@@ -27,7 +27,7 @@ OO.inheritClass( ve.dm.ModelFactory, OO.Factory );
  * Create a new item from a model element
  *
  * @param {Object} element Model element
- * @returns {ve.dm.Model} Model constructed from element
+ * @return {ve.dm.Model} Model constructed from element
  * @throws {Error} Element must have a .type property
  */
 ve.dm.ModelFactory.prototype.createFromElement = function ( element ) {

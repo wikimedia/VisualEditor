@@ -87,19 +87,19 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 	QUnit.expect( 12 * cases.length );
 
 	for ( i in cases ) {
-		selection = cases[i].selection;
+		selection = cases[ i ].selection;
 		assert.strictEqual( selection.getDocument(), doc, 'getDocument' );
 		assert.strictEqual( selection.getTableNode(), tableNode, 'getTableNode' );
-		assert.deepEqual( selection.getRanges(), cases[i].ranges, cases[i].msg + ': getRanges' );
-		assert.deepEqual( selection.getOuterRanges(), cases[i].outerRanges, cases[i].msg + ': getOuterRanges' );
-		assert.strictEqual( selection.fromCol, cases[i].fromCol, cases[i].msg + ': fromCol set' );
-		assert.strictEqual( selection.fromRow, cases[i].fromRow, cases[i].msg + ': fromRow set' );
-		assert.strictEqual( selection.toCol, cases[i].toCol, cases[i].msg + ': toCol set' );
-		assert.strictEqual( selection.toRow, cases[i].toRow, cases[i].msg + ': toRow set' );
-		assert.strictEqual( selection.startCol, cases[i].startCol, cases[i].msg + ': startCol set' );
-		assert.strictEqual( selection.startRow, cases[i].startRow, cases[i].msg + ': startRow set' );
-		assert.strictEqual( selection.endCol, cases[i].endCol, cases[i].msg + ': endCol set' );
-		assert.strictEqual( selection.endRow, cases[i].endRow, cases[i].msg + ': endRow set' );
+		assert.deepEqual( selection.getRanges(), cases[ i ].ranges, cases[ i ].msg + ': getRanges' );
+		assert.deepEqual( selection.getOuterRanges(), cases[ i ].outerRanges, cases[ i ].msg + ': getOuterRanges' );
+		assert.strictEqual( selection.fromCol, cases[ i ].fromCol, cases[ i ].msg + ': fromCol set' );
+		assert.strictEqual( selection.fromRow, cases[ i ].fromRow, cases[ i ].msg + ': fromRow set' );
+		assert.strictEqual( selection.toCol, cases[ i ].toCol, cases[ i ].msg + ': toCol set' );
+		assert.strictEqual( selection.toRow, cases[ i ].toRow, cases[ i ].msg + ': toRow set' );
+		assert.strictEqual( selection.startCol, cases[ i ].startCol, cases[ i ].msg + ': startCol set' );
+		assert.strictEqual( selection.startRow, cases[ i ].startRow, cases[ i ].msg + ': startRow set' );
+		assert.strictEqual( selection.endCol, cases[ i ].endCol, cases[ i ].msg + ': endCol set' );
+		assert.strictEqual( selection.endRow, cases[ i ].endRow, cases[ i ].msg + ': endRow set' );
 	}
 
 } );

@@ -125,7 +125,7 @@ OO.mixinClass( ve.dm.Scalable, OO.EventEmitter );
  * @param {number} [dimensions.width] The width of the image
  * @param {number} [dimensions.height] The height of the image
  * @param {number} [ratio] The image width/height ratio, if it exists
- * @returns {Object} Dimensions object with width and height
+ * @return {Object} Dimensions object with width and height
  */
 ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
 	dimensions = ve.copy( dimensions );
@@ -154,7 +154,7 @@ ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
 
 /**
  * Clone the current scalable object
- * @returns {ve.dm.Scalable} Cloned scalable object
+ * @return {ve.dm.Scalable} Cloned scalable object
  */
 ve.dm.Scalable.prototype.clone = function () {
 	var currentDimensions = this.getCurrentDimensions(),
@@ -362,7 +362,7 @@ ve.dm.Scalable.prototype.clearMaxDimensions = function () {
 /**
  * Get the original dimensions
  *
- * @returns {Object} Dimensions object with width & height
+ * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getCurrentDimensions = function () {
 	return this.currentDimensions;
@@ -371,7 +371,7 @@ ve.dm.Scalable.prototype.getCurrentDimensions = function () {
 /**
  * Get the original dimensions
  *
- * @returns {Object} Dimensions object with width & height
+ * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getOriginalDimensions = function () {
 	return this.originalDimensions;
@@ -380,7 +380,7 @@ ve.dm.Scalable.prototype.getOriginalDimensions = function () {
 /**
  * Get the default dimensions
  *
- * @returns {Object} Dimensions object with width & height
+ * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getDefaultDimensions = function () {
 	return this.defaultDimensions;
@@ -397,7 +397,7 @@ ve.dm.Scalable.prototype.isDefault = function () {
 /**
  * Get the minimum dimensions
  *
- * @returns {Object} Dimensions object with width & height
+ * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getMinDimensions = function () {
 	return this.minDimensions;
@@ -406,7 +406,7 @@ ve.dm.Scalable.prototype.getMinDimensions = function () {
 /**
  * Get the maximum dimensions
  *
- * @returns {Object} Dimensions object with width & height
+ * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getMaxDimensions = function () {
 	return this.maxDimensions;
@@ -415,7 +415,7 @@ ve.dm.Scalable.prototype.getMaxDimensions = function () {
 /**
  * The object enforces the minimum dimensions when scaling
  *
- * @returns {boolean} Enforces the minimum dimensions
+ * @return {boolean} Enforces the minimum dimensions
  */
 ve.dm.Scalable.prototype.isEnforcedMin = function () {
 	return this.enforceMin;
@@ -424,7 +424,7 @@ ve.dm.Scalable.prototype.isEnforcedMin = function () {
 /**
  * The object enforces the maximum dimensions when scaling
  *
- * @returns {boolean} Enforces the maximum dimensions
+ * @return {boolean} Enforces the maximum dimensions
  */
 ve.dm.Scalable.prototype.isEnforcedMax = function () {
 	return this.enforceMax;
@@ -453,7 +453,7 @@ ve.dm.Scalable.prototype.setEnforcedMax = function ( enforceMax ) {
 /**
  * Get the fixed aspect ratio (width/height)
  *
- * @returns {number} Aspect ratio
+ * @return {number} Aspect ratio
  */
 ve.dm.Scalable.prototype.getRatio = function () {
 	return this.ratio;
@@ -462,7 +462,7 @@ ve.dm.Scalable.prototype.getRatio = function () {
 /**
  * Check if the object has a fixed ratio
  *
- * @returns {boolean} The object has a fixed ratio
+ * @return {boolean} The object has a fixed ratio
  */
 ve.dm.Scalable.prototype.isFixedRatio = function () {
 	return this.fixedRatio;
@@ -471,7 +471,7 @@ ve.dm.Scalable.prototype.isFixedRatio = function () {
 /**
  * Get the current scale of the object
  *
- * @returns {number|null} A scale (1=100%), or null if not applicable
+ * @return {number|null} A scale (1=100%), or null if not applicable
  */
 ve.dm.Scalable.prototype.getCurrentScale = function () {
 	if ( !this.isFixedRatio() || !this.getCurrentDimensions() || !this.getOriginalDimensions() ) {
@@ -485,7 +485,7 @@ ve.dm.Scalable.prototype.getCurrentScale = function () {
  *
  * Only possible if enforceMin is false.
  *
- * @returns {boolean} Current dimensions are greater than maximum dimensions
+ * @return {boolean} Current dimensions are greater than maximum dimensions
  */
 ve.dm.Scalable.prototype.isTooSmall = function () {
 	return !!( this.getCurrentDimensions() && this.getMinDimensions() && (
@@ -499,7 +499,7 @@ ve.dm.Scalable.prototype.isTooSmall = function () {
  *
  * Only possible if enforceMax is false.
  *
- * @returns {boolean} Current dimensions are greater than maximum dimensions
+ * @return {boolean} Current dimensions are greater than maximum dimensions
  */
 ve.dm.Scalable.prototype.isTooLarge = function () {
 	return !!( this.getCurrentDimensions() && this.getMaxDimensions() && (
@@ -513,7 +513,7 @@ ve.dm.Scalable.prototype.isTooLarge = function () {
  *
  * @param {Object} dimensions Dimensions object with width & height
  * @param {number} [grid] Optional grid size to snap to
- * @returns {Object} Dimensions object with width & height
+ * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
 	var ratio, snap, snapMin, snapMax,
@@ -565,7 +565,7 @@ ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
 /**
  * Checks whether the current dimensions are numeric and within range
  *
- * @returns {boolean} Current dimensions are valid
+ * @return {boolean} Current dimensions are valid
  */
 ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
 	var dimensions = this.getCurrentDimensions(),
@@ -596,7 +596,7 @@ ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
  * Make sure that if width or height are set, they are not 'undefined'.
  *
  * @param {Object} dimensions A dimensions object to test
- * @returns {boolean} Valid or invalid dimensions object
+ * @return {boolean} Valid or invalid dimensions object
  */
 ve.dm.Scalable.prototype.isDimensionsObjectValid = function ( dimensions ) {
 	if (

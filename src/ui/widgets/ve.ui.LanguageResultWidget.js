@@ -46,7 +46,7 @@ ve.ui.LanguageResultWidget.prototype.updateLabel = function ( query, matchedProp
 
 	// Highlight where applicable
 	if ( matchedProperty ) {
-		$highlighted = ve.highlightQuery( data[matchedProperty], query );
+		$highlighted = ve.highlightQuery( data[ matchedProperty ], query );
 		if ( matchedProperty === 'name' ) {
 			this.$name.empty().append( $highlighted );
 		} else {

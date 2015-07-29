@@ -53,7 +53,7 @@ ve.ui.NodeInspector.prototype.getSelectedNode = function () {
 		selectedNode = this.getFragment().getSelectedNode();
 
 	for ( i = 0, len = modelClasses.length; i < len; i++ ) {
-		if ( selectedNode instanceof modelClasses[i] ) {
+		if ( selectedNode instanceof modelClasses[ i ] ) {
 			return selectedNode;
 		}
 	}

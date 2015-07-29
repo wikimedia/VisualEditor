@@ -42,7 +42,7 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 
 	if ( ve.isPlainObject( triggers ) ) {
 		if ( Object.prototype.hasOwnProperty.call( triggers, platformKey ) ) {
-			triggerList = Array.isArray( triggers[platformKey] ) ? triggers[platformKey] : [ triggers[platformKey] ];
+			triggerList = Array.isArray( triggers[ platformKey ] ) ? triggers[ platformKey ] : [ triggers[ platformKey ] ];
 		} else {
 			return;
 		}
@@ -52,10 +52,10 @@ ve.ui.TriggerRegistry.prototype.register = function ( name, triggers ) {
 
 	// Validate arguments
 	for ( i = 0, l = triggerList.length; i < l; i++ ) {
-		if ( !( triggerList[i] instanceof ve.ui.Trigger ) ) {
+		if ( !( triggerList[ i ] instanceof ve.ui.Trigger ) ) {
 			throw new Error( 'Trigger must be an instance of ve.ui.Trigger' );
 		}
-		if ( !triggerList[i].isComplete() ) {
+		if ( !triggerList[ i ].isComplete() ) {
 			throw new Error( 'Incomplete trigger' );
 		}
 	}

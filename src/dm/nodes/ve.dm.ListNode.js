@@ -36,7 +36,7 @@ ve.dm.ListNode.static.defaultAttributes = {
 ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
 
 ve.dm.ListNode.static.toDataElement = function ( domElements ) {
-	var style = domElements[0].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
+	var style = domElements[ 0 ].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
 	return { type: this.name, attributes: { style: style } };
 };
 

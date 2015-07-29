@@ -36,7 +36,7 @@ ve.ce.HeadingNode.static.name = 'heading';
  *
  * Tag name is selected based on the model's level attribute.
  *
- * @returns {string} HTML tag name
+ * @return {string} HTML tag name
  * @throws {Error} If level is invalid
  */
 ve.ce.HeadingNode.prototype.getTagName = function () {
@@ -46,7 +46,7 @@ ve.ce.HeadingNode.prototype.getTagName = function () {
 	if ( !Object.prototype.hasOwnProperty.call( types, level ) ) {
 		throw new Error( 'Invalid level' );
 	}
-	return types[level];
+	return types[ level ];
 };
 
 /**

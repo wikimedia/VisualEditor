@@ -44,7 +44,7 @@ ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
 			h5: 5,
 			h6: 6
 		},
-		level = levels[domElements[0].nodeName.toLowerCase()];
+		level = levels[ domElements[ 0 ].nodeName.toLowerCase() ];
 	return { type: this.name, attributes: { level: level } };
 };
 

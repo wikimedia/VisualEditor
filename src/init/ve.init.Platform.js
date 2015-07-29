@@ -63,7 +63,7 @@ ve.init.Platform.static.initializedPromise = ve.init.Platform.static.deferredPla
  * @static
  * @method
  * @inheritable
- * @returns {string} Client platform string
+ * @return {string} Client platform string
  */
 ve.init.Platform.static.getSystemPlatform = function () {
 	return $.client.profile().platform;
@@ -78,7 +78,7 @@ ve.init.Platform.static.getSystemPlatform = function () {
  * @static
  * @method
  * @inheritable
- * @returns {boolean} We are in IE
+ * @return {boolean} We are in IE
  */
 ve.init.Platform.static.isInternetExplorer = function () {
 	return $.client.profile().name === 'msie';
@@ -104,7 +104,7 @@ ve.init.Platform.static.isIos = function () {
  *
  * @method
  * @abstract
- * @returns {RegExp} Regular expression object
+ * @return {RegExp} Regular expression object
  */
 ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = null;
 
@@ -114,7 +114,7 @@ ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = null;
  *
  * @method
  * @abstract
- * @returns {RegExp} Regular expression object
+ * @return {RegExp} Regular expression object
  */
 ve.init.Platform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = null;
 
@@ -124,7 +124,7 @@ ve.init.Platform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = null;
  * @method
  * @abstract
  * @param {string|string[]} key Config key, or list of keys
- * @returns {Mixed|Object} Config value, or keyed object of config values if list of keys provided
+ * @return {Mixed|Object} Config value, or keyed object of config values if list of keys provided
  */
 ve.init.Platform.prototype.getConfig = null;
 
@@ -144,7 +144,7 @@ ve.init.Platform.prototype.addMessages = null;
  * @abstract
  * @param {string} key Message key
  * @param {Mixed...} [args] List of arguments which will be injected at $1, $2, etc. in the message
- * @returns {string} Localized message, or key or '<' + key + '>' if message not found
+ * @return {string} Localized message, or key or '<' + key + '>' if message not found
  */
 ve.init.Platform.prototype.getMessage = null;
 
@@ -165,7 +165,7 @@ ve.init.Platform.prototype.addParsedMessages = null;
  * @method
  * @abstract
  * @param {string} key Message key
- * @returns {string} Parsed localized message as HTML string
+ * @return {string} Parsed localized message as HTML string
  */
 ve.init.Platform.prototype.getParsedMessage = null;
 
@@ -174,7 +174,7 @@ ve.init.Platform.prototype.getParsedMessage = null;
  *
  * @method
  * @abstract
- * @returns {string[]} User language strings
+ * @return {string[]} User language strings
  */
 ve.init.Platform.prototype.getUserLanguages = null;
 
@@ -183,7 +183,7 @@ ve.init.Platform.prototype.getUserLanguages = null;
  *
  * @method
  * @abstract
- * @returns {string[]} API URLs
+ * @return {string[]} API URLs
  */
 ve.init.Platform.prototype.getMediaSources = null;
 
@@ -192,7 +192,7 @@ ve.init.Platform.prototype.getMediaSources = null;
  *
  * @method
  * @abstract
- * @returns {string[]} Language codes
+ * @return {string[]} Language codes
  */
 ve.init.Platform.prototype.getLanguageCodes = null;
 
@@ -202,7 +202,7 @@ ve.init.Platform.prototype.getLanguageCodes = null;
  * @method
  * @abstract
  * @param {string} code Language code
- * @returns {string} Language name
+ * @return {string} Language name
  */
 ve.init.Platform.prototype.getLanguageName = null;
 
@@ -212,7 +212,7 @@ ve.init.Platform.prototype.getLanguageName = null;
  * @method
  * @abstract
  * @param {string} code Language code
- * @returns {string} Language autonym
+ * @return {string} Language autonym
  */
 ve.init.Platform.prototype.getLanguageAutonym = null;
 
@@ -222,7 +222,7 @@ ve.init.Platform.prototype.getLanguageAutonym = null;
  * @method
  * @abstract
  * @param {string} code Language code
- * @returns {string} Language direction
+ * @return {string} Language direction
  */
 ve.init.Platform.prototype.getLanguageDirection = null;
 
@@ -233,7 +233,7 @@ ve.init.Platform.prototype.getLanguageDirection = null;
  * External callers should not call this. Instead, call #getInitializedPromise.
  *
  * @private
- * @returns {jQuery.Promise} Promise that will be resolved once initialization is done
+ * @return {jQuery.Promise} Promise that will be resolved once initialization is done
  */
 ve.init.Platform.prototype.initialize = function () {
 	return $.Deferred().resolve().promise();
@@ -248,7 +248,7 @@ ve.init.Platform.prototype.initialize = function () {
  * (shared between different Target instances) it is important not to rely
  * on this promise being asynchronous.
  *
- * @returns {jQuery.Promise} Promise that will be resolved once the platform is ready
+ * @return {jQuery.Promise} Promise that will be resolved once the platform is ready
  */
 ve.init.Platform.prototype.getInitializedPromise = function () {
 	if ( !this.initialized ) {
@@ -262,7 +262,7 @@ ve.init.Platform.prototype.getInitializedPromise = function () {
  *
  * Returns a promise which resolves with the character list
  *
- * @returns {jQuery.Promise}
+ * @return {jQuery.Promise}
  */
 ve.init.Platform.prototype.fetchSpecialCharList = function () {
 	var charsObj = {};

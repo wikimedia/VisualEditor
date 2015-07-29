@@ -34,9 +34,9 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 
 	model.setSelection( selection );
 	for ( i = 0; i < operations.length; i++ ) {
-		method = actions[operations[i]][0];
-		args = actions[operations[i]].slice( 1 );
-		view[method].apply( view, args );
+		method = actions[ operations[ i ] ][ 0 ];
+		args = actions[ operations[ i ] ].slice( 1 );
+		view[ method ].apply( view, args );
 	}
 	expectedData( data );
 
@@ -254,8 +254,8 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[i].html, cases[i].range, cases[i].operations,
-			cases[i].expectedData, cases[i].expectedSelection, cases[i].msg
+			assert, cases[ i ].html, cases[ i ].range, cases[ i ].operations,
+			cases[ i ].expectedData, cases[ i ].expectedSelection, cases[ i ].msg
 		);
 	}
 } );
@@ -488,8 +488,8 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[i].html, cases[i].range, cases[i].operations,
-			cases[i].expectedData, cases[i].expectedSelection, cases[i].msg
+			assert, cases[ i ].html, cases[ i ].range, cases[ i ].operations,
+			cases[ i ].expectedData, cases[ i ].expectedSelection, cases[ i ].msg
 		);
 	}
 } );
@@ -565,9 +565,9 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 		var txs, i, ops,
 			view = ve.test.utils.createSurfaceViewFromHtml( prevHtml ),
 			model = view.getModel(),
-			node = view.getDocument().getDocumentNode().children[0],
-			prevNode = $( prevHtml )[0],
-			nextNode = $( nextHtml )[0],
+			node = view.getDocument().getDocumentNode().children[ 0 ],
+			prevNode = $( prevHtml )[ 0 ],
+			nextNode = $( nextHtml )[ 0 ],
 			prev = {
 				text: ve.ce.getDomText( prevNode ),
 				hash: ve.ce.getDomHash( prevNode ),
@@ -580,10 +580,10 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 			};
 
 		view.onSurfaceObserverContentChange( node, prev, next );
-		txs = model.getHistory()[0].transactions;
+		txs = model.getHistory()[ 0 ].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
-			ops.push( txs[i].getOperations() );
+			ops.push( txs[ i ].getOperations() );
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': operations' );
 		assert.equalRange( model.getSelection().getRange(), expectedRange, msg + ': range' );
@@ -593,8 +593,8 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
-			cases[i].prevHtml, cases[i].prevRange, cases[i].nextHtml, cases[i].nextRange,
-			cases[i].expectedOps, cases[i].expectedRange || cases[i].nextRange, cases[i].msg
+			cases[ i ].prevHtml, cases[ i ].prevRange, cases[ i ].nextHtml, cases[ i ].nextRange,
+			cases[ i ].expectedOps, cases[ i ].expectedRange || cases[ i ].nextRange, cases[ i ].msg
 		);
 	}
 
@@ -617,7 +617,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 				clipboardData: {
 					items: [],
 					setData: function ( prop, val ) {
-						testClipboardData[prop] = val;
+						testClipboardData[ prop ] = val;
 						return true;
 					}
 				}
@@ -672,20 +672,20 @@ QUnit.test( 'onCopy', function ( assert ) {
 		testClipboardData = {};
 		view.onCopy( testEvent );
 
-		clipboardKey = testClipboardData['text/xcustom'];
+		clipboardKey = testClipboardData[ 'text/xcustom' ];
 
 		assert.strictEqual( clipboardKey, view.clipboardId + '-0', msg + ': clipboardId set' );
 
 		parts = clipboardKey.split( '-' );
-		clipboardIndex = parts[1];
-		slice = view.clipboard[clipboardIndex].slice;
+		clipboardIndex = parts[ 1 ];
+		slice = view.clipboard[ clipboardIndex ].slice;
 
 		assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
 		assert.equalRange( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
 		assert.equalRange( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
 		assert.equalDomElement(
-			$( '<div>' ).html( view.$pasteTarget.html() )[0],
-			$( '<div>' ).html( expectedHtml )[0],
+			$( '<div>' ).html( view.$pasteTarget.html() )[ 0 ],
+			$( '<div>' ).html( expectedHtml )[ 0 ],
 			msg + ': html'
 		);
 
@@ -694,9 +694,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
-			cases[i].doc, cases[i].range, cases[i].expectedData,
-			cases[i].expectedOriginalRange, cases[i].expectedBalancedRange,
-			cases[i].expectedHtml, cases[i].msg
+			cases[ i ].doc, cases[ i ].range, cases[ i ].expectedData,
+			cases[ i ].expectedOriginalRange, cases[ i ].expectedBalancedRange,
+			cases[ i ].expectedHtml, cases[ i ].msg
 		);
 	}
 
@@ -711,7 +711,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			this.originalEvent = {
 				clipboardData: {
 					getData: function ( prop ) {
-						return data[prop];
+						return data[ prop ];
 					}
 				}
 			};
@@ -1103,13 +1103,13 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		if ( cases[i].expectedOps ) {
+		if ( cases[ i ].expectedOps ) {
 			expected++;
 		}
-		if ( cases[i].expectedRange ) {
+		if ( cases[ i ].expectedRange ) {
 			expected++;
 		}
-		if ( cases[i].expectedHtml ) {
+		if ( cases[ i ].expectedHtml ) {
 			expected++;
 		}
 	}
@@ -1126,11 +1126,11 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		model.setLinearSelection( range );
 		view.pasteSpecial = pasteSpecial;
 		if ( useClipboardData ) {
-			e['text/html'] = pasteHtml;
-			e['text/xcustom'] = 'useClipboardData-0';
+			e[ 'text/html' ] = pasteHtml;
+			e[ 'text/xcustom' ] = 'useClipboardData-0';
 		} else if ( fromVe ) {
-			e['text/html'] = pasteHtml;
-			e['text/xcustom'] = '0.123-0';
+			e[ 'text/html' ] = pasteHtml;
+			e[ 'text/xcustom' ] = '0.123-0';
 		}
 		view.beforePaste( new TestEvent( e ) );
 		if ( pasteTargetHtml ) {
@@ -1143,17 +1143,17 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		if ( expectedOps ) {
 			ops = [];
 			if ( model.getHistory().length ) {
-				txs = model.getHistory()[0].transactions;
+				txs = model.getHistory()[ 0 ].transactions;
 				for ( i = 0; i < txs.length; i++ ) {
-					txops = txs[i].getOperations();
+					txops = txs[ i ].getOperations();
 					for ( j = 0; j < txops.length; j++ ) {
-						if ( txops[j].remove ) {
-							ve.dm.example.postprocessAnnotations( txops[j].remove, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txops[j].remove );
+						if ( txops[ j ].remove ) {
+							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
 						}
-						if ( txops[j].insert ) {
-							ve.dm.example.postprocessAnnotations( txops[j].insert, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txops[j].insert );
+						if ( txops[ j ].insert ) {
+							ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
 						}
 					}
 					ops.push( txops );
@@ -1173,10 +1173,10 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
-			cases[i].documentHtml, cases[i].pasteHtml, cases[i].fromVe, cases[i].useClipboardData,
-			cases[i].pasteTargetHtml, cases[i].range, cases[i].pasteSpecial,
-			cases[i].expectedOps, cases[i].expectedRange, cases[i].expectedHtml,
-			cases[i].msg
+			cases[ i ].documentHtml, cases[ i ].pasteHtml, cases[ i ].fromVe, cases[ i ].useClipboardData,
+			cases[ i ].pasteTargetHtml, cases[ i ].range, cases[ i ].pasteSpecial,
+			cases[ i ].expectedOps, cases[ i ].expectedRange, cases[ i ].expectedHtml,
+			cases[ i ].msg
 		);
 	}
 
@@ -1300,23 +1300,23 @@ QUnit.test( 'handleTableArrowKey', function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		offsets = cases[i].selectionOffsets;
-		table = tables[cases[i].table || 'mergedCells'];
+		offsets = cases[ i ].selectionOffsets;
+		table = tables[ cases[ i ].table || 'mergedCells' ];
 		view = table.view;
 		model = view.getModel();
 		model.setSelection( new ve.dm.TableSelection(
-			model.getDocument(), table.tableRange, offsets[0], offsets[1], offsets[2], offsets[3] )
+			model.getDocument(), table.tableRange, offsets[ 0 ], offsets[ 1 ], offsets[ 2 ], offsets[ 3 ] )
 		);
 		view.handleTableArrowKey( {
-			keyCode: OO.ui.Keys[cases[i].key],
-			shiftKey: !!cases[i].shiftKey,
+			keyCode: OO.ui.Keys[ cases[ i ].key ],
+			shiftKey: !!cases[ i ].shiftKey,
 			preventDefault: fn
 		} );
 		selection = model.getSelection();
 		assert.deepEqual(
 			[ selection.fromCol, selection.fromRow, selection.toCol, selection.toRow ],
-			cases[i].expectedSelectionOffsets,
-			cases[i].msg
+			cases[ i ].expectedSelectionOffsets,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -1375,13 +1375,13 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 							if ( isIE && key !== 'text' ) {
 								throw new Error( 'IE FAIL' );
 							}
-							dataTransfer[key] = value;
+							dataTransfer[ key ] = value;
 						},
 						getData: function ( key ) {
 							if ( isIE && key !== 'text' ) {
 								throw new Error( 'IE FAIL' );
 							}
-							return dataTransfer[key];
+							return dataTransfer[ key ];
 						}
 					}
 				},
@@ -1414,8 +1414,8 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
-			cases[i].range, cases[i].targetOffset, cases[i].expectedTransfer, cases[i].expectedData,
-			cases[i].expectedSelection, cases[i].isIE, cases[i].msg
+			cases[ i ].range, cases[ i ].targetOffset, cases[ i ].expectedTransfer, cases[ i ].expectedData,
+			cases[ i ].expectedSelection, cases[ i ].isIE, cases[ i ].msg
 		);
 	}
 
@@ -1451,7 +1451,7 @@ QUnit.test( 'getNearestCorrectOffset', function ( assert ) {
 
 	for ( dir = -1; dir <= 1; dir += 2 ) {
 		for ( i = 0; i < data.getLength(); i++ ) {
-			assert.strictEqual( view.getNearestCorrectOffset( i, dir ), expected[dir][i], 'Direction: ' + dir + ' Offset: ' + i );
+			assert.strictEqual( view.getNearestCorrectOffset( i, dir ), expected[ dir ][ i ], 'Direction: ' + dir + ' Offset: ' + i );
 		}
 	}
 	view.destroy();
@@ -1568,34 +1568,34 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		for ( j = 0; j < cases[i].expected.length; j++ ) {
-			expect += cases[i].expected[j] ? ( cases[i].expected[j].focusNode === undefined ? 2 : 4 ) : 1;
+		for ( j = 0; j < cases[ i ].expected.length; j++ ) {
+			expect += cases[ i ].expected[ j ] ? ( cases[ i ].expected[ j ].focusNode === undefined ? 2 : 4 ) : 1;
 		}
 	}
 
 	QUnit.expect( expect );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		view = ve.test.utils.createSurfaceViewFromHtml( cases[i].html );
+		view = ve.test.utils.createSurfaceViewFromHtml( cases[ i ].html );
 		internalListNode = view.getModel().getDocument().getInternalList().getListNode();
 		for ( j = 0, l = internalListNode.getOuterRange().start; j < l; j++ ) {
-			msg = ' at ' + j + ' in ' + cases[i].msg;
+			msg = ' at ' + j + ' in ' + cases[ i ].msg;
 			node = view.getDocument().getDocumentNode().getNodeFromOffset( j );
 			if ( node.isFocusable() ) {
-				assert.strictEqual( null, cases[i].expected[j], 'Focusable node at ' + j );
+				assert.strictEqual( null, cases[ i ].expected[ j ], 'Focusable node at ' + j );
 			} else {
 				selection = view.getSelectionState( new ve.Range( j ) );
 				if ( selection.isCollapsed ) {
-					expectedNode = $( '<div>' ).html( cases[i].expected[j].anchorNode )[0].childNodes[0];
+					expectedNode = $( '<div>' ).html( cases[ i ].expected[ j ].anchorNode )[ 0 ].childNodes[ 0 ];
 					assert.equalDomElement( selection.anchorNode, expectedNode, 'Node ' + msg );
-					assert.strictEqual( selection.anchorOffset, cases[i].expected[j].anchorOffset, 'Offset ' + msg );
+					assert.strictEqual( selection.anchorOffset, cases[ i ].expected[ j ].anchorOffset, 'Offset ' + msg );
 				} else {
-					expectedNode = $( '<div>' ).html( cases[i].expected[j].anchorNode )[0].childNodes[0];
+					expectedNode = $( '<div>' ).html( cases[ i ].expected[ j ].anchorNode )[ 0 ].childNodes[ 0 ];
 					assert.equalDomElement( selection.anchorNode, expectedNode, 'Anchor node ' + msg );
-					assert.strictEqual( selection.anchorOffset, cases[i].expected[j].anchorOffset, 'Anchor offset ' + msg );
-					expectedNode = $( '<div>' ).html( cases[i].expected[j].focusNode )[0].childNodes[0];
+					assert.strictEqual( selection.anchorOffset, cases[ i ].expected[ j ].anchorOffset, 'Anchor offset ' + msg );
+					expectedNode = $( '<div>' ).html( cases[ i ].expected[ j ].focusNode )[ 0 ].childNodes[ 0 ];
 					assert.equalDomElement( selection.focusNode, expectedNode, 'End node ' + msg );
-					assert.strictEqual( selection.focusOffset, cases[i].expected[j].focusOffset, 'Focus offset ' + msg );
+					assert.strictEqual( selection.focusOffset, cases[ i ].expected[ j ].focusOffset, 'Focus offset ' + msg );
 				}
 			}
 		}

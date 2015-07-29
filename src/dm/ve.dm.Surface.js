@@ -181,7 +181,7 @@ ve.dm.Surface.prototype.isStaging = function () {
  * @return {boolean} staging.allowUndo Allow undo while staging
  */
 ve.dm.Surface.prototype.getStaging = function () {
-	return this.stagingStack[this.stagingStack.length - 1];
+	return this.stagingStack[ this.stagingStack.length - 1 ];
 };
 
 /**
@@ -234,18 +234,19 @@ ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
  * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
  */
 ve.dm.Surface.prototype.popStaging = function () {
+	var i, transaction, staging, transactions,
+		reverseTransactions = [];
+
 	if ( !this.isStaging() ) {
 		return;
 	}
 
-	var i, transaction,
-		reverseTransactions = [],
-		staging = this.stagingStack.pop(),
-		transactions = staging.transactions;
+	staging = this.stagingStack.pop();
+	transactions = staging.transactions;
 
 	// Not applying, so rollback transactions
 	for ( i = transactions.length - 1; i >= 0; i-- ) {
-		transaction = transactions[i].reversed();
+		transaction = transactions[ i ].reversed();
 		reverseTransactions.push( transaction );
 	}
 	this.changeInternal( reverseTransactions, undefined, true );
@@ -264,11 +265,12 @@ ve.dm.Surface.prototype.popStaging = function () {
  * @fires history
  */
 ve.dm.Surface.prototype.applyStaging = function () {
+	var staging;
 	if ( !this.isStaging() ) {
 		return;
 	}
 
-	var staging = this.stagingStack.pop();
+	staging = this.stagingStack.pop();
 
 	if ( this.isStaging() ) {
 		// Merge popped transactions into the current item in the staging stack
@@ -297,11 +299,12 @@ ve.dm.Surface.prototype.applyStaging = function () {
  * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
  */
 ve.dm.Surface.prototype.popAllStaging = function () {
+	var transactions = [];
+
 	if ( !this.isStaging() ) {
 		return;
 	}
 
-	var transactions = [];
 	while ( this.isStaging() ) {
 		ve.batchSplice( transactions, 0, 0, this.popStaging() );
 	}
@@ -659,7 +662,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		}
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		if ( selection.isSingleCell() ) {
-			selectedNode = selection.getMatrixCells()[0].node;
+			selectedNode = selection.getMatrixCells()[ 0 ].node;
 		}
 		contextChange = true;
 	} else if ( selection instanceof ve.dm.NullSelection ) {
@@ -761,24 +764,24 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 		}
 		this.transacting = true;
 		for ( i = 0, len = transactions.length; i < len; i++ ) {
-			if ( !transactions[i].isNoOp() ) {
+			if ( !transactions[ i ].isNoOp() ) {
 				if ( !skipUndoStack ) {
 					if ( this.isStaging() ) {
 						if ( !this.getStagingTransactions().length ) {
 							this.getStaging().selectionBefore = selectionBefore;
 						}
-						this.getStagingTransactions().push( transactions[i] );
+						this.getStagingTransactions().push( transactions[ i ] );
 					} else {
 						this.truncateUndoStack();
 						if ( !this.newTransactions.length ) {
 							this.selectionBefore = selectionBefore;
 						}
-						this.newTransactions.push( transactions[i] );
+						this.newTransactions.push( transactions[ i ] );
 					}
 				}
 				// The .commit() call below indirectly invokes setSelection()
-				this.getDocument().commit( transactions[i] );
-				if ( transactions[i].hasElementAttributeOperations() ) {
+				this.getDocument().commit( transactions[ i ] );
+				if ( transactions[ i ].hasElementAttributeOperations() ) {
 					contextChange = true;
 				}
 			}
@@ -855,11 +858,11 @@ ve.dm.Surface.prototype.undo = function () {
 	this.breakpoint();
 	this.undoIndex++;
 
-	item = this.undoStack[this.undoStack.length - this.undoIndex];
+	item = this.undoStack[ this.undoStack.length - this.undoIndex ];
 	if ( item ) {
 		// Apply reversed transactions in reversed order
 		for ( i = item.transactions.length - 1; i >= 0; i-- ) {
-			transaction = item.transactions[i].reversed();
+			transaction = item.transactions[ i ].reversed();
 			transactions.push( transaction );
 		}
 		this.changeInternal( transactions, item.selectionBefore, true );
@@ -880,7 +883,7 @@ ve.dm.Surface.prototype.redo = function () {
 
 	this.breakpoint();
 
-	item = this.undoStack[this.undoStack.length - this.undoIndex];
+	item = this.undoStack[ this.undoStack.length - this.undoIndex ];
 	if ( item ) {
 		// ve.copy( item.transactions ) invokes .clone() on each transaction in item.transactions
 		this.changeInternal( ve.copy( item.transactions ), item.selection, true );

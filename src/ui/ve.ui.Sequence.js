@@ -48,11 +48,11 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
 			new ve.Range( offset - plaintext.length + i, offset );
 	}
 	for ( i = this.data.length - 1; i >= 0; i--, j-- ) {
-		if ( typeof this.data[i] === 'string' ) {
-			if ( this.data[i] !== data.getCharacterData( j ) ) {
+		if ( typeof this.data[ i ] === 'string' ) {
+			if ( this.data[ i ] !== data.getCharacterData( j ) ) {
 				return null;
 			}
-		} else if ( !ve.compare( this.data[i], data.getData( j ), true ) ) {
+		} else if ( !ve.compare( this.data[ i ], data.getData( j ), true ) ) {
 			return null;
 		}
 	}

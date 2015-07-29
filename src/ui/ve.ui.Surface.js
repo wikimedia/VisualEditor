@@ -22,9 +22,9 @@
  * @cfg {string} [inDialog] The name of the dialog this surface is in
  */
 ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
-	config = config || {};
-
 	var documentModel;
+
+	config = config || {};
 
 	// Parent constructor
 	OO.ui.Element.call( this, config );
@@ -236,19 +236,19 @@ ve.ui.Surface.prototype.setupDebugBar = function () {
 
 /**
  * Get the bounding rectangle of the surface, relative to the viewport.
- * @returns {Object} Object with top, bottom, left, right, width and height properties.
+ * @return {Object} Object with top, bottom, left, right, width and height properties.
  */
 ve.ui.Surface.prototype.getBoundingClientRect = function () {
 	// We would use getBoundingClientRect(), but in iOS7 that's relative to the
 	// document rather than to the viewport
-	return this.$element[0].getClientRects()[0];
+	return this.$element[ 0 ].getClientRects()[ 0 ];
 };
 
 /**
  * Check if editing is enabled.
  *
  * @method
- * @returns {boolean} Editing is enabled
+ * @return {boolean} Editing is enabled
  */
 ve.ui.Surface.prototype.isEnabled = function () {
 	return this.enabled;
@@ -258,7 +258,7 @@ ve.ui.Surface.prototype.isEnabled = function () {
  * Get the surface model.
  *
  * @method
- * @returns {ve.dm.Surface} Surface model
+ * @return {ve.dm.Surface} Surface model
  */
 ve.ui.Surface.prototype.getModel = function () {
 	return this.model;
@@ -268,7 +268,7 @@ ve.ui.Surface.prototype.getModel = function () {
  * Get the surface view.
  *
  * @method
- * @returns {ve.ce.Surface} Surface view
+ * @return {ve.ce.Surface} Surface view
  */
 ve.ui.Surface.prototype.getView = function () {
 	return this.view;
@@ -278,7 +278,7 @@ ve.ui.Surface.prototype.getView = function () {
  * Get the context menu.
  *
  * @method
- * @returns {ve.ui.Context} Context user interface
+ * @return {ve.ui.Context} Context user interface
  */
 ve.ui.Surface.prototype.getContext = function () {
 	return this.context;
@@ -288,7 +288,7 @@ ve.ui.Surface.prototype.getContext = function () {
  * Get dialogs window set.
  *
  * @method
- * @returns {ve.ui.WindowManager} Dialogs window set
+ * @return {ve.ui.WindowManager} Dialogs window set
  */
 ve.ui.Surface.prototype.getDialogs = function () {
 	return this.dialogs;
@@ -296,7 +296,7 @@ ve.ui.Surface.prototype.getDialogs = function () {
 
 /**
  * Get toolbar dialogs window set.
- * @returns {ve.ui.WindowManager} Toolbar dialogs window set
+ * @return {ve.ui.WindowManager} Toolbar dialogs window set
  */
 ve.ui.Surface.prototype.getToolbarDialogs = function () {
 	return this.toolbarDialogs;
@@ -308,7 +308,7 @@ ve.ui.Surface.prototype.getToolbarDialogs = function () {
  * Local overlays are attached to the same frame as the surface.
  *
  * @method
- * @returns {ve.ui.Overlay} Local overlay
+ * @return {ve.ui.Overlay} Local overlay
  */
 ve.ui.Surface.prototype.getLocalOverlay = function () {
 	return this.localOverlay;
@@ -320,7 +320,7 @@ ve.ui.Surface.prototype.getLocalOverlay = function () {
  * Global overlays are attached to the top-most frame.
  *
  * @method
- * @returns {ve.ui.Overlay} Global overlay
+ * @return {ve.ui.Overlay} Global overlay
  */
 ve.ui.Surface.prototype.getGlobalOverlay = function () {
 	return this.globalOverlay;
@@ -403,7 +403,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
  * @param {ve.ui.Trigger|string} triggerOrAction Trigger or symbolic name of action
  * @param {string} [method] Action method name
  * @param {Mixed...} [args] Additional arguments for action
- * @returns {boolean} Action or command was executed
+ * @return {boolean} Action or command was executed
  */
 ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
 	var command, obj, ret;
@@ -423,7 +423,7 @@ ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
 		if ( ve.ui.actionFactory.doesActionSupportMethod( triggerOrAction, method ) ) {
 			// Create an action object and execute the method on it
 			obj = ve.ui.actionFactory.create( triggerOrAction, this );
-			ret = obj[method].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+			ret = obj[ method ].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
 			return ret === undefined || !!ret;
 		}
 	}
@@ -473,7 +473,7 @@ ve.ui.Surface.prototype.showProgress = function () {
 /**
  * Get sanitization rules for rich paste
  *
- * @returns {Object} Import rules
+ * @return {Object} Import rules
  */
 ve.ui.Surface.prototype.getImportRules = function () {
 	return this.importRules;
@@ -482,7 +482,7 @@ ve.ui.Surface.prototype.getImportRules = function () {
 /**
  * Surface 'dir' property (GUI/User-Level Direction)
  *
- * @returns {string} 'ltr' or 'rtl'
+ * @return {string} 'ltr' or 'rtl'
  */
 ve.ui.Surface.prototype.getDir = function () {
 	return this.$element.css( 'direction' );
@@ -517,7 +517,7 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 			return selection.getDescription();
 		} )
 		.setObserver( 'DOM doc', function () {
-			return ve.serializeNodeDebug( surface.view.$element[0] );
+			return ve.serializeNodeDebug( surface.view.$element[ 0 ] );
 		} )
 		.setObserver( 'DOM selection', function () {
 			var nativeRange,

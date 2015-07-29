@@ -18,29 +18,29 @@ QUnit.test( 'getCellNodeFromTarget', function ( assert ) {
 			'</table>'
 		),
 		documentNode = view.getDocument().getDocumentNode(),
-		tableNode = documentNode.children[0],
+		tableNode = documentNode.children[ 0 ],
 		$tableNode = tableNode.$element,
 		cases = [
 			{
 				msg: 'Table cell',
-				target: $tableNode.find( 'td' )[0],
-				node: documentNode.children[0].children[0].children[0].children[0]
+				target: $tableNode.find( 'td' )[ 0 ],
+				node: documentNode.children[ 0 ].children[ 0 ].children[ 0 ].children[ 0 ]
 			},
 			{
 				msg: 'Paragraph inside cell',
-				target: $tableNode.find( 'td' ).last().find( 'p' )[0],
-				node: documentNode.children[0].children[0].children[0].children[1]
+				target: $tableNode.find( 'td' ).last().find( 'p' )[ 0 ],
+				node: documentNode.children[ 0 ].children[ 0 ].children[ 0 ].children[ 1 ]
 			},
 			{
 				msg: 'Cell inside nested table',
-				target: $tableNode.find( 'table td' ).first()[0],
+				target: $tableNode.find( 'table td' ).first()[ 0 ],
 				node: null
 			}
 		];
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.strictEqual( tableNode.getCellNodeFromTarget( cases[i].target ), cases[i].node, cases[i].msg );
+		assert.strictEqual( tableNode.getCellNodeFromTarget( cases[ i ].target ), cases[ i ].node, cases[ i ].msg );
 	}
 	view.destroy();
 } );
@@ -51,7 +51,7 @@ QUnit.test( 'onTableMouseDown', function ( assert ) {
 			'<table><tr><td>Foo</td><td>Bar</td></tr></table>'
 		),
 		documentNode = view.getDocument().getDocumentNode(),
-		tableNode = documentNode.children[0],
+		tableNode = documentNode.children[ 0 ],
 		$tableNode = tableNode.$element,
 		mockEvent = {
 			preventDefault: function () {}
@@ -60,7 +60,7 @@ QUnit.test( 'onTableMouseDown', function ( assert ) {
 			{
 				msg: 'Table cell',
 				event: {
-					target: $tableNode.find( 'td' )[0]
+					target: $tableNode.find( 'td' )[ 0 ]
 				},
 				expectedSelection: {
 					type: 'table',
@@ -74,7 +74,7 @@ QUnit.test( 'onTableMouseDown', function ( assert ) {
 			{
 				msg: 'Shift click second cell paragraph',
 				event: {
-					target: $tableNode.find( 'td' ).last().find( 'p' )[0],
+					target: $tableNode.find( 'td' ).last().find( 'p' )[ 0 ],
 					shiftKey: true
 				},
 				expectedSelection: {
@@ -90,11 +90,11 @@ QUnit.test( 'onTableMouseDown', function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		tableNode.onTableMouseDown( $.extend( mockEvent, cases[i].event ) );
+		tableNode.onTableMouseDown( $.extend( mockEvent, cases[ i ].event ) );
 		assert.deepEqual(
 			tableNode.surface.getModel().getSelection().toJSON(),
-			cases[i].expectedSelection,
-			cases[i].msg
+			cases[ i ].expectedSelection,
+			cases[ i ].msg
 		);
 		// Clear document mouse up handlers
 		tableNode.onTableMouseUp();

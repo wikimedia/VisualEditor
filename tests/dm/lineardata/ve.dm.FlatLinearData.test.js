@@ -21,7 +21,7 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) 
 
 	QUnit.expect( data.getLength() * 3 );
 	for ( i = 0; i < data.getLength(); i++ ) {
-		assert.strictEqual( data.getType( i ), types[i], 'Type at offset ' + i );
+		assert.strictEqual( data.getType( i ), types[ i ], 'Type at offset ' + i );
 		assert.strictEqual( data.isOpenElementData( i ), isOpen.indexOf( i ) !== -1, 'isOpen ' + i );
 		assert.strictEqual( data.isCloseElementData( i ), isClose.indexOf( i ) !== -1, 'isClose ' + i );
 	}
@@ -74,7 +74,7 @@ QUnit.test( 'isElementData', 1, function ( assert ) {
 		];
 	QUnit.expect( data.getLength() + 1 );
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.strictEqual( data.isElementData( i ), cases[i].expected, cases[i].msg );
+		assert.strictEqual( data.isElementData( i ), cases[ i ].expected, cases[ i ].msg );
 	}
 } );
 
@@ -104,9 +104,9 @@ QUnit.test( 'containsElementData', 1, function ( assert ) {
 		];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), cases[i].data );
+		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
 		assert.strictEqual(
-			data.containsElementData(), cases[i].expected, cases[i].msg
+			data.containsElementData(), cases[ i ].expected, cases[ i ].msg
 		);
 	}
 } );

@@ -91,12 +91,13 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
  * @inheritdoc
  */
 ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
+	var commandName, tool;
+
 	if ( !ve.ui.Toolbar.super.prototype.isToolAvailable.apply( this, arguments ) ) {
 		return false;
 	}
 	// Check the tool's command is available on the surface
-	var commandName,
-		tool = this.getToolFactory().lookup( name );
+	tool = this.getToolFactory().lookup( name );
 	if ( !tool ) {
 		return false;
 	}
@@ -175,13 +176,14 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
  * Update the state of the tools
  */
 ve.ui.Toolbar.prototype.updateToolState = function () {
+	var dirInline, dirBlock, fragmentAnnotation, activeDialogs, fragment;
+
 	if ( !this.getSurface() ) {
 		this.emit( 'updateState', null, null );
 		return;
 	}
 
-	var dirInline, dirBlock, fragmentAnnotation, activeDialogs,
-		fragment = this.getSurface().getModel().getFragment();
+	fragment = this.getSurface().getModel().getFragment();
 
 	// Update context direction for button icons UI.
 	// By default, inline and block directions are the same.
@@ -234,7 +236,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
  * Get triggers for a specified name.
  *
  * @param {string} name Trigger name
- * @returns {ve.ui.Trigger[]|undefined} Triggers
+ * @return {ve.ui.Trigger[]|undefined} Triggers
  */
 ve.ui.Toolbar.prototype.getTriggers = function ( name ) {
 	return this.getSurface().triggerListener.getTriggers( name );
@@ -261,7 +263,7 @@ ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
 /**
  * Gets the surface which the toolbar controls.
  *
- * @returns {ve.ui.Surface} Surface being controlled
+ * @return {ve.ui.Surface} Surface being controlled
  */
 ve.ui.Toolbar.prototype.getSurface = function () {
 	return this.surface;

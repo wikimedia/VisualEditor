@@ -15,7 +15,7 @@ function runAnnotationActionTest( assert, html, method, args, range, expectedDat
 
 	expectedData( data );
 	surface.getModel().setLinearSelection( range );
-	AnnotationAction[method].apply( AnnotationAction, args );
+	AnnotationAction[ method ].apply( AnnotationAction, args );
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 }
@@ -98,6 +98,6 @@ QUnit.test( 'toggle', function ( assert ) {
 
 	QUnit.expect( cases.length * 1 );
 	for ( i = 0; i < cases.length; i++ ) {
-		runAnnotationActionTest( assert, cases[i].html, cases[i].method, cases[i].args, cases[i].range, cases[i].expectedData, cases[i].msg );
+		runAnnotationActionTest( assert, cases[ i ].html, cases[ i ].method, cases[ i ].args, cases[ i ].range, cases[ i ].expectedData, cases[ i ].msg );
 	}
 } );

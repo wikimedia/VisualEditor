@@ -58,11 +58,12 @@ ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.SpecialCharacterDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
+			var inspector = this;
+
 			this.surface = data.surface;
 			this.surface.getView().focus();
 			this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
 
-			var inspector = this;
 			if ( !this.characters ) {
 				this.$spinner.show();
 				ve.init.platform.fetchSpecialCharList()
@@ -133,7 +134,7 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
 		this.pages.push(
 			new ve.ui.SpecialCharacterPage( category, {
 				label: category,
-				characters: this.characters[category]
+				characters: this.characters[ category ]
 			} )
 		);
 	}

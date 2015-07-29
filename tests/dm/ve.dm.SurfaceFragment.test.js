@@ -152,11 +152,11 @@ QUnit.test( 'expandLinearSelection (annotation)', function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		fragment = surface.getLinearFragment( cases[i].range ).expandLinearSelection(
+		fragment = surface.getLinearFragment( cases[ i ].range ).expandLinearSelection(
 			'annotation',
-			ve.dm.example.createAnnotation( cases[i].annotation )
+			ve.dm.example.createAnnotation( cases[ i ].annotation )
 		);
-		assert.equalHash( fragment.getSelection().getRange(), cases[i].expected, cases[i].msg );
+		assert.equalHash( fragment.getSelection().getRange(), cases[ i ].expected, cases[ i ].msg );
 	}
 } );
 
@@ -193,9 +193,9 @@ QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		surface = new ve.dm.Surface( ve.dm.example.createExampleDocument( cases[i].doc ) );
-		fragment = surface.getLinearFragment( cases[i].range ).expandLinearSelection( 'closest', cases[i].type );
-		assert.equalHash( fragment.getSelection(), cases[i].expected, cases[i].msg );
+		surface = new ve.dm.Surface( ve.dm.example.createExampleDocument( cases[ i ].doc ) );
+		fragment = surface.getLinearFragment( cases[ i ].range ).expandLinearSelection( 'closest', cases[ i ].type );
+		assert.equalHash( fragment.getSelection(), cases[ i ].expected, cases[ i ].msg );
 	}
 } );
 
@@ -222,14 +222,14 @@ QUnit.test( 'expandLinearSelection (word)', 1, function ( assert ) {
 	];
 	QUnit.expect( cases.length * 2 );
 	for ( i = 0; i < cases.length; i++ ) {
-		doc = new ve.dm.Document( cases[i].phrase.split( '' ) );
+		doc = new ve.dm.Document( cases[ i ].phrase.split( '' ) );
 		surface = new ve.dm.Surface( doc );
-		fragment = surface.getLinearFragment( cases[i].range );
+		fragment = surface.getLinearFragment( cases[ i ].range );
 		newFragment = fragment.expandLinearSelection( 'word' );
 		range = newFragment.getSelection().getRange();
-		word = cases[i].phrase.substring( range.start, range.end );
-		assert.strictEqual( word, cases[i].expected, cases[i].msg + ': text' );
-		assert.strictEqual( cases[i].range.isBackwards(), range.isBackwards(), cases[i].msg + ': range direction' );
+		word = cases[ i ].phrase.substring( range.start, range.end );
+		assert.strictEqual( word, cases[ i ].expected, cases[ i ].msg + ': text' );
+		assert.strictEqual( cases[ i ].range.isBackwards(), range.isBackwards(), cases[ i ].msg + ': range direction' );
 	}
 } );
 
@@ -360,8 +360,8 @@ QUnit.test( 'delete', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceFragmentDeleteTest(
-			assert, cases[i].html, cases[i].range, cases[i].directionAfterRemove,
-			cases[i].expectedData, cases[i].expectedRange, cases[i].msg
+			assert, cases[ i ].html, cases[ i ].range, cases[ i ].directionAfterRemove,
+			cases[ i ].expectedData, cases[ i ].expectedRange, cases[ i ].msg
 		);
 	}
 } );

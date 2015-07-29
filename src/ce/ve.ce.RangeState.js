@@ -73,7 +73,7 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 
 	if (
 		nativeSelection.rangeCount &&
-		OO.ui.contains( documentNode.$element[0], nativeSelection.anchorNode, true )
+		OO.ui.contains( documentNode.$element[ 0 ], nativeSelection.anchorNode, true )
 	) {
 		// Freeze selection out of live object.
 		selection = new ve.SelectionState( nativeSelection );
@@ -120,8 +120,8 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 		this.text = null;
 		this.hash = null;
 	} else {
-		this.text = ve.ce.getDomText( this.node.$element[0] );
-		this.hash = ve.ce.getDomHash( this.node.$element[0] );
+		this.text = ve.ce.getDomText( this.node.$element[ 0 ] );
+		this.hash = ve.ce.getDomHash( this.node.$element[ 0 ] );
 	}
 
 	// Only set contentChanged if we're still in the same branch node

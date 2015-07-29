@@ -112,7 +112,7 @@ ve.ui.DimensionsWidget.prototype.renderDefaults = function () {
 
 /**
  * Get the default dimensions
- * @returns {Object} Default dimensions
+ * @return {Object} Default dimensions
  */
 ve.ui.DimensionsWidget.prototype.getDefaults = function () {
 	return this.defaults;
@@ -128,7 +128,7 @@ ve.ui.DimensionsWidget.prototype.removeDefaults = function () {
 
 /**
  * Check whether the widget is empty.
- * @returns {boolean} Both values are empty
+ * @return {boolean} Both values are empty
  */
 ve.ui.DimensionsWidget.prototype.isEmpty = function () {
 	return (
@@ -170,9 +170,9 @@ ve.ui.DimensionsWidget.prototype.setDimensions = function ( dimensions ) {
 
 /**
  * Return the current dimension values in the widget
- * @returns {Object} dimensions The width and height values of the inputs
- * @returns {number} dimensions.width The value of the width input
- * @returns {number} dimensions.height The value of the height input
+ * @return {Object} dimensions The width and height values of the inputs
+ * @return {number} dimensions.width The value of the width input
+ * @return {number} dimensions.height The value of the height input
  */
 ve.ui.DimensionsWidget.prototype.getDimensions = function () {
 	return {
@@ -198,7 +198,7 @@ ve.ui.DimensionsWidget.prototype.setDisabled = function ( isDisabled ) {
 
 /**
  * Get the current value in the width input
- * @returns {string} Input value
+ * @return {string} Input value
  */
 ve.ui.DimensionsWidget.prototype.getWidth = function () {
 	return this.widthInput.getValue();
@@ -206,7 +206,7 @@ ve.ui.DimensionsWidget.prototype.getWidth = function () {
 
 /**
  * Get the current value in the height input
- * @returns {string} Input value
+ * @return {string} Input value
  */
 ve.ui.DimensionsWidget.prototype.getHeight = function () {
 	return this.heightInput.getValue();

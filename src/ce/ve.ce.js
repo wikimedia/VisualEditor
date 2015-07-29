@@ -43,7 +43,7 @@ ve.ce.chimeraImgDataUri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAA
  *
  * @method
  * @param {HTMLElement} element DOM element to get text of
- * @returns {string} Plain text of DOM element
+ * @return {string} Plain text of DOM element
  */
 ve.ce.getDomText = function ( element ) {
 	// Inspired by jQuery.text / Sizzle.getText
@@ -72,7 +72,7 @@ ve.ce.getDomText = function ( element ) {
 				viewNode = $element.data( 'view' );
 				// Only return snowmen for the first element in a sibling group: otherwise
 				// we'll double-count this node
-				if ( viewNode && element === viewNode.$element[0] ) {
+				if ( viewNode && element === viewNode.$element[ 0 ] ) {
 					// \u2603 is the snowman character: ☃
 					return new Array( viewNode.getOuterLength() + 1 ).join( '\u2603' );
 				}
@@ -104,7 +104,7 @@ ve.ce.getDomText = function ( element ) {
  *
  * @method
  * @param {HTMLElement} element DOM element to get hash of
- * @returns {string} Hash of DOM element
+ * @return {string} Hash of DOM element
  */
 ve.ce.getDomHash = function ( element ) {
 	var nodeType = element.nodeType,
@@ -135,9 +135,9 @@ ve.ce.getDomHash = function ( element ) {
  * Get the first cursor offset immediately after a node.
  *
  * @param {Node} node DOM node
- * @returns {Object}
- * @returns {Node} return.node
- * @returns {number} return.offset
+ * @return {Object}
+ * @return {Node} return.node
+ * @return {number} return.offset
  */
 ve.ce.nextCursorOffset = function ( node ) {
 	var nextNode, offset;
@@ -155,9 +155,9 @@ ve.ce.nextCursorOffset = function ( node ) {
  * Get the first cursor offset immediately before a node.
  *
  * @param {Node} node DOM node
- * @returns {Object}
- * @returns {Node} return.node
- * @returns {number} return.offset
+ * @return {Object}
+ * @return {Node} return.node
+ * @return {number} return.offset
  */
 ve.ce.previousCursorOffset = function ( node ) {
 	var previousNode, offset;
@@ -177,7 +177,7 @@ ve.ce.previousCursorOffset = function ( node ) {
  * @method
  * @param {HTMLElement} domNode DOM node
  * @param {number} domOffset DOM offset within the DOM node
- * @returns {number} Linear model offset
+ * @return {number} Linear model offset
  * @throws {Error} domOffset is out of bounds
  * @throws {Error} domNode has no ancestor with a .data( 'view' )
  * @throws {Error} domNode is not in document
@@ -212,7 +212,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 	 * - Traversal-consecutive non-view nodes are either all alienated or all not alienated.
 	 *
 	 * @param {Node} n Node to traverse from
-	 * @returns {Node} Previous traversal node from n
+	 * @return {Node} Previous traversal node from n
 	 * @throws {Error} domNode has no ancestor with a .data( 'view' )
 	 */
 	function traverse( n ) {
@@ -284,7 +284,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		} else {
 			// Offset is right before childNodes[domOffset]. Set startNode to this node
 			// (i.e. the node right after the offset), then traverse back once.
-			startNode = domNode.childNodes[domOffset];
+			startNode = domNode.childNodes[ domOffset ];
 			node = traverse( startNode );
 		}
 	} else {
@@ -359,7 +359,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
  *
  * @method
  * @param {HTMLElement} element Slug DOM element
- * @returns {number} Linear model offset
+ * @return {number} Linear model offset
  * @throws {Error}
  */
 ve.ce.getOffsetOfSlug = function ( element ) {
@@ -422,7 +422,7 @@ ve.ce.isAfterAnnotationBoundaries = function ( node, offset ) {
  *
  * @method
  * @param {jQuery.Event} e Key press event
- * @returns {boolean} Modifier key is pressed
+ * @return {boolean} Modifier key is pressed
  */
 ve.ce.isShortcutKey = function ( e ) {
 	return !!( e.ctrlKey || e.metaKey );
@@ -436,7 +436,7 @@ ve.ce.isShortcutKey = function ( e ) {
  * @param {number} selection.anchorOffset
  * @param {Node} selection.focusNode
  * @param {number} selection.focusOffset
- * @returns {ve.Range|null} DM range, or null if nothing in the CE document is selected
+ * @return {ve.Range|null} DM range, or null if nothing in the CE document is selected
  */
 ve.ce.veRangeFromSelection = function ( selection ) {
 	try {

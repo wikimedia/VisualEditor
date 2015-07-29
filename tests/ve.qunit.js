@@ -24,7 +24,7 @@
 	 * @private
 	 * @param {ve.Node} node Node tree to summarize
 	 * @param {boolean} [shallow] Do not summarize each child recursively
-	 * @returns {Object} Summary of node tree
+	 * @return {Object} Summary of node tree
 	 */
 	function getNodeTreeSummary( node, shallow ) {
 		var i,
@@ -41,7 +41,7 @@
 			if ( !shallow ) {
 				summary.children = [];
 				for ( i = 0; i < numChildren; i++ ) {
-					summary.children.push( getNodeTreeSummary( node.children[i] ) );
+					summary.children.push( getNodeTreeSummary( node.children[ i ] ) );
 				}
 			}
 		}
@@ -57,7 +57,7 @@
 	 * @method
 	 * @private
 	 * @param {Object[]} selection Selection to summarize
-	 * @returns {Object} Summary of selection
+	 * @return {Object} Summary of selection
 	 */
 	function getNodeSelectionSummary( selection ) {
 		var i,
@@ -69,13 +69,13 @@
 			summary.results = [];
 			for ( i = 0; i < selection.length; i++ ) {
 				summary.results.push( {
-					node: getNodeTreeSummary( selection[i].node, true ),
-					range: selection[i].range,
-					index: selection[i].index,
-					indexInNode: selection[i].indexInNode,
-					nodeRange: selection[i].nodeRange,
-					nodeOuterRange: selection[i].nodeOuterRange,
-					parentOuterRange: selection[i].parentOuterRange
+					node: getNodeTreeSummary( selection[ i ].node, true ),
+					range: selection[ i ].range,
+					index: selection[ i ].index,
+					indexInNode: selection[ i ].indexInNode,
+					nodeRange: selection[ i ].nodeRange,
+					nodeOuterRange: selection[ i ].nodeOuterRange,
+					parentOuterRange: selection[ i ].parentOuterRange
 				} );
 			}
 		}
@@ -87,7 +87,7 @@
 	 *
 	 * @private
 	 * @param {ve.dm.Node|Object} value Value in the object/array
-	 * @returns {Object} Node summary if value is a node, otherwise just the value
+	 * @return {Object} Node summary if value is a node, otherwise just the value
 	 */
 	function convertNodes( value ) {
 		return value instanceof ve.dm.Node || value instanceof ve.ce.Node ?
@@ -100,7 +100,7 @@
 	 *
 	 * @ignore
 	 * @param {string} s
-	 * @returns {string}
+	 * @return {string}
 	 */
 	function unescapeText( s ) {
 		return s.replace( /&(#039|quot|lt|gt|amp);/g, function ( match, seq ) {
@@ -130,12 +130,13 @@
 	 * @static
 	 */
 	QUnit.assert.equalNodeTree = function ( actual, expected, shallow, message ) {
+		var actualSummary, expectedSummary;
 		if ( typeof shallow === 'string' && arguments.length === 3 ) {
 			message = shallow;
 			shallow = undefined;
 		}
-		var actualSummary = getNodeTreeSummary( actual, shallow ),
-			expectedSummary = getNodeTreeSummary( expected, shallow );
+		actualSummary = getNodeTreeSummary( actual, shallow );
+		expectedSummary = getNodeTreeSummary( expected, shallow );
 		QUnit.push(
 			QUnit.equiv( actualSummary, expectedSummary ), actualSummary, expectedSummary, message
 		);
@@ -151,7 +152,7 @@
 			expectedSummary = getNodeSelectionSummary( expected );
 
 		for ( i = 0; i < actual.length; i++ ) {
-			if ( expected[i] && expected[i].node !== actual[i].node ) {
+			if ( expected[ i ] && expected[ i ].node !== actual[ i ].node ) {
 				QUnit.push( false, actualSummary, expectedSummary,
 					message + ' (reference equality for selection[' + i + '].node)'
 				);
@@ -183,8 +184,8 @@
 			var i = 0,
 				len = arr.length;
 			for ( ; i < len; i++ ) {
-				if ( arr[i].originalDomElements ) {
-					delete arr[i].originalDomElements;
+				if ( arr[ i ].originalDomElements ) {
+					delete arr[ i ].originalDomElements;
 				}
 			}
 		}

@@ -71,6 +71,7 @@ ve.ui.TableCaptionTool.static.commandName = 'tableCaption';
 ve.ui.TableCaptionTool.static.deactivateOnSelect = false;
 
 ve.ui.TableCaptionTool.prototype.onUpdateState = function ( fragment ) {
+	var hasCaptionNode, selection;
 	// Parent method
 	ve.ui.TableCaptionTool.super.prototype.onUpdateState.apply( this, arguments );
 
@@ -79,8 +80,7 @@ ve.ui.TableCaptionTool.prototype.onUpdateState = function ( fragment ) {
 		return;
 	}
 
-	var hasCaptionNode,
-		selection = fragment.getSelection();
+	selection = fragment.getSelection();
 
 	if ( selection instanceof ve.dm.TableSelection ) {
 		hasCaptionNode = !!selection.getTableNode().getCaptionNode();

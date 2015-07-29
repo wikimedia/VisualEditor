@@ -65,10 +65,10 @@ ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset ) {
 	plaintext = data.getText( true, new ve.Range( textStart + 1, offset ) );
 	// Now search through the registry.
 	for ( name in this.registry ) {
-		range = this.registry[name].match( data, offset, plaintext );
+		range = this.registry[ name ].match( data, offset, plaintext );
 		if ( range !== null ) {
 			sequences.push( {
-				sequence: this.registry[name],
+				sequence: this.registry[ name ],
 				range: range
 			} );
 		}

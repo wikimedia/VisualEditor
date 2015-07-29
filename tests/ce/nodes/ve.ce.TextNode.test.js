@@ -134,11 +134,11 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
-		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].data, store ) );
-		ve.dm.example.preprocessAnnotations( cases[i].html, store );
+		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[ i ].data, store ) );
+		ve.dm.example.preprocessAnnotations( cases[ i ].html, store );
 		assert.deepEqual(
-			( new ve.ce.TextNode( doc.getDocumentNode().getChildren()[0].getChildren()[0] ) ).getAnnotatedHtml(),
-			cases[i].html
+			( new ve.ce.TextNode( doc.getDocumentNode().getChildren()[ 0 ].getChildren()[ 0 ] ) ).getAnnotatedHtml(),
+			cases[ i ].html
 		);
 	}
 } );

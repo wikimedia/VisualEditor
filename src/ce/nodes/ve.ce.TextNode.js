@@ -41,7 +41,7 @@ ve.ce.TextNode.whitespaceHtmlCharacters = {
  * Get an HTML rendering of the text.
  *
  * @method
- * @returns {Array} Array of rendered HTML fragments with annotations
+ * @return {Array} Array of rendered HTML fragments with annotations
  */
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 	var i, chr,
@@ -50,20 +50,20 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace();
 
 	function setChar( chr, index, data ) {
-		if ( Array.isArray( data[index] ) ) {
+		if ( Array.isArray( data[ index ] ) ) {
 			// Don't modify the original array, clone it first
-			data[index] = data[index].slice( 0 );
-			data[index][0] = chr;
+			data[ index ] = data[ index ].slice( 0 );
+			data[ index ][ 0 ] = chr;
 		} else {
-			data[index] = chr;
+			data[ index ] = chr;
 		}
 	}
 
 	function getChar( index, data ) {
-		if ( Array.isArray( data[index] ) ) {
-			return data[index][0];
+		if ( Array.isArray( data[ index ] ) ) {
+			return data[ index ][ 0 ];
 		} else {
-			return data[index];
+			return data[ index ];
 		}
 	}
 
@@ -72,7 +72,7 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 			chr = getChar( i, data );
 			// Show meaningful whitespace characters
 			if ( Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, chr ) ) {
-				setChar( whitespaceHtmlChars[chr], i, data );
+				setChar( whitespaceHtmlChars[ chr ], i, data );
 			}
 		}
 

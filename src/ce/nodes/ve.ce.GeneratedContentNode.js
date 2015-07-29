@@ -69,7 +69,7 @@ ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;
  * @abstract
  * @method
  * @param {Object} [config] Optional additional data
- * @returns {jQuery.Promise} Promise object, may be abortable
+ * @return {jQuery.Promise} Promise object, may be abortable
  */
 ve.ce.GeneratedContentNode.prototype.generateContents = null;
 
@@ -93,7 +93,7 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function () 
  * return value.
  *
  * @param {HTMLElement[]} domElements Clones of the DOM elements from the store
- * @returns {HTMLElement[]} Clones of the DOM elements in the right document, with modifications
+ * @return {HTMLElement[]} Clones of the DOM elements in the right document, with modifications
  */
 ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElements ) {
 	var i, len, $rendering,
@@ -112,8 +112,8 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	if ( $rendering.length ) {
 		// Span wrap root text nodes so they can be measured
 		for ( i = 0, len = $rendering.length; i < len; i++ ) {
-			if ( $rendering[i].nodeType === Node.TEXT_NODE ) {
-				$rendering[i] = $( '<span>' ).append( $rendering[i] )[0];
+			if ( $rendering[ i ].nodeType === Node.TEXT_NODE ) {
+				$rendering[ i ] = $( '<span>' ).append( $rendering[ i ] )[ 0 ];
 			}
 		}
 	} else {
@@ -123,7 +123,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	// Render the computed values of some attributes
 	ve.resolveAttributes(
 		$rendering,
-		domElements[0].ownerDocument,
+		domElements[ 0 ].ownerDocument,
 		ve.dm.Converter.computedAttributes
 	);
 
@@ -138,11 +138,12 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
  * @fires teardown
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
+	var $newElements;
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	var $newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
-	if ( !this.$element[0].parentNode ) {
+	$newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	if ( !this.$element[ 0 ].parentNode ) {
 		// this.$element hasn't been attached yet, so just overwrite it
 		this.$element = $newElements;
 	} else {
@@ -324,10 +325,10 @@ ve.ce.GeneratedContentNode.prototype.getResizableElement = function () {
  * @return {boolean} The rendering is visible
  */
 ve.ce.GeneratedContentNode.prototype.isVisible = function () {
+	var visible = false;
 	if ( this.$element.text().trim() !== '' ) {
 		return true;
 	}
-	var visible = false;
 	this.$element.each( function () {
 		var $this = $( this );
 		if ( $this.width() >= 8 && $this.height() >= 8 ) {

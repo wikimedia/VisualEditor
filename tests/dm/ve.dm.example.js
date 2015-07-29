@@ -26,7 +26,7 @@ ve.dm.example = {};
  * @method
  * @param {Array} data Linear model data
  * @param {ve.dm.IndexValueStore} [store] Index-value store to use, creates one if undefined
- * @returns {ve.dm.FlatLinearData} Linear data store
+ * @return {ve.dm.FlatLinearData} Linear data store
  * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
 ve.dm.example.preprocessAnnotations = function ( data, store ) {
@@ -35,17 +35,17 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 	// Sanity check to make sure ve.dm.example data has not been passed in
 	// by reference. Always use ve#copy.
 	for ( i in ve.dm.example ) {
-		if ( data === ve.dm.example[i] ) {
+		if ( data === ve.dm.example[ i ] ) {
 			throw new Error( 'Example data passed to preprocessAnnotations by reference' );
 		}
 	}
 
 	store = store || new ve.dm.IndexValueStore();
 	for ( i = 0; i < data.length; i++ ) {
-		key = data[i].annotations ? 'annotations' : 1;
+		key = data[ i ].annotations ? 'annotations' : 1;
 		// check for shorthand annotation objects in array
-		if ( Array.isArray( data[i][key] ) && data[i][key][0].type ) {
-			data[i][key] = ve.dm.example.createAnnotationSet( store, data[i][key] ).getIndexes();
+		if ( Array.isArray( data[ i ][ key ] ) && data[ i ][ key ][ 0 ].type ) {
+			data[ i ][ key ] = ve.dm.example.createAnnotationSet( store, data[ i ][ key ] ).getIndexes();
 		}
 	}
 	return new ve.dm.FlatLinearData( store, data );
@@ -65,16 +65,16 @@ ve.dm.example.postprocessAnnotations = function ( data, store ) {
 	var i, j, key;
 
 	for ( i = 0; i < data.length; i++ ) {
-		key = data[i].annotations ? 'annotations' : 1;
-		if ( Array.isArray( data[i][key] ) ) {
-			data[i] = $.extend( Array.isArray( data[i] ) ? [] : {}, data[i] );
-			data[i][key] = new ve.dm.AnnotationSet( store, data[i][key] ).get();
-			for ( j = 0; j < data[i][key].length; j++ ) {
-				data[i][key][j] = data[i][key][j].element;
-				if ( data[i][key][j].originalDomElements ) {
+		key = data[ i ].annotations ? 'annotations' : 1;
+		if ( Array.isArray( data[ i ][ key ] ) ) {
+			data[ i ] = $.extend( Array.isArray( data[ i ] ) ? [] : {}, data[ i ] );
+			data[ i ][ key ] = new ve.dm.AnnotationSet( store, data[ i ][ key ] ).get();
+			for ( j = 0; j < data[ i ][ key ].length; j++ ) {
+				data[ i ][ key ][ j ] = data[ i ][ key ][ j ].element;
+				if ( data[ i ][ key ][ j ].originalDomElements ) {
 					// Make a shallow clone and remove .originalDomElements from it
-					data[i][key][j] = $.extend( {}, data[i][key][j] );
-					delete data[i][key][j].originalDomElements;
+					data[ i ][ key ][ j ] = $.extend( {}, data[ i ][ key ][ j ] );
+					delete data[ i ][ key ][ j ].originalDomElements;
 				}
 			}
 		}
@@ -90,8 +90,8 @@ ve.dm.example.postprocessAnnotations = function ( data, store ) {
 ve.dm.example.removeOriginalDomElements = function ( data ) {
 	var i, len;
 	for ( i = 0, len = data.length; i < len; i++ ) {
-		if ( data[i].originalDomElements ) {
-			delete data[i].originalDomElements;
+		if ( data[ i ].originalDomElements ) {
+			delete data[ i ].originalDomElements;
 		}
 	}
 	return data;
@@ -101,7 +101,7 @@ ve.dm.example.removeOriginalDomElements = function ( data ) {
  * Create an annotation object from shorthand notation.
  * @method
  * @param {Object} annotation Plain object with type and attributes properties
- * @returns {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
+ * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
  */
 ve.dm.example.createAnnotation = function ( annotation ) {
 	return ve.dm.annotationFactory.createFromElement( annotation );
@@ -115,12 +115,12 @@ ve.dm.example.createAnnotation = function ( annotation ) {
  *
  * @method
  * @param {Array} annotations Array of annotations in shorthand format
- * @returns {ve.dm.AnnotationSet}
+ * @return {ve.dm.AnnotationSet}
  */
 ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 	var i;
 	for ( i = 0; i < annotations.length; i++ ) {
-		annotations[i] = ve.dm.example.createAnnotation( annotations[i] );
+		annotations[ i ] = ve.dm.example.createAnnotation( annotations[ i ] );
 	}
 	return new ve.dm.AnnotationSet( store, store.indexes( annotations ) );
 };
@@ -151,7 +151,7 @@ ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-bl
  *
  * @param {string} [name='data'] Named element of ve.dm.example
  * @param {ve.dm.IndexValueStore} [store] A specific index-value store to use, optionally.
- * @returns {ve.dm.Document} Document
+ * @return {ve.dm.Document} Document
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocument = function ( name, store ) {
@@ -164,15 +164,15 @@ ve.dm.example.createExampleDocument = function ( name, store ) {
  * @param {string} [name='data'] Named element of ve.dm.example
  * @param {ve.dm.IndexValueStore} [store] A specific index-value store to use, optionally.
  * @param {Object} object Collection of test documents, keyed by name
- * @returns {ve.dm.Document} Document
+ * @return {ve.dm.Document} Document
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocumentFromObject = function ( name, store, object ) {
 	name = name || 'data';
-	if ( object[name] === undefined ) {
+	if ( object[ name ] === undefined ) {
 		throw new Error( 'Example data \'' + name + '\' not found' );
 	}
-	return ve.dm.example.createExampleDocumentFromData( object[name], store );
+	return ve.dm.example.createExampleDocumentFromData( object[ name ], store );
 };
 
 ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
@@ -185,9 +185,9 @@ ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
 	if ( data.internalItems ) {
 		for ( i = 0; i < data.internalItems.length; i++ ) {
 			doc.internalList.queueItemHtml(
-				data.internalItems[i].group,
-				data.internalItems[i].key,
-				data.internalItems[i].body
+				data.internalItems[ i ].group,
+				data.internalItems[ i ].key,
+				data.internalItems[ i ].body
 			);
 		}
 	}
@@ -204,13 +204,13 @@ ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
  * @method
  * @param {ve.Node} root Root node to lookup from
  * @param {number...} [paths] Index path
- * @returns {ve.Node} Node at given path
+ * @return {ve.Node} Node at given path
  */
 ve.dm.example.lookupNode = function ( root ) {
 	var i,
 		node = root;
 	for ( i = 1; i < arguments.length; i++ ) {
-		node = node.children[arguments[i]];
+		node = node.children[ arguments[ i ] ];
 	}
 	return node;
 };
@@ -219,7 +219,7 @@ ve.dm.example.createDomElement = function ( type, attributes ) {
 	var key,
 		element = document.createElement( type );
 	for ( key in attributes ) {
-		element.setAttribute( key, attributes[key] );
+		element.setAttribute( key, attributes[ key ] );
 	}
 	return element;
 };
@@ -1125,36 +1125,36 @@ ve.dm.example.emptyBranch = [
  */
 ve.dm.example.tree = new ve.dm.DocumentNode( [
 	// Heading with "abc"
-	new ve.dm.HeadingNode( ve.dm.example.data[0], [ new ve.dm.TextNode( 3 ) ] ),
-	new ve.dm.TableNode( ve.dm.example.data[5], [
-		new ve.dm.TableSectionNode( ve.dm.example.data[6], [
-			new ve.dm.TableRowNode( ve.dm.example.data[7], [
-				new ve.dm.TableCellNode( ve.dm.example.data[8], [
+	new ve.dm.HeadingNode( ve.dm.example.data[ 0 ], [ new ve.dm.TextNode( 3 ) ] ),
+	new ve.dm.TableNode( ve.dm.example.data[ 5 ], [
+		new ve.dm.TableSectionNode( ve.dm.example.data[ 6 ], [
+			new ve.dm.TableRowNode( ve.dm.example.data[ 7 ], [
+				new ve.dm.TableCellNode( ve.dm.example.data[ 8 ], [
 					// Paragraph with "d"
-					new ve.dm.ParagraphNode( ve.dm.example.data[9], [ new ve.dm.TextNode( 1 ) ] ),
-					new ve.dm.ListNode( ve.dm.example.data[12], [
+					new ve.dm.ParagraphNode( ve.dm.example.data[ 9 ], [ new ve.dm.TextNode( 1 ) ] ),
+					new ve.dm.ListNode( ve.dm.example.data[ 12 ], [
 						// 1st level bullet list item with "e"
-						new ve.dm.ListItemNode( ve.dm.example.data[13], [
+						new ve.dm.ListItemNode( ve.dm.example.data[ 13 ], [
 							new ve.dm.ParagraphNode(
-								ve.dm.example.data[14],
+								ve.dm.example.data[ 14 ],
 								[ new ve.dm.TextNode( 1 ) ]
 							),
-							new ve.dm.ListNode( ve.dm.example.data[17], [
+							new ve.dm.ListNode( ve.dm.example.data[ 17 ], [
 								// 2nd level bullet list item with "f"
-								new ve.dm.ListItemNode( ve.dm.example.data[18], [
+								new ve.dm.ListItemNode( ve.dm.example.data[ 18 ], [
 									new ve.dm.ParagraphNode(
-										ve.dm.example.data[19],
+										ve.dm.example.data[ 19 ],
 										[ new ve.dm.TextNode( 1 ) ]
 									)
 								] )
 							] )
 						] )
 					] ),
-					new ve.dm.ListNode( ve.dm.example.data[26], [
+					new ve.dm.ListNode( ve.dm.example.data[ 26 ], [
 						// Numbered list item with "g"
-						new ve.dm.ListItemNode( ve.dm.example.data[27], [
+						new ve.dm.ListItemNode( ve.dm.example.data[ 27 ], [
 							new ve.dm.ParagraphNode(
-								ve.dm.example.data[28],
+								ve.dm.example.data[ 28 ],
 								[ new ve.dm.TextNode( 1 ) ]
 							)
 						] )
@@ -1164,24 +1164,24 @@ ve.dm.example.tree = new ve.dm.DocumentNode( [
 		] )
 	] ),
 	// Preformatted with "h[example.png]i"
-	new ve.dm.PreformattedNode( ve.dm.example.data[37], [
+	new ve.dm.PreformattedNode( ve.dm.example.data[ 37 ], [
 		new ve.dm.TextNode( 1 ),
-		new ve.dm.InlineImageNode( ve.dm.example.data[39] ),
+		new ve.dm.InlineImageNode( ve.dm.example.data[ 39 ] ),
 		new ve.dm.TextNode( 1 )
 	] ),
-	new ve.dm.DefinitionListNode( ve.dm.example.data[43], [
+	new ve.dm.DefinitionListNode( ve.dm.example.data[ 43 ], [
 		// Definition list term item with "j"
-		new ve.dm.DefinitionListItemNode( ve.dm.example.data[44], [
-			new ve.dm.ParagraphNode( ve.dm.example.data[45], [ new ve.dm.TextNode( 1 ) ] )
+		new ve.dm.DefinitionListItemNode( ve.dm.example.data[ 44 ], [
+			new ve.dm.ParagraphNode( ve.dm.example.data[ 45 ], [ new ve.dm.TextNode( 1 ) ] )
 		] ),
 		// Definition list definition item with "k"
-		new ve.dm.DefinitionListItemNode( ve.dm.example.data[49], [
-			new ve.dm.ParagraphNode( ve.dm.example.data[50], [ new ve.dm.TextNode( 1 ) ] )
+		new ve.dm.DefinitionListItemNode( ve.dm.example.data[ 49 ], [
+			new ve.dm.ParagraphNode( ve.dm.example.data[ 50 ], [ new ve.dm.TextNode( 1 ) ] )
 		] )
 	] ),
-	new ve.dm.ParagraphNode( ve.dm.example.data[55], [ new ve.dm.TextNode( 1 ) ] ),
-	new ve.dm.ParagraphNode( ve.dm.example.data[58], [ new ve.dm.TextNode( 1 ) ] ),
-	new ve.dm.InternalListNode( ve.dm.example.data[61] )
+	new ve.dm.ParagraphNode( ve.dm.example.data[ 55 ], [ new ve.dm.TextNode( 1 ) ] ),
+	new ve.dm.ParagraphNode( ve.dm.example.data[ 58 ], [ new ve.dm.TextNode( 1 ) ] ),
+	new ve.dm.InternalListNode( ve.dm.example.data[ 61 ] )
 ] );
 
 ve.dm.example.domToDataCases = {

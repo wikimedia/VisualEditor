@@ -32,11 +32,11 @@ ve.ce.TestOffset = function VeCeTestOffset( direction, offset ) {
  * Calculate the offset from each end of a particular HTML string
  *
  * @param {Node} node The DOM node with respect to which the offset is resolved
- * @returns {Object} Offset information
- * @returns {number} [return.consumed] The number of code units consumed (if n out of range)
- * @returns {Node} [return.node] The node containing the offset (if n in range)
- * @returns {number} [return.offset] The offset in code units / child elements (if n in range)
- * @returns {string} [return.slice] String representation of the offset position (if n in range)
+ * @return {Object} Offset information
+ * @return {number} [return.consumed] The number of code units consumed (if n out of range)
+ * @return {Node} [return.node] The node containing the offset (if n in range)
+ * @return {number} [return.offset] The offset in code units / child elements (if n in range)
+ * @return {string} [return.slice] String representation of the offset position (if n in range)
  */
 ve.ce.TestOffset.prototype.resolve = function ( node ) {
 	var reversed = ( this.direction !== 'forward' );
@@ -85,7 +85,7 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 		childNodes.reverse();
 	}
 	for ( i = 0, len = childNodes.length; i < len; i++ ) {
-		childNode = node.childNodes[i];
+		childNode = node.childNodes[ i ];
 		found = ve.ce.TestOffset.static.findTextOffset( childNode, n - consumed, reversed );
 		if ( found.node ) {
 			return found;
@@ -93,7 +93,7 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 		consumed += found.consumed;
 		// Extra boundary after element, if not followed by a text node
 		if ( childNode.nodeType === node.ELEMENT_NODE ) {
-			if ( i + 1 === len || childNodes[i + 1].nodeType !== node.TEXT_NODE ) {
+			if ( i + 1 === len || childNodes[ i + 1 ].nodeType !== node.TEXT_NODE ) {
 				consumed += 1;
 				if ( consumed === n ) {
 					// TODO: create a reasonable 'slice' string
@@ -130,11 +130,11 @@ ve.ce.TestRunner = function VeCeTestRunner( view ) {
 	// Take control of eventSequencer 'setTimeouts'
 	testRunner = this;
 	this.view.eventSequencer.postpone = function ( f ) {
-		testRunner.postponedCalls[++callId] = f;
+		testRunner.postponedCalls[ ++callId ] = f;
 		return callId;
 	};
 	this.view.eventSequencer.cancelPostponed = function ( callId ) {
-		delete testRunner.postponedCalls[callId];
+		delete testRunner.postponedCalls[ callId ];
 	};
 };
 
@@ -144,13 +144,13 @@ ve.ce.TestRunner = function VeCeTestRunner( view ) {
  * Get the paragraph node in which testing occurs
  *
  * TODO: The code assumes that the document consists of exactly one paragraph
- * @returns {Node} The paragraph node
+ * @return {Node} The paragraph node
  */
 
 ve.ce.TestRunner.prototype.getParagraph = function () {
-	var p = this.view.$element.find( '.ve-ce-documentNode > p' )[0];
+	var p = this.view.$element.find( '.ve-ce-documentNode > p' )[ 0 ];
 	if ( p === undefined ) {
-		if ( this.view.$element.find( '.ve-ce-documentNode' )[0] === undefined ) {
+		if ( this.view.$element.find( '.ve-ce-documentNode' )[ 0 ] === undefined ) {
 			throw new Error( 'no CE div' );
 		}
 		throw new Error( 'CE div but no p' );
@@ -174,7 +174,7 @@ ve.ce.TestRunner.prototype.endLoop = function () {
 		check = false;
 		for ( callId in postponedCalls ) {
 			check = true;
-			postponedCalls[callId]();
+			postponedCalls[ callId ]();
 		}
 	}
 };
@@ -221,7 +221,7 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
 	} else {
 		focusNode.insertBefore(
 			document.createTextNode( text ),
-			focusNode.childNodes[focusOffset]
+			focusNode.childNodes[ focusOffset ]
 		);
 	}
 	this.lastText = text;
@@ -232,11 +232,11 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
  *
  * @param {ve.ce.TestOffset|number} start The start offset
  * @param {ve.ce.TestOffset|number} end The end offset
- * @returns {Object} Selected range
- * @returns {Node} return.startNode The node at the start of the selection
- * @returns {number} return.startOffset The start offset within the node
- * @returns {Node} return.endNode The node at the endof the selection
- * @returns {number} return.endOffset The endoffset within the node
+ * @return {Object} Selected range
+ * @return {Node} return.startNode The node at the start of the selection
+ * @return {number} return.startOffset The start offset within the node
+ * @return {Node} return.endNode The node at the endof the selection
+ * @return {number} return.endOffset The endoffset within the node
  */
 ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 	var foundStart, foundEnd, nativeRange;

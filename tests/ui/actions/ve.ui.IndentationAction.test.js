@@ -20,7 +20,7 @@ function runIndentationChangeTest( assert, range, method, expectedRange, expecte
 	}
 
 	surface.getModel().setLinearSelection( range );
-	indentationAction[method]();
+	indentationAction[ method ]();
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
@@ -44,7 +44,7 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 				},
 				expectedOriginalData: function ( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo
-					delete data[12].internal;
+					delete data[ 12 ].internal;
 				},
 				msg: 'decrease indentation on partial selection of list item "Item 2"'
 			},
@@ -56,13 +56,13 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 					data.splice( 0, 2 );
 					data.splice( 8, 2 );
 					data.splice( 16, 1, { type: 'list', attributes: { style: 'bullet' } } );
-					delete data[0].internal;
-					delete data[8].internal;
+					delete data[ 0 ].internal;
+					delete data[ 8 ].internal;
 				},
 				expectedOriginalData: function ( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo
-					delete data[2].internal;
-					delete data[12].internal;
+					delete data[ 2 ].internal;
+					delete data[ 12 ].internal;
 				},
 				msg: 'decrease indentation on Items 1 & 2'
 			},
@@ -80,6 +80,6 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 
 	QUnit.expect( cases.length * 4 );
 	for ( i = 0; i < cases.length; i++ ) {
-		runIndentationChangeTest( assert, cases[i].range, cases[i].method, cases[i].expectedRange, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
+		runIndentationChangeTest( assert, cases[ i ].range, cases[ i ].method, cases[ i ].expectedRange, cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].msg );
 	}
 } );

@@ -88,7 +88,7 @@ ve.dm.TableSelection.prototype.expand = function () {
 
 	while ( cells.length > lastCellCount ) {
 		for ( i = 0; i < cells.length; i++ ) {
-			cell = cells[i];
+			cell = cells[ i ];
 			startCol = Math.min( startCol, cell.col );
 			startRow = Math.min( startRow, cell.row );
 			endCol = Math.max( endCol, cell.col + cell.node.getColspan() - 1 );
@@ -178,7 +178,7 @@ ve.dm.TableSelection.prototype.getRanges = function () {
 	var i, l, ranges = [],
 		cells = this.getMatrixCells();
 	for ( i = 0, l = cells.length; i < l; i++ ) {
-		ranges.push( cells[i].node.getRange() );
+		ranges.push( cells[ i ].node.getRange() );
 	}
 	return ranges;
 };
@@ -192,7 +192,7 @@ ve.dm.TableSelection.prototype.getOuterRanges = function () {
 	var i, l, ranges = [],
 		cells = this.getMatrixCells();
 	for ( i = 0, l = cells.length; i < l; i++ ) {
-		ranges.push( cells[i].node.getOuterRange() );
+		ranges.push( cells[ i ].node.getOuterRange() );
 	}
 	return ranges;
 };
@@ -201,7 +201,7 @@ ve.dm.TableSelection.prototype.getOuterRanges = function () {
  * Retrieves all cells (no placeholders) within a given selection.
  *
  * @param {boolean} [includePlaceholders] Include placeholders in result
- * @returns {ve.dm.TableMatrixCell[]} List of table cells
+ * @return {ve.dm.TableMatrixCell[]} List of table cells
  */
 ve.dm.TableSelection.prototype.getMatrixCells = function ( includePlaceholders ) {
 	var row, col, cell,
@@ -218,9 +218,9 @@ ve.dm.TableSelection.prototype.getMatrixCells = function ( includePlaceholders )
 			if ( !includePlaceholders && cell.isPlaceholder() ) {
 				cell = cell.owner;
 			}
-			if ( !visited[cell.key] ) {
+			if ( !visited[ cell.key ] ) {
 				cells.push( cell );
-				visited[cell.key] = true;
+				visited[ cell.key ] = true;
 			}
 		}
 	}

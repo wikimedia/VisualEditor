@@ -98,26 +98,26 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 
 	// Calculate expected assertion count
 	for ( c = 0; c < cases.length; c++ ) {
-		expectCount += cases[c].data.length;
+		expectCount += cases[ c ].data.length;
 	}
 	QUnit.expect( expectCount + 1 );
 
 	// Run tests
 	for ( i = 0; i < cases.length; i++ ) {
-		data = ve.dm.example.preprocessAnnotations( cases[i].data );
+		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
 		doc = new ve.dm.Document( data );
 		if ( i === 0 ) {
 			assert.notStrictEqual(
-				doc.data.getAnnotationsFromOffset( 0, cases[i].ignoreClose ).getIndexes(),
-				doc.data.getAnnotationsFromOffset( 0, cases[i].ignoreClose ).getIndexes(),
+				doc.data.getAnnotationsFromOffset( 0, cases[ i ].ignoreClose ).getIndexes(),
+				doc.data.getAnnotationsFromOffset( 0, cases[ i ].ignoreClose ).getIndexes(),
 				'annotation set indexes are not equal by reference'
 			);
 		}
 		for ( j = 0; j < doc.getData().length; j++ ) {
-			annotations = doc.data.getAnnotationsFromOffset( j, cases[i].ignoreClose );
+			annotations = doc.data.getAnnotationsFromOffset( j, cases[ i ].ignoreClose );
 			assert.deepEqual( annotations,
-				ve.dm.example.createAnnotationSet( doc.getStore(), cases[i].expected[j] ),
-				cases[i].msg[j]
+				ve.dm.example.createAnnotationSet( doc.getStore(), cases[ i ].expected[ j ] ),
+				cases[ i ].msg[ j ]
 			);
 		}
 	}
@@ -371,12 +371,12 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		data = ve.dm.example.preprocessAnnotations( cases[i].data );
+		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
 		doc = new ve.dm.Document( data );
 		assert.deepEqual(
-			doc.data.getAnnotationsFromRange( new ve.Range( 0, cases[i].data.length ), cases[i].all ).getIndexes(),
-			ve.dm.example.createAnnotationSet( doc.getStore(), cases[i].expected ).getIndexes(),
-			cases[i].msg
+			doc.data.getAnnotationsFromRange( new ve.Range( 0, cases[ i ].data.length ), cases[ i ].all ).getIndexes(),
+			ve.dm.example.createAnnotationSet( doc.getStore(), cases[ i ].expected ).getIndexes(),
+			cases[ i ].msg
 		);
 	}
 } );
@@ -471,13 +471,13 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		data = ve.dm.example.preprocessAnnotations( cases[i].data );
+		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
 		doc = new ve.dm.Document( data );
 		assert.equalRange(
-			doc.data.getAnnotatedRangeFromOffset( cases[i].offset,
-				ve.dm.example.createAnnotation( cases[i].annotation ) ),
-			cases[i].expected,
-			cases[i].msg
+			doc.data.getAnnotatedRangeFromOffset( cases[ i ].offset,
+				ve.dm.example.createAnnotation( cases[ i ].annotation ) ),
+			cases[ i ].expected,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -578,9 +578,9 @@ QUnit.test( 'trimOuterSpaceFromRange', function ( assert ) {
 	elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.deepEqual(
-			elementData.trimOuterSpaceFromRange( cases[i].range ),
-			cases[i].trimmed,
-			cases[i].msg
+			elementData.trimOuterSpaceFromRange( cases[ i ].range ),
+			cases[ i ].trimmed,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -652,8 +652,8 @@ QUnit.test( 'isContentOffset', function ( assert ) {
 		right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
 		assert.strictEqual(
 			data.isContentOffset( i ),
-			cases[i].expected,
-			cases[i].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
+			cases[ i ].expected,
+			cases[ i ].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
 		);
 	}
 } );
@@ -725,13 +725,13 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 		right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
 		assert.strictEqual(
 			data.isStructuralOffset( i ),
-			cases[i].expected[0],
-			cases[i].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
+			cases[ i ].expected[ 0 ],
+			cases[ i ].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
 		);
 		assert.strictEqual(
 			data.isStructuralOffset( i, true ),
-			cases[i].expected[1],
-			cases[i].msg + ', unrestricted (' + left + '|' + right + ' @ ' + i + ')'
+			cases[ i ].expected[ 1 ],
+			cases[ i ].msg + ', unrestricted (' + left + '|' + right + ' @ ' + i + ')'
 		);
 	}
 } );
@@ -745,7 +745,7 @@ QUnit.test( 'getCharacterData', function ( assert ) {
 	QUnit.expect( data.length );
 	for ( i = 0; i < data.length; i++ ) {
 		assert.strictEqual(
-			linearData.getCharacterData( i ), expected[i]
+			linearData.getCharacterData( i ), expected[ i ]
 		);
 	}
 } );
@@ -788,9 +788,9 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 		];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
 		assert.strictEqual(
-			data.isContentData(), cases[i].expected, cases[i].msg
+			data.isContentData(), cases[ i ].expected, cases[ i ].msg
 		);
 	}
 } );
@@ -820,15 +820,15 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 	];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
 		assert.strictEqual(
 			data.getRelativeOffset(
-				cases[i].offset,
-				cases[i].distance,
-				cases[i].callback
+				cases[ i ].offset,
+				cases[ i ].distance,
+				cases[ i ].callback
 			),
-			cases[i].expected,
-			cases[i].msg
+			cases[ i ].expected,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -957,11 +957,11 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 		];
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		doc = cases[i].doc || simpleDoc;
+		doc = cases[ i ].doc || simpleDoc;
 		assert.strictEqual(
-			doc.data.getRelativeContentOffset( cases[i].offset, cases[i].distance ),
-			cases[i].expected,
-			cases[i].msg
+			doc.data.getRelativeContentOffset( cases[ i ].offset, cases[ i ].distance ),
+			cases[ i ].expected,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -1015,9 +1015,9 @@ QUnit.test( 'getNearestContentOffset', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
-			doc.data.getNearestContentOffset( cases[i].offset, cases[i].direction ),
-			cases[i].expected,
-			cases[i].msg
+			doc.data.getNearestContentOffset( cases[ i ].offset, cases[ i ].direction ),
+			cases[ i ].expected,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -1125,10 +1125,10 @@ QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.data.getRelativeStructuralOffset(
-				cases[i].offset, cases[i].distance, cases[i].unrestricted
+				cases[ i ].offset, cases[ i ].distance, cases[ i ].unrestricted
 			),
-			cases[i].expected,
-			cases[i].msg
+			cases[ i ].expected,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -1243,10 +1243,10 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.data.getNearestStructuralOffset(
-				cases[i].offset, cases[i].direction, cases[i].unrestricted
+				cases[ i ].offset, cases[ i ].direction, cases[ i ].unrestricted
 			),
-			cases[i].expected,
-			cases[i].msg
+			cases[ i ].expected,
+			cases[ i ].msg
 		);
 	}
 } );
@@ -1422,18 +1422,18 @@ QUnit.test( 'getWordRange', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		// Construct the text (inside a paragraph, because getNearestContentOffset assumes
 		// text cannot be at the very start or end of the data).
-		data = cases[i].phrase.split( '' );
+		data = cases[ i ].phrase.split( '' );
 		data.unshift( { type: 'paragraph' } );
 		data.push( { type: '/paragraph' } );
 		elementLinearData = new ve.dm.ElementLinearData( store, data );
 		// Adjust offsets to account for the paragraph tag
-		range = elementLinearData.getWordRange( cases[i].offset + 1 );
-		word = cases[i].phrase.substring( range.start - 1, range.end - 1 );
-		assert.strictEqual( word, cases[i].expected,
-			cases[i].msg + ': ' +
-			cases[i].phrase.substring( 0, cases[i].offset ) + '│' +
-			cases[i].phrase.substring( cases[i].offset, cases[i].phrase.length ) +
-			' → ' + cases[i].expected
+		range = elementLinearData.getWordRange( cases[ i ].offset + 1 );
+		word = cases[ i ].phrase.substring( range.start - 1, range.end - 1 );
+		assert.strictEqual( word, cases[ i ].expected,
+			cases[ i ].msg + ': ' +
+			cases[ i ].phrase.substring( 0, cases[ i ].offset ) + '│' +
+			cases[ i ].phrase.substring( cases[ i ].offset, cases[ i ].phrase.length ) +
+			' → ' + cases[ i ].expected
 		);
 	}
 } );
@@ -1528,23 +1528,23 @@ QUnit.test( 'sanitize', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		count++;
-		if ( cases[i].store ) {
+		if ( cases[ i ].store ) {
 			count++;
 		}
 	}
 	QUnit.expect( count );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[i].html ) );
+		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].html ) );
 		data = model.data;
-		data.sanitize( cases[i].rules || {} );
-		assert.equalLinearData( data.data, cases[i].data, cases[i].msg + ': data' );
-		if ( cases[i].store ) {
+		data.sanitize( cases[ i ].rules || {} );
+		assert.equalLinearData( data.data, cases[ i ].data, cases[ i ].msg + ': data' );
+		if ( cases[ i ].store ) {
 			/*jshint loopfunc:true */
 			actualStore = data.getStore().valueStore.map( function ( ann ) {
 				return ann.element;
 			} );
-			assert.equalLinearData( actualStore, cases[i].store, cases[i].msg + ': store' );
+			assert.equalLinearData( actualStore, cases[ i ].store, cases[ i ].msg + ': store' );
 		}
 	}
 } );
@@ -1584,8 +1584,8 @@ QUnit.test( 'countNonInternalElements', function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
-		assert.strictEqual( data.countNonInternalElements(), cases[i].expected, cases[i].msg );
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
+		assert.strictEqual( data.countNonInternalElements(), cases[ i ].expected, cases[ i ].msg );
 	}
 } );
 
@@ -1638,8 +1638,8 @@ QUnit.test( 'hasContent', function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].data );
-		assert.strictEqual( data.hasContent(), cases[i].expected, cases[i].msg );
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
+		assert.strictEqual( data.hasContent(), cases[ i ].expected, cases[ i ].msg );
 	}
 } );
 
@@ -1689,9 +1689,9 @@ QUnit.test( 'getUsedStoreValues', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.deepEqual(
-			elementData.getUsedStoreValues( cases[i].range ),
-			cases[i].expected,
-			cases[i].msg
+			elementData.getUsedStoreValues( cases[ i ].range ),
+			cases[ i ].expected,
+			cases[ i ].msg
 		);
 	}
 
@@ -1816,9 +1816,9 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[i].before );
-		data.remapStoreIndexes( cases[i].mapping );
-		assert.deepEqual( data.data, cases[i].after, cases[i].msg );
+		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].before );
+		data.remapStoreIndexes( cases[ i ].mapping );
+		assert.deepEqual( data.data, cases[ i ].after, cases[ i ].msg );
 	}
 } );
 

@@ -91,7 +91,7 @@ ve.ui.Context.prototype.isVisible = function () {
  *
  * @method
  * @abstract
- * @returns {Object[]} List of objects containing `type`, `name` and `model` properties,
+ * @return {Object[]} List of objects containing `type`, `name` and `model` properties,
  *   representing each compatible type (either `item` or `tool`), symbolic name of the item or tool
  *   and the model the item or tool is compatible with
  */
@@ -140,22 +140,22 @@ ve.ui.Context.prototype.setupMenuItems = function () {
 		items = [];
 
 	for ( i = 0, len = sources.length; i < len; i++ ) {
-		source = sources[i];
+		source = sources[ i ];
 		if ( source.type === 'item' ) {
 			items.push( ve.ui.contextItemFactory.create(
-				sources[i].name, this, sources[i].model
+				sources[ i ].name, this, sources[ i ].model
 			) );
 		} else if ( source.type === 'tool' ) {
 			items.push( new ve.ui.ToolContextItem(
-				this, sources[i].model, ve.ui.toolFactory.lookup( sources[i].name )
+				this, sources[ i ].model, ve.ui.toolFactory.lookup( sources[ i ].name )
 			) );
 		}
 	}
 
 	this.addItems( items );
 	for ( i = 0, len = items.length; i < len; i++ ) {
-		items[i].connect( this, { command: 'onContextItemCommand' } );
-		items[i].setup();
+		items[ i ].connect( this, { command: 'onContextItemCommand' } );
+		items[ i ].setup();
 	}
 
 	return this;
@@ -171,7 +171,7 @@ ve.ui.Context.prototype.teardownMenuItems = function () {
 	var i, len;
 
 	for ( i = 0, len = this.items.length; i < len; i++ ) {
-		this.items[i].teardown();
+		this.items[ i ].teardown();
 	}
 	this.clearItems();
 

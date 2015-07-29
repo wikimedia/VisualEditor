@@ -73,7 +73,7 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 				fieldLayout = new OO.ui.FieldLayout(
 					progressBar,
 					{
-						label: progresses[i].label,
+						label: progresses[ i ].label,
 						align: 'top'
 					}
 				);
@@ -88,9 +88,9 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 						fieldLayout.$element, cancelButton.$element
 					)
 				);
-				progresses[i].progressBarDeferred.resolve( progressBar, cancelDeferred.promise() );
+				progresses[ i ].progressBarDeferred.resolve( progressBar, cancelDeferred.promise() );
 				/*jshint loopfunc:true */
-				progresses[i].progressCompletePromise.then(
+				progresses[ i ].progressCompletePromise.then(
 					this.progressComplete.bind( this, $row, false ),
 					this.progressComplete.bind( this, $row, true )
 				);
@@ -107,7 +107,7 @@ ve.ui.ProgressDialog.prototype.getActionProcess = function ( action ) {
 		var i, l;
 		if ( action === 'cancel' ) {
 			for ( i = 0, l = this.cancelDeferreds.length; i < l; i++ ) {
-				this.cancelDeferreds[i].reject();
+				this.cancelDeferreds[ i ].reject();
 			}
 		}
 		this.close( { action: action } );

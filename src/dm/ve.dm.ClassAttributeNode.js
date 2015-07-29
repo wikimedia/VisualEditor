@@ -50,9 +50,9 @@ ve.dm.ClassAttributeNode.static.setClassAttributes = function ( attributes, clas
 	}
 
 	for ( i = 0, l = classNames.length; i < l; i++ ) {
-		className = classNames[i];
+		className = classNames[ i ];
 		if ( Object.prototype.hasOwnProperty.call( this.classAttributes, className ) ) {
-			attributes = ve.extendObject( attributes, this.classAttributes[className] );
+			attributes = ve.extendObject( attributes, this.classAttributes[ className ] );
 		} else {
 			unrecognizedClasses.push( className );
 		}
@@ -73,10 +73,10 @@ ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attribut
 		classNames = [];
 
 	for ( className in this.classAttributes ) {
-		classAttributeSet = this.classAttributes[className];
+		classAttributeSet = this.classAttributes[ className ];
 		hasClass = true;
 		for ( key in classAttributeSet ) {
-			if ( attributes[key] !== classAttributeSet[key] ) {
+			if ( attributes[ key ] !== classAttributeSet[ key ] ) {
 				hasClass = false;
 				break;
 			}

@@ -17,6 +17,8 @@
  * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
+	var dirItems;
+
 	// Configuration initialization
 	config = config || {};
 
@@ -59,7 +61,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.directionSelect.connect( this, { select: 'onChange' } );
 
 	// Initialization
-	var dirItems = [
+	dirItems = [
 		new OO.ui.ButtonOptionWidget( {
 			data: 'rtl',
 			icon: 'textDirRTL'
@@ -126,11 +128,13 @@ ve.ui.LanguageInputWidget.prototype.onFindLanguageButtonClick = function () {
  * Handle input widget change events.
  */
 ve.ui.LanguageInputWidget.prototype.onChange = function () {
+	var selectedItem;
+
 	if ( this.updating ) {
 		return;
 	}
 
-	var selectedItem = this.directionSelect.getSelectedItem();
+	selectedItem = this.directionSelect.getSelectedItem();
 	this.setLangAndDir(
 		this.languageCodeTextInput.getValue(),
 		selectedItem ? selectedItem.getData() : null
@@ -179,7 +183,7 @@ ve.ui.LanguageInputWidget.prototype.setLangAndDir = function ( lang, dir ) {
 /**
  * Get the language
  *
- * @returns {string} Language code
+ * @return {string} Language code
  */
 ve.ui.LanguageInputWidget.prototype.getLang = function () {
 	return this.lang;
@@ -188,7 +192,7 @@ ve.ui.LanguageInputWidget.prototype.getLang = function () {
 /**
  * Get the directionality
  *
- * @returns {string} Directionality (ltr/rtl)
+ * @return {string} Directionality (ltr/rtl)
  */
 ve.ui.LanguageInputWidget.prototype.getDir = function () {
 	return this.dir;

@@ -33,43 +33,46 @@ OO.inheritClass( ve.ui.DataTransferHandlerFactory, OO.Factory );
  * @inheritdoc
  */
 ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
+	var i, j, ilen, jlen, kinds, types, extensions;
+
 	// Parent method
 	ve.ui.DataTransferHandlerFactory.super.prototype.register.call( this, constructor );
 
-	var i, j, ilen, jlen,
-		kinds = constructor.static.kinds,
-		types = constructor.static.types,
-		extensions = constructor.static.extensions;
+	kinds = constructor.static.kinds;
+	types = constructor.static.types;
+	extensions = constructor.static.extensions;
 
 	function ensureArray( obj, prop ) {
-		if ( obj[prop] === undefined ) {
-			obj[prop] = [];
+		if ( obj[ prop ] === undefined ) {
+			obj[ prop ] = [];
 		}
-		return obj[prop];
+		return obj[ prop ];
 	}
+
 	function ensureMap( obj, prop ) {
-		if ( obj[prop] === undefined ) {
-			obj[prop] = {};
+		if ( obj[ prop ] === undefined ) {
+			obj[ prop ] = {};
 		}
-		return obj[prop];
+		return obj[ prop ];
 	}
+
 	if ( !kinds ) {
 		for ( j = 0, jlen = types.length; j < jlen; j++ ) {
-			ensureArray( this.handlerNamesByType, types[j] ).unshift( constructor.static.name );
+			ensureArray( this.handlerNamesByType, types[ j ] ).unshift( constructor.static.name );
 		}
 	} else {
 		for ( i = 0, ilen = kinds.length; i < ilen; i++ ) {
 			for ( j = 0, jlen = types.length; j < jlen; j++ ) {
 				ensureArray(
-					ensureMap( this.handlerNamesByKindAndType, kinds[i] ),
-					types[j]
+					ensureMap( this.handlerNamesByKindAndType, kinds[ i ] ),
+					types[ j ]
 				).unshift( constructor.static.name );
 			}
 		}
 	}
 	if ( constructor.prototype instanceof ve.ui.FileTransferHandler ) {
 		for ( i = 0, ilen = extensions.length; i < ilen; i++ ) {
-			ensureArray( this.handlerNamesByExtension, extensions[i] ).unshift( constructor.static.name );
+			ensureArray( this.handlerNamesByExtension, extensions[ i ] ).unshift( constructor.static.name );
 		}
 	}
 };
@@ -79,7 +82,7 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
  *
  * @param {ve.ui.DataTransferItem} item Data transfer item
  * @param {boolean} isPaste Handler being used for paste
- * @returns {string|undefined} Handler name, or undefined if not found
+ * @return {string|undefined} Handler name, or undefined if not found
  */
 ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste ) {
 	var i,
@@ -94,10 +97,13 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 	function fetch( obj /*, args...*/ ) {
 		var i;
 		for ( i = 1; i < arguments.length; i++ ) {
-			if ( typeof arguments[i] !== 'string' || !Object.prototype.hasOwnProperty.call( obj, arguments[i] ) ) {
+			if (
+				typeof arguments[ i ] !== 'string' ||
+				!Object.prototype.hasOwnProperty.call( obj, arguments[ i ] )
+			) {
 				return [];
 			}
-			obj = obj[arguments[i]];
+			obj = obj[ arguments[ i ] ];
 		}
 		return obj;
 	}
@@ -112,8 +118,8 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 	);
 
 	for ( i = 0; i < names.length; i++ ) {
-		name = names[i];
-		constructor = this.registry[name];
+		name = names[ i ];
+		constructor = this.registry[ name ];
 
 		if ( isPaste && !constructor.static.handlesPaste ) {
 			continue;

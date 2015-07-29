@@ -32,7 +32,7 @@ OO.initClass( ve.dm.LinearData );
  *
  * @method
  * @param {Object} item Element item
- * @returns {string} Type of the element
+ * @return {string} Type of the element
  */
 ve.dm.LinearData.static.getType = function ( item ) {
 	return this.isCloseElementData( item ) ? item.type.slice( 1 ) : item.type;
@@ -50,7 +50,7 @@ ve.dm.LinearData.static.getType = function ( item ) {
  *
  * @method
  * @param {Object|Array|string} item Linear data item
- * @returns {boolean} Item is an element
+ * @return {boolean} Item is an element
  */
 ve.dm.LinearData.static.isElementData = function ( item ) {
 	// Data exists and appears to be an element
@@ -61,7 +61,7 @@ ve.dm.LinearData.static.isElementData = function ( item ) {
  * Checks if data item is an open element.
  * @method
  * @param {Object} item Element item
- * @returns {boolean} Item is an open element
+ * @return {boolean} Item is an open element
  */
 ve.dm.LinearData.static.isOpenElementData = function ( item ) {
 	return this.isElementData( item ) && item.type.charAt( 0 ) !== '/';
@@ -71,7 +71,7 @@ ve.dm.LinearData.static.isOpenElementData = function ( item ) {
  * Checks if data item is a close element.
  * @method
  * @param {Object} item Element item
- * @returns {boolean} Item is a close element
+ * @return {boolean} Item is a close element
  */
 ve.dm.LinearData.static.isCloseElementData = function ( item ) {
 	return this.isElementData( item ) && item.type.charAt( 0 ) === '/';
@@ -84,10 +84,10 @@ ve.dm.LinearData.static.isCloseElementData = function ( item ) {
  *
  * @method
  * @param {number} [offset] Offset to get data from
- * @returns {Object|Array} Data from index, or all data (by reference)
+ * @return {Object|Array} Data from index, or all data (by reference)
  */
 ve.dm.LinearData.prototype.getData = function ( offset ) {
-	return offset === undefined ? this.data : this.data[offset];
+	return offset === undefined ? this.data : this.data[ offset ];
 };
 
 /**
@@ -98,7 +98,7 @@ ve.dm.LinearData.prototype.getData = function ( offset ) {
  * @param {Object|string} value Value to store
  */
 ve.dm.LinearData.prototype.setData = function ( offset, value ) {
-	this.data[offset] = value;
+	this.data[ offset ] = value;
 };
 
 /**
@@ -106,7 +106,7 @@ ve.dm.LinearData.prototype.setData = function ( offset, value ) {
  *
  * @method
  * @param {Object...} [value] Values to store
- * @returns {number} The new length of the linear data
+ * @return {number} The new length of the linear data
  */
 ve.dm.LinearData.prototype.push = function () {
 	return Array.prototype.push.apply( this.data, arguments );
@@ -116,7 +116,7 @@ ve.dm.LinearData.prototype.push = function () {
  * Gets length of the linear data
  *
  * @method
- * @returns {number} Length of the linear data
+ * @return {number} Length of the linear data
  */
 ve.dm.LinearData.prototype.getLength = function () {
 	return this.getData().length;
@@ -125,7 +125,7 @@ ve.dm.LinearData.prototype.getLength = function () {
 /**
  * Gets the index-value store
  * @method
- * @returns {ve.dm.IndexValueStore} The index-value store
+ * @return {ve.dm.IndexValueStore} The index-value store
  */
 ve.dm.LinearData.prototype.getStore = function () {
 	return this.store;
@@ -137,7 +137,7 @@ ve.dm.LinearData.prototype.getStore = function () {
  * @method
  * @param {number} begin Index to begin at
  * @param {number} [end] Index to end at
- * @returns {Array} One-level deep copy of sliced range
+ * @return {Array} One-level deep copy of sliced range
  */
 ve.dm.LinearData.prototype.slice = function () {
 	return Array.prototype.slice.apply( this.data, arguments );
@@ -149,7 +149,7 @@ ve.dm.LinearData.prototype.slice = function () {
  * @method
  * @param {number} begin Index to begin at
  * @param {number} [end] Index to end at
- * @returns {ve.dm.LinearData} LinearData object containing one-level deep copy of sliced range
+ * @return {ve.dm.LinearData} LinearData object containing one-level deep copy of sliced range
  */
 ve.dm.LinearData.prototype.sliceObject = function () {
 	return new this.constructor( this.getStore(), this.slice.apply( this, arguments ) );
@@ -162,7 +162,7 @@ ve.dm.LinearData.prototype.sliceObject = function () {
  * @param {number} index Splice from
  * @param {number} howmany Items to be removed
  * @param {Object...} [element] Items to be inserted
- * @returns {Array} Elements removed
+ * @return {Array} Elements removed
  */
 ve.dm.LinearData.prototype.splice = function () {
 	return Array.prototype.splice.apply( this.data, arguments );
@@ -175,7 +175,7 @@ ve.dm.LinearData.prototype.splice = function () {
  * @param {number} index Splice from
  * @param {number} howmany Items to be removed
  * @param {Object...} [element] Items to be inserted
- * @returns {ve.dm.LinearData} LinearData object containing elements removed
+ * @return {ve.dm.LinearData} LinearData object containing elements removed
  */
 ve.dm.LinearData.prototype.spliceObject = function () {
 	return new this.constructor( this.getStore(), this.splice.apply( this, arguments ) );
@@ -189,7 +189,7 @@ ve.dm.LinearData.prototype.spliceObject = function () {
  * @param offset
  * @param remove
  * @param insert
- * @returns {Array}
+ * @return {Array}
  */
 ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
 	return ve.batchSplice( this.getData(), offset, remove, data );
@@ -203,7 +203,7 @@ ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
  * @param offset
  * @param remove
  * @param insert
- * @returns {ve.dm.LinearData}
+ * @return {ve.dm.LinearData}
  */
 ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data ) {
 	return new this.constructor(
@@ -218,7 +218,7 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
  * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
- * @returns {Array} Slice or copy of data
+ * @return {Array} Slice or copy of data
  */
 ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	var end, data,
@@ -237,7 +237,7 @@ ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 /*
  * Clone the data, with a deep copy of the data.
  *
- * @returns {ve.dm.LinearData} Clone of this object
+ * @return {ve.dm.LinearData} Clone of this object
  */
 ve.dm.LinearData.prototype.clone = function () {
 	return new this.constructor(

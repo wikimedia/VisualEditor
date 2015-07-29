@@ -51,13 +51,13 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 
 		for ( i = 0; i < input.data.length; i++ ) {
 			data.push( { type: 'tableRow' } );
-			line = input.data[i];
+			line = input.data[ i ];
 			for ( j = 0; j < line.length; j++ ) {
 				data.push(
 					{ type: 'tableCell', attributes: { style: ( i === 0 ? 'header' : 'data' ) } },
 					{ type: 'paragraph', internal: { generated: 'wrapper' } }
 				);
-				data = data.concat( line[j].split( '' ) );
+				data = data.concat( line[ j ].split( '' ) );
 				data.push(
 					{ type: '/paragraph' },
 					{ type: '/tableCell' }

@@ -72,9 +72,9 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushStopAnnotating', 'set', store.index( underline ) ]
 				],
 				expected: function ( data ) {
-					data[1] = [ 'a', store.indexes( [ bold ] ) ];
-					data[2] = [ 'b', store.indexes( [ bold ] ) ];
-					data[3] = [ 'c', store.indexes( [ bold, underline ] ) ];
+					data[ 1 ] = [ 'a', store.indexes( [ bold ] ) ];
+					data[ 2 ] = [ 'b', store.indexes( [ bold ] ) ];
+					data[ 3 ] = [ 'c', store.indexes( [ bold, underline ] ) ];
 				}
 			},
 			'annotating content and leaf elements': {
@@ -85,9 +85,9 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushStopAnnotating', 'set', store.index( bold ) ]
 				],
 				expected: function ( data ) {
-					data[38] = [ 'h', store.indexes( [ bold ] ) ];
-					data[39].annotations = store.indexes( [ bold ] );
-					data[41] = [ 'i', store.indexes( [ bold ] ) ];
+					data[ 38 ] = [ 'h', store.indexes( [ bold ] ) ];
+					data[ 39 ].annotations = store.indexes( [ bold ] );
+					data[ 41 ] = [ 'i', store.indexes( [ bold ] ) ];
 				}
 			},
 			'annotating across metadata': {
@@ -100,9 +100,9 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushRetain', 6 ]
 				],
 				expected: function ( data ) {
-					data[2] = [ 'b', store.indexes( [ bold ] ) ];
-					data[3].annotations = store.indexes( [ bold ] );
-					data[5] = [ 'c', store.indexes( [ bold ] ) ];
+					data[ 2 ] = [ 'b', store.indexes( [ bold ] ) ];
+					data[ 3 ].annotations = store.indexes( [ bold ] );
+					data[ 5 ] = [ 'c', store.indexes( [ bold ] ) ];
 				}
 			},
 			'annotating with metadata at edges': {
@@ -115,11 +115,11 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushRetain', 3 ]
 				],
 				expected: function ( data ) {
-					data[7].annotations = store.indexes( [ bold ] );
-					data[5] = [ 'c', store.indexes( [ bold ] ) ];
-					data[6] = [ 'd', store.indexes( [ bold ] ) ];
-					data[9] = [ 'e', store.indexes( [ bold ] ) ];
-					data[10] = [ 'f', store.indexes( [ bold ] ) ];
+					data[ 7 ].annotations = store.indexes( [ bold ] );
+					data[ 5 ] = [ 'c', store.indexes( [ bold ] ) ];
+					data[ 6 ] = [ 'd', store.indexes( [ bold ] ) ];
+					data[ 9 ] = [ 'e', store.indexes( [ bold ] ) ];
+					data[ 10 ] = [ 'f', store.indexes( [ bold ] ) ];
 				}
 			},
 			'unannotating metadata': {
@@ -143,9 +143,9 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushRetain', 6 ]
 				],
 				expected: function ( data ) {
-					data[2] = 'b';
-					data[5] = 'c';
-					delete data[3].annotations;
+					data[ 2 ] = 'b';
+					data[ 5 ] = 'c';
+					delete data[ 3 ].annotations;
 				}
 			},
 			'using an annotation method other than set or clear throws an exception': {
@@ -201,10 +201,10 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushReplaceElementAttribute', 'src', ve.dm.example.imgSrc, undefined ]
 				],
 				expected: function ( data ) {
-					data[0].attributes.level = 2;
-					data[12].attributes.style = 'number';
-					data[12].attributes.test = 'abcd';
-					delete data[39].attributes.src;
+					data[ 0 ].attributes.level = 2;
+					data[ 12 ].attributes.style = 'number';
+					data[ 12 ].attributes.test = 'abcd';
+					delete data[ 39 ].attributes.src;
 				}
 			},
 			'changing attributes on non-element data throws an exception': {
@@ -279,9 +279,9 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushReplace', 4, 1, [ { type: '/paragraph' } ] ]
 				],
 				expected: function ( data ) {
-					data[0].type = 'paragraph';
-					delete data[0].attributes;
-					data[4].type = '/paragraph';
+					data[ 0 ].type = 'paragraph';
+					delete data[ 0 ].attributes;
+					data[ 4 ].type = '/paragraph';
 				}
 			},
 			'conversion with wrong closing': {
@@ -374,7 +374,7 @@ QUnit.test( 'commit', function ( assert ) {
 				data: ve.dm.example.withMeta,
 				calls: [
 					[ 'pushRetain', 11 ],
-					[ 'pushReplaceMetadata', ve.dm.example.withMetaMetaData[11], [] ],
+					[ 'pushReplaceMetadata', ve.dm.example.withMetaMetaData[ 11 ], [] ],
 					[ 'pushRetain', 1 ]
 				],
 				expected: function ( data ) {
@@ -386,7 +386,7 @@ QUnit.test( 'commit', function ( assert ) {
 				calls: [
 					[ 'pushRetain', 11 ],
 					[ 'pushRetainMetadata', 1 ],
-					[ 'pushReplaceMetadata', ve.dm.example.withMetaMetaData[11].slice( 1, 3 ), [] ],
+					[ 'pushReplaceMetadata', ve.dm.example.withMetaMetaData[ 11 ].slice( 1, 3 ), [] ],
 					[ 'pushRetainMetadata', 1 ],
 					[ 'pushRetain', 1 ]
 				],
@@ -399,7 +399,7 @@ QUnit.test( 'commit', function ( assert ) {
 				calls: [
 					[ 'pushRetain', 11 ],
 					[ 'pushRetainMetadata', 3 ],
-					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][3] ], [ metaElementInsert ] ],
+					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[ 11 ][ 3 ] ], [ metaElementInsert ] ],
 					[ 'pushRetain', 1 ]
 				],
 				expected: function ( data ) {
@@ -411,9 +411,9 @@ QUnit.test( 'commit', function ( assert ) {
 				calls: [
 					[ 'pushRetain', 11 ],
 					[ 'pushRetainMetadata', 1 ],
-					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][1] ], [ metaElementInsert ] ],
+					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[ 11 ][ 1 ] ], [ metaElementInsert ] ],
 					[ 'pushRetainMetadata', 1 ],
-					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[11][3] ], [ metaElementInsert ] ],
+					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[ 11 ][ 3 ] ], [ metaElementInsert ] ],
 					[ 'pushRetain', 1 ]
 				],
 				expected: function ( data ) {
@@ -639,14 +639,14 @@ QUnit.test( 'commit', function ( assert ) {
 		};
 
 	for ( msg in cases ) {
-		n += ( 'expected' in cases[msg] ) ? 4 : 3;
+		n += ( 'expected' in cases[ msg ] ) ? 4 : 3;
 	}
 	QUnit.expect( n );
 
 	// Run tests
 	for ( msg in cases ) {
 		// Generate original document
-		originalData = cases[msg].data || ve.dm.example.data;
+		originalData = cases[ msg ].data || ve.dm.example.data;
 		originalDoc = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
@@ -657,23 +657,23 @@ QUnit.test( 'commit', function ( assert ) {
 		testDoc.buildNodeTree();
 
 		tx = new ve.dm.Transaction( testDoc );
-		for ( i = 0; i < cases[msg].calls.length; i++ ) {
+		for ( i = 0; i < cases[ msg ].calls.length; i++ ) {
 			// some calls need the document as its first argument
-			if ( /^(pushReplace$|new)/.test( cases[msg].calls[i][0] ) ) {
-				cases[msg].calls[i].splice( 1, 0, testDoc );
+			if ( /^(pushReplace$|new)/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
+				cases[ msg ].calls[ i ].splice( 1, 0, testDoc );
 			}
 			// special case static methods of Transaction
-			if ( /^new/.test( cases[msg].calls[i][0] ) ) {
-				tx = ve.dm.Transaction[cases[msg].calls[i][0]].apply( null, cases[msg].calls[i].slice( 1 ) );
+			if ( /^new/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
+				tx = ve.dm.Transaction[ cases[ msg ].calls[ i ][ 0 ] ].apply( null, cases[ msg ].calls[ i ].slice( 1 ) );
 				break;
 			}
-			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
+			tx[ cases[ msg ].calls[ i ][ 0 ] ].apply( tx, cases[ msg ].calls[ i ].slice( 1 ) );
 		}
 
-		if ( 'expected' in cases[msg] ) {
+		if ( 'expected' in cases[ msg ] ) {
 			// Generate expected document
 			expectedData = ve.copy( originalData );
-			cases[msg].expected( expectedData );
+			cases[ msg ].expected( expectedData );
 			expectedDoc = new ve.dm.Document(
 				ve.dm.example.preprocessAnnotations( expectedData, store )
 			);
@@ -694,13 +694,13 @@ QUnit.test( 'commit', function ( assert ) {
 				originalDoc.getDocumentNode(),
 				'rollback (tree): ' + msg
 			);
-		} else if ( 'exception' in cases[msg] ) {
+		} else if ( 'exception' in cases[ msg ] ) {
 			/*jshint loopfunc:true */
 			assert.throws(
 				function () {
 					testDoc.commit( tx );
 				},
-				cases[msg].exception,
+				cases[ msg ].exception,
 				'exception thrown: ' + msg
 			);
 			assert.deepEqualWithDomElements( testDoc.getFullData(), originalDoc.getFullData(), 'data unmodified: ' + msg );

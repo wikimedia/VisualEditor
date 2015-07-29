@@ -63,8 +63,8 @@ ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
 	for ( i = 0; i < selection.length; i++ ) {
 		// No tree synchronization needed
 		// Queue events
-		this.queueEvent( selection[i].node, 'annotation' );
-		this.queueEvent( selection[i].node, 'update' );
+		this.queueEvent( selection[ i ].node, 'annotation' );
+		this.queueEvent( selection[ i ].node, 'update' );
 	}
 };
 
@@ -143,16 +143,16 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
 
 	// If the document is empty, selection[0].node will be the document (so no parent)
 	// but we won't get indexInNode either. Detect this and use index=0 in that case.
-	if ( 'indexInNode' in selection[0] || !selection[0].node.getParent() ) {
+	if ( 'indexInNode' in selection[ 0 ] || !selection[ 0 ].node.getParent() ) {
 		// Insertion
-		parent = selection[0].node;
-		index = selection[0].indexInNode || 0;
+		parent = selection[ 0 ].node;
+		index = selection[ 0 ].indexInNode || 0;
 		numNodes = 0;
 	} else {
 		// Rebuild
-		firstNode = selection[0].node;
+		firstNode = selection[ 0 ].node;
 		parent = firstNode.getParent();
-		index = selection[0].index;
+		index = selection[ 0 ].index;
 		numNodes = selection.length;
 	}
 	// Perform rebuild in tree
@@ -169,7 +169,7 @@ ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
  * Get the document being synchronized.
  *
  * @method
- * @returns {ve.dm.Document} Document being synchronized
+ * @return {ve.dm.Document} Document being synchronized
  */
 ve.dm.DocumentSynchronizer.prototype.getDocument = function () {
 	return this.document;
@@ -287,8 +287,8 @@ ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node ) {
 	if ( !node.queuedEventHashes ) {
 		node.queuedEventHashes = {};
 	}
-	if ( !node.queuedEventHashes[hash] ) {
-		node.queuedEventHashes[hash] = true;
+	if ( !node.queuedEventHashes[ hash ] ) {
+		node.queuedEventHashes[ hash ] = true;
 		this.eventQueue.push( {
 			node: node,
 			args: args.concat( this.transaction )
@@ -315,16 +315,16 @@ ve.dm.DocumentSynchronizer.prototype.synchronize = function () {
 		i;
 	// Execute the actions in the queue
 	for ( i = 0; i < this.actionQueue.length; i++ ) {
-		action = this.actionQueue[i];
+		action = this.actionQueue[ i ];
 		if ( Object.prototype.hasOwnProperty.call( ve.dm.DocumentSynchronizer.synchronizers, action.type ) ) {
-			ve.dm.DocumentSynchronizer.synchronizers[action.type].call( this, action );
+			ve.dm.DocumentSynchronizer.synchronizers[ action.type ].call( this, action );
 		} else {
 			throw new Error( 'Invalid action type ' + action.type );
 		}
 	}
 	// Emit events in the event queue
 	for ( i = 0; i < this.eventQueue.length; i++ ) {
-		event = this.eventQueue[i];
+		event = this.eventQueue[ i ];
 		event.node.emit.apply( event.node, event.args );
 		delete event.node.queuedEventHashes;
 	}

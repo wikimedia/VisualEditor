@@ -29,7 +29,7 @@ ve.dm.Selection.static.type = null;
  *
  * @param {ve.dm.Document} doc Document to create the selection on
  * @param {string|Object} json JSON serialization or hash object
- * @returns {ve.dm.Selection} New selection
+ * @return {ve.dm.Selection} New selection
  * @throws {Error} Unknown selection type
  */
 ve.dm.Selection.static.newFromJSON = function ( doc, json ) {
@@ -50,7 +50,7 @@ ve.dm.Selection.static.newFromJSON = function ( doc, json ) {
  * @method
  * @param {ve.dm.Document} doc Document to create the selection on
  * @param {Object} hash Hash object
- * @returns {ve.dm.Selection} New selection
+ * @return {ve.dm.Selection} New selection
  */
 ve.dm.Selection.static.newFromHash = null;
 
@@ -61,7 +61,7 @@ ve.dm.Selection.static.newFromHash = null;
  *
  * @abstract
  * @method
- * @returns {Object} Object for JSON serialization
+ * @return {Object} Object for JSON serialization
  */
 ve.dm.Selection.prototype.toJSON = null;
 
@@ -70,7 +70,7 @@ ve.dm.Selection.prototype.toJSON = null;
  *
  * @abstract
  * @method
- * @returns {string} Textual description
+ * @return {string} Textual description
  */
 ve.dm.Selection.prototype.getDescription = null;
 
@@ -79,7 +79,7 @@ ve.dm.Selection.prototype.getDescription = null;
  *
  * @abstract
  * @method
- * @returns {ve.dm.Selection} Cloned selection
+ * @return {ve.dm.Selection} Cloned selection
  */
 ve.dm.Selection.prototype.clone = null;
 
@@ -88,7 +88,7 @@ ve.dm.Selection.prototype.clone = null;
  *
  * @abstract
  * @method
- * @returns {ve.dm.Selection} Collapsed selection
+ * @return {ve.dm.Selection} Collapsed selection
  */
 ve.dm.Selection.prototype.collapseToStart = null;
 
@@ -97,7 +97,7 @@ ve.dm.Selection.prototype.collapseToStart = null;
  *
  * @abstract
  * @method
- * @returns {ve.dm.Selection} Collapsed selection
+ * @return {ve.dm.Selection} Collapsed selection
  */
 ve.dm.Selection.prototype.collapseToEnd = null;
 
@@ -106,7 +106,7 @@ ve.dm.Selection.prototype.collapseToEnd = null;
  *
  * @abstract
  * @method
- * @returns {ve.dm.Selection} Collapsed selection
+ * @return {ve.dm.Selection} Collapsed selection
  */
 ve.dm.Selection.prototype.collapseToFrom = null;
 
@@ -115,7 +115,7 @@ ve.dm.Selection.prototype.collapseToFrom = null;
  *
  * @abstract
  * @method
- * @returns {ve.dm.Selection} Collapsed selection
+ * @return {ve.dm.Selection} Collapsed selection
  */
 ve.dm.Selection.prototype.collapseToTo = null;
 
@@ -124,7 +124,7 @@ ve.dm.Selection.prototype.collapseToTo = null;
  *
  * @abstract
  * @method
- * @returns {boolean} Selection is collapsed
+ * @return {boolean} Selection is collapsed
  */
 ve.dm.Selection.prototype.isCollapsed = null;
 
@@ -149,7 +149,7 @@ ve.dm.Selection.prototype.translateByTransaction = null;
 ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInsertion ) {
 	var i, l, selection = this;
 	for ( i = 0, l = txs.length; i < l; i++ ) {
-		selection = selection.translateByTransaction( txs[i], excludeInsertion );
+		selection = selection.translateByTransaction( txs[ i ], excludeInsertion );
 	}
 	return selection;
 };
@@ -157,7 +157,7 @@ ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInser
 /**
  * Check if this selection is null
  *
- * @returns {boolean} The selection is null
+ * @return {boolean} The selection is null
  */
 ve.dm.Selection.prototype.isNull = function () {
 	return false;
@@ -168,14 +168,14 @@ ve.dm.Selection.prototype.isNull = function () {
  *
  * @abstract
  * @method
- * @returns {ve.Range[]} Ranges
+ * @return {ve.Range[]} Ranges
  */
 ve.dm.Selection.prototype.getRanges = null;
 
 /**
  * Get the document model this selection applies to
  *
- * @returns {ve.dm.Document} Document model
+ * @return {ve.dm.Document} Document model
  */
 ve.dm.Selection.prototype.getDocument = function () {
 	return this.documentModel;
@@ -187,7 +187,7 @@ ve.dm.Selection.prototype.getDocument = function () {
  * @abstract
  * @method
  * @param {ve.dm.Selection} other Other selection
- * @returns {boolean} Selections are equal
+ * @return {boolean} Selections are equal
  */
 ve.dm.Selection.prototype.equals = null;
 

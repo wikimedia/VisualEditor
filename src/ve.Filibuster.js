@@ -260,11 +260,11 @@ ve.Filibuster.prototype.wrapClass = function ( klass, blacklist ) {
 	container = klass.prototype;
 	fnNames = Object.getOwnPropertyNames( container );
 	for ( i = 0, len = fnNames.length; i < len; i++ ) {
-		fnName = fnNames[i];
+		fnName = fnNames[ i ];
 		if ( fnName === 'prototype' || fnName === 'constructor' ) {
 			continue;
 		}
-		fn = container[fnName];
+		fn = container[ fnName ];
 		if ( typeof fn !== 'function' || fn.wrappedFunction ) {
 			continue;
 		}
@@ -288,8 +288,8 @@ ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, blacklist ) {
 	var i, len, propNames, propName, prop, isConstructor;
 	propNames = Object.getOwnPropertyNames( ns );
 	for ( i = 0, len = propNames.length; i < len; i++ ) {
-		propName = propNames[i];
-		prop = ns[propName];
+		propName = propNames[ i ];
+		prop = ns[ propName ];
 		if ( blacklist && blacklist.indexOf( prop ) !== -1 ) {
 			continue;
 		}

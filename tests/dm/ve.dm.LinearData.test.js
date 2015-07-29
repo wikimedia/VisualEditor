@@ -14,11 +14,11 @@ QUnit.test( 'basic usage', 7, function ( assert ) {
 
 	assert.strictEqual( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
 	assert.deepEqual( data.getData(), ve.dm.example.data, 'getData: full array matches source data' );
-	assert.strictEqual( data.getData( 10 ), data.data[10], 'getData: data at offset 10 is same as array[10]' );
+	assert.strictEqual( data.getData( 10 ), data.data[ 10 ], 'getData: data at offset 10 is same as array[10]' );
 	assert.strictEqual( data.getData( -1 ), data.data[ -1 ], 'getData: data at -1 is undefined' );
 
 	data.setData( 1, 'x' );
-	assert.strictEqual( data.data[1], 'x', 'setData: data set at offset 1 changed' );
+	assert.strictEqual( data.data[ 1 ], 'x', 'setData: data set at offset 1 changed' );
 	assert.strictEqual( data.getLength(), data.data.length, 'getLength: equal to array length' );
 	assert.strictEqual( data.getStore(), store, 'getStore: equal to original store by reference' );
 } );

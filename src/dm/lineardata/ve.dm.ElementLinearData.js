@@ -44,21 +44,21 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
  *
  * @param {Object|Array|string} a First element
  * @param {Object|Array|string} b Second element
- * @returns {boolean} Elements are comparable
+ * @return {boolean} Elements are comparable
  */
 ve.dm.ElementLinearData.static.compareElements = function ( a, b ) {
+	var aPlain = a,
+		bPlain = b;
+
 	if ( a === undefined || b === undefined ) {
 		return false;
 	}
 
-	var aPlain = a,
-		bPlain = b;
-
 	if ( Array.isArray( a ) ) {
-		aPlain = a[0];
+		aPlain = a[ 0 ];
 	}
 	if ( Array.isArray( b ) ) {
-		bPlain = b[0];
+		bPlain = b[ 0 ];
 	}
 	if ( a && a.type ) {
 		aPlain = {
@@ -94,16 +94,17 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b ) {
  *
  * @method
  * @param {number} offset Document offset
- * @returns {boolean} Content can be inserted at offset
+ * @return {boolean} Content can be inserted at offset
  */
 ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
+	var left, right, factory;
 	// Edges are never content
 	if ( offset === 0 || offset === this.getLength() ) {
 		return false;
 	}
-	var left = this.getData( offset - 1 ),
-		right = this.getData( offset ),
-		factory = ve.dm.nodeFactory;
+	left = this.getData( offset - 1 );
+	right = this.getData( offset );
+	factory = ve.dm.nodeFactory;
 	return (
 		// Data exists at offsets
 		( left !== undefined && right !== undefined ) &&
@@ -180,17 +181,18 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
  * @method
  * @param {number} offset Document offset
  * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
- * @returns {boolean} Structure can be inserted at offset
+ * @return {boolean} Structure can be inserted at offset
  */
 ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrestricted ) {
+	var left, right, factory;
 	// Edges are always structural
 	if ( offset === 0 || offset === this.getLength() ) {
 		return true;
 	}
 	// Offsets must be within range and both sides must be elements
-	var left = this.getData( offset - 1 ),
-		right = this.getData( offset ),
-		factory = ve.dm.nodeFactory;
+	left = this.getData( offset - 1 );
+	right = this.getData( offset );
+	factory = ve.dm.nodeFactory;
 	return (
 		(
 			left !== undefined &&
@@ -262,7 +264,7 @@ ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrest
  * Elements are discovered by iterating through the entire data array.
  *
  * @method
- * @returns {boolean} True if all elements in data are content elements
+ * @return {boolean} True if all elements in data are content elements
  */
 ve.dm.ElementLinearData.prototype.isContentData = function () {
 	var item, i = this.getLength();
@@ -284,10 +286,11 @@ ve.dm.ElementLinearData.prototype.isContentData = function () {
  * @method
  * @param {number} offset Offset to get annotations for
  * @param {boolean} [ignoreClose] Ignore annotations on close elements
- * @returns {number[]} An array of annotation store indexes the offset is covered by
+ * @return {number[]} An array of annotation store indexes the offset is covered by
  * @throws {Error} offset out of bounds
  */
 ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( offset, ignoreClose ) {
+	var element;
 	if ( offset < 0 || offset > this.getLength() ) {
 		throw new Error( 'offset ' + offset + ' out of bounds' );
 	}
@@ -302,14 +305,14 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 		offset = this.getRelativeContentOffset( offset, -1 );
 	}
 
-	var element = this.getData( offset );
+	element = this.getData( offset );
 
 	if ( element === undefined || typeof element === 'string' ) {
 		return [];
 	} else if ( element.annotations ) {
 		return element.annotations.slice();
-	} else if ( element[1] ) {
-		return element[1].slice();
+	} else if ( element[ 1 ] ) {
+		return element[ 1 ].slice();
 	} else {
 		return [];
 	}
@@ -323,7 +326,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
  * @method
  * @param {number} offset Offset to get annotations for
  * @param {boolean} [ignoreClose] Ignore annotations on close elements
- * @returns {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
+ * @return {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
  * @throws {Error} offset out of bounds
  */
 ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset, ignoreClose ) {
@@ -392,7 +395,7 @@ ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key,
 	if ( value === undefined ) {
 		// Clear
 		if ( item.attributes ) {
-			delete item.attributes[key];
+			delete item.attributes[ key ];
 		}
 	} else {
 		// Automatically initialize attributes object
@@ -400,7 +403,7 @@ ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key,
 			item.attributes = {};
 		}
 		// Set
-		item.attributes[key] = value;
+		item.attributes[ key ] = value;
 	}
 };
 
@@ -412,7 +415,7 @@ ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key,
  */
 ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
 	var item = this.getData( offset ),
-		data = Array.isArray( item ) ? item[0] : item;
+		data = Array.isArray( item ) ? item[ 0 ] : item;
 	return typeof data === 'string' ? data : '';
 };
 
@@ -422,7 +425,7 @@ ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
  * @method
  * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
- * @returns {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
+ * @return {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
 ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
 	var start = offset,
@@ -452,7 +455,7 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offse
  * @method
  * @param {number} offset Offset to begin looking forward and backward from
  * @param {ve.dm.Annotation} annotation Annotation to test for coverage with
- * @returns {ve.Range|null} Range of content covered by annotation, or a copy of the range
+ * @return {ve.Range|null} Range of content covered by annotation, or a copy of the range
  */
 ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
 	var start = range.start,
@@ -479,7 +482,7 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( ra
  * @method
  * @param {ve.Range} range Range to get annotations for
  * @param {boolean} [all=false] Get all annotations found within the range, not just those that cover it
- * @returns {ve.dm.AnnotationSet} All annotation objects range is covered by
+ * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, all ) {
 	var i, left, right, ignoreChildrenDepth = 0;
@@ -531,7 +534,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
  * Check if the range has any annotations
  *
  * @method
- * @returns {boolean} The range contains at least one annotation
+ * @return {boolean} The range contains at least one annotation
  */
 ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
 	var i;
@@ -548,7 +551,7 @@ ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
  *
  * @method
  * @param {ve.Range} range Range to trim
- * @returns {Object} Trimmed range
+ * @return {Object} Trimmed range
  */
 ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 	var start = range.start,
@@ -606,7 +609,7 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  * @param {Function} callback Function to call to check if an offset is valid which will be
  * given initial argument of offset
  * @param {Mixed...} [args] Additional arguments to pass to the callback
- * @returns {number} Relative valid offset or -1 if there are no valid offsets in data
+ * @return {number} Relative valid offset or -1 if there are no valid offsets in data
  * @throws {Error} offset was inside an ignoreChildren node
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
@@ -701,7 +704,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
  * @method
  * @param {number} offset Offset to start from
  * @param {number} distance Number of content offsets to move
- * @returns {number} Relative content offset or -1 if there are no valid offsets in data
+ * @return {number} Relative content offset or -1 if there are no valid offsets in data
  */
 ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, distance ) {
 	return this.getRelativeOffset( offset, distance, this.constructor.prototype.isContentOffset );
@@ -719,15 +722,17 @@ ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, 
  * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
- * @returns {number} Nearest content offset or -1 if there are no valid offsets in data
+ * @return {number} Nearest content offset or -1 if there are no valid offsets in data
  */
 ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, direction ) {
+	var left, right;
+
 	if ( this.isContentOffset( offset ) ) {
 		return offset;
 	}
 	if ( direction === undefined ) {
-		var left = this.getRelativeContentOffset( offset, -1 ),
-			right = this.getRelativeContentOffset( offset, 1 );
+		left = this.getRelativeContentOffset( offset, -1 );
+		right = this.getRelativeContentOffset( offset, 1 );
 		return offset - left < right - offset ? left : right;
 	} else {
 		return this.getRelativeContentOffset( offset, direction > 0 ? 1 : -1 );
@@ -744,7 +749,7 @@ ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, d
  * @param {number} offset Offset to start from
  * @param {number} distance Number of structural offsets to move
  * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
- * @returns {number} Relative structural offset
+ * @return {number} Relative structural offset
  */
 ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offset, distance, unrestricted ) {
 	// Optimization: start and end are always unrestricted structural offsets
@@ -769,15 +774,16 @@ ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offse
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
  * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
- * @returns {number} Nearest structural offset
+ * @return {number} Nearest structural offset
  */
 ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset, direction, unrestricted ) {
+	var left, right;
 	if ( this.isStructuralOffset( offset, unrestricted ) ) {
 		return offset;
 	}
 	if ( !direction ) {
-		var left = this.getRelativeStructuralOffset( offset, -1, unrestricted ),
-			right = this.getRelativeStructuralOffset( offset, 1, unrestricted );
+		left = this.getRelativeStructuralOffset( offset, -1, unrestricted );
+		right = this.getRelativeStructuralOffset( offset, 1, unrestricted );
 		return offset - left < right - offset ? left : right;
 	} else {
 		return this.getRelativeStructuralOffset( offset, direction > 0 ? 1 : -1, unrestricted );
@@ -795,7 +801,7 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
  *
  * @method
  * @param {number} offset Offset to start from; must not be inside a surrogate pair
- * @returns {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
+ * @return {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
  */
 ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
 	var dataString = new ve.dm.DataString( this.getData() );
@@ -846,7 +852,7 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
  *
  * @method
  * @param {ve.Range} [range] Optional range to get store values for
- * @returns {Object} Object containing all store values, indexed by store index
+ * @return {Object} Object containing all store values, indexed by store index
  */
 ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
 	var i, index, indexes, j,
@@ -860,9 +866,9 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
 		indexes = this.getAnnotationIndexesFromOffset( i, true );
 		j = indexes.length;
 		while ( j-- ) {
-			index = indexes[j];
+			index = indexes[ j ];
 			if ( !Object.prototype.hasOwnProperty.call( valueStore, index ) ) {
-				valueStore[index] = this.getStore().value( index );
+				valueStore[ index ] = this.getStore().value( index );
 			}
 		}
 	}
@@ -882,12 +888,12 @@ ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		indexes = this.getAnnotationIndexesFromOffset( i, true );
 		for ( j = 0, jlen = indexes.length; j < jlen; j++ ) {
-			indexes[j] = mapping[indexes[j]];
+			indexes[ j ] = mapping[ indexes[ j ] ];
 		}
 		this.setAnnotationIndexesAtOffset( i, indexes );
 		if ( this.isOpenElementData( i ) ) {
 			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			nodeClass.static.remapStoreIndexes( this.data[i], mapping );
+			nodeClass.static.remapStoreIndexes( this.data[ i ], mapping );
 		}
 	}
 };
@@ -907,7 +913,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping,
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
 			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			nodeClass.static.remapInternalListIndexes( this.data[i], mapping, internalList );
+			nodeClass.static.remapInternalListIndexes( this.data[ i ], mapping, internalList );
 		}
 	}
 };
@@ -925,7 +931,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
 			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			nodeClass.static.remapInternalListKeys( this.data[i], internalList );
+			nodeClass.static.remapInternalListKeys( this.data[ i ], internalList );
 		}
 	}
 };
@@ -967,8 +973,8 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 		if ( this.isElementData( i ) ) {
 			type = this.getType( i );
 			// Apply type conversions
-			if ( rules.conversions && rules.conversions[type] ) {
-				type = rules.conversions[type];
+			if ( rules.conversions && rules.conversions[ type ] ) {
+				type = rules.conversions[ type ];
 				this.getData( i ).type = ( this.isCloseElementData( i ) ? '/' : '' ) + type;
 			}
 			// Convert content-containing non-paragraph nodes to paragraphs in plainText mode
@@ -1044,7 +1050,7 @@ ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated )
  * Counts all elements that aren't between internalList and /internalList
  *
  * @param {number} [limit] Number of elements after which to stop counting
- * @returns {number} Number of elements that aren't in an internalList
+ * @return {number} Number of elements that aren't in an internalList
  */
 ve.dm.ElementLinearData.prototype.countNonInternalElements = function ( limit ) {
 	var i, l, type,
@@ -1072,7 +1078,7 @@ ve.dm.ElementLinearData.prototype.countNonInternalElements = function ( limit ) 
  * Returns true if the document has content that's not part of an
  * internalList.
  *
- * @returns {boolean}
+ * @return {boolean}
  *   True iff there are at least 3 elements that aren't in an internalList.
  */
 ve.dm.ElementLinearData.prototype.hasContent = function () {

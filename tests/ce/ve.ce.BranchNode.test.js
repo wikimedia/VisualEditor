@@ -23,7 +23,7 @@ ve.ce.BranchNodeStub.prototype.getTagName = function () {
 	var style = this.model.getAttribute( 'style' ),
 		types = { a: 'a', b: 'b' };
 
-	return types[style];
+	return types[ style ];
 };
 
 ve.ce.nodeFactory.register( ve.ce.BranchNodeStub );
@@ -78,18 +78,18 @@ QUnit.test( 'onSplice', 7, function ( assert ) {
 	modelA.splice( 0, 0, modelB, modelC );
 
 	assert.strictEqual( viewA.getChildren().length, 2 );
-	assert.deepEqual( viewA.getChildren()[0].getModel(), modelB );
-	assert.deepEqual( viewA.getChildren()[1].getModel(), modelC );
+	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelB );
+	assert.deepEqual( viewA.getChildren()[ 1 ].getModel(), modelC );
 
 	// Removal tests
 	modelA.splice( 0, 1 );
 
 	assert.strictEqual( viewA.getChildren().length, 1 );
-	assert.deepEqual( viewA.getChildren()[0].getModel(), modelC );
+	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelC );
 
 	// Removal and insertion tests
 	modelA.splice( 0, 1, modelB );
 
 	assert.strictEqual( viewA.getChildren().length, 1 );
-	assert.deepEqual( viewA.getChildren()[0].getModel(), modelB );
+	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelB );
 } );

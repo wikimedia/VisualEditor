@@ -50,10 +50,10 @@ QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) 
 	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		view = ve.test.utils.createSurfaceViewFromHtml( cases[i].html );
+		view = ve.test.utils.createSurfaceViewFromHtml( cases[ i ].html );
 		documentView = view.getDocument();
-		assert.strictEqual( ve.ce.getDomHash( documentView.getDocumentNode().$element[0] ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
-		assert.strictEqual( ve.ce.getDomText( documentView.getDocumentNode().$element[0] ), cases[i].text, 'getDomText: ' + cases[i].msg );
+		assert.strictEqual( ve.ce.getDomHash( documentView.getDocumentNode().$element[ 0 ] ), cases[ i ].hash, 'getDomHash: ' + cases[ i ].msg );
+		assert.strictEqual( ve.ce.getDomText( documentView.getDocumentNode().$element[ 0 ] ), cases[ i ].text, 'getDomText: ' + cases[ i ].msg );
 		view.destroy();
 	}
 } );
@@ -77,12 +77,12 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 
 	QUnit.expect( cases.length * 2 );
 	view = ve.test.utils.createSurfaceViewFromHtml( '' );
-	element = view.getDocument().getDocumentNode().$element[0];
+	element = view.getDocument().getDocumentNode().$element[ 0 ];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		element.innerHTML = cases[i].html;
-		assert.strictEqual( ve.ce.getDomHash( element.firstChild ), cases[i].hash, 'getDomHash: ' + cases[i].msg );
-		assert.strictEqual( ve.ce.getDomText( element.firstChild ), cases[i].text, 'getDomText: ' + cases[i].msg );
+		element.innerHTML = cases[ i ].html;
+		assert.strictEqual( ve.ce.getDomHash( element.firstChild ), cases[ i ].hash, 'getDomHash: ' + cases[ i ].msg );
+		assert.strictEqual( ve.ce.getDomText( element.firstChild ), cases[ i ].text, 'getDomText: ' + cases[ i ].msg );
 	}
 
 	view.destroy();
@@ -230,7 +230,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 		];
 
 	for ( i = 0; i < testCases.length; i++ ) {
-		expected += testCases[i].expected.length;
+		expected += testCases[ i ].expected.length;
 	}
 
 	QUnit.expect( expected );
@@ -243,11 +243,11 @@ QUnit.test( 'getOffset', function ( assert ) {
 					expectedIndex++;
 					assert.strictEqual(
 						ve.ce.getOffset( parent, i ),
-						testCase.expected[expectedIndex],
+						testCase.expected[ expectedIndex ],
 						testCase.msg + ': offset ' + i + ' in <' + parent.nodeName.toLowerCase() + '>'
 					);
-					if ( parent.childNodes[i] && !$( parent.childNodes[i] ).hasClass( 've-ce-branchNode-blockSlug' ) ) {
-						expectedIndex = testOffsets( parent.childNodes[i], testCase, expectedIndex );
+					if ( parent.childNodes[ i ] && !$( parent.childNodes[ i ] ).hasClass( 've-ce-branchNode-blockSlug' ) ) {
+						expectedIndex = testOffsets( parent.childNodes[ i ], testCase, expectedIndex );
 					}
 				}
 				break;
@@ -256,7 +256,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 					expectedIndex++;
 					assert.strictEqual(
 						ve.ce.getOffset( parent, i ),
-						testCase.expected[expectedIndex],
+						testCase.expected[ expectedIndex ],
 						testCase.msg + ': offset ' + i + ' in "' + parent.data + '"'
 					);
 				}
@@ -266,11 +266,11 @@ QUnit.test( 'getOffset', function ( assert ) {
 	}
 
 	for ( i = 0; i < testCases.length; i++ ) {
-		view = ve.test.utils.createSurfaceViewFromHtml( testCases[i].html );
+		view = ve.test.utils.createSurfaceViewFromHtml( testCases[ i ].html );
 		documentModel = view.getModel().getDocument();
 		documentView = view.getDocument();
 
-		testOffsets( documentView.getDocumentNode().$element[0], testCases[i], -1 );
+		testOffsets( documentView.getDocumentNode().$element[ 0 ], testCases[ i ], -1 );
 		view.destroy();
 	}
 } );
@@ -306,9 +306,9 @@ QUnit.test( 'nextCursorOffset', function ( assert ) {
 	QUnit.expect( tests.length );
 	elt = ve.createDocumentFromHtml( '' ).createElement( 'div' );
 	for ( i = 0, len = tests.length; i < len; i++ ) {
-		test = tests[i];
+		test = tests[ i ];
 		elt.innerHTML = test.html;
-		img = elt.getElementsByTagName( 'img' )[0];
+		img = elt.getElementsByTagName( 'img' )[ 0 ];
 		nextOffset = ve.ce.nextCursorOffset( img );
 		assert.deepEqual(
 			[ dumpnode( nextOffset.node ), nextOffset.offset ],
@@ -329,13 +329,13 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 	];
 	count = 0;
 	for ( i = 0, ilen = tests.length; i < ilen; i++ ) {
-		count += tests[i].length + 1;
+		count += tests[ i ].length + 1;
 	}
 	QUnit.expect( 2 * count );
 	dom = ve.createDocumentFromHtml( '' );
 	elt = dom.createElement( 'div' );
 	for ( i = 0, ilen = tests.length; i < ilen; i++ ) {
-		test = tests[i];
+		test = tests[ i ];
 		elt.innerHTML = test.join( '' );
 		for ( j = 0, jlen = test.length; j < jlen + 1; j++ ) {
 			testOffset = new ve.ce.TestOffset( 'forward', j );
@@ -370,12 +370,12 @@ QUnit.test( 'fakeImes', function ( assert ) {
 	// count tests
 	count = 0;
 	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
-		testName = ve.ce.imetests[i][0];
-		testActions = ve.ce.imetests[i][1];
+		testName = ve.ce.imetests[ i ][ 0 ];
+		testActions = ve.ce.imetests[ i ][ 1 ];
 		// For the test that there is at least one endLoop
 		count++;
 		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
-			action = testActions[j].action;
+			action = testActions[ j ].action;
 			if ( action === 'endLoop' ) {
 				// For the test that the model and CE surface are in sync
 				count++;
@@ -388,28 +388,28 @@ QUnit.test( 'fakeImes', function ( assert ) {
 	fakePreventDefault = function () {};
 
 	for ( i = 0, ilen = ve.ce.imetests.length; i < ilen; i++ ) {
-		testName = ve.ce.imetests[i][0];
-		failAt = testsFailAt[testName] || null;
-		testActions = ve.ce.imetests[i][1];
+		testName = ve.ce.imetests[ i ][ 0 ];
+		failAt = testsFailAt[ testName ] || null;
+		testActions = ve.ce.imetests[ i ][ 1 ];
 		foundEndLoop = false;
 		// First element is the testInfo
-		testInfo = testActions[0];
+		testInfo = testActions[ 0 ];
 		view = ve.test.utils.createSurfaceViewFromHtml( testInfo.startDom || '' );
 		view.getModel().setLinearSelection( new ve.Range( 1 ) );
 		testRunner = new ve.ce.TestRunner( view );
 		// start at 1 to omit the testInfo
 		died = false;
 		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
-			action = testActions[j].action;
-			args = testActions[j].args;
-			seq = testActions[j].seq;
+			action = testActions[ j ].action;
+			args = testActions[ j ].args;
+			seq = testActions[ j ].seq;
 			if ( !died ) {
 				if ( action === 'sendEvent' ) {
 					// TODO: make preventDefault work
-					args[1].preventDefault = fakePreventDefault;
+					args[ 1 ].preventDefault = fakePreventDefault;
 				}
 				try {
-					testRunner[action].apply( testRunner, args );
+					testRunner[ action ].apply( testRunner, args );
 				} catch ( ex ) {
 					died = ex;
 				}
@@ -490,10 +490,10 @@ QUnit.test( 'isAfterAnnotationBoundaries', function ( assert ) {
 	QUnit.expect( tests.length );
 
 	for ( i = 0, iLen = tests.length; i < iLen; i++ ) {
-		test = tests[i];
+		test = tests[ i ];
 		node = div;
 		for ( j = 0, jLen = test.path.length; j < jLen; j++ ) {
-			node = node.childNodes[ test.path[j] ];
+			node = node.childNodes[ test.path[ j ] ];
 		}
 		assert.strictEqual(
 			ve.ce.isAfterAnnotationBoundaries( node, test.offset ),

@@ -70,7 +70,7 @@ ve.ce.LeafNode.prototype.onSetup = function () {
  * if the annotations aren't necessarily the same across the entire node (like in ve.ce.TextNode).
  *
  * @method
- * @returns {Array} Array of HTML fragments, i.e.
+ * @return {Array} Array of HTML fragments, i.e.
  *  [ string | jQuery | [string|jQuery, ve.dm.AnnotationSet] ]
  */
 ve.ce.LeafNode.prototype.getAnnotatedHtml = function () {

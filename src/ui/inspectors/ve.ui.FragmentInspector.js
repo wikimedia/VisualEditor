@@ -64,7 +64,7 @@ ve.ui.FragmentInspector.prototype.onFormSubmit = function () {
 /**
  * Get the surface fragment the inspector is for.
  *
- * @returns {ve.dm.SurfaceFragment|null} Surface fragment the inspector is for, null if the
+ * @return {ve.dm.SurfaceFragment|null} Surface fragment the inspector is for, null if the
  *   inspector is closed
  */
 ve.ui.FragmentInspector.prototype.getFragment = function () {
@@ -167,5 +167,5 @@ ve.ui.FragmentInspector.prototype.getReadyProcess = function ( data ) {
 ve.ui.FragmentInspector.prototype.getBodyHeight = function () {
 	// HACK: Chrome gets the height wrong by 1px for elements with opacity < 1
 	// e.g. a disabled button.
-	return Math.ceil( this.container.$element[0].scrollHeight ) + 1;
+	return Math.ceil( this.container.$element[ 0 ].scrollHeight ) + 1;
 };

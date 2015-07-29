@@ -87,7 +87,7 @@ ve.dm.APIResultsProvider.prototype.setAPIurl = function ( apiurl ) {
 /**
  * Set api url
  *
- * @returns {string} API url
+ * @return {string} API url
  */
 ve.dm.APIResultsProvider.prototype.getAPIurl = function () {
 	return this.apiurl;
@@ -96,7 +96,7 @@ ve.dm.APIResultsProvider.prototype.getAPIurl = function () {
 /**
  * Get the static, non-changing data parameters sent to the API
  *
- * @returns {Object} Data parameters
+ * @return {Object} Data parameters
  */
 ve.dm.APIResultsProvider.prototype.getStaticParams = function () {
 	return this.staticParams;
@@ -105,7 +105,7 @@ ve.dm.APIResultsProvider.prototype.getStaticParams = function () {
 /**
  * Get the user-inputted dynamic data parameters sent to the API
  *
- * @returns {Object} Data parameters
+ * @return {Object} Data parameters
  */
 ve.dm.APIResultsProvider.prototype.getUserParams = function () {
 	return this.userParams;
@@ -131,7 +131,7 @@ ve.dm.APIResultsProvider.prototype.setUserParams = function ( params ) {
  * Get fetch limit or 'page' size. This is the number
  * of results per request.
  *
- * @returns {number} limit
+ * @return {number} limit
  */
 ve.dm.APIResultsProvider.prototype.getDefaultFetchLimit = function () {
 	return this.limit;
@@ -149,7 +149,7 @@ ve.dm.APIResultsProvider.prototype.setDefaultFetchLimit = function ( limit ) {
 /**
  * Get provider API language
  *
- * @returns {string} Provider API language
+ * @return {string} Provider API language
  */
 ve.dm.APIResultsProvider.prototype.getLang = function () {
 	return this.lang;
@@ -167,7 +167,7 @@ ve.dm.APIResultsProvider.prototype.setLang = function ( lang ) {
 /**
  * Get result offset
  *
- * @returns {number} Offset Results offset for the upcoming request
+ * @return {number} Offset Results offset for the upcoming request
  */
 ve.dm.APIResultsProvider.prototype.getOffset = function () {
 	return this.offset;
@@ -186,7 +186,7 @@ ve.dm.APIResultsProvider.prototype.setOffset = function ( offset ) {
  * Check whether the provider is depleted and has no more results
  * to hand off.
  *
- * @returns {boolean} The provider is depleted
+ * @return {boolean} The provider is depleted
  */
 ve.dm.APIResultsProvider.prototype.isDepleted = function () {
 	return this.depleted;
@@ -204,7 +204,7 @@ ve.dm.APIResultsProvider.prototype.toggleDepleted = function ( isDepleted ) {
 /**
  * Get the default ajax settings
  *
- * @returns {Object} Ajax settings
+ * @return {Object} Ajax settings
  */
 ve.dm.APIResultsProvider.prototype.getAjaxSettings = function () {
 	return this.ajaxSettings;

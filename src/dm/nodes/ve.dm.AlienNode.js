@@ -50,7 +50,7 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 
 	element = { type: type };
 
-	if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[0].nodeName.toLowerCase() ) !== -1 ) {
+	if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[ 0 ].nodeName.toLowerCase() ) !== -1 ) {
 		element.attributes = { cellable: true };
 		ve.dm.TableCellableNode.static.setAttributes( element.attributes, domElements );
 	}

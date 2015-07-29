@@ -53,6 +53,6 @@ QUnit.test( 'getHashObject', function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0, l = cases.length; i < l; i++ ) {
-		assert.deepEqual( cases[i].annotation.getHashObject(), cases[i].expected, cases[i].msg );
+		assert.deepEqual( cases[ i ].annotation.getHashObject(), cases[ i ].expected, cases[ i ].msg );
 	}
 } );

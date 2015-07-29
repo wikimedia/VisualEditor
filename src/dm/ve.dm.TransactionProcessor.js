@@ -55,7 +55,7 @@ ve.dm.TransactionProcessor.processors = {};
  * @method
  */
 ve.dm.TransactionProcessor.prototype.nextOperation = function () {
-	return this.operations[this.operationIndex++] || false;
+	return this.operations[ this.operationIndex++ ] || false;
 };
 
 /**
@@ -67,7 +67,7 @@ ve.dm.TransactionProcessor.prototype.nextOperation = function () {
  */
 ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 	if ( Object.prototype.hasOwnProperty.call( ve.dm.TransactionProcessor.processors, op.type ) ) {
-		ve.dm.TransactionProcessor.processors[op.type].call( this, op );
+		ve.dm.TransactionProcessor.processors[ op.type ].call( this, op );
 	} else {
 		throw new Error( 'Invalid operation error. Operation type is not supported: ' + op.type );
 	}
@@ -135,7 +135,7 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
  * @throws {Error} Unrecognized modification type
  */
 ve.dm.TransactionProcessor.prototype.queueModification = function ( modification ) {
-	if ( typeof ve.dm.TransactionProcessor.modifiers[modification.type] !== 'function' ) {
+	if ( typeof ve.dm.TransactionProcessor.modifiers[ modification.type ] !== 'function' ) {
 		throw new Error( 'Unrecognized modification type ' + modification.type );
 	}
 	this.modificationQueue.push( modification );
@@ -149,10 +149,10 @@ ve.dm.TransactionProcessor.prototype.applyModifications = function () {
 	var i, len, modifier, modifications = this.modificationQueue;
 	this.modificationQueue = [];
 	for ( i = 0, len = modifications.length; i < len; i++ ) {
-		modifier = ve.dm.TransactionProcessor.modifiers[modifications[i].type];
+		modifier = ve.dm.TransactionProcessor.modifiers[ modifications[ i ].type ];
 		// Add to the beginning of rollbackQueue, because the most recent change needs to
 		// be undone first
-		this.rollbackQueue.unshift( modifier.apply( this, modifications[i].args || [] ) );
+		this.rollbackQueue.unshift( modifier.apply( this, modifications[ i ].args || [] ) );
 	}
 };
 
@@ -164,7 +164,7 @@ ve.dm.TransactionProcessor.prototype.rollbackModifications = function () {
 	var i, len, rollbacks = this.rollbackQueue;
 	this.rollbackQueue = [];
 	for ( i = 0, len = rollbacks.length; i < len; i++ ) {
-		rollbacks[i]();
+		rollbacks[ i ]();
 	}
 };
 
@@ -192,6 +192,8 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
+	var isElement, annotations, i, j, jlen;
+
 	function setAndClear( anns, set, clear ) {
 		if ( anns.containsAnyOf( set ) ) {
 			throw new Error( 'Invalid transaction, annotation to be set is already set' );
@@ -205,7 +207,6 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		}
 	}
 
-	var isElement, annotations, i, j, jlen;
 	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
 		return;
 	}
@@ -267,9 +268,10 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
  * @return {Function} Function that undoes the modification
  */
 ve.dm.TransactionProcessor.modifiers.splice = function ( type, offset, remove, insert ) {
+	var removed, data;
 	insert = insert || [];
-	var data = type === 'metadata' ? this.document.metadata : this.document.data,
-		removed = data.batchSplice( offset, remove, insert );
+	data = type === 'metadata' ? this.document.metadata : this.document.data;
+	removed = data.batchSplice( offset, remove, insert );
 	return function () {
 		data.batchSplice( offset, insert.length, removed );
 	};
@@ -285,9 +287,10 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( type, offset, remove, i
  * @return {Function} Function that undoes the modification
  */
 ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
+	var removed, metadata;
 	insert = insert || [];
-	var metadata = this.document.metadata,
-		removed = metadata.spliceMetadataAtOffset( offset, index, remove, insert );
+	metadata = this.document.metadata;
+	removed = metadata.spliceMetadataAtOffset( offset, index, remove, insert );
 	return function () {
 		metadata.spliceMetadataAtOffset( offset, index, insert.length, removed );
 	};
@@ -336,7 +339,7 @@ ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index
 ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, value ) {
 	var data = this.document.data,
 		item = data.getData( offset ),
-		oldValue = item.attributes && item.attributes[key];
+		oldValue = item.attributes && item.attributes[ key ];
 	data.setAttributeAtOffset( offset, key, value );
 	return function () {
 		data.setAttributeAtOffset( offset, key, oldValue );
@@ -530,7 +533,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			),
 			'leaves'
 		);
-		node = selection[0].node;
+		node = selection[ 0 ].node;
 		if (
 			!removeHasStructure && !insertHasStructure &&
 			selection.length === 1 &&
@@ -542,16 +545,16 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		} else if (
 			!removeHasStructure && !insertHasStructure && remove.length === 0 && insert.length > 0 &&
 			selection.length === 1 && node && node.canContainContent() &&
-			( selection[0].indexInNode !== undefined || node.getLength() === 0 )
+			( selection[ 0 ].indexInNode !== undefined || node.getLength() === 0 )
 		) {
 			// Text-only addition where a text node didn't exist before. Create one
-			this.synchronizer.pushInsertTextNode( node, selection[0].indexInNode || 0, insert.length - remove.length );
+			this.synchronizer.pushInsertTextNode( node, selection[ 0 ].indexInNode || 0, insert.length - remove.length );
 		} else {
 			// Replacement is not exclusively text
 			// Rebuild all covered nodes
 			range = new ve.Range(
-				selection[0].nodeOuterRange.start,
-				selection[selection.length - 1].nodeOuterRange.end
+				selection[ 0 ].nodeOuterRange.start,
+				selection[ selection.length - 1 ].nodeOuterRange.end
 			);
 			this.synchronizer.pushRebuild( range,
 				new ve.Range( range.start + this.adjustment,
@@ -617,7 +620,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 						prevCursor + opRemove.length
 					), 'siblings' );
 					for ( i = 0; i < selection.length; i++ ) {
-						affectedRanges.push( selection[i].nodeOuterRange );
+						affectedRanges.push( selection[ i ].nodeOuterRange );
 					}
 				}
 				// Walk through the remove and insert data
@@ -625,7 +628,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				// for each of these two separately. The model is
 				// only consistent if both levels are zero.
 				for ( i = 0; i < opRemove.length; i++ ) {
-					type = opRemove[i].type;
+					type = opRemove[ i ].type;
 					if ( type !== undefined ) {
 						if ( type.charAt( 0 ) === '/' ) {
 							// Closing element
@@ -641,7 +644,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				// insertion closes elements it doesn't open (i.e. splits elements),
 				// in which case it's the affected ancestor
 				for ( i = 0; i < opInsert.length; i++ ) {
-					type = opInsert[i].type;
+					type = opInsert[ i ].type;
 					if ( type !== undefined ) {
 						if ( type.charAt( 0 ) === '/' ) {
 							// Closing element

@@ -33,14 +33,14 @@ QUnit.test( 'Basic tests', function ( assert ) {
 				msg: 'From null to inside heading',
 				resetOld: true,
 				range: {
-					startNode: doc.children[0].$element[0],
+					startNode: doc.children[ 0 ].$element[ 0 ],
 					startOffset: 1
 				},
 				expected: {
 					branchNodeChanged: true,
 					contentChanged: false,
 					hash: '<H1>#<B>#</B><I>#</I></H1>',
-					node: doc.children[0],
+					node: doc.children[ 0 ],
 					selectionChanged: true,
 					text: 'abc',
 					veRange: new ve.Range( 2 )
@@ -49,16 +49,16 @@ QUnit.test( 'Basic tests', function ( assert ) {
 			{
 				msg: 'From heading to paragraph',
 				range: {
-					startNode: doc.children[4].$element[0],
+					startNode: doc.children[ 4 ].$element[ 0 ],
 					startOffset: 0,
-					endNode: doc.children[4].$element[0],
+					endNode: doc.children[ 4 ].$element[ 0 ],
 					endOffset: 1
 				},
 				expected: {
 					branchNodeChanged: true,
 					contentChanged: false,
 					hash: '<P>#</P>',
-					node: doc.children[4],
+					node: doc.children[ 4 ],
 					selectionChanged: true,
 					text: 'l',
 					veRange: new ve.Range( 56, 57 )
@@ -67,16 +67,16 @@ QUnit.test( 'Basic tests', function ( assert ) {
 			{
 				msg: 'Selection changing anchor node only',
 				range: {
-					startNode: doc.children[4].$element[0],
+					startNode: doc.children[ 4 ].$element[ 0 ],
 					startOffset: 1,
-					endNode: doc.children[4].$element[0],
+					endNode: doc.children[ 4 ].$element[ 0 ],
 					endOffset: 1
 				},
 				expected: {
 					branchNodeChanged: false,
 					contentChanged: false,
 					hash: '<P>#</P>',
-					node: doc.children[4],
+					node: doc.children[ 4 ],
 					selectionChanged: true,
 					text: 'l',
 					veRange: new ve.Range( 57, 57 )
@@ -124,19 +124,19 @@ QUnit.test( 'Basic tests', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		nativeSelection.removeAllRanges();
-		if ( cases[i].range ) {
+		if ( cases[ i ].range ) {
 			nativeRange = document.createRange();
-			nativeRange.setStart( cases[i].range.startNode, cases[i].range.startOffset );
-			if ( cases[i].range.endNode ) {
-				nativeRange.setEnd( cases[i].range.endNode, cases[i].range.endOffset );
+			nativeRange.setStart( cases[ i ].range.startNode, cases[ i ].range.startOffset );
+			if ( cases[ i ].range.endNode ) {
+				nativeRange.setEnd( cases[ i ].range.endNode, cases[ i ].range.endOffset );
 			}
 			nativeSelection.addRange( nativeRange );
 		}
-		if ( cases[i].resetOld ) {
+		if ( cases[ i ].resetOld ) {
 			oldState = null;
 		}
 		rangeState = new ve.ce.RangeState( oldState, doc );
-		assert.deepEqual( getSummary( rangeState ), cases[i].expected, cases[i].msg );
+		assert.deepEqual( getSummary( rangeState ), cases[ i ].expected, cases[ i ].msg );
 		oldState = rangeState;
 	}
 	view.destroy();

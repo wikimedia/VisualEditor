@@ -192,7 +192,7 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		node = new ve.dm.NodeStub( cases[i].original );
-		assert.deepEqual( node.getClonedElement( cases[i].preserveGenerated ), cases[i].clone, cases[i].msg );
+		node = new ve.dm.NodeStub( cases[ i ].original );
+		assert.deepEqual( node.getClonedElement( cases[ i ].preserveGenerated ), cases[ i ].clone, cases[ i ].msg );
 	}
 } );

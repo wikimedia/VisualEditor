@@ -77,7 +77,7 @@ ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
 /**
  * Get the group this meta item belongs to.
  * @see #static-group
- * @returns {string} Group
+ * @return {string} Group
  */
 ve.dm.MetaItem.prototype.getGroup = function () {
 	return this.constructor.static.group;
@@ -85,7 +85,7 @@ ve.dm.MetaItem.prototype.getGroup = function () {
 
 /**
  * Get the MetaList this item is attached to.
- * @returns {ve.dm.MetaList|null} Reference to the parent list, or null if not attached
+ * @return {ve.dm.MetaList|null} Reference to the parent list, or null if not attached
  */
 ve.dm.MetaItem.prototype.getParentList = function () {
 	return this.list;
@@ -96,7 +96,7 @@ ve.dm.MetaItem.prototype.getParentList = function () {
  *
  * This is only known if the item is attached to a MetaList.
  *
- * @returns {number|null} Offset, or null if not attached
+ * @return {number|null} Offset, or null if not attached
  */
 ve.dm.MetaItem.prototype.getOffset = function () {
 	return this.offset;
@@ -107,7 +107,7 @@ ve.dm.MetaItem.prototype.getOffset = function () {
  *
  * This is only known if the item is attached to a MetaList.
  *
- * @returns {number|null} Index, or null if not attached
+ * @return {number|null} Index, or null if not attached
  */
 ve.dm.MetaItem.prototype.getIndex = function () {
 	return this.index;
@@ -158,7 +158,7 @@ ve.dm.MetaItem.prototype.detach = function ( list ) {
 
 /**
  * Check whether this item is attached to a MetaList.
- * @returns {boolean} Whether item is attached
+ * @return {boolean} Whether item is attached
  */
 ve.dm.MetaItem.prototype.isAttached = function () {
 	return this.list !== null;

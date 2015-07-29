@@ -93,7 +93,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		ve.init.platform.initialize().done( function () {
 			var i;
 			for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
-				ve.demo.surfaceContainers[i].reload( currentLang, currentDir );
+				ve.demo.surfaceContainers[ i ].reload( currentLang, currentDir );
 			}
 		} );
 	} );
@@ -117,7 +117,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		var i, pages = [];
 		if ( history.replaceState ) {
 			for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
-				pages.push( ve.demo.surfaceContainers[i].pageMenu.getSelectedItem().getData() );
+				pages.push( ve.demo.surfaceContainers[ i ].pageMenu.getSelectedItem().getData() );
 			}
 			history.replaceState( null, document.title, '#!' + pages.join( ',' ) );
 		}
@@ -127,7 +127,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		var surfaceContainer;
 
 		if ( !page && ve.demo.surfaceContainers.length ) {
-			page = ve.demo.surfaceContainers[ve.demo.surfaceContainers.length - 1].pageMenu.getSelectedItem().getData();
+			page = ve.demo.surfaceContainers[ ve.demo.surfaceContainers.length - 1 ].pageMenu.getSelectedItem().getData();
 		}
 
 		surfaceContainer = new ve.demo.SurfaceContainer( target, page, currentLang, currentDir );
@@ -143,7 +143,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		}
 		if ( pages.length ) {
 			for ( i = 0; i < pages.length; i++ ) {
-				addSurfaceContainer( pages[i] );
+				addSurfaceContainer( pages[ i ] );
 			}
 		} else {
 			addSurfaceContainer( 'pages/simple.html' );

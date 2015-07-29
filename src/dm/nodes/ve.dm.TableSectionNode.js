@@ -46,7 +46,7 @@ ve.dm.TableSectionNode.static.toDataElement = function ( domElements ) {
 			tbody: 'body',
 			tfoot: 'footer'
 		},
-		style = styles[domElements[0].nodeName.toLowerCase()] || 'body';
+		style = styles[ domElements[ 0 ].nodeName.toLowerCase() ] || 'body';
 	return { type: this.name, attributes: { style: style } };
 };
 
@@ -56,7 +56,7 @@ ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {
 			body: 'tbody',
 			footer: 'tfoot'
 		},
-		tag = tags[dataElement.attributes && dataElement.attributes.style || 'body'];
+		tag = tags[ dataElement.attributes && dataElement.attributes.style || 'body' ];
 	return [ doc.createElement( tag ) ];
 };
 

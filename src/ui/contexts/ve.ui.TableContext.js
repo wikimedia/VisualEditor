@@ -66,7 +66,7 @@ ve.ui.TableContext.static.groups = {
  */
 ve.ui.TableContext.prototype.getRelatedSources = function () {
 	var i, l,
-		items = this.constructor.static.groups[this.itemGroup];
+		items = this.constructor.static.groups[ this.itemGroup ];
 
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];
@@ -74,7 +74,7 @@ ve.ui.TableContext.prototype.getRelatedSources = function () {
 		for ( i = 0, l = items.length; i < l; i++ ) {
 			this.relatedSources.push( {
 				type: 'item',
-				name: items[i]
+				name: items[ i ]
 			} );
 		}
 	}
@@ -113,12 +113,13 @@ ve.ui.TableContext.prototype.onDocumentMouseDown = function ( e ) {
  * @inheritdoc
  */
 ve.ui.TableContext.prototype.toggleMenu = function ( show ) {
+	var dir, surfaceModel, surfaceView;
+
 	// Parent method
 	ve.ui.TableContext.super.prototype.toggleMenu.call( this, show );
 
-	var dir,
-		surfaceModel = this.surface.getModel(),
-		surfaceView = this.surface.getView();
+	surfaceModel = this.surface.getModel();
+	surfaceView = this.surface.getView();
 
 	this.popup.toggle( show );
 	if ( this.popup.isVisible() ) {

@@ -37,7 +37,7 @@ ve.dm.InlineImageNode.static.isContent = true;
 ve.dm.InlineImageNode.static.matchTagNames = [ 'img' ];
 
 ve.dm.InlineImageNode.static.toDataElement = function ( domElements ) {
-	var $node = $( domElements[0] ),
+	var $node = $( domElements[ 0 ] ),
 		alt = $node.attr( 'alt' ),
 		width = $node.attr( 'width' ),
 		height = $node.attr( 'height' );

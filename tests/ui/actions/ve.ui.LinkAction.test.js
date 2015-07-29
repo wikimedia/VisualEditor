@@ -21,7 +21,7 @@ function runAutolinkTest( assert, html, method, range, expectedRange, expectedDa
 		expectedOriginalData( originalData );
 	}
 	surface.getModel().setLinearSelection( range );
-	status = linkAction[method]();
+	status = linkAction[ method ]();
 	assert.equal( status, !expectFail, msg + ': action return value' );
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
@@ -44,8 +44,9 @@ QUnit.test( 'autolink', function ( assert ) {
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 20, 20 ),
 				expectedData: function ( data ) {
-					for ( var i = 1; i < 19; i++ ) {
-						data[i] = [ data[i], [ 0 ] ];
+					var i;
+					for ( i = 1; i < 19; i++ ) {
+						data[ i ] = [ data[ i ], [ 0 ] ];
 					}
 				},
 				msg: 'Autolink after space'
@@ -56,8 +57,9 @@ QUnit.test( 'autolink', function ( assert ) {
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 21, 21 ),
 				expectedData: function ( data ) {
-					for ( var i = 1; i < 19; i++ ) {
-						data[i] = [ data[i], [ 0 ] ];
+					var i;
+					for ( i = 1; i < 19; i++ ) {
+						data[ i ] = [ data[ i ], [ 0 ] ];
 					}
 				},
 				msg: 'Autolink after newline'
@@ -68,8 +70,9 @@ QUnit.test( 'autolink', function ( assert ) {
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 20, 20 ),
 				expectedData: function ( data ) {
-					for ( var i = 1; i < 19; i++ ) {
-						data[i] = [ data[i], [ 0 ] ];
+					var i;
+					for ( i = 1; i < 19; i++ ) {
+						data[ i ] = [ data[ i ], [ 0 ] ];
 					}
 				},
 				msg: 'Autolink with mixed case'
@@ -80,8 +83,9 @@ QUnit.test( 'autolink', function ( assert ) {
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 22, 22 ),
 				expectedData: function ( data ) {
-					for ( var i = 1; i < 19; i++ ) {
-						data[i] = [ data[i], [ 0 ] ];
+					var i;
+					for ( i = 1; i < 19; i++ ) {
+						data[ i ] = [ data[ i ], [ 0 ] ];
 					}
 				},
 				msg: 'Strip trailing punctuation'
@@ -100,6 +104,6 @@ QUnit.test( 'autolink', function ( assert ) {
 
 	QUnit.expect( cases.length * 5 );
 	for ( i = 0; i < cases.length; i++ ) {
-		runAutolinkTest( assert, cases[i].html, cases[i].method, cases[i].range, cases[i].expectedRange, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
+		runAutolinkTest( assert, cases[ i ].html, cases[ i ].method, cases[ i ].range, cases[ i ].expectedRange, cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].msg );
 	}
 } );

@@ -92,7 +92,7 @@ QUnit.test( 'compareClassLists', 1, function ( assert ) {
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.strictEqual( ve.compareClassLists.apply( ve, cases[i].args ), cases[i].expected );
+		assert.strictEqual( ve.compareClassLists.apply( ve, cases[ i ].args ), cases[ i ].expected );
 	}
 } );
 
@@ -293,7 +293,7 @@ QUnit.test( 'batchSplice', function ( assert ) {
 		assert.deepEqual( expected, actual, msg + ': inserting 3 elements (array)' );
 
 		for ( i = 0; i < 2100; i++ ) {
-			bigArr[i] = i;
+			bigArr[ i ] = i;
 		}
 		actualRet = ve.batchSplice( actual, 2, 3, bigArr );
 		expectedRet = expected.splice.apply( expected, [ 2, 3 ].concat( bigArr.slice( 0, 1050 ) ) );
@@ -426,17 +426,17 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	function assertCreateDocument( createDocument, msg ) {
 		var i, key, attributes, attributesObject;
 		for ( key in cases ) {
-			doc = createDocument( cases[key].html );
+			doc = createDocument( cases[ key ].html );
 			attributes = $( 'html', doc ).get( 0 ).attributes;
 			attributesObject = {};
 			for ( i = 0; i < attributes.length; i++ ) {
-				attributesObject[attributes[i].name] = attributes[i].value;
+				attributesObject[ attributes[ i ].name ] = attributes[ i ].value;
 			}
-			expectedHead = $( '<head>' ).html( cases[key].head ).get( 0 );
-			expectedBody = $( '<body>' ).html( cases[key].body ).get( 0 );
-			assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, msg + ': ' + cases[key].msg + ' (head)' );
-			assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, msg + ': ' + cases[key].msg + ' (body)' );
-			assert.deepEqual( attributesObject, cases[key].htmlAttributes, msg + ': ' + cases[key].msg + ' (html attributes)' );
+			expectedHead = $( '<head>' ).html( cases[ key ].head ).get( 0 );
+			expectedBody = $( '<body>' ).html( cases[ key ].body ).get( 0 );
+			assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, msg + ': ' + cases[ key ].msg + ' (head)' );
+			assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, msg + ': ' + cases[ key ].msg + ' (body)' );
+			assert.deepEqual( attributesObject, cases[ key ].htmlAttributes, msg + ': ' + cases[ key ].msg + ' (html attributes)' );
 		}
 	}
 
@@ -505,8 +505,8 @@ QUnit.test( 'resolveUrl', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.createDocumentFromHtml( '' );
-		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[i].base )[0] );
-		assert.strictEqual( ve.resolveUrl( cases[i].href, doc ), cases[i].resolved, cases[i].msg );
+		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[ i ].base )[ 0 ] );
+		assert.strictEqual( ve.resolveUrl( cases[ i ].href, doc ), cases[ i ].resolved, cases[ i ].msg );
 	}
 } );
 
@@ -537,14 +537,14 @@ QUnit.test( 'fixBase', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		targetDoc = ve.createDocumentFromHtml( '' );
 		sourceDoc = ve.createDocumentFromHtml( '' );
-		if ( cases[i].targetBase ) {
-			targetDoc.head.appendChild( $( '<base>', targetDoc ).attr( 'href', cases[i].targetBase )[0] );
+		if ( cases[ i ].targetBase ) {
+			targetDoc.head.appendChild( $( '<base>', targetDoc ).attr( 'href', cases[ i ].targetBase )[ 0 ] );
 		}
-		if ( cases[i].sourceBase ) {
-			sourceDoc.head.appendChild( $( '<base>', sourceDoc ).attr( 'href', cases[i].sourceBase )[0] );
+		if ( cases[ i ].sourceBase ) {
+			sourceDoc.head.appendChild( $( '<base>', sourceDoc ).attr( 'href', cases[ i ].sourceBase )[ 0 ] );
 		}
-		ve.fixBase( targetDoc, sourceDoc, cases[i].fallbackBase );
-		assert.strictEqual( targetDoc.baseURI, cases[i].fixedBase, cases[i].msg );
+		ve.fixBase( targetDoc, sourceDoc, cases[ i ].fallbackBase );
+		assert.strictEqual( targetDoc.baseURI, cases[ i ].fixedBase, cases[ i ].msg );
 	}
 } );
 
@@ -600,14 +600,14 @@ QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
 	QUnit.expect( cases.length * 2 );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
-			ve.graphemeSafeSubstring( text, cases[i].start, cases[i].end, true ),
-			cases[i].expected[0],
-			cases[i].msg + ' (outer)'
+			ve.graphemeSafeSubstring( text, cases[ i ].start, cases[ i ].end, true ),
+			cases[ i ].expected[ 0 ],
+			cases[ i ].msg + ' (outer)'
 		);
 		assert.strictEqual(
-			ve.graphemeSafeSubstring( text, cases[i].start, cases[i].end, false ),
-			cases[i].expected[1],
-			cases[i].msg + ' (inner)'
+			ve.graphemeSafeSubstring( text, cases[ i ].start, cases[ i ].end, false ),
+			cases[ i ].expected[ 1 ],
+			cases[ i ].msg + ' (inner)'
 		);
 	}
 } );
@@ -677,30 +677,30 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 	ve.isStyleAttributeBroken = true;
 
 	for ( i = 0; i < cases.length; i++ ) {
-		if ( cases[i].normalize ) {
+		if ( cases[ i ].normalize ) {
 			oldNormalizeAttributeValue = ve.normalizeAttributeValue;
-			ve.normalizeAttributeValue = cases[i].normalize;
+			ve.normalizeAttributeValue = cases[ i ].normalize;
 		}
-		if ( cases[i].before ) {
+		if ( cases[ i ].before ) {
 			assert.strictEqual(
-				ve.transformStyleAttributes( cases[i].before, false )
+				ve.transformStyleAttributes( cases[ i ].before, false )
 					// Firefox adds linebreaks after <!DOCTYPE>s
 					.replace( '<!DOCTYPE html>\n', '<!DOCTYPE html>' ),
-				cases[i].masked || cases[i].before,
-				cases[i].msg + ' (masking)'
+				cases[ i ].masked || cases[ i ].before,
+				cases[ i ].msg + ' (masking)'
 			);
 		} else {
-			assert.ok( true, cases[i].msg + ' (no masking test)' );
+			assert.ok( true, cases[ i ].msg + ' (no masking test)' );
 		}
 		assert.strictEqual(
-			ve.transformStyleAttributes( cases[i].masked || cases[i].before, true )
+			ve.transformStyleAttributes( cases[ i ].masked || cases[ i ].before, true )
 				// Firefox adds a linebreak after <!DOCTYPE>s
 				.replace( '<!DOCTYPE html>\n', '<!DOCTYPE html>' ),
-			cases[i].after || cases[i].before,
-			cases[i].msg + ' (unmasking)'
+			cases[ i ].after || cases[ i ].before,
+			cases[ i ].msg + ' (unmasking)'
 		);
 
-		if ( cases[i].normalize ) {
+		if ( cases[ i ].normalize ) {
 			ve.normalizeAttributeValue = oldNormalizeAttributeValue;
 		}
 	}
@@ -826,11 +826,11 @@ QUnit.test( 'normalizeNode', function ( assert ) {
 	ve.isNormalizeBroken = true;
 
 	for ( i = 0; i < cases.length; i++ ) {
-		actual = ve.test.utils.buildDom( cases[i].before );
-		expected = ve.test.utils.buildDom( cases[i].after );
+		actual = ve.test.utils.buildDom( cases[ i ].before );
+		expected = ve.test.utils.buildDom( cases[ i ].after );
 		ve.normalizeNode( actual );
-		assert.equalDomElement( actual, expected, cases[i].msg );
-		assert.ok( actual.isEqualNode( expected ), cases[i].msg + ' (isEqualNode)' );
+		assert.equalDomElement( actual, expected, cases[ i ].msg );
+		assert.ok( actual.isEqualNode( expected ), cases[ i ].msg + ' (isEqualNode)' );
 	}
 
 	ve.isNormalizeBroken = wasNormalizeBroken;
@@ -858,22 +858,22 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 	nodes.html = doc.documentElement;
 	nodes.head = doc.head;
 	nodes.body = doc.body;
-	nodes.div = doc.getElementsByTagName( 'div' )[0];
-	nodes.p = doc.getElementsByTagName( 'p' )[0];
-	nodes.b = doc.getElementsByTagName( 'b' )[0];
-	nodes.i = doc.getElementsByTagName( 'i' )[0];
-	nodes.img = doc.getElementsByTagName( 'img' )[0];
-	nodes.textA = nodes.p.childNodes[0];
-	nodes.textB = nodes.b.childNodes[0];
-	nodes.textC = nodes.p.childNodes[2];
-	nodes.textD = nodes.div.childNodes[1];
-	nodes.textE = nodes.body.childNodes[1];
+	nodes.div = doc.getElementsByTagName( 'div' )[ 0 ];
+	nodes.p = doc.getElementsByTagName( 'p' )[ 0 ];
+	nodes.b = doc.getElementsByTagName( 'b' )[ 0 ];
+	nodes.i = doc.getElementsByTagName( 'i' )[ 0 ];
+	nodes.img = doc.getElementsByTagName( 'img' )[ 0 ];
+	nodes.textA = nodes.p.childNodes[ 0 ];
+	nodes.textB = nodes.b.childNodes[ 0 ];
+	nodes.textC = nodes.p.childNodes[ 2 ];
+	nodes.textD = nodes.div.childNodes[ 1 ];
+	nodes.textE = nodes.body.childNodes[ 1 ];
 	function getNode( name ) {
 		return nodes[ name ];
 	}
 	QUnit.expect( tests.length );
 	for ( i = 0, len = tests.length; i < len; i++ ) {
-		test = tests[i];
+		test = tests[ i ];
 		testNodes = test.nodes.split( /\s+/ ).map( getNode );
 		ancestorNode = nodes[ test.ancestor ];
 		assert.equal(
@@ -969,7 +969,7 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 
 	for ( direction in { forward: undefined, backward: undefined } ) {
 		for ( i = 0, len = tests.length; i < len; i++ ) {
-			test = tests[i];
+			test = tests[ i ];
 			div.innerHTML = test.html;
 			offsetPaths = [];
 			position = {

@@ -16,27 +16,28 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
+	var character, characterNode, characters, $characters, charactersNode;
+
 	// Parent constructor
 	OO.ui.PageLayout.call( this, name, config );
 
 	this.label = config.label;
 	this.icon = config.icon;
 
-	var character, characterNode,
-		characters = config.characters,
-		$characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' ),
-		charactersNode = $characters[0];
+	characters = config.characters;
+	$characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' );
+	charactersNode = $characters[ 0 ];
 
 	// The body of this loop is executed a few thousand times when opening
 	// ve.ui.SpecialCharacterDialog, avoid jQuery wrappers.
 	for ( character in characters ) {
 		characterNode = document.createElement( 'div' );
 		characterNode.className = 've-ui-specialCharacterPage-character';
-		if ( characters[character].titleMsg ) {
-			characterNode.setAttribute( 'title', ve.msg( characters[character].titleMsg ) );
+		if ( characters[ character ].titleMsg ) {
+			characterNode.setAttribute( 'title', ve.msg( characters[ character ].titleMsg ) );
 		}
 		characterNode.textContent = character;
-		$.data( characterNode, 'character', characters[character] );
+		$.data( characterNode, 'character', characters[ character ] );
 		charactersNode.appendChild( characterNode );
 	}
 

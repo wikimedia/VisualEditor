@@ -21,7 +21,7 @@ ve.LeafNode = function VeLeafNode() {
  * Check if the node has children.
  *
  * @method
- * @returns {boolean} Whether the node has children
+ * @return {boolean} Whether the node has children
  */
 ve.LeafNode.prototype.hasChildren = function () {
 	return false;

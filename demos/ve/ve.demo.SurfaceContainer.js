@@ -12,6 +12,9 @@
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
+	var pageDropdown, pageLabel, removeButton, $exitReadButton,
+		container = this;
+
 	// Parent constructor
 	ve.demo.SurfaceContainer.super.call( this );
 
@@ -20,24 +23,23 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	ve.demo.surfaceContainers.push( this );
 
-	var container = this,
-		pageDropdown = new OO.ui.DropdownWidget( {
-			menu: {
-				items: this.getPageMenuItems()
-			}
-		} ),
-		pageLabel = new OO.ui.LabelWidget( {
-			label: 'Page',
-			input: pageDropdown
-		} ),
-		removeButton = new OO.ui.ButtonWidget( {
-			icon: 'remove',
-			label: 'Remove surface'
-		} ),
-		$exitReadButton = $( '<a href="#">' ).text( 'Back to editor' ).on( 'click', function () {
-			container.change( 've' );
-			return false;
-		} );
+	pageDropdown = new OO.ui.DropdownWidget( {
+		menu: {
+			items: this.getPageMenuItems()
+		}
+	} );
+	pageLabel = new OO.ui.LabelWidget( {
+		label: 'Page',
+		input: pageDropdown
+	} );
+	removeButton = new OO.ui.ButtonWidget( {
+		icon: 'remove',
+		label: 'Remove surface'
+	} );
+	$exitReadButton = $( '<a href="#">' ).text( 'Back to editor' ).on( 'click', function () {
+		container.change( 've' );
+		return false;
+	} );
 
 	this.modeSelect = new OO.ui.ButtonSelectWidget().addItems( [
 		new OO.ui.ButtonOptionWidget( { data: 've', label: 'VE' } ),
@@ -115,7 +117,7 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
 	for ( name in ve.demoPages ) {
 		items.push(
 			new OO.ui.MenuOptionWidget( {
-				data: ve.demoPages[name],
+				data: ve.demoPages[ name ],
 				label: name
 			} )
 		);
@@ -162,7 +164,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 		case 'read':
 			closePromise = this.$readView.slideUp().promise();
 			if ( !page ) {
-				html = ve.properInnerHtml( this.$readView[0] );
+				html = ve.properInnerHtml( this.$readView[ 0 ] );
 			}
 			break;
 

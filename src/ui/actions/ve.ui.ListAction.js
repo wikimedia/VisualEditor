@@ -50,8 +50,8 @@ ve.ui.ListAction.prototype.allWrapped = function ( style ) {
 
 	for ( i = 0, len = nodes.length; i < len; i++ ) {
 		if (
-			( len === 1 || !nodes[i].range || nodes[i].range.getLength() ) &&
-			!nodes[i].node.hasMatchingAncestor( 'list', attributes )
+			( len === 1 || !nodes[ i ].range || nodes[ i ].range.getLength() ) &&
+			!nodes[ i ].node.hasMatchingAncestor( 'list', attributes )
 		) {
 			all = false;
 			break;
@@ -69,7 +69,7 @@ ve.ui.ListAction.prototype.allWrapped = function ( style ) {
  * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.toggle = function ( style, noBreakpoints ) {
-	return this[this.allWrapped( style ) ? 'unwrap' : 'wrap']( style, noBreakpoints );
+	return this[ this.allWrapped( style ) ? 'unwrap' : 'wrap' ]( style, noBreakpoints );
 };
 
 /**
@@ -143,7 +143,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
 	} else {
 		groups = documentModel.getCoveredSiblingGroups( range );
 		for ( i = 0; i < groups.length; i++ ) {
-			group = groups[i];
+			group = groups[ i ];
 			if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 				if ( group.grandparent !== previousList ) {
 					// Change the list style
@@ -159,8 +159,8 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
 			} else {
 				// Get a range that covers the whole group
 				groupRange = new ve.Range(
-					group.nodes[0].getOuterRange().start,
-					group.nodes[group.nodes.length - 1].getOuterRange().end
+					group.nodes[ 0 ].getOuterRange().start,
+					group.nodes[ group.nodes.length - 1 ].getOuterRange().end
 				);
 				// Convert everything to paragraphs first
 				surfaceModel.change(

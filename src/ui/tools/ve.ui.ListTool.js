@@ -46,16 +46,17 @@ ve.ui.ListTool.static.deactivateOnSelect = false;
  * @inheritdoc
  */
 ve.ui.ListTool.prototype.onUpdateState = function ( fragment ) {
+	var i, len, nodes, style, all;
+
 	// Parent method
 	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
 
-	var i, len,
-		nodes = fragment ? fragment.getSelectedLeafNodes() : [],
-		style = this.constructor.static.style,
-		all = !!nodes.length;
+	nodes = fragment ? fragment.getSelectedLeafNodes() : [];
+	style = this.constructor.static.style;
+	all = !!nodes.length;
 
 	for ( i = 0, len = nodes.length; i < len; i++ ) {
-		if ( !nodes[i].hasMatchingAncestor( 'list', { style: style } ) ) {
+		if ( !nodes[ i ].hasMatchingAncestor( 'list', { style: style } ) ) {
 			all = false;
 			break;
 		}

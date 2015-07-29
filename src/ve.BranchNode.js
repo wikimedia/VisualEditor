@@ -40,9 +40,9 @@ ve.BranchNode.static.traverse = function ( node, callback ) {
 		children = node.getChildren();
 
 	for ( i = 0, len = children.length; i < len; i++ ) {
-		callback.call( this, children[i] );
-		if ( children[i] instanceof ve.ce.BranchNode ) {
-			this.traverse( children[i], callback );
+		callback.call( this, children[ i ] );
+		if ( children[ i ] instanceof ve.ce.BranchNode ) {
+			this.traverse( children[ i ], callback );
 		}
 	}
 };
@@ -53,7 +53,7 @@ ve.BranchNode.static.traverse = function ( node, callback ) {
  * Check if the node has children.
  *
  * @method
- * @returns {boolean} Whether the node has children
+ * @return {boolean} Whether the node has children
  */
 ve.BranchNode.prototype.hasChildren = function () {
 	return true;
@@ -63,7 +63,7 @@ ve.BranchNode.prototype.hasChildren = function () {
  * Get child nodes.
  *
  * @method
- * @returns {ve.Node[]} List of child nodes
+ * @return {ve.Node[]} List of child nodes
  */
 ve.BranchNode.prototype.getChildren = function () {
 	return this.children;
@@ -74,7 +74,7 @@ ve.BranchNode.prototype.getChildren = function () {
  *
  * @method
  * @param {ve.dm.Node} node Child node to find index of
- * @returns {number} Index of child node or -1 if node was not found
+ * @return {number} Index of child node or -1 if node was not found
  */
 ve.BranchNode.prototype.indexOf = function ( node ) {
 	return this.children.indexOf( node );
@@ -88,13 +88,14 @@ ve.BranchNode.prototype.indexOf = function ( node ) {
  * @param {ve.Node} root Node to use as root
  */
 ve.BranchNode.prototype.setRoot = function ( root ) {
+	var i;
 	if ( root === this.root ) {
 		// Nothing to do, don't recurse into all descendants
 		return;
 	}
 	this.root = root;
-	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].setRoot( root );
+	for ( i = 0; i < this.children.length; i++ ) {
+		this.children[ i ].setRoot( root );
 	}
 };
 
@@ -106,13 +107,14 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
  * @param {ve.Document} root Node to use as root
  */
 ve.BranchNode.prototype.setDocument = function ( doc ) {
+	var i;
 	if ( doc === this.doc ) {
 		// Nothing to do, don't recurse into all descendants
 		return;
 	}
 	this.doc = doc;
-	for ( var i = 0; i < this.children.length; i++ ) {
-		this.children[i].setDocument( doc );
+	for ( i = 0; i < this.children.length; i++ ) {
+		this.children[ i ].setDocument( doc );
 	}
 };
 
@@ -127,18 +129,18 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
  * @method
  * @param {number} offset Offset get node for
  * @param {boolean} [shallow] Do not iterate into child nodes of child nodes
- * @returns {ve.Node|null} Node at offset, or null if none was found
+ * @return {ve.Node|null} Node at offset, or null if none was found
  */
 ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
+	var i, length, nodeLength, childNode, nodeOffset;
 	if ( offset === 0 ) {
 		return this;
 	}
 	// TODO a lot of logic is duplicated in selectNodes(), abstract that into a traverser or something
 	if ( this.children.length ) {
-		var i, length, nodeLength, childNode,
-			nodeOffset = 0;
+		nodeOffset = 0;
 		for ( i = 0, length = this.children.length; i < length; i++ ) {
-			childNode = this.children[i];
+			childNode = this.children[ i ];
 			if ( offset === nodeOffset ) {
 				// The requested offset is right before childNode,
 				// so it's not inside any of this's children, but inside this

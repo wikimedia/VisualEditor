@@ -57,6 +57,8 @@ ve.dm.BlockImageNode.static.matchTagNames = [ 'figure' ];
 // ve.dm.BlockImageNode.static.blacklistedAnnotationTypes = [ 'link' ];
 
 ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) {
+	var dataElement, figure, classAttr, img, caption, attributes, width, height, altText;
+
 	// Workaround for jQuery's .children() being expensive due to
 	// https://github.com/jquery/sizzle/issues/311
 	function findChildren( parent, nodeNames ) {
@@ -65,17 +67,16 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 		} );
 	}
 
-	var dataElement,
-		figure = domElements[0],
-		classAttr = figure.getAttribute( 'class' ),
-		img = findChildren( figure, 'img' )[0] || null,
-		caption = findChildren( figure, 'figcaption' )[0] || null,
-		attributes = {
-			src: img && img.getAttribute( 'src' )
-		},
-		width = img && img.getAttribute( 'width' ),
-		height = img && img.getAttribute( 'height' ),
-		altText = img && img.getAttribute( 'alt' );
+	figure = domElements[ 0 ];
+	classAttr = figure.getAttribute( 'class' );
+	img = findChildren( figure, 'img' )[ 0 ] || null;
+	caption = findChildren( figure, 'figcaption' )[ 0 ] || null;
+	attributes = {
+		src: img && img.getAttribute( 'src' )
+	};
+	width = img && img.getAttribute( 'width' );
+	height = img && img.getAttribute( 'height' );
+	altText = img && img.getAttribute( 'alt' );
 
 	if ( altText !== undefined ) {
 		attributes.alt = altText;
@@ -109,7 +110,7 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 // TODO: At this moment node is not resizable but when it will be then adding defaultSize class
 // should be more conditional.
 ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
-	var dataElement = data[0],
+	var dataElement = data[ 0 ],
 		width = dataElement.attributes.width,
 		height = dataElement.attributes.height,
 		classAttr = this.getClassAttrFromAttributes( dataElement.attributes ),
@@ -148,10 +149,10 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
  * Get the caption node of the image.
  *
  * @method
- * @returns {ve.dm.BlockImageCaptionNode|null} Caption node, if present
+ * @return {ve.dm.BlockImageCaptionNode|null} Caption node, if present
  */
 ve.dm.BlockImageNode.prototype.getCaptionNode = function () {
-	var node = this.children[0];
+	var node = this.children[ 0 ];
 	return node instanceof ve.dm.BlockImageCaptionNode ? node : null;
 };
 

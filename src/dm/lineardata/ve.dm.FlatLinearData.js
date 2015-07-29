@@ -30,7 +30,7 @@ OO.inheritClass( ve.dm.FlatLinearData, ve.dm.LinearData );
  * Get the type of the element at a specified offset
  * @method
  * @param {number} offset Data offset
- * @returns {string} Type of the element
+ * @return {string} Type of the element
  */
 ve.dm.FlatLinearData.prototype.getType = function ( offset ) {
 	return ve.dm.LinearData.static.getType( this.getData( offset ) );
@@ -40,7 +40,7 @@ ve.dm.FlatLinearData.prototype.getType = function ( offset ) {
  * Check if data at a given offset is an element.
  * @method
  * @param {number} offset Data offset
- * @returns {boolean} Data at offset is an element
+ * @return {boolean} Data at offset is an element
  */
 ve.dm.FlatLinearData.prototype.isElementData = function ( offset ) {
 	return ve.dm.LinearData.static.isElementData( this.getData( offset ) );
@@ -53,7 +53,7 @@ ve.dm.FlatLinearData.prototype.isElementData = function ( offset ) {
  * Elements are discovered by iterating through the entire data array (backwards).
  *
  * @method
- * @returns {boolean} At least one elements exists in data
+ * @return {boolean} At least one elements exists in data
  */
 ve.dm.FlatLinearData.prototype.containsElementData = function () {
 	var i = this.getLength();
@@ -69,7 +69,7 @@ ve.dm.FlatLinearData.prototype.containsElementData = function () {
  * Checks if data at a given offset is an open element.
  * @method
  * @param {number} offset Data offset
- * @returns {boolean} Data at offset is an open element
+ * @return {boolean} Data at offset is an open element
  */
 ve.dm.FlatLinearData.prototype.isOpenElementData = function ( offset ) {
 	return ve.dm.LinearData.static.isOpenElementData( this.getData( offset ) );
@@ -79,7 +79,7 @@ ve.dm.FlatLinearData.prototype.isOpenElementData = function ( offset ) {
  * Checks if data at a given offset is a close element.
  * @method
  * @param {number} offset Data offset
- * @returns {boolean} Data at offset is a close element
+ * @return {boolean} Data at offset is a close element
  */
 ve.dm.FlatLinearData.prototype.isCloseElementData = function ( offset ) {
 	return ve.dm.LinearData.static.isCloseElementData( this.getData( offset ) );

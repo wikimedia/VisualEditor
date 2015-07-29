@@ -27,7 +27,7 @@ OO.initClass( ve.dm.GeneratedContentNode );
  * @param {Object} dataElement Data element
  * @param {Object|string|Array} generatedContents Generated contents
  * @param {ve.dm.IndexValueStore} store Index-value store
- * @returns {number} Index of stored data
+ * @return {number} Index of stored data
  */
 ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElement, generatedContents, store ) {
 	var hash = OO.getHash( [ this.getHashObject( dataElement ), undefined ] );

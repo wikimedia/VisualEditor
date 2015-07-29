@@ -107,7 +107,7 @@ indicating their order between the standard tags.
 * @inheritable
 * @param
 * @fires name
-* @returns
+* @return
 
 ## Add a new javascript class
 

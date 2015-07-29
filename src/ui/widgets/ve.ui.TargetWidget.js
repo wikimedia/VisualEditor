@@ -58,7 +58,7 @@ OO.inheritClass( ve.ui.TargetWidget, OO.ui.Widget );
  * Get surface.
  *
  * @method
- * @returns {ve.ui.Surface} Surface
+ * @return {ve.ui.Surface} Surface
  */
 ve.ui.TargetWidget.prototype.getSurface = function () {
 	return this.surface;
@@ -68,7 +68,7 @@ ve.ui.TargetWidget.prototype.getSurface = function () {
  * Get toolbar.
  *
  * @method
- * @returns {OO.ui.Toolbar} Toolbar
+ * @return {OO.ui.Toolbar} Toolbar
  */
 ve.ui.TargetWidget.prototype.getToolbar = function () {
 	return this.toolbar;
@@ -78,7 +78,7 @@ ve.ui.TargetWidget.prototype.getToolbar = function () {
  * Get content data.
  *
  * @method
- * @returns {ve.dm.ElementLinearData} Content data
+ * @return {ve.dm.ElementLinearData} Content data
  */
 ve.ui.TargetWidget.prototype.getContent = function () {
 	return this.surface.getModel().getDocument().getData();

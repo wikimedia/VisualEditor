@@ -36,7 +36,7 @@ OO.mixinClass( ve.ui.ContextItemFactory, ve.ui.ModeledFactory );
  */
 ve.ui.ContextItemFactory.prototype.isEmbeddable = function ( name ) {
 	if ( Object.prototype.hasOwnProperty.call( this.registry, name ) ) {
-		return !!this.registry[name].static.embeddable;
+		return !!this.registry[ name ].static.embeddable;
 	}
 	throw new Error( 'Unrecognized symbolic name: ' + name );
 };
@@ -49,7 +49,7 @@ ve.ui.ContextItemFactory.prototype.isEmbeddable = function ( name ) {
  */
 ve.ui.ContextItemFactory.prototype.isExclusive = function ( name ) {
 	if ( Object.prototype.hasOwnProperty.call( this.registry, name ) ) {
-		return !!this.registry[name].static.exclusive;
+		return !!this.registry[ name ].static.exclusive;
 	}
 	throw new Error( 'Unrecognized symbolic name: ' + name );
 };

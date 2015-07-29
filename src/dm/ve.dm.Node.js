@@ -273,13 +273,13 @@ ve.dm.Node.static.remapInternalListKeys = function () {
  * @static
  * @param {HTMLElement[]} domElements DOM elements being converted
  * @param {ve.dm.Converter} converter Converter object
- * @returns {boolean} The element is inline
+ * @return {boolean} The element is inline
  */
 ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
 	var i, length, allTagsInline = true;
 
 	for ( i = 0, length = domElements.length; i < length; i++ ) {
-		if ( ve.isBlockElement( domElements[i] ) ) {
+		if ( ve.isBlockElement( domElements[ i ] ) ) {
 			allTagsInline = false;
 			break;
 		}
@@ -302,7 +302,7 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * @static
  * @param {Object} element Element object
  * @param {boolean} preserveGenerated Preserve internal.generated property of element
- * @returns {Object} Cloned element object
+ * @return {Object} Cloned element object
  */
 ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
 	var clone = ve.copy( element );
@@ -320,7 +320,7 @@ ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
 /**
  * @see #static-cloneElement
  * @param {boolean} preserveGenerated Preserve internal.generated property of element
- * @returns {Object} Cloned element object
+ * @return {Object} Cloned element object
  */
 ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated ) {
 	return this.constructor.static.cloneElement( this.element, preserveGenerated );
@@ -365,7 +365,7 @@ ve.dm.Node.prototype.canHaveChildrenNotContent = function () {
  * Check if the node is an internal node
  *
  * @method
- * @returns {boolean} Node is an internal node
+ * @return {boolean} Node is an internal node
  */
 ve.dm.Node.prototype.isInternal = function () {
 	return this.constructor.static.isInternal;
@@ -424,7 +424,7 @@ ve.dm.Node.prototype.isCellEditable = function () {
  * Check if the node can have a slug before it.
  *
  * @method
- * @returns {boolean} Whether the node can have a slug before it
+ * @return {boolean} Whether the node can have a slug before it
  */
 ve.dm.Node.prototype.canHaveSlugBefore = function () {
 	return !this.canContainContent() && this.getParentNodeTypes() === null;
@@ -434,7 +434,7 @@ ve.dm.Node.prototype.canHaveSlugBefore = function () {
  * Check if the node can have a slug after it.
  *
  * @method
- * @returns {boolean} Whether the node can have a slug after it
+ * @return {boolean} Whether the node can have a slug after it
  */
 ve.dm.Node.prototype.canHaveSlugAfter = ve.dm.Node.prototype.canHaveSlugBefore;
 
@@ -463,7 +463,7 @@ ve.dm.Node.prototype.shouldIgnoreChildren = function () {
  * Check if the node has an ancestor with matching type and attribute values.
  *
  * @method
- * @returns {boolean} Node has an ancestor with matching type and attribute values
+ * @return {boolean} Node has an ancestor with matching type and attribute values
  */
 ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
 	var node = this;
@@ -482,7 +482,7 @@ ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
  * Check if the node matches type and attribute values.
  *
  * @method
- * @returns {boolean} Node matches type and attribute values
+ * @return {boolean} Node matches type and attribute values
  */
 ve.dm.Node.prototype.matches = function ( type, attributes ) {
 	var key;
@@ -494,7 +494,7 @@ ve.dm.Node.prototype.matches = function ( type, attributes ) {
 	// Check attributes
 	if ( attributes ) {
 		for ( key in attributes ) {
-			if ( this.getAttribute( key ) !== attributes[key] ) {
+			if ( this.getAttribute( key ) !== attributes[ key ] ) {
 				return false;
 			}
 		}
@@ -522,11 +522,12 @@ ve.dm.Node.prototype.getLength = function () {
  * @throws {Error} Invalid content length error if length is less than 0
  */
 ve.dm.Node.prototype.setLength = function ( length ) {
+	var diff;
 	if ( length < 0 ) {
 		throw new Error( 'Length cannot be negative' );
 	}
 	// Compute length adjustment from old length
-	var diff = length - this.length;
+	diff = length - this.length;
 	// Set new length
 	this.length = length;
 	// Adjust the parent's length
@@ -568,10 +569,10 @@ ve.dm.Node.prototype.getOffset = function () {
 	siblings = this.parent.children;
 	offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
 	for ( i = 0, len = siblings.length; i < len; i++ ) {
-		if ( siblings[i] === this ) {
+		if ( siblings[ i ] === this ) {
 			break;
 		}
-		offset += siblings[i].getOuterLength();
+		offset += siblings[ i ].getOuterLength();
 	}
 	if ( i === len ) {
 		throw new Error( 'Node not found in parent\'s children array' );
@@ -589,7 +590,7 @@ ve.dm.Node.prototype.getOffset = function () {
  *
  * @method
  * @param {ve.dm.Node} node Node to consider merging with
- * @returns {boolean} Nodes can be merged
+ * @return {boolean} Nodes can be merged
  */
 ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 	var n1 = this,

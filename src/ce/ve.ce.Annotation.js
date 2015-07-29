@@ -56,7 +56,7 @@ ve.ce.Annotation.static.forceContinuation = false;
  * @static
  * @inheritable
  * @param {ve.dm.Annotation} annotation Annotation model
- * @returns {string} Description of annotation
+ * @return {string} Description of annotation
  */
 ve.ce.Annotation.static.getDescription = function () {
 	return '';
@@ -66,7 +66,7 @@ ve.ce.Annotation.static.getDescription = function () {
 
 /**
  * Get the content branch node this annotation is rendered in, if any.
- * @returns {ve.ce.ContentBranchNode|null} Content branch node or null if none
+ * @return {ve.ce.ContentBranchNode|null} Content branch node or null if none
  */
 ve.ce.Annotation.prototype.getParentNode = function () {
 	return this.parentNode;

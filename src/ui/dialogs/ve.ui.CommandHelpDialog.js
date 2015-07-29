@@ -44,21 +44,22 @@ ve.ui.CommandHelpDialog.static.actions = [
  * @inheritdoc
  */
 ve.ui.CommandHelpDialog.prototype.getBodyHeight = function () {
-	return Math.round( this.contentLayout.$element[0].scrollHeight );
+	return Math.round( this.contentLayout.$element[ 0 ].scrollHeight );
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
+	var i, j, jLen, k, kLen, triggerList, commands, shortcut, platform, platformKey,
+		$list, $shortcut, commandGroups;
+
 	// Parent method
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
 
-	var i, j, jLen, k, kLen, triggerList, commands, shortcut,
-		platform = ve.getSystemPlatform(),
-		platformKey = platform === 'mac' ? 'mac' : 'pc',
-		$list, $shortcut,
-		commandGroups = this.constructor.static.getCommandGroups();
+	platform = ve.getSystemPlatform();
+	platformKey = platform === 'mac' ? 'mac' : 'pc';
+	commandGroups = this.constructor.static.getCommandGroups();
 
 	this.contentLayout = new OO.ui.PanelLayout( {
 		scrollable: true,
@@ -68,18 +69,18 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	this.$container = $( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
 	for ( i in commandGroups ) {
-		commands = commandGroups[i].commands;
+		commands = commandGroups[ i ].commands;
 		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
-			if ( commands[j].trigger ) {
-				triggerList = ve.ui.triggerRegistry.lookup( commands[j].trigger );
+			if ( commands[ j ].trigger ) {
+				triggerList = ve.ui.triggerRegistry.lookup( commands[ j ].trigger );
 			} else {
 				triggerList = [];
-				for ( k = 0, kLen = commands[j].shortcuts.length; k < kLen; k++ ) {
-					shortcut = commands[j].shortcuts[k];
+				for ( k = 0, kLen = commands[ j ].shortcuts.length; k < kLen; k++ ) {
+					shortcut = commands[ j ].shortcuts[ k ];
 					triggerList.push(
 						new ve.ui.Trigger(
-							ve.isPlainObject( shortcut ) ? shortcut[platformKey] : shortcut,
+							ve.isPlainObject( shortcut ) ? shortcut[ platformKey ] : shortcut,
 							true
 						)
 					);
@@ -88,19 +89,19 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 			$shortcut = $( '<dt>' );
 			for ( k = 0, kLen = triggerList.length; k < kLen; k++ ) {
 				$shortcut.append( $( '<kbd>' ).text(
-					triggerList[k].getMessage().replace( /\+/g, ' + ' )
+					triggerList[ k ].getMessage().replace( /\+/g, ' + ' )
 				) );
 			}
 			$list.append(
 				$shortcut,
-				$( '<dd>' ).text( ve.msg( commands[j].msg ) )
+				$( '<dd>' ).text( ve.msg( commands[ j ].msg ) )
 			);
 		}
 		this.$container.append(
 			$( '<div>' )
 				.addClass( 've-ui-commandHelpDialog-section' )
 				.append(
-					$( '<h3>' ).text( ve.msg( commandGroups[i].title ) ),
+					$( '<h3>' ).text( ve.msg( commandGroups[ i ].title ) ),
 					$list
 				)
 		);
@@ -116,7 +117,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
  * Get the list of commands, grouped by type
  *
  * @static
- * @returns {Object} Object containing command groups, consist of a title message and array of commands
+ * @return {Object} Object containing command groups, consist of a title message and array of commands
  */
 ve.ui.CommandHelpDialog.static.getCommandGroups = function () {
 	return {

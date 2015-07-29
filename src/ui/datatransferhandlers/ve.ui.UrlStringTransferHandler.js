@@ -116,7 +116,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 			// text/x-moz-url includes titles with the links (alternating lines)
 			links = data.match( /^(.*)(\r\n?|\n)(.*)$/mg ).map( function ( item ) {
 				item = item.split( /[\r\n]+/ );
-				return { href: item[0], title: item[1] };
+				return { href: item[ 0 ], title: item[ 1 ] };
 			} );
 			break;
 
@@ -138,7 +138,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 			content = link.title.split( '' );
 		ve.dm.Document.static.addAnnotationsToData( content, annotationSet );
 		for ( i = 0; i < content.length; i++ ) {
-			result.push( content[i] );
+			result.push( content[ i ] );
 		}
 		result.push( ' ' );
 	} );

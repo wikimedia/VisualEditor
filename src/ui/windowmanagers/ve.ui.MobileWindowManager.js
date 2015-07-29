@@ -52,7 +52,7 @@ ve.ui.MobileWindowManager.prototype.onMobileOpening = function ( win, opening ) 
 		if ( win instanceof OO.ui.ProcessDialog ) {
 			list = win.actions.list;
 			for ( i = 0, l = list.length; i < l; i++ ) {
-				action = list[i];
+				action = list[ i ];
 				action.toggleFramed( false );
 				if ( action.hasFlag( 'back' ) ) {
 					action

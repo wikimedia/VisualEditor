@@ -42,7 +42,7 @@ ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
 
 	models = fragment ? fragment.getSelectedModels() : [];
 	for ( i = 0, len = models.length; i < len; i++ ) {
-		if ( this.constructor.static.isCompatibleWith( models[i] ) ) {
+		if ( this.constructor.static.isCompatibleWith( models[ i ] ) ) {
 			this.setActive( true );
 			break;
 		}

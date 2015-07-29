@@ -81,22 +81,22 @@ module.exports = function ( grunt ) {
 			var module, moduleStyles, moduleScripts, dependency, dependencies;
 			dependencies = moduleUtils.buildDependencyList( modules, load );
 			for ( dependency in dependencies ) {
-				module = dependencies[dependency];
+				module = dependencies[ dependency ];
 				if ( loadedModules.indexOf( module ) > -1 ) {
 					continue;
 				}
 				loadedModules.push( module );
-				if ( modules[module].scripts ) {
-					moduleScripts = modules[module].scripts
+				if ( modules[ module ].scripts ) {
+					moduleScripts = modules[ module ].scripts
 						.map( expand ).filter( filter.bind( this, 'scripts' ) ).map( scriptTag )
 						.join( '\n' );
 					if ( moduleScripts ) {
 						scripts.push( indent + '<!-- ' + module + ' -->\n' + moduleScripts );
 					}
 				}
-				if ( modules[module].styles ) {
-					moduleStyles = modules[module].styles
-						.map( expand ).filter( filter.bind( this, 'styles' ) ).map( styleTag.bind( styleTag, modules[module].styleGroup ) )
+				if ( modules[ module ].styles ) {
+					moduleStyles = modules[ module ].styles
+						.map( expand ).filter( filter.bind( this, 'styles' ) ).map( styleTag.bind( styleTag, modules[ module ].styleGroup ) )
 						.join( '\n' );
 					if ( moduleStyles ) {
 						styles.push( indent + '<!-- ' + module + ' -->\n' + moduleStyles );
@@ -145,7 +145,7 @@ module.exports = function ( grunt ) {
 		grunt.util.async.forEachSeries(
 			Object.keys( placeholders ),
 			function ( id, next ) {
-				placeholder( text, id.toUpperCase(), placeholders[id], function ( newText ) {
+				placeholder( text, id.toUpperCase(), placeholders[ id ], function ( newText ) {
 					text = newText;
 					next();
 				} );

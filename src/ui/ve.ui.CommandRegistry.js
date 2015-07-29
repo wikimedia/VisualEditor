@@ -44,7 +44,7 @@ ve.ui.CommandRegistry.prototype.register = function ( command ) {
  * Returns the primary command for for node.
  *
  * @param {ve.ce.Node} node Node to get command for
- * @returns {ve.ui.Command}
+ * @return {ve.ui.Command}
  */
 ve.ui.CommandRegistry.prototype.getCommandForNode = function ( node ) {
 	return this.lookup( node.constructor.static.primaryCommandName );

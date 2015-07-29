@@ -113,7 +113,7 @@ ve.dm.LinearSelection.prototype.getRanges = function () {
 /**
  * Get the range for this selection
  *
- * @returns {ve.Range} Range
+ * @return {ve.Range} Range
  */
 ve.dm.LinearSelection.prototype.getRange = function () {
 	return this.range;

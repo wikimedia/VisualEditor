@@ -208,7 +208,7 @@ ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	} else {
 		this.setSizeType( 'custom' );
 		if ( $.isNumeric( value ) ) {
-			dimensions[type] = Number( value );
+			dimensions[ type ] = Number( value );
 			this.setCurrentDimensions( dimensions );
 		} else {
 			this.validateDimensions();
@@ -277,7 +277,7 @@ ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
 
 /**
  * Get the placeholder value of the scale input
- * @returns {string} Placeholder value
+ * @return {string} Placeholder value
  */
 ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
 	return this.scaleInput.$element.prop( 'placeholder' );
@@ -303,7 +303,7 @@ ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
 /**
  * Get the size type from the select widget
  *
- * @returns {string} The size type
+ * @return {string} The size type
  */
 ve.ui.MediaSizeWidget.prototype.getSizeType = function () {
 	return this.sizeTypeSelectWidget.getSelectedItem() ? this.sizeTypeSelectWidget.getSelectedItem().getData() : '';
@@ -353,7 +353,7 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 
 /**
  * Get the attached scalable object
- * @returns {ve.dm.Scalable} The scalable object representing the media
+ * @return {ve.dm.Scalable} The scalable object representing the media
  * source being resized.
  */
 ve.ui.MediaSizeWidget.prototype.getScalable = function () {
@@ -382,7 +382,7 @@ ve.ui.MediaSizeWidget.prototype.setRatio = function ( ratio ) {
 
 /**
  * Get the current aspect ratio
- * @returns {number} Aspect ratio
+ * @return {number} Aspect ratio
  */
 ve.ui.MediaSizeWidget.prototype.getRatio = function () {
 	return this.scalable.getRatio();
@@ -401,7 +401,7 @@ ve.ui.MediaSizeWidget.prototype.setMaxDimensions = function ( dimensions ) {
 
 /**
  * Retrieve the currently defined maximum dimensions
- * @returns {Object} dimensions Height and width
+ * @return {Object} dimensions Height and width
  */
 ve.ui.MediaSizeWidget.prototype.getMaxDimensions = function () {
 	return this.scalable.getMaxDimensions();
@@ -409,7 +409,7 @@ ve.ui.MediaSizeWidget.prototype.getMaxDimensions = function () {
 
 /**
  * Retrieve the current dimensions
- * @returns {Object} Width and height
+ * @return {Object} Width and height
  */
 ve.ui.MediaSizeWidget.prototype.getCurrentDimensions = function () {
 	return this.currentDimensions;
@@ -492,7 +492,7 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
  * dimensions for thumbnails when the image type changes. Triggers the error
  * class if needed.
  *
- * @returns {boolean} Current dimensions are valid
+ * @return {boolean} Current dimensions are valid
  */
 ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 	var isValid = this.isValid();
@@ -528,7 +528,7 @@ ve.ui.MediaSizeWidget.prototype.updateDefaultDimensions = function () {
 
 /**
  * Check if the custom dimensions are empty.
- * @returns {boolean} Both width/height values are empty
+ * @return {boolean} Both width/height values are empty
  */
 ve.ui.MediaSizeWidget.prototype.isCustomEmpty = function () {
 	return this.dimensionsWidget.isEmpty();
@@ -544,7 +544,7 @@ ve.ui.MediaSizeWidget.prototype.toggleFullSizeButtonDisabled = function ( isDisa
 
 /**
  * Check if the scale input is empty.
- * @returns {boolean} Scale input value is empty
+ * @return {boolean} Scale input value is empty
  */
 ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
 	return ( this.scaleInput.getValue() === '' );
@@ -552,7 +552,7 @@ ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
 
 /**
  * Check if all inputs are empty.
- * @returns {boolean} All input values are empty
+ * @return {boolean} All input values are empty
  */
 ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
 	return ( this.isCustomEmpty() && this.isScaleEmpty() );
@@ -564,7 +564,7 @@ ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
  * 2. If inputs have non numeric values, input is invalid
  * 3. If inputs have numeric values, validate through scalable
  *    calculations to see if the dimensions follow the rules.
- * @returns {boolean} Valid or invalid dimension values
+ * @return {boolean} Valid or invalid dimension values
  */
 ve.ui.MediaSizeWidget.prototype.isValid = function () {
 	var itemType = this.sizeTypeSelectWidget.getSelectedItem() ?

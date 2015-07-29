@@ -14,7 +14,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 		cases = ve.dm.example.domToDataCases;
 
 	for ( msg in cases ) {
-		if ( cases[msg].ceHtml ) {
+		if ( cases[ msg ].ceHtml ) {
 			expected++;
 		}
 	}
@@ -22,8 +22,8 @@ QUnit.test( 'Converter tests', function ( assert ) {
 	QUnit.expect( expected );
 
 	for ( msg in cases ) {
-		if ( cases[msg].ceHtml ) {
-			caseItem = ve.copy( cases[msg] );
+		if ( cases[ msg ].ceHtml ) {
+			caseItem = ve.copy( cases[ msg ] );
 			model = ve.test.utils.getModelFromTestCase( caseItem );
 			view = new ve.ce.Document( model );
 			$documentElement = view.getDocumentNode().$element;
@@ -80,7 +80,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		if ( item.type ) {
 			return '<' + item.type + '>';
 		} else if ( Array.isArray( item ) ) {
-			return item[0];
+			return item[ 0 ];
 		} else if ( typeof item === 'string' ) {
 			return item;
 		} else {
@@ -89,7 +89,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	}
 
 	for ( i = 0, len = tests.length; i < len; i++ ) {
-		test = tests[i];
+		test = tests[ i ];
 		parts = test.positions.split( /[|]/ );
 		view = ve.test.utils.createSurfaceViewFromHtml( test.html );
 		data = view.getModel().getDocument().data.data

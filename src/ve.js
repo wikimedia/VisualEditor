@@ -18,7 +18,7 @@ window.ve = {};
  * values with microsecond precision that are guaranteed to be monotonic. On all other browsers,
  * it will fall back to using `Date.now`.
  *
- * @returns {number} Current time
+ * @return {number} Current time
  */
 ve.now = ( function () {
 	var perf = window.performance,

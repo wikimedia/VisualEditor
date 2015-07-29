@@ -4,25 +4,27 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+var itemCounter, responseDelay, FullResourceProvider, EmptyResourceProvider, SingleResultResourceProvider;
+
 QUnit.module( 've.dm.APIResultsQueue' );
 
-var itemCounter = 0,
-	responseDelay = 1,
-	FullResourceProvider = function VeDmFullResourceProvider( config ) {
-		this.timer = null;
-		// Inheritance
-		ve.dm.APIResultsProvider.call( this, '', config );
-	},
-	EmptyResourceProvider = function VeDmEmptyResourceProvider( config ) {
-		this.timer = null;
-		// Inheritance
-		ve.dm.APIResultsProvider.call( this, '', config );
-	},
-	SingleResultResourceProvider = function VeDmSingleResultResourceProvider( config ) {
-		this.timer = null;
-		// Inheritance
-		ve.dm.APIResultsProvider.call( this, '', config );
-	};
+itemCounter = 0;
+responseDelay = 1;
+FullResourceProvider = function VeDmFullResourceProvider( config ) {
+	this.timer = null;
+	// Inheritance
+	ve.dm.APIResultsProvider.call( this, '', config );
+};
+EmptyResourceProvider = function VeDmEmptyResourceProvider( config ) {
+	this.timer = null;
+	// Inheritance
+	ve.dm.APIResultsProvider.call( this, '', config );
+};
+SingleResultResourceProvider = function VeDmSingleResultResourceProvider( config ) {
+	this.timer = null;
+	// Inheritance
+	ve.dm.APIResultsProvider.call( this, '', config );
+};
 
 OO.inheritClass( FullResourceProvider, ve.dm.APIResultsProvider );
 OO.inheritClass( EmptyResourceProvider, ve.dm.APIResultsProvider );

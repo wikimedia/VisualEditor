@@ -34,7 +34,7 @@ OO.inheritClass( ve.ui.TargetToolbar, ve.ui.Toolbar );
 /**
  * Gets the target which the toolbar controls.
  *
- * @returns {ve.init.Target} Target being controlled
+ * @return {ve.init.Target} Target being controlled
  */
 ve.ui.TargetToolbar.prototype.getTarget = function () {
 	return this.target;

@@ -45,7 +45,7 @@ ve.Node = function VeNode() {
  *
  * @method
  * @abstract
- * @returns {string[]|null} List of node types allowed as children or null if any type is allowed
+ * @return {string[]|null} List of node types allowed as children or null if any type is allowed
  */
 ve.Node.prototype.getChildNodeTypes = null;
 
@@ -54,7 +54,7 @@ ve.Node.prototype.getChildNodeTypes = null;
  *
  * @method
  * @abstract
- * @returns {string[]|null} List of node types allowed as parents or null if any type is allowed
+ * @return {string[]|null} List of node types allowed as parents or null if any type is allowed
  */
 ve.Node.prototype.getParentNodeTypes = null;
 
@@ -85,7 +85,7 @@ ve.Node.prototype.isAllowedParentNodeType = function ( type ) {
  *
  * @method
  * @abstract
- * @returns {string[]|null} List of node types suggested as parents or null if any type is suggested
+ * @return {string[]|null} List of node types suggested as parents or null if any type is suggested
  */
 ve.Node.prototype.getSuggestedParentNodeTypes = null;
 
@@ -94,7 +94,7 @@ ve.Node.prototype.getSuggestedParentNodeTypes = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node can have children
+ * @return {boolean} Node can have children
  */
 ve.Node.prototype.canHaveChildren = null;
 
@@ -103,7 +103,7 @@ ve.Node.prototype.canHaveChildren = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node can have children but not content nor be content
+ * @return {boolean} Node can have children but not content nor be content
  */
 ve.Node.prototype.canHaveChildrenNotContent = null;
 
@@ -112,7 +112,7 @@ ve.Node.prototype.canHaveChildrenNotContent = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node can contain content
+ * @return {boolean} Node can contain content
  */
 ve.Node.prototype.canContainContent = null;
 
@@ -121,7 +121,7 @@ ve.Node.prototype.canContainContent = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node is content
+ * @return {boolean} Node is content
  */
 ve.Node.prototype.isContent = null;
 
@@ -130,7 +130,7 @@ ve.Node.prototype.isContent = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node represents a wrapped element
+ * @return {boolean} Node represents a wrapped element
  */
 ve.Node.prototype.isWrapped = null;
 
@@ -139,7 +139,7 @@ ve.Node.prototype.isWrapped = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node is focusable
+ * @return {boolean} Node is focusable
  */
 ve.Node.prototype.isFocusable = null;
 
@@ -148,7 +148,7 @@ ve.Node.prototype.isFocusable = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node is alignable
+ * @return {boolean} Node is alignable
  */
 ve.Node.prototype.isAlignable = null;
 
@@ -157,7 +157,7 @@ ve.Node.prototype.isAlignable = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node can behave as a table cell
+ * @return {boolean} Node can behave as a table cell
  */
 ve.Node.prototype.isCellable = null;
 
@@ -166,7 +166,7 @@ ve.Node.prototype.isCellable = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node can be edited in place
+ * @return {boolean} Node can be edited in place
  */
 ve.Node.prototype.isCellEditable = null;
 
@@ -177,7 +177,7 @@ ve.Node.prototype.isCellEditable = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node has significant whitespace
+ * @return {boolean} Node has significant whitespace
  */
 ve.Node.prototype.hasSignificantWhitespace = null;
 
@@ -186,7 +186,7 @@ ve.Node.prototype.hasSignificantWhitespace = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node handles its own children
+ * @return {boolean} Node handles its own children
  */
 ve.Node.prototype.handlesOwnChildren = null;
 
@@ -195,7 +195,7 @@ ve.Node.prototype.handlesOwnChildren = null;
  *
  * @method
  * @abstract
- * @returns {boolean} Node's children should be ignored
+ * @return {boolean} Node's children should be ignored
  */
 ve.Node.prototype.shouldIgnoreChildren = null;
 
@@ -204,7 +204,7 @@ ve.Node.prototype.shouldIgnoreChildren = null;
  *
  * @method
  * @abstract
- * @returns {number} Node length
+ * @return {number} Node length
  */
 ve.Node.prototype.getLength = null;
 
@@ -215,7 +215,7 @@ ve.Node.prototype.getLength = null;
  *
  * @method
  * @abstract
- * @returns {number} Offset of node
+ * @return {number} Offset of node
  * @throws {Error} Node not found in parent's children array
  */
 ve.Node.prototype.getOffset = null;
@@ -225,7 +225,7 @@ ve.Node.prototype.getOffset = null;
  *
  * @method
  * @param {boolean} backwards Return a backwards range
- * @returns {ve.Range} Inner node range
+ * @return {ve.Range} Inner node range
  */
 ve.Node.prototype.getRange = function ( backwards ) {
 	var offset = this.getOffset() + ( this.isWrapped() ? 1 : 0 ),
@@ -238,7 +238,7 @@ ve.Node.prototype.getRange = function ( backwards ) {
  *
  * @method
  * @param {boolean} backwards Return a backwards range
- * @returns {ve.Range} Node outer range
+ * @return {ve.Range} Node outer range
  */
 ve.Node.prototype.getOuterRange = function ( backwards ) {
 	var range = new ve.Range( this.getOffset(), this.getOffset() + this.getOuterLength() );
@@ -249,7 +249,7 @@ ve.Node.prototype.getOuterRange = function ( backwards ) {
  * Get the outer length of the node, which includes wrappers if present.
  *
  * @method
- * @returns {number} Node outer length
+ * @return {number} Node outer length
  */
 ve.Node.prototype.getOuterLength = function () {
 	return this.getLength() + ( this.isWrapped() ? 2 : 0 );
@@ -261,7 +261,7 @@ ve.Node.prototype.getOuterLength = function () {
  * Get the symbolic node type name.
  *
  * @method
- * @returns {string} Symbolic name of element type
+ * @return {string} Symbolic name of element type
  */
 ve.Node.prototype.getType = function () {
 	return this.type;
@@ -271,7 +271,7 @@ ve.Node.prototype.getType = function () {
  * Get a reference to the node's parent.
  *
  * @method
- * @returns {ve.Node} Reference to the node's parent
+ * @return {ve.Node} Reference to the node's parent
  */
 ve.Node.prototype.getParent = function () {
 	return this.parent;
@@ -281,7 +281,7 @@ ve.Node.prototype.getParent = function () {
  * Get the root node of the tree the node is currently attached to.
  *
  * @method
- * @returns {ve.Node} Root node
+ * @return {ve.Node} Root node
  */
 ve.Node.prototype.getRoot = function () {
 	return this.root;
@@ -312,7 +312,7 @@ ve.Node.prototype.setRoot = function ( root ) {
  * Get the document the node is a part of.
  *
  * @method
- * @returns {ve.Document} Document the node is a part of
+ * @return {ve.Document} Document the node is a part of
  */
 ve.Node.prototype.getDocument = function () {
 	return this.doc;
@@ -365,7 +365,7 @@ ve.Node.prototype.detach = function () {
  *
  * @method
  * @param {Function} callback Callback method to be called for every traversed node. Returning false stops the traversal.
- * @returns {ve.Node|null} Node which caused the traversal to stop, or null if it didn't
+ * @return {ve.Node|null} Node which caused the traversal to stop, or null if it didn't
  */
 ve.Node.prototype.traverseUpstream = function ( callback ) {
 	var node = this;

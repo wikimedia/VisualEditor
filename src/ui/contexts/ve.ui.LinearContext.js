@@ -241,32 +241,32 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 			models = [];
 			items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = items.length; i < len; i++ ) {
-				if ( !items[i].model.isInspectable() ) {
+				if ( !items[ i ].model.isInspectable() ) {
 					continue;
 				}
-				if ( ve.ui.contextItemFactory.isExclusive( items[i].name ) ) {
-					models.push( items[i].model );
+				if ( ve.ui.contextItemFactory.isExclusive( items[ i ].name ) ) {
+					models.push( items[ i ].model );
 				}
 				this.relatedSources.push( {
 					type: 'item',
-					embeddable: ve.ui.contextItemFactory.isEmbeddable( items[i].name ),
-					name: items[i].name,
-					model: items[i].model
+					embeddable: ve.ui.contextItemFactory.isEmbeddable( items[ i ].name ),
+					name: items[ i ].name,
+					model: items[ i ].model
 				} );
 			}
 			tools = ve.ui.toolFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = tools.length; i < len; i++ ) {
-				if ( !tools[i].model.isInspectable() ) {
+				if ( !tools[ i ].model.isInspectable() ) {
 					continue;
 				}
-				if ( models.indexOf( tools[i].model ) === -1 ) {
-					toolClass = ve.ui.toolFactory.lookup( tools[i].name );
+				if ( models.indexOf( tools[ i ].model ) === -1 ) {
+					toolClass = ve.ui.toolFactory.lookup( tools[ i ].name );
 					this.relatedSources.push( {
 						type: 'tool',
 						embeddable: !toolClass ||
 							!( toolClass.prototype instanceof ve.ui.InspectorTool ),
-						name: tools[i].name,
-						model: tools[i].model
+						name: tools[ i ].name,
+						model: tools[ i ].model
 					} );
 				}
 			}

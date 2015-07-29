@@ -76,7 +76,7 @@ ve.ui.AnnotationInspector.static.actions = [
  * Only override this if the form provides the user a way to blank out primary information, allowing
  * them to remove the annotation by clearing the form.
  *
- * @returns {boolean} Form is empty
+ * @return {boolean} Form is empty
  */
 ve.ui.AnnotationInspector.prototype.shouldRemoveAnnotation = function () {
 	return false;
@@ -87,7 +87,7 @@ ve.ui.AnnotationInspector.prototype.shouldRemoveAnnotation = function () {
  *
  * Defaults to using #getInsertionText.
  *
- * @returns {Array} Linear model content to insert
+ * @return {Array} Linear model content to insert
  */
 ve.ui.AnnotationInspector.prototype.getInsertionData = function () {
 	return this.getInsertionText().split( '' );
@@ -96,7 +96,7 @@ ve.ui.AnnotationInspector.prototype.getInsertionData = function () {
 /**
  * Get text to insert if nothing was selected when the inspector opened.
  *
- * @returns {string} Text to insert
+ * @return {string} Text to insert
  */
 ve.ui.AnnotationInspector.prototype.getInsertionText = function () {
 	return '';
@@ -111,7 +111,7 @@ ve.ui.AnnotationInspector.prototype.getInsertionText = function () {
  *
  * @abstract
  * @method
- * @returns {ve.dm.Annotation} Annotation to apply
+ * @return {ve.dm.Annotation} Annotation to apply
  */
 ve.ui.AnnotationInspector.prototype.getAnnotation = null;
 
@@ -121,7 +121,7 @@ ve.ui.AnnotationInspector.prototype.getAnnotation = null;
  * @abstract
  * @method
  * @param {ve.dm.SurfaceFragment} fragment Surface fragment
- * @returns {ve.dm.Annotation|null} Annotation
+ * @return {ve.dm.Annotation|null} Annotation
  */
 ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = null;
 
@@ -131,7 +131,7 @@ ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = null;
  * @method
  * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
  * @param {boolean} [all] Get annotations which only cover some of the fragment
- * @returns {ve.dm.AnnotationSet} Matching annotations
+ * @return {ve.dm.AnnotationSet} Matching annotations
  */
 ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
 	var modelClasses = this.constructor.static.modelClasses;
@@ -330,7 +330,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				// Clear all existing annotations
 				annotations = this.getMatchingAnnotations( fragment, true ).get();
 				for ( i = 0, len = annotations.length; i < len; i++ ) {
-					fragment.annotateContent( 'clear', annotations[i] );
+					fragment.annotateContent( 'clear', annotations[ i ] );
 				}
 			}
 			if ( replace ) {

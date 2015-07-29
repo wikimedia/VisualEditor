@@ -193,20 +193,20 @@ QUnit.test( 'isAnnotation', function ( assert ) {
 	QUnit.expect( allAnnotationTags.length + nonAnnotationTags.length + 2 );
 
 	for ( i = 0, len = allAnnotationTags.length; i < len; i++ ) {
-		node = document.createElement( allAnnotationTags[i] );
+		node = document.createElement( allAnnotationTags[ i ] );
 		assert.deepEqual(
 			ve.dm.modelRegistry.isAnnotation( node ),
 			true,
-			allAnnotationTags[i] + ' annotation'
+			allAnnotationTags[ i ] + ' annotation'
 		);
 	}
 
 	for ( i = 0, len = nonAnnotationTags.length; i < len; i++ ) {
-		node = document.createElement( nonAnnotationTags[i] );
+		node = document.createElement( nonAnnotationTags[ i ] );
 		assert.deepEqual(
 			ve.dm.modelRegistry.isAnnotation( node ),
 			false,
-			allAnnotationTags[i] + ' non-annotation'
+			allAnnotationTags[ i ] + ' non-annotation'
 		);
 	}
 

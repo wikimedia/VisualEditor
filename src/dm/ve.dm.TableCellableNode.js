@@ -26,9 +26,9 @@ ve.dm.TableCellableNode.static.isCellable = true;
 /* Static Methods */
 
 ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElements ) {
-	var style = domElements[0].nodeName.toLowerCase() === 'th' ? 'header' : 'data',
-		colspan = domElements[0].getAttribute( 'colspan' ),
-		rowspan = domElements[0].getAttribute( 'rowspan' );
+	var style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data',
+		colspan = domElements[ 0 ].getAttribute( 'colspan' ),
+		rowspan = domElements[ 0 ].getAttribute( 'rowspan' );
 
 	attributes.style = style;
 

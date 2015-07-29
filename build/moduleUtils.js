@@ -122,15 +122,15 @@ var self = module.exports = {
 		list = list || [];
 
 		for ( i = 0; i < load.length; i++ ) {
-			module = load[i];
+			module = load[ i ];
 
 			if ( !modules.hasOwnProperty( module ) ) {
 				throw new Error( 'Dependency ' + module + ' not found' );
 			}
 
 			// Add in any dependencies
-			if ( modules[module].hasOwnProperty( 'dependencies' ) ) {
-				self.buildDependencyList( modules, modules[module].dependencies, list );
+			if ( modules[ module ].hasOwnProperty( 'dependencies' ) ) {
+				self.buildDependencyList( modules, modules[ module ].dependencies, list );
 			}
 
 			// Append target load module to the end of the current list

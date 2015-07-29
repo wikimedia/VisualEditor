@@ -67,7 +67,7 @@ ve.ui.DialogTool.prototype.onUpdateState = function ( fragment, contextDirection
 	if ( this.constructor.static.associatedWindows !== null ) {
 		myWindowNames = this.constructor.static.associatedWindows;
 	} else if ( this.getCommand().getAction() === 'window' ) {
-		myWindowNames = [ this.getCommand().getArgs()[0] ];
+		myWindowNames = [ this.getCommand().getArgs()[ 0 ] ];
 	}
 
 	// Show the tool as active if any of its associated windows is open

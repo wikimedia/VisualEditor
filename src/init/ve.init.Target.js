@@ -216,7 +216,7 @@ ve.init.Target.prototype.destroy = function () {
 /**
  * Get the target's scroll container
  *
- * @returns {jQuery} The target's scroll container
+ * @return {jQuery} The target's scroll container
  */
 ve.init.Target.prototype.getScrollContainer = function () {
 	return $( this.getElementWindow() );
@@ -283,7 +283,7 @@ ve.init.Target.prototype.onToolbarResize = function () {
  * @method
  * @param {ve.dm.Document} dmDoc Document model
  * @param {Object} [config] Configuration options
- * @returns {ve.ui.Surface}
+ * @return {ve.ui.Surface}
  */
 ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 	config = ve.extendObject( {
@@ -303,7 +303,7 @@ ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
  *
  * @param {ve.dm.Document} dmDoc Document model
  * @param {Object} [config] Configuration options
- * @returns {ve.ui.Surface}
+ * @return {ve.ui.Surface}
  */
 ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
 	var surface = this.createSurface( dmDoc, config );

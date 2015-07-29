@@ -36,7 +36,7 @@ ve.ce.TableSectionNode.static.name = 'tableSection';
  *
  * Tag name is selected based on the model's style attribute.
  *
- * @returns {string} HTML tag name
+ * @return {string} HTML tag name
  * @throws {Error} If style is invalid
  */
 ve.ce.TableSectionNode.prototype.getTagName = function () {
@@ -46,7 +46,7 @@ ve.ce.TableSectionNode.prototype.getTagName = function () {
 	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
 		throw new Error( 'Invalid style' );
 	}
-	return types[style];
+	return types[ style ];
 };
 
 /**

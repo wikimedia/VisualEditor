@@ -15,14 +15,16 @@
  * @param {Object} [config] Configuration options
  */
 ve.ce.TableCellNode = function VeCeTableCellNode() {
+	var rowspan, colspan;
+
 	// Parent constructor
 	ve.ce.TableCellNode.super.apply( this, arguments );
 
 	// Mixin constructors
 	ve.ce.TableCellableNode.call( this );
 
-	var rowspan = this.model.getRowspan(),
-		colspan = this.model.getColspan();
+	rowspan = this.model.getRowspan();
+	colspan = this.model.getColspan();
 
 	// DOM changes
 	this.$element
@@ -66,7 +68,7 @@ ve.ce.TableCellNode.static.name = 'tableCell';
  *
  * Tag name is selected based on the model's style attribute.
  *
- * @returns {string} HTML tag name
+ * @return {string} HTML tag name
  * @throws {Error} Invalid style
  */
 ve.ce.TableCellNode.prototype.getTagName = function () {
@@ -76,7 +78,7 @@ ve.ce.TableCellNode.prototype.getTagName = function () {
 	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
 		throw new Error( 'Invalid style' );
 	}
-	return types[style];
+	return types[ style ];
 };
 
 /**
@@ -105,11 +107,12 @@ ve.ce.TableCellNode.prototype.onUpdate = function () {
  * @inheritdoc
  */
 ve.ce.TableCellNode.prototype.onSetup = function () {
+	var rowspan, colspan;
 	// Parent method
 	ve.ce.TableCellNode.super.prototype.onSetup.call( this );
 
-	var rowspan = this.model.getRowspan(),
-		colspan = this.model.getColspan();
+	rowspan = this.model.getRowspan();
+	colspan = this.model.getColspan();
 	// Set attributes (duplicated from constructor in case this.$element is replaced)
 	if ( rowspan > 1 ) {
 		this.$element.attr( 'rowspan', rowspan );

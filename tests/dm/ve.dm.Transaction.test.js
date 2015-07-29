@@ -12,35 +12,35 @@ function runBuilderTests( assert, cases ) {
 	var msg, tx, i;
 	for ( msg in cases ) {
 		tx = new ve.dm.Transaction( {} );
-		for ( i = 0; i < cases[msg].calls.length; i++ ) {
-			tx[cases[msg].calls[i][0]].apply( tx, cases[msg].calls[i].slice( 1 ) );
+		for ( i = 0; i < cases[ msg ].calls.length; i++ ) {
+			tx[ cases[ msg ].calls[ i ][ 0 ] ].apply( tx, cases[ msg ].calls[ i ].slice( 1 ) );
 		}
-		assert.deepEqualWithDomElements( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+		assert.deepEqualWithDomElements( tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
 	}
 }
 
 function runConstructorTests( assert, constructor, cases, testRange ) {
 	var msg, tx;
 	for ( msg in cases ) {
-		if ( cases[msg].ops ) {
+		if ( cases[ msg ].ops ) {
 			tx = constructor.apply(
-				ve.dm.Transaction, cases[msg].args
+				ve.dm.Transaction, cases[ msg ].args
 			);
-			assert.deepEqualWithDomElements( tx.getOperations(), cases[msg].ops, msg + ': operations match' );
+			assert.deepEqualWithDomElements( tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
 			if ( testRange ) {
 				assert.equalRange(
 					tx.getModifiedRange(),
-					cases[msg].range || new ve.Range( cases[msg].args[1], cases[msg].args[1] + cases[msg].args[2].length ),
+					cases[ msg ].range || new ve.Range( cases[ msg ].args[ 1 ], cases[ msg ].args[ 1 ] + cases[ msg ].args[ 2 ].length ),
 					msg + ': range matches'
 				);
 			}
-		} else if ( cases[msg].exception ) {
+		} else if ( cases[ msg ].exception ) {
 			/*jshint loopfunc:true */
 			assert.throws( function () {
 				constructor.apply(
-					ve.dm.Transaction, cases[msg].args
+					ve.dm.Transaction, cases[ msg ].args
 				);
-			}, cases[msg].exception, msg + ': throw exception' );
+			}, cases[ msg ].exception, msg + ': throw exception' );
 		}
 	}
 }
@@ -407,12 +407,12 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 		};
 	QUnit.expect( Object.keys( cases ).length * 2 );
 	for ( key in cases ) {
-		for ( i = 0; i < cases[key].ops.length; i++ ) {
-			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
+		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
+			if ( cases[ key ].ops[ i ].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
 			}
-			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
+			if ( cases[ key ].ops[ i ].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, doc.getStore() );
 			}
 		}
 	}
@@ -680,7 +680,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 					{
 						type: 'replaceMetadata',
 						remove: [],
-						insert: ve.dm.MetaLinearData.static.merge( metaDoc.getMetadata().slice( 7, 9 ) )[0]
+						insert: ve.dm.MetaLinearData.static.merge( metaDoc.getMetadata().slice( 7, 9 ) )[ 0 ]
 					},
 					{ type: 'retain', length: 4 }
 				]
@@ -746,13 +746,13 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 		};
 	QUnit.expect( Object.keys( cases ).length );
 	for ( key in cases ) {
-		for ( i = 0; i < cases[key].ops.length; i++ ) {
-			store = cases[key].args[0].getStore();
-			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, store );
+		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
+			store = cases[ key ].args[ 0 ].getStore();
+			if ( cases[ key ].ops[ i ].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, store );
 			}
-			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, store );
+			if ( cases[ key ].ops[ i ].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, store );
 			}
 		}
 	}
@@ -772,8 +772,8 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 						type: 'replace',
 						insert: [ 'X', 'Y' ],
 						insertMetadata: [
-							metaDoc.getMetadata()[4].concat(
-								metaDoc.getMetadata()[7]
+							metaDoc.getMetadata()[ 4 ].concat(
+								metaDoc.getMetadata()[ 7 ]
 							),
 							undefined
 						],
@@ -807,12 +807,12 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 		};
 	QUnit.expect( Object.keys( cases ).length );
 	for ( key in cases ) {
-		for ( i = 0; i < cases[key].ops.length; i++ ) {
-			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
+		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
+			if ( cases[ key ].ops[ i ].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
 			}
-			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
+			if ( cases[ key ].ops[ i ].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, doc.getStore() );
 			}
 		}
 	}
@@ -1047,32 +1047,32 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 	QUnit.expect( cases.length * 3 );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		doc = ve.dm.example.createExampleDocument( cases[i].doc );
-		if ( cases[i].newDocData ) {
+		doc = ve.dm.example.createExampleDocument( cases[ i ].doc );
+		if ( cases[ i ].newDocData ) {
 			store2 = new ve.dm.IndexValueStore();
-			doc2 = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[i].newDocData, store2 ) );
+			doc2 = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[ i ].newDocData, store2 ) );
 			removalOps = [];
-		} else if ( cases[i].range ) {
-			doc2 = doc.cloneFromRange( cases[i].range );
-			cases[i].modify( doc2 );
-			tx = ve.dm.Transaction.newFromRemoval( doc, cases[i].range );
+		} else if ( cases[ i ].range ) {
+			doc2 = doc.cloneFromRange( cases[ i ].range );
+			cases[ i ].modify( doc2 );
+			tx = ve.dm.Transaction.newFromRemoval( doc, cases[ i ].range );
 			doc.commit( tx );
 			removalOps = tx.getOperations();
 		}
 
-		assert.deepEqualWithDomElements( removalOps, cases[i].removalOps, cases[i].msg + ': removal' );
+		assert.deepEqualWithDomElements( removalOps, cases[ i ].removalOps, cases[ i ].msg + ': removal' );
 
-		tx = ve.dm.Transaction.newFromDocumentInsertion( doc, cases[i].offset, doc2 );
-		assert.deepEqualWithDomElements( tx.getOperations(), cases[i].expectedOps, cases[i].msg + ': transaction' );
+		tx = ve.dm.Transaction.newFromDocumentInsertion( doc, cases[ i ].offset, doc2 );
+		assert.deepEqualWithDomElements( tx.getOperations(), cases[ i ].expectedOps, cases[ i ].msg + ': transaction' );
 
 		actualStoreItems = [];
-		expectedStoreItems = cases[i].expectedStoreItems || [];
+		expectedStoreItems = cases[ i ].expectedStoreItems || [];
 		for ( j = 0; j < expectedStoreItems.length; j++ ) {
-			actualStoreItems[j] = doc.store.value( doc.store.indexOfHash(
-				OO.getHash( expectedStoreItems[j] )
+			actualStoreItems[ j ] = doc.store.value( doc.store.indexOfHash(
+				OO.getHash( expectedStoreItems[ j ] )
 			) );
 		}
-		assert.deepEqual( actualStoreItems, expectedStoreItems, cases[i].msg + ': store items' );
+		assert.deepEqual( actualStoreItems, expectedStoreItems, cases[ i ].msg + ': store items' );
 	}
 } );
 
@@ -1580,13 +1580,13 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 		};
 	QUnit.expect( Object.keys( cases ).length );
 	for ( key in cases ) {
-		for ( i = 0; i < cases[key].ops.length; i++ ) {
-			store = cases[key].args[0].getStore();
-			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, store );
+		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
+			store = cases[ key ].args[ 0 ].getStore();
+			if ( cases[ key ].ops[ i ].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, store );
 			}
-			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, store );
+			if ( cases[ key ].ops[ i ].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, store );
 			}
 		}
 	}
@@ -1719,7 +1719,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 						removeMetadata: listMetaDoc.getMetadata().slice( 0, 2 )
 					},
 					{ type: 'replaceMetadata',
-						insert: ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice( 0, 2 ) )[0],
+						insert: ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice( 0, 2 ) )[ 0 ],
 						remove: []
 					},
 					{ type: 'retain', length: 3 },
@@ -1730,7 +1730,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 						removeMetadata: listMetaDoc.getMetadata().slice( 5, 7 )
 					},
 					{ type: 'replaceMetadata',
-						insert: ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice( 5, 7 ) )[0],
+						insert: ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice( 5, 7 ) )[ 0 ],
 						remove: []
 					},
 					{ type: 'retain', length: 3 },
@@ -1741,7 +1741,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 						removeMetadata: listMetaDoc.getMetadata().slice( 10, 12 )
 					},
 					{ type: 'replaceMetadata',
-						insert: ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice( 10, 12 ) )[0],
+						insert: ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice( 10, 12 ) )[ 0 ],
 						remove: []
 					},
 					{ type: 'retainMetadata', length: 1 }
@@ -1762,12 +1762,12 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 		};
 	QUnit.expect( Object.keys( cases ).length );
 	for ( key in cases ) {
-		for ( i = 0; cases[key].ops && i < cases[key].ops.length; i++ ) {
-			if ( cases[key].ops[i].remove ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].remove, doc.getStore() );
+		for ( i = 0; cases[ key ].ops && i < cases[ key ].ops.length; i++ ) {
+			if ( cases[ key ].ops[ i ].remove ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
 			}
-			if ( cases[key].ops[i].insert ) {
-				ve.dm.example.preprocessAnnotations( cases[key].ops[i].insert, doc.getStore() );
+			if ( cases[ key ].ops[ i ].insert ) {
+				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].insert, doc.getStore() );
 			}
 		}
 	}
@@ -1814,9 +1814,9 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	};
 	QUnit.expect( 2 * Object.keys( mapping ).length );
 	for ( offset in mapping ) {
-		expected = Array.isArray( mapping[offset] ) ? mapping[offset] : [ mapping[offset], mapping[offset] ];
-		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[1], offset );
-		assert.strictEqual( tx.translateOffset( Number( offset ), true ), expected[0], offset + ' (excludeInsertion)' );
+		expected = Array.isArray( mapping[ offset ] ) ? mapping[ offset ] : [ mapping[ offset ], mapping[ offset ] ];
+		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[ 1 ], offset );
+		assert.strictEqual( tx.translateOffset( Number( offset ), true ), expected[ 0 ], offset + ' (excludeInsertion)' );
 	}
 } );
 
@@ -1859,8 +1859,8 @@ QUnit.test( 'translateRange', function ( assert ) {
 	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.equalRange( tx.translateRange( cases[i].before ), cases[i].after, cases[i].msg );
-		assert.equalRange( tx.translateRange( cases[i].before.flip() ), cases[i].after.flip(), cases[i].msg + ' (reversed)' );
+		assert.equalRange( tx.translateRange( cases[ i ].before ), cases[ i ].after, cases[ i ].msg );
+		assert.equalRange( tx.translateRange( cases[ i ].before.flip() ), cases[ i ].after.flip(), cases[ i ].msg + ' (reversed)' );
 	}
 } );
 
@@ -1957,10 +1957,10 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		tx = new ve.dm.Transaction( doc );
-		for ( j = 0; j < cases[i].calls.length; j++ ) {
-			tx[cases[i].calls[j][0]].apply( tx, cases[i].calls[j].slice( 1 ) );
+		for ( j = 0; j < cases[ i ].calls.length; j++ ) {
+			tx[ cases[ i ].calls[ j ][ 0 ] ].apply( tx, cases[ i ].calls[ j ].slice( 1 ) );
 		}
-		assert.equalRange( tx.getModifiedRange(), cases[i].range, cases[i].msg );
+		assert.equalRange( tx.getModifiedRange(), cases[ i ].range, cases[ i ].msg );
 	}
 } );
 
@@ -2280,7 +2280,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listWithMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
-		allElements = ve.dm.example.withMetaMetaData[11],
+		allElements = ve.dm.example.withMetaMetaData[ 11 ],
 		someElements = allElements.slice( 1, 3 ),
 		cases = {
 			'removing all metadata elements from metadata list': {
@@ -2348,7 +2348,7 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 				text: ' inline '
 			}
 		},
-		oldElement = ve.dm.example.withMetaMetaData[11][3],
+		oldElement = ve.dm.example.withMetaMetaData[ 11 ][ 3 ],
 		cases = {
 			'replacing metadata at end of list': {
 				args: [ doc, 11, 3, newElement ],
@@ -2369,7 +2369,7 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 					{ type: 'retain', length: 12 },
 					{
 						type: 'replaceMetadata',
-						remove: [ listWithMetaDoc.metadata.getData( 12 )[0] ],
+						remove: [ listWithMetaDoc.metadata.getData( 12 )[ 0 ] ],
 						insert: [ newElement ]
 					}
 				]
@@ -2388,11 +2388,12 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 } );
 
 QUnit.test( 'isNoOp', function ( assert ) {
-	QUnit.expect( 3 * 8 - 2 );
-	var doc = ve.dm.example.createExampleDocument(),
+	var tx,
+		doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
-		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
-		tx;
+		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' );
+
+	QUnit.expect( 3 * 8 - 2 );
 	[ doc, metaDoc, listMetaDoc ].forEach( function ( d, i ) {
 		var isDoc = ( i === 0 ),
 			isListMetaDoc = ( i === 2 );

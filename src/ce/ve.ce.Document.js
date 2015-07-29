@@ -38,7 +38,7 @@ OO.inheritClass( ve.ce.Document, ve.Document );
  *
  * @method
  * @param {number} offset Offset to get slug at
- * @returns {HTMLElement} Slug at offset
+ * @return {HTMLElement} Slug at offset
  */
 ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
 	var node = this.getBranchNodeFromOffset( offset );
@@ -49,9 +49,9 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
  * Calculate the DOM location corresponding to a DM offset
  *
  * @param {number} offset Linear model offset
- * @returns {Object} DOM location
- * @returns.node {Node} location node
- * @returns.offset {number} location offset within the node
+ * @return {Object} DOM location
+ * @return {Node} return.node location node
+ * @return {number} return.offset location offset within the node
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
@@ -111,8 +111,8 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		return ve.ce.nextCursorOffset( nextNode );
 	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
 		currentNode.childNodes.length > nao.offset &&
-		currentNode.childNodes[nao.offset].nodeType === Node.ELEMENT_NODE &&
-		currentNode.childNodes[nao.offset].classList.contains( 've-ce-pre-unicorn' )
+		currentNode.childNodes[ nao.offset ].nodeType === Node.ELEMENT_NODE &&
+		currentNode.childNodes[ nao.offset ].classList.contains( 've-ce-pre-unicorn' )
 	) {
 		// At element offset just before the pre unicorn; return the point just after it
 		return { node: nao.node, offset: nao.offset + 1 };
@@ -132,8 +132,8 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		return ve.ce.previousCursorOffset( previousNode );
 	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
 		nao.offset > 0 &&
-		currentNode.childNodes[nao.offset - 1].nodeType === Node.ELEMENT_NODE &&
-		currentNode.childNodes[nao.offset - 1].classList.contains( 've-ce-post-unicorn' )
+		currentNode.childNodes[ nao.offset - 1 ].nodeType === Node.ELEMENT_NODE &&
+		currentNode.childNodes[ nao.offset - 1 ].classList.contains( 've-ce-post-unicorn' )
 	) {
 		// At element offset just after the post unicorn; return the point just before it
 		return { node: nao.node, offset: nao.offset - 1 };
@@ -147,9 +147,9 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
  *
  * @private
  * @param {number} offset Linear model offset
- * @returns {Object} location
- * @returns.node {Node} location node
- * @returns.offset {number} location offset within the node
+ * @return {Object} location
+ * @return {Node} return.node location node
+ * @return {number} return.offset location offset within the node
  */
 ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offset ) {
 	var node, startOffset, current, stack, item, $item, length, model,
@@ -177,12 +177,12 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	current = [ node.$element.contents(), 0 ];
 	stack = [ current ];
 	while ( stack.length > 0 ) {
-		if ( current[1] >= current[0].length ) {
+		if ( current[ 1 ] >= current[ 0 ].length ) {
 			stack.pop();
 			current = stack[ stack.length - 1 ];
 			continue;
 		}
-		item = current[0][current[1]];
+		item = current[ 0 ][ current[ 1 ] ];
 		if ( item.nodeType === Node.TEXT_NODE ) {
 			length = item.textContent.length;
 			if ( offset >= startOffset && offset <= startOffset + length ) {
@@ -194,19 +194,19 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				startOffset += length;
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
-			$item = current[0].eq( current[1] );
+			$item = current[ 0 ].eq( current[ 1 ] );
 			if ( $item.hasClass( 've-ce-unicorn' ) ) {
 				if ( offset === startOffset ) {
 					// Return if empty unicorn pair at the correct offset
-					if ( $( $item[0].previousSibling ).hasClass( 've-ce-unicorn' ) ) {
+					if ( $( $item[ 0 ].previousSibling ).hasClass( 've-ce-unicorn' ) ) {
 						return {
-							node: $item[0].parentNode,
-							offset: current[1] - 1
+							node: $item[ 0 ].parentNode,
+							offset: current[ 1 ] - 1
 						};
-					} else if ( $( $item[0].nextSibling ).hasClass( 've-ce-unicorn' ) ) {
+					} else if ( $( $item[ 0 ].nextSibling ).hasClass( 've-ce-unicorn' ) ) {
 						return {
-							node: $item[0].parentNode,
-							offset: current[1] + 1
+							node: $item[ 0 ].parentNode,
+							offset: current[ 1 ] + 1
 						};
 					}
 					// Else algorithm will/did descend into unicorned range
@@ -221,8 +221,8 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 					countedNodes.push( model );
 					if ( offset >= startOffset && offset < startOffset + length ) {
 						stack.push( [ $item.contents(), 0 ] );
-						current[1]++;
-						current = stack[stack.length - 1];
+						current[ 1 ]++;
+						current = stack[ stack.length - 1 ];
 						continue;
 					} else {
 						startOffset += length;
@@ -236,17 +236,17 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				// the internalList then the start node will be the document node.
 				//
 				// Skip contents without incrementing offset.
-				current[1]++;
+				current[ 1 ]++;
 				continue;
 			} else {
 				// Any other type of node (e.g. b, inline slug, img): descend
 				stack.push( [ $item.contents(), 0 ] );
-				current[1]++;
-				current = stack[stack.length - 1];
+				current[ 1 ]++;
+				current = stack[ stack.length - 1 ];
 				continue;
 			}
 		}
-		current[1]++;
+		current[ 1 ]++;
 	}
 	throw new Error( 'Offset could not be translated to a DOM element and offset: ' + offset );
 };
@@ -256,7 +256,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
  *
  * @method
  * @param {ve.dm.Selection} selection Selection
- * @returns {string|null} 'rtl', 'ltr' or null if unknown
+ * @return {string|null} 'rtl', 'ltr' or null if unknown
  */
 ve.ce.Document.prototype.getDirectionFromSelection = function ( selection ) {
 	var effectiveNode, range, selectedNodes;
@@ -274,10 +274,10 @@ ve.ce.Document.prototype.getDirectionFromSelection = function ( selection ) {
 	if ( selectedNodes.length > 1 ) {
 		// Selection of multiple nodes
 		// Get the common parent node
-		effectiveNode = this.selectNodes( range, 'siblings' )[0].node.getParent();
+		effectiveNode = this.selectNodes( range, 'siblings' )[ 0 ].node.getParent();
 	} else {
 		// selection of a single node
-		effectiveNode = selectedNodes[0].node;
+		effectiveNode = selectedNodes[ 0 ].node;
 
 		while ( effectiveNode.isContent() ) {
 			// This means that we're in a leaf node, like TextNode

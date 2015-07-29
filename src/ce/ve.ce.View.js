@@ -104,7 +104,7 @@ ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
  * a resolution document.
  *
  * @see #getResolvedAttribute
- * @returns {HTMLDocument|null} HTML document to use for resolution, or null if not available
+ * @return {HTMLDocument|null} HTML document to use for resolution, or null if not available
  */
 ve.ce.View.prototype.getModelHtmlDocument = function () {
 	return null;
@@ -132,7 +132,7 @@ ve.ce.View.prototype.onTeardown = function () {
  * Get the model the view observes.
  *
  * @method
- * @returns {ve.dm.Model} Model the view observes
+ * @return {ve.dm.Model} Model the view observes
  */
 ve.ce.View.prototype.getModel = function () {
 	return this.model;
@@ -142,7 +142,7 @@ ve.ce.View.prototype.getModel = function () {
  * Check if the view is attached to the live DOM.
  *
  * @method
- * @returns {boolean} View is attached to the live DOM
+ * @return {boolean} View is attached to the live DOM
  */
 ve.ce.View.prototype.isLive = function () {
 	return this.live;
@@ -171,7 +171,7 @@ ve.ce.View.prototype.setLive = function ( live ) {
  * @return {boolean} Node is inside a contentEditable node
  */
 ve.ce.View.prototype.isInContentEditable = function () {
-	var node = this.$element[0].parentNode;
+	var node = this.$element[ 0 ].parentNode;
 	while ( node && node.contentEditable === 'inherit' ) {
 		node = node.parentNode;
 	}
@@ -184,7 +184,7 @@ ve.ce.View.prototype.isInContentEditable = function () {
  * @abstract
  * @method
  * @param {string} key Attribute name whose value is a URL
- * @returns {string} URL resolved according to the document's base
+ * @return {string} URL resolved according to the document's base
  */
 ve.ce.View.prototype.getResolvedAttribute = function ( key ) {
 	var plainValue = this.model.getAttribute( key ),

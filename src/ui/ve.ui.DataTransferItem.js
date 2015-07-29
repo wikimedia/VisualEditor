@@ -48,7 +48,7 @@ ve.ui.DataTransferItem.static.newFromBlob = function ( blob, htmlStringData ) {
  */
 ve.ui.DataTransferItem.static.newFromDataUri = function ( dataUri, htmlStringData ) {
 	var parts = dataUri.split( ',' );
-	return new ve.ui.DataTransferItem( 'file', parts[0].match( /^data:([^;]+)/ )[1], { dataUri: parts[1], htmlStringData: htmlStringData } );
+	return new ve.ui.DataTransferItem( 'file', parts[ 0 ].match( /^data:([^;]+)/ )[ 1 ], { dataUri: parts[ 1 ], htmlStringData: htmlStringData } );
 };
 
 /**
@@ -83,11 +83,11 @@ ve.ui.DataTransferItem.static.newFromItem = function ( item, htmlStringData ) {
  * @return {Blob} File blob
  */
 ve.ui.DataTransferItem.prototype.getAsFile = function () {
+	var binary, array, i;
+
 	if ( this.data.item ) {
 		return this.data.item.getAsFile();
 	}
-
-	var binary, array, i;
 
 	if ( !this.blob && this.data.dataUri ) {
 		binary = atob( this.data.dataUri );

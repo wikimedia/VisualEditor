@@ -15,7 +15,7 @@ function runTableActionTest( assert, html, method, args, selection, expectedData
 
 	expectedData( data );
 	surface.getModel().setSelection( ve.dm.Selection.static.newFromJSON( surface.getModel().getDocument(), selection ) );
-	tableAction[method].apply( tableAction, args );
+	tableAction[ method ].apply( tableAction, args );
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	if ( expectedSelection ) {
@@ -177,7 +177,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				args: [ 'col', 'before' ],
 				expectedData: function ( data ) {
 					data.splice.apply( data, [ 150, 0 ].concat( tableData ) );
-					data[90].attributes.colspan = 4;
+					data[ 90 ].attributes.colspan = 4;
 					data.splice.apply( data, [ 76, 0 ].concat( tableData ) );
 					data.splice.apply( data, [ 45, 0 ].concat( tableData ) );
 					data.splice.apply( data, [ 18, 0 ].concat( tableData ) );
@@ -227,7 +227,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'insert',
 				args: [ 'row', 'before' ],
 				expectedData: function ( data ) {
-					data[45].attributes.rowspan = 5;
+					data[ 45 ].attributes.rowspan = 5;
 					data.splice.apply( data, [ 83, 0 ].concat(
 						[
 							{ type: 'tableRow' }
@@ -257,8 +257,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'mergeCells',
 				args: [],
 				expectedData: function ( data ) {
-					data[3].attributes.colspan = 3;
-					data[3].attributes.rowspan = 2;
+					data[ 3 ].attributes.colspan = 3;
+					data[ 3 ].attributes.rowspan = 2;
 					data.splice( 40, 5 );
 					data.splice( 35, 5 );
 					data.splice( 13, 5 );
@@ -279,8 +279,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'mergeCells',
 				args: [],
 				expectedData: function ( data ) {
-					data[90].attributes.colspan = 1;
-					data[90].attributes.rowspan = 1;
+					data[ 90 ].attributes.colspan = 1;
+					data[ 90 ].attributes.rowspan = 1;
 					data.splice.apply( data, [ 124, 0 ].concat( tableData, tableData, tableData ) );
 					data.splice.apply( data, [ 110, 0 ].concat( tableData, tableData, tableData ) );
 					data.splice.apply( data, [ 96, 0 ].concat( tableData, tableData ) );
@@ -300,8 +300,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'mergeCells',
 				args: [],
 				expectedData: function ( data ) {
-					data[3].attributes.colspan = 6;
-					data[3].attributes.rowspan = 1;
+					data[ 3 ].attributes.colspan = 6;
+					data[ 3 ].attributes.rowspan = 1;
 					data.splice( 8, 122 );
 				},
 				msg: 'merge full rows'
@@ -319,8 +319,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'mergeCells',
 				args: [],
 				expectedData: function ( data ) {
-					data[3].attributes.colspan = 1;
-					data[3].attributes.rowspan = 7;
+					data[ 3 ].attributes.colspan = 1;
+					data[ 3 ].attributes.rowspan = 7;
 					data.splice( 132, 24 );
 					data.splice( 118, 6 );
 					data.splice( 104, 6 );
@@ -364,8 +364,8 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'delete',
 				args: [ 'row' ],
 				expectedData: function ( data ) {
-					data[90].attributes.rowspan = 2;
-					data[45].attributes.rowspan = 3;
+					data[ 90 ].attributes.rowspan = 2;
+					data[ 45 ].attributes.rowspan = 3;
 					data.splice( 110, 0,
 						{
 							type: 'tableCell',
@@ -398,7 +398,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'delete',
 				args: [ 'col' ],
 				expectedData: function ( data ) {
-					data[90].attributes.colspan = 2;
+					data[ 90 ].attributes.colspan = 2;
 					data.splice( 150, 6 );
 					data.splice( 18, 5 );
 				},
@@ -418,9 +418,9 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				method: 'changeCellStyle',
 				args: [ 'header' ],
 				expectedData: function ( data ) {
-					data[8].attributes.style = 'header';
-					data[13].attributes.style = 'header';
-					data[40].attributes.style = 'header';
+					data[ 8 ].attributes.style = 'header';
+					data[ 13 ].attributes.style = 'header';
+					data[ 40 ].attributes.style = 'header';
 				},
 				msg: 'change style to header'
 			},
@@ -484,15 +484,15 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 
 	for ( i = 0; i < cases.length; i++ ) {
 		expected++;
-		if ( cases[i].expectedSelection ) {
+		if ( cases[ i ].expectedSelection ) {
 			expected++;
 		}
 	}
 	QUnit.expect( expected );
 	for ( i = 0; i < cases.length; i++ ) {
 		runTableActionTest(
-			assert, cases[i].html, cases[i].method, cases[i].args, cases[i].selection,
-			cases[i].expectedData, cases[i].expectedSelection, cases[i].msg
+			assert, cases[ i ].html, cases[ i ].method, cases[ i ].args, cases[ i ].selection,
+			cases[ i ].expectedData, cases[ i ].expectedSelection, cases[ i ].msg
 		);
 	}
 } );

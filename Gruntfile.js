@@ -6,6 +6,25 @@
 
 /*jshint node:true */
 module.exports = function ( grunt ) {
+	var modules = grunt.file.readJSON( 'build/modules.json' ),
+		moduleUtils = require( './build/moduleUtils' ),
+		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
+		coreBuildFilesApex = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.apex' ] ),
+		coreBuildFilesMediaWiki = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.mediawiki' ] ),
+		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts,
+		demoPages = ( function () {
+			var pages = {},
+				files = grunt.file.expand( 'demos/ve/pages/*.html' );
+			files.forEach( function ( file ) {
+				var matches = file.match( /^.*(pages\/(.+).html)$/ ),
+					path = matches[ 1 ],
+					name = matches[ 2 ];
+
+				pages[ name ] = path;
+			} );
+			return pages;
+		} )();
+
 	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
@@ -22,25 +41,6 @@ module.exports = function ( grunt ) {
 
 	// We want to use `grunt watch` to start this and karma watch together.
 	grunt.renameTask( 'watch', 'runwatch' );
-
-	var modules = grunt.file.readJSON( 'build/modules.json' ),
-		moduleUtils = require( './build/moduleUtils' ),
-		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
-		coreBuildFilesApex = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.apex' ] ),
-		coreBuildFilesMediaWiki = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.mediawiki' ] ),
-		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts,
-		demoPages = ( function () {
-			var pages = {},
-				files = grunt.file.expand( 'demos/ve/pages/*.html' );
-			files.forEach( function ( file ) {
-				var matches = file.match( /^.*(pages\/(.+).html)$/ ),
-					path = matches[1],
-					name = matches[2];
-
-				pages[name] = path;
-			} );
-			return pages;
-		} )();
 
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
@@ -72,11 +72,11 @@ module.exports = function ( grunt ) {
 			// HACK: Ideally these libraries would provide their own distribution files (T95667)
 			'jquery.i18n': {
 				dest: 'dist/lib/jquery.i18n.js',
-				src: modules['jquery.i18n'].scripts
+				src: modules[ 'jquery.i18n' ].scripts
 			},
 			'jquery.uls.data': {
 				dest: 'dist/lib/jquery.uls.data.js',
-				src: modules['jquery.uls.data'].scripts
+				src: modules[ 'jquery.uls.data' ].scripts
 			}
 		},
 		cssjanus: {
@@ -240,6 +240,7 @@ module.exports = function ( grunt ) {
 			},
 			all: [
 				'*.js',
+				'{.jsduck,build,demos,src,tests}/*.js',
 				'{.jsduck,build,demos,src,tests}/**/*.js'
 			]
 		},

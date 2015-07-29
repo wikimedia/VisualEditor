@@ -19,7 +19,7 @@ function runListConverterTest( assert, html, method, style, range, expectedRange
 		expectedOriginalData( originalData );
 	}
 	surface.getModel().setLinearSelection( range );
-	listAction[method]( style );
+	listAction[ method ]( style );
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
@@ -54,8 +54,8 @@ QUnit.test( '(un)wrap', function ( assert ) {
 				style: 'bullet',
 				expectedRange: new ve.Range( 187, 205 ),
 				expectedData: function ( data ) {
-					delete data[190].internal;
-					delete data[202].internal;
+					delete data[ 190 ].internal;
+					delete data[ 202 ].internal;
 					data.splice( 186, 4 );
 					data.splice( 196, 2 );
 					data.splice( 206, 2,
@@ -67,8 +67,8 @@ QUnit.test( '(un)wrap', function ( assert ) {
 				},
 				expectedOriginalData: function ( data ) {
 					// generated: 'wrapper' is removed by the action and not restored by undo
-					delete data[190].internal;
-					delete data[202].internal;
+					delete data[ 190 ].internal;
+					delete data[ 202 ].internal;
 				},
 				msg: 'unwrapping two double listed paragraphs'
 			}
@@ -76,6 +76,6 @@ QUnit.test( '(un)wrap', function ( assert ) {
 
 	QUnit.expect( cases.length * 4 );
 	for ( i = 0; i < cases.length; i++ ) {
-		runListConverterTest( assert, cases[i].html, cases[i].method, cases[i].style, cases[i].range, cases[i].expectedRange, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
+		runListConverterTest( assert, cases[ i ].html, cases[ i ].method, cases[ i ].style, cases[ i ].range, cases[ i ].expectedRange, cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].msg );
 	}
 } );

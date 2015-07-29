@@ -90,13 +90,13 @@
 	ve.test.utils.countGetModelFromDomTests = function ( cases ) {
 		var msg, n = 0;
 		for ( msg in cases ) {
-			if ( cases[msg].head !== undefined || cases[msg].body !== undefined ) {
+			if ( cases[ msg ].head !== undefined || cases[ msg ].body !== undefined ) {
 				n += 3;
-				if ( cases[msg].storeLength ) {
+				if ( cases[ msg ].storeLength ) {
 					n += 1;
 				}
-				if ( cases[msg].storeItems ) {
-					n += cases[msg].storeItems.length;
+				if ( cases[ msg ].storeItems ) {
+					n += cases[ msg ].storeItems.length;
 				}
 			}
 		}
@@ -130,10 +130,10 @@
 			// check storeItems have been added to store
 			if ( caseItem.storeItems ) {
 				for ( i = 0, length = caseItem.storeItems.length; i < length; i++ ) {
-					hash = caseItem.storeItems[i].hash || OO.getHash( caseItem.storeItems[i].value );
+					hash = caseItem.storeItems[ i ].hash || OO.getHash( caseItem.storeItems[ i ].value );
 					assert.deepEqualWithDomElements(
 						model.getStore().value( model.getStore().indexOfHash( hash ) ) || {},
-						caseItem.storeItems[i].value,
+						caseItem.storeItems[ i ].value,
 						msg + ': store item ' + i + ' found'
 					);
 				}
@@ -153,7 +153,7 @@
 		// Load storeItems into store
 		if ( caseItem.storeItems ) {
 			for ( i = 0, length = caseItem.storeItems.length; i < length; i++ ) {
-				store.index( caseItem.storeItems[i].value, caseItem.storeItems[i].hash );
+				store.index( caseItem.storeItems[ i ].value, caseItem.storeItems[ i ].hash );
 			}
 		}
 		model = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
@@ -189,7 +189,7 @@
 	 * Create a UI surface from some HTML
 	 *
 	 * @param {string} html Document HTML
-	 * @returns {ve.ui.Surface} UI surface
+	 * @return {ve.ui.Surface} UI surface
 	 */
 	ve.test.utils.createSurfaceFromHtml = function ( html ) {
 		return this.createSurfaceFromDocument( ve.createDocumentFromHtml( html ) );
@@ -199,7 +199,7 @@
 	 * Create a UI surface from a document
 	 *
 	 * @param {ve.dm.Document} doc Document
-	 * @returns {ve.ui.Surface} UI surface
+	 * @return {ve.ui.Surface} UI surface
 	 */
 	ve.test.utils.createSurfaceFromDocument = function ( doc ) {
 		var target = new ve.init.sa.Target();
@@ -212,7 +212,7 @@
 	 * Create a CE surface from some HTML
 	 *
 	 * @param {string} html Document HTML
-	 * @returns {ve.ce.Surface} CE surface
+	 * @return {ve.ce.Surface} CE surface
 	 */
 	ve.test.utils.createSurfaceViewFromHtml = function ( html ) {
 		return this.createSurfaceViewFromDocument(
@@ -224,7 +224,7 @@
 	 * Create a CE surface from a document
 	 *
 	 * @param {ve.dm.Document} doc Document
-	 * @returns {ve.ce.Surface} CE surface
+	 * @return {ve.ce.Surface} CE surface
 	 */
 	ve.test.utils.createSurfaceViewFromDocument = function ( doc ) {
 		var mockSurface = {
@@ -258,7 +258,7 @@
 	 * Create a model-only UI surface from some HTML
 	 *
 	 * @param {string} html Document HTML
-	 * @returns {Object} Mock UI surface which only returns a real model
+	 * @return {Object} Mock UI surface which only returns a real model
 	 */
 	ve.test.utils.createModelOnlySurfaceFromHtml = function ( html ) {
 		var model = new ve.dm.Surface(
@@ -284,7 +284,7 @@
 	 * @param {string} data.type Tag name or '#text' or '#comment'
 	 * @param {string} [data.text] Node text, only used if type is '#text' or '#comment'
 	 * @param {Object[]} [data.children] Node's children; array of objects like data
-	 * @returns {Node} DOM node corresponding to data
+	 * @return {Node} DOM node corresponding to data
 	 */
 	ve.test.utils.buildDom = function buildDom( data ) {
 		var i, node;
@@ -297,7 +297,7 @@
 		node = document.createElement( data.type );
 		if ( data.children ) {
 			for ( i = 0; i < data.children.length; i++ ) {
-				node.appendChild( buildDom( data.children[i] ) );
+				node.appendChild( buildDom( data.children[ i ] ) );
 			}
 		}
 		return node;
@@ -314,7 +314,7 @@
 	 * @param {number} position.offset The offset at which the position marker lies
 	 * @param {Object} [options]
 	 * @param {Function|string} options.ignore Selector for nodes to omit from output
-	 * @returns {string} Serialization of the node and position
+	 * @return {string} Serialization of the node and position
 	 */
 	ve.test.utils.serializePosition = function ( rootNode, position, options ) {
 		var html = [];
@@ -356,7 +356,7 @@
 				if ( node === position.node && i === position.offset ) {
 					html.push( '|' );
 				}
-				add( node.childNodes[i] );
+				add( node.childNodes[ i ] );
 			}
 			if ( node === position.node && node.childNodes.length === position.offset ) {
 				html.push( '|' );

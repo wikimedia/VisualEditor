@@ -70,7 +70,7 @@ ve.SelectionState.static.newNullSelection = function () {
 /**
  * Returns the selection with the anchor and focus swapped
  *
- * @returns {ve.SelectionState} selection with anchor/focus swapped. Object-identical to this if isCollapsed
+ * @return {ve.SelectionState} selection with anchor/focus swapped. Object-identical to this if isCollapsed
  */
 ve.SelectionState.prototype.flip = function () {
 	if ( this.isCollapsed ) {
@@ -90,7 +90,7 @@ ve.SelectionState.prototype.flip = function () {
  * Whether the selection represents is the same range as another DOM Selection-like object
  *
  * @param {Object} other DOM Selection-like object
- * @returns {boolean} True if the anchors/focuses are equal (including null)
+ * @return {boolean} True if the anchors/focuses are equal (including null)
  */
 ve.SelectionState.prototype.equalsSelection = function ( other ) {
 	return this.anchorNode === other.anchorNode &&
@@ -105,7 +105,7 @@ ve.SelectionState.prototype.equalsSelection = function ( other ) {
  * N.B. Range objects do not show whether the selection is backwards
  *
  * @param {HTMLDocument} doc The owner document of the selection nodes
- * @returns {Range|null} Range
+ * @return {Range|null} Range
  */
 ve.SelectionState.prototype.getNativeRange = function ( doc ) {
 	var range;

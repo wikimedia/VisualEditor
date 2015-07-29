@@ -38,7 +38,7 @@ ve.ce.DefinitionListItemNode.static.splitOnEnter = true;
  *
  * Tag name is selected based on the model's style attribute.
  *
- * @returns {string} HTML tag name
+ * @return {string} HTML tag name
  * @throws {Error} If style is invalid
  */
 ve.ce.DefinitionListItemNode.prototype.getTagName = function () {
@@ -48,7 +48,7 @@ ve.ce.DefinitionListItemNode.prototype.getTagName = function () {
 	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
 		throw new Error( 'Invalid style' );
 	}
-	return types[style];
+	return types[ style ];
 };
 
 /**
