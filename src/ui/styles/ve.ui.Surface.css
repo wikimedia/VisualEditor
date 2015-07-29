@@ -18,7 +18,7 @@
 }
 
 .ve-ui-surface-placeholder {
-	color: #aaa;
+	opacity: 0.33;
 	position: absolute;
 	/* Match .ve-ce-documentNode */
 	padding: 0.9375em 1.875em;
