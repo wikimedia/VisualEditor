@@ -432,7 +432,7 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullCol', selection.isFullCol() );
 
 	if ( selectionChanged ) {
-		OO.ui.Element.static.scrollIntoView( this.$selectionBox.get( 0 ) );
+		ve.scrollIntoView( this.$selectionBox.get( 0 ) );
 	}
 };
 
