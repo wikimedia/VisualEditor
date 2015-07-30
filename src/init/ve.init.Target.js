@@ -13,11 +13,14 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {Object} toolbarConfig Configuration options for the toolbar
+ * @param {Object} [config] Configuration options
+ * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
  */
-ve.init.Target = function VeInitTarget( toolbarConfig ) {
+ve.init.Target = function VeInitTarget( config ) {
+	config = config || {};
+
 	// Parent constructor
-	OO.ui.Element.call( this );
+	ve.init.Target.super.call( this, config );
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
@@ -26,7 +29,7 @@ ve.init.Target = function VeInitTarget( toolbarConfig ) {
 	this.surfaces = [];
 	this.surface = null;
 	this.toolbar = null;
-	this.toolbarConfig = toolbarConfig;
+	this.toolbarConfig = config.toolbarConfig;
 	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands );
 	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands );
 

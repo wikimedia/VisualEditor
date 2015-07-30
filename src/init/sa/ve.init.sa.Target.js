@@ -24,17 +24,19 @@
  * @extends ve.init.Target
  *
  * @constructor
- * @param {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
- * @param {Object} [toolbarConfig] Configuration options for the toolbar
+ * @param {Object} [config] Configuration options
+ * @cfg {string} [surfaceType] Type of surface to use, 'desktop' or 'mobile'
+ * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
  * @throws {Error} Unknown surfaceType
  */
-ve.init.sa.Target = function VeInitSaTarget( surfaceType, toolbarConfig ) {
-	toolbarConfig = $.extend( { shadow: true, actions: true, floatable: true }, toolbarConfig );
+ve.init.sa.Target = function VeInitSaTarget( config ) {
+	config = config || {};
+	config.toolbarConfig = $.extend( { shadow: true, actions: true, floatable: true }, config.toolbarConfig );
 
 	// Parent constructor
-	ve.init.Target.call( this, toolbarConfig );
+	ve.init.sa.Target.super.call( this, config );
 
-	this.surfaceType = surfaceType || this.constructor.static.defaultSurfaceType;
+	this.surfaceType = config.surfaceType || this.constructor.static.defaultSurfaceType;
 	this.actions = null;
 
 	switch ( this.surfaceType ) {
