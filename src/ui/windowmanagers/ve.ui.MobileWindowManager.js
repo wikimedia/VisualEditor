@@ -19,6 +19,9 @@ ve.ui.MobileWindowManager = function VeUiMobileWindowManager( surface, config ) 
 	// Parent constructor
 	ve.ui.MobileWindowManager.super.call( this, surface, config );
 
+	// Events
+	this.connect( this, { opening: 'onMobileOpening' } );
+
 	// Initialization
 	this.$element.addClass( 've-ui-mobileWindowManager' );
 };
@@ -38,3 +41,19 @@ ve.ui.MobileWindowManager.static.sizes = {
 ve.ui.MobileWindowManager.static.defaultSize = 'full';
 
 /* Methods */
+
+/**
+ * Handle window opening events
+ */
+ve.ui.MobileWindowManager.prototype.onMobileOpening = function ( win, opening ) {
+	// HACK: un-frame buttons
+	opening.done( function () {
+		var i, l, list;
+		if ( win instanceof OO.ui.ProcessDialog ) {
+			list = win.actions.list;
+			for ( i = 0, l = list.length; i < l; i++ ) {
+				list[i].toggleFramed( false );
+			}
+		}
+	} );
+};
