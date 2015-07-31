@@ -15,6 +15,8 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
+ * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
+ * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
  */
 ve.init.Target = function VeInitTarget( config ) {
 	config = config || {};
@@ -25,11 +27,16 @@ ve.init.Target = function VeInitTarget( config ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
+	// Register
+	ve.init.target = this;
+
 	// Properties
 	this.surfaces = [];
 	this.surface = null;
 	this.toolbar = null;
 	this.toolbarConfig = config.toolbarConfig;
+	this.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
+	this.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
 	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands );
 	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands );
 
@@ -44,9 +51,6 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.onDocumentKeyDownHandler = this.onDocumentKeyDown.bind( this );
 	this.onTargetKeyDownHandler = this.onTargetKeyDown.bind( this );
 	this.bindHandlers();
-
-	// Register
-	ve.init.target = this;
 };
 
 /* Inheritance */

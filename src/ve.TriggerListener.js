@@ -41,7 +41,7 @@ ve.TriggerListener.prototype.setupCommands = function ( commands ) {
 			triggers = ve.ui.triggerRegistry.lookup( command );
 			if ( triggers ) {
 				for ( j = triggers.length - 1; j >= 0; j-- ) {
-					this.commandsByTrigger[triggers[j].toString()] = ve.ui.commandRegistry.lookup( command );
+					this.commandsByTrigger[triggers[j].toString()] = ve.init.target.commandRegistry.lookup( command );
 				}
 				this.triggers[command] = triggers;
 			}

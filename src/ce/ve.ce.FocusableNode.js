@@ -225,7 +225,7 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
 	if ( !this.model.isInspectable() ) {
 		return false;
 	}
-	var command = ve.ui.commandRegistry.getCommandForNode( this );
+	var command = ve.init.target.commandRegistry.getCommandForNode( this );
 	if ( command ) {
 		command.execute( this.focusableSurface.getSurface() );
 	}

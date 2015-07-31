@@ -165,7 +165,7 @@ ve.ui.ContextItem.prototype.isEditable = function () {
  * @return {ve.ui.Command} Command
  */
 ve.ui.ContextItem.prototype.getCommand = function () {
-	return ve.ui.commandRegistry.lookup( this.constructor.static.commandName );
+	return ve.init.target.commandRegistry.lookup( this.constructor.static.commandName );
 };
 
 /**

@@ -7,9 +7,10 @@
 ( function () {
 	/*jshint browser:true */
 
-	// Create a standalone platform so ve.init.platform is available
+	// Create a standalone platform and target so ve.init.platform/target are available
 	/*jshint nonew:false */
 	new ve.init.sa.Platform();
+	new ve.init.sa.Target();
 	/*jshint nonew:true */
 
 	// Configure QUnit

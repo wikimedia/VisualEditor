@@ -42,7 +42,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$menus = $( '<div>' );
 	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
 	this.triggerListener = new ve.TriggerListener( OO.simpleArrayDifference(
-		config.includeCommands || Object.keys( ve.ui.commandRegistry.registry ), config.excludeCommands || []
+		config.includeCommands || Object.keys( ve.init.target.commandRegistry.registry ), config.excludeCommands || []
 	) );
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
