@@ -156,18 +156,6 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
-		'code', 'annotation', 'toggle',
-		{ args: [ 'textStyle/code' ], supportedSelections: [ 'linear', 'table' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'strikethrough', 'annotation', 'toggle',
-		{ args: [ 'textStyle/strikethrough' ], supportedSelections: [ 'linear', 'table' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
 		'language', 'window', 'open',
 		{ args: [ 'language' ], supportedSelections: [ 'linear' ] }
 	)
