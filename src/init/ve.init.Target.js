@@ -17,6 +17,7 @@
  * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
  * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
+ * @cfg {ve.ui.DataTransferHandlerFactory} [dataTransferHandlerFactory] Data transfer handler factory to use
  */
 ve.init.Target = function VeInitTarget( config ) {
 	config = config || {};
@@ -37,6 +38,7 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.toolbarConfig = config.toolbarConfig;
 	this.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
 	this.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
+	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.ui.dataTransferHandlerFactory;
 	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands );
 	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands );
 
