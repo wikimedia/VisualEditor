@@ -17,7 +17,7 @@
  */
 ve.ui.MobileSurface = function VeUiMobileSurface() {
 	// Parent constructor
-	ve.ui.Surface.apply( this, arguments );
+	ve.ui.MobileSurface.super.apply( this, arguments );
 
 	// Properties
 	this.scrollPosition = null;
