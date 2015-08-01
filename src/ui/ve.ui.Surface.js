@@ -54,8 +54,8 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 		// HTMLDocument
 		documentModel = ve.dm.converter.getModelFromDom( dataOrDoc );
 	}
-	this.model = new ve.dm.Surface( documentModel );
-	this.view = new ve.ce.Surface( this.model, this );
+	this.model = this.createModel( documentModel );
+	this.view = this.createView( this.model );
 	this.dialogs = this.createDialogWindowManager();
 	this.importRules = config.importRules || {};
 	this.enabled = true;
@@ -185,6 +185,26 @@ ve.ui.Surface.prototype.createContext = null;
  * @return {ve.ui.WindowManager} Dialog window manager
  */
 ve.ui.Surface.prototype.createDialogWindowManager = null;
+
+/**
+ * Create a surface model
+ *
+ * @param {ve.dm.Document} doc Document model
+ * @return {ve.dm.Surface} Surface model
+ */
+ve.ui.Surface.prototype.createModel = function ( doc ) {
+	return new ve.dm.Surface( doc );
+};
+
+/**
+ * Create a surface view
+ *
+ * @param {ve.dm.Surface} model Surface model
+ * @return {ve.ce.Surface} Surface view
+ */
+ve.ui.Surface.prototype.createView = function ( model ) {
+	return new ve.ce.Surface( model, this );
+};
 
 /**
  * Set up the debug bar and insert it into the DOM.
