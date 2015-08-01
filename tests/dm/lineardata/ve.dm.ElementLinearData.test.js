@@ -1477,7 +1477,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				plainText: true,
+				rules: { plainText: true },
 				msg: 'Annotations removed in plainText mode'
 			},
 			{
@@ -1495,7 +1495,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				plainText: true,
+				rules: { plainText: true },
 				msg: 'Headings converted to paragraph is plainText mode'
 			},
 			{
@@ -1537,7 +1537,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[i].html ) );
 		data = model.data;
-		data.sanitize( cases[i].rules || {}, cases[i].plainText );
+		data.sanitize( cases[i].rules || {} );
 		assert.equalLinearData( data.data, cases[i].data, cases[i].msg + ': data' );
 		if ( cases[i].store ) {
 			/*jshint loopfunc:true */
