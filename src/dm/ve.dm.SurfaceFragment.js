@@ -225,6 +225,7 @@ ve.dm.SurfaceFragment.prototype.willExcludeInsertions = function () {
  * boundaries of the selection; if it is disabled, insertions will be included.
  *
  * @param {boolean} excludeInsertions Whether to exclude insertions
+ * @chainable
  */
 ve.dm.SurfaceFragment.prototype.setExcludeInsertions = function ( excludeInsertions ) {
 	excludeInsertions = !!excludeInsertions;
@@ -234,6 +235,7 @@ ve.dm.SurfaceFragment.prototype.setExcludeInsertions = function ( excludeInserti
 		// Set the new value
 		this.excludeInsertions = excludeInsertions;
 	}
+	return this;
 };
 
 /**
