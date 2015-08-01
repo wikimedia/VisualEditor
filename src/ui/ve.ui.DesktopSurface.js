@@ -17,7 +17,7 @@
  */
 ve.ui.DesktopSurface = function VeUiDesktopSurface() {
 	// Parent constructor
-	ve.ui.Surface.apply( this, arguments );
+	ve.ui.DesktopSurface.super.apply( this, arguments );
 };
 
 /* Inheritance */
