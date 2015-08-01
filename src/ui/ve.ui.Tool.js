@@ -97,5 +97,5 @@ ve.ui.Tool.prototype.getCommand = function () {
 	if ( this.constructor.static.commandName === null ) {
 		return null;
 	}
-	return ve.ui.commandRegistry.lookup( this.constructor.static.commandName );
+	return ve.init.target.commandRegistry.lookup( this.constructor.static.commandName );
 };

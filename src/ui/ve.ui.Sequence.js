@@ -60,7 +60,7 @@ ve.ui.Sequence.prototype.match = function ( data, offset ) {
 ve.ui.Sequence.prototype.execute = function ( surface ) {
 	var range, executed, stripFragment,
 		surfaceModel = surface.getModel(),
-		command = ve.ui.commandRegistry.lookup( this.getCommandName() );
+		command = ve.init.target.commandRegistry.lookup( this.getCommandName() );
 
 	if ( !command ) {
 		throw new Error( 'Command not found: ' + this.getCommandName() ) ;
