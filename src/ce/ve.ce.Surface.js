@@ -1889,7 +1889,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		context, left, right, contextRange,
 		items = [],
 		importantElement = '[id],[typeof],[rel]',
-		importRules = this.getSurface().getImportRules(),
+		importRules = !this.pasteSpecial ? this.getSurface().getImportRules() : { all: { plainText: true } },
 		beforePasteData = this.beforePasteData || {},
 		selection = this.model.getSelection(),
 		view = this;
@@ -1993,8 +1993,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getOriginalData() )
 			);
 
-			if ( importRules.all || this.pasteSpecial ) {
-				pasteData.sanitize( importRules.all || {}, this.pasteSpecial );
+			if ( importRules.all ) {
+				pasteData.sanitize( importRules.all );
 			}
 
 			// Annotate
@@ -2014,8 +2014,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getBalancedData() )
 			);
 
-			if ( importRules.all || this.pasteSpecial ) {
-				pasteData.sanitize( importRules.all || {}, this.pasteSpecial );
+			if ( importRules.all ) {
+				pasteData.sanitize( importRules.all );
 			}
 
 			// Annotate
@@ -2077,12 +2077,12 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
 		// If the clipboardKey isn't set (paste from non-VE instance) use external import rules
 		if ( !clipboardKey ) {
-			data.sanitize( importRules.external, this.pasteSpecial );
+			data.sanitize( importRules.external || {} );
 			if ( importRules.all ) {
 				data.sanitize( importRules.all );
 			}
 		} else {
-			data.sanitize( importRules.all || {}, this.pasteSpecial );
+			data.sanitize( importRules.all || {} );
 		}
 		data.remapInternalListKeys( this.model.getDocument().getInternalList() );
 
@@ -2098,7 +2098,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			);
 			if ( this.pasteSpecial ) {
 				// The context may have been sanitized, so sanitize here as well for comparison
-				context.sanitize( importRules, this.pasteSpecial, true );
+				context.sanitize( importRules, true );
 			}
 
 			// Remove matching context from the left

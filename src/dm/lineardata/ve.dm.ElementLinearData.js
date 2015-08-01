@@ -937,14 +937,14 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
  * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
  * @param {boolean} [rules.removeOriginalDomElements] Remove references to DOM elements data was converted from
- * @param {boolean} [plainText=false] Remove all formatting for plain text import
+ * @param {boolean} [rules.plainText] Remove all formatting for plain text import
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
-ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEmptyContentBranches ) {
+ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentBranches ) {
 	var i, len, annotations, emptySet, setToRemove, type,
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
-	if ( plainText ) {
+	if ( rules.plainText ) {
 		emptySet = new ve.dm.AnnotationSet( this.getStore() );
 	} else {
 		if ( rules.removeOriginalDomElements ) {
@@ -972,7 +972,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 				this.getData( i ).type = ( this.isCloseElementData( i ) ? '/' : '' ) + type;
 			}
 			// Convert content-containing non-paragraph nodes to paragraphs in plainText mode
-			if ( plainText && type !== 'paragraph' && ve.dm.nodeFactory.canNodeContainContent( type ) ) {
+			if ( rules.plainText && type !== 'paragraph' && ve.dm.nodeFactory.canNodeContainContent( type ) ) {
 				type = 'paragraph';
 				this.setData( i, {
 					type: ( this.isCloseElementData( i ) ? '/' : '' ) + type
@@ -981,7 +981,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 			// Remove blacklisted nodes
 			if (
 				( rules.blacklist && rules.blacklist.indexOf( type ) !== -1 ) ||
-				( plainText && type !== 'paragraph' && type !== 'internalList' )
+				( rules.plainText && type !== 'paragraph' && type !== 'internalList' )
 			) {
 				this.splice( i, 1 );
 				// Make sure you haven't just unwrapped a wrapper paragraph
@@ -1009,7 +1009,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, plainText, keepEm
 		}
 		annotations = this.getAnnotationsFromOffset( i, true );
 		if ( !annotations.isEmpty() ) {
-			if ( plainText ) {
+			if ( rules.plainText ) {
 				this.setAnnotationsAtOffset( i, emptySet );
 			} else if ( setToRemove.getLength() ) {
 				// Remove blacklisted annotations
