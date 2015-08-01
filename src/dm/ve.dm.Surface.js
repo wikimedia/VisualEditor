@@ -465,7 +465,7 @@ ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, exclud
  * @return {ve.dm.SurfaceFragment} Surface fragment
  */
 ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excludeInsertions ) {
-	return new ve.dm.SurfaceFragment( this, new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect, excludeInsertions );
+	return this.getFragment( new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect, excludeInsertions );
 };
 
 /**
