@@ -1238,7 +1238,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 	doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
 
 	if ( importRules ) {
-		data.sanitize( importRules.external );
+		data.sanitize( importRules.external || {} );
 		if ( importRules.all ) {
 			data.sanitize( importRules.all );
 		}
