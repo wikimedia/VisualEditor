@@ -10,6 +10,7 @@
 	"visualeditor-align-widget-left": "چپ",
 	"visualeditor-align-widget-right": "راست",
 	"visualeditor-alignablecontextitem-title": "هوم ترازی",
+	"visualeditor-annotationbutton-bold-tooltip": "پۉررأنگ",
 	"visualeditor-annotationbutton-code-tooltip": "کد کامپیوتری",
 	"visualeditor-annotationbutton-italic-tooltip": "کج",
 	"visualeditor-annotationbutton-language-tooltip": "زوون",
@@ -90,6 +91,7 @@
 	"visualeditor-shortcuts-formatting": "قالب بنی پاراگراف",
 	"visualeditor-shortcuts-history": "تاریخچه",
 	"visualeditor-shortcuts-other": "دیه",
+	"visualeditor-shortcuts-text-style": "سأبک ھ مأتن",
 	"visualeditor-slug-insert": "هشتن پاراگراف",
 	"visualeditor-specialcharacter-button-tooltip": "کاراکتر مخصوص",
 	"visualeditor-specialcharacterinspector-title": "کاراکتر مخصوص",
@@ -112,5 +114,6 @@
 	"visualeditor-toolbar-paragraph-format": "قالب بنی",
 	"visualeditor-toolbar-structure": "ساختار",
 	"visualeditor-toolbar-style-tooltip": "متن سبک",
-	"visualeditor-toolbar-table": "جدول"
+	"visualeditor-toolbar-table": "جدول",
+	"visualeditor-toolbar-text-style": "سأبک‌دیهی"
 }

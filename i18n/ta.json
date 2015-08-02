@@ -7,7 +7,8 @@
 			"மதனாஹரன்",
 			"Kalyanasundar",
 			"ElangoRamanujam",
-			"Info-farmer"
+			"Info-farmer",
+			"Dineshkumar Ponnusamy"
 		]
 	},
 	"visualeditor": "காட்சிசார்த் தொகுப்பி",
@@ -75,7 +76,7 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "முன்னிடைவெளி குறை",
 	"visualeditor-inspector-close-tooltip": "மூடுக",
 	"visualeditor-inspector-remove-tooltip": "நீக்குக",
-	"visualeditor-language-search-input-placeholder": "மொழியின் பெயர், குறியீட்டால் தேடல்",
+	"visualeditor-language-search-input-placeholder": "மொழியின் பெயர் அல்லது குறியீட்டால் தேடல்",
 	"visualeditor-languageinspector-title": "மொழி",
 	"visualeditor-languageinspector-widget-changelang": "மொழியைக் கண்டறி",
 	"visualeditor-languageinspector-widget-label-direction": "திசை",
