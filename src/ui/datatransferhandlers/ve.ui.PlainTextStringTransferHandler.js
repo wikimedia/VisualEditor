@@ -37,7 +37,7 @@ ve.ui.PlainTextStringTransferHandler.static.handlesPaste = false;
  * @inheritdoc
  */
 ve.ui.PlainTextStringTransferHandler.prototype.process = function () {
-	this.insertableDataDeferred.resolve( this.item.getAsString() );
+	this.resolve( this.item.getAsString() );
 };
 
 /* Registration */

@@ -42,7 +42,7 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 		input = Papa.parse( this.reader.result );
 
 	if ( input.meta.aborted || ( input.data.length <= 0 ) ) {
-		this.insertableDataDeferred.reject();
+		this.abort();
 	} else {
 		data.push(
 			{ type: 'table' },
@@ -71,7 +71,7 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 			{ type: '/table' }
 		);
 
-		this.insertableDataDeferred.resolve( data );
+		this.resolve( data );
 	}
 
 	// Parent method

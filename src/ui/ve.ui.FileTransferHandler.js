@@ -30,7 +30,7 @@ ve.ui.FileTransferHandler = function VeUiFileTransferHandler() {
 	// Events
 	this.reader.addEventListener( 'progress', this.onFileProgress.bind( this ) );
 	this.reader.addEventListener( 'load', this.onFileLoad.bind( this ) );
-	this.reader.addEventListener( 'loadend', this.onFileLoadEnd.bind( this ) );
+	this.reader.addEventListener( 'error', this.onFileError.bind( this ) );
 };
 
 /* Inheritance */
@@ -85,14 +85,12 @@ ve.ui.FileTransferHandler.prototype.onFileLoad = function () {
 };
 
 /**
- * Handle load end events from the file reader
+ * Handle error events from the file reader
  *
- * @param {Event} e Load end event
+ * @param {Event} e Error event
  */
-ve.ui.FileTransferHandler.prototype.onFileLoadEnd = function () {
-	// 'loadend' fires after 'load'/'abort'/'error'.
-	// Reject the deferred if it hasn't already resolved.
-	this.insertableDataDeferred.reject();
+ve.ui.FileTransferHandler.prototype.onFileError = function () {
+	this.abort();
 };
 
 /**

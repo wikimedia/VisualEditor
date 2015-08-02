@@ -102,6 +102,15 @@ ve.ui.DataTransferHandler.prototype.getInsertableData = function () {
 };
 
 /**
+ * Resolve the data transfer handler with some data
+ *
+ * @param {ve.dm.Document|string|Array} dataOrDoc Insertable data or document
+ */
+ve.ui.DataTransferHandler.prototype.resolve = function ( dataOrDoc ) {
+	this.insertableDataDeferred.resolve( dataOrDoc );
+};
+
+/**
  * Abort the data transfer handler
  */
 ve.ui.DataTransferHandler.prototype.abort = function () {
