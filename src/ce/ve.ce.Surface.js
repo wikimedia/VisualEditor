@@ -438,8 +438,10 @@ ve.ce.Surface.prototype.getSelectionRects = function ( selection ) {
 		relativeRects = [];
 
 	selection = selection || this.getModel().getSelection();
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	if ( selection instanceof ve.dm.NullSelection ) {
 		return null;
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		return this.getSelectionBoundingRect( selection );
 	}
 
 	range = selection.getRange();
@@ -491,7 +493,7 @@ ve.ce.Surface.prototype.getSelectionStartAndEndRects = function ( selection ) {
 	var range, focusedNode;
 
 	selection = selection || this.getModel().getSelection();
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	if ( selection instanceof ve.dm.NullSelection ) {
 		return null;
 	}
 
@@ -518,29 +520,32 @@ ve.ce.Surface.prototype.getSelectionBoundingRect = function ( selection ) {
 	var range, nativeRange, boundingRect, surfaceRect, focusedNode;
 
 	selection = selection || this.getModel().getSelection();
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return null;
-	}
 
-	range = selection.getRange();
-	focusedNode = this.getFocusedNode( range );
+	if ( selection instanceof ve.dm.TableSelection ) {
+		boundingRect = this.getActiveTableNode().getSelectionBoundingRect( selection );
+	} else if ( selection instanceof ve.dm.LinearSelection ) {
+		range = selection.getRange();
+		focusedNode = this.getFocusedNode( range );
 
-	if ( focusedNode ) {
-		return focusedNode.getBoundingRect();
-	}
-
-	nativeRange = this.getNativeRange( range );
-	if ( !nativeRange ) {
-		return null;
-	}
-
-	try {
-		boundingRect = RangeFix.getBoundingClientRect( nativeRange );
-		if ( !boundingRect ) {
-			throw new Error( 'getBoundingClientRect returned null' );
+		if ( focusedNode ) {
+			return focusedNode.getBoundingRect();
 		}
-	} catch ( e ) {
-		boundingRect = this.getNodeClientRectFromRange( nativeRange );
+
+		nativeRange = this.getNativeRange( range );
+		if ( !nativeRange ) {
+			return null;
+		}
+
+		try {
+			boundingRect = RangeFix.getBoundingClientRect( nativeRange );
+			if ( !boundingRect ) {
+				throw new Error( 'getBoundingClientRect returned null' );
+			}
+		} catch ( e ) {
+			boundingRect = this.getNodeClientRectFromRange( nativeRange );
+		}
+	} else {
+		return null;
 	}
 
 	surfaceRect = this.getSurface().getBoundingClientRect();
@@ -3694,11 +3699,13 @@ ve.ce.Surface.prototype.handleTableDelete = function () {
 	var i, l,
 		surfaceModel = this.getModel(),
 		fragments = [],
-		ranges = surfaceModel.getSelection().getRanges();
+		cells = surfaceModel.getSelection().getMatrixCells();
 
-	for ( i = 0, l = ranges.length; i < l; i++ ) {
-		// Create auto-updating fragments from ranges
-		fragments.push( surfaceModel.getLinearFragment( ranges[i], true ) );
+	for ( i = 0, l = cells.length; i < l; i++ ) {
+		if ( cells[i].node.isCellEditable() ) {
+			// Create auto-updating fragments from ranges
+			fragments.push( surfaceModel.getLinearFragment( cells[i].node.getRange(), true ) );
+		}
 	}
 
 	for ( i = 0, l = fragments.length; i < l; i++ ) {

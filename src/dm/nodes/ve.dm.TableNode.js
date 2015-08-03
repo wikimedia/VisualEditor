@@ -234,6 +234,6 @@ ve.dm.TableNodeCellIterator.prototype.nextCell = function () {
 	}
 	// Get the next node and make sure it's a cell node (and not an alien node)
 	var cellNode = this.rowNode.children[this.cellIndex];
-	this.cellNode = cellNode instanceof ve.dm.TableCellNode ? cellNode : null;
+	this.cellNode = cellNode && cellNode.isCellable() ? cellNode : null;
 	this.cellIndex++;
 };

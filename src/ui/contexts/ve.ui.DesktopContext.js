@@ -190,6 +190,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		rtl = this.surface.getModel().getDocument().getDir() === 'rtl',
 		surface = this.surface.getView(),
 		selection = this.inspector && this.inspector.previousSelection,
+		isTableSelection = ( selection || this.surface.getModel().getSelection() ) instanceof ve.dm.TableSelection,
 		focusedNode = surface.getFocusedNode();
 
 	boundingRect = surface.getSelectionBoundingRect( selection );
@@ -202,7 +203,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		// Skip updating the cursor position, but still update the width and height.
 		this.popup.toggleAnchor( true );
 		this.popup.align = 'center';
-	} else if ( focusedNode && !focusedNode.isContent() ) {
+	} else if ( isTableSelection || ( focusedNode && !focusedNode.isContent() ) ) {
 		embeddable = this.isEmbeddable() &&
 			boundingRect.height > this.$group.outerHeight() + 5 &&
 			boundingRect.width > this.$group.outerWidth() + 10;

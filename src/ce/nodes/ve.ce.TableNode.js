@@ -249,8 +249,11 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 			selection = selection.collapseToFrom();
 			this.surface.getModel().setSelection( selection );
 		}
-		this.editingFragment = this.surface.getModel().getFragment( selection );
 		cell = this.getCellNodesFromSelection( selection )[0];
+		if ( !cell.isCellEditable() ) {
+			return;
+		}
+		this.editingFragment = this.surface.getModel().getFragment( selection );
 		cell.setEditing( true );
 		if ( !noSelect ) {
 			cellRange = cell.getModel().getRange();
@@ -349,8 +352,8 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		return;
 	}
 
-	var i, l, nodes, cellOffset, anchorNode, anchorOffset, selectionOffset,
-		top, left, bottom, right,
+	var i, l, anchorNode, anchorOffset, selectionOffset, cells,
+		editable = true,
 		selection = this.editingFragment ?
 			this.editingFragment.getSelection() :
 			this.surface.getModel().getSelection(),
@@ -363,27 +366,18 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		return;
 	}
 
-	nodes = this.getCellNodesFromSelection( selection );
-	anchorNode = this.getCellNodesFromSelection( selection.collapseToFrom() )[0];
-	anchorOffset = ve.translateRect( anchorNode.$element[0].getBoundingClientRect(), -tableOffset.left, -tableOffset.top );
-
-	top = Infinity;
-	bottom = -Infinity;
-	left = Infinity;
-	right = -Infinity;
+	cells = selection.getMatrixCells();
+	anchorNode = this.getCellNodesFromSelection( selection.collapseToFrom() )[0];	anchorOffset = ve.translateRect( anchorNode.$element[0].getBoundingClientRect(), -tableOffset.left, -tableOffset.top );
 
 	// Compute a bounding box for the given cell elements
-	for ( i = 0, l = nodes.length; i < l; i++ ) {
-		cellOffset = nodes[i].$element[0].getBoundingClientRect();
-
-		top = Math.min( top, cellOffset.top );
-		bottom = Math.max( bottom, cellOffset.bottom );
-		left = Math.min( left, cellOffset.left );
-		right = Math.max( right, cellOffset.right );
+	for ( i = 0, l = cells.length; i < l; i++ ) {
+		if ( editable && !cells[i].node.isCellEditable() ) {
+			editable = false;
+		}
 	}
 
 	selectionOffset = ve.translateRect(
-		{ top: top, bottom: bottom, left: left, right: right, width: right - left, height: bottom - top },
+		this.getSelectionBoundingRect( selection ),
 		-tableOffset.left, -tableOffset.top
 	);
 
@@ -429,11 +423,47 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	// Classes
 	this.$selectionBox
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullRow', selection.isFullRow() )
-		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullCol', selection.isFullCol() );
+		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullCol', selection.isFullCol() )
+		.toggleClass( 've-ce-tableNodeOverlay-selection-box-notEditable', !editable );
 
 	if ( selectionChanged ) {
 		ve.scrollIntoView( this.$selectionBox.get( 0 ) );
 	}
+};
+
+/**
+ * Get the coordinates of the selection's bounding rectangle relative to the client.
+ *
+ * @param {ve.dm.Selection} selection Selection to get rectangles for
+ * @returns {Object} Selection rectangle, with keys top, bottom, left, right, width, height
+ */
+ve.ce.TableNode.prototype.getSelectionBoundingRect = function ( selection ) {
+	var i, l, cellOffset, top, bottom, left, right,
+		nodes = this.getCellNodesFromSelection( selection );
+
+	top = Infinity;
+	bottom = -Infinity;
+	left = Infinity;
+	right = -Infinity;
+
+	// Compute a bounding box for the given cell elements
+	for ( i = 0, l = nodes.length; i < l; i++ ) {
+		cellOffset = nodes[i].$element[0].getBoundingClientRect();
+
+		top = Math.min( top, cellOffset.top );
+		bottom = Math.max( bottom, cellOffset.bottom );
+		left = Math.min( left, cellOffset.left );
+		right = Math.max( right, cellOffset.right );
+	}
+
+	return {
+		top: top,
+		bottom: bottom,
+		left: left,
+		right: right,
+		width: right - left,
+		height: bottom - top
+	};
 };
 
 /**
