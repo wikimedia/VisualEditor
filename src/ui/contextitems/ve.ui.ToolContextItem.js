@@ -38,7 +38,7 @@ OO.inheritClass( ve.ui.ToolContextItem, ve.ui.ContextItem );
  * @inheritdoc
  */
 ve.ui.ToolContextItem.prototype.getCommand = function () {
-	return ve.ui.commandRegistry.lookup( this.tool.static.commandName );
+	return ve.init.target.commandRegistry.lookup( this.tool.static.commandName );
 };
 
 /**
