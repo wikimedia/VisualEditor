@@ -126,6 +126,15 @@ ve.dm.Node.static.isFocusable = false;
 ve.dm.Node.static.isAlignable = false;
 
 /**
+ * Whether this node type can behave as a table cell.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isCellable = false;
+
+/**
  * Whether this node type can contain content. The children of content container nodes must be
  * content nodes.
  *
@@ -395,6 +404,20 @@ ve.dm.Node.prototype.isFocusable = function () {
  */
 ve.dm.Node.prototype.isAlignable = function () {
 	return this.constructor.static.isAlignable;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isCellable = function () {
+	return this.constructor.static.isCellable;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isCellEditable = function () {
+	return this.constructor.static.isCellEditable;
 };
 
 /**

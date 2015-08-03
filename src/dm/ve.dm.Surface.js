@@ -644,9 +644,12 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		if ( !insertionAnnotations.equalsInOrder( this.insertionAnnotations ) ) {
 			this.setInsertionAnnotations( insertionAnnotations );
 		}
-	}
-
-	if ( selection instanceof ve.dm.TableSelection || selection instanceof ve.dm.NullSelection ) {
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		if ( selection.isSingleCell() ) {
+			selectedNode = selection.getMatrixCells()[0].node;
+		}
+		contextChange = true;
+	} else if ( selection instanceof ve.dm.NullSelection ) {
 		contextChange = true;
 	}
 

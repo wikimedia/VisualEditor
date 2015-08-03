@@ -153,6 +153,24 @@ ve.Node.prototype.isFocusable = null;
 ve.Node.prototype.isAlignable = null;
 
 /**
+ * Check if the node can behave as a table cell
+ *
+ * @method
+ * @abstract
+ * @returns {boolean} Node can behave as a table cell
+ */
+ve.Node.prototype.isCellable = null;
+
+/**
+ * Check the node, behaving as a table cell, can be edited in place
+ *
+ * @method
+ * @abstract
+ * @returns {boolean} Node can be edited in place
+ */
+ve.Node.prototype.isCellEditable = null;
+
+/**
  * Check if the node has significant whitespace.
  *
  * Can only be true if canContainContent is also true.

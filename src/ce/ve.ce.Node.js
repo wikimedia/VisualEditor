@@ -149,6 +149,20 @@ ve.ce.Node.prototype.isAlignable = function () {
 /**
  * @inheritdoc ve.Node
  */
+ve.ce.Node.prototype.isCellable = function () {
+	return this.model.isCellable();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.ce.Node.prototype.isCellEditable = function () {
+	return this.model.isCellEditable();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
 ve.ce.Node.prototype.hasSignificantWhitespace = function () {
 	return this.model.hasSignificantWhitespace();
 };

@@ -220,12 +220,19 @@ ve.ui.LinearContext.prototype.isInspectable = function () {
  * @inheritdoc
  */
 ve.ui.LinearContext.prototype.getRelatedSources = function () {
-	var i, len, toolClass, items, tools, models, selectedModels;
+	var i, len, toolClass, items, tools, models,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection(),
+		selectedModels = [];
 
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];
-		if ( this.surface.getModel().getSelection() instanceof ve.dm.LinearSelection ) {
+		if ( selection instanceof ve.dm.LinearSelection ) {
 			selectedModels = this.surface.getModel().getFragment().getSelectedModels();
+		} else if ( selection instanceof ve.dm.TableSelection ) {
+			selectedModels = [ surfaceModel.getSelectedNode() ];
+		}
+		if ( selectedModels.length ) {
 			models = [];
 			items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 			for ( i = 0, len = items.length; i < len; i++ ) {

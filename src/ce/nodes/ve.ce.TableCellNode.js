@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ce.BranchNode
+ * @mixins ve.ce.TableCellableNode
  * @constructor
  * @param {ve.dm.TableCellNode} model Model to observe
  * @param {Object} [config] Configuration options
@@ -16,6 +17,9 @@
 ve.ce.TableCellNode = function VeCeTableCellNode() {
 	// Parent constructor
 	ve.ce.TableCellNode.super.apply( this, arguments );
+
+	// Mixin constructors
+	ve.ce.TableCellableNode.call( this );
 
 	var rowspan = this.model.getRowspan(),
 		colspan = this.model.getColspan();
@@ -48,6 +52,8 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 /* Inheritance */
 
 OO.inheritClass( ve.ce.TableCellNode, ve.ce.BranchNode );
+
+OO.mixinClass( ve.ce.TableCellNode, ve.ce.TableCellableNode );
 
 /* Static Properties */
 
