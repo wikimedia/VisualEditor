@@ -37,7 +37,7 @@ ve.ui.HTMLStringTransferHandler.static.handlesPaste = false;
  * @inheritdoc
  */
 ve.ui.HTMLStringTransferHandler.prototype.process = function () {
-	this.insertableDataDeferred.resolve(
+	this.resolve(
 		this.surface.getModel().getDocument().newFromHtml( this.item.getAsString(), this.surface.getImportRules() )
 	);
 };

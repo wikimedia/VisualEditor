@@ -37,7 +37,7 @@ ve.ui.HTMLFileTransferHandler.static.extensions = [ 'html', 'htm', 'xhtml' ];
  * @inheritdoc
  */
 ve.ui.HTMLFileTransferHandler.prototype.onFileLoad = function () {
-	this.insertableDataDeferred.resolve(
+	this.resolve(
 		this.surface.getModel().getDocument().newFromHtml( this.reader.result, this.surface.getImportRules() )
 	);
 

@@ -37,7 +37,7 @@ ve.ui.PlainTextFileTransferHandler.static.extension = [ 'txt' ];
  * @inheritdoc
  */
 ve.ui.PlainTextFileTransferHandler.prototype.onFileLoad = function () {
-	this.insertableDataDeferred.resolve( this.reader.result );
+	this.resolve( this.reader.result );
 
 	// Parent method
 	ve.ui.PlainTextFileTransferHandler.super.prototype.onFileLoad.apply( this, arguments );
