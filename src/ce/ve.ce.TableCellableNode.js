@@ -13,7 +13,7 @@
  * @constructor
  */
 ve.ce.TableCellableNode = function VeCeTableCellableNode() {
-	if ( !this.isCellEditable() ) {
+	if ( this.isCellable() && !this.isCellEditable() ) {
 		this.$element.attr( 'title', ve.msg( 'visualeditor-aliennode-tooltip' ) );
 	}
 };
