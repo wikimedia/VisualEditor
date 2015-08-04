@@ -9,3 +9,8 @@
 .ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
 	box-shadow: none;
 }
+
+.ve-ui-toolbarDialog-padded {
+	padding-top: 0;
+	border-top: 0;
+}

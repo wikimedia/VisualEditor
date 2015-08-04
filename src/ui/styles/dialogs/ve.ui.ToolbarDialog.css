@@ -16,8 +16,6 @@
 
 .ve-ui-toolbarDialog-padded {
 	padding: 0.375em; /* 0.3em / 0.8 */
-	padding-top: 0;
-	border-top: 0;
 }
 
 .ve-ui-toolbarDialog.oo-ui-window-ready {
