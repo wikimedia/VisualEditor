@@ -10,7 +10,8 @@
 			"Tehnix",
 			"Sarrus",
 			"Jhertel",
-			"Macofe"
+			"Macofe",
+			"Mads Haupt"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -35,7 +36,7 @@
 	"visualeditor-commentinspector-edit": "Redigér kommentar",
 	"visualeditor-commentinspector-title": "Kommentar",
 	"visualeditor-commentinspector-tooltip": "Kommentar",
-	"visualeditor-contextitemwidget-label-secondary": "Redigér",
+	"visualeditor-contextitemwidget-label-secondary": "Rediger",
 	"visualeditor-dialog-action-apply": "Anvend ændringer",
 	"visualeditor-dialog-action-cancel": "Annuller",
 	"visualeditor-dialog-action-done": "Færdig",
