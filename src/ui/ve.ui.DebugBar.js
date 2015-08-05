@@ -29,6 +29,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.$dumpModel = $( '<td>' ).addClass( 've-ui-debugBar-dump-model' );
 
 	hideDumpButton = new OO.ui.ButtonWidget( {
+		icon: 'collapse',
 		label: 'Hide'
 	} );
 
