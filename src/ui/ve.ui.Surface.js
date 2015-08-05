@@ -112,10 +112,10 @@ ve.ui.Surface.prototype.destroy = function () {
 	this.model.stopHistoryTracking();
 
 	// Destroy the ce.Surface, the ui.Context and window managers
-	this.view.destroy();
 	this.context.destroy();
 	this.dialogs.destroy();
 	this.toolbarDialogs.destroy();
+	this.view.destroy();
 	if ( this.debugBar ) {
 		this.debugBar.destroy();
 	}
