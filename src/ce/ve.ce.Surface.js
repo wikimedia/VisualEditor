@@ -321,7 +321,7 @@ ve.ce.Surface.prototype.destroy = function () {
 
 	// HACK: Blur to make selection/cursor disappear (needed in Firefox
 	// in some cases, and in iOS to hide the keyboard)
-	this.$documentNode[0].blur();
+	this.blur();
 
 	// Remove DOM elements (also disconnects their events)
 	this.$element.remove();
@@ -633,6 +633,16 @@ ve.ce.Surface.prototype.focus = function () {
 		}
 	} );
 	// onDocumentFocus takes care of the rest
+};
+
+/**
+ * Blur the surface
+ */
+ve.ce.Surface.prototype.blur = function () {
+	this.nativeSelection.removeAllRanges();
+	this.getElementDocument().activeElement.blur();
+	// This won't trigger focusin/focusout events, so trigger focus change manually
+	this.onFocusChange();
 };
 
 /**
