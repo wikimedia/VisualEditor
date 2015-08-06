@@ -639,6 +639,11 @@ ve.ce.Surface.prototype.focus = function () {
  * Blur the surface
  */
 ve.ce.Surface.prototype.blur = function () {
+	if ( this.deactivated ) {
+		// Clear the model selection, so activate doesn't trigger another de-activate
+		this.getModel().setNullSelection();
+		this.activate();
+	}
 	this.nativeSelection.removeAllRanges();
 	this.getElementDocument().activeElement.blur();
 	// This won't trigger focusin/focusout events, so trigger focus change manually
