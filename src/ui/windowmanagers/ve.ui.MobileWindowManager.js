@@ -46,14 +46,21 @@ ve.ui.MobileWindowManager.static.defaultSize = 'full';
  * Handle window opening events
  */
 ve.ui.MobileWindowManager.prototype.onMobileOpening = function ( win, opening ) {
-	// HACK: un-frame buttons
+	// HACK: un-frame buttons and convert 'back' buttons to icon only
 	opening.done( function () {
-		var i, l, list;
+		var i, l, list, action;
 		if ( win instanceof OO.ui.ProcessDialog ) {
 			list = win.actions.list;
 			for ( i = 0, l = list.length; i < l; i++ ) {
-				list[i].toggleFramed( false );
+				action = list[i];
+				action.toggleFramed( false );
+				if ( action.hasFlag( 'back' ) ) {
+					action
+						.setIcon( 'previous' )
+						.setLabel( '' );
+				}
 			}
+			win.fitLabel();
 		}
 	} );
 };
