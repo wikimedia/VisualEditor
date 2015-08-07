@@ -37,11 +37,14 @@ ve.ui.ContextItem = function ( context, model, config ) {
 	this.$body = $( '<div>' );
 	this.$info = $( '<div>' );
 	this.$description = $( '<div>' );
-	this.editButton = new OO.ui.ButtonWidget( {
-		label: ve.msg( 'visualeditor-contextitemwidget-label-secondary' ),
-		flags: [ 'progressive' ],
-		classes: [ 've-ui-contextItem-editButton' ]
-	} );
+	this.editButton = new OO.ui.ButtonWidget( ve.extendObject(
+		this.context.getButtonConfig(),
+		{
+			label: ve.msg( 'visualeditor-contextitemwidget-label-secondary' ),
+			flags: [ 'progressive' ],
+			classes: [ 've-ui-contextItem-editButton' ]
+		}
+	) );
 	this.fragment = null;
 
 	// Events

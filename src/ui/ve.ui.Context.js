@@ -56,8 +56,22 @@ ve.ui.Context.static.basicRendering = false;
 
 /* Methods */
 
+/**
+ * Check if items should provide only a basic rendering.
+ *
+ * @return {boolean} items should provide only a basic rendering
+ */
 ve.ui.Context.prototype.shouldUseBasicRendering = function () {
 	return this.constructor.static.basicRendering;
+};
+
+/**
+ * Get the deafult config options for rendering a button in a context tiem
+ *
+ * @return {Object} Default config options
+ */
+ve.ui.Context.prototype.getButtonConfig = function () {
+	return {};
 };
 
 /**

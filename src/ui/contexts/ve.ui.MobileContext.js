@@ -52,3 +52,12 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 		overlay: this.surface.getGlobalOverlay()
 	} );
 };
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MobileContext.prototype.getButtonConfig = function () {
+	return {
+		framed: false
+	};
+};

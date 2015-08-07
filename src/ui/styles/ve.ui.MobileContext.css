@@ -11,3 +11,15 @@
 .ve-ui-mobileContext-menu {
 	border-top: 1px solid #eee;
 }
+
+.ve-ui-mobileContext .ve-ui-contextItem-label {
+	min-width: auto;
+}
+
+.ve-ui-mobileContext .ve-ui-contextItem-title {
+	padding: 0.7em 1em 0.7em 0.5em;
+}
+
+.ve-ui-mobileContext .ve-ui-contextItem-description {
+	line-height: 3.164em;
+}
