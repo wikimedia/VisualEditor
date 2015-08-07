@@ -99,13 +99,24 @@ ve.init.Platform.static.isIos = function () {
 /* Methods */
 
 /**
- * Get a regular expression that matches allowed external link URLs.
+ * Get an anchored regular expression that matches allowed external link URLs
+ * starting at the beginning of an input string.
  *
  * @method
  * @abstract
  * @returns {RegExp} Regular expression object
  */
 ve.init.Platform.prototype.getExternalLinkUrlProtocolsRegExp = null;
+
+/**
+ * Get an unanchored regular expression that matches allowed external link URLs
+ * anywhere in an input string.
+ *
+ * @method
+ * @abstract
+ * @returns {RegExp} Regular expression object
+ */
+ve.init.Platform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = null;
 
 /**
  * Get a config value from the platform.
