@@ -2829,7 +2829,7 @@ ve.ce.Surface.prototype.checkSequences = function () {
 
 	// sequences.length will likely be 0 or 1 so don't cache
 	for ( i = 0; i < sequences.length; i++ ) {
-		executed = sequences[i].execute( this.surface ) || executed;
+		executed = sequences[i].sequence.execute( this.surface, sequences[i].range ) || executed;
 	}
 	if ( executed ) {
 		this.showModelSelection( model.getSelection() );
@@ -3421,7 +3421,8 @@ ve.ce.Surface.prototype.handleLinearEnter = function ( e ) {
 		stack = [],
 		outermostNode = null,
 		nodeModel = null,
-		nodeModelRange = null;
+		nodeModelRange = null,
+		surface = this;
 
 	// Handle removal first
 	if ( !range.isCollapsed() ) {
@@ -3582,6 +3583,9 @@ ve.ce.Surface.prototype.handleLinearEnter = function ( e ) {
 	}
 	// Reset and resume polling
 	this.surfaceObserver.clear();
+	setTimeout( function () {
+		surface.checkSequences();
+	} );
 };
 
 /**
