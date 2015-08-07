@@ -58,6 +58,18 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
  */
 
 /**
+ * @event focus
+ *
+ * The selection was just set to a non-null selection
+ */
+
+/**
+ * @event blur
+ *
+ * The selection was just set to a null selection
+ */
+
+/**
  * @event documentUpdate
  *
  * Emitted when a transaction has been processed on the document and the selection has been
@@ -561,6 +573,7 @@ ve.dm.Surface.prototype.setNullSelection = function () {
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
 		startNode, selectedNode, range, selectedAnnotations, isCollapsed,
+		oldSelection = this.selection,
 		branchNodes = {},
 		selectionChange = false,
 		contextChange = false,
@@ -578,7 +591,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	}
 
 	// this.selection needs to be updated before we call setInsertionAnnotations
-	if ( !this.selection.equals( selection ) ) {
+	if ( !oldSelection.equals( selection ) ) {
 		selectionChange = true;
 		this.selection = selection;
 	}
@@ -680,6 +693,12 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	// If selection changed emit a select
 	if ( selectionChange ) {
 		this.emit( 'select', this.selection.clone() );
+		if ( oldSelection.isNull() ) {
+			this.emit( 'focus' );
+		}
+		if ( selection.isNull() ) {
+			this.emit( 'blur' );
+		}
 	}
 
 	if ( contextChange ) {
