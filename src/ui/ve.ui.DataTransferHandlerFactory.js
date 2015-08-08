@@ -41,21 +41,35 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
 		types = constructor.static.types,
 		extensions = constructor.static.extensions;
 
+	function ensureArray( obj, prop ) {
+		if ( obj[prop] === undefined ) {
+			obj[prop] = [];
+		}
+		return obj[prop];
+	}
+	function ensureMap( obj, prop ) {
+		if ( obj[prop] === undefined ) {
+			obj[prop] = {};
+		}
+		return obj[prop];
+	}
 	if ( !kinds ) {
 		for ( j = 0, jlen = types.length; j < jlen; j++ ) {
-			this.handlerNamesByType[types[j]] = constructor.static.name;
+			ensureArray( this.handlerNamesByType, types[j] ).unshift( constructor.static.name );
 		}
 	} else {
 		for ( i = 0, ilen = kinds.length; i < ilen; i++ ) {
 			for ( j = 0, jlen = types.length; j < jlen; j++ ) {
-				this.handlerNamesByKindAndType[kinds[i]] = this.handlerNamesByKindAndType[kinds[i]] || {};
-				this.handlerNamesByKindAndType[kinds[i]][types[j]] = constructor.static.name;
+				ensureArray(
+					ensureMap( this.handlerNamesByKindAndType, kinds[i] ),
+					types[j]
+				).unshift( constructor.static.name );
 			}
 		}
 	}
 	if ( constructor.prototype instanceof ve.ui.FileTransferHandler ) {
 		for ( i = 0, ilen = extensions.length; i < ilen; i++ ) {
-			this.handlerNamesByExtension[extensions[i]] = constructor.static.name;
+			ensureArray( this.handlerNamesByExtension, extensions[i] ).unshift( constructor.static.name );
 		}
 	}
 };
@@ -68,30 +82,52 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
  * @returns {string|undefined} Handler name, or undefined if not found
  */
 ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste ) {
-	var constructor,
-		name =
-			// 1. Match by kind + type (e.g. 'file' + 'text/html')
-			( this.handlerNamesByKindAndType[item.kind] && this.handlerNamesByKindAndType[item.kind][item.type] ) ||
-			// 2. Match by just type (e.g. 'image/jpeg')
-			this.handlerNamesByType[item.type] ||
-			// 3. Match by file extension (e.g. 'csv')
-			this.handlerNamesByExtension[item.getExtension()];
+	var i,
+		name,
+		constructor,
+		names;
 
-	if ( !name ) {
-		return;
+	// Fetch a given nested property, returning a zero-length array if
+	// any component of the path is not present.
+	// This is similar to ve.getProp, except with a `hasOwnProperty`
+	// test to ensure we aren't fooled by __proto__ and friends.
+	function fetch( obj /*, args...*/ ) {
+		var i;
+		for ( i = 1; i < arguments.length; i++ ) {
+			if ( typeof arguments[i] !== 'string' || !Object.prototype.hasOwnProperty.call( obj, arguments[i] ) ) {
+				return [];
+			}
+			obj = obj[arguments[i]];
+		}
+		return obj;
 	}
 
-	constructor = this.registry[name];
+	names = [].concat(
+		// 1. Match by kind + type (e.g. 'file' + 'text/html')
+		fetch( this.handlerNamesByKindAndType, item.kind, item.type ),
+		// 2. Match by just type (e.g. 'image/jpeg')
+		fetch( this.handlerNamesByType, item.type ),
+		// 3. Match by file extension (e.g. 'csv')
+		fetch( this.handlerNamesByExtension, item.getExtension() )
+	);
 
-	if ( isPaste && !constructor.static.handlesPaste ) {
-		return;
+	for ( i = 0; i < names.length; i++ ) {
+		name = names[i];
+		constructor = this.registry[name];
+
+		if ( isPaste && !constructor.static.handlesPaste ) {
+			continue;
+		}
+
+		if ( constructor.static.matchFunction && !constructor.static.matchFunction( item ) ) {
+			continue;
+		}
+
+		return name;
 	}
 
-	if ( constructor.static.matchFunction && !constructor.static.matchFunction( item ) ) {
-		return;
-	}
-
-	return name;
+	// No matching handler
+	return;
 };
 
 /* Initialization */
