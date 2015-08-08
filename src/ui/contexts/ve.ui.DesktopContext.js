@@ -182,6 +182,9 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
+	// Parent method
+	ve.ui.DesktopContext.super.prototype.updateDimensions.call( this );
+
 	if ( !this.isVisible() ) {
 		return;
 	}

@@ -10,6 +10,7 @@
  * @class
  * @abstract
  * @extends OO.ui.Element
+ * @mixins OO.EventEmitter
  * @mixins OO.ui.mixin.GroupElement
  *
  * @constructor
@@ -21,6 +22,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	ve.ui.Context.super.call( this, config );
 
 	// Mixin constructors
+	OO.EventEmitter.call( this );
 	OO.ui.mixin.GroupElement.call( this, config );
 
 	// Properties
@@ -41,7 +43,15 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 
 OO.inheritClass( ve.ui.Context, OO.ui.Element );
 
+OO.mixinClass( ve.ui.Context, OO.EventEmitter );
+
 OO.mixinClass( ve.ui.Context, OO.ui.mixin.GroupElement );
+
+/* Events */
+
+/**
+ * @event resize
+ */
 
 /* Static Property */
 
@@ -187,6 +197,7 @@ ve.ui.Context.prototype.onContextItemCommand = function () {};
  *
  * @param {boolean} [show] Show the context, omit to toggle
  * @return {jQuery.Promise} Promise resolved when context is finished showing/hiding
+ * @fires resize
  */
 ve.ui.Context.prototype.toggle = function ( show ) {
 	show = show === undefined ? !this.visible : !!show;
@@ -194,6 +205,7 @@ ve.ui.Context.prototype.toggle = function ( show ) {
 		this.visible = show;
 		this.$element.toggleClass( 'oo-ui-element-hidden', !this.visible );
 	}
+	this.emit( 'resize' );
 	return $.Deferred().resolve().promise();
 };
 
@@ -201,9 +213,11 @@ ve.ui.Context.prototype.toggle = function ( show ) {
  * Update the size and position of the context.
  *
  * @chainable
+ * @fires resize
  */
 ve.ui.Context.prototype.updateDimensions = function () {
 	// Override in subclass if context is positioned relative to content
+	this.emit( 'resize' );
 	return this;
 };
 
