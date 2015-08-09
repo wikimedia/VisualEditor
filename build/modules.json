@@ -699,8 +699,7 @@
 	"visualEditor.standalone.demo": {
 		"scripts": [
 			"demos/ve/ve.demo.js",
-			"demos/ve/ve.demo.SurfaceContainer.js",
-			"demos/ve/ve.demo.init.js"
+			"demos/ve/ve.demo.SurfaceContainer.js"
 		],
 		"styles": [
 			"demos/ve/demo.css"
@@ -709,7 +708,8 @@
 	},
 	"visualEditor.desktop.standalone.demo": {
 		"scripts": [
-			"demos/ve/demo.desktop.js"
+			"demos/ve/demo.desktop.js",
+			"demos/ve/ve.demo.init.js"
 		],
 		"styles": [
 			"demos/ve/demo.desktop.css"
@@ -721,7 +721,8 @@
 	},
 	"visualEditor.mobile.standalone.demo": {
 		"scripts": [
-			"demos/ve/demo.mobile.js"
+			"demos/ve/demo.mobile.js",
+			"demos/ve/ve.demo.init.js"
 		],
 		"styles": [
 			"demos/ve/demo.mobile.css"
