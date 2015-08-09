@@ -33,7 +33,7 @@ ve.ui.TableAction.static.name = 'table';
  * @static
  * @property
  */
-ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellStyle', 'mergeCells', 'caption' ];
+ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellStyle', 'mergeCells', 'caption', 'enterTableCell' ];
 
 /* Methods */
 
@@ -325,6 +325,24 @@ ve.ui.TableAction.prototype.caption = function () {
 
 		fragment.collapseToStart().adjustLinearSelection( 2, 2 ).select();
 	}
+	return true;
+};
+
+/**
+ * Enter a table cell for editing
+ *
+ * @return {boolean} Action was executed
+ */
+ve.ui.TableAction.prototype.enterTableCell = function () {
+	var tableNode,
+		selection = this.surface.getModel().getSelection();
+
+	if ( !( selection instanceof ve.dm.TableSelection ) ) {
+		return false;
+	}
+	tableNode = this.surface.getView().documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+	tableNode.setEditing( true );
+	this.surface.getView().focus();
 	return true;
 };
 

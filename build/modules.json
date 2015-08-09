@@ -649,6 +649,7 @@
 		"scripts": [
 			"src/ui/ve.ui.MobileSurface.js",
 			"src/ui/contexts/ve.ui.MobileContext.js",
+			"src/ui/contextitems/ve.ui.MobileTableCellContextItem.js",
 			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js"
 		],
 		"styles": [

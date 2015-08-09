@@ -298,3 +298,9 @@ ve.ui.commandRegistry.register(
 		{ args: [ 'data' ], supportedSelections: [ 'table' ] }
 	)
 );
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
+		'enterTableCell', 'table', 'enterTableCell',
+		{ supportedSelections: [ 'table' ] }
+	)
+);
