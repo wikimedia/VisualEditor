@@ -8,11 +8,11 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 	var $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),
-		target = new ve.init.sa.Target(),
+		target = new ve.demo.target(),
 
 		currentLang = $.i18n().locale,
 		currentDir = target.$element.css( 'direction' ) || 'ltr',
-		device = ve.init.sa.Target.static.defaultSurfaceType,
+		device = ve.demo.target === ve.init.sa.DesktopTarget ? 'desktop' : 'mobile',
 
 		// Menu widgets
 		addSurfaceContainerButton = new OO.ui.ButtonWidget( {

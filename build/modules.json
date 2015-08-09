@@ -686,12 +686,18 @@
 		]
 	},
 	"visualEditor.desktop.standalone": {
+		"scripts": [
+			"src/init/sa/ve.init.sa.DesktopTarget.js"
+		],
 		"dependencies": [
 			"visualEditor.standalone",
 			"visualEditor.desktop"
 		]
 	},
 	"visualEditor.mobile.standalone": {
+		"scripts": [
+			"src/init/sa/ve.init.sa.MobileTarget.js"
+		],
 		"dependencies": [
 			"visualEditor.standalone",
 			"visualEditor.mobile"
