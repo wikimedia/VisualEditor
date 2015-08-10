@@ -18,6 +18,9 @@ ve.ui.TargetToolbar = function VeUiTargetToolbar( target, config ) {
 	// Parent constructor
 	ve.ui.TargetToolbar.super.call( this, config );
 
+	// Initialization
+	this.$element.addClass( 've-ui-targetToolbar' );
+
 	// Properties
 	this.target = target;
 };
