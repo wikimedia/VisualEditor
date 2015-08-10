@@ -12,7 +12,7 @@
 	vertical-align: middle;
 }
 
-.ve-ui-alignableContextItem .ve-ui-contextItem-description {
+.ve-ui-mobileContext .ve-ui-alignableContextItem .ve-ui-contextItem-description {
 	line-height: 1em;
-	padding-top: 0.2em;
+	padding-top: 0.3em;
 }
