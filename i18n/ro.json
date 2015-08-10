@@ -113,6 +113,7 @@
 	"visualeditor-table-insert-table": "Tabel",
 	"visualeditor-table-merge-cells": "Îmbină celulele",
 	"visualeditor-tablecell-tooltip": "Dublu-click pentru a modifica celula",
+	"visualeditor-tablecell-contextitem": "Celulă tabel",
 	"visualeditor-toolbar-format-tooltip": "Formatarea paragrafului",
 	"visualeditor-toolbar-history": "Istoric",
 	"visualeditor-toolbar-insert": "Inserare",

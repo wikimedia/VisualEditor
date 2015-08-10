@@ -117,6 +117,7 @@
 	"visualeditor-table-insert-table": "Tabelle",
 	"visualeditor-table-merge-cells": "Zellen zusammenführen",
 	"visualeditor-tablecell-tooltip": "Doppelklick zum Bearbeiten der Zelle",
+	"visualeditor-tablecell-contextitem": "Tabellenzelle",
 	"visualeditor-toolbar-format-tooltip": "Absatz formatieren",
 	"visualeditor-toolbar-history": "Verlauf",
 	"visualeditor-toolbar-insert": "Einfügen",

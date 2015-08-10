@@ -115,6 +115,7 @@
 	"visualeditor-table-insert-table": "Πίνακας",
 	"visualeditor-table-merge-cells": "Συγχώνευση κελιών",
 	"visualeditor-tablecell-tooltip": "Κάντε διπλό κλικ για επεξεργασία κελιού",
+	"visualeditor-tablecell-contextitem": "Κελί πίνακα",
 	"visualeditor-toolbar-format-tooltip": "Μορφή παραγράφου",
 	"visualeditor-toolbar-history": "Ιστορικό",
 	"visualeditor-toolbar-insert": "Εισαγωγή",
