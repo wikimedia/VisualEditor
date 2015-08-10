@@ -22,11 +22,38 @@ ve.init.Platform = function VeInitPlatform() {
 	// Provide messages to OOUI
 	OO.ui.getUserLanguages = this.getUserLanguages.bind( this );
 	OO.ui.msg = this.getMessage.bind( this );
+
+	// Notify those waiting for a platform that they can finish initialization
+	setTimeout( function () {
+		ve.init.Platform.static.deferredPlatform.resolve( ve.init.platform );
+	} );
 };
 
 /* Inheritance */
 
 OO.mixinClass( ve.init.Platform, OO.EventEmitter );
+
+/* Static Properties */
+
+/**
+ * A jQuery.Deferred that tracks when the platform has been created.
+ * @private
+ */
+ve.init.Platform.static.deferredPlatform = $.Deferred();
+
+/**
+ * A promise that tracks when ve.init.platform is ready for use.  When
+ * this promise is resolved the platform will have been created and
+ * initialized.
+ *
+ * This promise is safe to access early in VE startup before
+ * `ve.init.platform` has been set.
+ *
+ * @property {jQuery.Promise}
+ */
+ve.init.Platform.static.initializedPromise = ve.init.Platform.static.deferredPlatform.promise().then( function ( platform ) {
+	return platform.getInitializedPromise();
+} );
 
 /* Static Methods */
 
