@@ -9,7 +9,7 @@
 }
 
 .ve-ui-mobileContext-menu {
-	border-top: 1px solid #eee;
+	border-top: 1px solid #ddd;
 }
 
 .ve-ui-mobileContext .ve-ui-contextItem-label {
@@ -22,4 +22,17 @@
 
 .ve-ui-mobileContext .ve-ui-contextItem-description {
 	line-height: 3.164em;
+}
+
+.ve-ui-mobileContext .ve-ui-contextItem-actions {
+	line-height: 3.164em;
+	padding: 0;
+}
+
+.ve-ui-mobileContext .ve-ui-contextItem-actions .oo-ui-buttonWidget {
+	border-left: 1px solid #ddd;
+}
+
+.ve-ui-mobileContext .ve-ui-contextItem-actions .oo-ui-buttonElement-button {
+	padding: 0 0.5em
 }

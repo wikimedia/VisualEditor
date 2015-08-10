@@ -36,6 +36,8 @@ ve.ui.MobileTableCellContextItem.static.label = OO.ui.deferMsg( 'visualeditor-ta
 
 ve.ui.MobileTableCellContextItem.static.modelClasses = [ ve.dm.TableCellNode ];
 
+ve.ui.MobileTableCellContextItem.static.deletable = false;
+
 ve.ui.MobileTableCellContextItem.static.embeddable = false;
 
 ve.ui.MobileTableCellContextItem.static.commandName = 'enterTableCell';
