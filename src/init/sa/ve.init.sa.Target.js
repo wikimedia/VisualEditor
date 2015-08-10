@@ -111,12 +111,11 @@ ve.init.sa.Target.prototype.setupToolbar = function ( surface ) {
 	// Parent method
 	ve.init.sa.Target.super.prototype.setupToolbar.call( this, surface );
 
-	if ( !this.getToolbar().initialized ) {
-		this.getToolbar().$element.addClass( 've-init-sa-target-toolbar' );
+	this.getToolbar().$element.addClass( 've-init-sa-target-toolbar' );
+	if ( !this.actions ) {
 		this.actions = new ve.ui.TargetToolbar( this );
 		this.getToolbar().$actions.append( this.actions.$element );
 	}
-	this.getToolbar().initialize();
 
 	this.actions.setup( this.constructor.static.actionGroups, this.getSurface() );
 
