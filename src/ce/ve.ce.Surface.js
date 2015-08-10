@@ -206,6 +206,10 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  */
 
 /**
+ * @event keyup
+ */
+
+/**
  * When the surface changes its position (only if it happens
  * after initialize has already been called).
  *
@@ -1584,6 +1588,7 @@ ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
  * @method
  * @param {jQuery.Event} e Key up event
  * @fires selectionEnd
+ * @fires keyup
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 	// Detect end of selecting by letting go of shift
@@ -1591,24 +1596,7 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function ( e ) {
 		this.selecting = false;
 		this.emit( 'selectionEnd' );
 	}
-
-	var nativeRange, clientRect, scrollTo;
-
-	if ( !this.surface.toolbarHeight ) {
-		return;
-	}
-
-	nativeRange = this.getNativeRange();
-	if ( !nativeRange ) {
-		return null;
-	}
-
-	clientRect = RangeFix.getBoundingClientRect( nativeRange );
-
-	if ( clientRect && clientRect.top < this.surface.toolbarHeight ) {
-		scrollTo = this.$window.scrollTop() + clientRect.top - this.surface.toolbarHeight;
-		this.$window.scrollTop( scrollTo );
-	}
+	this.emit( 'keyup' );
 };
 
 /**

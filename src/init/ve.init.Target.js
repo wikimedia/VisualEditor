@@ -41,6 +41,8 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.ui.dataTransferHandlerFactory;
 	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands );
 	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands );
+	this.$scrollContainer = this.getScrollContainer();
+	this.toolbarScrollOffset = 0;
 
 	// Initialization
 	this.$element.addClass( 've-init-target' );
@@ -52,6 +54,7 @@ ve.init.Target = function VeInitTarget( config ) {
 	// Events
 	this.onDocumentKeyDownHandler = this.onDocumentKeyDown.bind( this );
 	this.onTargetKeyDownHandler = this.onTargetKeyDown.bind( this );
+	this.onContainerScrollHandler = this.onContainerScroll.bind( this );
 	this.bindHandlers();
 };
 
@@ -184,6 +187,7 @@ ve.init.Target.static.importRules = {
 ve.init.Target.prototype.bindHandlers = function () {
 	$( this.getElementDocument() ).on( 'keydown', this.onDocumentKeyDownHandler );
 	this.$element.on( 'keydown', this.onTargetKeyDownHandler );
+	this.$scrollContainer.on( 'scroll', this.onContainerScrollHandler );
 };
 
 /**
@@ -192,6 +196,7 @@ ve.init.Target.prototype.bindHandlers = function () {
 ve.init.Target.prototype.unbindHandlers = function () {
 	$( this.getElementDocument() ).off( 'keydown', this.onDocumentKeyDownHandler );
 	this.$element.off( 'keydown', this.onTargetKeyDownHandler );
+	this.$scrollContainer.off( 'scroll', this.onContainerScrollHandler );
 };
 
 /**
@@ -206,6 +211,33 @@ ve.init.Target.prototype.destroy = function () {
 	this.$element.remove();
 	this.unbindHandlers();
 	ve.init.target = null;
+};
+
+/**
+ * Get the target's scroll container
+ *
+ * @returns {jQuery} The target's scroll container
+ */
+ve.init.Target.prototype.getScrollContainer = function () {
+	return $( this.getElementWindow() );
+};
+
+/**
+ * Handle scroll container scroll events
+ */
+ve.init.Target.prototype.onContainerScroll = function () {
+	var scrollTop,
+		toolbar = this.getToolbar();
+
+	if ( toolbar.isFloatable() ) {
+		scrollTop = this.$scrollContainer.scrollTop();
+
+		if ( scrollTop + this.toolbarScrollOffset > toolbar.getElementOffset().top ) {
+			toolbar.float();
+		} else {
+			toolbar.unfloat();
+		}
+	}
 };
 
 /**
@@ -239,6 +271,13 @@ ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
 };
 
 /**
+ * Handle toolbar resize events
+ */
+ve.init.Target.prototype.onToolbarResize = function () {
+	this.getSurface().setToolbarHeight( this.getToolbar().getHeight() + this.toolbarScrollOffset );
+};
+
+/**
  * Create a surface.
  *
  * @method
@@ -269,7 +308,10 @@ ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
 	var surface = this.createSurface( dmDoc, config );
 	this.surfaces.push( surface );
-	surface.getView().connect( this, { focus: this.onSurfaceViewFocus.bind( this, surface ) } );
+	surface.getView().connect( this, {
+		focus: this.onSurfaceViewFocus.bind( this, surface ),
+		keyup: this.onSurfaceViewKeyUp.bind( this, surface )
+	} );
 	return surface;
 };
 
@@ -289,6 +331,64 @@ ve.init.Target.prototype.clearSurfaces = function () {
  */
 ve.init.Target.prototype.onSurfaceViewFocus = function ( surface ) {
 	this.setSurface( surface );
+};
+
+/**
+ * Handle key up events from a surface's view
+ *
+ * @param {ve.ui.Surface} surface Surface firing the event
+ */
+ve.init.Target.prototype.onSurfaceViewKeyUp = function ( surface ) {
+	this.scrollCursorIntoView( surface );
+};
+
+/**
+ * Check if the toolbar is overlapping the surface
+ *
+ * @return {boolean} Toolbar is overlapping the surface
+ */
+ve.init.Target.prototype.isToolbarOverSurface = function () {
+	return this.getToolbar().isFloating();
+};
+
+/**
+ * Scroll the cursor into view.
+ *
+ * @param {ve.ui.Surface} surface Surface to scroll
+ */
+ve.init.Target.prototype.scrollCursorIntoView = function ( surface ) {
+	var nativeRange, clientRect, cursorTop, scrollTo, toolbarBottom;
+
+	if ( !this.isToolbarOverSurface() ) {
+		return;
+	}
+
+	nativeRange = surface.getView().getNativeRange();
+	if ( !nativeRange ) {
+		return;
+	}
+
+	clientRect = RangeFix.getBoundingClientRect( nativeRange );
+	if ( !clientRect ) {
+		return;
+	}
+
+	cursorTop = clientRect.top - 5;
+	toolbarBottom = this.getSurface().toolbarHeight;
+
+	if ( cursorTop < toolbarBottom ) {
+		scrollTo = this.$scrollContainer.scrollTop() + cursorTop - toolbarBottom;
+		this.scrollTo( scrollTo );
+	}
+};
+
+/**
+ * Scroll the scroll container to a specific offset
+ *
+ * @param {number} offset Scroll offset
+ */
+ve.init.Target.prototype.scrollTo = function ( offset ) {
+	this.$scrollContainer.scrollTop( offset );
 };
 
 /**
@@ -330,9 +430,14 @@ ve.init.Target.prototype.getToolbar = function () {
  * @param {ve.ui.Surface} surface Surface
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
-	this.getToolbar().setup( this.constructor.static.toolbarGroups, surface );
+	var toolbar = this.getToolbar();
+
+	toolbar.connect( this, { resize: 'onToolbarResize' } );
+
+	toolbar.setup( this.constructor.static.toolbarGroups, surface );
 	this.attachToolbar( surface );
-	this.getToolbar().$bar.append( surface.getToolbarDialogs().$element );
+	toolbar.$bar.append( surface.getToolbarDialogs().$element );
+	this.onContainerScroll();
 };
 
 /**
@@ -340,4 +445,5 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
  */
 ve.init.Target.prototype.attachToolbar = function () {
 	this.getToolbar().$element.insertBefore( this.getToolbar().getSurface().$element );
+	this.getToolbar().initialize();
 };
