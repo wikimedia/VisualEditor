@@ -35,7 +35,7 @@ For other grunt tasks, see:
 $ grunt --help
 ```
 
-To run the tests in a web browser, open `src/tests/index.html`.
+To run the tests in a web browser, open `tests/index.html`.
 
 ## Building documentation
 
@@ -68,7 +68,7 @@ $ gem install --user-install jsduck
 Creating the documentation is easy:
 ```sh
 $ cd VisualEditor
-$ bin/generateDocs.sh
+$ npm run doc
 ```
 
 The generated documentation is in the `docs/` subdirectory.  View the
@@ -112,12 +112,8 @@ indicating their order between the standard tags.
 ## Add a new javascript class
 
 When a new javascript class is added, the file must be referenced in a number of places
-before it can be used.
+before it can be used:
 
-Test files:
-* src/tests/index.html.template
-
-Regular files:
 * .jsduck/categories.json in General->Utilities (or somewhere more specific)
-* modules.json in visualEditor.core (or somewhere more specific)
+* build/modules.json in visualEditor.core.build (or somewhere more specific)
 * Run `grunt build`
