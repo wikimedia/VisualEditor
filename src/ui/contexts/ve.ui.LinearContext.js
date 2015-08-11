@@ -220,7 +220,7 @@ ve.ui.LinearContext.prototype.isInspectable = function () {
  * @inheritdoc
  */
 ve.ui.LinearContext.prototype.getRelatedSources = function () {
-	var i, len, toolClass, items, tools, models,
+	var i, len, toolClass, items, tools, models, selectedNode,
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection(),
 		selectedModels = [];
@@ -228,7 +228,7 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];
 		if ( selection instanceof ve.dm.LinearSelection ) {
-			selectedModels = this.surface.getModel().getFragment().getSelectedModels();
+			selectedModels = surfaceModel.getFragment().getSelectedModels();
 		} else if ( selection instanceof ve.dm.TableSelection ) {
 			selectedModels = [ surfaceModel.getSelectedNode() ];
 		}
@@ -262,6 +262,18 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 							!( toolClass.prototype instanceof ve.ui.InspectorTool ),
 						name: tools[i].name,
 						model: tools[i].model
+					} );
+				}
+			}
+			if ( !this.relatedSources.length ) {
+				selectedNode = surfaceModel.getSelectedNode();
+				// For now we only need alien contexts to show the delete button
+				if ( selectedNode && this.showDeleteButton() ) {
+					this.relatedSources.push( {
+						type: 'item',
+						embeddable: ve.ui.contextItemFactory.isEmbeddable( 'alien' ),
+						name: 'alien',
+						model: selectedNode
 					} );
 				}
 			}

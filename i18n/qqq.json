@@ -29,6 +29,7 @@
 	"visualeditor-align-widget-left": "Label for aligning to the left.\n{{Related|Visualeditor-dialog-media-position}}\n{{Identical|Left}}",
 	"visualeditor-align-widget-right": "Label for aligning to the right.\n\n{{Related|Visualeditor-dialog-media-position}}\n{{Identical|Right}}",
 	"visualeditor-alignablecontextitem-title": "Title for the context item for alignable nodes\n{{Identical|Alignment}}",
+	"visualeditor-aliencontextitem-title": "Title for the context item for unidentifiable nodes",
 	"visualeditor-annotationbutton-bold-tooltip": "Tooltip text for bold button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Bold}}",
 	"visualeditor-annotationbutton-code-tooltip": "Tooltip text for code button.\n{{Related|Visualeditor-annotationbutton}}",
 	"visualeditor-annotationbutton-italic-tooltip": "Tooltip text for italic button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Italic}}",
