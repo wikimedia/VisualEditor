@@ -123,6 +123,7 @@
 	"visualeditor-table-insert-table": "表格",
 	"visualeditor-table-merge-cells": "合并单元格",
 	"visualeditor-tablecell-tooltip": "双击以编辑单元格",
+	"visualeditor-tablecell-contextitem": "表格单元格",
 	"visualeditor-toolbar-format-tooltip": "格式段落",
 	"visualeditor-toolbar-history": "历史",
 	"visualeditor-toolbar-insert": "插入",

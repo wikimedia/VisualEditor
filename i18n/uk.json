@@ -15,7 +15,8 @@
 			"Tel'et",
 			"Tifinaghes",
 			"Ата",
-			"Piramidion"
+			"Piramidion",
+			"Dars"
 		]
 	},
 	"visualeditor": "Візуальний редактор",
@@ -122,6 +123,7 @@
 	"visualeditor-table-insert-table": "Таблиця",
 	"visualeditor-table-merge-cells": "Об'єднати комірки",
 	"visualeditor-tablecell-tooltip": "Клацніть двічі, аби редагувати комірку таблиці",
+	"visualeditor-tablecell-contextitem": "Комірки таблиці",
 	"visualeditor-toolbar-format-tooltip": "Формат абзацу",
 	"visualeditor-toolbar-history": "Історія",
 	"visualeditor-toolbar-insert": "Вставити",

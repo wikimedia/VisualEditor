@@ -122,6 +122,7 @@
 	"visualeditor-table-insert-table": "표",
 	"visualeditor-table-merge-cells": "셀 병합",
 	"visualeditor-tablecell-tooltip": "셀을 편집하려면 더블 클릭",
+	"visualeditor-tablecell-contextitem": "표 셀",
 	"visualeditor-toolbar-format-tooltip": "문단 서식",
 	"visualeditor-toolbar-history": "역사",
 	"visualeditor-toolbar-insert": "넣기",

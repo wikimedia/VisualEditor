@@ -125,6 +125,7 @@
 	"visualeditor-table-insert-table": "Таблица",
 	"visualeditor-table-merge-cells": "Объединить ячейки",
 	"visualeditor-tablecell-tooltip": "Дважды кликните для редактирования ячейки",
+	"visualeditor-tablecell-contextitem": "Ячейка таблицы",
 	"visualeditor-toolbar-format-tooltip": "Формат абзаца",
 	"visualeditor-toolbar-history": "История",
 	"visualeditor-toolbar-insert": "Вставить",
