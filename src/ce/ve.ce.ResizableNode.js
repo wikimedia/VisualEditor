@@ -272,7 +272,7 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 	// Node may have already been torn down, e.g. after delete
-	if ( !this.root ) {
+	if ( !this.isResizableSetup || !this.root ) {
 		return;
 	}
 
@@ -282,7 +282,6 @@ ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 	}
 
 	this.resizableSurface.disconnect( this, { position: 'setResizableHandlesSizeAndPosition' } );
-
 };
 
 /**
