@@ -64,24 +64,33 @@ OO.mixinClass( ve.ui.Context, OO.ui.mixin.GroupElement );
  */
 ve.ui.Context.static.basicRendering = false;
 
+/**
+ * Default config options for rendering a button in a context item
+ *
+ * @static
+ * @inheritable
+ * @property {Object}
+ */
+ve.ui.Context.static.defaultButtonConfig = {};
+
 /* Methods */
 
 /**
  * Check if items should provide only a basic rendering.
  *
- * @return {boolean} items should provide only a basic rendering
+ * @return {boolean} Items should provide only a basic rendering
  */
 ve.ui.Context.prototype.shouldUseBasicRendering = function () {
 	return this.constructor.static.basicRendering;
 };
 
 /**
- * Get the deafult config options for rendering a button in a context tiem
+ * Get the default config options for rendering a button in a context item
  *
- * @return {Object} Default config options
+ * @return {Object} Config options
  */
-ve.ui.Context.prototype.getButtonConfig = function () {
-	return {};
+ve.ui.Context.prototype.getDefaultButtonConfig = function () {
+	return OO.copy( this.constructor.static.defaultButtonConfig );
 };
 
 /**
