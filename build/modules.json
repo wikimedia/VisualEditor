@@ -374,6 +374,7 @@
 			"src/ui/ve.ui.ModeledFactory.js",
 			"src/ui/ve.ui.ContextItem.js",
 			"src/ui/ve.ui.ContextItemFactory.js",
+			"src/ui/contextitems/ve.ui.AlienContextItem.js",
 			"src/ui/contextitems/ve.ui.AlignableContextItem.js",
 			"src/ui/contextitems/ve.ui.CommentContextItem.js",
 			"src/ui/contextitems/ve.ui.LanguageContextItem.js",
