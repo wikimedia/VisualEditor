@@ -65,6 +65,15 @@ OO.mixinClass( ve.ui.Context, OO.ui.mixin.GroupElement );
 ve.ui.Context.static.basicRendering = false;
 
 /**
+ * Context items should show a delete button
+ *
+ * @static
+ * @inheritable
+ * @property {Object}
+ */
+ve.ui.Context.static.showDeleteButton = false;
+
+/**
  * Default config options for rendering a button in a context item
  *
  * @static
@@ -82,6 +91,15 @@ ve.ui.Context.static.defaultButtonConfig = {};
  */
 ve.ui.Context.prototype.shouldUseBasicRendering = function () {
 	return this.constructor.static.basicRendering;
+};
+
+/**
+ * Check if context items should show a delete button
+ *
+ * @return {boolean} Context items should show a delete button
+ */
+ve.ui.Context.prototype.showDeleteButton = function () {
+	return this.constructor.static.showDeleteButton;
 };
 
 /**

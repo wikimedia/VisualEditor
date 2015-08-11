@@ -41,9 +41,8 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.LinearContext );
 
 ve.ui.MobileContext.static.basicRendering = true;
 
-/**
- * @inheritdoc
- */
+ve.ui.MobileContext.static.showDeleteButton = true;
+
 ve.ui.MobileContext.static.defaultButtonConfig = { framed: false };
 
 /* Methods */
