@@ -38,7 +38,7 @@ ve.ui.ContextItem = function ( context, model, config ) {
 	this.$info = $( '<div>' );
 	this.$description = $( '<div>' );
 	this.editButton = new OO.ui.ButtonWidget( ve.extendObject(
-		this.context.getButtonConfig(),
+		this.context.getDefaultButtonConfig(),
 		{
 			label: ve.msg( 'visualeditor-contextitemwidget-label-secondary' ),
 			flags: [ 'progressive' ],

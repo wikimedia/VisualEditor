@@ -41,6 +41,11 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.LinearContext );
 
 ve.ui.MobileContext.static.basicRendering = true;
 
+/**
+ * @inheritdoc
+ */
+ve.ui.MobileContext.static.defaultButtonConfig = { framed: false };
+
 /* Methods */
 
 /**
@@ -51,13 +56,4 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 		factory: ve.ui.windowFactory,
 		overlay: this.surface.getGlobalOverlay()
 	} );
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.MobileContext.prototype.getButtonConfig = function () {
-	return {
-		framed: false
-	};
 };
