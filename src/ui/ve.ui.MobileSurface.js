@@ -37,6 +37,10 @@ ve.ui.MobileSurface = function VeUiMobileSurface() {
 
 OO.inheritClass( ve.ui.MobileSurface, ve.ui.Surface );
 
+/* Static Properties */
+
+ve.ui.MobileSurface.static.isMobile = true;
+
 /* Methods */
 
 /**

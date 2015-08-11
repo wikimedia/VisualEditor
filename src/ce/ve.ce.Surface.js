@@ -2369,16 +2369,16 @@ ve.ce.Surface.prototype.preparePasteTargetForCopy = function () {
 	// whitespace, use a single unicode character as this is required for programmatic
 	// selection to work correctly in all browsers (e.g. Safari won't select a single space).
 	// #onCopy will ignore this native selection and use the DM selection
-	if ( !ve.init.platform.constructor.static.isIos() ) {
+	if ( !this.getSurface().isMobile() ) {
 		this.$pasteTarget.text( ( this.focusedNode && this.focusedNode.$element.text().trim() ) || '☢' );
 		ve.selectElement( this.$pasteTarget[0] );
 		this.$pasteTarget[0].focus();
 	} else {
-		// Selecting the paste target fails on iOS:
-		// * The selection stays visible and causes scrolling
+		// Selecting the paste target fails on mobile:
+		// * On iOS The selection stays visible and causes scrolling
 		// * The user is unlikely to be able to trigger a keyboard copy anyway
 		// Instead just deactivate the surface so the native cursor doesn't
-		// get in the way.
+		// get in the way and the on screen keyboard doesn't show.
 		// TODO: Provide a copy tool in the context menu
 		this.deactivate();
 	}

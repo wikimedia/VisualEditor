@@ -231,6 +231,9 @@
 				$blockers: $( '<div>' ),
 				$selections: $( '<div>' ),
 				$element: $( '<div>' ),
+				isMobile: function () {
+					return false;
+				},
 				getBoundingClientRect: function () {
 					return {};
 				},
