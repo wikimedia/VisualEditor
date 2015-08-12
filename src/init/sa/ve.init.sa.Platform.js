@@ -27,6 +27,7 @@ ve.init.sa.Platform = function VeInitSaPlatform( messagePaths ) {
 
 	// Properties
 	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
+	this.unanchoredExternalLinkUrlProtocolsRegExp = /https?\:\/\//;
 	this.messagePaths = messagePaths || [];
 	this.parsedMessages = {};
 	this.userLanguages = [ 'en' ];
@@ -41,6 +42,11 @@ OO.inheritClass( ve.init.sa.Platform, ve.init.Platform );
 /** @inheritdoc */
 ve.init.sa.Platform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
 	return this.externalLinkUrlProtocolsRegExp;
+};
+
+/** @inheritdoc */
+ve.init.sa.Platform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () {
+	return this.unanchoredExternalLinkUrlProtocolsRegExp;
 };
 
 /**

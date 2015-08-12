@@ -216,6 +216,12 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'autolinkUrl', 'link', 'autolinkUrl',
+		{ supportedSelections: [ 'linear' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'pasteSpecial', 'content', 'pasteSpecial',
 		{ supportedSelections: [ 'linear', 'table' ] }
 	)
