@@ -59,6 +59,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
  *
  * @param {Array} data Linear model data. Will be modified.
  * @param {ve.dm.IndexValueStore} store Index-value store to resolve annotations in
+ * @return {Array} The given `data` parameter.
  */
 ve.dm.example.postprocessAnnotations = function ( data, store ) {
 	var i, j, key;
@@ -78,6 +79,7 @@ ve.dm.example.postprocessAnnotations = function ( data, store ) {
 			}
 		}
 	}
+	return data;
 };
 
 /**
