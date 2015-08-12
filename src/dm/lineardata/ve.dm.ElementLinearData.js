@@ -1069,9 +1069,11 @@ ve.dm.ElementLinearData.prototype.countNonInternalElements = function ( limit ) 
 };
 
 /**
- * Counts all elements that aren't between internalList and /internalList
+ * Returns true if the document has content that's not part of an
+ * internalList.
  *
- * @returns {number} Number of elements that aren't in an internalList
+ * @returns {boolean}
+ *   True iff there are at least 3 elements that aren't in an internalList.
  */
 ve.dm.ElementLinearData.prototype.hasContent = function () {
 	// Two or less elements (<p>, </p>) is considered an empty document
