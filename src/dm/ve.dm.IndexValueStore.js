@@ -46,6 +46,14 @@ ve.dm.IndexValueStore.prototype.getLength = function () {
 	return this.hashes.length;
 };
 
+ve.dm.IndexValueStore.prototype.truncate = function ( start ) {
+	var i, len,
+		removedHashes = this.hashes.splice( start );
+	for ( i = 0, len = removedHashes.length; i < len; i++ ) {
+		delete this.hashStore[ removedHashes[ i ] ];
+	}
+};
+
 /**
  * Return a new store containing a slice of the values in insertion order
  *

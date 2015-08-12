@@ -14,11 +14,22 @@ body {
 
 /* Demo */
 
+.ve-pad-logo,
 .ve-demo-logo {
 	float: right;
 	margin: 0.5em 0 0 0;
-	background: url( VisualEditor-logo.svg ) no-repeat;
+	background-repeat: no-repeat;
 	background-size: contain; /* stylelint-disable-line no-unsupported-browser-features */
+}
+
+.ve-pad-logo {
+	background-image: url( VisualEditor-pad-logo.svg );
+	width: 8.5em;
+	height: 3.75em;
+}
+
+.ve-demo-logo {
+	background-image: url( VisualEditor-logo.svg );
 	width: 10.75em;
 	height: 3.75em;
 }

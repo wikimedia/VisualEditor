@@ -50,6 +50,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	// Properties
 	this.parentDocument = parentDocument;
 	this.completeHistory = [];
+	this.storeLengthAtHistoryLength = [ 0 ];
 	this.nodesByType = {};
 
 	if ( data instanceof ve.dm.ElementLinearData ) {
@@ -340,6 +341,7 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 		doc.emit( 'presynchronize', transaction );
 	} );
 	this.completeHistory.push( transaction );
+	this.storeLengthAtHistoryLength[ this.completeHistory.length ] = this.store.getLength();
 	this.emit( 'transact', transaction );
 };
 
@@ -1545,11 +1547,32 @@ ve.dm.Document.prototype.getCompleteHistoryLength = function () {
 /**
  * Get all the items in the complete history stack since a specified pointer.
  *
- * @param {number} pointer Pointer from where to start the slice
- * @return {Array} Array of transaction objects with undo flag
+ * @param {number} start Pointer from where to start the slice
+ * @return {ve.dm.Transaction[]} Array of transaction objects with undo flag
  */
-ve.dm.Document.prototype.getCompleteHistorySince = function ( pointer ) {
-	return this.completeHistory.slice( pointer );
+ve.dm.Document.prototype.getCompleteHistorySince = function ( start ) {
+	return this.completeHistory.slice( start );
+};
+
+/**
+ * Single change containing most recent transactions in history stack
+ *
+ * @param {number} start Pointer from where to start slicing transactions
+ * @return {ve.dm.Change} Single change containing transactions since pointer
+ */
+ve.dm.Document.prototype.getChangeSince = function ( start ) {
+	var t, len, transaction,
+		transactions = [],
+		stores = [];
+	for ( t = start, len = this.completeHistory.length; t < len; t++ ) {
+		transaction = this.completeHistory[ t ];
+		transactions.push( transaction );
+		stores.push( this.store.slice(
+			this.storeLengthAtHistoryLength[ t ],
+			this.storeLengthAtHistoryLength[ t + 1 ]
+		) );
+	}
+	return new ve.dm.Change( start, transactions, stores, {} );
 };
 
 /**
