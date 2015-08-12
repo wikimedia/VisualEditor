@@ -2175,7 +2175,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, targetFragment ) {
 	var i, l, stringData,
 		items = [],
-		stringTypes = [ 'text/html', 'text/plain' ];
+		stringTypes = [ 'text/x-moz-url', 'text/uri-list', 'text/x-uri', 'text/html', 'text/plain' ];
 
 	if ( dataTransfer.items ) {
 		for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
