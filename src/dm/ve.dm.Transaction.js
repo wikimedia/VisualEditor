@@ -9,9 +9,11 @@
  *
  * @class
  * @constructor
+ * @param {ve.dm.Document} doc The document to which this transaction applies
+ * @param {Object[]} [operations] The operations comprising this transaction; default []
  */
-ve.dm.Transaction = function VeDmTransaction( doc ) {
-	this.operations = [];
+ve.dm.Transaction = function VeDmTransaction( doc, operations ) {
+	this.operations = operations || [];
 	this.applied = false;
 	this.doc = doc;
 };
@@ -741,6 +743,15 @@ ve.dm.Transaction.reversers = {
 };
 
 /* Methods */
+
+/**
+ * Get a serializable object describing the transaction
+ *
+ * @return {Object} Serializable object
+ */
+ve.dm.Transaction.prototype.toJSON = function () {
+	return this.operations;
+};
 
 /**
  * Create a clone of this transaction.
