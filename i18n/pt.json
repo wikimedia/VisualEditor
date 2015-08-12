@@ -14,7 +14,8 @@
 			"Imperadeiro98",
 			"He7d3r",
 			"Ti4goc",
-			"Diego Queiroz"
+			"Diego Queiroz",
+			"Macofe"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -23,6 +24,7 @@
 	"visualeditor-align-widget-left": "Esquerda",
 	"visualeditor-align-widget-right": "Direita",
 	"visualeditor-alignablecontextitem-title": "Alinhamento",
+	"visualeditor-aliencontextitem-title": "Item",
 	"visualeditor-annotationbutton-bold-tooltip": "Negrito",
 	"visualeditor-annotationbutton-code-tooltip": "Código",
 	"visualeditor-annotationbutton-italic-tooltip": "Itálico",

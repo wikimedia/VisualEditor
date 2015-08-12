@@ -5,7 +5,8 @@
 			"KartikMistry",
 			"The Discoverer",
 			"NehalDaveND",
-			"Dsvyas"
+			"Dsvyas",
+			"Nisargjhaveri"
 		]
 	},
 	"visualeditor": "વિઝ્યુલએડિટર",
@@ -14,6 +15,7 @@
 	"visualeditor-align-widget-left": "ડાબે",
 	"visualeditor-align-widget-right": "જમણે",
 	"visualeditor-alignablecontextitem-title": "સીધ નિર્ધારણ",
+	"visualeditor-aliencontextitem-title": "વસ્તુ",
 	"visualeditor-annotationbutton-bold-tooltip": "ઘાટું",
 	"visualeditor-annotationbutton-code-tooltip": "કોમ્પ્યુટર સંહિતા",
 	"visualeditor-annotationbutton-italic-tooltip": "ત્રાંસું",

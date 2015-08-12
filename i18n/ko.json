@@ -14,7 +14,8 @@
 			"Naturehead",
 			"Revi",
 			"Infinity",
-			"SeoJeongHo"
+			"SeoJeongHo",
+			"Hwangjy9"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -23,6 +24,7 @@
 	"visualeditor-align-widget-left": "왼쪽",
 	"visualeditor-align-widget-right": "오른쪽",
 	"visualeditor-alignablecontextitem-title": "맞춤",
+	"visualeditor-aliencontextitem-title": "항목",
 	"visualeditor-annotationbutton-bold-tooltip": "굵게",
 	"visualeditor-annotationbutton-code-tooltip": "컴퓨터 코드",
 	"visualeditor-annotationbutton-italic-tooltip": "기울임꼴",

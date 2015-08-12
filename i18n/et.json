@@ -110,6 +110,7 @@
 	"visualeditor-table-insert-table": "Tabel",
 	"visualeditor-table-merge-cells": "Ühenda lahtrid",
 	"visualeditor-tablecell-tooltip": "Lahtri redigeerimiseks tee topeltklõps",
+	"visualeditor-tablecell-contextitem": "Tabelilahter",
 	"visualeditor-toolbar-format-tooltip": "Lõigu vorming",
 	"visualeditor-toolbar-history": "Ajalugu",
 	"visualeditor-toolbar-insert": "Lisa",

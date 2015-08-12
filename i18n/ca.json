@@ -13,7 +13,8 @@
 			"Edustus",
 			"Davidpar",
 			"Gerardduenas",
-			"Maceleiro"
+			"Maceleiro",
+			"Macofe"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -22,6 +23,7 @@
 	"visualeditor-align-widget-left": "Esquerra",
 	"visualeditor-align-widget-right": "Dreta",
 	"visualeditor-alignablecontextitem-title": "Alineament",
+	"visualeditor-aliencontextitem-title": "Element",
 	"visualeditor-annotationbutton-bold-tooltip": "Negreta",
 	"visualeditor-annotationbutton-code-tooltip": "Codi d'ordinador",
 	"visualeditor-annotationbutton-italic-tooltip": "Cursiva",

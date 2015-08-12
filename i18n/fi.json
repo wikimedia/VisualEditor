@@ -125,6 +125,7 @@
 	"visualeditor-table-insert-table": "Taulukko",
 	"visualeditor-table-merge-cells": "Yhdistä solut",
 	"visualeditor-tablecell-tooltip": "Muokkaa solua kaksoisnapsauttamalla",
+	"visualeditor-tablecell-contextitem": "Taulukon solu",
 	"visualeditor-toolbar-format-tooltip": "Kappaleen muotoilu",
 	"visualeditor-toolbar-history": "Historia",
 	"visualeditor-toolbar-insert": "Aseta",

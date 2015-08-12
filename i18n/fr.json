@@ -32,7 +32,8 @@
 			"Orikrin1998",
 			"Windes",
 			"Weft",
-			"Wladek92"
+			"Wladek92",
+			"Macofe"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
@@ -41,6 +42,7 @@
 	"visualeditor-align-widget-left": "Gauche",
 	"visualeditor-align-widget-right": "Droite",
 	"visualeditor-alignablecontextitem-title": "Alignement",
+	"visualeditor-aliencontextitem-title": "Élément",
 	"visualeditor-annotationbutton-bold-tooltip": "Gras",
 	"visualeditor-annotationbutton-code-tooltip": "Code informatique",
 	"visualeditor-annotationbutton-italic-tooltip": "Italique",
@@ -143,6 +145,7 @@
 	"visualeditor-table-insert-table": "Tableau",
 	"visualeditor-table-merge-cells": "Fusionner les cellules",
 	"visualeditor-tablecell-tooltip": "Double-cliquez pour modifier la cellule",
+	"visualeditor-tablecell-contextitem": "Cellule du tableau",
 	"visualeditor-toolbar-format-tooltip": "Mise en forme du paragraphe",
 	"visualeditor-toolbar-history": "Historique",
 	"visualeditor-toolbar-insert": "Insérer",

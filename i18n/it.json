@@ -18,7 +18,8 @@
 			"Nivit",
 			"Giuseppe Forte",
 			"Macofe",
-			"Mpiva"
+			"Mpiva",
+			"Statix64"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -27,6 +28,7 @@
 	"visualeditor-align-widget-left": "Sinistra",
 	"visualeditor-align-widget-right": "Destra",
 	"visualeditor-alignablecontextitem-title": "Allineamento",
+	"visualeditor-aliencontextitem-title": "Elemento",
 	"visualeditor-annotationbutton-bold-tooltip": "Grassetto",
 	"visualeditor-annotationbutton-code-tooltip": "Codice di computer",
 	"visualeditor-annotationbutton-italic-tooltip": "Corsivo",
