@@ -66,8 +66,22 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
 	range = selection.getRange();
 	rangeEnd = range.end;
 
-	// Shrink range to eliminate trailing whitespace.
-	linktext = documentModel.data.getText( true, range ).replace( /\s+$/, '' );
+	linktext = documentModel.data.getText( true, range );
+
+	// Eliminate trailing whitespace.
+	linktext = linktext.replace( /\s+$/, '' );
+
+	// Eliminate trailing punctuation.
+	linktext = linktext.replace( this.getTrailingPunctuation( linktext ), '' );
+
+	// Make sure we still have a real URL after trail removal, and not
+	// a bare protocol (or no protocol at all, if we stripped the last colon)
+	if ( !ve.ui.LinkAction.static.autolinkRegExp.test( linktext + ' ' ) ) {
+		// Don't autolink this.
+		return false;
+	}
+
+	// Shrink range to match new linktext.
 	range = range.truncate( linktext.length );
 
 	// Check that none of the range has an existing link annotation.
@@ -94,6 +108,23 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
 	);
 
 	return true;
+};
+
+/**
+ * Return an appropriate "trailing punctuation" set, which will
+ * get stripped from possible autolinks.
+ * @param {String} candidate
+ *   The candidate text.  Some users may not wish to include closing
+ *   brackets/braces/parentheses in the stripped character class if an
+ *   opening bracket/brace/parenthesis in present in the candidate link
+ *   text.
+ * @return {RegExp}
+ *   A regular expression matching trailing punctuation which will be
+ *   stripped from an autolink.
+ */
+ve.ui.LinkAction.prototype.getTrailingPunctuation = function ( candidate ) {
+	/* jshint unused: false */
+	return /[,;.:!?)\]\}]+$/;
 };
 
 /**
