@@ -26,8 +26,8 @@ ve.init.sa.Platform = function VeInitSaPlatform( messagePaths ) {
 	ve.init.Platform.call( this );
 
 	// Properties
-	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//;
-	this.unanchoredExternalLinkUrlProtocolsRegExp = /https?\:\/\//;
+	this.externalLinkUrlProtocolsRegExp = /^https?\:\/\//i;
+	this.unanchoredExternalLinkUrlProtocolsRegExp = /https?\:\/\//i;
 	this.messagePaths = messagePaths || [];
 	this.parsedMessages = {};
 	this.userLanguages = [ 'en' ];

@@ -56,6 +56,18 @@ QUnit.test( 'autolink', function ( assert ) {
 					}
 				},
 				msg: 'Autolink after newline'
+			},
+			{
+				html: '<p>Http://Example.COm xyz</p>',
+				range: new ve.Range( 1, 20 ),
+				method: 'autolinkUrl',
+				expectedRange: new ve.Range( 20, 20 ),
+				expectedData: function ( data ) {
+					for ( var i = 1; i < 19; i++ ) {
+						data[i] = [ data[i], [ 0 ] ];
+					}
+				},
+				msg: 'Autolink with mixed case'
 			}
 		];
 
