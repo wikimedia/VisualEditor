@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"David1010"
+			"David1010",
+			"Silovan"
 		]
 	},
 	"visualeditor": "ვიზუალური რედაქტორი",
@@ -10,6 +11,7 @@
 	"visualeditor-align-widget-left": "მარცხნივ",
 	"visualeditor-align-widget-right": "მარჯვნივ",
 	"visualeditor-alignablecontextitem-title": "გასწორება",
+	"visualeditor-aliencontextitem-title": "ელემენტი",
 	"visualeditor-annotationbutton-bold-tooltip": "მუქი",
 	"visualeditor-annotationbutton-code-tooltip": "კომპიუტერის კოდი",
 	"visualeditor-annotationbutton-italic-tooltip": "კურსივი",

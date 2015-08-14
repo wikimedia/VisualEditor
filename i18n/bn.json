@@ -117,6 +117,7 @@
 	"visualeditor-table-insert-table": "ছক",
 	"visualeditor-table-merge-cells": "ঘর একত্রীকরণ",
 	"visualeditor-tablecell-tooltip": "ঘর সম্পাদনা করার জন্য দুইবার ক্লিক করুন",
+	"visualeditor-tablecell-contextitem": "ছকের ঘর",
 	"visualeditor-toolbar-format-tooltip": "অনুচ্ছেদ বিন্যাস",
 	"visualeditor-toolbar-history": "ইতিহাস",
 	"visualeditor-toolbar-insert": "যোগ করো",
