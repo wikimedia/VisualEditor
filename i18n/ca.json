@@ -122,6 +122,7 @@
 	"visualeditor-table-insert-table": "Taula",
 	"visualeditor-table-merge-cells": "Fusiona les cel·les",
 	"visualeditor-tablecell-tooltip": "Feu doble clic per editar la cel·la",
+	"visualeditor-tablecell-contextitem": "Cel·la de taula",
 	"visualeditor-toolbar-format-tooltip": "Format de paràgraf",
 	"visualeditor-toolbar-history": "Historial",
 	"visualeditor-toolbar-insert": "Insereix",

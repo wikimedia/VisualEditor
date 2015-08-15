@@ -113,6 +113,7 @@
 	"visualeditor-table-insert-table": "Tabela",
 	"visualeditor-table-merge-cells": "Spoji celice",
 	"visualeditor-tablecell-tooltip": "Za ureditev celice naredite dvojni klik",
+	"visualeditor-tablecell-contextitem": "Celica tabele",
 	"visualeditor-toolbar-format-tooltip": "Oblikujte odstavek",
 	"visualeditor-toolbar-history": "Zgodovina",
 	"visualeditor-toolbar-insert": "Vstavi",
