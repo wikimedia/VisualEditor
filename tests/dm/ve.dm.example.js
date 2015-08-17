@@ -1505,7 +1505,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo"></span>bar<span rel="ve:Comment" data-ve-comment="baz"></span></b></p>',
+		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment="baz">&nbsp;</span></b></p>',
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
 			'<b class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">' +
 				ve.dm.example.inlineSlug +
@@ -1826,7 +1826,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" comment "></span>'
+		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" comment ">&nbsp;</span>'
 	},
 	'empty document with content added by the editor': {
 		data: [
@@ -1958,7 +1958,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p>Foo<b><span rel="ve:Comment" data-ve-comment=" Bar "></span></b>Baz</p>'
+		clipboardBody: '<p>Foo<b><span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span></b>Baz</p>'
 	},
 	'empty annotation with metadata': {
 		body: '<p>Foo<b><meta /></b>Baz</p>',
@@ -2554,7 +2554,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" Foo "></span> <span rel="ve:Comment" data-ve-comment=" Bar "></span>\nFoo'
+		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" Foo ">&nbsp;</span> <span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span>\nFoo'
 	},
 	'whitespace preservation with comments at end of wrapper paragraph': {
 		body: '<ul><li> bar<!-- baz -->quux </li></ul>',
@@ -2597,7 +2597,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<ul><li> bar<span rel="ve:Comment" data-ve-comment=" baz "></span>quux </li></ul>'
+		clipboardBody: '<ul><li> bar<span rel="ve:Comment" data-ve-comment=" baz ">&nbsp;</span>quux </li></ul>'
 	},
 	'whitespace preservation with metadata and space at end of wrapper paragraph': {
 		body: '<ul><li> bar<meta />quux </li></ul>',
@@ -2775,7 +2775,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p> <span rel="ve:Comment" data-ve-comment=" foo "></span>bar<span rel="ve:Comment" data-ve-comment=" baz "></span> </p>'
+		clipboardBody: '<p> <span rel="ve:Comment" data-ve-comment=" foo ">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment=" baz ">&nbsp;</span> </p>'
 	},
 	'whitespace surrounding metadata in a wrapper': {
 		body: '<b>Foo</b> <meta />\n<i>Bar</i>',
@@ -3173,7 +3173,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="-Foo-bar-->b&amp;r-"></span></p>'
+		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="-Foo-bar-->b&amp;r-">&nbsp;</span></p>'
 	},
 	'comment escaping is normalized': {
 		body: '<p><!--&gt;Foo-bar--&gt;b&amp;r---></p>',
@@ -3186,7 +3186,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		normalizedBody: '<p><!--&#62;Foo-bar-&#45;>b&#38;r&#45;--></p>',
-		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-"></span></p>'
+		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-">&nbsp;</span></p>'
 	},
 	'other branch nodes': {
 		body: '<center>Foo</center><blockquote>Bar</blockquote>',

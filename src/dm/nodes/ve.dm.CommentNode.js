@@ -57,6 +57,7 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 		span = doc.createElement( 'span' );
 		span.setAttribute( 'rel', 've:Comment' );
 		span.setAttribute( 'data-ve-comment', dataElement.attributes.text );
+		span.appendChild( doc.createTextNode( '\u00a0' ) );
 		return [ span ];
 	} else {
 		// Real comment node
