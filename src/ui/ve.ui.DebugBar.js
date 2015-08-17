@@ -18,7 +18,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	// Parent constructor
 	OO.ui.Element.call( this, config );
 
-	var dumpModelButtonGroup, hideDumpButton;
+	var dumpModelButtonGroup, hideDumpButton, closeButton;
 
 	this.surface = surface;
 
@@ -31,6 +31,11 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	hideDumpButton = new OO.ui.ButtonWidget( {
 		icon: 'collapse',
 		label: 'Hide'
+	} );
+
+	closeButton = new OO.ui.ButtonWidget( {
+		icon: 'close',
+		label: 'Close'
 	} );
 
 	this.$dump =
@@ -69,6 +74,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.inputDebuggingToggle.on( 'click', this.onInputDebuggingToggleClick.bind( this ) );
 	this.filibusterToggle.on( 'click', this.onFilibusterToggleClick.bind( this ) );
 	hideDumpButton.on( 'click', this.$dump.hide.bind( this.$dump ) );
+	closeButton.on( 'click', this.$element.remove.bind( this.$element ) );
 
 	this.onDumpModelChangeToggleClick();
 	this.getSurface().getModel().connect( this, { select: 'onSurfaceSelect' } );
@@ -82,7 +88,9 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 			$( this.constructor.static.dividerTemplate ),
 			dumpModelButtonGroup.$element,
 			this.inputDebuggingToggle.$element,
-			this.filibusterToggle.$element
+			this.filibusterToggle.$element,
+			$( this.constructor.static.dividerTemplate ),
+			closeButton.$element
 		),
 		this.$dump,
 		this.$filibuster
