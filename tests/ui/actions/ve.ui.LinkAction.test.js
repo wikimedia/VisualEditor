@@ -9,7 +9,9 @@ QUnit.module( 've.ui.LinkAction' );
 /* Tests */
 
 function runAutolinkTest( assert, html, method, range, expectedRange, expectedData, expectedOriginalData, msg ) {
-	var surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
+	var status,
+		expectFail = /^Don't/.test( msg ),
+		surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
 		linkAction = new ve.ui.LinkAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() ),
 		originalData = ve.copy( data );
@@ -19,12 +21,15 @@ function runAutolinkTest( assert, html, method, range, expectedRange, expectedDa
 		expectedOriginalData( originalData );
 	}
 	surface.getModel().setLinearSelection( range );
-	linkAction[method]();
+	status = linkAction[method]();
+	assert.equal( status, !expectFail, msg + ': action return value' );
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
-	surface.getModel().undo();
+	if ( status ) {
+		surface.getModel().undo();
+	}
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ' (undo): ranges match' );
@@ -68,10 +73,32 @@ QUnit.test( 'autolink', function ( assert ) {
 					}
 				},
 				msg: 'Autolink with mixed case'
+			},
+			{
+				html: '<p>http://example.com.) xyz</p>',
+				range: new ve.Range( 1, 22 ),
+				method: 'autolinkUrl',
+				expectedRange: new ve.Range( 22, 22 ),
+				expectedData: function ( data ) {
+					for ( var i = 1; i < 19; i++ ) {
+						data[i] = [ data[i], [ 0 ] ];
+					}
+				},
+				msg: 'Strip trailing punctuation'
+			},
+			{
+				html: '<p>http://.) xyz</p>',
+				range: new ve.Range( 1, 11 ),
+				method: 'autolinkUrl',
+				expectedRange: new ve.Range( 1, 11 ),
+				expectedData: function ( /*data*/ ) {
+					/* no change, no link */
+				},
+				msg: 'Don\'t link if stripping leaves bare protocol'
 			}
 		];
 
-	QUnit.expect( cases.length * 4 );
+	QUnit.expect( cases.length * 5 );
 	for ( i = 0; i < cases.length; i++ ) {
 		runAutolinkTest( assert, cases[i].html, cases[i].method, cases[i].range, cases[i].expectedRange, cases[i].expectedData, cases[i].expectedOriginalData, cases[i].msg );
 	}
