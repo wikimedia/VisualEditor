@@ -5,11 +5,13 @@
 			"Audriusa",
 			"Eitvys200",
 			"Papuass",
-			"PeterisP"
+			"PeterisP",
+			"Silraks"
 		]
 	},
 	"visualeditor": "Vizuālais redaktors",
 	"visualeditor-aliennode-tooltip": "Atvainojiet, pagaidām šo elementu var labot tikai pirmkoda režīmā.",
+	"visualeditor-aliencontextitem-title": "Ieraksts",
 	"visualeditor-annotationbutton-bold-tooltip": "Pustrekns",
 	"visualeditor-annotationbutton-code-tooltip": "Datora kods",
 	"visualeditor-annotationbutton-italic-tooltip": "Kursīvā",
