@@ -8,10 +8,10 @@ QUnit.module( 've.ui.UrlStringTransferHandler' );
 
 /* Tests */
 
-function runUrlStringHandlerTest( assert, string, mimeType, expectedData ) {
+function runUrlStringHandlerTest( assert, string, htmlString, mimeType, expectedDataFunc, msg ) {
 	var handler,
 		done = assert.async(),
-		item = ve.ui.DataTransferItem.static.newFromString( string, mimeType ),
+		item = ve.ui.DataTransferItem.static.newFromString( string, mimeType, htmlString ),
 		doc = ve.dm.example.createExampleDocument(),
 		mockSurface = {
 			getModel: function () {
@@ -20,9 +20,6 @@ function runUrlStringHandlerTest( assert, string, mimeType, expectedData ) {
 						return doc;
 					}
 				};
-			},
-			getImportRules: function () {
-				return ve.init.mw.Target.static.importRules;
 			}
 		},
 		linkAction = ve.ui.actionFactory.create( 'link', mockSurface ),
@@ -30,81 +27,114 @@ function runUrlStringHandlerTest( assert, string, mimeType, expectedData ) {
 			return linkAction.getLinkAnnotation( href ).element;
 		};
 
+	// Invoke the handler
 	handler = ve.ui.dataTransferHandlerFactory.create( 'urlString', mockSurface, item );
 
 	handler.getInsertableData().done( function ( actualData ) {
 		ve.dm.example.postprocessAnnotations( actualData, doc.getStore() );
-		assert.equalLinearData( actualData, expectedData( makeLinkAnnotation ), 'data match' );
+		assert.equalLinearData( actualData, expectedDataFunc( makeLinkAnnotation ), msg + ': data match' );
 		done();
 	} );
 }
 
-QUnit.test( 'simple external link', 1, function ( assert ) {
-	runUrlStringHandlerTest( assert, 'http://example.com', 'text/plain', function ( makeAnnotation ) {
-		var a = makeAnnotation( 'http://example.com' );
-		return [
-			[ 'h', [ a ] ],
-			[ 't', [ a ] ],
-			[ 't', [ a ] ],
-			[ 'p', [ a ] ],
-			[ ':', [ a ] ],
-			[ '/', [ a ] ],
-			[ '/', [ a ] ],
-			[ 'e', [ a ] ],
-			[ 'x', [ a ] ],
-			[ 'a', [ a ] ],
-			[ 'm', [ a ] ],
-			[ 'p', [ a ] ],
-			[ 'l', [ a ] ],
-			[ 'e', [ a ] ],
-			[ '.', [ a ] ],
-			[ 'c', [ a ] ],
-			[ 'o', [ a ] ],
-			[ 'm', [ a ] ],
-			' '
+QUnit.test( 'paste', function ( assert ) {
+	var i,
+		cases = [
+			{
+				msg: 'Simple external link',
+				pasteString: 'http://example.com',
+				pasteType: 'text/plain',
+				expectedData: function ( makeAnnotation ) {
+					var a = makeAnnotation( 'http://example.com' );
+					return [
+						[ 'h', [ a ] ],
+						[ 't', [ a ] ],
+						[ 't', [ a ] ],
+						[ 'p', [ a ] ],
+						[ ':', [ a ] ],
+						[ '/', [ a ] ],
+						[ '/', [ a ] ],
+						[ 'e', [ a ] ],
+						[ 'x', [ a ] ],
+						[ 'a', [ a ] ],
+						[ 'm', [ a ] ],
+						[ 'p', [ a ] ],
+						[ 'l', [ a ] ],
+						[ 'e', [ a ] ],
+						[ '.', [ a ] ],
+						[ 'c', [ a ] ],
+						[ 'o', [ a ] ],
+						[ 'm', [ a ] ],
+						' '
+					];
+				}
+			},
+			{
+				msg: 'DnD standard URI list without HTML',
+				pasteString: '#comment\nhttp://example.com\n',
+				pasteType: 'text/uri-list',
+				expectedData: function ( makeAnnotation ) {
+					var a = makeAnnotation( 'http://example.com' );
+					return [
+						[ 'h', [ a ] ],
+						[ 't', [ a ] ],
+						[ 't', [ a ] ],
+						[ 'p', [ a ] ],
+						[ ':', [ a ] ],
+						[ '/', [ a ] ],
+						[ '/', [ a ] ],
+						[ 'e', [ a ] ],
+						[ 'x', [ a ] ],
+						[ 'a', [ a ] ],
+						[ 'm', [ a ] ],
+						[ 'p', [ a ] ],
+						[ 'l', [ a ] ],
+						[ 'e', [ a ] ],
+						[ '.', [ a ] ],
+						[ 'c', [ a ] ],
+						[ 'o', [ a ] ],
+						[ 'm', [ a ] ],
+						' '
+					];
+				}
+			},
+			{
+				msg: 'DnD standard URI list with HTML',
+				pasteString: '#comment\nhttp://example.com\n',
+				pasteType: 'text/uri-list',
+				pasteHtml: '<a href="http://example.com/foo">Foo</a>',
+				expectedData: function ( makeAnnotation ) {
+					var a = makeAnnotation( 'http://example.com/foo' );
+					return [
+						[ 'F', [ a ] ],
+						[ 'o', [ a ] ],
+						[ 'o', [ a ] ],
+						' '
+					];
+				}
+			},
+			{
+				msg: 'Mozilla URI list',
+				pasteString: 'http://example.com\n[[Foo]]',
+				pasteType: 'text/x-moz-url',
+				expectedData: function ( makeAnnotation ) {
+					var a = makeAnnotation( 'http://example.com' );
+					return [
+						[ '[', [ a ] ],
+						[ '[', [ a ] ],
+						[ 'F', [ a ] ],
+						[ 'o', [ a ] ],
+						[ 'o', [ a ] ],
+						[ ']', [ a ] ],
+						[ ']', [ a ] ],
+						' '
+					];
+				}
+			}
 		];
-	} );
-} );
 
-QUnit.test( 'DnD standard URI list', 1, function ( assert ) {
-	runUrlStringHandlerTest( assert, '#comment\nhttp://example.com\n', 'text/uri-list', function ( makeAnnotation ) {
-		var a = makeAnnotation( 'http://example.com' );
-		return [
-			[ 'h', [ a ] ],
-			[ 't', [ a ] ],
-			[ 't', [ a ] ],
-			[ 'p', [ a ] ],
-			[ ':', [ a ] ],
-			[ '/', [ a ] ],
-			[ '/', [ a ] ],
-			[ 'e', [ a ] ],
-			[ 'x', [ a ] ],
-			[ 'a', [ a ] ],
-			[ 'm', [ a ] ],
-			[ 'p', [ a ] ],
-			[ 'l', [ a ] ],
-			[ 'e', [ a ] ],
-			[ '.', [ a ] ],
-			[ 'c', [ a ] ],
-			[ 'o', [ a ] ],
-			[ 'm', [ a ] ],
-			' '
-		];
-	} );
-} );
-
-QUnit.test( 'Mozilla URI list', 1, function ( assert ) {
-	runUrlStringHandlerTest( assert, 'http://example.com\n[[Foo]]', 'text/x-moz-url', function ( makeAnnotation ) {
-		var a = makeAnnotation( 'http://example.com' );
-		return [
-			[ '[', [ a ] ],
-			[ '[', [ a ] ],
-			[ 'F', [ a ] ],
-			[ 'o', [ a ] ],
-			[ 'o', [ a ] ],
-			[ ']', [ a ] ],
-			[ ']', [ a ] ],
-			' '
-		];
-	} );
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		runUrlStringHandlerTest( assert, cases[ i ].pasteString, cases[ i ].pasteHtml, cases[ i ].pasteType, cases[ i ].expectedData, cases[ i ].msg );
+	}
 } );
