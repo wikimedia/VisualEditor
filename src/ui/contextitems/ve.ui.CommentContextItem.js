@@ -8,7 +8,7 @@
  * Context item for a comment.
  *
  * @class
- * @extends ve.ui.ContextItem
+ * @extends ve.ui.LinearContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model item is related to
@@ -24,7 +24,7 @@ ve.ui.CommentContextItem = function VeUiCommentContextItem( context, model, conf
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.CommentContextItem, ve.ui.ContextItem );
+OO.inheritClass( ve.ui.CommentContextItem, ve.ui.LinearContextItem );
 
 /* Static Properties */
 

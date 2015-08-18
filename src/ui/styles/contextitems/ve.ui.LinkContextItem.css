@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-linkContextItem .ve-ui-contextItem-body {
+.ve-ui-linkContextItem .ve-ui-linearContextItem-body {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;

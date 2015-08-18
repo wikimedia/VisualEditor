@@ -31,62 +31,13 @@ ve.ui.ContextItem = function VeUiContextItem( context, model, config ) {
 	// Properties
 	this.context = context;
 	this.model = model;
-	this.$head = $( '<div>' );
-	this.$title = $( '<div>' );
-	this.$actions = $( '<div>' );
-	this.$body = $( '<div>' );
-	this.$info = $( '<div>' );
-	this.$description = $( '<div>' );
-	this.editButton = new OO.ui.ButtonWidget( ve.extendObject(
-		this.context.getDefaultButtonConfig(),
-		{
-			label: ve.msg( 'visualeditor-contextitemwidget-label-secondary' ),
-			flags: [ 'progressive' ],
-			classes: [ 've-ui-contextItem-editButton' ]
-		}
-	) );
-	this.deleteButton = new OO.ui.ButtonWidget( ve.extendObject(
-		this.context.getDefaultButtonConfig(),
-		{
-			icon: 'remove',
-			flags: [ 'destructive' ]
-		}
-	) );
-	this.actionButtons = new OO.ui.ButtonGroupWidget();
-	if ( this.isDeletable() ) {
-		this.actionButtons.addItems( [ this.deleteButton ] );
-	}
-	if ( this.isEditable() ) {
-		this.actionButtons.addItems( [ this.editButton ] );
-	}
 	this.fragment = null;
 
 	// Events
-	this.editButton.connect( this, { click: 'onEditButtonClick' } );
-	this.deleteButton.connect( this, { click: 'onDeleteButtonClick' } );
 	this.$element.on( 'mousedown', false );
 
 	// Initialization
-	this.$label.addClass( 've-ui-contextItem-label' );
-	this.$icon.addClass( 've-ui-contextItem-icon' );
-	this.$description.addClass( 've-ui-contextItem-description' );
-	this.$info
-		.addClass( 've-ui-contextItem-info' )
-		.append( this.$description );
-	this.$title
-		.addClass( 've-ui-contextItem-title' )
-		.append( this.$icon, this.$label );
-	this.$actions
-		.addClass( 've-ui-contextItem-actions' )
-		.append( this.actionButtons.$element );
-	this.$head
-		.addClass( 've-ui-contextItem-head' )
-		.append( this.$title, this.$info, this.$actions );
-	this.$body.addClass( 've-ui-contextItem-body' );
-	this.$element
-		.addClass( 've-ui-contextItem' )
-		.toggleClass( 've-ui-contextItem-basic', this.context.shouldUseBasicRendering() )
-		.append( this.$head, this.$body );
+	this.$element.addClass( 've-ui-contextItem' );
 };
 
 /* Inheritance */
@@ -103,20 +54,6 @@ OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.PendingElement );
  */
 
 /* Static Properties */
-
-ve.ui.ContextItem.static.editable = true;
-
-ve.ui.ContextItem.static.deletable = true;
-
-/**
- * Whether the context item should try (if space permits) to go inside the node,
- * rather than below with an arrow
- *
- * @static
- * @property {boolean}
- * @inheritable
- */
-ve.ui.ContextItem.static.embeddable = true;
 
 /**
  * Whether this item exclusively handles any model class
@@ -143,29 +80,6 @@ ve.ui.ContextItem.static.modelClasses = [];
 /* Methods */
 
 /**
- * Handle edit button click events.
- *
- * @localdoc Executes the command related to #static-commandName on the context's surface
- *
- * @protected
- */
-ve.ui.ContextItem.prototype.onEditButtonClick = function () {
-	var command = this.getCommand();
-
-	if ( command ) {
-		command.execute( this.context.getSurface() );
-		this.emit( 'command' );
-	}
-};
-
-/**
- * Handle delete button click events.
- */
-ve.ui.ContextItem.prototype.onDeleteButtonClick = function () {
-	this.getFragment().removeContent();
-};
-
-/**
  * Check if this item is compatible with a given model.
  *
  * @static
@@ -175,24 +89,6 @@ ve.ui.ContextItem.prototype.onDeleteButtonClick = function () {
  */
 ve.ui.ContextItem.static.isCompatibleWith = function ( model ) {
 	return ve.isInstanceOfAny( model, this.modelClasses );
-};
-
-/**
- * Check if item is editable.
- *
- * @return {boolean} Item is editable
- */
-ve.ui.ContextItem.prototype.isEditable = function () {
-	return this.constructor.static.editable && ( !this.model || this.model.isEditable() );
-};
-
-/**
- * Check if item is deletable.
- *
- * @return {boolean} Item is deletable
- */
-ve.ui.ContextItem.prototype.isDeletable = function () {
-	return this.constructor.static.deletable && this.isNode() && this.context.showDeleteButton();
 };
 
 /**
@@ -229,58 +125,19 @@ ve.ui.ContextItem.prototype.getFragment = function () {
 };
 
 /**
- * Get the description.
- *
- * @localdoc Override for custom description content
- * @return {string} Item description
- */
-ve.ui.ContextItem.prototype.getDescription = function () {
-	return '';
-};
-
-/**
- * Render the body.
- *
- * @localdoc Renders the result of #getDescription, override for custom body rendering
- */
-ve.ui.ContextItem.prototype.renderBody = function () {
-	this.$body.text( this.getDescription() );
-};
-
-/**
- * Render the description.
- *
- * @localdoc Renders the result of #getDescription, override for custom description rendering
- */
-ve.ui.ContextItem.prototype.renderDescription = function () {
-	this.$description.text( this.getDescription() );
-};
-
-/**
  * Setup the item.
  *
- * @localdoc Calls #renderDescription if the context suggests basic rendering or #renderBody if not,
- *   override to start any async rendering common to the body and description
  * @chainable
  */
 ve.ui.ContextItem.prototype.setup = function () {
-	if ( this.context.shouldUseBasicRendering() ) {
-		this.renderDescription();
-	} else {
-		this.renderBody();
-	}
-
 	return this;
 };
 
 /**
  * Teardown the item.
  *
- * @localdoc Empties the description and body, override to abort any async rendering
  * @chainable
  */
 ve.ui.ContextItem.prototype.teardown = function () {
-	this.$description.empty();
-	this.$body.empty();
 	return this;
 };

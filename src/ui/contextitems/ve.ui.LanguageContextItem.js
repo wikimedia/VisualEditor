@@ -8,7 +8,7 @@
  * Context item for a language.
  *
  * @class
- * @extends ve.ui.ContextItem
+ * @extends ve.ui.LinearContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model item is related to
@@ -24,7 +24,7 @@ ve.ui.LanguageContextItem = function VeUiLanguageContextItem( context, model, co
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.LanguageContextItem, ve.ui.ContextItem );
+OO.inheritClass( ve.ui.LanguageContextItem, ve.ui.LinearContextItem );
 
 /* Static Properties */
 

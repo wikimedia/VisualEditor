@@ -8,7 +8,7 @@
  * Context item for a tool.
  *
  * @class
- * @extends ve.ui.ContextItem
+ * @extends ve.ui.LinearContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model the item is related to
@@ -30,7 +30,7 @@ ve.ui.ToolContextItem = function VeUiToolContextItem( context, model, tool, conf
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.ToolContextItem, ve.ui.ContextItem );
+OO.inheritClass( ve.ui.ToolContextItem, ve.ui.LinearContextItem );
 
 /* Methods */
 

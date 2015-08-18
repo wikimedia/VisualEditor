@@ -8,7 +8,7 @@
  * Context item for a link.
  *
  * @class
- * @extends ve.ui.ContextItem
+ * @extends ve.ui.LinearContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model item is related to
@@ -24,7 +24,7 @@ ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.LinkContextItem, ve.ui.ContextItem );
+OO.inheritClass( ve.ui.LinkContextItem, ve.ui.LinearContextItem );
 
 /* Static Properties */
 
