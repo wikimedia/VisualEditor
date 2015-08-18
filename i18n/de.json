@@ -39,6 +39,7 @@
 	"visualeditor-commentinspector-tooltip": "Kommentar",
 	"visualeditor-content-select-all": "Alle auswählen",
 	"visualeditor-contextitemwidget-label-secondary": "Bearbeiten",
+	"visualeditor-contextitemwidget-label-remove": "Löschen",
 	"visualeditor-dialog-action-apply": "Änderungen speichern",
 	"visualeditor-dialog-action-cancel": "Abbrechen",
 	"visualeditor-dialog-action-done": "Fertig",
