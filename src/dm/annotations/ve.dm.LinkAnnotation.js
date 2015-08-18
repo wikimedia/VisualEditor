@@ -65,6 +65,7 @@ ve.dm.LinkAnnotation.static.getHref = function ( dataElement ) {
 
 /**
  * Convenience wrapper for .getHref() on the current element.
+ *
  * @see #static-getHref
  * @return {string} Link href
  */

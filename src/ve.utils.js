@@ -89,6 +89,7 @@ ve.copyDomElements = function ( domElements, doc ) {
 
 /**
  * Check if two arrays of DOM elements are equal (according to .isEqualNode())
+ *
  * @param {HTMLElement[]} domElements1 First array of DOM elements
  * @param {HTMLElement[]} domElements2 Second array of DOM elements
  * @return {boolean} All elements are pairwise equal
@@ -900,6 +901,7 @@ ve.resolveAttributes = function ( $elements, doc, attrs ) {
 	/**
 	 * Callback for jQuery.fn.each that resolves the value of attr to the computed
 	 * property value. Called in the context of an HTMLElement.
+	 *
 	 * @private
 	 */
 	function resolveAttribute() {
@@ -971,7 +973,8 @@ ve.isUriComponentValid = function ( s ) {
  * Safe version of decodeURIComponent() that doesn't throw exceptions.
  *
  * If the native decodeURIComponent() call threw an exception, the original string
- * will be returned
+ * will be returned.
+ *
  * @param {string} s String to decode
  * @return {string} Decoded string, or same string if decoding failed
  * @see #isUriComponentValid
@@ -1228,6 +1231,7 @@ ve.normalizeNode = function ( node ) {
 
 /**
  * Translate rect by some fixed vector and return a new offset object
+ *
  * @param {Object} rect Offset object containing all or any of top, left, bottom, right, width & height
  * @param {number} x Horizontal translation
  * @param {number} y Vertical translation
@@ -1258,6 +1262,7 @@ ve.translateRect = function ( rect, x, y ) {
 
 /**
  * Get the start and end rectangles (in a text flow sense) from a list of rectangles
+ *
  * @param {Array} rects Full list of rectangles
  * @return {Object|null} Object containing two rectangles: start and end, or null if there are no rectangles
  */

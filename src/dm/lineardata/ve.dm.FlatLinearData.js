@@ -27,7 +27,8 @@ OO.inheritClass( ve.dm.FlatLinearData, ve.dm.LinearData );
 /* Methods */
 
 /**
- * Get the type of the element at a specified offset
+ * Get the type of the element at a specified offset.
+ *
  * @method
  * @param {number} offset Data offset
  * @return {string} Type of the element
@@ -38,6 +39,7 @@ ve.dm.FlatLinearData.prototype.getType = function ( offset ) {
 
 /**
  * Check if data at a given offset is an element.
+ *
  * @method
  * @param {number} offset Data offset
  * @return {boolean} Data at offset is an element
@@ -67,6 +69,7 @@ ve.dm.FlatLinearData.prototype.containsElementData = function () {
 
 /**
  * Checks if data at a given offset is an open element.
+ *
  * @method
  * @param {number} offset Data offset
  * @return {boolean} Data at offset is an open element
@@ -77,6 +80,7 @@ ve.dm.FlatLinearData.prototype.isOpenElementData = function ( offset ) {
 
 /**
  * Checks if data at a given offset is a close element.
+ *
  * @method
  * @param {number} offset Data offset
  * @return {boolean} Data at offset is a close element

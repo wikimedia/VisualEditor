@@ -35,7 +35,8 @@ OO.inheritClass( ve.ui.WindowManager, OO.ui.WindowManager );
 /* Methods */
 
 /**
- * Get directionality
+ * Get directionality.
+ *
  * @return {string} UI directionality
  */
 ve.ui.WindowManager.prototype.getDir = function () {

@@ -251,6 +251,7 @@ ve.dm.TableSelection.prototype.translateByTransaction = function ( tx, excludeIn
 
 /**
  * Check if the selection spans a single cell
+ *
  * @return {boolean} The selection spans a single cell
  */
 ve.dm.TableSelection.prototype.isSingleCell = function () {

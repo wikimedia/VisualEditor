@@ -113,6 +113,7 @@ ve.dm.AnnotationSet.prototype.get = function ( offset ) {
 
 /**
  * Get store index from offset within annotation set.
+ *
  * @param {number} offset Offset within annotation set
  * @return {number} Store index at specified offset
  */
@@ -122,6 +123,7 @@ ve.dm.AnnotationSet.prototype.getIndex = function ( offset ) {
 
 /**
  * Get all store indexes.
+ *
  * @return {Array} Store indexes
  */
 ve.dm.AnnotationSet.prototype.getIndexes = function () {

@@ -66,6 +66,7 @@ ve.ce.Annotation.static.getDescription = function () {
 
 /**
  * Get the content branch node this annotation is rendered in, if any.
+ *
  * @return {ve.ce.ContentBranchNode|null} Content branch node or null if none
  */
 ve.ce.Annotation.prototype.getParentNode = function () {

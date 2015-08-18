@@ -38,7 +38,8 @@ ve.ce.AnnotationFactory.prototype.getDescription = function ( annotation ) {
 };
 
 /**
- * Check if an annotation needs to force continuation
+ * Check if an annotation needs to force continuation.
+ *
  * @param {string} type Annotation type
  * @return {boolean} Whether the annotation needs to force continuation
  */

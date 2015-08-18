@@ -155,6 +155,7 @@ ve.EventSequencer.prototype.detach = function () {
 
 /**
  * Add listeners to be fired at the start of the Javascript event loop iteration
+ *
  * @method
  * @param {Function|Function[]} listeners Listener(s) that take no arguments
  * @chainable
@@ -169,6 +170,7 @@ ve.EventSequencer.prototype.onLoop = function ( listeners ) {
 
 /**
  * Add listeners to be fired just before the browser native action
+ *
  * @method
  * @param {Object.<string,Function>} listeners Function for each event
  * @chainable
@@ -183,6 +185,7 @@ ve.EventSequencer.prototype.on = function ( listeners ) {
 
 /**
  * Add listeners to be fired as soon as possible after the native action
+ *
  * @method
  * @param {Object.<string,Function>} listeners Function for each event
  * @chainable
@@ -197,6 +200,7 @@ ve.EventSequencer.prototype.after = function ( listeners ) {
 
 /**
  * Add listeners to be fired once, as soon as possible after the native action
+ *
  * @method
  * @param {Object.<string,Function[]>} listeners Function for each event
  * @chainable
@@ -211,6 +215,7 @@ ve.EventSequencer.prototype.afterOne = function ( listeners ) {
 
 /**
  * Add listeners to be fired at the end of the Javascript event loop iteration
+ *
  * @method
  * @param {Function|Function[]} listeners Listener(s) that take no arguments
  * @chainable
@@ -225,6 +230,7 @@ ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
 
 /**
  * Add listeners to be fired once, at the end of the Javascript event loop iteration
+ *
  * @method
  * @param {Function|Function[]} listeners Listener(s) that take no arguments
  * @chainable
@@ -239,6 +245,7 @@ ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {
 
 /**
  * Generic listener method which does the sequencing
+ *
  * @private
  * @method
  * @param {string} eventName Javascript name of the event, e.g. 'keydown'
@@ -281,6 +288,7 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 
 /**
  * Generic after listener method which gets queued
+ *
  * @private
  * @method
  * @param {string} eventName Javascript name of the event, e.g. 'keydown'
@@ -306,6 +314,7 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 
 /**
  * Call each onLoopListener once
+ *
  * @private
  * @method
  */
@@ -319,6 +328,7 @@ ve.EventSequencer.prototype.doOnLoop = function () {
 
 /**
  * Call each afterLoopListener once, unless the setTimeout is already cancelled
+ *
  * @private
  * @method
  * @param {number} myTimeoutId The calling setTimeout id
@@ -350,6 +360,7 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 
 /**
  * Push any pending doAfterLoop to end of task queue (cancel, then re-set)
+ *
  * @private
  * @method
  */
@@ -366,6 +377,7 @@ ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
 
 /**
  * Run any pending listeners, and clear the pending queue
+ *
  * @private
  * @method
  * @param {string} eventName The name of the event currently being triggered

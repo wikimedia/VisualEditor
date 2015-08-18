@@ -236,6 +236,7 @@ ve.ui.Surface.prototype.setupDebugBar = function () {
 
 /**
  * Get the bounding rectangle of the surface, relative to the viewport.
+ *
  * @return {Object} Object with top, bottom, left, right, width and height properties.
  */
 ve.ui.Surface.prototype.getBoundingClientRect = function () {
@@ -296,6 +297,7 @@ ve.ui.Surface.prototype.getDialogs = function () {
 
 /**
  * Get toolbar dialogs window set.
+ *
  * @return {ve.ui.WindowManager} Toolbar dialogs window set
  */
 ve.ui.Surface.prototype.getToolbarDialogs = function () {
@@ -554,6 +556,7 @@ ve.ui.Surface.prototype.stopFilibuster = function () {
 
 /**
  * Get the name of the dialog this surface is in
+ *
  * @return {string} The name of the dialog this surface is in
  */
 ve.ui.Surface.prototype.getInDialog = function () {
