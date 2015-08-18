@@ -1138,7 +1138,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		} else {
 			document.execCommand( 'insertHTML', false, pasteHtml );
 		}
-		view.afterPaste();
+		view.afterPaste( new TestEvent( e ) );
 
 		if ( expectedOps ) {
 			ops = [];

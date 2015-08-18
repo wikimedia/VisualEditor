@@ -1890,10 +1890,11 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  *
  * @param {jQuery.Event} e Paste event
  */
-ve.ce.Surface.prototype.afterPaste = function () {
+ve.ce.Surface.prototype.afterPaste = function ( e ) {
+	// jshint unused:false
 	var clipboardKey, clipboardId, clipboardIndex, clipboardHash, range,
 		$elements, parts, pasteData, slice, tx, internalListRange,
-		data, doc, htmlDoc, $images, i,
+		data, doc, htmlStr, htmlDoc, $images, i,
 		context, left, right, contextRange,
 		items = [],
 		importantElement = '[id],[typeof],[rel]',
@@ -2041,7 +2042,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// If the clipboardKey is set (paste from other VE instance), and clipboard
 			// data is available, then make sure important spans haven't been dropped
 			if ( !$elements ) {
-				$elements = $( $.parseHTML( beforePasteData.html ) );
+				htmlStr = beforePasteData.html;
+				$elements = $( $.parseHTML( htmlStr ) );
 			}
 			if (
 				// HACK: Allow the test runner to force the use of clipboardData
@@ -2051,7 +2053,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				)
 			) {
 				// CE destroyed an important element, so revert to using clipboard data
-				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
+				htmlStr = beforePasteData.html;
+				htmlDoc = ve.createDocumentFromHtml( htmlStr );
 				// Remove the pasteProtect class. See #onCopy.
 				$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
 				beforePasteData.context = null;
@@ -2062,14 +2065,15 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// contain all sorts of horrible metadata (head tags etc.)
 			// TODO: IE will always take this path, and so may have bugs with span unwrapping
 			// in edge cases (e.g. pasting a single MWReference)
-			htmlDoc = ve.createDocumentFromHtml( this.$pasteTarget.html() );
+			htmlStr = this.$pasteTarget.html();
+			htmlDoc = ve.createDocumentFromHtml( htmlStr );
 		}
 		// Some browsers don't provide pasted image data through the clipboardData API and
 		// instead create img tags with data URLs, so detect those here
 		$images = $( htmlDoc.body ).find( 'img[src^=data\\:]' );
 		if ( $images.length ) {
 			for ( i = 0; i < $images.length; i++ ) {
-				items.push( ve.ui.DataTransferItem.static.newFromDataUri( $images.eq( i ).attr( 'src' ) ) );
+				items.push( ve.ui.DataTransferItem.static.newFromDataUri( $images.eq( i ).attr( 'src' ), htmlStr ) );
 			}
 			if ( this.handleDataTransferItems( items, true ) ) {
 				return;
@@ -2175,24 +2179,25 @@ ve.ce.Surface.prototype.afterPaste = function () {
 ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, targetFragment ) {
 	var i, l, stringData,
 		items = [],
+		htmlStringData = dataTransfer.getData( 'text/html' ),
 		stringTypes = [ 'text/x-moz-url', 'text/uri-list', 'text/x-uri', 'text/html', 'text/plain' ];
 
 	if ( dataTransfer.items ) {
 		for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
 			if ( dataTransfer.items[i].kind !== 'string' ) {
-				items.push( ve.ui.DataTransferItem.static.newFromItem( dataTransfer.items[i] ) );
+				items.push( ve.ui.DataTransferItem.static.newFromItem( dataTransfer.items[i], htmlStringData ) );
 			}
 		}
 	} else if ( dataTransfer.files ) {
 		for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
-			items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[i] ) );
+			items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[i], htmlStringData ) );
 		}
 	}
 
 	for ( i = 0, l = stringTypes.length; i < stringTypes.length; i++ ) {
 		stringData = dataTransfer.getData( stringTypes[i] );
 		if ( stringData ) {
-			items.push( ve.ui.DataTransferItem.static.newFromString( stringData, stringTypes[i] ) );
+			items.push( ve.ui.DataTransferItem.static.newFromString( stringData, stringTypes[i], htmlStringData ) );
 		}
 	}
 
