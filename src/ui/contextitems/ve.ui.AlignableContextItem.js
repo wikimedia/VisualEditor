@@ -8,7 +8,7 @@
  * Context item for an alignable node.
  *
  * @class
- * @extends ve.ui.ContextItem
+ * @extends ve.ui.LinearContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model item is related to
@@ -32,7 +32,7 @@ ve.ui.AlignableContextItem = function VeUiAlignableContextItem( context, model, 
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.AlignableContextItem, ve.ui.ContextItem );
+OO.inheritClass( ve.ui.AlignableContextItem, ve.ui.LinearContextItem );
 
 /* Static Properties */
 

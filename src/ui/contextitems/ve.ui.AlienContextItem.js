@@ -8,7 +8,7 @@
  * Context item for a Alien.
  *
  * @class
- * @extends ve.ui.ContextItem
+ * @extends ve.ui.LinearContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model item is related to
@@ -24,7 +24,7 @@ ve.ui.AlienContextItem = function VeUiAlienContextItem( context, model, config )
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.AlienContextItem, ve.ui.ContextItem );
+OO.inheritClass( ve.ui.AlienContextItem, ve.ui.LinearContextItem );
 
 /* Static Properties */
 

@@ -53,62 +53,26 @@ OO.mixinClass( ve.ui.Context, OO.ui.mixin.GroupElement );
  * @event resize
  */
 
-/* Static Property */
+/* Static Properties */
 
 /**
- * Instruct items to provide only a basic rendering.
+ * Context is for mobile devices.
  *
  * @static
  * @inheritable
  * @property {boolean}
  */
-ve.ui.Context.static.basicRendering = false;
-
-/**
- * Context items should show a delete button
- *
- * @static
- * @inheritable
- * @property {Object}
- */
-ve.ui.Context.static.showDeleteButton = false;
-
-/**
- * Default config options for rendering a button in a context item
- *
- * @static
- * @inheritable
- * @property {Object}
- */
-ve.ui.Context.static.defaultButtonConfig = {};
+ve.ui.Context.static.isMobile = false;
 
 /* Methods */
 
 /**
- * Check if items should provide only a basic rendering.
+ * Check if context is for mobile devices
  *
- * @return {boolean} Items should provide only a basic rendering
+ * @return {boolean} Context is for mobile devices
  */
-ve.ui.Context.prototype.shouldUseBasicRendering = function () {
-	return this.constructor.static.basicRendering;
-};
-
-/**
- * Check if context items should show a delete button
- *
- * @return {boolean} Context items should show a delete button
- */
-ve.ui.Context.prototype.showDeleteButton = function () {
-	return this.constructor.static.showDeleteButton;
-};
-
-/**
- * Get the default config options for rendering a button in a context item
- *
- * @return {Object} Config options
- */
-ve.ui.Context.prototype.getDefaultButtonConfig = function () {
-	return OO.copy( this.constructor.static.defaultButtonConfig );
+ve.ui.Context.prototype.isMobile = function () {
+	return this.constructor.static.isMobile;
 };
 
 /**

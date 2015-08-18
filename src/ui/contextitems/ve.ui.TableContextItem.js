@@ -20,11 +20,17 @@ ve.ui.TableContextItem = function VeUiTableContextItem() {
 	// Parent constructor
 	ve.ui.TableContextItem.super.apply( this, arguments );
 
+	this.actionButton = new OO.ui.ButtonWidget( {
+		framed: false,
+		classes: [ 've-ui-tableContextItem-actionButton' ]
+	} );
+
+	this.actionButton.connect( this, { click: 'onActionButtonClick' } );
+
 	// Initialization
-	this.$title.remove();
-	this.$info.remove();
-	this.editButton.toggleFramed( false ).clearFlags();
-	this.$element.addClass( 've-ui-tableContextItem' );
+	this.$element
+		.addClass( 've-ui-tableContextItem' )
+		.append( this.actionButton.$element );
 };
 
 /* Inheritance */
@@ -47,6 +53,22 @@ ve.ui.TableContextItem.static.title = null;
 /* Methods */
 
 /**
+ * Handle action button click events.
+ *
+ * @localdoc Executes the command related to #static-commandName on the context's surface
+ *
+ * @protected
+ */
+ve.ui.TableContextItem.prototype.onActionButtonClick = function () {
+	var command = this.getCommand();
+
+	if ( command ) {
+		command.execute( this.context.getSurface() );
+		this.emit( 'command' );
+	}
+};
+
+/**
  * Get the title of the tool, used by the button label
  *
  * @return {jQuery|string|OO.ui.HtmlSnippet|Function} Tool title
@@ -62,7 +84,7 @@ ve.ui.TableContextItem.prototype.setup = function () {
 	// Parent method
 	ve.ui.TableContextItem.super.prototype.setup.call( this );
 
-	this.editButton
+	this.actionButton
 		.setIcon( this.constructor.static.icon )
 		.setLabel( this.getTitle() );
 };

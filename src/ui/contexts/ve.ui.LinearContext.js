@@ -39,21 +39,26 @@ ve.ui.LinearContext = function VeUiLinearContext() {
 
 OO.inheritClass( ve.ui.LinearContext, ve.ui.Context );
 
-/* Static Property */
+/* Static Properties */
 
 /**
- * Instruct items to provide only a basic rendering.
+ * Context items should show a delete button
  *
  * @static
  * @inheritable
- * @property {boolean}
+ * @property {Object}
  */
-ve.ui.LinearContext.static.basicRendering = false;
+ve.ui.LinearContext.static.showDeleteButton = false;
 
 /* Methods */
 
-ve.ui.LinearContext.prototype.shouldUseBasicRendering = function () {
-	return this.constructor.static.basicRendering;
+/**
+ * Check if context items should show a delete button
+ *
+ * @return {boolean} Context items should show a delete button
+ */
+ve.ui.LinearContext.prototype.showDeleteButton = function () {
+	return this.constructor.static.showDeleteButton;
 };
 
 /**

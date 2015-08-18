@@ -39,11 +39,9 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.LinearContext );
 
 /* Static Properties */
 
-ve.ui.MobileContext.static.basicRendering = true;
+ve.ui.MobileContext.static.isMobile = true;
 
 ve.ui.MobileContext.static.showDeleteButton = true;
-
-ve.ui.MobileContext.static.defaultButtonConfig = { framed: false };
 
 /* Methods */
 
