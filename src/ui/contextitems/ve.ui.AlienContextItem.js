@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model item is related to
  * @param {Object} config Configuration options
  */
-ve.ui.AlienContextItem = function VeAlienContextItem( context, model, config ) {
+ve.ui.AlienContextItem = function VeUiAlienContextItem( context, model, config ) {
 	// Parent constructor
 	ve.ui.AlienContextItem.super.call( this, context, model, config );
 

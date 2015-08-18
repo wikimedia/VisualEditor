@@ -11,7 +11,7 @@
  * @extends OO.Registry
  * @constructor
  */
-ve.ui.CommandRegistry = function VeCommandRegistry() {
+ve.ui.CommandRegistry = function VeUiCommandRegistry() {
 	// Parent constructor
 	OO.Registry.call( this );
 };

@@ -14,7 +14,7 @@
  * @param {ve.dm.Model} model Model item is related to
  * @param {Object} config Configuration options
  */
-ve.ui.MobileTableCellContextItem = function VeMobileTableCellContextItem() {
+ve.ui.MobileTableCellContextItem = function VeUiMobileTableCellContextItem() {
 	// Parent constructor
 	ve.ui.MobileTableCellContextItem.super.apply( this, arguments );
 

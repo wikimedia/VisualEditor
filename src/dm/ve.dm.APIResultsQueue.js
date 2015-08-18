@@ -1,11 +1,11 @@
 /*!
- * VisualEditor DataModel ResourceQueue class.
+ * VisualEditor DataModel APIResultsQueue class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * Resource Queue object.
+ * API Results Queue object.
  *
  * @class
  * @mixins OO.EventEmitter
@@ -17,7 +17,7 @@
  *  that the queue should always strive to have on top of the
  *  individual requests for items.
  */
-ve.dm.APIResultsQueue = function VeDmResourceQueue( config ) {
+ve.dm.APIResultsQueue = function VeDmAPIResultsQueue( config ) {
 	config = config || {};
 
 	this.fileRepoPromise = null;

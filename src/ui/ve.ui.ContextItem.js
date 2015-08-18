@@ -19,7 +19,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [basic] Render only basic information
  */
-ve.ui.ContextItem = function ( context, model, config ) {
+ve.ui.ContextItem = function VeUiContextItem( context, model, config ) {
 	// Parent constructor
 	ve.ui.ContextItem.super.call( this, config );
 

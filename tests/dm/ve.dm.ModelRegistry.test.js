@@ -27,7 +27,7 @@ ve.dm.StubSingleTagAnnotation.static.name = 'stubsingletag';
 ve.dm.StubSingleTagAnnotation.static.matchTagNames = [ 'a' ];
 
 /* Single type with any allowed */
-ve.dm.StubSingleTypeWithAnyAllowedAnnotation = function VeDmStubSingleTypeWithAnyAnnotation() {
+ve.dm.StubSingleTypeWithAnyAllowedAnnotation = function VeDmStubSingleTypeWithAnyAllowedAnnotation() {
 	ve.dm.StubSingleTypeWithAnyAllowedAnnotation.super.apply( this, arguments );
 };
 OO.inheritClass( ve.dm.StubSingleTypeWithAnyAllowedAnnotation, ve.dm.Annotation );

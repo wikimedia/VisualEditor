@@ -16,7 +16,7 @@
  * @param {Function} tool Tool class the item is based on
  * @param {Object} config Configuration options
  */
-ve.ui.TableContextItem = function VeTableContextItem() {
+ve.ui.TableContextItem = function VeUiTableContextItem() {
 	// Parent constructor
 	ve.ui.TableContextItem.super.apply( this, arguments );
 
