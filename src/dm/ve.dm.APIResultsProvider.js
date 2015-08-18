@@ -1,11 +1,11 @@
 /*!
- * VisualEditor DataModel ResourceProvider class.
+ * VisualEditor DataModel APIResultsProvider class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * Resource Provider object.
+ * API Results Provider object.
  *
  * @class
  * @mixins OO.EventEmitter
@@ -23,7 +23,7 @@
  *  the API request. These can change per request, like the search query term
  *  or sizing parameters for images, etc.
  */
-ve.dm.APIResultsProvider = function VeDmResourceProvider( apiurl, config ) {
+ve.dm.APIResultsProvider = function VeDmAPIResultsProvider( apiurl, config ) {
 	config = config || {};
 
 	this.setAPIurl( apiurl );

@@ -14,7 +14,7 @@
  * @constructor
  * @param {Object} [element] Reference to element in linear model
  */
-ve.dm.InlineImageNode = function VeDmImageNode() {
+ve.dm.InlineImageNode = function VeDmInlineImageNode() {
 	// Parent constructor
 	ve.dm.InlineImageNode.super.apply( this, arguments );
 

@@ -12,7 +12,7 @@
  * @constructor
  * @param {string[]} commands Commands to listen to triggers for
  */
-ve.TriggerListener = function VeUiTriggerListener( commands ) {
+ve.TriggerListener = function VeTriggerListener( commands ) {
 	// Properties
 	this.commands = [];
 	this.commandsByTrigger = {};

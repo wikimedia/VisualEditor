@@ -96,7 +96,7 @@ ve.dm.modelRegistry.register( ve.dm.TableNode );
  * @constructor
  * @param {ve.dm.TableNode} tableNode Table node to iterate through
  */
-ve.dm.TableNodeCellIterator = function VeCeTableNodeCellIterator( tableNode ) {
+ve.dm.TableNodeCellIterator = function VeDmTableNodeCellIterator( tableNode ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
