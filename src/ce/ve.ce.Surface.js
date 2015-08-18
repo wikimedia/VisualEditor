@@ -1895,7 +1895,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 	// jshint unused:false
 	var clipboardKey, clipboardId, clipboardIndex, clipboardHash, range,
 		$elements, parts, pasteData, slice, tx, internalListRange,
-		data, doc, htmlStr, htmlDoc, $images, i,
+		data, doc, htmlDoc, $images, i,
 		context, left, right, contextRange,
 		items = [],
 		importantElement = '[id],[typeof],[rel]',
@@ -2043,8 +2043,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			// If the clipboardKey is set (paste from other VE instance), and clipboard
 			// data is available, then make sure important spans haven't been dropped
 			if ( !$elements ) {
-				htmlStr = beforePasteData.html;
-				$elements = $( $.parseHTML( htmlStr ) );
+				$elements = $( $.parseHTML( beforePasteData.html ) );
 			}
 			if (
 				// HACK: Allow the test runner to force the use of clipboardData
@@ -2054,8 +2053,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				)
 			) {
 				// CE destroyed an important element, so revert to using clipboard data
-				htmlStr = beforePasteData.html;
-				htmlDoc = ve.createDocumentFromHtml( htmlStr );
+				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
 				// Remove the pasteProtect class. See #onCopy.
 				$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
 				beforePasteData.context = null;
@@ -2066,15 +2064,17 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			// contain all sorts of horrible metadata (head tags etc.)
 			// TODO: IE will always take this path, and so may have bugs with span unwrapping
 			// in edge cases (e.g. pasting a single MWReference)
-			htmlStr = this.$pasteTarget.html();
-			htmlDoc = ve.createDocumentFromHtml( htmlStr );
+			htmlDoc = ve.createDocumentFromHtml( this.$pasteTarget.html() );
 		}
 		// Some browsers don't provide pasted image data through the clipboardData API and
 		// instead create img tags with data URLs, so detect those here
 		$images = $( htmlDoc.body ).find( 'img[src^=data\\:]' );
 		if ( $images.length ) {
 			for ( i = 0; i < $images.length; i++ ) {
-				items.push( ve.ui.DataTransferItem.static.newFromDataUri( $images.eq( i ).attr( 'src' ), htmlStr ) );
+				items.push( ve.ui.DataTransferItem.static.newFromDataUri(
+					$images.eq( i ).attr( 'src' ),
+					$images[ i ].outerHTML
+				) );
 			}
 			if ( this.handleDataTransferItems( items, true ) ) {
 				return;
