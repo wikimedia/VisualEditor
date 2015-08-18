@@ -9,14 +9,17 @@ QUnit.module( 've.ui.LinkAction' );
 /* Tests */
 
 function runAutolinkTest( assert, html, method, range, expectedRange, expectedData, expectedOriginalData, msg ) {
-	var status,
+	var status, actualData,
 		expectFail = /^Don't/.test( msg ),
 		surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
 		linkAction = new ve.ui.LinkAction( surface ),
 		data = ve.copy( surface.getModel().getDocument().getFullData() ),
-		originalData = ve.copy( data );
+		originalData = ve.copy( data ),
+		makeLinkAnnotation = function ( linktext ) {
+			return linkAction.getLinkAnnotation( linktext ).element;
+		};
 
-	expectedData( data );
+	expectedData( data, makeLinkAnnotation );
 	if ( expectedOriginalData ) {
 		expectedOriginalData( originalData );
 	}
@@ -24,7 +27,9 @@ function runAutolinkTest( assert, html, method, range, expectedRange, expectedDa
 	status = linkAction[ method ]();
 	assert.equal( status, !expectFail, msg + ': action return value' );
 
-	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
+	actualData = surface.getModel().getDocument().getFullData();
+	ve.dm.example.postprocessAnnotations( actualData, surface.getModel().getDocument().getStore() );
+	assert.equalLinearData( actualData, data, msg + ': data models match' );
 	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
 	if ( status ) {
@@ -43,10 +48,11 @@ QUnit.test( 'autolink', function ( assert ) {
 				range: new ve.Range( 1, 20 ),
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 20, 20 ),
-				expectedData: function ( data ) {
-					var i;
+				expectedData: function ( data, makeAnnotation ) {
+					var i,
+						a = makeAnnotation( 'http://example.com' );
 					for ( i = 1; i < 19; i++ ) {
-						data[ i ] = [ data[ i ], [ 0 ] ];
+						data[ i ] = [ data[ i ], [ a ] ];
 					}
 				},
 				msg: 'Autolink after space'
@@ -56,10 +62,11 @@ QUnit.test( 'autolink', function ( assert ) {
 				range: new ve.Range( 1, 21 ),
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 21, 21 ),
-				expectedData: function ( data ) {
-					var i;
+				expectedData: function ( data, makeAnnotation ) {
+					var i,
+						a = makeAnnotation( 'http://example.com' );
 					for ( i = 1; i < 19; i++ ) {
-						data[ i ] = [ data[ i ], [ 0 ] ];
+						data[ i ] = [ data[ i ], [ a ] ];
 					}
 				},
 				msg: 'Autolink after newline'
@@ -69,10 +76,11 @@ QUnit.test( 'autolink', function ( assert ) {
 				range: new ve.Range( 1, 20 ),
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 20, 20 ),
-				expectedData: function ( data ) {
-					var i;
+				expectedData: function ( data, makeAnnotation ) {
+					var i,
+						a = makeAnnotation( 'Http://Example.COm' );
 					for ( i = 1; i < 19; i++ ) {
-						data[ i ] = [ data[ i ], [ 0 ] ];
+						data[ i ] = [ data[ i ], [ a ] ];
 					}
 				},
 				msg: 'Autolink with mixed case'
@@ -82,10 +90,11 @@ QUnit.test( 'autolink', function ( assert ) {
 				range: new ve.Range( 1, 22 ),
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 22, 22 ),
-				expectedData: function ( data ) {
-					var i;
+				expectedData: function ( data, makeAnnotation ) {
+					var i,
+						a = makeAnnotation( 'http://example.com' );
 					for ( i = 1; i < 19; i++ ) {
-						data[ i ] = [ data[ i ], [ 0 ] ];
+						data[ i ] = [ data[ i ], [ a ] ];
 					}
 				},
 				msg: 'Strip trailing punctuation'
@@ -95,7 +104,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				range: new ve.Range( 1, 11 ),
 				method: 'autolinkUrl',
 				expectedRange: new ve.Range( 1, 11 ),
-				expectedData: function ( /*data*/ ) {
+				expectedData: function ( /*data, makeAnnotation*/ ) {
 					/* no change, no link */
 				},
 				msg: 'Don\'t link if stripping leaves bare protocol'
