@@ -174,9 +174,9 @@ ve.ui.WindowAction.prototype.getWindowType = function ( name ) {
 };
 
 /**
- * Get the window manager for a specified window class
+ * Get the window manager for a specified window type
  *
- * @param {Function} windowType Window type
+ * @param {Function} windowType Window type: 'inspector', 'toolbar', or 'dialog'
  * @return {ve.ui.WindowManager|null} Window manager
  */
 ve.ui.WindowAction.prototype.getWindowManager = function ( windowType ) {
