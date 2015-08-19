@@ -274,7 +274,17 @@ ve.ui.DebugBar.prototype.onDumpModelChangeToggleClick = function () {
 };
 
 ve.ui.DebugBar.prototype.onInputDebuggingToggleClick = function () {
+	var surfaceModel = this.getSurface().getModel(),
+		selection = surfaceModel.getSelection();
+
 	ve.inputDebug = this.inputDebuggingToggle.getValue();
+
+	// Clear the cursor before rebuilding, it will be restored later
+	surfaceModel.setNullSelection();
+	setTimeout( function () {
+		surfaceModel.getDocument().rebuildTree();
+		surfaceModel.setSelection( selection );
+	} );
 };
 
 /**
