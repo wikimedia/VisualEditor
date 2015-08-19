@@ -99,7 +99,7 @@ ve.dm.IndexValueStore.prototype.value = function ( index ) {
  * Same as value but with arrays.
  *
  * @method
- * @param {number[]} index Index to lookup
+ * @param {number[]} indexes Indices to lookup
  * @return {Array} Values at these indexes, or undefined if out of bounds
  */
 ve.dm.IndexValueStore.prototype.values = function ( indexes ) {

@@ -277,15 +277,15 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 /**
  * Insert one array into another.
  *
- * Shortcut for `ve.batchSplice( dst, offset, 0, src )`.
+ * Shortcut for `ve.batchSplice( arr, offset, 0, src )`.
  *
  * @see #batchSplice
  * @param {Array|ve.dm.BranchNode} arr Target object (must have `splice` method)
  * @param {number} offset Offset in arr where items will be inserted
- * @param {Array} data Items to insert at offset
+ * @param {Array} src Items to insert at offset
  */
-ve.insertIntoArray = function ( dst, offset, src ) {
-	ve.batchSplice( dst, offset, 0, src );
+ve.insertIntoArray = function ( arr, offset, src ) {
+	ve.batchSplice( arr, offset, 0, src );
 };
 
 /**
@@ -575,7 +575,7 @@ ve.getHtmlAttributes = function ( attributes ) {
  * responsible for making sure these are sane tag/attribute names and do not contain
  * unsanitized content from an external source (e.g. from the user or from the web).
  *
- * @param {string} tag HTML tag name
+ * @param {string} tagName HTML tag name
  * @param {Object} [attributes] Key-value map of attributes for the tag
  * @return {string} Opening HTML tag
  */
@@ -893,7 +893,7 @@ ve.resolveUrl = function ( url, base ) {
  *
  * @param {jQuery} $elements Set of DOM elements to modify
  * @param {HTMLDocument} doc Document to resolve against (different from $elements' .ownerDocument)
- * @param {string[]} attr Attributes to resolve
+ * @param {string[]} attrs Attributes to resolve
  */
 ve.resolveAttributes = function ( $elements, doc, attrs ) {
 	var i, len, attr;

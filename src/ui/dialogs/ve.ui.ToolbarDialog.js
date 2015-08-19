@@ -12,7 +12,6 @@
  * @extends OO.ui.Dialog
  *
  * @constructor
- * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
  */
 ve.ui.ToolbarDialog = function VeUiToolbarDialog( config ) {

@@ -11,7 +11,7 @@
  * @extends ve.ui.SurfaceWindowManager
  *
  * @constructor
- * @param {ve.ui.Surface} Surface this belongs to
+ * @param {ve.ui.Surface} surface Surface this belongs to
  * @param {Object} [config] Configuration options
  * @cfg {ve.ui.Overlay} [overlay] Overlay to use for menus
  */

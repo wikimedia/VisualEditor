@@ -1023,7 +1023,7 @@ ve.dm.Transaction.prototype.getModifiedRange = function () {
  * @private
  * @method
  * @param {ve.dm.Document} doc Document to finish off.
- * @param {number} Final offset edited by the transaction up to this point.
+ * @param {number} offset Final offset edited by the transaction up to this point.
  * @param {number} [metaOffset=0] Final metadata offset edited, if non-zero.
  */
 ve.dm.Transaction.prototype.pushFinalRetain = function ( doc, offset, metaOffset ) {

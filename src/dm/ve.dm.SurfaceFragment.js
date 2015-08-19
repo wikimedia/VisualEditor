@@ -1191,7 +1191,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
  * The new isolated selection is then safely unwrapped.
  *
  * @method
- * @param {string} type Node type to isolate for
+ * @param {string} isolateForType Node type to isolate for
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {

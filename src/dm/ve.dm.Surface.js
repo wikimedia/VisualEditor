@@ -333,7 +333,7 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
 /**
  * Set annotations that will be used upon insertion.
  *
- * @param {ve.dm.AnnotationSet|null} Insertion annotations to use or null to disable them
+ * @param {ve.dm.AnnotationSet|null} annotations Insertion annotations to use or null to disable them
  * @fires insertionAnnotationsChange
  * @fires contextChange
  */

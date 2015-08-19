@@ -122,7 +122,7 @@ ve.Range.prototype.containsOffset = function ( offset ) {
 /**
  * Check if another range is within the range.
  *
- * @param {ve.Range} offset Range to check
+ * @param {ve.Range} range Range to check
  * @return {boolean} If other range is within the range
  */
 ve.Range.prototype.containsRange = function ( range ) {

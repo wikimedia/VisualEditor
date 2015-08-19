@@ -113,20 +113,20 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
  * @constructor
  * @param {ve.ce.Surface} surface The UI Surface
  */
-ve.ce.TestRunner = function VeCeTestRunner( view ) {
+ve.ce.TestRunner = function VeCeTestRunner( surface ) {
 	var testRunner,
 		callId = 0;
-	this.view = view;
-	this.model = view.getModel();
-	this.doc = view.getElementDocument();
-	this.nativeSelection = view.nativeSelection;
+	this.view = surface;
+	this.model = surface.getModel();
+	this.doc = surface.getElementDocument();
+	this.nativeSelection = surface.nativeSelection;
 	this.postponedCalls = {};
 
 	// TODO: The code assumes that the document consists of exactly one paragraph
 	this.lastText = this.getParagraph().textContent;
 
 	// Turn off SurfaceObserver setTimeouts
-	view.surfaceObserver.pollInterval = null;
+	surface.surfaceObserver.pollInterval = null;
 
 	// Take control of eventSequencer 'setTimeouts'
 	testRunner = this;

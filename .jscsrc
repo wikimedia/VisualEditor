@@ -9,6 +9,7 @@
 				"see": true
 			}
 		},
+		"checkParamNames": true,
 		"requireNewlineAfterDescription": true
 	}
 }

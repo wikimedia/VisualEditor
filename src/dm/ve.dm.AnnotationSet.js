@@ -9,7 +9,7 @@
  *
  * @constructor
  * @param {ve.dm.IndexValueStore} store Index-value store
- * @param {number[]} [indexes] Array of store indexes
+ * @param {number[]} [storeIndexes] Array of store indexes
  */
 ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeIndexes ) {
 	// Parent constructor

@@ -156,7 +156,7 @@ ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
 };
 
 /**
- * Get the type of a window class
+ * Get the specified window type
  *
  * @param {string} name Window name
  * @return {string|null} Window type: 'inspector', 'toolbar' or 'dialog'
@@ -176,7 +176,7 @@ ve.ui.WindowAction.prototype.getWindowType = function ( name ) {
 /**
  * Get the window manager for a specified window class
  *
- * @param {Function} windowClass Window class
+ * @param {Function} windowType Window type
  * @return {ve.ui.WindowManager|null} Window manager
  */
 ve.ui.WindowAction.prototype.getWindowManager = function ( windowType ) {
