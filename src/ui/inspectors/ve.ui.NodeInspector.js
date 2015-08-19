@@ -45,7 +45,7 @@ ve.ui.NodeInspector.static.modelClasses = [];
  * If no node is selected or the selected node is incompatible, null will be returned.
  *
  * @param {Object} [data] Inspector opening data
- * @return {ve.dm.Node} Selected node
+ * @return {ve.dm.Node|null} Selected node
  */
 ve.ui.NodeInspector.prototype.getSelectedNode = function () {
 	var i, len,

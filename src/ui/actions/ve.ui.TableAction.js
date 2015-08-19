@@ -90,8 +90,8 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 /**
  * Inserts a new row or column into the currently focused table.
  *
- * @param {String} mode Insertion mode; 'row' to insert a new row, 'col' for a new column
- * @param {String} position Insertion position; 'before' to insert before the current selection,
+ * @param {string} mode Insertion mode; 'row' to insert a new row, 'col' for a new column
+ * @param {string} position Insertion position; 'before' to insert before the current selection,
  *   'after' to insert after it
  * @return {boolean} Action was executed
  */
@@ -123,7 +123,7 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 /**
  * Deletes selected rows, columns, or the whole table.
  *
- * @param {String} mode Deletion mode; 'row' to delete rows, 'col' for columns, 'table' to remove the whole table
+ * @param {string} mode Deletion mode; 'row' to delete rows, 'col' for columns, 'table' to remove the whole table
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.delete = function ( mode ) {
@@ -368,9 +368,9 @@ ve.ui.TableAction.prototype.deleteTable = function ( tableNode ) {
  *    insertRowOrCol( table, 'row', 1, 'after' );
  *
  * @param {ve.dm.TableNode} tableNode Table node
- * @param {String} mode Insertion mode; 'row' or 'col'
- * @param {Number} index Row or column index of the base row or column.
- * @param {String} position Insertion position; 'before' or 'after'
+ * @param {string} mode Insertion mode; 'row' or 'col'
+ * @param {number} index Row or column index of the base row or column.
+ * @param {string} position Insertion position; 'before' or 'after'
  * @param {ve.dm.TableSelection} [selection] Selection to move to after insertion
  */
 ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, position, selection ) {
@@ -483,7 +483,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
  * Increase the span of a cell by one.
  *
  * @param {ve.dm.TableMatrixCell} cell Table matrix cell
- * @param {String} mode Span to increment; 'row' or 'col'
+ * @param {string} mode Span to increment; 'row' or 'col'
  * @return {ve.dm.Transaction} Transaction
  */
 ve.ui.TableAction.prototype.incrementSpan = function ( cell, mode ) {
@@ -503,9 +503,9 @@ ve.ui.TableAction.prototype.incrementSpan = function ( cell, mode ) {
  * Decreases the span of a cell so that the given interval is removed.
  *
  * @param {ve.dm.TableMatrixCell} cell Table matrix cell
- * @param {String} mode Span to decrement 'row' or 'col'
- * @param {Number} minIndex Smallest row or column index (inclusive)
- * @param {Number} maxIndex Largest row or column index (inclusive)
+ * @param {string} mode Span to decrement 'row' or 'col'
+ * @param {number} minIndex Smallest row or column index (inclusive)
+ * @param {number} maxIndex Largest row or column index (inclusive)
  * @return {ve.dm.Transaction} Transaction
  */
 ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, maxIndex ) {
@@ -530,9 +530,9 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
  *    ve.ui.TableAction.deleteRowsOrColumns( matrix, 'row', 1, 3 );
  *
  * @param {ve.dm.TableMatrix} matrix Table matrix
- * @param {String} mode 'row' or 'col'
- * @param {Number} minIndex Smallest row or column index to be deleted
- * @param {Number} maxIndex Largest row or column index to be deleted (inclusive)
+ * @param {string} mode 'row' or 'col'
+ * @param {number} minIndex Smallest row or column index to be deleted
+ * @param {number} maxIndex Largest row or column index to be deleted (inclusive)
  */
 ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIndex, maxIndex ) {
 	var row, col, i, l, cell, key,

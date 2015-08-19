@@ -240,7 +240,7 @@ ve.dm.TableMatrix.prototype.lookupCell = function ( cellNode ) {
  * Finds the closest cell not being a placeholder for a given cell.
  *
  * @param {ve.dm.TableMatrixCell} cell Table cell
- * @return {ve.dm.TableMatrixCell} Closest cell
+ * @return {ve.dm.TableMatrixCell|null} Closest cell
  */
 ve.dm.TableMatrix.prototype.findClosestCell = function ( cell ) {
 	var col, cols, rowCells,

@@ -45,7 +45,7 @@ ve.ui.NodeDialog.static.modelClasses = [];
  * If no node is selected or the selected node is incompatible, null will be returned.
  *
  * @param {Object} [data] Dialog opening data
- * @return {ve.dm.Node} Selected node
+ * @return {ve.dm.Node|null} Selected node
  */
 ve.ui.NodeDialog.prototype.getSelectedNode = function () {
 	var i, len,

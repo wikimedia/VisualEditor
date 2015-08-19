@@ -242,7 +242,7 @@ ve.dm.AnnotationSet.prototype.offsetOfIndex = function ( storeIndex ) {
  * @method
  * @param {Function} callback Function that takes an annotation and returns boolean true to include
  * @param {boolean} [returnBool] For internal use only
- * @return {ve.dm.AnnotationSet} New set containing only the matching annotations
+ * @return {ve.dm.AnnotationSet|boolean} New set containing only the matching annotations
  */
 ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 	var i, length, result, storeIndex, annotation;

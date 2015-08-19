@@ -257,7 +257,7 @@ ve.ce.SurfaceObserver.prototype.setTimeout = function ( callback, timeout ) {
  *
  * Used when you have just polled, but don't want to wait for a 'rangeChange' event.
  *
- * @return {ve.Range} Range
+ * @return {ve.Range|null} Range
  */
 ve.ce.SurfaceObserver.prototype.getRange = function () {
 	if ( !this.rangeState ) {

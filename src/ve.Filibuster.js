@@ -462,9 +462,9 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
  *
  * The resulting value is easily dumpable, and will not change if val changes.
  *
- * @param {Object|string|number|undefined} val Value to analyze
+ * @param {Object|string|number|undefined|null} val Value to analyze
  * @param {Set} [seen] Seen objects, for recursion detection
- * @return {Object|string|number|undefined} Plain old data object
+ * @return {Object|string|number|null} Plain old data object
  */
 ve.Filibuster.static.clonePlain = function ( val, seen ) {
 	var plainVal,

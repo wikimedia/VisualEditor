@@ -380,7 +380,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  *
  * @private
  * @param {ve.Range} range Range to get client rect for
- * @return {Object} ClientRect-like object
+ * @return {Object|null} ClientRect-like object
  */
 ve.ce.Surface.prototype.getNodeClientRectFromRange = function ( range ) {
 	var rect, side, x, adjacentNode, unicornRect,

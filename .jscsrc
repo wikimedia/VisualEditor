@@ -10,7 +10,10 @@
 			}
 		},
 		"checkParamNames": true,
+		"checkRedundantAccess": true,
+		"checkRedundantReturns": true,
+		"requireNewlineAfterDescription": true,
 		"requireParamTypes": true,
-		"requireNewlineAfterDescription": true
+		"requireReturnTypes": true
 	}
 }

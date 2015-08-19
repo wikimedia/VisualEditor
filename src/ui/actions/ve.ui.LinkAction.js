@@ -114,7 +114,7 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
  * Return an appropriate "trailing punctuation" set, which will
  * get stripped from possible autolinks.
  *
- * @param {String} candidate
+ * @param {string} candidate
  *   The candidate text.  Some users may not wish to include closing
  *   brackets/braces/parentheses in the stripped character class if an
  *   opening bracket/brace/parenthesis in present in the candidate link
