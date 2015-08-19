@@ -45,6 +45,7 @@
 	"visualeditor-commentinspector-tooltip": "評論",
 	"visualeditor-content-select-all": "全選",
 	"visualeditor-contextitemwidget-label-secondary": "編輯",
+	"visualeditor-contextitemwidget-label-remove": "刪除",
 	"visualeditor-dialog-action-apply": "套用變更",
 	"visualeditor-dialog-action-cancel": "取消",
 	"visualeditor-dialog-action-done": "完成",

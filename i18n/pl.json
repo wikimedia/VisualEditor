@@ -123,6 +123,7 @@
 	"visualeditor-table-insert-table": "Tabela",
 	"visualeditor-table-merge-cells": "Scal komórki",
 	"visualeditor-tablecell-tooltip": "Kliknij dwukrotnie, aby edytować komórkę tabeli",
+	"visualeditor-tablecell-contextitem": "Komórka tabeli",
 	"visualeditor-toolbar-format-tooltip": "Formatowanie akapitu",
 	"visualeditor-toolbar-history": "Historia",
 	"visualeditor-toolbar-insert": "Wstaw",
