@@ -115,10 +115,10 @@ ve.dm.MetaLinearData.prototype.getTotalDataLength = function () {
  *
  * @method
  * @see ve#batchSplice
- * @param offset {number} Splice into the metadata array for this offset
- * @param index {number} Index in the metadata array to insert/remove at
- * @param remove {number} Number of items to remove
- * @param insert {Array} Items to insert
+ * @param {number} offset Splice into the metadata array for this offset
+ * @param {number} index Index in the metadata array to insert/remove at
+ * @param {number} remove Number of items to remove
+ * @param {Array} insert Items to insert
  * @return {Array} Removed items
  */
 ve.dm.MetaLinearData.prototype.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {

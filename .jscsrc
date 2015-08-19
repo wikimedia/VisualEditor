@@ -10,6 +10,7 @@
 			}
 		},
 		"checkParamNames": true,
+		"requireParamTypes": true,
 		"requireNewlineAfterDescription": true
 	}
 }
