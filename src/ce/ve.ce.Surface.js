@@ -656,6 +656,7 @@ ve.ce.Surface.prototype.blur = function () {
 
 /**
  * Handler for focusin and focusout events. Filters events and debounces to #onFocusChange.
+ *
  * @param {jQuery.Event} e focusin/out event
  */
 ve.ce.Surface.prototype.onDocumentFocusInOut = function ( e ) {
@@ -2413,6 +2414,7 @@ ve.ce.Surface.prototype.getFocusedNode = function ( range ) {
 
 /**
  * Find the block slug a given range is in.
+ *
  * @param {ve.Range} range Range to check
  * @return {HTMLElement|null} Slug, or null if no slug or if range is not collapsed
  */
@@ -2470,6 +2472,7 @@ ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
 
 /**
  * Handle insertionAnnotationsChange events on the surface model.
+ *
  * @param {ve.dm.AnnotationSet} insertionAnnotations
  */
 ve.ce.Surface.prototype.onInsertionAnnotationsChange = function () {
@@ -2963,6 +2966,7 @@ ve.ce.Surface.prototype.moveModelCursor = function ( offset ) {
 
 /**
  * Get the directionality at the current focused node
+ *
  * @return {string} 'ltr' or 'rtl'
  */
 ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
@@ -2988,7 +2992,8 @@ ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
 /**
  * Restore the selection from the model if it is outside the active table node
  *
- * This is only useful if the DOM selection and the model selection are out of sync
+ * This is only useful if the DOM selection and the model selection are out of sync.
+ *
  * @return {boolean} Whether the selection was restored
  */
 ve.ce.Surface.prototype.restoreActiveTableNodeSelection = function () {
@@ -4102,6 +4107,7 @@ ve.ce.Surface.prototype.changeModel = function ( transaction, selection ) {
 
 /**
  * Inform the surface that one of its ContentBranchNodes' rendering has changed.
+ *
  * @see ve.ce.ContentBranchNode#renderContents
  */
 ve.ce.Surface.prototype.setContentBranchNodeChanged = function () {

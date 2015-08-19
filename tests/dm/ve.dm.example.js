@@ -84,6 +84,7 @@ ve.dm.example.postprocessAnnotations = function ( data, store ) {
 
 /**
  * Remove originalDomElements from linear model data.
+ *
  * @param {Array} data Linear model data. Will be modified.
  * @return {Array} data parameter
  */
@@ -99,6 +100,7 @@ ve.dm.example.removeOriginalDomElements = function ( data ) {
 
 /**
  * Create an annotation object from shorthand notation.
+ *
  * @method
  * @param {Object} annotation Plain object with type and attributes properties
  * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass

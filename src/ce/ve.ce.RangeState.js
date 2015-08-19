@@ -61,6 +61,7 @@ OO.initClass( ve.ce.RangeState );
 
 /**
  * Saves a snapshot of the current range state
+ *
  * @method
  * @param {ve.ce.RangeState|null} old Previous range state
  * @param {ve.ce.DocumentNode} documentNode Document node

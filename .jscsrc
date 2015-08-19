@@ -8,6 +8,7 @@
 				"source": true,
 				"see": true
 			}
-		}
+		},
+		"requireNewlineAfterDescription": true
 	}
 }

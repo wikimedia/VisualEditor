@@ -33,6 +33,7 @@ ve.ce.InternalListNode.static.name = 'internalList';
 
 /**
  * Deliberately empty: don't build an entire CE tree with DOM elements for things that won't render
+ *
  * @inheritdoc
  */
 ve.ce.InternalListNode.prototype.onSplice = function () {

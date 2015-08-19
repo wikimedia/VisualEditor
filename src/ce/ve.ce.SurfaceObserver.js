@@ -103,6 +103,7 @@ ve.ce.SurfaceObserver.prototype.startTimerLoop = function () {
 
 /**
  * Loop once with `setTimeout`
+ *
  * @method
  * @param {boolean} firstTime Wait before polling
  */

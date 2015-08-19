@@ -154,6 +154,7 @@ ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
 
 /**
  * Clone the current scalable object
+ *
  * @return {ve.dm.Scalable} Cloned scalable object
  */
 ve.dm.Scalable.prototype.clone = function () {
@@ -262,6 +263,7 @@ ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
 
 /**
  * Reset and remove the default dimensions
+ *
  * @fires defaultSizeChange
  */
 ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
@@ -272,6 +274,7 @@ ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
 
 /**
  * Reset and remove the default dimensions
+ *
  * @fires originalSizeChange
  */
 ve.dm.Scalable.prototype.clearOriginalDimensions = function () {
@@ -337,6 +340,7 @@ ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
 
 /**
  * Clear the minimum dimensions
+ *
  * @fires minSizeChange
  */
 ve.dm.Scalable.prototype.clearMinDimensions = function () {
@@ -349,6 +353,7 @@ ve.dm.Scalable.prototype.clearMinDimensions = function () {
 
 /**
  * Clear the maximum dimensions
+ *
  * @fires maxSizeChange
  */
 ve.dm.Scalable.prototype.clearMaxDimensions = function () {
@@ -388,6 +393,7 @@ ve.dm.Scalable.prototype.getDefaultDimensions = function () {
 
 /**
  * Get the default state of the scalable object
+ *
  * @return {boolean} Default size or custom
  */
 ve.dm.Scalable.prototype.isDefault = function () {

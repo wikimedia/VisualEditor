@@ -169,6 +169,7 @@ ve.ui.MediaSizeWidget.prototype.onScalableCurrentSizeChange = function ( dimensi
 
 /**
  * Respond to default size or status change in the scalable object.
+ *
  * @param {boolean} isDefault Current default state
  */
 ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefault ) {
@@ -231,6 +232,7 @@ ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
 
 /**
  * Respond to size type change
+ *
  * @param {OO.ui.OptionWidget} item Selected size type item
  * @fires changeSizeType
  */
@@ -269,6 +271,7 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 
 /**
  * Set the placeholder value of the scale input
+ *
  * @param {number} value Placeholder value
  */
 ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
@@ -277,6 +280,7 @@ ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
 
 /**
  * Get the placeholder value of the scale input
+ *
  * @return {string} Placeholder value
  */
 ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
@@ -285,6 +289,7 @@ ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
 
 /**
  * Select a size type in the select widget
+ *
  * @param {string} sizeType The size type to select
  */
 ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
@@ -353,6 +358,7 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 
 /**
  * Get the attached scalable object
+ *
  * @return {ve.dm.Scalable} The scalable object representing the media
  * source being resized.
  */
@@ -374,6 +380,7 @@ ve.ui.MediaSizeWidget.prototype.onFullSizeButtonClick = function () {
 
 /**
  * Set the image aspect ratio explicitly
+ *
  * @param {number} Numerical value of an aspect ratio
  */
 ve.ui.MediaSizeWidget.prototype.setRatio = function ( ratio ) {
@@ -382,6 +389,7 @@ ve.ui.MediaSizeWidget.prototype.setRatio = function ( ratio ) {
 
 /**
  * Get the current aspect ratio
+ *
  * @return {number} Aspect ratio
  */
 ve.ui.MediaSizeWidget.prototype.getRatio = function () {
@@ -391,6 +399,7 @@ ve.ui.MediaSizeWidget.prototype.getRatio = function () {
 /**
  * Set the maximum dimensions for the image. These will be limited only if
  * enforcedMax is true.
+ *
  * @param {Object} dimensions Height and width
  */
 ve.ui.MediaSizeWidget.prototype.setMaxDimensions = function ( dimensions ) {
@@ -401,6 +410,7 @@ ve.ui.MediaSizeWidget.prototype.setMaxDimensions = function ( dimensions ) {
 
 /**
  * Retrieve the currently defined maximum dimensions
+ *
  * @return {Object} dimensions Height and width
  */
 ve.ui.MediaSizeWidget.prototype.getMaxDimensions = function () {
@@ -409,6 +419,7 @@ ve.ui.MediaSizeWidget.prototype.getMaxDimensions = function () {
 
 /**
  * Retrieve the current dimensions
+ *
  * @return {Object} Width and height
  */
 ve.ui.MediaSizeWidget.prototype.getCurrentDimensions = function () {
@@ -417,6 +428,7 @@ ve.ui.MediaSizeWidget.prototype.getCurrentDimensions = function () {
 
 /**
  * Disable or enable the entire widget
+ *
  * @param {boolean} isDisabled Disable the widget
  */
 ve.ui.MediaSizeWidget.prototype.setDisabled = function ( isDisabled ) {
@@ -528,6 +540,7 @@ ve.ui.MediaSizeWidget.prototype.updateDefaultDimensions = function () {
 
 /**
  * Check if the custom dimensions are empty.
+ *
  * @return {boolean} Both width/height values are empty
  */
 ve.ui.MediaSizeWidget.prototype.isCustomEmpty = function () {
@@ -536,6 +549,7 @@ ve.ui.MediaSizeWidget.prototype.isCustomEmpty = function () {
 
 /**
  * Toggle a disabled state for the full size button
+ *
  * @param {boolean} isDisabled Disabled or not
  */
 ve.ui.MediaSizeWidget.prototype.toggleFullSizeButtonDisabled = function ( isDisabled ) {
@@ -544,6 +558,7 @@ ve.ui.MediaSizeWidget.prototype.toggleFullSizeButtonDisabled = function ( isDisa
 
 /**
  * Check if the scale input is empty.
+ *
  * @return {boolean} Scale input value is empty
  */
 ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
@@ -552,6 +567,7 @@ ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
 
 /**
  * Check if all inputs are empty.
+ *
  * @return {boolean} All input values are empty
  */
 ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
@@ -564,6 +580,7 @@ ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
  * 2. If inputs have non numeric values, input is invalid
  * 3. If inputs have numeric values, validate through scalable
  *    calculations to see if the dimensions follow the rules.
+ *
  * @return {boolean} Valid or invalid dimension values
  */
 ve.ui.MediaSizeWidget.prototype.isValid = function () {

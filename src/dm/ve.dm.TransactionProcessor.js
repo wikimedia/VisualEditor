@@ -261,6 +261,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 
 /**
  * Splice data into / out of the data or metadata array.
+ *
  * @param {string} type 'data' or 'metadata'
  * @param {number} offset Offset to remove/insert at
  * @param {number} remove Number of elements to remove
@@ -331,6 +332,7 @@ ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index
 
 /**
  * Set an attribute at a given offset.
+ *
  * @param {number} offset Offset in data array
  * @param {string} key Attribute name
  * @param {Mixed} value New attribute value

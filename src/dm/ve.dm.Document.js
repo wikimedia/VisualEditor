@@ -386,6 +386,7 @@ ve.dm.Document.prototype.getStore = function () {
 
 /**
  * Get the document's internal list
+ *
  * @return {ve.dm.InternalList} The document's internal list
  */
 ve.dm.Document.prototype.getInternalList = function () {
@@ -394,6 +395,7 @@ ve.dm.Document.prototype.getInternalList = function () {
 
 /**
  * Get the document's inner whitespace
+ *
  * @return {Array} The document's inner whitespace
  */
 ve.dm.Document.prototype.getInnerWhitespace = function () {
@@ -1314,6 +1316,7 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps 
 
 /**
  * Get the length of the complete history stack. This is also the current pointer.
+ *
  * @return {number} Length of the complete history stack
  */
 ve.dm.Document.prototype.getCompleteHistoryLength = function () {
@@ -1322,6 +1325,7 @@ ve.dm.Document.prototype.getCompleteHistoryLength = function () {
 
 /**
  * Get all the items in the complete history stack since a specified pointer.
+ *
  * @param {number} pointer Pointer from where to start the slice
  * @return {Array} Array of transaction objects with undo flag
  */
@@ -1331,6 +1335,7 @@ ve.dm.Document.prototype.getCompleteHistorySince = function ( pointer ) {
 
 /**
  * Get the content language
+ *
  * @return {string} Language code
  */
 ve.dm.Document.prototype.getLang = function () {
@@ -1339,6 +1344,7 @@ ve.dm.Document.prototype.getLang = function () {
 
 /**
  * Get the content directionality
+ *
  * @return {string} Directionality (ltr/rtl)
  */
 ve.dm.Document.prototype.getDir = function () {

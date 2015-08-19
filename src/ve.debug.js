@@ -58,6 +58,7 @@ ve.dir = function () {
 /**
  * Like outerHTML serialization, but wraps each text node in a fake tag. This
  * makes it obvious whether there are split text nodes present.
+ *
  * @param {Node} domNode The node to serialize
  * @return {string} Serialization of the node and its contents
  */

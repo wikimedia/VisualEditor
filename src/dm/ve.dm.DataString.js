@@ -6,6 +6,7 @@
 
 /**
  * Wrapper class to read document data as a plain text string.
+ *
  * @class
  * @extends unicodeJS.TextString
  * @constructor
@@ -21,6 +22,7 @@ OO.inheritClass( ve.dm.DataString, unicodeJS.TextString );
 
 /**
  * Reads the character from the specified position in the data.
+ *
  * @param {number} position Position in data to read from
  * @return {string|null} Character at position, or null if not text
  */

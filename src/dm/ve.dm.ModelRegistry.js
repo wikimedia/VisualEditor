@@ -499,6 +499,7 @@
 
 	/**
 	 * Tests whether a node will be modelled as an annotation
+	 *
 	 * @param {Node} node The node
 	 * @return {boolean} Whether the element will be modelled as an annotation
 	 */

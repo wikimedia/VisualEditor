@@ -324,6 +324,7 @@ ve.dm.Model.prototype.getAttributes = function ( prefix ) {
 
 /**
  * Get the DOM element(s) this model was originally converted from, if any.
+ *
  * @return {HTMLElement[]} DOM elements this model was converted from, empty if not applicable
  */
 ve.dm.Model.prototype.getOriginalDomElements = function () {

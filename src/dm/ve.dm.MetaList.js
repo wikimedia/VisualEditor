@@ -73,6 +73,7 @@ OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
  * - insert items for new metadata that was inserted
  * - remove items for metadata that was removed
  * - translate offsets and recompute indices for metadata that has shifted
+ *
  * @param {ve.dm.Transaction} tx Transaction that was applied to the document
  * @fires insert
  * @fires remove
@@ -326,6 +327,7 @@ ve.dm.MetaList.prototype.getAllItems = function () {
  * metadata into the document.
  *
  * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
+ *
  * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
  * @param {number} [offset] Offset to insert the new metadata, or undefined to add to the end
  * @param {number} [index] Index to insert the new metadata, or undefined to add to the end
@@ -348,6 +350,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 /**
  * Remove a meta item from the document. This builds and processes a transaction that removes the
  * associated metadata from the document.
+ *
  * @param {ve.dm.MetaItem} item Item to remove
  */
 ve.dm.MetaList.prototype.removeMeta = function ( item ) {

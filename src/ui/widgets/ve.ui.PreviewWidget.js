@@ -75,6 +75,7 @@ ve.ui.PreviewWidget.prototype.destroy = function () {
 
 /**
  * Replace the content of the body with the model DOM
+ *
  * @fires render
  */
 ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
@@ -104,6 +105,7 @@ ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
 
 /**
  * Check if the preview is still generating
+ *
  * @return {boolean} Still generating
  */
 ve.ui.PreviewWidget.prototype.isGenerating = function () {

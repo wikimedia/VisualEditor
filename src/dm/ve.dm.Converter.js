@@ -371,6 +371,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 
 /**
  * Create a data element from a DOM element.
+ *
  * @param {ve.dm.Model} modelClass Model class to use for conversion
  * @param {Node[]} domElements DOM elements to convert
  * @return {Object|Array|null} Data element or array of linear model data, or null to alienate
@@ -405,6 +406,7 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
 
 /**
  * Convert an HTML document to a document model.
+ *
  * @param {HTMLDocument} doc HTML document to convert
  * @param {Object} options Conversion options
  * @param {HTMLDocument} [options.targetDoc=doc] Target HTML document we are converting for, if different from doc

@@ -126,6 +126,7 @@
 
 	/**
 	 * Assert that summaries of two node trees are equal.
+	 *
 	 * @method
 	 * @static
 	 */
@@ -208,6 +209,7 @@
 
 	/**
 	 * Assert that two objects which may contain dom elements are equal.
+	 *
 	 * @method
 	 * @static
 	 */
@@ -221,6 +223,7 @@
 
 	/**
 	 * Assert that two objects which may contain node trees are equal.
+	 *
 	 * @method
 	 * @static
 	 */

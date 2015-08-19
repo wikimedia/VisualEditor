@@ -81,6 +81,7 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
 
 /**
  * Gets all the item's HTML strings
+ *
  * @method
  * @return {Object} Name-indexed object containing HTMLElements
  */
@@ -90,6 +91,7 @@ ve.dm.InternalList.prototype.getItemHtmlQueue = function () {
 
 /**
  * Gets the internal list's document model
+ *
  * @method
  * @return {ve.dm.Document} Document model
  */
@@ -99,6 +101,7 @@ ve.dm.InternalList.prototype.getDocument = function () {
 
 /**
  * Get the list node
+ *
  * @method
  * @return {ve.dm.InternalListNode} List node
  */
@@ -191,6 +194,7 @@ ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName, oldListKey
 
 /**
  * Get the next number in a monotonically increasing series.
+ *
  * @return {number} One higher than the return value of the previous call, or 0 on the first call
  */
 ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
@@ -238,6 +242,7 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 
 /**
  * Generate a transaction for inserting a new internal item node
+ *
  * @param {string} groupName Item group
  * @param {string} key Item key
  * @param {Array} data Linear model data
@@ -270,6 +275,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
 
 /**
  * Get position of a key within a group
+ *
  * @param {string} groupName Name of the group
  * @param {string} key Name of the key
  * @return {number} Position within the key ordering for that group
@@ -280,6 +286,7 @@ ve.dm.InternalList.prototype.getIndexPosition = function ( groupName, index ) {
 
 /**
  * Get the internal item index of a group key if it already exists
+ *
  * @param {string} groupName Item group
  * @param {string} key Item name
  * @return {number|undefined} The index of the group key, or undefined if it doesn't exist yet
@@ -290,6 +297,7 @@ ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
 
 /**
  * Add a node.
+ *
  * @method
  * @param {string} groupName Item group
  * @param {string} key Item name
@@ -344,6 +352,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 
 /**
  * Mark a node group as having been changed since the last transaction.
+ *
  * @param {string} groupName Name of group which has changed
  */
 ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
@@ -354,6 +363,7 @@ ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
 
 /**
  * Handle document transaction events
+ *
  * @fires update
  */
 ve.dm.InternalList.prototype.onTransact = function () {
@@ -370,6 +380,7 @@ ve.dm.InternalList.prototype.onTransact = function () {
 
 /**
  * Remove a node.
+ *
  * @method
  * @param {string} groupName Item group
  * @param {string} key Item name
@@ -403,6 +414,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
 
 /**
  * Sort the indexOrder array within a group object.
+ *
  * @param {Object} group Group object
  */
 ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {

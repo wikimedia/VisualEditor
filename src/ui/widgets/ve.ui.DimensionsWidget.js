@@ -75,6 +75,7 @@ OO.inheritClass( ve.ui.DimensionsWidget, OO.ui.Widget );
 
 /**
  * Respond to width change, propagate the input change event
+ *
  * @param {string} value The new changed value
  * @fires widthChange
  */
@@ -84,6 +85,7 @@ ve.ui.DimensionsWidget.prototype.onWidthChange = function ( value ) {
 
 /**
  * Respond to height change, propagate the input change event
+ *
  * @param {string} value The new changed value
  * @fires heightChange
  */
@@ -93,6 +95,7 @@ ve.ui.DimensionsWidget.prototype.onHeightChange = function ( value ) {
 
 /**
  * Set default dimensions
+ *
  * @param {Object} dimensions Default dimensions, width and height
  */
 ve.ui.DimensionsWidget.prototype.setDefaults = function ( dimensions ) {
@@ -112,6 +115,7 @@ ve.ui.DimensionsWidget.prototype.renderDefaults = function () {
 
 /**
  * Get the default dimensions
+ *
  * @return {Object} Default dimensions
  */
 ve.ui.DimensionsWidget.prototype.getDefaults = function () {
@@ -128,6 +132,7 @@ ve.ui.DimensionsWidget.prototype.removeDefaults = function () {
 
 /**
  * Check whether the widget is empty.
+ *
  * @return {boolean} Both values are empty
  */
 ve.ui.DimensionsWidget.prototype.isEmpty = function () {
@@ -155,6 +160,7 @@ ve.ui.DimensionsWidget.prototype.reset = function () {
 
 /**
  * Set the dimensions value of the inputs
+ *
  * @param {Object} dimensions The width and height values of the inputs
  * @param {number} dimensions.width The value of the width input
  * @param {number} dimensions.height The value of the height input
@@ -170,6 +176,7 @@ ve.ui.DimensionsWidget.prototype.setDimensions = function ( dimensions ) {
 
 /**
  * Return the current dimension values in the widget
+ *
  * @return {Object} dimensions The width and height values of the inputs
  * @return {number} dimensions.width The value of the width input
  * @return {number} dimensions.height The value of the height input
@@ -183,6 +190,7 @@ ve.ui.DimensionsWidget.prototype.getDimensions = function () {
 
 /**
  * Disable or enable the inputs
+ *
  * @param {boolean} isDisabled Set disabled or enabled
  */
 ve.ui.DimensionsWidget.prototype.setDisabled = function ( isDisabled ) {
@@ -198,6 +206,7 @@ ve.ui.DimensionsWidget.prototype.setDisabled = function ( isDisabled ) {
 
 /**
  * Get the current value in the width input
+ *
  * @return {string} Input value
  */
 ve.ui.DimensionsWidget.prototype.getWidth = function () {
@@ -206,6 +215,7 @@ ve.ui.DimensionsWidget.prototype.getWidth = function () {
 
 /**
  * Get the current value in the height input
+ *
  * @return {string} Input value
  */
 ve.ui.DimensionsWidget.prototype.getHeight = function () {
@@ -214,6 +224,7 @@ ve.ui.DimensionsWidget.prototype.getHeight = function () {
 
 /**
  * Set a value for the width input
+ *
  * @param {string} value
  */
 ve.ui.DimensionsWidget.prototype.setWidth = function ( value ) {
@@ -222,6 +233,7 @@ ve.ui.DimensionsWidget.prototype.setWidth = function ( value ) {
 
 /**
  * Set a value for the height input
+ *
  * @param {string} value
  */
 ve.ui.DimensionsWidget.prototype.setHeight = function ( value ) {

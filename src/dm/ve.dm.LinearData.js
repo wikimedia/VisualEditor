@@ -59,6 +59,7 @@ ve.dm.LinearData.static.isElementData = function ( item ) {
 
 /**
  * Checks if data item is an open element.
+ *
  * @method
  * @param {Object} item Element item
  * @return {boolean} Item is an open element
@@ -69,6 +70,7 @@ ve.dm.LinearData.static.isOpenElementData = function ( item ) {
 
 /**
  * Checks if data item is a close element.
+ *
  * @method
  * @param {Object} item Element item
  * @return {boolean} Item is a close element
@@ -124,6 +126,7 @@ ve.dm.LinearData.prototype.getLength = function () {
 
 /**
  * Gets the index-value store
+ *
  * @method
  * @return {ve.dm.IndexValueStore} The index-value store
  */

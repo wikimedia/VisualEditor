@@ -118,6 +118,7 @@ ve.dm.Surface.prototype.enable = function () {
 
 /**
  * Initialize the surface model
+ *
  * @fires contextChange
  */
 ve.dm.Surface.prototype.initialize = function () {

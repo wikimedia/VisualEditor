@@ -49,6 +49,7 @@ ve.ce.TestOffset.static = {};
 /**
  * Find text by offset in the given node.
  * Returns the same as #resolve.
+ *
  * @private
  * @static
  */
@@ -193,6 +194,7 @@ ve.ce.TestRunner.prototype.sendEvent = function ( eventName, ev ) {
  * Change the text
  *
  * TODO: it should be possible to add markup
+ *
  * @param {string} text The new text
  */
 ve.ce.TestRunner.prototype.changeText = function ( text ) {
@@ -274,6 +276,7 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 
 /**
  * Call assert.equal to check the IME test has updated the DM correctly
+ *
  * @param {Object} assert The QUnit assertion object
  * @param {string} testName The name of the test scenario
  * @param {number} sequence The sequence number in the test scenario
@@ -285,6 +288,7 @@ ve.ce.TestRunner.prototype.testEqual = function ( assert, testName, sequence ) {
 
 /**
  * Call assert.notEqual to check the IME test has not updated the DM correctly
+ *
  * @param {Object} assert The QUnit assertion object
  * @param {string} testName The name of the test scenario
  * @param {number} sequence The sequence number in the test scenario
