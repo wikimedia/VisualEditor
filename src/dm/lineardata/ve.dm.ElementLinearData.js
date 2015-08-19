@@ -609,7 +609,7 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  * @param {number} distance Number of valid offsets to move
  * @param {Function} callback Function to call to check if an offset is valid which will be
  * given initial argument of offset
- * @param {Mixed...} [args] Additional arguments to pass to the callback
+ * @param {...Mixed} [args] Additional arguments to pass to the callback
  * @return {number} Relative valid offset or -1 if there are no valid offsets in data
  * @throws {Error} offset was inside an ignoreChildren node
  */

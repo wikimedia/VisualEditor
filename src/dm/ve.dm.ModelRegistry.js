@@ -51,7 +51,7 @@
 	 *
 	 * @private
 	 * @param {Object} obj Object the array resides in
-	 * @param {string...} keys
+	 * @param {...string} keys
 	 * @param {Mixed} value
 	 */
 	function addType( obj ) {
@@ -77,7 +77,7 @@
 	 *
 	 * @private
 	 * @param {Object} obj Object the array resides in
-	 * @param {string...} keys
+	 * @param {...string} keys
 	 * @param {Mixed} value to remove
 	 */
 	function removeType( obj ) {

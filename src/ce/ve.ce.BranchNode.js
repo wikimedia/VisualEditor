@@ -163,7 +163,7 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
  * @method
  * @param {number} index Index to remove and or insert nodes at
  * @param {number} howmany Number of nodes to remove
- * @param {ve.dm.BranchNode...} [nodes] Variadic list of nodes to insert
+ * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
  */
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	var i, j,

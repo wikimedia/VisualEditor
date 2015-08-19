@@ -206,7 +206,7 @@ ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
  *
  * @method
  * @param {ve.Node} root Root node to lookup from
- * @param {number...} [paths] Index path
+ * @param {...number} [paths] Index path
  * @return {ve.Node} Node at given path
  */
 ve.dm.example.lookupNode = function ( root ) {

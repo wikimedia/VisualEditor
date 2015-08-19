@@ -107,7 +107,7 @@ ve.dm.LinearData.prototype.setData = function ( offset, value ) {
  * Push data to the end of the array
  *
  * @method
- * @param {Object...} [value] Values to store
+ * @param {...Object} [value] Values to store
  * @return {number} The new length of the linear data
  */
 ve.dm.LinearData.prototype.push = function () {
@@ -164,7 +164,7 @@ ve.dm.LinearData.prototype.sliceObject = function () {
  * @method
  * @param {number} index Splice from
  * @param {number} howmany Items to be removed
- * @param {Object...} [element] Items to be inserted
+ * @param {...Object} [element] Items to be inserted
  * @return {Array} Elements removed
  */
 ve.dm.LinearData.prototype.splice = function () {
@@ -177,7 +177,7 @@ ve.dm.LinearData.prototype.splice = function () {
  * @method
  * @param {number} index Splice from
  * @param {number} howmany Items to be removed
- * @param {Object...} [element] Items to be inserted
+ * @param {...Object} [element] Items to be inserted
  * @return {ve.dm.LinearData} LinearData object containing elements removed
  */
 ve.dm.LinearData.prototype.spliceObject = function () {

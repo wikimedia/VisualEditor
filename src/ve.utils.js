@@ -165,7 +165,7 @@ ve.isEmptyObject = $.isEmptyObject;
  * @source <http://api.jquery.com/jQuery.extend/>
  * @param {boolean} [recursive=false]
  * @param {Mixed} [target] Object that will receive the new properties
- * @param {Mixed...} [sources] Variadic list of objects containing properties
+ * @param {...Mixed} [sources] Variadic list of objects containing properties
  * to be merged into the target.
  * @return {Mixed} Modified version of first or second argument
  */
@@ -355,7 +355,7 @@ ve.binarySearch = function ( arr, searchFunc, forInsertion ) {
  *
  * This implementation does nothing, to add a real implementation ve.debug needs to be loaded.
  *
- * @param {Mixed...} [args] Data to log
+ * @param {...Mixed} [args] Data to log
  */
 ve.log = ve.log || function () {
 	// don't do anything, this is just a stub
@@ -366,7 +366,7 @@ ve.log = ve.log || function () {
  *
  * This implementation does nothing, to add a real implementation ve.debug needs to be loaded.
  *
- * @param {Mixed...} [args] Data to log
+ * @param {...Mixed} [args] Data to log
  */
 ve.error = ve.error || function () {
 	// don't do anything, this is just a stub
@@ -419,7 +419,7 @@ ve.selectEnd = function ( element ) {
  * Get a localized message.
  *
  * @param {string} key Message key
- * @param {Mixed...} [params] Message parameters
+ * @param {...Mixed} [params] Message parameters
  * @return {string} Localized message
  */
 ve.msg = function () {
@@ -1300,7 +1300,7 @@ ve.getStartAndEndRects = function ( rects ) {
 /**
  * Find the nearest common ancestor of DOM nodes
  *
- * @param {Node...} DOM nodes in the same document
+ * @param {...Node} DOM nodes in the same document
  * @return {Node|null} Nearest common ancestor node
  */
 ve.getCommonAncestor = function () {

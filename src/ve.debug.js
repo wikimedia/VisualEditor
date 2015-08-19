@@ -23,7 +23,7 @@ ve.debug = true;
  * Logs data to the console.
  *
  * @method
- * @param {Mixed...} [data] Data to log
+ * @param {...Mixed} [data] Data to log
  */
 ve.log = function () {
 	// In IE9 console methods are not real functions and as such do not inherit
@@ -36,7 +36,7 @@ ve.log = function () {
  * Logs error to the console.
  *
  * @method
- * @param {Mixed...} [data] Data to log
+ * @param {...Mixed} [data] Data to log
  */
 ve.error = function () {
 	// In IE9 console methods are not real functions and as such do not inherit

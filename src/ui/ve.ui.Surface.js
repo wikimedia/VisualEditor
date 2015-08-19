@@ -404,7 +404,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
  * @method
  * @param {ve.ui.Trigger|string} triggerOrAction Trigger or symbolic name of action
  * @param {string} [method] Action method name
- * @param {Mixed...} [args] Additional arguments for action
+ * @param {...Mixed} [args] Additional arguments for action
  * @return {boolean} Action or command was executed
  */
 ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
