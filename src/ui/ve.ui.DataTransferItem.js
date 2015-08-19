@@ -54,7 +54,6 @@ ve.ui.DataTransferItem.static.newFromDataUri = function ( dataUri, htmlStringDat
 /**
  * Create a data transfer item from string data.
  *
- * @param {DataTransfer} dataTransfer Native data transfer object
  * @param {string} stringData Native string data
  * @param {string} type Native MIME type
  * @param {string} [htmlStringData] HTML string representation of data transfer

@@ -116,6 +116,7 @@ ve.dm.example.createAnnotation = function ( annotation ) {
  * AnnotationSet.
  *
  * @method
+ * @param {ve.dm.IndexValueStore} store Index-value store
  * @param {Array} annotations Array of annotations in shorthand format
  * @return {ve.dm.AnnotationSet}
  */

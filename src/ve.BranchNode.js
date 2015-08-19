@@ -104,7 +104,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
  *
  * @method
  * @see ve.Node#setDocument
- * @param {ve.Document} root Node to use as root
+ * @param {ve.Document} doc Document this node is a part of
  */
 ve.BranchNode.prototype.setDocument = function ( doc ) {
 	var i;

@@ -280,8 +280,8 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
  * @param {string} key Name of the key
  * @return {number} Position within the key ordering for that group
  */
-ve.dm.InternalList.prototype.getIndexPosition = function ( groupName, index ) {
-	return this.nodes[ groupName ].indexOrder.indexOf( index );
+ve.dm.InternalList.prototype.getIndexPosition = function ( groupName, key ) {
+	return this.nodes[ groupName ].indexOrder.indexOf( key );
 };
 
 /**

@@ -12,16 +12,15 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {jQuery} $container
  * @param {ve.dm.Surface} model Surface model to observe
  * @param {ve.ui.Surface} ui Surface user interface
  * @param {Object} [config] Configuration options
  */
-ve.ce.Surface = function VeCeSurface( model, ui, options ) {
+ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	var surface = this;
 
 	// Parent constructor
-	OO.ui.Element.call( this, options );
+	OO.ui.Element.call( this, config );
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
@@ -380,7 +379,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  * locate the selection focus position.
  *
  * @private
- * @param {Range} range Range to get client rect for
+ * @param {ve.Range} range Range to get client rect for
  * @return {Object} ClientRect-like object
  */
 ve.ce.Surface.prototype.getNodeClientRectFromRange = function ( range ) {
@@ -4093,13 +4092,13 @@ ve.ce.Surface.prototype.decRenderLock = function () {
  * @param {ve.dm.Selection} selection New selection
  * @throws {Error} If calls to this method are nested
  */
-ve.ce.Surface.prototype.changeModel = function ( transaction, selection ) {
+ve.ce.Surface.prototype.changeModel = function ( transactions, selection ) {
 	if ( this.newModelSelection !== null ) {
 		throw new Error( 'Nested change of newModelSelection' );
 	}
 	this.newModelSelection = selection;
 	try {
-		this.model.change( transaction, selection );
+		this.model.change( transactions, selection );
 	} finally {
 		this.newModelSelection = null;
 	}

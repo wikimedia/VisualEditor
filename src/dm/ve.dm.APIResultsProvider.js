@@ -176,7 +176,7 @@ ve.dm.APIResultsProvider.prototype.getOffset = function () {
 /**
  * Set result offset
  *
- * @param {number} Results offset for the upcoming request
+ * @param {number} offset Results offset for the upcoming request
  */
 ve.dm.APIResultsProvider.prototype.setOffset = function ( offset ) {
 	this.offset = offset;

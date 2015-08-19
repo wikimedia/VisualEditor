@@ -428,7 +428,7 @@ ve.EventSequencer.prototype.postpone = function ( callback ) {
  *
  * This is a separate function because that makes it easier to replace when testing
  *
- * @param {number} callId Unique postponed timeout id
+ * @param {number} timeoutId Unique postponed timeout id
  */
 ve.EventSequencer.prototype.cancelPostponed = function ( timeoutId ) {
 	clearTimeout( timeoutId );

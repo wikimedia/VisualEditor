@@ -191,7 +191,7 @@ ve.dm.LinearData.prototype.spliceObject = function () {
  * @see ve#batchSplice
  * @param offset
  * @param remove
- * @param insert
+ * @param data
  * @return {Array}
  */
 ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
@@ -205,7 +205,7 @@ ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
  * @see ve#batchSplice
  * @param offset
  * @param remove
- * @param insert
+ * @param data
  * @return {ve.dm.LinearData}
  */
 ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data ) {

@@ -332,7 +332,7 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  * This invokes the toDomElements function registered for the element type.
  *
  * @method
- * @param {Object|Array} dataElement Linear model element or data slice
+ * @param {Object|Array} dataElements Linear model element or data slice
  * @param {HTMLDocument} doc Document to create DOM elements in
  * @param {Node[]} [childDomElements] Array of child DOM elements to pass in (annotations only)
  * @return {Node|boolean} DOM element, or false if the element cannot be converted

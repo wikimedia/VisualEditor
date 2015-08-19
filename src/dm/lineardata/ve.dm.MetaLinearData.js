@@ -165,11 +165,11 @@ ve.dm.MetaLinearData.prototype.getAnnotationsFromOffsetAndIndex = function ( off
  *
  * @method
  * @param {number} offset Offset to set annotations at
- * @param {number} metadataOffset Index to set annotations at
+ * @param {number} metadataIndex Index to set annotations at
  * @param {ve.dm.AnnotationSet} annotations Annotations to set
  */
-ve.dm.MetaLinearData.prototype.setAnnotationsAtOffsetAndIndex = function ( offset, index, annotations ) {
-	var item = this.getData( offset, index );
+ve.dm.MetaLinearData.prototype.setAnnotationsAtOffsetAndIndex = function ( offset, metadataIndex, annotations ) {
+	var item = this.getData( offset, metadataIndex );
 	if ( annotations.isEmpty() ) {
 		// Clean up
 		delete item.annotations;

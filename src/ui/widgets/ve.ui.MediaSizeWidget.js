@@ -381,7 +381,7 @@ ve.ui.MediaSizeWidget.prototype.onFullSizeButtonClick = function () {
 /**
  * Set the image aspect ratio explicitly
  *
- * @param {number} Numerical value of an aspect ratio
+ * @param {number} ratio Numerical value of an aspect ratio
  */
 ve.ui.MediaSizeWidget.prototype.setRatio = function ( ratio ) {
 	this.scalable.setRatio( ratio );

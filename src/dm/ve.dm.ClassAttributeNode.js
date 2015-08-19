@@ -65,7 +65,7 @@ ve.dm.ClassAttributeNode.static.setClassAttributes = function ( attributes, clas
 /**
  * Get class attribute from element attributes
  *
- * @param {Object} elementAttributes Element attributes
+ * @param {Object} attributes Element attributes
  * @return {string|null} Class name, or null if no classes to set
  */
 ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attributes ) {
