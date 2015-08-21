@@ -286,7 +286,17 @@ ve.init.Target.prototype.onToolbarResize = function () {
  * @return {ve.ui.Surface}
  */
 ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
-	config = ve.extendObject( {
+	return new ve.ui.DesktopSurface( dmDoc, this.getSurfaceConfig( config ) );
+};
+
+/**
+ * Get surface configuration options
+ *
+ * @param {Object} config Configuration option overrides
+ * @return {Object} Surface configuration options
+ */
+ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
+	return ve.extendObject( {
 		includeCommands: this.constructor.static.includeCommands,
 		excludeCommands: OO.simpleArrayUnion(
 			this.constructor.static.excludeCommands,
@@ -295,7 +305,6 @@ ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 		),
 		importRules: this.constructor.static.importRules
 	}, config );
-	return new ve.ui.DesktopSurface( dmDoc, config );
 };
 
 /**
