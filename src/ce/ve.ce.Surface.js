@@ -2230,7 +2230,7 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 	}
 
 	for ( i = 0, l = items.length; i < l; i++ ) {
-		name = ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( items[ i ], isPaste );
+		name = ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( items[ i ], isPaste, this.pasteSpecial );
 		if ( name ) {
 			ve.init.target.dataTransferHandlerFactory.create( name, this.surface, items[ i ] )
 				.getInsertableData().done( insert );
