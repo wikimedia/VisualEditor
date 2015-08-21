@@ -611,15 +611,17 @@ ve.ce.Surface.prototype.focus = function () {
 		surface = this,
 		selection = this.getModel().getSelection();
 
+	if ( selection instanceof ve.dm.NullSelection ) {
+		this.getModel().selectFirstContentOffset();
+		selection = this.getModel().getSelection();
+	}
+
 	// Focus the documentNode for text selections, or the pasteTarget for focusedNode selections
 	if ( this.focusedNode || selection instanceof ve.dm.TableSelection ) {
 		this.$pasteTarget[ 0 ].focus();
 	} else if ( selection instanceof ve.dm.LinearSelection ) {
 		node = this.getDocument().getNodeAndOffset( selection.getRange().start ).node;
 		$( node ).closest( '[contenteditable=true]' )[ 0 ].focus();
-	} else if ( selection instanceof ve.dm.NullSelection ) {
-		this.getModel().selectFirstContentOffset();
-		return;
 	}
 
 	// If we are calling focus after replacing a node the selection may be gone
@@ -3847,6 +3849,7 @@ ve.ce.Surface.prototype.showModelSelection = function ( selection ) {
  */
 ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 	var range,
+		$focusTarget,
 		extendedBackwards = false,
 		sel = this.nativeSelection,
 		newSel = selection;
@@ -3887,8 +3890,9 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
-	if ( !OO.ui.contains( this.getElementDocument().activeElement, newSel.focusNode, true ) ) {
-		$( newSel.focusNode ).closest( '[contenteditable=true]' ).focus();
+	$focusTarget = $( newSel.focusNode ).closest( '[contenteditable=true]' );
+	if ( !OO.ui.contains( $focusTarget.get( 0 ), this.getElementDocument().activeElement, true ) ) {
+		$focusTarget.focus();
 	} else {
 		// Scroll the node into view
 		ve.scrollIntoView(
