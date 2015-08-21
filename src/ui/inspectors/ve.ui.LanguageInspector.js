@@ -26,8 +26,6 @@ OO.inheritClass( ve.ui.LanguageInspector, ve.ui.AnnotationInspector );
 
 ve.ui.LanguageInspector.static.name = 'language';
 
-ve.ui.LanguageInspector.static.size = 'medium';
-
 ve.ui.LanguageInspector.static.title =
 	OO.ui.deferMsg( 'visualeditor-languageinspector-title' );
 

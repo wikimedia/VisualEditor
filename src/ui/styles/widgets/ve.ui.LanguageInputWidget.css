@@ -5,14 +5,18 @@
  */
 
 .ve-ui-languageInputWidget-findLanguageButton .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	width: 8.5em;
+	width: 9.5em;
 	text-align: left;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
-.ve-ui-languageInputWidget-languageCodeTextInput {
+.ve-ui-languageInputWidget .oo-ui-fieldLayout.oo-ui-labelElement > .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
 	width: 7em;
+}
+
+.ve-ui-languageInputWidget-languageCodeTextInput {
+	width: 6em;
 }
 
 .ve-ui-languageInputWidget-directionSelect {
