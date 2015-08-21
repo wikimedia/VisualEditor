@@ -67,6 +67,15 @@ ve.ui.DataTransferHandler.static.types = [];
 ve.ui.DataTransferHandler.static.handlesPaste = true;
 
 /**
+ * Use handler when data transfer source is a "paste special"
+ *
+ * @static
+ * @type {boolean}
+ * @inheritable
+ */
+ve.ui.DataTransferHandler.static.handlesPasteSpecial = false;
+
+/**
  * Custom match function which is given the data transfer item as its only argument
  * and returns a boolean indicating if the handler matches
  *

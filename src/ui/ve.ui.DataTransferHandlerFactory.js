@@ -82,9 +82,10 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
  *
  * @param {ve.ui.DataTransferItem} item Data transfer item
  * @param {boolean} isPaste Handler being used for paste
+ * @param {boolean} isPasteSpecial Handler being used for "paste special"
  * @return {string|undefined} Handler name, or undefined if not found
  */
-ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste ) {
+ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste, isPasteSpecial ) {
 	var i,
 		name,
 		constructor,
@@ -120,6 +121,10 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 	for ( i = 0; i < names.length; i++ ) {
 		name = names[ i ];
 		constructor = this.registry[ name ];
+
+		if ( isPasteSpecial && !constructor.static.handlesPasteSpecial ) {
+			continue;
+		}
 
 		if ( isPaste && !constructor.static.handlesPaste ) {
 			continue;
