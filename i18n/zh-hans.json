@@ -67,7 +67,7 @@
 	"visualeditor-find-and-replace-replace-all-button": "替换所有",
 	"visualeditor-find-and-replace-replace-button": "替换",
 	"visualeditor-find-and-replace-replace-text": "替换",
-	"visualeditor-find-and-replace-results": "$2个结果中的第$1个结果",
+	"visualeditor-find-and-replace-results": "$2中的$1个",
 	"visualeditor-find-and-replace-title": "查找和替换",
 	"visualeditor-formatdropdown-format-blockquote": "引用块",
 	"visualeditor-formatdropdown-format-heading-label": "标题（1-6）",
