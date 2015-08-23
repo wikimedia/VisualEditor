@@ -18,6 +18,8 @@ ve.ui.DataTransferHandler = function VeUiDataTransferHandler( surface, item ) {
 	// Properties
 	this.surface = surface;
 	this.item = item;
+	this.progress = false;
+	this.progressBar = null;
 
 	this.insertableDataDeferred = $.Deferred();
 };
@@ -124,4 +126,35 @@ ve.ui.DataTransferHandler.prototype.resolve = function ( dataOrDoc ) {
  */
 ve.ui.DataTransferHandler.prototype.abort = function () {
 	this.insertableDataDeferred.reject();
+};
+
+/**
+ * Create a progress bar with a specified label
+ *
+ * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
+ * @param {jQuery|string|Function} label Progress bar label
+ */
+ve.ui.DataTransferHandler.prototype.createProgress = function ( progressCompletePromise, label ) {
+	var handler = this;
+
+	this.surface.createProgress( progressCompletePromise, label ).done( function ( progressBar, cancelPromise ) {
+		// Set any progress that was achieved before this resolved
+		progressBar.setProgress( handler.progress );
+		handler.progressBar = progressBar;
+		cancelPromise.fail( handler.abort.bind( handler ) );
+	} );
+};
+
+/**
+ * Set progress bar progress
+ *
+ * Progress is stored in a property in case the progress bar doesn't exist yet.
+ *
+ * @param {number} progress Progress percent
+ */
+ve.ui.DataTransferHandler.prototype.setProgress = function ( progress ) {
+	this.progress = progress;
+	if ( this.progressBar ) {
+		this.progressBar.setProgress( this.progress );
+	}
 };
