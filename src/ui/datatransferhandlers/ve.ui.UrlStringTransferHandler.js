@@ -140,7 +140,6 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 		for ( i = 0; i < content.length; i++ ) {
 			result.push( content[ i ] );
 		}
-		result.push( ' ' );
 	} );
 	this.resolve( result );
 };

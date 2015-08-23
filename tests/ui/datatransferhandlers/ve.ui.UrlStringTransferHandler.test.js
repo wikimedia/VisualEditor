@@ -64,8 +64,7 @@ QUnit.test( 'paste', function ( assert ) {
 						[ '.', [ a ] ],
 						[ 'c', [ a ] ],
 						[ 'o', [ a ] ],
-						[ 'm', [ a ] ],
-						' '
+						[ 'm', [ a ] ]
 					];
 				}
 			},
@@ -93,8 +92,7 @@ QUnit.test( 'paste', function ( assert ) {
 						[ '.', [ a ] ],
 						[ 'c', [ a ] ],
 						[ 'o', [ a ] ],
-						[ 'm', [ a ] ],
-						' '
+						[ 'm', [ a ] ]
 					];
 				}
 			},
@@ -108,8 +106,7 @@ QUnit.test( 'paste', function ( assert ) {
 					return [
 						[ 'F', [ a ] ],
 						[ 'o', [ a ] ],
-						[ 'o', [ a ] ],
-						' '
+						[ 'o', [ a ] ]
 					];
 				}
 			},
@@ -126,8 +123,7 @@ QUnit.test( 'paste', function ( assert ) {
 						[ 'o', [ a ] ],
 						[ 'o', [ a ] ],
 						[ ']', [ a ] ],
-						[ ']', [ a ] ],
-						' '
+						[ ']', [ a ] ]
 					];
 				}
 			}
