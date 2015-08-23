@@ -100,6 +100,20 @@ QUnit.test( 'autolink', function ( assert ) {
 				msg: 'Strip trailing punctuation'
 			},
 			{
+				html: '<p>"http://example.com" xyz</p>',
+				range: new ve.Range( 2, 22 ),
+				method: 'autolinkUrl',
+				expectedRange: new ve.Range( 22, 22 ),
+				expectedData: function ( data, makeAnnotation ) {
+					var i,
+						a = makeAnnotation( 'http://example.com' );
+					for ( i = 2; i < 20; i++ ) {
+						data[ i ] = [ data[ i ], [ a ] ];
+					}
+				},
+				msg: 'Strip trailing quotes'
+			},
+			{
 				html: '<p>http://.) xyz</p>',
 				range: new ve.Range( 1, 11 ),
 				method: 'autolinkUrl',

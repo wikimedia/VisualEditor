@@ -148,7 +148,7 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc ) {
  */
 ve.ui.LinkAction.prototype.getTrailingPunctuation = function ( candidate ) {
 	/* jshint unused: false */
-	return /[,;.:!?)\]\}]+$/;
+	return /[,;.:!?)\]\}"'”’»]+$/;
 };
 
 /**
