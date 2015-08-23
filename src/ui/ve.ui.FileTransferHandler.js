@@ -24,9 +24,6 @@ ve.ui.FileTransferHandler = function VeUiFileTransferHandler() {
 
 	this.reader = new FileReader();
 
-	this.progress = false;
-	this.progressBar = null;
-
 	// Events
 	this.reader.addEventListener( 'progress', this.onFileProgress.bind( this ) );
 	this.reader.addEventListener( 'load', this.onFileLoad.bind( this ) );
@@ -104,32 +101,15 @@ ve.ui.FileTransferHandler.prototype.abort = function () {
 };
 
 /**
- * Create a progress bar with a specified label
+ * Overrides the parent to make the default label the filename
  *
- * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
+ * @param {jQuery.Promise} progressCompletePromise
  * @param {jQuery|string|Function} [label] Progress bar label, defaults to file name
  */
 ve.ui.FileTransferHandler.prototype.createProgress = function ( progressCompletePromise, label ) {
-	var handler = this;
+	// Make the default label the filename
+	label = label || this.file.name;
 
-	this.surface.createProgress( progressCompletePromise, label || this.file.name ).done( function ( progressBar, cancelPromise ) {
-		// Set any progress that was achieved before this resolved
-		progressBar.setProgress( handler.progress );
-		handler.progressBar = progressBar;
-		cancelPromise.fail( handler.abort.bind( handler ) );
-	} );
-};
-
-/**
- * Set progress bar progress
- *
- * Progress is stored in a property in case the progress bar doesn't exist yet.
- *
- * @param {number} progress Progress percent
- */
-ve.ui.FileTransferHandler.prototype.setProgress = function ( progress ) {
-	this.progress = progress;
-	if ( this.progressBar ) {
-		this.progressBar.setProgress( this.progress );
-	}
+	// Parent method
+	ve.ui.FileTransferHandler.super.prototype.createProgress.call( this, progressCompletePromise, label );
 };
