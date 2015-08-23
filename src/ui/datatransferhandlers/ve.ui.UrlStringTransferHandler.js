@@ -97,7 +97,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 			// spec for how it should be done.
 			links = data.replace( /^#.*(\r\n?|\n|$)/mg, '' ).trim()
 				.split( /[\r\n]+/g ).map( function ( line ) {
-					return { href: line, title: line };
+					return { href: line };
 				} );
 			// When Google Chrome uses this mime type the link titles can
 			// be extracted from the 'text/html' version of the item.
@@ -122,7 +122,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 
 		default:
 			// A single URL
-			links = [ { href: data.trim(), title: data } ];
+			links = [ { href: data.trim() } ];
 			break;
 	}
 
@@ -135,7 +135,9 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 			annotationSet = new ve.dm.AnnotationSet( store, store.indexes( [
 				annotation
 			] ) ),
-			content = link.title.split( '' );
+			title = link.title || annotation.getDisplayTitle(),
+			content = title.split( '' );
+
 		ve.dm.Document.static.addAnnotationsToData( content, annotationSet );
 		for ( i = 0; i < content.length; i++ ) {
 			result.push( content[ i ] );

@@ -74,6 +74,17 @@ ve.dm.LinkAnnotation.prototype.getHref = function () {
 };
 
 /**
+ * Get the display title for this link
+ *
+ * Can be overriden by special link types.
+ *
+ * @return {string} Display title
+ */
+ve.dm.LinkAnnotation.prototype.getDisplayTitle = function () {
+	return this.getHref();
+};
+
+/**
  * @inheritdoc
  */
 ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
