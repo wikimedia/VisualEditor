@@ -778,6 +778,10 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 /**
  * Insert HTML in the fragment.
  *
+ * This will move the fragment's range to cover the inserted content. Note that this may be
+ * different from what a normal range translation would do: the insertion might occur
+ * at a different offset if that is needed to make the document balanced.
+ *
  * @method
  * @param {string} html HTML to insert
  * @param {Object} [importRules] The import rules for the target surface, if importing
@@ -791,11 +795,17 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
 /**
  * Insert a ve.dm.Document in the fragment.
  *
+ * This will move the fragment's range to cover the inserted content. Note that this may be
+ * different from what a normal range translation would do: the insertion might occur
+ * at a different offset if that is needed to make the document balanced.
+ *
  * @method
  * @param {ve.dm.Document} doc Document to insert
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertDocument = function ( doc ) {
+	var tx, newRange;
+
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return this;
 	}
@@ -804,11 +814,15 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( doc ) {
 		this.removeContent();
 	}
 
-	this.change( new ve.dm.Transaction.newFromDocumentInsertion(
+	tx = new ve.dm.Transaction.newFromDocumentInsertion(
 		this.getDocument(),
 		this.getSelection().getRange().start,
 		doc
-	) );
+	);
+	// Set the range to cover the inserted content; the offset translation will be wrong
+	// if newFromInsertion() decided to move the insertion point
+	newRange = tx.getModifiedRange();
+	this.change( tx, new ve.dm.LinearSelection( this.getDocument(), newRange ) );
 
 	return this;
 };

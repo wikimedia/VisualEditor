@@ -2222,11 +2222,15 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 	targetFragment = targetFragment || this.getModel().getFragment();
 
 	function insert( docOrData ) {
+		var resultFragment = targetFragment.collapseToEnd();
 		if ( docOrData instanceof ve.dm.Document ) {
-			targetFragment.collapseToEnd().insertDocument( docOrData );
+			resultFragment.insertDocument( docOrData );
 		} else {
-			targetFragment.collapseToEnd().insertContent( docOrData );
+			resultFragment.insertContent( docOrData );
 		}
+		// The resultFragment's selection now covers the inserted content;
+		// adjust selection to end of inserted content.
+		resultFragment.collapseToEnd().select();
 	}
 
 	for ( i = 0, l = items.length; i < l; i++ ) {
