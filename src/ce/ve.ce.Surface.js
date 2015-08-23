@@ -324,7 +324,9 @@ ve.ce.Surface.prototype.destroy = function () {
 
 	// HACK: Blur to make selection/cursor disappear (needed in Firefox
 	// in some cases, and in iOS to hide the keyboard)
-	this.blur();
+	if ( this.isFocused() ) {
+		this.blur();
+	}
 
 	// Remove DOM elements (also disconnects their events)
 	this.$element.remove();
