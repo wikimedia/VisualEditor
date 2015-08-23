@@ -86,16 +86,7 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
  * @inheritdoc
  */
 ve.init.sa.MobileTarget.prototype.createSurface = function ( dmDoc, config ) {
-	config = ve.extendObject( {
-		includeCommands: this.constructor.static.includeCommands,
-		excludeCommands: OO.simpleArrayUnion(
-			this.constructor.static.excludeCommands,
-			this.constructor.static.documentCommands,
-			this.constructor.static.targetCommands
-		),
-		importRules: this.constructor.static.importRules
-	}, config );
-	return new ve.ui.MobileSurface( dmDoc, config );
+	return new ve.ui.MobileSurface( dmDoc, this.getSurfaceConfig( config ) );
 };
 
 /**
