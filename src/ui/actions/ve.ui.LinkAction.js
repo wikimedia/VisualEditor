@@ -44,12 +44,36 @@ ve.ui.LinkAction.static.methods = [ 'autolinkUrl' ];
 /* Methods */
 
 /**
- * Autolink the selection (which may have trailing whitespace).
+ * Autolink the selected URL (which may have trailing whitespace).
  *
  * @method
- * @return {boolean} Action was executed
+ * @return {boolean}
+ *   True if the selection is a valid URL and the autolink action was
+ *   executed; otherwise false.
  */
 ve.ui.LinkAction.prototype.autolinkUrl = function () {
+	return this.autolink( function ( linktext ) {
+		// Make sure we still have a real URL after trail removal, and not
+		// a bare protocol (or no protocol at all, if we stripped the last
+		// colon from the protocol)
+		return ve.ui.LinkAction.static.autolinkRegExp.test( linktext + ' ' );
+	} );
+};
+
+/**
+ * Autolink the selection, which may have trailing whitespace.
+ *
+ * @method
+ * @private
+ * @param {Function} validateFunc
+ *   A function used to validate the given linktext.
+ * @param {string} validateFunc.linktext
+ *   Linktext with trailing whitespace and punctuation stripped.
+ * @param {boolean} validateFunc.return
+ *   True iff the given linktext is valid.  If false, no linking will be done.
+ * @return {boolean} Selection was valid and link action was executed.
+ */
+ve.ui.LinkAction.prototype.autolink = function ( validateFunc ) {
 	var range, rangeEnd, linktext, i,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -74,9 +98,8 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
 	// Eliminate trailing punctuation.
 	linktext = linktext.replace( this.getTrailingPunctuation( linktext ), '' );
 
-	// Make sure we still have a real URL after trail removal, and not
-	// a bare protocol (or no protocol at all, if we stripped the last colon)
-	if ( !ve.ui.LinkAction.static.autolinkRegExp.test( linktext + ' ' ) ) {
+	// Validate the stripped text.
+	if ( !validateFunc( linktext ) ) {
 		// Don't autolink this.
 		return false;
 	}
@@ -129,16 +152,17 @@ ve.ui.LinkAction.prototype.getTrailingPunctuation = function ( candidate ) {
 };
 
 /**
- * Return an appropriate annotation for the given href.
+ * Return an appropriate annotation for the given link text.
  *
  * @method
+ * @param {string} linktext The link text to annotate.
  * @return {ve.dm.LinkAnnotation} The annotation to use.
  */
-ve.ui.LinkAction.prototype.getLinkAnnotation = function ( href ) {
+ve.ui.LinkAction.prototype.getLinkAnnotation = function ( linktext ) {
 	return new ve.dm.LinkAnnotation( {
 		type: 'link',
 		attributes: {
-			href: href
+			href: linktext
 		}
 	} );
 };
