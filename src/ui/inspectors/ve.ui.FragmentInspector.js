@@ -48,6 +48,8 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
 	}
 ] );
 
+ve.ui.FragmentInspector.static.size = 'large';
+
 /* Methods */
 
 /**
