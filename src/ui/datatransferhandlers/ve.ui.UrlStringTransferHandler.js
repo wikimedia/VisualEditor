@@ -78,11 +78,9 @@ ve.ui.UrlStringTransferHandler.static.matchFunction = function ( item ) {
  * @inheritdoc
  */
 ve.ui.UrlStringTransferHandler.prototype.process = function () {
-	var links,
-		html,
-		doc,
-		result,
+	var links, html, doc, result,
 		surface = this.surface,
+		store = surface.getModel().getDocument().getStore(),
 		linkAction = ve.ui.actionFactory.create( 'link', surface ),
 		data = this.item.getAsString();
 
@@ -130,13 +128,17 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 	result = [];
 	links.forEach( function ( link ) {
 		var i,
-			store = surface.getModel().getDocument().getStore(),
 			annotation = linkAction.getLinkAnnotation( link.href ),
 			annotationSet = new ve.dm.AnnotationSet( store, store.indexes( [
 				annotation
 			] ) ),
 			title = link.title || annotation.getDisplayTitle(),
 			content = title.split( '' );
+
+		// Put a space between multiple links
+		if ( result.length ) {
+			result.push( ' ' );
+		}
 
 		ve.dm.Document.static.addAnnotationsToData( content, annotationSet );
 		for ( i = 0; i < content.length; i++ ) {

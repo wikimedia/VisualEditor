@@ -112,18 +112,23 @@ QUnit.test( 'paste', function ( assert ) {
 			},
 			{
 				msg: 'Mozilla URI list',
-				pasteString: 'http://example.com\n[[Foo]]',
+				pasteString: 'http://example.com\n[[Foo]]\nhttp://example.org\nBar',
 				pasteType: 'text/x-moz-url',
 				expectedData: function ( makeAnnotation ) {
-					var a = makeAnnotation( 'http://example.com' );
+					var a1 = makeAnnotation( 'http://example.com' ),
+						a2 = makeAnnotation( 'http://example.org' );
 					return [
-						[ '[', [ a ] ],
-						[ '[', [ a ] ],
-						[ 'F', [ a ] ],
-						[ 'o', [ a ] ],
-						[ 'o', [ a ] ],
-						[ ']', [ a ] ],
-						[ ']', [ a ] ]
+						[ '[', [ a1 ] ],
+						[ '[', [ a1 ] ],
+						[ 'F', [ a1 ] ],
+						[ 'o', [ a1 ] ],
+						[ 'o', [ a1 ] ],
+						[ ']', [ a1 ] ],
+						[ ']', [ a1 ] ],
+						' ',
+						[ 'B', [ a2 ] ],
+						[ 'a', [ a2 ] ],
+						[ 'r', [ a2 ] ]
 					];
 				}
 			}
