@@ -15,7 +15,8 @@
 			"Wpedzich",
 			"Matik7",
 			"Rezonansowy",
-			"Openbk"
+			"Openbk",
+			"The Polish"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -24,6 +25,7 @@
 	"visualeditor-align-widget-left": "Do lewej",
 	"visualeditor-align-widget-right": "Do prawej",
 	"visualeditor-alignablecontextitem-title": "Wyrównanie",
+	"visualeditor-aliencontextitem-title": "Element",
 	"visualeditor-annotationbutton-bold-tooltip": "Pogrubienie",
 	"visualeditor-annotationbutton-code-tooltip": "Kod programu",
 	"visualeditor-annotationbutton-italic-tooltip": "Kursywa",
