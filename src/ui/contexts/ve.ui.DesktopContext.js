@@ -182,7 +182,8 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
-	var startAndEndRects, position, embeddable, middle, boundingRect, rtl, surface, selection, isTableSelection, focusedNode;
+	var startAndEndRects, position, embeddable, middle, boundingRect, rtl,
+		surface, startingSelection, currentSelection, isTableSelection, focusedNode;
 
 	// Parent method
 	ve.ui.DesktopContext.super.prototype.updateDimensions.call( this );
@@ -193,11 +194,14 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 
 	rtl = this.surface.getModel().getDocument().getDir() === 'rtl';
 	surface = this.surface.getView();
-	selection = this.inspector && this.inspector.previousSelection;
-	isTableSelection = ( selection || this.surface.getModel().getSelection() ) instanceof ve.dm.TableSelection;
 	focusedNode = surface.getFocusedNode();
+	// Selection when the inspector was opened. Used to stop the context from
+	// jumping when an inline selection expands, e.g. to cover a long word
+	startingSelection = !focusedNode && this.inspector && this.inspector.previousSelection;
+	currentSelection = this.surface.getModel().getSelection();
+	isTableSelection = ( startingSelection || currentSelection ) instanceof ve.dm.TableSelection;
 
-	boundingRect = surface.getSelectionBoundingRect( selection );
+	boundingRect = surface.getSelectionBoundingRect( startingSelection );
 
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.
@@ -230,7 +234,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		}
 	} else {
 		// The selection is text or an inline focused node
-		startAndEndRects = surface.getSelectionStartAndEndRects( selection );
+		startAndEndRects = surface.getSelectionStartAndEndRects( startingSelection );
 		if ( startAndEndRects ) {
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
 			if (
