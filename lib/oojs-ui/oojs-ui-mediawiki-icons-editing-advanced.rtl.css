@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.12.5
+ * OOjs UI v0.12.6
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-08-19T02:10:25Z
+ * Date: 2015-08-26T00:14:44Z
  */
 .oo-ui-icon-alignCentre {
 	background-image: url("themes/mediawiki/images/icons/align-center.png");
@@ -43,6 +43,18 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/align-float-right-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/align-float-right-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/align-float-right-invert.png");
+}
+.oo-ui-icon-calendar {
+	background-image: url("themes/mediawiki/images/icons/calendar-rtl.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/calendar-rtl.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/calendar-rtl.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/calendar-rtl.png");
+}
+.oo-ui-icon-calendar-invert {
+	background-image: url("themes/mediawiki/images/icons/calendar-rtl-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/calendar-rtl-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/calendar-rtl-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/calendar-rtl-invert.png");
 }
 .oo-ui-icon-find {
 	background-image: url("themes/mediawiki/images/icons/find-rtl.png");

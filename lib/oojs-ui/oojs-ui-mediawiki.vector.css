@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.12.5
+ * OOjs UI v0.12.6
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-08-19T02:10:25Z
+ * Date: 2015-08-26T00:14:44Z
  */
 @-webkit-keyframes oo-ui-progressBarWidget-slide {
 	from {
@@ -149,10 +149,10 @@
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #347bff;
+	color: #2962cc;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	color: #777777;
+	color: #347bff;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
@@ -161,10 +161,10 @@
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #00af89;
+	color: #008064;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	color: #777777;
+	color: #00af89;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
@@ -173,10 +173,10 @@
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #d11d13;
+	color: #8c130d;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	color: #777777;
+	color: #d11d13;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
@@ -1118,6 +1118,9 @@
 }
 .oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconElement-icon {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/check.svg);
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
 }
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover {
 	background-color: #eeeeee;
@@ -2293,6 +2296,25 @@
 .oo-ui-selectFileWidget-notsupported.oo-ui-indicatorElement .oo-ui-selectFileWidget-handle {
 	padding-right: 2em;
 }
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dragdrop-ui .oo-ui-selectFileWidget-handle {
+	height: 3.5em;
+	border: 1px dashed #cccccc;
+	border-radius: 0;
+	padding: 0.5em 1em;
+	background: #ffffff;
+	text-align: center;
+	vertical-align: middle;
+}
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dragdrop-ui .oo-ui-selectFileWidget-handle .oo-ui-iconElement-icon {
+	margin: 0.6em 0;
+}
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dragdrop-ui .oo-ui-selectFileWidget-handle .oo-ui-selectFileWidget-label {
+	color: #000000;
+}
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dragdrop-ui .oo-ui-selectFileWidget-handle:hover,
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dragdrop-ui.oo-ui-selectFileWidget-canDrop .oo-ui-selectFileWidget-handle {
+	background-color: #eeeeee;
+}
 .oo-ui-outlineOptionWidget {
 	position: relative;
 	cursor: pointer;
@@ -3061,108 +3083,90 @@
 .oo-ui-icon-add {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/add.svg);
 }
-.oo-ui-image-constructive .oo-ui-icon-add,
 .oo-ui-image-constructive.oo-ui-icon-add {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/add-constructive.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-add,
 .oo-ui-image-invert.oo-ui-icon-add {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/add-invert.svg);
 }
 .oo-ui-icon-advanced {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/advanced.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-advanced,
 .oo-ui-image-invert.oo-ui-icon-advanced {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/advanced-invert.svg);
 }
 .oo-ui-icon-alert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/alert.svg);
 }
-.oo-ui-image-warning .oo-ui-icon-alert,
 .oo-ui-image-warning.oo-ui-icon-alert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/alert-warning.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-alert,
 .oo-ui-image-invert.oo-ui-icon-alert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/alert-invert.svg);
 }
 .oo-ui-icon-cancel {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/cancel.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-cancel,
 .oo-ui-image-invert.oo-ui-icon-cancel {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/cancel-invert.svg);
 }
 .oo-ui-icon-check {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/check.svg);
 }
-.oo-ui-image-constructive .oo-ui-icon-check,
 .oo-ui-image-constructive.oo-ui-icon-check {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/check-constructive.svg);
 }
-.oo-ui-image-progressive .oo-ui-icon-check,
 .oo-ui-image-progressive.oo-ui-icon-check {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/check-progressive.svg);
 }
-.oo-ui-image-destructive .oo-ui-icon-check,
 .oo-ui-image-destructive.oo-ui-icon-check {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/check-destructive.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-check,
 .oo-ui-image-invert.oo-ui-icon-check {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/check-invert.svg);
 }
 .oo-ui-icon-circle {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/circle.svg);
 }
-.oo-ui-image-constructive .oo-ui-icon-circle,
 .oo-ui-image-constructive.oo-ui-icon-circle {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/circle-constructive.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-circle,
 .oo-ui-image-invert.oo-ui-icon-circle {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/circle-invert.svg);
 }
 .oo-ui-icon-close {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/close-ltr.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-close,
 .oo-ui-image-invert.oo-ui-icon-close {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/close-ltr-invert.svg);
 }
 .oo-ui-icon-code {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/code.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-code,
 .oo-ui-image-invert.oo-ui-icon-code {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/code-invert.svg);
 }
 .oo-ui-icon-collapse {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/collapse.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-collapse,
 .oo-ui-image-invert.oo-ui-icon-collapse {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/collapse-invert.svg);
 }
 .oo-ui-icon-comment {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/comment.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-comment,
 .oo-ui-image-invert.oo-ui-icon-comment {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/comment-invert.svg);
 }
 .oo-ui-icon-ellipsis {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/ellipsis.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-ellipsis,
 .oo-ui-image-invert.oo-ui-icon-ellipsis {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/ellipsis-invert.svg);
 }
 .oo-ui-icon-expand {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/expand.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-expand,
 .oo-ui-image-invert.oo-ui-icon-expand {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/expand-invert.svg);
 }
@@ -3177,135 +3181,113 @@
 .oo-ui-icon-help:lang(yi) {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/help-ltr.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-help,
 .oo-ui-image-invert.oo-ui-icon-help {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/help-ltr-invert.svg);
 }
 /* @noflip */
-.oo-ui-image-invert .oo-ui-icon-help:lang(he),
 .oo-ui-image-invert.oo-ui-icon-help:lang(he) {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/help-ltr-invert.svg);
 }
 /* @noflip */
-.oo-ui-image-invert .oo-ui-icon-help:lang(yi),
 .oo-ui-image-invert.oo-ui-icon-help:lang(yi) {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/help-ltr-invert.svg);
 }
 .oo-ui-icon-history {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/history.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-history,
 .oo-ui-image-invert.oo-ui-icon-history {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/history-invert.svg);
 }
 .oo-ui-icon-info {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/info.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-info,
 .oo-ui-image-invert.oo-ui-icon-info {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/info-invert.svg);
 }
 .oo-ui-icon-menu {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/menu.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-menu,
 .oo-ui-image-invert.oo-ui-icon-menu {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/menu-invert.svg);
 }
 .oo-ui-icon-next {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/move-ltr.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-next,
 .oo-ui-image-invert.oo-ui-icon-next {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/move-ltr-invert.svg);
 }
 .oo-ui-icon-notice {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/notice.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-notice,
 .oo-ui-image-invert.oo-ui-icon-notice {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/notice-invert.svg);
 }
 .oo-ui-icon-picture {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/picture.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-picture,
 .oo-ui-image-invert.oo-ui-icon-picture {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/picture-invert.svg);
 }
 .oo-ui-icon-previous {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/move-rtl.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-previous,
 .oo-ui-image-invert.oo-ui-icon-previous {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/move-rtl-invert.svg);
 }
 .oo-ui-icon-redo {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/arched-arrow-ltr.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-redo,
 .oo-ui-image-invert.oo-ui-icon-redo {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/arched-arrow-ltr-invert.svg);
 }
 .oo-ui-icon-remove {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/remove.svg);
 }
-.oo-ui-image-destructive .oo-ui-icon-remove,
 .oo-ui-image-destructive.oo-ui-icon-remove {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/remove-destructive.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-remove,
 .oo-ui-image-invert.oo-ui-icon-remove {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/remove-invert.svg);
 }
 .oo-ui-icon-search {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/search-ltr.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-search,
 .oo-ui-image-invert.oo-ui-icon-search {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/search-ltr-invert.svg);
 }
 .oo-ui-icon-settings {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/settings.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-settings,
 .oo-ui-image-invert.oo-ui-icon-settings {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/settings-invert.svg);
 }
 .oo-ui-icon-tag {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/tag.svg);
 }
-.oo-ui-image-destructive .oo-ui-icon-tag,
 .oo-ui-image-destructive.oo-ui-icon-tag {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/tag-destructive.svg);
 }
-.oo-ui-image-warning .oo-ui-icon-tag,
 .oo-ui-image-warning.oo-ui-icon-tag {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/tag-warning.svg);
 }
-.oo-ui-image-constructive .oo-ui-icon-tag,
 .oo-ui-image-constructive.oo-ui-icon-tag {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/tag-constructive.svg);
 }
-.oo-ui-image-progressive .oo-ui-icon-tag,
 .oo-ui-image-progressive.oo-ui-icon-tag {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/tag-progressive.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-tag,
 .oo-ui-image-invert.oo-ui-icon-tag {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/tag-invert.svg);
 }
 .oo-ui-icon-undo {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/arched-arrow-rtl.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-undo,
 .oo-ui-image-invert.oo-ui-icon-undo {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/arched-arrow-rtl-invert.svg);
 }
 .oo-ui-icon-window {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/window.svg);
 }
-.oo-ui-image-invert .oo-ui-icon-window,
 .oo-ui-image-invert.oo-ui-icon-window {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/window-invert.svg);
 }
@@ -3313,56 +3295,48 @@
 .oo-ui-indicator-alert {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/alert.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-alert,
 .oo-ui-image-invert.oo-ui-indicator-alert {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/alert-invert.svg);
 }
 .oo-ui-indicator-clear {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/clear.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-clear,
 .oo-ui-image-invert.oo-ui-indicator-clear {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/clear-invert.svg);
 }
 .oo-ui-indicator-up {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-up.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-up,
 .oo-ui-image-invert.oo-ui-indicator-up {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-up-invert.svg);
 }
 .oo-ui-indicator-down {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-down.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-down,
 .oo-ui-image-invert.oo-ui-indicator-down {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-down-invert.svg);
 }
 .oo-ui-indicator-next {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-ltr.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-next,
 .oo-ui-image-invert.oo-ui-indicator-next {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-ltr-invert.svg);
 }
 .oo-ui-indicator-previous {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-rtl.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-previous,
 .oo-ui-image-invert.oo-ui-indicator-previous {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/arrow-rtl-invert.svg);
 }
 .oo-ui-indicator-required {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/required.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-required,
 .oo-ui-image-invert.oo-ui-indicator-required {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/required-invert.svg);
 }
 .oo-ui-indicator-search {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/search-ltr.svg);
 }
-.oo-ui-image-invert .oo-ui-indicator-search,
 .oo-ui-image-invert.oo-ui-indicator-search {
 	background-image: /* @embed */ url(themes/mediawiki/images/indicators/search-ltr-invert.svg);
 }
