@@ -293,6 +293,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 			this.query = new RegExp( find );
 		} catch ( e ) {
 			this.invalidRegex = true;
+			this.query = '';
 		}
 	} else {
 		this.query = find;
