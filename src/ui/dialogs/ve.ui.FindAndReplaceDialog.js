@@ -56,7 +56,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.results = 0;
 	// Range over the list of fragments indicating which ones where rendered,
 	// e.g. [1,3] means fragments 1 & 2 were rendered
-	this.renderedFragments = null;
+	this.renderedFragments = new ve.Range();
 	this.replacing = false;
 	this.focusedIndex = 0;
 	this.query = null;
@@ -321,7 +321,11 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
 	var i, selection, viewportRange, start, end;
 
-	if ( this.replacing ) {
+	if (
+		this.replacing ||
+		// Check the surface isn't hidden, such as during deactivation
+		!this.surface.getView().$element.is( ':visible' )
+	) {
 		return;
 	}
 
