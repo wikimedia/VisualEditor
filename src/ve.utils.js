@@ -412,15 +412,33 @@ ve.msg = function () {
 };
 
 /**
- * Get a config value.
+ * Get platform config value(s)
  *
  * @param {string|string[]} key Config key, or list of keys
  * @return {Mixed|Object} Config value, or keyed object of config values if list of keys provided
  */
 ve.config = function () {
-	// Avoid using bind because ve.init.platform doesn't exist yet.
-	// TODO: Fix dependency issues between ve.js and ve.init.platform
 	return ve.init.platform.getConfig.apply( ve.init.platform, arguments );
+};
+
+/**
+ * Get or set a user config value.
+ *
+ * @param {string|string[]|Object} key Config key, list of keys or object mapping keys to values
+ * @param {Mixed} [value] Value to set, if setting and key is a string
+ * @return {Mixed|Object|boolean} Config value, keyed object of config values if list of keys provided,
+ *  or success boolean if setting.
+ */
+ve.userConfig = function ( key ) {
+	if ( arguments.length <= 1 && ( typeof key === 'string' || Array.isArray( key ) ) ) {
+		// get( string key )
+		// get( Array keys )
+		return ve.init.platform.getUserConfig.apply( ve.init.platform, arguments );
+	} else {
+		// set( Object values )
+		// set( key, value )
+		return ve.init.platform.setUserConfig.apply( ve.init.platform, arguments );
+	}
 };
 
 /**
