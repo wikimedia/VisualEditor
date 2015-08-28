@@ -70,11 +70,13 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchCaseSensitive',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' )
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' ),
+		value: ve.userConfig( 'visualeditor-findAndReplace-matchCase' )
 	} );
 	this.regexToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchRegularExpression',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' )
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
+		value: ve.userConfig( 'visualeditor-findAndReplace-regex' )
 	} );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
@@ -256,6 +258,10 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	this.updateFragments();
 	this.renderFragments();
 	this.highlightFocused( true );
+	ve.userConfig( {
+		'visualeditor-findAndReplace-matchCase': this.matchCaseToggle.getValue(),
+		'visualeditor-findAndReplace-regex': this.regexToggle.getValue()
+	} );
 };
 
 /**
