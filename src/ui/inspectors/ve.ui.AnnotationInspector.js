@@ -145,10 +145,8 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
  * @inheritdoc
  */
 ve.ui.AnnotationInspector.prototype.getMode = function () {
-	if ( this.fragment ) {
-		// Trim the fragment before getting selected models to match the behavior of
-		// #getSetupProcess
-		return this.fragment.trimLinearSelection().getSelectedModels().length ? 'edit' : 'insert';
+	if ( this.initialSelection ) {
+		return this.initialSelection.isCollapsed() ? 'insert' : 'edit';
 	}
 	return '';
 };
