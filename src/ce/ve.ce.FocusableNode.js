@@ -285,7 +285,7 @@ ve.ce.FocusableNode.prototype.onSurfaceMouseMove = function ( e ) {
 	var $target = $( e.target );
 	if (
 		!$target.hasClass( 've-ce-focusableNode-highlight' ) &&
-		$target.closest( '.ve-ce-focusableNode' ).length === 0
+		!OO.ui.contains( this.$focusable.toArray(), $target[ 0 ], true )
 	) {
 		this.clearHighlights();
 	}
