@@ -17,7 +17,8 @@
 			"Alirezaaa",
 			"Saeidpourbabak",
 			"Leyth",
-			"الناز"
+			"الناز",
+			"فلورانس"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -26,6 +27,7 @@
 	"visualeditor-align-widget-left": "چپ",
 	"visualeditor-align-widget-right": "راست",
 	"visualeditor-alignablecontextitem-title": "تراز",
+	"visualeditor-aliencontextitem-title": "مورد",
 	"visualeditor-annotationbutton-bold-tooltip": "پررنگ",
 	"visualeditor-annotationbutton-code-tooltip": "کد رایانه",
 	"visualeditor-annotationbutton-italic-tooltip": "کج",
@@ -45,6 +47,7 @@
 	"visualeditor-commentinspector-tooltip": "نظر",
 	"visualeditor-content-select-all": "انتخاب همه",
 	"visualeditor-contextitemwidget-label-secondary": "ویرایش",
+	"visualeditor-contextitemwidget-label-remove": "حذف",
 	"visualeditor-dialog-action-apply": "اعمال تغییرات",
 	"visualeditor-dialog-action-cancel": "لغو",
 	"visualeditor-dialog-action-done": "انجام شد",
@@ -125,6 +128,7 @@
 	"visualeditor-table-insert-table": "جدول",
 	"visualeditor-table-merge-cells": "ادغام خانه‌ها",
 	"visualeditor-tablecell-tooltip": "برای ویرایش خانه دو بار کلیک کنید",
+	"visualeditor-tablecell-contextitem": "سلول جدول",
 	"visualeditor-toolbar-format-tooltip": "قالب‌بندی بند",
 	"visualeditor-toolbar-history": "تاریخچه",
 	"visualeditor-toolbar-insert": "درج",
