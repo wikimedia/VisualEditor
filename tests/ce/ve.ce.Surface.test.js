@@ -706,6 +706,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	var i,
 		expected = 0,
 		exampleDoc = '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table>',
+		exampleSurface = ve.test.utils.createSurfaceViewFromHtml( exampleDoc ),
 		docLen = 24,
 		TestEvent = function ( data ) {
 			this.originalEvent = {
@@ -1118,7 +1119,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, pasteTargetHtml, range, pasteSpecial, expectedOps, expectedRange, expectedHtml, msg ) {
 		var i, j, txs, ops, txops, htmlDoc,
 			e = {},
-			view = ve.test.utils.createSurfaceViewFromHtml( documentHtml || exampleDoc ),
+			view = documentHtml ? ve.test.utils.createSurfaceViewFromHtml( documentHtml ) : exampleSurface,
 			model = view.getModel(),
 			doc = model.getDocument();
 
@@ -1168,7 +1169,13 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			htmlDoc = ve.dm.converter.getDomFromModel( doc );
 			assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
 		}
-		view.destroy();
+		if ( view === exampleSurface ) {
+			while ( model.hasBeenModified() ) {
+				model.undo();
+			}
+		} else {
+			view.destroy();
+		}
 	}
 
 	for ( i = 0; i < cases.length; i++ ) {
@@ -1179,6 +1186,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			cases[ i ].msg
 		);
 	}
+
+	exampleSurface.destroy();
 
 } );
 
