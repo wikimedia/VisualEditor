@@ -124,6 +124,7 @@
 	"visualeditor-table-insert-table": "Tabela",
 	"visualeditor-table-merge-cells": "Unir células",
 	"visualeditor-tablecell-tooltip": "Clique duas vezes para editar a célula",
+	"visualeditor-tablecell-contextitem": "Célula da tabela",
 	"visualeditor-toolbar-format-tooltip": "Formatar parágrafo",
 	"visualeditor-toolbar-history": "Histórico",
 	"visualeditor-toolbar-insert": "Inserir",
