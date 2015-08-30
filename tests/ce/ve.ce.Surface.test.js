@@ -8,6 +8,8 @@ QUnit.module( 've.ce.Surface' );
 
 /* Tests */
 
+ve.test.utils.exampleSurface = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() );
+
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, operations, expectedData, expectedSelection, msg ) {
 	var i, method, args, selection,
 		actions = {
@@ -20,7 +22,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 		},
 		view = html ?
 			ve.test.utils.createSurfaceViewFromHtml( html ) :
-			ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() ),
+			ve.test.utils.exampleSurface,
 		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() );
 
@@ -42,7 +44,13 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 
 	assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
 	assert.deepEqual( selection.toJSON(), expectedSelection, msg + ': selection' );
-	view.destroy();
+	if ( view === ve.test.utils.exampleSurface ) {
+		while ( model.hasBeenModified() ) {
+			model.undo();
+		}
+	} else {
+		view.destroy();
+	}
 };
 
 QUnit.test( 'handleLinearDelete', function ( assert ) {
