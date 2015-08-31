@@ -3370,7 +3370,7 @@ ve.ce.Surface.prototype.handleTableArrowKey = function ( e ) {
  * Handle insertion of content.
  */
 ve.ce.Surface.prototype.handleInsertion = function () {
-	var range, annotations, cellSelection, hasChanged, selection, documentModel;
+	var range, cellSelection, hasChanged, selection, documentModel;
 
 	// Don't allow a user to delete a focusable node just by typing
 	if ( this.focusedNode ) {
@@ -3383,11 +3383,9 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 
 	if ( selection instanceof ve.dm.TableSelection ) {
 		cellSelection = selection.collapseToFrom();
-		annotations = documentModel.data.getAnnotationsFromRange( cellSelection.getRanges()[ 0 ] );
 		this.model.setSelection( cellSelection );
 		this.handleTableDelete();
 		this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 ).setEditing( true );
-		this.model.setInsertionAnnotations( annotations );
 		selection = this.model.getSelection();
 	}
 
@@ -3399,10 +3397,6 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 
 	// Handles removing expanded selection before inserting new text
 	if ( !range.isCollapsed() ) {
-		// Pull annotations from the first character in the selection
-		annotations = documentModel.data.getAnnotationsFromRange(
-			new ve.Range( range.start, range.start + 1 )
-		);
 		if ( !this.documentView.rangeInsideOneLeafNode( range ) ) {
 			this.model.change(
 				ve.dm.Transaction.newFromRemoval(
@@ -3415,7 +3409,6 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 			this.surfaceObserver.clear();
 			range = this.model.getSelection().getRange();
 		}
-		this.model.setInsertionAnnotations( annotations );
 	}
 
 	if ( hasChanged ) {
