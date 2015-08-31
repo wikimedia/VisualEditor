@@ -202,6 +202,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
  */
 ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints ) {
 	var node,
+		indentationAction = ve.ui.actionFactory.create( 'indentation', this.surface ),
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument();
 
@@ -215,7 +216,7 @@ ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints ) {
 
 	do {
 		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().getRange().start );
-	} while ( node.hasMatchingAncestor( 'list' ) && this.surface.execute( 'indentation', 'decrease' ) );
+	} while ( node.hasMatchingAncestor( 'list' ) && indentationAction.decrease() );
 
 	if ( !noBreakpoints ) {
 		surfaceModel.breakpoint();

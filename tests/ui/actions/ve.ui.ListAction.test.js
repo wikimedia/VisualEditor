@@ -9,27 +9,26 @@ QUnit.module( 've.ui.ListAction' );
 /* Tests */
 
 function runListConverterTest( assert, html, method, style, range, expectedRange, expectedData, expectedOriginalData, msg ) {
-	var surface = ve.test.utils.createSurfaceFromHtml( html || ve.dm.example.html ),
+	var surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
+		surfaceModel = surface.getModel(),
 		listAction = new ve.ui.ListAction( surface ),
-		data = ve.copy( surface.getModel().getDocument().getFullData() ),
+		data = ve.copy( surfaceModel.getDocument().getFullData() ),
 		originalData = ve.copy( data );
 
 	expectedData( data );
 	if ( expectedOriginalData ) {
 		expectedOriginalData( originalData );
 	}
-	surface.getModel().setLinearSelection( range );
+	surfaceModel.setLinearSelection( range );
 	listAction[ method ]( style );
 
-	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
-	assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
+	assert.equalLinearData( surfaceModel.getDocument().getFullData(), data, msg + ': data models match' );
+	assert.equalRange( surfaceModel.getSelection().getRange(), expectedRange, msg + ': ranges match' );
 
-	surface.getModel().undo();
+	surfaceModel.undo();
 
-	assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
-	assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
-
-	surface.destroy();
+	assert.equalLinearData( surfaceModel.getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
+	assert.equalRange( surfaceModel.getSelection().getRange(), range, msg + ' (undo): ranges match' );
 }
 
 QUnit.test( '(un)wrap', function ( assert ) {
