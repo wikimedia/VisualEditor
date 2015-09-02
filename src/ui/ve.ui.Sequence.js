@@ -64,7 +64,6 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
  *
  * @param {ve.ui.Surface} surface surface
  * @return {boolean} The command executed
- * @throws {Error} Command not found
  */
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 	var stripRange, executed, stripFragment, selection,
@@ -72,7 +71,7 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		command = ve.init.target.commandRegistry.lookup( this.getCommandName() );
 
 	if ( !command ) {
-		throw new Error( 'Command not found: ' + this.getCommandName() ) ;
+		return false;
 	}
 
 	if ( this.strip ) {
