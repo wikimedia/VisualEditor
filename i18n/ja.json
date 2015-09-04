@@ -8,7 +8,8 @@
 			"Takot",
 			"Los688",
 			"赤城。",
-			"Sujiniku"
+			"Sujiniku",
+			"Otokoume"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -17,6 +18,7 @@
 	"visualeditor-align-widget-left": "左寄せ",
 	"visualeditor-align-widget-right": "右寄せ",
 	"visualeditor-alignablecontextitem-title": "配置",
+	"visualeditor-aliencontextitem-title": "項目",
 	"visualeditor-annotationbutton-bold-tooltip": "太字",
 	"visualeditor-annotationbutton-code-tooltip": "コンピューターのコード",
 	"visualeditor-annotationbutton-italic-tooltip": "斜体",
@@ -36,6 +38,7 @@
 	"visualeditor-commentinspector-tooltip": "コメント",
 	"visualeditor-content-select-all": "すべて選択",
 	"visualeditor-contextitemwidget-label-secondary": "編集",
+	"visualeditor-contextitemwidget-label-remove": "削除",
 	"visualeditor-dialog-action-apply": "変更内容を適用",
 	"visualeditor-dialog-action-cancel": "キャンセル",
 	"visualeditor-dialog-action-done": "完了",
@@ -117,6 +120,7 @@
 	"visualeditor-table-insert-table": "表",
 	"visualeditor-table-merge-cells": "セルを結合",
 	"visualeditor-tablecell-tooltip": "ダブルクリックしてセルを編集",
+	"visualeditor-tablecell-contextitem": "表のセル",
 	"visualeditor-toolbar-format-tooltip": "段落の書式設定",
 	"visualeditor-toolbar-history": "履歴",
 	"visualeditor-toolbar-insert": "挿入",
