@@ -177,6 +177,7 @@
 				"name": "Windows",
 				"classes": [
 					"ve.ui.*WindowManager",
+					"ve.ui.NodeWindow",
 					"ve.ui.*Dialog",
 					"ve.ui.*Inspector"
 				]
