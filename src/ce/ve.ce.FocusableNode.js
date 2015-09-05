@@ -445,7 +445,7 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 	}
 
 	function process( el ) {
-		var i, j, il, jl, contained, clientRects,
+		var i, j, il, jl, contained, clientRects, overflow,
 			$el = $( el );
 
 		if ( $el.hasClass( 've-ce-noHighlight' ) ) {
@@ -474,6 +474,13 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 				// children have not been processed yet and can be safely removed.
 				$set = $set.not( $el.find( '*' ) );
 			}
+		}
+
+		// Don't descend if overflow is anything but visible as this prevents
+		// child elements appearing beyond the bounding box of the parent
+		overflow = $el.css( 'overflow' );
+		if ( overflow && overflow !== 'visible' ) {
+			$set = $set.not( $el.find( '*' ) );
 		}
 
 		clientRects = el.getClientRects();
