@@ -33,11 +33,26 @@ OO.inheritClass( ve.init.sa.DesktopTarget, ve.init.sa.Target );
 ve.init.sa.DesktopTarget.prototype.setupToolbar = function ( surface ) {
 	if ( !this.actions ) {
 		this.actions = new ve.ui.TargetToolbar( this );
-		this.getToolbar().$actions.append( this.actions.$element );
 	}
-
-	this.actions.setup( this.constructor.static.actionGroups, surface );
 
 	// Parent method
 	ve.init.sa.DesktopTarget.super.prototype.setupToolbar.call( this, surface );
+
+	this.actions.setup( this.constructor.static.actionGroups, surface );
+	this.getToolbar().$actions.append( this.actions.$element );
+	this.actions.initialize();
+
+};
+
+/**
+ * @inheritdoc
+ */
+ve.init.sa.DesktopTarget.prototype.destroy = function () {
+	if ( this.actions ) {
+		this.actions.destroy();
+		this.actions = null;
+	}
+
+	// Parent method
+	ve.init.sa.DesktopTarget.super.prototype.destroy.apply( this, arguments );
 };
