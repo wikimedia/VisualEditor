@@ -272,6 +272,9 @@ module.exports = function ( grunt ) {
 			]
 		},
 		banana: {
+			options: {
+				disallowDuplicateTranslations: false
+			},
 			all: 'i18n/'
 		},
 		karma: {
