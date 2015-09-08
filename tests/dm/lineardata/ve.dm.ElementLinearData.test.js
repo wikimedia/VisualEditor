@@ -1620,6 +1620,16 @@ QUnit.test( 'hasContent', function ( assert ) {
 			},
 			{
 				data: [
+					{ type: 'alienBlock' },
+					{ type: '/alienBlock' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				expected: true,
+				msg: 'Document with non-ContentBranchNode (alienBlock) node has content'
+			},
+			{
+				data: [
 					{ type: 'paragraph' },
 					{ type: '/paragraph' },
 					{ type: 'internalList' },

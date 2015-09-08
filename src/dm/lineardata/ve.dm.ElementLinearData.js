@@ -1076,14 +1076,14 @@ ve.dm.ElementLinearData.prototype.countNonInternalElements = function ( limit ) 
 };
 
 /**
- * Returns true if the document has content that's not part of an
- * internalList.
+ * Checks if the document has content that's not part of an internalList.
  *
- * @return {boolean}
- *   True iff there are at least 3 elements that aren't in an internalList.
+ * @return {boolean} The document has content
  */
 ve.dm.ElementLinearData.prototype.hasContent = function () {
 	// Two or less elements (<p>, </p>) is considered an empty document
 	// For performance, abort the count when we reach 3.
-	return this.countNonInternalElements( 3 ) > 2;
+	return this.countNonInternalElements( 3 ) > 2 ||
+		// Also check that the element is not a content branch node, e.g. a blockImage
+		( this.isElementData( 0 ) && !ve.dm.nodeFactory.canNodeContainContent( this.getType( 0 ) ) );
 };
