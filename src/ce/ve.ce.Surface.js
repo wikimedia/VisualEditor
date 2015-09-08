@@ -1220,8 +1220,14 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 				this.handleTableEnter( e );
 			}
 			break;
-		case OO.ui.Keys.BACKSPACE:
 		case OO.ui.Keys.DELETE:
+			if ( e.shiftKey && ve.getSystemPlatform() !== 'mac' ) {
+				// Shift+Del on non-Mac platforms performs 'cut', so
+				// don't handle it here.
+				break;
+			}
+			/* falls through */
+		case OO.ui.Keys.BACKSPACE:
 			if ( selection instanceof ve.dm.LinearSelection ) {
 				if ( this.handleLinearDelete( e ) ) {
 					e.preventDefault();
