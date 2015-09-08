@@ -100,7 +100,13 @@
 			"lib/jquery.i18n/src/languages/uk.js"
 		],
 		"dependencies": [
-			"jquery"
+			"jquery",
+			"CLDRPluralRuleParser"
+		]
+	},
+	"CLDRPluralRuleParser" : {
+		"scripts": [
+			"lib/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js"
 		]
 	},
 	"jquery.i18n.dist": {
