@@ -35,8 +35,6 @@ ve.init.sa.Target = function VeInitSaTarget( config ) {
 	// Parent constructor
 	ve.init.sa.Target.super.call( this, config );
 
-	this.actions = null;
-
 	this.$element.addClass( 've-init-sa-target' );
 };
 
