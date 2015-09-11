@@ -1082,6 +1082,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
 	var selectionJSON, dragSelection, dragRange, originFragment, originData,
 		targetRange, targetOffset, targetFragment,
+		surfaceModel = this.getModel(),
 		dataTransfer = e.originalEvent.dataTransfer,
 		$dropTarget = this.$lastDropTarget,
 		dropPosition = this.lastDropPosition;
@@ -1111,7 +1112,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 			return;
 		}
 	}
-	targetFragment = this.getModel().getLinearFragment( new ve.Range( targetOffset ) );
+	targetFragment = surfaceModel.getLinearFragment( new ve.Range( targetOffset ) );
 
 	// Get source range from drag data
 	try {
@@ -1127,7 +1128,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	if ( this.relocatingNode ) {
 		dragRange = this.relocatingNode.getModel().getOuterRange();
 	} else if ( selectionJSON ) {
-		dragSelection = ve.dm.Selection.static.newFromJSON( this.getModel().getDocument(), selectionJSON );
+		dragSelection = ve.dm.Selection.static.newFromJSON( surfaceModel.getDocument(), selectionJSON );
 		if ( dragSelection instanceof ve.dm.LinearSelection ) {
 			dragRange = dragSelection.getRange();
 		}
@@ -1136,14 +1137,25 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Internal drop
 	if ( dragRange ) {
 		// Get a fragment and data of the node being dragged
-		originFragment = this.getModel().getLinearFragment( dragRange );
+		originFragment = surfaceModel.getLinearFragment( dragRange );
 		originData = originFragment.getData();
+
+		// Start staging so we can abort in the catch later
+		surfaceModel.pushStaging();
 
 		// Remove node from old location
 		originFragment.removeContent();
 
-		// Re-insert data at new location
-		targetFragment.insertContent( originData );
+		try {
+			// Re-insert data at new location
+			targetFragment.insertContent( originData );
+			surfaceModel.applyStaging();
+		} catch ( error ) {
+			// Insert content may throw an exception if it can't find a way
+			// to fixup the insertion sensibly
+			surfaceModel.popStaging();
+		}
+
 	} else {
 		// External drop
 		this.handleDataTransfer( dataTransfer, false, targetFragment );
