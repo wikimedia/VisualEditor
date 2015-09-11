@@ -26,7 +26,7 @@ OO.inheritClass( ve.ui.CommandHelpDialog, OO.ui.ProcessDialog );
 
 ve.ui.CommandHelpDialog.static.name = 'commandHelp';
 
-ve.ui.CommandHelpDialog.static.size = 'large';
+ve.ui.CommandHelpDialog.static.size = 'larger';
 
 ve.ui.CommandHelpDialog.static.title =
 	OO.ui.deferMsg( 'visualeditor-dialog-command-help-title' );
