@@ -178,19 +178,19 @@ ve.Range.prototype.equalsSelection = function ( other ) {
 };
 
 /**
- * Create a new range with a limited length.
+ * Create a new range with a truncated length.
  *
- * @param {number} length Length of the new range (negative for truncate from right)
+ * @param {number} limit Maximum length of new range (negative for left-side truncation)
  * @return {ve.Range} A new range
  */
-ve.Range.prototype.truncate = function ( length ) {
-	if ( length >= 0 ) {
+ve.Range.prototype.truncate = function ( limit ) {
+	if ( limit >= 0 ) {
 		return new ve.Range(
-			this.start, Math.min( this.start + length, this.end )
+			this.start, Math.min( this.start + limit, this.end )
 		);
 	} else {
 		return new ve.Range(
-			Math.max( this.end + length, this.start ), this.end
+			Math.max( this.end + limit, this.start ), this.end
 		);
 	}
 };

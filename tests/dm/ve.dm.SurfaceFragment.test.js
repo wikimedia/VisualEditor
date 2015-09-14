@@ -67,11 +67,49 @@ QUnit.test( 'update', 3, function ( assert ) {
 
 } );
 
+QUnit.test( 'getSelectedModels', 4, function ( assert ) {
+	var doc = ve.dm.example.createExampleDocument(),
+		surface = new ve.dm.Surface( doc );
+
+	assert.deepEqual(
+		surface.getLinearFragment( new ve.Range( 1, 3 ) ).getSelectedModels(),
+		[],
+		'Empty'
+	);
+	assert.deepEqual(
+		surface.getLinearFragment( new ve.Range( 2, 3 ) ).getSelectedModels(),
+		[ doc.data.store.value( 0 ) ],
+		'Bold annotation'
+	);
+	assert.deepEqual(
+		surface.getLinearFragment( new ve.Range( 1, 3 ) ).getSelectedModels( true ),
+		[
+			doc.getDocumentNode().children[ 0 ].children[ 0 ],
+			doc.data.store.value( 0 )
+		],
+		'Bold annotation and text node'
+	);
+	assert.deepEqual(
+		surface.getLinearFragment( new ve.Range( 39, 41 ) ).getSelectedModels(),
+		[ doc.getDocumentNode().children[ 2 ].children[ 1 ] ],
+		'Inline image node'
+	);
+} );
+
+QUnit.test( 'hasAnnotations', 2, function ( assert ) {
+	var doc = ve.dm.example.createExampleDocument(),
+		surface = new ve.dm.Surface( doc );
+
+	assert.strictEqual( surface.getLinearFragment( new ve.Range( 1, 2 ) ).hasAnnotations(), false, 'Plain text has none' );
+	assert.strictEqual( surface.getLinearFragment( new ve.Range( 2, 3 ) ).hasAnnotations(), true, 'Bold text has some' );
+} );
+
 QUnit.test( 'adjustLinearSelection', 4, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
 		adjustedFragment = fragment.adjustLinearSelection( -19, 35 );
+
 	assert.ok( fragment !== adjustedFragment, 'adjustLinearSelection produces a new fragment' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
 	assert.equalRange( adjustedFragment.getSelection().getRange(), new ve.Range( 1, 56 ), 'new range is used' );
@@ -80,11 +118,24 @@ QUnit.test( 'adjustLinearSelection', 4, function ( assert ) {
 	assert.deepEqual( adjustedFragment, fragment, 'fragment is clone if no parameters supplied' );
 } );
 
+QUnit.test( 'truncateLinearSelection', 4, function ( assert ) {
+	var range = new ve.Range( 100, 200 ),
+		doc = ve.dm.example.createExampleDocument(),
+		surface = new ve.dm.Surface( doc ),
+		fragment = surface.getLinearFragment( range );
+
+	assert.equalRange( fragment.truncateLinearSelection( 50 ).getSelection().getRange(), new ve.Range( 100, 150 ), 'truncate 50' );
+	assert.equalRange( fragment.truncateLinearSelection( 150 ).getSelection().getRange(), range, 'truncate 150 does nothing' );
+	assert.equalRange( fragment.truncateLinearSelection( -50 ).getSelection().getRange(), new ve.Range( 150, 200 ), 'truncate -50' );
+	assert.equalRange( fragment.truncateLinearSelection( -150 ).getSelection().getRange(), range, 'truncate -150 does nothing' );
+} );
+
 QUnit.test( 'collapseToStart/End', 6, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
 		collapsedFragment = fragment.collapseToStart();
+
 	assert.ok( fragment !== collapsedFragment, 'collapseToStart produces a new fragment' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
 	assert.equalRange( collapsedFragment.getSelection().getRange(), new ve.Range( 20 ), 'new range is used' );
@@ -366,10 +417,11 @@ QUnit.test( 'delete', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'insertContent', 8, function ( assert ) {
+QUnit.test( 'insertContent', 9, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 1, 4 ) );
+
 	fragment.insertContent( [ '1', '2', '3' ] );
 	assert.deepEqual(
 		doc.getData( new ve.Range( 1, 4 ) ),
@@ -396,6 +448,21 @@ QUnit.test( 'insertContent', 8, function ( assert ) {
 		fragment.getSelection().getRange(),
 		new ve.Range( 4 ),
 		'range restored after undo'
+	);
+
+	fragment = surface.getLinearFragment( new ve.Range( 0 ) );
+	fragment.insertContent( 'foo\nbar' );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 0, 10 ) ),
+		[
+			{ type: 'paragraph' },
+			'f', 'o', 'o',
+			{ type: '/paragraph' },
+			{ type: 'paragraph' },
+			'b', 'a', 'r',
+			{ type: '/paragraph' }
+		],
+		'newlines converted to paragraphs'
 	);
 
 	fragment = surface.getLinearFragment( new ve.Range( 1 ) );

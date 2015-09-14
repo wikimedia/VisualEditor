@@ -260,7 +260,7 @@ ve.dm.SurfaceFragment.prototype.adjustLinearSelection = function ( start, end ) 
  * Get a new fragment with a truncated length.
  *
  * @method
- * @param {number} limit Maximum length of range (negative for left-side truncation)
+ * @param {number} limit Maximum length of new range (negative for left-side truncation)
  * @return {ve.dm.SurfaceFragment} Truncated fragment
  */
 ve.dm.SurfaceFragment.prototype.truncateLinearSelection = function ( limit ) {
