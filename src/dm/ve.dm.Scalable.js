@@ -150,6 +150,27 @@ ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
 	return dimensions;
 };
 
+/**
+ * Check if an object is a dimensions object.
+ * Make sure that if width or height are set, they are not 'undefined'.
+ *
+ * @param {Object} dimensions A dimensions object to test
+ * @return {boolean} Valid or invalid dimensions object
+ */
+ve.dm.Scalable.static.isDimensionsObjectValid = function ( dimensions ) {
+	if (
+		dimensions &&
+		!$.isEmptyObject( dimensions ) &&
+		(
+			dimensions.width !== undefined ||
+			dimensions.height !== undefined
+		)
+	) {
+		return true;
+	}
+	return false;
+};
+
 /* Methods */
 
 /**
@@ -208,7 +229,7 @@ ve.dm.Scalable.prototype.setRatioFromDimensions = function ( dimensions ) {
  */
 ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
 	if (
-		this.isDimensionsObjectValid( dimensions ) &&
+		this.constructor.static.isDimensionsObjectValid( dimensions ) &&
 		!ve.compare( dimensions, this.getCurrentDimensions() )
 	) {
 		this.currentDimensions = ve.copy( dimensions );
@@ -231,7 +252,7 @@ ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
  */
 ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
 	if (
-		this.isDimensionsObjectValid( dimensions ) &&
+		this.constructor.static.isDimensionsObjectValid( dimensions ) &&
 		!ve.compare( dimensions, this.getOriginalDimensions() )
 	) {
 		this.originalDimensions = ve.copy( dimensions );
@@ -252,7 +273,7 @@ ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
  */
 ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
 	if (
-		this.isDimensionsObjectValid( dimensions ) &&
+		this.constructor.static.isDimensionsObjectValid( dimensions ) &&
 		!ve.compare( dimensions, this.getDefaultDimensions() )
 	) {
 		this.defaultDimensions = ve.copy( dimensions );
@@ -312,7 +333,7 @@ ve.dm.Scalable.prototype.toggleDefault = function ( isDefault ) {
  */
 ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
 	if (
-		this.isDimensionsObjectValid( dimensions ) &&
+		this.constructor.static.isDimensionsObjectValid( dimensions ) &&
 		!ve.compare( dimensions, this.getMinDimensions() )
 	) {
 		this.minDimensions = ve.copy( dimensions );
@@ -329,7 +350,7 @@ ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
  */
 ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
 	if (
-		this.isDimensionsObjectValid( dimensions ) &&
+		this.constructor.static.isDimensionsObjectValid( dimensions ) &&
 		!ve.compare( dimensions, this.getMaxDimensions() )
 	) {
 		this.maxDimensions = ve.copy( dimensions );
@@ -595,25 +616,4 @@ ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
 		)
 	);
 	return this.valid;
-};
-
-/**
- * Check if an object is a dimensions object.
- * Make sure that if width or height are set, they are not 'undefined'.
- *
- * @param {Object} dimensions A dimensions object to test
- * @return {boolean} Valid or invalid dimensions object
- */
-ve.dm.Scalable.prototype.isDimensionsObjectValid = function ( dimensions ) {
-	if (
-		dimensions &&
-		!$.isEmptyObject( dimensions ) &&
-		(
-			dimensions.width !== undefined ||
-			dimensions.height !== undefined
-		)
-	) {
-		return true;
-	}
-	return false;
 };

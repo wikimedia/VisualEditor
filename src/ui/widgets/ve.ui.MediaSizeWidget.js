@@ -477,7 +477,7 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 
 	if (
 		// Update only if the dimensions object is valid
-		this.scalable.isDimensionsObjectValid( normalizedDimensions ) &&
+		ve.dm.Scalable.static.isDimensionsObjectValid( normalizedDimensions ) &&
 		// And only if the dimensions object is not default
 		!this.scalable.isDefault()
 	) {
