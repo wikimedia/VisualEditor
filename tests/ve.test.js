@@ -502,11 +502,39 @@ QUnit.test( 'resolveUrl', function ( assert ) {
 				msg: 'href with protocol'
 			}
 		];
+
 	QUnit.expect( cases.length );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.createDocumentFromHtml( '' );
 		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[ i ].base )[ 0 ] );
 		assert.strictEqual( ve.resolveUrl( cases[ i ].href, doc ), cases[ i ].resolved, cases[ i ].msg );
+	}
+} );
+
+QUnit.test( 'resolveAttributes', function ( assert ) {
+	var i, doc, $html,
+		cases = [
+			{
+				base: 'http://example.com',
+				html: '<div><a href="foo">foo</a></div><a href="bar">bar</a><img src="baz">',
+				resolved: '<div><a href="http://example.com/foo">foo</a></div><a href="http://example.com/bar">bar</a><img src="http://example.com/baz">',
+				msg: 'href and src resolved'
+			}
+		];
+
+	QUnit.expect( cases.length );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		doc = ve.createDocumentFromHtml( '' );
+		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[ i ].base )[ 0 ] );
+		$html = $( '<div>' ).append( cases[ i ].html );
+		ve.resolveAttributes( $html, doc, ve.dm.Converter.computedAttributes );
+		assert.strictEqual(
+			$html.html(),
+			cases[ i ].resolved,
+			cases[ i ].msg
+		);
 	}
 } );
 

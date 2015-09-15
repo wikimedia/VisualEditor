@@ -915,8 +915,7 @@ ve.resolveAttributes = function ( $elements, doc, attrs ) {
 
 	for ( i = 0, len = attrs.length; i < len; i++ ) {
 		attr = attrs[ i ];
-		$elements.find( '[' + attr + ']' ).each( resolveAttribute );
-		$elements.filter( '[' + attr + ']' ).each( resolveAttribute );
+		$elements.find( '[' + attr + ']' ).addBack( '[' + attr + ']' ).each( resolveAttribute );
 	}
 };
 
