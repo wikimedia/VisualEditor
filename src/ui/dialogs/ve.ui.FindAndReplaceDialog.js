@@ -296,7 +296,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 
 	if ( isRegex && find ) {
 		try {
-			this.query = new RegExp( find );
+			this.query = new RegExp( find, matchCase ? 'g' : 'gi' );
 		} catch ( e ) {
 			this.invalidRegex = true;
 			this.query = '';

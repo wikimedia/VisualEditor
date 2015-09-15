@@ -1259,11 +1259,11 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * Find a text string within the document
  *
  * @param {string|RegExp} query Text to find, string or regex with no flags
- * @param {boolean} [caseSensitive] Case sensitive search
+ * @param {boolean} [caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
  * @param {boolean} [noOverlaps] Avoid overlapping matches
  * @return {ve.Range[]} List of ranges where the string was found
  */
-ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps ) {
+ve.dm.Document.prototype.findText = function ( query, caseSensitiveString, noOverlaps ) {
 	var i, l, len, match, offset, lines,
 		ranges = [],
 		text = this.data.getText(
@@ -1272,7 +1272,6 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps 
 		);
 
 	if ( query instanceof RegExp ) {
-		query = new RegExp( query.source, caseSensitive ? 'g' : 'gi' );
 		offset = 0;
 		// Avoid multi-line matching by only matching within newlines
 		lines = text.split( '\n' );
@@ -1299,7 +1298,7 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps 
 			query.lastIndex = 0;
 		}
 	} else {
-		if ( !caseSensitive ) {
+		if ( !caseSensitiveString ) {
 			text = text.toLowerCase();
 			query = query.toLowerCase();
 		}
