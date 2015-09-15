@@ -86,7 +86,7 @@ ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
 	ve.resolveAttributes(
 		$preview,
 		this.model.getDocument().getHtmlDocument(),
-		ve.dm.Converter.computedAttributes
+		ve.dm.Converter.static.computedAttributes
 	);
 
 	// Make all links open in a new window (sync rendering)

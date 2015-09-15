@@ -271,7 +271,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 
 		// annotationsChanged gets set to true by openAnnotation and closeAnnotation
 		annotationsChanged = false;
-		ve.dm.Converter.openAndCloseAnnotations( annotationStack, itemAnnotations,
+		ve.dm.Converter.static.openAndCloseAnnotations( annotationStack, itemAnnotations,
 			openAnnotation, closeAnnotation
 		);
 
