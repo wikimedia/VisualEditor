@@ -12,45 +12,44 @@
  * @extends OO.ui.Widget
  *
  * @constructor
- * @param {ve.dm.Node} nodeModel Model from which to create a preview
+ * @param {ve.dm.Node} model Model from which to create a preview
  * @param {Object} [config] Configuration options
  */
-ve.ui.PreviewWidget = function VeUiPreviewWidget( nodeModel, config ) {
-	var promise, promises = [],
+ve.ui.PreviewWidget = function VeUiPreviewWidget( model, config ) {
+	var promises = [],
 		widget = this;
 
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
 
-	this.model = nodeModel;
+	this.model = model;
 
 	// Initial CE node
-	this.rendering = ve.ce.nodeFactory.create( this.model.getType(), this.model );
+	this.view = ve.ce.nodeFactory.create( this.model.getType(), this.model );
+
+	function queueNode( node ) {
+		var promise;
+		if ( typeof node.generateContents === 'function' ) {
+			if ( node.isGenerating() ) {
+				promise = $.Deferred();
+				node.once( 'rerender', promise.resolve );
+				promises.push( promise );
+			}
+		}
+	}
 
 	// Traverse children to see when they are all rerendered
-	if ( this.rendering instanceof ve.ce.BranchNode ) {
-		ve.BranchNode.static.traverse( this.rendering, function ( node ) {
-			if ( typeof node.generateContents === 'function' ) {
-				if ( node.isGenerating() ) {
-					promise = $.Deferred();
-					node.once( 'rerender', promise.resolve );
-					promises.push( promise );
-				}
-			}
-		} );
-	} else if ( typeof this.rendering.generateContents === 'function' ) {
-		if ( this.rendering.isGenerating() ) {
-			promise = $.Deferred();
-			this.rendering.once( 'rerender', promise.resolve );
-			promises.push( promise );
-		}
+	if ( this.view instanceof ve.ce.BranchNode ) {
+		ve.BranchNode.static.traverse( this.view, queueNode );
+	} else {
+		queueNode( this.view );
 	}
 
 	// When all children are rerendered, replace with dm DOM
 	$.when.apply( $, promises )
 		.then( function () {
 			// Verify that the widget and/or the ce node weren't destroyed
-			if ( widget.rendering ) {
+			if ( widget.view ) {
 				widget.replaceWithModelDom();
 			}
 		} );
@@ -67,9 +66,9 @@ OO.inheritClass( ve.ui.PreviewWidget, OO.ui.Widget );
  * Destroy the preview node.
  */
 ve.ui.PreviewWidget.prototype.destroy = function () {
-	if ( this.rendering ) {
-		this.rendering.destroy();
-		this.rendering = null;
+	if ( this.view ) {
+		this.view.destroy();
+		this.view = null;
 	}
 };
 
@@ -89,7 +88,7 @@ ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
 		ve.dm.Converter.static.computedAttributes
 	);
 
-	// Make all links open in a new window (sync rendering)
+	// Make all links open in a new window (sync view)
 	$preview.find( 'a' ).attr( 'target', '_blank' );
 
 	// Replace content
@@ -99,8 +98,8 @@ ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
 	this.emit( 'render' );
 
 	// Cleanup
-	this.rendering.destroy();
-	this.rendering = null;
+	this.view.destroy();
+	this.view = null;
 };
 
 /**
@@ -109,5 +108,5 @@ ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
  * @return {boolean} Still generating
  */
 ve.ui.PreviewWidget.prototype.isGenerating = function () {
-	return this.rendering && this.rendering.isGenerating();
+	return this.view && this.view.isGenerating();
 };
