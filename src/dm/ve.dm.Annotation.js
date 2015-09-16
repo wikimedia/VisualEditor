@@ -85,17 +85,6 @@ ve.dm.Annotation.static.toDomElements = null;
 /* Methods */
 
 /**
- * Convenience wrapper for .toDomElements() on the current annotation
- *
- * @method
- * @param {HTMLDocument} [doc] HTML document to use to create elements
- * @see ve.dm.Model#toDomElements
- */
-ve.dm.Annotation.prototype.getDomElements = function ( doc ) {
-	return this.constructor.static.toDomElements( this.element, doc || document );
-};
-
-/**
  * Get an object containing comparable annotation properties.
  *
  * This is used by the converter to merge adjacent annotations.
