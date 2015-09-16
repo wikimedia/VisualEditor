@@ -67,6 +67,17 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 				html: '<s>abc</s>'
 			},
 			{
+				msg: 'Deleted text',
+				data: [
+					{ type: 'paragraph' },
+					[ 'a', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 'del' } } ] ],
+					[ 'b', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 'del' } } ] ],
+					[ 'c', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 'del' } } ] ],
+					{ type: '/paragraph' }
+				],
+				html: '<del>abc</del>'
+			},
+			{
 				msg: 'Small text',
 				data: [
 					{ type: 'paragraph' },
