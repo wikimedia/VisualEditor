@@ -2188,8 +2188,9 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 
 	// Restore focus and scroll position
 	this.$documentNode[ 0 ].focus();
+	this.$window.scrollTop( beforePasteData.scrollTop );
 	// Firefox sometimes doesn't change scrollTop immediately when pasting
-	// line breaks so wait until we fix it.
+	// line breaks at the end of a line so do it again later.
 	setTimeout( function () {
 		view.$window.scrollTop( beforePasteData.scrollTop );
 	} );
