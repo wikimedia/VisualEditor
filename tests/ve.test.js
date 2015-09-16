@@ -529,7 +529,7 @@ QUnit.test( 'resolveAttributes', function ( assert ) {
 		doc = ve.createDocumentFromHtml( '' );
 		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[ i ].base )[ 0 ] );
 		$html = $( '<div>' ).append( cases[ i ].html );
-		ve.resolveAttributes( $html, doc, ve.dm.Converter.computedAttributes );
+		ve.resolveAttributes( $html, doc, ve.dm.Converter.static.computedAttributes );
 		assert.strictEqual(
 			$html.html(),
 			cases[ i ].resolved,

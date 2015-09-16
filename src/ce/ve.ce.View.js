@@ -37,7 +37,7 @@ ve.ce.View = function VeCeView( model, config ) {
 	} );
 
 	// Render attributes from original DOM elements
-	ve.dm.Converter.renderHtmlAttributeList(
+	ve.dm.Converter.static.renderHtmlAttributeList(
 		this.model.getOriginalDomElements(),
 		this.$element,
 		this.constructor.static.renderHtmlAttributes,
