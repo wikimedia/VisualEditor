@@ -600,6 +600,55 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 
 } );
 
+QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert )  {
+	var i,
+		view = ve.test.utils.createSurfaceViewFromHtml( '' ),
+		model = view.getModel(),
+		fragment = model.getLinearFragment( new ve.Range( 1 ) ),
+		cases = [
+			{
+				msg: 'Url',
+				dataTransfer: {
+					items: [
+						{
+							kind: 'string',
+							type: 'text/uri-list'
+						}
+					],
+					getData: function ( type ) {
+						return type === 'text/uri-list' ? '#comment\nhttp://foo.com\n' : '';
+					}
+				},
+				isPaste: true,
+				expectedData: [
+					[ 'h', [ 0 ] ],
+					[ 't', [ 0 ] ],
+					[ 't', [ 0 ] ],
+					[ 'p', [ 0 ] ],
+					[ ':', [ 0 ] ],
+					[ '/', [ 0 ] ],
+					[ '/', [ 0 ] ],
+					[ 'f', [ 0 ] ],
+					[ 'o', [ 0 ] ],
+					[ 'o', [ 0 ] ],
+					[ '.', [ 0 ] ],
+					[ 'c', [ 0 ] ],
+					[ 'o', [ 0 ] ],
+					[ 'm', [ 0 ] ]
+				]
+			}
+		];
+
+	QUnit.expect( cases.length );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		fragment.select();
+		view.handleDataTransfer( cases[ i ].dataTransfer, cases[ i ].isPaste );
+		assert.equalLinearData( model.getDocument().getFullData( fragment.getSelection().getRange() ), cases[ i ].expectedData, cases[ i ].msg );
+		model.undo();
+	}
+} );
+
 QUnit.test( 'getClipboardHash', 1, function ( assert ) {
 	assert.strictEqual(
 		ve.ce.Surface.static.getClipboardHash(

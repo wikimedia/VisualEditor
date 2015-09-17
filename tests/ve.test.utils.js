@@ -239,6 +239,12 @@
 				},
 				getImportRules: function () {
 					return ve.init.sa.Target.static.importRules;
+				},
+				getModel: function () {
+					return model;
+				},
+				getView: function () {
+					return view;
 				}
 			},
 			model = new ve.dm.Surface( doc ),
