@@ -128,6 +128,7 @@
 	"visualeditor-table-insert-table": "Tabella",
 	"visualeditor-table-merge-cells": "Unisci celle",
 	"visualeditor-tablecell-tooltip": "Doppio click per modificare la cella",
+	"visualeditor-tablecell-contextitem": "Cella di tabella",
 	"visualeditor-toolbar-format-tooltip": "Formato del paragrafo",
 	"visualeditor-toolbar-history": "Cronologia",
 	"visualeditor-toolbar-insert": "Inserisci",
