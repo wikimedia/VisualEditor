@@ -87,11 +87,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.hasSelectionChangeEvents = 'onselectionchange' in this.getElementDocument();
 
 	// Events
-	this.surfaceObserver.connect( this, {
-		contentChange: 'onSurfaceObserverContentChange',
-		rangeChange: 'onSurfaceObserverRangeChange',
-		branchNodeChange: 'onSurfaceObserverBranchNodeChange'
-	} );
 	this.model.connect( this, {
 		select: 'onModelSelect',
 		documentUpdate: 'onModelDocumentUpdate',
@@ -306,6 +301,7 @@ ve.ce.Surface.prototype.destroy = function () {
 	var documentNode = this.documentView.getDocumentNode();
 
 	// Detach observer and event sequencer
+	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.detach();
 	this.eventSequencer.detach();
 
@@ -313,7 +309,6 @@ ve.ce.Surface.prototype.destroy = function () {
 	documentNode.setLive( false );
 
 	// Disconnect events
-	this.surfaceObserver.disconnect( this );
 	this.model.disconnect( this );
 
 	// Disconnect DOM events on the document
@@ -2404,7 +2399,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 		this.checkUnicorns( false );
 	}
 	// Update the selection state in the SurfaceObserver
-	this.surfaceObserver.pollOnceNoEmit();
+	this.surfaceObserver.pollOnceNoCallback();
 };
 
 /**
@@ -2504,7 +2499,7 @@ ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
 		this.onModelSelect();
 	}
 	// Update the state of the SurfaceObserver
-	this.surfaceObserver.pollOnceNoEmit();
+	this.surfaceObserver.pollOnceNoCallback();
 	// Wait for other documentUpdate listeners to run before emitting
 	setTimeout( function () {
 		surface.emit( 'position' );
@@ -2523,7 +2518,7 @@ ve.ce.Surface.prototype.onInsertionAnnotationsChange = function () {
 	}
 	// Must re-apply the selection after re-rendering
 	this.showModelSelection( this.getModel().getSelection() );
-	this.surfaceObserver.pollOnceNoEmit();
+	this.surfaceObserver.pollOnceNoCallback();
 };
 
 /**
@@ -2549,7 +2544,54 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
 };
 
 /**
- * Handle branch node change events.
+ * Handle changes observed from the DOM
+ *
+ * These are normally caused by the user interacting directly with the contenteditable.
+ *
+ * @param {Object|null} contentChange Observed change in a CE node's content
+ * @param {ve.ce.Node} contentChange.node CE node the change occurred in
+ * @param {Object} contentChange.previous Old data
+ * @param {Object} contentChange.next New data
+ *
+ * @param {Object|null} branchNodeChange Change of the selected BranchNode
+ * @param {ve.ce.BranchNode} branchNodeChange.oldBranchNode Node from which the range anchor has just moved
+ * @param {ve.ce.BranchNode} branchNodeChange.newBranchNode Node into which the range anchor has just moved
+ *
+ * @param {Object|null} rangeChange Change of the DOM selection
+ * @param {ve.Range|null} rangeChange.oldRange The old DM range
+ * @param {ve.Range|null} rangeChange.newRange The new DM range
+ *
+ * TODO: Clean up this interface: it's a minimal incremental step from the old emit-based interface
+ */
+
+ve.ce.Surface.prototype.handleObservedChanges = function ( contentChange, branchNodeChange, rangeChange ) {
+	if ( contentChange ) {
+		this.onObservedContentChange(
+			contentChange.node,
+			contentChange.previous,
+			contentChange.next
+		);
+	}
+	if ( branchNodeChange ) {
+		this.onObservedBranchNodeChange(
+			branchNodeChange.oldBranchNode,
+			branchNodeChange.newBranchNode
+		);
+	}
+	if ( rangeChange ) {
+		this.onObservedRangeChange(
+			rangeChange.oldRange,
+			rangeChange.newRange
+		);
+	}
+	if ( branchNodeChange && branchNodeChange.newBranchNode ) {
+		this.updateCursorHolders();
+		this.showModelSelection( this.getModel().getSelection() );
+	}
+};
+
+/**
+ * Handle branch node changes observed from the DOM.
  *
  * @see ve.ce.SurfaceObserver#pollOnce
  *
@@ -2557,23 +2599,9 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  * @param {ve.ce.BranchNode} oldBranchNode Node from which the range anchor has just moved
  * @param {ve.ce.BranchNode} newBranchNode Node into which the range anchor has just moved
  */
-ve.ce.Surface.prototype.onSurfaceObserverBranchNodeChange = function ( oldBranchNode, newBranchNode ) {
-	var surface;
+ve.ce.Surface.prototype.onObservedBranchNodeChange = function ( oldBranchNode ) {
 	if ( oldBranchNode instanceof ve.ce.ContentBranchNode ) {
 		oldBranchNode.renderContents();
-	}
-	// Optimisation: if newBranchNode is null there will be nothing to fix.
-	if ( newBranchNode ) {
-		surface = this;
-		// branchNodeChange happens before rangeChange. Deferring makes sure
-		// we don't apply the wrong selection.
-		// TODO: this setTimeout is ugly: it's working round our own 'emit' structure
-		setTimeout( function () {
-			// Re-apply selection in case the branch node change left us at an invalid offset
-			// e.g. in the document node.
-			surface.updateCursorHolders();
-			surface.showModelSelection( surface.getModel().getSelection() );
-		} );
 	}
 };
 
@@ -2609,7 +2637,10 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
 };
 
 /**
- * Handle selection change events.
+ * Handle selection changes observed from the DOM.
+ *
+ * This can be fired by a DOM selection change that doesn't cause any change in the DM range,
+ * with oldRange === newRange .
  *
  * @see ve.ce.SurfaceObserver#pollOnce
  *
@@ -2617,7 +2648,7 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
  * @param {ve.Range|null} oldRange
  * @param {ve.Range|null} newRange
  */
-ve.ce.Surface.prototype.onSurfaceObserverRangeChange = function ( oldRange, newRange ) {
+ve.ce.Surface.prototype.onObservedRangeChange = function ( oldRange, newRange ) {
 	if ( newRange && !newRange.isCollapsed() && oldRange && oldRange.equalsSelection( newRange ) ) {
 		// Ignore when the newRange is just a flipped oldRange
 		return;
@@ -2713,7 +2744,10 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 };
 
 /**
- * Handle content change events.
+ * Handle content changes observed from the DOM.
+ *
+ * The DOM change is analysed heuristically to build a semantically meaningful Transaction
+ * with the annotations the user intended.
  *
  * @see ve.ce.SurfaceObserver#pollOnce
  *
@@ -2728,7 +2762,7 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
  * @param {Object} next.hash New DOM hash
  * @param {ve.Range} next.range New selection
  */
-ve.ce.Surface.prototype.onSurfaceObserverContentChange = function ( node, previous, next ) {
+ve.ce.Surface.prototype.onObservedContentChange = function ( node, previous, next ) {
 	var data, range, len, annotations, offsetDiff, sameLeadingAndTrailing,
 		previousStart, nextStart, newRange, replacementRange,
 		fromLeft = 0,
@@ -3284,7 +3318,7 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 			);
 		} else {
 			// Check where the range has moved to
-			surface.surfaceObserver.pollOnceNoEmit();
+			surface.surfaceObserver.pollOnceNoCallback();
 			newRange = new ve.Range( surface.surfaceObserver.getRange().to );
 		}
 
