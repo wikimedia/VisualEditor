@@ -5,7 +5,8 @@
 			"Gmelfi",
 			"HalanTul",
 			"Gloria sah",
-			"Pippinu"
+			"Pippinu",
+			"Sarvaturi"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -40,7 +41,7 @@
 	"visualeditor-inspector-close-tooltip": "Chiùi",
 	"visualeditor-inspector-remove-tooltip": "Lèva",
 	"visualeditor-languageinspector-title": "Lingua",
-	"visualeditor-languageinspector-widget-changelang": "Trova la lingua",
+	"visualeditor-languageinspector-widget-changelang": "Attrova la lingua",
 	"visualeditor-languageinspector-widget-label-direction": "Dirizzioni",
 	"visualeditor-languageinspector-widget-label-langcode": "Codici dâ lingua",
 	"visualeditor-languageinspector-widget-label-language": "Lingua",
