@@ -35,8 +35,8 @@ ve.SelectionState = function VeSelectionState( selection ) {
 	}
 	this.isBackwards = selection.isBackwards;
 	if ( this.isBackwards === undefined ) {
-		// Set to false if nodes are null
-		this.isBackwards = this.focusNode !== null && ve.compareDocumentOrder(
+		// Set to false if nodes are null or focus is no earlier than anchor
+		this.isBackwards = ve.compareDocumentOrder(
 			this.focusNode,
 			this.focusOffset,
 			this.anchorNode,

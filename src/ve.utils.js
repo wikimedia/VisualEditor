@@ -1300,8 +1300,8 @@ ve.getStartAndEndRects = function ( rects ) {
 /**
  * Find the nearest common ancestor of DOM nodes
  *
- * @param {...Node} DOM nodes in the same document
- * @return {Node|null} Nearest common ancestor node
+ * @param {...Node|null} DOM nodes
+ * @return {Node|null} Nearest common ancestor; or null if there is none / an argument is null
  */
 ve.getCommonAncestor = function () {
 	var i, j, nodeCount, chain, node,
@@ -1321,9 +1321,11 @@ ve.getCommonAncestor = function () {
 			node = node.parentNode;
 		}
 		if ( chain.length === 0 ) {
+			// args[ i ] was null (so no common ancestor)
 			return null;
 		}
 		if ( i > 0 && chain[ 0 ] !== chains[ chains.length - 1 ][ 0 ] ) {
+			// no common ancestor (different documents or unattached branches)
 			return null;
 		}
 		if ( minHeight === null || minHeight > chain.length ) {
@@ -1332,8 +1334,9 @@ ve.getCommonAncestor = function () {
 		chains.push( chain );
 	}
 
-	// Step through chains in parallel, until they differ
-	// All chains are guaranteed to start with documentNode
+	// Step through chains in parallel, until they differ.
+	// All chains are guaranteed to start with the common document element (or the common root
+	// of an unattached branch)
 	for ( i = 1; i < minHeight; i++ ) {
 		node = chains[ 0 ][ i ];
 		for ( j = 1; j < nodeCount; j++ ) {
@@ -1402,16 +1405,24 @@ ve.compareTuples = function ( a, b ) {
 /**
  * Compare two nodes for position in document
  *
- * @param {Node} node1 First node
- * @param {number} offset1 First offset
- * @param {Node} node2 Second node
- * @param {number} offset2 Second offset
- * @return {number} negative, zero or positive number
+ * Return null if either position is either null or incomparable (e.g. where one of the nodes
+ * is detached or the nodes are from different documents).
+ *
+ * @param {Node|null} node1 First node
+ * @param {number|null} offset1 First offset
+ * @param {Node|null} node2 Second node
+ * @param {number|null} offset2 Second offset
+ * @return {number|null} negative, zero or positive number, or null if nodes null or incomparable
  */
+
 ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
 	var commonAncestor = ve.getCommonAncestor( node1, node2 );
 	if ( commonAncestor === null ) {
-		throw new Error( 'No common ancestor' );
+		// Signal no common ancestor. In theory we could disallow this case, and check
+		// the nodes for detachedness and same-documentness before each call, but such
+		// guard checks would duplicate (either explicitly or implicitly) much of the
+		// branch traversal performed in this method.
+		return null;
 	}
 	return ve.compareTuples(
 		ve.getOffsetPath( commonAncestor, node1, offset1 ),

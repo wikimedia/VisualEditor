@@ -1385,15 +1385,16 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * Compute the direction of cursor movement, if any
 	 *
 	 * Even if the user pressed a cursor key in the interior of the document, there may not
-	 * be any movement: browser BIDI and ce=false handling can be quite quirky
+	 * be any movement: browser BIDI and ce=false handling can be quite quirky.
 	 *
-	 * @return {number|null} -1 for startwards, 1 for endwards, null for none
+	 * Furthermore, the keydown selection nodes may have become detached since keydown (e.g.
+	 * if ve.ce.ContentBranchNode#renderContents has run).
+	 *
+	 * @return {number|null} -1 for startwards, 1 for endwards, null for none/unknown
 	 */
 	function getDirection() {
 		return (
 			isArrow &&
-			surface.keyDownState.selection.focusNode &&
-			surface.nativeSelection.focusNode &&
 			ve.compareDocumentOrder(
 				surface.nativeSelection.focusNode,
 				surface.nativeSelection.focusOffset,
@@ -3267,8 +3268,6 @@ ve.ce.Surface.prototype.handleLinearArrowKey = function ( e ) {
 				// The intended direction is clear, even if the cursor did not move
 				// or did something completely preposterous
 				afterDirection = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
-			} else if ( !surface.$document[ 0 ].contains( startFocusNode ) ) {
-				afterDirection = 0;
 			} else {
 				// Observe which way the cursor moved
 				afterDirection = ve.compareDocumentOrder(

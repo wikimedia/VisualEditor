@@ -880,7 +880,13 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 		{ nodes: 'img textE', ancestor: 'body' },
 		{ nodes: 'textA textB textC textD', ancestor: 'div' },
 		{ nodes: 'textA i b textC', ancestor: 'p' },
-		{ nodes: 'body div head p', ancestor: 'html' }
+		{ nodes: 'body div head p', ancestor: 'html' },
+		{ nodes: 'b null', ancestor: 'null' },
+		{ nodes: 'null b', ancestor: 'null' },
+		{ nodes: 'b i null', ancestor: 'null' },
+		{ nodes: 'b null i', ancestor: 'null' },
+		{ nodes: 'b unattached', ancestor: 'null' },
+		{ nodes: 'unattached b', ancestor: 'null' }
 	];
 	nodes = {};
 	nodes.html = doc.documentElement;
@@ -896,6 +902,8 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 	nodes.textC = nodes.p.childNodes[ 2 ];
 	nodes.textD = nodes.div.childNodes[ 1 ];
 	nodes.textE = nodes.body.childNodes[ 1 ];
+	nodes.null = null;
+	nodes.unattached = doc.createElement( 'div' ).appendChild( doc.createElement( 'span' ) );
 	function getNode( name ) {
 		return nodes[ name ];
 	}
