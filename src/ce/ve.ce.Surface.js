@@ -1432,6 +1432,11 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		return;
 	}
 
+	// Only fixup cursoring on linear selections.
+	if ( isArrow && !( surface.model.getSelection() instanceof ve.dm.LinearSelection ) ) {
+		return;
+	}
+
 	// Restore the selection and stop, if we cursored out of a table edit cell.
 	// Assumption: if we cursored out of a table cell, then none of the fixups below this point
 	// would have got the selection back inside the cell. Therefore it's OK to check here.
