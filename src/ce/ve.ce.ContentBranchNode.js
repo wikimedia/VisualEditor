@@ -166,7 +166,6 @@ ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	var i, ilen, j, jlen, item, itemAnnotations, clone, dmSurface, dmSelection, relCursor,
 		unicorn, img1, img2, annotationsChanged, childLength, offset, htmlItem, ceSurface,
-		nextItemAnnotations, linkAnnotations,
 		store = this.model.doc.getStore(),
 		annotationSet = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
@@ -271,18 +270,6 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		} else {
 			item = annotatedHtml[ i ];
 			itemAnnotations = new ve.dm.AnnotationSet( store );
-		}
-
-		// Remove 'a' from the unicorn, if the following item has no 'a'
-		if ( unicorn && item === unicorn[ 0 ] && i < ilen - 1 ) {
-			linkAnnotations = itemAnnotations.getAnnotationsByName( 'link' );
-			nextItemAnnotations = new ve.dm.AnnotationSet(
-				store,
-				Array.isArray( annotatedHtml[ i + 1 ] ) ? annotatedHtml[ i + 1 ][ 1 ] : undefined
-			);
-			if ( !nextItemAnnotations.containsAllOf( linkAnnotations ) ) {
-				itemAnnotations.removeSet( linkAnnotations );
-			}
 		}
 
 		// annotationsChanged gets set to true by openAnnotation and closeAnnotation
