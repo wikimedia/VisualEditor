@@ -8,15 +8,11 @@
  * ContentEditable surface observer.
  *
  * @class
- * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.ce.Surface} surface Surface to observe
  */
 ve.ce.SurfaceObserver = function VeCeSurfaceObserver( surface ) {
-	// Mixin constructors
-	OO.EventEmitter.call( this );
-
 	// Properties
 	this.surface = surface;
 	this.documentView = surface.getDocument();
@@ -30,44 +26,7 @@ ve.ce.SurfaceObserver = function VeCeSurfaceObserver( surface ) {
 
 /* Inheritance */
 
-OO.mixinClass( ve.ce.SurfaceObserver, OO.EventEmitter );
-
-/* Events */
-
-/**
- * When #poll sees a change this event is emitted (before the
- * properties are updated).
- *
- * @event contentChange
- * @param {HTMLElement} node DOM node the change occurred in
- * @param {Object} previous Old data
- * @param {Object} previous.text Old plain text content
- * @param {Object} previous.hash Old DOM hash
- * @param {ve.Range} previous.range Old selection
- * @param {Object} next New data
- * @param {Object} next.text New plain text content
- * @param {Object} next.hash New DOM hash
- * @param {ve.Range} next.range New selection
- */
-
-/**
- * When #poll observes a change in the document and the new selection anchor
- * branch node does not equal the last known one, this event is emitted.
- *
- * @event branchNodeChange
- * @param {ve.ce.BranchNode} oldBranchNode
- * @param {ve.ce.BranchNode} newBranchNode
- */
-
-/**
- * When #poll observes a change in the document and the new selection does
- * not equal the last known selection, this event is emitted (before the
- * properties are updated).
- *
- * @event rangeChange
- * @param {ve.Range|null} oldRange Old range
- * @param {ve.Range|null} newRange New range
- */
+OO.initClass( ve.ce.SurfaceObserver );
 
 /* Methods */
 
@@ -89,6 +48,7 @@ ve.ce.SurfaceObserver.prototype.detach = function () {
 	this.surface = null;
 	this.documentView = null;
 	this.domDocument = null;
+	this.rangeState = null;
 };
 
 /**
@@ -166,11 +126,11 @@ ve.ce.SurfaceObserver.prototype.pollOnce = function () {
 };
 
 /**
- * Poll to update SurfaceObserver, but don't emit change events
+ * Poll to update SurfaceObserver, but don't signal any changes back to the Surface
  *
  * @method
  */
-ve.ce.SurfaceObserver.prototype.pollOnceNoEmit = function () {
+ve.ce.SurfaceObserver.prototype.pollOnceNoCallback = function () {
 	this.pollOnceInternal( false );
 };
 
@@ -192,13 +152,16 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  *
  * @method
  * @private
- * @param {boolean} emitChanges Emit change events if selection changed
+ * @param {boolean} signalChanges If there changes are observed, call Surface#handleObservedChange
  * @param {boolean} selectionOnly Check for selection changes only
  * @fires contentChange
  * @fires rangeChange
  */
-ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selectionOnly ) {
-	var oldState, newState;
+ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, selectionOnly ) {
+	var oldState, newState,
+		contentChange = null,
+		branchNodeChange = null,
+		rangeChange = null;
 
 	if ( !this.domDocument || this.disabled ) {
 		return;
@@ -213,32 +176,38 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( emitChanges, selec
 
 	this.rangeState = newState;
 
-	if ( !selectionOnly && newState.node !== null && newState.contentChanged && emitChanges ) {
-		this.emit(
-			'contentChange',
-			newState.node,
-			{ text: oldState.text, hash: oldState.hash, range: oldState.veRange },
-			{ text: newState.text, hash: newState.hash, range: newState.veRange }
-		);
+	if ( !selectionOnly && newState.node !== null && newState.contentChanged && signalChanges ) {
+		contentChange = {
+			node: newState.node,
+			previous: { text: oldState.text, hash: oldState.hash, range: oldState.veRange },
+			next: { text: newState.text, hash: newState.hash, range: newState.veRange }
+		};
 	}
 
+	// TODO: Is it correct that branchNode changes are signalled even if !signalChanges ?
 	if ( newState.branchNodeChanged ) {
-		this.emit(
-			'branchNodeChange',
-			( oldState && oldState.node && oldState.node.root ? oldState.node : null ),
-			newState.node
-		);
+		branchNodeChange = {
+			oldBranchNode: (
+				oldState && oldState.node && oldState.node.root ?
+				oldState.node :
+				null
+			),
+			newBranchNode: newState.node
+		};
 	}
 
-	if ( newState.selectionChanged && emitChanges ) {
+	if ( newState.selectionChanged && signalChanges ) {
 		// Caution: selectionChanged is true if the CE selection is different, which can
 		// be the case even if the DM selection is unchanged. So the following line can
-		// emit a rangeChange event with identical oldState and newState.
-		this.emit(
-			'rangeChange',
-			( oldState ? oldState.veRange : null ),
-			newState.veRange
-		);
+		// signal a range change with identical oldRange and newRange.
+		rangeChange = {
+			oldRange: ( oldState ? oldState.veRange : null ),
+			newRange: newState.veRange
+		};
+	}
+
+	if ( contentChange || branchNodeChange || rangeChange ) {
+		this.surface.handleObservedChanges( contentChange, branchNodeChange, rangeChange );
 	}
 };
 

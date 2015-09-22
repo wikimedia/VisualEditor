@@ -494,7 +494,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
+QUnit.test( 'onObservedContentChange', function ( assert ) {
 	var i,
 		cases = [
 			{
@@ -579,7 +579,7 @@ QUnit.test( 'onSurfaceObserverContentChange', function ( assert ) {
 				range: nextRange
 			};
 
-		view.onSurfaceObserverContentChange( node, prev, next );
+		view.onObservedContentChange( node, prev, next );
 		txs = model.getHistory()[ 0 ].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
