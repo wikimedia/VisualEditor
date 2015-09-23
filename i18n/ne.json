@@ -3,7 +3,8 @@
 		"authors": [
 			"RajeshPandey",
 			"सरोज कुमार ढकाल",
-			"NehalDaveND"
+			"NehalDaveND",
+			"बिप्लब आनन्द"
 		]
 	},
 	"visualeditor": "दृष्टि सम्पादक",
@@ -26,7 +27,7 @@
 	"visualeditor-commentinspector-edit": "टिप्पणी सम्पादन गर्ने",
 	"visualeditor-commentinspector-title": "टिप्पणी",
 	"visualeditor-commentinspector-tooltip": "टिप्पणी",
-	"visualeditor-content-select-all": "सबै चुन्ने",
+	"visualeditor-content-select-all": "सबै छान्ने",
 	"visualeditor-contextitemwidget-label-secondary": "सम्पादन",
 	"visualeditor-dialog-action-apply": "परिवर्नहरू लागु गर्ने",
 	"visualeditor-dialog-action-cancel": "रद्द गर्ने",
