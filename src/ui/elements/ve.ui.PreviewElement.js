@@ -1,26 +1,30 @@
 /*!
- * VisualEditor UserInterface PreviewWidget class.
+ * VisualEditor UserInterface PreviewElement class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
 /**
- * Creates an ve.ui.PreviewWidget object.
+ * Creates an ve.ui.PreviewElement object.
  *
  * @class
- * @extends OO.ui.Widget
+ * @extends OO.ui.Element
+ * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Node} model Model from which to create a preview
  * @param {Object} [config] Configuration options
  */
-ve.ui.PreviewWidget = function VeUiPreviewWidget( model, config ) {
+ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
 	var promises = [],
-		widget = this;
+		element = this;
 
 	// Parent constructor
-	OO.ui.Widget.call( this, config );
+	OO.ui.Element.call( this, config );
+
+	// Mixin constructor
+	OO.EventEmitter.call( this );
 
 	this.model = model;
 
@@ -48,24 +52,26 @@ ve.ui.PreviewWidget = function VeUiPreviewWidget( model, config ) {
 	// When all children are rerendered, replace with dm DOM
 	$.when.apply( $, promises )
 		.then( function () {
-			// Verify that the widget and/or the ce node weren't destroyed
-			if ( widget.view ) {
-				widget.replaceWithModelDom();
+			// Verify that the element and/or the ce node weren't destroyed
+			if ( element.view ) {
+				element.replaceWithModelDom();
 			}
 		} );
 
 	// Initialize
-	this.$element.addClass( 've-ui-previewWidget' );
+	this.$element.addClass( 've-ui-previewElement' );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.PreviewWidget, OO.ui.Widget );
+OO.inheritClass( ve.ui.PreviewElement, OO.ui.Element );
+
+OO.mixinClass( ve.ui.PreviewElement, OO.EventEmitter );
 
 /**
  * Destroy the preview node.
  */
-ve.ui.PreviewWidget.prototype.destroy = function () {
+ve.ui.PreviewElement.prototype.destroy = function () {
 	if ( this.view ) {
 		this.view.destroy();
 		this.view = null;
@@ -77,7 +83,7 @@ ve.ui.PreviewWidget.prototype.destroy = function () {
  *
  * @fires render
  */
-ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
+ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 	var preview = ve.dm.converter.getDomFromModel( this.model.getDocument(), true ),
 		$preview = $( preview.body );
 
@@ -107,6 +113,11 @@ ve.ui.PreviewWidget.prototype.replaceWithModelDom = function () {
  *
  * @return {boolean} Still generating
  */
-ve.ui.PreviewWidget.prototype.isGenerating = function () {
+ve.ui.PreviewElement.prototype.isGenerating = function () {
 	return this.view && this.view.isGenerating();
 };
+
+/**
+ * @deprecated PreviewWidget has been renamed to PreviewElement
+ */
+ve.ui.PreviewWidget = ve.ui.PreviewElement;
