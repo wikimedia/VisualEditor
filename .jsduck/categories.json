@@ -150,6 +150,10 @@
 				"classes": ["ve.ui.*ContextItem"]
 			},
 			{
+				"name": "Elements",
+				"classes": ["ve.ui.*Element"]
+			},
+			{
 				"name": "Factories",
 				"classes": ["ve.ui.*Factory"]
 			},
