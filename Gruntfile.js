@@ -285,6 +285,7 @@ module.exports = function ( grunt ) {
 				singleRun: true,
 				browserDisconnectTimeout: 5000,
 				browserDisconnectTolerance: 2,
+				browserNoActivityTimeout: 30000,
 				autoWatch: false
 			},
 			main: {
