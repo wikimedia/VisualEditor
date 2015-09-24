@@ -48,17 +48,30 @@ ve.ui.SequenceRegistry.prototype.register = function ( sequence ) {
  *   for each.
  */
 ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset ) {
-	var textStart, plaintext, name, range, sequences = [];
+	var textStart, plaintext, name, range,
+		mode = 0,
+		sequences = [];
+
 	// To avoid blowup when matching RegExp sequences, we're going to grab
 	// all the plaintext to the left (until the nearest node) *once* and pass
 	// it to each sequence matcher.  We're also going to hard-limit that
 	// plaintext to 256 characters to ensure we don't run into O(N^2)
 	// slowdown when inserting N characters of plain text.
+
+	// First skip over open elements, then close elements, to ensure that
+	// pressing enter after a (possibly nested) list item or inside a
+	// paragraph works properly.  Typing "foo\n" inside a paragraph creates
+	// "foo</p><p>" in the content model, and typing "foo\n" inside a list
+	// creates "foo</p></li><li><p>" -- we want to give the matcher a
+	// chance to match "foo\n+" in these cases.
 	for ( textStart = offset - 1; textStart >= 0 && ( offset - textStart ) <= 256; textStart-- ) {
-		// Ignore an element if it occurs in the last two context characters.
-		// Typing "foo\n" creates "foo</p><p>" in the data model, and we want
-		// to give the matcher a chance against it.
-		if ( data.isElementData( textStart ) && ( offset - textStart ) > 2 ) {
+		if ( mode === 0 && !data.isOpenElementData( textStart ) ) {
+			mode++;
+		}
+		if ( mode === 1 && !data.isCloseElementData( textStart ) ) {
+			mode++;
+		}
+		if ( mode === 2 && data.isElementData( textStart ) ) {
 			break;
 		}
 	}
