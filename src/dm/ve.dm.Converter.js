@@ -1032,6 +1032,21 @@ ve.dm.Converter.prototype.getDomFromModel = function ( model, forClipboard ) {
 };
 
 /**
+ * Convert model node to an HTML DOM
+ *
+ * @method
+ * @param {ve.dm.Node} node Model node
+ * @param {boolean} [forClipboard=false] Conversion is for clipboard
+ * @return {HTMLDocument} Document containing the resulting HTML
+ */
+ve.dm.Converter.prototype.getDomFromNode = function ( node, forClipboard ) {
+	return this.getDomFromModel(
+		node.getDocument().cloneSliceFromRange( node.isInternal() ? node.getRange() : node.getOuterRange() ),
+		forClipboard
+	);
+};
+
+/**
  * Convert document model to an HTML DOM subtree and add it to a container element.
  *
  * @method
