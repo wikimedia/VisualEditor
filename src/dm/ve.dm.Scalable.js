@@ -288,9 +288,11 @@ ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
  * @fires defaultSizeChange
  */
 ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
-	this.defaultDimensions = null;
-	this.valid = null;
-	this.emit( 'defaultSizeChange', this.isDefault() );
+	if ( this.defaultDimensions !== null ) {
+		this.defaultDimensions = null;
+		this.valid = null;
+		this.emit( 'defaultSizeChange', this.isDefault() );
+	}
 };
 
 /**
@@ -299,9 +301,11 @@ ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
  * @fires originalSizeChange
  */
 ve.dm.Scalable.prototype.clearOriginalDimensions = function () {
-	this.originalDimensions = null;
-	this.valid = null;
-	this.emit( 'originalSizeChange', this.isDefault() );
+	if ( this.originalDimensions !== null ) {
+		this.originalDimensions = null;
+		this.valid = null;
+		this.emit( 'originalSizeChange', this.isDefault() );
+	}
 };
 
 /**
