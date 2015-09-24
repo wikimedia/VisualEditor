@@ -29,7 +29,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 			$documentElement = view.getDocumentNode().$element;
 			// Simplify slugs
 			$documentElement.find( '.ve-ce-branchNode-slug' ).children().remove();
-			assert.strictEqual( $documentElement.html(), caseItem.ceHtml, msg );
+			assert.equalDomElement( $documentElement[ 0 ].firstChild, ve.createDocumentFromHtml( caseItem.ceHtml ).body.firstChild, msg );
 		}
 	}
 } );

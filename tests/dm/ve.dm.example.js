@@ -229,7 +229,7 @@ ve.dm.example.createDomElement = function ( type, attributes ) {
 
 ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
-ve.dm.example.imgSrc = '//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg';
+ve.dm.example.imgSrc = 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg';
 
 ve.dm.example.baseUri = 'http://example.org';
 
@@ -1397,7 +1397,7 @@ ve.dm.example.domToDataCases = {
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
 			ve.dm.example.inlineSlug +
 			'<img class="ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode" contenteditable="false" alt="Example"' +
-				' src="//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" style="width: 100px; height: 50px;">' +
+				' src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" style="width: 100px; height: 50px;">' +
 			ve.dm.example.inlineSlug +
 			'</p>'
 	},
@@ -1409,7 +1409,7 @@ ve.dm.example.domToDataCases = {
 		] ),
 		ceHtml: ve.dm.example.blockSlug +
 			'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
-				'<img src="//upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
+				'<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
 				'<figcaption class="ve-ce-branchNode">' +
 					'<p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">caption</p>' +
 				'</figcaption>' +
