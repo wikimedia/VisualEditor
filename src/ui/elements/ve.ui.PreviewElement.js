@@ -84,8 +84,9 @@ ve.ui.PreviewElement.prototype.destroy = function () {
  * @fires render
  */
 ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
-	var preview = ve.dm.converter.getDomFromModel( this.model.getDocument(), true ),
-		$preview = $( preview.body );
+
+	var htmlDocument = ve.dm.converter.getDomFromNode( this.model, true ),
+		$preview = $( htmlDocument.body );
 
 	// Resolve attributes
 	ve.resolveAttributes(
