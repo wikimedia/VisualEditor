@@ -71,10 +71,22 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
  *   Linktext with trailing whitespace and punctuation stripped.
  * @param {boolean} validateFunc.return
  *   True iff the given linktext is valid.  If false, no linking will be done.
+ * @param {Function} [txFunc]
+ *   An optional function to create a transaction to perform the autolink.
+ *   If not provided, a transaction will be created which applies the
+ *   annotations returned by {@link ve.ui.LinkAction#getLinkAnnotation}.
+ * @param {ve.dm.Document} txFunc.documentModel
+ *   The document model to modify.
+ * @param {ve.Range} txFunc.range
+ *   The range to autolink.
+ * @param {string} txFunc.linktext
+ *   The text string to autolink.
+ * @param {ve.dm.Transaction} txFunc.return
+ *   The transaction to perform the autolink operation.
  * @return {boolean} Selection was valid and link action was executed.
  */
-ve.ui.LinkAction.prototype.autolink = function ( validateFunc ) {
-	var range, rangeEnd, linktext, i,
+ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
+	var range, rangeEnd, linktext, i, tx,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection();
@@ -120,15 +132,14 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc ) {
 	surfaceModel.setLinearSelection( new ve.Range( rangeEnd, rangeEnd ) );
 
 	// Annotate the (previous) range.
-	surfaceModel.change(
+	tx = txFunc ? txFunc( documentModel, range, linktext ) :
 		ve.dm.Transaction.newFromAnnotation(
 			documentModel,
 			range,
 			'set',
 			this.getLinkAnnotation( linktext )
-		),
-		surfaceModel.getSelection()
-	);
+		);
+	surfaceModel.change( tx );
 
 	return true;
 };
