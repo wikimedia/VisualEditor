@@ -4,7 +4,8 @@
 			"Kavya Manohar",
 			"Praveenp",
 			"Santhosh.thottingal",
-			"Vssun"
+			"Vssun",
+			"Ranjithsiji"
 		]
 	},
 	"visualeditor": "കണ്ടുതിരുത്തൽ സൗകര്യം",
@@ -13,6 +14,7 @@
 	"visualeditor-align-widget-left": "ഇടത്",
 	"visualeditor-align-widget-right": "വലത്",
 	"visualeditor-alignablecontextitem-title": "സ്ഥാനനിർണ്ണയം",
+	"visualeditor-aliencontextitem-title": "ഇനം",
 	"visualeditor-annotationbutton-bold-tooltip": "കടുപ്പിക്കുക",
 	"visualeditor-annotationbutton-code-tooltip": "കമ്പ്യൂട്ടർ ഭാഷ",
 	"visualeditor-annotationbutton-italic-tooltip": "ചെരിച്ച്",
@@ -32,6 +34,7 @@
 	"visualeditor-commentinspector-tooltip": "അഭിപ്രായം",
 	"visualeditor-content-select-all": "എല്ലാം തിരഞ്ഞെടുക്കുക",
 	"visualeditor-contextitemwidget-label-secondary": "തിരുത്തുക",
+	"visualeditor-contextitemwidget-label-remove": "മായ്ക്കുക",
 	"visualeditor-dialog-action-apply": "മാറ്റങ്ങൾ ബാധകമാക്കുക",
 	"visualeditor-dialog-action-cancel": "റദ്ദാക്കുക",
 	"visualeditor-dialog-action-done": "ചെയ്തു",
@@ -111,6 +114,7 @@
 	"visualeditor-table-insert-table": "പട്ടിക",
 	"visualeditor-table-merge-cells": "കളങ്ങൾ സംയോജിപ്പിക്കുക",
 	"visualeditor-tablecell-tooltip": "കളം തിരുത്താൻ ഇരട്ടഞെക്കൽ നടത്തുക",
+	"visualeditor-tablecell-contextitem": "പട്ടികയുടെ കളം",
 	"visualeditor-toolbar-format-tooltip": "ഖണ്ഡിക ചിട്ടപ്പെടുത്തുക",
 	"visualeditor-toolbar-history": "നാൾവഴി",
 	"visualeditor-toolbar-insert": "ഉൾപ്പെടുത്തുക",
