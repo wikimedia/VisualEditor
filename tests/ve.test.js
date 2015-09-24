@@ -539,7 +539,7 @@ QUnit.test( 'resolveAttributes', function ( assert ) {
 } );
 
 QUnit.test( 'fixBase', function ( assert ) {
-	var i, targetDoc, sourceDoc,
+	var i, targetDoc, sourceDoc, expectedBase,
 		cases = [
 			{
 				targetBase: '//example.org/foo',
@@ -562,23 +562,23 @@ QUnit.test( 'fixBase', function ( assert ) {
 			}
 		];
 
-	// HACK: Protocal-relative base fails in FF (T113595)
-	// TODO: Provide workaround
-	if ( $.client.profile().layout === 'gecko' ) {
-		cases.shift();
-	}
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		targetDoc = ve.createDocumentFromHtml( '' );
 		sourceDoc = ve.createDocumentFromHtml( '' );
+		expectedBase = cases[ i ].fixedBase;
 		if ( cases[ i ].targetBase ) {
 			targetDoc.head.appendChild( $( '<base>', targetDoc ).attr( 'href', cases[ i ].targetBase )[ 0 ] );
+			if ( targetDoc.baseURI ) {
+				// baseURI is valid, so we expect it to be untouched
+				expectedBase = targetDoc.baseURI;
+			}
 		}
 		if ( cases[ i ].sourceBase ) {
 			sourceDoc.head.appendChild( $( '<base>', sourceDoc ).attr( 'href', cases[ i ].sourceBase )[ 0 ] );
 		}
 		ve.fixBase( targetDoc, sourceDoc, cases[ i ].fallbackBase );
-		assert.strictEqual( targetDoc.baseURI, cases[ i ].fixedBase, cases[ i ].msg );
+		assert.strictEqual( targetDoc.baseURI, expectedBase, cases[ i ].msg );
 	}
 } );
 
