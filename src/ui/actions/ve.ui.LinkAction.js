@@ -187,7 +187,7 @@ ve.init.Platform.static.initializedPromise.then( function () {
 
 	ve.ui.LinkAction.static.autolinkRegExp =
 		new RegExp(
-			'\\b' + ve.init.platform.getUnanchoredExternalLinkUrlProtocolsRegExp().source + '\\S+(\\s|\\n\\n)$',
+			'\\b' + ve.init.platform.getUnanchoredExternalLinkUrlProtocolsRegExp().source + '\\S+(\\s|\\n+)$',
 			'i'
 		);
 
