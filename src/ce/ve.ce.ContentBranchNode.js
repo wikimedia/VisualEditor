@@ -372,6 +372,12 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		$( oldWrapper )
 			.find( '.ve-ce-linkAnnotation-active' )
 			.removeClass( 've-ce-linkAnnotation-active' );
+		$( oldWrapper )
+			.find( '.ve-ce-branchNode-inlineSlug' )
+			.children()
+			.unwrap()
+			.filter( '.ve-ce-chimera' )
+			.remove();
 		newWrapper = this.$element[ 0 ].cloneNode( false );
 		while ( rendered.firstChild ) {
 			newWrapper.appendChild( rendered.firstChild );
