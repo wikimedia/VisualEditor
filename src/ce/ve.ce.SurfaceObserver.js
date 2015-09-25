@@ -115,11 +115,7 @@ ve.ce.SurfaceObserver.prototype.enable = function () {
 /**
  * Poll for changes.
  *
- * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
- *
  * @method
- * @fires contentChange
- * @fires rangeChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnce = function () {
 	this.pollOnceInternal( true );
@@ -148,20 +144,13 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
 /**
  * Poll for changes.
  *
- * TODO: fixing selection in certain cases, handling selection across multiple nodes in Firefox
- *
  * @method
  * @private
  * @param {boolean} signalChanges If there changes are observed, call Surface#handleObservedChange
  * @param {boolean} selectionOnly Check for selection changes only
- * @fires contentChange
- * @fires rangeChange
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, selectionOnly ) {
-	var oldState, newState,
-		contentChange = null,
-		branchNodeChange = null,
-		rangeChange = null;
+	var oldState, newState;
 
 	if ( !this.domDocument || this.disabled ) {
 		return;
@@ -173,41 +162,16 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, sel
 		this.documentView.getDocumentNode(),
 		selectionOnly
 	);
-
 	this.rangeState = newState;
 
-	if ( !selectionOnly && newState.node !== null && newState.contentChanged && signalChanges ) {
-		contentChange = {
-			node: newState.node,
-			previous: { text: oldState.text, hash: oldState.hash, range: oldState.veRange },
-			next: { text: newState.text, hash: newState.hash, range: newState.veRange }
-		};
-	}
-
-	// TODO: Is it correct that branchNode changes are signalled even if !signalChanges ?
-	if ( newState.branchNodeChanged ) {
-		branchNodeChange = {
-			oldBranchNode: (
-				oldState && oldState.node && oldState.node.root ?
-				oldState.node :
-				null
-			),
-			newBranchNode: newState.node
-		};
-	}
-
-	if ( newState.selectionChanged && signalChanges ) {
-		// Caution: selectionChanged is true if the CE selection is different, which can
-		// be the case even if the DM selection is unchanged. So the following line can
-		// signal a range change with identical oldRange and newRange.
-		rangeChange = {
-			oldRange: ( oldState ? oldState.veRange : null ),
-			newRange: newState.veRange
-		};
-	}
-
-	if ( contentChange || branchNodeChange || rangeChange ) {
-		this.surface.handleObservedChanges( contentChange, branchNodeChange, rangeChange );
+	if ( signalChanges && (
+		newState.contentChanged ||
+		// TODO: The prior code signalled branchNode changes even if !signalChanges .
+		// Was this needed?
+		newState.branchNodeChanged ||
+		newState.selectionChanged
+	) ) {
+		this.surface.handleObservedChanges( oldState, newState );
 	}
 };
 
