@@ -16,19 +16,19 @@
 ve.ui.LinkAnnotationWidget = function VeUiLinkAnnotationWidget( config ) {
 	// Properties
 	this.annotation = null;
-	this.text = this.createInputWidget( config );
+	this.input = this.createInputWidget( config );
 
 	// Parent constructor
-	// Must be called after this.text is set as parent constructor calls this.setDisabled
+	// Must be called after this.input is set as parent constructor calls this.setDisabled
 	ve.ui.LinkAnnotationWidget.super.apply( this, arguments );
 
 	// Initialization
 	this.$element
-		.append( this.text.$element )
+		.append( this.input.$element )
 		.addClass( 've-ui-linkAnnotationWidget' );
 
 	// Events
-	this.text.connect( this, { change: 'onTextChange' } );
+	this.getTextInputWidget().connect( this, { change: 'onTextChange' } );
 };
 
 /* Inheritance */
@@ -83,13 +83,22 @@ ve.ui.LinkAnnotationWidget.static.getTextFromAnnotation = function ( annotation 
 /* Methods */
 
 /**
- * Create a text input widget to be used by the annotation widget
+ * Create a widget to be used by the annotation widget
  *
  * @param {Object} [config] Configuration options
- * @return {OO.ui.TextInputWidget} Text input widget
+ * @return {OO.ui.Widget} Text input widget
  */
 ve.ui.LinkAnnotationWidget.prototype.createInputWidget = function () {
 	return new OO.ui.TextInputWidget( { validate: 'non-empty' } );
+};
+
+/**
+ * Get the text input widget used by the annotation widget
+ *
+ * @return {OO.ui.TextInputWidget} Text input widget
+ */
+ve.ui.LinkAnnotationWidget.prototype.getTextInputWidget = function () {
+	return this.input;
 };
 
 /**
@@ -99,7 +108,7 @@ ve.ui.LinkAnnotationWidget.prototype.setDisabled = function () {
 	// Parent method
 	ve.ui.LinkAnnotationWidget.super.prototype.setDisabled.apply( this, arguments );
 
-	this.text.setDisabled( this.isDisabled() );
+	this.getTextInputWidget().setDisabled( this.isDisabled() );
 };
 
 /**
@@ -116,10 +125,10 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 	if ( $( 'body' ).hasClass( 'rtl' ) ) {
 		isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( value.trim() );
 		// If URL is external, flip to LTR. Otherwise, set back to RTL
-		this.text.setRTL( !isExt );
+		this.getTextInputWidget().setRTL( !isExt );
 	}
 
-	this.text.isValid().done( function ( valid ) {
+	this.getTextInputWidget().isValid().done( function ( valid ) {
 		// Keep annotation in sync with value
 		widget.setAnnotation( valid ? widget.constructor.static.getAnnotationFromText( value ) : null, true );
 	} );
@@ -148,7 +157,7 @@ ve.ui.LinkAnnotationWidget.prototype.setAnnotation = function ( annotation, from
 
 	// If this method was triggered by a change to the text input, leave it alone.
 	if ( !fromText ) {
-		this.text.setValue( this.constructor.static.getTextFromAnnotation( annotation ) );
+		this.getTextInputWidget().setValue( this.constructor.static.getTextFromAnnotation( annotation ) );
 	}
 
 	this.emit( 'change', this.annotation );

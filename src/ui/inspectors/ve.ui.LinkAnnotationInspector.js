@@ -56,7 +56,7 @@ ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
 	var inspector = this,
 		annotation = this.annotationInput.getAnnotation();
 
-	this.annotationInput.text.isValid().done( function ( isValid ) {
+	this.annotationInput.getTextInputWidget().isValid().done( function ( isValid ) {
 		isValid = isValid && !!annotation;
 		inspector.actions.forEach( { actions: [ 'open', 'done', 'insert' ] }, function ( action ) {
 			action.setDisabled( !isValid );
@@ -143,11 +143,11 @@ ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 ve.ui.LinkAnnotationInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
-			this.annotationInput.text.focus().select();
+			this.annotationInput.getTextInputWidget().focus().select();
 			this.getFragment().getSurface().enable();
 
 			// Clear validation state, so that we don't get "invalid" state immediately on focus
-			this.annotationInput.text.setValidityFlag( true );
+			this.annotationInput.getTextInputWidget().setValidityFlag( true );
 		}, this );
 };
 
@@ -157,7 +157,7 @@ ve.ui.LinkAnnotationInspector.prototype.getReadyProcess = function ( data ) {
 ve.ui.LinkAnnotationInspector.prototype.getHoldProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getHoldProcess.call( this, data )
 		.next( function () {
-			this.annotationInput.text.blur();
+			this.annotationInput.getTextInputWidget().blur();
 		}, this );
 };
 
