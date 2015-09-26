@@ -787,6 +787,7 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
 	this.surfaceObserver.startTimerLoop();
 	this.focused = true;
 	this.activate();
+	this.$element.addClass( 've-ce-surface-focused' );
 	this.emit( 'focus' );
 };
 
@@ -810,6 +811,7 @@ ve.ce.Surface.prototype.onDocumentBlur = function () {
 		this.focusedNode = null;
 	}
 	this.getModel().setNullSelection();
+	this.$element.removeClass( 've-ce-surface-focused' );
 	this.emit( 'blur' );
 };
 
