@@ -531,6 +531,56 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
 };
 
 /**
+ * Get the insertion annotations that should apply to a range.
+ *
+ * The semantics are intended to match Chromium's behaviour.
+ * TODO: This cannot match Firefox behaviour, which depends on the cursor's annotation
+ * boundary side, and performs a union of the annotations at each end of the selection;
+ * see https://phabricator.wikimedia.org/T113869 .
+ *
+ * @param {ve.Range} range The range into which text would be inserted
+ * @return {ve.dm.AnnotationSet} The insertion annotations that should apply
+ */
+ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( range ) {
+	var left, right, leftAnnotations, rightAnnotations;
+
+	if ( range.isCollapsed() ) {
+		// Get annotations from either side of the cursor
+		left = Math.max( 0, range.start - 1 );
+		if ( !this.isContentOffset( left ) ) {
+			left = -1;
+		}
+		right = Math.max( 0, range.start );
+		if ( !this.isContentOffset( right ) ) {
+			right = -1;
+		}
+	} else {
+		// Get annotations from the first character of the range
+		// TODO: The use of getNearestContentOffset no longer makes much sense here
+		left = this.getNearestContentOffset( range.start );
+		right = this.getNearestContentOffset( range.end );
+	}
+	if ( left === -1 ) {
+		// No content offset to our left, use empty set
+		return new ve.dm.AnnotationSet( this.getStore() );
+	}
+
+	// Include each annotation on the left that either continues on the right
+	// or should get added to appended content
+	leftAnnotations = this.getAnnotationsFromOffset( left );
+	if ( right === -1 ) {
+		// TODO: "return leftAnnotations" would match prior behaviour. Was that a mistake?
+		rightAnnotations = new ve.dm.AnnotationSet( this.getStore() );
+	} else {
+		rightAnnotations = this.getAnnotationsFromOffset( right );
+	}
+	return leftAnnotations.filter( function ( annotation ) {
+		return annotation.constructor.static.applyToAppendedContent ||
+			rightAnnotations.containsComparable( annotation );
+	} );
+};
+
+/**
  * Check if the range has any annotations
  *
  * @method
