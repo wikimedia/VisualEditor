@@ -2284,7 +2284,8 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
  */
 ve.ce.Surface.prototype.selectAll = function () {
 	var internalListRange, range, matrix,
-		selection = this.getModel().getSelection();
+		selection = this.getModel().getSelection(),
+		dmDoc = this.getModel().getDocument();
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		if ( this.getActiveTableNode() && this.getActiveTableNode().getEditingFragment() ) {
@@ -2293,8 +2294,8 @@ ve.ce.Surface.prototype.selectAll = function () {
 		} else {
 			internalListRange = this.getModel().getDocument().getInternalList().getListNode().getOuterRange();
 			range = new ve.Range(
-				this.getNearestCorrectOffset( 0, 1 ),
-				this.getNearestCorrectOffset( internalListRange.start, -1 )
+				dmDoc.getNearestCursorOffset( 0, 1 ),
+				dmDoc.getNearestCursorOffset( internalListRange.start, -1 )
 			);
 		}
 		this.getModel().setLinearSelection( range );
@@ -2773,7 +2774,8 @@ ve.ce.Surface.prototype.onObservedContentChange = function ( node, previous, nex
 		nodeOffset = node.getModel().getOffset(),
 		previousData = previous.text.split( '' ),
 		nextData = next.text.split( '' ),
-		modelData = this.model.getDocument().data,
+		dmDoc = this.getModel().getDocument(),
+		modelData = dmDoc.data,
 		lengthDiff = next.text.length - previous.text.length,
 		surface = this;
 
@@ -2900,7 +2902,7 @@ ve.ce.Surface.prototype.onObservedContentChange = function ( node, previous, nex
 	}
 	newRange = next.range;
 	if ( newRange.isCollapsed() ) {
-		newRange = new ve.Range( this.getNearestCorrectOffset( newRange.start, 1 ) );
+		newRange = new ve.Range( dmDoc.getNearestCursorOffset( newRange.start, 1 ) );
 	}
 
 	this.changeModel(
@@ -4127,14 +4129,15 @@ ve.ce.Surface.prototype.linkAnnotationAtFocus = function () {
  * @return {boolean} return.isBackwards True if the focus is before the anchor
  */
 ve.ce.Surface.prototype.getSelectionState = function ( range ) {
-	var anchor, focus;
+	var anchor, focus,
+		dmDoc = this.getModel().getDocument();
 
 	// Anchor/focus at the nearest correct position in the direction that grows the selection
 	anchor = this.documentView.getNodeAndOffset(
-		this.getNearestCorrectOffset( range.from, range.isBackwards() ? 1 : -1 )
+		dmDoc.getNearestCursorOffset( range.from, range.isBackwards() ? 1 : -1 )
 	);
 	focus = this.documentView.getNodeAndOffset(
-		this.getNearestCorrectOffset( range.to, range.isBackwards() ? -1 : 1 )
+		dmDoc.getNearestCursorOffset( range.to, range.isBackwards() ? -1 : 1 )
 	);
 	return new ve.SelectionState( {
 		anchorNode: anchor.node,
@@ -4187,53 +4190,6 @@ ve.ce.Surface.prototype.appendHighlights = function ( $highlights, focused ) {
 		this.$highlightsFocused.append( $highlights );
 	} else {
 		this.$highlightsBlurred.append( $highlights );
-	}
-};
-
-/*! Helpers */
-
-/**
- * Get the nearest offset that a cursor can be placed at.
- *
- * TODO: Find a better name and a better place for this method
- *
- * @method
- * @param {number} offset Offset to start looking at
- * @param {number} [direction=-1] Direction to look in, +1 or -1
- * @return {number} Nearest offset a cursor can be placed at
- */
-ve.ce.Surface.prototype.getNearestCorrectOffset = function ( offset, direction ) {
-	var contentOffset, structuralOffset,
-		documentModel = this.getModel().getDocument(),
-		data = documentModel.data;
-
-	direction = direction > 0 ? 1 : -1;
-	if (
-		data.isContentOffset( offset ) ||
-		documentModel.hasSlugAtOffset( offset )
-	) {
-		return offset;
-	}
-
-	contentOffset = data.getNearestContentOffset( offset, direction );
-	structuralOffset = data.getNearestStructuralOffset( offset, direction, true );
-
-	if ( !documentModel.hasSlugAtOffset( structuralOffset ) && contentOffset !== -1 ) {
-		return contentOffset;
-	}
-
-	if ( direction === 1 ) {
-		if ( contentOffset < offset ) {
-			return structuralOffset;
-		} else {
-			return Math.min( contentOffset, structuralOffset );
-		}
-	} else {
-		if ( contentOffset > offset ) {
-			return structuralOffset;
-		} else {
-			return Math.max( contentOffset, structuralOffset );
-		}
 	}
 };
 

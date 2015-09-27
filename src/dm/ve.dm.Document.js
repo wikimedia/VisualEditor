@@ -775,6 +775,47 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 };
 
 /**
+ * Get the nearest offset that a cursor can be placed at.
+ *
+ * @method
+ * @param {number} offset Offset to start looking at
+ * @param {number} [direction=-1] Direction to look in, +1 or -1
+ * @return {number} Nearest offset a cursor can be placed at
+ */
+ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction ) {
+	var contentOffset, structuralOffset;
+
+	direction = direction > 0 ? 1 : -1;
+	if (
+		this.data.isContentOffset( offset ) ||
+		this.hasSlugAtOffset( offset )
+	) {
+		return offset;
+	}
+
+	contentOffset = this.data.getNearestContentOffset( offset, direction );
+	structuralOffset = this.data.getNearestStructuralOffset( offset, direction, true );
+
+	if ( !this.hasSlugAtOffset( structuralOffset ) && contentOffset !== -1 ) {
+		return contentOffset;
+	}
+
+	if ( direction === 1 ) {
+		if ( contentOffset < offset ) {
+			return structuralOffset;
+		} else {
+			return Math.min( contentOffset, structuralOffset );
+		}
+	} else {
+		if ( contentOffset > offset ) {
+			return structuralOffset;
+		} else {
+			return Math.max( contentOffset, structuralOffset );
+		}
+	}
+};
+
+/**
  * @inheritdoc
  */
 ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {

@@ -876,3 +876,43 @@ QUnit.test( 'protection against double application of transactions', 1, function
 		'exception thrown when trying to commit an already-committed transaction'
 	);
 } );
+
+QUnit.test( 'getNearestCursorOffset', function ( assert ) {
+	var i, dir,
+		doc = ve.dm.converter.getModelFromDom(
+			ve.createDocumentFromHtml( ve.dm.example.html )
+		),
+		expected = {
+			// 10 offsets per row
+			'-1': [
+				1, 1, 2, 3, 4, 4, 4, 4, 4, 4,
+				10, 11, 11, 11, 11, 15, 16, 16, 16, 16,
+				20, 21, 21, 21, 21, 21, 21, 21, 21, 29,
+				30, 30, 30, 30, 30, 30, 30, 30, 38, 39,
+				39, 41, 42, 42, 42, 42, 46, 47, 47, 47,
+				47, 51, 52, 52, 52, 52, 56, 57, 57, 59,
+				60, 60, 60
+			],
+			1: [
+				1, 1, 2, 3, 4, 10, 10, 10, 10, 10,
+				10, 11, 15, 15, 15, 15, 16, 20, 20, 20,
+				20, 21, 29, 29, 29, 29, 29, 29, 29, 29,
+				30, 38, 38, 38, 38, 38, 38, 38, 38, 39,
+				41, 41, 42, 46, 46, 46, 46, 47, 51, 51,
+				51, 51, 52, 56, 56, 56, 56, 57, 59, 59,
+				60, 60, 60
+			]
+		};
+
+	QUnit.expect( doc.data.getLength() * 2 );
+
+	for ( dir = -1; dir <= 1; dir += 2 ) {
+		for ( i = 0; i < doc.data.getLength(); i++ ) {
+			assert.strictEqual(
+				doc.getNearestCursorOffset( i, dir ),
+				expected[ dir ][ i ],
+				'Direction: ' + dir + ' Offset: ' + i
+			);
+		}
+	}
+} );
