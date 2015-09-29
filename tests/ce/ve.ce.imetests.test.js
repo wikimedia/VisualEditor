@@ -9,8 +9,8 @@
 ve.ce.imetests = [];
 
 ve.ce.imetestsFailAt = {
-	'input-ie-win-chinese-traditional-handwriting': 4,
-	'input-ie-win-korean': 4
+	'input-ie9-win7-chinese-traditional-handwriting': 4,
+	'input-ie9-win7-korean': 4
 };
 
 ve.ce.imetestsPhantomFailAt = {
@@ -20,6 +20,6 @@ ve.ce.imetestsPhantomFailAt = {
 	'input-firefox-ubuntu-ibus-japanese-anthy--hiraganaonly': 8,
 	'input-firefox-ubuntu-ibus-korean-korean': 7,
 	'input-firefox-ubuntu-ibus-malayalam-swanalekha': 8,
-	'input-ie-win-chinese-traditional-handwriting': 4,
-	'input-ie-win-korean': 4
+	'input-ie9-win7-chinese-traditional-handwriting': 4,
+	'input-ie9-win7-korean': 4
 };

@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-ve.ce.imetests.push( [ 'input-chrome-win-welsh', [
+ve.ce.imetests.push( [ 'input-chrome-win7-welsh', [
 	{ imeIdentifier: 'Welsh', userAgent: 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', startDom: '' },
 	{ seq: 0, time: 10.479, action: 'sendEvent', args: [ 'keydown', { keyCode: 68 } ] },
 	{ seq: 1, time: 10.481, action: 'sendEvent', args: [ 'keypress', { keyCode: 100 } ] },

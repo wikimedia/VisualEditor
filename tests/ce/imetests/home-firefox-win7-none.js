@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-ve.ce.imetests.push( [ 'home-firefox-win-none', [
+ve.ce.imetests.push( [ 'home-firefox-win7-none', [
 	{ imeIdentifier: 'none', userAgent: 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0', startDom: '' },
 	{ seq: 0, time: 12.242, action: 'sendEvent', args: [ 'keydown', { keyCode: 65 } ] },
 	{ seq: 1, time: 12.261, action: 'sendEvent', args: [ 'keypress', { keyCode: 0 } ] },

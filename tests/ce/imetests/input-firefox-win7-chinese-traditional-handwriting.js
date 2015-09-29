@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-ve.ce.imetests.push( [ 'input-firefox-win-chinese-traditional-handwriting', [
+ve.ce.imetests.push( [ 'input-firefox-win7-chinese-traditional-handwriting', [
 	{ imeIdentifier: 'Chinese Traditional Handwriting', userAgent: 'Mozilla/5.0 (Windows NT 6.1; rv:19.0) Gecko/20100101 Firefox/19.0', startDom: 'x' },
 	{ seq: 0, time: 20.16, action: 'sendEvent', args: [ 'compositionstart', {} ] },
 	{ seq: 1, time: 20.205, action: 'changeText', args: [ '中' ] },
