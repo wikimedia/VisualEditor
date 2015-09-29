@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-ve.ce.imetests.push( [ 'input-chrome-win-chinese-traditional-handwriting', [
+ve.ce.imetests.push( [ 'input-chrome-win7-chinese-traditional-handwriting', [
 	{ imeIdentifier: 'Chinese Traditional Handwriting', userAgent: 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36', startDom: 'x' },
 	{ seq: 0, time: 8.491, action: 'changeText', args: [ '中' ] },
 	{ seq: 1, time: 8.491, action: 'changeSel', args: [ 1, 1 ] },

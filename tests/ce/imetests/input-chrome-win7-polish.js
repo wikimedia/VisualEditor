@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-ve.ce.imetests.push( [ 'input-chrome-win-polish', [
+ve.ce.imetests.push( [ 'input-chrome-win7-polish', [
 	{ imeIdentifier: 'Polish', userAgent: 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.28 Safari/537.36 OPR/27.0.1689.29 (Edition beta)', startDom: '' },
 	{ seq: 0, time: 5.323, action: 'sendEvent', args: [ 'keydown', { keyCode: 17 } ] },
 	{ seq: 1, time: 5.325, action: 'sendEvent', args: [ 'keydown', { keyCode: 18 } ] },

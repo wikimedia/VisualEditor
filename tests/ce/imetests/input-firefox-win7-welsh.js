@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-ve.ce.imetests.push( [ 'input-firefox-win-welsh', [
+ve.ce.imetests.push( [ 'input-firefox-win7-welsh', [
 	{ imeIdentifier: 'Welsh', userAgent: 'Mozilla/5.0 (Windows NT 6.1; rv:19.0) Gecko/20100101 Firefox/19.0', startDom: '' },
 	{ seq: 0, time: 4.995, action: 'sendEvent', args: [ 'keydown', { keyCode: 68 } ] },
 	{ seq: 1, time: 4.998, action: 'sendEvent', args: [ 'keypress', { keyCode: 0 } ] },

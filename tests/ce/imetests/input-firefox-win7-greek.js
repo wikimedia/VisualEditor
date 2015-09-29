@@ -4,7 +4,7 @@
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-ve.ce.imetests.push( [ 'input-firefox-win-greek', [
+ve.ce.imetests.push( [ 'input-firefox-win7-greek', [
 	{ imeIdentifier: 'Greek', userAgent: 'Mozilla/5.0 (Windows NT 6.1; rv:19.0) Gecko/20100101 Firefox/19.0', startDom: '' },
 	{ seq: 0, time: 7.083, action: 'sendEvent', args: [ 'keydown', { keyCode: 69 } ] },
 	{ seq: 1, time: 7.085, action: 'sendEvent', args: [ 'keypress', { keyCode: 0 } ] },
