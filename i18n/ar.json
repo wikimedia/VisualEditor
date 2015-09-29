@@ -16,7 +16,8 @@
 			"سامي الرحيلي",
 			"Abanima",
 			"Fatz",
-			"محمد أحمد عبد الفتاح"
+			"محمد أحمد عبد الفتاح",
+			"فلورانس"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -25,6 +26,7 @@
 	"visualeditor-align-widget-left": "يسار",
 	"visualeditor-align-widget-right": "يمين",
 	"visualeditor-alignablecontextitem-title": "المحاذاة",
+	"visualeditor-aliencontextitem-title": "العنصر",
 	"visualeditor-annotationbutton-bold-tooltip": "غليظ",
 	"visualeditor-annotationbutton-code-tooltip": "كود برمجي",
 	"visualeditor-annotationbutton-italic-tooltip": "مائل",
@@ -44,6 +46,7 @@
 	"visualeditor-commentinspector-tooltip": "تعليق",
 	"visualeditor-content-select-all": "تحديد الكل",
 	"visualeditor-contextitemwidget-label-secondary": "تعديل",
+	"visualeditor-contextitemwidget-label-remove": "شطب",
 	"visualeditor-dialog-action-apply": "طبق التعديلات",
 	"visualeditor-dialog-action-cancel": "ألغ",
 	"visualeditor-dialog-action-done": "نفذ",
@@ -124,6 +127,7 @@
 	"visualeditor-table-insert-table": "جدول",
 	"visualeditor-table-merge-cells": "دمج الخلايا",
 	"visualeditor-tablecell-tooltip": "النقر مرتين لتعديل الخلية",
+	"visualeditor-tablecell-contextitem": "خلية الجدول",
 	"visualeditor-toolbar-format-tooltip": "تنسيق الفقرة",
 	"visualeditor-toolbar-history": "تاريخ",
 	"visualeditor-toolbar-insert": "إدراج",
