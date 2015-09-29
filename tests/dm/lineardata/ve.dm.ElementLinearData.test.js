@@ -391,12 +391,16 @@ QUnit.test( 'getInsertionAnnotationsFromRange', function ( assert ) {
 		{ range: [ 1, 1 ], expected: [], msg: 'plain start at block start' },
 		{ range: [ 2, 2 ], expected: [], msg: 'plain interior' },
 		{ range: [ 3, 3 ], expected: [], msg: 'plain end before u' },
-		{ range: [ 4, 4 ], expected: [ u ], msg: 'u start' },
-		{ range: [ 5, 5 ], expected: [ u ], msg: 'u interior' },
+		{ range: [ 3, 3 ], startAfterAnnotations: true, expected: [ u ], msg: 'u start' },
+		{ range: [ 4, 4 ], expected: [ u ], msg: 'u interior' },
+		{ range: [ 5, 5 ], expected: [ u ], msg: 'u end' },
+		{ range: [ 5, 5 ], startAfterAnnotations: true, expected: [], msg: 'after u' },
 		{ range: [ 6, 6 ], expected: [], msg: 'plain start after u' },
 		{ range: [ 7, 7 ], expected: [], msg: 'plain end at block end' },
 		{ range: [ 9, 9 ], expected: [], msg: 'block start before u' },
+		{ range: [ 9, 9 ], startAfterAnnotations: true, expected: [ u ], msg: 'u start at block start' },
 		{ range: [ 10, 10 ], expected: [ u ], msg: 'u end before block end' },
+		{ range: [ 10, 10 ], startAfterAnnotations: true, expected: [], msg: 'after u before block end' },
 		{ range: [ 12, 12 ], expected: [], msg: 'empty block' },
 		{ range: [ 2, 3 ], expected: [], msg: 'forward to u start' },
 		{ range: [ 3, 2 ], expected: [], msg: 'backward to u start' },
@@ -414,7 +418,8 @@ QUnit.test( 'getInsertionAnnotationsFromRange', function ( assert ) {
 	).data;
 	tests.forEach( function ( test ) {
 		var observed = linearData.getInsertionAnnotationsFromRange(
-			new ve.Range( test.range[ 0 ], test.range[ 1 ] )
+			new ve.Range( test.range[ 0 ], test.range[ 1 ] ),
+			test.startAfterAnnotations
 		).get().map( function ( annotation ) {
 			return {
 				type: annotation.element.type,

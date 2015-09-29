@@ -539,44 +539,42 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
  * see https://phabricator.wikimedia.org/T113869 .
  *
  * @param {ve.Range} range The range into which text would be inserted
+ * @param {boolean} [startAfterAnnotations] Use annotations after cursor if collapsed
  * @return {ve.dm.AnnotationSet} The insertion annotations that should apply
  */
-ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( range ) {
-	var left, right, leftAnnotations, rightAnnotations;
+ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( range, startAfterAnnotations ) {
+	var start, startAnnotations, afterAnnotations;
 
-	if ( range.isCollapsed() ) {
-		// Get annotations from either side of the cursor
-		left = Math.max( 0, range.start - 1 );
-		if ( !this.isContentOffset( left ) ) {
-			left = -1;
-		}
-		right = Math.max( 0, range.start );
-		if ( !this.isContentOffset( right ) ) {
-			right = -1;
-		}
+	// Get position for start annotations
+	if ( range.isCollapsed() && !startAfterAnnotations ) {
+		// Use the position just before the cursor
+		start = Math.max( 0, range.start - 1 );
 	} else {
-		// Get annotations from the first character of the range
-		// TODO: The use of getNearestContentOffset no longer makes much sense here
-		left = this.getNearestContentOffset( range.start );
-		right = this.getNearestContentOffset( range.end );
-	}
-	if ( left === -1 ) {
-		// No content offset to our left, use empty set
-		return new ve.dm.AnnotationSet( this.getStore() );
+		// If uncollapsed, use the first character of the selection
+		// If collapsed, use the first position after the cursor
+		start = range.start;
 	}
 
-	// Include each annotation on the left that either continues on the right
-	// or should get added to appended content
-	leftAnnotations = this.getAnnotationsFromOffset( left );
-	if ( right === -1 ) {
-		// TODO: "return leftAnnotations" would match prior behaviour. Was that a mistake?
-		rightAnnotations = new ve.dm.AnnotationSet( this.getStore() );
+	// Get startAnnotations: the annotations that apply at the selection start
+	if ( this.isContentOffset( start ) ) {
+		startAnnotations = this.getAnnotationsFromOffset( start );
 	} else {
-		rightAnnotations = this.getAnnotationsFromOffset( right );
+		startAnnotations = new ve.dm.AnnotationSet( this.getStore() );
 	}
-	return leftAnnotations.filter( function ( annotation ) {
+
+	// Get afterAnnotations: the annotations that apply straight after the selection
+	if ( this.isContentOffset( range.end ) ) {
+		afterAnnotations = this.getAnnotationsFromOffset( range.end );
+	} else {
+		// Use the empty set
+		afterAnnotations = new ve.dm.AnnotationSet( this.getStore() );
+	}
+
+	// Return those startAnnotations that either continue in afterAnnotations or
+	// should get added to appended content
+	return startAnnotations.filter( function ( annotation ) {
 		return annotation.constructor.static.applyToAppendedContent ||
-			rightAnnotations.containsComparable( annotation );
+			afterAnnotations.containsComparable( annotation );
 	} );
 };
 
