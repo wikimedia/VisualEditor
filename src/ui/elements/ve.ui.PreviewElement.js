@@ -17,9 +17,6 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
-	var promises = [],
-		element = this;
-
 	// Parent constructor
 	OO.ui.Element.call( this, config );
 
@@ -28,35 +25,7 @@ ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
 
 	this.model = model;
 
-	// Initial CE node
-	this.view = ve.ce.nodeFactory.create( this.model.getType(), this.model );
-
-	function queueNode( node ) {
-		var promise;
-		if ( typeof node.generateContents === 'function' ) {
-			if ( node.isGenerating() ) {
-				promise = $.Deferred();
-				node.once( 'rerender', promise.resolve );
-				promises.push( promise );
-			}
-		}
-	}
-
-	// Traverse children to see when they are all rerendered
-	if ( this.view instanceof ve.ce.BranchNode ) {
-		ve.BranchNode.static.traverse( this.view, queueNode );
-	} else {
-		queueNode( this.view );
-	}
-
-	// When all children are rerendered, replace with dm DOM
-	$.when.apply( $, promises )
-		.then( function () {
-			// Verify that the element and/or the ce node weren't destroyed
-			if ( element.view ) {
-				element.replaceWithModelDom();
-			}
-		} );
+	this.updatePreview();
 
 	// Initialize
 	this.$element.addClass( 've-ui-previewElement' );
@@ -107,6 +76,44 @@ ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 	// Cleanup
 	this.view.destroy();
 	this.view = null;
+};
+
+/**
+ * Update the preview
+ */
+ve.ui.PreviewElement.prototype.updatePreview = function () {
+	var promises = [],
+		element = this;
+
+	// Initial CE node
+	this.view = ve.ce.nodeFactory.create( this.model.getType(), this.model );
+
+	function queueNode( node ) {
+		var promise;
+		if ( typeof node.generateContents === 'function' ) {
+			if ( node.isGenerating() ) {
+				promise = $.Deferred();
+				node.once( 'rerender', promise.resolve );
+				promises.push( promise );
+			}
+		}
+	}
+
+	// Traverse children to see when they are all rerendered
+	if ( this.view instanceof ve.ce.BranchNode ) {
+		ve.BranchNode.static.traverse( this.view, queueNode );
+	} else {
+		queueNode( this.view );
+	}
+
+	// When all children are rerendered, replace with dm DOM
+	$.when.apply( $, promises )
+		.then( function () {
+			// Verify that the element and/or the ce node weren't destroyed
+			if ( element.view ) {
+				element.replaceWithModelDom();
+			}
+		} );
 };
 
 /**
