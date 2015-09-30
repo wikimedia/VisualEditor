@@ -43,6 +43,10 @@
 	overflow: hidden;
 }
 
+.ve-ce-focusableNode-highlight-error {
+	background: #f00;
+}
+
 .ve-ce-focusableNode-highlight-relocatable-marker {
 	width: 100%;
 	height: 100%;

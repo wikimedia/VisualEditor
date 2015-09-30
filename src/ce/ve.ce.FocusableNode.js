@@ -80,8 +80,9 @@ OO.initClass( ve.ce.FocusableNode );
  * @return {jQuery} A highlight element
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
+	var extraClasses = this.generatedContentsValid ? '' : ' ve-ce-focusableNode-highlight-error';
 	return $( '<div>' )
-		.addClass( 've-ce-focusableNode-highlight' )
+		.addClass( 've-ce-focusableNode-highlight' + extraClasses )
 		.prop( {
 			title: this.constructor.static.getDescription( this.model ),
 			draggable: false
