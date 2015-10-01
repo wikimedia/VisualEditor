@@ -15,6 +15,7 @@
 ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	// Properties
 	this.generatingPromise = null;
+	this.generatedContentsValid = false;
 
 	// Events
 	this.model.connect( this, { update: 'onGeneratedContentNodeUpdate' } );
@@ -143,14 +144,19 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 		this.emit( 'teardown' );
 	}
 	$newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
-	if ( !this.$element[ 0 ].parentNode ) {
-		// this.$element hasn't been attached yet, so just overwrite it
-		this.$element = $newElements;
+	if ( this.validateGeneratedContents( $( generatedContents ) ) ) {
+		this.generatedContentsValid = true;
+		if ( !this.$element[ 0 ].parentNode ) {
+			// this.$element hasn't been attached yet, so just overwrite it
+			this.$element = $newElements;
+		} else {
+			// Switch out this.$element (which can contain multiple siblings) in place
+			this.$element.first().replaceWith( $newElements );
+			this.$element.remove();
+			this.$element = $newElements;
+		}
 	} else {
-		// Switch out this.$element (which can contain multiple siblings) in place
-		this.$element.first().replaceWith( $newElements );
-		this.$element.remove();
-		this.$element = $newElements;
+		this.generatedContentsValid = false;
 	}
 
 	// Update focusable and resizable elements if necessary
@@ -177,6 +183,18 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
  */
 ve.ce.GeneratedContentNode.prototype.afterRender = function () {
 	this.emit( 'rerender' );
+};
+
+/**
+ * Check whether the response HTML contains an error.
+ *
+ * The default implementation always returns true.
+ *
+ * @param {jQuery} $element The generated element
+ * @return {boolean} There is no error
+ */
+ve.ce.GeneratedContentNode.prototype.validateGeneratedContents = function () {
+	return true;
 };
 
 /**
