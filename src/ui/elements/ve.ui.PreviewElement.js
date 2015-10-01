@@ -124,8 +124,3 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 ve.ui.PreviewElement.prototype.isGenerating = function () {
 	return this.view && this.view.isGenerating();
 };
-
-/**
- * @deprecated PreviewWidget has been renamed to PreviewElement
- */
-ve.ui.PreviewWidget = ve.ui.PreviewElement;
