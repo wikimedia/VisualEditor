@@ -80,7 +80,8 @@ OO.initClass( ve.ce.FocusableNode );
  * @return {jQuery} A highlight element
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
-	var extraClasses = this.generatedContentsValid ? '' : ' ve-ce-focusableNode-highlight-error';
+	// For GCNs check this.generatedContentsValid; for non-GCNs it is undefined (and therefore falsey)
+	var extraClasses = ( this.generatedContentsValid === undefined || this.generatedContentsValid ) ? '' : ' ve-ce-focusableNode-highlight-error';
 	return $( '<div>' )
 		.addClass( 've-ce-focusableNode-highlight' + extraClasses )
 		.prop( {
