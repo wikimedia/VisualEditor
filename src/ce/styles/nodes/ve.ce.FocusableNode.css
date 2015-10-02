@@ -54,7 +54,7 @@
 
 .ve-ce-focusableNode-highlights-relocating .ve-ce-focusableNode-highlight-relocatable-marker {
 	background: #000;
-	background: rgba(0, 0, 0, 1);
+	background: rgba( 0, 0, 0, 1 );
 }
 
 /* Prevent 'copy image' appearing in context menu */

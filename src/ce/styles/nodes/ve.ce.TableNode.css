@@ -33,7 +33,7 @@
 .ve-ce-tableNodeOverlay-selection-box {
 	position: absolute;
 	border: solid 0 #6da9f7;
-	background: rgba(109, 169, 247, 0.3); /* #6da9f7 */
+	background: rgba( 109, 169, 247, 0.3 ); /* #6da9f7 */
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -51,10 +51,10 @@
 }
 
 .ve-ce-tableNodeOverlay-selection-box-notEditable {
-	background-image: -ms-repeating-linear-gradient(-45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
-	background-image: -webkit-repeating-linear-gradient(-45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
-	background-image: -moz-repeating-linear-gradient(-45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px);
-	background-image: repeating-linear-gradient(-45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -ms-repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -webkit-repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -moz-repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px);
+	background-image: repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
 }
 
 .ve-ce-tableNodeOverlay-selection-box-anchor {

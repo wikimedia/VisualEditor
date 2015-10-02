@@ -65,6 +65,6 @@
 	overflow: auto;
 }
 
-.ve-ui-linearContextItem-body:not(:empty) {
+.ve-ui-linearContextItem-body:not( :empty ) {
 	padding: 0 1em 1em 1em;
 }
