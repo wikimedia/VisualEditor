@@ -15,16 +15,17 @@
  * @class
  * @param {ve.dm.Document} doc Document
  * @param {ve.dm.Transaction} transaction Transaction
+ * @param {boolean} isStaging Transaction is being applied in staging mode
  * @constructor
  */
-ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction ) {
+ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction, isStaging ) {
 	// Properties
 	this.document = doc;
 	this.transaction = transaction;
 	this.operations = transaction.getOperations();
 	this.modificationQueue = [];
 	this.rollbackQueue = [];
-	this.synchronizer = new ve.dm.DocumentSynchronizer( doc, transaction );
+	this.synchronizer = new ve.dm.DocumentSynchronizer( doc, transaction, isStaging );
 	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
 	// the cursor only ever moves forward.
 	this.cursor = 0;
