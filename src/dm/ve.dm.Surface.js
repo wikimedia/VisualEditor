@@ -625,8 +625,7 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
  * @fires contextChange
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
-	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
-		startNode, selectedNode, range, selectedAnnotations, isCollapsed,
+	var insertionAnnotations, startNode, selectedNode, range, selectedAnnotations,
 		oldSelection = this.selection,
 		branchNodes = {},
 		selectionChange = false,
@@ -668,48 +667,24 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 			}
 		}
 
-		// Figure out which annotations to use for insertions
-		if ( range.isCollapsed() ) {
-			// Get annotations from either side of the cursor
-			left = Math.max( 0, range.start - 1 );
-			if ( !linearData.isContentOffset( left ) ) {
-				left = -1;
-			}
-			right = Math.max( 0, range.start );
-			if ( !linearData.isContentOffset( right ) ) {
-				right = -1;
-			}
-			selectedAnnotations = linearData.getAnnotationsFromOffset( range.start );
-			isCollapsed = true;
-		} else {
-			// Get annotations from the first character of the range
-			left = linearData.getNearestContentOffset( range.start );
-			right = linearData.getNearestContentOffset( range.end );
-			selectedAnnotations = linearData.getAnnotationsFromRange( range, true );
-			isCollapsed = false;
-		}
-		if ( left === -1 ) {
-			// No content offset to our left, use empty set
-			insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
-		} else {
-			// Include annotations on the left that should be added to appended content, or ones that
-			// are on both the left and the right that should not
-			leftAnnotations = linearData.getAnnotationsFromOffset( left );
-			if ( right !== -1 ) {
-				rightAnnotations = linearData.getAnnotationsFromOffset( right );
-				insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
-					return annotation.constructor.static.applyToAppendedContent ||
-						rightAnnotations.containsComparable( annotation );
-				} );
-			} else {
-				insertionAnnotations = leftAnnotations;
-			}
-		}
-
-		// Only emit an annotations change event if there's a difference
-		// Note that ANY difference matters here, even order
+		// Reset insertionAnnotations based on the neighbouring document data
+		insertionAnnotations = linearData.getInsertionAnnotationsFromRange( range );
+		// If there's *any* difference in insertion annotations (even order), then:
+		// * emit insertionAnnotationsChange
+		// * emit contextChange (TODO: is this desirable?)
 		if ( !insertionAnnotations.equalsInOrder( this.insertionAnnotations ) ) {
 			this.setInsertionAnnotations( insertionAnnotations );
+		}
+
+		// Reset selectedAnnotations
+		if ( range.isCollapsed() ) {
+			selectedAnnotations = linearData.getAnnotationsFromOffset( range.start );
+		} else {
+			selectedAnnotations = linearData.getAnnotationsFromRange( range, true );
+		}
+		if ( !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
+			this.selectedAnnotations = selectedAnnotations;
+			contextChange = true;
 		}
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		if ( selection.isSingleCell() ) {
@@ -720,16 +695,11 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		contextChange = true;
 	}
 
-	if ( selectedAnnotations && !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
-		this.selectedAnnotations = selectedAnnotations;
-		contextChange = true;
-	}
-
-	if ( isCollapsed !== this.isCollapsed ) {
+	if ( range && range.isCollapsed() !== this.isCollapsed ) {
 		// selectedAnnotations won't have changed if going from insertion annotations to
 		// selection of the same annotations, but some tools will consider that a context change
 		// (e.g. ClearAnnotationTool).
-		this.isCollapsed = isCollapsed;
+		this.isCollapsed = range.isCollapsed();
 		contextChange = true;
 	}
 

@@ -381,6 +381,50 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getInsertionAnnotationsFromRange', function ( assert ) {
+	var html, linearData, tests,
+		u = ve.dm.example.underline;
+
+	// <h1>:0 a:1 b:2 c:3 d:4 e:5 f:6 </h1>:7 <p>:8 g:9 </p>:10 <div>:11 </div>:12
+	html = '<h1>ab<u>cd</u>ef</h1><p><u>g</u></p><div></div>';
+	tests = [
+		{ range: [ 1, 1 ], expected: [], msg: 'plain start at block start' },
+		{ range: [ 2, 2 ], expected: [], msg: 'plain interior' },
+		{ range: [ 3, 3 ], expected: [], msg: 'plain end before u' },
+		{ range: [ 4, 4 ], expected: [ u ], msg: 'u start' },
+		{ range: [ 5, 5 ], expected: [ u ], msg: 'u interior' },
+		{ range: [ 6, 6 ], expected: [], msg: 'plain start after u' },
+		{ range: [ 7, 7 ], expected: [], msg: 'plain end at block end' },
+		{ range: [ 9, 9 ], expected: [], msg: 'block start before u' },
+		{ range: [ 10, 10 ], expected: [ u ], msg: 'u end before block end' },
+		{ range: [ 12, 12 ], expected: [], msg: 'empty block' },
+		{ range: [ 2, 3 ], expected: [], msg: 'forward to u start' },
+		{ range: [ 3, 2 ], expected: [], msg: 'backward to u start' },
+		{ range: [ 2, 4 ], expected: [], msg: 'forward past u start' },
+		{ range: [ 4, 2 ], expected: [], msg: 'backward past u start' },
+		{ range: [ 3, 4 ], expected: [ u ], msg: 'forward to u end' },
+		{ range: [ 4, 3 ], expected: [ u ], msg: 'backward to u end' },
+		{ range: [ 3, 5 ], expected: [ u ], msg: 'forward past u end' },
+		{ range: [ 5, 3 ], expected: [ u ], msg: 'backward past u end' }
+	];
+
+	QUnit.expect( tests.length );
+	linearData = ve.dm.converter.getModelFromDom(
+		ve.createDocumentFromHtml( html )
+	).data;
+	tests.forEach( function ( test ) {
+		var observed = linearData.getInsertionAnnotationsFromRange(
+			new ve.Range( test.range[ 0 ], test.range[ 1 ] )
+		).get().map( function ( annotation ) {
+			return {
+				type: annotation.element.type,
+				attributes: annotation.element.attributes
+			};
+		} );
+		assert.deepEqual( observed, test.expected, test.msg );
+	} );
+} );
+
 QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 	var i, data, doc,
 		cases = [
