@@ -28,8 +28,13 @@ QUnit.test( 'Converter tests', function ( assert ) {
 			view = new ve.ce.Document( model );
 			$documentElement = view.getDocumentNode().$element;
 			// Simplify slugs
-			$documentElement.find( '.ve-ce-branchNode-slug' ).children().remove();
-			assert.equalDomElement( $documentElement[ 0 ].firstChild, ve.createDocumentFromHtml( caseItem.ceHtml ).body.firstChild, msg );
+			$documentElement.find( '.ve-ce-branchNode-slug' ).contents().remove();
+			assert.equalDomElement(
+				// Wrap both in plain DIVs as we are only comparing the child nodes
+				$( '<div>' ).append( $documentElement.contents() )[ 0 ],
+				$( '<div>' ).append( ve.createDocumentFromHtml( caseItem.ceHtml ).body.childNodes )[ 0 ],
+				msg
+			);
 		}
 	}
 } );

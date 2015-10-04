@@ -3204,7 +3204,10 @@ ve.dm.example.domToDataCases = {
 			{ type: '/blockquote' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		ceHtml: '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
+			'<center class="ve-ce-branchNode"><p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Foo</p></center>' +
+			'<blockquote class="ve-ce-branchNode">Bar</blockquote>'
 	}
 };
 
