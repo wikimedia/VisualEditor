@@ -19,6 +19,13 @@ ve.dm.GeneratedContentNode = function VeDmGeneratedContentNode() {
 
 OO.initClass( ve.dm.GeneratedContentNode );
 
+/* Events */
+
+/**
+ * @event generatedContentsError
+ * @param {jQuery} $element Element containing the error message
+ */
+
 /* Static methods */
 
 /**
