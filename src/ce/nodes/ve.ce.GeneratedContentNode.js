@@ -15,7 +15,7 @@
 ve.ce.GeneratedContentNode = function VeCeGeneratedContentNode() {
 	// Properties
 	this.generatingPromise = null;
-	this.generatedContentsValid = false;
+	this.generatedContentsInvalid = null;
 	this.generatedContentsFirstRender = true;
 
 	// Events
@@ -145,11 +145,11 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 		this.emit( 'teardown' );
 	}
 	$newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	this.generatedContentsInvalid = !this.validateGeneratedContents( $( generatedContents ) );
 	// Render if this is the first time rendering, regardless of whether there is an error; otherwise only
 	// render if there is no error
-	if ( this.generatedContentsFirstRender || this.validateGeneratedContents( $( generatedContents ) ) ) {
+	if ( this.generatedContentsFirstRender || !this.generatedContentsInvalid ) {
 		this.generatedContentsFirstRender = false;
-		this.generatedContentsValid = true;
 		if ( !this.$element[ 0 ].parentNode ) {
 			// this.$element hasn't been attached yet, so just overwrite it
 			this.$element = $newElements;
@@ -159,8 +159,6 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents ) {
 			this.$element.remove();
 			this.$element = $newElements;
 		}
-	} else {
-		this.generatedContentsValid = false;
 	}
 
 	// Update focusable and resizable elements if necessary
