@@ -324,16 +324,17 @@ ve.dm.Document.prototype.getLength = function () {
  *
  * @method
  * @param {ve.dm.Transaction} transaction Transaction to apply
+ * @param {boolean} isStaging Transaction is being applied in staging mode
  * @fires transact
  * @throws {Error} Cannot commit a transaction that has already been committed
  */
-ve.dm.Document.prototype.commit = function ( transaction ) {
+ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 	var doc = this;
 	if ( transaction.hasBeenApplied() ) {
 		throw new Error( 'Cannot commit a transaction that has already been committed' );
 	}
 	this.emit( 'precommit' );
-	new ve.dm.TransactionProcessor( this, transaction ).process( function () {
+	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process( function () {
 		doc.emit( 'presynchronize', transaction );
 	} );
 	this.completeHistory.push( transaction );

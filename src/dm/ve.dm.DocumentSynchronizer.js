@@ -21,14 +21,16 @@
  * @constructor
  * @param {ve.dm.Document} doc Document to synchronize
  * @param {ve.dm.Transaction} transaction The transaction being synchronized for
+ * @param {boolean} isStaging Transaction is being applied in staging mode
  */
-ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc, transaction ) {
+ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc, transaction, isStaging ) {
 	// Properties
 	this.document = doc;
 	this.actionQueue = [];
 	this.eventQueue = [];
 	this.adjustment = 0;
 	this.transaction = transaction;
+	this.isStaging = isStaging;
 };
 
 /* Static Properties */
@@ -64,7 +66,7 @@ ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
 		// No tree synchronization needed
 		// Queue events
 		this.queueEvent( selection[ i ].node, 'annotation' );
-		this.queueEvent( selection[ i ].node, 'update' );
+		this.queueEvent( selection[ i ].node, 'update', this.isStaging );
 	}
 };
 
@@ -81,7 +83,7 @@ ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function ( action ) {
 	// No tree synchronization needed
 	// Queue events
 	this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
-	this.queueEvent( action.node, 'update' );
+	this.queueEvent( action.node, 'update', this.isStaging );
 };
 
 /**

@@ -35,6 +35,7 @@ ve.dm.Node = function VeDmNode( element ) {
 
 /**
  * @event update
+ * @param {boolean} staged Transaction was applied in staging mode
  */
 
 /* Inheritance */

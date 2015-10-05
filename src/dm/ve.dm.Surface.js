@@ -801,7 +801,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 					}
 				}
 				// The .commit() call below indirectly invokes setSelection()
-				this.getDocument().commit( transactions[ i ] );
+				this.getDocument().commit( transactions[ i ], this.isStaging() );
 				if ( transactions[ i ].hasElementAttributeOperations() ) {
 					contextChange = true;
 				}
