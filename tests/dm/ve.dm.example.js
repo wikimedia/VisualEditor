@@ -3191,14 +3191,16 @@ ve.dm.example.domToDataCases = {
 		normalizedBody: '<p><!--&#62;Foo-bar-&#45;>b&#38;r&#45;--></p>',
 		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-">&nbsp;</span></p>'
 	},
-	'other branch nodes': {
-		body: '<center>Foo</center><blockquote>Bar</blockquote>',
+	'other block nodes': {
+		body: '<center>Foo</center><hr><blockquote>Bar</blockquote>',
 		data: [
 			{ type: 'center' },
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'F', 'o', 'o',
 			{ type: '/paragraph' },
 			{ type: '/center' },
+			{ type: 'horizontalRule' },
+			{ type: '/horizontalRule' },
 			{ type: 'blockquote' },
 			'B', 'a', 'r',
 			{ type: '/blockquote' },
@@ -3207,6 +3209,8 @@ ve.dm.example.domToDataCases = {
 		],
 		ceHtml: '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
 			'<center class="ve-ce-branchNode"><p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Foo</p></center>' +
+			'<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
+			'<div class="ve-ce-focusableNode ve-ce-horizontalRuleNode" contenteditable="false"><hr class="ve-ce-leafNode"></div>' +
 			'<blockquote class="ve-ce-branchNode">Bar</blockquote>'
 	}
 };
