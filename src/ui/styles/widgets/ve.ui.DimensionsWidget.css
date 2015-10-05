@@ -14,5 +14,11 @@
 }
 
 .ve-ui-dimensionsWidget .oo-ui-labelWidget {
-	padding: 0.5em;
+	padding-right: 0.5em;
+	line-height: 2.35em;
+	vertical-align: middle;
+}
+
+.ve-ui-dimensionsWidget .oo-ui-labelWidget:last-child {
+	padding-right: 0;
 }
