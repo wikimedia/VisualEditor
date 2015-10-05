@@ -158,6 +158,9 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 			this.$element.remove();
 			this.$element = $newElements;
 		}
+	} else {
+		this.generatedContentsValid = false;
+		this.model.emit( 'generatedContentsError', $newElements );
 	}
 
 	// Update focusable and resizable elements if necessary
