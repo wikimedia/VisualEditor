@@ -22,8 +22,8 @@
 .ve-ce-branchNode-newSlug {
 	margin: -0.3em 0 -0.1em 0;
 	outline: 1px dashed #ccc;
-	/* rgba(#f1f7fb, 0.5) */
-	background-color: rgba(241, 247, 251, 0.75);
+	/* rgba( #f1f7fb, 0.5 ) */
+	background-color: rgba( 241, 247, 251, 0.75 );
 }
 
 .ve-ce-branchNode-newSlug-open {
@@ -89,7 +89,7 @@ pre.ve-ce-branchNode {
 .ve-ce-branchNode h5:empty:before,
 .ve-ce-branchNode h6:empty:before,
 .ve-ce-branchNode p:empty:before {
-	content: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
 }
 
 /* Emulate the first paragraph in each list item being unwrapped */
