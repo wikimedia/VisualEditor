@@ -210,7 +210,7 @@ ve.ce.GeneratedContentNode.prototype.validateGeneratedContents = function () {
  */
 ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
 	var store = this.model.doc.getStore(),
-		index = store.indexOfHash( OO.getHash( [ this.model, config ] ) );
+		index = store.indexOfHash( OO.getHash( [ this.model.getHashObjectForRendering(), config ] ) );
 	if ( index !== null ) {
 		this.render( store.value( index ), staged );
 	} else {
@@ -298,7 +298,7 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 	// in the meantime. Handle this gracefully.
 	if ( this.model.doc ) {
 		store = this.model.doc.getStore();
-		hash = OO.getHash( [ this.model, config ] );
+		hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
 		store.index( generatedContents, hash );
 	}
 
