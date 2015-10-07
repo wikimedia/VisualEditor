@@ -30,14 +30,6 @@ ve.ui.LinkAnnotationInspector.static.title = OO.ui.deferMsg( 'visualeditor-linki
 
 ve.ui.LinkAnnotationInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
-ve.ui.LinkAnnotationInspector.static.actions = ve.ui.LinkAnnotationInspector.super.static.actions.concat( [
-	{
-		action: 'open',
-		label: OO.ui.deferMsg( 'visualeditor-linkinspector-open' ),
-		modes: [ 'edit', 'insert' ]
-	}
-] );
-
 /* Methods */
 
 /**
@@ -58,7 +50,7 @@ ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
 
 	this.annotationInput.getTextInputWidget().isValid().done( function ( isValid ) {
 		isValid = isValid && !!annotation;
-		inspector.actions.forEach( { actions: [ 'open', 'done', 'insert' ] }, function ( action ) {
+		inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, function ( action ) {
 			action.setDisabled( !isValid );
 		} );
 	} );
@@ -169,17 +161,6 @@ ve.ui.LinkAnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 		.next( function () {
 			this.annotationInput.setAnnotation( null );
 		}, this );
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.LinkAnnotationInspector.prototype.getActionProcess = function ( action ) {
-	if ( action === 'open' ) {
-		window.open( this.annotationInput.getHref() );
-	}
-
-	return ve.ui.LinkAnnotationInspector.super.prototype.getActionProcess.call( this, action );
 };
 
 /* Registration */
