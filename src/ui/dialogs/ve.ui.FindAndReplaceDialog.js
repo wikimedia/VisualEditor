@@ -62,6 +62,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.query = null;
 	this.findText = new OO.ui.TextInputWidget( {
 		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' ),
+		value: ve.userConfig( 'visualeditor-findAndReplace-findText' ),
 		validate: ( function ( dialog ) {
 			return function () {
 				return !dialog.invalidRegex;
@@ -90,7 +91,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' )
 	} );
 	this.replaceText = new OO.ui.TextInputWidget( {
-		placeholder: ve.msg( 'visualeditor-find-and-replace-replace-text' )
+		placeholder: ve.msg( 'visualeditor-find-and-replace-replace-text' ),
+		value: ve.userConfig( 'visualeditor-findAndReplace-replaceText' )
 	} );
 	this.replaceButton = new OO.ui.ButtonWidget( {
 		label: ve.msg( 'visualeditor-find-and-replace-replace-button' )
@@ -133,7 +135,11 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.renderFragmentsDebounced = ve.debounce( this.renderFragments.bind( this ) );
 	this.findText.connect( this, {
 		change: 'onFindChange',
-		enter: 'onFindTextEnter'
+		enter: 'onFindReplaceTextEnter'
+	} );
+	this.replaceText.connect( this, {
+		change: 'onReplaceChange',
+		enter: 'onFindReplaceTextEnter'
 	} );
 	this.matchCaseToggle.connect( this, { change: 'onFindChange' } );
 	this.regexToggle.connect( this, { change: 'onFindChange' } );
@@ -259,17 +265,25 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	this.renderFragments();
 	this.highlightFocused( true );
 	ve.userConfig( {
+		'visualeditor-findAndReplace-findText': this.findText.getValue(),
 		'visualeditor-findAndReplace-matchCase': this.matchCaseToggle.getValue(),
 		'visualeditor-findAndReplace-regex': this.regexToggle.getValue()
 	} );
 };
 
 /**
- * Handle enter events on the find text input
+ * Handle change events to the replace input
+ */
+ve.ui.FindAndReplaceDialog.prototype.onReplaceChange = function () {
+	ve.userConfig( 'visualeditor-findAndReplace-replaceText', this.replaceText.getValue() );
+};
+
+/**
+ * Handle enter events on the find text and replace text inputs
  *
  * @param {jQuery.Event} e
  */
-ve.ui.FindAndReplaceDialog.prototype.onFindTextEnter = function ( e ) {
+ve.ui.FindAndReplaceDialog.prototype.onFindReplaceTextEnter = function ( e ) {
 	if ( !this.results ) {
 		return;
 	}
