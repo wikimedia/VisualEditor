@@ -55,16 +55,18 @@ ve.ce.LinkAnnotation.static.getDescription = function ( model ) {
  * @return {HTMLElement} The new nail
  */
 ve.ce.LinkAnnotation.static.makeNail = function ( type ) {
-	return $( '<img>' )
+	var $nail = $( '<img>' )
 		.prop( 'src', ve.inputDebug ? ve.ce.nailImgDataUri : ve.ce.minImgDataUri )
 		// The following classes can be used here:
 		// ve-ce-nail-pre-open
 		// ve-ce-nail-pre-close
 		// ve-ce-nail-post-open
 		// ve-ce-nail-post-close
-		.addClass( 've-ce-nail ve-ce-nail-' + type )
-		.css( { width: ve.inputDebug ? '' : '0', height: ve.inputDebug ? '' : '0' } )
-		.get( 0 );
+		.addClass( 've-ce-nail ve-ce-nail-' + type );
+	if ( ve.inputDebug ) {
+		$nail.addClass( 've-ce-nail-debug' );
+	}
+	return $nail.get( 0 );
 };
 
 /* Methods */
