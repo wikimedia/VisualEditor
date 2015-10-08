@@ -48,11 +48,21 @@ ve.ce.LinkAnnotation.static.getDescription = function ( model ) {
 	return model.getHref();
 };
 
+/**
+ * Create a nail (a zero-width image) to add extra cursor positions around links
+ *
+ * @param {string} type Nail type, one of 'pre-open', 'pre-close', 'post-open' and 'post-close'
+ * @return {HTMLElement} The new nail
+ */
 ve.ce.LinkAnnotation.static.makeNail = function ( type ) {
 	return $( '<img>' )
 		.prop( 'src', ve.inputDebug ? ve.ce.nailImgDataUri : ve.ce.minImgDataUri )
-		.addClass( 've-ce-nail' )
-		.addClass( 've-ce-nail-' + type )
+		// The following classes can be used here:
+		// ve-ce-nail-pre-open
+		// ve-ce-nail-pre-close
+		// ve-ce-nail-post-open
+		// ve-ce-nail-post-close
+		.addClass( 've-ce-nail ve-ce-nail-' + type )
 		.css( { width: ve.inputDebug ? '' : '0', height: ve.inputDebug ? '' : '0' } )
 		.get( 0 );
 };

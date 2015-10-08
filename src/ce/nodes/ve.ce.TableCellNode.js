@@ -136,6 +136,9 @@ ve.ce.TableCellNode.prototype.onAttributeChange = function ( key, from, to ) {
 			}
 			break;
 		case 'style':
+			// The following classes can be used here:
+			// ve-ce-tableCellNode-data
+			// ve-ce-tableCellNode-header
 			this.$element
 				.removeClass( 've-ce-tableCellNode-' + from )
 				.addClass( 've-ce-tableCellNode-' + to );
