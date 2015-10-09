@@ -8,13 +8,6 @@ QUnit.module( 've.ce' );
 
 /* Tests */
 
-QUnit.test( 'whitespacePattern', 4, function ( assert ) {
-	assert.deepEqual( 'a b'.match( ve.ce.whitespacePattern ), [ ' ' ], 'matches spaces' );
-	assert.deepEqual( 'a\u00A0b'.match( ve.ce.whitespacePattern ), [ '\u00A0' ], 'matches non-breaking spaces' );
-	assert.strictEqual( 'a\tb'.match( ve.ce.whitespacePattern ), null, 'does not match tab' );
-	assert.strictEqual( 'ab'.match( ve.ce.whitespacePattern ), null, 'does not match non-whitespace' );
-} );
-
 QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) {
 	var i, view, documentView,
 		cases = [
@@ -72,6 +65,12 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 				html: '<div><p>foo</p><div class="ve-ce-cursorHolder">x</div><p>bar</p></div>',
 				hash: '<DIV><P>#</P><P>#</P></DIV>',
 				text: 'foobar'
+			},
+			{
+				msg: 'nbsp is normalized to space, but tab is not',
+				html: '<div><p>a b\u00A0c\td</p></div>',
+				hash: '<DIV><P>#</P></DIV>',
+				text: 'a b c\td'
 			}
 		];
 

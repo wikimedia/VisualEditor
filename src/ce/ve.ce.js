@@ -16,16 +16,6 @@ ve.ce = {
 /* Static Properties */
 
 /**
- * RegExp pattern for matching all whitespaces in HTML text.
- *
- * \u0020 (32) space
- * \u00A0 (160) non-breaking space
- *
- * @property
- */
-ve.ce.whitespacePattern = /[\u0020\u00A0]/g;
-
-/**
  * Data URI for minimal GIF image.
  */
 ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODdhAQABAADcACwAAAAAAQABAAA';
@@ -90,9 +80,8 @@ ve.ce.getDomText = function ( element ) {
 		}
 		return text;
 	};
-	// Return the text, replacing spaces and non-breaking spaces with spaces?
-	// TODO: Why are we replacing spaces (\u0020) with spaces (' ')
-	return func( element ).replace( ve.ce.whitespacePattern, ' ' );
+	// Return the text, replacing non-breaking spaces with spaces
+	return func( element ).replace( /\u00A0/g, ' ' );
 };
 
 /**
