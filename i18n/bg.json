@@ -4,7 +4,8 @@
 			"DCLXVI",
 			"Hristofor.mirchev",
 			"පසිඳු කාවින්ද",
-			"Aquilax"
+			"Aquilax",
+			"V111P"
 		]
 	},
 	"visualeditor-align-widget-center": "Центриране",
@@ -27,6 +28,7 @@
 	"visualeditor-dialog-action-cancel": "Отказване",
 	"visualeditor-dialog-action-goback": "Връщане",
 	"visualeditor-dialog-command-help-title": "Клавишни комбинации",
+	"visualeditor-find-and-replace-next-button": "Търсене",
 	"visualeditor-formatdropdown-format-heading1": "Заглавие 1",
 	"visualeditor-formatdropdown-format-heading2": "Заглавие 2",
 	"visualeditor-formatdropdown-format-heading3": "Заглавие 3",
