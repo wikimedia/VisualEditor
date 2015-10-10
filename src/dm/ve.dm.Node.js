@@ -9,6 +9,7 @@
  *
  * @abstract
  * @extends ve.dm.Model
+ * @mixins OO.EventEmitter
  * @mixins ve.Node
  *
  * @constructor
