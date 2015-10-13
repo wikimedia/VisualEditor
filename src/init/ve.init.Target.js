@@ -377,6 +377,10 @@ ve.init.Target.prototype.scrollCursorIntoView = function ( surface ) {
 		return;
 	}
 
+	if ( OO.ui.contains( surface.getView().$pasteTarget[ 0 ], nativeRange.startContainer, true ) ) {
+		return;
+	}
+
 	clientRect = RangeFix.getBoundingClientRect( nativeRange );
 	if ( !clientRect ) {
 		return;
