@@ -211,7 +211,6 @@ ve.dm.Surface.prototype.getStagingTransactions = function () {
  * Push another level of staging to the staging stack
  *
  * @param {boolean} [allowUndo=false] Allow undo while staging
- * @fires history
  */
 ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
 	// If we're starting staging stop history tracking
@@ -487,13 +486,12 @@ ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excl
 /**
  * Prevent future states from being redone.
  *
- * @fires history
+ * Callers should eventually emit a 'history' event after using this method.
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
 	if ( this.undoIndex ) {
 		this.undoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
 		this.undoIndex = 0;
-		this.emit( 'history' );
 	}
 };
 
@@ -782,6 +780,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @param {ve.dm.Selection} [selection] [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
  * @fires select
+ * @fires history
  * @fires contextChange
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
@@ -825,6 +824,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 			}
 		}
 		this.transacting = false;
+		this.emit( 'history' );
 	}
 	selectionAfter = this.selection;
 
@@ -856,7 +856,6 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 /**
  * Set a history state breakpoint.
  *
- * @fires history
  * @return {boolean} A breakpoint was added
  */
 ve.dm.Surface.prototype.breakpoint = function () {
@@ -870,7 +869,6 @@ ve.dm.Surface.prototype.breakpoint = function () {
 			selectionBefore: this.selectionBefore.clone()
 		} );
 		this.newTransactions = [];
-		this.emit( 'history' );
 		return true;
 	} else if ( this.selectionBefore.isNull() && !this.selection.isNull() ) {
 		this.selectionBefore = this.selection.clone();
@@ -880,8 +878,6 @@ ve.dm.Surface.prototype.breakpoint = function () {
 
 /**
  * Step backwards in history.
- *
- * @fires history
  */
 ve.dm.Surface.prototype.undo = function () {
 	var i, item, transaction, transactions = [];
@@ -904,14 +900,11 @@ ve.dm.Surface.prototype.undo = function () {
 			transactions.push( transaction );
 		}
 		this.changeInternal( transactions, item.selectionBefore, true );
-		this.emit( 'history' );
 	}
 };
 
 /**
  * Step forwards in history.
- *
- * @fires history
  */
 ve.dm.Surface.prototype.redo = function () {
 	var item;
@@ -926,7 +919,6 @@ ve.dm.Surface.prototype.redo = function () {
 		// ve.copy( item.transactions ) invokes .clone() on each transaction in item.transactions
 		this.changeInternal( ve.copy( item.transactions ), item.selection, true );
 		this.undoIndex--;
-		this.emit( 'history' );
 	}
 };
 
