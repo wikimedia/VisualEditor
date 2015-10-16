@@ -152,9 +152,17 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
  * @return {number} return.offset location offset within the node
  */
 ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offset ) {
-	var node, startOffset, current, stack, item, $item, length, model,
-		countedNodes = [],
-		slug = this.getSlugAtOffset( offset );
+	var node, startOffset, current, stack, item, $item, length, model, slug,
+		countedNodes = [];
+
+	// Ask for the node first, so we can ask it to render, because that fixes up various things
+	// and _creates_ the slug if necessary.
+	node = this.getBranchNodeFromOffset( offset );
+	if ( node instanceof ve.ce.ContentBranchNode ) {
+		node.renderContents();
+	}
+
+	slug = this.getSlugAtOffset( offset );
 
 	// If we're a block slug, or an empty inline slug, return its location
 	// Start at the current branch node; get its start offset
@@ -172,7 +180,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	) ) {
 		return { node: slug, offset: 0 };
 	}
-	node = this.getBranchNodeFromOffset( offset );
+
 	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );
 	current = [ node.$element.contents(), 0 ];
 	stack = [ current ];
