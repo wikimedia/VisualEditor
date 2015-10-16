@@ -75,8 +75,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	// Snapshot updated at keyDown. See storeKeyDownState.
 	this.keyDownState = {
 		event: null,
-		selection: null,
-		focusIsAfterAnnotationBoundary: null
+		selection: null
 	};
 
 	this.cursorDirectionality = null;
@@ -2552,60 +2551,83 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  *
  * These are normally caused by the user interacting directly with the contenteditable.
  *
- * @param {Object|null} contentChange Observed change in a CE node's content
- * @param {ve.ce.Node} contentChange.node CE node the change occurred in
- * @param {Object} contentChange.previous Old data
- * @param {Object} contentChange.next New data
- *
- * @param {Object|null} branchNodeChange Change of the selected BranchNode
- * @param {ve.ce.BranchNode} branchNodeChange.oldBranchNode Node from which the range anchor has just moved
- * @param {ve.ce.BranchNode} branchNodeChange.newBranchNode Node into which the range anchor has just moved
- *
- * @param {Object|null} rangeChange Change of the DOM selection
- * @param {ve.Range|null} rangeChange.oldRange The old DM range
- * @param {ve.Range|null} rangeChange.newRange The new DM range
- *
- * TODO: Clean up this interface: it's a minimal incremental step from the old emit-based interface
+ * @param {ve.ce.RangeState|null} oldState The prior range state, if any
+ * @param {ve.ce.RangeState} newState The changed range state
  */
 
-ve.ce.Surface.prototype.handleObservedChanges = function ( contentChange, branchNodeChange, rangeChange ) {
-	if ( contentChange ) {
-		this.onObservedContentChange(
-			contentChange.node,
-			contentChange.previous,
-			contentChange.next
-		);
+ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
+	var newSelection, dmContentChange,
+		dmDoc = this.getModel().getDocument(),
+		insertedText = false;
+
+	if ( newState.contentChanged ) {
+		dmContentChange = ve.ce.modelChangeFromContentChange( oldState, newState );
+		if ( !dmContentChange.rerender ) {
+			this.incRenderLock();
+		}
+		try {
+			this.changeModel( dmContentChange.transaction, dmContentChange.selection );
+		} finally {
+			if ( !dmContentChange.rerender ) {
+				this.decRenderLock();
+			}
+		}
+
+		insertedText = dmContentChange.transaction.operations.filter( function ( op ) {
+			return op.type === 'replace' && op.insert.length;
+		} ).length > 0;
 	}
-	if ( branchNodeChange ) {
-		this.onObservedBranchNodeChange(
-			branchNodeChange.oldBranchNode,
-			branchNodeChange.newBranchNode
-		);
+
+	if (
+		newState.branchNodeChanged &&
+		oldState &&
+		oldState.node &&
+		oldState.node.root &&
+		oldState.node instanceof ve.ce.ContentBranchNode
+	) {
+		oldState.node.renderContents();
 	}
-	if ( rangeChange ) {
-		this.onObservedRangeChange(
-			rangeChange.oldRange,
-			rangeChange.newRange
-		);
+
+	if ( newState.selectionChanged && !(
+		// Ignore when the newRange is just a flipped oldRange
+		oldState &&
+		oldState.veRange &&
+		newState.veRange &&
+		!newState.veRange.isCollapsed() &&
+		oldState.veRange.equalsSelection( newState.veRange )
+	) ) {
+		if ( newState.veRange ) {
+			newSelection = new ve.dm.LinearSelection( dmDoc, newState.veRange );
+		} else {
+			newSelection = new ve.dm.NullSelection( dmDoc );
+		}
+		this.incRenderLock();
+		try {
+			this.changeModel( null, newSelection );
+		} finally {
+			this.decRenderLock();
+		}
+		this.checkUnicorns( false );
+
+		// Firefox lets you create multiple selections within a single paragraph
+		// which our model doesn't support, so detect and prevent these.
+		// This shouldn't create problems with IME candidates as only an explicit user
+		// action can create a multiple selection (CTRL+click), and we remove it
+		// immediately, so there can never be a multiple selection while the user is
+		// typing text; therefore the selection change will never commit IME candidates
+		// prematurely.
+		while ( this.nativeSelection.rangeCount > 1 ) {
+			// The current range is the last range, so remove ranges from the front
+			this.nativeSelection.removeRange( this.nativeSelection.getRangeAt( 0 ) );
+		}
 	}
-	if ( branchNodeChange && branchNodeChange.newBranchNode ) {
+
+	if ( insertedText ) {
+		this.checkSequences();
+	}
+	if ( newState.branchNodeChanged && newState.node ) {
 		this.updateCursorHolders();
 		this.showModelSelection( this.getModel().getSelection() );
-	}
-};
-
-/**
- * Handle branch node changes observed from the DOM.
- *
- * @see ve.ce.SurfaceObserver#pollOnce
- *
- * @method
- * @param {ve.ce.BranchNode} oldBranchNode Node from which the range anchor has just moved
- * @param {ve.ce.BranchNode} newBranchNode Node into which the range anchor has just moved
- */
-ve.ce.Surface.prototype.onObservedBranchNodeChange = function ( oldBranchNode ) {
-	if ( oldBranchNode instanceof ve.ce.ContentBranchNode ) {
-		oldBranchNode.renderContents();
 	}
 };
 
@@ -2638,48 +2660,6 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
 	} );
 
 	this.onModelSelect();
-};
-
-/**
- * Handle selection changes observed from the DOM.
- *
- * This can be fired by a DOM selection change that doesn't cause any change in the DM range,
- * with oldRange === newRange .
- *
- * @see ve.ce.SurfaceObserver#pollOnce
- *
- * @method
- * @param {ve.Range|null} oldRange
- * @param {ve.Range|null} newRange
- */
-ve.ce.Surface.prototype.onObservedRangeChange = function ( oldRange, newRange ) {
-	if ( newRange && !newRange.isCollapsed() && oldRange && oldRange.equalsSelection( newRange ) ) {
-		// Ignore when the newRange is just a flipped oldRange
-		return;
-	}
-
-	this.incRenderLock();
-	try {
-		this.changeModel(
-			null,
-			newRange ?
-				new ve.dm.LinearSelection( this.getModel().getDocument(), newRange ) :
-				new ve.dm.NullSelection( this.getModel().getDocument() )
-		);
-	} finally {
-		this.decRenderLock();
-	}
-	this.checkUnicorns( false );
-	// Firefox lets you create multiple selections within a single paragraph
-	// which our model doesn't support, so detect and prevent these.
-	// This shouldn't create problems with IME candidates as only an explicit user action
-	// can create a multiple selection (CTRL+click), and we remove it immediately, so there can
-	// never be a multiple selection while the user is typing text; therefore the
-	// selection change will never commit IME candidates prematurely.
-	while ( this.nativeSelection.rangeCount > 1 ) {
-		// The current range is the last range, so remove ranges from the front
-		this.nativeSelection.removeRange( this.nativeSelection.getRangeAt( 0 ) );
-	}
 };
 
 /**
@@ -2745,174 +2725,6 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 		focusNode: node,
 		focusOffset: offset
 	} ) );
-};
-
-/**
- * Handle content changes observed from the DOM.
- *
- * The DOM change is analysed heuristically to build a semantically meaningful Transaction
- * with the annotations the user intended.
- *
- * @see ve.ce.SurfaceObserver#pollOnce
- *
- * @method
- * @param {ve.ce.Node} node CE node the change occurred in
- * @param {Object} previous Old data
- * @param {Object} previous.text Old plain text content
- * @param {Object} previous.hash Old DOM hash
- * @param {ve.Range} previous.range Old selection
- * @param {Object} next New data
- * @param {Object} next.text New plain text content
- * @param {Object} next.hash New DOM hash
- * @param {ve.Range} next.range New selection
- */
-ve.ce.Surface.prototype.onObservedContentChange = function ( node, previous, next ) {
-	var data, range, len, annotations, offsetDiff, sameLeadingAndTrailing,
-		previousStart, nextStart, newRange, replacementRange,
-		fromLeft = 0,
-		fromRight = 0,
-		nodeOffset = node.getModel().getOffset(),
-		previousData = previous.text.split( '' ),
-		nextData = next.text.split( '' ),
-		dmDoc = this.getModel().getDocument(),
-		modelData = dmDoc.data,
-		lengthDiff = next.text.length - previous.text.length,
-		surface = this;
-
-	if ( previous.range && next.range ) {
-		offsetDiff = ( previous.range.isCollapsed() && next.range.isCollapsed() ) ?
-			next.range.start - previous.range.start : null;
-		previousStart = previous.range.start - nodeOffset - 1;
-		nextStart = next.range.start - nodeOffset - 1;
-		sameLeadingAndTrailing = offsetDiff !== null && (
-			(
-				lengthDiff > 0 &&
-				previous.text.slice( 0, previousStart ) ===
-					next.text.slice( 0, previousStart ) &&
-				previous.text.slice( previousStart ) ===
-					next.text.slice( nextStart )
-			) ||
-			(
-				lengthDiff < 0 &&
-				previous.text.slice( 0, nextStart ) ===
-					next.text.slice( 0, nextStart ) &&
-				previous.text.slice( previousStart - lengthDiff + offsetDiff ) ===
-					next.text.slice( nextStart )
-			)
-		);
-
-		// Simple insertion
-		if ( lengthDiff > 0 && offsetDiff === lengthDiff && sameLeadingAndTrailing ) {
-			data = nextData.slice( previousStart, nextStart );
-			// Apply insertion annotations
-			if ( node.unicornAnnotations ) {
-				annotations = node.unicornAnnotations;
-			} else if ( this.keyDownState.focusIsAfterAnnotationBoundary ) {
-				annotations = modelData.getAnnotationsFromOffset(
-					nodeOffset + previousStart + 1
-				);
-			} else {
-				annotations = this.model.getInsertionAnnotations();
-			}
-
-			if ( annotations.getLength() ) {
-				ve.dm.Document.static.addAnnotationsToData( data, annotations );
-			}
-
-			this.incRenderLock();
-			try {
-				this.changeModel(
-					ve.dm.Transaction.newFromInsertion(
-						this.documentView.model, previous.range.start, data
-					),
-					new ve.dm.LinearSelection( this.documentView.model, next.range )
-				);
-			} finally {
-				this.decRenderLock();
-			}
-			setTimeout( function () {
-				surface.checkSequences();
-			} );
-			return;
-		}
-
-		// Simple deletion
-		if ( ( offsetDiff === 0 || offsetDiff === lengthDiff ) && sameLeadingAndTrailing ) {
-			if ( offsetDiff === 0 ) {
-				range = new ve.Range( next.range.start, next.range.start - lengthDiff );
-			} else {
-				range = new ve.Range( next.range.start, previous.range.start );
-			}
-			this.incRenderLock();
-			try {
-				this.changeModel(
-					ve.dm.Transaction.newFromRemoval( this.documentView.model,
-						range ),
-					new ve.dm.LinearSelection( this.documentView.model, next.range )
-				);
-			} finally {
-				this.decRenderLock();
-			}
-			return;
-		}
-	}
-
-	// Complex change:
-	// 1. Count unchanged characters from left and right;
-	// 2. Assume that the minimal changed region indicates the replacement made by the user;
-	// 3. Hence guess how to map annotations.
-	// N.B. this logic can go wrong; e.g. this code will see slice->slide and
-	// assume that the user changed 'c' to 'd', but the user could instead have changed 'ic'
-	// to 'id', which would map annotations differently.
-
-	len = Math.min( previousData.length, nextData.length );
-
-	while ( fromLeft < len && previousData[ fromLeft ] === nextData[ fromLeft ] ) {
-		++fromLeft;
-	}
-
-	while (
-		fromRight < len - fromLeft &&
-		previousData[ previousData.length - 1 - fromRight ] ===
-		nextData[ nextData.length - 1 - fromRight ]
-	) {
-		++fromRight;
-	}
-	replacementRange = new ve.Range(
-		nodeOffset + 1 + fromLeft,
-		nodeOffset + 1 + previousData.length - fromRight
-	);
-	data = nextData.slice( fromLeft, nextData.length - fromRight );
-
-	if ( node.unicornAnnotations ) {
-		// This CBN is unicorned. Use the stored annotations.
-		annotations = node.unicornAnnotations;
-	} else if ( fromLeft + fromRight < previousData.length ) {
-		// Content is being removed, so guess that we want to use the annotations from the
-		// start of the removed content.
-		annotations = modelData.getAnnotationsFromOffset( replacementRange.start );
-	} else {
-		// No content is being removed, so guess that we want to use the annotations from
-		// just before the insertion (which means none at all if the insertion is at the
-		// start of a CBN).
-		annotations = modelData.getAnnotationsFromOffset( replacementRange.start - 1 );
-	}
-	if ( annotations.getLength() ) {
-		ve.dm.Document.static.addAnnotationsToData( data, annotations );
-	}
-	newRange = next.range;
-	if ( newRange.isCollapsed() ) {
-		newRange = new ve.Range( dmDoc.getNearestCursorOffset( newRange.start, 1 ) );
-	}
-
-	this.changeModel(
-		ve.dm.Transaction.newFromReplacement( this.documentView.model, replacementRange, data ),
-		new ve.dm.LinearSelection( this.documentView.model, newRange )
-	);
-	this.queueCheckSequences = true;
-	setTimeout( function () {
-		surface.checkSequences();
-	} );
 };
 
 /**
@@ -3007,28 +2819,19 @@ ve.ce.Surface.prototype.getActiveTableNode = function () {
  * modified, because anchorNode/focusNode are live and mutable, and so the offsets may come to
  * point confusingly to different places than they did when the selection was saved).
  *
- * Annotation changes before the cursor focus are detected: see ve.ce.isAfterAnnotationBoundary .
- *
  * @param {jQuery.Event|null} e Key down event; must be active when this call is made
  */
 ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
 	this.keyDownState.event = e;
 	this.keyDownState.selection = null;
-	this.keyDownState.focusIsAfterAnnotationBoundary = null;
 
-	if ( this.nativeSelection.rangeCount > 0 ) {
-		this.keyDownState.focusIsAfterAnnotationBoundary = ve.ce.isAfterAnnotationBoundary(
-			this.nativeSelection.focusNode,
-			this.nativeSelection.focusOffset
-		);
-		if ( e && (
-			e.keyCode === OO.ui.Keys.UP ||
-			e.keyCode === OO.ui.Keys.DOWN ||
-			e.keyCode === OO.ui.Keys.LEFT ||
-			e.keyCode === OO.ui.Keys.RIGHT
-		) ) {
-			this.keyDownState.selection = new ve.SelectionState( this.nativeSelection );
-		}
+	if ( this.nativeSelection.rangeCount > 0 && e && (
+		e.keyCode === OO.ui.Keys.UP ||
+		e.keyCode === OO.ui.Keys.DOWN ||
+		e.keyCode === OO.ui.Keys.LEFT ||
+		e.keyCode === OO.ui.Keys.RIGHT
+	) ) {
+		this.keyDownState.selection = new ve.SelectionState( this.nativeSelection );
 	}
 };
 

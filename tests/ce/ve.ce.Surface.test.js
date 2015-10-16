@@ -494,7 +494,7 @@ QUnit.test( 'handleLinearEnter', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'onObservedContentChange', function ( assert ) {
+QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 	var i,
 		cases = [
 			{
@@ -556,12 +556,53 @@ QUnit.test( 'onObservedContentChange', function ( assert ) {
 					]
 				],
 				msg: 'Replace into non-zero annotation next to word break'
+			},
+			{
+				prevHtml: '<p><b>X</b></p>',
+				prevRange: new ve.Range( 2 ),
+				nextHtml: '<p><b>XY</b></p>',
+				nextRange: new ve.Range( 3 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 2 },
+						{
+							type: 'replace',
+							insert: [ [ 'Y', [ 0 ] ] ],
+							remove: [],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
+						},
+						{ type: 'retain', length: 3 }
+					]
+				],
+				msg: 'Append into bold'
+			},
+			{
+				prevHtml: '<p><b>X</b></p>',
+				prevRange: new ve.Range( 2 ),
+				prevFocusIsAfterAnnotationBoundary: true,
+				nextHtml: '<p><b>X</b>Y</p>',
+				nextRange: new ve.Range( 3 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 2 },
+						{
+							type: 'replace',
+							insert: [ 'Y' ],
+							remove: [],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
+						},
+						{ type: 'retain', length: 3 }
+					]
+				],
+				msg: 'Append after bold'
 			}
 		];
 
 	QUnit.expect( cases.length * 2 );
 
-	function testRunner( prevHtml, prevRange, nextHtml, nextRange, expectedOps, expectedRange, msg ) {
+	function testRunner( prevHtml, prevRange, prevFocusIsAfterAnnotationBoundary, nextHtml, nextRange, expectedOps, expectedRange, msg ) {
 		var txs, i, ops,
 			view = ve.test.utils.createSurfaceViewFromHtml( prevHtml ),
 			model = view.getModel(),
@@ -569,17 +610,23 @@ QUnit.test( 'onObservedContentChange', function ( assert ) {
 			prevNode = $( prevHtml )[ 0 ],
 			nextNode = $( nextHtml )[ 0 ],
 			prev = {
+				node: node,
 				text: ve.ce.getDomText( prevNode ),
 				hash: ve.ce.getDomHash( prevNode ),
-				range: prevRange
+				veRange: prevRange,
+				focusIsAfterAnnotationBoundary: prevFocusIsAfterAnnotationBoundary || false
 			},
 			next = {
+				node: node,
 				text: ve.ce.getDomText( nextNode ),
 				hash: ve.ce.getDomHash( nextNode ),
-				range: nextRange
+				veRange: nextRange,
+				contentChanged: true
 			};
 
-		view.onObservedContentChange( node, prev, next );
+		// Set model linear selection, so that insertion annotations are primed correctly
+		model.setLinearSelection( prevRange );
+		view.handleObservedChanges( prev, next );
 		txs = model.getHistory()[ 0 ].transactions;
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
@@ -593,7 +640,8 @@ QUnit.test( 'onObservedContentChange', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		testRunner(
-			cases[ i ].prevHtml, cases[ i ].prevRange, cases[ i ].nextHtml, cases[ i ].nextRange,
+			cases[ i ].prevHtml, cases[ i ].prevRange, cases[ i ].prevFocusIsAfterAnnotationBoundary || false,
+			cases[ i ].nextHtml, cases[ i ].nextRange,
 			cases[ i ].expectedOps, cases[ i ].expectedRange || cases[ i ].nextRange, cases[ i ].msg
 		);
 	}
