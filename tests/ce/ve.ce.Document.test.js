@@ -44,7 +44,8 @@ QUnit.test( 'Converter tests', function ( assert ) {
 // TODO: getDirectionFromSelection
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
-	var tests, i, len, test, parts, view, data, ceDoc, rootNode, offsetCount, offset, position;
+	var tests, i, iLen, test, parts, view, data, ceDoc, rootNode, offsetCount, offset, position,
+		j, jLen, node;
 
 	// Each test below has the following:
 	// html: an input document
@@ -73,7 +74,23 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			data: [ '<div>', '<paragraph>', 'x', '</paragraph>', '</div>' ],
 			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'>|</div><div class='ve-ce-branchNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'><#text>||x|</#text></p></div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|</div>",
 			dies: [ 4 ]
+		},
+		{
+			title: 'Slugless emptied paragraph',
+			html: '<p></p>',
+			replacement: { path: [ 0 ], innerHtml: '' },
+			data: [ '<paragraph>', '</paragraph>' ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'>||</p></div>",
+			dies: [ 1 ]
+		},
+		{
+			title: 'Slugless emptied paragraph with raw <br> in DOM only',
+			html: '<p></p>',
+			replacement: { path: [ 0 ], innerHtml: '<br>' },
+			data: [ '<paragraph>', '</paragraph>' ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'><br>||</br></p></div>"
 		}
+
 	];
 	/*jscs:enable validateQuoteMarks */
 
@@ -93,7 +110,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		}
 	}
 
-	for ( i = 0, len = tests.length; i < len; i++ ) {
+	for ( i = 0, iLen = tests.length; i < iLen; i++ ) {
 		test = tests[ i ];
 		parts = test.positions.split( /[|]/ );
 		view = ve.test.utils.createSurfaceViewFromHtml( test.html );
@@ -102,7 +119,6 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			.map( showModelItem );
 		ceDoc = view.documentView;
 		rootNode = ceDoc.getDocumentNode().$element.get( 0 );
-
 		assert.deepEqual( data, test.data, test.title + ' (data)' );
 
 		offsetCount = data.length;
@@ -111,6 +127,17 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			test.positions.replace( /[^|]/g, '' ).length,
 			test.title + ' (offset count)'
 		);
+
+		if ( test.replacement ) {
+			node = rootNode;
+			for ( j = 0, jLen = test.replacement.path.length; j < jLen; j++ ) {
+				node = node.childNodes[ test.replacement.path[ j ] ];
+			}
+			$( node ).closest(
+				'.ve-ce-branchNode,.ve-ce-leafNode'
+			).data( 'view' ).removeSlugs();
+			node.innerHTML = test.replacement.innerHtml;
+		}
 
 		for ( offset = 0; offset < offsetCount; offset++ ) {
 			try {

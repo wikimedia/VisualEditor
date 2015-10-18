@@ -152,27 +152,29 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
  * @return {number} return.offset location offset within the node
  */
 ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offset ) {
-	var node, startOffset, current, stack, item, $item, length, model, slug,
-		countedNodes = [];
-
-	// Ask for the node first, so we can ask it to render, because that fixes up various things
-	// and _creates_ the slug if necessary.
-	node = this.getBranchNodeFromOffset( offset );
-	if ( node instanceof ve.ce.ContentBranchNode ) {
-		node.renderContents();
-	}
-
-	slug = this.getSlugAtOffset( offset );
+	var node, startOffset, current, stack, item, $item, length, model,
+		countedNodes = [],
+		slug = this.getSlugAtOffset( offset );
 
 	// If we're a block slug, or an empty inline slug, return its location
 	// Start at the current branch node; get its start offset
-	// Walk the tree, summing offsets until the sum reaches the desired offset value
-	// - If a whole branch is entirely before the offset, then don't descend into it
-	// - If the desired offset is in a text node, return that node and the correct remainder offset
-	// - If the desired offset is between an empty unicorn pair, return inter-unicorn location
-	// - Assume no other outcome is possible (because we would be inside a slug)
+	// Walk the tree, summing offsets until the sum reaches the desired offset value.
+	// If the desired offset:
+	// - is after a ve-ce-branchNode/ve-ce-leafNode: skip the node
+	// - is inside a ve-ce-branchNode/ve-ce-leafNode: descend into node
+	// - is between an empty unicorn pair: return inter-unicorn location
+	// At the desired offset:
+	// - If is a text node: return that node and the correct remainder offset
+	// - Else return the first maximally deep element at the offset
+	// Otherwise, signal an error
+
+	// Unfortunately, there is no way to avoid slugless block nodes with no DM length: an
+	// IME can remove all the text from a node at a time when it is unsafe to fixup the node
+	// contents. In this case, a maximally deep element gives better bounding rectangle
+	// coordinates than any of its containers.
 
 	// Check for a slug that is empty (apart from a chimera) or a block slug
+	// TODO: remove this check: it can just be a case of non-branchNode/leafNode DOM element
 	if ( slug && (
 		!slug.firstChild ||
 		$( slug ).hasClass( 've-ce-branchNode-blockSlug' ) ||
@@ -180,7 +182,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	) ) {
 		return { node: slug, offset: 0 };
 	}
-
+	node = this.getBranchNodeFromOffset( offset );
 	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );
 	current = [ node.$element.contents(), 0 ];
 	stack = [ current ];
@@ -188,6 +190,14 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 		if ( current[ 1 ] >= current[ 0 ].length ) {
 			stack.pop();
 			current = stack[ stack.length - 1 ];
+			if ( current && startOffset === offset ) {
+				// The current node has no DOM children and no DM length (e.g.
+				// it is a browser-generated <br/> that doesn't have class
+				// ve-ce-leafNode), but the node itself is at the required DM
+				// offset. Return the first offset inside this node (even if
+				// it's a node type that cannot contain content, like br).
+				return { node: current[ 0 ][ current[ 1 ] - 1 ], offset: 0 };
+			}
 			continue;
 		}
 		item = current[ 0 ][ current[ 1 ] ];
@@ -251,7 +261,8 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				current[ 1 ]++;
 				continue;
 			} else {
-				// Any other type of node (e.g. b, inline slug, img): descend
+				// Any other node type (e.g. b, inline slug, browser-generated br
+				// that doesn't have class ve-ce-leafNode): descend
 				stack.push( [ $item.contents(), 0 ] );
 				current[ 1 ]++;
 				current = stack[ stack.length - 1 ];

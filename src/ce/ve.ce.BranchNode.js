@@ -251,6 +251,20 @@ ve.ce.BranchNode.prototype.setupInlineSlugs = function () {
 };
 
 /**
+ * Remove all slugs in this branch
+ */
+ve.ce.BranchNode.prototype.removeSlugs = function () {
+	var i;
+	// Remove all slugs in this branch
+	for ( i in this.slugNodes ) {
+		if ( this.slugNodes[ i ] !== undefined && this.slugNodes[ i ].parentNode ) {
+			this.slugNodes[ i ].parentNode.removeChild( this.slugNodes[ i ] );
+		}
+		delete this.slugNodes[ i ];
+	}
+};
+
+/**
  * Setup slugs where needed.
  *
  * Existing slugs will be removed before new ones are added.
@@ -261,13 +275,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 	var i, slugTemplate, slugNode, child, slugButton,
 		doc = this.getElementDocument();
 
-	// Remove all slugs in this branch
-	for ( i in this.slugNodes ) {
-		if ( this.slugNodes[ i ] !== undefined && this.slugNodes[ i ].parentNode ) {
-			this.slugNodes[ i ].parentNode.removeChild( this.slugNodes[ i ] );
-		}
-		delete this.slugNodes[ i ];
-	}
+	this.removeSlugs();
 
 	if ( isBlock ) {
 		slugTemplate = ve.ce.BranchNode.blockSlugTemplate;
