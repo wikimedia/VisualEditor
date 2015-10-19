@@ -9,7 +9,8 @@
 			"Goelujjwal",
 			"संजीव कुमार",
 			"Venky2834",
-			"Ankita-ks"
+			"Ankita-ks",
+			"Sfic"
 		]
 	},
 	"visualeditor": "यथादृश्य संपादिका",
@@ -37,6 +38,7 @@
 	"visualeditor-commentinspector-tooltip": "टिप्पणी",
 	"visualeditor-content-select-all": "सभी का चयन करें",
 	"visualeditor-contextitemwidget-label-secondary": "संपादित करें",
+	"visualeditor-contextitemwidget-label-remove": "हटाएँ",
 	"visualeditor-dialog-action-apply": "परिवर्तन लागू करें",
 	"visualeditor-dialog-action-cancel": "रद्द करें",
 	"visualeditor-dialog-action-done": "पूर्ण हुआ",
@@ -83,7 +85,6 @@
 	"visualeditor-languageinspector-widget-label-direction": "दिशा",
 	"visualeditor-languageinspector-widget-label-langcode": "भाषा कोड",
 	"visualeditor-languageinspector-widget-label-language": "भाषा",
-	"visualeditor-linkinspector-open": "खोलें",
 	"visualeditor-linkinspector-title": "लिंक",
 	"visualeditor-listbutton-bullet-tooltip": "बुलेटेड सूची",
 	"visualeditor-listbutton-number-tooltip": "क्रमांकित सूची",
