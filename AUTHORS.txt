@@ -11,7 +11,7 @@ Moriel Schottlender <mschottlender@wikimedia.org>
 Roan Kattouw <roan@wikimedia.org>
 Rob Moen <rmoen@wikimedia.org>
 Sucheta Ghoshal <sghoshal@wikimedia.org>
-Timo Tijhof <timo@wikimedia.org>
+Timo Tijhof <krinklemail@gmail.com>
 Trevor Parscal <trevor@wikimedia.org>
 
 
