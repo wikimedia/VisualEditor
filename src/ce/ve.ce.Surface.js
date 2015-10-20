@@ -45,6 +45,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.renderLocks = 0;
 	this.dragging = false;
 	this.relocatingNode = false;
+	this.allowedFile = null;
 	this.resizing = false;
 	this.focused = false;
 	this.deactivated = false;
@@ -137,6 +138,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$element.on( {
 		dragstart: this.onDocumentDragStart.bind( this ),
 		dragover: this.onDocumentDragOver.bind( this ),
+		dragleave: this.onDocumentDragLeave.bind( this ),
 		drop: this.onDocumentDrop.bind( this )
 	} );
 
@@ -969,18 +971,56 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
  * @param {jQuery.Event} e Drag over event
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
-	var $target, $dropTarget, node, dropPosition, targetPosition, top, left,
-		nodeType, inIgnoreChildren;
-	if ( !this.relocatingNode ) {
-		return;
+	var i, l, $target, $dropTarget, node, dropPosition, targetPosition, top, left,
+		nodeType, inIgnoreChildren, item, fakeItem,
+		isContent = true,
+		dataTransfer = e.originalEvent.dataTransfer;
+
+	if ( this.relocatingNode ) {
+		isContent = this.relocatingNode.isContent();
+		nodeType = this.relocatingNode.getType();
+	} else {
+		if ( this.allowedFile === null ) {
+			this.allowedFile = false;
+			// If we can get file metadata, check if there is a DataTransferHandler registered
+			// to handle it.
+			if ( dataTransfer.items ) {
+				for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+					item = dataTransfer.items[ i ];
+					if ( item.kind !== 'string' ) {
+						fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
+						if ( ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
+							this.allowedFile = true;
+							break;
+						}
+					}
+				}
+			} else if ( dataTransfer.files ) {
+				for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
+					item = dataTransfer.items[ i ];
+					fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
+					if ( ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
+						this.allowedFile = true;
+						break;
+					}
+				}
+			// If we have no metadata (e.g. in Firefox) assume it is droppable
+			} else if ( Array.prototype.indexOf.call( dataTransfer.types || [], 'Files' ) !== -1 ) {
+				this.allowedFile = true;
+			}
+		}
+		// this.allowedFile is cached until the next dragleave event
+		if ( this.allowedFile ) {
+			isContent = false;
+			nodeType = 'alienBlock';
+		}
 	}
 
-	if ( !this.relocatingNode.isContent() ) {
+	if ( !isContent ) {
 		e.preventDefault();
 		$target = $( e.target ).closest( '.ve-ce-branchNode, .ve-ce-leafNode' );
 		if ( $target.length ) {
 			// Find the nearest node which will accept this node type
-			nodeType = this.relocatingNode.getType();
 			node = $target.data( 'view' );
 			while ( node.parent && !node.parent.isAllowedChildNodeType( nodeType ) ) {
 				node = node.parent;
@@ -1034,6 +1074,21 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 };
 
 /**
+ * Handle document drag leave events.
+ *
+ * @method
+ * @param {jQuery.Event} e Drag leave event
+ */
+ve.ce.Surface.prototype.onDocumentDragLeave = function () {
+	this.allowedFile = null;
+	if ( this.$lastDropTarget ) {
+		this.$dropMarker.addClass( 'oo-ui-element-hidden' );
+		this.$lastDropTarget = null;
+		this.lastDropPosition = null;
+	}
+};
+
+/**
  * Handle document drop events.
  *
  * Limits native drag and drop behaviour.
@@ -1054,7 +1109,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	e.preventDefault();
 
 	// Determine drop position
-	if ( this.relocatingNode && !this.relocatingNode.getModel().isContent() ) {
+	if ( $dropTarget ) {
 		// Block level drag and drop: use the lastDropTarget to get the targetOffset
 		if ( $dropTarget ) {
 			targetRange = $dropTarget.data( 'view' ).getModel().getOuterRange();
@@ -2707,12 +2762,9 @@ ve.ce.Surface.prototype.endRelocation = function () {
 	if ( this.relocatingNode ) {
 		this.emit( 'relocationEnd', this.relocatingNode );
 		this.relocatingNode = null;
-		if ( this.$lastDropTarget ) {
-			this.$dropMarker.addClass( 'oo-ui-element-hidden' );
-			this.$lastDropTarget = null;
-			this.lastDropPosition = null;
-		}
 	}
+	// Trigger a drag leave event to clear markers
+	this.onDocumentDragLeave();
 };
 
 /**

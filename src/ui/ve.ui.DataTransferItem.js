@@ -16,7 +16,7 @@
 ve.ui.DataTransferItem = function VeUiDataTransferItem( kind, type, data, name ) {
 	this.kind = kind;
 	this.type = type;
-	this.data = data;
+	this.data = data || {};
 	this.blob = this.data.blob || null;
 	this.stringData = this.data.stringData || ve.getProp( this.blob, 'name' ) || null;
 	this.name = name;
