@@ -3,7 +3,7 @@ Principal Authors (major contributors, alphabetically)
 Alex Monk <krenair@wikimedia.org>
 Bartosz Dziewoński <matmarex@wikimedia.org>
 Christian Williams <christian@wikia-inc.com>
-David Chan <dchan@wikimedia.org>
+David Chan <david@troi.org>
 Ed Sanders <esanders@wikimedia.org>
 Inez Korczynski <inez@wikia-inc.com>
 James Forrester  <jforrester@wikimedia.org>
