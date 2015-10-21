@@ -27,7 +27,7 @@ ve.ui.WhitespacePreservingTextInputWidget = function VeUiWhitespacePreservingTex
 	this.whitespace = [ '', '' ];
 	this.setValueAndWhitespace( config.valueAndWhitespace || '' );
 
-	this.$element.addClass( 've-ui-WhitespacePreservingTextInputWidget' );
+	this.$element.addClass( 've-ui-whitespacePreservingTextInputWidget' );
 };
 
 /* Inheritance */
