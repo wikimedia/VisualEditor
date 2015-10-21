@@ -108,7 +108,9 @@
 					"ve.ce.Surface",
 					"ve.ce.SurfaceObserver",
 					"ve.ce.*Selection",
-					"ve.ce.RangeState"
+					"ve.ce.RangeState",
+					"ve.ce.TextState",
+					"ve.ce.TextStateChunk"
 				]
 			},
 			{

@@ -612,3 +612,17 @@ ve.ce.modelChangeFromContentChange = function ( oldState, newState ) {
 		rerender: true
 	};
 };
+
+/**
+ * Check whether a given DOM element is an inline annotation
+ *
+ * @param {Node} element The element
+ * @return {boolean} Whether the element is an inline annotation
+ */
+ve.ce.isAnnotationElement = function ( element ) {
+	return !(
+		ve.isBlockElement( element ) ||
+		ve.isVoidElement( element ) ||
+		element.classList.contains( 've-ce-branchNode-slug' )
+	);
+};

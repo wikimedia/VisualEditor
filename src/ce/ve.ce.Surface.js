@@ -2377,25 +2377,25 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  */
 
 ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
-	var newSelection, dmContentChange,
+	var newSelection, transaction,
 		surface = this,
 		dmDoc = this.getModel().getDocument(),
 		insertedText = false;
 
 	if ( newState.contentChanged ) {
-		dmContentChange = ve.ce.modelChangeFromContentChange( oldState, newState );
-		if ( !dmContentChange.rerender ) {
-			this.incRenderLock();
-		}
+		transaction = newState.textState.getChangeTransaction(
+			oldState.textState,
+			dmDoc,
+			newState.node.getOffset(),
+			newState.node.unicornAnnotations
+		);
+		this.incRenderLock();
 		try {
-			this.changeModel( dmContentChange.transaction, dmContentChange.selection );
+			this.changeModel( transaction );
 		} finally {
-			if ( !dmContentChange.rerender ) {
-				this.decRenderLock();
-			}
+			this.decRenderLock();
 		}
-
-		insertedText = dmContentChange.transaction.operations.filter( function ( op ) {
+		insertedText = transaction.operations.filter( function ( op ) {
 			return op.type === 'replace' && op.insert.length;
 		} ).length > 0;
 	}

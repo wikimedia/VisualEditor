@@ -54,6 +54,11 @@ ve.ce.RangeState = function VeCeRangeState( old, documentNode, selectionOnly ) {
 	this.hash = null;
 
 	/**
+	 * @property {ve.ce.TextState|null} Current branch node's annotated content
+	 */
+	this.textState = null;
+
+	/**
 	 * @property {boolean|null} focusIsAfterAnnotationBoundary Focus lies after annotation tag
 	 */
 	this.focusIsAfterAnnotationBoundary = null;
@@ -121,16 +126,19 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 
 	this.branchNodeChanged = ( old && old.node ) !== this.node;
 
-	// Compute text/hash, for change comparison
+	// Compute text/hash/textState, for change comparison
 	if ( selectionOnly && !anchorNodeChanged ) {
 		this.text = old.text;
 		this.hash = old.hash;
+		this.textState = old.textState;
 	} else if ( !this.node ) {
 		this.text = null;
 		this.hash = null;
+		this.textState = null;
 	} else {
 		this.text = ve.ce.getDomText( this.node.$element[ 0 ] );
 		this.hash = ve.ce.getDomHash( this.node.$element[ 0 ] );
+		this.textState = new ve.ce.TextState( this.node.$element[ 0 ] );
 	}
 
 	// Only set contentChanged if we're still in the same branch node
@@ -138,7 +146,9 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 		!selectionOnly &&
 		!this.branchNodeChanged && (
 			( old && old.hash ) !== this.hash ||
-			( old && old.text ) !== this.text
+			( old && old.text ) !== this.text ||
+			( !this.textState && old && old.textState ) ||
+			( !!this.textState && !this.textState.isEqual( old && old.textState ) )
 		);
 
 	if ( old && !this.selectionChanged && !this.contentChanged ) {

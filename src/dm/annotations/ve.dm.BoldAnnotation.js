@@ -29,6 +29,8 @@ ve.dm.BoldAnnotation.static.name = 'textStyle/bold';
 
 ve.dm.BoldAnnotation.static.matchTagNames = [ 'b', 'strong' ];
 
+ve.dm.BoldAnnotation.static.inferFromDom = true;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.BoldAnnotation );

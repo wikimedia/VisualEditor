@@ -1614,3 +1614,54 @@ ve.rejectsCursor = function ( node ) {
 	// false, because if so then there can be no adjacent cursor.
 	return node.contentEditable === 'false';
 };
+
+/**
+ * Count the common elements at the start and end of two sequences
+ *
+ * @param {Array|string} before The original sequence
+ * @param {Array|string} after The modified sequence
+ * @param {Function} [equals] Two-argument comparison returning boolean (defaults to ===)
+ * @return {Object|null} Change offsets (valid in both sequences), or null if unchanged
+ * @return {number} return.start Offset from start of first changed element
+ * @return {number} return.end Offset from end of last changed element (nonoverlapping with start)
+ */
+ve.countEdgeMatches = function ( before, after, equals ) {
+	var len, start, end;
+	if ( !equals ) {
+		equals = function ( x, y ) {
+			return x === y;
+		};
+	}
+
+	len = Math.min( before.length, after.length );
+	// Find maximal matching left slice
+	for ( start = 0; start < len; start++ ) {
+		if ( !equals( before[ start ], after[ start ] ) ) {
+			break;
+		}
+	}
+	if ( start === len && before.length === after.length ) {
+		return null;
+	}
+	// Find maximal matching right slice that doesn't overlap the left slice
+	for ( end = 0; end < len - start; end++ ) {
+		if ( !equals(
+			before[ before.length - 1 - end ],
+			after[ after.length - 1 - end ]
+		) ) {
+			break;
+		}
+	}
+	return { start: start, end: end };
+};
+
+/**
+ * Repeat a string n times
+ *
+ * @param {string} str The string to repeat
+ * @param {number} n The number of times to repeat
+ * @param {string} The string, repeated n times
+ */
+ve.repeatString = function ( str, n ) {
+	return new Array( n + 1 ).join( str );
+};

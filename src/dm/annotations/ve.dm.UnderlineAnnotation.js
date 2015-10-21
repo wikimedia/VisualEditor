@@ -29,6 +29,8 @@ ve.dm.UnderlineAnnotation.static.name = 'textStyle/underline';
 
 ve.dm.UnderlineAnnotation.static.matchTagNames = [ 'u' ];
 
+ve.dm.UnderlineAnnotation.static.inferFromDom = true;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.UnderlineAnnotation );
