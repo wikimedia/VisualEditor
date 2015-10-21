@@ -116,3 +116,28 @@ ve.ui.Sequence.prototype.getName = function () {
 ve.ui.Sequence.prototype.getCommandName = function () {
 	return this.commandName;
 };
+
+/**
+ * Get a representation of the sequence useful for display
+ *
+ * What this means depends a bit on how the sequence was defined:
+ * * It strips out undisplayable things like the paragraph-start marker.
+ * * Regexps are just returned as a toString of the regexp.
+ *
+ * @param {boolean} explode Whether to return the message split up into some
+ *        reasonable sequence of inputs required to trigger the sequence (regexps
+ *        in sequences will be considered a single "input" as a toString of
+ *        the regexp, because they're hard to display no matter what...)
+ * @return {string} Message for display
+ */
+ve.ui.Sequence.prototype.getMessage = function ( explode ) {
+	var data;
+	if ( typeof this.data === 'string' ) {
+		data = this.data.split( '' );
+	} else if ( this.data instanceof RegExp ) {
+		data = [ this.data.toString() ];
+	} else {
+		data = this.data.filter( function ( key ) { return !ve.isPlainObject( key ); } );
+	}
+	return explode ? data : data.join( '' );
+};

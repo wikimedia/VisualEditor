@@ -45,23 +45,61 @@
 	width: 55%;
 	padding-right: 1em;
 	text-align: right;
-	font-weight: bold;
 }
 
 .ve-ui-commandHelpDialog-list dt kbd {
 	font-family: monospace;
+	font-weight: bold;
+	font-style: normal;
+}
+
+.ve-ui-commandHelpDialog-list dt > kbd {
 	display: block;
 	clear: right;
 }
 
 /* Enlarge vertical spacing in a list of shortcuts for one action */
 .ve-ui-commandHelpDialog-list dt kbd ~ kbd {
-	margin-top: 0.2em;
+	margin-top: 0.5em;
+}
+
+.ve-ui-commandHelpDialog-list dt kbd > kbd {
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	box-shadow: 0 1px 0 rgba( 0, 0, 0, 0.2 ), 0 0 0 2px #fff inset;
+	color: #333;
+	display: inline-block;
+	line-height: 1.4;
+	padding: 0.1em 0.4em;
+	margin: -0.1em 0.3em 0;
+	text-shadow: 0 1px 0 #fff;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.ve-ui-commandHelpDialog-list dt kbd[ data-label ]::before {
+	content: attr( data-label );
+	font-weight: normal;
+	font-style: italic;
+	padding-right: 3px;
+}
+
+.ve-ui-commandHelpDialog-sequence kbd:not( [ data-key="space" ] ) {
+	box-shadow: none;
+	text-transform: none;
+}
+.ve-ui-commandHelpDialog-sequence kbd:not( [ data-key="space" ] ) + kbd:not( [ data-key="space" ] ) {
+	margin-left: -0.5em;
+	padding-left: 0;
+	border-left: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 .ve-ui-commandHelpDialog-list dd,
 .ve-ui-commandHelpDialog-list dt {
-	line-height: 110%;
+	line-height: 1.4;
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
