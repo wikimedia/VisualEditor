@@ -385,10 +385,13 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 
 	this.$placeholder.toggleClass( 'oo-ui-element-hidden', hasContent );
 	if ( !hasContent ) {
+		// Use a clone of the first node in the document so the placeholder
+		// styling matches the text the users sees when they start typing
 		firstNode = this.getView().documentView.documentNode.getNodeFromOffset( 1 );
 		if ( firstNode ) {
 			$wrapper = firstNode.$element.clone();
 			if ( ve.debug ) {
+				// In debug mode a background colour from the render animation may be present
 				$wrapper.removeAttr( 'style' );
 			}
 		} else {
