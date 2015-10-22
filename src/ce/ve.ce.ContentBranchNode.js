@@ -165,7 +165,7 @@ ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	var i, ilen, j, jlen, item, itemAnnotations, clone, dmSurface, dmSelection, relCursor,
-		unicorn, img1, img2, annotationsChanged, childLength, offset, htmlItem, ceSurface,
+		unicorn, preUnicorn, postUnicorn, annotationsChanged, childLength, offset, htmlItem, ceSurface,
 		store = this.model.doc.getStore(),
 		annotationSet = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
@@ -287,27 +287,25 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 					current.appendChild( doc.createTextNode( buffer ) );
 					buffer = '';
 				}
-				img1 = doc.createElement( 'img' );
-				img2 = doc.createElement( 'img' );
-				img1.className = 've-ce-unicorn ve-ce-pre-unicorn';
-				img2.className = 've-ce-unicorn ve-ce-post-unicorn';
-				$( img1 ).data( 'dmOffset', ( this.getOffset() + 1 + i ) );
-				$( img2 ).data( 'dmOffset', ( this.getOffset() + 1 + i ) );
+				preUnicorn = doc.createElement( 'img' );
+				postUnicorn = doc.createElement( 'img' );
+				preUnicorn.className = 've-ce-unicorn ve-ce-pre-unicorn';
+				postUnicorn.className = 've-ce-unicorn ve-ce-post-unicorn';
+				$( preUnicorn ).data( 'modelOffset', ( this.getOffset() + 1 + i ) );
+				$( postUnicorn ).data( 'modelOffset', ( this.getOffset() + 1 + i ) );
 				if ( ve.inputDebug ) {
-					img1.setAttribute( 'src', ve.ce.unicornImgDataUri );
-					img2.setAttribute( 'src', ve.ce.unicornImgDataUri );
+					preUnicorn.setAttribute( 'src', ve.ce.unicornImgDataUri );
+					postUnicorn.setAttribute( 'src', ve.ce.unicornImgDataUri );
+					preUnicorn.className += ' ve-ce-unicorn-debug';
+					postUnicorn.className += ' ve-ce-unicorn-debug';
 				} else {
-					img1.setAttribute( 'src', ve.ce.minImgDataUri );
-					img2.setAttribute( 'src', ve.ce.minImgDataUri );
-					img1.style.width = '0px';
-					img2.style.width = '0px';
-					img1.style.height = '0px';
-					img2.style.height = '0px';
+					preUnicorn.setAttribute( 'src', ve.ce.minImgDataUri );
+					postUnicorn.setAttribute( 'src', ve.ce.minImgDataUri );
 				}
-				current.appendChild( img1 );
-				current.appendChild( img2 );
+				current.appendChild( preUnicorn );
+				current.appendChild( postUnicorn );
 				unicornInfo.annotations = dmSurface.getInsertionAnnotations();
-				unicornInfo.unicorns = [ img1, img2 ];
+				unicornInfo.unicorns = [ preUnicorn, postUnicorn ];
 			} else {
 				unicornInfo.unicornAnnotations = null;
 				unicornInfo.unicorns = null;

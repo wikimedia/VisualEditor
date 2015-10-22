@@ -183,7 +183,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		if ( domOffset !== 0 ) {
 			throw new Error( 'Non-zero offset in unicorn' );
 		}
-		return $domNode.data( 'dmOffset' );
+		return $domNode.data( 'modelOffset' );
 	}
 
 	/**
