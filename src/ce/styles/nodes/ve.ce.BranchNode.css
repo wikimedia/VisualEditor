@@ -73,6 +73,11 @@
 	height: auto;
 }
 
+.ve-ce-unicorn:not( .ve-ce-unicorn-debug ) {
+	width: 0;
+	height: 0;
+}
+
 /* Pre-formatted node styling */
 
 pre.ve-ce-branchNode {
