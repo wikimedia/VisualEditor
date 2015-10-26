@@ -119,7 +119,8 @@ ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
  * @param {jQuery.Event} e Mouse down or touch start event
  */
 ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
-	var cellNode, startCell, endCell, selection, newSelection;
+	var cellNode, startCell, endCell, selection, newSelection,
+		node = this;
 
 	if ( e.type === 'touchstart' && e.originalEvent.touches.length > 1 ) {
 		// Ignore multi-touch
@@ -128,6 +129,17 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 
 	cellNode = this.getCellNodeFromTarget( e.target );
 	if ( !cellNode ) {
+		return;
+	}
+
+	// Right-click
+	if ( e.which === 3 ) {
+		// Select the cell to the browser renders the correct context menu
+		ve.selectElement( cellNode.$element[ 0 ] );
+		setTimeout( function () {
+			// Trigger onModelSelect to restore the selection
+			node.surface.onModelSelect();
+		} );
 		return;
 	}
 
