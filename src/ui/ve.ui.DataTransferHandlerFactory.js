@@ -5,7 +5,7 @@
  */
 
 /**
- * Drop handler Factory.
+ * Data transfer handler factory.
  *
  * @class
  * @extends OO.Factory
@@ -78,7 +78,7 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
 };
 
 /**
- * Returns the primary command for for node.
+ * Get a handler name for a specific data transfer item
  *
  * @param {ve.ui.DataTransferItem} item Data transfer item
  * @param {boolean} isPaste Handler being used for paste
