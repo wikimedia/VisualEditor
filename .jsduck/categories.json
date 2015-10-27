@@ -114,6 +114,14 @@
 				"classes": ["ve.ce.*Annotation"]
 			},
 			{
+				"name": "Factories",
+				"classes": ["ve.ce.*Factory"]
+			},
+			{
+				"name": "Key down handlers",
+				"classes": ["ve.ce.*KeyDownHandler"]
+			},
+			{
 				"name": "Nodes",
 				"classes": ["ve.ce.Document", "ve.ce.*Node"]
 			}
@@ -132,9 +140,7 @@
 					"ve.ui.Toolbar",
 					"ve.ui.TargetToolbar",
 					"ve.ui.DebugBar",
-					"ve.ui.Trigger",
-					"ve.ui.*TransferHandler",
-					"ve.ui.DataTransferItem"
+					"ve.ui.Trigger"
 				]
 			},
 			{
@@ -148,6 +154,10 @@
 			{
 				"name": "Context items",
 				"classes": ["ve.ui.*ContextItem"]
+			},
+			{
+				"name": "Data transfer handlers",
+				"classes": ["ve.ui.*TransferHandler", "ve.ui.DataTransferItem"]
 			},
 			{
 				"name": "Elements",
