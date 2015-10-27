@@ -182,6 +182,15 @@ ve.dm.Selection.prototype.getDocument = function () {
 };
 
 /**
+ * Get the name of the selection type
+ *
+ * @return {string} Selection type name
+ */
+ve.dm.Selection.prototype.getName = function () {
+	return this.constructor.static.name;
+};
+
+/**
  * Check if two selections are equal
  *
  * @abstract

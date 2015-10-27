@@ -8,7 +8,7 @@ QUnit.module( 've.dm.LinearSelection' );
 
 /* Tests */
 
-QUnit.test( 'Construction and getters (getDocument, getRange(s))', 3, function ( assert ) {
+QUnit.test( 'Construction and getters (getDocument, getRange(s))', 4, function ( assert ) {
 	var dummyDoc = { a: 1 },
 		range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( dummyDoc, range );
@@ -16,6 +16,7 @@ QUnit.test( 'Construction and getters (getDocument, getRange(s))', 3, function (
 	assert.strictEqual( selection.getDocument(), dummyDoc, 'getDocument' );
 	assert.deepEqual( selection.getRange(), range, 'getRange' );
 	assert.deepEqual( selection.getRanges(), [ range ], 'getRanges' );
+	assert.strictEqual( selection.getName(), 'linear', 'getName' );
 } );
 
 QUnit.test( 'Basic methods (clone, collapse*, isCollased, equals, isNull)', 10, function ( assert ) {
@@ -50,7 +51,7 @@ QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescriptio
 		selection,
 		'newFromJSON'
 	);
-	assert.deepEqual( selection.getDescription(), 'Linear: 200 - 100', 'getDescription' );
+	assert.strictEqual( selection.getDescription(), 'Linear: 200 - 100', 'getDescription' );
 } );
 
 // TODO: translateByTransaction

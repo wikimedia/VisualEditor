@@ -8,7 +8,7 @@ QUnit.module( 've.dm.TableSelection' );
 
 /* Tests */
 
-QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, getTableNode)', 28, function ( assert ) {
+QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, getTableNode)', function ( assert ) {
 	var i, selection,
 		doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableNode = doc.getBranchNodeFromOffset( 1 ),
@@ -84,12 +84,13 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 			}
 		];
 
-	QUnit.expect( 12 * cases.length );
+	QUnit.expect( 13 * cases.length );
 
 	for ( i in cases ) {
 		selection = cases[ i ].selection;
 		assert.strictEqual( selection.getDocument(), doc, 'getDocument' );
 		assert.strictEqual( selection.getTableNode(), tableNode, 'getTableNode' );
+		assert.strictEqual( selection.getName(), 'table', 'getName' );
 		assert.deepEqual( selection.getRanges(), cases[ i ].ranges, cases[ i ].msg + ': getRanges' );
 		assert.deepEqual( selection.getOuterRanges(), cases[ i ].outerRanges, cases[ i ].msg + ': getOuterRanges' );
 		assert.strictEqual( selection.fromCol, cases[ i ].fromCol, cases[ i ].msg + ': fromCol set' );
@@ -155,7 +156,7 @@ QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescriptio
 		selection,
 		'newFromJSON'
 	);
-	assert.deepEqual( selection.getDescription(), 'Table: 0 - 171, c1 r2 - c3 r4', 'getDescription' );
+	assert.strictEqual( selection.getDescription(), 'Table: 0 - 171, c1 r2 - c3 r4', 'getDescription' );
 } );
 
 // TODO: getMatrixCells

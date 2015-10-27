@@ -50,7 +50,7 @@ ve.ui.Command.prototype.execute = function ( surface ) {
  */
 ve.ui.Command.prototype.isExecutable = function ( fragment ) {
 	return !this.supportedSelections ||
-		this.supportedSelections.indexOf( fragment.getSelection().constructor.static.name ) !== -1;
+		this.supportedSelections.indexOf( fragment.getSelection().getName() ) !== -1;
 };
 
 /**
