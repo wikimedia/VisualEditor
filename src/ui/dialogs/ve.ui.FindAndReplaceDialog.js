@@ -52,6 +52,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.invalidRegex = false;
 	this.$findResults = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResults' );
 	this.initialFragment = null;
+	this.startOffset = 0;
 	this.fragments = [];
 	this.results = 0;
 	// Range over the list of fragments indicating which ones where rendered,
@@ -189,14 +190,15 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 			this.surface.getView().connect( this, { position: this.renderFragmentsDebounced } );
 			this.surface.getView().$window.on( 'scroll', this.onWindowScrollDebounced );
 
+			this.initialFragment = fragment;
+			this.startOffset = ve.getProp( this.initialFragment.getSelection().getRanges(), 0, 'start' ) || 0;
+
 			text = fragment.getText();
 			if ( text && text !== this.findText.getValue() ) {
 				this.findText.setValue( text );
 			} else {
 				this.onFindChange();
 			}
-
-			this.initialFragment = fragment;
 		}, this );
 };
 
@@ -244,6 +246,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			this.$findResults.empty().detach();
 			this.fragments = [];
 			this.surface = null;
+			this.focusedIndex = 0;
 		}, this );
 };
 
@@ -298,7 +301,7 @@ ve.ui.FindAndReplaceDialog.prototype.onFindReplaceTextEnter = function ( e ) {
  * Update search result fragments
  */
 ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
-	var i, l,
+	var i, l, startIndex,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		ranges = [],
@@ -325,10 +328,13 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 		ranges = documentModel.findText( this.query, matchCase, true );
 		for ( i = 0, l = ranges.length; i < l; i++ ) {
 			this.fragments.push( surfaceModel.getLinearFragment( ranges[ i ], true, true ) );
+			if ( startIndex === undefined && ranges[ i ].start >= this.startOffset ) {
+				startIndex = this.fragments.length - 1;
+			}
 		}
 	}
 	this.results = this.fragments.length;
-	this.focusedIndex = Math.min( this.focusedIndex, this.results ? this.results - 1 : 0 );
+	this.focusedIndex = startIndex || 0;
 	this.nextButton.setDisabled( !this.results );
 	this.previousButton.setDisabled( !this.results );
 	this.replaceButton.setDisabled( !this.results );
@@ -424,6 +430,8 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		);
 		return;
 	}
+
+	this.startOffset = this.fragments[ this.focusedIndex ].getSelection().getRanges()[ 0 ].start;
 
 	this.$findResults
 		.find( '.ve-ui-findAndReplaceDialog-findResult-focused' )
