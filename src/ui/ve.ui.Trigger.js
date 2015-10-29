@@ -184,12 +184,12 @@ ve.ui.Trigger.static.platformFilters = {
 			alt: '⎇',
 			escape: '⎋'
 		};
-		return function ( keys ) {
+		return function ( keys, explode ) {
 			var i, len;
 			for ( i = 0, len = keys.length; i < len; i++ ) {
-				keys[ i ] = names[ keys[ i ] ] || keys[ i ];
+				keys[ i ] = ( names[ keys[ i ] ] || keys[ i ] ).toUpperCase();
 			}
-			return keys.join( '' ).toUpperCase();
+			return explode ? keys : keys.join( '' );
 		};
 	} )()
 };
@@ -383,18 +383,21 @@ ve.ui.Trigger.prototype.toString = function () {
  * This is similar to #toString but the resulting string will be formatted in a way that makes it
  * appear more native for the platform.
  *
+ * @param {boolean} explode Whether to return the message split up into some
+ *        reasonable sequence of inputs required
  * @return {string} Message for trigger
  */
-ve.ui.Trigger.prototype.getMessage = function () {
+ve.ui.Trigger.prototype.getMessage = function ( explode ) {
 	var keys,
 		platformFilters = ve.ui.Trigger.static.platformFilters,
 		platform = ve.getSystemPlatform();
 
 	keys = this.toString().split( '+' );
 	if ( Object.prototype.hasOwnProperty.call( platformFilters, platform ) ) {
-		return platformFilters[ platform ]( keys );
+		return platformFilters[ platform ]( keys, explode );
 	}
-	return keys.map( function ( key ) {
+	keys = keys.map( function ( key ) {
 		return key[ 0 ].toUpperCase() + key.slice( 1 ).toLowerCase();
-	} ).join( '+' );
+	} );
+	return explode ? keys : keys.join( '+' );
 };

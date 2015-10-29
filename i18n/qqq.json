@@ -116,6 +116,7 @@
 	"visualeditor-shortcuts-formatting": "Heading for paragraph formatting shortcuts",
 	"visualeditor-shortcuts-history": "Heading for history shortcuts.\n\nSee also:\n* {{msg-mw|Visualeditor-historybutton-redo-tooltip}}\n* {{msg-mw|Visualeditor-historybutton-undo-tooltip}}\n{{Identical|History}}",
 	"visualeditor-shortcuts-other": "Heading for other shortcuts.\n{{Identical|Other}}",
+	"visualeditor-shortcuts-sequence-notice": "Notice before a text-sequence shortcut that it should be typed out instead of being several keys to press at once",
 	"visualeditor-shortcuts-text-style": "Heading for text formatting shortcuts",
 	"visualeditor-slug-insert": "Label for slug to insert paragraph on an otherwise unreachable line",
 	"visualeditor-specialcharacter-button-tooltip": "Tooltip text for the insert character button.\n{{Identical|Special character}}",
