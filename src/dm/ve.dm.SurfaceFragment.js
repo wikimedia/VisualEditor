@@ -853,7 +853,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
-	var rangeAfterRemove, internalListRange, parentNode,
+	var rangeAfterRemove, parentNode,
 		tx, startNode, endNode, endNodeData, nodeToDelete,
 		rangeToRemove;
 
@@ -867,21 +867,10 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		return this;
 	}
 
-	// If selection spans entire document (selectAll) then
-	// replace with an empty paragraph
-	internalListRange = this.document.getInternalList().getListNode().getOuterRange();
-	if ( rangeToRemove.start === 0 && rangeToRemove.end >= internalListRange.start ) {
-		tx = ve.dm.Transaction.newFromReplacement( this.document, new ve.Range( 0, internalListRange.start ), [
-			{ type: 'paragraph' },
-			{ type: '/paragraph' }
-		] );
-		this.change( tx );
-		rangeAfterRemove = new ve.Range( 1 );
-	} else {
-		tx = ve.dm.Transaction.newFromRemoval( this.document, rangeToRemove );
-		this.change( tx );
-		rangeAfterRemove = tx.translateRange( rangeToRemove );
-	}
+	tx = ve.dm.Transaction.newFromRemoval( this.document, rangeToRemove );
+	this.change( tx );
+	rangeAfterRemove = tx.translateRange( rangeToRemove );
+
 	if ( !rangeAfterRemove.isCollapsed() ) {
 		// If after processing removal transaction range is not collapsed it means that not
 		// everything got merged nicely (at this moment transaction processor is capable of merging
