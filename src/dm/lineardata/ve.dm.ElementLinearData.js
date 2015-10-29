@@ -1133,5 +1133,10 @@ ve.dm.ElementLinearData.prototype.hasContent = function () {
 	// For performance, abort the count when we reach 3.
 	return this.countNonInternalElements( 3 ) > 2 ||
 		// Also check that the element is not a content branch node, e.g. a blockImage
-		( this.isElementData( 0 ) && !ve.dm.nodeFactory.canNodeContainContent( this.getType( 0 ) ) );
+		// and also that is not the internal list
+		(
+			this.isElementData( 0 ) &&
+			!ve.dm.nodeFactory.canNodeContainContent( this.getType( 0 ) ) &&
+			!ve.dm.nodeFactory.isNodeInternal( this.getType( 0 ) )
+		);
 };

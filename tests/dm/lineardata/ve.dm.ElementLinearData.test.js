@@ -1648,6 +1648,14 @@ QUnit.test( 'hasContent', function ( assert ) {
 			},
 			{
 				data: [
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				expected: false,
+				msg: 'Internal list only document has no content'
+			},
+			{
+				data: [
 					{ type: 'paragraph' },
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
