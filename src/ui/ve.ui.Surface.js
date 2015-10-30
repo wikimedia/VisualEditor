@@ -517,7 +517,7 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 		.setObserver( 'dm selection', function () {
 			var selection = surface.model.selection;
 			if ( !selection ) {
-				return null;
+				return 'null';
 			}
 			return selection.getDescription();
 		} )
@@ -528,7 +528,7 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 			var nativeRange,
 				nativeSelection = surface.view.nativeSelection;
 			if ( nativeSelection.rangeCount === 0 ) {
-				return null;
+				return 'null';
 			}
 			nativeRange = nativeSelection.getRangeAt( 0 );
 			return JSON.stringify( {

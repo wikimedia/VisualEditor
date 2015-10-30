@@ -71,14 +71,14 @@ ve.Filibuster.prototype.clearLogs = function () {
 
 /**
  * Attaches an observer callback. The callback returns a value representing the current state,
- * which must be a string, a number, a boolean, undefined or null (this ensures state values
- * are immutable and can be compared with strict equals).
+ * which must be a string (this ensures state values are immutable, comparable with strict
+ * equality and easily dumpable).
  *
  * The observer will be called before and after every function call. An observation is logged
  * every time there is a difference between the current return value and the previous one.
  *
  * @param {string} name The name of the observer, for display in the logs.
- * @param {Function} callback The callback; must return string|number|boolean|undefined|null
+ * @param {Function} callback The callback; must return a string
  * @chainable
  */
 ve.Filibuster.prototype.setObserver = function ( name, callback ) {
@@ -104,7 +104,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
 		} catch ( ex ) {
 			newState = 'Error: ' + ex;
 		}
-		if ( newState && !( typeof newState ).match( /^(string|number|boolean)$/ ) ) {
+		if ( typeof newState !== 'string' ) {
 			// Be strict about the allowed types, to ensure immutability
 			ve.error( 'Illegal state:', newState );
 			throw new Error( 'Illegal state: ' + newState );
