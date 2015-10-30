@@ -84,6 +84,15 @@ ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
 ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
 	var tx = new ve.dm.Transaction( doc ),
 		endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
+
+	// Ensure no transaction leaves the document in a completely empty state
+	if ( range.start === 0 && range.end >= doc.getInternalList().getListNode().getOuterRange().start ) {
+		endOffset = tx.pushInsertion( doc, endOffset, endOffset, [
+			{ type: 'paragraph' },
+			{ type: '/paragraph' }
+		] );
+	}
+
 	// Retain to end of document, if needed (for completeness)
 	tx.pushFinalRetain( doc, endOffset );
 	return tx;
@@ -1103,15 +1112,21 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
  * @param {number} removeStart Offset to start removing from
  * @param {number} removeEnd Offset to remove to
  * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
+ * @return {number} End offset of the removal
  */
 ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, removeEnd, removeMetadata ) {
-	var i, retainStart, internalStackDepth = 0;
+	var i, queuedRetain,
+		retainStart = removeStart,
+		internalStackDepth = 0;
 	// Iterate over removal range and use a stack counter to determine if
 	// we are inside an internal node
 	for ( i = removeStart; i < removeEnd; i++ ) {
 		if ( doc.data.isElementData( i ) && ve.dm.nodeFactory.isNodeInternal( doc.data.getType( i ) ) ) {
 			if ( !doc.data.isCloseElementData( i ) ) {
 				if ( internalStackDepth === 0 ) {
+					if ( queuedRetain ) {
+						this.pushRetain( queuedRetain );
+					}
 					this.pushReplace( doc, removeStart, i - removeStart, [], removeMetadata ? [] : undefined );
 					retainStart = i;
 				}
@@ -1119,13 +1134,20 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
 			} else {
 				internalStackDepth--;
 				if ( internalStackDepth === 0 ) {
-					this.pushRetain( i + 1 - retainStart );
+					queuedRetain = i + 1 - retainStart;
 					removeStart = i + 1;
 				}
 			}
 		}
 	}
-	this.pushReplace( doc, removeStart, removeEnd - removeStart, [], removeMetadata ? [] : undefined );
+	if ( removeEnd - removeStart ) {
+		if ( queuedRetain ) {
+			this.pushRetain( queuedRetain );
+		}
+		this.pushReplace( doc, removeStart, removeEnd - removeStart, [], removeMetadata ? [] : undefined );
+		retainStart = removeEnd;
+	}
+	return retainStart;
 };
 
 /**
@@ -1454,7 +1476,7 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 			).end;
 		}
 		this.pushRetain( removeStart - currentOffset );
-		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
+		removeEnd = this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
 		// All done
 		return removeEnd;
 	}
@@ -1486,8 +1508,7 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 
 			// Push the previous removal first
 			this.pushRetain( removeStart - offset );
-			this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
-			offset = removeEnd;
+			offset = this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
 
 			// Now start this removal
 			removeStart = nodeStart;
@@ -1497,8 +1518,7 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 	// Apply the last removal, if any
 	if ( removeEnd !== null ) {
 		this.pushRetain( removeStart - offset );
-		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
-		offset = removeEnd;
+		offset = this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
 	}
 	return offset;
 };

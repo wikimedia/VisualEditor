@@ -337,9 +337,7 @@ ve.test.utils.runSurfaceFragmentDeleteTest = function ( assert, html, range, dir
 	var data, doc, surface, fragment;
 
 	if ( html ) {
-		doc = new ve.dm.Document(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
-		);
+		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
 	} else {
 		doc = ve.dm.example.createExampleDocument();
 	}
@@ -404,6 +402,32 @@ QUnit.test( 'delete', function ( assert ) {
 				},
 				expectedRange: new ve.Range( 1 ),
 				msg: 'Backspace after select all spanning entire document creates empty paragraph'
+			},
+			{
+				html: '<div rel="ve:Alien">Foo</div><p>Bar</p>',
+				range: new ve.Range( 0, 6 ),
+				directionAfterRemove: -1,
+				expectedData: function ( data ) {
+					data.splice( 0, 7,
+							{ type: 'paragraph' },
+							{ type: '/paragraph' }
+						);
+				},
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Delete all when document starts with a focusable node'
+			},
+			{
+				html: '<div rel="ve:Alien">Foo</div><p>Bar</p><div rel="ve:Alien">Baz</div>',
+				range: new ve.Range( 0, 9 ),
+				directionAfterRemove: -1,
+				expectedData: function ( data ) {
+					data.splice( 0, 9,
+							{ type: 'paragraph' },
+							{ type: '/paragraph' }
+						);
+				},
+				expectedRange: new ve.Range( 1 ),
+				msg: 'Delete all when document starts and ends with a focusable node'
 			}
 		];
 
