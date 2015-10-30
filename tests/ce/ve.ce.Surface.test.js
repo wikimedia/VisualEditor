@@ -9,14 +9,14 @@ QUnit.module( 've.ce.Surface' );
 /* Tests */
 
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, operations, expectedData, expectedSelection, msg ) {
-	var i, method, args, selection,
+	var i, e, selection,
 		actions = {
-			backspace: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.BACKSPACE } ],
-			delete: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.DELETE } ],
-			modifiedBackspace: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.BACKSPACE, ctrlKey: true } ],
-			modifiedDelete: [ 'handleLinearDelete', { keyCode: OO.ui.Keys.DELETE, ctrlKey: true } ],
-			enter: [ 'handleLinearEnter', {} ],
-			modifiedEnter: [ 'handleLinearEnter', { shiftKey: true } ]
+			backspace: { keyCode: OO.ui.Keys.BACKSPACE },
+			delete: { keyCode: OO.ui.Keys.DELETE },
+			modifiedBackspace: { keyCode: OO.ui.Keys.BACKSPACE, ctrlKey: true },
+			modifiedDelete: { keyCode: OO.ui.Keys.DELETE, ctrlKey: true },
+			enter: { keyCode: OO.ui.Keys.ENTER },
+			modifiedEnter: { keyCode: OO.ui.Keys.ENTER, shiftKey: true }
 		},
 		view = html ?
 			ve.test.utils.createSurfaceViewFromHtml( html ) :
@@ -34,9 +34,12 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 
 	model.setSelection( selection );
 	for ( i = 0; i < operations.length; i++ ) {
-		method = actions[ operations[ i ] ][ 0 ];
-		args = actions[ operations[ i ] ].slice( 1 );
-		view[ method ].apply( view, args );
+		e = ve.extendObject( {}, {
+			preventDefault: function () {}
+		}, actions[ operations[ i ] ] );
+		ve.ce.keyDownHandlerFactory.executeHandlersForKey(
+			e.keyCode, selection.getName(), view, e
+		);
 	}
 	expectedData( data );
 
@@ -1507,11 +1510,14 @@ QUnit.test( 'handleTableArrowKey', function ( assert ) {
 		model.setSelection( new ve.dm.TableSelection(
 			model.getDocument(), table.tableRange, offsets[ 0 ], offsets[ 1 ], offsets[ 2 ], offsets[ 3 ] )
 		);
-		view.handleTableArrowKey( {
-			keyCode: OO.ui.Keys[ cases[ i ].key ],
-			shiftKey: !!cases[ i ].shiftKey,
-			preventDefault: fn
-		} );
+		ve.ce.keyDownHandlerFactory.executeHandlersForKey(
+			OO.ui.Keys[ cases[ i ].key ], model.getSelection().getName(), view,
+			{
+				keyCode: OO.ui.Keys[ cases[ i ].key ],
+				shiftKey: !!cases[ i ].shiftKey,
+				preventDefault: fn
+			}
+		);
 		selection = model.getSelection();
 		assert.deepEqual(
 			[ selection.fromCol, selection.fromRow, selection.toCol, selection.toRow ],
