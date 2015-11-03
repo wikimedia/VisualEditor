@@ -232,12 +232,12 @@ ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {
  * Register a command for display in the dialog
  *
  * @static
- * @param {string} category The dialog-category in which to display this
+ * @param {string} groupName The group in which to display this
  * @param {string} commandName The key for the command; never displayed, but used in sorting
  * @param {Object} details The details about the command, used in display
  */
-ve.ui.CommandHelpDialog.static.registerCommand = function ( category, commandName, details ) {
-	var group = ve.ui.CommandHelpDialog.static.commandGroups[ category ];
+ve.ui.CommandHelpDialog.static.registerCommand = function ( groupName, commandName, details ) {
+	var group = ve.ui.CommandHelpDialog.static.commandGroups[ groupName ];
 	if ( !group.commands[ commandName ] ) {
 		group.commands[ commandName ] = details;
 		return;
