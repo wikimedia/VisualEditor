@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mashoi7"
+			"Mashoi7",
+			"Ilja.mos"
 		]
 	},
 	"visualeditor": "Vizualine editoru",
@@ -24,7 +25,7 @@
 	"visualeditor-clipboard-cut": "Leikkua",
 	"visualeditor-clipboard-paste": "Liitä",
 	"visualeditor-clipboard-paste-special": "Liitä vaiku tekstannu",
-	"visualeditor-commentinspector-edit": "Edituiče kommentua",
+	"visualeditor-commentinspector-edit": "Kohendele kommentua",
 	"visualeditor-commentinspector-title": "Kommentu",
 	"visualeditor-commentinspector-tooltip": "Kommentu",
 	"visualeditor-content-select-all": "Valliče kai",
@@ -69,7 +70,6 @@
 	"visualeditor-languageinspector-widget-changelang": "Eči kieli",
 	"visualeditor-languageinspector-widget-label-langcode": "Kielikoudu",
 	"visualeditor-languageinspector-widget-label-language": "Kieli",
-	"visualeditor-linkinspector-open": "Avua",
 	"visualeditor-linkinspector-title": "Linku",
 	"visualeditor-listbutton-bullet-tooltip": "Luvettelo",
 	"visualeditor-listbutton-number-tooltip": "Noumeroitu luvettelo",
