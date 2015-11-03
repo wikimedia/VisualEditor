@@ -79,11 +79,21 @@ ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
  * @inheritdoc
  */
 ve.ui.Tool.prototype.onSelect = function () {
-	var command = this.getCommand();
+	var command = this.getCommand(),
+		surface = this.toolbar.getSurface();
 	if ( command instanceof ve.ui.Command ) {
-		command.execute( this.toolbar.getSurface() );
+		if ( surface.context.inspector ) {
+			surface.context.inspector.close().done( function () {
+				command.execute( surface );
+			} );
+		} else {
+			command.execute( surface );
+		}
 	}
 	if ( this.constructor.static.deactivateOnSelect ) {
+		// Even if the promise route was taken above, it's fine to call setActive here; it
+		// just disables the button, stopping double-clicks and making it feel more responsive
+		// if the promise is slow.
 		this.setActive( false );
 	}
 };
