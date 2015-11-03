@@ -406,6 +406,7 @@
 			"src/ui/ve.ui.ToolFactory.js",
 			"src/ui/ve.ui.Command.js",
 			"src/ui/ve.ui.CommandRegistry.js",
+			"src/ui/ve.ui.CommandHelpRegistry.js",
 			"src/ui/ve.ui.Trigger.js",
 			"src/ui/ve.ui.TriggerRegistry.js",
 			"src/ui/ve.ui.Sequence.js",

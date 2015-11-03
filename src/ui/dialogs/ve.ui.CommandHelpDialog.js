@@ -41,82 +41,26 @@ ve.ui.CommandHelpDialog.static.actions = [
 ve.ui.CommandHelpDialog.static.commandGroups = {
 	textStyle: {
 		title: 'visualeditor-shortcuts-text-style',
-		commands: {
-			bold: { trigger: 'bold', msg: 'visualeditor-annotationbutton-bold-tooltip' },
-			italic: { trigger: 'italic', msg: 'visualeditor-annotationbutton-italic-tooltip' },
-			link: { trigger: 'link', msg: 'visualeditor-annotationbutton-link-tooltip' },
-			superscript: { trigger: 'superscript', msg: 'visualeditor-annotationbutton-superscript-tooltip' },
-			subscript: { trigger: 'subscript', msg: 'visualeditor-annotationbutton-subscript-tooltip' },
-			underline: { trigger: 'underline', msg: 'visualeditor-annotationbutton-underline-tooltip' },
-			code: { trigger: 'code', msg: 'visualeditor-annotationbutton-code-tooltip' },
-			strikethrough: { trigger: 'strikethrough', msg: 'visualeditor-annotationbutton-strikethrough-tooltip' },
-			clear: { trigger: 'clear', msg: 'visualeditor-clearbutton-tooltip' }
-		},
 		promote: [ 'bold', 'italic', 'link' ],
 		demote: [ 'clear' ]
 	},
 	clipboard: {
 		title: 'visualeditor-shortcuts-clipboard',
-		commands: {
-			cut: {
-				shortcuts: [ {
-					mac: 'cmd+x',
-					pc: 'ctrl+x'
-				} ],
-				msg: 'visualeditor-clipboard-cut'
-			},
-			copy: {
-				shortcuts: [ {
-					mac: 'cmd+c',
-					pc: 'ctrl+c'
-				} ],
-				msg: 'visualeditor-clipboard-copy'
-			},
-			paste: {
-				shortcuts: [ {
-					mac: 'cmd+v',
-					pc: 'ctrl+v'
-				} ],
-				msg: 'visualeditor-clipboard-paste'
-			},
-			pasteSpecial: { trigger: 'pasteSpecial', msg: 'visualeditor-clipboard-paste-special' }
-		},
 		promote: [],
 		demote: []
 	},
 	formatting: {
 		title: 'visualeditor-shortcuts-formatting',
-		commands: {
-			paragraph: { trigger: 'paragraph', msg: 'visualeditor-formatdropdown-format-paragraph' },
-			heading: { shortcuts: [ 'ctrl+1-6' ], msg: 'visualeditor-formatdropdown-format-heading-label' },
-			pre: { trigger: 'preformatted', msg: 'visualeditor-formatdropdown-format-preformatted' },
-			blockquote: { trigger: 'blockquote', msg: 'visualeditor-formatdropdown-format-blockquote' },
-			indentIn: { trigger: 'indent', msg: 'visualeditor-indentationbutton-indent-tooltip' },
-			indentOut: { trigger: 'outdent', msg: 'visualeditor-indentationbutton-outdent-tooltip' },
-			listBullet: { sequence: [ 'bulletStar' ], msg: 'visualeditor-listbutton-bullet-tooltip' },
-			listNumber: { sequence: [ 'numberDot' ], msg: 'visualeditor-listbutton-number-tooltip' }
-		},
 		promote: [ 'paragraph', 'pre', 'blockquote' ],
 		demote: []
 	},
 	history: {
 		title: 'visualeditor-shortcuts-history',
-		commands: {
-			undo: { trigger: 'undo', msg: 'visualeditor-historybutton-undo-tooltip' },
-			redo: { trigger: 'redo', msg: 'visualeditor-historybutton-redo-tooltip' }
-		},
 		promote: [ 'undo', 'redo' ],
 		demote: []
 	},
 	other: {
 		title: 'visualeditor-shortcuts-other',
-		commands: {
-			findAndReplace: { trigger: 'findAndReplace', msg: 'visualeditor-find-and-replace-title' },
-			findNext: { trigger: 'findNext', msg: 'visualeditor-find-and-replace-next-button' },
-			findPrevious: { trigger: 'findPrevious', msg: 'visualeditor-find-and-replace-previous-button' },
-			selectAll: { trigger: 'selectAll', msg: 'visualeditor-content-select-all' },
-			commandHelp: { trigger: 'commandHelp', msg: 'visualeditor-dialog-command-help-title' }
-		},
 		promote: [ 'findAndReplace', 'findNext', 'findPrevious' ],
 		demote: [ 'commandHelp' ]
 	}
@@ -153,7 +97,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	this.$container = $( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
 	for ( i in commandGroups ) {
-		commands = ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup( commandGroups[ i ] );
+		commands = ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup( i, commandGroups[ i ].promote, commandGroups[ i ].demote );
 		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
 			if ( commands[ j ].trigger ) {
@@ -229,66 +173,39 @@ ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {
 };
 
 /**
- * Register a command for display in the dialog
- *
- * @static
- * @param {string} groupName The group in which to display this
- * @param {string} commandName The key for the command; never displayed, but used in sorting
- * @param {Object} details The details about the command, used in display
- */
-ve.ui.CommandHelpDialog.static.registerCommand = function ( groupName, commandName, details ) {
-	var group = ve.ui.CommandHelpDialog.static.commandGroups[ groupName ];
-	if ( !group.commands[ commandName ] ) {
-		group.commands[ commandName ] = details;
-		return;
-	}
-	if ( details.trigger ) {
-		group.commands[ commandName ].trigger = details.trigger;
-	}
-	if ( details.shortcuts ) {
-		group.commands[ commandName ].shortcuts = details.shortcuts;
-	}
-	if ( details.sequence ) {
-		group.commands[ commandName ].sequence = ( group.commands[ commandName ].sequence || [] ).concat( details.sequence );
-	}
-	if ( details.promote ) {
-		group.promote.push( commandName );
-	} else if ( details.demote ) {
-		group.demote.push( commandName );
-	}
-};
-
-/**
  * Extract a properly sorted list of commands from a command-group
  *
  * @static
- * @param {Object} group Group of related commands
- * @return {string[]} List of commands
+ * @param {string} groupName The dialog-category in which to display this
+ * @param {string[]} promote Commands which should be displayed first
+ * @param {string[]} demote Commands which should be displayed last
+ * @return {Object[]} List of commands in order
  */
-ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( group ) {
+ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, promote, demote ) {
 	var i,
-		keys = Object.keys( group.commands ),
+		commands = ve.ui.commandHelpRegistry.lookupByGroup( groupName ),
+		keys = Object.keys( commands ),
 		used = {},
 		auto = [],
 		promoted = [],
 		demoted = [];
 	keys.sort();
-	for ( i = 0; i < group.promote.length; i++ ) {
-		promoted.push( group.commands[ group.promote[ i ] ] );
-		used[ group.promote[ i ] ] = true;
+	for ( i = 0; i < promote.length; i++ ) {
+		promoted.push( commands[ promote[ i ] ] );
+		used[ promote[ i ] ] = true;
 	}
-	for ( i = 0; i < group.demote.length; i++ ) {
-		if ( used[ group.demote[ i ] ] ) {
+	for ( i = 0; i < demote.length; i++ ) {
+		if ( used[ demote[ i ] ] ) {
 			continue;
 		}
-		demoted.push( group.commands[ group.demote[ i ] ] );
-		used[ group.demote[ i ] ] = true;
+		demoted.push( commands[ demote[ i ] ] );
+		used[ demote[ i ] ] = true;
 	}
 	for ( i = 0; i < keys.length; i++ ) {
 		if ( used[ keys[ i ] ] ) {
 			continue;
 		}
-		auto.push( group.commands[ keys[ i ] ] );
+		auto.push( commands[ keys[ i ] ] );
 	}
 	return promoted.concat( auto, demoted );
 };
