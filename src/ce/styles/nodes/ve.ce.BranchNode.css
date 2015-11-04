@@ -47,10 +47,6 @@
 	display: block;
 }
 
-.ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	vertical-align: baseline;
-}
-
 .ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	width: 0.95em;
 	height: 0.95em;
