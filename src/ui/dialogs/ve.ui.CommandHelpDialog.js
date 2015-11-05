@@ -40,27 +40,27 @@ ve.ui.CommandHelpDialog.static.actions = [
 
 ve.ui.CommandHelpDialog.static.commandGroups = {
 	textStyle: {
-		title: 'visualeditor-shortcuts-text-style',
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-text-style' ),
 		promote: [ 'bold', 'italic', 'link' ],
 		demote: [ 'clear' ]
 	},
 	clipboard: {
-		title: 'visualeditor-shortcuts-clipboard',
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-clipboard' ),
 		promote: [],
 		demote: []
 	},
 	formatting: {
-		title: 'visualeditor-shortcuts-formatting',
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-formatting' ),
 		promote: [ 'paragraph', 'pre', 'blockquote' ],
 		demote: []
 	},
 	history: {
-		title: 'visualeditor-shortcuts-history',
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-history' ),
 		promote: [ 'undo', 'redo' ],
 		demote: []
 	},
 	other: {
-		title: 'visualeditor-shortcuts-other',
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-other' ),
 		promote: [ 'findAndReplace', 'findNext', 'findPrevious' ],
 		demote: [ 'commandHelp' ]
 	}
@@ -122,9 +122,9 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 					triggerList[ k ].getMessage( true ).map( ve.ui.CommandHelpDialog.static.buildKeyNode )
 				).find( 'kbd + kbd' ).before( '+' ).end() );
 			}
-			if ( commands[ j ].sequence ) {
-				for ( k = 0, kLen = commands[ j ].sequence.length; k < kLen; k++ ) {
-					sequence = ve.ui.sequenceRegistry.lookup( commands[ j ].sequence[ k ] );
+			if ( commands[ j ].sequences ) {
+				for ( k = 0, kLen = commands[ j ].sequences.length; k < kLen; k++ ) {
+					sequence = ve.ui.sequenceRegistry.lookup( commands[ j ].sequences[ k ] );
 					if ( sequence ) {
 						$shortcut.append( $( '<kbd class="ve-ui-commandHelpDialog-sequence">' )
 							.attr( 'data-label', ve.msg( 'visualeditor-shortcuts-sequence-notice' ) )
@@ -137,14 +137,14 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 			}
 			$list.append(
 				$shortcut,
-				$( '<dd>' ).text( ve.msg( commands[ j ].msg ) )
+				$( '<dd>' ).text( OO.ui.resolveMsg( commands[ j ].label ) )
 			);
 		}
 		this.$container.append(
 			$( '<div>' )
 				.addClass( 've-ui-commandHelpDialog-section' )
 				.append(
-					$( '<h3>' ).text( ve.msg( commandGroups[ i ].title ) ),
+					$( '<h3>' ).text( OO.ui.resolveMsg( commandGroups[ i ].title ) ),
 					$list
 				)
 		);
