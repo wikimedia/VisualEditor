@@ -21,12 +21,13 @@
 }
 
 .ve-ui-commandHelpDialog-section h3 {
-	margin: 0 0 1em 0;
+	text-align: center;
+	margin: 0;
 	padding: 0;
 }
 
 .ve-ui-commandHelpDialog-list {
-	margin: 1em 0;
+	margin: 0.5em 0 1.5em 0;
 }
 
 .ve-ui-commandHelpDialog-list dd {
