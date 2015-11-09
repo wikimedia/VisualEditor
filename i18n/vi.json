@@ -7,7 +7,8 @@
 			"Trần Nguyễn Minh Huy",
 			"Max20091",
 			"Dinhxuanduyet",
-			"Anh88"
+			"Anh88",
+			"Nguyên Lê"
 		]
 	},
 	"visualeditor": "Trình soạn thảo trực quan",
@@ -84,7 +85,6 @@
 	"visualeditor-languageinspector-widget-label-direction": "Hướng viết",
 	"visualeditor-languageinspector-widget-label-langcode": "Mã ngôn ngữ",
 	"visualeditor-languageinspector-widget-label-language": "Ngôn ngữ",
-	"visualeditor-linkinspector-open": "Mở",
 	"visualeditor-linkinspector-title": "Liên kết",
 	"visualeditor-listbutton-bullet-tooltip": "Danh sách không đánh số",
 	"visualeditor-listbutton-number-tooltip": "Danh sách đánh số",
@@ -100,6 +100,7 @@
 	"visualeditor-shortcuts-formatting": "Định dạng đoạn văn",
 	"visualeditor-shortcuts-history": "Lịch sử",
 	"visualeditor-shortcuts-other": "Khác",
+	"visualeditor-shortcuts-sequence-notice": "Nhập",
 	"visualeditor-shortcuts-text-style": "Kiểu văn bản",
 	"visualeditor-slug-insert": "Chèn đoạn văn",
 	"visualeditor-specialcharacter-button-tooltip": "Ký tự đặc biệt",
