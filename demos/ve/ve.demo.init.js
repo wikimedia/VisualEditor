@@ -9,6 +9,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 	var $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),
 		target = new ve.demo.target(),
+		hashChanging = false,
 
 		currentLang = $.i18n().locale,
 		currentDir = target.$element.css( 'direction' ) || 'ltr',
@@ -117,6 +118,9 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 	function updateHash() {
 		var i, pages = [];
+		if ( hashChanging ) {
+			return false;
+		}
 		if ( history.replaceState ) {
 			for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
 				pages.push( ve.demo.surfaceContainers[ i ].pageMenu.getSelectedItem().getData() );
@@ -154,5 +158,15 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 	createSurfacesFromHash( location.hash );
 
-	// TODO: hashchange handler?
+	$( window ).on( 'hashchange', function () {
+		if ( hashChanging ) {
+			return;
+		}
+		hashChanging = true;
+		ve.demo.surfaceContainers.slice().forEach( function ( container ) {
+			container.destroy();
+		} );
+		createSurfacesFromHash( location.hash );
+		hashChanging = false;
+	} );
 } );
