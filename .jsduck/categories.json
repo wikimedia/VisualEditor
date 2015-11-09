@@ -10,7 +10,8 @@
 					"ve.SelectionState",
 					"ve.EventSequencer",
 					"ve.Filibuster",
-					"ve.TriggerListener"
+					"ve.TriggerListener",
+					"ve.Scheduler"
 				]
 			},
 			{
