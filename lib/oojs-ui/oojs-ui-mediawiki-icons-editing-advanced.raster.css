@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.13.1
+ * OOjs UI v0.13.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-11-03T21:42:28Z
+ * Date: 2015-11-10T23:33:07Z
  */
 .oo-ui-icon-alignCentre {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/align-center.png);
@@ -39,10 +39,10 @@
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/find-ltr-invert.png);
 }
 .oo-ui-icon-insert {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/insert.png);
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/add.png);
 }
 .oo-ui-icon-insert-invert {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/insert-invert.png);
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/add-invert.png);
 }
 .oo-ui-icon-layout {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/layout-ltr.png);
