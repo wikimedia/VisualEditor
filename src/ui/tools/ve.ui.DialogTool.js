@@ -59,15 +59,18 @@ ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
  * @inheritdoc
  */
 ve.ui.DialogTool.prototype.onUpdateState = function ( fragment, contextDirection, activeDialogs ) {
-	var myWindowNames = [];
+	var command, myWindowNames = [];
 
 	// Parent method
 	ve.ui.DialogTool.super.prototype.onUpdateState.apply( this, arguments );
 
 	if ( this.constructor.static.associatedWindows !== null ) {
 		myWindowNames = this.constructor.static.associatedWindows;
-	} else if ( this.getCommand().getAction() === 'window' ) {
-		myWindowNames = [ this.getCommand().getArgs()[ 0 ] ];
+	} else {
+		command = this.getCommand();
+		if ( command && command.getAction() === 'window' ) {
+			myWindowNames = [ command.getArgs()[ 0 ] ];
+		}
 	}
 
 	// Show the tool as active if any of its associated windows is open
