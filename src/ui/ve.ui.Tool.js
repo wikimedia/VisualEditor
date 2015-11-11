@@ -53,7 +53,7 @@ ve.ui.Tool.static.deactivateOnSelect = true;
 /**
  * Get the symbolic command name for this tool.
  *
- * @return {ve.ui.Command}
+ * @return {string|null}
  */
 ve.ui.Tool.static.getCommandName = function () {
 	return this.commandName;
