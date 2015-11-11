@@ -106,7 +106,7 @@ ve.init.Target.static.toolbarGroups = [
 	{
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		type: 'list',
-		icon: 'insert',
+		icon: 'add',
 		label: '',
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		indicator: 'down',
