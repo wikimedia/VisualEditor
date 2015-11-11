@@ -14,7 +14,8 @@
 			"Davidpar",
 			"Gerardduenas",
 			"Maceleiro",
-			"Macofe"
+			"Macofe",
+			"Kippelboy"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -90,7 +91,6 @@
 	"visualeditor-languageinspector-widget-label-direction": "Direcció",
 	"visualeditor-languageinspector-widget-label-langcode": "Codi d'idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
-	"visualeditor-linkinspector-open": "Obre",
 	"visualeditor-linkinspector-title": "Enllaç",
 	"visualeditor-listbutton-bullet-tooltip": "Llista puntejada",
 	"visualeditor-listbutton-number-tooltip": "Llista numerada",
@@ -106,6 +106,7 @@
 	"visualeditor-shortcuts-formatting": "Format de paràgraf",
 	"visualeditor-shortcuts-history": "Historial",
 	"visualeditor-shortcuts-other": "Altres",
+	"visualeditor-shortcuts-sequence-notice": "Escriu",
 	"visualeditor-shortcuts-text-style": "Estil del text",
 	"visualeditor-slug-insert": "Inserta paràgraf",
 	"visualeditor-specialcharacter-button-tooltip": "Caràcter especial",
