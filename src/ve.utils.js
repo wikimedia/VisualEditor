@@ -52,6 +52,12 @@ ve.getObjectValues = OO.getObjectValues;
 
 /**
  * @method
+ * @inheritdoc OO#binarySearch
+ */
+ve.binarySearch = OO.binarySearch;
+
+/**
+ * @method
  * @inheritdoc OO#compare
  */
 ve.compare = OO.compare;
@@ -312,42 +318,6 @@ ve.batchPush = function ( arr, data ) {
 		index += batchSize;
 	}
 	return length;
-};
-
-/**
- * Use binary search to locate an element in a sorted array.
- *
- * searchFunc is given an element from the array. `searchFunc(elem)` must return a number
- * above 0 if the element we're searching for is to the right of (has a higher index than) elem,
- * below 0 if it is to the left of elem, or zero if it's equal to elem.
- *
- * To search for a specific value with a comparator function (a `function cmp(a,b)` that returns
- * above 0 if `a > b`, below 0 if `a < b`, and 0 if `a == b`), you can use
- * `searchFunc = cmp.bind( null, value )`.
- *
- * @param {Array} arr Array to search in
- * @param {Function} searchFunc Search function
- * @param {boolean} [forInsertion] If not found, return index where val could be inserted
- * @return {number|null} Index where val was found, or null if not found
- */
-ve.binarySearch = function ( arr, searchFunc, forInsertion ) {
-	var mid, cmpResult,
-		left = 0,
-		right = arr.length;
-	while ( left < right ) {
-		// Equivalent to Math.floor( ( left + right ) / 2 ) but much faster
-		/*jshint bitwise:false */
-		mid = ( left + right ) >> 1;
-		cmpResult = searchFunc( arr[ mid ] );
-		if ( cmpResult < 0 ) {
-			right = mid;
-		} else if ( cmpResult > 0 ) {
-			left = mid + 1;
-		} else {
-			return mid;
-		}
-	}
-	return forInsertion ? right : null;
 };
 
 /**
