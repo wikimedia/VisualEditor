@@ -50,6 +50,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, range, o
 
 QUnit.test( 'handleLinearDelete', function ( assert ) {
 	var i,
+		emptyList = '<ul><li><p></p></li></ul>',
 		cases = [
 			{
 				range: new ve.Range( 1, 4 ),
@@ -172,7 +173,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Table cell selected but not deleted by delete'
 			},
 			{
-				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				html: '<p>a</p>' + emptyList + '<p>b</p>',
 				range: new ve.Range( 6 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -185,7 +186,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Empty list node deleted by delete from inside'
 			},
 			{
-				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				html: '<p>a</p>' + emptyList + '<p>b</p>',
 				range: new ve.Range( 6 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -198,7 +199,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Empty list node deleted by backspace from inside'
 			},
 			{
-				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				html: '<p>a</p>' + emptyList + '<p>b</p>',
 				range: new ve.Range( 2 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -211,7 +212,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Empty list node deleted by delete from before'
 			},
 			{
-				html: '<p>a</p><ul><li><p></p></li></ul><p>b</p>',
+				html: '<p>a</p>' + emptyList + '<p>b</p>',
 				range: new ve.Range( 10 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -224,7 +225,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Empty list node deleted by backspace from after'
 			},
 			{
-				html: '<ul><li><p></p><ul><li><p></p></li></ul></li></ul>',
+				html: '<ul><li><p></p>' + emptyList + '</li></ul>',
 				range: new ve.Range( 7 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -250,6 +251,36 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 					range: new ve.Range( 1 )
 				},
 				msg: 'Backspace after select all spanning entire document creates empty paragraph'
+			},
+			{
+				html: emptyList + '<p>foo</p>',
+				range: new ve.Range( 3 ),
+				operations: [ 'backspace' ],
+				expectedData: function ( data ) {
+					data.splice( 0, 2 );
+					data.splice( 2, 2 );
+				},
+				expectedRange: new ve.Range( 1 ),
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 1 )
+				},
+				msg: 'List at start of document unwrapped by backspace'
+			},
+			{
+				html: '<p>foo</p>' + emptyList,
+				range: new ve.Range( 8 ),
+				operations: [ 'delete' ],
+				expectedData: function ( data ) {
+					data.splice( 5, 2 );
+					data.splice( 7, 2 );
+				},
+				expectedRange: new ve.Range( 5 ),
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 6 )
+				},
+				msg: 'List at end of document unwrapped by delete'
 			}
 		];
 
