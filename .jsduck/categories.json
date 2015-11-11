@@ -287,7 +287,14 @@
 		"groups": [
 			{
 				"name": "OOjs",
-				"classes": ["OO", "OO.EventEmitter", "OO.Factory", "OO.Registry"]
+				"classes": [
+					"OO",
+					"OO.EmitterList",
+					"OO.EventEmitter",
+					"OO.Factory",
+					"OO.Registry",
+					"OO.SortedEmitterList"
+				]
 			},
 			{
 				"name": "jQuery",
