@@ -38,7 +38,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup',
 		'compositionstart', 'compositionend',
-		'input'
+		'input', 'mousedown'
 	] );
 	this.clipboard = [];
 	this.clipboardId = String( Math.random() );
@@ -132,7 +132,13 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	if ( this.hasSelectionChangeEvents ) {
 		this.$document.on( 'selectionchange', this.onDocumentSelectionChange.bind( this ) );
 	} else {
+		// fake selection change events; mousemove gets optimized away if we're not dragging
+		// mousedown needs to run after nativemousedown, because otherwise the selection hasn't
+		// finished changigng
 		this.$documentNode.on( 'mousemove', this.onDocumentSelectionChange.bind( this ) );
+		this.eventSequencer.after( {
+			mousedown: this.onDocumentSelectionChange.bind( this )
+		} );
 	}
 
 	this.$element.on( {
