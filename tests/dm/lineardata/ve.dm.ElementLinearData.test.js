@@ -1572,6 +1572,30 @@ QUnit.test( 'sanitize', function ( assert ) {
 				],
 				rules: { removeOriginalDomElements: true },
 				msg: 'Span stripped when removing original DOM elements'
+			},
+			{
+				html: '<p>F<br>o</p><h1>B<br>a</h1><p>B<br></p>',
+				data: [
+					{ type: 'paragraph' },
+					'F',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'o',
+					{ type: '/paragraph' },
+					{ type: 'heading', attributes: { level: 1 } },
+					'B',
+					{ type: '/heading' },
+					{ type: 'heading', attributes: { level: 1 } },
+					'a',
+					{ type: '/heading' },
+					{ type: 'paragraph' },
+					'B',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { removeOriginalDomElements: true },
+				msg: 'Breaks split content branch nodes'
 			}
 		];
 

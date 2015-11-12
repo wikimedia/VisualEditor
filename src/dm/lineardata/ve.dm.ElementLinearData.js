@@ -993,10 +993,11 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
  * @param {boolean} [rules.removeOriginalDomElements] Remove references to DOM elements data was converted from
  * @param {boolean} [rules.plainText] Remove all formatting for plain text import
+ * @param {boolean} [rules.allowBreaks] Allow <br> line breaks, otherwise the node will be split
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentBranches ) {
-	var i, len, annotations, emptySet, setToRemove, type,
+	var i, len, annotations, emptySet, setToRemove, type, canContainContent, contentElement, isOpen,
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
 	if ( rules.plainText ) {
@@ -1021,18 +1022,23 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isElementData( i ) ) {
 			type = this.getType( i );
+			canContainContent = ve.dm.nodeFactory.canNodeContainContent( type );
+			isOpen = this.isOpenElementData( i );
+
 			// Apply type conversions
 			if ( rules.conversions && rules.conversions[ type ] ) {
 				type = rules.conversions[ type ];
-				this.getData( i ).type = ( this.isCloseElementData( i ) ? '/' : '' ) + type;
+				this.getData( i ).type = ( !isOpen ? '/' : '' ) + type;
 			}
+
 			// Convert content-containing non-paragraph nodes to paragraphs in plainText mode
-			if ( rules.plainText && type !== 'paragraph' && ve.dm.nodeFactory.canNodeContainContent( type ) ) {
+			if ( rules.plainText && type !== 'paragraph' && canContainContent ) {
 				type = 'paragraph';
 				this.setData( i, {
 					type: ( this.isCloseElementData( i ) ? '/' : '' ) + type
 				} );
 			}
+
 			// Remove blacklisted nodes
 			if (
 				( rules.blacklist && rules.blacklist.indexOf( type ) !== -1 ) ||
@@ -1050,16 +1056,27 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 				len--;
 				continue;
 			}
+
+			// Split on breaks
+			if ( !rules.allowBreaks && type === 'break' && contentElement ) {
+				this.splice( i, 2, { type: '/' + contentElement.type }, ve.copy( contentElement ) );
+			}
+
 			// If a node is empty but can contain content, then just remove it
 			if (
 				!keepEmptyContentBranches &&
-				i > 0 && this.isCloseElementData( i ) && this.isOpenElementData( i - 1 ) &&
-				ve.dm.nodeFactory.canNodeContainContent( type )
+				i > 0 && !isOpen && this.isOpenElementData( i - 1 ) &&
+				canContainContent
 			) {
 				this.splice( i - 1, 2 );
 				i -= 2;
 				len -= 2;
 				continue;
+			}
+
+			// Store the current contentElement for splitting
+			if ( canContainContent ) {
+				contentElement = isOpen ? this.getData( i ) : null;
 			}
 		}
 		annotations = this.getAnnotationsFromOffset( i, true );
