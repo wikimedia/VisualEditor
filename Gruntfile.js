@@ -152,7 +152,7 @@ module.exports = function ( grunt ) {
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.standalone.apex.dist',
+					'visualEditor.desktop.standalone.dist',
 					'visualEditor.standalone.read'
 				],
 				run: [ 'visualEditor.desktop.standalone.demo' ],

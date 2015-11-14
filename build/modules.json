@@ -729,6 +729,14 @@
 			"visualEditor.desktop"
 		]
 	},
+	"visualEditor.desktop.standalone.dist": {
+		"scripts": [
+			"src/init/sa/ve.init.sa.DesktopTarget.js"
+		],
+		"dependencies": [
+			"visualEditor.standalone.apex.dist"
+		]
+	},
 	"visualEditor.mobile.standalone": {
 		"scripts": [
 			"src/init/sa/ve.init.sa.MobileTarget.js"
