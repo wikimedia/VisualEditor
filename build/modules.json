@@ -393,6 +393,7 @@
 			"src/ui/ve.ui.ContextItem.js",
 			"src/ui/ve.ui.ContextItemFactory.js",
 			"src/ui/contextitems/ve.ui.LinearContextItem.js",
+			"src/ui/contextitems/ve.ui.AnnotationContextItem.js",
 			"src/ui/contextitems/ve.ui.TableContextItem.js",
 			"src/ui/contextitems/ve.ui.AlienContextItem.js",
 			"src/ui/contextitems/ve.ui.AlignableContextItem.js",
