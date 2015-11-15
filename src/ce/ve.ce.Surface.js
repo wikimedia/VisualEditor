@@ -373,14 +373,20 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  */
 ve.ce.Surface.prototype.getNodeClientRectFromRange = function ( range ) {
 	var rect, side, x, adjacentNode, unicornRect,
-		node = range.endContainer;
+		node = range.endContainer,
+		offset = range.endOffset,
+		leftNode = offset > 0 && node.childNodes[ offset - 1 ];
 
-	while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
-		node = node.parentNode;
-	}
+	if ( leftNode && leftNode.nodeType === Node.ELEMENT_NODE && leftNode.classList.contains( 've-ce-nail' ) ) {
+		node = leftNode;
+	} else {
+		while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
+			node = node.parentNode;
+		}
 
-	if ( !node ) {
-		return null;
+		if ( !node ) {
+			return null;
+		}
 	}
 
 	// When possible, pretend the cursor is the left/right border of the node
