@@ -391,7 +391,7 @@ ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range )
 	var i, j, jlen, rects, $result, top;
 	this.$findResults.empty();
 	for ( i = range.start; i < range.end; i++ ) {
-		rects = this.surface.getView().getSelectionRects( this.fragments[ i ].getSelection() );
+		rects = this.surface.getView().getSelection( this.fragments[ i ].getSelection() ).getSelectionRects();
 		$result = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
 		top = Infinity;
 		for ( j = 0, jlen = rects.length; j < jlen; j++ ) {
@@ -444,7 +444,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		top = $result.data( 'top' );
 	} else if ( scrollIntoView ) {
 		// If we're about to scroll into view and the result isn't rendered, compute the offset manually.
-		rect = surfaceView.getSelectionBoundingRect( this.fragments[ this.focusedIndex ].getSelection() );
+		rect = surfaceView.getSelection( this.fragments[ this.focusedIndex ].getSelection() ).getSelectionBoundingRect();
 		top = rect.top;
 	}
 

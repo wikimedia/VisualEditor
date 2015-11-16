@@ -366,197 +366,14 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 };
 
 /**
- * Get a client rect from the range's end node
+ * Get selection view object
  *
- * This function is used internally by getSelectionRects and
- * getSelectionBoundingRect as a fallback when Range.getClientRects
- * fails. The width is hard-coded to 0 as the function is used to
- * locate the selection focus position.
- *
- * @private
- * @param {ve.Range} range Range to get client rect for
- * @return {Object|null} ClientRect-like object
+ * @param {ve.dm.Selection} selection Optional selection mode, defaults to current selection
+ * @return {ve.ce.Selection} Selection view
  */
-ve.ce.Surface.prototype.getNodeClientRectFromRange = function ( range ) {
-	var rect, side, x, adjacentNode, unicornRect,
-		node = range.endContainer,
-		offset = range.endOffset,
-		leftNode = offset > 0 && node.childNodes[ offset - 1 ];
-
-	if ( leftNode && leftNode.nodeType === Node.ELEMENT_NODE && leftNode.classList.contains( 've-ce-nail' ) ) {
-		node = leftNode;
-	} else {
-		while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
-			node = node.parentNode;
-		}
-
-		if ( !node ) {
-			return null;
-		}
-	}
-
-	// When possible, pretend the cursor is the left/right border of the node
-	// (depending on directionality) as a fallback.
-
-	// We would use getBoundingClientRect(), but in iOS7 that's relative to the
-	// document rather than to the viewport
-	rect = node.getClientRects()[ 0 ];
-	if ( !rect ) {
-		// FF can return null when focusNode is invisible
-		return null;
-	}
-
-	side = this.getModel().getDocument().getDir() === 'rtl' ? 'right' : 'left';
-	adjacentNode = range.endContainer.childNodes[ range.endOffset ];
-	if ( range.collapsed && $( adjacentNode ).hasClass( 've-ce-unicorn' ) ) {
-		// We're next to a unicorn; use its left/right position
-		unicornRect = adjacentNode.getClientRects()[ 0 ];
-		if ( !unicornRect ) {
-			return null;
-		}
-		x = unicornRect[ side ];
-	} else {
-		x = rect[ side ];
-	}
-
-	return {
-		top: rect.top,
-		bottom: rect.bottom,
-		left: x,
-		right: x,
-		width: 0,
-		height: rect.height
-	};
-};
-
-/**
- * Get the rectangles of the selection relative to the surface.
- *
- * @method
- * @param {ve.dm.Selection} [selection] Optional selection to get the rectangles for, defaults to current selection
- * @return {Object[]|null} Selection rectangles
- */
-ve.ce.Surface.prototype.getSelectionRects = function ( selection ) {
-	var i, l, range, nativeRange, surfaceRect, focusedNode, rect,
-		rects = [],
-		relativeRects = [];
-
+ve.ce.Surface.prototype.getSelection = function ( selection ) {
 	selection = selection || this.getModel().getSelection();
-	if ( selection instanceof ve.dm.NullSelection ) {
-		return null;
-	} else if ( selection instanceof ve.dm.TableSelection ) {
-		return this.getSelectionBoundingRect( selection );
-	}
-
-	range = selection.getRange();
-	focusedNode = this.getFocusedNode( range );
-
-	if ( focusedNode ) {
-		return focusedNode.getRects();
-	}
-
-	nativeRange = this.getNativeRange( range );
-	if ( !nativeRange ) {
-		return null;
-	}
-
-	// Calling getClientRects sometimes fails:
-	// * in Firefox on page load when the address bar is still focused
-	// * in empty paragraphs
-	try {
-		rects = RangeFix.getClientRects( nativeRange );
-		if ( !rects.length ) {
-			throw new Error( 'getClientRects returned empty list' );
-		}
-	} catch ( e ) {
-		rect = this.getNodeClientRectFromRange( nativeRange );
-		if ( rect ) {
-			rects = [ rect ];
-		}
-	}
-
-	surfaceRect = this.getSurface().getBoundingClientRect();
-	if ( !rects || !surfaceRect ) {
-		return null;
-	}
-
-	for ( i = 0, l = rects.length; i < l; i++ ) {
-		relativeRects.push( ve.translateRect( rects[ i ], -surfaceRect.left, -surfaceRect.top ) );
-	}
-	return relativeRects;
-};
-
-/**
- * Get the start and end rectangles of the selection relative to the surface.
- *
- * @method
- * @param {ve.dm.Selection} [selection] Optional selection to get the rectangles for, defaults to current selection
- * @return {Object|null} Start and end selection rectangles
- */
-ve.ce.Surface.prototype.getSelectionStartAndEndRects = function ( selection ) {
-	var range, focusedNode;
-
-	selection = selection || this.getModel().getSelection();
-	if ( selection instanceof ve.dm.NullSelection ) {
-		return null;
-	}
-
-	range = selection.getRange();
-	focusedNode = this.getFocusedNode( range );
-
-	if ( focusedNode ) {
-		return focusedNode.getStartAndEndRects();
-	}
-
-	return ve.getStartAndEndRects( this.getSelectionRects() );
-};
-
-/**
- * Get the coordinates of the selection's bounding rectangle relative to the surface.
- *
- * Returned coordinates are relative to the surface.
- *
- * @method
- * @param {ve.dm.Selection} [selection] Optional selection to get the rectangles for, defaults to current selection
- * @return {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
- */
-ve.ce.Surface.prototype.getSelectionBoundingRect = function ( selection ) {
-	var range, nativeRange, boundingRect, surfaceRect, focusedNode;
-
-	selection = selection || this.getModel().getSelection();
-
-	if ( selection instanceof ve.dm.TableSelection ) {
-		boundingRect = this.getActiveTableNode().getSelectionBoundingRect( selection );
-	} else if ( selection instanceof ve.dm.LinearSelection ) {
-		range = selection.getRange();
-		focusedNode = this.getFocusedNode( range );
-
-		if ( focusedNode ) {
-			return focusedNode.getBoundingRect();
-		}
-
-		nativeRange = this.getNativeRange( range );
-		if ( !nativeRange ) {
-			return null;
-		}
-
-		try {
-			boundingRect = RangeFix.getBoundingClientRect( nativeRange );
-			if ( !boundingRect ) {
-				throw new Error( 'getBoundingClientRect returned null' );
-			}
-		} catch ( e ) {
-			boundingRect = this.getNodeClientRectFromRange( nativeRange );
-		}
-	} else {
-		return null;
-	}
-
-	surfaceRect = this.getSurface().getBoundingClientRect();
-	if ( !boundingRect || !surfaceRect ) {
-		return null;
-	}
-	return ve.translateRect( boundingRect, -surfaceRect.left, -surfaceRect.top );
+	return ve.ce.Selection.static.newFromModel( selection, this );
 };
 
 /*! Initialization */
@@ -759,7 +576,7 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 	) {
 		return;
 	}
-	rects = this.getSelectionRects( selection );
+	rects = this.getSelection().getSelectionRects();
 	if ( rects ) {
 		for ( i = 0, l = rects.length; i < l; i++ ) {
 			this.$deactivatedSelection.append( $( '<div>' ).css( {

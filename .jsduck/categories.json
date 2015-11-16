@@ -107,6 +107,7 @@
 					"ve.ce.NodeFactory",
 					"ve.ce.Surface",
 					"ve.ce.SurfaceObserver",
+					"ve.ce.*Selection",
 					"ve.ce.RangeState"
 				]
 			},

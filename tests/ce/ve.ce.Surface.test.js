@@ -1806,13 +1806,12 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 } );
 
 /* Methods with return values */
+// TODO: ve.ce.Surface#getSelection
 // TODO: ve.ce.Surface#getSurface
 // TODO: ve.ce.Surface#getModel
 // TODO: ve.ce.Surface#getDocument
 // TODO: ve.ce.Surface#getFocusedNode
 // TODO: ve.ce.Surface#isRenderingLocked
-// TODO: ve.ce.Surface#getSelectionBoundingRect
-// TODO: ve.ce.Surface#getSelectionStartAndEndRects
 
 /* Methods without return values */
 // TODO: ve.ce.Surface#initialize

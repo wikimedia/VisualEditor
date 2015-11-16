@@ -201,7 +201,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 	currentSelection = this.surface.getModel().getSelection();
 	isTableSelection = ( startingSelection || currentSelection ) instanceof ve.dm.TableSelection;
 
-	boundingRect = surface.getSelectionBoundingRect( startingSelection );
+	boundingRect = surface.getSelection( startingSelection ).getSelectionBoundingRect();
 
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.
@@ -234,7 +234,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		}
 	} else {
 		// The selection is text or an inline focused node
-		startAndEndRects = surface.getSelectionStartAndEndRects( startingSelection );
+		startAndEndRects = surface.getSelection( startingSelection ).getSelectionStartAndEndRects();
 		if ( startAndEndRects ) {
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
 			if (
