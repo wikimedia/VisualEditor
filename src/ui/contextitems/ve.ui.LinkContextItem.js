@@ -24,7 +24,7 @@ ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.LinkContextItem, ve.ui.LinearContextItem );
+OO.inheritClass( ve.ui.LinkContextItem, ve.ui.AnnotationContextItem );
 
 /* Static Properties */
 
@@ -39,6 +39,8 @@ ve.ui.LinkContextItem.static.modelClasses = [ ve.dm.LinkAnnotation ];
 ve.ui.LinkContextItem.static.embeddable = false;
 
 ve.ui.LinkContextItem.static.commandName = 'link';
+
+ve.ui.LinkContextItem.static.clearable = true;
 
 /* Methods */
 

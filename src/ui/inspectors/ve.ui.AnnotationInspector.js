@@ -44,12 +44,6 @@ ve.ui.AnnotationInspector.static.modelClasses = [];
 // from the inspector performs.
 ve.ui.AnnotationInspector.static.actions = [
 	{
-		action: 'remove',
-		label: OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
-		flags: 'destructive',
-		modes: 'edit'
-	},
-	{
 		action: 'done',
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
 		flags: [ 'progressive', 'primary' ],
@@ -149,18 +143,6 @@ ve.ui.AnnotationInspector.prototype.getMode = function () {
 		return this.initialSelection.isCollapsed() ? 'insert' : 'edit';
 	}
 	return '';
-};
-
-/**
- * @inheritdoc
- */
-ve.ui.AnnotationInspector.prototype.getActionProcess = function ( action ) {
-	if ( action === 'remove' ) {
-		return new OO.ui.Process( function () {
-			this.close( { action: 'remove' } );
-		}, this );
-	}
-	return ve.ui.AnnotationInspector.super.prototype.getActionProcess.call( this, action );
 };
 
 /**
@@ -271,7 +253,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				insertText = false,
 				replace = false,
 				annotation = this.getAnnotation(),
-				remove = data.action === 'remove' || ( data.action === 'done' && this.shouldRemoveAnnotation() ),
+				remove = data.action === 'done' && this.shouldRemoveAnnotation(),
 				surfaceModel = this.fragment.getSurface(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
 				selection = this.fragment.getSelection();
