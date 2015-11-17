@@ -37,8 +37,35 @@ ve.ce.TableSelection.prototype.getSelectionRects = function () {
  * @inheritdoc
  */
 ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
-	var boundingRect = this.getSurface().getActiveTableNode().getSelectionBoundingRect( this.getModel() ),
-		surfaceRect = this.getSurface().getSurface().getBoundingClientRect();
+	var i, l, cellOffset, top, bottom, left, right, boundingRect,
+		surface = this.getSurface(),
+		tableNode = surface.getActiveTableNode(),
+		nodes = tableNode.getCellNodesFromSelection( this.getModel() ),
+		surfaceRect = surface.getSurface().getBoundingClientRect();
+
+	top = Infinity;
+	bottom = -Infinity;
+	left = Infinity;
+	right = -Infinity;
+
+	// Compute a bounding box for the given cell elements
+	for ( i = 0, l = nodes.length; i < l; i++ ) {
+		cellOffset = nodes[ i ].$element[ 0 ].getBoundingClientRect();
+
+		top = Math.min( top, cellOffset.top );
+		bottom = Math.max( bottom, cellOffset.bottom );
+		left = Math.min( left, cellOffset.left );
+		right = Math.max( right, cellOffset.right );
+	}
+
+	boundingRect = {
+		top: top,
+		bottom: bottom,
+		left: left,
+		right: right,
+		width: right - left,
+		height: bottom - top
+	};
 
 	if ( !boundingRect || !surfaceRect ) {
 		return null;

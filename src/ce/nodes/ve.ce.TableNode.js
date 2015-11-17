@@ -391,8 +391,8 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	}
 
 	selectionOffset = ve.translateRect(
-		this.getSelectionBoundingRect( selection ),
-		-tableOffset.left, -tableOffset.top
+		this.surface.getSelection( selection ).getSelectionBoundingRect(),
+		surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
 	);
 
 	// Resize controls
@@ -443,41 +443,6 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	if ( selectionChanged ) {
 		ve.scrollIntoView( this.$selectionBox.get( 0 ) );
 	}
-};
-
-/**
- * Get the coordinates of the selection's bounding rectangle relative to the client.
- *
- * @param {ve.dm.Selection} selection Selection to get rectangles for
- * @return {Object} Selection rectangle, with keys top, bottom, left, right, width, height
- */
-ve.ce.TableNode.prototype.getSelectionBoundingRect = function ( selection ) {
-	var i, l, cellOffset, top, bottom, left, right,
-		nodes = this.getCellNodesFromSelection( selection );
-
-	top = Infinity;
-	bottom = -Infinity;
-	left = Infinity;
-	right = -Infinity;
-
-	// Compute a bounding box for the given cell elements
-	for ( i = 0, l = nodes.length; i < l; i++ ) {
-		cellOffset = nodes[ i ].$element[ 0 ].getBoundingClientRect();
-
-		top = Math.min( top, cellOffset.top );
-		bottom = Math.max( bottom, cellOffset.bottom );
-		left = Math.min( left, cellOffset.left );
-		right = Math.max( right, cellOffset.right );
-	}
-
-	return {
-		top: top,
-		bottom: bottom,
-		left: left,
-		right: right,
-		width: right - left,
-		height: bottom - top
-	};
 };
 
 /**
