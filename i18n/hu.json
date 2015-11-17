@@ -51,7 +51,7 @@
 	"visualeditor-find-and-replace-done": "Kész",
 	"visualeditor-find-and-replace-find-text": "Keresés",
 	"visualeditor-find-and-replace-invalid-regex": "Hibás reguláris kifejezés",
-	"visualeditor-find-and-replace-match-case": "Kis- és nagybetű különböző",
+	"visualeditor-find-and-replace-match-case": "Kis- és nagybetű-érzékeny",
 	"visualeditor-find-and-replace-next-button": "Következő keresése",
 	"visualeditor-find-and-replace-previous-button": "Előző keresése",
 	"visualeditor-find-and-replace-regular-expression": "Reguláris kifejezés",
