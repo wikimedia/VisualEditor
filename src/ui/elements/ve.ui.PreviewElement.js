@@ -13,7 +13,7 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {ve.dm.Node} model Model from which to create a preview
+ * @param {ve.dm.Node} [model] Model from which to create a preview
  * @param {Object} [config] Configuration options
  */
 ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
@@ -23,9 +23,9 @@ ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
 	// Mixin constructor
 	OO.EventEmitter.call( this );
 
-	this.model = model;
-
-	this.updatePreview();
+	if ( model ) {
+		this.setModel( model );
+	}
 
 	// Initialize
 	this.$element.addClass( 've-ui-previewElement' );
@@ -48,12 +48,21 @@ ve.ui.PreviewElement.prototype.destroy = function () {
 };
 
 /**
+ * Set the model node for the preview
+ *
+ * @param {ve.dm.Node} model Model from which to create a preview
+ */
+ve.ui.PreviewElement.prototype.setModel = function ( model ) {
+	this.model = model;
+	this.updatePreview();
+};
+
+/**
  * Replace the content of the body with the model DOM
  *
  * @fires render
  */
 ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
-
 	var htmlDocument = ve.dm.converter.getDomFromNode( this.model, true ),
 		$preview = $( htmlDocument.body );
 
