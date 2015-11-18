@@ -2024,7 +2024,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 
 	// Only look for files if HTML is not available:
 	//  - If a file is pasted/dropped it is unlikely it will have HTML fallback (it will have plain text fallback though)
-	//  - HTML generated from some browsers has an image fallback(!) that is a screenshot of the HTML snippet
+	//  - HTML generated from some clients has an image fallback(!) that is a screenshot of the HTML snippet (e.g. LibreOffice Calc)
 	if ( !htmlStringData ) {
 		if ( dataTransfer.items ) {
 			for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
