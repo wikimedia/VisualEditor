@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.13.2
+ * OOjs UI v0.13.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2015 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-11-10T23:33:07Z
+ * Date: 2015-11-18T01:09:30Z
  */
 .oo-ui-icon-image {
 	background-image: url("themes/mediawiki/images/icons/image-rtl.png");
@@ -44,17 +44,29 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageLock-rtl-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/imageLock-rtl-invert.png");
 }
+.oo-ui-icon-imageGallery {
+	background-image: url("themes/mediawiki/images/icons/imageGallery-rtl.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/imageGallery-rtl.png");
+}
+.oo-ui-icon-imageGallery-invert {
+	background-image: url("themes/mediawiki/images/icons/imageGallery-rtl-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/imageGallery-rtl-invert.png");
+}
 .oo-ui-icon-photoGallery {
-	background-image: url("themes/mediawiki/images/icons/photoGallery-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/photoGallery-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/photoGallery-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/photoGallery-rtl.png");
+	background-image: url("themes/mediawiki/images/icons/imageGallery-rtl.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/imageGallery-rtl.png");
 }
 .oo-ui-icon-photoGallery-invert {
-	background-image: url("themes/mediawiki/images/icons/photoGallery-rtl-invert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/photoGallery-rtl-invert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/photoGallery-rtl-invert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/photoGallery-rtl-invert.png");
+	background-image: url("themes/mediawiki/images/icons/imageGallery-rtl-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/imageGallery-rtl-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/imageGallery-rtl-invert.png");
 }
 .oo-ui-icon-play {
 	background-image: url("themes/mediawiki/images/icons/play-rtl.png");
