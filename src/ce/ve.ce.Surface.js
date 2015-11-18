@@ -2022,15 +2022,20 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 		htmlStringData = dataTransfer.getData( 'text/html' ),
 		stringTypes = [ 'text/x-moz-url', 'text/uri-list', 'text/x-uri', 'text/html', 'text/plain' ];
 
-	if ( dataTransfer.items ) {
-		for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
-			if ( dataTransfer.items[ i ].kind !== 'string' ) {
-				items.push( ve.ui.DataTransferItem.static.newFromItem( dataTransfer.items[ i ], htmlStringData ) );
+	// Only look for files if HTML is not available:
+	//  - If a file is pasted/dropped it is unlikely it will have HTML fallback (it will have plain text fallback though)
+	//  - HTML generated from some browsers has an image fallback(!) that is a screenshot of the HTML snippet
+	if ( !htmlStringData ) {
+		if ( dataTransfer.items ) {
+			for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+				if ( dataTransfer.items[ i ].kind !== 'string' ) {
+					items.push( ve.ui.DataTransferItem.static.newFromItem( dataTransfer.items[ i ], htmlStringData ) );
+				}
 			}
-		}
-	} else if ( dataTransfer.files ) {
-		for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
-			items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[ i ], htmlStringData ) );
+		} else if ( dataTransfer.files ) {
+			for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
+				items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[ i ], htmlStringData ) );
+			}
 		}
 	}
 
