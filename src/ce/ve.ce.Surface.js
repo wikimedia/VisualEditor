@@ -2058,7 +2058,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
  * @return {boolean} One more items was handled
  */
 ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, targetFragment ) {
-	var i, l, name,
+	var i, l, name, item,
 		handled = false;
 
 	targetFragment = targetFragment || this.getModel().getFragment();
@@ -2076,11 +2076,15 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 	}
 
 	for ( i = 0, l = items.length; i < l; i++ ) {
-		name = ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( items[ i ], isPaste, this.pasteSpecial );
+		item = items[ i ];
+		name = ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( item, isPaste, this.pasteSpecial );
 		if ( name ) {
-			ve.init.target.dataTransferHandlerFactory.create( name, this.surface, items[ i ] )
+			ve.init.target.dataTransferHandlerFactory.create( name, this.surface, item )
 				.getInsertableData().done( insert );
 			handled = true;
+			break;
+		} else if ( isPaste && item.type === 'text/html' ) {
+			// Don't handle anything else if text/html is available, as it is handled specially in #afterPaste
 			break;
 		}
 	}
