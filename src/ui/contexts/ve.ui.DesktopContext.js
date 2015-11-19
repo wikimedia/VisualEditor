@@ -292,15 +292,24 @@ ve.ui.DesktopContext.prototype.isEmbeddable = function () {
  * Resize the popup to match the size of its contents (menu or inspector).
  */
 ve.ui.DesktopContext.prototype.setPopupSize = function () {
-	var $container = this.inspector ? this.inspector.$frame : this.$group;
+	var surface = this.surface,
+		viewport = surface.getViewportDimensions(),
+		$container = this.inspector ? this.inspector.$frame : this.$group;
 
 	// PopupWidget normally is clippable, suppress that to be able to resize and scroll it into view.
 	// Needs to be repeated before every call, as it resets itself when the popup is shown or hidden.
 	this.popup.toggleClipping( false );
 
+	// We want to stop the popup from possibly being bigger than the viewport,
+	// as that can result in situations where it's impossible to reach parts
+	// of the popup. Limiting it to the window height would ignore toolbars
+	// and the find-replace dialog and suchlike. Therefore we set its max
+	// height to the surface's estimation of the actual viewport available to
+	// it. It's okay if the inspector goes off the edge of the viewport, so
+	// long as it's possible to scroll and get it all in view.
 	this.popup.setSize(
 		$container.outerWidth( true ),
-		$container.outerHeight( true )
+		Math.min( $container.outerHeight( true ), viewport.height )
 	);
 
 	this.popup.scrollElementIntoView();
