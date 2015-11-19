@@ -25,8 +25,12 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	// Parent constructor
 	OO.ui.Widget.call( this, config );
 
-	this.widthInput = new OO.ui.TextInputWidget( { validate: config.validate } );
-	this.heightInput = new OO.ui.TextInputWidget( { validate: config.validate } );
+	this.widthInput = new OO.ui.TextInputWidget( {
+		validate: config.validate || $.isNumeric
+	} );
+	this.heightInput = new OO.ui.TextInputWidget( {
+		validate: config.validate || $.isNumeric
+	} );
 
 	this.defaults = config.defaults || { width: '', height: '' };
 	this.renderDefaults();
