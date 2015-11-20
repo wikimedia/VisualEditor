@@ -59,9 +59,10 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
  *
  * @param {Array} data Linear model data. Will be modified.
  * @param {ve.dm.IndexValueStore} store Index-value store to resolve annotations in
+ * @param {boolean} [preserveDomElements] Preserve original DOM elements
  * @return {Array} The given `data` parameter.
  */
-ve.dm.example.postprocessAnnotations = function ( data, store ) {
+ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElements ) {
 	var i, j, key;
 
 	for ( i = 0; i < data.length; i++ ) {
@@ -71,7 +72,7 @@ ve.dm.example.postprocessAnnotations = function ( data, store ) {
 			data[ i ][ key ] = new ve.dm.AnnotationSet( store, data[ i ][ key ] ).get();
 			for ( j = 0; j < data[ i ][ key ].length; j++ ) {
 				data[ i ][ key ][ j ] = data[ i ][ key ][ j ].element;
-				if ( data[ i ][ key ][ j ].originalDomElements ) {
+				if ( !preserveDomElements && data[ i ][ key ][ j ].originalDomElements ) {
 					// Make a shallow clone and remove .originalDomElements from it
 					data[ i ][ key ][ j ] = $.extend( {}, data[ i ][ key ][ j ] );
 					delete data[ i ][ key ][ j ].originalDomElements;

@@ -121,7 +121,7 @@
 			actualRtDoc = ve.dm.converter.getDomFromModel( model );
 
 			// Normalize and verify data
-			ve.dm.example.postprocessAnnotations( actualData, model.getStore() );
+			ve.dm.example.postprocessAnnotations( actualData, model.getStore(), caseItem.preserveAnnotationDomElements );
 			assert.equalLinearData( actualData, caseItem.data, msg + ': data' );
 			assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
 			if ( caseItem.storeLength !== undefined ) {
