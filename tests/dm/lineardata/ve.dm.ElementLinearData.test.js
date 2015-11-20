@@ -1596,6 +1596,25 @@ QUnit.test( 'sanitize', function ( assert ) {
 				],
 				rules: { removeOriginalDomElements: true },
 				msg: 'Breaks split content branch nodes'
+			},
+			{
+				html: '<p>Foo\nBar\n <b>Baz\nQuux</b></p>',
+				data: [
+					{ type: 'paragraph' },
+					'F', 'o', 'o', ' ', 'B', 'a', 'r', ' ',
+					[ 'B', [ 0 ] ],
+					[ 'a', [ 0 ] ],
+					[ 'z', [ 0 ] ],
+					[ ' ', [ 0 ] ],
+					[ 'Q', [ 0 ] ],
+					[ 'u', [ 0 ] ],
+					[ 'u', [ 0 ] ],
+					[ 'x', [ 0 ] ],
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				msg: 'Newline characters are stripped and replaced with spaces where necessary'
 			}
 		];
 
