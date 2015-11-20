@@ -58,14 +58,20 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	var nao, currentNode, nextNode, previousNode;
 
 	// Get the un-unicorn-adjusted result. If it is:
-	// - just before pre unicorn, then return the cursor location just after it
-	// - just after the post unicorn, then return the cursor location just before it
-	// - anywhere else, then return the result unmodified
+	// - just before pre unicorn (in same branch node), return cursor location just after it
+	// - just after post unicorn (in same branch node), return cursor location just before it
+	// - anywhere else, return the result unmodified
 
+	/**
+	 * Get the next DOM node in document order within the same .ve-ce-branchNode
+	 *
+	 * @param {Node} node The current node
+	 * @return {Node|null} The next node
+	 */
 	function getNext( node ) {
 		while ( node.nextSibling === null ) {
 			node = node.parentNode;
-			if ( node === null ) {
+			if ( !node || node.classList.contains( 've-ce-branchNode' ) ) {
 				return null;
 			}
 		}
@@ -75,10 +81,17 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		}
 		return node;
 	}
+
+	/**
+	 * Get the previous DOM node in document order within the same .ve-ce-branchNode
+	 *
+	 * @param {Node} node The current node
+	 * @return {Node|null} The previous node
+	 */
 	function getPrevious( node ) {
 		while ( node.previousSibling === null ) {
 			node = node.parentNode;
-			if ( node === null ) {
+			if ( !node || node.classList.contains( 've-ce-branchNode' ) ) {
 				return null;
 			}
 		}
