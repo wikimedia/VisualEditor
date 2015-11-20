@@ -24,7 +24,7 @@ ve.ui.WhitespacePreservingTextInputWidget = function VeUiWhitespacePreservingTex
 
 	this.limit = config.limit;
 
-	this.whitespace = [ '', '' ];
+	this.setWhitespace( [ '', '' ] );
 	this.setValueAndWhitespace( config.valueAndWhitespace || '' );
 
 	this.$element.addClass( 've-ui-whitespacePreservingTextInputWidget' );
@@ -65,21 +65,14 @@ ve.ui.WhitespacePreservingTextInputWidget.prototype.setWhitespace = function ( w
 };
 
 /**
- * @inheritdoc
+ * Get the value of text widget, including hidden outer whitespace
+ *
+ * @return {string} Text widget value including whitespace
  */
-ve.ui.WhitespacePreservingTextInputWidget.prototype.getValue = function () {
+ve.ui.WhitespacePreservingTextInputWidget.prototype.getValueAndWhitespace = function () {
 	if ( !this.whitespace ) {
 		// In case getValue() is called from a parent constructor
 		return this.value;
 	}
-	return this.whitespace[ 0 ] + this.getInnerValue() + this.whitespace[ 1 ];
-};
-
-/**
- * Get the inner/displayed value of text widget, excluding hidden outer whitespace
- *
- * @return {string} Inner/displayed value
- */
-ve.ui.WhitespacePreservingTextInputWidget.prototype.getInnerValue = function () {
-	return this.value.trim();
+	return this.whitespace[ 0 ] + this.value + this.whitespace[ 1 ];
 };
