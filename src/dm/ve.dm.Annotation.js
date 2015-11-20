@@ -91,18 +91,21 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
 };
 
 /**
- * HACK: This method strips data-parsoid from HTML attributes for comparisons.
+ * HACK: This method strips data-parsoid & RESTBase ids from HTML attributes for comparisons.
  *
  * This should be removed once similar annotation merging is handled correctly
  * by Parsoid.
  *
- * @return {Object} An object all HTML attributes except data-parsoid
+ * @return {Object} An object all HTML attributes except data-parsoid & RESTBase ids
  */
 ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
 	var comparableAttributes, domElements = this.getOriginalDomElements();
 	if ( domElements[ 0 ] ) {
 		comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
 		delete comparableAttributes[ 'data-parsoid' ];
+		if ( comparableAttributes.id && comparableAttributes.id.match( /^mw[\w-]{2,}$/ ) ) {
+			delete comparableAttributes.id;
+		}
 		return comparableAttributes;
 	}
 	return {};
