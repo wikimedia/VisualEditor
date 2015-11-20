@@ -134,17 +134,15 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.CommentInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
-			var surfaceModel = this.getFragment().getSurface(),
-				text = this.textWidget.getValue(),
-				innerText = this.textWidget.getInnerValue();
+			var surfaceModel = this.getFragment().getSurface();
 
-			if ( data.action === 'remove' || innerText === '' ) {
+			if ( data.action === 'remove' || this.textWidget.getValue() === '' ) {
 				surfaceModel.popStaging();
 				// If popStaging removed the node then this will be a no-op
 				this.getFragment().removeContent();
 			} else {
 				// Edit comment node
-				this.getFragment().changeAttributes( { text: text } );
+				this.getFragment().changeAttributes( { text: this.textWidget.getValueAndWhitespace() } );
 				surfaceModel.applyStaging();
 			}
 
