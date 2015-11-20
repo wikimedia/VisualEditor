@@ -81,5 +81,5 @@ ve.ui.WhitespacePreservingTextInputWidget.prototype.getValue = function () {
  * @return {string} Inner/displayed value
  */
 ve.ui.WhitespacePreservingTextInputWidget.prototype.getInnerValue = function () {
-	return $.trim( this.value );
+	return this.value.trim();
 };
