@@ -10,7 +10,8 @@
 			"Metalhead64",
 			"Murma174",
 			"Se4598",
-			"Tomabrafix"
+			"Tomabrafix",
+			"TMg"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -101,7 +102,7 @@
 	"visualeditor-shortcuts-formatting": "Absatzformatierung",
 	"visualeditor-shortcuts-history": "Verlauf",
 	"visualeditor-shortcuts-other": "Andere",
-	"visualeditor-shortcuts-sequence-notice": "Typ",
+	"visualeditor-shortcuts-sequence-notice": "Tippe",
 	"visualeditor-shortcuts-text-style": "Textgestaltung",
 	"visualeditor-slug-insert": "Absatz einfügen",
 	"visualeditor-specialcharacter-button-tooltip": "Sonderzeichen",

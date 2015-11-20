@@ -9,6 +9,7 @@
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliennode-tooltip": "Žao nam je, ali ovaj element se za sada ne može uređivati u VisualEditoru, već na stari način.",
+	"visualeditor-aliencontextitem-title": "Stavka",
 	"visualeditor-annotationbutton-bold-tooltip": "Podebljano",
 	"visualeditor-annotationbutton-code-tooltip": "Računalni kôd",
 	"visualeditor-annotationbutton-italic-tooltip": "Kurziv",
