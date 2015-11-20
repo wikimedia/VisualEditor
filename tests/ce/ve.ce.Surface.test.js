@@ -1315,6 +1315,30 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				],
 				expectedRange: new ve.Range( 5 ),
 				msg: 'Paste API HTML used if important attributes dropped'
+			},
+			{
+				range: new ve.Range( 1 ),
+				pasteHtml: '<span rel="ve:Alien" id="useful">Foo</span><span rel="ve:Alien" id="mwAB">Bar</span>',
+				fromVe: true,
+				originalDomElements: true,
+				expectedRange: new ve.Range( 5 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'alienInline', originalDomElements: $( '<span rel="ve:Alien" id="useful">Foo</span>' ).toArray() },
+								{ type: '/alienInline' },
+								{ type: 'alienInline', originalDomElements: $( '<span rel="ve:Alien">Bar</span>' ).toArray() },
+								{ type: '/alienInline' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'Parsoid IDs stripped'
 			}
 		];
 
@@ -1331,7 +1355,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	}
 	QUnit.expect( expected );
 
-	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, pasteTargetHtml, range, pasteSpecial, expectedOps, expectedRange, expectedHtml, msg ) {
+	function testRunner( documentHtml, pasteHtml, fromVe, useClipboardData, pasteTargetHtml, range, pasteSpecial, expectedOps, expectedRange, expectedHtml, originalDomElements, msg ) {
 		var i, j, txs, ops, txops, htmlDoc,
 			e = {},
 			view = documentHtml ? ve.test.utils.createSurfaceViewFromHtml( documentHtml ) : exampleSurface,
@@ -1372,18 +1396,22 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					txops = txs[ i ].getOperations();
 					for ( j = 0; j < txops.length; j++ ) {
 						if ( txops[ j ].remove ) {
-							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
+							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore(), originalDomElements );
+							if ( !originalDomElements ) {
+								ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
+							}
 						}
 						if ( txops[ j ].insert ) {
-							ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
+							ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore(), originalDomElements );
+							if ( !originalDomElements ) {
+								ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
+							}
 						}
 					}
 					ops.push( txops );
 				}
 			}
-			assert.deepEqual( ops, expectedOps, msg + ': operations' );
+			assert.equalLinearData( ops, expectedOps, msg + ': operations' );
 		}
 		if ( expectedRange ) {
 			expectedRange = getLayoutSpecific( expectedRange );
@@ -1407,7 +1435,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		testRunner(
 			cases[ i ].documentHtml, cases[ i ].pasteHtml, cases[ i ].fromVe, cases[ i ].useClipboardData,
 			cases[ i ].pasteTargetHtml, cases[ i ].range, cases[ i ].pasteSpecial,
-			cases[ i ].expectedOps, cases[ i ].expectedRange, cases[ i ].expectedHtml,
+			cases[ i ].expectedOps, cases[ i ].expectedRange, cases[ i ].expectedHtml, cases[ i ].originalDomElements,
 			cases[ i ].msg
 		);
 	}

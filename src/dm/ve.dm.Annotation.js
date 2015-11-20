@@ -91,12 +91,12 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
 };
 
 /**
- * HACK: This method strips data-parsoid & RESTBase ids from HTML attributes for comparisons.
+ * HACK: This method strips data-parsoid & Parsoid IDs from HTML attributes for comparisons.
  *
  * This should be removed once similar annotation merging is handled correctly
  * by Parsoid.
  *
- * @return {Object} An object all HTML attributes except data-parsoid & RESTBase ids
+ * @return {Object} An object all HTML attributes except data-parsoid & Parsoid IDs
  */
 ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
 	var comparableAttributes, domElements = this.getOriginalDomElements();

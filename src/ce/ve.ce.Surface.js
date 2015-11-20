@@ -1758,6 +1758,14 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
 	this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
 
+	// HACK: Remove Parsoid IDs
+	this.$pasteTarget.find( '[id]' ).each( function () {
+		var $this = $( this );
+		if ( $this.attr( 'id' ).match( /^mw[\w-]{2,}$/ ) ) {
+			$this.removeAttr( 'id' );
+		}
+	} );
+
 	// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
 	this.$pasteTarget.find( 'span' ).each( function () {
 		var $this = $( this );
