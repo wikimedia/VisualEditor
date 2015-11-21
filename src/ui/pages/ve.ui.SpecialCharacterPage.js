@@ -52,6 +52,9 @@ OO.inheritClass( ve.ui.SpecialCharacterPage, OO.ui.PageLayout );
 
 /* Methods */
 
+/**
+ * @inheritdoc
+ */
 ve.ui.SpecialCharacterPage.prototype.setupOutlineItem = function ( outlineItem ) {
 	ve.ui.SpecialCharacterPage.super.prototype.setupOutlineItem.call( this, outlineItem );
 	this.outlineItem.setLabel( this.label );
