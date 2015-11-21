@@ -238,36 +238,36 @@ module.exports = function ( grunt ) {
 			options: {
 				jshintrc: true
 			},
-			all: [
-				'*.js',
-				'{.jsduck,build,demos,src,tests}/*.js',
-				'{.jsduck,build,demos,src,tests}/**/*.js'
-			]
+			all: '.'
 		},
 		jscs: {
 			fix: {
 				options: {
 					fix: true
 				},
-				src: [
-					'<%= jshint.all %>'
-				]
+				src: '.'
 			},
-			main: {
-				src: [
-					'<%= jshint.all %>'
-				]
-			}
+			main: '.'
 		},
 		csslint: {
 			options: {
 				csslintrc: '.csslintrc'
 			},
-			all: '{.jsduck,build,demos,src,tests}/**/*.css'
+			all: [
+				'**/*.css',
+				'!coverage/**',
+				'!dist/**',
+				'!docs/**',
+				'!lib/**',
+				'!node_modules/**'
+			]
 		},
 		jsonlint: {
 			all: [
 				'**/*.json',
+				'!dist/**',
+				'!docs/**',
+				'!lib/**',
 				'!node_modules/**'
 			]
 		},
@@ -309,7 +309,11 @@ module.exports = function ( grunt ) {
 		runwatch: {
 			files: [
 				'.{csslintrc,jscsrc,jshintignore,jshintrc}',
-				'<%= jshint.all %>',
+				'**/*.js',
+				'!coverage/**',
+				'!dist/**',
+				'!docs/**',
+				'!node_modules/**',
 				'<%= csslint.all %>'
 			],
 			tasks: [ 'test', 'karma:bg:run' ]
