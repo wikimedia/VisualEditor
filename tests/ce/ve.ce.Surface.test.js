@@ -220,7 +220,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				},
 				expectedSelection: {
 					type: 'linear',
-					range: new ve.Range( 2 )
+					range: new ve.Range( 4 )
 				},
 				msg: 'Empty list node deleted by backspace from after'
 			},
