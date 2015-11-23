@@ -150,6 +150,8 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
 
 /**
  * Handle the click event on the list
+ *
+ * @param {jQuery.Event} e Mouse click event
  */
 ve.ui.SpecialCharacterDialog.prototype.onListClick = function ( e ) {
 	var
