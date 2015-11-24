@@ -337,6 +337,7 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 			return this.slugNodes[ i + 1 ] || null;
 		}
 	}
+	return null;
 };
 
 /**
