@@ -16,5 +16,13 @@
 		"requireNewlineAfterDescription": true,
 		"requireParamTypes": true,
 		"requireReturnTypes": true
-	}
+	},
+
+	"excludeFiles": [
+		"coverage/**",
+		"dist/**",
+		"docs/**",
+		"lib/**",
+		"node_modules/**"
+	]
 }
