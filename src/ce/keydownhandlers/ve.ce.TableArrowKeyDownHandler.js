@@ -91,6 +91,8 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		rowOffset
 	);
 	surface.getModel().setSelection( newSelection );
+
+	return true;
 };
 
 /* Registration */

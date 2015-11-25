@@ -62,6 +62,8 @@ ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			{ type: '/paragraph' }
 		] );
 	}
+
+	return true;
 };
 
 /* Registration */

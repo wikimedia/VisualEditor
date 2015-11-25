@@ -70,7 +70,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		);
 		surface.model.setLinearSelection( range );
 		e.preventDefault();
-		return;
+		return true;
 	}
 
 	if ( surface.focusedNode ) {
@@ -99,7 +99,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			);
 			surface.model.setLinearSelection( range );
 			e.preventDefault();
-			return;
+			return true;
 		}
 		// Else inline focusable node
 
@@ -120,7 +120,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			if ( !upOrDown ) {
 				// un-shifted left/right: we've already moved so preventDefault
 				e.preventDefault();
-				return;
+				return true;
 			}
 			// Else keep going with the cursor in the new place
 		}
@@ -196,6 +196,8 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		surface.updateActiveLink();
 		surface.surfaceObserver.pollOnce();
 	} } );
+
+	return true;
 };
 
 /* Registration */

@@ -52,7 +52,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	focusedNode = surface.getFocusedNode();
 	if ( focusedNode ) {
 		focusedNode.executeCommand();
-		return;
+		return true;
 	}
 
 	// Handle removal first
@@ -218,6 +218,8 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	setTimeout( function () {
 		surface.checkSequences();
 	} );
+
+	return true;
 };
 
 /* Registration */
