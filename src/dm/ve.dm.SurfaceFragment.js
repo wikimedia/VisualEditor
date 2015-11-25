@@ -853,9 +853,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
-	var rangeAfterRemove, parentNode,
-		tx, startNode, endNode, endNodeData, nodeToDelete,
-		rangeToRemove;
+	var rangeAfterRemove, tx, startNode, endNode, endNodeData, nodeToDelete, rangeToRemove;
 
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return this;
@@ -867,78 +865,82 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		return this;
 	}
 
+	// Try to build a removal transaction. At the moment the transaction processor is only
+	// capable of merging nodes of the same type and at the same depth level, so some or all
+	// of rangeToRemove may be left untouched (and in some cases tx may not remove anything
+	// at all).
 	tx = ve.dm.Transaction.newFromRemoval( this.document, rangeToRemove );
 	this.change( tx );
 	rangeAfterRemove = tx.translateRange( rangeToRemove );
 
-	if ( !rangeAfterRemove.isCollapsed() ) {
-		// If after processing removal transaction range is not collapsed it means that not
-		// everything got merged nicely (at this moment transaction processor is capable of merging
-		// nodes of the same type and at the same depth level only), so we process with another
-		// merging that takes remaining data from endNode and inserts it at the end of startNode,
-		// endNode or recursively its parent (if have only one child) gets removed.
-		//
-		// If startNode has no content then we just delete that node instead of merging.
-		// This prevents content being inserted into empty structure which, e.g. and empty heading
-		// will be deleted, rather than "converting" the paragraph beneath to a heading.
-
-		endNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.end, false );
-
+	if (
+		!rangeAfterRemove.isCollapsed() &&
+		( endNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.end, false ) ) &&
 		// If endNode is within our rangeAfterRemove, then we shouldn't delete it
-		if ( endNode.getRange().start >= rangeAfterRemove.end ) {
-			startNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.start, false );
+		endNode.getRange().start >= rangeAfterRemove.end
+	) {
+		// If after processing removal transaction range is not collapsed it means that
+		// not everything got merged nicely, so we process further to deal with
+		// remaining content.
 
-			if ( startNode.getRange().isCollapsed() ) {
-				parentNode = startNode.getParent();
+		startNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.start, false );
+		if ( startNode.getRange().isCollapsed() ) {
+			// If startNode has no content then just delete that node instead of
+			// moving content from endNode to startNode. This prevents content being
+			// inserted into empty structure, e.g. and empty heading will be deleted
+			// rather than "converting" the paragraph beneath to a heading.
+			while ( true ) {
+				tx = ve.dm.Transaction.newFromRemoval( this.document, startNode.getOuterRange() );
+				startNode = startNode.getParent();
+				this.change( tx );
 
-				do {
-					// Remove startNode
-					tx = ve.dm.Transaction.newFromRemoval( this.document, startNode.getOuterRange() );
-					this.change( tx );
-					rangeAfterRemove = tx.translateRange( rangeAfterRemove );
-
-					startNode = parentNode;
-					parentNode = startNode.getParent();
-
-					// If the removal resulted in a block slug appearing in an empty node (e.g. when startNode
-					// was a paragraph or heading inside a list item), delete the empty node too.
-				} while (
-					startNode &&
-					startNode.children.length === 0 &&
-					(
-						startNode.hasSlugAtOffset( startNode.getRange().start ) ||
-						// These may not have slugs, but also must not be left empty (and thus uneditable) :(
-						startNode instanceof ve.dm.DefinitionListNode || startNode instanceof ve.dm.ListNode
-					) &&
-					startNode.canHaveChildrenNotContent()
-				);
-
-			} else {
-				endNodeData = this.document.getData( endNode.getRange() );
-				nodeToDelete = endNode;
-				nodeToDelete.traverseUpstream( function ( node ) {
-					var parent = node.getParent();
-					if ( parent.children.length === 1 ) {
-						nodeToDelete = parent;
-						return true;
-					} else {
-						return false;
-					}
-				} );
-				// Move contents of endNode into startNode, and delete nodeToDelete
-				this.change( [
-					ve.dm.Transaction.newFromRemoval(
-						this.document, nodeToDelete.getOuterRange()
-					),
-					ve.dm.Transaction.newFromInsertion(
-						this.document, rangeAfterRemove.start, endNodeData
-					)
-				] );
+				// If the removal resulted in the parent node being empty (e.g.
+				// when startNode was a paragraph inside a list item), loop to
+				// delete the parent node. Else break.
+				if ( !( startNode && startNode.children.length === 0 && (
+					startNode.hasSlugAtOffset( startNode.getRange().start ) ||
+					// These would be uneditable when empty, so remove
+					startNode instanceof ve.dm.DefinitionListNode ||
+					startNode instanceof ve.dm.ListNode
+				) && startNode.canHaveChildrenNotContent() ) ) {
+					break;
+				}
+				// Only fix up the range if we're going to loop (if we're not, the
+				// range collapse using getNearestContentOffset below will already
+				// do the fix up).
+				rangeAfterRemove = tx.translateRange( rangeAfterRemove );
 			}
+		} else {
+			// If startNode has content then take remaining content from endNode and
+			// append it into startNode. Then remove endNode (and recursively any
+			// ancestor that the removal causes to be empty).
+			endNodeData = this.document.getData( endNode.getRange() );
+			nodeToDelete = endNode;
+			nodeToDelete.traverseUpstream( function ( node ) {
+				var parent = node.getParent();
+				if ( parent.children.length === 1 ) {
+					nodeToDelete = parent;
+					return true;
+				} else {
+					return false;
+				}
+			} );
+			// Move contents of endNode into startNode, and delete nodeToDelete
+			this.change( [
+				ve.dm.Transaction.newFromRemoval(
+					this.document,
+					nodeToDelete.getOuterRange()
+				),
+				ve.dm.Transaction.newFromInsertion(
+					this.document,
+					rangeAfterRemove.start,
+					endNodeData
+				)
+			] );
 		}
 	}
 
-	// rangeAfterRemove is now guaranteed to be collapsed so make sure that it is a content offset
+	// Use a collapsed range at a content offset beside rangeAfterRemove.start
 	rangeAfterRemove = new ve.Range(
 		this.document.data.getNearestContentOffset(
 			rangeAfterRemove.start,
