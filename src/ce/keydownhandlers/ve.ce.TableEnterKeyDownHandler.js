@@ -40,6 +40,7 @@ ve.ce.TableEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	e.preventDefault();
 	tableNode.setEditing( true );
+	return true;
 };
 
 /* Registration */

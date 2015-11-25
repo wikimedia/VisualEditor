@@ -74,18 +74,20 @@ ve.ce.KeyDownHandlerFactory.prototype.lookupHandlersForKey = function ( key, sel
  * @param {string} selectionName Selection type nane
  * @param {ve.ce.Surface} surface Surface
  * @param {jQuery} e Key down event
- * @return {boolean} Some handlers were executed
+ * @return {boolean} Some handlers acted
  */
 ve.ce.KeyDownHandlerFactory.prototype.executeHandlersForKey = function ( key, selectionName, surface, e ) {
-	var i,
+	var i, acted,
 		handlers = this.lookupHandlersForKey( key, selectionName );
 
 	// Length is likely to be 1 or 0 so don't cache
 	for ( i = 0; i < handlers.length; i++ ) {
-		handlers[ i ].static.execute( surface, e );
+		if ( handlers[ i ].static.execute( surface, e ) ) {
+			acted = true;
+		}
 	}
 
-	return !!handlers.length;
+	return acted;
 };
 
 /* Initialization */

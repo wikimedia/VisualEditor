@@ -73,7 +73,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			surface.eventSequencer.afterOne( {
 				keydown: surface.surfaceObserver.pollOnce.bind( surface.surfaceObserver )
 			} );
-			return;
+			return true;
 		}
 
 		// If the native action would delete an outside nail, move *two* cursor positions
@@ -91,7 +91,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			surface.nativeSelection.addRange( range );
 			surface.updateActiveLink();
 			e.preventDefault();
-			return;
+			return true;
 		}
 
 		// If inside an empty link, delete it and preventDefault
@@ -135,7 +135,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			surface.nativeSelection.addRange( range );
 			surface.updateActiveLink();
 			e.preventDefault();
-			return;
+			return true;
 		}
 
 		// If the native action would delete an inside nail, move *two* cursor positions
@@ -153,7 +153,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			surface.nativeSelection.addRange( range );
 			surface.updateActiveLink();
 			e.preventDefault();
-			return;
+			return true;
 		}
 
 		offset = rangeToRemove.start;
@@ -164,7 +164,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			surface.eventSequencer.afterOne( {
 				keydown: surface.surfaceObserver.pollOnce.bind( surface.surfaceObserver )
 			} );
-			return;
+			return true;
 		}
 	}
 
@@ -175,7 +175,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		tableEditingRange = surface.getActiveTableNode() ? surface.getActiveTableNode().getEditingRange() : null;
 		if ( tableEditingRange && !tableEditingRange.containsRange( rangeToRemove ) ) {
 			e.preventDefault();
-			return;
+			return true;
 		}
 
 		// Prevent backspacing/deleting over table cells, select the cell instead
@@ -195,7 +195,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 					) );
 				}
 				e.preventDefault();
-				return;
+				return true;
 			}
 		}
 
@@ -211,7 +211,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			if ( startNode.isFocusable() ) {
 				surface.getModel().setLinearSelection( startNode.getOuterRange() );
 				e.preventDefault();
-				return;
+				return true;
 			}
 		}
 		if ( rangeToRemove.isCollapsed() ) {
@@ -224,7 +224,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			) {
 				// Content node at start or end of document, do nothing.
 				e.preventDefault();
-				return;
+				return true;
 			} else {
 				rangeToRemove = new ve.Range( nodeRange.start, rangeToRemove.start - 1 );
 			}
@@ -237,7 +237,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	surface.focus();
 	surface.surfaceObserver.clear();
 	e.preventDefault();
-	return;
+	return true;
 };
 
 /* Registration */
