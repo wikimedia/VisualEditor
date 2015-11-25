@@ -131,10 +131,28 @@ ve.ui.triggerRegistry.register(
 	'superscript', { mac: new ve.ui.Trigger( 'cmd+.' ), pc: new ve.ui.Trigger( 'ctrl+.' ) }
 );
 ve.ui.triggerRegistry.register(
-	'indent', new ve.ui.Trigger( 'tab' )
+	'indent', {
+		mac: [
+			new ve.ui.Trigger( 'tab' ),
+			new ve.ui.Trigger( 'cmd+]' )
+		],
+		pc: [
+			new ve.ui.Trigger( 'tab' ),
+			new ve.ui.Trigger( 'ctrl+]' )
+		]
+	}
 );
 ve.ui.triggerRegistry.register(
-	'outdent', new ve.ui.Trigger( 'shift+tab' )
+	'outdent', {
+		mac: [
+			new ve.ui.Trigger( 'shift+tab' ),
+			new ve.ui.Trigger( 'cmd+[' )
+		],
+		pc: [
+			new ve.ui.Trigger( 'shift+tab' ),
+			new ve.ui.Trigger( 'ctrl+[' )
+		]
+	}
 );
 ve.ui.triggerRegistry.register(
 	'commandHelp', {
