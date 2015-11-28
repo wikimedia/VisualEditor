@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ajdar"
+			"Ajdar",
+			"Ильнар"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -11,7 +12,7 @@
 	"visualeditor-annotationbutton-italic-tooltip": "Авышлы",
 	"visualeditor-annotationbutton-language-tooltip": "Тел",
 	"visualeditor-annotationbutton-link-tooltip": "Сылтама",
-	"visualeditor-clearbutton-tooltip": "Форматлауны чистарту",
+	"visualeditor-clearbutton-tooltip": "Стильне чистарту",
 	"visualeditor-dialog-action-apply": "Үзгәртүләрне кертү",
 	"visualeditor-dialog-action-cancel": "Баш тарту",
 	"visualeditor-dialog-action-goback": "Артка",
@@ -34,7 +35,7 @@
 	"visualeditor-languageinspector-widget-changelang": "Телне үзгәртү",
 	"visualeditor-languageinspector-widget-label-langcode": "Телнең коды",
 	"visualeditor-languageinspector-widget-label-language": "Тел",
-	"visualeditor-linkinspector-title": "Гиперсылтама",
+	"visualeditor-linkinspector-title": "Сылтама",
 	"visualeditor-listbutton-bullet-tooltip": "Тамгалы исемлек",
 	"visualeditor-listbutton-number-tooltip": "Санлы исемлек"
 }
