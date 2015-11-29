@@ -65,12 +65,6 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 				html: '<div><p>foo</p><div class="ve-ce-cursorHolder">x</div><p>bar</p></div>',
 				hash: '<DIV><P>#</P><P>#</P></DIV>',
 				text: 'foobar'
-			},
-			{
-				msg: 'nbsp is normalized to space, but tab is not',
-				html: '<div><p>a b\u00A0c\td</p></div>',
-				hash: '<DIV><P>#</P></DIV>',
-				text: 'a b c\td'
 			}
 		];
 

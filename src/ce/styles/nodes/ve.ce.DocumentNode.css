@@ -8,6 +8,12 @@
 	cursor: text;
 	/* 0.75/0.8, 1.5/0.8 */
 	padding: 0.9375em 1.875em;
+	/*
+	 * So that we don't need to use &nbsp; when rendering text with multiple consecutive spaces, and
+	 * that the browser doesn't insert &nbsp; when typing regular spaces, and that we can let the user
+	 * input actual non-breaking spaces in the text without having to guess if they're really needed.
+	 */
+	white-space: pre-wrap;
 }
 
 /*

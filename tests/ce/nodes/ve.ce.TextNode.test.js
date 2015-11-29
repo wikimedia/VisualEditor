@@ -54,57 +54,22 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 		{
 			// [ ]
 			data: [ { type: 'paragraph' }, ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0' ]
-		},
-		{
-			// [ ][ ]
-			data: [ { type: 'paragraph' }, ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', '\u00a0' ]
+			html: [ ' ' ]
 		},
 		{
 			// [ ][ ][ ]
 			data: [ { type: 'paragraph' }, ' ', ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', '\u00a0' ]
-		},
-		{
-			// [ ][ ][ ][ ]
-			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', '\u00a0', '\u00a0' ]
-		},
-		{
-			// [ ][ ][ ][ ][ ]
-			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', '\u00a0', ' ', '\u00a0' ]
-		},
-		{
-			// [ ][ ][ ][ ][ ][ ]
-			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', '\u00a0', ' ', '\u00a0', '\u00a0' ]
-		},
-		{
-			// [ ][A][ ][ ][ ][ ]
-			data: [ { type: 'paragraph' }, ' ', 'A', ' ', ' ', ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', 'A', ' ', '\u00a0', ' ', '\u00a0' ]
-		},
-		{
-			// [ ][ ][A][ ][ ][ ]
-			data: [ { type: 'paragraph' }, ' ', ' ', 'A', ' ', ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', 'A', ' ', '\u00a0', '\u00a0' ]
+			html: [ ' ', ' ', ' ' ]
 		},
 		{
 			// [ ][ ][ ][A][ ][ ]
 			data: [ { type: 'paragraph' }, ' ', ' ', ' ', 'A', ' ', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', '\u00a0', 'A', ' ', '\u00a0' ]
+			html: [ ' ', ' ', ' ', 'A', ' ', ' ' ]
 		},
 		{
-			// [ ][ ][ ][ ][A][ ]
-			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', 'A', ' ', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', '\u00a0', ' ', 'A', '\u00a0' ]
-		},
-		{
-			// [ ][ ][ ][ ][ ][A]
-			data: [ { type: 'paragraph' }, ' ', ' ', ' ', ' ', ' ', 'A', { type: '/paragraph' } ],
-			html: [ '\u00a0', ' ', '\u00a0', ' ', '\u00a0', 'A' ]
+			// [A][ ][A] with non-breaking space
+			data: [ { type: 'paragraph' }, 'A', '\u00a0', 'A', { type: '/paragraph' } ],
+			html: [ 'A', '\u00a0', 'A' ]
 		},
 		{
 			data: [ { type: 'paragraph' }, '\n', 'A', '\n', 'B', '\n', { type: '/paragraph' } ],
