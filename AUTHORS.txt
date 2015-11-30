@@ -1,39 +1,40 @@
 Principal Authors (major contributors, alphabetically)
 
-Alex Monk <krenair@gmail.com>
-Bartosz Dziewoński <matma.rex@gmail.com>
-Christian Williams <christian@wikia-inc.com>
-C. Scott Ananian <cscott@cscott.net>
+Christian Williams <orbit@framezero.com>
 David Chan <david@troi.org>
 Ed Sanders <esanders@wikimedia.org>
 Inez Korczyński <inez@wikia-inc.com>
-James D. Forrester  <jforrester@wikimedia.org>
-Moriel Schottlender <mschottlender@wikimedia.org>
-Roan Kattouw <roan@wikimedia.org>
-Rob Moen <rmoen@wikimedia.org>
-Sucheta Ghoshal <sghoshal@wikimedia.org>
+James D. Forrester <jforrester@wikimedia.org>
+Roan Kattouw <roan.kattouw@gmail.com>
+Rob Moen <rob.moen@gmail.com>
 Timo Tijhof <krinklemail@gmail.com>
-Trevor Parscal <trevor@wikimedia.org>
+Trevor Parscal <trevorparscal@gmail.com>
 
 
 Patch Contributors (minor contributors, alphabetically)
 
 Aaron Schulz <aschulz@wikimedia.org>
 Adam Wight <spam@ludd.net>
+Alex Monk <krenair@gmail.com>
+Alexander Emsenhuber <ialex.wiki@gmail.com>
 Amir E. Aharoni <amir.aharoni@mail.huji.ac.il>
 Antoine Musso <hashar@free.fr>
 Audrey Tang <audreyt@audreyt.org>
+Bartosz Dziewoński <matma.rex@gmail.com>
 Brion Vibber <brion@wikimedia.org>
+C. Scott Ananian <cscott@cscott.net>
+Carl Fürstenberg <azatoth@gmail.com>
 Chris McMahon <cmcmahon@wikimedia.org>
 David Lynch <dlynch@wikimedia.org>
+Erick Guan <fantasticfears@gmail.com>
 Erik Bernhardson <ebernhardson@wikimedia.org>
 Erik Moeller <erik@wikimedia.org>
-Florianschmidtwelzow <florian.schmidt.welzow@t-online.de>
+Florianschmidtwelzow <florian.schmidt.stargatewissen@gmail.com>
 Frédéric Bolduc <bolducfrederic@gmail.com>
-Gabriel Wicke <gwicke@wikimedia.org>
 Helder <he7d3r@gmail.com>
 Jeff Hall <jeffreyehall@gmail.com>
 Jiabao <jiabao.foss@gmail.com>
+John Du Hart <johnduhart@users.mediawiki.org>
 Juliusz Gonera <jgonera@gmail.com>
 Kunal Mehta <legoktm@gmail.com>
 Kyle Florence <kyle.florence@gmail.com>
@@ -41,19 +42,27 @@ Mark A. Hershberger <mah@everybody.org>
 Mark Holmquist <mtraceur@member.fsf.org>
 Matthew Flaschen <mflaschen@wikimedia.org>
 mayankmadan <maddiemadan@gmail.com>
-Neil Kandalgaonkar <neilk@brevity.org>
+Moriel Schottlender <mschottlender@wikimedia.org>
 Niklas Laxström <niklas.laxstrom@gmail.com>
 Oliver Buchtala <oliver.buchtala@gmail.com>
 Ori Livneh <ori@wikimedia.org>
+paladox <thomasmulhall410@yahoo.com>
+Pavel Selitskas <p.selitskas@gmail.com>
 Peter Coti <petercoti@gmail.com>
 Quim Gil <quimgil@gmail.com>
 rachel99 <rachelqa99@gmail.com>
+Raimond Spekking <raimond.spekking@gmail.com>
+Ryan Kaldari <rkaldari@wikimedia.org>
+Sam Reed <reedy@wikimedia.org>
+shirayuki <shirayuking@gmail.com>
+Siebrand Mazeland <s.mazeland@xs4all.nl>
 Steven Zhang <cro0016@gmail.com>
-Subramanya Sastry <ssastry@wikimedia.org>
+Sucheta Ghoshal <sghoshal@wikimedia.org>
 Thalia Chan <thalia.e.chan@googlemail.com>
 Tongbo Sui <beanixster@gmail.com>
 Yuki Shira <shirayuking@gmail.com>
 Željko Filipin <zeljko.filipin@gmail.com>
+
 
 Libraries used (alphabetically)
 
