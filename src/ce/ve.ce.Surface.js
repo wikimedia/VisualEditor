@@ -154,7 +154,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		keydown: this.onDocumentKeyDown.bind( this ),
 		keyup: this.onDocumentKeyUp.bind( this ),
 		keypress: this.onDocumentKeyPress.bind( this ),
-		input: this.onDocumentInput.bind( this )
+		input: this.onDocumentInput.bind( this ),
+		compositionstart: this.onDocumentCompositionStart.bind( this )
 	} ).after( {
 		keydown: this.afterDocumentKeyDown.bind( this )
 	} );
@@ -2145,6 +2146,30 @@ ve.ce.Surface.prototype.onDocumentInput = function () {
 	} finally {
 		this.decRenderLock();
 	}
+};
+
+/**
+ * Handle compositionstart events.
+ * Note that their meaning varies between browser/OS/IME combinations
+ *
+ * @method
+ * @param {jQuery.Event} e The compositionstart event
+ */
+ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
+	// Eagerly trigger emulated deletion on certain selections, to ensure a ContentEditable
+	// native node merge never happens. See https://phabricator.wikimedia.org/T123716 .
+	if (
+		this.model.selection instanceof ve.dm.TableSelection &&
+		$.client.profile().layout === 'gecko'
+	) {
+		// Work around a segfault on blur+focus in Firefox compositionstart handlers.
+		// It would get triggered by handleInsertion emptying the table cell then putting
+		// a linear selection inside it. See:
+		// https://phabricator.wikimedia.org/T86589
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=1230473
+		return;
+	}
+	this.handleInsertion();
 };
 
 /*! Custom Events */
