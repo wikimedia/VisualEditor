@@ -27,7 +27,8 @@ ve.ce.TableArrowKeyDownHandler.static.name = 'tableArrow';
 
 ve.ce.TableArrowKeyDownHandler.static.keys = [
 	OO.ui.Keys.UP, OO.ui.Keys.DOWN, OO.ui.Keys.LEFT, OO.ui.Keys.RIGHT,
-	OO.ui.Keys.END, OO.ui.Keys.HOME, OO.ui.Keys.PAGEUP, OO.ui.Keys.PAGEDOWN
+	OO.ui.Keys.END, OO.ui.Keys.HOME, OO.ui.Keys.PAGEUP, OO.ui.Keys.PAGEDOWN,
+	OO.ui.Keys.TAB
 ];
 
 ve.ce.TableArrowKeyDownHandler.static.supportedSelections = [ 'table' ];
@@ -38,11 +39,10 @@ ve.ce.TableArrowKeyDownHandler.static.supportedSelections = [ 'table' ];
  * @inheritdoc
  */
 ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
-	var tableNode, newSelection,
-		checkDir = false,
-		selection = surface.getModel().getSelection(),
+	var checkDir = false,
 		colOffset = 0,
-		rowOffset = 0;
+		rowOffset = 0,
+		expand = e.shiftKey;
 
 	switch ( e.keyCode ) {
 		case OO.ui.Keys.LEFT:
@@ -71,22 +71,39 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		case OO.ui.Keys.PAGEDOWN:
 			rowOffset = Infinity;
 			break;
+		case OO.ui.Keys.TAB:
+			colOffset = e.shiftKey ? -1 : 1;
+			expand = false; // shift-tab is a movement, not an expansion
+			break;
 	}
 
 	e.preventDefault();
 
+	ve.ce.TableArrowKeyDownHandler.static.moveTableSelection( surface, rowOffset, colOffset, checkDir, expand );
+};
+
+/**
+ * @param {ve.ce.Surface} surface Surface
+ * @param {number} rowOffset how many rows to move
+ * @param {number} colOffset how many columns to move
+ * @param {boolean} checkDir whether to translate offsets according to ltr settings
+ * @param {boolean} expand whether to expand the selection or replace it
+ */
+ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand ) {
+	var tableNode, newSelection,
+		selection = surface.getModel().getSelection();
 	if ( colOffset && checkDir ) {
 		tableNode = surface.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
 		if ( tableNode.$element.css( 'direction' ) !== 'ltr' ) {
 			colOffset *= -1;
 		}
 	}
-	if ( !e.shiftKey && !selection.isSingleCell() ) {
+	if ( !expand && !selection.isSingleCell() ) {
 		selection = selection.collapseToFrom();
 	}
 	newSelection = selection.newFromAdjustment(
-		e.shiftKey ? 0 : colOffset,
-		e.shiftKey ? 0 : rowOffset,
+		expand ? 0 : colOffset,
+		expand ? 0 : rowOffset,
 		colOffset,
 		rowOffset
 	);
