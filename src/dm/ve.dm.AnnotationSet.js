@@ -284,6 +284,23 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
 };
 
 /**
+ * Get the first annotation mergeable with the specified one
+ *
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @return {ve.dm.Annotation|null} First matching annotation
+ */
+ve.dm.AnnotationSet.prototype.getComparable = function ( annotation ) {
+	var i, len, ann;
+	for ( i = 0, len = this.getLength(); i < len; i++ ) {
+		ann = this.getStore().value( this.getIndex( i ) );
+		if ( ann.compareTo( annotation ) ) {
+			return ann;
+		}
+	}
+	return null;
+};
+
+/**
  * HACK: Check if the set contains an annotation comparable to the specified one
  * for the purposes of serialization.
  *

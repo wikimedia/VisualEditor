@@ -29,6 +29,8 @@ ve.dm.ItalicAnnotation.static.name = 'textStyle/italic';
 
 ve.dm.ItalicAnnotation.static.matchTagNames = [ 'i', 'em' ];
 
+ve.dm.ItalicAnnotation.static.inferFromDom = true;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.ItalicAnnotation );

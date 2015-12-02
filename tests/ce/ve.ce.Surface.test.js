@@ -646,15 +646,16 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 			prev = {
 				node: node,
 				text: ve.ce.getDomText( prevNode ),
-				hash: ve.ce.getDomHash( prevNode ),
+				textState: new ve.ce.TextState( prevNode ),
 				veRange: prevRange,
 				focusIsAfterAnnotationBoundary: prevFocusIsAfterAnnotationBoundary || false
 			},
 			next = {
 				node: node,
 				text: ve.ce.getDomText( nextNode ),
-				hash: ve.ce.getDomHash( nextNode ),
+				textState: new ve.ce.TextState( nextNode ),
 				veRange: nextRange,
+				selectionChanged: !nextRange.equals( prevRange ),
 				contentChanged: true
 			};
 
