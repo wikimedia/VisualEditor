@@ -15,7 +15,8 @@
 			"Gerardduenas",
 			"Maceleiro",
 			"Macofe",
-			"Kippelboy"
+			"Kippelboy",
+			"Jaumeortola"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -46,7 +47,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Modifica",
 	"visualeditor-contextitemwidget-label-remove": "Suprimeix",
 	"visualeditor-dialog-action-apply": "Desa els canvis",
-	"visualeditor-dialog-action-cancel": "Canceŀla",
+	"visualeditor-dialog-action-cancel": "Cancel·la",
 	"visualeditor-dialog-action-done": "Fet",
 	"visualeditor-dialog-action-goback": "Enrere",
 	"visualeditor-dialog-action-insert": "Insereix",
