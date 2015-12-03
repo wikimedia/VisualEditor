@@ -75,6 +75,7 @@
 	"visualeditor-find-and-replace-replace-text": "Label for replace text in find and replace\n{{Identical|Replace}}",
 	"visualeditor-find-and-replace-results": "Label for find results showing how many results were found ($2), and which one is currently highlighted ($1)\n{{Identical|Of}}",
 	"visualeditor-find-and-replace-title": "Title for find and replace",
+	"visualeditor-find-and-replace-word": "Label for whole word toggle in find and replace",
 	"visualeditor-formatdropdown-format-blockquote": "Item in the formatting dropdown for block quote text. A block quote is a quotation which is a whole paragraph, or several paragraphs.",
 	"visualeditor-formatdropdown-format-heading-label": "Label for heading level commands.\n{{Identical|Heading}}",
 	"visualeditor-formatdropdown-format-heading1": "Item in the generic formatting dropdown for a level 1 heading.\n{{Identical|Heading}}",

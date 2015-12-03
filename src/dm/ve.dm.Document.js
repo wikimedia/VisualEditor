@@ -1301,17 +1301,21 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * Find a text string within the document
  *
  * @param {string|RegExp} query Text to find, string or regex with no flags
- * @param {boolean} [caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
- * @param {boolean} [noOverlaps] Avoid overlapping matches
+ * @param {Object} [options] Search options
+ * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
+ * @param {boolean} [options.noOverlaps] Avoid overlapping matches
+ * @param {boolean} [options.wholeWord] Only match whole-word occurences
  * @return {ve.Range[]} List of ranges where the string was found
  */
-ve.dm.Document.prototype.findText = function ( query, caseSensitiveString, noOverlaps ) {
-	var i, l, len, match, offset, lines,
+ve.dm.Document.prototype.findText = function ( query, options ) {
+	var i, l, len, match, offset, lines, dataString,
 		ranges = [],
 		text = this.data.getText(
 			true,
 			new ve.Range( 0, this.getInternalList().getListNode().getOuterRange().start )
 		);
+
+	options = options || {};
 
 	if ( query instanceof RegExp ) {
 		offset = 0;
@@ -1332,7 +1336,7 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitiveString, noOve
 					offset + match.index,
 					offset + match.index + match[ 0 ].length
 				) );
-				if ( !noOverlaps ) {
+				if ( !options.noOverlaps ) {
 					query.lastIndex = match.index + 1;
 				}
 			}
@@ -1340,7 +1344,7 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitiveString, noOve
 			query.lastIndex = 0;
 		}
 	} else {
-		if ( !caseSensitiveString ) {
+		if ( !options.caseSensitiveString ) {
 			text = text.toLowerCase();
 			query = query.toLowerCase();
 		}
@@ -1348,8 +1352,16 @@ ve.dm.Document.prototype.findText = function ( query, caseSensitiveString, noOve
 		offset = -1;
 		while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
 			ranges.push( new ve.Range( offset, offset + len ) );
-			offset += noOverlaps ? len : 1;
+			offset += options.noOverlaps ? len : 1;
 		}
+	}
+
+	if ( options.wholeWord ) {
+		dataString = new ve.dm.DataString( this.getData() );
+		ranges = ranges.filter( function ( range ) {
+			return unicodeJS.wordbreak.isBreak( dataString, range.start ) &&
+				unicodeJS.wordbreak.isBreak( dataString, range.end );
+		} );
 	}
 
 	return ranges;

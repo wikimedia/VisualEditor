@@ -80,6 +80,11 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-regex' )
 	} );
+	this.wordToggle = new OO.ui.ToggleButtonWidget( {
+		icon: 'quotes',
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-word' ),
+		value: ve.userConfig( 'visualeditor-findAndReplace-word' )
+	} );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
 		icon: 'previous',
@@ -106,7 +111,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			classes: [ 've-ui-findAndReplaceDialog-cell' ],
 			items: [
 				this.matchCaseToggle,
-				this.regexToggle
+				this.regexToggle,
+				this.wordToggle
 			]
 		} );
 	navigateGroup = new OO.ui.ButtonGroupWidget( {
@@ -144,6 +150,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 	this.matchCaseToggle.connect( this, { change: 'onFindChange' } );
 	this.regexToggle.connect( this, { change: 'onFindChange' } );
+	this.wordToggle.connect( this, { change: 'onFindChange' } );
 	this.nextButton.connect( this, { click: 'findNext' } );
 	this.previousButton.connect( this, { click: 'findPrevious' } );
 	this.replaceButton.connect( this, { click: 'onReplaceButtonClick' } );
@@ -270,7 +277,8 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	ve.userConfig( {
 		'visualeditor-findAndReplace-findText': this.findText.getValue(),
 		'visualeditor-findAndReplace-matchCase': this.matchCaseToggle.getValue(),
-		'visualeditor-findAndReplace-regex': this.regexToggle.getValue()
+		'visualeditor-findAndReplace-regex': this.regexToggle.getValue(),
+		'visualeditor-findAndReplace-word': this.wordToggle.getValue()
 	} );
 };
 
@@ -307,6 +315,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 		ranges = [],
 		matchCase = this.matchCaseToggle.getValue(),
 		isRegex = this.regexToggle.getValue(),
+		wholeWord = this.wordToggle.getValue(),
 		find = this.findText.getValue();
 
 	this.invalidRegex = false;
@@ -325,7 +334,11 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 
 	this.fragments = [];
 	if ( this.query ) {
-		ranges = documentModel.findText( this.query, matchCase, true );
+		ranges = documentModel.findText( this.query, {
+			caseSensitiveString: matchCase,
+			noOverlaps: true,
+			wholeWord: wholeWord
+		} );
 		for ( i = 0, l = ranges.length; i < l; i++ ) {
 			this.fragments.push( surfaceModel.getLinearFragment( ranges[ i ], true, true ) );
 			if ( startIndex === undefined && ranges[ i ].start >= this.startOffset ) {
