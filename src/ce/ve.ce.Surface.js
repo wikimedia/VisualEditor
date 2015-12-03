@@ -2933,6 +2933,7 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 			start = range.start,
 			end = range.end,
 			lastLength = Infinity;
+
 		while ( range.getLength() < lastLength ) {
 			lastLength = range.getLength();
 			mid = Math.round( ( range.start + range.end ) / 2 );
@@ -2946,7 +2947,7 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 				mid = data.getNearestContentOffset( mid );
 			}
 
-			rect = surface.getSelectionBoundingRect( new ve.dm.LinearSelection( documentModel, new ve.Range( mid ) ) );
+			rect = surface.getSelection( new ve.dm.LinearSelection( documentModel, new ve.Range( mid ) ) ).getSelectionBoundingRect();
 			if ( rect[ side ] > offset ) {
 				end = mid;
 				range = new ve.Range( range.start, end );
