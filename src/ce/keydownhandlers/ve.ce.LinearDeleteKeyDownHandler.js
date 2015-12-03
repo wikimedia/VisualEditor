@@ -215,17 +215,30 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			}
 		}
 		if ( rangeToRemove.isCollapsed() ) {
-			// For instance beginning or end of the document.
+			// For some reason (most likely: we're at the beginning or end of the document) we can't
+			// expand the range. So, should we delete something or not?
+			// The rules are:
+			// * if we're literally at the start or end, and are in a content node, don't do anything
+			// * if we're in a plain paragraph, don't do anything
+			// * if we're in a list item and it's empty get rid of the item
 			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset - 1 );
 			nodeRange = startNode.getOuterRange();
 			if (
-				startNode.canContainContent() &&
-				( nodeRange.start === 0 || nodeRange.end === docLength )
+				// regular text (e.g. "<p>foo|</p>")
+				( startNode.getType() === 'text' ) ||
+				( startNode.getType() === 'tableCell' ) ||
+				// non-empty list? (<ul><li><p>foo|</p></li></ul>)
+				( startNode.getType() === 'listItem' && startNode.length > 2 ) ||
+				// content item at the start / end?
+				(
+					( startNode.canContainContent() || documentModel.getDocumentNode() === startNode ) &&
+					( nodeRange.start === 0 || nodeRange.end === docLength )
+				)
 			) {
-				// Content node at start or end of document, do nothing.
 				e.preventDefault();
 				return true;
 			} else {
+				// expand our removal to reflect what we actually need to remove
 				rangeToRemove = new ve.Range( nodeRange.start, rangeToRemove.start - 1 );
 			}
 		}
