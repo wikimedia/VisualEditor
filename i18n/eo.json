@@ -4,7 +4,8 @@
 			"Happy5214",
 			"KuboF",
 			"Shirayuki",
-			"Yekrats"
+			"Yekrats",
+			"Ochilov"
 		]
 	},
 	"visualeditor": "VidRedaktilo",
@@ -80,7 +81,6 @@
 	"visualeditor-languageinspector-widget-label-direction": "Direkto",
 	"visualeditor-languageinspector-widget-label-langcode": "Lingva kodo",
 	"visualeditor-languageinspector-widget-label-language": "Lingvo",
-	"visualeditor-linkinspector-open": "Malfermi",
 	"visualeditor-linkinspector-title": "Ligilo",
 	"visualeditor-listbutton-bullet-tooltip": "Bula listo",
 	"visualeditor-listbutton-number-tooltip": "Numera listo",
@@ -96,6 +96,7 @@
 	"visualeditor-shortcuts-formatting": "Formatado de alineo",
 	"visualeditor-shortcuts-history": "Historio",
 	"visualeditor-shortcuts-other": "Aliaj",
+	"visualeditor-shortcuts-sequence-notice": "Speco",
 	"visualeditor-shortcuts-text-style": "Stiligo de teksto",
 	"visualeditor-slug-insert": "Enmeti alineon",
 	"visualeditor-specialcharacter-button-tooltip": "Speciala signo",
