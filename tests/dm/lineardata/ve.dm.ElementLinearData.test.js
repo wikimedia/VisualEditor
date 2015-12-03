@@ -1598,7 +1598,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Breaks split content branch nodes'
 			},
 			{
-				html: '<p>Foo\nBar\n <b>Baz\nQuux</b></p>',
+				html: '<p>Foo\nBar\n <b>Baz \nQuux</b></p>',
 				data: [
 					{ type: 'paragraph' },
 					'F', 'o', 'o', ' ', 'B', 'a', 'r', ' ',

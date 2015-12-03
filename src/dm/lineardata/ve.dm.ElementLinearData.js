@@ -1083,8 +1083,8 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 			// and will confuse the user. Firefox adds these automatically when copying
 			// line-wrapped HTML. T104790
 			if ( this.getCharacterData( i ) === '\n' ) {
-				if ( this.getCharacterData( i + 1 ).match( /\s/ ) ) {
-					// If the next character is whitespace, remove the newline to avoid double spaces
+				if ( this.getCharacterData( i + 1 ).match( /\s/ ) || this.getCharacterData( i - 1 ).match( /\s/ ) ) {
+					// If whitespace-adjacent, remove the newline to avoid double spaces
 					this.splice( i, 1 );
 					i--;
 					len--;
