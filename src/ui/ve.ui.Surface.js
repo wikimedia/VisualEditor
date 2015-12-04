@@ -246,6 +246,22 @@ ve.ui.Surface.prototype.getBoundingClientRect = function () {
 };
 
 /**
+ * Get measurements of the visible area of the surface viewport
+ *
+ * @return {Object} Object with top, bottom, and height properties
+ */
+ve.ui.Surface.prototype.getViewportDimensions = function () {
+	var rect = this.getBoundingClientRect(),
+		top = Math.max( this.toolbarHeight - rect.top, 0 ),
+		bottom = top + $( this.getElementWindow() ).height() - this.toolbarHeight;
+	return {
+		top: top,
+		bottom: bottom,
+		height: bottom - top
+	};
+};
+
+/**
  * Check if editing is enabled.
  *
  * @method
