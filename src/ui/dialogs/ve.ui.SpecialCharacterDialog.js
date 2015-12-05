@@ -32,9 +32,6 @@ OO.inheritClass( ve.ui.SpecialCharacterDialog, ve.ui.ToolbarDialog );
 
 ve.ui.SpecialCharacterDialog.static.name = 'specialCharacter';
 
-ve.ui.SpecialCharacterDialog.static.title =
-	OO.ui.deferMsg( 'visualeditor-specialCharacterDialog-title' );
-
 ve.ui.SpecialCharacterDialog.static.size = 'full';
 
 ve.ui.SpecialCharacterDialog.static.padded = false;

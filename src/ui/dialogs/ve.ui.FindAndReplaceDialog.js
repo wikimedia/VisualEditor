@@ -27,8 +27,6 @@ OO.inheritClass( ve.ui.FindAndReplaceDialog, ve.ui.ToolbarDialog );
 
 ve.ui.FindAndReplaceDialog.static.name = 'findAndReplace';
 
-ve.ui.FindAndReplaceDialog.static.title = OO.ui.deferMsg( 'visualeditor-find-and-replace-title' );
-
 /**
  * Maximum number of results to render
  *
