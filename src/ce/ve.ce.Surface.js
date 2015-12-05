@@ -2389,15 +2389,17 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 			newState.node.getOffset(),
 			newState.node.unicornAnnotations
 		);
-		this.incRenderLock();
-		try {
-			this.changeModel( transaction );
-		} finally {
-			this.decRenderLock();
+		if ( transaction ) {
+			this.incRenderLock();
+			try {
+				this.changeModel( transaction );
+			} finally {
+				this.decRenderLock();
+			}
+			insertedText = transaction.operations.filter( function ( op ) {
+				return op.type === 'replace' && op.insert.length;
+			} ).length > 0;
 		}
-		insertedText = transaction.operations.filter( function ( op ) {
-			return op.type === 'replace' && op.insert.length;
-		} ).length > 0;
 	}
 
 	if (
