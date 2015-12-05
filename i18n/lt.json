@@ -4,7 +4,8 @@
 			"Audriusa",
 			"Eitvys200",
 			"Aswanas",
-			"Albertas"
+			"Albertas",
+			"Zygimantus"
 		]
 	},
 	"visualeditor": "VaizdoRedaktorius",
@@ -56,6 +57,7 @@
 	"visualeditor-find-and-replace-replace-text": "Pakeisti",
 	"visualeditor-find-and-replace-results": "$1 iš $2",
 	"visualeditor-find-and-replace-title": "Rasti ir pakeisti",
+	"visualeditor-find-and-replace-word": "Visas pasaulis",
 	"visualeditor-formatdropdown-format-blockquote": "Fragmento citata",
 	"visualeditor-formatdropdown-format-heading-label": "Antraštė (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Antraštė 1",

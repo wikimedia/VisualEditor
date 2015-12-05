@@ -13,7 +13,9 @@
 			"Sayginer",
 			"Violetanka",
 			"Mavrikant",
-			"Arystanbek"
+			"Arystanbek",
+			"HakanIST",
+			"McAang"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -63,6 +65,7 @@
 	"visualeditor-find-and-replace-replace-text": "Değiştir",
 	"visualeditor-find-and-replace-results": "$1, $2'de",
 	"visualeditor-find-and-replace-title": "Bul ve değiştir",
+	"visualeditor-find-and-replace-word": "Tüm kelime",
 	"visualeditor-formatdropdown-format-blockquote": "Blok alıntı",
 	"visualeditor-formatdropdown-format-heading-label": "Başlık (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Başlık 1",
@@ -87,7 +90,6 @@
 	"visualeditor-languageinspector-widget-label-direction": "Yön",
 	"visualeditor-languageinspector-widget-label-langcode": "Dil kodu",
 	"visualeditor-languageinspector-widget-label-language": "Dil",
-	"visualeditor-linkinspector-open": "Aç",
 	"visualeditor-linkinspector-title": "Bağlantı",
 	"visualeditor-listbutton-bullet-tooltip": "Madde imli liste",
 	"visualeditor-listbutton-number-tooltip": "Numaralı liste",
