@@ -281,16 +281,33 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				msg: 'Empty list at end of document unwrapped by delete'
 			},
 			{
-				html: '<ul><li><p>foo</p></li></ul>',
-				range: new ve.Range( 6 ),
+				html: '<p>foo</p><ul><li><p>bar</p></li></ul>',
+				range: new ve.Range( 11 ),
 				operations: [ 'delete' ],
-				expectedData: function () {
+				expectedData: function ( data ) {
+					data.splice( 5, 2 );
+					data.splice( 10, 2 );
 				},
 				expectedSelection: {
 					type: 'linear',
 					range: new ve.Range( 6 )
 				},
-				msg: 'Delete at end of non-empty list at end of document does nothing'
+				msg: 'Non-empty list at end of document unwrapped by delete'
+			},
+			{
+				html: '<p>foo</p><ul><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				range: new ve.Range( 18 ),
+				operations: [ 'delete' ],
+				expectedData: function ( data ) {
+					var paragraph = data.splice( 14, 5 );
+					data.splice( 13, 2 ); // remove the empty listItem
+					data.splice.apply( data, [ 14, 0 ].concat( paragraph, { type: 'list', attributes: { style: 'bullet' } }, { type: '/list' } ) );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 15 )
+				},
+				msg: 'Non-empty multi-item list at end of document unwrapped by delete'
 			},
 			{
 				html: '<p>foo</p>',
@@ -315,6 +332,44 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 					range: new ve.Range( 11 )
 				},
 				msg: 'Delete at end of last empty paragraph does nothing'
+			},
+			{
+				html: '<div rel="ve:Alien">foo</div><p>bar</p>',
+				range: new ve.Range( 2 ),
+				operations: [ 'backspace' ],
+				expectedData: function () {
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 0, 2 )
+				},
+				msg: 'Backspace after an alien just selects it'
+			},
+			{
+				html: '<p>bar</p><div rel="ve:Alien">foo</div>',
+				range: new ve.Range( 4 ),
+				operations: [ 'delete' ],
+				expectedData: function () {
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 5, 7 )
+				},
+				msg: 'Delete before an alien just selects it'
+			},
+			{
+				html: '<div rel="ve:Alien">foo</div><ul><li><p>foo</p></li></ul>',
+				range: new ve.Range( 5 ),
+				operations: [ 'backspace' ],
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+					data.splice( 7, 2 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 3 )
+				},
+				msg: 'List after an alien unwrapped by backspace'
 			}
 		];
 

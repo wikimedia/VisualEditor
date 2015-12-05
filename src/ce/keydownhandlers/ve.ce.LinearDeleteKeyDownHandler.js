@@ -227,8 +227,6 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 				// regular text (e.g. "<p>foo|</p>")
 				( startNode.getType() === 'text' ) ||
 				( startNode.getType() === 'tableCell' ) ||
-				// non-empty list? (<ul><li><p>foo|</p></li></ul>)
-				( startNode.getType() === 'listItem' && startNode.length > 2 ) ||
 				// content item at the start / end?
 				(
 					( startNode.canContainContent() || documentModel.getDocumentNode() === startNode ) &&
@@ -239,7 +237,22 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 				return true;
 			} else {
 				// expand our removal to reflect what we actually need to remove
-				rangeToRemove = new ve.Range( nodeRange.start, rangeToRemove.start - 1 );
+				switch ( startNode.getType() ) {
+					case 'list':
+						// if this is an empty list, we wind up with the list node instead of the list item
+						// to make the unwrapping work, we need to remove the list and the item
+						rangeToRemove = new ve.Range( nodeRange.start, nodeRange.start + 2 );
+						break;
+					case 'listItem':
+						rangeToRemove = new ve.Range( nodeRange.start, nodeRange.start + 1 );
+						break;
+					default:
+						if ( direction > 0 ) {
+							rangeToRemove = new ve.Range( rangeToRemove.start, nodeRange.end );
+						} else {
+							rangeToRemove = new ve.Range( nodeRange.start, rangeToRemove.start - 1 );
+						}
+				}
 			}
 		}
 	}
