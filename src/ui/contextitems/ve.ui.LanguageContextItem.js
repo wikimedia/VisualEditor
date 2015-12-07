@@ -8,7 +8,7 @@
  * Context item for a language.
  *
  * @class
- * @extends ve.ui.LinearContextItem
+ * @extends ve.ui.AnnotationContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model item is related to
