@@ -263,8 +263,7 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 					toolClass = ve.ui.toolFactory.lookup( tools[ i ].name );
 					this.relatedSources.push( {
 						type: 'tool',
-						embeddable: !toolClass ||
-							!( toolClass.prototype instanceof ve.ui.InspectorTool ),
+						embeddable: !toolClass || toolClass.static.makesEmbeddableContextItem,
 						name: tools[ i ].name,
 						model: tools[ i ].model
 					} );

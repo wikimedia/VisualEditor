@@ -1,5 +1,5 @@
 /*!
- * VisualEditor UserInterface DialogTool class.
+ * VisualEditor UserInterface WindowTool class.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -14,27 +14,16 @@
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.DialogTool = function VeUiDialogTool() {
+ve.ui.WindowTool = function VeUiWindowTool() {
 	// Parent constructor
-	ve.ui.DialogTool.super.apply( this, arguments );
+	ve.ui.WindowTool.super.apply( this, arguments );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.DialogTool, ve.ui.Tool );
+OO.inheritClass( ve.ui.WindowTool, ve.ui.Tool );
 
 /* Static Properties */
-
-/**
- * Annotation or node models this tool is related to.
- *
- * Used by #isCompatibleWith.
- *
- * @static
- * @property {Function[]}
- * @inheritable
- */
-ve.ui.DialogTool.static.modelClasses = [];
 
 /**
  * Name of the associated windows, if there is more than one possible value, or if it can't be
@@ -44,25 +33,18 @@ ve.ui.DialogTool.static.modelClasses = [];
  * @property {string[]}
  * @inheritable
  */
-ve.ui.DialogTool.static.associatedWindows = null;
-
-/**
- * @inheritdoc
- */
-ve.ui.DialogTool.static.isCompatibleWith = function ( model ) {
-	return ve.isInstanceOfAny( model, this.modelClasses );
-};
+ve.ui.WindowTool.static.associatedWindows = null;
 
 /* Methods */
 
 /**
  * @inheritdoc
  */
-ve.ui.DialogTool.prototype.onUpdateState = function ( fragment, contextDirection, activeDialogs ) {
+ve.ui.WindowTool.prototype.onUpdateState = function ( fragment, contextDirection, activeDialogs ) {
 	var command, myWindowNames = [];
 
 	// Parent method
-	ve.ui.DialogTool.super.prototype.onUpdateState.apply( this, arguments );
+	ve.ui.WindowTool.super.prototype.onUpdateState.apply( this, arguments );
 
 	if ( this.constructor.static.associatedWindows !== null ) {
 		myWindowNames = this.constructor.static.associatedWindows;
@@ -77,11 +59,14 @@ ve.ui.DialogTool.prototype.onUpdateState = function ( fragment, contextDirection
 	this.setActive( $( activeDialogs ).filter( myWindowNames ).length !== 0 );
 };
 
+// Deprecated alias
+ve.ui.DialogTool = ve.ui.WindowTool;
+
 /**
  * Command help tool.
  *
  * @class
- * @extends ve.ui.DialogTool
+ * @extends ve.ui.WindowTool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
@@ -89,7 +74,7 @@ ve.ui.DialogTool.prototype.onUpdateState = function ( fragment, contextDirection
 ve.ui.CommandHelpDialogTool = function VeUiCommandHelpDialogTool() {
 	ve.ui.CommandHelpDialogTool.super.apply( this, arguments );
 };
-OO.inheritClass( ve.ui.CommandHelpDialogTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.CommandHelpDialogTool, ve.ui.WindowTool );
 ve.ui.CommandHelpDialogTool.static.name = 'commandHelp';
 ve.ui.CommandHelpDialogTool.static.group = 'dialog';
 ve.ui.CommandHelpDialogTool.static.icon = 'help';
