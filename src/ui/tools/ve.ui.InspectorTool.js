@@ -33,27 +33,14 @@ ve.ui.InspectorTool.static.deactivateOnSelect = false;
  * @inheritdoc
  */
 ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
-	var i, len, models, ceSurface;
+	var i, len, models;
 
 	this.setActive( false );
 
 	// Parent method
 	ve.ui.InspectorTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	if ( !fragment ) {
-		models = [];
-	} else if (
-		this instanceof ve.ui.LinkInspectorTool &&
-		fragment.selection instanceof ve.dm.LinearSelection &&
-		( ceSurface = this.toolbar.getSurface().getView() ) &&
-		ceSurface.model.selection.range === fragment.selection.range
-	) {
-		// Ask the CE surface about selected models, so it can give the right
-		// answer about links based on the CE selection.
-		models = ceSurface.getSelectedModels();
-	} else {
-		models = fragment.getSelectedModels();
-	}
+	models = this.getSelectedModels( fragment ) ;
 
 	for ( i = 0, len = models.length; i < len; i++ ) {
 		if ( this.constructor.static.isCompatibleWith( models[ i ] ) ) {
@@ -61,6 +48,16 @@ ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
 			break;
 		}
 	}
+};
+
+/**
+ * Get list of selected nodes and annotations.
+ *
+ * @param {ve.dm.SurfaceFragment|null} fragment Surface fragment
+ * @return {ve.dm.Model[]} Selected models
+ */
+ve.ui.InspectorTool.prototype.getSelectedModels = function ( fragment ) {
+	return fragment ? fragment.getSelectedModels() : [];
 };
 
 /**
@@ -83,6 +80,23 @@ ve.ui.LinkInspectorTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-annotationbutton-link-tooltip' );
 ve.ui.LinkInspectorTool.static.modelClasses = [ ve.dm.LinkAnnotation ];
 ve.ui.LinkInspectorTool.static.commandName = 'link';
+
+ve.ui.LinkInspectorTool.prototype.getSelectedModels = function ( fragment ) {
+	var surfaceView,
+		selection = fragment && fragment.getSelection();
+
+	// Ask the CE surface about selected models, so it can give the right
+	// answer about links based on the CE selection.
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		surfaceView = this.toolbar.getSurface().getView();
+		if ( selection.equals( surfaceView.getModel().getSelection() ) ) {
+			return surfaceView.getSelectedModels();
+		}
+	}
+
+	return ve.ui.LinkInspectorTool.super.prototype.getSelectedModels.apply( this, arguments );
+};
+
 ve.ui.toolFactory.register( ve.ui.LinkInspectorTool );
 
 /**
