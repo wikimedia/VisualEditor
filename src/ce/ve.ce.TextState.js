@@ -10,7 +10,7 @@
  * @class
  *
  * @constructor
- * @param {Node} element Element whose content is to be snapshotted
+ * @param {HTMLElement} element Element whose content is to be snapshotted
  */
 ve.ce.TextState = function VeCeTextState( element ) {
 	/**
@@ -28,22 +28,22 @@ OO.initClass( ve.ce.TextState );
 /**
  * Saves a snapshot of the current text content state
  *
- * @param {Node} element Element whose content is to be snapshotted
+ * @param {HTMLElement} element Element whose content is to be snapshotted
  * @return {ve.ce.TextStateChunk[]} chunks
  */
 ve.ce.TextState.static.getChunks = function ( element ) {
 	var $node, viewNode,
 		node = element,
-		// Stack of tag-lists in force; each tag list is equal to its predecessor extended
-		// by one tag. This means two chunks have object-equal tag lists if they have the
-		// same tag elements in force (i.e. if their text nodes are DOM siblings).
-		tagListStack = [ [] ],
+		// Stack of element-lists in force; each element list is equal to its predecessor extended
+		// by one element. This means two chunks have object-equal element lists if they have the
+		// same element elements in force (i.e. if their text nodes are DOM siblings).
+		elementListStack = [ [] ],
 		stackTop = 0,
 		annotationStack = [],
 		chunks = [];
 
 	/**
-	 * Add to chunks, merging content with the same tags/type into the same chunk
+	 * Add to chunks, merging content with the same elements/type into the same chunk
 	 *
 	 * @param {string} text Plain text
 	 * @param {string} [type] If this is a unicorn then 'unicorn', else 'text' (default)
@@ -51,12 +51,12 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 	function add( text, type ) {
 		if (
 			!chunks.length ||
-			chunks[ chunks.length - 1 ].tags !== tagListStack[ stackTop ] ||
+			chunks[ chunks.length - 1 ].elements !== elementListStack[ stackTop ] ||
 			chunks[ chunks.length - 1 ].type !== type
 		) {
 			chunks.push( new ve.ce.TextStateChunk(
 				text,
-				tagListStack[ stackTop ],
+				elementListStack[ stackTop ],
 				type || 'text'
 			) );
 		} else {
@@ -95,8 +95,8 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 			add( '', 'unicorn' );
 		} else if ( node.firstChild ) {
 			if ( ve.ce.isAnnotationElement( node ) ) {
-				// push a new tag stack state
-				tagListStack.push( tagListStack[ stackTop ].concat( node ) );
+				// push a new element stack state
+				elementListStack.push( elementListStack[ stackTop ].concat( node ) );
 				annotationStack.push( node );
 				stackTop++;
 			}
@@ -113,7 +113,7 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 			}
 			if ( node === annotationStack[ annotationStack.length - 1 ] ) {
 				annotationStack.pop();
-				tagListStack.pop();
+				elementListStack.pop();
 				stackTop--;
 			}
 			if ( node.nextSibling ) {
@@ -168,7 +168,7 @@ ve.ce.TextState.prototype.isEqual = function ( other ) {
 ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, modelOffset, unicornAnnotations ) {
 	var change, i, iLen, textStart, textEnd, changeOffset, removed, removeRange,
 		annotations, missing, oldChunk, newChunk, j, jStart, jEnd, leastMissing,
-		matchStartOffset, matchOffset, bestOffset, jLen, oldAnnotations, tag,
+		matchStartOffset, matchOffset, bestOffset, jLen, oldAnnotations, element,
 		modelClass, ann, oldAnn, data,
 		oldChunks = prev.chunks,
 		newChunks = this.chunks,
@@ -215,7 +215,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 	textStart = 0;
 	textEnd = 0;
 	if ( change.start < Math.min( oldChunks.length, newChunks.length ) ) {
-		if ( oldChunks[ change.start ].isEqualTags( newChunks[ change.start ] ) ) {
+		if ( oldChunks[ change.start ].hasEqualElements( newChunks[ change.start ] ) ) {
 			oldChunk = oldChunks[ change.start ];
 			newChunk = newChunks[ change.start ];
 			iLen = Math.min( oldChunk.text.length, newChunk.text.length );
@@ -227,7 +227,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			textStart = i;
 		}
 
-		if ( oldChunks[ oldChunks.length - 1 - change.end ].isEqualTags(
+		if ( oldChunks[ oldChunks.length - 1 - change.end ].hasEqualElements(
 			newChunks[ newChunks.length - 1 - change.end ]
 		) ) {
 			oldChunk = oldChunks[ oldChunks.length - 1 - change.end ];
@@ -287,7 +287,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			continue;
 		}
 
-		// Search for matching tags in old chunks adjacent to the change (i.e. removed
+		// Search for matching elements in old chunks adjacent to the change (i.e. removed
 		// chunks or the first chunk before/after the removal). O(n^2) is fine here
 		// because during typical typing there is only one changed chunk, and the worst
 		// case is three new chunks (e.g. when the interior of an existing chunk is
@@ -315,7 +315,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		matchOffset = matchStartOffset;
 		for ( j = jStart; j < jEnd; j++ ) {
 			oldChunk = oldChunks[ j ];
-			if ( !oldChunk.isEqualTags( newChunk ) ) {
+			if ( !oldChunk.hasEqualElements( newChunk ) ) {
 				matchOffset += oldChunk.text.length;
 				continue;
 			}
@@ -333,22 +333,22 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			break;
 		}
 		if ( annotations === null ) {
-			// No exact match: search for the old chunk whose tag list covers best
+			// No exact match: search for the old chunk whose element list covers best
 			// (chosing the startmost of any tying chunks). There may be no missing
-			// tags even though the match is not exact (e.g. because of removed
+			// elements even though the match is not exact (e.g. because of removed
 			// annotations and reordering).
 			//
 			// This block doesn't happen during typical typing, so performance is
 			// less critical.
-			leastMissing = newChunk.tags.length;
+			leastMissing = newChunk.elements.length;
 			bestOffset = null;
 			matchOffset = matchStartOffset;
 			for ( j = jStart; j < jEnd; j++ ) {
 				oldChunk = oldChunks[ j ];
 				missing = countMissing(
-					newChunk.tags,
-					oldChunk.tags,
-					ve.ce.TextStateChunk.static.isEqualTag
+					newChunk.elements,
+					oldChunk.elements,
+					ve.ce.TextStateChunk.static.compareElements
 				);
 				if ( missing < leastMissing ) {
 					leastMissing = missing;
@@ -367,23 +367,23 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 					true
 				);
 			}
-			// For each tag in new order, add applicable old annotation, or
+			// For each element in new order, add applicable old annotation, or
 			// (if whitelisted) newly-created annotation.
 			// TODO: this can potentially duplicate existing non-adjacent
 			// annotations. Sometimes this could be required behaviour, e.g. for
 			// directionality spans; in other situations it would be cleaner to
 			// duplicate.
 			annotations = new ve.dm.AnnotationSet( modelData.getStore() );
-			for ( j = 0, jLen = newChunk.tags.length; j < jLen; j++ ) {
-				tag = newChunk.tags[ j ];
+			for ( j = 0, jLen = newChunk.elements.length; j < jLen; j++ ) {
+				element = newChunk.elements[ j ];
 				modelClass = ve.dm.modelRegistry.lookup(
-					ve.dm.modelRegistry.matchElement( tag )
+					ve.dm.modelRegistry.matchElement( element )
 				);
 				ann = ve.dm.annotationFactory.createFromElement(
-					ve.dm.converter.createDataElements( modelClass, [ tag ] )[ 0 ]
+					ve.dm.converter.createDataElements( modelClass, [ element ] )[ 0 ]
 				);
 				if ( !( ann instanceof ve.dm.Annotation ) ) {
-					// Erroneous tag; nothing we can do with it
+					// Erroneous element; nothing we can do with it
 					continue;
 				}
 				oldAnn = oldAnnotations.getComparable( ann );
