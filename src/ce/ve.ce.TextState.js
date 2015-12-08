@@ -399,7 +399,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 					oldAnn = oldAnnotations.getComparable( ann );
 					if ( oldAnn ) {
 						ann = oldAnn;
-					} else if ( !ann.constructor.static.inferFromDom ) {
+					} else if ( !ann.constructor.static.inferFromView ) {
 						// New and un-whitelisted: drop the annotation
 						continue;
 					}

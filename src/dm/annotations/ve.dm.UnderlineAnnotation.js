@@ -29,7 +29,7 @@ ve.dm.UnderlineAnnotation.static.name = 'textStyle/underline';
 
 ve.dm.UnderlineAnnotation.static.matchTagNames = [ 'u' ];
 
-ve.dm.UnderlineAnnotation.static.inferFromDom = true;
+ve.dm.UnderlineAnnotation.static.inferFromView = true;
 
 /* Registration */
 

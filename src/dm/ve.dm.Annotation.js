@@ -49,11 +49,11 @@ ve.dm.Annotation.static.enableAboutGrouping = false;
 ve.dm.Annotation.static.applyToAppendedContent = true;
 
 /**
- * Accept this annotation when the browser spontaneously adds it to DOM content.
+ * Accept this annotation when the browser spontaneously adds it to view's DOM.
  *
  * @property {boolean}
  */
-ve.dm.Annotation.static.inferFromDom = false;
+ve.dm.Annotation.static.inferFromView = false;
 
 /**
  * Annotations which are removed when this one is applied

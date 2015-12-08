@@ -29,7 +29,7 @@ ve.dm.ItalicAnnotation.static.name = 'textStyle/italic';
 
 ve.dm.ItalicAnnotation.static.matchTagNames = [ 'i', 'em' ];
 
-ve.dm.ItalicAnnotation.static.inferFromDom = true;
+ve.dm.ItalicAnnotation.static.inferFromView = true;
 
 /* Registration */
 
