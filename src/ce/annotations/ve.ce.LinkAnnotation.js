@@ -26,7 +26,8 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation() {
 		.prop( {
 			href: ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ),
 			title: this.constructor.static.getDescription( this.model )
-		} );
+		} )
+		.data( 'view', this );
 };
 
 /* Inheritance */

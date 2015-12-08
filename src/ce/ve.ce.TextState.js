@@ -169,7 +169,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 	var change, i, iLen, textStart, textEnd, changeOffset, removed, removeRange,
 		annotations, missing, oldChunk, newChunk, j, jStart, jEnd, leastMissing,
 		matchStartOffset, matchOffset, bestOffset, jLen, oldAnnotations, element,
-		modelClass, ann, oldAnn, data,
+		modelClass, ann, oldAnn, data, view,
 		oldChunks = prev.chunks,
 		newChunks = this.chunks,
 		modelData = modelDoc.data,
@@ -376,22 +376,33 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			annotations = new ve.dm.AnnotationSet( modelData.getStore() );
 			for ( j = 0, jLen = newChunk.elements.length; j < jLen; j++ ) {
 				element = newChunk.elements[ j ];
-				modelClass = ve.dm.modelRegistry.lookup(
-					ve.dm.modelRegistry.matchElement( element )
-				);
-				ann = ve.dm.annotationFactory.createFromElement(
-					ve.dm.converter.createDataElements( modelClass, [ element ] )[ 0 ]
-				);
-				if ( !( ann instanceof ve.dm.Annotation ) ) {
-					// Erroneous element; nothing we can do with it
-					continue;
-				}
-				oldAnn = oldAnnotations.getComparable( ann );
-				if ( oldAnn ) {
-					ann = oldAnn;
-				} else if ( !ann.constructor.static.inferFromDom ) {
-					// New and un-whitelisted: drop the annotation
-					continue;
+				// Recover the node from jQuery data store. This can only break if the browser
+				// completely rebuilds the node, but should work in cases like typing into
+				// collapsed links because nails ensure the link is never completely empty.
+				view = $( element ).data( 'view' );
+				if ( view ) {
+					ann = view.getModel();
+				} else {
+					// No view: new annotation element (or replacement one):
+					// see https://phabricator.wikimedia.org/T116269 and
+					// https://code.google.com/p/chromium/issues/detail?id=54646
+					modelClass = ve.dm.modelRegistry.lookup(
+						ve.dm.modelRegistry.matchElement( element )
+					);
+					ann = ve.dm.annotationFactory.createFromElement(
+						ve.dm.converter.createDataElements( modelClass, [ element ] )[ 0 ]
+					);
+					if ( !( ann instanceof ve.dm.Annotation ) ) {
+						// Erroneous element; nothing we can do with it
+						continue;
+					}
+					oldAnn = oldAnnotations.getComparable( ann );
+					if ( oldAnn ) {
+						ann = oldAnn;
+					} else if ( !ann.constructor.static.inferFromDom ) {
+						// New and un-whitelisted: drop the annotation
+						continue;
+					}
 				}
 				annotations.add( ann, annotations.getLength() );
 			}

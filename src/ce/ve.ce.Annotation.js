@@ -26,6 +26,7 @@ ve.ce.Annotation = function VeCeAnnotation( model, parentNode, config ) {
 
 	// Properties
 	this.parentNode = parentNode || null;
+	this.$element.data( 'view', this );
 };
 
 /* Inheritance */
