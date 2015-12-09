@@ -29,7 +29,7 @@ ve.dm.BoldAnnotation.static.name = 'textStyle/bold';
 
 ve.dm.BoldAnnotation.static.matchTagNames = [ 'b', 'strong' ];
 
-ve.dm.BoldAnnotation.static.inferFromDom = true;
+ve.dm.BoldAnnotation.static.inferFromView = true;
 
 /* Registration */
 
