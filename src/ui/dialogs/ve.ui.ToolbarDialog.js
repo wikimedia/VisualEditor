@@ -66,7 +66,7 @@ ve.ui.ToolbarDialog.prototype.setDisabled = function ( disabled ) {
 	if ( disabled !== this.disabled ) {
 		this.disabled = disabled;
 		this.$body
-			// Make sure sheild is last child
+			// Make sure shield is last child
 			.append( this.$shield )
 			.toggleClass( 've-ui-toolbarDialog-disabled', this.disabled );
 	}

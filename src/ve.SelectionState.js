@@ -14,10 +14,10 @@
  *
  * @constructor
  * @param {ve.SelectionState|Selection|Object} selection DOM Selection-like object
- * @param {Node|null} selection.anchorNode the Anchor node (null if no selection)
- * @param {number} selection.anchorOffset the Anchor offset (0 if no selection)
- * @param {Node|null} selection.focusNode the Focus node (null if no selection)
- * @param {number} selection.focusOffset the Focusoffset (0 if no selection)
+ * @param {Node|null} selection.anchorNode The anchor node (null if no selection)
+ * @param {number} selection.anchorOffset The anchor offset (0 if no selection)
+ * @param {Node|null} selection.focusNode The focus node (null if no selection)
+ * @param {number} selection.focusOffset The focus offset (0 if no selection)
  * @param {boolean} [selection.isCollapsed] Whether the anchor and focus are the same
  * @param {boolean} [selection.isBackwards] Whether the focus is before the anchor in document order
  */

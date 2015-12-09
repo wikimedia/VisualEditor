@@ -117,7 +117,7 @@ ve.dm.APIResultsProvider.prototype.getUserParams = function () {
  * @param {Object} params User defined data parameters
  */
 ve.dm.APIResultsProvider.prototype.setUserParams = function ( params ) {
-	// Assymetrically compare (params is subset of this.userParams)
+	// Asymmetrically compare (params is subset of this.userParams)
 	if ( !ve.compare( params, this.userParams, true ) ) {
 		this.userParams = $.extend( {}, this.userParams, params );
 		// Reset offset

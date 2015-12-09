@@ -47,7 +47,7 @@ ve.ce.KeyDownHandlerFactory.prototype.register = function ( constructor ) {
  * Get the handler for a specific key
  *
  * @param {number} key Key code
- * @param {string} selectionName Selection type nane
+ * @param {string} selectionName Selection type name
  * @return {Function[]} Matched handlers
  */
 ve.ce.KeyDownHandlerFactory.prototype.lookupHandlersForKey = function ( key, selectionName ) {
@@ -71,7 +71,7 @@ ve.ce.KeyDownHandlerFactory.prototype.lookupHandlersForKey = function ( key, sel
  * Execute the handlers for a specific key
  *
  * @param {number} key Key code
- * @param {string} selectionName Selection type nane
+ * @param {string} selectionName Selection type name
  * @param {ve.ce.Surface} surface Surface
  * @param {jQuery} e Key down event
  * @return {boolean} Some handlers acted

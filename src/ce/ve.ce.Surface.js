@@ -134,7 +134,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	} else {
 		// fake selection change events; mousemove gets optimized away if we're not dragging
 		// mousedown needs to run after nativemousedown, because otherwise the selection hasn't
-		// finished changigng
+		// finished changing
 		this.$documentNode.on( 'mousemove', this.onDocumentSelectionChange.bind( this ) );
 		this.eventSequencer.after( {
 			mousedown: this.onDocumentSelectionChange.bind( this )
@@ -527,7 +527,7 @@ ve.ce.Surface.prototype.onFocusChange = function () {
  */
 ve.ce.Surface.prototype.deactivate = function () {
 	if ( !this.deactivated ) {
-		// Disable the surface observer, there can be no observeable changes
+		// Disable the surface observer, there can be no observable changes
 		// until the surface is activated
 		this.surfaceObserver.disable();
 		this.deactivated = true;
@@ -1073,7 +1073,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
  *
  * If any of these triggers can't execute on the surface, (e.g. the underline
  * command has been blacklisted), we should still preventDefault so ContentEditable
- * native commands don't occur, leving the view out of sync with the model.
+ * native commands don't occur, leaving the view out of sync with the model.
  *
  * @method
  * @param {ve.ui.Trigger} trigger Trigger to check
@@ -1163,7 +1163,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 
 		$focusNode = $( focusNode );
 		// If the first ancestor with contenteditable set is ce=true, then we are allowed
-		// to be inside this focusalbe node (e.g. editing a table cell or caption)
+		// to be inside this focusable node (e.g. editing a table cell or caption)
 		if ( $focusNode.closest( '[contenteditable]' ).prop( 'contenteditable' ) === 'true' ) {
 			return null;
 		}
@@ -2021,7 +2021,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
  *
  * @param {DataTransfer} dataTransfer Data transfer
  * @param {boolean} isPaste Handlers being used for paste
- * @param {ve.dm.SurfaceFragment} [targetFragment] Fragment to inserto data items at, defaults to current selection
+ * @param {ve.dm.SurfaceFragment} [targetFragment] Fragment to insert data items at, defaults to current selection
  * @return {boolean} One more items was handled
  */
 ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, targetFragment ) {
@@ -2058,11 +2058,11 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 };
 
 /**
- * Handle the insertion of data tranfer items
+ * Handle the insertion of data transfer items
  *
  * @param {ve.ui.DataTransferItem[]} items Data transfer items
  * @param {boolean} isPaste Handlers being used for paste
- * @param {ve.dm.SurfaceFragment} [targetFragment] Fragment to inserto data items at, defaults to current selection
+ * @param {ve.dm.SurfaceFragment} [targetFragment] Fragment to insert data items at, defaults to current selection
  * @return {boolean} One more items was handled
  */
 ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, targetFragment ) {
@@ -3101,7 +3101,7 @@ ve.ce.Surface.prototype.selectActiveLinkContents = function () {
 };
 
 /**
- * Get the linkAnnotation node containing the cursor fous
+ * Get the linkAnnotation node containing the cursor focus
  *
  * If there is no focus, or it is not inside a linkAnnotation, return null
  *

@@ -96,7 +96,7 @@ ve.ui.LinearContext.prototype.onContextChange = function () {
 ve.ui.LinearContext.prototype.onDocumentUpdate = function () {
 	// Only mind this event if the menu is visible
 	if ( this.isVisible() && !this.isEmpty() ) {
-		// Reuse the debounced context change hanlder
+		// Reuse the debounced context change handler
 		this.onContextChange();
 	}
 };

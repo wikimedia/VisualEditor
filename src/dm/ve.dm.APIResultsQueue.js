@@ -41,7 +41,7 @@ OO.mixinClass( ve.dm.APIResultsQueue, OO.EventEmitter );
 
 /**
  * Set up the queue and its resources.
- * This should be overrided if there are any setup steps to perform.
+ * This should be overridden if there are any setup steps to perform.
  *
  * @return {jQuery.Promise} Promise that resolves when the resources
  *  are set up. Note: The promise must have an .abort() functionality.
@@ -157,7 +157,7 @@ ve.dm.APIResultsQueue.prototype.setProviders = function ( providers ) {
 };
 
 /**
- * Add a provbider to the group
+ * Add a provider to the group
  *
  * @param {ve.dm.APIResultsProvider} provider A provider object
  */

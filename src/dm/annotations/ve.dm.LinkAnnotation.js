@@ -74,7 +74,7 @@ ve.dm.LinkAnnotation.prototype.getHref = function () {
 /**
  * Get the display title for this link
  *
- * Can be overriden by special link types.
+ * Can be overridden by special link types.
  *
  * @return {string} Display title
  */

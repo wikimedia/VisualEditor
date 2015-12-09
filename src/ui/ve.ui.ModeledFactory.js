@@ -41,7 +41,7 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 	 * Collect the most specific compatible classes for a model.
 	 *
 	 * @private
-	 * @param {Object} model Model to find compatability with
+	 * @param {Object} model Model to find compatibility with
 	 * @return {Function[]} List of compatible classes
 	 */
 	function collect( model ) {

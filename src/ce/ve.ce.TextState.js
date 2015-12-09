@@ -334,7 +334,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		}
 		if ( annotations === null ) {
 			// No exact match: search for the old chunk whose element list covers best
-			// (chosing the startmost of any tying chunks). There may be no missing
+			// (choosing the startmost of any tying chunks). There may be no missing
 			// elements even though the match is not exact (e.g. because of removed
 			// annotations and reordering).
 			//

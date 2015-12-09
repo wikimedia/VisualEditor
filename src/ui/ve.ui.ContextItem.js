@@ -94,7 +94,7 @@ ve.ui.ContextItem.static.isCompatibleWith = function ( model ) {
 /**
  * Check if model is a node
  *
- * @return {boolean} Model is a nodel
+ * @return {boolean} Model is a node
  */
 ve.ui.ContextItem.prototype.isNode = function () {
 	return this.model && this.model instanceof ve.dm.Node;
