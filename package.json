@@ -30,6 +30,7 @@
     "grunt-jsonlint": "1.0.4",
     "grunt-contrib-watch": "0.6.1",
     "grunt-css-url-embed": "1.6.1",
+    "grunt-tyops": "0.1.0",
     "grunt-cssjanus": "0.2.4",
     "grunt-jscs": "2.1.0",
     "grunt-karma": "0.12.1",

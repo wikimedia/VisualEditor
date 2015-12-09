@@ -37,6 +37,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
 	grunt.loadNpmTasks( 'grunt-jscs' );
 	grunt.loadNpmTasks( 'grunt-karma' );
+	grunt.loadNpmTasks( 'grunt-tyops' );
 	grunt.loadTasks( 'build/tasks' );
 
 	// We want to use `grunt watch` to start this and karma watch together.
@@ -234,6 +235,19 @@ module.exports = function ( grunt ) {
 				indent: '\t\t'
 			}
 		},
+		tyops: {
+			options: {
+				typos: 'build/typos.json'
+			},
+			src: [
+				'**/*.{js,json,less,css,txt}',
+				'!build/typos.json',
+				'!lib/**',
+				'!i18n/**',
+				'!{coverage,dist,docs,node_modules}/**',
+				'!.git/**'
+			]
+		},
 		jshint: {
 			options: {
 				jshintrc: true
@@ -341,7 +355,7 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'lint', [ 'jshint', 'jscs:main', 'csslint', 'jsonlint', 'banana' ] );
+	grunt.registerTask( 'lint', [ 'tyops', 'jshint', 'jscs:main', 'csslint', 'jsonlint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:main' ] );
 	grunt.registerTask( 'fix', [ 'jscs:fix' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );

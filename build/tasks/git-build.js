@@ -14,7 +14,7 @@ module.exports = function ( grunt ) {
 				return;
 			}
 			grunt.config.set( 'pkg.version', grunt.config( 'pkg.version' ) + '-pre (' + stout.slice( 0, 10 ) + ')' );
-			grunt.verbose.writeln( 'Added git HEAD to pgk.version' );
+			grunt.verbose.writeln( 'Added git HEAD to pkg.version' );
 			done();
 		} );
 	} );
