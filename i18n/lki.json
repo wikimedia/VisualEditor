@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Hosseinblue"
+			"Hosseinblue",
+			"Arash71"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -29,10 +30,10 @@
 	"visualeditor-commentinspector-title": "قسۀ نیائن",
 	"visualeditor-commentinspector-tooltip": "قسۀ نیائن",
 	"visualeditor-content-select-all": "انتخاب کؤل",
-	"visualeditor-contextitemwidget-label-secondary": "دۀسکاری",
+	"visualeditor-contextitemwidget-label-secondary": "دةسکاری",
 	"visualeditor-contextitemwidget-label-remove": "پاکا کردن",
 	"visualeditor-dialog-action-apply": "اعمال تغییرات",
-	"visualeditor-dialog-action-cancel": "ئآهووسانن-لغو",
+	"visualeditor-dialog-action-cancel": "ئآهووسانن/لغو",
 	"visualeditor-dialog-action-done": "انجؤم بی",
 	"visualeditor-dialog-action-goback": "بوو دؤما/ عقب",
 	"visualeditor-dialog-action-insert": "قرار دائن",

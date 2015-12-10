@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"V6rg"
+			"V6rg",
+			"Arash71"
 		]
 	},
 	"visualeditor-align-widget-center": "مئنه",
@@ -9,7 +10,7 @@
 	"visualeditor-align-widget-right": "راست",
 	"visualeditor-aliencontextitem-title": "مأسمک",
 	"visualeditor-annotationbutton-bold-tooltip": "پۊررنگ",
-	"visualeditor-annotationbutton-code-tooltip": "کامپيۊترˇ کؤد",
+	"visualeditor-annotationbutton-code-tooltip": " کؤدکامپيۊتر",
 	"visualeditor-annotationbutton-italic-tooltip": "کج",
 	"visualeditor-annotationbutton-language-tooltip": "زوان",
 	"visualeditor-annotationbutton-link-tooltip": "خال",
@@ -44,7 +45,6 @@
 	"visualeditor-languageinspector-title": "زوان",
 	"visualeditor-languageinspector-widget-changelang": "زوانه ىاتن",
 	"visualeditor-languageinspector-widget-label-language": "زوان",
-	"visualeditor-linkinspector-open": "واگۊدن",
 	"visualeditor-linkinspector-title": "خال",
 	"visualeditor-listbutton-bullet-tooltip": "گۊللىي ليست",
 	"visualeditor-listbutton-number-tooltip": "نؤمرىي ليست",
