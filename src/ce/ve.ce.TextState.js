@@ -227,9 +227,12 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			textStart = i;
 		}
 
-		if ( oldChunks[ oldChunks.length - 1 - change.end ].hasEqualElements(
-			newChunks[ newChunks.length - 1 - change.end ]
-		) ) {
+		if (
+			change.end < Math.min( oldChunks.length, newChunks.length ) &&
+			oldChunks[ oldChunks.length - 1 - change.end ].hasEqualElements(
+				newChunks[ newChunks.length - 1 - change.end ]
+			)
+		) {
 			oldChunk = oldChunks[ oldChunks.length - 1 - change.end ];
 			newChunk = newChunks[ newChunks.length - 1 - change.end ];
 			// For oldChunks/newChunks/both, it's possible that only one chunk
