@@ -51,6 +51,15 @@ ve.ui.Tool.static.commandName = null;
 ve.ui.Tool.static.deactivateOnSelect = true;
 
 /**
+ * If this tool is used to create a ve.ui.ToolContextItem, should that item be embeddable
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.ui.Tool.static.makesEmbeddableContextItem = true;
+
+/**
  * Get the symbolic command name for this tool.
  *
  * @return {string|null}

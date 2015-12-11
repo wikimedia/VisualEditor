@@ -9,7 +9,7 @@
  *
  * @abstract
  * @class
- * @extends ve.ui.DialogTool
+ * @extends ve.ui.WindowTool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
@@ -21,7 +21,7 @@ ve.ui.ToolbarDialogTool = function VeUiToolbarDialogTool() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.ToolbarDialogTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.ToolbarDialogTool, ve.ui.WindowTool );
 
 /* Static Properties */
 

@@ -13,9 +13,9 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.SpecialCharacterDialog = function VeUiSpecialCharacterDialog( config ) {
+ve.ui.SpecialCharacterDialog = function VeUiSpecialCharacterDialog() {
 	// Parent constructor
-	ve.ui.ToolbarDialog.call( this, config );
+	ve.ui.SpecialCharacterDialog.super.apply( this, arguments );
 
 	this.characters = null;
 	this.$buttonDomList = null;

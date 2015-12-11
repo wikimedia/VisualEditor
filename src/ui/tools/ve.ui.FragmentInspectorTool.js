@@ -1,78 +1,50 @@
 /*!
- * VisualEditor UserInterface InspectorTool classes.
+ * VisualEditor UserInterface FragmentInspectorTool classes.
  *
  * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * UserInterface inspector tool.
+ * UserInterface fragment inspector tool.
  *
  * @abstract
  * @class
- * @extends ve.ui.DialogTool
+ * @extends ve.ui.FragmentWindowTool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.InspectorTool = function VeUiInspectorTool( toolGroup, config ) {
+ve.ui.FragmentInspectorTool = function VeUiFragmentInspectorTool() {
 	// Parent constructor
-	ve.ui.InspectorTool.super.call( this, toolGroup, config );
+	ve.ui.FragmentInspectorTool.super.apply( this, arguments );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.InspectorTool, ve.ui.DialogTool );
+OO.inheritClass( ve.ui.FragmentInspectorTool, ve.ui.FragmentWindowTool );
 
 /* Static Properties */
 
-ve.ui.InspectorTool.static.deactivateOnSelect = false;
+ve.ui.FragmentInspectorTool.static.makesEmbeddableContextItem = false;
 
 /* Methods */
 
-/**
- * @inheritdoc
- */
-ve.ui.InspectorTool.prototype.onUpdateState = function ( fragment ) {
-	var i, len, models;
-
-	this.setActive( false );
-
-	// Parent method
-	ve.ui.InspectorTool.super.prototype.onUpdateState.apply( this, arguments );
-
-	models = this.getSelectedModels( fragment ) ;
-
-	for ( i = 0, len = models.length; i < len; i++ ) {
-		if ( this.constructor.static.isCompatibleWith( models[ i ] ) ) {
-			this.setActive( true );
-			break;
-		}
-	}
-};
-
-/**
- * Get list of selected nodes and annotations.
- *
- * @param {ve.dm.SurfaceFragment|null} fragment Surface fragment
- * @return {ve.dm.Model[]} Selected models
- */
-ve.ui.InspectorTool.prototype.getSelectedModels = function ( fragment ) {
-	return fragment ? fragment.getSelectedModels() : [];
-};
+// Deprecated alias
+ve.ui.InspectorTool = ve.ui.FragmentInspectorTool;
 
 /**
  * UserInterface link tool.
  *
  * @class
- * @extends ve.ui.InspectorTool
+ * @extends ve.ui.FragmentInspectorTool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.LinkInspectorTool = function VeUiLinkInspectorTool( toolGroup, config ) {
-	ve.ui.InspectorTool.call( this, toolGroup, config );
+ve.ui.LinkInspectorTool = function VeUiLinkInspectorTool() {
+	ve.ui.LinkInspectorTool.super.apply( this, arguments );
 };
-OO.inheritClass( ve.ui.LinkInspectorTool, ve.ui.InspectorTool );
+OO.inheritClass( ve.ui.LinkInspectorTool, ve.ui.FragmentInspectorTool );
 ve.ui.LinkInspectorTool.static.name = 'link';
 ve.ui.LinkInspectorTool.static.group = 'meta';
 ve.ui.LinkInspectorTool.static.icon = 'link';
@@ -103,15 +75,15 @@ ve.ui.toolFactory.register( ve.ui.LinkInspectorTool );
  * UserInterface comment tool.
  *
  * @class
- * @extends ve.ui.InspectorTool
+ * @extends ve.ui.FragmentInspectorTool
  * @constructor
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommentInspectorTool = function VeUiCommentInspectorTool( toolGroup, config ) {
-	ve.ui.InspectorTool.call( this, toolGroup, config );
+ve.ui.CommentInspectorTool = function VeUiCommentInspectorTool() {
+	ve.ui.CommentInspectorTool.super.apply( this, arguments );
 };
-OO.inheritClass( ve.ui.CommentInspectorTool, ve.ui.InspectorTool );
+OO.inheritClass( ve.ui.CommentInspectorTool, ve.ui.FragmentInspectorTool );
 ve.ui.CommentInspectorTool.static.name = 'comment';
 ve.ui.CommentInspectorTool.static.group = 'meta';
 ve.ui.CommentInspectorTool.static.icon = 'notice';
