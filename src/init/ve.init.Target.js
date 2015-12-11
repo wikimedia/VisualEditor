@@ -35,6 +35,7 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.surfaces = [];
 	this.surface = null;
 	this.toolbar = null;
+	this.actionsToolbar = null;
 	this.toolbarConfig = config.toolbarConfig;
 	this.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
 	this.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
@@ -128,6 +129,8 @@ ve.init.Target.static.toolbarGroups = [
 	}
 ];
 
+ve.init.Target.static.actionGroups = [];
+
 /**
  * List of commands which can be triggered anywhere from within the document
  *
@@ -207,6 +210,10 @@ ve.init.Target.prototype.destroy = function () {
 	if ( this.toolbar ) {
 		this.toolbar.destroy();
 		this.toolbar = null;
+	}
+	if ( this.actionsToolbar ) {
+		this.actionsToolbar.destroy();
+		this.actionsToolbar = null;
 	}
 	this.$element.remove();
 	this.unbindHandlers();
@@ -438,19 +445,35 @@ ve.init.Target.prototype.getToolbar = function () {
 };
 
 /**
+ * Get the actions toolbar
+ *
+ * @return {ve.ui.TargetToolbar} Actions toolbar
+ */
+ve.init.Target.prototype.getActions = function () {
+	if ( !this.actionsToolbar ) {
+		this.actionsToolbar = new ve.ui.TargetToolbar( this );
+	}
+	return this.actionsToolbar;
+};
+
+/**
  * Set up the toolbar, attaching it to a surface.
  *
  * @param {ve.ui.Surface} surface Surface
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
-	var toolbar = this.getToolbar();
+	var toolbar = this.getToolbar(),
+		actions = this.getActions();
 
 	toolbar.connect( this, { resize: 'onToolbarResize' } );
 
 	toolbar.setup( this.constructor.static.toolbarGroups, surface );
+	actions.setup( this.constructor.static.actionGroups, surface );
 	this.attachToolbar( surface );
 	toolbar.$bar.append( surface.getToolbarDialogs().$element );
+	toolbar.$actions.append( actions.$element );
 	this.onContainerScroll();
+
 };
 
 /**
@@ -459,4 +482,5 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 ve.init.Target.prototype.attachToolbar = function () {
 	this.getToolbar().$element.insertBefore( this.getToolbar().getSurface().$element );
 	this.getToolbar().initialize();
+	this.getActions().initialize();
 };
