@@ -145,9 +145,9 @@ ve.ce.TestRunner = function VeCeTestRunner( surface ) {
  * Get the paragraph node in which testing occurs
  *
  * TODO: The code assumes that the document consists of exactly one paragraph
+ *
  * @return {Node} The paragraph node
  */
-
 ve.ce.TestRunner.prototype.getParagraph = function () {
 	var p = this.view.$element.find( '.ve-ce-documentNode > p' )[ 0 ];
 	if ( p === undefined ) {
