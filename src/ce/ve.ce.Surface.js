@@ -565,26 +565,22 @@ ve.ce.Surface.prototype.activate = function () {
  */
 ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 	var i, l, rects,
-		selection = this.getModel().getSelection();
+		selection = this.getSelection();
 
 	this.$deactivatedSelection.empty();
 
-	if (
-		!this.deactivated || this.focusedNode ||
-		!( selection instanceof ve.dm.LinearSelection ) ||
-		selection.isCollapsed()
-	) {
-		return;
-	}
-	rects = this.getSelection().getSelectionRects();
-	if ( rects ) {
-		for ( i = 0, l = rects.length; i < l; i++ ) {
-			this.$deactivatedSelection.append( $( '<div>' ).css( {
-				top: rects[ i ].top,
-				left: rects[ i ].left,
-				width: rects[ i ].width,
-				height: rects[ i ].height
-			} ) );
+	// Check we have a deactivated surface and a non-collapsed native selection
+	if ( this.deactivated && selection.isNativeCursor() && !selection.getModel().isCollapsed() ) {
+		rects = selection.getSelectionRects();
+		if ( rects ) {
+			for ( i = 0, l = rects.length; i < l; i++ ) {
+				this.$deactivatedSelection.append( $( '<div>' ).css( {
+					top: rects[ i ].top,
+					left: rects[ i ].left,
+					width: rects[ i ].width,
+					height: rects[ i ].height
+				} ) );
+			}
 		}
 	}
 };
