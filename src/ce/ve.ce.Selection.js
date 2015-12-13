@@ -83,6 +83,22 @@ ve.ce.Selection.prototype.getSelectionStartAndEndRects = function () {
  */
 ve.ce.Selection.prototype.getSelectionBoundingRect = null;
 
+/**
+ * Check if the selection covers a focused node
+ *
+ * @abstract
+ * @return {boolean} The selection covers a focused node
+ */
+ve.ce.Selection.prototype.isFocusedNode = null;
+
+/**
+ * Check if the selection is a native cursor selection
+ *
+ * @abstract
+ * @return {boolean} The selection covers a focused node
+ */
+ve.ce.Selection.prototype.isNativeCursor = null;
+
 /* Factory */
 
 ve.ce.selectionFactory = new OO.Factory();
