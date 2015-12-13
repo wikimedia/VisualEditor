@@ -9,7 +9,7 @@
  * @abstract
  * @constructor
  * @param {ve.dm.Selection} model Selection model
- * @param {ve.ce.Document} surface Surface
+ * @param {ve.ce.Surface} surface Surface view
  */
 ve.ce.Selection = function VeCeSelection( model, surface ) {
 	this.model = model;
@@ -26,16 +26,33 @@ ve.ce.Selection.static.type = null;
 
 /* Static methods */
 
-ve.ce.Selection.static.newFromModel = function ( model, doc ) {
-	return ve.ce.selectionFactory.create( model.getName(), model, doc );
+/**
+ * Create a new selection view from a selection model
+ *
+ * @param {ve.dm.Selection} model Selection model
+ * @param {ve.ce.Surface} surface Surface view
+ * @return {ve.ce.Selection} Selection view
+ */
+ve.ce.Selection.static.newFromModel = function ( model, surface ) {
+	return ve.ce.selectionFactory.create( model.getName(), model, surface );
 };
 
 /* Method */
 
+/**
+ * Get the surface view this selection exists on
+ *
+ * @return {ve.ce.Surface} Surface view
+ */
 ve.ce.Selection.prototype.getSurface = function () {
 	return this.surface;
 };
 
+/**
+ * Get the selection model
+ *
+ * @return {ve.dm.Selection} Selection model
+ */
 ve.ce.Selection.prototype.getModel = function () {
 	return this.model;
 };
