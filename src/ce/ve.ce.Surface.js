@@ -2849,30 +2849,31 @@ ve.ce.Surface.prototype.removeCursorHolders = function () {
  * Handle insertion of content.
  */
 ve.ce.Surface.prototype.handleInsertion = function () {
-	var range, cellSelection, hasChanged, selection, documentModel;
-
-	// Don't allow a user to delete a focusable node just by typing
-	if ( this.focusedNode ) {
-		return;
-	}
+	var range, hasChanged,
+		surfaceModel = this.getModel(),
+		selection = this.getSelection();
 
 	hasChanged = false;
-	selection = this.model.getSelection();
-	documentModel = this.model.getDocument();
 
-	if ( selection instanceof ve.dm.TableSelection ) {
-		cellSelection = selection.collapseToFrom();
-		this.model.setSelection( cellSelection );
+	if ( selection instanceof ve.ce.TableSelection ) {
+		// Collapse table selection to anchor cell
+		surfaceModel.setSelection( selection.getModel().collapseToFrom() );
+		// Delete the current contents
 		ve.ce.keyDownHandlerFactory.lookup( 'tableDelete' ).static.execute( this );
-		this.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 ).setEditing( true );
-		selection = this.model.getSelection();
-	}
-
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		// Place selection inside the cell
+		this.documentView.getBranchNodeFromOffset( selection.getModel().tableRange.start + 1 ).setEditing( true );
+		// Selection has changed, update
+		selection = this.getSelection();
+	} else if ( selection.isFocusedNode() ) {
+		// Don't allow a user to delete a non-table focusable node just by typing
 		return;
 	}
 
-	range = selection.getRange();
+	if ( !( selection instanceof ve.ce.LinearSelection ) ) {
+		return;
+	}
+
+	range = selection.getModel().getRange();
 
 	// Handles removing expanded selection before inserting new text
 	if (
@@ -2881,13 +2882,13 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 	) {
 		// Remove the selection to force its re-application from the DM (even if the
 		// DM is too granular to detect the selection change)
-		this.model.setNullSelection();
-		this.model.change(
+		surfaceModel.setNullSelection();
+		surfaceModel.change(
 			ve.dm.Transaction.newFromRemoval(
 				this.documentView.model,
 				range
 			),
-			new ve.dm.LinearSelection( documentModel, new ve.Range( range.start ) )
+			new ve.dm.LinearSelection( surfaceModel.getDocument(), new ve.Range( range.start ) )
 		);
 		hasChanged = true;
 		this.surfaceObserver.clear();
