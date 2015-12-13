@@ -661,7 +661,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	this.surfaceObserver.stopTimerLoop();
 	// In some browsers the selection doesn't change until after the event
 	// so poll in the 'after' function
-	setTimeout( this.afterDocumentMouseDown.bind( this, e, this.getModel().getSelection() ) );
+	setTimeout( this.afterDocumentMouseDown.bind( this, e, this.getSelection() ) );
 
 	// Handle triple click
 	// HACK: do not do triple click handling in IE, because their click counting is broken
@@ -693,7 +693,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  * Deferred until after document mouse down
  *
  * @param {jQuery.Event} e Mouse down event
- * @param {ve.dm.Selection} selectionBefore Selection before the mouse event
+ * @param {ve.ce.Selection} selectionBefore Selection before the mouse event
  */
 ve.ce.Surface.prototype.afterDocumentMouseDown = function ( e, selectionBefore ) {
 	// TODO: guard with incRenderLock?
@@ -714,14 +714,14 @@ ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
 	this.surfaceObserver.startTimerLoop();
 	// In some browsers the selection doesn't change until after the event
 	// so poll in the 'after' function
-	setTimeout( this.afterDocumentMouseUp.bind( this, e, this.getModel().getSelection() ) );
+	setTimeout( this.afterDocumentMouseUp.bind( this, e, this.getSelection() ) );
 };
 
 /**
  * Deferred until after document mouse up
  *
  * @param {jQuery.Event} e Mouse up event
- * @param {ve.dm.Selection} selectionBefore Selection before the mouse event
+ * @param {ve.ce.Selection} selectionBefore Selection before the mouse event
  */
 ve.ce.Surface.prototype.afterDocumentMouseUp = function ( e, selectionBefore ) {
 	// TODO: guard with incRenderLock?
@@ -743,16 +743,21 @@ ve.ce.Surface.prototype.afterDocumentMouseUp = function ( e, selectionBefore ) {
  *
  * https://code.google.com/p/chromium/issues/detail?id=345745
  *
- * @param {ve.dm.Selection} selectionBefore Selection before the mouse event
+ * @param {ve.ce.Selection} selectionBefore Selection before the mouse event
  */
 ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
 	var newSelection;
-	if ( !( selectionBefore instanceof ve.dm.LinearSelection ) ) {
+	if ( !selectionBefore.isNativeCursor() ) {
 		return;
 	}
-	newSelection = this.getModel().getSelection();
-	if ( newSelection.isCollapsed() && !newSelection.equals( selectionBefore ) ) {
-		this.getModel().setLinearSelection( new ve.Range( selectionBefore.getRange().from, newSelection.getRange().to ) );
+	newSelection = this.getSelection();
+	if ( newSelection.getModel().isCollapsed() && !newSelection.equals( selectionBefore ) ) {
+		this.getModel().setLinearSelection(
+			new ve.Range(
+				selectionBefore.getModel().getRange().from,
+				newSelection.getModel().getRange().to
+			)
+		);
 	}
 };
 

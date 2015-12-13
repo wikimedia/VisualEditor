@@ -99,6 +99,17 @@ ve.ce.Selection.prototype.isFocusedNode = null;
  */
 ve.ce.Selection.prototype.isNativeCursor = null;
 
+/**
+ * Check if two selections are equal
+ *
+ * @param {ve.ce.Selection} other Other selection
+ * @return {boolean} Selections are equal
+ */
+ve.ce.Selection.prototype.equals = function ( other ) {
+	return this.getSurface() === other.getSurface() &&
+		this.getModel().equals( other.getModel() );
+};
+
 /* Factory */
 
 ve.ce.selectionFactory = new OO.Factory();
