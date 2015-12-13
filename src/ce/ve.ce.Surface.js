@@ -426,18 +426,18 @@ ve.ce.Surface.prototype.disable = function () {
 ve.ce.Surface.prototype.focus = function () {
 	var node,
 		surface = this,
-		selection = this.getModel().getSelection();
+		selection = this.getSelection();
 
-	if ( selection instanceof ve.dm.NullSelection ) {
+	if ( selection.getModel().isNull() ) {
 		this.getModel().selectFirstContentOffset();
-		selection = this.getModel().getSelection();
+		selection = this.getSelection();
 	}
 
 	// Focus the documentNode for text selections, or the pasteTarget for focusedNode selections
-	if ( this.focusedNode || selection instanceof ve.dm.TableSelection ) {
+	if ( selection.isFocusedNode() ) {
 		this.$pasteTarget[ 0 ].focus();
-	} else if ( selection instanceof ve.dm.LinearSelection ) {
-		node = this.getDocument().getNodeAndOffset( selection.getRange().start ).node;
+	} else if ( selection.isNativeCursor() ) {
+		node = this.getDocument().getNodeAndOffset( selection.getModel().getRange().start ).node;
 		$( node ).closest( '[contenteditable=true]' )[ 0 ].focus();
 	}
 
