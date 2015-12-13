@@ -370,6 +370,74 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 					range: new ve.Range( 3 )
 				},
 				msg: 'List after an alien unwrapped by backspace'
+			},
+			{
+				html: '<p></p><div rel="ve:Alien">foo</div>',
+				range: new ve.Range( 2, 4 ),
+				operations: [ 'backspace' ],
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 1 )
+				},
+				msg: 'Backspace with an alien selected deletes it'
+			},
+			{
+				html: '<p></p><div rel="ve:Alien">foo</div>',
+				range: new ve.Range( 2, 4 ),
+				operations: [ 'delete' ],
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 1 )
+				},
+				msg: 'Delete with an alien selected deletes it'
+			},
+			{
+				html: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
+				range: new ve.Range( 2, 4 ),
+				operations: [ 'backspace' ],
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 2 )
+				},
+				msg: 'Backspace with an alien selected deletes it, with only aliens in the document'
+			},
+			{
+				html: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
+				range: new ve.Range( 2, 4 ),
+				operations: [ 'delete' ],
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 2 )
+				},
+				msg: 'Delete with an alien selected deletes it, with only aliens in the document'
+			},
+			{
+				html: '<div rel="ve:Alien">foo</div>',
+				range: new ve.Range( 0, 2 ),
+				operations: [ 'backspace' ],
+				expectedData: function ( data ) {
+					data.splice( 0, 2,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
+				},
+				expectedSelection: {
+					type: 'linear',
+					range: new ve.Range( 1 )
+				},
+				msg: 'Backspace with an alien selected deletes it and replaces it with a paragraph, when the alien is the entire document'
 			}
 		];
 
