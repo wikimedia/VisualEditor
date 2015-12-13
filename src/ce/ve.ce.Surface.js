@@ -1420,7 +1420,7 @@ ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
 		}
 	}
 	this.renderSelectedContentBranchNode();
-	this.showModelSelection( this.getModel().getSelection() );
+	this.showModelSelection();
 };
 
 /**
@@ -2215,7 +2215,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 	// called with the same (object-identical) selection object
 	// (i.e. if the model is calling us back)
 	if ( !this.isRenderingLocked() && selection !== this.newModelSelection ) {
-		this.showModelSelection( selection );
+		this.showModelSelection();
 		this.checkUnicorns( false );
 	}
 	// Update the selection state in the SurfaceObserver
@@ -2337,7 +2337,7 @@ ve.ce.Surface.prototype.onInsertionAnnotationsChange = function () {
 		return;
 	}
 	// Must re-apply the selection after re-rendering
-	this.showModelSelection( this.getModel().getSelection() );
+	this.showModelSelection();
 	this.surfaceObserver.pollOnceNoCallback();
 };
 
@@ -2450,7 +2450,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 	}
 	if ( newState.branchNodeChanged && newState.node ) {
 		this.updateCursorHolders();
-		this.showModelSelection( this.getModel().getSelection() );
+		this.showModelSelection();
 	}
 };
 
@@ -2570,7 +2570,7 @@ ve.ce.Surface.prototype.checkSequences = function () {
 		executed = sequences[ i ].sequence.execute( this.surface, sequences[ i ].range ) || executed;
 	}
 	if ( executed ) {
-		this.showModelSelection( model.getSelection() );
+		this.showModelSelection();
 	}
 };
 
@@ -2719,7 +2719,7 @@ ve.ce.Surface.prototype.restoreActiveTableNodeSelection = function () {
 		( editingRange = activeTableNode.getEditingRange() ) &&
 		!editingRange.containsRange( ve.ce.veRangeFromSelection( this.nativeSelection ) )
 	) {
-		this.showModelSelection( this.getModel().getSelection() );
+		this.showModelSelection();
 		return true;
 	} else {
 		return false;
@@ -2971,25 +2971,24 @@ ve.ce.Surface.prototype.getViewportRange = function () {
  * Apply a DM selection to the DOM
  *
  * @method
- * @param {ve.dm.Selection} selection Selection to show
  * @return {boolean} Whether the selection actually changed
  */
-ve.ce.Surface.prototype.showModelSelection = function ( selection ) {
+ve.ce.Surface.prototype.showModelSelection = function () {
+	var selection;
+
 	if ( this.deactivated ) {
 		// Defer until view has updated
 		setTimeout( this.updateDeactivatedSelection.bind( this ) );
 		return false;
 	}
 
-	if (
-		!( selection instanceof ve.dm.LinearSelection ) ||
-		this.focusedNode ||
-		this.focusedBlockSlug
-	) {
-		return false;
-	}
+	selection = this.getSelection();
 
-	return this.showSelectionState( this.getSelectionState( selection.getRange() ) );
+	if ( selection.isNativeCursor() && !this.focusedBlockSlug ) {
+		return this.showSelectionState( this.getSelectionState( selection.getModel().getRange() ) );
+	}
+	return false;
+
 };
 
 /**
