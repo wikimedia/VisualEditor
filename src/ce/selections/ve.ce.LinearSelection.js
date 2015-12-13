@@ -189,6 +189,20 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 	};
 };
 
+/**
+ * @inheritdoc
+ */
+ve.ce.LinearSelection.prototype.isFocusedNode = function () {
+	return !!this.getSurface().focusedNode;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.LinearSelection.prototype.isNativeCursor = function () {
+	return !this.getSurface().focusedNode;
+};
+
 /* Registration */
 
 ve.ce.selectionFactory.register( ve.ce.LinearSelection );

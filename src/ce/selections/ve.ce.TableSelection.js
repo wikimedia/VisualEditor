@@ -73,6 +73,20 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 	return ve.translateRect( boundingRect, -surfaceRect.left, -surfaceRect.top );
 };
 
+/**
+ * @inheritdoc
+ */
+ve.ce.TableSelection.prototype.isFocusedNode = function () {
+	return true;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.TableSelection.prototype.isNativeCursor = function () {
+	return false;
+};
+
 /* Registration */
 
 ve.ce.selectionFactory.register( ve.ce.TableSelection );

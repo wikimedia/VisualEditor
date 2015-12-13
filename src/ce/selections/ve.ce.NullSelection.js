@@ -47,6 +47,20 @@ ve.ce.NullSelection.prototype.getSelectionBoundingRect = function () {
 	return null;
 };
 
+/**
+ * @inheritdoc
+ */
+ve.ce.NullSelection.prototype.isFocusedNode = function () {
+	return false;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.NullSelection.prototype.isNativeCursor = function () {
+	return false;
+};
+
 /* Registration */
 
 ve.ce.selectionFactory.register( ve.ce.NullSelection );
