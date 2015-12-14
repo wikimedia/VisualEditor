@@ -14,6 +14,10 @@
 ve.ce.LinearSelection = function VeCeLinearSelection() {
 	// Parent constructor
 	ve.ce.LinearSelection.super.apply( this, arguments );
+
+	// Properties
+	// The focused node in the view when this selection was created, if one exists
+	this.focusedNode = this.getSurface().getFocusedNode( this.getModel().getRange() );
 };
 
 /* Inheritance */
@@ -166,7 +170,7 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 		return null;
 	}
 
-	side = this.getSurface().getModel().getDocument().getDir() === 'rtl' ? 'right' : 'left';
+	side = this.getModel().getDocument().getDir() === 'rtl' ? 'right' : 'left';
 	adjacentNode = range.endContainer.childNodes[ range.endOffset ];
 	if ( range.collapsed && $( adjacentNode ).hasClass( 've-ce-unicorn' ) ) {
 		// We're next to a unicorn; use its left/right position
@@ -193,14 +197,14 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
  * @inheritdoc
  */
 ve.ce.LinearSelection.prototype.isFocusedNode = function () {
-	return !!this.getSurface().focusedNode;
+	return !!this.focusedNode;
 };
 
 /**
  * @inheritdoc
  */
 ve.ce.LinearSelection.prototype.isNativeCursor = function () {
-	return !this.getSurface().focusedNode;
+	return !this.focusedNode;
 };
 
 /* Registration */

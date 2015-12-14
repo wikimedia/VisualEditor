@@ -368,7 +368,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 /**
  * Get selection view object
  *
- * @param {ve.dm.Selection} selection Optional selection mode, defaults to current selection
+ * @param {ve.dm.Selection} selection Optional selection model, defaults to current selection
  * @return {ve.ce.Selection} Selection view
  */
 ve.ce.Surface.prototype.getSelection = function ( selection ) {
