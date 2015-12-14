@@ -2562,13 +2562,13 @@ ve.ce.Surface.prototype.checkSequences = function () {
 	var i, sequences,
 		executed = false,
 		model = this.getModel(),
-		selection = model.getSelection();
+		selection = this.getSelection();
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	if ( !selection.isNativeCursor() ) {
 		return;
 	}
 
-	sequences = ve.init.target.sequenceRegistry.findMatching( model.getDocument().data, selection.getRange().end );
+	sequences = ve.init.target.sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getRanges()[ 0 ].end );
 
 	// sequences.length will likely be 0 or 1 so don't cache
 	for ( i = 0; i < sequences.length; i++ ) {
