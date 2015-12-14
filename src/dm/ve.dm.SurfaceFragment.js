@@ -853,7 +853,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
-	var rangeAfterRemove, tx, startNode, endNode, endNodeData, nodeToDelete, rangeToRemove;
+	var rangeAfterRemove, tx, startNode, endNode, endNodeData, nodeToDelete, rangeToRemove, nearestOffset;
 
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return this;
@@ -941,13 +941,21 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 	}
 
 	// Use a collapsed range at a content offset beside rangeAfterRemove.start
-	rangeAfterRemove = new ve.Range(
-		this.document.data.getNearestContentOffset(
-			rangeAfterRemove.start,
-			// If undefined (e.g. cut), default to backwards movement
-			directionAfterDelete || -1
-		)
+	nearestOffset = this.document.data.getNearestContentOffset(
+		rangeAfterRemove.start,
+		// If undefined (e.g. cut), default to backwards movement
+		directionAfterDelete || -1
 	);
+	if ( nearestOffset > -1 ) {
+		rangeAfterRemove = new ve.Range( nearestOffset );
+	} else {
+		// There isn't a valid content offset. This probably means that we're
+		// in a strange document which consists entirely of aliens, with no
+		// text entered. This is unusual, but not impossible. As such, just
+		// collapse the selection and accept that it won't really be
+		// meaningful in most cases.
+		rangeAfterRemove = new ve.Range( rangeAfterRemove.start );
+	}
 
 	this.change( [], new ve.dm.LinearSelection( this.getDocument(), rangeAfterRemove ) );
 
