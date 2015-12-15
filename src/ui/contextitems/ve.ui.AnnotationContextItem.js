@@ -76,6 +76,18 @@ ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
 		annotations = fragment.getAnnotations( true ).filter( function ( annotation ) {
 			return ve.isInstanceOfAny( annotation, modelClasses );
 		} ).get();
+	if (
+		!annotations.length &&
+		fragment.getSelection().isCollapsed() &&
+		fragment.getDocument().data.isContentOffset( fragment.getSelection().getRange().start )
+	) {
+		// Expand to nearest word and try again
+		fragment = fragment.expandLinearSelection( 'word' );
+
+		annotations = fragment.getAnnotations( true ).filter( function ( annotation ) {
+			return ve.isInstanceOfAny( annotation, modelClasses );
+		} ).get();
+	}
 	for ( i = 0, len = annotations.length; i < len; i++ ) {
 		fragment.expandLinearSelection( 'annotation', annotations[ i ] ).annotateContent( 'clear', annotations[ i ] );
 	}
