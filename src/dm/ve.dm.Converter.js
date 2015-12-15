@@ -1041,7 +1041,7 @@ ve.dm.Converter.prototype.getDomFromModel = function ( model, forClipboard ) {
  */
 ve.dm.Converter.prototype.getDomFromNode = function ( node, forClipboard ) {
 	return this.getDomFromModel(
-		node.getDocument().cloneSliceFromRange( node.isInternal() ? node.getRange() : node.getOuterRange() ),
+		node.getDocument().shallowCloneFromRange( node.isInternal() ? node.getRange() : node.getOuterRange() ),
 		forClipboard
 	);
 };
