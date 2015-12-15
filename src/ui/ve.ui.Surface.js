@@ -9,8 +9,7 @@
  *
  * @class
  * @abstract
- * @extends OO.ui.Element
- * @mixins OO.EventEmitter
+ * @extends OO.ui.Widget
  *
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
@@ -27,10 +26,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	config = config || {};
 
 	// Parent constructor
-	OO.ui.Element.call( this, config );
-
-	// Mixin constructor
-	OO.EventEmitter.call( this, config );
+	ve.ui.Surface.super.call( this, config );
 
 	// Properties
 	this.inDialog = config.inDialog || '';
@@ -58,7 +54,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.view = this.createView( this.model );
 	this.dialogs = this.createDialogWindowManager();
 	this.importRules = config.importRules || {};
-	this.enabled = true;
 	this.context = this.createContext();
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
@@ -87,9 +82,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.Surface, OO.ui.Element );
-
-OO.mixinClass( ve.ui.Surface, OO.EventEmitter );
+OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
 
 /* Events */
 
@@ -116,6 +109,7 @@ ve.ui.Surface.static.isMobile = false;
  * Destroy the surface, releasing all memory and removing all DOM elements.
  *
  * @method
+ * @chainable
  * @fires destroy
  */
 ve.ui.Surface.prototype.destroy = function () {
@@ -137,12 +131,16 @@ ve.ui.Surface.prototype.destroy = function () {
 
 	// Let others know we have been destroyed
 	this.emit( 'destroy' );
+
+	return this;
 };
 
 /**
  * Initialize surface.
  *
  * This must be called after the surface has been attached to the DOM.
+ *
+ * @chainable
  */
 ve.ui.Surface.prototype.initialize = function () {
 	// Attach globalOverlay to the global <body>, not the local frame's <body>
@@ -159,6 +157,7 @@ ve.ui.Surface.prototype.initialize = function () {
 
 	this.getView().initialize();
 	this.getModel().initialize();
+	return this;
 };
 
 /**
@@ -264,11 +263,12 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
 /**
  * Check if editing is enabled.
  *
+ * @deprecated Use #isDisabled
  * @method
  * @return {boolean} Editing is enabled
  */
 ve.ui.Surface.prototype.isEnabled = function () {
-	return this.enabled;
+	return !this.isDisabled();
 };
 
 /**
@@ -345,25 +345,42 @@ ve.ui.Surface.prototype.getGlobalOverlay = function () {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.ui.Surface.prototype.setDisabled = function ( disabled ) {
+	if ( disabled !== this.disabled && this.disabled !== null ) {
+		if ( disabled ) {
+			this.view.disable();
+			this.model.disable();
+		} else {
+			this.view.enable();
+			this.model.enable();
+		}
+	}
+	// Parent method
+	return ve.ui.Surface.super.prototype.setDisabled.call( this, disabled );
+};
+
+/**
  * Disable editing.
  *
+ * @deprecated Use #setDisabled
  * @method
+ * @chainable
  */
 ve.ui.Surface.prototype.disable = function () {
-	this.view.disable();
-	this.model.disable();
-	this.enabled = false;
+	return this.setDisabled( true );
 };
 
 /**
  * Enable editing.
  *
+ * @deprecated Use #setDisabled
  * @method
+ * @chainable
  */
 ve.ui.Surface.prototype.enable = function () {
-	this.enabled = true;
-	this.view.enable();
-	this.model.enable();
+	return this.setDisabled( false );
 };
 
 /**
@@ -429,7 +446,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
 	var command, obj, ret;
 
-	if ( !this.enabled ) {
+	if ( this.isDisabled() ) {
 		return;
 	}
 
