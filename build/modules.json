@@ -494,6 +494,7 @@
 			"src/ce/styles/nodes/ve.ce.FocusableNode.css",
 			"src/ce/styles/nodes/ve.ce.AlienNode.css",
 			"src/ce/styles/nodes/ve.ce.BranchNode.css",
+			"src/ce/styles/nodes/ve.ce.ContentBranchNode.css",
 			"src/ce/styles/nodes/ve.ce.CommentNode.css",
 			"src/ce/styles/nodes/ve.ce.DocumentNode.css",
 			"src/ce/styles/nodes/ve.ce.GeneratedContentNode.css",

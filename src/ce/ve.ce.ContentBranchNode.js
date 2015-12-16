@@ -28,6 +28,9 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 
 	this.onClickHandler = this.onClick.bind( this );
 
+	// DOM changes (keep in sync with #onSetup)
+	this.$element.addClass( 've-ce-contentBranchNode' );
+
 	// Events
 	this.connect( this, { childUpdate: 'onChildUpdate' } );
 	// Some browsers allow clicking links inside contenteditable, such as in iOS Safari when the
@@ -81,6 +84,17 @@ ve.ce.ContentBranchNode.static.appendRenderedContents = function ( container, wr
 };
 
 /* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ce.ContentBranchNode.prototype.onSetup = function () {
+	// Parent method
+	ve.ce.ContentBranchNode.super.prototype.onSetup.apply( this, arguments );
+
+	// DOM changes (duplicated from constructor in case this.$element is replaced)
+	this.$element.addClass( 've-ce-contentBranchNode' );
+};
 
 /**
  * Handle click events.

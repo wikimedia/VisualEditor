@@ -108,7 +108,7 @@ ve.ce.BranchNode.blockSlugTemplate = $( '<div>' )
  */
 ve.ce.BranchNode.prototype.onSetup = function () {
 	// Parent method
-	ve.ce.Node.prototype.onSetup.call( this );
+	ve.ce.BranchNode.super.prototype.onSetup.apply( this, arguments );
 
 	// DOM changes (duplicated from constructor in case this.$element is replaced)
 	this.$element.addClass( 've-ce-branchNode' );

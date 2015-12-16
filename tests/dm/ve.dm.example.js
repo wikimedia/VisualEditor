@@ -1212,7 +1212,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
 			'<b class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">a</b>' +
 			'<i class="ve-ce-textStyleAnnotation ve-ce-italicAnnotation">b</i>' +
 			'<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">c</u>' +
@@ -1319,7 +1319,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
 			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="en" title="visualeditor-languageannotation-description">ten</span>' +
 			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="fr" dir="ltr" title="visualeditor-languageannotation-description">dix</span>' +
 			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="cy" dir="ltr" title="visualeditor-languageannotation-description">deg</span>' +
@@ -1354,7 +1354,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
 			'<abbr class="ve-ce-textStyleAnnotation ve-ce-abbreviationAnnotation">a</abbr>' +
 			'<var class="ve-ce-textStyleAnnotation ve-ce-variableAnnotation">b</var>' +
 			'<kbd class="ve-ce-textStyleAnnotation ve-ce-userInputAnnotation">c</kbd>' +
@@ -1395,7 +1395,7 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
 			ve.dm.example.inlineSlug +
 			'<img class="ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode" contenteditable="false" alt="Example"' +
 				' src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" style="width: 100px; height: 50px;">' +
@@ -1412,7 +1412,7 @@ ve.dm.example.domToDataCases = {
 			'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
 				'<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
 				'<figcaption class="ve-ce-branchNode">' +
-					'<p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">caption</p>' +
+					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">caption</p>' +
 				'</figcaption>' +
 			'</figure>' +
 			ve.dm.example.blockSlug
@@ -1510,7 +1510,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment="baz">&nbsp;</span></b></p>',
-		ceHtml: '<p class="ve-ce-branchNode ve-ce-paragraphNode">' +
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
 			'<b class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">' +
 				ve.dm.example.inlineSlug +
 				'<span class="ve-ce-leafNode ve-ce-focusableNode oo-ui-iconElement oo-ui-iconElement-icon oo-ui-icon-notice ve-ce-commentNode" contenteditable="false"> </span>' +
@@ -3209,10 +3209,10 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		ceHtml: '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
-			'<center class="ve-ce-branchNode"><p class="ve-ce-branchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Foo</p></center>' +
+			'<center class="ve-ce-branchNode"><p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Foo</p></center>' +
 			'<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
 			'<div class="ve-ce-focusableNode ve-ce-horizontalRuleNode" contenteditable="false"><hr class="ve-ce-leafNode"></div>' +
-			'<blockquote class="ve-ce-branchNode">Bar</blockquote>'
+			'<blockquote class="ve-ce-branchNode ve-ce-contentBranchNode">Bar</blockquote>'
 	}
 };
 
