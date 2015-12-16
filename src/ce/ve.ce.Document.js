@@ -49,14 +49,14 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
  * Calculate the DOM location corresponding to a DM offset
  *
  * @param {number} offset Linear model offset
+ * @param {boolean} outsideNail Whether to jump outside nails if directly next to them
  * @return {Object} DOM location
  * @return {Node} return.node location node
  * @return {number} return.offset location offset within the node
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
-ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
+ve.ce.Document.prototype.getNodeAndOffset = function ( offset, outsideNail ) {
 	var nao, currentNode, nextLeaf, previousLeaf;
-
 	// Get the un-unicorn-adjusted result. If it is:
 	// - just before pre unicorn (in same branch node), return cursor location just after it
 	// - just after post unicorn (in same branch node), return cursor location just before it
@@ -130,6 +130,28 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		// At text offset or slug just after the post unicorn; return the point just before it
 		return ve.ce.previousCursorOffset( previousLeaf );
 	}
+
+	if ( outsideNail ) {
+		if (
+			nao.offset === currentNode.length &&
+			nextLeaf &&
+			nextLeaf.nodeType === Node.ELEMENT_NODE &&
+			nextLeaf.classList.contains( 've-ce-nail-pre-close' )
+		) {
+			// Being outside the nails requested and right next to the ending nail: jump outside
+			return ve.ce.nextCursorOffset( getAdjacentLeaf( 1, nextLeaf ) );
+		}
+		if (
+			nao.offset === 0 &&
+			previousLeaf &&
+			previousLeaf.nodeType === Node.ELEMENT_NODE &&
+			previousLeaf.classList.contains( 've-ce-nail-post-open' )
+		) {
+			// Being outside the nails requested and right next to the starting nail: jump outside
+			return ve.ce.previousCursorOffset( getAdjacentLeaf( -1, previousLeaf ) );
+		}
+	}
+
 	return nao;
 };
 
