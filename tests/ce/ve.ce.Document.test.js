@@ -60,19 +60,19 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			title: 'Simple para',
 			html: '<p>x</p>',
 			data: [ '<paragraph>', 'x', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'><#text>||x|</#text></p></div>"
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>||x|</#text></p></div>"
 		},
 		{
 			title: 'Bold',
 			html: '<p>x<b>y</b>z</p>',
 			data: [ '<paragraph>', 'x', 'y', 'z', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'><#text>||x|</#text><b class='ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>y|</#text></b><#text>z|</#text></p></div>"
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>||x|</#text><b class='ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>y|</#text></b><#text>z|</#text></p></div>"
 		},
 		{
 			title: 'Nested block nodes',
 			html: '<div><p>x</p></div>',
 			data: [ '<div>', '<paragraph>', 'x', '</paragraph>', '</div>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'>|</div><div class='ve-ce-branchNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'><#text>||x|</#text></p></div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|</div>",
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'>|</div><div class='ve-ce-branchNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>||x|</#text></p></div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|</div>",
 			dies: [ 4 ]
 		},
 		{
@@ -80,7 +80,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			html: '<p></p>',
 			replacement: { path: [ 0 ], innerHtml: '' },
 			data: [ '<paragraph>', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'>||</p></div>",
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>||</p></div>",
 			dies: [ 1 ]
 		},
 		{
@@ -88,7 +88,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			html: '<p></p>',
 			replacement: { path: [ 0 ], innerHtml: '<br>' },
 			data: [ '<paragraph>', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-paragraphNode'><br>||</br></p></div>"
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><br>||</br></p></div>"
 		}
 
 	];
