@@ -404,14 +404,14 @@ ve.dm.Document.prototype.getInnerWhitespace = function () {
 };
 
 /**
- * Clone a sub-document from a data slice of this document.
+ * Clone a sub-document from a shallow copy of this document.
  *
- * The new document's internal list will be only contain references to data within the slice.
+ * The new document's elements, internal list and store will only contain references to data within the slice.
  *
  * @param {ve.Range} range Range of data to slice
  * @return {ve.dm.DocumentSlice} New document
  */
-ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
+ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 	var i, first, last, firstNode, lastNode,
 		data, slice, originalRange, balancedRange,
 		balancedNodes, needsContext,
@@ -541,8 +541,8 @@ ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
 };
 
 /**
- * Clone a sub-document from a range in this document. The new document's store and internal list will be
- * clones of the ones in this document.
+ * Clone a sub-document from a range in this document. The new document's elements, store and internal list
+ * will be clones of the ones in this document.
  *
  * @param {ve.Range} range Range of data to clone
  * @return {ve.dm.Document} New document

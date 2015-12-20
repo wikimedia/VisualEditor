@@ -627,7 +627,7 @@ QUnit.test( 'rangeInsideOneLeafNode', function ( assert ) {
 		);
 	}
 } );
-QUnit.test( 'cloneSliceFromRange', function ( assert ) {
+QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 	var i, expectedData, slice, range, doc,
 		cases = [
 			{
@@ -843,7 +843,7 @@ QUnit.test( 'cloneSliceFromRange', function ( assert ) {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		] );
-		slice = doc.cloneSliceFromRange( cases[ i ].range );
+		slice = doc.shallowCloneFromRange( cases[ i ].range );
 		assert.deepEqualWithDomElements(
 			slice.getData(),
 			expectedData,

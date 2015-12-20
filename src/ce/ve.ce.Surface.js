@@ -1478,7 +1478,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		return;
 	}
 
-	slice = this.model.documentModel.cloneSliceFromRange( range );
+	slice = this.model.documentModel.shallowCloneFromRange( range );
 
 	// Clone the elements in the slice
 	slice.data.cloneElements( true );
