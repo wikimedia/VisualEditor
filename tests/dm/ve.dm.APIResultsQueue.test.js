@@ -51,11 +51,11 @@ FullResourceProvider.prototype.getResults = function ( howMany ) {
 };
 
 EmptyResourceProvider.prototype.getResults = function () {
-	var me = this,
+	var provider = this,
 		deferred = $.Deferred(),
 		timer = setTimeout(
 			function () {
-				me.toggleDepleted( true );
+				provider.toggleDepleted( true );
 				// Always resolve with empty value
 				deferred.resolve( [] );
 			},
@@ -66,12 +66,12 @@ EmptyResourceProvider.prototype.getResults = function () {
 
 SingleResultResourceProvider.prototype.getResults = function ( howMany ) {
 	var timer,
-		me = this,
+		provider = this,
 		deferred = $.Deferred();
 
 	timer = setTimeout(
 		function () {
-			me.toggleDepleted( howMany > 1 );
+			provider.toggleDepleted( howMany > 1 );
 			// Always resolve with one value
 			deferred.resolve( [ 'one result (' + ( itemCounter++ + 1 ) + ')' ] );
 		},
