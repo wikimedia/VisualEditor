@@ -9,7 +9,7 @@
 			"Vahe Gharakhanyan"
 		]
 	},
-	"visualeditor": "ՎիզուալԽմբագրիչ",
+	"visualeditor": "Վիզուալ խմբագրիչ",
 	"visualeditor-aliennode-tooltip": "Ցավում եմ, սակայն այս տարրը կարելի է խմբագրել միայն ելատեքստում։",
 	"visualeditor-align-widget-center": "Կենտրոն",
 	"visualeditor-align-widget-left": "Ձախ",
@@ -58,6 +58,7 @@
 	"visualeditor-find-and-replace-replace-text": "Փոխարինել",
 	"visualeditor-find-and-replace-results": "$1–ը $2–ից",
 	"visualeditor-find-and-replace-title": "Գտնել և փոխարինել",
+	"visualeditor-find-and-replace-word": "Բառն ամբողջությամբ",
 	"visualeditor-formatdropdown-format-blockquote": "Քաղվածք",
 	"visualeditor-formatdropdown-format-heading-label": "Վերնագիր (1–6)",
 	"visualeditor-formatdropdown-format-heading1": "Վերնագիր 1",
