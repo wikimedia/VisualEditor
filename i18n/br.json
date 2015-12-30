@@ -4,7 +4,8 @@
 			"Fohanno",
 			"Fulup",
 			"Y-M D",
-			"Maoris"
+			"Maoris",
+			"VIGNERON"
 		]
 	},
 	"visualeditor": "Gwelaozer",
@@ -99,8 +100,8 @@
 	"visualeditor-specialcharacter-button-tooltip": "Arouezenn dibar",
 	"visualeditor-specialcharacterinspector-title": "Arouezenn dibar",
 	"visualeditor-table-caption": "Alc'hwez",
-	"visualeditor-table-delete-col": "Lemel ar bann",
-	"visualeditor-table-delete-row": "Lemel al linenn",
+	"visualeditor-table-delete-col": "Lemel {{PLURAL:$1|ar bann|ar bannoù}}",
+	"visualeditor-table-delete-row": "Lemel {{PLURAL:$1|al linenn|al linennoù}}",
 	"visualeditor-table-delete-table": "Lemel an daolenn",
 	"visualeditor-table-format-data": "Kellig endalc'had",
 	"visualeditor-table-format-header": "Kellig talbenn",
