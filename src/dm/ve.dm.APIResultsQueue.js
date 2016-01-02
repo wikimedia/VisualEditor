@@ -124,6 +124,7 @@ ve.dm.APIResultsQueue.prototype.queryProviders = function ( howMany ) {
 ve.dm.APIResultsQueue.prototype.setParams = function ( params ) {
 	var i, len;
 	if ( !ve.compare( params, this.params, true ) ) {
+		this.reset();
 		this.params = ve.extendObject( this.params, params );
 		// Reset queue
 		this.queue = [];
@@ -135,6 +136,23 @@ ve.dm.APIResultsQueue.prototype.setParams = function ( params ) {
 		for ( i = 0, len = this.providers.length; i < len; i++ ) {
 			this.providers[ i ].setUserParams( this.params );
 		}
+	}
+};
+
+/**
+ * Reset the queue and all its providers
+ */
+ve.dm.APIResultsQueue.prototype.reset = function () {
+	var i, len;
+	// Reset queue
+	this.queue = [];
+	// Reset promises
+	for ( i = 0, len = this.providerPromises.length; i < len; i++ ) {
+		this.providerPromises[ i ].abort();
+	}
+	// Change queries
+	for ( i = 0, len = this.providers.length; i < len; i++ ) {
+		this.providers[ i ].reset();
 	}
 };
 

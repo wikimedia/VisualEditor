@@ -120,11 +120,18 @@ ve.dm.APIResultsProvider.prototype.setUserParams = function ( params ) {
 	// Asymmetrically compare (params is subset of this.userParams)
 	if ( !ve.compare( params, this.userParams, true ) ) {
 		this.userParams = $.extend( {}, this.userParams, params );
-		// Reset offset
-		this.setOffset( 0 );
-		// Reset depleted status
-		this.toggleDepleted( false );
+		this.reset();
 	}
+};
+
+/**
+ * Reset the provider
+ */
+ve.dm.APIResultsProvider.prototype.reset = function () {
+	// Reset offset
+	this.setOffset( 0 );
+	// Reset depleted status
+	this.toggleDepleted( false );
 };
 
 /**
