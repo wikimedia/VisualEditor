@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Firefox on Ubuntu in Japanese using iBus Anthy.
  *
- * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'input-firefox-ubuntu-ibus-japanese-anthy--hiraganaonly', [

@@ -1,7 +1,7 @@
 /*!
  * VisualEditor ContentEditable linear enter key down handler
  *
- * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**

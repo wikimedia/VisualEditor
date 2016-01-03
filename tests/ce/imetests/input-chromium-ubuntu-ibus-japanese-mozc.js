@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Chromium on Ubuntu in Japanese using iBus Mozc.
  *
- * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'input-chromium-ubuntu-ibus-japanese-mozc', [

@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Internet Explorer on Windows in Taditional Chinese Handwriting.
  *
- * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'input-ie9-win7-chinese-traditional-handwriting', [
