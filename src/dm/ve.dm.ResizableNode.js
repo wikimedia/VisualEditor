@@ -56,9 +56,18 @@ ve.dm.ResizableNode.prototype.createScalable = null;
  */
 ve.dm.ResizableNode.prototype.onResizableAttributeChange = function ( key ) {
 	if ( key === 'width' || key === 'height' ) {
-		this.getScalable().setCurrentDimensions( {
-			width: this.getAttribute( 'width' ),
-			height: this.getAttribute( 'height' )
-		} );
+		this.getScalable().setCurrentDimensions( this.getCurrentDimensions() );
 	}
+};
+
+/**
+ * Get the current dimensions from the model
+ *
+ * @return {Object} Current dimensions
+ */
+ve.dm.ResizableNode.prototype.getCurrentDimensions = function () {
+	return {
+		width: this.getAttribute( 'width' ),
+		height: this.getAttribute( 'height' )
+	};
 };
