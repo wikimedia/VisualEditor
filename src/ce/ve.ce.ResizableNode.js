@@ -592,12 +592,13 @@ ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
  * @return {Object} Attribute changes
  */
 ve.ce.ResizableNode.prototype.getAttributeChanges = function ( width, height ) {
-	var attrChanges = {};
+	var attrChanges = {},
+		currentDimensions = this.model.getCurrentDimensions();
 
-	if ( this.model.getAttribute( 'width' ) !== width ) {
+	if ( currentDimensions.width !== width ) {
 		attrChanges.width = width;
 	}
-	if ( this.model.getAttribute( 'height' ) !== height ) {
+	if ( currentDimensions.height !== height ) {
 		attrChanges.height = height;
 	}
 	return attrChanges;
