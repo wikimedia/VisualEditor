@@ -296,6 +296,11 @@ ve.ui.DesktopContext.prototype.setPopupSize = function () {
 		viewport = surface.getViewportDimensions(),
 		$container = this.inspector ? this.inspector.$frame : this.$group;
 
+	if ( !viewport ) {
+		// viewport can be null if the surface is not attached
+		return;
+	}
+
 	// PopupWidget normally is clippable, suppress that to be able to resize and scroll it into view.
 	// Needs to be repeated before every call, as it resets itself when the popup is shown or hidden.
 	this.popup.toggleClipping( false );

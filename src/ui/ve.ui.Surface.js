@@ -236,23 +236,31 @@ ve.ui.Surface.prototype.setupDebugBar = function () {
 /**
  * Get the bounding rectangle of the surface, relative to the viewport.
  *
- * @return {Object} Object with top, bottom, left, right, width and height properties.
+ * @return {Object|null} Object with top, bottom, left, right, width and height properties.
+ *  Null if the surface is not attached.
  */
 ve.ui.Surface.prototype.getBoundingClientRect = function () {
 	// We would use getBoundingClientRect(), but in iOS7 that's relative to the
 	// document rather than to the viewport
-	return this.$element[ 0 ].getClientRects()[ 0 ];
+	return this.$element[ 0 ].getClientRects()[ 0 ] || null;
 };
 
 /**
- * Get measurements of the visible area of the surface viewport
+ * Get vertical measurements of the visible area of the surface viewport
  *
- * @return {Object} Object with top, bottom, and height properties
+ * @return {Object|null} Object with top, bottom, and height properties. Null if the surface is not attached.
  */
 ve.ui.Surface.prototype.getViewportDimensions = function () {
-	var rect = this.getBoundingClientRect(),
-		top = Math.max( this.toolbarHeight - rect.top, 0 ),
-		bottom = top + $( this.getElementWindow() ).height() - this.toolbarHeight;
+	var top, bottom,
+		rect = this.getBoundingClientRect();
+
+	if ( !rect ) {
+		return null;
+	}
+
+	top = Math.max( this.toolbarHeight - rect.top, 0 );
+	bottom = top + $( this.getElementWindow() ).height() - this.toolbarHeight;
+
 	return {
 		top: top,
 		bottom: bottom,
