@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Hosseinblue",
-			"Arash71"
+			"Arash71",
+			"Lakzon"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -27,10 +28,10 @@
 	"visualeditor-clipboard-paste": "چسباندن",
 	"visualeditor-clipboard-paste-special": "چسباندن به عنوان متن ساده",
 	"visualeditor-commentinspector-edit": "ویرایش نظر",
-	"visualeditor-commentinspector-title": "قسۀ نیائن",
-	"visualeditor-commentinspector-tooltip": "قسۀ نیائن",
+	"visualeditor-commentinspector-title": "گەپ(قسە)بنۆیس",
+	"visualeditor-commentinspector-tooltip": "گەپ(قسە)بنۆیس",
 	"visualeditor-content-select-all": "انتخاب کؤل",
-	"visualeditor-contextitemwidget-label-secondary": "دةسکاری",
+	"visualeditor-contextitemwidget-label-secondary": "دەسکاری",
 	"visualeditor-contextitemwidget-label-remove": "پاکا کردن",
 	"visualeditor-dialog-action-apply": "اعمال تغییرات",
 	"visualeditor-dialog-action-cancel": "ئآهووسانن/لغو",
@@ -97,7 +98,7 @@
 	"visualeditor-shortcuts-sequence-notice": "نوع",
 	"visualeditor-shortcuts-text-style": "سبک متن",
 	"visualeditor-slug-insert": "درج بند",
-	"visualeditor-specialcharacter-button-tooltip": "نؤیسریاڵ ویژۀ",
+	"visualeditor-specialcharacter-button-tooltip": "نۆیسریال ویژە",
 	"visualeditor-specialcharacterinspector-title": "نؤیسریاڵ ویژۀ",
 	"visualeditor-table-caption": "عنوان",
 	"visualeditor-table-delete-col": "حذف {{PLURAL:$1|ستون|ستون‌های}}",
