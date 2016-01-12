@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.14.1
+ * OOjs UI v0.15.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011–2015 OOjs UI Team and other contributors.
+ * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-12-08T21:43:53Z
+ * Date: 2016-01-12T23:06:40Z
  */
 .oo-ui-icon-alignCentre {
 	background-image: url("themes/apex/images/icons/align-center.png");
@@ -38,11 +38,11 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/find-ltr.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/find-ltr.png");
 }
-.oo-ui-icon-insert {
-	background-image: url("themes/apex/images/icons/add.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/add.png");
+.oo-ui-icon-language {
+	background-image: url("themes/apex/images/icons/language-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/language-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/language-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/language-ltr.png");
 }
 .oo-ui-icon-layout {
 	background-image: url("themes/apex/images/icons/layout-ltr.png");
@@ -55,12 +55,6 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/newline-ltr.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/newline-ltr.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/newline-ltr.png");
-}
-.oo-ui-icon-redirect {
-	background-image: url("themes/apex/images/icons/redirect-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/redirect-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/redirect-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/redirect-ltr.png");
 }
 .oo-ui-icon-noWikiText {
 	background-image: url("themes/apex/images/icons/noWikiText-ltr.png");
@@ -91,6 +85,12 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/quotesAdd-ltr.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/quotesAdd-ltr.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/quotesAdd-ltr.png");
+}
+.oo-ui-icon-redirect {
+	background-image: url("themes/apex/images/icons/articleRedirect-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/articleRedirect-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/articleRedirect-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/articleRedirect-ltr.png");
 }
 .oo-ui-icon-searchCaseSensitive {
 	background-image: url("themes/apex/images/icons/case-sensitive.png");
@@ -159,10 +159,10 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/templateAdd-ltr.png");
 }
 .oo-ui-icon-translation {
-	background-image: url("themes/apex/images/icons/translation-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/translation-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/translation-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/translation-ltr.png");
+	background-image: url("themes/apex/images/icons/language-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/language-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/language-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/language-ltr.png");
 }
 .oo-ui-icon-wikiText {
 	background-image: url("themes/apex/images/icons/wikiText.png");

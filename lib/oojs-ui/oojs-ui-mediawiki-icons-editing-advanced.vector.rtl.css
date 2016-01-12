@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.14.1
+ * OOjs UI v0.15.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011–2015 OOjs UI Team and other contributors.
+ * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-12-08T21:43:53Z
+ * Date: 2016-01-12T23:06:40Z
  */
 .oo-ui-icon-alignCentre {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/align-center.svg);
@@ -38,11 +38,11 @@
 .oo-ui-icon-find-invert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/find-rtl-invert.svg);
 }
-.oo-ui-icon-insert {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/add.svg);
+.oo-ui-icon-language {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/language-rtl.svg);
 }
-.oo-ui-icon-insert-invert {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/add-invert.svg);
+.oo-ui-icon-language-invert {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/language-rtl-invert.svg);
 }
 .oo-ui-icon-layout {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/layout-rtl.svg);
@@ -55,12 +55,6 @@
 }
 .oo-ui-icon-newline-invert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/newline-rtl-invert.svg);
-}
-.oo-ui-icon-redirect {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/redirect-rtl.svg);
-}
-.oo-ui-icon-redirect-invert {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/redirect-rtl-invert.svg);
 }
 .oo-ui-icon-noWikiText {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/noWikiText-rtl.svg);
@@ -91,6 +85,12 @@
 }
 .oo-ui-icon-quotesAdd-invert {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/quotesAdd-rtl-invert.svg);
+}
+.oo-ui-icon-redirect {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/articleRedirect-rtl.svg);
+}
+.oo-ui-icon-redirect-invert {
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/articleRedirect-rtl-invert.svg);
 }
 .oo-ui-icon-searchCaseSensitive {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/case-sensitive.svg);
@@ -159,10 +159,10 @@
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/templateAdd-rtl-invert.svg);
 }
 .oo-ui-icon-translation {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/translation-rtl.svg);
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/language-rtl.svg);
 }
 .oo-ui-icon-translation-invert {
-	background-image: /* @embed */ url(themes/mediawiki/images/icons/translation-rtl-invert.svg);
+	background-image: /* @embed */ url(themes/mediawiki/images/icons/language-rtl-invert.svg);
 }
 .oo-ui-icon-wikiText {
 	background-image: /* @embed */ url(themes/mediawiki/images/icons/wikiText.svg);

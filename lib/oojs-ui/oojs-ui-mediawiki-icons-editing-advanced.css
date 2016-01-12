@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.14.1
+ * OOjs UI v0.15.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011–2015 OOjs UI Team and other contributors.
+ * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-12-08T21:43:53Z
+ * Date: 2016-01-12T23:06:40Z
  */
 .oo-ui-icon-alignCentre {
 	background-image: url("themes/mediawiki/images/icons/align-center.png");
@@ -68,17 +68,17 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/find-ltr-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/find-ltr-invert.png");
 }
-.oo-ui-icon-insert {
-	background-image: url("themes/mediawiki/images/icons/add.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/add.png");
+.oo-ui-icon-language {
+	background-image: url("themes/mediawiki/images/icons/language-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/language-ltr.png");
 }
-.oo-ui-icon-insert-invert {
-	background-image: url("themes/mediawiki/images/icons/add-invert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add-invert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add-invert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/add-invert.png");
+.oo-ui-icon-language-invert {
+	background-image: url("themes/mediawiki/images/icons/language-ltr-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/language-ltr-invert.png");
 }
 .oo-ui-icon-layout {
 	background-image: url("themes/mediawiki/images/icons/layout-ltr.png");
@@ -103,18 +103,6 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/newline-ltr-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/newline-ltr-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/newline-ltr-invert.png");
-}
-.oo-ui-icon-redirect {
-	background-image: url("themes/mediawiki/images/icons/redirect-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/redirect-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/redirect-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/redirect-ltr.png");
-}
-.oo-ui-icon-redirect-invert {
-	background-image: url("themes/mediawiki/images/icons/redirect-ltr-invert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/redirect-ltr-invert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/redirect-ltr-invert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/redirect-ltr-invert.png");
 }
 .oo-ui-icon-noWikiText {
 	background-image: url("themes/mediawiki/images/icons/noWikiText-ltr.png");
@@ -175,6 +163,18 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/quotesAdd-ltr-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/quotesAdd-ltr-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/quotesAdd-ltr-invert.png");
+}
+.oo-ui-icon-redirect {
+	background-image: url("themes/mediawiki/images/icons/articleRedirect-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/articleRedirect-ltr.png");
+}
+.oo-ui-icon-redirect-invert {
+	background-image: url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.png");
 }
 .oo-ui-icon-searchCaseSensitive {
 	background-image: url("themes/mediawiki/images/icons/case-sensitive.png");
@@ -309,16 +309,16 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/templateAdd-ltr-invert.png");
 }
 .oo-ui-icon-translation {
-	background-image: url("themes/mediawiki/images/icons/translation-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/translation-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/translation-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/translation-ltr.png");
+	background-image: url("themes/mediawiki/images/icons/language-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/language-ltr.png");
 }
 .oo-ui-icon-translation-invert {
-	background-image: url("themes/mediawiki/images/icons/translation-ltr-invert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/translation-ltr-invert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/translation-ltr-invert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/translation-ltr-invert.png");
+	background-image: url("themes/mediawiki/images/icons/language-ltr-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/language-ltr-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/language-ltr-invert.png");
 }
 .oo-ui-icon-wikiText {
 	background-image: url("themes/mediawiki/images/icons/wikiText.png");

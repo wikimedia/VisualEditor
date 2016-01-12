@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.14.1
+ * OOjs UI v0.15.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011–2015 OOjs UI Team and other contributors.
+ * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-12-08T21:43:53Z
+ * Date: 2016-01-12T23:06:40Z
  */
 .oo-ui-icon-alignCentre {
 	background-image: /* @embed */ url(themes/apex/images/icons/align-center.svg);
@@ -23,17 +23,14 @@
 .oo-ui-icon-find {
 	background-image: /* @embed */ url(themes/apex/images/icons/find-ltr.svg);
 }
-.oo-ui-icon-insert {
-	background-image: /* @embed */ url(themes/apex/images/icons/add.svg);
+.oo-ui-icon-language {
+	background-image: /* @embed */ url(themes/apex/images/icons/language-ltr.svg);
 }
 .oo-ui-icon-layout {
 	background-image: /* @embed */ url(themes/apex/images/icons/layout-ltr.svg);
 }
 .oo-ui-icon-newline {
 	background-image: /* @embed */ url(themes/apex/images/icons/newline-ltr.svg);
-}
-.oo-ui-icon-redirect {
-	background-image: /* @embed */ url(themes/apex/images/icons/redirect-ltr.svg);
 }
 .oo-ui-icon-noWikiText {
 	background-image: /* @embed */ url(themes/apex/images/icons/noWikiText-ltr.svg);
@@ -49,6 +46,9 @@
 }
 .oo-ui-icon-quotesAdd {
 	background-image: /* @embed */ url(themes/apex/images/icons/quotesAdd-ltr.svg);
+}
+.oo-ui-icon-redirect {
+	background-image: /* @embed */ url(themes/apex/images/icons/articleRedirect-ltr.svg);
 }
 .oo-ui-icon-searchCaseSensitive {
 	background-image: /* @embed */ url(themes/apex/images/icons/case-sensitive.svg);
@@ -84,7 +84,7 @@
 	background-image: /* @embed */ url(themes/apex/images/icons/templateAdd-ltr.svg);
 }
 .oo-ui-icon-translation {
-	background-image: /* @embed */ url(themes/apex/images/icons/translation-ltr.svg);
+	background-image: /* @embed */ url(themes/apex/images/icons/language-ltr.svg);
 }
 .oo-ui-icon-wikiText {
 	background-image: /* @embed */ url(themes/apex/images/icons/wikiText.svg);

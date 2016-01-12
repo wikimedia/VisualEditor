@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.14.1
+ * OOjs UI v0.15.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
- * Copyright 2011–2015 OOjs UI Team and other contributors.
+ * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2015-12-08T21:43:53Z
+ * Date: 2016-01-12T23:06:40Z
  */
 .oo-ui-icon-article {
 	background-image: url("themes/mediawiki/images/icons/article-ltr.png");
@@ -43,6 +43,18 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleSearch-ltr-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleSearch-ltr-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/articleSearch-ltr-invert.png");
+}
+.oo-ui-icon-articleRedirect {
+	background-image: url("themes/mediawiki/images/icons/articleRedirect-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/articleRedirect-ltr.png");
+}
+.oo-ui-icon-articleRedirect-invert {
+	background-image: url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/articleRedirect-ltr-invert.png");
 }
 .oo-ui-icon-book {
 	background-image: url("themes/mediawiki/images/icons/book-ltr.png");
