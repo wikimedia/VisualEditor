@@ -34,7 +34,7 @@ ve.ui.TableAction.static.name = 'table';
  * @property
  */
 ve.ui.TableAction.static.methods = [
-	'create', 'insert', 'delete', 'importTable',
+	'create', 'insert', 'moveRelative', 'move', 'delete', 'importTable',
 	'changeCellStyle', 'mergeCells', 'caption', 'enterTableCell'
 ];
 
@@ -120,6 +120,94 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 		surfaceModel.setSelection( selection );
 	}
 	this.insertRowOrCol( selection.getTableNode(), mode, index, position, selection );
+	return true;
+};
+
+/**
+ * Move a column or row relative to its current position
+ *
+ * @param {string} mode Move mode; 'col' or 'row'
+ * @param {string} direction Direction; 'before' or 'after'
+ * @return {boolean} Action was executed
+ */
+ve.ui.TableAction.prototype.moveRelative = function ( mode, direction ) {
+	var index,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection(),
+		matrix = selection.getTableNode().getMatrix();
+
+	if ( mode === 'row' ) {
+		if ( direction === 'before' ) {
+			index = Math.max( 0, selection.startRow - 1 );
+		} else {
+			index = Math.min( matrix.getRowCount(), selection.endRow + 2 );
+		}
+	} else {
+		if ( direction === 'before' ) {
+			index = Math.max( 0, selection.startCol - 1 );
+		} else {
+			index = Math.min( matrix.getMaxColCount(), selection.endCol + 2 );
+		}
+	}
+	return this.move( mode, index );
+};
+
+/**
+ * Move a column or row.
+ *
+ * @param {string} mode Move mode; 'col' or 'row'
+ * @param {string} index Row or column index to move to
+ * @return {boolean} Action was executed
+ */
+ve.ui.TableAction.prototype.move = function ( mode, index ) {
+	var i, removedMatrix, position, newSelection,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection(),
+		tableNode = selection.getTableNode(),
+		matrix = tableNode.getMatrix();
+
+	if ( !( selection instanceof ve.dm.TableSelection ) ) {
+		return false;
+	}
+
+	if ( mode === 'row' ) {
+		removedMatrix = this.deleteRowsOrColumns( matrix, mode, selection.startRow, selection.endRow );
+		if ( index > selection.endRow ) {
+			index = index - selection.getRowCount();
+		}
+		newSelection = new ve.dm.TableSelection(
+			selection.getDocument(),
+			// table node range was changed by deletion
+			tableNode.getOuterRange(),
+			selection.fromCol,
+			index,
+			selection.toCol,
+			index + selection.getRowCount() - 1
+		);
+	} else {
+		removedMatrix = this.deleteRowsOrColumns( matrix, mode, selection.startCol, selection.endCol );
+		if ( index > selection.endCol ) {
+			index = index - selection.getColCount();
+		}
+		newSelection = new ve.dm.TableSelection(
+			selection.getDocument(),
+			// table node range was changed by deletion
+			tableNode.getOuterRange(),
+			index,
+			selection.fromRow,
+			index + selection.getColCount() - 1,
+			selection.toRow
+		);
+	}
+	if ( index === 0 ) {
+		position = 'before';
+	} else {
+		index--;
+		position = 'after';
+	}
+	for ( i = removedMatrix.length - 1; i >= 0; i-- ) {
+		this.insertRowOrCol( tableNode, mode, index, position, newSelection, removedMatrix[ i ] );
+	}
 	return true;
 };
 
@@ -267,8 +355,7 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.mergeCells = function () {
-	var i, l, r, c, cell, cells, hasNonPlaceholders,
-		contentData,
+	var i, l, r, c, cell, cells, hasNonPlaceholders, contentData,
 		txs = [],
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -493,11 +580,16 @@ ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
  * @param {number} index Row or column index of the base row or column.
  * @param {string} position Insertion position; 'before' or 'after'
  * @param {ve.dm.TableSelection} [selection] Selection to move to after insertion
+ * @param {Object} [dataMatrixLine] Data to insert
+ * @param {Array} [dataMatrixLine.rowData] Row data if inserting a row
+ * @param {ve.dm.TableMatrixCell[]} [dataMatrixLine.cells] Table cells to insert
  */
-ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, position, selection ) {
-	var refIndex, cells, refCells, before,
-		offset, range, i, l, cell, refCell, data, style,
+ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, position, selection, dataMatrixLine ) {
+	var refIndex, cells, refCells, before, cellData,
+		offset, range, i, l, cell, refCell, style,
 		matrix = tableNode.matrix,
+		insertCells = [],
+		insertData = [],
 		txs = [],
 		updated = {},
 		inserts = [],
@@ -510,7 +602,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 	// To achieve this we look at the so called base row and a so called reference row.
 	// The base row is the one after or before which the new row will be inserted.
 	// The reference row is the one which is currently at the place of the new one.
-	// E.g., consider inserting a new row after the second: the base row is the second, the
+	// E.g. consider inserting a new row after the second: the base row is the second, the
 	// reference row is the third.
 	// A span must be increased if the base cell and the reference cell have the same 'owner'.
 	// E.g.:  C* | P**; C | P* | P**, i.e., one of the two cells might be the owner of the other,
@@ -542,11 +634,24 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 					txs.push( this.incrementSpan( cell, mode ) );
 					updated[ cell.key ] = true;
 				}
+				// Resolve merged cell conflicts when moving
+				if ( dataMatrixLine && dataMatrixLine.cells[ i ].owner.data && !dataMatrixLine.cells[ i ].owner.conflicted ) {
+					if ( dataMatrixLine.cells[ i ].isPlaceholder() ) {
+						// If placeholders conflict, collapse their owners
+						dataMatrixLine.cells[ i ].owner.data[ 0 ].attributes.colspan = 1;
+						dataMatrixLine.cells[ i ].owner.data[ 0 ].attributes.rowspan = 1;
+					}
+					// Mark owner (could be self) as conflicted so placeholders know it didn't get inserted
+					dataMatrixLine.cells[ i ].owner.conflicted = true;
+				}
 				continue;
 			}
 		}
 		// If it is not a span changer, we record the base cell as a reference for insertion
 		inserts.push( cell );
+		if ( dataMatrixLine ) {
+			insertCells.push( dataMatrixLine.cells[ i ] );
+		}
 	}
 
 	// Inserting a new row differs completely from inserting a new column:
@@ -554,14 +659,27 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 	// For a new column, new cells are inserted into existing row nodes at appropriate positions,
 	// i.e., relative to an existing cell node.
 	if ( mode === 'row' ) {
-		data = ve.dm.TableRowNode.static.createData( {
-			cellCount: inserts.length,
-			// Take the style of the first cell of the selected row
-			style: cells[ 0 ].node.getStyle()
-		} );
+		if ( !dataMatrixLine ) {
+			insertData = ve.dm.TableRowNode.static.createData( {
+				cellCount: inserts.length,
+				// Take the style of the first cell of the selected row
+				style: cells[ 0 ].node.getStyle()
+			} );
+		} else {
+			insertData.push( dataMatrixLine.row[ 0 ] );
+			insertCells.forEach( function ( cell ) {
+				if ( cell && cell.data ) {
+					insertData = insertData.concat( cell.data );
+				} else if ( !( cell && cell.isPlaceholder() && cell.owner.data && !cell.owner.conflicted ) ) {
+					// If a placeholder, and the owner was not inserted, created a blank cell
+					insertData = insertData.concat( ve.dm.TableCellNode.static.createData() );
+				}
+			} );
+			insertData.push( dataMatrixLine.row[ 1 ] );
+		}
 		range = matrix.getRowNode( index ).getOuterRange();
 		offset = before ? range.start : range.end;
-		txs.push( ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, data ) );
+		txs.push( ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, insertData ) );
 	} else {
 		// Make sure that the inserts are in descending offset order
 		// so that the transactions do not affect subsequent range offsets.
@@ -593,8 +711,19 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 				offset = before ? range.start : range.end;
 				style = cells[ 0 ].node.getStyle();
 			}
-			data = ve.dm.TableCellNode.static.createData( { style: style } );
-			txs.push( ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, data ) );
+			if ( !dataMatrixLine ) {
+				cellData = ve.dm.TableCellNode.static.createData( { style: style } );
+			} else {
+				cell = dataMatrixLine.cells[ cell.row ];
+				cellData = [];
+				if ( cell && cell.data ) {
+					cellData = cell.data;
+				} else if ( !( cell && cell.isPlaceholder() && cell.owner.data && !cell.owner.conflicted ) ) {
+					// If a placeholder, and the owner was not inserted, created a blank cell
+					cellData = ve.dm.TableCellNode.static.createData();
+				}
+			}
+			txs.push( ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, cellData ) );
 		}
 	}
 	surfaceModel.change( txs, selection ? selection.translateByTransactions( txs ) : null );
@@ -654,15 +783,19 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
  * @param {string} mode 'row' or 'col'
  * @param {number} minIndex Smallest row or column index to be deleted
  * @param {number} maxIndex Largest row or column index to be deleted (inclusive)
+ * @return {Array} Plain sub-matrix of items removed. In column mode this matrix is transposed.
  */
 ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIndex, maxIndex ) {
 	var row, col, i, l, cell, key,
-		span, startRow, startCol, endRow, endCol, rowNode,
+		span, startRow, startCol, endRow, endCol,
+		rowNode, rowRange, rowData,
+		removedMatrix = [],
 		cells = [],
 		txs = [],
 		adapted = {},
 		actions = [],
-		surfaceModel = this.surface.getModel();
+		surfaceModel = this.surface.getModel(),
+		documentModel = surfaceModel.getDocument();
 
 	// Deleting cells can have two additional consequences:
 	// 1. The cell is a Placeholder. The owner's span must be decreased.
@@ -691,7 +824,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		if ( cell.isPlaceholder() ) {
 			key = cell.owner.key;
 			if ( !adapted[ key ] ) {
-				// Note: we can record this transaction already, as it does not have an effect on the
+				// Note: we can record this transaction immediately, as it does not have an effect on the
 				// node range
 				txs.push( this.decrementSpan( cell.owner, mode, minIndex, maxIndex ) );
 				adapted[ key ] = true;
@@ -721,7 +854,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 				colspan: 1 + endCol - startCol,
 				rowspan: 1 + endRow - startRow,
 				style: cell.node.getStyle(),
-				content: surfaceModel.getDocument().getData( cell.node.getRange() )
+				content: documentModel.getData( cell.node.getRange() )
 			} );
 		}
 
@@ -747,18 +880,58 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		// Remove rows in reverse order to have valid transaction offsets
 		for ( row = maxIndex; row >= minIndex; row-- ) {
 			rowNode = matrix.getRowNode( row );
-			txs.push( ve.dm.Transaction.newFromRemoval( surfaceModel.getDocument(), rowNode.getOuterRange() ) );
+			txs.push( ve.dm.Transaction.newFromRemoval( documentModel, rowNode.getOuterRange() ) );
+
+			// Store removed data for moving
+			cells = matrix.getRow( row );
+			rowRange = rowNode.getOuterRange();
+			rowData = documentModel.getData( new ve.Range( rowRange.start, rowRange.start + 1 ), true ).concat(
+				documentModel.getData( new ve.Range( rowRange.end - 1, rowRange.end ), true )
+			);
+			// Remove all but start and end tags
+			rowData.splice( 1, rowData.length - 2 );
+			/*jshint loopfunc:true */
+			removedMatrix[ row - minIndex ] = {
+				row: rowData,
+				cells: cells.map( function ( cell ) {
+					if ( cell && !cell.isPlaceholder() ) {
+						cell.data = documentModel.getData( cell.node.getOuterRange(), true );
+						// When re-insterted the span can not exceed the size of the selection
+						if ( cell.data[ 0 ].attributes.rowspan > 1 + maxIndex - minIndex ) {
+							cell.data = null;
+						}
+					}
+					return cell;
+				} )
+			};
 		}
 	} else {
 		for ( i = 0; i < actions.length; i++ ) {
 			if ( actions[ i ].action === 'insert' ) {
 				txs.push( this.replacePlaceholder( matrix, actions[ i ].cell, actions[ i ] ) );
 			} else {
-				txs.push( ve.dm.Transaction.newFromRemoval( surfaceModel.getDocument(), actions[ i ].cell.node.getOuterRange() ) );
+				txs.push( ve.dm.Transaction.newFromRemoval( documentModel, actions[ i ].cell.node.getOuterRange() ) );
+				col = actions[ i ].cell.col - minIndex;
+				actions[ i ].cell.data = documentModel.getData( actions[ i ].cell.node.getOuterRange(), true );
 			}
+		}
+		for ( col = maxIndex; col >= minIndex; col-- ) {
+			removedMatrix[ col - minIndex ] = {
+				cells: matrix.getColumn( col ).map( function ( cell ) {
+					if ( cell && !cell.isPlaceholder() ) {
+						cell.data = documentModel.getData( cell.node.getOuterRange(), true );
+						// When re-insterted the span can not exceed the size of the selection
+						if ( cell.data[ 0 ].attributes.colspan > 1 + maxIndex - minIndex ) {
+							cell.data = null;
+						}
+					}
+					return cell;
+				} )
+			};
 		}
 	}
 	surfaceModel.change( txs, new ve.dm.NullSelection( surfaceModel.getDocument() ) );
+	return removedMatrix;
 };
 
 /**

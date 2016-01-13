@@ -298,6 +298,8 @@ ve.dm.TableMatrixCell = function VeDmTableMatrixCell( node, row, col, owner ) {
 	this.col = col;
 	this.key = row + '_' + col;
 	this.owner = owner || this;
+	// Used when moving cells
+	this.data = null;
 };
 
 /* Inheritance */

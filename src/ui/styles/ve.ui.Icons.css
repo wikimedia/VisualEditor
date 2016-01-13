@@ -1,0 +1,27 @@
+/*!
+ * VisualEditor UserInterface icon styles.
+ *
+ * @copyright 2011-2016 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+/*csslint duplicate-background-images:false */
+
+.oo-ui-icon-tableMoveColumnBefore {
+	/* @embed */
+	background-image: url( images/icons/table-move-column-ltr.svg );
+}
+
+.oo-ui-icon-tableMoveColumnAfter {
+	/* @embed */
+	background-image: url( images/icons/table-move-column-rtl.svg );
+}
+
+.oo-ui-icon-tableMoveRowBefore {
+	/* @embed */
+	background-image: url( images/icons/table-move-row-before.svg );
+}
+
+.oo-ui-icon-tableMoveRowAfter {
+	/* @embed */
+	background-image: url( images/icons/table-move-row-after.svg );
+}

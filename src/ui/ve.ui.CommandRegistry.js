@@ -282,6 +282,19 @@ ve.ui.commandRegistry.register(
 					{ args: [ mode, side ], supportedSelections: [ 'table' ] }
 				)
 			);
+
+			ve.ui.commandRegistry.register(
+				// Commands registered here:
+				// * moveColumnBefore
+				// * moveColumnAfter
+				// * moveRowBefore
+				// * moveRowAfter
+				new ve.ui.Command(
+					'move' + modeName + sideName, 'table', 'moveRelative',
+					{ args: [ mode, side ], supportedSelections: [ 'table' ] }
+				)
+			);
+
 		} );
 
 		// Commands registered here:

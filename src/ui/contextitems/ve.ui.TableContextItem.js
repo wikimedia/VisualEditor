@@ -127,6 +127,55 @@ ve.ui.TableContextItem.prototype.setup = function () {
 				OO.ui.deferMsg( 'visualeditor-table-insert-' + mode + '-' + side );
 			ve.ui[ className ].static.commandName = 'insert' + modeName + sideName;
 			ve.ui.contextItemFactory.register( ve.ui[ className ] );
+
+			// Classes created here:
+			// * ve.ui.MoveColumnBeforeContextItem
+			// * ve.ui.MoveColumnAfterContextItem
+			// * ve.ui.MoveRowBeforeContextItem
+			// * ve.ui.MoveRowAfterContextItem
+			className = 'Move' + modeName + sideName + 'ContextItem';
+			ve.ui[ className ] = function VeUiMoveRowOrColumnContextItem() {
+				ve.ui.TableContextItem.apply( this, arguments );
+			};
+			OO.inheritClass( ve.ui[ className ], ve.ui.TableContextItem );
+			ve.ui[ className ].static.name = 'move' + modeName + sideName;
+			ve.ui[ className ].static.group = 'table-' + mode;
+			ve.ui[ className ].static.icon = 'tableMove' + modeName + sideName;
+			// Messages used here:
+			// * visualeditor-table-move-col-before
+			// * visualeditor-table-move-col-after
+			// * visualeditor-table-move-row-before
+			// * visualeditor-table-move-row-after
+			ve.ui[ className ].static.title =
+				OO.ui.deferMsg( 'visualeditor-table-move-' + mode + '-' + side );
+			ve.ui[ className ].static.commandName = 'move' + modeName + sideName;
+			ve.ui[ className ].prototype.setup = function () {
+				var selection, matrix;
+
+				// Parent method
+				ve.ui.TableContextItem.prototype.setup.call( this );
+
+				selection = this.context.getSurface().getModel().getSelection();
+
+				if ( !( selection instanceof ve.dm.TableSelection ) ) {
+					this.actionButton.setDisabled( true );
+					return;
+				}
+
+				if ( side === 'before' ) {
+					this.actionButton.setDisabled(
+						( mode === 'row' && selection.startRow === 0 ) ||
+						( mode === 'col' && selection.startCol === 0 )
+					);
+				} else {
+					matrix = selection.getTableNode().getMatrix();
+					this.actionButton.setDisabled(
+						( mode === 'row' && selection.endRow === matrix.getRowCount() - 1 ) ||
+						( mode === 'col' && selection.endCol === matrix.getMaxColCount() - 1 )
+					);
+				}
+			};
+			ve.ui.contextItemFactory.register( ve.ui[ className ] );
 		} );
 
 		// Classes created here:

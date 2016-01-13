@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M18 11h-2.47l.72-1H17V9l1-1.375V11zm0-3.375h-1V7h-3v.625h-1V7h-3v.625H9V7H6v.625H5V6h13v1.625zm-13 0L6 9v1h.75l.72 1H5V7.625z" id="column-from"/>
+    <path d="M18 17H5v-5h3.22l.717 1H6v3h3v-2.906l1 1.344V16h1.125l.375.5.375-.5H13v-1.563l1-1.343V16h3v-3h-2.938l.72-1H18v5z" id="column-from-to"/>
+    <path d="M15.29 9l-3.78 5.188L7.71 9z" id="arrow"/>
+</svg>

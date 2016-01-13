@@ -55,8 +55,8 @@ OO.inheritClass( ve.ui.TableContext, ve.ui.Context );
 /* Static Properties */
 
 ve.ui.TableContext.static.groups = {
-	col: [ 'insertColumnBefore', 'insertColumnAfter', 'deleteColumn' ],
-	row: [ 'insertRowBefore', 'insertRowAfter', 'deleteRow' ]
+	col: [ 'insertColumnBefore', 'insertColumnAfter', 'moveColumnBefore', 'moveColumnAfter', 'deleteColumn' ],
+	row: [ 'insertRowBefore', 'insertRowAfter', 'moveRowBefore', 'moveRowAfter', 'deleteRow' ]
 };
 
 /* Methods */
@@ -115,9 +115,6 @@ ve.ui.TableContext.prototype.onDocumentMouseDown = function ( e ) {
 ve.ui.TableContext.prototype.toggleMenu = function ( show ) {
 	var dir, surfaceModel, surfaceView;
 
-	// Parent method
-	ve.ui.TableContext.super.prototype.toggleMenu.call( this, show );
-
 	surfaceModel = this.surface.getModel();
 	surfaceView = this.surface.getView();
 
@@ -134,4 +131,7 @@ ve.ui.TableContext.prototype.toggleMenu = function ( show ) {
 		surfaceModel.disconnect( this );
 		surfaceView.$document.off( 'mousedown', this.onDocumentMouseDownHandler );
 	}
+
+	// Parent method - call after selection has been possible modified above
+	ve.ui.TableContext.super.prototype.toggleMenu.call( this, show );
 };

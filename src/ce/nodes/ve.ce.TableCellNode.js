@@ -116,9 +116,13 @@ ve.ce.TableCellNode.prototype.onSetup = function () {
 	// Set attributes (duplicated from constructor in case this.$element is replaced)
 	if ( rowspan > 1 ) {
 		this.$element.attr( 'rowspan', rowspan );
+	} else {
+		this.$element.removeAttr( 'rowspan' );
 	}
 	if ( colspan > 1 ) {
 		this.$element.attr( 'colspan', colspan );
+	} else {
+		this.$element.removeAttr( 'colspan' );
 	}
 };
 
