@@ -257,41 +257,47 @@ ve.ui.commandRegistry.register(
 		{ args: [ 'table' ], supportedSelections: [ 'table' ] }
 	)
 );
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'insertRowBefore', 'table', 'insert',
-		{ args: [ 'row', 'before' ], supportedSelections: [ 'table' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'insertRowAfter', 'table', 'insert',
-		{ args: [ 'row', 'after' ], supportedSelections: [ 'table' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'deleteRow', 'table', 'delete',
-		{ args: [ 'row' ], supportedSelections: [ 'table' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'insertColumnBefore', 'table', 'insert',
-		{ args: [ 'col', 'before' ], supportedSelections: [ 'table' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'insertColumnAfter', 'table', 'insert',
-		{ args: [ 'col', 'after' ], supportedSelections: [ 'table' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command( 'deleteColumn', 'table', 'delete',
-		{ args: [ 'col' ], supportedSelections: [ 'table' ] }
-	)
-);
+
+( function () {
+
+	var modes = [ 'row', 'col' ],
+		sides = [ 'before', 'after' ],
+		modeNames = { row: 'Row', col: 'Column' },
+		sideNames = { before: 'Before', after: 'After' };
+
+	modes.forEach( function ( mode ) {
+		var modeName = modeNames[ mode ];
+
+		sides.forEach( function ( side ) {
+			var sideName = sideNames[ side ];
+
+			ve.ui.commandRegistry.register(
+				// Commands registered here:
+				// * insertColumnBefore
+				// * insertColumnAfter
+				// * insertRowBefore
+				// * insertRowAfter
+				new ve.ui.Command(
+					'insert' + modeName + sideName, 'table', 'insert',
+					{ args: [ mode, side ], supportedSelections: [ 'table' ] }
+				)
+			);
+		} );
+
+		// Commands registered here:
+		// * deleteRow
+		// * deleteColumn
+		ve.ui.commandRegistry.register(
+			new ve.ui.Command(
+				'delete' + modeName, 'table', 'delete',
+				{ args: [ mode ], supportedSelections: [ 'table' ] }
+			)
+		);
+
+	} );
+
+} )();
+
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
 		'tableCellHeader', 'table', 'changeCellStyle',
