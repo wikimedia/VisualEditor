@@ -91,82 +91,75 @@ ve.ui.TableContextItem.prototype.setup = function () {
 
 /* Specific tools */
 
-ve.ui.InsertColumnBeforeContextItem = function VeUiInsertColumnBeforeContextItem() {
-	ve.ui.InsertColumnBeforeContextItem.super.apply( this, arguments );
-};
-OO.inheritClass( ve.ui.InsertColumnBeforeContextItem, ve.ui.TableContextItem );
-ve.ui.InsertColumnBeforeContextItem.static.name = 'insertColumnBefore';
-ve.ui.InsertColumnBeforeContextItem.static.group = 'table-col';
-ve.ui.InsertColumnBeforeContextItem.static.icon = 'tableAddColumnBefore';
-ve.ui.InsertColumnBeforeContextItem.static.title =
-	OO.ui.deferMsg( 'visualeditor-table-insert-col-before' );
-ve.ui.InsertColumnBeforeContextItem.static.commandName = 'insertColumnBefore';
-ve.ui.contextItemFactory.register( ve.ui.InsertColumnBeforeContextItem );
+( function () {
 
-ve.ui.InsertColumnAfterContextItem = function VeUiInsertColumnAfterContextItem() {
-	ve.ui.InsertColumnAfterContextItem.super.apply( this, arguments );
-};
-OO.inheritClass( ve.ui.InsertColumnAfterContextItem, ve.ui.TableContextItem );
-ve.ui.InsertColumnAfterContextItem.static.name = 'insertColumnAfter';
-ve.ui.InsertColumnAfterContextItem.static.group = 'table-col';
-ve.ui.InsertColumnAfterContextItem.static.icon = 'tableAddColumnAfter';
-ve.ui.InsertColumnAfterContextItem.static.title =
-	OO.ui.deferMsg( 'visualeditor-table-insert-col-after' );
-ve.ui.InsertColumnAfterContextItem.static.commandName = 'insertColumnAfter';
-ve.ui.contextItemFactory.register( ve.ui.InsertColumnAfterContextItem );
+	var className,
+		modes = [ 'row', 'col' ],
+		sides = [ 'before', 'after' ],
+		modeNames = { row: 'Row', col: 'Column' },
+		sideNames = { before: 'Before', after: 'After' };
 
-ve.ui.DeleteColumnContextItem = function VeUiDeleteColumnContextItem() {
-	ve.ui.DeleteColumnContextItem.super.apply( this, arguments );
-};
-OO.inheritClass( ve.ui.DeleteColumnContextItem, ve.ui.TableContextItem );
-ve.ui.DeleteColumnContextItem.static.name = 'deleteColumn';
-ve.ui.DeleteColumnContextItem.static.group = 'table-col';
-ve.ui.DeleteColumnContextItem.static.icon = 'remove';
-ve.ui.DeleteColumnContextItem.static.commandName = 'deleteColumn';
-ve.ui.DeleteColumnContextItem.prototype.getTitle = function () {
-	var selection = this.context.getSurface().getModel().getSelection(),
-		colCount = selection instanceof ve.dm.TableSelection ? selection.getColCount() : 0;
+	modes.forEach( function ( mode ) {
+		var modeName = modeNames[ mode ];
 
-	return ve.msg( 'visualeditor-table-delete-col', colCount );
-};
-ve.ui.contextItemFactory.register( ve.ui.DeleteColumnContextItem );
+		sides.forEach( function ( side ) {
+			var sideName = sideNames[ side ];
 
-ve.ui.InsertRowBeforeContextItem = function VeUiInsertRowBeforeContextItem() {
-	ve.ui.InsertRowBeforeContextItem.super.apply( this, arguments );
-};
-OO.inheritClass( ve.ui.InsertRowBeforeContextItem, ve.ui.TableContextItem );
-ve.ui.InsertRowBeforeContextItem.static.name = 'insertRowBefore';
-ve.ui.InsertRowBeforeContextItem.static.group = 'table-row';
-ve.ui.InsertRowBeforeContextItem.static.icon = 'tableAddRowBefore';
-ve.ui.InsertRowBeforeContextItem.static.title =
-	OO.ui.deferMsg( 'visualeditor-table-insert-row-before' );
-ve.ui.InsertRowBeforeContextItem.static.commandName = 'insertRowBefore';
-ve.ui.contextItemFactory.register( ve.ui.InsertRowBeforeContextItem );
+			// Classes created here:
+			// * ve.ui.InsertColumnBeforeContextItem
+			// * ve.ui.InsertColumnAfterContextItem
+			// * ve.ui.InsertRowBeforeContextItem
+			// * ve.ui.InsertRowAfterContextItem
+			className = 'Insert' + modeName + sideName + 'ContextItem';
+			ve.ui[ className ] = function VeUiInsertRowOrColumnContextItem() {
+				ve.ui.TableContextItem.apply( this, arguments );
+			};
+			OO.inheritClass( ve.ui[ className ], ve.ui.TableContextItem );
+			ve.ui[ className ].static.name = 'insert' + modeName + sideName;
+			ve.ui[ className ].static.group = 'table-' + mode;
+			ve.ui[ className ].static.icon = 'tableAdd' + modeName + sideName;
+			// Messages used here:
+			// * visualeditor-table-insert-col-before
+			// * visualeditor-table-insert-col-after
+			// * visualeditor-table-insert-row-before
+			// * visualeditor-table-insert-row-after
+			ve.ui[ className ].static.title =
+				OO.ui.deferMsg( 'visualeditor-table-insert-' + mode + '-' + side );
+			ve.ui[ className ].static.commandName = 'insert' + modeName + sideName;
+			ve.ui.contextItemFactory.register( ve.ui[ className ] );
+		} );
 
-ve.ui.InsertRowAfterContextItem = function VeUiInsertRowAfterContextItem() {
-	ve.ui.InsertRowAfterContextItem.super.apply( this, arguments );
-};
-OO.inheritClass( ve.ui.InsertRowAfterContextItem, ve.ui.TableContextItem );
-ve.ui.InsertRowAfterContextItem.static.name = 'insertRowAfter';
-ve.ui.InsertRowAfterContextItem.static.group = 'table-row';
-ve.ui.InsertRowAfterContextItem.static.icon = 'tableAddRowAfter';
-ve.ui.InsertRowAfterContextItem.static.title =
-	OO.ui.deferMsg( 'visualeditor-table-insert-row-after' );
-ve.ui.InsertRowAfterContextItem.static.commandName = 'insertRowAfter';
-ve.ui.contextItemFactory.register( ve.ui.InsertRowAfterContextItem );
+		// Classes created here:
+		// * ve.ui.DeleteColumnContextItem
+		// * ve.ui.DeleteRowContextItem
+		className = 'Delete' + modeName + 'ContextItem';
+		ve.ui[ className ] = function VeUiDeleteRowOrColumnContextItem() {
+			ve.ui.TableContextItem.apply( this, arguments );
+		};
+		OO.inheritClass( ve.ui[ className ], ve.ui.TableContextItem );
+		ve.ui[ className ].static.name = 'delete' + modeName;
+		ve.ui[ className ].static.group = 'table-' + mode;
+		ve.ui[ className ].static.icon = 'remove';
+		ve.ui[ className ].static.commandName = 'delete' + modeName;
+		ve.ui[ className ].prototype.getTitle = function () {
+			var count,
+				selection = this.context.getSurface().getModel().getSelection();
 
-ve.ui.DeleteRowContextItem = function VeUiDeleteRowContextItem() {
-	ve.ui.DeleteRowContextItem.super.apply( this, arguments );
-};
-OO.inheritClass( ve.ui.DeleteRowContextItem, ve.ui.TableContextItem );
-ve.ui.DeleteRowContextItem.static.name = 'deleteRow';
-ve.ui.DeleteRowContextItem.static.group = 'table-row';
-ve.ui.DeleteRowContextItem.static.icon = 'remove';
-ve.ui.DeleteRowContextItem.static.commandName = 'deleteRow';
-ve.ui.DeleteRowContextItem.prototype.getTitle = function () {
-	var selection = this.context.getSurface().getModel().getSelection(),
-		rowCount = selection instanceof ve.dm.TableSelection ? selection.getRowCount() : 0;
+			if ( !( selection instanceof ve.dm.TableSelection ) ) {
+				count = 0;
+			} else if ( mode === 'row' ) {
+				count = selection.getRowCount();
+			} else {
+				count = selection.getColCount();
+			}
 
-	return ve.msg( 'visualeditor-table-delete-row', rowCount );
-};
-ve.ui.contextItemFactory.register( ve.ui.DeleteRowContextItem );
+			// Messages used here:
+			// * visualeditor-table-delete-col
+			// * visualeditor-table-delete-row
+			return ve.msg( 'visualeditor-table-delete-' + mode, count );
+		};
+		ve.ui.contextItemFactory.register( ve.ui[ className ] );
+
+	} );
+
+} )();
