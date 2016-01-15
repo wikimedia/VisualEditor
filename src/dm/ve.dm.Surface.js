@@ -916,9 +916,9 @@ ve.dm.Surface.prototype.redo = function () {
 
 	item = this.undoStack[ this.undoStack.length - this.undoIndex ];
 	if ( item ) {
+		this.undoIndex--;
 		// ve.copy( item.transactions ) invokes .clone() on each transaction in item.transactions
 		this.changeInternal( ve.copy( item.transactions ), item.selection, true );
-		this.undoIndex--;
 	}
 };
 
