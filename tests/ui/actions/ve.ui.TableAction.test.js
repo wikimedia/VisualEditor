@@ -332,6 +332,25 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 				msg: 'merge full columns'
 			},
 			{
+				html: '<table><tr><td></td><td>A</td></tr><tr><td></td><td></td></tr></table>',
+				selection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 25 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				method: 'mergeCells',
+				args: [],
+				expectedData: function ( data ) {
+					data.splice( 3, 4 );
+					data[ 3 ].attributes.colspan = 2;
+					data[ 3 ].attributes.rowspan = 1;
+				},
+				msg: 'merge when first cell is empty'
+			},
+			{
 				html: ve.dm.example.mergedCellsHtml,
 				selection: {
 					type: 'table',

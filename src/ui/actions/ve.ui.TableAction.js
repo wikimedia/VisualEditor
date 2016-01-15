@@ -192,9 +192,11 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.mergeCells = function () {
-	var i, r, c, cell, cells, hasNonPlaceholders,
+	var i, l, r, c, cell, cells, hasNonPlaceholders,
+		contentData,
 		txs = [],
 		surfaceModel = this.surface.getModel(),
+		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
 		matrix = selection.getTableNode().getMatrix();
 
@@ -207,7 +209,7 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		cells = selection.getMatrixCells( true );
 		txs.push(
 			ve.dm.Transaction.newFromAttributeChanges(
-				surfaceModel.getDocument(), cells[ 0 ].node.getOuterRange().start,
+				documentModel, cells[ 0 ].node.getOuterRange().start,
 				{ colspan: 1, rowspan: 1 }
 			)
 		);
@@ -226,17 +228,39 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		cells = selection.getMatrixCells();
 		txs.push(
 			ve.dm.Transaction.newFromAttributeChanges(
-				surfaceModel.getDocument(), cells[ 0 ].node.getOuterRange().start,
+				documentModel, cells[ 0 ].node.getOuterRange().start,
 				{
 					colspan: 1 + selection.endCol - selection.startCol,
 					rowspan: 1 + selection.endRow - selection.startRow
 				}
 			)
 		);
+		// Find first cell with content
+		for ( i = 0, l = cells.length; i < l; i++ ) {
+			contentData = new ve.dm.ElementLinearData(
+				documentModel.getStore(),
+				documentModel.getData( cells[ i ].node.getRange() )
+			);
+			if ( contentData.hasContent() ) {
+				// If the first cell contains content, we don't need to move any content
+				if ( !i ) {
+					contentData = null;
+				}
+				break;
+			}
+		}
 		for ( i = cells.length - 1; i >= 1; i-- ) {
 			txs.push(
 				ve.dm.Transaction.newFromRemoval(
-					surfaceModel.getDocument(), cells[ i ].node.getOuterRange()
+					documentModel, cells[ i ].node.getOuterRange()
+				)
+			);
+		}
+		// Move the first-found content to the merged cell
+		if ( contentData ) {
+			txs.push(
+				ve.dm.Transaction.newFromReplacement(
+					documentModel, cells[ 0 ].node.getRange(), contentData.data
 				)
 			);
 		}
