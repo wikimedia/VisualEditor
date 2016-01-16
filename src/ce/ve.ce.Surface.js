@@ -2134,10 +2134,10 @@ ve.ce.Surface.prototype.selectAll = function () {
 };
 
 /**
- * Handle document composition end events.
+ * Handle input events.
  *
  * @method
- * @param {jQuery.Event} e Input event
+ * @param {jQuery.Event} e The input event
  */
 ve.ce.Surface.prototype.onDocumentInput = function () {
 	this.incRenderLock();
