@@ -9,7 +9,8 @@
 			"Csega",
 			"Kishajnalka",
 			"Nyuszika7H",
-			"Rodrigo"
+			"Rodrigo",
+			"Tgr"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -61,6 +62,7 @@
 	"visualeditor-find-and-replace-replace-text": "Csere",
 	"visualeditor-find-and-replace-results": "$1 / $2",
 	"visualeditor-find-and-replace-title": "Keresés és csere",
+	"visualeditor-find-and-replace-word": "Teljes szó",
 	"visualeditor-formatdropdown-format-blockquote": "Idézetblokk",
 	"visualeditor-formatdropdown-format-heading-label": "Címsor (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Címsor 1",
