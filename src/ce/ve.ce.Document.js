@@ -55,7 +55,7 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
-	var nao, currentNode, nextNode, previousNode;
+	var nao, currentNode, nextLeaf, previousLeaf;
 
 	// Get the un-unicorn-adjusted result. If it is:
 	// - just before pre unicorn (in same branch node), return cursor location just after it
@@ -63,96 +63,74 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	// - anywhere else, return the result unmodified
 
 	/**
-	 * Get the next DOM node in document order within the same .ve-ce-branchNode
+	 * Get the DOM leaf between current and adjacent cursor positions in a .ve-ce-branchNode
 	 *
-	 * @param {Node} node The current node
-	 * @return {Node|null} The next node
+	 * @param {number} direction 1 for forwards, -1 for backwards
+	 * @param {Node} node The position node
+	 * @param {number} [offset] The position offset; defaults to leading edge inside node
+	 * @return {Node|null} DOM leaf, if it exists
 	 */
-	function getNext( node ) {
-		while ( node.nextSibling === null ) {
-			node = node.parentNode;
-			if ( !node || node.classList.contains( 've-ce-branchNode' ) ) {
-				return null;
-			}
+	function getAdjacentLeaf( direction, node, offset ) {
+		var back, interior;
+		back = direction < 0;
+		if ( offset === undefined ) {
+			offset = back ? 0 : ( node.childNodes || node.data ).length;
 		}
-		node = node.nextSibling;
-		while ( node.firstChild ) {
-			node = node.firstChild;
+		if ( back ) {
+			interior = offset > 0;
+		} else {
+			interior = offset < ( node.childNodes || node.data ).length;
 		}
-		return node;
-	}
 
-	/**
-	 * Get the previous DOM node in document order within the same .ve-ce-branchNode
-	 *
-	 * @param {Node} node The current node
-	 * @return {Node|null} The previous node
-	 */
-	function getPrevious( node ) {
-		while ( node.previousSibling === null ) {
-			node = node.parentNode;
-			if ( !node || node.classList.contains( 've-ce-branchNode' ) ) {
-				return null;
-			}
+		if ( node.nodeType === Node.TEXT_NODE && interior ) {
+			// There is only text adjacent to the position
+			return null;
 		}
-		node = node.previousSibling;
-		while ( node.lastChild ) {
-			node = node.lastChild;
+
+		if ( interior ) {
+			node = node.childNodes[ back ? offset - 1 : offset ];
+		} else {
+			// We're at the node boundary; step parent-wards until there is a
+			// previous sibling, then step to that
+			while ( ( back ? node.previousSibling : node.nextSibling ) === null ) {
+				node = node.parentNode;
+				if ( !node || node.classList.contains( 've-ce-branchNode' ) ) {
+					return null;
+				}
+			}
+			node = ( back ? node.previousSibling : node.nextSibling );
+		}
+
+		// step child-wards until we hit a leaf
+		while ( node.firstChild ) {
+			node = back ? node.lastChild : node.firstChild;
 		}
 		return node;
 	}
 
 	nao = this.getNodeAndOffsetUnadjustedForUnicorn( offset );
 	currentNode = nao.node;
-	nextNode = getNext( currentNode );
-	previousNode = getPrevious( currentNode );
+	previousLeaf = getAdjacentLeaf( -1, nao.node, nao.offset );
+	nextLeaf = getAdjacentLeaf( 1, nao.node, nao.offset );
 
-	// Adjust for unicorn if necessary, then return
+	// Adjust for unicorn or nails if necessary, then return
 	if (
-		( (
-			currentNode.nodeType === Node.TEXT_NODE &&
-			nao.offset === currentNode.data.length
-		) || (
-			currentNode.nodeType === Node.ELEMENT_NODE &&
-			currentNode.classList.contains( 've-ce-branchNode-inlineSlug' )
-		) ) &&
-		nextNode &&
-		nextNode.nodeType === Node.ELEMENT_NODE &&
-		nextNode.classList.contains( 've-ce-pre-unicorn' )
+		nextLeaf &&
+		nextLeaf.nodeType === Node.ELEMENT_NODE &&
+		nextLeaf.classList.contains( 've-ce-pre-unicorn' )
 	) {
-		// At text offset or slug just before the pre unicorn; return the point just after it
-		return ve.ce.nextCursorOffset( nextNode );
-	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
-		currentNode.childNodes.length > nao.offset &&
-		currentNode.childNodes[ nao.offset ].nodeType === Node.ELEMENT_NODE &&
-		currentNode.childNodes[ nao.offset ].classList.contains( 've-ce-pre-unicorn' )
-	) {
-		// At element offset just before the pre unicorn; return the point just after it
-		return { node: nao.node, offset: nao.offset + 1 };
-	} else if (
-		( (
-			currentNode.nodeType === Node.TEXT_NODE &&
-			nao.offset === 0
-		) || (
-			currentNode.nodeType === Node.ELEMENT_NODE &&
-			currentNode.classList.contains( 've-ce-branchNode-inlineSlug' )
-		) ) &&
-		previousNode &&
-		previousNode.nodeType === Node.ELEMENT_NODE &&
-		previousNode.classList.contains( 've-ce-post-unicorn' )
+		// At offset just before the pre unicorn; return the point just after it
+		return ve.ce.nextCursorOffset( nextLeaf );
+	}
+	if (
+		previousLeaf &&
+		previousLeaf.nodeType === Node.ELEMENT_NODE &&
+		previousLeaf.classList.contains( 've-ce-post-unicorn' )
 	) {
 		// At text offset or slug just after the post unicorn; return the point just before it
-		return ve.ce.previousCursorOffset( previousNode );
-	} else if ( currentNode.nodeType === Node.ELEMENT_NODE &&
-		nao.offset > 0 &&
-		currentNode.childNodes[ nao.offset - 1 ].nodeType === Node.ELEMENT_NODE &&
-		currentNode.childNodes[ nao.offset - 1 ].classList.contains( 've-ce-post-unicorn' )
-	) {
-		// At element offset just after the post unicorn; return the point just before it
-		return { node: nao.node, offset: nao.offset - 1 };
-	} else {
-		return nao;
+		return ve.ce.previousCursorOffset( previousLeaf );
 	}
+	return nao;
 };
 
 /**
