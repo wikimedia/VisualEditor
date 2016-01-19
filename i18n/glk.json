@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"V6rg",
-			"Arash71"
+			"Arash71",
+			"شیخ"
 		]
 	},
 	"visualeditor-align-widget-center": "مئنه",
@@ -35,12 +36,12 @@
 	"visualeditor-dialog-command-help-title": "کيليدتأخته وئرؤن",
 	"visualeditor-dialog-error": "ىک مؤشکلي هنأ...",
 	"visualeditor-dialog-error-dismiss": "پسا وگرد",
-	"visualeditor-dialog-language-auto-direction": "خۊکار",
+	"visualeditor-dialog-language-auto-direction": "خۊدکار",
 	"visualeditor-dialog-language-search-title": "زوانه دؤجئن",
 	"visualeditor-find-and-replace-done": "بۊبؤ",
 	"visualeditor-find-and-replace-find-text": "ىاتن",
 	"visualeditor-help-tool": "رانما",
-	"visualeditor-inspector-close-tooltip": "دبستن",
+	"visualeditor-inspector-close-tooltip": "دبۊستن",
 	"visualeditor-inspector-remove-tooltip": "حذف",
 	"visualeditor-languageinspector-title": "زوان",
 	"visualeditor-languageinspector-widget-changelang": "زوانه ىاتن",
