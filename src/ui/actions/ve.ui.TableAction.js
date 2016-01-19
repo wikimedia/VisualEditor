@@ -33,7 +33,10 @@ ve.ui.TableAction.static.name = 'table';
  * @static
  * @property
  */
-ve.ui.TableAction.static.methods = [ 'create', 'insert', 'delete', 'changeCellStyle', 'mergeCells', 'caption', 'enterTableCell' ];
+ve.ui.TableAction.static.methods = [
+	'create', 'insert', 'delete', 'importTable',
+	'changeCellStyle', 'mergeCells', 'caption', 'enterTableCell'
+];
 
 /* Methods */
 
@@ -159,6 +162,78 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
 };
 
 /**
+ * Import a table at the current selection, overwriting data cell by cell
+ *
+ * @param {ve.dm.TableNode} importedTableNode Table node to import
+ * @return {boolean} Action was executed
+ */
+ve.ui.TableAction.prototype.importTable = function ( importedTableNode ) {
+	var i, l, row, col, cell, importedCell, cellRange,
+		importedMatrix = importedTableNode.getMatrix(),
+		surfaceModel = this.surface.getModel(),
+		documentModel = surfaceModel.getDocument(),
+		selection = surfaceModel.getSelection(),
+		tableNode = selection.getTableNode(),
+		matrix = tableNode.getMatrix();
+
+	// Increase size of table to fit imported table
+	for ( i = 0, l = selection.startRow + importedMatrix.getRowCount() - matrix.getRowCount(); i < l; i++ ) {
+		this.insertRowOrCol( tableNode, 'row', matrix.getRowCount() - 1, 'after' );
+	}
+	for ( i = 0, l = selection.startCol + importedMatrix.getMaxColCount() - matrix.getMaxColCount(); i < l; i++ ) {
+		this.insertRowOrCol( tableNode, 'col', matrix.getMaxColCount() - 1, 'after' );
+	}
+	// Unmerge all cells in the target area
+	for ( row = importedMatrix.getRowCount() - 1; row >= 0; row-- ) {
+		for ( col = importedMatrix.getColCount( row ) - 1; col >= 0; col-- ) {
+			cell = matrix.getCell( selection.fromRow + row, selection.fromCol + col );
+			if ( cell.isPlaceholder() || cell.node.getColspan() > 1 || cell.node.getRowspan() > 1 ) {
+				this.unmergeCell( matrix, cell.owner );
+			}
+		}
+	}
+	// Overwrite data
+	for ( row = importedMatrix.getRowCount() - 1; row >= 0; row-- ) {
+		for ( col = importedMatrix.getColCount( row ) - 1; col >= 0; col-- ) {
+			cell = matrix.getCell( selection.fromRow + row, selection.fromCol + col );
+			cellRange = cell.node.getRange();
+			importedCell = importedMatrix.getCell( row, col );
+
+			if ( !importedCell.isPlaceholder() ) {
+				// Remove the existing cell contents
+				surfaceModel.change( ve.dm.Transaction.newFromRemoval( documentModel, cellRange ) );
+				// Perform the insertion as a separate change so the internalList offsets are correct
+				surfaceModel.change( [
+					// Attribute changes are performed separately, and removing the whole
+					// cell could change the dimensions of the table
+					ve.dm.Transaction.newFromAttributeChanges(
+						documentModel, cellRange.start - 1,
+						ve.copy( importedCell.node.element.attributes )
+					),
+					ve.dm.Transaction.newFromDocumentInsertion(
+						documentModel, cellRange.start,
+						importedTableNode.getDocument(),
+						importedCell.node.getRange()
+					)
+				] );
+			} else {
+				// Remove the existing cell completely
+				surfaceModel.change( ve.dm.Transaction.newFromRemoval( documentModel, cell.node.getOuterRange() ) );
+			}
+		}
+	}
+	surfaceModel.setSelection(
+		new ve.dm.TableSelection(
+			documentModel, tableNode.getOuterRange(),
+			selection.startCol, selection.startRow,
+			selection.startCol + importedMatrix.getMaxColCount() - 1,
+			selection.startRow + importedMatrix.getRowCount() - 1
+		)
+	);
+	return true;
+};
+
+/**
  * Change cell style
  *
  * @param {string} style Cell style; 'header' or 'data'
@@ -206,23 +281,8 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 
 	if ( selection.isSingleCell() ) {
 		// Split
-		cells = selection.getMatrixCells( true );
-		txs.push(
-			ve.dm.Transaction.newFromAttributeChanges(
-				documentModel, cells[ 0 ].node.getOuterRange().start,
-				{ colspan: 1, rowspan: 1 }
-			)
-		);
-		for ( i = cells.length - 1; i >= 1; i-- ) {
-			txs.push(
-				this.replacePlaceholder(
-					matrix,
-					cells[ i ],
-					{ style: cells[ 0 ].node.getStyle() }
-				)
-			);
-		}
-		surfaceModel.change( txs );
+		cells = selection.getMatrixCells();
+		this.unmergeCell( matrix, cells[ 0 ] );
 	} else {
 		// Merge
 		cells = selection.getMatrixCells();
@@ -385,6 +445,43 @@ ve.ui.TableAction.prototype.deleteTable = function ( tableNode ) {
 };
 
 /**
+ * Unmerge a cell
+ *
+ * @param {ve.dm.TableMatrix} matrix Table matrix the cell is in
+ * @param {ve.dm.TableMatrixCell} ownerCell The cell to unmerge
+ */
+ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
+	var col, row, cell,
+		txs = [],
+		colspan = ownerCell.node.getColspan(),
+		rowspan = ownerCell.node.getRowspan(),
+		surfaceModel = this.surface.getModel(),
+		documentModel = surfaceModel.getDocument();
+
+	txs.push(
+		ve.dm.Transaction.newFromAttributeChanges(
+			documentModel, ownerCell.node.getOuterRange().start,
+			{ colspan: 1, rowspan: 1 }
+		)
+	);
+	for ( row = ownerCell.row + rowspan - 1; row >= ownerCell.row; row-- ) {
+		for ( col = ownerCell.col + colspan - 1; col >= ownerCell.col; col-- ) {
+			cell = matrix.getCell( row, col );
+			if ( cell.isPlaceholder() ) {
+				txs.push(
+					this.replacePlaceholder(
+						matrix,
+						cell,
+						{ style: ownerCell.node.getStyle() }
+					)
+				);
+			}
+		}
+	}
+	surfaceModel.change( txs );
+};
+
+/**
  * Inserts a new row or column.
  *
  * Example: a new row can be inserted after the 2nd row using
@@ -500,7 +597,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 			txs.push( ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, data ) );
 		}
 	}
-	surfaceModel.change( txs, selection.translateByTransactions( txs ) );
+	surfaceModel.change( txs, selection ? selection.translateByTransactions( txs ) : null );
 };
 
 /**

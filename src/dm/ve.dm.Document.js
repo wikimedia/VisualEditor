@@ -408,12 +408,50 @@ ve.dm.Document.prototype.getInnerWhitespace = function () {
  *
  * The new document's elements, internal list and store will only contain references to data within the slice.
  *
+ * @param {ve.dm.Selection} selection Selection to create sub-document from
+ * @return {ve.dm.DocumentSlice} New document
+ */
+ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
+	var i, l, linearData, ranges, tableRange,
+		data = [];
+
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		return this.shallowCloneFromRange( selection.getRange() );
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		ranges = selection.getTableSliceRanges();
+		for ( i = 0, l = ranges.length; i < l; i++ ) {
+			data = data.concat( this.data.slice( ranges[ i ].start, ranges[ i ].end ) );
+		}
+		linearData = new ve.dm.ElementLinearData( this.getStore(), data );
+
+		tableRange = new ve.Range( 0, data.length );
+
+		// Copy over the internal list
+		ve.batchSplice(
+			linearData.data, linearData.getLength(), 0,
+			this.getData( this.getInternalList().getListNode().getOuterRange(), true )
+		);
+
+		// The internalList is rebuilt by the document constructor
+		return new ve.dm.TableSlice(
+			linearData, undefined, undefined, this.getInternalList().clone(), tableRange
+		);
+	} else {
+		return this.shallowCloneFromRange( new ve.Range( 0 ) );
+	}
+};
+
+/**
+ * Clone a sub-document from a shallow copy of this document.
+ *
+ * The new document's elements, internal list and store will only contain references to data within the slice.
+ *
  * @param {ve.Range} range Range of data to slice
  * @return {ve.dm.DocumentSlice} New document
  */
 ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 	var i, first, last, firstNode, lastNode,
-		data, slice, originalRange, balancedRange,
+		linearData, slice, originalRange, balancedRange,
 		balancedNodes, needsContext,
 		startNode = this.getBranchNodeFromOffset( range.start ),
 		endNode = this.getBranchNodeFromOffset( range.end ),
@@ -437,7 +475,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 	if ( selection.length === 0 ) {
 		// Nothing selected
-		data = new ve.dm.ElementLinearData( this.getStore(), [] );
+		linearData = new ve.dm.ElementLinearData( this.getStore(), [] );
 		originalRange = balancedRange = new ve.Range( 0 );
 	} else if ( startNode === endNode ) {
 		// Nothing to balance
@@ -509,7 +547,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 		// Final data:
 		//  contextOpenings + balanceOpenings + data slice + balanceClosings + contextClosings
-		data = new ve.dm.ElementLinearData(
+		linearData = new ve.dm.ElementLinearData(
 			this.getStore(),
 			contextOpenings.reverse()
 				.concat( balanceOpenings.reverse() )
@@ -529,13 +567,13 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 	// Copy over the internal list
 	ve.batchSplice(
-		data.data, data.getLength(), 0,
+		linearData.data, linearData.getLength(), 0,
 		this.getData( this.getInternalList().getListNode().getOuterRange(), true )
 	);
 
 	// The internalList is rebuilt by the document constructor
 	slice = new ve.dm.DocumentSlice(
-		data, undefined, undefined, this.getInternalList().clone(), originalRange, balancedRange
+		linearData, undefined, undefined, this.getInternalList().clone(), originalRange, balancedRange
 	);
 	return slice;
 };

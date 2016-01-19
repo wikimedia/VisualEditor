@@ -19,7 +19,7 @@
  */
 ve.dm.DocumentSlice = function VeDmDocumentSlice( data, htmlDocument, parentDocument, internalList, originalRange, balancedRange ) {
 	// Parent constructor
-	ve.dm.Document.call( this, data, htmlDocument, parentDocument, internalList );
+	ve.dm.DocumentSlice.super.call( this, data, htmlDocument, parentDocument, internalList );
 
 	this.originalRange = originalRange;
 	this.balancedRange = balancedRange;
