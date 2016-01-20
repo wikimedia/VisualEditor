@@ -29,6 +29,9 @@
 	margin-top: -0.15em;
 	padding: 0.15em 0;
 }
+.ve-ce-surface-deactivatedSelection-collapsed > div {
+	background: #000;
+}
 
 /* Set opacity directly on the highlights, rather than their containers,
    otherwise the opacity isn't applied at all */
