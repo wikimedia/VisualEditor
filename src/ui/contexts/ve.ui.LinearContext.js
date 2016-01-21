@@ -272,7 +272,7 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 			if ( !this.relatedSources.length ) {
 				selectedNode = surfaceModel.getSelectedNode();
 				// For now we only need alien contexts to show the delete button
-				if ( selectedNode && selectedNode.isFocusable() && !this.showDeleteButton() ) {
+				if ( selectedNode && selectedNode.isFocusable() && this.showDeleteButton() ) {
 					this.relatedSources.push( {
 						type: 'item',
 						embeddable: ve.ui.contextItemFactory.isEmbeddable( 'alien' ),
