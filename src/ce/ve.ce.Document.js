@@ -71,18 +71,20 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	 * @return {Node|null} DOM leaf, if it exists
 	 */
 	function getAdjacentLeaf( direction, node, offset ) {
-		var back, interior;
-		back = direction < 0;
+		var interior,
+			isText = ( node.nodeType === Node.TEXT_NODE ),
+			back = direction < 0;
+
 		if ( offset === undefined ) {
-			offset = back ? 0 : ( node.childNodes || node.data ).length;
+			offset = back ? 0 : ( isText ? node.data : node.childNodes ).length;
 		}
 		if ( back ) {
 			interior = offset > 0;
 		} else {
-			interior = offset < ( node.childNodes || node.data ).length;
+			interior = offset < ( isText ? node.data : node.childNodes ).length;
 		}
 
-		if ( node.nodeType === Node.TEXT_NODE && interior ) {
+		if ( isText && interior ) {
 			// There is only text adjacent to the position
 			return null;
 		}
