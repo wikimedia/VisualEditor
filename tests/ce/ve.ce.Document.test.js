@@ -89,8 +89,35 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			replacement: { path: [ 0 ], innerHtml: '<br>' },
 			data: [ '<paragraph>', '</paragraph>' ],
 			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><br>||</br></p></div>"
+		},
+		{
+			title: 'Paragraph with links, inside nails',
+			html: '<p><a href="A">A</a><a href="B">B</a></p>',
+			data: [ '<paragraph>', 'A', 'B', '</paragraph>' ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>||A|</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img><img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>B|</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img></p></div>"
+		},
+		{
+			title: 'Paragraph with links, outside nails',
+			html: '<p><a href="A">A</a><a href="B">B</a></p>',
+			data: [ '<paragraph>', 'A', 'B', '</paragraph>' ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>||<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>A</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>B</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|</p></div>",
+			outsideNails: true
+		},
+		{
+			title: 'Paragraph with links, non-text nodes, inside nails',
+			html: '<p><a href="A"><b>A<img></b></a></p>',
+			data: [ '<paragraph>', 'A', '<inlineImage>', '</inlineImage>', '</paragraph>' ],
+			dies: [ 3 ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><b class='ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>||A||</#text><img class='ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode'></img></b><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img><span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'>|</span></p></div>"
+		},
+		{
+			title: 'Paragraph with links, non-text nodes, outside nails',
+			html: '<p><a href="A"><b>A<img></b></a></p>',
+			data: [ '<paragraph>', 'A', '<inlineImage>', '</inlineImage>', '</paragraph>' ],
+			dies: [ 3 ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>||<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><b class='ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>A||</#text><img class='ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode'></img></b><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img><span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'>|</span></p></div>",
+			outsideNails: true
 		}
-
 	];
 	/*jscs:enable validateQuoteMarks */
 
@@ -141,7 +168,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 
 		for ( offset = 0; offset < offsetCount; offset++ ) {
 			try {
-				position = ceDoc.getNodeAndOffset( offset );
+				position = ceDoc.getNodeAndOffset( offset, test.outsideNails );
 				if ( test.dies && test.dies.indexOf( offset ) !== -1 ) {
 					assert.ok( false, test.title + ' (' + offset + ') does not die' );
 					continue;
@@ -154,12 +181,12 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 				continue;
 			}
 
-			position = ceDoc.getNodeAndOffset( offset );
+			position = ceDoc.getNodeAndOffset( offset, test.outsideNails );
 			assert.strictEqual(
 				ve.test.utils.serializePosition(
 					rootNode,
-					ceDoc.getNodeAndOffset( offset ),
-					{ ignore: '.ve-ce-branchNode-blockSlug>*' }
+					ceDoc.getNodeAndOffset( offset, test.outsideNails ),
+					{ ignore: '.ve-ce-branchNode-slug>*' }
 				),
 				[].concat(
 					parts.slice( 0, offset + 1 ),

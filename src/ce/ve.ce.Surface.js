@@ -3158,12 +3158,16 @@ ve.ce.Surface.prototype.getSelectionState = function ( range ) {
 	var anchor, focus,
 		dmDoc = this.getModel().getDocument();
 
-	// Anchor/focus at the nearest correct position in the direction that grows the selection
+	// Anchor/focus at the nearest correct position in the direction that
+	// grows the selection. If we're not yet fully focused, move the selection
+	// outside any nails to avoid popping up a context menu.
 	anchor = this.documentView.getNodeAndOffset(
-		dmDoc.getNearestCursorOffset( range.from, range.isBackwards() ? 1 : -1 )
+		dmDoc.getNearestCursorOffset( range.from, range.isBackwards() ? 1 : -1 ),
+		!this.focused
 	);
 	focus = this.documentView.getNodeAndOffset(
-		dmDoc.getNearestCursorOffset( range.to, range.isBackwards() ? -1 : 1 )
+		dmDoc.getNearestCursorOffset( range.to, range.isBackwards() ? -1 : 1 ),
+		!this.focused
 	);
 	return new ve.SelectionState( {
 		anchorNode: anchor.node,
