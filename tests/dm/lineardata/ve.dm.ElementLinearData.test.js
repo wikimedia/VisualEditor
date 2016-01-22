@@ -1615,6 +1615,35 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: '/internalList' }
 				],
 				msg: 'Newline characters are stripped and replaced with spaces where necessary'
+			},
+			{
+				html: '<p>Foo</p> \n\t <p>Bar</p>',
+				data: [
+					{ type: 'paragraph' },
+					'F', 'o', 'o',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				msg: 'HTML whitespace is stripped'
+			},
+			{
+				html: '<p>Foo</p> \n\t <p>Bar</p>',
+				data: [
+					{ type: 'paragraph', internal: { whitespace: [ undefined, undefined, undefined, ' \n\t ' ] } },
+					'F', 'o', 'o',
+					{ type: '/paragraph' },
+					{ type: 'paragraph', internal: { whitespace: [ ' \n\t ' ] } },
+					'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { preserveHtmlWhitespace: true },
+				msg: 'HTML whitespace is preserved when preserveHtmlWhitespace is used'
 			}
 		];
 
