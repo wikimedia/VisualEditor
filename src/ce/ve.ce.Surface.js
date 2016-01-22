@@ -570,7 +570,7 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 
 	this.$deactivatedSelection.empty();
 
-	// Check we have a deactivated surface
+	// Check we have a deactivated surface and a native selection
 	if ( this.deactivated && selection.isNativeCursor() ) {
 		rects = selection.getSelectionRects();
 		if ( rects ) {
