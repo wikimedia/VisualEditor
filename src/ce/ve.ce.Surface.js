@@ -570,17 +570,20 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 
 	this.$deactivatedSelection.empty();
 
-	// Check we have a deactivated surface and a non-collapsed native selection
-	if ( this.deactivated && selection.isNativeCursor() && !selection.getModel().isCollapsed() ) {
+	// Check we have a deactivated surface
+	if ( this.deactivated && selection.isNativeCursor() ) {
 		rects = selection.getSelectionRects();
 		if ( rects ) {
 			for ( i = 0, l = rects.length; i < l; i++ ) {
-				this.$deactivatedSelection.append( $( '<div>' ).css( {
-					top: rects[ i ].top,
-					left: rects[ i ].left,
-					width: rects[ i ].width,
-					height: rects[ i ].height
-				} ) );
+				this.$deactivatedSelection.append(
+					$( '<div>' ).css( {
+						top: rects[ i ].top,
+						left: rects[ i ].left,
+						// Collapsed selections can have a width of 0, so expand
+						width: Math.max( rects[ i ].width, 1 ),
+						height: rects[ i ].height
+					}
+				) ).toggleClass( 've-ce-surface-deactivatedSelection-collapsed', selection.getModel().isCollapsed() );
 			}
 		}
 	}
