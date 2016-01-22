@@ -994,6 +994,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {boolean} [rules.removeOriginalDomElements] Remove references to DOM elements data was converted from
  * @param {boolean} [rules.plainText] Remove all formatting for plain text import
  * @param {boolean} [rules.allowBreaks] Allow <br> line breaks, otherwise the node will be split
+ * @param {boolean} [rules.preserveHtmlWhitespace] Preserve non-semantic HTML whitespace
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentBranches ) {
@@ -1072,6 +1073,15 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 				i -= 2;
 				len -= 2;
 				continue;
+			}
+
+			if ( !rules.preserveHtmlWhitespace ) {
+				if ( ve.getProp( this.getData( i ), 'internal', 'whitespace' ) ) {
+					delete this.getData( i ).internal.whitespace;
+					if ( ve.isEmptyObject( this.getData( i ).internal ) ) {
+						delete this.getData( i ).internal;
+					}
+				}
 			}
 
 			// Store the current contentElement for splitting
