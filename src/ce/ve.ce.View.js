@@ -171,11 +171,7 @@ ve.ce.View.prototype.setLive = function ( live ) {
  * @return {boolean} Node is inside a contentEditable node
  */
 ve.ce.View.prototype.isInContentEditable = function () {
-	var node = this.$element[ 0 ].parentNode;
-	while ( node && node.contentEditable === 'inherit' ) {
-		node = node.parentNode;
-	}
-	return !!( node && node.contentEditable === 'true' );
+	return ve.isContentEditable( this.$element[ 0 ].parentNode );
 };
 
 /**

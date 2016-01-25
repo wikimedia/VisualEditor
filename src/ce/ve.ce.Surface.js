@@ -1155,7 +1155,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * @return {ve.ce.Node|null} node, or null if not in a focusable node
 	 */
 	function getSurroundingFocusableNode( node, offset, direction ) {
-		var focusNode, $focusNode;
+		var focusNode;
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			focusNode = node;
 		} else if ( direction > 0 && offset < node.childNodes.length ) {
@@ -1166,13 +1166,12 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 			focusNode = node;
 		}
 
-		$focusNode = $( focusNode );
-		// If the first ancestor with contenteditable set is ce=true, then we are allowed
-		// to be inside this focusable node (e.g. editing a table cell or caption)
-		if ( $focusNode.closest( '[contenteditable]' ).prop( 'contenteditable' ) === 'true' ) {
+		if ( ve.isContentEditable( focusNode ) ) {
+			// We are allowed to be inside this focusable node (e.g. editing a
+			// table cell or caption).
 			return null;
 		}
-		return $focusNode.closest( '.ve-ce-focusableNode, .ve-ce-tableNode' ).data( 'view' ) || null;
+		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode' ).data( 'view' ) || null;
 	}
 
 	/**
