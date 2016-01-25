@@ -604,6 +604,7 @@ ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
 		maxDimensions = this.isEnforcedMax() && !$.isEmptyObject( this.getMaxDimensions() ) && this.getMaxDimensions();
 
 	this.valid = (
+		!!dimensions &&
 		$.isNumeric( dimensions.width ) &&
 		$.isNumeric( dimensions.height ) &&
 		(
