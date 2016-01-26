@@ -37,9 +37,10 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$controls = $( '<div>' );
 	this.$menus = $( '<div>' );
 	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
-	this.triggerListener = new ve.TriggerListener( OO.simpleArrayDifference(
+	this.commands = OO.simpleArrayDifference(
 		config.includeCommands || Object.keys( ve.init.target.commandRegistry.registry ), config.excludeCommands || []
-	) );
+	);
+	this.triggerListener = new ve.TriggerListener( this.commands );
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
 		documentModel = dataOrDoc;
@@ -440,6 +441,15 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 		}
 		this.$placeholder.empty().append( $wrapper.text( this.placeholder ) );
 	}
+};
+
+/**
+ * Get list of commands available on this surface.
+ *
+ * @return {string[]} Commands
+ */
+ve.ui.Surface.prototype.getCommands = function () {
+	return this.commands;
 };
 
 /**

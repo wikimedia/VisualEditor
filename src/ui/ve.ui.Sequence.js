@@ -66,9 +66,14 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
  * @return {boolean} The command executed
  */
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {
-	var stripRange, executed, stripFragment, selection,
-		surfaceModel = surface.getModel(),
-		command = ve.init.target.commandRegistry.lookup( this.getCommandName() );
+	var command, stripRange, executed, stripFragment, selection,
+		surfaceModel = surface.getModel();
+
+	if ( surface.getCommands().indexOf( this.getCommandName() ) === -1 ) {
+		return false;
+	}
+
+	command = ve.init.target.commandRegistry.lookup( this.getCommandName() );
 
 	if ( !command ) {
 		return false;
