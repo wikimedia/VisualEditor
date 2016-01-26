@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.15.0
+ * OOjs UI v0.15.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-01-12T23:06:40Z
+ * Date: 2016-01-26T21:14:25Z
  */
 .oo-ui-icon-map {
 	background-image: url("themes/mediawiki/images/icons/map-rtl.png");
@@ -14,7 +14,7 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/map-rtl.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/map-rtl.png");
 }
-.oo-ui-icon-map-invert {
+.oo-ui-image-invert.oo-ui-icon-map {
 	background-image: url("themes/mediawiki/images/icons/map-rtl-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/map-rtl-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/map-rtl-invert.svg");
@@ -26,7 +26,7 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/mapPin.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/mapPin.png");
 }
-.oo-ui-icon-mapPin-invert {
+.oo-ui-image-invert.oo-ui-icon-mapPin {
 	background-image: url("themes/mediawiki/images/icons/mapPin-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/mapPin-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/mapPin-invert.svg");
@@ -38,7 +38,7 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/mapPinAdd-rtl.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/mapPinAdd-rtl.png");
 }
-.oo-ui-icon-mapPinAdd-invert {
+.oo-ui-image-invert.oo-ui-icon-mapPinAdd {
 	background-image: url("themes/mediawiki/images/icons/mapPinAdd-rtl-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/mapPinAdd-rtl-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/mapPinAdd-rtl-invert.svg");
@@ -50,7 +50,7 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/wikitrail-rtl.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/wikitrail-rtl.png");
 }
-.oo-ui-icon-wikitrail-invert {
+.oo-ui-image-invert.oo-ui-icon-wikitrail {
 	background-image: url("themes/mediawiki/images/icons/wikitrail-rtl-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/wikitrail-rtl-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/wikitrail-rtl-invert.svg");
