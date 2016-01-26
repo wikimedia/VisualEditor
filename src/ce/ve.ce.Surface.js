@@ -1123,7 +1123,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	var direction, focusableNode, startOffset, endOffset, offsetDiff, dmFocus, dmSelection,
-		inNonSlug, ceSelection, ceNode, range, fixupCursorForUnicorn, matrix, $focusNode,
+		inNonSlug, ceSelection, ceNode, range, fixupCursorForUnicorn, matrix, col, row, $focusNode,
 		surface = this,
 		isArrow = (
 			e.keyCode === OO.ui.Keys.UP ||
@@ -1329,8 +1329,10 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 				) );
 			} else {
 				matrix = focusableNode.getModel().getMatrix();
+				row = matrix.getRowCount() - 1;
+				col = matrix.getColCount( row ) - 1;
 				this.model.setSelection( new ve.dm.TableSelection(
-					this.model.documentModel, range, matrix.getColCount() - 1, matrix.getRowCount() - 1
+					this.model.documentModel, range, col, row
 				) );
 			}
 		} else {
@@ -2126,7 +2128,7 @@ ve.ce.Surface.prototype.selectAll = function () {
 		this.getModel().setSelection(
 			new ve.dm.TableSelection(
 				selection.getDocument(), selection.tableRange,
-				0, 0, matrix.getColCount() - 1, matrix.getRowCount() - 1
+				0, 0, matrix.getMaxColCount() - 1, matrix.getRowCount() - 1
 			)
 		);
 
