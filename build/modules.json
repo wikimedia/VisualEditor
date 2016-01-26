@@ -40,11 +40,11 @@
 			"lib/oojs-ui/oojs-ui-apex.js"
 		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui-apex.vector.css",
-			"lib/oojs-ui/oojs-ui-apex-icons-editing-core.vector.css",
-			"lib/oojs-ui/oojs-ui-apex-icons-editing-advanced.vector.css",
-			"lib/oojs-ui/oojs-ui-apex-icons-editing-styling.vector.css",
-			"lib/oojs-ui/oojs-ui-apex-icons-editing-list.vector.css"
+			"lib/oojs-ui/oojs-ui-apex.css",
+			"lib/oojs-ui/oojs-ui-apex-icons-editing-core.css",
+			"lib/oojs-ui/oojs-ui-apex-icons-editing-advanced.css",
+			"lib/oojs-ui/oojs-ui-apex-icons-editing-styling.css",
+			"lib/oojs-ui/oojs-ui-apex-icons-editing-list.css"
 		],
 		"dependencies": [
 			"oojs-ui"
@@ -55,11 +55,11 @@
 			"lib/oojs-ui/oojs-ui-mediawiki.js"
 		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui-mediawiki.vector.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-core.vector.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-advanced.vector.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-styling.vector.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-list.vector.css"
+			"lib/oojs-ui/oojs-ui-mediawiki.css",
+			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-core.css",
+			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-advanced.css",
+			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-styling.css",
+			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-list.css"
 		],
 		"dependencies": [
 			"oojs-ui"
