@@ -392,7 +392,7 @@ ve.dm.TableSelection.prototype.getColCount = function () {
  */
 ve.dm.TableSelection.prototype.isFullRow = function () {
 	var matrix = this.getTableNode().getMatrix();
-	return this.getColCount() === matrix.getColCount();
+	return this.getColCount() === matrix.getMaxColCount();
 };
 
 /**

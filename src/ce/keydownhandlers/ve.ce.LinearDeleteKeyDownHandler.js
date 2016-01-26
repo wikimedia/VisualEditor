@@ -43,7 +43,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.supportedSelections = [ 'linear' ];
  */
 ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	var docLength, startNode, tableEditingRange, position, skipNode, pairNode, linkNode, range,
-		documentModelSelectedNodes, i, node, nodeRange, nodeOuterRange, matrix,
+		documentModelSelectedNodes, i, node, nodeRange, nodeOuterRange, matrix, col, row,
 		direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		offset = 0,
@@ -190,8 +190,10 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 					) );
 				} else {
 					matrix = node.getMatrix();
+					row = matrix.getRowCount() - 1;
+					col = matrix.getColCount( row ) - 1;
 					surface.getModel().setSelection( new ve.dm.TableSelection(
-						documentModel, nodeOuterRange, matrix.getColCount() - 1, matrix.getRowCount() - 1
+						documentModel, nodeOuterRange, col, row
 					) );
 				}
 				e.preventDefault();

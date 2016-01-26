@@ -202,14 +202,32 @@ ve.dm.TableMatrix.prototype.getRowCount = function () {
 };
 
 /**
- * Get number of columns in the table
+ * Get number of columns in a row
  *
- * @param {number} [row] Row to count columns in (for when the table is sparse and this is variable)
+ * To get the number of columns in a table use #getMaxColCount
+ *
+ * @param {number} row Row to count columns in
  * @return {number} Number of columns
  */
 ve.dm.TableMatrix.prototype.getColCount = function ( row ) {
 	var matrix = this.getMatrix();
-	return matrix.length ? matrix[ row || 0 ].length : 0;
+	return matrix.length ? matrix[ row ].length : 0;
+};
+
+/**
+ * Get the maximum number of columns in a table
+ *
+ * This is required because in sparse tables the column count is variable.
+ *
+ * @return {number} Number of columns
+ */
+ve.dm.TableMatrix.prototype.getMaxColCount = function () {
+	var row, colCount = 0;
+
+	for ( row = this.getRowCount() - 1; row >= 0; row-- ) {
+		colCount = Math.max( colCount, this.getColCount( row ) );
+	}
+	return colCount;
 };
 
 /**
