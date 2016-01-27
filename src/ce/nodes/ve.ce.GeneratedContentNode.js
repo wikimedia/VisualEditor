@@ -343,23 +343,3 @@ ve.ce.GeneratedContentNode.prototype.getFocusableElement = function () {
 ve.ce.GeneratedContentNode.prototype.getResizableElement = function () {
 	return this.$element;
 };
-
-/**
- * Check if the rendering is visible
- *
- * @return {boolean} The rendering is visible
- */
-ve.ce.GeneratedContentNode.prototype.isVisible = function () {
-	var visible = false;
-	if ( this.$element.text().trim() !== '' ) {
-		return true;
-	}
-	this.$element.each( function () {
-		var $this = $( this );
-		if ( $this.width() >= 8 && $this.height() >= 8 ) {
-			visible = true;
-			return false;
-		}
-	} );
-	return visible;
-};

@@ -43,6 +43,8 @@ OO.mixinClass( ve.ce.AlienNode, ve.ce.TableCellableNode );
 
 ve.ce.AlienNode.static.name = 'alien';
 
+ve.ce.AlienNode.static.iconWhenInvisible = 'puzzle';
+
 /* Methods */
 
 /**

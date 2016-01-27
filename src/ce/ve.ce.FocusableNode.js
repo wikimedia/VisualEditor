@@ -38,6 +38,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	this.rects = null;
 	this.boundingRect = null;
 	this.startAndEndRects = null;
+	this.icon = null;
 
 	if ( Array.isArray( config.classes ) ) {
 		this.$highlights.addClass( config.classes.join( ' ' ) );
@@ -71,6 +72,19 @@ OO.initClass( ve.ce.FocusableNode );
 /**
  * @event blur
  */
+
+/* Static properties */
+
+/**
+ * Icon to use when the rendering is considered not visible, as defined in #hasRendering
+ *
+ * No icon is show if null.
+ *
+ * @static
+ * @property {string|null}
+ * @inheritable
+ */
+ve.ce.FocusableNode.static.iconWhenInvisible = null;
 
 /* Methods */
 
@@ -129,6 +143,25 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 		this.$element.on( {
 			'mousedown.ve-ce-focusableNode': function ( e ) { e.preventDefault(); }
 		} );
+	}
+
+	if ( this.constructor.static.iconWhenInvisible ) {
+		if ( !this.hasRendering() ) {
+			if ( !this.icon ) {
+				this.icon = new OO.ui.IconWidget( {
+					classes: [ 've-ce-focusableNode-invisibleIcon' ],
+					icon: this.constructor.static.iconWhenInvisible
+				} );
+				// Add em space for selection highlighting
+				this.icon.$element.text( '\u2003' );
+			}
+			this.$element.first()
+				.addClass( 've-ce-focusableNode-invisible' )
+				.prepend( this.icon.$element );
+		} else if ( this.icon ) {
+			this.$element.first().removeClass( 've-ce-focusableNode-invisible' );
+			this.icon.$element.detach();
+		}
 	}
 
 	this.isFocusableSetup = true;
@@ -623,4 +656,24 @@ ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
 		this.startAndEndRects = ve.getStartAndEndRects( this.rects );
 	}
 	return this.startAndEndRects;
+};
+
+/**
+ * Check if the rendering is visible
+ *
+ * @return {boolean} The node has a visible rendering
+ */
+ve.ce.FocusableNode.prototype.hasRendering = function () {
+	var visible = false;
+	if ( this.$element.text().trim() !== '' ) {
+		return true;
+	}
+	this.$element.each( function () {
+		var $this = $( this );
+		if ( $this.width() >= 8 && $this.height() >= 8 ) {
+			visible = true;
+			return false;
+		}
+	} );
+	return visible;
 };

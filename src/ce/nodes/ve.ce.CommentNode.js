@@ -10,7 +10,6 @@
  * @class
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
- * @mixins OO.ui.mixin.IconElement
  *
  * @constructor
  * @param {ve.dm.CommentNode} model Model to observe
@@ -22,28 +21,23 @@ ve.ce.CommentNode = function VeCeCommentNode( model, config ) {
 
 	// Mixin constructors
 	ve.ce.FocusableNode.call( this, this.$element, config );
-	OO.ui.mixin.IconElement.call( this, $.extend( {}, config, {
-		$icon: this.$element, icon: 'notice'
-	} ) );
 
 	// DOM changes
-	this.$element
-		.addClass( 've-ce-commentNode' )
-		// Add em space for selection highlighting
-		.text( '\u2003' );
+	this.$element.addClass( 've-ce-commentNode' );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ce.CommentNode, ve.ce.LeafNode );
 OO.mixinClass( ve.ce.CommentNode, ve.ce.FocusableNode );
-OO.mixinClass( ve.ce.CommentNode, OO.ui.mixin.IconElement );
 
 /* Static Properties */
 
 ve.ce.CommentNode.static.name = 'comment';
 
 ve.ce.CommentNode.static.primaryCommandName = 'comment';
+
+ve.ce.CommentNode.static.iconWhenInvisible = 'notice';
 
 /* Static Methods */
 
@@ -52,6 +46,13 @@ ve.ce.CommentNode.static.primaryCommandName = 'comment';
  */
 ve.ce.CommentNode.static.getDescription = function ( model ) {
 	return model.getAttribute( 'text' );
+};
+
+/**
+ * @inheritdoc ve.ce.FocusableNode
+ */
+ve.ce.CommentNode.prototype.hasRendering = function () {
+	return false;
 };
 
 /* Registration */

@@ -66,3 +66,26 @@
 	position: absolute;
 	top: -1000px;
 }
+
+.ve-ce-focusableNode-invisible {
+	display: inline-block;
+	vertical-align: middle;
+	/* Negative margins ensure icon height doesn't exceed line height in paragraphs */
+	margin: -6px 0 -2px 0;
+	width: 24px;
+	height: 24px;
+}
+
+
+
+.oo-ui-iconElement.ve-ce-focusableNode-invisibleIcon {
+	display: block;
+	/* Don't scale icon in headings etc. */
+	width: 24px;
+	height: 24px;
+	background-size: 24px 24px;
+	/* Make native selection match fake selection */
+	font-size: 24px;
+	line-height: 1em;
+	opacity: 0.5;
+}
