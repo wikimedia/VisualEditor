@@ -199,10 +199,10 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	}
 	node = this.getBranchNodeFromOffset( offset );
 	startOffset = node.getOffset() + ( ( node.isWrapped() ) ? 1 : 0 );
-	current = [ node.$element.contents(), 0 ];
+	current = { $contents: node.$element.contents(), offset: 0 };
 	stack = [ current ];
 	while ( stack.length > 0 ) {
-		if ( current[ 1 ] >= current[ 0 ].length ) {
+		if ( current.offset >= current.$contents.length ) {
 			stack.pop();
 			current = stack[ stack.length - 1 ];
 			if ( current && startOffset === offset ) {
@@ -211,11 +211,11 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				// ve-ce-leafNode), but the node itself is at the required DM
 				// offset. Return the first offset inside this node (even if
 				// it's a node type that cannot contain content, like br).
-				return { node: current[ 0 ][ current[ 1 ] - 1 ], offset: 0 };
+				return { node: current.$contents[ current.offset - 1 ], offset: 0 };
 			}
 			continue;
 		}
-		item = current[ 0 ][ current[ 1 ] ];
+		item = current.$contents[ current.offset ];
 		if ( item.nodeType === Node.TEXT_NODE ) {
 			length = item.textContent.length;
 			if ( offset >= startOffset && offset <= startOffset + length ) {
@@ -227,19 +227,19 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				startOffset += length;
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
-			$item = current[ 0 ].eq( current[ 1 ] );
+			$item = current.$contents.eq( current.offset );
 			if ( $item.hasClass( 've-ce-unicorn' ) ) {
 				if ( offset === startOffset ) {
 					// Return if empty unicorn pair at the correct offset
 					if ( $( $item[ 0 ].previousSibling ).hasClass( 've-ce-unicorn' ) ) {
 						return {
 							node: $item[ 0 ].parentNode,
-							offset: current[ 1 ] - 1
+							offset: current.offset - 1
 						};
 					} else if ( $( $item[ 0 ].nextSibling ).hasClass( 've-ce-unicorn' ) ) {
 						return {
 							node: $item[ 0 ].parentNode,
-							offset: current[ 1 ] + 1
+							offset: current.offset + 1
 						};
 					}
 					// Else algorithm will/did descend into unicorned range
@@ -253,8 +253,8 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 					length = model.getOuterLength();
 					countedNodes.push( model );
 					if ( offset >= startOffset && offset < startOffset + length ) {
-						stack.push( [ $item.contents(), 0 ] );
-						current[ 1 ]++;
+						stack.push( { $contents: $item.contents(), offset: 0 } );
+						current.offset++;
 						current = stack[ stack.length - 1 ];
 						continue;
 					} else {
@@ -269,22 +269,22 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				// the internalList then the start node will be the document node.
 				//
 				// Skip contents without incrementing offset.
-				current[ 1 ]++;
+				current.offset++;
 				continue;
 			} else if ( $item.hasClass( 've-ce-nail' ) ) {
 				// Skip contents without incrementing offset.
-				current[ 1 ]++;
+				current.offset++;
 				continue;
 			} else {
 				// Any other node type (e.g. b, inline slug, browser-generated br
 				// that doesn't have class ve-ce-leafNode): descend
-				stack.push( [ $item.contents(), 0 ] );
-				current[ 1 ]++;
+				stack.push( { $contents: $item.contents(), offset: 0 } );
+				current.offset++;
 				current = stack[ stack.length - 1 ];
 				continue;
 			}
 		}
-		current[ 1 ]++;
+		current.offset++;
 	}
 	throw new Error( 'Offset could not be translated to a DOM element and offset: ' + offset );
 };
