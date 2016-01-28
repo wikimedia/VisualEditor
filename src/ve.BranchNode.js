@@ -124,35 +124,39 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
  * This method is pretty expensive. If you need to get different slices of the same content, get
  * the content first, then slice it up locally.
  *
- * TODO: Rewrite this method to not use recursion, because the function call overhead is expensive
- *
  * @method
  * @param {number} offset Offset get node for
  * @param {boolean} [shallow] Do not iterate into child nodes of child nodes
  * @return {ve.Node|null} Node at offset, or null if none was found
  */
 ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
-	var i, length, nodeLength, childNode, nodeOffset;
+	var i, length, nodeLength, childNode,
+		currentNode = this,
+		nodeOffset = 0;
 	if ( offset === 0 ) {
-		return this;
+		return currentNode;
 	}
 	// TODO a lot of logic is duplicated in selectNodes(), abstract that into a traverser or something
-	if ( this.children.length ) {
-		nodeOffset = 0;
-		for ( i = 0, length = this.children.length; i < length; i++ ) {
-			childNode = this.children[ i ];
+	SIBLINGS:
+	while ( currentNode.children.length ) {
+		for ( i = 0, length = currentNode.children.length; i < length; i++ ) {
+			childNode = currentNode.children[ i ];
 			if ( childNode instanceof ve.ce.InternalListNode ) {
 				break;
 			}
 			if ( offset === nodeOffset ) {
-				// The requested offset is right before childNode,
-				// so it's not inside any of this's children, but inside this
-				return this;
+				// The requested offset is right before childNode, so it's not
+				// inside any of currentNode's children, but is inside currentNode
+				return currentNode;
 			}
 			nodeLength = childNode.getOuterLength();
 			if ( offset >= nodeOffset && offset < nodeOffset + nodeLength ) {
 				if ( !shallow && childNode.hasChildren() && childNode.getChildren().length ) {
-					return this.getNodeFromOffset.call( childNode, offset - nodeOffset - 1 );
+					// One of the children contains the node; increment to
+					// enter the node, then iterate through children
+					nodeOffset += 1;
+					currentNode = childNode;
+					continue SIBLINGS;
 				} else {
 					return childNode;
 				}
@@ -160,9 +164,9 @@ ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 			nodeOffset += nodeLength;
 		}
 		if ( offset === nodeOffset ) {
-			// The requested offset is right before this.children[i],
-			// so it's not inside any of this's children, but inside this
-			return this;
+			// The requested offset is right before currentNode.children[i], so it's
+			// not inside any of currentNode's children, but is inside currentNode
+			return currentNode;
 		}
 	}
 	return null;
