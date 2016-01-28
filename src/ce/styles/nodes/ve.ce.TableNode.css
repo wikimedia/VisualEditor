@@ -91,3 +91,9 @@
 	height: 6px;
 	border-bottom: 0;
 }
+
+.ve-ce-tableNode-missingCell {
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 0!important;
+}
