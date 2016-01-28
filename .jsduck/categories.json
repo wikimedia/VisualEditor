@@ -74,8 +74,8 @@
 				"classes": ["ve.dm.InternalList"]
 			},
 			{
-				"name": "Nodes",
-				"classes": ["ve.dm.Document*", "ve.dm.*Node"]
+				"name": "Nodes and documents",
+				"classes": ["ve.dm.Document", "ve.dm.*Slice", "ve.dm.*Node"]
 			},
 			{
 				"name": "Linear data",

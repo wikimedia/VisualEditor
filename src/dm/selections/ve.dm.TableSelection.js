@@ -184,6 +184,49 @@ ve.dm.TableSelection.prototype.getRanges = function () {
 };
 
 /**
+ * Get all the ranges required to build a table slice from the selection
+ *
+ * In addition to the outer ranges of the cells, this also includes the start and
+ * end tags of table rows, sections and the table itself.
+ *
+ * @return {ve.Range[]} Ranges
+ */
+ve.dm.TableSelection.prototype.getTableSliceRanges = function () {
+	var i, node,
+		ranges = [],
+		matrix = this.getTableNode().getMatrix();
+
+	// Arrays are non-overlapping so avoid duplication
+	// by indexing by range.start
+	function pushNode( node ) {
+		var range = node.getOuterRange();
+		ranges[ range.start ] = new ve.Range( range.start, range.start + 1 );
+		ranges[ range.end - 1 ] = new ve.Range( range.end - 1, range.end );
+	}
+
+	// Get the start and end tags of every parent of the cell
+	// up to and including the TableNode
+	for ( i = this.startRow; i <= this.endRow; i++ ) {
+		node = matrix.getRowNode( i );
+		pushNode( node );
+		while ( ( node = node.getParent() ) && node ) {
+			pushNode( node );
+			if ( node instanceof ve.dm.TableNode ) {
+				break;
+			}
+		}
+	}
+
+	return ranges
+		// Condense sparse array
+		.filter( function ( r ) { return r; } )
+		// Add cell ranges
+		.concat( this.getOuterRanges() )
+		// Sort
+		.sort( function ( a, b ) { return a.start - b.start; } );
+};
+
+/**
  * Get outer ranges of the selected cells
  *
  * @return {ve.Range[]} Outer ranges
