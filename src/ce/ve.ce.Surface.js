@@ -328,6 +328,19 @@ ve.ce.Surface.prototype.destroy = function () {
 };
 
 /**
+ * Get linear model offest from a mouse event
+ *
+ * @param {Event} e Event
+ * @return {number} Linear model offset, or -1 if coordinates are out of bounds
+ */
+ve.ce.Surface.prototype.getOffsetFromEventCoords = function ( e ) {
+	return this.getOffsetFromCoords(
+		e.pageX - this.$document.scrollLeft(),
+		e.pageY - this.$document.scrollTop()
+	);
+};
+
+/**
  * Get linear model offset from absolute coords
  *
  * @param {number} x X offset
@@ -956,10 +969,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 			return;
 		}
 	} else {
-		targetOffset = this.getOffsetFromCoords(
-			e.originalEvent.pageX - this.$document.scrollLeft(),
-			e.originalEvent.pageY - this.$document.scrollTop()
-		);
+		targetOffset = this.getOffsetFromEventCoords( e.originalEvent );
 		if ( targetOffset === -1 ) {
 			return;
 		}
