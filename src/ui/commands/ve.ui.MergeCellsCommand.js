@@ -32,7 +32,7 @@ OO.inheritClass( ve.ui.MergeCellsCommand, ve.ui.Command );
 ve.ui.MergeCellsCommand.prototype.isExecutable = function ( fragment ) {
 	// Parent method
 	return ve.ui.MergeCellsCommand.super.prototype.isExecutable.apply( this, arguments ) &&
-		fragment.getSelection().getMatrixCells( true ).length > 1;
+		fragment.getSelection().isMergeable();
 };
 
 /* Registration */

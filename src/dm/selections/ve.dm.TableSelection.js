@@ -305,6 +305,39 @@ ve.dm.TableSelection.prototype.isSingleCell = function () {
 };
 
 /**
+ * Check if the selection is mergeable or unmergeable
+ *
+ * The selection must span more than one matrix cell, but only
+ * one table section.
+ *
+ * @return {boolean} The selection is mergeable or unmergeable
+ */
+ve.dm.TableSelection.prototype.isMergeable = function () {
+	var r, sectionNode, lastSectionNode, matrix;
+
+	if ( this.getMatrixCells( true ).length <= 1 ) {
+		return false;
+	}
+
+	matrix = this.getTableNode().getMatrix();
+
+	function findSection( node ) {
+		return !( node instanceof ve.dm.TableSectionNode );
+	}
+
+	// Check all sections are the same
+	for ( r = this.endRow; r >= this.startRow; r-- ) {
+		sectionNode = matrix.getRowNode( r ).traverseUpstream( findSection );
+		if ( lastSectionNode && sectionNode !== lastSectionNode ) {
+			// Can't merge across sections
+			return false;
+		}
+		lastSectionNode = sectionNode;
+	}
+	return true;
+};
+
+/**
  * Get the selection's table node
  *
  * @return {ve.dm.TableNode} Table node
