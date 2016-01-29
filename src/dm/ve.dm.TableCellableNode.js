@@ -13,6 +13,10 @@
  * @constructor
  */
 ve.dm.TableCellableNode = function VeDmTableCellableNode() {
+	// Events
+	this.connect( this, {
+		attributeChange: 'onCellableAttributeChange'
+	} );
 };
 
 /* Inheritance */
@@ -122,12 +126,12 @@ ve.dm.TableCellableNode.prototype.getStyle = function () {
  * @param {string} from Old value
  * @param {string} to New value
  */
-ve.dm.TableCellableNode.prototype.onAttributeChange = function ( key ) {
+ve.dm.TableCellableNode.prototype.onCellableAttributeChange = function ( key ) {
 	if ( this.getParent() && ( key === 'colspan' || key === 'rowspan' ) ) {
 		// In practice the matrix should already be invalidated as you
 		// shouldn't change a span without adding/removing other cells,
 		// but it is possible to just change spans if you don't mind a
 		// non-rectangular table.
-		this.getParent().getParent().getParent().getMatrix().invalidate();
+		this.findParent( ve.dm.TableNode ).getMatrix().invalidate();
 	}
 };

@@ -321,13 +321,9 @@ ve.dm.TableSelection.prototype.isMergeable = function () {
 
 	matrix = this.getTableNode().getMatrix();
 
-	function findSection( node ) {
-		return !( node instanceof ve.dm.TableSectionNode );
-	}
-
 	// Check all sections are the same
 	for ( r = this.endRow; r >= this.startRow; r-- ) {
-		sectionNode = matrix.getRowNode( r ).traverseUpstream( findSection );
+		sectionNode = matrix.getRowNode( r ).findParent( ve.dm.TableSectionNode );
 		if ( lastSectionNode && sectionNode !== lastSectionNode ) {
 			// Can't merge across sections
 			return false;
