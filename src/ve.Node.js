@@ -377,3 +377,16 @@ ve.Node.prototype.traverseUpstream = function ( callback ) {
 	}
 	return null;
 };
+
+/**
+ * Traverse upstream until a parent of a specific type is found
+ *
+ * @method
+ * @param {Function} type Node type to find
+ * @return {ve.Node|null} Ancestor of this node matching the specified type
+ */
+ve.Node.prototype.findParent = function ( type ) {
+	return this.traverseUpstream( function ( node ) {
+		return !( node instanceof type );
+	} );
+};

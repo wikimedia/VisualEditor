@@ -21,11 +21,6 @@ ve.dm.TableCellNode = function VeDmTableCellNode() {
 
 	// Mixin constructor
 	ve.dm.TableCellableNode.call( this );
-
-	// Events
-	this.connect( this, {
-		attributeChange: 'onAttributeChange'
-	} );
 };
 
 /* Inheritance */
@@ -100,25 +95,6 @@ ve.dm.TableCellNode.static.createData = function ( options ) {
 		{ type: '/paragraph' }
 	];
 	return [ opening ].concat( content ).concat( [ { type: '/tableCell' } ] );
-};
-
-/* Methods */
-
-/**
- * Handle attributes changes
- *
- * @param {string} key Attribute key
- * @param {string} from Old value
- * @param {string} to New value
- */
-ve.dm.TableCellNode.prototype.onAttributeChange = function ( key ) {
-	if ( this.getParent() && ( key === 'colspan' || key === 'rowspan' ) ) {
-		// In practice the matrix should already be invalidated as you
-		// shouldn't change a span without adding/removing other cells,
-		// but it is possible to just change spans if you don't mind a
-		// non-rectangular table.
-		this.getParent().getParent().getParent().getMatrix().invalidate();
-	}
 };
 
 /* Registration */

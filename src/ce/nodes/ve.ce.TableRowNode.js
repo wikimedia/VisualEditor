@@ -59,7 +59,7 @@ ve.ce.TableRowNode.prototype.onSplice = function () {
  */
 ve.ce.TableRowNode.prototype.setupMissingCell = function () {
 	var row,
-		matrix = this.getParent().getParent().getModel().getMatrix(),
+		matrix = this.findParent( ve.ce.TableNode ).getModel().getMatrix(),
 		maxColCount = matrix.getMaxColCount();
 
 	row = matrix.getRowNodes().indexOf( this.model );
@@ -85,7 +85,7 @@ ve.ce.TableRowNode.prototype.onMissingCellClick = function () {
 	var row, col,
 		surfaceModel = this.getRoot().getSurface().getModel(),
 		documentModel =  surfaceModel.getDocument(),
-		tableModel = this.getParent().getParent().getModel(),
+		tableModel = this.findParent( ve.ce.TableNode ).getModel(),
 		matrix = tableModel.getMatrix();
 
 	// Add a cell onto the end of the row
