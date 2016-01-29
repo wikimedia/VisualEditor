@@ -105,11 +105,16 @@ ve.ce.TableNode.prototype.onTeardown = function () {
  * @param {jQuery.Event} e Double click event
  */
 ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
+	var offset;
 	if ( !this.getCellNodeFromTarget( e.target ) ) {
 		return;
 	}
 	if ( this.surface.getModel().getSelection() instanceof ve.dm.TableSelection ) {
 		this.setEditing( true );
+		offset = this.surface.getOffsetFromEventCoords( e.originalEvent );
+		if ( offset !== -1 ) {
+			this.surface.getModel().setLinearSelection( new ve.Range( offset ) );
+		}
 	}
 };
 
