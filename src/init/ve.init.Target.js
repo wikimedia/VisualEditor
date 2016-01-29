@@ -177,7 +177,8 @@ ve.init.Target.static.importRules = {
 			'textStyle/span', 'textStyle/font',
 			// Nodes
 			'alienInline', 'alienBlock', 'comment'
-		]
+		],
+		nodeSanitization: true
 	},
 	all: null
 };

@@ -220,6 +220,14 @@ ve.dm.Node.static.blacklistedAnnotationTypes = [];
 ve.dm.Node.static.defaultAttributes = {};
 
 /**
+ * Sanitize the node's linear model data, typically if it was generated from an external source (e.g. copied HTML)
+ *
+ * @param {Object} dataElement Linear model element, modified in place
+ */
+ve.dm.Node.static.sanitize = function () {
+};
+
+/**
  * Remap the store indexes stored in a linear model data element.
  *
  * The default implementation is empty. Nodes should override this if they store store indexes in

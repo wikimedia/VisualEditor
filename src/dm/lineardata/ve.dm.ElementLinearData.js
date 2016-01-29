@@ -995,10 +995,11 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {boolean} [rules.plainText] Remove all formatting for plain text import
  * @param {boolean} [rules.allowBreaks] Allow <br> line breaks, otherwise the node will be split
  * @param {boolean} [rules.preserveHtmlWhitespace] Preserve non-semantic HTML whitespace
+ * @param {boolean} [rules.nodeSanitization] Apply per-type node sanitizations via ve.dm.Node#sanitize
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentBranches ) {
-	var i, len, annotations, emptySet, setToRemove, type, canContainContent, contentElement, isOpen,
+	var i, len, annotations, emptySet, setToRemove, type, canContainContent, contentElement, isOpen, nodeClass,
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
 	if ( rules.plainText ) {
@@ -1119,9 +1120,16 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 				this.setAnnotationsAtOffset( i, annotations );
 			}
 		}
-		if ( this.isOpenElementData( i ) && rules.removeOriginalDomElements ) {
-			// Remove originalDomElements from nodes
-			delete this.getData( i ).originalDomElements;
+		if ( this.isOpenElementData( i ) ) {
+			if ( rules.nodeSanitization ) {
+				nodeClass = ve.dm.modelRegistry.lookup( this.getType( i ) );
+				// Perform per-class sanitizations:
+				nodeClass.static.sanitize( this.getData( i ), rules );
+			}
+			if ( rules.removeOriginalDomElements ) {
+				// Remove originalDomElements from nodes
+				delete this.getData( i ).originalDomElements;
+			}
 		}
 	}
 };
