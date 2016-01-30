@@ -38,6 +38,10 @@
 	background-image: none;
 }
 
+.ve-ui-desktopContext-floating {
+	position: fixed;
+}
+
 .ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
 	margin-top: 0.25em;
 }

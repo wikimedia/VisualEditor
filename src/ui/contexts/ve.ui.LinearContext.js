@@ -310,6 +310,7 @@ ve.ui.LinearContext.prototype.createInspectorWindowManager = null;
  */
 ve.ui.LinearContext.prototype.destroy = function () {
 	// Disconnect events
+	this.surface.getModel().disconnect( this );
 	this.inspectors.disconnect( this );
 
 	// Destroy inspectors WindowManager
