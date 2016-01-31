@@ -51,14 +51,8 @@ ve.ce.TableNode.prototype.onSetup = function () {
 	// Overlay
 	this.$selectionBox = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box' );
 	this.$selectionBoxAnchor = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box-anchor' );
-	this.colContext = new ve.ui.TableContext( this, 'col', {
-		classes: [ 've-ui-tableContext-colContext' ],
-		indicator: 'down'
-	} );
-	this.rowContext = new ve.ui.TableContext( this, 'row', {
-		classes: [ 've-ui-tableContext-rowContext' ],
-		indicator: 'next'
-	} );
+	this.colContext = new ve.ui.TableLineContext( this, 'col' );
+	this.rowContext = new ve.ui.TableLineContext( this, 'row' );
 
 	this.$overlay = $( '<div>' )
 		.addClass( 've-ce-tableNodeOverlay oo-ui-element-hidden' )

@@ -18,21 +18,21 @@
  * @param {Object} [config] Configuration options
  * @cfg {string} [indicator] Indicator to use on button
  */
-ve.ui.TableContext = function VeUiTableContext( tableNode, itemGroup, config ) {
+ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, config ) {
 	config = config || {};
 
 	// Parent constructor
-	ve.ui.TableContext.super.call( this, tableNode.surface.getSurface(), config );
+	ve.ui.TableLineContext.super.call( this, tableNode.surface.getSurface(), config );
 
 	// Properties
 	this.tableNode = tableNode;
 	this.itemGroup = itemGroup;
 	this.indicator = new OO.ui.IndicatorWidget( {
-		classes: [ 've-ui-tableContext-indicator' ],
-		indicator: config.indicator
+		classes: [ 've-ui-tableLineContext-indicator' ],
+		indicator: itemGroup === 'col' ? 'down' : 'next'
 	} );
 	this.popup = new OO.ui.PopupWidget( {
-		classes: [ 've-ui-tableContext-menu' ],
+		classes: [ 've-ui-tableLineContext-menu' ],
 		$container: this.surface.$element,
 		width: 180
 	} );
@@ -43,18 +43,23 @@ ve.ui.TableContext = function VeUiTableContext( tableNode, itemGroup, config ) {
 
 	// Initialization
 	this.popup.$body.append( this.$group );
-	this.$element.addClass( 've-ui-tableContext' ).append( this.indicator.$element, this.popup.$element );
+	// The following classes can be used here:
+	// * ve-ui-tableLineContext-col
+	// * ve-ui-tableLineContext-row
+	this.$element
+		.addClass( 've-ui-tableLineContext ve-ui-tableLineContext-' + itemGroup )
+		.append( this.indicator.$element, this.popup.$element );
 	// Visibility is handled by the table overlay
 	this.toggle( true );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.TableContext, ve.ui.Context );
+OO.inheritClass( ve.ui.TableLineContext, ve.ui.Context );
 
 /* Static Properties */
 
-ve.ui.TableContext.static.groups = {
+ve.ui.TableLineContext.static.groups = {
 	col: [ 'insertColumnBefore', 'insertColumnAfter', 'moveColumnBefore', 'moveColumnAfter', 'deleteColumn' ],
 	row: [ 'insertRowBefore', 'insertRowAfter', 'moveRowBefore', 'moveRowAfter', 'deleteRow' ]
 };
@@ -64,7 +69,7 @@ ve.ui.TableContext.static.groups = {
 /**
  * @inheritdoc
  */
-ve.ui.TableContext.prototype.getRelatedSources = function () {
+ve.ui.TableLineContext.prototype.getRelatedSources = function () {
 	var i, l,
 		items = this.constructor.static.groups[ this.itemGroup ];
 
@@ -84,7 +89,7 @@ ve.ui.TableContext.prototype.getRelatedSources = function () {
 /**
  * @inheritdoc
  */
-ve.ui.TableContext.prototype.onContextItemCommand = function () {
+ve.ui.TableLineContext.prototype.onContextItemCommand = function () {
 	this.toggleMenu( false );
 };
 
@@ -93,7 +98,7 @@ ve.ui.TableContext.prototype.onContextItemCommand = function () {
  *
  * @param {jQuery.Event} e Mouse down event
  */
-ve.ui.TableContext.prototype.onIndicatorMouseDown = function ( e ) {
+ve.ui.TableLineContext.prototype.onIndicatorMouseDown = function ( e ) {
 	e.preventDefault();
 	this.toggleMenu();
 };
@@ -103,7 +108,7 @@ ve.ui.TableContext.prototype.onIndicatorMouseDown = function ( e ) {
  *
  * @param {jQuery.Event} e Mouse down event
  */
-ve.ui.TableContext.prototype.onDocumentMouseDown = function ( e ) {
+ve.ui.TableLineContext.prototype.onDocumentMouseDown = function ( e ) {
 	if ( !$( e.target ).closest( this.$element ).length ) {
 		this.toggleMenu( false );
 	}
@@ -112,7 +117,7 @@ ve.ui.TableContext.prototype.onDocumentMouseDown = function ( e ) {
 /**
  * @inheritdoc
  */
-ve.ui.TableContext.prototype.toggleMenu = function ( show ) {
+ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
 	var dir, surfaceModel, surfaceView;
 
 	surfaceModel = this.surface.getModel();
@@ -133,5 +138,5 @@ ve.ui.TableContext.prototype.toggleMenu = function ( show ) {
 	}
 
 	// Parent method - call after selection has been possible modified above
-	ve.ui.TableContext.super.prototype.toggleMenu.call( this, show );
+	ve.ui.TableLineContext.super.prototype.toggleMenu.call( this, show );
 };

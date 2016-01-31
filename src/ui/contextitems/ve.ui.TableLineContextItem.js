@@ -1,11 +1,11 @@
 /*!
- * VisualEditor TableContextItem class.
+ * VisualEditor TableLineContextItem class.
  *
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 /**
- * Context item for a table tool.
+ * Context item for a table line (row or column) toolset.
  *
  * @class
  * @abstract
@@ -16,30 +16,30 @@
  * @param {Function} tool Tool class the item is based on
  * @param {Object} config Configuration options
  */
-ve.ui.TableContextItem = function VeUiTableContextItem() {
+ve.ui.TableLineContextItem = function VeUiTableLineContextItem() {
 	// Parent constructor
-	ve.ui.TableContextItem.super.apply( this, arguments );
+	ve.ui.TableLineContextItem.super.apply( this, arguments );
 
 	this.actionButton = new OO.ui.ButtonWidget( {
 		framed: false,
-		classes: [ 've-ui-tableContextItem-actionButton' ]
+		classes: [ 've-ui-tableLineContextItem-actionButton' ]
 	} );
 
 	this.actionButton.connect( this, { click: 'onActionButtonClick' } );
 
 	// Initialization
 	this.$element
-		.addClass( 've-ui-tableContextItem' )
+		.addClass( 've-ui-tableLineContextItem' )
 		.append( this.actionButton.$element );
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.TableContextItem, ve.ui.ContextItem );
+OO.inheritClass( ve.ui.TableLineContextItem, ve.ui.ContextItem );
 
 /* Static Properties */
 
-ve.ui.TableContextItem.static.name = 'table';
+ve.ui.TableLineContextItem.static.name = 'tableLine';
 
 /**
  * Title to use for context item action
@@ -48,7 +48,7 @@ ve.ui.TableContextItem.static.name = 'table';
  * @property {string}
  * @inheritable
  */
-ve.ui.TableContextItem.static.title = null;
+ve.ui.TableLineContextItem.static.title = null;
 
 /* Methods */
 
@@ -59,7 +59,7 @@ ve.ui.TableContextItem.static.title = null;
  *
  * @protected
  */
-ve.ui.TableContextItem.prototype.onActionButtonClick = function () {
+ve.ui.TableLineContextItem.prototype.onActionButtonClick = function () {
 	var command = this.getCommand();
 
 	if ( command ) {
@@ -73,16 +73,16 @@ ve.ui.TableContextItem.prototype.onActionButtonClick = function () {
  *
  * @return {jQuery|string|OO.ui.HtmlSnippet|Function} Tool title
  */
-ve.ui.TableContextItem.prototype.getTitle = function () {
+ve.ui.TableLineContextItem.prototype.getTitle = function () {
 	return this.constructor.static.title;
 };
 
 /**
  * @inheritdoc
  */
-ve.ui.TableContextItem.prototype.setup = function () {
+ve.ui.TableLineContextItem.prototype.setup = function () {
 	// Parent method
-	ve.ui.TableContextItem.super.prototype.setup.call( this );
+	ve.ui.TableLineContextItem.super.prototype.setup.call( this );
 
 	this.actionButton
 		.setIcon( this.constructor.static.icon )
@@ -112,9 +112,9 @@ ve.ui.TableContextItem.prototype.setup = function () {
 			// * ve.ui.InsertRowAfterContextItem
 			className = 'Insert' + modeName + sideName + 'ContextItem';
 			ve.ui[ className ] = function VeUiInsertRowOrColumnContextItem() {
-				ve.ui.TableContextItem.apply( this, arguments );
+				ve.ui.TableLineContextItem.apply( this, arguments );
 			};
-			OO.inheritClass( ve.ui[ className ], ve.ui.TableContextItem );
+			OO.inheritClass( ve.ui[ className ], ve.ui.TableLineContextItem );
 			ve.ui[ className ].static.name = 'insert' + modeName + sideName;
 			ve.ui[ className ].static.group = 'table-' + mode;
 			ve.ui[ className ].static.icon = 'tableAdd' + modeName + sideName;
@@ -135,9 +135,9 @@ ve.ui.TableContextItem.prototype.setup = function () {
 			// * ve.ui.MoveRowAfterContextItem
 			className = 'Move' + modeName + sideName + 'ContextItem';
 			ve.ui[ className ] = function VeUiMoveRowOrColumnContextItem() {
-				ve.ui.TableContextItem.apply( this, arguments );
+				ve.ui.TableLineContextItem.apply( this, arguments );
 			};
-			OO.inheritClass( ve.ui[ className ], ve.ui.TableContextItem );
+			OO.inheritClass( ve.ui[ className ], ve.ui.TableLineContextItem );
 			ve.ui[ className ].static.name = 'move' + modeName + sideName;
 			ve.ui[ className ].static.group = 'table-' + mode;
 			ve.ui[ className ].static.icon = 'tableMove' + modeName + sideName;
@@ -153,7 +153,7 @@ ve.ui.TableContextItem.prototype.setup = function () {
 				var selection, matrix;
 
 				// Parent method
-				ve.ui.TableContextItem.prototype.setup.call( this );
+				ve.ui.TableLineContextItem.prototype.setup.call( this );
 
 				selection = this.context.getSurface().getModel().getSelection();
 
@@ -183,9 +183,9 @@ ve.ui.TableContextItem.prototype.setup = function () {
 		// * ve.ui.DeleteRowContextItem
 		className = 'Delete' + modeName + 'ContextItem';
 		ve.ui[ className ] = function VeUiDeleteRowOrColumnContextItem() {
-			ve.ui.TableContextItem.apply( this, arguments );
+			ve.ui.TableLineContextItem.apply( this, arguments );
 		};
-		OO.inheritClass( ve.ui[ className ], ve.ui.TableContextItem );
+		OO.inheritClass( ve.ui[ className ], ve.ui.TableLineContextItem );
 		ve.ui[ className ].static.name = 'delete' + modeName;
 		ve.ui[ className ].static.group = 'table-' + mode;
 		ve.ui[ className ].static.icon = 'remove';
