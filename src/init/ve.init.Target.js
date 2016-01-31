@@ -117,15 +117,6 @@ ve.init.Target.static.toolbarGroups = [
 	{
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		include: [ 'specialCharacter' ]
-	},
-	// Table
-	{
-		header: OO.ui.deferMsg( 'visualeditor-toolbar-table' ),
-		type: 'list',
-		icon: 'table',
-		indicator: 'down',
-		include: [ { group: 'table' } ],
-		demote: [ 'deleteTable' ]
 	}
 ];
 

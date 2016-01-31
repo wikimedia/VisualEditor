@@ -35,7 +35,7 @@ ve.ui.TableAction.static.name = 'table';
  */
 ve.ui.TableAction.static.methods = [
 	'create', 'insert', 'moveRelative', 'move', 'delete', 'importTable',
-	'changeCellStyle', 'mergeCells', 'caption', 'enterTableCell'
+	'changeCellStyle', 'mergeCells', 'enterTableCell'
 ];
 
 /* Methods */
@@ -445,63 +445,6 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 				this.deleteRowsOrColumns( matrix, 'col', c, c );
 			}
 		}
-	}
-	return true;
-};
-
-/**
- * Toggle the existence of a caption node on the table
- *
- * @return {boolean} Action was executed
- */
-ve.ui.TableAction.prototype.caption = function () {
-	var fragment, captionNode, nodes, node, tableFragment,
-		surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection();
-
-	if ( selection instanceof ve.dm.TableSelection ) {
-		captionNode = selection.getTableNode().getCaptionNode();
-	} else if ( selection instanceof ve.dm.LinearSelection ) {
-		nodes = surfaceModel.getFragment().getSelectedLeafNodes();
-
-		node = nodes[ 0 ];
-		while ( node ) {
-			if ( node instanceof ve.dm.TableCaptionNode ) {
-				captionNode = node;
-				break;
-			}
-			node = node.getParent();
-		}
-		if ( !captionNode ) {
-			return;
-		}
-		tableFragment = surfaceModel.getFragment( new ve.dm.TableSelection(
-			surfaceModel.getDocument(),
-			captionNode.getParent().getOuterRange(),
-			0, 0, 0, 0,
-			true
-		) );
-	} else {
-		return false;
-	}
-
-	if ( captionNode ) {
-		fragment = surfaceModel.getLinearFragment( captionNode.getOuterRange(), true );
-		fragment.removeContent();
-		if ( tableFragment ) {
-			tableFragment.select();
-		}
-	} else {
-		fragment = surfaceModel.getLinearFragment( new ve.Range( selection.tableRange.start + 1 ), true );
-
-		fragment.insertContent( [
-			{ type: 'tableCaption' },
-			{ type: 'paragraph', internal: { generated: 'wrapper' } },
-			{ type: '/paragraph' },
-			{ type: '/tableCaption' }
-		], false );
-
-		fragment.collapseToStart().adjustLinearSelection( 2, 2 ).select();
 	}
 	return true;
 };

@@ -74,6 +74,29 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 };
 
 /**
+ * Get the bounding rectangle of the parent table
+ *
+ * @return {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
+ */
+ve.ce.TableSelection.prototype.getTableBoundingRect = function () {
+	var boundingRect,
+		surface = this.getSurface(),
+		tableNode = surface.getActiveTableNode(),
+		surfaceRect = surface.getSurface().getBoundingClientRect();
+
+	if ( !tableNode ) {
+		return null;
+	}
+
+	boundingRect = tableNode.$element[ 0 ].getBoundingClientRect();
+
+	if ( !boundingRect || !surfaceRect ) {
+		return null;
+	}
+	return ve.translateRect( boundingRect, -surfaceRect.left, -surfaceRect.top );
+};
+
+/**
  * @inheritdoc
  */
 ve.ce.TableSelection.prototype.isFocusedNode = function () {

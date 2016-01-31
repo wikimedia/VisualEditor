@@ -218,7 +218,9 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 	currentSelection = this.surface.getModel().getSelection();
 	isTableSelection = ( startingSelection || currentSelection ) instanceof ve.dm.TableSelection;
 
-	boundingRect = surface.getSelection( startingSelection ).getSelectionBoundingRect();
+	boundingRect = isTableSelection ?
+		surface.getSelection( startingSelection ).getTableBoundingRect() :
+		surface.getSelection( startingSelection ).getSelectionBoundingRect();
 
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.

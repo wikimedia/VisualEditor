@@ -23,7 +23,7 @@ function runTableActionTest( assert, html, method, args, selection, expectedData
 	}
 }
 
-QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption', function ( assert ) {
+QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function ( assert ) {
 	var i,
 		expected = 0,
 		tableCellTail = [
@@ -442,62 +442,6 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / caption',
 					data[ 40 ].attributes.style = 'header';
 				},
 				msg: 'change style to header'
-			},
-			{
-				html: ve.dm.example.mergedCellsHtml,
-				selection: {
-					type: 'table',
-					tableRange: new ve.Range( 0, 171 ),
-					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
-				},
-				method: 'caption',
-				args: [],
-				expectedData: function ( data ) {
-					data.splice( 1, 0,
-						{ type: 'tableCaption' },
-						{ type: 'paragraph', internal: { generated: 'wrapper' } },
-						{ type: '/paragraph' },
-						{ type: '/tableCaption' }
-					);
-				},
-				expectedSelection: {
-					type: 'linear',
-					range: new ve.Range( 3 )
-				},
-				msg: 'add caption'
-			},
-			{
-				html: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
-				selection: {
-					type: 'table',
-					tableRange: new ve.Range( 0, 20 ),
-					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
-				},
-				method: 'caption',
-				args: [],
-				expectedData: function ( data ) {
-					data.splice( 1, 7 );
-				},
-				msg: 'remove caption from table selection'
-			},
-			{
-				html: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
-				selection: {
-					type: 'linear',
-					range: new ve.Range( 5 )
-				},
-				method: 'caption',
-				args: [],
-				expectedData: function ( data ) {
-					data.splice( 1, 7 );
-				},
-				msg: 'remove caption from linear selection inside caption'
 			}
 		];
 

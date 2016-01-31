@@ -68,15 +68,6 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		indicator: 'down',
 		include: '*'
-	},
-	// Table
-	{
-		header: OO.ui.deferMsg( 'visualeditor-toolbar-table' ),
-		type: 'list',
-		icon: 'table',
-		indicator: 'down',
-		include: [ { group: 'table' } ],
-		demote: [ 'deleteTable' ]
 	}
 ];
 
