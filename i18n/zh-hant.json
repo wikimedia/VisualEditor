@@ -16,7 +16,8 @@
 			"Cwlin0416",
 			"Vincent Liu",
 			"Deryck Chan",
-			"LNDDYL"
+			"LNDDYL",
+			"Yejianfei"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -66,7 +67,7 @@
 	"visualeditor-find-and-replace-replace-all-button": "全部取代",
 	"visualeditor-find-and-replace-replace-button": "取代",
 	"visualeditor-find-and-replace-replace-text": "取代",
-	"visualeditor-find-and-replace-results": "第 $2 筆，共 $1 筆",
+	"visualeditor-find-and-replace-results": "第 $1 筆，共 $2 筆",
 	"visualeditor-find-and-replace-title": "搜尋與取代",
 	"visualeditor-formatdropdown-format-blockquote": "引用區塊",
 	"visualeditor-formatdropdown-format-heading-label": "標題 (1~6)",
@@ -98,7 +99,7 @@
 	"visualeditor-mediasizewidget-button-originaldimensions": "使用原始大小",
 	"visualeditor-mediasizewidget-label-custom": "自訂",
 	"visualeditor-mediasizewidget-label-defaulterror": "尺寸數值無效。",
-	"visualeditor-mediasizewidget-label-scale": "比例：縮圖標準大小的",
+	"visualeditor-mediasizewidget-label-scale": "比例尺",
 	"visualeditor-mediasizewidget-label-scale-percent": "%",
 	"visualeditor-mediasizewidget-sizeoptions-custom": "自訂",
 	"visualeditor-mediasizewidget-sizeoptions-default": "預設",
@@ -107,7 +108,7 @@
 	"visualeditor-shortcuts-formatting": "段落格式",
 	"visualeditor-shortcuts-history": "歷史記錄",
 	"visualeditor-shortcuts-other": "其他",
-	"visualeditor-shortcuts-sequence-notice": "類型",
+	"visualeditor-shortcuts-sequence-notice": "輸入",
 	"visualeditor-shortcuts-text-style": "文字樣式",
 	"visualeditor-slug-insert": "插入段落",
 	"visualeditor-specialcharacter-button-tooltip": "特殊字元",
