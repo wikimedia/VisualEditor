@@ -1,8 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Wisdom"
+			"Wisdom",
+			"Munkhzaya.E"
 		]
 	},
-	"visualeditor-dialog-action-insert": "Текст нэмэх"
+	"visualeditor-dialog-action-insert": "Текст нэмэх",
+	"visualeditor-table-move-col-after": "Дараа нь оруулах",
+	"visualeditor-table-move-col-before": "Өмнө нь оруулах",
+	"visualeditor-table-move-row-after": "Доор нь оруулах",
+	"visualeditor-table-move-row-before": "Дээр нь оруулах"
 }
