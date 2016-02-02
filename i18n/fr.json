@@ -33,7 +33,8 @@
 			"Windes",
 			"Weft",
 			"Wladek92",
-			"Macofe"
+			"Macofe",
+			"Litlok"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
@@ -73,6 +74,8 @@
 	"visualeditor-dialog-error-dismiss": "Revenir en arrière",
 	"visualeditor-dialog-language-auto-direction": "Auto",
 	"visualeditor-dialog-language-search-title": "Sélectionner la langue",
+	"visualeditor-dialog-table-caption": "Légende",
+	"visualeditor-dialog-table-title": "Propriétés du tableau",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-done": "Fait",
@@ -135,6 +138,7 @@
 	"visualeditor-specialcharacterinspector-title": "Caractères spéciaux",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"Lettres \": {\n\t\t\"Æ\" : \"Æ\",\n\t\t\"æ\" : \"æ\",\n\t\t\"À\" : \"À\",\n\t\t\"à\" : \"à\",\n\t\t\"Â\" : \"Â\",\n\t\t\"â\" : \"â\",\n\t\t\"Ä\" : \"Ä\",\n\t\t\"ä\" : \"ä\",\n\t\t\"Å\" : \"Å\",\n\t\t\"å\" : \"å\",\n\t\t\"Ç\" : \"Ç\",\n\t\t\"ç\" : \"ç\",\n\t\t\"È\" : \"È\",\n\t\t\"è\" : \"è\",\n\t\t\"É\" : \"É\",\n\t\t\"é\" : \"é\",\n\t\t\"Ê\" : \"Ê\",\n\t\t\"ê\" : \"ê\",\n\t\t\"Ë\" : \"Ë\",\n\t\t\"ë\" : \"ë\",\n\t\t\"Î\" : \"Î\",\n\t\t\"î\" : \"î\",\n\t\t\"Ï\" : \"Ï\",\n\t\t\"ï\" : \"ï\",\n\t\t\"Ô\" : \"Ô\",\n\t\t\"ô\" : \"ô\",\n\t\t\"Ö\" : \"Ö\",\n\t\t\"ö\" : \"ö\",\n\t\t\"Ø\" : \"Ø\",\n\t\t\"ø\" : \"ø\",\n\t\t\"Ù\" : \"Ù\",\n\t\t\"ù\" : \"ù\",\n\t\t\"Û\" : \"Û\",\n\t\t\"û\" : \"û\",\n\t\t\"Ü\" : \"Ü\",\n\t\t\"ü\" : \"ü\",\n\t\t\"Ÿ\" : \"Ÿ\",\n\t\t\"ÿ\" : \"ÿ\",\n\t\t\"Œ\" : \"Œ\",\n\t\t\"œ\" : \"œ\"\n\t},\n        \"Symboles \": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"′\": \"′\",\n\t\t\"″\": \"″\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"« »\" : \"« »\",\n\t\t\"“”\" : \"“”\",\n\t\t\"#\" : \"#\",\n\t\t\"@\" : \"@\",\n\t\t\"|\" : \"|\",\n\t\t\"~\" : \"~\",\n\t\t\"§\": \"§\",\n\t\t\"•\" : \"•\",\n\t\t\"·\": \"·\",\n\t\t\"…\" : \"…\",\n\t\t\"€\" : \"€\"\n\t},\n\t\"Symboles mathématiques \": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\",\n\t\t\"¹\" : \"¹\",\n\t\t\"²\" : \"²\",\n\t\t\"³\" : \"³\",\n\t\t\"⁴\" : \"⁴\",\n\t\t\"⁵\" : \"⁵\",\n\t\t\"⁶\" : \"⁶\",\n\t\t\"⁷\" : \"⁷\",\n\t\t\"⁸\" : \"⁸\",\n\t\t\"⁹\" : \"⁹\",\n\t\t\"⁰\" : \"⁰\",\n\t\t\"½\" : \"½\"\n\t}\n}",
 	"visualeditor-table-caption": "Légende",
+	"visualeditor-table-contextitem-properties": "Propriétés",
 	"visualeditor-table-delete-col": "Supprimer {{PLURAL:$1|la colonne|les colonnes}}",
 	"visualeditor-table-delete-row": "Supprimer {{PLURAL:$1|la ligne|les lignes}}",
 	"visualeditor-table-format-data": "Cellule de contenu",
@@ -145,6 +149,8 @@
 	"visualeditor-table-insert-row-before": "Insérer au-dessus",
 	"visualeditor-table-insert-table": "Tableau",
 	"visualeditor-table-merge-cells": "Fusionner les cellules",
+	"visualeditor-table-merge-cells-merge": "Fusionner",
+	"visualeditor-table-merge-cells-unmerge": "Scinder",
 	"visualeditor-table-move-col-after": "Déplacer après",
 	"visualeditor-table-move-col-before": "Déplacer avant",
 	"visualeditor-table-move-row-after": "Déplacer au-dessous",

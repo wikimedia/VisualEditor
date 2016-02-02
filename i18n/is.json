@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Maxí",
-			"Snævar"
+			"Snævar",
+			"Sveinki"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -39,6 +40,7 @@
 	"visualeditor-dialog-error-dismiss": "Fara til baka",
 	"visualeditor-dialog-language-auto-direction": "Sjálfvalin",
 	"visualeditor-dialog-language-search-title": "Velja tungumál",
+	"visualeditor-dialog-table-title": "Eiginleikar töflu",
 	"visualeditor-find-and-replace-done": "Búið",
 	"visualeditor-find-and-replace-find-text": "Finna",
 	"visualeditor-find-and-replace-invalid-regex": "Ógild regluleg segð",
@@ -95,9 +97,9 @@
 	"visualeditor-specialcharacter-button-tooltip": "Sérstafur",
 	"visualeditor-specialcharacterinspector-title": "Sérstafur",
 	"visualeditor-table-caption": "Myndatexti",
+	"visualeditor-table-contextitem-properties": "Eiginleikar",
 	"visualeditor-table-delete-col": "Eyða {{PLURAL:$1|dálki|dálkum}}",
 	"visualeditor-table-delete-row": "Eyða {{PLURAL:$1|röð|röðum}}",
-	"visualeditor-table-delete-table": "Eyða töflu",
 	"visualeditor-table-format-data": "Efnissella",
 	"visualeditor-table-format-header": "Haussella",
 	"visualeditor-table-insert-col-after": "Setja inn eftir",
@@ -106,8 +108,10 @@
 	"visualeditor-table-insert-row-before": "Setja inn fyrir ofan",
 	"visualeditor-table-insert-table": "Tafla",
 	"visualeditor-table-merge-cells": "Sameina sellur",
-	"visualeditor-tablecell-tooltip": "Tvísmella til að breyta reit",
+	"visualeditor-table-merge-cells-merge": "Sameina",
+	"visualeditor-table-merge-cells-unmerge": "Taka aftur sameiningu",
 	"visualeditor-tablecell-contextitem": "Töflureitur",
+	"visualeditor-tablecell-tooltip": "Tvísmella til að breyta reit",
 	"visualeditor-toolbar-format-tooltip": "Snið málsgreinar",
 	"visualeditor-toolbar-history": "Breytingaskrá",
 	"visualeditor-toolbar-insert": "Setja inn",
