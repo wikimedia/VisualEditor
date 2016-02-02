@@ -50,7 +50,8 @@ ve.ce.TableRowNode.prototype.onSplice = function () {
 	ve.ce.TableRowNode.super.prototype.onSplice.apply( this, arguments );
 
 	if ( this.getRoot() ) {
-		this.setupMissingCell();
+		// Defer call until after other changes in this cycle have been made
+		setTimeout( this.setupMissingCell.bind( this ) );
 	}
 };
 
