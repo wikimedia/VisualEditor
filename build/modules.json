@@ -28,7 +28,10 @@
 	},
 	"oojs-ui": {
 		"scripts": [
-			"lib/oojs-ui/oojs-ui.js"
+			"lib/oojs-ui/oojs-ui-core.js",
+			"lib/oojs-ui/oojs-ui-widgets.js",
+			"lib/oojs-ui/oojs-ui-toolbars.js",
+			"lib/oojs-ui/oojs-ui-windows.js"
 		],
 		"dependencies": [
 			"oojs",
