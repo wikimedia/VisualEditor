@@ -8,7 +8,8 @@
 			"Ydyashad",
 			"संतोष दहिवळ",
 			"NehalDaveND",
-			"Sau6402"
+			"Sau6402",
+			"Cherishsantosh"
 		]
 	},
 	"visualeditor": "यथादृश्यसंपादक",
@@ -43,6 +44,7 @@
 	"visualeditor-dialog-command-help-title": "कळफलक लघुपथ",
 	"visualeditor-dialog-error-dismiss": "परत जा",
 	"visualeditor-dialog-language-search-title": "भाषा निवडा",
+	"visualeditor-dialog-table-title": "सारणी",
 	"visualeditor-find-and-replace-done": "झाले",
 	"visualeditor-find-and-replace-find-text": "शोधा",
 	"visualeditor-find-and-replace-match-case": "’केस’जुळवा",
@@ -91,8 +93,9 @@
 	"visualeditor-specialcharacter-button-tooltip": "विशेष वर्ण",
 	"visualeditor-specialcharacterinspector-title": "विशेष वर्ण",
 	"visualeditor-table-caption": "मथळा",
-	"visualeditor-table-delete-table": "संचिका वगळा",
+	"visualeditor-table-contextitem-properties": "गुणधर्म",
 	"visualeditor-table-insert-table": "सारणी",
+	"visualeditor-table-merge-cells-merge": "विलीन",
 	"visualeditor-toolbar-history": "इतिहास",
 	"visualeditor-toolbar-insert": "समाविष्ट करा",
 	"visualeditor-toolbar-paragraph-format": "स्वरूपण",
