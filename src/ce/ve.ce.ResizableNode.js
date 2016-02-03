@@ -364,10 +364,8 @@ ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
  * @param {string} from Old value
  * @param {string} to New value
  */
-ve.ce.ResizableNode.prototype.onResizableAttributeChange = function ( key, from, to ) {
-	if ( key === 'width' || key === 'height' ) {
-		this.$resizable.css( key, to );
-	}
+ve.ce.ResizableNode.prototype.onResizableAttributeChange = function () {
+	this.$resizable.css( this.model.getCurrentDimensions() );
 };
 
 /**
