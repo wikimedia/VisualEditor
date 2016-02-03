@@ -139,7 +139,7 @@ ve.ce.nextCursorOffset = function ( node ) {
 		offset = 0;
 	} else {
 		nextNode = node.parentNode;
-		offset = 1 + Array.prototype.indexOf.call( node.parentNode.childNodes, node );
+		offset = 1 + ve.parentIndex( node );
 	}
 	return { node: nextNode, offset: offset };
 };
@@ -159,7 +159,7 @@ ve.ce.previousCursorOffset = function ( node ) {
 		offset = previousNode.data.length;
 	} else {
 		previousNode = node.parentNode;
-		offset = Array.prototype.indexOf.call( node.parentNode.childNodes, node );
+		offset = ve.parentIndex( node );
 	}
 	return { node: previousNode, offset: offset };
 };
@@ -396,7 +396,7 @@ ve.ce.isAfterAnnotationBoundary = function ( node, offset ) {
 		if ( offset > 0 ) {
 			return false;
 		}
-		offset = Array.prototype.indexOf.call( node.parentNode.childNodes, node );
+		offset = ve.parentIndex( node );
 		node = node.parentNode;
 	}
 	if ( offset === 0 ) {
