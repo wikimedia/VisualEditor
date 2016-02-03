@@ -12,7 +12,7 @@
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
-	var pageDropdown, pageLabel, removeButton, $exitReadButton,
+	var pageDropdown, pageLabel, removeButton, saveButton, $exitReadButton,
 		container = this;
 
 	// Parent constructor
@@ -35,6 +35,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	removeButton = new OO.ui.ButtonWidget( {
 		icon: 'remove',
 		label: 'Remove surface'
+	} );
+	saveButton = new OO.ui.ButtonWidget( {
+		label: 'Save HTML'
 	} );
 	$exitReadButton = $( '<a href="#">' ).text( 'Back to editor' ).on( 'click', function () {
 		container.change( 've' );
@@ -73,6 +76,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		container.change( item.getData() );
 	} );
 	removeButton.on( 'click', this.destroy.bind( this ) );
+	saveButton.on( 'click', this.save.bind( this ) );
 
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
 		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar-edit' ).append(
@@ -82,7 +86,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				this.modeSelect.$element,
 				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
-				removeButton.$element
+				removeButton.$element,
+				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				saveButton.$element
 			)
 		),
 		$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(
@@ -122,6 +128,13 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
 			} )
 		);
 	}
+	items.push(
+		new OO.ui.MenuOptionWidget( {
+			data: 'localStorage/ve-demo-saved-markup',
+			label: 'Saved',
+			disabled: !localStorage.getItem( 've-demo-saved-markup' )
+		} )
+	);
 	return items;
 };
 
@@ -218,6 +231,11 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src ) {
 
 	ve.init.platform.getInitializedPromise().done( function () {
 		container.$surfaceWrapper.slideUp().promise().done( function () {
+			var localMatch = src.match( /^localStorage\/(.+)$/ );
+			if ( localMatch ) {
+				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ) );
+				return;
+			}
 			$.ajax( {
 				url: src,
 				dataType: 'text'
@@ -297,4 +315,27 @@ ve.demo.SurfaceContainer.prototype.destroy = function () {
 	} );
 	ve.demo.surfaceContainers.splice( ve.demo.surfaceContainers.indexOf( container ), 1 );
 	this.emit( 'changePage' );
+};
+
+/**
+ * Save the current contents of the surface for later reloading
+ */
+ve.demo.SurfaceContainer.prototype.save = function () {
+	var html;
+	switch ( this.mode ) {
+		case 've':
+			html = this.surface.getHtml();
+			break;
+		case 'edit':
+			html = this.sourceTextInput.getValue();
+			break;
+		case 'read':
+			html = ve.properInnerHtml( this.$readView[ 0 ] );
+			break;
+		default:
+			return;
+	}
+	localStorage.setItem( 've-demo-saved-markup', html );
+	this.pageMenu.selectItemByData( 'localStorage/ve-demo-saved-markup' );
+	this.pageMenu.getSelectedItem().setDisabled( false );
 };

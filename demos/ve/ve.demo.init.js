@@ -144,7 +144,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 
 	function createSurfacesFromHash( hash ) {
 		var i, pages = [];
-		if ( /^#!pages\/.+$/.test( hash ) ) {
+		if ( /^#!(?:pages|localStorage)\/.+$/.test( hash ) ) {
 			pages = hash.slice( 2 ).split( ',' );
 		}
 		if ( pages.length ) {
