@@ -1126,7 +1126,8 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	var direction, focusableNode, startOffset, endOffset, offsetDiff, dmFocus, dmSelection,
-		inNonSlug, ceSelection, ceNode, range, fixupCursorForUnicorn, matrix, col, row, $focusNode,
+		inNonSlug, ceSelection, ceNode, range, fixupCursorForUnicorn, matrix, col, row,
+		$focusNode, removedUnicorns,
 		surface = this,
 		isArrow = (
 			e.keyCode === OO.ui.Keys.UP ||
@@ -1350,48 +1351,55 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		// (it was set by setLinearSelection calling onModelSelect)
 	}
 
+	if ( direction === undefined ) {
+		direction = getDirection();
+	}
+
 	fixupCursorForUnicorn = (
 		!e.shiftKey &&
 		( e.keyCode === OO.ui.Keys.LEFT || e.keyCode === OO.ui.Keys.RIGHT )
 	);
-	this.incRenderLock();
-	try {
-		this.surfaceObserver.pollOnce();
-	} finally {
-		this.decRenderLock();
-	}
-	this.checkUnicorns( fixupCursorForUnicorn );
-	if ( direction === undefined ) {
-		direction = getDirection();
+	removedUnicorns = this.cleanupUnicorns( fixupCursorForUnicorn );
+	if ( removedUnicorns ) {
+		this.surfaceObserver.pollOnceNoCallback();
+	} else {
+		this.incRenderLock();
+		try {
+			this.surfaceObserver.pollOnce();
+		} finally {
+			this.decRenderLock();
+		}
 	}
 	this.fixupCursorPosition( direction, e.shiftKey );
 };
 
 /**
- * Check whether the selection has moved out of the unicorned area (i.e. is not currently between
- * two unicorns) and if so, destroy the unicorns. If there are no active unicorns, this function
- * does nothing.
+ * Check whether the DOM selection has moved out of the unicorned area (i.e. is not currently
+ * between two unicorns) and if so, set the model selection from the DOM selection, destroy the
+ * unicorns and return true. If there are no active unicorns, this function does nothing and
+ * returns false.
  *
  * If the unicorns are destroyed as a consequence of the user moving the cursor across a unicorn
- * with the arrow keys, the cursor will have to be moved again to produce the cursor movement
- * the user expected. Set the fixupCursor parameter to true to enable this behavior.
+ * with the left/rightarrow keys, the cursor will have to be moved again to produce the cursor
+ * movement the user expected. Set the fixupCursor parameter to true to enable this behavior.
  *
- * @param {boolean} fixupCursor If destroying unicorns, fix the cursor position for expected movement
+ * @param {boolean} fixupCursor If destroying unicorns, fix up left/rightarrow cursor position
+ * @return {boolean} Whether unicorns have been destroyed
  */
-ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
+ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 	var preUnicorn, postUnicorn, range, node, fixup;
 	if ( !this.unicorningNode || !this.unicorningNode.unicorns ) {
-		return;
+		return false;
 	}
 	preUnicorn = this.unicorningNode.unicorns[ 0 ];
 	postUnicorn = this.unicorningNode.unicorns[ 1 ];
 	if ( !this.$document[ 0 ].contains( preUnicorn ) ) {
-		return;
+		return false;
 	}
 
 	if ( this.nativeSelection.rangeCount === 0 ) {
 		// XXX do we want to clear unicorns in this case?
-		return;
+		return false;
 	}
 	range = this.nativeSelection.getRangeAt( 0 );
 
@@ -1405,7 +1413,7 @@ ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
 		node = node.previousSibling;
 	}
 	if ( node === preUnicorn ) {
-		return;
+		return false;
 	}
 
 	// Selection endpoint is not between unicorns.
@@ -1422,16 +1430,23 @@ ve.ce.Surface.prototype.checkUnicorns = function ( fixupCursor ) {
 		// at or after the pre-unicorn (actually must be after the post-unicorn)
 		fixup = 1;
 	}
-	if ( fixupCursor ) {
-		this.incRenderLock();
-		try {
+
+	// Apply the DOM selection to the model
+	this.incRenderLock();
+	try {
+		this.changeModel( null, new ve.dm.LinearSelection(
+			this.model.getDocument(),
+			ve.ce.veRangeFromSelection( this.nativeSelection )
+		) );
+		if ( fixupCursor ) {
 			this.moveModelCursor( fixup );
-		} finally {
-			this.decRenderLock();
 		}
+	} finally {
+		this.decRenderLock();
 	}
 	this.renderSelectedContentBranchNode();
 	this.showModelSelection();
+	return true;
 };
 
 /**
@@ -2300,7 +2315,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 	// (i.e. if the model is calling us back)
 	if ( !this.isRenderingLocked() && selection !== this.newModelSelection ) {
 		this.showModelSelection();
-		this.checkUnicorns( false );
+		this.cleanupUnicorns( false );
 	}
 	// Update the selection state in the SurfaceObserver
 	this.surfaceObserver.pollOnceNoCallback();
@@ -2457,7 +2472,7 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  */
 
 ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
-	var newSelection, transaction,
+	var newSelection, transaction, removedUnicorns,
 		surface = this,
 		dmDoc = this.getModel().getDocument(),
 		insertedText = false;
@@ -2511,7 +2526,10 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 		} finally {
 			this.decRenderLock();
 		}
-		this.checkUnicorns( false );
+		removedUnicorns = this.cleanupUnicorns( false );
+		if ( removedUnicorns ) {
+			this.surfaceObserver.pollOnceNoCallback();
+		}
 
 		// Firefox lets you create multiple selections within a single paragraph
 		// which our model doesn't support, so detect and prevent these.
