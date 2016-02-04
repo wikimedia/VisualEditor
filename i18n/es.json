@@ -20,7 +20,8 @@
 			"Gloria sah",
 			"Wifidel",
 			"Macofe",
-			"JasterTDC"
+			"JasterTDC",
+			"YoViajo"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -60,6 +61,7 @@
 	"visualeditor-dialog-error-dismiss": "Regresar",
 	"visualeditor-dialog-language-auto-direction": "Automático",
 	"visualeditor-dialog-language-search-title": "Seleccionar idioma",
+	"visualeditor-dialog-table-caption": "Leyenda",
 	"visualeditor-find-and-replace-done": "Hecho",
 	"visualeditor-find-and-replace-find-text": "Buscar",
 	"visualeditor-find-and-replace-invalid-regex": "Expresión regular no válida",
@@ -117,6 +119,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "Carácter especial",
 	"visualeditor-specialcharacterinspector-title": "Carácter especial",
 	"visualeditor-table-caption": "Leyenda",
+	"visualeditor-table-contextitem-properties": "Propiedades",
 	"visualeditor-table-delete-col": "Eliminar {{PLURAL:$1|columna|columnas}}",
 	"visualeditor-table-delete-row": "Eliminar {{PLURAL:$1|fila|filas}}",
 	"visualeditor-table-format-data": "Celda de contenido",
@@ -127,6 +130,7 @@
 	"visualeditor-table-insert-row-before": "Insertar encima",
 	"visualeditor-table-insert-table": "Tabla",
 	"visualeditor-table-merge-cells": "Combinar celdas",
+	"visualeditor-table-merge-cells-merge": "Fusionar",
 	"visualeditor-table-move-col-after": "Mover después de que",
 	"visualeditor-table-move-col-before": "Mover antes de que",
 	"visualeditor-table-move-row-after": "Mover abajo",
