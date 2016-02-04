@@ -146,25 +146,48 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	}
 
 	if ( this.constructor.static.iconWhenInvisible ) {
-		if ( !this.hasRendering() ) {
-			if ( !this.icon ) {
-				this.icon = new OO.ui.IconWidget( {
-					classes: [ 've-ce-focusableNode-invisibleIcon' ],
-					icon: this.constructor.static.iconWhenInvisible
-				} );
-				// Add em space for selection highlighting
-				this.icon.$element.text( '\u2003' );
-			}
-			this.$element.first()
-				.addClass( 've-ce-focusableNode-invisible' )
-				.prepend( this.icon.$element );
-		} else if ( this.icon ) {
-			this.$element.first().removeClass( 've-ce-focusableNode-invisible' );
-			this.icon.$element.detach();
-		}
+		// Set up the invisible icon, and watch for its continued necessity if
+		// unloaded images which don't specify their width or height are
+		// involved.
+		this.$element
+			.find( 'img:not([width]),img:not([height])' )
+			.addBack( 'img:not([width]),img:not([height])' )
+			.on( 'load', this.updateInvisibleIcon.bind( this ) );
+		this.updateInvisibleIcon();
 	}
 
 	this.isFocusableSetup = true;
+};
+
+/**
+ * Update the state of icon if this node is invisible
+ *
+ * If the node doesn't have a visible rendering, we insert an icon to represent
+ * it. If the icon was already present, and this is called again when rendering
+ * has developed, we remove the icon.
+ *
+ * @method
+ */
+ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
+	if ( !this.constructor.static.iconWhenInvisible ) {
+		return;
+	}
+	if ( !this.hasRendering() ) {
+		if ( !this.icon ) {
+			this.icon = new OO.ui.IconWidget( {
+				classes: [ 've-ce-focusableNode-invisibleIcon' ],
+				icon: this.constructor.static.iconWhenInvisible
+			} );
+			// Add em space for selection highlighting
+			this.icon.$element.text( '\u2003' );
+		}
+		this.$element.first()
+			.addClass( 've-ce-focusableNode-invisible' )
+			.prepend( this.icon.$element );
+	} else if ( this.icon ) {
+		this.$element.first().removeClass( 've-ce-focusableNode-invisible' );
+		this.icon.$element.detach();
+	}
 };
 
 /**
@@ -661,6 +684,10 @@ ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
 /**
  * Check if the rendering is visible
  *
+ * "Visible", in this case, is defined as any of:
+ *  * contains any non-whitespace text
+ *  * is greater than 8px x 8px in dimensions
+ *
  * @return {boolean} The node has a visible rendering
  */
 ve.ce.FocusableNode.prototype.hasRendering = function () {
@@ -670,7 +697,16 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
 	}
 	this.$element.each( function () {
 		var $this = $( this );
-		if ( $this.width() >= 8 && $this.height() >= 8 ) {
+		if (
+			( $this.width() >= 8 && $this.height() >= 8 ) ||
+			// jQuery handles disparate cases, but is prone to elements which
+			// haven't experienced layout yet having 0 width / height. So,
+			// check the raw DOM width / height properties as well. If it's an
+			// image or other thing-with-width, this will work slightly more
+			// reliably. If it's not, this will be undefined and the
+			// comparison will thus just be false.
+			( this.width >= 8 && this.height >= 8 )
+		) {
 			visible = true;
 			return false;
 		}
