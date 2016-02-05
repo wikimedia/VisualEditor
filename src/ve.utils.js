@@ -1337,6 +1337,16 @@ ve.getCommonAncestor = function () {
 };
 
 /**
+ * Get the index of a node in its parentNode's childNode list
+ *
+ * @param {Node} node The node
+ * @return {number} Index in parentNode's childNode list
+ */
+ve.parentIndex = function ( node ) {
+	return Array.prototype.indexOf.call( node.parentNode.childNodes, node );
+};
+
+/**
  * Get the offset path from ancestor to offset in descendant
  *
  * @param {Node} ancestor The ancestor node
@@ -1351,9 +1361,7 @@ ve.getOffsetPath = function ( ancestor, node, nodeOffset ) {
 			ve.log( node, 'is not a descendant of', ancestor );
 			throw new Error( 'Not a descendant' );
 		}
-		path.unshift(
-			Array.prototype.indexOf.call( node.parentNode.childNodes, node )
-		);
+		path.unshift( ve.parentIndex( node ) );
 		node = node.parentNode;
 	}
 	return path;
@@ -1526,8 +1534,7 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 					steps: steps
 				};
 			}
-			offset = Array.prototype.indexOf.call( node.parentNode.childNodes, node ) +
-				( forward ? 1 : 0 );
+			offset = ve.parentIndex( node ) + ( forward ? 1 : 0 );
 			node = node.parentNode;
 			if ( !skipSoft || isHard ) {
 				return {

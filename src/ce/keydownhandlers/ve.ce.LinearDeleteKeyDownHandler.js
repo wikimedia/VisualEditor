@@ -116,16 +116,10 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		) {
 			linkNode = skipNode.parentNode;
 			range = document.createRange();
-			range.setStart(
-				linkNode.parentNode,
-				// Link's offset, minus 1 to allow for outer nail deletion
-				// (browsers actually tend to adjust range offsets automatically
-				// for previous sibling deletion, but just in case ...)
-				Array.prototype.indexOf.call(
-					linkNode.parentNode.childNodes,
-					linkNode
-				) - 1
-			);
+			// Set start to link's offset, minus 1 to allow for outer nail deletion
+			// (browsers actually tend to adjust range offsets automatically
+			// for previous sibling deletion, but just in case ...)
+			range.setStart( linkNode.parentNode, ve.parentIndex( linkNode ) - 1 );
 			// Remove the outer nails, then the link itself
 			linkNode.parentNode.removeChild( linkNode.previousSibling );
 			linkNode.parentNode.removeChild( linkNode.nextSibling );
