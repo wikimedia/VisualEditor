@@ -752,9 +752,9 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	}
 	if ( content.length ) {
 		if ( annotate && !annotations ) {
-			// TODO: Don't reach into properties of document
-			// FIXME: the logic we actually need for annotating inserted content correctly
-			// is MUCH more complicated
+			// TODO T126021: Don't reach into properties of document
+			// FIXME T126022: the logic we actually need for annotating inserted content
+			// correctly is MUCH more complicated
 			annotations = this.document.data
 				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 		}

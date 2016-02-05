@@ -301,8 +301,8 @@ ve.dm.AnnotationSet.prototype.getComparable = function ( annotation ) {
 };
 
 /**
- * HACK: Check if the set contains an annotation comparable to the specified one
- * for the purposes of serialization.
+ * FIXME T126031: Check if the set contains an annotation comparable to the
+ * specified one for the purposes of serialization.
  *
  * This method uses getComparableObjectForSerialization which also includes
  * HTML attributes.

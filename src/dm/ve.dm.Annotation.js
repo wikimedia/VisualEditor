@@ -99,7 +99,7 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
 };
 
 /**
- * HACK: This method strips data-parsoid & Parsoid IDs from HTML attributes for comparisons.
+ * FIXME T126037: This method strips data-parsoid & Parsoid IDs from HTML attributes for comparisons.
  *
  * This should be removed once similar annotation merging is handled correctly
  * by Parsoid.
@@ -120,8 +120,8 @@ ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
 };
 
 /**
- * HACK: This method adds in HTML attributes so comparable objects aren't serialized
- * together if they have different HTML attributes.
+ * FIXME T126038: This method adds in HTML attributes so comparable objects
+ * aren't serialized together if they have different HTML attributes.
  *
  * This method needs to be different from #getComparableObject which is
  * still used for editing annotations.
@@ -163,7 +163,7 @@ ve.dm.Annotation.prototype.compareTo = function ( annotation ) {
 };
 
 /**
- * HACK: Compare to another annotation for serialization
+ * FIXME T126039: Compare to another annotation for serialization
  *
  * Compares two annotations using #getComparableObjectForSerialization, unless
  * they are both generated annotations, in which case they must be identical.

@@ -46,7 +46,7 @@ ve.ui.MobileWindowManager.static.defaultSize = 'full';
  * Handle window opening events
  */
 ve.ui.MobileWindowManager.prototype.onMobileOpening = function ( win, opening ) {
-	// HACK: un-frame buttons and convert 'back' buttons to icon only
+	// FIXME T126029: un-frame buttons and convert 'back' buttons to icon only
 	opening.done( function () {
 		var i, l, list, action;
 		if ( win instanceof OO.ui.ProcessDialog ) {

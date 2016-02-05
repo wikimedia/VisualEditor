@@ -287,8 +287,8 @@ ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 
 	for ( i in this.getModel().slugPositions ) {
 		slugNode = doc.importNode( slugTemplate, true );
-		// FIXME: InternalListNode has an empty $element, so we assume that the slug goes at the
-		// end instead. This is a hack and the internal list needs to die in a fire.
+		// FIXME T126019: InternalListNode has an empty $element, so we assume that the slug goes
+		// at the end instead. This is a hack and the internal list needs to die in a fire.
 		if ( this.children[ i ] && this.children[ i ].$element[ 0 ] ) {
 			child = this.children[ i ].$element[ 0 ];
 			// child.parentNode might not be equal to this.$element[ 0 ]: e.g. annotated inline nodes

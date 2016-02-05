@@ -316,7 +316,7 @@ ve.ce.Surface.prototype.destroy = function () {
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
 
-	// HACK: Blur to make selection/cursor disappear (needed in Firefox
+	// FIXME T126041: Blur to make selection/cursor disappear (needed in Firefox
 	// in some cases, and in iOS to hide the keyboard)
 	if ( this.isFocused() ) {
 		this.blur();
@@ -681,7 +681,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	setTimeout( this.afterDocumentMouseDown.bind( this, e, this.getSelection() ) );
 
 	// Handle triple click
-	// HACK: do not do triple click handling in IE, because their click counting is broken
+	// FIXME T126043: do not do triple click handling in IE, because their click counting is broken
 	if ( e.originalEvent.detail >= 3 && !ve.init.platform.constructor.static.isInternetExplorer() ) {
 		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
@@ -1778,7 +1778,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
 	this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
 
-	// HACK: Remove Parsoid IDs
+	// FIXME T126044: Remove Parsoid IDs
 	this.$pasteTarget.find( '[id]' ).each( function () {
 		var $this = $( this );
 		if ( $this.attr( 'id' ).match( /^mw[\w-]{2,}$/ ) ) {
@@ -1931,7 +1931,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				$elements = $( $.parseHTML( beforePasteData.html ) );
 			}
 			if (
-				// HACK: Allow the test runner to force the use of clipboardData
+				// FIXME T126045: Allow the test runner to force the use of clipboardData
 				clipboardKey === 'useClipboardData-0' || (
 					$elements.find( importantElement ).andSelf().filter( importantElement ).length > 0 &&
 					this.$pasteTarget.find( importantElement ).length === 0
@@ -2046,7 +2046,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				right--;
 				context.splice( context.getLength() - 1, 1 );
 			}
-			// HACK: Strip trailing linebreaks probably introduced by Chrome bug
+			// FIXME T126046: Strip trailing linebreaks probably introduced by Chrome bug
 			while ( right > 0 && data.getType( right - 1 ) === 'break' ) {
 				right--;
 			}

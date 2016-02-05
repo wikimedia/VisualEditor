@@ -53,9 +53,6 @@ ve.dm.BlockImageNode.static.childNodeTypes = [ 'imageCaption' ];
 
 ve.dm.BlockImageNode.static.matchTagNames = [ 'figure' ];
 
-// FIXME: This commented code has been here since the file was created. Explain or remove.
-// ve.dm.BlockImageNode.static.blacklistedAnnotationTypes = [ 'link' ];
-
 ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) {
 	var dataElement, figure, classAttr, img, caption, attributes, width, height, altText;
 
