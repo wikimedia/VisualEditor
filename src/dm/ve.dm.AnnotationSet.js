@@ -565,6 +565,9 @@ ve.dm.AnnotationSet.prototype.diffWith = function ( set ) {
 /**
  * Get the intersection of the set with another set.
  *
+ * This requires annotations to be strictly equal. To find annotations which are comparable
+ * use the slower #getComparableAnnotationsFromSet with #addSet.
+ *
  * @method
  * @param {ve.dm.AnnotationSet} set Other set
  * @return {ve.dm.AnnotationSet} New set containing all annotations that are both in the set and in set
