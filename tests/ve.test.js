@@ -960,7 +960,7 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 	QUnit.expect( 2 * tests.length );
 
 	div = document.createElement( 'div' );
-	div.contentEditable = true;
+	div.contentEditable = 'true';
 
 	for ( direction in { forward: undefined, backward: undefined } ) {
 		for ( i = 0, len = tests.length; i < len; i++ ) {

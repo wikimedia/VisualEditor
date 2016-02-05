@@ -701,6 +701,19 @@ ve.elementTypes = {
 };
 
 /**
+ * Check whether a given node is contentEditable
+ *
+ * Handles 'inherit', via checking isContentEditable. Knows to check for text
+ * nodes, and will return whether the text node's parent is contentEditable.
+ *
+ * @param  {HTMLElement|Text} node Node to check contenteditable status of
+ * @return {boolean} Node is contenteditable
+ */
+ve.isContentEditable = function ( node ) {
+	return ( node.nodeType === Node.TEXT_NODE ? node.parentNode : node ).isContentEditable;
+};
+
+/**
  * Create an HTMLDocument from an HTML string.
  *
  * The html parameter is supposed to be a full HTML document with a doctype and an `<html>` tag.
