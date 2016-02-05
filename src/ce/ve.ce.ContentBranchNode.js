@@ -139,10 +139,10 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 	// Parent method
 	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
 
-	// HACK: adjust slugNodes indexes if isRenderingLocked. This should be sufficient to
-	// keep this.slugNodes valid - only text changes can occur, which cannot create a
-	// requirement for a new slug (it can make an existing slug redundant, but it is
-	// harmless to leave it there).
+	// FIXME T126025: adjust slugNodes indexes if isRenderingLocked. This should be
+	// sufficient to keep this.slugNodes valid - only text changes can occur, which
+	// cannot create a requirement for a new slug (it can make an existing slug
+	// redundant, but it is harmless to leave it there).
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked
@@ -154,7 +154,9 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 	this.renderContents();
 };
 
-/** @inheritdoc */
+/**
+ * @inheritdoc
+ */
 ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 	// Respect render lock
 	if (

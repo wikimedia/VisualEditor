@@ -1102,7 +1102,7 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 		} );
 	}
 
-	// HACK: Inject empty text nodes into empty non-void tags to prevent
+	// FIXME T126032: Inject empty text nodes into empty non-void tags to prevent
 	// things like <a></a> from being serialized as <a /> and wreaking havoc
 	$( xmlDoc ).find( ':empty:not(' + ve.elementTypes.void.join( ',' ) + ')' ).each( function () {
 		this.appendChild( xmlDoc.createTextNode( '' ) );
@@ -1151,7 +1151,7 @@ ve.serializeXhtml = function ( doc ) {
 	}
 
 	xml = new XMLSerializer().serializeToString( ve.fixupPreBug( doc.documentElement ) );
-	// HACK: strip out xmlns
+	// FIXME T126035: This strips out xmlns as a quick hack
 	xml = xml.replace( '<html xmlns="http://www.w3.org/1999/xhtml"', '<html' );
 	return ve.transformStyleAttributes( xml, true );
 };
@@ -1408,10 +1408,10 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
 /**
  * Get the client platform string from the browser.
  *
- * HACK: This is a wrapper for calling getSystemPlatform() on the current platform
- * except that if the platform hasn't been constructed yet, it falls back to using
- * the base class implementation in {ve.init.Platform}. A proper solution would be
- * not to need this information before the platform is constructed.
+ * FIXME T126036: This is a wrapper for calling getSystemPlatform() on the current
+ * platform except that if the platform hasn't been constructed yet, it falls back
+ * to using the base class implementation in {ve.init.Platform}. A proper solution
+ * would be not to need this information before the platform is constructed.
  *
  * @see ve.init.Platform#getSystemPlatform
  * @return {string} Client platform string

@@ -167,7 +167,7 @@ ve.ui.FragmentInspector.prototype.getReadyProcess = function ( data ) {
  * @inheritdoc
  */
 ve.ui.FragmentInspector.prototype.getBodyHeight = function () {
-	// HACK: Chrome gets the height wrong by 1px for elements with opacity < 1
+	// FIXME T126027: Chrome gets the height wrong by 1px for elements with opacity < 1
 	// e.g. a disabled button.
 	return Math.ceil( this.container.$element[ 0 ].scrollHeight ) + 1;
 };

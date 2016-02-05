@@ -55,7 +55,7 @@
 
 .ve-ce-surface-paste {
 	position: fixed;
-	/* Hack: Stop the viewport scrolling when the paste target is typed into */
+	/* FIXME T126024: Stop the viewport scrolling when the paste target is typed into */
 	top: 3em;
 	left: 0;
 	/* Try to avoid wrapping by not setting a width because of https://code.google.com/p/chromium/issues/detail?id=318925 */

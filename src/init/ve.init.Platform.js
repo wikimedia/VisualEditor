@@ -72,8 +72,8 @@ ve.init.Platform.static.getSystemPlatform = function () {
 /**
  * Check whether we are running in Internet Explorer.
  *
- * HACK: This should not be needed, and it should eventually be removed. If this hasn't died
- * in a fire by the end of September 2015, Roan has failed.
+ * FIXME T126026: This should not be needed, and it should eventually be removed.
+ * If this hasn't died in a fire by the end of September 2015, Roan has failed.
  *
  * @static
  * @method

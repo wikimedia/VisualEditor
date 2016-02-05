@@ -887,8 +887,8 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 	var length = node.getLength(),
 		offset = node.getOffset();
 	if ( offset >= 0 ) {
-		// XXX: If the node is wrapped in an element than we should increment the offset by one so
-		// we only return the content inside the element.
+		// FIXME T126023: If the node is wrapped in an element than we should increment
+		// the offset by one so we only return the content inside the element.
 		if ( node.isWrapped() ) {
 			offset++;
 		}
@@ -1315,8 +1315,8 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 		} ),
 		data = doc.data;
 
-	// FIXME: This is a paste-specific thing and possibly should not be in the generic newFromHtml()
-	// function. Maybe make this be triggered by a pasteRules property?
+	// FIXME T126020: This is a paste-specific thing and possibly should not be in the generic
+	// newFromHtml() function. Maybe make this be triggered by a pasteRules property?
 	// Clear metadata
 	doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
 
