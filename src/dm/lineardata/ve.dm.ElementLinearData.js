@@ -1142,10 +1142,13 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
  * @param {boolean} preserveGenerated Preserve internal.generated properties of elements
  */
 ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated ) {
-	var i, len;
+	var i, len, nodeClass;
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
-			this.setData( i, ve.dm.Node.static.cloneElement( this.getData( i ), preserveGenerated ) );
+			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
+			if ( nodeClass ) {
+				this.setData( i, nodeClass.static.cloneElement( this.getData( i ), preserveGenerated ) );
+			}
 		}
 	}
 };
