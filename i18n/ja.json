@@ -50,6 +50,7 @@
 	"visualeditor-dialog-language-auto-direction": "自動",
 	"visualeditor-dialog-language-search-title": "言語を選択",
 	"visualeditor-dialog-table-caption": "キャプション",
+	"visualeditor-dialog-table-title": "表のプロパティ",
 	"visualeditor-find-and-replace-done": "完了",
 	"visualeditor-find-and-replace-find-text": "検索",
 	"visualeditor-find-and-replace-invalid-regex": "無効な正規表現",
