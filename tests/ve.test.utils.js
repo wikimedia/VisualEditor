@@ -247,8 +247,9 @@
 					return view;
 				}
 			},
+			/* jshint -W003 */
 			model = new ve.dm.Surface( doc ),
-			view = new ve.ce.Surface( model, mockSurface );
+			view = new ve.ce.Surface( model, mockSurface ); /* jshint +W003 */
 
 		view.surface = mockSurface;
 		mockSurface.$element.append( view.$element );
