@@ -49,7 +49,7 @@ ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 			surface,
 			0, // rows
 			e.shiftKey ? -1 : 1, // columns
-			true, // respect rtl/ltr
+			false, // logical direction, not visual
 			false // don't expand the current selection
 		);
 		return true;
