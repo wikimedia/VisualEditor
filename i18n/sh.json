@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"OC Ripper",
-			"Sf"
+			"Sf",
+			"Conquistador"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -33,7 +34,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Izbriši",
 	"visualeditor-contextitemwidget-label-secondary": "Uredi",
 	"visualeditor-dialog-action-apply": "Primijenite promjene",
-	"visualeditor-dialog-action-cancel": "Odustani",
+	"visualeditor-dialog-action-cancel": "Otkaži",
 	"visualeditor-dialog-action-done": "Urađeno",
 	"visualeditor-dialog-action-goback": "Vrati se",
 	"visualeditor-dialog-action-insert": "Umetni",
