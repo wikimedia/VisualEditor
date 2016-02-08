@@ -260,7 +260,7 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
 	}
 
 	top = Math.max( this.toolbarHeight - rect.top, 0 );
-	bottom = top + $( this.getElementWindow() ).height() - this.toolbarHeight;
+	bottom = $( this.getElementWindow() ).height() - rect.top;
 
 	return {
 		top: top,
