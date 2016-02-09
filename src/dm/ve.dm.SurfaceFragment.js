@@ -451,7 +451,7 @@ ve.dm.SurfaceFragment.prototype.getText = function () {
  * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
-	var i, l, ranges, rangeAnnotations,
+	var i, l, ranges, rangeAnnotations, matchingAnnotations,
 		selection = this.getSelection( true ),
 		annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 
@@ -461,10 +461,22 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 		ranges = selection.getRanges();
 		for ( i = 0, l = ranges.length; i < l; i++ ) {
 			rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( ranges[ i ], all );
-			if ( all ) {
+			if ( !i ) {
+				// First range, annotations must be empty
+				annotations = rangeAnnotations;
+			} else if ( all ) {
 				annotations.addSet( rangeAnnotations );
 			} else {
-				annotations = i ? annotations.intersectWith( rangeAnnotations ) : rangeAnnotations;
+				matchingAnnotations = rangeAnnotations.getComparableAnnotationsFromSet( annotations );
+				if ( matchingAnnotations.isEmpty() ) {
+					// Nothing matched so our intersection is empty
+					annotations = matchingAnnotations;
+					break;
+				} else {
+					// match in the other direction, to keep all distinct compatible annotations (e.g. both b and strong)
+					annotations = annotations.getComparableAnnotationsFromSet( rangeAnnotations );
+					annotations.addSet( matchingAnnotations );
+				}
 			}
 		}
 		return annotations;
@@ -656,24 +668,22 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotation, data ) {
-	var annotation, annotations, i, ilen, j, jlen, tx, range,
+	var annotation, i, ilen, j, jlen, tx, range,
+		annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() ),
 		ranges = this.getSelection( true ).getRanges(),
 		txs = [];
 
 	if ( nameOrAnnotation instanceof ve.dm.Annotation ) {
-		annotations = [ nameOrAnnotation ];
+		annotations.push( nameOrAnnotation );
 	} else {
 		annotation = ve.dm.annotationFactory.create( nameOrAnnotation, data );
 		if ( method === 'set' ) {
-			annotations = [ annotation ];
-		} else {
-			annotations = [];
+			annotations.push( annotation );
+		} else if ( method === 'clear' ) {
 			for ( i = 0, ilen = ranges.length; i < ilen; i++ ) {
-				annotations = this.document.data.getAnnotationsFromRange( ranges[ i ], true )
-					.getAnnotationsByName( annotation.name ).get();
-				if ( annotations.length ) {
-					break;
-				}
+				annotations.addSet(
+					this.document.data.getAnnotationsFromRange( ranges[ i ], true ).getAnnotationsByName( annotation.name )
+				);
 			}
 		}
 	}
@@ -681,20 +691,16 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 		range = ranges[ i ];
 		if ( !range.isCollapsed() ) {
 			// Apply to selection
-			for ( j = 0, jlen = annotations.length; j < jlen; j++ ) {
-				tx = ve.dm.Transaction.newFromAnnotation( this.document, range, method, annotations[ j ] );
+			for ( j = 0, jlen = annotations.getLength(); j < jlen; j++ ) {
+				tx = ve.dm.Transaction.newFromAnnotation( this.document, range, method, annotations.get( j ) );
 				txs.push( tx );
 			}
 		} else {
 			// Apply annotation to stack
 			if ( method === 'set' ) {
-				for ( i = 0, ilen = annotations.length; i < ilen; i++ ) {
-					this.surface.addInsertionAnnotations( annotations[ i ] );
-				}
+				this.surface.addInsertionAnnotations( annotations );
 			} else if ( method === 'clear' ) {
-				for ( i = 0, ilen = annotations.length; i < ilen; i++ ) {
-					this.surface.removeInsertionAnnotations( annotations[ i ] );
-				}
+				this.surface.removeInsertionAnnotations( annotations );
 			}
 		}
 	}

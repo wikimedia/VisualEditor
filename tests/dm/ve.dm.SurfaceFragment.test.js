@@ -96,6 +96,26 @@ QUnit.test( 'getSelectedModels', 4, function ( assert ) {
 	);
 } );
 
+QUnit.test( 'getAnnotations', 4, function ( assert ) {
+	var tableSelection,
+		doc = ve.dm.example.createExampleDocument( 'annotatedTable' ),
+		tableRange = new ve.Range( 0, 52 ),
+		surface = new ve.dm.Surface( doc );
+
+	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 1, 0 );
+
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getIndexes(), [ 0, 1 ], 'Comparable annotations: [B] ∩ [Strong] = [B,Strong] ' );
+
+	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 2, 0 );
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getIndexes(), [], 'Non-comparable annotations: [B] ∩ [Strong] ∩ [I] = [] ' );
+
+	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 1, 1, 1 );
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getIndexes(), [ 0, 1 ], 'Non-comparable in first cell: [B,I] ∩ [Strong] = [B,Strong]' );
+
+	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 2, 0 );
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations( true ).getIndexes(), [ 0, 1, 2 ], 'Get all annotations' );
+} );
+
 QUnit.test( 'hasAnnotations', 2, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
