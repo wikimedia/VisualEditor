@@ -1,53 +1,13 @@
 /*!
- * OOjs UI v0.15.2
+ * OOjs UI v0.15.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-02T22:07:06Z
+ * Date: 2016-02-09T21:21:21Z
  */
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-element-hidden {
 	display: none !important;
 }
@@ -1128,55 +1088,15 @@
 }
 
 /*!
- * OOjs UI v0.15.2
+ * OOjs UI v0.15.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-02T22:07:06Z
+ * Date: 2016-02-09T21:21:21Z
  */
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-draggableElement {
 	cursor: -webkit-grab -moz-grab, url(images/grab.cur), move;
 }
@@ -1520,6 +1440,30 @@
 .oo-ui-progressBarWidget.oo-ui-widget-disabled {
 	opacity: 0.6;
 }
+@-webkit-keyframes oo-ui-progressBarWidget-slide {
+	from {
+		margin-left: -40%;
+	}
+	to {
+		margin-left: 100%;
+	}
+}
+@-moz-keyframes oo-ui-progressBarWidget-slide {
+	from {
+		margin-left: -40%;
+	}
+	to {
+		margin-left: 100%;
+	}
+}
+@keyframes oo-ui-progressBarWidget-slide {
+	from {
+		margin-left: -40%;
+	}
+	to {
+		margin-left: 100%;
+	}
+}
 .oo-ui-selectFileWidget {
 	display: inline-block;
 	vertical-align: middle;
@@ -1586,9 +1530,74 @@
 }
 .oo-ui-selectFileWidget-dropTarget {
 	cursor: default;
+	height: 5.5em;
+	text-align: left;
+	padding: 0;
 }
-.oo-ui-selectFileWidget-supported.oo-ui-widget-enabled .oo-ui-selectFileWidget-dropTarget {
-	cursor: pointer;
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-dropLabel,
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton {
+	display: none;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail {
+	height: 5.5em;
+	width: 5.5em;
+	position: absolute;
+	background-size: cover;
+	background-position: center center;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail.oo-ui-pendingElement-pending {
+	background-size: auto;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail > .oo-ui-selectFileWidget-noThumbnail-icon {
+	opacity: 0.4;
+	background-color: #cccccc;
+	height: 5.5em;
+	width: 5.5em;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
+	border: none;
+	background: none;
+	display: block;
+	height: 100%;
+	width: auto;
+	margin-left: 5.5em;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label {
+	position: relative;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label > .oo-ui-selectFileWidget-fileName {
+	display: block;
+	float: none;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label > .oo-ui-selectFileWidget-fileType {
+	display: block;
+	float: none;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-clearButton {
+	position: absolute;
+	right: 0.5em;
+}
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget {
+	text-align: center;
+}
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-dropLabel {
+	display: block;
+}
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail,
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
+	display: none;
+}
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton {
+	display: block;
+	margin: 0.7em;
+}
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget {
+	text-align: center;
+}
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info,
+.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
+	margin: 0;
 }
 .oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-clearButton,
 .oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-clearButton {
@@ -1683,25 +1692,25 @@
 .oo-ui-selectFileWidget-notsupported.oo-ui-indicatorElement .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-label {
 	right: 2em;
 }
-.oo-ui-selectFileWidget-dropTarget {
-	line-height: 3.5em;
-	background-color: #ffffff;
-	border: 1px dashed #aaaaaa;
-	padding: 0.5em 1em;
-	margin-bottom: 0.5em;
-	text-align: center;
-	vertical-align: middle;
-}
-.oo-ui-selectFileWidget-supported.oo-ui-widget-enabled .oo-ui-selectFileWidget-dropTarget:hover,
-.oo-ui-selectFileWidget-supported.oo-ui-widget-enabled.oo-ui-selectFileWidget-canDrop oo-ui-selectfilewidget-droptarget {
+.oo-ui-selectFileWidget-supported.oo-ui-widget-enabled.oo-ui-selectFileWidget-canDrop .oo-ui-selectFileWidget-dropTarget {
 	background-color: #e1f3ff;
 }
-.oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
 .oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget {
 	color: #cccccc;
 	text-shadow: 0 1px 1px #ffffff;
 	border-color: #dddddd;
 	background-color: #f3f3f3;
+}
+.oo-ui-selectFileWidget-dropTarget {
+	background-color: #ffffff;
+	border: 1px solid #aaaaaa;
+	margin-bottom: 0.5em;
+	vertical-align: middle;
+	border-radius: 0.25em;
+}
+.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget {
+	border-style: dashed;
 }
 .oo-ui-outlineOptionWidget {
 	position: relative;
@@ -1955,16 +1964,18 @@
 	color: #555555;
 	border-radius: 0.25em;
 }
-.oo-ui-capsuleItemWidget > .oo-ui-iconElement-icon {
-	cursor: pointer;
-}
-.oo-ui-capsuleItemWidget.oo-ui-widget-disabled > .oo-ui-iconElement-icon {
-	cursor: default;
-}
 .oo-ui-capsuleItemWidget.oo-ui-labelElement .oo-ui-labelElement-label {
-	display: block;
+	display: inline-block;
 	text-overflow: ellipsis;
 	overflow: hidden;
+}
+.oo-ui-capsuleItemWidget .oo-ui-buttonElement {
+	margin-top: -1.6em;
+	padding-left: 0.3em;
+}
+.oo-ui-capsuleItemWidget:focus {
+	outline: none;
+	border-color: #087ecc;
 }
 .oo-ui-capsuleItemWidget.oo-ui-indicatorElement > .oo-ui-labelElement-label {
 	padding-right: 1.3375em;
@@ -2065,55 +2076,15 @@
 }
 
 /*!
- * OOjs UI v0.15.2
+ * OOjs UI v0.15.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-02T22:07:06Z
+ * Date: 2016-02-09T21:21:21Z
  */
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
 	z-index: 4;
@@ -2621,55 +2592,15 @@
 }
 
 /*!
- * OOjs UI v0.15.2
+ * OOjs UI v0.15.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-02T22:07:06Z
+ * Date: 2016-02-09T21:21:21Z
  */
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
 	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
 }
@@ -3071,55 +3002,15 @@
 }
 
 /*!
- * OOjs UI v0.15.2
+ * OOjs UI v0.15.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-02T22:07:06Z
+ * Date: 2016-02-09T21:21:21Z
  */
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-icon-add {
 	background-image: url("themes/apex/images/icons/add.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
@@ -3291,46 +3182,6 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/window.png");
 }
 
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-indicator-alert {
 	background-image: url("themes/apex/images/indicators/alert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/alert.svg");
@@ -3380,46 +3231,6 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/search-ltr.png");
 }
 
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-texture-pending {
 	background-image: url("themes/apex/images/textures/pending.gif");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/pending.gif");

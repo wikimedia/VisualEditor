@@ -1,37 +1,13 @@
 /*!
- * OOjs UI v0.15.2
+ * OOjs UI v0.15.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-02T22:07:06Z
+ * Date: 2016-02-09T21:21:21Z
  */
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-icon-alignCentre {
 	background-image: url("themes/mediawiki/images/icons/align-center.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/align-center.svg");
@@ -67,6 +43,18 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/align-float-right-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/align-float-right-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/align-float-right-invert.png");
+}
+.oo-ui-icon-attachment {
+	background-image: url("themes/mediawiki/images/icons/attachment-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/attachment-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/attachment-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/attachment-ltr.png");
+}
+.oo-ui-image-invert.oo-ui-icon-attachment {
+	background-image: url("themes/mediawiki/images/icons/attachment-ltr-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/attachment-ltr-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/attachment-ltr-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/attachment-ltr-invert.png");
 }
 .oo-ui-icon-calendar {
 	background-image: url("themes/mediawiki/images/icons/calendar-ltr.png");

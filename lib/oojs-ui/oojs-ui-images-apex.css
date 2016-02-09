@@ -1,53 +1,13 @@
 /*!
- * OOjs UI v0.15.2
+ * OOjs UI v0.15.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-02T22:07:06Z
+ * Date: 2016-02-09T21:21:21Z
  */
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-icon-add {
 	background-image: url("themes/apex/images/icons/add.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
@@ -219,46 +179,6 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/window.png");
 }
 
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-indicator-alert {
 	background-image: url("themes/apex/images/indicators/alert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/alert.svg");
@@ -308,46 +228,6 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/search-ltr.png");
 }
 
-@-webkit-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-moz-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-ms-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@-o-keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
-@keyframes oo-ui-progressBarWidget-slide {
-	from {
-		margin-left: -40%;
-	}
-	to {
-		margin-left: 100%;
-	}
-}
 .oo-ui-texture-pending {
 	background-image: url("themes/apex/images/textures/pending.gif");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/pending.gif");
