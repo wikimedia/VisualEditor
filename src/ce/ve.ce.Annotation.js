@@ -62,15 +62,27 @@ ve.ce.Annotation.prototype.getParentNode = function () {
 	return this.parentNode;
 };
 
-/** */
+/**
+ * @inheritdoc
+ */
 ve.ce.Annotation.prototype.getModelHtmlDocument = function () {
 	return this.parentNode && this.parentNode.getModelHtmlDocument();
 };
 
+/**
+ * Append a child node to the annotation
+ *
+ * @param {Node} childNode Child node to append
+ */
 ve.ce.Annotation.prototype.appendChild = function ( childNode ) {
-	this.$element.append( childNode );
+	this.$element[ 0 ].appendChild( childNode );
 };
 
+/**
+ * Get the content container
+ *
+ * @return {HTMLElement} Content container
+ */
 ve.ce.Annotation.prototype.getContentContainer = function () {
 	return this.$element[ 0 ];
 };
