@@ -21,6 +21,7 @@
 	"visualeditor-clipboard-cut": "Klipp ut",
 	"visualeditor-clipboard-paste": "Lim inn",
 	"visualeditor-clipboard-paste-special": "Lim inn som rein tekst",
+	"visualeditor-content-select-all": "Vel alle",
 	"visualeditor-contextitemwidget-label-remove": "Slett",
 	"visualeditor-contextitemwidget-label-secondary": "Endra",
 	"visualeditor-dialog-action-apply": "Bruk endringar",
