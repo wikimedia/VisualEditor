@@ -34,7 +34,8 @@
 			"Weft",
 			"Wladek92",
 			"Macofe",
-			"Litlok"
+			"Litlok",
+			"The RedBurn"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
@@ -78,7 +79,7 @@
 	"visualeditor-dialog-table-title": "Propriétés du tableau",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
-	"visualeditor-find-and-replace-done": "Fait",
+	"visualeditor-find-and-replace-done": "Fermer",
 	"visualeditor-find-and-replace-find-text": "Rechercher",
 	"visualeditor-find-and-replace-invalid-regex": "Expression rationnelle invalide",
 	"visualeditor-find-and-replace-match-case": "Respecter la casse",
