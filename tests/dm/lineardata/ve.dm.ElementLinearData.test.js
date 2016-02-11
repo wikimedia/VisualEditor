@@ -1961,7 +1961,81 @@ QUnit.test( 'remapStoreIndexes', function ( assert ) {
 	}
 } );
 
-// TODO: ve.dm.ElementLinearData.static.compareElements
+QUnit.test( 'compareElements', function ( assert ) {
+	var i,
+		cases = [
+			{
+				a: '母',
+				b: '母',
+				comparison: true,
+				msg: 'Identical unannotated characters are identical'
+			},
+			{
+				a: '다',
+				b: '가',
+				comparison: false,
+				msg: 'Non-identical unannotated characters are not identical'
+			},
+			{
+				a: [ 'F', [ 0 ] ],
+				b: [ 'F', [ 0 ] ],
+				comparison: true,
+				msg: 'Identically-annotated identical characters are identical'
+			},
+			{
+				a: [ 'F', [ 0 ] ],
+				b: [ 'F', [ 1 ] ],
+				comparison: true,
+				msg: 'Identical characters, non-identically-annotated, are identical (!)'
+			},
+			{
+				a: 'F',
+				b: [ 'F', [ 0 ] ],
+				comparison: true,
+				msg: 'Identical characters, one annotated, one not, are identical (!)'
+			},
+			{
+				a: { type: 'heading' },
+				b: { type: 'heading' },
+				comparison: true,
+				msg: 'Identical opening elements are identical'
+			},
+			{
+				a: { type: 'heading' },
+				b: { type: '/heading' },
+				comparison: false,
+				msg: 'Matching opening and closing elements are not identical'
+			},
+			{
+				a: { type: 'heading', attributes: { level: 3 } },
+				b: { type: 'heading', attributes: { level: 3 } },
+				comparison: true,
+				msg: 'Identical elements with identical attributes are identical'
+			},
+			{
+				a: { type: 'heading', attributes: { level: 3 } },
+				b: { type: 'heading', attributes: { level: 2 } },
+				comparison: false,
+				msg: 'Identical elements with non-identical attributes are not identical'
+			},
+			{
+				a: { type: 'heading', attributes: { level: 3 } },
+				b: { type: 'heading' },
+				comparison: false,
+				msg: 'Identical elements, one without an attribute, are not identical'
+			}
+		];
+
+	QUnit.expect( cases.length );
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.equal(
+			ve.dm.ElementLinearData.static.compareElements( cases[ i ].a, cases[ i ].b ),
+			cases[ i ].comparison,
+			cases[ i ].msg
+		);
+	}
+} );
+
 // TODO: ve.dm.ElementLinearData#getAnnotationIndexesFromOffset
 // TODO: ve.dm.ElementLinearData#setAnnotationsAtOffset
 // TODO: ve.dm.ElementLinearData#getCharacterData
