@@ -33,6 +33,9 @@ ve.ce.TextStyleAnnotation.static.name = 'textStyle';
 
 /* Methods */
 
+/**
+ * @inheritdoc
+ */
 ve.ce.TextStyleAnnotation.prototype.getTagName = function () {
 	return this.getModel().getAttribute( 'nodeName' ) || this.constructor.static.tagName;
 };

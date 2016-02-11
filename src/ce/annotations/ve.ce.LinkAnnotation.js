@@ -77,19 +77,21 @@ ve.ce.LinkAnnotation.prototype.getContentContainer = function () {
 };
 
 /**
- * Attach contents to the annotation as descendent nodes, if not already attached
+ * @inheritdoc
  */
 ve.ce.LinkAnnotation.prototype.attachContents = function () {
 	var anchor = this.$anchor[ 0 ];
+	// Insert post-open nail, annotation contents, and pre-close nail into the anchor
 	anchor.appendChild( this.constructor.static.makeNail( 'post-open' ) );
 	anchor.appendChild( this.contentFragment );
 	anchor.appendChild( this.constructor.static.makeNail( 'pre-close' ) );
 };
 
 /**
- * @param {Node} node Parent node
+ * @inheritdoc
  */
 ve.ce.LinkAnnotation.prototype.appendTo = function ( node ) {
+	// Insert pre-open nail, anchor, and post-close nail into a parent node
 	node.appendChild( this.constructor.static.makeNail( 'pre-open' ) );
 	node.appendChild( this.$anchor[ 0 ] );
 	node.appendChild( this.constructor.static.makeNail( 'post-close' ) );

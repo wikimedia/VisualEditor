@@ -79,7 +79,7 @@ ve.ce.Annotation.prototype.appendChild = function ( childNode ) {
 };
 
 /**
- * Get the content container
+ * Get the container into which annotation contents should be appended
  *
  * @return {HTMLElement} Content container
  */
@@ -87,16 +87,28 @@ ve.ce.Annotation.prototype.getContentContainer = function () {
 	return this.$element[ 0 ];
 };
 
+/**
+ * Attach completed contents to the annotation as descendent nodes, if not already attached
+ *
+ * No further contents should be appended into the content container after calling this
+ */
 ve.ce.Annotation.prototype.attachContents = function () {
 	// Do nothing; already attached
 };
 
+/**
+ * Append the completed annotation to a parent node
+ *
+ * #attachContents should have been called first
+ *
+ * @param {Node} node Parent node
+ */
 ve.ce.Annotation.prototype.appendTo = function ( node ) {
 	node.appendChild( this.$element[ 0 ] );
 };
 
 /**
- * Release all memory.
+ * Release all memory
  */
 ve.ce.Annotation.prototype.destroy = function () {
 	this.parentNode = null;
