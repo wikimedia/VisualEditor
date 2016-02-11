@@ -1433,7 +1433,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				range: new ve.Range( 1 ),
 				pasteHtml: '<b>Foo</b>',
-				pasteTargetHtml: 'Foo',
+				pasteTargetHtml: '<p>Foo</p>',
 				fromVe: true,
 				expectedOps: [
 					[
@@ -1454,7 +1454,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				range: new ve.Range( 1 ),
 				pasteHtml: '<span rel="ve:Alien">Alien</span>',
-				pasteTargetHtml: '<span>Alien</span>',
+				pasteTargetHtml: '<p><span>Alien</span></p>',
 				fromVe: true,
 				expectedOps: [
 					[
@@ -1497,6 +1497,72 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Parsoid IDs stripped'
+			},
+			{
+				range: new ve.Range( 0 ),
+				pasteHtml: '<ul><li>A</li><ul><li>B</li></ul></ul>',
+				expectedRange: new ve.Range( 14 ),
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'A',
+								{ type: '/paragraph' },
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'B',
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: '/list' },
+								{ type: '/listItem' },
+								{ type: '/list' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				msg: 'Broken nested lists (Google Docs style)'
+			},
+			{
+				range: new ve.Range( 0 ),
+				// Write directly to paste target because using execCommand kills one of the <ul>s
+				pasteTargetHtml: 'A<ul><ul><li>B</li></ul></ul>C',
+				expectedRange: new ve.Range( 17 ),
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'A',
+								{ type: '/paragraph' },
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'B',
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: '/list' },
+								{ type: '/listItem' },
+								{ type: '/list' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'C',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				msg: 'Double indented lists (Google Docs style)'
 			}
 		];
 
@@ -1539,7 +1605,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		}
 		view.beforePaste( new TestEvent( e ) );
 		if ( pasteTargetHtml ) {
-			view.$pasteTarget.find( 'p' ).html( pasteTargetHtml );
+			view.$pasteTarget.html( pasteTargetHtml );
 		} else {
 			document.execCommand( 'insertHTML', false, pasteHtml );
 		}
