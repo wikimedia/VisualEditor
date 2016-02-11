@@ -1980,6 +1980,22 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				return;
 			}
 		}
+
+		// HACK: Fix invalid HTML from Google Docs nested lists (T98100).
+		// Converts
+		// <ul><li>A</li><ul><li>B</li></ul></ul>
+		// to
+		// <ul><li>A<ul><li>B</li></ul></li></ul>
+		$( htmlDoc.body ).find( 'ul > ul, ul > ol, ol > ul, ol > ol' ).each( function () {
+			if ( this.previousSibling ) {
+				this.previousSibling.appendChild( this );
+			} else {
+				// List starts double indented. This is invalid and a semantic nightmare.
+				// Just wrap with an extra list item
+				$( this ).wrap( '<li>' );
+			}
+		} );
+
 		// External paste
 		pastedDocumentModel = ve.dm.converter.getModelFromDom( htmlDoc, {
 			targetDoc: documentModel.getHtmlDocument(),
