@@ -14,6 +14,7 @@
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
+ * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
@@ -29,6 +30,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	ve.ui.Surface.super.call( this, config );
 
 	// Properties
+	this.$scrollContainer = config.$scrollContainer || $( this.getElementWindow() );
 	this.inDialog = config.inDialog || '';
 	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global' ] } );
 	this.localOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-local' ] } );
@@ -69,6 +71,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	} );
 
 	// Events
+	this.getView().connect( this, { keyup: 'scrollCursorIntoView' } );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
 
 	// Initialization
@@ -91,6 +94,12 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  * When a surface is destroyed.
  *
  * @event destroy
+ */
+
+/**
+ * The surface was scrolled programmatically
+ *
+ * @event scroll
  */
 
 /* Static Properties */
@@ -402,6 +411,53 @@ ve.ui.Surface.prototype.onDocumentTransact = function () {
 	if ( this.placeholder ) {
 		this.updatePlaceholder();
 	}
+};
+
+/**
+ * Scroll the cursor into view.
+ *
+ * This is required when the cursor disappears under the floating toolbar.
+ */
+ve.ui.Surface.prototype.scrollCursorIntoView = function () {
+	var view, nativeRange, clientRect, cursorTop, scrollTo, toolbarBottom;
+
+	if ( !this.toolbarHeight ) {
+		return;
+	}
+
+	view = this.getView();
+	nativeRange = view.getNativeRange();
+	if ( !nativeRange ) {
+		return;
+	}
+
+	if ( OO.ui.contains( view.$pasteTarget[ 0 ], nativeRange.startContainer, true ) ) {
+		return;
+	}
+
+	clientRect = RangeFix.getBoundingClientRect( nativeRange );
+	if ( !clientRect ) {
+		return;
+	}
+
+	cursorTop = clientRect.top - 5;
+	toolbarBottom = this.toolbarHeight;
+
+	if ( cursorTop < toolbarBottom ) {
+		scrollTo = this.$scrollContainer.scrollTop() + cursorTop - toolbarBottom;
+		this.scrollTo( scrollTo );
+	}
+};
+
+/**
+ * Scroll the scroll container to a specific offset
+ *
+ * @param {number} offset Scroll offset
+ * @fires scroll
+ */
+ve.ui.Surface.prototype.scrollTo = function ( offset ) {
+	this.$scrollContainer.scrollTop( offset );
+	this.emit( 'scroll' );
 };
 
 /**

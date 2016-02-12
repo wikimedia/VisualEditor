@@ -296,6 +296,7 @@ ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
  */
 ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
 	return ve.extendObject( {
+		$scrollContainer: this.$scrollContainer,
 		includeCommands: this.constructor.static.includeCommands,
 		excludeCommands: OO.simpleArrayUnion(
 			this.constructor.static.excludeCommands,
@@ -317,8 +318,7 @@ ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
 	var surface = this.createSurface( dmDoc, config );
 	this.surfaces.push( surface );
 	surface.getView().connect( this, {
-		focus: this.onSurfaceViewFocus.bind( this, surface ),
-		keyup: this.onSurfaceViewKeyUp.bind( this, surface )
+		focus: this.onSurfaceViewFocus.bind( this, surface )
 	} );
 	return surface;
 };
@@ -339,68 +339,6 @@ ve.init.Target.prototype.clearSurfaces = function () {
  */
 ve.init.Target.prototype.onSurfaceViewFocus = function ( surface ) {
 	this.setSurface( surface );
-};
-
-/**
- * Handle key up events from a surface's view
- *
- * @param {ve.ui.Surface} surface Surface firing the event
- */
-ve.init.Target.prototype.onSurfaceViewKeyUp = function ( surface ) {
-	this.scrollCursorIntoView( surface );
-};
-
-/**
- * Check if the toolbar is overlapping the surface
- *
- * @return {boolean} Toolbar is overlapping the surface
- */
-ve.init.Target.prototype.isToolbarOverSurface = function () {
-	return this.getToolbar().isFloating();
-};
-
-/**
- * Scroll the cursor into view.
- *
- * @param {ve.ui.Surface} surface Surface to scroll
- */
-ve.init.Target.prototype.scrollCursorIntoView = function ( surface ) {
-	var nativeRange, clientRect, cursorTop, scrollTo, toolbarBottom;
-
-	if ( !this.isToolbarOverSurface() ) {
-		return;
-	}
-
-	nativeRange = surface.getView().getNativeRange();
-	if ( !nativeRange ) {
-		return;
-	}
-
-	if ( OO.ui.contains( surface.getView().$pasteTarget[ 0 ], nativeRange.startContainer, true ) ) {
-		return;
-	}
-
-	clientRect = RangeFix.getBoundingClientRect( nativeRange );
-	if ( !clientRect ) {
-		return;
-	}
-
-	cursorTop = clientRect.top - 5;
-	toolbarBottom = this.getSurface().toolbarHeight;
-
-	if ( cursorTop < toolbarBottom ) {
-		scrollTo = this.$scrollContainer.scrollTop() + cursorTop - toolbarBottom;
-		this.scrollTo( scrollTo );
-	}
-};
-
-/**
- * Scroll the scroll container to a specific offset
- *
- * @param {number} offset Scroll offset
- */
-ve.init.Target.prototype.scrollTo = function ( offset ) {
-	this.$scrollContainer.scrollTop( offset );
 };
 
 /**
