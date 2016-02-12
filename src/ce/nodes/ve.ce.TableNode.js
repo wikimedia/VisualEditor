@@ -104,10 +104,14 @@ ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
 		return;
 	}
 	if ( this.surface.getModel().getSelection() instanceof ve.dm.TableSelection ) {
-		this.setEditing( true );
 		offset = this.surface.getOffsetFromEventCoords( e.originalEvent );
 		if ( offset !== -1 ) {
+			// Don't change selection in setEditing to avoid scrolling to bottom of cell
+			this.setEditing( true, true );
+			// Set selection to where the double click happened
 			this.surface.getModel().setLinearSelection( new ve.Range( offset ) );
+		} else {
+			this.setEditing( true );
 		}
 	}
 };
@@ -338,7 +342,8 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 			this.$element.on( 'touchstart.ve-ce-tableNode', this.onTableMouseDown.bind( this ) );
 		}
 		this.surface.setActiveTableNode( this );
-		this.updateOverlayDebounced( true );
+		// Ignore linear selection changes for the purpose of updating the overlay
+		this.updateOverlayDebounced( selection instanceof ve.dm.TableSelection );
 	} else if ( !active && this.active ) {
 		this.$overlay.addClass( 'oo-ui-element-hidden' );
 		if ( this.editingFragment ) {
