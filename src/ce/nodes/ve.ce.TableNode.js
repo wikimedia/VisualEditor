@@ -342,8 +342,10 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 			this.$element.on( 'touchstart.ve-ce-tableNode', this.onTableMouseDown.bind( this ) );
 		}
 		this.surface.setActiveTableNode( this );
-		// Ignore linear selection changes for the purpose of updating the overlay
-		this.updateOverlayDebounced( selection instanceof ve.dm.TableSelection );
+		// Ignore update the overlay if the table selection changed, i.e. not an in-cell selection change
+		if ( selection instanceof ve.dm.TableSelection ) {
+			this.updateOverlayDebounced( true  );
+		}
 	} else if ( !active && this.active ) {
 		this.$overlay.addClass( 'oo-ui-element-hidden' );
 		if ( this.editingFragment ) {
