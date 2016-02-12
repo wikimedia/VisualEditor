@@ -66,7 +66,8 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 				node: surface.nativeSelection.focusNode,
 				offset: surface.nativeSelection.focusOffset
 			},
-			direction
+			direction,
+			{ stop: ve.isHardCursorStep }
 		);
 		skipNode = position.steps[ position.steps.length - 1 ].node;
 		if ( skipNode.nodeType === Node.TEXT_NODE ) {
@@ -84,7 +85,11 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			skipNode.classList.contains( 've-ce-nail-pre-open' ) :
 			skipNode.classList.contains( 've-ce-nail-post-close' )
 		) {
-			position = ve.adjacentDomPosition( position, direction );
+			position = ve.adjacentDomPosition(
+				position,
+				direction,
+				{ stop: ve.isHardCursorStep }
+			);
 			range = document.createRange();
 			range.setStart( position.node, position.offset );
 			surface.nativeSelection.removeAllRanges();
@@ -140,7 +145,11 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			skipNode.classList.contains( 've-ce-nail-pre-close' ) :
 			skipNode.classList.contains( 've-ce-nail-post-open' )
 		) {
-			position = ve.adjacentDomPosition( position, direction );
+			position = ve.adjacentDomPosition(
+				position,
+				direction,
+				{ stop: ve.isHardCursorStep }
+			);
 			range = document.createRange();
 			range.setStart( position.node, position.offset );
 			surface.nativeSelection.removeAllRanges();

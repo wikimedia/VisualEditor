@@ -883,7 +883,7 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 	var tests, direction, i, len, test, offsetPaths, position, div;
 
 	// In the following tests, the html is put inside the top-level div as innerHTML. Then
-	// ve.adjacentDomNode is called with the position just inside the div (i.e.
+	// ve.adjacentDomPosition is called with the position just inside the div (i.e.
 	// { node: div, offset: 0 } for forward direction tests, and
 	// { node: div, offset: div.childNodes.length } for reverse direction tests). The result
 	// of the first call is passed into the function again, and so on iteratively until the
@@ -894,7 +894,7 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 		{
 			title: 'Simple p node',
 			html: '<p>x</p>',
-			options: { skipSoft: false },
+			options: { stop: function () { return true; } },
 			expectedOffsetPaths: [
 				[ 0 ],
 				[ 0, 0 ],
@@ -907,7 +907,7 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 		{
 			title: 'Filtered descent',
 			html: '<div class="x">foo</div><div class="y">bar</div>',
-			options: { skipSoft: false, noDescend: '.x' },
+			options: { stop: function () { return true; }, noDescend: '.x' },
 			expectedOffsetPaths: [
 				[ 0 ],
 				[ 1 ],
@@ -923,7 +923,7 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 		{
 			title: 'Empty tags and heavy nesting',
 			html: '<div><br/><p>foo <b>bar <i>baz</i></b></p></div>',
-			options: { skipSoft: false },
+			options: { stop: function () { return true; } },
 			expectedOffsetPaths: [
 				[ 0 ],
 				[ 0, 0 ],

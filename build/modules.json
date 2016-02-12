@@ -214,6 +214,7 @@
 			"src/ve.Range.js",
 			"src/ve.SelectionState.js",
 			"src/ve.Node.js",
+			"src/ve.PositionStep.js",
 			"src/ve.BranchNode.js",
 			"src/ve.LeafNode.js",
 			"src/ve.Document.js",
