@@ -6,7 +6,8 @@
 			"GeoO",
 			"Դավիթ Սարոյան",
 			"Աշոտ1997",
-			"Vahe Gharakhanyan"
+			"Vahe Gharakhanyan",
+			"Aram1985"
 		]
 	},
 	"visualeditor": "Վիզուալ խմբագրիչ",
@@ -118,7 +119,7 @@
 	"visualeditor-table-insert-table": "Աղյուսակ",
 	"visualeditor-table-merge-cells": "Միավորել վանդակները",
 	"visualeditor-table-merge-cells-merge": "Ձուլել",
-	"visualeditor-table-merge-cells-unmerge": "Անջատել",
+	"visualeditor-table-merge-cells-unmerge": "Միացնել",
 	"visualeditor-table-move-col-after": "Տեղափոխել առաջ",
 	"visualeditor-table-move-col-before": "Տեղափոխել ետ",
 	"visualeditor-table-move-row-after": "Տեղափոխել վար",
