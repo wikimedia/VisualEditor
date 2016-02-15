@@ -192,8 +192,8 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	// TODO: remove this check: it can just be a case of non-branchNode/leafNode DOM element
 	if ( slug && (
 		!slug.firstChild ||
-		$( slug ).hasClass( 've-ce-branchNode-blockSlug' ) ||
-		$( slug.firstChild ).hasClass( 've-ce-chimera' )
+		slug.classList.contains( 've-ce-branchNode-blockSlug' ) ||
+		slug.firstChild.classList.contains( 've-ce-chimera' )
 	) ) {
 		return { node: slug, offset: 0 };
 	}
@@ -228,24 +228,24 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 			}
 		} else if ( item.nodeType === Node.ELEMENT_NODE ) {
 			$item = current.$contents.eq( current.offset );
-			if ( $item.hasClass( 've-ce-unicorn' ) ) {
+			if ( item.classList.contains( 've-ce-unicorn' ) ) {
 				if ( offset === startOffset ) {
 					// Return if empty unicorn pair at the correct offset
-					if ( $( $item[ 0 ].previousSibling ).hasClass( 've-ce-unicorn' ) ) {
+					if ( item.previousSibling && item.previousSibling.classList.contains( 've-ce-unicorn' ) ) {
 						return {
-							node: $item[ 0 ].parentNode,
+							node: item.parentNode,
 							offset: current.offset - 1
 						};
-					} else if ( $( $item[ 0 ].nextSibling ).hasClass( 've-ce-unicorn' ) ) {
+					} else if ( item.nextSibling && item.nextSibling.classList.contains( 've-ce-unicorn' ) ) {
 						return {
-							node: $item[ 0 ].parentNode,
+							node: item.parentNode,
 							offset: current.offset + 1
 						};
 					}
 					// Else algorithm will/did descend into unicorned range
 				}
 				// Else algorithm will skip this unicorn
-			} else if ( $item.is( '.ve-ce-branchNode, .ve-ce-leafNode' ) ) {
+			} else if ( item.classList.contains( 've-ce-branchNode' ) || item.classList.contains( 've-ce-leafNode' ) ) {
 				model = $item.data( 'view' ).model;
 				// DM nodes can render as multiple elements in the view, so check
 				// we haven't already counted it.
@@ -261,7 +261,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 						startOffset += length;
 					}
 				}
-			} else if ( $item.hasClass( 've-ce-branchNode-blockSlug' ) ) {
+			} else if ( item.classList.contains( 've-ce-branchNode-blockSlug' ) ) {
 				// This is unusual: generated wrappers usually mean that the return
 				// value of getBranchNodeFromOffset will not have block slugs or
 				// block slug ancestors before the offset position. However, there
@@ -271,7 +271,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 				// Skip contents without incrementing offset.
 				current.offset++;
 				continue;
-			} else if ( $item.hasClass( 've-ce-nail' ) ) {
+			} else if ( item.classList.contains( 've-ce-nail' ) ) {
 				// Skip contents without incrementing offset.
 				current.offset++;
 				continue;

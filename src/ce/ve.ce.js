@@ -41,7 +41,6 @@ ve.ce.getDomText = function ( element ) {
 	var func = function ( element ) {
 		var viewNode,
 			nodeType = element.nodeType,
-			$element = $( element ),
 			text = '';
 
 		if (
@@ -49,18 +48,18 @@ ve.ce.getDomText = function ( element ) {
 			nodeType === Node.DOCUMENT_NODE ||
 			nodeType === Node.DOCUMENT_FRAGMENT_NODE
 		) {
-			if ( $element.hasClass( 've-ce-branchNode-blockSlug' ) ) {
+			if ( element.classList.contains( 've-ce-branchNode-blockSlug' ) ) {
 				// Block slugs are not represented in the model at all, but they do
 				// contain a single nbsp/FEFF character in the DOM, so make sure
 				// that character isn't counted
 				return '';
-			} else if ( $element.hasClass( 've-ce-cursorHolder' ) ) {
+			} else if ( element.classList.contains( 've-ce-cursorHolder' ) ) {
 				// Cursor holders do not exist in the model
 				return '';
-			} else if ( $element.hasClass( 've-ce-leafNode' ) ) {
+			} else if ( element.classList.contains( 've-ce-leafNode' ) ) {
 				// For leaf nodes, don't return the content, but return
 				// the right number of placeholder characters so the offsets match up.
-				viewNode = $element.data( 'view' );
+				viewNode = $( element ).data( 'view' );
 				// Only return snowmen for the first element in a sibling group: otherwise
 				// we'll double-count this node
 				if ( viewNode && element === viewNode.$element[ 0 ] ) {
@@ -107,9 +106,9 @@ ve.ce.getDomHash = function ( element ) {
 	} else if ( nodeType === Node.ELEMENT_NODE || nodeType === Node.DOCUMENT_NODE ) {
 		$element = $( element );
 		if ( !(
-			$element.hasClass( 've-ce-branchNode-blockSlug' ) ||
-			$element.hasClass( 've-ce-cursorHolder' ) ||
-			$element.hasClass( 've-ce-nail' )
+			element.classList.contains( 've-ce-branchNode-blockSlug' ) ||
+			element.classList.contains( 've-ce-cursorHolder' ) ||
+			element.classList.contains( 've-ce-nail' )
 		) ) {
 			hash += '<' + nodeName + '>';
 			// Traverse its children
@@ -176,14 +175,14 @@ ve.ce.previousCursorOffset = function ( node ) {
  * @throws {Error} domNode is not in document
  */
 ve.ce.getOffset = function ( domNode, domOffset ) {
-	var node, view, offset, startNode, maxOffset, lengthSum = 0,
-		$domNode = $( domNode );
+	var node, view, offset, startNode, maxOffset,
+		lengthSum = 0;
 
-	if ( $domNode.hasClass( 've-ce-unicorn' ) ) {
+	if ( domNode.nodeType === Node.ELEMENT_NODE && domNode.classList.contains( 've-ce-unicorn' ) ) {
 		if ( domOffset !== 0 ) {
 			throw new Error( 'Non-zero offset in unicorn' );
 		}
-		return $domNode.data( 'modelOffset' );
+		return $( domNode ).data( 'modelOffset' );
 	}
 
 	/**
@@ -283,8 +282,8 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 	} else {
 		// Text inside of a block slug doesn't count
 		if ( !(
-			$( domNode.parentNode ).hasClass( 've-ce-branchNode-blockSlug' ) ||
-			$( domNode.parentNode ).hasClass( 've-ce-cursorHolder' )
+			domNode.parentNode.classList.contains( 've-ce-branchNode-blockSlug' ) ||
+			domNode.parentNode.classList.contains( 've-ce-cursorHolder' )
 		) ) {
 			lengthSum += domOffset;
 		}
@@ -308,8 +307,8 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		// Text inside of a block slug doesn't count
 		if (
 			node.nodeType === Node.TEXT_NODE &&
-			!$( node.parentNode ).hasClass( 've-ce-branchNode-blockSlug' ) &&
-			!$( node.parentNode ).hasClass( 've-ce-cursorHolder' )
+			!node.parentNode.classList.contains( 've-ce-branchNode-blockSlug' ) &&
+			!node.parentNode.classList.contains( 've-ce-cursorHolder' )
 		) {
 			lengthSum += node.data.length;
 		}

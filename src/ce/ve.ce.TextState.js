@@ -32,7 +32,7 @@ OO.initClass( ve.ce.TextState );
  * @return {ve.ce.TextStateChunk[]} chunks
  */
 ve.ce.TextState.static.getChunks = function ( element ) {
-	var $node, viewNode,
+	var viewNode,
 		node = element,
 		// Stack of element-lists in force; each element list is equal to its predecessor extended
 		// by one element. This means two chunks have object-equal element lists if they have the
@@ -69,7 +69,6 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 		// If appropriate, step into first child and loop
 		// If no next sibling, step out until there is (breaking if we leave element)
 		// Step to next sibling and loop
-		$node = $( node );
 		// jscs:disable disallowEmptyBlocks
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			add( node.data.replace( /\u00A0/g, ' ' ) );
@@ -77,21 +76,21 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 			// Node types that don't appear in the model
 			// TODO: what about comments?
 			node.nodeType !== Node.ELEMENT_NODE ||
-			$node.hasClass( 've-ce-branchNode-blockSlug' ) ||
-			$node.hasClass( 've-ce-cursorHolder' )
+			node.classList.contains( 've-ce-branchNode-blockSlug' ) ||
+			node.classList.contains( 've-ce-cursorHolder' )
 		) {
 			// Do nothing
-		} else if ( $node.hasClass( 've-ce-leafNode' ) ) {
+		} else if ( node.classList.contains( 've-ce-leafNode' ) ) {
 			// Don't return the content, but return placeholder characters so the
 			// offsets match up.
-			viewNode = $node.data( 'view' );
+			viewNode = $( node ).data( 'view' );
 			// Only return placeholders for the first element in a sibling group;
 			// otherwise we'll double count this node
 			if ( viewNode && node === viewNode.$element[ 0 ] ) {
 				// \u2603 is the snowman character: ☃
 				add( ve.repeatString( '\u2603', viewNode.getOuterLength() ) );
 			}
-		} else if ( $node.hasClass( 've-ce-unicorn' ) ) {
+		} else if ( node.classList.contains( 've-ce-unicorn' ) ) {
 			add( '', 'unicorn' );
 		} else if ( node.firstChild ) {
 			if ( ve.ce.isAnnotationElement( node ) ) {

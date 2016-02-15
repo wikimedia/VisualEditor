@@ -502,12 +502,13 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 	}
 
 	function process( el ) {
-		var i, j, il, jl, contained, clientRects, overflow,
-			$el = $( el );
+		var i, j, il, jl, contained, clientRects, overflow, $el;
 
-		if ( $el.hasClass( 've-ce-noHighlight' ) ) {
+		if ( el.classList.contains( 've-ce-noHighlight' ) ) {
 			return;
 		}
+
+		$el = $( el );
 
 		if ( webkitColumns ) {
 			columnCount = $el.css( '-webkit-column-count' );
