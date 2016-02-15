@@ -623,7 +623,7 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
  * @fires contextChange
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
-	var insertionAnnotations, startNode, selectedNode, range, selectedAnnotations,
+	var insertionAnnotations, selectedNode, range, selectedAnnotations,
 		oldSelection = this.selection,
 		branchNodes = {},
 		selectionChange = false,
@@ -657,13 +657,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		} else {
 			branchNodes.end = branchNodes.start;
 		}
-		// Update selected node
-		if ( !range.isCollapsed() ) {
-			startNode = this.getDocument().documentNode.getNodeFromOffset( range.start + 1 );
-			if ( startNode && startNode.getOuterRange().equalsSelection( range ) ) {
-				selectedNode = startNode;
-			}
-		}
+		selectedNode = this.getSelectedNodeFromSelection( selection );
 
 		// Reset insertionAnnotations based on the neighbouring document data
 		insertionAnnotations = linearData.getInsertionAnnotationsFromRange( range );
@@ -933,12 +927,38 @@ ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
 };
 
 /**
- * Get the selected node covering the current range, or null
+ * Get the cached selected node covering the current selection, or null
  *
  * @return {ve.dm.Node|null} Selected node
  */
 ve.dm.Surface.prototype.getSelectedNode = function () {
 	return this.selectedNode;
+};
+
+/**
+ * Get the selected node covering a specific selection, or null
+ *
+ * @param {ve.dm.Selection} selection Selection
+ * @return {ve.dm.Node|null} Selected node
+ */
+ve.dm.Surface.prototype.getSelectedNodeFromSelection = function ( selection ) {
+	var range, startNode,
+		selectedNode = null;
+
+	selection = selection || this.getSelection();
+
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return null;
+	}
+
+	range = selection.getRange();
+	if ( !range.isCollapsed() ) {
+		startNode = this.getDocument().documentNode.getNodeFromOffset( range.start + 1 );
+		if ( startNode && startNode.getOuterRange().equalsSelection( range ) ) {
+			selectedNode = startNode;
+		}
+	}
+	return selectedNode;
 };
 
 /**
