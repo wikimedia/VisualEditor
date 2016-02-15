@@ -52,8 +52,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		autoClosePromises = [],
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
-		dir = surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() ) ||
-			surface.getModel().getDocument().getDir();
+		dir = surface.getView().getDocument().getDirectionFromSelection( fragment.getSelection() );
 
 	if ( !windowManager ) {
 		return false;
