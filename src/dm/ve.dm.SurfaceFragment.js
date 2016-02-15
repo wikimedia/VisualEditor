@@ -90,16 +90,17 @@ ve.dm.SurfaceFragment.prototype.update = function ( selection ) {
 		return;
 	}
 
-	if ( selection ) {
+	if ( selection && !selection.equals( this.selection ) ) {
 		this.selection = selection;
+		this.leafNodes = null;
 		this.historyPointer = this.document.getCompleteHistoryLength();
 	} else if ( this.historyPointer < this.document.getCompleteHistoryLength() ) {
 		// Small optimisation: check history pointer is in the past
 		txs = this.document.getCompleteHistorySince( this.historyPointer );
 		this.selection = this.selection.translateByTransactions( txs, this.excludeInsertions );
+		this.leafNodes = null;
 		this.historyPointer += txs.length;
 	}
-	this.leafNodes = null;
 };
 
 /**
