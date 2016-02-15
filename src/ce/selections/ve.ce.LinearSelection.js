@@ -18,6 +18,7 @@ ve.ce.LinearSelection = function VeCeLinearSelection() {
 	// Properties
 	// The focused node in the view when this selection was created, if one exists
 	this.focusedNode = this.getSurface().getFocusedNode( this.getModel().getRange() );
+	this.direction = null;
 };
 
 /* Inheritance */
@@ -205,6 +206,16 @@ ve.ce.LinearSelection.prototype.isFocusedNode = function () {
  */
 ve.ce.LinearSelection.prototype.isNativeCursor = function () {
 	return !this.focusedNode;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.LinearSelection.prototype.getDirection = function () {
+	if ( !this.direction ) {
+		this.direction = this.getSurface().getDocument().getDirectionFromRange( this.getModel().getRange() );
+	}
+	return this.direction;
 };
 
 /* Registration */

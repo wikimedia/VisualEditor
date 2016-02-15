@@ -110,6 +110,16 @@ ve.ce.Selection.prototype.equals = function ( other ) {
 		this.getModel().equals( other.getModel() );
 };
 
+/**
+ * Get the text directionality of the selection
+ *
+ * Note: This is the text's directionality, not the direction of the selection (e.g. ve.Range#isBackwards)
+ *
+ * @abstract
+ * @return {string} 'rtl', 'ltr'
+ */
+ve.ce.Selection.prototype.getDirection = null;
+
 /* Factory */
 
 ve.ce.selectionFactory = new OO.Factory();

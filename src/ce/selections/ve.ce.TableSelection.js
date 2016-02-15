@@ -14,6 +14,8 @@
 ve.ce.TableSelection = function VeCeTableSelection() {
 	// Parent constructor
 	ve.ce.TableSelection.super.apply( this, arguments );
+
+	this.direction = null;
 };
 
 /* Inheritance */
@@ -108,6 +110,16 @@ ve.ce.TableSelection.prototype.isFocusedNode = function () {
  */
 ve.ce.TableSelection.prototype.isNativeCursor = function () {
 	return false;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.TableSelection.prototype.getDirection = function () {
+	if ( !this.direction ) {
+		this.direction = this.getSurface().getDocument().getDirectionFromRange( this.getModel().tableRange );
+	}
+	return this.direction;
 };
 
 /* Registration */

@@ -61,6 +61,16 @@ ve.ce.NullSelection.prototype.isNativeCursor = function () {
 	return false;
 };
 
+/**
+ * @inheritdoc
+ *
+ * Null selections don't exist in the view, so just return
+ * the model's directionality.
+ */
+ve.ce.NullSelection.prototype.getDirection = function () {
+	return this.getModel().getDocument().getDir();
+};
+
 /* Registration */
 
 ve.ce.selectionFactory.register( ve.ce.NullSelection );
