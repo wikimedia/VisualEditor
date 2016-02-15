@@ -29,6 +29,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.surface = ui;
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
+	this.selection = null;
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this );
 	this.$window = $( this.getElementWindow() );
 	this.$document = $( this.getElementDocument() );
@@ -386,8 +387,13 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
  * @return {ve.ce.Selection} Selection view
  */
 ve.ce.Surface.prototype.getSelection = function ( selection ) {
-	selection = selection || this.getModel().getSelection();
-	return ve.ce.Selection.static.newFromModel( selection, this );
+	if ( selection ) {
+		// Specific selection requested, bypass cache
+		return ve.ce.Selection.static.newFromModel( selection, this );
+	} else if ( !this.selection ) {
+		this.selection = ve.ce.Selection.static.newFromModel( this.getModel().getSelection(), this );
+	}
+	return this.selection;
 };
 
 /*! Initialization */
@@ -2279,6 +2285,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 
 	this.cursorDirectionality = null;
 	this.contentBranchNodeChanged = false;
+	this.selection = null;
 
 	if ( selection instanceof ve.dm.NullSelection ) {
 		this.removeCursorHolders();
