@@ -349,12 +349,12 @@ ve.ce.FocusableNode.prototype.onSurfaceMouseMove = function ( e ) {
 };
 
 /**
- * Handle surface mouse out events.
+ * Handle surface mouse leave events.
  *
  * @method
- * @param {jQuery.Event} e Mouse out event
+ * @param {jQuery.Event} e Mouse leave event
  */
-ve.ce.FocusableNode.prototype.onSurfaceMouseOut = function ( e ) {
+ve.ce.FocusableNode.prototype.onSurfaceMouseLeave = function ( e ) {
 	if ( e.relatedTarget === null ) {
 		this.clearHighlights();
 	}
@@ -453,7 +453,7 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 	if ( !this.focused ) {
 		this.focusableSurface.$element.on( {
 			'mousemove.ve-ce-focusableNode': this.onSurfaceMouseMove.bind( this ),
-			'mouseout.ve-ce-focusableNode': this.onSurfaceMouseOut.bind( this )
+			'mouseleave.ve-ce-focusableNode': this.onSurfaceMouseLeave.bind( this )
 		} );
 	}
 };
