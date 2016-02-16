@@ -553,20 +553,14 @@ ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
  * @return {ve.dm.Node|null} The node selected by the range, or null if a node is not selected
  */
 ve.dm.SurfaceFragment.prototype.getSelectedNode = function () {
-	var i, len, range, nodes;
-	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
-		return null;
-	}
+	var surface = this.getSurface();
 
-	range = this.getSelection().getRange();
-	nodes = this.document.selectNodes( range, 'covered' );
-
-	for ( i = 0, len = nodes.length; i < len; i++ ) {
-		if ( nodes[ i ].nodeOuterRange.equalsSelection( range ) ) {
-			return nodes[ i ].node;
-		}
-	}
-	return null;
+	// Ensure the fragment is up to date
+	this.update();
+	return this.selection.equals( surface.getSelection() ) ?
+		// If the selection is equal to the surface's use the cached node
+		surface.getSelectedNode() :
+		surface.getSelectedNodeFromSelection( this.selection );
 };
 
 /**
