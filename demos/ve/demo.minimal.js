@@ -5,25 +5,28 @@
  */
 
 // Set up the platform and wait for i18n messages to load
-new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
+new ve.init.sa.Platform( ve.messagePaths ).initialize()
+	.fail( function () {
+		$( '.ve-instance' ).text( 'Sorry, this browser is not supported.' );
+	} )
+	.done( function () {
+		// Create the target
+		var target = new ve.init.sa.Target();
 
-	// Create the target
-	var target = new ve.init.sa.Target();
+		// Create a document model for a new surface
+		target.addSurface(
+			ve.dm.converter.getModelFromDom(
+				ve.createDocumentFromHtml( '<p><b>Hello,</b> <i>World!</i></p>' ),
+				// Optional: Document language, directionality (ltr/rtl)
+				{ lang: $.i18n().locale, dir: $( 'body' ).css( 'direction' ) }
+			)
+		);
 
-	// Create a document model for a new surface
-	target.addSurface(
-		ve.dm.converter.getModelFromDom(
-			ve.createDocumentFromHtml( '<p><b>Hello,</b> <i>World!</i></p>' ),
-			// Optional: Document language, directionality (ltr/rtl)
-			{ lang: $.i18n().locale, dir: $( 'body' ).css( 'direction' ) }
-		)
-	);
+		// Append the target to the document
+		$( '.ve-instance' ).append( target.$element );
 
-	// Append the target to the document
-	$( '.ve-instance' ).append( target.$element );
-
-	$( '.ve-demo-convert' ).on( 'click', function () {
-		// Get the current HTML from the surface and display
-		$( '.ve-demo-html' ).val( target.getSurface().getHtml() );
+		$( '.ve-demo-convert' ).on( 'click', function () {
+			// Get the current HTML from the surface and display
+			$( '.ve-demo-html' ).val( target.getSurface().getHtml() );
+		} );
 	} );
-} );

@@ -25,7 +25,12 @@
 		"groups": [
 			{
 				"name": "General",
-				"classes": ["ve.init", "ve.init.Platform", "ve.init.Target"]
+				"classes": [
+					"ve.init",
+					"ve.init.Platform",
+					"ve.init.Target",
+					"window.VisualEditorSupportCheck"
+				]
 			},
 			{
 				"name": "Stand-alone",

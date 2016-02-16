@@ -249,6 +249,7 @@ ve.init.Platform.prototype.getLanguageDirection = null;
 /**
  * Initialize the platform. The default implementation is to do nothing and return a resolved
  * promise. Subclasses should override this if they have asynchronous initialization work to do.
+ * The promise rejects if the platform is incompatible.
  *
  * External callers should not call this. Instead, call #getInitializedPromise.
  *
@@ -256,6 +257,9 @@ ve.init.Platform.prototype.getLanguageDirection = null;
  * @return {jQuery.Promise} Promise that will be resolved once initialization is done
  */
 ve.init.Platform.prototype.initialize = function () {
+	if ( !window.VisualEditorSupportCheck() ) {
+		return $.Deferred().reject().promise();
+	}
 	return $.Deferred().resolve().promise();
 };
 
