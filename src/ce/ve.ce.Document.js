@@ -290,27 +290,17 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 };
 
 /**
- * Get the directionality of some selection.
+ * Get the directionality of some range.
  *
- * Uses the computed CSS direction value of the current node, or the model's
- * directionality if the selection is null.
+ * Uses the computed CSS direction value of the current node.
  *
  * @method
- * @param {ve.dm.Selection} selection Selection
+ * @param {ve.Range} range Range
  * @return {string} 'rtl', 'ltr'
  */
-ve.ce.Document.prototype.getDirectionFromSelection = function ( selection ) {
-	var effectiveNode, range, selectedNodes;
-
-	if ( selection instanceof ve.dm.LinearSelection ) {
-		range = selection.getRange();
-	} else if ( selection instanceof ve.dm.TableSelection ) {
-		range = selection.tableRange;
-	} else {
-		return this.model.getDir();
-	}
-
-	selectedNodes = this.selectNodes( range, 'covered' );
+ve.ce.Document.prototype.getDirectionFromRange = function ( range ) {
+	var effectiveNode,
+		selectedNodes = this.selectNodes( range, 'covered' );
 
 	if ( selectedNodes.length > 1 ) {
 		// Selection of multiple nodes

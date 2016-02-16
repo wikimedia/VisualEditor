@@ -41,7 +41,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 
 // TODO: getNodeFromOffset
 // TODO: getSlugAtOffset
-// TODO: getDirectionFromSelection
+// TODO: getDirectionFromRange
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	var tests, i, iLen, test, parts, view, data, ceDoc, rootNode, offsetCount, offset, position,
