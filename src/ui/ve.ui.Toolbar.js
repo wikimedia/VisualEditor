@@ -188,8 +188,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 	// Update context direction for button icons UI.
 	// By default, inline and block directions are the same.
 	// If no context direction is available, use document model direction.
-	dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromSelection( fragment.getSelection() ) ||
-		fragment.getDocument().getDir();
+	dirInline = dirBlock = this.surface.getView().documentView.getDirectionFromSelection( fragment.getSelection() );
 
 	// 'inline' direction is different only if we are inside a language annotation
 	fragmentAnnotation = fragment.getAnnotations();
