@@ -290,9 +290,9 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 };
 
 /**
- * Get the directionality of some range.
+ * Get the block directionality of some range
  *
- * Uses the computed CSS direction value of the current node.
+ * Uses the computed CSS direction value of the current node
  *
  * @method
  * @param {ve.Range} range Range

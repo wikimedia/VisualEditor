@@ -111,9 +111,11 @@ ve.ce.Selection.prototype.equals = function ( other ) {
 };
 
 /**
- * Get the text directionality of the selection
+ * Get the block directionality of the selection
  *
- * Note: This is the text's directionality, not the direction of the selection (e.g. ve.Range#isBackwards)
+ * Note: This is not the direction of the selection (e.g. ve.Range#isBackwards); it is the
+ * computed block-level CSS directionality. The actual directionality at any point within the
+ * selection depends on both this and the browser's implementation of BIDI algorithm.
  *
  * @abstract
  * @return {string} 'rtl', 'ltr'
