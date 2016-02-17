@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -756,6 +756,12 @@
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 0.25em;
 }
+.oo-ui-dropdownInputWidget option {
+	font-size: inherit;
+	font-family: inherit;
+	height: 1.5em;
+	padding: 0.5em 1em;
+}
 .oo-ui-dropdownInputWidget.oo-ui-widget-enabled select:hover,
 .oo-ui-dropdownInputWidget.oo-ui-widget-enabled select:focus {
 	border-color: rgba(0, 0, 0, 0.2);
@@ -1088,14 +1094,14 @@
 }
 
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-draggableElement {
 	cursor: -webkit-grab -moz-grab, url(images/grab.cur), move;
@@ -2076,14 +2082,14 @@
 }
 
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2592,14 +2598,14 @@
 }
 
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
 	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);

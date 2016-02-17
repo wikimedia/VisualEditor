@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -155,9 +155,9 @@
 	min-width: 1em;
 	border-radius: 2px;
 	position: relative;
-	-webkit-transition: background 100ms ease, color 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
-	   -moz-transition: background 100ms ease, color 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
-	        transition: background 100ms ease, color 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
+	-webkit-transition: background 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+	   -moz-transition: background 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+	        transition: background 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
 }
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button:hover,
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button:focus {
@@ -778,9 +778,9 @@
 	border-width: 9px;
 }
 .oo-ui-popupWidget-transitioning .oo-ui-popupWidget-popup {
-	-webkit-transition: width 100ms ease, height 100ms ease, right 100ms ease;
-	   -moz-transition: width 100ms ease, height 100ms ease, right 100ms ease;
-	        transition: width 100ms ease, height 100ms ease, right 100ms ease;
+	-webkit-transition: width 100ms, height 100ms, right 100ms;
+	   -moz-transition: width 100ms, height 100ms, right 100ms;
+	        transition: width 100ms, height 100ms, right 100ms;
 }
 .oo-ui-popupWidget-head {
 	height: 2.5em;
@@ -923,6 +923,12 @@
 	border-radius: 2px;
 	padding-right: 1em;
 	vertical-align: middle;
+}
+.oo-ui-dropdownInputWidget option {
+	font-size: inherit;
+	font-family: inherit;
+	height: 1.5em;
+	padding: 0.5em 1em;
 }
 .oo-ui-dropdownInputWidget.oo-ui-widget-enabled select:hover,
 .oo-ui-dropdownInputWidget.oo-ui-widget-enabled select:focus {
@@ -1356,14 +1362,14 @@
 }
 
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-draggableElement {
 	cursor: -webkit-grab -moz-grab, url(images/grab.cur), move;
@@ -1595,9 +1601,9 @@
 	border-radius: 1em;
 	background-color: #ffffff;
 	margin-left: 0.5em;
-	-webkit-transition: background-color 100ms ease, border-color 100ms ease;
-	   -moz-transition: background-color 100ms ease, border-color 100ms ease;
-	        transition: background-color 100ms ease, border-color 100ms ease;
+	-webkit-transition: background-color 100ms, border-color 100ms;
+	   -moz-transition: background-color 100ms, border-color 100ms;
+	        transition: background-color 100ms, border-color 100ms;
 }
 .oo-ui-toggleSwitchWidget.oo-ui-widget-enabled {
 	cursor: pointer;
@@ -1645,9 +1651,9 @@
 	height: 1.2em;
 	border-radius: 1.2em;
 	background-color: #555555;
-	-webkit-transition: right 100ms ease, margin-right 100ms ease;
-	   -moz-transition: right 100ms ease, margin-right 100ms ease;
-	        transition: right 100ms ease, margin-right 100ms ease;
+	-webkit-transition: right 100ms, margin-right 100ms;
+	   -moz-transition: right 100ms, margin-right 100ms;
+	        transition: right 100ms, margin-right 100ms;
 }
 .oo-ui-toggleSwitchWidget-glow {
 	display: none;
@@ -2359,14 +2365,14 @@
 }
 
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2819,14 +2825,14 @@
 }
 
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-window {
 	background: transparent;
@@ -3170,9 +3176,9 @@
 .oo-ui-windowManager-modal > .oo-ui-dialog {
 	background-color: rgba(255, 255, 255, 0.5);
 	opacity: 0;
-	-webkit-transition: opacity 250ms ease;
-	   -moz-transition: opacity 250ms ease;
-	        transition: opacity 250ms ease;
+	-webkit-transition: opacity 250ms;
+	   -moz-transition: opacity 250ms;
+	        transition: opacity 250ms;
 }
 .oo-ui-windowManager-modal > .oo-ui-dialog > .oo-ui-window-frame {
 	background-color: #ffffff;
@@ -3181,9 +3187,9 @@
 	   -moz-transform: scale(0.5);
 	    -ms-transform: scale(0.5);
 	        transform: scale(0.5);
-	-webkit-transition: all 250ms ease;
-	   -moz-transition: all 250ms ease;
-	        transition: all 250ms ease;
+	-webkit-transition: all 250ms;
+	   -moz-transition: all 250ms;
+	        transition: all 250ms;
 }
 .oo-ui-windowManager-modal > .oo-ui-dialog.oo-ui-window-setup {
 	opacity: 1;
@@ -3204,14 +3210,14 @@
 }
 
 /*!
- * OOjs UI v0.15.3
+ * OOjs UI v0.15.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-02-09T21:21:21Z
+ * Date: 2016-02-17T02:03:27Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/mediawiki/images/icons/add.png");
