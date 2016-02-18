@@ -1,12 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Yejianfei"
+			"Yejianfei",
+			"Ztl8702"
 		]
 	},
 	"visualeditor": "可視化編輯器",
 	"visualeditor-aliencontextitem-title": "項目",
-	"visualeditor-aliennode-tooltip": "對不住，茲萆元素目前儷會使敆源代碼模式編輯。",
+	"visualeditor-aliennode-tooltip": "對不住，茲萆元素現在儷會使敆源代碼模式編輯。",
 	"visualeditor-align-widget-center": "臺中",
 	"visualeditor-align-widget-left": "左邊",
 	"visualeditor-align-widget-right": "右邊",
@@ -37,8 +38,8 @@
 	"visualeditor-dialog-action-goback": "返回",
 	"visualeditor-dialog-action-insert": "插入",
 	"visualeditor-dialog-command-help-title": "鍵盤快捷鍵",
-	"visualeditor-dialog-error": "發生錯誤……",
-	"visualeditor-dialog-error-dismiss": "返回",
+	"visualeditor-dialog-error": "什乇出毛病了……",
+	"visualeditor-dialog-error-dismiss": "轉去",
 	"visualeditor-dialog-language-auto-direction": "自動",
 	"visualeditor-dialog-language-search-title": "選擇語言",
 	"visualeditor-dialog-table-caption": "標題",
@@ -54,7 +55,7 @@
 	"visualeditor-find-and-replace-replace-button": "替換",
 	"visualeditor-find-and-replace-replace-text": "替換",
 	"visualeditor-find-and-replace-results": "第 $1 萆，共 $2 萆",
-	"visualeditor-find-and-replace-title": "查找共替換",
+	"visualeditor-find-and-replace-title": "討共替換",
 	"visualeditor-find-and-replace-word": "完整文字",
 	"visualeditor-formatdropdown-format-blockquote": "引用塊",
 	"visualeditor-formatdropdown-format-heading-label": "標題（1-6）",
