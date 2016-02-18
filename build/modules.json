@@ -175,6 +175,11 @@
 			"papaparse"
 		]
 	},
+	"visualEditor.supportCheck": {
+		"scripts": [
+			"src/init/ve.init.SupportCheck.js"
+		]
+	},
 	"visualEditor.base": {
 		"dependencies": [
 			"baselibs",
@@ -193,6 +198,7 @@
 			"src/init/ve.init.Target.js"
 		],
 		"dependencies": [
+			"visualEditor.supportCheck",
 			"unicodejs",
 			"rangefix"
 		]

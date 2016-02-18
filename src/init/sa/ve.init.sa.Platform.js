@@ -178,6 +178,10 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		promises = [],
 		fallbacks = $.i18n.fallbacks[ locale ];
 
+	if ( !window.VisualEditorSupportCheck() ) {
+		return $.Deferred().reject().promise();
+	}
+
 	if ( !fallbacks ) {
 		// Try to find something that has fallbacks (which means it's a language we know about)
 		// by stripping things from the end. But collect all the intermediate ones in case we
