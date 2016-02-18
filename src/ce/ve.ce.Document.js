@@ -193,7 +193,7 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 	if ( slug && (
 		!slug.firstChild ||
 		slug.classList.contains( 've-ce-branchNode-blockSlug' ) ||
-		slug.firstChild.classList.contains( 've-ce-chimera' )
+		( slug.firstChild.nodeType === Node.ELEMENT_NODE && slug.firstChild.classList.contains( 've-ce-chimera' ) )
 	) ) {
 		return { node: slug, offset: 0 };
 	}
