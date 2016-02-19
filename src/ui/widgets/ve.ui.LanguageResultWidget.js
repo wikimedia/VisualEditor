@@ -15,7 +15,7 @@
  */
 ve.ui.LanguageResultWidget = function VeUiLanguageResultWidget( config ) {
 	// Parent constructor
-	OO.ui.OptionWidget.call( this, config );
+	ve.ui.LanguageResultWidget.super.call( this, config );
 
 	// Initialization
 	this.$element.addClass( 've-ui-languageResultWidget' );

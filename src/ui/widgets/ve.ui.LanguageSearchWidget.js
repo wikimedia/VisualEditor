@@ -22,7 +22,7 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	}, config );
 
 	// Parent constructor
-	OO.ui.SearchWidget.call( this, config );
+	ve.ui.LanguageSearchWidget.super.call( this, config );
 
 	// Properties
 	this.languageResultWidgets = [];
@@ -59,7 +59,7 @@ OO.inheritClass( ve.ui.LanguageSearchWidget, OO.ui.SearchWidget );
  */
 ve.ui.LanguageSearchWidget.prototype.onQueryChange = function () {
 	// Parent method
-	OO.ui.SearchWidget.prototype.onQueryChange.call( this );
+	ve.ui.LanguageSearchWidget.super.prototype.onQueryChange.apply( this, arguments );
 
 	// Populate
 	this.addResults();
