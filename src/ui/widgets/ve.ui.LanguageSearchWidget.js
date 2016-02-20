@@ -96,7 +96,7 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 	var i, iLen, j, jLen, languageResult, data, matchedProperty,
 		matchProperties = [ 'name', 'autonym', 'code' ],
 		query = this.query.getValue().trim(),
-		matcher = new RegExp( '^' + this.constructor.static.escapeRegex( query ), 'i' ),
+		queryLower = query.toLowerCase(),
 		hasQuery = !!query.length,
 		items = [];
 
@@ -108,7 +108,7 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 		matchedProperty = null;
 
 		for ( j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
-			if ( matcher.test( data[ matchProperties[ j ] ] ) ) {
+			if ( data[ matchProperties[ j ] ] && data[ matchProperties[ j ] ].toLowerCase().indexOf( queryLower ) === 0 ) {
 				matchedProperty = matchProperties[ j ];
 				break;
 			}
@@ -128,16 +128,4 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 	if ( hasQuery ) {
 		this.results.highlightItem( this.results.getFirstSelectableItem() );
 	}
-};
-
-/**
- * Escape regex.
- *
- * Ported from Languagefilter#escapeRegex in jquery.uls.
- *
- * @param {string} value Text
- * @return {string} Text escaped for use in regex
- */
-ve.ui.LanguageSearchWidget.static.escapeRegex = function ( value ) {
-	return value.replace( /[\-\[\]{}()*+?.,\\\^$\|#\s]/g, '\\$&' );
 };
