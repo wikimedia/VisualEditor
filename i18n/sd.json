@@ -100,6 +100,7 @@
 	"visualeditor-table-contextitem-properties": "خصوصيتون",
 	"visualeditor-table-delete-col": "ڊاهيو {{PLURAL:$1|ڪالمُ|ڪالمَ}}",
 	"visualeditor-table-delete-row": "ڊاهيو {{PLURAL:$1|قطار|قطارون}}",
+	"visualeditor-table-format-data": "مواد جي جڳھ",
 	"visualeditor-table-insert-col-after": "کانپوءِ وجھو",
 	"visualeditor-table-insert-col-before": "کان اڳ وجھو",
 	"visualeditor-table-insert-row-after": "هيٺان وجھو",
