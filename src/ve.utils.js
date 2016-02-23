@@ -1442,30 +1442,6 @@ ve.getSystemPlatform = function () {
 };
 
 /**
- * Highlight text where a substring query matches
- *
- * @param {string} text Text
- * @param {string} query Query to find
- * @return {jQuery} Text with query substring wrapped in highlighted span
- */
-ve.highlightQuery = function ( text, query ) {
-	var $result = $( '<span>' ),
-		offset = text.toLowerCase().indexOf( query.toLowerCase() );
-
-	if ( !query.length || offset === -1 ) {
-		return $result.text( text );
-	}
-	$result.append(
-		document.createTextNode( text.slice( 0, offset ) ),
-		$( '<span>' )
-			.addClass( 've-ui-query-highlight' )
-			.text( text.slice( offset, offset + query.length ) ),
-		document.createTextNode( text.slice( offset + query.length ) )
-	);
-	return $result.contents();
-};
-
-/**
  * Get the closest matching DOM position in document order (forward or reverse)
  *
  * A DOM position is represented as an object with "node" and "offset" properties. The noDescend
