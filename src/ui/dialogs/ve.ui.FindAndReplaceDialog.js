@@ -185,8 +185,6 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.FindAndReplaceDialog.super.prototype.getSetupProcess.call( this, data )
 		.first( function () {
-			var text, fragment = data.fragment;
-
 			this.surface = data.surface;
 			this.surface.$selections.append( this.$findResults );
 
@@ -194,16 +192,6 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 			this.surface.getModel().connect( this, { documentUpdate: this.updateFragmentsDebounced } );
 			this.surface.getView().connect( this, { position: this.renderFragmentsDebounced } );
 			this.surface.getView().$window.on( 'scroll', this.onWindowScrollDebounced );
-
-			this.initialFragment = fragment;
-			this.startOffset = ve.getProp( this.initialFragment.getSelection().getRanges(), 0, 'start' ) || 0;
-
-			text = fragment.getText();
-			if ( text && text !== this.findText.getValue() ) {
-				this.findText.setValue( text );
-			} else {
-				this.onFindChange();
-			}
 		}, this );
 };
 
@@ -213,7 +201,7 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 ve.ui.FindAndReplaceDialog.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.FindAndReplaceDialog.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
-			this.findText.focus().select();
+			this.focus();
 		}, this );
 };
 
@@ -472,6 +460,33 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 };
 
 /**
+ * Focus the dialog
+ */
+ve.ui.FindAndReplaceDialog.prototype.focus = function () {
+	this.findText.focus().select();
+};
+
+/**
+ * Find the first result on opening
+ */
+ve.ui.FindAndReplaceDialog.prototype.findFirst = function () {
+	var text,
+		fragment = this.surface.getModel().getFragment( null, true );
+
+	this.initialFragment = fragment;
+	this.startOffset = ve.getProp( this.initialFragment.getSelection().getRanges(), 0, 'start' ) || 0;
+
+	text = fragment.getText();
+	if ( text && text !== this.findText.getValue() ) {
+		this.findText.setValue( text );
+	} else {
+		this.onFindChange();
+	}
+
+	this.focus();
+};
+
+/**
  * Find the next result
  */
 ve.ui.FindAndReplaceDialog.prototype.findNext = function () {
@@ -549,7 +564,7 @@ ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
  * @inheritdoc
  */
 ve.ui.FindAndReplaceDialog.prototype.getActionProcess = function ( action ) {
-	if ( action === 'findNext' || action === 'findPrevious' ) {
+	if ( action === 'findFirst' || action === 'findNext' || action === 'findPrevious' ) {
 		return new OO.ui.Process( this[ action ], this );
 	}
 	return ve.ui.FindAndReplaceDialog.super.prototype.getActionProcess.call( this, action );
