@@ -3075,7 +3075,7 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 		// context is important.
 		padding = 50,
 		top = Math.max( 0, dimensions.top - padding ),
-		bottom = dimensions.top + ( padding * 2 ),
+		bottom = dimensions.bottom + ( padding * 2 ),
 		documentRange = new ve.Range( 0, this.getModel().getDocument().getInternalList().getListNode().getOuterRange().start );
 
 	function highestIgnoreChildrenNode( childNode ) {
