@@ -296,7 +296,7 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 
 	// Because doneGenerating is invoked asynchronously, the model node may have become detached
 	// in the meantime. Handle this gracefully.
-	if ( this.model.doc ) {
+	if ( this.model && this.model.doc ) {
 		store = this.model.doc.getStore();
 		hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
 		store.index( generatedContents, hash );
