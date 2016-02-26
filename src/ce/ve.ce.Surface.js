@@ -3269,6 +3269,11 @@ ve.ce.Surface.prototype.linkAnnotationAtFocus = function () {
 /**
  * Get a SelectionState corresponding to a ve.Range.
  *
+ * If either endpoint of the ve.Range is not a cursor offset, adjust the SelectionState
+ * endpoints to be at cursor offsets. For a collapsed selection, the adjustment preserves
+ * collapsedness; for a non-collapsed selection, the adjustment is in the direction that
+ * grows the selection (thereby avoiding collapsing or reversing the selection).
+ *
  * @method
  * @param {ve.Range} range Range to get selection for
  * @return {Object} The selection
@@ -3290,10 +3295,14 @@ ve.ce.Surface.prototype.getSelectionState = function ( range ) {
 		dmDoc.getNearestCursorOffset( range.from, range.isBackwards() ? 1 : -1 ),
 		!this.focused
 	);
-	focus = this.documentView.getNodeAndOffset(
-		dmDoc.getNearestCursorOffset( range.to, range.isBackwards() ? -1 : 1 ),
-		!this.focused
-	);
+	if ( range.isCollapsed() ) {
+		focus = anchor;
+	} else {
+		focus = this.documentView.getNodeAndOffset(
+			dmDoc.getNearestCursorOffset( range.to, range.isBackwards() ? -1 : 1 ),
+			!this.focused
+		);
+	}
 	return new ve.SelectionState( {
 		anchorNode: anchor.node,
 		anchorOffset: anchor.offset,
