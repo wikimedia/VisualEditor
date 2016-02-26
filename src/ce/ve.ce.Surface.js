@@ -3313,13 +3313,9 @@ ve.ce.Surface.prototype.getSelectionState = function ( range ) {
  * @return {Range|null} Native range object, or null if there is no suitable selection
  */
 ve.ce.Surface.prototype.getNativeRange = function ( range ) {
-	var selectionState, modelSelection;
+	var selectionState;
 
-	if ( !range || (
-		!this.deactivated &&
-		( modelSelection = this.getModel().getSelection() ) instanceof ve.dm.LinearSelection &&
-		modelSelection.getRange().equalsSelection( range )
-	) ) {
+	if ( !range ) {
 		// If no range specified, or range is equivalent to current native selection,
 		// then use the current native selection
 		selectionState = new ve.SelectionState( this.nativeSelection );
