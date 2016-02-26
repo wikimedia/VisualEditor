@@ -188,7 +188,7 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		promises = [],
 		fallbacks = $.i18n.fallbacks[ locale ];
 
-	if ( !window.VisualEditorSupportCheck() ) {
+	if ( !VisualEditorSupportCheck() ) {
 		return $.Deferred().reject().promise();
 	}
 

@@ -24,6 +24,7 @@
 		"unicodeJS": false,
 		"RangeFix": false,
 		"Papa": false,
-		"ve": false
+		"ve": false,
+		"VisualEditorSupportCheck": false
 	}
 }

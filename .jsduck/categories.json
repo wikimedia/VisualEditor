@@ -29,7 +29,7 @@
 					"ve.init",
 					"ve.init.Platform",
 					"ve.init.Target",
-					"window.VisualEditorSupportCheck"
+					"global"
 				]
 			},
 			{
