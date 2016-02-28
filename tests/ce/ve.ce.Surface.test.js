@@ -2022,7 +2022,7 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		for ( j = 0; j < cases[ i ].expected.length; j++ ) {
-			expect += cases[ i ].expected[ j ] ? ( cases[ i ].expected[ j ].focusNode === undefined ? 2 : 4 ) : 1;
+			expect += cases[ i ].expected[ j ] ? 2 : 1;
 		}
 	}
 
@@ -2038,18 +2038,9 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 				assert.strictEqual( null, cases[ i ].expected[ j ], 'Focusable node at ' + j );
 			} else {
 				selection = view.getSelectionState( new ve.Range( j ) );
-				if ( selection.isCollapsed ) {
-					expectedNode = $( '<div>' ).html( cases[ i ].expected[ j ].anchorNode )[ 0 ].childNodes[ 0 ];
-					assert.equalDomElement( selection.anchorNode, expectedNode, 'Node ' + msg );
-					assert.strictEqual( selection.anchorOffset, cases[ i ].expected[ j ].anchorOffset, 'Offset ' + msg );
-				} else {
-					expectedNode = $( '<div>' ).html( cases[ i ].expected[ j ].anchorNode )[ 0 ].childNodes[ 0 ];
-					assert.equalDomElement( selection.anchorNode, expectedNode, 'Anchor node ' + msg );
-					assert.strictEqual( selection.anchorOffset, cases[ i ].expected[ j ].anchorOffset, 'Anchor offset ' + msg );
-					expectedNode = $( '<div>' ).html( cases[ i ].expected[ j ].focusNode )[ 0 ].childNodes[ 0 ];
-					assert.equalDomElement( selection.focusNode, expectedNode, 'End node ' + msg );
-					assert.strictEqual( selection.focusOffset, cases[ i ].expected[ j ].focusOffset, 'Focus offset ' + msg );
-				}
+				expectedNode = $( '<div>' ).html( cases[ i ].expected[ j ].anchorNode )[ 0 ].childNodes[ 0 ];
+				assert.equalDomElement( selection.anchorNode, expectedNode, 'Node ' + msg );
+				assert.strictEqual( selection.anchorOffset, cases[ i ].expected[ j ].anchorOffset, 'Offset ' + msg );
 			}
 		}
 		view.destroy();
