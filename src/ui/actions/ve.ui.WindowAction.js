@@ -82,8 +82,6 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		windowManager.getWindow( name ).then( function ( win ) {
 			var opening = windowManager.openWindow( win, data );
 
-			surface.getView().emit( 'position' );
-
 			if ( !win.constructor.static.activeSurface ) {
 				surface.getView().deactivate();
 			}
