@@ -76,6 +76,12 @@ ve.debounce = OO.ui.debounce;
 
 /**
  * @method
+ * @inheritdoc OO.ui#throttle
+ */
+ve.throttle = OO.ui.throttle;
+
+/**
+ * @method
  * @inheritdoc OO.ui.Element#scrollIntoView
  */
 ve.scrollIntoView = OO.ui.Element.static.scrollIntoView.bind( OO.ui.Element.static );

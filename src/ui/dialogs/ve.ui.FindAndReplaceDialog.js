@@ -136,9 +136,9 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	$replaceRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
 
 	// Events
-	this.onWindowScrollDebounced = ve.debounce( this.onWindowScroll.bind( this ), 250 );
-	this.updateFragmentsDebounced = ve.debounce( this.updateFragments.bind( this ) );
-	this.renderFragmentsDebounced = ve.debounce( this.renderFragments.bind( this ), 250 );
+	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
+	this.updateFragmentsThrottled = ve.throttle( this.updateFragments.bind( this ), 250 );
+	this.renderFragmentsThrottled = ve.throttle( this.renderFragments.bind( this ), 250 );
 	this.findText.connect( this, {
 		change: 'onFindChange',
 		enter: 'onFindReplaceTextEnter'
@@ -193,7 +193,7 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 			// Events
 			this.surface.getModel().connect( this, { documentUpdate: 'onSurfaceModelDocumentUpdate' } );
 			this.surface.getView().connect( this, { position: 'onSurfaceViewPosition' } );
-			this.surface.getView().$window.on( 'scroll', this.onWindowScrollDebounced );
+			this.surface.getView().$window.on( 'scroll', this.onWindowScrollThrottled );
 		}, this );
 };
 
@@ -220,7 +220,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			// Events
 			this.surface.getModel().disconnect( this );
 			surfaceView.disconnect( this );
-			this.surface.getView().$window.off( 'scroll', this.onWindowScrollDebounced );
+			this.surface.getView().$window.off( 'scroll', this.onWindowScrollThrottled );
 
 			// If the surface isn't selected, put the selection back in a sensible place
 			if ( surfaceModel.getSelection() instanceof ve.dm.NullSelection ) {
@@ -253,7 +253,7 @@ ve.ui.FindAndReplaceDialog.prototype.onSurfaceModelDocumentUpdate = function () 
 		return;
 	}
 	this.clearRenderedResultsCache();
-	this.updateFragmentsDebounced();
+	this.updateFragmentsThrottled();
 };
 
 /**
@@ -264,7 +264,7 @@ ve.ui.FindAndReplaceDialog.prototype.onSurfaceViewPosition = function () {
 		return;
 	}
 	this.clearRenderedResultsCache();
-	this.renderFragmentsDebounced();
+	this.renderFragmentsThrottled();
 };
 
 /**
@@ -620,7 +620,7 @@ ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
 	var dialog = this,
 		replace = this.replaceText.getValue();
 
-	// Prevent replace from triggering debounced redraws
+	// Prevent replace from triggering throttled redraws
 	this.replacing = true;
 
 	if ( this.query instanceof RegExp ) {
