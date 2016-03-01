@@ -257,6 +257,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 				) :
 				nodeRange
 		).select();
+		node.focusableSurface.updateActiveLink();
 	} );
 };
 
