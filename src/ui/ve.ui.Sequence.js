@@ -73,7 +73,7 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		return false;
 	}
 
-	command = ve.init.target.commandRegistry.lookup( this.getCommandName() );
+	command = surface.commandRegistry.lookup( this.getCommandName() );
 
 	if ( !command ) {
 		return false;

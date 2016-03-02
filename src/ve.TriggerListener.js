@@ -11,14 +11,26 @@
  *
  * @constructor
  * @param {string[]} commands Commands to listen to triggers for
+ * @param {ve.ui.CommandRegistry} commandRegistry Command registry to get commands from
  */
-ve.TriggerListener = function VeTriggerListener( commands ) {
+ve.TriggerListener = function VeTriggerListener( commands, commandRegistry ) {
+	var i, j, command, triggers;
+
 	// Properties
-	this.commands = [];
+	this.commands = commands;
 	this.commandsByTrigger = {};
 	this.triggers = {};
 
-	this.setupCommands( commands );
+	for ( i = this.commands.length - 1; i >= 0; i-- ) {
+		command = this.commands[ i ];
+		triggers = ve.ui.triggerRegistry.lookup( command );
+		if ( triggers ) {
+			for ( j = triggers.length - 1; j >= 0; j-- ) {
+				this.commandsByTrigger[ triggers[ j ].toString() ] = commandRegistry.lookup( command );
+			}
+			this.triggers[ command ] = triggers;
+		}
+	}
 };
 
 /* Inheritance */
@@ -26,28 +38,6 @@ ve.TriggerListener = function VeTriggerListener( commands ) {
 OO.initClass( ve.TriggerListener );
 
 /* Methods */
-
-/**
- * Setup commands
- *
- * @param {string[]} commands Commands to listen to triggers for
- */
-ve.TriggerListener.prototype.setupCommands = function ( commands ) {
-	var i, j, command, triggers;
-	this.commands = commands;
-	if ( commands.length ) {
-		for ( i = this.commands.length - 1; i >= 0; i-- ) {
-			command = this.commands[ i ];
-			triggers = ve.ui.triggerRegistry.lookup( command );
-			if ( triggers ) {
-				for ( j = triggers.length - 1; j >= 0; j-- ) {
-					this.commandsByTrigger[ triggers[ j ].toString() ] = ve.init.target.commandRegistry.lookup( command );
-				}
-				this.triggers[ command ] = triggers;
-			}
-		}
-	}
-};
 
 /**
  * Get list of commands.

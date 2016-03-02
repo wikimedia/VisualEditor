@@ -40,8 +40,8 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
 	this.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
 	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.ui.dataTransferHandlerFactory;
-	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands );
-	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands );
+	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands, this.commandRegistry );
+	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands, this.commandRegistry );
 	this.$scrollContainer = this.getScrollContainer();
 	this.toolbarScrollOffset = 0;
 
@@ -297,6 +297,8 @@ ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
 	return ve.extendObject( {
 		$scrollContainer: this.$scrollContainer,
+		commandRegistry: this.commandRegistry,
+		sequenceRegistry: this.sequenceRegistry,
 		includeCommands: this.constructor.static.includeCommands,
 		excludeCommands: OO.simpleArrayUnion(
 			this.constructor.static.excludeCommands,

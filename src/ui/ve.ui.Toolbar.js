@@ -247,7 +247,7 @@ ve.ui.Toolbar.prototype.getTriggers = function ( name ) {
  * @return {string[]} Command names
  */
 ve.ui.Toolbar.prototype.getCommands = function () {
-	return this.getSurface().triggerListener.getCommands();
+	return this.getSurface().getCommands();
 };
 
 /**

@@ -2721,7 +2721,7 @@ ve.ce.Surface.prototype.checkSequences = function () {
 		return;
 	}
 
-	sequences = ve.init.target.sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getRanges()[ 0 ].end );
+	sequences = this.getSurface().sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getRanges()[ 0 ].end );
 
 	// sequences.length will likely be 0 or 1 so don't cache
 	for ( i = 0; i < sequences.length; i++ ) {
