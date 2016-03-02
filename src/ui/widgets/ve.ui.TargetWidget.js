@@ -34,6 +34,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( doc, config ) {
 	// TODO: Override document/targetTriggerListener
 
 	this.surface = ve.init.target.createSurface( doc, {
+		inTargetWidget: true,
 		commandRegistry: this.commandRegistry,
 		sequenceRegistry: this.sequenceRegistry,
 		includeCommands: config.includeCommands,
