@@ -156,9 +156,10 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.replaceAllButton.connect( this, { click: 'onReplaceAllButtonClick' } );
 	doneButton.connect( this, { click: 'close' } );
 
+	this.findText.$input.on( 'keydown', this.onFindTextKeyDown.bind( this ) );
+	this.replaceText.$input.on( 'keydown', this.onReplaceTextKeyDown.bind( this ) );
+
 	// Initialization
-	this.findText.$input.prop( 'tabIndex', 1 );
-	this.replaceText.$input.prop( 'tabIndex', 2 );
 	this.$content.addClass( 've-ui-findAndReplaceDialog-content' );
 	this.$body
 		.append(
@@ -312,6 +313,30 @@ ve.ui.FindAndReplaceDialog.prototype.onFindReplaceTextEnter = function ( e ) {
 		this.findPrevious();
 	} else {
 		this.findNext();
+	}
+};
+
+/**
+ * Handle keydown events on the find text input
+ *
+ * @param {jQuery.Event} e
+ */
+ve.ui.FindAndReplaceDialog.prototype.onFindTextKeyDown = function ( e ) {
+	if ( e.which === OO.ui.Keys.TAB && !e.shiftKey ) {
+		this.replaceText.$input.focus();
+		e.preventDefault();
+	}
+};
+
+/**
+ * Handle keydown events on the replace text input
+ *
+ * @param {jQuery.Event} e
+ */
+ve.ui.FindAndReplaceDialog.prototype.onReplaceTextKeyDown = function ( e ) {
+	if ( e.which === OO.ui.Keys.TAB && e.shiftKey ) {
+		this.findText.$input.focus();
+		e.preventDefault();
 	}
 };
 
