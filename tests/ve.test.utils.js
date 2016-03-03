@@ -245,7 +245,9 @@
 				},
 				getView: function () {
 					return view;
-				}
+				},
+				commandRegistry: ve.ui.commandRegistry,
+				sequenceRegistry: ve.ui.sequenceRegistry
 			},
 			/* jshint -W003 */
 			model = new ve.dm.Surface( doc ),

@@ -106,7 +106,7 @@ ve.ui.ContextItem.prototype.isNode = function () {
  * @return {ve.ui.Command} Command
  */
 ve.ui.ContextItem.prototype.getCommand = function () {
-	return ve.init.target.commandRegistry.lookup( this.constructor.static.commandName );
+	return this.context.getSurface().commandRegistry.lookup( this.constructor.static.commandName );
 };
 
 /**

@@ -280,13 +280,14 @@ ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.executeCommand = function () {
-	var command;
+	var command, surface;
 	if ( !this.model.isInspectable() ) {
 		return false;
 	}
-	command = ve.init.target.commandRegistry.getCommandForNode( this );
+	surface = this.focusableSurface.getSurface();
+	command = surface.commandRegistry.getCommandForNode( this );
 	if ( command ) {
-		command.execute( this.focusableSurface.getSurface() );
+		command.execute( surface );
 	}
 };
 

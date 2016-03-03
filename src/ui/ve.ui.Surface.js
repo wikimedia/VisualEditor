@@ -15,6 +15,8 @@
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
+ * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
+ * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
@@ -39,10 +41,12 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$controls = $( '<div>' );
 	this.$menus = $( '<div>' );
 	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
+	this.commandRegistry = config.commandRegistry || ve.init.target.commandRegistry;
+	this.sequenceRegistry = config.sequenceRegistry || ve.init.target.sequenceRegistry;
 	this.commands = OO.simpleArrayDifference(
-		config.includeCommands || Object.keys( ve.init.target.commandRegistry.registry ), config.excludeCommands || []
+		config.includeCommands || Object.keys( this.commandRegistry.registry ), config.excludeCommands || []
 	);
-	this.triggerListener = new ve.TriggerListener( this.commands );
+	this.triggerListener = new ve.TriggerListener( this.commands, this.commandRegistry );
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
 		documentModel = dataOrDoc;
@@ -539,6 +543,20 @@ ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
 			ret = obj[ method ].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
 			return ret === undefined || !!ret;
 		}
+	}
+	return false;
+};
+
+/**
+ * Execute a command by name
+ *
+ * @param {string} commandName Command name
+ * @return {boolean} The command was executed
+ */
+ve.ui.Surface.prototype.executeCommand = function ( commandName ) {
+	var command = this.commandRegistry.lookup( commandName );
+	if ( command ) {
+		return command.execute( this );
 	}
 	return false;
 };
