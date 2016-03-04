@@ -17,7 +17,8 @@
 			"Yury Katkov",
 			"Умар",
 			"Kaganer",
-			"Nirovulf"
+			"Nirovulf",
+			"Perevod16"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -131,6 +132,10 @@
 	"visualeditor-table-merge-cells": "Объединить ячейки",
 	"visualeditor-table-merge-cells-merge": "Объединить",
 	"visualeditor-table-merge-cells-unmerge": "Разделить",
+	"visualeditor-table-move-col-after": "Двигаться после",
+	"visualeditor-table-move-col-before": "Прежде чем двигаться",
+	"visualeditor-table-move-row-after": "Двигаться ниже",
+	"visualeditor-table-move-row-before": "Двигатся выше",
 	"visualeditor-tablecell-contextitem": "Ячейка таблицы",
 	"visualeditor-tablecell-tooltip": "Дважды кликните для редактирования ячейки",
 	"visualeditor-toolbar-format-tooltip": "Формат абзаца",
