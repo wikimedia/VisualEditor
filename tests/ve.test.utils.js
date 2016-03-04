@@ -13,9 +13,6 @@
 	new ve.init.sa.Target();
 	/*jshint nonew:true */
 
-	// Configure QUnit
-	QUnit.config.requireExpects = true;
-
 	// Disable scroll animatinos
 	ve.scrollIntoView = function () {};
 
