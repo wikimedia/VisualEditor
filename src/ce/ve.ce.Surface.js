@@ -1432,7 +1432,7 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 	}
 	preUnicorn = this.unicorningNode.unicorns[ 0 ];
 	postUnicorn = this.unicorningNode.unicorns[ 1 ];
-	if ( !this.$document[ 0 ].contains( preUnicorn ) ) {
+	if ( !this.$documentNode[ 0 ].contains( preUnicorn ) ) {
 		return false;
 	}
 
