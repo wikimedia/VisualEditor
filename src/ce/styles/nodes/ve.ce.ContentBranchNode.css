@@ -12,3 +12,10 @@
 .ve-ce-contentBranchNode {
 	white-space: pre-wrap;
 }
+
+/*
+ * Undo this hack on focusable nodes
+ */
+.ve-ce-focusableNode {
+	white-space: normal;
+}
