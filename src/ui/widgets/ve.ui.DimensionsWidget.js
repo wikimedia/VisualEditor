@@ -187,8 +187,8 @@ ve.ui.DimensionsWidget.prototype.setDimensions = function ( dimensions ) {
  */
 ve.ui.DimensionsWidget.prototype.getDimensions = function () {
 	return {
-		width: this.widthInput.getValue(),
-		height: this.heightInput.getValue()
+		width: +this.widthInput.getValue(),
+		height: +this.heightInput.getValue()
 	};
 };
 
