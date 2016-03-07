@@ -88,8 +88,8 @@ ve.ui.LinkAnnotationWidget.static.getTextFromAnnotation = function ( annotation 
  * @param {Object} [config] Configuration options
  * @return {OO.ui.Widget} Text input widget
  */
-ve.ui.LinkAnnotationWidget.prototype.createInputWidget = function () {
-	return new OO.ui.TextInputWidget( { validate: 'non-empty' } );
+ve.ui.LinkAnnotationWidget.prototype.createInputWidget = function ( config ) {
+	return new OO.ui.TextInputWidget( $.extend( { validate: 'non-empty' }, config ) );
 };
 
 /**
