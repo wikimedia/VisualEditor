@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-icon-block {
 	background-image: url("themes/mediawiki/images/icons/block.png");
@@ -110,6 +110,12 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star-constructive.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/star-constructive.png");
 }
+.oo-ui-image-progressive.oo-ui-icon-star {
+	background-image: url("themes/mediawiki/images/icons/star-progressive.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star-progressive.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star-progressive.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/star-progressive.png");
+}
 .oo-ui-image-invert.oo-ui-icon-star {
 	background-image: url("themes/mediawiki/images/icons/star-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/star-invert.svg");
@@ -169,6 +175,12 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar-constructive.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar-constructive.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/unStar-constructive.png");
+}
+.oo-ui-image-progressive.oo-ui-icon-unStar {
+	background-image: url("themes/mediawiki/images/icons/unStar-progressive.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar-progressive.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/unStar-progressive.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/unStar-progressive.png");
 }
 .oo-ui-image-invert.oo-ui-icon-unStar {
 	background-image: url("themes/mediawiki/images/icons/unStar-invert.png");

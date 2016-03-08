@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -31,7 +31,8 @@
 	cursor: default;
 }
 .oo-ui-buttonElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
-.oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+.oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
+.oo-ui-buttonElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -39,18 +40,9 @@
 	display: inline-block;
 	position: relative;
 }
-.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	display: inline-block;
-	vertical-align: middle;
-}
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button {
-	display: inline-block;
 	vertical-align: top;
 	text-align: center;
-}
-.oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	display: inline-block;
-	vertical-align: middle;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
@@ -806,12 +798,9 @@
 	overflow: auto;
 }
 .oo-ui-textInputWidget input[type="search"] {
-	-webkit-appearance: none;
+	-webkit-appearance: texfield;
 }
 .oo-ui-textInputWidget input[type="search"]::-ms-clear {
-	display: none;
-}
-.oo-ui-textInputWidget input[type="search"]::-ms-reveal {
 	display: none;
 }
 .oo-ui-textInputWidget input[type="search"]::-webkit-search-decoration,
@@ -1100,33 +1089,38 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
-.oo-ui-draggableElement-handle.oo-ui-widget-enabled {
+.oo-ui-draggableElement-handle,
+.oo-ui-draggableElement-handle.oo-ui-widget {
 	cursor: move;
 	cursor: url(images/grab.cur );
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;
 	cursor:         grab;
 }
-.oo-ui-draggableElement-placeholder {
-	opacity: 0.2;
-}
-.oo-ui-draggableElement.oo-ui-widget-enabled:active {
+.oo-ui-draggableElement-handle:active {
 	cursor: move;
 	cursor: url(images/grabbing.cur );
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;
 	cursor:         grabbing;
 }
-.oo-ui-draggableGroupElement-horizontal .oo-ui-draggableElement.oo-ui-optionWidget {
+.oo-ui-draggableElement-handle.oo-ui-widget-disabled,
+.oo-ui-widget-disabled .oo-ui-draggableElement-handle {
+	cursor: default;
+}
+.oo-ui-draggableElement-placeholder {
+	opacity: 0.2;
+}
+.oo-ui-draggableGroupElement-horizontal .oo-ui-draggableElement {
 	display: inline-block;
 }
 .oo-ui-lookupElement > .oo-ui-menuSelectWidget {
@@ -2072,14 +2066,14 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2588,14 +2582,14 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
 	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
@@ -2742,7 +2736,6 @@
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
 	text-align: center;
 	line-height: 3.4em;
-	padding: 0 2em;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget:hover {
 	background-color: rgba(0, 0, 0, 0.05);
@@ -2998,14 +2991,14 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/apex/images/icons/add.png");

@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -31,7 +31,8 @@
 	cursor: default;
 }
 .oo-ui-buttonElement.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
-.oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+.oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
+.oo-ui-buttonElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -39,18 +40,9 @@
 	display: inline-block;
 	position: relative;
 }
-.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	display: inline-block;
-	vertical-align: middle;
-}
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button {
-	display: inline-block;
 	vertical-align: top;
 	text-align: center;
-}
-.oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	display: inline-block;
-	vertical-align: middle;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
@@ -113,14 +105,14 @@
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #008064;
+	color: #2962cc;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	color: #00af89;
+	color: #347bff;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	color: #005946;
+	color: #1f4999;
 	box-shadow: none;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
@@ -166,7 +158,6 @@
 .oo-ui-buttonElement-framed > input.oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	line-height: 1.2em;
-	display: inline-block;
 }
 .oo-ui-buttonElement-framed.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	position: absolute;
@@ -175,9 +166,6 @@
 }
 .oo-ui-buttonElement-framed.oo-ui-iconElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	margin-right: 0.3em;
-}
-.oo-ui-buttonElement-framed.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
-	display: inline-block;
 }
 .oo-ui-buttonElement-framed.oo-ui-indicatorElement.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator,
 .oo-ui-buttonElement-framed.oo-ui-indicatorElement.oo-ui-iconElement:not( .oo-ui-labelElement ) > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
@@ -236,20 +224,20 @@
 	color: #ffffff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
-	color: #00af89;
+	color: #347bff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover {
-	background-color: rgba(0, 171, 137, 0.1);
-	border-color: rgba(0, 89, 70, 0.5);
+	background-color: rgba(52, 123, 255, 0.1);
+	border-color: rgba(31, 73, 153, 0.5);
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px #005946;
-	border-color: #005946;
+	box-shadow: inset 0 0 0 1px #1f4999;
+	border-color: #1f4999;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
-	color: #005946;
-	border-color: #005946;
+	color: #1f4999;
+	border-color: #1f4999;
 	box-shadow: none;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
@@ -303,22 +291,22 @@
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
 	color: #ffffff;
-	background-color: #00af89;
-	border-color: #00af89;
+	background-color: #347bff;
+	border-color: #347bff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover {
-	background: #008064;
-	border-color: #008064;
+	background: #2962cc;
+	border-color: #2962cc;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus {
 	box-shadow: inset 0 0 0 1px #ffffff;
-	border-color: #00af89;
+	border-color: #347bff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
 	color: #ffffff;
-	background-color: #005946;
-	border-color: #005946;
+	background-color: #1f4999;
+	border-color: #1f4999;
 	box-shadow: none;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
@@ -864,10 +852,10 @@
 	height: 1.6em;
 	background-color: white;
 	border: 1px solid #777777;
-	background-image: url("themes/mediawiki/images/icons/check-constructive.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check-constructive.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check-constructive.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/check-constructive.png");
+	background-image: url("themes/mediawiki/images/icons/check-constructive-deprecated.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check-constructive-deprecated.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check-constructive-deprecated.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/check-constructive-deprecated.png");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-origin: border-box;
@@ -982,10 +970,10 @@
 	height: 1.6em;
 	background: white;
 	border: 1px solid #777777;
-	background-image: url("themes/mediawiki/images/icons/circle-constructive.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/circle-constructive.png");
+	background-image: url("themes/mediawiki/images/icons/circle-constructive-deprecated.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive-deprecated.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive-deprecated.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/circle-constructive-deprecated.png");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-origin: border-box;
@@ -1043,12 +1031,9 @@
 	overflow: auto;
 }
 .oo-ui-textInputWidget input[type="search"] {
-	-webkit-appearance: none;
+	-webkit-appearance: texfield;
 }
 .oo-ui-textInputWidget input[type="search"]::-ms-clear {
-	display: none;
-}
-.oo-ui-textInputWidget input[type="search"]::-ms-reveal {
 	display: none;
 }
 .oo-ui-textInputWidget input[type="search"]::-webkit-search-decoration,
@@ -1297,7 +1282,6 @@
 	right: 0.25em;
 }
 .oo-ui-dropdownWidget-handle .oo-ui-labelElement-label {
-	line-height: 1.275em;
 	margin: 0 1em;
 }
 .oo-ui-dropdownWidget-handle .oo-ui-indicatorElement-indicator {
@@ -1368,33 +1352,38 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
-.oo-ui-draggableElement-handle.oo-ui-widget-enabled {
+.oo-ui-draggableElement-handle,
+.oo-ui-draggableElement-handle.oo-ui-widget {
 	cursor: move;
 	cursor: url(images/grab.cur );
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;
 	cursor:         grab;
 }
-.oo-ui-draggableElement-placeholder {
-	opacity: 0.2;
-}
-.oo-ui-draggableElement.oo-ui-widget-enabled:active {
+.oo-ui-draggableElement-handle:active {
 	cursor: move;
 	cursor: url(images/grabbing.cur );
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;
 	cursor:         grabbing;
 }
-.oo-ui-draggableGroupElement-horizontal .oo-ui-draggableElement.oo-ui-optionWidget {
+.oo-ui-draggableElement-handle.oo-ui-widget-disabled,
+.oo-ui-widget-disabled .oo-ui-draggableElement-handle {
+	cursor: default;
+}
+.oo-ui-draggableElement-placeholder {
+	opacity: 0.2;
+}
+.oo-ui-draggableGroupElement-horizontal .oo-ui-draggableElement {
 	display: inline-block;
 }
 .oo-ui-lookupElement > .oo-ui-menuSelectWidget {
@@ -1997,7 +1986,7 @@
 	left: 2em;
 }
 .oo-ui-selectFileWidget-supported.oo-ui-widget-enabled.oo-ui-selectFileWidget-canDrop .oo-ui-selectFileWidget-dropTarget {
-	background: rgba(52, 123, 255, 0.1);
+	background-color: rgba(52, 123, 255, 0.1);
 }
 .oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
 .oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget {
@@ -2355,14 +2344,14 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2815,14 +2804,14 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-window {
 	background: transparent;
@@ -2962,7 +2951,6 @@
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
 	text-align: center;
 	line-height: 3.4em;
-	padding: 0 2em;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget:hover {
 	background-color: rgba(0, 0, 0, 0.05);
@@ -2980,10 +2968,10 @@
 	font-weight: bold;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-constructive:hover {
-	background-color: rgba(118, 171, 54, 0.05);
+	background-color: rgba(8, 126, 204, 0.05);
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-constructive:active {
-	background-color: rgba(118, 171, 54, 0.1);
+	background-color: rgba(8, 126, 204, 0.1);
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-destructive:hover {
 	background-color: rgba(212, 83, 83, 0.05);
@@ -3200,14 +3188,14 @@
 }
 
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/mediawiki/images/icons/add.png");
@@ -3220,6 +3208,12 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add-constructive.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add-constructive.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/add-constructive.png");
+}
+.oo-ui-image-progressive.oo-ui-icon-add {
+	background-image: url("themes/mediawiki/images/icons/add-progressive.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add-progressive.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/add-progressive.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/add-progressive.png");
 }
 .oo-ui-image-invert.oo-ui-icon-add {
 	background-image: url("themes/mediawiki/images/icons/add-invert.png");
@@ -3281,6 +3275,12 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/check.png");
 }
+.oo-ui-image-constructive-deprecated.oo-ui-icon-check {
+	background-image: url("themes/mediawiki/images/icons/check-constructive-deprecated.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check-constructive-deprecated.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check-constructive-deprecated.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/check-constructive-deprecated.png");
+}
 .oo-ui-image-constructive.oo-ui-icon-check {
 	background-image: url("themes/mediawiki/images/icons/check-constructive.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check-constructive.svg");
@@ -3311,11 +3311,23 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/circle.png");
 }
+.oo-ui-image-constructive-deprecated.oo-ui-icon-circle {
+	background-image: url("themes/mediawiki/images/icons/circle-constructive-deprecated.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive-deprecated.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive-deprecated.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/circle-constructive-deprecated.png");
+}
 .oo-ui-image-constructive.oo-ui-icon-circle {
 	background-image: url("themes/mediawiki/images/icons/circle-constructive.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-constructive.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/circle-constructive.png");
+}
+.oo-ui-image-progressive.oo-ui-icon-circle {
+	background-image: url("themes/mediawiki/images/icons/circle-progressive.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-progressive.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/circle-progressive.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/circle-progressive.png");
 }
 .oo-ui-image-invert.oo-ui-icon-circle {
 	background-image: url("themes/mediawiki/images/icons/circle-invert.png");

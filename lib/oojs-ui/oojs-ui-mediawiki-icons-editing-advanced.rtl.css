@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-icon-alignCentre {
 	background-image: url("themes/mediawiki/images/icons/align-center.png");
@@ -68,6 +68,18 @@
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/calendar-rtl-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/calendar-rtl-invert.png");
 }
+.oo-ui-icon-code {
+	background-image: url("themes/mediawiki/images/icons/code.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/code.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/code.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/code.png");
+}
+.oo-ui-image-invert.oo-ui-icon-code {
+	background-image: url("themes/mediawiki/images/icons/code-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/code-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/code-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/code-invert.png");
+}
 .oo-ui-icon-find {
 	background-image: url("themes/mediawiki/images/icons/find-rtl.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/find-rtl.svg");
@@ -103,6 +115,18 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/layout-rtl-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/layout-rtl-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/layout-rtl-invert.png");
+}
+.oo-ui-icon-markup {
+	background-image: url("themes/mediawiki/images/icons/markup.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/markup.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/markup.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/markup.png");
+}
+.oo-ui-image-invert.oo-ui-icon-markup {
+	background-image: url("themes/mediawiki/images/icons/markup-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/markup-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/markup-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/markup-invert.png");
 }
 .oo-ui-icon-newline {
 	background-image: url("themes/mediawiki/images/icons/newline-rtl.png");

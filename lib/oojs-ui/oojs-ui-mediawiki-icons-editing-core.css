@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-icon-edit {
 	background-image: url("themes/mediawiki/images/icons/edit-ltr.png");
@@ -85,4 +85,28 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/secure-link-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/secure-link-invert.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/secure-link-invert.png");
+}
+.oo-ui-icon-redo {
+	background-image: url("themes/mediawiki/images/icons/arched-arrow-ltr.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-ltr.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-ltr.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/arched-arrow-ltr.png");
+}
+.oo-ui-image-invert.oo-ui-icon-redo {
+	background-image: url("themes/mediawiki/images/icons/arched-arrow-ltr-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-ltr-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-ltr-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/arched-arrow-ltr-invert.png");
+}
+.oo-ui-icon-undo {
+	background-image: url("themes/mediawiki/images/icons/arched-arrow-rtl.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-rtl.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-rtl.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/arched-arrow-rtl.png");
+}
+.oo-ui-image-invert.oo-ui-icon-undo {
+	background-image: url("themes/mediawiki/images/icons/arched-arrow-rtl-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-rtl-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/arched-arrow-rtl-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/arched-arrow-rtl-invert.png");
 }

@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.1
+ * OOjs UI v0.16.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-01T21:50:17Z
+ * Date: 2016-03-08T21:46:53Z
  */
 .oo-ui-icon-bigger {
 	background-image: url("themes/mediawiki/images/icons/bigger-rtl.png");
@@ -252,6 +252,13 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/bold-cyrl-zhe.png");
 }
 /* @noflip */
+.oo-ui-icon-bold:lang(uk) {
+	background-image: url("themes/mediawiki/images/icons/bold-cyrl-zhe.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/bold-cyrl-zhe.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/bold-cyrl-zhe.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/bold-cyrl-zhe.png");
+}
+/* @noflip */
 .oo-ui-icon-bold:lang(nl) {
 	background-image: url("themes/mediawiki/images/icons/bold-v.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/bold-v.svg");
@@ -461,6 +468,13 @@
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/bold-cyrl-zhe-invert.png");
 }
 /* @noflip */
+.oo-ui-image-invert.oo-ui-icon-bold:lang(uk) {
+	background-image: url("themes/mediawiki/images/icons/bold-cyrl-zhe-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/bold-cyrl-zhe-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/bold-cyrl-zhe-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/bold-cyrl-zhe-invert.png");
+}
+/* @noflip */
 .oo-ui-image-invert.oo-ui-icon-bold:lang(nl) {
 	background-image: url("themes/mediawiki/images/icons/bold-v-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/bold-v-invert.svg");
@@ -608,6 +622,13 @@
 }
 /* @noflip */
 .oo-ui-icon-italic:lang(ru) {
+	background-image: url("themes/mediawiki/images/icons/italic-k.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/italic-k.png");
+}
+/* @noflip */
+.oo-ui-icon-italic:lang(uk) {
 	background-image: url("themes/mediawiki/images/icons/italic-k.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k.svg");
@@ -817,6 +838,13 @@
 }
 /* @noflip */
 .oo-ui-image-invert.oo-ui-icon-italic:lang(ru) {
+	background-image: url("themes/mediawiki/images/icons/italic-k-invert.png");
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k-invert.svg");
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k-invert.svg");
+	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/italic-k-invert.png");
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-italic:lang(uk) {
 	background-image: url("themes/mediawiki/images/icons/italic-k-invert.png");
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k-invert.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/italic-k-invert.svg");
