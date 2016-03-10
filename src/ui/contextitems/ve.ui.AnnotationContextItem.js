@@ -70,6 +70,17 @@ ve.ui.AnnotationContextItem.prototype.isClearable = function () {
  * @protected
  */
 ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
+	this.applyToAnnotations( function ( fragment, annotation ) {
+		fragment.annotateContent( 'clear', annotation );
+	} );
+};
+
+/**
+ * Apply a callback to every modelClass annotation in the current fragment
+ *
+ * @param  {Function} callback Callback, will be passed fragment and annotation
+ */
+ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback ) {
 	var i, len,
 		modelClasses = this.constructor.static.modelClasses,
 		fragment = this.getFragment(),
@@ -89,6 +100,6 @@ ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
 		} ).get();
 	}
 	for ( i = 0, len = annotations.length; i < len; i++ ) {
-		fragment.expandLinearSelection( 'annotation', annotations[ i ] ).annotateContent( 'clear', annotations[ i ] );
+		callback( fragment.expandLinearSelection( 'annotation', annotations[ i ] ), annotations[ i ] );
 	}
 };
