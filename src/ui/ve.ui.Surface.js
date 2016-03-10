@@ -44,7 +44,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.commandRegistry = config.commandRegistry || ve.init.target.commandRegistry;
 	this.sequenceRegistry = config.sequenceRegistry || ve.init.target.sequenceRegistry;
 	this.commands = OO.simpleArrayDifference(
-		config.includeCommands || Object.keys( this.commandRegistry.registry ), config.excludeCommands || []
+		config.includeCommands || this.commandRegistry.getNames(), config.excludeCommands || []
 	);
 	this.triggerListener = new ve.TriggerListener( this.commands, this.commandRegistry );
 	if ( dataOrDoc instanceof ve.dm.Document ) {

@@ -13,7 +13,7 @@
  */
 ve.ui.CommandRegistry = function VeUiCommandRegistry() {
 	// Parent constructor
-	OO.Registry.call( this );
+	ve.ui.CommandRegistry.super.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -37,7 +37,8 @@ ve.ui.CommandRegistry.prototype.register = function ( command ) {
 		);
 	}
 
-	OO.Registry.prototype.register.call( this, command.getName(), command );
+	// Parent method
+	ve.ui.CommandRegistry.super.prototype.register.call( this, command.getName(), command );
 };
 
 /**
@@ -48,6 +49,15 @@ ve.ui.CommandRegistry.prototype.register = function ( command ) {
  */
 ve.ui.CommandRegistry.prototype.getCommandForNode = function ( node ) {
 	return this.lookup( node.constructor.static.primaryCommandName );
+};
+
+/**
+ * Get a list of registered command names.
+ *
+ * @return {string[]}
+ */
+ve.ui.CommandRegistry.prototype.getNames = function () {
+	return Object.keys( this.registry );
 };
 
 /* Initialization */
