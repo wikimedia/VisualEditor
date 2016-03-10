@@ -231,12 +231,12 @@ ve.ce.Document.prototype.getNodeAndOffsetUnadjustedForUnicorn = function ( offse
 			if ( item.classList.contains( 've-ce-unicorn' ) ) {
 				if ( offset === startOffset ) {
 					// Return if empty unicorn pair at the correct offset
-					if ( item.previousSibling && item.previousSibling.classList.contains( 've-ce-unicorn' ) ) {
+					if ( item.previousSibling && item.previousSibling.classList && item.previousSibling.classList.contains( 've-ce-unicorn' ) ) {
 						return {
 							node: item.parentNode,
 							offset: current.offset - 1
 						};
-					} else if ( item.nextSibling && item.nextSibling.classList.contains( 've-ce-unicorn' ) ) {
+					} else if ( item.nextSibling && item.nextSibling.classList && item.nextSibling.classList.contains( 've-ce-unicorn' ) ) {
 						return {
 							node: item.parentNode,
 							offset: current.offset + 1
