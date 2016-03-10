@@ -37,9 +37,12 @@ ve.ce.KeyDownHandlerFactory.prototype.register = function ( constructor ) {
 	keys = constructor.static.keys;
 	name = constructor.static.name;
 
+	// TODO: Clean up handlerNamesByKeys in unregister
 	for ( i = 0, ilen = keys.length; i < ilen; i++ ) {
 		this.handlerNamesByKeys[ keys[ i ] ] = this.handlerNamesByKeys[ keys[ i ] ] || [];
-		this.handlerNamesByKeys[ keys[ i ] ].push( name );
+		if ( this.handlerNamesByKeys[ keys[ i ] ].indexOf( name ) === -1 ) {
+			this.handlerNamesByKeys[ keys[ i ] ].push( name );
+		}
 	}
 };
 
