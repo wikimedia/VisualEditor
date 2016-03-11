@@ -87,7 +87,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 
 	platform = ve.getSystemPlatform();
 	platformKey = platform === 'mac' ? 'mac' : 'pc';
-	commandGroups = ve.ui.CommandHelpDialog.static.commandGroups;
+	commandGroups = this.constructor.static.commandGroups;
 
 	this.contentLayout = new OO.ui.PanelLayout( {
 		scrollable: true,
@@ -97,7 +97,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	this.$container = $( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
 	for ( i in commandGroups ) {
-		commands = ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup( i, commandGroups[ i ].promote, commandGroups[ i ].demote );
+		commands = this.constructor.static.sortedCommandsFromGroup( i, commandGroups[ i ].promote, commandGroups[ i ].demote );
 		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
 			if ( commands[ j ].trigger ) {
@@ -119,7 +119,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 			$shortcut = $( '<dt>' );
 			for ( k = 0, kLen = triggerList.length; k < kLen; k++ ) {
 				$shortcut.append( $( '<kbd>' ).append(
-					triggerList[ k ].getMessage( true ).map( ve.ui.CommandHelpDialog.static.buildKeyNode )
+					triggerList[ k ].getMessage( true ).map( this.constructor.static.buildKeyNode )
 				).find( 'kbd + kbd' ).before( '+' ).end() );
 			}
 			if ( commands[ j ].sequences ) {
@@ -129,7 +129,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 						$shortcut.append( $( '<kbd class="ve-ui-commandHelpDialog-sequence">' )
 							.attr( 'data-label', ve.msg( 'visualeditor-shortcuts-sequence-notice' ) )
 							.append(
-								sequence.getMessage( true ).map( ve.ui.CommandHelpDialog.static.buildKeyNode )
+								sequence.getMessage( true ).map( this.constructor.static.buildKeyNode )
 							)
 						);
 					}
