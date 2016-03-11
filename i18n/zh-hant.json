@@ -124,6 +124,7 @@
 	"visualeditor-table-insert-row-before": "插入上方列",
 	"visualeditor-table-insert-table": "表格",
 	"visualeditor-table-merge-cells": "合併儲存格",
+	"visualeditor-table-merge-cells-merge": "合併",
 	"visualeditor-tablecell-contextitem": "表格儲存格",
 	"visualeditor-tablecell-tooltip": "雙擊點選以編輯儲存格",
 	"visualeditor-toolbar-format-tooltip": "段落格式",
