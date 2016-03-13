@@ -104,10 +104,12 @@ ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
 		return;
 	}
 	if ( this.surface.getModel().getSelection() instanceof ve.dm.TableSelection ) {
+		// Don't change selection in setEditing to avoid scrolling to bottom of cell
+		this.setEditing( true, true );
+		// getOffsetFromEventCoords doesn't work in ce=false in Firefox, so ensure
+		// this is called after setEditing( true ).
 		offset = this.surface.getOffsetFromEventCoords( e.originalEvent );
 		if ( offset !== -1 ) {
-			// Don't change selection in setEditing to avoid scrolling to bottom of cell
-			this.setEditing( true, true );
 			// Set selection to where the double click happened
 			this.surface.getModel().setLinearSelection( new ve.Range( offset ) );
 		} else {
