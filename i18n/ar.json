@@ -17,7 +17,8 @@
 			"Abanima",
 			"Fatz",
 			"محمد أحمد عبد الفتاح",
-			"فلورانس"
+			"فلورانس",
+			"JoyfulEditing"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -42,8 +43,8 @@
 	"visualeditor-clipboard-paste": "إلصاق",
 	"visualeditor-clipboard-paste-special": "إلصاق النص الخام",
 	"visualeditor-commentinspector-edit": "عدل التعليق",
-	"visualeditor-commentinspector-title": "تعليق",
-	"visualeditor-commentinspector-tooltip": "تعليق",
+	"visualeditor-commentinspector-title": "تعليق مخفي",
+	"visualeditor-commentinspector-tooltip": "تعليق مخفي",
 	"visualeditor-content-select-all": "تحديد الكل",
 	"visualeditor-contextitemwidget-label-remove": "شطب",
 	"visualeditor-contextitemwidget-label-secondary": "تعديل",

@@ -70,5 +70,7 @@
 	"visualeditor-specialcharacterinspector-title": "Nodau arbennig",
 	"visualeditor-toolbar-format-tooltip": "Fformatio paragraff",
 	"visualeditor-toolbar-insert": "Mewnosod",
-	"visualeditor-toolbar-style-tooltip": "Arddull testun"
+	"visualeditor-toolbar-style-tooltip": "Arddull y testun",
+	"visualeditor-toolbar-table": "Tabl",
+	"visualeditor-toolbar-text-style": "Arddull"
 }
