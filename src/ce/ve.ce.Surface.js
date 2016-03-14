@@ -1811,6 +1811,18 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		documentModel = surfaceModel.getDocument(),
 		view = this;
 
+	function sanitize( linearData, keepEmptyContentBranches ) {
+		// If the clipboardKey isn't set (paste from non-VE instance) use external import rules
+		if ( !clipboardKey ) {
+			linearData.sanitize( importRules.external || {}, keepEmptyContentBranches );
+			if ( importRules.all ) {
+				linearData.sanitize( importRules.all, keepEmptyContentBranches );
+			}
+		} else {
+			linearData.sanitize( importRules.all || {}, keepEmptyContentBranches );
+		}
+	}
+
 	// If the selection doesn't collapse after paste then nothing was inserted
 	if ( !this.nativeSelection.isCollapsed ) {
 		return;
@@ -2034,15 +2046,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		data = pastedDocumentModel.data;
 		// Clear metadata
 		pastedDocumentModel.metadata = new ve.dm.MetaLinearData( pastedDocumentModel.getStore(), new Array( 1 + data.getLength() ) );
-		// If the clipboardKey isn't set (paste from non-VE instance) use external import rules
-		if ( !clipboardKey ) {
-			data.sanitize( importRules.external || {} );
-			if ( importRules.all ) {
-				data.sanitize( importRules.all );
-			}
-		} else {
-			data.sanitize( importRules.all || {} );
-		}
+		sanitize( data );
 		data.remapInternalListKeys( documentModel.getInternalList() );
 
 		// Initialize node tree
@@ -2078,7 +2082,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			);
 			if ( this.pasteSpecial ) {
 				// The context may have been sanitized, so sanitize here as well for comparison
-				context.sanitize( importRules, true );
+				sanitize( context, true );
 			}
 
 			// Remove matching context from the left
