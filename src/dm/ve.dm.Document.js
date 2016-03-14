@@ -434,7 +434,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 
 		// The internalList is rebuilt by the document constructor
 		return new ve.dm.TableSlice(
-			linearData, undefined, undefined, this.getInternalList().clone(), tableRange
+			linearData, undefined, undefined, this.getInternalList(), tableRange
 		);
 	} else {
 		return this.shallowCloneFromRange( new ve.Range( 0 ) );
@@ -573,7 +573,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 	// The internalList is rebuilt by the document constructor
 	slice = new ve.dm.DocumentSlice(
-		linearData, undefined, undefined, this.getInternalList().clone(), originalRange, balancedRange
+		linearData, undefined, undefined, this.getInternalList(), originalRange, balancedRange
 	);
 	return slice;
 };
