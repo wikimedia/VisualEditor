@@ -1102,6 +1102,24 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Formatted text into paragraph with pasteSpecial'
 			},
 			{
+				range: new ve.Range( 11 ),
+				pasteHtml: '<i>Bar</i>',
+				pasteSpecial: true,
+				expectedRange: new ve.Range( 14 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 11 },
+						{
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 11 }
+					]
+				],
+				msg: 'Formatted text into heading with pasteSpecial'
+			},
+			{
 				range: new ve.Range( 4 ),
 				pasteHtml: '<p>Bar</p>',
 				expectedRange: {
