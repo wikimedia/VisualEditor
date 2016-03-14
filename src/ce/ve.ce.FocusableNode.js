@@ -490,11 +490,20 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
  * Calculate position of highlights
  */
 ve.ce.FocusableNode.prototype.calculateHighlights = function () {
-	var i, l, $set, columnCount, columnWidth,
+	var i, l, $set, columnCount, columnWidth, surfaceOffset,
 		rects = [],
 		filteredRects = [],
-		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style,
-		surfaceOffset = this.focusableSurface.getSurface().getBoundingClientRect();
+		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style;
+
+	// Protect against calling before/after surface setup/teardown
+	if ( !this.focusableSurface ) {
+		this.boundingRect = null;
+		this.startAndEndRects = null;
+		this.rects = [];
+		return;
+	}
+
+	surfaceOffset = this.focusableSurface.getSurface().getBoundingClientRect();
 
 	function contains( rect1, rect2 ) {
 		return rect2.left >= rect1.left &&
