@@ -2059,7 +2059,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		) {
 			// External table-into-table paste
 			tableAction = new ve.ui.TableAction( this.getSurface() );
-			tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ] );
+			tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ], true );
 			return;
 		}
 

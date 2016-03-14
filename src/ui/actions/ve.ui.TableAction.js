@@ -253,10 +253,11 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
  * Import a table at the current selection, overwriting data cell by cell
  *
  * @param {ve.dm.TableNode} importedTableNode Table node to import
+ * @param {boolean} importInternalList Import the table document's internalLiist
  * @return {boolean} Action was executed
  */
-ve.ui.TableAction.prototype.importTable = function ( importedTableNode ) {
-	var i, l, row, col, cell, importedCell, cellRange,
+ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importInternalList ) {
+	var i, l, row, col, cell, importedCell, cellRange, txs,
 		importedMatrix = importedTableNode.getMatrix(),
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -290,20 +291,32 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode ) {
 			if ( !importedCell.isPlaceholder() ) {
 				// Remove the existing cell contents
 				surfaceModel.change( ve.dm.Transaction.newFromRemoval( documentModel, cellRange ) );
-				// Perform the insertion as a separate change so the internalList offsets are correct
-				surfaceModel.change( [
-					// Attribute changes are performed separately, and removing the whole
-					// cell could change the dimensions of the table
+				// Attribute changes are performed separately, and removing the whole
+				// cell could change the dimensions of the table
+				txs = [
 					ve.dm.Transaction.newFromAttributeChanges(
 						documentModel, cellRange.start - 1,
 						ve.copy( importedCell.node.element.attributes )
-					),
-					ve.dm.Transaction.newFromDocumentInsertion(
-						documentModel, cellRange.start,
-						importedTableNode.getDocument(),
-						importedCell.node.getRange()
 					)
-				] );
+				];
+				if ( importInternalList ) {
+					txs.push(
+						ve.dm.Transaction.newFromDocumentInsertion(
+							documentModel, cellRange.start,
+							importedTableNode.getDocument(),
+							importedCell.node.getRange()
+						)
+					);
+				} else {
+					txs.push(
+						ve.dm.Transaction.newFromInsertion(
+							documentModel, cellRange.start,
+							importedTableNode.getDocument().getData( importedCell.node.getRange() )
+						)
+					);
+				}
+				// Perform the insertion as a separate change so the internalList offsets are correct
+				surfaceModel.change( txs );
 			} else {
 				// Remove the existing cell completely
 				surfaceModel.change( ve.dm.Transaction.newFromRemoval( documentModel, cell.node.getOuterRange() ) );
