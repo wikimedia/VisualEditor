@@ -4,11 +4,20 @@
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+.ve-ui-debugBar-commands {
+	margin-bottom: -0.5em;
+}
+
 .ve-ui-debugBar-commands > .oo-ui-widget,
 .ve-ui-debugBar-commands-divider {
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 1em;
+	margin-bottom: 0.5em;
+}
+
+.ve-ui-debugBar-commands > .oo-ui-widget:last-child {
+	margin-right: 0;
 }
 
 .ve-ui-debugBar-selectionLabel {
