@@ -1832,43 +1832,6 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		return null;
 	}
 
-	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
-	this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
-
-	// FIXME T126044: Remove Parsoid IDs
-	this.$pasteTarget.find( '[id]' ).each( function () {
-		var $this = $( this );
-		if ( $this.attr( 'id' ).match( /^mw[\w-]{2,}$/ ) ) {
-			$this.removeAttr( 'id' );
-		}
-	} );
-
-	// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
-	this.$pasteTarget.find( 'span' ).each( function () {
-		var $this = $( this );
-		$this.removeClass( 've-pasteProtect' );
-		if ( $this.attr( 'class' ) === '' ) {
-			$this.removeAttr( 'class' );
-		}
-		// Unwrap empty spans
-		if ( !this.attributes.length ) {
-			$this.replaceWith( this.childNodes );
-		}
-	} );
-
-	// Restore attributes. See #onCopy.
-	this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
-		var attrs;
-		try {
-			attrs = JSON.parse( this.getAttribute( 'data-ve-attributes' ) );
-		} catch ( e ) {
-			// Invalid JSON
-			return;
-		}
-		$( this ).attr( attrs );
-		this.removeAttribute( 'data-ve-attributes' );
-	} );
-
 	// Find the clipboard key
 	if ( beforePasteData.custom ) {
 		clipboardKey = beforePasteData.custom;
@@ -1915,11 +1878,51 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		}
 	}
 
-	// Internal table-into-table paste
-	if ( selection instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
-		tableAction = new ve.ui.TableAction( this.getSurface() );
-		tableAction.importTable( slice.getTableNode() );
-		return;
+	// All $pasteTarget sanitization can be skipped for internal paste
+	if ( !slice ) {
+		// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
+		this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
+
+		// FIXME T126044: Remove Parsoid IDs
+		this.$pasteTarget.find( '[id]' ).each( function () {
+			var $this = $( this );
+			if ( $this.attr( 'id' ).match( /^mw[\w-]{2,}$/ ) ) {
+				$this.removeAttr( 'id' );
+			}
+		} );
+
+		// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
+		this.$pasteTarget.find( 'span' ).each( function () {
+			var $this = $( this );
+			$this.removeClass( 've-pasteProtect' );
+			if ( $this.attr( 'class' ) === '' ) {
+				$this.removeAttr( 'class' );
+			}
+			// Unwrap empty spans
+			if ( !this.attributes.length ) {
+				$this.replaceWith( this.childNodes );
+			}
+		} );
+
+		// Restore attributes. See #onCopy.
+		this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
+			var attrs;
+			try {
+				attrs = JSON.parse( this.getAttribute( 'data-ve-attributes' ) );
+			} catch ( e ) {
+				// Invalid JSON
+				return;
+			}
+			$( this ).attr( attrs );
+			this.removeAttribute( 'data-ve-attributes' );
+		} );
+
+		// Internal table-into-table paste
+		if ( selection instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
+			tableAction = new ve.ui.TableAction( this.getSurface() );
+			tableAction.importTable( slice.getTableNode() );
+			return;
+		}
 	}
 
 	range = selection.getRanges()[ 0 ];
