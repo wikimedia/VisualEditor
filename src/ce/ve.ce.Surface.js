@@ -1800,7 +1800,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 	var clipboardKey, clipboardId, clipboardIndex, clipboardHash, range,
 		$elements, parts, pasteData, slice, tx, internalListRange,
 		data, pastedDocumentModel, htmlDoc, $images, i,
-		context, left, right, contextRange,
+		context, left, right, contextRange, handled,
 		tableAction,
 		items = [],
 		importantElement = '[id],[typeof],[rel]',
@@ -2121,12 +2121,24 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			contextRange = new ve.Range( left, right );
 		}
 
-		tx = ve.dm.Transaction.newFromDocumentInsertion(
-			documentModel,
-			range.start,
-			pastedDocumentModel,
-			contextRange
-		);
+		// If the external HTML turned out to be plain text after
+		// sanitization then run it as a plain text transfer item
+		if ( pastedDocumentModel.data.isPlainText( true, contextRange ) ) {
+			handled = this.handleDataTransferItems(
+				[ ve.ui.DataTransferItem.static.newFromString( pastedDocumentModel.data.getText( true, contextRange ) ) ],
+				true,
+				surfaceModel.getLinearFragment( range )
+			);
+		}
+
+		if ( !handled ) {
+			tx = ve.dm.Transaction.newFromDocumentInsertion(
+				documentModel,
+				range.start,
+				pastedDocumentModel,
+				contextRange
+			);
+		}
 	}
 
 	if ( this.getSelection().isNativeCursor() ) {
