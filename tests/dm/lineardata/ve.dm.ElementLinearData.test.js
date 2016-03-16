@@ -799,6 +799,15 @@ QUnit.test( 'getCharacterData', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'isPlainText', 4, function ( assert ) {
+	var doc = ve.dm.example.createExampleDocument();
+
+	assert.strictEqual( doc.data.isPlainText( false, new ve.Range( 1, 2 ) ), true, 'Plain text' );
+	assert.strictEqual( doc.data.isPlainText( true, new ve.Range( 1, 3 ) ), false, 'Annotated text' );
+	assert.strictEqual( doc.data.isPlainText( false, new ve.Range( 9, 11 ) ), false, 'Paragraph and text (no content nodes)' );
+	assert.strictEqual( doc.data.isPlainText( true, new ve.Range( 9, 11 ) ), true, 'Paragraph and text (content nodes allowed)' );
+} );
+
 QUnit.test( 'getText', 4, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument();
 
