@@ -585,7 +585,7 @@ QUnit.test( 'commit', function ( assert ) {
 					] ]
 				],
 				expected: function ( data ) {
-					ve.batchSplice( data, data.length - 2, 0, [
+					ve.batchSplice( data, data.length - 4, 0, [
 						{
 							type: 'alienMeta',
 							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
@@ -607,7 +607,7 @@ QUnit.test( 'commit', function ( assert ) {
 					] ]
 				],
 				expected: function ( data ) {
-					ve.batchSplice( data, data.length, 0, [
+					ve.batchSplice( data, data.length - 2, 0, [
 						{
 							type: 'alienMeta',
 							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
@@ -624,7 +624,7 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'newFromMetadataRemoval', 12, new ve.Range( 0, 1 ) ]
 				],
 				expected: function ( data ) {
-					ve.batchSplice( data, data.length - 2, 2, [] );
+					ve.batchSplice( data, data.length - 4, 2, [] );
 				}
 			},
 			'preserves trailing metadata': {

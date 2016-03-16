@@ -847,7 +847,9 @@ ve.dm.example.listWithMeta = [
 		type: 'alienMeta',
 		originalDomElements: $( '<meta property="thirteen" />' ).toArray()
 	},
-	{ type: '/alienMeta' }
+	{ type: '/alienMeta' },
+	{ type: 'internalList' },
+	{ type: '/internalList' }
 ];
 
 ve.dm.example.mergedCellsHtml =

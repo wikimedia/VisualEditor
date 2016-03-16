@@ -54,10 +54,10 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		listWithMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
 		doc2 = new ve.dm.Document(
-			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, { type: '/paragraph' } ] )
+			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] )
 		),
 		doc3 = new ve.dm.Document(
-			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' } ] )
+			ve.dm.example.preprocessAnnotations( [ { type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] )
 		),
 		cases = {
 			'paragraph before first element': {
@@ -74,16 +74,17 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 				]
 			},
 			'paragraph after last element': {
-				args: [ doc, 63, [ { type: 'paragraph' }, '1', { type: '/paragraph' } ] ],
+				args: [ doc, 61, [ { type: 'paragraph' }, '1', { type: '/paragraph' } ] ],
 				ops: [
-					{ type: 'retain', length: 63 },
+					{ type: 'retain', length: 61 },
 					{
 						type: 'replace',
 						remove: [],
 						insert: [ { type: 'paragraph' }, '1', { type: '/paragraph' } ],
 						insertedDataOffset: 0,
 						insertedDataLength: 3
-					}
+					},
+					{ type: 'retain', length: 2 }
 				]
 			},
 			'split paragraph': {
@@ -292,7 +293,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						insertedDataOffset: 0,
 						insertedDataLength: 8
 					},
-					{ type: 'retain', length: 1 }
+					{ type: 'retain', length: 3 }
 				]
 			},
 			'inserting three paragraphs into a document with just an empty paragraph': {
@@ -306,7 +307,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						insertedDataOffset: 0,
 						insertedDataLength: 13
 					},
-					{ type: 'retain', length: 1 }
+					{ type: 'retain', length: 3 }
 				]
 			},
 			'inserting one paragraph into empty paragraph moves insertion before': {
@@ -319,7 +320,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						insertedDataOffset: 0,
 						insertedDataLength: 5
 					},
-					{ type: 'retain', length: 2 }
+					{ type: 'retain', length: 4 }
 				],
 				range: new ve.Range( 0, 5 )
 			},
@@ -333,7 +334,8 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						insert: [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ],
 						insertedDataOffset: 0,
 						insertedDataLength: 5
-					}
+					},
+					{ type: 'retain', length: 2 }
 				],
 				range: new ve.Range( 5, 10 )
 			},
@@ -348,7 +350,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						insertedDataOffset: 1,
 						insertedDataLength: 5
 					},
-					{ type: 'retain', length: 3 }
+					{ type: 'retain', length: 5 }
 				],
 				range: new ve.Range( 3, 8 )
 			},
@@ -397,8 +399,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 						insertedDataOffset: 0,
 						insertedDataLength: 1
 					},
-					{ type: 'retain', length: 8 },
-					{ type: 'retainMetadata', length: 1 }
+					{ type: 'retain', length: 10 }
 				]
 			}
 			// TODO test cases for unclosed openings
@@ -1643,7 +1644,8 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 					{ type: 'replace',
 						remove: [ { type: '/listItem' }, { type: '/list' } ],
 						insert: []
-					}
+					},
+					{ type: 'retain', length: 2 }
 				]
 			},
 			'replaces a table with a list': {
@@ -1744,7 +1746,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 						insert: ve.dm.MetaLinearData.static.merge( listMetaDoc.getMetadata().slice( 10, 12 ) )[ 0 ],
 						remove: []
 					},
-					{ type: 'retainMetadata', length: 1 }
+					{ type: 'retain', length: 2 }
 				]
 			},
 			'checks integrity of unwrapOuter parameter': {
@@ -2257,7 +2259,8 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 						remove: [],
 						insert: [ element ]
 					},
-					{ type: 'retainMetadata', length: 1 }
+					{ type: 'retainMetadata', length: 1 },
+					{ type: 'retain', length: 2 }
 				]
 			},
 			'inserting trailing metadata (2)': {
@@ -2269,7 +2272,8 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 						type: 'replaceMetadata',
 						remove: [],
 						insert: [ element ]
-					}
+					},
+					{ type: 'retain', length: 2 }
 				]
 			}
 		};
@@ -2322,7 +2326,8 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 							}
 						],
 						insert: []
-					}
+					},
+					{ type: 'retain', length: 2 }
 				]
 			},
 			'checks metadata at offset is non-empty': {
@@ -2371,7 +2376,8 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 						type: 'replaceMetadata',
 						remove: [ listWithMetaDoc.metadata.getData( 12 )[ 0 ] ],
 						insert: [ newElement ]
-					}
+					},
+					{ type: 'retain', length: 2 }
 				]
 			},
 			'checks offset is in bounds': {
