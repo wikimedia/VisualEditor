@@ -617,19 +617,19 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 /**
  * Check if the data is just plain (un-annotated) text
  *
- * @param {boolean} [allowContentBranchNodes] Include content branch nodes in the definition of plain text, e.g. paragraphs, headings
+ * @param {boolean} [allowNonContentNodes] Include non-content nodes in the definition of plain text, e.g. paragraphs, headings, lists
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
  * @return {boolean} The data is plain text
  */
-ve.dm.ElementLinearData.prototype.isPlainText = function ( allowContentBranchNodes, range ) {
+ve.dm.ElementLinearData.prototype.isPlainText = function ( allowNonContentNodes, range ) {
 	var i;
 	range = range || new ve.Range( 0, this.getLength() );
 
 	for ( i = range.start; i < range.end; i++ ) {
 		if (
 			typeof this.data[ i ] === 'string' ||
-			allowContentBranchNodes && this.isElementData( i ) &&
-			ve.dm.nodeFactory.canNodeContainContent( this.getType( i ) )
+			allowNonContentNodes && this.isElementData( i ) &&
+			!ve.dm.nodeFactory.isNodeContent( this.getType( i ) )
 		) {
 			continue;
 		} else {
