@@ -988,10 +988,18 @@ ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion 
  * simple insertion transaction, the range will cover the newly inserted data, and for a simple
  * removal transaction it will be a zero-length range.
  *
+ * Changes within the internal list at the end of a document are ignored.
+ *
  * @return {ve.Range|null} Range covering modifications, or null for a no-op transaction
  */
 ve.dm.Transaction.prototype.getModifiedRange = function () {
-	var i, len, op, start, end, offset = 0;
+	var i, len, op, start, end,
+		oldOffset = 0,
+		offset = 0,
+		internalListNode = this.getDocument().getInternalList().getListNode(),
+		docEndOffset = internalListNode ? internalListNode.getOuterRange().start : this.getDocument().data.getLength();
+
+	opLoop:
 	for ( i = 0, len = this.operations.length; i < len; i++ ) {
 		op = this.operations[ i ];
 		switch ( op.type ) {
@@ -999,7 +1007,11 @@ ve.dm.Transaction.prototype.getModifiedRange = function () {
 				continue;
 
 			case 'retain':
+				if ( oldOffset + op.length > docEndOffset ) {
+					break opLoop;
+				}
 				offset += op.length;
+				oldOffset += op.length;
 				break;
 
 			default:
@@ -1009,6 +1021,7 @@ ve.dm.Transaction.prototype.getModifiedRange = function () {
 				}
 				if ( op.type === 'replace' ) {
 					offset += op.insert.length;
+					oldOffset += op.remove.length;
 				}
 				// Set end, so it'll end up being right after the last non-retain operation
 				if ( op.insertedDataLength ) {

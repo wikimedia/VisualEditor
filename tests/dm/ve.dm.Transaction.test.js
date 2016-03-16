@@ -1925,6 +1925,17 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			},
 			{
 				calls: [
+					[ 'pushRetain', 5 ],
+					[ 'pushReplace', doc, 5, 3, [ 'a', 'b', 'c', 'd' ] ],
+					[ 'pushRetain', 54 ],
+					[ 'pushReplace', doc, 62, 0, [ 'h', 'e', 'l', 'l', 'o' ] ],
+					[ 'pushRetain', 1 ]
+				],
+				range: new ve.Range( 5, 9 ),
+				msg: 'range ignores internalList changes'
+			},
+			{
+				calls: [
 					[ 'pushReplace', doc, 0, 3, [] ]
 				],
 				range: new ve.Range( 0 ),
