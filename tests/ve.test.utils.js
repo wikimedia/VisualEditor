@@ -284,6 +284,19 @@
 	};
 
 	/**
+	 * Create a DM selection from a range or a JSON selection
+	 *
+	 * @param {ve.dm.Document} doc Document
+	 * @param {ve.Range|Object|string} rangeOrSelection Range or JSON selection
+	 * @return {ve.dm.Selection} Selection
+	 */
+	ve.test.utils.selectionFromRangeOrSelection = function ( doc, rangeOrSelection ) {
+		return rangeOrSelection instanceof ve.Range ?
+				new ve.dm.LinearSelection( doc, rangeOrSelection ) :
+				ve.dm.Selection.static.newFromJSON( doc, rangeOrSelection );
+	};
+
+	/**
 	 * Build a DOM from a JSON structure.
 	 *
 	 * @param {Object} data JSON structure
