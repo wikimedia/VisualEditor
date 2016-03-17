@@ -1372,6 +1372,54 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Paste API HTML used if important attributes dropped'
 			},
 			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 22 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				pasteHtml: '<p>A</p>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 23 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 16 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [
+								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: '/paragraph' }
+							]
+						},
+						{ type: 'retain', length: docLen - 18 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph' },
+								'A',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 18 }
+					]
+				],
+				msg: 'Paste paragraph into table cell'
+			},
+			{
 				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: '<span rel="ve:Alien" id="useful">Foo</span><span rel="ve:Alien" id="mwAB">Bar</span>',
 				fromVe: true,
