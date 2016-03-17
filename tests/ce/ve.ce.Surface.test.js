@@ -1420,6 +1420,565 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Paste paragraph into table cell'
 			},
 			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 22 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				pasteHtml: '<table><tbody><tr><td>X</td></tr></table>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 23 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 16 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [
+								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: '/paragraph' }
+							]
+						},
+						{ type: 'retain', length: docLen - 18 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'X',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 18 }
+					]
+				],
+				msg: 'Paste table cell onto table cell'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 22 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				pasteHtml: '<table><tbody><tr><th>X</th></tr></table>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 23 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 16 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [
+								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: '/paragraph' }
+							]
+						},
+						{ type: 'retain', length: docLen - 18 }
+					],
+					[
+						{ type: 'retain', length: 15 },
+						{ type: 'attribute', key: 'style', from: 'data', to: 'header' },
+						{ type: 'retain', length: 7 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'X',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 18 }
+					]
+				],
+				msg: 'Paste table header cell onto table cell'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 22 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				pasteHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></table>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 33 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 2,
+					toRow: 0
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 19 },
+						{
+							insert: [
+								{
+									attributes: {
+										colspan: 1,
+										rowspan: 1,
+										style: 'data'
+									},
+									type: 'tableCell'
+								},
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' },
+								{
+									type: '/tableCell'
+								}
+							],
+							insertedDataLength: 4,
+							insertedDataOffset: 0,
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 5 }
+					],
+					[
+						{ type: 'retain', length: 23 },
+						{
+							type: 'replace',
+							insert: [
+								{
+									attributes: {
+										colspan: 1,
+										rowspan: 1,
+										style: 'data'
+									},
+									type: 'tableCell'
+								},
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' },
+								{
+									type: '/tableCell'
+								}
+							],
+							insertedDataLength: 4,
+							insertedDataOffset: 0,
+							remove: []
+						},
+						{ type: 'retain', length: 5 }
+					],
+					[
+						{ type: 'retain', length: 24 },
+						{
+							insert: [],
+							remove: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 6 }
+					],
+					[
+						{ type: 'retain', length: 24 },
+						{
+							insert: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								'Z',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 6 }
+					],
+					[
+						{ type: 'retain', length: 20 },
+						{
+							insert: [],
+							remove: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 11 }
+					],
+					[
+						{ type: 'retain', length: 20 },
+						{
+							insert: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								'Y',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 11 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							insert: [],
+							remove: [
+								{
+									internal: {
+										generated: 'empty'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 16 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							insert: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								'X',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 16 }
+					]
+				],
+				msg: 'Paste row of table cells onto table cell'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 22 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				pasteHtml: '<table><tbody><tr><td>X</td></tr><tr><td>Y</td></tr><tr><td>Z</td></tr></table>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 37 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 2
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 20 },
+						{
+							insert: [
+								{ type: 'tableRow' },
+								{
+									attributes: {
+										colspan: 1,
+										rowspan: 1,
+										style: 'data'
+									},
+									type: 'tableCell'
+								},
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' },
+								{ type: '/tableCell' },
+								{ type: '/tableRow' }
+							],
+							insertedDataLength: 6,
+							insertedDataOffset: 0,
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 4 }
+					],
+					[
+						{ type: 'retain', length: 26 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'tableRow' },
+								{
+									attributes: {
+										colspan: 1,
+										rowspan: 1,
+										style: 'data'
+									},
+									type: 'tableCell'
+								},
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' },
+								{ type: '/tableCell' },
+								{ type: '/tableRow' }
+							],
+							insertedDataLength: 6,
+							insertedDataOffset: 0,
+							remove: []
+						},
+						{ type: 'retain', length: 4 }
+					],
+					[
+						{ type: 'retain', length: 28 },
+						{
+							insert: [],
+							remove: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 6 }
+					],
+					[
+						{ type: 'retain', length: 28 },
+						{
+							insert: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								'Z',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 6 }
+					],
+					[
+						{ type: 'retain', length: 22 },
+						{
+							insert: [],
+							remove: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 13 }
+					],
+					[
+						{ type: 'retain', length: 22 },
+						{
+							insert: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								'Y',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 13 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							insert: [],
+							remove: [
+								{
+									internal: {
+										generated: 'empty'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 20 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							insert: [
+								{
+									internal: {
+										generated: 'wrapper'
+									},
+									type: 'paragraph'
+								},
+								'X',
+								{ type: '/paragraph' }
+							],
+							remove: [],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 20 }
+					]
+				],
+				msg: 'Paste column of table cells onto table cell'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 22 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				pasteHtml: '<p>Foo</p><table><tbody><tr><td>X</td></tr></table><p>Bar</p>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 41 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 16 },
+						{
+							insert: [],
+							remove: [
+								{
+									internal: {
+										generated: 'empty'
+									},
+									type: 'paragraph'
+								},
+								{ type: '/paragraph' }
+							],
+							type: 'replace'
+						},
+						{ type: 'retain', length: 6 }
+					],
+					[
+						{ type: 'retain', length: 16 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph' },
+								'F', 'o', 'o',
+								{ type: '/paragraph' },
+								{ type: 'table' },
+								{
+									type: 'tableSection',
+									attributes: {
+										style: 'body'
+									}
+								},
+								{ type: 'tableRow' },
+								{
+									type: 'tableCell',
+									attributes: {
+										style: 'data'
+									}
+								},
+								{
+									type: 'paragraph',
+									internal: {
+										generated: 'wrapper'
+									}
+								},
+								'X',
+								{ type: '/paragraph' },
+								{ type: '/tableCell' },
+								{ type: '/tableRow' },
+								{ type: '/tableSection' },
+								{ type: '/table' },
+								{ type: 'paragraph' },
+								'B', 'a', 'r',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 6 }
+					]
+				],
+				msg: 'Paste paragraphs and a table into table cell'
+			},
+			{
 				rangeOrSelection: new ve.Range( 1 ),
 				pasteHtml: '<span rel="ve:Alien" id="useful">Foo</span><span rel="ve:Alien" id="mwAB">Bar</span>',
 				fromVe: true,

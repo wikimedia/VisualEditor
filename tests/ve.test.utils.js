@@ -21,6 +21,8 @@
 	( function () {
 		var orgModule = QUnit.module;
 
+		QUnit.dump.maxDepth = 10;
+
 		QUnit.module = function ( name, localEnv ) {
 			localEnv = localEnv || {};
 			orgModule( name, {
