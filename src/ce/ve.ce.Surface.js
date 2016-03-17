@@ -1917,12 +1917,13 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			this.removeAttribute( 'data-ve-attributes' );
 		} );
 
-		// Internal table-into-table paste
-		if ( selection instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
-			tableAction = new ve.ui.TableAction( this.getSurface() );
-			tableAction.importTable( slice.getTableNode() );
-			return;
-		}
+	}
+
+	// Internal table-into-table paste
+	if ( selection instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
+		tableAction = new ve.ui.TableAction( this.getSurface() );
+		tableAction.importTable( slice.getTableNode() );
+		return;
 	}
 
 	range = selection.getRanges()[ 0 ];
