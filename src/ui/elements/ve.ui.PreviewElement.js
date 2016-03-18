@@ -131,5 +131,5 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
  * @return {boolean} Still generating
  */
 ve.ui.PreviewElement.prototype.isGenerating = function () {
-	return this.view && this.view.isGenerating();
+	return !!( this.view && this.view.isGenerating && this.view.isGenerating() );
 };
