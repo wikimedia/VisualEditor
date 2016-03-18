@@ -8,7 +8,7 @@ QUnit.module( 've.ce.Surface' );
 
 /* Tests */
 
-ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, rangeOrSelection, operations, expectedData, expectedRangeOrSelection, msg ) {
+ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, rangeOrSelection, operations, expectedData, expectedRangeOrSelection, msg ) {
 	var i, e, selection, expectedSelection,
 		actions = {
 			backspace: { keyCode: OO.ui.Keys.BACKSPACE },
@@ -18,9 +18,9 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, rangeOrS
 			enter: { keyCode: OO.ui.Keys.ENTER },
 			modifiedEnter: { keyCode: OO.ui.Keys.ENTER, shiftKey: true }
 		},
-		view = html ?
-			ve.test.utils.createSurfaceViewFromHtml( html ) :
-			ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() ),
+		view = typeof htmlOrDoc === 'string' ?
+			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
+			ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ),
 		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() );
 
@@ -56,6 +56,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, rangeOrS
 QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 	var i,
 		emptyList = '<ul><li><p></p></li></ul>',
+		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1, 4 ),
@@ -154,7 +155,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Table cell selected but not deleted by delete'
 			},
 			{
-				html: '<p>a</p>' + emptyList + '<p>b</p>',
+				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 6 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -164,7 +165,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Empty list node deleted by delete from inside'
 			},
 			{
-				html: '<p>a</p>' + emptyList + '<p>b</p>',
+				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 6 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -174,7 +175,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Empty list node deleted by backspace from inside'
 			},
 			{
-				html: '<p>a</p>' + emptyList + '<p>b</p>',
+				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 2 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -184,7 +185,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Empty list node deleted by delete from before'
 			},
 			{
-				html: '<p>a</p>' + emptyList + '<p>b</p>',
+				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 10 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -194,7 +195,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Empty list node deleted by backspace from after'
 			},
 			{
-				html: '<ul><li><p></p>' + emptyList + '</li></ul>',
+				htmlOrDoc: '<ul><li><p></p>' + emptyList + '</li></ul>',
 				rangeOrSelection: new ve.Range( 7 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -216,7 +217,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Backspace after select all spanning entire document creates empty paragraph'
 			},
 			{
-				html: emptyList + '<p>foo</p>',
+				htmlOrDoc: emptyList + '<p>foo</p>',
 				rangeOrSelection: new ve.Range( 3 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -227,7 +228,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'List at start of document unwrapped by backspace'
 			},
 			{
-				html: '<p>foo</p>' + emptyList,
+				htmlOrDoc: '<p>foo</p>' + emptyList,
 				rangeOrSelection: new ve.Range( 8 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -238,7 +239,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Empty list at end of document unwrapped by delete'
 			},
 			{
-				html: '<p>foo</p><ul><li><p>bar</p></li></ul>',
+				htmlOrDoc: '<p>foo</p><ul><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 11 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -249,7 +250,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Non-empty list at end of document unwrapped by delete'
 			},
 			{
-				html: '<p>foo</p><ul><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				htmlOrDoc: '<p>foo</p><ul><li><p>bar</p></li><li><p>baz</p></li></ul>',
 				rangeOrSelection: new ve.Range( 18 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -261,7 +262,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Non-empty multi-item list at end of document unwrapped by delete'
 			},
 			{
-				html: '<p>foo</p>',
+				htmlOrDoc: '<p>foo</p>',
 				rangeOrSelection: new ve.Range( 4 ),
 				operations: [ 'delete' ],
 				expectedData: function () {
@@ -270,7 +271,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Delete at end of last paragraph does nothing'
 			},
 			{
-				html: '<p>foo</p><p>bar</p><p></p>',
+				htmlOrDoc: '<p>foo</p><p>bar</p><p></p>',
 				rangeOrSelection: new ve.Range( 11 ),
 				operations: [ 'delete' ],
 				expectedData: function () {
@@ -279,7 +280,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Delete at end of last empty paragraph does nothing'
 			},
 			{
-				html: '<div rel="ve:Alien">foo</div><p>bar</p>',
+				htmlOrDoc: '<div rel="ve:Alien">foo</div><p>bar</p>',
 				rangeOrSelection: new ve.Range( 2 ),
 				operations: [ 'backspace' ],
 				expectedData: function () {
@@ -288,7 +289,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Backspace after an alien just selects it'
 			},
 			{
-				html: '<p>bar</p><div rel="ve:Alien">foo</div>',
+				htmlOrDoc: '<p>bar</p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 4 ),
 				operations: [ 'delete' ],
 				expectedData: function () {
@@ -297,7 +298,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Delete before an alien just selects it'
 			},
 			{
-				html: '<div rel="ve:Alien">foo</div><ul><li><p>foo</p></li></ul>',
+				htmlOrDoc: '<div rel="ve:Alien">foo</div><ul><li><p>foo</p></li></ul>',
 				rangeOrSelection: new ve.Range( 5 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -308,7 +309,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'List after an alien unwrapped by backspace'
 			},
 			{
-				html: '<p></p><div rel="ve:Alien">foo</div>',
+				htmlOrDoc: '<p></p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -318,7 +319,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Backspace with an alien selected deletes it'
 			},
 			{
-				html: '<p></p><div rel="ve:Alien">foo</div>',
+				htmlOrDoc: '<p></p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -328,7 +329,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Delete with an alien selected deletes it'
 			},
 			{
-				html: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
+				htmlOrDoc: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -338,7 +339,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Backspace with an alien selected deletes it, with only aliens in the document'
 			},
 			{
-				html: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
+				htmlOrDoc: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
 				operations: [ 'delete' ],
 				expectedData: function ( data ) {
@@ -348,7 +349,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Delete with an alien selected deletes it, with only aliens in the document'
 			},
 			{
-				html: '<div rel="ve:Alien">foo</div>',
+				htmlOrDoc: '<div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 0, 2 ),
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
@@ -361,30 +362,47 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				msg: 'Backspace with an alien selected deletes it and replaces it with a paragraph, when the alien is the entire document'
 			},
 			{
+				htmlOrDoc: mergedCellsDoc,
 				rangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 5, 37 ),
+					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
 					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					toCol: 2,
+					toRow: 1
 				},
 				operations: [ 'backspace' ],
 				expectedData: function ( data ) {
-					data.splice( 9, 24,
+					data.splice( 4, 3,
+						{ type: 'paragraph', internal: { generated: 'wrapper' } },
+						{ type: '/paragraph' }
+					);
+					data.splice( 8, 3,
+						{ type: 'paragraph', internal: { generated: 'wrapper' } },
+						{ type: '/paragraph' }
+					);
+					data.splice( 12, 3,
+						{ type: 'paragraph', internal: { generated: 'wrapper' } },
+						{ type: '/paragraph' }
+					);
+					data.splice( 33, 3,
+						{ type: 'paragraph', internal: { generated: 'wrapper' } },
+						{ type: '/paragraph' }
+					);
+					data.splice( 37, 3,
 						{ type: 'paragraph', internal: { generated: 'wrapper' } },
 						{ type: '/paragraph' }
 					);
 				},
 				expectedRangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 5, 15 ),
+					tableRange: new ve.Range( 0, 166 ),
 					fromCol: 0,
 					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					toCol: 2,
+					toRow: 1
 				},
-				msg: 'Table cell emptied by backspace'
+				msg: 'Table cells emptied by backspace'
 			}
 		];
 
@@ -392,7 +410,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[ i ].html, cases[ i ].rangeOrSelection, cases[ i ].operations,
+			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].operations,
 			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
 		);
 	}
@@ -535,7 +553,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				msg: 'Two enters breaks out of a list and starts a new paragraph'
 			},
 			{
-				html: '<p>foo</p>' + emptyList + '<p>bar</p>',
+				htmlOrDoc: '<p>foo</p>' + emptyList + '<p>bar</p>',
 				rangeOrSelection: new ve.Range( 8 ),
 				operations: [ 'enter' ],
 				expectedData: function ( data ) {
@@ -545,7 +563,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				msg: 'Enter in an empty list destroys it and moves to next paragraph'
 			},
 			{
-				html: '<p>foo</p>' + emptyList,
+				htmlOrDoc: '<p>foo</p>' + emptyList,
 				rangeOrSelection: new ve.Range( 8 ),
 				operations: [ 'enter' ],
 				expectedData: function ( data ) {
@@ -555,7 +573,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				msg: 'Enter in an empty list at end of document destroys it and moves to previous paragraph'
 			},
 			{
-				html: emptyList + '<p>bar</p>',
+				htmlOrDoc: emptyList + '<p>bar</p>',
 				rangeOrSelection: new ve.Range( 3 ),
 				operations: [ 'enter' ],
 				expectedData: function ( data ) {
@@ -565,7 +583,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				msg: 'Enter in an empty list at start of document destroys it and moves to next paragraph'
 			},
 			{
-				html: emptyList,
+				htmlOrDoc: emptyList,
 				rangeOrSelection: new ve.Range( 3 ),
 				operations: [ 'enter' ],
 				expectedData: function ( data ) {
@@ -584,7 +602,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[ i ].html, cases[ i ].rangeOrSelection, cases[ i ].operations,
+			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].operations,
 			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
 		);
 	}
