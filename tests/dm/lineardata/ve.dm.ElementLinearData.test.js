@@ -1596,6 +1596,19 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Headings converted to paragraph is plainText mode'
 			},
 			{
+				html: '<h1>Bar</h1>',
+				data: [
+					// TODO: non-relevant attributes should be discarded, T130377
+					{ type: 'paragraph', attributes: { level: 1 } },
+					'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { conversions: { heading: 'paragraph' } },
+				msg: 'Explicit conversion: heading->paragraph'
+			},
+			{
 				html: '<p>Foo</p><p></p><h1></h1><p>Bar</p>',
 				data: [
 					{ type: 'paragraph' },
