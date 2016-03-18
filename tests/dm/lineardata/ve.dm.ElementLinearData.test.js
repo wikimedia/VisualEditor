@@ -1623,6 +1623,18 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Empty content nodes are stripped'
 			},
 			{
+				html: '<div>Foo</div>',
+				data: [
+					{ type: 'paragraph' },
+					'F', 'o', 'o',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { blacklist: [ 'div' ] },
+				msg: 'Wrapper paragraph becomes real paragraph when unwrapped due to blacklist'
+			},
+			{
 				html: '<p><span style="color:red;" class="red">Foo</span></p>',
 				data: [
 					{ type: 'paragraph' },
