@@ -16,7 +16,10 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 			modifiedBackspace: { keyCode: OO.ui.Keys.BACKSPACE, ctrlKey: true },
 			modifiedDelete: { keyCode: OO.ui.Keys.DELETE, ctrlKey: true },
 			enter: { keyCode: OO.ui.Keys.ENTER },
-			modifiedEnter: { keyCode: OO.ui.Keys.ENTER, shiftKey: true }
+			shiftEnter: { keyCode: OO.ui.Keys.ENTER, shiftKey: true },
+			tab: { keyCode: OO.ui.Keys.TAB },
+			shiftTab: { keyCode: OO.ui.Keys.TAB, shiftKey: true },
+			escape: { keyCode: OO.ui.Keys.ESCAPE }
 		},
 		view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
@@ -36,7 +39,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	model.setSelection( selection );
 	for ( i = 0; i < operations.length; i++ ) {
 		e = ve.extendObject( {}, {
-			preventDefault: function () {}
+			preventDefault: function () {},
+			stopPropagation: function () {}
 		}, actions[ operations[ i ] ] );
 		ve.ce.keyDownHandlerFactory.executeHandlersForKey(
 			e.keyCode, selection.getName(), view, e
@@ -416,6 +420,103 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'special key down: table cells', function ( assert ) {
+	var i,
+		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
+		cases = [
+			{
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				operations: [ 'enter' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 11 ),
+				msg: 'Enter to edit a table cell'
+			},
+			{
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				operations: [ 'enter', 'escape' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				msg: 'Escape to leave a table cell'
+			},
+			{
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				operations: [ 'enter', 'tab' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 2,
+					fromRow: 0,
+					toCol: 2,
+					toRow: 0
+				},
+				msg: 'Tab while in a table cell moves to the next cell'
+			},
+			{
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				operations: [ 'enter', 'shiftTab' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'Shift+tab while in a table cell moves to the previous cell'
+			}
+		];
+
+	QUnit.expect( cases.length * 2 );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		ve.test.utils.runSurfaceHandleSpecialKeyTest(
+			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].operations,
+			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
+		);
+	}
+} );
+
 QUnit.test( 'special key down: linear enter', function ( assert ) {
 	var i,
 		emptyList = '<ul><li><p></p></li></ul>',
@@ -435,7 +536,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 57 ),
-				operations: [ 'modifiedEnter' ],
+				operations: [ 'shiftEnter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						57, 0,
@@ -444,7 +545,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 					);
 				},
 				expectedRangeOrSelection: new ve.Range( 59 ),
-				msg: 'End of paragraph split by modified enter'
+				msg: 'End of paragraph split by shift+enter'
 			},
 			{
 				rangeOrSelection: new ve.Range( 56 ),
@@ -528,7 +629,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 16 ),
-				operations: [ 'modifiedEnter' ],
+				operations: [ 'shiftEnter' ],
 				expectedData: function ( data ) {
 					data.splice(
 						16, 0,
@@ -537,7 +638,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 					);
 				},
 				expectedRangeOrSelection: new ve.Range( 18 ),
-				msg: 'List item not split by modified enter'
+				msg: 'List item not split by shift+enter'
 			},
 			{
 				rangeOrSelection: new ve.Range( 21 ),
@@ -834,7 +935,8 @@ QUnit.test( 'onCopy', function ( assert ) {
 					}
 				}
 			},
-			preventDefault: function () {}
+			preventDefault: function () {},
+			stopPropagation: function () {}
 		},
 		cases = [
 			{
@@ -930,6 +1032,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				}
 			};
 			this.preventDefault = function () {};
+			this.stopPropagation = function () {};
 		},
 		cases = [
 			{
@@ -2244,6 +2347,11 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 				expectedSelectionOffsets: [ 1, 0, 1, 0 ]
 			},
 			{
+				msg: 'Simple move right with tab',
+				key: 'TAB',
+				selectionOffsets: [ 0, 0 ],
+				expectedSelectionOffsets: [ 1, 0, 1, 0 ]
+			},			{
 				msg: 'Simple move end',
 				key: 'END',
 				selectionOffsets: [ 0, 0 ],
@@ -2264,6 +2372,13 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 			{
 				msg: 'Simple move left',
 				key: 'LEFT',
+				selectionOffsets: [ 5, 6 ],
+				expectedSelectionOffsets: [ 4, 6, 4, 6 ]
+			},
+			{
+				msg: 'Simple move left with shift-tab',
+				key: 'TAB',
+				shiftKey: true,
 				selectionOffsets: [ 5, 6 ],
 				expectedSelectionOffsets: [ 4, 6, 4, 6 ]
 			},
@@ -2346,7 +2461,8 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 			{
 				keyCode: OO.ui.Keys[ cases[ i ].key ],
 				shiftKey: !!cases[ i ].shiftKey,
-				preventDefault: fn
+				preventDefault: fn,
+				stopPropagation: fn
 			}
 		);
 		selection = model.getSelection();
@@ -2421,7 +2537,8 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 						}
 					}
 				},
-				preventDefault: function () {}
+				preventDefault: function () {},
+				stopPropagation: function () {}
 			};
 
 		// Mock drop coords
