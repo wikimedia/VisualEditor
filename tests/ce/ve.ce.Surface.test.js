@@ -53,7 +53,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, html, rangeOrS
 	view.destroy();
 };
 
-QUnit.test( 'handleLinearDelete', function ( assert ) {
+QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 	var i,
 		emptyList = '<ul><li><p></p></li></ul>',
 		cases = [
@@ -359,6 +359,32 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'Backspace with an alien selected deletes it and replaces it with a paragraph, when the alien is the entire document'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 5, 37 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				operations: [ 'backspace' ],
+				expectedData: function ( data ) {
+					data.splice( 9, 24,
+						{ type: 'paragraph', internal: { generated: 'wrapper' } },
+						{ type: '/paragraph' }
+					);
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 5, 15 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'Table cell emptied by backspace'
 			}
 		];
 
@@ -372,7 +398,7 @@ QUnit.test( 'handleLinearDelete', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'handleLinearEnter', function ( assert ) {
+QUnit.test( 'special key down: linear enter', function ( assert ) {
 	var i,
 		emptyList = '<ul><li><p></p></li></ul>',
 		cases = [
@@ -2172,7 +2198,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 } );
 
-QUnit.test( 'handleTableArrowKey', function ( assert ) {
+QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 	var i, offsets, selection, table, view, model,
 		fn = function () {},
 		tables = {
@@ -2522,11 +2548,6 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 // TODO: ve.ce.Surface#startRelocation
 // TODO: ve.ce.Surface#endRelocation
 // TODO: ve.ce.Surface#handleInsertion
-// TODO: ve.ce.Surface#handleLinearLeftOrRightArrowKey
-// TODO: ve.ce.Surface#handleLinearUpOrDownArrowKey
-// TODO: ve.ce.Surface#handleTableDelete
-// TODO: ve.ce.Surface#handleTableEditingEscape
-// TODO: ve.ce.Surface#handleTableEnter
 // TODO: ve.ce.Surface#showModelSelection
 // TODO: ve.ce.Surface#appendHighlights
 // TODO: ve.ce.Surface#incRenderLock
