@@ -454,7 +454,6 @@
 			"src/ui/commands/ve.ui.HistoryCommand.js",
 			"src/ui/commands/ve.ui.IndentationCommand.js",
 			"src/ui/commands/ve.ui.MergeCellsCommand.js",
-			"src/ui/commands/ve.ui.TableCaptionCommand.js",
 			"src/ui/dialogs/ve.ui.FragmentDialog.js",
 			"src/ui/dialogs/ve.ui.NodeDialog.js",
 			"src/ui/dialogs/ve.ui.ToolbarDialog.js",
