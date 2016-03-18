@@ -106,6 +106,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "Спэцыяльны сымбаль",
 	"visualeditor-specialcharacterinspector-title": "Спэцыяльны сымбаль",
 	"visualeditor-table-caption": "Подпіс",
+	"visualeditor-table-contextitem-properties": "Уласьцівасьці",
 	"visualeditor-table-delete-col": "Выдаліць {{PLURAL:$1|слупок|слупкі|слупкоў}}",
 	"visualeditor-table-delete-row": "Выдаліць {{PLURAL:$1|радок|радкі|радкоў}}",
 	"visualeditor-table-format-data": "Ячэйка са зьместам",
