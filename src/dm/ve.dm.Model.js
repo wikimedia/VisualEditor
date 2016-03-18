@@ -332,44 +332,6 @@ ve.dm.Model.prototype.getOriginalDomElements = function () {
 };
 
 /**
- * Check if the model has certain attributes.
- *
- * If an array of keys is provided only the presence of the attributes will be checked. If an object
- * with keys and values is provided both the presence of the attributes and their values will be
- * checked. Comparison of values is done by casting to strings unless the strict argument is used.
- *
- * @method
- * @param {string[]|Object} attributes Array of keys or object of keys and values
- * @param {boolean} strict Use strict comparison when checking if values match
- * @return {boolean} Model has attributes
- */
-ve.dm.Model.prototype.hasAttributes = function ( attributes, strict ) {
-	var key, i, len,
-		ourAttributes = this.getAttributes() || {};
-	if ( ve.isPlainObject( attributes ) ) {
-		// Node must have all the required attributes
-		for ( key in attributes ) {
-			if (
-				!( key in ourAttributes ) ||
-				( strict ?
-					attributes[ key ] !== ourAttributes[ key ] :
-					String( attributes[ key ] ) !== String( ourAttributes[ key ] )
-				)
-			) {
-				return false;
-			}
-		}
-	} else if ( Array.isArray( attributes ) ) {
-		for ( i = 0, len = attributes.length; i < len; i++ ) {
-			if ( !( attributes[ i ] in ourAttributes ) ) {
-				return false;
-			}
-		}
-	}
-	return true;
-};
-
-/**
  * Get a clone of the model's linear model element.
  *
  * The attributes object will be deep-copied.
