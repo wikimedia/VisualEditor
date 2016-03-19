@@ -510,6 +510,44 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
+	var i,
+		blockImageDoc = ve.dm.example.createExampleDocumentFromData(
+			[ { type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' } ].concat(
+				ve.dm.example.blockImage.data.slice()
+			).concat(
+				[ { type: 'paragraph' }, 'B', 'a', 'r', { type: '/paragraph' } ]
+			)
+		),
+		cases = [
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'LEFT' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				msg: 'Cursor left off a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'RIGHT' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 19 ),
+				msg: 'Cursor right off a block node'
+			}
+		];
+
+	QUnit.expect( cases.length * 2 );
+
+	for ( i = 0; i < cases.length; i++ ) {
+		ve.test.utils.runSurfaceHandleSpecialKeyTest(
+			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].keys,
+			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
+		);
+	}
+} );
+
 QUnit.test( 'special key down: linear enter', function ( assert ) {
 	var i,
 		emptyList = '<ul><li><p></p></li></ul>',
