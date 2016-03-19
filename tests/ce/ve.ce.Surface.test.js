@@ -8,19 +8,8 @@ QUnit.module( 've.ce.Surface' );
 
 /* Tests */
 
-ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, rangeOrSelection, operations, expectedData, expectedRangeOrSelection, msg ) {
-	var i, e, selection, expectedSelection,
-		actions = {
-			backspace: { keyCode: OO.ui.Keys.BACKSPACE },
-			delete: { keyCode: OO.ui.Keys.DELETE },
-			modifiedBackspace: { keyCode: OO.ui.Keys.BACKSPACE, ctrlKey: true },
-			modifiedDelete: { keyCode: OO.ui.Keys.DELETE, ctrlKey: true },
-			enter: { keyCode: OO.ui.Keys.ENTER },
-			shiftEnter: { keyCode: OO.ui.Keys.ENTER, shiftKey: true },
-			tab: { keyCode: OO.ui.Keys.TAB },
-			shiftTab: { keyCode: OO.ui.Keys.TAB, shiftKey: true },
-			escape: { keyCode: OO.ui.Keys.ESCAPE }
-		},
+ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, rangeOrSelection, keys, expectedData, expectedRangeOrSelection, msg ) {
+	var i, e, selection, expectedSelection, key,
 		view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
 			ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ),
@@ -37,11 +26,15 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	} );
 
 	model.setSelection( selection );
-	for ( i = 0; i < operations.length; i++ ) {
-		e = ve.extendObject( {}, {
+	for ( i = 0; i < keys.length; i++ ) {
+		key = keys[ i ].split( '+' );
+		e = {
+			keyCode: OO.ui.Keys[ key.pop() ],
+			shiftKey: key.indexOf( 'SHIFT' ) !== -1,
+			ctrlKey: key.indexOf( 'CTRL' ) !== -1,
 			preventDefault: function () {},
 			stopPropagation: function () {}
-		}, actions[ operations[ i ] ] );
+		};
 		ve.ce.keyDownHandlerFactory.executeHandlersForKey(
 			e.keyCode, selection.getName(), view, e
 		);
@@ -64,7 +57,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1, 4 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -73,7 +66,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1, 4 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -82,7 +75,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),
-				operations: [ 'modifiedBackspace' ],
+				keys: [ 'CTRL+BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -91,7 +84,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
-				operations: [ 'modifiedDelete' ],
+				keys: [ 'CTRL+DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 1, 3 );
 				},
@@ -100,7 +93,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 56, 57 ),
-				operations: [ 'delete', 'delete' ],
+				keys: [ 'DELETE', 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 55, 3 );
 				},
@@ -109,21 +102,21 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 41 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: new ve.Range( 39, 41 ),
 				msg: 'Focusable node selected but not deleted by backspace'
 			},
 			{
 				rangeOrSelection: new ve.Range( 39 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: new ve.Range( 39, 41 ),
 				msg: 'Focusable node selected but not deleted by delete'
 			},
 			{
 				rangeOrSelection: new ve.Range( 39, 41 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 39, 2 );
 				},
@@ -132,7 +125,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 38 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -146,7 +139,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -161,7 +154,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 6 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -171,7 +164,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 6 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -181,7 +174,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 2 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -191,7 +184,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
 				rangeOrSelection: new ve.Range( 10 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 3, 6 );
 				},
@@ -201,7 +194,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<ul><li><p></p>' + emptyList + '</li></ul>',
 				rangeOrSelection: new ve.Range( 7 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
@@ -210,7 +203,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 0, 63 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 0, 61,
 							{ type: 'paragraph' },
@@ -223,7 +216,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: emptyList + '<p>foo</p>',
 				rangeOrSelection: new ve.Range( 3 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 0, 2 );
 					data.splice( 2, 2 );
@@ -234,7 +227,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>foo</p>' + emptyList,
 				rangeOrSelection: new ve.Range( 8 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 2 );
 					data.splice( 7, 2 );
@@ -245,7 +238,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>foo</p><ul><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 11 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 2 );
 					data.splice( 10, 2 );
@@ -256,7 +249,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>foo</p><ul><li><p>bar</p></li><li><p>baz</p></li></ul>',
 				rangeOrSelection: new ve.Range( 18 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					var paragraph = data.splice( 14, 5 );
 					data.splice( 13, 2 ); // remove the empty listItem
@@ -268,7 +261,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>foo</p>',
 				rangeOrSelection: new ve.Range( 4 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function () {
 				},
 				expectedRangeOrSelection: new ve.Range( 4 ),
@@ -277,7 +270,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>foo</p><p>bar</p><p></p>',
 				rangeOrSelection: new ve.Range( 11 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function () {
 				},
 				expectedRangeOrSelection: new ve.Range( 11 ),
@@ -286,7 +279,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><p>bar</p>',
 				rangeOrSelection: new ve.Range( 2 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function () {
 				},
 				expectedRangeOrSelection: new ve.Range( 0, 2 ),
@@ -295,7 +288,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p>bar</p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 4 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function () {
 				},
 				expectedRangeOrSelection: new ve.Range( 5, 7 ),
@@ -304,7 +297,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><ul><li><p>foo</p></li></ul>',
 				rangeOrSelection: new ve.Range( 5 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 					data.splice( 7, 2 );
@@ -315,7 +308,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p></p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
@@ -325,7 +318,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<p></p><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
@@ -335,7 +328,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
@@ -345,7 +338,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<div rel="ve:Alien">foo</div><div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 2, 4 ),
-				operations: [ 'delete' ],
+				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
@@ -355,7 +348,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 			{
 				htmlOrDoc: '<div rel="ve:Alien">foo</div>',
 				rangeOrSelection: new ve.Range( 0, 2 ),
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 0, 2,
 						{ type: 'paragraph' },
@@ -375,7 +368,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 					toCol: 2,
 					toRow: 1
 				},
-				operations: [ 'backspace' ],
+				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice( 4, 3,
 						{ type: 'paragraph', internal: { generated: 'wrapper' } },
@@ -414,7 +407,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].operations,
+			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].keys,
 			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
 		);
 	}
@@ -434,7 +427,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					toCol: 1,
 					toRow: 0
 				},
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: new ve.Range( 11 ),
 				msg: 'Enter to edit a table cell'
@@ -449,7 +442,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					toCol: 1,
 					toRow: 0
 				},
-				operations: [ 'enter', 'escape' ],
+				keys: [ 'ENTER', 'ESCAPE' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -471,7 +464,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					toCol: 1,
 					toRow: 0
 				},
-				operations: [ 'enter', 'tab' ],
+				keys: [ 'ENTER', 'TAB' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -493,7 +486,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					toCol: 1,
 					toRow: 0
 				},
-				operations: [ 'enter', 'shiftTab' ],
+				keys: [ 'ENTER', 'SHIFT+TAB' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -511,7 +504,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].operations,
+			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].keys,
 			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
 		);
 	}
@@ -523,7 +516,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 57 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						57, 0,
@@ -536,7 +529,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 57 ),
-				operations: [ 'shiftEnter' ],
+				keys: [ 'SHIFT+ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						57, 0,
@@ -549,7 +542,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 56 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						56, 0,
@@ -562,7 +555,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 3 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						3, 0,
@@ -575,7 +568,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 2, 3 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						2, 1,
@@ -588,7 +581,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						0, 0,
@@ -601,7 +594,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						5, 0,
@@ -614,7 +607,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 16 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						16, 0,
@@ -629,7 +622,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 16 ),
-				operations: [ 'shiftEnter' ],
+				keys: [ 'SHIFT+ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						16, 0,
@@ -642,7 +635,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 21 ),
-				operations: [ 'enter', 'enter' ],
+				keys: [ 'ENTER', 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						24, 0,
@@ -656,7 +649,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			{
 				htmlOrDoc: '<p>foo</p>' + emptyList + '<p>bar</p>',
 				rangeOrSelection: new ve.Range( 8 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 6 );
 				},
@@ -666,7 +659,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			{
 				htmlOrDoc: '<p>foo</p>' + emptyList,
 				rangeOrSelection: new ve.Range( 8 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice( 5, 6 );
 				},
@@ -676,7 +669,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			{
 				htmlOrDoc: emptyList + '<p>bar</p>',
 				rangeOrSelection: new ve.Range( 3 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice( 0, 6 );
 				},
@@ -686,7 +679,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			{
 				htmlOrDoc: emptyList,
 				rangeOrSelection: new ve.Range( 3 ),
-				operations: [ 'enter' ],
+				keys: [ 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						0, 6,
@@ -703,7 +696,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].operations,
+			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].keys,
 			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
 		);
 	}
@@ -848,7 +841,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 		for ( i = 0; i < txs.length; i++ ) {
 			ops.push( txs[ i ].getOperations() );
 		}
-		assert.deepEqual( ops, expectedOps, msg + ': operations' );
+		assert.deepEqual( ops, expectedOps, msg + ': keys' );
 		assert.equalRange( model.getSelection().getRange(), expectedRangeOrSelection, msg + ': range' );
 
 		view.destroy();
@@ -2286,7 +2279,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					ops.push( txops );
 				}
 			}
-			assert.equalLinearData( ops, expectedOps, msg + ': operations' );
+			assert.equalLinearData( ops, expectedOps, msg + ': keys' );
 		}
 		if ( expectedRangeOrSelection ) {
 			expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), getLayoutSpecific( expectedRangeOrSelection ) );
