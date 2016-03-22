@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.3
+ * OOjs UI v0.16.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-16T19:20:26Z
+ * Date: 2016-03-22T22:48:25Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -1355,14 +1355,14 @@
 }
 
 /*!
- * OOjs UI v0.16.3
+ * OOjs UI v0.16.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-16T19:20:26Z
+ * Date: 2016-03-22T22:48:25Z
  */
 .oo-ui-draggableElement-handle,
 .oo-ui-draggableElement-handle.oo-ui-widget {
@@ -2342,19 +2342,19 @@
 	border-bottom-left-radius: 0;
 	border-left-width: 0;
 }
-.oo-ui-numberInputWidget .oo-ui-textInputWidget input {
+.oo-ui-numberInputWidget-buttoned .oo-ui-textInputWidget input {
 	border-radius: 0;
 }
 
 /*!
- * OOjs UI v0.16.3
+ * OOjs UI v0.16.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-16T19:20:26Z
+ * Date: 2016-03-22T22:48:25Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2807,14 +2807,14 @@
 }
 
 /*!
- * OOjs UI v0.16.3
+ * OOjs UI v0.16.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-16T19:20:26Z
+ * Date: 2016-03-22T22:48:25Z
  */
 .oo-ui-window {
 	background: transparent;
@@ -3191,14 +3191,14 @@
 }
 
 /*!
- * OOjs UI v0.16.3
+ * OOjs UI v0.16.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-16T19:20:26Z
+ * Date: 2016-03-22T22:48:25Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/mediawiki/images/icons/add.png");
