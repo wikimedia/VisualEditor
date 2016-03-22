@@ -8,16 +8,6 @@
 	padding: 0.25em 0.5em;
 }
 
-.ve-ui-specialCharacterDialog-spinner {
-	/* There might be a better place for a spinner? */
-	/* @embed */
-	background-image: url( ../images/spinner.gif );
-	width: 31px;
-	height: 31px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
 .ve-ui-specialCharacterDialog .oo-ui-bookletLayout {
 	height: 150px;
 }

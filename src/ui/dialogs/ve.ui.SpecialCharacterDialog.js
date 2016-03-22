@@ -44,9 +44,6 @@ ve.ui.SpecialCharacterDialog.static.padded = false;
 ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.SpecialCharacterDialog.super.prototype.initialize.call( this );
-
-	this.$spinner = $( '<div>' ).addClass( 've-ui-specialCharacterDialog-spinner' );
-	this.$content.append( this.$spinner );
 };
 
 /**
@@ -55,25 +52,9 @@ ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.SpecialCharacterDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var inspector = this;
-
 			this.surface = data.surface;
 			this.surface.getView().focus();
 			this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
-
-			if ( !this.characters ) {
-				this.$spinner.show();
-				ve.init.platform.fetchSpecialCharList()
-					.done( function ( specialChars ) {
-						inspector.characters = specialChars;
-						inspector.buildButtonList();
-					} )
-					// TODO: show error message on fetchCharList().fail
-					.always( function () {
-						// TODO: generalize push/pop pending, like we do in Dialog
-						inspector.$spinner.hide();
-					} );
-			}
 		}, this );
 };
 
@@ -95,8 +76,18 @@ ve.ui.SpecialCharacterDialog.prototype.getTeardownProcess = function ( data ) {
 ve.ui.SpecialCharacterDialog.prototype.getReadyProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.SpecialCharacterDialog.super.prototype.getReadyProcess.call( this, data )
-		.first( function () {
+		.next( function () {
+			var inspector = this;
+
 			this.surface.getView().focus();
+
+			if ( !this.characters ) {
+				return ve.init.platform.fetchSpecialCharList()
+					.then( function ( specialChars ) {
+						inspector.characters = specialChars;
+						inspector.buildButtonList();
+					} );
+			}
 		}, this );
 };
 
@@ -143,6 +134,8 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
 	);
 
 	this.$body.append( this.bookletLayout.$element );
+
+	this.updateSize();
 };
 
 /**
