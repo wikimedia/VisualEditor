@@ -187,6 +187,9 @@
 	/**
 	 * Create a UI surface from some HTML
 	 *
+	 * This is incredibly slow (>100ms) so consider creating just a ce.Surface
+	 * or dm.Surface, or a mock surface using create(View|Model)OnlySurface*.
+	 *
 	 * @param {string} html Document HTML
 	 * @return {ve.ui.Surface} UI surface
 	 */
@@ -196,6 +199,8 @@
 
 	/**
 	 * Create a UI surface from a document
+	 *
+	 * See warning in ve.test.utils.createSurfaceFromHtml.
 	 *
 	 * @param {ve.dm.Document} doc Document
 	 * @return {ve.ui.Surface} UI surface
