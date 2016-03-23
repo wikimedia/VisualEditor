@@ -824,7 +824,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
  * @param {jQuery.Event} e Drag over event
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
-	var i, l, $target, $dropTarget, node, dropPosition, targetPosition, top, left,
+	var i, l, $target, $dropTarget, node, dropPosition, targetPosition, targetOffset, top, left,
 		nodeType, inIgnoreChildren, item, fakeItem,
 		isContent = true,
 		dataTransfer = e.originalEvent.dataTransfer;
@@ -869,30 +869,44 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 		}
 	}
 
+	function getNearestDropTarget( node ) {
+		while ( node.parent && !node.parent.isAllowedChildNodeType( nodeType ) ) {
+			node = node.parent;
+		}
+		if ( node.parent ) {
+			inIgnoreChildren = false;
+			node.parent.traverseUpstream( function ( n ) {
+				if ( n.shouldIgnoreChildren() ) {
+					node = null;
+					return false;
+				}
+			} );
+			return node;
+		}
+	}
+
 	if ( !isContent ) {
 		e.preventDefault();
 		$target = $( e.target ).closest( '.ve-ce-branchNode, .ve-ce-leafNode' );
 		if ( $target.length ) {
 			// Find the nearest node which will accept this node type
-			node = $target.data( 'view' );
-			while ( node.parent && !node.parent.isAllowedChildNodeType( nodeType ) ) {
-				node = node.parent;
-			}
-			if ( node.parent ) {
-				inIgnoreChildren = false;
-				node.parent.traverseUpstream( function ( n ) {
-					if ( n.shouldIgnoreChildren() ) {
-						inIgnoreChildren = true;
-						return false;
-					}
-				} );
-			}
-			if ( node.parent && !inIgnoreChildren ) {
+			node = getNearestDropTarget( $target.data( 'view' ) );
+			if ( node ) {
 				$dropTarget = node.$element;
 				dropPosition = e.originalEvent.pageY - $dropTarget.offset().top > $dropTarget.outerHeight() / 2 ? 'bottom' : 'top';
 			} else {
-				$dropTarget = this.$lastDropTarget;
-				dropPosition = this.lastDropPosition;
+				targetOffset = this.getOffsetFromEventCoords( e.originalEvent );
+				if ( targetOffset !== -1 ) {
+					node = getNearestDropTarget( this.getDocument().getBranchNodeFromOffset( targetOffset ) );
+					if ( node ) {
+						$dropTarget = node.$element;
+						dropPosition = 'top';
+					}
+				}
+				if ( !$dropTarget ) {
+					$dropTarget = this.$lastDropTarget;
+					dropPosition = this.lastDropPosition;
+				}
 			}
 		}
 		if ( this.$lastDropTarget && (
