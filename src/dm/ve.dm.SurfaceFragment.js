@@ -716,7 +716,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  *
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
- * @param {boolean} annotate Content should be automatically annotated to match surrounding content
+ * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
@@ -727,9 +727,11 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	}
 
 	if ( !this.getSelection( true ).isCollapsed() ) {
-		// If we're replacing content, use the annotations selected
-		// instead of continuing from the left
-		annotations = this.getAnnotations();
+		if ( annotate ) {
+			// If we're replacing content, use the annotations selected
+			// instead of continuing from the left
+			annotations = this.getAnnotations();
+		}
 		this.removeContent();
 	}
 

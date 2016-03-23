@@ -461,11 +461,27 @@ QUnit.test( 'delete', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'insertContent', 9, function ( assert ) {
+QUnit.test( 'insertContent', 11, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 1, 4 ) );
+		fragment = surface.getLinearFragment( new ve.Range( 3, 4 ) );
 
+	fragment.insertContent( [ 'a' ], true );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 3, 4 ) ),
+		[ [ 'a', [ 1 ] ] ],
+		'inserting content (annotate=true) replaces selection with new annotated content'
+	);
+
+	fragment = surface.getLinearFragment( new ve.Range( 3, 4 ) );
+	fragment.insertContent( [ 'b' ] );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 3, 4 ) ),
+		[ 'b' ],
+		'inserting content (annotate=false) replaces selection with new plain content'
+	);
+
+	fragment = surface.getLinearFragment( new ve.Range( 1, 4 ) );
 	fragment.insertContent( [ '1', '2', '3' ] );
 	assert.deepEqual(
 		doc.getData( new ve.Range( 1, 4 ) ),
