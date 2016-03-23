@@ -263,6 +263,20 @@
 	};
 
 	/**
+	 * Create a view-only UI surface from some HTML
+	 *
+	 * @param {string} html Document HTML
+	 * @return {Object} Mock UI surface which only returns a real view (and its model)
+	 */
+	ve.test.utils.createViewOnlySurfaceFromHtml = function ( html ) {
+		var surfaceView = ve.test.utils.createSurfaceViewFromDocument(
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+		);
+
+		return surfaceView.surface;
+	};
+
+	/**
 	 * Create a model-only UI surface from some HTML
 	 *
 	 * @param {string} html Document HTML

@@ -368,7 +368,7 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
  * @param {boolean} selectionChanged The update was triggered by a selection change
  */
 ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
-	var i, l, anchorNode, anchorOffset, selectionOffset, selection, tableOffset, surfaceOffset, cells,
+	var i, l, anchorNode, anchorOffset, selectionOffset, selection, selectionRect, tableOffset, surfaceOffset, cells,
 		editable = true;
 
 	if ( !this.active || !this.root ) {
@@ -387,6 +387,12 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		return;
 	}
 
+	selectionRect = this.surface.getSelection( selection ).getSelectionBoundingRect();
+
+	if ( !selectionRect ) {
+		return;
+	}
+
 	cells = selection.getMatrixCells();
 	anchorNode = this.getCellNodesFromSelection( selection.collapseToFrom() )[ 0 ];
 	anchorOffset = ve.translateRect( anchorNode.$element[ 0 ].getBoundingClientRect(), -tableOffset.left, -tableOffset.top );
@@ -399,7 +405,7 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	}
 
 	selectionOffset = ve.translateRect(
-		this.surface.getSelection( selection ).getSelectionBoundingRect(),
+		selectionRect,
 		surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
 	);
 

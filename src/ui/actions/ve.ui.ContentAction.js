@@ -41,8 +41,8 @@ ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpeci
  *
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
- * @param {boolean} annotate Content should be automatically annotated to match surrounding content
- * @param {boolean} collapseToEnd Collapse selection to end after inserting
+ * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
+ * @param {boolean} [collapseToEnd] Collapse selection to end after inserting
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.insert = function ( content, annotate, collapseToEnd ) {

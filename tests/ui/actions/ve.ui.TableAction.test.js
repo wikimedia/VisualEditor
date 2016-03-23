@@ -8,18 +8,23 @@ QUnit.module( 've.ui.TableAction' );
 
 /* Tests */
 
-function runTableActionTest( assert, html, method, args, selection, expectedData, expectedSelection, msg ) {
+function runTableActionTest( assert, html, method, args, rangeOrSelection, expectedData, expectedRangeOrSelection, msg ) {
 	var surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
 		tableAction = new ve.ui.TableAction( surface ),
-		data = ve.copy( surface.getModel().getDocument().getFullData() );
+		data = ve.copy( surface.getModel().getDocument().getFullData() ),
+		documentModel = surface.getModel().getDocument(),
+		selection = ve.test.utils.selectionFromRangeOrSelection( documentModel, rangeOrSelection ),
+		expectedSelection = expectedRangeOrSelection && ve.test.utils.selectionFromRangeOrSelection( documentModel, expectedRangeOrSelection );
 
-	expectedData( data );
-	surface.getModel().setSelection( ve.dm.Selection.static.newFromJSON( surface.getModel().getDocument(), selection ) );
-	tableAction[ method ].apply( tableAction, args );
+	if ( expectedData ) {
+		expectedData( data );
+	}
+	surface.getModel().setSelection( selection );
+	tableAction[ method ].apply( tableAction, args || [] );
 
 	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
 	if ( expectedSelection ) {
-		assert.deepEqual( surface.getModel().getSelection().toJSON(), expectedSelection, msg + ': selections match' );
+		assert.equalHash( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
 	}
 }
 
@@ -53,10 +58,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 		].concat( tableCellTail ),
 		cases = [
 			{
-				selection: {
-					type: 'linear',
-					range: new ve.Range( 0 )
-				},
+				rangeOrSelection: new ve.Range( 0 ),
 				method: 'create',
 				args: [ {
 					cols: 1,
@@ -78,7 +80,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 						]
 					) );
 				},
-				expectedSelection: {
+				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 10 ),
 					fromCol: 0,
@@ -89,10 +91,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 				msg: 'create single cell table with attributes'
 			},
 			{
-				selection: {
-					type: 'linear',
-					range: new ve.Range( 0 )
-				},
+				rangeOrSelection: new ve.Range( 0 ),
 				method: 'create',
 				args: [ {
 					cols: 3,
@@ -134,7 +133,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 5,
@@ -153,7 +152,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 					data.splice.apply( data, [ 56, 0 ].concat( tableData ) );
 					data.splice.apply( data, [ 33, 0 ].concat( tableData ) );
 				},
-				expectedSelection: {
+				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 199 ),
 					fromCol: 5,
@@ -165,7 +164,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 3,
@@ -186,7 +185,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
@@ -216,7 +215,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
@@ -246,7 +245,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
@@ -268,7 +267,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 1,
@@ -289,7 +288,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
@@ -308,7 +307,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
@@ -333,7 +332,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: '<table><tr><td></td><td>A</td></tr><tr><td></td><td></td></tr></table>',
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 25 ),
 					fromCol: 0,
@@ -352,7 +351,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
@@ -372,7 +371,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
@@ -401,12 +400,12 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 					);
 					data.splice( 83, 20 );
 				},
-				expectedSelection: { type: 'null' },
+				expectedRangeOrSelection: { type: 'null' },
 				msg: 'delete row'
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 3,
@@ -421,12 +420,12 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 					data.splice( 150, 6 );
 					data.splice( 18, 5 );
 				},
-				expectedSelection: { type: 'null' },
+				expectedRangeOrSelection: { type: 'null' },
 				msg: 'delete column'
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,
-				selection: {
+				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 1,
@@ -447,15 +446,15 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 
 	for ( i = 0; i < cases.length; i++ ) {
 		expected++;
-		if ( cases[ i ].expectedSelection ) {
+		if ( cases[ i ].expectedRangeOrSelection ) {
 			expected++;
 		}
 	}
 	QUnit.expect( expected );
 	for ( i = 0; i < cases.length; i++ ) {
 		runTableActionTest(
-			assert, cases[ i ].html, cases[ i ].method, cases[ i ].args, cases[ i ].selection,
-			cases[ i ].expectedData, cases[ i ].expectedSelection, cases[ i ].msg
+			assert, cases[ i ].html, cases[ i ].method, cases[ i ].args, cases[ i ].rangeOrSelection,
+			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
 		);
 	}
 } );
