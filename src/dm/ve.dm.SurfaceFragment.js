@@ -720,7 +720,8 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
-	var i, l, lines, annotations, tx, offset, newRange;
+	var i, l, lines, annotations, tx, offset, newRange,
+		doc = this.getDocument();
 
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return this;
@@ -758,21 +759,17 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 			// TODO T126021: Don't reach into properties of document
 			// FIXME T126022: the logic we actually need for annotating inserted content
 			// correctly is MUCH more complicated
-			annotations = this.document.data
+			annotations = doc.data
 				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 		}
 		if ( annotations && annotations.getLength() > 0 ) {
 			ve.dm.Document.static.addAnnotationsToData( content, annotations );
 		}
-		tx = ve.dm.Transaction.newFromInsertion(
-			this.document,
-			offset,
-			content
-		);
+		tx = ve.dm.Transaction.newFromInsertion( doc, offset, content );
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
 		newRange = tx.getModifiedRange();
-		this.change( tx, new ve.dm.LinearSelection( this.getDocument(), newRange ) );
+		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
 	}
 
 	return this;
@@ -803,11 +800,12 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  * at a different offset if that is needed to make the document balanced.
  *
  * @method
- * @param {ve.dm.Document} doc Document to insert
+ * @param {ve.dm.Document} newDoc Document to insert
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.insertDocument = function ( doc ) {
-	var tx, newRange;
+ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc ) {
+	var tx, newRange,
+		doc = this.getDocument();
 
 	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
 		return this;
@@ -818,14 +816,14 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( doc ) {
 	}
 
 	tx = new ve.dm.Transaction.newFromDocumentInsertion(
-		this.getDocument(),
+		doc,
 		this.getSelection().getRange().start,
-		doc
+		newDoc
 	);
 	// Set the range to cover the inserted content; the offset translation will be wrong
 	// if newFromInsertion() decided to move the insertion point
 	newRange = tx.getModifiedRange();
-	this.change( tx, new ve.dm.LinearSelection( this.getDocument(), newRange ) );
+	this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
 
 	return this;
 };
