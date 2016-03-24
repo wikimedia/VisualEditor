@@ -103,7 +103,7 @@
 	"visualeditor-mediasizewidget-button-originaldimensions": "调整到原始大小",
 	"visualeditor-mediasizewidget-label-custom": "自定义",
 	"visualeditor-mediasizewidget-label-defaulterror": "尺寸值无效。",
-	"visualeditor-mediasizewidget-label-scale": "缩略图大小的比例：",
+	"visualeditor-mediasizewidget-label-scale": "比例：",
 	"visualeditor-mediasizewidget-label-scale-percent": "%",
 	"visualeditor-mediasizewidget-sizeoptions-custom": "自定义",
 	"visualeditor-mediasizewidget-sizeoptions-default": "默认",
