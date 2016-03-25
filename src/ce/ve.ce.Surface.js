@@ -2722,14 +2722,22 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 		return;
 	}
 	// Between nails: cross the one in the specified direction
-	fixedPosition = ve.adjacentDomPosition( { node: node, offset: offset }, direction );
+	fixedPosition = ve.adjacentDomPosition(
+		{ node: node, offset: offset },
+		direction,
+		{ stop: ve.isHardCursorStep }
+	);
 	node = fixedPosition.node;
 	offset = fixedPosition.offset;
 	if ( direction === -1 ) {
 		// Moving startwards: left-bias the fixed position
 		// Avoids Firefox bug "cursor disappears at left of img inside link":
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=1175495
-		fixedPosition = ve.adjacentDomPosition( fixedPosition, direction );
+		fixedPosition = ve.adjacentDomPosition(
+			fixedPosition,
+			direction,
+			{ stop: ve.isHardCursorStep }
+		);
 		if ( fixedPosition.node.nodeType === Node.TEXT_NODE ) {
 			// Have crossed into a text node; go back to its end
 			node = fixedPosition.node;

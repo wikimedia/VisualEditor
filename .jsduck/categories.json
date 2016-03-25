@@ -7,6 +7,7 @@
 				"classes": [
 					"ve",
 					"ve.Range",
+					"ve.PositionStep",
 					"ve.SelectionState",
 					"ve.EventSequencer",
 					"ve.Filibuster",
