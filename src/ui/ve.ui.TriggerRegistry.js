@@ -198,7 +198,10 @@ ve.ui.triggerRegistry.register(
 	'selectAll', { mac: new ve.ui.Trigger( 'cmd+a' ), pc: new ve.ui.Trigger( 'ctrl+a' ) }
 );
 ve.ui.triggerRegistry.register(
-	'pasteSpecial', { mac: new ve.ui.Trigger( 'cmd+shift+v' ), pc: new ve.ui.Trigger( 'ctrl+shift+v' ) }
+	'pasteSpecial', {
+		mac: new ve.ui.Trigger( 'cmd+option+shift+v' ),
+		pc: new ve.ui.Trigger( 'ctrl+shift+v' )
+	}
 );
 ve.ui.triggerRegistry.register(
 	'findAndReplace', { mac: new ve.ui.Trigger( 'cmd+f' ), pc: new ve.ui.Trigger( 'ctrl+f' ) }
