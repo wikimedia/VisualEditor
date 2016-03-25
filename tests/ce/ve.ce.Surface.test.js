@@ -8,7 +8,7 @@ QUnit.module( 've.ce.Surface' );
 
 /* Tests */
 
-ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, rangeOrSelection, keys, expectedData, expectedRangeOrSelection, msg ) {
+ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, rangeOrSelection, keys, expectedData, expectedRangeOrSelection, msg, forceSelection, fullEvents ) {
 	var i, e, selection, expectedSelection, key,
 		view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
@@ -35,9 +35,28 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 			preventDefault: function () {},
 			stopPropagation: function () {}
 		};
-		ve.ce.keyDownHandlerFactory.executeHandlersForKey(
-			e.keyCode, selection.getName(), view, e
-		);
+		if ( fullEvents ) {
+			// Some key handlers do things like schedule after-event handlers,
+			// and so we want to fake the full sequence.
+			// TODO: Could probably switch to using this for every test, but it
+			// would need the faked testing surface to be improved.
+			view.eventSequencer.onEvent( 'keydown', $.Event( 'keydown', e ) );
+			if ( forceSelection ) {
+				view.showSelectionState( view.getSelectionState( forceSelection ) );
+			}
+			view.eventSequencer.runPendingCalls( 'keydown' );
+			view.eventSequencer.onEvent( 'keypress', $.Event( 'keypress', e ) );
+			view.eventSequencer.runPendingCalls( 'keypress' );
+			view.eventSequencer.onEvent( 'keyup', $.Event( 'keyup', e ) );
+			view.eventSequencer.runPendingCalls( 'keyup' );
+		} else {
+			if ( forceSelection ) {
+				view.showSelectionState( view.getSelectionState( forceSelection ) );
+			}
+			ve.ce.keyDownHandlerFactory.executeHandlersForKey(
+				e.keyCode, selection.getName(), view, e
+			);
+		}
 	}
 	expectedData( data );
 
@@ -520,6 +539,84 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 			)
 		),
 		cases = [
+			// Within normal text. NOTE: these tests manually force the cursor to
+			// move, because we rely on native browser actions for that.
+			// As such, these are mostly testing to make sure that other
+			// behavior doesn't trigger when it shouldn't.
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 2 ),
+				keys: [ 'LEFT' ],
+				forceSelection: new ve.Range( 1 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'Cursor left in text'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 2 ),
+				keys: [ 'RIGHT' ],
+				forceSelection: new ve.Range( 3 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				msg: 'Cursor right in text'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 4 ),
+				keys: [ 'UP' ],
+				forceSelection: new ve.Range( 1 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'Cursor up in text'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 20 ),
+				keys: [ 'DOWN' ],
+				forceSelection: new ve.Range( 22 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 22 ),
+				msg: 'Cursor down in text'
+			},
+			// Cursor with shift held to adjust selection
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 2 ),
+				keys: [ 'SHIFT+LEFT' ],
+				forceSelection: new ve.Range( 1 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 2, 1 ),
+				msg: 'Cursor left in text with shift'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 2 ),
+				keys: [ 'SHIFT+RIGHT' ],
+				forceSelection: new ve.Range( 3 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 2, 3 ),
+				msg: 'Cursor right in text with shift'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 4 ),
+				keys: [ 'SHIFT+UP' ],
+				forceSelection: new ve.Range( 1 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 4, 1 ),
+				msg: 'Cursor up in text with shift'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 20 ),
+				keys: [ 'SHIFT+DOWN' ],
+				forceSelection: new ve.Range( 22 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 20, 22 ),
+				msg: 'Cursor down in text with shift'
+			},
+			// While focusing a block node
 			{
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 5, 18 ),
@@ -531,10 +628,26 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 			{
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'UP' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				msg: 'Cursor up off a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'RIGHT' ],
 				expectedData: function () {},
 				expectedRangeOrSelection: new ve.Range( 19 ),
 				msg: 'Cursor right off a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'DOWN' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 19 ),
+				msg: 'Cursor down off a block node'
 			}
 		];
 
@@ -543,7 +656,8 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceHandleSpecialKeyTest(
 			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].keys,
-			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
+			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg,
+			cases[ i ].forceSelection, true
 		);
 	}
 } );
