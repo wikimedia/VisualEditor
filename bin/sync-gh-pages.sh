@@ -14,7 +14,7 @@ npm install
 html='<!DOCTYPE html>
 <meta charset="utf-8">
 <title>VisualEditor</title>
-<link rel=stylesheet href="lib/oojs-ui/oojs-ui-apex.vector.css">
+<link rel=stylesheet href="lib/oojs-ui/oojs-ui-apex.css">
 <link rel=stylesheet href="demos/ve/demo.css">
 <style>
 	article {
