@@ -99,6 +99,7 @@ ve.init.Target.static.toolbarGroups = [
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		type: 'list',
 		icon: 'listBullet',
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		indicator: 'down',
 		include: [ { group: 'structure' } ],
 		demote: [ 'outdent', 'indent' ]
