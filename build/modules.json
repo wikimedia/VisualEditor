@@ -712,8 +712,7 @@
 		],
 		"styles": [
 			"src/ui/styles/ve.ui.MobileContext.css",
-			"src/ui/styles/ve.ui.MobileSurface.css",
-			"src/ui/styles/windowmanagers/ve.ui.MobileWindowManager.css"
+			"src/ui/styles/ve.ui.MobileSurface.css"
 		],
 		"dependencies": [
 			"visualEditor.core.build"
