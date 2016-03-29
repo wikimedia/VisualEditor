@@ -26,8 +26,6 @@ OO.inheritClass( ve.ui.CommentInspector, ve.ui.NodeInspector );
 
 ve.ui.CommentInspector.static.name = 'comment';
 
-ve.ui.CommentInspector.static.icon = 'notice';
-
 ve.ui.CommentInspector.static.title =
 	OO.ui.deferMsg( 'visualeditor-commentinspector-title' );
 
