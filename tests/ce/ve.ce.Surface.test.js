@@ -648,6 +648,45 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				expectedData: function () {},
 				expectedRangeOrSelection: new ve.Range( 19 ),
 				msg: 'Cursor down off a block node'
+			},
+			// Cursoring onto a block node, which should focus it
+			// Again, these are forcibly moving the cursor, so it's not a perfect
+			// test; it's more checking how we fix up the selection afterwards.
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 4 ),
+				keys: [ 'RIGHT' ],
+				forceSelection: new ve.Range( 8 ), // cursor moves into the caption
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 5, 18 ),
+				msg: 'Cursor right onto a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 19 ),
+				keys: [ 'LEFT' ],
+				forceSelection: new ve.Range( 17 ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 18, 5 ),
+				msg: 'Cursor left onto a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 4 ),
+				keys: [ 'DOWN' ],
+				forceSelection: new ve.Range( 14 ), // cursor moves into the caption
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 5, 18 ),
+				msg: 'Cursor down onto a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 20 ),
+				keys: [ 'UP' ],
+				forceSelection: new ve.Range( 14 ), // cursor moves into the caption
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 18, 5 ),
+				msg: 'Cursor up onto a block node'
 			}
 		];
 
