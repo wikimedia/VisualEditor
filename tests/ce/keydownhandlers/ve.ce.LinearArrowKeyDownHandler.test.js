@@ -155,6 +155,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'HOME' ],
 				expectedRangeOrSelection: new ve.Range( 4 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor home off a block node'
 			},
 			{
@@ -162,6 +163,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'UP' ],
 				expectedRangeOrSelection: new ve.Range( 4 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor up off a block node'
 			},
 			{
@@ -169,6 +171,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'PAGEUP' ],
 				expectedRangeOrSelection: new ve.Range( 4 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor page up off a block node'
 			},
 			{
@@ -183,6 +186,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'END' ],
 				expectedRangeOrSelection: new ve.Range( 19 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor end off a block node'
 			},
 			{
@@ -190,6 +194,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'DOWN' ],
 				expectedRangeOrSelection: new ve.Range( 19 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor down off a block node'
 			},
 			{
@@ -197,7 +202,41 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'PAGEDOWN' ],
 				expectedRangeOrSelection: new ve.Range( 19 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor page down off a block node'
+			},
+			// ...with shift
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'SHIFT+LEFT' ],
+				expectedRangeOrSelection: new ve.Range( 18, 4 ),
+				expectedDefaultPrevented: [ false ],
+				msg: 'Cursor left off a block node with shift'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'SHIFT+UP' ],
+				expectedRangeOrSelection: new ve.Range( 18, 4 ),
+				expectedDefaultPrevented: [ false ],
+				msg: 'Cursor up off a block node with shift'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'SHIFT+RIGHT' ],
+				expectedRangeOrSelection: new ve.Range( 5, 19 ),
+				expectedDefaultPrevented: [ false ],
+				msg: 'Cursor right off a block node with shift'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'SHIFT+DOWN' ],
+				expectedRangeOrSelection: new ve.Range( 5, 19 ),
+				expectedDefaultPrevented: [ false ],
+				msg: 'Cursor down off a block node with shift'
 			},
 			// Cursoring onto a block node, which should focus it
 			// Again, these are forcibly moving the cursor, so it's not a perfect

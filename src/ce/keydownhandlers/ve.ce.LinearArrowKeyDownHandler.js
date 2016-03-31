@@ -51,6 +51,16 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 	// TODO: onDocumentKeyDown did this already
 	surface.surfaceObserver.pollOnce();
 
+	function moveOffFocusableNode( focusableRange, dir ) {
+		return surface.model.getDocument().getRelativeRange(
+			focusableRange,
+			dir,
+			'character',
+			e.shiftKey,
+			activeNode && ( e.shiftKey || activeNode.trapsCursor() ) ? activeNode.getRange() : null
+		);
+	}
+
 	var direction, directionality;
 	if ( surface.focusedBlockSlug ) {
 		// Block level selection, so directionality is just css directionality
@@ -67,13 +77,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 				direction = 1;
 			}
 		}
-		range = surface.model.getDocument().getRelativeRange(
-			range,
-			direction,
-			'character',
-			e.shiftKey,
-			activeNode && ( e.shiftKey || activeNode.trapsCursor() ) ? activeNode.getRange() : null
-		);
+		range = moveOffFocusableNode( range, direction );
 		surface.model.setLinearSelection( range );
 		e.preventDefault();
 		return true;
@@ -94,21 +98,6 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			}
 		}
 
-		if ( !surface.focusedNode.isContent() ) {
-			// Block focusable node: move back/forward in DM (and DOM) and preventDefault
-			range = surface.model.getDocument().getRelativeRange(
-				range,
-				direction,
-				'character',
-				e.shiftKey,
-				activeNode && ( e.shiftKey || activeNode.trapsCursor() ) ? activeNode.getRange() : null
-			);
-			surface.model.setLinearSelection( range );
-			e.preventDefault();
-			return true;
-		}
-		// Else inline focusable node
-
 		if ( e.shiftKey ) {
 			// There is no DOM range to expand (because the selection is faked), so
 			// use "collapse to focus - observe - expand". Define "focus" to be the
@@ -119,8 +108,16 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			if ( direction === -1 ^ range.isBackwards() ) {
 				range = range.flip();
 			}
-			surface.model.setLinearSelection( new ve.Range( range.to ) );
+			var observationRange = new ve.Range( range.to );
+
+			if ( !surface.focusedNode.isContent() ) {
+				// Block focusable node: move the observation range to an adjacent content offset
+				observationRange = moveOffFocusableNode( observationRange, direction );
+				observationRange = new ve.Range( observationRange.to );
+			}
+			surface.model.setLinearSelection( observationRange );
 		} else {
+			range = moveOffFocusableNode( range, direction );
 			// Move to start/end of node in the model in DM (and DOM)
 			range = new ve.Range( direction === 1 ? range.end : range.start );
 			surface.model.setLinearSelection( range );
