@@ -27,7 +27,7 @@ QUnit.test( 'getInsertableData', 1, function ( assert ) {
 		},
 		mockReader = {
 			readAsText: fn,
-			result: 'a,b\nc,d'
+			result: 'a,b\nc,d\n'
 		};
 
 	handler = ve.ui.dataTransferHandlerFactory.create( 'dsv', mockSurface, item );
