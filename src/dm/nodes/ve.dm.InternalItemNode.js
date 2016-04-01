@@ -33,6 +33,8 @@ ve.dm.InternalItemNode.static.ignoreChildren = true;
 
 ve.dm.InternalItemNode.static.isInternal = true;
 
+ve.dm.InternalItemNode.static.isDeletable = false;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.InternalItemNode );

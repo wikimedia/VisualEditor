@@ -270,6 +270,20 @@ ve.dm.NodeFactory.prototype.isNodeInternal = function ( type ) {
 	throw new Error( 'Unknown node type: ' + type );
 };
 
+/**
+ * Check if node is deletable.
+ *
+ * @param {string} type Node type
+ * @return {boolean} Whether the node is internal
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeDeletable = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isDeletable;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
 /* Initialization */
 
 ve.dm.nodeFactory = new ve.dm.NodeFactory();

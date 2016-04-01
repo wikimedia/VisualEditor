@@ -1115,7 +1115,7 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
 
 /**
  * Adds a replace op to remove the desired range and, where required, splices in retain ops
- * to prevent the deletion of internal data.
+ * to prevent the deletion of undeletable nodes.
  *
  * An extra `replaceMetadata` operation might be pushed at the end if the
  * affected region contains metadata; see
@@ -1130,23 +1130,23 @@ ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
 ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, removeEnd, removeMetadata ) {
 	var i, queuedRetain,
 		retainStart = removeStart,
-		internalStackDepth = 0;
+		undeletableStackDepth = 0;
 	// Iterate over removal range and use a stack counter to determine if
-	// we are inside an internal node
+	// we are inside an undeletable node
 	for ( i = removeStart; i < removeEnd; i++ ) {
-		if ( doc.data.isElementData( i ) && ve.dm.nodeFactory.isNodeInternal( doc.data.getType( i ) ) ) {
+		if ( doc.data.isElementData( i ) && !ve.dm.nodeFactory.isNodeDeletable( doc.data.getType( i ) ) ) {
 			if ( !doc.data.isCloseElementData( i ) ) {
-				if ( internalStackDepth === 0 ) {
+				if ( undeletableStackDepth === 0 ) {
 					if ( queuedRetain ) {
 						this.pushRetain( queuedRetain );
 					}
 					this.pushReplace( doc, removeStart, i - removeStart, [], removeMetadata ? [] : undefined );
 					retainStart = i;
 				}
-				internalStackDepth++;
+				undeletableStackDepth++;
 			} else {
-				internalStackDepth--;
-				if ( internalStackDepth === 0 ) {
+				undeletableStackDepth--;
+				if ( undeletableStackDepth === 0 ) {
 					queuedRetain = i + 1 - retainStart;
 					removeStart = i + 1;
 				}
