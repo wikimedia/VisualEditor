@@ -389,7 +389,9 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 	if ( !Array.isArray( dataElements ) ) {
 		dataElements = [ dataElements ];
 	}
-	dataElements[ 0 ].originalDomElements = domElements;
+	if ( dataElements.length ) {
+		dataElements[ 0 ].originalDomElements = domElements;
+	}
 	return dataElements;
 };
 
@@ -679,9 +681,11 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					childNodes = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childNode ];
 					childDataElements = this.createDataElements( modelClass, childNodes );
-				} else {
+				} else if ( childDataElements.length ) {
 					// Update modelClass to reflect the type we got back
 					modelClass = this.modelRegistry.lookup( childDataElements[ 0 ].type );
+				} else {
+					continue;
 				}
 
 				// Now take the appropriate action based on that
