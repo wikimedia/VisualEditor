@@ -57,8 +57,14 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 		);
 
 		for ( i = 0; i < input.data.length; i++ ) {
-			data.push( { type: 'tableRow' } );
 			line = input.data[ i ];
+
+			// Skip 'empty' row if at the end of the file
+			if ( i === input.data.length - 1 && line.length === 1 && line[ 0 ] === '' ) {
+				continue;
+			}
+
+			data.push( { type: 'tableRow' } );
 			for ( j = 0; j < line.length; j++ ) {
 				data.push(
 					{ type: 'tableCell', attributes: { style: ( i === 0 ? 'header' : 'data' ) } },
