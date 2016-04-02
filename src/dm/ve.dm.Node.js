@@ -80,6 +80,16 @@ ve.dm.Node.static.handlesOwnChildren = false;
 ve.dm.Node.static.ignoreChildren = false;
 
 /**
+ * Whether this node can be deleted. If false, ve.dm.Transaction#newFromRemoval will silently
+ * ignore any attepts to delete this node.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isDeletable = true;
+
+/**
  * Whether this node type is internal. Internal node types are ignored by the converter.
  *
  * @static

@@ -33,6 +33,8 @@ ve.dm.InternalListNode.static.matchTagNames = [];
 
 ve.dm.InternalListNode.static.isInternal = true;
 
+ve.dm.InternalListNode.static.isDeletable = false;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.InternalListNode );
