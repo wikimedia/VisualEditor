@@ -1,0 +1,20 @@
+/*!
+ * VisualEditor ContentEditable SectionNode styles.
+ *
+ * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* Prevent margin collapse across sections */
+.ve-ce-sectionNode:before,
+.ve-ce-sectionNode:after {
+    content: "\00a0";
+    display: block;
+    overflow: hidden;
+    height: 0;
+}
+
+.ve-ce-documentNode .ve-ce-sectionNode-focused {
+	margin: 0 -0.5em;
+	padding: 0 0.5em;
+	outline: 1px dashed #ccc;
+}

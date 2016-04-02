@@ -13,10 +13,6 @@
 	cursor: text;
 }
 
-.ve-ce-tableCellNode-editing:focus {
-	outline: none;
-}
-
 .ve-ce-tableCellNode a {
 	pointer-events: none;
 }
