@@ -72,9 +72,15 @@ ve.ce.SectionNode.prototype.onTeardown = function () {
  * @param {ve.dm.Selection} selection Selection
  */
 ve.ce.SectionNode.prototype.onSurfaceModelSelect = function ( selection ) {
-	var ranges = selection.getRanges();
+	var ranges = selection.getRanges(),
+		sectionNode = this;
+
 	if ( ranges.length && this.model.getRange().containsRange( ranges[ 0 ] ) ) {
-		this.surface.setActiveNode( this );
+		// Only set this as the active node if active node is empty, or not a
+		// descendent of this node.
+		if ( !this.surface.getActiveNode() || !this.surface.getActiveNode().traverseUpstream( function ( node ) { return node !== sectionNode; } ) ) {
+			this.surface.setActiveNode( this );
+		}
 		this.$element.addClass( 've-ce-sectionNode-focused' );
 	} else {
 		if ( this.surface.getActiveNode() === this ) {
