@@ -90,6 +90,7 @@ ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
 	this.$element
 		.toggleClass( 've-ce-tableCellNode-editing', enable )
 		.prop( 'contentEditable', enable.toString() );
+	this.getRoot().getSurface().setActiveNode( enable ? this : null );
 };
 
 /**

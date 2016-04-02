@@ -21,6 +21,8 @@ ve.ce.TableNode = function VeCeTableNode() {
 	this.surface = null;
 	this.active = false;
 	this.startCell = null;
+	// Stores the original table selection as
+	// a fragment when entering cell edit mode
 	this.editingFragment = null;
 
 	// DOM changes
@@ -258,9 +260,10 @@ ve.ce.TableNode.prototype.onTableMouseUp = function () {
  * @param {boolean} noSelect Don't change the selection
  */
 ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
-	var cell, offset, cellRange, profile,
+	var cell, offset, cellRange, profile, activeCellNode,
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
+
 	if ( isEditing ) {
 		if ( !selection.isSingleCell() ) {
 			selection = selection.collapseToFrom();
@@ -279,13 +282,14 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 				surfaceModel.setLinearSelection( new ve.Range( offset ) );
 			}
 		}
-	} else if ( this.editingFragment ) {
-		this.getCellNodesFromSelection( this.editingFragment.getSelection() )[ 0 ].setEditing( false );
+	} else if ( ( activeCellNode = this.getActiveCellNode() ) ) {
+		activeCellNode.setEditing( false );
 		if ( !noSelect ) {
 			surfaceModel.setSelection( this.editingFragment.getSelection() );
 		}
 		this.editingFragment = null;
 	}
+
 	this.$element.toggleClass( 've-ce-tableNode-editing', isEditing );
 	// HACK T103035: Firefox 39 has a regression which clicking on a ce=false table
 	// always selects the entire table, even if you click in a ce=true child.
@@ -300,31 +304,12 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 };
 
 /**
- * Get fragment with table selection covering cell being edited
- *
- * @return {ve.dm.SurfaceFragment} Fragment, or null if not cell editing
- */
-ve.ce.TableNode.prototype.getEditingFragment = function () {
-	return this.editingFragment;
-};
-
-/**
- * Get range of cell being edited from editing fragment
- *
- * @return {ve.Range} Range, or null if not cell editing
- */
-ve.ce.TableNode.prototype.getEditingRange = function () {
-	var fragment = this.getEditingFragment();
-	return fragment ? fragment.getSelection().getRanges()[ 0 ] : null;
-};
-
-/**
  * Handle select events from the surface model.
  *
  * @param {ve.dm.Selection} selection Selection
  */
 ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
-	// The table is active if it is a linear selection inside a cell being edited
+	// The table is active if there is a linear selection inside a cell being edited
 	// or a table selection matching this table.
 	var active = (
 			this.editingFragment !== null &&
@@ -343,7 +328,6 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 			// accidental focusing of the table while scrolling
 			this.$element.on( 'touchstart.ve-ce-tableNode', this.onTableMouseDown.bind( this ) );
 		}
-		this.surface.setActiveTableNode( this );
 		// Ignore update the overlay if the table selection changed, i.e. not an in-cell selection change
 		if ( selection instanceof ve.dm.TableSelection ) {
 			this.updateOverlayDebounced( true  );
@@ -353,13 +337,26 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 		if ( this.editingFragment ) {
 			this.setEditing( false, true );
 		}
-		if ( this.surface.getActiveTableNode() === this ) {
-			this.surface.setActiveTableNode( null );
+		// When the table of the active node is deactivated, clear the active node
+		if ( this.getActiveCellNode() ) {
+			this.surface.setActiveNode( null );
 		}
 		this.$element.off( 'touchstart.ve-ce-tableNode' );
 	}
 	this.$element.toggleClass( 've-ce-tableNode-active', active );
 	this.active = active;
+};
+
+/**
+ * Get the active node in this table, if it has one
+ *
+ * @return {ve.ce.TableNode|null} The active cell node in this table
+ */
+ve.ce.TableNode.prototype.getActiveCellNode = function () {
+	var activeNode = this.surface.getActiveNode(),
+		tableNodeOfActiveCellNode = activeNode && activeNode instanceof ve.ce.TableCellNode && activeNode.findParent( ve.ce.TableNode );
+
+	return tableNodeOfActiveCellNode === this ? activeNode : null;
 };
 
 /**
