@@ -41,7 +41,7 @@ ve.ce.TableSelection.prototype.getSelectionRects = function () {
 ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 	var i, l, cellOffset, top, bottom, left, right, boundingRect,
 		surface = this.getSurface(),
-		tableNode = surface.getActiveTableNode(),
+		tableNode = surface.getDocument().getBranchNodeFromOffset( this.model.tableRange.start + 1 ),
 		nodes = tableNode.getCellNodesFromSelection( this.getModel() ),
 		surfaceRect = surface.getSurface().getBoundingClientRect();
 
@@ -83,7 +83,7 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 ve.ce.TableSelection.prototype.getTableBoundingRect = function () {
 	var boundingRect,
 		surface = this.getSurface(),
-		tableNode = surface.getActiveTableNode(),
+		tableNode = surface.getDocument().getBranchNodeFromOffset( this.model.tableRange.start + 1 ),
 		surfaceRect = surface.getSurface().getBoundingClientRect();
 
 	if ( !tableNode ) {

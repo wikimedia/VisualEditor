@@ -37,11 +37,11 @@ ve.ce.LinearEscapeKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * Handle escape key down events with a linear selection while table editing.
  */
 ve.ce.LinearEscapeKeyDownHandler.static.execute = function ( surface, e ) {
-	var tableNode = surface.getActiveTableNode();
-	if ( tableNode ) {
+	var activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode );
+	if ( activeTableNode ) {
 		e.preventDefault();
 		e.stopPropagation();
-		tableNode.setEditing( false );
+		activeTableNode.setEditing( false );
 		// if this was a merged cell, we're going to have unexpected behavior when the selection moves,
 		// so preemptively collapse to the top-left point of the merged cell.
 		surface.getModel().setSelection( surface.getModel().getSelection().collapseToStart() );

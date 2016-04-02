@@ -51,7 +51,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.focused = false;
 	this.deactivated = false;
 	this.$deactivatedSelection = $( '<div>' );
-	this.activeTableNode = null;
+	this.activeNode = null;
 	this.contentBranchNodeChanged = false;
 	this.selectionLink = null;
 	this.$highlightsFocused = $( '<div>' );
@@ -1306,7 +1306,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	// Restore the selection and stop, if we cursored out of a table edit cell.
 	// Assumption: if we cursored out of a table cell, then none of the fixups below this point
 	// would have got the selection back inside the cell. Therefore it's OK to check here.
-	if ( isArrow && this.restoreActiveTableNodeSelection() ) {
+	if ( isArrow && this.restoreActiveNodeSelection() ) {
 		return;
 	}
 
@@ -2266,13 +2266,14 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
  * Select all the contents within the current context
  */
 ve.ce.Surface.prototype.selectAll = function () {
-	var internalListRange, range, matrix,
+	var internalListRange, range, matrix, activeNode,
 		selection = this.getModel().getSelection(),
 		dmDoc = this.getModel().getDocument();
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
-		if ( this.getActiveTableNode() && this.getActiveTableNode().getEditingFragment() ) {
-			range = this.getActiveTableNode().getEditingRange();
+		activeNode = this.getActiveNode();
+		if ( activeNode ) {
+			range = activeNode.getRange();
 			range = new ve.Range( range.from + 1, range.to - 1 );
 		} else {
 			internalListRange = this.getModel().getDocument().getInternalList().getListNode().getOuterRange();
@@ -2815,21 +2816,21 @@ ve.ce.Surface.prototype.endRelocation = function () {
 };
 
 /**
- * Set the active table node
+ * Set the active node
  *
- * @param {ve.ce.TableNode|null} tableNode Table node
+ * @param {ve.ce.Node|null} node Active node
  */
-ve.ce.Surface.prototype.setActiveTableNode = function ( tableNode ) {
-	this.activeTableNode = tableNode;
+ve.ce.Surface.prototype.setActiveNode = function ( node ) {
+	this.activeNode = node;
 };
 
 /**
- * Get the active table node
+ * Get the active node
  *
- * @return {ve.ce.TableNode|null} Table node
+ * @return {ve.ce.Node|null} Active node
  */
-ve.ce.Surface.prototype.getActiveTableNode = function () {
-	return this.activeTableNode;
+ve.ce.Surface.prototype.getActiveNode = function () {
+	return this.activeNode;
 };
 
 /*! Utilities */
@@ -2915,12 +2916,11 @@ ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
  *
  * @return {boolean} Whether the selection was restored
  */
-ve.ce.Surface.prototype.restoreActiveTableNodeSelection = function () {
-	var activeTableNode, editingRange;
+ve.ce.Surface.prototype.restoreActiveNodeSelection = function () {
+	var range;
 	if (
-		( activeTableNode = this.getActiveTableNode() ) &&
-		( editingRange = activeTableNode.getEditingRange() ) &&
-		!editingRange.containsRange( ve.ce.veRangeFromSelection( this.nativeSelection ) )
+		( range = this.getActiveNode() && this.getActiveNode().getRange() ) &&
+		!range.containsRange( ve.ce.veRangeFromSelection( this.nativeSelection ) )
 	) {
 		this.showModelSelection();
 		return true;

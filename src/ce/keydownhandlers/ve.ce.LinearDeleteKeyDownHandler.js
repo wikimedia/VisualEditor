@@ -42,7 +42,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * In these cases, it will perform the content removal itself.
  */
 ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
-	var docLength, startNode, tableEditingRange, position, skipNode, pairNode, linkNode, range,
+	var docLength, startNode, position, skipNode, pairNode, linkNode, range,
 		documentModelSelectedNodes, i, node, nodeRange, nodeOuterRange, matrix, col, row,
 		direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
@@ -175,8 +175,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	if ( rangeToRemove.isCollapsed() ) {
 		// Expand rangeToRemove
 		rangeToRemove = documentModel.getRelativeRange( rangeToRemove, direction, unit, true );
-		tableEditingRange = surface.getActiveTableNode() ? surface.getActiveTableNode().getEditingRange() : null;
-		if ( tableEditingRange && !tableEditingRange.containsRange( rangeToRemove ) ) {
+		if ( surface.getActiveNode() && !surface.getActiveNode().getRange().containsRange( rangeToRemove ) ) {
 			e.preventDefault();
 			return true;
 		}
