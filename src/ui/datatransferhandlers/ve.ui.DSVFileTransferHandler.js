@@ -37,15 +37,22 @@ ve.ui.DSVFileTransferHandler.static.extensions = [ 'csv', 'tsv' ];
  * @inheritdoc
  */
 ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
-	var i, j, line,
+	var i, j, line, tableNodeName, tableNodeClass, tableElement,
 		data = [],
 		input = Papa.parse( this.reader.result );
 
 	if ( input.meta.aborted || ( input.data.length <= 0 ) ) {
 		this.abort();
 	} else {
+		// Lookup the type for table elements
+		tableNodeName = ve.dm.modelRegistry.matchElement( document.createElement( 'table' ) );
+		tableNodeClass = ve.dm.modelRegistry.lookup( tableNodeName );
+		tableElement = { type: tableNodeName };
+		// Sanitize, as this can add default attributes for the table type
+		tableNodeClass.static.sanitize( tableElement );
+
 		data.push(
-			{ type: 'table' },
+			tableElement,
 			{ type: 'tableSection', attributes: { style: 'body' } }
 		);
 
@@ -68,7 +75,7 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 
 		data.push(
 			{ type: '/tableSection' },
-			{ type: '/table' }
+			{ type: '/' + tableElement.type }
 		);
 
 		this.resolve( data );
