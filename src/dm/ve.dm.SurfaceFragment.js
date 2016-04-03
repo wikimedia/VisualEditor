@@ -926,18 +926,21 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 					return false;
 				}
 			} );
-			// Move contents of endNode into startNode, and delete nodeToDelete
-			this.change( [
-				ve.dm.Transaction.newFromRemoval(
-					this.document,
-					nodeToDelete.getOuterRange()
-				),
-				ve.dm.Transaction.newFromInsertion(
-					this.document,
-					rangeAfterRemove.start,
-					endNodeData
-				)
-			] );
+			tx = ve.dm.Transaction.newFromRemoval(
+				this.document,
+				nodeToDelete.getOuterRange()
+			);
+			if ( !tx.isNoOp() ) {
+				// Move contents of endNode into startNode, and delete nodeToDelete
+				this.change( [
+					tx,
+					ve.dm.Transaction.newFromInsertion(
+						this.document,
+						rangeAfterRemove.start,
+						endNodeData
+					)
+				] );
+			}
 		}
 	}
 
