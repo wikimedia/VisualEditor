@@ -140,6 +140,21 @@ ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
 };
 
 /**
+ * Check if a node is unwrappable.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} Whether the node is unwrappable
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeUnwrappable = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.isNodeWrapped( type ) && this.registry[ type ].static.isUnwrappable;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if a node can contain content.
  *
  * @method

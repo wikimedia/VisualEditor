@@ -109,6 +109,15 @@ ve.dm.Node.static.isInternal = false;
 ve.dm.Node.static.isWrapped = true;
 
 /**
+ * Whether this node type can be unwrapped by user input (e.g. backspace to unwrap a list item)
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isUnwrappable = true;
+
+/**
  * Whether this node type is a content node type. This means the node represents content, cannot
  * have children, and can only appear as children of a content container node. Content nodes are
  * also known as inline nodes.
@@ -396,6 +405,13 @@ ve.dm.Node.prototype.isInternal = function () {
  */
 ve.dm.Node.prototype.isWrapped = function () {
 	return this.constructor.static.isWrapped;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isUnwrappable = function () {
+	return this.isWrapped() && this.constructor.static.isUnwrappable;
 };
 
 /**

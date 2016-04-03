@@ -116,6 +116,13 @@ ve.ce.Node.prototype.isWrapped = function () {
 /**
  * @inheritdoc ve.Node
  */
+ve.ce.Node.prototype.isUnwrappable = function () {
+	return this.model.isUnwrappable();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
 ve.ce.Node.prototype.canContainContent = function () {
 	return this.model.canContainContent();
 };

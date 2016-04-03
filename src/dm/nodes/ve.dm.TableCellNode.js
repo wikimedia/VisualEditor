@@ -33,6 +33,8 @@ OO.mixinClass( ve.dm.TableCellNode, ve.dm.TableCellableNode );
 
 ve.dm.TableCellNode.static.name = 'tableCell';
 
+ve.dm.TableCellNode.static.isUnwrappable = false;
+
 ve.dm.TableCellNode.static.parentNodeTypes = [ 'tableRow' ];
 
 ve.dm.TableCellNode.static.defaultAttributes = { style: 'data' };

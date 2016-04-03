@@ -228,9 +228,8 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset - 1 );
 			nodeRange = startNode.getOuterRange();
 			if (
-				// regular text (e.g. "<p>foo|</p>")
-				( startNode.getType() === 'text' ) ||
-				( startNode.getType() === 'tableCell' ) ||
+				// The node is not unwrappable (e.g. table cells, text nodes)
+				!startNode.isUnwrappable() ||
 				// content item at the start / end?
 				(
 					( startNode.canContainContent() || documentModel.getDocumentNode() === startNode ) &&

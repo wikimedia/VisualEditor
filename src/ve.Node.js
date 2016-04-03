@@ -135,6 +135,17 @@ ve.Node.prototype.isContent = null;
 ve.Node.prototype.isWrapped = null;
 
 /**
+ * Check if the node can be unwrapped.
+ *
+ * Can only be true of the node is wrapped.
+ *
+ * @method
+ * @abstract
+ * @return {boolean} Node represents a unwrappable element
+ */
+ve.Node.prototype.isUnwrappable = null;
+
+/**
  * Check if the node is focusable
  *
  * @method

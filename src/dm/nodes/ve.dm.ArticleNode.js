@@ -27,6 +27,8 @@ OO.inheritClass( ve.dm.ArticleNode, ve.dm.BranchNode );
 
 ve.dm.ArticleNode.static.name = 'article';
 
+ve.dm.ArticleNode.static.isUnwrappable = false;
+
 ve.dm.ArticleNode.static.matchTagNames = [ 'article' ];
 
 /* Methods */
