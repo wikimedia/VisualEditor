@@ -86,7 +86,9 @@ ve.ce.SectionNode.prototype.onSurfaceModelSelect = function ( selection ) {
 		if ( this.surface.getActiveNode() === this ) {
 			this.surface.setActiveNode( null );
 		}
-		this.$element.removeClass( 've-ce-sectionNode-focused' );
+		if ( !selection.isNull() ) {
+			this.$element.removeClass( 've-ce-sectionNode-focused' );
+		}
 	}
 };
 

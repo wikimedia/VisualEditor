@@ -13,8 +13,11 @@
     height: 0;
 }
 
+.ve-ce-documentNode .ve-ce-sectionNode {
+	opacity: 0.5;
+	transition: opacity 250ms ease;
+}
+
 .ve-ce-documentNode .ve-ce-sectionNode-focused {
-	margin: 0 -0.5em;
-	padding: 0 0.5em;
-	outline: 1px dashed #ccc;
+	opacity: 1;
 }
