@@ -83,6 +83,13 @@ ve.dm.NullSelection.prototype.getRanges = function () {
 /**
  * @inheritdoc
  */
+ve.dm.NullSelection.prototype.getCoveringRange = function () {
+	return null;
+};
+
+/**
+ * @inheritdoc
+ */
 ve.dm.NullSelection.prototype.equals = function ( other ) {
 	return other instanceof ve.dm.NullSelection &&
 		this.getDocument() === other.getDocument();

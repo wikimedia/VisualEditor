@@ -173,6 +173,15 @@ ve.dm.Selection.prototype.isNull = function () {
 ve.dm.Selection.prototype.getRanges = null;
 
 /**
+ * Get the covering linear range for this selection
+ *
+ * @abstract
+ * @method
+ * @return {ve.Range|null} Covering range, if not null
+ */
+ve.dm.Selection.prototype.getCoveringRange = null;
+
+/**
  * Get the document model this selection applies to
  *
  * @return {ve.dm.Document} Document model

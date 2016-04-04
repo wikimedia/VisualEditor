@@ -72,10 +72,10 @@ ve.ce.SectionNode.prototype.onTeardown = function () {
  * @param {ve.dm.Selection} selection Selection
  */
 ve.ce.SectionNode.prototype.onSurfaceModelSelect = function ( selection ) {
-	var ranges = selection.getRanges(),
+	var coveringRange = selection.getCoveringRange(),
 		sectionNode = this;
 
-	if ( ranges.length && this.model.getRange().containsRange( ranges[ 0 ] ) ) {
+	if ( coveringRange && this.model.getRange().containsRange( new ve.Range( coveringRange.start ) ) ) {
 		// Only set this as the active node if active node is empty, or not a
 		// descendent of this node.
 		if ( !this.surface.getActiveNode() || !this.surface.getActiveNode().traverseUpstream( function ( node ) { return node !== sectionNode; } ) ) {

@@ -184,6 +184,16 @@ ve.dm.TableSelection.prototype.getRanges = function () {
 };
 
 /**
+ * @inheritdoc
+ *
+ * Note that this returns the table range, and not the minimal range covering
+ * all cells, as that would be far more expensive to compute.
+ */
+ve.dm.TableSelection.prototype.getCoveringRange = function () {
+	return this.tableRange;
+};
+
+/**
  * Get all the ranges required to build a table slice from the selection
  *
  * In addition to the outer ranges of the cells, this also includes the start and

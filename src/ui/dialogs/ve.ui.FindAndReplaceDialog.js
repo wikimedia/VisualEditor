@@ -494,7 +494,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		return;
 	}
 
-	this.startOffset = this.fragments[ this.focusedIndex ].getSelection().getRanges()[ 0 ].start;
+	this.startOffset = this.fragments[ this.focusedIndex ].getSelection().getCoveringRange().start;
 
 	this.$findResults
 		.find( '.ve-ui-findAndReplaceDialog-findResult-focused' )
