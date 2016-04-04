@@ -81,13 +81,13 @@ ve.ce.SectionNode.prototype.onSurfaceModelSelect = function ( selection ) {
 		if ( !this.surface.getActiveNode() || !this.surface.getActiveNode().traverseUpstream( function ( node ) { return node !== sectionNode; } ) ) {
 			this.surface.setActiveNode( this );
 		}
-		this.$element.addClass( 've-ce-sectionNode-focused' );
+		this.$element.addClass( 've-ce-sectionNode-active' );
 	} else {
 		if ( this.surface.getActiveNode() === this ) {
 			this.surface.setActiveNode( null );
 		}
 		if ( !selection.isNull() ) {
-			this.$element.removeClass( 've-ce-sectionNode-focused' );
+			this.$element.removeClass( 've-ce-sectionNode-active' );
 		}
 	}
 };
