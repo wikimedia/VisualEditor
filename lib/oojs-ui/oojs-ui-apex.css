@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.4
+ * OOjs UI v0.16.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-22T22:48:25Z
+ * Date: 2016-04-07T15:12:44Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -527,9 +527,6 @@
 .oo-ui-decoratedOptionWidget.oo-ui-widget-disabled .oo-ui-indicatorElement-indicator {
 	opacity: 0.2;
 }
-.oo-ui-radioSelectWidget {
-	padding: 0.75em 0 0.5em 0;
-}
 .oo-ui-radioOptionWidget {
 	cursor: default;
 	padding: 0;
@@ -746,7 +743,7 @@
 }
 .oo-ui-dropdownInputWidget select {
 	width: 100%;
-	resize: none;
+	cursor: pointer;
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
@@ -800,16 +797,16 @@
 .oo-ui-textInputWidget textarea {
 	overflow: auto;
 }
-.oo-ui-textInputWidget input[type="search"] {
+.oo-ui-textInputWidget [type="search"] {
 	-webkit-appearance: texfield;
 }
-.oo-ui-textInputWidget input[type="search"]::-ms-clear {
+.oo-ui-textInputWidget [type="search"]::-ms-clear {
 	display: none;
 }
-.oo-ui-textInputWidget input[type="search"]::-webkit-search-decoration,
-.oo-ui-textInputWidget input[type="search"]::-webkit-search-cancel-button,
-.oo-ui-textInputWidget input[type="search"]::-webkit-search-results-button,
-.oo-ui-textInputWidget input[type="search"]::-webkit-search-results-decoration {
+.oo-ui-textInputWidget [type="search"]::-webkit-search-decoration,
+.oo-ui-textInputWidget [type="search"]::-webkit-search-cancel-button,
+.oo-ui-textInputWidget [type="search"]::-webkit-search-results-button,
+.oo-ui-textInputWidget [type="search"]::-webkit-search-results-decoration {
 	display: none;
 }
 .oo-ui-textInputWidget > .oo-ui-iconElement-icon,
@@ -1092,14 +1089,14 @@
 }
 
 /*!
- * OOjs UI v0.16.4
+ * OOjs UI v0.16.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-22T22:48:25Z
+ * Date: 2016-04-07T15:12:44Z
  */
 .oo-ui-draggableElement-handle,
 .oo-ui-draggableElement-handle.oo-ui-widget {
@@ -1492,7 +1489,7 @@
 	position: relative;
 	overflow: hidden;
 }
-.oo-ui-selectFileWidget-selectButton > .oo-ui-buttonElement-button > input[type="file"] {
+.oo-ui-selectFileWidget-selectButton > .oo-ui-buttonElement-button > [type="file"] {
 	position: absolute;
 	margin: 0;
 	top: 0;
@@ -1506,7 +1503,7 @@
 	cursor: pointer;
 	padding-top: 100px;
 }
-.oo-ui-selectFileWidget-selectButton.oo-ui-widget-disabled > .oo-ui-buttonElement-button > input[type="file"] {
+.oo-ui-selectFileWidget-selectButton.oo-ui-widget-disabled > .oo-ui-buttonElement-button > [type="file"] {
 	display: none;
 }
 .oo-ui-selectFileWidget-info {
@@ -1568,7 +1565,7 @@
 	width: 5.5em;
 }
 .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
-	border: none;
+	border: 0;
 	background: none;
 	display: block;
 	height: 100%;
@@ -2069,14 +2066,14 @@
 }
 
 /*!
- * OOjs UI v0.16.4
+ * OOjs UI v0.16.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-22T22:48:25Z
+ * Date: 2016-04-07T15:12:44Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2585,14 +2582,14 @@
 }
 
 /*!
- * OOjs UI v0.16.4
+ * OOjs UI v0.16.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-22T22:48:25Z
+ * Date: 2016-04-07T15:12:44Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
 	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
@@ -2607,7 +2604,7 @@
 	        box-sizing: border-box;
 }
 .oo-ui-window-content:focus {
-	outline: none;
+	outline: 0;
 }
 .oo-ui-window-head,
 .oo-ui-window-foot {
@@ -2988,20 +2985,22 @@
 .oo-ui-windowManager-modal.oo-ui-windowManager-floating > .oo-ui-dialog > .oo-ui-window-frame {
 	top: 1em;
 	bottom: 1em;
+	max-height: 100%;
+	max-height: calc(100% - 2em);
 	border: 1px solid #cccccc;
 	border-radius: 0.5em;
 	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
 }
 
 /*!
- * OOjs UI v0.16.4
+ * OOjs UI v0.16.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-03-22T22:48:25Z
+ * Date: 2016-04-07T15:12:44Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/apex/images/icons/add.png");
