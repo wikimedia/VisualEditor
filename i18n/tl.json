@@ -4,7 +4,8 @@
 			"AnakngAraw",
 			"Sky Harbor",
 			"Jewel457",
-			"Leeheonjin"
+			"Leeheonjin",
+			"Jojit fb"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -17,7 +18,7 @@
 	"visualeditor-annotationbutton-code-tooltip": "Kodigo ng kompyuter",
 	"visualeditor-annotationbutton-italic-tooltip": "Nakapahilis",
 	"visualeditor-annotationbutton-language-tooltip": "Wika",
-	"visualeditor-annotationbutton-link-tooltip": "Kawing",
+	"visualeditor-annotationbutton-link-tooltip": "Link",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Pagpawi sa teksto",
 	"visualeditor-annotationbutton-subscript-tooltip": "Nakababang panitik",
 	"visualeditor-annotationbutton-superscript-tooltip": "Nakataas na panitik",
@@ -85,7 +86,6 @@
 	"visualeditor-specialcharacter-button-tooltip": "Natatanging panitik",
 	"visualeditor-specialcharacterinspector-title": "Natatanging panitik",
 	"visualeditor-table-caption": "Kapsiyon",
-	"visualeditor-table-delete-table": "Burahin ang talaan",
 	"visualeditor-table-insert-col-after": "Isingit kasunod",
 	"visualeditor-table-insert-col-before": "Isingit bago",
 	"visualeditor-table-insert-row-after": "Isingit sa ibaba",

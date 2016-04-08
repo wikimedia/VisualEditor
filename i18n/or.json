@@ -78,7 +78,6 @@
 	"visualeditor-languageinspector-widget-label-direction": "ଦିଗ",
 	"visualeditor-languageinspector-widget-label-langcode": "ଭାଷା କୋଡ",
 	"visualeditor-languageinspector-widget-label-language": "ଭାଷା",
-	"visualeditor-linkinspector-open": "ଖୋଲିବେ",
 	"visualeditor-linkinspector-title": "ଲିଙ୍କ",
 	"visualeditor-listbutton-bullet-tooltip": "ବିନ୍ଦୁ ଦିଆ ତାଲିକା",
 	"visualeditor-listbutton-number-tooltip": "ସଂଖ୍ୟାଦିଆ ତାଲିକା",
@@ -96,6 +95,5 @@
 	"visualeditor-specialcharacter-button-tooltip": "ବିଶେଷ ସଙ୍କେତ",
 	"visualeditor-specialcharacterinspector-title": "ବିଶେଷ ସଙ୍କେତ",
 	"visualeditor-table-caption": "ଶିରୋନାମ",
-	"visualeditor-table-delete-row": "{{PLURAL:$1|ଧାଡି|ଧାଡିଗୁଡିକ}} ଲିଭାଇବେ",
-	"visualeditor-table-delete-table": "ସାରଣୀ ଲିଭାଇବେ"
+	"visualeditor-table-delete-row": "{{PLURAL:$1|ଧାଡି|ଧାଡିଗୁଡିକ}} ଲିଭାଇବେ"
 }

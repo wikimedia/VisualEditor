@@ -6,10 +6,10 @@
 			"شیخ"
 		]
 	},
+	"visualeditor-aliencontextitem-title": "مأسمک",
 	"visualeditor-align-widget-center": "مئنه",
 	"visualeditor-align-widget-left": "چپ",
 	"visualeditor-align-widget-right": "راست",
-	"visualeditor-aliencontextitem-title": "مأسمک",
 	"visualeditor-annotationbutton-bold-tooltip": "پۊررنگ",
 	"visualeditor-annotationbutton-code-tooltip": " کؤدکامپيۊتر",
 	"visualeditor-annotationbutton-italic-tooltip": "کج",
@@ -27,8 +27,8 @@
 	"visualeditor-commentinspector-title": "نظر",
 	"visualeditor-commentinspector-tooltip": "نظر",
 	"visualeditor-content-select-all": "همه' دؤجين بۊکۊن",
-	"visualeditor-contextitemwidget-label-secondary": "دچينواچين",
 	"visualeditor-contextitemwidget-label-remove": "حذف",
+	"visualeditor-contextitemwidget-label-secondary": "دچينواچين",
 	"visualeditor-dialog-action-cancel": "لغو",
 	"visualeditor-dialog-action-done": "بۊبؤ",
 	"visualeditor-dialog-action-goback": "پسا وگرد",

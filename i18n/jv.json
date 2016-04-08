@@ -100,7 +100,6 @@
 	"visualeditor-table-caption": "Irah",
 	"visualeditor-table-delete-col": "Busak {{PLURAL:$1|kolem|kolem-kolem}}",
 	"visualeditor-table-delete-row": "Busak {{PLURAL:$1|baris|baris-baris}}",
-	"visualeditor-table-delete-table": "Busak tabèl",
 	"visualeditor-table-format-data": "Warangka isi",
 	"visualeditor-table-format-header": "Warangka irah",
 	"visualeditor-table-insert-col-after": "Lebokna sawisé",

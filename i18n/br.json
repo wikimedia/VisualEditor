@@ -102,7 +102,6 @@
 	"visualeditor-table-caption": "Alc'hwez",
 	"visualeditor-table-delete-col": "Lemel {{PLURAL:$1|ar bann|ar bannoù}}",
 	"visualeditor-table-delete-row": "Lemel {{PLURAL:$1|al linenn|al linennoù}}",
-	"visualeditor-table-delete-table": "Lemel an daolenn",
 	"visualeditor-table-format-data": "Kellig endalc'had",
 	"visualeditor-table-format-header": "Kellig talbenn",
 	"visualeditor-table-insert-col-after": "Ensoc'hañ goude",

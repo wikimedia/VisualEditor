@@ -4,11 +4,11 @@
 			"JinJian"
 		]
 	},
+	"visualeditor-aliencontextitem-title": "Item",
 	"visualeditor-align-widget-center": "Butnga",
 	"visualeditor-align-widget-left": "Wala",
 	"visualeditor-align-widget-right": "Tuo",
 	"visualeditor-alignablecontextitem-title": "Alignment",
-	"visualeditor-aliencontextitem-title": "Item",
 	"visualeditor-annotationbutton-bold-tooltip": "Padakmola",
 	"visualeditor-annotationbutton-code-tooltip": "Kodigo hiton computer",
 	"visualeditor-annotationbutton-italic-tooltip": "Italic",
@@ -27,8 +27,8 @@
 	"visualeditor-commentinspector-title": "Komentaryo",
 	"visualeditor-commentinspector-tooltip": "Komentaryo",
 	"visualeditor-content-select-all": "Igpili ngatanan",
-	"visualeditor-contextitemwidget-label-secondary": "Igliwat",
 	"visualeditor-contextitemwidget-label-remove": "Igpara",
+	"visualeditor-contextitemwidget-label-secondary": "Igliwat",
 	"visualeditor-dialog-action-apply": "Panbag-oha",
 	"visualeditor-dialog-action-cancel": "Igpabaliwaray",
 	"visualeditor-dialog-action-done": "Human na",
