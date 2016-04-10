@@ -384,7 +384,7 @@ ve.init.Target.prototype.getSurface = function () {
  */
 ve.init.Target.prototype.getToolbar = function () {
 	if ( !this.toolbar ) {
-		this.toolbar = new ve.ui.TargetToolbar( this, this.toolbarConfig );
+		this.toolbar = new ve.ui.PositionedTargetToolbar( this, this.toolbarConfig );
 	}
 	return this.toolbar;
 };

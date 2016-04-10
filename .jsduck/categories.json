@@ -147,8 +147,7 @@
 					"ve.ui.*Surface",
 					"ve.ui.*Context",
 					"ve.ui.Overlay",
-					"ve.ui.Toolbar",
-					"ve.ui.TargetToolbar",
+					"ve.ui.*Toolbar",
 					"ve.ui.DebugBar",
 					"ve.ui.Trigger"
 				]
