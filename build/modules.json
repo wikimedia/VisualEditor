@@ -428,6 +428,7 @@
 			"src/ui/ve.ui.Tool.js",
 			"src/ui/ve.ui.Toolbar.js",
 			"src/ui/ve.ui.TargetToolbar.js",
+			"src/ui/ve.ui.PositionedTargetToolbar.js",
 			{ "file": "src/ui/ve.ui.DebugBar.js", "debug": true },
 			"src/ui/ve.ui.ToolFactory.js",
 			"src/ui/ve.ui.Command.js",
