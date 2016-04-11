@@ -18,6 +18,6 @@
 	transition: opacity 250ms ease;
 }
 
-.ve-ce-documentNode .ve-ce-sectionNode-focused {
+.ve-ce-documentNode .ve-ce-sectionNode-active {
 	opacity: 1;
 }
