@@ -396,7 +396,7 @@ ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
 	var i, selection, viewportRange, start, end;
 
 	// Check the surface isn't hidden, such as during deactivation
-	if ( !this.surface.getView().$element.is( ':visible' ) ) {
+	if ( !this.surface || !this.surface.getView().$element.is( ':visible' ) ) {
 		return;
 	}
 
