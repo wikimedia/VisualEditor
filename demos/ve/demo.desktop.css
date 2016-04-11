@@ -24,10 +24,6 @@
 	margin: 0 2.5em 2.5em 2.5em;
 }
 
-.ve-init-sa-target-surfaceWrapper > :last-child {
-	border-radius: 0 0 0.25em 0.25em;
-}
-
 .ve-demo-read {
 	border: 1px solid #ccc;
 	box-shadow: 0 0.25em 1.5em 0 #ddd;
@@ -35,25 +31,12 @@
 
 /* Editor */
 
-.ve-init-sa-target-surfaceWrapper > .ve-ui-surface {
-	/* surface is used for positioning so use an inset-shadow border */
-	box-shadow: 0 0.25em 1.5em 0 #ddd, inset 0 0 0 1px #ccc;
-}
-
-.ve-init-sa-target-toolbar > .oo-ui-toolbar-bar {
+.ve-init-sa-target-surfaceWrapper {
 	border: 1px solid #ccc;
-	border-radius: 0.25em 0.25em 0 0;
-	border-bottom-width: 0;
-}
-
-.ve-init-sa-target-toolbar.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
-	border-top: none;
-	border-radius: 0;
-	border-bottom-width: 1px;
+	border-radius: 0.25em;
+	box-shadow: 0 0.25em 1.5em 0 #ddd;
 }
 
 .ve-init-sa-target-surfaceWrapper > .ve-ui-debugBar {
-	border: 1px solid #ccc;
-	border-top: 0;
-	box-shadow: 0 0.25em 1.5em 0 #ddd;
+	border-top: 1px solid #ccc;
 }
