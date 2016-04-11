@@ -2567,6 +2567,7 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
 
 ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
 	var newSelection, transaction, removedUnicorns,
+		activeNode, coveringRange, nodeRange, containsStart, containsEnd,
 		surface = this,
 		dmDoc = this.getModel().getDocument(),
 		insertedText = false;
@@ -2623,6 +2624,28 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 		removedUnicorns = this.cleanupUnicorns( false );
 		if ( removedUnicorns ) {
 			this.surfaceObserver.pollOnceNoCallback();
+		}
+
+		// Ensure we don't observe a selection that spans an active node
+		activeNode = this.getActiveNode();
+		coveringRange = newSelection.getCoveringRange();
+		if ( activeNode && coveringRange ) {
+			nodeRange = activeNode.getRange();
+			containsStart = nodeRange.containsRange( new ve.Range( coveringRange.start ) );
+			containsEnd = nodeRange.containsRange( new ve.Range( coveringRange.end ) );
+			// If the range starts xor ends in the active node, but not both, then it must
+			// span an active node boundary, so fixup.
+			/*jshint bitwise: false*/
+			if ( containsStart ^ containsEnd ) {
+				newSelection = oldState && oldState.veRange ?
+					new ve.dm.LinearSelection( dmDoc, oldState.veRange ) :
+					new ve.dm.NullSelection( dmDoc );
+				setTimeout( function () {
+					surface.changeModel( null, newSelection );
+					surface .showModelSelection();
+				} );
+			}
+			/*jshint bitwise: true*/
 		}
 
 		// Firefox lets you create multiple selections within a single paragraph
