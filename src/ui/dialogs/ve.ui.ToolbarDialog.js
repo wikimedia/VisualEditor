@@ -40,6 +40,14 @@ ve.ui.ToolbarDialog.static.activeSurface = true;
 
 ve.ui.ToolbarDialog.static.padded = true;
 
+/**
+ * Toolbar position, either 'above' or 'side' (right in LTR)
+ *
+ * @static
+ * @type {string} Toolbar position
+ */
+ve.ui.ToolbarDialog.static.position = 'above';
+
 /* Methods */
 
 /**
@@ -51,6 +59,7 @@ ve.ui.ToolbarDialog.prototype.initialize = function () {
 
 	this.$body.append( this.$shield );
 	this.$content.addClass( 've-ui-toolbarDialog-content' );
+	this.$element.addClass( 've-ui-toolbarDialog-position-' + this.constructor.static.position );
 	if ( this.constructor.static.padded ) {
 		this.$element.addClass( 've-ui-toolbarDialog-padded' );
 	}

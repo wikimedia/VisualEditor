@@ -26,6 +26,7 @@ ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, co
 	this.floatable = !!config.floatable;
 	this.$window = $( this.getElementWindow() );
 	this.elementOffset = null;
+	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
 
 	// Initialization
 	this.$element.addClass( 've-ui-positionedTargetToolbar' );
@@ -48,6 +49,7 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function () {
 		opening: 'onToolbarDialogsOpeningOrClosing',
 		closing: 'onToolbarDialogsOpeningOrClosing'
 	} );
+	this.$window.on( 'scroll', this.onWindowScrollThrottled );
 };
 
 /**
@@ -61,6 +63,7 @@ ve.ui.PositionedTargetToolbar.prototype.detach = function () {
 		this.getSurface().getToolbarDialogs().disconnect( this );
 		this.getSurface().getToolbarDialogs().clearWindows();
 	}
+	this.$window.off( 'scroll', this.onWindowScrollThrottled );
 
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.detach.apply( this, arguments );
@@ -86,6 +89,7 @@ ve.ui.PositionedTargetToolbar.prototype.onWindowResize = function () {
 		} );
 	}
 
+	this.onViewportResize();
 };
 
 /**
@@ -134,6 +138,7 @@ ve.ui.PositionedTargetToolbar.prototype.float = function () {
 		} );
 		this.floating = true;
 		this.emit( 'resize' );
+		this.onViewportResize();
 	}
 };
 
@@ -149,6 +154,7 @@ ve.ui.PositionedTargetToolbar.prototype.unfloat = function () {
 		this.$bar.css( { left: '', right: '' } );
 		this.floating = false;
 		this.emit( 'resize' );
+		this.onViewportResize();
 	}
 };
 
@@ -178,10 +184,40 @@ ve.ui.PositionedTargetToolbar.prototype.isFloatable = function () {
  * @param {Object} data
  */
 ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = function ( win, openingOrClosing ) {
-	var toolbar = this;
+	var width,
+		toolbar = this;
+
+	// win.isOpened before promise means we are closing
+	if ( win.constructor.static.position === 'side' && win.isOpened() ) {
+		// First closing transition
+		toolbar.getSurface().$element.css( 'margin-right', '' );
+		win.$element.css( 'width', '' );
+	}
 
 	openingOrClosing.then( function () {
+		var originalMargin;
 		toolbar.updateToolState();
+		if ( win.constructor.static.position === 'side' ) {
+			// win.isOpened after promise means we are opening
+			if ( win.isOpened() ) {
+				originalMargin = parseFloat( toolbar.getSurface().$element.css( 'margin-right' ) );
+				width = win.getSizeProperties().width;
+				toolbar.getSurface().$element
+					.addClass( 've-ui-surface-toolbarDialog-side' )
+					.css( 'margin-right', width + originalMargin );
+				win.$element.css( 'width', width );
+			} else {
+				// Second closing transition
+				toolbar.getSurface().$element.removeClass( 've-ui-surface-toolbarDialog-side' );
+			}
+
+			toolbar.onViewportResize();
+			setTimeout( function () {
+				toolbar.onViewportResize();
+				toolbar.getSurface().getView().emit( 'position' );
+			}, 250 );
+			toolbar.getSurface().getView().emit( 'position' );
+		}
 		// Wait for window transition
 		setTimeout( function () {
 			if ( toolbar.floating ) {
@@ -191,4 +227,31 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 			}
 		}, 250 );
 	} );
+};
+
+/**
+ * Handle the visible part of the surface viewport change dimensions
+ */
+ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
+	var viewportDimensions,
+		surface = this.getSurface(),
+		win = surface.getToolbarDialogs().getCurrentWindow();
+
+	if ( win && win.constructor.static.position === 'side' ) {
+		viewportDimensions = surface.getViewportDimensions();
+		if ( viewportDimensions ) {
+			surface.getToolbarDialogs().getCurrentWindow().$frame.css(
+				'height', Math.min( surface.getBoundingClientRect().height, viewportDimensions.height )
+			);
+		}
+	}
+};
+
+/**
+ * Handle window scroll events
+ */
+ve.ui.PositionedTargetToolbar.prototype.onWindowScroll = function () {
+	if ( !this.floating ) {
+		this.onViewportResize();
+	}
 };
