@@ -111,6 +111,13 @@ ve.dm.LinearSelection.prototype.getRanges = function () {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.getCoveringRange = function () {
+	return this.range;
+};
+
+/**
  * Get the range for this selection
  *
  * @return {ve.Range} Range
