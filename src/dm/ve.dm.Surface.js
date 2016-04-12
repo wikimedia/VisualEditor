@@ -152,16 +152,16 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
 };
 
 /**
- * Get a list of all history states.
+ * Get a list of all applied history states.
  *
- * @return {Object[]} List of transaction stacks
+ * @return {Object[]} List of applied transaction stacks
  */
 ve.dm.Surface.prototype.getHistory = function () {
+	var appliedUndoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
 	if ( this.newTransactions.length > 0 ) {
-		return this.undoStack.slice( 0 ).concat( [ { transactions: this.newTransactions.slice( 0 ) } ] );
-	} else {
-		return this.undoStack.slice( 0 );
+		return appliedUndoStack.concat( [ { transactions: this.newTransactions.slice( 0 ) } ] );
 	}
+	return appliedUndoStack;
 };
 
 /**
