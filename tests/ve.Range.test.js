@@ -8,7 +8,7 @@ QUnit.module( 've.Range' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange)', 28, function ( assert ) {
+QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange, overlapsRange)', 35, function ( assert ) {
 	var range = new ve.Range( 100, 200 );
 
 	assert.strictEqual( range.isCollapsed(), false );
@@ -34,10 +34,19 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 	assert.strictEqual( range.containsOffset( 100 ), true, 'contains 100' );
 	assert.strictEqual( range.containsOffset( 199 ), true, 'contains 199' );
 	assert.strictEqual( range.containsOffset( 200 ), false, 'doesn\'t contain 200' );
+
 	assert.strictEqual( range.containsRange( new ve.Range( 99, 100 ) ), false, 'doesn\'t contain 99, 100' );
 	assert.strictEqual( range.containsRange( new ve.Range( 100, 199 ) ), true, 'contains 101, 199' );
 	assert.strictEqual( range.containsRange( range ), true, 'contains itself' );
 	assert.strictEqual( range.containsRange( new ve.Range( 100, 201 ) ), false, 'doesn\'t contain 100, 201' );
+
+	assert.strictEqual( range.overlapsRange( new ve.Range( 98, 99 ) ), false, 'doesn\'t overlap 98, 99' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 203, 201 ) ), false, 'doesn\'t overlap 203,201' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 98, 100 ) ), true, 'overlaps 98,100' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 200, 201 ) ), true, 'overlaps 200,201' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 150, 98 ) ), true, 'overlaps 150,98' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 0, 300 ) ), true, 'overlaps 0,300' );
+	assert.strictEqual( range.overlapsRange( range ), true, 'overlaps itself' );
 
 	range = new ve.Range( 100 );
 	assert.strictEqual( range.isCollapsed(), true );

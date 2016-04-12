@@ -130,6 +130,21 @@ ve.Range.prototype.containsRange = function ( range ) {
 };
 
 /**
+ * Check if another range overlaps this range.
+ *
+ * This includes ranges which touch, e.g. [1,3] & [3,5], and ranges
+ * which cover this one completely, e.g. [1,3] & [0,5].
+ *
+ * Useful for testing if two ranges can be joined (using #expand)
+ *
+ * @param {ve.Range} range Range to check
+ * @return {boolean} If other range overlaps this range
+ */
+ve.Range.prototype.overlapsRange = function ( range ) {
+	return range.end >= this.start && range.start <= this.end;
+};
+
+/**
  * Get the length of the range.
  *
  * @return {number} Length of range
