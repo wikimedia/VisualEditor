@@ -982,3 +982,43 @@ ve.dm.Surface.prototype.onDocumentPreSynchronize = function ( tx ) {
 		this.translatedSelection = this.translatedSelection.translateByTransaction( tx );
 	}
 };
+
+/**
+ * Get a minimal set of ranges which have been modified by changes to the surface.
+ *
+ * @return {ve.Range[]} Modified ranges
+ */
+ve.dm.Surface.prototype.getModifiedRanges = function () {
+	var ranges = [],
+		compactRanges = [],
+		lastRange = null;
+
+	this.getHistory().forEach( function ( stackItem ) {
+		stackItem.transactions.forEach( function ( tx ) {
+			var newRange = tx.getModifiedRange();
+			// newRange will by null for no-ops
+			if ( newRange ) {
+				// Translate previous ranges by the current transaction
+				ranges.forEach( function ( range, i, arr ) {
+					arr[ i ] = tx.translateRange( range, true );
+				} );
+				if ( !newRange.isCollapsed() ) {
+					ranges.push( newRange );
+				}
+			}
+		} );
+	} );
+
+	ranges.sort( function ( a, b ) { return a.start - b.start; } ).forEach( function ( range ) {
+		if ( !range.isCollapsed() ) {
+			if ( lastRange && lastRange.overlapsRange( range ) ) {
+				compactRanges.pop();
+				range = lastRange.expand( range );
+			}
+			compactRanges.push( range );
+			lastRange = range;
+		}
+	} );
+
+	return compactRanges;
+};
