@@ -12,6 +12,11 @@
 	background-color: #E6F1FF;
 }
 
+.ve-ce-nail {
+	/* IE9 adds borders to linked images */
+	border: 0;
+}
+
 .ve-ce-nail:not( .ve-ce-nail-debug ) {
 	width: 0;
 	height: 0;
