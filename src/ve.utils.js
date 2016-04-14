@@ -818,8 +818,10 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	newDocument.write( html ); // Party like it's 1995!
 	newDocument.close();
 	// Detach the iframe
-	// FIXME detaching breaks access to newDocument in IE
 	iframe.parentNode.removeChild( iframe );
+	// Prevent garbage collection of iframe as long as newDocument exists, as destroying
+	// the original iframe makes access to the document impossible in IE9
+	newDocument.originalIframe = iframe;
 
 	if ( !newDocument.documentElement || newDocument.documentElement.cloneNode( false ) === undefined ) {
 		// Surprise! The document is not a document! Only happens on Opera.
