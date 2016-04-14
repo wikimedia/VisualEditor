@@ -78,6 +78,11 @@
 			"lib/rangefix/rangefix.js"
 		]
 	},
+	"dom-classlist-shim": {
+		"scripts": [
+			"lib/classList/classList.js"
+		]
+	},
 	"jquery.i18n": {
 		"scripts": [
 			"lib/jquery.i18n/src/jquery.i18n.js",
@@ -198,6 +203,7 @@
 			"src/init/ve.init.Target.js"
 		],
 		"dependencies": [
+			"dom-classlist-shim",
 			"visualEditor.supportCheck",
 			"unicodejs",
 			"rangefix"

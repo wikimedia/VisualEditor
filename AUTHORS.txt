@@ -66,6 +66,12 @@ Yuki Shira <shirayuking@gmail.com>
 
 Libraries used (alphabetically)
 
+classList.js
+ – https://github.com/eligrey/classList.js/
+ – Dedicated to the public domain
+   https://github.com/eligrey/classList.js/blob/master/LICENSE.md
+ – Eli Grey, http://eligrey.com
+
 jQuery
  – https://jquery.com/
  – MIT license
