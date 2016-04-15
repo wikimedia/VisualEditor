@@ -31,6 +31,7 @@ ve.ui.UrlStringTransferHandler.static.name = 'urlString';
 ve.ui.UrlStringTransferHandler.static.types = [
 	// DnD standard, no title information
 	'text/uri-list',
+	// Support: Firefox
 	// Firefox type, preserves title
 	'text/x-moz-url',
 	// Used in GNOME drag-and-drop
@@ -97,7 +98,8 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 				.split( /[\r\n]+/g ).map( function ( line ) {
 					return { href: line };
 				} );
-			// When Google Chrome uses this mime type the link titles can
+			// Support: Chrome
+			// When Chrome uses this mime type the link titles can
 			// be extracted from the 'text/html' version of the item.
 			// Let's try that.
 			if ( this.item.data.htmlStringData ) {

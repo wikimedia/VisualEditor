@@ -12,6 +12,7 @@
 	opacity: 0.15;
 }
 
+/* Support: IE */
 /* Set opacity directly on the highlights, rather than their containers,
    otherwise the opacity isn't applied at all */
 .ve-init-target-ie .ve-ce-surface-highlights-focused .ve-ce-focusableNode-highlight {
@@ -30,6 +31,7 @@
    children in Firefox. */
 /*csslint vendor-prefix: false, compatible-vendor-prefixes:false */
 .ve-ce-focusableNode * {
+	/* Support: Firefox */
 	/* T70537: work around Firefox bug */
 	-moz-user-select: none;
 }

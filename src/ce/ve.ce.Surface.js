@@ -162,6 +162,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	} );
 
 	// Initialization
+	// Support: Chrome
 	// Add 'notranslate' class to prevent Chrome's translate feature from
 	// completely messing up the CE DOM (T59124)
 	this.$element.addClass( 've-ce-surface notranslate' );
@@ -236,6 +237,7 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * @type {string[]}
  */
 ve.ce.Surface.static.unsafeAttributes = [
+	// Support: Firefox
 	// RDFa: Firefox ignores these
 	'about',
 	'content',
@@ -317,6 +319,7 @@ ve.ce.Surface.prototype.destroy = function () {
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
 
+	// Support: Firefox, iOS
 	// FIXME T126041: Blur to make selection/cursor disappear (needed in Firefox
 	// in some cases, and in iOS to hide the keyboard)
 	if ( this.isFocused() ) {
@@ -465,6 +468,7 @@ ve.ce.Surface.prototype.focus = function () {
 	// but onDocumentFocus won't fire so restore the selection here too.
 	this.onModelSelect();
 	setTimeout( function () {
+		// Support: Chrome
 		// In some browsers (e.g. Chrome) giving the document node focus doesn't
 		// necessarily give you a selection (e.g. if the first child is a <figure>)
 		// so if the surface isn't 'focused' (has no selection) give it a selection
@@ -499,6 +503,7 @@ ve.ce.Surface.prototype.blur = function () {
  * @param {jQuery.Event} e focusin/out event
  */
 ve.ce.Surface.prototype.onDocumentFocusInOut = function ( e ) {
+	// Support: IE11
 	// Filter out focusin/out events on iframes
 	// IE11 emits these when the focus moves into/out of an iframed document,
 	// but these events are misleading because the focus in this document didn't
@@ -686,6 +691,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// so poll in the 'after' function
 	setTimeout( this.afterDocumentMouseDown.bind( this, e, this.getSelection() ) );
 
+	// Support: IE
 	// Handle triple click
 	// FIXME T126043: do not do triple click handling in IE, because their click counting is broken
 	if ( e.originalEvent.detail >= 3 && !ve.init.platform.constructor.static.isInternetExplorer() ) {
@@ -758,6 +764,7 @@ ve.ce.Surface.prototype.afterDocumentMouseUp = function ( e, selectionBefore ) {
 /**
  * Fix shift-click selection
  *
+ * Support: Chrome
  * When shift-clicking on links Chrome tries to collapse the selection
  * so check for this and fix manually.
  *
@@ -811,6 +818,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 	try {
 		dataTransfer.setData( 'application-x/VisualEditor', JSON.stringify( this.getModel().getSelection() ) );
 	} catch ( err ) {
+		// Support: IE
 		// IE doesn't support custom data types, but overwriting the actual drag data should be avoided
 		// TODO: Do this with an internal state to avoid overwriting drag data even in IE
 		dataTransfer.setData( 'text', '__ve__' + JSON.stringify( this.getModel().getSelection() ) );
@@ -857,6 +865,7 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 						break;
 					}
 				}
+			// Support: Firefox
 			// If we have no metadata (e.g. in Firefox) assume it is droppable
 			} else if ( Array.prototype.indexOf.call( dataTransfer.types || [], 'Files' ) !== -1 ) {
 				this.allowedFile = true;
@@ -1061,7 +1070,8 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	}
 
 	if ( e.which === 229 ) {
-		// Ignore fake IME events (emitted in IE and Chromium)
+		// Support: IE, Chrome
+		// Ignore fake IME events (emitted in IE and Chrome)
 		return;
 	}
 
@@ -1576,6 +1586,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		return ve.resolveUrl( href, htmlDoc );
 	} );
 
+	// Support: Firefox
 	// Some attributes (e.g RDFa attributes in Firefox) aren't preserved by copy
 	unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[' ) + ']';
 	this.$pasteTarget.find( unsafeSelector ).each( function () {
@@ -2129,6 +2140,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				right--;
 				context.splice( context.getLength() - 1, 1 );
 			}
+			// Support: Chrome
 			// FIXME T126046: Strip trailing linebreaks probably introduced by Chrome bug
 			while ( right > 0 && data.getType( right - 1 ) === 'break' ) {
 				right--;
@@ -2324,6 +2336,7 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
 		this.model.selection instanceof ve.dm.TableSelection &&
 		$.client.profile().layout === 'gecko'
 	) {
+		// Support: Firefox
 		// Work around a segfault on blur+focus in Firefox compositionstart handlers.
 		// It would get triggered by handleInsertion emptying the table cell then putting
 		// a linear selection inside it. See:
@@ -2648,6 +2661,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 			/*jshint bitwise: true*/
 		}
 
+		// Support: Firefox
 		// Firefox lets you create multiple selections within a single paragraph
 		// which our model doesn't support, so detect and prevent these.
 		// This shouldn't create problems with IME candidates as only an explicit user
@@ -2754,6 +2768,7 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 	node = fixedPosition.node;
 	offset = fixedPosition.offset;
 	if ( direction === -1 ) {
+		// Support: Firefox
 		// Moving startwards: left-bias the fixed position
 		// Avoids Firefox bug "cursor disappears at left of img inside link":
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=1175495
@@ -3248,6 +3263,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 				sel.extend( newSel.focusNode, newSel.focusOffset );
 				extendedBackwards = true;
 			} catch ( e ) {
+				// Support: Firefox
 				// Firefox sometimes fails when nodes are different
 				// see https://bugzilla.mozilla.org/show_bug.cgi?id=921444
 			}

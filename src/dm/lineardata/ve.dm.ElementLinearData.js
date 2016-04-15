@@ -1115,6 +1115,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 				contentElement = isOpen ? this.getData( i ) : null;
 			}
 		} else {
+			// Support: Firefox
 			// Remove plain newline characters, as they are semantically meaningless
 			// and will confuse the user. Firefox adds these automatically when copying
 			// line-wrapped HTML. T104790

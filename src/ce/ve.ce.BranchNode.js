@@ -68,6 +68,7 @@ ve.ce.BranchNode.inlineSlugTemplate = ( function () {
 			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
 			.append( $img );
 
+	// Support: Firefox
 	// Firefox misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
 	// But setting an src in Chrome is very slow, so only set it in Firefox
 	if ( layout === 'gecko' ) {

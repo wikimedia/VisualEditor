@@ -525,6 +525,7 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 			columnCount = $el.css( '-webkit-column-count' );
 			columnWidth = $el.css( '-webkit-column-width' );
 			if ( ( columnCount && columnCount !== 'auto' ) || ( columnWidth && columnWidth !== 'auto' ) ) {
+				// Support: Chrome
 				// Chrome incorrectly measures children of nodes with columns [1], let's
 				// just ignore them rather than render a possibly bizarre highlight. They
 				// will usually not be positioned, because Chrome also doesn't position

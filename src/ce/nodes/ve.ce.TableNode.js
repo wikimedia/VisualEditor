@@ -291,7 +291,8 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 	}
 
 	this.$element.toggleClass( 've-ce-tableNode-editing', isEditing );
-	// HACK T103035: Firefox 39 has a regression which clicking on a ce=false table
+	// Support: Firefox 39
+	// HACK T103035: Firefox 39 has a regression in which clicking on a ce=false table
 	// always selects the entire table, even if you click in a ce=true child.
 	// Making the table ce=true does allow the user to make selections across cells
 	// and corrupt the table in some circumstance, so restrict this hack as much

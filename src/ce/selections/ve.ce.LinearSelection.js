@@ -52,6 +52,7 @@ ve.ce.LinearSelection.prototype.getSelectionRects = function () {
 		return null;
 	}
 
+	// Support: Firefox
 	// Calling getClientRects sometimes fails:
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs

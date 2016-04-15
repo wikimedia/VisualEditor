@@ -26,6 +26,7 @@ ve.debug = true;
  * @param {...Mixed} [data] Data to log
  */
 ve.log = function () {
+	// Support: IE9
 	// In IE9 console methods are not real functions and as such do not inherit
 	// from Function.prototype, thus console.log.apply does not exist.
 	// However it is function-like enough that passing it to Function#apply does work.
@@ -39,6 +40,7 @@ ve.log = function () {
  * @param {...Mixed} [data] Data to log
  */
 ve.error = function () {
+	// Support: IE9
 	// In IE9 console methods are not real functions and as such do not inherit
 	// from Function.prototype, thus console.error.apply does not exist.
 	// However it is function-like enough that passing it to Function#apply does work.

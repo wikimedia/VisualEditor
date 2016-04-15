@@ -759,6 +759,7 @@ ve.createDocumentFromHtml = function ( html ) {
 ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
 	var newDocument;
 
+	// Support: IE
 	// IE doesn't like empty strings
 	html = html || '<body></body>';
 
@@ -1064,6 +1065,7 @@ ve.fixupPreBug = function ( element ) {
 ve.normalizeAttributeValue = function ( name, value, nodeName ) {
 	var node = document.createElement( nodeName || 'div' );
 	node.setAttribute( name, value );
+	// Support: IE
 	// IE normalizes invalid CSS to empty string, then if you normalize
 	// an empty string again it becomes null. Return an empty string
 	// instead of null to make this function idempotent.
@@ -1083,11 +1085,13 @@ ve.normalizeAttributeValue = function ( name, value, nodeName ) {
 ve.transformStyleAttributes = function ( html, unmask ) {
 	var xmlDoc, fromAttr, toAttr, i, len,
 		maskAttrs = [
+			// Support: IE
 			'style', // IE normalizes 'color:#ffd' to 'color: rgb(255, 255, 221);'
 			'bgcolor', // IE normalizes '#FFDEAD' to '#ffdead'
 			'color', // IE normalizes 'Red' to 'red'
 			'width', // IE normalizes '240px' to '240'
 			'height', // Same as width
+			// Support: Firefox
 			'rowspan', // IE and Firefox normalize rowspan="02" to rowspan="2"
 			'colspan' // Same as rowspan
 		];
@@ -1140,6 +1144,7 @@ ve.transformStyleAttributes = function ( html, unmask ) {
  * @return {HTMLDocument} HTML DOM
  */
 ve.parseXhtml = function ( html ) {
+	// Support: IE
 	// Feature-detect style attribute breakage in IE
 	if ( ve.isStyleAttributeBroken === undefined ) {
 		ve.isStyleAttributeBroken = ve.normalizeAttributeValue( 'style', 'color:#ffd' ) !== 'color:#ffd';
@@ -1159,6 +1164,7 @@ ve.parseXhtml = function ( html ) {
  */
 ve.serializeXhtml = function ( doc ) {
 	var xml;
+	// Support: IE
 	// Feature-detect style attribute breakage in IE
 	if ( ve.isStyleAttributeBroken === undefined ) {
 		ve.isStyleAttributeBroken = ve.normalizeAttributeValue( 'style', 'color:#ffd' ) !== 'color:#ffd';
@@ -1184,6 +1190,7 @@ ve.serializeXhtml = function ( doc ) {
 ve.normalizeNode = function ( node ) {
 	var p, nodeIterator, textNode;
 	if ( ve.isNormalizeBroken === undefined ) {
+		// Support: IE11
 		// Feature-detect IE11's broken .normalize() implementation.
 		// We know that it fails to remove the empty text node at the end
 		// in this example, but for mysterious reasons it also fails to merge
