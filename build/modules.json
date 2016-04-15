@@ -320,6 +320,7 @@
 			"src/dm/metaitems/ve.dm.CommentMetaItem.js",
 			"src/dm/nodes/ve.dm.CommentNode.js",
 			"src/ce/ve.ce.js",
+			{ "file": "src/ce/ve.ce.debug.js", "debug": true },
 			"src/ce/ve.ce.TextStateChunk.js",
 			"src/ce/ve.ce.TextState.js",
 			"src/ce/ve.ce.RangeState.js",
