@@ -42,9 +42,6 @@
 			/* contentEditable */
 			!!( 'contentEditable' in document.createElement( 'div' ) ) &&
 
-			/* DOM */
-			!!document.documentElement.classList &&
-
 			/* SVG */
 			!!(
 				document.createElementNS &&

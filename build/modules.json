@@ -203,10 +203,10 @@
 			"src/init/ve.init.Target.js"
 		],
 		"dependencies": [
-			"dom-classlist-shim",
 			"visualEditor.supportCheck",
 			"unicodejs",
-			"rangefix"
+			"rangefix",
+			"dom-classlist-shim"
 		]
 	},
 	"visualEditor.core": {
