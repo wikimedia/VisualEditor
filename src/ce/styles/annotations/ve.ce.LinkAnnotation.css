@@ -13,6 +13,7 @@
 }
 
 .ve-ce-nail {
+	/* Support: IE9 */
 	/* IE9 adds borders to linked images */
 	border: 0;
 }

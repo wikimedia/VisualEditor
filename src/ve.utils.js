@@ -373,6 +373,7 @@ ve.selectElement = function ( element ) {
 	try {
 		nativeSelection.removeAllRanges();
 	} catch ( e ) {
+		// Support: IE9
 		// IE9 can throw an exception if the range is invisible
 	}
 	nativeSelection.addRange( nativeRange );
@@ -824,6 +825,7 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	newDocument.close();
 	// Detach the iframe
 	iframe.parentNode.removeChild( iframe );
+	// Support: IE9
 	// Prevent garbage collection of iframe as long as newDocument exists, as destroying
 	// the original iframe makes access to the document impossible in IE9
 	newDocument.originalIframe = iframe;
