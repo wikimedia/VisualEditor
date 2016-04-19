@@ -53,7 +53,7 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * @property {HTMLElement}
  */
 ve.ce.BranchNode.inlineSlugTemplate = ( function () {
-	var layout = $.client.profile().layout,
+	var profile = $.client.profile(),
 		// The following classes can be used here:
 		// ve-ce-chimera-gecko
 		// ve-ce-chimera-konqueror
@@ -63,15 +63,15 @@ ve.ce.BranchNode.inlineSlugTemplate = ( function () {
 		// ve-ce-chimera-opera
 		// ve-ce-chimera-webkit
 		$img = $( '<img>' )
-			.addClass( 've-ce-chimera ve-ce-chimera-' + layout ),
+			.addClass( 've-ce-chimera ve-ce-chimera-' + profile.layout ),
 		$span = $( '<span>' )
 			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
 			.append( $img );
 
-	// Support: Firefox
+	// Support: Firefox<=37
 	// Firefox misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
-	// But setting an src in Chrome is very slow, so only set it in Firefox
-	if ( layout === 'gecko' ) {
+	// Setting an src in Chrome is slow, so only set it in affected versions of Firefox
+	if ( profile.layout === 'gecko' && profile.versionNumber < 38 ) {
 		$img.prop( 'src', ve.ce.minImgDataUri );
 	}
 	return $span.get( 0 );
