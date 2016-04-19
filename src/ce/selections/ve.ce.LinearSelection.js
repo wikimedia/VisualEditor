@@ -52,10 +52,11 @@ ve.ce.LinearSelection.prototype.getSelectionRects = function () {
 		return null;
 	}
 
-	// Support: Firefox
+	// Support: Firefox, IE
 	// Calling getClientRects sometimes fails:
 	// * in Firefox on page load when the address bar is still focused
 	// * in empty paragraphs
+	// * near annotation nails
 	try {
 		rects = RangeFix.getClientRects( nativeRange );
 		if ( !rects.length ) {
@@ -140,25 +141,24 @@ ve.ce.LinearSelection.prototype.getSelectionBoundingRect = function () {
  * locate the selection focus position.
  *
  * @private
- * @param {ve.Range} range Range to get client rect for
+ * @param {Range} range Range to get client rect for
  * @return {Object|null} ClientRect-like object
  */
 ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) {
 	var rect, side, x, adjacentNode, unicornRect,
 		node = range.endContainer,
-		offset = range.endOffset,
-		leftNode = offset > 0 && node.childNodes[ offset - 1 ];
+		offset = range.endOffset;
 
-	if ( leftNode && leftNode.nodeType === Node.ELEMENT_NODE && leftNode.classList.contains( 've-ce-nail' ) ) {
-		node = leftNode;
-	} else {
-		while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
-			node = node.parentNode;
-		}
+	if ( node.nodeType === Node.TEXT_NODE && ( offset === 0 || offset === node.length ) ) {
+		node = offset ? node.previousSibling : node.nextSibling;
+	}
 
-		if ( !node ) {
-			return null;
-		}
+	while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
+		node = node.parentNode;
+	}
+
+	if ( !node ) {
+		return null;
 	}
 
 	// When possible, pretend the cursor is the left/right border of the node
