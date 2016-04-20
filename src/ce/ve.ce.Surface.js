@@ -134,15 +134,19 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 			surface.$documentNode[ 0 ].focus();
 		} );
 
+	// Support: IE<=11
+	// IE<=11 will fire two selection change events when moving the selection from
+	// the paste target to the document. We are only interested in the last one (T133104).
+	this.onDocumentSelectionChangeDebounced = ve.debounce( this.onDocumentSelectionChange.bind( this ) );
 	if ( this.hasSelectionChangeEvents ) {
-		this.$document.on( 'selectionchange', this.onDocumentSelectionChange.bind( this ) );
+		this.$document.on( 'selectionchange', this.onDocumentSelectionChangeDebounced );
 	} else {
 		// fake selection change events; mousemove gets optimized away if we're not dragging
 		// mousedown needs to run after nativemousedown, because otherwise the selection hasn't
 		// finished changing
-		this.$documentNode.on( 'mousemove', this.onDocumentSelectionChange.bind( this ) );
+		this.$documentNode.on( 'mousemove', this.onDocumentSelectionChangeDebounced );
 		this.eventSequencer.after( {
-			mousedown: this.onDocumentSelectionChange.bind( this )
+			mousedown: this.onDocumentSelectionChangeDebounced
 		} );
 	}
 
@@ -319,6 +323,9 @@ ve.ce.Surface.prototype.destroy = function () {
 	// Disconnect DOM events on the document
 	this.$document.off( 'focusin focusout', this.onDocumentFocusInOutHandler );
 	this.$document.off( 'mousedown', this.debounceFocusChange );
+	if ( this.hasSelectionChangeEvents ) {
+		this.$document.off( 'selectionchange', this.onDocumentSelectionChangeDebounced );
+	}
 
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
