@@ -69,6 +69,11 @@
 	height: 1em;
 }
 
+.ve-ce-chimera-gecko {
+	/* Force height in empty branch */
+	border: 1px solid transparent;
+}
+
 .ve-ce-chimera-debug {
 	width: auto;
 	height: auto;
