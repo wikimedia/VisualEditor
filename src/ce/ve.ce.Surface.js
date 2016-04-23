@@ -3343,17 +3343,18 @@ ve.ce.Surface.prototype.updateActiveLink = function () {
 };
 
 /**
- * Update the selection to contain the contents of the activeLink, if it exists
+ * Update the selection to contain the contents of a node
  *
+ * @param {HTMLElement} node
  * @return {boolean} Whether the selection changed
  */
-ve.ce.Surface.prototype.selectActiveLinkContents = function () {
+ve.ce.Surface.prototype.selectNodeContents = function ( node ) {
 	var anchor, focus;
-	if ( !this.activeLink ) {
+	if ( !node ) {
 		return false;
 	}
-	anchor = ve.ce.nextCursorOffset( this.activeLink.childNodes[ 0 ] );
-	focus = ve.ce.previousCursorOffset( this.activeLink.childNodes[ this.activeLink.childNodes.length - 1 ] );
+	anchor = ve.ce.nextCursorOffset( node.childNodes[ 0 ] );
+	focus = ve.ce.previousCursorOffset( node.childNodes[ node.childNodes.length - 1 ] );
 	return this.showSelectionState( new ve.SelectionState( {
 		anchorNode: anchor.node,
 		anchorOffset: anchor.offset, // past the nail
@@ -3361,6 +3362,15 @@ ve.ce.Surface.prototype.selectActiveLinkContents = function () {
 		focusOffset: focus.offset, // before the nail
 		isCollapsed: false
 	} ) );
+};
+
+/**
+ * Update the selection to contain the contents of the activeLink, if it exists
+ *
+ * @return {boolean} Whether the selection changed
+ */
+ve.ce.Surface.prototype.selectActiveLinkContents = function () {
+	return this.selectLinkContents( this.activeLink );
 };
 
 /**
