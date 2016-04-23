@@ -1161,7 +1161,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 	QUnit.expect( cases.length * 5 );
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, msg ) {
-		var clipboardKey, parts, clipboardIndex, slice,
+		var clipboardKey, slice,
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
 
@@ -1172,11 +1172,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 		clipboardKey = testClipboardData[ 'text/xcustom' ];
 
-		assert.strictEqual( clipboardKey, view.clipboardId + '-0', msg + ': clipboardId set' );
+		assert.strictEqual( clipboardKey, view.clipboardId + '-' + view.clipboardIndex, msg + ': clipboardId set' );
 
-		parts = clipboardKey.split( '-' );
-		clipboardIndex = parts[ 1 ];
-		slice = view.clipboard[ clipboardIndex ].slice;
+		slice = view.clipboard.slice;
 
 		assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
 		assert.equalRange( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );

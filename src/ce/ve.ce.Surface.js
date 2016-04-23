@@ -42,8 +42,9 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		'compositionstart', 'compositionend',
 		'input', 'mousedown'
 	] );
-	this.clipboard = [];
+	this.clipboard = null;
 	this.clipboardId = String( Math.random() );
+	this.clipboardIndex = 0;
 	this.renderLocks = 0;
 	this.dragging = false;
 	this.relocatingNode = false;
@@ -1568,8 +1569,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * @param {jQuery.Event} e Copy event
  */
 ve.ce.Surface.prototype.onCopy = function ( e ) {
-	var originalSelection,
-		clipboardIndex, clipboardItem,
+	var originalSelection, clipboardKey,
 		scrollTop, unsafeSelector, slice,
 		profile = $.client.profile(),
 		selection = this.getModel().getSelection(),
@@ -1621,8 +1621,9 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		this.setAttribute( 'data-ve-attributes', JSON.stringify( attrs ) );
 	} );
 
-	clipboardItem = { slice: slice, hash: null };
-	clipboardIndex = this.clipboard.push( clipboardItem ) - 1;
+	this.clipboardIndex++;
+	clipboardKey = this.clipboardId + '-' + this.clipboardIndex;
+	this.clipboard = { slice: slice, hash: null };
 
 	// Check we have a clipboardData API that supports custom MIME types
 	if (
@@ -1637,7 +1638,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		// Disable the default event so we can override the data
 		e.preventDefault();
 
-		clipboardData.setData( 'text/xcustom', this.clipboardId + '-' + clipboardIndex );
+		clipboardData.setData( 'text/xcustom', clipboardKey );
 		// As we've disabled the default event we need to set the normal clipboard data
 		// It is apparently impossible to set text/xcustom without setting the other
 		// types manually too.
@@ -1647,9 +1648,9 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		// Support: IE, Firefox<48
 		// If the browser doesn't support custom MIME types in the clipboard, write an empty span
 		// with the clipboard key to the HTML.
-		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
+		this.clipboard.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		this.$pasteTarget.prepend(
-			$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex ).html( '&nbsp;' )
+			$( '<span>' ).attr( 'data-ve-clipboard-key', clipboardKey ).html( '&nbsp;' )
 		);
 
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
@@ -1920,19 +1921,12 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 	this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).remove();
 
 	// If we have a clipboard key, validate it and fetch data
-	if ( clipboardKey ) {
-		parts = clipboardKey.split( '-' );
-		clipboardId = parts[ 0 ];
-		clipboardIndex = parts[ 1 ];
-		if ( clipboardId === this.clipboardId && this.clipboard[ clipboardIndex ] ) {
-			// Hash validation: either text/xcustom was used or the hash must be
-			// equal to the hash of the pasted HTML to assert that the HTML
-			// hasn't been modified in another editor before being pasted back.
-			if ( beforePasteData.custom ||
-				this.clipboard[ clipboardIndex ].hash === clipboardHash
-			) {
-				slice = this.clipboard[ clipboardIndex ].slice;
-			}
+	if ( clipboardKey === this.clipboardId + '-' + this.clipboardIndex ) {
+		// Hash validation: either text/xcustom was used or the hash must be
+		// equal to the hash of the pasted HTML to assert that the HTML
+		// hasn't been modified in another editor before being pasted back.
+		if ( beforePasteData.custom || clipboardHash === this.clipboard.hash ) {
+			slice = this.clipboard.slice;
 		}
 	}
 
