@@ -1655,7 +1655,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
 		// select the data we want to go in the clipboard
-		if ( this.getModel().getSelection() instanceof ve.dm.LinearSelection ) {
+		if ( this.getSelection().isNativeCursor() ) {
 			// We have a selection in the document; preserve it so it can restored
 			originalSelection = new ve.SelectionState( this.nativeSelection );
 
@@ -1682,7 +1682,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 				view.surfaceObserver.enable();
 			} );
 		} else {
-			// If nativeRange is null, the pasteTarget *should* already be selected...
+			// If the selection is non-native, the pasteTarget *should* already be selected...
 			ve.selectElement( this.$pasteTarget[ 0 ] );
 		}
 	}
