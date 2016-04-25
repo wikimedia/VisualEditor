@@ -145,12 +145,19 @@ ve.ce.LinearSelection.prototype.getSelectionBoundingRect = function () {
  * @return {Object|null} ClientRect-like object
  */
 ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) {
-	var rect, side, x, adjacentNode, unicornRect,
+	var rect, side, x, adjacentNode, unicornRect, annotationNode, fixHeight, middle,
 		node = range.endContainer,
 		offset = range.endOffset;
 
 	if ( node.nodeType === Node.TEXT_NODE && ( offset === 0 || offset === node.length ) ) {
 		node = offset ? node.previousSibling : node.nextSibling;
+	} else if ( node.nodeType === Node.ELEMENT_NODE && ( offset === 0 || offset === node.childNodes.length ) ) {
+		node = offset ? node.lastChild : node.firstChild;
+		// Nail heights are 0, so use the annotation's height
+		if ( node.classList.contains( 've-ce-nail' ) ) {
+			annotationNode = offset ? node.previousSibling : node.nextSibling;
+			fixHeight = annotationNode.getClientRects()[ 0 ].height;
+		}
 	}
 
 	while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
@@ -174,7 +181,7 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 
 	side = this.getModel().getDocument().getDir() === 'rtl' ? 'right' : 'left';
 	adjacentNode = range.endContainer.childNodes[ range.endOffset ];
-	if ( range.collapsed && $( adjacentNode ).hasClass( 've-ce-unicorn' ) ) {
+	if ( range.collapsed && adjacentNode && adjacentNode.classList && adjacentNode.classList.contains( 've-ce-unicorn' ) ) {
 		// We're next to a unicorn; use its left/right position
 		unicornRect = adjacentNode.getClientRects()[ 0 ];
 		if ( !unicornRect ) {
@@ -185,14 +192,27 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 		x = rect[ side ];
 	}
 
-	return {
-		top: rect.top,
-		bottom: rect.bottom,
-		left: x,
-		right: x,
-		width: 0,
-		height: rect.height
-	};
+	if ( fixHeight ) {
+		// Use a pre-computed height from above, maintaining the vertical center
+		middle = ( rect.top + rect.bottom ) / 2;
+		return {
+			top: middle - ( fixHeight / 2 ),
+			bottom: middle + ( fixHeight / 2 ),
+			left: x,
+			right: x,
+			width: 0,
+			height: fixHeight
+		};
+	} else {
+		return {
+			top: rect.top,
+			bottom: rect.bottom,
+			left: x,
+			right: x,
+			width: 0,
+			height: rect.height
+		};
+	}
 };
 
 /**
