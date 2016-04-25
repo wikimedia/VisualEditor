@@ -1571,6 +1571,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var originalSelection,
 		clipboardIndex, clipboardItem,
 		scrollTop, unsafeSelector, slice,
+		profile = $.client.profile(),
 		selection = this.getModel().getSelection(),
 		view = this,
 		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
@@ -1623,9 +1624,14 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	clipboardItem = { slice: slice, hash: null };
 	clipboardIndex = this.clipboard.push( clipboardItem ) - 1;
 
-	// Check we have a W3C clipboardData API
+	// Check we have a clipboardData API that supports custom MIME types
 	if (
-		clipboardData && clipboardData.items
+		clipboardData && (
+			// Chrome
+			clipboardData.items ||
+			// Firefox >= 48 (but not Firefox Android, which has name='android' and doesn't support this feature)
+			( profile.name === 'firefox' && profile.versionNumber >= 48 )
+		)
 	) {
 		// Webkit allows us to directly edit the clipboard
 		// Disable the default event so we can override the data
@@ -1638,6 +1644,9 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 		clipboardData.setData( 'text/html', this.$pasteTarget.html() );
 		clipboardData.setData( 'text/plain', this.$pasteTarget.text() );
 	} else {
+		// Support: IE, Firefox<48
+		// If the browser doesn't support custom MIME types in the clipboard, write an empty span
+		// with the clipboard key to the HTML.
 		clipboardItem.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 		this.$pasteTarget.prepend(
 			$( '<span>' ).attr( 'data-ve-clipboard-key', this.clipboardId + '-' + clipboardIndex ).html( '&nbsp;' )
