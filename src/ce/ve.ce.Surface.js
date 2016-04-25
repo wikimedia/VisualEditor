@@ -1624,35 +1624,35 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	this.clipboardIndex++;
 	clipboardKey = this.clipboardId + '-' + this.clipboardIndex;
 	this.clipboard = { slice: slice, hash: null };
-
-	// Check we have a clipboardData API that supports custom MIME types
-	if (
-		clipboardData && (
+	// Support: IE, Firefox<48
+	// Writing the key to text/xcustom won't work in IE & Firefox<48, so write
+	// it to the HTML instead
+	if ( !( clipboardData && (
 			// Chrome
 			clipboardData.items ||
 			// Firefox >= 48 (but not Firefox Android, which has name='android' and doesn't support this feature)
 			( profile.name === 'firefox' && profile.versionNumber >= 48 )
 		)
-	) {
-		// Webkit allows us to directly edit the clipboard
+	) ) {
+		this.$pasteTarget.prepend(
+			$( '<span>' ).attr( 'data-ve-clipboard-key', clipboardKey ).html( '&nbsp;' )
+		);
+		// To ensure the contents with the clipboardKey isn't modified in an external editor,
+		// store a hash of the contents for later validation.
+		this.clipboard.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
+	}
+
+	// If we have access to the clipboard write straight to it so we don't
+	// have to fiddle around with the selection and fix scroll offsets.
+	if ( clipboardData ) {
 		// Disable the default event so we can override the data
 		e.preventDefault();
 
 		clipboardData.setData( 'text/xcustom', clipboardKey );
-		// As we've disabled the default event we need to set the normal clipboard data
-		// It is apparently impossible to set text/xcustom without setting the other
-		// types manually too.
 		clipboardData.setData( 'text/html', this.$pasteTarget.html() );
 		clipboardData.setData( 'text/plain', this.$pasteTarget.text() );
 	} else {
-		// Support: IE, Firefox<48
-		// If the browser doesn't support custom MIME types in the clipboard, write an empty span
-		// with the clipboard key to the HTML.
-		this.clipboard.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
-		this.$pasteTarget.prepend(
-			$( '<span>' ).attr( 'data-ve-clipboard-key', clipboardKey ).html( '&nbsp;' )
-		);
-
+		// Support: IE
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
 		// select the data we want to go in the clipboard
 		if ( this.getSelection().isNativeCursor() ) {
