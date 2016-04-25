@@ -116,6 +116,12 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'linkNoExpand', 'window', 'open',
+		{ args: [ 'link', { noExpand: true } ], supportedSelections: [ 'linear' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'specialCharacter', 'window', 'toggle',
 		{ args: [ 'specialCharacter' ], supportedSelections: [ 'linear' ] }
 	)
