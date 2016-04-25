@@ -73,6 +73,10 @@ ve.ce.TableNode.prototype.onSetup = function () {
 		'mousedown.ve-ce-tableNode': this.onTableMouseDown.bind( this ),
 		'dblclick.ve-ce-tableNode': this.onTableDblClick.bind( this )
 	} );
+	this.$overlay.on( {
+		'mousedown.ve-ce-tableNode': this.onTableMouseDown.bind( this ),
+		'dblclick.ve-ce-tableNode': this.onTableDblClick.bind( this )
+	} );
 	this.onTableMouseUpHandler = this.onTableMouseUp.bind( this );
 	this.onTableMouseMoveHandler = this.onTableMouseMove.bind( this );
 	// Select and position events both fire updateOverlay, so debounce. Also makes
@@ -90,6 +94,7 @@ ve.ce.TableNode.prototype.onTeardown = function () {
 	ve.ce.TableNode.super.prototype.onTeardown.call( this );
 	// Events
 	this.$element.off( '.ve-ce-tableNode' );
+	this.$overlay.off( '.ve-ce-tableNode' );
 	this.surface.getModel().disconnect( this );
 	this.surface.disconnect( this );
 	this.$overlay.remove();
@@ -102,7 +107,7 @@ ve.ce.TableNode.prototype.onTeardown = function () {
  */
 ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
 	var offset;
-	if ( !this.getCellNodeFromTarget( e.target ) ) {
+	if ( !this.getCellNodeFromEvent( e ) ) {
 		return;
 	}
 	if ( this.surface.getModel().getSelection() instanceof ve.dm.TableSelection ) {
@@ -129,12 +134,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 	var cellNode, startCell, endCell, selection, newSelection,
 		node = this;
 
-	if ( e.type === 'touchstart' && e.originalEvent.touches.length > 1 ) {
-		// Ignore multi-touch
-		return;
-	}
-
-	cellNode = this.getCellNodeFromTarget( e.target );
+	cellNode = this.getCellNodeFromEvent( e );
 	if ( !cellNode ) {
 		return;
 	}
@@ -184,21 +184,71 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 };
 
 /**
- * Get the table and cell node from an event target
+ * Get a table cell node from a mouse event
  *
- * @param {HTMLElement} target Element target to find nearest cell node to
+ * Works around various issues with touch events and browser support.
+ *
+ * @param {jQuery.Event} e Mouse event
+ * @return {ve.ce.TableCellNode|null} Table cell node
+ */
+ve.ce.TableNode.prototype.getCellNodeFromEvent = function ( e ) {
+	var touch, cellNode;
+
+	// 'touchmove' doesn't give a correct e.target, so calculate it from coordinates
+	if ( e.type === 'touchstart' && e.originalEvent.touches.length > 1 ) {
+		// Ignore multi-touch
+		return null;
+	} else if ( e.type === 'touchmove' ) {
+		if ( e.originalEvent.touches.length > 1 ) {
+			// Ignore multi-touch
+			return null;
+		}
+		touch = e.originalEvent.touches[ 0 ];
+		return this.getCellNodeFromPoint( touch.clientX, touch.clientY );
+	} else if ( OO.ui.contains( this.$overlay[ 0 ], e.target, true ) ) {
+		// Support: IE<=10
+		// Browsers which don't support pointer-events:none will still fire events
+		// on the overlay. Hide the overlay and get the target from the event coords.
+		this.$overlay.addClass( 'oo-ui-element-hidden' );
+		cellNode = this.getCellNodeFromPoint( e.clientX, e.clientY );
+		this.$overlay.removeClass( 'oo-ui-element-hidden' );
+		return cellNode;
+	} else {
+		return this.getNearestCellNode( e.target );
+	}
+};
+
+/**
+ * Get the cell node from a point
+ *
+ * @param {number} x X offset
+ * @param {number} y Y offset
  * @return {ve.ce.TableCellNode|null} Table cell node, or null if none found
  */
-ve.ce.TableNode.prototype.getCellNodeFromTarget = function ( target ) {
-	var $target = $( target ),
-		$table = $target.closest( 'table' );
+ve.ce.TableNode.prototype.getCellNodeFromPoint = function ( x, y ) {
+	return this.getNearestCellNode(
+		this.surface.getElementDocument().elementFromPoint( x, y )
+	);
+};
+
+/**
+ * Get the nearest cell node in this table to an element
+ *
+ * If the nearest cell node is in another table, return null.
+ *
+ * @param {HTMLElement} element Element target to find nearest cell node to
+ * @return {ve.ce.TableCellNode|null} Table cell node, or null if none found
+ */
+ve.ce.TableNode.prototype.getNearestCellNode = function ( element ) {
+	var $element = $( element ),
+		$table = $element.closest( 'table' );
 
 	// Nested table, ignore
 	if ( !this.$element.is( $table ) ) {
 		return null;
 	}
 
-	return $target.closest( 'td, th' ).data( 'view' );
+	return $element.closest( 'td, th' ).data( 'view' );
 };
 
 /**
@@ -207,21 +257,9 @@ ve.ce.TableNode.prototype.getCellNodeFromTarget = function ( target ) {
  * @param {jQuery.Event} e Mouse/touch move event
  */
 ve.ce.TableNode.prototype.onTableMouseMove = function ( e ) {
-	var cell, selection, touch, target, cellNode;
+	var cell, selection, cellNode;
 
-	// 'touchmove' doesn't give a correct e.target, so calculate it from coordinates
-	if ( e.type === 'touchmove' ) {
-		if ( e.originalEvent.touches.length > 1 ) {
-			// Ignore multi-touch
-			return;
-		}
-		touch = e.originalEvent.touches[ 0 ];
-		target = this.surface.getElementDocument().elementFromPoint( touch.clientX, touch.clientY );
-	} else {
-		target = e.target;
-	}
-
-	cellNode = this.getCellNodeFromTarget( target );
+	cellNode = this.getCellNodeFromEvent( e );
 	if ( !cellNode ) {
 		return;
 	}
