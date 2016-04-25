@@ -157,6 +157,7 @@ ve.ui.AnnotationInspector.prototype.getMode = function () {
  *
  * @method
  * @param {Object} [data] Inspector opening data
+ * @param {boolean} [data.noExpand] Don't expand the selection when opening
  */
 ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
@@ -177,7 +178,9 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 					fragment.getDocument().data.isContentOffset( fragment.getSelection().getRange().start )
 				) {
 					// Expand to nearest word
-					fragment = fragment.expandLinearSelection( 'word' );
+					if ( !data.noExpand ) {
+						fragment = fragment.expandLinearSelection( 'word' );
+					}
 
 					// TODO: We should review how getMatchingAnnotation works in light of the fact
 					// that in the case of a collapsed range, the method falls back to retrieving
@@ -206,7 +209,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 					}
 				}
 			}
-			if ( annotation ) {
+			if ( annotation && !data.noExpand ) {
 				// Expand range to cover annotation
 				fragment = fragment.expandLinearSelection( 'annotation', annotation );
 			}
