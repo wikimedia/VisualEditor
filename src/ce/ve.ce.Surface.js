@@ -72,6 +72,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.useFakePaste = profile.name === 'msie' && profile.versionNumber < 11;
 	this.copying = false;
 	this.pasteSpecial = false;
+	this.pointerEvents = null;
 	this.focusedBlockSlug = null;
 	this.focusedNode = null;
 	// This is set on entering changeModel, then unset when leaving.
@@ -3664,4 +3665,21 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 ve.ce.Surface.prototype.selectionSplitsLink = function () {
 	return ve.ce.linkAt( this.nativeSelection.anchorNode ) !==
 		ve.ce.linkAt( this.nativeSelection.focusNode );
+};
+
+/**
+ * Check if the surface supports the pointer-events CSS rule
+ *
+ * Support: IE<=10
+ *
+ * @return {boolean} The surface supports pointer-events
+ */
+ve.ce.Surface.prototype.supportsPointerEvents = function () {
+	var element;
+	if ( this.pointerEvents === null ) {
+		element = this.getElementDocument().createElement( 'div' );
+		element.style.cssText = 'pointer-events:auto';
+		this.pointerEvents = element.style.pointerEvents === 'auto';
+	}
+	return this.pointerEvents;
 };

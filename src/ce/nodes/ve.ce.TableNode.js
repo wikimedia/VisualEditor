@@ -340,6 +340,12 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 		this.$element.prop( 'contentEditable', isEditing.toString() );
 	}
 	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-editing', isEditing );
+	// Support: IE<=10
+	// If the browser doesn't support pointer-events:none, hide the selection boxes.
+	if ( !this.surface.supportsPointerEvents() ) {
+		this.$selectionBox.toggleClass( 'oo-ui-element-hidden', isEditing );
+		this.$selectionBoxAnchor.toggleClass( 'oo-ui-element-hidden', isEditing );
+	}
 };
 
 /**
