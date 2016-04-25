@@ -161,7 +161,7 @@ ve.ui.AnnotationInspector.prototype.getMode = function () {
 ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var expandedFragment, trimmedFragment, initialCoveringAnnotation,
+			var initialCoveringAnnotation,
 				inspector = this,
 				annotationSet, annotations,
 				fragment = this.getFragment(),
@@ -177,8 +177,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 					fragment.getDocument().data.isContentOffset( fragment.getSelection().getRange().start )
 				) {
 					// Expand to nearest word
-					expandedFragment = fragment.expandLinearSelection( 'word' );
-					fragment = expandedFragment;
+					fragment = fragment.expandLinearSelection( 'word' );
 
 					// TODO: We should review how getMatchingAnnotation works in light of the fact
 					// that in the case of a collapsed range, the method falls back to retrieving
@@ -196,8 +195,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 					}
 				} else {
 					// Trim whitespace
-					trimmedFragment = fragment.trimLinearSelection();
-					fragment = trimmedFragment;
+					fragment = fragment.trimLinearSelection();
 				}
 
 				if ( !fragment.getSelection().isCollapsed() && !annotation ) {
@@ -210,8 +208,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			}
 			if ( annotation ) {
 				// Expand range to cover annotation
-				expandedFragment = fragment.expandLinearSelection( 'annotation', annotation );
-				fragment = expandedFragment;
+				fragment = fragment.expandLinearSelection( 'annotation', annotation );
 			}
 
 			// Update selection
