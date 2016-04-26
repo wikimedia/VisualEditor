@@ -3244,7 +3244,7 @@ ve.ce.Surface.prototype.getViewportRange = function () {
  * @return {boolean} Whether the selection actually changed
  */
 ve.ce.Surface.prototype.showModelSelection = function () {
-	var selection;
+	var selection, changed;
 
 	if ( this.deactivated ) {
 		// Defer until view has updated
@@ -3255,7 +3255,17 @@ ve.ce.Surface.prototype.showModelSelection = function () {
 	selection = this.getSelection();
 
 	if ( selection.isNativeCursor() && !this.focusedBlockSlug ) {
-		return this.showSelectionState( this.getSelectionState( selection.getModel().getRange() ) );
+		changed = this.showSelectionState(
+			this.getSelectionState( selection.getModel().getRange() )
+		);
+		// Support: Chrome
+		// Fixes T131674, which is only triggered with Chromium-style ce=false cursoring
+		// restrictions (but other cases of non-updated cursor holders can probably occur
+		// in other browsers).
+		if ( changed ) {
+			this.updateCursorHolders();
+			return true;
+		}
 	}
 	return false;
 
