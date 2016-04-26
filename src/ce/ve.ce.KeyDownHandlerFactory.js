@@ -11,7 +11,7 @@
  * @extends OO.Factory
  * @constructor
  */
-ve.ce.KeyDownHandlerFactory = function VeUiKeyDownHandlerFactory() {
+ve.ce.KeyDownHandlerFactory = function VeCeKeyDownHandlerFactory() {
 	// Parent constructor
 	ve.ce.KeyDownHandlerFactory.super.apply( this, arguments );
 
