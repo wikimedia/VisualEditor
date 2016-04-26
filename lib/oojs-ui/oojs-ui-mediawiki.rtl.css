@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.16.6
+ * OOjs UI v0.17.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-19T21:57:53Z
+ * Date: 2016-04-26T21:34:05Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -574,6 +574,9 @@
 }
 .oo-ui-optionWidget.oo-ui-widget-enabled {
 	cursor: pointer;
+}
+.oo-ui-optionWidget.oo-ui-widget-disabled {
+	cursor: default;
 }
 .oo-ui-optionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
 	display: block;
@@ -1342,14 +1345,14 @@
 }
 
 /*!
- * OOjs UI v0.16.6
+ * OOjs UI v0.17.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-19T21:57:53Z
+ * Date: 2016-04-26T21:34:05Z
  */
 .oo-ui-draggableElement-handle,
 .oo-ui-draggableElement-handle.oo-ui-widget {
@@ -1790,10 +1793,7 @@
 	left: 0;
 	text-overflow: ellipsis;
 }
-.oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label > .oo-ui-selectFileWidget-fileName {
-	float: right;
-}
-.oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label > .oo-ui-selectFileWidget-fileType {
+.oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-fileType {
 	float: left;
 }
 .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator,
@@ -1801,7 +1801,7 @@
 .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-clearButton {
 	position: absolute;
 }
-.oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-clearButton {
+.oo-ui-selectFileWidget .oo-ui-selectFileWidget-clearButton {
 	z-index: 2;
 }
 .oo-ui-selectFileWidget-dropTarget {
@@ -1841,8 +1841,13 @@
 .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label {
 	position: relative;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label > .oo-ui-selectFileWidget-fileName,
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label > .oo-ui-selectFileWidget-fileType {
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-fileName {
+	display: block;
+	padding-left: 2.375em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-fileType {
 	display: block;
 	float: none;
 }
@@ -1895,16 +1900,18 @@
 	margin-right: 0.5em;
 }
 .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	display: block;
 	line-height: 2.3em;
 	margin: 0;
 	overflow: hidden;
 	white-space: nowrap;
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
 	text-overflow: ellipsis;
-	right: 0.5em;
-	left: 0.5em;
+	right: 0;
+	left: 0;
+	padding-right: 0.5em;
 }
 .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label > .oo-ui-selectFileWidget-fileType {
 	color: #888888;
@@ -1925,10 +1932,11 @@
 	height: 2.3em;
 }
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info {
+	background-color: #f3f3f3;
 	color: #cccccc;
 	text-shadow: 0 -1px 1px #ffffff;
 	border-color: #dddddd;
-	background-color: #f3f3f3;
+	cursor: default;
 }
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon,
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator {
@@ -1948,6 +1956,7 @@
 }
 .oo-ui-selectFileWidget.oo-ui-indicatorElement .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-label {
 	left: 4.4625em;
+	padding-right: 0;
 }
 .oo-ui-selectFileWidget.oo-ui-indicatorElement .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-clearButton {
 	left: 2.0875em;
@@ -1959,6 +1968,7 @@
 .oo-ui-selectFileWidget-empty.oo-ui-indicatorElement .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-label,
 .oo-ui-selectFileWidget-notsupported.oo-ui-indicatorElement .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-label {
 	left: 2em;
+	padding-right: 0;
 }
 .oo-ui-selectFileWidget-supported.oo-ui-widget-enabled.oo-ui-selectFileWidget-canDrop .oo-ui-selectFileWidget-dropTarget {
 	background-color: #ebf2ff;
@@ -1998,6 +2008,9 @@
 	font-size: 1.1em;
 	padding: 0.75em;
 }
+.oo-ui-outlineOptionWidget .oo-ui-iconElement-icon {
+	font-size: 90.90909%;
+}
 .oo-ui-outlineOptionWidget.oo-ui-indicatorElement .oo-ui-labelElement-label {
 	padding-left: 1.5em;
 }
@@ -2028,9 +2041,6 @@
 }
 .oo-ui-outlineOptionWidget.oo-ui-flaggedElement-important {
 	font-weight: bold;
-}
-.oo-ui-outlineOptionWidget.oo-ui-flaggedElement-placeholder {
-	font-style: italic;
 }
 .oo-ui-outlineOptionWidget.oo-ui-flaggedElement-empty .oo-ui-iconElement-icon {
 	opacity: 0.5;
@@ -2321,14 +2331,14 @@
 }
 
 /*!
- * OOjs UI v0.16.6
+ * OOjs UI v0.17.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-19T21:57:53Z
+ * Date: 2016-04-26T21:34:05Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2688,6 +2698,9 @@
 	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check.svg");
 	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/mediawiki/images/icons/check.svg");
 	background-image:      -o-linear-gradient(transparent, transparent), url("themes/mediawiki/images/icons/check.png");
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
 }
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover {
 	background-color: #eeeeee;
@@ -2778,14 +2791,14 @@
 }
 
 /*!
- * OOjs UI v0.16.6
+ * OOjs UI v0.17.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-19T21:57:53Z
+ * Date: 2016-04-26T21:34:05Z
  */
 .oo-ui-window {
 	background: transparent;
@@ -3164,14 +3177,14 @@
 }
 
 /*!
- * OOjs UI v0.16.6
+ * OOjs UI v0.17.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-19T21:57:53Z
+ * Date: 2016-04-26T21:34:05Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/mediawiki/images/icons/add.png");
