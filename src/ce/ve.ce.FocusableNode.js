@@ -39,6 +39,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	this.boundingRect = null;
 	this.startAndEndRects = null;
 	this.icon = null;
+	this.touchMoved = false;
 
 	if ( Array.isArray( config.classes ) ) {
 		this.$highlights.addClass( config.classes.join( ' ' ) );
@@ -133,6 +134,8 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	// Events
 	this.$focusable.on( {
 		'mouseenter.ve-ce-focusableNode': this.onFocusableMouseEnter.bind( this ),
+		'touchstart.ve-ce-focusableNode': this.onFocusableTouchStart.bind( this ),
+		'touchmove.ve-ce-focusableNode': this.onFocusableTouchMove.bind( this ),
 		'mousedown.ve-ce-focusableNode touchend.ve-ce-focusableNode': this.onFocusableMouseDown.bind( this )
 	} );
 	// $element is ce=false so make sure nothing happens when you click
@@ -230,9 +233,14 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		selection = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
 
+	if ( e.type === 'touchend' && this.touchMoved ) {
+		return;
+	}
+
 	if ( !this.isInContentEditable() ) {
 		return;
 	}
+
 	if ( e.which === 3 ) {
 		// Hide images, and select spans so context menu shows 'copy', but not 'copy image'
 		this.$highlights.addClass( 've-ce-focusableNode-highlights-contextOpen' );
@@ -332,6 +340,26 @@ ve.ce.FocusableNode.prototype.onFocusableMouseEnter = function () {
 	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing && this.isInContentEditable() ) {
 		this.createHighlights();
 	}
+};
+
+/**
+ * Handle touch start events.
+ *
+ * @method
+ * @param {jQuery.Event} e Touch start event
+ */
+ve.ce.FocusableNode.prototype.onFocusableTouchStart = function () {
+	this.touchMoved = false;
+};
+
+/**
+ * Handle touch move events.
+ *
+ * @method
+ * @param {jQuery.Event} e Touch move event
+ */
+ve.ce.FocusableNode.prototype.onFocusableTouchMove = function () {
+	this.touchMoved = true;
 };
 
 /**
