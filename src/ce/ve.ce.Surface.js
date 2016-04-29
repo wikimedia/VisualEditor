@@ -143,10 +143,13 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	if ( this.hasSelectionChangeEvents ) {
 		this.$document.on( 'selectionchange', this.onDocumentSelectionChangeDebounced );
 	} else {
-		// fake selection change events; mousemove gets optimized away if we're not dragging
-		// mousedown needs to run after nativemousedown, because otherwise the selection hasn't
-		// finished changing
-		this.$documentNode.on( 'mousemove', this.onDocumentSelectionChangeDebounced );
+		// Fake selection change events with mousemove if dragging
+		this.$documentNode.on( 'mousemove', function () {
+			if ( surface.dragging ) {
+				this.onDocumentSelectionChangeDebounced();
+			}
+		} );
+		// mousedown needs to run after native mousedown action has changed the selection
 		this.eventSequencer.after( {
 			mousedown: this.onDocumentSelectionChangeDebounced
 		} );
@@ -811,10 +814,6 @@ ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
  * @param {jQuery.Event} e Selection change event
  */
 ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
-	if ( !this.dragging ) {
-		// Optimisation
-		return;
-	}
 	this.fixupCursorPosition( 0, this.dragging );
 	this.updateActiveLink();
 	this.surfaceObserver.pollOnceSelection();
