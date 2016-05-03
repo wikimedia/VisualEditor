@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.17.0
+ * OOjs UI v0.17.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-26T21:34:05Z
+ * Date: 2016-05-03T22:58:06Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -53,6 +53,9 @@
 	font-weight: bold;
 	text-decoration: none;
 }
+.oo-ui-buttonElement > .oo-ui-buttonElement-button:focus {
+	outline: 0;
+}
 .oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	margin-left: 0;
 }
@@ -60,8 +63,7 @@
 	margin-left: 0.46875em;
 }
 .oo-ui-buttonElement-frameless > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.2);
-	outline: 0;
+	box-shadow: inset 0 0 0 1px #347bff, 0 0 0 1px #347bff;
 }
 .oo-ui-buttonElement-frameless > .oo-ui-buttonElement-button .oo-ui-indicatorElement-indicator {
 	margin-right: 0;
@@ -83,36 +85,33 @@
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	color: #444444;
 }
-.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
-.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #2962cc;
-}
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	color: #347bff;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label {
+	color: #2962cc;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	color: #1f4999;
 	box-shadow: none;
 }
-.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
-.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #2962cc;
-}
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	color: #347bff;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label {
+	color: #2962cc;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	color: #1f4999;
 	box-shadow: none;
 }
-.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
-.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #8c130d;
-}
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	color: #d11d13;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label {
+	color: #8c130d;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
@@ -142,10 +141,6 @@
 	-webkit-transition: background 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
 	   -moz-transition: background 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
 	        transition: background 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
-}
-.oo-ui-buttonElement-framed > .oo-ui-buttonElement-button:hover,
-.oo-ui-buttonElement-framed > .oo-ui-buttonElement-button:focus {
-	outline: 0;
 }
 .oo-ui-buttonElement-framed > input.oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
@@ -182,7 +177,8 @@
 	background-color: #ebebeb;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+	border-color: #347bff;
+	box-shadow: inset 0 0 0 1px #347bff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
@@ -197,13 +193,9 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button {
 	color: #347bff;
 }
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:hover {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover {
 	background-color: #ebf2ff;
 	border-color: #859dcc;
-}
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px #1f4999;
-	border-color: #1f4999;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
@@ -215,16 +207,16 @@
 	background-color: #999999;
 	color: #ffffff;
 }
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
+	border-color: #347bff;
+	box-shadow: inset 0 0 0 1px #347bff;
+}
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
 	color: #347bff;
 }
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover {
 	background-color: #ebf2ff;
 	border-color: #859dcc;
-}
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px #1f4999;
-	border-color: #1f4999;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
@@ -236,16 +228,16 @@
 	background-color: #999999;
 	color: #ffffff;
 }
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
+	border-color: #347bff;
+	box-shadow: inset 0 0 0 1px #347bff;
+}
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
 	color: #d11d13;
 }
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:hover {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover {
 	background-color: #fbe8e7;
 	border-color: #b77c79;
-}
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px #73100a;
-	border-color: #73100a;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
@@ -257,18 +249,18 @@
 	background-color: #999999;
 	color: #ffffff;
 }
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
+	border-color: #d11d13;
+	box-shadow: inset 0 0 0 1px #d11d13;
+}
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button {
 	color: #ffffff;
 	background-color: #347bff;
 	border-color: #347bff;
 }
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:hover {
-	background: #2962cc;
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover {
+	background-color: #2962cc;
 	border-color: #2962cc;
-}
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px #ffffff;
-	border-color: #347bff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
@@ -281,18 +273,18 @@
 	background-color: #999999;
 	color: #ffffff;
 }
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
+	border-color: #347bff;
+	box-shadow: inset 0 0 0 1px #ffffff;
+}
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
 	color: #ffffff;
 	background-color: #347bff;
 	border-color: #347bff;
 }
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover {
-	background: #2962cc;
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover {
+	background-color: #2962cc;
 	border-color: #2962cc;
-}
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px #ffffff;
-	border-color: #347bff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
@@ -305,18 +297,18 @@
 	background-color: #999999;
 	color: #ffffff;
 }
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
+	border-color: #347bff;
+	box-shadow: inset 0 0 0 1px #ffffff;
+}
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
 	color: #ffffff;
 	background-color: #d11d13;
 	border-color: #d11d13;
 }
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:hover {
-	background: #8c130d;
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover {
+	background-color: #8c130d;
 	border-color: #8c130d;
-}
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus {
-	box-shadow: inset 0 0 0 1px #ffffff;
-	border-color: #d11d13;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
@@ -328,6 +320,10 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
 	background-color: #999999;
 	color: #ffffff;
+}
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
+	border-color: #d11d13;
+	box-shadow: inset 0 0 0 1px #ffffff;
 }
 .oo-ui-clippableElement-clippable {
 	-webkit-box-sizing: border-box;
@@ -621,6 +617,12 @@
 .oo-ui-decoratedOptionWidget.oo-ui-widget-disabled .oo-ui-indicatorElement-indicator {
 	opacity: 0.2;
 }
+.oo-ui-radioSelectWidget:focus {
+	outline: 0;
+}
+.oo-ui-radioSelectWidget:focus .oo-ui-radioOptionWidget.oo-ui-optionWidget-selected .oo-ui-radioInputWidget [type="radio"] + span {
+	border-width: 2px;
+}
 .oo-ui-radioOptionWidget {
 	cursor: default;
 	padding: 0.25em 0;
@@ -688,6 +690,9 @@
 .oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed .oo-ui-buttonElement-button {
 	border-radius: 0;
 	margin-left: -1px;
+}
+.oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed .oo-ui-buttonElement-button:focus {
+	z-index: 2;
 }
 .oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed:first-child .oo-ui-buttonElement-button {
 	border-bottom-left-radius: 2px;
@@ -1345,14 +1350,14 @@
 }
 
 /*!
- * OOjs UI v0.17.0
+ * OOjs UI v0.17.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-26T21:34:05Z
+ * Date: 2016-05-03T22:58:06Z
  */
 .oo-ui-draggableElement-handle,
 .oo-ui-draggableElement-handle.oo-ui-widget {
@@ -1527,6 +1532,14 @@
 }
 .oo-ui-buttonSelectWidget:last-child {
 	margin-right: 0;
+}
+.oo-ui-buttonSelectWidget:focus {
+	outline: 0;
+}
+.oo-ui-buttonSelectWidget:focus .oo-ui-buttonOptionWidget.oo-ui-optionWidget-selected .oo-ui-buttonElement-button {
+	border-color: #347bff;
+	box-shadow: inset 0 0 0 1px #347bff;
+	z-index: 2;
 }
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget .oo-ui-buttonElement-button {
 	border-radius: 0;
@@ -1807,7 +1820,6 @@
 .oo-ui-selectFileWidget-dropTarget {
 	cursor: default;
 	height: 5.5em;
-	text-align: left;
 	padding: 0;
 }
 .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-dropLabel,
@@ -1855,9 +1867,6 @@
 	position: absolute;
 	right: 0.5em;
 }
-.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget {
-	text-align: center;
-}
 .oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-dropLabel {
 	display: block;
 }
@@ -1880,6 +1889,12 @@
 .oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-clearButton,
 .oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-clearButton {
 	display: none;
+}
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget .oo-ui-buttonElement-button,
+.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget .oo-ui-buttonElement-button {
+	cursor: no-drop;
 }
 .oo-ui-selectFileWidget:last-child {
 	margin-right: 0;
@@ -2221,14 +2236,14 @@
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
 	vertical-align: middle;
-	padding: 0 0.4em;
-	margin: 0.1em;
 	height: 1.7em;
 	line-height: 1.7em;
 	background-color: #eeeeee;
-	border: 1px solid #cccccc;
 	color: #555555;
+	margin: 0.1em;
+	border: 1px solid #cccccc;
 	border-radius: 2px;
+	padding: 0 0.4em;
 }
 .oo-ui-capsuleItemWidget.oo-ui-labelElement .oo-ui-labelElement-label {
 	display: inline-block;
@@ -2238,16 +2253,38 @@
 .oo-ui-capsuleItemWidget:focus {
 	outline: 0;
 	border-color: #347bff;
+	box-shadow: inset 0 0 0 1px #347bff;
 }
 .oo-ui-capsuleItemWidget.oo-ui-widget-disabled {
-	color: #cccccc;
-	text-shadow: 0 1px 1px #ffffff;
-	border-color: #dddddd;
 	background-color: #f3f3f3;
+	color: #cccccc;
+	border-color: #dddddd;
+	text-shadow: 0 1px 1px #ffffff;
 }
 .oo-ui-capsuleItemWidget > .oo-ui-buttonElement {
-	margin-top: -1.4em;
-	padding-left: 0.3em;
+	display: none;
+}
+.oo-ui-capsuleItemWidget.oo-ui-widget-enabled {
+	padding-right: 1.5375em;
+}
+.oo-ui-capsuleItemWidget.oo-ui-widget-enabled > .oo-ui-buttonElement {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+.oo-ui-capsuleItemWidget.oo-ui-widget-enabled .oo-ui-buttonElement-button {
+	display: block;
+	width: 1.5375em;
+	height: 100%;
+}
+.oo-ui-capsuleItemWidget.oo-ui-widget-enabled .oo-ui-buttonElement-button .oo-ui-indicator-clear {
+	position: absolute;
+	top: 0;
+	right: 0.3em;
+	bottom: 0;
+	height: auto;
 }
 .oo-ui-searchWidget-query {
 	position: absolute;
@@ -2331,14 +2368,14 @@
 }
 
 /*!
- * OOjs UI v0.17.0
+ * OOjs UI v0.17.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-26T21:34:05Z
+ * Date: 2016-05-03T22:58:06Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2791,14 +2828,14 @@
 }
 
 /*!
- * OOjs UI v0.17.0
+ * OOjs UI v0.17.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-26T21:34:05Z
+ * Date: 2016-05-03T22:58:06Z
  */
 .oo-ui-window {
 	background: transparent;
@@ -3177,14 +3214,14 @@
 }
 
 /*!
- * OOjs UI v0.17.0
+ * OOjs UI v0.17.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-04-26T21:34:05Z
+ * Date: 2016-05-03T22:58:06Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/mediawiki/images/icons/add.png");
