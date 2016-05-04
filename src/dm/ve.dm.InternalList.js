@@ -224,12 +224,15 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 		if ( itemHtmlQueue[ i ] !== '' ) {
 			div = doc.createElement( 'div' );
 			div.innerHTML = itemHtmlQueue[ i ];
-			itemData = converter.getDataFromDomSubtree( div );
-			list = list.concat(
-				[ { type: 'internalItem', attributes: { originalHtml: itemHtmlQueue[ i ] } } ],
-				itemData,
+			itemData = [].concat(
+				[ { type: 'internalItem' } ],
+				converter.getDataFromDomSubtree( div ),
 				[ { type: '/internalItem' } ]
 			);
+			if ( !converter.isFromClipboard() ) {
+				itemData[ 0 ].attributes = { originalHtml: itemHtmlQueue[ i ] };
+			}
+			list = list.concat( itemData );
 		} else {
 			list = list.concat( [ { type: 'internalItem' }, { type: '/internalItem' } ] );
 		}
