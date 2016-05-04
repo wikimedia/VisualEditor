@@ -1148,10 +1148,10 @@ QUnit.test( 'onCopy', function ( assert ) {
 				expectedOriginalRange: new ve.Range( 0, 5 ),
 				expectedBalancedRange: new ve.Range( 0, 5 ),
 				expectedHtml:
-					'<p about="a" content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" class="i" ' +
+					'<p content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" class="i" ' +
 						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
 						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
-						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
+						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;}">' +
 						'Foo' +
 					'</p>',
 				msg: 'RDFa attributes encoded into data-ve-attributes'

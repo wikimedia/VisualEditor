@@ -334,11 +334,23 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * @return {Object} Cloned element object
  */
 ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
-	var clone = ve.copy( element );
+	var i, len, about,
+		clone = ve.copy( element );
 	if ( !preserveGenerated && clone.internal ) {
 		delete clone.internal.generated;
 		if ( ve.isEmptyObject( clone.internal ) ) {
 			delete clone.internal;
+		}
+	}
+	// Remove about attribute to prevent about grouping of duplicated nodes
+	if ( clone.originalDomElements ) {
+		// TODO: The '#mwtNNN' is required by Parsoid. Make the name used here
+		// more generic and specify the #mwt pattern in MW code.
+		about = '#mwt' + Math.floor( 1000000000 * Math.random() );
+		for ( i = 0, len = clone.originalDomElements.length; i < len; i++ ) {
+			if ( clone.originalDomElements[ i ].hasAttribute( 'about' ) ) {
+				clone.originalDomElements[ i ].setAttribute( 'about', about );
+			}
 		}
 	}
 	return clone;
@@ -348,6 +360,8 @@ ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
 
 /**
  * @see #static-cloneElement
+ * Implementations should override the static method, not this one
+ *
  * @param {boolean} preserveGenerated Preserve internal.generated property of element
  * @return {Object} Cloned element object
  */
