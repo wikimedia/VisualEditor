@@ -34,12 +34,12 @@
     "grunt-cssjanus": "0.3.2",
     "grunt-jscs": "2.8.0",
     "grunt-jsonlint": "1.0.7",
-    "grunt-karma": "0.12.2",
+    "grunt-karma": "1.0.0",
     "grunt-tyops": "0.1.0",
-    "karma-chrome-launcher": "0.2.3",
-    "karma-coverage": "0.5.5",
-    "karma-firefox-launcher": "0.1.7",
-    "karma-qunit": "0.1.9",
+    "karma-chrome-launcher": "1.0.1",
+    "karma-coverage": "1.0.0",
+    "karma-firefox-launcher": "1.0.0",
+    "karma-qunit": "1.0.0",
     "karma": "0.13.22",
     "qunitjs": "1.23.1"
   }
