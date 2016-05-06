@@ -92,18 +92,6 @@ pre.ve-ce-branchNode {
 	word-wrap: normal;
 }
 
-/* Hack for empty headings and paragraphs; can't use min-height because of IE */
-
-.ve-ce-branchNode h1:empty:before,
-.ve-ce-branchNode h2:empty:before,
-.ve-ce-branchNode h3:empty:before,
-.ve-ce-branchNode h4:empty:before,
-.ve-ce-branchNode h5:empty:before,
-.ve-ce-branchNode h6:empty:before,
-.ve-ce-branchNode p:empty:before {
-	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
-}
-
 /* Emulate the first paragraph in each list item being unwrapped */
 
 /* TODO use CSS class for wrapper paragraph */
