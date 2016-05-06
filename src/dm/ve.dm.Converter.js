@@ -592,25 +592,16 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 		context.canCloseWrapper = false;
 		context.expectingContent = context.originallyExpectingContent;
 	}
-	function getAboutGroup( el ) {
-		var elAbout, node,
-			textNodes = [],
-			aboutGroup = [ el ];
+	function getAboutGroup( node ) {
+		var about,
+			aboutGroup = [ node ];
 
-		if ( !el.getAttribute || el.getAttribute( 'about' ) === null ) {
+		if ( node.nodeType !== Node.ELEMENT_NODE || node.getAttribute( 'about' ) === null ) {
 			return aboutGroup;
 		}
-		elAbout = el.getAttribute( 'about' );
-		for ( node = el.nextSibling; node; node = node.nextSibling ) {
-			if ( !node.getAttribute ) {
-				// Text nodes don't have a getAttribute() method. Thanks HTML DOM,
-				// that's really helpful ^^
-				textNodes.push( node );
-				continue;
-			}
-			if ( node.getAttribute( 'about' ) === elAbout ) {
-				aboutGroup = aboutGroup.concat( textNodes );
-				textNodes = [];
+		about = node.getAttribute( 'about' );
+		while ( ( node = node.nextSibling ) !== null ) {
+			if ( node.nodeType === Node.ELEMENT_NODE && node.getAttribute( 'about' ) === about ) {
 				aboutGroup.push( node );
 			} else {
 				break;
