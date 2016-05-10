@@ -86,6 +86,57 @@
 		assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 	};
 
+	ve.test.utils.countActionTests = function ( cases ) {
+		var i, expected = 0;
+		for ( i = 0; i < cases.length; i++ ) {
+			expected += cases[ i ].undo ? 2 : 1;
+			if ( cases[ i ].expectedRangeOrSelection ) {
+				expected += cases[ i ].undo ? 2 : 1;
+			}
+		}
+		return expected;
+	};
+
+	ve.test.utils.runActionTest = function ( actionName, assert, html, createView, method, args, rangeOrSelection, expectedData, expectedOriginalData, expectedRangeOrSelection, undo, msg ) {
+		var actualData,
+			surface = createView ?
+				ve.test.utils.createViewOnlySurfaceFromHtml( html || ve.dm.example.html ) :
+				ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
+			action = ve.ui.actionFactory.create( actionName, surface ),
+			data = ve.copy( surface.getModel().getDocument().getFullData() ),
+			originalData = ve.copy( data ),
+			documentModel = surface.getModel().getDocument(),
+			selection = ve.test.utils.selectionFromRangeOrSelection( documentModel, rangeOrSelection ),
+			expectedSelection = expectedRangeOrSelection && ve.test.utils.selectionFromRangeOrSelection( documentModel, expectedRangeOrSelection );
+
+		ve.dm.example.postprocessAnnotations( data, surface.getModel().getDocument().getStore() );
+
+		if ( expectedData ) {
+			expectedData( data, action );
+		}
+		if ( expectedOriginalData ) {
+			expectedOriginalData( originalData, action );
+		}
+		surface.getModel().setSelection( selection );
+		action[ method ].apply( action, args || [] );
+
+		actualData = surface.getModel().getDocument().getFullData();
+		ve.dm.example.postprocessAnnotations( actualData, surface.getModel().getDocument().getStore() );
+		assert.equalLinearData( actualData, data, msg + ': data models match' );
+		if ( expectedSelection ) {
+			assert.equalHash( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
+		}
+
+		if ( undo ) {
+			surface.getModel().undo();
+
+			assert.equalLinearData( surface.getModel().getDocument().getFullData(), originalData, msg + ' (undo): data models match' );
+			if ( expectedSelection ) {
+				assert.equalHash( surface.getModel().getSelection(), selection, msg + ' (undo): selections match' );
+			}
+		}
+	};
+
 	ve.test.utils.countGetModelFromDomTests = function ( cases ) {
 		var msg, n = 0;
 		for ( msg in cases ) {

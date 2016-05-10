@@ -8,29 +8,8 @@ QUnit.module( 've.ui.TableAction' );
 
 /* Tests */
 
-function runTableActionTest( assert, html, method, args, rangeOrSelection, expectedData, expectedRangeOrSelection, msg ) {
-	var surface = ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
-		tableAction = new ve.ui.TableAction( surface ),
-		data = ve.copy( surface.getModel().getDocument().getFullData() ),
-		documentModel = surface.getModel().getDocument(),
-		selection = ve.test.utils.selectionFromRangeOrSelection( documentModel, rangeOrSelection ),
-		expectedSelection = expectedRangeOrSelection && ve.test.utils.selectionFromRangeOrSelection( documentModel, expectedRangeOrSelection );
-
-	if ( expectedData ) {
-		expectedData( data );
-	}
-	surface.getModel().setSelection( selection );
-	tableAction[ method ].apply( tableAction, args || [] );
-
-	assert.equalLinearData( surface.getModel().getDocument().getFullData(), data, msg + ': data models match' );
-	if ( expectedSelection ) {
-		assert.equalHash( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
-	}
-}
-
 QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function ( assert ) {
 	var i,
-		expected = 0,
 		tableCellTail = [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{ type: '/paragraph' },
@@ -444,17 +423,11 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 			}
 		];
 
+	QUnit.expect( ve.test.utils.countActionTests( cases ) );
 	for ( i = 0; i < cases.length; i++ ) {
-		expected++;
-		if ( cases[ i ].expectedRangeOrSelection ) {
-			expected++;
-		}
-	}
-	QUnit.expect( expected );
-	for ( i = 0; i < cases.length; i++ ) {
-		runTableActionTest(
-			assert, cases[ i ].html, cases[ i ].method, cases[ i ].args, cases[ i ].rangeOrSelection,
-			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
+		ve.test.utils.runActionTest(
+			'table', assert, cases[ i ].html, false, cases[ i ].method, cases[ i ].args, cases[ i ].rangeOrSelection,
+			cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].expectedRangeOrSelection, cases[ i ].undo, cases[ i ].msg
 		);
 	}
 } );
