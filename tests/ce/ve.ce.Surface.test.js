@@ -996,13 +996,63 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 					]
 				],
 				msg: 'Append after bold'
+			},
+			{
+				prevHtml: '<p>Foo</p>',
+				prevRange: new ve.Range( 4 ),
+				nextHtml: '<p>Foo </p>',
+				nextRange: new ve.Range( 5 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [ ' ' ],
+							remove: [],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
+						},
+						{ type: 'retain', length: 3 }
+					]
+				],
+				expectsBreakpoint: true, // adding a word break triggers a breakpoint
+				msg: 'Inserting a word break'
+			},
+			{
+				prevHtml: '<p>Foo</p>',
+				prevRange: new ve.Range( 4 ),
+				nextHtml: '<p>Fo</p>',
+				nextRange: new ve.Range( 3 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 3 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [ 'o' ]
+						},
+						{ type: 'retain', length: 3 }
+					]
+				],
+				expectsBreakpoint: true, // any delete triggers a breakpoint
+				msg: 'Deleting text'
+			},
+			{
+				prevHtml: '<p>Foo</p>',
+				prevRange: new ve.Range( 4 ),
+				nextHtml: '<p>Foo</p>',
+				nextRange: new ve.Range( 1 ),
+				expectedOps: [],
+				expectsBreakpoint: false,
+				msg: 'Just moving the selection'
 			}
 		];
 
-	QUnit.expect( cases.length * 2 );
+	QUnit.expect( cases.length * 3 );
 
-	function testRunner( prevHtml, prevRange, prevFocusIsAfterAnnotationBoundary, nextHtml, nextRange, expectedOps, expectedRangeOrSelection, msg ) {
+	function testRunner( prevHtml, prevRange, prevFocusIsAfterAnnotationBoundary, nextHtml, nextRange, expectedOps, expectedRangeOrSelection, expectsBreakpoint, msg ) {
 		var txs, i, ops,
+			delayed = [],
 			view = ve.test.utils.createSurfaceViewFromHtml( prevHtml ),
 			model = view.getModel(),
 			node = view.getDocument().getDocumentNode().children[ 0 ],
@@ -1022,18 +1072,27 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 				veRange: nextRange,
 				selectionChanged: !nextRange.equals( prevRange ),
 				contentChanged: true
-			};
+			},
+			initialBreakpoints = model.undoStack.length;
+
+		view.afterRenderLock = function ( callback ) {
+			delayed.push( callback );
+		};
 
 		// Set model linear selection, so that insertion annotations are primed correctly
 		model.setLinearSelection( prevRange );
 		view.handleObservedChanges( prev, next );
-		txs = model.getHistory()[ 0 ].transactions;
+		for ( i = 0; i < delayed.length; i++ ) {
+			delayed[ i ]();
+		}
+		txs = ( model.getHistory()[ 0 ] || {} ).transactions || [];
 		ops = [];
 		for ( i = 0; i < txs.length; i++ ) {
 			ops.push( txs[ i ].getOperations() );
 		}
 		assert.deepEqual( ops, expectedOps, msg + ': keys' );
 		assert.equalRange( model.getSelection().getRange(), expectedRangeOrSelection, msg + ': range' );
+		assert.equal( initialBreakpoints !== model.undoStack.length, !!expectsBreakpoint, msg + ': breakpoint' );
 
 		view.destroy();
 	}
@@ -1042,7 +1101,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 		testRunner(
 			cases[ i ].prevHtml, cases[ i ].prevRange, cases[ i ].prevFocusIsAfterAnnotationBoundary || false,
 			cases[ i ].nextHtml, cases[ i ].nextRange,
-			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection || cases[ i ].nextRange, cases[ i ].msg
+			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection || cases[ i ].nextRange, cases[ i ].expectsBreakpoint, cases[ i ].msg
 		);
 	}
 

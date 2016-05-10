@@ -2709,14 +2709,23 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 	}
 
 	if ( insertedText ) {
-		// Use setTimeout to escape current renderLock
-		setTimeout( function () {
+		surface.afterRenderLock( function () {
 			surface.checkSequences();
+			surface.maybeSetBreakpoint();
 		} );
 	}
 	if ( newState.branchNodeChanged && newState.node ) {
 		this.updateCursorHolders();
 		this.showModelSelection();
+	}
+	if ( !insertedText ) {
+		// Two likely cases here:
+		// 1. The cursor moved. If so, fire off a breakpoint to catch any transactions
+		//    that were pending, in case a word was being typed.
+		// 2. Text was deleted. If so, make a breakpoint. A future enhancement could be
+		//    to make this only break after a sequence of deletes. (Maybe combine new
+		//    breakpoints with the former breakpoint based on the new transactions?)
+		surface.getModel().breakpoint();
 	}
 };
 
@@ -2846,6 +2855,40 @@ ve.ce.Surface.prototype.checkSequences = function () {
 	}
 	if ( executed ) {
 		this.showModelSelection();
+	}
+};
+
+/**
+ * See if the just-entered content fits our criteria for setting a history breakpoint
+ */
+ve.ce.Surface.prototype.maybeSetBreakpoint = function () {
+	var offset,
+		data = this.getModel().getDocument().data,
+		selection = this.getSelection();
+
+	if ( !selection.isNativeCursor() ) {
+		return;
+	}
+
+	// We have just entered text, probably. We want to know whether we just
+	// created a word break. We can't check the current offset, since the
+	// common case is that being at the end of the string, which is inherently
+	// a word break. So, we check whether the previous offset is a word break,
+	// which should catch cases where we have hit space or added punctuation.
+	// We use getWordRange because it handles the unicode cases, and accounts
+	// for single-character words where a space back is a word break because
+	// it's the *start* of a word.
+
+	// Note: Text input which isn't using word breaks, for whatever reason,
+	// will get breakpoints set by the fallback timer anyway. This is the
+	// main reason to not debounce that timer here, as then a reasonable
+	// typist with such text would never get a breakpoint set. The compromise
+	// position here will occasionally get a breakpoint set in the middle of
+	// the first word typed.
+
+	offset = selection.getModel().getCoveringRange().end - 1;
+	if ( data.getWordRange( offset ).end === offset ) {
+		this.getModel().breakpoint();
 	}
 };
 
@@ -3548,6 +3591,15 @@ ve.ce.Surface.prototype.incRenderLock = function () {
  */
 ve.ce.Surface.prototype.decRenderLock = function () {
 	this.renderLocks--;
+};
+
+/**
+ * Escape the current render lock
+ */
+ve.ce.Surface.prototype.afterRenderLock = function ( callback ) {
+	// TODO: implement an actual tracking system that makes sure renderlock is
+	// 0 when this is done.
+	setTimeout( callback );
 };
 
 /**
