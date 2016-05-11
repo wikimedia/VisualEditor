@@ -16,6 +16,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				rangeOrSelection: new ve.Range( 1, 20 ),
 				method: 'autolinkUrl',
 				expectedRangeOrSelection: new ve.Range( 20 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 20 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -23,6 +24,7 @@ QUnit.test( 'autolink', function ( assert ) {
 						data[ i ] = [ data[ i ], [ a.element ] ];
 					}
 				},
+				undo: true,
 				msg: 'Autolink after space'
 			},
 			{
@@ -30,6 +32,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				rangeOrSelection: new ve.Range( 1, 21 ),
 				method: 'autolinkUrl',
 				expectedRangeOrSelection: new ve.Range( 21 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 21 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -37,6 +40,7 @@ QUnit.test( 'autolink', function ( assert ) {
 						data[ i ] = [ data[ i ], [ a.element ] ];
 					}
 				},
+				undo: true,
 				msg: 'Autolink after newline'
 			},
 			{
@@ -44,6 +48,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				rangeOrSelection: new ve.Range( 1, 20 ),
 				method: 'autolinkUrl',
 				expectedRangeOrSelection: new ve.Range( 20 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 20 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'Http://Example.COm' );
@@ -51,6 +56,7 @@ QUnit.test( 'autolink', function ( assert ) {
 						data[ i ] = [ data[ i ], [ a.element ] ];
 					}
 				},
+				undo: true,
 				msg: 'Autolink with mixed case'
 			},
 			{
@@ -58,6 +64,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				rangeOrSelection: new ve.Range( 1, 22 ),
 				method: 'autolinkUrl',
 				expectedRangeOrSelection: new ve.Range( 22 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 22 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -65,6 +72,7 @@ QUnit.test( 'autolink', function ( assert ) {
 						data[ i ] = [ data[ i ], [ a.element ] ];
 					}
 				},
+				undo: true,
 				msg: 'Strip trailing punctuation'
 			},
 			{
@@ -72,6 +80,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				rangeOrSelection: new ve.Range( 2, 22 ),
 				method: 'autolinkUrl',
 				expectedRangeOrSelection: new ve.Range( 22 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 22 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -79,6 +88,7 @@ QUnit.test( 'autolink', function ( assert ) {
 						data[ i ] = [ data[ i ], [ a.element ] ];
 					}
 				},
+				undo: true,
 				msg: 'Strip trailing quotes'
 			},
 			{
@@ -96,8 +106,13 @@ QUnit.test( 'autolink', function ( assert ) {
 	QUnit.expect( ve.test.utils.countActionTests( cases ) );
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runActionTest(
-			'link', assert, cases[ i ].html, false, cases[ i ].method, [], cases[ i ].rangeOrSelection,
-			cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].expectedRangeOrSelection, cases[ i ].undo, cases[ i ].msg
+			'link', assert, cases[ i ].html, false, cases[ i ].method, [], cases[ i ].rangeOrSelection, cases[ i ].msg,
+			{
+				expectedData: cases[ i ].expectedData,
+				expectedRangeOrSelection: cases[ i ].expectedRangeOrSelection,
+				expectedOriginalRangeOrSelection: cases[ i ].expectedOriginalRangeOrSelection,
+				undo: cases[ i ].undo
+			}
 		);
 	}
 } );

@@ -61,8 +61,13 @@ QUnit.test( 'increase/decrease', 2, function ( assert ) {
 	QUnit.expect( ve.test.utils.countActionTests( cases ) );
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runActionTest(
-			'indentation', assert, cases[ i ].html || ve.dm.example.isolationHtml, false, cases[ i ].method, [], cases[ i ].rangeOrSelection,
-			cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].expectedRangeOrSelection, cases[ i ].undo, cases[ i ].msg
+			'indentation', assert, cases[ i ].html || ve.dm.example.isolationHtml, false, cases[ i ].method, [], cases[ i ].rangeOrSelection, cases[ i ].msg,
+			{
+				expectedData: cases[ i ].expectedData,
+				expectedOriginalData: cases[ i ].expectedOriginalData,
+				expectedRangeOrSelection: cases[ i ].expectedRangeOrSelection,
+				undo: cases[ i ].undo
+			}
 		);
 	}
 } );

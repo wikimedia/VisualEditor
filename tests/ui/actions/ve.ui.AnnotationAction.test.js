@@ -106,8 +106,11 @@ QUnit.test( 'toggle', function ( assert ) {
 	QUnit.expect( ve.test.utils.countActionTests( cases ) );
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runActionTest(
-			'annotation', assert, cases[ i ].html, false, cases[ i ].method, cases[ i ].args, cases[ i ].rangeOrSelection,
-			cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].expectedRangeOrSelection, cases[ i ].undo, cases[ i ].msg
+			'annotation', assert, cases[ i ].html, false, cases[ i ].method, cases[ i ].args, cases[ i ].rangeOrSelection, cases[ i ].msg,
+			{
+				expectedData: cases[ i ].expectedData,
+				expectedRangeOrSelection: cases[ i ].expectedRangeOrSelection
+			}
 		);
 	}
 } );
