@@ -102,8 +102,13 @@ QUnit.test( 'convert', function ( assert ) {
 	QUnit.expect( ve.test.utils.countActionTests( cases ) );
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runActionTest(
-			'format', assert, cases[ i ].html || ve.dm.example.isolationHtml, false, 'convert', [ cases[ i ].type, cases[ i ].attributes ], cases[ i ].rangeOrSelection,
-			cases[ i ].expectedData, cases[ i ].expectedOriginalData, cases[ i ].expectedRangeOrSelection, cases[ i ].undo, cases[ i ].msg
+			'format', assert, cases[ i ].html || ve.dm.example.isolationHtml, false, 'convert',
+			[ cases[ i ].type, cases[ i ].attributes ], cases[ i ].rangeOrSelection, cases[ i ].msg,
+			{
+				expectedData: cases[ i ].expectedData,
+				expectedRangeOrSelection: cases[ i ].expectedRangeOrSelection,
+				undo: cases[ i ].undo
+			}
 		);
 	}
 } );
