@@ -227,7 +227,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 				if ( this.fragments.length ) {
 					// Either the active search result...
 					selection = this.fragments[ this.focusedIndex ].getSelection();
-				} else if ( !( this.initialFragment.getSelection() instanceof ve.dm.NullSelection ) ) {
+				} else if ( this.initialFragment && !( this.initialFragment.getSelection() instanceof ve.dm.NullSelection ) ) {
 					// ... or the initial selection
 					selection = this.initialFragment.getSelection();
 				}
