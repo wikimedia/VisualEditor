@@ -27,7 +27,6 @@
     "grunt-contrib-clean": "1.0.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-copy": "1.0.0",
-    "grunt-contrib-csslint": "1.0.0",
     "grunt-contrib-jshint": "1.0.0",
     "grunt-contrib-watch": "1.0.0",
     "grunt-css-url-embed": "1.6.1",
@@ -41,6 +40,7 @@
     "karma-firefox-launcher": "1.0.0",
     "karma-qunit": "1.0.0",
     "karma": "0.13.22",
-    "qunitjs": "1.23.1"
+    "qunitjs": "1.23.1",
+    "stylelint": "6.3.3"
   }
 }

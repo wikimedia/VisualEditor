@@ -39,7 +39,7 @@
 
 .ve-ce-focusableNode-highlight {
 	background: #6da9f7;
-	box-shadow: inset 0 0 0 1px #4C76ac;
+	box-shadow: inset 0 0 0 1px #4c76ac;
 	position: absolute;
 	/* Clip extra span added for selectability */
 	overflow: hidden;
