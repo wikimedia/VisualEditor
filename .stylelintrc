@@ -27,7 +27,10 @@
 		"declaration-bang-space-after": [ "never" ],
 		"declaration-bang-space-before": [ "always" ],
 		"declaration-colon-space-after": [ "always" ],
-		"declaration-colon-space-before": [ "never" ]
+		"declaration-colon-space-before": [ "never" ],
+
+		"string-no-newline": true,
+		"string-quotes": [ "single" ]
 
 	}
 }

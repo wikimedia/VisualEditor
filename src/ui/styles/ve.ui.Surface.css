@@ -9,7 +9,7 @@
 }
 
 .ve-ui-surface:after {
-	content: ".";
+	content: '.';
 	display: block;
 	clear: both;
 	visibility: hidden;
