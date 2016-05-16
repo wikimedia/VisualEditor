@@ -52,5 +52,15 @@
 		"block-opening-brace-space-after": [ "always-single-line" ],
 		"block-opening-brace-space-before": [ "always" ],
 
+		"selector-combinator-space-after": [ "always" ],
+		"selector-combinator-space-before": [ "always" ],
+		"selector-no-vendor-prefix": true,
+		"selector-root-no-composition": true,
+		"selector-pseudo-element-colon-notation": [ "double" ],
+
+		"selector-list-comma-newline-after": [ "always" ],
+		"selector-list-comma-newline-before": [ "never-multi-line" ],
+		"selector-list-comma-space-after": [ "always-single-line" ],
+		"selector-list-comma-space-before": [ "never" ]
 	}
 }
