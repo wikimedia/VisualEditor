@@ -6,7 +6,6 @@
 
 .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
 	background-color: #95d14f;
-	background-image: -ms-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -webkit-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
@@ -15,7 +14,6 @@
 }
 
 .ve-ce-surface-highlights-focused .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
-	background-image: -ms-repeating-linear-gradient( -45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -webkit-repeating-linear-gradient( -45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient( -45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
