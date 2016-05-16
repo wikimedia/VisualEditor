@@ -7,6 +7,7 @@
 		"no-missing-eof-newline": true,
 
 		"no-duplicate-selectors": true,
+		"no-descending-specificity": true,
 
 		"no-unknown-animations": true,
 
