@@ -111,7 +111,7 @@ body {
 }
 
 .ve-filibuster-changes {
-	border: solid red 1px;
+	border: 1px solid #f00;
 }
 
 .ve-filibuster-frame {

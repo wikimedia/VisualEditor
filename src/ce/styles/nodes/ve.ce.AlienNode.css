@@ -6,10 +6,10 @@
 
 .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
 	background-color: #95d14f;
-	background-image: -ms-repeating-linear-gradient( -45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
-	background-image: -webkit-repeating-linear-gradient( -45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
-	background-image: -moz-repeating-linear-gradient( -45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px);
-	background-image: repeating-linear-gradient( -45deg, white 0px, white 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -ms-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -webkit-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -moz-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px);
+	background-image: repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-size: 14px 14px;
 	cursor: not-allowed;
 }
