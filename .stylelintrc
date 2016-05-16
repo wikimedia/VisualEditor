@@ -6,6 +6,8 @@
 		"no-eol-whitespace": true,
 		"no-missing-eof-newline": true,
 
+		"no-duplicate-selectors": true,
+
 		"color-hex-case": [ "lower" ],
 		"color-hex-length": [ "short" ],
 		"color-named": [ "never" ],

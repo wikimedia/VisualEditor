@@ -7,6 +7,7 @@
 .ve-ce-tableCellNode {
 	border: 1px dotted #ccc;
 	padding: 0.25em 0.5em;
+	min-width: 1em;
 }
 
 .ve-ce-tableCellNode-editing {
@@ -34,10 +35,6 @@
 .ve-ce-tableNode-active > tfoot > tr > .ve-ce-tableCellNode,
 .ve-ce-tableNode-active > tbody > tr > .ve-ce-tableCellNode {
 	border-style: solid;
-}
-
-.ve-ce-tableCellNode {
-	min-width: 1em;
 }
 
 .ve-ce-tableCellNode .ve-ce-paragraphNode {
