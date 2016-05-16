@@ -91,15 +91,15 @@
 }
 
 .ve-ui-debugBar-dump li .ve-ui-debugBar-dump-element {
-	background-color: #ddeeff;
+	background-color: #def;
 }
 
 .ve-ui-debugBar-dump li .ve-ui-debugBar-dump-char {
-	background-color: #ddffee;
+	background-color: #dfe;
 }
 
 .ve-ui-debugBar-dump li .ve-ui-debugBar-dump-achar {
-	background-color: #ffeedd;
+	background-color: #fed;
 }
 
 .ve-ui-debugBar-filibuster {
