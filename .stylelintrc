@@ -4,7 +4,10 @@
 		"color-hex-case": [ "lower" ],
 		"color-hex-length": [ "short" ],
 		"color-named": [ "never" ],
-		"color-no-invalid-hex": true
+		"color-no-invalid-hex": true,
+
+		"font-family-name-quotes": [ "single-unless-keyword" ],
+		"font-weight-notation": [ "named-where-possible" ]
 
 	}
 }
