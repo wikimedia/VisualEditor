@@ -23,13 +23,6 @@
 	background-repeat: no-repeat;
 }
 
-.ve-ce-resizableNode-hide-nw .ve-ce-resizableNode-nwHandle,
-.ve-ce-resizableNode-hide-ne .ve-ce-resizableNode-neHandle,
-.ve-ce-resizableNode-hide-sw .ve-ce-resizableNode-swHandle,
-.ve-ce-resizableNode-hide-se .ve-ce-resizableNode-seHandle {
-	display: none;
-}
-
 .ve-ce-resizableNode-nwHandle {
 	cursor: nw-resize;
 	left: -6px;
@@ -64,6 +57,13 @@
 .ve-ce-resizableNode-swHandle {
 	/* @embed */
 	background-image: url( ../../../ui/styles/images/resize-ne-sw.svg );
+}
+
+.ve-ce-resizableNode-hide-nw .ve-ce-resizableNode-nwHandle,
+.ve-ce-resizableNode-hide-ne .ve-ce-resizableNode-neHandle,
+.ve-ce-resizableNode-hide-sw .ve-ce-resizableNode-swHandle,
+.ve-ce-resizableNode-hide-se .ve-ce-resizableNode-seHandle {
+	display: none;
 }
 
 .ve-ce-resizableNode-sizeLabel {
