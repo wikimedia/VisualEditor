@@ -30,7 +30,10 @@
 		"declaration-colon-space-before": [ "never" ],
 
 		"string-no-newline": true,
-		"string-quotes": [ "single" ]
+		"string-quotes": [ "single" ],
+
+		"declaration-block-no-duplicate-properties": [ true, { ignore: [ "consecutive-duplicates" ] } ],
+		"declaration-block-no-shorthand-property-overrides": true
 
 	}
 }
