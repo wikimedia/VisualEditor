@@ -8,6 +8,8 @@
 
 		"no-duplicate-selectors": true,
 
+		"no-unknown-animations": true,
+
 		"color-hex-case": [ "lower" ],
 		"color-hex-length": [ "short" ],
 		"color-named": [ "never" ],
