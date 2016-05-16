@@ -93,5 +93,5 @@
 .ve-ce-tableNode-missingCell {
 	background-repeat: no-repeat;
 	background-position: center center;
-	border: 0 !important;
+	border: 0 !important; /* stylelint-disable-line declaration-no-important */
 }

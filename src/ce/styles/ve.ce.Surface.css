@@ -66,13 +66,13 @@
 }
 
 .ve-ce-surface-paste * {
-	height: 1px !important;
+	height: 1px !important; /* stylelint-disable-line declaration-no-important */
 }
 
 /* Support: IE */
 /* Prevent IE from wrapping link text in <u> and <font color> tags */
 .ve-init-target-ie .ve-ce-surface-paste a {
-	text-decoration: underline !important;
+	text-decoration: underline !important; /* stylelint-disable-line declaration-no-important */
 	color: #06c;
 }
 
