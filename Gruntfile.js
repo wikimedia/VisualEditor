@@ -321,13 +321,13 @@ module.exports = function ( grunt ) {
 		},
 		runwatch: {
 			files: [
-				'.{csslintrc,jscsrc,jshintignore,jshintrc}',
+				'.{stylelintrc,jscsrc,jshintignore,jshintrc}',
 				'**/*.js',
 				'!coverage/**',
 				'!dist/**',
 				'!docs/**',
 				'!node_modules/**',
-				'<%= csslint.all %>'
+				'<%= stylelint.all %>'
 			],
 			tasks: [ 'test', 'karma:bg:run' ]
 		}
