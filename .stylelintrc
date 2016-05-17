@@ -9,6 +9,7 @@
 		"no-duplicate-selectors": true,
 		"no-descending-specificity": true,
 		"declaration-no-important": true,
+		"selector-no-id": true,
 
 		"no-unknown-animations": true,
 
