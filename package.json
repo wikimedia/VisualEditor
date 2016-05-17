@@ -34,6 +34,7 @@
     "grunt-jscs": "2.8.0",
     "grunt-jsonlint": "1.0.7",
     "grunt-karma": "1.0.0",
+    "grunt-stylelint": "0.1.0",
     "grunt-tyops": "0.1.0",
     "karma-chrome-launcher": "1.0.1",
     "karma-coverage": "1.0.0",
