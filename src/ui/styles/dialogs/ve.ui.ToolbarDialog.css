@@ -16,7 +16,7 @@
 	-webkit-transition: max-height 250ms;
 	-moz-transition: max-height 250ms;
 	transition: max-height 250ms;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-toolbarDialog-position-above.oo-ui-window-ready {
@@ -36,7 +36,7 @@
 	-webkit-transition: width 250ms;
 	-moz-transition: width 250ms;
 	transition: width 250ms;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-surface {
@@ -45,7 +45,7 @@
 	-webkit-transition: margin 250ms, min-height 250ms;
 	-moz-transition: margin 250ms, min-height 250ms;
 	transition: margin 250ms, min-height 250ms;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-surface-toolbarDialog-side {

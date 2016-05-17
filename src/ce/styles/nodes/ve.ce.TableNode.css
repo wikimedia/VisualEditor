@@ -55,7 +55,7 @@
 	background-image: -webkit-repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-tableNodeOverlay-selection-box-anchor {

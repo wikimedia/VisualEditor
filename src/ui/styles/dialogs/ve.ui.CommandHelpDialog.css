@@ -11,7 +11,7 @@
 	-moz-column-count: 3;
 	-webkit-column-count: 3;
 	column-count: 3;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-commandHelpDialog-section {
