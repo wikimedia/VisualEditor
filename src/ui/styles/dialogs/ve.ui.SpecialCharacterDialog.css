@@ -50,7 +50,7 @@
 	-webkit-transition: border-color 200ms;
 	-moz-transition: border-color 200ms;
 	transition: border-color 200ms;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-specialCharacterPage-character:hover {

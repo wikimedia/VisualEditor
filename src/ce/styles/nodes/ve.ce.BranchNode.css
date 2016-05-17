@@ -16,7 +16,7 @@
 	-webkit-transition: opacity 200ms ease-out;
 	-moz-transition: opacity 200ms ease-out;
 	transition: opacity 200ms ease-out;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-branchNode-blockSlug,
@@ -41,7 +41,7 @@
 	-webkit-transition: all 400ms ease-out;
 	-moz-transition: all 400ms ease-out;
 	transition: all 400ms ease-out;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget {

@@ -19,7 +19,7 @@
 	-webkit-transition: opacity 250ms ease;
 	-moz-transition: opacity 250ms ease;
 	transition: opacity 250ms ease;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-documentNode .ve-ce-sectionNode-active {

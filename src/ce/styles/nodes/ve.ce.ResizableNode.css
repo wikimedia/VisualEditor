@@ -74,7 +74,7 @@
 	-webkit-transition: opacity 200ms;
 	-moz-transition: opacity 200ms;
 	transition: opacity 200ms;
-	/* stylelint-enable */
+	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-resizableNode-sizeLabel-resizing {
