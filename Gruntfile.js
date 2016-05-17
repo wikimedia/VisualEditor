@@ -264,9 +264,6 @@ module.exports = function ( grunt ) {
 			main: '.'
 		},
 		stylelint: {
-			options: {
-				stylelintrc: '.stylelintrc'
-			},
 			src: [
 				'**/*.css',
 				'!coverage/**',
