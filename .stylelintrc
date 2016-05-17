@@ -1,18 +1,6 @@
 {
+	"extends": "stylelint-config-wikimedia",
 	"rules": {
-
-		"indentation": [ "tab" ],
-		"max-empty-lines": 1,
-		"no-eol-whitespace": true,
-		"no-missing-eof-newline": true,
-
-		"no-duplicate-selectors": true,
-		"no-descending-specificity": true,
-		"declaration-no-important": true,
-		"selector-no-id": true,
-
-		"no-unknown-animations": true,
-
 		"no-browser-hacks": [ true, {
 			"browsers": [ ">5%", "Chrome >= 1", "Firefox >= 15", "Explorer >= 9", "Edge >= 1", "iOS >= 7", "Opera >= 12", "Safari >= 7", "ExplorerMobile >= 10", "Android >= 3", "not BlackBerry >= 1", "ChromeAndroid >= 1", "FirefoxAndroid >= 1", "OperaMobile >= 12", "not OperaMini >= 1" ]
 		} ],
@@ -20,89 +8,5 @@
 		"no-unsupported-browser-features": [ true, {
 			"browsers": [ ">5%", "Chrome >= 1", "Firefox >= 15", "Explorer >= 9", "Edge >= 12", "iOS >= 7", "Opera >= 12", "Safari >= 7", "ExplorerMobile >= 10", "Android >= 4", "not BlackBerry >= 1", "ChromeAndroid >= 1", "FirefoxAndroid >= 1", "OperaMobile >= 12", "not OperaMini >= 1" ]
 		} ],
-
-		"color-hex-case": [ "lower" ],
-		"color-hex-length": [ "short" ],
-		"color-named": [ "never" ],
-		"color-no-invalid-hex": true,
-
-		"font-family-name-quotes": [ "single-unless-keyword" ],
-		"font-weight-notation": [ "named-where-possible" ],
-
-		"function-calc-no-unspaced-operator": true,
-		"function-comma-newline-after": "never-multi-line",
-		"function-comma-newline-before": "never-multi-line",
-		"function-comma-space-after": [ "always" ],
-		"function-comma-space-before": [ "never" ],
-		"function-parentheses-newline-inside": [ "never-multi-line" ],
-		"function-parentheses-space-inside": [ "always" ],
-		"function-url-quotes": [ "none" ],
-		"function-whitespace-after": [ "always" ],
-
-		"value-list-comma-newline-after": [ "never-multi-line" ],
-		"value-list-comma-newline-before": [ "always-multi-line" ],
-		"value-list-comma-space-after": [ "always-single-line" ],
-		"value-list-comma-space-before": [ "never" ],
-
-		"declaration-bang-space-after": [ "never" ],
-		"declaration-bang-space-before": [ "always" ],
-		"declaration-colon-space-after": [ "always" ],
-		"declaration-colon-space-before": [ "never" ],
-
-		"string-no-newline": true,
-		"string-quotes": [ "single" ],
-
-		"declaration-block-no-duplicate-properties": [ true, { ignore: [ "consecutive-duplicates" ] } ],
-		"declaration-block-no-shorthand-property-overrides": true,
-
-		"declaration-block-semicolon-newline-after": [ "always" ],
-		"declaration-block-semicolon-newline-before": [ "never-multi-line" ],
-		"declaration-block-semicolon-space-after": [ "always-single-line" ],
-		"declaration-block-semicolon-space-before": [ "never" ],
-		"declaration-block-single-line-max-declarations": 1,
-		"declaration-block-trailing-semicolon": [ "always" ],
-
-		"block-closing-brace-newline-after": [ "always" ],
-		"block-closing-brace-newline-before": [ "always-multi-line" ],
-		"block-closing-brace-space-after": [ "always-single-line" ],
-		"block-closing-brace-space-before": [ "always-single-line" ],
-		"block-no-empty": true,
-		"block-no-single-line": true,
-		"block-opening-brace-newline-after": [ "always-multi-line" ],
-		"block-opening-brace-space-after": [ "always-single-line" ],
-		"block-opening-brace-space-before": [ "always" ],
-
-		"selector-combinator-space-after": [ "always" ],
-		"selector-combinator-space-before": [ "always" ],
-		"selector-no-vendor-prefix": true,
-		"selector-root-no-composition": true,
-		"selector-pseudo-element-colon-notation": [ "double" ],
-
-		"selector-list-comma-newline-after": [ "always" ],
-		"selector-list-comma-newline-before": [ "never-multi-line" ],
-		"selector-list-comma-space-after": [ "always-single-line" ],
-		"selector-list-comma-space-before": [ "never" ],
-
-		"media-feature-colon-space-after": [ "always" ],
-		"media-feature-colon-space-before": [ "never" ],
-		"media-feature-name-no-vendor-prefix": true,
-		"media-feature-no-missing-punctuation": true,
-		"media-feature-range-operator-space-after": [ "always" ],
-		"media-feature-range-operator-space-before": [ "always" ],
-
-		"media-query-parentheses-space-inside": [ "always" ],
-
-		"media-query-list-comma-newline-after": [ "always-multi-line" ],
-		"media-query-list-comma-newline-before": [ "never-multi-line" ],
-		"media-query-list-comma-space-after": [ "always-single-line" ],
-		"media-query-list-comma-space-before": [ "never" ],
-
-		"at-rule-empty-line-before": [ "always", {
-			except: [ "blockless-group", "first-nested" ],
-			ignore: ["after-comment"],
-		} ],
-		"at-rule-name-case": "lower",
-		"at-rule-name-space-after": "always-single-line"
-
 	}
 }
