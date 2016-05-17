@@ -10,13 +10,11 @@
 
 /* We have to use a * selector because user-select isn't inherited by absolutely positioned
    children in Firefox. */
-/*csslint vendor-prefix: false, compatible-vendor-prefixes:false */
 .ve-ce-focusableNode * {
 	/* Support: Firefox */
 	/* T70537: work around Firefox bug */
 	-moz-user-select: none; /* stylelint-disable-line no-unsupported-browser-features */
 }
-/*csslint vendor-prefix: true, compatible-vendor-prefixes:true */
 
 .ve-ce-focusableNode-highlight {
 	background: #6da9f7;

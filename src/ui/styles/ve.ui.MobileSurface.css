@@ -5,7 +5,6 @@
  */
 
 /* Most vendor prefixes are not needed on mobile devices */
-/*csslint compatible-vendor-prefixes:false */
 
 .ve-ui-mobileSurface-overlay-global {
 	background: #fff;
