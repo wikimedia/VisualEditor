@@ -63,7 +63,7 @@
 .ve-ui-debugBar-dump th {
 	padding: 0.5em 1em;
 	color: #555;
-	text-shadow: 0 1px 1px #fff;
+	text-shadow: 0 1px 1px #fff; /* stylelint-disable-line no-unsupported-browser-features */
 }
 
 .ve-ui-debugBar-dump ol {
@@ -77,13 +77,13 @@
 	border-radius: 0.3em;
 	margin: 0.25em 0 0.25em 0;
 	padding: 0.125em 0.5em;
-	text-shadow: 0 1px 1px #fff;
+	text-shadow: 0 1px 1px #fff; /* stylelint-disable-line no-unsupported-browser-features */
 	color: #000;
 }
 
 .ve-ui-debugBar-dump li > span > span {
 	color: #aaa;
-	text-shadow: 0 1px 1px #fff;
+	text-shadow: 0 1px 1px #fff; /* stylelint-disable-line no-unsupported-browser-features */
 }
 
 .ve-ui-debugBar-dump li .ve-ui-debugBar-dump-undefined {
@@ -123,5 +123,5 @@
 .ve-ui-debugBar-filibuster th {
 	padding: 0.5em 1em;
 	color: #555;
-	text-shadow: 0 1px 1px #fff;
+	text-shadow: 0 1px 1px #fff; /* stylelint-disable-line no-unsupported-browser-features */
 }

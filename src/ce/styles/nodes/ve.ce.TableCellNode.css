@@ -15,11 +15,11 @@
 }
 
 .ve-ce-tableCellNode a {
-	pointer-events: none;
+	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
 }
 
 .ve-ce-tableCellNode-editing a {
-	pointer-events: auto;
+	pointer-events: auto; /* stylelint-disable-line no-unsupported-browser-features */
 }
 
 .ve-ce-tableCellNode > .ve-ce-branchNode-blockSlug {

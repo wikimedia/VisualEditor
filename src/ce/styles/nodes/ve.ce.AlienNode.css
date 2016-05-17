@@ -6,17 +6,23 @@
 
 .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
 	background-color: #95d14f;
+	/* TODO: Support IE9 with fallback T135497 */
+	/* stylelint-disable no-unsupported-browser-features */
 	background-image: -webkit-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, #fff 0px, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-size: 14px 14px;
 	cursor: not-allowed;
+	/* stylelint-enable */
 }
 
 .ve-ce-surface-highlights-focused .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
+	/* TODO: Support IE9 with fallback T135497 */
+	/* stylelint-disable no-unsupported-browser-features */
 	background-image: -webkit-repeating-linear-gradient( -45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient( -45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, #6da9f7 0px, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
+	/* stylelint-enable */
 }
 
 .ve-ce-surface-highlights-blurred .ve-ce-alienNode-highlights {

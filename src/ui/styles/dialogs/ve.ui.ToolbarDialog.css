@@ -12,10 +12,11 @@
 	overflow-y: hidden;
 	max-height: 0;
 	border-top: 1px solid #ddd;
+	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: max-height 250ms;
 	-moz-transition: max-height 250ms;
-	-o-transition: max-height 250ms;
 	transition: max-height 250ms;
+	/* stylelint-enable */
 }
 
 .ve-ui-toolbarDialog-position-above.oo-ui-window-ready {
@@ -31,18 +32,20 @@
 	overflow-x: hidden;
 	width: 0;
 	margin-top: 1px;
+	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: width 250ms;
 	-moz-transition: width 250ms;
-	-o-transition: width 250ms;
 	transition: width 250ms;
+	/* stylelint-enable */
 }
 
 .ve-ui-surface {
 	min-height: 0;
+	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: margin 250ms, min-height 250ms;
 	-moz-transition: margin 250ms, min-height 250ms;
-	-o-transition: margin 250ms, min-height 250ms;
 	transition: margin 250ms, min-height 250ms;
+	/* stylelint-enable */
 }
 
 .ve-ui-surface-toolbarDialog-side {

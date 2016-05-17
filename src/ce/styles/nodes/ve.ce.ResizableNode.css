@@ -70,10 +70,11 @@
 	position: absolute;
 	text-align: center;
 	opacity: 0;
+	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: opacity 200ms;
 	-moz-transition: opacity 200ms;
-	-o-transition: opacity 200ms;
 	transition: opacity 200ms;
+	/* stylelint-enable */
 }
 
 .ve-ce-resizableNode-sizeLabel-resizing {

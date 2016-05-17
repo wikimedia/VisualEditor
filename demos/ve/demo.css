@@ -18,7 +18,7 @@ body {
 	float: right;
 	margin: 0.5em 0 0 0;
 	background: url( VisualEditor-logo.svg ) no-repeat;
-	background-size: contain;
+	background-size: contain; /* stylelint-disable-line no-unsupported-browser-features */
 	width: 10.75em;
 	height: 3.75em;
 }

@@ -16,6 +16,10 @@
 			"browsers": [ ">5%", "Chrome >= 1", "Firefox >= 15", "Explorer >= 9", "Edge >= 1", "iOS >= 7", "Opera >= 15", "Safari >= 7", "ExplorerMobile >= 10", "Android >= 3", "not BlackBerry >= 1", "ChromeAndroid >= 1", "FirefoxAndroid >= 1", "OperaMobile >= 15", "not OperaMini >= 1" ]
 		} ],
 
+		"no-unsupported-browser-features": [ true, {
+			"browsers": [ ">5%", "Chrome >= 1", "Firefox >= 15", "Explorer >= 9", "Edge >= 12", "iOS >= 7", "Opera >= 15", "Safari >= 7", "ExplorerMobile >= 10", "Android >= 4", "not BlackBerry >= 1", "ChromeAndroid >= 1", "FirefoxAndroid >= 1", "OperaMobile >= 15", "not OperaMini >= 1" ]
+		} ],
+
 		"color-hex-case": [ "lower" ],
 		"color-hex-length": [ "short" ],
 		"color-named": [ "never" ],

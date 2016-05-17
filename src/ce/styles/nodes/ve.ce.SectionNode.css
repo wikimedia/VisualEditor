@@ -15,7 +15,11 @@
 
 .ve-ce-documentNode .ve-ce-sectionNode {
 	opacity: 0.5;
+	/* stylelint-disable no-unsupported-browser-features */
+	-webkit-transition: opacity 250ms ease;
+	-moz-transition: opacity 250ms ease;
 	transition: opacity 250ms ease;
+	/* stylelint-enable */
 }
 
 .ve-ce-documentNode .ve-ce-sectionNode-active {

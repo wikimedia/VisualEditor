@@ -20,7 +20,8 @@
 	top: 0;
 	left: 0;
 	opacity: 0.5;
-	pointer-events: none;
+	/* TODO: Support IE9 with JS mouse events */
+	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
 }
 
 .ve-ce-surface-deactivatedSelection > div {
@@ -50,12 +51,12 @@
 .ve-ce-surface-dropMarker {
 	height: 1px;
 	background: #999;
-	pointer-events: none;
+	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
 	position: absolute;
 }
 
 .ve-ce-surface-paste {
-	position: fixed;
+	position: fixed; /* stylelint-disable-line no-unsupported-browser-features */
 	/* FIXME T126024: Stop the viewport scrolling when the paste target is typed into */
 	top: 3em;
 	left: 0;
