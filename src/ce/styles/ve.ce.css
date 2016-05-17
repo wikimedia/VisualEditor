@@ -3,8 +3,6 @@
  *
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
-/*csslint known-properties:false */
-/* Bug: https://github.com/stubbornella/csslint/issues/436 */
 
 .ve-ce-bidi-isolate {
 	unicode-bidi: isolate;
