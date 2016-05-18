@@ -1738,7 +1738,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 			actualStore = data.getStore().valueStore.map( function ( ann ) {
 				return ann.element;
 			} );
-			assert.equalLinearData( actualStore, cases[ i ].store, cases[ i ].msg + ': store' );
+			assert.deepEqualWithDomElements( actualStore, cases[ i ].store, cases[ i ].msg + ': store' );
 		}
 	}
 } );

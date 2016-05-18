@@ -1024,16 +1024,23 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentBranches ) {
-	var i, len, annotations, emptySet, setToRemove, type, canContainContent, contentElement, isOpen, nodeClass,
+	var i, len, annotations, emptySet, setToRemove, type,
+		canContainContent, contentElement, isOpen, nodeClass, ann, oldHash,
+		store = this.getStore(),
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
 	if ( rules.plainText ) {
-		emptySet = new ve.dm.AnnotationSet( this.getStore() );
+		emptySet = new ve.dm.AnnotationSet( store );
 	} else {
 		if ( rules.removeOriginalDomElements ) {
 			// Remove originalDomElements from annotations
 			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
-				delete allAnnotations.get( i ).element.originalDomElements;
+				ann = allAnnotations.get( i );
+				if ( ann.element.originalDomElements ) {
+					oldHash = OO.getHash( ann );
+					delete allAnnotations.get( i ).element.originalDomElements;
+					store.replaceHash( oldHash, ann );
+				}
 			}
 		}
 
