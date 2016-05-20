@@ -264,7 +264,7 @@ module.exports = function ( grunt ) {
 			main: '.'
 		},
 		stylelint: {
-			src: [
+			all: [
 				'**/*.css',
 				'!coverage/**',
 				'!dist/**',
