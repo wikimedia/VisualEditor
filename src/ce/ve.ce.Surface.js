@@ -1973,7 +1973,10 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			$( this ).attr( attrs );
 			this.removeAttribute( 'data-ve-attributes' );
 		} );
-
+	} else {
+		// Clone again. The elements were cloned on copy, but we need to clone
+		// on paste too in case the same thing is pasted multiple times.
+		slice.data.cloneElements( true );
 	}
 
 	// Internal table-into-table paste
@@ -2108,6 +2111,9 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		data = pastedDocumentModel.data;
 		// Clear metadata
 		pastedDocumentModel.metadata = new ve.dm.MetaLinearData( pastedDocumentModel.getStore(), new Array( 1 + data.getLength() ) );
+		// Clone again
+		data.cloneElements( true );
+		// Sanitize
 		sanitize( data );
 		data.remapInternalListKeys( documentModel.getInternalList() );
 

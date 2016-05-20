@@ -342,7 +342,7 @@ ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
 			delete clone.internal;
 		}
 	}
-	// Remove about attribute to prevent about grouping of duplicated nodes
+	// Generate a new about attribute to prevent about grouping of cloned nodes
 	if ( clone.originalDomElements ) {
 		// TODO: The '#mwtNNN' is required by Parsoid. Make the name used here
 		// more generic and specify the #mwt pattern in MW code.
