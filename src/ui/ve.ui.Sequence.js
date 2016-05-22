@@ -66,7 +66,7 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
  * @return {boolean} The command executed
  */
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {
-	var command, stripRange, executed, stripFragment, selection,
+	var command, stripRange, executed, stripFragment, selection, args,
 		surfaceModel = surface.getModel();
 
 	if ( surface.getCommands().indexOf( this.getCommandName() ) === -1 ) {
@@ -94,9 +94,19 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		surfaceModel.setLinearSelection( range );
 	}
 
-	executed = command.execute( surface );
+	// For sequences that trigger dialogs, pass an extra flag so the window knows
+	// to un-strip the sequence if it is closed without action. See ve.ui.WindowAction.
+	if ( command.getAction() === 'window' && command.getMethod() === 'open' ) {
+		args = ve.copy( command.args );
+		args[ 1 ] = args[ 1 ] || {};
+		args[ 1 ].strippedSequence = !!this.strip;
+	}
+
+	executed = command.execute( surface, args );
 
 	if ( executed && stripFragment ) {
+		// Strip the typed text. This will be undone if the action triggered was
+		// window/open and the window is dismissed
 		stripFragment.removeContent();
 	}
 
