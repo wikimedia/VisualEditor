@@ -91,7 +91,11 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 					if ( !win.constructor.static.activeSurface ) {
 						surface.getView().activate();
 					}
-					closed.then( function () {
+					closed.then( function ( closedData ) {
+						// Sequence-triggered window closed without action, undo
+						if ( data.strippedSequence && !( closedData && closedData.action ) ) {
+							surface.getModel().undo();
+						}
 						surface.getView().emit( 'position' );
 					} );
 				} );
