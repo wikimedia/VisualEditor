@@ -11,7 +11,8 @@
 			"Murma174",
 			"Se4598",
 			"Tomabrafix",
-			"TMg"
+			"TMg",
+			"Saehrimnir"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -124,10 +125,10 @@
 	"visualeditor-table-merge-cells": "Zellen zusammenführen",
 	"visualeditor-table-merge-cells-merge": "Verbinden",
 	"visualeditor-table-merge-cells-unmerge": "Teilen",
-	"visualeditor-table-move-col-after": "Danach einfügen",
-	"visualeditor-table-move-col-before": "Davor einfügen",
-	"visualeditor-table-move-row-after": "Unten einfügen",
-	"visualeditor-table-move-row-before": "Oben einfügen",
+	"visualeditor-table-move-col-after": "Nach rechts verschieben",
+	"visualeditor-table-move-col-before": "Nach links verschieben",
+	"visualeditor-table-move-row-after": "Nach unten verschieben",
+	"visualeditor-table-move-row-before": "Nach oben verschieben",
 	"visualeditor-tablecell-contextitem": "Tabellenzelle",
 	"visualeditor-tablecell-tooltip": "Doppelklick zum Bearbeiten der Zelle",
 	"visualeditor-toolbar-format-tooltip": "Absatz formatieren",

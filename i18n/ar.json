@@ -18,7 +18,8 @@
 			"Fatz",
 			"محمد أحمد عبد الفتاح",
 			"فلورانس",
-			"JoyfulEditing"
+			"JoyfulEditing",
+			"Shbib Al-Subaie"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -40,8 +41,8 @@
 	"visualeditor-clearbutton-tooltip": "أزل التنسيق",
 	"visualeditor-clipboard-copy": "نسخ",
 	"visualeditor-clipboard-cut": "قص",
-	"visualeditor-clipboard-paste": "إلصاق",
-	"visualeditor-clipboard-paste-special": "إلصاق النص الخام",
+	"visualeditor-clipboard-paste": "لصق",
+	"visualeditor-clipboard-paste-special": "لصق النص الخام",
 	"visualeditor-commentinspector-edit": "عدل التعليق",
 	"visualeditor-commentinspector-title": "تعليق مخفي",
 	"visualeditor-commentinspector-tooltip": "تعليق مخفي",

@@ -5,7 +5,8 @@
 			"Muhammed taha",
 			"Kurdboydm",
 			"Asoxor",
-			"Pirehelokan"
+			"Pirehelokan",
+			"Sarchia"
 		]
 	},
 	"visualeditor": "دەستکاریکەری دیداری",
@@ -32,6 +33,7 @@
 	"visualeditor-dialog-error-dismiss": "بگەڕێوە",
 	"visualeditor-dialog-language-auto-direction": "خۆگەڕ",
 	"visualeditor-dialog-language-search-title": "زمان ھەڵبژێرە",
+	"visualeditor-dialog-table-caption": "ڕاڤە",
 	"visualeditor-find-and-replace-done": "کرا",
 	"visualeditor-find-and-replace-find-text": "بیدۆزەرەوە",
 	"visualeditor-find-and-replace-next-button": "پاشتر بدۆزەرەوە",
@@ -72,6 +74,7 @@
 	"visualeditor-slug-insert": "بەند زیاد بکە",
 	"visualeditor-specialcharacter-button-tooltip": "نووسەی تایبەت",
 	"visualeditor-specialcharacterinspector-title": "نووسەی تایبەت",
+	"visualeditor-table-caption": "ڕاڤە",
 	"visualeditor-table-delete-col": "سڕینەوە{{PLURAL:$1|ستوون|ستوونەکان}}",
 	"visualeditor-table-format-header": "خانەی سەردێڕ",
 	"visualeditor-table-insert-col-after": "لە دوای زیاد بکە",

@@ -35,7 +35,8 @@
 			"Wladek92",
 			"Macofe",
 			"Litlok",
-			"The RedBurn"
+			"The RedBurn",
+			"Trizek (WMF)"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
@@ -132,7 +133,7 @@
 	"visualeditor-shortcuts-formatting": "Mise en forme du paragraphe",
 	"visualeditor-shortcuts-history": "Historique",
 	"visualeditor-shortcuts-other": "Autre",
-	"visualeditor-shortcuts-sequence-notice": "Type",
+	"visualeditor-shortcuts-sequence-notice": "Taper",
 	"visualeditor-shortcuts-text-style": "Style du texte",
 	"visualeditor-slug-insert": "Insérer un paragraphe",
 	"visualeditor-specialcharacter-button-tooltip": "Caractères spéciaux",
