@@ -30,7 +30,7 @@
 }
 
 .ve-init-sa-target-toolbar.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
-	border-top: none;
+	border-top: 0;
 }
 
 .ve-ui-debugBar {

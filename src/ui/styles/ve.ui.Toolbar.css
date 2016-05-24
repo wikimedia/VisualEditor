@@ -19,7 +19,7 @@
 	position: fixed; /* stylelint-disable-line no-unsupported-browser-features */
 	top: 0;
 	z-index: 2;
-	border-top: none;
+	border-top: 0;
 }
 
 .ve-ui-toolbar-floating .oo-ui-toolbar-shadow {

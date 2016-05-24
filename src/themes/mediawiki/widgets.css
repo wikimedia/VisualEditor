@@ -11,7 +11,7 @@
 }
 
 .ve-ui-targetWidget > :last-child {
-	border-bottom: none;
+	border-bottom: 0;
 }
 
 /* Context item */

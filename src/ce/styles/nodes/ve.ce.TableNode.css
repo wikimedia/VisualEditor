@@ -52,9 +52,9 @@
 .ve-ce-tableNodeOverlay-selection-box-notEditable {
 	/* TODO: Support IE9 with fallback T135497 */
 	/* stylelint-disable no-unsupported-browser-features */
-	background-image: -webkit-repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
-	background-image: -moz-repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
-	background-image: repeating-linear-gradient( -45deg, transparent 0px, transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -webkit-repeating-linear-gradient( -45deg, transparent 0 transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -moz-repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
 	/* stylelint-enable no-unsupported-browser-features */
 }
 
