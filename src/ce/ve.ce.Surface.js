@@ -847,6 +847,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	var i, l, $target, $dropTarget, node, dropPosition, targetPosition, targetOffset, top, left,
 		nodeType, inIgnoreChildren, item, fakeItem,
+		dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory,
 		isContent = true,
 		dataTransfer = e.originalEvent.dataTransfer;
 
@@ -863,7 +864,7 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 					item = dataTransfer.items[ i ];
 					if ( item.kind !== 'string' ) {
 						fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
-						if ( ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
+						if ( dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
 							this.allowedFile = true;
 							break;
 						}
@@ -873,7 +874,7 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 				for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
 					item = dataTransfer.items[ i ];
 					fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
-					if ( ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
+					if ( dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
 						this.allowedFile = true;
 						break;
 					}
@@ -2281,6 +2282,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
  */
 ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, targetFragment ) {
 	var i, l, name, item,
+		dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory,
 		handled = false;
 
 	targetFragment = targetFragment || this.getModel().getFragment();
@@ -2299,9 +2301,9 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 
 	for ( i = 0, l = items.length; i < l; i++ ) {
 		item = items[ i ];
-		name = ve.init.target.dataTransferHandlerFactory.getHandlerNameForItem( item, isPaste, this.pasteSpecial );
+		name = dataTransferHandlerFactory.getHandlerNameForItem( item, isPaste, this.pasteSpecial );
 		if ( name ) {
-			ve.init.target.dataTransferHandlerFactory.create( name, this.surface, item )
+			dataTransferHandlerFactory.create( name, this.surface, item )
 				.getInsertableData().done( insert );
 			handled = true;
 			break;

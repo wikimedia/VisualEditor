@@ -15,9 +15,6 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
- * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
- * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
- * @cfg {ve.ui.DataTransferHandlerFactory} [dataTransferHandlerFactory] Data transfer handler factory to use
  */
 ve.init.Target = function VeInitTarget( config ) {
 	config = config || {};
@@ -37,13 +34,10 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.toolbar = null;
 	this.actionsToolbar = null;
 	this.toolbarConfig = config.toolbarConfig;
-	this.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
-	this.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
-	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.ui.dataTransferHandlerFactory;
-	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands, this.commandRegistry );
-	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands, this.commandRegistry );
 	this.$scrollContainer = this.getScrollContainer();
 	this.toolbarScrollOffset = 0;
+
+	this.setupTriggerListeners();
 
 	// Initialization
 	this.$element.addClass( 've-init-target' );
@@ -214,6 +208,15 @@ ve.init.Target.prototype.destroy = function () {
 };
 
 /**
+ * Set up trigger listeners
+ */
+ve.init.Target.prototype.setupTriggerListeners = function () {
+	var surfaceOrSurfaceConfig = this.getSurface() || this.getSurfaceConfig();
+	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands, surfaceOrSurfaceConfig.commandRegistry );
+	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands, surfaceOrSurfaceConfig.commandRegistry );
+};
+
+/**
  * Get the target's scroll container
  *
  * @return {jQuery} The target's scroll container
@@ -310,8 +313,9 @@ ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
 ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
 	return ve.extendObject( {
 		$scrollContainer: this.$scrollContainer,
-		commandRegistry: this.commandRegistry,
-		sequenceRegistry: this.sequenceRegistry,
+		commandRegistry: ve.ui.commandRegistry,
+		sequenceRegistry: ve.ui.sequenceRegistry,
+		dataTransferHandlerFactory: ve.ui.dataTransferHandlerFactory,
 		includeCommands: this.constructor.static.includeCommands,
 		excludeCommands: OO.simpleArrayUnion(
 			this.constructor.static.excludeCommands,
@@ -418,7 +422,6 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	toolbar.$bar.append( surface.getToolbarDialogs().$element );
 	toolbar.$actions.append( actions.$element );
 	this.onContainerScroll();
-
 };
 
 /**

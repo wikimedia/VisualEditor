@@ -59,7 +59,9 @@ ve.init.sa.Target.static.actionGroups = [
  * @inheritdoc
  */
 ve.init.sa.Target.prototype.addSurface = function () {
+	// Parent method
 	var surface = ve.init.sa.Target.super.prototype.addSurface.apply( this, arguments );
+
 	this.$element.append( $( '<div>' ).addClass( 've-init-sa-target-surfaceWrapper' ).append( surface.$element ) );
 	if ( !this.getSurface() ) {
 		this.setSurface( surface );

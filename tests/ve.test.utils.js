@@ -289,7 +289,8 @@
 	 * @return {ve.ce.Surface} CE surface
 	 */
 	ve.test.utils.createSurfaceViewFromDocument = function ( doc ) {
-		var mockSurface = {
+		var model, view,
+			mockSurface = {
 				$blockers: $( '<div>' ),
 				$selections: $( '<div>' ),
 				$element: $( '<div>' ),
@@ -309,11 +310,12 @@
 					return view;
 				},
 				commandRegistry: ve.ui.commandRegistry,
-				sequenceRegistry: ve.ui.sequenceRegistry
-			},
-			/* jshint -W003 */
-			model = new ve.dm.Surface( doc ),
-			view = new ve.ce.Surface( model, mockSurface ); /* jshint +W003 */
+				sequenceRegistry: ve.ui.sequenceRegistry,
+				dataTransferHandlerFactory: ve.ui.dataTransferHandlerFactory
+			};
+
+		model = new ve.dm.Surface( doc );
+		view = new ve.ce.Surface( model, mockSurface );
 
 		view.surface = mockSurface;
 		mockSurface.$element.append( view.$element );

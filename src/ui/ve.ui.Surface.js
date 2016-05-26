@@ -17,6 +17,7 @@
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
  * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
+ * @cfg {ve.ui.DataTransferHandlerFactory} [dataTransferHandlerFactory] Data transfer handler factory to use
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
@@ -43,6 +44,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
 	this.commandRegistry = config.commandRegistry || ve.init.target.commandRegistry;
 	this.sequenceRegistry = config.sequenceRegistry || ve.init.target.sequenceRegistry;
+	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.init.target.dataTransferHandlerFactory;
 	this.commands = OO.simpleArrayDifference(
 		config.includeCommands || this.commandRegistry.getNames(), config.excludeCommands || []
 	);
