@@ -1820,11 +1820,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		// before conversion as it can affect textStart/End offsets.
 		delete contextElement.internal;
 		ve.dm.converter.getDomSubtreeFromModel(
-			new ve.dm.Document(
-				new ve.dm.ElementLinearData( documentModel.getStore(), context ),
-				documentModel.getHtmlDocument(), undefined, documentModel.getInternalList(),
-				documentModel.getLang(), documentModel.getDir()
-			),
+			documentModel.cloneWithData( context, true ),
 			this.$pasteTarget[ 0 ]
 		);
 
