@@ -246,7 +246,7 @@ ve.ui.Surface.prototype.isMobile = function () {
  */
 ve.ui.Surface.prototype.setupDebugBar = function () {
 	this.debugBar = new ve.ui.DebugBar( this );
-	this.debugBar.$element.insertAfter( this.$element );
+	this.$element.append( this.debugBar.$element );
 };
 
 /**

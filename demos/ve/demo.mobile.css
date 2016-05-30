@@ -32,7 +32,3 @@
 .ve-init-sa-target-toolbar.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
 	border-top: 0;
 }
-
-.ve-ui-debugBar {
-	border-bottom: 1px solid #ccc;
-}

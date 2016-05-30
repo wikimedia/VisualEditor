@@ -104,6 +104,7 @@ body {
 
 .ve-ui-debugBar {
 	padding: 1.5em;
+	border-top: 1px solid #ccc;
 }
 
 .ve-ui-debugBar-filibuster {

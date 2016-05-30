@@ -4,6 +4,10 @@
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+.ve-ui-debugBar {
+	clear: both;
+}
+
 .ve-ui-debugBar-commands {
 	margin-bottom: -0.5em;
 }
