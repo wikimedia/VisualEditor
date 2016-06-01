@@ -134,7 +134,7 @@ ve.dm.Surface.prototype.startHistoryTracking = function () {
 		return;
 	}
 	if ( this.historyTrackingInterval === null ) {
-		this.historyTrackingInterval = setInterval( this.breakpoint.bind( this ), 750 );
+		this.historyTrackingInterval = setInterval( this.breakpoint.bind( this ), 3000 );
 	}
 };
 
@@ -149,6 +149,14 @@ ve.dm.Surface.prototype.stopHistoryTracking = function () {
 		clearInterval( this.historyTrackingInterval );
 		this.historyTrackingInterval = null;
 	}
+};
+
+/**
+ * Reset the timer for automatic history-tracking
+ */
+ve.dm.Surface.prototype.resetHistoryTrackingInterval = function () {
+	this.stopHistoryTracking();
+	this.startHistoryTracking();
 };
 
 /**
@@ -854,6 +862,7 @@ ve.dm.Surface.prototype.breakpoint = function () {
 	if ( !this.enabled ) {
 		return false;
 	}
+	this.resetHistoryTrackingInterval();
 	if ( this.newTransactions.length > 0 ) {
 		this.undoStack.push( {
 			transactions: this.newTransactions,
