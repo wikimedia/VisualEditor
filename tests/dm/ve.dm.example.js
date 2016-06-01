@@ -3207,13 +3207,56 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
+	'about group separated by whitespace is split': {
+		body: '<div rel="ve:Alien" about="#vet1">Foo</div>\t<div rel="ve:Alien" about="#vet1">Bar</div>',
+		data: [
+			{
+				type: 'alienBlock',
+				originalDomElements: $( '<div rel="ve:Alien" about="#vet1">Foo</div>' ).toArray(),
+				internal: {
+					whitespace: [ undefined, undefined, undefined, '\t' ]
+				}
+			},
+			{ type: '/alienBlock' },
+			{
+				type: 'alienBlock',
+				originalDomElements: $( '<div rel="ve:Alien" about="#vet1">Bar</div>' ).toArray(),
+				internal: {
+					whitespace: [ '\t' ]
+				}
+			},
+			{ type: '/alienBlock' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'about group separated by text is split': {
+		body: '<p><span rel="ve:Alien" about="#vet1">Foo</span>X<span rel="ve:Alien" about="#vet1">Bar</span></p>',
+		data: [
+			{ type: 'paragraph' },
+			{
+				type: 'alienInline',
+				originalDomElements: $( '<span rel="ve:Alien" about="#vet1">Foo</span>' ).toArray()
+			},
+			{ type: '/alienInline' },
+			'X',
+			{
+				type: 'alienInline',
+				originalDomElements: $( '<span rel="ve:Alien" about="#vet1">Bar</span>' ).toArray()
+			},
+			{ type: '/alienInline' },
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
 	'whitespace preservation with an about group': {
-		body: ' <div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>\t\t\t' +
+		body: ' <div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>' +
 			'<div rel="ve:Alien" about="#vet1">  Bar   </div>    ',
 		data: [
 			{
 				type: 'alienBlock',
-				originalDomElements: $( '<div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>\t\t\t' +
+				originalDomElements: $( '<div rel="ve:Alien" about="#vet1">\tFoo\t\t</div>' +
 						'<div rel="ve:Alien" about="#vet1">  Bar   </div>' ).toArray(),
 				internal: {
 					whitespace: [ ' ', undefined, undefined, '    ' ]
