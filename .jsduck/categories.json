@@ -149,7 +149,8 @@
 					"ve.ui.Overlay",
 					"ve.ui.*Toolbar",
 					"ve.ui.DebugBar",
-					"ve.ui.Trigger"
+					"ve.ui.Trigger",
+					"ve.ui.TabIndexScope"
 				]
 			},
 			{

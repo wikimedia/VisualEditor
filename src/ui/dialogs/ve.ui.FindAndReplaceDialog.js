@@ -67,43 +67,52 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			return function () {
 				return !dialog.invalidRegex;
 			};
-		} )( this )
+		} )( this ),
+		tabIndex: 1
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchCaseSensitive',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' ),
-		value: ve.userConfig( 'visualeditor-findAndReplace-matchCase' )
+		value: ve.userConfig( 'visualeditor-findAndReplace-matchCase' ),
+		tabIndex: 8
 	} );
 	this.regexToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchRegularExpression',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
-		value: ve.userConfig( 'visualeditor-findAndReplace-regex' )
+		value: ve.userConfig( 'visualeditor-findAndReplace-regex' ),
+		tabIndex: 9
 	} );
 	this.wordToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'quotes',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-word' ),
-		value: ve.userConfig( 'visualeditor-findAndReplace-word' )
+		value: ve.userConfig( 'visualeditor-findAndReplace-word' ),
+		tabIndex: 10
 	} );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
 		icon: 'previous',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
-			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' )
+			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' ),
+		tabIndex: 6
 	} );
 	this.nextButton = new OO.ui.ButtonWidget( {
 		icon: 'next',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
-			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' )
+			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' ),
+		tabIndex: 7
 	} );
 	this.replaceText = new OO.ui.TextInputWidget( {
 		placeholder: ve.msg( 'visualeditor-find-and-replace-replace-text' ),
-		value: ve.userConfig( 'visualeditor-findAndReplace-replaceText' )
+		value: ve.userConfig( 'visualeditor-findAndReplace-replaceText' ),
+		tabIndex: 2
 	} );
 	this.replaceButton = new OO.ui.ButtonWidget( {
-		label: ve.msg( 'visualeditor-find-and-replace-replace-button' )
+		label: ve.msg( 'visualeditor-find-and-replace-replace-button' ),
+		tabIndex: 3
 	} );
 	this.replaceAllButton = new OO.ui.ButtonWidget( {
-		label: ve.msg( 'visualeditor-find-and-replace-replace-all-button' )
+		label: ve.msg( 'visualeditor-find-and-replace-replace-all-button' ),
+		tabIndex: 4
 	} );
 
 	optionsGroup = new OO.ui.ButtonGroupWidget( {
@@ -130,7 +139,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 	doneButton = new OO.ui.ButtonWidget( {
 		classes: [ 've-ui-findAndReplaceDialog-cell' ],
-		label: ve.msg( 'visualeditor-find-and-replace-done' )
+		label: ve.msg( 'visualeditor-find-and-replace-done' ),
+		tabIndex: 5
 	} );
 	$findRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
 	$replaceRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
@@ -156,8 +166,9 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.replaceAllButton.connect( this, { click: 'onReplaceAllButtonClick' } );
 	doneButton.connect( this, { click: 'close' } );
 
-	this.findText.$input.on( 'keydown', this.onFindTextKeyDown.bind( this ) );
-	this.replaceText.$input.on( 'keydown', this.onReplaceTextKeyDown.bind( this ) );
+	this.tabIndexScope = new ve.ui.TabIndexScope( {
+		root: this.$element
+	} );
 
 	// Initialization
 	this.$content.addClass( 've-ui-findAndReplaceDialog-content' );
@@ -313,30 +324,6 @@ ve.ui.FindAndReplaceDialog.prototype.onFindReplaceTextEnter = function ( e ) {
 		this.findPrevious();
 	} else {
 		this.findNext();
-	}
-};
-
-/**
- * Handle keydown events on the find text input
- *
- * @param {jQuery.Event} e
- */
-ve.ui.FindAndReplaceDialog.prototype.onFindTextKeyDown = function ( e ) {
-	if ( e.which === OO.ui.Keys.TAB && !e.shiftKey ) {
-		this.replaceText.$input.focus();
-		e.preventDefault();
-	}
-};
-
-/**
- * Handle keydown events on the replace text input
- *
- * @param {jQuery.Event} e
- */
-ve.ui.FindAndReplaceDialog.prototype.onReplaceTextKeyDown = function ( e ) {
-	if ( e.which === OO.ui.Keys.TAB && e.shiftKey ) {
-		this.findText.$input.focus();
-		e.preventDefault();
 	}
 };
 
