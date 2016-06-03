@@ -42,9 +42,9 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$controls = $( '<div>' );
 	this.$menus = $( '<div>' );
 	this.$placeholder = $( '<div>' ).addClass( 've-ui-surface-placeholder' );
-	this.commandRegistry = config.commandRegistry || ve.init.target.commandRegistry;
-	this.sequenceRegistry = config.sequenceRegistry || ve.init.target.sequenceRegistry;
-	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.init.target.dataTransferHandlerFactory;
+	this.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
+	this.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
+	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.ui.dataTransferHandlerFactory;
 	this.commands = OO.simpleArrayDifference(
 		config.includeCommands || this.commandRegistry.getNames(), config.excludeCommands || []
 	);
