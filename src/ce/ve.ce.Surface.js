@@ -480,6 +480,7 @@ ve.ce.Surface.prototype.focus = function () {
 	// If we are calling focus after replacing a node the selection may be gone
 	// but onDocumentFocus won't fire so restore the selection here too.
 	this.onModelSelect();
+	// setTimeout: postpone until onDocumentFocus has been called
 	setTimeout( function () {
 		// Support: Chrome
 		// In some browsers (e.g. Chrome) giving the document node focus doesn't
@@ -700,8 +701,9 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	this.$document.on( 'mouseup', this.onDocumentMouseUpHandler );
 
 	this.surfaceObserver.stopTimerLoop();
-	// In some browsers the selection doesn't change until after the event
-	// so poll in the 'after' function
+	// setTimeout: In some browsers the selection doesn't change until after the event
+	// so poll in the 'after' function.
+	// TODO: rewrite to use EventSequencer
 	setTimeout( this.afterDocumentMouseDown.bind( this, e, this.getSelection() ) );
 
 	// Support: IE
@@ -754,8 +756,9 @@ ve.ce.Surface.prototype.afterDocumentMouseDown = function ( e, selectionBefore )
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
 	this.$document.off( 'mouseup', this.onDocumentMouseUpHandler );
 	this.surfaceObserver.startTimerLoop();
-	// In some browsers the selection doesn't change until after the event
+	// setTimeout: In some browsers the selection doesn't change until after the event
 	// so poll in the 'after' function
+	// TODO: rewrite to use EventSequencer
 	setTimeout( this.afterDocumentMouseUp.bind( this, e, this.getSelection() ) );
 };
 
@@ -1557,6 +1560,7 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 	}
 
 	this.onCopy( e );
+	// setTimeout: postpone until after the setTimeout in onCopy
 	setTimeout( function () {
 		// Trigger a fake backspace to remove the content: this behaves differently based on the selection,
 		// e.g. in a TableSelection.
@@ -1675,6 +1679,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 			// Restore scroll position after changing focus
 			this.$window.scrollTop( scrollTop );
 
+			// setTimeout: postpone until after the default copy action
 			setTimeout( function () {
 				// If the range was in $highlights (right-click copy), don't restore it
 				if ( !OO.ui.contains( view.$highlights[ 0 ], originalSelection.focusNode, true ) ) {
@@ -1716,6 +1721,7 @@ ve.ce.Surface.prototype.onPaste = function ( e, fakePaste ) {
 	this.surfaceObserver.disable();
 	this.pasting = true;
 	this.fakePasting = !!fakePaste;
+	// setTimeout: postpone until after the default paste action
 	setTimeout( function () {
 		try {
 			if ( !e.isDefaultPrevented() ) {
@@ -2211,7 +2217,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		// Restore focus and scroll position
 		this.$documentNode[ 0 ].focus();
 		this.$window.scrollTop( beforePasteData.scrollTop );
-		// Firefox sometimes doesn't change scrollTop immediately when pasting
+		// setTimeout: Firefox sometimes doesn't change scrollTop immediately when pasting
 		// line breaks at the end of a line so do it again later.
 		setTimeout( function () {
 			view.$window.scrollTop( beforePasteData.scrollTop );
@@ -2563,7 +2569,7 @@ ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
 	}
 	// Update the state of the SurfaceObserver
 	this.surfaceObserver.pollOnceNoCallback();
-	// Wait for other documentUpdate listeners to run before emitting
+	// setTimeout: Wait for other documentUpdate listeners to run before emitting
 	setTimeout( function () {
 		surface.emit( 'position' );
 	} );
@@ -2690,6 +2696,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 				newSelection = oldState && oldState.veRange ?
 					new ve.dm.LinearSelection( dmDoc, oldState.veRange ) :
 					new ve.dm.NullSelection( dmDoc );
+				// TODO: setTimeout: document purpose
 				setTimeout( function () {
 					surface.changeModel( null, newSelection );
 					surface .showModelSelection();
@@ -2754,6 +2761,7 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
 	// Animate the slug open
 	$slug = this.getDocument().getDocumentNode().getNodeFromOffset( offset + 1 ).$element;
 	$slug.addClass( 've-ce-branchNode-newSlug' );
+	// setTimeout: postpone until after animation is complete
 	setTimeout( function () {
 		$slug.addClass( 've-ce-branchNode-newSlug-open' );
 		setTimeout( function () {
@@ -3298,7 +3306,7 @@ ve.ce.Surface.prototype.showModelSelection = function () {
 	var selection, changed;
 
 	if ( this.deactivated ) {
-		// Defer until view has updated
+		// setTimeout: Defer until view has updated
 		setTimeout( this.updateDeactivatedSelection.bind( this ) );
 		return false;
 	}
@@ -3603,6 +3611,7 @@ ve.ce.Surface.prototype.decRenderLock = function () {
 ve.ce.Surface.prototype.afterRenderLock = function ( callback ) {
 	// TODO: implement an actual tracking system that makes sure renderlock is
 	// 0 when this is done.
+	// setTimeout: postpone until there is definitely no render lock
 	setTimeout( callback );
 };
 
