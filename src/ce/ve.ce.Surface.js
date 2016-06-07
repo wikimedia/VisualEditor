@@ -1209,7 +1209,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  * @param {jQuery.Event} e keydown event
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
-	var keyDownSelection, direction, focusableNode, startOffset, endOffset,
+	var keyDownSelectionState, direction, focusableNode, startOffset, endOffset,
 		offsetDiff, dmFocus, dmSelection, inNonSlug, ceSelection, ceNode, range,
 		fixupCursorForUnicorn, matrix, col, row, $focusNode, removedUnicorns,
 		surface = this,
@@ -1276,8 +1276,8 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 			ve.compareDocumentOrder(
 				surface.nativeSelection.focusNode,
 				surface.nativeSelection.focusOffset,
-				keyDownSelection.focusNode,
-				keyDownSelection.focusOffset
+				keyDownSelectionState.focusNode,
+				keyDownSelectionState.focusOffset
 			)
 		) || null;
 	}
@@ -1285,7 +1285,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	if ( e !== this.keyDownState.event ) {
 		return;
 	}
-	keyDownSelection = this.keyDownState.selection;
+	keyDownSelectionState = this.keyDownState.selectionState;
 	this.clearKeyDownState();
 
 	if (
@@ -1361,7 +1361,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		!e.ctrlKey &&
 		!e.altKey &&
 		!e.metaKey &&
-		keyDownSelection.isCollapsed &&
+		keyDownSelectionState.isCollapsed &&
 		this.nativeSelection.isCollapsed &&
 		( direction = getDirection() ) !== null
 	) {
@@ -1375,8 +1375,8 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 			// Calculate the DM offsets of our motion
 			try {
 				startOffset = ve.ce.getOffset(
-					keyDownSelection.focusNode,
-					keyDownSelection.focusOffset
+					keyDownSelectionState.focusNode,
+					keyDownSelectionState.focusOffset
 				);
 				endOffset = ve.ce.getOffset(
 					this.nativeSelection.focusNode,
@@ -2973,7 +2973,7 @@ ve.ce.Surface.prototype.getActiveNode = function () {
  */
 ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
 	this.keyDownState.event = e;
-	this.keyDownState.selection = null;
+	this.keyDownState.selectionState = null;
 
 	if ( this.nativeSelection.rangeCount > 0 && e && (
 		e.keyCode === OO.ui.Keys.UP ||
@@ -2981,7 +2981,7 @@ ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
 		e.keyCode === OO.ui.Keys.LEFT ||
 		e.keyCode === OO.ui.Keys.RIGHT
 	) ) {
-		this.keyDownState.selection = new ve.SelectionState( this.nativeSelection );
+		this.keyDownState.selectionState = new ve.SelectionState( this.nativeSelection );
 	}
 };
 
@@ -2990,7 +2990,7 @@ ve.ce.Surface.prototype.storeKeyDownState = function ( e ) {
  */
 ve.ce.Surface.prototype.clearKeyDownState = function () {
 	this.keyDownState.event = null;
-	this.keyDownState.selection = null;
+	this.keyDownState.selectionState = null;
 };
 
 /**
