@@ -127,14 +127,14 @@ ve.ce.RangeState.prototype.saveState = function ( old, documentNode, selectionOn
 	this.branchNodeChanged = ( old && old.node ) !== this.node;
 
 	// Compute text/hash/textState, for change comparison
-	if ( selectionOnly && !anchorNodeChanged ) {
-		this.text = old.text;
-		this.hash = old.hash;
-		this.textState = old.textState;
-	} else if ( !this.node ) {
+	if ( !this.node ) {
 		this.text = null;
 		this.hash = null;
 		this.textState = null;
+	} else if ( selectionOnly && !anchorNodeChanged ) {
+		this.text = old.text;
+		this.hash = old.hash;
+		this.textState = old.textState;
 	} else {
 		this.text = ve.ce.getDomText( this.node.$element[ 0 ] );
 		this.hash = ve.ce.getDomHash( this.node.$element[ 0 ] );
