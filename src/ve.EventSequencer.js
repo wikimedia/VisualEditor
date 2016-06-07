@@ -259,9 +259,9 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 		this.doOnLoop();
 	}
 
-	onListeners = this.onListenersForEvent[ eventName ] || [];
+	// Listener list: take snapshot (for immutability if a listener adds another listener)
+	onListeners = ( this.onListenersForEvent[ eventName ] || [] ).slice();
 
-	// Length cache 'len' is required, as an onListener could add another onListener
 	for ( i = 0, len = onListeners.length; i < len; i++ ) {
 		onListener = onListeners[ i ];
 		this.callListener( 'on', eventName, i, onListener, ev );
@@ -297,11 +297,10 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 	var i, len, afterListeners, afterOneListeners;
 
-	// Snapshot the listener lists, and blank *OneListener list.
-	// This ensures reasonable behaviour if a function called adds another listener.
+	// Listener list: take snapshot (for immutability if a listener adds another listener)
 	afterListeners = ( this.afterListenersForEvent[ eventName ] || [] ).slice();
-	afterOneListeners = ( this.afterOneListenersForEvent[ eventName ] || [] ).slice();
-	( this.afterOneListenersForEvent[ eventName ] || [] ).length = 0;
+	// One-time listener list: take snapshot (for immutability) and blank the list
+	afterOneListeners = ( this.afterOneListenersForEvent[ eventName ] || [] ).splice( 0 );
 
 	for ( i = 0, len = afterListeners.length; i < len; i++ ) {
 		this.callListener( 'after', eventName, i, afterListeners[ i ], ev );
@@ -342,11 +341,10 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 	}
 	this.afterLoopTimeoutId = null;
 
-	// Snapshot the listener lists, and blank *OneListener list.
-	// This ensures reasonable behaviour if a function called adds another listener.
+	// Loop listener list: take snapshot (for immutability if a listener adds another listener)
 	afterLoopListeners = this.afterLoopListeners.slice();
-	afterLoopOneListeners = this.afterLoopOneListeners.slice();
-	this.afterLoopOneListeners.length = 0;
+	// One-time loop listener list: take snapshot (for immutability) and blank the list
+	afterLoopOneListeners = this.afterLoopOneListeners.splice( 0 );
 
 	for ( i = 0, len = afterLoopListeners.length; i < len; i++ ) {
 		this.callListener( 'afterLoop', null, i, this.afterLoopListeners[ i ], null );
