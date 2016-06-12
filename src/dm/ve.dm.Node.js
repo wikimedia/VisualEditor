@@ -348,7 +348,8 @@ ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
 		// more generic and specify the #mwt pattern in MW code.
 		about = '#mwt' + Math.floor( 1000000000 * Math.random() );
 		for ( i = 0, len = clone.originalDomElements.length; i < len; i++ ) {
-			if ( clone.originalDomElements[ i ].hasAttribute( 'about' ) ) {
+			// Check for hasAttribute as comments don't have them
+			if ( clone.originalDomElements[ i ].hasAttribute && clone.originalDomElements[ i ].hasAttribute( 'about' ) ) {
 				clone.originalDomElements[ i ].setAttribute( 'about', about );
 			}
 		}
