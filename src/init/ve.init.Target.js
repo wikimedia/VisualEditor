@@ -46,6 +46,12 @@ ve.init.Target = function VeInitTarget( config ) {
 		this.$element.addClass( 've-init-target-ie' );
 	}
 
+	// We don't have any Edge CSS bugs that aren't present in IE, so
+	// use a combined class to simplify selectors.
+	if ( ve.init.platform.constructor.static.isEdge() ) {
+		this.$element.addClass( 've-init-target-ie-or-edge' );
+	}
+
 	// Events
 	this.onDocumentKeyDownHandler = this.onDocumentKeyDown.bind( this );
 	this.onTargetKeyDownHandler = this.onTargetKeyDown.bind( this );
