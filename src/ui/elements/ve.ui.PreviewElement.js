@@ -110,7 +110,7 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 
 	// Traverse children to see when they are all rerendered
 	if ( this.view instanceof ve.ce.BranchNode ) {
-		ve.BranchNode.static.traverse( this.view, queueNode );
+		this.view.traverse( queueNode );
 	} else {
 		queueNode( this.view );
 	}
