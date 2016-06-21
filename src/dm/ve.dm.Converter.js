@@ -615,7 +615,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 			type = ve.dm.LinearData.static.getType( data[ i ] );
 			if ( type ) {
 				itemClass = modelRegistry.lookup( type ) || ve.dm.AlienNode;
-				if ( !( itemClass.prototype === targetClass.prototype || itemClass.prototype instanceof targetClass ) ) {
+				if ( !( itemClass === targetClass || itemClass.prototype instanceof targetClass ) ) {
 					return false;
 				}
 			} else {
