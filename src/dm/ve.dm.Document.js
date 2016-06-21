@@ -50,6 +50,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	// Properties
 	this.parentDocument = parentDocument;
 	this.completeHistory = [];
+	this.nodesByType = {};
 
 	if ( data instanceof ve.dm.ElementLinearData ) {
 		// Pre-split ElementLinearData
@@ -306,6 +307,7 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
 	// so attach all nodes in stack[1] to the root node
 	ve.batchSplice( this.documentNode, 0, 0, currentStack );
+	this.updateNodesByType( [ this.documentNode ], [] );
 
 	doc.buildingNodeTree = false;
 };
@@ -954,16 +956,19 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
  * @return {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
  */
 ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offset, newLength ) {
-	var // Get a slice of the document where it's been changed
-		data = this.data.sliceObject( offset, offset + newLength ),
+	// Get a slice of the document where it's been changed
+	var data = this.data.sliceObject( offset, offset + newLength ),
 		// Build document fragment from data
 		fragment = new this.constructor( data, this.htmlDocument, this ),
 		// Get generated child nodes from the document fragment
-		nodes = fragment.getDocumentNode().getChildren();
-	// Replace nodes in the model tree
-	ve.batchSplice( parent, index, numNodes, nodes );
+		addedNodes = fragment.getDocumentNode().getChildren(),
+		// Replace nodes in the model tree
+		removedNodes = ve.batchSplice( parent, index, numNodes, addedNodes );
+
+	this.updateNodesByType( addedNodes, removedNodes );
+
 	// Return inserted nodes
-	return nodes;
+	return addedNodes;
 };
 
 /**
@@ -978,6 +983,82 @@ ve.dm.Document.prototype.rebuildTree = function () {
 		0,
 		this.data.getLength()
 	);
+};
+
+/**
+ * Update the nodes-by-type index
+ *
+ * @param {ve.dm.Node[]} addedNodes Added nodes
+ * @param {ve.dm.Node[]} removedNodes Removed nodes
+ */
+ve.dm.Document.prototype.updateNodesByType = function ( addedNodes, removedNodes ) {
+	var doc = this;
+
+	function remove( node ) {
+		var type = node.getType(),
+			nodes = doc.nodesByType[ type ] || [],
+			index = nodes.indexOf( node );
+
+		if ( index !== -1 ) {
+			nodes.splice( index, 1 );
+			if ( !nodes.length ) {
+				delete doc.nodesByType[ type ];
+			}
+		}
+	}
+
+	function add( node ) {
+		var type = node.getType(),
+			nodes = doc.nodesByType[ type ] = doc.nodesByType[ type ] || [];
+
+		nodes.push( node );
+	}
+
+	function traverse( nodes, action ) {
+		nodes.forEach( function ( node ) {
+			if ( node.hasChildren() ) {
+				node.traverse( action );
+			}
+			action( node );
+		} );
+	}
+
+	traverse( removedNodes, remove );
+	traverse( addedNodes, add );
+};
+
+/**
+ * Get all nodes in the tree for a specific type
+ *
+ * If a string type is passed only nodes of that exact type will be returned,
+ * if a node class is passed, all sub types will be matched.
+ *
+ * String type matching will be faster than class matching.
+ *
+ * @param {string|Function} type Node type name or node constructor
+ * @param {boolean} sort Sort nodes by document order
+ * @return {ve.dm.Node[]} Nodes of a specific type
+ */
+ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
+	var t, nodeType,
+		nodes = [];
+	if ( type instanceof Function ) {
+		for ( t in this.nodesByType ) {
+			nodeType = ve.dm.nodeFactory.lookup( t );
+			if ( nodeType === type || nodeType.prototype instanceof type ) {
+				nodes = nodes.concat( this.getNodesByType( t ) );
+			}
+		}
+	} else {
+		nodes = this.nodesByType[ type ];
+	}
+
+	if ( sort ) {
+		nodes.sort( function ( a, b ) {
+			return a.getOffset() - b.getOffset();
+		} );
+	}
+	return nodes;
 };
 
 /**
