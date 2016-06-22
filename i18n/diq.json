@@ -6,7 +6,8 @@
 			"Kghbln",
 			"Marmase",
 			"Mirzali",
-			"Se4598"
+			"Se4598",
+			"Kumkumuk"
 		]
 	},
 	"visualeditor": "Vurnayoğê vênayışi",
@@ -74,9 +75,14 @@
 	"visualeditor-shortcuts-history": "Tarix",
 	"visualeditor-shortcuts-other": "Zewbi",
 	"visualeditor-shortcuts-text-style": "Metin nızamkerdış",
-	"visualeditor-specialcharacter-button-tooltip": "Karakterê xısusiyi",
+	"visualeditor-specialcharacter-button-tooltip": "Sembolê bağsey",
 	"visualeditor-specialcharacterinspector-title": "Karakterê xısusiyi",
 	"visualeditor-toolbar-format-tooltip": "Formata paragrafer",
+	"visualeditor-toolbar-history": "Tarix",
 	"visualeditor-toolbar-insert": "Cı ke",
-	"visualeditor-toolbar-style-tooltip": "terzê metini"
+	"visualeditor-toolbar-paragraph-format": "Format kerdış",
+	"visualeditor-toolbar-structure": "Kerdayış",
+	"visualeditor-toolbar-style-tooltip": "terzê metini",
+	"visualeditor-toolbar-table": "Tablo",
+	"visualeditor-toolbar-text-style": "Stil"
 }

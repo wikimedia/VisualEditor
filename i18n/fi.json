@@ -17,7 +17,8 @@
 			"Elseweyr",
 			"Gloria sah",
 			"Alluk.",
-			"Olimar"
+			"Olimar",
+			"01miki10"
 		]
 	},
 	"visualeditor": "Visuaalinen muokkain",
@@ -57,6 +58,8 @@
 	"visualeditor-dialog-error-dismiss": "Takaisin",
 	"visualeditor-dialog-language-auto-direction": "Automaattinen",
 	"visualeditor-dialog-language-search-title": "Valitse kieli",
+	"visualeditor-dialog-table-caption": "Kuvateksti",
+	"visualeditor-dialog-table-title": "Taulukon ominaisuudet",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-done": "Valmis",
@@ -118,6 +121,7 @@
 	"visualeditor-specialcharacterinspector-title": "Erikoismerkit",
 	"visualeditor-specialcharinspector-characterlist-insert": "{\n\t\"Symbolit\": {\n\t\t\"−\": \"−\",\n\t\t\"—\": \"—\",\n\t\t\"°\": \"°\",\n\t\t\"′\": \"′\",\n\t\t\"″\": \"″\",\n\t\t\"←\": \"←\",\n\t\t\"→\": \"→\",\n\t\t\"« »\" : \"« »\",\n\t\t\"“”\" : \"“”\",\n\t\t\"#\" : \"#\",\n\t\t\"@\" : \"@\",\n\t\t\"|\" : \"|\",\n\t\t\"~\" : \"~\",\n\t\t\"§\": \"§\",\n\t\t\"•\" : \"•\",\n\t\t\"·\": \"·\",\n\t\t\"…\" : \"…\",\n\t\t\"€\" : \"€\"\n\t},\n\t\"Aksentit\": {\n\t\t\"Æ\" : \"Æ\",\n\t\t\"æ\" : \"æ\",\n\t\t\"À\" : \"À\",\n\t\t\"à\" : \"à\",\n\t\t\"Â\" : \"Â\",\n\t\t\"â\" : \"â\",\n\t\t\"Ä\" : \"Ä\",\n\t\t\"ä\" : \"ä\",\n\t\t\"Å\" : \"Å\",\n\t\t\"å\" : \"å\",\n\t\t\"Ç\" : \"Ç\",\n\t\t\"ç\" : \"ç\",\n\t\t\"È\" : \"È\",\n\t\t\"è\" : \"è\",\n\t\t\"É\" : \"É\",\n\t\t\"é\" : \"é\",\n\t\t\"Ê\" : \"Ê\",\n\t\t\"ê\" : \"ê\",\n\t\t\"Ë\" : \"Ë\",\n\t\t\"ë\" : \"ë\",\n\t\t\"Î\" : \"Î\",\n\t\t\"î\" : \"î\",\n\t\t\"Ï\" : \"Ï\",\n\t\t\"ï\" : \"ï\",\n\t\t\"Ô\" : \"Ô\",\n\t\t\"ô\" : \"ô\",\n\t\t\"Ö\" : \"Ö\",\n\t\t\"ö\" : \"ö\",\n\t\t\"Ø\" : \"Ø\",\n\t\t\"ø\" : \"ø\",\n\t\t\"Ù\" : \"Ù\",\n\t\t\"ù\" : \"ù\",\n\t\t\"Û\" : \"Û\",\n\t\t\"û\" : \"û\",\n\t\t\"Ü\" : \"Ü\",\n\t\t\"ü\" : \"ü\",\n\t\t\"Ÿ\" : \"Ÿ\",\n\t\t\"ÿ\" : \"ÿ\",\n\t\t\"Œ\" : \"Œ\",\n\t\t\"œ\" : \"œ\"\n\t},\n\t\"Matemaattiset\": {\n\t\t\"−\": \"−\",\n\t\t\"×\": \"×\",\n\t\t\"÷\": \"÷\",\n\t\t\"≈\": \"≈\",\n\t\t\"≠\": \"≠\",\n\t\t\"≤\": \"≤\",\n\t\t\"≥\": \"≥\",\n\t\t\"±\": \"±\",\n\t\t\"¹\" : \"¹\",\n\t\t\"²\" : \"²\",\n\t\t\"³\" : \"³\",\n\t\t\"⁴\" : \"⁴\",\n\t\t\"⁵\" : \"⁵\",\n\t\t\"⁶\" : \"⁶\",\n\t\t\"⁷\" : \"⁷\",\n\t\t\"⁸\" : \"⁸\",\n\t\t\"⁹\" : \"⁹\",\n\t\t\"⁰\" : \"⁰\",\n\t\t\"½\" : \"½\"\n\t}\n}",
 	"visualeditor-table-caption": "Kuvaus",
+	"visualeditor-table-contextitem-properties": "Ominaisuudet",
 	"visualeditor-table-delete-col": "Poista {{PLURAL:$1|sarake|sarakkeet}}",
 	"visualeditor-table-delete-row": "Poista {{PLURAL:$1|rivi|rivit}}",
 	"visualeditor-table-format-data": "Sisältösolu",
@@ -130,6 +134,10 @@
 	"visualeditor-table-merge-cells": "Yhdistä solut",
 	"visualeditor-table-merge-cells-merge": "Yhdistä",
 	"visualeditor-table-merge-cells-unmerge": "Peru yhdistäminen",
+	"visualeditor-table-move-col-after": "Siirrä oikealle",
+	"visualeditor-table-move-col-before": "Siirrä vasemmalle",
+	"visualeditor-table-move-row-after": "Siirrä alas",
+	"visualeditor-table-move-row-before": "Siirrä ylös",
 	"visualeditor-tablecell-contextitem": "Taulukon solu",
 	"visualeditor-tablecell-tooltip": "Muokkaa solua kaksoisnapsauttamalla",
 	"visualeditor-toolbar-format-tooltip": "Kappaleen muotoilu",
