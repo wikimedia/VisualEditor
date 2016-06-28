@@ -128,6 +128,16 @@ ve.dm.Node.static.isUnwrappable = true;
 ve.dm.Node.static.isContent = false;
 
 /**
+ * For a non-content node type, whether this node type can be serialized in a content
+ * position (e.g. for round tripping). This value is ignored if isContent is true.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.canSerializeAsContent = false;
+
+/**
  * Whether this node type can be focused. Focusable nodes react to selections differently.
  *
  * @static

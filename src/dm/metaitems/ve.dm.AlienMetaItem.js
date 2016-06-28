@@ -10,7 +10,7 @@
  * @class
  * @extends ve.dm.MetaItem
  * @constructor
- * @param {Object} element Reference to element in meta-linmod
+ * @param {Object} element Reference to element in linmod
  */
 ve.dm.AlienMetaItem = function VeDmAlienMetaItem() {
 	// Parent constructor

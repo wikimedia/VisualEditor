@@ -112,6 +112,7 @@ QUnit.test( 'Test that never succeeds', function ( assert ) {
 		}
 	).done( function () {
 		assert.ok( false, 'promise was wrongly resolved as successful' );
+		done();
 	} ).fail( function () {
 		assert.ok( true, 'promise was rejected' );
 		done();

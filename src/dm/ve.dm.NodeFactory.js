@@ -209,6 +209,22 @@ ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 };
 
 /**
+ * Check if a node can be serialized into a content position
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} The node is content or can be round-tripped into a content position
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.canNodeSerializeAsContent = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isContent ||
+			this.registry[ type ].static.canSerializeAsContent;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if the node is focusable.
  *
  * @method
