@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.17.4
+ * OOjs UI v0.17.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-05-31T21:50:56Z
+ * Date: 2016-06-29T13:27:11Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
@@ -67,7 +67,6 @@
 .oo-ui-buttonElement-frameless > input.oo-ui-buttonElement-button {
 	padding-right: 0.25em;
 	padding-left: 0.25em;
-	color: #333333;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
 	box-shadow: inset 0 0 0 1px #347bff, 0 0 0 1px #347bff;
@@ -270,7 +269,7 @@
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
 	border-color: #347bff;
-	box-shadow: inset 0 0 0 1px #ffffff;
+	box-shadow: inset 0 0 0 1px #347bff, inset 0 0 0 2px #ffffff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
 	color: #ffffff;
@@ -294,7 +293,7 @@
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
 	border-color: #347bff;
-	box-shadow: inset 0 0 0 1px #ffffff;
+	box-shadow: inset 0 0 0 1px #347bff, inset 0 0 0 2px #ffffff;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
 	color: #ffffff;
@@ -318,7 +317,7 @@
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
 	border-color: #d11d13;
-	box-shadow: inset 0 0 0 1px #ffffff;
+	box-shadow: inset 0 0 0 1px #d11d13, inset 0 0 0 2px #ffffff;
 }
 .oo-ui-clippableElement-clippable {
 	-webkit-box-sizing: border-box;
@@ -1035,13 +1034,13 @@
 .oo-ui-textInputWidget textarea {
 	display: block;
 	width: 100%;
-	resize: none;
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
 }
 .oo-ui-textInputWidget textarea {
 	overflow: auto;
+	resize: none;
 }
 .oo-ui-textInputWidget [type="search"] {
 	-webkit-appearance: textfield;
@@ -1095,7 +1094,6 @@
 .oo-ui-textInputWidget input,
 .oo-ui-textInputWidget textarea {
 	padding: 0.5em;
-	line-height: 1.275em;
 	margin: 0;
 	font-size: inherit;
 	font-family: inherit;
@@ -1103,9 +1101,9 @@
 	color: #000000;
 	border: 1px solid #cccccc;
 	border-radius: 2px;
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+}
+.oo-ui-textInputWidget textarea {
+	line-height: 1.275em;
 }
 .oo-ui-textInputWidget .oo-ui-pendingElement-pending {
 	background-color: transparent;
@@ -1249,6 +1247,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	cursor: default;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
@@ -1262,12 +1261,12 @@
 .oo-ui-dropdownWidget-handle .oo-ui-iconElement-icon {
 	position: absolute;
 }
+.oo-ui-dropdownWidget.oo-ui-widget-enabled .oo-ui-dropdownWidget-handle {
+	cursor: pointer;
+}
 .oo-ui-dropdownWidget > .oo-ui-menuSelectWidget {
 	z-index: 1;
 	width: 100%;
-}
-.oo-ui-dropdownWidget.oo-ui-widget-enabled .oo-ui-dropdownWidget-handle {
-	cursor: pointer;
 }
 .oo-ui-dropdownWidget:last-child {
 	margin-left: 0;
@@ -1385,14 +1384,14 @@
 }
 
 /*!
- * OOjs UI v0.17.4
+ * OOjs UI v0.17.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-05-31T21:50:56Z
+ * Date: 2016-06-29T13:27:11Z
  */
 .oo-ui-draggableElement-handle,
 .oo-ui-draggableElement-handle.oo-ui-widget {
@@ -1403,7 +1402,6 @@
 	cursor:         grab;
 }
 .oo-ui-draggableElement-handle:active {
-	cursor: move;
 	cursor: url(images/grabbing.cur );
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;
@@ -1647,21 +1645,6 @@
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
 }
-.oo-ui-toggleSwitchWidget .oo-ui-toggleSwitchWidget-glow {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
-	        user-select: none;
-}
-.oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-glow {
-	display: none;
-}
 .oo-ui-toggleSwitchWidget:last-child {
 	margin-left: 0;
 }
@@ -1669,17 +1652,22 @@
 	content: "";
 	display: block;
 	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
+	top: 1px;
+	right: 1px;
+	bottom: 1px;
+	left: 1px;
 	border: 1px solid transparent;
 	border-radius: 1em;
 	z-index: 1;
+	-webkit-transition: border-color 100ms;
+	   -moz-transition: border-color 100ms;
+	        transition: border-color 100ms;
 }
 .oo-ui-toggleSwitchWidget-grip {
 	top: 0.35em;
+	min-width: 16px;
 	width: 1.2em;
+	min-height: 16px;
 	height: 1.2em;
 	border-radius: 1.2em;
 	background-color: #555555;
@@ -1690,13 +1678,13 @@
 .oo-ui-toggleSwitchWidget-glow {
 	display: none;
 }
-.oo-ui-toggleSwitchWidget.oo-ui-toggleWidget-on .oo-ui-toggleSwitchWidget-grip {
-	right: 1.9em;
-	margin-right: -2px;
-}
 .oo-ui-toggleSwitchWidget.oo-ui-toggleWidget-off .oo-ui-toggleSwitchWidget-grip {
 	right: 0.4em;
 	margin-right: 0;
+}
+.oo-ui-toggleSwitchWidget.oo-ui-toggleWidget-on .oo-ui-toggleSwitchWidget-grip {
+	right: 1.9em;
+	margin-right: -2px;
 }
 .oo-ui-toggleSwitchWidget.oo-ui-widget-enabled.oo-ui-toggleWidget-on {
 	background-color: #347bff;
@@ -1848,6 +1836,14 @@
 .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-clearButton {
 	position: absolute;
 }
+.oo-ui-widget-disabled .oo-ui-selectFileWidget-info {
+	cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
 .oo-ui-selectFileWidget .oo-ui-selectFileWidget-clearButton {
 	z-index: 2;
 }
@@ -1923,6 +1919,14 @@
 }
 .oo-ui-selectFileWidget-empty.oo-ui-widget-enabled .oo-ui-selectFileWidget-dropLabel {
 	display: block;
+}
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 }
 .oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
 .oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget,
@@ -2412,14 +2416,14 @@
 }
 
 /*!
- * OOjs UI v0.17.4
+ * OOjs UI v0.17.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-05-31T21:50:56Z
+ * Date: 2016-06-29T13:27:11Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2859,14 +2863,14 @@
 }
 
 /*!
- * OOjs UI v0.17.4
+ * OOjs UI v0.17.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-05-31T21:50:56Z
+ * Date: 2016-06-29T13:27:11Z
  */
 .oo-ui-window {
 	background: transparent;
@@ -2920,12 +2924,8 @@
 	bottom: 0;
 }
 .oo-ui-dialog-content > .oo-ui-window-foot {
-	overflow: hidden;
-	z-index: 1;
+	z-index: 3;
 	bottom: 0;
-}
-.oo-ui-dialog-content > .oo-ui-window-body {
-	outline: 1px solid #aaaaaa;
 }
 .oo-ui-messageDialog-actions-horizontal {
 	display: table;
@@ -2957,6 +2957,9 @@
 	bottom: auto;
 	display: inline;
 	white-space: nowrap;
+}
+.oo-ui-messageDialog-content > .oo-ui-window-foot {
+	outline: 1px solid #aaaaaa;
 }
 .oo-ui-messageDialog-title,
 .oo-ui-messageDialog-message {
@@ -2997,7 +3000,7 @@
 	border-bottom-width: 0;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget {
-	height: 3.4em;
+	min-height: 3.4em;
 	margin-left: 0;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget:last-child {
@@ -3005,7 +3008,7 @@
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
 	text-align: center;
-	line-height: 3.4em;
+	line-height: 3.4;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget:hover {
 	background-color: rgba(0, 0, 0, 0.05);
@@ -3245,14 +3248,14 @@
 }
 
 /*!
- * OOjs UI v0.17.4
+ * OOjs UI v0.17.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-05-31T21:50:56Z
+ * Date: 2016-06-29T13:27:11Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/mediawiki/images/icons/add.png");
