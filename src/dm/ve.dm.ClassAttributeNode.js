@@ -32,6 +32,10 @@ OO.initClass( ve.dm.ClassAttributeNode );
  */
 ve.dm.ClassAttributeNode.static.classAttributes = {};
 
+ve.dm.ClassAttributeNode.static.preserveHtmlAttributes = function ( attribute ) {
+	return attribute !== 'class';
+};
+
 /**
  * Set attributes from a class attribute
  *
