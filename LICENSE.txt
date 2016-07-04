@@ -1,6 +1,6 @@
 Copyright (c) 2011-2016 VisualEditor Team and others
 
-https://git.wikimedia.org/blob/VisualEditor%2FVisualEditor/master/AUTHORS.txt
+https://phabricator.wikimedia.org/diffusion/GVED/browse/master/AUTHORS.txt
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
