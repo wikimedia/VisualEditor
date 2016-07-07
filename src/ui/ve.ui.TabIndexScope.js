@@ -17,7 +17,8 @@
 ve.ui.TabIndexScope = function VeUiTabIndexScope( config ) {
 	config = $.extend( {
 		root: false,
-		skipAriaDisabled: true
+		skipAriaDisabled: true,
+		skipAriaHidden: true
 	}, config );
 
 	this.skipAriaDisabled = config.skipAriaDisabled;
@@ -63,6 +64,9 @@ ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
 			return false;
 		}
 		if ( self.skipAriaDisabled && this.getAttribute( 'aria-disabled' ) === 'true' ) {
+			return false;
+		}
+		if ( self.skipAriaHidden && $( this ).closest( '[aria-hidden="true"]' ).length ) {
 			return false;
 		}
 		return OO.ui.isFocusableElement( $( this ) );

@@ -111,6 +111,10 @@ ve.ui.FragmentInspector.prototype.initialize = function () {
 	this.$content.addClass( 've-ui-fragmentInspector-content' );
 	this.container.$element.append( this.form.$element, this.$otherActions );
 	this.$body.append( this.container.$element );
+
+	this.tabIndexScope = new ve.ui.TabIndexScope( {
+		root: this.$content
+	} );
 };
 
 /**
