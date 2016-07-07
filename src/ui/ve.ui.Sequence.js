@@ -12,7 +12,9 @@
  * @constructor
  * @param {string} name Symbolic name
  * @param {string} commandName Command name this sequence executes
- * @param {string|Array|RegExp} data Data to match
+ * @param {string|Array|RegExp} data Data to match. String, linear data array, or regular expression.
+ *         When using a RegularExpression always match the end of the sequence with a '$' so that
+ *         only sequences next to the user's cursor match.
  * @param {number} [strip=0] Number of data elements to strip after execution
  *        (from the right)
  * @param {boolean} [setSelection=false] Whether to set the selection to the
