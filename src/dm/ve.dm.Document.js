@@ -1050,7 +1050,7 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
 			}
 		}
 	} else {
-		nodes = this.nodesByType[ type ];
+		nodes = this.nodesByType[ type ] || [];
 	}
 
 	if ( sort ) {
