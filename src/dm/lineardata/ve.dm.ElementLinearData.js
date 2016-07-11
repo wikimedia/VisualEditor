@@ -617,21 +617,28 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 /**
  * Check if the data is just plain (un-annotated) text
  *
- * @param {boolean} [allowNonContentNodes] Include non-content nodes in the definition of plain text, e.g. paragraphs, headings, lists
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
+ * @param {boolean} [allowNonContentNodes] Include non-content nodes in the definition of plain text, e.g. paragraphs, headings, lists
+ * @param {boolean} [allowedTypes] Only allow specific non-content types
  * @return {boolean} The data is plain text
  */
-ve.dm.ElementLinearData.prototype.isPlainText = function ( allowNonContentNodes, range ) {
-	var i;
+ve.dm.ElementLinearData.prototype.isPlainText = function ( range, allowNonContentNodes, allowedTypes ) {
+	var i, type;
+
 	range = range || new ve.Range( 0, this.getLength() );
 
 	for ( i = range.start; i < range.end; i++ ) {
-		if (
-			typeof this.data[ i ] === 'string' ||
-			allowNonContentNodes && this.isElementData( i ) &&
-			!ve.dm.nodeFactory.isNodeContent( this.getType( i ) )
-		) {
+		if ( typeof this.data[ i ] === 'string' ) {
 			continue;
+		} else if ( ( allowNonContentNodes || allowedTypes ) && this.isElementData( i ) ) {
+			type = this.getType( i );
+			if ( allowedTypes && allowedTypes.indexOf( type ) !== -1 ) {
+				continue;
+			}
+			if ( allowNonContentNodes && !ve.dm.nodeFactory.isNodeContent( type ) ) {
+				continue;
+			}
+			return false;
 		} else {
 			return false;
 		}

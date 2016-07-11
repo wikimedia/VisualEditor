@@ -2192,7 +2192,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 
 		// If the external HTML turned out to be plain text after
 		// sanitization then run it as a plain text transfer item
-		if ( pastedDocumentModel.data.isPlainText( true, contextRange ) ) {
+		if ( pastedDocumentModel.data.isPlainText( contextRange, true ) ) {
 			pastedText = pastedDocumentModel.data.getText( true, contextRange );
 			if ( pastedText ) {
 				handled = this.handleDataTransferItems(

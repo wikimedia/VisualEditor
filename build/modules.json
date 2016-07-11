@@ -257,6 +257,7 @@
 			"src/dm/ve.dm.Selection.js",
 			"src/dm/ve.dm.Surface.js",
 			"src/dm/ve.dm.SurfaceFragment.js",
+			"src/dm/ve.dm.SourceSurfaceFragment.js",
 			"src/dm/ve.dm.DataString.js",
 			"src/dm/ve.dm.Document.js",
 			"src/dm/ve.dm.DocumentSlice.js",
