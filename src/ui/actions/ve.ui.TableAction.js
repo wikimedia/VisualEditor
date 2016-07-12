@@ -160,7 +160,7 @@ ve.ui.TableAction.prototype.moveRelative = function ( mode, direction ) {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.move = function ( mode, index ) {
-	var i, removedMatrix, position, newSelection,
+	var i, removedMatrix, position, newOffsets,
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection(),
 		tableNode = selection.getTableNode(),
@@ -175,29 +175,23 @@ ve.ui.TableAction.prototype.move = function ( mode, index ) {
 		if ( index > selection.endRow ) {
 			index = index - selection.getRowCount();
 		}
-		newSelection = new ve.dm.TableSelection(
-			selection.getDocument(),
-			// table node range was changed by deletion
-			tableNode.getOuterRange(),
+		newOffsets = [
 			selection.fromCol,
 			index,
 			selection.toCol,
 			index + selection.getRowCount() - 1
-		);
+		];
 	} else {
 		removedMatrix = this.deleteRowsOrColumns( matrix, mode, selection.startCol, selection.endCol );
 		if ( index > selection.endCol ) {
 			index = index - selection.getColCount();
 		}
-		newSelection = new ve.dm.TableSelection(
-			selection.getDocument(),
-			// table node range was changed by deletion
-			tableNode.getOuterRange(),
+		newOffsets = [
 			index,
 			selection.fromRow,
 			index + selection.getColCount() - 1,
 			selection.toRow
-		);
+		];
 	}
 	if ( index === 0 ) {
 		position = 'before';
@@ -206,8 +200,15 @@ ve.ui.TableAction.prototype.move = function ( mode, index ) {
 		position = 'after';
 	}
 	for ( i = removedMatrix.length - 1; i >= 0; i-- ) {
-		this.insertRowOrCol( tableNode, mode, index, position, newSelection, removedMatrix[ i ] );
+		this.insertRowOrCol( tableNode, mode, index, position, null, removedMatrix[ i ] );
 	}
+	// Only set selection once for performance
+	surfaceModel.setSelection( new ve.dm.TableSelection(
+		selection.getDocument(),
+		// table node range was changed by deletion
+		tableNode.getOuterRange(),
+		newOffsets[ 0 ], newOffsets[ 1 ], newOffsets[ 2 ], newOffsets[ 3 ]
+	) );
 	return true;
 };
 
