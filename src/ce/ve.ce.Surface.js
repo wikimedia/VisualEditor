@@ -3134,25 +3134,17 @@ ve.ce.Surface.prototype.updateCursorHolders = function () {
 		holderBefore = doc.importNode( this.constructor.static.cursorHolderTemplate, true );
 		holderBefore.classList.add( 've-ce-cursorHolder-after' );
 		if ( ve.inputDebug ) {
-			$( holderBefore ).css( {
-				width: '2px',
-				height: '2px',
-				border: 'solid red 1px'
-			} );
+			holderBefore.classList.add( 've-ce-cursorHolder-debug' );
 		}
 		$( nodeBefore ).after( holderBefore );
 	}
 	if ( nodeAfter ) {
 		holderAfter = doc.importNode( this.constructor.static.cursorHolderTemplate, true );
 		holderAfter.classList.add( 've-ce-cursorHolder-before' );
-		if ( ve.inputDebug ) {
-			$( holderAfter ).css( {
-				width: '2px',
-				height: '2px',
-				border: 'solid red 1px'
-			} );
-		}
 		$( nodeAfter ).before( holderAfter );
+		if ( ve.inputDebug ) {
+			holderAfter.classList.add( 've-ce-cursorHolder-debug' );
+		}
 	}
 	this.cursorHolders = { before: holderBefore, after: holderAfter };
 };
