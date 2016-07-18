@@ -1120,28 +1120,41 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
  * Example:
  *     // fragment is a selection of: <p>a</p><p>b</p>
  *     fragment.wrapAllNodes(
+ *         { type: 'list', attributes: { style: 'bullet' } },
+ *         { type: 'listItem' }
+ *     )
+ *     // fragment is now a selection of: <ul><li><p>a</p></li><li><p>b</p></li></ul>
+ *
+ * Example:
+ *     // fragment is a selection of: <p>a</p><p>b</p>
+ *     fragment.wrapAllNodes(
  *         [{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
  *     )
  *     // fragment is now a selection of: <ul><li><p>a</p><p>b</p></li></ul>
  *
  * @method
- * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
- * @param {string} wrapper.type Node type of wrapper
- * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @param {Object|Object[]} wrapOuter Opening element(s) to wrap around the range
+ * @param {Object|Object[]} wrapEach Opening element(s) to wrap around each top-level element in the range
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
+ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) {
 	var range = this.getSelection().getCoveringRange();
 	if ( !range ) {
 		return this;
 	}
 
-	if ( !Array.isArray( wrapper ) ) {
-		wrapper = [ wrapper ];
+	if ( !Array.isArray( wrapOuter ) ) {
+		wrapOuter = [ wrapOuter ];
+	}
+
+	wrapEach = wrapEach || [];
+
+	if ( !Array.isArray( wrapEach ) ) {
+		wrapEach = [ wrapEach ];
 	}
 
 	this.change(
-		ve.dm.Transaction.newFromWrap( this.document, range, [], wrapper, [], [] )
+		ve.dm.Transaction.newFromWrap( this.document, range, [], wrapOuter, [], wrapEach )
 	);
 
 	return this;
