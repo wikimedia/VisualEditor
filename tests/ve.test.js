@@ -879,6 +879,46 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getCommonStartSequenceLength', function ( assert ) {
+	var i, len, tests, test;
+	tests = [
+		{
+			sequences: [ [ 0, 1, 2 ], [ 0, 1, 2 ], [ '0', 1, 2 ] ],
+			commonLength: 0,
+			title: 'No common start sequence'
+		},
+		{
+			sequences: [ [ 1, 2, 3 ], [] ],
+			commonLength: 0,
+			title: 'Empty sequence'
+		},
+		{
+			sequences: [ [ 'five', 6 ], [ 'five' ] ],
+			commonLength: 1,
+			title: 'Differing lengths'
+		},
+		{
+			sequences: [ [ 1, 2 ] ],
+			commonLength: 2,
+			title: 'Single sequence'
+		},
+		{
+			sequences: [ 'Cymru', 'Cymry', 'Cymraes', 'Cymro', 'Cymraeg' ],
+			commonLength: 4,
+			title: 'String sequences'
+		}
+	];
+	QUnit.expect( tests.length );
+	for ( i = 0, len = tests.length; i < len; i++ ) {
+		test = tests[ i ];
+		assert.strictEqual(
+			ve.getCommonStartSequenceLength( test.sequences ),
+			test.commonLength,
+			test.title
+		);
+	}
+} );
+
 QUnit.test( 'adjacentDomPosition', function ( assert ) {
 	var tests, direction, i, len, test, offsetPaths, position, div;
 

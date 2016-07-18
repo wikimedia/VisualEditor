@@ -184,7 +184,8 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  * Apply the current annotation stacks.
  *
  * This will set all annotations in this.set and clear all annotations in `this.clear` on the data
- * between the offsets `this.cursor` and `this.cursor + to`.
+ * between the offsets `this.cursor` and `this.cursor + to`. Annotations are set at the highest
+ * annotation set offset below which annotations are uniform across the whole range.
  *
  * @method
  * @param {number} to Offset to stop annotating at, annotating starts at this.cursor
@@ -193,13 +194,13 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var isElement, annotations, i, j, jlen;
+	var annotationsForOffset, setIndex, isElement, annotations, i, j, jlen;
 
-	function setAndClear( anns, set, clear ) {
+	function setAndClear( anns, set, clear, index ) {
 		if ( anns.containsAnyOf( set ) ) {
 			throw new Error( 'Invalid transaction, annotation to be set is already set' );
 		} else {
-			anns.addSet( set );
+			anns.addSet( set, index );
 		}
 		if ( !anns.containsAllOf( clear ) ) {
 			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
@@ -212,6 +213,17 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		return;
 	}
 	// Set/clear annotations on data
+	annotationsForOffset = [];
+	for ( i = this.cursor; i < to; i++ ) {
+		annotationsForOffset[ i - this.cursor ] = this.document.data.getAnnotationsFromOffset( i );
+	}
+	// Calculate highest offset below which annotations are uniform across the whole range
+	setIndex = ve.getCommonStartSequenceLength(
+		annotationsForOffset.map( function ( annotations ) {
+			return annotations.storeIndexes;
+		} )
+	);
+
 	for ( i = this.cursor; i < to; i++ ) {
 		isElement = this.document.data.isElementData( i );
 		if ( isElement ) {
@@ -224,7 +236,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			}
 		}
 		annotations = this.document.data.getAnnotationsFromOffset( i );
-		setAndClear( annotations, this.set, this.clear );
+		setAndClear( annotations, this.set, this.clear, setIndex );
 		// Store annotation indexes in linear model
 		this.queueModification( {
 			type: 'annotateData',

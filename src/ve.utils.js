@@ -1307,6 +1307,38 @@ ve.getStartAndEndRects = function ( rects ) {
 };
 
 /**
+ * Find the length of the common start sequence of one or more sequences
+ *
+ *
+ * @param {Array} sequences Array of sequences (arrays, strings etc)
+ * @return {number} Common start sequence length
+ */
+ve.getCommonStartSequenceLength = function ( sequences ) {
+	var i, len, val,
+		commonLength = 0;
+	if ( sequences.length === 0 ) {
+		throw new Error( 'Need at least one sequence' );
+	}
+	commonLengthLoop:
+	while ( true ) {
+		if ( commonLength >= sequences[ 0 ].length ) {
+			break;
+		}
+		val = sequences[ 0 ][ commonLength ];
+		for ( i = 1, len = sequences.length; i < len; i++ ) {
+			if (
+				sequences[ i ].length < commonLength ||
+				sequences[ i ][ commonLength ] !== val
+			) {
+				break commonLengthLoop;
+			}
+		}
+		commonLength++;
+	}
+	return commonLength;
+};
+
+/**
  * Find the nearest common ancestor of DOM nodes
  *
  * @param {...Node|null} DOM nodes

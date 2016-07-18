@@ -411,15 +411,25 @@ ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
 };
 
 /**
- * Add all annotations in the given set to the end of the set.
+ * Add all annotations in the given set, removing any duplicates (including existing ones).
  *
- * Annotations from the other set that are already in the set will not be added again.
+ * The offset calculation happens before duplicates are removed.
  *
  * @method
  * @param {ve.dm.AnnotationSet} set Set to add to the set
+ * @param {number} [offset] Offset at which to insert; defaults to the end of the set
+
  */
-ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
-	this.storeIndexes = OO.simpleArrayUnion( this.getIndexes(), set.getIndexes() );
+ve.dm.AnnotationSet.prototype.addSet = function ( set, offset ) {
+	var indexes = this.getIndexes();
+	if ( offset === undefined ) {
+		offset = indexes.length;
+	}
+	this.storeIndexes = OO.simpleArrayUnion(
+		indexes.slice( 0, offset ),
+		set.getIndexes(),
+		indexes.slice( offset )
+	);
 };
 
 /**
