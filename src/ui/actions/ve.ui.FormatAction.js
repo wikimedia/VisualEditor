@@ -48,20 +48,18 @@ ve.ui.FormatAction.static.methods = [ 'convert' ];
  * @return {boolean} Action was executed
  */
 ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
-	var selected, i, length, contentBranch, txs,
+	var selected, i, length, contentBranch,
 		surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection(),
-		fragmentForSelection = surfaceModel.getFragment( selection, true ),
-		doc = surfaceModel.getDocument(),
+		fragment = surfaceModel.getFragment(),
 		fragments = [];
 
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	if ( !( fragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
 		return;
 	}
 
 	// We can't have headings or pre's in a list, so if we're trying to convert
 	// things that are in lists to a heading or a pre, split the list
-	selected = doc.selectNodes( selection.getRange(), 'leaves' );
+	selected = fragment.getLeafNodes();
 	for ( i = 0, length = selected.length; i < length; i++ ) {
 		contentBranch = selected[ i ].node.isContent() ?
 			selected[ i ].node.getParent() :
@@ -73,10 +71,8 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	for ( i = 0, length = fragments.length; i < length; i++ ) {
 		fragments[ i ].isolateAndUnwrap( type );
 	}
-	selection = fragmentForSelection.getSelection();
 
-	txs = ve.dm.Transaction.newFromContentBranchConversion( doc, selection.getRange(), type, attributes );
-	surfaceModel.change( txs, selection );
+	fragment.convertNodes( type, attributes );
 	this.surface.getView().focus();
 	return true;
 };
