@@ -86,7 +86,7 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
  * @return {boolean} Selection was valid and link action was executed.
  */
 ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
-	var range, rangeEnd, linktext, i, tx,
+	var range, rangeEnd, linktext, i,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection();
@@ -129,17 +129,16 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
 	}
 
 	// Make sure `undo` doesn't expose the selected linktext.
-	surfaceModel.setLinearSelection( new ve.Range( rangeEnd, rangeEnd ) );
+	surfaceModel.setLinearSelection( new ve.Range( rangeEnd ) );
 
 	// Annotate the (previous) range.
-	tx = txFunc ? txFunc( documentModel, range, linktext ) :
-		ve.dm.Transaction.newFromAnnotation(
-			documentModel,
-			range,
-			'set',
-			this.getLinkAnnotation( linktext )
-		);
-	surfaceModel.change( tx );
+	if ( txFunc ) {
+		// TODO: Change this API so that 'txFunc' is given a surface fragment
+		// as an argument, and uses the fragment to directly edit the document.
+		surfaceModel.change( txFunc( documentModel, range, linktext ) );
+	} else {
+		surfaceModel.getLinearFragment( range, true ).annotateContent( 'set', this.getLinkAnnotation( linktext ) );
+	}
 
 	return true;
 };
