@@ -255,10 +255,11 @@ ve.init.Target.prototype.onContainerScroll = function () {
  * @param {jQuery.Event} e Key down event
  */
 ve.init.Target.prototype.onDocumentKeyDown = function ( e ) {
-	var command, trigger = new ve.ui.Trigger( e );
+	var command, surface, trigger = new ve.ui.Trigger( e );
 	if ( trigger.isComplete() ) {
 		command = this.documentTriggerListener.getCommandByTrigger( trigger.toString() );
-		if ( command && command.execute( this.getSurface() ) ) {
+		surface = this.getSurface();
+		if ( surface && command && command.execute( surface ) ) {
 			e.preventDefault();
 		}
 	}
@@ -270,10 +271,11 @@ ve.init.Target.prototype.onDocumentKeyDown = function ( e ) {
  * @param {jQuery.Event} e Key down event
  */
 ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
-	var command, trigger = new ve.ui.Trigger( e );
+	var command, surface, trigger = new ve.ui.Trigger( e );
 	if ( trigger.isComplete() ) {
 		command = this.targetTriggerListener.getCommandByTrigger( trigger.toString() );
-		if ( command && command.execute( this.getSurface() ) ) {
+		surface = this.getSurface();
+		if ( surface && command && command.execute( surface ) ) {
 			e.preventDefault();
 		}
 	}
