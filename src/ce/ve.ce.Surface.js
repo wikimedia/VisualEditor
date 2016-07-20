@@ -1750,21 +1750,18 @@ ve.ce.Surface.prototype.onPaste = function ( e, fakePaste ) {
  * @param {jQuery.Event} e Paste event
  */
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
-	var tx, range, node, nodeRange, contextElement, nativeRange,
+	var range, node, nodeRange, contextElement, nativeRange,
 		context, leftText, rightText, textNode, textStart, textEnd,
 		selection = this.getModel().getSelection(),
 		clipboardData = e.originalEvent.clipboardData,
 		surfaceModel = this.getModel(),
+		fragment = surfaceModel.getFragment(),
 		documentModel = surfaceModel.getDocument();
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		// Pasting over a linear selection? Remove first.
-		if ( !selection.isCollapsed() ) {
-			tx = ve.dm.Transaction.newFromRemoval( documentModel, selection.getRange() );
-			selection = selection.translateByTransaction( tx );
-			surfaceModel.change( tx, selection );
-		}
-		range = selection.getRange();
+		fragment.removeContent();
+		range = fragment.getSelection().getRange();
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		// Selection removal is handled in after paste for tables (depends on pasted content)
 		range = new ve.Range( selection.getRanges()[ 0 ].start );
@@ -1868,8 +1865,8 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  */
 ve.ce.Surface.prototype.afterPaste = function ( e ) {
 	// jshint unused:false
-	var clipboardKey, clipboardId, clipboardIndex, clipboardHash, range,
-		$elements, parts, pasteData, slice, tx, internalListRange,
+	var clipboardKey, clipboardId, clipboardIndex, clipboardHash,
+		$elements, parts, pasteData, slice, internalListRange,
 		data, pastedDocumentModel, htmlDoc, $images, i,
 		context, left, right, contextRange, pastedText, handled,
 		tableAction,
@@ -1878,7 +1875,8 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		importRules = !this.pasteSpecial ? this.getSurface().getImportRules() : { all: { plainText: true } },
 		beforePasteData = this.beforePasteData || {},
 		surfaceModel = this.getModel(),
-		selection = surfaceModel.getSelection(),
+		fragment = surfaceModel.getFragment(),
+		targetFragment = surfaceModel.getFragment( null, true ),
 		documentModel = surfaceModel.getDocument(),
 		view = this;
 
@@ -1895,7 +1893,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		return;
 	}
 
-	if ( selection instanceof ve.dm.NullSelection ) {
+	if ( fragment.isNull() ) {
 		return null;
 	}
 
@@ -1982,25 +1980,24 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		slice.data.cloneElements( true );
 	}
 
-	// Internal table-into-table paste
-	if ( selection instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
-		tableAction = new ve.ui.TableAction( this.getSurface() );
-		tableAction.importTable( slice.getTableNode() );
-		return;
-	}
+	if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
+		// Internal table-into-table paste
+		if ( fragment.getSelection() instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
+			tableAction = new ve.ui.TableAction( this.getSurface() );
+			tableAction.importTable( slice.getTableNode() );
+			return;
+		}
 
-	// Range to remove
-	range = selection.getRanges()[ 0 ];
+		// For table selections the target is the first cell
+		targetFragment = surfaceModel.getLinearFragment( fragment.getSelection().getRanges()[ 0 ], true );
+	}
 
 	if ( slice ) {
 		// Pasting non-table content into table: just replace the the first cell with the pasted content
-		if ( selection instanceof ve.dm.TableSelection ) {
+		if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
 			// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is
 			// about to be triggered.
-			tx = ve.dm.Transaction.newFromRemoval( documentModel, range );
-			surfaceModel.change( tx );
-			selection = selection.translateByTransaction( tx );
-			tx = null;
+			targetFragment.removeContent();
 		}
 
 		// Internal paste
@@ -2017,15 +2014,8 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				sanitize( pasteData, true );
 			}
 
-			// Annotate
-			ve.dm.Document.static.addAnnotationsToData( pasteData.getData(), this.model.getInsertionAnnotations() );
-
-			// Transaction
-			tx = ve.dm.Transaction.newFromInsertion(
-				documentModel,
-				range.start,
-				pasteData.getData()
-			);
+			// Insert content
+			targetFragment.insertContent( pasteData.getData(), true );
 		} catch ( err ) {
 			// If that fails, use the balanced data
 			// Take a copy to prevent actions in the data model affecting view.clipboard
@@ -2038,15 +2028,8 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				sanitize( pasteData, true );
 			}
 
-			// Annotate
-			ve.dm.Document.static.addAnnotationsToData( pasteData.getData(), this.model.getInsertionAnnotations() );
-
-			// Transaction
-			tx = ve.dm.Transaction.newFromInsertion(
-				documentModel,
-				range.start,
-				pasteData.getData()
-			);
+			// Insert content
+			targetFragment.insertContent( pasteData.getData(), true );
 		}
 	} else {
 		if ( clipboardKey && beforePasteData.html ) {
@@ -2123,25 +2106,20 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		// Initialize node tree
 		pastedDocumentModel.buildNodeTree();
 
-		if (
-			selection instanceof ve.dm.TableSelection &&
-			pastedDocumentModel.documentNode.children.length === 2 &&
-			pastedDocumentModel.documentNode.children[ 0 ] instanceof ve.dm.TableNode
-		) {
+		if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
 			// External table-into-table paste
-			tableAction = new ve.ui.TableAction( this.getSurface() );
-			tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ], true );
-			return;
-		}
+			if (
+				pastedDocumentModel.documentNode.children.length === 2 &&
+				pastedDocumentModel.documentNode.children[ 0 ] instanceof ve.dm.TableNode
+			) {
+				tableAction = new ve.ui.TableAction( this.getSurface() );
+				tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ], true );
+				return;
+			}
 
-		// Pasting non-table content into table: just replace the the first cell with the pasted content
-		if ( selection instanceof ve.dm.TableSelection ) {
-			// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is
-			// about to be triggered.
-			tx = ve.dm.Transaction.newFromRemoval( documentModel, range );
-			surfaceModel.change( tx );
-			selection = selection.translateByTransaction( tx );
-			tx = null;
+			// Pasting non-table content into table: just replace the the first cell with the pasted content
+			// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is about to be triggered.
+			targetFragment.removeContent();
 		}
 
 		// If the paste was given context, calculate the range of the inserted data
@@ -2198,18 +2176,13 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				handled = this.handleDataTransferItems(
 					[ ve.ui.DataTransferItem.static.newFromString( pastedText ) ],
 					true,
-					surfaceModel.getLinearFragment( range )
+					targetFragment
 				);
 			}
 		}
 
 		if ( !handled ) {
-			tx = ve.dm.Transaction.newFromDocumentInsertion(
-				documentModel,
-				range.start,
-				pastedDocumentModel,
-				contextRange
-			);
+			targetFragment.insertDocument( pastedDocumentModel, contextRange );
 		}
 	}
 
@@ -2224,12 +2197,9 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		} );
 	}
 
-	if ( tx ) {
-		selection = selection.translateByTransaction( tx );
-		surfaceModel.change( tx, selection.collapseToStart() );
-		if ( selection instanceof ve.dm.LinearSelection ) {
-			surfaceModel.setSelection( selection.collapseToEnd() );
-		}
+	// If orignal selection was linear, switch to end of pasted text
+	if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
+		targetFragment.collapseToEnd().select();
 	}
 };
 
@@ -3172,6 +3142,7 @@ ve.ce.Surface.prototype.removeCursorHolders = function () {
 ve.ce.Surface.prototype.handleInsertion = function () {
 	var range, hasChanged,
 		surfaceModel = this.getModel(),
+		fragment = surfaceModel.getFragment(),
 		selection = this.getSelection();
 
 	hasChanged = false;
@@ -3204,13 +3175,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		// Remove the selection to force its re-application from the DM (even if the
 		// DM is too granular to detect the selection change)
 		surfaceModel.setNullSelection();
-		surfaceModel.change(
-			ve.dm.Transaction.newFromRemoval(
-				this.documentView.model,
-				range
-			),
-			new ve.dm.LinearSelection( surfaceModel.getDocument(), new ve.Range( range.start ) )
-		);
+		fragment.removeContent().collapseToStart().select();
 		hasChanged = true;
 		this.surfaceObserver.clear();
 		this.storeKeyDownState( this.keyDownState.event );
