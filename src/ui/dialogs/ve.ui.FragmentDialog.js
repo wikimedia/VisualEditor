@@ -28,6 +28,18 @@ OO.inheritClass( ve.ui.FragmentDialog, OO.ui.ProcessDialog );
 
 /**
  * @inheritdoc
+ */
+ve.ui.FragmentDialog.prototype.initialize = function ( data ) {
+	// Parent method
+	ve.ui.FragmentDialog.super.prototype.initialize.call( this, data );
+
+	this.tabIndexScope = new ve.ui.TabIndexScope( {
+		root: this.$content
+	} );
+};
+
+/**
+ * @inheritdoc
  * @throws {Error} If fragment was not provided through data parameter
  */
 ve.ui.FragmentDialog.prototype.getSetupProcess = function ( data ) {

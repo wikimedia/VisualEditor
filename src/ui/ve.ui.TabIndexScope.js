@@ -22,6 +22,7 @@ ve.ui.TabIndexScope = function VeUiTabIndexScope( config ) {
 	}, config );
 
 	this.skipAriaDisabled = config.skipAriaDisabled;
+	this.skipAriaHidden = config.skipAriaHidden;
 
 	this.onRootKeyDownBound = this.onRootKeyDown.bind( this );
 
