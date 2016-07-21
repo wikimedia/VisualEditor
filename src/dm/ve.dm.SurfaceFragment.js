@@ -824,10 +824,12 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange 
 	}
 
 	tx = new ve.dm.Transaction.newFromDocumentInsertion( doc, range.start, newDoc, newDocRange );
-	// Set the range to cover the inserted content; the offset translation will be wrong
-	// if newFromInsertion() decided to move the insertion point
-	newRange = tx.getModifiedRange();
-	this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
+	if ( !tx.isNoOp() ) {
+		// Set the range to cover the inserted content; the offset translation will be wrong
+		// if newFromInsertion() decided to move the insertion point
+		newRange = tx.getModifiedRange();
+		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
+	}
 
 	return this;
 };
