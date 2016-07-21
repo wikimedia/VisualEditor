@@ -807,9 +807,10 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  *
  * @method
  * @param {ve.dm.Document} newDoc Document to insert
+ * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc ) {
+ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange ) {
 	var tx, newRange,
 		range = this.getSelection().getCoveringRange(),
 		doc = this.getDocument();
@@ -822,7 +823,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc ) {
 		this.removeContent();
 	}
 
-	tx = new ve.dm.Transaction.newFromDocumentInsertion( doc, range.start, newDoc );
+	tx = new ve.dm.Transaction.newFromDocumentInsertion( doc, range.start, newDoc, newDocRange );
 	// Set the range to cover the inserted content; the offset translation will be wrong
 	// if newFromInsertion() decided to move the insertion point
 	newRange = tx.getModifiedRange();
