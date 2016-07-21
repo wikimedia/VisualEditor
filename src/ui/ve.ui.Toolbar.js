@@ -209,7 +209,9 @@ ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
 /**
  * Gets the surface which the toolbar controls.
  *
- * @return {ve.ui.Surface} Surface being controlled
+ * Returns null if the toolbar hasn't been set up yet.
+ *
+ * @return {ve.ui.Surface|null} Surface being controlled
  */
 ve.ui.Toolbar.prototype.getSurface = function () {
 	return this.surface;
