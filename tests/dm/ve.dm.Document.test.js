@@ -633,22 +633,35 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			{
 				msg: 'empty range',
 				range: new ve.Range( 2 ),
-				expected: []
+				expected: [
+					{ type: 'paragraph', internal: { generated: 'empty' } },
+					{ type: 'paragraph' }
+				],
+				originalRange: new ve.Range( 1 ),
+				balancedRange: new ve.Range( 1 )
 			},
 			{
 				msg: 'range with one character',
 				range: new ve.Range( 2, 3 ),
 				expected: [
-					[ 'b', [ ve.dm.example.bold ] ]
-				]
+					{ type: 'heading', attributes: { level: 1 } },
+					[ 'b', [ ve.dm.example.bold ] ],
+					{ type: '/heading' }
+				],
+				originalRange: new ve.Range( 1, 2 ),
+				balancedRange: new ve.Range( 1, 2 )
 			},
 			{
 				msg: 'range with two characters',
 				range: new ve.Range( 2, 4 ),
 				expected: [
+					{ type: 'heading', attributes: { level: 1 } },
 					[ 'b', [ ve.dm.example.bold ] ],
-					[ 'c', [ ve.dm.example.italic ] ]
-				]
+					[ 'c', [ ve.dm.example.italic ] ],
+					{ type: '/heading' }
+				],
+				originalRange: new ve.Range( 1, 3 ),
+				balancedRange: new ve.Range( 1, 3 )
 			},
 			{
 				msg: 'range with two characters and a header closing',
@@ -792,46 +805,54 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				msg: 'inline node at start',
 				range: new ve.Range( 1, 3 ),
 				expected: [
+					{ type: 'paragraph' },
 					ve.dm.example.image.data,
-					{ type: '/inlineImage' }
+					{ type: '/inlineImage' },
+					{ type: '/paragraph' }
 				],
-				originalRange: new ve.Range( 0, 2 ),
-				balancedRange: new ve.Range( 0, 2 )
+				originalRange: new ve.Range( 1, 3 ),
+				balancedRange: new ve.Range( 1, 3 )
 			},
 			{
 				doc: 'inlineAtEdges',
 				msg: 'inline node at end',
 				range: new ve.Range( 6, 8 ),
 				expected: [
+					{ type: 'paragraph' },
 					{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
-					{ type: '/alienInline' }
+					{ type: '/alienInline' },
+					{ type: '/paragraph' }
 				],
-				originalRange: new ve.Range( 0, 2 ),
-				balancedRange: new ve.Range( 0, 2 )
+				originalRange: new ve.Range( 1, 3 ),
+				balancedRange: new ve.Range( 1, 3 )
 			},
 			{
 				doc: 'inlineAtEdges',
 				msg: 'inline node at start with text',
 				range: new ve.Range( 1, 5 ),
 				expected: [
+					{ type: 'paragraph' },
 					ve.dm.example.image.data,
 					{ type: '/inlineImage' },
-					'F', 'o'
+					'F', 'o',
+					{ type: '/paragraph' }
 				],
-				originalRange: new ve.Range( 0, 4 ),
-				balancedRange: new ve.Range( 0, 4 )
+				originalRange: new ve.Range( 1, 5 ),
+				balancedRange: new ve.Range( 1, 5 )
 			},
 			{
 				doc: 'inlineAtEdges',
 				msg: 'inline node at end with text',
 				range: new ve.Range( 4, 8 ),
 				expected: [
+					{ type: 'paragraph' },
 					'o', 'o',
 					{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
-					{ type: '/alienInline' }
+					{ type: '/alienInline' },
+					{ type: '/paragraph' }
 				],
-				originalRange: new ve.Range( 0, 4 ),
-				balancedRange: new ve.Range( 0, 4 )
+				originalRange: new ve.Range( 1, 5 ),
+				balancedRange: new ve.Range( 1, 5 )
 			}
 		];
 	QUnit.expect( 3 * cases.length );

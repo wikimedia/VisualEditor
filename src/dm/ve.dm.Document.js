@@ -454,7 +454,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 	var i, first, last, firstNode, lastNode,
 		linearData, slice, originalRange, balancedRange,
-		balancedNodes, needsContext,
+		balancedNodes, needsContext, contextElement,
 		startNode = this.getBranchNodeFromOffset( range.start ),
 		endNode = this.getBranchNodeFromOffset( range.end ),
 		selection = this.selectNodes( range, 'siblings' ),
@@ -477,8 +477,11 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 	if ( selection.length === 0 ) {
 		// Nothing selected
-		linearData = new ve.dm.ElementLinearData( this.getStore(), [] );
-		originalRange = balancedRange = new ve.Range( 0 );
+		linearData = new ve.dm.ElementLinearData( this.getStore(), [
+			{ type: 'paragraph', internal: { generated: 'empty' } },
+			{ type: 'paragraph' }
+		] );
+		originalRange = balancedRange = new ve.Range( 1 );
 	} else if ( startNode === endNode ) {
 		// Nothing to balance
 		balancedNodes = selection;
@@ -527,11 +530,15 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		);
 	}
 
+	function nodeNeedsContext( node ) {
+		return node.getParentNodeTypes() !== null || node.isContent();
+	}
+
 	if ( !balancedRange ) {
 		// Check if any of the balanced siblings need more context for insertion anywhere
 		needsContext = false;
 		for ( i = balancedNodes.length - 1; i >= 0; i-- ) {
-			if ( balancedNodes[ i ].node.getParentNodeTypes() !== null ) {
+			if ( nodeNeedsContext( balancedNodes[ i ].node ) ) {
 				needsContext = true;
 				break;
 			}
@@ -540,10 +547,11 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		if ( needsContext ) {
 			startNode = balancedNodes[ 0 ].node;
 			// Keep wrapping until the outer node can be inserted anywhere
-			while ( startNode.getParent() && startNode.getParentNodeTypes() !== null ) {
+			while ( startNode.getParent() && nodeNeedsContext( startNode ) ) {
 				startNode = startNode.getParent();
-				contextOpenings.push( startNode.getClonedElement() );
-				contextClosings.push( { type: '/' + startNode.getType() } );
+				contextElement = startNode.getClonedElement();
+				contextOpenings.push( contextElement );
+				contextClosings.push( { type: '/' + contextElement.type } );
 			}
 		}
 
