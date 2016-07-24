@@ -1168,6 +1168,7 @@ QUnit.test( 'getClipboardHash', 1, function ( assert ) {
 
 QUnit.test( 'onCopy', function ( assert ) {
 	var i, testClipboardData,
+		count = 0,
 		testEvent = {
 			originalEvent: {
 				clipboardData: {
@@ -1198,6 +1199,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 				expectedOriginalRange: new ve.Range( 1, 6 ),
 				expectedBalancedRange: new ve.Range( 1, 6 ),
 				expectedHtml: '<ol><li><p>g</p></li></ol>',
+				expectedText: 'g\n\n',
 				msg: 'Copy list item'
 			},
 			{
@@ -1213,13 +1215,32 @@ QUnit.test( 'onCopy', function ( assert ) {
 						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;}">' +
 						'Foo' +
 					'</p>',
+				expectedText: 'Foo\n\n',
 				msg: 'RDFa attributes encoded into data-ve-attributes'
+			},
+			{
+				rangeOrSelection: new ve.Range( 0, 61 ),
+				expectedText: 'abc\n\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n',
+				msg: 'Plain text of entire document'
 			}
 		];
 
-	QUnit.expect( cases.length * 5 );
+	for ( i = 0; i < cases.length; i++ ) {
+		count += 3;
+		if ( cases[ i ].expectedData ) {
+			count++;
+		}
+		if ( cases[ i ].expectedHtml ) {
+			count++;
+		}
+		if ( cases[ i ].expectedText ) {
+			count++;
+		}
+	}
 
-	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, msg ) {
+	QUnit.expect( count );
+
+	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, msg ) {
 		var clipboardKey, slice,
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
@@ -1235,14 +1256,21 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 		slice = view.clipboard.slice;
 
-		assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
-		assert.equalRange( slice.originalRange, expectedOriginalRange, msg + ': originalRange' );
-		assert.equalRange( slice.balancedRange, expectedBalancedRange, msg + ': balancedRange' );
-		assert.equalDomElement(
-			$( '<div>' ).html( view.$pasteTarget.html() )[ 0 ],
-			$( '<div>' ).html( expectedHtml )[ 0 ],
-			msg + ': html'
-		);
+		assert.equalRange( slice.originalRange, expectedOriginalRange || rangeOrSelection, msg + ': originalRange' );
+		assert.equalRange( slice.balancedRange, expectedBalancedRange || rangeOrSelection, msg + ': balancedRange' );
+		if ( expectedData ) {
+			assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
+		}
+		if ( expectedHtml ) {
+			assert.equalDomElement(
+				$( '<div>' ).html( testClipboardData[ 'text/html' ] )[ 0 ],
+				$( '<div>' ).html( expectedHtml )[ 0 ],
+				msg + ': html'
+			);
+		}
+		if ( expectedText ) {
+			assert.strictEqual( testClipboardData[ 'text/plain' ], expectedText, msg + ': text' );
+		}
 
 		view.destroy();
 	}
@@ -1251,7 +1279,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		testRunner(
 			cases[ i ].doc, cases[ i ].rangeOrSelection, cases[ i ].expectedData,
 			cases[ i ].expectedOriginalRange, cases[ i ].expectedBalancedRange,
-			cases[ i ].expectedHtml, cases[ i ].msg
+			cases[ i ].expectedHtml, cases[ i ].expectedText, cases[ i ].msg
 		);
 	}
 
