@@ -1659,7 +1659,10 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 			clipboardData.setData( 'text/xcustom', clipboardKey );
 		}
 		clipboardData.setData( 'text/html', this.$pasteTarget.html() );
-		clipboardData.setData( 'text/plain', this.$pasteTarget.text() );
+		// innerText "approximates the text the user would get if they highlighted the
+		// contents of the element with the cursor and then copied to the clipboard." - MDN
+		// Use $.text as a fallback for Firefox <= 44
+		clipboardData.setData( 'text/plain', this.$pasteTarget[ 0 ].innerText || this.$pasteTarget.text() );
 	} else {
 		// Support: IE
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
