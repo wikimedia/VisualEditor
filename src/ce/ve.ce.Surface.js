@@ -1884,12 +1884,8 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		// If the clipboardKey isn't set (paste from non-VE instance) use external import rules
 		if ( !clipboardKey ) {
 			linearData.sanitize( importRules.external || {}, keepEmptyContentBranches );
-			if ( importRules.all ) {
-				linearData.sanitize( importRules.all, keepEmptyContentBranches );
-			}
-		} else {
-			linearData.sanitize( importRules.all || {}, keepEmptyContentBranches );
 		}
+		linearData.sanitize( importRules.all || {}, keepEmptyContentBranches );
 	}
 
 	// If the selection doesn't collapse after paste then nothing was inserted
@@ -2015,8 +2011,8 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				ve.copy( slice.getOriginalData() )
 			);
 
-			if ( importRules.all ) {
-				pasteData.sanitize( importRules.all );
+			if ( this.pasteSpecial ) {
+				sanitize( pasteData, true );
 			}
 
 			// Annotate
@@ -2036,8 +2032,8 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 				ve.copy( slice.getBalancedData() )
 			);
 
-			if ( importRules.all ) {
-				pasteData.sanitize( importRules.all );
+			if ( this.pasteSpecial ) {
+				sanitize( pasteData, true );
 			}
 
 			// Annotate

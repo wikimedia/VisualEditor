@@ -2498,6 +2498,56 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Double indented lists (Google Docs style)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 0 ),
+				pasteTargetHtml: '<p>A</p><p></p><p>B</p>',
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph' },
+								'A',
+								{ type: '/paragraph' },
+								{ type: 'paragraph' },
+								'B',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				msg: 'Empty paragraph stripped from external paste'
+			},
+			{
+				rangeOrSelection: new ve.Range( 8 ),
+				documentHtml: '<p>A</p><p></p><p>B</p>',
+				internalSourceRangeOrSelection: new ve.Range( 0, 8 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 8 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph' },
+								'A',
+								{ type: '/paragraph' },
+								{ type: 'paragraph' },
+								{ type: '/paragraph' },
+								{ type: 'paragraph' },
+								'B',
+								{ type: '/paragraph' }
+							],
+							insertedDataLength: 8,
+							insertedDataOffset: 0,
+							remove: []
+						},
+						{ type: 'retain', length: 2 }
+					]
+				],
+				msg: 'Empty paragraph kept in internal paste'
 			}
 		];
 
