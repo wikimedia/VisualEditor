@@ -433,14 +433,15 @@ ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
  * Get plain text for the fragment.
  *
  * @method
+ * @param {boolean} [maintainIndices] Maintain data offset to string index alignment by replacing elements with line breaks
  * @return {string} Fragment text
  */
-ve.dm.SurfaceFragment.prototype.getText = function () {
+ve.dm.SurfaceFragment.prototype.getText = function ( maintainIndices ) {
 	var range = this.getSelection().getCoveringRange();
 	if ( !range ) {
 		return '';
 	}
-	return this.document.data.getText( false, range );
+	return this.document.data.getText( maintainIndices, range );
 };
 
 /**
