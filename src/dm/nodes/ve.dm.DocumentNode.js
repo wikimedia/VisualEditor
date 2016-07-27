@@ -35,6 +35,17 @@ ve.dm.DocumentNode.static.parentNodeTypes = [];
 
 ve.dm.DocumentNode.static.matchTagNames = [];
 
+/* Methods */
+
+ve.dm.DocumentNode.prototype.getElement =
+ve.dm.DocumentNode.prototype.getAttribute =
+ve.dm.DocumentNode.prototype.getAttributes =
+ve.dm.DocumentNode.prototype.getOriginalDomElements =
+ve.dm.DocumentNode.prototype.getClonedElement =
+ve.dm.DocumentNode.prototype.getHashObject = function () {
+	throw new Error( 'DocumentNodes do not exist in the linear model' );
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.DocumentNode );
