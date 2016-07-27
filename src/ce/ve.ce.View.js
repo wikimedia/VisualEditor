@@ -45,9 +45,9 @@ ve.ce.View = function VeCeView( model, config ) {
 			// computed attributes
 			true,
 			// deep
-			!ve.dm.nodeFactory.lookup( this.model.getType() ) ||
-				!ve.dm.nodeFactory.canNodeHaveChildren( this.model.getType() ) ||
-				ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.model.getType() )
+			!( this.model instanceof ve.dm.Node ) ||
+			!this.model.canHaveChildren() ||
+			this.model.handlesOwnChildren()
 		);
 	}
 };
