@@ -79,12 +79,12 @@ ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 	// Replace content
 	this.$element.empty().append( $preview.contents() );
 
-	// Event
-	this.emit( 'render' );
-
 	// Cleanup
 	this.view.destroy();
 	this.view = null;
+
+	// Event
+	this.emit( 'render' );
 };
 
 /**
@@ -131,5 +131,5 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
  * @return {boolean} Still generating
  */
 ve.ui.PreviewElement.prototype.isGenerating = function () {
-	return !!( this.view && this.view.isGenerating && this.view.isGenerating() );
+	return !!this.view;
 };
