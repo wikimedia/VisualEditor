@@ -1432,9 +1432,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 
 	if ( importRules ) {
 		data.sanitize( importRules.external || {} );
-		if ( importRules.all ) {
-			data.sanitize( importRules.all );
-		}
+		data.sanitize( importRules.all || {} );
 	}
 
 	data.remapInternalListKeys( this.getInternalList() );
