@@ -1632,7 +1632,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// Support: IE, Firefox<48
 	// Writing the key to text/xcustom won't work in IE & Firefox<48, so write
 	// it to the HTML instead
-	supportsCustomMimeType = clipboardData && (
+	supportsCustomMimeType = !!clipboardData && (
 		// Chrome
 		clipboardData.items ||
 		// Firefox >= 48 (but not Firefox Android, which has name='android' and doesn't support this feature)
@@ -1649,7 +1649,9 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 
 	// If we have access to the clipboard write straight to it so we don't
 	// have to fiddle around with the selection and fix scroll offsets.
-	if ( clipboardData ) {
+	// Support: Edge
+	// Despite having the clipboard API, Edge only supports Text and URL types.
+	if ( clipboardData && !ve.init.platform.constructor.static.isEdge() ) {
 		// Disable the default event so we can override the data
 		e.preventDefault();
 
