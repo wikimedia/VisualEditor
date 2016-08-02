@@ -36,18 +36,20 @@ ve.ce.View = function VeCeView( model, config ) {
 		teardown: 'onTeardown'
 	} );
 
-	// Render attributes from original DOM elements
-	ve.dm.Converter.static.renderHtmlAttributeList(
-		this.model.getOriginalDomElements(),
-		this.$element,
-		this.constructor.static.renderHtmlAttributes,
-		// computed attributes
-		true,
-		// deep
-		!ve.dm.nodeFactory.lookup( this.model.getType() ) ||
-			!ve.dm.nodeFactory.canNodeHaveChildren( this.model.getType() ) ||
-			ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.model.getType() )
-	);
+	if ( this.model.element ) {
+		// Render attributes from original DOM elements
+		ve.dm.Converter.static.renderHtmlAttributeList(
+			this.model.getOriginalDomElements(),
+			this.$element,
+			this.constructor.static.renderHtmlAttributes,
+			// computed attributes
+			true,
+			// deep
+			!ve.dm.nodeFactory.lookup( this.model.getType() ) ||
+				!ve.dm.nodeFactory.canNodeHaveChildren( this.model.getType() ) ||
+				ve.dm.nodeFactory.doesNodeHandleOwnChildren( this.model.getType() )
+		);
+	}
 };
 
 /* Inheritance */
