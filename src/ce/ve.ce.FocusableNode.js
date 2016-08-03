@@ -38,7 +38,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	this.rects = null;
 	this.boundingRect = null;
 	this.startAndEndRects = null;
-	this.icon = null;
+	this.$icon = null;
 	this.touchMoved = false;
 
 	if ( Array.isArray( config.classes ) ) {
@@ -176,21 +176,31 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 		return;
 	}
 	if ( !this.hasRendering() ) {
-		if ( !this.icon ) {
-			this.icon = new OO.ui.IconWidget( {
-				classes: [ 've-ce-focusableNode-invisibleIcon' ],
-				icon: this.constructor.static.iconWhenInvisible
-			} );
-			// Add em space for selection highlighting
-			this.icon.$element.text( '\u2003' );
+		if ( !this.$icon ) {
+			this.$icon = this.createInvisibleIcon();
 		}
 		this.$element.first()
 			.addClass( 've-ce-focusableNode-invisible' )
-			.prepend( this.icon.$element );
-	} else if ( this.icon ) {
+			.prepend( this.$icon );
+	} else if ( this.$icon ) {
 		this.$element.first().removeClass( 've-ce-focusableNode-invisible' );
-		this.icon.$element.detach();
+		this.$icon.detach();
 	}
+};
+
+/**
+ * Create a element to show if the node is invisible
+ *
+ * @return {jQuery} Element to show
+ */
+ve.ce.FocusableNode.prototype.createInvisibleIcon = function () {
+	var icon = new OO.ui.IconWidget( {
+		classes: [ 've-ce-focusableNode-invisibleIcon' ],
+		icon: this.constructor.static.iconWhenInvisible
+	} );
+	// Add em space for selection highlighting
+	icon.$element.text( '\u2003' );
+	return icon.$element;
 };
 
 /**
