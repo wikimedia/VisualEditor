@@ -1,15 +1,16 @@
 /*!
- * OOjs UI v0.17.6
+ * OOjs UI v0.17.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-07-12T20:26:07Z
+ * Date: 2016-08-03T16:38:27Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
+	/* stylelint-disable-line declaration-no-important */
 }
 .oo-ui-buttonElement > .oo-ui-buttonElement-button {
 	cursor: pointer;
@@ -797,6 +798,14 @@
 	overflow: auto;
 	resize: none;
 }
+.oo-ui-textInputWidget [type="number"] {
+	-moz-appearance: textfield;
+}
+.oo-ui-textInputWidget [type="number"]::-webkit-outer-spin-button,
+.oo-ui-textInputWidget [type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 .oo-ui-textInputWidget [type="search"] {
 	-webkit-appearance: textfield;
 }
@@ -1052,8 +1061,8 @@
 .oo-ui-comboBoxInputWidget.oo-ui-widget-enabled > .oo-ui-indicatorElement-indicator {
 	cursor: pointer;
 }
-.oo-ui-comboBoxInputWidget-php input::-webkit-calendar-picker-indicator {
-	opacity: 0 !important;
+.oo-ui-comboBoxInputWidget-php ::-webkit-calendar-picker-indicator {
+	opacity: 0;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -1111,14 +1120,14 @@
 }
 
 /*!
- * OOjs UI v0.17.6
+ * OOjs UI v0.17.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-07-12T20:26:07Z
+ * Date: 2016-08-03T16:38:27Z
  */
 .oo-ui-draggableElement-handle,
 .oo-ui-draggableElement-handle.oo-ui-widget {
@@ -1201,6 +1210,8 @@
 	right: 0;
 	left: 0;
 	bottom: 0;
+	/* stylelint-disable declaration-no-important */
+	/* stylelint-enable declaration-no-important */
 }
 .oo-ui-menuLayout-menu,
 .oo-ui-menuLayout-content {
@@ -1551,32 +1562,32 @@
 .oo-ui-selectFileWidget .oo-ui-selectFileWidget-clearButton {
 	z-index: 2;
 }
-.oo-ui-selectFileWidget-dropTarget {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget {
 	cursor: default;
 	height: 5.5em;
 	padding: 0;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-dropLabel,
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-dropLabel,
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton {
 	display: none;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail {
 	height: 5.5em;
 	width: 5.5em;
 	position: absolute;
 	background-size: cover;
 	background-position: center center;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail.oo-ui-pendingElement-pending {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail.oo-ui-pendingElement-pending {
 	background-size: auto;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail > .oo-ui-selectFileWidget-noThumbnail-icon {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail > .oo-ui-selectFileWidget-noThumbnail-icon {
 	opacity: 0.4;
 	background-color: #cccccc;
 	height: 5.5em;
 	width: 5.5em;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
 	border: 0;
 	background: none;
 	display: block;
@@ -1584,37 +1595,37 @@
 	width: auto;
 	margin-right: 5.5em;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-label {
 	position: relative;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-fileName {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-fileName {
 	display: block;
 	padding-left: 2.375em;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-fileType {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-fileType {
 	display: block;
 	float: none;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-clearButton {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info > .oo-ui-selectFileWidget-clearButton {
 	position: absolute;
 	left: 0.5em;
 }
-.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail,
-.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
+.oo-ui-selectFileWidget-empty.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-thumbnail,
+.oo-ui-selectFileWidget-empty.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
 	display: none;
 }
-.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton {
+.oo-ui-selectFileWidget-empty.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton {
 	display: block;
 	margin: 0.7em;
 }
-.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget {
+.oo-ui-selectFileWidget-empty.oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget {
 	text-align: center;
 }
-.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
+.oo-ui-selectFileWidget-empty.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info,
+.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-info {
 	margin: 0;
 }
 .oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-clearButton,
@@ -1624,18 +1635,18 @@
 .oo-ui-selectFileWidget-empty.oo-ui-widget-enabled .oo-ui-selectFileWidget-dropLabel {
 	display: block;
 }
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget {
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
 	    -ms-user-select: none;
 	        user-select: none;
 }
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget,
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget .oo-ui-buttonElement-button,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget .oo-ui-buttonElement-button {
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget .oo-ui-buttonElement-button,
+.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget .oo-ui-buttonElement-button {
 	cursor: no-drop;
 }
 .oo-ui-selectFileWidget:last-child {
@@ -1722,27 +1733,27 @@
 .oo-ui-selectFileWidget-notsupported.oo-ui-indicatorElement .oo-ui-selectFileWidget-info .oo-ui-selectFileWidget-label {
 	left: 2em;
 }
-.oo-ui-selectFileWidget-supported.oo-ui-widget-enabled.oo-ui-selectFileWidget-canDrop .oo-ui-selectFileWidget-dropTarget {
+.oo-ui-selectFileWidget-supported.oo-ui-widget-enabled.oo-ui-selectFileWidget-canDrop.oo-ui-selectFileWidget-dropTarget {
 	background-color: #e1f3ff;
 }
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-dropTarget,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-dropTarget {
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget {
 	color: #cccccc;
 	text-shadow: 0 -1px 1px #ffffff;
 	border-color: #dddddd;
 	background-color: #f3f3f3;
 }
-.oo-ui-selectFileWidget-dropTarget {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget {
 	background-color: #ffffff;
 	border: 1px solid #aaaaaa;
 	margin-bottom: 0.5em;
 	vertical-align: middle;
 	border-radius: 0.25em;
 }
-.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton > .oo-ui-buttonElement-button {
+.oo-ui-selectFileWidget.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-selectButton > .oo-ui-buttonElement-button {
 	border-radius: 0.25em;
 }
-.oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-dropTarget {
+.oo-ui-selectFileWidget-empty.oo-ui-selectFileWidget-dropTarget {
 	border-style: dashed;
 }
 .oo-ui-outlineOptionWidget {
@@ -2057,14 +2068,6 @@
 .oo-ui-numberInputWidget-field > .oo-ui-textInputWidget {
 	width: 100%;
 }
-.oo-ui-numberInputWidget-field > .oo-ui-textInputWidget [type="number"]::-webkit-outer-spin-button,
-.oo-ui-numberInputWidget-field > .oo-ui-textInputWidget [type="number"]::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
-}
-.oo-ui-numberInputWidget-field > .oo-ui-textInputWidget [type="number"] {
-	-moz-appearance: textfield;
-}
 .oo-ui-numberInputWidget-field > .oo-ui-buttonWidget {
 	white-space: nowrap;
 }
@@ -2091,14 +2094,14 @@
 }
 
 /*!
- * OOjs UI v0.17.6
+ * OOjs UI v0.17.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-07-12T20:26:07Z
+ * Date: 2016-08-03T16:38:27Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2594,14 +2597,14 @@
 }
 
 /*!
- * OOjs UI v0.17.6
+ * OOjs UI v0.17.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-07-12T20:26:07Z
+ * Date: 2016-08-03T16:38:27Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
 	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
@@ -3004,14 +3007,14 @@
 }
 
 /*!
- * OOjs UI v0.17.6
+ * OOjs UI v0.17.7
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-07-12T20:26:07Z
+ * Date: 2016-08-03T16:38:27Z
  */
 .oo-ui-icon-add {
 	background-image: url("themes/apex/images/icons/add.png");
