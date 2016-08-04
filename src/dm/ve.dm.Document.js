@@ -454,7 +454,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 	var i, first, last, firstNode, lastNode,
 		linearData, slice, originalRange, balancedRange,
-		balancedNodes, needsContext, contextElement,
+		balancedNodes, needsContext, contextElement, isContent,
 		startNode = this.getBranchNodeFromOffset( range.start ),
 		endNode = this.getBranchNodeFromOffset( range.end ),
 		selection = this.selectNodes( range, 'siblings' ),
@@ -548,8 +548,12 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			startNode = balancedNodes[ 0 ].node;
 			// Keep wrapping until the outer node can be inserted anywhere
 			while ( startNode.getParent() && nodeNeedsContext( startNode ) ) {
+				isContent = startNode.isContent();
 				startNode = startNode.getParent();
 				contextElement = startNode.getClonedElement();
+				if ( isContent ) {
+					ve.setProp( contextElement, 'internal', 'generated', 'wrapper' );
+				}
 				contextOpenings.push( contextElement );
 				contextClosings.push( { type: '/' + contextElement.type } );
 			}

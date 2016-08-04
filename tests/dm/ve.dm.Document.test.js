@@ -644,7 +644,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				msg: 'range with one character',
 				range: new ve.Range( 2, 3 ),
 				expected: [
-					{ type: 'heading', attributes: { level: 1 } },
+					{ type: 'heading', attributes: { level: 1 }, internal: { generated: 'wrapper' } },
 					[ 'b', [ ve.dm.example.bold ] ],
 					{ type: '/heading' }
 				],
@@ -655,7 +655,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				msg: 'range with two characters',
 				range: new ve.Range( 2, 4 ),
 				expected: [
-					{ type: 'heading', attributes: { level: 1 } },
+					{ type: 'heading', attributes: { level: 1 }, internal: { generated: 'wrapper' } },
 					[ 'b', [ ve.dm.example.bold ] ],
 					[ 'c', [ ve.dm.example.italic ] ],
 					{ type: '/heading' }
@@ -805,7 +805,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				msg: 'inline node at start',
 				range: new ve.Range( 1, 3 ),
 				expected: [
-					{ type: 'paragraph' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } },
 					ve.dm.example.image.data,
 					{ type: '/inlineImage' },
 					{ type: '/paragraph' }
@@ -818,7 +818,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				msg: 'inline node at end',
 				range: new ve.Range( 6, 8 ),
 				expected: [
-					{ type: 'paragraph' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } },
 					{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
 					{ type: '/alienInline' },
 					{ type: '/paragraph' }
@@ -831,7 +831,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				msg: 'inline node at start with text',
 				range: new ve.Range( 1, 5 ),
 				expected: [
-					{ type: 'paragraph' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } },
 					ve.dm.example.image.data,
 					{ type: '/inlineImage' },
 					'F', 'o',
@@ -845,7 +845,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				msg: 'inline node at end with text',
 				range: new ve.Range( 4, 8 ),
 				expected: [
-					{ type: 'paragraph' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } },
 					'o', 'o',
 					{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
 					{ type: '/alienInline' },
