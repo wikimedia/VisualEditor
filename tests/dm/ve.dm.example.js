@@ -1546,7 +1546,8 @@ ve.dm.example.domToDataCases = {
 			'<font class="ve-ce-textStyleAnnotation ve-ce-fontAnnotation">i</font>' +
 		'</p>'
 	},
-	'strip leading whitespace in paragraphs': {
+	'strip leading whitespace in non-whitespace preserving nodes': {
+		// T53462/T142132
 		data: [
 			{ type: 'paragraph' },
 			' ', 'f', 'o', 'o',
@@ -1563,7 +1564,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		normalizedBody: '<p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre>'
+		normalizedBody: '<p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre>',
+		clipboardBody: '<p> foo</p><p> \t \tbar</p><h2>  baz</h2><pre> \tquux</pre>'
 	},
 	image: {
 		body: ve.dm.example.image.html,
