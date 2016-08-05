@@ -3260,7 +3260,7 @@ ve.ce.Surface.prototype.getViewportRange = function () {
  * @return {boolean} Whether the selection actually changed
  */
 ve.ce.Surface.prototype.showModelSelection = function () {
-	var selection, changed;
+	var selection, changed, modelRange, impliedModelRange;
 
 	if ( this.deactivated ) {
 		// setTimeout: Defer until view has updated
@@ -3269,22 +3269,45 @@ ve.ce.Surface.prototype.showModelSelection = function () {
 	}
 
 	selection = this.getSelection();
-
-	if ( selection.isNativeCursor() && !this.focusedBlockSlug ) {
-		changed = this.showSelectionState(
-			this.getSelectionState( selection.getModel().getRange() )
+	if ( !selection.isNativeCursor() || this.focusedBlockSlug ) {
+		// Model selection is an emulated selection (e.g. table). The view is certain to
+		// match it already, because there is no way to change the view selection when
+		// an emulated selection is showing.
+		return false;
+	}
+	modelRange = selection.getModel().getRange();
+	if ( this.documentView.documentNode.$element.get( 0 ).contains(
+		this.nativeSelection.focusNode
+	) ) {
+		// See whether the model range implied by the DOM selection is already equal to
+		// the actual model range. This is necessary because one model selection can
+		// correspond to many DOM selections, and we don't want to change a DOM
+		// selection that is already valid to an arbitrary different DOM selection.
+		impliedModelRange = new ve.Range(
+			ve.ce.getOffset(
+				this.nativeSelection.anchorNode,
+				this.nativeSelection.anchorOffset
+			),
+			ve.ce.getOffset(
+				this.nativeSelection.focusNode,
+				this.nativeSelection.focusOffset
+			)
 		);
-		// Support: Chrome
-		// Fixes T131674, which is only triggered with Chromium-style ce=false cursoring
-		// restrictions (but other cases of non-updated cursor holders can probably occur
-		// in other browsers).
-		if ( changed ) {
-			this.updateCursorHolders();
-			return true;
+		if ( modelRange.equals( impliedModelRange ) ) {
+			// Current native selection fits model range; don't change
+			return false;
 		}
 	}
+	changed = this.showSelectionState( this.getSelectionState( modelRange ) );
+	// Support: Chrome
+	// Fixes T131674, which is only triggered with Chromium-style ce=false cursoring
+	// restrictions (but other cases of non-updated cursor holders can probably occur
+	// in other browsers).
+	if ( changed ) {
+		this.updateCursorHolders();
+		return true;
+	}
 	return false;
-
 };
 
 /**
