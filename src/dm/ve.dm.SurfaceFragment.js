@@ -663,21 +663,23 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
  *
  * @method
  * @param {string} method Mode of annotation, either 'set' or 'clear'
- * @param {string|ve.dm.Annotation} nameOrAnnotation Annotation name, for example: 'textStyle/bold' or
- * Annotation object
+ * @param {string|ve.dm.Annotation|ve.dm.AnnotationSet} nameOrAnnotations Annotation name, for example: 'textStyle/bold',
+ *  Annotation object or AnnotationSet
  * @param {Object} [data] Additional annotation data (not used if annotation object is given)
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotation, data ) {
+ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotations, data ) {
 	var annotation, i, ilen, j, jlen, tx, range,
 		annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() ),
 		ranges = this.getSelection().getRanges(),
 		txs = [];
 
-	if ( nameOrAnnotation instanceof ve.dm.Annotation ) {
-		annotations.push( nameOrAnnotation );
+	if ( nameOrAnnotations instanceof ve.dm.AnnotationSet ) {
+		annotations = nameOrAnnotations;
+	} else if ( nameOrAnnotations instanceof ve.dm.Annotation ) {
+		annotations.push( nameOrAnnotations );
 	} else {
-		annotation = ve.dm.annotationFactory.create( nameOrAnnotation, data );
+		annotation = ve.dm.annotationFactory.create( nameOrAnnotations, data );
 		if ( method === 'set' ) {
 			annotations.push( annotation );
 		} else if ( method === 'clear' ) {
@@ -809,10 +811,11 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  * @method
  * @param {ve.dm.Document} newDoc Document to insert
  * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
+ * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange ) {
-	var tx, newRange,
+ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange, annotate ) {
+	var tx, newRange, annotations, offset,
 		range = this.getSelection().getCoveringRange(),
 		doc = this.getDocument();
 
@@ -821,15 +824,32 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange 
 	}
 
 	if ( !range.isCollapsed() ) {
+		if ( annotate ) {
+			// If we're replacing content, use the annotations selected
+			// instead of continuing from the left
+			annotations = this.getAnnotations();
+		}
 		this.removeContent();
 	}
 
-	tx = new ve.dm.Transaction.newFromDocumentInsertion( doc, range.start, newDoc, newDocRange );
+	offset = range.start;
+	if ( annotate && !annotations ) {
+		// TODO T126021: Don't reach into properties of document
+		// FIXME T126022: the logic we actually need for annotating inserted content
+		// correctly is MUCH more complicated
+		annotations = doc.data
+			.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
+	}
+
+	tx = new ve.dm.Transaction.newFromDocumentInsertion( doc, offset, newDoc, newDocRange );
 	if ( !tx.isNoOp() ) {
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
 		newRange = tx.getModifiedRange();
 		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
+		if ( annotations && annotations.getLength() > 0 ) {
+			this.annotateContent( 'set', annotations );
+		}
 	}
 
 	return this;

@@ -1353,7 +1353,41 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: docLen - 25 }
 					]
 				],
-				msg: 'Text into annotated content'
+				msg: 'Internal text into annotated content'
+			},
+			{
+				rangeOrSelection: new ve.Range( 25 ),
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 28 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 25 },
+						{
+							type: 'replace',
+							insert: [ 'F', 'o', 'o' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 25 }
+					],
+					[
+						{ type: 'retain', length: 25 },
+						{
+							type: 'annotate',
+							method: 'set',
+							bias: 'start',
+							index: 0
+						},
+						{ type: 'retain', length: 3 },
+						{
+							type: 'annotate',
+							method: 'set',
+							bias: 'stop',
+							index: 0
+						},
+						{ type: 'retain', length: 5 }
+					]
+				],
+				msg: 'External text into annotated content'
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),
