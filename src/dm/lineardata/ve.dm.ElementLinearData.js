@@ -1021,9 +1021,9 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {boolean} [rules.allowBreaks] Allow <br> line breaks, otherwise the node will be split
  * @param {boolean} [rules.preserveHtmlWhitespace] Preserve non-semantic HTML whitespace
  * @param {boolean} [rules.nodeSanitization] Apply per-type node sanitizations via ve.dm.Node#sanitize
- * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
+ * @param {boolean} [rules.keepEmptyContentBranches] Preserve empty content branch nodes
  */
-ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentBranches ) {
+ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 	var i, len, annotations, emptySet, setToRemove, type,
 		canContainContent, contentElement, isOpen, nodeClass, ann, oldHash,
 		store = this.getStore(),
@@ -1098,7 +1098,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentB
 
 			// If a node is empty but can contain content, then just remove it
 			if (
-				!keepEmptyContentBranches &&
+				!rules.keepEmptyContentBranches &&
 				i > 0 && !isOpen && this.isOpenElementData( i - 1 ) &&
 				canContainContent
 			) {
