@@ -1243,8 +1243,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				);
 			// Continue forward as far as the plain text goes
 			while ( typeof data[ i ] === 'string' ) {
-				// HACK: Skip over leading whitespace (bug 51462) in non-whitespace-preserving tags
-				if ( !( isStart && data[ i ].match( /\s/ ) ) ) {
+				// HACK: Skip over leading whitespace (T53462/T142132) in non-whitespace-preserving tags
+				// This should possibly be handled by Parsoid or in the UI.
+				if ( !( isStart && data[ i ].match( /\s/ ) && !this.forClipboard ) ) {
 					text += data[ i ];
 					isStart = false;
 				}
