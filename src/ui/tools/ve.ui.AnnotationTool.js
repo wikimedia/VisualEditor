@@ -206,6 +206,50 @@ ve.ui.SubscriptAnnotationTool.static.commandName = 'subscript';
 ve.ui.toolFactory.register( ve.ui.SubscriptAnnotationTool );
 
 /**
+ * UserInterface big tool.
+ *
+ * @class
+ * @extends ve.ui.AnnotationTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.BigAnnotationTool = function VeUiBigAnnotationTool( toolGroup, config ) {
+	ve.ui.AnnotationTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.BigAnnotationTool, ve.ui.AnnotationTool );
+ve.ui.BigAnnotationTool.static.name = 'big';
+ve.ui.BigAnnotationTool.static.group = 'textStyle';
+ve.ui.BigAnnotationTool.static.icon = 'bigger';
+ve.ui.BigAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-big-tooltip' );
+ve.ui.BigAnnotationTool.static.annotation = { name: 'textStyle/big' };
+ve.ui.BigAnnotationTool.static.commandName = 'big';
+ve.ui.toolFactory.register( ve.ui.BigAnnotationTool );
+
+/**
+ * UserInterface small tool.
+ *
+ * @class
+ * @extends ve.ui.AnnotationTool
+ * @constructor
+ * @param {OO.ui.ToolGroup} toolGroup
+ * @param {Object} [config] Configuration options
+ */
+ve.ui.SmallAnnotationTool = function VeUiSmallAnnotationTool( toolGroup, config ) {
+	ve.ui.AnnotationTool.call( this, toolGroup, config );
+};
+OO.inheritClass( ve.ui.SmallAnnotationTool, ve.ui.AnnotationTool );
+ve.ui.SmallAnnotationTool.static.name = 'small';
+ve.ui.SmallAnnotationTool.static.group = 'textStyle';
+ve.ui.SmallAnnotationTool.static.icon = 'smaller';
+ve.ui.SmallAnnotationTool.static.title =
+	OO.ui.deferMsg( 'visualeditor-annotationbutton-small-tooltip' );
+ve.ui.SmallAnnotationTool.static.annotation = { name: 'textStyle/small' };
+ve.ui.SmallAnnotationTool.static.commandName = 'small';
+ve.ui.toolFactory.register( ve.ui.SmallAnnotationTool );
+
+/**
  * UserInterface more text styles tool.
  *
  * @class
@@ -229,6 +273,6 @@ ve.ui.MoreTextStyleTool.static.groupConfig = {
 	indicator: 'down',
 	title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
 	include: [ { group: 'textStyle' }, 'language', 'clear' ],
-	demote: [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
+	demote: [ 'strikethrough', 'code', 'underline', 'language', 'big', 'small', 'clear' ]
 };
 ve.ui.toolFactory.register( ve.ui.MoreTextStyleTool );
