@@ -146,7 +146,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		// Fake selection change events with mousemove if dragging
 		this.$documentNode.on( 'mousemove', function () {
 			if ( surface.dragging ) {
-				this.onDocumentSelectionChangeDebounced();
+				surface.onDocumentSelectionChangeDebounced();
 			}
 		} );
 		// mousedown needs to run after native mousedown action has changed the selection
