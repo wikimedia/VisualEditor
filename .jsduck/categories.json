@@ -60,7 +60,7 @@
 					"ve.dm.APIResultsProvider",
 					"ve.dm.APIResultsQueue",
 					"ve.dm.Surface",
-					"ve.dm.SurfaceFragment",
+					"ve.dm.*SurfaceFragment",
 					"ve.dm.*Selection",
 					"ve.dm.Transaction",
 					"ve.dm.TransactionProcessor",

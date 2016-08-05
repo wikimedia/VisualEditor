@@ -6,7 +6,7 @@
 
 /**
  * A surface is a top-level object which contains both a surface model and a surface view.
- * This is the mobile version of the surface.
+ * This is the desktop version of the surface.
  *
  * @class
  * @extends ve.ui.Surface
