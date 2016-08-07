@@ -14,6 +14,7 @@
  * @param {ve.dm.ModelRegistry} modelRegistry
  * @param {ve.dm.NodeFactory} nodeFactory
  * @param {ve.dm.AnnotationFactory} annotationFactory
+ * @param {ve.dm.MetaItemFactory} metaItemFactory
  */
 ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotationFactory, metaItemFactory ) {
 	// Properties
@@ -339,7 +340,9 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  * @param {Object|Array} dataElements Linear model element or data slice
  * @param {HTMLDocument} doc Document to create DOM elements in
  * @param {Node[]} [childDomElements] Array of child DOM elements to pass in (annotations only)
- * @return {Node|boolean} DOM element, or false if the element cannot be converted
+ * @return {Node[]|boolean} DOM elements, or false if the element cannot be converted.
+ *  If the first DOMelement has a 'handledOwnChildren' property set, the converter treats it as if it
+ *  were a handlesOwnChildren node.
  */
 ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc, childDomElements ) {
 	var domElements,
@@ -1079,7 +1082,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		dataLen = data.length,
 		canContainContentStack = [],
-		conv = this,
+		converter = this,
 		doc = container.ownerDocument,
 		domElement = container,
 		annotationStack = new ve.dm.AnnotationSet( this.store );
@@ -1154,7 +1157,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		}
 
 		if ( annotatedChildDomElements.length ) {
-			annotationElement = conv.getDomElementsFromDataElement(
+			annotationElement = converter.getDomElementsFromDataElement(
 				annotation.getElement(), doc, annotatedChildDomElements
 			)[ 0 ];
 		}
@@ -1570,6 +1573,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 
 				if ( Array.isArray( dataElementOrSlice ) ) {
 					i += dataElementOrSlice.length - 2;
+				} else if ( childDomElements && childDomElements.length && childDomElements[ 0 ].handledOwnChildren ) {
+					i = findEndOfNode( i ) - 2;
 				}
 			}
 		}
