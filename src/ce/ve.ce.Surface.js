@@ -1471,7 +1471,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
  * @return {boolean} Whether unicorns have been destroyed
  */
 ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
-	var preUnicorn, postUnicorn, range, node, fixup;
+	var preUnicorn, postUnicorn, range, node, fixup, veRange;
 	if ( !this.unicorningNode || !this.unicorningNode.unicorns ) {
 		return false;
 	}
@@ -1518,10 +1518,16 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 	// Apply the DOM selection to the model
 	this.incRenderLock();
 	try {
-		this.changeModel( null, new ve.dm.LinearSelection(
-			this.model.getDocument(),
-			ve.ce.veRangeFromSelection( this.nativeSelection )
-		) );
+		veRange = ve.ce.veRangeFromSelection( this.nativeSelection );
+		if ( veRange ) {
+			// The most likely reason for this condition to not-pass is if we
+			// try to cleanup unicorns while the native selection is outside
+			// the model momentarily, as sometimes happens during paste.
+			this.changeModel( null, new ve.dm.LinearSelection(
+				this.model.getDocument(),
+				veRange
+			) );
+		}
 		if ( fixupCursor ) {
 			this.moveModelCursor( fixup );
 		}
