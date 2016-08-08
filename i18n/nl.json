@@ -22,7 +22,8 @@
 			"TheDJ",
 			"MedShot",
 			"McDutchie",
-			"Robin van der Vliet"
+			"Robin van der Vliet",
+			"MrLeopold"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -32,11 +33,13 @@
 	"visualeditor-align-widget-left": "Links",
 	"visualeditor-align-widget-right": "Rechts",
 	"visualeditor-alignablecontextitem-title": "Uitlijning",
+	"visualeditor-annotationbutton-big-tooltip": "Groot",
 	"visualeditor-annotationbutton-bold-tooltip": "Vet",
 	"visualeditor-annotationbutton-code-tooltip": "Computercode",
 	"visualeditor-annotationbutton-italic-tooltip": "Cursief",
 	"visualeditor-annotationbutton-language-tooltip": "Taal",
 	"visualeditor-annotationbutton-link-tooltip": "Koppeling",
+	"visualeditor-annotationbutton-small-tooltip": "Klein",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Doorhalen",
 	"visualeditor-annotationbutton-subscript-tooltip": "Subscript",
 	"visualeditor-annotationbutton-superscript-tooltip": "Superscript",

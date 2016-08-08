@@ -18,7 +18,8 @@
 			"Hwangjy9",
 			"Kurousagi",
 			"고솜",
-			"Namoroka"
+			"Namoroka",
+			"Ykhwong"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -28,11 +29,13 @@
 	"visualeditor-align-widget-left": "왼쪽",
 	"visualeditor-align-widget-right": "오른쪽",
 	"visualeditor-alignablecontextitem-title": "맞춤",
+	"visualeditor-annotationbutton-big-tooltip": "크게",
 	"visualeditor-annotationbutton-bold-tooltip": "굵게",
 	"visualeditor-annotationbutton-code-tooltip": "컴퓨터 코드",
 	"visualeditor-annotationbutton-italic-tooltip": "기울임꼴",
 	"visualeditor-annotationbutton-language-tooltip": "언어",
 	"visualeditor-annotationbutton-link-tooltip": "링크",
+	"visualeditor-annotationbutton-small-tooltip": "작게",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "취소선",
 	"visualeditor-annotationbutton-subscript-tooltip": "아래 첨자",
 	"visualeditor-annotationbutton-superscript-tooltip": "위 첨자",
