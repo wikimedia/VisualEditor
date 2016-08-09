@@ -1171,6 +1171,17 @@ ve.parseXhtml = function ( html ) {
  * @return {string} Serialized HTML string
  */
 ve.serializeXhtml = function ( doc ) {
+	return ve.serializeXhtmlElement( doc.documentElement );
+};
+
+/**
+ * Serialize an HTML element created with #parseXhtml back to an HTML string, unmasking any
+ * attributes that were masked.
+ *
+ * @param {HTMLElement} element HTML element
+ * @return {string} Serialized HTML string
+ */
+ve.serializeXhtmlElement = function ( element ) {
 	var xml;
 	// Support: IE
 	// Feature-detect style attribute breakage in IE
@@ -1180,10 +1191,10 @@ ve.serializeXhtml = function ( doc ) {
 	if ( !ve.isStyleAttributeBroken ) {
 		// Use outerHTML if possible because in Firefox, XMLSerializer URL-encodes
 		// hrefs but outerHTML doesn't
-		return ve.properOuterHtml( doc.documentElement );
+		return ve.properOuterHtml( element );
 	}
 
-	xml = new XMLSerializer().serializeToString( ve.fixupPreBug( doc.documentElement ) );
+	xml = new XMLSerializer().serializeToString( ve.fixupPreBug( element ) );
 	// FIXME T126035: This strips out xmlns as a quick hack
 	xml = xml.replace( '<html xmlns="http://www.w3.org/1999/xhtml"', '<html' );
 	return ve.transformStyleAttributes( xml, true );
