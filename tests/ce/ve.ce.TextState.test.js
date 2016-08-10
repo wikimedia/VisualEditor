@@ -317,6 +317,40 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				},
 				{ type: 'retain', length: 3 }
 			]
+		},
+		{
+			msg: 'Insert new chunk whose annotations match end chunk\'s',
+			oldRawHtml: '<u>x</u>yz',
+			oldInnerHtml: '<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">x</u>yz',
+			newInnerHtml: '<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">x</u>y<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">w</u>yz',
+			operations: [
+				{ type: 'retain', length: 2 },
+				{
+					type: 'replace',
+					remove: [],
+					insert: [ 'y', [ 'w', [ 0 ] ] ],
+					insertedDataOffset: 0,
+					insertedDataLength: 2
+				},
+				{ type: 'retain', length: 5 }
+			]
+		},
+		{
+			msg: 'Ambiguous insert with start and end both identical to original',
+			oldRawHtml: 'ab',
+			oldInnerHtml: 'ab',
+			newInnerHtml: 'ab<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">x</u>ab',
+			operations: [
+				{ type: 'retain', length: 3 },
+				{
+					type: 'replace',
+					remove: [],
+					insert: [ [ 'x', [ 0 ] ], 'a', 'b' ],
+					insertedDataOffset: 0,
+					insertedDataLength: 3
+				},
+				{ type: 'retain', length: 3 }
+			]
 		}
 	];
 

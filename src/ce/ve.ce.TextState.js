@@ -213,7 +213,11 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 	// During typical typing, there is a single changed chunk with matching start/end chars.
 	textStart = 0;
 	textEnd = 0;
-	if ( change.start < Math.min( oldChunks.length, newChunks.length ) ) {
+	if ( change.start + change.end < Math.min( oldChunks.length, newChunks.length ) ) {
+		// Both oldChunks and newChunks include a changed chunk. Therefore the first changed
+		// chunk of oldChunks and newChunks is respectively oldChunks[ change.start ] and
+		// newChunks[ change.start ] . If they have matching annotations, then matching
+		// characters at their start are also part of the unchanged start region.
 		if ( oldChunks[ change.start ].hasEqualElements( newChunks[ change.start ] ) ) {
 			oldChunk = oldChunks[ change.start ];
 			newChunk = newChunks[ change.start ];
@@ -226,19 +230,22 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			textStart = i;
 		}
 
-		if (
-			change.end < Math.min( oldChunks.length, newChunks.length ) &&
-			oldChunks[ oldChunks.length - 1 - change.end ].hasEqualElements(
+		// Likewise, the last changed chunk of oldChunks and newChunks is respectively
+		// oldChunks[ oldChunks.length - 1 - change.end ] and
+		// newChunks[ newChunks.length - 1 - change.end ] , and if they have matching
+		// annotations, then matching characters at their end potentially form part of
+		// the unchanged end region.
+		if ( oldChunks[ oldChunks.length - 1 - change.end ].hasEqualElements(
 				newChunks[ newChunks.length - 1 - change.end ]
-			)
-		) {
+		) ) {
 			oldChunk = oldChunks[ oldChunks.length - 1 - change.end ];
 			newChunk = newChunks[ newChunks.length - 1 - change.end ];
-			// For oldChunks/newChunks/both, it's possible that only one chunk
-			// changed, in which case textStart has already eaten into that chunk;
-			// so take care not to overlap it. (For example, for 'ana'->'anna',
-			// textStart will be 2 so we want to limit textEnd to 1, else the 'n'
-			// of 'ana' will be counted twice).
+			// However, if only one chunk has changed in oldChunks/newChunks, then
+			// oldChunk/newChunk is also the *first* changed chunk, in which case
+			// textStart has already eaten into that chunk; so take care not to
+			// overlap it. (For example, for 'ana'->'anna', textStart will be 2 so
+			// we want to limit textEnd to 1, else the 'n' of 'ana' will be counted
+			// twice).
 			iLen = Math.min(
 				oldChunk.text.length -
 				( change.start + change.end === oldChunks.length - 1 ? textStart : 0 ),
