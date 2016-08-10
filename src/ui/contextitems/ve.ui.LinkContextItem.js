@@ -23,12 +23,6 @@ ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config ) {
 
 	this.labelPreview = new OO.ui.LabelWidget();
 	if ( this.context.isMobile() ) {
-		this.labelButton = new OO.ui.ButtonWidget( {
-			framed: false,
-			icon: 'edit',
-			title: OO.ui.deferMsg( 'visualeditor-linkcontext-label-change' ),
-			flags: [ 'progressive' ]
-		} );
 		this.$labelLayout = $( '<div>' ).addClass( 've-ui-linkContextItem-label' ).append(
 			$( '<div>' ).addClass( 've-ui-linkContextItem-label-body' ).append(
 				new OO.ui.LabelWidget( {
@@ -38,10 +32,9 @@ ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config ) {
 				$( '<div>' ).addClass( 've-ui-linkContextItem-label-preview' ).append( this.labelPreview.$element )
 			)
 		);
-		this.$bodyAction.before( this.$labelLayout );
-
 		this.$innerBody = $( '<div>' ).addClass( 've-ui-linkContextItem-inner-body' );
 		this.$body.append(
+			this.$labelLayout,
 			new OO.ui.LabelWidget( {
 				classes: [ 've-ui-linkContextItem-link-label' ],
 				label: OO.ui.deferMsg( 'visualeditor-linkinspector-title' )
@@ -63,11 +56,11 @@ ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config ) {
 			),
 			$( '<div>' ).addClass( 've-ui-linkContextItem-label-preview' ).append( this.labelPreview.$element )
 		);
-	}
-	this.labelButton.connect( this, { click: 'onLabelButtonClick' } );
+		this.labelButton.connect( this, { click: 'onLabelButtonClick' } );
 
-	if ( !this.isReadOnly() ) {
-		this.$labelLayout.append( $( '<div>' ).addClass( 've-ui-linkContextItem-label-action' ).append( this.labelButton.$element ) );
+		if ( !this.isReadOnly() ) {
+			this.$labelLayout.append( $( '<div>' ).addClass( 've-ui-linkContextItem-label-action' ).append( this.labelButton.$element ) );
+		}
 	}
 };
 
@@ -131,8 +124,17 @@ ve.ui.LinkContextItem.prototype.renderBody = function () {
  * @protected
  */
 ve.ui.LinkContextItem.prototype.updateLabelPreview = function () {
-	var annotationView = this.getAnnotationView(),
-		label = annotationView && annotationView.$element[ 0 ].innerText.trim();
+	var label,
+		surfaceModel = this.context.getSurface().getModel(),
+		annotationView = this.getAnnotationView();
+
+	// annotationView is a potentially old view node from when the context was
+	// first focused in the document. If the annotation model has been changed
+	// as well, this may be a problem.
+	if ( annotationView ) {
+		label = surfaceModel.getFragment().expandLinearSelection( 'annotation', annotationView.getModel() ).getText();
+	}
+
 	this.labelPreview.setLabel( label || ve.msg( 'visualeditor-linkcontext-label-fallback' ) );
 };
 
@@ -151,6 +153,7 @@ ve.ui.LinkContextItem.prototype.onLabelButtonClick = function () {
 		annotationView.$element[ 0 ],
 		this.context.isMobile() ? 'end' : undefined
 	);
+
 	ve.track( 'activity.' + this.constructor.static.name, { action: 'context-label' } );
 };
 

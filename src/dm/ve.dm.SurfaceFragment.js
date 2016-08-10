@@ -315,12 +315,12 @@ ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
  *
  * @param {string} [scope='parent'] Method of expansion:
  *  - `word`: Expands to cover the nearest word by looking for word breaks (see UnicodeJS.wordbreak)
- *  - `annotation`: Expands to cover a given annotation (argument) within the current range
+ *  - `annotation`: Expands to cover a given annotation type (ve.dm.Annotation) within the current range
  *  - `root`: Expands to cover the entire document
  *  - `siblings`: Expands to cover all sibling nodes
  *  - `closest`: Expands to cover the closest common ancestor node of a give type (ve.dm.Node)
  *  - `parent`: Expands to cover the closest common parent node
- * @param {Mixed} [type] Parameter to use with scope method if needed
+ * @param {ve.dm.Annotation|ve.dm.Node} [type] Parameter to use with scope method if needed
  * @return {ve.dm.SurfaceFragment} Expanded fragment
  */
 ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type ) {
@@ -432,6 +432,20 @@ ve.dm.SurfaceFragment.prototype.getText = function ( maintainIndices ) {
 		return '';
 	}
 	return this.document.data.getText( maintainIndices, range );
+};
+
+/**
+ * Whether the fragment contains only text, allowing annotations
+ *
+ * @method
+ * @return {boolean} Whether there's only text
+ */
+ve.dm.SurfaceFragment.prototype.containsOnlyText = function () {
+	var range = this.getSelection().getCoveringRange();
+	if ( !range ) {
+		return true;
+	}
+	return this.document.data.isPlainText( range, false, false, false, true );
 };
 
 /**
