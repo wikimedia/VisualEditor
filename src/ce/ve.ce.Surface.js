@@ -1873,7 +1873,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 	// jshint unused:false
 	var clipboardKey, clipboardId, clipboardIndex, clipboardHash,
 		$elements, parts, pasteData, slice, internalListRange,
-		data, pastedDocumentModel, htmlDoc, $images, i,
+		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange, pastedText, handled,
 		tableAction,
 		items = [],
@@ -2067,8 +2067,11 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		}
 		// Some browsers don't provide pasted image data through the clipboardData API and
 		// instead create img tags with data URLs, so detect those here
-		$images = $( htmlDoc.body ).find( 'img[src^=data\\:]' );
-		if ( $images.length ) {
+		$body = $( htmlDoc.body );
+		$images = $body.children( 'img[src^=data\\:]' );
+		// Check the body contained just children.
+		// TODO: In the future this may want to trigger image uploads *and* paste the HTML.
+		if ( $images.length === $body.children().length ) {
 			for ( i = 0; i < $images.length; i++ ) {
 				items.push( ve.ui.DataTransferItem.static.newFromDataUri(
 					$images.eq( i ).attr( 'src' ),
