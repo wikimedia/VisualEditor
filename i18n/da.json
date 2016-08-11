@@ -11,7 +11,8 @@
 			"Sarrus",
 			"Jhertel",
 			"Macofe",
-			"Mads Haupt"
+			"Mads Haupt",
+			"Peter Alberti"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -19,11 +20,13 @@
 	"visualeditor-align-widget-center": "Centreret",
 	"visualeditor-align-widget-left": "Venstre",
 	"visualeditor-align-widget-right": "Højre",
+	"visualeditor-annotationbutton-big-tooltip": "Stor",
 	"visualeditor-annotationbutton-bold-tooltip": "Fed",
 	"visualeditor-annotationbutton-code-tooltip": "Computer kode",
 	"visualeditor-annotationbutton-italic-tooltip": "Kursiv",
 	"visualeditor-annotationbutton-language-tooltip": "Sprog",
 	"visualeditor-annotationbutton-link-tooltip": "Link",
+	"visualeditor-annotationbutton-small-tooltip": "Lille",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Gennemstregning",
 	"visualeditor-annotationbutton-subscript-tooltip": "Sænket skrift",
 	"visualeditor-annotationbutton-superscript-tooltip": "Hævet skrift",
@@ -90,6 +93,8 @@
 	"visualeditor-shortcuts-text-style": "Tekststil",
 	"visualeditor-specialcharacter-button-tooltip": "Specialtegn",
 	"visualeditor-specialcharacterinspector-title": "Specialtegn",
+	"visualeditor-table-delete-col": "Slet {{PLURAL:$1|kolonne|kolonner}}",
+	"visualeditor-table-delete-row": "Slet {{PLURAL:$1|række|rækker}}",
 	"visualeditor-toolbar-format-tooltip": "Formatér afsnit",
 	"visualeditor-toolbar-history": "Historik",
 	"visualeditor-toolbar-insert": "Indsæt",
