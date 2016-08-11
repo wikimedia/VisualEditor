@@ -2563,7 +2563,7 @@ ve.ce.Surface.prototype.onInsertionAnnotationsChange = function () {
 		return;
 	}
 	// Must re-apply the selection after re-rendering
-	this.showModelSelection();
+	this.forceShowModelSelection();
 	this.surfaceObserver.pollOnceNoCallback();
 };
 
@@ -3261,12 +3261,23 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 };
 
 /**
- * Apply a DM selection to the DOM
+ * Apply a DM selection to the DOM, even if the old DOM selection is different but DM-equivalent
  *
  * @method
  * @return {boolean} Whether the selection actually changed
  */
-ve.ce.Surface.prototype.showModelSelection = function () {
+ve.ce.Surface.prototype.forceShowModelSelection = function () {
+	return this.showModelSelection( true );
+};
+
+/**
+ * Apply a DM selection to the DOM
+ *
+ * @method
+ * @param {boolean} [force] Replace the DOM selection if it is different but DM-equivalent
+ * @return {boolean} Whether the selection actually changed
+ */
+ve.ce.Surface.prototype.showModelSelection = function ( force ) {
 	var selection, changed, modelRange, impliedModelRange;
 
 	if ( this.deactivated ) {
@@ -3283,7 +3294,7 @@ ve.ce.Surface.prototype.showModelSelection = function () {
 		return false;
 	}
 	modelRange = selection.getModel().getRange();
-	if ( this.documentView.documentNode.$element.get( 0 ).contains(
+	if ( !force && this.documentView.documentNode.$element.get( 0 ).contains(
 		this.nativeSelection.focusNode
 	) ) {
 		// See whether the model range implied by the DOM selection is already equal to
