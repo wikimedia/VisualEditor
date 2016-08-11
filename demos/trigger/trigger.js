@@ -64,7 +64,7 @@ $( 'body' ).on( {
 $( '#primary .key, #modifiers .key' ).on( {
 	mousedown: function ( e ) {
 		var $target = $( e.target );
-		if ( e.which === 1 ) {
+		if ( e.which === OO.ui.MouseButtons.LEFT ) {
 			if ( $target.closest( '#primary' ).length ) {
 				$primary.find( '.active' ).removeClass( 'active' );
 			}
@@ -76,7 +76,7 @@ $( '#primary .key, #modifiers .key' ).on( {
 	mouseup: function ( e ) {
 		var parts = [],
 			$target = $( e.target );
-		if ( e.which === 1 ) {
+		if ( e.which === OO.ui.MouseButtons.LEFT ) {
 			if ( $target.hasClass( 'active' ) && !$target.hasClass( 'activating' ) ) {
 				$target.removeClass( 'active' );
 			}

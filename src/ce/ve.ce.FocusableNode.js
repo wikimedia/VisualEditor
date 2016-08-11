@@ -251,7 +251,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		return;
 	}
 
-	if ( e.which === 3 ) {
+	if ( e.which === OO.ui.MouseButtons.RIGHT ) {
 		// Hide images, and select spans so context menu shows 'copy', but not 'copy image'
 		this.$highlights.addClass( 've-ce-focusableNode-highlights-contextOpen' );
 		// Make ce=true so we get cut/paste options in context menu

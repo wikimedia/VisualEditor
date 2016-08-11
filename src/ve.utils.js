@@ -1723,3 +1723,13 @@ ve.countEdgeMatches = function ( before, after, equals ) {
 ve.repeatString = function ( str, n ) {
 	return new Array( n + 1 ).join( str );
 };
+
+/**
+ * Check whether a jQuery event represents a plain left click, without any modifiers
+ *
+ * @param {jQuery.Event} e The jQuery event object
+ * @return {boolean} Whether it was an unmodified left click
+ */
+ve.isUnmodifiedLeftClick = function ( e ) {
+	return e && e.which && e.which === OO.ui.MouseButtons.LEFT && !( e.shiftKey || e.altKey || e.ctrlKey || e.metaKey );
+};

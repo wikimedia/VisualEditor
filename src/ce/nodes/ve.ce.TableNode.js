@@ -140,7 +140,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 	}
 
 	// Right-click
-	if ( e.which === 3 ) {
+	if ( e.which === OO.ui.MouseButtons.RIGHT ) {
 		// Select the cell to the browser renders the correct context menu
 		ve.selectElement( cellNode.$element[ 0 ] );
 		setTimeout( function () {
