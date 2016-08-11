@@ -693,7 +693,7 @@ ve.ce.Surface.prototype.isFocused = function () {
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	var newFragment;
-	if ( e.which !== 1 ) {
+	if ( e.which !== OO.ui.MouseButtons.LEFT ) {
 		return;
 	}
 
