@@ -26,7 +26,6 @@ ve.dm.Node = function VeDmNode( element ) {
 	// Properties
 	this.length = 0;
 	this.element = element;
-	this.doc = undefined;
 };
 
 /**

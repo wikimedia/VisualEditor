@@ -21,9 +21,6 @@ ve.ce.Node = function VeCeNode( model, config ) {
 
 	// Mixin constructor
 	ve.Node.call( this );
-
-	// Properties
-	this.parent = null;
 };
 
 /* Inheritance */
