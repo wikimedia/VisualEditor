@@ -88,7 +88,7 @@
 	"visualeditor-formatdropdown-title": "修改格式",
 	"visualeditor-help-tool": "帮助",
 	"visualeditor-historybutton-redo-tooltip": "重做",
-	"visualeditor-historybutton-undo-tooltip": "撤消",
+	"visualeditor-historybutton-undo-tooltip": "撤销",
 	"visualeditor-indentationbutton-indent-tooltip": "增加缩进",
 	"visualeditor-indentationbutton-outdent-tooltip": "减少缩进",
 	"visualeditor-inspector-close-tooltip": "关闭",

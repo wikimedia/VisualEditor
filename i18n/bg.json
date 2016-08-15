@@ -6,7 +6,8 @@
 			"පසිඳු කාවින්ද",
 			"Aquilax",
 			"V111P",
-			"Лорд Бъмбъри"
+			"Лорд Бъмбъри",
+			"StanProg"
 		]
 	},
 	"visualeditor": "Визуален редактор",
@@ -16,11 +17,13 @@
 	"visualeditor-align-widget-left": "Наляво",
 	"visualeditor-align-widget-right": "Надясно",
 	"visualeditor-alignablecontextitem-title": "Подравняване",
+	"visualeditor-annotationbutton-big-tooltip": "Голям",
 	"visualeditor-annotationbutton-bold-tooltip": "Получер",
 	"visualeditor-annotationbutton-code-tooltip": "Програмен код",
 	"visualeditor-annotationbutton-italic-tooltip": "Курсив",
 	"visualeditor-annotationbutton-language-tooltip": "Език",
 	"visualeditor-annotationbutton-link-tooltip": "Препратка",
+	"visualeditor-annotationbutton-small-tooltip": "Малък",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Зачеркване",
 	"visualeditor-annotationbutton-subscript-tooltip": "Долен индекс",
 	"visualeditor-annotationbutton-superscript-tooltip": "Горен индекс",
