@@ -3383,7 +3383,11 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 	// Setting a range doesn't give focus in all browsers so make sure this happens
 	// Also set focus after range to prevent scrolling to top
 	$focusTarget = $( newSel.focusNode ).closest( '[contenteditable=true]' );
-	if ( !OO.ui.contains( $focusTarget.get( 0 ), this.getElementDocument().activeElement, true ) ) {
+	if ( !OO.ui.contains( $focusTarget.get( 0 ), this.getElementDocument().activeElement ) ) {
+		// Note: contains *doesn't* include === here. This is desired, as the
+		// common case for getting here is when pressing backspace when the
+		// cursor is in the middle of a block of text (thus both are a <div>),
+		// and we don't want to scroll away from the caret.
 		$focusTarget.focus();
 	} else {
 		// Scroll the node into view
