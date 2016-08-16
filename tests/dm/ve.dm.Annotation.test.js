@@ -13,39 +13,24 @@ QUnit.test( 'getHashObject', function ( assert ) {
 				msg: 'Bold',
 				annotation: new ve.dm.BoldAnnotation( {
 					type: 'textStyle/bold',
-					attributes: { nodeName: 'b' },
-					originalDomElements: $( '<b>Foo</b>' ).toArray()
+					attributes: { nodeName: 'b' }
 				} ),
 				expected: {
 					type: 'textStyle/bold',
-					attributes: { nodeName: 'b' },
-					originalDomElements: '<b></b>'
+					attributes: { nodeName: 'b' }
 				}
 			},
 			{
-				msg: 'Bold with different content',
-				annotation: new ve.dm.BoldAnnotation( {
-					type: 'textStyle/bold',
-					attributes: { nodeName: 'b' },
-					originalDomElements: $( '<b>Bar</b>' ).toArray()
-				} ),
-				expected: {
-					type: 'textStyle/bold',
-					attributes: { nodeName: 'b' },
-					originalDomElements: '<b></b>'
-				}
-			},
-			{
-				msg: 'Italic with attributes',
+				msg: 'Italic with original DOM elements',
 				annotation: new ve.dm.ItalicAnnotation( {
 					type: 'textStyle/italic',
 					attributes: { nodeName: 'i' },
-					originalDomElements: $( '<i style="color:red;">Foo</i>' ).toArray()
+					originalDomElementsIndex: 1
 				} ),
 				expected: {
 					type: 'textStyle/italic',
 					attributes: { nodeName: 'i' },
-					originalDomElements: '<i style="color:red;"></i>'
+					originalDomElementsIndex: 1
 				}
 			}
 		];

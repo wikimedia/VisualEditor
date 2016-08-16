@@ -220,7 +220,7 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
  * @return {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
 ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
-	return this.offsetOfIndex( this.store.indexOfHash( OO.getHash( annotation ) ) );
+	return this.offsetOfIndex( this.getStore().indexOfValue( annotation ) );
 };
 
 /**

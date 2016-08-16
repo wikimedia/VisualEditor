@@ -609,6 +609,23 @@ ve.setDomAttributes = function ( element, attributes, whitelist ) {
 };
 
 /**
+ * Get an HTML representation of a DOM element node, text node or comment node
+ *
+ * @param {Node} node The DOM node
+ * @return {string} HTML representation of the node
+ */
+ve.getNodeHtml = function ( node ) {
+	var div;
+	if ( node.nodeType === Node.ELEMENT_NODE ) {
+		return node.outerHTML;
+	} else {
+		div = document.createElement( 'div' );
+		div.appendChild( node.cloneNode( true ) );
+		return div.innerHTML;
+	}
+};
+
+/**
  * Build a summary of an HTML element.
  *
  * Summaries include node name, text, attributes and recursive summaries of children.

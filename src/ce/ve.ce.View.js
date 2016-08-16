@@ -36,10 +36,10 @@ ve.ce.View = function VeCeView( model, config ) {
 		teardown: 'onTeardown'
 	} );
 
-	if ( this.model.element ) {
+	if ( this.model.element && this.model.element.originalDomElementsIndex !== undefined ) {
 		// Render attributes from original DOM elements
 		ve.dm.Converter.static.renderHtmlAttributeList(
-			this.model.getOriginalDomElements(),
+			this.model.getOriginalDomElements( this.model.getStore() ),
 			this.$element,
 			this.constructor.static.renderHtmlAttributes,
 			// computed attributes

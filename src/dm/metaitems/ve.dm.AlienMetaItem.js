@@ -29,8 +29,8 @@ ve.dm.AlienMetaItem.static.matchTagNames = [ 'meta', 'link' ];
 
 ve.dm.AlienMetaItem.static.preserveHtmlAttributes = false;
 
-ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement, doc ) {
-	return ve.copyDomElements( dataElement.originalDomElements, doc );
+ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement, doc, converter ) {
+	return ve.copyDomElements( converter.getStore().value( dataElement.originalDomElementsIndex ) || [], doc );
 };
 
 /* Registration */

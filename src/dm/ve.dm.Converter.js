@@ -146,6 +146,7 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
  */
 ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements, targetDomElements, filter, computed, deep ) {
 	var i, ilen, j, jlen, attrs, value;
+
 	if ( filter === undefined ) {
 		filter = true;
 	}
@@ -345,7 +346,7 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  *  were a handlesOwnChildren node.
  */
 ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc, childDomElements ) {
-	var domElements,
+	var domElements, originalDomElements,
 		dataElement = Array.isArray( dataElements ) ? dataElements[ 0 ] : dataElements,
 		nodeClass = this.modelRegistry.lookup( dataElement.type );
 
@@ -359,10 +360,11 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	if ( !Array.isArray( domElements ) && !( nodeClass.prototype instanceof ve.dm.Annotation ) ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
+	originalDomElements = this.store.value( dataElement.originalDomElementsIndex );
 	// Optimization: don't call renderHtmlAttributeList if returned domElements are equal to the originals
-	if ( dataElement.originalDomElements && !ve.isEqualDomElements( domElements, dataElement.originalDomElements ) ) {
+	if ( originalDomElements && !ve.isEqualDomElements( domElements, originalDomElements ) ) {
 		ve.dm.Converter.static.renderHtmlAttributeList(
-			dataElement.originalDomElements,
+			originalDomElements,
 			domElements,
 			nodeClass.static.preserveHtmlAttributes,
 			// computed
@@ -393,7 +395,7 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 		dataElements = [ dataElements ];
 	}
 	if ( dataElements.length ) {
-		dataElements[ 0 ].originalDomElements = domElements;
+		dataElements[ 0 ].originalDomElementsIndex = this.store.index( domElements, domElements.map( ve.getNodeHtml ).join( '' ) );
 	}
 	return dataElements;
 };
@@ -684,7 +686,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 
 				// Now take the appropriate action based on that
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
-					annotation = this.annotationFactory.createFromElement( childDataElements[ 0 ] );
+					annotation = this.annotationFactory.createFromElement( childDataElements[ 0 ], this.store );
 					// Start wrapping if needed
 					if ( !context.inWrapper && !context.expectingContent ) {
 						startWrapping();
@@ -1106,8 +1108,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			matches, first, last,
 			leading = '',
 			trailing = '',
-			origElementText = annotation.getOriginalDomElements()[ 0 ] &&
-				annotation.getOriginalDomElements()[ 0 ].textContent ||
+			originalDomElements = annotation.getOriginalDomElements( converter.store ),
+			origElementText = originalDomElements[ 0 ] &&
+				originalDomElements[ 0 ].textContent ||
 				'';
 
 		// Add text if needed

@@ -64,10 +64,10 @@ QUnit.test( 'constructor', 12, function ( assert ) {
 	assert.strictEqual( doc.data, data, 'ElementLinearData is stored by reference' );
 
 	doc = ve.dm.example.createExampleDocument( 'withMeta' );
-	assert.deepEqualWithDomElements( doc.getData(), ve.dm.example.withMetaPlainData,
+	assert.equalLinearDataWithDom( doc.getStore(), doc.getData(), ve.dm.example.withMetaPlainData,
 		'metadata is stripped out of the linear model'
 	);
-	assert.deepEqualWithDomElements( doc.getMetadata(), ve.dm.example.withMetaMetaData,
+	assert.equalLinearDataWithDom( doc.getStore(), doc.getMetadata(), ve.dm.example.withMetaMetaData,
 		'metadata is put in the meta-linmod'
 	);
 	assert.equalNodeTree(
@@ -83,12 +83,12 @@ QUnit.test( 'constructor', 12, function ( assert ) {
 QUnit.test( 'getData', 1, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		expectedData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) );
-	assert.deepEqualWithDomElements( doc.getData(), expectedData.getData() );
+	assert.equalLinearDataWithDom( doc.getStore(), doc.getData(), expectedData.getData() );
 } );
 
 QUnit.test( 'getFullData', 1, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' );
-	assert.deepEqualWithDomElements( doc.getFullData(), ve.dm.example.withMeta );
+	assert.equalLinearDataWithDom( doc.getStore(), doc.getFullData(), ve.dm.example.withMeta );
 } );
 
 QUnit.test( 'cloneFromRange', function ( assert ) {
@@ -865,7 +865,8 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			{ type: '/internalList' }
 		] );
 		slice = doc.shallowCloneFromRange( cases[ i ].range );
-		assert.deepEqualWithDomElements(
+		assert.equalLinearDataWithDom(
+			doc.getStore(),
 			slice.getData(),
 			expectedData,
 			cases[ i ].msg + ': data'

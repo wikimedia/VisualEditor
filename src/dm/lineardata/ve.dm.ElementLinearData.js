@@ -937,6 +937,7 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
  */
 ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
 	var i, index, indexes, j,
+		store = this.getStore(),
 		valueStore = {};
 
 	range = range || new ve.Range( 0, this.data.length );
@@ -949,34 +950,14 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
 		while ( j-- ) {
 			index = indexes[ j ];
 			if ( !Object.prototype.hasOwnProperty.call( valueStore, index ) ) {
-				valueStore[ index ] = this.getStore().value( index );
+				valueStore[ index ] = store.value( index );
 			}
+		}
+		if ( this.data[ i ].originalDomElementsIndex !== undefined ) {
+			valueStore[ this.data[ i ].originalDomElementsIndex ] = store.value( this.data[ i ].originalDomElementsIndex );
 		}
 	}
 	return valueStore;
-};
-
-/**
- * Remap the store indexes used in this linear data.
- *
- * Remaps annotations and calls remapStoreIndexes() on each node.
- *
- * @method
- * @param {Object} mapping Mapping from store indexes to store indexes
- */
-ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
-	var i, ilen, j, jlen, indexes, nodeClass;
-	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
-		indexes = this.getAnnotationIndexesFromOffset( i, true );
-		for ( j = 0, jlen = indexes.length; j < jlen; j++ ) {
-			indexes[ j ] = mapping[ indexes[ j ] ];
-		}
-		this.setAnnotationIndexesAtOffset( i, indexes );
-		if ( this.isOpenElementData( i ) ) {
-			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			nodeClass.static.remapStoreIndexes( this.data[ i ], mapping );
-		}
-	}
 };
 
 /**
@@ -1032,7 +1013,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 	var i, len, annotations, emptySet, setToRemove, type,
-		canContainContent, contentElement, isOpen, nodeClass, ann, oldHash,
+		canContainContent, contentElement, isOpen, nodeClass, ann,
 		store = this.getStore(),
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
@@ -1043,10 +1024,8 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			// Remove originalDomElements from annotations
 			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
 				ann = allAnnotations.get( i );
-				if ( ann.element.originalDomElements ) {
-					oldHash = OO.getHash( ann );
-					delete allAnnotations.get( i ).element.originalDomElements;
-					store.replaceHash( oldHash, ann );
+				if ( ann.element.originalDomElementsIndex !== undefined ) {
+					delete allAnnotations.get( i ).element.originalDomElementsIndex;
 				}
 			}
 		}
@@ -1168,7 +1147,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			}
 			if ( rules.removeOriginalDomElements ) {
 				// Remove originalDomElements from nodes
-				delete this.getData( i ).originalDomElements;
+				delete this.getData( i ).originalDomElementsIndex;
 			}
 		}
 	}
@@ -1182,12 +1161,13 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
  * @param {boolean} preserveGenerated Preserve internal.generated properties of elements
  */
 ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated ) {
-	var i, len, nodeClass;
+	var i, len, nodeClass,
+		store = this.getStore();
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
 			nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			if ( nodeClass ) {
-				this.setData( i, nodeClass.static.cloneElement( this.getData( i ), preserveGenerated ) );
+				this.setData( i, nodeClass.static.cloneElement( this.getData( i ), store, preserveGenerated ) );
 			}
 		}
 	}

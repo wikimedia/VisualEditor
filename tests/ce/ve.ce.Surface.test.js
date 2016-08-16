@@ -912,6 +912,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 
 QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 	var i,
+		linkIndex = 'h4601de4ee174fedd',
 		cases = [
 			{
 				prevHtml: '<p></p>',
@@ -963,8 +964,8 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{ type: 'retain', length: 5 },
 						{
 							type: 'replace',
-							insert: [ [ 'B', [ 1 ] ] ],
-							remove: [ [ 'X', [ 1 ] ] ],
+							insert: [ [ 'B', [ linkIndex ] ] ],
+							remove: [ [ 'X', [ linkIndex ] ] ],
 							insertedDataLength: 1,
 							insertedDataOffset: 0
 						},
@@ -983,7 +984,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{ type: 'retain', length: 2 },
 						{
 							type: 'replace',
-							insert: [ [ 'Y', [ 0 ] ] ],
+							insert: [ [ 'Y', [ 'h3f03d2abae6ddc0d' ] ] ],
 							remove: [],
 							insertedDataOffset: 0,
 							insertedDataLength: 1
@@ -1126,12 +1127,17 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 
 QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert )  {
 	var i,
-		view = ve.test.utils.createSurfaceViewFromHtml( '' ),
-		model = view.getModel(),
+		surface = ve.test.utils.createViewOnlySurfaceFromHtml( '' ),
+		view = surface.getView(),
+		model = surface.getModel(),
+		linkAction = ve.ui.actionFactory.create( 'link', surface ),
+		link = linkAction.getLinkAnnotation( 'http://foo.com' ),
+		// Don't hard-code link index as it may depend on the LinkAction used
+		linkIndex = model.getDocument().getStore().indexOfValue( link ),
 		fragment = model.getLinearFragment( new ve.Range( 1 ) ),
 		cases = [
 			{
-				msg: 'Url',
+				msg: 'URL',
 				dataTransfer: {
 					items: [
 						{
@@ -1145,20 +1151,20 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert )  {
 				},
 				isPaste: true,
 				expectedData: [
-					[ 'h', [ 0 ] ],
-					[ 't', [ 0 ] ],
-					[ 't', [ 0 ] ],
-					[ 'p', [ 0 ] ],
-					[ ':', [ 0 ] ],
-					[ '/', [ 0 ] ],
-					[ '/', [ 0 ] ],
-					[ 'f', [ 0 ] ],
-					[ 'o', [ 0 ] ],
-					[ 'o', [ 0 ] ],
-					[ '.', [ 0 ] ],
-					[ 'c', [ 0 ] ],
-					[ 'o', [ 0 ] ],
-					[ 'm', [ 0 ] ]
+					[ 'h', [ linkIndex ] ],
+					[ 't', [ linkIndex ] ],
+					[ 't', [ linkIndex ] ],
+					[ 'p', [ linkIndex ] ],
+					[ ':', [ linkIndex ] ],
+					[ '/', [ linkIndex ] ],
+					[ '/', [ linkIndex ] ],
+					[ 'f', [ linkIndex ] ],
+					[ 'o', [ linkIndex ] ],
+					[ 'o', [ linkIndex ] ],
+					[ '.', [ linkIndex ] ],
+					[ 'c', [ linkIndex ] ],
+					[ 'o', [ linkIndex ] ],
+					[ 'm', [ linkIndex ] ]
 				]
 			}
 		];
@@ -1375,14 +1381,14 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'annotate',
 							method: 'set',
 							bias: 'start',
-							index: 0
+							index: ve.dm.example.annIndex( 'b', 'Quux' )
 						},
 						{ type: 'retain', length: 3 },
 						{
 							type: 'annotate',
 							method: 'set',
 							bias: 'stop',
-							index: 0
+							index: ve.dm.example.annIndex( 'b', 'Quux' )
 						},
 						{ type: 'retain', length: 5 }
 					]
@@ -2444,27 +2450,12 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Paste paragraphs and a table into table cell'
 			},
 			{
+				documentHtml: '<p></p>',
 				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: '<span rel="ve:Alien" id="useful">Foo</span><span rel="ve:Alien" id="mwAB">Bar</span>',
+				pasteHtml: '<img src="null" id="mwAB"><img src="null" id="useful">',
 				fromVe: true,
-				originalDomElements: true,
 				expectedRangeOrSelection: new ve.Range( 5 ),
-				expectedOps: [
-					[
-						{ type: 'retain', length: 1 },
-						{
-							type: 'replace',
-							insert: [
-								{ type: 'alienInline', originalDomElements: $( '<span rel="ve:Alien" id="useful">Foo</span>' ).toArray() },
-								{ type: '/alienInline' },
-								{ type: 'alienInline', originalDomElements: $( '<span rel="ve:Alien">Bar</span>' ).toArray() },
-								{ type: '/alienInline' }
-							],
-							remove: []
-						},
-						{ type: 'retain', length: docLen - 1 }
-					]
-				],
+				expectedHtml: '<p><img src="null"><img src="null" id="useful"></p>',
 				msg: 'Parsoid IDs stripped'
 			},
 			{
@@ -2598,12 +2589,16 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	}
 	QUnit.expect( expected );
 
-	function testRunner( documentHtml, pasteHtml, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, originalDomElements, msg ) {
+	function testRunner( documentHtml, pasteHtml, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, store, msg ) {
 		var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent,
 			e = {},
 			view = documentHtml ? ve.test.utils.createSurfaceViewFromHtml( documentHtml ) : exampleSurface,
 			model = view.getModel(),
 			doc = model.getDocument();
+
+		function summary( el ) {
+			return ve.getDomElementSummary( el, true );
+		}
 
 		function getLayoutSpecific( expected ) {
 			if ( $.isPlainObject( expected ) && !expected.type ) {
@@ -2646,22 +2641,23 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					txops = txs[ i ].getOperations();
 					for ( j = 0; j < txops.length; j++ ) {
 						if ( txops[ j ].remove ) {
-							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore(), originalDomElements );
-							if ( !originalDomElements ) {
-								ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
-							}
+							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
 						}
 						if ( txops[ j ].insert ) {
-							ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore(), originalDomElements );
-							if ( !originalDomElements ) {
-								ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
-							}
+							ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
 						}
 					}
 					ops.push( txops );
 				}
 			}
 			assert.equalLinearData( ops, expectedOps, msg + ': data' );
+			if ( store ) {
+				for ( i in store ) {
+					assert.deepEqual( doc.getStore().value( i ).map( summary ), store[ i ].map( summary ), ': store value ' + i );
+				}
+			}
 		}
 		if ( expectedRangeOrSelection ) {
 			expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), getLayoutSpecific( expectedRangeOrSelection ) );
@@ -2685,8 +2681,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		testRunner(
 			cases[ i ].documentHtml, cases[ i ].pasteHtml, cases[ i ].internalSourceRangeOrSelection, cases[ i ].fromVe, cases[ i ].useClipboardData,
 			cases[ i ].pasteTargetHtml, cases[ i ].rangeOrSelection, cases[ i ].pasteSpecial,
-			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection, cases[ i ].expectedHtml, cases[ i ].originalDomElements,
-			cases[ i ].msg
+			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection, cases[ i ].expectedHtml,
+			cases[ i ].store, cases[ i ].msg
 		);
 	}
 

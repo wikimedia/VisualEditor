@@ -210,9 +210,9 @@ ve.ce.GeneratedContentNode.prototype.validateGeneratedContents = function () {
  */
 ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
 	var store = this.model.doc.getStore(),
-		index = store.indexOfHash( OO.getHash( [ this.model.getHashObjectForRendering(), config ] ) );
-	if ( index !== null ) {
-		this.render( store.value( index ), staged );
+		contents = store.value( store.indexOfValue( null, OO.getHash( [ this.model.getHashObjectForRendering(), config ] ) ) );
+	if ( contents ) {
+		this.render( contents, staged );
 	} else {
 		this.forceUpdate( config, staged );
 	}

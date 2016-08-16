@@ -8,55 +8,60 @@ QUnit.module( 've.dm.IndexValueStore' );
 
 /* Tests */
 
-QUnit.test( 'index(es)/indexOfHash', 12, function ( assert ) {
+QUnit.test( 'index(es)', 11, function ( assert ) {
 	var index, indexes,
 		object1 = { a: 1, b: 2 },
+		object1Hash = 'h608de49a4600dbb5',
 		object2 = { c: 3, d: 4 },
+		object2Hash = 'hdf3d2cbd332be4da',
+		customHash = 'hb05df789ce115b75',
 		store = new ve.dm.IndexValueStore();
 
 	index = store.index( object1 );
-	assert.strictEqual( index, 0, 'First object stores in 0' );
+	assert.strictEqual( index, object1Hash, 'First object stores in hash' );
 	index = store.index( object1 );
-	assert.strictEqual( index, 0, 'First object re-stores in 0' );
+	assert.strictEqual( index, object1Hash, 'First object re-stores in hash' );
 	index = store.index( object2 );
-	assert.strictEqual( index, 1, 'Second object stores in 1' );
-	assert.deepEqual( store.value( 0 ), object1, '0th item is first object' );
+	assert.strictEqual( index, object2Hash, 'Second object stores in 1' );
+	assert.deepEqual( store.value( object1Hash ), object1, 'first object has finds first object' );
 
 	index = store.index( object2, 'custom hash string' );
-	assert.strictEqual( index, 2, 'Second object with custom hash stores in 2' );
+	assert.strictEqual( index, customHash, 'Second object with custom hash stores in custom hash' );
 	index = store.index( object1, 'custom hash string' );
-	assert.strictEqual( index, 2, 'Using the same custom hash with a different object returns index 2 again' );
-	assert.deepEqual( store.value( 2 ), object2, 'Second object was not overwritten' );
+	assert.strictEqual( index, customHash, 'Using the same custom hash with a different object returns custom hash again' );
+	assert.deepEqual( store.value( customHash ), object2, 'Second object was not overwritten' );
 
 	index = store.index( object1, 'custom hash string', true );
 	assert.deepEqual( store.value( index ), object1, 'Second object is overwritten when overwrite flag is set' );
 
-	assert.strictEqual( store.indexOfHash( 'custom hash string' ), 2, 'Index of custom hash is 2' );
-	assert.strictEqual( store.indexOfHash( 'unused hash string' ), null, 'Index of unused hash is null' );
-
 	store = new ve.dm.IndexValueStore();
 
 	indexes = store.indexes( [ object1, object2 ] );
-	assert.deepEqual( indexes, [ 0, 1 ], 'Store two objects in 0,1' );
+	assert.deepEqual( indexes, [ object1Hash, object2Hash ], 'Store two objects in 0,1' );
 
 	store = new ve.dm.IndexValueStore();
 
 	index = store.index( 'String to store' );
-	assert.strictEqual( store.value( 0 ), 'String to store', 'Strings are stored as strings, not objects' );
+	assert.strictEqual( store.value( index ), 'String to store', 'Strings are stored as strings, not objects' );
+
+	index = store.index( [ 'array', 1, 2, 3 ] );
+	assert.deepEqual( store.value( index ), [ 'array', 1, 2, 3 ], 'Arrays are stored as arrays, not objects' );
 
 } );
 
 QUnit.test( 'value(s)', 5, function ( assert ) {
 	var object1 = { a: 1, b: 2 },
+		object1Hash = 'h608de49a4600dbb5',
 		object2 = { c: 3, d: 4 },
+		object2Hash = 'hdf3d2cbd332be4da',
 		store = new ve.dm.IndexValueStore();
 
 	store.index( object1 );
 	store.index( object2 );
-	assert.deepEqual( store.value( 0 ), object1, 'Value 0 is first stored object' );
-	assert.deepEqual( store.value( 1 ), object2, 'Value 1 is second stored object' );
-	assert.strictEqual( store.value( 2 ), undefined, 'Value 2 is undefined' );
-	assert.deepEqual( store.values( [ 1, 0 ] ), [ object2, object1 ], 'Values [1, 0] are second and first object' );
+	assert.deepEqual( store.value( object1Hash ), object1, 'First hash gets first stored object' );
+	assert.deepEqual( store.value( object2Hash ), object2, 'Second hash gets second stored object' );
+	assert.strictEqual( store.value( 'h0missing' ), undefined, 'Value of missing hash is undefined' );
+	assert.deepEqual( store.values( [ object2Hash, object1Hash ] ), [ object2, object1 ], 'Values [secondHash, firstHash] are second and first object' );
 	object1.a = 3;
-	assert.deepEqual( store.value( 0 ), { a: 1, b: 2 }, 'Value 0 is still first stored object after original has been modified' );
+	assert.deepEqual( store.value( object1Hash ), { a: 1, b: 2 }, 'Value 0 is still first stored object after original has been modified' );
 } );
