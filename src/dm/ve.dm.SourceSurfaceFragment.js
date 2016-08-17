@@ -90,14 +90,18 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ) );
 	}
 
-	conversionPromise = this.convertDocument( doc ).always( function ( source ) {
-		fragment.removeContent();
+	conversionPromise = this.convertDocument( doc )
+		.done( function ( source ) {
+			fragment.removeContent();
 
-		if ( source ) {
-			// Parent method
-			ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( fragment, source.trim() );
-		}
-	} );
+			if ( source ) {
+				// Parent method
+				ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( fragment, source.trim() );
+			}
+		} )
+		.fail( function () {
+			ve.error( 'Failed to convert document', arguments );
+		} );
 
 	return this;
 };
