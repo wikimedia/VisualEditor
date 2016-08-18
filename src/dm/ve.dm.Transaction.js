@@ -915,7 +915,8 @@ ve.dm.Transaction.rebaseTransactions = function ( transactionA, transactionB ) {
  */
 ve.dm.Transaction.prototype.clone = function () {
 	var tx = new this.constructor();
-	tx.operations = ve.copy( this.operations );
+	// For this plain, serializable array, stringify+parse profiles faster than ve.copy
+	tx.operations = JSON.parse( JSON.stringify( this.operations ) );
 	tx.author = this.author;
 	return tx;
 };
@@ -1138,7 +1139,7 @@ ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion 
  * @return {ve.Range} Translated range, as it will be after processing transaction
  */
 ve.dm.Transaction.prototype.translateRangeWithAuthor = function ( range, author ) {
-	var backward = !this.author || !author || author <= this.author,
+	var backward = !this.author || !author || author < this.author,
 		start = this.translateOffset( range.start, backward ),
 		end = this.translateOffset( range.end, backward );
 	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );

@@ -602,6 +602,14 @@
 			"diffMatchPatch"
 		]
 	},
+	"visualEditor.rebase": {
+		"scripts": [
+			"src/dm/ve.dm.Change.js"
+		],
+		"dependencies": [
+			"visualEditor.core.build"
+		]
+	},
 	"visualEditor.test": {
 		"scripts": [
 			"tests/ve.qunit.js",
@@ -629,6 +637,7 @@
 			"tests/dm/ve.dm.InternalList.test.js",
 			"tests/dm/ve.dm.LinearData.test.js",
 			"tests/dm/ve.dm.Transaction.test.js",
+			"tests/dm/ve.dm.Change.test.js",
 			"tests/dm/ve.dm.TransactionProcessor.test.js",
 			"tests/dm/ve.dm.APIResultsQueue.test.js",
 			"tests/dm/ve.dm.Surface.test.js",
@@ -710,7 +719,8 @@
 		"dependencies": [
 			"jsdifflib",
 			"qunit",
-			"visualEditor.desktop.standalone"
+			"visualEditor.desktop.standalone",
+			"visualEditor.rebase"
 		]
 	},
 	"visualEditor.theme.apex": {

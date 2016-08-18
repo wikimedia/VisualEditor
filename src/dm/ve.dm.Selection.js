@@ -171,6 +171,25 @@ ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInser
 };
 
 /**
+ * Apply translations from a change
+ *
+ * @param {ve.dm.Change} change The change
+ * @param {number} author The author ID of this selection
+ * @return {ve.dm.Selection} A new translated selection
+ */
+ve.dm.Selection.prototype.translateByChange = function ( change, author ) {
+	var i, len,
+		selection = this;
+	for ( i = 0, len = change.transactions.length; i < len; i++ ) {
+		selection = selection.translateByTransactionWithAuthor(
+			change.transactions[ i ],
+			author
+		);
+	}
+	return selection;
+};
+
+/**
  * Check if this selection is null
  *
  * @return {boolean} The selection is null
