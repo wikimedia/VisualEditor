@@ -93,7 +93,7 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
  * @param {boolean} wrap Wrap to the next/previous row at edges, insert new row at end
  */
 ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand, wrap ) {
-	var tableNode, newSelection,
+	var tableNode, newSelection, documentModel,
 		selection = surface.getModel().getSelection();
 	if ( colOffset && checkDir ) {
 		tableNode = surface.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
@@ -123,6 +123,13 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 		surface.getSurface().execute( 'table', 'insert', 'row', 'after' );
 		selection = surface.getModel().getSelection();
 		adjust();
+	}
+
+	// If moving up/down didn't move, we must be at the start/end of the table,
+	// so move outside
+	if ( rowOffset !== 0 && selection.equals( newSelection ) ) {
+		documentModel = selection.getDocument();
+		newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( selection.tableRange, rowOffset ) );
 	}
 
 	surface.getModel().setSelection( newSelection );
