@@ -60,12 +60,13 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	}
 	expectedData( data );
 
-	expectedSelection = expectedRangeOrSelection instanceof ve.Range ?
+	expectedSelection = ve.dm.Selection.static.newFromJSON( model.getDocument(), expectedRangeOrSelection instanceof ve.Range ?
 		{ type: 'linear', range: expectedRangeOrSelection } :
-		expectedRangeOrSelection;
+		expectedRangeOrSelection
+	);
 
 	assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
-	assert.deepEqual( selection.toJSON(), expectedSelection, msg + ': selection' );
+	assert.equalHash( selection, expectedSelection, msg + ': selection' );
 	view.destroy();
 };
 
@@ -167,9 +168,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 5, 37 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				msg: 'Table cell selected but not deleted by backspace'
 			},
@@ -181,9 +180,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 5, 37 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				msg: 'Table cell selected but not deleted by delete'
 			},
@@ -459,9 +456,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 1,
-					fromRow: 0,
-					toCol: 1,
-					toRow: 0
+					fromRow: 0
 				},
 				keys: [ 'ENTER' ],
 				expectedData: function () {},
@@ -474,9 +469,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 1,
-					fromRow: 0,
-					toCol: 1,
-					toRow: 0
+					fromRow: 0
 				},
 				keys: [ 'ENTER', 'ESCAPE' ],
 				expectedData: function () {},
@@ -484,9 +477,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 1,
-					fromRow: 0,
-					toCol: 1,
-					toRow: 0
+					fromRow: 0
 				},
 				msg: 'Escape to leave a table cell'
 			},
@@ -496,9 +487,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 1,
-					fromRow: 0,
-					toCol: 1,
-					toRow: 0
+					fromRow: 0
 				},
 				keys: [ 'ENTER', 'TAB' ],
 				expectedData: function () {},
@@ -506,9 +495,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 2,
-					fromRow: 0,
-					toCol: 2,
-					toRow: 0
+					fromRow: 0
 				},
 				msg: 'Tab while in a table cell moves to the next cell'
 			},
@@ -518,9 +505,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 1,
-					fromRow: 0,
-					toCol: 1,
-					toRow: 0
+					fromRow: 0
 				},
 				keys: [ 'ENTER', 'SHIFT+TAB' ],
 				expectedData: function () {},
@@ -528,9 +513,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				msg: 'Shift+tab while in a table cell moves to the previous cell'
 			},
@@ -541,9 +524,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 5,
-					fromRow: 6,
-					toCol: 5,
-					toRow: 6
+					fromRow: 6
 				},
 				keys: [ 'TAB' ],
 				expectedData: function ( data ) {
@@ -559,9 +540,7 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 0, 197 ),
 					fromCol: 0,
-					fromRow: 7,
-					toCol: 0,
-					toRow: 7
+					fromRow: 7
 				},
 				msg: 'Tab at end of table inserts new row'
 			}
@@ -1872,9 +1851,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 22 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				pasteHtml: '<p>A</p>',
 				fromVe: true,
@@ -1882,9 +1859,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 23 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				expectedOps: [
 					[
@@ -1920,9 +1895,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 22 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				pasteHtml: '<table><tbody><tr><td>X</td></tr></table>',
 				fromVe: true,
@@ -1930,9 +1903,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 23 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				expectedOps: [
 					[
@@ -1968,9 +1939,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 22 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				pasteHtml: '<table><tbody><tr><th>X</th></tr></table>',
 				fromVe: true,
@@ -1978,9 +1947,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 23 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				expectedOps: [
 					[
@@ -2021,9 +1988,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 22 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				pasteHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></table>',
 				fromVe: true,
@@ -2209,9 +2174,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 22 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				pasteHtml: '<table><tbody><tr><td>X</td></tr><tr><td>Y</td></tr><tr><td>Z</td></tr></table>',
 				fromVe: true,
@@ -2397,9 +2360,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 22 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				pasteHtml: '<p>Foo</p><table><tbody><tr><td>X</td></tr></table><p>Bar</p>',
 				fromVe: true,
@@ -2407,9 +2368,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					type: 'table',
 					tableRange: new ve.Range( 12, 41 ),
 					fromCol: 0,
-					fromRow: 0,
-					toCol: 0,
-					toRow: 0
+					fromRow: 0
 				},
 				expectedOps: [
 					[
