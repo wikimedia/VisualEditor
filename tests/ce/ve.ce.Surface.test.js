@@ -2726,7 +2726,14 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 				key: 'TAB',
 				selectionOffsets: [ 0, 0 ],
 				expectedSelectionOffsets: [ 1, 0, 1, 0 ]
-			},			{
+			},
+			{
+				msg: 'Move right with tab at end wraps to next line',
+				key: 'TAB',
+				selectionOffsets: [ 5, 0 ],
+				expectedSelectionOffsets: [ 0, 1, 0, 1 ]
+			},
+			{
 				msg: 'Simple move end',
 				key: 'END',
 				selectionOffsets: [ 0, 0 ],
@@ -2751,11 +2758,18 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 				expectedSelectionOffsets: [ 4, 6, 4, 6 ]
 			},
 			{
-				msg: 'Simple move left with shift-tab',
+				msg: 'Simple move left with shift+tab',
 				key: 'TAB',
 				shiftKey: true,
 				selectionOffsets: [ 5, 6 ],
 				expectedSelectionOffsets: [ 4, 6, 4, 6 ]
+			},
+			{
+				msg: 'Move left with shift+tab at start wraps to previous line',
+				key: 'TAB',
+				shiftKey: true,
+				selectionOffsets: [ 0, 1 ],
+				expectedSelectionOffsets: [ 5, 0, 5, 0 ]
 			},
 			{
 				msg: 'Simple move home',

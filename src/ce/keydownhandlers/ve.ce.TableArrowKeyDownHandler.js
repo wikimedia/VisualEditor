@@ -39,7 +39,8 @@ ve.ce.TableArrowKeyDownHandler.static.supportedSelections = [ 'table' ];
  * @inheritdoc
  */
 ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
-	var checkDir = false,
+	var wrap = false,
+		checkDir = false,
 		colOffset = 0,
 		rowOffset = 0,
 		expand = e.shiftKey;
@@ -74,12 +75,13 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		case OO.ui.Keys.TAB:
 			colOffset = e.shiftKey ? -1 : 1;
 			expand = false; // shift-tab is a movement, not an expansion
+			wrap = true;
 			break;
 	}
 
 	e.preventDefault();
 
-	ve.ce.TableArrowKeyDownHandler.static.moveTableSelection( surface, rowOffset, colOffset, checkDir, expand );
+	this.moveTableSelection( surface, rowOffset, colOffset, checkDir, expand, wrap );
 };
 
 /**
@@ -88,8 +90,9 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
  * @param {number} colOffset how many columns to move
  * @param {boolean} checkDir whether to translate offsets according to ltr settings
  * @param {boolean} expand whether to expand the selection or replace it
+ * @param {boolean} wrap Wrap to the next/previous row at edges
  */
-ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand ) {
+ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand, wrap ) {
 	var tableNode, newSelection,
 		selection = surface.getModel().getSelection();
 	if ( colOffset && checkDir ) {
@@ -105,7 +108,8 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 		expand ? 0 : colOffset,
 		expand ? 0 : rowOffset,
 		colOffset,
-		rowOffset
+		rowOffset,
+		wrap
 	);
 	surface.getModel().setSelection( newSelection );
 
