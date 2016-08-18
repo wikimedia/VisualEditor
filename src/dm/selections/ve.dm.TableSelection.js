@@ -368,7 +368,7 @@ ve.dm.TableSelection.prototype.getTableNode = function () {
  * @return {ve.dm.TableSelection} Adjusted selection
  */
 ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fromRowOffset, toColOffset, toRowOffset, wrap ) {
-	var fromCell, toCell,
+	var fromCell, toCell, wrapDir,
 		matrix = this.getTableNode().getMatrix();
 
 	if ( toColOffset === undefined ) {
@@ -394,6 +394,7 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fro
 						// Subtract columns in current row
 						col -= matrix.getColCount( row );
 						row++;
+						wrapDir = 1;
 					} else {
 						break;
 					}
@@ -402,6 +403,7 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fro
 						row--;
 						// Add columns in previous row
 						col += matrix.getColCount( row );
+						wrapDir = -1;
 					} else {
 						break;
 					}
@@ -438,6 +440,13 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fro
 	}
 	if ( toRowOffset ) {
 		toCell = adjust( 'row', toCell, toRowOffset );
+	}
+
+	// Collapse to end/start if wrapping forwards/backwards
+	if ( wrapDir > 0 ) {
+		fromCell = toCell;
+	} else if ( wrapDir < 0 ) {
+		toCell = fromCell;
 	}
 
 	return new this.constructor(

@@ -12,7 +12,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	var i, e, selection, expectedSelection, key,
 		view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
-			ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ),
+			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ) ),
 		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() );
 
@@ -533,6 +533,37 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					toRow: 0
 				},
 				msg: 'Shift+tab while in a table cell moves to the previous cell'
+			},
+			{
+				// Create a full surface and return the view, as the UI surface is required for the insert action
+				htmlOrDoc: ve.test.utils.createSurfaceFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) ).view,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 5,
+					fromRow: 6,
+					toCol: 5,
+					toRow: 6
+				},
+				keys: [ 'TAB' ],
+				expectedData: function ( data ) {
+					var tableCell = [
+						{ type: 'tableCell', attributes: { style: 'data', colspan: 1, rowspan: 1 } },
+						{ type: 'paragraph', internal: { generated: 'wrapper' } },
+						{ type: '/paragraph' },
+						{ type: '/tableCell' }
+					];
+					data.splice.apply( data, [ 169, 0 ].concat( { type: 'tableRow' }, tableCell, tableCell, tableCell, tableCell, tableCell, tableCell, { type: '/tableRow' } ) );
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 197 ),
+					fromCol: 0,
+					fromRow: 7,
+					toCol: 0,
+					toRow: 7
+				},
+				msg: 'Tab at end of table inserts new row'
 			}
 		];
 

@@ -90,7 +90,7 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
  * @param {number} colOffset how many columns to move
  * @param {boolean} checkDir whether to translate offsets according to ltr settings
  * @param {boolean} expand whether to expand the selection or replace it
- * @param {boolean} wrap Wrap to the next/previous row at edges
+ * @param {boolean} wrap Wrap to the next/previous row at edges, insert new row at end
  */
 ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand, wrap ) {
 	var tableNode, newSelection,
@@ -104,13 +104,27 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 	if ( !expand && !selection.isSingleCell() ) {
 		selection = selection.collapseToFrom();
 	}
-	newSelection = selection.newFromAdjustment(
-		expand ? 0 : colOffset,
-		expand ? 0 : rowOffset,
-		colOffset,
-		rowOffset,
-		wrap
-	);
+
+	function adjust() {
+		newSelection = selection.newFromAdjustment(
+			expand ? 0 : colOffset,
+			expand ? 0 : rowOffset,
+			colOffset,
+			rowOffset,
+			wrap
+		);
+	}
+
+	adjust();
+
+	// If wrapping forwards didn't move, we must be at the end of the table,
+	// so insert a new row and try again
+	if ( wrap && colOffset > 0 && selection.equals( newSelection ) ) {
+		surface.getSurface().execute( 'table', 'insert', 'row', 'after' );
+		selection = surface.getModel().getSelection();
+		adjust();
+	}
+
 	surface.getModel().setSelection( newSelection );
 
 	return true;
