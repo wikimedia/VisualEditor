@@ -2695,7 +2695,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 } );
 
 QUnit.test( 'special key down: table arrow keys', function ( assert ) {
-	var i, offsets, selection, table, view, model,
+	var i, offsets, expectedSelectionOffsets, selection, table, view, model,
 		fn = function () {},
 		tables = {
 			mergedCells: {
@@ -2719,93 +2719,93 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 				msg: 'Simple move right',
 				key: 'RIGHT',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 1, 0, 1, 0 ]
+				expectedSelectionOffsets: [ 1, 0 ]
 			},
 			{
 				msg: 'Simple move right with tab',
 				key: 'TAB',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 1, 0, 1, 0 ]
+				expectedSelectionOffsets: [ 1, 0 ]
 			},
 			{
 				msg: 'Move right with tab at end wraps to next line',
 				key: 'TAB',
 				selectionOffsets: [ 5, 0 ],
-				expectedSelectionOffsets: [ 0, 1, 0, 1 ]
+				expectedSelectionOffsets: [ 0, 1 ]
 			},
 			{
 				msg: 'Simple move end',
 				key: 'END',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 5, 0, 5, 0 ]
+				expectedSelectionOffsets: [ 5, 0 ]
 			},
 			{
 				msg: 'Simple move down',
 				key: 'DOWN',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 0, 1, 0, 1 ]
+				expectedSelectionOffsets: [ 0, 1 ]
 			},
 			{
 				msg: 'Simple move page down',
 				key: 'PAGEDOWN',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 0, 6, 0, 6 ]
+				expectedSelectionOffsets: [ 0, 6 ]
 			},
 			{
 				msg: 'Simple move left',
 				key: 'LEFT',
 				selectionOffsets: [ 5, 6 ],
-				expectedSelectionOffsets: [ 4, 6, 4, 6 ]
+				expectedSelectionOffsets: [ 4, 6 ]
 			},
 			{
 				msg: 'Simple move left with shift+tab',
 				key: 'TAB',
 				shiftKey: true,
 				selectionOffsets: [ 5, 6 ],
-				expectedSelectionOffsets: [ 4, 6, 4, 6 ]
+				expectedSelectionOffsets: [ 4, 6 ]
 			},
 			{
 				msg: 'Move left with shift+tab at start wraps to previous line',
 				key: 'TAB',
 				shiftKey: true,
 				selectionOffsets: [ 0, 1 ],
-				expectedSelectionOffsets: [ 5, 0, 5, 0 ]
+				expectedSelectionOffsets: [ 5, 0 ]
 			},
 			{
 				msg: 'Simple move home',
 				key: 'HOME',
 				selectionOffsets: [ 5, 6 ],
-				expectedSelectionOffsets: [ 0, 6, 0, 6 ]
+				expectedSelectionOffsets: [ 0, 6 ]
 			},
 			{
 				msg: 'Simple move page up',
 				key: 'PAGEUP',
 				selectionOffsets: [ 5, 6 ],
-				expectedSelectionOffsets: [ 5, 0, 5, 0 ]
+				expectedSelectionOffsets: [ 5, 0 ]
 			},
 			{
 				msg: 'Move left at start',
 				key: 'LEFT',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 0, 0, 0, 0 ]
+				expectedSelectionOffsets: [ 0, 0 ]
 			},
 			{
 				msg: 'Move up at start',
 				key: 'UP',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 0, 0, 0, 0 ]
+				expectedSelectionOffsets: [ 0, 0 ]
 			},
 			{
 				msg: 'Move right at end',
 				key: 'RIGHT',
 				selectionOffsets: [ 5, 6 ],
-				expectedSelectionOffsets: [ 5, 6, 5, 6 ]
+				expectedSelectionOffsets: [ 5, 6 ]
 			},
 			{
 				msg: 'Move down at end',
 				key: 'DOWN',
 				selectionOffsets: [ 5, 6 ],
-				expectedSelectionOffsets: [ 5, 6, 5, 6 ]
+				expectedSelectionOffsets: [ 5, 6 ]
 			},
 			{
 				msg: 'Move from merged cell to merged cell',
@@ -2824,14 +2824,14 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 				msg: 'Expanded selection collapses',
 				key: 'DOWN',
 				selectionOffsets: [ 0, 0, 2, 0 ],
-				expectedSelectionOffsets: [ 0, 1, 0, 1 ]
+				expectedSelectionOffsets: [ 0, 1 ]
 			},
 			{
 				msg: 'Left in RTL table increments column',
 				table: 'rtl',
 				key: 'LEFT',
 				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 1, 0, 1, 0 ]
+				expectedSelectionOffsets: [ 1, 0 ]
 			}
 		];
 
@@ -2855,9 +2855,12 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 			}
 		);
 		selection = model.getSelection();
+		expectedSelectionOffsets = cases[ i ].expectedSelectionOffsets.length > 2 ?
+			cases[ i ].expectedSelectionOffsets :
+			cases[ i ].expectedSelectionOffsets.concat( cases[ i ].expectedSelectionOffsets );
 		assert.deepEqual(
 			[ selection.fromCol, selection.fromRow, selection.toCol, selection.toRow ],
-			cases[ i ].expectedSelectionOffsets,
+			expectedSelectionOffsets,
 			cases[ i ].msg
 		);
 	}
