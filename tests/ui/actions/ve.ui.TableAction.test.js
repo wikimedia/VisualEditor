@@ -8,7 +8,7 @@ QUnit.module( 've.ui.TableAction' );
 
 /* Tests */
 
-QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function ( assert ) {
+QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelative', function ( assert ) {
 	var i,
 		tableCellTail = [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
@@ -421,7 +421,116 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 				},
 				msg: 'change style to header'
 			},
-			// TODO: Write tests for simple row/column moves
+			{
+				html: ve.dm.example.annotatedTableHtml,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 0,
+					fromRow: 1,
+					toCol: 0,
+					toRow: 1
+				},
+				method: 'moveRelative',
+				args: [ 'row', 'before' ],
+				expectedData: function ( data ) {
+					var row = data.splice( 25, 25 );
+					data.splice.apply( data, [ 2, 0 ].concat( row ) );
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'move row before'
+			},
+			{
+				html: ve.dm.example.annotatedTableHtml,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				method: 'moveRelative',
+				args: [ 'row', 'after' ],
+				expectedData: function ( data ) {
+					var row = data.splice( 25, 25 );
+					data.splice.apply( data, [ 2, 0 ].concat( row ) );
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 0,
+					fromRow: 1,
+					toCol: 0,
+					toRow: 1
+				},
+				msg: 'move row after'
+			},
+			{
+				html: ve.dm.example.annotatedTableHtml,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				method: 'moveRelative',
+				args: [ 'col', 'before' ],
+				expectedData: function ( data ) {
+					var cell2 = data.splice( 34, 8 ),
+						cell1 = data.splice( 10, 7 );
+
+					data.splice.apply( data, [ 26 - cell1.length, 0 ].concat( cell2 ) );
+					data.splice.apply( data, [ 3, 0 ].concat( cell1 ) );
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'move column before'
+			},
+			{
+				html: ve.dm.example.annotatedTableHtml,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				method: 'moveRelative',
+				args: [ 'col', 'after' ],
+				expectedData: function ( data ) {
+					var cell2 = data.splice( 26, 8 ),
+						cell1 = data.splice( 3, 7 );
+
+					data.splice.apply( data, [ 42 - cell1.length - cell2.length, 0 ].concat( cell2 ) );
+					data.splice.apply( data, [ 17 - cell1.length, 0 ].concat( cell1 ) );
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 52 ),
+					fromCol: 1,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 0
+				},
+				msg: 'move column after'
+			},
 			{
 				html: '<table><tr></tr><tr><td>A</td></tr></table>',
 				rangeOrSelection: {
