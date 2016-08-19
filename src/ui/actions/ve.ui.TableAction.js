@@ -581,9 +581,10 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		refCells = matrix.getColumn( refIndex ) || [];
 	}
 
-	for ( i = 0, l = cells.length; i < l; i++ ) {
+	for ( i = 0, l = Math.max( cells.length, dataMatrixLine ? dataMatrixLine.cells.length : 0 ); i < l; i++ ) {
 		cell = cells[ i ];
 		if ( !cell ) {
+			insertCells.push( dataMatrixLine.cells[ i ] );
 			continue;
 		}
 		refCell = refCells[ i ];

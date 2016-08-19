@@ -420,6 +420,25 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle', function 
 					data[ 40 ].attributes.style = 'header';
 				},
 				msg: 'change style to header'
+			},
+			// TODO: Write tests for simple row/column moves
+			{
+				html: '<table><tr></tr><tr><td>A</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 13 ),
+					fromCol: 0,
+					fromRow: 1,
+					toCol: 0,
+					toRow: 1
+				},
+				method: 'moveRelative',
+				args: [ 'row', 'before' ],
+				expectedData: function ( data ) {
+					var row = data.splice( 4, 7 );
+					data.splice.apply( data, [ 2, 0 ].concat( row ) );
+				},
+				msg: 'move row adjacent to sparse row'
 			}
 		];
 
