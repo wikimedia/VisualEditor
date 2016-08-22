@@ -22,7 +22,7 @@ ve.ce.View = function VeCeView( model, config ) {
 	this.model = model;
 
 	// Parent constructor
-	OO.ui.Element.call( this, config );
+	ve.ce.View.super.call( this, config );
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );

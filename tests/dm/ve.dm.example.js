@@ -3642,7 +3642,7 @@ ve.dm.example.RDFaDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHt
 
 ve.dm.example.UnboldableNode = function () {
 	// Parent constructor
-	ve.dm.LeafNode.apply( this, arguments );
+	ve.dm.example.UnboldableNode.super.apply( this, arguments );
 };
 OO.inheritClass( ve.dm.example.UnboldableNode, ve.dm.LeafNode );
 ve.dm.example.UnboldableNode.static.name = 'exampleUnboldable';
@@ -3651,9 +3651,9 @@ ve.dm.example.UnboldableNode.static.blacklistedAnnotationTypes = [ 'textStyle/bo
 ve.dm.example.UnboldableNode.static.matchTagNames = [];
 ve.dm.modelRegistry.register( ve.dm.example.UnboldableNode );
 
-ve.dm.example.IgnoreChildrenNode = function ( children, element ) {
+ve.dm.example.IgnoreChildrenNode = function () {
 	// Parent constructor
-	ve.dm.BranchNode.call( this, children, element );
+	ve.dm.example.IgnoreChildrenNode.super.apply( this, arguments );
 };
 OO.inheritClass( ve.dm.example.IgnoreChildrenNode, ve.dm.BranchNode );
 ve.dm.example.IgnoreChildrenNode.static.name = 'exampleIgnoreChildren';

@@ -21,7 +21,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		profile = $.client.profile();
 
 	// Parent constructor
-	OO.ui.Element.call( this, config );
+	ve.ce.Surface.super.call( this, config );
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );

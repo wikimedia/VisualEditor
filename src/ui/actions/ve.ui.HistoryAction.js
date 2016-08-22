@@ -13,9 +13,9 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ui.HistoryAction = function VeUiHistoryAction( surface ) {
+ve.ui.HistoryAction = function VeUiHistoryAction() {
 	// Parent constructor
-	ve.ui.Action.call( this, surface );
+	ve.ui.HistoryAction.super.apply( this, arguments );
 };
 
 /* Inheritance */

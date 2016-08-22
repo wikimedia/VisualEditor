@@ -14,9 +14,9 @@
  * @param {ve.dm.BlockquoteNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.BlockquoteNode = function VeCeBlockquoteNode( model, config ) {
+ve.ce.BlockquoteNode = function VeCeBlockquoteNode() {
 	// Parent constructor
-	ve.ce.ContentBranchNode.call( this, model, config );
+	ve.ce.BlockquoteNode.super.apply( this, arguments );
 };
 
 /* Inheritance */

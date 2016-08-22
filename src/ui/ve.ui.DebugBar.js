@@ -18,7 +18,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	var closeButton;
 
 	// Parent constructor
-	OO.ui.Element.call( this, config );
+	ve.ui.DebugBar.super.call( this, config );
 
 	this.surface = surface;
 

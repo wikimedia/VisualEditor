@@ -15,9 +15,9 @@
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.Tool = function VeUiTool( toolGroup, config ) {
+ve.ui.Tool = function VeUiTool() {
 	// Parent constructor
-	OO.ui.Tool.call( this, toolGroup, config );
+	ve.ui.Tool.super.apply( this, arguments );
 
 	// Disable initially
 	this.setDisabled( true );

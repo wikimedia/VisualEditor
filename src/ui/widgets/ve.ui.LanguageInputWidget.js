@@ -24,7 +24,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	config = config || {};
 
 	// Parent constructor
-	OO.ui.Widget.call( this, config );
+	ve.ui.LanguageInputWidget.super.call( this, config );
 
 	// Properties
 	this.lang = null;

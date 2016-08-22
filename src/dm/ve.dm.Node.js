@@ -17,7 +17,7 @@
  */
 ve.dm.Node = function VeDmNode( element ) {
 	// Parent constructor
-	ve.dm.Model.call( this, element );
+	ve.dm.Node.super.apply( this, arguments );
 
 	// Mixin constructors
 	ve.Node.call( this );

@@ -13,17 +13,17 @@ responseDelay = 1;
 FullResourceProvider = function VeDmFullResourceProvider( config ) {
 	this.timer = null;
 	// Inheritance
-	ve.dm.APIResultsProvider.call( this, '', config );
+	FullResourceProvider.super.call( this, '', config );
 };
 EmptyResourceProvider = function VeDmEmptyResourceProvider( config ) {
 	this.timer = null;
 	// Inheritance
-	ve.dm.APIResultsProvider.call( this, '', config );
+	EmptyResourceProvider.super.call( this, '', config );
 };
 SingleResultResourceProvider = function VeDmSingleResultResourceProvider( config ) {
 	this.timer = null;
 	// Inheritance
-	ve.dm.APIResultsProvider.call( this, '', config );
+	SingleResultResourceProvider.super.call( this, '', config );
 };
 
 OO.inheritClass( FullResourceProvider, ve.dm.APIResultsProvider );

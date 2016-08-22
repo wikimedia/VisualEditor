@@ -17,7 +17,7 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 	config = config || {};
 
 	// Parent constructor
-	OO.ui.Toolbar.call( this, ve.ui.toolFactory, ve.ui.toolGroupFactory, config );
+	ve.ui.Toolbar.super.call( this, ve.ui.toolFactory, ve.ui.toolGroupFactory, config );
 
 	// Default directions
 	this.contextDirection = { inline: 'ltr', block: 'ltr' };
@@ -235,7 +235,7 @@ ve.ui.Toolbar.prototype.detach = function () {
  */
 ve.ui.Toolbar.prototype.destroy = function () {
 	// Parent method
-	OO.ui.Toolbar.prototype.destroy.call( this );
+	ve.ui.Toolbar.super.prototype.destroy.call( this );
 
 	// Detach surface last, because tool destructors need getSurface()
 	this.detach();

@@ -10,7 +10,7 @@ QUnit.module( 've.Scheduler' );
 
 ve.TestScheduler = function VeTestScheduler() {
 	// Parent constructor
-	ve.Scheduler.call( this );
+	ve.TestScheduler.super.apply( this, arguments );
 
 	this.nowCounter = 0;
 };

@@ -16,7 +16,7 @@
  */
 ve.ce.Document = function VeCeDocument( model, surface ) {
 	// Parent constructor
-	ve.Document.call( this, new ve.ce.DocumentNode( model.getDocumentNode(), surface ) );
+	ve.ce.Document.super.call( this, new ve.ce.DocumentNode( model.getDocumentNode(), surface ) );
 
 	this.getDocumentNode().$element.prop( {
 		lang: model.getLang(),

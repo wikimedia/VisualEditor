@@ -13,9 +13,9 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.CommentInspector = function VeUiCommentInspector( config ) {
+ve.ui.CommentInspector = function VeUiCommentInspector() {
 	// Parent constructor
-	ve.ui.NodeInspector.call( this, config );
+	ve.ui.CommentInspector.super.apply( this, arguments );
 };
 
 /* Inheritance */

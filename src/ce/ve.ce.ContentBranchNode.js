@@ -15,7 +15,7 @@
  * @param {ve.dm.BranchNode} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
+ve.ce.ContentBranchNode = function VeCeContentBranchNode() {
 	// Properties
 	this.lastTransaction = null;
 	// Parent constructor calls renderContents, so this must be set first
@@ -24,7 +24,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode( model, config ) {
 	this.unicorns = null;
 
 	// Parent constructor
-	ve.ce.BranchNode.call( this, model, config );
+	ve.ce.ContentBranchNode.super.apply( this, arguments );
 
 	this.onClickHandler = this.onClick.bind( this );
 
@@ -137,7 +137,7 @@ ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
  */
 ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 	// Parent method
-	ve.ce.BranchNode.prototype.onSplice.apply( this, arguments );
+	ve.ce.ContentBranchNode.super.prototype.onSplice.apply( this, arguments );
 
 	// FIXME T126025: adjust slugNodes indexes if isRenderingLocked. This should be
 	// sufficient to keep this.slugNodes valid - only text changes can occur, which
@@ -165,7 +165,8 @@ ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 	) {
 		return;
 	}
-	ve.ce.BranchNode.prototype.setupBlockSlugs.apply( this, arguments );
+	// Parent method
+	ve.ce.ContentBranchNode.super.prototype.setupBlockSlugs.apply( this, arguments );
 };
 
 /**
@@ -455,7 +456,7 @@ ve.ce.ContentBranchNode.prototype.onTeardown = function () {
 	var ceSurface = this.getRoot().getSurface();
 
 	// Parent method
-	ve.ce.BranchNode.prototype.onTeardown.call( this );
+	ve.ce.ContentBranchNode.super.prototype.onTeardown.call( this );
 
 	ceSurface.setNotUnicorning( this );
 };

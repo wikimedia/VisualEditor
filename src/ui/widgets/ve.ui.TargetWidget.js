@@ -25,7 +25,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( doc, config ) {
 	config = config || {};
 
 	// Parent constructor
-	OO.ui.Widget.call( this, config );
+	ve.ui.TargetWidget.super.call( this, config );
 
 	// Properties
 	this.commandRegistry = config.commandRegistry || ve.init.target.getSurface().commandRegistry;

@@ -14,9 +14,9 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ui.TableAction = function VeUiTableAction( surface ) {
+ve.ui.TableAction = function VeUiTableAction() {
 	// Parent constructor
-	ve.ui.Action.call( this, surface );
+	ve.ui.TableAction.super.apply( this, arguments );
 };
 
 /* Inheritance */

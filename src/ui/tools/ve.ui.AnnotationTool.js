@@ -14,9 +14,9 @@
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.AnnotationTool = function VeUiAnnotationTool( toolGroup, config ) {
+ve.ui.AnnotationTool = function VeUiAnnotationTool() {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolGroup, config );
+	ve.ui.AnnotationTool.super.apply( this, arguments );
 };
 
 /* Inheritance */
@@ -44,7 +44,7 @@ ve.ui.AnnotationTool.static.deactivateOnSelect = false;
  */
 ve.ui.AnnotationTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
-	ve.ui.Tool.prototype.onUpdateState.apply( this, arguments );
+	ve.ui.AnnotationTool.super.prototype.onUpdateState.apply( this, arguments );
 
 	this.setActive(
 		fragment && fragment.getAnnotations().hasAnnotationWithName( this.constructor.static.annotation.name )
@@ -60,8 +60,8 @@ ve.ui.AnnotationTool.prototype.onUpdateState = function ( fragment ) {
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.BoldAnnotationTool = function VeUiBoldAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.BoldAnnotationTool = function VeUiBoldAnnotationTool() {
+	ve.ui.BoldAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.BoldAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.BoldAnnotationTool.static.name = 'bold';
@@ -82,8 +82,8 @@ ve.ui.toolFactory.register( ve.ui.BoldAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.ItalicAnnotationTool = function VeUiItalicAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.ItalicAnnotationTool = function VeUiItalicAnnotationTool() {
+	ve.ui.ItalicAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.ItalicAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.ItalicAnnotationTool.static.name = 'italic';
@@ -104,8 +104,8 @@ ve.ui.toolFactory.register( ve.ui.ItalicAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.CodeAnnotationTool = function VeUiCodeAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.CodeAnnotationTool = function VeUiCodeAnnotationTool() {
+	ve.ui.CodeAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.CodeAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.CodeAnnotationTool.static.name = 'code';
@@ -126,8 +126,8 @@ ve.ui.toolFactory.register( ve.ui.CodeAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.StrikethroughAnnotationTool = function VeUiStrikethroughAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.StrikethroughAnnotationTool = function VeUiStrikethroughAnnotationTool() {
+	ve.ui.StrikethroughAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.StrikethroughAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.StrikethroughAnnotationTool.static.name = 'strikethrough';
@@ -148,8 +148,8 @@ ve.ui.toolFactory.register( ve.ui.StrikethroughAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.UnderlineAnnotationTool = function VeUiUnderlineAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.UnderlineAnnotationTool = function VeUiUnderlineAnnotationTool() {
+	ve.ui.UnderlineAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.UnderlineAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.UnderlineAnnotationTool.static.name = 'underline';
@@ -170,8 +170,8 @@ ve.ui.toolFactory.register( ve.ui.UnderlineAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.SuperscriptAnnotationTool = function VeUiSuperscriptAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.SuperscriptAnnotationTool = function VeUiSuperscriptAnnotationTool() {
+	ve.ui.SuperscriptAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.SuperscriptAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.SuperscriptAnnotationTool.static.name = 'superscript';
@@ -192,8 +192,8 @@ ve.ui.toolFactory.register( ve.ui.SuperscriptAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.SubscriptAnnotationTool = function VeUiSubscriptAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.SubscriptAnnotationTool = function VeUiSubscriptAnnotationTool() {
+	ve.ui.SubscriptAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.SubscriptAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.SubscriptAnnotationTool.static.name = 'subscript';
@@ -214,8 +214,8 @@ ve.ui.toolFactory.register( ve.ui.SubscriptAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.BigAnnotationTool = function VeUiBigAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.BigAnnotationTool = function VeUiBigAnnotationTool() {
+	ve.ui.BigAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.BigAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.BigAnnotationTool.static.name = 'big';
@@ -236,8 +236,8 @@ ve.ui.toolFactory.register( ve.ui.BigAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.SmallAnnotationTool = function VeUiSmallAnnotationTool( toolGroup, config ) {
-	ve.ui.AnnotationTool.call( this, toolGroup, config );
+ve.ui.SmallAnnotationTool = function VeUiSmallAnnotationTool() {
+	ve.ui.SmallAnnotationTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.SmallAnnotationTool, ve.ui.AnnotationTool );
 ve.ui.SmallAnnotationTool.static.name = 'small';
@@ -258,8 +258,8 @@ ve.ui.toolFactory.register( ve.ui.SmallAnnotationTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.MoreTextStyleTool = function VeUiMoreTextStyleTool( toolGroup, config ) {
-	OO.ui.ToolGroupTool.call( this, toolGroup, config );
+ve.ui.MoreTextStyleTool = function VeUiMoreTextStyleTool() {
+	ve.ui.MoreTextStyleTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.MoreTextStyleTool, OO.ui.ToolGroupTool );
 ve.ui.MoreTextStyleTool.static.autoAddToCatchall = false;

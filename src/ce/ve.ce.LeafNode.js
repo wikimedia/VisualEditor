@@ -22,7 +22,7 @@ ve.ce.LeafNode = function VeCeLeafNode( model ) {
 	ve.LeafNode.call( this );
 
 	// Parent constructor
-	ve.ce.Node.apply( this, arguments );
+	ve.ce.LeafNode.super.apply( this, arguments );
 
 	// DOM changes (keep in sync with #onSetup)
 	if ( model.isWrapped() ) {
@@ -47,7 +47,7 @@ ve.ce.LeafNode.static.tagName = 'span';
  */
 ve.ce.LeafNode.prototype.onSetup = function () {
 	// Parent method
-	ve.ce.Node.prototype.onSetup.call( this );
+	ve.ce.LeafNode.super.prototype.onSetup.call( this );
 
 	// DOM changes (duplicated from constructor in case this.$element is replaced)
 	if ( this.model.isWrapped() ) {

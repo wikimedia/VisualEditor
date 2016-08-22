@@ -13,9 +13,9 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ui.AnnotationAction = function VeUiAnnotationAction( surface ) {
+ve.ui.AnnotationAction = function VeUiAnnotationAction() {
 	// Parent constructor
-	ve.ui.Action.call( this, surface );
+	ve.ui.AnnotationAction.super.apply( this, arguments );
 };
 
 /* Inheritance */

@@ -15,9 +15,9 @@
  * @constructor
  * @param {Object} element Reference to element in meta-linmod
  */
-ve.dm.MetaItem = function VeDmMetaItem( element ) {
+ve.dm.MetaItem = function VeDmMetaItem() {
 	// Parent constructor
-	ve.dm.Model.call( this, element );
+	ve.dm.MetaItem.super.apply( this, arguments );
 	// Mixin
 	OO.EventEmitter.call( this );
 

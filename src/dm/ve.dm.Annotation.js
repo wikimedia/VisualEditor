@@ -21,7 +21,7 @@
  */
 ve.dm.Annotation = function VeDmAnnotation( element, store ) {
 	// Parent constructor
-	ve.dm.Model.call( this, element );
+	ve.dm.Annotation.super.call( this, element );
 
 	// Properties
 	this.name = this.constructor.static.name; // For ease of filtering

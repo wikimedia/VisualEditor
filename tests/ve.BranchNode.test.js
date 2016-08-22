@@ -9,6 +9,9 @@ QUnit.module( 've.BranchNode' );
 /* Stubs */
 
 ve.BranchNodeStub = function VeBranchNodeStub( children ) {
+	// Parent constructor
+	ve.BranchNodeStub.super.call( this );
+	// Mixin constructor
 	ve.BranchNode.call( this, children );
 };
 

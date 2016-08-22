@@ -13,9 +13,9 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ui.FormatAction = function VeUiFormatAction( surface ) {
+ve.ui.FormatAction = function VeUiFormatAction() {
 	// Parent constructor
-	ve.ui.Action.call( this, surface );
+	ve.ui.FormatAction.super.apply( this, arguments );
 };
 
 /* Inheritance */

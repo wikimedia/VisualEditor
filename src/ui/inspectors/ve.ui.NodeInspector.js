@@ -14,9 +14,9 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.NodeInspector = function VeUiNodeInspector( config ) {
+ve.ui.NodeInspector = function VeUiNodeInspector() {
 	// Parent constructor
-	ve.ui.FragmentInspector.call( this, config );
+	ve.ui.NodeInspector.super.apply( this, arguments );
 
 	// Mixin constructor
 	ve.ui.NodeWindow.call( this );

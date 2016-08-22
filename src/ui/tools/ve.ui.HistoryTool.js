@@ -13,9 +13,9 @@
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.HistoryTool = function VeUiHistoryTool( toolGroup, config ) {
+ve.ui.HistoryTool = function VeUiHistoryTool() {
 	// Parent constructor
-	ve.ui.Tool.call( this, toolGroup, config );
+	ve.ui.HistoryTool.super.apply( this, arguments );
 
 	// Events
 	this.toolbar.getSurface().getModel().connect( this, { history: 'onHistory' } );
@@ -42,6 +42,7 @@ ve.ui.HistoryTool.prototype.onHistory = function () {
  */
 ve.ui.HistoryTool.prototype.destroy = function () {
 	this.toolbar.getSurface().getModel().disconnect( this );
+	// Parent method
 	ve.ui.HistoryTool.super.prototype.destroy.call( this );
 };
 
@@ -54,8 +55,9 @@ ve.ui.HistoryTool.prototype.destroy = function () {
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.UndoHistoryTool = function VeUiUndoHistoryTool( toolGroup, config ) {
-	ve.ui.HistoryTool.call( this, toolGroup, config );
+ve.ui.UndoHistoryTool = function VeUiUndoHistoryTool() {
+	// Parent constructor
+	ve.ui.UndoHistoryTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.UndoHistoryTool, ve.ui.HistoryTool );
 ve.ui.UndoHistoryTool.static.name = 'undo';
@@ -75,8 +77,9 @@ ve.ui.toolFactory.register( ve.ui.UndoHistoryTool );
  * @param {OO.ui.ToolGroup} toolGroup
  * @param {Object} [config] Configuration options
  */
-ve.ui.RedoHistoryTool = function VeUiRedoHistoryTool( toolGroup, config ) {
-	ve.ui.HistoryTool.call( this, toolGroup, config );
+ve.ui.RedoHistoryTool = function VeUiRedoHistoryTool() {
+	// Parent constructor
+	ve.ui.RedoHistoryTool.super.apply( this, arguments );
 };
 OO.inheritClass( ve.ui.RedoHistoryTool, ve.ui.HistoryTool );
 ve.ui.RedoHistoryTool.static.name = 'redo';

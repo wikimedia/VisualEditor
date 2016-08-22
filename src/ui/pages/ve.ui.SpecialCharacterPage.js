@@ -19,7 +19,7 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 	var character, characterNode, characters, $characters, charactersNode;
 
 	// Parent constructor
-	OO.ui.PageLayout.call( this, name, config );
+	ve.ui.SpecialCharacterPage.super.apply( this, arguments );
 
 	this.label = config.label;
 	this.icon = config.icon;
@@ -55,7 +55,9 @@ OO.inheritClass( ve.ui.SpecialCharacterPage, OO.ui.PageLayout );
 /**
  * @inheritdoc
  */
-ve.ui.SpecialCharacterPage.prototype.setupOutlineItem = function ( outlineItem ) {
-	ve.ui.SpecialCharacterPage.super.prototype.setupOutlineItem.call( this, outlineItem );
+ve.ui.SpecialCharacterPage.prototype.setupOutlineItem = function () {
+	// Parent method
+	ve.ui.SpecialCharacterPage.super.prototype.setupOutlineItem.apply( this, arguments );
+
 	this.outlineItem.setLabel( this.label );
 };

@@ -30,7 +30,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	var fullData, result, split, doc, root;
 
 	// Parent constructor
-	ve.Document.call( this, new ve.dm.DocumentNode() );
+	ve.dm.Document.super.call( this, new ve.dm.DocumentNode() );
 
 	// Initialization
 	split = true;

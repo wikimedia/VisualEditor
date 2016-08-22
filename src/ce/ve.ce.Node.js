@@ -15,9 +15,9 @@
  * @param {ve.dm.Node} model Model to observe
  * @param {Object} [config] Configuration options
  */
-ve.ce.Node = function VeCeNode( model, config ) {
+ve.ce.Node = function VeCeNode() {
 	// Parent constructor
-	ve.ce.View.call( this, model, config );
+	ve.ce.Node.super.apply( this, arguments );
 
 	// Mixin constructor
 	ve.Node.call( this );
@@ -224,7 +224,7 @@ ve.ce.Node.prototype.destroy = function () {
 	this.doc = null;
 
 	// Parent method
-	ve.ce.View.prototype.destroy.call( this );
+	ve.ce.Node.super.prototype.destroy.call( this );
 };
 
 /** */

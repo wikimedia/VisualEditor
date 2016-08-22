@@ -18,7 +18,7 @@
  */
 ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
 	// Parent constructor
-	OO.ui.Element.call( this, config );
+	ve.ui.PreviewElement.super.call( this, config );
 
 	// Mixin constructor
 	OO.EventEmitter.call( this );

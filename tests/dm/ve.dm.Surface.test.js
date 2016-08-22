@@ -10,7 +10,7 @@ ve.dm.SurfaceStub = function VeDmSurfaceStub( data, range ) {
 	var doc = new ve.dm.Document( data || [ { type: 'paragraph' }, 'h', 'i', { type: '/paragraph' } ] );
 
 	// Inheritance
-	ve.dm.Surface.call( this, doc );
+	ve.dm.SurfaceStub.super.call( this, doc );
 
 	// Initialize selection to simulate the surface being focused
 	this.setLinearSelection( range || new ve.Range( 1 ) );

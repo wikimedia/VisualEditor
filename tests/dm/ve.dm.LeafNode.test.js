@@ -10,7 +10,7 @@ QUnit.module( 've.dm.LeafNode' );
 
 ve.dm.LeafNodeStub = function VeDmLeafNodeStub() {
 	// Parent constructor
-	ve.dm.LeafNode.apply( this, arguments );
+	ve.dm.LeafNodeStub.super.apply( this, arguments );
 };
 
 OO.inheritClass( ve.dm.LeafNodeStub, ve.dm.LeafNode );

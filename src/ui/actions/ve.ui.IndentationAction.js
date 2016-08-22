@@ -13,9 +13,9 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ui.IndentationAction = function VeUiIndentationAction( surface ) {
+ve.ui.IndentationAction = function VeUiIndentationAction() {
 	// Parent constructor
-	ve.ui.Action.call( this, surface );
+	ve.ui.IndentationAction.super.apply( this, arguments );
 };
 
 /* Inheritance */

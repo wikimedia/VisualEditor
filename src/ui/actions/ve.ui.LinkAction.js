@@ -13,9 +13,9 @@
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
  */
-ve.ui.LinkAction = function VeUiLinkAction( surface ) {
+ve.ui.LinkAction = function VeUiLinkAction() {
 	// Parent constructor
-	ve.ui.Action.call( this, surface );
+	ve.ui.LinkAction.super.apply( this, arguments );
 };
 
 /* Inheritance */
