@@ -543,6 +543,34 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 					fromRow: 7
 				},
 				msg: 'Tab at end of table inserts new row'
+			},
+			{
+				// Create a full surface and return the view, as the UI surface is required for the insert action
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 2,
+					fromRow: 0
+				},
+				keys: [ 'UP' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 0 ),
+				msg: 'Up in first row of table moves out of table'
+			},
+			{
+				// Create a full surface and return the view, as the UI surface is required for the insert action
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 2,
+					fromRow: 6
+				},
+				keys: [ 'DOWN' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 171 ),
+				msg: 'Down in last row of table moves out of table'
 			}
 		];
 
@@ -2780,20 +2808,8 @@ QUnit.test( 'special key down: table arrow keys', function ( assert ) {
 				expectedSelectionOffsets: [ 0, 0 ]
 			},
 			{
-				msg: 'Move up at start',
-				key: 'UP',
-				selectionOffsets: [ 0, 0 ],
-				expectedSelectionOffsets: [ 0, 0 ]
-			},
-			{
 				msg: 'Move right at end',
 				key: 'RIGHT',
-				selectionOffsets: [ 5, 6 ],
-				expectedSelectionOffsets: [ 5, 6 ]
-			},
-			{
-				msg: 'Move down at end',
-				key: 'DOWN',
 				selectionOffsets: [ 5, 6 ],
 				expectedSelectionOffsets: [ 5, 6 ]
 			},
