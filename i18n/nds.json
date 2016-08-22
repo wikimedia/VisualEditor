@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Zylbath"
+			"Zylbath",
+			"Servien"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -11,13 +12,19 @@
 	"visualeditor-annotationbutton-italic-tooltip": "Kursiv",
 	"visualeditor-annotationbutton-language-tooltip": "Spraak",
 	"visualeditor-annotationbutton-link-tooltip": "Lenk",
+	"visualeditor-annotationbutton-small-tooltip": "Lütt",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Dörstrieken",
 	"visualeditor-annotationbutton-subscript-tooltip": "Deepstellen",
 	"visualeditor-annotationbutton-superscript-tooltip": "Hoogstellen",
 	"visualeditor-annotationbutton-underline-tooltip": "Ünnerstrieken",
 	"visualeditor-clearbutton-tooltip": "Formateren wegmaken",
+	"visualeditor-commentinspector-title": "Kommentar",
+	"visualeditor-commentinspector-tooltip": "Kommentar",
+	"visualeditor-contextitemwidget-label-remove": "Wegsmieten",
+	"visualeditor-contextitemwidget-label-secondary": "Ännern",
 	"visualeditor-dialog-action-apply": "Ännern spiekern",
 	"visualeditor-dialog-action-cancel": "Afbreken",
+	"visualeditor-dialog-action-done": "Färtig",
 	"visualeditor-dialog-action-goback": "Torüch",
 	"visualeditor-formatdropdown-format-heading1": "Böverschrift 1",
 	"visualeditor-formatdropdown-format-heading2": "Böverschrift 2",
@@ -40,7 +47,14 @@
 	"visualeditor-languageinspector-widget-label-direction": "Richtung",
 	"visualeditor-languageinspector-widget-label-langcode": "Spraak-Kood",
 	"visualeditor-languageinspector-widget-label-language": "Spraak",
-	"visualeditor-linkinspector-title": "Hyperlenk",
+	"visualeditor-linkinspector-title": "Lenk",
 	"visualeditor-listbutton-bullet-tooltip": "Optellensteken",
-	"visualeditor-listbutton-number-tooltip": "Nummereerte Liest"
+	"visualeditor-listbutton-number-tooltip": "Nummereerte Liest",
+	"visualeditor-mediasizewidget-label-scale": "Skaal",
+	"visualeditor-mediasizewidget-sizeoptions-default": "Standard",
+	"visualeditor-mediasizewidget-sizeoptions-scale": "Skaal",
+	"visualeditor-shortcuts-history": "Historie",
+	"visualeditor-shortcuts-other": "Annere",
+	"visualeditor-shortcuts-sequence-notice": "Typ",
+	"visualeditor-toolbar-history": "Historie"
 }
