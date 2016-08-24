@@ -2465,3 +2465,94 @@ QUnit.test( 'isNoOp', function ( assert ) {
 		// metadata replacement never creates no-op
 	} );
 } );
+
+QUnit.test( 'toJSON/build with operations', function ( assert ) {
+	var i, tx, ops,
+		doc = ve.dm.example.createExampleDocument(),
+		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
+		cases = [
+			{
+				msg: 'Replace annotated text',
+				method: 'newFromReplacement',
+				args: [ doc, new ve.Range( 1, 4 ), [ 'F', 'o', 'o' ] ],
+				expected: [
+					{ type: 'retain', length: 1 },
+					{
+						type: 'replace',
+						remove: [ 'a', [ 'b', [ ve.dm.example.boldIndex ] ], [ 'c', [ ve.dm.example.italicIndex ] ] ],
+						insert: [ 'F', 'o', 'o' ],
+						insertedDataOffset: 0,
+						insertedDataLength: 3
+					},
+					{ type: 'retain', length: 59 }
+				]
+			},
+			{
+				msg: 'New paragraph',
+				method: 'newFromInsertion',
+				args: [ doc, 0, [ { type: 'paragraph' }, { type: '/paragraph' } ] ],
+				roundTripArgs: [ doc, 0, [ { type: 'paragraph' }, { type: '/paragraph' } ] ],
+				expected: [
+					{
+						type: 'replace',
+						remove: [],
+						insert: [ { type: 'paragraph' }, { type: '/paragraph' } ],
+						insertedDataOffset: 0,
+						insertedDataLength: 2
+					},
+					{ type: 'retain', length: 63 }
+				]
+			},
+			{
+				msg: 'New alien preserves originalDomElements',
+				method: 'newFromInsertion',
+				args: [ doc, 0, [ { type: 'alienBlock' }, { type: '/alienBlock' } ] ],
+				expected: [
+					{
+						type: 'replace',
+						remove: [],
+						insert: [ { type: 'alienBlock' }, { type: '/alienBlock' } ],
+						insertedDataOffset: 0,
+						insertedDataLength: 2
+					},
+					{ type: 'retain', length: 63 }
+				]
+			},
+			{
+				msg: 'Add annotation',
+				method: 'newFromAnnotation',
+				args: [ doc, new ve.Range( 1, 4 ), 'set', underline ],
+				expected: [
+					{ type: 'retain', length: 1 },
+					{
+						type: 'annotate',
+						method: 'set',
+						bias: 'start',
+						index: ve.dm.example.underlineIndex
+					},
+					{ type: 'retain', length: 3 },
+					{
+						type: 'annotate',
+						method: 'set',
+						bias: 'stop',
+						index: ve.dm.example.underlineIndex
+					},
+					{ type: 'retain', length: 59 }
+				]
+			}
+		];
+
+	QUnit.expect( 2 * cases.length );
+
+	for ( i = 0; i < cases.length; i++ ) {
+
+		tx = ve.dm.Transaction[ cases[ i ].method ].apply( ve.dm.Transaction, cases[ i ].args );
+		ops = JSON.parse( JSON.stringify( tx.toJSON() ) );
+		assert.deepEqual( ops, cases[ i ].expected, cases[ i ].msg + ': toJSON' );
+		if ( cases[ i ].roundTripArgs ) {
+			tx = ve.dm.Transaction[ cases[ i ].method ].apply( ve.dm.Transaction, cases[ i ].roundTripArgs );
+		}
+		assert.deepEqual( new ve.dm.Transaction( doc, ops ), tx, cases[ i ].msg + ': build from operations' );
+
+	}
+} );
