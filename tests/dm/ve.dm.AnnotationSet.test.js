@@ -23,8 +23,8 @@ QUnit.test( 'Basic usage', 32, function ( assert ) {
 	assert.deepEqual( annotationSet.get( 0 ), bold, 'get(0) is bold' );
 	assert.strictEqual( annotationSet.contains( italic ), true, 'contains italic' );
 	assert.strictEqual( annotationSet.contains( underline ), false, 'doesn\'t contain underline' );
-	assert.strictEqual( annotationSet.containsIndex( 1 ), true, 'contains italic by index' );
-	assert.strictEqual( annotationSet.containsIndex( 2 ), false, 'doesn\'t contain underline by index' );
+	assert.strictEqual( annotationSet.containsIndex( store.indexOfValue( italic ) ), true, 'contains italic by index' );
+	assert.strictEqual( annotationSet.containsIndex( store.indexOfValue( underline ) ), false, 'doesn\'t contain underline by index' );
 	assert.strictEqual( annotationSet.containsAnyOf( annotationSet2 ), true, 'containsAnyOf set2 is true' );
 	assert.strictEqual( annotationSet.containsAnyOf( emptySet ), false, 'containsAnyOf empty set is false' );
 	assert.strictEqual( annotationSet.containsAllOf( annotationSet2 ), false, 'containsAllOf set2 set is false' );

@@ -54,10 +54,10 @@
 	ve.test = { utils: {} };
 
 	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {
-		var doc = ve.dm.example.createExampleDocument( 'isolationData' ),
+		var data,
+			doc = ve.dm.example.createExampleDocument( 'isolationData' ),
 			surface = new ve.dm.Surface( doc ),
-			fragment = surface.getLinearFragment( range ),
-			data;
+			fragment = surface.getLinearFragment( range );
 
 		data = ve.copy( doc.getFullData() );
 		fragment.isolateAndUnwrap( type );
@@ -149,11 +149,8 @@
 		for ( msg in cases ) {
 			if ( cases[ msg ].head !== undefined || cases[ msg ].body !== undefined ) {
 				n += 3;
-				if ( cases[ msg ].storeLength ) {
-					n += 1;
-				}
 				if ( cases[ msg ].storeItems ) {
-					n += cases[ msg ].storeItems.length;
+					n += Object.keys( cases[ msg ].storeItems ).length;
 				}
 			}
 		}
@@ -161,7 +158,7 @@
 	};
 
 	ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {
-		var model, i, length, hash, html, htmlDoc, actualData, actualRtDoc, expectedRtDoc,
+		var model, hash, html, htmlDoc, actualData, actualRtDoc, expectedRtDoc,
 			// Make sure we've always got a <base> tag
 			defaultHead = '<base href="' + ve.dm.example.baseUri + '">';
 
@@ -181,17 +178,13 @@
 			ve.dm.example.postprocessAnnotations( actualData, model.getStore(), caseItem.preserveAnnotationDomElements );
 			assert.equalLinearData( actualData, caseItem.data, msg + ': data' );
 			assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
-			if ( caseItem.storeLength !== undefined ) {
-				assert.strictEqual( model.getStore().valueStore.length, caseItem.storeLength, msg + ': store length matches' );
-			}
 			// check storeItems have been added to store
 			if ( caseItem.storeItems ) {
-				for ( i = 0, length = caseItem.storeItems.length; i < length; i++ ) {
-					hash = caseItem.storeItems[ i ].hash || OO.getHash( caseItem.storeItems[ i ].value );
+				for ( hash in caseItem.storeItems ) {
 					assert.deepEqualWithDomElements(
-						model.getStore().value( model.getStore().indexOfHash( hash ) ) || {},
-						caseItem.storeItems[ i ].value,
-						msg + ': store item ' + i + ' found'
+						model.getStore().value( hash ) || {},
+						caseItem.storeItems[ hash ],
+						msg + ': store item ' + hash + ' found'
 					);
 				}
 			}
@@ -204,13 +197,13 @@
 	};
 
 	ve.test.utils.getModelFromTestCase = function ( caseItem ) {
-		var i, length, model,
+		var hash, model,
 			store = new ve.dm.IndexValueStore();
 
 		// Load storeItems into store
 		if ( caseItem.storeItems ) {
-			for ( i = 0, length = caseItem.storeItems.length; i < length; i++ ) {
-				store.index( caseItem.storeItems[ i ].value, caseItem.storeItems[ i ].hash );
+			for ( hash in caseItem.storeItems ) {
+				store.hashStore[ hash ] = ve.copy( caseItem.storeItems[ hash ] );
 			}
 		}
 		model = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );

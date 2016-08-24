@@ -4,129 +4,119 @@
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* global SparkMD5 */
+
 /**
- * Index-value store
+ * Hash-keyed value store
+ *
+ * Values are objects, strings or Arrays, and are hashed using an algorithm with low collision
+ * probability: values with the same hash can be assumed equal.
+ *
+ * Two stores can be merged even if they have differently computed hashes, so long as two values
+ * will (with high probability) have the same hash only if equal. In this case, equivalent
+ * values can have two different hashes.
+ *
+ * TODO: rename the class to reflect that it is no longer an index-value store
  *
  * @class
  * @constructor
  */
 ve.dm.IndexValueStore = function VeDmIndexValueStore() {
-	// maps hashes to indexes
+	// maps values to hashes
 	this.hashStore = {};
-	// maps indexes to values
-	this.valueStore = [];
 };
 
 /* Methods */
 
 /**
- * Get the index of a value in the store.
- *
- * If the hash is not found the value is added to the store.
+ * Insert a value into the store
  *
  * @method
- * @param {Object|string|Array} value Value to lookup or store
- * @param {string} [hash] Value hash. Uses OO.getHash( value ) if not provided.
- * @param {boolean} [overwrite=false] Overwrite the value in the store if the hash is already in use
- * @return {number} The index of the value in the store
+ * @param {Object|string|Array} value Value to store
+ * @param {string} [stringified] Stringified version of value; default OO.getHash( value )
+ * @param {boolean} [overwrite=false] Overwrite the value in the store if the hash is found
+ * @return {string} Hash value with low collision probability
  */
-ve.dm.IndexValueStore.prototype.index = function ( value, hash, overwrite ) {
-	var index;
-	if ( typeof hash !== 'string' ) {
-		hash = OO.getHash( value );
-	}
-	index = this.indexOfHash( hash );
-	if ( index === null || overwrite ) {
-		if ( index === null ) {
-			index = this.valueStore.length;
-		}
+ve.dm.IndexValueStore.prototype.index = function ( value, stringified, overwrite ) {
+	var hash = this.indexOfValue( value, stringified );
+	if ( !this.hashStore[ hash ] || overwrite ) {
 		if ( Array.isArray( value ) ) {
-			this.valueStore[ index ] = ve.copy( value );
+			this.hashStore[ hash ] = ve.copy( value );
 		} else if ( typeof value === 'object' ) {
-			this.valueStore[ index ] = ve.cloneObject( value );
+			this.hashStore[ hash ] = ve.cloneObject( value );
 		} else {
-			this.valueStore[ index ] = value;
+			this.hashStore[ hash ] = value;
 		}
-		this.hashStore[ hash ] = index;
 	}
-	return index;
+
+	return hash;
 };
 
 /**
- * Get the index of a hash in the store.
- *
- * Returns null if the hash is not found.
+ * Get the hash of a value without inserting it in the store
  *
  * @method
- * @param {Object|string|Array} hash Value hash.
- * @return {number|null} The index of the value in the store, or undefined if it is not found
+ * @param {Object|string|Array} value Value to hash
+ * @param {string} [stringified] Stringified version of value; default OO.getHash( value )
+ * @return {string} Hash value with low collision probability
  */
-ve.dm.IndexValueStore.prototype.indexOfHash = function ( hash ) {
-	return hash in this.hashStore ? this.hashStore[ hash ] : null;
+ve.dm.IndexValueStore.prototype.indexOfValue = function ( value, stringified ) {
+	if ( typeof stringified !== 'string' ) {
+		stringified = OO.getHash( value );
+	}
+
+	// We don't need cryptographically strong hashes, just low collision probability. Given
+	// effectively random hash distribution, for n values hashed into a space of m hash
+	// strings, the probability of a collision is roughly n^2 / (2m). We use 16 hex digits
+	// of MD5 i.e. 2^64 possible hash strings, so given 2^16 stored values the collision
+	// probability is about 2^-33 =~ 0.0000000001 , i.e. negligible.
+	//
+	// Prefix with a letter to prevent all numeric hashes, and to constrain the space of
+	// possible object property values.
+	return 'h' + SparkMD5.hash( stringified ).slice( 0, 16 );
 };
 
 /**
- * Get the indexes of values in the store
+ * Get the hashes of values in the store
  *
  * Same as index but with arrays.
  *
  * @method
  * @param {Object[]} values Values to lookup or store
- * @return {Array} The indexes of the values in the store
+ * @return {string[]} The hashes of the values in the store
  */
 ve.dm.IndexValueStore.prototype.indexes = function ( values ) {
-	var i, length, indexes = [];
+	var i, length, hashes = [];
 	for ( i = 0, length = values.length; i < length; i++ ) {
-		indexes.push( this.index( values[ i ] ) );
+		hashes.push( this.index( values[ i ] ) );
 	}
-	return indexes;
+	return hashes;
 };
 
 /**
- * Get the value at a particular index
+ * Get the value stored for a particular hash
  *
  * @method
- * @param {number} index Index to lookup
- * @return {Object|undefined} Value at this index, or undefined if out of bounds
+ * @param {string} hash Hash to look up
+ * @return {Object|undefined} Value stored for this hash if present, else undefined
  */
-ve.dm.IndexValueStore.prototype.value = function ( index ) {
-	return this.valueStore[ index ];
+ve.dm.IndexValueStore.prototype.value = function ( hash ) {
+	return this.hashStore[ hash ];
 };
 
 /**
- * Replace a value's stored hash, e.g. if the value has changed and you want to discard the old one.
- *
- * @param {string} oldHash The value's previously stored hash
- * @param {Object|string|Array} value New value
- * @throws {Error} Old hash not found
- */
-ve.dm.IndexValueStore.prototype.replaceHash = function ( oldHash, value ) {
-	var newHash = OO.getHash( value ),
-		index = this.hashStore[ oldHash ];
-
-	if ( index === undefined ) {
-		throw new Error( 'Old hash not found: ' + oldHash );
-	}
-
-	delete this.hashStore[ oldHash ];
-
-	this.hashStore[ newHash ] = index;
-	this.valueStore[ index ] = value;
-};
-
-/**
- * Get the values at a set of indexes
+ * Get the values stored for a list of hashes
  *
  * Same as value but with arrays.
  *
  * @method
- * @param {number[]} indexes Indices to lookup
- * @return {Array} Values at these indexes, or undefined if out of bounds
+ * @param {string[]} hashes Hashes to lookup
+ * @return {Array} Values for these hashes (undefined for any not present)
  */
-ve.dm.IndexValueStore.prototype.values = function ( indexes ) {
+ve.dm.IndexValueStore.prototype.values = function ( hashes ) {
 	var i, length, values = [];
-	for ( i = 0, length = indexes.length; i < length; i++ ) {
-		values.push( this.value( indexes[ i ] ) );
+	for ( i = 0, length = hashes.length; i < length; i++ ) {
+		values.push( this.value( hashes[ i ] ) );
 	}
 	return values;
 };
@@ -141,10 +131,9 @@ ve.dm.IndexValueStore.prototype.values = function ( indexes ) {
  * @return {ve.dm.IndexValueStore} New store with the same contents as this one
  */
 ve.dm.IndexValueStore.prototype.clone = function () {
-	var key, clone = new this.constructor();
-	clone.valueStore = this.valueStore.slice();
-	for ( key in this.hashStore ) {
-		clone.hashStore[ key ] = this.hashStore[ key ];
+	var hash, clone = new this.constructor();
+	for ( hash in this.hashStore ) {
+		clone.hashStore[ hash ] = this.hashStore[ hash ];
 	}
 	return clone;
 };
@@ -152,23 +141,20 @@ ve.dm.IndexValueStore.prototype.clone = function () {
 /**
  * Merge another store into this store.
  *
- * Objects that are in other but not in this are added to this, possibly with a different index.
- * Objects present in both stores may have different indexes in each store. An object is returned
- * mapping each index in other to the corresponding index in this.
+ * It is allowed for the two stores to have differently computed hashes, so long as two values
+ * will (with high probability) have the same hash only if equal. In this case, equivalent
+ * values can have two different hashes.
  *
  * Objects added to the store are added by reference, not cloned like in .index()
  *
  * @param {ve.dm.IndexValueStore} other Store to merge into this one
- * @return {Object} Object in which the keys are indexes in other and the values are the corresponding keys in this
  */
 ve.dm.IndexValueStore.prototype.merge = function ( other ) {
-	var key, index, mapping = {};
-	for ( key in other.hashStore ) {
-		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, key ) ) {
-			index = this.valueStore.push( other.valueStore[ other.hashStore[ key ] ] ) - 1;
-			this.hashStore[ key ] = index;
+	var hash;
+
+	for ( hash in other.hashStore ) {
+		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, hash ) ) {
+			this.hashStore[ hash ] = other.hashStore[ hash ];
 		}
-		mapping[ other.hashStore[ key ] ] = this.hashStore[ key ];
 	}
-	return mapping;
 };

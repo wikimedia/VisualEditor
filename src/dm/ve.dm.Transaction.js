@@ -113,7 +113,7 @@ ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
  * @return {ve.dm.Transaction} Transaction that inserts the nodes and updates the internal list
  */
 ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, newDocRange ) {
-	var i, len, storeMerge, listMerge, data, metadata, listData, listMetadata, linearData,
+	var i, len, listMerge, data, metadata, listData, listMetadata, linearData,
 		oldEndOffset, newEndOffset, tx, insertion, spliceItemRange, spliceListNodeRange,
 		listNode = doc.internalList.getListNode(),
 		listNodeRange = listNode.getRange(),
@@ -142,9 +142,7 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 	}
 
 	// Merge the stores
-	storeMerge = doc.getStore().merge( newDoc.getStore() );
-	// Remap the store indexes in the data
-	data.remapStoreIndexes( storeMerge );
+	doc.getStore().merge( newDoc.getStore() );
 
 	listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
 	// Remap the indexes in the data
@@ -165,8 +163,6 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 			doc.getStore(),
 			newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true )
 		);
-		// Remap indexes in data coming from newDoc
-		linearData.remapStoreIndexes( storeMerge );
 		listData = linearData.data
 			.concat( doc.getData( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
 		listMetadata = newDoc.getMetadata( new ve.Range( newListNodeRange.start, newEndOffset ), true )
@@ -181,8 +177,6 @@ ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, new
 			doc.getStore(),
 			newDoc.getData( listMerge.newItemRanges[ i ], true )
 		);
-		// Remap indexes in data coming from newDoc
-		linearData.remapStoreIndexes( storeMerge );
 		listData = listData.concat( linearData.data );
 		// We don't have to worry about merging metadata at the edges, because there can't be
 		// metadata between internal list items

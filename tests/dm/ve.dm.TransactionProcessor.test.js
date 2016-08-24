@@ -707,7 +707,7 @@ QUnit.test( 'commit', function ( assert ) {
 			expectedDoc.buildNodeTree();
 			// Commit
 			testDoc.commit( tx );
-			assert.deepEqualWithDomElements( testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
+			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				expectedDoc.getDocumentNode(),
@@ -715,7 +715,7 @@ QUnit.test( 'commit', function ( assert ) {
 			);
 			// Rollback
 			testDoc.commit( tx.reversed() );
-			assert.deepEqualWithDomElements( testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + msg );
+			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				originalDoc.getDocumentNode(),
@@ -730,7 +730,7 @@ QUnit.test( 'commit', function ( assert ) {
 				cases[ msg ].exception,
 				'exception thrown: ' + msg
 			);
-			assert.deepEqualWithDomElements( testDoc.getFullData(), originalDoc.getFullData(), 'data unmodified: ' + msg );
+			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'data unmodified: ' + msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),
 				originalDoc.getDocumentNode(),

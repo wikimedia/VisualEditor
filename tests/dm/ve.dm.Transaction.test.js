@@ -26,7 +26,7 @@ function runConstructorTests( assert, constructor, cases, testRange ) {
 			tx = constructor.apply(
 				ve.dm.Transaction, cases[ msg ].args
 			);
-			assert.deepEqualWithDomElements( tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
+			assert.equalLinearDataWithDom( cases[ msg ].args[ 0 ].getStore(), tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
 			if ( testRange ) {
 				assert.equalRange(
 					tx.getModifiedRange(),
@@ -823,7 +823,6 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 	var i, j, doc2, store2, tx, actualStoreItems, expectedStoreItems, removalOps,
 		doc = ve.dm.example.createExampleDocument( 'internalData' ),
-		nextIndex = doc.store.valueStore.length,
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		whee = [ { type: 'paragraph' }, 'W', 'h', 'e', 'e', { type: '/paragraph' } ],
 		wheeItem = [ { type: 'internalItem' } ].concat( whee ).concat( [ { type: '/internalItem' } ] ),
@@ -888,13 +887,15 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 						remove: doc.getData( new ve.Range( 6, 14 ) )
 							.concat( doc.getData( new ve.Range( 19, 20 ) ) ),
 						insert: doc.getData( new ve.Range( 6, 15 ) )
-							.concat( [ [ doc.data.getData( 15 ), [ nextIndex ] ] ] )
-							.concat( [ [ doc.data.getData( 16 ), [ nextIndex ] ] ] )
+							.concat( [ [ doc.data.getData( 15 ), [ ve.dm.example.boldIndex ] ] ] )
+							.concat( [ [ doc.data.getData( 16 ), [ ve.dm.example.boldIndex ] ] ] )
 							.concat( doc.getData( new ve.Range( 17, 20 ) ) )
 					},
 					{ type: 'retain', length: 7 }
 				],
-				expectedStoreItems: [ bold ]
+				expectedStoreItems: {
+					h49981eab0f8056ff: bold
+				}
 			},
 			{
 				msg: 'insertion into internal list',
@@ -1031,7 +1032,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', [ 'o', [ nextIndex ] ], 'o', { type: '/paragraph' } ]
+						insert: [ { type: 'paragraph' }, 'F', [ 'o', [ ve.dm.example.boldIndex ] ], 'o', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 6 },
 					{
@@ -1041,7 +1042,9 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 					},
 					{ type: 'retain', length: 7 }
 				],
-				expectedStoreItems: [ bold ]
+				expectedStoreItems: {
+					h49981eab0f8056ff: bold
+				}
 			}
 		];
 
@@ -1066,12 +1069,11 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 		tx = ve.dm.Transaction.newFromDocumentInsertion( doc, cases[ i ].offset, doc2 );
 		assert.deepEqualWithDomElements( tx.getOperations(), cases[ i ].expectedOps, cases[ i ].msg + ': transaction' );
 
-		actualStoreItems = [];
-		expectedStoreItems = cases[ i ].expectedStoreItems || [];
-		for ( j = 0; j < expectedStoreItems.length; j++ ) {
-			actualStoreItems[ j ] = doc.store.value( doc.store.indexOfHash(
-				OO.getHash( expectedStoreItems[ j ] )
-			) );
+		actualStoreItems = {};
+		expectedStoreItems = cases[ i ].expectedStoreItems || {};
+		for ( j in expectedStoreItems ) {
+			actualStoreItems[ j ] = doc.store.value( j );
+			expectedStoreItems[ j ].store = store2;
 		}
 		assert.deepEqual( actualStoreItems, expectedStoreItems, cases[ i ].msg + ': store items' );
 	}
@@ -1164,14 +1166,14 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 61 }
 				]
@@ -1184,28 +1186,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 59 }
 				]
@@ -1218,28 +1220,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 2
+						index: ve.dm.example.strongIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 2
+						index: ve.dm.example.strongIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 2
+						index: ve.dm.example.strongIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 2
+						index: ve.dm.example.strongIndex
 					},
 					{ type: 'retain', length: 59 }
 				]
@@ -1252,14 +1254,14 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'clear',
 						bias: 'start',
-						index: 1
+						index: ve.dm.example.strongIndex
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'clear',
 						bias: 'stop',
-						index: 1
+						index: ve.dm.example.strongIndex
 					},
 					{ type: 'retain', length: 3 }
 				]
@@ -1278,28 +1280,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 6 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 1 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 52 }
 				]
@@ -1312,14 +1314,14 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 4 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 21 }
 				]
@@ -1332,28 +1334,28 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 2 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 21 }
 				]
@@ -1366,42 +1368,42 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 2 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 15 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'start',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 3 },
 					{
 						type: 'annotate',
 						method: 'set',
 						bias: 'stop',
-						index: 0
+						index: ve.dm.example.boldIndex
 					},
 					{ type: 'retain', length: 3 }
 				]

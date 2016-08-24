@@ -398,13 +398,13 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 					modelClass = ve.dm.modelRegistry.lookup(
 						ve.dm.modelRegistry.matchElement( element )
 					);
-					ann = ve.dm.annotationFactory.createFromElement(
-						ve.dm.converter.createDataElements( modelClass, [ element ] )[ 0 ]
-					);
-					if ( !( ann instanceof ve.dm.Annotation ) ) {
+					if ( !( modelClass.prototype instanceof ve.dm.Annotation ) ) {
 						// Erroneous element; nothing we can do with it
 						continue;
 					}
+					ann = ve.dm.annotationFactory.createFromElement(
+						modelClass.static.toDataElement( [ element ], ve.dm.converter )
+					);
 					oldAnn = oldAnnotations.getComparable( ann );
 					if ( oldAnn ) {
 						ann = oldAnn;

@@ -9,7 +9,11 @@ QUnit.module( 've.ce.TextState' );
 /* Tests */
 
 QUnit.test( 'getChangeTransaction', function ( assert ) {
-	var i, view, documentView, documentNode, test, oldState, newState, change, tests;
+	var i, view, documentView, documentNode, test, oldState, newState, change, tests,
+		underlineIndex = ve.dm.example.underlineIndex,
+		boldIndex = ve.dm.example.boldIndex,
+		annIndex = ve.dm.example.annIndex;
+
 	tests = [
 		{
 			msg: 'Clear bold',
@@ -20,7 +24,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{ type: 'retain', length: 5 },
 				{
 					type: 'replace',
-					remove: [ [ 'b', [ 0 ] ], [ 'a', [ 0 ] ], [ 'r', [ 0 ] ] ],
+					remove: [ [ 'b', [ annIndex( 'b', 'bar' ) ] ], [ 'a', [ annIndex( 'b', 'bar' ) ] ], [ 'r', [ annIndex( 'b', 'bar' ) ] ] ],
 					insert: [ 'b', 'a', 'r' ],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
@@ -38,7 +42,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'r', [ 0 ] ] ],
+					insert: [ [ 'r', [ annIndex( 'b', 'ba' ) ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 1
 				},
@@ -55,7 +59,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [ 'b', 'a', 'r' ],
-					insert: [ [ 'b', [ 0 ] ], [ 'a', [ 0 ] ], [ 'r', [ 0 ] ] ],
+					insert: [ [ 'b', [ boldIndex ] ], [ 'a', [ boldIndex ] ], [ 'r', [ boldIndex ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
 				},
@@ -72,7 +76,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'z', [ 0 ] ] ],
+					insert: [ [ 'z', [ annIndex( 'b', 'y' ) ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 1
 				},
@@ -107,7 +111,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'y', [ 0 ] ] ],
+					insert: [ [ 'y', [ 'anything' ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 1
 				},
@@ -125,9 +129,9 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 					type: 'replace',
 					remove: [ 'b', 'a', 'r' ],
 					insert: [
-						[ 'b', [ 0, 1 ] ],
-						[ 'a', [ 0, 1 ] ],
-						[ 'r', [ 0, 1 ] ]
+						[ 'b', [ annIndex( 'u', 'baz' ), boldIndex ] ],
+						[ 'a', [ annIndex( 'u', 'baz' ), boldIndex ] ],
+						[ 'r', [ annIndex( 'u', 'baz' ), boldIndex ] ]
 					],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
@@ -144,8 +148,16 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{ type: 'retain', length: 5 },
 				{
 					type: 'replace',
-					remove: [ [ 'b', [ 0, 1 ] ], [ 'a', [ 0, 1 ] ], [ 'r', [ 0, 1 ] ] ],
-					insert: [ [ 'b', [ 0 ] ], [ 'a', [ 0 ] ], [ 'r', [ 0 ] ] ],
+					remove: [
+						[ 'b', [ annIndex( 'i', 'foo <b>bar</b> baz' ), annIndex( 'b', 'bar' ) ] ],
+						[ 'a', [ annIndex( 'i', 'foo <b>bar</b> baz' ), annIndex( 'b', 'bar' ) ] ],
+						[ 'r', [ annIndex( 'i', 'foo <b>bar</b> baz' ), annIndex( 'b', 'bar' ) ] ]
+					],
+					insert: [
+						[ 'b', [ annIndex( 'i', 'foo <b>bar</b> baz' ) ] ],
+						[ 'a', [ annIndex( 'i', 'foo <b>bar</b> baz' ) ] ],
+						[ 'r', [ annIndex( 'i', 'foo <b>bar</b> baz' ) ] ]
+					],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
 				},
@@ -162,7 +174,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'r', [ 0, 1 ] ] ],
+					insert: [ [ 'r', [ annIndex( 'i', 'foo <b>ba</b> baz' ), annIndex( 'b', 'ba' ) ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 1
 				},
@@ -178,8 +190,16 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{ type: 'retain', length: 5 },
 				{
 					type: 'replace',
-					remove: [ [ 'b', [ 0 ] ], [ 'a', [ 0 ] ], [ 'r', [ 0 ] ] ],
-					insert: [ [ 'b', [ 0, 1 ] ], [ 'a', [ 0, 1 ] ], [ 'r', [ 0, 1 ] ] ],
+					remove: [
+						[ 'b', [ annIndex( 'i', 'foo bar baz' ) ] ],
+						[ 'a', [ annIndex( 'i', 'foo bar baz' ) ] ],
+						[ 'r', [ annIndex( 'i', 'foo bar baz' ) ] ]
+					],
+					insert: [
+						[ 'b', [ annIndex( 'i', 'foo bar baz' ), boldIndex ] ],
+						[ 'a', [ annIndex( 'i', 'foo bar baz' ), boldIndex ] ],
+						[ 'r', [ annIndex( 'i', 'foo bar baz' ), boldIndex ] ]
+					],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
 				},
@@ -196,7 +216,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'z', [ 0, 1 ] ] ],
+					insert: [ [ 'z', [ annIndex( 'i', 'wx<b>y</b>' ), annIndex( 'b', 'y' ) ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 1
 				},
@@ -213,7 +233,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'z', [ 0 ] ] ],
+					insert: [ [ 'z', [ annIndex( 'i', 'wx<b>y</b>' ) ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 1
 				},
@@ -231,7 +251,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'y', [ 0, 1 ] ] ],
+					insert: [ [ 'y', [ 'anything1', 'anything2' ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 1
 				},
@@ -247,11 +267,15 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{ type: 'retain', length: 5 },
 				{
 					type: 'replace',
-					remove: [ [ 'b', [ 0 ] ], [ 'a', [ 0 ] ], [ 'r', [ 0 ] ] ],
+					remove: [
+						[ 'b', [ annIndex( 'i', 'foo bar<u>baz</u>' ) ] ],
+						[ 'a', [ annIndex( 'i', 'foo bar<u>baz</u>' ) ] ],
+						[ 'r', [ annIndex( 'i', 'foo bar<u>baz</u>' ) ] ]
+					],
 					insert: [
-						[ 'b', [ 0, 1, 2 ] ],
-						[ 'a', [ 0, 1, 2 ] ],
-						[ 'r', [ 0, 1, 2 ] ]
+						[ 'b', [ annIndex( 'i', 'foo bar<u>baz</u>' ), annIndex( 'u', 'baz' ), boldIndex ] ],
+						[ 'a', [ annIndex( 'i', 'foo bar<u>baz</u>' ), annIndex( 'u', 'baz' ), boldIndex ] ],
+						[ 'r', [ annIndex( 'i', 'foo bar<u>baz</u>' ), annIndex( 'u', 'baz' ), boldIndex ] ]
 					],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
@@ -269,10 +293,10 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [ 'b', 'a', 'z' ],
-					// TODO: Reuse bold 0 instead of creating a new bold 2?
+					// TODO: Reuse bold instead of creating a new bold?
 					// (Some annotation types may need specific rules as to
 					// when this can be done)
-					insert: [ [ 'b', [ 2 ] ], [ 'a', [ 2 ] ], [ 'z', [ 2 ] ] ],
+					insert: [ [ 'b', [ boldIndex ] ], [ 'a', [ boldIndex ] ], [ 'z', [ boldIndex ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
 				},
@@ -288,8 +312,14 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{ type: 'retain', length: 3 },
 				{
 					type: 'replace',
-					remove: [ [ 'c', [ 0, 1 ] ], [ 'd', [ 0 ] ] ],
-					insert: [ [ 'c', [ 0, 1, 2 ] ], [ 'd', [ 0, 2 ] ] ],
+					remove: [
+						[ 'c', [ annIndex( 'i', 'a<b>bc</b>de' ), annIndex( 'b', 'bc' ) ] ],
+						[ 'd', [ annIndex( 'i', 'a<b>bc</b>de' ) ] ]
+					],
+					insert: [
+						[ 'c', [ annIndex( 'i', 'a<b>bc</b>de' ), annIndex( 'b', 'bc' ), underlineIndex ] ],
+						[ 'd', [ annIndex( 'i', 'a<b>bc</b>de' ), underlineIndex ] ]
+					],
 					insertedDataOffset: 0,
 					insertedDataLength: 2
 				},
@@ -309,9 +339,19 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 					// a diff algorithm that matches common start/end items
 					// then replaces the entire interior. In real life usage
 					// there won't usually be two separate changed regions.
-					remove: [ [ 'b', [ 1 ] ], [ 'a', [ 1 ] ], [ 'r', [ 1 ] ], ' ', 'b', 'a', 'z' ],
+					remove: [
+						[ 'b', [ annIndex( 'i', 'bar' ) ] ],
+						[ 'a', [ annIndex( 'i', 'bar' ) ] ],
+						[ 'r', [ annIndex( 'i', 'bar' ) ] ],
+						' ', 'b', 'a', 'z'
+					],
 					// The first insertion get
-					insert: [ 'b', 'a', 'r', ' ', [ 'b', [ 0 ] ], [ 'a', [ 0 ] ], [ 'z', [ 0 ] ] ],
+					insert: [
+						'b', 'a', 'r', ' ',
+						[ 'b', [ annIndex( 'b', 'foo' ) ] ],
+						[ 'a', [ annIndex( 'b', 'foo' ) ] ],
+						[ 'z', [ annIndex( 'b', 'foo' ) ] ]
+					],
 					insertedDataOffset: 0,
 					insertedDataLength: 7
 				},
@@ -328,7 +368,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ 'y', [ 'w', [ 0 ] ] ],
+					insert: [ 'y', [ 'w', [ annIndex( 'u', 'x' ) ] ] ],
 					insertedDataOffset: 0,
 					insertedDataLength: 2
 				},
@@ -345,7 +385,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'x', [ 0 ] ], 'a', 'b' ],
+					insert: [ [ 'x', [ underlineIndex ] ], 'a', 'b' ],
 					insertedDataOffset: 0,
 					insertedDataLength: 3
 				},

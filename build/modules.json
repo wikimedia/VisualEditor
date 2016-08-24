@@ -78,6 +78,11 @@
 			"lib/rangefix/rangefix.js"
 		]
 	},
+	"spark-md5": {
+		"scripts": [
+			"lib/spark-md5/spark-md5.js"
+		]
+	},
 	"dom-classlist-shim": {
 		"scripts": [
 			"lib/classList/classList.js"
@@ -206,6 +211,7 @@
 			"visualEditor.supportCheck",
 			"unicodejs",
 			"rangefix",
+			"spark-md5",
 			"dom-classlist-shim"
 		]
 	},

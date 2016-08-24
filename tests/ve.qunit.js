@@ -181,34 +181,41 @@
 	};
 
 	QUnit.assert.equalLinearData = function ( actual, expected, message ) {
-		function removeOriginalDomElements( arr ) {
-			var i = 0,
-				len = arr.length;
-			for ( ; i < len; i++ ) {
-				if ( arr[ i ].originalDomElements ) {
-					delete arr[ i ].originalDomElements;
-				}
+		function removeOriginalDomElements( val ) {
+			if ( val && val.originalDomElementsIndex !== undefined ) {
+				delete val.originalDomElementsIndex;
+			}
+			if ( val && val.originalDomElements !== undefined ) {
+				delete val.originalDomElements;
 			}
 		}
 
-		if ( Array.isArray( actual ) ) {
-			actual = actual.slice();
-			removeOriginalDomElements( actual );
-		}
-		if ( Array.isArray( expected ) ) {
-			expected = expected.slice();
-			removeOriginalDomElements( expected );
+		actual = ve.copy( actual );
+		expected = ve.copy( expected );
+		actual = ve.copy( actual, null, removeOriginalDomElements );
+		expected = ve.copy( expected, null, removeOriginalDomElements );
+
+		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+	};
+
+	QUnit.assert.equalLinearDataWithDom = function ( store, actual, expected, message ) {
+		function addOriginalDomElements( val ) {
+			if ( val && val.originalDomElementsIndex !== undefined ) {
+				val.originalDomElements = store.value( val.originalDomElementsIndex );
+				delete val.originalDomElementsIndex;
+			}
 		}
 
-		// FIXME domElements handling here shouldn't be necessary, but it is because of AlienNode
-		actual = ve.copy( actual, ve.convertDomElements );
-		expected = ve.copy( expected, ve.convertDomElements );
+		actual = ve.copy( actual );
+		expected = ve.copy( expected );
+		actual = ve.copy( actual, ve.convertDomElements, addOriginalDomElements );
+		expected = ve.copy( expected, ve.convertDomElements, addOriginalDomElements );
 
 		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
 	};
 
 	/**
-	 * Assert that two objects which may contain dom elements are equal.
+	 * Assert that two objects which may contain DOM elements are equal.
 	 *
 	 * @method
 	 * @static

@@ -1251,6 +1251,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	var nodes, startSplitNode, endSplitNode, startOffset, endOffset, oldExclude,
 		allowedParents,
+		insertions = [],
 		outerDepth = 0,
 		factory = ve.dm.nodeFactory,
 		startSplitRequired = false,
@@ -1260,9 +1261,10 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		fragment = this;
 
 	function createSplits( splitNodes, insertBefore ) {
-		var i, length, tx,
+		var i, length,
 			adjustment = 0,
 			data = [];
+
 		for ( i = 0, length = splitNodes.length; i < length; i++ ) {
 			data.unshift( { type: '/' + splitNodes[ i ].type } );
 			data.push( splitNodes[ i ].getClonedElement() );
@@ -1272,8 +1274,11 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 			}
 		}
 
-		tx = ve.dm.Transaction.newFromInsertion( fragment.getDocument(), insertBefore ? startOffset : endOffset, data );
-		fragment.change( tx );
+		// Queue up transaction data
+		insertions.push( {
+			offset: insertBefore ? startOffset : endOffset,
+			data: data
+		} );
 
 		startOffset += adjustment;
 		endOffset += adjustment;
@@ -1330,6 +1335,12 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	if ( endSplitRequired ) {
 		createSplits( endSplitNodes, false );
 	}
+
+	insertions.forEach( function ( insertion ) {
+		fragment.change(
+			ve.dm.Transaction.newFromInsertion( fragment.getDocument(), insertion.offset, insertion.data )
+		);
+	} );
 
 	this.setExcludeInsertions( oldExclude );
 
