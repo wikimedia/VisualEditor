@@ -7,10 +7,13 @@
 /* global SparkMD5 */
 
 /**
- * Hash-keyed value store
+ * Ordered append-only hash store, whose values once inserted are immutable
  *
  * Values are objects, strings or Arrays, and are hashed using an algorithm with low collision
  * probability: values with the same hash can be assumed equal.
+ *
+ * Values are stored in insertion order, and the store can be sliced to get a subset of values
+ * inserted consecutively.
  *
  * Two stores can be merged even if they have differently computed hashes, so long as two values
  * will (with high probability) have the same hash only if equal. In this case, equivalent
@@ -22,11 +25,41 @@
  * @constructor
  */
 ve.dm.IndexValueStore = function VeDmIndexValueStore() {
-	// maps values to hashes
+	// Maps hashes to values
 	this.hashStore = {};
+	// Hashes in order of insertion (used for slicing)
+	this.hashes = [];
 };
 
 /* Methods */
+
+/**
+ * Get the number of values in the store
+ *
+ * @return {number} Number of values in the store
+ */
+ve.dm.IndexValueStore.prototype.getLength = function () {
+	return this.hashes.length;
+};
+
+/**
+ * Return a new store containing a slice of the values in insertion order
+ *
+ * @param {number} [start] Include values from position start onwards (default: 0)
+ * @param {number} [end] Include values to position end exclusive (default: slice to end)
+ * @return {ve.dm.IndexValueStore} Slice of the current store (with non-cloned value references)
+ */
+ve.dm.IndexValueStore.prototype.slice = function ( start, end ) {
+	var i, len, hash,
+		sliced = new this.constructor();
+
+	sliced.hashes = this.hashes.slice( start, end );
+	for ( i = 0, len = sliced.hashes.length; i < len; i++ ) {
+		hash = sliced.hashes[ i ];
+		sliced.hashStore[ hash ] = this.hashStore[ hash ];
+	}
+	return sliced;
+};
 
 /**
  * Insert a value into the store
@@ -34,12 +67,12 @@ ve.dm.IndexValueStore = function VeDmIndexValueStore() {
  * @method
  * @param {Object|string|Array} value Value to store
  * @param {string} [stringified] Stringified version of value; default OO.getHash( value )
- * @param {boolean} [overwrite=false] Overwrite the value in the store if the hash is found
  * @return {string} Hash value with low collision probability
  */
-ve.dm.IndexValueStore.prototype.index = function ( value, stringified, overwrite ) {
+ve.dm.IndexValueStore.prototype.index = function ( value, stringified ) {
 	var hash = this.indexOfValue( value, stringified );
-	if ( !this.hashStore[ hash ] || overwrite ) {
+
+	if ( !this.hashStore[ hash ] ) {
 		if ( Array.isArray( value ) ) {
 			this.hashStore[ hash ] = ve.copy( value );
 		} else if ( typeof value === 'object' ) {
@@ -47,6 +80,7 @@ ve.dm.IndexValueStore.prototype.index = function ( value, stringified, overwrite
 		} else {
 			this.hashStore[ hash ] = value;
 		}
+		this.hashes.push( hash );
 	}
 
 	return hash;
@@ -131,7 +165,10 @@ ve.dm.IndexValueStore.prototype.values = function ( hashes ) {
  * @return {ve.dm.IndexValueStore} New store with the same contents as this one
  */
 ve.dm.IndexValueStore.prototype.clone = function () {
-	var hash, clone = new this.constructor();
+	var hash,
+		clone = new this.constructor();
+
+	clone.hashes = this.hashes.slice();
 	for ( hash in this.hashStore ) {
 		clone.hashStore[ hash ] = this.hashStore[ hash ];
 	}
@@ -145,16 +182,19 @@ ve.dm.IndexValueStore.prototype.clone = function () {
  * will (with high probability) have the same hash only if equal. In this case, equivalent
  * values can have two different hashes.
  *
- * Objects added to the store are added by reference, not cloned like in .index()
+ * Values are added in the order they appear in the other store. Objects added to the store are
+ * added by reference, not cloned, unlike in .index()
  *
  * @param {ve.dm.IndexValueStore} other Store to merge into this one
  */
 ve.dm.IndexValueStore.prototype.merge = function ( other ) {
-	var hash;
+	var i, len, hash;
 
-	for ( hash in other.hashStore ) {
+	for ( i = 0, len = other.hashes.length; i < len; i++ ) {
+		hash = other.hashes[ i ];
 		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, hash ) ) {
 			this.hashStore[ hash ] = other.hashStore[ hash ];
+			this.hashes.push( hash );
 		}
 	}
 };

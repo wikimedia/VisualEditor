@@ -8,7 +8,7 @@ QUnit.module( 've.dm.IndexValueStore' );
 
 /* Tests */
 
-QUnit.test( 'index(es)', 11, function ( assert ) {
+QUnit.test( 'index(es)', 10, function ( assert ) {
 	var index, indexes,
 		object1 = { a: 1, b: 2 },
 		object1Hash = 'h608de49a4600dbb5',
@@ -30,9 +30,6 @@ QUnit.test( 'index(es)', 11, function ( assert ) {
 	index = store.index( object1, 'custom hash string' );
 	assert.strictEqual( index, customHash, 'Using the same custom hash with a different object returns custom hash again' );
 	assert.deepEqual( store.value( customHash ), object2, 'Second object was not overwritten' );
-
-	index = store.index( object1, 'custom hash string', true );
-	assert.deepEqual( store.value( index ), object1, 'Second object is overwritten when overwrite flag is set' );
 
 	store = new ve.dm.IndexValueStore();
 
@@ -64,4 +61,18 @@ QUnit.test( 'value(s)', 5, function ( assert ) {
 	assert.deepEqual( store.values( [ object2Hash, object1Hash ] ), [ object2, object1 ], 'Values [secondHash, firstHash] are second and first object' );
 	object1.a = 3;
 	assert.deepEqual( store.value( object1Hash ), { a: 1, b: 2 }, 'Value 0 is still first stored object after original has been modified' );
+} );
+
+QUnit.test( 'slice', 3, function ( assert ) {
+	var sliced,
+		values = [ 'foo', 'bar', 'baz', 'qux', 'quux' ],
+		store = new ve.dm.IndexValueStore();
+
+	store.indexes( values );
+	sliced = store.slice( 2, 4 );
+	assert.deepEqual( sliced.values( sliced.hashes ), values.slice( 2, 4 ), 'Slice' );
+	sliced = store.slice( 3 );
+	assert.deepEqual( sliced.values( sliced.hashes ), values.slice( 3 ), 'Slice to end' );
+	sliced = store.slice();
+	assert.deepEqual( sliced.values( sliced.hashes ), values, 'Slice all' );
 } );
