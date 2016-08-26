@@ -33,14 +33,33 @@ OO.inheritClass( ve.ui.DataTransferHandlerFactory, OO.Factory );
  * @inheritdoc
  */
 ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
-	var i, j, ilen, jlen, kinds, types, extensions;
-
 	// Parent method
-	ve.ui.DataTransferHandlerFactory.super.prototype.register.call( this, constructor );
+	ve.ui.DataTransferHandlerFactory.super.prototype.register.apply( this, arguments );
 
-	kinds = constructor.static.kinds;
-	types = constructor.static.types;
-	extensions = constructor.static.extensions;
+	this.updateIndexes( constructor, true );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DataTransferHandlerFactory.prototype.unregister = function ( constructor ) {
+	// Parent method
+	ve.ui.DataTransferHandlerFactory.super.prototype.unregister.apply( this, arguments );
+
+	this.updateIndexes( constructor, false );
+};
+
+/**
+ * Update indexes used for handler loopup
+ *
+ * @param {Function} constructor Handler's constructor to insert/remove
+ * @param {boolean} insert Insert the handler into the indexes, remove otherwise
+ */
+ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructor, insert ) {
+	var i, j, ilen, jlen,
+		kinds = constructor.static.kinds,
+		types = constructor.static.types,
+		extensions = constructor.static.extensions;
 
 	function ensureArray( obj, prop ) {
 		if ( obj[ prop ] === undefined ) {
@@ -56,23 +75,42 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
 		return obj[ prop ];
 	}
 
+	function remove( arr, item ) {
+		var index;
+		if ( ( index = arr.indexOf( item ) ) !== -1 ) {
+			arr.splice( index, 1 );
+		}
+	}
+
 	if ( !kinds ) {
 		for ( j = 0, jlen = types.length; j < jlen; j++ ) {
-			ensureArray( this.handlerNamesByType, types[ j ] ).unshift( constructor.static.name );
+			if ( insert ) {
+				ensureArray( this.handlerNamesByType, types[ j ] ).unshift( constructor.static.name );
+			} else {
+				remove( this.handlerNamesByType[ types[ j ] ], constructor.static.name );
+			}
 		}
 	} else {
 		for ( i = 0, ilen = kinds.length; i < ilen; i++ ) {
 			for ( j = 0, jlen = types.length; j < jlen; j++ ) {
-				ensureArray(
-					ensureMap( this.handlerNamesByKindAndType, kinds[ i ] ),
-					types[ j ]
-				).unshift( constructor.static.name );
+				if ( insert ) {
+					ensureArray(
+						ensureMap( this.handlerNamesByKindAndType, kinds[ i ] ),
+						types[ j ]
+					).unshift( constructor.static.name );
+				} else {
+					remove( this.handlerNamesByKindAndType[ kinds[ i ] ][ types[ j ] ], constructor.static.name );
+				}
 			}
 		}
 	}
 	if ( constructor.prototype instanceof ve.ui.FileTransferHandler ) {
 		for ( i = 0, ilen = extensions.length; i < ilen; i++ ) {
-			ensureArray( this.handlerNamesByExtension, extensions[ i ] ).unshift( constructor.static.name );
+			if ( insert ) {
+				ensureArray( this.handlerNamesByExtension, extensions[ i ] ).unshift( constructor.static.name );
+			} else {
+				remove( this.handlerNamesByExtension[ extensions[ i ] ], constructor.static.name );
+			}
 		}
 	}
 };
