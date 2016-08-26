@@ -1020,7 +1020,7 @@ ve.dm.Surface.prototype.getModifiedRanges = function () {
 
 	ranges.sort( function ( a, b ) { return a.start - b.start; } ).forEach( function ( range ) {
 		if ( !range.isCollapsed() ) {
-			if ( lastRange && lastRange.overlapsRange( range ) ) {
+			if ( lastRange && lastRange.touchesRange( range ) ) {
 				compactRanges.pop();
 				range = lastRange.expand( range );
 			}
