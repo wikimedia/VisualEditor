@@ -579,13 +579,15 @@ ve.ui.Surface.prototype.setToolbarHeight = function ( toolbarHeight ) {
  *
  * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
  * @param {jQuery|string|Function} label Progress bar label
+ * @param {boolean} nonCancellable Progress item can't be cancelled
  * @return {jQuery.Promise} Promise which resolves with a progress bar widget and a promise which fails if cancelled
  */
-ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, label ) {
+ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, label, nonCancellable ) {
 	var progressBarDeferred = $.Deferred();
 
 	this.progresses.push( {
 		label: label,
+		cancellable: !nonCancellable,
 		progressCompletePromise: progressCompletePromise,
 		progressBarDeferred: progressBarDeferred
 	} );
