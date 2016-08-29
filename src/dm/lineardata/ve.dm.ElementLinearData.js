@@ -1112,7 +1112,9 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			// Remove plain newline characters, as they are semantically meaningless
 			// and will confuse the user. Firefox adds these automatically when copying
 			// line-wrapped HTML. T104790
-			if ( this.getCharacterData( i ) === '\n' ) {
+			// However, don't remove them if we're in a situation where they might
+			// actually be meaningful -- i.e. if we're inside a <pre>. T132006
+			if ( this.getCharacterData( i ) === '\n' && !ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( type ) ) {
 				if ( this.getCharacterData( i + 1 ).match( /\s/ ) || this.getCharacterData( i - 1 ).match( /\s/ ) ) {
 					// If whitespace-adjacent, remove the newline to avoid double spaces
 					this.splice( i, 1 );

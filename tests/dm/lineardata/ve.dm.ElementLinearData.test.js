@@ -1690,6 +1690,20 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Newline characters are stripped and replaced with spaces where necessary'
 			},
 			{
+				html: '<p>Foo\nBar\n <pre>Baz \nQuux</pre></p>',
+				data: [
+					{ type: 'paragraph' },
+					'F', 'o', 'o', ' ', 'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'preformatted' },
+					'B', 'a', 'z', ' ', '\n', 'Q', 'u', 'u', 'x',
+					{ type: '/preformatted' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				msg: 'Newline characters are not stripped when they are meaningful'
+			},
+			{
 				html: '<p>Foo</p> \n\t <p>Bar</p>',
 				data: [
 					{ type: 'paragraph' },
