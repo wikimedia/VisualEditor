@@ -1377,6 +1377,32 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Text into paragraph'
 			},
 			{
+				rangeOrSelection: new ve.Range( 4, 5 ),
+				pasteHtml: 'Bar',
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [ 'o' ]
+						},
+						{ type: 'retain', length: docLen - 5 }
+					],
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 5 }
+					]
+				],
+				msg: 'Text into selection'
+			},
+			{
 				rangeOrSelection: new ve.Range( 25 ),
 				internalSourceRangeOrSelection: new ve.Range( 3, 6 ),
 				expectedRangeOrSelection: new ve.Range( 28 ),
@@ -1428,10 +1454,58 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							bias: 'stop',
 							index: ve.dm.example.annIndex( 'b', 'Quux' )
 						},
-						{ type: 'retain', length: 5 }
+						{ type: 'retain', length: docLen - 25 }
 					]
 				],
 				msg: 'External text into annotated content'
+			},
+			{
+				rangeOrSelection: new ve.Range( 23, 27 ),
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 26 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 23 },
+						{
+							type: 'replace',
+							insert: [],
+							remove: [
+								[ 'Q', [ bold ] ],
+								[ 'u', [ bold ] ],
+								[ 'u', [ bold ] ],
+								[ 'x', [ bold ] ]
+							]
+						},
+						{ type: 'retain', length: docLen - 27 }
+					],
+					[
+						{ type: 'retain', length: 23 },
+						{
+							type: 'replace',
+							insert: [ 'F', 'o', 'o' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 27 }
+					],
+					[
+						{ type: 'retain', length: 23 },
+						{
+							type: 'annotate',
+							method: 'set',
+							bias: 'start',
+							index: ve.dm.example.annIndex( 'b', 'Quux' )
+						},
+						{ type: 'retain', length: 3 },
+						{
+							type: 'annotate',
+							method: 'set',
+							bias: 'stop',
+							index: ve.dm.example.annIndex( 'b', 'Quux' )
+						},
+						{ type: 'retain', length: docLen - 27 }
+					]
+				],
+				msg: 'External text over annotated content'
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),
@@ -2656,7 +2730,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			if ( model.getHistory().length ) {
 				txs = model.getHistory()[ 0 ].transactions;
 				for ( i = 0; i < txs.length; i++ ) {
-					txops = txs[ i ].getOperations();
+					txops = ve.copy( txs[ i ].getOperations() );
 					for ( j = 0; j < txops.length; j++ ) {
 						if ( txops[ j ].remove ) {
 							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
