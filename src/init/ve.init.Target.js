@@ -354,6 +354,11 @@ ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
  * Destroy and remove all surfaces from the target
  */
 ve.init.Target.prototype.clearSurfaces = function () {
+	if ( this.surfaces.indexOf( this.surface ) !== -1 ) {
+		// We're about to destroy this.surface, so unset it for sanity
+		// Otherwise, getSurface() could return a destroyed surface
+		this.surface = null;
+	}
 	while ( this.surfaces.length ) {
 		this.surfaces.pop().destroy();
 	}
