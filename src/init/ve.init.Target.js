@@ -354,11 +354,9 @@ ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
  * Destroy and remove all surfaces from the target
  */
 ve.init.Target.prototype.clearSurfaces = function () {
-	if ( this.surfaces.indexOf( this.surface ) !== -1 ) {
-		// We're about to destroy this.surface, so unset it for sanity
-		// Otherwise, getSurface() could return a destroyed surface
-		this.surface = null;
-	}
+	// We're about to destroy this.surface, so unset it for sanity
+	// Otherwise, getSurface() could return a destroyed surface
+	this.surface = null;
 	while ( this.surfaces.length ) {
 		this.surfaces.pop().destroy();
 	}
@@ -379,6 +377,9 @@ ve.init.Target.prototype.onSurfaceViewFocus = function ( surface ) {
  * @param {ve.ui.Surface} surface Surface
  */
 ve.init.Target.prototype.setSurface = function ( surface ) {
+	if ( this.surfaces.indexOf( surface ) === -1 ) {
+		throw new Error( 'Active surface must have been added first' );
+	}
 	if ( surface !== this.surface ) {
 		this.surface = surface;
 		this.setupToolbar( surface );
