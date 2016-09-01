@@ -1756,7 +1756,7 @@ ve.ce.Surface.prototype.onPaste = function ( e, fakePaste ) {
  * @param {jQuery.Event} e Paste event
  */
 ve.ce.Surface.prototype.beforePaste = function ( e ) {
-	var range, node, nodeRange, contextElement, nativeRange,
+	var range, startNode, endNode, contextElement, nativeRange,
 		context, leftText, rightText, textNode, textStart, textEnd,
 		selection = this.getModel().getSelection(),
 		clipboardData = e.originalEvent.clipboardData,
@@ -1765,11 +1765,8 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		documentModel = surfaceModel.getDocument();
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
-		// Pasting over a linear selection? Remove first.
-		fragment.removeContent();
 		range = fragment.getSelection().getRange();
 	} else if ( selection instanceof ve.dm.TableSelection ) {
-		// Selection removal is handled in after paste for tables (depends on pasted content)
 		range = new ve.Range( selection.getRanges()[ 0 ].start );
 	} else {
 		e.preventDefault();
@@ -1798,27 +1795,27 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	this.$pasteTarget.empty();
 
 	// Get node from cursor position
-	node = documentModel.getBranchNodeFromOffset( range.start );
-	if ( node.canContainContent() ) {
+	startNode = documentModel.getBranchNodeFromOffset( range.start );
+	if ( startNode.canContainContent() ) {
 		// If this is a content branch node, then add its DM HTML
 		// to the paste target to give CE some context.
 		textStart = textEnd = 0;
-		nodeRange = node.getRange();
-		contextElement = node.getClonedElement();
+		contextElement = startNode.getClonedElement();
 		// Make sure that context doesn't have any attributes that might confuse
 		// the importantElement check in afterPaste.
 		$( documentModel.getStore().value( contextElement.originalDomElementsIndex ) ).removeAttr( 'id typeof rel' );
 		context = [ contextElement ];
 		// If there is content to the left of the cursor, put a placeholder
 		// character to the left of the cursor
-		if ( range.start > nodeRange.start ) {
+		if ( range.start > startNode.getRange().start ) {
 			leftText = '☀';
 			context.push( leftText );
 			textStart = textEnd = 1;
 		}
 		// If there is content to the right of the cursor, put a placeholder
 		// character to the right of the cursor
-		if ( range.end < nodeRange.end ) {
+		endNode = documentModel.getBranchNodeFromOffset( range.end );
+		if ( range.end < endNode.getRange().end ) {
 			rightText = '☂';
 			context.push( rightText );
 		}
