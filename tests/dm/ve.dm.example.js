@@ -158,10 +158,10 @@ ve.dm.example.language = function ( lang, dir ) {
 
 ve.dm.example.annIndex = function ( tagName, text ) {
 	var ann = ve.copy( {
-			b: ve.dm.example.bold,
-			i: ve.dm.example.italic,
-			u: ve.dm.example.underline
-		}[ tagName ] );
+		b: ve.dm.example.bold,
+		i: ve.dm.example.italic,
+		u: ve.dm.example.underline
+	}[ tagName ] );
 
 	ann.originalDomElementsIndex = ve.dm.IndexValueStore.prototype.indexOfValue( null, '<' + tagName + '>' + text + '</' + tagName + '>' );
 	return ve.dm.IndexValueStore.prototype.indexOfValue( ann );

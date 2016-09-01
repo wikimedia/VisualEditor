@@ -13,9 +13,7 @@
  * @constructor
  * @param {jQuery} [$classedElement=this.$element] Element to which attribute-based classes are attached
  */
-ve.ce.ClassAttributeNode = function VeCeClassAttributeNode( $classedElement, config ) {
-	config = config || {};
-
+ve.ce.ClassAttributeNode = function VeCeClassAttributeNode( $classedElement ) {
 	// Properties
 	this.$classedElement = $classedElement || this.$element;
 	this.currentAttributeClasses = '';

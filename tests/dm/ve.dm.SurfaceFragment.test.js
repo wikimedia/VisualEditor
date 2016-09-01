@@ -271,26 +271,27 @@ QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
 } );
 
 QUnit.test( 'expandLinearSelection (word)', 1, function ( assert ) {
-	var i, doc, surface, fragment, newFragment, range, word, cases = [
-		{
-			phrase: 'the quick brown fox',
-			range: new ve.Range( 6, 13 ),
-			expected: 'quick brown',
-			msg: 'range starting and ending in latin words'
-		},
-		{
-			phrase: 'the quick brown fox',
-			range: new ve.Range( 18, 12 ),
-			expected: 'brown fox',
-			msg: 'backwards range starting and ending in latin words'
-		},
-		{
-			phrase: 'the quick brown fox',
-			range: new ve.Range( 7 ),
-			expected: 'quick',
-			msg: 'zero-length range'
-		}
-	];
+	var i, doc, surface, fragment, newFragment, range, word,
+		cases = [
+			{
+				phrase: 'the quick brown fox',
+				range: new ve.Range( 6, 13 ),
+				expected: 'quick brown',
+				msg: 'range starting and ending in latin words'
+			},
+			{
+				phrase: 'the quick brown fox',
+				range: new ve.Range( 18, 12 ),
+				expected: 'brown fox',
+				msg: 'backwards range starting and ending in latin words'
+			},
+			{
+				phrase: 'the quick brown fox',
+				range: new ve.Range( 7 ),
+				expected: 'quick',
+				msg: 'zero-length range'
+			}
+		];
 	QUnit.expect( cases.length * 2 );
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = new ve.dm.Document( cases[ i ].phrase.split( '' ) );

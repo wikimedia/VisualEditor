@@ -76,8 +76,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content ) {
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRange ) {
-	var conversionPromise,
-		range = this.getSelection().getCoveringRange(),
+	var range = this.getSelection().getCoveringRange(),
 		fragment = this;
 
 	if ( !range ) {
@@ -90,7 +89,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ) );
 	}
 
-	conversionPromise = this.convertDocument( doc )
+	/* conversionPromise = */ this.convertDocument( doc )
 		.done( function ( source ) {
 			fragment.removeContent();
 

@@ -53,9 +53,9 @@ ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElement
 
 ve.dm.TableCellableNode.static.applyAttributes = function ( attributes, domElement ) {
 	var spans = {
-			colspan: attributes.colspan,
-			rowspan: attributes.rowspan
-		};
+		colspan: attributes.colspan,
+		rowspan: attributes.rowspan
+	};
 
 	// Ignore spans of 1 unless they were in the original HTML
 	if ( attributes.colspan === 1 && Number( attributes.originalColspan ) !== 1 ) {

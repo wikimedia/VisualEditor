@@ -856,46 +856,47 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getRelativeOffset', function ( assert ) {
-	var i, data, cases = [
-		{
-			msg: 'document without any valid offsets returns -1',
-			offset: 0,
-			distance: 1,
-			data: [],
-			callback: function () {
-				return false;
+	var i, data,
+		cases = [
+			{
+				msg: 'document without any valid offsets returns -1',
+				offset: 0,
+				distance: 1,
+				data: [],
+				callback: function () {
+					return false;
+				},
+				expected: -1
 			},
-			expected: -1
-		},
-		{
-			msg: 'document with all valid offsets returns offset + distance',
-			offset: 0,
-			distance: 2,
-			data: [ 'a', 'b' ],
-			callback: function () {
-				return true;
+			{
+				msg: 'document with all valid offsets returns offset + distance',
+				offset: 0,
+				distance: 2,
+				data: [ 'a', 'b' ],
+				callback: function () {
+					return true;
+				},
+				expected: 2
 			},
-			expected: 2
-		},
-		{
-			msg: 'document with invalid offset inside an ignoreChildren node throws',
-			offset: 7,
-			distance: 1,
-			data: [
-				'a',
-				{ type: 'blockImage', attributes: {} },
-				{ type: 'imageCaption' },
-				{ type: 'paragraph', internal: { generated: 'wrapper' } },
-				'a', 'b', 'c',
-				{ type: '/paragraph' },
-				{ type: '/imageCaption' },
-				{ type: '/blockImage' },
-				'b'
-			],
-			callback: ve.dm.ElementLinearData.prototype.isContentOffset,
-			exception: /offset was inside an ignoreChildren node/
-		}
-	];
+			{
+				msg: 'document with invalid offset inside an ignoreChildren node throws',
+				offset: 7,
+				distance: 1,
+				data: [
+					'a',
+					{ type: 'blockImage', attributes: {} },
+					{ type: 'imageCaption' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } },
+					'a', 'b', 'c',
+					{ type: '/paragraph' },
+					{ type: '/imageCaption' },
+					{ type: '/blockImage' },
+					'b'
+				],
+				callback: ve.dm.ElementLinearData.prototype.isContentOffset,
+				exception: /offset was inside an ignoreChildren node/
+			}
+		];
 
 	QUnit.expect( cases.length );
 

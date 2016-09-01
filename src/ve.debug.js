@@ -1,9 +1,10 @@
-/*global console */
 /*!
  * VisualEditor debugging methods.
  *
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
+
+/* eslint-disable no-console */
 
 /**
  * @property {boolean} debug

@@ -77,4 +77,4 @@ ve.ce.imetests.push( [ 'input-chromium-ubuntu-ibus-japanese-mozc', [
 	{ seq: 68, time: 26.236, action: 'changeSel', args: [ 3, 3 ] },
 	{ seq: 69, time: 26.236, action: 'sendEvent', args: [ 'input', { } ] },
 	{ seq: 70, time: 26.242, action: 'endLoop', args: [] }
- ] ] );
+] ] );

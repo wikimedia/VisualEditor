@@ -3,7 +3,7 @@
  *
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
-/*global Set*/
+/* global Set */
 
 /**
  * A scrupulous event logger that logs state at every function call, and

@@ -722,7 +722,7 @@ QUnit.test( 'commit', function ( assert ) {
 				'rollback (tree): ' + msg
 			);
 		} else if ( 'exception' in cases[ msg ] ) {
-			/*jshint loopfunc:true */
+			/* jshint loopfunc:true */
 			assert.throws(
 				function () {
 					testDoc.commit( tx );

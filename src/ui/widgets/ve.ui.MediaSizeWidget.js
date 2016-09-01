@@ -18,7 +18,7 @@
  * @cfg {boolean} [noOriginalDimensions] The item being sized doesn't have original dimensions
  */
 ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
-	var fieldScale, fieldCustom, scalePercentLabel;
+	var fieldCustom;
 
 	// Configuration
 	config = config || {};
@@ -58,10 +58,10 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 
 	// Define scale
 	this.scaleInput = new OO.ui.TextInputWidget();
-	scalePercentLabel = new OO.ui.LabelWidget( {
-		input: this.scaleInput,
-		label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
-	} );
+	// scalePercentLabel = new OO.ui.LabelWidget( {
+	// 	input: this.scaleInput,
+	// 	label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
+	// } );
 
 	this.dimensionsWidget = new ve.ui.DimensionsWidget( { validate: this.isValid.bind( this ) } );
 
@@ -72,14 +72,14 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	} );
 
 	// Field layouts
-	fieldScale = new OO.ui.FieldLayout(
-		this.scaleInput, {
-			align: 'right',
-			// TODO: when upright is supported by Parsoid
-			// classes: ['ve-ui-mediaSizeWidget-section-scale'],
-			label: ve.msg( 'visualeditor-mediasizewidget-label-scale' )
-		}
-	);
+	// fieldScale = new OO.ui.FieldLayout(
+	// 	this.scaleInput, {
+	// 		align: 'right',
+	// 		// TODO: when upright is supported by Parsoid
+	// 		// classes: ['ve-ui-mediaSizeWidget-section-scale'],
+	// 		label: ve.msg( 'visualeditor-mediasizewidget-label-scale' )
+	// 	}
+	// );
 	// TODO: when upright is supported by Parsoid
 	// this.scaleInput.$element.append( scalePercentLabel.$element );
 	fieldCustom = new OO.ui.FieldLayout(
