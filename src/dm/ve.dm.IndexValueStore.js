@@ -62,6 +62,16 @@ ve.dm.IndexValueStore.prototype.slice = function ( start, end ) {
 };
 
 /**
+ * Clone a store.
+ *
+ * @deprecated Use #slice with no arguments.
+ * @return {ve.dm.IndexValueStore} New store with the same contents as this one
+ */
+ve.dm.IndexValueStore.prototype.clone = function () {
+	return this.slice();
+};
+
+/**
  * Insert a value into the store
  *
  * @method
@@ -153,26 +163,6 @@ ve.dm.IndexValueStore.prototype.values = function ( hashes ) {
 		values.push( this.value( hashes[ i ] ) );
 	}
 	return values;
-};
-
-/**
- * Clone a store.
- *
- * The returned clone is shallow: the valueStore array and the hashStore array are cloned, but
- * the values inside them are copied by reference. These values are supposed to be immutable,
- * though.
- *
- * @return {ve.dm.IndexValueStore} New store with the same contents as this one
- */
-ve.dm.IndexValueStore.prototype.clone = function () {
-	var hash,
-		clone = new this.constructor();
-
-	clone.hashes = this.hashes.slice();
-	for ( hash in this.hashStore ) {
-		clone.hashStore[ hash ] = this.hashStore[ hash ];
-	}
-	return clone;
 };
 
 /**
