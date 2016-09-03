@@ -613,16 +613,20 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
  * Create a sub-document associated with this document like #cloneFromRange, but without cloning
  * any data from a range in this document: instead, use the specified data.
  *
- * @param {Array} data Linear model data
+ * @param {Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data Raw linear model data,
+ *  ElementLinearData or FlatLinearData
  * @param {boolean} [copyInternalList] Copy the internal list
  * @return {ve.dm.Document} New document
  */
 ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList ) {
-	var newDoc,
-		store = this.getStore().clone();
+	var newDoc;
+
+	if ( Array.isArray( data ) ) {
+		data = new ve.dm.FlatLinearData( this.getStore().clone(), data );
+	}
 
 	newDoc = new this.constructor(
-		new ve.dm.FlatLinearData( store, data ),
+		data,
 		// htmlDocument
 		this.getHtmlDocument(),
 		// parentDocument
