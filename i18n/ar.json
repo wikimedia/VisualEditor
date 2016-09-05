@@ -19,7 +19,8 @@
 			"محمد أحمد عبد الفتاح",
 			"فلورانس",
 			"JoyfulEditing",
-			"Shbib Al-Subaie"
+			"Shbib Al-Subaie",
+			"Meno25"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -64,7 +65,7 @@
 	"visualeditor-dialog-table-caption": "التعليق",
 	"visualeditor-dialog-table-title": "خصائص الجدول",
 	"visualeditor-find-and-replace-done": "تم",
-	"visualeditor-find-and-replace-find-text": "إبحث",
+	"visualeditor-find-and-replace-find-text": "ابحث",
 	"visualeditor-find-and-replace-invalid-regex": "تعبير منتظم غير صالح",
 	"visualeditor-find-and-replace-match-case": "مطابقة حالة الأحرف",
 	"visualeditor-find-and-replace-next-button": "ابحث عن التالي",
@@ -74,7 +75,7 @@
 	"visualeditor-find-and-replace-replace-button": "استبدال",
 	"visualeditor-find-and-replace-replace-text": "استبدل",
 	"visualeditor-find-and-replace-results": "$1 من $2",
-	"visualeditor-find-and-replace-title": "أبحث واستبدل",
+	"visualeditor-find-and-replace-title": "ابحث واستبدل",
 	"visualeditor-find-and-replace-word": "الكلمة كلها",
 	"visualeditor-formatdropdown-format-blockquote": "نص اقتباس",
 	"visualeditor-formatdropdown-format-heading-label": "عنوان (1-6)",
