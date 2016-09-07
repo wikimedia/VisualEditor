@@ -841,7 +841,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 			.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 	}
 
-	tx = new ve.dm.Transaction.newFromDocumentInsertion( doc, offset, newDoc, newDocRange );
+	tx = ve.dm.Transaction.newFromDocumentInsertion( doc, offset, newDoc, newDocRange );
 	if ( !tx.isNoOp() ) {
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
