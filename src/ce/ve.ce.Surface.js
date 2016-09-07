@@ -3046,7 +3046,8 @@ ve.ce.Surface.prototype.restoreActiveNodeSelection = function () {
  * @return {Node|null} Potentially cursor-adjacent uneditable branch node, or null
  */
 ve.ce.Surface.prototype.findAdjacentUneditableBranchNode = function ( direction ) {
-	var node,
+	var node, viewNode,
+		activeNode = this.getActiveNode(),
 		forward = direction > 0;
 
 	node = $( this.nativeSelection.focusNode ).closest(
@@ -3083,6 +3084,13 @@ ve.ce.Surface.prototype.findAdjacentUneditableBranchNode = function ( direction 
 				return null;
 			}
 			if ( $( node ).is( '.ve-ce-focusableNode,.ve-ce-tableNode' ) ) {
+				if ( activeNode ) {
+					viewNode = $( node ).data( 'view' );
+					if ( !activeNode.getRange().containsRange( viewNode.getRange() ) ) {
+						// Node is outside the active node
+						return null;
+					}
+				}
 				return node;
 			}
 			if ( !node.childNodes || node.childNodes.length === 0 ) {
