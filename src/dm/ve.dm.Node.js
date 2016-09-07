@@ -345,7 +345,7 @@ ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated ) 
 			return elClone;
 		} );
 		if ( modified ) {
-			clone.originalDomElementsIndex = store.index( domElements );
+			clone.originalDomElementsIndex = store.index( domElements, domElements.map( ve.getNodeHtml ).join( '' ) );
 		}
 	}
 	return clone;
