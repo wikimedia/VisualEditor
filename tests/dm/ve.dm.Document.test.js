@@ -886,7 +886,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 
 QUnit.test( 'protection against double application of transactions', 1, function ( assert ) {
 	var testDocument = ve.dm.example.createExampleDocument(),
-		tx = new ve.dm.Transaction( testDocument );
+		tx = new ve.dm.Transaction();
 	tx.pushRetain( 1 );
 	tx.pushReplace( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
 	testDocument.commit( tx );

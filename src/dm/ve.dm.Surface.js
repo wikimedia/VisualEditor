@@ -1004,7 +1004,7 @@ ve.dm.Surface.prototype.getModifiedRanges = function () {
 
 	this.getHistory().forEach( function ( stackItem ) {
 		stackItem.transactions.forEach( function ( tx ) {
-			var newRange = tx.getModifiedRange();
+			var newRange = tx.getModifiedRange( this.documentModel );
 			// newRange will by null for no-ops
 			if ( newRange ) {
 				// Translate previous ranges by the current transaction

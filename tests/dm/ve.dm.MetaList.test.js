@@ -135,7 +135,7 @@ QUnit.test( 'onTransact', function ( assert ) {
 	QUnit.expect( cases.length * ( 8 * doc.metadata.getTotalDataLength() + 2 ) );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		tx = new ve.dm.Transaction( doc );
+		tx = new ve.dm.Transaction();
 		for ( j = 0; j < cases[ i ].calls.length; j++ ) {
 			tx[ cases[ i ].calls[ j ][ 0 ] ].apply( tx, cases[ i ].calls[ j ].slice( 1 ) );
 		}

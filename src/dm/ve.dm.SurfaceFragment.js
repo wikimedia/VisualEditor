@@ -777,7 +777,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		tx = ve.dm.Transaction.newFromInsertion( doc, offset, content );
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
-		newRange = tx.getModifiedRange();
+		newRange = tx.getModifiedRange( doc );
 		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
 	}
 
@@ -845,7 +845,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 	if ( !tx.isNoOp() ) {
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
-		newRange = tx.getModifiedRange();
+		newRange = tx.getModifiedRange( doc );
 		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
 		if ( annotations && annotations.getLength() > 0 ) {
 			this.annotateContent( 'set', annotations );
