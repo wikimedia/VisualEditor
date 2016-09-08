@@ -45,6 +45,13 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
 		rowOffset = 0,
 		expand = e.shiftKey;
 
+	if ( e.ctrlKey || e.altKey || e.metaKey ) {
+		// Support: Firefox
+		// In Firefox, ctrl-tab to switch browser-tabs still triggers the
+		// keydown event.
+		return;
+	}
+
 	switch ( e.keyCode ) {
 		case OO.ui.Keys.LEFT:
 			colOffset = -1;
