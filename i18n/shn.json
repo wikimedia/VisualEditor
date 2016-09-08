@@ -51,5 +51,8 @@
 	"visualeditor-find-and-replace-invalid-regex": "လွင်ႈဢွၵ်ႇၼႄႇၼႆႉ ၽိတ်းပိူင်ႈဝႆႉ",
 	"visualeditor-find-and-replace-match-case": "သၢႆငၢႆ ၶူပ်းမႅၼ်ႈ",
 	"visualeditor-find-and-replace-next-button": "ႁႃထႅင်ႈ",
-	"visualeditor-find-and-replace-previous-button": "ႁႃၶိုၼ်း ၽၢႆႇလင်"
+	"visualeditor-find-and-replace-previous-button": "ႁႃၶိုၼ်း ၽၢႆႇလင်",
+	"visualeditor-find-and-replace-replace-all-button": "တႅၼ်းတီႈ တင်းမူတ်း",
+	"visualeditor-find-and-replace-replace-button": "တႅၼ်းတီႈ",
+	"visualeditor-find-and-replace-replace-text": "တႅၼ်းတီႈ"
 }
