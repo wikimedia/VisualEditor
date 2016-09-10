@@ -1927,7 +1927,7 @@ QUnit.test( 'getUsedStoreValues', function ( assert ) {
 
 } );
 
-QUnit.test( 'compareElements', function ( assert ) {
+QUnit.test( 'compareElementsUnannotated', function ( assert ) {
 	var i,
 		cases = [
 			{
@@ -1995,7 +1995,7 @@ QUnit.test( 'compareElements', function ( assert ) {
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.equal(
-			ve.dm.ElementLinearData.static.compareElements( cases[ i ].a, cases[ i ].b ),
+			ve.dm.ElementLinearData.static.compareElementsUnannotated( cases[ i ].a, cases[ i ].b ),
 			cases[ i ].comparison,
 			cases[ i ].msg
 		);

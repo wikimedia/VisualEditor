@@ -2142,7 +2142,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			left = 0;
 			while (
 				context.getLength() &&
-				ve.dm.ElementLinearData.static.compareElements(
+				ve.dm.ElementLinearData.static.compareElementsUnannotated(
 					data.getData( left ),
 					data.isElementData( left ) ? context.getData( 0 ) : beforePasteData.leftText
 				)
@@ -2156,7 +2156,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 			while (
 				right > 0 &&
 				context.getLength() &&
-				ve.dm.ElementLinearData.static.compareElements(
+				ve.dm.ElementLinearData.static.compareElementsUnannotated(
 					data.getData( right - 1 ),
 					data.isElementData( right - 1 ) ? context.getData( context.getLength() - 1 ) : beforePasteData.rightText
 				)

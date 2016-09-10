@@ -46,7 +46,7 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
  * @param {Object|Array|string} b Second element
  * @return {boolean} Elements are comparable
  */
-ve.dm.ElementLinearData.static.compareElements = function ( a, b ) {
+ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
 	var aPlain = a,
 		bPlain = b;
 
@@ -73,6 +73,46 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b ) {
 		};
 	}
 	return ve.compare( aPlain, bPlain );
+};
+
+/**
+ * Compare two elements' basic properties and annotations
+ *
+ * Elements are comparable if they have the same type, attributes,
+ * text data and annotations, as determined by
+ * ve.dm.AnnotationSet#compareTo .
+ *
+ * @param {Object|Array|string} a First element
+ * @param {Object|Array|string} b Second element
+ * @param {ve.dm.IndexValueStore} aStore First element's store
+ * @param {ve.dm.IndexValueStore} [bStore] Second element's store, if different
+ * @return {boolean} Elements are comparable
+ */
+ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore ) {
+	var aSet, bSet, aAnnotations, bAnnotations;
+
+	bStore = bStore || aStore;
+
+	if ( !this.compareElementsUnannotated( a, b ) ) {
+		return false;
+	}
+	if ( Array.isArray( a ) ) {
+		aAnnotations = a[ 1 ];
+	}
+	if ( Array.isArray( b ) ) {
+		bAnnotations = b[ 1 ];
+	}
+	if ( a && a.type ) {
+		aAnnotations = a.annotations;
+	}
+	if ( b && b.type ) {
+		bAnnotations = b.annotations;
+	}
+
+	aSet = new ve.dm.AnnotationSet( aStore, aAnnotations || [] );
+	bSet = new ve.dm.AnnotationSet( bStore, bAnnotations || [] );
+
+	return aSet.compareTo( bSet );
 };
 
 /* Methods */
