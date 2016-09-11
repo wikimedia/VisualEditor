@@ -693,7 +693,6 @@
 			"tests/ce/ve.ce.LeafNode.test.js",
 			"tests/ce/nodes/ve.ce.TextNode.test.js",
 			"tests/ce/nodes/ve.ce.TableNode.test.js",
-			"tests/init/ve.init.Platform.test.js",
 			"tests/init/ve.init.sa.Platform.test.js",
 			"tests/ui/ve.ui.DataTransferHandlerFactory.test.js",
 			"tests/ui/ve.ui.Trigger.test.js",

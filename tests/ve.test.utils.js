@@ -5,10 +5,46 @@
  */
 
 ( function () {
-	// Create a standalone platform and target so ve.init.platform/target are available
+	/**
+	 * @class
+	 * @singleton
+	 * @ignore
+	 */
+	ve.test = { utils: {} };
+
+	// Create a dummy platform and target so ve.init.platform/target are available
+	function DummyPlatform() {
+		DummyPlatform.super.apply( this, arguments );
+	}
+	OO.inheritClass( DummyPlatform, ve.init.Platform );
+	DummyPlatform.prototype.getUserLanguages = function () { return [ 'en' ]; };
+	DummyPlatform.prototype.getMessage = function ( msg ) { return msg; };
+	DummyPlatform.prototype.getLanguageName = function () { return 'English'; };
+	DummyPlatform.prototype.getLanguageDirection = function () { return 'ltr'; };
+	DummyPlatform.prototype.getExternalLinkUrlProtocolsRegExp = function () { return /^https?\:\/\//i; };
+	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () { return /https?\:\/\//i; };
+
+	ve.test.utils.DummyPlatform = DummyPlatform;
+
+	function DummyTarget() {
+		DummyTarget.super.apply( this, arguments );
+	}
+	OO.inheritClass( DummyTarget, ve.init.Target );
+	DummyTarget.prototype.addSurface = function () {
+		// Parent method
+		var surface = DummyTarget.super.prototype.addSurface.apply( this, arguments );
+		if ( !this.getSurface() ) {
+			this.setSurface( surface );
+		}
+		surface.initialize();
+		return surface;
+	};
+
+	ve.test.utils.DummyTarget = DummyTarget;
+
 	/* eslint-disable no-new */
-	new ve.init.sa.Platform();
-	new ve.init.sa.Target();
+	new ve.test.utils.DummyPlatform();
+	new ve.test.utils.DummyTarget();
 	/* eslint-enable no-new */
 
 	// Disable scroll animatinos
@@ -43,13 +79,6 @@
 			} );
 		};
 	}() );
-
-	/**
-	 * @class
-	 * @singleton
-	 * @ignore
-	 */
-	ve.test = { utils: {} };
 
 	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {
 		var data,
@@ -294,7 +323,7 @@
 					return {};
 				},
 				getImportRules: function () {
-					return ve.init.sa.Target.static.importRules;
+					return ve.init.Target.static.importRules;
 				},
 				getModel: function () {
 					return model;
