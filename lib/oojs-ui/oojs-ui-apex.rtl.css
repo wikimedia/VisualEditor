@@ -1,16 +1,20 @@
 /*!
- * OOjs UI v0.17.8
+ * OOjs UI v0.17.9
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-08-16T21:13:53Z
+ * Date: 2016-09-13T18:30:06Z
  */
 .oo-ui-element-hidden {
 	display: none !important;
 	/* stylelint-disable-line declaration-no-important */
+}
+.oo-ui-buttonElement {
+	display: inline-block;
+	vertical-align: middle;
 }
 .oo-ui-buttonElement > .oo-ui-buttonElement-button {
 	cursor: pointer;
@@ -52,7 +56,7 @@
 	text-align: center;
 }
 .oo-ui-buttonElement > .oo-ui-buttonElement-button {
-	color: #333333;
+	color: #333;
 }
 .oo-ui-buttonElement.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	margin-right: 0;
@@ -73,21 +77,21 @@
 }
 .oo-ui-buttonElement-frameless > .oo-ui-buttonElement-button:hover > .oo-ui-labelElement-label,
 .oo-ui-buttonElement-frameless > .oo-ui-buttonElement-button:focus > .oo-ui-labelElement-label {
-	color: #000000;
+	color: #000;
 }
 .oo-ui-buttonElement-frameless > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	color: #333333;
+	color: #333;
 }
 .oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	margin-right: 0.25em;
 }
 .oo-ui-buttonElement-frameless > input.oo-ui-buttonElement-button {
 	padding-right: 0.25em;
-	color: #333333;
+	color: #333;
 }
 .oo-ui-buttonElement-frameless > input.oo-ui-buttonElement-button:hover,
 .oo-ui-buttonElement-frameless > input.oo-ui-buttonElement-button:focus {
-	color: #000000;
+	color: #000;
 }
 .oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
 	color: #087ecc;
@@ -102,7 +106,7 @@
 	opacity: 0.2;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-disabled > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button {
 	padding: 0.2em 0.8em;
@@ -112,16 +116,16 @@
 	-webkit-transition: border-color 100ms ease;
 	   -moz-transition: border-color 100ms ease;
 	        transition: border-color 100ms ease;
-	background-color: #eeeeee;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(100%, #dddddd));
-	background-image: -webkit-linear-gradient(top, #ffffff 0, #dddddd 100%);
-	background-image:    -moz-linear-gradient(top, #ffffff 0, #dddddd 100%);
-	background-image:         linear-gradient(to bottom, #ffffff 0, #dddddd 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffffff', endColorstr='#ffdddddd' )";
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(100%, #ddd));
+	background-image: -webkit-linear-gradient(top, #fff 0, #ddd 100%);
+	background-image:    -moz-linear-gradient(top, #fff 0, #ddd 100%);
+	background-image:         linear-gradient(to bottom, #fff 0, #ddd 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffffffff\', endColorstr=\'#ffdddddd\' )';
 }
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button:hover,
 .oo-ui-buttonElement-framed > .oo-ui-buttonElement-button:focus {
-	border-color: #aaaaaa;
+	border-color: #aaa;
 	outline: none;
 }
 .oo-ui-buttonElement-framed > input.oo-ui-buttonElement-button,
@@ -132,14 +136,14 @@
 .oo-ui-buttonElement-framed.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
 .oo-ui-buttonElement-framed.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
 	box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-	color: #000000;
+	color: #000;
 	border-color: #c9c9c9;
-	background-color: #eeeeee;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #dddddd), color-stop(100%, #ffffff));
-	background-image: -webkit-linear-gradient(top, #dddddd 0, #ffffff 100%);
-	background-image:    -moz-linear-gradient(top, #dddddd 0, #ffffff 100%);
-	background-image:         linear-gradient(to bottom, #dddddd 0, #ffffff 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffdddddd', endColorstr='#ffffffff' )";
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ddd), color-stop(100%, #fff));
+	background-image: -webkit-linear-gradient(top, #ddd 0, #fff 100%);
+	background-image:    -moz-linear-gradient(top, #ddd 0, #fff 100%);
+	background-image:         linear-gradient(to bottom, #ddd 0, #fff 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffdddddd\', endColorstr=\'#ffffffff\' )';
 }
 .oo-ui-buttonElement-framed.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	margin-right: -0.5em;
@@ -164,7 +168,7 @@
 	background-image: -webkit-linear-gradient(top, #eaf4fa 0, #b0d9ee 100%);
 	background-image:    -moz-linear-gradient(top, #eaf4fa 0, #b0d9ee 100%);
 	background-image:         linear-gradient(to bottom, #eaf4fa 0, #b0d9ee 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffeaf4fa', endColorstr='#ffb0d9ee' )";
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffeaf4fa\', endColorstr=\'#ffb0d9ee\' )';
 }
 .oo-ui-buttonElement-framed.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:hover,
 .oo-ui-buttonElement-framed.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus {
@@ -179,7 +183,7 @@
 	background-image: -webkit-linear-gradient(top, #b0d9ee 0, #eaf4fa 100%);
 	background-image:    -moz-linear-gradient(top, #b0d9ee 0, #eaf4fa 100%);
 	background-image:         linear-gradient(to bottom, #b0d9ee 0, #eaf4fa 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffb0d9ee', endColorstr='#ffeaf4fa' )";
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffb0d9ee\', endColorstr=\'#ffeaf4fa\' )';
 }
 .oo-ui-buttonElement-framed.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
 	border: 1px solid #b8d892;
@@ -188,7 +192,7 @@
 	background-image: -webkit-linear-gradient(top, #f0fbe1 0, #c3e59a 100%);
 	background-image:    -moz-linear-gradient(top, #f0fbe1 0, #c3e59a 100%);
 	background-image:         linear-gradient(to bottom, #f0fbe1 0, #c3e59a 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff0fbe1', endColorstr='#ffc3e59a' )";
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#fff0fbe1\', endColorstr=\'#ffc3e59a\' )';
 }
 .oo-ui-buttonElement-framed.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:hover,
 .oo-ui-buttonElement-framed.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus {
@@ -203,7 +207,7 @@
 	background-image: -webkit-linear-gradient(top, #c3e59a 0, #f0fbe1 100%);
 	background-image:    -moz-linear-gradient(top, #c3e59a 0, #f0fbe1 100%);
 	background-image:         linear-gradient(to bottom, #c3e59a 0, #f0fbe1 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc3e59a', endColorstr='#fff0fbe1' )";
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffc3e59a\', endColorstr=\'#fff0fbe1\' )';
 }
 .oo-ui-buttonElement-framed.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
 	color: #d45353;
@@ -214,9 +218,9 @@
 	opacity: 0.5;
 	-webkit-transform: translate3d(0, 0, 0);
 	box-shadow: none;
-	color: #333333;
-	background: #eeeeee;
-	border-color: #cccccc;
+	color: #333;
+	background: #eee;
+	border-color: #ccc;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled > .oo-ui-buttonElement-button:hover,
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button:hover,
@@ -224,7 +228,7 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled > .oo-ui-buttonElement-button:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled.oo-ui-buttonElement-active > .oo-ui-buttonElement-button:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-disabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button:focus {
-	border-color: #cccccc;
+	border-color: #ccc;
 	box-shadow: none;
 }
 .oo-ui-clippableElement-clippable {
@@ -275,7 +279,7 @@
 }
 .oo-ui-fieldLayout:before,
 .oo-ui-fieldLayout:after {
-	content: " ";
+	content: ' ';
 	display: table;
 }
 .oo-ui-fieldLayout:after {
@@ -342,7 +346,7 @@
 	margin-left: 0;
 }
 .oo-ui-fieldLayout-disabled > .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-fieldLayout-messages {
 	list-style: none none;
@@ -383,16 +387,25 @@
 }
 .oo-ui-fieldsetLayout {
 	position: relative;
+	min-width: 0;
 	margin: 0;
-	padding: 0;
 	border: 0;
+	padding: 0.01px 0 0 0;
+}
+body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
+	display: table-cell;
 }
 .oo-ui-fieldsetLayout.oo-ui-iconElement > .oo-ui-iconElement-icon {
 	display: block;
 	position: absolute;
 }
 .oo-ui-fieldsetLayout.oo-ui-labelElement > .oo-ui-labelElement-label {
-	display: inline-block;
+	color: inherit;
+	display: table;
+	box-sizing: border-box;
+	max-width: 100%;
+	padding: 0;
+	white-space: normal;
 }
 .oo-ui-fieldsetLayout > .oo-ui-fieldsetLayout-help {
 	float: left;
@@ -506,7 +519,7 @@
 	background-color: #a7dcff;
 }
 .oo-ui-optionWidget.oo-ui-widget-disabled {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-decoratedOptionWidget {
 	padding: 0.5em 3em 0.5em 2em;
@@ -573,8 +586,6 @@
 	opacity: 0.2;
 }
 .oo-ui-buttonWidget {
-	display: inline-block;
-	vertical-align: middle;
 	margin-left: 0.5em;
 }
 .oo-ui-buttonWidget:last-child {
@@ -649,8 +660,8 @@
 	overflow: hidden;
 }
 .oo-ui-popupWidget-popup {
-	background-color: #ffffff;
-	border: 1px solid #cccccc;
+	background-color: #fff;
+	border: 1px solid #ccc;
 	border-radius: 0.25em;
 	box-shadow: 0 0.15em 0.5em 0 rgba(0, 0, 0, 0.2);
 }
@@ -659,7 +670,7 @@
 }
 .oo-ui-popupWidget-anchored .oo-ui-popupWidget-anchor:before,
 .oo-ui-popupWidget-anchored .oo-ui-popupWidget-anchor:after {
-	content: "";
+	content: '';
 	position: absolute;
 	width: 0;
 	height: 0;
@@ -670,13 +681,13 @@
 .oo-ui-popupWidget-anchored .oo-ui-popupWidget-anchor:before {
 	bottom: -7px;
 	right: -6px;
-	border-bottom-color: #aaaaaa;
+	border-bottom-color: #aaa;
 	border-width: 7px;
 }
 .oo-ui-popupWidget-anchored .oo-ui-popupWidget-anchor:after {
 	bottom: -7px;
 	right: -5px;
-	border-bottom-color: #ffffff;
+	border-bottom-color: #fff;
 	border-width: 6px;
 }
 .oo-ui-popupWidget-transitioning .oo-ui-popupWidget-popup {
@@ -717,10 +728,6 @@
 .oo-ui-inputWidget:last-child {
 	margin-left: 0;
 }
-.oo-ui-buttonInputWidget {
-	display: inline-block;
-	vertical-align: middle;
-}
 .oo-ui-buttonInputWidget > button,
 .oo-ui-buttonInputWidget > input {
 	border: 0;
@@ -751,7 +758,7 @@
 	        box-sizing: border-box;
 }
 .oo-ui-dropdownInputWidget select {
-	background-color: #ffffff;
+	background-color: #fff;
 	height: 2.5em;
 	padding: 0.5em;
 	font-size: inherit;
@@ -771,8 +778,8 @@
 	outline: none;
 }
 .oo-ui-dropdownInputWidget.oo-ui-widget-disabled select {
-	color: #cccccc;
-	border-color: #dddddd;
+	color: #ccc;
+	border-color: #ddd;
 	background-color: #f3f3f3;
 }
 .oo-ui-radioSelectInputWidget .oo-ui-fieldLayout {
@@ -799,22 +806,22 @@
 	overflow: auto;
 	resize: none;
 }
-.oo-ui-textInputWidget [type="number"] {
+.oo-ui-textInputWidget [type='number'] {
 	-moz-appearance: textfield;
 }
-.oo-ui-textInputWidget [type="number"]::-webkit-outer-spin-button,
-.oo-ui-textInputWidget [type="number"]::-webkit-inner-spin-button {
+.oo-ui-textInputWidget [type='number']::-webkit-outer-spin-button,
+.oo-ui-textInputWidget [type='number']::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 	margin: 0;
 }
-.oo-ui-textInputWidget [type="search"] {
+.oo-ui-textInputWidget [type='search'] {
 	-webkit-appearance: textfield;
 }
-.oo-ui-textInputWidget [type="search"]::-ms-clear {
+.oo-ui-textInputWidget [type='search']::-ms-clear {
 	display: none;
 }
-.oo-ui-textInputWidget [type="search"]::-webkit-search-decoration,
-.oo-ui-textInputWidget [type="search"]::-webkit-search-cancel-button {
+.oo-ui-textInputWidget [type='search']::-webkit-search-decoration,
+.oo-ui-textInputWidget [type='search']::-webkit-search-cancel-button {
 	display: none;
 }
 .oo-ui-textInputWidget > .oo-ui-iconElement-icon,
@@ -841,6 +848,21 @@
 .oo-ui-textInputWidget.oo-ui-widget-enabled.oo-ui-textInputWidget-type-search > .oo-ui-indicatorElement-indicator {
 	cursor: pointer;
 }
+.oo-ui-textInputWidget.oo-ui-widget-disabled input,
+.oo-ui-textInputWidget.oo-ui-widget-disabled textarea {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
+.oo-ui-textInputWidget.oo-ui-widget-disabled .oo-ui-labelElement-label {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
 .oo-ui-textInputWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
 	display: block;
 }
@@ -862,10 +884,10 @@
 	line-height: 1.275em;
 	font-size: inherit;
 	font-family: inherit;
-	background-color: #ffffff;
-	color: #000000;
-	border: 1px solid #cccccc;
-	box-shadow: 0 0 0 #ffffff, inset 0 0.1em 0.2em #dddddd;
+	background-color: #fff;
+	color: #000;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 0 #fff, inset 0 0.1em 0.2em #ddd;
 	border-radius: 0.25em;
 	-webkit-transition: border-color 250ms ease, box-shadow 250ms ease;
 	   -moz-transition: border-color 250ms ease, box-shadow 250ms ease;
@@ -879,21 +901,21 @@
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea:focus {
 	outline: none;
 	border-color: #a7dcff;
-	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 #ffffff;
+	box-shadow: 0 0 0.3em #a7dcff, 0 0 0 #fff;
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled input[readonly],
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea[readonly] {
-	color: #777777;
+	color: #777;
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-invalid input,
 .oo-ui-textInputWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-invalid textarea {
-	background-color: #ffdddd;
+	background-color: #fdd;
 }
 .oo-ui-textInputWidget.oo-ui-widget-disabled input,
 .oo-ui-textInputWidget.oo-ui-widget-disabled textarea {
-	color: #cccccc;
-	text-shadow: 0 -1px 1px #ffffff;
-	border-color: #dddddd;
+	color: #ccc;
+	text-shadow: 0 -1px 1px #fff;
+	border-color: #ddd;
 	background-color: #f3f3f3;
 }
 .oo-ui-textInputWidget.oo-ui-widget-disabled .oo-ui-iconElement-icon,
@@ -901,8 +923,8 @@
 	opacity: 0.2;
 }
 .oo-ui-textInputWidget.oo-ui-widget-disabled .oo-ui-labelElement-label {
-	color: #dddddd;
-	text-shadow: 0 -1px 1px #ffffff;
+	color: #ddd;
+	text-shadow: 0 -1px 1px #fff;
 }
 .oo-ui-textInputWidget.oo-ui-iconElement input,
 .oo-ui-textInputWidget.oo-ui-iconElement textarea {
@@ -923,7 +945,7 @@
 .oo-ui-textInputWidget > .oo-ui-labelElement-label {
 	padding: 0.4em;
 	line-height: 1.5em;
-	color: #888888;
+	color: #888;
 }
 .oo-ui-textInputWidget-labelPosition-after.oo-ui-indicatorElement > .oo-ui-labelElement-label {
 	margin-left: 2.0875em;
@@ -935,9 +957,9 @@
 	position: absolute;
 	width: 100%;
 	z-index: 4;
-	background-color: #ffffff;
+	background-color: #fff;
 	margin-top: -1px;
-	border: 1px solid #cccccc;
+	border: 1px solid #ccc;
 	border-radius: 0 0 0.25em 0.25em;
 	box-shadow: 0 0.15em 1em 0 rgba(0, 0, 0, 0.2);
 }
@@ -954,9 +976,6 @@
 .oo-ui-menuOptionWidget .oo-ui-iconElement-icon {
 	display: none;
 }
-.oo-ui-menuOptionWidget.oo-ui-optionWidget-selected {
-	background-color: transparent;
-}
 .oo-ui-menuOptionWidget.oo-ui-optionWidget-selected .oo-ui-iconElement-icon {
 	display: block;
 }
@@ -970,14 +989,14 @@
 .oo-ui-menuSectionOptionWidget {
 	cursor: default;
 	padding: 0.33em 0.75em;
-	color: #888888;
+	color: #888;
 }
 .oo-ui-dropdownWidget {
 	display: inline-block;
 	position: relative;
 	width: 100%;
 	max-width: 50em;
-	background-color: #ffffff;
+	background-color: #fff;
 	margin-left: 0.5em;
 }
 .oo-ui-dropdownWidget-handle {
@@ -1029,9 +1048,9 @@
 	margin: 0 0.5em;
 }
 .oo-ui-dropdownWidget.oo-ui-widget-disabled .oo-ui-dropdownWidget-handle {
-	color: #cccccc;
-	text-shadow: 0 -1px 1px #ffffff;
-	border-color: #dddddd;
+	color: #ccc;
+	text-shadow: 0 -1px 1px #fff;
+	border-color: #ddd;
 	background-color: #f3f3f3;
 }
 .oo-ui-dropdownWidget.oo-ui-widget-disabled .oo-ui-dropdownWidget-handle:focus {
@@ -1048,7 +1067,6 @@
 }
 .oo-ui-comboBoxInputWidget {
 	display: inline-block;
-	position: relative;
 	width: 100%;
 	max-width: 50em;
 	margin-left: 0.5em;
@@ -1096,7 +1114,7 @@
 	line-height: 1.5em;
 }
 .oo-ui-multioptionWidget.oo-ui-widget-disabled {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-checkboxMultioptionWidget {
 	cursor: default;
@@ -1115,14 +1133,14 @@
 }
 .oo-ui-progressBarWidget {
 	max-width: 50em;
-	background-color: #ffffff;
-	border: 1px solid #cccccc;
+	background-color: #fff;
+	border: 1px solid #ccc;
 	border-radius: 0.25em;
 	overflow: hidden;
 }
 .oo-ui-progressBarWidget-bar {
 	height: 1em;
-	border-left: 1px solid #cccccc;
+	border-left: 1px solid #ccc;
 	-webkit-transition: width 250ms ease, margin-right 250ms ease;
 	   -moz-transition: width 250ms ease, margin-right 250ms ease;
 	        transition: width 250ms ease, margin-right 250ms ease;
@@ -1131,7 +1149,7 @@
 	background-image: -webkit-linear-gradient(top, #eaf4fa 0, #b0d9ee 100%);
 	background-image:    -moz-linear-gradient(top, #eaf4fa 0, #b0d9ee 100%);
 	background-image:         linear-gradient(to bottom, #eaf4fa 0, #b0d9ee 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffeaf4fa', endColorstr='#ffb0d9ee' )";
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffeaf4fa\', endColorstr=\'#ffb0d9ee\' )';
 }
 .oo-ui-progressBarWidget-indeterminate .oo-ui-progressBarWidget-bar {
 	-webkit-animation: oo-ui-progressBarWidget-slide 2s infinite linear;
@@ -1170,14 +1188,14 @@
 }
 
 /*!
- * OOjs UI v0.17.8
+ * OOjs UI v0.17.9
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-08-16T21:13:53Z
+ * Date: 2016-09-13T18:30:06Z
  */
 .oo-ui-draggableElement-handle,
 .oo-ui-draggableElement-handle.oo-ui-widget {
@@ -1236,7 +1254,7 @@
 	padding: 1.5em;
 }
 .oo-ui-bookletLayout-outlinePanel {
-	border-left: 1px solid #dddddd;
+	border-left: 1px solid #ddd;
 }
 .oo-ui-bookletLayout-outlinePanel > .oo-ui-outlineControlsWidget {
 	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.25);
@@ -1362,6 +1380,9 @@
 	padding: 0;
 	background-color: transparent;
 }
+.oo-ui-buttonOptionWidget.oo-ui-buttonElement-active .oo-ui-buttonElement-button {
+	cursor: default;
+}
 .oo-ui-buttonOptionWidget.oo-ui-iconElement .oo-ui-iconElement-icon,
 .oo-ui-buttonOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
 	position: static;
@@ -1374,8 +1395,6 @@
 	background-color: transparent;
 }
 .oo-ui-toggleButtonWidget {
-	display: inline-block;
-	vertical-align: middle;
 	margin-left: 0.5em;
 }
 .oo-ui-toggleButtonWidget:last-child {
@@ -1396,15 +1415,15 @@
 	height: 2em;
 	width: 4em;
 	border-radius: 1em;
-	box-shadow: 0 0 0 #ffffff, inset 0 0.1em 0.2em #dddddd;
-	border: 1px solid #cccccc;
+	box-shadow: 0 0 0 #fff, inset 0 0.1em 0.2em #ddd;
+	border: 1px solid #ccc;
 	margin-left: 0.5em;
-	background-color: #eeeeee;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #dddddd), color-stop(100%, #ffffff));
-	background-image: -webkit-linear-gradient(top, #dddddd 0, #ffffff 100%);
-	background-image:    -moz-linear-gradient(top, #dddddd 0, #ffffff 100%);
-	background-image:         linear-gradient(to bottom, #dddddd 0, #ffffff 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffdddddd', endColorstr='#ffffffff' )";
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ddd), color-stop(100%, #fff));
+	background-image: -webkit-linear-gradient(top, #ddd 0, #fff 100%);
+	background-image:    -moz-linear-gradient(top, #ddd 0, #fff 100%);
+	background-image:         linear-gradient(to bottom, #ddd 0, #fff 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffdddddd\', endColorstr=\'#ffffffff\' )';
 }
 .oo-ui-toggleSwitchWidget.oo-ui-widget-enabled {
 	cursor: pointer;
@@ -1424,7 +1443,7 @@
 }
 .oo-ui-toggleSwitchWidget.oo-ui-widget-enabled:hover,
 .oo-ui-toggleSwitchWidget.oo-ui-widget-enabled:hover .oo-ui-toggleSwitchWidget-grip {
-	border-color: #aaaaaa;
+	border-color: #aaa;
 }
 .oo-ui-toggleSwitchWidget-grip {
 	top: 0.25em;
@@ -1438,12 +1457,12 @@
 	-webkit-transition: right 250ms ease, margin-right 250ms ease;
 	   -moz-transition: right 250ms ease, margin-right 250ms ease;
 	        transition: right 250ms ease, margin-right 250ms ease;
-	background-color: #eeeeee;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(100%, #dddddd));
-	background-image: -webkit-linear-gradient(top, #ffffff 0, #dddddd 100%);
-	background-image:    -moz-linear-gradient(top, #ffffff 0, #dddddd 100%);
-	background-image:         linear-gradient(to bottom, #ffffff 0, #dddddd 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffffff', endColorstr='#ffdddddd' )";
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(100%, #ddd));
+	background-image: -webkit-linear-gradient(top, #fff 0, #ddd 100%);
+	background-image:    -moz-linear-gradient(top, #fff 0, #ddd 100%);
+	background-image:         linear-gradient(to bottom, #fff 0, #ddd 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffffffff\', endColorstr=\'#ffdddddd\' )';
 }
 .oo-ui-toggleSwitchWidget-glow {
 	position: absolute;
@@ -1461,7 +1480,7 @@
 	background-image: -webkit-linear-gradient(top, #b0d9ee 0, #eaf4fa 100%);
 	background-image:    -moz-linear-gradient(top, #b0d9ee 0, #eaf4fa 100%);
 	background-image:         linear-gradient(to bottom, #b0d9ee 0, #eaf4fa 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffb0d9ee', endColorstr='#ffeaf4fa' )";
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffb0d9ee\', endColorstr=\'#ffeaf4fa\' )';
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
@@ -1491,13 +1510,12 @@
 }
 .oo-ui-selectFileWidget-selectButton {
 	display: table-cell;
-	vertical-align: middle;
 }
 .oo-ui-selectFileWidget-selectButton > .oo-ui-buttonElement-button {
 	position: relative;
 	overflow: hidden;
 }
-.oo-ui-selectFileWidget-selectButton > .oo-ui-buttonElement-button > [type="file"] {
+.oo-ui-selectFileWidget-selectButton > .oo-ui-buttonElement-button > [type='file'] {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -1510,7 +1528,7 @@
 	cursor: pointer;
 	padding-top: 100px;
 }
-.oo-ui-selectFileWidget-selectButton.oo-ui-widget-disabled > .oo-ui-buttonElement-button > [type="file"] {
+.oo-ui-selectFileWidget-selectButton.oo-ui-widget-disabled > .oo-ui-buttonElement-button > [type='file'] {
 	display: none;
 }
 .oo-ui-selectFileWidget-info {
@@ -1542,9 +1560,6 @@
 	right: 0;
 	left: 0;
 	text-overflow: ellipsis;
-}
-.oo-ui-selectFileWidget-fileType {
-	display: none;
 }
 .oo-ui-selectFileWidget-clearButton {
 	position: absolute;
@@ -1650,7 +1665,7 @@
 }
 .oo-ui-selectFileWidget-info {
 	height: 2.4em;
-	background-color: #ffffff;
+	background-color: #fff;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 0 0.25em 0.25em 0;
 	border-width: 1px 1px 1px 0;
@@ -1679,11 +1694,6 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
-.oo-ui-selectFileWidget-fileType {
-	color: #888888;
-	display: block;
-	margin-top: 0.25em;
-}
 .oo-ui-selectFileWidget-clearButton {
 	top: 0;
 	left: 0;
@@ -1694,7 +1704,7 @@
 	height: 2.3em;
 }
 .oo-ui-selectFileWidget-empty .oo-ui-selectFileWidget-label {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-selectFileWidget.oo-ui-iconElement .oo-ui-selectFileWidget-label {
 	right: 2.475em;
@@ -1719,8 +1729,8 @@
 	background-color: #e1f3ff;
 }
 .oo-ui-selectFileWidget-dropTarget {
-	background-color: #ffffff;
-	border: 1px solid #aaaaaa;
+	background-color: #fff;
+	border: 1px solid #aaa;
 	vertical-align: middle;
 	border-radius: 0.25em;
 }
@@ -1739,17 +1749,17 @@
 .oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
 .oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget {
 	background-color: #f3f3f3;
-	color: #cccccc;
-	border-color: #dddddd;
-	text-shadow: 0 -1px 1px #ffffff;
+	color: #ccc;
+	border-color: #ddd;
+	text-shadow: 0 -1px 1px #fff;
 }
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info,
 .oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info,
 .oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-info {
 	background-color: #f3f3f3;
-	color: #cccccc;
-	border-color: #dddddd;
-	text-shadow: 0 -1px 1px #ffffff;
+	color: #ccc;
+	border-color: #ddd;
+	text-shadow: 0 -1px 1px #fff;
 }
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon,
 .oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon,
@@ -1760,8 +1770,6 @@
 	opacity: 0.2;
 }
 .oo-ui-outlineOptionWidget {
-	position: relative;
-	cursor: pointer;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
@@ -1808,11 +1816,11 @@
 	opacity: 0.5;
 }
 .oo-ui-outlineOptionWidget.oo-ui-flaggedElement-empty .oo-ui-labelElement-label {
-	color: #777777;
+	color: #777;
 }
 .oo-ui-outlineControlsWidget {
 	height: 3em;
-	background-color: #ffffff;
+	background-color: #fff;
 }
 .oo-ui-outlineControlsWidget-items,
 .oo-ui-outlineControlsWidget-movers {
@@ -1853,7 +1861,7 @@
 	text-align: right;
 	white-space: nowrap;
 	overflow: hidden;
-	background-color: #eeeeee;
+	background-color: #eee;
 	box-shadow: inset 0 -0.015em 0.1em rgba(0, 0, 0, 0.1);
 }
 .oo-ui-tabOptionWidget {
@@ -1877,17 +1885,17 @@
 }
 .oo-ui-tabOptionWidget.oo-ui-widget-enabled:hover {
 	background-color: rgba(255, 255, 255, 0.2);
-	border-color: #dddddd;
+	border-color: #ddd;
 }
 .oo-ui-tabOptionWidget.oo-ui-widget-enabled:active {
-	background-color: #ffffff;
-	border-color: #dddddd;
+	background-color: #fff;
+	border-color: #ddd;
 }
 .oo-ui-selectWidget-pressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected,
 .oo-ui-selectWidget-depressed .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected,
 .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected:hover {
-	background-color: #ffffff;
-	border-color: #dddddd;
+	background-color: #fff;
+	border-color: #ddd;
 }
 .oo-ui-capsuleMultiselectWidget {
 	display: inline-block;
@@ -1910,7 +1918,7 @@
 	display: inline;
 }
 .oo-ui-capsuleMultiselectWidget-handle {
-	background-color: #ffffff;
+	background-color: #fff;
 	cursor: text;
 	min-height: 2.4em;
 	margin-left: 0.5em;
@@ -1937,7 +1945,7 @@
 	font-size: inherit;
 	font-family: inherit;
 	background-color: transparent;
-	color: #000000;
+	color: #000;
 	vertical-align: middle;
 }
 .oo-ui-capsuleMultiselectWidget-handle > .oo-ui-capsuleMultiselectWidget-content > input:focus {
@@ -1963,9 +1971,9 @@
 	border-color: rgba(0, 0, 0, 0.2);
 }
 .oo-ui-capsuleMultiselectWidget.oo-ui-widget-disabled .oo-ui-capsuleMultiselectWidget-handle {
-	color: #cccccc;
-	text-shadow: 0 -1px 1px #ffffff;
-	border-color: #dddddd;
+	color: #ccc;
+	text-shadow: 0 -1px 1px #fff;
+	border-color: #ddd;
 	background-color: #f3f3f3;
 	cursor: default;
 }
@@ -1988,14 +1996,14 @@
 	margin: 0.1em;
 	height: 1.7em;
 	line-height: 1.7em;
-	background-color: #eeeeee;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(100%, #dddddd));
-	background-image: -webkit-linear-gradient(top, #ffffff 0, #dddddd 100%);
-	background-image:    -moz-linear-gradient(top, #ffffff 0, #dddddd 100%);
-	background-image:         linear-gradient(to bottom, #ffffff 0, #dddddd 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffffff', endColorstr='#ffdddddd' )";
-	border: 1px solid #cccccc;
-	color: #555555;
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(100%, #ddd));
+	background-image: -webkit-linear-gradient(top, #fff 0, #ddd 100%);
+	background-image:    -moz-linear-gradient(top, #fff 0, #ddd 100%);
+	background-image:         linear-gradient(to bottom, #fff 0, #ddd 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffffffff\', endColorstr=\'#ffdddddd\' )';
+	border: 1px solid #ccc;
+	color: #555;
 	border-radius: 0.25em;
 }
 .oo-ui-capsuleItemWidget.oo-ui-labelElement .oo-ui-labelElement-label {
@@ -2011,9 +2019,9 @@
 	opacity: 0.5;
 	-webkit-transform: translate3d(0, 0, 0);
 	box-shadow: none;
-	color: #333333;
-	background: #eeeeee;
-	border-color: #cccccc;
+	color: #333;
+	background: #eee;
+	border-color: #ccc;
 }
 .oo-ui-capsuleItemWidget > .oo-ui-buttonElement {
 	margin-top: -1.25em;
@@ -2054,26 +2062,19 @@
 	position: relative;
 	max-width: 50em;
 }
+.oo-ui-numberInputWidget-buttoned .oo-ui-buttonWidget,
+.oo-ui-numberInputWidget-buttoned .oo-ui-textInputWidget {
+	display: table-cell;
+}
+.oo-ui-numberInputWidget-buttoned .oo-ui-buttonElement-button {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
 .oo-ui-numberInputWidget-field {
 	display: table;
 	table-layout: fixed;
 	width: 100%;
-}
-.oo-ui-numberInputWidget-field > .oo-ui-buttonWidget,
-.oo-ui-numberInputWidget-field > .oo-ui-textInputWidget {
-	display: table-cell;
-	vertical-align: middle;
-}
-.oo-ui-numberInputWidget-field > .oo-ui-textInputWidget {
-	width: 100%;
-}
-.oo-ui-numberInputWidget-field > .oo-ui-buttonWidget {
-	white-space: nowrap;
-}
-.oo-ui-numberInputWidget-field > .oo-ui-buttonWidget > .oo-ui-buttonElement-button {
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
 }
 .oo-ui-numberInputWidget-field > .oo-ui-buttonWidget {
 	width: 2.25em;
@@ -2093,14 +2094,14 @@
 }
 
 /*!
- * OOjs UI v0.17.8
+ * OOjs UI v0.17.9
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-08-16T21:13:53Z
+ * Date: 2016-09-13T18:30:06Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -2163,7 +2164,7 @@
 	border-color: rgba(0, 0, 0, 0.1);
 }
 .oo-ui-toolGroup.oo-ui-widget-enabled .oo-ui-tool-link .oo-ui-tool-title {
-	color: #000000;
+	color: #000;
 }
 .oo-ui-barToolGroup > .oo-ui-iconElement-icon,
 .oo-ui-barToolGroup > .oo-ui-labelElement-label {
@@ -2221,11 +2222,11 @@
 	border-color: rgba(0, 0, 0, 0.2);
 	box-shadow: inset 0 0.0875em 0.0875em 0 rgba(0, 0, 0, 0.07);
 	background-color: #f8fbfd;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f1f7fb), color-stop(100%, #ffffff));
-	background-image: -webkit-linear-gradient(top, #f1f7fb 0, #ffffff 100%);
-	background-image:    -moz-linear-gradient(top, #f1f7fb 0, #ffffff 100%);
-	background-image:         linear-gradient(to bottom, #f1f7fb 0, #ffffff 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff1f7fb', endColorstr='#ffffffff' )";
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f1f7fb), color-stop(100%, #fff));
+	background-image: -webkit-linear-gradient(top, #f1f7fb 0, #fff 100%);
+	background-image:    -moz-linear-gradient(top, #f1f7fb 0, #fff 100%);
+	background-image:         linear-gradient(to bottom, #f1f7fb 0, #fff 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#fff1f7fb\', endColorstr=\'#ffffffff\' )';
 }
 .oo-ui-barToolGroup.oo-ui-widget-enabled > .oo-ui-toolGroup-tools > .oo-ui-tool.oo-ui-tool-active.oo-ui-widget-enabled + .oo-ui-tool-active.oo-ui-widget-enabled {
 	border-right-color: rgba(0, 0, 0, 0.1);
@@ -2234,7 +2235,7 @@
 	outline: 0;
 }
 .oo-ui-barToolGroup.oo-ui-widget-enabled > .oo-ui-toolGroup-tools > .oo-ui-tool.oo-ui-widget-disabled > .oo-ui-tool-link .oo-ui-tool-title {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-barToolGroup.oo-ui-widget-enabled > .oo-ui-toolGroup-tools > .oo-ui-tool.oo-ui-widget-disabled > .oo-ui-tool-link .oo-ui-iconElement-icon {
 	opacity: 0.2;
@@ -2249,7 +2250,7 @@
 	outline: 0;
 }
 .oo-ui-barToolGroup.oo-ui-widget-disabled > .oo-ui-toolGroup-tools > .oo-ui-tool > .oo-ui-tool-link .oo-ui-tool-title {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-barToolGroup.oo-ui-widget-disabled > .oo-ui-toolGroup-tools > .oo-ui-tool > .oo-ui-tool-link .oo-ui-iconElement-icon {
 	opacity: 0.2;
@@ -2367,17 +2368,17 @@
 	border-bottom-left-radius: 0;
 	box-shadow: inset 0 0.0875em 0.0875em 0 rgba(0, 0, 0, 0.07);
 	background-color: #f8fbfd;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f1f7fb), color-stop(100%, #ffffff));
-	background-image: -webkit-linear-gradient(top, #f1f7fb 0, #ffffff 100%);
-	background-image:    -moz-linear-gradient(top, #f1f7fb 0, #ffffff 100%);
-	background-image:         linear-gradient(to bottom, #f1f7fb 0, #ffffff 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff1f7fb', endColorstr='#ffffffff' )";
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f1f7fb), color-stop(100%, #fff));
+	background-image: -webkit-linear-gradient(top, #f1f7fb 0, #fff 100%);
+	background-image:    -moz-linear-gradient(top, #f1f7fb 0, #fff 100%);
+	background-image:         linear-gradient(to bottom, #f1f7fb 0, #fff 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#fff1f7fb\', endColorstr=\'#ffffffff\' )';
 }
 .oo-ui-popupToolGroup .oo-ui-toolGroup-tools {
 	top: 2.5em;
 	margin: 0 -1px;
-	border: 1px solid #cccccc;
-	background-color: #ffffff;
+	border: 1px solid #ccc;
+	background-color: #fff;
 	box-shadow: 0 0.3125em 1.25em rgba(0, 0, 0, 0.25);
 }
 .oo-ui-popupToolGroup .oo-ui-tool-link {
@@ -2396,7 +2397,7 @@
 	line-height: 2em;
 }
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel {
-	color: #888888;
+	color: #888;
 }
 .oo-ui-listToolGroup .oo-ui-tool {
 	display: block;
@@ -2419,11 +2420,11 @@
 	border-color: rgba(0, 0, 0, 0.1);
 	box-shadow: inset 0 0.0875em 0.0875em 0 rgba(0, 0, 0, 0.07);
 	background-color: #f8fbfd;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f1f7fb), color-stop(100%, #ffffff));
-	background-image: -webkit-linear-gradient(top, #f1f7fb 0, #ffffff 100%);
-	background-image:    -moz-linear-gradient(top, #f1f7fb 0, #ffffff 100%);
-	background-image:         linear-gradient(to bottom, #f1f7fb 0, #ffffff 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff1f7fb', endColorstr='#ffffffff' )";
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f1f7fb), color-stop(100%, #fff));
+	background-image: -webkit-linear-gradient(top, #f1f7fb 0, #fff 100%);
+	background-image:    -moz-linear-gradient(top, #f1f7fb 0, #fff 100%);
+	background-image:         linear-gradient(to bottom, #f1f7fb 0, #fff 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#fff1f7fb\', endColorstr=\'#ffffffff\' )';
 }
 .oo-ui-listToolGroup .oo-ui-tool-active.oo-ui-widget-enabled + .oo-ui-tool-active.oo-ui-widget-enabled {
 	border-top-color: rgba(0, 0, 0, 0.1);
@@ -2438,16 +2439,16 @@
 	opacity: 1;
 }
 .oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-tool-title {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-tool-accel {
-	color: #dddddd;
+	color: #ddd;
 }
 .oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconElement-icon {
 	opacity: 0.2;
 }
 .oo-ui-listToolGroup.oo-ui-widget-disabled {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-listToolGroup.oo-ui-widget-disabled .oo-ui-indicatorElement-indicator,
 .oo-ui-listToolGroup.oo-ui-widget-disabled .oo-ui-iconElement-icon {
@@ -2481,10 +2482,10 @@
 	background-image: none;
 }
 .oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconElement-icon {
-	background-image: url("themes/apex/images/icons/check.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/check.png");
+	background-image: url('themes/apex/images/icons/check.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/check.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/check.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/check.png');
 	background-size: contain;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -2493,13 +2494,13 @@
 	background-color: #e1f3ff;
 }
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-tool-title {
-	color: #cccccc;
+	color: #ccc;
 }
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconElement-icon {
 	opacity: 0.2;
 }
 .oo-ui-menuToolGroup.oo-ui-widget-disabled {
-	color: #cccccc;
+	color: #ccc;
 	border-color: rgba(0, 0, 0, 0.05);
 }
 .oo-ui-menuToolGroup.oo-ui-widget-disabled .oo-ui-indicatorElement-indicator,
@@ -2513,11 +2514,14 @@
 	line-height: 1;
 	position: relative;
 }
-.oo-ui-toolbar-actions {
-	float: left;
-}
-.oo-ui-toolbar-actions .oo-ui-toolbar {
-	display: inline-block;
+.oo-ui-toolbar-tools,
+.oo-ui-toolbar-actions,
+.oo-ui-toolbar-shadow {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 }
 .oo-ui-toolbar-tools {
 	display: inline;
@@ -2529,14 +2533,11 @@
 .oo-ui-toolbar-tools .oo-ui-tool {
 	white-space: normal;
 }
-.oo-ui-toolbar-tools,
-.oo-ui-toolbar-actions,
-.oo-ui-toolbar-shadow {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
-	        user-select: none;
+.oo-ui-toolbar-actions {
+	float: left;
+}
+.oo-ui-toolbar-actions .oo-ui-toolbar {
+	display: inline-block;
 }
 .oo-ui-toolbar-actions .oo-ui-popupWidget {
 	-webkit-touch-callout: default;
@@ -2553,13 +2554,13 @@
 	pointer-events: none;
 }
 .oo-ui-toolbar-bar {
-	border-bottom: 1px solid #cccccc;
+	border-bottom: 1px solid #ccc;
 	background-color: #f8fbfd;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(100%, #f1f7fb));
-	background-image: -webkit-linear-gradient(top, #ffffff 0, #f1f7fb 100%);
-	background-image:    -moz-linear-gradient(top, #ffffff 0, #f1f7fb 100%);
-	background-image:         linear-gradient(to bottom, #ffffff 0, #f1f7fb 100%);
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffffff', endColorstr='#fff1f7fb' )";
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(100%, #f1f7fb));
+	background-image: -webkit-linear-gradient(top, #fff 0, #f1f7fb 100%);
+	background-image:    -moz-linear-gradient(top, #fff 0, #f1f7fb 100%);
+	background-image:         linear-gradient(to bottom, #fff 0, #f1f7fb 100%);
+	-ms-filter: 'progid:DXImageTransform.Microsoft.gradient( startColorstr=\'#ffffffff\', endColorstr=\'#fff1f7fb\' )';
 }
 .oo-ui-toolbar-bar .oo-ui-toolbar-bar {
 	border: 0;
@@ -2596,14 +2597,14 @@
 }
 
 /*!
- * OOjs UI v0.17.8
+ * OOjs UI v0.17.9
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-08-16T21:13:53Z
+ * Date: 2016-09-13T18:30:06Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
 	background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
@@ -2713,12 +2714,12 @@
 .oo-ui-messageDialog-title {
 	font-size: 1.5em;
 	line-height: 1em;
-	color: #000000;
+	color: #000;
 }
 .oo-ui-messageDialog-message {
 	font-size: 0.9em;
 	line-height: 1.25em;
-	color: #666666;
+	color: #666;
 }
 .oo-ui-messageDialog-message-verbose {
 	font-size: 1.1em;
@@ -2926,7 +2927,7 @@
 }
 .oo-ui-processDialog-errors-title {
 	font-size: 1.5em;
-	color: #000000;
+	color: #000;
 	margin-bottom: 2em;
 }
 .oo-ui-processDialog-error {
@@ -2976,7 +2977,7 @@
 	        transition: opacity 250ms ease;
 }
 .oo-ui-windowManager-modal > .oo-ui-dialog > .oo-ui-window-frame {
-	background-color: #ffffff;
+	background-color: #fff;
 	opacity: 0;
 	-webkit-transform: scale(0.5);
 	   -moz-transform: scale(0.5);
@@ -3001,250 +3002,250 @@
 	bottom: 1em;
 	max-height: 100%;
 	max-height: calc(100% - 2em);
-	border: 1px solid #cccccc;
+	border: 1px solid #ccc;
 	border-radius: 0.5em;
 	box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
 }
 
 /*!
- * OOjs UI v0.17.8
+ * OOjs UI v0.17.9
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2016 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2016-08-16T21:13:53Z
+ * Date: 2016-09-13T18:30:06Z
  */
 .oo-ui-icon-add {
-	background-image: url("themes/apex/images/icons/add.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/add.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/add.png");
+	background-image: url('themes/apex/images/icons/add.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/add.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/add.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/add.png');
 }
 .oo-ui-icon-advanced {
-	background-image: url("themes/apex/images/icons/advanced.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/advanced.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/advanced.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/advanced.png");
+	background-image: url('themes/apex/images/icons/advanced.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/advanced.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/advanced.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/advanced.png');
 }
 .oo-ui-icon-alert {
-	background-image: url("themes/apex/images/icons/alert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/alert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/alert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/alert.png");
+	background-image: url('themes/apex/images/icons/alert.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/alert.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/alert.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/alert.png');
 }
 .oo-ui-icon-cancel {
-	background-image: url("themes/apex/images/icons/cancel.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/cancel.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/cancel.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/cancel.png");
+	background-image: url('themes/apex/images/icons/cancel.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/cancel.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/cancel.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/cancel.png');
 }
 .oo-ui-icon-check {
-	background-image: url("themes/apex/images/icons/check.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/check.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/check.png");
+	background-image: url('themes/apex/images/icons/check.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/check.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/check.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/check.png');
 }
 .oo-ui-icon-circle {
-	background-image: url("themes/apex/images/icons/circle.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/circle.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/circle.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/circle.png");
+	background-image: url('themes/apex/images/icons/circle.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/circle.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/circle.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/circle.png');
 }
 .oo-ui-icon-close {
-	background-image: url("themes/apex/images/icons/close.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/close.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/close.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/close.png");
+	background-image: url('themes/apex/images/icons/close.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/close.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/close.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/close.png');
 }
 .oo-ui-icon-code {
-	background-image: url("themes/apex/images/icons/code.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/code.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/code.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/code.png");
+	background-image: url('themes/apex/images/icons/code.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/code.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/code.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/code.png');
 }
 .oo-ui-icon-collapse {
-	background-image: url("themes/apex/images/icons/collapse.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/collapse.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/collapse.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/collapse.png");
+	background-image: url('themes/apex/images/icons/collapse.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/collapse.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/collapse.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/collapse.png');
 }
 .oo-ui-icon-comment {
-	background-image: url("themes/apex/images/icons/comment.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/comment.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/comment.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/comment.png");
+	background-image: url('themes/apex/images/icons/comment.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/comment.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/comment.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/comment.png');
 }
 .oo-ui-icon-ellipsis {
-	background-image: url("themes/apex/images/icons/ellipsis.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/ellipsis.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/ellipsis.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/ellipsis.png");
+	background-image: url('themes/apex/images/icons/ellipsis.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/ellipsis.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/ellipsis.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/ellipsis.png');
 }
 .oo-ui-icon-expand {
-	background-image: url("themes/apex/images/icons/expand.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/expand.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/expand.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/expand.png");
+	background-image: url('themes/apex/images/icons/expand.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/expand.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/expand.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/expand.png');
 }
 .oo-ui-icon-help {
-	background-image: url("themes/apex/images/icons/help-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/help-rtl.png");
+	background-image: url('themes/apex/images/icons/help-rtl.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/help-rtl.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/help-rtl.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/help-rtl.png');
 }
 /* @noflip */
 .oo-ui-icon-help:lang(he) {
-	background-image: url("themes/apex/images/icons/help-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/help-ltr.png");
+	background-image: url('themes/apex/images/icons/help-ltr.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/help-ltr.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/help-ltr.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/help-ltr.png');
 }
 /* @noflip */
 .oo-ui-icon-help:lang(yi) {
-	background-image: url("themes/apex/images/icons/help-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/help-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/help-ltr.png");
+	background-image: url('themes/apex/images/icons/help-ltr.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/help-ltr.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/help-ltr.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/help-ltr.png');
 }
 .oo-ui-icon-history {
-	background-image: url("themes/apex/images/icons/history.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/history.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/history.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/history.png");
+	background-image: url('themes/apex/images/icons/history.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/history.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/history.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/history.png');
 }
 .oo-ui-icon-info {
-	background-image: url("themes/apex/images/icons/info.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/info.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/info.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/info.png");
+	background-image: url('themes/apex/images/icons/info.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/info.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/info.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/info.png');
 }
 .oo-ui-icon-menu {
-	background-image: url("themes/apex/images/icons/menu.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/menu.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/menu.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/menu.png");
+	background-image: url('themes/apex/images/icons/menu.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/menu.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/menu.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/menu.png');
 }
 .oo-ui-icon-next {
-	background-image: url("themes/apex/images/icons/move-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/move-rtl.png");
+	background-image: url('themes/apex/images/icons/move-rtl.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/move-rtl.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/move-rtl.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/move-rtl.png');
 }
 .oo-ui-icon-notice {
-	background-image: url("themes/apex/images/icons/notice.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/notice.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/notice.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/notice.png");
+	background-image: url('themes/apex/images/icons/notice.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/notice.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/notice.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/notice.png');
 }
 .oo-ui-icon-previous {
-	background-image: url("themes/apex/images/icons/move-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/move-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/move-ltr.png");
+	background-image: url('themes/apex/images/icons/move-ltr.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/move-ltr.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/move-ltr.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/move-ltr.png');
 }
 .oo-ui-icon-redo {
-	background-image: url("themes/apex/images/icons/arched-arrow-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/arched-arrow-rtl.png");
+	background-image: url('themes/apex/images/icons/arched-arrow-rtl.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/arched-arrow-rtl.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/arched-arrow-rtl.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/arched-arrow-rtl.png');
 }
 .oo-ui-icon-remove {
-	background-image: url("themes/apex/images/icons/trash.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/trash.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/trash.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/trash.png");
+	background-image: url('themes/apex/images/icons/trash.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/trash.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/trash.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/trash.png');
 }
 .oo-ui-icon-search {
-	background-image: url("themes/apex/images/icons/search.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/search.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/search.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/search.png");
+	background-image: url('themes/apex/images/icons/search.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/search.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/search.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/search.png');
 }
 .oo-ui-icon-settings {
-	background-image: url("themes/apex/images/icons/settings.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/settings.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/settings.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/settings.png");
+	background-image: url('themes/apex/images/icons/settings.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/settings.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/settings.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/settings.png');
 }
 .oo-ui-icon-tag {
-	background-image: url("themes/apex/images/icons/tag.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/tag.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/tag.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/tag.png");
+	background-image: url('themes/apex/images/icons/tag.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/tag.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/tag.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/tag.png');
 }
 .oo-ui-icon-undo {
-	background-image: url("themes/apex/images/icons/arched-arrow-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/arched-arrow-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/arched-arrow-ltr.png");
+	background-image: url('themes/apex/images/icons/arched-arrow-ltr.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/arched-arrow-ltr.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/arched-arrow-ltr.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/arched-arrow-ltr.png');
 }
 .oo-ui-icon-window {
-	background-image: url("themes/apex/images/icons/window.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/window.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/icons/window.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/icons/window.png");
+	background-image: url('themes/apex/images/icons/window.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/window.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/window.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/window.png');
 }
 
 .oo-ui-indicator-alert {
-	background-image: url("themes/apex/images/indicators/alert.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/alert.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/alert.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/alert.png");
+	background-image: url('themes/apex/images/indicators/alert.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/alert.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/alert.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/alert.png');
 }
 .oo-ui-indicator-clear {
-	background-image: url("themes/apex/images/indicators/clear.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/clear.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/clear.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/clear.png");
+	background-image: url('themes/apex/images/indicators/clear.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/clear.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/clear.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/clear.png');
 }
 .oo-ui-indicator-up {
-	background-image: url("themes/apex/images/indicators/arrow-up.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-up.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-up.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-up.png");
+	background-image: url('themes/apex/images/indicators/arrow-up.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-up.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-up.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/arrow-up.png');
 }
 .oo-ui-indicator-down {
-	background-image: url("themes/apex/images/indicators/arrow-down.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-down.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-down.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-down.png");
+	background-image: url('themes/apex/images/indicators/arrow-down.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-down.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-down.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/arrow-down.png');
 }
 .oo-ui-indicator-next {
-	background-image: url("themes/apex/images/indicators/arrow-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-rtl.png");
+	background-image: url('themes/apex/images/indicators/arrow-rtl.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-rtl.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-rtl.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/arrow-rtl.png');
 }
 .oo-ui-indicator-previous {
-	background-image: url("themes/apex/images/indicators/arrow-ltr.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-ltr.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/arrow-ltr.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/arrow-ltr.png");
+	background-image: url('themes/apex/images/indicators/arrow-ltr.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-ltr.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-ltr.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/arrow-ltr.png');
 }
 .oo-ui-indicator-required {
-	background-image: url("themes/apex/images/indicators/required.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/required.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/required.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/required.png");
+	background-image: url('themes/apex/images/indicators/required.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/required.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/required.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/required.png');
 }
 .oo-ui-indicator-search {
-	background-image: url("themes/apex/images/indicators/search-rtl.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/search-rtl.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/indicators/search-rtl.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/indicators/search-rtl.png");
+	background-image: url('themes/apex/images/indicators/search-rtl.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/search-rtl.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/search-rtl.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/indicators/search-rtl.png');
 }
 
 .oo-ui-texture-pending {
-	background-image: url("themes/apex/images/textures/pending.gif");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/pending.gif");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/pending.gif");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/textures/pending.gif");
+	background-image: url('themes/apex/images/textures/pending.gif');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/textures/pending.gif');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/textures/pending.gif');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/textures/pending.gif');
 }
 .oo-ui-texture-transparency {
-	background-image: url("themes/apex/images/textures/transparency.png");
-	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/transparency.svg");
-	background-image:         linear-gradient(transparent, transparent), /* @embed */ url("themes/apex/images/textures/transparency.svg");
-	background-image:      -o-linear-gradient(transparent, transparent), url("themes/apex/images/textures/transparency.png");
+	background-image: url('themes/apex/images/textures/transparency.png');
+	background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/textures/transparency.svg');
+	background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/textures/transparency.svg');
+	background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/textures/transparency.png');
 }
