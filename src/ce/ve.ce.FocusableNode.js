@@ -119,6 +119,8 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
+	var rAF = requestAnimationFrame || setTimeout;
+
 	// Exit if already setup or not attached
 	if ( this.isFocusableSetup || !this.root ) {
 		return;
@@ -156,7 +158,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 			.find( 'img:not([width]),img:not([height])' )
 			.addBack( 'img:not([width]),img:not([height])' )
 			.on( 'load', this.updateInvisibleIcon.bind( this ) );
-		this.updateInvisibleIcon();
+		rAF( this.updateInvisibleIcon.bind( this ) );
 	}
 
 	this.isFocusableSetup = true;
