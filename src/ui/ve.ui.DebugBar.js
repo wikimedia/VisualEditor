@@ -112,7 +112,9 @@ ve.ui.DebugBar.prototype.getSurface = function () {
  *
  * @param {ve.dm.Selection} selection
  */
-ve.ui.DebugBar.prototype.onSurfaceSelect = function ( selection ) {
+ve.ui.DebugBar.prototype.onSurfaceSelect = function () {
+	// Do not trust the emitted selection: nested emits can invalidate it. See T145938.
+	var selection = this.surface.model.getSelection();
 	this.selectionLabel.setLabel( selection.getDescription() );
 	this.logRangeButton.setDisabled( !(
 		( selection instanceof ve.dm.LinearSelection && !selection.isCollapsed() ) ||
