@@ -426,7 +426,8 @@ ve.init.Target.prototype.getActions = function () {
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	var toolbar = this.getToolbar(),
-		actions = this.getActions();
+		actions = this.getActions(),
+		rAF = requestAnimationFrame || setTimeout;
 
 	toolbar.connect( this, { resize: 'onToolbarResize' } );
 
@@ -435,7 +436,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	this.attachToolbar( surface );
 	toolbar.$bar.append( surface.getToolbarDialogs().$element );
 	toolbar.$actions.append( actions.$element );
-	this.onContainerScroll();
+	rAF( this.onContainerScrollHandler );
 };
 
 /**
