@@ -33,6 +33,7 @@ ve.ce.ContentBranchNode = function VeCeContentBranchNode() {
 
 	// Events
 	this.connect( this, { childUpdate: 'onChildUpdate' } );
+	this.model.connect( this, { detach: 'onModelDetach' } );
 	// Some browsers allow clicking links inside contenteditable, such as in iOS Safari when the
 	// keyboard is closed
 	this.$element.on( 'click', this.onClickHandler );
@@ -352,6 +353,12 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	}
 	wrapper.unicornInfo = unicornInfo;
 	return wrapper;
+};
+
+ve.ce.ContentBranchNode.prototype.onModelDetach = function () {
+	if ( this.root instanceof ve.ce.DocumentNode ) {
+		this.root.getSurface().setContentBranchNodeChanged();
+	}
 };
 
 /**
