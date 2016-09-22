@@ -70,7 +70,7 @@
 	"visualeditor-find-and-replace-done": "Afgerond",
 	"visualeditor-find-and-replace-find-text": "Zoeken",
 	"visualeditor-find-and-replace-invalid-regex": "Ongeldige reguliere expressie",
-	"visualeditor-find-and-replace-match-case": "Identieke hoofdletters",
+	"visualeditor-find-and-replace-match-case": "Hoofdlettergevoelig",
 	"visualeditor-find-and-replace-next-button": "Volgende zoeken",
 	"visualeditor-find-and-replace-previous-button": "Vorige zoeken",
 	"visualeditor-find-and-replace-regular-expression": "Reguliere expressie",
