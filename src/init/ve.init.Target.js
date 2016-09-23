@@ -427,7 +427,7 @@ ve.init.Target.prototype.getActions = function () {
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	var toolbar = this.getToolbar(),
 		actions = this.getActions(),
-		rAF = requestAnimationFrame || setTimeout;
+		rAF = window.requestAnimationFrame || setTimeout;
 
 	toolbar.connect( this, { resize: 'onToolbarResize' } );
 

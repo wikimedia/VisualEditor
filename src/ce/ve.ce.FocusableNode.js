@@ -119,7 +119,7 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
-	var rAF = requestAnimationFrame || setTimeout;
+	var rAF = window.requestAnimationFrame || setTimeout;
 
 	// Exit if already setup or not attached
 	if ( this.isFocusableSetup || !this.root ) {
