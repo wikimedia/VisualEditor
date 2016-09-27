@@ -25,7 +25,7 @@ ve.ce.SectionNode = function VeCeSectionNode() {
 
 	this.$element
 		.addClass( 've-ce-sectionNode' )
-		.prop( 'contentEditable', 'true' );
+		.prop( { contentEditable: 'true', spellcheck: true } );
 };
 
 /* Inheritance */
