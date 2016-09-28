@@ -9,23 +9,16 @@ QUnit.module( 've.ce.Surface' );
 /* Tests */
 
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, rangeOrSelection, keys, expectedData, expectedRangeOrSelection, msg, forceSelection, fullEvents ) {
-	var i, e, selection, expectedSelection, key,
+	var i, e, expectedSelection, key,
 		view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
 			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ) ),
 		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() );
 
-	// TODO: model.getSelection() should be consistent after it has been
-	// changed but appears to behave differently depending on the browser.
-	// The selection from the select event is still consistent.
-	selection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection );
-
-	model.on( 'select', function ( s ) {
-		selection = s;
-	} );
-
-	model.setSelection( selection );
+	model.setSelection(
+		ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection )
+	);
 	for ( i = 0; i < keys.length; i++ ) {
 		key = keys[ i ].split( '+' );
 		e = {
@@ -54,7 +47,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 				view.showSelectionState( view.getSelectionState( forceSelection ) );
 			}
 			ve.ce.keyDownHandlerFactory.executeHandlersForKey(
-				e.keyCode, selection.getName(), view, e
+				e.keyCode, model.getSelection().getName(), view, e
 			);
 		}
 	}
@@ -66,7 +59,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	);
 
 	assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
-	assert.equalHash( selection, expectedSelection, msg + ': selection' );
+	assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
 	view.destroy();
 };
 
