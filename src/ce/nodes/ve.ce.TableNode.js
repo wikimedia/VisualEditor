@@ -139,8 +139,8 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		return;
 	}
 
-	// Right-click
-	if ( e.which === OO.ui.MouseButtons.RIGHT ) {
+	// Right-click on a cell which isn't being edited
+	if ( e.which === OO.ui.MouseButtons.RIGHT && !this.getActiveCellNode() ) {
 		// Select the cell to the browser renders the correct context menu
 		ve.selectElement( cellNode.$element[ 0 ] );
 		setTimeout( function () {

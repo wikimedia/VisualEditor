@@ -20,7 +20,7 @@ ve.ce.TableCaptionNode = function VeCeTableCaptionNode() {
 	// DOM changes
 	this.$element
 		.addClass( 've-ce-tableCaptionNode' )
-		.prop( 'contentEditable', 'true' );
+		.prop( { contentEditable: 'true', spellcheck: true } );
 };
 
 /* Inheritance */

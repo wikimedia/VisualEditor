@@ -41,8 +41,10 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 		this.$element.attr( 'colspan', colspan );
 	}
 
-	// Add tooltip
-	this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
+	this.$element
+		// Add tooltip
+		.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) )
+		.prop( 'spellcheck', true );
 
 	// Events
 	this.model.connect( this, {
