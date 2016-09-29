@@ -12,7 +12,7 @@
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
-	var pageDropdown, pageLabel, removeButton, saveButton, $exitReadButton,
+	var pageDropdown, pageLabel, removeButton, saveButton, diffButton, $exitReadButton,
 		container = this;
 
 	// Parent constructor
@@ -38,6 +38,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	} );
 	saveButton = new OO.ui.ButtonWidget( {
 		label: 'Save HTML'
+	} );
+	diffButton = new OO.ui.ButtonWidget( {
+		label: 'Get diff'
 	} );
 	$exitReadButton = $( '<a href="#">' ).text( 'Back to editor' ).on( 'click', function () {
 		container.change( 've' );
@@ -77,6 +80,12 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	} );
 	removeButton.on( 'click', this.destroy.bind( this ) );
 	saveButton.on( 'click', this.save.bind( this ) );
+	diffButton.on( 'click', function () {
+		var windowManager = new OO.ui.WindowManager( { factory: ve.ui.windowFactory } );
+		$( 'body' ).append( windowManager.$element );
+		container.target.oldDoc.rebuildTree();
+		windowManager.openWindow( 'diff' );
+	} );
 
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
 		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar-edit' ).append(
@@ -88,7 +97,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 				removeButton.$element,
 				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
-				saveButton.$element
+				saveButton.$element,
+				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				diffButton.$element
 			)
 		),
 		$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(
@@ -260,7 +271,8 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src ) {
  * @param {string} pageHtml HTML string
  */
 ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
-	var container = this;
+	var dmDoc,
+		container = this;
 
 	if ( this.surface ) {
 		this.surface.destroy();
@@ -275,6 +287,10 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
 	);
 
 	this.target.setSurface( this.surface );
+
+	dmDoc = this.surface.getModel().getDocument();
+	this.target.oldDoc = dmDoc.cloneFromRange( new ve.Range( 0, dmDoc.data.getLength() ) );
+	// rebuildTree is called when getDiff is run
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() )
 		.hide().slideDown().promise().done( function () {

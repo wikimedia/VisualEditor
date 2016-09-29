@@ -209,6 +209,19 @@
 		]
 	},
 	{
+		"name": "Diffing",
+		"groups": [
+			{
+				"name": "Data Model",
+				"classes": ["ve.dm.VisualDiff"]
+			},
+			{
+				"name": "Core",
+				"classes": ["ve.DiffTreeNode"]
+			}
+		]
+	},
+	{
 		"name": "Tests",
 		"groups": [
 			{
@@ -298,6 +311,10 @@
 			{
 				"name": "jQuery",
 				"classes": ["jQuery", "jQuery.Event", "jQuery.Promise", "jQuery.Deferred", "jQuery.jqXHR", "QUnit"]
+			},
+			{
+				"name": "treeDiffer",
+				"classes": ["treeDiffer.Differ", "treeDiffer.Tree", "treeDiffer.TreeNode"]
 			},
 			{
 				"name": "JavaScript",

@@ -1,0 +1,28 @@
+{
+	"preset": "wikimedia",
+
+	"jsDoc": {
+		"checkAnnotations": {
+			"preset": "jsduck5",
+			"extra": {
+				"source": true,
+				"see": true
+			}
+		},
+		"checkParamNames": true,
+		"checkRedundantAccess": true,
+		"checkRedundantReturns": true,
+		"checkTypes": "strictNativeCase",
+		"requireNewlineAfterDescription": true,
+		"requireParamTypes": true,
+		"requireReturnTypes": true
+	},
+
+	"excludeFiles": [
+		"coverage/**",
+		"dist/**",
+		"docs/**",
+		"lib/**",
+		"node_modules/**"
+	]
+}
