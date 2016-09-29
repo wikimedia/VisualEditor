@@ -16,7 +16,8 @@
 			"Arystanbek",
 			"HakanIST",
 			"McAang",
-			"Sadrettin"
+			"Sadrettin",
+			"Kumkumuk"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -26,11 +27,13 @@
 	"visualeditor-align-widget-left": "Sol",
 	"visualeditor-align-widget-right": "Sağ",
 	"visualeditor-alignablecontextitem-title": "Hizalama",
+	"visualeditor-annotationbutton-big-tooltip": "Büyük",
 	"visualeditor-annotationbutton-bold-tooltip": "Kalın",
 	"visualeditor-annotationbutton-code-tooltip": "Bilgisayar kodu",
 	"visualeditor-annotationbutton-italic-tooltip": "Eğik",
 	"visualeditor-annotationbutton-language-tooltip": "Dil",
 	"visualeditor-annotationbutton-link-tooltip": "Bağlantı",
+	"visualeditor-annotationbutton-small-tooltip": "Küçük",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Üstü çizili",
 	"visualeditor-annotationbutton-subscript-tooltip": "Alt simge",
 	"visualeditor-annotationbutton-superscript-tooltip": "Üst simge",
