@@ -606,6 +606,42 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
 };
 
 /**
+ * Check if the nodes at the current fragment have an ancestor with matching type and attribute values.
+ *
+ * @param {string} type Node type to match
+ * @param {Object} [attributes] Node attributes to match
+ * @return {boolean} Nodes have a matching ancestor
+ */
+ve.dm.SurfaceFragment.prototype.hasMatchingAncestor = function ( type, attributes ) {
+	var i, len, cells,
+		selection = this.getSelection(),
+		nodes = this.getSelectedLeafNodes(),
+		all = !!nodes.length;
+
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		nodes = this.getSelectedLeafNodes();
+		all = !!nodes.length;
+		for ( i = 0, len = nodes.length; i < len; i++ ) {
+			if ( !nodes[ i ].hasMatchingAncestor( type, attributes ) ) {
+				all = false;
+				break;
+			}
+		}
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		cells = selection.getMatrixCells();
+		all = true;
+		for ( i = cells.length - 1; i >= 0; i-- ) {
+			if ( !cells[ i ].node.matches( type, attributes ) ) {
+				all = false;
+				break;
+			}
+		}
+	}
+
+	return all;
+};
+
+/**
  * Apply the fragment's range to the surface as a selection.
  *
  * @method

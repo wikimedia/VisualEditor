@@ -48,7 +48,8 @@ ve.ui.FormatTool.static.format = null;
  * @inheritdoc
  */
 ve.ui.FormatTool.prototype.onUpdateState = function ( fragment ) {
-	var i, len, nodes, all, cells, selection, format;
+	var isMatching,
+		format = this.constructor.static.format;
 
 	// Parent method
 	ve.ui.FormatTool.super.prototype.onUpdateState.apply( this, arguments );
@@ -62,30 +63,10 @@ ve.ui.FormatTool.prototype.onUpdateState = function ( fragment ) {
 
 	this.toggle( true );
 
-	selection = fragment.getSelection();
-	format = this.constructor.static.format;
+	isMatching = fragment.hasMatchingAncestor( format.type, format.attributes );
 
-	if ( selection instanceof ve.dm.LinearSelection ) {
-		nodes = fragment.getSelectedLeafNodes();
-		all = !!nodes.length;
-		for ( i = 0, len = nodes.length; i < len; i++ ) {
-			if ( !nodes[ i ].hasMatchingAncestor( format.type, format.attributes ) ) {
-				all = false;
-				break;
-			}
-		}
-	} else if ( selection instanceof ve.dm.TableSelection ) {
-		cells = selection.getMatrixCells();
-		all = true;
-		for ( i = cells.length - 1; i >= 0; i-- ) {
-			if ( !cells[ i ].node.matches( format.type, format.attributes ) ) {
-				all = false;
-				break;
-			}
-		}
-	}
-	this.convertible = !all;
-	this.setActive( all );
+	this.convertible = !isMatching;
+	this.setActive( isMatching );
 };
 
 /**
