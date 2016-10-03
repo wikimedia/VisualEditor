@@ -519,6 +519,8 @@ ve.dm.Node.prototype.shouldIgnoreChildren = function () {
  * Check if the node has an ancestor with matching type and attribute values.
  *
  * @method
+ * @param {string} type Node type to match
+ * @param {Object} [attributes] Node attributes to match
  * @return {boolean} Node has an ancestor with matching type and attribute values
  */
 ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
@@ -538,6 +540,8 @@ ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
  * Check if the node matches type and attribute values.
  *
  * @method
+ * @param {string} type Node type to match
+ * @param {Object} [attributes] Node attributes to match
  * @return {boolean} Node matches type and attribute values
  */
 ve.dm.Node.prototype.matches = function ( type, attributes ) {
