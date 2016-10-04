@@ -83,7 +83,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	// Snapshot updated at keyDown. See storeKeyDownState.
 	this.keyDownState = {
 		event: null,
-		selection: null
+		selectionState: null
 	};
 
 	this.cursorDirectionality = null;
@@ -576,6 +576,7 @@ ve.ce.Surface.prototype.deactivate = function () {
 		// Remove ranges so the user can't accidentally type into the document
 		this.nativeSelection.removeAllRanges();
 		this.updateDeactivatedSelection();
+		this.clearKeyDownState();
 	}
 };
 
@@ -1272,6 +1273,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	function getDirection() {
 		return (
 			isArrow &&
+			keyDownSelectionState &&
 			ve.compareDocumentOrder(
 				surface.nativeSelection.focusNode,
 				surface.nativeSelection.focusOffset,
@@ -1360,6 +1362,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 		!e.ctrlKey &&
 		!e.altKey &&
 		!e.metaKey &&
+		keyDownSelectionState &&
 		keyDownSelectionState.isCollapsed &&
 		this.nativeSelection.isCollapsed &&
 		( direction = getDirection() ) !== null
