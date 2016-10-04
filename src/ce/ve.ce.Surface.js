@@ -53,6 +53,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.resizing = false;
 	this.focused = false;
 	this.deactivated = false;
+	this.deactivatedForCopy = false;
 	this.$deactivatedSelection = $( '<div>' );
 	this.activeNode = null;
 	this.contentBranchNodeChanged = false;
@@ -633,8 +634,11 @@ ve.ce.Surface.prototype.onFocusChange = function () {
  * range with a fake rendered one.
  *
  * Used by dialogs so they can take focus without losing the original document selection.
+ *
+ * @param {boolean} [deactivatedForCopy] Surface was deactivated by preparePasteTargetForCopy
  */
-ve.ce.Surface.prototype.deactivate = function () {
+ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy ) {
+	this.deactivatedForCopy = !!deactivatedForCopy;
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
 		// until the surface is activated
@@ -654,6 +658,7 @@ ve.ce.Surface.prototype.deactivate = function () {
 ve.ce.Surface.prototype.activate = function () {
 	if ( this.deactivated && this.getModel().enabled ) {
 		this.deactivated = false;
+		this.deactivatedForCopy = false;
 		this.updateDeactivatedSelection();
 		this.surfaceObserver.enable();
 		if ( OO.ui.contains( this.$documentNode[ 0 ], this.nativeSelection.anchorNode, true ) ) {
@@ -2764,6 +2769,12 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 
 		focusedNode = this.findFocusedNode( selection.getRange() );
 
+		if ( this.deactivatedForCopy && !blockSlug && !focusedNode ) {
+			// If preparePasteTargetForCopy deactivated the surface then
+			// reactivate it here (no-op if already active). See T147304
+			this.activate();
+		}
+
 		// If focus has changed, update nodes and this.focusedNode
 		if ( focusedNode !== this.focusedNode ) {
 			if ( this.focusedNode ) {
@@ -2827,8 +2838,8 @@ ve.ce.Surface.prototype.preparePasteTargetForCopy = function () {
 		// * The user is unlikely to be able to trigger a keyboard copy anyway
 		// Instead just deactivate the surface so the native cursor doesn't
 		// get in the way and the on screen keyboard doesn't show.
-		// TODO: Provide a copy tool in the context menu
-		this.deactivate();
+		// TODO: Provide a copy tool in the context menu (T202278)
+		this.deactivate( true );
 	}
 };
 
