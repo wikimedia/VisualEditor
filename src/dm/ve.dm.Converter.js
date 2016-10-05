@@ -548,7 +548,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 			if ( wrappedMetaItems[ i ].type && wrappedMetaItems[ i ].type.charAt( 0 ) !== '/' ) {
 				if ( wrappedMetaItems[ i ].internal && wrappedMetaItems[ i ].internal.whitespace ) {
 					if ( whitespaceTreatment === 'restore' ) {
-						toInsert = toInsert.concat( ve.dm.Converter.static.getDataContentFromText(
+						toInsert.push.apply( toInsert, ve.dm.Converter.static.getDataContentFromText(
 								wrappedMetaItems[ i ].internal.whitespace[ 0 ], context.annotations
 						) );
 						delete wrappedMetaItems[ i ].internal;
@@ -565,7 +565,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 			// This is horrible and this whole system desperately needs to be rewritten
 			ve.batchSplice( data, wrappedWhitespaceIndex, 0, toInsert );
 		} else {
-			data = data.concat( toInsert );
+			data.push.apply( data, toInsert );
 		}
 		wrappedMetaItems = [];
 	}
@@ -707,7 +707,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						}
 					}
 					outputWrappedMetaItems( 'restore' );
-					data = data.concat( childDataElements );
+					data.push.apply( data, childDataElements );
 					// Clear wrapped whitespace
 					wrappedWhitespace = '';
 				} else {
@@ -725,7 +725,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						// Queue wrapped meta items only if it's actually possible for us to move them out
 						// of the wrapper
 						if ( context.inWrapper && context.canCloseWrapper ) {
-							wrappedMetaItems = wrappedMetaItems.concat( childDataElements );
+							wrappedMetaItems.push.apply( wrappedMetaItems, childDataElements );
 							if ( wrappedWhitespace !== '' ) {
 								data.splice( wrappedWhitespaceIndex, wrappedWhitespace.length );
 								addWhitespace( childDataElements[ 0 ], 0, wrappedWhitespace );
@@ -734,7 +734,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 							}
 						} else {
 							outputWrappedMetaItems( 'restore' );
-							data = data.concat( childDataElements );
+							data.push.apply( data, childDataElements );
 							processNextWhitespace( childDataElements[ 0 ] );
 							prevElement = childDataElements[ 0 ];
 						}
@@ -786,7 +786,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						// Recursion
 						// Opening and closing elements are added by the recursion too
 						outputWrappedMetaItems( 'restore' );
-						data = data.concat(
+						data.push.apply( data,
 							this.getDataFromDomSubtree( childNode, childDataElements[ 0 ],
 								new ve.dm.AnnotationSet( this.store )
 							)
@@ -797,7 +797,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						}
 						// Write childDataElements directly
 						outputWrappedMetaItems( 'restore' );
-						data = data.concat( childDataElements );
+						data.push.apply( data, childDataElements );
 					}
 					processNextWhitespace( childDataElements[ 0 ] );
 					prevElement = childDataElements[ 0 ];
@@ -822,7 +822,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 							// comment about wrappedWhitespace below)
 							wrappedWhitespace = text;
 							wrappedWhitespaceIndex = data.length;
-							data = data.concat(
+							data.push.apply( data,
 								ve.dm.Converter.static.getDataContentFromText( wrappedWhitespace, context.annotations )
 							);
 						} else {
@@ -876,12 +876,12 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 							outputWrappedMetaItems( 'restore' );
 							// We were already wrapping in a paragraph,
 							// so the leading whitespace must be output
-							data = data.concat(
+							data.push.apply( data,
 								ve.dm.Converter.static.getDataContentFromText( matches[ 1 ], context.annotations )
 							);
 						}
 						// Output the text sans whitespace
-						data = data.concat(
+						data.push.apply( data,
 							ve.dm.Converter.static.getDataContentFromText( matches[ 2 ], context.annotations )
 						);
 
@@ -894,7 +894,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						// because we have to apply the correct annotations.
 						wrappedWhitespace = matches[ 3 ];
 						wrappedWhitespaceIndex = data.length;
-						data = data.concat(
+						data.push.apply( data,
 							ve.dm.Converter.static.getDataContentFromText( wrappedWhitespace, context.annotations )
 						);
 						prevElement = wrappingParagraph;
@@ -931,7 +931,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 				}
 
 				// Annotate the text and output it
-				data = data.concat(
+				data.push.apply( data,
 					ve.dm.Converter.static.getDataContentFromText( text, context.annotations )
 				);
 				break;
