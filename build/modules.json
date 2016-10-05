@@ -533,6 +533,7 @@
 			"src/ce/styles/nodes/ve.ce.DocumentNode.css",
 			"src/ce/styles/nodes/ve.ce.GeneratedContentNode.css",
 			"src/ce/styles/nodes/ve.ce.HorizontalRuleNode.css",
+			"src/ce/styles/nodes/ve.ce.CommentNode.css",
 			"src/ce/styles/annotations/ve.ce.LanguageAnnotation.css",
 			"src/ce/styles/annotations/ve.ce.LinkAnnotation.css",
 			"src/ce/styles/nodes/ve.ce.ResizableNode.css",
