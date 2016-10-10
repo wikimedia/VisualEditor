@@ -80,7 +80,8 @@ ve.ui.CommandHelpDialog.prototype.getBodyHeight = function () {
  */
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	var i, j, jLen, k, kLen, triggerList, commands, shortcut, platform, platformKey,
-		$list, $shortcut, commandGroups, sequence;
+		$list, $shortcut, commandGroups, sequence, hasCommand, hasShortcut,
+		sequenceRegistry = ve.init.target.getSurface().sequenceRegistry;
 
 	// Parent method
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
@@ -97,9 +98,11 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	this.$container = $( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
 	for ( i in commandGroups ) {
+		hasCommand = false;
 		commands = this.constructor.static.sortedCommandsFromGroup( i, commandGroups[ i ].promote, commandGroups[ i ].demote );
 		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
+			hasShortcut = false;
 			if ( commands[ j ].trigger ) {
 				triggerList = ve.ui.triggerRegistry.lookup( commands[ j ].trigger );
 			} else {
@@ -121,10 +124,11 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 				$shortcut.append( $( '<kbd>' ).append(
 					triggerList[ k ].getMessage( true ).map( this.constructor.static.buildKeyNode )
 				).find( 'kbd + kbd' ).before( '+' ).end() );
+				hasShortcut = true;
 			}
 			if ( commands[ j ].sequences ) {
 				for ( k = 0, kLen = commands[ j ].sequences.length; k < kLen; k++ ) {
-					sequence = ve.ui.sequenceRegistry.lookup( commands[ j ].sequences[ k ] );
+					sequence = sequenceRegistry.lookup( commands[ j ].sequences[ k ] );
 					if ( sequence ) {
 						$shortcut.append( $( '<kbd class="ve-ui-commandHelpDialog-sequence">' )
 							.attr( 'data-label', ve.msg( 'visualeditor-shortcuts-sequence-notice' ) )
@@ -132,22 +136,28 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 								sequence.getMessage( true ).map( this.constructor.static.buildKeyNode )
 							)
 						);
+						hasShortcut = true;
 					}
 				}
 			}
-			$list.append(
-				$shortcut,
-				$( '<dd>' ).text( OO.ui.resolveMsg( commands[ j ].label ) )
+			if ( hasShortcut ) {
+				$list.append(
+					$shortcut,
+					$( '<dd>' ).text( OO.ui.resolveMsg( commands[ j ].label ) )
+				);
+				hasCommand = true;
+			}
+		}
+		if ( hasCommand ) {
+			this.$container.append(
+				$( '<div>' )
+					.addClass( 've-ui-commandHelpDialog-section' )
+					.append(
+						$( '<h3>' ).text( OO.ui.resolveMsg( commandGroups[ i ].title ) ),
+						$list
+					)
 			);
 		}
-		this.$container.append(
-			$( '<div>' )
-				.addClass( 've-ui-commandHelpDialog-section' )
-				.append(
-					$( '<h3>' ).text( OO.ui.resolveMsg( commandGroups[ i ].title ) ),
-					$list
-				)
-		);
 	}
 
 	this.contentLayout.$element.append( this.$container );
