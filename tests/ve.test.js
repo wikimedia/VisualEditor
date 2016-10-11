@@ -315,6 +315,33 @@ QUnit.test( 'batchSplice', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'batchPush', function ( assert ) {
+	var i, actual, actualRet,
+		bigArr = [];
+
+	actual = [];
+	actualRet = ve.batchPush( actual, [ 1, 2, 3 ] );
+	assert.deepEqual( actualRet, 3, 'Adding to an empty array: return' );
+	assert.deepEqual( actual, [ 1, 2, 3 ], 'Adding to an empty array: value' );
+
+	actual = [ 1 ];
+	actualRet = ve.batchPush( actual, [ 1, 2, 3 ] );
+	assert.deepEqual( actualRet, 4, 'Adding to a non-empty array: return' );
+	assert.deepEqual( actual, [ 1, 1, 2, 3 ], 'Adding to a non-empty array: value' );
+
+	// batchPush takes a separate codepath for really long arrays, make sure it's behaving similarly:
+
+	for ( i = 0; i < 2100; i++ ) {
+		bigArr[ i ] = i;
+	}
+
+	actual = [ 'a' ];
+	actualRet = ve.batchPush( actual, bigArr );
+	assert.deepEqual( actualRet, 2101, 'Adding a huge array: return' );
+	assert.deepEqual( actual[ 0 ], 'a', 'Adding a huge array: first value' );
+	assert.deepEqual( actual[ actual.length - 1 ], 2099, 'Adding a huge array: last value' );
+} );
+
 QUnit.test( 'insertIntoArray', 3, function ( assert ) {
 	var target;
 
