@@ -63,6 +63,97 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	view.destroy();
 };
 
+ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, store, reuseView, msg ) {
+	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent,
+		layout = $.client.profile().layout,
+		e = {},
+		view = typeof htmlOrView === 'string' ?
+			ve.test.utils.createSurfaceViewFromHtml( htmlOrView ) :
+			htmlOrView,
+		model = view.getModel(),
+		doc = model.getDocument();
+
+	function summary( el ) {
+		return ve.getDomElementSummary( el, true );
+	}
+
+	function getLayoutSpecific( expected ) {
+		if ( $.isPlainObject( expected ) && !expected.type ) {
+			return expected[ layout ] || expected.default;
+		}
+		return expected;
+	}
+
+	// Paste sequence
+	if ( internalSourceRangeOrSelection ) {
+		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), internalSourceRangeOrSelection ) );
+		testEvent = new ve.test.utils.TestEvent();
+		view.onCopy( testEvent );
+	} else {
+		if ( useClipboardData ) {
+			e[ 'text/html' ] = pasteHtml;
+			e[ 'text/xcustom' ] = 'useClipboardData-0';
+		} else if ( fromVe ) {
+			e[ 'text/html' ] = pasteHtml;
+			e[ 'text/xcustom' ] = '0.123-0';
+		}
+		testEvent = new ve.test.utils.TestEvent( e );
+	}
+	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
+	view.pasteSpecial = pasteSpecial;
+	view.beforePaste( testEvent );
+	if ( pasteTargetHtml ) {
+		view.$pasteTarget.html( pasteTargetHtml );
+	} else {
+		document.execCommand( 'insertHTML', false, pasteHtml );
+	}
+	view.afterPaste( testEvent );
+
+	if ( expectedOps ) {
+		expectedOps = getLayoutSpecific( expectedOps );
+		ops = [];
+		if ( model.getHistory().length ) {
+			txs = model.getHistory()[ 0 ].transactions;
+			for ( i = 0; i < txs.length; i++ ) {
+				txops = ve.copy( txs[ i ].getOperations() );
+				for ( j = 0; j < txops.length; j++ ) {
+					if ( txops[ j ].remove ) {
+						ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
+						ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
+					}
+					if ( txops[ j ].insert ) {
+						ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore() );
+						ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
+					}
+				}
+				ops.push( txops );
+			}
+		}
+		assert.equalLinearData( ops, expectedOps, msg + ': data' );
+		if ( store ) {
+			for ( i in store ) {
+				assert.deepEqual( doc.getStore().value( i ).map( summary ), store[ i ].map( summary ), ': store value ' + i );
+			}
+		}
+	}
+	if ( expectedRangeOrSelection ) {
+		expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), getLayoutSpecific( expectedRangeOrSelection ) );
+		assert.equalHash( model.getSelection(), expectedSelection, msg +  ': selection' );
+	}
+	if ( expectedHtml ) {
+		htmlDoc = ve.dm.converter.getDomFromModel( doc );
+		assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
+	}
+	if ( reuseView ) {
+		while ( model.hasBeenModified() ) {
+			model.undo();
+		}
+		model.truncateUndoStack();
+	} else {
+		view.destroy();
+	}
+};
+
 ve.test.utils.TestEvent = function TestEvent( data ) {
 	data = data || {};
 	this.originalEvent = {
@@ -1326,7 +1417,6 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	var i,
-		layout = $.client.profile().layout,
 		expected = 0,
 		exampleDoc = '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table><p><b>Quux</b></p>',
 		exampleSurface = ve.test.utils.createSurfaceViewFromHtml( exampleDoc ),
@@ -2535,15 +2625,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Paste paragraphs and a table into table cell'
 			},
 			{
-				documentHtml: '<p></p>',
-				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: '<img src="null" id="mwAB"><img src="null" id="useful">',
-				fromVe: true,
-				expectedRangeOrSelection: new ve.Range( 5 ),
-				expectedHtml: '<p><img src="null"><img src="null" id="useful"></p>',
-				msg: 'Parsoid IDs stripped'
-			},
-			{
 				rangeOrSelection: new ve.Range( 0 ),
 				pasteHtml: '<ul><li>A</li><ul><li>B</li></ul></ul>',
 				expectedRangeOrSelection: new ve.Range( 14 ),
@@ -2674,100 +2755,13 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	}
 	QUnit.expect( expected );
 
-	function testRunner( documentHtml, pasteHtml, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, store, msg ) {
-		var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent,
-			e = {},
-			view = documentHtml ? ve.test.utils.createSurfaceViewFromHtml( documentHtml ) : exampleSurface,
-			model = view.getModel(),
-			doc = model.getDocument();
-
-		function summary( el ) {
-			return ve.getDomElementSummary( el, true );
-		}
-
-		function getLayoutSpecific( expected ) {
-			if ( $.isPlainObject( expected ) && !expected.type ) {
-				return expected[ layout ] || expected.default;
-			}
-			return expected;
-		}
-
-		// Paste sequence
-		if ( internalSourceRangeOrSelection ) {
-			model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), internalSourceRangeOrSelection ) );
-			testEvent = new ve.test.utils.TestEvent();
-			view.onCopy( testEvent );
-		} else {
-			if ( useClipboardData ) {
-				e[ 'text/html' ] = pasteHtml;
-				e[ 'text/xcustom' ] = 'useClipboardData-0';
-			} else if ( fromVe ) {
-				e[ 'text/html' ] = pasteHtml;
-				e[ 'text/xcustom' ] = '0.123-0';
-			}
-			testEvent = new ve.test.utils.TestEvent( e );
-		}
-		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
-		view.pasteSpecial = pasteSpecial;
-		view.beforePaste( testEvent );
-		if ( pasteTargetHtml ) {
-			view.$pasteTarget.html( pasteTargetHtml );
-		} else {
-			document.execCommand( 'insertHTML', false, pasteHtml );
-		}
-		view.afterPaste( testEvent );
-
-		if ( expectedOps ) {
-			expectedOps = getLayoutSpecific( expectedOps );
-			ops = [];
-			if ( model.getHistory().length ) {
-				txs = model.getHistory()[ 0 ].transactions;
-				for ( i = 0; i < txs.length; i++ ) {
-					txops = ve.copy( txs[ i ].getOperations() );
-					for ( j = 0; j < txops.length; j++ ) {
-						if ( txops[ j ].remove ) {
-							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
-						}
-						if ( txops[ j ].insert ) {
-							ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
-						}
-					}
-					ops.push( txops );
-				}
-			}
-			assert.equalLinearData( ops, expectedOps, msg + ': data' );
-			if ( store ) {
-				for ( i in store ) {
-					assert.deepEqual( doc.getStore().value( i ).map( summary ), store[ i ].map( summary ), ': store value ' + i );
-				}
-			}
-		}
-		if ( expectedRangeOrSelection ) {
-			expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), getLayoutSpecific( expectedRangeOrSelection ) );
-			assert.equalHash( model.getSelection(), expectedSelection, msg +  ': selection' );
-		}
-		if ( expectedHtml ) {
-			htmlDoc = ve.dm.converter.getDomFromModel( doc );
-			assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
-		}
-		if ( view === exampleSurface ) {
-			while ( model.hasBeenModified() ) {
-				model.undo();
-			}
-			model.truncateUndoStack();
-		} else {
-			view.destroy();
-		}
-	}
-
 	for ( i = 0; i < cases.length; i++ ) {
-		testRunner(
-			cases[ i ].documentHtml, cases[ i ].pasteHtml, cases[ i ].internalSourceRangeOrSelection, cases[ i ].fromVe, cases[ i ].useClipboardData,
+		ve.test.utils.runSurfacePasteTest(
+			assert, cases[ i ].documentHtml || exampleSurface,
+			cases[ i ].pasteHtml, cases[ i ].internalSourceRangeOrSelection, cases[ i ].fromVe, cases[ i ].useClipboardData,
 			cases[ i ].pasteTargetHtml, cases[ i ].rangeOrSelection, cases[ i ].pasteSpecial,
 			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection, cases[ i ].expectedHtml,
-			cases[ i ].store, cases[ i ].msg
+			cases[ i ].store, !cases[ i ].documentHtml, cases[ i ].msg
 		);
 	}
 

@@ -1877,6 +1877,7 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		context, left, right, contextRange, pastedText, handled,
 		tableAction,
 		items = [],
+		metadataIdRegExp = ve.init.platform.getMetadataIdRegExp(),
 		importantElement = '[id],[typeof],[rel]',
 		importRules = !this.pasteSpecial ? this.getSurface().getImportRules() : { all: { plainText: true, keepEmptyContentBranches: true } },
 		beforePasteData = this.beforePasteData || {},
@@ -1947,13 +1948,14 @@ ve.ce.Surface.prototype.afterPaste = function ( e ) {
 		// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
 		this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
 
-		// FIXME T126044: Remove Parsoid IDs
-		this.$pasteTarget.find( '[id]' ).each( function () {
-			var $this = $( this );
-			if ( $this.attr( 'id' ).match( /^mw[\w-]{2,}$/ ) ) {
-				$this.removeAttr( 'id' );
-			}
-		} );
+		if ( metadataIdRegExp ) {
+			this.$pasteTarget.find( '[id]' ).each( function () {
+				var $this = $( this );
+				if ( $this.attr( 'id' ).match( metadataIdRegExp ) ) {
+					$this.removeAttr( 'id' );
+				}
+			} );
+		}
 
 		// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
 		this.$pasteTarget.find( 'span' ).each( function () {

@@ -102,21 +102,28 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
 };
 
 /**
- * FIXME T126037: This method strips data-parsoid & Parsoid IDs from HTML attributes for comparisons.
+ * FIXME T126037: This method strips data-parsoid & RESTBase IDs from HTML attributes for comparisons.
  *
  * This should be removed once similar annotation merging is handled correctly
  * by Parsoid.
  *
- * @return {Object} An object all HTML attributes except data-parsoid & Parsoid IDs
+ * @return {Object} An object all HTML attributes except data-parsoid & RESTBase IDs
  */
 ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
-	var comparableAttributes, domElements = this.store && this.getOriginalDomElements( this.store );
+	var comparableAttributes, metadataIdRegExp,
+		domElements = this.store && this.getOriginalDomElements( this.store );
+
 	if ( domElements && domElements[ 0 ] ) {
 		comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
 		delete comparableAttributes[ 'data-parsoid' ];
-		if ( comparableAttributes.id && comparableAttributes.id.match( /^mw[\w-]{2,}$/ ) ) {
-			delete comparableAttributes.id;
+
+		if ( comparableAttributes.id ) {
+			metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
+			if ( metadataIdRegExp && comparableAttributes.id.match( metadataIdRegExp ) ) {
+				delete comparableAttributes.id;
+			}
 		}
+
 		return comparableAttributes;
 	}
 	return {};
