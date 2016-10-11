@@ -1332,6 +1332,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 		exampleSurface = ve.test.utils.createSurfaceViewFromHtml( exampleDoc ),
 		docLen = 30,
 		bold = ve.dm.example.bold,
+		italic = ve.dm.example.italic,
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -1427,30 +1428,38 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 25 },
 						{
 							type: 'replace',
-							insert: [ 'F', 'o', 'o' ],
+							insert: [
+								[ 'F', [ bold ] ],
+								[ 'o', [ bold ] ],
+								[ 'o', [ bold ] ]
+							],
 							remove: []
-						},
-						{ type: 'retain', length: docLen - 25 }
-					],
-					[
-						{ type: 'retain', length: 25 },
-						{
-							type: 'annotate',
-							method: 'set',
-							bias: 'start',
-							index: ve.dm.example.annIndex( 'b', 'Quux' )
-						},
-						{ type: 'retain', length: 3 },
-						{
-							type: 'annotate',
-							method: 'set',
-							bias: 'stop',
-							index: ve.dm.example.annIndex( 'b', 'Quux' )
 						},
 						{ type: 'retain', length: docLen - 25 }
 					]
 				],
 				msg: 'External text into annotated content'
+			},
+			{
+				rangeOrSelection: new ve.Range( 25 ),
+				pasteHtml: '<i>Foo</i>',
+				expectedRangeOrSelection: new ve.Range( 28 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 25 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'F', [ bold, italic ] ],
+								[ 'o', [ bold, italic ] ],
+								[ 'o', [ bold, italic ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 25 }
+					]
+				],
+				msg: 'Formatted text into annotated content'
 			},
 			{
 				rangeOrSelection: new ve.Range( 23, 27 ),
@@ -1475,25 +1484,12 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 23 },
 						{
 							type: 'replace',
-							insert: [ 'F', 'o', 'o' ],
+							insert: [
+								[ 'F', [ bold ] ],
+								[ 'o', [ bold ] ],
+								[ 'o', [ bold ] ]
+							],
 							remove: []
-						},
-						{ type: 'retain', length: docLen - 27 }
-					],
-					[
-						{ type: 'retain', length: 23 },
-						{
-							type: 'annotate',
-							method: 'set',
-							bias: 'start',
-							index: ve.dm.example.annIndex( 'b', 'Quux' )
-						},
-						{ type: 'retain', length: 3 },
-						{
-							type: 'annotate',
-							method: 'set',
-							bias: 'stop',
-							index: ve.dm.example.annIndex( 'b', 'Quux' )
 						},
 						{ type: 'retain', length: docLen - 27 }
 					]

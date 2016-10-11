@@ -803,7 +803,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		if ( annotate && !annotations ) {
 			// TODO T126021: Don't reach into properties of document
 			// FIXME T126022: the logic we actually need for annotating inserted content
-			// correctly is MUCH more complicated
+			// correctly is much more complicated
 			annotations = doc.data
 				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 		}
@@ -851,7 +851,7 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange, annotate ) {
-	var tx, newRange, annotations, offset,
+	var tx, newRange, annotations, offset, i, iLen, item, annotatedData, annotatedDoc,
 		range = this.getSelection().getCoveringRange(),
 		doc = this.getDocument();
 
@@ -871,23 +871,45 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 	offset = range.start;
 	if ( annotate && !annotations ) {
 		// TODO T126021: Don't reach into properties of document
-		// FIXME T126022: the logic we actually need for annotating inserted content
-		// correctly is MUCH more complicated
 		annotations = doc.data
 			.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 	}
 
-	tx = ve.dm.Transaction.newFromDocumentInsertion( doc, offset, newDoc, newDocRange );
+	if ( !annotations || annotations.getLength() === 0 ) {
+		annotatedDoc = newDoc;
+	} else {
+		// Build shallow-cloned annotatedData array, copying on write as we go
+		annotatedData = newDoc.data.slice();
+		for ( i = 0, iLen = newDoc.data.getLength(); i < iLen; i++ ) {
+			item = annotatedData[ i ];
+			// Insert surrounding annotations below newDoc annotations
+			// FIXME T126022: the logic we actually need for annotating inserted
+			// content correctly is MUCH more complicated
+			if ( ve.dm.LinearData.static.isOpenElementData( item ) ) {
+				item = annotatedData[ i ] = ve.copy( item );
+				item.annotations = annotations.storeIndexes.concat( item.annotations );
+			} else if ( ve.dm.LinearData.static.isCloseElementData( item ) ) {
+				annotatedData[ i ] = ve.copy( item );
+			} else if ( Array.isArray( item ) ) {
+				annotatedData[ i ] = [
+					item[ 0 ],
+					annotations.storeIndexes.concat( item[ 1 ] )
+				];
+			} else if ( typeof item === 'string' ) {
+				annotatedData[ i ] = [ item, annotations.storeIndexes.slice() ];
+			} else {
+				throw new Error( 'Unknown item type' );
+			}
+		}
+		annotatedDoc = newDoc.cloneWithData( annotatedData );
+	}
+	tx = ve.dm.Transaction.newFromDocumentInsertion( doc, offset, annotatedDoc, newDocRange );
 	if ( !tx.isNoOp() ) {
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
 		newRange = tx.getModifiedRange( doc );
 		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
-		if ( annotations && annotations.getLength() > 0 ) {
-			this.annotateContent( 'set', annotations );
-		}
 	}
-
 	return this;
 };
 
