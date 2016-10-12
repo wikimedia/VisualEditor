@@ -596,13 +596,13 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
  * Clone a sub-document from a range in this document. The new document's elements, store and internal list
  * will be clones of the ones in this document.
  *
- * @param {ve.Range} range Range of data to clone
+ * @param {ve.Range} [range] Range of data to clone, clones the whole document if ommitted.
  * @return {ve.dm.Document} New document
  */
 ve.dm.Document.prototype.cloneFromRange = function ( range ) {
 	var listRange = this.getInternalList().getListNode().getOuterRange(),
 		data = ve.copy( this.getFullData( range, true ) );
-	if ( range.start > listRange.start || range.end < listRange.end ) {
+	if ( range && ( range.start > listRange.start || range.end < listRange.end ) ) {
 		// The range does not include the entire internal list, so add it
 		data = data.concat( this.getFullData( listRange ) );
 	}

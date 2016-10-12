@@ -95,6 +95,12 @@ QUnit.test( 'cloneFromRange', function ( assert ) {
 	var i, doc2, doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		cases = [
 			{
+				msg: 'range undefined',
+				doc: 'internalData',
+				range: undefined,
+				expectedData: doc.data.slice()
+			},
+			{
 				msg: 'first internal item',
 				doc: 'internalData',
 				range: new ve.Range( 7, 12 ),
