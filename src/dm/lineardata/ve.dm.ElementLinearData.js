@@ -1126,6 +1126,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			if (
 				!rules.keepEmptyContentBranches &&
 				i > 0 && !isOpen && this.isOpenElementData( i - 1 ) &&
+				!ve.getProp( this.getData( i - 1 ), 'internal', 'generated' ) &&
 				canContainContent
 			) {
 				this.splice( i - 1, 2 );

@@ -1623,6 +1623,20 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Empty content nodes are stripped'
 			},
 			{
+				html: '<ul><li></li></ul>',
+				data: [
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph', internal: { generated: 'empty' } },
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				msg: 'Empty, but generated, content nodes are preserved'
+			},
+			{
 				html: '<div>Foo</div>',
 				data: [
 					{ type: 'paragraph' },
