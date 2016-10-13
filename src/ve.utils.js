@@ -224,7 +224,7 @@ ve.supportsSplice = ( function () {
  * Includes a replacement for broken implementations of Array.prototype.splice().
  *
  * @param {Array|ve.dm.BranchNode} arr Target object (must have `splice` method, object will be modified)
- * @param {number} offset Offset in arr to splice at. This may NOT be negative, unlike the
+ * @param {number} offset Offset in arr to splice at. This MUST NOT be negative, unlike the
  *  'index' parameter in Array#splice.
  * @param {number} remove Number of elements to remove at the offset. May be zero
  * @param {Array} data Array of items to insert at the offset. Must be non-empty if remove=0
@@ -283,6 +283,56 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 		index += batchSize;
 		toRemove = 0;
 	}
+	return removed;
+};
+
+/**
+ * Splice one array into another, replicating any holes
+ *
+ * Similar to arr.splice.apply( arr, [ offset, remove ].concat( data ) ), except holes in
+ * data remain holes in arr. Optimized for length changes that are negative, zero, or
+ * fairly small positive.
+ *
+ * @param {Array} arr Array to modify
+ * @param {number} offset Offset in arr to splice at. This MUST NOT be negative, unlike the
+ *  'index' parameter in Array#splice.
+ * @param {number} remove Number of elements to remove at the offset. May be zero
+ * @param {Array} data Array of items to insert at the offset
+ * @return {Array} Array of items removed, with holes preserved
+ */
+ve.sparseSplice = function ( arr, offset, remove, data ) {
+	var i,
+		removed = [],
+		endOffset = offset + remove,
+		diff = data.length - remove;
+	if ( data === arr ) {
+		// Pathological case: arr and data are reference-identical
+		data = data.slice();
+	}
+	// Remove content without adjusting length
+	arr.slice( offset, endOffset ).forEach( function ( item, i ) {
+		removed[ i ] = item;
+		delete arr[ offset + i ];
+	} );
+	// Adjust length
+	if ( diff > 0 ) {
+		// Grow with undefined values, then delete. (This is optimised for diff
+		// comparatively small: otherwise, it would sometimes be quicker to relocate
+		// each element of arr that lies above offset).
+		ve.batchSplice( arr, endOffset, 0, new Array( diff ) );
+		for ( i = endOffset + diff - 1; i >= endOffset; i-- ) {
+			delete arr[ i ];
+		}
+	} else if ( diff < 0 ) {
+		// Shrink
+		arr.splice( offset, -diff );
+	}
+	// Insert new content
+	data.forEach( function ( item, i ) {
+		arr[ offset + i ] = item;
+	} );
+	// Set removed.length in case there are holes at the end
+	removed.length = remove;
 	return removed;
 };
 

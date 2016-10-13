@@ -266,6 +266,78 @@ QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
 	);
 } );
 
+QUnit.test( 'sparseSplice', function ( assert ) {
+	var tests, i, len, test;
+	// Convert a sparse array of primitives to an array of strings, with '' for holes.
+	// This is needed because QUnit.equiv treats holes as equivalent to undefined.
+	function mapToString( flatArray ) {
+		var j, jLen,
+			strings = [];
+		for ( j = 0, jLen = flatArray.length; j < jLen; j++ ) {
+			strings.push( flatArray.hasOwnProperty( j ) ? String( flatArray[ j ] ) : '' );
+		}
+		return strings;
+	}
+	function runTest( arr, offset, remove, data, expectedReturn, expectedArray, msg ) {
+		var observedReturn,
+			testArr = arr.slice();
+
+		observedReturn = ve.sparseSplice( testArr, offset, remove, data );
+		assert.deepEqual(
+			mapToString( observedReturn ),
+			mapToString( expectedReturn ),
+			msg + ': return'
+		);
+		assert.deepEqual(
+			mapToString( testArr ),
+			mapToString( expectedArray ),
+			msg + ': modification'
+		);
+	}
+	tests =	[
+		/*jshint elision:true */
+		// jscs:disable disallowTrailingComma
+		// jscs:disable disallowSpaceBeforeBinaryOperators
+		// arr, offset, remove, data, expectedReturn, expectedArray, msg
+		[ [], 0, 0, [ , 3 ], [], [ , 3 ], 'insert empty, leading hole' ],
+		[ [], 0, 0, [ 1, , 3 ], [], [ 1, , 3 ], 'insert empty, middle hole' ],
+		// Note: the first trailing comma does not create a hole
+		[ [], 0, 0, [ 1, , ], [], [ 1, , ], 'insert empty, trailing hole' ],
+		[ [ 4, , 5 ], 0, 0, [ 1, , 3 ], [], [ 1, , 3, 4, , 5 ], 'insert start' ],
+		[ [ 0, , 4 ], 1, 0, [ 1, , 3 ], [], [ 0, 1, , 3, , 4 ], 'insert mid' ],
+		[ [ 0, , 4 ], 3, 0, [ 1, , 3 ], [], [ 0, , 4, 1, , 3 ], 'insert end' ],
+
+		[ [ 4, , 5, , 6 ], 0, 4, [ 1, , 3 ], [ 4, , 5, , ], [ 1, , 3, 6 ], 'diff<0 start' ],
+		[ [ 4, , , 5, , 6 ], 1, 4, [ 1, , 3 ], [ , , 5, , ], [ 4, 1, , 3, 6 ], 'diff<0 mid' ],
+		[ [ 4, , 5, , 6 ], 1, 4, [ 1, , 3 ], [ , 5, , 6 ], [ 4, 1, , 3 ], 'diff<0 end' ],
+
+		[ [ 4, , 5, , 6 ], 0, 2, [ 1, , 3 ], [ 4, , ], [ 1, , 3, 5, , 6 ], 'diff>0 start' ],
+		[ [ 4, , 5, , 6 ], 1, 2, [ 1, , 3 ], [ , 5 ], [ 4, 1, , 3, , 6 ], 'diff>0 mid' ],
+		[ [ 4, , 5, , 6 ], 3, 2, [ 1, , 3 ], [ , 6 ], [ 4, , 5, 1, , 3 ], 'diff>0 end' ],
+
+		[ [ 4, , 5, , 6 ], 0, 3, [ 1, , 3 ], [ 4, , 5 ], [ 1, , 3, , 6 ], 'diff=0 start' ],
+		[ [ 4, , 5, , 6 ], 1, 3, [ 1, , 3 ], [ , 5, , ], [ 4, 1, , 3, 6 ], 'diff=0 mid' ],
+		[ [ 4, , 5, , 6 ], 2, 3, [ 1, , 3 ], [ 5, , 6 ], [ 4, , 1, , 3 ], 'diff=0 end' ]
+		// jscs:enable disallowSpaceBeforeBinaryOperators
+		// jscs:enable disallowTrailingComma
+		/*jshint elision:false */
+	];
+	QUnit.expect( 2 * tests.length + 1 );
+	assert.notDeepEqual(
+		/*jshint elision:true */
+		// jscs:disable disallowTrailingComma
+		mapToString( [ 1, , ] ),
+		// jscs:enable disallowTrailingComma
+		/*jshint elision:false */
+		mapToString( [ 1, undefined ] ),
+		'holes look different to undefined'
+	);
+	for ( i = 0, len = tests.length; i < len; i++ ) {
+		test = tests[ i ];
+		runTest.apply( null, test );
+	}
+} );
+
 QUnit.test( 'batchSplice', function ( assert ) {
 	var spliceWasSupported = ve.supportsSplice;
 
