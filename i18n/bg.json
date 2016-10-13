@@ -7,12 +7,13 @@
 			"Aquilax",
 			"V111P",
 			"Лорд Бъмбъри",
-			"StanProg"
+			"StanProg",
+			"Vodnokon4e"
 		]
 	},
 	"visualeditor": "Визуален редактор",
 	"visualeditor-aliencontextitem-title": "Елемент",
-	"visualeditor-aliennode-tooltip": "Съжаляваме, този елемент може да бъде редактиран само посредством редактиране на кода засега.",
+	"visualeditor-aliennode-tooltip": "Съжаляваме, засега този елемент може да се редактира само в изходен режим.",
 	"visualeditor-align-widget-center": "Центриране",
 	"visualeditor-align-widget-left": "Наляво",
 	"visualeditor-align-widget-right": "Надясно",
