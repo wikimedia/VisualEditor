@@ -131,7 +131,8 @@ ve.init.Platform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = null;
  * Get a regular expression that matches IDs used only for linking document
  * data to metadata. Use null if your document format does not have such IDs.
  *
- * @property {RegExp|null} Regular expression object
+ * @method
+ * @return {RegExp|null} Regular expression object
  */
 ve.init.Platform.prototype.getMetadataIdRegExp = function () {
 	return null;
