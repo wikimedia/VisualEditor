@@ -271,7 +271,9 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			if ( !remove ) {
 				if ( data.action !== 'done' ) {
 					surfaceModel.popStaging();
-					surfaceModel.setSelection( this.previousSelection );
+					if ( this.previousSelection ) {
+						surfaceModel.setSelection( this.previousSelection );
+					}
 					return;
 				}
 				if ( this.initialSelection.isCollapsed() ) {
