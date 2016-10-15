@@ -1637,6 +1637,20 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Empty, but generated, content nodes are preserved'
 			},
 			{
+				html: '<ul><li><br></li></ul>',
+				data: [
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } },
+					{ type: '/paragraph' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				msg: 'Line breaks in wrapper paragraphs are discarded'
+			},
+			{
 				html: '<div>Foo</div>',
 				data: [
 					{ type: 'paragraph' },
