@@ -7,6 +7,9 @@
 .ve-ui-progressDialog-row {
 	display: table;
 	width: 100%;
+}
+
+.ve-ui-progressDialog-row:not( :last-child ) {
 	margin-bottom: 1em;
 }
 
