@@ -5,7 +5,8 @@
 			"Lloffiwr",
 			"Robin Owain",
 			"ОйЛ",
-			"DChan (WMF)"
+			"DChan (WMF)",
+			"Ed g2s"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -15,11 +16,13 @@
 	"visualeditor-align-widget-left": "Chwith",
 	"visualeditor-align-widget-right": "De",
 	"visualeditor-alignablecontextitem-title": "Alinio",
+	"visualeditor-annotationbutton-big-tooltip": "Mawr",
 	"visualeditor-annotationbutton-bold-tooltip": "Trwm",
 	"visualeditor-annotationbutton-code-tooltip": "Cod cyfrifiadurol",
 	"visualeditor-annotationbutton-italic-tooltip": "Italig",
 	"visualeditor-annotationbutton-language-tooltip": "Iaith",
 	"visualeditor-annotationbutton-link-tooltip": "Dolen",
+	"visualeditor-annotationbutton-small-tooltip": "Bach",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Llinell drwodd",
 	"visualeditor-annotationbutton-subscript-tooltip": "Isysgrif",
 	"visualeditor-annotationbutton-superscript-tooltip": "Uwchysgrif",
@@ -108,6 +111,7 @@
 	"visualeditor-table-contextitem-properties": "Priodweddau",
 	"visualeditor-table-delete-col": "Dileu’r {{PLURAL:$1|colofn|colofnau}}",
 	"visualeditor-table-delete-row": "Dileu’r {{PLURAL:$1|rhes|rhesi}}",
+	"visualeditor-table-insert-table": "Tabl",
 	"visualeditor-toolbar-format-tooltip": "Fformatio paragraff",
 	"visualeditor-toolbar-insert": "Mewnosod",
 	"visualeditor-toolbar-style-tooltip": "Arddull y testun",
