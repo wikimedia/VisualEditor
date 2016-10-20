@@ -1593,7 +1593,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: '/internalList' }
 				],
 				rules: { plainText: true },
-				msg: 'Headings converted to paragraph is plainText mode'
+				msg: 'Headings converted to paragraph in plainText mode'
 			},
 			{
 				html: '<h1>Bar</h1>',
