@@ -2464,7 +2464,7 @@ QUnit.test( 'isNoOp', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'toJSON/build with operations', function ( assert ) {
+QUnit.test( 'operations/build from operations', function ( assert ) {
 	var i, tx, ops,
 		doc = ve.dm.example.createExampleDocument(),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
@@ -2545,8 +2545,8 @@ QUnit.test( 'toJSON/build with operations', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 
 		tx = ve.dm.Transaction[ cases[ i ].method ].apply( ve.dm.Transaction, cases[ i ].args );
-		ops = JSON.parse( JSON.stringify( tx.toJSON() ) );
-		assert.deepEqual( ops, cases[ i ].expected, cases[ i ].msg + ': toJSON' );
+		ops = ve.copy( tx.operations );
+		assert.deepEqual( ops, cases[ i ].expected, cases[ i ].msg + ': operations' );
 		if ( cases[ i ].roundTripArgs ) {
 			tx = ve.dm.Transaction[ cases[ i ].method ].apply( ve.dm.Transaction, cases[ i ].roundTripArgs );
 		}

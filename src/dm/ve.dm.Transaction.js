@@ -25,6 +25,7 @@
 ve.dm.Transaction = function VeDmTransaction( operations ) {
 	this.operations = operations || [];
 	this.applied = false;
+	this.author = null;
 };
 
 /* Static Methods */
@@ -904,15 +905,6 @@ ve.dm.Transaction.rebaseTransactions = function ( transactionA, transactionB ) {
 /* Methods */
 
 /**
- * Get a serializable object describing the transaction
- *
- * @return {Object} Serializable object
- */
-ve.dm.Transaction.prototype.toJSON = function () {
-	return this.operations;
-};
-
-/**
  * Create a clone of this transaction.
  *
  * The returned transaction will be exactly the same as this one, except that its 'applied' flag
@@ -924,6 +916,7 @@ ve.dm.Transaction.prototype.toJSON = function () {
 ve.dm.Transaction.prototype.clone = function () {
 	var tx = new this.constructor();
 	tx.operations = ve.copy( this.operations );
+	tx.author = this.author;
 	return tx;
 };
 
@@ -951,6 +944,7 @@ ve.dm.Transaction.prototype.reversed = function () {
 		}
 		tx.operations.push( newOp );
 	}
+	tx.author = this.author;
 	return tx;
 };
 
