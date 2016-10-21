@@ -5,11 +5,22 @@
  */
 
 /**
- * DataModel transaction.
+ * Transaction on ve.dm.ElementLinearData, preserving ve.dm.Document tree validity
+ *
+ * A transaction represents a mapping on ve.dm.ElementLinearData, from one state (the start
+ * state) to another (the end state). The transaction is guaranteed not to break tree validity:
+ * if the start state represents a syntactically valid ve.dm.Document tree (without unbalanced
+ * tags, bare listItems, bare table cells etc), then the end state tree must be syntactically
+ * valid too.
+ *
+ * A transaction is comprised of a list of operations, which must preserve tree validity as a
+ * whole, though each individual operation may not. For example, a DivNode wrapping can be
+ * removed by one operation removing the 'div' and another removing the '/div'.  The
+ * ve.dm.Transaction.newFrom* methods help build transactions that preserve tree validity.
  *
  * @class
  * @constructor
- * @param {Object[]} [operations] The operations comprising this transaction; default []
+ * @param {Object[]} [operations] Operations preserving tree validity as a whole; default []
  */
 ve.dm.Transaction = function VeDmTransaction( operations ) {
 	this.operations = operations || [];
@@ -738,6 +749,156 @@ ve.dm.Transaction.reversers = {
 		removeMetadata: 'insertMetadata'
 	},
 	replaceMetadata: { insert: 'remove', remove: 'insert' } // swap .insert with .remove
+};
+
+/**
+ * Rebase parallel transactions transactionA and transactionB onto each other
+ *
+ * Recalling that a transaction is a mapping from one ve.dm.ElementLinearData state to another,
+ * suppose we have two parallel transactions, i.e.:
+ *
+ * - transactionA mapping docstate0 to some docstateA, and
+ * - transactionB mapping docstate0 to some docstateB .
+ *
+ * Then we want rebasing to give us two new transactions:
+ *
+ * - aRebasedOntoB mapping docstateB to some docstateC, and
+ * - bRebasedOntoA mapping docstateA to docstateC ,
+ *
+ * so that applying transactionA then bRebasedOntoA results in the same document state as
+ * applying transactionB then aRebasedOntoB .
+ *
+ * However, it is useful to regard some transaction pairs as "conflicting" or unrebasable. In
+ * this implementation, transactions are considered to conflict if they have active ranges that
+ * overlap, where a transaction's "active range" means the smallest single range in the *start*
+ * document outside which the contents are unchanged by the transaction. (In practice the
+ * operations within the transaction actually specify which ranges map to where, giving a
+ * natural and unambiguous definition of "active range". Also, the identity transaction on a
+ * document state has no active range but is trivially rebasable with any parallel
+ * transaction).
+ *
+ * For non-conflicting transactions, rebasing of each transaction is performed by resizing the
+ * inactive range either before or after the transaction to accommodate the length difference
+ * caused by the other transaction. There is ambiguity in the case where both transactions have
+ * a zero-length active range at the same position (i.e. two inserts in the same place); in this
+ * case, transactionA's insertion is put before transactionB's.
+ *
+ * It is impossible for rebasing defined this way to create an invalid transaction that breaks
+ * tree validity. This is clear because every position in the rebased transaction's active
+ * range has the same node ancestry as the corresponding position before the rebase (else a
+ * tag must have changed both before and after that position, contradicting the fact that the
+ * transactions' active ranges do not overlap).
+ *
+ * Also it is clear that for a pair of non-conflicting parallel transactions, applying either
+ * one followed by the other rebased will result in the same final document state, as required.
+ *
+ * @param {ve.dm.Transaction} transactionA Transaction A
+ * @param {ve.dm.Transaction} transactionB Transaction B, with the same document start state
+ * @return {Mixed[]} [ aRebasedOntoB, bRebasedOntoA ], or [ null, null ] if conflicting
+ */
+ve.dm.Transaction.rebaseTransactions = function ( transactionA, transactionB ) {
+	var infoA, infoB;
+	/**
+	 * Calculate a transaction's active range and length change
+	 *
+	 * @param {ve.dm.Transaction} transaction The transaction
+	 * @return {Object} Active range and length change
+	 * @return {number|undefined} return.start Start offset of the active range
+	 * @return {number|undefined} return.end End offset of the active range
+	 * @return {number} return.diff Length change the transaction causes
+	 */
+	function getActiveRangeAndLengthDiff( transaction ) {
+		var i, len, op, start, end, active,
+			offset = 0,
+			annotations = 0,
+			diff = 0;
+
+		for ( i = 0, len = transaction.operations.length; i < len; i++ ) {
+			op = transaction.operations[ i ];
+			if ( op.type === 'annotate' ) {
+				annotations += ( op.bias === 'start' ? 1 : -1 );
+				continue;
+			}
+			active = annotations > 0 || (
+				op.type !== 'retain' && op.type !== 'retainMetadata'
+			);
+			// Place start marker
+			if ( active && start === undefined ) {
+				start = offset;
+			}
+			// adjust offset and diff
+			if ( op.type === 'retain' ) {
+				offset += op.length;
+			} else if ( op.type === 'replace' ) {
+				offset += op.remove.length;
+				diff += op.insert.length - op.remove.length;
+			}
+			// Place/move end marker
+			if ( op.type === 'attribute' || op.type === 'replaceMetadata' ) {
+				// Op with length 0 but that effectively modifies 1 position
+				end = offset + 1;
+			} else if ( active ) {
+				end = offset;
+			}
+		}
+		return { start: start, end: end, diff: diff };
+	}
+
+	/**
+	 * Adjust (in place) the retain length at the start/end of an operations list
+	 *
+	 * @param {Object[]} ops Operations list
+	 * @param {string} place Where to adjust, start|end
+	 * @param {number} diff Adjustment; must not cause negative retain length
+	 */
+	function adjustRetain( ops, place, diff ) {
+		var start = place === 'start',
+			i = start ? 0 : ops.length - 1;
+
+		if ( diff === 0 ) {
+			return;
+		}
+		if ( !start && ops[ i ] && ops[ i ].type === 'retainMetadata' ) {
+			i = ops.length - 2;
+		}
+		if ( ops[ i ] && ops[ i ].type === 'retain' ) {
+			ops[ i ].length += diff;
+			if ( ops[ i ].length < 0 ) {
+				throw new Error( 'Negative retain length' );
+			} else if ( ops[ i ].length === 0 ) {
+				ops.splice( i, 1 );
+			}
+			return;
+		}
+		if ( diff < 0 ) {
+			throw new Error( 'Negative retain length' );
+		}
+		ops.splice( start ? 0 : ops.length, 0, { type: 'retain', length: diff } );
+	}
+
+	transactionA = transactionA.clone();
+	transactionB = transactionB.clone();
+	infoA = getActiveRangeAndLengthDiff( transactionA );
+	infoB = getActiveRangeAndLengthDiff( transactionB );
+
+	if ( infoA.start === undefined || infoB.start === undefined ) {
+		// One of the transactions is a no-op: only need to adjust its retain length.
+		// We can safely adjust both, because the no-op must have diff 0
+		adjustRetain( transactionA.operations, 'start', infoB.diff );
+		adjustRetain( transactionB.operations, 'start', infoA.diff );
+	} else if ( infoA.end <= infoB.start ) {
+		// This includes the case where both transactions are insertions at the same
+		// point
+		adjustRetain( transactionB.operations, 'start', infoA.diff );
+		adjustRetain( transactionA.operations, 'end', infoB.diff );
+	} else if ( infoB.end <= infoA.start ) {
+		adjustRetain( transactionA.operations, 'start', infoB.diff );
+		adjustRetain( transactionB.operations, 'end', infoA.diff );
+	} else {
+		// The active ranges overlap: conflict
+		return [ null, null ];
+	}
+	return [ transactionA, transactionB ];
 };
 
 /* Methods */
@@ -1528,4 +1689,23 @@ ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, 
 		offset = this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
 	}
 	return offset;
+};
+
+/**
+ * Rebase this transaction to be applicable after another one
+ *
+ * The returned transaction is equivalent to this, but with operation ranges remapped in
+ * accordance with the length changes made by other. If operations overlap with those in other,
+ * then a conflict is signalled by returning null.
+ *
+ * @param {ve.dm.Transaction} other Transaction acting on the same document state as this
+ * @param {boolean} [startmost] If ambiguous, operations from this come startmost (default: endmost)
+ * @return {ve.dm.Transaction|null} Rebased transaction, or null if changed ranges conflict
+ */
+ve.dm.Transaction.prototype.rebasedOnto = function ( other, startmost ) {
+	if ( startmost ) {
+		return this.constructor.rebaseTransactions( this, other )[ 0 ];
+	} else {
+		return this.constructor.rebaseTransactions( other, this )[ 1 ];
+	}
 };
