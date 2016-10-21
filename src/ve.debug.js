@@ -99,3 +99,50 @@ ve.serializeNodeDebug = function ( domNode ) {
 	add( domNode );
 	return html.join( '' );
 };
+
+/**
+ * Get a human-readable summary of a transaction
+ *
+ * @param {ve.dm.Transaction} tx A transaction
+ * @return {string} Human-readable summary
+ */
+ve.summarizeTransaction = function ( tx ) {
+	var annotations = 0;
+	function summarizeItems( items ) {
+		return '\'' + items.map( function ( item ) {
+			if ( item.type ) {
+				return '<' + item.type + '>';
+			} else if ( Array.isArray( item ) ) {
+				return item[ 0 ];
+			} else if ( typeof item === 'string' ) {
+				return item;
+			} else {
+				throw new Error( 'Unknown item type: ' + item );
+			}
+		} ).join( '' ) + '\'';
+	}
+	return '(' + tx.operations.map( function ( op ) {
+		if ( op.type === 'retain' ) {
+			return ( annotations ? 'annotate ' : 'retain ' ) + op.length;
+		} else if ( op.type === 'replace' ) {
+			if ( op.remove.length === 0 ) {
+				return 'insert ' + summarizeItems( op.insert );
+			} else if ( op.insert.length === 0 ) {
+				return 'remove ' + summarizeItems( op.remove );
+			} else {
+				return 'replace ' + summarizeItems( op.remove ) +
+					' -> ' + summarizeItems( op.insert );
+			}
+		} else if ( op.type === 'attribute' ) {
+			return 'attribute';
+		} else if ( op.type === 'annotate' ) {
+			annotations += op.bias === 'start' ? 1 : -1;
+			return 'annotate';
+		} else if ( op.type.endsWith( 'Metadata' ) ) {
+			// We don't care much because we're deprecating metadata ops
+			return 'metadata';
+		} else {
+			throw new Error( 'Unknown op type: ' + op.type );
+		}
+	} ).join( ', ' ) + ')';
+};
