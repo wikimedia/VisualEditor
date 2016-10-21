@@ -448,11 +448,11 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
  *
  * The new document's elements, internal list and store will only contain references to data within the slice.
  *
- * @param {ve.Range} range Range of data to slice
+ * @param {ve.Range} [range] Range of data to slice; defaults to whole document
  * @return {ve.dm.DocumentSlice} New document
  */
 ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
-	var i, first, last, firstNode, lastNode,
+	var listRange, i, first, last, firstNode, lastNode,
 		linearData, slice, originalRange, balancedRange,
 		balancedNodes, needsContext, contextElement, isContent,
 		startNode = this.getBranchNodeFromOffset( range.start ),
@@ -462,6 +462,10 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		balanceClosings = [],
 		contextOpenings = [],
 		contextClosings = [];
+
+	listRange = this.getInternalList().getListNode().getOuterRange();
+	// Default to the whole document (but excluding the internal list)
+	range = range || new ve.Range( 0, listRange.start );
 
 	// Fix up selection to remove empty items in unwrapped nodes
 	// TODO: fix this is selectNodes
@@ -582,7 +586,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 	// Copy over the internal list
 	ve.batchSplice(
 		linearData.data, linearData.getLength(), 0,
-		this.getData( this.getInternalList().getListNode().getOuterRange(), true )
+		this.getData( listRange, true )
 	);
 
 	// The internalList is rebuilt by the document constructor
