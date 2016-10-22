@@ -95,6 +95,18 @@ QUnit.test( 'breakpoint/undo/redo', 12, function ( assert ) {
 
 } );
 
+QUnit.test( 'range translation', 2, function ( assert ) {
+	var sel, range,
+		surface = new ve.dm.SurfaceStub( null, new ve.Range( 3 ) ),
+		doc = surface.getDocument(),
+		tx = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'x' ] );
+	surface.change( tx );
+	sel = surface.getSelection();
+	assert.ok( sel instanceof ve.dm.LinearSelection, 'Selection is linear' );
+	range = sel.getRange();
+	assert.deepEqual( { from: range.from, to: range.to }, { from: 3, to: 3 }, 'Cursor is unmoved' );
+} );
+
 QUnit.test( 'staging', 37, function ( assert ) {
 	var tx1, tx2,
 		surface = new ve.dm.SurfaceStub( null, new ve.Range( 1, 3 ) ),
