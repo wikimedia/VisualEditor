@@ -99,7 +99,7 @@ ve.dm.LinearSelection.prototype.isCollapsed = function () {
 /**
  * @inheritdoc
  */
-ve.dm.Selection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
+ve.dm.LinearSelection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
 	return new this.constructor( this.getDocument(), tx.translateRange( this.getRange(), excludeInsertion ) );
 };
 
