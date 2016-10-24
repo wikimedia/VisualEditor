@@ -11,7 +11,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		target = new ve.demo.target(),
 		hashChanging = false,
 
-		currentLang = $.i18n().locale,
+		currentLang = ve.init.platform.getUserLanguages()[ 0 ],
 		currentDir = target.$element.css( 'direction' ) || 'ltr',
 		device = ve.demo.target === ve.init.sa.DesktopTarget ? 'desktop' : 'mobile',
 
@@ -69,7 +69,6 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 	languageInput.setLangAndDir( currentLang, currentDir );
 	// Dir doesn't change on init but styles need to be set
 	updateStylesFromDir();
-	target.$element.attr( 'lang', currentLang );
 
 	languageInput.on( 'change', function ( lang, dir ) {
 		if ( dir === currentDir && lang !== 'qqx' && ve.availableLanguages.indexOf( lang ) === -1 ) {
