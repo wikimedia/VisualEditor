@@ -136,6 +136,7 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 	} );
 };
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Sets the annotation value.
  *

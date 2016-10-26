@@ -4,6 +4,9 @@
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+// HACK: eslint valid-jsdoc doesn't yet support @chainable: https://github.com/eslint/eslint/issues/6681
+/* eslint-disable valid-jsdoc */
+
 /**
  * DataModel surface fragment.
  *

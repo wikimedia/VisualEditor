@@ -124,6 +124,8 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 	this.afterLoopTimeoutId = null;
 };
 
+/* eslint-disable valid-jsdoc */
+
 /**
  * Attach to a node, to listen to its jQuery events
  *

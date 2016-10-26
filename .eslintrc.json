@@ -15,7 +15,6 @@
 	},
 	"rules": {
 		"dot-notation": 0,
-		"valid-jsdoc": 0,
 		"wrap-iife": 0,
 		"no-console": "error",
 		"spaced-comment": ["error", "always", { "exceptions": ["*", "!"] }]
