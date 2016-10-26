@@ -69,7 +69,7 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 		// If appropriate, step into first child and loop
 		// If no next sibling, step out until there is (breaking if we leave element)
 		// Step to next sibling and loop
-		// jscs:disable disallowEmptyBlocks
+		// jscs:disable disallowEmptyBlocks (awaiting eslint replacement; T149266)
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			add( node.data.replace( /\u00A0/g, ' ' ) );
 		} else if (
