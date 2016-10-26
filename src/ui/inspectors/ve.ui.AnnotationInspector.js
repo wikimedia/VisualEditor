@@ -158,6 +158,7 @@ ve.ui.AnnotationInspector.prototype.getMode = function () {
  * @method
  * @param {Object} [data] Inspector opening data
  * @param {boolean} [data.noExpand] Don't expand the selection when opening
+ * @return {OO.ui.Process}
  */
 ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )

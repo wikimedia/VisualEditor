@@ -54,6 +54,7 @@ ve.dm.TransactionProcessor.processors = {};
  * Get the next operation.
  *
  * @method
+ * @return {Object|boolean} The next operation, or false if there isn't one
  */
 ve.dm.TransactionProcessor.prototype.nextOperation = function () {
 	return this.operations[ this.operationIndex++ ] || false;

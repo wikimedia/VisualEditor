@@ -170,6 +170,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
  * Wrap a key (as provided by a Trigger) in a node, for display
  *
  * @static
+ * @param {string} key Key to display
  * @return {jQuery} A kbd wrapping the key text
  */
 ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {

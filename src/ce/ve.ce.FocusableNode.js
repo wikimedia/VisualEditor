@@ -311,7 +311,7 @@ ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
 ve.ce.FocusableNode.prototype.executeCommand = function () {
 	var command, surface;
 	if ( !this.model.isInspectable() ) {
-		return false;
+		return;
 	}
 	surface = this.focusableSurface.getSurface();
 	command = surface.commandRegistry.getCommandForNode( this );

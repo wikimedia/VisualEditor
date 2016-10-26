@@ -7,6 +7,7 @@
 /**
  * @class
  * @extends ve.dm.Selection
+ * @param {ve.dm.Document} doc
  * @constructor
  */
 ve.dm.NullSelection = function VeDmNullSelection( doc ) {

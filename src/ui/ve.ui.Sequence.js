@@ -39,6 +39,7 @@ OO.initClass( ve.ui.Sequence );
  *
  * @param {ve.dm.ElementLinearData} data String or linear data
  * @param {number} offset Offset
+ * @param {string} plaintext Plain text of data
  * @return {ve.Range|null} Range corresponding to the match, or else null
  */
 ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
@@ -65,6 +66,7 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
  * Execute the command associated with the sequence
  *
  * @param {ve.ui.Surface} surface surface
+ * @param {ve.Range} range Range to set
  * @return {boolean} The command executed
  */
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {

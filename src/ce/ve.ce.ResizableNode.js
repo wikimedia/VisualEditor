@@ -109,7 +109,11 @@ ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 	return this.resizableOffset;
 };
 
-/** */
+/**
+ * Set the original dimensions of the scalable object
+ *
+ * @param {Object} dimensions Dimensions
+ */
 ve.ce.ResizableNode.prototype.setOriginalDimensions = function ( dimensions ) {
 	var scalable;
 
@@ -417,7 +421,7 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	} );
 	this.emit( 'resizeStart' );
 
-	return false;
+	e.preventDefault();
 };
 
 /**

@@ -78,6 +78,7 @@ ve.ui.CommentInspector.prototype.getActionProcess = function ( action ) {
  *
  * @method
  * @param {Object} [data] Inspector opening data
+ * @return {OO.ui.Process}
  */
 ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getSetupProcess.call( this, data )

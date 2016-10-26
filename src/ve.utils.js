@@ -1789,7 +1789,7 @@ ve.countEdgeMatches = function ( before, after, equals ) {
  *
  * @param {string} str The string to repeat
  * @param {number} n The number of times to repeat
- * @param {string} The string, repeated n times
+ * @return {string} The string, repeated n times
  */
 ve.repeatString = function ( str, n ) {
 	return new Array( n + 1 ).join( str );
