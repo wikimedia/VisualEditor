@@ -1119,7 +1119,14 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 
 			// Split on breaks
 			if ( !rules.allowBreaks && type === 'break' && contentElement ) {
-				this.splice( i, 2, { type: '/' + contentElement.type }, ve.copy( contentElement ) );
+				if ( this.isOpenElementData( i - 1 ) && this.isCloseElementData( i + 1 ) ) {
+					// If the break is the only element in another element it was likely added
+					// to force it open, so remove it.
+					this.splice( i, 2 );
+					len -= 2;
+				} else {
+					this.splice( i, 2, { type: '/' + contentElement.type }, ve.copy( contentElement ) );
+				}
 				// Move pointer back and continue
 				i--;
 				continue;
