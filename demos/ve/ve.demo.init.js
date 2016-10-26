@@ -58,10 +58,6 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		location.href = location.href.replace( device, item.getData() );
 	} );
 
-	addSurfaceContainerButton.on( 'click', function () {
-		addSurfaceContainer();
-	} );
-
 	messageKeyButton.on( 'click', function () {
 		languageInput.setLangAndDir( 'qqx', currentDir );
 	} );
@@ -140,6 +136,10 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		updateHash();
 		target.$element.append( surfaceContainer.$element );
 	}
+
+	addSurfaceContainerButton.on( 'click', function () {
+		addSurfaceContainer();
+	} );
 
 	function createSurfacesFromHash( hash ) {
 		var i, pages = [];

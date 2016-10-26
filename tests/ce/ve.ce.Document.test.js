@@ -44,8 +44,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 // TODO: getDirectionFromRange
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
-	var tests, i, iLen, test, parts, view, data, ceDoc, rootNode, offsetCount, offset, position,
-		j, jLen, node;
+	var tests, i, iLen, test, parts, view, data, ceDoc, rootNode, offsetCount, offset, j, jLen, node;
 
 	// Each test below has the following:
 	// html: an input document
@@ -54,7 +53,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	// characters on a modified HTML representation in which text nodes are wrapped in
 	// <#text>...</#text> tags (and most attributes are omitted)
 	// dies (optional): a list of DM offsets where getNodeAndOffset is expected to die
-	/*jscs:disable validateQuoteMarks */
+	/* eslint-disable quotes */
 	tests = [
 		{
 			title: 'Simple para',
@@ -113,8 +112,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Foo</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Bar</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
 		}
 	];
-
-	/*jscs:enable validateQuoteMarks */
+	/* eslint-enable quotes */
 
 	QUnit.expect( tests.reduce( function ( total, test ) {
 		return total + test.positions.replace( /[^|]/g, '' ).length + 2;
@@ -163,7 +161,6 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 
 		for ( offset = 0; offset < offsetCount; offset++ ) {
 			try {
-				position = ceDoc.getNodeAndOffset( offset, test.outsideNails );
 				if ( test.dies && test.dies.indexOf( offset ) !== -1 ) {
 					assert.ok( false, test.title + ' (' + offset + ') does not die' );
 					continue;
@@ -176,7 +173,6 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 				continue;
 			}
 
-			position = ceDoc.getNodeAndOffset( offset, test.outsideNails );
 			assert.strictEqual(
 				ve.test.utils.serializePosition(
 					rootNode,

@@ -27,68 +27,69 @@ QUnit.module( 've' );
 // ve.extendObject: Tested upstream (jQuery)
 
 QUnit.test( 'compareClassLists', 1, function ( assert ) {
-	var i, cases = [
-		{
-			args: [ '', '' ],
-			expected: true
-		},
-		{
-			args: [ '', [] ],
-			expected: true
-		},
-		{
-			args: [ [], [] ],
-			expected: true
-		},
-		{
-			args: [ '', [ '' ] ],
-			expected: true
-		},
-		{
-			args: [ [], [ '' ] ],
-			expected: true
-		},
-		{
-			args: [ 'foo', '' ],
-			expected: false
-		},
-		{
-			args: [ 'foo', 'foo' ],
-			expected: true
-		},
-		{
-			args: [ 'foo', 'bar' ],
-			expected: false
-		},
-		{
-			args: [ 'foo', 'foo bar' ],
-			expected: false
-		},
-		{
-			args: [ 'foo', [ 'foo' ] ],
-			expected: true
-		},
-		{
-			args: [ [ 'foo' ], 'bar' ],
-			expected: false
-		},
-		{
-			args: [ 'foo', [ 'foo', 'bar' ] ],
-			expected: false
-		},
-		{
-			args: [ 'foo', [ 'foo', 'foo' ] ],
-			expected: true
-		},
-		{
-			args: [ [ 'foo' ], 'foo foo' ],
-			expected: true
-		},
-		{
-			args: [ 'foo bar foo', 'foo foo' ],
-			expected: false
-		}
-	];
+	var i,
+		cases = [
+			{
+				args: [ '', '' ],
+				expected: true
+			},
+			{
+				args: [ '', [] ],
+				expected: true
+			},
+			{
+				args: [ [], [] ],
+				expected: true
+			},
+			{
+				args: [ '', [ '' ] ],
+				expected: true
+			},
+			{
+				args: [ [], [ '' ] ],
+				expected: true
+			},
+			{
+				args: [ 'foo', '' ],
+				expected: false
+			},
+			{
+				args: [ 'foo', 'foo' ],
+				expected: true
+			},
+			{
+				args: [ 'foo', 'bar' ],
+				expected: false
+			},
+			{
+				args: [ 'foo', 'foo bar' ],
+				expected: false
+			},
+			{
+				args: [ 'foo', [ 'foo' ] ],
+				expected: true
+			},
+			{
+				args: [ [ 'foo' ], 'bar' ],
+				expected: false
+			},
+			{
+				args: [ 'foo', [ 'foo', 'bar' ] ],
+				expected: false
+			},
+			{
+				args: [ 'foo', [ 'foo', 'foo' ] ],
+				expected: true
+			},
+			{
+				args: [ [ 'foo' ], 'foo foo' ],
+				expected: true
+			},
+			{
+				args: [ 'foo bar foo', 'foo foo' ],
+				expected: false
+			}
+		];
 
 	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
@@ -295,7 +296,7 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 		);
 	}
 	tests =	[
-		/*jshint elision:true */
+		/* jshint elision:true */
 		// jscs:disable disallowTrailingComma
 		// jscs:disable disallowSpaceBeforeBinaryOperators
 		// arr, offset, remove, data, expectedReturn, expectedArray, msg
@@ -320,15 +321,15 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 		[ [ 4, , 5, , 6 ], 2, 3, [ 1, , 3 ], [ 5, , 6 ], [ 4, , 1, , 3 ], 'diff=0 end' ]
 		// jscs:enable disallowSpaceBeforeBinaryOperators
 		// jscs:enable disallowTrailingComma
-		/*jshint elision:false */
+		/* jshint elision:false */
 	];
 	QUnit.expect( 2 * tests.length + 1 );
 	assert.notDeepEqual(
-		/*jshint elision:true */
+		/* jshint elision:true */
 		// jscs:disable disallowTrailingComma
 		mapToString( [ 1, , ] ),
 		// jscs:enable disallowTrailingComma
-		/*jshint elision:false */
+		/* jshint elision:false */
 		mapToString( [ 1, undefined ] ),
 		'holes look different to undefined'
 	);
@@ -790,6 +791,8 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 			ve.normalizeAttributeValue = oldNormalizeAttributeValue;
 		}
 	}
+
+	ve.isStyleAttributeBroken = wasStyleAttributeBroken;
 } );
 
 QUnit.test( 'normalizeNode', function ( assert ) {

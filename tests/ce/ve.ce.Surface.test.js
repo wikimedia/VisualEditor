@@ -1665,7 +1665,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				pasteHtml: '<p>Bar</p>',
 				expectedRangeOrSelection: {
 					gecko: new ve.Range( 11 ),
-					default: new ve.Range( 7 )
+					'default': new ve.Range( 7 )
 				},
 				expectedOps: {
 					gecko: [
@@ -1685,7 +1685,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							{ type: 'retain', length: docLen - 4 }
 						]
 					],
-					default: [
+					'default': [
 						[
 							{ type: 'retain', length: 4 },
 							{
@@ -1704,7 +1704,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				pasteHtml: '<p>Bar</p>',
 				expectedRangeOrSelection: {
 					gecko: new ve.Range( 6 ),
-					default: new ve.Range( 9 )
+					'default': new ve.Range( 9 )
 				},
 				expectedOps: {
 					gecko: [
@@ -1722,7 +1722,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							{ type: 'retain', length: docLen - 7 }
 						]
 					],
-					default: [
+					'default': [
 						[
 							{ type: 'retain', length: 6 },
 							{
@@ -1741,7 +1741,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				pasteHtml: '<p>Bar</p>',
 				expectedRangeOrSelection: {
 					gecko: new ve.Range( 8 ),
-					default: new ve.Range( 6 )
+					'default': new ve.Range( 6 )
 				},
 				expectedOps: {
 					gecko: [
@@ -1759,7 +1759,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							{ type: 'retain', length: docLen - 3 }
 						]
 					],
-					default: [
+					'default': [
 						[
 							{ type: 'retain', length: 3 },
 							{
@@ -1778,7 +1778,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				pasteHtml: '<h2>Quux</h2>',
 				expectedRangeOrSelection: {
 					gecko: new ve.Range( 11 ),
-					default: new ve.Range( 15 )
+					'default': new ve.Range( 15 )
 				},
 				expectedOps: {
 					gecko: [
@@ -1796,7 +1796,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							{ type: 'retain', length: docLen - 12 }
 						]
 					],
-					default: [
+					'default': [
 						[
 							{ type: 'retain', length: 11 },
 							{

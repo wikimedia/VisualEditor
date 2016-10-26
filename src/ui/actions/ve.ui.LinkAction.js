@@ -156,7 +156,7 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
  *   A regular expression matching trailing punctuation which will be
  *   stripped from an autolink.
  */
-ve.ui.LinkAction.prototype.getTrailingPunctuation = function ( candidate ) {
+ve.ui.LinkAction.prototype.getTrailingPunctuation = function () {
 	/* jshint unused: false */
 	return /[,;.:!?)\]\}"'”’»]+$/;
 };

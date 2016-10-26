@@ -415,7 +415,7 @@ ve.ce.Surface.prototype.getSelection = function ( selection ) {
 	return this.selection;
 };
 
-/*! Initialization */
+/* Initialization */
 
 /**
  * Initialize surface.
@@ -849,7 +849,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 	var i, l, $target, $dropTarget, node, dropPosition, targetPosition, targetOffset, top, left,
-		nodeType, inIgnoreChildren, item, fakeItem,
+		nodeType, item, fakeItem,
 		dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory,
 		isContent = true,
 		dataTransfer = e.originalEvent.dataTransfer;
@@ -900,7 +900,6 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 			node = node.parent;
 		}
 		if ( node.parent ) {
-			inIgnoreChildren = false;
 			node.parent.traverseUpstream( function ( n ) {
 				if ( n.shouldIgnoreChildren() ) {
 					node = null;
@@ -1474,12 +1473,11 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
  * @return {boolean} Whether unicorns have been destroyed
  */
 ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
-	var preUnicorn, postUnicorn, range, node, fixup, veRange;
+	var preUnicorn, range, node, fixup, veRange;
 	if ( !this.unicorningNode || !this.unicorningNode.unicorns ) {
 		return false;
 	}
 	preUnicorn = this.unicorningNode.unicorns[ 0 ];
-	postUnicorn = this.unicorningNode.unicorns[ 1 ];
 	if ( !this.$documentNode[ 0 ].contains( preUnicorn ) ) {
 		return false;
 	}
@@ -1869,10 +1867,10 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  *
  * @param {jQuery.Event} e Paste event
  */
-ve.ce.Surface.prototype.afterPaste = function ( e ) {
+ve.ce.Surface.prototype.afterPaste = function () {
 	// jshint unused:false
-	var clipboardKey, clipboardId, clipboardIndex, clipboardHash,
-		$elements, parts, pasteData, slice, internalListRange,
+	var clipboardKey, clipboardHash,
+		$elements, pasteData, slice, internalListRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange, pastedText, handled,
 		tableAction,
@@ -2369,7 +2367,7 @@ ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
 	this.handleInsertion();
 };
 
-/*! Custom Events */
+/* Custom Events */
 
 /**
  * Handle model select events.
@@ -2670,7 +2668,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 			containsEnd = nodeRange.containsRange( new ve.Range( coveringRange.end ) );
 			// If the range starts xor ends in the active node, but not both, then it must
 			// span an active node boundary, so fixup.
-			/*jshint bitwise: false*/
+			// eslint-disable-next-line no-bitwise
 			if ( containsStart ^ containsEnd ) {
 				newSelection = oldState && oldState.veRange ?
 					new ve.dm.LinearSelection( dmDoc, oldState.veRange ) :
@@ -2681,7 +2679,6 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 					surface .showModelSelection();
 				} );
 			}
-			/*jshint bitwise: true*/
 		}
 
 		// Support: Firefox
@@ -2892,7 +2889,7 @@ ve.ce.Surface.prototype.onWindowResize = ve.debounce( function () {
 	this.emit( 'position' );
 }, 50 );
 
-/*! Relocation */
+/* Relocation */
 
 /**
  * Start a relocation action.
@@ -2938,7 +2935,7 @@ ve.ce.Surface.prototype.getActiveNode = function () {
 	return this.activeNode;
 };
 
-/*! Utilities */
+/* Utilities */
 
 /**
  * Store a state snapshot at a keydown event, to be used in an after-keydown handler
@@ -3157,12 +3154,10 @@ ve.ce.Surface.prototype.removeCursorHolders = function () {
  * Handle insertion of content.
  */
 ve.ce.Surface.prototype.handleInsertion = function () {
-	var range, hasChanged,
+	var range,
 		surfaceModel = this.getModel(),
 		fragment = surfaceModel.getFragment(),
 		selection = this.getSelection();
-
-	hasChanged = false;
 
 	if ( selection instanceof ve.ce.TableSelection ) {
 		// Collapse table selection to anchor cell
@@ -3193,7 +3188,6 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		// DM is too granular to detect the selection change)
 		surfaceModel.setNullSelection();
 		fragment.removeContent().collapseToStart().select();
-		hasChanged = true;
 		this.surfaceObserver.clear();
 		this.storeKeyDownState( this.keyDownState.event );
 		this.surfaceObserver.stopTimerLoop();
@@ -3557,7 +3551,7 @@ ve.ce.Surface.prototype.appendHighlights = function ( $highlights, focused ) {
 	}
 };
 
-/*! Getters */
+/* Getters */
 
 /**
  * Get the top-level surface.

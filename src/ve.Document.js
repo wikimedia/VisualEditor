@@ -507,7 +507,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
  *  - grandparent: parent's parent
  */
 ve.Document.prototype.getCoveredSiblingGroups = function ( range ) {
-	var i, firstCoveredSibling, lastCoveredSibling, node, parentNode, siblingNode,
+	var i, firstCoveredSibling, node, parentNode, siblingNode,
 		leaves = this.selectNodes( range, 'leaves' ),
 		groups = [],
 		lastEndOffset = 0;
@@ -537,7 +537,6 @@ ve.Document.prototype.getCoveredSiblingGroups = function ( range ) {
 		do {
 			// Add this to its sibling's group
 			groups[ groups.length - 1 ].nodes.push( siblingNode );
-			lastCoveredSibling = siblingNode;
 			i++;
 			if ( leaves[ i ] === undefined ) {
 				break;

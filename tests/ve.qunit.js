@@ -4,7 +4,7 @@
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/*global difflib,diffview */
+/* global difflib,diffview */
 
 ( function ( QUnit ) {
 	/**
@@ -105,16 +105,16 @@
 	function unescapeText( s ) {
 		return s.replace( /&(#039|quot|lt|gt|amp);/g, function ( match, seq ) {
 			switch ( seq )  {
-			case '#039':
-				return '\'';
-			case 'quot':
-				return '"';
-			case 'lt':
-				return '<';
-			case 'gt':
-				return '>';
-			case 'amp':
-				return '&';
+				case '#039':
+					return '\'';
+				case 'quot':
+					return '"';
+				case 'lt':
+					return '<';
+				case 'gt':
+					return '>';
+				case 'amp':
+					return '&';
 			}
 		} );
 	}

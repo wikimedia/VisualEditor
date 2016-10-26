@@ -246,7 +246,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 			splice = Array.prototype.splice;
 		} else {
 			// Standard Array.prototype.splice() function implemented using .slice() and .push().
-			splice = function ( offset, remove/*, data... */ ) {
+			splice = function ( offset, remove /* , data... */ ) {
 				var data, begin, removed, end;
 
 				data = Array.prototype.slice.call( arguments, 2 );
@@ -776,7 +776,7 @@ ve.elementTypes = {
 		'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
 		'map', 'object', 'pre', 'progress', 'video'
 	],
-	void: [
+	'void': [
 		'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img',
 		'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
 	]
@@ -1182,7 +1182,7 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 	for ( i = 0, len = maskAttrs.length; i < len; i++ ) {
 		fromAttr = unmask ? 'data-ve-' + maskAttrs[ i ] : maskAttrs[ i ];
 		toAttr = unmask ? maskAttrs[ i ] : 'data-ve-' + maskAttrs[ i ];
-		/*jshint loopfunc:true */
+		/* jshint loopfunc:true */
 		$( xmlDoc ).find( '[' + fromAttr + ']' ).each( function () {
 			var toAttrValue, fromAttrNormalized,
 				fromAttrValue = this.getAttribute( fromAttr );

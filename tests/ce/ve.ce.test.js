@@ -82,7 +82,7 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 } );
 
 QUnit.test( 'getOffset', function ( assert ) {
-	var i, view, documentModel, documentView,
+	var i, view, documentView,
 		expected = 0,
 		testCases = [
 			{
@@ -260,7 +260,6 @@ QUnit.test( 'getOffset', function ( assert ) {
 
 	for ( i = 0; i < testCases.length; i++ ) {
 		view = ve.test.utils.createSurfaceViewFromHtml( testCases[ i ].html );
-		documentModel = view.getModel().getDocument();
 		documentView = view.getDocument();
 
 		testOffsets( documentView.getDocumentNode().$element[ 0 ], testCases[ i ], -1 );

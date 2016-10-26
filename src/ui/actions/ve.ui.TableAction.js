@@ -853,7 +853,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			);
 			// Remove all but start and end tags
 			rowData.splice( 1, rowData.length - 2 );
-			/*jshint loopfunc:true */
+			/* jshint loopfunc:true */
 			removedMatrix[ row - minIndex ] = {
 				row: rowData,
 				cells: cells.map( function ( cell ) {

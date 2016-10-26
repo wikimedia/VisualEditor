@@ -116,13 +116,13 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 
 	optionsGroup = new OO.ui.ButtonGroupWidget( {
-			classes: [ 've-ui-findAndReplaceDialog-cell' ],
-			items: [
-				this.matchCaseToggle,
-				this.regexToggle,
-				this.wordToggle
-			]
-		} );
+		classes: [ 've-ui-findAndReplaceDialog-cell' ],
+		items: [
+			this.matchCaseToggle,
+			this.regexToggle,
+			this.wordToggle
+		]
+	} );
 	navigateGroup = new OO.ui.ButtonGroupWidget( {
 		classes: [ 've-ui-findAndReplaceDialog-cell' ],
 		items: [

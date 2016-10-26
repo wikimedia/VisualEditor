@@ -1,3 +1,5 @@
+/* global Uint8Array */
+
 /**
  * Data transfer item wrapper
  *

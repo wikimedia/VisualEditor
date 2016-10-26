@@ -60,20 +60,20 @@ ve.ui.TabIndexScope.prototype.setTabRoot = function ( $root ) {
 ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
 	var self = this,
 		elements = this.$root.find( '*' ).filter( function () {
-		if ( this.tabIndex === -1 ) {
-			// tabIndex -1 is focusable, but shouldn't appear to keyboard-navigation
-			return false;
-		}
-		if ( self.skipAriaDisabled && this.getAttribute( 'aria-disabled' ) === 'true' ) {
-			return false;
-		}
-		if ( self.skipAriaHidden && $( this ).closest( '[aria-hidden="true"]' ).length ) {
-			return false;
-		}
-		return OO.ui.isFocusableElement( $( this ) );
-	} ).map( function ( index ) {
-		return { element: this, index: index };
-	} ).get();
+			if ( this.tabIndex === -1 ) {
+				// tabIndex -1 is focusable, but shouldn't appear to keyboard-navigation
+				return false;
+			}
+			if ( self.skipAriaDisabled && this.getAttribute( 'aria-disabled' ) === 'true' ) {
+				return false;
+			}
+			if ( self.skipAriaHidden && $( this ).closest( '[aria-hidden="true"]' ).length ) {
+				return false;
+			}
+			return OO.ui.isFocusableElement( $( this ) );
+		} ).map( function ( index ) {
+			return { element: this, index: index };
+		} ).get();
 	elements.sort( function ( a, b ) {
 		if ( a.element.tabIndex < b.element.tabIndex ) {
 			return -1;

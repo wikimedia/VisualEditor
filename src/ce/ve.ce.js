@@ -93,15 +93,13 @@ ve.ce.getDomText = function ( element ) {
  * @return {string} Hash of DOM element
  */
 ve.ce.getDomHash = function ( element ) {
-	var $element,
-		nodeType = element.nodeType,
+	var nodeType = element.nodeType,
 		nodeName = element.nodeName,
 		hash = '';
 
 	if ( nodeType === Node.TEXT_NODE || nodeType === Node.CDATA_SECTION_NODE ) {
 		return '#';
 	} else if ( nodeType === Node.ELEMENT_NODE || nodeType === Node.DOCUMENT_NODE ) {
-		$element = $( element );
 		if ( !(
 			element.classList.contains( 've-ce-branchNode-blockSlug' ) ||
 			element.classList.contains( 've-ce-cursorHolder' ) ||

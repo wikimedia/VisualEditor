@@ -52,7 +52,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
 		} else {
 			directionality = $( surface.focusedBlockSlug ).css( 'direction' );
-			/*jshint bitwise:false */
+			// eslint-disable-next-line no-bitwise
 			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
 				// leftarrow in ltr, or rightarrow in rtl
 				direction = -1;
@@ -78,7 +78,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			direction = e.keyCode === OO.ui.Keys.DOWN ? 1 : -1;
 		} else {
 			directionality = surface.getFocusedNodeDirectionality();
-			/*jshint bitwise:false */
+			// eslint-disable-next-line no-bitwise
 			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
 				// leftarrow in ltr, or rightarrow in rtl
 				direction = -1;
@@ -109,6 +109,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			// edge of the focusedNode in the direction of motion (so the selection
 			// always grows). This means that clicking on the focusableNode then
 			// modifying the selection will always include the node.
+			// eslint-disable-next-line no-bitwise
 			if ( direction === -1 ^ range.isBackwards() ) {
 				range = range.flip();
 			}

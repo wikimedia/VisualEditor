@@ -622,7 +622,7 @@ ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, 
  * @return {ve.dm.Transaction}
  */
 ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
-	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingUnwrapEach, closingWrapEach,
+	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingWrapEach,
 		tx = new ve.dm.Transaction(),
 		depth = 0;
 
@@ -636,7 +636,7 @@ ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, u
 		}
 		return closings;
 	}
-	closingUnwrapEach = closingArray( unwrapEach );
+	/* closingUnwrapEach = */ closingArray( unwrapEach );
 	closingWrapEach = closingArray( wrapEach );
 
 	// TODO: check for and fix nesting validity like fixupInsertion does
