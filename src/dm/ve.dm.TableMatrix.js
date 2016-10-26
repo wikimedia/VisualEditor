@@ -168,7 +168,7 @@ ve.dm.TableMatrix.prototype.getRowNode = function ( row ) {
  * Note: this is primarily for internal use. Do not change the delivered matrix
  * and do not store as it may be invalidated.
  *
- * @return {ve.dm.TableMatrixCell[][]} Table matrix
+ * @return {Array} Table matrix, a 2D array of ve.dm.TableMatrixCell objects
  */
 ve.dm.TableMatrix.prototype.getMatrix = function () {
 	if ( !this.matrix ) {

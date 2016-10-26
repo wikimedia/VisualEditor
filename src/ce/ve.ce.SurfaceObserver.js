@@ -180,6 +180,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, sel
  *
  * @param {Function} callback Callback
  * @param {number} timeout Timeout ms
+ * @return {number} Timeout ID
  */
 ve.ce.SurfaceObserver.prototype.setTimeout = function ( callback, timeout ) {
 	return setTimeout( callback, timeout );

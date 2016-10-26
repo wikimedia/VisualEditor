@@ -227,7 +227,11 @@ ve.ce.Node.prototype.destroy = function () {
 	ve.ce.Node.super.prototype.destroy.call( this );
 };
 
-/** */
+/**
+ * Get the model's HTML document
+ *
+ * @return {HTMLDocument} Model document
+ */
 ve.ce.Node.prototype.getModelHtmlDocument = function () {
 	return this.model.getDocument() && this.model.getDocument().getHtmlDocument();
 };

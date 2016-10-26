@@ -75,6 +75,7 @@ ve.ui.LinkAnnotationWidget.static.getAnnotationFromText = function ( value ) {
  *
  * @static
  * @param {ve.dm.LinkAnnotation|null} annotation Link annotation
+ * @return {string} Text value for the annotation
  */
 ve.ui.LinkAnnotationWidget.static.getTextFromAnnotation = function ( annotation ) {
 	return annotation ? annotation.getHref() : '';
@@ -115,6 +116,7 @@ ve.ui.LinkAnnotationWidget.prototype.setDisabled = function () {
  * Handle value-changing events from the text input
  *
  * @method
+ * @param {string} value New input value
  */
 ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 	var isExt,

@@ -990,6 +990,7 @@ ve.dm.Transaction.prototype.getOperations = function () {
  * Check if the transaction has any operations with a certain type.
  *
  * @method
+ * @param {string} type Operation type
  * @return {boolean} Has operations of a given type
  */
 ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
@@ -1327,6 +1328,8 @@ ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, remo
  * @param {Array} insert Data to insert.
  * @param {Array|undefined} removeMetadata Metadata removed.
  * @param {Array} insertMetadata Metadata to insert.
+ * @param {number} [insertedDataOffset] Inserted data offset
+ * @param {number} [insertedDataLength] Inserted data length
  */
 ve.dm.Transaction.prototype.pushReplaceInternal = function ( remove, insert, removeMetadata, insertMetadata, insertedDataOffset, insertedDataLength ) {
 	var op = {

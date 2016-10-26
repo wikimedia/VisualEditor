@@ -410,5 +410,4 @@ ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
 		this.groups[ group ].splice( at, 1 );
 	}
 	item.detach( this );
-	return item;
 };

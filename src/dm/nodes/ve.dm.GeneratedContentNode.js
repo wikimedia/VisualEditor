@@ -49,6 +49,7 @@ ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElemen
  * don't affect the rendering.
  *
  * @static
+ * @param {Object} dataElement Data element
  * @return {Object} Hash object
  */
 ve.dm.GeneratedContentNode.static.getHashObjectForRendering = function ( dataElement ) {

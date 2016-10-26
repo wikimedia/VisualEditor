@@ -82,7 +82,7 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
  * sense for that view in particular.
  *
  * @static
- * @property {boolean|string|RegExp|Array|Object}
+ * @property {boolean|Function}
  * @inheritable
  */
 ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {

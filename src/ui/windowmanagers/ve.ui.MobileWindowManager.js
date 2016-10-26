@@ -44,6 +44,9 @@ ve.ui.MobileWindowManager.static.defaultSize = 'full';
 
 /**
  * Handle window opening events
+ *
+ * @param {OO.ui.Window} win Window
+ * @param {jQuery.Promise} opening Opening promise
  */
 ve.ui.MobileWindowManager.prototype.onMobileOpening = function ( win, opening ) {
 	// FIXME T126029: un-frame buttons and convert 'back' buttons to icon only

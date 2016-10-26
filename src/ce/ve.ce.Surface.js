@@ -1233,7 +1233,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * unit instead of letting the cursor slip inside them.
 
 	 * @private
-	 * @param {Node} DOM node of cursor position
+	 * @param {Node} node DOM node of cursor position
 	 * @param {number} offset Offset of cursor position
 	 * @param {number} direction Cursor motion direction (1=forward, -1=backward)
 	 * @return {ve.ce.Node|null} node, or null if not in a focusable node
@@ -1715,6 +1715,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
  *
  * @param {jQuery.Event} e Paste event
  * @param {boolean} fakePaste Paste event is fake (i.e. a CTRL+V keydown event)
+ * @return {boolean} False if the event is cancelled
  */
 ve.ce.Surface.prototype.onPaste = function ( e, fakePaste ) {
 	var surface = this;
@@ -1866,6 +1867,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  * Handle post-paste events.
  *
  * @param {jQuery.Event} e Paste event
+ * @return {boolean} False if the event is cancelled
  */
 ve.ce.Surface.prototype.afterPaste = function () {
 	// jshint unused:false
@@ -3613,6 +3615,8 @@ ve.ce.Surface.prototype.decRenderLock = function () {
 
 /**
  * Escape the current render lock
+ *
+ * @param {Function} callback Function to run after render lock
  */
 ve.ce.Surface.prototype.afterRenderLock = function ( callback ) {
 	// TODO: implement an actual tracking system that makes sure renderlock is

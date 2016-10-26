@@ -405,6 +405,7 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
  *
  * @method
  * @param {Object} dataAnnotation Annotation object
+ * @param {HTMLDocument} doc HTML document to create element with
  * @return {HTMLElement} HTML DOM node
  */
 ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation, doc ) {

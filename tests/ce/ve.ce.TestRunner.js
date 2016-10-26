@@ -52,6 +52,10 @@ ve.ce.TestOffset.static = {};
  *
  * @private
  * @static
+ * @param {Node} node Node
+ * @param {number} n Offset
+ * @param {boolean} reversed Reversed
+ * @return {Object} Offset information
  */
 ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	var i, len, found, slice, offset, childNode, childNodes, consumed = 0;

@@ -816,6 +816,7 @@ ve.dm.Document.prototype.getRelativeRange = function ( range, direction, unit, e
  * @param {number} offset Offset to start looking at
  * @param {number} direction Direction to look in, +1 or -1
  * @param {number} limit Stop looking after reaching certain offset
+ * @return {ve.dm.Node|null} Nearest focusable node, or null if not found
  */
 ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction, limit ) {
 	// It is never an offset of the node, but just an offset for which getNodeFromOffset should

@@ -214,6 +214,8 @@ ve.ui.Context.prototype.updateDimensions = function () {
 
 /**
  * Destroy the context, removing all DOM elements.
+ *
+ * @chainable
  */
 ve.ui.Context.prototype.destroy = function () {
 	// Disconnect events
