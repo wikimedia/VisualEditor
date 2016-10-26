@@ -69,6 +69,7 @@ ve.Filibuster.prototype.clearLogs = function () {
 	this.callPath.length = 0;
 };
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Attaches an observer callback. The callback returns a value representing the current state,
  * which must be a string (this ensures state values are immutable, comparable with strict
@@ -248,6 +249,7 @@ ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName )
 	return this;
 };
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Wrap the functions in a class with wrappers that perform logging.
  *
@@ -276,6 +278,7 @@ ve.Filibuster.prototype.wrapClass = function ( klass, blacklist ) {
 	return this;
 };
 
+// eslint-disable-next-line valid-jsdoc
 /**
  * Recursively wrap the functions in a namespace with wrappers that perform logging.
  *

@@ -121,6 +121,8 @@ ve.ui.Surface.static.isMobile = false;
 
 /* Methods */
 
+/* eslint-disable valid-jsdoc */
+
 /**
  * Destroy the surface, releasing all memory and removing all DOM elements.
  *
@@ -407,6 +409,8 @@ ve.ui.Surface.prototype.disable = function () {
 ve.ui.Surface.prototype.enable = function () {
 	return this.setDisabled( false );
 };
+
+/* eslint-enable valid-jsdoc */
 
 /**
  * Handle transact events from the document model

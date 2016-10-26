@@ -106,6 +106,8 @@ ve.ui.Context.prototype.getSurface = function () {
 	return this.surface;
 };
 
+/* eslint-disable valid-jsdoc */
+
 /**
  * Toggle the menu.
  *
