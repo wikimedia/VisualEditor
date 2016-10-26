@@ -119,8 +119,6 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
-	var rAF = window.requestAnimationFrame || setTimeout;
-
 	// Exit if already setup or not attached
 	if ( this.isFocusableSetup || !this.root ) {
 		return;
@@ -158,7 +156,7 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 			.find( 'img:not([width]),img:not([height])' )
 			.addBack( 'img:not([width]),img:not([height])' )
 			.on( 'load', this.updateInvisibleIcon.bind( this ) );
-		rAF( this.updateInvisibleIcon.bind( this ) );
+		this.updateInvisibleIcon();
 	}
 
 	this.isFocusableSetup = true;
@@ -174,20 +172,31 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
+	var showIcon,
+		rAF = window.requestAnimationFrame || setTimeout,
+		node = this;
+
 	if ( !this.constructor.static.iconWhenInvisible ) {
 		return;
 	}
-	if ( !this.hasRendering() ) {
-		if ( !this.$icon ) {
-			this.$icon = this.createInvisibleIcon();
+
+	showIcon = !this.hasRendering();
+
+	// Defer updating the DOM. If we don't do this, the hasRendering() call for the next
+	// FocusableNode will force a reflow, which is slow.
+	rAF( function () {
+		if ( showIcon ) {
+			if ( !node.$icon ) {
+				node.$icon = node.createInvisibleIcon();
+			}
+			node.$element.first()
+				.addClass( 've-ce-focusableNode-invisible' )
+				.prepend( node.$icon );
+		} else if ( node.$icon ) {
+			node.$element.first().removeClass( 've-ce-focusableNode-invisible' );
+			node.$icon.detach();
 		}
-		this.$element.first()
-			.addClass( 've-ce-focusableNode-invisible' )
-			.prepend( this.$icon );
-	} else if ( this.$icon ) {
-		this.$element.first().removeClass( 've-ce-focusableNode-invisible' );
-		this.$icon.detach();
-	}
+	} );
 };
 
 /**
