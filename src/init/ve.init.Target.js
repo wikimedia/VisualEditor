@@ -15,6 +15,8 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
+ * @cfg {Object} [modes] Available editing modes. Defaults to static.modes
+ * @cfg {Object} [mode] Initial editing mode. Must be in this.modes and defaults to first item.
  */
 ve.init.Target = function VeInitTarget( config ) {
 	config = config || {};
@@ -36,6 +38,9 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.toolbarConfig = config.toolbarConfig;
 	this.$scrollContainer = this.getScrollContainer();
 	this.toolbarScrollOffset = 0;
+
+	this.modes = config.modes || this.constructor.static.modes;
+	this.setMode( config.mode );
 
 	this.setupTriggerListeners();
 
@@ -66,6 +71,17 @@ OO.inheritClass( ve.init.Target, OO.ui.Element );
 OO.mixinClass( ve.init.Target, OO.EventEmitter );
 
 /* Static Properties */
+
+/**
+ * Editing modes available in the target.
+ *
+ * Must contain at least one mode. Overridden if the #modes config option is used.
+ *
+ * @static
+ * @property {string[]}
+ * @inheritable
+ */
+ve.init.Target.static.modes = [ 'visual' ];
 
 ve.init.Target.static.toolbarGroups = [
 	// History
@@ -176,6 +192,34 @@ ve.init.Target.static.importRules = {
 };
 
 /* Methods */
+
+/**
+ * Set editing mode
+ *
+ * @param {string} mode Editing mode, see static.modes
+ */
+ve.init.Target.prototype.setMode = function ( mode ) {
+	// Mode is not available
+	if ( this.modes.indexOf( mode ) === -1 ) {
+		if ( !this.mode ) {
+			// Use default mode if nothing has been set
+			mode = this.modes[ 0 ];
+		} else {
+			// Fail if we already have a valid mode
+			return;
+		}
+	}
+	if ( mode !== this.mode ) {
+		// The follow classes are used here:
+		// * ve-init-target-visual
+		// * ve-init-target-[modename]
+		if ( this.mode ) {
+			this.$element.removeClass( 've-init-target-' + this.mode );
+		}
+		this.$element.addClass( 've-init-target-' + mode );
+		this.mode = mode;
+	}
+};
 
 /**
  * Bind event handlers to target and document
