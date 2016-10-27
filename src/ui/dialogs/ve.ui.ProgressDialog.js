@@ -94,7 +94,7 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 
 				this.text.$element.append( $row );
 				progresses[ i ].progressBarDeferred.resolve( progressBar, cancelDeferred.promise() );
-				/* jshint loopfunc:true */
+				/* jshint loopfunc:true (awaiting eslint replacement; T149264) */
 				progresses[ i ].progressCompletePromise.then(
 					this.progressComplete.bind( this, $row, false ),
 					this.progressComplete.bind( this, $row, true )

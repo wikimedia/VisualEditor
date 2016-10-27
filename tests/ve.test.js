@@ -296,9 +296,8 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 		);
 	}
 	tests =	[
-		/* jshint elision:true */
-		// jscs:disable disallowTrailingComma
-		// jscs:disable disallowSpaceBeforeBinaryOperators
+		/* jshint elision:true (awaiting eslint replacement; T149262) */
+		// jscs:disable disallowSpaceBeforeBinaryOperators (awaiting eslint replacement; T149263)
 		// arr, offset, remove, data, expectedReturn, expectedArray, msg
 		[ [], 0, 0, [ , 3 ], [], [ , 3 ], 'insert empty, leading hole' ],
 		[ [], 0, 0, [ 1, , 3 ], [], [ 1, , 3 ], 'insert empty, middle hole' ],
@@ -320,15 +319,12 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 		[ [ 4, , 5, , 6 ], 1, 3, [ 1, , 3 ], [ , 5, , ], [ 4, 1, , 3, 6 ], 'diff=0 mid' ],
 		[ [ 4, , 5, , 6 ], 2, 3, [ 1, , 3 ], [ 5, , 6 ], [ 4, , 1, , 3 ], 'diff=0 end' ]
 		// jscs:enable disallowSpaceBeforeBinaryOperators
-		// jscs:enable disallowTrailingComma
 		/* jshint elision:false */
 	];
 	QUnit.expect( 2 * tests.length + 1 );
 	assert.notDeepEqual(
-		/* jshint elision:true */
-		// jscs:disable disallowTrailingComma
+		/* jshint elision:true (awaiting eslint replacement; T149262) */
 		mapToString( [ 1, , ] ),
-		// jscs:enable disallowTrailingComma
 		/* jshint elision:false */
 		mapToString( [ 1, undefined ] ),
 		'holes look different to undefined'
