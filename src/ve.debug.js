@@ -122,7 +122,7 @@ ve.summarizeTransaction = function ( tx ) {
 			}
 		} ).join( '' ) + '\'';
 	}
-	return '(' + tx.operations.map( function ( op ) {
+	return '(' + tx.author + ' ' + tx.operations.map( function ( op ) {
 		if ( op.type === 'retain' ) {
 			return ( annotations ? 'annotate ' : 'retain ' ) + op.length;
 		} else if ( op.type === 'replace' ) {
