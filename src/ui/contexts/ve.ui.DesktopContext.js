@@ -215,6 +215,11 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 	// Selection when the inspector was opened. Used to stop the context from
 	// jumping when an inline selection expands, e.g. to cover a long word
 	startingSelection = !focusedNode && this.inspector && this.inspector.previousSelection;
+	// Don't use start selection if it comes from another document, e.g. the fake document used in
+	// source mode.
+	if ( startingSelection && startingSelection.getDocument() !== surface.getModel().getDocument ) {
+		startingSelection = null;
+	}
 	currentSelection = this.surface.getModel().getSelection();
 	isTableSelection = ( startingSelection || currentSelection ) instanceof ve.dm.TableSelection;
 
