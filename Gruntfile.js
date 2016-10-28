@@ -253,8 +253,7 @@ module.exports = function ( grunt ) {
 					fix: true
 				},
 				src: [
-					'*.js',
-					'{bin,build,demos,src,tests}/**/*.js'
+					'<%= eslint.main %>'
 				]
 			},
 			main: [
