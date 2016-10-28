@@ -1870,7 +1870,6 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  * @return {boolean} False if the event is cancelled
  */
 ve.ce.Surface.prototype.afterPaste = function () {
-	// jshint unused:false (awaiting eslint replacement; T149267)
 	var clipboardKey, clipboardHash,
 		$elements, pasteData, slice, internalListRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
