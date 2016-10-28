@@ -104,7 +104,7 @@
 	 */
 	function unescapeText( s ) {
 		return s.replace( /&(#039|quot|lt|gt|amp);/g, function ( match, seq ) {
-			switch ( seq )  {
+			switch ( seq ) {
 				case '#039':
 					return '\'';
 				case 'quot':

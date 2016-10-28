@@ -35,7 +35,7 @@ function runConstructorTests( assert, constructor, cases, testRange ) {
 				);
 			}
 		} else if ( cases[ msg ].exception ) {
-			/* jshint loopfunc:true */
+			// eslint-disable-next-line no-loop-func
 			assert.throws( function () {
 				constructor.apply( ve.dm.Transaction, args );
 			}, cases[ msg ].exception, msg + ': throw exception' );

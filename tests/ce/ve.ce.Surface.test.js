@@ -138,7 +138,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, in
 	}
 	if ( expectedRangeOrSelection ) {
 		expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), getLayoutSpecific( expectedRangeOrSelection ) );
-		assert.equalHash( model.getSelection(), expectedSelection, msg +  ': selection' );
+		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
 	}
 	if ( expectedHtml ) {
 		htmlDoc = ve.dm.converter.getDomFromModel( doc );
@@ -1247,7 +1247,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 
 } );
 
-QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert )  {
+QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 	var i,
 		surface = ve.test.utils.createViewOnlySurfaceFromHtml( '' ),
 		view = surface.getView(),

@@ -375,7 +375,7 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 		}
 		// Ignore update the overlay if the table selection changed, i.e. not an in-cell selection change
 		if ( selection instanceof ve.dm.TableSelection ) {
-			this.updateOverlayDebounced( true  );
+			this.updateOverlayDebounced( true );
 		}
 	} else if ( !active && this.active ) {
 		this.$overlay.addClass( 'oo-ui-element-hidden' );

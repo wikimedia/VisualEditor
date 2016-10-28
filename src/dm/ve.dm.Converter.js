@@ -1226,7 +1226,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				}
 				endOffset = findEndOfNode( i );
 				// Remove this node's data from dataCopy
-				dataCopy.splice( i - ( dataLen - dataCopy.length ),  endOffset - i );
+				dataCopy.splice( i - ( dataLen - dataCopy.length ), endOffset - i );
 				// Move i such that it will be at endOffset in the next iteration
 				i = endOffset - 1;
 			}

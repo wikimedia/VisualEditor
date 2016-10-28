@@ -90,7 +90,7 @@ ve.ce.TableRowNode.prototype.setupMissingCell = function () {
 ve.ce.TableRowNode.prototype.onMissingCellClick = function () {
 	var row, col,
 		surfaceModel = this.getRoot().getSurface().getModel(),
-		documentModel =  surfaceModel.getDocument(),
+		documentModel = surfaceModel.getDocument(),
 		tableModel = this.findParent( ve.ce.TableNode ).getModel(),
 		matrix = tableModel.getMatrix();
 

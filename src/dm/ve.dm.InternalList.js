@@ -260,7 +260,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
 		index = this.getItemNodeCount();
 		this.keyIndexes[ groupName + '/' + key ] = index;
 
-		itemData = [ { type: 'internalItem' } ].concat( data,  [ { type: '/internalItem' } ] );
+		itemData = [ { type: 'internalItem' } ].concat( data, [ { type: '/internalItem' } ] );
 		tx = ve.dm.Transaction.newFromInsertion(
 			this.getDocument(),
 			this.getListNode().getRange().end,

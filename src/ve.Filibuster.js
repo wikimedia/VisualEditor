@@ -379,7 +379,7 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 		return (
 			'<b>exit ' + ve.escapeHtml( frame.funcName ) + '</b>' +
 			'--->' +
-			( frame.thrown ?  'thrown' : showVal( frame.returned ) )
+			( frame.thrown ? 'thrown' : showVal( frame.returned ) )
 		);
 	}
 

@@ -915,7 +915,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 		} else if ( 'exception' in cases[ i ] ) {
 
 			assert.throws(
-				// jshint loopfunc:true
+				// eslint-disable-next-line no-loop-func
 				function () {
 					data.getRelativeOffset(
 						cases[ i ].offset,
@@ -925,7 +925,6 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 				},
 				cases[ i ].exception,
 				cases[ i ].msg
-				// jshint loopfunc:false
 			);
 		}
 	}

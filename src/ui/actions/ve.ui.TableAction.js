@@ -798,7 +798,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		// Detect if the owner of a spanning cell gets deleted and
 		// leaves orphaned placeholders
 		span = cell.node.getSpans()[ mode ];
-		if ( cell[ mode ] + span - 1  > maxIndex ) {
+		if ( cell[ mode ] + span - 1 > maxIndex ) {
 			// add inserts for orphaned place holders
 			if ( mode === 'col' ) {
 				startRow = cell.row;
@@ -853,9 +853,9 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			);
 			// Remove all but start and end tags
 			rowData.splice( 1, rowData.length - 2 );
-			/* jshint loopfunc:true (awaiting eslint replacement; T149264) */
 			removedMatrix[ row - minIndex ] = {
 				row: rowData,
+				// eslint-disable-next-line no-loop-func
 				cells: cells.map( function ( cell ) {
 					if ( cell && !cell.isPlaceholder() ) {
 						cell.data = documentModel.getData( cell.node.getOuterRange(), true );

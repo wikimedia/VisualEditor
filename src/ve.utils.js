@@ -1182,7 +1182,7 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 	for ( i = 0, len = maskAttrs.length; i < len; i++ ) {
 		fromAttr = unmask ? 'data-ve-' + maskAttrs[ i ] : maskAttrs[ i ];
 		toAttr = unmask ? maskAttrs[ i ] : 'data-ve-' + maskAttrs[ i ];
-		/* jshint loopfunc:true (awaiting eslint replacement; T149264) */
+		// eslint-disable-next-line no-loop-func
 		$( xmlDoc ).find( '[' + fromAttr + ']' ).each( function () {
 			var toAttrValue, fromAttrNormalized,
 				fromAttrValue = this.getAttribute( fromAttr );

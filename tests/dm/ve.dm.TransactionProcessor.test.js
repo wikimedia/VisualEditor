@@ -597,8 +597,8 @@ QUnit.test( 'commit', function ( assert ) {
 					data.splice( 32, 1 ); // remove '/listItem'
 					data.splice( 20, 1 ); // remove 'listItem'
 					data.splice( 17, 1 ); // remove '/listItem'
-					data.splice(  5, 1 ); // remove 'listItem'
-					data.splice(  2, 1 ); // remove 'list'
+					data.splice( 5, 1 ); // remove 'listItem'
+					data.splice( 2, 1 ); // remove 'list'
 				}
 			},
 			'inserting trailing metadata (1)': {
@@ -722,8 +722,8 @@ QUnit.test( 'commit', function ( assert ) {
 				'rollback (tree): ' + msg
 			);
 		} else if ( 'exception' in cases[ msg ] ) {
-			/* jshint loopfunc:true */
 			assert.throws(
+				// eslint-disable-next-line no-loop-func
 				function () {
 					testDoc.commit( tx );
 				},

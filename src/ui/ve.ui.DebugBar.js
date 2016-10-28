@@ -211,7 +211,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
 			if ( annotations ) {
 				$label.append(
-					/* jshint loopfunc:true (awaiting eslint replacement; T149264) */
+					// eslint-disable-next-line no-loop-func
 					$( '<span>' ).text(
 						'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( function ( ann ) {
 							return JSON.stringify( ann.getComparableObject() );
