@@ -243,7 +243,9 @@
 	 * @return {ve.ui.Surface} UI surface
 	 */
 	ve.test.utils.createSurfaceFromHtml = function ( html ) {
-		return this.createSurfaceFromDocument( ve.createDocumentFromHtml( html ) );
+		return this.createSurfaceFromDocument(
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+		);
 	};
 
 	/**
