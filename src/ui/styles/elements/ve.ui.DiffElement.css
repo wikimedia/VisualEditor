@@ -1,0 +1,43 @@
+/*!
+ * VisualEditor MediaWiki UserInterface DiffElement styles.
+ *
+ * @copyright 2011-2016 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.ve-ui-diffElement-insert {
+	background-color: #7fd7c4;
+	border-radius: 0.25em;
+}
+
+.ve-ui-diffElement-remove {
+	background-color: #e88e89;
+	border-radius: 0.25em;
+}
+
+.ve-ui-diffElement-none {
+	opacity: 0.5;
+}
+
+.ve-ui-diffElement-doc-child-change {
+	border-left: 5px solid #347bff;
+	padding-left: 5px;
+	margin-left: -10px;
+}
+
+.ve-ui-diffElement-up {
+	border-top: 1px solid;
+	opacity: 1;
+}
+
+.ve-ui-diffElement-down {
+	border-bottom: 1px solid;
+	opacity: 1;
+}
+
+.ve-ui-diffElement-insert:empty:before,
+.ve-ui-diffElement-remove:empty:before,
+.ve-ui-diffElement-up:empty:before,
+.ve-ui-diffElement-down:empty:before {
+	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
+}

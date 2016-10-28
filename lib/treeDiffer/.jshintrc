@@ -1,0 +1,24 @@
+{
+	// Enforcing
+	"bitwise": true,
+	"eqeqeq": true,
+	"freeze": true,
+	"latedef": "nofunc",
+	"futurehostile": true,
+	"noarg": true,
+	"nonew": true,
+	"undef": true,
+	"unused": true,
+
+	"strict": false,
+
+	// Relaxing
+
+	// Environment
+	"browser": true,
+	"jquery": true,
+
+	"globals": {
+		"treeDiffer": false
+	}
+}
