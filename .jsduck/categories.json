@@ -225,8 +225,19 @@
 		]
 	},
 	{
-		"name": "UnicodeJS",
+		"name": "Upstream",
 		"groups": [
+			{
+				"name": "OOjs",
+				"classes": [
+					"OO",
+					"OO.EmitterList",
+					"OO.EventEmitter",
+					"OO.Factory",
+					"OO.Registry",
+					"OO.SortedEmitterList"
+				]
+			},
 			{
 				"name": "UnicodeJS",
 				"classes": [
@@ -236,14 +247,9 @@
 					"unicodeJS.graphemebreak",
 					"unicodeJS.characterclass"
 				]
-			}
-		]
-	},
-	{
-		"name": "OOjs UI",
-		"groups": [
+			},
 			{
-				"name": "General",
+				"name": "OOjs UI General",
 				"classes": [
 					"OO.ui",
 					"OO.ui.Element",
@@ -258,52 +264,36 @@
 				]
 			},
 			{
-				"name": "Factories",
-				"classes": ["OO.ui.*Factory"]
-			},
-			{
-				"name": "Tools",
-				"classes": ["OO.ui.*Tool"]
-			},
-			{
-				"name": "Mixins",
+				"name": "OOjs UI Mixins",
 				"classes": ["OO.ui.mixin", "OO.ui.mixin.*"]
 			},
 			{
-				"name": "Layouts",
+				"name": "OOjs UI Factories",
+				"classes": ["OO.ui.*Factory"]
+			},
+			{
+				"name": "OOjs UI Layouts",
 				"classes": ["OO.ui.*Layout"]
 			},
 			{
-				"name": "Tool groups",
+				"name": "OOjs UI Tool groups",
 				"classes": ["OO.ui.*ToolGroup"]
 			},
 			{
-				"name": "Widgets",
+				"name": "OOjs UI Tools",
+				"classes": ["OO.ui.*Tool"]
+			},
+			{
+				"name": "OOjs UI Widgets",
 				"classes": ["OO.ui.*Widget"]
 			},
 			{
-				"name": "Dialogs",
+				"name": "OOjs UI Dialogs",
 				"classes": ["OO.ui.*Dialog"]
 			},
 			{
-				"name": "Themes",
+				"name": "OOjs UI Themes",
 				"classes": ["OO.ui.*Theme"]
-			}
-		]
-	},
-	{
-		"name": "Upstream",
-		"groups": [
-			{
-				"name": "OOjs",
-				"classes": [
-					"OO",
-					"OO.EmitterList",
-					"OO.EventEmitter",
-					"OO.Factory",
-					"OO.Registry",
-					"OO.SortedEmitterList"
-				]
 			},
 			{
 				"name": "jQuery",
