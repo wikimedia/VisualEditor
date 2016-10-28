@@ -5,6 +5,7 @@
  */
 
 /* eslint-env node */
+
 module.exports = function ( grunt ) {
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
