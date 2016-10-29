@@ -28,10 +28,8 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 	// Documents
 	this.oldDoc = visualDiff.oldDoc;
 	this.newDoc = visualDiff.newDoc;
-	this.oldDoc.rebuildTree();
-	this.newDoc.rebuildTree();
-	this.oldDocChildren = this.oldDoc.documentNode.children;
-	this.newDocChildren = this.newDoc.documentNode.children;
+	this.oldDocChildren = this.oldDoc.getDocumentNode().children;
+	this.newDocChildren = this.newDoc.getDocumentNode().children;
 
 	// Diff
 	this.oldToNew = diff.docChildrenOldToNew;
