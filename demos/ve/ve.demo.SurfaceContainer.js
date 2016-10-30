@@ -81,9 +81,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	removeButton.on( 'click', this.destroy.bind( this ) );
 	saveButton.on( 'click', this.save.bind( this ) );
 	diffButton.on( 'click', function () {
-		var windowManager = new OO.ui.WindowManager( { factory: ve.ui.windowFactory } );
-		$( 'body' ).append( windowManager.$element );
-		windowManager.openWindow( 'diff' );
+		container.surface.dialogs.openWindow( 'diff', {
+			oldDoc: container.oldDoc,
+			newDoc: container.surface.model.documentModel
+		} );
 	} );
 
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
@@ -288,7 +289,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
 	this.target.setSurface( this.surface );
 
 	dmDoc = this.surface.getModel().getDocument();
-	this.target.oldDoc = dmDoc.cloneFromRange( new ve.Range( 0, dmDoc.data.getLength() ) );
+	this.oldDoc = dmDoc.cloneFromRange();
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() )
 		.hide().slideDown().promise().done( function () {

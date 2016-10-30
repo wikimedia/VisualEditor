@@ -491,6 +491,7 @@
 			"src/ui/dialogs/ve.ui.NodeDialog.js",
 			"src/ui/dialogs/ve.ui.ToolbarDialog.js",
 			"src/ui/dialogs/ve.ui.CommandHelpDialog.js",
+			"src/ui/dialogs/ve.ui.DiffDialog.js",
 			"src/ui/dialogs/ve.ui.FindAndReplaceDialog.js",
 			"src/ui/dialogs/ve.ui.ProgressDialog.js",
 			"src/ui/dialogs/ve.ui.SpecialCharacterDialog.js",

@@ -36,25 +36,36 @@ ve.ui.DiffDialog.static.actions = [
 
 /* Methods */
 
+/**
+ * @inheritdoc
+ */
 ve.ui.DiffDialog.prototype.initialize = function () {
-	var visualDiff, diffElement;
-
 	// Parent method
 	ve.ui.DiffDialog.parent.prototype.initialize.apply( this, arguments );
-
-	visualDiff = new ve.dm.VisualDiff( ve.init.target.oldDoc, ve.init.target.surface.model.documentModel );
-	diffElement = new ve.ui.DiffElement( visualDiff );
 
 	this.content = new OO.ui.PanelLayout( {
 		padded: true,
 		expanded: true
 	} );
 
-	this.$body.append(
-		this.content.$element.append(
-			diffElement.$element
-		)
-	);
+	this.$body.append( this.content.$element );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DiffDialog.prototype.getSetupProcess = function ( data ) {
+	return ve.ui.DiffDialog.super.prototype.getSetupProcess.call( this, data )
+		.next( function () {
+
+			var visualDiff, diffElement;
+			visualDiff = new ve.dm.VisualDiff( data.oldDoc, data.newDoc );
+			diffElement = new ve.ui.DiffElement( visualDiff );
+
+			this.content.$element.empty().append(
+				diffElement.$element
+			);
+		}, this );
 };
 
 /* Registration */
