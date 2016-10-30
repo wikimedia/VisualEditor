@@ -7,12 +7,14 @@
 
 .ve-ui-diffElement-insert {
 	background-color: #7fd7c4;
-	border-radius: 0.25em;
+	border-radius: 0.15em;
+	box-shadow: 0 0 0 1px #7fd7c4;
 }
 
 .ve-ui-diffElement-remove {
 	background-color: #e88e89;
-	border-radius: 0.25em;
+	border-radius: 0.15em;
+	box-shadow: 0 0 0 1px #e88e89;
 }
 
 .ve-ui-diffElement-none {
@@ -38,6 +40,10 @@
 .ve-ui-diffElement-insert:empty:before,
 .ve-ui-diffElement-remove:empty:before,
 .ve-ui-diffElement-up:empty:before,
-.ve-ui-diffElement-down:empty:before {
+.ve-ui-diffElement-down:empty:before,
+.ve-ui-diffElement-insert *:empty:before,
+.ve-ui-diffElement-remove *:empty:before,
+.ve-ui-diffElement-up *:empty:before,
+.ve-ui-diffElement-down *:empty:before {
 	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
 }
