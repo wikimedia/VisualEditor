@@ -16,11 +16,11 @@
  * @param {Object} node Node of any type
  * @param {Object} config
  */
-ve.DiffTreeNode = function ( node, config ) {
+ve.DiffTreeNode = function ( node ) {
 	// Parent constructor
-	ve.DiffTreeNode.parent.call( this, node );
+	ve.DiffTreeNode.super.apply( this, arguments );
 
-	this.doc = config.doc;
+	this.doc = node.getDocument();
 };
 
 /* Inheritance */
@@ -38,7 +38,6 @@ OO.inheritClass( ve.DiffTreeNode, treeDiffer.TreeNode );
  * @return {boolean} The nodes are equal
  */
 ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
-
 	if ( this.node instanceof ve.dm.ContentBranchNode && otherNode.node instanceof ve.dm.ContentBranchNode ) {
 		return JSON.stringify( this.doc.getData( this.node.getOuterRange() ) ) ===
 			JSON.stringify( otherNode.doc.getData( otherNode.node.getOuterRange() ) );
@@ -46,7 +45,6 @@ ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
 		return ( this.node.element.type === otherNode.node.element.type &&
 			ve.compare( this.node.element.attributes, otherNode.node.element.attributes ) );
 	}
-
 };
 
 /**

@@ -409,8 +409,8 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 		return cleanDiff;
 	}
 
-	oldDocChildTree = new this.treeDiffer.Tree( oldDocChild, ve.DiffTreeNode, { doc: this.oldDoc } );
-	newDocChildTree = new this.treeDiffer.Tree( newDocChild, ve.DiffTreeNode, { doc: this.newDoc } );
+	oldDocChildTree = new this.treeDiffer.Tree( oldDocChild, ve.DiffTreeNode );
+	newDocChildTree = new this.treeDiffer.Tree( newDocChild, ve.DiffTreeNode );
 
 	treeDiff = new this.treeDiffer.Differ( oldDocChildTree, newDocChildTree )
 		.transactions[ oldDocChildTree.orderedNodes.length - 1 ][ newDocChildTree.orderedNodes.length - 1 ];
