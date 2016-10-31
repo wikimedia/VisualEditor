@@ -225,9 +225,7 @@
 			"unicodejs",
 			"rangefix",
 			"spark-md5",
-			"dom-classlist-shim",
-			"treeDiffer",
-			"diffMatchPatch"
+			"dom-classlist-shim"
 		]
 	},
 	"visualEditor.core": {
@@ -247,7 +245,6 @@
 			"src/ve.Document.js",
 			"src/ve.EventSequencer.js",
 			"src/ve.Scheduler.js",
-			"src/ve.DiffTreeNode.js",
 			{ "file": "src/ve.Filibuster.js", "debug": true },
 			"src/dm/ve.dm.js",
 			"src/dm/ve.dm.Model.js",
@@ -288,7 +285,6 @@
 			"src/dm/ve.dm.DocumentSynchronizer.js",
 			"src/dm/ve.dm.IndexValueStore.js",
 			"src/dm/ve.dm.Converter.js",
-			"src/dm/ve.dm.VisualDiff.js",
 			"src/dm/selections/ve.dm.LinearSelection.js",
 			"src/dm/selections/ve.dm.NullSelection.js",
 			"src/dm/selections/ve.dm.TableSelection.js",
@@ -508,9 +504,7 @@
 			"src/ui/datatransferhandlers/ve.ui.PlainTextFileTransferHandler.js",
 			"src/ui/datatransferhandlers/ve.ui.HTMLFileTransferHandler.js",
 			"src/ui/datatransferhandlers/ve.ui.UrlStringTransferHandler.js",
-			"src/ui/dialogs/ve.ui.DiffDialog.js",
 			"src/ui/elements/ve.ui.PreviewElement.js",
-			"src/ui/elements/ve.ui.DiffElement.js",
 			"src/ui/windowmanagers/ve.ui.ToolbarDialogWindowManager.js",
 			"src/ui/widgets/ve.ui.AlignWidget.js",
 			"src/ui/widgets/ve.ui.LanguageSearchWidget.js",
@@ -566,7 +560,6 @@
 			"src/ui/styles/dialogs/ve.ui.FindAndReplaceDialog.css",
 			"src/ui/styles/dialogs/ve.ui.ProgressDialog.css",
 			"src/ui/styles/dialogs/ve.ui.SpecialCharacterDialog.css",
-			"src/ui/styles/elements/ve.ui.DiffElement.css",
 			"src/ui/styles/tools/ve.ui.FormatTool.css",
 			"src/ui/styles/widgets/ve.ui.LanguageInputWidget.css",
 			"src/ui/styles/widgets/ve.ui.LanguageSearchWidget.css",
@@ -594,6 +587,22 @@
 		"styleGroup": "ve",
 		"dependencies": [
 			"visualEditor.base.build"
+		]
+	},
+	"visualEditor.diffing": {
+		"scripts": [
+			"src/ve.DiffTreeNode.js",
+			"src/dm/ve.dm.VisualDiff.js",
+			"src/ui/dialogs/ve.ui.DiffDialog.js",
+			"src/ui/elements/ve.ui.DiffElement.js"
+		],
+		"styles": [
+			"src/ui/styles/elements/ve.ui.DiffElement.css"
+		],
+		"dependencies": [
+			"visualEditor.core.build",
+			"treeDiffer",
+			"diffMatchPatch"
 		]
 	},
 	"visualEditor.test": {
@@ -723,7 +732,8 @@
 			"oojs-ui-apex",
 			"visualEditor.core",
 			"visualEditor.desktop.build",
-			"visualEditor.theme.apex"
+			"visualEditor.theme.apex",
+			"visualEditor.diffing"
 		]
 	},
 	"visualEditor.desktop.build": {
