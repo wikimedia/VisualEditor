@@ -21,10 +21,8 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc ) {
 
 	this.oldDoc = oldDoc.cloneFromRange();
 	this.newDoc = newDoc.cloneFromRange();
-	this.oldDoc.rebuildTree();
-	this.newDoc.rebuildTree();
-	this.oldDocNode = oldDoc.documentNode;
-	this.newDocNode = newDoc.documentNode;
+	this.oldDocNode = oldDoc.getDocumentNode();
+	this.newDocNode = newDoc.getDocumentNode();
 	this.oldDocChildren = this.oldDocNode.children;
 	this.newDocChildren = this.newDocNode.children;
 	this.treeDiffer = treeDiffer;

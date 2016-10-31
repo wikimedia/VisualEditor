@@ -83,7 +83,6 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	diffButton.on( 'click', function () {
 		var windowManager = new OO.ui.WindowManager( { factory: ve.ui.windowFactory } );
 		$( 'body' ).append( windowManager.$element );
-		container.target.oldDoc.rebuildTree();
 		windowManager.openWindow( 'diff' );
 	} );
 
@@ -290,7 +289,6 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml ) {
 
 	dmDoc = this.surface.getModel().getDocument();
 	this.target.oldDoc = dmDoc.cloneFromRange( new ve.Range( 0, dmDoc.data.getLength() ) );
-	// rebuildTree is called when getDiff is run
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() )
 		.hide().slideDown().promise().done( function () {
