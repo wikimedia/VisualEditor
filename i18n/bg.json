@@ -93,11 +93,14 @@
 	"visualeditor-listbutton-bullet-tooltip": "Неномериран списък",
 	"visualeditor-listbutton-number-tooltip": "Номериран списък",
 	"visualeditor-mediasizewidget-button-originaldimensions": "Преобръщане в пълен размер",
+	"visualeditor-mediasizewidget-label-custom": "По избор",
 	"visualeditor-mediasizewidget-label-defaulterror": "Невалидни стойности за размера",
 	"visualeditor-mediasizewidget-label-scale": "Мащаб",
 	"visualeditor-mediasizewidget-label-scale-percent": "% от размера на малкото изображение",
+	"visualeditor-mediasizewidget-sizeoptions-custom": "По избор",
 	"visualeditor-mediasizewidget-sizeoptions-default": "По подразбиране",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Мащаб",
+	"visualeditor-shortcuts-clipboard": "Буферна памет",
 	"visualeditor-shortcuts-formatting": "Форматиране на абзац",
 	"visualeditor-shortcuts-history": "История",
 	"visualeditor-shortcuts-other": "Други",
@@ -120,8 +123,8 @@
 	"visualeditor-table-merge-cells": "Сливане на клетки",
 	"visualeditor-table-merge-cells-merge": "Сливане",
 	"visualeditor-table-merge-cells-unmerge": "Разделяне",
-	"visualeditor-table-move-col-after": "Преместване назад",
-	"visualeditor-table-move-col-before": "Преместване напред",
+	"visualeditor-table-move-col-after": "Преместване след",
+	"visualeditor-table-move-col-before": "Преместване преди",
 	"visualeditor-table-move-row-after": "Преместване надолу",
 	"visualeditor-table-move-row-before": "Преместване нагоре",
 	"visualeditor-tablecell-contextitem": "Клетка от таблицата",
@@ -132,5 +135,6 @@
 	"visualeditor-toolbar-paragraph-format": "Форматиране",
 	"visualeditor-toolbar-structure": "Структура",
 	"visualeditor-toolbar-style-tooltip": "Стил на текста",
-	"visualeditor-toolbar-table": "Таблица"
+	"visualeditor-toolbar-table": "Таблица",
+	"visualeditor-toolbar-text-style": "Стил"
 }
