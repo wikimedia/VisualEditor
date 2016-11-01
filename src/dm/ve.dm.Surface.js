@@ -998,13 +998,14 @@ ve.dm.Surface.prototype.onDocumentPreSynchronize = function ( tx ) {
  * @return {ve.Range[]} Modified ranges
  */
 ve.dm.Surface.prototype.getModifiedRanges = function () {
-	var ranges = [],
+	var doc = this.getDocument(),
+		ranges = [],
 		compactRanges = [],
 		lastRange = null;
 
 	this.getHistory().forEach( function ( stackItem ) {
 		stackItem.transactions.forEach( function ( tx ) {
-			var newRange = tx.getModifiedRange( this.documentModel );
+			var newRange = tx.getModifiedRange( doc );
 			// newRange will by null for no-ops
 			if ( newRange ) {
 				// Translate previous ranges by the current transaction
