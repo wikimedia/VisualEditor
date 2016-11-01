@@ -8,12 +8,12 @@ QUnit.module( 've.Range' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange, touchesRange)', 35, function ( assert ) {
+QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange, touchesRange)', function ( assert ) {
 	var range = new ve.Range( 100, 200 );
 
-	assert.strictEqual( range.isCollapsed(), false );
-	assert.strictEqual( range.isBackwards(), false );
-	assert.strictEqual( range.getLength(), 100 );
+	assert.strictEqual( range.isCollapsed(), false, 'forwards range is not collapsed' );
+	assert.strictEqual( range.isBackwards(), false, 'forwards range is not backwards' );
+	assert.strictEqual( range.getLength(), 100, 'forwards range has length 100' );
 	assert.strictEqual( range.equals( new ve.Range( 100, 200 ) ), true, 'equals matches identical range' );
 	assert.strictEqual( range.equals( new ve.Range( 200, 100 ) ), false, 'equals doesn\'t match reverse range' );
 	assert.strictEqual( range.equalsSelection( new ve.Range( 200, 100 ) ), true, 'equalsSelection matches reverse range' );
@@ -27,9 +27,9 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 	assert.strictEqual( range.containsRange( new ve.Range( 100, 201 ) ), false, 'doesn\'t contain 100, 201' );
 
 	range = new ve.Range( 200, 100 );
-	assert.strictEqual( range.isCollapsed(), false );
-	assert.strictEqual( range.isBackwards(), true );
-	assert.strictEqual( range.getLength(), 100 );
+	assert.strictEqual( range.isCollapsed(), false, 'backwards range is not collapsed' );
+	assert.strictEqual( range.isBackwards(), true, 'backwards range is backwards' );
+	assert.strictEqual( range.getLength(), 100, 'backwards range has length 100' );
 	assert.strictEqual( range.containsOffset( 99 ), false, 'doesn\'t contain 99' );
 	assert.strictEqual( range.containsOffset( 100 ), true, 'contains 100' );
 	assert.strictEqual( range.containsOffset( 199 ), true, 'contains 199' );
@@ -41,17 +41,25 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 	assert.strictEqual( range.containsRange( new ve.Range( 100, 201 ) ), false, 'doesn\'t contain 100, 201' );
 
 	assert.strictEqual( range.touchesRange( new ve.Range( 98, 99 ) ), false, 'doesn\'t touch 98, 99' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 203, 201 ) ), false, 'doesn\'t touch 203,201' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 98, 100 ) ), true, 'touches 98,100' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 200, 201 ) ), true, 'touches 200,201' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 150, 98 ) ), true, 'touches 150,98' );
-	assert.strictEqual( range.touchesRange( new ve.Range( 0, 300 ) ), true, 'touches 0,300' );
+	assert.strictEqual( range.touchesRange( new ve.Range( 203, 201 ) ), false, 'doesn\'t touch 203, 201' );
+	assert.strictEqual( range.touchesRange( new ve.Range( 98, 100 ) ), true, 'touches 98, 100' );
+	assert.strictEqual( range.touchesRange( new ve.Range( 200, 201 ) ), true, 'touches 200, 201' );
+	assert.strictEqual( range.touchesRange( new ve.Range( 150, 98 ) ), true, 'touches 150, 98' );
+	assert.strictEqual( range.touchesRange( new ve.Range( 0, 300 ) ), true, 'touches 0, 300' );
 	assert.strictEqual( range.touchesRange( range ), true, 'returns true when passed itself' );
 
+	assert.strictEqual( range.overlapsRange( new ve.Range( 99, 100 ) ), false, 'doesn\'t overlap 99, 100' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 202, 200 ) ), false, 'doesn\'t overlap 202, 200' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 99, 101 ) ), true, 'overlaps 99, 101' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 199, 201 ) ), true, 'overlaps 199, 201' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 150, 98 ) ), true, 'overlaps 150, 98' );
+	assert.strictEqual( range.overlapsRange( new ve.Range( 0, 300 ) ), true, 'overlaps 0, 300' );
+	assert.strictEqual( range.overlapsRange( range ), true, 'returns true when passed itself' );
+
 	range = new ve.Range( 100 );
-	assert.strictEqual( range.isCollapsed(), true );
-	assert.strictEqual( range.isBackwards(), false );
-	assert.strictEqual( range.getLength(), 0 );
+	assert.strictEqual( range.isCollapsed(), true, 'collapsed range is collapsed' );
+	assert.strictEqual( range.isBackwards(), false, 'collapsed range is not backwards' );
+	assert.strictEqual( range.getLength(), 0, 'collapsed range has zero length' );
 
 } );
 
