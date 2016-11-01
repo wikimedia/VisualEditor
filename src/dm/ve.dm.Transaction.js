@@ -1164,6 +1164,14 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc ) {
 				oldOffset += op.length;
 				break;
 
+			case 'attribute':
+				if ( start === undefined ) {
+					start = offset;
+				}
+				// Attribute changes modify the element to their right but don't move the cursor
+				end = offset + 1;
+				break;
+
 			default:
 				if ( start === undefined ) {
 					// This is the first non-retain operation, set start to right before it
@@ -1173,6 +1181,7 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc ) {
 					offset += op.insert.length;
 					oldOffset += op.remove.length;
 				}
+
 				// Set end, so it'll end up being right after the last non-retain operation
 				if ( op.insertedDataLength ) {
 					end = start + op.insertedDataLength;

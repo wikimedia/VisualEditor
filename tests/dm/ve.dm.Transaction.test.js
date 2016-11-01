@@ -1953,7 +1953,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 					[ 'pushRetain', 5 ],
 					[ 'pushReplaceElementAttribute', 'style', 'bullet', 'number' ]
 				],
-				range: new ve.Range( 5 ),
+				range: new ve.Range( 5, 6 ),
 				msg: 'single attribute change'
 			},
 			{
@@ -1962,7 +1962,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 					[ 'pushRetain', 42 ],
 					[ 'pushReplaceElementAttribute', 'style', 'bullet', 'number' ]
 				],
-				range: new ve.Range( 0, 42 ),
+				range: new ve.Range( 0, 43 ),
 				msg: 'two attribute changes'
 			}
 		];
