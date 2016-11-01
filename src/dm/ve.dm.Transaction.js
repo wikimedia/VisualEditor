@@ -1137,17 +1137,22 @@ ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion 
  * simple insertion transaction, the range will cover the newly inserted data, and for a simple
  * removal transaction it will be a zero-length range.
  *
- * Changes within the internal list at the end of a document are ignored.
- *
  * @param {ve.dm.Document} doc The document in the state to which the transaction applies
+ * @param {boolean} includeInternalList Include changes within the internal list
  * @return {ve.Range|null} Range covering modifications, or null for a no-op transaction
  */
-ve.dm.Transaction.prototype.getModifiedRange = function ( doc ) {
-	var i, len, op, start, end,
+ve.dm.Transaction.prototype.getModifiedRange = function ( doc, includeInternalList ) {
+	var i, len, op, start, end, internalListNode,
+		docEndOffset = doc.data.getLength(),
 		oldOffset = 0,
-		offset = 0,
-		internalListNode = doc.getInternalList().getListNode(),
-		docEndOffset = internalListNode ? internalListNode.getOuterRange().start : this.getDocument().data.getLength();
+		offset = 0;
+
+	if ( !includeInternalList ) {
+		internalListNode = doc.getInternalList().getListNode();
+		if ( internalListNode ) {
+			docEndOffset = internalListNode.getOuterRange().start;
+		}
+	}
 
 	opLoop:
 	for ( i = 0, len = this.operations.length; i < len; i++ ) {
