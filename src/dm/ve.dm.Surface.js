@@ -931,7 +931,7 @@ ve.dm.Surface.prototype.redo = function () {
  * @fires documentUpdate
  */
 ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
-	this.setSelection( this.getSelection().translateByTransaction( tx ) );
+	this.setSelection( this.getSelection().translateByTransactionWithAuthor( tx, null ) );
 	this.emit( 'documentUpdate', tx );
 };
 

@@ -57,6 +57,11 @@ ve.dm.Selection.static.newFromHash = null;
 /* Methods */
 
 /**
+ * Test for selection equality
+ */
+ve.dm.Selection.prototype.equals = null;
+
+/**
  * Get a JSON serialization of this selection
  *
  * @abstract
@@ -138,6 +143,17 @@ ve.dm.Selection.prototype.isCollapsed = null;
  * @return {ve.dm.Selection} A new translated selection
  */
 ve.dm.Selection.prototype.translateByTransaction = null;
+
+/**
+ * Apply translations from a transaction, with bias depending on author ID comparison
+ *
+ * @abstract
+ * @method
+ * @param {ve.dm.Transaction} tx Transaction
+ * @param {number} author The selection's author ID
+ * @return {ve.dm.Selection} A new translated selection
+ */
+ve.dm.Selection.prototype.translateByTransactionWithAuthor = null;
 
 /**
  * Apply translations from a set of transactions
