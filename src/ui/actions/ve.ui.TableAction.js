@@ -855,7 +855,6 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			rowData.splice( 1, rowData.length - 2 );
 			removedMatrix[ row - minIndex ] = {
 				row: rowData,
-				// eslint-disable-next-line no-loop-func
 				cells: cells.map( function ( cell ) {
 					if ( cell && !cell.isPlaceholder() ) {
 						cell.data = documentModel.getData( cell.node.getOuterRange(), true );

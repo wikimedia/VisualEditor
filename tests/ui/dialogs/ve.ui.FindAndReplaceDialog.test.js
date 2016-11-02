@@ -86,7 +86,6 @@ QUnit.test( 'find fragments', function ( assert ) {
 				dialog.matchCaseToggle.setValue( !!cases[ i ].matchCase );
 				dialog.regexToggle.setValue( !!cases[ i ].regex );
 				dialog.findText.setValue( cases[ i ].find );
-				/* jshint loopfunc:true */
 				ranges = dialog.fragments.map( function ( fragment ) {
 					return fragment.getSelection().getRange();
 				} );
