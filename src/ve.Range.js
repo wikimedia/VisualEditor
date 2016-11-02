@@ -150,6 +150,20 @@ ve.Range.prototype.touchesRange = function ( range ) {
 };
 
 /**
+ * Check if another range overlaps this one
+ *
+ * This includes ranges which intersect this one, e.g. [1,3] & [2,4],
+ * and ranges which cover this one completely, e.g. [1,3] & [0,5],
+ * but *not* ranges which only touch, e.g. [0,2] & [2,4].
+ *
+ * @param {ve.Range} range Range to check
+ * @return {boolean} If other range overlaps this range
+ */
+ve.Range.prototype.overlapsRange = function ( range ) {
+	return range.end > this.start && range.start < this.end;
+};
+
+/**
  * Get the length of the range.
  *
  * @return {number} Length of range
