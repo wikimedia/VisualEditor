@@ -583,10 +583,10 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		);
 	}
 
-	// Copy over the internal list
+	// Shallow copy over the internal list
 	ve.batchSplice(
 		linearData.data, linearData.getLength(), 0,
-		this.getData( listRange, true )
+		this.getData( listRange )
 	);
 
 	// The internalList is rebuilt by the document constructor
