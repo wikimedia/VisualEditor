@@ -463,7 +463,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 	for ( i = 1, ilen = linearDiff.length; i < ilen; i++ ) {
 		diffDocData = diffDocData.concat( linearDiff[ i ][ 1 ] );
 	}
-	diffDoc = ve.init.target.surface.model.documentModel.cloneWithData( diffDocData );
+	diffDoc = this.newDoc.cloneWithData( diffDocData );
 
 	// Add spans with the appropriate class for removes and inserts
 	// TODO: do insert and remove outside of loop
