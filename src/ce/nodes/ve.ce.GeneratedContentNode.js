@@ -125,7 +125,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 
 	// Render the computed values of some attributes
 	ve.resolveAttributes(
-		$rendering,
+		$rendering.toArray(),
 		domElements[ 0 ].ownerDocument,
 		ve.dm.Converter.static.computedAttributes
 	);

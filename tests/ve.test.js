@@ -559,13 +559,19 @@ QUnit.test( 'resolveUrl', function ( assert ) {
 } );
 
 QUnit.test( 'resolveAttributes', function ( assert ) {
-	var i, doc, $html,
+	var i, doc, div,
 		cases = [
 			{
 				base: 'http://example.com',
 				html: '<div><a href="foo">foo</a></div><a href="bar">bar</a><img src="baz">',
 				resolved: '<div><a href="http://example.com/foo">foo</a></div><a href="http://example.com/bar">bar</a><img src="http://example.com/baz">',
 				msg: 'href and src resolved'
+			},
+			{
+				base: 'http://example.com',
+				html: '<a href="foo">foo</a>',
+				resolved: '<a href="http://example.com/foo">foo</a>',
+				msg: 'href resolved on self (unwrapped)'
 			}
 		];
 
@@ -574,10 +580,11 @@ QUnit.test( 'resolveAttributes', function ( assert ) {
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.createDocumentFromHtml( '' );
 		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[ i ].base )[ 0 ] );
-		$html = $( '<div>' ).append( cases[ i ].html );
-		ve.resolveAttributes( $html, doc, ve.dm.Converter.static.computedAttributes );
+		div = document.createElement( 'div' );
+		div.innerHTML = cases[ i ].html;
+		ve.resolveAttributes( div.childNodes, doc, ve.dm.Converter.static.computedAttributes );
 		assert.strictEqual(
-			$html.html(),
+			div.innerHTML,
 			cases[ i ].resolved,
 			cases[ i ].msg
 		);

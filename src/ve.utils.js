@@ -966,30 +966,40 @@ ve.resolveUrl = function ( url, base ) {
  *
  * This performs node.setAttribute( 'attr', nodeInDoc[attr] ); for every node.
  *
- * @param {jQuery} $elements Set of DOM elements to modify
+ * Doesn't use jQuery to avoid document switching performance bug
+ *
+ * @param {HTMLElement[]|jQuery} elementsOrJQuery Set of DOM elements to modify. Passing a jQuery selector is deprecated.
  * @param {HTMLDocument} doc Document to resolve against (different from $elements' .ownerDocument)
  * @param {string[]} attrs Attributes to resolve
  */
-ve.resolveAttributes = function ( $elements, doc, attrs ) {
-	var i, len, attr;
+ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
+	var i, iLen, j, jLen, element, attr,
+		// Convert jQuery selections to plain arrays
+		elements = elementsOrJQuery.toArray ? elementsOrJQuery.toArray() : elementsOrJQuery;
 
 	/**
-	 * Callback for jQuery.fn.each that resolves the value of attr to the computed
-	 * property value. Called in the context of an HTMLElement.
+	 * Resolves the value of attr to the computed property value.
 	 *
 	 * @private
+	 * @param {HTMLElement} el Element
 	 */
-	function resolveAttribute() {
-		var nodeInDoc = doc.createElement( this.nodeName );
-		nodeInDoc.setAttribute( attr, this.getAttribute( attr ) );
+	function resolveAttribute( el ) {
+		var nodeInDoc = doc.createElement( el.nodeName );
+		nodeInDoc.setAttribute( attr, el.getAttribute( attr ) );
 		if ( nodeInDoc[ attr ] ) {
-			this.setAttribute( attr, nodeInDoc[ attr ] );
+			el.setAttribute( attr, nodeInDoc[ attr ] );
 		}
 	}
 
-	for ( i = 0, len = attrs.length; i < len; i++ ) {
-		attr = attrs[ i ];
-		$elements.find( '[' + attr + ']' ).addBack( '[' + attr + ']' ).each( resolveAttribute );
+	for ( i = 0, iLen = elements.length; i < iLen; i++ ) {
+		element = elements[ i ];
+		for ( j = 0, jLen = attrs.length; j < jLen; j++ ) {
+			attr = attrs[ j ];
+			if ( element.hasAttribute( attr ) ) {
+				resolveAttribute( element );
+			}
+			Array.prototype.forEach.call( element.querySelectorAll( '[' + attr + ']' ), resolveAttribute );
+		}
 	}
 };
 
