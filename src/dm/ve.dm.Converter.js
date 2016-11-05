@@ -1210,35 +1210,6 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		return dataSlice;
 	}
 
-	function removeInternalNodes() {
-		var dataCopy, endOffset;
-		// See if there is an internalList in the data, and if there is one, remove it
-		// Removing it here prevents unwanted interactions with whitespace preservation
-		for ( i = 0; i < dataLen; i++ ) {
-			if (
-				data[ i ].type && data[ i ].type.charAt( 0 ) !== '/' &&
-				ve.dm.nodeFactory.lookup( data[ i ].type ) &&
-				ve.dm.nodeFactory.isNodeInternal( data[ i ].type )
-			) {
-				// Copy data if we haven't already done so
-				if ( !dataCopy ) {
-					dataCopy = data.slice();
-				}
-				endOffset = findEndOfNode( i );
-				// Remove this node's data from dataCopy
-				dataCopy.splice( i - ( dataLen - dataCopy.length ), endOffset - i );
-				// Move i such that it will be at endOffset in the next iteration
-				i = endOffset - 1;
-			}
-		}
-		if ( dataCopy ) {
-			data = dataCopy;
-			dataLen = data.length;
-		}
-	}
-
-	removeInternalNodes();
-
 	for ( i = 0; i < dataLen; i++ ) {
 		if ( typeof data[ i ] === 'string' ) {
 			// Text
@@ -1431,8 +1402,10 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							if ( domElement.childNodes.length === 0 && (
 									// then check that we are the last child
 									// before unwrapping (and therefore destroying)
-									i === data.length - 1 ||
-									data[ i + 1 ].type.charAt( 0 ) === '/'
+									data[ i + 1 ] === undefined ||
+									data[ i + 1 ].type.charAt( 0 ) === '/' ||
+									// Document ends when we encounter the internal list
+									( data[ i + 1 ].type && this.nodeFactory.isNodeInternal( data[ i + 1 ].type ) )
 								)
 							) {
 								doUnwrap = true;
@@ -1491,6 +1464,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				// Create node from data
 				if ( this.metaItemFactory.lookup( data[ i ].type ) ) {
 					isContentNode = canContainContentStack[ canContainContentStack.length - 1 ];
+				} else if ( this.nodeFactory.isNodeInternal( data[ i ].type ) ) {
+					// Reached the internal list, finish
+					break;
 				} else {
 					canContainContentStack.push(
 						// if the last item was true then this item must inherit it
