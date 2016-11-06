@@ -1622,7 +1622,7 @@ ve.dm.example.domToDataCases = {
 		ceHtml: ve.dm.example.blockSlug +
 			'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
 				'<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
-				'<figcaption class="ve-ce-branchNode">' +
+				'<figcaption class="ve-ce-branchNode ve-ce-activeNode" contenteditable="true" spellcheck="true">' +
 					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">caption</p>' +
 				'</figcaption>' +
 			'</figure>' +

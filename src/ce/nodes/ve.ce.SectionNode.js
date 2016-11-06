@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ce.BranchNode
+ * @mixins ve.ce.ActiveNode
  * @constructor
  * @param {ve.dm.SectionNode} model Model to observe
  * @param {Object} [config] Configuration options
@@ -17,80 +18,27 @@ ve.ce.SectionNode = function VeCeSectionNode() {
 	// Parent constructor
 	ve.ce.SectionNode.super.apply( this, arguments );
 
-	// Properties
-	this.surface = null;
-
 	// Events
 	this.model.connect( this, { update: 'onUpdate' } );
 
-	this.$element
-		.addClass( 've-ce-sectionNode' )
-		.prop( { contentEditable: 'true', spellcheck: true } );
+	// Mixin constructors
+	ve.ce.ActiveNode.call( this );
+
+	// DOM changes
+	this.$element.addClass( 've-ce-sectionNode' );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ce.SectionNode, ve.ce.BranchNode );
 
+OO.mixinClass( ve.ce.SectionNode, ve.ce.ActiveNode );
+
 /* Static Properties */
 
 ve.ce.SectionNode.static.name = 'section';
 
 /* Methods */
-
-/**
- * @inheritdoc
- */
-ve.ce.SectionNode.prototype.onSetup = function () {
-	// Parent method
-	ve.ce.SectionNode.super.prototype.onSetup.call( this );
-
-	// Exit if already setup or not attached
-	if ( this.isSetup || !this.root ) {
-		return;
-	}
-	this.surface = this.getRoot().getSurface();
-
-	// Events
-	this.surface.getModel().connect( this, { select: 'onSurfaceModelSelect' } );
-};
-
-/**
- * @inheritdoc
- */
-ve.ce.SectionNode.prototype.onTeardown = function () {
-	// Parent method
-	ve.ce.SectionNode.super.prototype.onTeardown.call( this );
-
-	// Events
-	this.surface.getModel().disconnect( this );
-};
-
-/**
- * Handle select events from the surface model.
- *
- * @param {ve.dm.Selection} selection Selection
- */
-ve.ce.SectionNode.prototype.onSurfaceModelSelect = function ( selection ) {
-	var coveringRange = selection.getCoveringRange(),
-		sectionNode = this;
-
-	if ( coveringRange && this.model.getRange().containsRange( new ve.Range( coveringRange.start ) ) ) {
-		// Only set this as the active node if active node is empty, or not a
-		// descendent of this node.
-		if ( !this.surface.getActiveNode() || !this.surface.getActiveNode().traverseUpstream( function ( node ) { return node !== sectionNode; } ) ) {
-			this.surface.setActiveNode( this );
-		}
-		this.$element.addClass( 've-ce-sectionNode-active' );
-	} else {
-		if ( this.surface.getActiveNode() === this ) {
-			this.surface.setActiveNode( null );
-		}
-		if ( !selection.isNull() ) {
-			this.$element.removeClass( 've-ce-sectionNode-active' );
-		}
-	}
-};
 
 /**
  * Get the HTML tag name.

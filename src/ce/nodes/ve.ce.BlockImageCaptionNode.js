@@ -9,6 +9,8 @@
  *
  * @class
  * @extends ve.ce.BranchNode
+ * @mixins ve.ce.ActiveNode
+ *
  * @constructor
  * @param {ve.dm.BlockImageCaptionNode} model Model to observe
  * @param {Object} [config] Configuration options
@@ -16,11 +18,16 @@
 ve.ce.BlockImageCaptionNode = function VeCeBlockImageCaptionNode() {
 	// Parent constructor
 	ve.ce.BlockImageCaptionNode.super.apply( this, arguments );
+
+	// Mixin constructor
+	ve.ce.ActiveNode.call( this );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ce.BlockImageCaptionNode, ve.ce.BranchNode );
+
+OO.mixinClass( ve.ce.BlockImageCaptionNode, ve.ce.ActiveNode );
 
 /* Static Properties */
 
