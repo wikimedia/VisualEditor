@@ -163,17 +163,13 @@ ve.ui.DiffElement.prototype.getNodeHtml = function ( node, action, move ) {
  */
 ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move ) {
 	var i, ilen, j, jlen, k, klen,
-		iModified, jModified, nodeHtml,
+		iModified, jModified, classes, nodeHtml,
 		newNodeIndex = this.oldToNew[ oldNodeIndex ].node,
 		nodeRange = this.newDocChildren[ newNodeIndex ].getOuterRange(),
 		nodeData = this.newDoc.getData( nodeRange ),
 		alreadyProcessed = {
-			remove: [],
-			insert: []
-		},
-		markedNodes = {
-			remove: [],
-			insert: []
+			remove: {},
+			insert: {}
 		},
 		diff = this.oldToNew[ oldNodeIndex ].diff,
 		treeDiff = diff.treeDiff,
@@ -185,139 +181,112 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		correspondingNodes = this.oldToNew[ oldNodeIndex ].correspondingNodes;
 
 	/**
-	 * Modify the linear data to reflect the diff, one node at a time. (Nodes here
-	 * are descendants of the child of the document, which have been tree diffed.)
-	 * At this level, a ve.dm.BranchNode could either have been inserted or removed,
-	 * whereas a ve.dm.ContentBranchNode could also have been changed, meaning that
-	 * part of its data has been inserted and/or removed.
+	 * Splice in the removed data for the subtree rooted at this node, from the old
+	 * document.
 	 *
-	 * We start with data from the new document, then (1) splice in data
-	 * corresponding to any removed nodes from the old document, and (2) highlight
-	 * and data that has been removed or inserted.
-	 *
-	 * @param {number} nodeIndex The index of the node in its tree's orderedNodes
-	 * array.
-	 * @param {string} action 'remove', 'insert' or 'change'
-	 * @param {string} [move] 'up' or 'down' if the node has moved
+	 * @param {number} nodeIndex The index of this node in the subtree rooted at
+	 * this document child
 	 */
-	function nodesInsertOrRemove( nodeIndex, action, move ) {
-		var i, ilen,
-			doc, nodes,
-			subNodeTreeNode,
-			subNode,
-			subNodeRange,
-			subNodeData,
-			spliceIndex,
-			annotatedData,
-			descendant, descendants,
-			outerNodeRange, outerNodeData,
-			correspondingNodesObject, tree,
-			parentNode, siblingNodes,
-			rightMostLeftSiblingNode,
-			oldPreviousNode, newPreviousNodeRange,
-			insertIndex;
+	function highlightRemovedSubTree( nodeIndex ) {
+		var i, ilen, subTreeRootNode, subTreeRootNodeData, siblingNodes,
+			newPreviousNodeIndex, oldPreviousNodeIndex, insertIndex, descendants;
 
-		// Define tree and doc
-		tree = action === 'remove' ? oldTree : newTree;
-		doc = action === 'remove' ? this.oldDoc : this.newDoc;
-		nodes = action === 'remove' ? oldNodes : newNodes;
+		// Get outer data for this node from the old doc and add remove class
+		subTreeRootNode = oldNodes[ nodeIndex ];
+		subTreeRootNodeData = this.oldDoc.getData( subTreeRootNode.node.getOuterRange() );
+		subTreeRootNodeData[ 0 ] = this.addClassesToNode( subTreeRootNodeData[ 0 ], this.oldDoc, 'remove' );
 
-		// Get the outer node
-		outerNodeRange = action === 'remove' ? tree.orderedNodes[ nodeIndex ].node.getOuterRange() : nodeRange;
-		outerNodeData = action === 'remove' ? doc.getData( outerNodeRange ) : nodeData;
-		subNodeTreeNode = nodes[ nodeIndex ];
-
-		// Get subNode and add action class
-		subNode = subNodeTreeNode.node;
-		subNodeRange = subNode.getOuterRange();
-		spliceIndex = subNodeRange.from - outerNodeRange.from;
-		subNodeData = outerNodeData.splice( spliceIndex, subNodeRange.to - subNodeRange.from );
-		subNodeData[ 0 ] = this.addClassesToNode( subNodeData[ 0 ], doc, action, move );
-
-		if ( action === 'remove' ) {
-			correspondingNodesObject = correspondingNodes.oldToNew;
-			parentNode = subNodeTreeNode.parent;
-			siblingNodes = parentNode.children;
-			rightMostLeftSiblingNode = null;
-		} else {
-			correspondingNodesObject = correspondingNodes.newToOld;
-		}
-
-		// If node is a CBN, annotate it
-		if ( subNode instanceof ve.dm.ContentBranchNode ) {
-			annotatedData = subNodeData.splice( 1, subNodeData.length - 2 );
-			annotatedData = action === 'change' ? diffInfo[ k ].linearDiff : annotatedData;
-			annotatedData = this.annotateNode( this.getDataAsLinearDiff( annotatedData, action ) );
-			ve.batchSplice( subNodeData, 1, 0, annotatedData );
-		}
-
-		// Splice in the modified subNode
-		ve.batchSplice( outerNodeData, spliceIndex, 0, subNodeData );
-
-		// If action is insert or remove, make node's descendants the same
-		if ( action !== 'change' ) {
-			descendants = tree.getNodeDescendants( subNodeTreeNode );
-			for ( i = 0, ilen = descendants.length; i < ilen; i++ ) {
-
-				descendant = descendants[ i ];
-
-				if ( descendant.index in correspondingNodesObject ) {
-
-					markedNodes[ action ].push( correspondingNodesObject[ descendant.index ] );
-
-				} else if ( correspondingNodes[ action ].indexOf( descendant.index ) !== -1 ) {
-
-					// Get subNode and add action class
-					subNode = descendant.node;
-					subNodeRange = subNode.getOuterRange();
-					spliceIndex = subNodeRange.from - outerNodeRange.from;
-					subNodeData = outerNodeData.splice( spliceIndex, subNodeRange.to - subNodeRange.from );
-					subNodeData[ 0 ] = this.addClassesToNode( subNodeData[ 0 ], doc, action );
-
-					// If node is a CBN, annotate it
-					if ( subNode instanceof ve.dm.ContentBranchNode ) {
-						annotatedData = subNodeData.splice( 1, subNodeData.length - 2 );
-						annotatedData = action === 'change' ? diffInfo[ k ].linearDiff : annotatedData;
-						annotatedData = this.annotateNode( this.getDataAsLinearDiff( annotatedData, action ) );
-						ve.batchSplice( subNodeData, 1, 0, annotatedData );
-					}
-
-					// Splice in the modified subNode
-					ve.batchSplice( outerNodeData, spliceIndex, 0, subNodeData );
-					alreadyProcessed[ action ].push( descendant.index );
-
-				}
-			}
-		}
-
-		if ( action === 'insert' || action === 'change' ) {
-			nodeData = outerNodeData;
-		} else {
-			// Check if this node has left siblings
-			for ( i = 0, ilen = siblingNodes.length; i < ilen; i++ ) {
-				// Children should be in index order
-				if ( siblingNodes[ i ].index === subNodeTreeNode.index ) {
-					break;
-				} else {
-					rightMostLeftSiblingNode = siblingNodes[ i ];
-				}
-			}
-			// If so, find the rightmost one and its corresponding new node
-			if ( rightMostLeftSiblingNode !== null ) {
-				oldPreviousNode = rightMostLeftSiblingNode;
-				newPreviousNodeRange = newNodes[ correspondingNodes.oldToNew[ oldPreviousNode.index ] ].node.getOuterRange();
-				insertIndex = newPreviousNodeRange.to - nodeRange.from - 1;
+		// Find the node that corresponds to the "previous node" of this node. The
+		// "previous node" is either:
+		// - the rightmost left sibling that corresponds to a node in the new document
+		// - or if there isn't one, then this node's parent (which must correspond to
+		// a node in the new document, or this node would have been marked already
+		// processed)
+		siblingNodes = subTreeRootNode.parent.children;
+		for ( i = 0, ilen = siblingNodes.length; i < ilen; i++ ) {
+			if ( siblingNodes[ i ].index === nodeIndex ) {
+				break;
 			} else {
-				oldPreviousNode = parentNode;
-				newPreviousNodeRange = newNodes[ correspondingNodes.oldToNew[ oldPreviousNode.index ] ].node.getRange();
-				insertIndex = newPreviousNodeRange.from - nodeRange.from;
+				oldPreviousNodeIndex = siblingNodes[ i ].index;
+				newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ] || newPreviousNodeIndex;
 			}
-			// Splice in the subnode's annotated data just after the new node's open tag
-			ve.batchSplice( nodeData, insertIndex, 0, outerNodeData );
 		}
 
+		// If previous node was found among siblings, insert the removed subtree just
+		// after its corresponding node in the new document. Otherwise insert the
+		// removed subtree just inside its parent node's correspondign node.
+		if ( newPreviousNodeIndex ) {
+			insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().to - nodeRange.from;
+		} else {
+			newPreviousNodeIndex = correspondingNodes.oldToNew[ subTreeRootNode.parent.index ];
+			insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().from - nodeRange.from;
+		}
+		ve.batchSplice( nodeData, insertIndex, 0, subTreeRootNodeData );
+
+		// Mark all children as already processed
+		// In the future, may also annotate all descendants
+		descendants = oldTree.getNodeDescendants( subTreeRootNode );
+		for ( i = 0, ilen = descendants.length; i < ilen; i++ ) {
+			alreadyProcessed.remove[ descendants[ i ].index ] = true;
+		}
 	}
 
+	/**
+	 * Mark this node as inserted.
+	 *
+	 * @param {number} nodeIndex The index of this node in the subtree rooted at
+	 * this document child
+	 */
+	function highlightInsertedSubTree( nodeIndex ) {
+		var i, ilen, subTreeRootNode, subTreeRootNodeRangeStart, descendants;
+
+		// Find index of first data element for this node
+		subTreeRootNode = newNodes[ nodeIndex ];
+		subTreeRootNodeRangeStart = subTreeRootNode.node.getOuterRange().from - nodeRange.from;
+
+		// Add insert class
+		nodeData[ subTreeRootNodeRangeStart ] = this.addClassesToNode(
+			nodeData[ subTreeRootNodeRangeStart ], this.newDoc, 'insert'
+		);
+
+		// Mark all children as already processed
+		// In the future, may also annotate all descendants
+		descendants = newTree.getNodeDescendants( subTreeRootNode );
+		for ( i = 0, ilen = descendants.length; i < ilen; i++ ) {
+			alreadyProcessed.insert[ descendants[ i ].index ] = true;
+		}
+	}
+
+	/**
+	 * Mark this node as changed and, if it is a content branch node, splice in
+	 * the diff data.
+	 *
+	 * @param {number} nodeIndex The index of this node in the subtree rooted at
+	 * this document child
+	 */
+	function highlightChangedSubTree( nodeIndex ) {
+		var subTreeRootNode, subTreeRootNodeRangeStart, subTreeRootNodeData, annotatedData;
+
+		// The new node was changed.
+		// Get data for this node
+		subTreeRootNode = newNodes[ nodeIndex ];
+		subTreeRootNodeRangeStart = subTreeRootNode.node.getOuterRange().from - nodeRange.from;
+
+		if ( subTreeRootNode.node instanceof ve.dm.ContentBranchNode ) {
+			// If node is a CBN, splice in the annotated diff
+			subTreeRootNodeData = diffInfo[ k ].linearDiff;
+			annotatedData = this.annotateNode( subTreeRootNodeData );
+			ve.batchSplice( nodeData, subTreeRootNodeRangeStart + 1, subTreeRootNode.node.length, annotatedData );
+		} else {
+			// If node is a BN, add change class
+			nodeData[ subTreeRootNodeRangeStart ] = this.addClassesToNode(
+				nodeData[ subTreeRootNodeRangeStart ], this.newDoc, 'change'
+			);
+		}
+	}
+
+	// Iterate backwards over trees so that changes are made from right to left
+	// of the data, to avoid having to update ranges
 	ilen = Math.max( oldNodes.length, newNodes.length );
 	jlen = ilen;
 	for ( i = 0, j = 0; i < ilen && j < jlen; i++, j++ ) {
@@ -328,45 +297,44 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		if ( iModified < 0 ) {
 
 			// The rest of the nodes have been removed
-			if ( alreadyProcessed.remove.indexOf( jModified ) === -1 ) {
-				nodesInsertOrRemove.call( this, jModified, 'remove', move );
+			if ( !( jModified in alreadyProcessed.remove ) ) {
+				highlightRemovedSubTree.call( this, jModified );
 			}
 
 		} else if ( jModified < 0 ) {
 
 			// The rest of the nodes have been inserted
-			if ( alreadyProcessed.insert.indexOf( iModified ) === -1 ) {
-				nodesInsertOrRemove.call( this, iModified, 'insert', move );
+			if ( !( iModified in alreadyProcessed.insert ) ) {
+				highlightInsertedSubTree.call( this, iModified );
 			}
 
 		} else if ( correspondingNodes.newToOld[ iModified ] === jModified ) {
 
-			// Insert, remove or check for change
-			if ( markedNodes.insert.indexOf( iModified ) !== -1 ) {
-				nodesInsertOrRemove.call( this, iModified, 'insert', move );
-			} else if ( markedNodes.remove.indexOf( jModified ) !== -1 ) {
-				nodesInsertOrRemove.call( this, jModified, 'remove', move );
-			} else {
-				for ( k = 0, klen = treeDiff.length; k < klen; k++ ) {
-					if ( treeDiff[ k ][ 0 ] === iModified && treeDiff[ k ][ 1 ] === jModified ) {
-						nodesInsertOrRemove.call( this, iModified, 'change', move );
+			// The new node was changed.
+			for ( k = 0, klen = treeDiff.length; k < klen; k++ ) {
+				if ( treeDiff[ k ][ 0 ] === iModified && treeDiff[ k ][ 1 ] === jModified ) {
+					if ( !( iModified in alreadyProcessed.remove ) &&
+						!( iModified in alreadyProcessed.insert ) ) {
+
+						highlightChangedSubTree.call( this, iModified );
+
 					}
 				}
 			}
 
 		} else if ( correspondingNodes.newToOld[ iModified ] === undefined ) {
 
-			// The new node was inserted
-			if ( alreadyProcessed.insert.indexOf( iModified ) === -1 ) {
-				nodesInsertOrRemove.call( this, iModified, 'insert', move );
+			// The new node was inserted.
+			if ( !( iModified in alreadyProcessed.insert ) ) {
+				highlightInsertedSubTree.call( this, iModified );
 			}
 			j--;
 
 		} else if ( correspondingNodes.newToOld[ iModified ] < jModified ) {
 
-			// The old node was removed
-			if ( alreadyProcessed.remove.indexOf( jModified ) === -1 ) {
-				nodesInsertOrRemove.call( this, jModified, 'remove', move );
+			// The old node was removed.
+			if ( !( jModified in alreadyProcessed.remove ) ) {
+				highlightRemovedSubTree.call( this, jModified );
 			}
 			i--;
 
@@ -379,7 +347,8 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		)
 	).body.innerHTML;
 
-	nodeHtml = $( '<div>' ).addClass( this.classPrefix + 'doc-child-change' ).append( nodeHtml );
+	classes = this.classPrefix + 'doc-child-change' + ( move ? ' ' + this.classPrefix + move : '' );
+	nodeHtml = $( '<div>' ).addClass( classes ).append( nodeHtml );
 
 	return nodeHtml;
 
@@ -424,24 +393,6 @@ ve.ui.DiffElement.prototype.addClassesToNode = function ( nodeData, nodeDoc, act
 	node.originalDomElementsIndex = originalDomElementsIndex;
 
 	return node;
-};
-
-/**
- * Get linear data in the linear diff format
- *
- * @param {Array} nodeData
- * @param {string} action 'remove', 'insert' or 'change'
- * @return {Array}
- */
-ve.ui.DiffElement.prototype.getDataAsLinearDiff = function ( nodeData, action ) {
-	switch ( action ) {
-		case 'insert':
-			return [ [ 1, nodeData ] ];
-		case 'remove':
-			return [ [ -1, nodeData ] ];
-		case 'change':
-			return nodeData;
-	}
 };
 
 /**
