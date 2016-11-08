@@ -130,10 +130,13 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 		this.getTextInputWidget().setDir( isExt ? 'ltr' : 'rtl' );
 	}
 
-	this.getTextInputWidget().isValid().done( function ( valid ) {
-		// Keep annotation in sync with value
-		widget.setAnnotation( valid ? widget.constructor.static.getAnnotationFromText( value ) : null, true );
-	} );
+	this.getTextInputWidget().getValidity()
+		.done( function () {
+			widget.setAnnotation( widget.constructor.static.getAnnotationFromText( value ), true );
+		} )
+		.fail( function () {
+			widget.setAnnotation( null, true );
+		} );
 };
 
 // eslint-disable-next-line valid-jsdoc
