@@ -55,7 +55,7 @@ ve.dm.Scalable = function VeDmScalable( config ) {
 	if ( config.defaultDimensions ) {
 		this.setDefaultDimensions( config.defaultDimensions );
 	}
-	if ( !!config.isDefault ) {
+	if ( config.isDefault ) {
 		this.toggleDefault( !!config.isDefault );
 	}
 	if ( config.minDimensions ) {
