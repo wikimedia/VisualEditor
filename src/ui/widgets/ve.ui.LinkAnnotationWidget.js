@@ -127,7 +127,7 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 	if ( $( 'body' ).hasClass( 'rtl' ) ) {
 		isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( value.trim() );
 		// If URL is external, flip to LTR. Otherwise, set back to RTL
-		this.getTextInputWidget().setRTL( !isExt );
+		this.getTextInputWidget().setDir( isExt ? 'ltr' : 'rtl' );
 	}
 
 	this.getTextInputWidget().isValid().done( function ( valid ) {
