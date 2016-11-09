@@ -3142,10 +3142,10 @@ ve.ce.Surface.prototype.removeCursorHolders = function () {
 	if ( !this.cursorHolders ) {
 		return;
 	}
-	if ( this.cursorHolders.before ) {
+	if ( this.cursorHolders.before && this.cursorHolders.before.parentNode ) {
 		this.cursorHolders.before.parentNode.removeChild( this.cursorHolders.before );
 	}
-	if ( this.cursorHolders.after ) {
+	if ( this.cursorHolders.after && this.cursorHolders.after.parentNode ) {
 		this.cursorHolders.after.parentNode.removeChild( this.cursorHolders.after );
 	}
 	this.cursorHolders = null;
