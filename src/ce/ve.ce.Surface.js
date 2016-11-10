@@ -1874,7 +1874,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		$elements, pasteData, slice, internalListRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange, pastedText, handled,
-		tableAction,
+		tableAction, htmlBlacklist,
 		items = [],
 		metadataIdRegExp = ve.init.platform.getMetadataIdRegExp(),
 		importantElement = '[id],[typeof],[rel]',
@@ -2098,6 +2098,21 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				$( this ).wrap( '<li>' );
 			}
 		} );
+
+		// HTML sanitization
+		htmlBlacklist = ve.getProp( importRules, 'external', 'htmlBlacklist' );
+		if ( htmlBlacklist && !clipboardKey ) {
+			if ( htmlBlacklist.remove ) {
+				htmlBlacklist.remove.forEach( function ( selector ) {
+					$( htmlDoc.body ).find( selector ).remove();
+				} );
+			}
+			if ( htmlBlacklist.unwrap ) {
+				htmlBlacklist.unwrap.forEach( function ( selector ) {
+					$( htmlDoc.body ).find( selector ).contents().unwrap();
+				} );
+			}
+		}
 
 		// External paste
 		pastedDocumentModel = ve.dm.converter.getModelFromDom( htmlDoc, {

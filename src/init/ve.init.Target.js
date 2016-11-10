@@ -174,18 +174,24 @@ ve.init.Target.static.excludeCommands = [];
  *
  * One set for external (non-VE) paste sources and one for all paste sources.
  *
- * @see ve.dm.ElementLinearData#sanitize
+ * Most rules are handled in ve.dm.ElementLinearData#sanitize, but htmlBlacklist
+ * is handled in ve.ce.Surface#afterPaste.
+ *
  * @type {Object}
  */
 ve.init.Target.static.importRules = {
 	external: {
 		blacklist: [
 			// Annotations
-			// TODO: allow spans
 			'textStyle/span', 'textStyle/font',
 			// Nodes
-			'alienInline', 'alienBlock', 'comment'
+			'alienInline', 'alienBlock', 'comment', 'div'
 		],
+		// Selectors to filter. Runs before model type blacklist above.
+		htmlBlacklist: {
+			// remove: [ 'selectorToRemove' ]
+			unwrap: [ 'fieldset', 'legend' ]
+		},
 		nodeSanitization: true
 	},
 	all: null
