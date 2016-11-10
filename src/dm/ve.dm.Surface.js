@@ -632,6 +632,7 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var insertionAnnotations, selectedNode, range, selectedAnnotations,
+		rangeFocus, oldRangeFocus, focusRangeMovingBack,
 		oldSelection = this.selection,
 		branchNodes = {},
 		selectionChange = false,
@@ -685,6 +686,23 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		if ( !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
 			this.selectedAnnotations = selectedAnnotations;
 			contextChange = true;
+		}
+
+		// Did the annotations at the focus point of a non-collapsed selection
+		// change? (i.e. did the selection move in/out of an annotation as it
+		// expanded?)
+		if ( selectionChange && !range.isCollapsed() && oldSelection instanceof ve.dm.LinearSelection ) {
+			rangeFocus = new ve.Range( range.to );
+			oldRangeFocus = new ve.Range( oldSelection.getRange().to );
+			focusRangeMovingBack = rangeFocus.to < oldRangeFocus.to;
+			// If we're moving back in the document, getInsertionAnnotationsFromRange
+			// needs to be told to fetch the annotations after the cursor, otherwise
+			// it'll trigger one position too soon.
+			if (
+				!linearData.getInsertionAnnotationsFromRange( rangeFocus, focusRangeMovingBack ).compareTo( linearData.getInsertionAnnotationsFromRange( oldRangeFocus, focusRangeMovingBack ) )
+			) {
+				contextChange = true;
+			}
 		}
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		selectedNode = selection.getMatrixCells()[ 0 ].node;
