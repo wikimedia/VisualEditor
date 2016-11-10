@@ -19,6 +19,9 @@
  * @cfg {Object} [mode] Initial editing mode. Must be in this.modes and defaults to first item.
  */
 ve.init.Target = function VeInitTarget( config ) {
+	var isIe = ve.init.platform.constructor.static.isInternetExplorer(),
+		isEdge = ve.init.platform.constructor.static.isEdge();
+
 	config = config || {};
 
 	// Parent constructor
@@ -47,13 +50,13 @@ ve.init.Target = function VeInitTarget( config ) {
 	// Initialization
 	this.$element.addClass( 've-init-target' );
 
-	if ( ve.init.platform.constructor.static.isInternetExplorer() ) {
+	if ( isIe ) {
 		this.$element.addClass( 've-init-target-ie' );
 	}
 
 	// We don't have any Edge CSS bugs that aren't present in IE, so
 	// use a combined class to simplify selectors.
-	if ( ve.init.platform.constructor.static.isEdge() ) {
+	if ( isIe || isEdge ) {
 		this.$element.addClass( 've-init-target-ie-or-edge' );
 	}
 
