@@ -247,14 +247,7 @@ ve.init.Target.prototype.unbindHandlers = function () {
  */
 ve.init.Target.prototype.destroy = function () {
 	this.clearSurfaces();
-	if ( this.toolbar ) {
-		this.toolbar.destroy();
-		this.toolbar = null;
-	}
-	if ( this.actionsToolbar ) {
-		this.actionsToolbar.destroy();
-		this.actionsToolbar = null;
-	}
+	this.teardownToolbar();
 	this.$element.remove();
 	this.unbindHandlers();
 	ve.init.target = null;
@@ -484,6 +477,20 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	toolbar.$bar.append( surface.getToolbarDialogs().$element );
 	toolbar.$actions.append( actions.$element );
 	rAF( this.onContainerScrollHandler );
+};
+
+/**
+ * Teardown the toolbar
+ */
+ve.init.Target.prototype.teardownToolbar = function () {
+	if ( this.toolbar ) {
+		this.toolbar.destroy();
+		this.toolbar = null;
+	}
+	if ( this.actionsToolbar ) {
+		this.actionsToolbar.destroy();
+		this.actionsToolbar = null;
+	}
 };
 
 /**
