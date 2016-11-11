@@ -652,6 +652,17 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				balancedRange: new ve.Range( 1 )
 			},
 			{
+				doc: 'alienWithEmptyData',
+				msg: 'collapsed range in empty paragraph',
+				range: new ve.Range( 1 ),
+				expected: [
+					{ type: 'paragraph', internal: { generated: 'empty' } },
+					{ type: 'paragraph' }
+				],
+				originalRange: new ve.Range( 1 ),
+				balancedRange: new ve.Range( 1 )
+			},
+			{
 				msg: 'range with one character',
 				range: new ve.Range( 2, 3 ),
 				expected: [
