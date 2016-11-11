@@ -19,6 +19,7 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 	// Parent constructor
 	ve.ui.Toolbar.super.call( this, ve.ui.toolFactory, ve.ui.toolGroupFactory, config );
 
+	this.groups = null;
 	// Default directions
 	this.contextDirection = { inline: 'ltr', block: 'ltr' };
 	// The following classes can be used here:
@@ -62,8 +63,14 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 
 	this.surface = surface;
 
-	// Parent method
-	ve.ui.Toolbar.super.prototype.setup.call( this, groups );
+	// The parent method just rebuilds the tool groups so only
+	// do this if they have changed
+	if ( groups !== this.groups ) {
+		// Parent method
+		ve.ui.Toolbar.super.prototype.setup.call( this, groups );
+	}
+
+	this.groups = groups;
 
 	// Events
 	this.getSurface().getModel().connect( this, { contextChange: 'onContextChange' } );
