@@ -36,7 +36,7 @@ ve.dm.AnnotationSet.prototype.getStore = function () {
  * @return {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.clone = function () {
-	return new ve.dm.AnnotationSet( this.getStore(), this.storeIndexes.slice( 0 ) );
+	return new ve.dm.AnnotationSet( this.getStore(), this.storeIndexes.slice() );
 };
 
 /**
