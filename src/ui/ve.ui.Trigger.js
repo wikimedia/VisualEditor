@@ -192,7 +192,7 @@ ve.ui.Trigger.static.platformFilters = {
 			}
 			return explode ? keys : keys.join( '' );
 		};
-	} )()
+	}() )
 };
 
 /**

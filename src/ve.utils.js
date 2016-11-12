@@ -209,7 +209,7 @@ ve.supportsSplice = ( function () {
 
 	// Splice is supported
 	return true;
-} )();
+}() );
 
 /**
  * Splice one array into another.

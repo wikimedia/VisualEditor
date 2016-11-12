@@ -343,7 +343,7 @@ ve.ui.commandRegistry.register(
 
 	} );
 
-} )();
+}() );
 
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(

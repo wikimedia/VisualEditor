@@ -67,7 +67,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			return function () {
 				return !dialog.invalidRegex;
 			};
-		} )( this ),
+		}( this ) ),
 		tabIndex: 1
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {

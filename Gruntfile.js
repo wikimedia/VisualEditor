@@ -24,7 +24,7 @@ module.exports = function ( grunt ) {
 				pages[ name ] = path;
 			} );
 			return pages;
-		} )();
+		}() );
 
 	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-banana-checker' );

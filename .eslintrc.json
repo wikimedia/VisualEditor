@@ -14,7 +14,6 @@
 		"Papa": false
 	},
 	"rules": {
-		"dot-notation": 0,
-		"wrap-iife": 0
+		"dot-notation": [ "error", { "allowKeywords": true } ]
 	}
 }

@@ -211,4 +211,4 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 
 	} );
 
-} )();
+}() );

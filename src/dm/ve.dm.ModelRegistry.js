@@ -512,4 +512,4 @@
 
 	ve.dm.modelRegistry = new ve.dm.ModelRegistry();
 
-} )( ve );
+}( ve ) );
