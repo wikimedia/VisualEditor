@@ -484,7 +484,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			i--;
 		}
 
-		if ( selection.length === 0 ) {
+		if ( selection.length === 0 || range.isCollapsed() ) {
 			// Nothing selected
 			linearData = new ve.dm.ElementLinearData( this.getStore(), [
 				{ type: 'paragraph', internal: { generated: 'empty' } },
