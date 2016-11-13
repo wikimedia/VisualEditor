@@ -480,7 +480,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 
 	toolbar.setup( this.constructor.static.toolbarGroups, surface );
 	actions.setup( this.constructor.static.actionGroups, surface );
-	this.attachToolbar( surface );
+	this.attachToolbar();
 	toolbar.$bar.append( surface.getToolbarDialogs().$element );
 	toolbar.$actions.append( actions.$element );
 	rAF( this.onContainerScrollHandler );
@@ -490,7 +490,8 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
  * Attach the toolbar to the DOM
  */
 ve.init.Target.prototype.attachToolbar = function () {
-	this.getToolbar().$element.insertBefore( this.getToolbar().getSurface().$element );
-	this.getToolbar().initialize();
+	var toolbar = this.getToolbar();
+	toolbar.$element.insertBefore( toolbar.getSurface().$element );
+	toolbar.initialize();
 	this.getActions().initialize();
 };
