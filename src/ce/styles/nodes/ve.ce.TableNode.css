@@ -14,7 +14,7 @@
 	cursor: text;
 }
 
-.ve-ce-tableCaptionNode:focus {
+.ve-ce-tableCaptionNode.ve-ce-activeNode-active {
 	border: 1px dotted #ccc;
 	border-bottom: 0;
 	margin-top: -1px;
