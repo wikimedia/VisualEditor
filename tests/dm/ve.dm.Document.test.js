@@ -637,7 +637,12 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 	var i, expectedData, slice, range, doc,
 		cases = [
 			{
-				msg: 'empty range',
+				msg: 'no range',
+				range: undefined,
+				expected: ve.copy( ve.dm.example.data.slice( 0, -2 ) )
+			},
+			{
+				msg: 'collapsed range',
 				range: new ve.Range( 2 ),
 				expected: [
 					{ type: 'paragraph', internal: { generated: 'empty' } },
