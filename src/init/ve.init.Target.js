@@ -203,7 +203,7 @@ ve.init.Target.static.importRules = {
  */
 ve.init.Target.prototype.setMode = function ( mode ) {
 	// Mode is not available
-	if ( this.modes.indexOf( mode ) === -1 ) {
+	if ( !this.isModeAvailable( mode ) ) {
 		if ( !this.mode ) {
 			// Use default mode if nothing has been set
 			mode = this.modes[ 0 ];
@@ -222,6 +222,16 @@ ve.init.Target.prototype.setMode = function ( mode ) {
 		this.$element.addClass( 've-init-target-' + mode );
 		this.mode = mode;
 	}
+};
+
+/**
+ * Check if a specific editing mode is available
+ *
+ * @param {string} mode Editing mode
+ * @return {boolean} Editing mode is available
+ */
+ve.init.Target.prototype.isModeAvailable = function ( mode ) {
+	return this.modes.indexOf( mode ) !== -1;
 };
 
 /**
