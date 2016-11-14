@@ -96,7 +96,7 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 						attributes: { text: '' }
 					},
 					{ type: '/comment' }
-				] );
+				] ).select();
 				this.commentNode = this.getSelectedNode();
 			}
 		}, this );
