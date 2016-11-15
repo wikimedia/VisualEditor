@@ -2692,7 +2692,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 				// TODO: setTimeout: document purpose
 				setTimeout( function () {
 					surface.changeModel( null, newSelection );
-					surface .showModelSelection();
+					surface.showModelSelection();
 				} );
 			}
 		}

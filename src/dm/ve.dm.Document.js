@@ -539,6 +539,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			);
 		}
 
+		// eslint-disable-next-line no-inner-declarations
 		function nodeNeedsContext( node ) {
 			return node.getParentNodeTypes() !== null || node.isContent();
 		}
