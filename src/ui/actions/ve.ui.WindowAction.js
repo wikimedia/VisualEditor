@@ -52,13 +52,15 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		autoClosePromises = [],
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
-		dir = surface.getView().getSelection().getDirection();
+		dir = surface.getView().getSelection().getDirection(),
+		// HACK: Allow $returnFocusTo to take null upstream
+		$noFocus = [ { focus: function () {} } ];
 
 	if ( !windowManager ) {
 		return false;
 	}
 
-	data = ve.extendObject( { dir: dir }, data, { fragment: fragment } );
+	data = ve.extendObject( { dir: dir }, data, { fragment: fragment, $returnFocusTo: $noFocus } );
 	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
 		data = ve.extendObject( data, { surface: surface } );
 		// Auto-close the current window if it is different to the one we are
