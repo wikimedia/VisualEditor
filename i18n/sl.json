@@ -106,7 +106,7 @@
 	"visualeditor-shortcuts-text-style": "Slog besedila",
 	"visualeditor-slug-insert": "Vstavi odstavek",
 	"visualeditor-specialcharacter-button-tooltip": "Posebni znak",
-	"visualeditor-specialcharacterinspector-title": "Posebni znak",
+	"visualeditor-specialcharacterinspector-title": "Posebni znaki",
 	"visualeditor-table-caption": "Napis",
 	"visualeditor-table-contextitem-properties": "Lastnosti",
 	"visualeditor-table-delete-col": "Izbriši {{PLURAL:$1|stolpec|2=stolpca|3=stolpce|4=stolpce|stolpcev}}",
@@ -127,12 +127,12 @@
 	"visualeditor-table-move-row-before": "Prestavi pod",
 	"visualeditor-tablecell-contextitem": "Celica tabele",
 	"visualeditor-tablecell-tooltip": "Za ureditev celice naredite dvojni klik",
-	"visualeditor-toolbar-format-tooltip": "Oblikujte odstavek",
+	"visualeditor-toolbar-format-tooltip": "Oblikovanje odstavka",
 	"visualeditor-toolbar-history": "Zgodovina",
 	"visualeditor-toolbar-insert": "Vstavi",
 	"visualeditor-toolbar-paragraph-format": "Oblikovanje",
 	"visualeditor-toolbar-structure": "Zgradba",
-	"visualeditor-toolbar-style-tooltip": "Oblikujte besedilo",
+	"visualeditor-toolbar-style-tooltip": "Oblikovanje besedila",
 	"visualeditor-toolbar-table": "Tabela",
 	"visualeditor-toolbar-text-style": "Slog"
 }
