@@ -194,7 +194,7 @@ QUnit.test( 'findItem', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'insertMeta', 5, function ( assert ) {
+QUnit.test( 'insertMeta', 6, function ( assert ) {
 	var expected,
 		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		surface = new ve.dm.Surface( doc ),
@@ -218,6 +218,9 @@ QUnit.test( 'insertMeta', 5, function ( assert ) {
 	expected.push( insert );
 	list.insertMeta( insert, 0 );
 	assert.deepEqual( doc.metadata.getData( 0 ), expected, 'Inserting metadata without passing an index adds to the end' );
+
+	list.insertMeta( insert );
+	assert.deepEqual( doc.metadata.getData( 11, 4 ), insert, 'Inserting metadata without passing an offset adds to the end of document' );
 
 	list.insertMeta( insert, 1 );
 	assert.deepEqual( doc.metadata.getData( 1 ), [ insert ], 'Inserting metadata without passing an index without pre-existing metadata' );

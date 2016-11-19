@@ -338,7 +338,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 		meta = meta.getElement();
 	}
 	if ( offset === undefined ) {
-		offset = this.document.data.getLength();
+		offset = this.document.getInternalList().getListNode().getOuterRange().start;
 	}
 	if ( index === undefined ) {
 		index = ( this.document.metadata.getData( offset ) || [] ).length;

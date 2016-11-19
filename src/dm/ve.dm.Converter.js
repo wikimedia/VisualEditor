@@ -1409,7 +1409,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 									data[ i + 1 ] === undefined ||
 									data[ i + 1 ].type.charAt( 0 ) === '/' ||
 									// Document ends when we encounter the internal list
-									( data[ i + 1 ].type && this.nodeFactory.isNodeInternal( data[ i + 1 ].type ) )
+									(
+										data[ i + 1 ].type &&
+										!this.metaItemFactory.lookup( data[ i + 1 ].type ) &&
+										this.nodeFactory.isNodeInternal( data[ i + 1 ].type )
+									)
 								)
 							) {
 								doUnwrap = true;
