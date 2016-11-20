@@ -348,12 +348,11 @@ ve.init.Target.prototype.onToolbarResize = function () {
  * Create a target widget.
  *
  * @method
- * @param {ve.dm.Document} dmDoc Document model
  * @param {Object} [config] Configuration options
  * @return {ve.ui.TargetWidget}
  */
-ve.init.Target.prototype.createTargetWidget = function ( dmDoc, config ) {
-	return new ve.ui.TargetWidget( dmDoc, config );
+ve.init.Target.prototype.createTargetWidget = function ( config ) {
+	return new ve.ui.TargetWidget( config );
 };
 
 /**
