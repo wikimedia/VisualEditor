@@ -64,6 +64,27 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>' +
 					'<p class="ve-ui-diffElement-none">bar</p>' +
 					spacer
+			},
+			{
+				msg: 'Wrapper paragraphs are made concrete',
+				oldDoc: 'foo',
+				newDoc: 'boo',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p class="ve-ui-diffElement-remove">foo</p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p class="ve-ui-diffElement-insert">boo</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Classes added to ClassAttributeNodes',
+				oldDoc: '<figure class="ve-align-right"><img src="foo.jpg"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure class="ve-align-right"><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<figure class="ve-align-right ve-ui-diffElement-change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+					'</div>'
 			}
 		];
 

@@ -376,6 +376,10 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		)
 	).body.innerHTML;
 
+	// The following classes are used here:
+	// * ve-ui-diffElement-doc-child-change
+	// * ve-ui-diffElement-up
+	// * ve-ui-diffElement-down
 	classes = this.classPrefix + 'doc-child-change' + ( move ? ' ' + this.classPrefix + move : '' );
 	nodeHtml = $( '<div>' ).addClass( classes ).append( nodeHtml );
 
@@ -398,6 +402,12 @@ ve.ui.DiffElement.prototype.addClassesToNode = function ( nodeData, nodeDoc, act
 		node = ve.copy( nodeData ),
 		classes = [];
 
+	// The following classes are used here:
+	// * ve-ui-diffElement-up
+	// * ve-ui-diffElement-down
+	// * ve-ui-diffElement-remove
+	// * ve-ui-diffElement-insert
+	// * ve-ui-diffElement-change
 	if ( action ) {
 		classes.push( this.classPrefix + action );
 	}
@@ -405,21 +415,33 @@ ve.ui.DiffElement.prototype.addClassesToNode = function ( nodeData, nodeDoc, act
 		classes.push( this.classPrefix + move );
 	}
 
-	if ( node.originalDomElementsIndex ) {
-		domElements = ve.copy( nodeDoc.getStore().value( node.originalDomElementsIndex ) );
-		domElements[ 0 ] = domElements[ 0 ].cloneNode( true );
-		domElements[ 0 ].classList.add.apply( domElements[ 0 ].classList, classes );
-	} else {
-		domElement = document.createElement( 'span' );
-		domElement.setAttribute( 'class', classes.join( ' ' ) );
-		domElements = [ domElement ];
+	// Don't let any nodes get unwrapped
+	if ( ve.getProp( node, 'internal', 'generated' ) ) {
+		delete node.internal.generated;
 	}
 
-	originalDomElementsIndex = this.newDoc.getStore().index(
-		domElements, domElements.map( ve.getNodeHtml ).join( '' )
-	);
+	if ( ve.getProp( node, 'attributes', 'unrecognizedClasses' ) ) {
+		// ClassAttributeNodes don't copy over original classes, so
+		// add to the unrecognizedClasses list instead
+		// TODO: Other node types may take control of their class lists
+		node.attributes.unrecognizedClasses.push( classes );
+	} else {
+		if ( node.originalDomElementsIndex ) {
+			domElements = ve.copy( nodeDoc.getStore().value( node.originalDomElementsIndex ) );
+			domElements[ 0 ] = domElements[ 0 ].cloneNode( true );
+			domElements[ 0 ].classList.add.apply( domElements[ 0 ].classList, classes );
+		} else {
+			domElement = document.createElement( 'span' );
+			domElement.setAttribute( 'class', classes.join( ' ' ) );
+			domElements = [ domElement ];
+		}
 
-	node.originalDomElementsIndex = originalDomElementsIndex;
+		originalDomElementsIndex = this.newDoc.getStore().index(
+			domElements, domElements.map( ve.getNodeHtml ).join( '' )
+		);
+
+		node.originalDomElementsIndex = originalDomElementsIndex;
+	}
 
 	return node;
 };
