@@ -157,23 +157,20 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
  * @return {string} HTML to display the action/move
  */
 ve.ui.DiffElement.prototype.getNodeHtml = function ( node, action, move ) {
-	var nodeData, nodeDoc, nodeHtml;
-
-	nodeDoc = action === 'remove' ? this.oldDoc : this.newDoc;
+	var nodeData, nodeHtml,
+		nodeDoc = action === 'remove' ? this.oldDoc : this.newDoc,
+		documentSlice = nodeDoc.cloneFromRange( node.getOuterRange() );
 
 	// Get the linear model for the node
-	nodeData = nodeDoc.getData( node.getOuterRange() );
+	nodeData = documentSlice.data.data;
 
 	// Add the classes to the outer element (in case there was a move)
 	nodeData[ 0 ] = this.addClassesToNode( nodeData[ 0 ], nodeDoc, action, move );
 
 	// Get the html for the linear model with classes
 	// Doc is always the new doc when inserting into the store
-	nodeHtml = ve.dm.converter.getDomFromModel(
-		nodeDoc.cloneWithData(
-			new ve.dm.ElementLinearData( this.newDoc.getStore(), nodeData )
-		)
-	).body.innerHTML;
+	documentSlice.getStore().merge( this.newDoc.getStore() );
+	nodeHtml = ve.dm.converter.getDomFromModel( documentSlice ).body.innerHTML;
 
 	if ( action !== 'none' ) {
 		nodeHtml = $( '<div>' ).addClass( this.classPrefix + 'doc-child-change' ).append( nodeHtml );
@@ -195,7 +192,8 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		iModified, jModified, classes, nodeHtml,
 		newNodeIndex = this.oldToNew[ oldNodeIndex ].node,
 		nodeRange = this.newDocChildren[ newNodeIndex ].getOuterRange(),
-		nodeData = this.newDoc.getData( nodeRange ),
+		documentSlice = this.newDoc.cloneFromRange( nodeRange ),
+		nodeData = documentSlice.data.data,
 		alreadyProcessed = {
 			remove: {},
 			insert: {}
@@ -370,11 +368,8 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		}
 	}
 
-	nodeHtml = ve.dm.converter.getDomFromModel(
-		this.newDoc.cloneWithData(
-			new ve.dm.ElementLinearData( this.newDoc.getStore(), nodeData )
-		)
-	).body.innerHTML;
+	documentSlice.getStore().merge( this.newDoc.getStore() );
+	nodeHtml = ve.dm.converter.getDomFromModel( documentSlice ).body.innerHTML;
 
 	// The following classes are used here:
 	// * ve-ui-diffElement-doc-child-change
