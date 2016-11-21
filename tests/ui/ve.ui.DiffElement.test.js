@@ -10,6 +10,7 @@ QUnit.module( 've.ui.DiffElement' );
 
 QUnit.test( 'Diffing', function ( assert ) {
 	var i, len, visualDiff, diffElement,
+		spacer = '<div class="ve-ui-diffElement-spacer">⋮</div>',
 		cases = [
 			{
 				msg: 'Simple text change',
@@ -49,6 +50,20 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'粵語嘅書面語' +
 						'</p>' +
 					'</div>'
+			},
+			{
+				msg: 'Only change-adjacent paragraphs are shown',
+				oldDoc: '<p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<p>boo</p><p>bar</p><p>baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p class="ve-ui-diffElement-remove">foo</p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p class="ve-ui-diffElement-insert">boo</p>' +
+					'</div>' +
+					'<p class="ve-ui-diffElement-none">bar</p>' +
+					spacer
 			}
 		];
 

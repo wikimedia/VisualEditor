@@ -57,7 +57,10 @@ OO.inheritClass( ve.ui.DiffElement, OO.ui.Element );
  */
 ve.ui.DiffElement.prototype.getDiffHtml = function () {
 	var i, j, k, ilen, jlen, klen, nodes, move,
-		diffHtml = [];
+		anyChanges = false,
+		spacer = false,
+		diffHtml = [],
+		diffQueue = [];
 
 	ilen = Math.max( this.oldDocChildren.length, this.newDocChildren.length );
 	jlen = ilen;
@@ -68,7 +71,7 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 			// Everything else in the new doc is an insert
 			nodes = this.newDocChildren.slice( j );
 			for ( k = 0, klen = nodes.length; k < klen; k++ ) {
-				diffHtml.push( this.getNodeHtml( nodes[ k ], 'insert' ) );
+				diffQueue.push( [ 'getNodeHtml', nodes[ k ], 'insert' ] );
 			}
 
 		} else if ( this.newDocChildren[ j ] === undefined ) {
@@ -76,30 +79,30 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 			// Everything else in the old doc is a remove
 			nodes = this.oldDocChildren.slice( i );
 			for ( k = 0, klen = nodes.length; k < klen; k++ ) {
-				diffHtml.push( this.getNodeHtml( nodes[ k ], 'remove' ) );
+				diffQueue.push( [ 'getNodeHtml', nodes[ k ], 'remove' ] );
 			}
 
 		} else if ( this.remove.indexOf( i ) !== -1 ) {
 
 			// The old node is a remove. Decrement the new node index
 			// to compare the same new node to the next old node
-			diffHtml.push( this.getNodeHtml( this.oldDocChildren[ i ], 'remove' ) );
+			diffQueue.push( [ 'getNodeHtml', this.oldDocChildren[ i ], 'remove' ] );
 			j--;
 
 		} else if ( this.insert.indexOf( j ) !== -1 ) {
 
 			// The new node is an insert. Decrement the old node index
 			// to compare the same old node to the next new node
-			diffHtml.push( this.getNodeHtml( this.newDocChildren[ j ], 'insert' ) );
+			diffQueue.push( [ 'getNodeHtml', this.newDocChildren[ j ], 'insert' ] );
 			i--;
 
-		} else if ( typeof ( this.newToOld[ j ] ) === 'number' ) {
+		} else if ( typeof this.newToOld[ j ] === 'number' ) {
 
 			// The old and new node are exactly the same, but still
 			// need to check if there has been a move
 			move = this.newToOld[ j ] === i ? undefined :
 				( this.newToOld[ j ] > i ? 'up' : 'down' );
-			diffHtml.push( this.getNodeHtml( this.newDocChildren[ j ], 'none', move ) );
+			diffQueue.push( [ 'getNodeHtml', this.newDocChildren[ j ], 'none', move ] );
 
 		} else {
 
@@ -107,12 +110,38 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 			// diff and also check if there has been a move
 			move = this.newToOld[ j ].node === i ? undefined :
 				( this.newToOld[ j ].node > i ? 'up' : 'down' );
-			diffHtml.push( this.getChangedNodeHtml( this.newToOld[ j ].node, move ) );
+			diffQueue.push( [ 'getChangedNodeHtml', this.newToOld[ j ].node, move ] );
 
 		}
 	}
 
-	return diffHtml;
+	function isUnchanged( item ) {
+		return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
+	}
+
+	for ( i = 0, ilen = diffQueue.length; i < ilen; i++ ) {
+		if (
+			!isUnchanged( diffQueue[ i - 1 ] ) ||
+			!isUnchanged( diffQueue[ i ] ) ||
+			!isUnchanged( diffQueue[ i + 1 ] )
+		) {
+			spacer = false;
+			anyChanges = true;
+			diffHtml.push(
+				this[ diffQueue[ i ][ 0 ] ].apply( this, diffQueue[ i ].slice( 1 ) )
+			);
+		} else if ( !spacer ) {
+			spacer = true;
+			diffHtml.push( $( '<div class="ve-ui-diffElement-spacer">' ).text( '⋮' ) );
+		}
+	}
+
+	if ( !anyChanges ) {
+		return [ $( '<div class="ve-ui-diffElement-no-changes">' ).text( 'No changes' ) ];
+	} else {
+		return diffHtml;
+	}
+
 };
 
 /**

@@ -45,7 +45,7 @@ ve.ui.DiffDialog.prototype.initialize = function () {
 
 	this.content = new OO.ui.PanelLayout( {
 		padded: true,
-		expanded: true
+		expanded: false
 	} );
 
 	this.$body.append( this.content.$element );

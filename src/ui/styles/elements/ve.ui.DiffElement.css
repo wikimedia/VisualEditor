@@ -23,7 +23,7 @@
 }
 
 .ve-ui-diffElement-none {
-	opacity: 0.5;
+	opacity: 0.4;
 }
 
 .ve-ui-diffElement-doc-child-change {
@@ -51,4 +51,15 @@
 .ve-ui-diffElement-up *:empty:before,
 .ve-ui-diffElement-down *:empty:before {
 	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
+}
+
+.ve-ui-diffElement-no-changes {
+	color: #888;
+	font-style: italic;
+}
+
+.ve-ui-diffElement-spacer {
+	color: #888;
+	text-align: center;
+	clear: both;
 }
