@@ -609,7 +609,9 @@
 	},
 	"visualEditor.rebase": {
 		"scripts": [
-			"src/dm/ve.dm.Change.js"
+			"src/dm/ve.dm.Change.js",
+			"src/dm/ve.dm.RebaseServer.js",
+			"src/dm/ve.dm.RebaseClient.js"
 		],
 		"dependencies": [
 			"visualEditor.core.build"
@@ -644,6 +646,7 @@
 			"tests/dm/ve.dm.Transaction.test.js",
 			"tests/dm/ve.dm.TransactionBuilder.test.js",
 			"tests/dm/ve.dm.Change.test.js",
+			"tests/dm/ve.dm.RebaseServer.test.js",
 			"tests/dm/ve.dm.TransactionProcessor.test.js",
 			"tests/dm/ve.dm.APIResultsQueue.test.js",
 			"tests/dm/ve.dm.Surface.test.js",
