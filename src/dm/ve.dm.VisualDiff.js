@@ -246,31 +246,35 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 		diffInfo = {};
 
 	/**
-	 * Get the index of the first or last whitespace in a data array
+	 * Get the index of the first or last wordbreak in a data array
 	 *
 	 * @param {Array} data Linear data
-	 * @param {boolean} reversed Get the index of the last whitespace
-	 * @return {number} Index of the first or last whitespace, or -1 if no
-	 * whitespace was found
+	 * @param {boolean} reversed Get the index of the last wordbreak
+	 * @return {number} Index of the first or last wordbreak, or -1 if no
+	 * wordbreak was found
 	 */
-	function findWhitespace( data, reversed ) {
-		var i, ilen, index;
+	function findWordbreaks( data, reversed ) {
+		var offset,
+			dataString = new ve.dm.DataString( data );
 
-		for ( i = 0, ilen = data.length; i < ilen; i++ ) {
-			index = reversed ? ilen - i - 1 : i;
-			if ( data[ index ][ 0 ] !== undefined && data[ index ][ 0 ].match( /\s/ ) ) {
-				return index;
-			}
+		offset = unicodeJS.wordbreak.moveBreakOffset(
+			reversed ? -1 : 1,
+			dataString,
+			reversed ? data.length : 0
+		);
+
+		if ( offset === 0 || offset === data.length ) {
+			return -1;
+		} else {
+			// If searching forwards take the caracter to the left
+			return offset - ( !reversed ? 1 : 0 );
 		}
-
-		return -1;
 	}
 
 	/**
-	 * The perfect diff is not always human-friendly, so clean it up. (NB this is
-	 * currently optimised for English, and may need rethinking for other languages.)
-	 * Make sure retained content spans whole words (here defined as being bounded by
-	 * whitespace), and "de-stripe" any sequences of alternating removes and inserts
+	 * The perfect diff is not always human-friendly, so clean it up.
+	 * Make sure retained content spans whole words (no wordbreaks),
+	 * and "de-stripe" any sequences of alternating removes and inserts
 	 * (with no retains) to look like one continuous removal and one continuous
 	 * insert.
 	 *
@@ -292,7 +296,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 	 * @return {Array} A human-friendlier linear diff
 	 */
 	function getCleanDiff( diff ) {
-		var i, ilen, action, data, firstWhitespace, lastWhitespace, start, end,
+		var i, ilen, action, data, firstWordbreak, lastWordbreak, start, end,
 			previousData = null,
 			previousAction = null,
 			cleanDiff = [],
@@ -338,28 +342,28 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 				start = [];
 				end = [];
-				firstWhitespace = findWhitespace( data, false );
-				lastWhitespace = firstWhitespace === -1 ? -1 : findWhitespace( data, true );
+				firstWordbreak = findWordbreaks( data, false );
+				lastWordbreak = firstWordbreak === -1 ? -1 : findWordbreaks( data, true );
 
-				if ( firstWhitespace === -1 ) {
-					// If there was no whitespace, retain should be replaced with
+				if ( firstWordbreak === -1 ) {
+					// If there was no wordbreak, retain should be replaced with
 					// remove-insert
 					diff.splice( i, 1, [ -1, data ], [ 1, data ] );
 					i++;
 				} else {
 					if ( i !== diff.length - 1 ) {
 						// Unless we are at the end of the diff, replace the portion
-						// after the last whitespace.
-						end = data.splice( lastWhitespace );
+						// after the last wordbreak.
+						end = data.splice( lastWordbreak );
 					}
 					if ( i !== 0 ) {
 						// Unless we are at the start of the diff, replace the portion
-						// before the first whitespace.
-						start = data.splice( 0, firstWhitespace + 1 );
+						// before the first wordbreak.
+						start = data.splice( 0, firstWordbreak + 1 );
 					}
 
 					// At this point the only portion we want to retain is what's left of
-					// data (if anything; if firstWhitespace === lastWhitespace !== -1, then
+					// data (if anything; if firstWordbreak === lastWordbreak !== -1, then
 					// data has been spliced away completely).
 					if ( start.length > 0 ) {
 						diff.splice( i, 0, [ -1, start ], [ 1, start ] );

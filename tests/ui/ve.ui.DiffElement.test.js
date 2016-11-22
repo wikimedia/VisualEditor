@@ -19,8 +19,34 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo ' +
-							'<span class="ve-ui-diffElement-remove">bar</span>  <span class="ve-ui-diffElement-insert">car</span>' +
+							'<span class="ve-ui-diffElement-remove">bar</span> <span class="ve-ui-diffElement-insert">car</span>' +
 							' baz' +
+						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Simple text change with non-whitespace word break boundaires',
+				oldDoc: '<p>foo"bar"baz</p>',
+				newDoc: '<p>foo"bXr"baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo"' +
+							'<span class="ve-ui-diffElement-remove">bar</span><span class="ve-ui-diffElement-insert">bXr</span>' +
+							'"baz' +
+						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Text change in script with no whitespace',
+				oldDoc: '<p>粵文係粵語嘅書面語</p>',
+				newDoc: '<p>粵文唔係粵語嘅書面語</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'粵' +
+							'<span class="ve-ui-diffElement-remove">文係</span><span class="ve-ui-diffElement-insert">文唔係</span>' +
+							'粵語嘅書面語' +
 						'</p>' +
 					'</div>'
 			}
