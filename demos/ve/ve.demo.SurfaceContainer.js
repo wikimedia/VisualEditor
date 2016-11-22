@@ -40,7 +40,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		label: 'Save HTML'
 	} );
 	diffButton = new OO.ui.ButtonWidget( {
-		label: 'Get diff'
+		label: 'Show changes'
 	} );
 	$exitReadButton = $( '<a href="#">' ).text( 'Back to editor' ).on( 'click', function () {
 		container.change( 've' );
