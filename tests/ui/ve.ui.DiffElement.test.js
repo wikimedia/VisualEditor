@@ -20,7 +20,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo ' +
-							'<span class="ve-ui-diffElement-remove">bar</span> <span class="ve-ui-diffElement-insert">car</span>' +
+							'<del class="ve-ui-diffElement-remove">bar</del> <ins class="ve-ui-diffElement-insert">car</ins>' +
 							' baz' +
 						'</p>' +
 					'</div>'
@@ -33,7 +33,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo"' +
-							'<span class="ve-ui-diffElement-remove">bar</span><span class="ve-ui-diffElement-insert">bXr</span>' +
+							'<del class="ve-ui-diffElement-remove">bar</del><ins class="ve-ui-diffElement-insert">bXr</ins>' +
 							'"baz' +
 						'</p>' +
 					'</div>'
@@ -46,7 +46,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'粵' +
-							'<span class="ve-ui-diffElement-remove">文係</span><span class="ve-ui-diffElement-insert">文唔係</span>' +
+							'<del class="ve-ui-diffElement-remove">文係</del><ins class="ve-ui-diffElement-insert">文唔係</ins>' +
 							'粵語嘅書面語' +
 						'</p>' +
 					'</div>'

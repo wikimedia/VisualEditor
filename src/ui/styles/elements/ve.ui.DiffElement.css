@@ -5,15 +5,19 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-diffElement-insert,
+.ve-ui-diffElement-remove {
+	text-decoration: inherit;
+	border-radius: 0.15em;
+}
+
 .ve-ui-diffElement-insert {
 	background-color: #7fd7c4;
-	border-radius: 0.15em;
 	box-shadow: 0 0 0 0.1em #7fd7c4;
 }
 
 .ve-ui-diffElement-remove {
 	background-color: #e88e89;
-	border-radius: 0.15em;
 	box-shadow: 0 0 0 0.1em #e88e89;
 }
 
