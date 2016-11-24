@@ -606,6 +606,7 @@
 	"visualEditor.diffing": {
 		"scripts": [
 			"src/ve.DiffTreeNode.js",
+			"src/ve.DiffMatchPatch.js",
 			"src/dm/ve.dm.VisualDiff.js",
 			"src/ui/dialogs/ve.ui.DiffDialog.js",
 			"src/ui/elements/ve.ui.DiffElement.js"
