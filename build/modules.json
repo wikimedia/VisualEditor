@@ -756,7 +756,8 @@
 			"oojs-ui-mediawiki",
 			"visualEditor.core",
 			"visualEditor.mobile.build",
-			"visualEditor.theme.mediawiki"
+			"visualEditor.theme.mediawiki",
+			"visualEditor.diffing"
 		]
 	},
 	"visualEditor.mobile.build": {
