@@ -10,6 +10,7 @@ QUnit.module( 've.ui.DiffElement' );
 
 QUnit.test( 'Diffing', function ( assert ) {
 	var i, len, visualDiff, diffElement,
+		oldDoc, newDoc,
 		spacer = '<div class="ve-ui-diffElement-spacer">⋮</div>',
 		cases = [
 			{
@@ -155,14 +156,32 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<tr><td>C</td><td class="ve-ui-diffElement-remove">D</td></tr>' +
 						'</tbody></table>' +
 					'</div>'
+			},
+			{
+				msg: 'Annotation insertion',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo <b>bar</b> baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>foo <del class="ve-ui-diffElement-remove">bar</del>  <ins class="ve-ui-diffElement-insert"><b>bar</b></ins> baz</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Annotation removal',
+				oldDoc: '<p>foo <b>bar</b> baz</p>',
+				newDoc: '<p>foo bar baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>foo <del class="ve-ui-diffElement-remove"><b>bar</b></del>  <ins class="ve-ui-diffElement-insert">bar</ins> baz</p>' +
+					'</div>'
 			}
 		];
 
 	for ( i = 0, len = cases.length; i < len; i++ ) {
-		visualDiff = new ve.dm.VisualDiff(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].oldDoc ) ),
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].newDoc ) )
-		);
+		oldDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].oldDoc ) );
+		newDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].newDoc ) );
+		newDoc.getStore().merge( oldDoc.getStore() );
+		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
 		diffElement = new ve.ui.DiffElement( visualDiff );
 		assert.strictEqual( diffElement.$element.html(), cases[ i ].expected, cases[ i ].msg );
 	}
