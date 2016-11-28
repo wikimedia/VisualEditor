@@ -23,12 +23,16 @@
  *
  * @class
  * @constructor
+ * @param {Object[]} [values] Values to insert
  */
-ve.dm.IndexValueStore = function VeDmIndexValueStore() {
+ve.dm.IndexValueStore = function VeDmIndexValueStore( values ) {
 	// Maps hashes to values
 	this.hashStore = {};
 	// Hashes in order of insertion (used for slicing)
 	this.hashes = [];
+	if ( values ) {
+		this.indexes( values );
+	}
 };
 
 /* Methods */
@@ -187,4 +191,67 @@ ve.dm.IndexValueStore.prototype.merge = function ( other ) {
 			this.hashes.push( hash );
 		}
 	}
+};
+
+/**
+ * Clone this store excluding certain values, like a set difference operation
+ *
+ * @param {ve.dm.IndexValueStore|Object} omit Store of values to omit, or object whose keys are hashes to emit
+ * @return {ve.dm.IndexValueStore} All values in this that do not appear in other
+ */
+ve.dm.IndexValueStore.prototype.difference = function ( omit ) {
+	var i, len, hash,
+		store = new this.constructor();
+
+	if ( omit instanceof ve.dm.IndexValueStore ) {
+		omit = omit.hashStore;
+	}
+	for ( i = 0, len = this.hashes.length; i < len; i++ ) {
+		hash = this.hashes[ i ];
+		if ( !Object.prototype.hasOwnProperty.call( omit, hash ) ) {
+			store.hashes.push( hash );
+			store.hashStore[ hash ] = this.hashStore[ hash ];
+		}
+	}
+	return store;
+};
+
+/**
+ * @param {ve.dm.Transaction[]} transactions List of transactions
+ * @return {ve.dm.IndexValueStore} The values in the transactions, in the order they occur
+ */
+ve.dm.IndexValueStore.prototype.filter = function ( transactions ) {
+	var t, tLen, operations, o, oLen, op, hash, e, eLen, annotations, a, aLen,
+		store = new ve.dm.IndexValueStore();
+
+	for ( t = 0, tLen = transactions.length; t < tLen; t++ ) {
+		operations = transactions[ t ].operations;
+		for ( o = 0, oLen = operations.length; o < oLen; o++ ) {
+			op = operations[ o ];
+			if ( op.type === 'annotate' && op.bias === 'start' ) {
+				hash = op.index;
+				if ( !Object.prototype.hasOwnProperty.call( store.hashSet, hash ) ) {
+					store.hashSet[ hash ] = this.hashSet[ hash ];
+					store.hashes.push( hash );
+				}
+			}
+			if ( op.type !== 'replace' ) {
+				continue;
+			}
+			for ( e = 0, eLen = op.insert.length; e < eLen; e++ ) {
+				annotations = op.insert[ e ][ 1 ];
+				if ( !annotations ) {
+					continue;
+				}
+				for ( a = 0, aLen = annotations.length; a < aLen; a++ ) {
+					hash = annotations[ a ];
+					if ( !Object.prototype.hasOwnProperty.call( store.hashSet, hash ) ) {
+						store.hashSet[ hash ] = this.hashSet[ hash ];
+						store.hashes.push( hash );
+					}
+				}
+			}
+		}
+	}
+	return store;
 };
