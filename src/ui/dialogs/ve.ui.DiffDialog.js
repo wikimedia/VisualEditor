@@ -28,10 +28,13 @@ ve.ui.DiffDialog.static.name = 'diff';
 
 ve.ui.DiffDialog.static.size = 'larger';
 
-ve.ui.DiffDialog.static.title = 'Diff dialog';
+ve.ui.DiffDialog.static.title = 'Changes';
 
 ve.ui.DiffDialog.static.actions = [
-	{ label: 'Cancel', flags: 'safe' }
+	{
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
+		flags: 'safe'
+	}
 ];
 
 /* Methods */
