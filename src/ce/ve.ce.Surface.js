@@ -2048,7 +2048,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			if (
 				// FIXME T126045: Allow the test runner to force the use of clipboardData
 				clipboardKey === 'useClipboardData-0' || (
-					$elements.find( importantElement ).andSelf().filter( importantElement ).length > 0 &&
+					$elements.find( importantElement ).addBack().filter( importantElement ).length > 0 &&
 					this.$pasteTarget.find( importantElement ).length === 0
 				)
 			) {
