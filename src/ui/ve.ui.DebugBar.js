@@ -30,17 +30,17 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 
 	closeButton = new OO.ui.ButtonWidget( {
 		icon: 'close',
-		label: 'Close'
+		label: ve.msg( 'visualeditor-debugbar-close' )
 	} );
 
 	// Widgets
 	this.selectionLabel = new OO.ui.LabelWidget( { classes: [ 've-ui-debugBar-selectionLabel' ] } );
 
-	this.logRangeButton = new OO.ui.ButtonWidget( { label: 'Log', disabled: true } );
-	this.showModelToggle = new OO.ui.ToggleButtonWidget( { label: 'Show model' } );
-	this.updateModelToggle = new OO.ui.ToggleButtonWidget( { label: 'Update on changes' } );
-	this.inputDebuggingToggle = new OO.ui.ToggleButtonWidget( { label: 'Input debugging' } );
-	this.filibusterToggle = new OO.ui.ToggleButtonWidget( { label: 'Filibuster' } );
+	this.logRangeButton = new OO.ui.ButtonWidget( { label: ve.msg( 'visualeditor-debugbar-logrange' ), disabled: true } );
+	this.showModelToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-showmodel' ) } );
+	this.updateModelToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-updatemodel' ) } );
+	this.inputDebuggingToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-inputdebug' ) } );
+	this.filibusterToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-startfilibuster' ) } );
 
 	this.$dump =
 		$( '<div class="ve-ui-debugBar-dump">' ).append(
@@ -301,7 +301,7 @@ ve.ui.DebugBar.prototype.onInputDebuggingToggleChange = function ( value ) {
 ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 	var debugBar = this;
 	if ( this.filibusterToggle.getValue() ) {
-		this.filibusterToggle.setLabel( 'Stop Filibuster' );
+		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-stopfilibuster' ) );
 		this.$filibuster.off( 'click' );
 		this.$filibuster.hide();
 		this.$filibuster.empty();
@@ -329,7 +329,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 				$li.toggleClass( 've-filibuster-frame-expanded' );
 			}
 		} );
-		this.filibusterToggle.setLabel( 'Filibuster' );
+		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-startfilibuster' ) );
 	}
 };
 
