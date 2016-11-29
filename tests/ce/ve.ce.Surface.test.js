@@ -37,8 +37,15 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 			// would need the faked testing surface to be improved.
 			view.eventSequencer.onEvent( 'keydown', $.Event( 'keydown', e ) );
 			view.eventSequencer.onEvent( 'keypress', $.Event( 'keypress', e ) );
-			if ( forceSelection ) {
+			if ( forceSelection instanceof ve.Range ) {
 				view.showSelectionState( view.getSelectionState( forceSelection ) );
+			} else if ( forceSelection && forceSelection.focusNode ) {
+				view.showSelectionState( new ve.SelectionState( {
+					anchorNode: view.$element.find( forceSelection.anchorNode )[ 0 ],
+					anchorOffset: forceSelection.anchorOffset,
+					focusNode: view.$element.find( forceSelection.focusNode )[ 0 ],
+					focusOffset: forceSelection.focusOffset
+				} ) );
 			}
 			view.eventSequencer.onEvent( 'keyup', $.Event( 'keyup', e ) );
 			view.eventSequencer.endLoop();
@@ -774,7 +781,14 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'RIGHT' ],
-				forceSelection: new ve.Range( 8 ), // cursor moves into the caption
+				// Force cursor into the cursor holder before the block image
+				forceSelection: {
+					anchorNode: '.ve-ce-cursorHolder-before',
+					// Emulating Chromium 50, right arrow lands at offset 0
+					anchorOffset: 0,
+					focusNode: '.ve-ce-cursorHolder-before',
+					focusOffset: 0
+				},
 				expectedRangeOrSelection: new ve.Range( 5, 18 ),
 				msg: 'Cursor right onto a block node'
 			},
@@ -782,7 +796,14 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 19 ),
 				keys: [ 'LEFT' ],
-				forceSelection: new ve.Range( 17 ),
+				// Force cursor into the cursor holder after the block image
+				forceSelection: {
+					anchorNode: '.ve-ce-cursorHolder-after',
+					// Emulating Chromium 50, left arrow lands at offset 1
+					anchorOffset: 1,
+					focusNode: '.ve-ce-cursorHolder-after',
+					focusOffset: 1
+				},
 				expectedRangeOrSelection: new ve.Range( 18, 5 ),
 				msg: 'Cursor left onto a block node'
 			},
@@ -790,7 +811,14 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'DOWN' ],
-				forceSelection: new ve.Range( 14 ), // cursor moves into the caption
+				// Force cursor into the cursor holder before the block image
+				forceSelection: {
+					anchorNode: '.ve-ce-cursorHolder-before',
+					// Emulating Chromium 50, down arrow lands at offset 0
+					anchorOffset: 0,
+					focusNode: '.ve-ce-cursorHolder-before',
+					focusOffset: 0
+				},
 				expectedRangeOrSelection: new ve.Range( 5, 18 ),
 				msg: 'Cursor down onto a block node'
 			},
@@ -798,7 +826,14 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 20 ),
 				keys: [ 'UP' ],
-				forceSelection: new ve.Range( 14 ), // cursor moves into the caption
+				// Force cursor into the cursor holder after the block image
+				forceSelection: {
+					anchorNode: '.ve-ce-cursorHolder-after',
+					// Emulating Chromium 50, up arrow lands at offset 0
+					anchorOffset: 0,
+					focusNode: '.ve-ce-cursorHolder-after',
+					focusOffset: 0
+				},
 				expectedRangeOrSelection: new ve.Range( 18, 5 ),
 				msg: 'Cursor up onto a block node'
 			}
