@@ -459,4 +459,42 @@
 		add( rootNode );
 		return html.join( '' );
 	};
+
+	/**
+	 * Take control of EventSequencer timeouts
+	 *
+	 * Modifies an EventSequencer object in-place to allow setTimeout behaviour to be
+	 * simulated by test code. Replaces `postpone` and `cancelPostponed` with methods that
+	 * queue/unqueue to an array, and adds an `endLoop` method to unqueue and run every
+	 * queued call.
+	 *
+	 * @param {ve.EventSequencer} eventSequencer The EventSequencer to hijack
+	 */
+	ve.test.utils.hijackEventSequencerTimeouts = function ( eventSequencer ) {
+		eventSequencer.postponedCalls = [];
+
+		eventSequencer.postpone = function ( f ) {
+			this.postponedCalls.push( f );
+			return this.postponedCalls.length - 1;
+		};
+
+		eventSequencer.cancelPostponed = function ( callId ) {
+			this.postponedCalls[ callId ] = null;
+		};
+
+		eventSequencer.endLoop = function () {
+			var i, f;
+			// Run every postponed call in order of postponement. Do not cache
+			// list length, because postponed calls may add more postponed calls
+			for ( i = 0; i < this.postponedCalls.length; i++ ) {
+				f = this.postponedCalls[ i ];
+				if ( f ) {
+					// Exceptions thrown here will leave the postponed calls
+					// list in an inconsistent state
+					f();
+				}
+			}
+			this.postponedCalls.length = 0;
+		};
+	};
 }() );

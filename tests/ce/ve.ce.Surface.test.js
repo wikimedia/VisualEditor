@@ -16,6 +16,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 		model = view.getModel(),
 		data = ve.copy( model.getDocument().getFullData() );
 
+	ve.test.utils.hijackEventSequencerTimeouts( view.eventSequencer );
+
 	model.setSelection(
 		ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection )
 	);
@@ -34,14 +36,12 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 			// TODO: Could probably switch to using this for every test, but it
 			// would need the faked testing surface to be improved.
 			view.eventSequencer.onEvent( 'keydown', $.Event( 'keydown', e ) );
+			view.eventSequencer.onEvent( 'keypress', $.Event( 'keypress', e ) );
 			if ( forceSelection ) {
 				view.showSelectionState( view.getSelectionState( forceSelection ) );
 			}
-			view.eventSequencer.runPendingCalls( 'keydown' );
-			view.eventSequencer.onEvent( 'keypress', $.Event( 'keypress', e ) );
-			view.eventSequencer.runPendingCalls( 'keypress' );
 			view.eventSequencer.onEvent( 'keyup', $.Event( 'keyup', e ) );
-			view.eventSequencer.runPendingCalls( 'keyup' );
+			view.eventSequencer.endLoop();
 		} else {
 			if ( forceSelection ) {
 				view.showSelectionState( view.getSelectionState( forceSelection ) );
@@ -60,7 +60,6 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 		{ type: 'linear', range: expectedRangeOrSelection } :
 		expectedRangeOrSelection
 	);
-
 	assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
 	view.destroy();
 };
