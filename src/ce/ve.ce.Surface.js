@@ -2743,7 +2743,7 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
 		offset = ve.ce.getOffsetOfSlug( element ),
 		documentModel = this.getModel().getDocument();
 
-	this.changeModel( ve.dm.Transaction.newFromInsertion(
+	this.changeModel( ve.dm.TransactionBuilder.static.newFromInsertion(
 		documentModel, offset, [
 			{ type: 'paragraph', internal: { generated: 'slug' } },
 			{ type: '/paragraph' }

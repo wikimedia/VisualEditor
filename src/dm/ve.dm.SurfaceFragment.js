@@ -681,7 +681,7 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
 			continue;
 		}
 		txs.push(
-			ve.dm.Transaction.newFromAttributeChanges(
+			ve.dm.TransactionBuilder.static.newFromAttributeChanges(
 				this.document, result.nodeOuterRange.start, attr
 			)
 		);
@@ -734,7 +734,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 		if ( !range.isCollapsed() ) {
 			// Apply to selection
 			for ( j = 0, jlen = annotations.getLength(); j < jlen; j++ ) {
-				tx = ve.dm.Transaction.newFromAnnotation( this.document, range, method, annotations.get( j ) );
+				tx = ve.dm.TransactionBuilder.static.newFromAnnotation( this.document, range, method, annotations.get( j ) );
 				txs.push( tx );
 			}
 		} else {
@@ -813,7 +813,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		if ( annotations && annotations.getLength() > 0 ) {
 			ve.dm.Document.static.addAnnotationsToData( content, annotations );
 		}
-		tx = ve.dm.Transaction.newFromInsertion( doc, offset, content );
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, offset, content );
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
 		newRange = tx.getModifiedRange( doc );
@@ -906,7 +906,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 		}
 		annotatedDoc = newDoc.cloneWithData( annotatedData );
 	}
-	tx = ve.dm.Transaction.newFromDocumentInsertion( doc, offset, annotatedDoc, newDocRange );
+	tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( doc, offset, annotatedDoc, newDocRange );
 	if ( !tx.isNoOp() ) {
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
@@ -929,7 +929,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 	}
 
 	if ( !range.isCollapsed() ) {
-		this.change( ve.dm.Transaction.newFromRemoval( this.document, range ) );
+		this.change( ve.dm.TransactionBuilder.static.newFromRemoval( this.document, range ) );
 	}
 
 	return this;
@@ -954,7 +954,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 	// capable of merging nodes of the same type and at the same depth level, so some or all
 	// of rangeToRemove may be left untouched (and in some cases tx may not remove anything
 	// at all).
-	tx = ve.dm.Transaction.newFromRemoval( this.document, rangeToRemove );
+	tx = ve.dm.TransactionBuilder.static.newFromRemoval( this.document, rangeToRemove );
 	this.change( tx );
 	rangeAfterRemove = tx.translateRange( rangeToRemove );
 
@@ -975,7 +975,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 			// inserted into empty structure, e.g. and empty heading will be deleted
 			// rather than "converting" the paragraph beneath to a heading.
 			while ( true ) {
-				tx = ve.dm.Transaction.newFromRemoval( this.document, startNode.getOuterRange() );
+				tx = ve.dm.TransactionBuilder.static.newFromRemoval( this.document, startNode.getOuterRange() );
 				startNode = startNode.getParent();
 				this.change( tx );
 
@@ -1010,7 +1010,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 					return false;
 				}
 			} );
-			tx = ve.dm.Transaction.newFromRemoval(
+			tx = ve.dm.TransactionBuilder.static.newFromRemoval(
 				this.document,
 				nodeToDelete.getOuterRange()
 			);
@@ -1018,7 +1018,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 				// Move contents of endNode into startNode, and delete nodeToDelete
 				this.change( [
 					tx,
-					ve.dm.Transaction.newFromInsertion(
+					ve.dm.TransactionBuilder.static.newFromInsertion(
 						this.document,
 						rangeAfterRemove.start,
 						endNodeData
@@ -1064,7 +1064,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
 		return this;
 	}
 
-	this.change( ve.dm.Transaction.newFromContentBranchConversion(
+	this.change( ve.dm.TransactionBuilder.static.newFromContentBranchConversion(
 		this.document, range, type, attr
 	) );
 
@@ -1100,7 +1100,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
 		wrapper = [ wrapper ];
 	}
 	this.change(
-		ve.dm.Transaction.newFromWrap( this.document, range, [], [], [], wrapper )
+		ve.dm.TransactionBuilder.static.newFromWrap( this.document, range, [], [], [], wrapper )
 	);
 
 	return this;
@@ -1140,7 +1140,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
 		outerUnwrapper.push( this.surface.getDocument().data.getData( range.start - i ) );
 	}
 
-	this.change( ve.dm.Transaction.newFromWrap(
+	this.change( ve.dm.TransactionBuilder.static.newFromWrap(
 		this.document, range, outerUnwrapper, [], innerUnwrapper, []
 	) );
 
@@ -1190,7 +1190,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 	}
 
 	this.change(
-		ve.dm.Transaction.newFromWrap( this.document, range, [], [], unwrapper, wrapper )
+		ve.dm.TransactionBuilder.static.newFromWrap( this.document, range, [], [], unwrapper, wrapper )
 	);
 
 	return this;
@@ -1239,7 +1239,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) 
 	}
 
 	this.change(
-		ve.dm.Transaction.newFromWrap( this.document, range, [], wrapOuter, [], wrapEach )
+		ve.dm.TransactionBuilder.static.newFromWrap( this.document, range, [], wrapOuter, [], wrapEach )
 	);
 
 	return this;
@@ -1291,7 +1291,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 	}
 
 	this.change(
-		ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] )
+		ve.dm.TransactionBuilder.static.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] )
 	);
 
 	return this;
@@ -1399,7 +1399,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 
 	insertions.forEach( function ( insertion ) {
 		fragment.change(
-			ve.dm.Transaction.newFromInsertion( fragment.getDocument(), insertion.offset, insertion.data )
+			ve.dm.TransactionBuilder.static.newFromInsertion( fragment.getDocument(), insertion.offset, insertion.data )
 		);
 	} );
 

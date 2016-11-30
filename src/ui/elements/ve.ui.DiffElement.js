@@ -479,7 +479,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 					domElements.map( ve.getNodeHtml ).join( '' )
 				);
 				annType = type === 1 ? 'textStyle/insert' : 'textStyle/delete';
-				transaction = ve.dm.Transaction.newFromAnnotation(
+				transaction = ve.dm.TransactionBuilder.static.newFromAnnotation(
 					diffDoc, range, 'set',
 					ve.dm.annotationFactory.create(
 						annType,

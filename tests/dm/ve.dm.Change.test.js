@@ -10,13 +10,13 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 	var rebased,
 		doc = ve.dm.example.createExampleDocument(),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
-		replace12 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 1, 2 ), [ 'f', 'o', 'o' ] ),
-		replace23 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 2, 3 ), [ 'b', 'a', 'r' ] ),
-		replace13 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 1, 3 ), [ 'b', 'a', 'z' ] ),
-		replace24 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 2, 4 ), [ 'q', 'u', 'x' ] ),
-		insert1X = ve.dm.Transaction.newFromInsertion( doc, 1, [ 'x' ] ),
-		insert1Y = ve.dm.Transaction.newFromInsertion( doc, 1, [ 'y' ] ),
-		annotate12 = ve.dm.Transaction.newFromAnnotation( doc, new ve.Range( 1, 2 ), 'set', bold ),
+		replace12 = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 1, 2 ), [ 'f', 'o', 'o' ] ),
+		replace23 = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 2, 3 ), [ 'b', 'a', 'r' ] ),
+		replace13 = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 1, 3 ), [ 'b', 'a', 'z' ] ),
+		replace24 = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 2, 4 ), [ 'q', 'u', 'x' ] ),
+		insert1X = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'x' ] ),
+		insert1Y = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'y' ] ),
+		annotate12 = ve.dm.TransactionBuilder.static.newFromAnnotation( doc, new ve.Range( 1, 2 ), 'set', bold ),
 		rebasedOnto = function ( tx1, tx2 ) {
 			return ve.dm.Change.static.rebaseTransactions( tx1, tx2 )[ 0 ];
 		};
@@ -143,10 +143,10 @@ QUnit.test( 'Change operations', 8, function ( assert ) {
 		bIndex = [ ve.dm.example.boldIndex ],
 		iIndex = [ ve.dm.example.italicIndex ],
 		uIndex = [ ve.dm.example.underlineIndex ],
-		TxInsert = ve.dm.Transaction.newFromInsertion,
-		TxReplace = ve.dm.Transaction.newFromReplacement,
-		TxRemove = ve.dm.Transaction.newFromRemoval,
-		TxAnnotate = ve.dm.Transaction.newFromAnnotation,
+		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion,
+		TxReplace = ve.dm.TransactionBuilder.static.newFromReplacement,
+		TxRemove = ve.dm.TransactionBuilder.static.newFromRemoval,
+		TxAnnotate = ve.dm.TransactionBuilder.static.newFromAnnotation,
 		insert1 = new ve.dm.Change( 0, [
 			TxInsert( doc, 1, [ [ 'o', bIndex ] ] ),
 			TxInsert( doc, 2, [ [ 'n', bIndex ] ] ),
@@ -260,7 +260,7 @@ QUnit.test( 'Serialize/deserialize', 5, function ( assert ) {
 		doc = surface.documentModel,
 		b = ve.dm.example.bold,
 		bIndex = [ ve.dm.example.boldIndex ],
-		TxInsert = ve.dm.Transaction.newFromInsertion,
+		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion,
 		change = new ve.dm.Change( 0, [
 			TxInsert( doc, 1, [ [ 'f', bIndex ] ] ),
 			// Second insert is too short, as first insert wasn't applied to the doc
@@ -363,7 +363,7 @@ QUnit.test( 'Same-offset typing', 1, function ( assert ) {
 			} ).reverse() );
 			doc.completeHistory.length = 0;
 		},
-		TxInsert = ve.dm.Transaction.newFromInsertion;
+		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion;
 
 	// 'ab' and 'cd' typed at the same offset
 	a = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ noVals ], {} );

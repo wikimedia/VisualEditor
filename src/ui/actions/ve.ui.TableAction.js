@@ -291,18 +291,18 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 
 			if ( !importedCell.isPlaceholder() ) {
 				// Remove the existing cell contents
-				surfaceModel.change( ve.dm.Transaction.newFromRemoval( documentModel, cellRange ) );
+				surfaceModel.change( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, cellRange ) );
 				// Attribute changes are performed separately, and removing the whole
 				// cell could change the dimensions of the table
 				txs = [
-					ve.dm.Transaction.newFromAttributeChanges(
+					ve.dm.TransactionBuilder.static.newFromAttributeChanges(
 						documentModel, cellRange.start - 1,
 						ve.copy( importedCell.node.element.attributes )
 					)
 				];
 				if ( importInternalList ) {
 					txs.push(
-						ve.dm.Transaction.newFromDocumentInsertion(
+						ve.dm.TransactionBuilder.static.newFromDocumentInsertion(
 							documentModel, cellRange.start,
 							importedTableNode.getDocument(),
 							importedCell.node.getRange()
@@ -310,7 +310,7 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 					);
 				} else {
 					txs.push(
-						ve.dm.Transaction.newFromInsertion(
+						ve.dm.TransactionBuilder.static.newFromInsertion(
 							documentModel, cellRange.start,
 							importedTableNode.getDocument().getData( importedCell.node.getRange() )
 						)
@@ -320,7 +320,7 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 				surfaceModel.change( txs );
 			} else {
 				// Remove the existing cell completely
-				surfaceModel.change( ve.dm.Transaction.newFromRemoval( documentModel, cell.node.getOuterRange() ) );
+				surfaceModel.change( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, cell.node.getOuterRange() ) );
 			}
 		}
 	}
@@ -354,7 +354,7 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 	ranges = selection.getOuterRanges();
 	for ( i = ranges.length - 1; i >= 0; i-- ) {
 		txs.push(
-			ve.dm.Transaction.newFromAttributeChanges(
+			ve.dm.TransactionBuilder.static.newFromAttributeChanges(
 				surfaceModel.getDocument(), ranges[ i ].start, { style: style }
 			)
 		);
@@ -391,7 +391,7 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		}
 		cells = selection.getMatrixCells();
 		txs.push(
-			ve.dm.Transaction.newFromAttributeChanges(
+			ve.dm.TransactionBuilder.static.newFromAttributeChanges(
 				documentModel, cells[ 0 ].node.getOuterRange().start,
 				{
 					colspan: 1 + selection.endCol - selection.startCol,
@@ -417,7 +417,7 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		// Remove placeholders
 		for ( i = cells.length - 1; i >= 1; i-- ) {
 			txs.push(
-				ve.dm.Transaction.newFromRemoval(
+				ve.dm.TransactionBuilder.static.newFromRemoval(
 					documentModel, cells[ i ].node.getOuterRange()
 				)
 			);
@@ -425,7 +425,7 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		// Move the first-found content to the merged cell
 		if ( contentData ) {
 			txs.push(
-				ve.dm.Transaction.newFromReplacement(
+				ve.dm.TransactionBuilder.static.newFromReplacement(
 					documentModel, cells[ 0 ].node.getRange(), contentData.data
 				)
 			);
@@ -508,7 +508,7 @@ ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
 		documentModel = surfaceModel.getDocument();
 
 	txs.push(
-		ve.dm.Transaction.newFromAttributeChanges(
+		ve.dm.TransactionBuilder.static.newFromAttributeChanges(
 			documentModel, ownerCell.node.getOuterRange().start,
 			{ colspan: 1, rowspan: 1 }
 		)
@@ -642,7 +642,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		}
 		range = matrix.getRowNode( index ).getOuterRange();
 		offset = before ? range.start : range.end;
-		txs.push( ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, insertData ) );
+		txs.push( ve.dm.TransactionBuilder.static.newFromInsertion( surfaceModel.getDocument(), offset, insertData ) );
 	} else {
 		// Make sure that the inserts are in descending offset order
 		// so that the transactions do not affect subsequent range offsets.
@@ -686,7 +686,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 					cellData = ve.dm.TableCellNode.static.createData();
 				}
 			}
-			txs.push( ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, cellData ) );
+			txs.push( ve.dm.TransactionBuilder.static.newFromInsertion( surfaceModel.getDocument(), offset, cellData ) );
 		}
 	}
 	surfaceModel.change( txs, selection ? selection.translateByTransactions( txs ) : null );
@@ -709,7 +709,7 @@ ve.ui.TableAction.prototype.incrementSpan = function ( cell, mode ) {
 		data = { colspan: cell.node.getColspan() + 1 };
 	}
 
-	return ve.dm.Transaction.newFromAttributeChanges( surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
+	return ve.dm.TransactionBuilder.static.newFromAttributeChanges( surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
 };
 
 /**
@@ -732,7 +732,7 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
 		data = { colspan: span };
 	}
 
-	return ve.dm.Transaction.newFromAttributeChanges( surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
+	return ve.dm.TransactionBuilder.static.newFromAttributeChanges( surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
 };
 
 /**
@@ -843,7 +843,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		// Remove rows in reverse order to have valid transaction offsets
 		for ( row = maxIndex; row >= minIndex; row-- ) {
 			rowNode = matrix.getRowNode( row );
-			txs.push( ve.dm.Transaction.newFromRemoval( documentModel, rowNode.getOuterRange() ) );
+			txs.push( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, rowNode.getOuterRange() ) );
 
 			// Store removed data for moving
 			cells = matrix.getRow( row );
@@ -872,7 +872,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			if ( actions[ i ].action === 'insert' ) {
 				txs.push( this.replacePlaceholder( matrix, actions[ i ].cell, actions[ i ] ) );
 			} else {
-				txs.push( ve.dm.Transaction.newFromRemoval( documentModel, actions[ i ].cell.node.getOuterRange() ) );
+				txs.push( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, actions[ i ].cell.node.getOuterRange() ) );
 				col = actions[ i ].cell.col - minIndex;
 				actions[ i ].cell.data = documentModel.getData( actions[ i ].cell.node.getOuterRange(), true );
 			}
@@ -920,7 +920,7 @@ ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder,
 		offset = range.start;
 	}
 	data = ve.dm.TableCellNode.static.createData( options );
-	return ve.dm.Transaction.newFromInsertion( surfaceModel.getDocument(), offset, data );
+	return ve.dm.TransactionBuilder.static.newFromInsertion( surfaceModel.getDocument(), offset, data );
 };
 
 /* Registration */

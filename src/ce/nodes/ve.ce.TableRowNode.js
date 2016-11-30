@@ -96,7 +96,7 @@ ve.ce.TableRowNode.prototype.onMissingCellClick = function () {
 
 	// Add a cell onto the end of the row
 	surfaceModel.change(
-		ve.dm.Transaction.newFromInsertion(
+		ve.dm.TransactionBuilder.static.newFromInsertion(
 			documentModel, this.getModel().getRange().end,
 			ve.dm.TableCellNode.static.createData()
 		)

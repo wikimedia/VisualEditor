@@ -515,7 +515,7 @@ ve.ce.modelChangeFromContentChange = function ( oldState, newState ) {
 		}
 
 		return {
-			transaction: ve.dm.Transaction.newFromInsertion(
+			transaction: ve.dm.TransactionBuilder.static.newFromInsertion(
 				dmDoc,
 				oldRange.start,
 				data
@@ -534,7 +534,7 @@ ve.ce.modelChangeFromContentChange = function ( oldState, newState ) {
 		oldText.slice( newStart - lengthDiff ) === newText.slice( newStart )
 	) {
 		return {
-			transaction: ve.dm.Transaction.newFromRemoval(
+			transaction: ve.dm.TransactionBuilder.static.newFromRemoval(
 				dmDoc,
 				new ve.Range( newRange.start, newRange.start - lengthDiff )
 			),
@@ -597,7 +597,7 @@ ve.ce.modelChangeFromContentChange = function ( oldState, newState ) {
 		newRange = new ve.Range( dmDoc.getNearestCursorOffset( newRange.start, 1 ) );
 	}
 	return {
-		transaction: ve.dm.Transaction.newFromReplacement(
+		transaction: ve.dm.TransactionBuilder.static.newFromReplacement(
 			dmDoc,
 			replacementRange,
 			data
