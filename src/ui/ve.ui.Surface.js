@@ -14,6 +14,7 @@
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
+ * @cfg {boolean} [mode] Editing mode
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
  * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
@@ -35,6 +36,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	// Properties
 	this.$scrollContainer = config.$scrollContainer || $( this.getElementWindow() );
 	this.inDialog = config.inDialog || '';
+	this.mode = config.mode;
 	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global' ] } );
 	this.localOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-local' ] } );
 	this.$selections = $( '<div>' );
@@ -194,6 +196,15 @@ ve.ui.Surface.prototype.getDom = function () {
  */
 ve.ui.Surface.prototype.getHtml = function () {
 	return ve.properInnerHtml( this.getDom().body );
+};
+
+/**
+ * Get the surface's editing mode
+ *
+ * @return {string} Editing mode
+ */
+ve.ui.Surface.prototype.getMode = function () {
+	return this.mode;
 };
 
 /**
