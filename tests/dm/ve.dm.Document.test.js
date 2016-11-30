@@ -908,13 +908,13 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 
 QUnit.test( 'protection against double application of transactions', 1, function ( assert ) {
 	var testDocument = ve.dm.example.createExampleDocument(),
-		tx = new ve.dm.Transaction();
-	tx.pushRetain( 1 );
-	tx.pushReplace( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
-	testDocument.commit( tx );
+		txBuilder = new ve.dm.TransactionBuilder();
+	txBuilder.pushRetain( 1 );
+	txBuilder.pushReplace( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
+	testDocument.commit( txBuilder.getTransaction() );
 	assert.throws(
 		function () {
-			testDocument.commit( tx );
+			testDocument.commit( txBuilder.getTransaction() );
 		},
 		Error,
 		'exception thrown when trying to commit an already-committed transaction'
