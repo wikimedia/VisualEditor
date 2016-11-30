@@ -40,6 +40,8 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	this.excludeCommands = config.excludeCommands;
 	this.importRules = config.importRules;
 	this.inDialog = config.inDialog;
+	// TODO: Support source widgets
+	this.mode = 'visual';
 
 	this.surface = null;
 	this.toolbar = null;
@@ -84,6 +86,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		this.$toolbarContainer.append( this.toolbar.$element );
 	}
 	this.surface = ve.init.target.createSurface( doc, {
+		mode: this.mode,
 		inTargetWidget: true,
 		commandRegistry: this.commandRegistry,
 		sequenceRegistry: this.sequenceRegistry,

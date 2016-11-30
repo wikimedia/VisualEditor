@@ -16,7 +16,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
  * @cfg {Object} [modes] Available editing modes. Defaults to static.modes
- * @cfg {Object} [mode] Initial editing mode. Must be in this.modes and defaults to first item.
+ * @cfg {Object} [defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
  */
 ve.init.Target = function VeInitTarget( config ) {
 	var isIe = ve.init.platform.constructor.static.isInternetExplorer(),
@@ -43,7 +43,7 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.toolbarScrollOffset = 0;
 
 	this.modes = config.modes || this.constructor.static.modes;
-	this.setMode( config.mode );
+	this.setDefaultMode( config.defaultMode );
 
 	this.setupTriggerListeners();
 
@@ -203,31 +203,40 @@ ve.init.Target.static.importRules = {
 /* Methods */
 
 /**
- * Set editing mode
+ * Set default editing mode for new surfaces
  *
- * @param {string} mode Editing mode, see static.modes
+ * @param {string} defaultMode Editing mode, see static.modes
  */
-ve.init.Target.prototype.setMode = function ( mode ) {
+ve.init.Target.prototype.setDefaultMode = function ( defaultMode ) {
 	// Mode is not available
-	if ( !this.isModeAvailable( mode ) ) {
-		if ( !this.mode ) {
+	if ( !this.isModeAvailable( defaultMode ) ) {
+		if ( !this.defaultMode ) {
 			// Use default mode if nothing has been set
-			mode = this.modes[ 0 ];
+			defaultMode = this.modes[ 0 ];
 		} else {
 			// Fail if we already have a valid mode
 			return;
 		}
 	}
-	if ( mode !== this.mode ) {
+	if ( defaultMode !== this.defaultMode ) {
 		// The follow classes are used here:
 		// * ve-init-target-visual
 		// * ve-init-target-[modename]
-		if ( this.mode ) {
-			this.$element.removeClass( 've-init-target-' + this.mode );
+		if ( this.defaultMode ) {
+			this.$element.removeClass( 've-init-target-' + this.defaultMode );
 		}
-		this.$element.addClass( 've-init-target-' + mode );
-		this.mode = mode;
+		this.$element.addClass( 've-init-target-' + defaultMode );
+		this.defaultMode = defaultMode;
 	}
+};
+
+/**
+ * Get default editing mode for new surfaces
+ *
+ * @return {string} Editing mode
+ */
+ve.init.Target.prototype.getDefaultMode = function () {
+	return this.defaultMode;
 };
 
 /**
@@ -397,7 +406,7 @@ ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
  * @return {ve.ui.DesktopSurface}
  */
 ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
-	var surface = this.createSurface( dmDoc, config );
+	var surface = this.createSurface( dmDoc, ve.extendObject( { mode: this.getDefaultMode() }, config ) );
 	this.surfaces.push( surface );
 	surface.getView().connect( this, {
 		focus: this.onSurfaceViewFocus.bind( this, surface )
