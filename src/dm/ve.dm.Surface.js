@@ -12,13 +12,18 @@
  *
  * @constructor
  * @param {ve.dm.Document} doc Document model to create surface for
+ * @param {Object} [config] Configuration options
+ * @cfg {boolean} [sourceMode] Source editing mode
  */
-ve.dm.Surface = function VeDmSurface( doc ) {
+ve.dm.Surface = function VeDmSurface( doc, config ) {
+	config = config || {};
+
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
 	// Properties
 	this.documentModel = doc;
+	this.sourceMode = !!config.sourceMode;
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = new ve.dm.NullSelection( this.getDocument() );
 	this.selectionBefore = new ve.dm.NullSelection( this.getDocument() );
@@ -476,7 +481,11 @@ ve.dm.Surface.prototype.getTranslatedSelection = function () {
  * @return {ve.dm.SurfaceFragment} Surface fragment
  */
 ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, excludeInsertions ) {
-	return new ve.dm.SurfaceFragment( this, selection || this.selection, noAutoSelect, excludeInsertions );
+	selection = selection || this.selection;
+	// TODO: Use a factory pattery to generate fragments
+	return this.sourceMode ?
+		new ve.dm.SourceSurfaceFragment( this, selection, noAutoSelect, excludeInsertions ) :
+		new ve.dm.SurfaceFragment( this, selection, noAutoSelect, excludeInsertions );
 };
 
 /**

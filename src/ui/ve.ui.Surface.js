@@ -85,7 +85,10 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	// Initialization
 	this.$menus.append( this.context.$element );
 	this.$element
-		.addClass( 've-ui-surface' )
+		// The following classes are used here:
+		// * ve-ui-surface-visual
+		// * ve-ui-surface-source
+		.addClass( 've-ui-surface ve-ui-surface-' + this.mode )
 		.append( this.view.$element );
 	this.view.$element.after( this.localOverlay.$element );
 	this.localOverlay.$element.append( this.$selections, this.$blockers, this.$controls, this.$menus );
@@ -186,6 +189,23 @@ ve.ui.Surface.prototype.initialize = function () {
  * @return {HTMLDocument} HTML document
  */
 ve.ui.Surface.prototype.getDom = function () {
+	var i, l, text, data;
+
+	// Optimized converter for source mode, which contains only
+	// plain text or paragraphs.
+	if ( this.getMode() === 'source' ) {
+		text = '';
+		data = this.getModel().getDocument().data.data;
+		for ( i = 0, l = data.length; i < l; i++ ) {
+			if ( data[ i ].type === '/paragraph' && data[ i + 1 ].type === 'paragraph' ) {
+				text += '\n';
+			} else if ( !data[ i ].type ) {
+				text += data[ i ];
+			}
+		}
+
+		return text;
+	}
 	return ve.dm.converter.getDomFromModel( this.getModel().getDocument() );
 };
 
@@ -195,7 +215,9 @@ ve.ui.Surface.prototype.getDom = function () {
  * @return {string} HTML
  */
 ve.ui.Surface.prototype.getHtml = function () {
-	return ve.properInnerHtml( this.getDom().body );
+	return this.getMode() === 'source' ?
+		this.getDom() :
+		ve.properInnerHtml( this.getDom().body );
 };
 
 /**
@@ -232,7 +254,7 @@ ve.ui.Surface.prototype.createDialogWindowManager = null;
  * @return {ve.dm.Surface} Surface model
  */
 ve.ui.Surface.prototype.createModel = function ( doc ) {
-	return new ve.dm.Surface( doc );
+	return new ve.dm.Surface( doc, { sourceMode: this.getMode() === 'source' } );
 };
 
 /**
