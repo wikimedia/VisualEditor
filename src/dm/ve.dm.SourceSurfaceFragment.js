@@ -30,7 +30,7 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 		originalDocument = this.getDocument(),
 		coveringRange = this.getSelection().getCoveringRange();
 
-	if ( coveringRange ) {
+	if ( !coveringRange.isCollapsed() ) {
 		tempDocument = originalDocument.shallowCloneFromRange( coveringRange );
 		rangeInDocument = tempDocument.originalRange;
 	} else {
