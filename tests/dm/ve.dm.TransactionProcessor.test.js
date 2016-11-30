@@ -10,7 +10,7 @@ QUnit.module( 've.dm.TransactionProcessor' );
 
 QUnit.test( 'commit', function ( assert ) {
 	var i, originalData, originalDoc,
-		msg, testDoc, tx, expectedData, expectedDoc,
+		msg, testDoc, txBuilder, tx, expectedData, expectedDoc,
 		n = 0,
 		store = ve.dm.example.createExampleDocument().getStore(),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
@@ -683,7 +683,8 @@ QUnit.test( 'commit', function ( assert ) {
 		);
 		testDoc.buildNodeTree();
 
-		tx = new ve.dm.Transaction();
+		txBuilder = new ve.dm.TransactionBuilder();
+		tx = null;
 		for ( i = 0; i < cases[ msg ].calls.length; i++ ) {
 			// some calls need the document as its first argument
 			if ( /^(pushReplace$|new)/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
@@ -691,10 +692,13 @@ QUnit.test( 'commit', function ( assert ) {
 			}
 			// special case static methods of Transaction
 			if ( /^new/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
-				tx = ve.dm.Transaction[ cases[ msg ].calls[ i ][ 0 ] ].apply( null, cases[ msg ].calls[ i ].slice( 1 ) );
+				tx = ve.dm.TransactionBuilder.static[ cases[ msg ].calls[ i ][ 0 ] ].apply( null, cases[ msg ].calls[ i ].slice( 1 ) );
 				break;
 			}
-			tx[ cases[ msg ].calls[ i ][ 0 ] ].apply( tx, cases[ msg ].calls[ i ].slice( 1 ) );
+			txBuilder[ cases[ msg ].calls[ i ][ 0 ] ].apply( txBuilder, cases[ msg ].calls[ i ].slice( 1 ) );
+		}
+		if ( tx === null ) {
+			tx = txBuilder.getTransaction();
 		}
 
 		if ( 'expected' in cases[ msg ] ) {

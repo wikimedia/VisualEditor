@@ -38,7 +38,7 @@ QUnit.test( 'constructor', function ( assert ) {
 } );
 
 QUnit.test( 'onTransact', function ( assert ) {
-	var i, j, surface, tx, list,
+	var i, j, surface, txBuilder, tx, list,
 		doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		comment = { type: 'alienMeta', attributes: { style: 'comment', text: 'onTransact test' } },
 		heading = { type: 'heading', attributes: { level: 2 } },
@@ -135,10 +135,11 @@ QUnit.test( 'onTransact', function ( assert ) {
 	QUnit.expect( cases.length * ( 8 * doc.metadata.getTotalDataLength() + 2 ) );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		tx = new ve.dm.Transaction();
+		txBuilder = new ve.dm.TransactionBuilder();
 		for ( j = 0; j < cases[ i ].calls.length; j++ ) {
-			tx[ cases[ i ].calls[ j ][ 0 ] ].apply( tx, cases[ i ].calls[ j ].slice( 1 ) );
+			txBuilder[ cases[ i ].calls[ j ][ 0 ] ].apply( txBuilder, cases[ i ].calls[ j ].slice( 1 ) );
 		}
+		tx = txBuilder.getTransaction();
 		doc = ve.dm.example.createExampleDocument( 'withMeta' );
 		surface = new ve.dm.Surface( doc );
 		list = new ve.dm.MetaList( surface );

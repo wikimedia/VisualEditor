@@ -6,6 +6,126 @@
 
 QUnit.module( 've.dm.Change' );
 
+QUnit.test( 'rebaseTransactions', function ( assert ) {
+	var rebased,
+		doc = ve.dm.example.createExampleDocument(),
+		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
+		replace12 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 1, 2 ), [ 'f', 'o', 'o' ] ),
+		replace23 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 2, 3 ), [ 'b', 'a', 'r' ] ),
+		replace13 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 1, 3 ), [ 'b', 'a', 'z' ] ),
+		replace24 = ve.dm.Transaction.newFromReplacement( doc, new ve.Range( 2, 4 ), [ 'q', 'u', 'x' ] ),
+		insert1X = ve.dm.Transaction.newFromInsertion( doc, 1, [ 'x' ] ),
+		insert1Y = ve.dm.Transaction.newFromInsertion( doc, 1, [ 'y' ] ),
+		annotate12 = ve.dm.Transaction.newFromAnnotation( doc, new ve.Range( 1, 2 ), 'set', bold ),
+		rebasedOnto = function ( tx1, tx2 ) {
+			return ve.dm.Change.static.rebaseTransactions( tx1, tx2 )[ 0 ];
+		};
+	assert.deepEqual( rebasedOnto( replace23, replace12 ).operations, [
+		{
+			type: 'retain',
+			length: 4
+		},
+		{
+			type: 'replace',
+			remove: [ [ 'b', [ ve.dm.example.boldIndex ] ] ],
+			insert: [ 'b', 'a', 'r' ],
+			insertedDataOffset: 0,
+			insertedDataLength: 3
+		},
+		{
+			type: 'retain',
+			length: 60
+		}
+	], 'Rebase onto upwind replace' );
+
+	assert.deepEqual( rebasedOnto( replace12, replace23 ).operations, [
+		{
+			type: 'retain',
+			length: 1
+		},
+		{
+			type: 'replace',
+			remove: [ 'a' ],
+			insert: [ 'f', 'o', 'o' ],
+			insertedDataOffset: 0,
+			insertedDataLength: 3
+		},
+		{
+			type: 'retain',
+			length: 63
+		}
+	], 'Rebase onto downwind replace' );
+
+	assert.deepEqual( rebasedOnto( replace12, replace23 ).operations, [
+		{
+			type: 'retain',
+			length: 1
+		},
+		{
+			type: 'replace',
+			remove: [ 'a' ],
+			insert: [ 'f', 'o', 'o' ],
+			insertedDataOffset: 0,
+			insertedDataLength: 3
+		},
+		{
+			type: 'retain',
+			length: 63
+		}
+	], 'Rebase onto downwind replace' );
+
+	assert.deepEqual( rebasedOnto( replace24, annotate12 ).operations, replace24.operations, 'Rebase onto upwind annotate' );
+
+	assert.deepEqual( rebasedOnto( replace12, annotate12 ), null, 'Rebase conflict with overlapping annotate' );
+	assert.deepEqual( rebasedOnto( replace12, replace13 ), null, 'Rebase conflict with surrounding replace' );
+	assert.deepEqual( rebasedOnto( replace13, replace12 ), null, 'Rebase conflict with surrounded replace' );
+	assert.deepEqual( rebasedOnto( replace13, replace24 ), null, 'Rebase conflict with overlapping downwind replace' );
+	assert.deepEqual( rebasedOnto( replace24, replace13 ), null, 'Rebase conflict with overlapping upwind replace' );
+
+	assert.deepEqual(
+		rebasedOnto( rebasedOnto( replace12, replace23 ), replace23.reversed() ).operations,
+		replace12.operations,
+		'Inverse rebase'
+	);
+
+	rebased = ve.dm.Change.static.rebaseTransactions( insert1X, insert1Y );
+	assert.deepEqual( rebased[ 0 ].operations, [
+		{
+			type: 'retain',
+			length: 1
+		},
+		{
+			type: 'replace',
+			remove: [],
+			insert: [ 'x' ],
+			insertedDataOffset: 0,
+			insertedDataLength: 1
+		},
+		{
+			type: 'retain',
+			length: 63
+		}
+	], 'Rebase-startmost insert onto parallel insert at the same offset' );
+
+	assert.deepEqual( rebased[ 1 ].operations, [
+		{
+			type: 'retain',
+			length: 2
+		},
+		{
+			type: 'replace',
+			remove: [],
+			insert: [ 'y' ],
+			insertedDataOffset: 0,
+			insertedDataLength: 1
+		},
+		{
+			type: 'retain',
+			length: 62
+		}
+	], 'Rebase-endmost insert onto parallel insert at the same offset' );
+} );
+
 QUnit.test( 'Change operations', 8, function ( assert ) {
 	var change, replace2, remove2,
 		origData = [ { type: 'paragraph' }, 't', 'h', 'r', 'e', 'e', { type: '/paragraph' } ],

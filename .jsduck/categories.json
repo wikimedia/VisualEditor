@@ -63,6 +63,7 @@
 					"ve.dm.*SurfaceFragment",
 					"ve.dm.*Selection",
 					"ve.dm.Transaction",
+					"ve.dm.TransactionBuilder",
 					"ve.dm.Change",
 					"ve.dm.TransactionProcessor",
 					"ve.dm.TransactionProcessor.*"
