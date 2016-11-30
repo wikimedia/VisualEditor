@@ -415,7 +415,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests( assert, ve.dm.Transaction.newFromInsertion, cases, true );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromInsertion, cases, true );
 } );
 
 QUnit.test( 'newFromRemoval', function ( assert ) {
@@ -755,7 +755,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests( assert, ve.dm.Transaction.newFromRemoval, cases );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromRemoval, cases );
 } );
 
 QUnit.test( 'newFromReplacement', function ( assert ) {
@@ -815,7 +815,7 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests( assert, ve.dm.Transaction.newFromReplacement, cases, false );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromReplacement, cases, false );
 } );
 
 QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
@@ -832,7 +832,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 				range: new ve.Range( 7, 12 ),
 				modify: function ( newDoc ) {
 					// Change "Bar" to "Bazaar"
-					newDoc.commit( ve.dm.Transaction.newFromInsertion(
+					newDoc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
 						newDoc, 3, [ 'z', 'a', 'a' ]
 					) );
 				},
@@ -865,7 +865,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 				range: new ve.Range( 14, 19 ),
 				modify: function ( newDoc ) {
 					// Bold the first two characters
-					newDoc.commit( ve.dm.Transaction.newFromAnnotation(
+					newDoc.commit( ve.dm.TransactionBuilder.static.newFromAnnotation(
 						newDoc, new ve.Range( 1, 3 ), 'set', bold
 					) );
 				},
@@ -933,7 +933,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 				offset: 21,
 				range: new ve.Range( 21, 27 ),
 				modify: function ( newDoc ) {
-					newDoc.commit( ve.dm.Transaction.newFromInsertion(
+					newDoc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
 						newDoc, 12, [ '!', '!', '!' ]
 					) );
 				},
@@ -1057,14 +1057,14 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 		} else if ( cases[ i ].range ) {
 			doc2 = doc.cloneFromRange( cases[ i ].range );
 			cases[ i ].modify( doc2 );
-			tx = ve.dm.Transaction.newFromRemoval( doc, cases[ i ].range );
+			tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, cases[ i ].range );
 			doc.commit( tx );
 			removalOps = tx.getOperations();
 		}
 
 		assert.deepEqualWithDomElements( removalOps, cases[ i ].removalOps, cases[ i ].msg + ': removal' );
 
-		tx = ve.dm.Transaction.newFromDocumentInsertion( doc, cases[ i ].offset, doc2 );
+		tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( doc, cases[ i ].offset, doc2 );
 		assert.deepEqualWithDomElements( tx.getOperations(), cases[ i ].expectedOps, cases[ i ].msg + ': transaction' );
 
 		actualStoreItems = {};
@@ -1134,7 +1134,7 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 			}
 		};
 	QUnit.expect( Object.keys( cases ).length );
-	runConstructorTests( assert, ve.dm.Transaction.newFromAttributeChanges, cases );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAttributeChanges, cases );
 } );
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {
@@ -1409,7 +1409,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 		};
 
 	QUnit.expect( Object.keys( cases ).length );
-	runConstructorTests( assert, ve.dm.Transaction.newFromAnnotation, cases );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAnnotation, cases );
 } );
 
 QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
@@ -1593,7 +1593,7 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 	}
 	runConstructorTests(
 		assert,
-		ve.dm.Transaction.newFromContentBranchConversion,
+		ve.dm.TransactionBuilder.static.newFromContentBranchConversion,
 		cases
 	);
 } );
@@ -1775,7 +1775,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 	}
 	runConstructorTests(
 		assert,
-		ve.dm.Transaction.newFromWrap,
+		ve.dm.TransactionBuilder.static.newFromWrap,
 		cases
 	);
 } );
@@ -2092,7 +2092,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 			}
 		};
 	QUnit.expect( Object.keys( cases ).length );
-	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataInsertion, cases );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataInsertion, cases );
 } );
 
 QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
@@ -2154,7 +2154,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 			}
 		};
 	QUnit.expect( Object.keys( cases ).length );
-	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataRemoval, cases );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataRemoval, cases );
 } );
 
 QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
@@ -2204,7 +2204,7 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 			}
 		};
 	QUnit.expect( Object.keys( cases ).length );
-	runConstructorTests( assert, ve.dm.Transaction.newFromMetadataElementReplacement, cases );
+	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataElementReplacement, cases );
 } );
 
 QUnit.test( 'isNoOp', function ( assert ) {
@@ -2218,46 +2218,46 @@ QUnit.test( 'isNoOp', function ( assert ) {
 		var isDoc = ( i === 0 ),
 			isListMetaDoc = ( i === 2 );
 
-		tx = ve.dm.Transaction.newFromReplacement(
+		tx = ve.dm.TransactionBuilder.static.newFromReplacement(
 			d, new ve.Range( 1 ), [], false
 		);
 		assert.strictEqual( tx.isNoOp(), true );
 
-		tx = ve.dm.Transaction.newFromInsertion(
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion(
 			d, 1, []
 		);
 		assert.strictEqual( tx.isNoOp(), true );
 
-		tx = ve.dm.Transaction.newFromRemoval(
+		tx = ve.dm.TransactionBuilder.static.newFromRemoval(
 			d, new ve.Range( 1 ), false
 		);
 		assert.strictEqual( tx.isNoOp(), true );
 
 		if ( !isListMetaDoc ) {
-			tx = ve.dm.Transaction.newFromDocumentInsertion(
+			tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion(
 				d, 1,
 				ve.dm.example.createExampleDocument(), new ve.Range( 0 )
 			);
 			assert.strictEqual( tx.isNoOp(), true );
 		}
 
-		tx = ve.dm.Transaction.newFromAttributeChanges(
+		tx = ve.dm.TransactionBuilder.static.newFromAttributeChanges(
 			d, isListMetaDoc ? 1 : 0, {}
 		);
 		assert.strictEqual( tx.isNoOp(), true );
 
-		tx = ve.dm.Transaction.newFromAnnotation(
+		tx = ve.dm.TransactionBuilder.static.newFromAnnotation(
 			d, new ve.Range( 1 ), 'set', new ve.dm.ItalicAnnotation()
 		);
 		assert.strictEqual( tx.isNoOp(), true );
 
-		tx = ve.dm.Transaction.newFromMetadataInsertion(
+		tx = ve.dm.TransactionBuilder.static.newFromMetadataInsertion(
 			d, 1, 0, []
 		);
 		assert.strictEqual( tx.isNoOp(), true );
 
 		if ( !isDoc ) {
-			tx = ve.dm.Transaction.newFromMetadataRemoval(
+			tx = ve.dm.TransactionBuilder.static.newFromMetadataRemoval(
 				d, 0, new ve.Range( 1 )
 			);
 			assert.strictEqual( tx.isNoOp(), true );

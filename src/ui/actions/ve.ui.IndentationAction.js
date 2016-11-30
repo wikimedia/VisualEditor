@@ -233,7 +233,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	// (1) Split the listItem into a separate list
 	if ( documentModel.data.getData( listItemRange.start - 1 ).type !== 'list' ) {
 		// (1a) listItem is not the first child, split the list before listItem
-		tx = ve.dm.Transaction.newFromInsertion( documentModel, listItemRange.start,
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, listItemRange.start,
 			[ { type: '/list' }, listElement ]
 		);
 		surfaceModel.change( tx );
@@ -242,7 +242,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 	}
 	if ( documentModel.data.getData( listItemRange.end ).type !== '/list' ) {
 		// (1b) listItem is not the last child, split the list after listItem
-		tx = ve.dm.Transaction.newFromInsertion( documentModel, listItemRange.end,
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, listItemRange.end,
 			[ { type: '/list' }, listElement ]
 		);
 		surfaceModel.change( tx );
@@ -278,7 +278,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		// TODO factor common split logic somehow?
 		if ( documentModel.data.getData( splitListRange.start - 1 ).type !== 'listItem' ) {
 			// (3a) Split parentListItem before list
-			tx = ve.dm.Transaction.newFromInsertion( documentModel, splitListRange.start,
+			tx = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, splitListRange.start,
 				[ { type: '/listItem' }, { type: 'listItem' } ]
 			);
 			surfaceModel.change( tx );
@@ -287,7 +287,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		}
 		if ( documentModel.data.getData( splitListRange.end ).type !== '/listItem' ) {
 			// (3b) Split parentListItem after list
-			tx = ve.dm.Transaction.newFromInsertion( documentModel, splitListRange.end,
+			tx = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, splitListRange.end,
 				[ { type: '/listItem' }, { type: 'listItem' } ]
 			);
 			surfaceModel.change( tx );

@@ -16,7 +16,7 @@
  * A transaction is comprised of a list of operations, which must preserve tree validity as a
  * whole, though each individual operation may not. For example, a DivNode wrapping can be
  * removed by one operation removing the 'div' and another removing the '/div'.  The
- * ve.dm.Transaction.newFrom* methods help build transactions that preserve tree validity.
+ * ve.dm.TransactionBuilder.static.newFrom* methods help build transactions that preserve tree validity.
  *
  * @class
  * @constructor

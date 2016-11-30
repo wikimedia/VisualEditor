@@ -127,7 +127,7 @@ QUnit.test( 'documentUpdate/select events', 3, function ( assert ) {
 	var surface = new ve.dm.SurfaceStub(),
 		doc = surface.getDocument(),
 		// docmentUpdate doesn't fire for no-op transactions, so make sure there's something there
-		tx = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'i' ] ),
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'i' ] ),
 		events = {
 			documentUpdate: 0,
 			select: 0
@@ -153,7 +153,7 @@ QUnit.test( 'breakpoint/undo/redo', 12, function ( assert ) {
 		fragment = surface.getFragment(),
 		doc = surface.getDocument(),
 		selection = new ve.dm.LinearSelection( doc, range ),
-		tx = ve.dm.Transaction.newFromInsertion( doc, 1, [ 'x' ] );
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'x' ] );
 
 	assert.strictEqual( surface.breakpoint(), false, 'Returns false if no transactions applied' );
 
@@ -192,7 +192,7 @@ QUnit.test( 'range translation', 2, function ( assert ) {
 	var sel, range,
 		surface = new ve.dm.SurfaceStub( null, new ve.Range( 3 ) ),
 		doc = surface.getDocument(),
-		tx = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'x' ] );
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'x' ] );
 	surface.change( tx );
 	sel = surface.getSelection();
 	assert.ok( sel instanceof ve.dm.LinearSelection, 'Selection is linear' );
@@ -211,14 +211,14 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	assert.strictEqual( surface.doesStagingAllowUndo(), undefined, 'doesStagingAllowUndo undefined when not staging' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface range matches fragment range' );
 
-	surface.change( ve.dm.Transaction.newFromInsertion( doc, 1, [ 'a' ] ) );
+	surface.change( ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'a' ] ) );
 
 	surface.pushStaging();
 	assert.strictEqual( surface.isStaging(), true, 'isStaging true after pushStaging' );
 	assert.deepEqual( surface.getStagingTransactions(), [], 'getStagingTransactions empty array after pushStaging' );
 	assert.strictEqual( surface.doesStagingAllowUndo(), false, 'doesStagingAllowUndo false when staging without undo' );
 
-	tx1 = ve.dm.Transaction.newFromInsertion( doc, 2, [ 'b' ] );
+	tx1 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 2, [ 'b' ] );
 	surface.change( tx1 );
 
 	assert.strictEqual( fragment.getText(), 'abhi', 'document contents match after first transaction' );
@@ -231,7 +231,7 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	assert.strictEqual( surface.doesStagingAllowUndo(), true, 'doesStagingAllowUndo true when staging with undo' );
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
-	tx2 = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'c' ] );
+	tx2 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'c' ] );
 	surface.change( tx2 );
 
 	assert.strictEqual( fragment.getText(), 'abchi', 'document contents match after second transaction' );
@@ -248,11 +248,11 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging();
-	tx1 = ve.dm.Transaction.newFromInsertion( doc, 2, [ 'b' ] );
+	tx1 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 2, [ 'b' ] );
 	surface.change( tx1 );
 
 	surface.pushStaging();
-	tx2 = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'c' ] );
+	tx2 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'c' ] );
 	surface.change( tx2 );
 
 	assert.deepEqual( surface.popAllStaging(), [ tx1, tx2 ], 'popAllStaging returns full transaction list' );
@@ -260,11 +260,11 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging();
-	tx1 = ve.dm.Transaction.newFromInsertion( doc, 2, [ 'b' ] );
+	tx1 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 2, [ 'b' ] );
 	surface.change( tx1 );
 
 	surface.pushStaging();
-	tx2 = ve.dm.Transaction.newFromInsertion( doc, 3, [ 'c' ] );
+	tx2 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'c' ] );
 	surface.change( tx2 );
 
 	surface.applyStaging();
@@ -276,11 +276,11 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Surface selection matches fragment range' );
 
 	surface.pushStaging();
-	tx1 = ve.dm.Transaction.newFromInsertion( doc, 4, [ 'd' ] );
+	tx1 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 4, [ 'd' ] );
 	surface.change( tx1 );
 
 	surface.pushStaging();
-	tx2 = ve.dm.Transaction.newFromInsertion( doc, 5, [ 'e' ] );
+	tx2 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 5, [ 'e' ] );
 	surface.change( tx2 );
 
 	surface.applyAllStaging();
@@ -295,7 +295,7 @@ QUnit.test( 'staging', 37, function ( assert ) {
 	surface.pushStaging();
 	surface.pushStaging();
 	// Apply transaction at second level, first level is empty and has no selctionBefore
-	tx1 = ve.dm.Transaction.newFromInsertion( doc, 4, [ 'd' ] );
+	tx1 = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 4, [ 'd' ] );
 	surface.change( tx1 );
 	surface.applyAllStaging();
 	// Dirty selection

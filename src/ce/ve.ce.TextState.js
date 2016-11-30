@@ -419,5 +419,5 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		ve.batchPush( newData, data );
 	}
 
-	return ve.dm.Transaction.newFromReplacement( modelDoc, removeRange, newData );
+	return ve.dm.TransactionBuilder.static.newFromReplacement( modelDoc, removeRange, newData );
 };

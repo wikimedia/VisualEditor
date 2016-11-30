@@ -343,7 +343,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
 	if ( index === undefined ) {
 		index = ( this.document.metadata.getData( offset ) || [] ).length;
 	}
-	tx = ve.dm.Transaction.newFromMetadataInsertion( this.document, offset, index, [ meta ] );
+	tx = ve.dm.TransactionBuilder.static.newFromMetadataInsertion( this.document, offset, index, [ meta ] );
 	this.surface.change( tx );
 };
 
@@ -355,7 +355,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
  */
 ve.dm.MetaList.prototype.removeMeta = function ( item ) {
 	var tx;
-	tx = ve.dm.Transaction.newFromMetadataRemoval(
+	tx = ve.dm.TransactionBuilder.static.newFromMetadataRemoval(
 		this.document,
 		item.getOffset(),
 		new ve.Range( item.getIndex(), item.getIndex() + 1 )
