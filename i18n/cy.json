@@ -6,7 +6,8 @@
 			"Robin Owain",
 			"ОйЛ",
 			"DChan (WMF)",
-			"Ed g2s"
+			"Ed g2s",
+			"Jdforrester"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -111,7 +112,11 @@
 	"visualeditor-table-contextitem-properties": "Priodweddau",
 	"visualeditor-table-delete-col": "Dileu’r {{PLURAL:$1|colofn|colofnau}}",
 	"visualeditor-table-delete-row": "Dileu’r {{PLURAL:$1|rhes|rhesi}}",
+	"visualeditor-table-format-data": "Cynnwys cell",
+	"visualeditor-table-format-header": "Pennawd cell",
 	"visualeditor-table-insert-table": "Tabl",
+	"visualeditor-table-merge-cells": "Cyfuno celloedd",
+	"visualeditor-tablecell-contextitem": "Tabl cell",
 	"visualeditor-toolbar-format-tooltip": "Fformatio paragraff",
 	"visualeditor-toolbar-insert": "Mewnosod",
 	"visualeditor-toolbar-style-tooltip": "Arddull y testun",
