@@ -64,7 +64,6 @@
 					"ve.dm.*Selection",
 					"ve.dm.Transaction",
 					"ve.dm.TransactionBuilder",
-					"ve.dm.Change",
 					"ve.dm.TransactionProcessor",
 					"ve.dm.TransactionProcessor.*"
 				]
@@ -99,6 +98,14 @@
 					"ve.dm.TableMatrix",
 					"ve.dm.TableMatrixCell",
 					"ve.dm.TableNodeCellIterator"
+				]
+			},
+			{
+				"name": "Rebasing",
+				"classes": [
+					"ve.dm.Change",
+					"ve.dm.RebaseServer",
+					"ve.dm.RebaseClient"
 				]
 			}
 		]
@@ -325,6 +332,7 @@
 					"Boolean",
 					"Date",
 					"Function",
+					"Map",
 					"Number",
 					"Object",
 					"RegExp",
