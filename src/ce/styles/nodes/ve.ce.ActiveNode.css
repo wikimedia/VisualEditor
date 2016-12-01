@@ -1,0 +1,14 @@
+/*!
+ * VisualEditor ContentEditable SectionNode styles.
+ *
+ * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-focusableNode .ve-ce-activeNode {
+	cursor: text;
+}
+
+.ve-ce-focusableNode .ve-ce-activeNode,
+.ve-ce-focusableNode .ve-ce-activeNode * {
+	-moz-user-select: text; /* stylelint-disable-line no-unsupported-browser-features */
+}

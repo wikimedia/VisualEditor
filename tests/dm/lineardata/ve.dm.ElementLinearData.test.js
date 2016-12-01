@@ -879,7 +879,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 				expected: 2
 			},
 			{
-				msg: 'document with invalid offset inside an ignoreChildren node throws',
+				msg: 'document with offset inside an ignoreChildren doesn\'t leave it and returns -1',
 				offset: 7,
 				distance: 1,
 				data: [
@@ -894,7 +894,7 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 					'b'
 				],
 				callback: ve.dm.ElementLinearData.prototype.isContentOffset,
-				exception: /offset was inside an ignoreChildren node/
+				expected: -1
 			}
 		];
 

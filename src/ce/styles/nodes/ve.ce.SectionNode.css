@@ -22,6 +22,6 @@
 	/* stylelint-enable no-unsupported-browser-features */
 }
 
-.ve-ce-documentNode .ve-ce-sectionNode-active {
+.ve-ce-documentNode .ve-ce-sectionNode.ve-ce-activeNode-active {
 	opacity: 1;
 }

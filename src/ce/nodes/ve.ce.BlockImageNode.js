@@ -30,7 +30,7 @@ ve.ce.BlockImageNode = function VeCeBlockImageNode( model, config ) {
 		.prependTo( this.$element );
 
 	// Mixin constructors
-	ve.ce.ImageNode.call( this, this.$element, this.$image, config );
+	ve.ce.ImageNode.call( this, this.$image, this.$image, config );
 	ve.ce.AlignableNode.call( this, this.$element, config );
 
 	// Initialization

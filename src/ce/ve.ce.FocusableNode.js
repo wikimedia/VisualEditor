@@ -144,7 +144,11 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	// handles mousedown events.
 	if ( !this.$element.is( this.$focusable ) ) {
 		this.$element.on( {
-			'mousedown.ve-ce-focusableNode': function ( e ) { e.preventDefault(); }
+			'mousedown.ve-ce-focusableNode': function ( e ) {
+				if ( !ve.isContentEditable( e.target ) ) {
+					e.preventDefault();
+				}
+			}
 		} );
 	}
 

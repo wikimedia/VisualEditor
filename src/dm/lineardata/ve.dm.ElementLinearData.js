@@ -731,7 +731,6 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  * given initial argument of offset
  * @param {...Mixed} [args] Additional arguments to pass to the callback
  * @return {number} Relative valid offset or -1 if there are no valid offsets in data
- * @throws {Error} offset was inside an ignoreChildren node
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
 	var i, direction,
@@ -779,7 +778,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 			} else {
 				ignoreChildrenDepth--;
 				if ( ignoreChildrenDepth < 0 ) {
-					throw new Error( 'offset was inside an ignoreChildren node' );
+					return -1;
 				}
 			}
 		}
