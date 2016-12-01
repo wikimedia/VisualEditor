@@ -4,6 +4,8 @@
  * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* global DOMPurify */
+
 /**
  * DataModel change.
  *
@@ -142,7 +144,10 @@ ve.dm.Change.static.deserializeValue = function ( serialized ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
 	} else if ( serialized.type === 'domNodeArray' ) {
 		return serialized.value.map( function ( nodeHtml ) {
-			return $.parseHTML( nodeHtml )[ 0 ];
+			return DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
+				ALLOWED_ATTR: [ 'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof' ],
+				FORBID_TAGS: [ 'style' ]
+			} );
 		} );
 	} else if ( serialized.type === 'plain' ) {
 		return serialized.value;

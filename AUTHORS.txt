@@ -77,6 +77,11 @@ Diff Match and Patch
  – Apache license 2.0
  – Google, Inc.
 
+DOMPurify
+ – https://github.com/cure53/DOMPurify
+ – Apache license 2.0 (dual with MPL 2.0)
+ – Mario Heiderich and other contributors
+
 jQuery
  – https://jquery.com/
  – MIT license
