@@ -106,6 +106,56 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 };
 
 /**
+ * @inheritdoc
+ */
+ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) {
+	var i, node, nodes,
+		content,
+		range = this.getSelection().getCoveringRange();
+
+	if ( !range ) {
+		return this;
+	}
+
+	function getOpening( element ) {
+		element.internal = {
+			whitespace: [ '\n', '\n', '\n', '\n' ]
+		};
+		return element;
+	}
+
+	function getClosing( element ) {
+		return { type: '/' + element.type };
+	}
+
+	if ( !Array.isArray( wrapOuter ) ) {
+		wrapOuter = [ wrapOuter ];
+	}
+
+	wrapEach = wrapEach || [];
+
+	if ( !Array.isArray( wrapEach ) ) {
+		wrapEach = [ wrapEach ];
+	}
+
+	nodes = this.getSelectedLeafNodes();
+
+	content = wrapOuter.map( getOpening );
+	for ( i = 0; i < nodes.length; i++ ) {
+		node = nodes[ i ];
+		content = content
+			.concat( wrapEach.map( getOpening ) )
+			.concat( this.getSurface().getLinearFragment( node.getRange() ).getText().split( '' ) )
+			.concat( wrapEach.reverse().map( getClosing ) );
+	}
+	content = content.concat( wrapOuter.reverse().map( getClosing ) );
+
+	this.insertContent( content );
+
+	return this;
+};
+
+/**
  * Convert sub document to source text
  *
  * The default implementation converts to HTML synchronously.
