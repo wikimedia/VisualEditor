@@ -26,30 +26,21 @@ OO.inheritClass( ve.dm.SourceSurfaceFragment, ve.dm.SurfaceFragment );
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
-	var fragment, tempDocument, rangeInDocument, tempSurfaceModel,
-		originalDocument = this.getDocument(),
-		coveringRange = this.getSelection().getCoveringRange();
+	var tempFragment, tempSurfaceModel,
+		args = arguments,
+		fragment = this,
+		text = this.getText( true );
 
-	if ( !coveringRange.isCollapsed() ) {
-		tempDocument = originalDocument.shallowCloneFromRange( coveringRange );
-		rangeInDocument = tempDocument.originalRange;
-	} else {
-		tempDocument = new ve.dm.Document(
-			[
-				{ type: 'paragraph', internal: { generated: 'wrapper' } }, { type: '/paragraph' },
-				{ type: 'internalList' }, { type: '/internalList' }
-			],
-			null, null, null, null,
-			originalDocument.getLang(),
-			originalDocument.getDir()
+	this.convertFromSource( text ).then( function ( selectionDocument ) {
+		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
+		tempFragment = tempSurfaceModel.getLinearFragment(
+			// TODO: Find content offsets
+			new ve.Range( 0, selectionDocument.getInternalList().getListNode().getOuterRange().start )
 		);
-		rangeInDocument = new ve.Range( 1 );
-	}
-	tempSurfaceModel = new ve.dm.Surface( tempDocument );
-	fragment = tempSurfaceModel.getLinearFragment( rangeInDocument );
-	fragment.annotateContent.apply( fragment, arguments );
+		tempFragment.annotateContent.apply( tempFragment, args );
 
-	this.insertDocument( fragment.getDocument() );
+		fragment.insertDocument( tempFragment.getDocument() );
+	} );
 
 	return this;
 };
@@ -89,7 +80,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ) );
 	}
 
-	/* conversionPromise = */ this.convertDocument( doc )
+	this.convertToSource( doc )
 		.done( function ( source ) {
 			fragment.removeContent();
 
@@ -156,7 +147,7 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
 };
 
 /**
- * Convert sub document to source text
+ * Convert model slice to source text
  *
  * The default implementation converts to HTML synchronously.
  *
@@ -166,13 +157,48 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
  * @param {ve.dm.Document} doc Document
  * @return {jQuery.Promise} Promise with resolves with source, or rejects
  */
-ve.dm.SourceSurfaceFragment.prototype.convertDocument = function ( doc ) {
+ve.dm.SourceSurfaceFragment.prototype.convertToSource = function ( doc ) {
 	if ( !doc.data.hasContent() ) {
 		return $.Deferred().reject().promise();
 	} else {
 		return $.Deferred().resolve(
 			ve.properInnerHtml(
 				ve.dm.converter.getDomFromModel( doc ).body
+			)
+		).promise();
+	}
+};
+
+/**
+ * Convert source text to model slice
+ *
+ * The default implementation converts from HTML synchronously.
+ *
+ * If the conversion is asynchornous it should lock the surface
+ * until complete.
+ *
+ * @param {string} source Source text
+ * @return {jQuery.Promise} Promise with resolves with source
+ */
+ve.dm.SourceSurfaceFragment.prototype.convertFromSource = function ( source ) {
+	var lang = this.getDocument().getLang(),
+		dir = this.getDocument().getDir();
+
+	if ( !source ) {
+		return $.Deferred().resolve(
+			new ve.dm.Document(
+				[
+					{ type: 'paragraph', internal: { generated: 'wrapper' } }, { type: '/paragraph' },
+					{ type: 'internalList' }, { type: '/internalList' }
+				],
+				null, null, null, null,
+				lang, dir
+			)
+		).promise();
+	} else {
+		return $.Deferred().resolve(
+			ve.dm.converter.getModelFromDom(
+				ve.createDocumentFromHtml( source, { lang: lang, dir: dir } )
 			)
 		).promise();
 	}
