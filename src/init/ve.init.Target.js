@@ -427,6 +427,30 @@ ve.init.Target.prototype.clearSurfaces = function () {
 };
 
 /**
+ * Parse document string into an HTML document
+ *
+ * @param {string} documentString Document
+ * @param {string} mode Editing mode
+ * @return {HTMLDocument} HTML document
+ */
+ve.init.Target.prototype.parseDocument = function ( documentString, mode ) {
+	var doc;
+	if ( mode === 'source' ) {
+		// Parse as plain text in source mode
+		doc = ve.createDocumentFromHtml( '' );
+
+		documentString.split( '\n' ).forEach( function ( line ) {
+			var p = doc.createElement( 'p' );
+			p.appendChild( doc.createTextNode( line ) );
+			doc.body.appendChild( p );
+		} );
+	} else {
+		doc = ve.createDocumentFromHtml( documentString );
+	}
+	return doc;
+};
+
+/**
  * Handle focus events from a surface's view
  *
  * @param {ve.ui.Surface} surface Surface firing the event

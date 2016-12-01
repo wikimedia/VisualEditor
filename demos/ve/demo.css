@@ -86,14 +86,6 @@ body {
 	width: 0;
 }
 
-.ve-demo-source {
-	max-width: none;
-}
-
-.ve-demo-source textarea {
-	font-family: monospace;
-}
-
 .ve-demo-read {
 	/* Match document padding and surface font size */
 	padding: 0.75em 1.5em;
