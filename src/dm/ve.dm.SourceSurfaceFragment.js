@@ -48,6 +48,29 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 /**
  * @inheritdoc
  */
+ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
+	var tempFragment, tempSurfaceModel,
+		args = arguments,
+		fragment = this,
+		text = this.getText( true );
+
+	this.convertFromSource( text ).then( function ( selectionDocument ) {
+		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
+		tempFragment = tempSurfaceModel.getLinearFragment(
+			// TODO: Find content offsets
+			new ve.Range( 0, selectionDocument.getInternalList().getListNode().getOuterRange().start )
+		);
+		tempFragment.convertNodes.apply( tempFragment, args );
+
+		fragment.insertDocument( tempFragment.getDocument() );
+	} );
+
+	return this;
+};
+
+/**
+ * @inheritdoc
+ */
 ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content ) {
 	var data;
 
