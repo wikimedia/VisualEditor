@@ -46,6 +46,7 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
  */
 ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	var currentInspector, inspectorWindowManager,
+		originalFragment, originalDocument, coveringRange, rangeInDocument, tempDocument, tempSurfaceModel,
 		windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
 		currentWindow = windowManager.getCurrentWindow(),
@@ -54,10 +55,36 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		fragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getSelection().getDirection(),
 		// HACK: Allow $returnFocusTo to take null upstream
-		$noFocus = [ { focus: function () {} } ];
+		$noFocus = [ { focus: function () {} } ],
+		// TODO: Add 'doesHandleSource' method to factory
+		sourceMode = surface.getMode() === 'source' && !ve.ui.windowFactory.lookup( name ).static.handlesSource;
 
 	if ( !windowManager ) {
 		return false;
+	}
+
+	if ( sourceMode ) {
+		// TODO: This duplicates code in SourceSurfaceFragment#annotateContent
+		originalFragment = fragment;
+		originalDocument = originalFragment.getDocument();
+		coveringRange = originalFragment.getSelection().getCoveringRange();
+		if ( coveringRange && !coveringRange.isCollapsed() ) {
+			tempDocument = surface.getModel().getDocument().shallowCloneFromRange( coveringRange );
+			rangeInDocument = tempDocument.originalRange;
+		} else {
+			tempDocument = new ve.dm.Document(
+				[
+					{ type: 'paragraph', internal: { generated: 'wrapper' } }, { type: '/paragraph' },
+					{ type: 'internalList' }, { type: '/internalList' }
+				],
+				null, null, null, null,
+				originalDocument.getLang(),
+				originalDocument.getDir()
+			);
+			rangeInDocument = new ve.Range( 1 );
+		}
+		tempSurfaceModel = new ve.dm.Surface( tempDocument );
+		fragment = tempSurfaceModel.getLinearFragment( rangeInDocument );
 	}
 
 	data = ve.extendObject( { dir: dir }, data, { fragment: fragment, $returnFocusTo: $noFocus } );
@@ -89,6 +116,10 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 			}
 
 			opening.then( function ( closing ) {
+				if ( sourceMode ) {
+					// HACK: previousSelection is assumed to be in the visible surface
+					win.previousSelection = null;
+				}
 				closing.then( function ( closed ) {
 					if ( !win.constructor.static.activeSurface ) {
 						surface.getView().activate();
@@ -97,6 +128,9 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 						// Sequence-triggered window closed without action, undo
 						if ( data.strippedSequence && !( closedData && closedData.action ) ) {
 							surface.getModel().undo();
+						}
+						if ( tempSurfaceModel && tempSurfaceModel.hasBeenModified() ) {
+							originalFragment.insertDocument( tempSurfaceModel.getDocument() );
 						}
 						surface.getView().emit( 'position' );
 					} );
