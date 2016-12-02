@@ -84,7 +84,9 @@ ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 	// Move content to element
 	element.innerHTML = '';
 	while ( body.childNodes.length ) {
-		element.appendChild( body.childNodes[ 0 ] );
+		element.appendChild(
+			element.ownerDocument.adoptNode( body.childNodes[ 0 ] )
+		);
 	}
 
 	// Cleanup
