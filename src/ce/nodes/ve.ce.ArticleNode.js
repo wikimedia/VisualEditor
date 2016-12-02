@@ -30,6 +30,8 @@ OO.inheritClass( ve.ce.ArticleNode, ve.ce.BranchNode );
 
 ve.ce.ArticleNode.static.name = 'article';
 
+ve.ce.ArticleNode.static.tagName = 'article';
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.ArticleNode );
