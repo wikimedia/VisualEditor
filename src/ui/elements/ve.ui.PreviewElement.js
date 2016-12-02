@@ -66,25 +66,26 @@ ve.ui.PreviewElement.prototype.setModel = function ( model ) {
  */
 ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 	var htmlDocument = ve.dm.converter.getDomFromNode( this.model, true ),
+		body = htmlDocument.body,
 		element = this.$element[ 0 ];
 
 	// Resolve attributes
 	ve.resolveAttributes(
-		htmlDocument.body,
+		body,
 		this.model.getDocument().getHtmlDocument(),
 		ve.dm.Converter.static.computedAttributes
 	);
 
 	// Make all links open in a new window (sync view)
-	Array.prototype.forEach.call( htmlDocument.body.querySelectorAll( 'a[href]' ), function ( el ) {
+	Array.prototype.forEach.call( body.querySelectorAll( 'a[href]' ), function ( el ) {
 		el.setAttribute( 'target', '_blank' );
 	} );
 
-	// Replace content
+	// Move content to element
 	element.innerHTML = '';
-	Array.prototype.forEach.call( htmlDocument.body.childNodes, function ( node ) {
-		element.appendChild( node );
-	} );
+	while ( body.childNodes.length ) {
+		element.appendChild( body.childNodes[ 0 ] );
+	}
 
 	// Cleanup
 	this.view.destroy();
