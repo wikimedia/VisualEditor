@@ -140,14 +140,26 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 };
 
 ve.dm.Change.static.deserializeValue = function ( serialized ) {
+	var rdfaAttrs;
 	if ( serialized.type === 'annotation' ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
 	} else if ( serialized.type === 'domNodeArray' ) {
+		rdfaAttrs = [ 'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof' ];
+
 		return serialized.value.map( function ( nodeHtml ) {
-			return DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
-				ALLOWED_ATTR: [ 'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof' ],
-				FORBID_TAGS: [ 'style' ]
+			// Support: IE9
+			// DOMPurify.sanitize will return html strings in incompatible browsers
+			var fragmentOrHtml = DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
+				ALLOWED_ATTR: rdfaAttrs,
+				ADD_URI_SAFE_ATTR: rdfaAttrs,
+				FORBID_TAGS: [ 'style' ],
+				RETURN_DOM_FRAGMENT: true
 			} );
+			if ( typeof fragmentOrHtml === 'string' ) {
+				return $.parseHTML( fragmentOrHtml )[ 0 ];
+			} else {
+				return fragmentOrHtml.childNodes[ 0 ];
+			}
 		} );
 	} else if ( serialized.type === 'plain' ) {
 		return serialized.value;
