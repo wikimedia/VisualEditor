@@ -81,26 +81,29 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		fragmentPromise = $.Deferred().resolve( fragment ).promise();
 	}
 
-	fragmentPromise.then( function ( fragment ) {
-		data = ve.extendObject( { dir: dir }, data, { fragment: fragment, $returnFocusTo: $noFocus } );
-		if ( windowType === 'toolbar' || windowType === 'inspector' ) {
-			data = ve.extendObject( data, { surface: surface } );
-			// Auto-close the current window if it is different to the one we are
-			// trying to open.
-			// TODO: Make auto-close a window manager setting
-			if ( currentWindow && currentWindow.constructor.static.name !== name ) {
-				autoClosePromises.push( windowManager.closeWindow( currentWindow ) );
-			}
-		}
+	data = ve.extendObject( { dir: dir }, data, { $returnFocusTo: $noFocus } );
 
-		// If we're opening a dialog, close all inspectors first
-		if ( windowType === 'dialog' ) {
-			inspectorWindowManager = windowAction.getWindowManager( 'inspector' );
-			currentInspector = inspectorWindowManager.getCurrentWindow();
-			if ( currentInspector ) {
-				autoClosePromises.push( inspectorWindowManager.closeWindow( currentInspector ) );
-			}
+	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
+		data = ve.extendObject( data, { surface: surface } );
+		// Auto-close the current window if it is different to the one we are
+		// trying to open.
+		// TODO: Make auto-close a window manager setting
+		if ( currentWindow && currentWindow.constructor.static.name !== name ) {
+			autoClosePromises.push( windowManager.closeWindow( currentWindow ) );
 		}
+	}
+
+	// If we're opening a dialog, close all inspectors first
+	if ( windowType === 'dialog' ) {
+		inspectorWindowManager = windowAction.getWindowManager( 'inspector' );
+		currentInspector = inspectorWindowManager.getCurrentWindow();
+		if ( currentInspector ) {
+			autoClosePromises.push( inspectorWindowManager.closeWindow( currentInspector ) );
+		}
+	}
+
+	fragmentPromise.then( function ( fragment ) {
+		ve.extendObject( data, { fragment: fragment } );
 
 		$.when.apply( $, autoClosePromises ).always( function () {
 			windowManager.getWindow( name ).then( function ( win ) {
