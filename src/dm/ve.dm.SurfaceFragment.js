@@ -794,7 +794,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 			for ( i = 0, l = lines.length; i < l; i++ ) {
 				if ( lines[ i ].length ) {
 					content.push( { type: 'paragraph' } );
-					content = content.concat( lines[ i ].split( '' ) );
+					ve.batchPush( content, lines[ i ].split( '' ) );
 					content.push( { type: '/paragraph' } );
 				}
 			}
