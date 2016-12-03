@@ -57,14 +57,20 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		dir = surface.getView().getSelection().getDirection(),
 		// HACK: Allow $returnFocusTo to take null upstream
 		$noFocus = [ { focus: function () {} } ],
+		windowClass = ve.ui.windowFactory.lookup( name ),
+		mayContainFragment = windowClass.prototype instanceof ve.ui.FragmentDialog ||
+			windowClass.prototype instanceof ve.ui.FragmentInspector ||
+			windowType === 'toolbar' || windowType === 'inspector',
 		// TODO: Add 'doesHandleSource' method to factory
-		sourceMode = surface.getMode() === 'source' && !ve.ui.windowFactory.lookup( name ).static.handlesSource;
+		sourceMode = surface.getMode() === 'source' && !windowClass.static.handlesSource;
 
 	if ( !windowManager ) {
 		return false;
 	}
 
-	if ( sourceMode ) {
+	if ( !mayContainFragment ) {
+		fragmentPromise = $.Deferred().resolve().promise();
+	} else if ( sourceMode ) {
 		text = fragment.getText( true );
 		originalFragment = fragment;
 
