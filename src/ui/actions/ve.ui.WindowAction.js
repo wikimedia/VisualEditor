@@ -47,6 +47,7 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
 ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	var currentInspector, inspectorWindowManager, fragmentPromise,
 		originalFragment, text,
+		windowAction = this,
 		windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
 		currentWindow = windowManager.getCurrentWindow(),
@@ -94,7 +95,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 
 		// If we're opening a dialog, close all inspectors first
 		if ( windowType === 'dialog' ) {
-			inspectorWindowManager = this.getWindowManager( 'inspector' );
+			inspectorWindowManager = windowAction.getWindowManager( 'inspector' );
 			currentInspector = inspectorWindowManager.getCurrentWindow();
 			if ( currentInspector ) {
 				autoClosePromises.push( inspectorWindowManager.closeWindow( currentInspector ) );
