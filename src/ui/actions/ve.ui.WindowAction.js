@@ -72,7 +72,10 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 			var tempSurfaceModel = new ve.dm.Surface( selectionDocument ),
 				tempFragment = tempSurfaceModel.getLinearFragment(
 					// TODO: Select all content using content offset methods
-					new ve.Range( 1, selectionDocument.getInternalList().getListNode().getOuterRange().start - 1 )
+					new ve.Range(
+						1,
+						Math.max( 1, selectionDocument.getInternalList().getListNode().getOuterRange().start - 1 )
+					)
 				);
 
 			return tempFragment;
