@@ -49,6 +49,8 @@
 	"visualeditor-content-select-all": "全選",
 	"visualeditor-contextitemwidget-label-remove": "刪除",
 	"visualeditor-contextitemwidget-label-secondary": "編輯",
+	"visualeditor-debugbar-close": "關閉",
+	"visualeditor-debugbar-logrange": "日誌",
 	"visualeditor-dialog-action-apply": "套用變更",
 	"visualeditor-dialog-action-cancel": "取消",
 	"visualeditor-dialog-action-done": "完成",

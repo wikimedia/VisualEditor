@@ -7,7 +7,8 @@
 			"Դավիթ Սարոյան",
 			"Աշոտ1997",
 			"Vahe Gharakhanyan",
-			"Aram1985"
+			"Aram1985",
+			"Kareyac"
 		]
 	},
 	"visualeditor": "Վիզուալ խմբագրիչ",
@@ -37,6 +38,7 @@
 	"visualeditor-content-select-all": "Նշել ամբողջը",
 	"visualeditor-contextitemwidget-label-remove": "Ջնջել",
 	"visualeditor-contextitemwidget-label-secondary": "Խմբագրել",
+	"visualeditor-debugbar-close": "Փակել",
 	"visualeditor-dialog-action-apply": "Կիրառել փոփոխությունները",
 	"visualeditor-dialog-action-cancel": "Չեղարկել",
 	"visualeditor-dialog-action-done": "Արված է",

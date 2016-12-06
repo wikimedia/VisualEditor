@@ -17,7 +17,8 @@
 			"HakanIST",
 			"McAang",
 			"Sadrettin",
-			"Kumkumuk"
+			"Kumkumuk",
+			"Alikaan"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -49,6 +50,11 @@
 	"visualeditor-content-select-all": "Hepsini seç",
 	"visualeditor-contextitemwidget-label-remove": "Sil",
 	"visualeditor-contextitemwidget-label-secondary": "Değiştir",
+	"visualeditor-debugbar-close": "Kapat",
+	"visualeditor-debugbar-inputdebug": "Giriş hata ayıklama",
+	"visualeditor-debugbar-logrange": "Günlük",
+	"visualeditor-debugbar-showmodel": "Modeli göster",
+	"visualeditor-debugbar-updatemodel": "Değişiklik yapıldığında güncelle",
 	"visualeditor-dialog-action-apply": "Değişiklikleri uygula",
 	"visualeditor-dialog-action-cancel": "İptal et",
 	"visualeditor-dialog-action-done": "Bitti",

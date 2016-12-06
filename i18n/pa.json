@@ -5,7 +5,8 @@
 			"Babanwalia",
 			"Bouron",
 			"Nasir8891",
-			"Satdeep gill"
+			"Satdeep gill",
+			"Sony dandiwal"
 		]
 	},
 	"visualeditor": "ਵਿਜ਼ੁਅਲ ਐਡੀਟਰ",
@@ -37,6 +38,9 @@
 	"visualeditor-content-select-all": "ਸਾਰਾ ਚੁਣੋ",
 	"visualeditor-contextitemwidget-label-remove": "ਮਿਟਾਓ",
 	"visualeditor-contextitemwidget-label-secondary": "ਸੋਧੋ",
+	"visualeditor-debugbar-close": "ਬੰਦ",
+	"visualeditor-debugbar-logrange": "ਲਾਗ",
+	"visualeditor-debugbar-showmodel": "ਮਾਡਲ ਦਿਖਾਓ",
 	"visualeditor-dialog-action-apply": "ਤਬਦੀਲੀਆਂ ਲਾਗੂ ਕਰੋ",
 	"visualeditor-dialog-action-cancel": "ਰੱਦ ਕਰੋ",
 	"visualeditor-dialog-action-done": "ਮੁਕੰਮਲ",

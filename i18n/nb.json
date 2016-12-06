@@ -6,7 +6,8 @@
 			"Jeblad",
 			"Laaknor",
 			"Njardarlogar",
-			"Apple farmer"
+			"Apple farmer",
+			"Jon Harald Søby"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -38,6 +39,9 @@
 	"visualeditor-content-select-all": "Marker alt",
 	"visualeditor-contextitemwidget-label-remove": "Slett",
 	"visualeditor-contextitemwidget-label-secondary": "Rediger",
+	"visualeditor-debugbar-close": "Lukk",
+	"visualeditor-debugbar-logrange": "Logg",
+	"visualeditor-debugbar-showmodel": "Vis modell",
 	"visualeditor-dialog-action-apply": "Ta i bruk endringer",
 	"visualeditor-dialog-action-cancel": "Avbryt",
 	"visualeditor-dialog-action-done": "Ferdig",

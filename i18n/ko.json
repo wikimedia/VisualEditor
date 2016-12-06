@@ -51,6 +51,8 @@
 	"visualeditor-content-select-all": "모두 선택",
 	"visualeditor-contextitemwidget-label-remove": "삭제",
 	"visualeditor-contextitemwidget-label-secondary": "편집",
+	"visualeditor-debugbar-close": "닫기",
+	"visualeditor-debugbar-logrange": "로그",
 	"visualeditor-dialog-action-apply": "바뀜 적용",
 	"visualeditor-dialog-action-cancel": "취소",
 	"visualeditor-dialog-action-done": "완료",
