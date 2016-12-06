@@ -9,6 +9,8 @@
 module.exports = function ( grunt ) {
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
+		rebaserBuildFiles = moduleUtils.makeBuildList( modules, [ 'rebaser.build' ] ),
+		veRebaseFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.rebase' ] ),
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
 		coreBuildFilesApex = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.apex' ] ),
 		coreBuildFilesMediaWiki = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.mediawiki' ] ),
@@ -49,6 +51,21 @@ module.exports = function ( grunt ) {
 			dist: [ 'dist/*', 'coverage/*' ]
 		},
 		concat: {
+			'rebaser.build': {
+				options: {
+					banner: grunt.file.read( 'build/rebaser-banner.txt' ),
+					footer: grunt.file.read( 'build/rebaser-footer.txt' )
+				},
+				dest: 'dist/ve-rebaser.js',
+				src: rebaserBuildFiles.scripts
+			},
+			'visualEditor.rebase': {
+				options: {
+					banner: grunt.file.read( 'build/banner.txt' )
+				},
+				dest: 'dist/visualEditor-rebase.js',
+				src: veRebaseFiles.scripts
+			},
 			js: {
 				options: {
 					banner: grunt.file.read( 'build/banner.txt' )
@@ -244,7 +261,7 @@ module.exports = function ( grunt ) {
 				'!build/typos.json',
 				'!lib/**',
 				'!i18n/**',
-				'!{coverage,dist,docs,node_modules}/**',
+				'!{coverage,dist,docs,node_modules,rebaser/node_modules}/**',
 				'!.git/**'
 			]
 		},

@@ -900,6 +900,22 @@
 			"demos/ve/demo.minimal.css"
 		]
 	},
+	"rebaser.build": {
+		"scripts": [
+			"src/dm/ve.dm.IndexValueStore.js",
+			"src/dm/ve.dm.Transaction.js",
+			"src/dm/ve.dm.Change.js",
+			"src/dm/ve.dm.RebaseServer.js",
+			"src/ve.Range.js",
+			"src/dm/ve.dm.Selection.js",
+			"src/dm/selections/ve.dm.NullSelection.js",
+			"src/dm/selections/ve.dm.LinearSelection.js",
+			"src/dm/selections/ve.dm.TableSelection.js"
+		],
+		"dependencies": [
+			"oojs"
+		]
+	},
 	"visualEditor.build": {
 		"dependencies": [
 			"visualEditor.standalone.build",

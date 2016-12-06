@@ -1,0 +1,3 @@
+( function ( ve ) {
+var module = undefined, $ = { isPlainObject: function () { throw new Error( 'No $.isPlainObject because no jQuery' ); } };
+ve.dm = {};
