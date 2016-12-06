@@ -11,12 +11,18 @@ $( function () {
 
 	function onSubmit() {
 		var docName = documentNameInput.getValue().replace( / /g, '_' );
-		window.location.href = '/doc/edit/' + encodeURIComponent( docName );
+		if ( docName ) {
+			window.location.href = '/doc/edit/' + encodeURIComponent( docName );
+		} else {
+			documentNameInput.focus();
+		}
 	}
 
 	submitButton.on( 'click', onSubmit );
 	documentNameInput.on( 'enter', onSubmit );
 
 	$( '.ve-demo-index' ).append( documentNameField.$element );
+
+	documentNameInput.focus();
 
 } );
