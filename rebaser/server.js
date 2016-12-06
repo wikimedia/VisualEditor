@@ -76,6 +76,10 @@ function makeConnectionHandler( docName ) {
 app.use( express.static( __dirname + '/..' ) );
 app.set( 'view engine', 'ejs' );
 
+app.get( '/', function ( req, res ) {
+	res.render( 'index' );
+} );
+
 app.get( '/doc/edit/:docName', function ( req, res ) {
 	var nsp,
 		docName = req.params.docName;
