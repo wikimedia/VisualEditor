@@ -55,6 +55,38 @@
 	position: absolute;
 }
 
+.ve-ce-surface-highlights-user-selections {
+	opacity: 0.5;
+	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+}
+
+.ve-ce-surface-highlights-user-cursors {
+	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+}
+
+.ve-ce-surface-highlights-user-selection {
+	position: absolute;
+	background: #faa;
+	box-shadow: inset 0 0 0 1px #a66;
+}
+
+.ve-ce-surface-highlights-user-cursor {
+	position: absolute;
+	background: #a66;
+	width: 2px;
+}
+
+.ve-ce-surface-highlights-user-cursor-label {
+	position: absolute;
+	font-size: 0.7em;
+	background: #a66;
+	color: #fff;
+	padding: 0.2em;
+	top: -1.4em;
+	height: 1em;
+	line-height: 1;
+}
+
 .ve-ce-surface-paste {
 	position: fixed; /* stylelint-disable-line no-unsupported-browser-features */
 	/* FIXME T126024: Stop the viewport scrolling when the paste target is typed into */

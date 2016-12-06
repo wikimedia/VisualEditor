@@ -428,6 +428,9 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 		throw new Error( 'Invalid annotation method ' + op.method );
 	}
 	annotation = this.document.getStore().value( op.index );
+	if ( !annotation ) {
+		throw new Error( 'No annotation stored for ' + op.index );
+	}
 	if ( op.bias === 'start' ) {
 		target.push( annotation );
 	} else {

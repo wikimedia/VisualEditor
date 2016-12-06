@@ -1,4 +1,9 @@
 {
+	"socket.io": {
+		"scripts": [
+			"node_modules/socket.io-client/socket.io.js"
+		]
+	},
 	"jquery": {
 		"scripts": [
 			"lib/jquery/jquery.js"
@@ -618,11 +623,13 @@
 		"scripts": [
 			"src/dm/ve.dm.Change.js",
 			"src/dm/ve.dm.RebaseServer.js",
-			"src/dm/ve.dm.RebaseClient.js"
+			"src/dm/ve.dm.RebaseClient.js",
+			"src/dm/ve.dm.SurfaceSynchronizer.js"
 		],
 		"dependencies": [
 			"visualEditor.core.build",
-			"dompurify"
+			"dompurify",
+			"socket.io"
 		]
 	},
 	"visualEditor.test": {
