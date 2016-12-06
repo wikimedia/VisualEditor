@@ -27,6 +27,8 @@ OO.inheritClass( ve.ui.FindAndReplaceDialog, ve.ui.ToolbarDialog );
 
 ve.ui.FindAndReplaceDialog.static.name = 'findAndReplace';
 
+ve.ui.FindAndReplaceDialog.static.handlesSource = true;
+
 /**
  * Maximum number of results to render
  *
