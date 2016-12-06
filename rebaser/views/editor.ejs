@@ -51,35 +51,11 @@
 		<script src="../../lib/oojs-ui/oojs-ui-toolbars.js"></script>
 		<script src="../../lib/oojs-ui/oojs-ui-windows.js"></script>
 
-		<!-- CLDRPluralRuleParser -->
-		<script src="../../lib/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js"></script>
+		<!-- jquery.i18n.dist -->
+		<script src="../../dist/lib/jquery.i18n.js"></script>
 
-		<!-- jquery.i18n -->
-		<script src="../../lib/jquery.i18n/src/jquery.i18n.js"></script>
-		<script src="../../lib/jquery.i18n/src/jquery.i18n.messagestore.js"></script>
-		<script src="../../lib/jquery.i18n/src/jquery.i18n.parser.js"></script>
-		<script src="../../lib/jquery.i18n/src/jquery.i18n.emitter.js"></script>
-		<script src="../../lib/jquery.i18n/src/jquery.i18n.emitter.bidi.js"></script>
-		<script src="../../lib/jquery.i18n/src/jquery.i18n.language.js"></script>
-		<script src="../../lib/jquery.i18n/src/jquery.i18n.fallbacks.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/bs.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/dsb.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/fi.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/ga.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/he.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/hsb.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/hu.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/hy.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/la.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/ml.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/os.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/ru.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/sl.js"></script>
-		<script src="../../lib/jquery.i18n/src/languages/uk.js"></script>
-
-		<!-- jquery.uls.data -->
-		<script src="../../lib/jquery.uls/src/jquery.uls.data.js"></script>
-		<script src="../../lib/jquery.uls/src/jquery.uls.data.utils.js"></script>
+		<!-- jquery.uls.data.dist -->
+		<script src="../../dist/lib/jquery.uls.data.js"></script>
 
 		<!-- jquery.client -->
 		<script src="../../lib/jquery.client/jquery.client.js"></script>
@@ -90,31 +66,23 @@
 		<!-- oojs-ui-apex -->
 		<script src="../../lib/oojs-ui/oojs-ui-apex.js"></script>
 
-		<script src="../../dist/visualEditor.js"></script>
+		<!-- visualEditor.rebase.build -->
 		<script src="../../dist/visualEditor-rebase.js"></script>
 
-		<!-- visualEditor.desktop.build -->
-		<script src="../../src/ui/ve.ui.DesktopSurface.js"></script>
-		<script src="../../src/ui/contexts/ve.ui.DesktopContext.js"></script>
-		<script src="../../src/ui/windowmanagers/ve.ui.DesktopInspectorWindowManager.js"></script>
-
-		<!-- visualEditor.standalone.build -->
-		<script src="../../src/init/sa/ve.init.sa.js"></script>
-		<script src="../../src/init/sa/ve.init.sa.Platform.js"></script>
-		<script src="../../src/init/sa/ve.init.sa.Target.js"></script>
-		<!-- visualEditor.desktop.standalone -->
+		<!-- visualEditor.desktop.standalone.dist -->
 		<script src="../../src/init/sa/ve.init.sa.DesktopTarget.js"></script>
 
 		<script>
 			ve.docName = <%- JSON.stringify( docName ); %>;
-			ve.messagePaths = ["../../i18n/","../../lib/oojs-ui/i18n/"];
+			ve.messagePaths = ["../../dist/i18n/","../../lib/oojs-ui/i18n/"];
 		</script>
 
-		<!-- socket.io -->
-		<script src="/socket.io/socket.io.js"></script>
-
+		<!-- visualEditor.standalone.demo -->
 		<script src="../../demos/ve/ve.demo.js"></script>
+
+		<!-- visualEditor.desktop.standalone.demo -->
 		<script src="../../demos/ve/demo.desktop.js"></script>
+
 		<script src="../../rebaser/demo.js"></script>
 
 	</body>

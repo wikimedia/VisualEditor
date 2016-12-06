@@ -1,7 +1,7 @@
 {
 	"socket.io": {
 		"scripts": [
-			"node_modules/socket.io-client/socket.io.js"
+			"rebaser/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"
 		]
 	},
 	"jquery": {
@@ -627,9 +627,14 @@
 			"src/dm/ve.dm.SurfaceSynchronizer.js"
 		],
 		"dependencies": [
-			"visualEditor.core.build",
 			"dompurify",
 			"socket.io"
+		]
+	},
+	"visualEditor.rebase.build": {
+		"dependencies": [
+			"visualEditor.build",
+			"visualEditor.rebase"
 		]
 	},
 	"visualEditor.test": {

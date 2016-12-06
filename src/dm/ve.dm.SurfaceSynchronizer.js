@@ -30,7 +30,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface ) {
 	// Whether we are currently synchronizing the model
 	this.applying = false;
 
-	if ( window.QUnit || !window.io ) {
+	// HACK: Disable in unit tests
+	if ( window.QUnit ) {
 		return;
 	}
 
