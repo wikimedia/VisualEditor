@@ -276,7 +276,8 @@ module.exports = function ( grunt ) {
 			},
 			main: [
 				'*.js',
-				'{bin,build,demos,src,tests}/**/*.js'
+				'{bin,build,demos,src,tests,rebaser}/**/*.js',
+				'!rebaser/node_modules/**'
 			]
 		},
 		stylelint: {

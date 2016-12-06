@@ -1,21 +1,15 @@
-/*global require*/
-/*global __dirname*/
-/*global Map*/
-/*global process*/
-/*global console*/
+/* eslint-disable no-console */
+
 var rebaseServer, docNamespaces, lastAuthorForDoc, artificialDelay,
 	port = 8081,
 	express = require( 'express' ),
 	app = express(),
 	http = require( 'http' ).Server( app ),
 	io = require( 'socket.io' )( http ),
-	/*jshint -W079 */
 	ve = require( '../dist/ve-rebaser.js' );
-	/*jshint +W079 */
 
 function summarize( author, backtrack, change ) {
-	var authors,
-		storeCount = 0,
+	var storeCount = 0,
 		summary = [];
 	summary.push( 'author=' + author );
 	if ( backtrack ) {
@@ -57,7 +51,7 @@ function makeConnectionHandler( docName ) {
 		console.log( 'Sending full history: ' + summarize( null, 0, history ) );
 		socket.emit( 'newChange', history.serialize( true ) );
 		socket.on( 'submitChange', setTimeout.bind( null, function ( data ) {
-			var change, selection, applied;
+			var change, applied;
 			try {
 				change = ve.dm.Change.static.deserialize( data.change, true );
 				console.log( 'receive ' + summarize( author, data.backtrack, change ) );
