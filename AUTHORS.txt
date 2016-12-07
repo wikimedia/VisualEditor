@@ -127,6 +127,11 @@ RangeFix
  – MIT license
  – Ed Sanders and other contributors
 
+socket.io-client
+ — https://github.com/socketio/socket.io-client
+ – MIT License
+ – Guillermo Rauch and other contributors
+
 Tree Differ
  – https://github.com/tchanders/treeDiffer.js
  – MIT license

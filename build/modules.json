@@ -1,7 +1,7 @@
 {
 	"socket.io": {
 		"scripts": [
-			"rebaser/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"
+			"lib/socket.io-client/socket.io.min.js"
 		]
 	},
 	"jquery": {
