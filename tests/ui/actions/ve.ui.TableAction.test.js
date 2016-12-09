@@ -363,7 +363,9 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				expectedData: function ( data ) {
 					data[ 90 ].attributes.rowspan = 2;
 					data[ 45 ].attributes.rowspan = 3;
-					data.splice( 110, 0,
+					data.splice(
+						110,
+						0,
 						{
 							type: 'tableCell',
 							attributes: {
