@@ -163,6 +163,40 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				msg: 'insert column in middle of table'
 			},
 			{
+				html: '<table><tr></tr><tr><td>A</td><td>B</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 18 ),
+					fromCol: 0,
+					fromRow: 1,
+					toCol: 0,
+					toRow: 1
+				},
+				method: 'insert',
+				args: [ 'col', 'after' ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 10, 0 ].concat( tableData ) );
+				},
+				msg: 'insert column at middle of table with sparse row'
+			},
+			{
+				html: '<table><tr></tr><tr><td>A</td><td>B</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 18 ),
+					fromCol: 1,
+					fromRow: 1,
+					toCol: 1,
+					toRow: 1
+				},
+				method: 'insert',
+				args: [ 'col', 'after' ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 15, 0 ].concat( tableData ) );
+				},
+				msg: 'insert column at end of table with sparse row'
+			},
+			{
 				html: ve.dm.example.mergedCellsHtml,
 				rangeOrSelection: {
 					type: 'table',

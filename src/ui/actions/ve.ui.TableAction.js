@@ -584,7 +584,11 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 	for ( i = 0, l = Math.max( cells.length, dataMatrixLine ? dataMatrixLine.cells.length : 0 ); i < l; i++ ) {
 		cell = cells[ i ];
 		if ( !cell ) {
-			insertCells.push( dataMatrixLine.cells[ i ] );
+			if ( dataMatrixLine && dataMatrixLine.cells[ i ] ) {
+				// if we've been given data to fill the empty cells with, do so
+				insertCells.push( dataMatrixLine.cells[ i ] );
+			}
+			// either way, continue on to the next cell
 			continue;
 		}
 		refCell = refCells[ i ];
