@@ -136,7 +136,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 							if ( data.strippedSequence && !( closedData && closedData.action ) ) {
 								surface.getModel().undo();
 							}
-							if ( sourceMode && fragment.getSurface().hasBeenModified() ) {
+							if ( sourceMode && fragment && fragment.getSurface().hasBeenModified() ) {
 								originalFragment.insertDocument( fragment.getDocument() );
 							}
 							surface.getView().emit( 'position' );
