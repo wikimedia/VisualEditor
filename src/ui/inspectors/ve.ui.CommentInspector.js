@@ -108,7 +108,6 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 ve.ui.CommentInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
-			this.getFragment().getSurface().enable();
 			this.textWidget.focus();
 		}, this );
 };
