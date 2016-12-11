@@ -968,7 +968,7 @@ ve.resolveUrl = function ( url, base ) {
  *
  * Doesn't use jQuery to avoid document switching performance bug
  *
- * @param {HTMLElement[]|jQuery} elementsOrJQuery Set of DOM elements to modify. Passing a jQuery selector is deprecated.
+ * @param {HTMLElement|HTMLElement[]|NodeList|jQuery} elementsOrJQuery Set of DOM elements to modify. Passing a jQuery selector is deprecated.
  * @param {HTMLDocument} doc Document to resolve against (different from $elements' .ownerDocument)
  * @param {string[]} attrs Attributes to resolve
  */
@@ -976,6 +976,11 @@ ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
 	var i, iLen, j, jLen, element, attr,
 		// Convert jQuery selections to plain arrays
 		elements = elementsOrJQuery.toArray ? elementsOrJQuery.toArray() : elementsOrJQuery;
+
+	// Duck typing for array or NodeList :(
+	if ( elements.length === undefined ) {
+		elements = [ elements ];
+	}
 
 	/**
 	 * Resolves the value of attr to the computed property value.
