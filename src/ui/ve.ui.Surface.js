@@ -443,6 +443,13 @@ ve.ui.Surface.prototype.enable = function () {
 	return this.setDisabled( false );
 };
 
+/**
+ * Give focus to the surface
+ */
+ve.ui.Surface.prototype.focus = function () {
+	this.getView().focus();
+};
+
 /* eslint-enable valid-jsdoc */
 
 /**
