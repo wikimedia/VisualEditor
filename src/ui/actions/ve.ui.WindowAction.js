@@ -137,6 +137,8 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 								surface.getModel().undo();
 							}
 							if ( sourceMode && fragment && fragment.getSurface().hasBeenModified() ) {
+								// Action may be async, so we use auto select to ensure the content is selected
+								originalFragment.setAutoSelect( true );
 								originalFragment.insertDocument( fragment.getDocument() );
 							}
 							surface.getView().emit( 'position' );

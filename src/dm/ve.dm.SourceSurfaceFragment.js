@@ -120,11 +120,11 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 
 	this.convertToSource( doc )
 		.done( function ( source ) {
-			fragment.removeContent();
-
 			if ( source ) {
 				// Parent method
 				ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( fragment, source.trim() );
+			} else {
+				fragment.removeContent();
 			}
 		} )
 		.fail( function () {
