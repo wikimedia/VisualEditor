@@ -1759,6 +1759,40 @@ QUnit.test( 'sanitize', function ( assert ) {
 				],
 				rules: { preserveHtmlWhitespace: true },
 				msg: 'HTML whitespace is preserved when preserveHtmlWhitespace is used'
+			},
+			{
+				html: '<p>Foo</p><p><br /></p><p>Bar</p>',
+				data: [
+					{ type: 'paragraph' },
+					'F', 'o', 'o',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { keepEmptyContentBranches: true },
+				msg: 'Blank line (Chrome style) preserved with keepEmptyContentBranches'
+			},
+			{
+				html: '<p>Foo<br /><br />Bar</p>',
+				data: [
+					{ type: 'paragraph' },
+					'F', 'o', 'o',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { keepEmptyContentBranches: true },
+				msg: 'Blank line (Firefox style) preserved with keepEmptyContentBranches'
 			}
 		];
 
