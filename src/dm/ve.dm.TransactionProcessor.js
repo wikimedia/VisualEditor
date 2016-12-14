@@ -84,7 +84,7 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
  * @param {Function} [presynchronizeHandler] Callback to emit before synchronizing
  */
 ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler ) {
-	var op;
+	var op, completed;
 
 	// First process each operation to gather modifications in the modification queue.
 	// If an exception occurs during this stage, we don't need to do anything to recover,
@@ -98,30 +98,34 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
 
 	// Apply the queued modifications
 	try {
+		completed = false;
 		this.applyModifications();
-	} catch ( e ) {
-		// Restore the linear model to its original state
-		this.rollbackModifications();
-		// Rethrow the exception
-		throw e;
+		completed = true;
+	} finally {
+		if ( !completed ) {
+			// Restore the linear model to its original state
+			this.rollbackModifications();
+		}
 	}
 	// Mark the transaction as committed
 	this.transaction.markAsApplied();
 
 	// Synchronize the node tree for the modifications we just made
 	try {
+		completed = false;
 		if ( presynchronizeHandler ) {
 			presynchronizeHandler();
 		}
 		this.synchronizer.synchronize( this.transaction );
-	} catch ( e ) {
-		// Restore the linear model to its original state
-		this.rollbackModifications();
-		// The synchronizer may have left the tree in some sort of weird half-baked state,
-		// so rebuild it from scratch
-		this.document.rebuildTree();
-		// Rethrow the exception
-		throw e;
+		completed = true;
+	} finally {
+		if ( !completed ) {
+			// Restore the linear model to its original state
+			this.rollbackModifications();
+			// The synchronizer may have left the tree in some sort of weird half-baked state,
+			// so rebuild it from scratch
+			this.document.rebuildTree();
+		}
 	}
 
 };
