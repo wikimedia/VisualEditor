@@ -570,57 +570,6 @@ ve.escapeHtml = ( function () {
 }() );
 
 /**
- * Generate HTML attributes.
- *
- * NOTE: While the values of attributes are escaped, the names of attributes (i.e. the keys in
- * the attributes objects) are NOT ESCAPED. The caller is responsible for making sure these are
- * sane tag/attribute names and do not contain unsanitized content from an external source
- * (e.g. from the user or from the web).
- *
- * @param {Object} [attributes] Key-value map of attributes for the tag
- * @return {string} HTML attributes
- */
-ve.getHtmlAttributes = function ( attributes ) {
-	var attrName, attrValue,
-		parts = [];
-
-	if ( !ve.isPlainObject( attributes ) || ve.isEmptyObject( attributes ) ) {
-		return '';
-	}
-
-	for ( attrName in attributes ) {
-		attrValue = attributes[ attrName ];
-		if ( attrValue === true ) {
-			// Convert name=true to name=name
-			attrValue = attrName;
-		} else if ( attrValue === false ) {
-			// Skip name=false
-			continue;
-		}
-		parts.push( attrName + '="' + ve.escapeHtml( String( attrValue ) ) + '"' );
-	}
-
-	return parts.join( ' ' );
-};
-
-/**
- * Generate an opening HTML tag.
- *
- * NOTE: While the values of attributes are escaped, the tag name and the names of
- * attributes (i.e. the keys in the attributes objects) are NOT ESCAPED. The caller is
- * responsible for making sure these are sane tag/attribute names and do not contain
- * unsanitized content from an external source (e.g. from the user or from the web).
- *
- * @param {string} tagName HTML tag name
- * @param {Object} [attributes] Key-value map of attributes for the tag
- * @return {string} Opening HTML tag
- */
-ve.getOpeningHtmlTag = function ( tagName, attributes ) {
-	var attr = ve.getHtmlAttributes( attributes );
-	return '<' + tagName + ( attr ? ' ' + attr : '' ) + '>';
-};
-
-/**
  * Get the attributes of a DOM element as an object with key/value pairs.
  *
  * @param {HTMLElement} element
