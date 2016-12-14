@@ -112,7 +112,10 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 		return this;
 	}
 
-	newDocRange = newDocRange || new ve.Range( 0, doc.getInternalList().getListNode().getOuterRange().start );
+	if ( newDocRange ) {
+		doc = doc.shallowCloneFromRange( newDocRange );
+		newDocRange = doc.originalRange;
+	}
 
 	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ] ) ) {
 		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ) );
