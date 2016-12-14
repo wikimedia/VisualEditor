@@ -5,6 +5,10 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+.ve-ui-diffElement {
+	margin-left: 20px;
+}
+
 .ve-ui-diffElement-insert,
 .ve-ui-diffElement-remove,
 .ve-ui-diffElement-change-insert,
@@ -42,8 +46,8 @@
 .ve-ui-diffElement-down,
 .ve-ui-diffElement-doc-child-change {
 	border-left: 6px solid #36c;
-	padding-left: 4px;
-	margin-left: -10px;
+	padding-left: 14px;
+	margin-left: -20px;
 }
 
 .ve-ui-diffElement-up,
