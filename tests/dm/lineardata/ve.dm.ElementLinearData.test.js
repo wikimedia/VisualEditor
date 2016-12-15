@@ -799,11 +799,12 @@ QUnit.test( 'getCharacterData', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'isPlainText', 6, function ( assert ) {
+QUnit.test( 'isPlainText', 7, function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument();
 
 	assert.strictEqual( doc.data.isPlainText( new ve.Range( 1, 2 ), false ), true, 'Plain text' );
 	assert.strictEqual( doc.data.isPlainText( new ve.Range( 1, 3 ), true ), false, 'Annotated text' );
+	assert.strictEqual( doc.data.isPlainText( new ve.Range( 2, 3 ), true, undefined, true ), true, 'Annotated text, ignoring covering annotations' );
 	assert.strictEqual( doc.data.isPlainText( new ve.Range( 9, 11 ), false ), false, 'Paragraph and text (no content nodes)' );
 	assert.strictEqual( doc.data.isPlainText( new ve.Range( 9, 11 ), true ), true, 'Paragraph and text (content nodes allowed)' );
 	assert.strictEqual( doc.data.isPlainText( new ve.Range( 12, 26 ), false ), false, 'List (no content nodes)' );
