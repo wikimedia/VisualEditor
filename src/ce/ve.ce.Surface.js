@@ -842,7 +842,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 	try {
 		dataTransfer.setData( 'application-x/VisualEditor', JSON.stringify( this.getModel().getSelection() ) );
 	} catch ( err ) {
-		// Support: IE
+		// Support: IE, Edge
 		// IE doesn't support custom data types, but overwriting the actual drag data should be avoided
 		// TODO: Do this with an internal state to avoid overwriting drag data even in IE
 		dataTransfer.setData( 'text', '__ve__' + JSON.stringify( this.getModel().getSelection() ) );
@@ -1033,14 +1033,21 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	try {
 		selectionJSON = dataTransfer.getData( 'application-x/VisualEditor' );
 	} catch ( err ) {
+		// Support: IE
+		// IE throws an error when trying to read custom data.
+		// Edge also fails but doesn't throw an error.
+	}
+
+	if ( !selectionJSON ) {
+		// Support: IE, Edge (selectionJSON not set; T75240)
 		selectionJSON = dataTransfer.getData( 'text' );
-		// Support: IE9 (selectionJSON not set; T75240)
 		if ( selectionJSON && selectionJSON.slice( 0, 6 ) === '__ve__' ) {
 			selectionJSON = selectionJSON.slice( 6 );
 		} else {
 			selectionJSON = null;
 		}
 	}
+
 	if ( this.relocatingNode ) {
 		dragRange = this.relocatingNode.getModel().getOuterRange();
 	} else if ( selectionJSON ) {
