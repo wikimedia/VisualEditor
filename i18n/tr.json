@@ -18,7 +18,8 @@
 			"McAang",
 			"Sadrettin",
 			"Kumkumuk",
-			"Alikaan"
+			"Alikaan",
+			"1917 Ekim Devrimi"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -54,6 +55,8 @@
 	"visualeditor-debugbar-inputdebug": "Giriş hata ayıklama",
 	"visualeditor-debugbar-logrange": "Günlük",
 	"visualeditor-debugbar-showmodel": "Modeli göster",
+	"visualeditor-debugbar-startfilibuster": "Haydut",
+	"visualeditor-debugbar-stopfilibuster": "Haydutu durdur",
 	"visualeditor-debugbar-updatemodel": "Değişiklik yapıldığında güncelle",
 	"visualeditor-dialog-action-apply": "Değişiklikleri uygula",
 	"visualeditor-dialog-action-cancel": "İptal et",
