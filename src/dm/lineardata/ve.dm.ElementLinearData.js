@@ -659,16 +659,26 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
  *
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
  * @param {boolean} [allowNonContentNodes] Include non-content nodes in the definition of plain text, e.g. paragraphs, headings, lists
- * @param {boolean} [allowedTypes] Only allow specific non-content types
+ * @param {string[]} [allowedTypes] Only allow specific non-content types
+ * @param {boolean} [ignoreCoveringAnnotations] Ignore covering annotations
  * @return {boolean} The data is plain text
  */
-ve.dm.ElementLinearData.prototype.isPlainText = function ( range, allowNonContentNodes, allowedTypes ) {
-	var i, type;
+ve.dm.ElementLinearData.prototype.isPlainText = function ( range, allowNonContentNodes, allowedTypes, ignoreCoveringAnnotations ) {
+	var i, type, annotations;
 
 	range = range || new ve.Range( 0, this.getLength() );
 
+	if ( ignoreCoveringAnnotations ) {
+		annotations = this.getAnnotationsFromRange( range );
+	}
+
 	for ( i = range.start; i < range.end; i++ ) {
 		if ( typeof this.data[ i ] === 'string' ) {
+			continue;
+		} else if (
+			ignoreCoveringAnnotations && Array.isArray( this.data[ i ] ) &&
+			annotations.containsAllOf( this.getAnnotationsFromOffset( i ) )
+		) {
 			continue;
 		} else if ( ( allowNonContentNodes || allowedTypes ) && this.isElementData( i ) ) {
 			type = this.getType( i );

@@ -71,12 +71,13 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 /**
  * @inheritdoc
  */
-ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content ) {
+ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 	var i, l, data, lines;
 
 	if ( typeof content !== 'string' ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), content );
-		if ( !data.isPlainText( null, false, [ 'paragraph' ] ) ) {
+		// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
+		if ( !data.isPlainText( null, false, [ 'paragraph' ], annotate ) ) {
 			this.insertDocument( new ve.dm.Document( content.concat( [ { type: 'internalList' }, { type: '/internalList' } ] ) ) );
 			return this;
 		}
@@ -104,7 +105,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content ) {
 /**
  * @inheritdoc
  */
-ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRange ) {
+ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRange, annotate ) {
 	var range = this.getSelection().getCoveringRange(),
 		fragment = this;
 
@@ -114,8 +115,12 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 
 	newDocRange = newDocRange || new ve.Range( 0, doc.getInternalList().getListNode().getOuterRange().start );
 
-	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ] ) ) {
-		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ) );
+	// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
+	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ], annotate ) ) {
+		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ).map( function ( element ) {
+			// Remove any text annotations, as we have determined them to be covering
+			return Array.isArray( element ) ? element[ 0 ] : element;
+		} ) );
 	}
 
 	this.convertToSource( doc )
