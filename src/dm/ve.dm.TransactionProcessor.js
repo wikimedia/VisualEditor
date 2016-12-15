@@ -102,6 +102,7 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
 		this.applyModifications();
 		completed = true;
 	} finally {
+		// Don't catch and re-throw errors so that they are reported properly
 		if ( !completed ) {
 			// Restore the linear model to its original state
 			this.rollbackModifications();
@@ -119,6 +120,7 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
 		this.synchronizer.synchronize( this.transaction );
 		completed = true;
 	} finally {
+		// Don't catch and re-throw errors so that they are reported properly
 		if ( !completed ) {
 			// Restore the linear model to its original state
 			this.rollbackModifications();
