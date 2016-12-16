@@ -81,7 +81,9 @@ ve.ui.CommandHelpDialog.prototype.getBodyHeight = function () {
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	var i, j, jLen, k, kLen, triggerList, commands, shortcut, platform, platformKey,
 		$list, $shortcut, commandGroups, sequence, hasCommand, hasShortcut,
-		sequenceRegistry = ve.init.target.getSurface().sequenceRegistry;
+		surface = ve.init.target.getSurface(),
+		sequenceRegistry = surface.sequenceRegistry,
+		commandRegistry = surface.commandRegistry;
 
 	// Parent method
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
@@ -102,8 +104,11 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 		commands = this.constructor.static.sortedCommandsFromGroup( i, commandGroups[ i ].promote, commandGroups[ i ].demote );
 		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
-			hasShortcut = false;
 			if ( commands[ j ].trigger ) {
+				if ( !commandRegistry.lookup( commands[ j ].trigger ) ) {
+					// Trigger is specified by unavailable command
+					continue;
+				}
 				triggerList = ve.ui.triggerRegistry.lookup( commands[ j ].trigger );
 			} else {
 				triggerList = [];
@@ -119,6 +124,9 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 					}
 				}
 			}
+
+			hasShortcut = false;
+
 			$shortcut = $( '<dt>' );
 			for ( k = 0, kLen = triggerList.length; k < kLen; k++ ) {
 				$shortcut.append( $( '<kbd>' ).append(
