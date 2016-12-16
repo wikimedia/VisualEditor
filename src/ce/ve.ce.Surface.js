@@ -1889,7 +1889,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		$elements, pasteData, slice, internalListRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange, pastedText, handled,
-		tableAction, htmlBlacklist,
+		tableAction, htmlBlacklist, pastedNodes,
 		items = [],
 		metadataIdRegExp = ve.init.platform.getMetadataIdRegExp(),
 		importantElement = '[id],[typeof],[rel]',
@@ -2162,9 +2162,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			targetFragment.removeContent();
 		}
 
+		internalListRange = pastedDocumentModel.getInternalList().getListNode().getOuterRange();
+
 		// If the paste was given context, calculate the range of the inserted data
 		if ( beforePasteData.context ) {
-			internalListRange = pastedDocumentModel.getInternalList().getListNode().getOuterRange();
 			context = new ve.dm.ElementLinearData(
 				pastedDocumentModel.getStore(),
 				ve.copy( beforePasteData.context )
@@ -2204,6 +2205,23 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				right--;
 			}
 			contextRange = new ve.Range( left, right );
+		} else {
+			contextRange = new ve.Range( 0, internalListRange.start );
+		}
+		pastedNodes = pastedDocumentModel.selectNodes( contextRange, 'siblings' ).filter( function ( node ) {
+			// Ignore nodes where nothing is selected
+			return !( node.range && node.range.isCollapsed() );
+		} );
+
+		// Unwrap single content branch nodes to match internal copy/paste behaviour
+		// (which wouldn't put the open and close tags in the clipboard to begin with).
+		if (
+			pastedNodes.length === 1 &&
+			pastedNodes[ 0 ].node instanceof ve.dm.ContentBranchNode
+		) {
+			if ( contextRange.containsRange( pastedNodes[ 0 ].nodeRange ) ) {
+				contextRange = pastedNodes[ 0 ].nodeRange;
+			}
 		}
 
 		// If the external HTML turned out to be plain text after

@@ -2003,19 +2003,21 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				expectedOps: [
 					[
 						{
+							type: 'retain',
+							length: 1
+						},
+						{
 							type: 'replace',
 							insert: [
-								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								{ type: 'alienInline' },
-								{ type: '/alienInline' },
-								{ type: '/paragraph' }
+								{ type: '/alienInline' }
 							],
 							remove: []
 						},
-						{ type: 'retain', length: docLen }
+						{ type: 'retain', length: docLen - 1 }
 					]
 				],
-				expectedRangeOrSelection: new ve.Range( 4 ),
+				expectedRangeOrSelection: new ve.Range( 3 ),
 				msg: 'Paste API HTML used if important attributes dropped'
 			},
 			{
@@ -2720,6 +2722,63 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Empty paragraph kept in internal paste'
+			},
+			{
+				rangeOrSelection: new ve.Range( 0 ),
+				pasteTargetHtml: '<h3>A</h3>',
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'paragraph' },
+								'A',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				msg: 'Non-paragraph content branch node converted to paragraph'
+			},
+			{
+				rangeOrSelection: new ve.Range( 5 ),
+				pasteHtml: '<h3>A</h3>',
+				expectedOps: [
+					[
+						{
+							type: 'retain',
+							length: 5
+						},
+						{
+							type: 'replace',
+							insert: [ 'A' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 5 }
+					]
+				],
+				msg: 'Non-paragraph content branch node converted to paragraph when in paragraph'
+			},
+			{
+				rangeOrSelection: new ve.Range( 6 ),
+				pasteHtml: '<h3>A</h3>',
+				expectedOps: [
+					[
+						{
+							type: 'retain',
+							length: 6
+						},
+						{
+							type: 'replace',
+							insert: [ 'A' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 6 }
+					]
+				],
+				msg: 'Non-paragraph content branch node converted to paragraph at end of paragraph'
 			}
 		];
 
