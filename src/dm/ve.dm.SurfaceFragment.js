@@ -1134,10 +1134,10 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
 	}
 
 	for ( i = 0; i < innerDepth; i++ ) {
-		innerUnwrapper.push( this.surface.getDocument().data.getData( range.start + i ) );
+		innerUnwrapper.push( this.document.data.getData( range.start + i ) );
 	}
 	for ( i = outerDepth; i > 0; i-- ) {
-		outerUnwrapper.push( this.surface.getDocument().data.getData( range.start - i ) );
+		outerUnwrapper.push( this.document.data.getData( range.start - i ) );
 	}
 
 	this.change( ve.dm.TransactionBuilder.static.newFromWrap(
@@ -1186,7 +1186,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
 	}
 
 	for ( i = 0; i < depth; i++ ) {
-		unwrapper.push( this.surface.getDocument().data.getData( range.start + i ) );
+		unwrapper.push( this.document.data.getData( range.start + i ) );
 	}
 
 	this.change(
@@ -1287,7 +1287,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
 	}
 
 	for ( i = 0; i < depth; i++ ) {
-		unwrapper.push( this.surface.getDocument().data.getData( range.start + i ) );
+		unwrapper.push( this.document.data.getData( range.start + i ) );
 	}
 
 	this.change(
