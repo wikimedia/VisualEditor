@@ -27,38 +27,28 @@ OO.inheritClass( ve.ui.CommandHelpRegistry, OO.Registry );
  *
  * @static
  * @param {string} groupName Dialog-category in which to display this
- * @param {string} commandName Name of the command
+ * @param {string} commandHelpName Name of the command help item.
  * @param {Object} details Details about the command
  * @param {Function|string} details.label Label describing the command. String or deferred message function.
  * @param {string} [details.trigger] Symbolic name of trigger this for this command
  * @param {string} [details.shortcut] Keyboard shortcut if this is not a real trigger (e.g. copy/paste)
  * @param {string[]} [details.sequences] Symbolic names of sequences, if this is a sequence, not a trigger
  */
-ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandName, details ) {
+ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelpName, details ) {
 	var existingCommand;
 
-	existingCommand = this.registry[ commandName ];
+	existingCommand = this.registry[ commandHelpName ];
 	if ( existingCommand ) {
-		// This is _almost_ just doing extend(existingCommand, details)
-		// But some values need special handling, so we can't do that.
-		if ( details.label ) {
-			existingCommand.label = details.label;
-		}
-		if ( details.trigger ) {
-			existingCommand.trigger = details.trigger;
-		}
-		if ( details.shortcuts ) {
-			existingCommand.shortcuts = details.shortcuts;
-		}
 		if ( details.sequences ) {
-			existingCommand.sequences = ( existingCommand.sequences || [] ).concat( details.sequences );
+			details = ve.copy( details );
+			details.sequences = ( existingCommand.sequences || [] ).concat( details.sequences );
 		}
-		details = existingCommand;
+		ve.extendObject( existingCommand, details );
 	}
 
 	details.group = groupName;
 
-	OO.Registry.prototype.register.call( this, commandName, details );
+	OO.Registry.prototype.register.call( this, commandHelpName, details );
 };
 
 /**
@@ -68,10 +58,10 @@ ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandName
  * @return {Object} Commands associated with the group
  */
 ve.ui.CommandHelpRegistry.prototype.lookupByGroup = function ( groupName ) {
-	var commandName, matches = {};
-	for ( commandName in this.registry ) {
-		if ( groupName === this.registry[ commandName ].group ) {
-			matches[ commandName ] = this.registry[ commandName ];
+	var commandHelpName, matches = {};
+	for ( commandHelpName in this.registry ) {
+		if ( groupName === this.registry[ commandHelpName ].group ) {
+			matches[ commandHelpName ] = this.registry[ commandHelpName ];
 		}
 	}
 	return matches;
