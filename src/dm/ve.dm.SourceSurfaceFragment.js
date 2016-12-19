@@ -113,7 +113,10 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 		return this;
 	}
 
-	newDocRange = newDocRange || new ve.Range( 0, doc.getInternalList().getListNode().getOuterRange().start );
+	if ( newDocRange ) {
+		doc = doc.shallowCloneFromRange( newDocRange );
+		newDocRange = doc.originalRange;
+	}
 
 	// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
 	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ], annotate ) ) {
