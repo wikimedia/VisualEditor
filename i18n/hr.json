@@ -119,6 +119,7 @@
 	"visualeditor-table-move-col-before": "Premjesti lijevo",
 	"visualeditor-table-move-row-after": "Premjesti ispod",
 	"visualeditor-table-move-row-before": "Premjesti iznad",
+	"visualeditor-tablecell-contextitem": "Ćelija",
 	"visualeditor-tablecell-tooltip": "Kliknite dva puta da biste uređivali polje",
 	"visualeditor-toolbar-format-tooltip": "Oblikovanje odlomka",
 	"visualeditor-toolbar-history": "Povijest",

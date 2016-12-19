@@ -22,7 +22,8 @@
 			"Macofe",
 			"JasterTDC",
 			"YoViajo",
-			"Lemondoge"
+			"Lemondoge",
+			"Dgstranz"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -54,6 +55,13 @@
 	"visualeditor-content-select-all": "Seleccionar todo",
 	"visualeditor-contextitemwidget-label-remove": "Borrar",
 	"visualeditor-contextitemwidget-label-secondary": "Editar",
+	"visualeditor-debugbar-close": "Cerrar",
+	"visualeditor-debugbar-inputdebug": "Depuración de entrada",
+	"visualeditor-debugbar-logrange": "Registro",
+	"visualeditor-debugbar-showmodel": "Mostrar modelo",
+	"visualeditor-debugbar-startfilibuster": "Filibustero",
+	"visualeditor-debugbar-stopfilibuster": "Detener al filibustero",
+	"visualeditor-debugbar-updatemodel": "Actualización sobre los cambios",
 	"visualeditor-dialog-action-apply": "Aplicar cambios",
 	"visualeditor-dialog-action-cancel": "Cancelar",
 	"visualeditor-dialog-action-done": "Hecho",
