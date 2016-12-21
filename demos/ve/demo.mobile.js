@@ -5,3 +5,7 @@
  */
 
 ve.demo.target = ve.init.sa.MobileTarget;
+
+OO.ui.isMobile = function () {
+	return true;
+};
