@@ -248,7 +248,7 @@ QUnit.test( 'Change operations', 8, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'Serialize/deserialize', 5, function ( assert ) {
+QUnit.test( 'Serialize/deserialize', 6, function ( assert ) {
 	var origData = [ { type: 'paragraph' }, 'b', 'a', 'r', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
@@ -308,6 +308,35 @@ QUnit.test( 'Serialize/deserialize', 5, function ( assert ) {
 				{}
 			],
 			selections: {}
+		},
+		unsanitized = {
+			start: 0,
+			transactions: [ {
+				author: 'fred',
+				operations: [ { type: 'retain', length: 2 } ]
+			} ],
+			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
+				type: 'domNodeArray',
+				value: [
+					'<script></script>',
+					'<p onclick="alert(\'gotcha!\')"></p>'
+				]
+			} } } ],
+			selections: {}
+		},
+		sanitized = {
+			start: 0,
+			transactions: [ {
+				author: 'fred',
+				operations: [ { type: 'retain', length: 2 } ]
+			} ],
+			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
+				type: 'domNodeArray',
+				value: [
+					'<p></p>'
+				]
+			} } } ],
+			selections: {}
 		};
 
 	// Fixup second insert
@@ -346,6 +375,12 @@ QUnit.test( 'Serialize/deserialize', 5, function ( assert ) {
 		ve.dm.Change.static.deserialize( serialized, true ).serialize( true ),
 		serialized,
 		'Deserialize and reserialize, preserving store values'
+	);
+
+	assert.deepEqual(
+		ve.dm.Change.static.deserialize( unsanitized ).serialize(),
+		sanitized,
+		'Unsanitized round trips into sanitized'
 	);
 } );
 

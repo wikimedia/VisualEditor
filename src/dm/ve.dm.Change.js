@@ -156,10 +156,14 @@ ve.dm.Change.static.deserializeValue = function ( serialized ) {
 				RETURN_DOM_FRAGMENT: true
 			} );
 			if ( typeof fragmentOrHtml === 'string' ) {
-				return $.parseHTML( fragmentOrHtml )[ 0 ];
+				return fragmentOrHtml && $.parseHTML( fragmentOrHtml )[ 0 ];
 			} else {
 				return fragmentOrHtml.childNodes[ 0 ];
 			}
+		} ).filter( function ( node ) {
+			// Nodes can be sanitized to nothing (empty string or undefined)
+			// so check it is truthy
+			return node;
 		} );
 	} else if ( serialized.type === 'plain' ) {
 		return serialized.value;
