@@ -217,7 +217,7 @@ ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( author ) {
  * @param {Object} serializedChange Serialized ve.dm.Change that the server has applied
  */
 ve.dm.SurfaceSynchronizer.prototype.onNewChange = function ( serializedChange ) {
-	var change = ve.dm.Change.static.deserialize( serializedChange );
+	var change = ve.dm.Change.static.deserialize( serializedChange, this.doc );
 	// Make sure we don't attempt to submit any of the transactions we commit while manipulating
 	// the state of the document
 	this.applying = true;

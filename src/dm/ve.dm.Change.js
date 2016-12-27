@@ -92,15 +92,18 @@ ve.dm.Change.static = {};
  * Change object will be rebased and reserialized without ever being applied to a document.
  *
  * @param {Object} data JSON-serialized change
+ * @param {ve.dm.Document} [doc] Document, used for creating proper selections if deserializing in the client
  * @param {boolean} [preserveStoreValues] Keep store values verbatim instead of deserializing
  * @return {ve.dm.Change} Deserialized Change object
  */
-ve.dm.Change.static.deserialize = function ( data, preserveStoreValues ) {
+ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues ) {
 	var author,
+		staticChange = this,
 		selections = {};
+
 	for ( author in data.selections ) {
 		selections[ author ] = ve.dm.Selection.static.newFromJSON(
-			null,
+			doc,
 			data.selections[ author ]
 		);
 	}
@@ -119,7 +122,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues ) {
 			for ( hash in serializedStore.hashStore ) {
 				value = serializedStore.hashStore[ hash ];
 				if ( !preserveStoreValues ) {
-					value = ve.dm.Change.static.deserializeValue( value );
+					value = staticChange.deserializeValue( value );
 				}
 				store.hashStore[ hash ] = value;
 			}
