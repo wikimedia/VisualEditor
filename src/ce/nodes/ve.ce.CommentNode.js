@@ -84,7 +84,7 @@ ve.ce.CommentNode.static.getTextPreview = function ( text ) {
  * @param {string} to New value
  */
 ve.ce.CommentNode.prototype.onAttributeChange = function ( key, from, to ) {
-	if ( key === 'text' ) {
+	if ( key === 'text' && this.icon ) {
 		this.icon.setLabel( this.constructor.static.getTextPreview( to ) );
 	}
 };
