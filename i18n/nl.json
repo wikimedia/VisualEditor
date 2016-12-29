@@ -23,7 +23,8 @@
 			"MedShot",
 			"McDutchie",
 			"Robin van der Vliet",
-			"MrLeopold"
+			"MrLeopold",
+			"Mainframe98"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -56,6 +57,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Verwijderen",
 	"visualeditor-contextitemwidget-label-secondary": "Bewerken",
 	"visualeditor-debugbar-close": "Sluiten",
+	"visualeditor-debugbar-logrange": "Logboek",
 	"visualeditor-dialog-action-apply": "Wijzigingen toepassen",
 	"visualeditor-dialog-action-cancel": "Annuleren",
 	"visualeditor-dialog-action-done": "Afgerond",
