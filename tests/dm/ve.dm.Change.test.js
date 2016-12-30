@@ -269,28 +269,34 @@ QUnit.test( 'Serialize/deserialize', 5, function ( assert ) {
 		serialized = {
 			start: 0,
 			transactions: [
-				[
-					{ type: 'retain', length: 1 },
-					{
-						type: 'replace',
-						remove: [],
-						insert: [ [ 'f', bIndex ] ],
-						insertedDataOffset: 0,
-						insertedDataLength: 1
-					},
-					{ type: 'retain', length: 4 }
-				],
-				[
-					{ type: 'retain', length: 2 },
-					{
-						type: 'replace',
-						remove: [],
-						insert: [ [ 'u', bIndex ] ],
-						insertedDataOffset: 0,
-						insertedDataLength: 1
-					},
-					{ type: 'retain', length: 4 }
-				]
+				{
+					author: null,
+					operations: [
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							remove: [],
+							insert: [ [ 'f', bIndex ] ],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
+						},
+						{ type: 'retain', length: 4 }
+					]
+				},
+				{
+					author: null,
+					operations: [
+						{ type: 'retain', length: 2 },
+						{
+							type: 'replace',
+							remove: [],
+							insert: [ [ 'u', bIndex ] ],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
+						},
+						{ type: 'retain', length: 4 }
+					]
+				}
 			],
 			stores: [
 				{
@@ -305,7 +311,10 @@ QUnit.test( 'Serialize/deserialize', 5, function ( assert ) {
 					},
 					hashes: bIndex
 				},
-				{}
+				{
+					hashStore: {},
+					hashes: []
+				}
 			],
 			selections: {}
 		};
@@ -313,7 +322,6 @@ QUnit.test( 'Serialize/deserialize', 5, function ( assert ) {
 	// Fixup second insert
 	change.transactions[ 1 ].operations[ 2 ].length += 1;
 
-	serialized = change.serialize();
 	assert.deepEqual( change.serialize(), serialized, 'Serialize' );
 
 	assert.deepEqual(
