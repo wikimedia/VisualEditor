@@ -53,7 +53,7 @@ function makeConnectionHandler( docName ) {
 		socket.on( 'submitChange', setTimeout.bind( null, function ( data ) {
 			var change, applied;
 			try {
-				change = ve.dm.Change.static.deserialize( data.change, true );
+				change = ve.dm.Change.static.deserialize( data.change, null, true );
 				console.log( 'receive ' + summarize( author, data.backtrack, change ) );
 				applied = rebaseServer.applyChange( docName, author, data.backtrack, change );
 				if ( !applied.isEmpty() ) {
