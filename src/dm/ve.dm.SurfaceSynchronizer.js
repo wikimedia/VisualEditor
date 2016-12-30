@@ -14,8 +14,13 @@
  *
  * @constructor
  * @param {ve.dm.Surface} surface Surface model to synchronize
+ * @param {string} documentId Document ID
+ * @param {Object} [config] Configuration options
+ * @cfg {string} [server] IO server
  */
-ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface ) {
+ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config ) {
+	config = config || {};
+
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 	ve.dm.RebaseClient.call( this );
@@ -25,7 +30,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface ) {
 	this.doc = surface.documentModel;
 	this.store = this.doc.getStore();
 	this.authorSelections = {};
-	this.documentId = ve.docName; // HACK
+	this.documentId = documentId;
 
 	// Whether we are currently synchronizing the model
 	this.applying = false;
@@ -36,7 +41,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface ) {
 	}
 
 	// HACK
-	this.socket = io( '/' + this.documentId );
+	this.socket = io( ( config.server || '' ) + '/' + this.documentId );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
 
