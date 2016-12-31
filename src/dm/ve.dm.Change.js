@@ -153,7 +153,7 @@ ve.dm.Change.static.deserializeValue = function ( serialized ) {
 			// Support: IE9
 			// DOMPurify.sanitize will return html strings in incompatible browsers
 			var fragmentOrHtml = DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
-				ALLOWED_ATTR: rdfaAttrs,
+				ADD_ATTR: rdfaAttrs,
 				ADD_URI_SAFE_ATTR: rdfaAttrs,
 				FORBID_TAGS: [ 'style' ],
 				RETURN_DOM_FRAGMENT: true
