@@ -35,11 +35,6 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	// Whether we are currently synchronizing the model
 	this.applying = false;
 
-	// HACK: Disable in unit tests
-	if ( window.QUnit ) {
-		return;
-	}
-
 	// HACK
 	this.socket = io( ( config.server || '' ) + '/' + this.documentId );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
@@ -197,9 +192,7 @@ ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( author ) {
 	this.setAuthor( author );
 	this.surface.setAuthor( this.author );
 	// HACK
-	if ( !window.QUnit ) {
-		$( '.ve-demo-editor' ).prepend( $( '<span style="position: absolute; top: 1.5em;">' ).text( this.author ) );
-	}
+	$( '.ve-demo-editor' ).prepend( $( '<span style="position: absolute; top: 1.5em;">' ).text( this.author ) );
 };
 
 /**
