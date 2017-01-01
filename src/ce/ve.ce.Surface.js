@@ -517,7 +517,11 @@ ve.ce.Surface.prototype.blur = function () {
 		this.activate();
 	}
 	this.nativeSelection.removeAllRanges();
-	this.getElementDocument().activeElement.blur();
+	if ( this.getElementDocument().activeElement ) {
+		// Support: IE<=11
+		// While switching between editor modes, there's sometimes no activeElement.
+		this.getElementDocument().activeElement.blur();
+	}
 	// This won't trigger focusin/focusout events, so trigger focus change manually
 	this.onFocusChange();
 };
