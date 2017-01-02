@@ -4,6 +4,7 @@ var rebaseServer, docNamespaces, lastAuthorForDoc, artificialDelay,
 	port = 8081,
 	express = require( 'express' ),
 	app = express(),
+	url = require( 'url' ),
 	http = require( 'http' ).Server( app ),
 	io = require( 'socket.io' )( http ),
 	ve = require( '../dist/ve-rebaser.js' );
@@ -81,13 +82,7 @@ app.get( '/', function ( req, res ) {
 } );
 
 app.get( '/doc/edit/:docName', function ( req, res ) {
-	var nsp,
-		docName = req.params.docName;
-	if ( !docNamespaces.has( docName ) ) {
-		nsp = io.of( '/' + docName );
-		docNamespaces.set( docName, nsp );
-		nsp.on( 'connection', makeConnectionHandler( docName ) );
-	}
+	var docName = req.params.docName;
 	res.render( 'editor', { docName: docName } );
 } );
 
@@ -97,6 +92,17 @@ app.get( '/doc/raw/:docName', function ( req, res ) {
 	// and none of that code is likely to work in nodejs without some work because of how heavily
 	// it uses the DOM.
 	res.status( 401 ).send( 'DOM in nodejs is hard' );
+} );
+
+io.on( 'connection', function ( socket ) {
+	var nsp,
+		docName = url.parse( socket.handshake.url, true ).query.docName;
+
+	if ( docName && !docNamespaces.has( docName ) ) {
+		nsp = io.of( '/' + docName );
+		docNamespaces.set( docName, nsp );
+		nsp.on( 'connection', makeConnectionHandler( docName ) );
+	}
 } );
 
 http.listen( port );

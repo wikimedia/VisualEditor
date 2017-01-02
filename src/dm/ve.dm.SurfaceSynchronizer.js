@@ -36,7 +36,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.applying = false;
 
 	// HACK
-	this.socket = io( ( config.server || '' ) + '/' + this.documentId );
+	this.socket = io( ( config.server || '' ) + '/' + this.documentId, { query: { docName: this.documentId } } );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
 
