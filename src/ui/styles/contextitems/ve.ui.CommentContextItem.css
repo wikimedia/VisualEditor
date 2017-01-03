@@ -9,7 +9,8 @@
 	margin: 0 0.5em 1em 0.5em;
 	overflow: auto;
 	max-height: 10em;
-	font-family: 'Courier New', 'Courier', monospace;
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
 	white-space: pre-wrap;
 	line-height: 1.25em;
 	color: #555;

@@ -33,8 +33,8 @@
 }
 
 .ve-ui-surface-source .ve-ce-documentNode {
-	font-size: 1.2821em;
-	font-family: monospace;
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
 }
 
 .ve-ui-surface-source .ve-ce-paragraphNode {

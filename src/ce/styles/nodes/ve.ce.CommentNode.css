@@ -5,8 +5,9 @@
  */
 
 .ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement {
-	font-family: 'Courier New', 'Courier', monospace;
-	font-size: 0.914286em;
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+	font-size: 0.8125em;
 	width: auto;
 }
 

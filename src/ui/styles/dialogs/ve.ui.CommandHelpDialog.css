@@ -52,7 +52,9 @@
 }
 
 .ve-ui-commandHelpDialog-list dt kbd {
-	font-family: monospace;
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+	font-size: 0.8125em;
 	font-weight: bold;
 	font-style: normal;
 }
@@ -68,6 +70,7 @@
 }
 
 .ve-ui-commandHelpDialog-list dt kbd > kbd {
+	font-size: 1em; /* Prevent double shrinking */
 	background-color: #f7f7f7;
 	border: 1px solid #ccc;
 	border-radius: 3px;
