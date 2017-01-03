@@ -476,14 +476,15 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 	}
 
 	view = this.getView();
-	nativeRange = view.getNativeRange();
-	if ( !nativeRange ) {
+
+	if ( !view.nativeSelection.focusNode || OO.ui.contains( view.$pasteTarget[ 0 ], view.nativeSelection.focusNode, true ) ) {
 		return;
 	}
 
-	if ( OO.ui.contains( view.$pasteTarget[ 0 ], nativeRange.startContainer, true ) ) {
-		return;
-	}
+	nativeRange = document.createRange();
+	// We only care about the focus end of the selection, the anchor never moves
+	// and should be allowed off screen.
+	nativeRange.setStart( view.nativeSelection.focusNode, view.nativeSelection.focusOffset );
 
 	clientRect = RangeFix.getBoundingClientRect( nativeRange );
 	if ( !clientRect ) {
