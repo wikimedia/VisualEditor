@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Firefox on Ubuntu in Japanese using iBus Mozc.
  *
- * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'input-firefox-ubuntu-ibus-japanese-mozc', [

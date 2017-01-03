@@ -1,7 +1,7 @@
 /*!
  * VisualEditor minimal demo
  *
- * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 // Set up the platform and wait for i18n messages to load

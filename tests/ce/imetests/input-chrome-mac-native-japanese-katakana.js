@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Chrome on Mac OS X in Katakana Japanese using OS native IME.
  *
- * @copyright 2011-2016 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'input-chrome-mac-native-japanese-katakana', [
