@@ -614,9 +614,47 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
  * @return {ve.dm.Transaction}
  */
 ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
-	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingWrapEach,
+	var i, startOffset, closingUnwrapEach, closingWrapEach, endOffset, ptr,
 		txBuilder = new ve.dm.TransactionBuilder(),
 		depth = 0;
+
+	/**
+	 * Match items before/after an offset, skipping over MetaItems
+	 *
+	 * @param {string} direction Direction of match, backwards|forwards
+	 * @param {number} offset First boundary for the matching items
+	 * @param {Object[]} matchList List of objects with .type properties to compare
+	 * @param {string} matchName Description of the match, for error messages
+	 * @return {number} Other slice boundary for the matching items
+	 * @throws {Error} Unmatched item foo in matchName [(found bar)]
+	 */
+	function match( direction, offset, matchList, matchName ) {
+		var start, stop, step, i, item;
+		if ( direction === 'forwards' ) {
+			start = 0;
+			stop = matchList.length;
+			step = 1;
+			// Inclusive 'from' slice boundary
+			offset--;
+		} else {
+			start = matchList.length - 1;
+			stop = -1;
+			step = -1;
+		}
+		for ( i = start; i !== stop; i += step ) {
+			offset += step;
+			item = doc.data.data[ offset ];
+			if ( item.type !== matchList[ i ].type ) {
+				throw new Error( 'Unmatched item ' + matchList[ i ].type + ' in ' +
+					matchName + ' (found ' + item.type + ')' );
+			}
+		}
+		if ( direction === 'forwards' ) {
+			// Exclusive 'to' slice boundary
+			offset++;
+		}
+		return offset;
+	}
 
 	// Function to generate arrays of closing elements in reverse order
 	function closingArray( openings ) {
@@ -628,83 +666,63 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 		}
 		return closings;
 	}
-	/* closingUnwrapEach = */ closingArray( unwrapEach );
+
+	closingUnwrapEach = closingArray( unwrapEach );
 	closingWrapEach = closingArray( wrapEach );
 
 	// TODO: check for and fix nesting validity like fixupInsertion does
-	if ( range.start > unwrapOuter.length ) {
-		// Retain up to the first thing we're unwrapping
-		// The outer unwrapping takes place *outside*
-		// the range, so compensate for that
-		txBuilder.pushRetain( range.start - unwrapOuter.length );
-	} else if ( range.start < unwrapOuter.length ) {
-		throw new Error( 'unwrapOuter is longer than the data preceding the range' );
-	}
 
-	// Replace the opening elements for the outer unwrap&wrap
-	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
-		// Verify that wrapOuter matches the data at this position
-		unwrapOuterData = doc.data.slice( range.start - unwrapOuter.length, range.start );
-		for ( i = 0; i < unwrapOuterData.length; i++ ) {
-			if ( unwrapOuterData[ i ].type !== unwrapOuter[ i ].type ) {
-				throw new Error( 'Element in unwrapOuter does not match: expected ' +
-					unwrapOuter[ i ].type + ' but found ' + unwrapOuterData[ i ].type );
-			}
-		}
-		// Instead of putting in unwrapOuter as given, put it in the
-		// way it appears in the model so we pick up any attributes
-		txBuilder.pushReplace( doc, range.start - unwrapOuter.length, unwrapOuter.length, ve.copy( wrapOuter ) );
-	}
+	// Verify the data before range.start matches unwrapOuter, and find where to retain up to
+	ptr = match( 'backwards', range.start, unwrapOuter, 'unwrapOuter' );
+	txBuilder.pushRetain( ptr );
+	// Replace wrapper
+	txBuilder.pushReplace( doc, ptr, range.start - ptr, ve.copy( wrapOuter ) );
 
-	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
+	if ( wrapEach.length === 0 && unwrapEach.length === 0 ) {
+		// There is no wrapEach/unwrapEach to be done, just retain
+		// up to the end of the range
+		txBuilder.pushRetain( range.end - range.start );
+	} else {
 		// Visit each top-level child and wrap/unwrap it
 		// TODO figure out if we should use the tree/node functions here
 		// rather than iterating over offsets, it may or may not be faster
 		for ( i = range.start; i < range.end; i++ ) {
-			if ( doc.data.isElementData( i ) ) {
-				// This is a structural offset
-				if ( !doc.data.isCloseElementData( i ) ) {
-					// This is an opening element
-					if ( depth === 0 ) {
-						// We are at the start of a top-level element
-						// Replace the opening elements
-
-						// Verify that unwrapEach matches the data at this position
-						unwrapEachData = doc.data.slice( i, i + unwrapEach.length );
-						for ( j = 0; j < unwrapEachData.length; j++ ) {
-							if ( unwrapEachData[ j ].type !== unwrapEach[ j ].type ) {
-								throw new Error( 'Element in unwrapEach does not match: expected ' +
-									unwrapEach[ j ].type + ' but found ' +
-									unwrapEachData[ j ].type );
-							}
-						}
-						// Instead of putting in unwrapEach as given, put it in the
-						// way it appears in the model, so we pick up any attributes
-						txBuilder.pushReplace( doc, i, unwrapEach.length, ve.copy( wrapEach ) );
-
-						// Store this offset for later
-						startOffset = i + unwrapEach.length;
-					}
-					depth++;
-				} else {
-					// This is a closing element
-					depth--;
-					if ( depth === 0 ) {
-						// We are at the end of a top-level element
-						// Advance past the element, then back up past the unwrapEach
-						j = ( i + 1 ) - unwrapEach.length;
-						// Retain the contents of what we're wrapping
-						txBuilder.pushRetain( j - startOffset );
-						// Replace the closing elements
-						txBuilder.pushReplace( doc, j, unwrapEach.length, ve.copy( closingWrapEach ) );
-					}
+			if ( !doc.data.isElementData( i ) ) {
+				continue;
+			}
+			if ( doc.data.isOpenElementData( i ) ) {
+				depth++;
+				if ( depth !== 1 ) {
+					continue;
 				}
+				// This is the start of a top-level element
+				ptr = match( 'forwards', i, unwrapEach, 'unwrapEach' );
+				// Replace wrapper
+				txBuilder.pushReplace( doc, i, ptr - i, ve.copy( wrapEach ) );
+				startOffset = ptr;
+				// Goto end of wrapper
+				if ( ptr > i ) {
+					i = ptr - 1;
+				}
+				continue;
+			}
+			// Else this is a closing element
+			depth--;
+			if ( depth !== 0 ) {
+				continue;
+			}
+			// This is the end of a top-level element
+			ptr = match( 'forwards', i, closingUnwrapEach, 'closingUnwrapEach' );
+			endOffset = ( ptr > i ) ? i : i + 1;
+			// Retain the contents that we're wrapping
+			txBuilder.pushRetain( endOffset - startOffset );
+			// Replace the closing elements
+			txBuilder.pushReplace( doc, endOffset, ptr - i, ve.copy( closingWrapEach ) );
+			// Goto end of wrapper
+			if ( ptr > i ) {
+				i = ptr - 1;
 			}
 		}
-	} else {
-		// There is no wrapEach/unwrapEach to be done, just retain
-		// up to the end of the range
-		txBuilder.pushRetain( range.end - range.start );
 	}
 
 	// this is a no-op if unwrapOuter.length===0 and wrapOuter.length===0
