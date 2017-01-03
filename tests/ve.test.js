@@ -211,62 +211,6 @@ QUnit.test( 'setDomAttributes', 7, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'getHtmlAttributes', 7, function ( assert ) {
-	assert.deepEqual(
-		ve.getHtmlAttributes(),
-		'',
-		'no attributes argument'
-	);
-	assert.deepEqual(
-		ve.getHtmlAttributes( NaN + 'px' ),
-		'',
-		'invalid attributes argument'
-	);
-	assert.deepEqual(
-		ve.getHtmlAttributes( {} ),
-		'',
-		'empty attributes argument'
-	);
-	assert.deepEqual(
-		ve.getHtmlAttributes( { src: 'foo' } ),
-		'src="foo"',
-		'one attribute'
-	);
-	assert.deepEqual(
-		ve.getHtmlAttributes( { href: 'foo', rel: 'bar' } ),
-		'href="foo" rel="bar"',
-		'two attributes'
-	);
-	assert.deepEqual(
-		ve.getHtmlAttributes( { selected: true, blah: false, value: 3 } ),
-		'selected="selected" value="3"',
-		'handling of booleans and numbers'
-	);
-	assert.deepEqual(
-		ve.getHtmlAttributes( { placeholder: '<foo>&"bar"&\'baz\'' } ),
-		'placeholder="&lt;foo&gt;&amp;&quot;bar&quot;&amp;&#039;baz&#039;"',
-		'escaping of attribute values'
-	);
-} );
-
-QUnit.test( 'getOpeningHtmlTag', 3, function ( assert ) {
-	assert.deepEqual(
-		ve.getOpeningHtmlTag( 'code', {} ),
-		'<code>',
-		'opening tag without attributes'
-	);
-	assert.deepEqual(
-		ve.getOpeningHtmlTag( 'img', { src: 'foo' } ),
-		'<img src="foo">',
-		'opening tag with one attribute'
-	);
-	assert.deepEqual(
-		ve.getOpeningHtmlTag( 'a', { href: 'foo', rel: 'bar' } ),
-		'<a href="foo" rel="bar">',
-		'tag with two attributes'
-	);
-} );
-
 QUnit.test( 'sparseSplice', function ( assert ) {
 	var tests, i, len, test;
 	// Convert a sparse array of primitives to an array of strings, with '' for holes.
