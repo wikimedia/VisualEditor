@@ -93,6 +93,9 @@ ve.ui.AnnotationInspector.prototype.getInsertionData = function () {
  * @return {string} Text to insert
  */
 ve.ui.AnnotationInspector.prototype.getInsertionText = function () {
+	if ( this.sourceMode ) {
+		return OO.ui.resolveMsg( this.constructor.static.title );
+	}
 	return '';
 };
 
