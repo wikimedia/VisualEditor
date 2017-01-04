@@ -325,7 +325,9 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 					fragment.annotateContent( 'set', annotation );
 				}
 			}
-			if ( !data.action || insertText ) {
+			// HACK: ui.WindowAction unsets previousSelection in source mode,
+			// so we can't rely on it existing.
+			if ( this.previousSelection && ( !data.action || insertText ) ) {
 				// Restore selection to what it was before we expanded it
 				selection = this.previousSelection;
 			}
