@@ -53,6 +53,8 @@
 	"visualeditor-contextitemwidget-label-secondary": "편집",
 	"visualeditor-debugbar-close": "닫기",
 	"visualeditor-debugbar-logrange": "로그",
+	"visualeditor-debugbar-showmodel": "모델 보기",
+	"visualeditor-debugbar-updatemodel": "변경사항에 대한 업데이트",
 	"visualeditor-dialog-action-apply": "바뀜 적용",
 	"visualeditor-dialog-action-cancel": "취소",
 	"visualeditor-dialog-action-done": "완료",
