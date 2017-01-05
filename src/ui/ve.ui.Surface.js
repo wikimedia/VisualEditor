@@ -79,7 +79,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	} );
 
 	// Events
-	this.getView().connect( this, { keyup: 'scrollCursorIntoView' } );
+	this.getModel().connect( this, { select: 'scrollCursorIntoView' } );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
 
 	// Initialization
@@ -464,16 +464,14 @@ ve.ui.Surface.prototype.onDocumentTransact = function () {
 };
 
 /**
- * Scroll the cursor into view.
+ * Scroll the cursor into view
+ *
+ * Called in response to selection events.
  *
  * This is required when the cursor disappears under the floating toolbar.
  */
 ve.ui.Surface.prototype.scrollCursorIntoView = function () {
-	var view, nativeRange, clientRect, cursorTop, scrollTo, toolbarBottom;
-
-	if ( !this.toolbarHeight ) {
-		return;
-	}
+	var view, clientRect, surfaceRect, cursorTop, cursorBottom, scrollTo, bottomBound, topBound;
 
 	view = this.getView();
 
@@ -481,21 +479,30 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 		return;
 	}
 
-	nativeRange = document.createRange();
-	// We only care about the focus end of the selection, the anchor never moves
-	// and should be allowed off screen.
-	nativeRange.setStart( view.nativeSelection.focusNode, view.nativeSelection.focusOffset );
-
-	clientRect = RangeFix.getBoundingClientRect( nativeRange );
+	// We only care about the focus end of the selection, the anchor never
+	// moves and should be allowed off screen. Thus, we get the start/end
+	// rects, and calculate based on the end.
+	clientRect = this.getView().getSelection().getSelectionStartAndEndRects();
 	if ( !clientRect ) {
 		return;
 	}
 
-	cursorTop = clientRect.top - 5;
-	toolbarBottom = this.toolbarHeight;
+	// We want viewport-relative coordinates, so we need to translate it
+	surfaceRect = this.getBoundingClientRect();
+	clientRect = ve.translateRect( clientRect.end, surfaceRect.left, surfaceRect.top );
 
-	if ( cursorTop < toolbarBottom ) {
-		scrollTo = this.$scrollContainer.scrollTop() + cursorTop - toolbarBottom;
+	// TODO: this has some long-standing assumptions that we're going to be in
+	// the context we expect. If we get VE in a scrollable div or suchlike,
+	// we'd no longer be able to make these assumptions about top/bottom of
+	// window.
+	topBound = this.toolbarHeight; // top of the window + height of the toolbar
+	bottomBound = window.innerHeight; // bottom of the window
+
+	cursorTop = clientRect.top - 5;
+	cursorBottom = clientRect.bottom + 5;
+
+	if ( cursorTop < topBound || cursorBottom > bottomBound ) {
+		scrollTo = this.$scrollContainer.scrollTop() + ( cursorTop - topBound );
 		this.scrollTo( scrollTo );
 	}
 };
