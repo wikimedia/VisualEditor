@@ -1,6 +1,12 @@
+/*!
+ * VisualEditor rebase server script.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
 /* eslint-disable no-console */
 
-var rebaseServer, artificialDelay, logStream,
+var rebaseServer, pendingForDoc, artificialDelay, logStream, handlers,
 	port = 8081,
 	fs = require( 'fs' ),
 	express = require( 'express' ),
@@ -30,86 +36,166 @@ function logServerEvent( event ) {
 	logEvent( event );
 }
 
+function wait( timeout ) {
+	return new Promise( function ( resolve ) {
+		setTimeout( resolve, timeout );
+	} );
+}
+
+function logError( err ) {
+	console.log( err.stack );
+}
+
 rebaseServer = new ve.dm.RebaseServer( logServerEvent );
+docNamespaces = new Map();
+lastAuthorForDoc = new Map();
+pendingForDoc = new Map();
 artificialDelay = parseInt( process.argv[ 2 ] ) || 0;
+
+function* welcomeNewClient( socket, docName, author ) {
+	var state, authorData;
+	yield rebaseServer.updateDocState( docName, author, null, {
+		displayName: 'User ' + author // TODO: i18n
+	} );
+
+	state = yield rebaseServer.getDocState( docName );
+	authorData = state.authors.get( author );
+
+	socket.emit( 'registered', {
+		authorId: author,
+		authorName: authorData.displayName,
+		token: authorData.token
+	} );
+	docNamespaces.get( docName ).emit( 'nameChange', {
+		authorId: author,
+		authorName: authorData.displayName
+	} );
+	// HACK Catch the client up on the current state by sending it the entire history
+	// Ideally we'd be able to initialize the client using HTML, but that's hard, see
+	// comments in the /raw handler. Keeping an updated linmod on the server could be
+	// feasible if TransactionProcessor was modified to have a "don't sync, just apply"
+	// mode and ve.dm.Document was faked with { data: ..., metadata: ..., store: ... }
+	socket.emit( 'initDoc', {
+		history: state.history.serialize( true ),
+		names: state.getActiveNames()
+	} );
+}
+
+function* onSubmitChange( context, data ) {
+	var change, applied;
+	yield wait( artificialDelay );
+	change = ve.dm.Change.static.deserialize( data.change, null, true );
+	applied = yield rebaseServer.applyChange( context.docName, context.author, data.backtrack, change );
+	if ( !applied.isEmpty() ) {
+		docNamespaces.get( context.docName ).emit( 'newChange', applied.serialize( true ) );
+	}
+}
+
+function* onChangeName( context, newName ) {
+	yield rebaseServer.updateDocState( context.docName, context.author, null, {
+		displayName: newName
+	} );
+	docNamespaces.get( context.docName ).emit( 'nameChange', {
+		authorId: context.author,
+		authorName: newName
+	} );
+	logServerEvent( {
+		type: 'nameChange',
+		doc: context.docName,
+		author: context.author,
+		newName: newName
+	} );
+}
+
+function* onUsurp( context, data ) {
+	var state = yield rebaseServer.getDocState( context.docName ),
+		newAuthorData = state.authors.get( data.authorId );
+	if ( newAuthorData.token !== data.token ) {
+		context.socket.emit( 'usurpFailed' );
+		return;
+	}
+	yield rebaseServer.updateDocState( context.docName, data.authorId, null, {
+		active: true
+	} );
+	// TODO either delete this author, or reimplement usurp in a client-initiated way
+	yield rebaseServer.updateDocState( context.docName, context.author, null, {
+		active: false
+	} );
+	context.socket.emit( 'registered', {
+		authorId: data.authorId,
+		authorName: newAuthorData.displayName,
+		token: newAuthorData.token
+	} );
+	docNamespaces.get( context.docName ).emit( 'nameChange', {
+		authorId: data.authorId,
+		authorName: newAuthorData.displayName
+	} );
+	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.author );
+
+	context.author = data.authorId;
+}
+
+function* onDisconnect( context ) {
+	yield rebaseServer.updateDocState( context.docName, context.author, null, {
+		active: false
+	} );
+	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.author );
+	logServerEvent( {
+		type: 'disconnect',
+		doc: context.docName,
+		author: context.author
+	} );
+}
+
+function addStep( docName, generatorFunc ) {
+	var pending = Promise.resolve( pendingForDoc.get( docName ) );
+	pending = pending
+		.then( function () {
+			return ve.spawn( generatorFunc );
+		} )
+		.catch( logError );
+	pendingForDoc.set( pending );
+}
+
+handlers = {
+	submitChange: onSubmitChange,
+	changeName: onChangeName,
+	usurp: onUsurp,
+	disconnect: onDisconnect
+};
+
+function handleEvent( context, eventName, data ) {
+	addStep( context.docName, handlers[ eventName ]( context, data ) );
+}
 
 function makeConnectionHandler( docName ) {
 	return function handleConnection( socket ) {
-		var history = rebaseServer.getDocState( docName ).history,
-			author = 1 + ( lastAuthorForDoc.get( docName ) || 0 ),
-			authorData = rebaseServer.getAuthorData( docName, author );
-		lastAuthorForDoc.set( docName, author );
-		rebaseServer.setAuthorName( docName, author, 'User ' + author ); // TODO: i18n
+		// Allocate new author ID
+		var context = {
+				socket: socket,
+				docName: docName,
+				author: 1 + ( lastAuthorForDoc.get( docName ) || 0 )
+			},
+			eventName;
+		lastAuthorForDoc.set( docName, context.author );
 		logServerEvent( {
 			type: 'newClient',
 			doc: docName,
-			author: author
+			author: context.author
 		} );
-		socket.emit( 'registered', {
-			authorId: author,
-			authorName: authorData.displayName,
-			token: authorData.token
-		} );
-		docNamespaces.get( docName ).emit( 'nameChange', { authorId: author, authorName: authorData.displayName } );
-		socket.on( 'usurp', function ( data ) {
-			var newAuthorData = rebaseServer.getAuthorData( docName, data.authorId );
-			if ( newAuthorData.token !== data.token ) {
-				socket.emit( 'usurpFailed' );
-				return;
-			}
-			newAuthorData.active = true;
-			socket.emit( 'registered', {
-				authorId: data.authorId,
-				authorName: newAuthorData.displayName,
-				token: newAuthorData.token
-			} );
-			docNamespaces.get( docName ).emit( 'nameChange', { authorId: data.authorId, authorName: newAuthorData.displayName } );
-			docNamespaces.get( docName ).emit( 'authorDisconnect', author );
-			rebaseServer.removeAuthor( docName, author );
-			author = data.authorId;
-		} );
-		// HACK Catch the client up on the current state by sending it the entire history
-		// Ideally we'd be able to initialize the client using HTML, but that's hard, see
-		// comments in the /raw handler. Keeping an updated linmod on the server could be
-		// feasible if TransactionProcessor was modified to have a "don't sync, just apply"
-		// mode and ve.dm.Document was faked with { data: ..., metadata: ..., store: ... }
-		socket.emit( 'initDoc', { history: history.serialize( true ), names: rebaseServer.getAllNames( docName ) } );
-		socket.on( 'changeName', function ( newName ) {
-			logServerEvent( {
-				type: 'nameChange',
-				doc: docName,
-				author: author,
-				newName: newName
-			} );
-			rebaseServer.setAuthorName( docName, author, newName );
-			docNamespaces.get( docName ).emit( 'nameChange', { authorId: author, authorName: newName } );
-		} );
-		socket.on( 'submitChange', setTimeout.bind( null, function ( data ) {
-			var change, applied;
-			try {
-				change = ve.dm.Change.static.deserialize( data.change, null, true );
-				applied = rebaseServer.applyChange( docName, author, data.backtrack, change );
-				if ( !applied.isEmpty() ) {
-					docNamespaces.get( docName ).emit( 'newChange', applied.serialize( true ) );
-				}
-			} catch ( error ) {
-				console.error( error.stack );
-			}
-		}, artificialDelay ) );
+
+		// Kick off welcome process
+		addStep( docName, welcomeNewClient( socket, docName, context.author ) );
+
+		// Attach event handlers
+		for ( eventName in handlers ) {
+			// eslint-disable-next-line no-loop-func
+			socket.on( eventName, handleEvent.bind( null, context, eventName ) );
+		}
 		socket.on( 'logEvent', function ( event ) {
-			event.clientId = author;
+			event.clientId = context.author;
 			event.doc = docName;
 			logEvent( event );
-		} );
-		socket.on( 'disconnect', function () {
-			var authorData = rebaseServer.getAuthorData( docName, author );
-			authorData.active = false;
-			docNamespaces.get( docName ).emit( 'authorDisconnect', author );
-			logServerEvent( {
-				type: 'disconnect',
-				doc: docName,
-				author: author
-			} );
 		} );
 	};
 }
