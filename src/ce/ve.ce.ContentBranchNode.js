@@ -193,7 +193,11 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		current = wrapper,
 		annotationStack = [],
 		nodeStack = [],
-		unicornInfo = {},
+		unicornInfo = {
+			hasCursor: false,
+			annotations: null,
+			unicorns: null
+		},
 		buffer = '',
 		node = this;
 
@@ -327,7 +331,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 				unicornInfo.annotations = dmSurface.getInsertionAnnotations();
 				unicornInfo.unicorns = [ preUnicorn, postUnicorn ];
 			} else {
-				unicornInfo.unicornAnnotations = null;
+				unicornInfo.annotations = null;
 				unicornInfo.unicorns = null;
 			}
 		} else {
@@ -384,7 +388,6 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 
 	rendered = this.getRenderedContents();
 	unicornInfo = rendered.unicornInfo;
-	delete rendered.unicornInfo;
 
 	// Return if unchanged. Test by building the new version and checking DOM-equality.
 	// However we have to normalize to cope with consecutive text nodes. We can't normalize
@@ -439,7 +442,6 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 			this.getRoot().getSurface().setNotUnicorningAll( this );
 		}
 	}
-	this.hasCursor = null;
 
 	// Add slugs
 	this.setupInlineSlugs();
