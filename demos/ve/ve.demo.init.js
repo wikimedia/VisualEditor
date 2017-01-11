@@ -4,7 +4,7 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
+new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( function () {
 
 	var $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),
@@ -89,6 +89,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		OO.ui.msg = ve.init.platform.getMessage.bind( ve.init.platform );
 
 		// HACK: Re-initialize page to load message files
+		ve.init.target.teardownToolbar();
 		ve.init.platform.initialize().done( function () {
 			var i;
 			for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
