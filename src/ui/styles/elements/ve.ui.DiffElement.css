@@ -33,7 +33,7 @@
 .ve-ui-diffElement-up,
 .ve-ui-diffElement-down,
 .ve-ui-diffElement-doc-child-change {
-	border-left: 6px solid #347bff;
+	border-left: 6px solid #36c;
 	padding-left: 4px;
 	margin-left: -10px;
 }
@@ -59,12 +59,12 @@
 
 .ve-ui-diffElement-down:before {
 	bottom: 0;
-	border-top: 6px solid #347bff;
+	border-top: 6px solid #36c;
 }
 
 .ve-ui-diffElement-up:before {
 	top: 0;
-	border-bottom: 6px solid #347bff;
+	border-bottom: 6px solid #36c;
 }
 
 .ve-ui-diffElement-insert:empty:before,
@@ -79,12 +79,11 @@
 }
 
 .ve-ui-diffElement-no-changes {
-	color: #888;
+	color: #72777d;
 	font-style: italic;
 }
 
 .ve-ui-diffElement-spacer {
-	color: #888;
-	text-align: center;
+	color: #72777d;
 	clear: both;
 }
