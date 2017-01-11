@@ -2,6 +2,13 @@
 
 # This script builds a new gh-pages branch from latest master
 
+read -p "This script will delete all untracked files in the VE folder. Continue (y/n)? " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+	exit 0
+fi
+
 cd "$(dirname $0)/.."
 git fetch origin
 git checkout -B gh-pages origin/master
