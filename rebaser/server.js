@@ -39,7 +39,7 @@ artificialDelay = parseInt( process.argv[ 2 ] ) || 0;
 
 function makeConnectionHandler( docName ) {
 	return function handleConnection( socket ) {
-		var history = rebaseServer.getStateForDoc( docName ).history,
+		var history = rebaseServer.getDocState( docName ).history,
 			author = 1 + ( lastAuthorForDoc.get( docName ) || 0 );
 		lastAuthorForDoc.set( docName, author );
 		console.log( 'new client ' + author + ' for ' + docName );
