@@ -43,7 +43,7 @@ ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelp
 			details = ve.copy( details );
 			details.sequences = ( existingCommand.sequences || [] ).concat( details.sequences );
 		}
-		ve.extendObject( existingCommand, details );
+		details = ve.extendObject( existingCommand, details );
 	}
 
 	details.group = groupName;
