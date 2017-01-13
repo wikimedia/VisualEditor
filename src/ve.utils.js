@@ -1776,3 +1776,34 @@ ve.repeatString = function ( str, n ) {
 ve.isUnmodifiedLeftClick = function ( e ) {
 	return e && e.which && e.which === OO.ui.MouseButtons.LEFT && !( e.shiftKey || e.altKey || e.ctrlKey || e.metaKey );
 };
+
+/**
+ * Are multiple formats for clipboardData items supported?
+ *
+ * If you want to use unknown formats, an additional check for whether we're
+ * on MS Edge needs to be made, as that only supports standard plain text / HTML.
+ *
+ * @param {jQuery.Event} e A jQuery event object for a copy/paste event
+ * @param {boolean} [customTypes] Check whether non-standard formats are supported
+ * @return {boolean} Whether multiple clipboardData item formats are supported
+ */
+ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
+	var profile, clipboardData,
+		cacheKey = customTypes ? 'cachedCustom' : 'cached';
+
+	if ( ve.isClipboardDataFormatsSupported[ cacheKey ] === undefined ) {
+		profile = $.client.profile();
+		clipboardData = e.originalEvent.clipboardData;
+		ve.isClipboardDataFormatsSupported[ cacheKey ] = !!(
+			clipboardData &&
+			( !customTypes || profile.name !== 'edge' ) && (
+				// Chrome
+				clipboardData.items ||
+				// Firefox >= 48 (but not Firefox Android, which has name='android' and doesn't support this feature)
+				( profile.name === 'firefox' && profile.versionNumber >= 48 )
+			)
+		);
+	}
+
+	return ve.isClipboardDataFormatsSupported[ cacheKey ];
+};
