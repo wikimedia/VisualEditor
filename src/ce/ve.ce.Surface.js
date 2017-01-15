@@ -2264,10 +2264,9 @@ ve.ce.Surface.prototype.afterPaste = function () {
  * @return {boolean} One more items was handled
  */
 ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, targetFragment ) {
-	var i, l, stringData,
+	var i, l, pushItemToBack,
 		items = [],
-		htmlStringData = dataTransfer.getData( 'text/html' ),
-		stringTypes = [ 'text/x-moz-url', 'text/uri-list', 'text/x-uri', 'text/html', 'text/plain' ];
+		htmlStringData = dataTransfer.getData( 'text/html' );
 
 	// Only look for files if HTML is not available:
 	//  - If a file is pasted/dropped it is unlikely it will have HTML fallback (it will have plain text fallback though)
@@ -2286,12 +2285,35 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 		}
 	}
 
-	for ( i = 0, l = stringTypes.length; i < stringTypes.length; i++ ) {
-		stringData = dataTransfer.getData( stringTypes[ i ] );
-		if ( stringData ) {
-			items.push( ve.ui.DataTransferItem.static.newFromString( stringData, stringTypes[ i ], htmlStringData ) );
+	// Extract "string" types.
+	for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+		if (
+			dataTransfer.items[ i ].kind === 'string' &&
+			dataTransfer.items[ i ].type.substr( 0, 5 ) === 'text/'
+		) {
+			items.push( ve.ui.DataTransferItem.static.newFromString(
+				dataTransfer.getData( dataTransfer.items[ i ].type ),
+				dataTransfer.items[ i ].type,
+				htmlStringData
+			) );
 		}
 	}
+
+	// We care a little bit about the order of items, as the first one matched
+	// is going to be the one we handle, and don't trust dataTransfer.items to
+	// be in the fallback order we'd prefer. In practice, this just means that
+	// we want to text/html and text/plain to be at the end of the list, as
+	// they tend to show up as common fallbacks.
+	pushItemToBack = function ( array, type ) {
+		var i, l;
+		for ( i = 0, l = array.length; i < l; i++ ) {
+			if ( array[ i ].type === type ) {
+				return array.push( array.splice( i, 1 )[ 0 ] );
+			}
+		}
+	};
+	pushItemToBack( items, 'text/html' );
+	pushItemToBack( items, 'text/plain' );
 
 	return this.handleDataTransferItems( items, isPaste, targetFragment );
 };
