@@ -47,6 +47,8 @@
 	"visualeditor-content-select-all": "Selecionar tudo",
 	"visualeditor-contextitemwidget-label-remove": "Eliminar",
 	"visualeditor-contextitemwidget-label-secondary": "Editar",
+	"visualeditor-debugbar-close": "Fechar",
+	"visualeditor-debugbar-logrange": "Registo",
 	"visualeditor-dialog-action-apply": "Aplicar alterações",
 	"visualeditor-dialog-action-cancel": "Cancelar",
 	"visualeditor-dialog-action-done": "Feito",

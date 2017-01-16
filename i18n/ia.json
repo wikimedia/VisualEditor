@@ -39,6 +39,7 @@
 	"visualeditor-debugbar-showmodel": "Monstrar modello",
 	"visualeditor-debugbar-startfilibuster": "Filibustero",
 	"visualeditor-debugbar-stopfilibuster": "Arrestar filibustero",
+	"visualeditor-debugbar-updatemodel": "Actualisar quando il ha cambiamentos",
 	"visualeditor-dialog-action-apply": "Applicar modificationes",
 	"visualeditor-dialog-action-cancel": "Cancellar",
 	"visualeditor-dialog-action-done": "Finite",

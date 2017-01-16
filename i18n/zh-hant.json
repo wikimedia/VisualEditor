@@ -17,7 +17,8 @@
 			"Vincent Liu",
 			"Deryck Chan",
 			"LNDDYL",
-			"Yejianfei"
+			"Yejianfei",
+			"Jdforrester"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -50,7 +51,12 @@
 	"visualeditor-contextitemwidget-label-remove": "刪除",
 	"visualeditor-contextitemwidget-label-secondary": "編輯",
 	"visualeditor-debugbar-close": "關閉",
+	"visualeditor-debugbar-inputdebug": "輸入調試",
 	"visualeditor-debugbar-logrange": "日誌",
+	"visualeditor-debugbar-showmodel": "顯示模型",
+	"visualeditor-debugbar-startfilibuster": "冗長辯論",
+	"visualeditor-debugbar-stopfilibuster": "停止冗長辯論",
+	"visualeditor-debugbar-updatemodel": "更改上的更新",
 	"visualeditor-dialog-action-apply": "套用變更",
 	"visualeditor-dialog-action-cancel": "取消",
 	"visualeditor-dialog-action-done": "完成",

@@ -18,7 +18,8 @@
 			"Kippelboy",
 			"Jaumeortola",
 			"Ssola",
-			"Stanqo"
+			"Stanqo",
+			"Luchibsl1"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -50,6 +51,7 @@
 	"visualeditor-content-select-all": "Selecciona-ho tot",
 	"visualeditor-contextitemwidget-label-remove": "Suprimeix",
 	"visualeditor-contextitemwidget-label-secondary": "Modifica",
+	"visualeditor-debugbar-close": "Затваряне",
 	"visualeditor-dialog-action-apply": "Aplica els canvis",
 	"visualeditor-dialog-action-cancel": "Cancel·la",
 	"visualeditor-dialog-action-done": "Fet",

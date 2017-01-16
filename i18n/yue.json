@@ -6,7 +6,8 @@
 			"Shinjiman",
 			"CRCHF",
 			"Ktchankt",
-			"Yueman"
+			"Yueman",
+			"Jdforrester"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -16,11 +17,13 @@
 	"visualeditor-align-widget-left": "靠左",
 	"visualeditor-align-widget-right": "靠右",
 	"visualeditor-alignablecontextitem-title": "對齊",
+	"visualeditor-annotationbutton-big-tooltip": "大",
 	"visualeditor-annotationbutton-bold-tooltip": "粗字",
 	"visualeditor-annotationbutton-code-tooltip": "程式碼",
 	"visualeditor-annotationbutton-italic-tooltip": "斜字",
 	"visualeditor-annotationbutton-language-tooltip": "呢句係咩文",
 	"visualeditor-annotationbutton-link-tooltip": "連結",
+	"visualeditor-annotationbutton-small-tooltip": "細",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "劃綫",
 	"visualeditor-annotationbutton-subscript-tooltip": "下角細字",
 	"visualeditor-annotationbutton-superscript-tooltip": "上角細字",
@@ -36,6 +39,7 @@
 	"visualeditor-content-select-all": "揀嗮",
 	"visualeditor-contextitemwidget-label-remove": "剷走",
 	"visualeditor-contextitemwidget-label-secondary": "編輯",
+	"visualeditor-debugbar-close": "閂",
 	"visualeditor-dialog-action-apply": "改實",
 	"visualeditor-dialog-action-cancel": "取消",
 	"visualeditor-dialog-action-done": "搞掂",

@@ -58,6 +58,8 @@
 	"visualeditor-contextitemwidget-label-secondary": "Bewerken",
 	"visualeditor-debugbar-close": "Sluiten",
 	"visualeditor-debugbar-logrange": "Logboek",
+	"visualeditor-debugbar-showmodel": "Toon model",
+	"visualeditor-debugbar-updatemodel": "Bijwerken wanneer er wijzigingen zijn",
 	"visualeditor-dialog-action-apply": "Wijzigingen toepassen",
 	"visualeditor-dialog-action-cancel": "Annuleren",
 	"visualeditor-dialog-action-done": "Afgerond",
