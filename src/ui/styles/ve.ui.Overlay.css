@@ -21,3 +21,27 @@
 	/* Toolbar is z-index 1 */
 	z-index: 2;
 }
+
+/* Most vendor prefixes are not needed on mobile devices */
+
+.ve-ui-overlay-global-mobile {
+	background: #fff;
+	height: 100%;
+	-webkit-transform: translate3d( 0, -100%, 0 );
+	transform: translate3d( 0, -100%, 0 );
+
+	/* stylelint-disable no-unsupported-browser-features */
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	/* stylelint-enable no-unsupported-browser-features */
+}
+
+.ve-ui-overlay-global-mobile-visible {
+	-webkit-transform: none;
+	transform: none;
+}
+
+.ve-ui-overlay-global-mobile-enabled {
+	height: 100%;
+	overflow: hidden;
+}
