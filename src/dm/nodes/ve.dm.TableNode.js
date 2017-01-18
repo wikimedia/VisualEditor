@@ -29,6 +29,11 @@ ve.dm.TableNode = function VeDmTableNode() {
 
 OO.inheritClass( ve.dm.TableNode, ve.dm.BranchNode );
 
+/**
+ * @event cellAttributeChange
+ * @param {ve.dm.TableCellableNode} cell
+ */
+
 /* Static Properties */
 
 ve.dm.TableNode.static.name = 'table';
@@ -43,7 +48,24 @@ ve.dm.TableNode.static.matchTagNames = [ 'table' ];
  * Handle splicing of child nodes
  */
 ve.dm.TableNode.prototype.onSplice = function () {
+	var i,
+		nodes = Array.prototype.slice.call( arguments, 2 );
 	this.getMatrix().invalidate();
+	for ( i = 0; i < nodes.length; i++ ) {
+		nodes[ i ].connect( this, {
+			cellAttributeChange: 'onCellAttributeChange'
+		} );
+	}
+};
+
+/**
+ * Handle cell attribute changes
+ *
+ * @param {ve.dm.TableCellableNode} cell
+ * @fires cellAttributeChange
+ */
+ve.dm.TableNode.prototype.onCellAttributeChange = function ( cell ) {
+	this.emit( 'cellAttributeChange', cell );
 };
 
 /**

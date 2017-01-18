@@ -26,6 +26,11 @@ ve.dm.TableSectionNode = function VeDmTableSectionNode() {
 
 OO.inheritClass( ve.dm.TableSectionNode, ve.dm.BranchNode );
 
+/**
+ * @event cellAttributeChange
+ * @param {ve.dm.TableCellableNode} cell
+ */
+
 /* Static Properties */
 
 ve.dm.TableSectionNode.static.name = 'tableSection';
@@ -66,9 +71,26 @@ ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {
  * Handle splicing of child nodes
  */
 ve.dm.TableSectionNode.prototype.onSplice = function () {
+	var i,
+		nodes = Array.prototype.slice.call( arguments, 2 );
 	if ( this.getRoot() ) {
 		this.getParent().getMatrix().invalidate();
 	}
+	for ( i = 0; i < nodes.length; i++ ) {
+		nodes[ i ].connect( this, {
+			cellAttributeChange: 'onCellAttributeChange'
+		} );
+	}
+};
+
+/**
+ * Handle cell attribute changes
+ *
+ * @param {ve.dm.TableCellableNode} cell
+ * @fires cellAttributeChange
+ */
+ve.dm.TableSectionNode.prototype.onCellAttributeChange = function ( cell ) {
+	this.emit( 'cellAttributeChange', cell );
 };
 
 /* Registration */
