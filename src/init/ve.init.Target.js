@@ -370,10 +370,10 @@ ve.init.Target.prototype.createTargetWidget = function ( config ) {
  * @method
  * @param {ve.dm.Document} dmDoc Document model
  * @param {Object} [config] Configuration options
- * @return {ve.ui.DesktopSurface}
+ * @return {ve.ui.Surface}
  */
 ve.init.Target.prototype.createSurface = function ( dmDoc, config ) {
-	return new ve.ui.DesktopSurface( dmDoc, this.getSurfaceConfig( config ) );
+	return new ve.ui.Surface( dmDoc, this.getSurfaceConfig( config ) );
 };
 
 /**
@@ -403,7 +403,7 @@ ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
  *
  * @param {ve.dm.Document} dmDoc Document model
  * @param {Object} [config] Configuration options
- * @return {ve.ui.DesktopSurface}
+ * @return {ve.ui.Surface}
  */
 ve.init.Target.prototype.addSurface = function ( dmDoc, config ) {
 	var surface = this.createSurface( dmDoc, ve.extendObject( { mode: this.getDefaultMode() }, config ) );

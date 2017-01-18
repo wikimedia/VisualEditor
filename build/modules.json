@@ -775,7 +775,6 @@
 	},
 	"visualEditor.desktop.build": {
 		"scripts": [
-			"src/ui/ve.ui.DesktopSurface.js",
 			"src/ui/contexts/ve.ui.DesktopContext.js",
 			"src/ui/windowmanagers/ve.ui.DesktopInspectorWindowManager.js"
 		],
@@ -797,14 +796,12 @@
 	},
 	"visualEditor.mobile.build": {
 		"scripts": [
-			"src/ui/ve.ui.MobileSurface.js",
 			"src/ui/contexts/ve.ui.MobileContext.js",
 			"src/ui/contextitems/ve.ui.MobileTableCellContextItem.js",
 			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js"
 		],
 		"styles": [
-			"src/ui/styles/ve.ui.MobileContext.css",
-			"src/ui/styles/ve.ui.MobileSurface.css"
+			"src/ui/styles/ve.ui.MobileContext.css"
 		],
 		"dependencies": [
 			"visualEditor.core.build"

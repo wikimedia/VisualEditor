@@ -37,7 +37,11 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.$scrollContainer = config.$scrollContainer || $( this.getElementWindow() );
 	this.inDialog = config.inDialog || '';
 	this.mode = config.mode;
-	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global' ] } );
+
+	// The following classes are used here:
+	// * ve-ui-overlay-global-mobile
+	// * ve-ui-overlay-global-desktop
+	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global', 've-ui-overlay-global-' + OO.ui.isMobile() ? 'mobile' : 'desktop' ] } );
 	this.localOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-local' ] } );
 	this.$selections = $( '<div>' );
 	this.$blockers = $( '<div>' );
@@ -71,6 +75,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.filibuster = null;
 	this.debugBar = null;
 	this.setPlaceholder( config.placeholder );
+	this.scrollPosition = null;
 
 	this.toolbarHeight = 0;
 	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
@@ -81,6 +86,8 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	// Events
 	this.getModel().connect( this, { select: 'scrollCursorIntoView' } );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
+	this.dialogs.connect( this, { opening: 'onWindowOpening' } );
+	this.context.getInspectors().connect( this, { opening: 'onWindowOpening' } );
 
 	// Initialization
 	this.$menus.append( this.context.$element );
@@ -147,6 +154,12 @@ ve.ui.Surface.prototype.destroy = function () {
 	if ( this.debugBar ) {
 		this.debugBar.destroy();
 	}
+
+	// Disconnect events
+	this.dialogs.disconnect( this );
+	this.context.getInspectors().disconnect( this );
+
+	this.toggleMobileGlobalOverlay( false );
 
 	// Remove DOM elements
 	this.$element.remove();
@@ -233,19 +246,26 @@ ve.ui.Surface.prototype.getMode = function () {
  * Create a context.
  *
  * @method
- * @abstract
  * @return {ve.ui.Context} Context
  */
-ve.ui.Surface.prototype.createContext = null;
+ve.ui.Surface.prototype.createContext = function () {
+	return OO.ui.isMobile() ? new ve.ui.MobileContext( this ) : new ve.ui.DesktopContext( this );
+};
 
 /**
  * Create a dialog window manager.
  *
  * @method
- * @abstract
  * @return {ve.ui.WindowManager} Dialog window manager
  */
-ve.ui.Surface.prototype.createDialogWindowManager = null;
+ve.ui.Surface.prototype.createDialogWindowManager = function () {
+	return OO.ui.isMobile() ?
+		new ve.ui.MobileWindowManager( this, {
+			factory: ve.ui.windowFactory,
+			overlay: this.globalOverlay
+		} ) :
+		new ve.ui.SurfaceWindowManager( this, { factory: ve.ui.windowFactory } );
+};
 
 /**
  * Create a surface model
@@ -516,6 +536,61 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 ve.ui.Surface.prototype.scrollTo = function ( offset ) {
 	this.$scrollContainer.scrollTop( offset );
 	this.emit( 'scroll' );
+};
+
+/**
+ * Handle an dialog opening event.
+ *
+ * @param {OO.ui.Window} win Window that's being opened
+ * @param {jQuery.Promise} opening Promise resolved when window is opened; when the promise is
+ *   resolved the first argument will be a promise which will be resolved when the window begins
+ *   closing, the second argument will be the opening data
+ * @param {Object} data Window opening data
+ */
+ve.ui.Surface.prototype.onWindowOpening = function ( win, opening ) {
+	var surface = this;
+
+	if ( OO.ui.isMobile() ) {
+		opening
+			.progress( function ( data ) {
+				if ( data.state === 'setup' ) {
+					surface.toggleMobileGlobalOverlay( true );
+				}
+			} )
+			.always( function ( opened ) {
+				opened.always( function ( closed ) {
+					closed.always( function () {
+						surface.toggleMobileGlobalOverlay( false );
+					} );
+				} );
+			} );
+	}
+};
+
+/**
+ * Show or hide mobile global overlay.
+ *
+ * @param {boolean} show Show the global overlay.
+ */
+ve.ui.Surface.prototype.toggleMobileGlobalOverlay = function ( show ) {
+	var $body = $( 'body' );
+
+	if ( !OO.ui.isMobile() ) {
+		return;
+	}
+
+	// Store current position before we set overflow: hidden on body
+	if ( show ) {
+		this.scrollPosition = $body.scrollTop();
+	}
+
+	$( 'html, body' ).toggleClass( 've-ui-overlay-global-mobile-enabled', show );
+	this.globalOverlay.$element.toggleClass( 've-ui-overlay-global-mobile-visible', show );
+
+	// Restore previous position after we remove overflow: hidden on body
+	if ( !show ) {
+		$body.scrollTop( this.scrollPosition );
+	}
 };
 
 /**
