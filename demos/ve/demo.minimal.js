@@ -10,8 +10,12 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize()
 		$( '.ve-instance' ).text( 'Sorry, this browser is not supported.' );
 	} )
 	.done( function () {
-		// Create the target
-		var target = new ve.init.sa.Target();
+		var convertButton, convertText,
+			// Create the target
+			target = new ve.init.sa.Target();
+
+		// Append the target to the document
+		$( '.ve-instance' ).append( target.$element );
 
 		// Create a document model for a new surface
 		target.addSurface(
@@ -22,11 +26,16 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize()
 			)
 		);
 
-		// Append the target to the document
-		$( '.ve-instance' ).append( target.$element );
-
-		$( '.ve-demo-convert' ).on( 'click', function () {
+		// Button and textarea for showing HTML output
+		convertButton = new OO.ui.ButtonWidget( { label: 'Convert to HTML', icon: 'expand' } ).on( 'click', function () {
 			// Get the current HTML from the surface and display
-			$( '.ve-demo-html' ).val( target.getSurface().getHtml() );
+			convertText.setValue( target.getSurface().getHtml() );
 		} );
+
+		convertText = new OO.ui.TextInputWidget( { multiline: true, autosize: true, classes: [ 've-demo-html' ] } );
+
+		$( '.ve-demo-output' ).append(
+			convertButton.$element,
+			convertText.$element
+		);
 	} );
