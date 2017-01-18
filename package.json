@@ -28,7 +28,7 @@
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-watch": "1.0.0",
-    "grunt-css-url-embed": "1.8.0",
+    "grunt-css-url-embed": "1.9.0",
     "grunt-cssjanus": "0.3.2",
     "grunt-eslint": "19.0.0",
     "grunt-jsonlint": "1.1.0",
