@@ -1536,6 +1536,24 @@ ve.dm.example.domToDataCases = {
 			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="RtL" title="visualeditor-languageannotation-description-with-dir">34</span>' +
 		'</p>'
 	},
+	'datetime annotation': {
+		body: '<p>' +
+			'<time>a</time>' +
+			'<time datetime="2001-05-15T19:00">b</time>' +
+		'</p>',
+		data: [
+			{ type: 'paragraph' },
+			[ 'a', [ { type: 'textStyle/datetime', attributes: { nodeName: 'time', datetime: null } } ] ],
+			[ 'b', [ { type: 'textStyle/datetime', attributes: { nodeName: 'time', datetime: '2001-05-15T19:00' } } ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
+			'<time class="ve-ce-textStyleAnnotation ve-ce-datetimeAnnotation">a</time>' +
+			'<time class="ve-ce-textStyleAnnotation ve-ce-datetimeAnnotation">b</time>' +
+		'</p>'
+	},
 	'other textStyle annotations': {
 		body: '<p>' +
 			'<abbr>a</abbr>' +
@@ -1543,10 +1561,9 @@ ve.dm.example.domToDataCases = {
 			'<kbd>c</kbd>' +
 			'<q>d</q>' +
 			'<samp>e</samp>' +
-			'<time>f</time>' +
-			'<dfn>g</dfn>' +
-			'<mark>h</mark>' +
-			'<font>i</font>' +
+			'<dfn>f</dfn>' +
+			'<mark>g</mark>' +
+			'<font>h</font>' +
 		'</p>',
 		data: [
 			{ type: 'paragraph' },
@@ -1555,10 +1572,9 @@ ve.dm.example.domToDataCases = {
 			[ 'c', [ { type: 'textStyle/userInput', attributes: { nodeName: 'kbd' } } ] ],
 			[ 'd', [ { type: 'textStyle/quotation', attributes: { nodeName: 'q' } } ] ],
 			[ 'e', [ { type: 'textStyle/codeSample', attributes: { nodeName: 'samp' } } ] ],
-			[ 'f', [ { type: 'textStyle/datetime', attributes: { nodeName: 'time' } } ] ],
-			[ 'g', [ { type: 'textStyle/definition', attributes: { nodeName: 'dfn' } } ] ],
-			[ 'h', [ { type: 'textStyle/highlight', attributes: { nodeName: 'mark' } } ] ],
-			[ 'i', [ { type: 'textStyle/font', attributes: { nodeName: 'font' } } ] ],
+			[ 'f', [ { type: 'textStyle/definition', attributes: { nodeName: 'dfn' } } ] ],
+			[ 'g', [ { type: 'textStyle/highlight', attributes: { nodeName: 'mark' } } ] ],
+			[ 'h', [ { type: 'textStyle/font', attributes: { nodeName: 'font' } } ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1569,10 +1585,9 @@ ve.dm.example.domToDataCases = {
 			'<kbd class="ve-ce-textStyleAnnotation ve-ce-userInputAnnotation">c</kbd>' +
 			'<q class="ve-ce-textStyleAnnotation ve-ce-quotationAnnotation">d</q>' +
 			'<samp class="ve-ce-textStyleAnnotation ve-ce-codeSampleAnnotation">e</samp>' +
-			'<time class="ve-ce-textStyleAnnotation ve-ce-datetimeAnnotation">f</time>' +
-			'<dfn class="ve-ce-textStyleAnnotation ve-ce-definitionAnnotation">g</dfn>' +
-			'<mark class="ve-ce-textStyleAnnotation ve-ce-highlightAnnotation">h</mark>' +
-			'<font class="ve-ce-textStyleAnnotation ve-ce-fontAnnotation">i</font>' +
+			'<dfn class="ve-ce-textStyleAnnotation ve-ce-definitionAnnotation">f</dfn>' +
+			'<mark class="ve-ce-textStyleAnnotation ve-ce-highlightAnnotation">g</mark>' +
+			'<font class="ve-ce-textStyleAnnotation ve-ce-fontAnnotation">h</font>' +
 		'</p>'
 	},
 	'strip leading whitespace in non-whitespace preserving nodes': {
