@@ -6,24 +6,24 @@
  *
  * Example:
  *
- *   <table>
- *     <tr><td rowspan=2>1</td><td colspan=2>2</td><td rowspan=2 colspan=2>3</td></tr>
- *     <tr><td>4</td><td>5</td></tr>
- *   </table>
+ *     <table>
+ *       <tr><td rowspan=2>1</td><td colspan=2>2</td><td rowspan=2 colspan=2>3</td></tr>
+ *       <tr><td>4</td><td>5</td></tr>
+ *     </table>
  *
  * Visually this table would look like:
  *
- *    -------------------
- *   | 1 | 2     | 3     |
- *   |   |-------|       |
- *   |   | 4 | 5 |       |
- *    -------------------
+ *      -------------------
+ *     | 1 | 2     | 3     |
+ *     |   |-------|       |
+ *     |   | 4 | 5 |       |
+ *      -------------------
  *
  * The HTML model is sparse which makes it hard to read but also difficult to work with programmatically.
  * The corresponding TableCellMatrix would look like:
  *
- *   | C[1] | C[2] | P[2] | C[3] | P[3] |
- *   | P[1] | C[4] | C[5] | P[3] | P[3] |
+ *     | C[1] | C[2] | P[2] | C[3] | P[3] |
+ *     | P[1] | C[4] | C[5] | P[3] | P[3] |
  *
  * Where C[1] represents a Cell instance wrapping cell 1,
  * and P[1] a PlaceHolder instance owned by that cell.
