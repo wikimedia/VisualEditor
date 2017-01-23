@@ -9,7 +9,8 @@
 			"NoiX180",
 			"Pras",
 			"Tokoko",
-			"Chavch"
+			"Chavch",
+			"Silovan"
 		]
 	},
 	"visualeditor": "ვიზუალური რედაქტორი",
@@ -41,6 +42,10 @@
 	"visualeditor-content-select-all": "ყველაფრის მონიშვნა",
 	"visualeditor-contextitemwidget-label-remove": "წაშლა",
 	"visualeditor-contextitemwidget-label-secondary": "რედაქტირება",
+	"visualeditor-debugbar-close": "დახურვა",
+	"visualeditor-debugbar-logrange": "ჟურნალი",
+	"visualeditor-debugbar-showmodel": "მოდელის ჩვენება",
+	"visualeditor-debugbar-updatemodel": "ცვლილებების განახლება",
 	"visualeditor-dialog-action-apply": "ცვლილებების შენახვა",
 	"visualeditor-dialog-action-cancel": "გაუქმება",
 	"visualeditor-dialog-action-done": "გაკეთდა",
