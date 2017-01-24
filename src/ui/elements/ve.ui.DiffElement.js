@@ -340,7 +340,7 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 			// The new node was changed.
 			for ( k = 0, klen = treeDiff.length; k < klen; k++ ) {
 				if ( treeDiff[ k ][ 0 ] === iModified && treeDiff[ k ][ 1 ] === jModified ) {
-					if ( !( iModified in alreadyProcessed.remove ) &&
+					if ( !( jModified in alreadyProcessed.remove ) &&
 						!( iModified in alreadyProcessed.insert ) ) {
 
 						highlightChangedSubTree.call( this, iModified );
