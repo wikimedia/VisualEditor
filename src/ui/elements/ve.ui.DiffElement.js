@@ -241,7 +241,7 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 
 		// If previous node was found among siblings, insert the removed subtree just
 		// after its corresponding node in the new document. Otherwise insert the
-		// removed subtree just inside its parent node's correspondign node.
+		// removed subtree just inside its parent node's corresponding node.
 		if ( newPreviousNodeIndex ) {
 			insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().to - nodeRange.from;
 		} else {
@@ -292,24 +292,28 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 	 * this document child
 	 */
 	function highlightChangedSubTree( nodeIndex ) {
-		var subTreeRootNode, subTreeRootNodeRangeStart, subTreeRootNodeData, annotatedData;
+		var subTreeRootNode, subTreeRootNodeRangeStart, subTreeRootNodeData, annotatedData,
+			subTreeDiffInfo = diffInfo[ k ];
 
 		// The new node was changed.
 		// Get data for this node
 		subTreeRootNode = newNodes[ nodeIndex ];
 		subTreeRootNodeRangeStart = subTreeRootNode.node.getOuterRange().from - nodeRange.from;
 
-		if ( subTreeRootNode.node instanceof ve.dm.ContentBranchNode ) {
-			// If node is a CBN, splice in the annotated diff
-			subTreeRootNodeData = diffInfo[ k ].linearDiff;
+		if ( subTreeDiffInfo.linearDiff ) {
+			// If there is a content change, splice it in
+			subTreeRootNodeData = subTreeDiffInfo.linearDiff;
 			annotatedData = this.annotateNode( subTreeRootNodeData );
 			ve.batchSplice( nodeData, subTreeRootNodeRangeStart + 1, subTreeRootNode.node.length, annotatedData );
 		} else {
-			// If node is a BN, add change class
+			// If there is no content change, just add change class
 			nodeData[ subTreeRootNodeRangeStart ] = this.addClassesToNode(
 				nodeData[ subTreeRootNodeRangeStart ], this.newDoc, 'change'
 			);
 		}
+
+		// TODO: render type and attribute changes according to subTreeDiffInfo.typeChange
+		// and subTreeDiffInfo.attributeChange
 	}
 
 	// Iterate backwards over trees so that changes are made from right to left
@@ -343,7 +347,18 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 					if ( !( jModified in alreadyProcessed.remove ) &&
 						!( iModified in alreadyProcessed.insert ) ) {
 
-						highlightChangedSubTree.call( this, iModified );
+						if ( diffInfo[ k ].replacement ) {
+
+							// We are treating these nodes as removed and inserted
+							this.getNodeHtml( oldNodes[ jModified ].node, 'remove' );
+							this.getNodeHtml( newNodes[ iModified ].node, 'insert' );
+
+						} else {
+
+							// There could be any combination of content, attribute and type changes
+							highlightChangedSubTree.call( this, iModified, jModified );
+
+						}
 
 					}
 				}

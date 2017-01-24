@@ -243,7 +243,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 		insertLength,
 		diffLength = 0,
 		keepLength = 0,
-		diffInfo = {};
+		diffInfo = [];
 
 	/**
 	 * Get the index of the first or last wordbreak in a data array
@@ -436,16 +436,22 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 				!( newNode instanceof ve.dm.ContentBranchNode ) ) {
 
 				// There is no content change
+				diffInfo.push( {
+					typeChange: oldNode.type !== newNode.type,
+					attributeChange: !ve.compare( oldNode.getAttributes(), newNode.getAttributes() )
+				} );
 				continue;
 
 			} else if ( !( newNode instanceof ve.dm.ContentBranchNode ) ) {
 
 				// Content was removed
+				diffInfo.push( { replacement: true } );
 				removeLength = oldNode.length;
 
 			} else if ( !( oldNode instanceof ve.dm.ContentBranchNode ) ) {
 
 				// Content was inserted
+				diffInfo.push( { replacement: true } );
 				insertLength = newNode.length;
 
 			// If we got this far, they are both CBNs
@@ -458,7 +464,11 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 				linearDiff = getCleanDiff( linearDiff );
 
-				diffInfo[ i ] = { linearDiff: linearDiff };
+				diffInfo.push( {
+					linearDiff: linearDiff,
+					typeChange: oldNode.type !== newNode.type,
+					attributeChange: !ve.compare( oldNode.getAttributes(), newNode.getAttributes() )
+				} );
 
 				// Record how much content was removed and inserted
 				for ( j = 0, jlen = linearDiff.length; j < jlen; j++ ) {
