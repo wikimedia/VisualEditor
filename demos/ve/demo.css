@@ -56,7 +56,7 @@ body {
 	text-transform: capitalize;
 }
 
-.ve-demo-toolbar .ve-ui-languageInputWidget .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
+.ve-demo-toolbar .ve-ui-languageInputWidget .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
 	display: none;
 }
 
