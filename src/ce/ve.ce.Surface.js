@@ -2285,17 +2285,19 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 		}
 	}
 
-	// Extract "string" types.
-	for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
-		if (
-			dataTransfer.items[ i ].kind === 'string' &&
-			dataTransfer.items[ i ].type.substr( 0, 5 ) === 'text/'
-		) {
-			items.push( ve.ui.DataTransferItem.static.newFromString(
-				dataTransfer.getData( dataTransfer.items[ i ].type ),
-				dataTransfer.items[ i ].type,
-				htmlStringData
-			) );
+	if ( dataTransfer.items ) {
+		// Extract "string" types.
+		for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+			if (
+				dataTransfer.items[ i ].kind === 'string' &&
+				dataTransfer.items[ i ].type.substr( 0, 5 ) === 'text/'
+			) {
+				items.push( ve.ui.DataTransferItem.static.newFromString(
+					dataTransfer.getData( dataTransfer.items[ i ].type ),
+					dataTransfer.items[ i ].type,
+					htmlStringData
+				) );
+			}
 		}
 	}
 
