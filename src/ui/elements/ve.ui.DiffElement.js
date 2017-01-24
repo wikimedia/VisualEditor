@@ -223,31 +223,42 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		subTreeRootNodeData = this.oldDoc.getData( subTreeRootNode.node.getOuterRange() );
 		subTreeRootNodeData[ 0 ] = this.addClassesToNode( subTreeRootNodeData[ 0 ], this.oldDoc, 'remove' );
 
-		// Find the node that corresponds to the "previous node" of this node. The
-		// "previous node" is either:
-		// - the rightmost left sibling that corresponds to a node in the new document
-		// - or if there isn't one, then this node's parent (which must correspond to
-		// a node in the new document, or this node would have been marked already
-		// processed)
-		siblingNodes = subTreeRootNode.parent.children;
-		for ( i = 0, ilen = siblingNodes.length; i < ilen; i++ ) {
-			if ( siblingNodes[ i ].index === nodeIndex ) {
-				break;
-			} else {
-				oldPreviousNodeIndex = siblingNodes[ i ].index;
-				newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ] || newPreviousNodeIndex;
+		// If this node is a child of the document node, then it won't have a "previous
+		// node" (see below), in which case, insert it just before its corresponding
+		// node in the new document.
+		if ( subTreeRootNode.index === 0 ) {
+			insertIndex = newNodes[ correspondingNodes.oldToNew[ 0 ] ]
+				.node.getOuterRange().from - nodeRange.from;
+		} else {
+
+			// Find the node that corresponds to the "previous node" of this node. The
+			// "previous node" is either:
+			// - the rightmost left sibling that corresponds to a node in the new document
+			// - or if there isn't one, then this node's parent (which must correspond to
+			// a node in the new document, or this node would have been marked already
+			// processed)
+			siblingNodes = subTreeRootNode.parent.children;
+			for ( i = 0, ilen = siblingNodes.length; i < ilen; i++ ) {
+				if ( siblingNodes[ i ].index === nodeIndex ) {
+					break;
+				} else {
+					oldPreviousNodeIndex = siblingNodes[ i ].index;
+					newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ] || newPreviousNodeIndex;
+				}
 			}
+
+			// If previous node was found among siblings, insert the removed subtree just
+			// after its corresponding node in the new document. Otherwise insert the
+			// removed subtree just inside its parent node's corresponding node.
+			if ( newPreviousNodeIndex ) {
+				insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().to - nodeRange.from;
+			} else {
+				newPreviousNodeIndex = correspondingNodes.oldToNew[ subTreeRootNode.parent.index ];
+				insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().from - nodeRange.from;
+			}
+
 		}
 
-		// If previous node was found among siblings, insert the removed subtree just
-		// after its corresponding node in the new document. Otherwise insert the
-		// removed subtree just inside its parent node's corresponding node.
-		if ( newPreviousNodeIndex ) {
-			insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().to - nodeRange.from;
-		} else {
-			newPreviousNodeIndex = correspondingNodes.oldToNew[ subTreeRootNode.parent.index ];
-			insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().from - nodeRange.from;
-		}
 		ve.batchSplice( nodeData, insertIndex, 0, subTreeRootNodeData );
 
 		// Mark all children as already processed
@@ -350,8 +361,8 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 						if ( diffInfo[ k ].replacement ) {
 
 							// We are treating these nodes as removed and inserted
-							this.getNodeHtml( oldNodes[ jModified ].node, 'remove' );
-							this.getNodeHtml( newNodes[ iModified ].node, 'insert' );
+							highlightRemovedSubTree.call( this, jModified );
+							highlightInsertedSubTree.call( this, iModified );
 
 						} else {
 
