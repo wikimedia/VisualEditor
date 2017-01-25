@@ -44,7 +44,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		'input', 'mousedown'
 	] );
 	this.clipboard = null;
-	this.clipboardId = String( Math.random() );
+	this.clipboardId = Math.random().toString();
 	this.clipboardIndex = 0;
 	this.renderLocks = 0;
 	this.dragging = false;
