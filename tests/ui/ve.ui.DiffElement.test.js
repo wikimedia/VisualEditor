@@ -131,6 +131,30 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change ve-ui-diffElement-down">' +
 						'<p>foo bar <del class="ve-ui-diffElement-remove">baz</del><ins class="ve-ui-diffElement-insert">baz!</ins></p>' +
 					'</div>'
+			},
+			{
+				msg: 'Insert table column',
+				oldDoc: '<table><tr><td>A</td></tr><tr><td>C</td></tr></table>',
+				newDoc: '<table><tr><td>A</td><td>B</td></tr><tr><td>C</td><td>D</td></tr></table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td class="ve-ui-diffElement-insert">B</td></tr>' +
+							'<tr><td>C</td><td class="ve-ui-diffElement-insert">D</td></tr>' +
+						'</tbody></table>' +
+					'</div>'
+			},
+			{
+				msg: 'Remove table column',
+				oldDoc: '<table><tr><td>A</td><td>B</td></tr><tr><td>C</td><td>D</td></tr></table>',
+				newDoc: '<table><tr><td>A</td></tr><tr><td>C</td></tr></table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td class="ve-ui-diffElement-remove">B</td></tr>' +
+							'<tr><td>C</td><td class="ve-ui-diffElement-remove">D</td></tr>' +
+						'</tbody></table>' +
+					'</div>'
 			}
 		];
 
