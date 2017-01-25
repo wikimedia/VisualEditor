@@ -72,6 +72,7 @@
 	"visualeditor-dialog-language-search-title": "Title for language search dialog\n{{Identical|Select language}}",
 	"visualeditor-dialog-table-caption": "Label for caption toggle in table dialog.\n{{Identical|Caption}}",
 	"visualeditor-dialog-table-title": "Title for the table dialog.",
+	"visualeditor-diff-nochanges": "Label shown when there are no changes in the diff",
 	"visualeditor-dimensionswidget-px": "{{optional}}\nLabel for the dimensions properties denoting pixel units.",
 	"visualeditor-dimensionswidget-times": "{{optional}}\nLabel for the dimensions properties denoting 'by', as in width x height.",
 	"visualeditor-find-and-replace-done": "Label for button to finish using the find and replace dialog\n{{Identical|Done}}",
