@@ -91,6 +91,26 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<figure class="ve-align-right ve-ui-diffElement-change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
 					'</div>'
+			},
+			{
+				msg: 'Node inserted',
+				oldDoc: '<p>foo</p>',
+				newDoc: '<p>foo</p><div rel="ve:Alien">Alien</div>',
+				expected:
+					'<p class="ve-ui-diffElement-none">foo</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<div rel="ve:Alien" class="ve-ui-diffElement-insert">Alien</div>' +
+					'</div>'
+			},
+			{
+				msg: 'Node removed',
+				oldDoc: '<p>foo</p><div rel="ve:Alien">Alien</div>',
+				newDoc: '<p>foo</p>',
+				expected:
+					'<p class="ve-ui-diffElement-none">foo</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<div rel="ve:Alien" class="ve-ui-diffElement-remove">Alien</div>' +
+					'</div>'
 			}
 		];
 
