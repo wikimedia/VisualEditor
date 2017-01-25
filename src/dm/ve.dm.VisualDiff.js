@@ -123,9 +123,6 @@ ve.dm.VisualDiff.prototype.compareDocChildren = function ( oldDocChild, newDocCh
 	oldData = this.oldDoc.getData( oldDocChild.getOuterRange() );
 	newData = this.newDoc.getData( newDocChild.getOuterRange() );
 
-	if ( oldData.length !== newData.length ) {
-		return false;
-	}
 	if ( JSON.stringify( oldData ) === JSON.stringify( newData ) ) {
 		return true;
 	}
