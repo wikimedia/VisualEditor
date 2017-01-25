@@ -26,6 +26,12 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Non semantic whitespace change (no diff)',
+				oldDoc: '<p>foo</p>',
+				newDoc: '<p>  foo  </p>',
+				expected: '<div class="ve-ui-diffElement-no-changes">No changes</div>'
+			},
+			{
 				msg: 'Simple text change with non-whitespace word break boundaires',
 				oldDoc: '<p>foo"bar"baz</p>',
 				newDoc: '<p>foo"bXr"baz</p>',
