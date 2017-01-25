@@ -57,8 +57,8 @@ ve.dm.TestRebaseServer = function VeDmRebaseServer() {
 
 OO.inheritClass( ve.dm.TestRebaseServer, ve.dm.RebaseServer );
 
-ve.dm.TestRebaseServer.prototype.historySummary = function () {
-	return ve.dm.testHistorySummary( this.stateForDoc.get( 'foo' ).history );
+ve.dm.TestRebaseServer.prototype.historySummary = function historySummary() {
+	return ve.dm.testHistorySummary( this.getDocState( 'foo' ).history );
 };
 
 ve.dm.TestRebaseClient = function VeDmTestRebaseClient( server, sharedIncoming ) {
