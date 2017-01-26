@@ -756,9 +756,23 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 			{
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'HOME' ],
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				msg: 'Cursor home off a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'UP' ],
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				msg: 'Cursor up off a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'PAGEUP' ],
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				msg: 'Cursor page up off a block node'
 			},
 			{
 				htmlOrDoc: blockImageDoc,
@@ -770,9 +784,23 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 			{
 				htmlOrDoc: blockImageDoc,
 				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'END' ],
+				expectedRangeOrSelection: new ve.Range( 19 ),
+				msg: 'Cursor end off a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
 				keys: [ 'DOWN' ],
 				expectedRangeOrSelection: new ve.Range( 19 ),
 				msg: 'Cursor down off a block node'
+			},
+			{
+				htmlOrDoc: blockImageDoc,
+				rangeOrSelection: new ve.Range( 5, 18 ),
+				keys: [ 'PAGEDOWN' ],
+				expectedRangeOrSelection: new ve.Range( 19 ),
+				msg: 'Cursor page down off a block node'
 			},
 			// Cursoring onto a block node, which should focus it
 			// Again, these are forcibly moving the cursor, so it's not a perfect

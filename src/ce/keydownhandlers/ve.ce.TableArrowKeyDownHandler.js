@@ -27,7 +27,7 @@ ve.ce.TableArrowKeyDownHandler.static.name = 'tableArrow';
 
 ve.ce.TableArrowKeyDownHandler.static.keys = [
 	OO.ui.Keys.UP, OO.ui.Keys.DOWN, OO.ui.Keys.LEFT, OO.ui.Keys.RIGHT,
-	OO.ui.Keys.END, OO.ui.Keys.HOME, OO.ui.Keys.PAGEUP, OO.ui.Keys.PAGEDOWN,
+	OO.ui.Keys.HOME, OO.ui.Keys.END, OO.ui.Keys.PAGEUP, OO.ui.Keys.PAGEDOWN,
 	OO.ui.Keys.TAB
 ];
 
