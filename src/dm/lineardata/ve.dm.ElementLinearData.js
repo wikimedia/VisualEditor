@@ -60,6 +60,9 @@ ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
 	if ( Array.isArray( b ) ) {
 		bPlain = b[ 0 ];
 	}
+	if ( aPlain === bPlain ) {
+		return true;
+	}
 	if ( a && a.type ) {
 		aPlain = {
 			type: a.type,
@@ -89,13 +92,26 @@ ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
  * @return {boolean} Elements are comparable
  */
 ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore ) {
-	var aSet, bSet, aAnnotations, bAnnotations;
+	var aType, aSet, bSet, aAnnotations, bAnnotations;
 
-	bStore = bStore || aStore;
+	if ( a === b ) {
+		return true;
+	}
 
+	aType = typeof a;
+
+	if ( aType !== typeof b ) {
+		// Different types
+		return false;
+	}
+	if ( aType === 'string' ) {
+		// Both strings, and not equal
+		return false;
+	}
 	if ( !this.compareElementsUnannotated( a, b ) ) {
 		return false;
 	}
+	// Elements are equal without annotations, now compare annotations:
 	if ( Array.isArray( a ) ) {
 		aAnnotations = a[ 1 ];
 	}
@@ -110,7 +126,7 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 	}
 
 	aSet = new ve.dm.AnnotationSet( aStore, aAnnotations || [] );
-	bSet = new ve.dm.AnnotationSet( bStore, bAnnotations || [] );
+	bSet = new ve.dm.AnnotationSet( bStore || aStore, bAnnotations || [] );
 
 	return aSet.compareTo( bSet );
 };
