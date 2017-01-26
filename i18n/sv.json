@@ -63,6 +63,7 @@
 	"visualeditor-dialog-language-search-title": "Välj språk",
 	"visualeditor-dialog-table-caption": "Bildtext",
 	"visualeditor-dialog-table-title": "Tabellegenskaper",
+	"visualeditor-diff-nochanges": "Kunde inte granska eftersom din version matchar den senaste versionen av denna sida.",
 	"visualeditor-find-and-replace-done": "Klart",
 	"visualeditor-find-and-replace-find-text": "Sök",
 	"visualeditor-find-and-replace-invalid-regex": "Ogiltigt reguljärt uttryck",

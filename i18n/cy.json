@@ -58,6 +58,7 @@
 	"visualeditor-dialog-language-search-title": "Dewis iaith",
 	"visualeditor-dialog-table-caption": "Pennawd",
 	"visualeditor-dialog-table-title": "Priodweddau'r tabl",
+	"visualeditor-diff-nochanges": "Ni ellid dechrau adolygu oherwydd bod y diwygiad hwn yn union debyg i ddiwygiad diweddaraf y dudalen hon.",
 	"visualeditor-find-and-replace-done": "Wedi cwblhau",
 	"visualeditor-find-and-replace-find-text": "Canfod",
 	"visualeditor-find-and-replace-invalid-regex": "Mynegiad rheolaidd annilys",

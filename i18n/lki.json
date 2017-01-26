@@ -43,6 +43,7 @@
 	"visualeditor-dialog-error-dismiss": "بوو دؤما/ عقب",
 	"visualeditor-dialog-language-auto-direction": "خودکار",
 	"visualeditor-dialog-language-search-title": "زوون انتخاب کۀ",
+	"visualeditor-diff-nochanges": "امکان آغاز بازبینی نبود چراکه نسخهٔ شما با آخرین نسخهٔ این صفحه یکسان است.",
 	"visualeditor-find-and-replace-done": "انجؤم بی",
 	"visualeditor-find-and-replace-find-text": "آدئین(پێاکرن)",
 	"visualeditor-find-and-replace-invalid-regex": "عبارت باقاعده نامعتبر",

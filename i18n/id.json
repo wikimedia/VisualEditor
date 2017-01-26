@@ -53,6 +53,7 @@
 	"visualeditor-dialog-language-search-title": "Pilih bahasa",
 	"visualeditor-dialog-table-caption": "Judul",
 	"visualeditor-dialog-table-title": "Atribut tabel",
+	"visualeditor-diff-nochanges": "Tidak dapat memulai peninjauan karena revisi Anda cocok dengan versi terbaru dari halaman ini.",
 	"visualeditor-dimensionswidget-px": "piks",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-done": "Selesai",

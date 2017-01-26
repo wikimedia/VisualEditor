@@ -64,6 +64,7 @@
 	"visualeditor-dialog-language-search-title": "Selecciona un idioma",
 	"visualeditor-dialog-table-caption": "Peu d'imatge",
 	"visualeditor-dialog-table-title": "Propietats de la taula",
+	"visualeditor-diff-nochanges": "No s'ha pogut començar la revisió perquè la vostra edició coincideix amb la darrera versió d'aquesta pàgina.",
 	"visualeditor-find-and-replace-done": "Fet",
 	"visualeditor-find-and-replace-find-text": "Cerca",
 	"visualeditor-find-and-replace-invalid-regex": "Expressió regular no vàlida",

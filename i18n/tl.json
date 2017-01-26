@@ -42,6 +42,7 @@
 	"visualeditor-dialog-error-dismiss": "Bumalik",
 	"visualeditor-dialog-language-auto-direction": "Automatiko",
 	"visualeditor-dialog-language-search-title": "Pumili ng wika",
+	"visualeditor-diff-nochanges": "Hindi masimulan ang repaso dahil umaayon ang pagbabago mo sa pinakahuling bersiyon ng pahinang ito.",
 	"visualeditor-find-and-replace-invalid-regex": "Hindi wastong regular na ekspresyon",
 	"visualeditor-find-and-replace-match-case": "Itugma kung malaki o maliit na titik",
 	"visualeditor-find-and-replace-next-button": "Hanapin ang kasunod",

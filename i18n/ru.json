@@ -20,7 +20,8 @@
 			"Nirovulf",
 			"Perevod16",
 			"Jackie",
-			"Mailman"
+			"Mailman",
+			"Ctac"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -69,6 +70,7 @@
 	"visualeditor-dialog-language-search-title": "Выберите язык",
 	"visualeditor-dialog-table-caption": "Подпись",
 	"visualeditor-dialog-table-title": "Свойства таблицы",
+	"visualeditor-diff-nochanges": "Правки были проигнорированы, потому что вы не внесли никаких изменений в текст.",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Найти",
 	"visualeditor-find-and-replace-invalid-regex": "Недопустимое регулярное выражение",
@@ -141,10 +143,10 @@
 	"visualeditor-table-merge-cells": "Объединить ячейки",
 	"visualeditor-table-merge-cells-merge": "Объединить",
 	"visualeditor-table-merge-cells-unmerge": "Разделить",
-	"visualeditor-table-move-col-after": "Двигаться после",
-	"visualeditor-table-move-col-before": "Прежде чем двигаться",
-	"visualeditor-table-move-row-after": "Двигаться ниже",
-	"visualeditor-table-move-row-before": "Двигаться выше",
+	"visualeditor-table-move-col-after": "Передвинуть вправо",
+	"visualeditor-table-move-col-before": "Передвинуть влево",
+	"visualeditor-table-move-row-after": "Передвинуть ниже",
+	"visualeditor-table-move-row-before": "Передвинуть вверх",
 	"visualeditor-tablecell-contextitem": "Ячейка таблицы",
 	"visualeditor-tablecell-tooltip": "Дважды кликните для редактирования ячейки",
 	"visualeditor-toolbar-format-tooltip": "Формат абзаца",

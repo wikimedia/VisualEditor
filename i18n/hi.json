@@ -55,6 +55,7 @@
 	"visualeditor-dialog-language-search-title": "भाषा चुनें",
 	"visualeditor-dialog-table-caption": "शीर्षक",
 	"visualeditor-dialog-table-title": "सारणी गुण",
+	"visualeditor-diff-nochanges": "बदलाव जाँच नहीं की जा सकती क्योंकि आपका अवतरण सद्य अवतरण से मेल खाता है।",
 	"visualeditor-find-and-replace-done": "पूर्ण हुआ",
 	"visualeditor-find-and-replace-find-text": "खोजें",
 	"visualeditor-find-and-replace-invalid-regex": "अवैध रेगुलर एक्सप्रेशन",

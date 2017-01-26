@@ -59,6 +59,7 @@
 	"visualeditor-dialog-language-search-title": "Nyelvválasztás",
 	"visualeditor-dialog-table-caption": "Cím",
 	"visualeditor-dialog-table-title": "Táblázattulajdonságok",
+	"visualeditor-diff-nochanges": "A felülvizsgálat nem kezdhető el, mert a te változatod megegyezik a lap utolsó változatával.",
 	"visualeditor-find-and-replace-done": "Kész",
 	"visualeditor-find-and-replace-find-text": "Keresés",
 	"visualeditor-find-and-replace-invalid-regex": "Hibás reguláris kifejezés",

@@ -67,6 +67,7 @@
 	"visualeditor-dialog-language-search-title": "언어 선택",
 	"visualeditor-dialog-table-caption": "설명",
 	"visualeditor-dialog-table-title": "표 속성",
+	"visualeditor-diff-nochanges": "당신의 판이 이 문서의 최신 판과 일치하기 때문에 검토를 시작할 수 없습니다.",
 	"visualeditor-find-and-replace-done": "완료",
 	"visualeditor-find-and-replace-find-text": "찾기",
 	"visualeditor-find-and-replace-invalid-regex": "잘못된 정규 표현식",

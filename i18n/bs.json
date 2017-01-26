@@ -48,6 +48,7 @@
 	"visualeditor-dialog-language-search-title": "Izaberi jezik",
 	"visualeditor-dialog-table-caption": "Zaglavlje",
 	"visualeditor-dialog-table-title": "Svojstva tabele",
+	"visualeditor-diff-nochanges": "Revidiranje nije moglo početi jer vaša revizija odgovara posljednjoj verziji ove stranice.",
 	"visualeditor-find-and-replace-done": "Gotovo",
 	"visualeditor-find-and-replace-find-text": "Traži",
 	"visualeditor-find-and-replace-invalid-regex": "Nevažeći regularni izraz",

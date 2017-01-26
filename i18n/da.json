@@ -51,6 +51,7 @@
 	"visualeditor-dialog-language-auto-direction": "Auto",
 	"visualeditor-dialog-language-search-title": "Vælg sprog",
 	"visualeditor-dialog-table-title": "Egenskaber for tabel",
+	"visualeditor-diff-nochanges": "Kunne ikke starte gennemgangen, fordi din version svarer til den seneste version af denne side.",
 	"visualeditor-find-and-replace-done": "Udført",
 	"visualeditor-find-and-replace-find-text": "Søg",
 	"visualeditor-find-and-replace-next-button": "Find næste",

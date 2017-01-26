@@ -52,6 +52,7 @@
 	"visualeditor-dialog-language-search-title": "Chọn ngôn ngữ",
 	"visualeditor-dialog-table-caption": "Chú thích",
 	"visualeditor-dialog-table-title": "Thuộc tính bảng",
+	"visualeditor-diff-nochanges": "Không thể bắt đầu xem lại vì phiên bản của bạn hoàn toàn trùng với phiên bản mới nhất của trang này.",
 	"visualeditor-dimensionswidget-px": "điểm ảnh",
 	"visualeditor-find-and-replace-done": "Xong",
 	"visualeditor-find-and-replace-find-text": "Tìm kiếm",

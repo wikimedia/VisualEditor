@@ -53,6 +53,7 @@
 	"visualeditor-dialog-language-search-title": "Izvēlieties valodu",
 	"visualeditor-dialog-table-caption": "Virsraksts",
 	"visualeditor-dialog-table-title": "Tabulas parametri",
+	"visualeditor-diff-nochanges": "Nevarējām sākt pārskatīšanu, jo šī versija jau atbilst lapas svaigākajai versijai.",
 	"visualeditor-find-and-replace-done": "Gatavs",
 	"visualeditor-find-and-replace-find-text": "Atrast",
 	"visualeditor-find-and-replace-invalid-regex": "Nederīga regulārā izteiksme",

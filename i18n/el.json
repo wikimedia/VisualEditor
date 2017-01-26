@@ -53,6 +53,7 @@
 	"visualeditor-dialog-language-search-title": "Επιλογή γλώσσας",
 	"visualeditor-dialog-table-caption": "Λεζάντα",
 	"visualeditor-dialog-table-title": "Ιδιότητες πίνακα",
+	"visualeditor-diff-nochanges": "Δεν ήταν δυνατή η εκκίνηση του ελέγχου, επειδή η αναθεώρησή σας ταιριάζει με την τελευταία έκδοση αυτής της σελίδας.",
 	"visualeditor-find-and-replace-done": "Έγινε",
 	"visualeditor-find-and-replace-find-text": "Εύρεση",
 	"visualeditor-find-and-replace-invalid-regex": "Μη έγκυρη κανονική έκφραση",

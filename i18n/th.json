@@ -43,6 +43,7 @@
 	"visualeditor-dialog-error-dismiss": "กลับไป",
 	"visualeditor-dialog-language-auto-direction": "อัตโนมัติ",
 	"visualeditor-dialog-language-search-title": "เลือกภาษา",
+	"visualeditor-diff-nochanges": "ไม่สามารถเริ่มการทบทวนเนื่องจากรุ่นของคุณตรงกับรุ่นล่าสุดของหน้านี้",
 	"visualeditor-find-and-replace-done": "สำเร็จ",
 	"visualeditor-find-and-replace-find-text": "ค้นหา",
 	"visualeditor-find-and-replace-invalid-regex": "นิพจน์ปรกติไม่สมเหตุสมผล",

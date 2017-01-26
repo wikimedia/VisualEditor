@@ -70,6 +70,7 @@
 	"visualeditor-dialog-language-search-title": "Dil seç",
 	"visualeditor-dialog-table-caption": "Başlık",
 	"visualeditor-dialog-table-title": "Tablo Özellikleri",
+	"visualeditor-diff-nochanges": "İnceleme başlatılamadı, çünkü revizyonunuz sayfanın en son sürümüyle eş durumda.",
 	"visualeditor-find-and-replace-done": "Bitti",
 	"visualeditor-find-and-replace-find-text": "Bul",
 	"visualeditor-find-and-replace-invalid-regex": "Geçersiz düzenli ifade",

@@ -50,6 +50,7 @@
 	"visualeditor-dialog-language-search-title": "Izbira jezika",
 	"visualeditor-dialog-table-caption": "Napis",
 	"visualeditor-dialog-table-title": "Lastnosti tabele",
+	"visualeditor-diff-nochanges": "Ne morem prikazati primerjave, saj je vaša redakcija enaka zadnji različici strani.",
 	"visualeditor-find-and-replace-done": "Končano",
 	"visualeditor-find-and-replace-find-text": "Poišči",
 	"visualeditor-find-and-replace-invalid-regex": "Neveljaven regularni izraz",

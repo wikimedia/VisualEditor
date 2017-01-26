@@ -63,6 +63,7 @@
 	"visualeditor-dialog-language-search-title": "انتخاب زبان",
 	"visualeditor-dialog-table-caption": "عنوان",
 	"visualeditor-dialog-table-title": "ويژگی‌های جدول",
+	"visualeditor-diff-nochanges": "امکان آغاز بازبینی نبود چراکه نسخهٔ شما با آخرین نسخهٔ این صفحه یکسان است.",
 	"visualeditor-find-and-replace-done": "انجام شد",
 	"visualeditor-find-and-replace-find-text": "یافتن",
 	"visualeditor-find-and-replace-invalid-regex": "عبارت باقاعده نامعتبر",

@@ -52,6 +52,7 @@
 	"visualeditor-dialog-language-search-title": "Pasirinkite kalbą",
 	"visualeditor-dialog-table-caption": "Antraštė",
 	"visualeditor-dialog-table-title": "Lentelės nustatymai",
+	"visualeditor-diff-nochanges": "Nepavyko paleisti peržiūros, nes jūsų peržiūra atitinka paskutinę šio puslapio versiją.",
 	"visualeditor-find-and-replace-done": "Atlikta",
 	"visualeditor-find-and-replace-find-text": "Ieškoti",
 	"visualeditor-find-and-replace-invalid-regex": "Neteisinga reguliarioji išraiška",

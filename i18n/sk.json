@@ -48,6 +48,7 @@
 	"visualeditor-dialog-language-search-title": "Vybrať jazyk",
 	"visualeditor-dialog-table-caption": "Titulok",
 	"visualeditor-dialog-table-title": "Vlastnosti tabuľky",
+	"visualeditor-diff-nochanges": "Nepodarilo sa spustiť kontrolu, protože vaša revízia zodpovedá najnovšej verzii stránky.",
 	"visualeditor-find-and-replace-done": "Hotovo",
 	"visualeditor-find-and-replace-find-text": "Hľadať",
 	"visualeditor-find-and-replace-invalid-regex": "Chybný regulárny výraz",

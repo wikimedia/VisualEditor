@@ -48,6 +48,7 @@
 	"visualeditor-dialog-language-search-title": "Keele valimine",
 	"visualeditor-dialog-table-caption": "Pealkiri",
 	"visualeditor-dialog-table-title": "Tabeli atribuudid",
+	"visualeditor-diff-nochanges": "Ülevaatusega ei saa alustada, sest sinu redaktsioon kattub selle lehekülje viimase versiooniga.",
 	"visualeditor-find-and-replace-done": "Valmis",
 	"visualeditor-find-and-replace-find-text": "Otsitav",
 	"visualeditor-find-and-replace-invalid-regex": "Vigane regulaaravaldis",

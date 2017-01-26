@@ -65,6 +65,7 @@
 	"visualeditor-dialog-language-search-title": "Wybierz język",
 	"visualeditor-dialog-table-caption": "Nagłówek",
 	"visualeditor-dialog-table-title": "Właściwości tabeli",
+	"visualeditor-diff-nochanges": "Nie można uruchomić przeglądania zmian, ponieważ twoja wersja jest tożsama z ostatnią zapisaną wersją tej strony.",
 	"visualeditor-find-and-replace-done": "Gotowe",
 	"visualeditor-find-and-replace-find-text": "Znajdź",
 	"visualeditor-find-and-replace-invalid-regex": "Nieprawidłowe wyrażenie regularne",

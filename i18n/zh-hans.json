@@ -69,6 +69,7 @@
 	"visualeditor-dialog-language-search-title": "选择语言",
 	"visualeditor-dialog-table-caption": "说明",
 	"visualeditor-dialog-table-title": "表格属性",
+	"visualeditor-diff-nochanges": "您无法开始检查，因为您没有更改任何内容。",
 	"visualeditor-find-and-replace-done": "完成",
 	"visualeditor-find-and-replace-find-text": "查找",
 	"visualeditor-find-and-replace-invalid-regex": "无效的正则表达式",
