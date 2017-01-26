@@ -137,7 +137,7 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 	}
 
 	if ( !anyChanges ) {
-		return [ $( '<div class="ve-ui-diffElement-no-changes">' ).text( ve.msg( 'visualeditor-diff-nochanges' ) ) ];
+		return [ $( '<div class="ve-ui-diffElement-no-changes">' ).text( ve.msg( 'visualeditor-diff-no-changes' ) ) ];
 	} else {
 		return diffHtml;
 	}
