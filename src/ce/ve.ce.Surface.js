@@ -2336,7 +2336,8 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 	targetFragment = targetFragment || this.getModel().getFragment();
 
 	function insert( docOrData ) {
-		var resultFragment = targetFragment.collapseToEnd();
+		// For non-paste transfers, don't overwrite the selection
+		var resultFragment = !isPaste ? targetFragment.collapseToEnd() : targetFragment;
 		if ( docOrData instanceof ve.dm.Document ) {
 			resultFragment.insertDocument( docOrData );
 		} else {
