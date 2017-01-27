@@ -890,7 +890,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 			// content correctly is MUCH more complicated
 			if ( ve.dm.LinearData.static.isOpenElementData( item ) ) {
 				item = annotatedData[ i ] = ve.copy( item );
-				item.annotations = annotations.storeIndexes.concat( item.annotations );
+				item.annotations = annotations.storeIndexes.concat( item.annotations || [] );
 			} else if ( ve.dm.LinearData.static.isCloseElementData( item ) ) {
 				annotatedData[ i ] = ve.copy( item );
 			} else if ( Array.isArray( item ) ) {

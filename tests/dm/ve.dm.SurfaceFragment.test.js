@@ -462,7 +462,7 @@ QUnit.test( 'delete', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'insertContent', 11, function ( assert ) {
+QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 3, 4 ) );
@@ -554,6 +554,24 @@ QUnit.test( 'insertContent', 11, function ( assert ) {
 		fragment.getSelection().getRange(),
 		new ve.Range( 5, 7 ),
 		'range covers inserted content in moved position (right)'
+	);
+
+	// Set up document and surface from scratch
+	doc = ve.dm.example.createExampleDocument();
+	surface = new ve.dm.Surface( doc );
+
+	fragment = surface.getLinearFragment( new ve.Range( 3, 4 ) );
+	fragment.insertDocument( new ve.dm.Document( [
+		{ type: 'paragraph' }, { type: 'alienInline' }, { type: '/alienInline' }, { type: '/paragraph' },
+		{ type: 'internalList' }, { type: '/internalList' }
+	] ), new ve.Range( 1, 3 ), true );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 3, 5 ) ),
+		[
+			{ type: 'alienInline', annotations: [ ve.dm.example.italicIndex ] },
+			{ type: '/alienInline' }
+		],
+		'Inline node inserted in annotation gets annotated'
 	);
 } );
 
