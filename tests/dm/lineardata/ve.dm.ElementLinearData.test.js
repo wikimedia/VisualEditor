@@ -1719,13 +1719,16 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Newline characters are stripped and replaced with spaces where necessary'
 			},
 			{
-				html: '<p>Foo\nBar\n <pre>Baz \nQuux</pre></p>',
+				html: '<p>Foo\nBar\n </p><pre>Baz \nQuux<!--comment-->\nWhee</pre>',
 				data: [
 					{ type: 'paragraph' },
 					'F', 'o', 'o', ' ', 'B', 'a', 'r',
 					{ type: '/paragraph' },
 					{ type: 'preformatted' },
 					'B', 'a', 'z', ' ', '\n', 'Q', 'u', 'u', 'x',
+					{ type: 'comment', attributes: { text: 'comment' } },
+					{ type: '/comment' },
+					'\n', 'W', 'h', 'e', 'e',
 					{ type: '/preformatted' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
