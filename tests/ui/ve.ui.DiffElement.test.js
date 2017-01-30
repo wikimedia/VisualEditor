@@ -192,6 +192,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		oldDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].oldDoc ) );
 		newDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].newDoc ) );
+		// TODO: Differ expects newDoc to be derived from oldDoc and contain all its store data.
+		// We may want to remove that assumption from the differ?
 		newDoc.getStore().merge( oldDoc.getStore() );
 		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
 		diffElement = new ve.ui.DiffElement( visualDiff );
