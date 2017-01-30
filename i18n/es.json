@@ -74,7 +74,7 @@
 	"visualeditor-dialog-language-search-title": "Seleccionar idioma",
 	"visualeditor-dialog-table-caption": "Leyenda",
 	"visualeditor-dialog-table-title": "Propiedades de la tabla",
-	"visualeditor-diff-nochanges": "No se pudo iniciar la revisión porque tu modificación coincide con la última versión de esta página.",
+	"visualeditor-diff-no-changes": "Sin cambios",
 	"visualeditor-find-and-replace-done": "Hecho",
 	"visualeditor-find-and-replace-find-text": "Buscar",
 	"visualeditor-find-and-replace-invalid-regex": "Expresión regular no válida",

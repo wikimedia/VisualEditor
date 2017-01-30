@@ -63,7 +63,7 @@
 	"visualeditor-dialog-language-search-title": "בחירת שפה",
 	"visualeditor-dialog-table-caption": "כותרת",
 	"visualeditor-dialog-table-title": "מאפייני טבלה",
-	"visualeditor-diff-nochanges": "לא ניתן להתחיל את הסקירה, כי הגרסה שלך זהה לגרסה האחרונה של הדף.",
+	"visualeditor-diff-no-changes": "אין שינויים",
 	"visualeditor-dimensionswidget-px": "פיקסל",
 	"visualeditor-find-and-replace-done": "סיום",
 	"visualeditor-find-and-replace-find-text": "חיפוש",

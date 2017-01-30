@@ -21,7 +21,8 @@
 			"Perevod16",
 			"Jackie",
 			"Mailman",
-			"Ctac"
+			"Ctac",
+			"Kareyac"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -70,7 +71,7 @@
 	"visualeditor-dialog-language-search-title": "Выберите язык",
 	"visualeditor-dialog-table-caption": "Подпись",
 	"visualeditor-dialog-table-title": "Свойства таблицы",
-	"visualeditor-diff-nochanges": "Правки были проигнорированы, потому что вы не внесли никаких изменений в текст.",
+	"visualeditor-diff-no-changes": "Никаких изменений",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Найти",
 	"visualeditor-find-and-replace-invalid-regex": "Недопустимое регулярное выражение",

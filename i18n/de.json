@@ -63,7 +63,7 @@
 	"visualeditor-dialog-language-search-title": "Sprache auswählen",
 	"visualeditor-dialog-table-caption": "Überschrift",
 	"visualeditor-dialog-table-title": "Tabelleneigenschaften",
-	"visualeditor-diff-nochanges": "Die Überprüfung konnte nicht gestartet werden, da deine Version der aktuellen Seitenversion entspricht.",
+	"visualeditor-diff-no-changes": "Keine Änderungen",
 	"visualeditor-find-and-replace-done": "Fertig",
 	"visualeditor-find-and-replace-find-text": "Suchen",
 	"visualeditor-find-and-replace-invalid-regex": "Ungültiger regulärer Ausdruck",

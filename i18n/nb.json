@@ -58,7 +58,7 @@
 	"visualeditor-dialog-language-search-title": "Velg språk",
 	"visualeditor-dialog-table-caption": "Tittel",
 	"visualeditor-dialog-table-title": "Tabellegenskaper",
-	"visualeditor-diff-nochanges": "Kunne ikke starte gjennomgangen siden din versjon er helt lik den forrige versjonen av denne siden.",
+	"visualeditor-diff-no-changes": "Ingen endringer",
 	"visualeditor-find-and-replace-done": "Ferdig",
 	"visualeditor-find-and-replace-find-text": "Finn",
 	"visualeditor-find-and-replace-invalid-regex": "Ugyldig regulært uttrykk",

@@ -87,7 +87,7 @@
 	"visualeditor-dialog-language-search-title": "Sélectionner la langue",
 	"visualeditor-dialog-table-caption": "Légende",
 	"visualeditor-dialog-table-title": "Propriétés du tableau",
-	"visualeditor-diff-nochanges": "Impossible de commencer la relecture car votre révision correspond à la dernière version de cette page.",
+	"visualeditor-diff-no-changes": "Pas de modifications",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-done": "Fermer",

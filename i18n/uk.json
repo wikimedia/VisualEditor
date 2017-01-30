@@ -67,7 +67,6 @@
 	"visualeditor-dialog-language-search-title": "Вибір мови",
 	"visualeditor-dialog-table-caption": "Заголовок",
 	"visualeditor-dialog-table-title": "Властивості таблиці",
-	"visualeditor-diff-nochanges": "Не вдалося запустити перегляд, бо ваша редакція відповідає останній версії цієї сторінки.",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Пошук",
 	"visualeditor-find-and-replace-invalid-regex": "Неправильний регулярний вираз",

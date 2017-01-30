@@ -7,7 +7,8 @@
 			"Yekrats",
 			"Ochilov",
 			"Psychoslave",
-			"Robin van der Vliet"
+			"Robin van der Vliet",
+			"NMaia"
 		]
 	},
 	"visualeditor": "VidRedaktilo",
@@ -40,6 +41,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Forigi",
 	"visualeditor-contextitemwidget-label-secondary": "Redakti",
 	"visualeditor-debugbar-close": "Fermi",
+	"visualeditor-debugbar-logrange": "Protokolo",
 	"visualeditor-dialog-action-apply": "Apliki ŝanĝojn",
 	"visualeditor-dialog-action-cancel": "Nuligi",
 	"visualeditor-dialog-action-done": "Apliki",

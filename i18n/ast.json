@@ -54,7 +54,7 @@
 	"visualeditor-dialog-language-search-title": "Escoyer llingua",
 	"visualeditor-dialog-table-caption": "Pie",
 	"visualeditor-dialog-table-title": "Propiedaes de la tabla",
-	"visualeditor-diff-nochanges": "Nun pudo aniciase la revisión porque la so revisión coincide cola última versión d'esta páxina.",
+	"visualeditor-diff-no-changes": "Nun hai cambeos",
 	"visualeditor-find-and-replace-done": "Fecho",
 	"visualeditor-find-and-replace-find-text": "Alcontrar",
 	"visualeditor-find-and-replace-invalid-regex": "Espresión regular inválida",
