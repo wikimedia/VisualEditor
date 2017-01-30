@@ -190,6 +190,7 @@ ve.extendObject = $.extend;
 ve.supportsSplice = ( function () {
 	var a, n;
 
+	// Support: Safari 8
 	// This returns false in Safari 8
 	a = new Array( 100000 );
 	a.splice( 30, 0, 'x' );
@@ -198,6 +199,7 @@ ve.supportsSplice = ( function () {
 		return false;
 	}
 
+	// Support: Opera 12.15
 	// This returns false in Opera 12.15
 	a = [];
 	n = 256;
@@ -805,6 +807,7 @@ ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
  */
 ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	var newDocument, $iframe, iframe;
+
 	// Here's what this fallback code should look like:
 	//
 	//     var newDocument = document.implementation.createHtmlDocument( '' );
@@ -830,6 +833,10 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	// contentDocument. The only browser having issues with that is Opera (sometimes the accessible
 	// value is not actually a Document, but something which behaves just like an empty regular
 	// object...), so we're detecting that and using the innerHTML hack described above.
+
+	// Support: IE9
+	// Support: Firefox 20
+	// Support: Opera 12
 
 	html = html || '<body></body>';
 
@@ -990,6 +997,7 @@ ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
 		}
 		// else: <base> tag present and valid, do nothing
 	} else if ( fallbackBase ) {
+		// Support: Firefox
 		// No <base> tag, add one
 		baseNode = targetDoc.createElement( 'base' );
 		baseNode.setAttribute( 'href', fallbackBase );
@@ -1232,6 +1240,7 @@ ve.serializeXhtmlElement = function ( element ) {
 		ve.isStyleAttributeBroken = ve.normalizeAttributeValue( 'style', 'color:#ffd' ) !== 'color:#ffd';
 	}
 	if ( !ve.isStyleAttributeBroken ) {
+		// Support: Firefox
 		// Use outerHTML if possible because in Firefox, XMLSerializer URL-encodes
 		// hrefs but outerHTML doesn't
 		return ve.properOuterHtml( element );
@@ -1642,6 +1651,7 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 
 		childNode = node.childNodes[ forward ? offset : offset - 1 ];
 
+		// Support: Firefox
 		// If the child is uncursorable, or is an element matching noDescend, do not
 		// descend into it: instead, return the position just beyond it in the current node
 		if (
@@ -1797,9 +1807,10 @@ ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
 		ve.isClipboardDataFormatsSupported[ cacheKey ] = !!(
 			clipboardData &&
 			( !customTypes || profile.name !== 'edge' ) && (
-				// Chrome
+				// Support: Chrome
 				clipboardData.items ||
-				// Firefox >= 48 (but not Firefox Android, which has name='android' and doesn't support this feature)
+				// Support: Firefox >= 48
+				// (but not Firefox Android, which has name='android' and doesn't support this feature)
 				( profile.name === 'firefox' && profile.versionNumber >= 48 )
 			)
 		);
