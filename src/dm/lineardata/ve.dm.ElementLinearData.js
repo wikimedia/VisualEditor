@@ -1063,6 +1063,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 	var i, len, annotations, emptySet, setToRemove, type,
 		canContainContent, contentElement, isOpen, nodeClass, ann,
+		elementStack = [],
 		store = this.getStore(),
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
@@ -1093,6 +1094,12 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			type = this.getType( i );
 			canContainContent = ve.dm.nodeFactory.canNodeContainContent( type );
 			isOpen = this.isOpenElementData( i );
+
+			if ( isOpen ) {
+				elementStack.push( this.getData( i ) );
+			} else {
+				elementStack.pop();
+			}
 			// Apply type conversions
 			if ( rules.conversions && rules.conversions[ type ] ) {
 				type = rules.conversions[ type ];
@@ -1175,7 +1182,11 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			// line-wrapped HTML. T104790
 			// However, don't remove them if we're in a situation where they might
 			// actually be meaningful -- i.e. if we're inside a <pre>. T132006
-			if ( this.getCharacterData( i ) === '\n' && !ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( type ) ) {
+			if (
+				this.getCharacterData( i ) === '\n' &&
+				// Get last open type from the stack
+				!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( elementStack[ elementStack.length - 1 ].type )
+			) {
 				if ( this.getCharacterData( i + 1 ).match( /\s/ ) || this.getCharacterData( i - 1 ).match( /\s/ ) ) {
 					// If whitespace-adjacent, remove the newline to avoid double spaces
 					this.splice( i, 1 );
