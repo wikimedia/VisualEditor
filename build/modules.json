@@ -672,6 +672,7 @@
 			"tests/dm/ve.dm.APIResultsQueue.test.js",
 			"tests/dm/ve.dm.Surface.test.js",
 			"tests/dm/ve.dm.SurfaceFragment.test.js",
+			"tests/dm/ve.dm.SourceSurfaceFragment.test.js",
 			"tests/dm/ve.dm.ModelRegistry.test.js",
 			"tests/dm/ve.dm.MetaList.test.js",
 			"tests/dm/ve.dm.Scalable.test.js",
