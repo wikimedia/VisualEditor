@@ -120,15 +120,10 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 
 	// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
 	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ], annotate ) ) {
-		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call(
-			this,
-			doc.data.getDataSlice( newDocRange ).map( function ( element ) {
-				// Remove any text annotations, as we have determined them to be covering
-				return Array.isArray( element ) ? element[ 0 ] : element;
-			} )
-				// Re-join as string so that newline splitting logic is triggered
-				.join( '' )
-		);
+		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ).map( function ( element ) {
+			// Remove any text annotations, as we have determined them to be covering
+			return Array.isArray( element ) ? element[ 0 ] : element;
+		} ) );
 	}
 
 	this.convertToSource( doc )
