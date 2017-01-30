@@ -581,10 +581,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 				selection[ 0 ].nodeOuterRange.start,
 				selection[ selection.length - 1 ].nodeOuterRange.end
 			);
-			this.synchronizer.pushRebuild( range,
-				new ve.Range( range.start + this.adjustment,
-					range.end + this.adjustment + insert.length - remove.length )
-			);
+			this.synchronizer.pushRebuild( range, insert.length - remove.length );
 		}
 
 		// Advance the cursor
@@ -717,10 +714,7 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		coveringRange = ve.Range.static.newCoveringRange( affectedRanges );
 		this.synchronizer.pushRebuild(
 			coveringRange,
-			new ve.Range(
-				coveringRange.start + this.adjustment - opAdjustment,
-				coveringRange.end + this.adjustment
-			)
+			opAdjustment
 		);
 	}
 };
