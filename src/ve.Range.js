@@ -72,13 +72,13 @@ ve.Range.static.newFromHash = function ( hash ) {
  * Create a range object that covers all of the given ranges.
  *
  * @static
- * @param {Array} ranges Array of ve.Range objects (at least one)
+ * @param {ve.Range[]} ranges Array of ve.Range objects (at least one)
  * @param {boolean} backwards Return a backwards range
  * @return {ve.Range} Range that spans all of the given ranges
  */
 ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
 	var minStart, maxEnd, i, range;
-	if ( !ranges || ranges.length === 0 ) {
+	if ( ranges.length === 0 ) {
 		throw new Error( 'newCoveringRange() requires at least one range' );
 	}
 	minStart = ranges[ 0 ].start;
