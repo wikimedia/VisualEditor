@@ -263,7 +263,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 	}
 	// Notify the synchronizer
 	if ( this.cursor < to ) {
-		this.synchronizer.pushAnnotation( new ve.Range( this.cursor + this.adjustment, to + this.adjustment ) );
+		this.synchronizer.pushAnnotation( new ve.Range( this.cursor, to ) );
 	}
 };
 
