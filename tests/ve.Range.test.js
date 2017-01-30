@@ -91,7 +91,7 @@ QUnit.test( 'Modification (flip, truncate, expand, translate, clone)', 17, funct
 
 } );
 
-QUnit.test( 'Factory methods & serialization (newCoveringRange, newFromJSON, toJSON)', 6, function ( assert ) {
+QUnit.test( 'Factory methods & serialization (newCoveringRange, newFromJSON, toJSON)', 8, function ( assert ) {
 	var range = new ve.Range( 100, 200 );
 
 	assert.equalRange(
@@ -103,6 +103,22 @@ QUnit.test( 'Factory methods & serialization (newCoveringRange, newFromJSON, toJ
 		ve.Range.static.newCoveringRange( [ range, new ve.Range( 150, 250 ) ], true ),
 		new ve.Range( 250, 100 ),
 		'backwards covering range'
+	);
+
+	assert.throws(
+		function() {
+			ve.Range.static.newCoveringRange( null, true );
+		},
+		Error,
+		'throws an exception when providing no array of ranges'
+	);
+
+	assert.throws(
+		function() {
+			ve.Range.static.newCoveringRange( [], true );
+		},
+		Error,
+		'throws an exception when providing an empty array of ranges'
 	);
 
 	assert.deepEqual( range.toJSON(), { type: 'range', from: 100, to: 200 }, 'toJSON' );
