@@ -29,10 +29,14 @@
  * and P[1] a PlaceHolder instance owned by that cell.
  *
  * @class
+ * @mixins OO.EventEmitter
  * @constructor
  * @param {ve.dm.TableNode} tableNode Reference to a table instance
  */
 ve.dm.TableMatrix = function VeDmTableMatrix( tableNode ) {
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
 	this.tableNode = tableNode;
 	// Do not access these directly as they get invalidated on structural changes
 	// Use the accessor methods instead.
@@ -40,14 +44,25 @@ ve.dm.TableMatrix = function VeDmTableMatrix( tableNode ) {
 	this.rowNodes = null;
 };
 
+/* Inheritance */
+
+OO.mixinClass( ve.dm.TableMatrix, OO.EventEmitter );
+
+/**
+ * @event structureChange
+ */
+
 /**
  * Invalidates the matrix structure.
  *
  * This is called by ve.dm.TableNode on structural changes.
+ *
+ * @fires structureChange
  */
 ve.dm.TableMatrix.prototype.invalidate = function () {
 	this.matrix = null;
 	this.rowNodes = null;
+	this.emit( 'structureChange' );
 };
 
 /**
