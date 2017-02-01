@@ -11,7 +11,7 @@
 	text-overflow: ellipsis;
 }
 
-.ve-ui-languageInputWidget .oo-ui-fieldLayout.oo-ui-labelElement > .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
+.ve-ui-languageInputWidget .oo-ui-fieldLayout.oo-ui-labelElement > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
 	width: 7em;
 }
 
