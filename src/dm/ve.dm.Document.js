@@ -89,13 +89,7 @@ OO.inheritClass( ve.dm.Document, ve.Document );
 /**
  * @event precommit
  * Emitted when a transaction is about to be committed.
- */
-
-/**
- * @event presynchronize
- * Emitted when a transaction has been applied to the linear model
- * but the model tree has not yet been synchronized.
- * @param {ve.dm.Transaction} tx Transaction that is about to be synchronized
+ * @param {ve.dm.Transaction} tx Transaction that is about to be committed
  */
 
 /**
@@ -328,18 +322,16 @@ ve.dm.Document.prototype.getLength = function () {
  * @method
  * @param {ve.dm.Transaction} transaction Transaction to apply
  * @param {boolean} isStaging Transaction is being applied in staging mode
+ * @fires precommit
  * @fires transact
  * @throws {Error} Cannot commit a transaction that has already been committed
  */
 ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
-	var doc = this;
 	if ( transaction.hasBeenApplied() ) {
 		throw new Error( 'Cannot commit a transaction that has already been committed' );
 	}
-	this.emit( 'precommit' );
-	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process( function () {
-		doc.emit( 'presynchronize', transaction );
-	} );
+	this.emit( 'precommit', transaction );
+	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process();
 	this.completeHistory.push( transaction );
 	this.storeLengthAtHistoryLength[ this.completeHistory.length ] = this.store.getLength();
 	this.emit( 'transact', transaction );

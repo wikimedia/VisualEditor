@@ -81,9 +81,8 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
  * When all operations are done being processed, the document will be synchronized.
  *
  * @method
- * @param {Function} [presynchronizeHandler] Callback to emit before synchronizing
  */
-ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler ) {
+ve.dm.TransactionProcessor.prototype.process = function () {
 	var op, completed;
 
 	// First process each operation to gather modifications in the modification queue.
@@ -114,9 +113,6 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
 	// Synchronize the node tree for the modifications we just made
 	try {
 		completed = false;
-		if ( presynchronizeHandler ) {
-			presynchronizeHandler();
-		}
 		this.synchronizer.synchronize();
 		completed = true;
 	} finally {

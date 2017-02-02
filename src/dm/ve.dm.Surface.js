@@ -47,8 +47,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	// Events
 	this.getDocument().connect( this, {
 		transact: 'onDocumentTransact',
-		precommit: 'onDocumentPreCommit',
-		presynchronize: 'onDocumentPreSynchronize'
+		precommit: 'onDocumentPreCommit'
 	} );
 };
 
@@ -999,25 +998,15 @@ ve.dm.Surface.prototype.getSelectedNodeFromSelection = function ( selection ) {
 };
 
 /**
- * Clone the selection ready for early translation (before synchronization).
+ * Update translatedSelection early (before the commit actually occurs)
  *
- * This is so #ve.ce.ContentBranchNode.getRenderedContents can consider the translated
+ * This is so ve.ce.ContentBranchNode#getRenderedContents can consider the translated
  * selection for unicorn rendering.
- */
-ve.dm.Surface.prototype.onDocumentPreCommit = function () {
-	this.translatedSelection = this.selection.clone();
-};
-
-/**
- * Update translatedSelection early (before synchronization)
  *
- * @param {ve.dm.Transaction} tx Transaction that was processed
- * @fires documentUpdate
+ * @param {ve.dm.Transaction} tx Transaction that's about to be committed
  */
-ve.dm.Surface.prototype.onDocumentPreSynchronize = function ( tx ) {
-	if ( this.translatedSelection ) {
-		this.translatedSelection = this.translatedSelection.translateByTransaction( tx );
-	}
+ve.dm.Surface.prototype.onDocumentPreCommit = function ( tx ) {
+	this.translatedSelection = this.selection.translateByTransaction( tx );
 };
 
 /**
