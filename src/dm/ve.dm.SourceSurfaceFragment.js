@@ -106,7 +106,8 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annota
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRange, annotate ) {
-	var range = this.getSelection().getCoveringRange(),
+	var data,
+		range = this.getSelection().getCoveringRange(),
 		fragment = this;
 
 	if ( !range ) {
@@ -120,10 +121,18 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 
 	// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
 	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ], annotate ) ) {
-		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, doc.data.getDataSlice( newDocRange ).map( function ( element ) {
+		data = doc.data.getDataSlice( newDocRange );
+		data.forEach( function ( element, i, arr ) {
 			// Remove any text annotations, as we have determined them to be covering
-			return Array.isArray( element ) ? element[ 0 ] : element;
-		} ) );
+			element = Array.isArray( element ) ? element[ 0 ] : element;
+			// Convert newlines to paragraph breaks (T156498)
+			if ( element === '\r' ) {
+				arr.splice( i, 1 );
+			} else if ( element === '\n' ) {
+				arr.splice( i, 1, { type: '/paragraph' }, { type: 'paragraph' } );
+			}
+		} );
+		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, data );
 	}
 
 	this.convertToSource( doc )
