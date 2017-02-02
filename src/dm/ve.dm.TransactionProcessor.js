@@ -117,7 +117,7 @@ ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler 
 		if ( presynchronizeHandler ) {
 			presynchronizeHandler();
 		}
-		this.synchronizer.synchronize( this.transaction );
+		this.synchronizer.synchronize();
 		completed = true;
 	} finally {
 		// Don't catch and re-throw errors so that they are reported properly
