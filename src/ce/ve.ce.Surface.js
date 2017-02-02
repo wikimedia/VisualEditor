@@ -1527,8 +1527,9 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 		range.endOffset,
 		preUnicorn.parentNode,
 		ve.parentIndex( preUnicorn )
-	) < 0 ) {
-		// before the pre-unicorn
+	) <= 0 ) {
+		// before the pre-unicorn (including in the equality case, because the selection
+		// endpoint is an offset between sibling positions)
 		fixup = -1;
 	} else {
 		// at or after the pre-unicorn (actually must be after the post-unicorn)
