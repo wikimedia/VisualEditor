@@ -9,7 +9,7 @@ QUnit.module( 've.dm.TransactionProcessor' );
 /* Tests */
 
 QUnit.test( 'commit', function ( assert ) {
-	var i, originalData, originalDoc,
+	var i, j, originalData, originalDoc, node,
 		msg, testDoc, txBuilder, tx, expectedData, expectedDoc,
 		n = 0,
 		store = ve.dm.example.createExampleDocument().getStore(),
@@ -76,7 +76,29 @@ QUnit.test( 'commit', function ( assert ) {
 					data[ 1 ] = [ 'a', store.indexes( [ bold ] ) ];
 					data[ 2 ] = [ 'b', store.indexes( [ bold ] ) ];
 					data[ 3 ] = [ 'c', store.indexes( [ bold, underline ] ) ];
-				}
+				},
+				events: [
+					[ 'annotation', 0, 0 ],
+					[ 'update', 0, 0 ]
+				]
+			},
+			'annotating after inserting': {
+				calls: [
+					[ 'pushRetain', 1 ],
+					[ 'pushReplace', 1, 0, [ 'x', 'y', 'z' ] ],
+					[ 'pushRetain', 55 ],
+					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
+					[ 'pushRetain', 1 ],
+					[ 'pushStopAnnotating', 'set', store.index( bold ) ]
+				],
+				expected: function ( data ) {
+					data[ 56 ] = [ 'l', store.indexes( [ bold ] ) ];
+					data.splice( 1, 0, 'x', 'y', 'z' );
+				},
+				events: [
+					[ 'annotation', 4, 0 ],
+					[ 'update', 4, 0 ]
+				]
 			},
 			'annotating content and leaf elements': {
 				calls: [
@@ -89,7 +111,15 @@ QUnit.test( 'commit', function ( assert ) {
 					data[ 38 ] = [ 'h', store.indexes( [ bold ] ) ];
 					data[ 39 ].annotations = store.indexes( [ bold ] );
 					data[ 41 ] = [ 'i', store.indexes( [ bold ] ) ];
-				}
+				},
+				events: [
+					[ 'annotation', 2, 0 ],
+					[ 'update', 2, 0 ],
+					[ 'annotation', 2, 1 ],
+					[ 'update', 2, 1 ],
+					[ 'annotation', 2, 2 ],
+					[ 'update', 2, 2 ]
+				]
 			},
 			'annotating across metadata': {
 				data: metadataExample,
@@ -104,7 +134,11 @@ QUnit.test( 'commit', function ( assert ) {
 					data[ 2 ] = [ 'b', store.indexes( [ bold ] ) ];
 					data[ 3 ].annotations = store.indexes( [ bold ] );
 					data[ 5 ] = [ 'c', store.indexes( [ bold ] ) ];
-				}
+				},
+				events: [
+					[ 'annotation', 0, 0 ],
+					[ 'update', 0, 0 ]
+				]
 			},
 			'annotating with metadata at edges': {
 				data: metadataExample,
@@ -121,7 +155,11 @@ QUnit.test( 'commit', function ( assert ) {
 					data[ 6 ] = [ 'd', store.indexes( [ bold ] ) ];
 					data[ 9 ] = [ 'e', store.indexes( [ bold ] ) ];
 					data[ 10 ] = [ 'f', store.indexes( [ bold ] ) ];
-				}
+				},
+				events: [
+					[ 'annotation', 0, 0 ],
+					[ 'update', 0, 0 ]
+				]
 			},
 			'unannotating metadata': {
 				data: [
@@ -147,7 +185,11 @@ QUnit.test( 'commit', function ( assert ) {
 					data[ 2 ] = 'b';
 					data[ 5 ] = 'c';
 					delete data[ 3 ].annotations;
-				}
+				},
+				events: [
+					[ 'annotation', 0, 0 ],
+					[ 'update', 0, 0 ]
+				]
 			},
 			'using an annotation method other than set or clear throws an exception': {
 				calls: [
@@ -711,7 +753,7 @@ QUnit.test( 'commit', function ( assert ) {
 		};
 
 	for ( msg in cases ) {
-		n += ( 'expected' in cases[ msg ] ) ? 4 : 3;
+		n += ( 'expected' in cases[ msg ] ? 4 : 3 ) + ( 'events' in cases[ msg ] ? cases[ msg ].events.length : 0 );
 	}
 	QUnit.expect( n );
 
@@ -754,6 +796,22 @@ QUnit.test( 'commit', function ( assert ) {
 				ve.dm.example.preprocessAnnotations( expectedData, store )
 			);
 			expectedDoc.buildNodeTree();
+
+			if ( 'events' in cases[ msg ] ) {
+				// Set up event handlers
+				for ( i = 0; i < cases[ msg ].events.length; i++ ) {
+					node = testDoc.getDocumentNode();
+					for ( j = 1; j < cases[ msg ].events[ i ].length; j++ ) {
+						node = node.getChildren()[ cases[ msg ].events[ i ][ j ] ];
+					}
+					node.on( cases[ msg ].events[ i ][ 0 ], ( function ( obj ) {
+						return function () {
+							obj.fired = true;
+						};
+					}( cases[ msg ].events[ i ] ) ) );
+				}
+			}
+
 			// Commit
 			testDoc.commit( tx );
 			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
@@ -762,6 +820,15 @@ QUnit.test( 'commit', function ( assert ) {
 				expectedDoc.getDocumentNode(),
 				'commit (tree): ' + msg
 			);
+			if ( 'events' in cases[ msg ] ) {
+				for ( i = 0; i < cases[ msg ].events.length; i++ ) {
+					assert.ok(
+						cases[ msg ].events[ i ].fired,
+						'event ' + cases[ msg ].events[ i ][ 0 ] + ' on ' +
+							cases[ msg ].events[ i ].slice( 1 ).join( ',' ) + ': ' + msg
+					);
+				}
+			}
 			// Rollback
 			testDoc.commit( tx.reversed() );
 			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'rollback (data): ' + msg );
