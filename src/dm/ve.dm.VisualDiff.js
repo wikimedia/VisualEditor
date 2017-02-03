@@ -15,8 +15,9 @@
  * @constructor
  * @param {ve.dm.Document} oldDoc
  * @param {ve.dm.Document} newDoc
+ * @param {Number} [timeout=1000] Timeout after which to stop performing linear diffs (in ms)
  */
-ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc ) {
+ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc, timeout ) {
 
 	this.oldDoc = oldDoc.cloneFromRange();
 	this.newDoc = newDoc.cloneFromRange();
@@ -27,6 +28,7 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc ) {
 	this.treeDiffer = treeDiffer;
 	// eslint-disable-next-line camelcase,new-cap
 	this.linearDiffer = new ve.DiffMatchPatch( this.oldDoc.getStore(), this.newDoc.getStore() );
+	this.endTime = new Date().getTime() + ( timeout || 1000 );
 
 	this.diff = this.getDiff();
 };
@@ -452,13 +454,18 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 			// If we got this far, they are both CBNs
 			} else {
+				if ( new Date().getTime() < this.endTime ) {
+					linearDiff = this.linearDiffer.diff_main(
+						this.oldDoc.getData( oldNode.getRange() ),
+						this.newDoc.getData( newNode.getRange() )
+					);
 
-				linearDiff = this.linearDiffer.diff_main(
-					this.oldDoc.getData( oldNode.getRange() ),
-					this.newDoc.getData( newNode.getRange() )
-				);
-
-				linearDiff = getCleanDiff( linearDiff );
+					linearDiff = getCleanDiff( linearDiff );
+				} else {
+					linearDiff = null;
+					removeLength += oldNode.getLength();
+					insertLength += newNode.getLength();
+				}
 
 				diffInfo.push( {
 					linearDiff: linearDiff,
@@ -466,12 +473,14 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 					attributeChange: !ve.compare( oldNode.getAttributes(), newNode.getAttributes() )
 				} );
 
-				// Record how much content was removed and inserted
-				for ( j = 0, jlen = linearDiff.length; j < jlen; j++ ) {
-					if ( linearDiff[ j ][ 0 ] === 1 ) {
-						insertLength += linearDiff[ j ][ 1 ].length;
-					} else if ( linearDiff[ j ][ 0 ] === -1 ) {
-						removeLength += linearDiff[ j ][ 1 ].length;
+				if ( linearDiff ) {
+					// Record how much content was removed and inserted
+					for ( j = 0, jlen = linearDiff.length; j < jlen; j++ ) {
+						if ( linearDiff[ j ][ 0 ] === 1 ) {
+							insertLength += linearDiff[ j ][ 1 ].length;
+						} else if ( linearDiff[ j ][ 0 ] === -1 ) {
+							removeLength += linearDiff[ j ][ 1 ].length;
+						}
 					}
 				}
 
