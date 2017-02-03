@@ -331,6 +331,51 @@ QUnit.test( 'commit', function ( assert ) {
 					data.splice( 3, 1 );
 				}
 			},
+			'wrapping elements': {
+				calls: [
+					[ 'pushRetain', 55 ],
+					[ 'pushReplace', 55, 0, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
+					[ 'pushRetain', 3 ],
+					[ 'pushReplace', 58, 0, [ { type: '/listItem' }, { type: 'listItem' } ] ],
+					[ 'pushRetain', 3 ],
+					[ 'pushReplace', 61, 0, [ { type: '/listItem' }, { type: '/list' } ] ]
+				],
+				expected: function ( data ) {
+					data.splice( 61, 0, { type: '/listItem' }, { type: '/list' } );
+					data.splice( 58, 0, { type: '/listItem' }, { type: 'listItem' } );
+					data.splice( 55, 0, { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } );
+				}
+			},
+			'unwrapping elements': {
+				calls: [
+					[ 'pushRetain', 43 ],
+					[ 'pushReplace', 43, 2, [] ],
+					[ 'pushRetain', 3 ],
+					[ 'pushReplace', 48, 2, [] ],
+					[ 'pushRetain', 3 ],
+					[ 'pushReplace', 53, 2, [] ]
+				],
+				expected: function ( data ) {
+					data.splice( 53, 2 );
+					data.splice( 48, 2 );
+					data.splice( 43, 2 );
+				}
+			},
+			'rewrapping elements': {
+				calls: [
+					[ 'pushRetain', 43 ],
+					[ 'pushReplace', 43, 2, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
+					[ 'pushRetain', 3 ],
+					[ 'pushReplace', 48, 2, [ { type: '/listItem' }, { type: 'listItem' } ] ],
+					[ 'pushRetain', 3 ],
+					[ 'pushReplace', 53, 2, [ { type: '/listItem' }, { type: '/list' } ] ]
+				],
+				expected: function ( data ) {
+					data.splice( 53, 2, { type: '/listItem' }, { type: '/list' } );
+					data.splice( 48, 2, { type: '/listItem' }, { type: 'listItem' } );
+					data.splice( 43, 2, { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } );
+				}
+			},
 			'applying a link across an existing annotation boundary': {
 				data: [
 					{ type: 'paragraph' },
