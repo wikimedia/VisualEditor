@@ -420,60 +420,60 @@ QUnit.test( 'getBranchNodeFromOffset', function ( assert ) {
 			[], // 5 - document
 			[ 1 ], // 6 - table
 			[ 1, 0 ], // 7 - tableSection
-			[ 1, 0, 0 ], // 7 - tableRow
-			[ 1, 0, 0, 0 ], // 8 - tableCell
-			[ 1, 0, 0, 0, 0 ], // 9 - paragraph
+			[ 1, 0, 0 ], // 8 - tableRow
+			[ 1, 0, 0, 0 ], // 9 - tableCell
 			[ 1, 0, 0, 0, 0 ], // 10 - paragraph
-			[ 1, 0, 0, 0 ], // 11 - tableCell
-			[ 1, 0, 0, 0, 1 ], // 12 - list
-			[ 1, 0, 0, 0, 1, 0 ], // 13 - listItem
-			[ 1, 0, 0, 0, 1, 0, 0 ], // 14 - paragraph
+			[ 1, 0, 0, 0, 0 ], // 11 - paragraph
+			[ 1, 0, 0, 0 ], // 12 - tableCell
+			[ 1, 0, 0, 0, 1 ], // 13 - list
+			[ 1, 0, 0, 0, 1, 0 ], // 14 - listItem
 			[ 1, 0, 0, 0, 1, 0, 0 ], // 15 - paragraph
-			[ 1, 0, 0, 0, 1, 0 ], // 16 - listItem
-			[ 1, 0, 0, 0, 1, 0, 1 ], // 17 - list
-			[ 1, 0, 0, 0, 1, 0, 1, 0 ], // 18 - listItem
-			[ 1, 0, 0, 0, 1, 0, 1, 0, 0 ], // 19 - paragraph
+			[ 1, 0, 0, 0, 1, 0, 0 ], // 16 - paragraph
+			[ 1, 0, 0, 0, 1, 0 ], // 17 - listItem
+			[ 1, 0, 0, 0, 1, 0, 1 ], // 18 - list
+			[ 1, 0, 0, 0, 1, 0, 1, 0 ], // 19 - listItem
 			[ 1, 0, 0, 0, 1, 0, 1, 0, 0 ], // 20 - paragraph
-			[ 1, 0, 0, 0, 1, 0, 1, 0 ], // 21 - listItem
-			[ 1, 0, 0, 0, 1, 0, 1 ], // 22 - list
-			[ 1, 0, 0, 0, 1, 0 ], // 23 - listItem
-			[ 1, 0, 0, 0, 1 ], // 24 - list
-			[ 1, 0, 0, 0 ], // 25 - tableCell
-			[ 1, 0, 0, 0, 2 ], // 26 - list
-			[ 1, 0, 0, 0, 2, 0 ], // 27 - listItem
-			[ 1, 0, 0, 0, 2, 0, 0 ], // 28 - paragraph
+			[ 1, 0, 0, 0, 1, 0, 1, 0, 0 ], // 21 - paragraph
+			[ 1, 0, 0, 0, 1, 0, 1, 0 ], // 22 - listItem
+			[ 1, 0, 0, 0, 1, 0, 1 ], // 23 - list
+			[ 1, 0, 0, 0, 1, 0 ], // 24 - listItem
+			[ 1, 0, 0, 0, 1 ], // 25 - list
+			[ 1, 0, 0, 0 ], // 26 - tableCell
+			[ 1, 0, 0, 0, 2 ], // 27 - list
+			[ 1, 0, 0, 0, 2, 0 ], // 28 - listItem
 			[ 1, 0, 0, 0, 2, 0, 0 ], // 29 - paragraph
-			[ 1, 0, 0, 0, 2, 0 ], // 30 - listItem
-			[ 1, 0, 0, 0, 2 ], // 31 - list
-			[ 1, 0, 0, 0 ], // 32 - tableCell
-			[ 1, 0, 0 ], // 33 - tableRow
-			[ 1, 0 ], // 33 - tableSection
-			[ 1 ], // 34 - table
-			[], // 35- document
-			[ 2 ], // 36 - preformatted
-			[ 2 ], // 37 - preformatted
+			[ 1, 0, 0, 0, 2, 0, 0 ], // 30 - paragraph
+			[ 1, 0, 0, 0, 2, 0 ], // 31 - listItem
+			[ 1, 0, 0, 0, 2 ], // 32 - list
+			[ 1, 0, 0, 0 ], // 33 - tableCell
+			[ 1, 0, 0 ], // 34 - tableRow
+			[ 1, 0 ], // 35 - tableSection
+			[ 1 ], // 36 - table
+			[], // 37- document
 			[ 2 ], // 38 - preformatted
 			[ 2 ], // 39 - preformatted
 			[ 2 ], // 40 - preformatted
-			[], // 41 - document
-			[ 3 ], // 42 - definitionList
-			[ 3, 0 ], // 43 - definitionListItem
-			[ 3, 0, 0 ], // 44 - paragraph
-			[ 3, 0, 0 ], // 45 - paragraph
-			[ 3, 0 ], // 46 - definitionListItem
-			[ 3 ], // 47 - definitionList
-			[ 3, 1 ], // 48 - definitionListItem
-			[ 3, 1, 0 ], // 49 - paragraph
-			[ 3, 1, 0 ], // 50 - paragraph
-			[ 3, 1 ], // 51 - definitionListItem
-			[ 3 ], // 52 - definitionList
-			[], // 53 - document
-			[ 4 ], // 54 - paragraph
-			[ 4 ], // 55 - paragraph
-			[], // 56 - document
-			[ 5 ], // 57 - paragraph
-			[ 5 ], // 58 - paragraph
-			[] // 59 - document
+			[ 2 ], // 41 - preformatted
+			[ 2 ], // 42 - preformatted
+			[], // 43 - document
+			[ 3 ], // 44 - definitionList
+			[ 3, 0 ], // 45 - definitionListItem
+			[ 3, 0, 0 ], // 46 - paragraph
+			[ 3, 0, 0 ], // 47 - paragraph
+			[ 3, 0 ], // 48 - definitionListItem
+			[ 3 ], // 49 - definitionList
+			[ 3, 1 ], // 50 - definitionListItem
+			[ 3, 1, 0 ], // 51 - paragraph
+			[ 3, 1, 0 ], // 52 - paragraph
+			[ 3, 1 ], // 53 - definitionListItem
+			[ 3 ], // 54 - definitionList
+			[], // 55 - document
+			[ 4 ], // 56 - paragraph
+			[ 4 ], // 57 - paragraph
+			[], // 58 - document
+			[ 5 ], // 59 - paragraph
+			[ 5 ], // 60 - paragraph
+			[] // 61 - document
 		];
 	QUnit.expect( expected.length );
 	for ( i = 0; i < expected.length; i++ ) {
