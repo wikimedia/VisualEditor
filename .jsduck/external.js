@@ -37,5 +37,10 @@
  */
 
 /**
+ * @class diff_match_patch
+ * @source <http://github.com/edg2s/google-diff-match-patch>
+ */
+
+/**
  * @class Map
  */

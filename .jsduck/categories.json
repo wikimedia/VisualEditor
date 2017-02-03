@@ -228,7 +228,10 @@
 			},
 			{
 				"name": "Core",
-				"classes": ["ve.DiffTreeNode"]
+				"classes": [
+					"ve.DiffMatchPatch",
+					"ve.DiffTreeNode"
+				]
 			}
 		]
 	},
@@ -326,6 +329,10 @@
 			{
 				"name": "treeDiffer",
 				"classes": ["treeDiffer.Differ", "treeDiffer.Tree", "treeDiffer.TreeNode"]
+			},
+			{
+				"name": "DiffMatchPatch",
+				"classes": ["diff_match_patch"]
 			},
 			{
 				"name": "JavaScript",

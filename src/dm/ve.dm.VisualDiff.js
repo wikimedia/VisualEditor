@@ -1,11 +1,10 @@
 /*!
- * VisualEditor DataModel VisualDiff
- *  class.
+ * VisualEditor DataModel VisualDiff class.
  *
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* global diff_match_patch, treeDiffer */
+/* global treeDiffer */
 
 /**
  * VisualDiff
@@ -27,7 +26,7 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc ) {
 	this.newDocChildren = this.newDocNode.children;
 	this.treeDiffer = treeDiffer;
 	// eslint-disable-next-line camelcase,new-cap
-	this.linearDiffer = new diff_match_patch( this.oldDoc.getStore(), this.newDoc.getStore(), true );
+	this.linearDiffer = new ve.DiffMatchPatch( this.oldDoc.getStore(), this.newDoc.getStore() );
 
 	this.diff = this.getDiff();
 };
