@@ -4,7 +4,7 @@
  * Code shared with the OOjs UI project
  */
 
-/* eslint-env node */
+/* eslint-env node, es6 */
 var self = module.exports = {
 	/**
 	 * Expand an array of file paths and variant-objects into

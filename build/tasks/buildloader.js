@@ -2,7 +2,7 @@
  * Build a static loader file from a template
  */
 
-/* eslint-env node */
+/* eslint-env node, es6 */
 module.exports = function ( grunt ) {
 
 	grunt.registerMultiTask( 'buildloader', function () {
