@@ -9,10 +9,6 @@
 	position: relative;
 }
 
-.ve-ui-toolbar .oo-ui-toolbar-shadow {
-	opacity: 0;
-}
-
 /* PositionedTargetToolbar */
 
 .ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
@@ -20,8 +16,4 @@
 	top: 0;
 	z-index: 2;
 	border-top: 0;
-}
-
-.ve-ui-toolbar-floating .oo-ui-toolbar-shadow {
-	opacity: 0.5;
 }
