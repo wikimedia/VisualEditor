@@ -1492,7 +1492,9 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
  * @return {boolean} Whether unicorns have been destroyed
  */
 ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
-	var preUnicorn, range, node, fixup, veRange;
+	var preUnicorn, range, node, fixup, veRange,
+		contentBranchNodeBefore, contentBranchNodeAfter;
+
 	if ( !this.unicorningNode || !this.unicorningNode.unicorns ) {
 		return false;
 	}
@@ -1536,11 +1538,13 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 		fixup = 1;
 	}
 
+	contentBranchNodeBefore = this.getSelectedContentBranchNode();
+
 	// Apply the DOM selection to the model
-	this.incRenderLock();
-	try {
-		veRange = ve.ce.veRangeFromSelection( this.nativeSelection );
-		if ( veRange ) {
+	veRange = ve.ce.veRangeFromSelection( this.nativeSelection );
+	if ( veRange ) {
+		this.incRenderLock();
+		try {
 			// The most likely reason for this condition to not-pass is if we
 			// try to cleanup unicorns while the native selection is outside
 			// the model momentarily, as sometimes happens during paste.
@@ -1548,14 +1552,22 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 				this.model.getDocument(),
 				veRange
 			) );
+			if ( fixupCursor ) {
+				this.moveModelCursor( fixup );
+			}
+		} finally {
+			this.decRenderLock();
 		}
-		if ( fixupCursor ) {
-			this.moveModelCursor( fixup );
-		}
-	} finally {
-		this.decRenderLock();
 	}
-	this.renderSelectedContentBranchNode();
+
+	contentBranchNodeAfter = this.getSelectedContentBranchNode();
+	if ( contentBranchNodeAfter ) {
+		contentBranchNodeAfter.renderContents();
+	}
+	if ( contentBranchNodeBefore && contentBranchNodeBefore !== contentBranchNodeAfter ) {
+		contentBranchNodeBefore.renderContents();
+	}
+
 	this.showModelSelection();
 	return true;
 };
@@ -2645,25 +2657,35 @@ ve.ce.Surface.prototype.onInsertionAnnotationsChange = function () {
 };
 
 /**
- * Re-render the ContentBranchNode the selection is currently in.
+ * Get the ContentBranchNode containing the selection focus, if any
+ *
+ * @return {ve.ce.ContentBranchNode|null} ContentBranchNode containing selection focus, or null
+ */
+ve.ce.Surface.prototype.getSelectedContentBranchNode = function () {
+	var node,
+		selection = this.model.getSelection();
+
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return null;
+	}
+	node = this.documentView.getBranchNodeFromOffset( selection.getRange().to );
+	if ( !node || !( node instanceof ve.ce.ContentBranchNode ) ) {
+		return null;
+	}
+	return node;
+};
+
+/**
+ * Re-render the ContentBranchNode containing the selection focus, if any
  *
  * @return {boolean} Whether a re-render actually happened
  */
 ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
-	var selection, ceNode;
-	selection = this.model.getSelection();
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+	var node = this.getSelectedContentBranchNode();
+	if ( !node ) {
 		return false;
 	}
-	ceNode = this.documentView.getBranchNodeFromOffset( selection.getRange().start );
-	if ( ceNode === null ) {
-		return false;
-	}
-	if ( !( ceNode instanceof ve.ce.ContentBranchNode ) ) {
-		// not a content branch node
-		return false;
-	}
-	return ceNode.renderContents();
+	return node.renderContents();
 };
 
 /**

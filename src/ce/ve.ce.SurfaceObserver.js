@@ -166,8 +166,6 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, sel
 
 	if ( signalChanges && (
 		newState.contentChanged ||
-		// TODO: The prior code signalled branchNode changes even if !signalChanges .
-		// Was this needed?
 		newState.branchNodeChanged ||
 		newState.selectionChanged
 	) ) {
