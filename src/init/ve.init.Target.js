@@ -96,7 +96,6 @@ ve.init.Target.static.toolbarGroups = [
 	{
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-paragraph-format' ),
 		type: 'menu',
-		indicator: 'down',
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-format-tooltip' ),
 		include: [ { group: 'format' } ],
 		promote: [ 'paragraph' ],
@@ -119,7 +118,6 @@ ve.init.Target.static.toolbarGroups = [
 		type: 'list',
 		icon: 'listBullet',
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
-		indicator: 'down',
 		include: [ { group: 'structure' } ],
 		demote: [ 'outdent', 'indent' ]
 	},
@@ -130,7 +128,6 @@ ve.init.Target.static.toolbarGroups = [
 		icon: 'add',
 		label: '',
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
-		indicator: 'down',
 		include: '*'
 	},
 	// Special character toolbar
