@@ -18,7 +18,8 @@
 			"Deryck Chan",
 			"LNDDYL",
 			"Yejianfei",
-			"Jdforrester"
+			"Jdforrester",
+			"Wehwei"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -69,6 +70,7 @@
 	"visualeditor-dialog-language-search-title": "選擇語言",
 	"visualeditor-dialog-table-caption": "標題",
 	"visualeditor-dialog-table-title": "表格屬性",
+	"visualeditor-diff-no-changes": "沒有變更",
 	"visualeditor-find-and-replace-done": "完成",
 	"visualeditor-find-and-replace-find-text": "尋找",
 	"visualeditor-find-and-replace-invalid-regex": "無效的正規表示法",
