@@ -273,6 +273,10 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 				}
 			} else {
 				// Branch or leaf node closing
+				if ( this.data.getType( i ) !== currentNode.getType() ) {
+					throw new Error( 'Expected closing for ' + currentNode.getType() +
+						' but got closing for ' + this.data.getType( i ) );
+				}
 				// Pop this node's inner stack from the outer stack. It'll have all of the
 				// node's child nodes fully constructed
 				children = nodeStack.pop();
@@ -299,8 +303,12 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 	// appended in order. Used by ve.dm.InternalList.
 	doc.buildingNodeTree = true;
 
-	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
-	// so attach all nodes in stack[1] to the root node
+	// The end state is nodeStack = [ [this.documentNode], [ array, of, its, children ] ]
+	// so attach all nodes in currentStack to the root node
+	if ( nodeStack.length > 2 ) {
+		// A node was opened but never closed
+		throw new Error( 'Unbalanced input passed to document' );
+	}
 	ve.batchSplice( this.documentNode, 0, 0, currentStack );
 	this.updateNodesByType( [ this.documentNode ], [] );
 
