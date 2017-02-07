@@ -39,9 +39,21 @@ OO.initClass( ve.dm.Converter );
 
 /**
  * List of HTML attribute names that {#renderHtmlAttributeList} should use computed values for.
+ *
  * @type {string[]}
  */
 ve.dm.Converter.static.computedAttributes = [ 'href', 'src' ];
+
+/**
+ * Pattern matching 'white space characters' as defined by the HTML spec only.
+ *
+ * All other whitespace should be treated as text, e.g. non-breaking spaces.
+ *
+ * See https://www.w3.org/TR/html4/struct/text.html#h-9.1
+ *
+ * @type {RegExp}
+ */
+ve.dm.Converter.static.whitespaceList = ' \\t\\f\\u200b\\r\\n';
 
 /* Static Methods */
 
@@ -501,6 +513,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 	var i, childNode, childNodes, childDataElements, text, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
 		annotation, childIsContent, aboutGroup, emptyParagraph,
+		whitespaceList = this.constructor.static.whitespaceList,
 		modelRegistry = this.modelRegistry,
 		data = [],
 		nextWhitespace = '',
@@ -819,7 +832,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 				}
 				if ( !context.originallyExpectingContent ) {
 					// Strip and store outer whitespace
-					if ( text.match( /^\s+$/ ) ) {
+					if ( text.match( new RegExp( '^[' + whitespaceList + ']+$' ) ) ) {
 						// This text node is whitespace only
 						if ( context.inWrapper ) {
 							// We're already wrapping, so output this whitespace
@@ -853,9 +866,9 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					} else {
 						// This text node contains actual text
 						// Separate the real text from the whitespace
-						// HACK: . doesn't match newlines in JS, so use
+						// HACK: '.' doesn't match newlines in JS, so use
 						// [\s\S] to match any character
-						matches = text.match( /^(\s*)([\s\S]*?)(\s*)$/ );
+						matches = text.match( new RegExp( '^([' + whitespaceList + ']*)([\\s\\S]*?)([' + whitespaceList + ']*)$' ) );
 						if ( !context.inWrapper ) {
 							// Wrap the text in a paragraph and output it
 							startWrapping();
@@ -915,7 +928,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
 				) {
 					// Strip leading whitespace from the first child
-					matches = text.match( /^\s+/ );
+					matches = text.match( new RegExp( '^[' + whitespaceList + ']+' ) );
 					if ( matches && matches[ 0 ] !== '' ) {
 						addWhitespace( wrapperElement, 1, matches[ 0 ] );
 						text = text.slice( matches[ 0 ].length );
@@ -928,7 +941,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
 				) {
 					// Strip trailing whitespace from the last child
-					matches = text.match( /\s+$/ );
+					matches = text.match( new RegExp( '[' + whitespaceList + ']+$' ) );
 					if ( matches && matches[ 0 ] !== '' ) {
 						addWhitespace( wrapperElement, 2, matches[ 0 ] );
 						text = text.slice( 0, text.length - matches[ 0 ].length );
@@ -1087,6 +1100,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice, oldLastOuterPost,
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
+		whitespaceList = this.constructor.static.whitespaceList,
 		dataLen = data.length,
 		canContainContentStack = [],
 		converter = this,
@@ -1133,8 +1147,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		while (
 			first &&
 			first.nodeType === Node.TEXT_NODE &&
-			( matches = first.data.match( /^\s+/ ) ) &&
-			!origElementText.match( /^\s/ )
+			( matches = first.data.match( new RegExp( '^[' + whitespaceList + ']+' ) ) ) &&
+			!origElementText.match( new RegExp( '^[' + whitespaceList + ']' ) )
 		) {
 			leading += matches[ 0 ];
 			first.deleteData( 0, matches[ 0 ].length );
@@ -1150,8 +1164,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		while (
 			last &&
 			last.nodeType === Node.TEXT_NODE &&
-			( matches = last.data.match( /\s+$/ ) ) &&
-			!origElementText.match( /\s$/ )
+			( matches = last.data.match( new RegExp( '[' + whitespaceList + ']+$' ) ) ) &&
+			!origElementText.match( new RegExp( '[' + whitespaceList + ']$' ) )
 		) {
 			trailing = matches[ 0 ] + trailing;
 			last.deleteData( last.data.length - matches[ 0 ].length, matches[ 0 ].length );
@@ -1227,7 +1241,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			while ( typeof data[ i ] === 'string' ) {
 				// HACK: Skip over leading whitespace (T53462/T142132) in non-whitespace-preserving tags
 				// This should possibly be handled by Parsoid or in the UI.
-				if ( !( isStart && data[ i ].match( /\s/ ) && !this.forClipboard ) ) {
+				if ( !( isStart && data[ i ].match( new RegExp( '[' + whitespaceList + ']' ) ) && !this.forClipboard ) ) {
 					text += data[ i ];
 					isStart = false;
 				}
