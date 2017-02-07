@@ -3003,6 +3003,16 @@ ve.dm.example.domToDataCases = {
 		],
 		clipboardBody: '<p> <span rel="ve:Comment" data-ve-comment=" foo ">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment=" baz ">&nbsp;</span> </p>'
 	},
+	'non-breaking spaces not treated as whitespace': {
+		body: '<p>  &nbsp;&nbsp;foo&nbsp;\t</p>',
+		data: [
+			{ type: 'paragraph', internal: { whitespace: [ undefined, '  ', '\t' ] } },
+			'\u00a0', '\u00a0', 'f', 'o', 'o', '\u00a0',
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
 	'whitespace surrounding metadata in a wrapper': {
 		body: '<b>Foo</b> <meta />\n<i>Bar</i>',
 		data: [
