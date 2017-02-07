@@ -294,12 +294,17 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 	 * @return {Array} A human-friendlier linear diff
 	 */
 	function getCleanDiff( diff ) {
-		var i, ilen, action, data, firstWordbreak, lastWordbreak, start, end,
+		var i, ilen, action, data, firstWordbreak, lastWordbreak,
+			start, end, aItem, bItem, aAction, bAction, aData, bData,
 			previousData = null,
 			previousAction = null,
 			cleanDiff = [],
 			remove = [],
 			insert = [];
+
+		function compareData( element, index ) {
+			return ve.dm.ElementLinearData.static.compareElementsUnannotated( element, bData[ index ] );
+		}
 
 		// Where the same data is removed and inserted, replace it with a retain
 		for ( i = 0; i < diff.length; i++ ) {
@@ -404,6 +409,31 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 		}
 		if ( insert.length > 0 ) {
 			cleanDiff.push( [ 1, insert ] );
+		}
+
+		// Finally, go over any consecutive remove-inserts (also insert-removes?)
+		// and if they have the same character data, make them changes instead
+		for ( i = 0, ilen = cleanDiff.length - 1; i < ilen; i++ ) {
+			aItem = cleanDiff[ i ];
+			bItem = cleanDiff[ i + 1 ];
+			aData = aItem[ 1 ];
+			bData = bItem[ 1 ];
+			aAction = aItem[ 0 ];
+			bAction = bItem[ 0 ];
+			// If they have the same length content and they are a consecutive
+			// remove and insert, and they have the same contentm then mark the
+			// old one as a change-remove (-2) and the new one as a change-insert
+			// (2)
+			if (
+				aData.length === bData.length &&
+				( ( aAction === -1 && bAction === 1 ) || ( aAction === 1 && bAction === -1 ) ) &&
+				aData.every( compareData )
+			) {
+				cleanDiff[ i ][ 0 ] = aAction === -1 ? -2 : 2;
+				cleanDiff[ i + 1 ][ 0 ] = bAction === -1 ? -2 : 2;
+				// No need to check bItem against the following item
+				i += 1;
+			}
 		}
 
 		return cleanDiff;

@@ -475,7 +475,7 @@ ve.ui.DiffElement.prototype.addClassesToNode = function ( nodeData, nodeDoc, act
  * @return {Array} Data with annotations added
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
-	var i, ilen, range, type, annType,
+	var i, ilen, range, type, typeAsString, annType, domElementType,
 		start = 0, // The starting index for a range for building an annotation
 		end, transaction, annotatedLinearDiff,
 		domElement, domElements, originalDomElementsIndex,
@@ -495,16 +495,37 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 		if ( start !== end ) {
 			range = { start: start, end: end };
 			type = linearDiff[ i ][ 0 ];
-			if ( type === 1 || type === -1 ) {
-				diffClass = this.classPrefix + ( type === 1 ? 'insert' : 'remove' );
-				domElement = document.createElement( type === 1 ? 'ins' : 'del' );
+			if ( type !== 0 ) {
+				switch ( type ) {
+					case -1:
+						typeAsString = 'remove';
+						domElementType = 'del';
+						annType = 'textStyle/delete';
+						break;
+					case 1:
+						typeAsString = 'insert';
+						domElementType = 'ins';
+						annType = 'textStyle/insert';
+						break;
+					case -2:
+						typeAsString = 'change-remove';
+						domElementType = 'span';
+						annType = 'textStyle/span';
+						break;
+					case 2:
+						typeAsString = 'change-insert';
+						domElementType = 'span';
+						annType = 'textStyle/span';
+						break;
+				}
+				diffClass = this.classPrefix + typeAsString;
+				domElement = document.createElement( domElementType );
 				domElement.setAttribute( 'class', diffClass );
 				domElements = [ domElement ];
 				originalDomElementsIndex = diffDoc.getStore().index(
 					domElements,
 					domElements.map( ve.getNodeHtml ).join( '' )
 				);
-				annType = type === 1 ? 'textStyle/insert' : 'textStyle/delete';
 				transaction = ve.dm.TransactionBuilder.static.newFromAnnotation(
 					diffDoc, range, 'set',
 					ve.dm.annotationFactory.create(
