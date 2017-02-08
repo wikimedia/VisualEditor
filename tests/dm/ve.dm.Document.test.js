@@ -8,7 +8,7 @@ QUnit.module( 've.dm.Document' );
 
 /* Tests */
 
-QUnit.test( 'constructor', 12, function ( assert ) {
+QUnit.test( 'constructor', 14, function ( assert ) {
 	var data, htmlDoc,
 		doc = ve.dm.example.createExampleDocument();
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
@@ -34,6 +34,33 @@ QUnit.test( 'constructor', 12, function ( assert ) {
 		},
 		Error,
 		'unclosed inline node causes exception'
+	);
+	assert.throws(
+		function () {
+			doc = new ve.dm.Document( [
+				{ type: 'div' },
+				{ type: 'paragraph' },
+				'a',
+				{ type: '/div' },
+				{ type: '/paragraph' }
+			] );
+			doc.buildNodeTree();
+		},
+		Error,
+		'mismatching close tags cause exception'
+	);
+	assert.throws(
+		function () {
+			doc = new ve.dm.Document( [
+				{ type: 'div' },
+				{ type: 'paragraph' },
+				'a',
+				{ type: '/paragraph' }
+			] );
+			doc.buildNodeTree();
+		},
+		Error,
+		'unclosed open tag causes exception'
 	);
 
 	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ] );
