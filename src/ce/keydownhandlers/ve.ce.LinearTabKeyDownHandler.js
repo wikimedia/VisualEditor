@@ -53,6 +53,7 @@ ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 			false, // don't expand the current selection,
 			true // wrap to next/previous row
 		);
+		activeTableNode.setEditing( true );
 		return true;
 	}
 	return false;
