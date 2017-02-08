@@ -106,7 +106,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annota
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRange, annotate ) {
-	var data,
+	var data, i, l,
 		range = this.getSelection().getCoveringRange(),
 		fragment = this;
 
@@ -122,16 +122,22 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 	// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
 	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ], annotate ) ) {
 		data = doc.data.getDataSlice( newDocRange );
-		data.forEach( function ( element, i, arr ) {
+		for ( i = 0, l = data.length; i < l; i++ ) {
 			// Remove any text annotations, as we have determined them to be covering
-			element = Array.isArray( element ) ? element[ 0 ] : element;
-			// Convert newlines to paragraph breaks (T156498)
-			if ( element === '\r' ) {
-				arr.splice( i, 1 );
-			} else if ( element === '\n' ) {
-				arr.splice( i, 1, { type: '/paragraph' }, { type: 'paragraph' } );
+			if ( Array.isArray( data[ i ] ) ) {
+				data[ i ] = data[ i ][ 0 ];
 			}
-		} );
+			// Convert newlines to paragraph breaks (T156498)
+			if ( data[ i ] === '\r' ) {
+				data.splice( i, 1 );
+				i--;
+				l--;
+			} else if ( data[ i ] === '\n' ) {
+				data.splice( i, 1, { type: '/paragraph' }, { type: 'paragraph' } );
+				i++;
+				l++;
+			}
+		}
 		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, data );
 	}
 
