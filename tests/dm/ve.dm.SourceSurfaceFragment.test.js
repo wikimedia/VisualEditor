@@ -36,17 +36,29 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 
 	fragment.insertDocument( new ve.dm.Document( [
 		{ type: 'paragraph' },
-		'f', 'o', 'o', '\n', 'b', 'a', 'r',
+		'f', '\n', 'o', '\n', 'o', '\n', 'b', '\n', 'a', '\n', 'r',
 		{ type: '/paragraph' }
 	] ) );
 	assert.deepEqual(
-		doc.getData( new ve.Range( 0, 10 ) ),
+		doc.getData( new ve.Range( 0, 18 ) ),
 		[
 			{ type: 'paragraph' },
-			'f', 'o', 'o',
+			'f',
 			{ type: '/paragraph' },
 			{ type: 'paragraph' },
-			'b', 'a', 'r',
+			'o',
+			{ type: '/paragraph' },
+			{ type: 'paragraph' },
+			'o',
+			{ type: '/paragraph' },
+			{ type: 'paragraph' },
+			'b',
+			{ type: '/paragraph' },
+			{ type: 'paragraph' },
+			'a',
+			{ type: '/paragraph' },
+			{ type: 'paragraph' },
+			'r',
 			{ type: '/paragraph' }
 		],
 		'Newline in string split to paragraphs'
