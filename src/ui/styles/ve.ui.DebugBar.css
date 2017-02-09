@@ -59,7 +59,8 @@
 	vertical-align: top;
 }
 
-.ve-ui-debugBar-dump-linmod-data {
+.ve-ui-debugBar-dump-linmod-data,
+.ve-ui-debugBar-dump-linmod-metadata {
 	width: 27%;
 }
 

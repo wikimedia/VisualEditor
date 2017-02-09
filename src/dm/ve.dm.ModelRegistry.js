@@ -121,6 +121,8 @@
 			ve.dm.annotationFactory.register( constructor );
 		} else if ( constructor.prototype instanceof ve.dm.Node ) {
 			ve.dm.nodeFactory.register( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.MetaItem ) {
+			ve.dm.metaItemFactory.register( constructor );
 		} else {
 			throw new Error( 'No factory associated with this ve.dm.Model subclass' );
 		}
@@ -182,6 +184,8 @@
 			ve.dm.annotationFactory.unregister( constructor );
 		} else if ( constructor.prototype instanceof ve.dm.Node ) {
 			ve.dm.nodeFactory.unregister( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.MetaItem ) {
+			ve.dm.metaItemFactory.unregister( constructor );
 		} else {
 			throw new Error( 'No factory associated with this ve.dm.Model subclass' );
 		}
