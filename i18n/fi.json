@@ -18,7 +18,8 @@
 			"Gloria sah",
 			"Alluk.",
 			"Olimar",
-			"01miki10"
+			"01miki10",
+			"Pyscowicz"
 		]
 	},
 	"visualeditor": "Visuaalinen muokkain",
@@ -66,6 +67,7 @@
 	"visualeditor-dialog-language-search-title": "Valitse kieli",
 	"visualeditor-dialog-table-caption": "Kuvateksti",
 	"visualeditor-dialog-table-title": "Taulukon ominaisuudet",
+	"visualeditor-diff-no-changes": "Ei muutoksia",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-done": "Valmis",
