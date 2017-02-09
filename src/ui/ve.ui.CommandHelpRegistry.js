@@ -108,6 +108,19 @@ ve.ui.commandHelpRegistry.register( 'clipboard', 'paste', {
 } );
 ve.ui.commandHelpRegistry.register( 'clipboard', 'pasteSpecial', { trigger: 'pasteSpecial', label: OO.ui.deferMsg( 'visualeditor-clipboard-paste-special' ) } );
 
+// Dialog
+ve.ui.commandHelpRegistry.register( 'dialog', 'dialogCancel', {
+	shortcuts: [ 'escape' ],
+	label: OO.ui.deferMsg( 'visualeditor-command-dialog-cancel' )
+} );
+ve.ui.commandHelpRegistry.register( 'dialog', 'dialogConfirm', {
+	shortcuts: [ {
+		mac: 'cmd+enter',
+		pc: 'ctrl+enter'
+	} ],
+	label: OO.ui.deferMsg( 'visualeditor-command-dialog-confirm' )
+} );
+
 // Formatting
 ve.ui.commandHelpRegistry.register( 'formatting', 'paragraph', { trigger: 'paragraph', label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-paragraph' ) } );
 ve.ui.commandHelpRegistry.register( 'formatting', 'heading', { shortcuts: [ 'ctrl+1-6' ], label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading-label' ) } );

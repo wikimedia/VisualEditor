@@ -59,6 +59,11 @@ ve.ui.CommandHelpDialog.static.commandGroups = {
 		promote: [ 'undo', 'redo' ],
 		demote: []
 	},
+	dialog: {
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-dialog' ),
+		promote: [],
+		demote: []
+	},
 	other: {
 		title: OO.ui.deferMsg( 'visualeditor-shortcuts-other' ),
 		promote: [ 'findAndReplace', 'findNext', 'findPrevious' ],
