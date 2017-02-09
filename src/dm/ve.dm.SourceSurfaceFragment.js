@@ -136,6 +136,11 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 				data.splice( i, 1, { type: '/paragraph' }, { type: 'paragraph' } );
 				i++;
 				l++;
+			} else if ( data[ i ] === '\u00a0' ) {
+				// Replace non-breaking spaces, they were probably created during HTML conversion
+				// and are invisible to the user so likely to just cause problems.
+				// If you want a non-breaking space in source you should probably use &nbsp; T154382
+				data[ i ] = ' ';
 			}
 		}
 		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, data );
