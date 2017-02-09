@@ -499,6 +499,15 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 		return;
 	}
 
+	if ( this.getView().dragging ) {
+		// Allow native scroll behavior while dragging, as the start/end
+		// points are unreliable until we're finished. Without this, trying to
+		// drag a selection larger than a single screen will sometimes lock
+		// the viewport in place, as it tries to keep the wrong end of the
+		// selection on-screen.
+		return;
+	}
+
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen. Thus, we get the start/end
 	// rects, and calculate based on the end.
@@ -521,8 +530,11 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 	cursorTop = clientRect.top - 5;
 	cursorBottom = clientRect.bottom + 5;
 
-	if ( cursorTop < topBound || cursorBottom > bottomBound ) {
+	if ( cursorTop < topBound ) {
 		scrollTo = this.$scrollContainer.scrollTop() + ( cursorTop - topBound );
+		this.scrollTo( scrollTo );
+	} else if ( cursorBottom > bottomBound ) {
+		scrollTo = this.$scrollContainer.scrollTop() + ( cursorBottom - bottomBound );
 		this.scrollTo( scrollTo );
 	}
 };
