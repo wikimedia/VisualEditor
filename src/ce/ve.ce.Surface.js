@@ -121,12 +121,17 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 
 	this.onDocumentFocusInOutHandler = this.onDocumentFocusInOut.bind( this );
 	this.$document.on( 'focusin focusout', this.onDocumentFocusInOutHandler );
-	// It is possible for a mousedown to clear the selection
-	// without triggering a focus change event (e.g. if the
-	// document has been programmatically blurred) so trigger
-	// a focus change to check if we still have a selection
+
 	this.debounceFocusChange = ve.debounce( this.onFocusChange ).bind( this );
+	// If the document is blurred (but still has a selection) it is
+	// possible to clear the selection by clicking elsewhere without
+	// triggering a focus or blur event, so listen to mousedown globally.
 	this.$document.on( 'mousedown', this.debounceFocusChange );
+	// It is possible that when focusin fires, the selection is not yet inside
+	// the document. This happens if the selection is being moved inside itself,
+	// e.g. the whole html page was previously selected, including the docuemntNode.
+	// In this case the selection is not moved until mouseup. T157499
+	this.$documentNode.on( 'mouseup', this.debounceFocusChange );
 
 	this.$pasteTarget.add( this.$highlights ).on( {
 		cut: this.onCut.bind( this ),
