@@ -96,6 +96,7 @@ QUnit.test( 'commit', function ( assert ) {
 					data.splice( 1, 0, 'x', 'y', 'z' );
 				},
 				events: [
+					[ 'lengthChange', 0, 0 ],
 					[ 'annotation', 4, 0 ],
 					[ 'update', 4, 0 ]
 				]
@@ -313,6 +314,14 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplace', 1, 1, [ 'F', { type: 'inlineImage' }, 'O', 'O' ] ]
 				],
+				exception: /Unbalanced set of replace operations found/
+			},
+			'wrapping a heading in an inline node': {
+				calls: [
+					[ 'pushReplace', 0, 0, [ { type: 'inlineImage' } ] ],
+					[ 'pushRetain', 5 ],
+					[ 'pushReplace', 5, 0, [ { type: '/inlineImage' } ] ]
+				],
 				exception: /Opening element for node that cannot have children must be followed by closing element/
 			},
 			'converting an element': {
@@ -416,6 +425,125 @@ QUnit.test( 'commit', function ( assert ) {
 					data.splice( 53, 2, { type: '/listItem' }, { type: '/list' } );
 					data.splice( 48, 2, { type: '/listItem' }, { type: 'listItem' } );
 					data.splice( 43, 2, { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } );
+				}
+			},
+			'merging a nested element': {
+				calls: [
+					[ 'pushRetain', 47 ],
+					[ 'pushReplace', 47, 4, [] ]
+				],
+				expected: function ( data ) {
+					data.splice( 47, 4 );
+				}
+			},
+			'merging an element that also has a content insertion': {
+				calls: [
+					[ 'pushRetain', 56 ],
+					[ 'pushReplace', 56, 0, [ 'x' ] ],
+					[ 'pushRetain', 1 ],
+					[ 'pushReplace', 57, 2, [] ]
+				],
+				expected: function ( data ) {
+					data.splice( 57, 2 );
+					data.splice( 56, 0, 'x' );
+				}
+			},
+			'merging a nested element that also has a structural insertion': {
+				calls: [
+					[ 'pushRetain', 45 ],
+					[ 'pushReplace', 45, 0, [ { type: 'paragraph' }, 'x', { type: '/paragraph' } ] ],
+					[ 'pushRetain', 2 ],
+					[ 'pushReplace', 47, 4, [] ]
+				],
+				expected: function ( data ) {
+					data.splice( 47, 4 );
+					data.splice( 45, 0, { type: 'paragraph' }, 'x', { type: '/paragraph' } );
+				}
+			},
+			'merging the same element from both sides at once': {
+				data: [
+					{ type: 'paragraph' },
+					'a',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'b',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'c',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'd',
+					{ type: '/paragraph' }
+				],
+				calls: [
+					[ 'pushRetain', 2 ],
+					[ 'pushReplace', 2, 2, [] ],
+					[ 'pushRetain', 1 ],
+					[ 'pushReplace', 5, 2, [] ]
+				],
+				expected: function ( data ) {
+					data.splice( 5, 2 );
+					data.splice( 2, 2 );
+				}
+			},
+			'deleting images on both sides of a text node at once': {
+				data: [
+					{ type: 'paragraph' },
+					'a',
+					{ type: 'inlineImage' },
+					{ type: '/inlineImage' },
+					'b',
+					{ type: 'inlineImage' },
+					{ type: '/inlineImage' },
+					'c',
+					{ type: '/paragraph' }
+				],
+				calls: [
+					[ 'pushRetain', 2 ],
+					[ 'pushReplace', 2, 2, [] ],
+					[ 'pushRetain', 1 ],
+					[ 'pushReplace', 5, 2, [] ]
+				],
+				expected: function ( data ) {
+					data.splice( 5, 2 );
+					data.splice( 2, 2 );
+				}
+			},
+			'unwrap inside of a split inside of a wrap': {
+				data: [
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'div' },
+					{ type: 'paragraph' },
+					'a',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'b',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'c',
+					{ type: '/paragraph' },
+					{ type: '/div' },
+					{ type: '/listItem' },
+					{ type: '/list' },
+					{ type: 'paragraph' },
+					'd',
+					{ type: '/paragraph' }
+				],
+				calls: [
+					[ 'pushReplace', 0, 0, [ { type: 'div' } ] ],
+					[ 'pushRetain', 6 ],
+					[ 'pushReplace', 6, 0, [ { type: '/div' } ] ],
+					[ 'pushRetain', 3 ],
+					[ 'pushReplace', 9, 0, [ { type: 'div' } ] ],
+					[ 'pushRetain', 6 ],
+					[ 'pushReplace', 15, 0, [ { type: '/div' } ] ]
+				],
+				expected: function ( data ) {
+					data.splice( 15, 0, { type: '/div' } );
+					data.splice( 9, 0, { type: 'div' } );
+					data.splice( 6, 0, { type: '/div' } );
+					data.splice( 0, 0, { type: 'div' } );
 				}
 			},
 			'applying a link across an existing annotation boundary': {
@@ -806,7 +934,7 @@ QUnit.test( 'commit', function ( assert ) {
 					}
 					node.on( cases[ msg ].events[ i ][ 0 ], ( function ( obj ) {
 						return function () {
-							obj.fired = true;
+							obj.fired = ( obj.fired || 0 ) + 1;
 						};
 					}( cases[ msg ].events[ i ] ) ) );
 				}
@@ -822,8 +950,9 @@ QUnit.test( 'commit', function ( assert ) {
 			);
 			if ( 'events' in cases[ msg ] ) {
 				for ( i = 0; i < cases[ msg ].events.length; i++ ) {
-					assert.ok(
+					assert.equal(
 						cases[ msg ].events[ i ].fired,
+						1,
 						'event ' + cases[ msg ].events[ i ][ 0 ] + ' on ' +
 							cases[ msg ].events[ i ].slice( 1 ).join( ',' ) + ': ' + msg
 					);

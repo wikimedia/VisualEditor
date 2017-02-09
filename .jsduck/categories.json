@@ -54,7 +54,6 @@
 					"ve.dm.NodeFactory",
 					"ve.dm.Converter",
 					"ve.dm.DataString",
-					"ve.dm.DocumentSynchronizer",
 					"ve.dm.IndexValueStore",
 					"ve.dm.Scalable",
 					"ve.dm.APIResultsProvider",
