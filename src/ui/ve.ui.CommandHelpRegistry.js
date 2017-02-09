@@ -31,11 +31,13 @@ OO.inheritClass( ve.ui.CommandHelpRegistry, OO.Registry );
  * @param {Object} details Details about the command
  * @param {Function|string} details.label Label describing the command. String or deferred message function.
  * @param {string} [details.trigger] Symbolic name of trigger this for this command
- * @param {string} [details.shortcut] Keyboard shortcut if this is not a real trigger (e.g. copy/paste)
+ * @param {string[]} [details.shortcuts] Keyboard shortcuts if this is not a real trigger (e.g. copy/paste)
  * @param {string[]} [details.sequences] Symbolic names of sequences, if this is a sequence, not a trigger
  */
 ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelpName, details ) {
-	var existingCommand;
+	var existingCommand, i, shortcut,
+		platform = ve.getSystemPlatform(),
+		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
 	existingCommand = this.registry[ commandHelpName ];
 	if ( existingCommand ) {
@@ -44,6 +46,15 @@ ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelp
 			details.sequences = ( existingCommand.sequences || [] ).concat( details.sequences );
 		}
 		details = ve.extendObject( existingCommand, details );
+	}
+
+	if ( details.shortcuts ) {
+		for ( i = 0; i < details.shortcuts.length; i++ ) {
+			shortcut = details.shortcuts[ i ];
+			if ( ve.isPlainObject( shortcut ) ) {
+				details.shortcuts[ i ] = shortcut[ platformKey ];
+			}
+		}
 	}
 
 	details.group = groupName;

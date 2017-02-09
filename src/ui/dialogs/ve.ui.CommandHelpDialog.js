@@ -84,7 +84,7 @@ ve.ui.CommandHelpDialog.prototype.getBodyHeight = function () {
  * @inheritdoc
  */
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
-	var i, j, jLen, k, kLen, triggerList, commands, shortcut, platform, platformKey,
+	var i, j, jLen, k, kLen, triggerList, commands, shortcut,
 		$list, $shortcut, commandGroups, sequence, hasCommand, hasShortcut,
 		surface = ve.init.target.getSurface(),
 		sequenceRegistry = surface.sequenceRegistry,
@@ -93,8 +93,6 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
 
-	platform = ve.getSystemPlatform();
-	platformKey = platform === 'mac' ? 'mac' : 'pc';
 	commandGroups = this.constructor.static.commandGroups;
 
 	this.contentLayout = new OO.ui.PanelLayout( {
@@ -121,10 +119,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 					for ( k = 0, kLen = commands[ j ].shortcuts.length; k < kLen; k++ ) {
 						shortcut = commands[ j ].shortcuts[ k ];
 						triggerList.push(
-							new ve.ui.Trigger(
-								ve.isPlainObject( shortcut ) ? shortcut[ platformKey ] : shortcut,
-								true
-							)
+							new ve.ui.Trigger( shortcut, true )
 						);
 					}
 				}
