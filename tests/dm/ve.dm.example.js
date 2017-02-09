@@ -655,7 +655,6 @@ ve.dm.example.internalData.internalItems = [
 ];
 
 ve.dm.example.withMeta = [
-	// 0
 	{
 		type: 'alienMeta',
 		originalDomElements: $( '<!-- No content conversion -->' ).toArray()
@@ -667,40 +666,31 @@ ve.dm.example.withMeta = [
 	},
 	{ type: '/alienMeta' },
 	{ type: 'paragraph' },
-	// 5
 	'F',
 	'o',
 	'o',
-	{ type: '/paragraph' },
 	{
 		type: 'alienMeta',
 		originalDomElements: $( '<link rel="bar" href="baz" />' ).toArray()
 	},
-	// 10
 	{ type: '/alienMeta' },
-	{ type: 'paragraph' },
 	'B',
 	'a',
 	'r',
-	// 15
-	{ type: '/paragraph' },
 	{
 		type: 'alienMeta',
 		originalDomElements: $( '<meta property="foo" content="bar" />' ).toArray()
 	},
 	{ type: '/alienMeta' },
-	{ type: 'paragraph' },
 	'B',
-	// 20
 	'a',
-	'z',
-	{ type: '/paragraph' },
 	{
 		type: 'alienMeta',
 		originalDomElements: $( '<!-- inline -->' ).toArray()
 	},
 	{ type: '/alienMeta' },
-	// 25
+	'z',
+	{ type: '/paragraph' },
 	{
 		type: 'alienMeta',
 		originalDomElements: $( '<meta property="bar" content="baz" />' ).toArray()
@@ -715,7 +705,6 @@ ve.dm.example.withMeta = [
 		type: 'alienMeta',
 		originalDomElements: $( '<link rel="foofoo" href="barbar" />' ).toArray()
 	},
-	// 30
 	{ type: '/alienMeta' },
 	{
 		type: 'alienMeta',
@@ -724,6 +713,80 @@ ve.dm.example.withMeta = [
 	{ type: '/alienMeta' },
 	{ type: 'internalList' },
 	{ type: '/internalList' }
+];
+
+ve.dm.example.withMetaPlainData = [
+	{ type: 'paragraph' },
+	'F',
+	'o',
+	'o',
+	'B',
+	'a',
+	'r',
+	'B',
+	'a',
+	'z',
+	{ type: '/paragraph' },
+	{ type: 'internalList' },
+	{ type: '/internalList' }
+];
+
+ve.dm.example.withMetaMetaData = [
+	[
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<!-- No content conversion -->' ).toArray()
+		},
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<meta property="foo" />' ).toArray()
+		}
+	],
+	undefined,
+	undefined,
+	undefined,
+	[
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<link rel="bar" href="baz" />' ).toArray()
+		}
+	],
+	undefined,
+	undefined,
+	[
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<meta property="foo" content="bar" />' ).toArray()
+		}
+	],
+	undefined,
+	[
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<!-- inline -->' ).toArray()
+		}
+	],
+	undefined,
+	[
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<meta property="bar" content="baz" />' ).toArray()
+		},
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<!--barbaz-->' ).toArray()
+		},
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<link rel="foofoo" href="barbar" />' ).toArray()
+		},
+		{
+			type: 'alienMeta',
+			originalDomElements: $( '<meta typeof=bazquux" data-foo="foobar" />' ).toArray()
+		}
+	],
+	undefined,
+	undefined
 ];
 
 ve.dm.example.listWithMeta = [

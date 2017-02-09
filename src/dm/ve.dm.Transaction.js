@@ -24,15 +24,8 @@
  */
 ve.dm.Transaction = function VeDmTransaction( operations ) {
 	this.operations = operations || [];
-	// TODO: remove this backwards-incompatibility check
-	this.operations.forEach( function ( op ) {
-		if ( op.type && op.type.match( /meta/i ) ) {
-			throw new Error( 'Metadata ops are no longer supported' );
-		}
-	} );
 	this.applied = false;
 	this.author = null;
-	this.isReversed = false;
 };
 
 /* Inheritance */
@@ -59,10 +52,13 @@ OO.initClass( ve.dm.Transaction );
 ve.dm.Transaction.static.reversers = {
 	annotate: { method: { set: 'clear', clear: 'set' } }, // swap 'set' with 'clear'
 	attribute: { from: 'to', to: 'from' }, // swap .from with .to
-	replace: { // swap .insert with .remove
+	replace: { // swap .insert with .remove and .insertMetadata with .removeMetadata
 		insert: 'remove',
-		remove: 'insert'
-	}
+		remove: 'insert',
+		insertMetadata: 'removeMetadata',
+		removeMetadata: 'insertMetadata'
+	},
+	replaceMetadata: { insert: 'remove', remove: 'insert' } // swap .insert with .remove
 };
 
 /* Static Methods */
@@ -100,11 +96,17 @@ ve.dm.Transaction.prototype.pushRetainMetadataOp = function ( length ) {
  *
  * @param {Array} remove Data to remove
  * @param {Array} insert Data to insert, possibly fixed up
+ * @param {Array|undefined} removeMetadata Metadata to remove
+ * @param {Array|undefined} insertMetadata Metadata to insert
  * @param {number} [insertedDataOffset] Offset of intended insertion within fixed up data
  * @param {number} [insertedDataLength] Length of intended insertion within fixed up data
  */
-ve.dm.Transaction.prototype.pushReplaceOp = function ( remove, insert, insertedDataOffset, insertedDataLength ) {
+ve.dm.Transaction.prototype.pushReplaceOp = function ( remove, insert, removeMetadata, insertMetadata, insertedDataOffset, insertedDataLength ) {
 	var op = { type: 'replace', remove: remove, insert: insert };
+	if ( removeMetadata !== undefined && insertMetadata !== undefined ) {
+		op.removeMetadata = removeMetadata;
+		op.insertMetadata = insertMetadata;
+	}
 	if ( insertedDataOffset !== undefined && insertedDataLength !== undefined ) {
 		op.insertedDataOffset = insertedDataOffset;
 		op.insertedDataLength = insertedDataLength;
@@ -171,10 +173,7 @@ ve.dm.Transaction.prototype.clone = function () {
  * @return {ve.dm.Transaction} Reverse of this transaction
  */
 ve.dm.Transaction.prototype.reversed = function () {
-	var i, len, op, newOp, reverse, prop,
-		tx = new this.constructor();
-
-	tx.isReversed = !this.isReversed;
+	var i, len, op, newOp, reverse, prop, tx = new this.constructor();
 	for ( i = 0, len = this.operations.length; i < len; i++ ) {
 		op = this.operations[ i ];
 		newOp = ve.copy( op );
@@ -206,6 +205,9 @@ ve.dm.Transaction.prototype.isNoOp = function () {
 		return true;
 	} else if ( this.operations.length === 1 ) {
 		return this.operations[ 0 ].type === 'retain';
+	} else if ( this.operations.length === 2 ) {
+		return this.operations[ 0 ].type === 'retain' &&
+			this.operations[ 1 ].type === 'retainMetadata';
 	} else {
 		return false;
 	}
@@ -416,6 +418,9 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, includeInternalLi
 	for ( i = 0, len = this.operations.length; i < len; i++ ) {
 		op = this.operations[ i ];
 		switch ( op.type ) {
+			case 'retainMetadata':
+				continue;
+
 			case 'retain':
 				if ( oldOffset + op.length > docEndOffset ) {
 					break opLoop;
