@@ -30,7 +30,6 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
 	// the cursor only ever moves forward.
 	this.cursor = 0;
-	this.metadataCursor = 0;
 	// Adjustment that needs to be added to linear model offsets in the original linear model
 	// to get offsets in the half-updated linear model. Arguments to queued modifications all use
 	// unadjusted offsets; this is needed to adjust those offsets after other modifications have been
@@ -221,7 +220,6 @@ ve.dm.TransactionProcessor.prototype.emitQueuedEvents = function () {
  */
 ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
 	this.cursor += increment;
-	this.metadataCursor = 0;
 };
 
 /**
@@ -238,7 +236,7 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var annotationsForOffset, setIndex, isElement, annotations, i, j, jlen;
+	var annotationsForOffset, setIndex, isElement, annotations, i;
 
 	function setAndClear( anns, set, clear, index ) {
 		if ( anns.containsAnyOf( set ) ) {
@@ -271,7 +269,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 	for ( i = this.cursor; i < to; i++ ) {
 		isElement = this.document.data.isElementData( i );
 		if ( isElement ) {
-			if ( !ve.dm.nodeFactory.isNodeContent( this.document.data.getType( i ) ) ) {
+			if ( !ve.dm.nodeFactory.canNodeSerializeAsContent( this.document.data.getType( i ) ) ) {
 				throw new Error( 'Invalid transaction, cannot annotate a non-content element' );
 			}
 			if ( this.document.data.isCloseElementData( i ) ) {
@@ -286,17 +284,6 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			type: 'annotateData',
 			args: [ i, annotations ]
 		} );
-	}
-	// Set/clear annotations on metadata, but not on the edges of the range
-	for ( i = this.cursor + 1; i < to; i++ ) {
-		for ( j = 0, jlen = this.document.metadata.getDataLength( i ); j < jlen; j++ ) {
-			annotations = this.document.metadata.getAnnotationsFromOffsetAndIndex( i, j );
-			setAndClear( annotations, this.set, this.clear );
-			this.queueModification( {
-				type: 'annotateMetadata',
-				args: [ i, j, annotations ]
-			} );
-		}
 	}
 	// Queue a "modification" that emits annotate events
 	if ( this.cursor < to ) {
@@ -321,13 +308,12 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
  */
 
 /**
- * Splice data into / out of the data or metadata array, and synchronize the tree.
+ * Splice data into / out of the data array, and synchronize the tree.
  *
  * For efficiency, this function modifies the splice operation objects (i.e. the elements
  * of the splices array). It also relies on these objects not being modified by others later.
  *
  * @param {Object[]} splices Array of splice operations to execute. Properties:
- *  {string} splices[].type 'data' or 'metadata'
  *  {number} splices[].offset Offset to remove/insert at (unadjusted)
  *  {number} splices[].removeLength Number of elements to remove
  *  {Array} splices[].insert Data to insert; for efficiency, objects are inserted without cloning
@@ -338,10 +324,8 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorLevel ) {
 	var i, s, selection, node, parent, textNode, splitAncestor, index, numNodes,
 		startOffset, newLength,
-		lengthDiffs = {
-			data: 0,
-			metadata: 0
-		},
+		lengthDiff = 0,
+		data = this.document.data,
 		dataSplices = [],
 		syncCompleted = false;
 
@@ -352,7 +336,7 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorL
 		for ( i = splices.length - 1; i >= 0; i-- ) {
 			s = splices[ i ];
 			if ( s.removedData !== undefined ) {
-				s.dataObj.batchSplice( s.offset, s.insert.length, s.removedData );
+				data.batchSplice( s.offset, s.insert.length, s.removedData );
 			}
 		}
 	} );
@@ -360,24 +344,20 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorL
 	// Apply splices to the linmod and record how to undo them
 	for ( i = 0; i < splices.length; i++ ) {
 		s = splices[ i ];
-		s.dataObj = s.type === 'metadata' ? this.document.metadata : this.document.data;
 
 		// Adjust s.offset for previous modifications that have already been synced to the tree;
 		// this value is used by the tree sync code later.
 		s.treeOffset = s.offset + this.adjustment;
 		// Also adjust s.offset for previous iterations of this loop (i.e. unsynced modifications);
 		// this is the value we need for the actual array splice.
-		s.offset = s.treeOffset + lengthDiffs[ s.type ];
+		s.offset = s.treeOffset + lengthDiff;
 
 		// Perform the splice and put the removed data in s, for the undo function
-		s.removedData = s.dataObj.batchSplice( s.offset, s.removeLength, s.insert );
-		lengthDiffs[ s.type ] += s.insert.length - s.removeLength;
-
-		if ( s.type === 'data' ) {
-			dataSplices.push( s );
-		}
+		s.removedData = data.batchSplice( s.offset, s.removeLength, s.insert );
+		lengthDiff += s.insert.length - s.removeLength;
+		dataSplices.push( s );
 	}
-	this.adjustment += lengthDiffs.data;
+	this.adjustment += lengthDiff;
 
 	// Synchronize the tree. There are three cases:
 	// - If the splice only deleted and inserted text, find the text node and resize it
@@ -412,11 +392,11 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorL
 			if ( node && node.getType() === 'text' ) {
 				// Resize the text node
 				parent = node.getParent();
-				if ( parent && node.getLength() + lengthDiffs.data === 0 ) {
+				if ( parent && node.getLength() + lengthDiff === 0 ) {
 					// Automatically delete empty text nodes
 					parent.splice( parent.indexOf( node ), 1 );
 				} else {
-					node.adjustLength( lengthDiffs.data );
+					node.adjustLength( lengthDiff );
 				}
 				syncCompleted = true;
 			} else if (
@@ -479,41 +459,20 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorL
 			startOffset = selection[ 0 ].range.start;
 			// If indexInNode is set or node is the root, then the input range must have been zero-length,
 			// so selection.length must be 1 and selection[ 0 ].range.end must equal startOffset.
-			// This means selection[ selection.length - 1 ].range.end - startOffset + lengthDiffs.data
-			// is really just lengthDiffs.data.
-			newLength = lengthDiffs.data;
+			// This means selection[ selection.length - 1 ].range.end - startOffset + lengthDiff
+			// is really just lengthDiff
+			newLength = lengthDiff;
 		} else {
 			// Otherwise, this is a rebuild of a set of siblings
 			parent = node.getParent();
 			index = selection[ 0 ].index; // === node.getParent().indexOf( node )
 			numNodes = selection.length;
 			startOffset = selection[ 0 ].nodeOuterRange.start;
-			newLength = selection[ selection.length - 1 ].nodeOuterRange.end - startOffset + lengthDiffs.data;
+			newLength = selection[ selection.length - 1 ].nodeOuterRange.end - startOffset + lengthDiff;
 		}
 
 		this.document.rebuildNodes( parent, index, numNodes, startOffset, newLength );
 	}
-};
-
-/**
- * Splice metadata into / out of the metadata array at a given offset.
- *
- * @param {number} offset Offset whose metadata array to modify (unadjusted)
- * @param {number} index Index in that offset's metadata array to remove/insert at
- * @param {number} remove Number of elements to remove
- * @param {Array} [insert] Elements to insert
- */
-ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
-	var removed, metadata;
-	offset += this.adjustment;
-	insert = insert || [];
-	metadata = this.document.metadata;
-
-	removed = metadata.spliceMetadataAtOffset( offset, index, remove, insert );
-
-	this.queueUndoFunction( function () {
-		metadata.spliceMetadataAtOffset( offset, index, insert.length, removed );
-	} );
 };
 
 /**
@@ -532,26 +491,6 @@ ve.dm.TransactionProcessor.modifiers.annotateData = function ( offset, annotatio
 	oldAnnotations = data.getAnnotationsFromOffset( offset );
 	this.queueUndoFunction( function () {
 		data.setAnnotationsAtOffset( offset, oldAnnotations );
-	} );
-};
-
-/**
- * Set annotations at a given metadata offset and index.
- *
- * @param {number} offset Offset to annotate at (unadjusted)
- * @param {number} index Index in that offset's metadata array
- * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
- */
-ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index, annotations ) {
-	var oldAnnotations,
-		metadata = this.document.metadata;
-	offset += this.adjustment;
-
-	metadata.setAnnotationsAtOffsetAndIndex( offset, index, annotations );
-
-	oldAnnotations = metadata.getAnnotationsFromOffsetAndIndex( offset, index );
-	this.queueUndoFunction( function () {
-		metadata.setAnnotationsAtOffsetAndIndex( offset, index, oldAnnotations );
 	} );
 };
 
@@ -631,21 +570,6 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 	}
 	this.applyAnnotations( this.cursor + op.length );
 	this.advanceCursor( op.length );
-};
-
-/**
- * Execute a metadata retain operation.
- *
- * This method is called within the context of a transaction processor instance.
- *
- * This moves the metadata cursor by op.length.
- *
- * @method
- * @param {Object} op Operation object:
- * @param {number} op.length Number of elements to retain
- */
-ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
-	this.metadataCursor += op.length;
 };
 
 /**
@@ -786,20 +710,12 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		}
 	}
 	// Queue up splice operations
-	this.replaceSpliceQueue.push(
-		{
-			type: 'data',
-			offset: this.cursor,
-			removeLength: op.remove.length,
-			insert: op.insert
-		},
-		{
-			type: 'metadata',
-			offset: this.cursor,
-			removeLength: ( op.removeMetadata || op.remove ).length,
-			insert: op.insertMetadata || new Array( op.insert.length )
-		}
-	);
+	this.replaceSpliceQueue.push( {
+		type: 'data',
+		offset: this.cursor,
+		removeLength: op.remove.length,
+		insert: op.insert
+	} );
 
 	this.advanceCursor( op.remove.length );
 
@@ -812,22 +728,4 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 		this.replaceSpliceQueue = [];
 		this.replaceMinInsertLevel = 0;
 	}
-};
-
-/**
- * Execute a metadata replace operation.
- *
- * This method is called within the context of a transaction processor instance.
- *
- * @method
- * @param {Object} op Operation object
- * @param {Array} op.remove Metadata to remove
- * @param {Array} op.insert Metadata to insert
- */
-ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
-	this.queueModification( {
-		type: 'spliceMetadataAtOffset',
-		args: [ this.cursor, this.metadataCursor, op.remove.length, op.insert ]
-	} );
-	this.metadataCursor += op.insert.length;
 };

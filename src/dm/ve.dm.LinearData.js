@@ -79,6 +79,20 @@ ve.dm.LinearData.static.isCloseElementData = function ( item ) {
 	return this.isElementData( item ) && item.type.charAt( 0 ) === '/';
 };
 
+/**
+ * Test whether a linear model item is a meta item element
+ *
+ * @param {Object|string|Array|undefined} item Linear model item
+ * @return {boolean} Whether the item is a meta item element
+ */
+ve.dm.LinearData.static.isMetaItem = function ( item ) {
+	// This correctly returns false if item is a string, an Array or undefined
+	return !!item && ve.isSubclass(
+		ve.dm.nodeFactory.lookup( ve.dm.LinearData.static.getType( item ) ),
+		ve.dm.MetaItem
+	);
+};
+
 /* Methods */
 
 /**

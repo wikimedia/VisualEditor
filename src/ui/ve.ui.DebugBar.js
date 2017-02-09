@@ -24,7 +24,6 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 
 	this.$commands = $( '<div>' ).addClass( 've-ui-debugBar-commands' );
 	this.$linmodData = $( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-data' );
-	this.$linmodMetadata = $( '<td>' ).addClass( 've-ui-debugBar-dump-linmod-metadata' );
 	this.$viewTree = $( '<td>' ).addClass( 've-ui-debugBar-view-tree' );
 	this.$modelTree = $( '<td>' ).addClass( 've-ui-debugBar-model-tree' );
 
@@ -46,10 +45,10 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 		$( '<div class="ve-ui-debugBar-dump">' ).append(
 			this.updateModelToggle.$element,
 			$( '<table></table>' ).append(
-				$( '<thead><th>Linear model data</th><th>Linear model metadata</th><th>View tree</th><th>Model tree</th></thead>' ),
+				$( '<thead><th>Linear model data</th><th>View tree</th><th>Model tree</th></thead>' ),
 				$( '<tbody>' ).append(
 					$( '<tr>' ).append(
-						this.$linmodData, this.$linmodMetadata, this.$viewTree, this.$modelTree
+						this.$linmodData, this.$viewTree, this.$modelTree
 					)
 				)
 			)
@@ -162,8 +161,6 @@ ve.ui.DebugBar.prototype.updateDump = function () {
 
 	// linear model dump
 	this.$linmodData.html( this.generateListFromLinearData( documentModel.data ) );
-	this.$linmodMetadata.html( this.generateListFromLinearData( documentModel.metadata ) );
-
 	this.$modelTree.html(
 		this.generateListFromNode( documentModel.getDocumentNode() )
 	);
@@ -189,12 +186,14 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 		$label = $( '<span>' );
 		element = data[ i ];
 		annotations = null;
-		if ( linearData instanceof ve.dm.MetaLinearData ) {
-			if ( element && element.length ) {
-				$li.append( this.generateListFromLinearData( element ) );
-			} else {
-				$li.append( $( '<span>undefined</span>' ).addClass( 've-ui-debugBar-dump-undefined' ) );
-			}
+		if ( element.type ) {
+			$label.addClass( 've-ui-debugBar-dump-element' );
+			text = element.type;
+			annotations = element.annotations;
+		} else if ( Array.isArray( element ) ) {
+			$label.addClass( 've-ui-debugBar-dump-achar' );
+			text = element[ 0 ];
+			annotations = element[ 1 ];
 		} else {
 			if ( element.type ) {
 				$label.addClass( 've-ui-debugBar-dump-element' );
@@ -221,6 +220,18 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 
 			$li.append( $label );
 		}
+		$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
+		if ( annotations ) {
+			$label.append(
+				$( '<span>' ).text(
+					'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( function ( ann ) {
+						return JSON.stringify( ann.getComparableObject() );
+					} ).join( ', ' ) + ']'
+				)
+			);
+		}
+
+		$li.append( $label );
 		$ol.append( $li );
 	}
 	return $ol;
