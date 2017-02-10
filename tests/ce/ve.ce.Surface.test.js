@@ -579,12 +579,10 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 				},
 				keys: [ 'ENTER', 'TAB' ],
 				expectedRangeOrSelection: {
-					type: 'table',
-					tableRange: new ve.Range( 0, 171 ),
-					fromCol: 2,
-					fromRow: 0
+					type: 'linear',
+					range: new ve.Range( 16 )
 				},
-				msg: 'Tab while in a table cell moves to the next cell'
+				msg: 'Tab while in a table cell moves inside the next cell'
 			},
 			{
 				htmlOrDoc: mergedCellsDoc,
@@ -596,12 +594,10 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 				},
 				keys: [ 'ENTER', 'SHIFT+TAB' ],
 				expectedRangeOrSelection: {
-					type: 'table',
-					tableRange: new ve.Range( 0, 171 ),
-					fromCol: 0,
-					fromRow: 0
+					type: 'linear',
+					range: new ve.Range( 6 )
 				},
-				msg: 'Shift+tab while in a table cell moves to the previous cell'
+				msg: 'Shift+tab while in a table cell moves inside the previous cell'
 			},
 			{
 				// Create a full surface and return the view, as the UI surface is required for the insert action
