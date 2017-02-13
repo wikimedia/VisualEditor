@@ -51,6 +51,8 @@ ve.ui.TableDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.TableDialog.super.prototype.initialize.call( this );
 
+	this.initialValues = null;
+
 	this.panel = new OO.ui.PanelLayout( {
 		padded: true,
 		expanded: false
@@ -62,9 +64,31 @@ ve.ui.TableDialog.prototype.initialize = function () {
 		label: ve.msg( 'visualeditor-dialog-table-caption' )
 	} );
 
+	this.captionToggle.connect( this, { change: 'updateActions' } );
+
 	this.panel.$element.append( this.captionField.$element );
 
 	this.$body.append( this.panel.$element );
+};
+
+/**
+ * Update the 'done' action according to whether there are changes
+ */
+ve.ui.TableDialog.prototype.updateActions = function () {
+	this.actions.setAbilities( { done: !ve.compare( this.getValues(), this.initialValues ) } );
+};
+
+/**
+ * Get object describing current form values.
+ *
+ * To be compared against this.initialValues
+ *
+ * @return {Object} Current form values
+ */
+ve.ui.TableDialog.prototype.getValues = function () {
+	return {
+		caption: this.captionToggle.getValue()
+	};
 };
 
 /**
@@ -73,10 +97,12 @@ ve.ui.TableDialog.prototype.initialize = function () {
 ve.ui.TableDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.TableDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var captionNode = this.getFragment().getSelection().getTableNode().getCaptionNode();
-			this.hadCaption = !!captionNode;
-			this.captionToggle.setValue( !!captionNode );
+			this.initialValues = {
+				caption: !!this.getFragment().getSelection().getTableNode().getCaptionNode()
+			};
+			this.captionToggle.setValue( this.initialValues.caption );
 			this.closingFragment = null;
+			this.updateActions();
 		}, this );
 };
 
@@ -92,8 +118,8 @@ ve.ui.TableDialog.prototype.getActionProcess = function ( action ) {
 				surfaceModel = this.getFragment().getSurface();
 				selection = surfaceModel.getSelection();
 				captionNode = this.getFragment().getSelection().getTableNode().getCaptionNode();
-				if ( this.hadCaption !== this.captionToggle.getValue() ) {
-					if ( this.hadCaption ) {
+				if ( this.captionToggle.getValue() !== this.initialValues.caption ) {
+					if ( this.initialValues.caption ) {
 						fragment = surfaceModel.getLinearFragment( captionNode.getOuterRange(), true );
 						fragment.removeContent();
 					} else {
