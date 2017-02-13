@@ -45,6 +45,8 @@
 	"visualeditor-clipboard-cut": "Leikkaa",
 	"visualeditor-clipboard-paste": "Liitä",
 	"visualeditor-clipboard-paste-special": "Liitä pelkkänä tekstinä",
+	"visualeditor-command-dialog-cancel": "Sulje / peruuta muutos",
+	"visualeditor-command-dialog-confirm": "Vahvista muutos",
 	"visualeditor-commentinspector-edit": "Muokkaa kommenttia",
 	"visualeditor-commentinspector-title": "Kommentti",
 	"visualeditor-commentinspector-tooltip": "Kommentti",
