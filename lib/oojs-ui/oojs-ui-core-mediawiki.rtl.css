@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.19.1
+ * OOjs UI v0.19.2
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-02-08T00:38:35Z
+ * Date: 2017-02-14T22:47:25Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -381,6 +381,9 @@
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   min-height: 3.125em;
+}
+.oo-ui-floatableElement {
+  position: absolute;
 }
 .oo-ui-iconElement .oo-ui-iconElement-icon,
 .oo-ui-iconElement.oo-ui-iconElement-icon {
@@ -803,8 +806,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-popupWidget {
   position: absolute;
-  /* @noflip */
-  left: 0;
+  right: 0;
 }
 .oo-ui-popupWidget-popup {
   position: relative;
@@ -818,9 +820,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupWidget-anchored .oo-ui-popupWidget-anchor {
   display: block;
   position: absolute;
-  /* %60top` property is to be set in theme's selector due to specific `@size-anchor` values
-			/* @noflip */
-  left: 0;
+  /* %60top` property is to be set in theme's selector due to specific `@size-anchor` values */
+  right: 0;
   background-repeat: no-repeat;
 }
 .oo-ui-popupWidget-head {
@@ -831,10 +832,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
           user-select: none;
 }
 .oo-ui-popupWidget-head > .oo-ui-buttonWidget {
-  float: right;
+  float: left;
 }
 .oo-ui-popupWidget-head > .oo-ui-labelElement-label {
-  float: left;
+  float: right;
   cursor: default;
 }
 .oo-ui-popupWidget-body {
@@ -867,20 +868,20 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-popupWidget-anchored .oo-ui-popupWidget-anchor:before {
   bottom: -10px;
-  left: -9px;
+  right: -9px;
   border-bottom-color: #a2a9b1;
   border-width: 10px;
 }
 .oo-ui-popupWidget-anchored .oo-ui-popupWidget-anchor:after {
   bottom: -10px;
-  left: -8px;
+  right: -8px;
   border-bottom-color: #fff;
   border-width: 9px;
 }
 .oo-ui-popupWidget-transitioning .oo-ui-popupWidget-popup {
-  -webkit-transition: width 100ms, height 100ms, left 100ms;
-     -moz-transition: width 100ms, height 100ms, left 100ms;
-          transition: width 100ms, height 100ms, left 100ms;
+  -webkit-transition: width 100ms, height 100ms, right 100ms;
+     -moz-transition: width 100ms, height 100ms, right 100ms;
+          transition: width 100ms, height 100ms, right 100ms;
 }
 .oo-ui-popupWidget-head {
   height: 2.5em;
@@ -904,18 +905,16 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: auto;
 }
 .oo-ui-popupWidget.oo-ui-popupButtonWidget-frameless-popup {
-  /* @noflip */
-  margin-left: 0.9375em;
+  margin-right: 0.9375em;
 }
 .oo-ui-popupWidget.oo-ui-popupButtonWidget-framed-popup {
-  /* @noflip */
-  margin-left: 1.5em;
+  margin-right: 1.5em;
 }
 .oo-ui-inputWidget {
-  margin-right: 0.5em;
+  margin-left: 0.5em;
 }
 .oo-ui-inputWidget:last-child {
-  margin-right: 0;
+  margin-left: 0;
 }
 .oo-ui-buttonInputWidget > button,
 .oo-ui-buttonInputWidget > input {
@@ -951,7 +950,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   position: absolute;
-  left: 0;
+  right: 0;
   width: 1.5625em;
   height: 1.5625em;
   border: 1px solid #72777d;
