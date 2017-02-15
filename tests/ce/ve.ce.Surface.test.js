@@ -627,7 +627,6 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 				msg: 'Tab at end of table inserts new row'
 			},
 			{
-				// Create a full surface and return the view, as the UI surface is required for the insert action
 				htmlOrDoc: mergedCellsDoc,
 				rangeOrSelection: {
 					type: 'table',
@@ -640,7 +639,6 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 				msg: 'Up in first row of table moves out of table'
 			},
 			{
-				// Create a full surface and return the view, as the UI surface is required for the insert action
 				htmlOrDoc: mergedCellsDoc,
 				rangeOrSelection: {
 					type: 'table',
@@ -660,6 +658,12 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
 		);
 	}
+
+	// Allow the real surface created with createSurfaceFromDocument for the
+	// 'Tab at end of table inserts new row' case to get properly initialized
+	// before we end the test and kill it.
+	// FIXME Oh no eww gross
+	setTimeout( assert.async(), 0 );
 } );
 
 QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
