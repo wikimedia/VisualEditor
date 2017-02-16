@@ -6,7 +6,8 @@
 			"Kurdboydm",
 			"Asoxor",
 			"Pirehelokan",
-			"Sarchia"
+			"Sarchia",
+			"Lost Whispers"
 		]
 	},
 	"visualeditor": "دەستکاریکەری دیداری",
@@ -29,6 +30,8 @@
 	"visualeditor-clipboard-copy": "لەبەرگرتنەوە",
 	"visualeditor-clipboard-cut": "بڕین",
 	"visualeditor-clipboard-paste": "چەسپاندن",
+	"visualeditor-command-dialog-cancel": "داخستنەوە / ھەڵوەشانەوەی گۆڕانکارییەکە",
+	"visualeditor-command-dialog-confirm": "گۆڕانکارییەکە دڵنیا بکەرەوە",
 	"visualeditor-commentinspector-edit": "دەستکاریکردنی بۆچوون",
 	"visualeditor-commentinspector-title": "بۆچوون",
 	"visualeditor-commentinspector-tooltip": "بۆچوون",

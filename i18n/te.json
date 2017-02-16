@@ -10,7 +10,8 @@
 			"மதனாஹரன்",
 			"రహ్మానుద్దీన్",
 			"Kiranmayee",
-			"Ravichandra"
+			"Ravichandra",
+			"Chaduvari"
 		]
 	},
 	"visualeditor": "విజువల్ ఎడిటర్",
@@ -36,6 +37,7 @@
 	"visualeditor-clipboard-cut": "కత్తిరించు",
 	"visualeditor-clipboard-paste": "అతికించు",
 	"visualeditor-clipboard-paste-special": "సాదా పాఠ్యంగా అతికించు",
+	"visualeditor-command-dialog-confirm": "మార్పును ధ్రువీకరించండి",
 	"visualeditor-commentinspector-edit": "వ్యాఖ్యను మార్చు",
 	"visualeditor-commentinspector-title": "వ్యాఖ్య",
 	"visualeditor-commentinspector-tooltip": "వ్యాఖ్య",

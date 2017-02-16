@@ -8,7 +8,8 @@
 			"Runab",
 			"Sayak Sarkar",
 			"Aftabuzzaman",
-			"RYasmeen (WMF)"
+			"RYasmeen (WMF)",
+			"Elias Ahmmad"
 		]
 	},
 	"visualeditor": "দৃশ্যমান সম্পাদনা",
@@ -34,6 +35,8 @@
 	"visualeditor-clipboard-cut": "ছেদন",
 	"visualeditor-clipboard-paste": "প্রতিলেপন",
 	"visualeditor-clipboard-paste-special": "সরল লেখা হিসাবে প্রতিলেপন করো",
+	"visualeditor-command-dialog-cancel": "পরিবর্তন বন্ধ / বাতিল করুন",
+	"visualeditor-command-dialog-confirm": "পরিবর্তন নিশ্চিত করুন",
 	"visualeditor-commentinspector-edit": "মন্তব্য সম্পাদনা করুন",
 	"visualeditor-commentinspector-title": "মন্তব্য",
 	"visualeditor-commentinspector-tooltip": "মন্তব্য",
@@ -106,6 +109,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "পূর্বনির্ধারিত",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "মাপদণ্ড",
 	"visualeditor-shortcuts-clipboard": "ক্লিপবোর্ড",
+	"visualeditor-shortcuts-dialog": "ডায়লগ জানালা",
 	"visualeditor-shortcuts-formatting": "অনুচ্ছেদ বিন্যাসন",
 	"visualeditor-shortcuts-history": "ইতিহাস",
 	"visualeditor-shortcuts-other": "অন্য",
