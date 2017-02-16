@@ -75,7 +75,8 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	removeButton.on( 'click', this.destroy.bind( this ) );
 	saveButton.on( 'click', this.save.bind( this ) );
 	diffButton.on( 'click', function () {
-		container.surface.dialogs.openWindow( 'diff', {
+		var windowAction = ve.ui.actionFactory.create( 'window', container.surface );
+		windowAction.open( 'diff', {
 			oldDoc: container.oldDoc,
 			newDoc: container.surface.model.documentModel
 		} );
