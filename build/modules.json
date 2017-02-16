@@ -607,7 +607,6 @@
 			"src/ve.DiffTreeNode.js",
 			"src/ve.DiffMatchPatch.js",
 			"src/dm/ve.dm.VisualDiff.js",
-			"src/ui/dialogs/ve.ui.DiffDialog.js",
 			"src/ui/elements/ve.ui.DiffElement.js"
 		],
 		"styles": [
@@ -617,6 +616,14 @@
 			"visualEditor.core.build",
 			"treeDiffer",
 			"diffMatchPatch"
+		]
+	},
+	"visualEditor.diffing.standalone": {
+		"scripts": [
+			"src/ui/dialogs/ve.ui.DiffDialog.js"
+		],
+		"dependencies": [
+			"visualEditor.diffing"
 		]
 	},
 	"visualEditor.rebase": {
@@ -770,7 +777,7 @@
 			"visualEditor.core",
 			"visualEditor.desktop.build",
 			"visualEditor.theme.apex",
-			"visualEditor.diffing"
+			"visualEditor.diffing.standalone"
 		]
 	},
 	"visualEditor.desktop.build": {
@@ -791,7 +798,7 @@
 			"visualEditor.core",
 			"visualEditor.mobile.build",
 			"visualEditor.theme.mediawiki",
-			"visualEditor.diffing"
+			"visualEditor.diffing.standalone"
 		]
 	},
 	"visualEditor.mobile.build": {
