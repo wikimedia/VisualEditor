@@ -6,7 +6,7 @@
 
 /* Prevent focus outline on editable sections */
 .ve-ce-branchNode:focus {
-	outline: none;
+	outline: 0;
 }
 
 .ve-ce-branchNode-blockSlug {

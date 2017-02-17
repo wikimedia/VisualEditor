@@ -7,5 +7,5 @@
 /* ve.ui.ToolbarDialog */
 
 .ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
-	outline: none;
+	outline: 0;
 }
