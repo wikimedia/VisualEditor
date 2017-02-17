@@ -1,12 +1,3 @@
 {
-	"extends": "stylelint-config-wikimedia",
-	"rules": {
-		"no-browser-hacks": [ true, {
-			"browsers": [ "Chrome >= 1", "Firefox >= 12", "Explorer >= 9", "Edge >= 12", "iOS >= 7", "Opera >= 12", "Safari >= 7", "ExplorerMobile >= 10", "Android >= 4", "not BlackBerry >= 1", "ChromeAndroid >= 1", "FirefoxAndroid >= 1", "OperaMobile >= 12", "not OperaMini >= 1" ]
-		} ],
-
-		"no-unsupported-browser-features": [ true, {
-			"browsers": [ "Chrome >= 1", "Firefox >= 12", "Explorer >= 9", "Edge >= 12", "iOS >= 7", "Opera >= 12", "Safari >= 7", "ExplorerMobile >= 10", "Android >= 4", "not BlackBerry >= 1", "ChromeAndroid >= 1", "FirefoxAndroid >= 1", "OperaMobile >= 12", "not OperaMini >= 1" ]
-		} ]
-	}
+	"extends": "stylelint-config-wikimedia"
 }
