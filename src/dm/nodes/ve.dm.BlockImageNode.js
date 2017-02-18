@@ -41,7 +41,7 @@ OO.mixinClass( ve.dm.BlockImageNode, ve.dm.AlignableNode );
 ve.dm.BlockImageNode.static.name = 'blockImage';
 
 ve.dm.BlockImageNode.static.preserveHtmlAttributes = function ( attribute ) {
-	var attributes = [ 'src', 'width', 'height', 'href' ];
+	var attributes = [ 'class', 'src', 'width', 'height', 'href' ];
 	return attributes.indexOf( attribute ) === -1;
 };
 

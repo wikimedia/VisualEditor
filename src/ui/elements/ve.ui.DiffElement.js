@@ -441,10 +441,12 @@ ve.ui.DiffElement.prototype.addClassesToNode = function ( nodeData, nodeDoc, act
 		delete node.internal.generated;
 	}
 
-	if ( ve.getProp( node, 'attributes', 'unrecognizedClasses' ) ) {
+	if ( ve.dm.modelRegistry.lookup( node.type ).static.classAttributes ) {
 		// ClassAttributeNodes don't copy over original classes, so
 		// add to the unrecognizedClasses list instead
 		// TODO: Other node types may take control of their class lists
+		node.attributes = node.attributes || {};
+		node.attributes.unrecognizedClasses = node.attributes.unrecognizedClasses || [];
 		node.attributes.unrecognizedClasses.push( classes );
 	} else {
 		if ( node.originalDomElementsIndex ) {
