@@ -59,10 +59,7 @@ function makeConnectionHandler( docName ) {
 				applied = rebaseServer.applyChange( docName, author, data.backtrack, change );
 				if ( !applied.isEmpty() ) {
 					console.log( 'applied ' + summarize( author, 0, applied ) );
-					docNamespaces.get( docName ).emit(
-						'newChange',
-						applied.serialize( true )
-					);
+					docNamespaces.get( docName ).emit( 'newChange', applied.serialize( true ) );
 				}
 				if ( applied.getLength() < change.getLength() ) {
 					console.log( author + ' rejected ' + ( applied.getLength() - change.getLength() ) );
@@ -71,6 +68,11 @@ function makeConnectionHandler( docName ) {
 				console.error( error.stack );
 			}
 		}, artificialDelay ) );
+		socket.on( 'disconnect', function () {
+			var change = rebaseServer.applyUnselect( docName, author );
+			docNamespaces.get( docName ).emit( 'newChange', change.serialize( true ) );
+			console.log( 'disconnect', author, docName );
+		} );
 	};
 }
 
