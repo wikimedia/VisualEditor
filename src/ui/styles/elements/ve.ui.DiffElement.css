@@ -42,6 +42,10 @@ figure.ve-ui-diffElement-remove > figcaption {
 	display: none;
 }
 
+del.ve-ui-diffElement-remove {
+	text-decoration: line-through;
+}
+
 .ve-ui-diffElement-remove + .ve-ui-diffElement-insert,
 .ve-ui-diffElement-insert + .ve-ui-diffElement-remove,
 .ve-ui-diffElement-remove + .ve-ui-diffElement-change-insert,
