@@ -354,7 +354,7 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 
 			// The new node was changed.
 			for ( k = 0, klen = treeDiff.length; k < klen; k++ ) {
-				if ( treeDiff[ k ][ 0 ] === iModified && treeDiff[ k ][ 1 ] === jModified ) {
+				if ( treeDiff[ k ][ 0 ] === jModified && treeDiff[ k ][ 1 ] === iModified ) {
 					if ( !( jModified in alreadyProcessed.remove ) &&
 						!( iModified in alreadyProcessed.insert ) ) {
 

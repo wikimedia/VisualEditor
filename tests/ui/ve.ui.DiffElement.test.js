@@ -170,6 +170,26 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Table row removed and cells edited',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+						'<tr><td>D</td><td>E</td><td>F</td></tr>' +
+						'<tr><td>G</td><td>H</td><td>I</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td>A</td><td>B</td><td>X</td></tr>' +
+						'<tr><td>G</td><td>H</td><td>Y</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td>B</td><td><del class="ve-ui-diffElement-remove">C</del><ins class="ve-ui-diffElement-insert">X</ins></td></tr>' +
+							'<tr class="ve-ui-diffElement-remove"><td>D</td><td>E</td><td>F</td></tr>' +
+							'<tr><td>G</td><td>H</td><td><del class="ve-ui-diffElement-remove">I</del><ins class="ve-ui-diffElement-insert">Y</ins></td></tr>' +
+						'</tbody></table>' +
+					'</div>'
+			},
+			{
 				msg: 'Annotation insertion',
 				oldDoc: '<p>foo bar baz</p>',
 				newDoc: '<p>foo <b>bar</b> baz</p>',

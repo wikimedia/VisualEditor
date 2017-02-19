@@ -464,22 +464,22 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 				!( newNode instanceof ve.dm.ContentBranchNode ) ) {
 
 				// There is no content change
-				diffInfo.push( {
+				diffInfo[ i ] = {
 					typeChange: oldNode.type !== newNode.type,
 					attributeChange: !ve.compare( oldNode.getAttributes(), newNode.getAttributes() )
-				} );
+				};
 				continue;
 
 			} else if ( !( newNode instanceof ve.dm.ContentBranchNode ) ) {
 
 				// Content was removed
-				diffInfo.push( { replacement: true } );
+				diffInfo[ i ] = { replacement: true };
 				removeLength = oldNode.length;
 
 			} else if ( !( oldNode instanceof ve.dm.ContentBranchNode ) ) {
 
 				// Content was inserted
-				diffInfo.push( { replacement: true } );
+				diffInfo[ i ] = { replacement: true };
 				insertLength = newNode.length;
 
 			// If we got this far, they are both CBNs
@@ -497,11 +497,11 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 					insertLength += newNode.getLength();
 				}
 
-				diffInfo.push( {
+				diffInfo[ i ] = {
 					linearDiff: linearDiff,
 					typeChange: oldNode.type !== newNode.type,
 					attributeChange: !ve.compare( oldNode.getAttributes(), newNode.getAttributes() )
-				} );
+				};
 
 				if ( linearDiff ) {
 					// Record how much content was removed and inserted
