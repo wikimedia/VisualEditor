@@ -11,12 +11,19 @@
 .ve-ui-toolbarDialog-position-above {
 	overflow-y: hidden;
 	max-height: 0;
-	border-top: 1px solid #ddd;
 	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: max-height 250ms;
 	-moz-transition: max-height 250ms;
 	transition: max-height 250ms;
 	/* stylelint-enable no-unsupported-browser-features */
+}
+
+.oo-ui-toolbar-position-top .ve-ui-toolbarDialog-position-above {
+	border-top: 1px solid #ddd;
+}
+
+.oo-ui-toolbar-position-bottom .ve-ui-toolbarDialog-position-above {
+	border-bottom: 1px solid #ddd;
 }
 
 .ve-ui-toolbarDialog-position-above.oo-ui-window-ready {

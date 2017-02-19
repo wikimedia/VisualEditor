@@ -41,11 +41,18 @@ OO.inheritClass( ve.ui.PositionedTargetToolbar, ve.ui.TargetToolbar );
 /**
  * @inheritdoc
  */
-ve.ui.PositionedTargetToolbar.prototype.setup = function () {
+ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
+	var toolbarDialogs = surface.getToolbarDialogs();
+
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.setup.apply( this, arguments );
 
-	this.getSurface().getToolbarDialogs().connect( this, {
+	if ( this.position === 'bottom' ) {
+		this.$bar.prepend( toolbarDialogs.$element );
+	} else {
+		this.$bar.append( toolbarDialogs.$element );
+	}
+	toolbarDialogs.connect( this, {
 		opening: 'onToolbarDialogsOpeningOrClosing',
 		closing: 'onToolbarDialogsOpeningOrClosing'
 	} );
@@ -235,18 +242,19 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
  */
 ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
 	var win, viewportDimensions,
-		surface = this.getSurface();
+		surface = this.getSurface(),
+		toolbarDialogs = surface.getToolbarDialogs();
 
 	if ( !surface ) {
 		return;
 	}
 
-	win = surface.getToolbarDialogs().getCurrentWindow();
+	win = toolbarDialogs.getCurrentWindow();
 
 	if ( win && win.constructor.static.position === 'side' ) {
 		viewportDimensions = surface.getViewportDimensions();
 		if ( viewportDimensions ) {
-			surface.getToolbarDialogs().getCurrentWindow().$frame.css(
+			toolbarDialogs.getCurrentWindow().$frame.css(
 				'height', Math.min( surface.getBoundingClientRect().height, viewportDimensions.height )
 			);
 		}
