@@ -27,44 +27,37 @@ OO.inheritClass( ve.init.sa.MobileTarget, ve.init.sa.Target );
 
 ve.init.sa.MobileTarget.static.toolbarGroups = [
 	// History
-	{
-		header: OO.ui.deferMsg( 'visualeditor-toolbar-history' ),
-		include: [ 'undo' ]
-	},
+	{ include: [ 'undo' ] },
 	// Style
 	{
+		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
 		classes: [ 've-test-toolbar-style' ],
 		type: 'list',
 		icon: 'textStyle',
-		indicator: 'down',
-		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
 		include: [ { group: 'textStyle' }, 'language', 'clear' ],
 		forceExpand: [ 'bold', 'italic', 'clear' ],
 		promote: [ 'bold', 'italic' ],
 		demote: [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
 	},
 	// Link
-	{
-		header: OO.ui.deferMsg( 'visualeditor-linkinspector-title' ),
-		include: [ 'link' ]
-	},
+	{ include: [ 'link' ] },
 	// Structure
 	{
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		type: 'list',
 		icon: 'listBullet',
-		indicator: 'down',
 		include: [ { group: 'structure' } ],
 		demote: [ 'outdent', 'indent' ]
 	},
 	// Insert
 	{
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		type: 'list',
 		icon: 'add',
 		label: '',
-		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
-		indicator: 'down',
 		include: '*'
 	}
 ];
