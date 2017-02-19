@@ -320,10 +320,12 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 				surfaceModel.setLinearSelection( new ve.Range( offset ) );
 			}
 		}
-	} else if ( ( activeCellNode = this.getActiveCellNode() ) ) {
-		activeCellNode.setEditing( false );
-		if ( !noSelect ) {
-			surfaceModel.setSelection( this.editingFragment.getSelection() );
+	} else {
+		if ( ( activeCellNode = this.getActiveCellNode() ) ) {
+			activeCellNode.setEditing( false );
+			if ( !noSelect ) {
+				surfaceModel.setSelection( this.editingFragment.getSelection() );
+			}
 		}
 		this.editingFragment = null;
 	}
@@ -375,6 +377,9 @@ ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 		}
 		// Ignore update the overlay if the table selection changed, i.e. not an in-cell selection change
 		if ( selection instanceof ve.dm.TableSelection ) {
+			if ( this.editingFragment ) {
+				this.setEditing( false, true );
+			}
 			this.updateOverlayDebounced( true );
 		}
 	} else if ( !active && this.active ) {
