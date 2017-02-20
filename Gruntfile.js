@@ -4,7 +4,7 @@
  * @package VisualEditor
  */
 
-/* eslint-env node */
+/* eslint-env node, es6 */
 
 module.exports = function ( grunt ) {
 	var modules = grunt.file.readJSON( 'build/modules.json' ),
