@@ -10,7 +10,8 @@
 			"Kumkumuk",
 			"Asmen",
 			"1917 Ekim Devrimi",
-			"Gırd"
+			"Gırd",
+			"Archaeodontosaurus"
 		]
 	},
 	"visualeditor": "Vurnayoğê vênayışi",
@@ -36,6 +37,8 @@
 	"visualeditor-clipboard-cut": "Bıbırne",
 	"visualeditor-clipboard-paste": "Pıra ne",
 	"visualeditor-clipboard-paste-special": "Zey metnê sadey pıra ne",
+	"visualeditor-command-dialog-cancel": "Vırnayışi bıqefelnı/Bıtexelnı",
+	"visualeditor-command-dialog-confirm": "Vırnayışi tesdiq kı",
 	"visualeditor-commentinspector-edit": "Vatışi bıvurnê",
 	"visualeditor-commentinspector-title": "Mışewre",
 	"visualeditor-commentinspector-tooltip": "Mışewre",
@@ -61,6 +64,7 @@
 	"visualeditor-dialog-language-search-title": "Zıwan weçine",
 	"visualeditor-dialog-table-caption": "Bınnuşte",
 	"visualeditor-dialog-table-title": "Xısusiyetê tabloy",
+	"visualeditor-diff-no-changes": "Vırnayış çıniyo",
 	"visualeditor-find-and-replace-done": "Qeyd ke",
 	"visualeditor-find-and-replace-find-text": "Bıvêne",
 	"visualeditor-find-and-replace-invalid-regex": "Nêravêrde bênizam ifade",
@@ -92,7 +96,7 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Dekewtan bızeydne",
 	"visualeditor-inspector-close-tooltip": "Racın",
 	"visualeditor-inspector-remove-tooltip": "Hewad",
-	"visualeditor-language-search-input-placeholder": "Bı geyr namey zıwani yana kode",
+	"visualeditor-language-search-input-placeholder": "Şıma namey zıwani ya zi kodi ra bıgeyrê",
 	"visualeditor-languageinspector-title": "Zıwan",
 	"visualeditor-languageinspector-widget-changelang": "Zıwan bıvêne",
 	"visualeditor-languageinspector-widget-label-direction": "İstikamet",
@@ -110,6 +114,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Hesabiyaye",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Sence",
 	"visualeditor-shortcuts-clipboard": "Pano",
+	"visualeditor-shortcuts-dialog": "Teqay dialogi",
 	"visualeditor-shortcuts-formatting": "Paragraf nızamkerdış",
 	"visualeditor-shortcuts-history": "Tarix",
 	"visualeditor-shortcuts-other": "Zewbi",
