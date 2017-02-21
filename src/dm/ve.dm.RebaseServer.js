@@ -36,16 +36,18 @@ ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
  *
  * @param {string} doc Name of a document
  * @param {number} author Author ID
- * @param {ve.dm.Change|null} newHistory New history to append
- * @param {number} rejections Unacknowledged rejections for author
- * @param {ve.dm.Change|null} continueBase Continue base for author
+ * @param {ve.dm.Change} [newHistory] New history to append
+ * @param {number} [rejections] Unacknowledged rejections for author
+ * @param {ve.dm.Change} [continueBase] Continue base for author
  */
 ve.dm.RebaseServer.prototype.updateDocState = function ( doc, author, newHistory, rejections, continueBase ) {
 	var state = this.getDocState( doc );
 	if ( newHistory ) {
 		state.history.push( newHistory );
 	}
-	state.rejections.set( author, rejections );
+	if ( rejections !== undefined ) {
+		state.rejections.set( author, rejections );
+	}
 	if ( continueBase ) {
 		state.continueBases.set( author, continueBase );
 	}
@@ -93,4 +95,19 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, author, ba
 	rejections = result.rejected ? result.rejected.getLength() : 0;
 	this.updateDocState( doc, author, result.rebased, rejections, result.transposedHistory );
 	return result.rebased;
+};
+
+/**
+ * Apply a change that nulls out the given author's selection.
+ *
+ * @param {string} doc Document name
+ * @param {string} author Author ID
+ * @return {ve.dm.Change} Change that was applied
+ */
+ve.dm.RebaseServer.prototype.applyUnselect = function ( doc, author ) {
+	var state = this.getDocState( doc ),
+		change = state.history.mostRecent( state.history.start + state.history.getLength() );
+	change.selections[ author ] = new ve.dm.NullSelection( null );
+	this.updateDocState( doc, author, change );
+	return change;
 };
