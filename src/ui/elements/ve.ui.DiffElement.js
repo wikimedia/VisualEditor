@@ -168,7 +168,7 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
 	nodeData = documentSlice.data.data;
 
 	// Add the classes to the outer element (in case there was a move)
-	nodeData[ 0 ] = this.addClassesToNode( nodeData[ 0 ], nodeDoc, action, move );
+	nodeData[ 0 ] = this.addAttributesToNode( nodeData[ 0 ], nodeDoc, { 'data-diff-action': action, 'data-diff-move': move } );
 
 	// Get the html for the linear model with classes
 	// Doc is always the new doc when inserting into the store
@@ -233,7 +233,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		// Get outer data for this node from the old doc and add remove class
 		subTreeRootNode = oldNodes[ nodeIndex ];
 		subTreeRootNodeData = this.oldDoc.getData( subTreeRootNode.node.getOuterRange() );
-		subTreeRootNodeData[ 0 ] = this.addClassesToNode( subTreeRootNodeData[ 0 ], this.oldDoc, 'remove' );
+		subTreeRootNodeData[ 0 ] = this.addAttributesToNode( subTreeRootNodeData[ 0 ], this.oldDoc, { 'data-diff-action': 'remove' } );
 
 		// If this node is a child of the document node, then it won't have a "previous
 		// node" (see below), in which case, insert it just before its corresponding
@@ -295,8 +295,8 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		subTreeRootNodeRangeStart = subTreeRootNode.node.getOuterRange().from - nodeRange.from;
 
 		// Add insert class
-		nodeData[ subTreeRootNodeRangeStart ] = this.addClassesToNode(
-			nodeData[ subTreeRootNodeRangeStart ], this.newDoc, 'insert'
+		nodeData[ subTreeRootNodeRangeStart ] = this.addAttributesToNode(
+			nodeData[ subTreeRootNodeRangeStart ], this.newDoc, { 'data-diff-action': 'insert' }
 		);
 
 		// Mark all children as already processed
@@ -330,8 +330,8 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 			ve.batchSplice( nodeData, subTreeRootNodeRangeStart + 1, subTreeRootNode.node.length, annotatedData );
 		} else {
 			// If there is no content change, just add change class
-			nodeData[ subTreeRootNodeRangeStart ] = this.addClassesToNode(
-				nodeData[ subTreeRootNodeRangeStart ], this.newDoc, 'change'
+			nodeData[ subTreeRootNodeRangeStart ] = this.addAttributesToNode(
+				nodeData[ subTreeRootNodeRangeStart ], this.newDoc, { 'data-diff-action': 'change' }
 			);
 		}
 
@@ -428,62 +428,37 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 };
 
 /**
- * Add classes to highlight diff actions
+ * Add attributes to a node.
  *
  * @param {Object} nodeData Linear data to be highlighted
  * @param {ve.dm.Document} nodeDoc The document from which the data is taken
- * @param {string} action 'remove', 'insert' or 'change'
- * @param {string} [move] 'up' or 'down' if the node has moved
+ * @param {Object} attributes Attributes to set
  * @return {Object} Highlighted linear data
  */
-ve.ui.DiffElement.prototype.addClassesToNode = function ( nodeData, nodeDoc, action, move ) {
-	var originalDomElementsIndex,
-		domElement, domElements,
-		node = ve.copy( nodeData ),
-		classes = [];
-
-	// The following classes are used here:
-	// * ve-ui-diffElement-up
-	// * ve-ui-diffElement-down
-	// * ve-ui-diffElement-remove
-	// * ve-ui-diffElement-insert
-	// * ve-ui-diffElement-change
-	if ( action ) {
-		classes.push( this.classPrefix + action );
-	}
-	if ( move ) {
-		classes.push( this.classPrefix + move );
-	}
+ve.ui.DiffElement.prototype.addAttributesToNode = function ( nodeData, nodeDoc, attributes ) {
+	var key, originalDomElementsIndex, domElements,
+		node = ve.copy( nodeData );
 
 	// Don't let any nodes get unwrapped
 	if ( ve.getProp( node, 'internal', 'generated' ) ) {
 		delete node.internal.generated;
 	}
 
-	if ( ve.dm.modelRegistry.lookup( node.type ).static.classAttributes ) {
-		// ClassAttributeNodes don't copy over original classes, so
-		// add to the unrecognizedClasses list instead
-		// TODO: Other node types may take control of their class lists
-		node.attributes = node.attributes || {};
-		node.attributes.unrecognizedClasses = node.attributes.unrecognizedClasses || [];
-		node.attributes.unrecognizedClasses.push( classes );
+	if ( node.originalDomElementsIndex ) {
+		domElements = ve.copy( nodeDoc.getStore().value( node.originalDomElementsIndex ) );
+		domElements[ 0 ] = domElements[ 0 ].cloneNode( true );
 	} else {
-		if ( node.originalDomElementsIndex ) {
-			domElements = ve.copy( nodeDoc.getStore().value( node.originalDomElementsIndex ) );
-			domElements[ 0 ] = domElements[ 0 ].cloneNode( true );
-			domElements[ 0 ].classList.add.apply( domElements[ 0 ].classList, classes );
-		} else {
-			domElement = document.createElement( 'span' );
-			domElement.setAttribute( 'class', classes.join( ' ' ) );
-			domElements = [ domElement ];
-		}
-
-		originalDomElementsIndex = this.newDoc.getStore().index(
-			domElements, domElements.map( ve.getNodeHtml ).join( '' )
-		);
-
-		node.originalDomElementsIndex = originalDomElementsIndex;
+		domElements = [ document.createElement( 'span' ) ];
 	}
+	for ( key in attributes ) {
+		if ( attributes[ key ] !== undefined ) {
+			domElements[ 0 ].setAttribute( key, attributes[ key ] );
+		}
+	}
+	originalDomElementsIndex = this.newDoc.getStore().index(
+		domElements, domElements.map( ve.getNodeHtml ).join( '' )
+	);
+	node.originalDomElementsIndex = originalDomElementsIndex;
 
 	return node;
 };
@@ -500,7 +475,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 		start = 0, // The starting index for a range for building an annotation
 		end, transaction, annotatedLinearDiff,
 		domElement, domElements, originalDomElementsIndex,
-		diffDoc, diffDocData, diffClass;
+		diffDoc, diffDocData;
 
 	// Make a new document from the diff
 	diffDocData = linearDiff[ 0 ][ 1 ];
@@ -509,7 +484,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 	}
 	diffDoc = this.newDoc.cloneWithData( diffDocData );
 
-	// Add spans with the appropriate class for removes and inserts
+	// Add spans with the appropriate attributes for removes and inserts
 	// TODO: do insert and remove outside of loop
 	for ( i = 0; i < ilen; i++ ) {
 		end = start + linearDiff[ i ][ 1 ].length;
@@ -539,9 +514,8 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 						annType = 'textStyle/span';
 						break;
 				}
-				diffClass = this.classPrefix + typeAsString;
 				domElement = document.createElement( domElementType );
-				domElement.setAttribute( 'class', diffClass );
+				domElement.setAttribute( 'data-diff-action', typeAsString );
 				domElements = [ domElement ];
 				originalDomElementsIndex = diffDoc.getStore().index(
 					domElements,
