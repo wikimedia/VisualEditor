@@ -16,7 +16,7 @@
  * @param {ve.dm.VisualDiff} [visualDiff] Diff to visualize
  */
 ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
-	var i, ilen, diff = visualDiff.diff;
+	var diff = visualDiff.diff;
 
 	// Parent constructor
 	OO.ui.Element.call( this );
@@ -38,10 +38,7 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 	this.remove = diff.docChildrenRemove;
 
 	// HTML
-	this.diffHtml = this.getDiffHtml();
-	for ( i = 0, ilen = this.diffHtml.length; i < ilen; i++ ) {
-		this.$element.append( this.diffHtml[ i ] );
-	}
+	this.renderDiff();
 };
 
 /* Inheritance */
@@ -51,16 +48,18 @@ OO.inheritClass( ve.ui.DiffElement, OO.ui.Element );
 /* Methods */
 
 /**
- * Get the HTML for displaying the diff
- *
- * @return {Array} HTML for each child of the document node
+ * Render the diff
  */
-ve.ui.DiffElement.prototype.getDiffHtml = function () {
-	var i, j, k, ilen, jlen, klen, nodes, move,
+ve.ui.DiffElement.prototype.renderDiff = function () {
+	var i, j, k, ilen, jlen, klen, nodes, move, elements, spacerNode, noChanges,
+		element = this.$element[ 0 ],
 		anyChanges = false,
 		spacer = false,
-		diffHtml = [],
 		diffQueue = [];
+
+	spacerNode = document.createElement( 'div' );
+	spacerNode.setAttribute( 'class', 've-ui-diffElement-spacer' );
+	spacerNode.appendChild( document.createTextNode( '⋮' ) );
 
 	ilen = Math.max( this.oldDocChildren.length, this.newDocChildren.length );
 	jlen = ilen;
@@ -71,7 +70,7 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 			// Everything else in the new doc is an insert
 			nodes = this.newDocChildren.slice( j );
 			for ( k = 0, klen = nodes.length; k < klen; k++ ) {
-				diffQueue.push( [ 'getNodeHtml', nodes[ k ], 'insert' ] );
+				diffQueue.push( [ 'getNodeElements', nodes[ k ], 'insert' ] );
 			}
 
 		} else if ( this.newDocChildren[ j ] === undefined ) {
@@ -79,21 +78,21 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 			// Everything else in the old doc is a remove
 			nodes = this.oldDocChildren.slice( i );
 			for ( k = 0, klen = nodes.length; k < klen; k++ ) {
-				diffQueue.push( [ 'getNodeHtml', nodes[ k ], 'remove' ] );
+				diffQueue.push( [ 'getNodeElements', nodes[ k ], 'remove' ] );
 			}
 
 		} else if ( this.remove.indexOf( i ) !== -1 ) {
 
 			// The old node is a remove. Decrement the new node index
 			// to compare the same new node to the next old node
-			diffQueue.push( [ 'getNodeHtml', this.oldDocChildren[ i ], 'remove' ] );
+			diffQueue.push( [ 'getNodeElements', this.oldDocChildren[ i ], 'remove' ] );
 			j--;
 
 		} else if ( this.insert.indexOf( j ) !== -1 ) {
 
 			// The new node is an insert. Decrement the old node index
 			// to compare the same old node to the next new node
-			diffQueue.push( [ 'getNodeHtml', this.newDocChildren[ j ], 'insert' ] );
+			diffQueue.push( [ 'getNodeElements', this.newDocChildren[ j ], 'insert' ] );
 			i--;
 
 		} else if ( typeof this.newToOld[ j ] === 'number' ) {
@@ -102,7 +101,7 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 			// need to check if there has been a move
 			move = this.newToOld[ j ] === i ? undefined :
 				( this.newToOld[ j ] > i ? 'up' : 'down' );
-			diffQueue.push( [ 'getNodeHtml', this.newDocChildren[ j ], 'none', move ] );
+			diffQueue.push( [ 'getNodeElements', this.newDocChildren[ j ], 'none', move ] );
 
 		} else {
 
@@ -110,7 +109,7 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 			// diff and also check if there has been a move
 			move = this.newToOld[ j ].node === i ? undefined :
 				( this.newToOld[ j ].node > i ? 'up' : 'down' );
-			diffQueue.push( [ 'getChangedNodeHtml', this.newToOld[ j ].node, move ] );
+			diffQueue.push( [ 'getChangedNodeElements', this.newToOld[ j ].node, move ] );
 
 		}
 	}
@@ -127,21 +126,26 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
 		) {
 			spacer = false;
 			anyChanges = true;
-			diffHtml.push(
-				this[ diffQueue[ i ][ 0 ] ].apply( this, diffQueue[ i ].slice( 1 ) )
-			);
+			elements = this[ diffQueue[ i ][ 0 ] ].apply( this, diffQueue[ i ].slice( 1 ) );
+			while ( elements.length ) {
+				element.appendChild(
+					element.ownerDocument.adoptNode( elements[ 0 ] )
+				);
+				elements.shift();
+			}
 		} else if ( !spacer ) {
 			spacer = true;
-			diffHtml.push( $( '<div class="ve-ui-diffElement-spacer">' ).text( '⋮' ) );
+			element.appendChild( spacerNode.cloneNode( true ) );
 		}
 	}
 
 	if ( !anyChanges ) {
-		return [ $( '<div class="ve-ui-diffElement-no-changes">' ).text( ve.msg( 'visualeditor-diff-no-changes' ) ) ];
-	} else {
-		return diffHtml;
+		noChanges = document.createElement( 'div' );
+		noChanges.setAttribute( 'class', 've-ui-diffElement-no-changes' );
+		noChanges.appendChild( document.createTextNode( ve.msg( 'visualeditor-diff-no-changes' ) ) );
+		element.innerHTML = '';
+		element.appendChild( noChanges );
 	}
-
 };
 
 /**
@@ -154,10 +158,10 @@ ve.ui.DiffElement.prototype.getDiffHtml = function () {
  * or moved
  * @param {string} action 'remove', 'insert' or, if moved, 'none'
  * @param {string} [move] 'up' or 'down' if the node has moved
- * @return {string} HTML to display the action/move
+ * @return {HTMLElement[]} HTML to display the action/move
  */
-ve.ui.DiffElement.prototype.getNodeHtml = function ( node, action, move ) {
-	var nodeData, nodeHtml,
+ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
+	var nodeData, body, element,
 		nodeDoc = action === 'remove' ? this.oldDoc : this.newDoc,
 		documentSlice = nodeDoc.cloneFromRange( node.getOuterRange() );
 
@@ -170,13 +174,21 @@ ve.ui.DiffElement.prototype.getNodeHtml = function ( node, action, move ) {
 	// Get the html for the linear model with classes
 	// Doc is always the new doc when inserting into the store
 	documentSlice.getStore().merge( this.newDoc.getStore() );
-	nodeHtml = ve.dm.converter.getDomFromModel( documentSlice ).body.innerHTML;
+	body = ve.dm.converter.getDomFromModel( documentSlice ).body;
 
 	if ( action !== 'none' ) {
-		nodeHtml = $( '<div>' ).addClass( this.classPrefix + 'doc-child-change' ).append( nodeHtml );
+		element = document.createElement( 'div' );
+		element.setAttribute( 'class', this.classPrefix + 'doc-child-change' );
+		while ( body.childNodes.length ) {
+			element.appendChild(
+				element.ownerDocument.adoptNode( body.childNodes[ 0 ] )
+			);
+		}
+		return [ element ];
 	}
 
-	return nodeHtml;
+	// Convert NodeList to real array
+	return Array.prototype.slice.call( body.childNodes );
 };
 
 /**
@@ -185,11 +197,11 @@ ve.ui.DiffElement.prototype.getNodeHtml = function ( node, action, move ) {
  *
  * @param {number} oldNodeIndex The index of the old node in this.oldDocChildren
  * @param {string} [move] 'up' or 'down' if the node has moved
- * @return {string} HTML to display the action/move
+ * @return {HTMLElement[]} HTML elements to display the action/move
  */
-ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move ) {
+ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, move ) {
 	var i, ilen, j, jlen, k, klen,
-		iModified, jModified, classes, nodeHtml,
+		iModified, jModified, classes, element, body,
 		newNodeIndex = this.oldToNew[ oldNodeIndex ].node,
 		nodeRange = this.newDocChildren[ newNodeIndex ].getOuterRange(),
 		documentSlice = this.newDoc.cloneFromRange( nodeRange ),
@@ -394,18 +406,24 @@ ve.ui.DiffElement.prototype.getChangedNodeHtml = function ( oldNodeIndex, move )
 		}
 	}
 
-	documentSlice.getStore().merge( this.newDoc.getStore() );
-	nodeHtml = ve.dm.converter.getDomFromModel( documentSlice ).body.innerHTML;
-
 	// The following classes are used here:
 	// * ve-ui-diffElement-doc-child-change
 	// * ve-ui-diffElement-up
 	// * ve-ui-diffElement-down
 	classes = this.classPrefix + 'doc-child-change' + ( move ? ' ' + this.classPrefix + move : '' );
-	nodeHtml = $( '<div>' ).addClass( classes ).append( nodeHtml );
+	element = document.createElement( 'div' );
+	element.setAttribute( 'class', classes );
 
-	return nodeHtml;
+	documentSlice.getStore().merge( this.newDoc.getStore() );
+	body = ve.dm.converter.getDomFromModel( documentSlice ).body;
 
+	while ( body.childNodes.length ) {
+		element.appendChild(
+			element.ownerDocument.adoptNode( body.childNodes[ 0 ] )
+		);
+	}
+
+	return [ element ];
 };
 
 /**
