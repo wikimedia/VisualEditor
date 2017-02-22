@@ -6,11 +6,10 @@
  */
 
 /**
- * Creates an ve.ui.DiffElement object.
+ * Creates a ve.ui.DiffElement object.
  *
  * @class
  * @extends OO.ui.Element
- * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.VisualDiff} [visualDiff] Diff to visualize
@@ -19,7 +18,7 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 	var diff = visualDiff.diff;
 
 	// Parent constructor
-	OO.ui.Element.call( this );
+	ve.ui.DiffElement.super.call( this );
 
 	// CSS
 	this.$element.addClass( 've-ui-diffElement' );

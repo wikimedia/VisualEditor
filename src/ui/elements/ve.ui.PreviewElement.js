@@ -6,7 +6,7 @@
  */
 
 /**
- * Creates an ve.ui.PreviewElement object.
+ * Creates a ve.ui.PreviewElement object.
  *
  * @class
  * @extends OO.ui.Element
