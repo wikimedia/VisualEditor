@@ -157,7 +157,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</tbody></table>' +
 					'</div>'
 			},
-			/* TODO: These tests should pass
 			{
 				msg: 'Remove table column',
 				oldDoc: '<table><tr><td>A</td><td>B</td></tr><tr><td>C</td><td>D</td></tr></table>',
@@ -190,7 +189,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</tbody></table>' +
 					'</div>'
 			},
-			*/
 			{
 				msg: 'Annotation insertion',
 				oldDoc: '<p>foo bar baz</p>',
