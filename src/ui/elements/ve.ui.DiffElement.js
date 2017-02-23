@@ -263,10 +263,10 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 			// after its corresponding node in the new document. Otherwise insert the
 			// removed subtree just inside its parent node's corresponding node.
 			if ( newPreviousNodeIndex ) {
-				insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().to - nodeRange.from;
+				insertIndex = newNodes[ newPreviousNodeIndex ].node.getOuterRange().to - nodeRange.from;
 			} else {
 				newPreviousNodeIndex = correspondingNodes.oldToNew[ subTreeRootNode.parent.index ];
-				insertIndex = newNodes[ newPreviousNodeIndex ].node.getRange().from - nodeRange.from;
+				insertIndex = newNodes[ newPreviousNodeIndex ].node.getOuterRange().from - nodeRange.from;
 			}
 
 		}
