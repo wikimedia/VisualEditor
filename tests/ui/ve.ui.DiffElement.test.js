@@ -86,6 +86,15 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Classes added to ClassAttributeNodes',
+				oldDoc: '<figure><img src="foo.jpg"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<figure class="ve-ui-diffElement-change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+					'</div>'
+			},
+			{
+				msg: 'Classes added to ClassAttributeNodes with classes',
 				oldDoc: '<figure class="ve-align-right"><img src="foo.jpg"><figcaption>bar</figcaption></figure>',
 				newDoc: '<figure class="ve-align-right"><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
