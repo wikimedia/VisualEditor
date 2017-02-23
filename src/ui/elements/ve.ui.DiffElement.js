@@ -173,7 +173,8 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
 	// Get the html for the linear model with classes
 	// Doc is always the new doc when inserting into the store
 	documentSlice.getStore().merge( this.newDoc.getStore() );
-	body = ve.dm.converter.getDomFromModel( documentSlice ).body;
+	// forClipboard is true, so that we can render otherwise invisible nodes
+	body = ve.dm.converter.getDomFromModel( documentSlice, true ).body;
 
 	if ( action !== 'none' ) {
 		element = document.createElement( 'div' );
@@ -414,7 +415,8 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 	element.setAttribute( 'class', classes );
 
 	documentSlice.getStore().merge( this.newDoc.getStore() );
-	body = ve.dm.converter.getDomFromModel( documentSlice ).body;
+	// forClipboard is true, so that we can render otherwise invisible nodes
+	body = ve.dm.converter.getDomFromModel( documentSlice, true ).body;
 
 	while ( body.childNodes.length ) {
 		element.appendChild(

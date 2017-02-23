@@ -21,7 +21,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo ' +
-							'<del class="ve-ui-diffElement-remove">bar</del> <ins class="ve-ui-diffElement-insert">car</ins>' +
+							'<del class="ve-ui-diffElement-remove">bar</del><ins class="ve-ui-diffElement-insert">car</ins>' +
 							' baz' +
 						'</p>' +
 					'</div>'
@@ -52,9 +52,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
-							'粵' +
-							'<del class="ve-ui-diffElement-remove">文係</del><ins class="ve-ui-diffElement-insert">文唔係</ins>' +
-							'粵語嘅書面語' +
+							'粵文' +
+							'<ins class="ve-ui-diffElement-insert">唔</ins>' +
+							'係粵語嘅書面語' +
 						'</p>' +
 					'</div>'
 			},
@@ -148,10 +148,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>quux whee!</p><p>foo bar baz!</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change ve-ui-diffElement-up">' +
-						'<p>quux <del class="ve-ui-diffElement-remove">whee</del><ins class="ve-ui-diffElement-insert">whee!</ins></p>' +
+						'<p>quux whee<ins class="ve-ui-diffElement-insert">!</ins></p>' +
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change ve-ui-diffElement-down">' +
-						'<p>foo bar <del class="ve-ui-diffElement-remove">baz</del><ins class="ve-ui-diffElement-insert">baz!</ins></p>' +
+						'<p>foo bar baz<ins class="ve-ui-diffElement-insert">!</ins></p>' +
 					'</div>'
 			},
 			{
@@ -204,7 +204,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo <b>bar</b> baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <span class="ve-ui-diffElement-change-remove">bar</span>  <span class="ve-ui-diffElement-change-insert"><b>bar</b></span> baz</p>' +
+						'<p>foo <span class="ve-ui-diffElement-change-remove">bar</span><b><span class="ve-ui-diffElement-change-insert">bar</span></b> baz</p>' +
 					'</div>'
 			},
 			{
@@ -213,7 +213,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo bar baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <span class="ve-ui-diffElement-change-remove"><b>bar</b></span>  <span class="ve-ui-diffElement-change-insert">bar</span> baz</p>' +
+						'<p>foo <b><span class="ve-ui-diffElement-change-remove">bar</span></b><span class="ve-ui-diffElement-change-insert">bar</span> baz</p>' +
 					'</div>'
 			},
 			{
@@ -222,7 +222,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo <b>bar</b> baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <del class="ve-ui-diffElement-remove">car</del>  <ins class="ve-ui-diffElement-insert"><b>bar</b></ins> baz</p>' +
+						'<p>foo <del class="ve-ui-diffElement-remove">car</del><b><ins class="ve-ui-diffElement-insert">bar</ins></b> baz</p>' +
 					'</div>'
 			},
 			{
@@ -231,7 +231,33 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo car baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <del class="ve-ui-diffElement-remove"><b>bar</b></del>  <ins class="ve-ui-diffElement-insert">car</ins> baz</p>' +
+						'<p>foo <b><del class="ve-ui-diffElement-remove">bar</del></b><ins class="ve-ui-diffElement-insert">car</ins> baz</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Comment insertion',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo bar<!--comment--> baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar' +
+							'<ins class="ve-ui-diffElement-insert"><span rel="ve:Comment" data-ve-comment="comment">&nbsp;</span></ins>' +
+							' baz' +
+						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Comment removal',
+				oldDoc: '<p>foo bar<!--comment--> baz</p>',
+				newDoc: '<p>foo bar baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar' +
+							'<del class="ve-ui-diffElement-remove"><span rel="ve:Comment" data-ve-comment="comment">&nbsp;</span></del>' +
+							' baz' +
+						'</p>' +
 					'</div>'
 			}
 		];

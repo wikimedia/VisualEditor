@@ -269,6 +269,17 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 		}
 	}
 
+	/*
+	 * Determine whether there is a wordbreak at an offset
+	 *
+	 * @param {Array} data Linear data
+	 * @param {number} offset
+	 * @return {boolean} There is a wordbreak at the offset
+	 */
+	function isBreak( data, offset ) {
+		return !!( unicodeJS.wordbreak.isBreak( new ve.dm.DataString( data ), offset ) );
+	}
+
 	/**
 	 * The perfect diff is not always human-friendly, so clean it up.
 	 * Make sure retained content spans whole words (no wordbreaks),
@@ -354,14 +365,14 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 					diff.splice( i, 1, [ -1, data ], [ 1, data ] );
 					i++;
 				} else {
-					if ( i !== diff.length - 1 ) {
-						// Unless we are at the end of the diff, replace the portion
-						// after the last wordbreak.
+					if ( i !== diff.length - 1 && !isBreak( data.concat( diff[ i + 1 ][ 1 ] ), data.length ) ) {
+						// Unless we are at the end of the diff, or the next item starts
+						// with a wordbreak, replace the portion after the last wordbreak.
 						end = data.splice( lastWordbreak );
 					}
-					if ( i !== 0 ) {
-						// Unless we are at the start of the diff, replace the portion
-						// before the first wordbreak.
+					if ( i !== 0 && !isBreak( previousData.concat( data ), previousData.length ) ) {
+						// Unless we are at the start of the diff, or the previous item ends
+						// with a word break,replace the portion before the first wordbreak.
 						start = data.splice( 0, firstWordbreak + 1 );
 					}
 
@@ -380,6 +391,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 				}
 
 			}
+			previousData = data;
 		}
 
 		// In a sequence of -remove-insert-remove-insert- make the removes into a
