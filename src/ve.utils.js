@@ -184,6 +184,16 @@ ve.isEmptyObject = $.isEmptyObject;
 ve.extendObject = $.extend;
 
 /**
+ * Feature detect if the browser supports localeCompare options flags
+ *
+ * Should work in Chrome>=24, FF>=29 & IE>=11
+ *
+ * @private
+ * @property {boolean}
+ */
+ve.supportsLocaleCompareOptions = 'e'.localeCompare( 'É', 'en', { sensitivity: 'base' } ) === 0;
+
+/**
  * @private
  * @property {boolean}
  */
