@@ -22,7 +22,6 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 
 	// CSS
 	this.$element.addClass( 've-ui-diffElement' );
-	this.classPrefix = 've-ui-diffElement-';
 
 	// Documents
 	this.oldDoc = visualDiff.oldDoc;
@@ -178,7 +177,7 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
 
 	if ( action !== 'none' ) {
 		element = document.createElement( 'div' );
-		element.setAttribute( 'class', this.classPrefix + 'doc-child-change' );
+		element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
 		while ( body.childNodes.length ) {
 			element.appendChild(
 				element.ownerDocument.adoptNode( body.childNodes[ 0 ] )
@@ -201,7 +200,7 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
  */
 ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, move ) {
 	var i, ilen, j, jlen, k, klen,
-		iModified, jModified, classes, element, body,
+		iModified, jModified, element, body,
 		newNodeIndex = this.oldToNew[ oldNodeIndex ].node,
 		nodeRange = this.newDocChildren[ newNodeIndex ].getOuterRange(),
 		documentSlice = this.newDoc.cloneFromRange( nodeRange ),
@@ -406,13 +405,11 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		}
 	}
 
-	// The following classes are used here:
-	// * ve-ui-diffElement-doc-child-change
-	// * ve-ui-diffElement-up
-	// * ve-ui-diffElement-down
-	classes = this.classPrefix + 'doc-child-change' + ( move ? ' ' + this.classPrefix + move : '' );
 	element = document.createElement( 'div' );
-	element.setAttribute( 'class', classes );
+	element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
+	if ( move ) {
+		element.setAttribute( 'data-diff-move', move );
+	}
 
 	documentSlice.getStore().merge( this.newDoc.getStore() );
 	// forClipboard is true, so that we can render otherwise invisible nodes
