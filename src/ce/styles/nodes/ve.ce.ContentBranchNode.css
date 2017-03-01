@@ -22,6 +22,6 @@
 /*
  * Undo this hack on focusable nodes
  */
-.ve-ce-focusableNode {
+.ve-ce-focusableNode:not( pre ) {
 	white-space: normal;
 }
