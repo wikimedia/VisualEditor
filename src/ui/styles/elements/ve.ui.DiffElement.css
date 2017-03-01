@@ -6,7 +6,7 @@
  */
 
 .ve-ui-diffElement {
-	margin-left: 20px;
+	margin-left: 15px;
 }
 
 [data-diff-action='insert'],
@@ -66,14 +66,6 @@ del[data-diff-action='remove'] {
 }
 
 [data-diff-move='up'],
-[data-diff-move='down'],
-.ve-ui-diffElement-doc-child-change {
-	border-left: 6px solid #36c;
-	padding-left: 14px;
-	margin-left: -20px;
-}
-
-[data-diff-move='up'],
 [data-diff-move='down'] {
 	position: relative;
 	opacity: 1;
@@ -82,23 +74,22 @@ del[data-diff-action='remove'] {
 [data-diff-move='up']:before,
 [data-diff-move='down']:before {
 	position: absolute;
-	left: -6px;
+	left: -15px;
 	content: ' ';
+	top: 50%;
+	margin-top: -3px;
 	width: 0;
 	height: 0;
-	border-left: 3px solid transparent;
-	border-right: 3px solid transparent;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
 	background: #fff;
-	outline: 3px solid #fff;
 }
 
 [data-diff-move='down']:before {
-	bottom: 0;
 	border-top: 6px solid #36c;
 }
 
 [data-diff-move='up']:before {
-	top: 0;
 	border-bottom: 6px solid #36c;
 }
 
