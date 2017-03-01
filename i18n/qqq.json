@@ -77,6 +77,8 @@
 	"visualeditor-diff-no-changes": "Label displayed in the diff view when no net changes have been made.",
 	"visualeditor-dimensionswidget-px": "{{optional}}\nLabel for the dimensions properties denoting pixel units.",
 	"visualeditor-dimensionswidget-times": "{{optional}}\nLabel for the dimensions properties denoting 'by', as in width x height.",
+	"visualeditor-find-and-replace-diacritic": "Label for diacritic insensitive toggle in find and replace",
+	"visualeditor-find-and-replace-diacritic-unavailable": "Label for diabled diacritic insensitive toggle in find and replace when not supported by browser",
 	"visualeditor-find-and-replace-done": "Label for button to finish using the find and replace dialog\n{{Identical|Done}}",
 	"visualeditor-find-and-replace-find-text": "Label for find text in find and replace\n{{Identical|Find}}",
 	"visualeditor-find-and-replace-invalid-regex": "Inline error message shown for an invalid regular expression",

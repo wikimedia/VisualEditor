@@ -1471,12 +1471,14 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @param {string|RegExp} query Text to find, string or regex with no flags
  * @param {Object} [options] Search options
  * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
+ * @param {boolean} [options.diacriticInsensitiveString] Diacritic insensitive search for a string query. Ignored by regexes.
+ *  Only works in browsers which support String.prototype.localeCompare's options argument.
  * @param {boolean} [options.noOverlaps] Avoid overlapping matches
  * @param {boolean} [options.wholeWord] Only match whole-word occurrences
  * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, options ) {
-	var i, l, len, match, offset, lines, dataString,
+	var i, j, l, qLen, match, offset, lines, dataString, sensitivity,
 		ranges = [],
 		text = this.data.getText(
 			true,
@@ -1512,15 +1514,32 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 			query.lastIndex = 0;
 		}
 	} else {
-		if ( !options.caseSensitiveString ) {
-			text = text.toLowerCase();
-			query = query.toLowerCase();
-		}
-		len = query.length;
-		offset = -1;
-		while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
-			ranges.push( new ve.Range( offset, offset + len ) );
-			offset += options.noOverlaps ? len : 1;
+		qLen = query.length;
+		if ( options.diacriticInsensitiveString && ve.supportsLocaleCompareOptions ) {
+			sensitivity = options.caseSensitiveString ? 'case' : 'base';
+			// Iterate up to (and including) offset textLength - queryLength. Beyond that point
+			// there is not enough room for the query to exist
+			for ( offset = 0, l = text.length - qLen; offset <= l; offset++ ) {
+				j = 0;
+				while ( text[ offset + j ].localeCompare( query[ j ], this.lang, { sensitivity: sensitivity } ) === 0 ) {
+					j++;
+					if ( j === qLen ) {
+						ranges.push( new ve.Range( offset, offset + qLen ) );
+						offset += options.noOverlaps ? qLen - 1 : 0;
+						break;
+					}
+				}
+			}
+		} else {
+			if ( !options.caseSensitiveString ) {
+				text = text.toLowerCase();
+				query = query.toLowerCase();
+			}
+			offset = -1;
+			while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
+				ranges.push( new ve.Range( offset, offset + qLen ) );
+				offset += options.noOverlaps ? qLen : 1;
+			}
 		}
 	}
 

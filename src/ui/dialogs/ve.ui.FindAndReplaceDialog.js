@@ -90,6 +90,14 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		value: ve.userConfig( 'visualeditor-findAndReplace-word' ),
 		tabIndex: 10
 	} );
+	this.diacriticToggle = new OO.ui.ToggleButtonWidget( {
+		icon: 'searchDiacritics',
+		iconTitle: ve.supportsLocaleCompareOptions ?
+			ve.msg( 'visualeditor-find-and-replace-diacritic' ) :
+			ve.msg( 'visualeditor-find-and-replace-diacritic-unavailable' ),
+		value: ve.userConfig( 'visualeditor-findAndReplace-diacritic' ),
+		tabIndex: 11
+	} );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
 		icon: 'previous',
@@ -122,7 +130,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		items: [
 			this.matchCaseToggle,
 			this.regexToggle,
-			this.wordToggle
+			this.wordToggle,
+			this.diacriticToggle
 		]
 	} );
 	navigateGroup = new OO.ui.ButtonGroupWidget( {
@@ -162,6 +171,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.matchCaseToggle.connect( this, { change: 'onFindChange' } );
 	this.regexToggle.connect( this, { change: 'onFindChange' } );
 	this.wordToggle.connect( this, { change: 'onFindChange' } );
+	this.diacriticToggle.connect( this, { change: 'onFindChange' } );
 	this.nextButton.connect( this, { click: 'findNext' } );
 	this.previousButton.connect( this, { click: 'findPrevious' } );
 	this.replaceButton.connect( this, { click: 'onReplaceButtonClick' } );
@@ -298,11 +308,13 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	this.clearRenderedResultsCache();
 	this.renderFragments();
 	this.highlightFocused( true );
+	this.diacriticToggle.setDisabled( !ve.supportsLocaleCompareOptions || this.regexToggle.getValue() );
 	ve.userConfig( {
 		'visualeditor-findAndReplace-findText': this.findText.getValue(),
 		'visualeditor-findAndReplace-matchCase': this.matchCaseToggle.getValue(),
 		'visualeditor-findAndReplace-regex': this.regexToggle.getValue(),
-		'visualeditor-findAndReplace-word': this.wordToggle.getValue()
+		'visualeditor-findAndReplace-word': this.wordToggle.getValue(),
+		'visualeditor-findAndReplace-diacritic': this.diacriticToggle.getValue()
 	} );
 };
 
@@ -340,6 +352,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 		matchCase = this.matchCaseToggle.getValue(),
 		isRegex = this.regexToggle.getValue(),
 		wholeWord = this.wordToggle.getValue(),
+		diacriticInsensitive = this.diacriticToggle.getValue(),
 		find = this.findText.getValue();
 
 	this.invalidRegex = false;
@@ -360,6 +373,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 	if ( this.query ) {
 		ranges = documentModel.findText( this.query, {
 			caseSensitiveString: matchCase,
+			diacriticInsensitiveString: diacriticInsensitive,
 			noOverlaps: true,
 			wholeWord: wholeWord
 		} );
