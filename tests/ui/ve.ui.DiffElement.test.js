@@ -90,7 +90,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<figure><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure data-diff-action="change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure data-diff-action="structural-change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
 					'</div>'
 			},
 			{
@@ -99,7 +99,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<figure class="ve-align-right"><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure class="ve-align-right" data-diff-action="change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure class="ve-align-right" data-diff-action="structural-change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
 					'</div>'
 			},
 			{
@@ -161,8 +161,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<table><tbody>' +
-							'<tr><td>A</td><td data-diff-action="insert">B</td></tr>' +
-							'<tr><td>C</td><td data-diff-action="insert">D</td></tr>' +
+							'<tr><td>A</td>' +
+							'<td data-diff-action="structural-insert"><p data-diff-action=\"insert\">B</p></td></tr>' +
+							'<tr><td>C</td>' +
+							'<td data-diff-action="structural-insert"><p data-diff-action=\"insert\">D</p></td></tr>' +
 						'</tbody></table>' +
 					'</div>'
 			},
@@ -173,8 +175,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<table><tbody>' +
-							'<tr><td>A</td><td data-diff-action="remove">B</td></tr>' +
-							'<tr><td>C</td><td data-diff-action="remove">D</td></tr>' +
+							'<tr><td>A</td><td data-diff-action="structural-remove"><p data-diff-action=\"remove\">B</p></td></tr>' +
+							'<tr><td>C</td><td data-diff-action="structural-remove"><p data-diff-action=\"remove\">D</p></td></tr>' +
 						'</tbody></table>' +
 					'</div>'
 			},
@@ -193,7 +195,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<table><tbody>' +
 							'<tr><td>A</td><td>B</td><td><del data-diff-action="remove">C</del><ins data-diff-action="insert">X</ins></td></tr>' +
-							'<tr data-diff-action="remove"><td>D</td><td>E</td><td>F</td></tr>' +
+							'<tr data-diff-action="structural-remove">' +
+								'<td data-diff-action="structural-remove"><p data-diff-action=\"remove\">D</p></td>' +
+								'<td data-diff-action="structural-remove"><p data-diff-action=\"remove\">E</p></td>' +
+								'<td data-diff-action="structural-remove"><p data-diff-action=\"remove\">F</p></td>' +
+							'</tr>' +
 							'<tr><td>G</td><td>H</td><td><del data-diff-action="remove">I</del><ins data-diff-action="insert">Y</ins></td></tr>' +
 						'</tbody></table>' +
 					'</div>'
@@ -258,6 +264,55 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<del data-diff-action="remove"><span rel="ve:Comment" data-ve-comment="comment">&nbsp;</span></del>' +
 							' baz' +
 						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'List item insertion',
+				oldDoc: '<ul><li><p>foo</p></li><li><p>baz</p></li></ul>',
+				newDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p>foo</p></li>' +
+							'<li data-diff-action=\"structural-insert\"><p data-diff-action=\"insert\">bar</p></li>' +
+							'<li><p>baz</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
+				msg: 'List item removal',
+				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				newDoc: '<ul><li><p>foo</p></li><li><p>baz</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p>foo</p></li>' +
+							'<li data-diff-action=\"structural-remove\"><p data-diff-action=\"remove\">bar</p></li>' +
+							'<li><p>baz</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
+				msg: 'List item indentation',
+				oldDoc: '<ul><li><p>foo</p></li></ul>',
+				newDoc: '<ul><li><ul><li><p>foo</p></li></ul></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul data-diff-action=\"structural-insert\">' +
+							'<li data-diff-action=\"structural-insert\"><ul><li><p>foo</p></li></ul></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
+				msg: 'List item deindentation',
+				oldDoc: '<ul><li><ul><li><p>foo</p></li></ul></li></ul>',
+				newDoc: '<ul><li><p>foo</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							// TODO: Add remove classes here
+							'<li><p>foo</p></li>' +
+						'</ul>' +
 					'</div>'
 			}
 		];
