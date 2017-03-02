@@ -189,6 +189,20 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
 	}
 };
 
+/**
+ * Provide a new, empty Document.
+ *
+ * @return {ve.dm.Document}
+ */
+ve.dm.Document.static.newBlankDocument = function () {
+	return new ve.dm.Document( [
+		{ type: 'paragraph', internal: { wrapper: 'empty' } },
+		{ type: '/paragraph' },
+		{ type: 'internalList' },
+		{ type: '/internalList' }
+	] );
+};
+
 /* Methods */
 
 /**
