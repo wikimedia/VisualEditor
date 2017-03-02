@@ -370,7 +370,8 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 			nodeDiffData = diffInfo.linearDiff;
 			annotatedData = this.annotateNode( nodeDiffData );
 			ve.batchSplice( nodeData, nodeRangeStart + 1, node.node.length, annotatedData );
-		} else {
+		}
+		if ( diffInfo.attributeChange ) {
 			// If there is no content change, just add change class
 			nodeData[ nodeRangeStart ] = this.addAttributesToNode(
 				nodeData[ nodeRangeStart ], this.newDoc, { 'data-diff-action': 'structural-change' }
