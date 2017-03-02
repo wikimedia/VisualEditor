@@ -22,7 +22,7 @@
 table[data-diff-action='insert'] > caption,
 figure[data-diff-action='insert'] > figcaption {
 	background-color: #7fd7c4 !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 0.1em #7fd7c4;
+	box-shadow: 0 0 0 1px #7fd7c4;
 }
 
 [data-diff-action='remove'],
@@ -30,12 +30,12 @@ figure[data-diff-action='insert'] > figcaption {
 table[data-diff-action='remove'] > caption,
 figure[data-diff-action='remove'] > figcaption {
 	background-color: #e88e89 !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 0.1em #e88e89;
+	box-shadow: 0 0 0 1px #e88e89;
 }
 
 [data-diff-action='change-insert'] {
 	background-color: #8ab4e8 !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 0.1em #8ab4e8;
+	box-shadow: 0 0 0 1px #8ab4e8;
 }
 
 [data-diff-action='change-remove'] {
@@ -58,7 +58,7 @@ del[data-diff-action='remove'] {
 [data-diff-action='insert'] + [data-diff-action='remove'],
 [data-diff-action='remove'] + [data-diff-action='change-insert'],
 [data-diff-action='insert'] + [data-diff-action='change-remove'] {
-	margin-left: 0.2em;
+	margin-left: 2px;
 }
 
 [data-diff-action='none'] {
