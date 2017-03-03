@@ -1400,7 +1400,7 @@ ve.getCommonStartSequenceLength = function ( sequences ) {
 		val = sequences[ 0 ][ commonLength ];
 		for ( i = 1, len = sequences.length; i < len; i++ ) {
 			if (
-				sequences[ i ].length < commonLength ||
+				sequences[ i ].length <= commonLength ||
 				sequences[ i ][ commonLength ] !== val
 			) {
 				break commonLengthLoop;

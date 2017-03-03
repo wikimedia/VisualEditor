@@ -699,13 +699,14 @@ ve.ui.DiffElement.prototype.addAttributesToNode = function ( nodeData, nodeDoc, 
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 	var i, ilen, range, type, typeAsString, annType, domElementType, changes, item,
+		annIndex, annIndexLists, j, height,
 		DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
 		DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT,
 		DIFF_CHANGE_DELETE = ve.DiffMatchPatch.static.DIFF_CHANGE_DELETE,
 		DIFF_CHANGE_INSERT = ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT,
 		items = [],
 		start = 0, // The starting index for a range for building an annotation
-		end, transaction, annotatedLinearDiff,
+		end, annotatedLinearDiff,
 		domElement, domElements, originalDomElementsIndex,
 		diffDoc, diffDocData,
 		diffElement = this;
@@ -776,17 +777,45 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 					domElements,
 					domElements.map( ve.getNodeHtml ).join( '' )
 				);
-				transaction = ve.dm.TransactionBuilder.static.newFromAnnotation(
-					diffDoc, range, 'set',
-					ve.dm.annotationFactory.create(
-						annType,
-						{
-							type: annType,
-							originalDomElementsIndex: originalDomElementsIndex
-						}
+				annIndex = diffDoc.getStore().index(
+					ve.dm.annotationFactory.create( annType, {
+						type: annType,
+						originalDomElementsIndex: originalDomElementsIndex
+					} )
+				);
+
+				// Insert annotation above annotations that span the entire range
+				// and at least one character more
+				annIndexLists = [];
+				for (
+					j = Math.max( 0, range.start - 1 );
+					j < Math.min( range.end + 1, diffDoc.data.getLength() );
+					j++
+				) {
+					annIndexLists[ j ] =
+						diffDoc.data.getAnnotationIndexesFromOffset( j );
+				}
+				height = Math.min(
+					ve.getCommonStartSequenceLength(
+						annIndexLists.slice(
+							Math.max( 0, range.start - 1 ),
+							range.end
+						)
+					),
+					ve.getCommonStartSequenceLength(
+						annIndexLists.slice(
+							range.start,
+							Math.min( range.end + 1, diffDoc.data.getLength() )
+						)
 					)
 				);
-				diffDoc.commit( transaction );
+				for ( j = range.start; j < range.end; j++ ) {
+					annIndexLists[ j ].splice( height, 0, annIndex );
+					diffDoc.data.setAnnotationIndexesAtOffset(
+						j,
+						annIndexLists[ j ]
+					);
+				}
 			}
 		}
 		start = end;
