@@ -486,7 +486,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 	for ( i = 0; i < ilen; i++ ) {
 		end = start + linearDiff[ i ][ 1 ].length;
 		if ( start !== end ) {
-			range = { start: start, end: end };
+			range = new ve.Range( start, end );
 			type = linearDiff[ i ][ 0 ];
 			if ( type !== 0 ) {
 				switch ( type ) {
