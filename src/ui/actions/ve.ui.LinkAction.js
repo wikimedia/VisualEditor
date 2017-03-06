@@ -56,7 +56,7 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
 		// Make sure we still have a real URL after trail removal, and not
 		// a bare protocol (or no protocol at all, if we stripped the last
 		// colon from the protocol)
-		return ve.ui.LinkAction.static.autolinkRegExp.test( linktext + ' ' );
+		return ve.ui.LinkAction.static.autolinkRegExp.test( linktext );
 	} );
 };
 
@@ -101,6 +101,15 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
 
 	range = selection.getRange();
 	rangeEnd = range.end;
+
+	// If there's text immediately past the range, don't autolink.
+	// The user did something silly like type a link in the middle of a word.
+	if (
+		rangeEnd + 1 < documentModel.data.getLength() &&
+		/\w/.test( documentModel.data.getText( true, new ve.Range( rangeEnd, rangeEnd + 1 ) ) )
+	) {
+		return false;
+	}
 
 	linktext = documentModel.data.getText( true, range );
 
@@ -185,11 +194,11 @@ ve.init.Platform.static.initializedPromise.then( function () {
 
 	ve.ui.LinkAction.static.autolinkRegExp =
 		new RegExp(
-			'\\b' + ve.init.platform.getUnanchoredExternalLinkUrlProtocolsRegExp().source + '\\S+(\\s|\\n+)$',
+			'\\b' + ve.init.platform.getUnanchoredExternalLinkUrlProtocolsRegExp().source + '\\S+$',
 			'i'
 		);
 
 	ve.ui.sequenceRegistry.register(
-		new ve.ui.Sequence( 'autolinkUrl', 'autolinkUrl', ve.ui.LinkAction.static.autolinkRegExp, 0, true )
+		new ve.ui.Sequence( 'autolinkUrl', 'autolinkUrl', ve.ui.LinkAction.static.autolinkRegExp, 0, true, true )
 	);
 } );

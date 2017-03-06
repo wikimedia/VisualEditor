@@ -13,10 +13,10 @@ QUnit.test( 'autolink', function ( assert ) {
 		cases = [
 			{
 				html: '<p>http://example.com xyz</p>',
-				rangeOrSelection: new ve.Range( 1, 20 ),
+				rangeOrSelection: new ve.Range( 1, 19 ),
 				method: 'autolinkUrl',
-				expectedRangeOrSelection: new ve.Range( 20 ),
-				expectedOriginalRangeOrSelection: new ve.Range( 20 ),
+				expectedRangeOrSelection: new ve.Range( 19 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 19 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -29,10 +29,10 @@ QUnit.test( 'autolink', function ( assert ) {
 			},
 			{
 				html: '<p>http://example.com</p><p>xyz</p>',
-				rangeOrSelection: new ve.Range( 1, 21 ),
+				rangeOrSelection: new ve.Range( 1, 19 ),
 				method: 'autolinkUrl',
-				expectedRangeOrSelection: new ve.Range( 21 ),
-				expectedOriginalRangeOrSelection: new ve.Range( 21 ),
+				expectedRangeOrSelection: new ve.Range( 19 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 19 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -45,10 +45,10 @@ QUnit.test( 'autolink', function ( assert ) {
 			},
 			{
 				html: '<p>Http://Example.COm xyz</p>',
-				rangeOrSelection: new ve.Range( 1, 20 ),
+				rangeOrSelection: new ve.Range( 1, 19 ),
 				method: 'autolinkUrl',
-				expectedRangeOrSelection: new ve.Range( 20 ),
-				expectedOriginalRangeOrSelection: new ve.Range( 20 ),
+				expectedRangeOrSelection: new ve.Range( 19 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 19 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'Http://Example.COm' );
@@ -61,10 +61,10 @@ QUnit.test( 'autolink', function ( assert ) {
 			},
 			{
 				html: '<p>http://example.com.) xyz</p>',
-				rangeOrSelection: new ve.Range( 1, 22 ),
+				rangeOrSelection: new ve.Range( 1, 21 ),
 				method: 'autolinkUrl',
-				expectedRangeOrSelection: new ve.Range( 22 ),
-				expectedOriginalRangeOrSelection: new ve.Range( 22 ),
+				expectedRangeOrSelection: new ve.Range( 21 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 21 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -77,10 +77,10 @@ QUnit.test( 'autolink', function ( assert ) {
 			},
 			{
 				html: '<p>"http://example.com" xyz</p>',
-				rangeOrSelection: new ve.Range( 2, 22 ),
+				rangeOrSelection: new ve.Range( 2, 21 ),
 				method: 'autolinkUrl',
-				expectedRangeOrSelection: new ve.Range( 22 ),
-				expectedOriginalRangeOrSelection: new ve.Range( 22 ),
+				expectedRangeOrSelection: new ve.Range( 21 ),
+				expectedOriginalRangeOrSelection: new ve.Range( 21 ),
 				expectedData: function ( data, action ) {
 					var i,
 						a = action.getLinkAnnotation( 'http://example.com' );
@@ -92,10 +92,20 @@ QUnit.test( 'autolink', function ( assert ) {
 				msg: 'Strip trailing quotes'
 			},
 			{
-				html: '<p>http://.) xyz</p>',
-				rangeOrSelection: new ve.Range( 1, 11 ),
+				html: '<p>http://example.comFoo bar baz</p>',
+				rangeOrSelection: new ve.Range( 1, 19 ),
 				method: 'autolinkUrl',
-				expectedRangeOrSelection: new ve.Range( 1, 11 ),
+				expectedRangeOrSelection: new ve.Range( 1, 19 ),
+				expectedData: function () {
+					/* no change, no link */
+				},
+				msg: 'Don\'t link if followed by word characters'
+			},
+			{
+				html: '<p>http://.) xyz</p>',
+				rangeOrSelection: new ve.Range( 1, 10 ),
+				method: 'autolinkUrl',
+				expectedRangeOrSelection: new ve.Range( 1, 10 ),
 				expectedData: function () {
 					/* no change, no link */
 				},
