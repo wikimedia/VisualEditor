@@ -58,6 +58,8 @@
 	"visualeditor-dialog-table-title": "Табела на својства",
 	"visualeditor-diff-no-changes": "Нема промени",
 	"visualeditor-dimensionswidget-px": "пиксели",
+	"visualeditor-find-and-replace-diacritic": "Без оглед на надредни знаци",
+	"visualeditor-find-and-replace-diacritic-unavailable": "Пребарувањето без оглед на надредни знаци не е достапно на овој прелистувач",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Најди",
 	"visualeditor-find-and-replace-invalid-regex": "Неважечки регуларен израз",

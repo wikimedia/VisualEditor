@@ -10,7 +10,8 @@
 			"Pras",
 			"Tokoko",
 			"Chavch",
-			"Silovan"
+			"Silovan",
+			"OpusDEI"
 		]
 	},
 	"visualeditor": "ვიზუალური რედაქტორი",
@@ -36,6 +37,8 @@
 	"visualeditor-clipboard-cut": "ამოჭრა",
 	"visualeditor-clipboard-paste": "ჩასმა",
 	"visualeditor-clipboard-paste-special": "ჩასვი, როგორც ჩვეულებრივი ტექსტი",
+	"visualeditor-command-dialog-cancel": "დახურვა / ცვლილების გაუქმება",
+	"visualeditor-command-dialog-confirm": "ცვლილების დადასტურება",
 	"visualeditor-commentinspector-edit": "კომენტარის რედაქტირება",
 	"visualeditor-commentinspector-title": "კომენტარი",
 	"visualeditor-commentinspector-tooltip": "კომენტარი",
@@ -43,8 +46,11 @@
 	"visualeditor-contextitemwidget-label-remove": "წაშლა",
 	"visualeditor-contextitemwidget-label-secondary": "რედაქტირება",
 	"visualeditor-debugbar-close": "დახურვა",
+	"visualeditor-debugbar-inputdebug": "შეყვანის შეცდომების გასწორება",
 	"visualeditor-debugbar-logrange": "ჟურნალი",
 	"visualeditor-debugbar-showmodel": "მოდელის ჩვენება",
+	"visualeditor-debugbar-startfilibuster": "შეყოვნება",
+	"visualeditor-debugbar-stopfilibuster": "შეყოვნების შეჩერება",
 	"visualeditor-debugbar-updatemodel": "ცვლილებების განახლება",
 	"visualeditor-dialog-action-apply": "ცვლილებების შენახვა",
 	"visualeditor-dialog-action-cancel": "გაუქმება",
@@ -58,6 +64,7 @@
 	"visualeditor-dialog-language-search-title": "ენის არჩევა",
 	"visualeditor-dialog-table-caption": "წარწერა",
 	"visualeditor-dialog-table-title": "მაგიდის თვისებები",
+	"visualeditor-diff-no-changes": "ცვლილებები არ არის",
 	"visualeditor-dimensionswidget-px": "პქ",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-done": "შესრულებულია",

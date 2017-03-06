@@ -24,7 +24,8 @@
 			"McDutchie",
 			"Robin van der Vliet",
 			"MrLeopold",
-			"Mainframe98"
+			"Mainframe98",
+			"Huhbakker"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -59,8 +60,11 @@
 	"visualeditor-contextitemwidget-label-remove": "Verwijderen",
 	"visualeditor-contextitemwidget-label-secondary": "Bewerken",
 	"visualeditor-debugbar-close": "Sluiten",
+	"visualeditor-debugbar-inputdebug": "Input voor foutopsporing",
 	"visualeditor-debugbar-logrange": "Logboek",
 	"visualeditor-debugbar-showmodel": "Toon model",
+	"visualeditor-debugbar-startfilibuster": "Filibuster",
+	"visualeditor-debugbar-stopfilibuster": "Stop Filibuster",
 	"visualeditor-debugbar-updatemodel": "Bijwerken wanneer er wijzigingen zijn",
 	"visualeditor-dialog-action-apply": "Wijzigingen toepassen",
 	"visualeditor-dialog-action-cancel": "Annuleren",

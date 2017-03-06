@@ -22,7 +22,8 @@
 			"Jackie",
 			"Mailman",
 			"Ctac",
-			"Kareyac"
+			"Kareyac",
+			"Redredsonia"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -74,6 +75,7 @@
 	"visualeditor-dialog-table-caption": "Подпись",
 	"visualeditor-dialog-table-title": "Свойства таблицы",
 	"visualeditor-diff-no-changes": "Никаких изменений",
+	"visualeditor-find-and-replace-diacritic": "Не учитывать диакритические знаки",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Найти",
 	"visualeditor-find-and-replace-invalid-regex": "Недопустимое регулярное выражение",

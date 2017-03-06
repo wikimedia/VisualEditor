@@ -72,6 +72,8 @@
 	"visualeditor-dialog-table-caption": "说明",
 	"visualeditor-dialog-table-title": "表格属性",
 	"visualeditor-diff-no-changes": "没有更改",
+	"visualeditor-find-and-replace-diacritic": "附加符号不敏感",
+	"visualeditor-find-and-replace-diacritic-unavailable": "附加符号不敏感搜索在该浏览器不可用",
 	"visualeditor-find-and-replace-done": "完成",
 	"visualeditor-find-and-replace-find-text": "查找",
 	"visualeditor-find-and-replace-invalid-regex": "无效的正则表达式",
