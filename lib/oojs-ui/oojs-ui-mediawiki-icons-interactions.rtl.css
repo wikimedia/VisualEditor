@@ -1,15 +1,37 @@
 /*!
- * OOjs UI v0.19.4
+ * OOjs UI v0.19.5
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-02-28T23:19:44Z
+ * Date: 2017-03-07T22:57:06Z
  */
-/* stylelint-disable selector-no-vendor-prefix, at-rule-no-unknown */
-/* stylelint-enable selector-no-vendor-prefix, at-rule-no-unknown */
+.oo-ui-icon-add {
+  background-image: url('themes/mediawiki/images/icons/add.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add.png');
+}
+.oo-ui-image-constructive.oo-ui-icon-add {
+  background-image: url('themes/mediawiki/images/icons/add-constructive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-constructive.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-constructive.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-constructive.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-add {
+  background-image: url('themes/mediawiki/images/icons/add-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-progressive.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-progressive.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-progressive.png');
+}
+.oo-ui-image-invert.oo-ui-icon-add {
+  background-image: url('themes/mediawiki/images/icons/add-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-invert.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-invert.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-invert.png');
+}
 .oo-ui-icon-beta {
   background-image: url('themes/mediawiki/images/icons/beta.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/beta.svg');
@@ -279,6 +301,24 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ribbonPrize-progressive.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ribbonPrize-progressive.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/ribbonPrize-progressive.png');
+}
+.oo-ui-icon-subtract {
+  background-image: url('themes/mediawiki/images/icons/subtract.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/subtract.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/subtract.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/subtract.png');
+}
+.oo-ui-image-invert.oo-ui-icon-subtract {
+  background-image: url('themes/mediawiki/images/icons/subtract-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/subtract-invert.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/subtract-invert.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/subtract-invert.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-subtract {
+  background-image: url('themes/mediawiki/images/icons/subtract-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/subtract-progressive.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/subtract-progressive.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/subtract-progressive.png');
 }
 .oo-ui-icon-sun {
   background-image: url('themes/mediawiki/images/icons/sun-rtl.png');
