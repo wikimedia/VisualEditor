@@ -41,13 +41,6 @@
 	opacity: 0.5;
 }
 
-/* @noflip */
-.ve-ce-surface-highlights {
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
 .ve-ce-surface-dropMarker {
 	height: 1px;
 	background: #999;
