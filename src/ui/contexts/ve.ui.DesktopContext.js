@@ -171,10 +171,9 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 	this.transitioning = $.Deferred();
 	promise = this.transitioning.promise();
 
-	this.popup.toggle( show );
-
 	// Parent method
 	ve.ui.DesktopContext.super.prototype.toggle.call( this, show );
+	this.popup.toggle( show );
 
 	this.transitioning.resolve();
 	this.transitioning = null;
@@ -234,7 +233,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		// to browser weirdness.
 		// Skip updating the cursor position, but still update the width and height.
 		this.popup.toggleAnchor( true );
-		this.popup.align = 'center';
+		this.popup.setAlignment( 'center' );
 	} else if ( isTableSelection || ( focusedNode && !focusedNode.isContent() ) ) {
 		embeddable = this.isEmbeddable() &&
 			boundingRect.height > this.$group.outerHeight() + 5 &&
@@ -246,7 +245,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 				x: rtl ? boundingRect.left : boundingRect.right,
 				y: boundingRect.top
 			};
-			this.popup.align = 'backwards';
+			this.popup.setAlignment( 'backwards' );
 		} else {
 			// Position the context underneath the center of the node
 			middle = ( boundingRect.left + boundingRect.right ) / 2;
@@ -254,7 +253,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 				x: middle,
 				y: boundingRect.bottom
 			};
-			this.popup.align = 'center';
+			this.popup.setAlignment( 'center' );
 		}
 	} else {
 		// The selection is text or an inline focused node
@@ -280,7 +279,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		}
 
 		this.popup.toggleAnchor( true );
-		this.popup.align = 'center';
+		this.popup.setAlignment( 'center' );
 	}
 
 	if ( position ) {
