@@ -57,6 +57,8 @@
 	"visualeditor-dialog-table-caption": "Pie",
 	"visualeditor-dialog-table-title": "Propiedaes de la tabla",
 	"visualeditor-diff-no-changes": "Nun hai cambeos",
+	"visualeditor-find-and-replace-diacritic": "Nun sensible a diacríticos",
+	"visualeditor-find-and-replace-diacritic-unavailable": "La gueta nun sensible a diacríticos nun ta disponible pa esti restolador",
 	"visualeditor-find-and-replace-done": "Fecho",
 	"visualeditor-find-and-replace-find-text": "Alcontrar",
 	"visualeditor-find-and-replace-invalid-regex": "Espresión regular inválida",

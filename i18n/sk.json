@@ -4,7 +4,8 @@
 			"Mimarik",
 			"Teslaton",
 			"Matthew Greg",
-			"Kusavica"
+			"Kusavica",
+			"Lexected"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -48,6 +49,7 @@
 	"visualeditor-dialog-language-search-title": "Vybrať jazyk",
 	"visualeditor-dialog-table-caption": "Titulok",
 	"visualeditor-dialog-table-title": "Vlastnosti tabuľky",
+	"visualeditor-find-and-replace-diacritic": "Nezávisle na diakritike",
 	"visualeditor-find-and-replace-done": "Hotovo",
 	"visualeditor-find-and-replace-find-text": "Hľadať",
 	"visualeditor-find-and-replace-invalid-regex": "Chybný regulárny výraz",

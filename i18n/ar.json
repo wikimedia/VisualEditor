@@ -75,6 +75,8 @@
 	"visualeditor-dialog-table-caption": "التعليق",
 	"visualeditor-dialog-table-title": "خصائص الجدول",
 	"visualeditor-diff-no-changes": "لا تغييرات",
+	"visualeditor-find-and-replace-diacritic": "غير حساس للتشكيل",
+	"visualeditor-find-and-replace-diacritic-unavailable": "البحث غير الحساس للتشكيل غير متوفر في هذا المتصفح",
 	"visualeditor-find-and-replace-done": "تم",
 	"visualeditor-find-and-replace-find-text": "ابحث",
 	"visualeditor-find-and-replace-invalid-regex": "تعبير منتظم غير صالح",
