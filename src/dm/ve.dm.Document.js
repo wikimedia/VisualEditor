@@ -1492,7 +1492,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, options ) {
-	var i, j, l, qLen, match, offset, lines, dataString, sensitivity,
+	var i, j, l, qLen, match, offset, lines, dataString, sensitivity, compare,
 		ranges = [],
 		text = this.data.getText(
 			true,
@@ -1529,13 +1529,14 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 		}
 	} else {
 		qLen = query.length;
-		if ( options.diacriticInsensitiveString && ve.supportsLocaleCompareOptions ) {
+		if ( options.diacriticInsensitiveString && ve.supportsIntl ) {
 			sensitivity = options.caseSensitiveString ? 'case' : 'base';
+			compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
 			// Iterate up to (and including) offset textLength - queryLength. Beyond that point
 			// there is not enough room for the query to exist
 			for ( offset = 0, l = text.length - qLen; offset <= l; offset++ ) {
 				j = 0;
-				while ( text[ offset + j ].localeCompare( query[ j ], this.lang, { sensitivity: sensitivity } ) === 0 ) {
+				while ( compare( text[ offset + j ], query[ j ] ) === 0 ) {
 					j++;
 					if ( j === qLen ) {
 						ranges.push( new ve.Range( offset, offset + qLen ) );
