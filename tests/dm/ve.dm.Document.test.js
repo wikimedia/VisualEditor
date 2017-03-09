@@ -1043,15 +1043,18 @@ QUnit.test( 'Find text', function ( assert ) {
 	var i, ranges,
 		supportsIntl = ve.supportsIntl,
 		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
-			// 1
+			// 0
 			'<p>Foo bar fooq.</p>' +
+			// 15
 			'<p>baz foob</p>' +
 			// 25
 			'<p>Liberté, Égalité, Fraternité.</p>' +
 			// 56
 			'<p>ééé</p>' +
 			// 61
-			'<p>Erdős, Malmö</p>'
+			'<p>Erdős, Malmö</p>' +
+			// 75
+			'<p>İzlanda</p>'
 		) ),
 		cases = [
 			{
@@ -1122,7 +1125,16 @@ QUnit.test( 'Find text', function ( assert ) {
 					new ve.Range( 16, 24 ),
 					new ve.Range( 26, 55 ),
 					new ve.Range( 57, 60 ),
-					new ve.Range( 62, 74 )
+					new ve.Range( 62, 74 ),
+					new ve.Range( 76, 83 )
+				]
+			},
+			{
+				msg: 'Character which changes length after toLowerCase (İ) doesn\'t break later offsets',
+				query: 'land',
+				options: {},
+				ranges: [
+					new ve.Range( 78, 82 )
 				]
 			},
 			{
@@ -1248,6 +1260,7 @@ QUnit.test( 'Find text', function ( assert ) {
 		assert.deepEqual( ranges, cases[ i ].ranges, cases[ i ].msg );
 		if ( !cases[ i ].options.diacriticInsensitiveString ) {
 			ve.supportsIntl = false;
+			ranges = doc.findText( cases[ i ].query, cases[ i ].options );
 			assert.deepEqual( ranges, cases[ i ].ranges, cases[ i ].msg + ': without Intl API' );
 			ve.supportsIntl = supportsIntl;
 		}

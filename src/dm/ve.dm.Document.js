@@ -1486,7 +1486,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @param {Object} [options] Search options
  * @param {boolean} [options.caseSensitiveString] Case sensitive search for a string query. Ignored by regexes (use 'i' flag).
  * @param {boolean} [options.diacriticInsensitiveString] Diacritic insensitive search for a string query. Ignored by regexes.
- *  Only works in browsers which support String.prototype.localeCompare's options argument.
+ *  Only works in browsers which support the Internationalization API
  * @param {boolean} [options.noOverlaps] Avoid overlapping matches
  * @param {boolean} [options.wholeWord] Only match whole-word occurrences
  * @return {ve.Range[]} List of ranges where the string was found
