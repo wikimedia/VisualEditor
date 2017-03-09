@@ -1492,16 +1492,19 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, options ) {
-	var i, j, l, qLen, match, offset, lines, dataString, sensitivity, compare,
-		ranges = [],
-		text = this.data.getText(
-			true,
-			new ve.Range( 0, this.getInternalList().getListNode().getOuterRange().start )
-		);
+	var i, j, l, qLen, match, offset, lines, dataString, sensitivity, compare, text,
+		data = this.data,
+		docLen = this.getInternalList().getListNode().getOuterRange().start,
+		ranges = [];
 
 	options = options || {};
 
 	if ( query instanceof RegExp ) {
+		// Convert whole doucment to plain-text for regex matching
+		text = data.getText(
+			true,
+			new ve.Range( 0, docLen )
+		);
 		offset = 0;
 		// Avoid multi-line matching by only matching within newlines
 		lines = text.split( '\n' );
@@ -1529,31 +1532,34 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 		}
 	} else {
 		qLen = query.length;
-		if ( options.diacriticInsensitiveString && ve.supportsIntl ) {
-			sensitivity = options.caseSensitiveString ? 'case' : 'base';
+		if ( ve.supportsIntl ) {
+			if ( options.diacriticInsensitiveString ) {
+				sensitivity = options.caseSensitiveString ? 'case' : 'base';
+			} else {
+				sensitivity = options.caseSensitiveString ? 'variant' : 'accent';
+			}
 			compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
-			// Iterate up to (and including) offset textLength - queryLength. Beyond that point
-			// there is not enough room for the query to exist
-			for ( offset = 0, l = text.length - qLen; offset <= l; offset++ ) {
-				j = 0;
-				while ( compare( text[ offset + j ], query[ j ] ) === 0 ) {
-					j++;
-					if ( j === qLen ) {
-						ranges.push( new ve.Range( offset, offset + qLen ) );
-						offset += options.noOverlaps ? qLen - 1 : 0;
-						break;
-					}
-				}
-			}
 		} else {
-			if ( !options.caseSensitiveString ) {
-				text = text.toLowerCase();
-				query = query.toLowerCase();
-			}
-			offset = -1;
-			while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
-				ranges.push( new ve.Range( offset, offset + qLen ) );
-				offset += options.noOverlaps ? qLen : 1;
+			// Support: IE<=10
+			compare = options.caseSensitiveString ?
+				function ( a, b ) {
+					return a === b ? 0 : 1;
+				} :
+				function ( a, b ) {
+					return a.toLowerCase() === b.toLowerCase() ? 0 : 1;
+				};
+		}
+		// Iterate up to (and including) offset textLength - queryLength. Beyond that point
+		// there is not enough room for the query to exist
+		for ( offset = 0, l = docLen - qLen; offset <= l; offset++ ) {
+			j = 0;
+			while ( compare( data.getCharacterData( offset + j ), query[ j ] ) === 0 ) {
+				j++;
+				if ( j === qLen ) {
+					ranges.push( new ve.Range( offset, offset + qLen ) );
+					offset += options.noOverlaps ? qLen - 1 : 0;
+					break;
+				}
 			}
 		}
 	}

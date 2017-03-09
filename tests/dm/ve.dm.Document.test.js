@@ -1041,6 +1041,7 @@ QUnit.test( 'Selection equality', function ( assert ) {
 
 QUnit.test( 'Find text', function ( assert ) {
 	var i, ranges,
+		supportsIntl = ve.supportsIntl,
 		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
 			// 1
 			'<p>Foo bar fooq.</p>' +
@@ -1245,5 +1246,10 @@ QUnit.test( 'Find text', function ( assert ) {
 		doc.lang = cases[ i ].lang || 'en';
 		ranges = doc.findText( cases[ i ].query, cases[ i ].options );
 		assert.deepEqual( ranges, cases[ i ].ranges, cases[ i ].msg );
+		if ( !cases[ i ].options.diacriticInsensitiveString ) {
+			ve.supportsIntl = false;
+			assert.deepEqual( ranges, cases[ i ].ranges, cases[ i ].msg + ': without Intl API' );
+			ve.supportsIntl = supportsIntl;
+		}
 	}
 } );
