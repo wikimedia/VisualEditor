@@ -241,14 +241,14 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
  * Handle the visible part of the surface viewport change dimensions
  */
 ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
-	var win, viewportDimensions,
-		surface = this.getSurface(),
-		toolbarDialogs = surface.getToolbarDialogs();
+	var win, viewportDimensions, toolbarDialogs,
+		surface = this.getSurface();
 
 	if ( !surface ) {
 		return;
 	}
 
+	toolbarDialogs = surface.getToolbarDialogs();
 	win = toolbarDialogs.getCurrentWindow();
 
 	if ( win && win.constructor.static.position === 'side' ) {
