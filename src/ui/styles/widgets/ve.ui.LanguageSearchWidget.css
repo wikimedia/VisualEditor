@@ -10,3 +10,7 @@
 	float: right;
 	color: #777;
 }
+
+.ve-ui-languageResultWidget .oo-ui-labelWidget {
+	cursor: inherit;
+}
