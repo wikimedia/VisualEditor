@@ -22,10 +22,6 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 			label: 'Add surface'
 		} ),
 
-		messageKeyButton = new OO.ui.ButtonWidget( {
-			icon: 'textLanguage',
-			label: 'Lang keys'
-		} ),
 		languageInput = new ve.ui.LanguageInputWidget( {
 			requireDir: true,
 			hideCodeInput: true,
@@ -36,6 +32,23 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 			new OO.ui.ButtonOptionWidget( { data: 'desktop', label: 'Desktop' } ),
 			new OO.ui.ButtonOptionWidget( { data: 'mobile', label: 'Mobile' } )
 		] );
+
+	// HACK: Prepend a qqx/message keys option to the list
+	languageInput.dialogs.on( 'opening', function ( window, opening ) {
+		opening.then( function () {
+			var searchWidget = languageInput.dialogs.currentWindow.searchWidget;
+			searchWidget.filteredLanguageResultWidgets.unshift(
+				new ve.ui.LanguageResultWidget( {
+					data: {
+						code: 'qqx',
+						name: 'Message keys',
+						autonym: 'Message keys'
+					}
+				} )
+			);
+			searchWidget.addResults();
+		} );
+	} );
 
 	function updateStylesFromDir() {
 		var oldDir = currentDir === 'ltr' ? 'rtl' : 'ltr';
@@ -57,10 +70,6 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 
 	deviceSelect.on( 'select', function ( item ) {
 		location.href = location.href.replace( device, item.getData() );
-	} );
-
-	messageKeyButton.on( 'click', function () {
-		languageInput.setLangAndDir( 'qqx', currentDir );
 	} );
 
 	languageInput.setLangAndDir( currentLang, currentDir );
@@ -104,7 +113,6 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 		$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
 			addSurfaceContainerButton.$element,
 			$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
-			messageKeyButton.$element,
 			languageInput.$element,
 			$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
 			deviceSelect.$element
