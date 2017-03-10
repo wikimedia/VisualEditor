@@ -55,8 +55,6 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getSelection().getDirection(),
-		// HACK: Allow $returnFocusTo to take null upstream
-		$noFocus = [ { focus: function () {} } ],
 		windowClass = ve.ui.windowFactory.lookup( name ),
 		mayContainFragment = windowClass.prototype instanceof ve.ui.FragmentDialog ||
 			windowClass.prototype instanceof ve.ui.FragmentInspector ||
@@ -90,7 +88,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		fragmentPromise = $.Deferred().resolve( fragment ).promise();
 	}
 
-	data = ve.extendObject( { dir: dir }, data, { $returnFocusTo: $noFocus } );
+	data = ve.extendObject( { dir: dir }, data, { $returnFocusTo: null } );
 
 	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
 		data = ve.extendObject( data, { surface: surface } );
