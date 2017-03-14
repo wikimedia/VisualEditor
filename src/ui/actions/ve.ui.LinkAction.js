@@ -102,15 +102,6 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
 	range = selection.getRange();
 	rangeEnd = range.end;
 
-	// If there's text immediately past the range, don't autolink.
-	// The user did something silly like type a link in the middle of a word.
-	if (
-		rangeEnd + 1 < documentModel.data.getLength() &&
-		/\w/.test( documentModel.data.getText( true, new ve.Range( rangeEnd, rangeEnd + 1 ) ) )
-	) {
-		return false;
-	}
-
 	linktext = documentModel.data.getText( true, range );
 
 	// Eliminate trailing whitespace.
@@ -127,6 +118,15 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
 
 	// Shrink range to match new linktext.
 	range = range.truncate( linktext.length );
+
+	// If there are word characters (but not punctuation) immediately past the range, don't autolink.
+	// The user did something silly like type a link in the middle of a word.
+	if (
+		range.end + 1 < documentModel.data.getLength() &&
+		/\w/.test( documentModel.data.getText( true, new ve.Range( range.end, range.end + 1 ) ) )
+	) {
+		return false;
+	}
 
 	// Check that none of the range has an existing link annotation.
 	// Otherwise we could autolink an internal link, which would be ungood.
