@@ -19,13 +19,18 @@
  *        (from the right)
  * @param {boolean} [setSelection=false] Whether to set the selection to the
  *        range matching the sequence before executing the command.
+ * @param {boolean} [delayed=false] Whether to wait for the user to stop typing matching content
+ *     before executing the command. When the sequence matches typed text, it will not be executed
+ *     immediately, but only after more non-matching text is added afterwards or the selection is
+ *     changed. This is useful for variable-length sequences (defined with RegExps).
  */
-ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelection ) {
+ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelection, delayed ) {
 	this.name = name;
 	this.commandName = commandName;
 	this.data = data;
 	this.strip = strip;
 	this.setSelection = setSelection;
+	this.delayed = delayed;
 };
 
 /* Inheritance */
@@ -70,7 +75,7 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
  * @return {boolean} The command executed
  */
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {
-	var command, stripRange, executed, stripFragment, selection, args,
+	var command, stripRange, executed, stripFragment, originalSelectionFragment, args,
 		surfaceModel = surface.getModel();
 
 	if ( surface.getCommands().indexOf( this.getCommandName() ) === -1 ) {
@@ -93,8 +98,10 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 
 	surfaceModel.breakpoint();
 
+	// Use SurfaceFragment rather than Selection to automatically adjust the selection for any changes
+	// (additions, removals) caused by executing the command
+	originalSelectionFragment = surfaceModel.getFragment();
 	if ( this.setSelection ) {
-		selection = surfaceModel.getSelection();
 		surfaceModel.setLinearSelection( range );
 	}
 
@@ -114,8 +121,11 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		stripFragment.removeContent();
 	}
 
-	if ( !executed && selection ) {
-		surfaceModel.setSelection( selection );
+	// Restore user's selection if:
+	// * This sequence was not executed after all
+	// * This sequence is delayed, so it only executes after the user changed the selection
+	if ( !executed || this.delayed ) {
+		originalSelectionFragment.select();
 	}
 
 	return executed;

@@ -57,6 +57,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.activeNode = null;
 	this.contentBranchNodeChanged = false;
 	this.selectionLink = null;
+	this.delayedSequences = [];
 	this.$highlightsFocused = $( '<div>' );
 	this.$highlightsBlurred = $( '<div>' );
 	this.$highlightsUserSelections = $( '<div>' );
@@ -2472,6 +2473,8 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 	var focusedNode, blockSlug,
 		selection = this.getModel().getSelection();
 
+	setTimeout( this.checkDelayedSequences.bind( this ) );
+
 	this.cursorDirectionality = null;
 	this.contentBranchNodeChanged = false;
 	this.selection = null;
@@ -2930,8 +2933,7 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
  * Check the current surface offset for sequence matches
  */
 ve.ce.Surface.prototype.checkSequences = function () {
-	var i, sequences,
-		executed = false,
+	var matchingSequences,
 		model = this.getModel(),
 		selection = this.getSelection();
 
@@ -2939,13 +2941,63 @@ ve.ce.Surface.prototype.checkSequences = function () {
 		return;
 	}
 
-	sequences = this.getSurface().sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getCoveringRange().end );
+	matchingSequences = this.getSurface().sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getCoveringRange().end );
+
+	this.executeSequences( matchingSequences );
+};
+
+/**
+ * Check if any of the previously delayed sequences no longer match with current offset,
+ * and therefore should be executed.
+ */
+ve.ce.Surface.prototype.checkDelayedSequences = function () {
+	var matchingSequences, matchingByName, i, matchingSeq,
+		sequences = [],
+		model = this.getModel(),
+		selection = this.getSelection();
+
+	if ( !selection.isNativeCursor() ) {
+		matchingSequences = [];
+	} else {
+		matchingSequences = this.getSurface().sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getCoveringRange().end );
+	}
+	matchingByName = {};
+	for ( i = 0; i < matchingSequences.length; i++ ) {
+		matchingByName[ matchingSequences[ i ].sequence.getName() ] = matchingSequences[ i ];
+	}
+
+	for ( i = 0; i < this.delayedSequences.length; i++ ) {
+		matchingSeq = matchingByName[ this.delayedSequences[ i ].sequence.getName() ];
+		if (
+			!matchingSeq ||
+			matchingSeq.range.start !== this.delayedSequences[ i ].range.start
+		) {
+			// This sequence stopped matching; execute it with the previously saved range
+			this.delayedSequences[ i ].wasDelayed = true;
+			sequences.push( this.delayedSequences[ i ] );
+		}
+	}
+	// Discard any delayed sequences; they will be checked for again when the user starts typing
+	this.delayedSequences = [];
+
+	this.executeSequences( sequences );
+};
+
+ve.ce.Surface.prototype.executeSequences = function ( sequences ) {
+	var i,
+		executed = false;
 
 	// sequences.length will likely be 0 or 1 so don't cache
 	for ( i = 0; i < sequences.length; i++ ) {
-		executed = sequences[ i ].sequence.execute( this.surface, sequences[ i ].range ) || executed;
+		if ( sequences[ i ].sequence.delayed && !sequences[ i ].wasDelayed ) {
+			// Save the sequence and match range for execution later
+			this.delayedSequences.push( sequences[ i ] );
+		} else {
+			executed = sequences[ i ].sequence.execute( this.surface, sequences[ i ].range ) || executed;
+		}
 	}
 	if ( executed ) {
+		this.delayedSequences = [];
 		this.showModelSelection();
 	}
 };
