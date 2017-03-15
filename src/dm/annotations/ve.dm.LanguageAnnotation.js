@@ -59,6 +59,17 @@ ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement, doc ) {
 	return [ domElement ];
 };
 
+ve.dm.LanguageAnnotation.static.describeChange = function ( key, change ) {
+	if ( key === 'lang' ) {
+		return ve.msg( 'visualeditor-changedesc-language',
+			ve.init.platform.getLanguageName( change.from.toLowerCase() ),
+			ve.init.platform.getLanguageName( change.to.toLowerCase() )
+		);
+	}
+	// Parent method
+	return ve.dm.LanguageAnnotation.parent.static.describeChange.apply( this, arguments );
+};
+
 /* Methods */
 
 /**

@@ -99,6 +99,18 @@ ve.dm.TableCellNode.static.createData = function ( options ) {
 	return [ opening ].concat( content ).concat( [ { type: '/tableCell' } ] );
 };
 
+ve.dm.TableCellNode.static.describeChange = function ( key, change ) {
+	if ( key === 'style' ) {
+		return ve.msg( 'visualeditor-changedesc-no-key',
+			// Either visualeditor-table-format-data or visualeditor-table-format-header
+			ve.msg( 'visualeditor-table-format-' + change.from ),
+			ve.msg( 'visualeditor-table-format-' + change.to )
+		);
+	}
+	// Parent method
+	return ve.dm.TableCellNode.parent.static.describeChange.apply( this, arguments );
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.TableCellNode );
