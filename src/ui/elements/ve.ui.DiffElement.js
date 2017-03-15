@@ -20,8 +20,7 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 	// Parent constructor
 	ve.ui.DiffElement.super.call( this );
 
-	// CSS
-	this.$element.addClass( 've-ui-diffElement' );
+	this.elementId = 0;
 
 	// Documents
 	this.oldDoc = visualDiff.oldDoc;
@@ -35,22 +34,170 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 	this.insert = diff.docChildrenInsert;
 	this.remove = diff.docChildrenRemove;
 
-	// HTML
+	this.$overlays = $( '<div>' ).addClass( 've-ui-diffElement-overlays' );
+	this.$content = $( '<div>' ).addClass( 've-ui-diffElement-content' );
+	this.$document = $( '<div>' ).addClass( 've-ui-diffElement-document' );
+	this.$sidebar = $( '<div>' ).addClass( 've-ui-diffElement-sidebar' );
+
+	this.descriptions = new ve.ui.ChangeDescriptionsSelectWidget();
+	this.descriptions.connect( this, { highlight: 'onDescriptionsHighlight' } );
+	this.descriptionItemsStack = [];
+	this.onWindowResizeDebounced = ve.debounce( this.onWindowResize.bind( this ), 250 );
+	$( this.getElementWindow() ).on( 'resize', this.onWindowResizeDebounced );
+
+	this.$document.on( {
+		mousemove: this.onDocumentMouseMove.bind( this )
+	} );
+
+	// DOM
+	this.$element
+		.append(
+			this.$overlays,
+			this.$content.append( this.$document ),
+			this.$sidebar.append( this.descriptions.$element )
+		)
+		.addClass( 've-ui-diffElement' );
 	this.renderDiff();
+	this.$element.toggleClass( 've-ui-diffElement-hasDescriptions', !this.descriptions.isEmpty() );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ui.DiffElement, OO.ui.Element );
 
+/* Static methods */
+
+/**
+ * Compare attribute sets between two elements
+ *
+ * @param {Object} oldAttributes Old attributes
+ * @param {Object} newAttributes New attributes
+ * @return {Object} Keyed set of attributes
+ */
+ve.ui.DiffElement.static.compareAttributes = function ( oldAttributes, newAttributes ) {
+	var key,
+		attributeChanges = {};
+
+	function compareKeys( a, b ) {
+		if ( typeof a === 'object' && typeof b === 'object' ) {
+			return ve.compare( a, b );
+		} else {
+			return a === b;
+		}
+	}
+
+	for ( key in oldAttributes ) {
+		if ( !compareKeys( oldAttributes[ key ], newAttributes[ key ] ) ) {
+			attributeChanges[ key ] = { from: oldAttributes[ key ], to: newAttributes[ key ] };
+		}
+	}
+	for ( key in newAttributes ) {
+		if ( !oldAttributes.hasOwnProperty( key ) && newAttributes[ key ] !== undefined ) {
+			attributeChanges[ key ] = { from: oldAttributes[ key ], to: newAttributes[ key ] };
+		}
+	}
+	return attributeChanges;
+};
+
 /* Methods */
+
+/**
+ * Get a diff element in the document from its elementId
+ *
+ * @param {number} elementId ID
+ * @return {jQuery} Element
+ */
+ve.ui.DiffElement.prototype.getDiffElementById = function ( elementId ) {
+	return this.$document.find( '[data-diff-id=' + elementId + ']' );
+};
+
+/**
+ * Handle description item hightlight events
+ *
+ * @param {OO.ui.OptionWidget} item Description item
+ */
+ve.ui.DiffElement.prototype.onDescriptionsHighlight = function ( item ) {
+	var i, l, elementRects, overlayRect;
+	if ( this.lastItem ) {
+		this.getDiffElementById( this.lastItem.getData() ).css( 'outline', '' );
+		this.$overlays.empty();
+	}
+	if ( item ) {
+		overlayRect = this.$overlays[ 0 ].getBoundingClientRect();
+		elementRects = ve.ce.FocusableNode.static.getRectsForElement( this.getDiffElementById( item.getData() ), overlayRect ).rects;
+		for ( i = 0, l = elementRects.length; i < l; i++ ) {
+			this.$overlays.append(
+				$( '<div>' ).addClass( 've-ui-diffElement-highlight' ).css( {
+					top: elementRects[ i ].top,
+					left: elementRects[ i ].left,
+					width: elementRects[ i ].width,
+					height: elementRects[ i ].height
+				} )
+			);
+		}
+		this.lastItem = item;
+	}
+};
+
+/**
+ * Handle document mouse move events
+ *
+ * @param {jQuery.Event} e Mouse move event
+ */
+ve.ui.DiffElement.prototype.onDocumentMouseMove = function ( e ) {
+	var elementId = $( e.target ).closest( '[data-diff-id]' ).attr( 'data-diff-id' );
+	if ( elementId !== undefined ) {
+		this.descriptions.highlightItem(
+			this.descriptions.getItemFromData( +elementId )
+		);
+	} else {
+		this.descriptions.highlightItem();
+	}
+};
+
+/**
+ * Handle window resize events
+ *
+ * @param {jQuery.Event} event Window resize event
+ */
+ve.ui.DiffElement.prototype.onWindowResize = function () {
+	this.positionDescriptions();
+};
+
+/**
+ * Reposition the description items so they are not above their position in the document
+ */
+ve.ui.DiffElement.prototype.positionDescriptions = function () {
+	var diffElement = this;
+	this.descriptions.getItems().forEach( function ( item ) {
+		var elementRect, itemRect;
+
+		item.$element.css( 'margin-top', '' );
+
+		itemRect = item.$element[ 0 ].getBoundingClientRect();
+		elementRect = diffElement.getDiffElementById( item.getData() )[ 0 ].getBoundingClientRect();
+
+		if ( elementRect.top > itemRect.top ) {
+			item.$element.css( 'margin-top', elementRect.top - itemRect.top - 5 );
+		}
+
+	} );
+	this.$document.css( 'min-height', this.$sidebar.height() );
+};
+
+/**
+ * Destroy the diff and remove global handlers
+ */
+ve.ui.DiffElement.prototype.destroy = function () {
+	$( this.getElementWindow() ).off( 'resize', this.onWindowResizeDebounced );
+};
 
 /**
  * Render the diff
  */
 ve.ui.DiffElement.prototype.renderDiff = function () {
 	var i, j, k, ilen, jlen, klen, nodes, move, elements, spacerNode, noChanges,
-		element = this.$element[ 0 ],
+		documentNode = this.$document[ 0 ],
 		anyChanges = false,
 		spacer = false,
 		diffQueue = [];
@@ -126,14 +273,14 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			anyChanges = true;
 			elements = this[ diffQueue[ i ][ 0 ] ].apply( this, diffQueue[ i ].slice( 1 ) );
 			while ( elements.length ) {
-				element.appendChild(
-					element.ownerDocument.adoptNode( elements[ 0 ] )
+				documentNode.appendChild(
+					documentNode.ownerDocument.adoptNode( elements[ 0 ] )
 				);
 				elements.shift();
 			}
 		} else if ( !spacer ) {
 			spacer = true;
-			element.appendChild( spacerNode.cloneNode( true ) );
+			documentNode.appendChild( spacerNode.cloneNode( true ) );
 		}
 	}
 
@@ -141,8 +288,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		noChanges = document.createElement( 'div' );
 		noChanges.setAttribute( 'class', 've-ui-diffElement-no-changes' );
 		noChanges.appendChild( document.createTextNode( ve.msg( 'visualeditor-diff-no-changes' ) ) );
-		element.innerHTML = '';
-		element.appendChild( noChanges );
+		documentNode.innerHTML = '';
+		documentNode.appendChild( noChanges );
 	}
 };
 
@@ -358,7 +505,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 	 * @param {Object} diffInfo Information relating to this node's change
 	 */
 	function highlightChangedNode( nodeIndex, diffInfo ) {
-		var node, nodeRangeStart, nodeDiffData, annotatedData;
+		var node, nodeRangeStart, nodeDiffData, annotatedData, item;
 
 		// The new node was changed.
 		// Get data for this node
@@ -376,10 +523,9 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 			nodeData[ nodeRangeStart ] = this.addAttributesToNode(
 				nodeData[ nodeRangeStart ], this.newDoc, { 'data-diff-action': 'structural-change' }
 			);
+			item = this.compareNodeAttributes( nodeData, nodeRangeStart, this.newDoc, diffInfo.attributeChange );
+			this.descriptionItemsStack.unshift( item );
 		}
-
-		// TODO: render type and attribute changes according to diffInfo.typeChange
-		// and diffInfo.attributeChange
 	}
 
 	// Iterate backwards over trees so that changes are made from right to left
@@ -438,6 +584,10 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		}
 	}
 
+	// Push new description items from the queue
+	this.descriptions.addItems( this.descriptionItemsStack );
+	this.descriptionItemsStack = [];
+
 	element = document.createElement( 'div' );
 	element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
 	if ( move ) {
@@ -455,6 +605,48 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 	}
 
 	return [ element ];
+};
+
+/**
+ * Compare attributes of two nodes
+ *
+ * @param {Array} data Linear data containing new node
+ * @param {number} offset Offset in data
+ * @param {ve.dm.Document} doc Document model
+ * @param {Object} attributeChange Attribute change object containing oldAttributes and newAttributes
+ * @return {OO.ui.OptionWidget} Change description item
+ */
+ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, doc, attributeChange ) {
+	var changes, item,
+		attributeChanges = this.constructor.static.compareAttributes( attributeChange.oldAttributes, attributeChange.newAttributes );
+
+	changes = ve.dm.modelRegistry.lookup( data[ offset ].type ).static.describeChanges( attributeChanges, attributeChange.newAttributes );
+	item = this.getChangeDescriptionItem( changes );
+	data[ offset ] = this.addAttributesToNode( data[ offset ], doc, { 'data-diff-id': item.getData() } );
+	return item;
+};
+
+/**
+ * Get a change description item from a set of changes
+ *
+ * @param {Object} changes Changes
+ * @return {OO.ui.OptionWidget} Change description item
+ */
+ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes ) {
+	var i, l, item,
+		elementId = this.elementId,
+		$label = $( [] );
+
+	for ( i = 0, l = changes.length; i < l; i++ ) {
+		$label = $label.add( $( '<div>' ).text( changes[ i ] ) );
+	}
+	item = new OO.ui.OptionWidget( {
+		label: $label,
+		data: elementId,
+		classes: [ 've-ui-diffElement-attributeChange' ]
+	} );
+	this.elementId++;
+	return item;
 };
 
 /**
@@ -476,13 +668,18 @@ ve.ui.DiffElement.prototype.addAttributesToNode = function ( nodeData, nodeDoc, 
 
 	if ( node.originalDomElementsIndex ) {
 		domElements = ve.copy( nodeDoc.getStore().value( node.originalDomElementsIndex ) );
-		domElements[ 0 ] = domElements[ 0 ].cloneNode( true );
+		domElements.map( function ( element ) {
+			return element.cloneNode( true );
+		} );
 	} else {
 		domElements = [ document.createElement( 'span' ) ];
 	}
 	for ( key in attributes ) {
 		if ( attributes[ key ] !== undefined ) {
-			domElements[ 0 ].setAttribute( key, attributes[ key ] );
+			// eslint-disable-next-line no-loop-func
+			domElements.forEach( function ( element ) {
+				element.setAttribute( key, attributes[ key ] );
+			} );
 		}
 	}
 	originalDomElementsIndex = this.newDoc.getStore().index(
@@ -501,11 +698,13 @@ ve.ui.DiffElement.prototype.addAttributesToNode = function ( nodeData, nodeDoc, 
  * @return {Array} Data with annotations added
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
-	var i, ilen, range, type, typeAsString, annType, domElementType,
+	var i, ilen, range, type, typeAsString, annType, domElementType, changes, item,
+		items = [],
 		start = 0, // The starting index for a range for building an annotation
 		end, transaction, annotatedLinearDiff,
 		domElement, domElements, originalDomElementsIndex,
-		diffDoc, diffDocData;
+		diffDoc, diffDocData,
+		diffElement = this;
 
 	// Make a new document from the diff
 	diffDocData = linearDiff[ 0 ][ 1 ];
@@ -547,6 +746,28 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 				domElement = document.createElement( domElementType );
 				domElement.setAttribute( 'data-diff-action', typeAsString );
 				domElements = [ domElement ];
+
+				if ( linearDiff[ i ].annotationChanges ) {
+					changes = [];
+					linearDiff[ i ].annotationChanges.forEach( function ( annotationChange ) { // eslint-disable-line no-loop-func
+						var attributeChanges;
+						if ( annotationChange.oldAnnotation && annotationChange.newAnnotation ) {
+							attributeChanges = diffElement.constructor.static.compareAttributes(
+								annotationChange.oldAnnotation.getAttributes(),
+								annotationChange.newAnnotation.getAttributes()
+							);
+							changes = changes.concat( ve.dm.modelRegistry.lookup( annotationChange.newAnnotation.getType() ).static.describeChanges(
+								attributeChanges, annotationChange.newAnnotation.getAttributes()
+							) );
+						}
+					} );
+					if ( changes.length ) {
+						item = diffElement.getChangeDescriptionItem( changes );
+						domElement.setAttribute( 'data-diff-id', item.getData() );
+						items.push( item );
+					}
+				}
+
 				originalDomElementsIndex = diffDoc.getStore().index(
 					domElements,
 					domElements.map( ve.getNodeHtml ).join( '' )
@@ -566,6 +787,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 		}
 		start = end;
 	}
+	this.descriptionItemsStack.unshift.apply( this.descriptionItemsStack, items );
 
 	// Merge the stores and get the data
 	this.newDoc.getStore().merge( diffDoc.getStore() );

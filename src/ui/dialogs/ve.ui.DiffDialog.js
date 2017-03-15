@@ -46,6 +46,8 @@ ve.ui.DiffDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.DiffDialog.parent.prototype.initialize.apply( this, arguments );
 
+	this.diffElement = null;
+
 	this.content = new OO.ui.PanelLayout( {
 		padded: true,
 		expanded: false
@@ -60,14 +62,38 @@ ve.ui.DiffDialog.prototype.initialize = function () {
 ve.ui.DiffDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.DiffDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
+			this.diffElement = new ve.ui.DiffElement( new ve.dm.VisualDiff( data.oldDoc, data.newDoc ) );
 
-			var visualDiff, diffElement;
-			visualDiff = new ve.dm.VisualDiff( data.oldDoc, data.newDoc );
-			diffElement = new ve.ui.DiffElement( visualDiff );
-
-			this.content.$element.empty().append(
-				diffElement.$element
+			this.content.$element.append(
+				this.diffElement.$element
 			);
+		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DiffDialog.prototype.getReadyProcess = function ( data ) {
+	return ve.ui.DiffDialog.super.prototype.getReadyProcess.call( this, data )
+		.next( function () {
+			var dialog = this;
+			setTimeout( function () {
+				dialog.withoutSizeTransitions( function () {
+					dialog.diffElement.positionDescriptions();
+					dialog.updateSize();
+				} );
+			}, OO.ui.theme.getDialogTransitionDuration() );
+		}, this );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.DiffDialog.prototype.getTeardownProcess = function ( data ) {
+	return ve.ui.DiffDialog.super.prototype.getTeardownProcess.call( this, data )
+		.next( function () {
+			this.diffElement.destroy();
+			this.diffElement.$element.remove();
 		}, this );
 };
 

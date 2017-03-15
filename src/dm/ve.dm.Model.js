@@ -241,6 +241,43 @@ ve.dm.Model.static.getAllowedRdfaTypes = function () {
 	return this.allowedRdfaTypes;
 };
 
+/**
+ * Describe attribute changes in the model
+ *
+ * @param {Object} attributeChanges Attribute changes, keyed list containing objects with from and to properties
+ * @return {string[]} Descriptions
+ */
+ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
+	var key, change,
+		descriptions = [];
+	for ( key in attributeChanges ) {
+		change = this.describeChange( key, attributeChanges[ key ] );
+		if ( change ) {
+			descriptions.push( change );
+		}
+	}
+	return descriptions;
+};
+
+/**
+ * Describe a single attribute change in the model
+ *
+ * @param {string} key Attribute key
+ * @param {Object} change Change object with from and to properties
+ * @return {string} Description
+ */
+ve.dm.Model.static.describeChange = function ( key, change ) {
+	if ( ( typeof change.from === 'object' && change.from !== null ) || ( typeof change.to === 'object' && change.to !== null ) ) {
+		return ve.msg( 'visualeditor-changedesc-unknown', key );
+	} else if ( change.from === undefined ) {
+		return ve.msg( 'visualeditor-changedesc-set', key, change.to );
+	} else if ( change.to === undefined ) {
+		return ve.msg( 'visualeditor-changedesc-unset', key, change.from );
+	} else {
+		return ve.msg( 'visualeditor-changedesc-changed', key, change.from, change.to );
+	}
+};
+
 /* Methods */
 
 /**
