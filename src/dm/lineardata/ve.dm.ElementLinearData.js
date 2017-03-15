@@ -1064,6 +1064,31 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
 };
 
 /**
+ * Remap an annotation index when it changes
+ *
+ * @param  {string} oldIndex Old index to replace
+ * @param  {string} newIndex New index to replace it with
+ */
+ve.dm.ElementLinearData.prototype.remapAnnotationIndex = function ( oldIndex, newIndex ) {
+	var i, ilen, attrIndex;
+	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
+		if ( this.data[ i ] === undefined || typeof this.data[ i ] === 'string' ) {
+			// common case, cheap, avoid the isArray check
+			continue;
+		} else if ( Array.isArray( this.data[ i ] ) ) {
+			attrIndex = this.data[ i ][ 1 ].indexOf( oldIndex );
+			if ( attrIndex !== -1 ) {
+				if ( this.data[ i ][ 1 ].indexOf( newIndex ) === -1 ) {
+					this.data[ i ][ 1 ].splice( attrIndex, 1, newIndex );
+				} else {
+					this.data[ i ][ 1 ].splice( attrIndex, 1, newIndex );
+				}
+			}
+		}
+	}
+};
+
+/**
  * Sanitize data according to a set of rules.
  *
  * @param {Object} rules Sanitization rules
@@ -1077,7 +1102,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param {boolean} [rules.keepEmptyContentBranches] Preserve empty content branch nodes
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
-	var i, len, annotations, emptySet, setToRemove, type,
+	var i, len, annotations, emptySet, setToRemove, type, oldHash, newHash,
 		canContainContent, contentElement, isOpen, nodeClass, ann,
 		elementStack = [],
 		store = this.getStore(),
@@ -1091,7 +1116,23 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
 				ann = allAnnotations.get( i );
 				if ( ann.element.originalDomElementsIndex !== undefined ) {
+					// This changes the hash of the value, so we have to
+					// update that. If we don't do this, other assumptions
+					// that values fetched from the store are actually in the
+					// store will fail.
+					oldHash = store.indexOfValue( ann );
 					delete allAnnotations.get( i ).element.originalDomElementsIndex;
+					newHash = store.replaceHash( oldHash, ann );
+					this.remapAnnotationIndex( oldHash, newHash );
+					if ( allAnnotations.storeIndexes.indexOf( newHash ) !== -1 ) {
+						// New annotation-value was already in the set, which
+						// just reduces the effective-length of the set.
+						allAnnotations.storeIndexes.splice( i, 1 );
+						i--;
+						len--;
+					} else {
+						allAnnotations.storeIndexes.splice( i, 1, newHash );
+					}
 				}
 			}
 		}

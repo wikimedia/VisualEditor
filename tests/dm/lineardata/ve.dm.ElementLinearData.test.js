@@ -1545,12 +1545,12 @@ QUnit.test( 'sanitize', function ( assert ) {
 				html: '<p style="text-shadow: 0 0 1px #000;">F<b style="color:blue;">o</b>o</p>',
 				data: [
 					{ type: 'paragraph' },
-					'F', [ 'o', [ 'h5dd47c3facf7b6a8' ] ], 'o',
+					'F', [ 'o', [ 'h49981eab0f8056ff' ] ], 'o',
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				store: { h5dd47c3facf7b6a8: bold },
+				store: { h49981eab0f8056ff: bold },
 				rules: { removeOriginalDomElements: true },
 				msg: 'Original DOM elements removed'
 			},
