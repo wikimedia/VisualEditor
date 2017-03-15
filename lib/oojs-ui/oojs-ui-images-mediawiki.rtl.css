@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.19.5
+ * OOjs UI v0.20.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-03-07T22:57:06Z
+ * Date: 2017-03-15T17:06:28Z
  */
 .oo-ui-icon-add {
   background-image: url('themes/mediawiki/images/icons/add.png');
@@ -591,12 +591,6 @@
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/alert-invert.png');
 }
-.oo-ui-image-progressive.oo-ui-indicator-alert {
-  background-image: url('themes/mediawiki/images/indicators/alert-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/alert-progressive.png');
-}
 .oo-ui-indicator-clear {
   background-image: url('themes/mediawiki/images/indicators/clear.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear.svg');
@@ -608,12 +602,6 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear-invert.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/clear-invert.png');
-}
-.oo-ui-image-progressive.oo-ui-indicator-clear {
-  background-image: url('themes/mediawiki/images/indicators/clear-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/clear-progressive.png');
 }
 .oo-ui-indicator-up {
   background-image: url('themes/mediawiki/images/indicators/arrow-up.png');
@@ -627,12 +615,6 @@
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-up-invert.png');
 }
-.oo-ui-image-progressive.oo-ui-indicator-up {
-  background-image: url('themes/mediawiki/images/indicators/arrow-up-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-up-progressive.png');
-}
 .oo-ui-indicator-down {
   background-image: url('themes/mediawiki/images/indicators/arrow-down.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down.svg');
@@ -644,12 +626,6 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down-invert.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-down-invert.png');
-}
-.oo-ui-image-progressive.oo-ui-indicator-down {
-  background-image: url('themes/mediawiki/images/indicators/arrow-down-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-down-progressive.png');
 }
 .oo-ui-indicator-next {
   background-image: url('themes/mediawiki/images/indicators/arrow-rtl.png');
@@ -663,12 +639,6 @@
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-rtl-invert.png');
 }
-.oo-ui-image-progressive.oo-ui-indicator-next {
-  background-image: url('themes/mediawiki/images/indicators/arrow-rtl-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-rtl-progressive.png');
-}
 .oo-ui-indicator-previous {
   background-image: url('themes/mediawiki/images/indicators/arrow-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr.svg');
@@ -680,12 +650,6 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr-invert.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-ltr-invert.png');
-}
-.oo-ui-image-progressive.oo-ui-indicator-previous {
-  background-image: url('themes/mediawiki/images/indicators/arrow-ltr-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-ltr-progressive.png');
 }
 .oo-ui-indicator-required {
   background-image: url('themes/mediawiki/images/indicators/required.png');
@@ -699,12 +663,6 @@
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/required-invert.png');
 }
-.oo-ui-image-progressive.oo-ui-indicator-required {
-  background-image: url('themes/mediawiki/images/indicators/required-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/required-progressive.png');
-}
 .oo-ui-indicator-search {
   background-image: url('themes/mediawiki/images/indicators/search-rtl.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-rtl.svg');
@@ -716,12 +674,6 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-rtl-invert.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-rtl-invert.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/search-rtl-invert.png');
-}
-.oo-ui-image-progressive.oo-ui-indicator-search {
-  background-image: url('themes/mediawiki/images/indicators/search-rtl-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-rtl-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-rtl-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/search-rtl-progressive.png');
 }
 
 .oo-ui-texture-pending {

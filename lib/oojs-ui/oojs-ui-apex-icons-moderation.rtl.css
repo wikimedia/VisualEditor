@@ -1,24 +1,18 @@
 /*!
- * OOjs UI v0.19.5
+ * OOjs UI v0.20.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-03-07T22:57:06Z
+ * Date: 2017-03-15T17:06:28Z
  */
 .oo-ui-icon-block {
   background-image: url('themes/apex/images/icons/block.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/block.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/block.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/block.png');
-}
-.oo-ui-icon-blockUndo {
-  background-image: url('themes/apex/images/icons/unBlock-rtl.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unBlock-rtl.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unBlock-rtl.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/unBlock-rtl.png');
 }
 .oo-ui-icon-unBlock {
   background-image: url('themes/apex/images/icons/unBlock-rtl.png');
@@ -31,12 +25,6 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/flag-rtl.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/flag-rtl.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/flag-rtl.png');
-}
-.oo-ui-icon-flagUndo {
-  background-image: url('themes/apex/images/icons/unFlag-rtl.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unFlag-rtl.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unFlag-rtl.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/unFlag-rtl.png');
 }
 .oo-ui-icon-unFlag {
   background-image: url('themes/apex/images/icons/unFlag-rtl.png');
@@ -81,12 +69,6 @@
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/trash.png');
 }
 .oo-ui-icon-unTrash {
-  background-image: url('themes/apex/images/icons/unTrash-rtl.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unTrash-rtl.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unTrash-rtl.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/unTrash-rtl.png');
-}
-.oo-ui-icon-trashUndo {
   background-image: url('themes/apex/images/icons/unTrash-rtl.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unTrash-rtl.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unTrash-rtl.svg');
