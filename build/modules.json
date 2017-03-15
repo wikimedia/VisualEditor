@@ -608,7 +608,8 @@
 			"src/ve.DiffTreeNode.js",
 			"src/ve.DiffMatchPatch.js",
 			"src/dm/ve.dm.VisualDiff.js",
-			"src/ui/elements/ve.ui.DiffElement.js"
+			"src/ui/elements/ve.ui.DiffElement.js",
+			"src/ui/widgets/ve.ui.ChangeDescriptionsSelectWidget.js"
 		],
 		"styles": [
 			"src/ui/styles/elements/ve.ui.DiffElement.css"

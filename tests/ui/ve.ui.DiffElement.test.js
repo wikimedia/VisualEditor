@@ -90,7 +90,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<figure><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure data-diff-action="structural-change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
 					'</div>'
 			},
 			{
@@ -99,7 +99,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<figure class="ve-align-right"><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure class="ve-align-right" data-diff-action="structural-change"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
 					'</div>'
 			},
 			{
@@ -210,7 +210,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo <b>bar</b> baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <span data-diff-action="change-remove">bar</span><b><span data-diff-action="change-insert">bar</span></b> baz</p>' +
+						'<p>foo <del data-diff-action="remove">bar</del><b><ins data-diff-action="insert">bar</ins></b> baz</p>' +
 					'</div>'
 			},
 			{
@@ -219,7 +219,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo bar baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <b><span data-diff-action="change-remove">bar</span></b><span data-diff-action="change-insert">bar</span> baz</p>' +
+						'<p>foo <b><del data-diff-action="remove">bar</del></b><ins data-diff-action="insert">bar</ins> baz</p>' +
 					'</div>'
 			},
 			{
@@ -325,6 +325,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 		newDoc.getStore().merge( oldDoc.getStore() );
 		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
 		diffElement = new ve.ui.DiffElement( visualDiff );
-		assert.strictEqual( diffElement.$element.html(), cases[ i ].expected, cases[ i ].msg );
+		assert.strictEqual( diffElement.$document.html(), cases[ i ].expected, cases[ i ].msg );
 	}
 } );

@@ -6,7 +6,60 @@
  */
 
 .ve-ui-diffElement {
+	position: relative;
+}
+
+.ve-ui-diffElement-content {
 	margin-left: 15px;
+}
+
+.ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-content {
+	margin-right: 16em;
+	padding-right: 1em;
+	border-right: 1px solid #ccc;
+}
+
+.ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-sidebar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 15em;
+}
+
+.ve-ui-diffElement-overlays {
+	position: absolute;
+	opacity: 0.5;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.ve-ui-changeDescriptionsSelectWidget > .oo-ui-optionWidget {
+	cursor: default;
+}
+
+.ve-ui-changeDescriptionsSelectWidget > .oo-ui-optionWidget-highlighted {
+	background: #b6d4fb; /* #6da9f7 at 50% opacity */
+}
+
+.ve-ui-diffElement-highlight {
+	position: absolute;
+	/*background: #6da9f7;*/
+	outline: 3px solid #6da9f7;
+	padding: 2px;
+	margin: -2px 0 0 -2px;
+	/* TODO: Support IE9 with JS mouse events */
+	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+}
+
+.ve-ui-diffElement-attributeChange {
+	color: #72777d;
+}
+
+.ve-ui-diffElement-attributeChange.oo-ui-labelElement .oo-ui-labelElement-label {
+	white-space: normal;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 [data-diff-action='insert'],
@@ -14,7 +67,6 @@
 [data-diff-action='change-insert'],
 [data-diff-action='change-remove'] {
 	text-decoration: inherit;
-	border-radius: 0.15em;
 }
 
 [data-diff-action='insert'],
@@ -33,9 +85,10 @@ figure[data-diff-action='remove'] > figcaption {
 	box-shadow: 0 0 0 1px #e88e89;
 }
 
+[data-diff-action='change'],
 [data-diff-action='change-insert'] {
-	background-color: #8ab4e8 !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 1px #8ab4e8;
+	background-color: #b6d4fb !important; /* stylelint-disable-line declaration-no-important */
+	box-shadow: 0 0 0 1px #b6d4fb;
 }
 
 [data-diff-action='change-remove'] {
@@ -58,7 +111,7 @@ del[data-diff-action='remove'] {
 [data-diff-action='insert'] + [data-diff-action='remove'],
 [data-diff-action='remove'] + [data-diff-action='change-insert'],
 [data-diff-action='insert'] + [data-diff-action='change-remove'] {
-	margin-left: 2px;
+	margin-left: 4px;
 }
 
 [data-diff-action='none'] {
