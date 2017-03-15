@@ -591,6 +591,7 @@ ve.ce.Surface.prototype.deactivate = function () {
 		// until the surface is activated
 		this.surfaceObserver.disable();
 		this.deactivated = true;
+		this.checkDelayedSequences();
 		// Remove ranges so the user can't accidentally type into the document
 		this.nativeSelection.removeAllRanges();
 		this.updateDeactivatedSelection();
@@ -2956,7 +2957,7 @@ ve.ce.Surface.prototype.checkDelayedSequences = function () {
 		model = this.getModel(),
 		selection = this.getSelection();
 
-	if ( !selection.isNativeCursor() ) {
+	if ( this.deactivated || !selection.isNativeCursor() ) {
 		matchingSequences = [];
 	} else {
 		matchingSequences = this.getSurface().sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getCoveringRange().end );
