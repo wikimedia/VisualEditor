@@ -53,6 +53,17 @@ ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( 'h' + level ) ];
 };
 
+ve.dm.HeadingNode.static.describeChange = function ( key, change ) {
+	if ( key === 'level' ) {
+		return ve.msg( 'visualeditor-changedesc-no-key',
+			ve.msg( 'visualeditor-formatdropdown-format-heading' + change.from ),
+			ve.msg( 'visualeditor-formatdropdown-format-heading' + change.to )
+		);
+	}
+	// Parent method
+	return ve.dm.HeadingNode.parent.static.describeChange.apply( this, arguments );
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.HeadingNode );

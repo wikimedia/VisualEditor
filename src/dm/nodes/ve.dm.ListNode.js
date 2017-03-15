@@ -45,6 +45,18 @@ ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( tag ) ];
 };
 
+ve.dm.ListNode.static.describeChange = function ( key, change ) {
+	if ( key === 'style' ) {
+		return ve.msg( 'visualeditor-changedesc-no-key',
+			// Either visualeditor-listbutton-bullet-tooltip or visualeditor-listbutton-number-tooltip
+			ve.msg( 'visualeditor-listbutton-' + change.from + '-tooltip' ),
+			ve.msg( 'visualeditor-listbutton-' + change.to + '-tooltip' )
+		);
+	}
+	// Parent method
+	return ve.dm.ListNode.parent.static.describeChange.apply( this, arguments );
+};
+
 /* Methods */
 
 ve.dm.ListNode.prototype.canHaveSlugAfter = function () {
