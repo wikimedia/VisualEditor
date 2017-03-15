@@ -87,6 +87,137 @@ OO.initClass( ve.ce.FocusableNode );
  */
 ve.ce.FocusableNode.static.iconWhenInvisible = null;
 
+/* Static methods */
+
+/**
+ * Get rects for an element
+ *
+ * @param {jQuery} $element Element to get highlights
+ * @param {Object} [relativeRect] Rect with top & left to get position relative to
+ * @return {Object} Object containing rects and boundingRect
+ */
+ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRect ) {
+	var i, l, $set, columnCount, columnWidth,
+		boundingRect = null,
+		rects = [],
+		filteredRects = [],
+		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style;
+
+	function contains( rect1, rect2 ) {
+		return rect2.left >= rect1.left &&
+			rect2.top >= rect1.top &&
+			rect2.right <= rect1.right &&
+			rect2.bottom <= rect1.bottom;
+	}
+
+	function process( el ) {
+		var i, j, il, jl, contained, clientRects, overflow, $el;
+
+		if ( el.classList.contains( 've-ce-noHighlight' ) ) {
+			return;
+		}
+
+		$el = $( el );
+
+		if ( webkitColumns ) {
+			columnCount = $el.css( '-webkit-column-count' );
+			columnWidth = $el.css( '-webkit-column-width' );
+			if ( ( columnCount && columnCount !== 'auto' ) || ( columnWidth && columnWidth !== 'auto' ) ) {
+				// Support: Chrome
+				// Chrome incorrectly measures children of nodes with columns [1], let's
+				// just ignore them rather than render a possibly bizarre highlight. They
+				// will usually not be positioned, because Chrome also doesn't position
+				// them correctly [2] and so people avoid doing it.
+				//
+				// Of course there are other ways to render a node outside the bounding
+				// box of its parent, like negative margin. We do not handle these cases,
+				// and the highlight may not correctly cover the entire node if that
+				// happens. This can't be worked around without implementing CSS
+				// layouting logic ourselves, which is not worth it.
+				//
+				// [1] https://code.google.com/p/chromium/issues/detail?id=391271
+				// [2] https://code.google.com/p/chromium/issues/detail?id=291616
+
+				// jQuery keeps nodes in its collections in document order, so the
+				// children have not been processed yet and can be safely removed.
+				$set = $set.not( $el.find( '*' ) );
+			}
+		}
+
+		// Don't descend if overflow is anything but visible as this prevents
+		// child elements appearing beyond the bounding box of the parent
+		overflow = $el.css( 'overflow' );
+		if ( overflow && overflow !== 'visible' ) {
+			$set = $set.not( $el.find( '*' ) );
+		}
+
+		clientRects = el.getClientRects();
+
+		for ( i = 0, il = clientRects.length; i < il; i++ ) {
+			contained = false;
+			for ( j = 0, jl = rects.length; j < jl; j++ ) {
+				// This rect is contained by an existing rect, discard
+				if ( contains( rects[ j ], clientRects[ i ] ) ) {
+					contained = true;
+					break;
+				}
+				// An existing rect is contained by this rect, discard the existing rect
+				if ( contains( clientRects[ i ], rects[ j ] ) ) {
+					rects.splice( j, 1 );
+					j--;
+					jl--;
+				}
+			}
+			if ( !contained ) {
+				rects.push( clientRects[ i ] );
+			}
+		}
+	}
+
+	$set = $element.find( '*' ).addBack();
+	// Calling process() may change $set.length
+	for ( i = 0; i < $set.length; i++ ) {
+		process( $set[ i ] );
+	}
+
+	// Elements with a width/height of 0 return a clientRect with a width/height of 1
+	// As elements with an actual width/height of 1 aren't that useful anyway, just
+	// throw away anything that is <=1
+	filteredRects = rects.filter( function ( rect ) {
+		return rect.width > 1 && rect.height > 1;
+	} );
+	// But if this filtering doesn't leave any rects at all, then we do want to use the 1px rects
+	if ( filteredRects.length > 0 ) {
+		rects = filteredRects;
+	}
+
+	boundingRect = null;
+
+	for ( i = 0, l = rects.length; i < l; i++ ) {
+		// Translate to relative
+		if ( relativeRect ) {
+			rects[ i ] = ve.translateRect( rects[ i ], -relativeRect.left, -relativeRect.top );
+		}
+		if ( !boundingRect ) {
+			boundingRect = ve.copy( rects[ i ] );
+		} else {
+			boundingRect.top = Math.min( boundingRect.top, rects[ i ].top );
+			boundingRect.left = Math.min( boundingRect.left, rects[ i ].left );
+			boundingRect.bottom = Math.max( boundingRect.bottom, rects[ i ].bottom );
+			boundingRect.right = Math.max( boundingRect.right, rects[ i ].right );
+		}
+	}
+	if ( boundingRect ) {
+		boundingRect.width = boundingRect.right - boundingRect.left;
+		boundingRect.height = boundingRect.bottom - boundingRect.top;
+	}
+
+	return {
+		rects: rects,
+		boundingRect: boundingRect
+	};
+};
+
 /* Methods */
 
 /**
@@ -540,143 +671,27 @@ ve.ce.FocusableNode.prototype.redrawHighlights = function () {
 };
 
 /**
- * Calculate position of highlights
+ * Re-calculate position of highlights
  */
 ve.ce.FocusableNode.prototype.calculateHighlights = function () {
-	var i, l, $set, columnCount, columnWidth, surfaceOffset,
-		rects = [],
-		filteredRects = [],
-		webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style;
+	var allRects, surfaceOffset;
 
 	// Protect against calling before/after surface setup/teardown
 	if ( !this.focusableSurface ) {
+		this.rects = [];
 		this.boundingRect = null;
 		this.startAndEndRects = null;
-		this.rects = [];
 		return;
 	}
 
 	surfaceOffset = this.focusableSurface.getSurface().getBoundingClientRect();
 
-	function contains( rect1, rect2 ) {
-		return rect2.left >= rect1.left &&
-			rect2.top >= rect1.top &&
-			rect2.right <= rect1.right &&
-			rect2.bottom <= rect1.bottom;
-	}
+	allRects = this.constructor.static.getRectsForElement( this.$focusable, surfaceOffset );
 
-	function process( el ) {
-		var i, j, il, jl, contained, clientRects, overflow, $el;
-
-		if ( el.classList.contains( 've-ce-noHighlight' ) ) {
-			return;
-		}
-
-		$el = $( el );
-
-		if ( webkitColumns ) {
-			columnCount = $el.css( '-webkit-column-count' );
-			columnWidth = $el.css( '-webkit-column-width' );
-			if ( ( columnCount && columnCount !== 'auto' ) || ( columnWidth && columnWidth !== 'auto' ) ) {
-				// Support: Chrome
-				// Chrome incorrectly measures children of nodes with columns [1], let's
-				// just ignore them rather than render a possibly bizarre highlight. They
-				// will usually not be positioned, because Chrome also doesn't position
-				// them correctly [2] and so people avoid doing it.
-				//
-				// Of course there are other ways to render a node outside the bounding
-				// box of its parent, like negative margin. We do not handle these cases,
-				// and the highlight may not correctly cover the entire node if that
-				// happens. This can't be worked around without implementing CSS
-				// layouting logic ourselves, which is not worth it.
-				//
-				// [1] https://code.google.com/p/chromium/issues/detail?id=391271
-				// [2] https://code.google.com/p/chromium/issues/detail?id=291616
-
-				// jQuery keeps nodes in its collections in document order, so the
-				// children have not been processed yet and can be safely removed.
-				$set = $set.not( $el.find( '*' ) );
-			}
-		}
-
-		// Don't descend if overflow is anything but visible as this prevents
-		// child elements appearing beyond the bounding box of the parent
-		overflow = $el.css( 'overflow' );
-		if ( overflow && overflow !== 'visible' ) {
-			$set = $set.not( $el.find( '*' ) );
-		}
-
-		clientRects = el.getClientRects();
-
-		for ( i = 0, il = clientRects.length; i < il; i++ ) {
-			contained = false;
-			for ( j = 0, jl = rects.length; j < jl; j++ ) {
-				// This rect is contained by an existing rect, discard
-				if ( contains( rects[ j ], clientRects[ i ] ) ) {
-					contained = true;
-					break;
-				}
-				// An existing rect is contained by this rect, discard the existing rect
-				if ( contains( clientRects[ i ], rects[ j ] ) ) {
-					rects.splice( j, 1 );
-					j--;
-					jl--;
-				}
-			}
-			if ( !contained ) {
-				rects.push( clientRects[ i ] );
-			}
-		}
-	}
-
-	$set = this.$focusable.find( '*' ).addBack();
-	// Calling process() may change $set.length
-	for ( i = 0; i < $set.length; i++ ) {
-		process( $set[ i ] );
-	}
-
-	// Elements with a width/height of 0 return a clientRect with a width/height of 1
-	// As elements with an actual width/height of 1 aren't that useful anyway, just
-	// throw away anything that is <=1
-	filteredRects = rects.filter( function ( rect ) {
-		return rect.width > 1 && rect.height > 1;
-	} );
-	// But if this filtering doesn't leave any rects at all, then we do want to use the 1px rects
-	if ( filteredRects.length > 0 ) {
-		rects = filteredRects;
-	}
-
-	this.boundingRect = null;
+	this.rects = allRects.rects;
+	this.boundingRect = allRects.boundingRect;
 	// startAndEndRects is lazily evaluated in getStartAndEndRects from rects
 	this.startAndEndRects = null;
-
-	for ( i = 0, l = rects.length; i < l; i++ ) {
-		// Translate to relative
-		rects[ i ] = ve.translateRect( rects[ i ], -surfaceOffset.left, -surfaceOffset.top );
-		this.$highlights.append(
-			this.createHighlight().css( {
-				top: rects[ i ].top,
-				left: rects[ i ].left,
-				width: rects[ i ].width,
-				height: rects[ i ].height
-			} )
-		);
-
-		if ( !this.boundingRect ) {
-			this.boundingRect = ve.copy( rects[ i ] );
-		} else {
-			this.boundingRect.top = Math.min( this.boundingRect.top, rects[ i ].top );
-			this.boundingRect.left = Math.min( this.boundingRect.left, rects[ i ].left );
-			this.boundingRect.bottom = Math.max( this.boundingRect.bottom, rects[ i ].bottom );
-			this.boundingRect.right = Math.max( this.boundingRect.right, rects[ i ].right );
-		}
-	}
-	if ( this.boundingRect ) {
-		this.boundingRect.width = this.boundingRect.right - this.boundingRect.left;
-		this.boundingRect.height = this.boundingRect.bottom - this.boundingRect.top;
-	}
-
-	this.rects = rects;
 };
 
 /**
