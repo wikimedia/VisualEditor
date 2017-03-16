@@ -16,9 +16,6 @@
 ve.ui.ClearAnnotationTool = function VeUiClearAnnotationTool() {
 	// Parent constructor
 	ve.ui.ClearAnnotationTool.super.apply( this, arguments );
-
-	// Initialization
-	this.setDisabled( true );
 };
 
 /* Inheritance */

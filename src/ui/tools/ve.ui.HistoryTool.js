@@ -19,9 +19,6 @@ ve.ui.HistoryTool = function VeUiHistoryTool() {
 
 	// Events
 	this.toolbar.getSurface().getModel().connect( this, { history: 'onHistory' } );
-
-	// Initialization
-	this.setDisabled( true );
 };
 
 /* Inheritance */
