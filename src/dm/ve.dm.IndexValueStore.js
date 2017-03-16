@@ -108,6 +108,32 @@ ve.dm.IndexValueStore.prototype.index = function ( value, stringified ) {
 	return hash;
 };
 
+ /**
+ * Replace a value's stored hash, e.g. if the value has changed and you want to discard the old one.
+ *
+ * @param {string} oldHash The value's previously stored hash
+ * @param {Object|string|Array} value New value
+ * @throws {Error} Old hash not found
+ * @return {string} New hash
+ */
+ve.dm.IndexValueStore.prototype.replaceHash = function ( oldHash, value ) {
+	var newHash = this.indexOfValue( value ),
+		index = this.hashStore[ oldHash ];
+
+	if ( index === undefined ) {
+		throw new Error( 'Old hash not found: ' + oldHash );
+	}
+
+	delete this.hashStore[ oldHash ];
+
+	if ( this.hashStore[ newHash ] === undefined ) {
+		this.hashStore[ newHash ] = value;
+		this.hashes.splice( this.hashes.indexOf( oldHash ), 1, newHash );
+	}
+
+	return newHash;
+};
+
 /**
  * Get the hash of a value without inserting it in the store
  *
