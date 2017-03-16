@@ -4,7 +4,8 @@
 			"MaGa",
 			"Roberta F.",
 			"SpeedyGonsales",
-			"Zeljko.filipin"
+			"Zeljko.filipin",
+			"Bugoslav"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -49,7 +50,7 @@
 	"visualeditor-find-and-replace-diacritic-unavailable": "Pretraga sa zanemarenim dijakriticima nije podržana u ovom pregledniku",
 	"visualeditor-find-and-replace-done": "Gotovo",
 	"visualeditor-find-and-replace-find-text": "Traži",
-	"visualeditor-find-and-replace-invalid-regex": "Nevaljali regularni izraz",
+	"visualeditor-find-and-replace-invalid-regex": "Regularni izraz nije valjan",
 	"visualeditor-find-and-replace-match-case": "Razlikuj velika/mala slova",
 	"visualeditor-find-and-replace-next-button": "Traži sljedeće",
 	"visualeditor-find-and-replace-previous-button": "Traži prethodno",
@@ -99,7 +100,7 @@
 	"visualeditor-shortcuts-formatting": "Oblikovanje odlomaka",
 	"visualeditor-shortcuts-history": "Povijest",
 	"visualeditor-shortcuts-other": "Ostalo",
-	"visualeditor-shortcuts-sequence-notice": "Ukucajte",
+	"visualeditor-shortcuts-sequence-notice": "Utipkajte",
 	"visualeditor-shortcuts-text-style": "Oblikovanje teksta",
 	"visualeditor-slug-insert": "Umetni odlomak",
 	"visualeditor-specialcharacter-button-tooltip": "Posebni znak",
