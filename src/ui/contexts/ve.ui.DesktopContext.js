@@ -430,6 +430,8 @@ ve.ui.DesktopContext.prototype.destroy = function () {
 		resize: this.onWindowResizeHandler,
 		scroll: this.onWindowScrollDebounced
 	} );
+	// Popups bind scroll events if they're in positioning mode, so make sure that's disabled
+	this.popup.togglePositioning( false );
 
 	// Parent method
 	return ve.ui.DesktopContext.super.prototype.destroy.call( this );
