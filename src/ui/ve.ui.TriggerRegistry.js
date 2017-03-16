@@ -207,6 +207,9 @@ ve.ui.triggerRegistry.register(
 	'findAndReplace', { mac: new ve.ui.Trigger( 'cmd+f' ), pc: new ve.ui.Trigger( 'ctrl+f' ) }
 );
 ve.ui.triggerRegistry.register(
+	'changeDirectionality', { mac: new ve.ui.Trigger( 'cmd+shift+x' ), pc: new ve.ui.Trigger( 'ctrl+shift+x' ) }
+);
+ve.ui.triggerRegistry.register(
 	'findNext', {
 		mac: new ve.ui.Trigger( 'cmd+g' ),
 		pc: [

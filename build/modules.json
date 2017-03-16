@@ -532,6 +532,7 @@
 			"src/ui/widgets/ve.ui.NoFocusButtonWidget.js",
 			"src/ui/widgets/ve.ui.WhitespacePreservingTextInputWidget.js",
 			"src/ui/tools/ve.ui.AnnotationTool.js",
+			"src/ui/tools/ve.ui.ChangeDirectionalityTool.js",
 			"src/ui/tools/ve.ui.ClearAnnotationTool.js",
 			"src/ui/tools/ve.ui.WindowTool.js",
 			"src/ui/tools/ve.ui.FragmentWindowTool.js",

@@ -32,7 +32,7 @@ ve.ui.ContentAction.static.name = 'content';
  * @static
  * @property
  */
-ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial', 'selectAll' ];
+ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial', 'selectAll', 'changeDirectionality' ];
 
 /* Methods */
 
@@ -98,6 +98,19 @@ ve.ui.ContentAction.prototype.pasteSpecial = function () {
 	this.surface.getView().pasteSpecial = true;
 	// Return false to allow the paste event to occur
 	return false;
+};
+
+/**
+ * Change directionality
+ *
+ * @method
+ * @return {boolean} Action was executed
+ */
+ve.ui.ContentAction.prototype.changeDirectionality = function () {
+	var documentView = this.surface.getView().getDocument();
+	documentView.setDir( documentView.getDir() === 'ltr' ? 'rtl' : 'ltr' );
+	this.surface.getModel().emit( 'contextChange' );
+	return true;
 };
 
 /* Registration */
