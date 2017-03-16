@@ -151,4 +151,5 @@ ve.ui.commandHelpRegistry.register( 'other', 'findAndReplace', { trigger: 'findA
 ve.ui.commandHelpRegistry.register( 'other', 'findNext', { trigger: 'findNext', label: OO.ui.deferMsg( 'visualeditor-find-and-replace-next-button' ) } );
 ve.ui.commandHelpRegistry.register( 'other', 'findPrevious', { trigger: 'findPrevious', label: OO.ui.deferMsg( 'visualeditor-find-and-replace-previous-button' ) } );
 ve.ui.commandHelpRegistry.register( 'other', 'selectAll', { trigger: 'selectAll', label: OO.ui.deferMsg( 'visualeditor-content-select-all' ) } );
+ve.ui.commandHelpRegistry.register( 'other', 'changeDirectionality', { trigger: 'changeDirectionality', label: OO.ui.deferMsg( 'visualeditor-changedir' ) } );
 ve.ui.commandHelpRegistry.register( 'other', 'commandHelp', { trigger: 'commandHelp', label: OO.ui.deferMsg( 'visualeditor-dialog-command-help-title' ) } );

@@ -190,6 +190,11 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'changeDirectionality', 'content', 'changeDirectionality'
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'language', 'window', 'open',
 		{ args: [ 'language' ], supportedSelections: [ 'linear' ] }
 	)
