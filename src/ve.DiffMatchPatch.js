@@ -123,15 +123,6 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 	 * (with no retains) to look like one continuous removal and one continuous
 	 * insert.
 	 *
-	 * TODO: Clean up cases like:
-	 * - insert "word1"
-	 * - retain " "
-	 * - remove "word2"
-	 * - retain " "
-	 * - insert "word3"
-	 * - retain " "
-	 * - remove "word4"
-	 *
 	 * Additionally clean up mistakes made by the linear differ, such as removing
 	 * and inserting identical content (insetead of retaining it) and removing,
 	 * inserting or retaining an empty content array.
@@ -152,6 +143,11 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 
 		function compareData( element, index ) {
 			return ve.dm.ElementLinearData.static.compareElementsUnannotated( element, bData[ index ] );
+		}
+
+		function isWhitespace( element ) {
+			var data = Array.isArray( element ) ? element[ 0 ] : element;
+			return typeof data === 'string' && !!data.match( /\s/ );
 		}
 
 		// Where the same data is removed and inserted, replace it with a retain
@@ -241,15 +237,20 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			} else if ( action === DIFF_INSERT ) {
 				insert = insert.concat( data );
 			} else if ( action === DIFF_EQUAL && data.length > 0 ) {
-				if ( remove.length > 0 ) {
-					cleanDiff.push( [ DIFF_DELETE, remove ] );
+				if ( data.every( isWhitespace ) ) {
+					remove = remove.concat( data );
+					insert = insert.concat( data );
+				} else {
+					if ( remove.length > 0 ) {
+						cleanDiff.push( [ DIFF_DELETE, remove ] );
+					}
+					remove = [];
+					if ( insert.length > 0 ) {
+						cleanDiff.push( [ DIFF_INSERT, insert ] );
+					}
+					insert = [];
+					cleanDiff.push( diff[ i ] );
 				}
-				remove = [];
-				if ( insert.length > 0 ) {
-					cleanDiff.push( [ DIFF_INSERT, insert ] );
-				}
-				insert = [];
-				cleanDiff.push( diff[ i ] );
 			}
 		}
 
