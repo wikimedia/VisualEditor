@@ -59,6 +59,20 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Consecutive word partial changes',
+				oldDoc: '<p>foo bar baz hello world quux whee</p>',
+				newDoc: '<p>foo bar baz hellish work quux whee</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar baz ' +
+							'<del data-diff-action="remove">hello world</del>' +
+							'<ins data-diff-action="insert">hellish work</ins>' +
+							' quux whee' +
+						'</p>' +
+					'</div>'
+			},
+			{
 				msg: 'Only change-adjacent paragraphs are shown',
 				oldDoc: '<p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<p>boo</p><p>bar</p><p>baz</p>',
