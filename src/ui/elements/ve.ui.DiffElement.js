@@ -699,6 +699,10 @@ ve.ui.DiffElement.prototype.addAttributesToNode = function ( nodeData, nodeDoc, 
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 	var i, ilen, range, type, typeAsString, annType, domElementType, changes, item,
+		DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
+		DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT,
+		DIFF_CHANGE_DELETE = ve.DiffMatchPatch.static.DIFF_CHANGE_DELETE,
+		DIFF_CHANGE_INSERT = ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT,
 		items = [],
 		start = 0, // The starting index for a range for building an annotation
 		end, transaction, annotatedLinearDiff,
@@ -722,22 +726,22 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 			type = linearDiff[ i ][ 0 ];
 			if ( type !== 0 ) {
 				switch ( type ) {
-					case -1:
+					case DIFF_DELETE:
 						typeAsString = 'remove';
 						domElementType = 'del';
 						annType = 'textStyle/delete';
 						break;
-					case 1:
+					case DIFF_INSERT:
 						typeAsString = 'insert';
 						domElementType = 'ins';
 						annType = 'textStyle/insert';
 						break;
-					case -2:
+					case DIFF_CHANGE_DELETE:
 						typeAsString = 'change-remove';
 						domElementType = 'span';
 						annType = 'textStyle/span';
 						break;
-					case 2:
+					case DIFF_CHANGE_INSERT:
 						typeAsString = 'change-insert';
 						domElementType = 'span';
 						annType = 'textStyle/span';

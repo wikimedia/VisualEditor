@@ -27,6 +27,14 @@ ve.DiffMatchPatch = function VeDiffMatchPatch( oldStore, newStore ) {
 
 OO.inheritClass( ve.DiffMatchPatch, diff_match_patch );
 
+/* Static properties */
+
+ve.DiffMatchPatch.static.DIFF_DELETE = -1;
+ve.DiffMatchPatch.static.DIFF_INSERT = 1;
+ve.DiffMatchPatch.static.DIFF_EQUAL = 0;
+ve.DiffMatchPatch.static.DIFF_CHANGE_DELETE = -2;
+ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT = 2;
+
 /* Methods */
 
 ve.DiffMatchPatch.prototype.isEqualChar = function ( a, b ) {
@@ -64,7 +72,12 @@ ve.DiffMatchPatch.prototype.getEmptyString = function () {
 
 ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 	var diffs = this.diff_main.apply( this, arguments ),
-		store = this.store;
+		store = this.store,
+		DIFF_DELETE = this.constructor.static.DIFF_DELETE,
+		DIFF_INSERT = this.constructor.static.DIFF_INSERT,
+		DIFF_EQUAL = this.constructor.static.DIFF_EQUAL,
+		DIFF_CHANGE_DELETE = this.constructor.static.DIFF_CHANGE_DELETE,
+		DIFF_CHANGE_INSERT = this.constructor.static.DIFF_CHANGE_INSERT;
 
 	/**
 	 * Get the index of the first or last wordbreak in a data array
@@ -147,7 +160,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			data = diff[ i ][ 1 ];
 			// Should improve on JSON.stringify
 			if ( action + previousAction === 0 && JSON.stringify( data ) === JSON.stringify( previousData ) ) {
-				diff.splice( i - 1, 2, [ 0, data ] );
+				diff.splice( i - 1, 2, [ DIFF_EQUAL, data ] );
 				i++;
 			}
 			previousAction = action;
@@ -176,7 +189,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 		for ( i = 0; i < diff.length; i++ ) {
 			action = diff[ i ][ 0 ];
 			data = diff[ i ][ 1 ];
-			if ( action === 0 ) {
+			if ( action === DIFF_EQUAL ) {
 
 				start = [];
 				end = [];
@@ -186,7 +199,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 				if ( firstWordbreak === -1 ) {
 					// If there was no wordbreak, retain should be replaced with
 					// remove-insert
-					diff.splice( i, 1, [ -1, data ], [ 1, data ] );
+					diff.splice( i, 1, [ DIFF_DELETE, data ], [ DIFF_INSERT, data ] );
 					i++;
 				} else {
 					if ( i !== diff.length - 1 && !isBreak( data.concat( diff[ i + 1 ][ 1 ] ), data.length ) ) {
@@ -204,11 +217,11 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 					// data (if anything; if firstWordbreak === lastWordbreak !== -1, then
 					// data has been spliced away completely).
 					if ( start.length > 0 ) {
-						diff.splice( i, 0, [ -1, start ], [ 1, start ] );
+						diff.splice( i, 0, [ DIFF_DELETE, start ], [ DIFF_INSERT, start ] );
 						i += 2;
 					}
 					if ( end.length > 0 ) {
-						diff.splice( i + 1, 0, [ -1, end ], [ 1, end ] );
+						diff.splice( i + 1, 0, [ DIFF_DELETE, end ], [ DIFF_INSERT, end ] );
 						i += 2;
 					}
 
@@ -223,17 +236,17 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 		for ( i = 0, ilen = diff.length; i < ilen; i++ ) {
 			action = diff[ i ][ 0 ];
 			data = diff[ i ][ 1 ];
-			if ( action === -1 ) {
+			if ( action === DIFF_DELETE ) {
 				remove = remove.concat( data );
-			} else if ( action === 1 ) {
+			} else if ( action === DIFF_INSERT ) {
 				insert = insert.concat( data );
-			} else if ( action === 0 && data.length > 0 ) {
+			} else if ( action === DIFF_EQUAL && data.length > 0 ) {
 				if ( remove.length > 0 ) {
-					cleanDiff.push( [ -1, remove ] );
+					cleanDiff.push( [ DIFF_DELETE, remove ] );
 				}
 				remove = [];
 				if ( insert.length > 0 ) {
-					cleanDiff.push( [ 1, insert ] );
+					cleanDiff.push( [ DIFF_INSERT, insert ] );
 				}
 				insert = [];
 				cleanDiff.push( diff[ i ] );
@@ -241,10 +254,10 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 		}
 
 		if ( remove.length > 0 ) {
-			cleanDiff.push( [ -1, remove ] );
+			cleanDiff.push( [ DIFF_DELETE, remove ] );
 		}
 		if ( insert.length > 0 ) {
-			cleanDiff.push( [ 1, insert ] );
+			cleanDiff.push( [ DIFF_INSERT, insert ] );
 		}
 
 		// Finally, go over any consecutive remove-inserts (also insert-removes?)
@@ -262,7 +275,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			// (2)
 			if (
 				aData.length === bData.length &&
-				( ( aAction === -1 && bAction === 1 ) || ( aAction === 1 && bAction === -1 ) ) &&
+				( ( aAction === DIFF_DELETE && bAction === DIFF_INSERT ) || ( aAction === DIFF_INSERT && bAction === DIFF_DELETE ) ) &&
 				aData.every( compareData )
 			) {
 				aAnnotations = new ve.dm.ElementLinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
@@ -279,8 +292,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 
 				if ( annotationChanges.length ) {
 					cleanDiff[ i + 1 ].annotationChanges = annotationChanges;
-					cleanDiff[ i ][ 0 ] = aAction === -1 ? -2 : 2;
-					cleanDiff[ i + 1 ][ 0 ] = bAction === -1 ? -2 : 2;
+					cleanDiff[ i ][ 0 ] = aAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
+					cleanDiff[ i + 1 ][ 0 ] = bAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
 				}
 
 				// No need to check bItem against the following item
