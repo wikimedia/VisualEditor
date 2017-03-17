@@ -80,12 +80,12 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 		DIFF_CHANGE_INSERT = this.constructor.static.DIFF_CHANGE_INSERT;
 
 	/**
-	 * Get the index of the first or last wordbreak in a data array
+	 * Get the index of the the first or last wordbreak in a data array
 	 *
 	 * @param {Array} data Linear data
 	 * @param {boolean} reversed Get the index of the last wordbreak
-	 * @return {number} Index of the first or last wordbreak, or -1 if no
-	 * wordbreak was found
+	 * @return {number|null} Index of the first or last wordbreak, or null if no
+	 *  wordbreak was found
 	 */
 	function findWordbreaks( data, reversed ) {
 		var offset,
@@ -97,11 +97,10 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			reversed ? data.length : 0
 		);
 
-		if ( offset === 0 || offset === data.length ) {
-			return -1;
+		if ( ( reversed && offset === 0 ) || ( !reversed && offset === data.length ) ) {
+			return null;
 		} else {
-			// If searching forwards take the caracter to the left
-			return offset - ( !reversed ? 1 : 0 );
+			return offset;
 		}
 	}
 
@@ -132,7 +131,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 	 * @return {Array} A human-friendlier linear diff
 	 */
 	function getCleanDiff( diff ) {
-		var i, ilen, action, data, firstWordbreak, lastWordbreak,
+		var i, ilen, j, action, data, firstWordbreak, lastWordbreak,
 			start, end, aItem, bItem, aAction, bAction, aData, bData,
 			aAnnotations, bAnnotations, annotationChanges,
 			previousData = null,
@@ -155,7 +154,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			action = diff[ i ][ 0 ];
 			data = diff[ i ][ 1 ];
 			// Should improve on JSON.stringify
-			if ( action + previousAction === 0 && JSON.stringify( data ) === JSON.stringify( previousData ) ) {
+			if ( ( action > 0 || previousAction > 0 ) && action + previousAction === 0 && JSON.stringify( data ) === JSON.stringify( previousData ) ) {
 				diff.splice( i - 1, 2, [ DIFF_EQUAL, data ] );
 				i++;
 			}
@@ -190,9 +189,9 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 				start = [];
 				end = [];
 				firstWordbreak = findWordbreaks( data, false );
-				lastWordbreak = firstWordbreak === -1 ? -1 : findWordbreaks( data, true );
+				lastWordbreak = firstWordbreak === null ? null : findWordbreaks( data, true );
 
-				if ( firstWordbreak === -1 ) {
+				if ( firstWordbreak === null ) {
 					// If there was no wordbreak, retain should be replaced with
 					// remove-insert
 					diff.splice( i, 1, [ DIFF_DELETE, data ], [ DIFF_INSERT, data ] );
@@ -206,11 +205,20 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 					if ( i !== 0 && !isBreak( previousData.concat( data ), previousData.length ) ) {
 						// Unless we are at the start of the diff, or the previous item ends
 						// with a word break,replace the portion before the first wordbreak.
-						start = data.splice( 0, firstWordbreak + 1 );
+						start = data.splice( 0, firstWordbreak );
+					} else {
+						// Skip over close tags to ensure a balanced remove/insert
+						// Word break logic should ensure that there aren't unbalanced
+						// tags on the left of the remove/insert
+						j = 0;
+						while ( ve.dm.LinearData.static.isCloseElementData( data[ j ] ) ) {
+							j++;
+						}
+						start = data.splice( 0, j );
 					}
 
 					// At this point the only portion we want to retain is what's left of
-					// data (if anything; if firstWordbreak === lastWordbreak !== -1, then
+					// data (if anything; if firstWordbreak === lastWordbreak !== null, then
 					// data has been spliced away completely).
 					if ( start.length > 0 ) {
 						diff.splice( i, 0, [ DIFF_DELETE, start ], [ DIFF_INSERT, start ] );

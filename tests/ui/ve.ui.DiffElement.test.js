@@ -12,6 +12,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 	var i, len, visualDiff, diffElement,
 		oldDoc, newDoc,
 		spacer = '<div class="ve-ui-diffElement-spacer">⋮</div>',
+		comment = function ( text ) {
+			return '<span rel="ve:Comment" data-ve-comment="' + text + '">&nbsp;</span>';
+		},
 		cases = [
 			{
 				msg: 'Simple text change',
@@ -147,6 +150,47 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p data-diff-action="insert">Foo</p>' +
 					'</div>'
+			},
+			{
+				msg: 'Inline node inserted',
+				oldDoc: '<p>foo bar baz quux</p>',
+				newDoc: '<p>foo bar <!-- whee --> baz quux</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar ' +
+							'<ins data-diff-action="insert">' + comment( ' whee ' ) + '</ins>' +
+							' baz quux' +
+						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Inline node removed',
+				oldDoc: '<p>foo bar <!-- whee --> baz quux</p>',
+				newDoc: '<p>foo bar baz quux</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar ' +
+							'<del data-diff-action="remove">' + comment( ' whee ' ) + '</del>' +
+							' baz quux' +
+						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Inline node modified',
+				oldDoc: '<p>foo bar <!-- whee --> baz quux</p>',
+				newDoc: '<p>foo bar <!-- wibble --> baz quux</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar ' +
+							'<del data-diff-action="remove">' + comment( ' whee ' ) + '</del>' +
+							'<ins data-diff-action="insert">' + comment( ' wibble ' ) + '</ins>' +
+							' baz quux' +
+						'</p>' +
+					'</div>'
+
 			},
 			{
 				msg: 'Paragraphs moved',
