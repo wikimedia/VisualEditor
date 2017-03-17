@@ -19,7 +19,10 @@ ve.ui.DesktopContext = function VeUiDesktopContext() {
 	ve.ui.DesktopContext.super.apply( this, arguments );
 
 	// Properties
-	this.popup = new OO.ui.PopupWidget( { $container: this.surface.$element } );
+	this.popup = new OO.ui.PopupWidget( {
+		hideWhenOutOfView: false,
+		$container: this.surface.$element
+	} );
 	this.position = null;
 	this.embeddable = null;
 	this.boundingRect = null;
