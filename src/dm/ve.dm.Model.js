@@ -245,6 +245,8 @@ ve.dm.Model.static.getAllowedRdfaTypes = function () {
  * Describe attribute changes in the model
  *
  * @param {Object} attributeChanges Attribute changes, keyed list containing objects with from and to properties
+ * @param {Object} attributes New attributes
+ * @param {Object} element New element
  * @return {string[]} Descriptions
  */
 ve.dm.Model.static.describeChanges = function ( attributeChanges ) {

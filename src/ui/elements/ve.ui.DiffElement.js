@@ -620,7 +620,7 @@ ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, doc
 	var changes, item,
 		attributeChanges = this.constructor.static.compareAttributes( attributeChange.oldAttributes, attributeChange.newAttributes );
 
-	changes = ve.dm.modelRegistry.lookup( data[ offset ].type ).static.describeChanges( attributeChanges, attributeChange.newAttributes );
+	changes = ve.dm.modelRegistry.lookup( data[ offset ].type ).static.describeChanges( attributeChanges, attributeChange.newAttributes, data[ offset ] );
 	item = this.getChangeDescriptionItem( changes );
 	data[ offset ] = this.addAttributesToNode( data[ offset ], doc, { 'data-diff-id': item.getData() } );
 	return item;
@@ -757,7 +757,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 								annotationChange.newAnnotation.getAttributes()
 							);
 							changes = changes.concat( ve.dm.modelRegistry.lookup( annotationChange.newAnnotation.getType() ).static.describeChanges(
-								attributeChanges, annotationChange.newAnnotation.getAttributes()
+								attributeChanges, annotationChange.newAnnotation.getAttributes(), annotationChange.newAnnotation.getElement()
 							) );
 						}
 					} );
