@@ -241,7 +241,9 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 		insertLength,
 		diffLength = 0,
 		keepLength = 0,
-		diffInfo = [];
+		diffInfo = [],
+		DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
+		DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT;
 
 	oldDocChildTree = new this.treeDiffer.Tree( oldDocChild, ve.DiffTreeNode );
 	newDocChildTree = new this.treeDiffer.Tree( newDocChild, ve.DiffTreeNode );
@@ -318,9 +320,9 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 				if ( linearDiff ) {
 					// Record how much content was removed and inserted
 					for ( j = 0, jlen = linearDiff.length; j < jlen; j++ ) {
-						if ( linearDiff[ j ][ 0 ] === 1 ) {
+						if ( linearDiff[ j ][ 0 ] === DIFF_INSERT ) {
 							insertLength += linearDiff[ j ][ 1 ].length;
-						} else if ( linearDiff[ j ][ 0 ] === -1 ) {
+						} else if ( linearDiff[ j ][ 0 ] === DIFF_DELETE ) {
 							removeLength += linearDiff[ j ][ 1 ].length;
 						}
 					}
