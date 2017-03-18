@@ -156,14 +156,14 @@ ve.dm.example.language = function ( lang, dir ) {
 	return { type: 'meta/language', attributes: { lang: lang, dir: dir } };
 };
 
-ve.dm.example.annIndex = function ( tagName, text ) {
+ve.dm.example.annIndex = function ( tagName ) {
 	var ann = ve.copy( {
 		b: ve.dm.example.bold,
 		i: ve.dm.example.italic,
 		u: ve.dm.example.underline
 	}[ tagName ] );
 
-	ann.originalDomElementsIndex = ve.dm.IndexValueStore.prototype.indexOfValue( null, '<' + tagName + '>' + text + '</' + tagName + '>' );
+	ann.originalDomElementsIndex = ve.dm.IndexValueStore.prototype.indexOfValue( null, '<' + tagName + '>' + '</' + tagName + '>' );
 	return ve.dm.IndexValueStore.prototype.indexOfValue( ann );
 };
 
@@ -172,10 +172,6 @@ ve.dm.example.boldIndex = 'h49981eab0f8056ff';
 ve.dm.example.italicIndex = 'hefd27ef3bf2041dd';
 ve.dm.example.underlineIndex = 'hf214c680fbc361da';
 ve.dm.example.strongIndex = 'ha5aaf526d1c3af54';
-
-ve.dm.example.domBoldIndex = 'ha17878c4224059d6';
-ve.dm.example.domItalicIndex = 'h818fb55eaa1f5676';
-ve.dm.example.domUnderlineIndex = 'h6d4db1ae2f34b4b7';
 
 ve.dm.example.inlineSlug = '<span class="ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug"></span>';
 ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>';
@@ -1501,6 +1497,33 @@ ve.dm.example.domToDataCases = {
 		],
 		normalizedBody: '<p><i>Foo</i><b>bar</b></p>'
 	},
+	'annotation merging': {
+		body: '<p><b>abc</b>X<b>def</b><i>ghi</i></p>',
+		data: [
+			{ type: 'paragraph' },
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'c', [ ve.dm.example.bold ] ],
+			'X',
+			[ 'd', [ ve.dm.example.bold ] ],
+			[ 'e', [ ve.dm.example.bold ] ],
+			[ 'f', [ ve.dm.example.bold ] ],
+			[ 'g', [ ve.dm.example.italic ] ],
+			[ 'h', [ ve.dm.example.italic ] ],
+			[ 'i', [ ve.dm.example.italic ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		modify: function ( doc ) {
+			doc.commit( ve.dm.TransactionBuilder.static.newFromRemoval(
+				doc,
+				new ve.Range( 4, 5 )
+			) );
+		},
+		normalizedBody: '<p><b>abcdef</b><i>ghi</i></p>',
+		fromDataBody: '<p><b>abcdef</b><i>ghi</i></p>'
+	},
 	'language annotation': {
 		body: '<p>' +
 			'<span lang="en">ten</span>' +
@@ -2209,6 +2232,9 @@ ve.dm.example.domToDataCases = {
 		body:
 			'<p><b>Foo</b><b>bar</b><strong>baz</strong></p>' +
 			'<p><a href="quux">Foo</a><a href="quux">bar</a><a href="whee">baz</a></p>',
+		normalizedBody:
+			'<p><b>Foobar</b><strong>baz</strong></p>' +
+			'<p><a href="quux">Foobar</a><a href="whee">baz</a></p>',
 		data: [
 			{ type: 'paragraph' },
 			[ 'F', [ ve.dm.example.bold ] ],
@@ -2238,6 +2264,19 @@ ve.dm.example.domToDataCases = {
 		fromDataBody:
 			'<p><b>Foobarbaz</b></p>' +
 			'<p><a href="quux">Foobar</a><a href="whee">baz</a></p>'
+	},
+	'adjacent identical annotations with identical content': {
+		body: '<p><b>x</b><b>x</b></p>',
+		normalizedBody: '<p><b>xx</b></p>',
+		data: [
+			{ type: 'paragraph' },
+			[ 'x', [ ve.dm.example.bold ] ],
+			[ 'x', [ ve.dm.example.bold ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		fromDataBody: '<p><b>xx</b></p>'
 	},
 	'list item with space followed by link': {
 		body: '<ul><li><p> <a href="Foobar">bar</a></p></li></ul>',

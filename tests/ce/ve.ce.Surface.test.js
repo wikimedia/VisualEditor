@@ -1068,7 +1068,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 
 QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 	var i,
-		linkIndex = 'h4601de4ee174fedd',
+		linkIndex = 'h3f6906f71a963fc3',
 		cases = [
 			{
 				prevHtml: '<p></p>',
@@ -1140,7 +1140,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{ type: 'retain', length: 2 },
 						{
 							type: 'replace',
-							insert: [ [ 'Y', [ 'h3f03d2abae6ddc0d' ] ] ],
+							insert: [ [ 'Y', [ 'hd72ee073faddca4e' ] ] ],
 							remove: [],
 							insertedDataOffset: 0,
 							insertedDataLength: 1
