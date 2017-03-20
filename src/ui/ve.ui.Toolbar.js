@@ -47,6 +47,12 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  */
 
 /**
+ * @event surfaceChange
+ * @param {ve.ui.Surface|null} oldSurface Old surface being controlled
+ * @param {ve.ui.Surface|null} newSurface New surface being controlled
+ */
+
+/**
  * @event resize
  */
 
@@ -59,9 +65,16 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  * @param {ve.ui.Surface} [surface] Surface to attach to
  */
 ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
+	var oldSurface;
+
 	this.detach();
 
-	this.surface = surface;
+	if ( surface !== this.surface ) {
+		// this.surface should be changed before we fire the event
+		oldSurface = this.surface;
+		this.surface = surface;
+		this.emit( 'surfaceChange', oldSurface, surface );
+	}
 
 	// The parent method just rebuilds the tool groups so only
 	// do this if they have changed

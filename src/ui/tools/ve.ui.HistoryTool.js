@@ -18,7 +18,7 @@ ve.ui.HistoryTool = function VeUiHistoryTool() {
 	ve.ui.HistoryTool.super.apply( this, arguments );
 
 	// Events
-	this.toolbar.getSurface().getModel().connect( this, { history: 'onHistory' } );
+	this.toolbar.connect( this, { surfaceChange: 'onSurfaceChange' } );
 };
 
 /* Inheritance */
@@ -26,6 +26,22 @@ ve.ui.HistoryTool = function VeUiHistoryTool() {
 OO.inheritClass( ve.ui.HistoryTool, ve.ui.Tool );
 
 /* Methods */
+
+/**
+ * Handle surface change events from the toolbar
+ *
+ * @param {ve.ui.Surface|null} oldSurface
+ * @param {ve.ui.Surface|null} newSurface
+ */
+ve.ui.HistoryTool.prototype.onSurfaceChange = function ( oldSurface, newSurface ) {
+	if ( oldSurface ) {
+		oldSurface.getModel().disconnet( this );
+	}
+	if ( newSurface ) {
+		newSurface.getModel().connect( this, { history: 'onHistory' } );
+		this.onUpdateState( newSurface.getModel().getFragment() );
+	}
+};
 
 /**
  * Handle history events on the surface model
