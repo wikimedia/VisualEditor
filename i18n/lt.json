@@ -5,7 +5,8 @@
 			"Eitvys200",
 			"Aswanas",
 			"Albertas",
-			"Zygimantus"
+			"Zygimantus",
+			"Nersip"
 		]
 	},
 	"visualeditor": "VaizdoRedaktorius",
@@ -26,6 +27,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Nuleisti",
 	"visualeditor-annotationbutton-superscript-tooltip": "Pakelti",
 	"visualeditor-annotationbutton-underline-tooltip": "Pabraukti",
+	"visualeditor-changedir-tool-ltr": "Vaizdas kaip iš kairės į dešinę",
 	"visualeditor-clearbutton-tooltip": "Pašalinti formatavimą",
 	"visualeditor-clipboard-copy": "Kopijuoti",
 	"visualeditor-clipboard-cut": "Iškirpti",

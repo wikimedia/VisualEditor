@@ -25,7 +25,8 @@
 			"Robin van der Vliet",
 			"MrLeopold",
 			"Mainframe98",
-			"Huhbakker"
+			"Huhbakker",
+			"Rcdeboer"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -46,6 +47,15 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Subscript",
 	"visualeditor-annotationbutton-superscript-tooltip": "Superscript",
 	"visualeditor-annotationbutton-underline-tooltip": "Onderstrepen",
+	"visualeditor-changedesc-changed": "$1 is gewijzigd van $2 naar $3",
+	"visualeditor-changedesc-image-size": "Grootte is gewijzigd van $1 naar $2",
+	"visualeditor-changedesc-language": "Taal is gewijzigd van $1 naar $2",
+	"visualeditor-changedesc-link-href": "Doel van koppeling is gewijzigd van $1 naar $2",
+	"visualeditor-changedesc-no-key": "$1 is gewijzigd naar $2",
+	"visualeditor-changedesc-set": "$1 is ingesteld op $2",
+	"visualeditor-changedesc-unknown": "$1 is gewijzigd",
+	"visualeditor-changedesc-unset": "$1 is teruggedraaid van $2",
+	"visualeditor-changedir": "Tekstrichting wijzigen",
 	"visualeditor-clearbutton-tooltip": "Opmaak wissen",
 	"visualeditor-clipboard-copy": "Kopiëren",
 	"visualeditor-clipboard-cut": "Knippen",
