@@ -279,7 +279,7 @@ QUnit.test( 'nextCursorOffset', function ( assert ) {
 	var i, len, tests, elt, test, img, nextOffset;
 
 	function dumpnode( node ) {
-		if ( node.nodeType === 3 ) {
+		if ( node.nodeType === Node.TEXT_NODE ) {
 			return '#' + node.data;
 		} else {
 			return node.nodeName.toLowerCase();
