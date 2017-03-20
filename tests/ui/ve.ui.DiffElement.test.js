@@ -154,43 +154,45 @@ QUnit.test( 'Diffing', function ( assert ) {
 			{
 				msg: 'Inline node inserted',
 				oldDoc: '<p>foo bar baz quux</p>',
-				newDoc: '<p>foo bar <!-- whee --> baz quux</p>',
+				newDoc: '<p>foo bar <!--whee--> baz quux</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo bar ' +
-							'<ins data-diff-action="insert">' + comment( ' whee ' ) + ' </ins>' +
+							'<ins data-diff-action="insert">' + comment( 'whee' ) + ' </ins>' +
 							'baz quux' +
 						'</p>' +
 					'</div>'
 			},
 			{
 				msg: 'Inline node removed',
-				oldDoc: '<p>foo bar <!-- whee --> baz quux</p>',
+				oldDoc: '<p>foo bar <!--whee--> baz quux</p>',
 				newDoc: '<p>foo bar baz quux</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo bar ' +
-							'<del data-diff-action="remove">' + comment( ' whee ' ) + ' </del>' +
+							'<del data-diff-action="remove">' + comment( 'whee' ) + ' </del>' +
 							'baz quux' +
 						'</p>' +
 					'</div>'
 			},
 			{
 				msg: 'Inline node modified',
-				oldDoc: '<p>foo bar <!-- whee --> baz quux</p>',
-				newDoc: '<p>foo bar <!-- wibble --> baz quux</p>',
+				oldDoc: '<p>foo bar <!--whee--> baz quux</p>',
+				newDoc: '<p>foo bar <!--wibble--> baz quux</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo bar ' +
-							'<del data-diff-action="remove">' + comment( ' whee ' ) + '</del>' +
-							'<ins data-diff-action="insert">' + comment( ' wibble ' ) + '</ins>' +
+							'<span data-diff-action="change-remove">' + comment( 'whee' ) + '</span>' +
+							'<span data-diff-action="change-insert" data-diff-id="0">' + comment( 'wibble' ) + '</span>' +
 							' baz quux' +
 						'</p>' +
-					'</div>'
-
+					'</div>',
+				expectedDescriptions: [
+					'visualeditor-changedesc-comment,whee,wibble'
+				]
 			},
 			{
 				msg: 'Paragraphs moved',
@@ -402,6 +404,13 @@ QUnit.test( 'Diffing', function ( assert ) {
 		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
 		diffElement = new ve.ui.DiffElement( visualDiff );
 		assert.strictEqual( diffElement.$document.html(), cases[ i ].expected, cases[ i ].msg );
+		if ( cases[ i ].expectedDescriptions !== undefined ) {
+			assert.deepEqual(
+				diffElement.descriptions.items.map( function ( item ) { return item.$label.text(); } ),
+				cases[ i ].expectedDescriptions,
+				cases[ i ].msg + ': sidebar'
+			);
+		}
 	}
 } );
 

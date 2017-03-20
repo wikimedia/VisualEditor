@@ -70,6 +70,13 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 	}
 };
 
+ve.dm.CommentNode.static.describeChange = function ( key, change ) {
+	if ( key === 'text' ) {
+		// TODO: Run comment changes through a linear differ.
+		return ve.msg( 'visualeditor-changedesc-comment', change.from, change.to );
+	}
+};
+
 /**
  * @class
  * @extends ve.dm.CommentNode

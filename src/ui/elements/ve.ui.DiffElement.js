@@ -696,7 +696,7 @@ ve.ui.DiffElement.prototype.addAttributesToNode = function ( nodeData, nodeDoc, 
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 	var i, ilen, range, type, typeAsString, annType, domElementType, changes, item,
-		annIndex, annIndexLists, j, height,
+		annIndex, annIndexLists, j, height, element,
 		DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
 		DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT,
 		DIFF_CHANGE_DELETE = ve.DiffMatchPatch.static.DIFF_CHANGE_DELETE,
@@ -749,9 +749,10 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 				domElement.setAttribute( 'data-diff-action', typeAsString );
 				domElements = [ domElement ];
 
+				changes = [];
 				if ( linearDiff[ i ].annotationChanges ) {
-					changes = [];
-					linearDiff[ i ].annotationChanges.forEach( function ( annotationChange ) { // eslint-disable-line no-loop-func
+					// eslint-disable-next-line no-loop-func
+					linearDiff[ i ].annotationChanges.forEach( function ( annotationChange ) {
 						var attributeChanges;
 						if ( annotationChange.oldAnnotation && annotationChange.newAnnotation ) {
 							attributeChanges = diffElement.constructor.static.compareAttributes(
@@ -763,11 +764,24 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 							) );
 						}
 					} );
-					if ( changes.length ) {
-						item = diffElement.getChangeDescriptionItem( changes );
-						domElement.setAttribute( 'data-diff-id', item.getData() );
-						items.push( item );
-					}
+				}
+				if ( linearDiff[ i ].attributeChanges ) {
+					element = linearDiff[ i ][ 1 ][ 0 ];
+					// eslint-disable-next-line no-loop-func
+					linearDiff[ i ].attributeChanges.forEach( function ( attributeChange ) {
+						var attributeChanges = diffElement.constructor.static.compareAttributes(
+							attributeChange.oldAttributes,
+							attributeChange.newAttributes
+						);
+						changes = changes.concat( ve.dm.modelRegistry.lookup( element.type ).static.describeChanges(
+							attributeChanges, element.attributes, element
+						) );
+					} );
+				}
+				if ( changes.length ) {
+					item = diffElement.getChangeDescriptionItem( changes );
+					domElement.setAttribute( 'data-diff-id', item.getData() );
+					items.push( item );
 				}
 
 				originalDomElementsIndex = diffDoc.getStore().index(

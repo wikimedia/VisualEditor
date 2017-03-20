@@ -133,15 +133,19 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 	function getCleanDiff( diff ) {
 		var i, ilen, j, action, data, firstWordbreak, lastWordbreak,
 			start, end, aItem, bItem, aAction, bAction, aData, bData,
-			aAnnotations, bAnnotations, annotationChanges,
+			aAnnotations, bAnnotations, annotationChanges, attributeChanges,
 			previousData = null,
 			previousAction = null,
 			cleanDiff = [],
 			remove = [],
 			insert = [];
 
-		function compareData( element, index ) {
-			return ve.dm.ElementLinearData.static.compareElementsUnannotated( element, bData[ index ] );
+		function equalUnannotated( element, index, other ) {
+			return ve.dm.ElementLinearData.static.compareElementsUnannotated( element, other[ index ] );
+		}
+
+		function equalElements( element, index, other ) {
+			return element.type && other[ index ].type && element.type === other[ index ].type;
 		}
 
 		function isWhitespace( element ) {
@@ -270,7 +274,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 		}
 
 		// Finally, go over any consecutive remove-inserts (also insert-removes?)
-		// and if they have the same character data, make them changes instead
+		// and if they have the same character data, or are modified content nodes,
+		// make them changes instead
 		for ( i = 0, ilen = cleanDiff.length - 1; i < ilen; i++ ) {
 			aItem = cleanDiff[ i ];
 			bItem = cleanDiff[ i + 1 ];
@@ -284,25 +289,40 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			// (2)
 			if (
 				aData.length === bData.length &&
-				( ( aAction === DIFF_DELETE && bAction === DIFF_INSERT ) || ( aAction === DIFF_INSERT && bAction === DIFF_DELETE ) ) &&
-				aData.every( compareData )
+				( ( aAction === DIFF_DELETE && bAction === DIFF_INSERT ) || ( aAction === DIFF_INSERT && bAction === DIFF_DELETE ) )
 			) {
-				aAnnotations = new ve.dm.ElementLinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
-				bAnnotations = new ve.dm.ElementLinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
+				if ( aData.every( equalUnannotated.bind( bData ) ) ) {
+					aAnnotations = new ve.dm.ElementLinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
+					bAnnotations = new ve.dm.ElementLinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
 
-				annotationChanges = [];
-				bAnnotations.get().forEach( function ( b ) { // eslint-disable-line no-loop-func
-					var sameName = aAnnotations.getAnnotationsByName( b.name );
-					if ( sameName.getLength() && !aAnnotations.containsComparable( b ) ) {
-						// Annotations which have the same type, but are non-comparable, e.g. link with a different href
-						annotationChanges.push( { oldAnnotation: sameName.get( 0 ), newAnnotation: b } );
+					annotationChanges = [];
+					bAnnotations.get().forEach( function ( b ) { // eslint-disable-line no-loop-func
+						var sameName = aAnnotations.getAnnotationsByName( b.name );
+						if ( sameName.getLength() && !aAnnotations.containsComparable( b ) ) {
+							// Annotations which have the same type, but are non-comparable, e.g. link with a different href
+							annotationChanges.push( { oldAnnotation: sameName.get( 0 ), newAnnotation: b } );
+						}
+					} );
+
+					if ( annotationChanges.length ) {
+						cleanDiff[ i + 1 ].annotationChanges = annotationChanges;
+						cleanDiff[ i ][ 0 ] = aAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
+						cleanDiff[ i + 1 ][ 0 ] = bAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
 					}
-				} );
-
-				if ( annotationChanges.length ) {
-					cleanDiff[ i + 1 ].annotationChanges = annotationChanges;
-					cleanDiff[ i ][ 0 ] = aAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
-					cleanDiff[ i + 1 ][ 0 ] = bAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
+				}
+				if ( aData.every( equalElements.bind( bData ) ) ) {
+					attributeChanges = [];
+					// eslint-disable-next-line no-loop-func
+					bData.forEach( function ( element, i ) {
+						if ( ve.dm.LinearData.static.isOpenElementData( element ) ) {
+							attributeChanges.push( { oldAttributes: aData[ i ].attributes, newAttributes: element.attributes, index: i } );
+						}
+					} );
+					if ( attributeChanges.length ) {
+						cleanDiff[ i + 1 ].attributeChanges = attributeChanges;
+						cleanDiff[ i ][ 0 ] = aAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
+						cleanDiff[ i + 1 ][ 0 ] = bAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
+					}
 				}
 
 				// No need to check bItem against the following item
