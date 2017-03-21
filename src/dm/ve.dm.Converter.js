@@ -402,7 +402,8 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
  * @return {Object|Array|null} Data element or array of linear model data, or null to alienate
  */
 ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElements ) {
-	var dataElements = modelClass.static.toDataElement( domElements, this );
+	var serializer,
+		dataElements = modelClass.static.toDataElement( domElements, this );
 
 	if ( !dataElements ) {
 		return null;
@@ -411,7 +412,18 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 		dataElements = [ dataElements ];
 	}
 	if ( dataElements.length ) {
-		dataElements[ 0 ].originalDomElementsIndex = this.store.index( domElements, domElements.map( ve.getNodeHtml ).join( '' ) );
+		if ( modelClass.prototype instanceof ve.dm.Annotation ) {
+			serializer = function ( node ) {
+				// Do not include childNodes; see T160839
+				return node.cloneNode( false ).outerHTML;
+			};
+		} else {
+			serializer = ve.getNodeHtml;
+		}
+		dataElements[ 0 ].originalDomElementsIndex = this.store.index(
+			domElements,
+			domElements.map( serializer ).join( '' )
+		);
 	}
 	return dataElements;
 };
