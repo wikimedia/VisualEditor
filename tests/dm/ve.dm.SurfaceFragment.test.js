@@ -573,6 +573,32 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 		],
 		'Inline node inserted in annotation gets annotated'
 	);
+
+	doc = ve.dm.example.createExampleDocumentFromData( [
+		{ type: 'paragraph' },
+		[ 'F', [ ve.dm.example.bold ] ],
+		[ 'o', [ ve.dm.example.bold ] ],
+		[ 'o', [ ve.dm.example.bold ] ],
+		{ type: '/paragraph' },
+		{ type: 'internalList' },
+		{ type: '/internalList' }
+	] );
+	surface = new ve.dm.Surface( doc );
+	fragment = surface.getLinearFragment( new ve.Range( 2 ) );
+	fragment.insertContent(
+		ve.dm.example.preprocessAnnotations( [
+			// Annotated with a differently-hashing bold attribute
+			[ 'x', [ { type: 'textStyle/bold', attributes: { nodeName: 'b', irrelevant: true } } ] ]
+		], doc.store ).data,
+		true
+	);
+	assert.deepEqual(
+		doc.getData( new ve.Range( 2, 3 ) ),
+		[
+			[ 'x', [ ve.dm.example.boldIndex ] ]
+		],
+		'inserting content (annotate=true) reuses comparable annotations on existing content'
+	);
 } );
 
 QUnit.test( 'changeAttributes', 1, function ( assert ) {

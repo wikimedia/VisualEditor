@@ -356,6 +356,20 @@ ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
 };
 
 /**
+ * Filter out all annotations in this set which are comparable to those in another set
+ *
+ * This returns a new set.
+ *
+ * @param  {ve.dm.AnnotationSet} set The AnnotationSet to filter out
+ * @return {ve.dm.AnnotationSet} A new set without the comparable annotations
+ */
+ve.dm.AnnotationSet.prototype.withoutComparableSet = function ( set ) {
+	return this.filter( function ( annotation ) {
+		return !set.containsComparable( annotation );
+	} );
+};
+
+/**
  * Strictly compare two annotation sets for equality.
  *
  * This method only considers two annotation sets to be equal if they contain exactly the same
