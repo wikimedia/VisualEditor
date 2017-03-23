@@ -28,6 +28,7 @@
 	"visualeditor-aliencontextitem-title": "Title for the context item for unidentifiable nodes\n{{Identical|Item}}",
 	"visualeditor-aliennode-tooltip": "Tooltip for items that VisualEditor cannot edit",
 	"visualeditor-align-widget-center": "Label for aligning text to the center.\n{{Related|Visualeditor-align-widget}}\n{{Identical|Center}}",
+	"visualeditor-align-widget-default": "Label for aligning text to the default direction.\n{{Related|Visualeditor-align-widget}}\n{{Identical|Default}}",
 	"visualeditor-align-widget-left": "Label for aligning text to the left.\n{{Related|Visualeditor-align-widget}}\n{{Identical|Left}}",
 	"visualeditor-align-widget-right": "Label for aligning text to the right.\n\n{{Related|Visualeditor-align-widget}}\n{{Identical|Right}}",
 	"visualeditor-alignablecontextitem-title": "Title for the context item for alignable nodes\n{{Identical|Alignment}}",

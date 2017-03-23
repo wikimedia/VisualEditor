@@ -20,6 +20,7 @@
 	"visualeditor-aliencontextitem-title": "Item",
 	"visualeditor-aliennode-tooltip": "Sorry, this element can only be edited in source mode for now.",
 	"visualeditor-align-widget-center": "Center",
+	"visualeditor-align-widget-default": "Default",
 	"visualeditor-align-widget-left": "Left",
 	"visualeditor-align-widget-right": "Right",
 	"visualeditor-alignablecontextitem-title": "Alignment",
