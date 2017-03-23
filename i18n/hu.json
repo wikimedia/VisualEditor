@@ -10,7 +10,8 @@
 			"Kishajnalka",
 			"Nyuszika7H",
 			"Rodrigo",
-			"Tgr"
+			"Tgr",
+			"Notramo"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -31,6 +32,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Alsó index",
 	"visualeditor-annotationbutton-superscript-tooltip": "Felső index",
 	"visualeditor-annotationbutton-underline-tooltip": "Aláhúzott",
+	"visualeditor-changedesc-unknown": "$1 megváltozott",
 	"visualeditor-clearbutton-tooltip": "Stílusok törlése",
 	"visualeditor-clipboard-copy": "Másolás",
 	"visualeditor-clipboard-cut": "Kivágás",

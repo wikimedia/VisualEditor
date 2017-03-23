@@ -24,6 +24,8 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "נידעריקונג",
 	"visualeditor-annotationbutton-superscript-tooltip": "הייבונג",
 	"visualeditor-annotationbutton-underline-tooltip": "אונטערשטרײַכן",
+	"visualeditor-changedesc-language": "שפּראַך געענדערט פון $1 אויף $2",
+	"visualeditor-changedesc-unknown": "$1 געענדערט",
 	"visualeditor-clearbutton-tooltip": "אפראמען געשטאלט",
 	"visualeditor-clipboard-copy": "קאפירן",
 	"visualeditor-clipboard-cut": "אויסשנײַדן",

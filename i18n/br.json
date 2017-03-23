@@ -26,6 +26,8 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Isskrid",
 	"visualeditor-annotationbutton-superscript-tooltip": "Usskrid",
 	"visualeditor-annotationbutton-underline-tooltip": "Islinennet",
+	"visualeditor-changedesc-language": "Yezh kemmet eus $1 da $2",
+	"visualeditor-changedesc-unknown": "$1 kemmet",
 	"visualeditor-clearbutton-tooltip": "Diverkañ ar stil",
 	"visualeditor-clipboard-copy": "Eilañ",
 	"visualeditor-clipboard-cut": "Troc'hañ",

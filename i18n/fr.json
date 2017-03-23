@@ -43,6 +43,7 @@
 	"visualeditor-aliencontextitem-title": "Élément",
 	"visualeditor-aliennode-tooltip": "Désolé, cet élément ne peut être modifié qu’avec l’éditeur de wikicode pour l’instant.",
 	"visualeditor-align-widget-center": "Centré",
+	"visualeditor-align-widget-default": "Par défaut",
 	"visualeditor-align-widget-left": "Gauche",
 	"visualeditor-align-widget-right": "Droite",
 	"visualeditor-alignablecontextitem-title": "Alignement",

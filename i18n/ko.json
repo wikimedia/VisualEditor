@@ -42,6 +42,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "밑줄",
 	"visualeditor-changedesc-language": "언어가 $1에서 $2(으)로 바뀌었습니다",
 	"visualeditor-changedir-tool-ltr": "왼쪽에서 오른쪽으로 읽기",
+	"visualeditor-changedir-tool-rtl": "오른쪽에서 왼쪽으로 읽기",
 	"visualeditor-clearbutton-tooltip": "서식 지우기",
 	"visualeditor-clipboard-copy": "복사",
 	"visualeditor-clipboard-cut": "잘라내기",
