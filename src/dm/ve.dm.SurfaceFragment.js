@@ -811,7 +811,14 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
 		}
 		if ( annotations && annotations.getLength() > 0 ) {
-			ve.dm.Document.static.addAnnotationsToData( content, annotations );
+			// Add the annotations to the content, passing the
+			// replaceComparable argument which will remove any comparable
+			// annotations from content so that they can be replaced with
+			// those in annotations. This has the effect of not double-
+			// wrapping any annotations which are identical apart from their
+			// original DOM element so we don't generate markup like
+			// <b>f<b>o</b>o</b> when pasting.
+			ve.dm.Document.static.addAnnotationsToData( content, annotations, true );
 		}
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, offset, content );
 		// Set the range to cover the inserted content; the offset translation will be wrong

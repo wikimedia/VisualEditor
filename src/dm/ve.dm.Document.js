@@ -164,8 +164,9 @@ ve.dm.Document.static.splitData = function ( fullData ) {
  * @static
  * @param {Array} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
+ * @param {boolean} [replaceComparable] Whether to remove annotations from the data which are comparable to those in annotationSet
  */
-ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
+ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, replaceComparable ) {
 	var i, length, newAnnotationSet, store = annotationSet.getStore();
 	if ( annotationSet.isEmpty() ) {
 		// Nothing to do
@@ -183,6 +184,11 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
 		} else {
 			// Add to existing array
 			newAnnotationSet = new ve.dm.AnnotationSet( store, data[ i ][ 1 ] );
+			if ( replaceComparable ) {
+				// Remove any annotations from newAnnotationSet which are
+				// comparable to those in annotationSet
+				newAnnotationSet = newAnnotationSet.withoutComparableSet( annotationSet );
+			}
 			newAnnotationSet.addSet( annotationSet.clone() );
 		}
 		data[ i ][ 1 ] = newAnnotationSet.getIndexes();
