@@ -30,6 +30,45 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Minimal text change',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo bar! baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar' +
+							'<ins data-diff-action="insert">!</ins>' +
+							' baz' +
+						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Minimal text change at start of paragraph',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo! bar baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo' +
+							'<ins data-diff-action="insert">!</ins>' +
+							' bar baz' +
+						'</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Minimal text change at end of paragraph',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo bar !baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo bar ' +
+							'<ins data-diff-action="insert">!</ins>' +
+							'baz' +
+						'</p>' +
+					'</div>'
+			},
+			{
 				msg: 'Non semantic whitespace change (no diff)',
 				oldDoc: '<p>foo</p>',
 				newDoc: '<p>  foo  </p>',

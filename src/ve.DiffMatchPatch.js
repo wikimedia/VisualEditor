@@ -134,6 +134,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 		var i, ilen, j, action, data, firstWordbreak, lastWordbreak,
 			start, end, aItem, bItem, aAction, bAction, aData, bData,
 			aAnnotations, bAnnotations, annotationChanges, attributeChanges,
+			notNextStartsWithWordbreak, notPreviousEndsWithWordBreak,
 			previousData = null,
 			previousAction = null,
 			cleanDiff = [],
@@ -194,21 +195,23 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 				end = [];
 				firstWordbreak = findWordbreaks( data, false );
 				lastWordbreak = firstWordbreak === null ? null : findWordbreaks( data, true );
+				notNextStartsWithWordbreak = i !== diff.length - 1 && !isBreak( data.concat( diff[ i + 1 ][ 1 ] ), data.length );
+				notPreviousEndsWithWordBreak = i !== 0 && !isBreak( previousData.concat( data ), previousData.length );
 
-				if ( firstWordbreak === null ) {
-					// If there was no wordbreak, retain should be replaced with
-					// remove-insert
+				if ( firstWordbreak === null && ( notNextStartsWithWordbreak || notPreviousEndsWithWordBreak ) ) {
+					// If there was no wordbreak, and there are no wordbreaks either side,
+					// the retain should be replaced with a remove-insert
 					diff.splice( i, 1, [ DIFF_DELETE, data ], [ DIFF_INSERT, data ] );
 					i++;
 				} else {
-					if ( i !== diff.length - 1 && !isBreak( data.concat( diff[ i + 1 ][ 1 ] ), data.length ) ) {
-						// Unless we are at the end of the diff, or the next item starts
-						// with a wordbreak, replace the portion after the last wordbreak.
+					if ( notNextStartsWithWordbreak ) {
+						// Unless the next item starts with a wordbreak, replace the portion
+						// after the last wordbreak.
 						end = data.splice( lastWordbreak );
 					}
-					if ( i !== 0 && !isBreak( previousData.concat( data ), previousData.length ) ) {
-						// Unless we are at the start of the diff, or the previous item ends
-						// with a word break,replace the portion before the first wordbreak.
+					if ( notPreviousEndsWithWordBreak ) {
+						// Unless the previous item ends with a word break,replace the portion
+						// before the first wordbreak.
 						start = data.splice( 0, firstWordbreak );
 					} else {
 						// Skip over close tags to ensure a balanced remove/insert
