@@ -76,10 +76,7 @@ ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 		ve.dm.Converter.static.computedAttributes
 	);
 
-	// Make all links open in a new window (sync view)
-	Array.prototype.forEach.call( body.querySelectorAll( 'a[href]' ), function ( el ) {
-		el.setAttribute( 'target', '_blank' );
-	} );
+	ve.targetLinksToNewWindow( body );
 
 	// Move content to element
 	element.innerHTML = '';

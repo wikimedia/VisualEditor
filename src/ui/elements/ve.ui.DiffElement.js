@@ -284,6 +284,9 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		}
 	}
 
+	ve.resolveAttributes( documentNode, this.newDoc.getHtmlDocument(), ve.dm.Converter.static.computedAttributes );
+	ve.targetLinksToNewWindow( documentNode );
+
 	if ( !anyChanges ) {
 		noChanges = document.createElement( 'div' );
 		noChanges.setAttribute( 'class', 've-ui-diffElement-no-changes' );

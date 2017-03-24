@@ -1016,6 +1016,18 @@ ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
 };
 
 /**
+ * Make all links within a DOM element open in a new window
+ *
+ * @param {HTMLElement} container DOM element to search for links
+ */
+ve.targetLinksToNewWindow = function ( container ) {
+	// Make all links open in a new window
+	Array.prototype.forEach.call( container.querySelectorAll( 'a[href]' ), function ( el ) {
+		el.setAttribute( 'target', '_blank' );
+	} );
+};
+
+/**
  * Check if a string is a valid URI component.
  *
  * A URI component is considered invalid if decodeURIComponent() throws an exception.
