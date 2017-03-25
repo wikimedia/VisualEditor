@@ -9,9 +9,13 @@
  * DataModel rebase server
  *
  * @class
+ *
+ * @constructor
+ * @param {Function} [logCallback]
  */
-ve.dm.RebaseServer = function VeDmRebaseServer() {
+ve.dm.RebaseServer = function VeDmRebaseServer( logCallback ) {
 	this.stateForDoc = new Map();
+	this.logEvent = logCallback || function () {};
 };
 
 OO.initClass( ve.dm.RebaseServer );
@@ -67,7 +71,7 @@ ve.dm.RebaseServer.prototype.updateDocState = function ( doc, author, newHistory
  * @return {ve.dm.Change} Accepted change (or initial segment thereof), as rebased
  */
 ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, author, backtrack, change ) {
-	var base, rejections, result,
+	var base, rejections, result, appliedChange,
 		state = this.getDocState( doc );
 
 	base = state.continueBases.get( author ) || change.truncate( 0 );
@@ -76,25 +80,34 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, author, ba
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;
 		this.updateDocState( doc, author, null, rejections, null );
-		return change.truncate( 0 );
-	}
-	if ( rejections < backtrack ) {
+		appliedChange = change.truncate( 0 );
+	} else if ( rejections < backtrack ) {
 		throw new Error( 'Backtrack=' + backtrack + ' > ' + rejections + '=rejections' );
-	}
+	} else {
+		if ( change.start > base.start ) {
+			// Remote has rebased some committed changes into its history since base was built.
+			// They are guaranteed to be equivalent to the start of base. See mathematical
+			// docs for proof (Cuius rei demonstrationem mirabilem sane deteximus hanc marginis
+			// exiguitas non caperet).
+			base = base.mostRecent( change.start );
+		}
+		base = base.concat( state.history.mostRecent( base.start + base.getLength() ) );
 
-	if ( change.start > base.start ) {
-		// Remote has rebased some committed changes into its history since base was built.
-		// They are guaranteed to be equivalent to the start of base. See mathematical
-		// docs for proof (Cuius rei demonstrationem mirabilem sane deteximus hanc marginis
-		// exiguitas non caperet).
-		base = base.mostRecent( change.start );
+		result = ve.dm.Change.static.rebaseUncommittedChange( base, change );
+		rejections = result.rejected ? result.rejected.getLength() : 0;
+		this.updateDocState( doc, author, result.rebased, rejections, result.transposedHistory );
+		appliedChange = result.rebased;
 	}
-	base = base.concat( state.history.mostRecent( base.start + base.getLength() ) );
-
-	result = ve.dm.Change.static.rebaseUncommittedChange( base, change );
-	rejections = result.rejected ? result.rejected.getLength() : 0;
-	this.updateDocState( doc, author, result.rebased, rejections, result.transposedHistory );
-	return result.rebased;
+	this.logEvent( {
+		type: 'applyChange',
+		doc: doc,
+		author: author,
+		incoming: change,
+		applied: appliedChange,
+		backtrack: backtrack,
+		rejections: rejections
+	} );
+	return appliedChange;
 };
 
 /**

@@ -12,6 +12,7 @@ sublime-*
 /docs
 node_modules
 npm-debug.log
+rebaser/rebaser.log
 
 # OS
 .DS_Store
