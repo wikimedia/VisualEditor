@@ -21,13 +21,11 @@ ve.dm.BlockquoteNode = function VeDmBlockquoteNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.BlockquoteNode, ve.dm.BranchNode );
+OO.inheritClass( ve.dm.BlockquoteNode, ve.dm.ContentBranchNode );
 
 /* Static Properties */
 
 ve.dm.BlockquoteNode.static.name = 'blockquote';
-
-ve.dm.BlockquoteNode.static.canContainContent = true;
 
 ve.dm.BlockquoteNode.static.matchTagNames = [ 'blockquote' ];
 
