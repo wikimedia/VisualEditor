@@ -27,8 +27,6 @@ OO.inheritClass( ve.dm.HeadingNode, ve.dm.ContentBranchNode );
 
 ve.dm.HeadingNode.static.name = 'heading';
 
-ve.dm.HeadingNode.static.canContainContent = true;
-
 ve.dm.HeadingNode.static.defaultAttributes = {
 	level: 1
 };

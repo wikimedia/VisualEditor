@@ -27,8 +27,6 @@ OO.inheritClass( ve.dm.ParagraphNode, ve.dm.ContentBranchNode );
 
 ve.dm.ParagraphNode.static.name = 'paragraph';
 
-ve.dm.ParagraphNode.static.canContainContent = true;
-
 ve.dm.ParagraphNode.static.matchTagNames = [ 'p' ];
 
 /* Registration */

@@ -27,8 +27,6 @@ OO.inheritClass( ve.dm.PreformattedNode, ve.dm.ContentBranchNode );
 
 ve.dm.PreformattedNode.static.name = 'preformatted';
 
-ve.dm.PreformattedNode.static.canContainContent = true;
-
 ve.dm.PreformattedNode.static.hasSignificantWhitespace = true;
 
 ve.dm.PreformattedNode.static.matchTagNames = [ 'pre' ];
