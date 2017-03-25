@@ -2239,7 +2239,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		// (which wouldn't put the open and close tags in the clipboard to begin with).
 		if (
 			pastedNodes.length === 1 &&
-			pastedNodes[ 0 ].node instanceof ve.dm.ContentBranchNode
+			pastedNodes[ 0 ].node.canContainContent()
 		) {
 			if ( contextRange.containsRange( pastedNodes[ 0 ].nodeRange ) ) {
 				contextRange = pastedNodes[ 0 ].nodeRange;

@@ -409,7 +409,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 
 		node = oldNodes[ nodeIndex ];
 
-		if ( !( node.node instanceof ve.dm.ContentBranchNode ) ) {
+		if ( !node.node.canContainContent() ) {
 
 			// Record that the node has been removed, but don't display it, for now
 			// TODO: describe the change for the attribute diff
@@ -494,7 +494,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		// Add insert class
 		nodeData[ nodeRangeStart ] = this.addAttributesToNode(
 			nodeData[ nodeRangeStart ], this.newDoc, {
-				'data-diff-action': node.node instanceof ve.dm.ContentBranchNode ? 'insert' : 'structural-insert'
+				'data-diff-action': node.node.canContainContent() ? 'insert' : 'structural-insert'
 			}
 		);
 	}

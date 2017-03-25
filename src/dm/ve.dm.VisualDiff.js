@@ -266,8 +266,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 			oldNode = oldDocChildTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
 			newNode = newDocChildTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
 
-			if ( !( oldNode instanceof ve.dm.ContentBranchNode ) &&
-				!( newNode instanceof ve.dm.ContentBranchNode ) ) {
+			if ( !oldNode.canContainContent() && !newNode.canContainContent() ) {
 
 				// There is no content change
 				diffInfo[ i ] = {
@@ -281,13 +280,13 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 				};
 				continue;
 
-			} else if ( !( newNode instanceof ve.dm.ContentBranchNode ) ) {
+			} else if ( !newNode.canContainContent() ) {
 
 				// Content was removed
 				diffInfo[ i ] = { replacement: true };
 				removeLength = oldNode.length;
 
-			} else if ( !( oldNode instanceof ve.dm.ContentBranchNode ) ) {
+			} else if ( !oldNode.canContainContent() ) {
 
 				// Content was inserted
 				diffInfo[ i ] = { replacement: true };
@@ -334,7 +333,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 			// Node was removed
 			oldNode = oldDocChildTree.orderedNodes[ treeDiff[ i ][ 0 ] ];
-			if ( oldNode.node instanceof ve.dm.ContentBranchNode ) {
+			if ( oldNode.node.canContainContent() ) {
 				removeLength = oldNode.node.length;
 			}
 
@@ -342,7 +341,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 			// Node was inserted
 			newNode = newDocChildTree.orderedNodes[ treeDiff[ i ][ 1 ] ];
-			if ( newNode.node instanceof ve.dm.ContentBranchNode ) {
+			if ( newNode.node.canContainContent() ) {
 				insertLength = newNode.node.length;
 			}
 
