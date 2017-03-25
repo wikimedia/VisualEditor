@@ -57,8 +57,8 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 			this.$sidebar.append( this.descriptions.$element )
 		)
 		.addClass( 've-ui-diffElement' );
+
 	this.renderDiff();
-	this.$element.toggleClass( 've-ui-diffElement-hasDescriptions', !this.descriptions.isEmpty() );
 };
 
 /* Inheritance */
@@ -294,6 +294,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		documentNode.innerHTML = '';
 		documentNode.appendChild( noChanges );
 	}
+
+	this.$element.toggleClass( 've-ui-diffElement-hasDescriptions', !this.descriptions.isEmpty() );
 };
 
 /**
