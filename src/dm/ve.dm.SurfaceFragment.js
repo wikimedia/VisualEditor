@@ -818,7 +818,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 			// wrapping any annotations which are identical apart from their
 			// original DOM element so we don't generate markup like
 			// <b>f<b>o</b>o</b> when pasting.
-			ve.dm.Document.static.addAnnotationsToData( content, annotations, true );
+			ve.dm.Document.static.addAnnotationsToData( content, annotations, true, doc.store );
 		}
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, offset, content );
 		// Set the range to cover the inserted content; the offset translation will be wrong
@@ -861,7 +861,7 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange, annotate ) {
-	var tx, newRange, annotations, offset, i, iLen, item, annotatedData, annotatedDoc,
+	var tx, newRange, annotations, offset, annotatedData, annotatedDoc,
 		range = this.getSelection().getCoveringRange(),
 		doc = this.getDocument();
 
@@ -889,28 +889,10 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 		annotatedDoc = newDoc;
 	} else {
 		// Build shallow-cloned annotatedData array, copying on write as we go
+		// FIXME T126022: the logic we actually need for annotating inserted content
+		// correctly is much more complicated
 		annotatedData = newDoc.data.slice();
-		for ( i = 0, iLen = newDoc.data.getLength(); i < iLen; i++ ) {
-			item = annotatedData[ i ];
-			// Insert surrounding annotations below newDoc annotations
-			// FIXME T126022: the logic we actually need for annotating inserted
-			// content correctly is MUCH more complicated
-			if ( ve.dm.LinearData.static.isOpenElementData( item ) ) {
-				item = annotatedData[ i ] = ve.copy( item );
-				item.annotations = annotations.storeIndexes.concat( item.annotations || [] );
-			} else if ( ve.dm.LinearData.static.isCloseElementData( item ) ) {
-				annotatedData[ i ] = ve.copy( item );
-			} else if ( Array.isArray( item ) ) {
-				annotatedData[ i ] = [
-					item[ 0 ],
-					annotations.storeIndexes.concat( item[ 1 ] )
-				];
-			} else if ( typeof item === 'string' ) {
-				annotatedData[ i ] = [ item, annotations.storeIndexes.slice() ];
-			} else {
-				throw new Error( 'Unknown item type' );
-			}
-		}
+		ve.dm.Document.static.addAnnotationsToData( annotatedData, annotations, true, newDoc.store, true );
 		annotatedDoc = newDoc.cloneWithData( annotatedData );
 	}
 	tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( doc, offset, annotatedDoc, newDocRange );
