@@ -599,6 +599,29 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 		],
 		'inserting content (annotate=true) reuses comparable annotations on existing content'
 	);
+
+	doc = ve.dm.example.createExampleDocumentFromData( [
+		{ type: 'paragraph' },
+		[ 'F', [ ve.dm.example.bold ] ],
+		[ 'o', [ ve.dm.example.bold ] ],
+		[ 'o', [ ve.dm.example.bold ] ],
+		{ type: '/paragraph' },
+		{ type: 'internalList' },
+		{ type: '/internalList' }
+	] );
+	surface = new ve.dm.Surface( doc );
+	fragment = surface.getLinearFragment( new ve.Range( 2 ) );
+	fragment.insertDocument( ve.dm.example.createExampleDocumentFromData( [
+		{ type: 'paragraph' }, [ 'x', [ { type: 'textStyle/bold', attributes: { nodeName: 'b', irrelevant: true } } ] ], { type: '/paragraph' },
+		{ type: 'internalList' }, { type: '/internalList' }
+	] ), new ve.Range( 1, 3 ), true );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 2, 3 ) ),
+		[
+			[ 'x', [ ve.dm.example.boldIndex ] ]
+		],
+		'inserting document (annotate=true) reuses comparable annotations on existing content'
+	);
 } );
 
 QUnit.test( 'changeAttributes', 1, function ( assert ) {

@@ -165,17 +165,30 @@ ve.dm.Document.static.splitData = function ( fullData ) {
  * @param {Array} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
  * @param {boolean} [replaceComparable] Whether to remove annotations from the data which are comparable to those in annotationSet
+ * @param {ve.dm.IndexValueStore} [store] Store associated with the data; only needs to be provided if that data is associated with a different store than annotationSet
+ * @param {boolean} [prepend] Whether to prepend annotationSet to the existing annotations
  */
-ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, replaceComparable ) {
-	var i, length, newAnnotationSet, store = annotationSet.getStore();
+ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, replaceComparable, store, prepend ) {
+	var i, length, newAnnotationSet,
+		offset = prepend ? 0 : undefined;
 	if ( annotationSet.isEmpty() ) {
 		// Nothing to do
 		return;
 	}
+	store = store || annotationSet.getStore();
 	// Apply annotations to data
 	for ( i = 0, length = data.length; i < length; i++ ) {
 		if ( data[ i ].type ) {
 			// Element
+			if ( ve.dm.LinearData.static.isOpenElementData( data[ i ] ) ) {
+				// data[ i ].annotations = annotations.storeIndexes.concat( item.annotations || [] );
+				newAnnotationSet = new ve.dm.AnnotationSet( store, data[ i ].annotations || [] );
+				if ( replaceComparable ) {
+					newAnnotationSet = newAnnotationSet.withoutComparableSet( annotationSet );
+				}
+				newAnnotationSet.addSet( annotationSet.clone(), offset );
+				data[ i ].annotations = newAnnotationSet.getIndexes();
+			}
 			continue;
 		} else if ( !Array.isArray( data[ i ] ) ) {
 			// Wrap in array
@@ -189,7 +202,7 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
 				// comparable to those in annotationSet
 				newAnnotationSet = newAnnotationSet.withoutComparableSet( annotationSet );
 			}
-			newAnnotationSet.addSet( annotationSet.clone() );
+			newAnnotationSet.addSet( annotationSet.clone(), offset );
 		}
 		data[ i ][ 1 ] = newAnnotationSet.getIndexes();
 	}
