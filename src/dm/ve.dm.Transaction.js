@@ -21,11 +21,12 @@
  * @class
  * @constructor
  * @param {Object[]} [operations] Operations preserving tree validity as a whole; default []
+ * @param {Number|null} [author] Positive integer author ID; default null
  */
-ve.dm.Transaction = function VeDmTransaction( operations ) {
+ve.dm.Transaction = function VeDmTransaction( operations, author ) {
 	this.operations = operations || [];
 	this.applied = false;
-	this.author = null;
+	this.author = author || null;
 };
 
 /* Inheritance */
@@ -65,7 +66,34 @@ ve.dm.Transaction.static.reversers = {
 
 // ve.dm.Transaction.newFrom* methods are added by ve.dm.TransactionBuilder for legacy support.
 
+/**
+ * Deserialize a transaction from a JSONable object
+ *
+ * @param {Object} data Transaction serialized as a JSONable object
+ * @return {ve.dm.Transaction} Deserialized transaction
+ */
+ve.dm.Transaction.static.deserialize = function ( data ) {
+	return new ve.dm.Transaction(
+		// For this plain, serializable array, stringify+parse profiles faster than ve.copy
+		JSON.parse( JSON.stringify( data.operations ) ),
+		data.author
+	);
+};
+
 /* Methods */
+
+/**
+ * Serialize the transaction into a JSONable object
+ *
+ * Values are not necessarily deep copied
+ * @return {Object} Serialized transaction
+ */
+ve.dm.Transaction.prototype.serialize = function () {
+	return {
+		operations: this.operations,
+		author: this.author
+	};
+};
 
 /**
  * Push a retain operation
@@ -156,11 +184,11 @@ ve.dm.Transaction.prototype.pushAnnotateOp = function ( method, bias, index ) {
  * @return {ve.dm.Transaction} Clone of this transaction
  */
 ve.dm.Transaction.prototype.clone = function () {
-	var tx = new this.constructor();
-	// For this plain, serializable array, stringify+parse profiles faster than ve.copy
-	tx.operations = JSON.parse( JSON.stringify( this.operations ) );
-	tx.author = this.author;
-	return tx;
+	return new this.constructor(
+		// For this plain, serializable array, stringify+parse profiles faster than ve.copy
+		JSON.parse( JSON.stringify( this.operations ) ),
+		this.author
+	);
 };
 
 /**

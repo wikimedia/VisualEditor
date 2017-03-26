@@ -86,19 +86,18 @@ ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
 ve.dm.Change.static = {};
 
 /**
- * Deserialize a JSON-serialized change
+ * Deserialize a change from a JSONable object
  *
  * Store values can be deserialized, or kept verbatim; the latter is an optimization if the
  * Change object will be rebased and reserialized without ever being applied to a document.
  *
- * @param {Object} data JSON-serialized change
+ * @param {Object} data Change serialized as a JSONable object
  * @param {ve.dm.Document} [doc] Document, used for creating proper selections if deserializing in the client
  * @param {boolean} [preserveStoreValues] Keep store values verbatim instead of deserializing
- * @return {ve.dm.Change} Deserialized Change object
+ * @return {ve.dm.Change} Deserialized change
  */
 ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues ) {
-	var author,
-		staticChange = this,
+	var author, deserializeStore,
 		selections = {};
 
 	for ( author in data.selections ) {
@@ -107,27 +106,16 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues ) {
 			data.selections[ author ]
 		);
 	}
+	deserializeStore = ve.dm.IndexValueStore.static.deserialize.bind(
+		null,
+		preserveStoreValues ? function noop( x ) {
+			return x;
+		} : this.deserializeValue
+	);
 	return new ve.dm.Change(
 		data.start,
-		data.transactions.map( function ( tx ) {
-			var newTx = new ve.dm.Transaction( tx.operations );
-			newTx.author = tx.author;
-			return newTx;
-		} ),
-		data.stores.map( function ( serializedStore ) {
-			var hash, value,
-				store = new ve.dm.IndexValueStore();
-			store.hashes = serializedStore.hashes;
-			store.hashStore = {};
-			for ( hash in serializedStore.hashStore ) {
-				value = serializedStore.hashStore[ hash ];
-				if ( !preserveStoreValues ) {
-					value = staticChange.deserializeValue( value );
-				}
-				store.hashStore[ hash ] = value;
-			}
-			return store;
-		} ),
+		data.transactions.map( ve.dm.Transaction.static.deserialize ),
+		data.stores.map( deserializeStore ),
 		selections
 	);
 };
@@ -733,39 +721,27 @@ ve.dm.Change.prototype.removeFromHistory = function ( documentModel ) {
  * already, i.e. the Change object was created by #deserialize without deserializing store values).
  *
  * @param {boolean} [preserveStoreValues] If true, keep store values verbatim instead of serializing
- * @return {ve.dm.Change} Deserialized Change object
+ * @return {ve.dm.Change} Deserialized change
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
-	var author,
-		selections = {},
-		change = this;
+	var author, serializeStoreValues, serializeStore,
+		selections = {};
 
 	for ( author in this.selections ) {
 		selections[ author ] = this.selections[ author ].toJSON();
 	}
+	serializeStoreValues = preserveStoreValues ? function noop( x ) {
+		return x;
+	} : this.constructor.static.serializeValue;
+	serializeStore = function ( store ) {
+		return store.serialize( serializeStoreValues );
+	};
 	return {
 		start: this.start,
-		transactions: this.transactions.map( function ( transaction ) {
-			return {
-				operations: transaction.operations,
-				author: transaction.author
-			};
+		transactions: this.transactions.map( function ( tx ) {
+			return tx.serialize();
 		} ),
-		stores: this.stores.map( function ( store ) {
-			var hash, value,
-				serialized = {};
-			for ( hash in store.hashStore ) {
-				value = store.hashStore[ hash ];
-				if ( !preserveStoreValues ) {
-					value = change.constructor.static.serializeValue( value );
-				}
-				serialized[ hash ] = value;
-			}
-			return {
-				hashes: store.hashes.slice(),
-				hashStore: serialized
-			};
-		} ),
+		stores: this.stores.map( serializeStore ),
 		selections: selections
 	};
 };
