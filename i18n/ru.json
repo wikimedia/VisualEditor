@@ -30,6 +30,7 @@
 	"visualeditor-aliencontextitem-title": "Элемент",
 	"visualeditor-aliennode-tooltip": "К сожалению, в настоящее время этот элемент можно изменять только в режиме правки исходного текста.",
 	"visualeditor-align-widget-center": "По центру",
+	"visualeditor-align-widget-default": "По умолчанию",
 	"visualeditor-align-widget-left": "Слева",
 	"visualeditor-align-widget-right": "Справа",
 	"visualeditor-alignablecontextitem-title": "Выравнивание",
