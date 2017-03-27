@@ -58,7 +58,9 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	focusedNode = surface.getFocusedNode();
 	if ( focusedNode ) {
-		focusedNode.executeCommand();
+		if ( focusedNode.getModel().isEditable() ) {
+			focusedNode.executeCommand();
+		}
 		return true;
 	}
 
