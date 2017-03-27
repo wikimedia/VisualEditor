@@ -435,7 +435,9 @@ ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
 	if ( !this.isInContentEditable() ) {
 		return;
 	}
-	this.executeCommand();
+	if ( this.getModel().isEditable() ) {
+		this.executeCommand();
+	}
 };
 
 /**
