@@ -41,7 +41,13 @@ html='<!DOCTYPE html>
 </article>'
 echo "$html" > index.html
 
-git add index.html
+# Disable Jekyll default settings for GitHub Pages
+# as otherwise node_modules/qunitjs will not be published.
+# https://help.github.com/articles/files-that-start-with-an-underscore-are-missing/
+# https://www.bennadel.com/blog/3181-including-node-modules.htm
+touch .nojekyll
+
+git add index.html .nojekyll
 git add -f node_modules/qunitjs dist/
 
 git commit -m "Create gh-pages branch"
