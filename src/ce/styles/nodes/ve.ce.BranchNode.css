@@ -10,8 +10,9 @@
 }
 
 .ve-ce-branchNode-blockSlug {
-	cursor: pointer;
+	visibility: hidden;
 	opacity: 0;
+	cursor: pointer;
 	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: opacity 200ms ease-out;
 	-moz-transition: opacity 200ms ease-out;
@@ -25,6 +26,10 @@
 	outline: 1px dashed #ccc;
 	/* rgba( #f1f7fb, 0.5 ) */
 	background-color: rgba( 241, 247, 251, 0.75 );
+}
+
+.ve-ce-surface-enabled .ve-ce-branchNode-blockSlug {
+	visibility: visible;
 }
 
 .ve-ce-branchNode-blockSlug:hover,
