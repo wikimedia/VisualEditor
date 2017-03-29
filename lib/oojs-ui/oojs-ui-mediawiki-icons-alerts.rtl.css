@@ -1,13 +1,37 @@
 /*!
- * OOjs UI v0.20.0
+ * OOjs UI v0.20.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-03-15T17:06:28Z
+ * Date: 2017-03-28T22:19:34Z
  */
+.oo-ui-icon-alert {
+  background-image: url('themes/mediawiki/images/icons/alert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert.png');
+}
+.oo-ui-image-warning.oo-ui-icon-alert {
+  background-image: url('themes/mediawiki/images/icons/alert-warning.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-warning.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-warning.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-warning.png');
+}
+.oo-ui-image-invert.oo-ui-icon-alert {
+  background-image: url('themes/mediawiki/images/icons/alert-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-invert.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-invert.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-invert.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-alert {
+  background-image: url('themes/mediawiki/images/icons/alert-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-progressive.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-progressive.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-progressive.png');
+}
 .oo-ui-icon-bell {
   background-image: url('themes/mediawiki/images/icons/bell.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/bell.svg');
@@ -43,6 +67,24 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/bellOn-rtl-progressive.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/bellOn-rtl-progressive.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/bellOn-rtl-progressive.png');
+}
+.oo-ui-icon-comment {
+  background-image: url('themes/mediawiki/images/icons/comment.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment.png');
+}
+.oo-ui-image-invert.oo-ui-icon-comment {
+  background-image: url('themes/mediawiki/images/icons/comment-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-invert.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-invert.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment-invert.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-comment {
+  background-image: url('themes/mediawiki/images/icons/comment-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-progressive.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-progressive.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment-progressive.png');
 }
 .oo-ui-icon-eye {
   background-image: url('themes/mediawiki/images/icons/eye.png');
@@ -97,6 +139,24 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/message-rtl-progressive.svg');
   background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/message-rtl-progressive.svg');
   background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/message-rtl-progressive.png');
+}
+.oo-ui-icon-notice {
+  background-image: url('themes/mediawiki/images/icons/notice.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice.png');
+}
+.oo-ui-image-invert.oo-ui-icon-notice {
+  background-image: url('themes/mediawiki/images/icons/notice-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-invert.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-invert.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice-invert.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-notice {
+  background-image: url('themes/mediawiki/images/icons/notice-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-progressive.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-progressive.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice-progressive.png');
 }
 .oo-ui-icon-signature {
   background-image: url('themes/mediawiki/images/icons/signature-rtl.png');

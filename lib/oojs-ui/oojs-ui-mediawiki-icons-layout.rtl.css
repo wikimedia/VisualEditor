@@ -1,13 +1,31 @@
 /*!
- * OOjs UI v0.20.0
+ * OOjs UI v0.20.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-03-15T17:06:28Z
+ * Date: 2017-03-28T22:19:34Z
  */
+.oo-ui-icon-menu {
+  background-image: url('themes/mediawiki/images/icons/menu.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu.png');
+}
+.oo-ui-image-invert.oo-ui-icon-menu {
+  background-image: url('themes/mediawiki/images/icons/menu-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-invert.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-invert.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu-invert.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-menu {
+  background-image: url('themes/mediawiki/images/icons/menu-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-progressive.svg');
+  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-progressive.svg');
+  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu-progressive.png');
+}
 .oo-ui-icon-stripeFlow {
   background-image: url('themes/mediawiki/images/icons/stripeFlow-rtl.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/stripeFlow-rtl.svg');
