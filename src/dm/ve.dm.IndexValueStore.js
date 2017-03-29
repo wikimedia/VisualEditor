@@ -35,7 +35,51 @@ ve.dm.IndexValueStore = function VeDmIndexValueStore( values ) {
 	}
 };
 
+/* Inheritance */
+
+OO.initClass( ve.dm.IndexValueStore );
+
+/* Static Methods */
+
+/**
+ * Deserialize a store from a JSONable object
+ *
+ * @param {Function} deserializeValue Deserializer for arbitrary store values
+ * @param {Object} data Store serialized as a JSONable object
+ * @return {ve.dm.IndexValueStore} Deserialized store
+ */
+ve.dm.IndexValueStore.static.deserialize = function ( deserializeValue, data ) {
+	var hash,
+		store = new ve.dm.IndexValueStore();
+
+	store.hashes = data.hashes.slice();
+	store.hashStore = {};
+	for ( hash in data.hashStore ) {
+		store.hashStore[ hash ] = deserializeValue( data.hashStore[ hash ] );
+	}
+	return store;
+};
+
 /* Methods */
+
+/**
+ * Serialize the store into a JSONable object
+ *
+ * @param {Function} serializeValue Serializer for arbitrary store values
+ * @return {Object} Serialized store
+ */
+ve.dm.IndexValueStore.prototype.serialize = function ( serializeValue ) {
+	var hash,
+		serialized = {};
+
+	for ( hash in this.hashStore ) {
+		serialized[ hash ] = serializeValue( this.hashStore[ hash ] );
+	}
+	return {
+		hashes: this.hashes.slice(),
+		hashStore: serialized
+	};
+};
 
 /**
  * Get the number of values in the store
