@@ -2286,6 +2286,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	// If orignal selection was linear, switch to end of pasted text
 	if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
 		targetFragment.collapseToEnd().select();
+		this.checkSequences( /* isPaste */ true );
 	}
 };
 
@@ -2940,8 +2941,10 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 
 /**
  * Check the current surface offset for sequence matches
+ *
+ * @param {boolean} [isPaste] Whether this in the context of a paste
  */
-ve.ce.Surface.prototype.checkSequences = function () {
+ve.ce.Surface.prototype.checkSequences = function ( isPaste ) {
 	var matchingSequences,
 		model = this.getModel(),
 		selection = this.getSelection();
@@ -2950,7 +2953,11 @@ ve.ce.Surface.prototype.checkSequences = function () {
 		return;
 	}
 
-	matchingSequences = this.getSurface().sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getCoveringRange().end );
+	matchingSequences = this.getSurface().sequenceRegistry.findMatching(
+		model.getDocument().data,
+		selection.getModel().getCoveringRange().end,
+		isPaste
+	);
 
 	this.executeSequences( matchingSequences );
 };

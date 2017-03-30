@@ -43,13 +43,14 @@ ve.ui.SequenceRegistry.prototype.register = function ( sequence ) {
  *
  * @param {ve.dm.ElementLinearData} data Linear data
  * @param {number} offset Offset
+ * @param {boolean} [isPaste] Whether this in the context of a paste
  * @return {{sequence:ve.ui.Sequence,range:ve.Range}[]}
  *   Array of matching sequences, and the corresponding range of the match
  *   for each.
  */
-ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset ) {
-	var textStart, plaintext, name, range,
-		mode = 0,
+ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset, isPaste ) {
+	var textStart, plaintext, name, range, sequence,
+		state = 0,
 		sequences = [];
 
 	// To avoid blowup when matching RegExp sequences, we're going to grab
@@ -65,23 +66,27 @@ ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset ) {
 	// creates "foo</p></li><li><p>" -- we want to give the matcher a
 	// chance to match "foo\n+" in these cases.
 	for ( textStart = offset - 1; textStart >= 0 && ( offset - textStart ) <= 256; textStart-- ) {
-		if ( mode === 0 && !data.isOpenElementData( textStart ) ) {
-			mode++;
+		if ( state === 0 && !data.isOpenElementData( textStart ) ) {
+			state++;
 		}
-		if ( mode === 1 && !data.isCloseElementData( textStart ) ) {
-			mode++;
+		if ( state === 1 && !data.isCloseElementData( textStart ) ) {
+			state++;
 		}
-		if ( mode === 2 && data.isElementData( textStart ) ) {
+		if ( state === 2 && data.isElementData( textStart ) ) {
 			break;
 		}
 	}
 	plaintext = data.getText( true, new ve.Range( textStart + 1, offset ) );
 	// Now search through the registry.
 	for ( name in this.registry ) {
-		range = this.registry[ name ].match( data, offset, plaintext );
+		sequence = this.registry[ name ];
+		if ( isPaste && !sequence.checkOnPaste ) {
+			continue;
+		}
+		range = sequence.match( data, offset, plaintext );
 		if ( range !== null ) {
 			sequences.push( {
-				sequence: this.registry[ name ],
+				sequence: sequence,
 				range: range
 			} );
 		}

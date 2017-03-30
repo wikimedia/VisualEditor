@@ -23,14 +23,16 @@
  *     before executing the command. When the sequence matches typed text, it will not be executed
  *     immediately, but only after more non-matching text is added afterwards or the selection is
  *     changed. This is useful for variable-length sequences (defined with RegExps).
+ * @param {boolean} [checkOnPaste=false] Whether the sequence should also be matched after paste.
  */
-ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelection, delayed ) {
+ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelection, delayed, checkOnPaste ) {
 	this.name = name;
 	this.commandName = commandName;
 	this.data = data;
 	this.strip = strip;
 	this.setSelection = setSelection;
 	this.delayed = delayed;
+	this.checkOnPaste = checkOnPaste;
 };
 
 /* Inheritance */
