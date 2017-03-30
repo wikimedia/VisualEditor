@@ -282,7 +282,7 @@ ve.Node.prototype.getType = function () {
  * Get a reference to the node's parent.
  *
  * @method
- * @return {ve.Node} Reference to the node's parent
+ * @return {ve.Node|null} Reference to the node's parent, null if detached
  */
 ve.Node.prototype.getParent = function () {
 	return this.parent;
@@ -292,7 +292,7 @@ ve.Node.prototype.getParent = function () {
  * Get the root node of the tree the node is currently attached to.
  *
  * @method
- * @return {ve.Node} Root node
+ * @return {ve.Node|null} Root node, null if detached
  */
 ve.Node.prototype.getRoot = function () {
 	return this.root;
@@ -323,7 +323,7 @@ ve.Node.prototype.setRoot = function ( root ) {
  * Get the document the node is a part of.
  *
  * @method
- * @return {ve.Document} Document the node is a part of
+ * @return {ve.Document|null} Document the node is a part of, null if detached
  */
 ve.Node.prototype.getDocument = function () {
 	return this.doc;
