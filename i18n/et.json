@@ -25,6 +25,8 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Allindeks",
 	"visualeditor-annotationbutton-superscript-tooltip": "Ülaindeks",
 	"visualeditor-annotationbutton-underline-tooltip": "Allakriipsutus",
+	"visualeditor-changedir-tool-ltr": "Kirjuta vasakult paremale",
+	"visualeditor-changedir-tool-rtl": "Kirjuta paremalt vasakule",
 	"visualeditor-clearbutton-tooltip": "Vorminguta",
 	"visualeditor-clipboard-copy": "Kopeeri",
 	"visualeditor-clipboard-cut": "Lõika",
