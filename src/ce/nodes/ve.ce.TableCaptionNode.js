@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ce.BranchNode
+ * @mixins ve.ce.ActiveNode
  * @constructor
  * @param {ve.dm.TableCaptionNode} model Model to observe
  * @param {Object} [config] Configuration options
@@ -21,9 +22,7 @@ ve.ce.TableCaptionNode = function VeCeTableCaptionNode() {
 	ve.ce.ActiveNode.call( this );
 
 	// DOM changes
-	this.$element
-		.addClass( 've-ce-tableCaptionNode' )
-		.prop( { contentEditable: 'true', spellcheck: true } );
+	this.$element.addClass( 've-ce-tableCaptionNode' );
 };
 
 /* Inheritance */

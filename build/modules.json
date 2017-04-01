@@ -391,6 +391,7 @@
 			"src/ce/keydownhandlers/ve.ce.TableEnterKeyDownHandler.js",
 			"src/ce/keydownhandlers/ve.ce.LinearTabKeyDownHandler.js",
 			"src/ce/nodes/ve.ce.GeneratedContentNode.js",
+			"src/ce/nodes/ve.ce.ContentEditableNode.js",
 			"src/ce/nodes/ve.ce.ActiveNode.js",
 			"src/ce/nodes/ve.ce.AlienNode.js",
 			"src/ce/nodes/ve.ce.ArticleNode.js",

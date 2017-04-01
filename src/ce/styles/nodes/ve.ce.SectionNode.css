@@ -13,13 +13,13 @@
 	height: 0;
 }
 
-.ve-ce-documentNode .ve-ce-sectionNode {
-	opacity: 0.5;
+.ve-ce-sectionNode {
+	opacity: 1;
 	-webkit-transition: opacity 250ms ease;
 	-moz-transition: opacity 250ms ease;
 	transition: opacity 250ms ease;
 }
 
-.ve-ce-documentNode .ve-ce-sectionNode.ve-ce-activeNode-active {
-	opacity: 1;
+.ve-ce-surface-enabled .ve-ce-sectionNode:not( .ve-ce-activeNode-active ) {
+	opacity: 0.5;
 }

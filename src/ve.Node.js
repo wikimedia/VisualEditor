@@ -31,10 +31,20 @@ ve.Node = function VeNode() {
  */
 
 /**
+ * The node has a new root assigned.
+ *
+ * The root will be consistent with that set in descendants and ancestors, but other parts of the
+ * tree may be inconsistent.
+ *
  * @event root
  */
 
 /**
+ * The node root has been set to null.
+ *
+ * The root will be consistent with that set in descendants and ancestors, but other parts of the
+ * tree may be inconsistent.
+ *
  * @event unroot
  */
 
@@ -304,18 +314,22 @@ ve.Node.prototype.getRoot = function () {
  * This method is overridden by nodes with children.
  *
  * @method
- * @param {ve.Node} root Node to use as root
+ * @param {ve.Node|null} root Node to use as root
  * @fires root
  * @fires unroot
  */
 ve.Node.prototype.setRoot = function ( root ) {
-	if ( root !== this.root ) {
-		this.root = root;
-		if ( this.getRoot() ) {
-			this.emit( 'root' );
-		} else {
-			this.emit( 'unroot' );
-		}
+	var oldRoot = this.root;
+	if ( root === oldRoot ) {
+		return;
+	}
+	if ( oldRoot ) {
+		this.root = null;
+		this.emit( 'unroot', oldRoot );
+	}
+	this.root = root;
+	if ( root ) {
+		this.emit( 'root', root );
 	}
 };
 

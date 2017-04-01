@@ -22,6 +22,7 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 
 	// Mixin constructors
 	ve.ce.TableCellableNode.call( this );
+	ve.ce.ContentEditableNode.call( this );
 
 	rowspan = this.model.getRowspan();
 	colspan = this.model.getColspan();
@@ -41,10 +42,8 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 		this.$element.attr( 'colspan', colspan );
 	}
 
-	this.$element
-		// Add tooltip
-		.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) )
-		.prop( 'spellcheck', true );
+	// Add tooltip
+	this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
 
 	// Events
 	this.model.connect( this, {
@@ -58,6 +57,7 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 OO.inheritClass( ve.ce.TableCellNode, ve.ce.BranchNode );
 
 OO.mixinClass( ve.ce.TableCellNode, ve.ce.TableCellableNode );
+OO.mixinClass( ve.ce.TableCellNode, ve.ce.ContentEditableNode );
 
 /* Static Properties */
 
@@ -89,9 +89,8 @@ ve.ce.TableCellNode.prototype.getTagName = function () {
  * @param {boolean} enable Enable editing
  */
 ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
-	this.$element
-		.toggleClass( 've-ce-tableCellNode-editing', enable )
-		.prop( 'contentEditable', enable.toString() );
+	this.$element.toggleClass( 've-ce-tableCellNode-editing', enable );
+	this.setContentEditable( enable );
 	this.getRoot().getSurface().setActiveNode( enable ? this : null );
 };
 

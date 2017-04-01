@@ -9,11 +9,15 @@
  * uneditable sections.
  *
  * @class
+ * @mixins ve.ce.ContentEditableNode
  * @abstract
  *
  * @constructor
  */
 ve.ce.ActiveNode = function VeCeActiveNode() {
+	// Mixin constructor
+	ve.ce.ContentEditableNode.call( this );
+
 	// Properties
 	this.activeNodeSurface = null;
 	this.isActiveNodeSetup = false;
@@ -25,14 +29,12 @@ ve.ce.ActiveNode = function VeCeActiveNode() {
 	} );
 
 	// DOM changes
-	this.$element
-		.addClass( 've-ce-activeNode' )
-		.prop( { contentEditable: 'true', spellcheck: true } );
+	this.$element.addClass( 've-ce-activeNode' );
 };
 
 /* Inheritance */
 
-OO.initClass( ve.ce.ActiveNode );
+OO.mixinClass( ve.ce.ActiveNode, ve.ce.ContentEditableNode );
 
 /* Methods */
 

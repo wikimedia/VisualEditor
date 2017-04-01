@@ -18,6 +18,9 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 	// Parent constructor
 	ve.ce.DocumentNode.super.call( this, model, config );
 
+	// Mixin constructor
+	ve.ce.ContentEditableNode.call( this );
+
 	// Properties
 	this.surface = surface;
 
@@ -26,12 +29,14 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 
 	// DOM changes
 	this.$element.addClass( 've-ce-documentNode' );
-	this.$element.prop( { contentEditable: 'true', spellcheck: true } );
 };
 
 /* Inheritance */
 
 OO.inheritClass( ve.ce.DocumentNode, ve.ce.BranchNode );
+OO.mixinClass( ve.ce.DocumentNode, ve.ce.ContentEditableNode );
+
+/* Events */
 
 /* Static Properties */
 
@@ -67,7 +72,7 @@ ve.ce.DocumentNode.prototype.getSurface = function () {
  * @method
  */
 ve.ce.DocumentNode.prototype.disable = function () {
-	this.$element.prop( 'contentEditable', 'false' );
+	this.setContentEditable( false );
 };
 
 /**
@@ -76,7 +81,7 @@ ve.ce.DocumentNode.prototype.disable = function () {
  * @method
  */
 ve.ce.DocumentNode.prototype.enable = function () {
-	this.$element.prop( 'contentEditable', 'true' );
+	this.setContentEditable( true );
 };
 
 /* Registration */
