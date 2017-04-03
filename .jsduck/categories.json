@@ -247,6 +247,13 @@
 					"ve.ce.TestOffset",
 					"ve.ce.TestRunner"
 				]
+			},
+			{
+				"name": "Rebaser",
+				"classes": [
+					"ve.dm.TestRebaseClient",
+					"ve.dm.TestRebaseServer"
+				]
 			}
 		]
 	},
