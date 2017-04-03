@@ -190,6 +190,7 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
  */
 ve.ui.DiffElement.prototype.destroy = function () {
 	$( this.getElementWindow() ).off( 'resize', this.onWindowResizeDebounced );
+	this.$element.remove();
 };
 
 /**
