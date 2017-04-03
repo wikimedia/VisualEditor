@@ -3,7 +3,8 @@
 		"authors": [
 			"John Reid",
 			"Amire80",
-			"Foxj"
+			"Foxj",
+			"AmaryllisGardener"
 		]
 	},
 	"visualeditor": "VeesualEediter",
@@ -21,6 +22,14 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Subscreept",
 	"visualeditor-annotationbutton-superscript-tooltip": "Superscreept",
 	"visualeditor-annotationbutton-underline-tooltip": "Unnerline",
+	"visualeditor-changedesc-changed": "$1 chynged frae $2 tae $3",
+	"visualeditor-changedesc-image-size": "Size chynged frae $1 tae $2",
+	"visualeditor-changedesc-language": "Leid chynged frae $1 tae $2",
+	"visualeditor-changedesc-no-key": "$1 chynged tae $2",
+	"visualeditor-changedesc-set": "$1 set tae $2",
+	"visualeditor-changedesc-unknown": "$1 chynged",
+	"visualeditor-changedesc-unset": "$1 unset frae $2",
+	"visualeditor-changedir-tool-ltr": "View as left-tae-richt",
 	"visualeditor-clearbutton-tooltip": "Clear stylin",
 	"visualeditor-clipboard-copy": "Copie",
 	"visualeditor-clipboard-cut": "Cut",

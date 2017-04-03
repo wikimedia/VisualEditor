@@ -9,13 +9,15 @@
 			"Glavkos",
 			"Nikosguard",
 			"Tifa93",
-			"Giorgos456"
+			"Giorgos456",
+			"GR"
 		]
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliencontextitem-title": "Αντικείμενο",
 	"visualeditor-aliennode-tooltip": "Συγγνώμη, προς το παρόν η επεξεργασία αυτού του στοιχείου μπορεί να γίνει μόνο με τον επεξεργαστή κώδικα.",
 	"visualeditor-align-widget-center": "Κέντρο",
+	"visualeditor-align-widget-default": "Προεπιλογή",
 	"visualeditor-align-widget-left": "Αριστερά",
 	"visualeditor-align-widget-right": "Δεξιά",
 	"visualeditor-alignablecontextitem-title": "Ευθυγράμμιση",
