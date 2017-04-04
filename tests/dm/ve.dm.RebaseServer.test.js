@@ -6,195 +6,244 @@
 
 QUnit.module( 've.dm.RebaseServer' );
 
-QUnit.test( 'Rebase', 43, function ( assert ) {
-	var origData = [ { type: 'paragraph' }, { type: '/paragraph' } ],
-		newSurface = function () {
-			return new ve.dm.Surface(
-				ve.dm.example.createExampleDocumentFromData( origData )
-			);
+QUnit.test( 'Rebase', function ( assert ) {
+	var cases = [
+		{
+			name: 'Concurrent insertions',
+			initialData: [ { type: 'paragraph' }, { type: '/paragraph' } ],
+			clients: [ '1', '2' ],
+			ops: [
+				// Client 1 submits abc
+				[ '1', 'apply', [
+					[ 'insert', 1, [ 'a' ], 3 ],
+					[ 'insert', 2, [ 'b' ], 3 ],
+					[ 'insert', 3, [ 'c' ], 3 ]
+				] ],
+				// Client getHistorySummary() output looks like: confirmed/sent?/unsent!
+				// Obviously, the server only has confirmed items
+				[ '1', 'assertHist', 'abc!' ],
+				[ '1', 'submit' ],
+				[ '1', 'assertHist', 'abc?' ],
+				[ '1', 'deliver' ],
+				[ 'server', 'assertHist', 'abc' ],
+
+				// Client 2 submits AB
+				[ '2', 'apply', [
+					[ 'insert', 1, [ 'A' ], 3 ],
+					[ 'insert', 2, [ 'B' ], 3 ]
+				] ],
+				[ '2', 'assertHist', 'AB!' ],
+				[ '2', 'submit' ],
+				[ '2', 'deliver' ],
+				// Server puts client 2's insertion after client 1's
+				[ 'server', 'assertHist', 'abcAB' ],
+
+				// Client 1 inserts bolded def
+				[ '1', 'apply', [
+					[ 'insert', 4, [ 'd', 'e', 'f' ], 3 ]
+				] ],
+				[ '1', 'assertHist', 'abc?/def!' ],
+				// Client 1 receives confirmation of abc
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', 'abc/def!' ],
+				// Client 1 submits def
+				[ '1', 'submit' ],
+				[ '1', 'assertHist', 'abc/def?' ],
+				[ '1', 'deliver' ],
+				// The summary order shows that def arrived after AB in the
+				// history (even though it lies before AB in document order)
+				[ 'server', 'assertHist', 'abcABdef' ],
+
+				// Client 2 inserts underlined CD
+				[ '2', 'apply', [
+					[ 'insert', 3, [ 'C', 'D' ], 3 ]
+				] ],
+				[ '2', 'assertHist', 'AB?/CD!' ],
+				// Client 2 receives abc and rebases over it
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', 'abc/AB?/CD!' ],
+				// Client 2 receives confirmation of AB
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', 'abcAB/CD!' ],
+				// Client 2 submits CD
+				[ '2', 'submit' ],
+				[ '2', 'assertHist', 'abcAB/CD?' ],
+				[ '2', 'deliver' ],
+				[ 'server', 'assertHist', 'abcABdefCD' ],
+
+				// Client 1 receives AB, rebases def over it
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', 'abcAB/def?' ],
+				// Client 1 receives confirmation of def
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', 'abcABdef' ],
+
+				// Client 1 submits ghi
+				[ '1', 'apply', [
+					[ 'insert', 9, [ 'g', 'h', 'i' ], 3 ]
+				] ],
+				[ '1', 'assertHist', 'abcABdef/ghi!' ],
+				[ '1', 'submit' ],
+				[ '1', 'assertHist', 'abcABdef/ghi?' ],
+				[ '1', 'deliver' ],
+				[ 'server', 'assertHist', 'abcABdefCDghi' ],
+				// Client 1 receives CD, rebases ghi over it
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', 'abcABdefCD/ghi?' ],
+				// Client 1 receives confirmation of ghi
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', 'abcABdefCDghi' ],
+
+				// Client 2 catches up
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', 'abcABdef/CD?' ],
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', 'abcABdefCD' ],
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', 'abcABdefCDghi' ]
+			]
 		},
-		txReplace = function ( before, remove, insert, after ) {
-			return new ve.dm.Transaction( [
-				{ type: 'retain', length: before },
-				{
-					type: 'replace',
-					remove: remove,
-					insert: insert,
-					insertedDataOffset: 0,
-					insertedDataLength: insert.length
-				},
-				{ type: 'retain', length: after }
-			] );
-		},
-		txInsert = function ( before, insert, after ) {
-			return txReplace( before, [], insert, after );
-		},
-		txRemove = function ( before, remove, after ) {
-			return txReplace( before, remove, [], after );
-		},
-		noVals = new ve.dm.IndexValueStore(),
-		surface = newSurface(),
-		doc = surface.documentModel,
-		newSel = function ( offset ) {
-			return new ve.dm.LinearSelection( doc, new ve.Range( offset ) );
-		},
-		b = ve.dm.example.bold,
-		i = ve.dm.example.italic,
-		u = ve.dm.example.underline,
-		bIndex = [ ve.dm.example.boldIndex ],
-		iIndex = [ ve.dm.example.italicIndex ],
-		uIndex = [ ve.dm.example.underlineIndex ],
-		bStore = new ve.dm.IndexValueStore( [ b ] ),
-		iStore = new ve.dm.IndexValueStore( [ i ] ),
-		uStore = new ve.dm.IndexValueStore( [ u ] ),
-		server = new ve.dm.TestRebaseServer(),
-		sharedIncoming = [],
-		client1 = new ve.dm.TestRebaseClient( server, sharedIncoming ),
-		client2 = new ve.dm.TestRebaseClient( server, sharedIncoming );
+		{
+			name: 'Conflicting deletions',
+			initialData: [
+				{ type: 'paragraph' },
+				'a', 'b', 'c', 'A', 'B', 'd', 'e', 'f', 'C', 'D', 'g', 'h', 'i',
+				{ type: '/paragraph' }
+			],
+			clients: [ '1', '2' ],
+			ops: [
+				// Client 1 delivers one deletion and leaves another one in the pipeline
+				[ '1', 'apply', [
+					[ 'remove', 5, 2, 10 ]
+				] ],
+				[ '1', 'assertHist', '-(Bd)!' ],
+				[ '1', 'submit' ],
+				[ '1', 'assertHist', '-(Bd)?' ],
+				[ '1', 'apply', [
+					[ 'remove', 3, 2, 10 ]
+				] ],
+				[ '1', 'assertHist', '-(Bd)?/-(cA)!' ],
+				[ '1', 'submit' ],
+				[ '1', 'assertHist', '-(Bd)-(cA)?' ],
+				[ '1', 'deliver' ],
+				[ 'server', 'assertHist', '-(Bd)' ],
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', '-(Bd)/-(cA)?' ],
 
-	client1.setAuthor( 1 );
-	client2.setAuthor( 2 );
+				// Client 2 applies a partially-conflicting change
+				[ '2', 'apply', [
+					[ 'insert', 1, [ 'W' ], 16 ],
+					// Conflicts with undelivered deletion of 'cA'
+					[ 'insert', 5, [ 'X' ], 13 ],
+					// Conflicts with delivered deletion of 'Bd'
+					[ 'insert', 8, [ 'Y' ], 11 ],
+					[ 'insert', 12, [ 'Z' ], 8 ]
+				] ],
+				[ '2', 'assertHist', 'WXYZ!' ],
+				[ '2', 'submit' ],
+				[ '2', 'assertHist', 'WXYZ?' ],
+				[ '2', 'receive' ],
+				// Y conflicts with -(Bd), so Y and Z are discarded
+				[ '2', 'assertHist', '-(Bd)/WX?' ],
 
-	// Client getHistorySummary() output looks like: confirmed/sent?/unsent!
-	// Obviously, the server only has confirmed items
+				// Client 2 applies a "doomed" change built on top of a change that will conflict
+				[ '2', 'apply', [
+					[ 'insert', 1, [ 'V' ], 18 ]
+				] ],
+				[ '2', 'assertHist', '-(Bd)/WX?/V!' ],
+				[ '2', 'submit' ],
+				[ '2', 'assertHist', '-(Bd)/WXV?' ],
 
-	// First, concurrent insertions
-	client1.applyChange( new ve.dm.Change( 0, [
-		txInsert( 1, [ 'a' ], 3 ),
-		txInsert( 2, [ 'b' ], 3 ),
-		txInsert( 3, [ 'c' ], 3 )
-	], [ noVals, noVals, noVals ], { 1: newSel( 4 ) } ) );
-	assert.equal( client1.getHistorySummary(), 'abc!', '1apply0' );
-	client1.submitChange();
-	assert.equal( client1.getHistorySummary(), 'abc?', '1submit0' );
-	client1.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abc', '1deliver0' );
+				// Client 1 delivers -(cA)
+				[ '1', 'deliver' ],
+				[ 'server', 'assertHist', '-(Bd)-(cA)' ],
+				// Client 2 delivers W (accepted) and X (rejected)
+				[ '2', 'deliver' ],
+				[ '2', 'deliver' ],
+				[ 'server', 'assertHist', '-(Bd)-(cA)W' ],
+				// Client 2 receives -(cA), discards X and V
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', '-(Bd)-(cA)/W?' ],
 
-	client2.applyChange( new ve.dm.Change( 0, [
-		txInsert( 1, [ 'A' ], 3 ),
-		txInsert( 2, [ 'B' ], 3 )
-	], [ noVals, noVals ], { 2: newSel( 3 ) } ) );
-	assert.equal( client2.getHistorySummary(), 'AB!', '2apply0' );
-	client2.submitChange();
-	client2.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcAB', '2deliver0' );
+				// Client 2 inserts and submits P, server accepts
+				[ '2', 'apply', [
+					[ 'insert', 1, [ 'P' ], 16 ]
+				] ],
+				[ '2', 'assertHist', '-(Bd)-(cA)/W?/P!' ],
+				[ '2', 'submit' ],
+				[ '2', 'assertHist', '-(Bd)-(cA)/WP?' ],
+				[ '2', 'deliver' ],
+				[ 'server', 'assertHist', '-(Bd)-(cA)WP' ],
 
-	client1.applyChange( new ve.dm.Change( 3, [
-		txInsert( 4, [ [ 'd', bIndex ] ], 3 ),
-		txInsert( 5, [ [ 'e', bIndex ] ], 3 ),
-		txInsert( 6, [ [ 'f', bIndex ] ], 3 )
-	], [ bStore, noVals, noVals ], { 1: newSel( 7 ) } ) );
-	assert.equal( client1.getHistorySummary(), 'abc?/def!', '1apply1' );
-	client1.receiveOne();
-	assert.equal( client1.getHistorySummary(), 'abc/def!', '1receive0' );
-	client1.submitChange();
-	assert.equal( client1.getHistorySummary(), 'abc/def?', '1receive1' );
-	client1.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcABdef', '1deliver1' );
+				// Client 2 receives confirmation of W and P
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', '-(Bd)-(cA)W/P?' ],
+				[ '2', 'receive' ],
+				[ '2', 'assertHist', '-(Bd)-(cA)WP' ]
+			]
+		} ],
+		i, j, op, server, client, clients, action, txs;
 
-	client2.applyChange( new ve.dm.Change( 2, [
-		txInsert( 3, [ [ 'C', uIndex ] ], 3 ),
-		txInsert( 4, [ [ 'D', uIndex ] ], 3 )
-	], [ uStore, noVals ], { 2: newSel( 5 ) } ) );
-	assert.equal( client2.getHistorySummary(), 'AB?/CD!', '2apply1' );
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abc/AB?/CD!', '2receive0' );
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcAB/CD!', '2receive1' );
+	function makeTransaction( doc, data ) {
+		var i, method,
+			builder = new ve.dm.TransactionBuilder();
+		if ( data[ 0 ] === 'insert' ) {
+			data = [
+				[ 'pushRetain', data[ 1 ] ],
+				[ 'pushReplace', doc, data[ 1 ], 0, data[ 2 ] ],
+				[ 'pushRetain', data[ 3 ] ]
+			];
+		} else if ( data[ 0 ] === 'remove' ) {
+			data = [
+				[ 'pushRetain', data[ 1 ] ],
+				[ 'pushReplace', doc, data[ 1 ], data[ 2 ], [] ],
+				[ 'pushRetain', data[ 3 ] ]
+			];
+		}
+		for ( i = 0; i < data.length; i++ ) {
+			method = data[ i ].shift();
+			builder[ method ].apply( builder, data[ i ] );
+		}
+		return builder.getTransaction();
+	}
 
-	client2.submitChange();
-	assert.equal( client2.getHistorySummary(), 'abcAB/CD?', '2submit1' );
-	client2.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcABdefCD', '2deliver1' );
+	QUnit.expect( cases.reduce( function ( sum, thiscase ) {
+		return sum + thiscase.ops.filter( function ( op ) {
+			return op[ 1 ] === 'assertHist';
+		} ).length;
+	}, 0 ) );
 
-	client1.receiveOne();
-	assert.equal( client1.getHistorySummary(), 'abcAB/def?', '1receive1' );
-	client1.receiveOne();
-	assert.equal( client1.getHistorySummary(), 'abcABdef', '1receive2' );
+	for ( i = 0; i < cases.length; i++ ) {
+		server = new ve.dm.TestRebaseServer();
+		clients = { server: server };
+		for ( j = 0; j < cases[ i ].clients.length; j++ ) {
+			client = new ve.dm.TestRebaseClient( server, cases[ i ].initialData );
+			client.setAuthor( cases[ i ].clients[ j ] );
+			clients[ cases[ i ].clients[ j ] ] = client;
+		}
 
-	client1.applyChange( new ve.dm.Change( 8, [
-		txInsert( 9, [ [ 'g', iIndex ] ], 3 ),
-		txInsert( 10, [ [ 'h', iIndex ] ], 3 ),
-		txInsert( 11, [ [ 'i', iIndex ] ], 3 )
-	], [ iStore, noVals, noVals ], { 1: newSel( 12 ) } ) );
-	assert.equal( client1.getHistorySummary(), 'abcABdef/ghi!', '1apply3' );
-	client1.submitChange();
-	assert.equal( client1.getHistorySummary(), 'abcABdef/ghi?', '1submit3' );
-	client1.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcABdefCDghi', '1deliver3' );
-	client1.receiveOne();
-	assert.equal( client1.getHistorySummary(), 'abcABdefCD/ghi?', '1receive3' );
-	client1.receiveOne();
-	assert.equal( client1.getHistorySummary(), 'abcABdefCDghi', '1receive4' );
+		for ( j = 0; j < cases[ i ].ops.length; j++ ) {
+			op = cases[ i ].ops[ j ];
+			if ( op[ 0 ] === 'debugger' ) {
+				// eslint-disable-next-line no-debugger
+				debugger;
+				continue;
+			}
 
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcABdef/CD?', '2receive2' );
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCD', '2receive3' );
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi', '2receive4' );
-
-	// Then, deliver one deletion and leave another in the pipeline
-	client1.applyChange( new ve.dm.Change( 13, [
-		txRemove( 5, [ 'B', 'd' ], 10 )
-	], [ noVals ], { 1: newSel( 5 ) } ) );
-	assert.equal( client1.getHistorySummary(), 'abcABdefCDghi/-(Bd)!', '1apply5' );
-	client1.submitChange();
-	assert.equal( client1.getHistorySummary(), 'abcABdefCDghi/-(Bd)?', '1submit5' );
-	client1.applyChange( new ve.dm.Change( 14, [
-		txRemove( 3, [ 'c', 'A' ], 10 )
-	], [ noVals ], { 1: newSel( 3 ) } ) );
-	assert.equal( client1.getHistorySummary(), 'abcABdefCDghi/-(Bd)?/-(cA)!', '1apply6' );
-	client1.submitChange();
-	assert.equal( client1.getHistorySummary(), 'abcABdefCDghi/-(Bd)-(cA)?', '1submit6' );
-	client1.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcABdefCDghi-(Bd)', '1deliver5' );
-	client1.receiveOne();
-	assert.equal( client1.getHistorySummary(), 'abcABdefCDghi-(Bd)/-(cA)?', '1receive5' );
-
-	// Apply a partially-conflicting change
-	client2.applyChange( new ve.dm.Change( 13, [
-		txInsert( 1, [ 'W' ], 16 ),
-		// Conflicts with undelivered deletion of 'cA'
-		txInsert( 5, [ 'X' ], 13 ),
-		// Conflicts with delivered deletion of 'Bd'
-		txInsert( 8, [ 'Y' ], 11 ),
-		txInsert( 12, [ 'Z' ], 8 )
-	], [ noVals, noVals, noVals, noVals ], { 2: newSel( 12 ) } ) );
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi/WXYZ!', '2apply5' );
-	client2.submitChange();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi/WXYZ?', '2submit5' );
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)/WX?', '2receive5' );
-
-	// Apply a "doomed change" built on top of a change that will conflict
-	client2.applyChange( new ve.dm.Change( 16, [
-		txInsert( 1, [ 'V' ], 18 )
-	], [ noVals ], { 2: newSel( 2 ) } ) );
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)/WX?/V!', '2apply7' );
-	client2.submitChange();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)/WXV?', '2submit7' );
-
-	client1.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)', '1deliver6' );
-
-	client2.deliverOne();
-	client2.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)W', '2deliver5' );
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)/W?', '2receive6' );
-
-	client2.applyChange( new ve.dm.Change( 16, [
-		txInsert( 1, [ 'P' ], 16 )
-	], [ noVals ], { 2: newSel( 2 ) } ) );
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)/W?/P!', '2apply8' );
-	client2.submitChange();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)/WP?', '2submit8' );
-	client2.deliverOne();
-	assert.equal( server.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)WP', '2deliver8' );
-
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)W/P?', '2receive7' );
-	client2.receiveOne();
-	assert.equal( client2.getHistorySummary(), 'abcABdefCDghi-(Bd)-(cA)WP', '2receive8' );
+			client = clients[ op[ 0 ] ];
+			action = op[ 1 ];
+			if ( action === 'apply' ) {
+				txs = op[ 2 ].map( makeTransaction.bind( null, client.doc ) );
+				client.applyTransactions( txs );
+			} else if ( action === 'assertHist' ) {
+				assert.equal( client.getHistorySummary(), op[ 2 ], cases[ i ].name + ': ' + ( op[ 3 ] || j ) );
+			} else if ( action === 'submit' ) {
+				client.submitChange();
+			} else if ( action === 'deliver' ) {
+				client.deliverOne();
+			} else if ( action === 'receive' ) {
+				client.receiveOne();
+			}
+		}
+	}
 } );

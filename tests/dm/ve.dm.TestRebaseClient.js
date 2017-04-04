@@ -12,21 +12,45 @@
  *
  * @constructor
  * @param {ve.dm.TestRebaseServer} server Rebase server
+ * @param {Array} initialData Document
  */
-ve.dm.TestRebaseClient = function VeDmTestRebaseClient( server ) {
+ve.dm.TestRebaseClient = function VeDmTestRebaseClient( server, initialData ) {
 	ve.dm.RebaseClient.apply( this );
 
 	this.server = server;
 	this.incomingPointer = 0;
 	this.outgoing = [];
 	this.outgoingPointer = 0;
-	this.history = new ve.dm.Change( 0, [], [], {} );
-	this.trueHistory = [];
+	this.doc = new ve.dm.Document( OO.copy( initialData ) );
+	this.surface = new ve.dm.Surface( this.doc );
 };
 
 OO.initClass( ve.dm.TestRebaseClient );
 OO.mixinClass( ve.dm.TestRebaseClient, ve.dm.RebaseClient );
 
+/**
+ * Compact, potentially ambiguous summary of insertions/removals, disregarding location
+ *
+ * Example: insertion1insertion2-(removal3)insertion3/uncommittedinsertion4?/-(unsentremoval5)!
+ *
+ * Only insertions and removals are represented. An insertion is represented by the toString
+ * content inserted; a removal by '-(' then the toString content removed then ')'. The offset
+ * in the document of the insertion/removal is not represented at all. Consecutive transaction
+ * representations are concatenated.
+ *
+ * Therefore this format is ambiguous unless the test transactions are chosen very carefully.
+ * The summary 'abc' could represent any of the following changes (amongst others):
+ *
+ * * Append 'abc'
+ * * Append 'a', then append 'bc'
+ * * Append 'a' then prepend 'bc'
+ * * Append 'a' then prepend 'b' then append 'c'
+ *
+ * @param {ve.dm.Change} change The document history
+ * @param {number} [commitLength] The point above which the transactions are uncommitted
+ * @param {number} [sentLength] The point above which the transactions are unsent
+ * @return {string} Compact summary of the history
+ */
 ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, sentLength ) {
 	var committed, sent, unsent,
 		text = [];
@@ -73,11 +97,11 @@ ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, 
 };
 
 ve.dm.TestRebaseClient.prototype.getHistorySummary = function () {
-	return this.constructor.static.historySummary( this.history, this.commitLength, this.sentLength );
+	return this.constructor.static.historySummary( this.getChangeSince( 0 ), this.commitLength, this.sentLength );
 };
 
 ve.dm.TestRebaseClient.prototype.getChangeSince = function ( start ) {
-	return this.history.mostRecent( start );
+	return this.doc.getChangeSince( start );
 };
 
 ve.dm.TestRebaseClient.prototype.sendChange = function ( backtrack, change ) {
@@ -85,27 +109,29 @@ ve.dm.TestRebaseClient.prototype.sendChange = function ( backtrack, change ) {
 };
 
 ve.dm.TestRebaseClient.prototype.applyChange = function ( change ) {
+	change.applyTo( this.surface );
+};
+
+ve.dm.TestRebaseClient.prototype.applyTransactions = function( txs ) {
 	var author = this.getAuthor();
-	change.transactions.forEach( function ( transaction ) {
+	txs.forEach( function ( transaction ) {
 		if ( transaction.author === null ) {
 			transaction.author = author;
 		}
 	} );
-	this.history.push( change );
-	this.trueHistory.push( { change: change, reversed: false } );
+	this.surface.change( txs );
 };
 
 ve.dm.TestRebaseClient.prototype.unapplyChange = function ( change ) {
-	this.history = this.history.truncate( change.start );
-	this.trueHistory.push( { change: change, reversed: true } );
+	change.unapplyTo( this.surface );
 };
 
 ve.dm.TestRebaseClient.prototype.addToHistory = function ( change ) {
-	this.history.push( change );
+	change.addToHistory( this.doc );
 };
 
 ve.dm.TestRebaseClient.prototype.removeFromHistory = function ( change ) {
-	this.history = this.history.truncate( change.start );
+	change.removeFromHistory( this.doc );
 };
 
 ve.dm.TestRebaseClient.prototype.deliverOne = function () {
