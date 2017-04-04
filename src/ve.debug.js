@@ -26,13 +26,7 @@ ve.debug = true;
  * @method
  * @param {...Mixed} [data] Data to log
  */
-ve.log = function () {
-	// Support: IE9
-	// In IE9 console methods are not real functions and as such do not inherit
-	// from Function.prototype, thus console.log.apply does not exist.
-	// However it is function-like enough that passing it to Function#apply does work.
-	Function.prototype.apply.call( console.log, console, arguments );
-};
+ve.log = console.log;
 
 /**
  * Logs error to the console.
@@ -40,13 +34,7 @@ ve.log = function () {
  * @method
  * @param {...Mixed} [data] Data to log
  */
-ve.error = function () {
-	// Support: IE9
-	// In IE9 console methods are not real functions and as such do not inherit
-	// from Function.prototype, thus console.error.apply does not exist.
-	// However it is function-like enough that passing it to Function#apply does work.
-	Function.prototype.apply.call( console.error, console, arguments );
-};
+ve.error = console.error;
 
 /**
  * Logs an object to the console.
@@ -54,9 +42,7 @@ ve.error = function () {
  * @method
  * @param {Object} obj Object to log
  */
-ve.dir = function () {
-	Function.prototype.apply.call( console.dir, console, arguments );
-};
+ve.dir = console.dir;
 
 /**
  * Like outerHTML serialization, but wraps each text node in a fake tag. This

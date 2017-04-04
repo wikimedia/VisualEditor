@@ -436,12 +436,7 @@ ve.selectElement = function ( element ) {
 		nativeSelection = win.getSelection();
 	nativeRange.setStart( element, 0 );
 	nativeRange.setEnd( element, element.childNodes.length );
-	try {
-		nativeSelection.removeAllRanges();
-	} catch ( e ) {
-		// Support: IE9
-		// IE9 can throw an exception if the range is invisible
-	}
+	nativeSelection.removeAllRanges();
 	nativeSelection.addRange( nativeRange );
 };
 

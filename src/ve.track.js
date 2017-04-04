@@ -4,8 +4,6 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* eslint-ecmaVersion 3 */
-
 ( function () {
 	var callbacks = $.Callbacks( 'memory' ),
 		queue = [];

@@ -138,19 +138,12 @@ ve.dm.Change.static.deserializeValue = function ( serialized ) {
 		rdfaAttrs = [ 'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof' ];
 
 		return serialized.value.map( function ( nodeHtml ) {
-			// Support: IE9
-			// DOMPurify.sanitize will return html strings in incompatible browsers
-			var fragmentOrHtml = DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
+			return DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
 				ADD_ATTR: rdfaAttrs,
 				ADD_URI_SAFE_ATTR: rdfaAttrs,
 				FORBID_TAGS: [ 'style' ],
 				RETURN_DOM_FRAGMENT: true
-			} );
-			if ( typeof fragmentOrHtml === 'string' ) {
-				return fragmentOrHtml && $.parseHTML( fragmentOrHtml )[ 0 ];
-			} else {
-				return fragmentOrHtml.childNodes[ 0 ];
-			}
+			} ).childNodes[ 0 ];
 		} ).filter( function ( node ) {
 			// Nodes can be sanitized to nothing (empty string or undefined)
 			// so check it is truthy

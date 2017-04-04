@@ -37,11 +37,8 @@ then
 fi
 
 # Copy files
-# - Exclude the minimised distribution files
-# - Support: IE9
-#   VE requires SVG support, but IE9 doesn't support the CSS background fallback
-#   so ends up using the PNGs. Otherwise they would not be required.
-rsync --force --recursive --delete --exclude 'oojs-ui*.min.*' --exclude 'oojs-ui.js' ./node_modules/oojs-ui/dist/ "$REPO_DIR/$TARGET_DIR"
+# - Exclude the minimised distribution files and PNG image assets (VE requires SVG support)
+-rsync --force --recursive --delete --exclude 'oojs-ui*.min.*' --exclude 'oojs-ui.js' --exclude 'themes/*/images/*/*.png' ./node_modules/oojs-ui/dist/ "$REPO_DIR/$TARGET_DIR"
 
 # Clean up temporary area
 rm -rf "$NPM_DIR"

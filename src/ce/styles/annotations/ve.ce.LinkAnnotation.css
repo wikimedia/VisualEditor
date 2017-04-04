@@ -12,12 +12,6 @@
 	background-color: #e6f1ff;
 }
 
-.ve-ce-nail {
-	/* Support: IE9 */
-	/* IE9 adds borders to linked images */
-	border: 0;
-}
-
 .ve-ce-nail:not( .ve-ce-nail-debug ) {
 	width: 0;
 	height: 0;
