@@ -676,6 +676,8 @@
 			"tests/dm/ve.dm.Transaction.test.js",
 			"tests/dm/ve.dm.TransactionBuilder.test.js",
 			"tests/dm/ve.dm.Change.test.js",
+			"tests/dm/ve.dm.TestRebaseClient.js",
+			"tests/dm/ve.dm.TestRebaseServer.js",
 			"tests/dm/ve.dm.RebaseServer.test.js",
 			"tests/dm/ve.dm.TransactionProcessor.test.js",
 			"tests/dm/ve.dm.APIResultsQueue.test.js",
