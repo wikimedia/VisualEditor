@@ -47,7 +47,6 @@
 	outline: 3px solid #6da9f7;
 	padding: 2px;
 	margin: -2px 0 0 -2px;
-	/* TODO: Support IE9 with JS mouse events */
 	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
 }
 

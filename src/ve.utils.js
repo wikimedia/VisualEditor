@@ -839,7 +839,6 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	// value is not actually a Document, but something which behaves just like an empty regular
 	// object...), so we're detecting that and using the innerHTML hack described above.
 
-	// Support: IE9
 	// Support: Firefox 20
 	// Support: Opera 12
 
@@ -857,10 +856,6 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	newDocument.close();
 	// Detach the iframe
 	iframe.parentNode.removeChild( iframe );
-	// Support: IE9
-	// Prevent garbage collection of iframe as long as newDocument exists, as destroying
-	// the original iframe makes access to the document impossible in IE9
-	newDocument.originalIframe = iframe;
 
 	if ( !newDocument.documentElement || newDocument.documentElement.cloneNode( false ) === undefined ) {
 		// Surprise! The document is not a document! Only happens on Opera.
