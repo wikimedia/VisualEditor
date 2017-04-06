@@ -16,7 +16,8 @@
 			"NH",
 			"Platinawolf",
 			"Jenniesarina",
-			"Hannibal-reserv"
+			"Hannibal-reserv",
+			"André Costa (WMSE)"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -80,7 +81,7 @@
 	"visualeditor-dialog-error-dismiss": "Gå tillbaka",
 	"visualeditor-dialog-language-auto-direction": "Auto",
 	"visualeditor-dialog-language-search-title": "Välj språk",
-	"visualeditor-dialog-table-caption": "Bildtext",
+	"visualeditor-dialog-table-caption": "Tabellrubrik",
 	"visualeditor-dialog-table-title": "Tabellegenskaper",
 	"visualeditor-diff-no-changes": "Inga ändringar",
 	"visualeditor-find-and-replace-diacritic": "Ignorera diakritiska tecken",
