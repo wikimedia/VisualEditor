@@ -19,7 +19,7 @@ body {
 	float: right;
 	margin: 0.5em 0 0 0;
 	background-repeat: no-repeat;
-	background-size: contain; /* stylelint-disable-line no-unsupported-browser-features */
+	background-size: contain;
 }
 
 .ve-pad-logo {

@@ -20,7 +20,7 @@
 	top: 0;
 	left: 0;
 	opacity: 0.5;
-	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+	pointer-events: none;
 }
 
 .ve-ce-surface-deactivatedSelection > div {
@@ -43,17 +43,17 @@
 .ve-ce-surface-dropMarker {
 	height: 1px;
 	background: #999;
-	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+	pointer-events: none;
 	position: absolute;
 }
 
 .ve-ce-surface-highlights-user-selections {
 	opacity: 0.5;
-	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+	pointer-events: none;
 }
 
 .ve-ce-surface-highlights-user-cursors {
-	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+	pointer-events: none;
 }
 
 .ve-ce-surface-highlights-user-selection {
@@ -80,7 +80,7 @@
 }
 
 .ve-ce-surface-paste {
-	position: fixed; /* stylelint-disable-line no-unsupported-browser-features */
+	position: fixed;
 	/* FIXME T126024: Stop the viewport scrolling when the paste target is typed into */
 	top: 3em;
 	left: 0;

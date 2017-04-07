@@ -10,5 +10,5 @@
 
 .ve-ce-focusableNode .ve-ce-activeNode,
 .ve-ce-focusableNode .ve-ce-activeNode * {
-	-moz-user-select: text; /* stylelint-disable-line no-unsupported-browser-features */
+	-moz-user-select: text;
 }

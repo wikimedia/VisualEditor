@@ -11,11 +11,9 @@
 .ve-ui-toolbarDialog-position-above {
 	overflow-y: hidden;
 	max-height: 0;
-	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: max-height 250ms;
 	-moz-transition: max-height 250ms;
 	transition: max-height 250ms;
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .oo-ui-toolbar-position-top .ve-ui-toolbarDialog-position-above {
@@ -39,20 +37,16 @@
 	overflow-x: hidden;
 	width: 0;
 	margin-top: 1px;
-	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: width 250ms;
 	-moz-transition: width 250ms;
 	transition: width 250ms;
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-surface {
 	min-height: 0;
-	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: margin 250ms, min-height 250ms;
 	-moz-transition: margin 250ms, min-height 250ms;
 	transition: margin 250ms, min-height 250ms;
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-surface-toolbarDialog-side {

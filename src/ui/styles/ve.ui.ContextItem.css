@@ -6,12 +6,10 @@
 
 .ve-ui-contextItem {
 	/* Disable selection to avoid stealing focus from the surface */
-	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	/* stylelint-enable no-unsupported-browser-features */
 	cursor: default;
 }
 

@@ -22,11 +22,11 @@
 
 .ve-ce-tableNodeOverlay {
 	position: absolute;
-	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+	pointer-events: none;
 }
 
 .ve-ce-tableNodeOverlay .ve-ui-tableLineContext {
-	pointer-events: auto; /* stylelint-disable-line no-unsupported-browser-features */
+	pointer-events: auto;
 }
 
 .ve-ce-tableNodeOverlay-selection-box {
@@ -50,11 +50,9 @@
 }
 
 .ve-ce-tableNodeOverlay-selection-box-notEditable {
-	/* stylelint-disable no-unsupported-browser-features */
 	background-image: -webkit-repeating-linear-gradient( -45deg, transparent 0 transparent 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-tableNodeOverlay-selection-box-anchor {

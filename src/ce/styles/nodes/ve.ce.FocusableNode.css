@@ -13,7 +13,7 @@
 .ve-ce-focusableNode * {
 	/* Support: Firefox */
 	/* T70537: work around Firefox bug */
-	-moz-user-select: none; /* stylelint-disable-line no-unsupported-browser-features */
+	-moz-user-select: none;
 }
 
 .ve-ce-focusableNode-highlight {
@@ -62,7 +62,7 @@
 	/* Don't scale icon in headings etc. */
 	width: 24px;
 	height: 24px;
-	background-size: 24px 24px; /* stylelint-disable-line no-unsupported-browser-features */
+	background-size: 24px 24px;
 	/* Make native selection match fake selection */
 	font-size: 24px;
 	line-height: 1em;

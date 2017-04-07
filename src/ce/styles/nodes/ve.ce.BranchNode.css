@@ -13,11 +13,9 @@
 	visibility: hidden;
 	opacity: 0;
 	cursor: pointer;
-	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: opacity 200ms ease-out;
 	-moz-transition: opacity 200ms ease-out;
 	transition: opacity 200ms ease-out;
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-branchNode-blockSlug,
@@ -42,11 +40,9 @@
 	background-color: transparent;
 	outline-color: transparent;
 	outline-offset: 1em;
-	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: all 400ms ease-out;
 	-moz-transition: all 400ms ease-out;
 	transition: all 400ms ease-out;
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget {
@@ -62,7 +58,7 @@
 .ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
 	width: 0.95em;
 	height: 0.95em;
-	background-size: auto; /* stylelint-disable-line no-unsupported-browser-features */
+	background-size: auto;
 }
 
 .ve-ce-chimera {

@@ -46,11 +46,9 @@
 	display: inline-block;
 	margin: 0 3px 3px 0;
 	border: 1px solid #e6e6e6;
-	/* stylelint-disable no-unsupported-browser-features */
 	-webkit-transition: border-color 200ms;
 	-moz-transition: border-color 200ms;
 	transition: border-color 200ms;
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-specialCharacterPage-character:hover {

@@ -5,13 +5,10 @@
  */
 
 .ve-ui-commandHelpDialog-container {
-	/* TODO: IE9 doesn't support column layouts T135379 */
-	/* stylelint-disable no-unsupported-browser-features */
 	-ms-column-count: 3;
 	-moz-column-count: 3;
 	-webkit-column-count: 3;
 	column-count: 3;
-	/* stylelint-enable no-unsupported-browser-features */
 }
 
 .ve-ui-commandHelpDialog-section {
@@ -80,7 +77,7 @@
 	line-height: 1.4;
 	padding: 0.1em 0.4em;
 	margin: -0.1em 0.3em 0;
-	text-shadow: 0 1px 0 #fff; /* stylelint-disable-line no-unsupported-browser-features */
+	text-shadow: 0 1px 0 #fff;
 	text-transform: uppercase;
 	text-align: center;
 }

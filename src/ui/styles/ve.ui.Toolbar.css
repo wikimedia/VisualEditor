@@ -12,7 +12,7 @@
 /* PositionedTargetToolbar */
 
 .ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
-	position: fixed; /* stylelint-disable-line no-unsupported-browser-features */
+	position: fixed;
 	top: 0;
 	z-index: 2;
 	border-top: 0;

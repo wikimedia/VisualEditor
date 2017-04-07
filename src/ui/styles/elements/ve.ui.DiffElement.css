@@ -47,7 +47,7 @@
 	outline: 3px solid #6da9f7;
 	padding: 2px;
 	margin: -2px 0 0 -2px;
-	pointer-events: none; /* stylelint-disable-line no-unsupported-browser-features */
+	pointer-events: none;
 }
 
 .ve-ui-diffElement-attributeChange {
