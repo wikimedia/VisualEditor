@@ -159,12 +159,17 @@ ve.ui.DiffElement.prototype.onDocumentMouseMove = function ( e ) {
 ve.ui.DiffElement.prototype.positionDescriptions = function () {
 	var diffElement = this;
 	this.descriptions.getItems().forEach( function ( item ) {
-		var elementRect, itemRect;
+		var elementRect, itemRect, $element;
 
 		item.$element.css( 'margin-top', '' );
 
 		itemRect = item.$element[ 0 ].getBoundingClientRect();
-		elementRect = diffElement.getDiffElementById( item.getData() )[ 0 ].getBoundingClientRect();
+		$element = diffElement.getDiffElementById( item.getData() );
+		if ( !$element.length ) {
+			// Changed element isn't visible - probably shouldn't happen
+			return;
+		}
+		elementRect = ve.ce.FocusableNode.static.getRectsForElement( $element ).boundingRect;
 
 		if ( elementRect.top > itemRect.top ) {
 			item.$element.css( 'margin-top', elementRect.top - itemRect.top - 5 );
