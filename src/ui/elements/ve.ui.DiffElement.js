@@ -42,8 +42,6 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
 	this.descriptions = new ve.ui.ChangeDescriptionsSelectWidget();
 	this.descriptions.connect( this, { highlight: 'onDescriptionsHighlight' } );
 	this.descriptionItemsStack = [];
-	this.onWindowResizeDebounced = ve.debounce( this.onWindowResize.bind( this ), 250 );
-	$( this.getElementWindow() ).on( 'resize', this.onWindowResizeDebounced );
 
 	this.$document.on( {
 		mousemove: this.onDocumentMouseMove.bind( this )
@@ -156,15 +154,6 @@ ve.ui.DiffElement.prototype.onDocumentMouseMove = function ( e ) {
 };
 
 /**
- * Handle window resize events
- *
- * @param {jQuery.Event} event Window resize event
- */
-ve.ui.DiffElement.prototype.onWindowResize = function () {
-	this.positionDescriptions();
-};
-
-/**
  * Reposition the description items so they are not above their position in the document
  */
 ve.ui.DiffElement.prototype.positionDescriptions = function () {
@@ -183,14 +172,6 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
 
 	} );
 	this.$document.css( 'min-height', this.$sidebar.height() );
-};
-
-/**
- * Destroy the diff and remove global handlers
- */
-ve.ui.DiffElement.prototype.destroy = function () {
-	$( this.getElementWindow() ).off( 'resize', this.onWindowResizeDebounced );
-	this.$element.remove();
 };
 
 /**
