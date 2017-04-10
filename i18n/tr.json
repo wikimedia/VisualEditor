@@ -19,7 +19,8 @@
 			"Sadrettin",
 			"Kumkumuk",
 			"Alikaan",
-			"1917 Ekim Devrimi"
+			"1917 Ekim Devrimi",
+			"Vito Genovese"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -50,7 +51,7 @@
 	"visualeditor-commentinspector-tooltip": "Yorum",
 	"visualeditor-content-select-all": "Hepsini seç",
 	"visualeditor-contextitemwidget-label-remove": "Sil",
-	"visualeditor-contextitemwidget-label-secondary": "Değiştir",
+	"visualeditor-contextitemwidget-label-secondary": "Düzenle",
 	"visualeditor-debugbar-close": "Kapat",
 	"visualeditor-debugbar-inputdebug": "Giriş hata ayıklama",
 	"visualeditor-debugbar-logrange": "Günlük",
