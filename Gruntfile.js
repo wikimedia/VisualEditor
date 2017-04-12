@@ -319,12 +319,14 @@ module.exports = function ( grunt ) {
 				preprocessors: {
 					'src/**/*.js': [ 'coverage' ]
 				},
-				reporters: [ 'dots', 'coverage' ],
-				coverageReporter: { reporters: [
-					{ type: 'json-summary', dir: 'coverage/' },
-					{ type: 'html', dir: 'coverage/' },
-					{ type: 'text-summary', dir: 'coverage/' }
-				] }
+				reporters: [ 'mocha', 'coverage' ],
+				coverageReporter: {
+					reporters: [
+						{ type: 'json-summary', dir: 'coverage/' },
+						{ type: 'html', dir: 'coverage/' },
+						{ type: 'text-summary', dir: 'coverage/' }
+					]
+				}
 			},
 			others: {
 				browsers: [ 'Firefox' ]
