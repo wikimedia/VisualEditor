@@ -14,11 +14,6 @@ body {
 	border: 1px solid #ccc;
 }
 
-.ve-instance .ve-ce-documentNode,
-.ve-instance .ve-ui-surface-placeholder {
-	padding: 0.75em 1.5em;
-}
-
 .ve-demo-output {
 	margin: 1em;
 }

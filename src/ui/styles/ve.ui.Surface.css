@@ -32,6 +32,11 @@
 	text-overflow: ellipsis;
 }
 
+.ve-ui-surface-placeholder,
+.ve-ui-surface .ve-ce-documentNode {
+	padding: 0.5em 1.5em;
+}
+
 .ve-ui-surface-source .ve-ce-documentNode {
 	/* Specify a valid second value to fix size in Chrome/FF */
 	font-family: monospace, 'Courier';
