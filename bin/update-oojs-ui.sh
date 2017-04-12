@@ -38,7 +38,7 @@ fi
 
 # Copy files
 # - Exclude the minimised distribution files and PNG image assets (VE requires SVG support)
--rsync --force --recursive --delete --exclude 'oojs-ui*.min.*' --exclude 'oojs-ui.js' --exclude 'themes/*/images/*/*.png' ./node_modules/oojs-ui/dist/ "$REPO_DIR/$TARGET_DIR"
+rsync --force --recursive --delete --exclude 'oojs-ui*.min.*' --exclude 'oojs-ui.js' --exclude 'themes/**/images/*/*.png' ./node_modules/oojs-ui/dist/ "$REPO_DIR/$TARGET_DIR"
 
 # Clean up temporary area
 rm -rf "$NPM_DIR"
