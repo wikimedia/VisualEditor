@@ -1100,7 +1100,10 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 
 	} else {
 		// External drop
-		this.handleDataTransfer( dataTransfer, false, targetFragment );
+		// TODO: Support sanitized drop on single line surfaces
+		if ( this.getSurface().isMultiline() ) {
+			this.handleDataTransfer( dataTransfer, false, targetFragment );
+		}
 	}
 	this.endRelocation();
 };

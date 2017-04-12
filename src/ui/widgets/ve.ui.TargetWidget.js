@@ -21,6 +21,7 @@
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
+ * @cfg {boolean} [multiline] Multi-line surface
  * @cfg {string} [inDialog] The name of the dialog this surface widget is in
  */
 ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
@@ -38,6 +39,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	this.tools = config.tools;
 	this.includeCommands = config.includeCommands;
 	this.excludeCommands = config.excludeCommands;
+	this.multiline = config.multiline !== false;
 	this.importRules = config.importRules;
 	this.inDialog = config.inDialog;
 	// TODO: Support source widgets
@@ -94,6 +96,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		includeCommands: this.includeCommands,
 		excludeCommands: this.excludeCommands,
 		importRules: this.importRules,
+		multiline: this.multiline,
 		inDialog: this.inDialog
 	} );
 

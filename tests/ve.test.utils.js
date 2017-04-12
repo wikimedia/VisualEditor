@@ -319,6 +319,9 @@
 				isMobile: function () {
 					return false;
 				},
+				isMultiline: function () {
+					return true;
+				},
 				getBoundingClientRect: function () {
 					return {};
 				},
