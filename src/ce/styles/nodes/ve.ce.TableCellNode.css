@@ -15,6 +15,7 @@
 }
 
 .ve-ce-tableCellNode a {
+	/* TODO: Suport IE10 with JS mouse events */
 	pointer-events: none;
 }
 
