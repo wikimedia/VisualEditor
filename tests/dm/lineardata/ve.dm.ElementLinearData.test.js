@@ -1597,6 +1597,18 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Headings converted to paragraph in plainText mode'
 			},
 			{
+				html: '<p>Bar</p><p>Baz</p><p>Quux</p>',
+				data: [
+					{ type: 'paragraph' },
+					'B', 'a', 'r',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { singleLine: true },
+				msg: 'Extra lines truncated in singleline mode'
+			},
+			{
 				html: '<h1>Bar</h1>',
 				data: [
 					// TODO: non-relevant attributes should be discarded, T130377

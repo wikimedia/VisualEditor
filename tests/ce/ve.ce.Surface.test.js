@@ -895,6 +895,18 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 57 ),
+				keys: [ 'ENTER' ],
+				htmlOrDoc: ( function () {
+					var view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() );
+					view.surface.isMultiline = function () { return false; };
+					return view;
+				}() ),
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 57 ),
+				msg: 'Enter does nothing in single line mode'
+			},
+			{
+				rangeOrSelection: new ve.Range( 57 ),
 				keys: [ 'SHIFT+ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(

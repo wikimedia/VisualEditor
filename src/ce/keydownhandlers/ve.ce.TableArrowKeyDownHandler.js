@@ -89,6 +89,7 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
 	e.preventDefault();
 
 	this.moveTableSelection( surface, rowOffset, colOffset, checkDir, expand, wrap );
+	return true;
 };
 
 /**

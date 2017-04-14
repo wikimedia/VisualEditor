@@ -22,6 +22,7 @@
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
+ * @cfg {boolean} [multiline=true] Multi-line surface
  * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
  * @cfg {string} [inDialog] The name of the dialog this surface is in
  */
@@ -69,6 +70,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.view = this.createView( this.model );
 	this.dialogs = this.createDialogWindowManager();
 	this.importRules = config.importRules || {};
+	this.multiline = config.multiline !== false;
 	this.context = this.createContext();
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
@@ -750,7 +752,20 @@ ve.ui.Surface.prototype.showProgress = function () {
  * @return {Object} Import rules
  */
 ve.ui.Surface.prototype.getImportRules = function () {
-	return this.importRules;
+	var singleLine = { singleLine: !this.multiline };
+	return {
+		all: ve.extendObject( {}, this.importRules.all, singleLine ),
+		external: ve.extendObject( {}, this.importRules.external, singleLine )
+	};
+};
+
+/**
+ * Check if the surface is multi-line
+ *
+ * @return {boolean} Surface is multi-line
+ */
+ve.ui.Surface.prototype.isMultiline = function () {
+	return this.multiline;
 };
 
 /**
