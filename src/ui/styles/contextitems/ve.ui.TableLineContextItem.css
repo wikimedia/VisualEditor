@@ -8,7 +8,16 @@
 	display: block;
 }
 
-.ve-ui-tableLineContextItem-actionButton .oo-ui-buttonElement-button {
+.ve-ui-tableLineContextItem-actionButton.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button {
 	display: block;
 	padding: 0.5em;
+}
+
+.ve-ui-tableLineContextItem-actionButton.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+	display: inline-block;
+	position: static;
+}
+
+.ve-ui-tableLineContextItem-actionButton.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
+	margin-left: 0.25em;
 }
