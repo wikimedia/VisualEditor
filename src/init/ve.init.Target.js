@@ -38,7 +38,7 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.surface = null;
 	this.toolbar = null;
 	this.actionsToolbar = null;
-	this.toolbarConfig = config.toolbarConfig;
+	this.toolbarConfig = config.toolbarConfig || {};
 	this.$scrollContainer = this.getScrollContainer();
 	this.toolbarScrollOffset = 0;
 
@@ -490,7 +490,7 @@ ve.init.Target.prototype.getToolbar = function () {
  */
 ve.init.Target.prototype.getActions = function () {
 	if ( !this.actionsToolbar ) {
-		this.actionsToolbar = new ve.ui.TargetToolbar( this );
+		this.actionsToolbar = new ve.ui.TargetToolbar( this, { position: this.toolbarConfig.position } );
 	}
 	return this.actionsToolbar;
 };
