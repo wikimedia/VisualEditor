@@ -58,6 +58,8 @@
 	"visualeditor-changedesc-unknown": "$1 is gewijzigd",
 	"visualeditor-changedesc-unset": "$1 is teruggedraaid van $2",
 	"visualeditor-changedir": "Tekstrichting wijzigen",
+	"visualeditor-changedir-tool-ltr": "Toon als links-naar-rechts",
+	"visualeditor-changedir-tool-rtl": "Toon als rechts-naar-links",
 	"visualeditor-clearbutton-tooltip": "Opmaak wissen",
 	"visualeditor-clipboard-copy": "Kopiëren",
 	"visualeditor-clipboard-cut": "Knippen",

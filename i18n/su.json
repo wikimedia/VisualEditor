@@ -1,13 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kandar"
+			"Kandar",
+			"Uchup19"
 		]
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliencontextitem-title": "Item",
 	"visualeditor-aliennode-tooltip": "Hampura, keur saayeunaeun mah ieu unsur ukur bisa diédit dina mode sumber.",
 	"visualeditor-align-widget-center": "Tengah",
+	"visualeditor-align-widget-default": "Bawaan",
 	"visualeditor-align-widget-left": "Kénca",
 	"visualeditor-align-widget-right": "Katuhu",
 	"visualeditor-alignablecontextitem-title": "Lelempeng",
@@ -20,8 +22,12 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Subskrip",
 	"visualeditor-annotationbutton-superscript-tooltip": "Superskrip",
 	"visualeditor-annotationbutton-underline-tooltip": "Garis handap",
+	"visualeditor-changedesc-image-size": "Ukuranna dirobah tina $1 jadi $2",
+	"visualeditor-changedesc-no-key": "$1 dirobah kana $2",
+	"visualeditor-changedesc-unknown": "$1 dirobah",
+	"visualeditor-changedesc-unset": "$1 teu disét tina $2",
 	"visualeditor-clearbutton-tooltip": "Hapus format",
-	"visualeditor-clipboard-copy": "Salin",
+	"visualeditor-clipboard-copy": "Téplak",
 	"visualeditor-clipboard-cut": "Potong",
 	"visualeditor-clipboard-paste": "Tapel",
 	"visualeditor-clipboard-paste-special": "Tapelkeun salaku téks polos",
