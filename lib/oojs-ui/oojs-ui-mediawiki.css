@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.21.0
+ * OOjs UI v0.21.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-11T22:51:10Z
+ * Date: 2017-04-18T23:32:54Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -20,17 +20,17 @@
   cursor: pointer;
   display: inline-block;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   vertical-align: middle;
   font-family: inherit;
   font-size: inherit;
   white-space: nowrap;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-buttonElement > .oo-ui-buttonElement-button::-moz-focus-inner {
   border-color: transparent;
@@ -95,15 +95,15 @@
 }
 .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button {
   -webkit-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
 }
 .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
 .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
   opacity: 0.87;
   -webkit-transition: opacity 100ms;
-     -moz-transition: opacity 100ms;
-          transition: opacity 100ms;
+  -moz-transition: opacity 100ms;
+  transition: opacity 100ms;
 }
 .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon.oo-ui-image-invert,
 .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator.oo-ui-image-invert {
@@ -133,7 +133,10 @@
 }
 .oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button {
   margin-left: -1px;
-  border: 1px solid #fff;
+  border-color: #fff;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 1px;
   padding: 0.3125em 0;
 }
 .oo-ui-buttonElement-frameless.oo-ui-indicatorElement > .oo-ui-buttonElement-button {
@@ -239,9 +242,6 @@
   color: #fff;
   border: 1px solid #c8ccd1;
 }
-.oo-ui-buttonElement-framed.oo-ui-widget-disabled + .oo-ui-widget-disabled > .oo-ui-buttonElement-button {
-  border-left-color: #fff;
-}
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled > .oo-ui-buttonElement-button {
   background-color: #f8f9fa;
   color: #222;
@@ -283,7 +283,8 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:active:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
   background-color: #eff3fa;
   color: #2a4b8d;
   border-color: #2a4b8d;
@@ -292,6 +293,7 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus {
   border-color: #36c;
   box-shadow: inset 0 0 0 1px #36c;
+  outline: 0;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
   color: #36c;
@@ -303,7 +305,8 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:active:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
   background-color: #eff3fa;
   color: #2a4b8d;
   border-color: #2a4b8d;
@@ -312,6 +315,7 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus {
   border-color: #36c;
   box-shadow: inset 0 0 0 1px #36c;
+  outline: 0;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
   color: #d33;
@@ -323,7 +327,8 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:active:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
   background-color: #ffffff;
   color: #b32424;
   border-color: #b32424;
@@ -332,6 +337,7 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus {
   border-color: #d33;
   box-shadow: inset 0 0 0 1px #d33;
+  outline: 0;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button {
   color: #fff;
@@ -345,7 +351,8 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:active:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
   color: #fff;
   background-color: #2a4b8d;
   border-color: #2a4b8d;
@@ -354,6 +361,7 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus {
   border-color: #36c;
   box-shadow: inset 0 0 0 1px #36c, inset 0 0 0 2px #fff;
+  outline: 0;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button {
   color: #fff;
@@ -367,7 +375,8 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:active:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
   color: #fff;
   background-color: #2a4b8d;
   border-color: #2a4b8d;
@@ -376,6 +385,7 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-constructive > .oo-ui-buttonElement-button:focus {
   border-color: #36c;
   box-shadow: inset 0 0 0 1px #36c, inset 0 0 0 2px #fff;
+  outline: 0;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
   color: #fff;
@@ -389,7 +399,8 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:active:focus,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
   color: #fff;
   background-color: #b32424;
   border-color: #b32424;
@@ -398,6 +409,7 @@
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus {
   border-color: #d33;
   box-shadow: inset 0 0 0 1px #d33, inset 0 0 0 2px #fff;
+  outline: 0;
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-flaggedElement-primary > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
@@ -405,8 +417,8 @@
 }
 .oo-ui-clippableElement-clippable {
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   min-height: 3.125em;
 }
 .oo-ui-floatableElement {
@@ -646,7 +658,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-panelLayout-scrollable {
   overflow: auto;
   -webkit-transform: translateZ(0);
-          transform: translateZ(0);
+  transform: translateZ(0);
 }
 .oo-ui-panelLayout-expanded {
   position: absolute;
@@ -734,6 +746,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-decoratedOptionWidget .oo-ui-labelElement-label {
   line-height: 1.172em;
 }
+.oo-ui-decoratedOptionWidget.oo-ui-indicatorElement {
+  padding-right: 1.875em;
+}
 .oo-ui-decoratedOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
   right: 0.9375em;
 }
@@ -808,17 +823,20 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-right: 0;
 }
 .oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed .oo-ui-buttonElement-button {
-  border-radius: 0;
   margin-left: -1px;
+  border-radius: 0;
 }
 .oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed:first-child .oo-ui-buttonElement-button {
+  margin-left: 0;
   border-bottom-left-radius: 2px;
   border-top-left-radius: 2px;
-  margin-left: 0;
 }
 .oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed:last-child .oo-ui-buttonElement-button {
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
+}
+.oo-ui-buttonGroupWidget .oo-ui-buttonElement-framed.oo-ui-widget-disabled + .oo-ui-widget-disabled > .oo-ui-buttonElement-button {
+  border-left-color: #fff;
 }
 .oo-ui-buttonGroupWidget.oo-ui-widget-enabled .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover,
 .oo-ui-buttonGroupWidget.oo-ui-widget-enabled .oo-ui-buttonElement.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active {
@@ -894,9 +912,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupWidget-head {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-popupWidget-head > .oo-ui-buttonWidget {
   float: right;
@@ -991,8 +1009,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-popupWidget-transitioning .oo-ui-popupWidget-popup {
   -webkit-transition: width 100ms, height 100ms, left 100ms;
-     -moz-transition: width 100ms, height 100ms, left 100ms;
-          transition: width 100ms, height 100ms, left 100ms;
+  -moz-transition: width 100ms, height 100ms, left 100ms;
+  transition: width 100ms, height 100ms, left 100ms;
 }
 .oo-ui-popupWidget-head {
   height: 2.5em;
@@ -1052,8 +1070,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-repeat: no-repeat;
   background-size: 0 0;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   position: absolute;
   left: 0;
   width: 1.5625em;
@@ -1064,8 +1082,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-checkboxInputWidget [type='checkbox']:checked + span {
   background-image: url('themes/mediawiki/images/icons/check-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-invert.png');
   background-size: 90% 90%;
 }
 .oo-ui-checkboxInputWidget [type='checkbox']:disabled + span {
@@ -1082,8 +1100,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox'] + span {
   cursor: pointer;
   -webkit-transition: background-color 100ms, background-size 100ms, border-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, background-size 100ms, border-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, background-size 100ms, border-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, background-size 100ms, border-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, background-size 100ms, border-color 100ms, box-shadow 100ms;
 }
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:hover + span,
 .oo-ui-checkboxInputWidget.oo-ui-widget-enabled [type='checkbox']:focus:hover + span {
@@ -1133,8 +1151,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   position: relative;
   vertical-align: middle;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   width: 100%;
   max-width: 50em;
 }
@@ -1147,8 +1165,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-repeat: no-repeat;
   width: 100%;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-dropdownInputWidget.oo-ui-widget-enabled select {
   cursor: pointer;
@@ -1160,11 +1178,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-dropdownInputWidget select {
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   border: 1px solid #a2a9b1;
   border-radius: 2px;
   padding: 0.625em 0.9375em 0.546875em;
@@ -1191,8 +1209,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: #f8f9fa;
   color: #222;
   -webkit-transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
 }
 .oo-ui-dropdownInputWidget.oo-ui-widget-enabled select:hover {
   background-color: #fff;
@@ -1236,8 +1254,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   position: absolute;
   left: 0;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   width: 1.5625em;
   height: 1.5625em;
   border: 1px solid #72777d;
@@ -1273,8 +1291,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-radioInputWidget.oo-ui-widget-enabled [type='radio'] + span {
   cursor: pointer;
   -webkit-transition: background-color 100ms, border-color 100ms, border-width 100ms;
-     -moz-transition: background-color 100ms, border-color 100ms, border-width 100ms;
-          transition: background-color 100ms, border-color 100ms, border-width 100ms;
+  -moz-transition: background-color 100ms, border-color 100ms, border-width 100ms;
+  transition: background-color 100ms, border-color 100ms, border-width 100ms;
 }
 .oo-ui-radioInputWidget.oo-ui-widget-enabled [type='radio']:hover + span {
   border-color: #36c;
@@ -1325,8 +1343,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   position: relative;
   vertical-align: middle;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   width: 100%;
   max-width: 50em;
 }
@@ -1335,8 +1353,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   display: block;
   width: 100%;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-textInputWidget textarea {
   overflow: auto;
@@ -1373,9 +1391,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   height: 100%;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled > .oo-ui-iconElement-icon,
 .oo-ui-textInputWidget.oo-ui-widget-enabled > .oo-ui-indicatorElement-indicator {
@@ -1389,9 +1407,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-textInputWidget.oo-ui-widget-disabled .oo-ui-labelElement-label {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-textInputWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
   display: block;
@@ -1435,10 +1453,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled input,
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea {
-  box-shadow: inset 0 0 0 1px #fff;
+  box-shadow: inset 0 0 0 1px transparent;
   -webkit-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-     -moz-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-          transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  -moz-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled input:hover,
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea:hover {
@@ -1452,7 +1470,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled input[readonly],
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea[readonly] {
-  color: #72777d;
+  background-color: #f8f9fa;
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled input[readonly]:hover,
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea[readonly]:hover {
@@ -1460,8 +1478,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled input[readonly]:focus,
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea[readonly]:focus {
-  border-color: #c8ccd1;
-  box-shadow: inset 0 0 0 1px #c8ccd1;
+  border-color: #36c;
 }
 .oo-ui-textInputWidget.oo-ui-widget-enabled input::-webkit-input-placeholder,
 .oo-ui-textInputWidget.oo-ui-widget-enabled textarea::-webkit-input-placeholder {
@@ -1576,14 +1593,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-menuOptionWidget {
   -webkit-transition: background-color 100ms, color 100ms;
-     -moz-transition: background-color 100ms, color 100ms;
-          transition: background-color 100ms, color 100ms;
-}
-.oo-ui-menuOptionWidget .oo-ui-iconElement-icon {
-  display: none;
-}
-.oo-ui-menuOptionWidget.oo-ui-optionWidget-selected .oo-ui-iconElement-icon {
-  display: block;
+  -moz-transition: background-color 100ms, color 100ms;
+  transition: background-color 100ms, color 100ms;
 }
 .oo-ui-menuOptionWidget.oo-ui-optionWidget-highlighted {
   background-color: #eaecf0;
@@ -1593,16 +1604,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: #eaf3ff;
   color: #36c;
 }
-.oo-ui-menuOptionWidget.oo-ui-optionWidget-selected .oo-ui-iconElement-icon {
-  display: none;
-}
 .oo-ui-menuOptionWidget.oo-ui-optionWidget-selected.oo-ui-menuOptionWidget.oo-ui-optionWidget-highlighted,
 .oo-ui-menuOptionWidget.oo-ui-optionWidget-pressed.oo-ui-menuOptionWidget.oo-ui-optionWidget-highlighted {
   background-color: rgba(41, 98, 204, 0.1);
   color: #36c;
-}
-.oo-ui-menuOptionWidget.oo-ui-iconElement {
-  padding-left: 0.9375em;
 }
 .oo-ui-menuSectionOptionWidget {
   color: #72777d;
@@ -1629,12 +1634,12 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: default;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-dropdownWidget-handle .oo-ui-iconElement-icon,
 .oo-ui-dropdownWidget-handle .oo-ui-indicatorElement-indicator {
@@ -1674,8 +1679,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: #f8f9fa;
   color: #222;
   -webkit-transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, border-color 100ms, box-shadow 100ms;
 }
 .oo-ui-dropdownWidget.oo-ui-widget-enabled .oo-ui-dropdownWidget-handle:hover {
   background-color: #fff;
@@ -1699,8 +1704,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-dropdownWidget.oo-ui-widget-enabled .oo-ui-dropdownWidget-handle .oo-ui-indicatorElement-indicator {
   opacity: 0.87;
   -webkit-transition: opacity 100ms;
-     -moz-transition: opacity 100ms;
-          transition: opacity 100ms;
+  -moz-transition: opacity 100ms;
+  transition: opacity 100ms;
 }
 .oo-ui-dropdownWidget.oo-ui-widget-enabled.oo-ui-dropdownWidget-open .oo-ui-dropdownWidget-handle {
   background-color: #fff;
@@ -1840,18 +1845,18 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-progressBarWidget-bar {
   height: 1em;
   -webkit-transition: width 200ms;
-     -moz-transition: width 200ms;
-          transition: width 200ms;
+  -moz-transition: width 200ms;
+  transition: width 200ms;
 }
 .oo-ui-progressBarWidget-indeterminate .oo-ui-progressBarWidget-bar {
   -webkit-animation: oo-ui-progressBarWidget-slide 2s infinite linear;
-     -moz-animation: oo-ui-progressBarWidget-slide 2s infinite linear;
-          animation: oo-ui-progressBarWidget-slide 2s infinite linear;
+  -moz-animation: oo-ui-progressBarWidget-slide 2s infinite linear;
+  animation: oo-ui-progressBarWidget-slide 2s infinite linear;
   width: 40%;
   -webkit-transform: translate(-25%);
-     -moz-transform: translate(-25%);
-      -ms-transform: translate(-25%);
-          transform: translate(-25%);
+  -moz-transform: translate(-25%);
+  -ms-transform: translate(-25%);
+  transform: translate(-25%);
   border-left-width: 1px;
 }
 .oo-ui-progressBarWidget.oo-ui-widget-enabled .oo-ui-progressBarWidget-bar {
@@ -1863,55 +1868,55 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 @-webkit-keyframes oo-ui-progressBarWidget-slide {
   from {
     -webkit-transform: translate(-100%);
-       -moz-transform: translate(-100%);
-        -ms-transform: translate(-100%);
-            transform: translate(-100%);
+    -moz-transform: translate(-100%);
+    -ms-transform: translate(-100%);
+    transform: translate(-100%);
   }
   to {
     -webkit-transform: translate(350%);
-       -moz-transform: translate(350%);
-        -ms-transform: translate(350%);
-            transform: translate(350%);
+    -moz-transform: translate(350%);
+    -ms-transform: translate(350%);
+    transform: translate(350%);
   }
 }
 @-moz-keyframes oo-ui-progressBarWidget-slide {
   from {
     -webkit-transform: translate(-100%);
-       -moz-transform: translate(-100%);
-        -ms-transform: translate(-100%);
-            transform: translate(-100%);
+    -moz-transform: translate(-100%);
+    -ms-transform: translate(-100%);
+    transform: translate(-100%);
   }
   to {
     -webkit-transform: translate(350%);
-       -moz-transform: translate(350%);
-        -ms-transform: translate(350%);
-            transform: translate(350%);
+    -moz-transform: translate(350%);
+    -ms-transform: translate(350%);
+    transform: translate(350%);
   }
 }
 @keyframes oo-ui-progressBarWidget-slide {
   from {
     -webkit-transform: translate(-100%);
-       -moz-transform: translate(-100%);
-        -ms-transform: translate(-100%);
-            transform: translate(-100%);
+    -moz-transform: translate(-100%);
+    -ms-transform: translate(-100%);
+    transform: translate(-100%);
   }
   to {
     -webkit-transform: translate(350%);
-       -moz-transform: translate(350%);
-        -ms-transform: translate(350%);
-            transform: translate(350%);
+    -moz-transform: translate(350%);
+    -ms-transform: translate(350%);
+    transform: translate(350%);
   }
 }
 
 /*!
- * OOjs UI v0.21.0
+ * OOjs UI v0.21.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-11T22:51:10Z
+ * Date: 2017-04-18T23:32:54Z
  */
 .oo-ui-draggableElement {
   padding: 1.0546875em 0.9375em 0.9375em;
@@ -1920,14 +1925,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: move;
   cursor: url(images/grab.cur );
   cursor: -webkit-grab;
-  cursor:    -moz-grab;
-  cursor:         grab;
+  cursor: -moz-grab;
+  cursor: grab;
 }
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ):active {
   cursor: url(images/grabbing.cur );
   cursor: -webkit-grabbing;
-  cursor:    -moz-grabbing;
-  cursor:         grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;
 }
 .oo-ui-draggableElement-handle.oo-ui-widget-disabled,
 .oo-ui-widget-disabled .oo-ui-draggableElement-handle {
@@ -1950,8 +1955,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-bookletLayout-stackLayout > .oo-ui-panelLayout {
   width: 100%;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-bookletLayout-outlinePanel-editable > .oo-ui-outlineSelectWidget {
   position: absolute;
@@ -2002,8 +2007,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-menuLayout-content {
   position: absolute;
   -webkit-transition: all 200ms ease;
-     -moz-transition: all 200ms ease;
-          transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  transition: all 200ms ease;
 }
 .oo-ui-menuLayout-menu {
   height: 18em;
@@ -2089,13 +2094,13 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   outline: 0;
 }
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget .oo-ui-buttonElement-button {
-  border-radius: 0;
   margin-left: -1px;
+  border-radius: 0;
 }
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget:first-child .oo-ui-buttonElement-button {
+  margin-left: 0;
   border-bottom-left-radius: 2px;
   border-top-left-radius: 2px;
-  margin-left: 0;
 }
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget:last-child .oo-ui-buttonElement-button {
   border-bottom-right-radius: 2px;
@@ -2104,6 +2109,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget.oo-ui-iconElement .oo-ui-iconElement-icon,
 .oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget.oo-ui-indicatorElement .oo-ui-indicatorElement-indicator {
   position: absolute;
+}
+.oo-ui-buttonSelectWidget .oo-ui-buttonOptionWidget.oo-ui-widget-disabled + .oo-ui-widget-disabled > .oo-ui-buttonElement-button {
+  border-left-color: #fff;
 }
 .oo-ui-buttonSelectWidget.oo-ui-widget-enabled:focus .oo-ui-buttonOptionWidget.oo-ui-optionWidget-selected .oo-ui-buttonElement-button {
   border-color: #36c;
@@ -2143,10 +2151,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   vertical-align: middle;
   overflow: hidden;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-transform: translateZ(0);
-          transform: translateZ(0);
+  transform: translateZ(0);
   background-color: #f8f9fa;
   width: 3.5em;
   min-height: 26px;
@@ -2155,8 +2163,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-radius: 1em;
   margin-right: 0.5em;
   -webkit-transition: background-color 250ms, border-color 250ms;
-     -moz-transition: background-color 250ms, border-color 250ms;
-          transition: background-color 250ms, border-color 250ms;
+  -moz-transition: background-color 250ms, border-color 250ms;
+  transition: background-color 250ms, border-color 250ms;
 }
 .oo-ui-toggleSwitchWidget.oo-ui-widget-enabled {
   cursor: pointer;
@@ -2165,8 +2173,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   position: absolute;
   display: block;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-toggleSwitchWidget:last-child {
   margin-right: 0;
@@ -2183,8 +2191,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-radius: 1em;
   z-index: 1;
   -webkit-transition: border-color 250ms;
-     -moz-transition: border-color 250ms;
-          transition: border-color 250ms;
+  -moz-transition: border-color 250ms;
+  transition: border-color 250ms;
 }
 .oo-ui-toggleSwitchWidget-grip {
   top: 0.3125em;
@@ -2194,8 +2202,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   height: 1.25em;
   border-radius: 1.25em;
   -webkit-transition: background-color 250ms, left 100ms, margin-left 100ms;
-     -moz-transition: background-color 250ms, left 100ms, margin-left 100ms;
-          transition: background-color 250ms, left 100ms, margin-left 100ms;
+  -moz-transition: background-color 250ms, left 100ms, margin-left 100ms;
+  transition: background-color 250ms, left 100ms, margin-left 100ms;
 }
 .oo-ui-toggleSwitchWidget-glow {
   display: none;
@@ -2315,8 +2323,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   position: relative;
   overflow: hidden;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator,
 .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon {
@@ -2328,9 +2336,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: default;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-selectFileWidget-label {
   position: absolute;
@@ -2418,9 +2426,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
 .oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget,
@@ -2444,18 +2452,20 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-right-width: 0;
 }
 .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon {
+  top: -1px;
   left: 0.46875em;
-  min-height: 2.4em;
+  min-height: 2.5em;
   margin-left: -1px;
 }
 .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator {
+  top: -1px;
   right: 0.9375em;
-  min-height: 2.4em;
+  min-height: 2.5em;
 }
 .oo-ui-selectFileWidget-label {
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   display: block;
   right: 2.375em;
   padding-top: 0.625em;
@@ -2521,8 +2531,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: #fff;
   border-style: dashed;
   -webkit-transition: background-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-     -moz-transition: background-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-          transition: background-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  -moz-transition: background-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: background-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 .oo-ui-selectFileWidget-empty.oo-ui-widget-enabled.oo-ui-selectFileWidget-dropTarget:hover {
   border-color: #72777d;
@@ -2531,29 +2541,34 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: #eaf3ff;
   color: #36c;
 }
-.oo-ui-selectFileWidget.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
-.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget {
-  background-color: #eaecf0;
-  border-color: #c8ccd1;
-}
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info,
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-info {
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info {
   background-color: #eaecf0;
   color: #72777d;
   border-color: #c8ccd1;
   text-shadow: 0 1px 1px #fff;
 }
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon,
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon {
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-iconElement-icon {
   opacity: 0.51;
 }
 .oo-ui-selectFileWidget.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator,
-.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator,
-.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator {
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled .oo-ui-selectFileWidget-info > .oo-ui-indicatorElement-indicator {
   opacity: 0.15;
+}
+.oo-ui-selectFileWidget.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget,
+.oo-ui-selectFileWidget-empty.oo-ui-widget-disabled.oo-ui-selectFileWidget-dropTarget {
+  background-color: #eaecf0;
+  border-color: #c8ccd1;
+}
+.oo-ui-selectFileWidget-notsupported .oo-ui-selectFileWidget-info {
+  background-color: #eaecf0;
+  color: #222;
+  border-color: #c8ccd1;
+}
+.oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget {
+  background-color: #eaecf0;
+  border-color: #c8ccd1;
 }
 .oo-ui-selectFileWidget-notsupported.oo-ui-selectFileWidget-dropTarget .oo-ui-selectFileWidget-label {
   padding: 1em 0.9375em;
@@ -2570,13 +2585,13 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-outlineOptionWidget {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   padding: 1.0546875em 0.9375em 0.9375em;
   -webkit-transition: background-color 100ms, color 100ms;
-     -moz-transition: background-color 100ms, color 100ms;
-          transition: background-color 100ms, color 100ms;
+  -moz-transition: background-color 100ms, color 100ms;
+  transition: background-color 100ms, color 100ms;
 }
 .oo-ui-outlineOptionWidget.oo-ui-optionWidget-highlighted {
   background-color: #eaecf0;
@@ -2625,8 +2640,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-outlineControlsWidget-movers {
   float: left;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-outlineControlsWidget > .oo-ui-iconElement-icon {
   float: left;
@@ -2674,8 +2689,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding: 0.35em 1em;
   font-weight: bold;
   -webkit-transition: background-color 100ms, color 100ms;
-     -moz-transition: background-color 100ms, color 100ms;
-          transition: background-color 100ms, color 100ms;
+  -moz-transition: background-color 100ms, color 100ms;
+  transition: background-color 100ms, color 100ms;
 }
 .oo-ui-tabOptionWidget.oo-ui-widget-enabled:hover {
   background-color: rgba(255, 255, 255, 0.3);
@@ -2715,14 +2730,17 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-tagMultiselectWidget-content {
   position: relative;
 }
-.oo-ui-tagMultiselectWidget.oo-ui-widget-disabled .oo-ui-tagMultiselectWidget-content > input {
-  display: none;
-}
 .oo-ui-tagMultiselectWidget-group {
   display: inline;
 }
-.oo-ui-tagMultiselectWidget-inputPosition-outline {
+.oo-ui-tagMultiselectWidget-outlined {
   width: 100%;
+}
+.oo-ui-tagMultiselectWidget.oo-ui-widget-enabled.oo-ui-tagMultiselectWidget-inlined .oo-ui-tagMultiselectWidget-handle {
+  cursor: text;
+}
+.oo-ui-tagMultiselectWidget.oo-ui-widget-disabled .oo-ui-tagMultiselectWidget-content > input {
+  display: none;
 }
 .oo-ui-tagMultiselectWidget-focusTrap {
   display: inline-block;
@@ -2736,8 +2754,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border: 1px solid #a2a9b1;
   border-radius: 2px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-tagMultiselectWidget-handle:last-child {
   margin-right: 0;
@@ -2792,10 +2810,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-tagMultiselectWidget.oo-ui-widget-enabled .oo-ui-tagMultiselectWidget-handle {
   background-color: #fff;
-  cursor: text;
   -webkit-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-     -moz-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-          transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  -moz-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 .oo-ui-tagMultiselectWidget.oo-ui-widget-enabled:hover .oo-ui-tagMultiselectWidget-handle {
   border-color: #72777d;
@@ -2804,6 +2821,19 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-color: #36c;
   outline: 0;
   box-shadow: inset 0 0 0 1px #36c;
+}
+.oo-ui-tagMultiselectWidget.oo-ui-widget-enabled.oo-ui-tagMultiselectWidget-outlined .oo-ui-tagMultiselectWidget-handle {
+  background-color: #f8f9fa;
+  border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.oo-ui-tagMultiselectWidget.oo-ui-widget-enabled.oo-ui-tagMultiselectWidget-outlined .oo-ui-tagMultiselectWidget-handle .oo-ui-tagItemWidget.oo-ui-widget-enabled {
+  background-color: #fff;
+}
+.oo-ui-tagMultiselectWidget.oo-ui-widget-enabled.oo-ui-tagMultiselectWidget-outlined .oo-ui-inputWidget-input {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 .oo-ui-tagMultiselectWidget.oo-ui-widget-disabled .oo-ui-tagMultiselectWidget-handle {
   color: #72777d;
@@ -2823,8 +2853,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: default;
   white-space: nowrap;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   width: auto;
   max-width: 100%;
   height: 1.7em;
@@ -2856,8 +2886,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   color: #222;
   padding-right: 1.5375em;
   -webkit-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
 }
 .oo-ui-tagItemWidget.oo-ui-widget-enabled:hover {
   background-color: #fff;
@@ -2941,8 +2971,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border: 1px solid #a2a9b1;
   border-radius: 2px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-capsuleMultiselectWidget-handle:last-child {
   margin-right: 0;
@@ -3003,8 +3033,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: #fff;
   cursor: text;
   -webkit-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-     -moz-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
-          transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  -moz-transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
+  transition: border-color 200ms cubic-bezier(0.39, 0.575, 0.565, 1), box-shadow 200ms cubic-bezier(0.39, 0.575, 0.565, 1);
 }
 .oo-ui-capsuleMultiselectWidget.oo-ui-widget-enabled:hover .oo-ui-capsuleMultiselectWidget-handle {
   border-color: #72777d;
@@ -3032,8 +3062,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   cursor: default;
   white-space: nowrap;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   width: auto;
   max-width: 100%;
   height: 1.7em;
@@ -3055,8 +3085,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   color: #222;
   padding-right: 1.5375em;
   -webkit-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, color 100ms, border-color 100ms, box-shadow 100ms;
 }
 .oo-ui-capsuleItemWidget.oo-ui-widget-enabled:hover {
   background-color: #fff;
@@ -3169,24 +3199,24 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.21.0
+ * OOjs UI v0.21.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-11T22:51:10Z
+ * Date: 2017-04-18T23:32:54Z
  */
 .oo-ui-tool.oo-ui-widget-enabled {
   -webkit-transition: background-color 100ms;
-     -moz-transition: background-color 100ms;
-          transition: background-color 100ms;
+  -moz-transition: background-color 100ms;
+  transition: background-color 100ms;
 }
 .oo-ui-tool.oo-ui-widget-enabled .oo-ui-tool-link .oo-ui-tool-title {
   -webkit-transition: color 100ms;
-     -moz-transition: color 100ms;
-          transition: color 100ms;
+  -moz-transition: color 100ms;
+  transition: color 100ms;
 }
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -3266,8 +3296,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-barToolGroup.oo-ui-widget-enabled > .oo-ui-toolGroup-tools > .oo-ui-tool.oo-ui-widget-enabled > .oo-ui-tool-link .oo-ui-tool-title {
   color: #222;
   -webkit-transition: color 100ms;
-     -moz-transition: color 100ms;
-          transition: color 100ms;
+  -moz-transition: color 100ms;
+  transition: color 100ms;
 }
 .oo-ui-barToolGroup.oo-ui-widget-enabled > .oo-ui-toolGroup-tools > .oo-ui-tool.oo-ui-widget-enabled.oo-ui-tool-active {
   background-color: #eaf3ff;
@@ -3370,6 +3400,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
   margin-right: 1.75em;
 }
+.oo-ui-popupToolGroup.oo-ui-labelElement:not( .oo-ui-indicatorElement ) .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
+  margin: 0 0.5em;
+}
 .oo-ui-popupToolGroup-header {
   line-height: 2.6;
   margin: 0 0.6em;
@@ -3401,6 +3434,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-toolbar-narrow .oo-ui-popupToolGroup-handle .oo-ui-iconElement-icon {
   left: 0;
 }
+.oo-ui-popupToolGroup:not( .oo-ui-labelElement ):not( .oo-ui-iconElement ) .oo-ui-indicatorElement-indicator {
+  opacity: 1;
+}
 .oo-ui-popupToolGroup .oo-ui-toolGroup-tools {
   margin: 0 -1px;
   border: 1px solid #c8ccd1;
@@ -3417,8 +3453,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupToolGroup .oo-ui-tool-link {
   padding: 0.4em 0.625em;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-iconElement-icon {
   height: 2.5em;
@@ -3434,8 +3470,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-popupToolGroup.oo-ui-widget-enabled {
   -webkit-transition: background-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, box-shadow 100ms;
 }
 .oo-ui-popupToolGroup.oo-ui-widget-enabled.oo-ui-popupToolGroup-active {
   box-shadow: inset 0 0.07em 0.07em 0 rgba(0, 0, 0, 0.07);
@@ -3446,8 +3482,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-popupToolGroup.oo-ui-widget-enabled > .oo-ui-popupToolGroup-handle {
   -webkit-transition: background-color 100ms, box-shadow 100ms;
-     -moz-transition: background-color 100ms, box-shadow 100ms;
-          transition: background-color 100ms, box-shadow 100ms;
+  -moz-transition: background-color 100ms, box-shadow 100ms;
+  transition: background-color 100ms, box-shadow 100ms;
 }
 .oo-ui-popupToolGroup.oo-ui-widget-enabled > .oo-ui-popupToolGroup-handle:hover {
   background-color: #eaecf0;
@@ -3455,11 +3491,83 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupToolGroup.oo-ui-widget-enabled > .oo-ui-popupToolGroup-handle:active {
   background-color: #eaf3ff;
 }
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive > .oo-ui-popupToolGroup-handle {
+  color: #fff;
+  background-color: #36c;
+  border-color: #36c;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive > .oo-ui-popupToolGroup-handle:hover {
+  background-color: #447ff5;
+  border-color: #447ff5;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive > .oo-ui-popupToolGroup-handle:active,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive > .oo-ui-popupToolGroup-handle:active:focus,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-pressed > .oo-ui-popupToolGroup-handle,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-active > .oo-ui-popupToolGroup-handle,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive.oo-ui-popupToolGroup-active > .oo-ui-popupToolGroup-handle {
+  color: #fff;
+  background-color: #2a4b8d;
+  border-color: #2a4b8d;
+  box-shadow: none;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-progressive > .oo-ui-popupToolGroup-handle:focus {
+  border-color: #36c;
+  box-shadow: inset 0 0 0 1px #36c, inset 0 0 0 2px #fff;
+  outline: 0;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive > .oo-ui-popupToolGroup-handle {
+  color: #fff;
+  background-color: #36c;
+  border-color: #36c;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive > .oo-ui-popupToolGroup-handle:hover {
+  background-color: #447ff5;
+  border-color: #447ff5;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive > .oo-ui-popupToolGroup-handle:active,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive > .oo-ui-popupToolGroup-handle:active:focus,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-pressed > .oo-ui-popupToolGroup-handle,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive.oo-ui-buttonElement-active > .oo-ui-popupToolGroup-handle,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive.oo-ui-popupToolGroup-active > .oo-ui-popupToolGroup-handle {
+  color: #fff;
+  background-color: #2a4b8d;
+  border-color: #2a4b8d;
+  box-shadow: none;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-constructive > .oo-ui-popupToolGroup-handle:focus {
+  border-color: #36c;
+  box-shadow: inset 0 0 0 1px #36c, inset 0 0 0 2px #fff;
+  outline: 0;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive > .oo-ui-popupToolGroup-handle {
+  color: #fff;
+  background-color: #d33;
+  border-color: #d33;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive > .oo-ui-popupToolGroup-handle:hover {
+  background-color: #ff4242;
+  border-color: #ff4242;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive > .oo-ui-popupToolGroup-handle:active,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive > .oo-ui-popupToolGroup-handle:active:focus,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-pressed > .oo-ui-popupToolGroup-handle,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-active > .oo-ui-popupToolGroup-handle,
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive.oo-ui-popupToolGroup-active > .oo-ui-popupToolGroup-handle {
+  color: #fff;
+  background-color: #b32424;
+  border-color: #b32424;
+  box-shadow: none;
+}
+.oo-ui-popupToolGroup.oo-ui-flaggedElement-destructive > .oo-ui-popupToolGroup-handle:focus {
+  border-color: #d33;
+  box-shadow: inset 0 0 0 1px #d33, inset 0 0 0 2px #fff;
+  outline: 0;
+}
 .oo-ui-listToolGroup .oo-ui-tool {
   display: block;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-listToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover {
   background-color: #eaecf0;
@@ -3503,8 +3611,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconElement-icon {
   background-image: url('themes/mediawiki/images/icons/check-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-progressive.png');
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -3535,9 +3643,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-toolbar-actions {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-toolbar-tools {
   display: inline;
@@ -3558,9 +3666,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-toolbar-actions .oo-ui-popupWidget {
   -webkit-touch-callout: default;
   -webkit-user-select: all;
-     -moz-user-select: all;
-      -ms-user-select: all;
-          user-select: all;
+  -moz-user-select: all;
+  -ms-user-select: all;
+  user-select: all;
 }
 .oo-ui-toolbar-bar {
   background-color: #fff;
@@ -3621,22 +3729,22 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.21.0
+ * OOjs UI v0.21.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-11T22:51:10Z
+ * Date: 2017-04-18T23:32:54Z
  */
 .oo-ui-window {
   background: transparent;
 }
 .oo-ui-window-frame {
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-window-content {
   position: absolute;
@@ -3652,9 +3760,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-window-foot {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .oo-ui-window-body {
   margin: 0;
@@ -3674,8 +3782,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   left: 0;
   right: 0;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-dialog-content > .oo-ui-window-head {
   overflow: hidden;
@@ -3766,34 +3874,40 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-right: 0;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget .oo-ui-buttonElement-button {
+  margin-left: 0;
+  border: 0;
   border-radius: 0;
+  padding: 0;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
   line-height: 3.4375em;
   text-align: center;
 }
-.oo-ui-messageDialog-actions .oo-ui-actionWidget:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled .oo-ui-buttonElement-button:hover {
+  background-color: #f8f9fa;
 }
-.oo-ui-messageDialog-actions .oo-ui-actionWidget:active {
-  background-color: rgba(0, 0, 0, 0.1);
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled .oo-ui-buttonElement-button:active {
+  background-color: #c8ccd1;
 }
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-progressive:hover,
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-constructive:hover {
-  background-color: rgba(8, 126, 204, 0.05);
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled .oo-ui-buttonElement-button:focus {
+  box-shadow: inset 0 0 0 1px #36c, 0 0 0 1px #36c;
 }
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-progressive:active,
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-constructive:active {
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive .oo-ui-buttonElement-button:hover,
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive .oo-ui-buttonElement-button:hover {
+  background-color: #eaf3ff;
+}
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive .oo-ui-buttonElement-button:active,
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive .oo-ui-buttonElement-button:active {
   background-color: rgba(8, 126, 204, 0.1);
 }
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-progressive .oo-ui-labelElement-label,
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-constructive .oo-ui-labelElement-label {
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-progressive .oo-ui-labelElement-label,
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-constructive .oo-ui-labelElement-label {
   font-weight: bold;
 }
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-destructive:hover {
-  background-color: rgba(212, 83, 83, 0.05);
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive .oo-ui-buttonElement-button:hover {
+  background-color: #fbe8e7;
 }
-.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-flaggedElement-destructive:active {
+.oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive .oo-ui-buttonElement-button:active {
   background-color: rgba(212, 83, 83, 0.1);
 }
 .oo-ui-processDialog-location {
@@ -3964,19 +4078,19 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: rgba(255, 255, 255, 0.5);
   opacity: 0;
   -webkit-transition: opacity 250ms;
-     -moz-transition: opacity 250ms;
-          transition: opacity 250ms;
+  -moz-transition: opacity 250ms;
+  transition: opacity 250ms;
 }
 .oo-ui-windowManager-modal > .oo-ui-dialog > .oo-ui-window-frame {
   background-color: #fff;
   opacity: 0;
   -webkit-transform: scale(0.5);
-     -moz-transform: scale(0.5);
-      -ms-transform: scale(0.5);
-          transform: scale(0.5);
+  -moz-transform: scale(0.5);
+  -ms-transform: scale(0.5);
+  transform: scale(0.5);
   -webkit-transition: all 250ms;
-     -moz-transition: all 250ms;
-          transition: all 250ms;
+  -moz-transition: all 250ms;
+  transition: all 250ms;
 }
 .oo-ui-windowManager-modal > .oo-ui-dialog.oo-ui-window-setup {
   opacity: 1;
@@ -3984,9 +4098,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-windowManager-modal > .oo-ui-dialog.oo-ui-window-ready > .oo-ui-window-frame {
   opacity: 1;
   -webkit-transform: scale(1);
-     -moz-transform: scale(1);
-      -ms-transform: scale(1);
-          transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
 }
 .oo-ui-windowManager-modal.oo-ui-windowManager-floating > .oo-ui-dialog > .oo-ui-window-frame {
   top: 1em;
@@ -3999,692 +4113,692 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.21.0
+ * OOjs UI v0.21.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-11T22:51:10Z
+ * Date: 2017-04-18T23:32:54Z
  */
 .oo-ui-icon-add {
   background-image: url('themes/mediawiki/images/icons/add.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add.png');
 }
 .oo-ui-image-constructive.oo-ui-icon-add {
   background-image: url('themes/mediawiki/images/icons/add-constructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-constructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-constructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-constructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-constructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-constructive.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-add {
   background-image: url('themes/mediawiki/images/icons/add-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-progressive.png');
 }
 .oo-ui-image-invert.oo-ui-icon-add {
   background-image: url('themes/mediawiki/images/icons/add-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/add-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/add-invert.png');
 }
 .oo-ui-icon-advanced {
   background-image: url('themes/mediawiki/images/icons/advanced.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/advanced.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/advanced.png');
 }
 .oo-ui-image-invert.oo-ui-icon-advanced {
   background-image: url('themes/mediawiki/images/icons/advanced-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/advanced-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/advanced-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-advanced {
   background-image: url('themes/mediawiki/images/icons/advanced-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/advanced-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/advanced-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/advanced-progressive.png');
 }
 .oo-ui-icon-alert {
   background-image: url('themes/mediawiki/images/icons/alert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert.png');
 }
 .oo-ui-image-warning.oo-ui-icon-alert {
   background-image: url('themes/mediawiki/images/icons/alert-warning.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-warning.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-warning.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-warning.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-warning.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-warning.png');
 }
 .oo-ui-image-invert.oo-ui-icon-alert {
   background-image: url('themes/mediawiki/images/icons/alert-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-alert {
   background-image: url('themes/mediawiki/images/icons/alert-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/alert-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/alert-progressive.png');
 }
 .oo-ui-icon-cancel {
   background-image: url('themes/mediawiki/images/icons/cancel.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel.png');
 }
 .oo-ui-image-destructive.oo-ui-icon-cancel {
   background-image: url('themes/mediawiki/images/icons/cancel-destructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-destructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-destructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-destructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel-destructive.png');
 }
 .oo-ui-image-invert.oo-ui-icon-cancel {
   background-image: url('themes/mediawiki/images/icons/cancel-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-cancel {
   background-image: url('themes/mediawiki/images/icons/cancel-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/cancel-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/cancel-progressive.png');
 }
 .oo-ui-icon-check {
   background-image: url('themes/mediawiki/images/icons/check.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check.png');
 }
 .oo-ui-image-constructive.oo-ui-icon-check {
   background-image: url('themes/mediawiki/images/icons/check-constructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-constructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-constructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-constructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-constructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-constructive.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-check {
   background-image: url('themes/mediawiki/images/icons/check-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-progressive.png');
 }
 .oo-ui-image-destructive.oo-ui-icon-check {
   background-image: url('themes/mediawiki/images/icons/check-destructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-destructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-destructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-destructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-destructive.png');
 }
 .oo-ui-image-invert.oo-ui-icon-check {
   background-image: url('themes/mediawiki/images/icons/check-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/check-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/check-invert.png');
 }
 .oo-ui-icon-circle {
   background-image: url('themes/mediawiki/images/icons/circle.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle.png');
 }
 .oo-ui-image-constructive.oo-ui-icon-circle {
   background-image: url('themes/mediawiki/images/icons/circle-constructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-constructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-constructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle-constructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-constructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle-constructive.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-circle {
   background-image: url('themes/mediawiki/images/icons/circle-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle-progressive.png');
 }
 .oo-ui-image-invert.oo-ui-icon-circle {
   background-image: url('themes/mediawiki/images/icons/circle-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/circle-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/circle-invert.png');
 }
 .oo-ui-icon-close {
   background-image: url('themes/mediawiki/images/icons/close.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/close.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/close.png');
 }
 .oo-ui-image-invert.oo-ui-icon-close {
   background-image: url('themes/mediawiki/images/icons/close-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/close-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/close-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-close {
   background-image: url('themes/mediawiki/images/icons/close-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/close-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/close-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/close-progressive.png');
 }
 .oo-ui-icon-code {
   background-image: url('themes/mediawiki/images/icons/code.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/code.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/code.png');
 }
 .oo-ui-image-invert.oo-ui-icon-code {
   background-image: url('themes/mediawiki/images/icons/code-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/code-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/code-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-code {
   background-image: url('themes/mediawiki/images/icons/code-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/code-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/code-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/code-progressive.png');
 }
 .oo-ui-icon-collapse {
   background-image: url('themes/mediawiki/images/icons/collapse.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse.png');
 }
 .oo-ui-image-invert.oo-ui-icon-collapse {
   background-image: url('themes/mediawiki/images/icons/collapse-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-collapse {
   background-image: url('themes/mediawiki/images/icons/collapse-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse-progressive.png');
 }
 .oo-ui-icon-comment {
   background-image: url('themes/mediawiki/images/icons/comment.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment.png');
 }
 .oo-ui-image-invert.oo-ui-icon-comment {
   background-image: url('themes/mediawiki/images/icons/comment-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-comment {
   background-image: url('themes/mediawiki/images/icons/comment-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/comment-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/comment-progressive.png');
 }
 .oo-ui-icon-ellipsis {
   background-image: url('themes/mediawiki/images/icons/ellipsis.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/ellipsis.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/ellipsis.png');
 }
 .oo-ui-image-invert.oo-ui-icon-ellipsis {
   background-image: url('themes/mediawiki/images/icons/ellipsis-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/ellipsis-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/ellipsis-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-ellipsis {
   background-image: url('themes/mediawiki/images/icons/ellipsis-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/ellipsis-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/ellipsis-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/ellipsis-progressive.png');
 }
 .oo-ui-icon-expand {
   background-image: url('themes/mediawiki/images/icons/expand.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand.png');
 }
 .oo-ui-image-invert.oo-ui-icon-expand {
   background-image: url('themes/mediawiki/images/icons/expand-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-expand {
   background-image: url('themes/mediawiki/images/icons/expand-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand-progressive.png');
 }
 .oo-ui-icon-help {
   background-image: url('themes/mediawiki/images/icons/help-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr.png');
 }
 /* @noflip */
 .oo-ui-icon-help:lang(he) {
   background-image: url('themes/mediawiki/images/icons/help-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr.png');
 }
 /* @noflip */
 .oo-ui-icon-help:lang(yi) {
   background-image: url('themes/mediawiki/images/icons/help-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr.png');
 }
 .oo-ui-image-invert.oo-ui-icon-help {
   background-image: url('themes/mediawiki/images/icons/help-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-invert.png');
 }
 /* @noflip */
 .oo-ui-image-invert.oo-ui-icon-help:lang(he) {
   background-image: url('themes/mediawiki/images/icons/help-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-invert.png');
 }
 /* @noflip */
 .oo-ui-image-invert.oo-ui-icon-help:lang(yi) {
   background-image: url('themes/mediawiki/images/icons/help-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-help {
   background-image: url('themes/mediawiki/images/icons/help-ltr-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-progressive.png');
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-help:lang(he) {
   background-image: url('themes/mediawiki/images/icons/help-ltr-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-progressive.png');
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-help:lang(yi) {
   background-image: url('themes/mediawiki/images/icons/help-ltr-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/help-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/help-ltr-progressive.png');
 }
 .oo-ui-icon-history {
   background-image: url('themes/mediawiki/images/icons/history.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/history.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/history.png');
 }
 .oo-ui-image-invert.oo-ui-icon-history {
   background-image: url('themes/mediawiki/images/icons/history-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/history-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/history-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-history {
   background-image: url('themes/mediawiki/images/icons/history-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/history-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/history-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/history-progressive.png');
 }
 .oo-ui-icon-info {
   background-image: url('themes/mediawiki/images/icons/info.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/info.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/info.png');
 }
 .oo-ui-image-invert.oo-ui-icon-info {
   background-image: url('themes/mediawiki/images/icons/info-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/info-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/info-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-info {
   background-image: url('themes/mediawiki/images/icons/info-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/info-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/info-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/info-progressive.png');
 }
 .oo-ui-icon-menu {
   background-image: url('themes/mediawiki/images/icons/menu.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu.png');
 }
 .oo-ui-image-invert.oo-ui-icon-menu {
   background-image: url('themes/mediawiki/images/icons/menu-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-menu {
   background-image: url('themes/mediawiki/images/icons/menu-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/menu-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/menu-progressive.png');
 }
 .oo-ui-icon-next {
   background-image: url('themes/mediawiki/images/icons/move-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr.png');
 }
 .oo-ui-image-invert.oo-ui-icon-next {
   background-image: url('themes/mediawiki/images/icons/move-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-next {
   background-image: url('themes/mediawiki/images/icons/move-ltr-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr-progressive.png');
 }
 .oo-ui-icon-notice {
   background-image: url('themes/mediawiki/images/icons/notice.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice.png');
 }
 .oo-ui-image-invert.oo-ui-icon-notice {
   background-image: url('themes/mediawiki/images/icons/notice-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-notice {
   background-image: url('themes/mediawiki/images/icons/notice-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/notice-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/notice-progressive.png');
 }
 .oo-ui-icon-previous {
   background-image: url('themes/mediawiki/images/icons/move-rtl.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl.png');
 }
 .oo-ui-image-invert.oo-ui-icon-previous {
   background-image: url('themes/mediawiki/images/icons/move-rtl-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-previous {
   background-image: url('themes/mediawiki/images/icons/move-rtl-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl-progressive.png');
 }
 .oo-ui-icon-redo {
   background-image: url('themes/mediawiki/images/icons/arched-arrow-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-ltr.png');
 }
 .oo-ui-image-invert.oo-ui-icon-redo {
   background-image: url('themes/mediawiki/images/icons/arched-arrow-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-ltr-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-redo {
   background-image: url('themes/mediawiki/images/icons/arched-arrow-ltr-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-ltr-progressive.png');
 }
 .oo-ui-icon-remove {
   background-image: url('themes/mediawiki/images/icons/trash.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash.png');
 }
 .oo-ui-image-destructive.oo-ui-icon-remove {
   background-image: url('themes/mediawiki/images/icons/trash-destructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-destructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-destructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-destructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash-destructive.png');
 }
 .oo-ui-image-invert.oo-ui-icon-remove {
   background-image: url('themes/mediawiki/images/icons/trash-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-remove {
   background-image: url('themes/mediawiki/images/icons/trash-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/trash-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/trash-progressive.png');
 }
 .oo-ui-icon-search {
   background-image: url('themes/mediawiki/images/icons/search-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/search-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/search-ltr.png');
 }
 .oo-ui-image-invert.oo-ui-icon-search {
   background-image: url('themes/mediawiki/images/icons/search-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/search-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/search-ltr-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-search {
   background-image: url('themes/mediawiki/images/icons/search-ltr-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/search-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/search-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/search-ltr-progressive.png');
 }
 .oo-ui-icon-settings {
   background-image: url('themes/mediawiki/images/icons/settings.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/settings.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/settings.png');
 }
 .oo-ui-image-invert.oo-ui-icon-settings {
   background-image: url('themes/mediawiki/images/icons/settings-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/settings-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/settings-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-settings {
   background-image: url('themes/mediawiki/images/icons/settings-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/settings-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/settings-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/settings-progressive.png');
 }
 .oo-ui-icon-tag {
   background-image: url('themes/mediawiki/images/icons/tag.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag.png');
 }
 .oo-ui-image-destructive.oo-ui-icon-tag {
   background-image: url('themes/mediawiki/images/icons/tag-destructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-destructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-destructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-destructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-destructive.png');
 }
 .oo-ui-image-warning.oo-ui-icon-tag {
   background-image: url('themes/mediawiki/images/icons/tag-warning.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-warning.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-warning.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-warning.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-warning.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-warning.png');
 }
 .oo-ui-image-constructive.oo-ui-icon-tag {
   background-image: url('themes/mediawiki/images/icons/tag-constructive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-constructive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-constructive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-constructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-constructive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-constructive.png');
 }
 .oo-ui-image-invert.oo-ui-icon-tag {
   background-image: url('themes/mediawiki/images/icons/tag-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-tag {
   background-image: url('themes/mediawiki/images/icons/tag-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/tag-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/tag-progressive.png');
 }
 .oo-ui-icon-undo {
   background-image: url('themes/mediawiki/images/icons/arched-arrow-rtl.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-rtl.png');
 }
 .oo-ui-image-invert.oo-ui-icon-undo {
   background-image: url('themes/mediawiki/images/icons/arched-arrow-rtl-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-rtl-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-rtl-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-undo {
   background-image: url('themes/mediawiki/images/icons/arched-arrow-rtl-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-rtl-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/arched-arrow-rtl-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arched-arrow-rtl-progressive.png');
 }
 .oo-ui-icon-window {
   background-image: url('themes/mediawiki/images/icons/window.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/window.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/window.png');
 }
 .oo-ui-image-invert.oo-ui-icon-window {
   background-image: url('themes/mediawiki/images/icons/window-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/window-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/window-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-window {
   background-image: url('themes/mediawiki/images/icons/window-progressive.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window-progressive.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window-progressive.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/window-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/window-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/window-progressive.png');
 }
 
 .oo-ui-indicator-alert {
   background-image: url('themes/mediawiki/images/indicators/alert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/alert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/alert.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-alert {
   background-image: url('themes/mediawiki/images/indicators/alert-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/alert-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/alert-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/alert-invert.png');
 }
 .oo-ui-indicator-clear {
   background-image: url('themes/mediawiki/images/indicators/clear.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/clear.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/clear.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-clear {
   background-image: url('themes/mediawiki/images/indicators/clear-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/clear-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/clear-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/clear-invert.png');
 }
 .oo-ui-indicator-up {
   background-image: url('themes/mediawiki/images/indicators/arrow-up.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-up.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-up.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-up {
   background-image: url('themes/mediawiki/images/indicators/arrow-up-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-up-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-up-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-up-invert.png');
 }
 .oo-ui-indicator-down {
   background-image: url('themes/mediawiki/images/indicators/arrow-down.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-down.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-down.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-down {
   background-image: url('themes/mediawiki/images/indicators/arrow-down-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-down-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-down-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-down-invert.png');
 }
 .oo-ui-indicator-next {
   background-image: url('themes/mediawiki/images/indicators/arrow-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-ltr.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-next {
   background-image: url('themes/mediawiki/images/indicators/arrow-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-ltr-invert.png');
 }
 .oo-ui-indicator-previous {
   background-image: url('themes/mediawiki/images/indicators/arrow-rtl.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-rtl.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-previous {
   background-image: url('themes/mediawiki/images/indicators/arrow-rtl-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-rtl-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/arrow-rtl-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/arrow-rtl-invert.png');
 }
 .oo-ui-indicator-required {
   background-image: url('themes/mediawiki/images/indicators/required.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/required.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/required.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-required {
   background-image: url('themes/mediawiki/images/indicators/required-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/required-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/required-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/required-invert.png');
 }
 .oo-ui-indicator-search {
   background-image: url('themes/mediawiki/images/indicators/search-ltr.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-ltr.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-ltr.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/search-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/search-ltr.png');
 }
 .oo-ui-image-invert.oo-ui-indicator-search {
   background-image: url('themes/mediawiki/images/indicators/search-ltr-invert.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-ltr-invert.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-ltr-invert.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/search-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/indicators/search-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/indicators/search-ltr-invert.png');
 }
 
 .oo-ui-texture-pending {
   background-image: url('themes/mediawiki/images/textures/pending.gif');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/textures/pending.gif');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/textures/pending.gif');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/textures/pending.gif');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/textures/pending.gif');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/textures/pending.gif');
 }
 .oo-ui-texture-transparency {
   background-image: url('themes/mediawiki/images/textures/transparency.png');
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/textures/transparency.svg');
-  background-image:         linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/textures/transparency.svg');
-  background-image:      -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/textures/transparency.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/textures/transparency.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/textures/transparency.png');
 }
