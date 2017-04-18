@@ -26,11 +26,17 @@
 			/* contentEditable */
 			!!( 'contentEditable' in document.createElement( 'div' ) ) &&
 
-			/* SVG */
+			/* createElementNS */
+			!!document.createElementNS &&
+
+			/* classList */
 			!!(
-				document.createElementNS &&
-				document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGRect
-			)
+				( 'classList' in document.createElement( '_' ) ) ||
+				( 'classList' in document.createElementNS( 'http://www.w3.org/2000/svg ', 'g' ) )
+			) &&
+
+			/* SVG */
+			!!( 'createSVGRect' in document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ) )
 		);
 	};
 }() );

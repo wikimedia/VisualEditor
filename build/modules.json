@@ -103,11 +103,6 @@
 			"lib/spark-md5/spark-md5.js"
 		]
 	},
-	"dom-classlist-shim": {
-		"scripts": [
-			"lib/classList/classList.js"
-		]
-	},
 	"jquery.i18n": {
 		"scripts": [
 			"lib/jquery.i18n/src/jquery.i18n.js",
@@ -231,8 +226,7 @@
 			"visualEditor.supportCheck",
 			"unicodejs",
 			"rangefix",
-			"spark-md5",
-			"dom-classlist-shim"
+			"spark-md5"
 		]
 	},
 	"visualEditor.core": {
