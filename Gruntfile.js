@@ -325,7 +325,47 @@ module.exports = function ( grunt ) {
 						{ type: 'json-summary', dir: 'coverage/' },
 						{ type: 'html', dir: 'coverage/' },
 						{ type: 'text-summary', dir: 'coverage/' }
-					]
+					],
+					// https://github.com/karma-runner/karma-coverage/blob/v1.1.1/docs/configuration.md#check
+					check: {
+						global: {
+							functions: 60,
+							branches: 60,
+							statements: 60,
+							lines: 60,
+							overrides: {
+								'src/dm/*.js': {
+									functions: 80,
+									branches: 80,
+									statements: 80,
+									lines: 80
+								},
+								'src/dm/**/*.js': {
+									functions: 80,
+									branches: 80,
+									statements: 80,
+									lines: 80
+								}
+							}
+						},
+						each: {
+							functions: 20,
+							branches: 20,
+							statements: 20,
+							lines: 20,
+							excludes: [
+								'src/ve.track.js',
+								'src/init/**/*.js',
+								'src/ce/**/*.js',
+								'src/ui/**/*.js',
+								'src/dm/ve.dm.SurfaceSynchronizer.js',
+								'src/dm/ve.dm.TableSlice.js',
+								'src/dm/annotations/ve.dm.BidiAnnotation.js',
+								'src/dm/metaitems/ve.dm.CommentMetaItem.js',
+								'src/dm/nodes/ve.dm.GeneratedContentNode.js'
+							]
+						}
+					}
 				}
 			},
 			others: {
