@@ -21,7 +21,8 @@
 			"Mpiva",
 			"Statix64",
 			"Wikitoni",
-			"Nemo bis"
+			"Nemo bis",
+			"Fringio"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -49,6 +50,8 @@
 	"visualeditor-changedesc-no-key": "$1 modificato a $2",
 	"visualeditor-changedesc-set": "$1 impostato a $2",
 	"visualeditor-changedesc-unknown": "$1 modificato",
+	"visualeditor-changedir-tool-ltr": "Vedi da sinistra a destra",
+	"visualeditor-changedir-tool-rtl": "Vedi da destra a sinistra",
 	"visualeditor-clearbutton-tooltip": "Pulisci formattazione",
 	"visualeditor-clipboard-copy": "Copia",
 	"visualeditor-clipboard-cut": "Taglia",
