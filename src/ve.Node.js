@@ -22,12 +22,12 @@ ve.Node = function VeNode() {
 
 /**
  * @event attach
- * @param {ve.Node} parent
+ * @param {ve.Node} New parent
  */
 
 /**
  * @event detach
- * @param {ve.Node} parent
+ * @param {ve.Node} Old parent
  */
 
 /**
@@ -37,6 +37,7 @@ ve.Node = function VeNode() {
  * tree may be inconsistent.
  *
  * @event root
+ * @param {ve.Node} New root
  */
 
 /**
@@ -46,6 +47,7 @@ ve.Node = function VeNode() {
  * tree may be inconsistent.
  *
  * @event unroot
+ * @param {ve.Node} Old root
  */
 
 /* Abstract Methods */

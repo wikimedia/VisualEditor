@@ -128,7 +128,6 @@ QUnit.test( 'initialization', 1, function ( assert ) {
 // TODO: getSuggestedParentNodeTypes
 // TODO: isNodeWrapped
 // TODO: canNodeContainContent
-// TODO: canNodeTakeAnnotationType
 // TODO: isNodeContent
 // TODO: doesNodeHaveSignificantWhitespace
 // TODO: doesNodeHandleOwnChildren
