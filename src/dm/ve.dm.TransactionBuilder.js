@@ -1211,17 +1211,3 @@ ve.dm.TransactionBuilder.prototype.pushRemoval = function ( doc, currentOffset, 
 	}
 	return offset;
 };
-
-// Add newFrom* methods to ve.dm.Transaction for legacy support.
-
-ve.dm.Transaction.newFromReplacement = ve.dm.TransactionBuilder.static.newFromReplacement;
-ve.dm.Transaction.newFromInsertion = ve.dm.TransactionBuilder.static.newFromInsertion;
-ve.dm.Transaction.newFromRemoval = ve.dm.TransactionBuilder.static.newFromRemoval;
-ve.dm.Transaction.newFromDocumentInsertion = ve.dm.TransactionBuilder.static.newFromDocumentInsertion;
-ve.dm.Transaction.newFromAttributeChanges = ve.dm.TransactionBuilder.static.newFromAttributeChanges;
-ve.dm.Transaction.newFromAnnotation = ve.dm.TransactionBuilder.static.newFromAnnotation;
-ve.dm.Transaction.newFromMetadataInsertion = ve.dm.TransactionBuilder.static.newFromMetadataInsertion;
-ve.dm.Transaction.newFromMetadataRemoval = ve.dm.TransactionBuilder.static.newFromMetadataRemoval;
-ve.dm.Transaction.newFromMetadataElementReplacement = ve.dm.TransactionBuilder.static.newFromMetadataElementReplacement;
-ve.dm.Transaction.newFromContentBranchConversion = ve.dm.TransactionBuilder.static.newFromContentBranchConversion;
-ve.dm.Transaction.newFromWrap = ve.dm.TransactionBuilder.static.newFromWrap;
