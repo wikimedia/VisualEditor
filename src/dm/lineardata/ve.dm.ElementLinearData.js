@@ -337,6 +337,30 @@ ve.dm.ElementLinearData.prototype.isContentData = function () {
 };
 
 /**
+ * Check if an annotation can be applied at a specific offset
+ *
+ * @param {number} offset Offset
+ * @param {ve.dm.Annotation} annotation Annotation
+ * @param {boolean} [ignoreClose] Ignore close elements, otherwise check if their open element is annotatable
+ * @return {boolean} Annotation can be applied at this offset
+ */
+ve.dm.ElementLinearData.prototype.canTakeAnnotationAtOffset = function ( offset, annotation, ignoreClose ) {
+	var type;
+	if ( this.isElementData( offset ) ) {
+		if ( ignoreClose && this.isCloseElementData( offset ) ) {
+			return false;
+		}
+		type = this.getType( offset );
+		// Structural nodes are never annotatable
+		// Blacklisted annotations can't be set
+		return ve.dm.nodeFactory.isNodeContent( type ) && ve.dm.nodeFactory.canNodeTakeAnnotation( type, annotation );
+	} else {
+		// Text is always annotatable
+		return true;
+	}
+};
+
+/**
  * Get annotations' store indexes covered by an offset.
  *
  * @method

@@ -296,7 +296,7 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
  * @return {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, method, annotation ) {
-	var covered, type, annotatable,
+	var covered, annotatable,
 		txBuilder = new ve.dm.TransactionBuilder(),
 		data = doc.data,
 		index = doc.getStore().index( annotation ),
@@ -308,28 +308,11 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 
 	// Iterate over all data in range, annotating where appropriate
 	while ( i < range.end ) {
-		if ( data.isElementData( i ) ) {
-			type = data.getType( i );
-			if ( ve.dm.nodeFactory.shouldIgnoreChildren( type ) ) {
-				ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
-			}
-			if ( ve.dm.nodeFactory.isNodeContent( type ) ) {
-				if ( method === 'set' && !ve.dm.nodeFactory.canNodeTakeAnnotationType( type, annotation ) ) {
-					// Blacklisted annotations can't be set
-					annotatable = false;
-				} else {
-					annotatable = true;
-				}
-			} else {
-				// Structural nodes are never annotatable
-				annotatable = false;
-			}
-		} else {
-			// Text is always annotatable
-			annotatable = true;
+		if ( data.isElementData( i ) && ve.dm.nodeFactory.shouldIgnoreChildren( data.getType( i ) ) ) {
+			ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
 		}
-		// No annotations if we're inside an ignoreChildren node
-		annotatable = annotatable && !ignoreChildrenDepth;
+		annotatable = !ignoreChildrenDepth && data.canTakeAnnotationAtOffset( i, annotation );
+
 		if (
 			!annotatable ||
 			( insideContentNode && !data.isCloseElementData( i ) )
