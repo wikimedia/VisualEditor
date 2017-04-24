@@ -6,13 +6,15 @@
 			"Милан Јелисавчић",
 			"Srdjan m",
 			"Сербијана",
-			"Zoranzoki21"
+			"Zoranzoki21",
+			"Obsuser"
 		]
 	},
 	"visualeditor": "Визуелни уређивач",
 	"visualeditor-aliencontextitem-title": "Ставка",
-	"visualeditor-aliennode-tooltip": "Жао нам је, овај елемент може за сада да се мењају само у изворном режиму.",
+	"visualeditor-aliennode-tooltip": "Жао нам је, овај елемент може за сада да се мења само у изворном режиму.",
 	"visualeditor-align-widget-center": "Средина",
+	"visualeditor-align-widget-default": "Подразумевано",
 	"visualeditor-align-widget-left": "Лево",
 	"visualeditor-align-widget-right": "Десно",
 	"visualeditor-alignablecontextitem-title": "Задатак",

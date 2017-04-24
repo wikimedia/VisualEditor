@@ -15,7 +15,8 @@
 			"TheGabrielZaum",
 			"TheEduGobi",
 			"Eduardo Addad de Oliveira",
-			"O andarilho"
+			"O andarilho",
+			"Felipe L. Ewald"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -65,7 +66,7 @@
 	"visualeditor-debugbar-logrange": "Registro",
 	"visualeditor-debugbar-showmodel": "Mostrar modelo",
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
-	"visualeditor-debugbar-stopfilibuster": "Parar filibuster",
+	"visualeditor-debugbar-stopfilibuster": "Parar Filibuster",
 	"visualeditor-debugbar-updatemodel": "Atualização das alterações",
 	"visualeditor-dialog-action-apply": "Aplicar mudanças",
 	"visualeditor-dialog-action-cancel": "Cancelar",
