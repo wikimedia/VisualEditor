@@ -560,6 +560,22 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 	doc = ve.dm.example.createExampleDocument();
 	surface = new ve.dm.Surface( doc );
 
+	fragment = surface.getLinearFragment( new ve.Range( 2, 3 ) );
+	fragment.insertDocument( new ve.dm.Document( [
+		{ type: 'paragraph' }, { type: 'exampleUnboldable' }, { type: '/exampleUnboldable' }, 'x', { type: '/paragraph' },
+		{ type: 'internalList' }, { type: '/internalList' }
+	] ), new ve.Range( 1, 4 ), true );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 2, 5 ) ),
+		[
+			{ type: 'exampleUnboldable' },
+			{ type: '/exampleUnboldable' },
+			[ 'x', [ ve.dm.example.boldIndex ] ]
+		],
+		'Unboldable node pasted into bold doesn\'t get bolded'
+	);
+	surface.undo();
+
 	fragment = surface.getLinearFragment( new ve.Range( 3, 4 ) );
 	fragment.insertDocument( new ve.dm.Document( [
 		{ type: 'paragraph' }, { type: 'alienInline' }, { type: '/alienInline' }, { type: '/paragraph' },

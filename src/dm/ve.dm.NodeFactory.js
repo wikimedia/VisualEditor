@@ -170,7 +170,7 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
 };
 
 /**
- * Check if node can take annotations of a specific type.
+ * Check if node can take an annotation.
  *
  * @method
  * @param {string} type Node type
@@ -178,7 +178,7 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
  * @return {boolean} Node can take annotations of this type
  * @throws {Error} Unknown node type
  */
-ve.dm.NodeFactory.prototype.canNodeTakeAnnotationType = function ( type, annotation ) {
+ve.dm.NodeFactory.prototype.canNodeTakeAnnotation = function ( type, annotation ) {
 	var i, len, blacklist;
 	if ( !Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		throw new Error( 'Unknown node type: ' + type );
