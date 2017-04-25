@@ -211,11 +211,20 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
 /**
  * Provide a new, empty Document.
  *
+ * @param {string} [paragraphType='empty'] Paragraph type: 'empty', 'wrapper' or null for a regular paragraph
  * @return {ve.dm.Document}
  */
-ve.dm.Document.static.newBlankDocument = function () {
+ve.dm.Document.static.newBlankDocument = function ( paragraphType ) {
+	var paragraph = { type: 'paragraph' };
+
+	paragraphType = paragraphType === undefined ? 'empty' : paragraphType;
+
+	if ( paragraphType ) {
+		ve.setProp( paragraph, 'internal', 'generated', paragraphType );
+	}
+
 	return new ve.dm.Document( [
-		{ type: 'paragraph', internal: { generated: 'empty' } },
+		paragraph,
 		{ type: '/paragraph' },
 		{ type: 'internalList' },
 		{ type: '/internalList' }
