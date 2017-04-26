@@ -2269,7 +2269,7 @@ QUnit.test( 'isNoOp', function ( assert ) {
 
 QUnit.test( 'operations/build from operations', function ( assert ) {
 	var i, tx, ops,
-		static = ve.dm.TransactionBuilder.static,
+		tBSstatic = ve.dm.TransactionBuilder.static,
 		doc = ve.dm.example.createExampleDocument(),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
 		cases = [
@@ -2348,11 +2348,11 @@ QUnit.test( 'operations/build from operations', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 
-		tx = static[ cases[ i ].method ].apply( static, cases[ i ].args );
+		tx = tBSstatic[ cases[ i ].method ].apply( tBSstatic, cases[ i ].args );
 		ops = ve.copy( tx.operations );
 		assert.deepEqual( ops, cases[ i ].expected, cases[ i ].msg + ': operations' );
 		if ( cases[ i ].roundTripArgs ) {
-			tx = static[ cases[ i ].method ].apply( static, cases[ i ].roundTripArgs );
+			tx = tBSstatic[ cases[ i ].method ].apply( tBSstatic, cases[ i ].roundTripArgs );
 		}
 		assert.deepEqual( new ve.dm.Transaction( ops ), tx, cases[ i ].msg + ': build from operations' );
 
