@@ -35,6 +35,12 @@ ve.dm.InternalItemNode.static.isInternal = true;
 
 ve.dm.InternalItemNode.static.isDeletable = false;
 
+/* Methods */
+
+ve.dm.InternalItemNode.static.describeChanges = function () {
+	return [];
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.InternalItemNode );
