@@ -93,10 +93,15 @@ ve.dm.LinkAnnotation.prototype.getDisplayTitle = function () {
 /**
  * Get the fragment / hash for the current href
  *
- * @returns {string} The fragment, or an empty string if none is present
+ * @returns {string|null} The fragment, or null if none is present
  */
 ve.dm.LinkAnnotation.prototype.getFragment = function () {
-	return this.getHref().split( '#' )[ 1 ] || '';
+	var href = this.getHref(),
+		hash = href.indexOf( '#' );
+	if ( hash === -1 ) {
+		return null;
+	}
+	return href.slice( hash + 1 );
 };
 
 /**
