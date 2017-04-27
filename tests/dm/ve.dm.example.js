@@ -1587,6 +1587,7 @@ ve.dm.example.domToDataCases = {
 			'<dfn>f</dfn>' +
 			'<mark>g</mark>' +
 			'<font>h</font>' +
+			'<bdi>i</bdi>' +
 		'</p>',
 		data: [
 			{ type: 'paragraph' },
@@ -1598,6 +1599,7 @@ ve.dm.example.domToDataCases = {
 			[ 'f', [ { type: 'textStyle/definition', attributes: { nodeName: 'dfn' } } ] ],
 			[ 'g', [ { type: 'textStyle/highlight', attributes: { nodeName: 'mark' } } ] ],
 			[ 'h', [ { type: 'textStyle/font', attributes: { nodeName: 'font' } } ] ],
+			[ 'i', [ { type: 'textStyle/bidi', attributes: { nodeName: 'bdi' } } ] ],
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -1611,6 +1613,7 @@ ve.dm.example.domToDataCases = {
 			'<dfn class="ve-ce-textStyleAnnotation ve-ce-definitionAnnotation">f</dfn>' +
 			'<mark class="ve-ce-textStyleAnnotation ve-ce-highlightAnnotation">g</mark>' +
 			'<font class="ve-ce-textStyleAnnotation ve-ce-fontAnnotation">h</font>' +
+			'<bdi class="ve-ce-textStyleAnnotation ve-ce-bidiAnnotation">i</bdi>' +
 		'</p>'
 	},
 	'strip leading whitespace in non-whitespace preserving nodes': {
