@@ -658,6 +658,7 @@
 			"tests/dm/ve.dm.example.js",
 			"tests/dm/ve.dm.Annotation.test.js",
 			"tests/dm/ve.dm.AnnotationSet.test.js",
+			"tests/dm/ve.dm.LinkAnnotation.test.js",
 			"tests/dm/ve.dm.NodeFactory.test.js",
 			"tests/dm/ve.dm.Node.test.js",
 			"tests/dm/ve.dm.Converter.test.js",
