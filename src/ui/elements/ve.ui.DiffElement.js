@@ -516,7 +516,9 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 				nodeData[ nodeRangeStart ], this.newDoc, { 'data-diff-action': 'structural-change' }
 			);
 			item = this.compareNodeAttributes( nodeData, nodeRangeStart, this.newDoc, diffInfo.attributeChange );
-			this.descriptionItemsStack.unshift( item );
+			if ( item ) {
+				this.descriptionItemsStack.unshift( item );
+			}
 		}
 	}
 
@@ -606,16 +608,19 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
  * @param {number} offset Offset in data
  * @param {ve.dm.Document} doc Document model
  * @param {Object} attributeChange Attribute change object containing oldAttributes and newAttributes
- * @return {OO.ui.OptionWidget} Change description item
+ * @return {OO.ui.OptionWidget|null} Change description item, or null if nothing to describe
  */
 ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, doc, attributeChange ) {
 	var changes, item,
 		attributeChanges = this.constructor.static.compareAttributes( attributeChange.oldAttributes, attributeChange.newAttributes );
 
 	changes = ve.dm.modelRegistry.lookup( data[ offset ].type ).static.describeChanges( attributeChanges, attributeChange.newAttributes, data[ offset ] );
-	item = this.getChangeDescriptionItem( changes );
-	data[ offset ] = this.addAttributesToNode( data[ offset ], doc, { 'data-diff-id': item.getData() } );
-	return item;
+	if ( changes.length ) {
+		item = this.getChangeDescriptionItem( changes );
+		data[ offset ] = this.addAttributesToNode( data[ offset ], doc, { 'data-diff-id': item.getData() } );
+		return item;
+	}
+	return null;
 };
 
 /**
