@@ -10,12 +10,12 @@ QUnit.test( 'getFragment', function ( assert ) {
 	var	i, l,
 		cases = [
 			{
-				msg: 'No fragment returns empty string',
+				msg: 'No fragment returns null',
 				annotation: new ve.dm.LinkAnnotation( {
 					type: 'link',
 					attributes: { href: 'https://www.example.org/' }
 				} ),
-				expected: ''
+				expected: null
 			},
 			{
 				msg: 'Blank fragment returns empty string',
@@ -42,20 +42,20 @@ QUnit.test( 'getFragment', function ( assert ) {
 				expected: '!foo'
 			},
 			{
-				msg: 'Double-hash returns empty',
+				msg: 'Double-hash returns everything after the first hash',
 				annotation: new ve.dm.LinkAnnotation( {
 					type: 'link',
 					attributes: { href: 'https://www.example.org/##foo' }
 				} ),
-				expected: ''
+				expected: '#foo'
 			},
 			{
-				msg: 'Multi-fragment returns first one',
+				msg: 'Multi-fragment returns everything after the first hash',
 				annotation: new ve.dm.LinkAnnotation( {
 					type: 'link',
-					attributes: { href: 'https://www.example.org/#foo#bar' }
+					attributes: { href: 'https://www.example.org/#foo#bar#baz' }
 				} ),
-				expected: 'foo'
+				expected: 'foo#bar#baz'
 			}
 		];
 
