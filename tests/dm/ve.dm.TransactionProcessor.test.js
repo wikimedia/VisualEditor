@@ -11,7 +11,6 @@ QUnit.module( 've.dm.TransactionProcessor' );
 QUnit.test( 'commit', function ( assert ) {
 	var i, j, originalData, originalDoc, node,
 		msg, testDoc, txBuilder, tx, expectedData, expectedDoc,
-		n = 0,
 		store = ve.dm.example.createExampleDocument().getStore(),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
@@ -879,11 +878,6 @@ QUnit.test( 'commit', function ( assert ) {
 				}
 			}
 		};
-
-	for ( msg in cases ) {
-		n += ( 'expected' in cases[ msg ] ? 4 : 3 ) + ( 'events' in cases[ msg ] ? cases[ msg ].events.length : 0 );
-	}
-	QUnit.expect( n );
 
 	// Run tests
 	for ( msg in cases ) {

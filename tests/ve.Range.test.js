@@ -63,7 +63,7 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 
 } );
 
-QUnit.test( 'Modification (flip, truncate, expand, translate, clone)', 17, function ( assert ) {
+QUnit.test( 'Modification (flip, truncate, expand, translate, clone)', function ( assert ) {
 	var range = new ve.Range( 100, 200 );
 
 	assert.equalRange( range.flip(), new ve.Range( 200, 100 ), 'flip reverses the range' );

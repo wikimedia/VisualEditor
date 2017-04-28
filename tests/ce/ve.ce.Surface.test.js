@@ -1343,7 +1343,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getClipboardHash', 1, function ( assert ) {
+QUnit.test( 'getClipboardHash', function ( assert ) {
 	assert.strictEqual(
 		ve.ce.Surface.static.getClipboardHash(
 			$( '  <p class="foo"> B<b>a</b>r </p>\n\t<span class="baz"></span> Quux <h1><span></span>Whee</h1>' )

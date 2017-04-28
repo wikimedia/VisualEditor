@@ -99,7 +99,6 @@ QUnit.test( 'convert', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( ve.test.utils.countActionTests( cases ) );
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runActionTest(
 			'format', assert, cases[ i ].html || ve.dm.example.isolationHtml, false, 'convert',

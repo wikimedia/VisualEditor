@@ -404,7 +404,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 			// TODO test cases for (currently failing) unopened closings use case
 			// TODO analyze other possible cases (substrings of linmod data)
 		};
-	QUnit.expect( Object.keys( cases ).length * 2 );
+
 	for ( key in cases ) {
 		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
 			if ( cases[ key ].ops[ i ].remove ) {
@@ -743,7 +743,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 				]
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	for ( key in cases ) {
 		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
 			store = cases[ key ].args[ 0 ].getStore();
@@ -804,7 +804,7 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 				]
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	for ( key in cases ) {
 		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
 			if ( cases[ key ].ops[ i ].remove ) {
@@ -1046,8 +1046,6 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length * 3 );
-
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.dm.example.createExampleDocument( cases[ i ].doc );
 		if ( cases[ i ].newDocData ) {
@@ -1133,7 +1131,7 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 				exception: Error
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAttributeChanges, cases );
 } );
 
@@ -1408,7 +1406,6 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 			}
 		};
 
-	QUnit.expect( Object.keys( cases ).length );
 	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAnnotation, cases );
 } );
 
@@ -1579,7 +1576,7 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 				]
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	for ( key in cases ) {
 		for ( i = 0; i < cases[ key ].ops.length; i++ ) {
 			store = cases[ key ].args[ 0 ].getStore();
@@ -1762,7 +1759,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 				exception: Error
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	for ( key in cases ) {
 		for ( i = 0; cases[ key ].ops && i < cases[ key ].ops.length; i++ ) {
 			if ( cases[ key ].ops[ i ].remove ) {
@@ -1780,7 +1777,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'pushRetain', 2, function ( assert ) {
+QUnit.test( 'pushRetain', function ( assert ) {
 	var cases = {
 		retain: {
 			calls: [ [ 'pushRetain', 5 ] ],
@@ -1904,7 +1901,7 @@ QUnit.test( 'pushReplace', function ( assert ) {
 				diff: 0
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	runBuilderTests( assert, cases );
 } );
 
@@ -1946,7 +1943,7 @@ QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
 			diff: 0
 		}
 	};
-	QUnit.expect( Object.keys( cases ).length );
+
 	runBuilderTests( assert, cases );
 } );
 
@@ -2023,7 +2020,7 @@ QUnit.test( 'push*Annotating', function ( assert ) {
 			diff: 0
 		}
 	};
-	QUnit.expect( Object.keys( cases ).length );
+
 	runBuilderTests( assert, cases );
 } );
 
@@ -2091,7 +2088,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 				]
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataInsertion, cases );
 } );
 
@@ -2153,7 +2150,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 				exception: Error
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataRemoval, cases );
 } );
 
@@ -2203,7 +2200,7 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 				exception: Error
 			}
 		};
-	QUnit.expect( Object.keys( cases ).length );
+
 	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataElementReplacement, cases );
 } );
 
@@ -2213,7 +2210,6 @@ QUnit.test( 'isNoOp', function ( assert ) {
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' );
 
-	QUnit.expect( 3 * 8 - 2 );
 	[ doc, metaDoc, listMetaDoc ].forEach( function ( d, i ) {
 		var isDoc = ( i === 0 ),
 			isListMetaDoc = ( i === 2 );
@@ -2343,8 +2339,6 @@ QUnit.test( 'operations/build from operations', function ( assert ) {
 				]
 			}
 		];
-
-	QUnit.expect( 2 * cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
 

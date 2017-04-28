@@ -8,7 +8,7 @@ QUnit.module( 've.ui.DSVFileTransferHandler' );
 
 /* Tests */
 
-QUnit.test( 'getInsertableData', 1, function ( assert ) {
+QUnit.test( 'getInsertableData', function ( assert ) {
 	var handler,
 		done = assert.async(),
 		fn = function () {},

@@ -10,16 +10,7 @@ QUnit.module( 've.ce.Document' );
 
 QUnit.test( 'Converter tests', function ( assert ) {
 	var msg, model, view, caseItem, $documentElement,
-		expected = 0,
 		cases = ve.dm.example.domToDataCases;
-
-	for ( msg in cases ) {
-		if ( cases[ msg ].ceHtml ) {
-			expected++;
-		}
-	}
-
-	QUnit.expect( expected );
 
 	for ( msg in cases ) {
 		if ( cases[ msg ].ceHtml ) {
@@ -113,10 +104,6 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		}
 	];
 	/* eslint-enable quotes */
-
-	QUnit.expect( tests.reduce( function ( total, test ) {
-		return total + test.positions.replace( /[^|]/g, '' ).length + 2;
-	}, 0 ) );
 
 	function showModelItem( item ) {
 		if ( item.type ) {

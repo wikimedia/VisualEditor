@@ -30,25 +30,25 @@ ve.ce.nodeFactory.register( ve.ce.BranchNodeStub );
 
 /* Tests */
 
-QUnit.test( 'splitOnEnter', 1, function ( assert ) {
+QUnit.test( 'splitOnEnter', function ( assert ) {
 	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	assert.strictEqual( node.splitOnEnter(), true );
 } );
 
-QUnit.test( 'canHaveChildren', 1, function ( assert ) {
+QUnit.test( 'canHaveChildren', function ( assert ) {
 	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	assert.strictEqual( node.canHaveChildren(), true );
 } );
 
-QUnit.test( 'canHaveChildrenNotContent', 1, function ( assert ) {
+QUnit.test( 'canHaveChildrenNotContent', function ( assert ) {
 	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	assert.strictEqual( node.canHaveChildrenNotContent(), true );
 } );
 
-QUnit.test( 'updateTagName', 4, function ( assert ) {
+QUnit.test( 'updateTagName', function ( assert ) {
 	var attributes = { style: 'a' },
 		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( {
 			type: 'branch-stub',
@@ -68,7 +68,7 @@ QUnit.test( 'updateTagName', 4, function ( assert ) {
 	assert.strictEqual( node.$element.text(), 'hello', 'contents are added to new wrapper' );
 } );
 
-QUnit.test( 'onSplice', 7, function ( assert ) {
+QUnit.test( 'onSplice', function ( assert ) {
 	var modelA = new ve.dm.BranchNodeStub(),
 		modelB = new ve.dm.BranchNodeStub(),
 		modelC = new ve.dm.BranchNodeStub(),

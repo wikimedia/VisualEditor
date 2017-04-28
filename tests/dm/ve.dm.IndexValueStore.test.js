@@ -8,7 +8,7 @@ QUnit.module( 've.dm.IndexValueStore' );
 
 /* Tests */
 
-QUnit.test( 'index(es)', 10, function ( assert ) {
+QUnit.test( 'index(es)', function ( assert ) {
 	var index, indexes,
 		object1 = { a: 1, b: 2 },
 		object1Hash = 'h608de49a4600dbb5',
@@ -46,7 +46,7 @@ QUnit.test( 'index(es)', 10, function ( assert ) {
 
 } );
 
-QUnit.test( 'value(s)', 5, function ( assert ) {
+QUnit.test( 'value(s)', function ( assert ) {
 	var object1 = { a: 1, b: 2 },
 		object1Hash = 'h608de49a4600dbb5',
 		object2 = { c: 3, d: 4 },
@@ -63,7 +63,7 @@ QUnit.test( 'value(s)', 5, function ( assert ) {
 	assert.deepEqual( store.value( object1Hash ), { a: 1, b: 2 }, 'Value 0 is still first stored object after original has been modified' );
 } );
 
-QUnit.test( 'slice', 3, function ( assert ) {
+QUnit.test( 'slice', function ( assert ) {
 	var sliced,
 		values = [ 'foo', 'bar', 'baz', 'qux', 'quux' ],
 		store = new ve.dm.IndexValueStore();

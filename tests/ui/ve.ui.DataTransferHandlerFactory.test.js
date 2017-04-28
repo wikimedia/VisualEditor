@@ -37,7 +37,7 @@ ve.ui.StubHandlerHtml3 = makeStubHandler( 'html3', true, [ 'text/html' ] );
 ve.ui.StubHandlerHtml3.static.matchFunction = function () { return false; };
 
 /* Tests */
-QUnit.test( 'getHandlerNameForItem', 14, function ( assert ) {
+QUnit.test( 'getHandlerNameForItem', function ( assert ) {
 	var factory = new ve.ui.DataTransferHandlerFactory(),
 		stubItemTypeHtml = makeStubItem( 'text/html' ),
 		stubItemFileHtml = makeStubItem( 'text/html', 'file', 'html' ),

@@ -476,8 +476,6 @@ QUnit.test( 'describeChange', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
-
 	for ( i = 0, l = cases.length; i < l; i++ ) {
 		key = cases[ i ].testedKey;
 		assert.deepEqual(

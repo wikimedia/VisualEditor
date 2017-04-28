@@ -25,7 +25,7 @@ QUnit.module( 've.init.sa.Platform', {
 	}
 } );
 
-QUnit.test( 'getUserConfig', 4, function ( assert ) {
+QUnit.test( 'getUserConfig', function ( assert ) {
 	var platform = new ve.init.sa.Platform();
 
 	assert.strictEqual( platform.getUserConfig( 'test-1' ), null, 'unknown key' );
@@ -45,7 +45,7 @@ QUnit.test( 'getUserConfig', 4, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'setUserConfig', 4, function ( assert ) {
+QUnit.test( 'setUserConfig', function ( assert ) {
 	var platform = new ve.init.sa.Platform();
 
 	assert.strictEqual( platform.setUserConfig( 'test-1', 'one' ), true, 'set key' );
@@ -63,7 +63,7 @@ QUnit.test( 'setUserConfig', 4, function ( assert ) {
 	);
 } );
 
-QUnit.asyncTest( 'messages', 4, function ( assert ) {
+QUnit.asyncTest( 'messages', function ( assert ) {
 	var platform = new ve.init.sa.Platform();
 
 	platform.getInitializedPromise().done( function () {
@@ -97,7 +97,7 @@ QUnit.asyncTest( 'messages', 4, function ( assert ) {
 	} );
 } );
 
-QUnit.asyncTest( 'parsedMessage', 3, function ( assert ) {
+QUnit.asyncTest( 'parsedMessage', function ( assert ) {
 	var platform = new ve.init.sa.Platform();
 
 	platform.getInitializedPromise().done( function () {

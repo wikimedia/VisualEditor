@@ -120,8 +120,6 @@ QUnit.test( 'Basic tests', function ( assert ) {
 		};
 	}
 
-	QUnit.expect( cases.length );
-
 	for ( i = 0; i < cases.length; i++ ) {
 		nativeSelection.removeAllRanges();
 		if ( cases[ i ].range ) {

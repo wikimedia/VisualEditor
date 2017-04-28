@@ -8,7 +8,7 @@ QUnit.module( 've.dm.MetaLinearData' );
 
 /* Tests */
 
-QUnit.test( 'basic usage', 6, function ( assert ) {
+QUnit.test( 'basic usage', function ( assert ) {
 	var store = new ve.dm.IndexValueStore(),
 		data = new ve.dm.MetaLinearData( store, ve.copy( ve.dm.example.withMetaMetaData ) );
 

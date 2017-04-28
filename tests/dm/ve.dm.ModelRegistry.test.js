@@ -131,7 +131,7 @@ ve.dm.StubRegExpNode.static.matchRdfaTypes = [
 
 /* Tests */
 
-QUnit.test( 'matchElement', 14, function ( assert ) {
+QUnit.test( 'matchElement', function ( assert ) {
 	var registry = new ve.dm.ModelRegistry(),
 		element = document.createElement( 'a' );
 
@@ -189,8 +189,6 @@ QUnit.test( 'isAnnotation', function ( assert ) {
 	var i, len, node,
 		allAnnotationTags = [ 'a', 'abbr', 'b', 'big', 'code', 'dfn', 'font', 'i', 'kbd', 'mark', 'q', 's', 'samp', 'small', 'span', 'sub', 'sup', 'time', 'u', 'var' ],
 		nonAnnotationTags = [ 'h1', 'p', 'ul', 'li', 'table', 'tr', 'td' ];
-
-	QUnit.expect( allAnnotationTags.length + nonAnnotationTags.length + 2 );
 
 	for ( i = 0, len = allAnnotationTags.length; i < len; i++ ) {
 		node = document.createElement( allAnnotationTags[ i ] );

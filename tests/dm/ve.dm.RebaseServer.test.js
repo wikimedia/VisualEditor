@@ -207,12 +207,6 @@ QUnit.test( 'Rebase', function ( assert ) {
 		return builder.getTransaction();
 	}
 
-	QUnit.expect( cases.reduce( function ( sum, thiscase ) {
-		return sum + thiscase.ops.filter( function ( op ) {
-			return op[ 1 ] === 'assertHist';
-		} ).length;
-	}, 0 ) );
-
 	for ( i = 0; i < cases.length; i++ ) {
 		server = new ve.dm.TestRebaseServer();
 		clients = { server: server };

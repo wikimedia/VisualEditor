@@ -84,8 +84,6 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 			}
 		];
 
-	QUnit.expect( 13 * cases.length );
-
 	for ( i in cases ) {
 		selection = cases[ i ].selection;
 		assert.strictEqual( selection.getDocument(), doc, 'getDocument' );
@@ -105,7 +103,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 
 } );
 
-QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', 17, function ( assert ) {
+QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		doc2 = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
@@ -136,7 +134,7 @@ QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, i
 	assert.strictEqual( largeSelection.isFullRow(), false, 'isFullRow' );
 } );
 
-QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', 3, function ( assert ) {
+QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
 		selection = new ve.dm.TableSelection( doc, tableRange, 1, 2, 3, 4 ),

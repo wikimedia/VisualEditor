@@ -394,8 +394,6 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 		}
 	];
 
-	QUnit.expect( 2 * tests.length );
-
 	for ( i = 0; i < tests.length; i++ ) {
 		test = tests[ i ];
 		view = ve.test.utils.createSurfaceViewFromHtml( test.oldRawHtml );

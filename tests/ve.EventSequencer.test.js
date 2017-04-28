@@ -47,7 +47,7 @@ ve.TestEventSequencer.prototype.runPostponed = function () {
 
 /* Tests */
 
-QUnit.test( 'EventSequencer', 3, function ( assert ) {
+QUnit.test( 'EventSequencer', function ( assert ) {
 	var sequencer,
 		calls = [];
 
