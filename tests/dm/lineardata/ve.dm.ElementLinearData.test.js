@@ -1917,6 +1917,66 @@ QUnit.test( 'hasContent', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getAnnotationIndexesFromOffset', function ( assert ) {
+	var i,
+		boldHash = 'h49981eab0f8056ff',
+		italicHash = 'hefd27ef3bf2041dd',
+		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
+		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
+		cases = [
+			{
+				msg: '0 has no annotations',
+				offset: 0,
+				ignoreClose: true,
+				expected: []
+			},
+			{
+				msg: '2 has a BoldAnnotation',
+				offset: 2,
+				ignoreClose: true,
+				expected: [ boldHash ]
+			},
+			{
+				msg: '3 contains an ItalicAnnotation',
+				offset: 3,
+				ignoreClose: true,
+				expected: [ italicHash ]
+			}
+		],
+		errorCases = [
+			{
+				msg: '-1 throws as out of bounds',
+				offset: -1,
+				ignoreClose: true,
+				exception: ''
+			},
+			{
+				msg: '64 throws as out of bounds',
+				offset: 64,
+				ignoreClose: true,
+				exception: ''
+			}
+		];
+
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.deepEqual(
+			elementData.getAnnotationIndexesFromOffset( cases[ i ].offset, cases[ i ].ignoreClose ),
+			cases[ i ].expected,
+			cases[ i ].msg
+		);
+	}
+
+	for ( i = 0; i < errorCases.length; i++ ) {
+		assert.throws(
+			// eslint-disable-next-line no-loop-func
+			function () {
+				elementData.getAnnotationIndexesFromOffset( errorCases[ i ].offset, errorCases[ i ].ignoreClose );
+			}, new Error( 'offset ' + errorCases[ i ].offset + ' out of bounds' ),
+			errorCases[ i ].msg
+		);
+	}
+} );
+
 QUnit.test( 'getUsedStoreValues', function ( assert ) {
 	var i,
 		bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
@@ -2048,7 +2108,6 @@ QUnit.test( 'compareElementsUnannotated', function ( assert ) {
 	}
 } );
 
-// TODO: ve.dm.ElementLinearData#getAnnotationIndexesFromOffset
 // TODO: ve.dm.ElementLinearData#setAnnotationsAtOffset
 // TODO: ve.dm.ElementLinearData#getCharacterData
 // TODO: ve.dm.ElementLinearData#getAnnotatedRangeFromSelection
@@ -2056,3 +2115,4 @@ QUnit.test( 'compareElementsUnannotated', function ( assert ) {
 // TODO: ve.dm.ElementLinearData#remapInternalListIndexes
 // TODO: ve.dm.ElementLinearData#remapInternalListKeys
 // TODO: ve.dm.ElementLinearData#cloneElements
+// TODO: ve.dm.ElementLinearData#compareElements
