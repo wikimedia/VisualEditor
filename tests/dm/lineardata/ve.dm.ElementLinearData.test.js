@@ -8,12 +8,11 @@ QUnit.module( 've.dm.ElementLinearData' );
 
 /* Tests */
 
-QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
-	var c, i, j,
+QUnit.test( 'getAnnotationsFromOffset', function ( assert ) {
+	var i, j,
 		data,
 		doc,
 		annotations,
-		expectCount = 0,
 		cases = [
 			{
 				msg: [ 'bold #1', 'bold #2' ],
@@ -96,12 +95,6 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 			}
 		];
 
-	// Calculate expected assertion count
-	for ( c = 0; c < cases.length; c++ ) {
-		expectCount += cases[ c ].data.length;
-	}
-	QUnit.expect( expectCount + 1 );
-
 	// Run tests
 	for ( i = 0; i < cases.length; i++ ) {
 		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
@@ -123,7 +116,7 @@ QUnit.test( 'getAnnotationsFromOffset', 1, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
+QUnit.test( 'getAnnotationsFromRange', function ( assert ) {
 	var i, data, doc,
 		cases = [
 			{
@@ -368,8 +361,6 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
-
 	for ( i = 0; i < cases.length; i++ ) {
 		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
 		doc = new ve.dm.Document( data );
@@ -382,55 +373,53 @@ QUnit.test( 'getAnnotationsFromRange', 1, function ( assert ) {
 } );
 
 QUnit.test( 'getInsertionAnnotationsFromRange', function ( assert ) {
-	var html, linearData, tests,
-		u = ve.dm.example.underline;
+	var linearData,
+		u = ve.dm.example.underline,
+		// <h1>:0 a:1 b:2 c:3 d:4 e:5 f:6 </h1>:7 <p>:8 g:9 </p>:10 <div>:11 </div>:12
+		html = '<h1>ab<u>cd</u>ef</h1><p><u>g</u></p><div></div>',
+		cases = [
+			{ range: [ 1, 1 ], expected: [], msg: 'plain start at block start' },
+			{ range: [ 2, 2 ], expected: [], msg: 'plain interior' },
+			{ range: [ 3, 3 ], expected: [], msg: 'plain end before u' },
+			{ range: [ 3, 3 ], startAfterAnnotations: true, expected: [ u ], msg: 'u start' },
+			{ range: [ 4, 4 ], expected: [ u ], msg: 'u interior' },
+			{ range: [ 5, 5 ], expected: [ u ], msg: 'u end' },
+			{ range: [ 5, 5 ], startAfterAnnotations: true, expected: [], msg: 'after u' },
+			{ range: [ 6, 6 ], expected: [], msg: 'plain start after u' },
+			{ range: [ 7, 7 ], expected: [], msg: 'plain end at block end' },
+			{ range: [ 9, 9 ], expected: [], msg: 'block start before u' },
+			{ range: [ 9, 9 ], startAfterAnnotations: true, expected: [ u ], msg: 'u start at block start' },
+			{ range: [ 10, 10 ], expected: [ u ], msg: 'u end before block end' },
+			{ range: [ 10, 10 ], startAfterAnnotations: true, expected: [], msg: 'after u before block end' },
+			{ range: [ 12, 12 ], expected: [], msg: 'empty block' },
+			{ range: [ 2, 3 ], expected: [], msg: 'forward to u start' },
+			{ range: [ 3, 2 ], expected: [], msg: 'backward to u start' },
+			{ range: [ 2, 4 ], expected: [], msg: 'forward past u start' },
+			{ range: [ 4, 2 ], expected: [], msg: 'backward past u start' },
+			{ range: [ 3, 4 ], expected: [ u ], msg: 'forward to u end' },
+			{ range: [ 4, 3 ], expected: [ u ], msg: 'backward to u end' },
+			{ range: [ 3, 5 ], expected: [ u ], msg: 'forward past u end' },
+			{ range: [ 5, 3 ], expected: [ u ], msg: 'backward past u end' }
+		];
 
-	// <h1>:0 a:1 b:2 c:3 d:4 e:5 f:6 </h1>:7 <p>:8 g:9 </p>:10 <div>:11 </div>:12
-	html = '<h1>ab<u>cd</u>ef</h1><p><u>g</u></p><div></div>';
-	tests = [
-		{ range: [ 1, 1 ], expected: [], msg: 'plain start at block start' },
-		{ range: [ 2, 2 ], expected: [], msg: 'plain interior' },
-		{ range: [ 3, 3 ], expected: [], msg: 'plain end before u' },
-		{ range: [ 3, 3 ], startAfterAnnotations: true, expected: [ u ], msg: 'u start' },
-		{ range: [ 4, 4 ], expected: [ u ], msg: 'u interior' },
-		{ range: [ 5, 5 ], expected: [ u ], msg: 'u end' },
-		{ range: [ 5, 5 ], startAfterAnnotations: true, expected: [], msg: 'after u' },
-		{ range: [ 6, 6 ], expected: [], msg: 'plain start after u' },
-		{ range: [ 7, 7 ], expected: [], msg: 'plain end at block end' },
-		{ range: [ 9, 9 ], expected: [], msg: 'block start before u' },
-		{ range: [ 9, 9 ], startAfterAnnotations: true, expected: [ u ], msg: 'u start at block start' },
-		{ range: [ 10, 10 ], expected: [ u ], msg: 'u end before block end' },
-		{ range: [ 10, 10 ], startAfterAnnotations: true, expected: [], msg: 'after u before block end' },
-		{ range: [ 12, 12 ], expected: [], msg: 'empty block' },
-		{ range: [ 2, 3 ], expected: [], msg: 'forward to u start' },
-		{ range: [ 3, 2 ], expected: [], msg: 'backward to u start' },
-		{ range: [ 2, 4 ], expected: [], msg: 'forward past u start' },
-		{ range: [ 4, 2 ], expected: [], msg: 'backward past u start' },
-		{ range: [ 3, 4 ], expected: [ u ], msg: 'forward to u end' },
-		{ range: [ 4, 3 ], expected: [ u ], msg: 'backward to u end' },
-		{ range: [ 3, 5 ], expected: [ u ], msg: 'forward past u end' },
-		{ range: [ 5, 3 ], expected: [ u ], msg: 'backward past u end' }
-	];
-
-	QUnit.expect( tests.length );
 	linearData = ve.dm.converter.getModelFromDom(
 		ve.createDocumentFromHtml( html )
 	).data;
-	tests.forEach( function ( test ) {
+	cases.forEach( function ( caseItem ) {
 		var observed = linearData.getInsertionAnnotationsFromRange(
-			new ve.Range( test.range[ 0 ], test.range[ 1 ] ),
-			test.startAfterAnnotations
+			new ve.Range( caseItem.range[ 0 ], caseItem.range[ 1 ] ),
+			caseItem.startAfterAnnotations
 		).get().map( function ( annotation ) {
 			return {
 				type: annotation.element.type,
 				attributes: annotation.element.attributes
 			};
 		} );
-		assert.deepEqual( observed, test.expected, test.msg );
+		assert.deepEqual( observed, caseItem.expected, caseItem.msg );
 	} );
 } );
 
-QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
+QUnit.test( 'getAnnotatedRangeFromOffset', function ( assert ) {
 	var i, data, doc,
 		cases = [
 			{
@@ -516,8 +505,6 @@ QUnit.test( 'getAnnotatedRangeFromOffset', 1, function ( assert ) {
 				expected: new ve.Range( 1, 7 )
 			}
 		];
-
-	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
@@ -622,7 +609,6 @@ QUnit.test( 'trimOuterSpaceFromRange', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
 	linearData = ve.dm.example.preprocessAnnotations( data );
 	elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() );
 	for ( i = 0; i < cases.length; i++ ) {
@@ -695,7 +681,7 @@ QUnit.test( 'isContentOffset', function ( assert ) {
 			{ msg: 'between non-content branches', expected: false },
 			{ msg: 'right of document', expected: false }
 		];
-	QUnit.expect( data.getLength() + 1 );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		left = data.getData( i - 1 ) ? ( data.getData( i - 1 ).type || data.getCharacterData( i - 1 ) ) : '[start]';
 		right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
@@ -768,7 +754,7 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 			{ msg: 'between non-content branches', expected: [ true, false ] },
 			{ msg: 'right of document', expected: [ true, true ] }
 		];
-	QUnit.expect( ( data.getLength() + 1 ) * 2 );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		left = data.getData( i - 1 ) ? ( data.getData( i - 1 ).type || data.getCharacterData( i - 1 ) ) : '[start]';
 		right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
@@ -791,7 +777,6 @@ QUnit.test( 'getCharacterData', function ( assert ) {
 		expected = [ '', 'a', 'b', '' ],
 		linearData = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), data );
 
-	QUnit.expect( data.length );
 	for ( i = 0; i < data.length; i++ ) {
 		assert.strictEqual(
 			linearData.getCharacterData( i ), expected[ i ]
@@ -799,7 +784,7 @@ QUnit.test( 'getCharacterData', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'isPlainText', 7, function ( assert ) {
+QUnit.test( 'isPlainText', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument();
 
 	assert.strictEqual( doc.data.isPlainText( new ve.Range( 1, 2 ), false ), true, 'Plain text' );
@@ -811,7 +796,7 @@ QUnit.test( 'isPlainText', 7, function ( assert ) {
 	assert.strictEqual( doc.data.isPlainText( new ve.Range( 12, 26 ), true ), true, 'List (content nodes allowed)' );
 } );
 
-QUnit.test( 'getText', 4, function ( assert ) {
+QUnit.test( 'getText', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument();
 
 	assert.strictEqual( doc.data.getText( false, new ve.Range( 2, 11 ) ), 'bcd' );
@@ -823,7 +808,7 @@ QUnit.test( 'getText', 4, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'isContentData', 1, function ( assert ) {
+QUnit.test( 'isContentData', function ( assert ) {
 	var i, data,
 		cases = [
 			{
@@ -847,7 +832,7 @@ QUnit.test( 'isContentData', 1, function ( assert ) {
 				expected: true
 			}
 		];
-	QUnit.expect( cases.length );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
 		assert.strictEqual(
@@ -898,8 +883,6 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 				expected: -1
 			}
 		];
-
-	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
@@ -1053,7 +1036,7 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 				expected: 9
 			}
 		];
-	QUnit.expect( cases.length );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = cases[ i ].doc || simpleDoc;
 		assert.strictEqual(
@@ -1110,7 +1093,7 @@ QUnit.test( 'getNearestContentOffset', function ( assert ) {
 				expected: 1
 			}
 		];
-	QUnit.expect( cases.length );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.data.getNearestContentOffset( cases[ i ].offset, cases[ i ].direction ),
@@ -1219,7 +1202,7 @@ QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 				expected: 0
 			}
 		];
-	QUnit.expect( cases.length );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.data.getRelativeStructuralOffset(
@@ -1337,7 +1320,7 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 				expected: 0
 			}
 		];
-	QUnit.expect( cases.length );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			doc.data.getNearestStructuralOffset(
@@ -1516,7 +1499,7 @@ QUnit.test( 'getWordRange', function ( assert ) {
 				expected: 'index_of'
 			}
 		];
-	QUnit.expect( cases.length );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		// Construct the text (inside a paragraph, because getNearestContentOffset assumes
 		// text cannot be at the very start or end of the data).
@@ -1538,7 +1521,6 @@ QUnit.test( 'getWordRange', function ( assert ) {
 
 QUnit.test( 'sanitize', function ( assert ) {
 	var i, model, data, actualStore, key,
-		count = 0,
 		bold = { type: 'textStyle/bold', attributes: { nodeName: 'b' } },
 		cases = [
 			{
@@ -1813,14 +1795,6 @@ QUnit.test( 'sanitize', function ( assert ) {
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		count++;
-		if ( cases[ i ].store ) {
-			count++;
-		}
-	}
-	QUnit.expect( count );
-
-	for ( i = 0; i < cases.length; i++ ) {
 		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].html ) );
 		data = model.data;
 		data.sanitize( cases[ i ].rules || {} );
@@ -1866,8 +1840,6 @@ QUnit.test( 'countNonInternalElements', function ( assert ) {
 				msg: 'Counting non-internal elements'
 			}
 		];
-
-	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
@@ -1939,8 +1911,6 @@ QUnit.test( 'hasContent', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
-
 	for ( i = 0; i < cases.length; i++ ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
 		assert.strictEqual( data.hasContent(), cases[ i ].expected, cases[ i ].msg );
@@ -1994,7 +1964,6 @@ QUnit.test( 'getUsedStoreValues', function ( assert ) {
 		return ann.element;
 	}
 
-	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.deepEqual(
 			ve.copy( elementData.getUsedStoreValues( cases[ i ].range ), getElement ),
@@ -2070,7 +2039,6 @@ QUnit.test( 'compareElementsUnannotated', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.equal(
 			ve.dm.ElementLinearData.static.compareElementsUnannotated( cases[ i ].a, cases[ i ].b ),

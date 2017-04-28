@@ -19,17 +19,17 @@ ve.NodeStub.static.name = 'stub';
 
 /* Tests */
 
-QUnit.test( 'getType', 1, function ( assert ) {
+QUnit.test( 'getType', function ( assert ) {
 	var node = new ve.NodeStub();
 	assert.strictEqual( node.getType(), 'stub' );
 } );
 
-QUnit.test( 'getParent', 1, function ( assert ) {
+QUnit.test( 'getParent', function ( assert ) {
 	var node = new ve.NodeStub();
 	assert.strictEqual( node.getParent(), null );
 } );
 
-QUnit.test( 'getRoot', 1, function ( assert ) {
+QUnit.test( 'getRoot', function ( assert ) {
 	var node = new ve.NodeStub();
 	assert.strictEqual( node.getRoot(), null );
 } );

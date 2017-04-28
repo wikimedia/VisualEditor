@@ -8,7 +8,7 @@ QUnit.module( 've.dm.AnnotationSet' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage', 32, function ( assert ) {
+QUnit.test( 'Basic usage', function ( assert ) {
 	var annotationSet3,
 		store = new ve.dm.IndexValueStore(),
 		bold = new ve.dm.BoldAnnotation(),
@@ -75,7 +75,7 @@ QUnit.test( 'Basic usage', 32, function ( assert ) {
 	assert.strictEqual( annotationSet3.contains( italic ), true, 'set intersected with set2 contains italic' );
 } );
 
-QUnit.test( 'Comparable', 7, function ( assert ) {
+QUnit.test( 'Comparable', function ( assert ) {
 	var annotationSet3,
 		store = new ve.dm.IndexValueStore(),
 		bold = new ve.dm.BoldAnnotation(),

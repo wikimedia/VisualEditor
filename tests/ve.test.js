@@ -26,7 +26,7 @@ QUnit.module( 've' );
 
 // ve.extendObject: Tested upstream (jQuery)
 
-QUnit.test( 'compareClassLists', 1, function ( assert ) {
+QUnit.test( 'compareClassLists', function ( assert ) {
 	var i,
 		cases = [
 			{
@@ -91,13 +91,12 @@ QUnit.test( 'compareClassLists', 1, function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual( ve.compareClassLists.apply( ve, cases[ i ].args ), cases[ i ].expected );
 	}
 } );
 
-QUnit.test( 'isInstanceOfAny', 7, function ( assert ) {
+QUnit.test( 'isInstanceOfAny', function ( assert ) {
 	function Foo() {}
 	OO.initClass( Foo );
 
@@ -153,7 +152,7 @@ QUnit.test( 'isInstanceOfAny', 7, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'getDomAttributes', 1, function ( assert ) {
+QUnit.test( 'getDomAttributes', function ( assert ) {
 	assert.deepEqual(
 		ve.getDomAttributes( $.parseHTML( '<div string="foo" empty number="0"></div>' )[ 0 ] ),
 		{ string: 'foo', empty: '', number: '0' },
@@ -161,7 +160,7 @@ QUnit.test( 'getDomAttributes', 1, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'setDomAttributes', 7, function ( assert ) {
+QUnit.test( 'setDomAttributes', function ( assert ) {
 	var target,
 		sample = $.parseHTML( '<div foo="one" bar="two" baz="three"></div>' )[ 0 ];
 
@@ -263,7 +262,7 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 		[ [ 4, , 5, , 6 ], 2, 3, [ 1, , 3 ], [ 5, , 6 ], [ 4, , 1, , 3 ], 'diff=0 end' ]
 		/* eslint-enable no-sparse-arrays */
 	];
-	QUnit.expect( 2 * tests.length + 1 );
+
 	assert.notDeepEqual(
 		// eslint-disable-next-line no-sparse-arrays
 		mapToString( [ 1, , ] ),
@@ -312,8 +311,6 @@ QUnit.test( 'batchSplice', function ( assert ) {
 		assert.deepEqual( expected, actual, msg + ': replacing 3 elements with 2100 elements (array)' );
 	}
 
-	QUnit.expect( 8 * ( spliceWasSupported ? 2 : 1 ) );
-
 	assertBatchSplice();
 
 	// If the current browser supported native splice,
@@ -352,7 +349,7 @@ QUnit.test( 'batchPush', function ( assert ) {
 	assert.deepEqual( actual[ actual.length - 1 ], 2099, 'Adding a huge array: last value' );
 } );
 
-QUnit.test( 'insertIntoArray', 3, function ( assert ) {
+QUnit.test( 'insertIntoArray', function ( assert ) {
 	var target;
 
 	target = [ 'a', 'b', 'c' ];
@@ -368,7 +365,7 @@ QUnit.test( 'insertIntoArray', 3, function ( assert ) {
 	assert.deepEqual( target, [ 'a', 'b', 'c', 'x', 'y' ], 'insert beyond end' );
 } );
 
-QUnit.test( 'escapeHtml', 1, function ( assert ) {
+QUnit.test( 'escapeHtml', function ( assert ) {
 	assert.strictEqual( ve.escapeHtml( ' "script\' <foo & bar> ' ), ' &quot;script&#039; &lt;foo &amp; bar&gt; ' );
 } );
 
@@ -410,8 +407,6 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 				htmlAttributes: {}
 			}
 		];
-
-	QUnit.expect( cases.length * 3 * ( 2 + ( supportsDomParser ? 1 : 0 ) + ( supportsIframe ? 1 : 0 ) ) );
 
 	function assertCreateDocument( createDocument, msg ) {
 		var i, key, attributes, attributesObject;
@@ -493,8 +488,6 @@ QUnit.test( 'resolveUrl', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
-
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.createDocumentFromHtml( '' );
 		doc.head.appendChild( $( '<base>', doc ).attr( 'href', cases[ i ].base )[ 0 ] );
@@ -518,8 +511,6 @@ QUnit.test( 'resolveAttributes', function ( assert ) {
 				msg: 'href resolved on self (unwrapped)'
 			}
 		];
-
-	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = ve.createDocumentFromHtml( '' );
@@ -559,7 +550,6 @@ QUnit.test( 'fixBase', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		targetDoc = ve.createDocumentFromHtml( '' );
 		sourceDoc = ve.createDocumentFromHtml( '' );
@@ -579,7 +569,7 @@ QUnit.test( 'fixBase', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'isBlockElement/isVoidElement', 10, function ( assert ) {
+QUnit.test( 'isBlockElement/isVoidElement', function ( assert ) {
 	assert.strictEqual( ve.isBlockElement( 'div' ), true, '"div" is a block element' );
 	assert.strictEqual( ve.isBlockElement( 'SPAN' ), false, '"SPAN" is not a block element' );
 	assert.strictEqual( ve.isBlockElement( 'a' ), false, '"a" is not a block element' );
@@ -628,7 +618,7 @@ QUnit.test( 'graphemeSafeSubstring', function ( assert ) {
 				expected: [ '\ud860\udee2', '' ]
 			}
 		];
-	QUnit.expect( cases.length * 2 );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual(
 			ve.graphemeSafeSubstring( text, cases[ i ].start, cases[ i ].end, true ),
@@ -701,7 +691,6 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 				normalize: normalizeBgcolor
 			}
 		];
-	QUnit.expect( 2 * cases.length );
 
 	// Force transformStyleAttributes to think that we're in a broken browser
 	wasStyleAttributeBroken = ve.isStyleAttributeBroken;
@@ -851,7 +840,6 @@ QUnit.test( 'normalizeNode', function ( assert ) {
 				}
 			}
 		];
-	QUnit.expect( 2 * cases.length );
 
 	// Force normalizeNode to think native normalization is broken so it uses the manual
 	// normalization code
@@ -912,7 +900,7 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 	function getNode( name ) {
 		return nodes[ name ];
 	}
-	QUnit.expect( tests.length );
+
 	for ( i = 0, len = tests.length; i < len; i++ ) {
 		test = tests[ i ];
 		testNodes = test.nodes.split( /\s+/ ).map( getNode );
@@ -954,7 +942,7 @@ QUnit.test( 'getCommonStartSequenceLength', function ( assert ) {
 			title: 'String sequences'
 		}
 	];
-	QUnit.expect( tests.length );
+
 	for ( i = 0, len = tests.length; i < len; i++ ) {
 		test = tests[ i ];
 		assert.strictEqual(
@@ -1042,8 +1030,6 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 			]
 		}
 	];
-
-	QUnit.expect( 2 * tests.length );
 
 	div = document.createElement( 'div' );
 	div.contentEditable = 'true';

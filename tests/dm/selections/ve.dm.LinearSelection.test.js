@@ -8,7 +8,7 @@ QUnit.module( 've.dm.LinearSelection' );
 
 /* Tests */
 
-QUnit.test( 'Construction and getters (getDocument, getRange(s))', 4, function ( assert ) {
+QUnit.test( 'Construction and getters (getDocument, getRange(s))', function ( assert ) {
 	var dummyDoc = { a: 1 },
 		range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( dummyDoc, range );
@@ -19,7 +19,7 @@ QUnit.test( 'Construction and getters (getDocument, getRange(s))', 4, function (
 	assert.strictEqual( selection.getName(), 'linear', 'getName' );
 } );
 
-QUnit.test( 'Basic methods (clone, collapse*, isCollased, equals, isNull)', 10, function ( assert ) {
+QUnit.test( 'Basic methods (clone, collapse*, isCollased, equals, isNull)', function ( assert ) {
 	var dummyDoc = { a: 1 },
 		dummyDoc2 = { a: 1 },
 		range = new ve.Range( 200, 100 ),
@@ -40,7 +40,7 @@ QUnit.test( 'Basic methods (clone, collapse*, isCollased, equals, isNull)', 10, 
 	assert.strictEqual( selection.isNull(), false, 'not null' );
 } );
 
-QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', 3, function ( assert ) {
+QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', function ( assert ) {
 	var dummyDoc = { a: 1 },
 		range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( dummyDoc, range );

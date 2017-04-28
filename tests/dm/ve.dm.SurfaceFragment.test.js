@@ -8,7 +8,7 @@ QUnit.module( 've.dm.SurfaceFragment' );
 
 /* Tests */
 
-QUnit.test( 'constructor', 5, function ( assert ) {
+QUnit.test( 'constructor', function ( assert ) {
 	var fragment,
 		doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
@@ -26,7 +26,7 @@ QUnit.test( 'constructor', 5, function ( assert ) {
 	assert.strictEqual( fragment.willAutoSelect(), false, 'noAutoSelect values are boolean' );
 } );
 
-QUnit.test( 'update', 3, function ( assert ) {
+QUnit.test( 'update', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment1 = surface.getLinearFragment( new ve.Range( 55, 61 ) ),
@@ -67,7 +67,7 @@ QUnit.test( 'update', 3, function ( assert ) {
 
 } );
 
-QUnit.test( 'getSelectedModels', 4, function ( assert ) {
+QUnit.test( 'getSelectedModels', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
 
@@ -96,7 +96,7 @@ QUnit.test( 'getSelectedModels', 4, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'getAnnotations', 4, function ( assert ) {
+QUnit.test( 'getAnnotations', function ( assert ) {
 	var tableSelection,
 		doc = ve.dm.example.createExampleDocument( 'annotatedTable' ),
 		tableRange = new ve.Range( 0, 52 ),
@@ -116,7 +116,7 @@ QUnit.test( 'getAnnotations', 4, function ( assert ) {
 	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations( true ).getIndexes(), [ ve.dm.example.boldIndex, ve.dm.example.strongIndex, ve.dm.example.italicIndex ], 'Get all annotations' );
 } );
 
-QUnit.test( 'hasAnnotations', 2, function ( assert ) {
+QUnit.test( 'hasAnnotations', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
 
@@ -124,7 +124,7 @@ QUnit.test( 'hasAnnotations', 2, function ( assert ) {
 	assert.strictEqual( surface.getLinearFragment( new ve.Range( 2, 3 ) ).hasAnnotations(), true, 'Bold text has some' );
 } );
 
-QUnit.test( 'adjustLinearSelection', 4, function ( assert ) {
+QUnit.test( 'adjustLinearSelection', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
@@ -138,7 +138,7 @@ QUnit.test( 'adjustLinearSelection', 4, function ( assert ) {
 	assert.deepEqual( adjustedFragment, fragment, 'fragment is clone if no parameters supplied' );
 } );
 
-QUnit.test( 'truncateLinearSelection', 4, function ( assert ) {
+QUnit.test( 'truncateLinearSelection', function ( assert ) {
 	var range = new ve.Range( 100, 200 ),
 		doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
@@ -150,7 +150,7 @@ QUnit.test( 'truncateLinearSelection', 4, function ( assert ) {
 	assert.equalRange( fragment.truncateLinearSelection( -150 ).getSelection().getRange(), range, 'truncate -150 does nothing' );
 } );
 
-QUnit.test( 'collapseToStart/End', 6, function ( assert ) {
+QUnit.test( 'collapseToStart/End', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
@@ -221,7 +221,6 @@ QUnit.test( 'expandLinearSelection (annotation)', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		fragment = surface.getLinearFragment( cases[ i ].range ).expandLinearSelection(
 			'annotation',
@@ -262,7 +261,6 @@ QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
 	for ( i = 0; i < cases.length; i++ ) {
 		surface = new ve.dm.Surface( ve.dm.example.createExampleDocument( cases[ i ].doc ) );
 		fragment = surface.getLinearFragment( cases[ i ].range ).expandLinearSelection( 'closest', cases[ i ].type );
@@ -270,7 +268,7 @@ QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'expandLinearSelection (word)', 1, function ( assert ) {
+QUnit.test( 'expandLinearSelection (word)', function ( assert ) {
 	var i, doc, surface, fragment, newFragment, range, word,
 		cases = [
 			{
@@ -292,7 +290,7 @@ QUnit.test( 'expandLinearSelection (word)', 1, function ( assert ) {
 				msg: 'zero-length range'
 			}
 		];
-	QUnit.expect( cases.length * 2 );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		doc = new ve.dm.Document( cases[ i ].phrase.split( '' ) );
 		surface = new ve.dm.Surface( doc );
@@ -305,7 +303,7 @@ QUnit.test( 'expandLinearSelection (word)', 1, function ( assert ) {
 	}
 } );
 
-QUnit.test( 'removeContent', 6, function ( assert ) {
+QUnit.test( 'removeContent', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
 		expectedDoc = ve.dm.example.createExampleDocument(),
@@ -451,8 +449,6 @@ QUnit.test( 'delete', function ( assert ) {
 				msg: 'Delete all when document starts and ends with a focusable node'
 			}
 		];
-
-	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfaceFragmentDeleteTest(
@@ -640,7 +636,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'changeAttributes', 1, function ( assert ) {
+QUnit.test( 'changeAttributes', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 0, 5 ) );
@@ -652,7 +648,7 @@ QUnit.test( 'changeAttributes', 1, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
+QUnit.test( 'wrapNodes/unwrapNodes', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
@@ -727,7 +723,7 @@ QUnit.test( 'wrapNodes/unwrapNodes', 10, function ( assert ) {
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 5, 29 ), 'new range contains inner elements' );
 } );
 
-QUnit.test( 'rewrapNodes', 4, function ( assert ) {
+QUnit.test( 'rewrapNodes', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 43, 55 ) ),
@@ -780,7 +776,7 @@ QUnit.test( 'rewrapNodes', 4, function ( assert ) {
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 59, 65 ), 'new range contains rewrapping elements' );
 } );
 
-QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
+QUnit.test( 'wrapAllNodes', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
@@ -859,7 +855,7 @@ QUnit.test( 'wrapAllNodes', 10, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
+QUnit.test( 'rewrapAllNodes', function ( assert ) {
 	var expectedData,
 		doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
@@ -918,7 +914,7 @@ QUnit.test( 'rewrapAllNodes', 6, function ( assert ) {
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 0, 5 ), 'new range contains rewrapping elements' );
 } );
 
-QUnit.test( 'isolateAndUnwrap', 1, function ( assert ) {
+QUnit.test( 'isolateAndUnwrap', function ( assert ) {
 	ve.test.utils.runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), function ( data ) {
 		data.splice( 11, 0, { type: 'listItem' } );
 		data.splice( 12, 1 );

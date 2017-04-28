@@ -6,7 +6,7 @@
 
 QUnit.module( 've.dm.Scalable' );
 
-QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', 28, function ( assert ) {
+QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', function ( assert ) {
 	var eventEmitted = false,
 		currentDimensions = {
 			width: 300,
@@ -125,7 +125,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', 28, fun
 
 } );
 
-QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isTooSmall/isTooLarge', 16, function ( assert ) {
+QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isTooSmall/isTooLarge', function ( assert ) {
 	var currentDimensions = {
 			width: 300,
 			height: 200
@@ -181,7 +181,7 @@ QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isToo
 
 } );
 
-QUnit.test( 'isDefault/toggleDefault', 4, function ( assert ) {
+QUnit.test( 'isDefault/toggleDefault', function ( assert ) {
 	var scalable = new ve.dm.Scalable( {
 			isDefault: true
 		} ),
@@ -206,8 +206,6 @@ QUnit.test( 'isDimensionsObjectValid', function ( assert ) {
 			{ dimensions: { width: undefined, height: undefined }, expected: false, msg: 'Explicity undefined' }
 		];
 
-	QUnit.expect( cases.length );
-
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.strictEqual( ve.dm.Scalable.static.isDimensionsObjectValid( cases[ i ].dimensions ), cases[ i ].expected, cases[ i ].msg );
 	}
@@ -221,8 +219,6 @@ QUnit.test( 'getDimensionsFromValue', function ( assert ) {
 			{ dimensions: { width: '', height: 400 }, ratio: 0.5, expected: { width: 200, height: 400 }, msg: 'Empty width' },
 			{ dimensions: { width: 200, height: '' }, ratio: 0.5, expected: { width: 200, height: 400 }, msg: 'Empty height' }
 		];
-
-	QUnit.expect( cases.length );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.deepEqual( ve.dm.Scalable.static.getDimensionsFromValue( cases[ i ].dimensions, cases[ i ].ratio ), cases[ i ].expected, cases[ i ].msg );

@@ -46,7 +46,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		15: [ 18, 21 ],
 		16: 22
 	};
-	QUnit.expect( 2 * Object.keys( mapping ).length );
+
 	for ( offset in mapping ) {
 		expected = Array.isArray( mapping[ offset ] ) ? mapping[ offset ] : [ mapping[ offset ], mapping[ offset ] ];
 		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[ 1 ], offset );
@@ -91,7 +91,6 @@ QUnit.test( 'translateRange', function ( assert ) {
 			msg: 'wrapped range plus one on the right'
 		}
 	];
-	QUnit.expect( cases.length * 2 );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.equalRange( tx.translateRange( cases[ i ].before ), cases[ i ].after, cases[ i ].msg );
@@ -201,7 +200,6 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		txBuilder = new ve.dm.TransactionBuilder();
 		for ( j = 0; j < cases[ i ].calls.length; j++ ) {

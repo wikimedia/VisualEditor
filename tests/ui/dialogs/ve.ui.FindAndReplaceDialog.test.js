@@ -74,8 +74,6 @@ QUnit.test( 'find fragments', function ( assert ) {
 			}
 		];
 
-	QUnit.expect( cases.length );
-
 	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).done( function ( dialog ) {
 		dialog.open( {
 			surface: surface,
@@ -122,8 +120,6 @@ QUnit.test( 'replace all', function ( assert ) {
 				expected: 'X bar Xq.X Xb'
 			}
 		];
-
-	QUnit.expect( cases.length );
 
 	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).done( function ( dialog ) {
 		dialog.open( {

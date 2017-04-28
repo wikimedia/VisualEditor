@@ -97,7 +97,7 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 			html: [ '&', '<', '>', '\'', '"' ]
 		}
 	];
-	QUnit.expect( cases.length );
+
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[ i ].data, store ) );
 		ve.dm.example.preprocessAnnotations( cases[ i ].html, store );

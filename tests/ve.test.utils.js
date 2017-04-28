@@ -113,17 +113,6 @@
 		assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
 	};
 
-	ve.test.utils.countActionTests = function ( cases ) {
-		var i, expected = 0;
-		for ( i = 0; i < cases.length; i++ ) {
-			expected += cases[ i ].undo ? 2 : 1;
-			if ( cases[ i ].expectedRangeOrSelection ) {
-				expected += cases[ i ].undo ? 2 : 1;
-			}
-		}
-		return expected;
-	};
-
 	ve.test.utils.runActionTest = function ( actionName, assert, html, createView, method, args, rangeOrSelection, msg, options ) {
 		var actualData, originalData, expectedOriginalRangeOrSelection,
 			surface = createView ?
@@ -169,19 +158,6 @@
 				assert.equalHash( surface.getModel().getSelection(), expectedOriginalRangeOrSelection || selection, msg + ' (undo): selections match' );
 			}
 		}
-	};
-
-	ve.test.utils.countGetModelFromDomTests = function ( cases ) {
-		var msg, n = 0;
-		for ( msg in cases ) {
-			if ( cases[ msg ].head !== undefined || cases[ msg ].body !== undefined ) {
-				n += 3;
-				if ( cases[ msg ].storeItems ) {
-					n += Object.keys( cases[ msg ].storeItems ).length;
-				}
-			}
-		}
-		return n;
 	};
 
 	ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {

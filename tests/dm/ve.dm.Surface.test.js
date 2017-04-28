@@ -20,12 +20,12 @@ OO.inheritClass( ve.dm.SurfaceStub, ve.dm.Surface );
 
 // Tests
 
-QUnit.test( 'getDocument', 1, function ( assert ) {
+QUnit.test( 'getDocument', function ( assert ) {
 	var surface = new ve.dm.SurfaceStub();
 	assert.strictEqual( surface.getDocument(), surface.documentModel );
 } );
 
-QUnit.test( 'getSelection', 1, function ( assert ) {
+QUnit.test( 'getSelection', function ( assert ) {
 	var surface = new ve.dm.SurfaceStub();
 	assert.strictEqual( surface.getSelection(), surface.selection );
 } );
@@ -123,7 +123,7 @@ QUnit.test( 'contextChange events', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'documentUpdate/select events', 3, function ( assert ) {
+QUnit.test( 'documentUpdate/select events', function ( assert ) {
 	var surface = new ve.dm.SurfaceStub(),
 		doc = surface.getDocument(),
 		// docmentUpdate doesn't fire for no-op transactions, so make sure there's something there
@@ -147,7 +147,7 @@ QUnit.test( 'documentUpdate/select events', 3, function ( assert ) {
 	assert.deepEqual( events, { documentUpdate: 2, select: 2 }, 'change with transaction and selection' );
 } );
 
-QUnit.test( 'breakpoint/undo/redo', 12, function ( assert ) {
+QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
 	var range = new ve.Range( 1, 3 ),
 		surface = new ve.dm.SurfaceStub( null, range ),
 		fragment = surface.getFragment(),
@@ -188,7 +188,7 @@ QUnit.test( 'breakpoint/undo/redo', 12, function ( assert ) {
 
 } );
 
-QUnit.test( 'range translation', 2, function ( assert ) {
+QUnit.test( 'range translation', function ( assert ) {
 	var sel, range,
 		surface = new ve.dm.SurfaceStub( null, new ve.Range( 3 ) ),
 		doc = surface.getDocument(),
@@ -200,7 +200,7 @@ QUnit.test( 'range translation', 2, function ( assert ) {
 	assert.deepEqual( { from: range.from, to: range.to }, { from: 3, to: 3 }, 'Cursor is unmoved' );
 } );
 
-QUnit.test( 'staging', 37, function ( assert ) {
+QUnit.test( 'staging', function ( assert ) {
 	var tx1, tx2,
 		surface = new ve.dm.SurfaceStub( null, new ve.Range( 1, 3 ) ),
 		fragment = surface.getFragment(),

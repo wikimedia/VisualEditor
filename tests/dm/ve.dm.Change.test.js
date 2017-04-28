@@ -126,7 +126,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 	], 'Rebase-endmost insert onto parallel insert at the same offset' );
 } );
 
-QUnit.test( 'Change operations', 8, function ( assert ) {
+QUnit.test( 'Change operations', function ( assert ) {
 	var change, replace2, remove2,
 		origData = [ { type: 'paragraph' }, 't', 'h', 'r', 'e', 'e', { type: '/paragraph' } ],
 		newSurface = function () {
@@ -248,7 +248,7 @@ QUnit.test( 'Change operations', 8, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'Serialize/deserialize', 6, function ( assert ) {
+QUnit.test( 'Serialize/deserialize', function ( assert ) {
 	var origData = [ { type: 'paragraph' }, 'b', 'a', 'r', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
@@ -392,7 +392,7 @@ QUnit.test( 'Serialize/deserialize', 6, function ( assert ) {
 	);
 } );
 
-QUnit.test( 'Same-offset typing', 1, function ( assert ) {
+QUnit.test( 'Same-offset typing', function ( assert ) {
 	var a, b, c, d, tests, i, len, test, operations, expected,
 		surface = new ve.dm.Surface( ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
@@ -455,10 +455,7 @@ QUnit.test( 'Same-offset typing', 1, function ( assert ) {
 		}
 	];
 
-	len = tests.length;
-	QUnit.expect( len + 6 );
-
-	for ( i = 0; i < len; i++ ) {
+	for ( i = 0, len = tests.length; i < len; i++ ) {
 		test = tests[ i ];
 		operations = test.change.transactions[ 0 ].operations;
 		assert.deepEqual( {
