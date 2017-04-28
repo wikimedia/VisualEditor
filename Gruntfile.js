@@ -266,14 +266,6 @@ module.exports = function ( grunt ) {
 			]
 		},
 		eslint: {
-			fix: {
-				options: {
-					fix: true
-				},
-				src: [
-					'<%= eslint.main %>'
-				]
-			},
 			main: [
 				'*.js',
 				'{bin,build,demos,src,tests,rebaser}/**/*.js',
@@ -412,9 +404,8 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'lint', [ 'tyops', 'eslint:main', 'stylelint', 'jsonlint', 'banana' ] );
+	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'jsonlint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:main' ] );
-	grunt.registerTask( 'fix', [ 'eslint:fix' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
 	grunt.registerTask( 'ci', [ '_test', 'git-status' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
