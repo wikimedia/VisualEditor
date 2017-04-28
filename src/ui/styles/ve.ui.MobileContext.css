@@ -27,6 +27,7 @@
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions {
 	vertical-align: top;
 	padding: 0;
+	height: 100%;
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget {
@@ -35,6 +36,23 @@
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonElement-button {
-	padding: 0.625em 0.5em;
+	padding: 1.538em 1.2em;
 	vertical-align: top;
+	height: 100%;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-labelElement .oo-ui-buttonElement-button {
+	padding: 0.86em 1.2em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement .oo-ui-buttonElement-button {
+	padding-left: 2.03125em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement .oo-ui-iconElement-icon {
+	left: 0.65em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement.oo-ui-labelElement .oo-ui-buttonElement-button {
+	padding-left: 2.63125em;
 }
