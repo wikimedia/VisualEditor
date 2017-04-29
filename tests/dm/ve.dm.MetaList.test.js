@@ -8,7 +8,7 @@ QUnit.module( 've.dm.MetaList' );
 
 /* Tests */
 
-function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
+ve.test.utils.assertItemsMatchMetadata = function ( assert, metadata, list, msg, full ) {
 	var i, j,
 		k = 0,
 		items = list.getAllItems();
@@ -26,7 +26,7 @@ function assertItemsMatchMetadata( assert, metadata, list, msg, full ) {
 		}
 	}
 	assert.strictEqual( items.length, k, msg + ' (number of items)' );
-}
+};
 
 QUnit.test( 'constructor', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
@@ -34,7 +34,7 @@ QUnit.test( 'constructor', function ( assert ) {
 		list = new ve.dm.MetaList( surface ),
 		metadata = doc.metadata;
 
-	assertItemsMatchMetadata( assert, metadata, list, 'Constructor', true );
+	ve.test.utils.assertItemsMatchMetadata( assert, metadata, list, 'Constructor', true );
 } );
 
 QUnit.test( 'onTransact', function ( assert ) {
@@ -142,9 +142,9 @@ QUnit.test( 'onTransact', function ( assert ) {
 		list = new ve.dm.MetaList( surface );
 		// Test both the transaction-via-surface and transaction-via-document flows
 		surface.change( tx );
-		assertItemsMatchMetadata( assert, doc.metadata, list, cases[ i ].msg, true );
+		ve.test.utils.assertItemsMatchMetadata( assert, doc.metadata, list, cases[ i ].msg, true );
 		surface.change( tx.reversed() );
-		assertItemsMatchMetadata( assert, doc.metadata, list, cases[ i ].msg + ' (rollback)', true );
+		ve.test.utils.assertItemsMatchMetadata( assert, doc.metadata, list, cases[ i ].msg + ' (rollback)', true );
 	}
 } );
 

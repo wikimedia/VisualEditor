@@ -7,7 +7,8 @@
 QUnit.module( 've.ui.DataTransferHandlerFactory' );
 
 /* Stubs */
-function makeStubHandler( name, handlesPaste, types, kinds, extensions ) {
+
+ve.test.utils.makeStubTransferHandler = function ( name, handlesPaste, types, kinds, extensions ) {
 	function StubHandler() {
 		StubHandler.super.apply( this, arguments );
 	}
@@ -18,32 +19,37 @@ function makeStubHandler( name, handlesPaste, types, kinds, extensions ) {
 	StubHandler.static.types = types || [];
 	StubHandler.static.extensions = extensions;
 	return StubHandler;
-}
-function makeStubItem( type, kind, extension ) {
+};
+
+ve.test.utils.makeStubTransferItem = function ( type, kind, extension ) {
 	return {
 		type: type,
 		kind: kind,
 		getExtension: function () { return extension; }
 	};
-}
-
-ve.ui.StubHandlerFileHtml1 = makeStubHandler( 'filehtml1', true, [ 'text/html' ], [ 'file' ], [ 'html' ] );
-ve.ui.StubHandlerFileHtml2 = makeStubHandler( 'filehtml2', false, [ 'text/html' ], [ 'file' ], [ 'html' ] );
-ve.ui.StubHandlerStringHtml = makeStubHandler( 'stringhtml', false, [ 'text/html' ], [ 'string' ] );
-ve.ui.StubHandlerHtml1 = makeStubHandler( 'html1', true, [ 'text/html' ] );
-ve.ui.StubHandlerHtml2 = makeStubHandler( 'html2', false, [ 'text/html' ] );
-// The `html3` handler should never show up
-ve.ui.StubHandlerHtml3 = makeStubHandler( 'html3', true, [ 'text/html' ] );
-ve.ui.StubHandlerHtml3.static.matchFunction = function () { return false; };
+};
 
 /* Tests */
 QUnit.test( 'getHandlerNameForItem', function ( assert ) {
-	var factory = new ve.ui.DataTransferHandlerFactory(),
-		stubItemTypeHtml = makeStubItem( 'text/html' ),
-		stubItemFileHtml = makeStubItem( 'text/html', 'file', 'html' ),
-		stubItemStringHtml = makeStubItem( 'text/html', 'string', 'html' ),
-		stubItemExtHtml = makeStubItem( null, null, 'html' ),
-		stubItemProto = makeStubItem( '__proto__', '__proto__', '__proto__' );
+	var StubHandlerFileHtml1, StubHandlerFileHtml2, StubHandlerStringHtml,
+		StubHandlerHtml1, StubHandlerHtml2, StubHandlerHtml3,
+		makeStubTransferHandler = ve.test.utils.makeStubTransferHandler,
+		makeStubTransferItem = ve.test.utils.makeStubTransferItem,
+		factory = new ve.ui.DataTransferHandlerFactory(),
+		stubItemTypeHtml = makeStubTransferItem( 'text/html' ),
+		stubItemFileHtml = makeStubTransferItem( 'text/html', 'file', 'html' ),
+		stubItemStringHtml = makeStubTransferItem( 'text/html', 'string', 'html' ),
+		stubItemExtHtml = makeStubTransferItem( null, null, 'html' ),
+		stubItemProto = makeStubTransferItem( '__proto__', '__proto__', '__proto__' );
+
+	StubHandlerFileHtml1 = makeStubTransferHandler( 'filehtml1', true, [ 'text/html' ], [ 'file' ], [ 'html' ] );
+	StubHandlerFileHtml2 = makeStubTransferHandler( 'filehtml2', false, [ 'text/html' ], [ 'file' ], [ 'html' ] );
+	StubHandlerStringHtml = makeStubTransferHandler( 'stringhtml', false, [ 'text/html' ], [ 'string' ] );
+	StubHandlerHtml1 = makeStubTransferHandler( 'html1', true, [ 'text/html' ] );
+	StubHandlerHtml2 = makeStubTransferHandler( 'html2', false, [ 'text/html' ] );
+	// The `html3` handler should never show up
+	StubHandlerHtml3 = makeStubTransferHandler( 'html3', true, [ 'text/html' ] );
+	StubHandlerHtml3.static.matchFunction = function () { return false; };
 
 	// The factory should start out empty and __proto__ shouldn't cause a crash
 	assert.deepEqual( factory.getHandlerNameForItem( stubItemTypeHtml, false ), undefined, 'Empty factory shouldn\'t match by type' );
@@ -52,12 +58,12 @@ QUnit.test( 'getHandlerNameForItem', function ( assert ) {
 	assert.deepEqual( factory.getHandlerNameForItem( stubItemExtHtml, false ), undefined, 'Empty factory shouldn\'t match by extension' );
 	assert.deepEqual( factory.getHandlerNameForItem( stubItemProto, false ), undefined, 'Empty factory shouldn\'t crash on __proto__' );
 
-	factory.register( ve.ui.StubHandlerFileHtml1 );
-	factory.register( ve.ui.StubHandlerFileHtml2 );
-	factory.register( ve.ui.StubHandlerStringHtml );
-	factory.register( ve.ui.StubHandlerHtml1 );
-	factory.register( ve.ui.StubHandlerHtml2 );
-	factory.register( ve.ui.StubHandlerHtml3 );
+	factory.register( StubHandlerFileHtml1 );
+	factory.register( StubHandlerFileHtml2 );
+	factory.register( StubHandlerStringHtml );
+	factory.register( StubHandlerHtml1 );
+	factory.register( StubHandlerHtml2 );
+	factory.register( StubHandlerHtml3 );
 
 	// Ensure that __proto__ doesn't cause a crash
 	assert.deepEqual( factory.getHandlerNameForItem( stubItemProto, false ), undefined, 'Ensure that __proto__ doesn\'t cause a crash' );

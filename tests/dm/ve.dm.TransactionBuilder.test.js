@@ -8,7 +8,7 @@ QUnit.module( 've.dm.TransactionBuilder' );
 
 /* Helper methods */
 
-function runBuilderTests( assert, cases ) {
+ve.test.utils.runTransactionBuilderTests = function ( assert, cases ) {
 	var msg, txBuilder, i;
 	for ( msg in cases ) {
 		txBuilder = new ve.dm.TransactionBuilder();
@@ -17,9 +17,9 @@ function runBuilderTests( assert, cases ) {
 		}
 		assert.deepEqualWithDomElements( txBuilder.getTransaction().getOperations(), cases[ msg ].ops, msg + ': operations match' );
 	}
-}
+};
 
-function runConstructorTests( assert, constructor, cases, testRange ) {
+ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, cases, testRange ) {
 	var msg, doc, args, tx;
 	for ( msg in cases ) {
 		doc = cases[ msg ].args[ 0 ];
@@ -41,7 +41,7 @@ function runConstructorTests( assert, constructor, cases, testRange ) {
 			}, cases[ msg ].exception, msg + ': throw exception' );
 		}
 	}
-}
+};
 
 /* Tests */
 
@@ -415,7 +415,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromInsertion, cases, true );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromInsertion, cases, true );
 } );
 
 QUnit.test( 'newFromRemoval', function ( assert ) {
@@ -755,7 +755,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromRemoval, cases );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromRemoval, cases );
 } );
 
 QUnit.test( 'newFromReplacement', function ( assert ) {
@@ -815,7 +815,7 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromReplacement, cases, false );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromReplacement, cases, false );
 } );
 
 QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
@@ -1132,7 +1132,7 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 			}
 		};
 
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAttributeChanges, cases );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAttributeChanges, cases );
 } );
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {
@@ -1406,7 +1406,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 			}
 		};
 
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAnnotation, cases );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAnnotation, cases );
 } );
 
 QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
@@ -1588,7 +1588,7 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests(
+	ve.test.utils.runTransactionConstructorTests(
 		assert,
 		ve.dm.TransactionBuilder.static.newFromContentBranchConversion,
 		cases
@@ -1770,7 +1770,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 			}
 		}
 	}
-	runConstructorTests(
+	ve.test.utils.runTransactionConstructorTests(
 		assert,
 		ve.dm.TransactionBuilder.static.newFromWrap,
 		cases
@@ -1790,7 +1790,7 @@ QUnit.test( 'pushRetain', function ( assert ) {
 			diff: 0
 		}
 	};
-	runBuilderTests( assert, cases );
+	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
 QUnit.test( 'pushReplace', function ( assert ) {
@@ -1902,7 +1902,7 @@ QUnit.test( 'pushReplace', function ( assert ) {
 			}
 		};
 
-	runBuilderTests( assert, cases );
+	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
 QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
@@ -1944,7 +1944,7 @@ QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
 		}
 	};
 
-	runBuilderTests( assert, cases );
+	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
 QUnit.test( 'push*Annotating', function ( assert ) {
@@ -2021,7 +2021,7 @@ QUnit.test( 'push*Annotating', function ( assert ) {
 		}
 	};
 
-	runBuilderTests( assert, cases );
+	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
 QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
@@ -2089,7 +2089,7 @@ QUnit.test( 'newFromMetadataInsertion', function ( assert ) {
 			}
 		};
 
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataInsertion, cases );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataInsertion, cases );
 } );
 
 QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
@@ -2151,7 +2151,7 @@ QUnit.test( 'newFromMetadataRemoval', function ( assert ) {
 			}
 		};
 
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataRemoval, cases );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataRemoval, cases );
 } );
 
 QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
@@ -2201,7 +2201,7 @@ QUnit.test( 'newFromMetadataElementReplacement', function ( assert ) {
 			}
 		};
 
-	runConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataElementReplacement, cases );
+	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromMetadataElementReplacement, cases );
 } );
 
 QUnit.test( 'isNoOp', function ( assert ) {

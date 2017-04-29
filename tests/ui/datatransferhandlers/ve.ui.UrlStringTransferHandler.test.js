@@ -8,7 +8,7 @@ QUnit.module( 've.ui.UrlStringTransferHandler' );
 
 /* Tests */
 
-function runUrlStringHandlerTest( assert, string, htmlString, mimeType, expectedDataFunc, msg ) {
+ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, mimeType, expectedDataFunc, msg ) {
 	var handler,
 		done = assert.async(),
 		item = ve.ui.DataTransferItem.static.newFromString( string, mimeType, htmlString ),
@@ -35,7 +35,7 @@ function runUrlStringHandlerTest( assert, string, htmlString, mimeType, expected
 		assert.equalLinearData( actualData, expectedDataFunc( makeLinkAnnotation ), msg + ': data match' );
 		done();
 	} );
-}
+};
 
 QUnit.test( 'paste', function ( assert ) {
 	var i,
@@ -135,6 +135,6 @@ QUnit.test( 'paste', function ( assert ) {
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		runUrlStringHandlerTest( assert, cases[ i ].pasteString, cases[ i ].pasteHtml, cases[ i ].pasteType, cases[ i ].expectedData, cases[ i ].msg );
+		ve.test.utils.runUrlStringHandlerTest( assert, cases[ i ].pasteString, cases[ i ].pasteHtml, cases[ i ].pasteType, cases[ i ].expectedData, cases[ i ].msg );
 	}
 } );

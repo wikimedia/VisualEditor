@@ -4,90 +4,94 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-var itemCounter, responseDelay, FullResourceProvider, EmptyResourceProvider, SingleResultResourceProvider;
-
 QUnit.module( 've.dm.APIResultsQueue' );
 
-itemCounter = 0;
-responseDelay = 1;
-FullResourceProvider = function VeDmFullResourceProvider( config ) {
-	this.timer = null;
-	// Inheritance
-	FullResourceProvider.super.call( this, '', config );
-};
-EmptyResourceProvider = function VeDmEmptyResourceProvider( config ) {
-	this.timer = null;
-	// Inheritance
-	EmptyResourceProvider.super.call( this, '', config );
-};
-SingleResultResourceProvider = function VeDmSingleResultResourceProvider( config ) {
-	this.timer = null;
-	// Inheritance
-	SingleResultResourceProvider.super.call( this, '', config );
-};
+( function () {
+	var itemCounter;
 
-OO.inheritClass( FullResourceProvider, ve.dm.APIResultsProvider );
-OO.inheritClass( EmptyResourceProvider, ve.dm.APIResultsProvider );
-OO.inheritClass( SingleResultResourceProvider, ve.dm.APIResultsProvider );
+	itemCounter = 0;
+	ve.dm.example.FullResourceProvider = function VeDmFullResourceProvider( config ) {
+		this.timer = null;
+		this.responseDelay = 1;
+		// Inheritance
+		ve.dm.example.FullResourceProvider.super.call( this, '', config );
+	};
+	ve.dm.example.EmptyResourceProvider = function VeDmEmptyResourceProvider( config ) {
+		this.timer = null;
+		this.responseDelay = 1;
+		// Inheritance
+		ve.dm.example.EmptyResourceProvider.super.call( this, '', config );
+	};
+	ve.dm.example.SingleResultResourceProvider = function VeDmSingleResultResourceProvider( config ) {
+		this.timer = null;
+		this.responseDelay = 1;
+		// Inheritance
+		ve.dm.example.SingleResultResourceProvider.super.call( this, '', config );
+	};
 
-FullResourceProvider.prototype.getResults = function ( howMany ) {
-	var i, timer,
-		result = [],
-		deferred = $.Deferred();
+	OO.inheritClass( ve.dm.example.FullResourceProvider, ve.dm.APIResultsProvider );
+	OO.inheritClass( ve.dm.example.EmptyResourceProvider, ve.dm.APIResultsProvider );
+	OO.inheritClass( ve.dm.example.SingleResultResourceProvider, ve.dm.APIResultsProvider );
 
-	for ( i = itemCounter; i < itemCounter + howMany; i++ ) {
-		result.push( 'result ' + ( i + 1 ) );
-	}
-	itemCounter = i;
+	ve.dm.example.FullResourceProvider.prototype.getResults = function ( howMany ) {
+		var i, timer,
+			result = [],
+			deferred = $.Deferred();
 
-	timer = setTimeout(
-		function () {
-			// Always resolve with some values
-			deferred.resolve( result );
-		},
-		responseDelay );
+		for ( i = itemCounter; i < itemCounter + howMany; i++ ) {
+			result.push( 'result ' + ( i + 1 ) );
+		}
+		itemCounter = i;
 
-	return deferred.promise( { abort: function () { clearTimeout( timer ); } } );
-};
-
-EmptyResourceProvider.prototype.getResults = function () {
-	var provider = this,
-		deferred = $.Deferred(),
 		timer = setTimeout(
 			function () {
-				provider.toggleDepleted( true );
-				// Always resolve with empty value
-				deferred.resolve( [] );
+				// Always resolve with some values
+				deferred.resolve( result );
 			},
-			responseDelay );
+			this.responseDelay );
 
-	return deferred.promise( { abort: function () { clearTimeout( timer ); } } );
-};
+		return deferred.promise( { abort: function () { clearTimeout( timer ); } } );
+	};
 
-SingleResultResourceProvider.prototype.getResults = function ( howMany ) {
-	var timer,
-		provider = this,
-		deferred = $.Deferred();
+	ve.dm.example.EmptyResourceProvider.prototype.getResults = function () {
+		var provider = this,
+			deferred = $.Deferred(),
+			timer = setTimeout(
+				function () {
+					provider.toggleDepleted( true );
+					// Always resolve with empty value
+					deferred.resolve( [] );
+				},
+				this.responseDelay );
 
-	timer = setTimeout(
-		function () {
-			provider.toggleDepleted( howMany > 1 );
-			// Always resolve with one value
-			deferred.resolve( [ 'one result (' + ( itemCounter++ + 1 ) + ')' ] );
-		},
-		responseDelay );
+		return deferred.promise( { abort: function () { clearTimeout( timer ); } } );
+	};
 
-	return deferred.promise( { abort: function () { clearTimeout( timer ); } } );
-};
+	ve.dm.example.SingleResultResourceProvider.prototype.getResults = function ( howMany ) {
+		var timer,
+			provider = this,
+			deferred = $.Deferred();
+
+		timer = setTimeout(
+			function () {
+				provider.toggleDepleted( howMany > 1 );
+				// Always resolve with one value
+				deferred.resolve( [ 'one result (' + ( itemCounter++ + 1 ) + ')' ] );
+			},
+			this.responseDelay );
+
+		return deferred.promise( { abort: function () { clearTimeout( timer ); } } );
+	};
+}() );
 
 /* Tests */
 
 QUnit.test( 'Query providers', function ( assert ) {
 	var done = assert.async(),
 		providers = [
-			new FullResourceProvider(),
-			new EmptyResourceProvider(),
-			new SingleResultResourceProvider()
+			new ve.dm.example.FullResourceProvider(),
+			new ve.dm.example.EmptyResourceProvider(),
+			new ve.dm.example.SingleResultResourceProvider()
 		],
 		queue = new ve.dm.APIResultsQueue( {
 			threshold: 2
@@ -159,19 +163,19 @@ QUnit.test( 'Abort providers', function ( assert ) {
 		biggerQueue = new ve.dm.APIResultsQueue( {
 			threshold: 5
 		} ),
-		providers2 = [
-			new FullResourceProvider(),
-			new EmptyResourceProvider(),
-			new SingleResultResourceProvider()
+		providers = [
+			new ve.dm.example.FullResourceProvider(),
+			new ve.dm.example.EmptyResourceProvider(),
+			new ve.dm.example.SingleResultResourceProvider()
 		];
 
 	assert.expect( 1 );
 
 	// Make the delay higher
-	responseDelay = 3;
+	providers.forEach( function ( provider ) { provider.responseDelay = 3; } );
 
 	// Add providers to queue
-	biggerQueue.setProviders( providers2 );
+	biggerQueue.setProviders( providers );
 
 	biggerQueue.setParams( { foo: 'bar' } );
 	biggerQueue.get( 100 )
@@ -181,7 +185,7 @@ QUnit.test( 'Abort providers', function ( assert ) {
 		} );
 
 	// Make the delay higher
-	responseDelay = 5;
+	providers.forEach( function ( provider ) { provider.responseDelay = 5; } );
 
 	biggerQueue.setParams( { foo: 'baz' } );
 	biggerQueue.get( 10 )
