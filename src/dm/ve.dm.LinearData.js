@@ -211,7 +211,7 @@ ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
 ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data ) {
 	return new this.constructor(
 		this.getStore(),
-		this.batchSplice.call( this, offset, remove, data )
+		this.batchSplice( offset, remove, data )
 	);
 };
 

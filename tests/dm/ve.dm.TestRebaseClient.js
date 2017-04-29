@@ -60,8 +60,8 @@ ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, 
 	if ( sentLength === undefined ) {
 		sentLength = change.transactions.length;
 	}
-	committed = change.transactions.slice( 0, commitLength ),
-	sent = change.transactions.slice( commitLength, sentLength ),
+	committed = change.transactions.slice( 0, commitLength );
+	sent = change.transactions.slice( commitLength, sentLength );
 	unsent = change.transactions.slice( sentLength );
 
 	function joinText( transactions ) {

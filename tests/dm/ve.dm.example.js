@@ -163,7 +163,7 @@ ve.dm.example.annIndex = function ( tagName ) {
 		u: ve.dm.example.underline
 	}[ tagName ] );
 
-	ann.originalDomElementsIndex = ve.dm.IndexValueStore.prototype.indexOfValue( null, '<' + tagName + '>' + '</' + tagName + '>' );
+	ann.originalDomElementsIndex = ve.dm.IndexValueStore.prototype.indexOfValue( null, '<' + tagName + '></' + tagName + '>' );
 	return ve.dm.IndexValueStore.prototype.indexOfValue( ann );
 };
 

@@ -1344,31 +1344,35 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	// Find start split point, if required
 	startSplitNode = nodes[ 0 ].node;
 	startOffset = startSplitNode.getOuterRange().start;
-	while ( allowedParents !== null && allowedParents.indexOf( startSplitNode.getParent().type ) === -1 ) {
-		if ( startSplitNode.getParent().indexOf( startSplitNode ) > 0 ) {
-			startSplitRequired = true;
+	if ( allowedParents !== null ) {
+		while ( allowedParents.indexOf( startSplitNode.getParent().type ) === -1 ) {
+			if ( startSplitNode.getParent().indexOf( startSplitNode ) > 0 ) {
+				startSplitRequired = true;
+			}
+			startSplitNode = startSplitNode.getParent();
+			if ( startSplitRequired ) {
+				startSplitNodes.unshift( startSplitNode );
+			} else {
+				startOffset = startSplitNode.getOuterRange().start;
+			}
+			outerDepth++;
 		}
-		startSplitNode = startSplitNode.getParent();
-		if ( startSplitRequired ) {
-			startSplitNodes.unshift( startSplitNode );
-		} else {
-			startOffset = startSplitNode.getOuterRange().start;
-		}
-		outerDepth++;
 	}
 
 	// Find end split point, if required
 	endSplitNode = nodes[ nodes.length - 1 ].node;
 	endOffset = endSplitNode.getOuterRange().end;
-	while ( allowedParents !== null && allowedParents.indexOf( endSplitNode.getParent().type ) === -1 ) {
-		if ( endSplitNode.getParent().indexOf( endSplitNode ) < endSplitNode.getParent().getChildren().length - 1 ) {
-			endSplitRequired = true;
-		}
-		endSplitNode = endSplitNode.getParent();
-		if ( endSplitRequired ) {
-			endSplitNodes.unshift( endSplitNode );
-		} else {
-			endOffset = endSplitNode.getOuterRange().end;
+	if ( allowedParents !== null ) {
+		while ( allowedParents.indexOf( endSplitNode.getParent().type ) === -1 ) {
+			if ( endSplitNode.getParent().indexOf( endSplitNode ) < endSplitNode.getParent().getChildren().length - 1 ) {
+				endSplitRequired = true;
+			}
+			endSplitNode = endSplitNode.getParent();
+			if ( endSplitRequired ) {
+				endSplitNodes.unshift( endSplitNode );
+			} else {
+				endOffset = endSplitNode.getOuterRange().end;
+			}
 		}
 	}
 

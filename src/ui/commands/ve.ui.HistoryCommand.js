@@ -12,13 +12,15 @@
  *
  * @constructor
  * @param {string} name
- * @param {string} method
+ * @param {string} [method]
  */
 ve.ui.HistoryCommand = function VeUiHistoryCommand( name, method ) {
+	method = method || name;
+
 	// Parent constructor
 	ve.ui.HistoryCommand.super.call( this, name, 'history', method );
 
-	this.check = {
+	this.checkMethod = {
 		undo: 'canUndo',
 		redo: 'canRedo'
 	}[ method ];
@@ -38,11 +40,11 @@ ve.ui.HistoryCommand.prototype.isExecutable = function ( fragment ) {
 
 	// Parent method
 	return ve.ui.HistoryCommand.super.prototype.isExecutable.apply( this, arguments ) &&
-		surface[ this.check ].call( surface );
+		surface[ this.checkMethod ]();
 };
 
 /* Registration */
 
-ve.ui.commandRegistry.register( new ve.ui.HistoryCommand( 'undo', 'undo' ) );
+ve.ui.commandRegistry.register( new ve.ui.HistoryCommand( 'undo' ) );
 
-ve.ui.commandRegistry.register( new ve.ui.HistoryCommand( 'redo', 'redo' ) );
+ve.ui.commandRegistry.register( new ve.ui.HistoryCommand( 'redo' ) );
