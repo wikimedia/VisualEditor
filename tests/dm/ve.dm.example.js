@@ -1314,6 +1314,17 @@ ve.dm.example.emptyBranch = [
 	{ type: '/internalList' }
 ];
 
+ve.dm.example.annotatedComplexities = [
+	{ type: 'paragraph' },
+	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
+	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ] ],
+	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'b', style: 'color: red;' } } ] ],
+	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'b', style: 'color: blue;' } } ] ],
+	{ type: '/paragraph' },
+	{ type: 'internalList' },
+	{ type: '/internalList' }
+];
+
 /**
  * Sample content data index.
  *

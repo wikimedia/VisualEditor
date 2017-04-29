@@ -2034,76 +2034,100 @@ QUnit.test( 'getUsedStoreValues', function ( assert ) {
 
 } );
 
-QUnit.test( 'compareElementsUnannotated', function ( assert ) {
+QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert ) {
 	var i,
+		store = new ve.dm.IndexValueStore(),
 		cases = [
 			{
 				a: '母',
 				b: '母',
 				comparison: true,
-				msg: 'Identical unannotated characters are identical'
+				msg: 'Identical unannotated characters'
 			},
 			{
 				a: '다',
 				b: '가',
 				comparison: false,
-				msg: 'Non-identical unannotated characters are not identical'
+				msg: 'Non-identical unannotated characters'
 			},
 			{
-				a: [ 'F', [ 0 ] ],
-				b: [ 'F', [ 0 ] ],
+				a: [ 'F', [ ve.dm.example.boldIndex ] ],
+				b: [ 'F', [ ve.dm.example.boldIndex ] ],
 				comparison: true,
-				msg: 'Identically-annotated identical characters are identical'
+				msg: 'Identically-annotated identical characters'
 			},
 			{
-				a: [ 'F', [ 0 ] ],
-				b: [ 'F', [ 1 ] ],
+				a: [ 'F', [ ve.dm.example.boldIndex ] ],
+				b: [ 'F', [ ve.dm.example.italicIndex ] ],
+				comparison: false,
+				comparisonUnannotated: true,
+				msg: 'Identical characters, non-identically-annotated'
+			},
+			{
+				a: [ 'F', [ ve.dm.example.boldIndex ] ],
+				b: [ 'F', [ ve.dm.example.strongIndex ] ],
 				comparison: true,
-				msg: 'Identical characters, non-identically-annotated, are identical (!)'
+				msg: 'Identical characters, comparably-annotated'
 			},
 			{
 				a: 'F',
-				b: [ 'F', [ 0 ] ],
+				b: [ 'F', [ ve.dm.example.boldIndex ] ],
+				comparison: false,
+				comparisonUnannotated: true,
+				msg: 'Identical characters, one annotated, one not'
+			},
+			{
+				a: { type: 'paragraph' },
+				b: { type: 'paragraph' },
 				comparison: true,
-				msg: 'Identical characters, one annotated, one not, are identical (!)'
+				msg: 'Identical opening paragraphs'
 			},
 			{
 				a: { type: 'heading' },
 				b: { type: 'heading' },
 				comparison: true,
-				msg: 'Identical opening elements are identical'
+				msg: 'Identical opening elements'
 			},
 			{
 				a: { type: 'heading' },
 				b: { type: '/heading' },
 				comparison: false,
-				msg: 'Matching opening and closing elements are not identical'
+				msg: 'Matching opening and closing elements'
 			},
 			{
 				a: { type: 'heading', attributes: { level: 3 } },
 				b: { type: 'heading', attributes: { level: 3 } },
 				comparison: true,
-				msg: 'Identical elements with identical attributes are identical'
+				msg: 'Identical elements with identical attributes'
 			},
 			{
 				a: { type: 'heading', attributes: { level: 3 } },
 				b: { type: 'heading', attributes: { level: 2 } },
 				comparison: false,
-				msg: 'Identical elements with non-identical attributes are not identical'
+				msg: 'Identical elements with non-identical attributes'
 			},
 			{
 				a: { type: 'heading', attributes: { level: 3 } },
 				b: { type: 'heading' },
 				comparison: false,
-				msg: 'Identical elements, one without an attribute, are not identical'
+				msg: 'Identical elements, one without an attribute'
 			}
 		];
 
+	store.index( new ve.dm.BoldAnnotation( ve.dm.example.bold ) );
+	store.index( new ve.dm.BoldAnnotation( ve.dm.example.strong ) );
+	store.index( new ve.dm.ItalicAnnotation( ve.dm.example.italic ) );
+
 	for ( i = 0; i < cases.length; i++ ) {
 		assert.equal(
-			ve.dm.ElementLinearData.static.compareElementsUnannotated( cases[ i ].a, cases[ i ].b ),
+			ve.dm.ElementLinearData.static.compareElements( cases[ i ].a, cases[ i ].b, store ),
 			cases[ i ].comparison,
 			cases[ i ].msg
+		);
+		assert.equal(
+			ve.dm.ElementLinearData.static.compareElementsUnannotated( cases[ i ].a, cases[ i ].b ),
+			cases[ i ].comparisonUnannotated || cases[ i ].comparison,
+			cases[ i ].msg + ' (unannotated)'
 		);
 	}
 } );
@@ -2115,4 +2139,3 @@ QUnit.test( 'compareElementsUnannotated', function ( assert ) {
 // TODO: ve.dm.ElementLinearData#remapInternalListIndexes
 // TODO: ve.dm.ElementLinearData#remapInternalListKeys
 // TODO: ve.dm.ElementLinearData#cloneElements
-// TODO: ve.dm.ElementLinearData#compareElements
