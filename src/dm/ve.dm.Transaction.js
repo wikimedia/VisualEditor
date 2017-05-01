@@ -231,14 +231,15 @@ ve.dm.Transaction.prototype.reversed = function () {
 ve.dm.Transaction.prototype.isNoOp = function () {
 	if ( this.operations.length === 0 ) {
 		return true;
-	} else if ( this.operations.length === 1 ) {
-		return this.operations[ 0 ].type === 'retain';
-	} else if ( this.operations.length === 2 ) {
-		return this.operations[ 0 ].type === 'retain' &&
-			this.operations[ 1 ].type === 'retainMetadata';
-	} else {
-		return false;
 	}
+	if ( this.operations.length === 1 ) {
+		return this.operations[ 0 ].type === 'retain';
+	}
+	if ( this.operations.length === 2 ) {
+		return this.operations[ 0 ].type === 'retain' && this.operations[ 1 ].type === 'retainMetadata';
+	}
+
+	return false;
 };
 
 /**
