@@ -288,8 +288,19 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 			cell = matrix.getCell( selection.fromRow + row, selection.fromCol + col );
 			cellRange = cell.node.getRange();
 			importedCell = importedMatrix.getCell( row, col );
-
-			if ( !importedCell.isPlaceholder() ) {
+			if ( importedCell.node.type !== cell.node.type ) {
+				// Since the imported cell isn't the same type as the
+				// existing cell, we can't quite trust our assumptions about
+				// how it's supposed to work. As such, it's safer to outright
+				// replace the cell rather than trying to be clever and switch
+				// out the attributes / data. We shouldn't have gotten to this
+				// point without it being Cellable, so this should at least
+				// work.
+				surfaceModel.change( ve.dm.TransactionBuilder.static.newFromReplacement(
+					documentModel, cell.node.getOuterRange(),
+					importedTableNode.getDocument().getData( importedCell.node.getOuterRange() )
+				) );
+			} else if ( !importedCell.isPlaceholder() ) {
 				// Remove the existing cell contents
 				surfaceModel.change( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, cellRange ) );
 				// Attribute changes are performed separately, and removing the whole

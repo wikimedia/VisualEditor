@@ -51,6 +51,7 @@ ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	element = { type: type };
 
 	if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[ 0 ].nodeName.toLowerCase() ) !== -1 ) {
+		element.type = 'alienTableCell';
 		element.attributes = { cellable: true };
 		ve.dm.TableCellableNode.static.setAttributes( element.attributes, domElements );
 	}
@@ -107,7 +108,26 @@ ve.dm.AlienInlineNode.static.name = 'alienInline';
 
 ve.dm.AlienInlineNode.static.isContent = true;
 
+/**
+ * DataModel alienTableCell node.
+ *
+ * @class
+ * @extends ve.dm.AlienNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.AlienTableCellNode = function VeDmAlienTableCellNode() {
+	// Parent constructor
+	ve.dm.AlienTableCellNode.super.apply( this, arguments );
+};
+
+OO.inheritClass( ve.dm.AlienTableCellNode, ve.dm.AlienNode );
+
+ve.dm.AlienTableCellNode.static.name = 'alienTableCell';
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.AlienBlockNode );
 ve.dm.modelRegistry.register( ve.dm.AlienInlineNode );
+ve.dm.modelRegistry.register( ve.dm.AlienTableCellNode );

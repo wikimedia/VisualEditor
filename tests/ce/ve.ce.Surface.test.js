@@ -2204,6 +2204,85 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
+				pasteHtml: '<table><tbody><tr><td rel="ve:Alien">X</td></tr></table>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 20 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 15 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'alienTableCell', attributes: { cellable: true, style: 'data' } },
+								{ type: '/alienTableCell' }
+							],
+							remove: [
+								{ type: 'tableCell', attributes: { style: 'data' } },
+								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: '/paragraph' },
+								{ type: '/tableCell' }
+							],
+							insertedDataLength: 2,
+							insertedDataOffset: 0
+						},
+						{ type: 'retain', length: docLen - 19 }
+					]
+				],
+				msg: 'Paste alien cell onto table cell'
+			},
+
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 8 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				documentHtml: '<table><tbody><tr><td rel="ve:Alien">X</td></tr></table>',
+				pasteHtml: '<table><tbody><tr><td>Y</td></tr></table>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 11 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				expectedOps: [
+					[
+						{ type: 'retain', length: 3 },
+						{
+							type: 'replace',
+							remove: [
+								{ type: 'alienTableCell', attributes: { cellable: true, style: 'data' } },
+								{ type: '/alienTableCell' }
+							],
+							insert: [
+								{ type: 'tableCell', attributes: { style: 'data' } },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'Y',
+								{ type: '/paragraph' },
+								{ type: '/tableCell' }
+							],
+							insertedDataLength: 5,
+							insertedDataOffset: 0
+						},
+						{ type: 'retain', length: 5 }
+					]
+				],
+				msg: 'Paste table cell onto alien cell'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 12, 22 ),
+					fromCol: 0,
+					fromRow: 0
+				},
 				pasteHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {

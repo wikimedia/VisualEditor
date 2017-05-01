@@ -35,7 +35,7 @@ OO.inheritClass( ve.dm.TableRowNode, ve.dm.BranchNode );
 
 ve.dm.TableRowNode.static.name = 'tableRow';
 
-ve.dm.TableRowNode.static.childNodeTypes = [ 'tableCell' ];
+ve.dm.TableRowNode.static.childNodeTypes = [ 'tableCell', 'alienTableCell' ];
 
 ve.dm.TableRowNode.static.parentNodeTypes = [ 'tableSection' ];
 
