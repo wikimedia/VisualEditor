@@ -34,6 +34,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "सबस्क्रिप्ट",
 	"visualeditor-annotationbutton-superscript-tooltip": "सुपरस्क्रिप्ट",
 	"visualeditor-annotationbutton-underline-tooltip": "रेखांकित करें",
+	"visualeditor-changedesc-image-size": "आकार $1 से बदल कर $2 हो गया।",
 	"visualeditor-clearbutton-tooltip": "स्वरूपण हटाएँ",
 	"visualeditor-clipboard-copy": "कॉपी",
 	"visualeditor-clipboard-cut": "कट",
