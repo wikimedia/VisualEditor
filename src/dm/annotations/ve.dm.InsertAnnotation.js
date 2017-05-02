@@ -29,6 +29,9 @@ ve.dm.InsertAnnotation.static.name = 'textStyle/insert';
 
 ve.dm.InsertAnnotation.static.matchTagNames = [ 'ins' ];
 
+// TODO: Move this to a DiffInsertionAnnotation sub-class
+ve.dm.InsertAnnotation.static.trimWhitespace = false;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.InsertAnnotation );

@@ -1155,39 +1155,41 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 
 		// HACK: Move any leading and trailing whitespace out of the annotation, but only if the
 		// annotation didn't originally have leading/trailing whitespace
-		first = annotatedChildDomElements[ 0 ];
-		while (
-			first &&
-			first.nodeType === Node.TEXT_NODE &&
-			( matches = first.data.match( new RegExp( '^[' + whitespaceList + ']+' ) ) ) &&
-			!origElementText.match( new RegExp( '^[' + whitespaceList + ']' ) )
-		) {
-			leading += matches[ 0 ];
-			first.deleteData( 0, matches[ 0 ].length );
-			if ( first.data.length !== 0 ) {
-				break;
-			}
-			// Remove empty text node
-			annotatedChildDomElements.shift();
-			// Process next text node to see if it also has whitespace
+		if ( annotation.constructor.static.trimWhitespace ) {
 			first = annotatedChildDomElements[ 0 ];
-		}
-		last = annotatedChildDomElements[ annotatedChildDomElements.length - 1 ];
-		while (
-			last &&
-			last.nodeType === Node.TEXT_NODE &&
-			( matches = last.data.match( new RegExp( '[' + whitespaceList + ']+$' ) ) ) &&
-			!origElementText.match( new RegExp( '[' + whitespaceList + ']$' ) )
-		) {
-			trailing = matches[ 0 ] + trailing;
-			last.deleteData( last.data.length - matches[ 0 ].length, matches[ 0 ].length );
-			if ( last.data.length !== 0 ) {
-				break;
+			while (
+				first &&
+				first.nodeType === Node.TEXT_NODE &&
+				( matches = first.data.match( new RegExp( '^[' + whitespaceList + ']+' ) ) ) &&
+				!origElementText.match( new RegExp( '^[' + whitespaceList + ']' ) )
+			) {
+				leading += matches[ 0 ];
+				first.deleteData( 0, matches[ 0 ].length );
+				if ( first.data.length !== 0 ) {
+					break;
+				}
+				// Remove empty text node
+				annotatedChildDomElements.shift();
+				// Process next text node to see if it also has whitespace
+				first = annotatedChildDomElements[ 0 ];
 			}
-			// Remove empty text node
-			annotatedChildDomElements.pop();
-			// Process next text node to see if it also has whitespace
 			last = annotatedChildDomElements[ annotatedChildDomElements.length - 1 ];
+			while (
+				last &&
+				last.nodeType === Node.TEXT_NODE &&
+				( matches = last.data.match( new RegExp( '[' + whitespaceList + ']+$' ) ) ) &&
+				!origElementText.match( new RegExp( '[' + whitespaceList + ']$' ) )
+			) {
+				trailing = matches[ 0 ] + trailing;
+				last.deleteData( last.data.length - matches[ 0 ].length, matches[ 0 ].length );
+				if ( last.data.length !== 0 ) {
+					break;
+				}
+				// Remove empty text node
+				annotatedChildDomElements.pop();
+				// Process next text node to see if it also has whitespace
+				last = annotatedChildDomElements[ annotatedChildDomElements.length - 1 ];
+			}
 		}
 
 		if ( annotatedChildDomElements.length ) {

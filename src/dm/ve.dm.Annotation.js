@@ -61,9 +61,18 @@ ve.dm.Annotation.static.inferFromView = false;
 /**
  * Annotations which are removed when this one is applied
  *
- * @type {string[]}
+ * @property {string[]}
  */
 ve.dm.Annotation.static.removes = [];
+
+/**
+ * Move whitespace at the edge of the transaction outside of it when converting
+ *
+ * e.g. "foo<b> bar </b>baz" -> "foo <b>bar</b> baz"
+ *
+ * @property {boolean}
+ */
+ve.dm.Annotation.static.trimWhitespace = true;
 
 /**
  * Static function to convert a linear model data element for this annotation type back to

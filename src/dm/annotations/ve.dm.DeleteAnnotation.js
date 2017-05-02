@@ -29,6 +29,9 @@ ve.dm.DeleteAnnotation.static.name = 'textStyle/delete';
 
 ve.dm.DeleteAnnotation.static.matchTagNames = [ 'del' ];
 
+// TODO: Move this to a DiffDeleteAnnotation sub-class
+ve.dm.DeleteAnnotation.static.trimWhitespace = false;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.DeleteAnnotation );
