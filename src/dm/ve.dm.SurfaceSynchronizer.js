@@ -127,6 +127,21 @@ ve.dm.SurfaceSynchronizer.prototype.removeFromHistory = function ( change ) {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
+	// Serialize the event data and pass it on to the server for logging
+	var key;
+	for ( key in event ) {
+		if ( event[ key ] instanceof ve.dm.Change ) {
+			event[ key ] = event[ key ].serialize();
+		}
+	}
+
+	this.socket.emit( 'logEvent', event );
+};
+
+/**
  * Respond to transactions happening on the document. Ignores transactions applied by
  * SurfaceSynchronizer itself.
  *
