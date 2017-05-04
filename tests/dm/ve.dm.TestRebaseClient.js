@@ -112,7 +112,7 @@ ve.dm.TestRebaseClient.prototype.applyChange = function ( change ) {
 	change.applyTo( this.surface );
 };
 
-ve.dm.TestRebaseClient.prototype.applyTransactions = function( txs ) {
+ve.dm.TestRebaseClient.prototype.applyTransactions = function ( txs ) {
 	var author = this.getAuthor();
 	txs.forEach( function ( transaction ) {
 		if ( transaction.author === null ) {

@@ -196,7 +196,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	ilen = Math.max( this.oldDocChildren.length, this.newDocChildren.length );
 	jlen = ilen;
 
-	for ( i = 0, j = 0; i < ilen, j < jlen; i++, j++ ) {
+	for ( i = 0, j = 0; i < ilen && j < jlen; i++, j++ ) {
 		if ( this.oldDocChildren[ i ] === undefined ) {
 
 			// Everything else in the new doc is an insert
