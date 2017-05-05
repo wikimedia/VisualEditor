@@ -227,8 +227,12 @@ QUnit.test( 'Rebase', function ( assert ) {
 			client = clients[ op[ 0 ] ];
 			action = op[ 1 ];
 			if ( action === 'apply' ) {
-				txs = op[ 2 ].map( makeTransaction.bind( null, client.doc ) );
-				client.applyTransactions( txs );
+				if ( Array.isArray( op[ 2 ] ) ) {
+					txs = op[ 2 ].map( makeTransaction.bind( null, client.doc ) );
+					client.applyTransactions( txs );
+				} else {
+					client.applyChange( ve.dm.Change.static.deserialize( op[ 2 ] ) );
+				}
 			} else if ( action === 'assertHist' ) {
 				assert.equal( client.getHistorySummary(), op[ 2 ], cases[ i ].name + ': ' + ( op[ 3 ] || j ) );
 			} else if ( action === 'submit' ) {
