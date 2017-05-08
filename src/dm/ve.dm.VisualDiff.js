@@ -255,6 +255,14 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 	// tags for each child node
 	keepLength = oldDocChild.length - 2 * ( oldDocChildTree.orderedNodes.length - 1 );
 
+	// Tree diff timed out: record as full remove and insert
+	if ( !treeDiff ) {
+		treeDiff = [];
+		linearDiff = null;
+		diffLength = oldDocChild.length + newDocChild.length;
+		keepLength = 0;
+	}
+
 	for ( i = 0, ilen = treeDiff.length; i < ilen; i++ ) {
 
 		removeLength = 0;
