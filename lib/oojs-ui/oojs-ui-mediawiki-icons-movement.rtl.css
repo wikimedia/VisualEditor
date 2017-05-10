@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.21.2
+ * OOjs UI v0.21.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-26T01:05:15Z
+ * Date: 2017-05-10T00:55:45Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/mediawiki/images/icons/arrow-rtl.png');
@@ -45,76 +45,76 @@
   background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/arrow-ltr-progressive.png');
 }
 .oo-ui-icon-caretNext {
-  background-image: url('themes/mediawiki/images/icons/caret-ltr.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-ltr.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-ltr.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caret-ltr.png');
+  background-image: url('themes/mediawiki/images/icons/move-ltr.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr.png');
 }
 .oo-ui-image-invert.oo-ui-icon-caretNext {
-  background-image: url('themes/mediawiki/images/icons/caret-ltr-invert.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-ltr-invert.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-ltr-invert.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caret-ltr-invert.png');
+  background-image: url('themes/mediawiki/images/icons/move-ltr-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-caretNext {
-  background-image: url('themes/mediawiki/images/icons/caret-ltr-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-ltr-progressive.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-ltr-progressive.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caret-ltr-progressive.png');
+  background-image: url('themes/mediawiki/images/icons/move-ltr-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr-progressive.png');
 }
 .oo-ui-icon-caretLast {
-  background-image: url('themes/mediawiki/images/icons/caret-rtl.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-rtl.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-rtl.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caret-rtl.png');
+  background-image: url('themes/mediawiki/images/icons/move-rtl.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl.png');
 }
 .oo-ui-image-invert.oo-ui-icon-caretLast {
-  background-image: url('themes/mediawiki/images/icons/caret-rtl-invert.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-rtl-invert.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-rtl-invert.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caret-rtl-invert.png');
+  background-image: url('themes/mediawiki/images/icons/move-rtl-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-caretLast {
-  background-image: url('themes/mediawiki/images/icons/caret-rtl-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-rtl-progressive.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caret-rtl-progressive.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caret-rtl-progressive.png');
+  background-image: url('themes/mediawiki/images/icons/move-rtl-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-rtl-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-rtl-progressive.png');
 }
 .oo-ui-icon-caretDown {
-  background-image: url('themes/mediawiki/images/icons/caretDown.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretDown.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretDown.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caretDown.png');
+  background-image: url('themes/mediawiki/images/icons/expand.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand.png');
 }
 .oo-ui-image-invert.oo-ui-icon-caretDown {
-  background-image: url('themes/mediawiki/images/icons/caretDown-invert.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretDown-invert.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretDown-invert.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caretDown-invert.png');
+  background-image: url('themes/mediawiki/images/icons/expand-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-caretDown {
-  background-image: url('themes/mediawiki/images/icons/caretDown-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretDown-progressive.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretDown-progressive.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caretDown-progressive.png');
+  background-image: url('themes/mediawiki/images/icons/expand-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/expand-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/expand-progressive.png');
 }
 .oo-ui-icon-caretUp {
-  background-image: url('themes/mediawiki/images/icons/caretUp.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretUp.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretUp.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caretUp.png');
+  background-image: url('themes/mediawiki/images/icons/collapse.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse.png');
 }
 .oo-ui-image-invert.oo-ui-icon-caretUp {
-  background-image: url('themes/mediawiki/images/icons/caretUp-invert.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretUp-invert.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretUp-invert.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caretUp-invert.png');
+  background-image: url('themes/mediawiki/images/icons/collapse-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse-invert.png');
 }
 .oo-ui-image-progressive.oo-ui-icon-caretUp {
-  background-image: url('themes/mediawiki/images/icons/caretUp-progressive.png');
-  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretUp-progressive.svg');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/caretUp-progressive.svg');
-  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/caretUp-progressive.png');
+  background-image: url('themes/mediawiki/images/icons/collapse-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/collapse-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/collapse-progressive.png');
 }
 .oo-ui-icon-collapse {
   background-image: url('themes/mediawiki/images/icons/collapse.png');
@@ -223,6 +223,42 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-progressive.svg');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-ltr-progressive.svg');
   background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-ltr-progressive.png');
+}
+.oo-ui-icon-last {
+  background-image: url('themes/mediawiki/images/icons/move-end-rtl.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-rtl.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-rtl.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-end-rtl.png');
+}
+.oo-ui-image-invert.oo-ui-icon-last {
+  background-image: url('themes/mediawiki/images/icons/move-end-rtl-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-rtl-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-rtl-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-end-rtl-invert.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-last {
+  background-image: url('themes/mediawiki/images/icons/move-end-rtl-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-rtl-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-rtl-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-end-rtl-progressive.png');
+}
+.oo-ui-icon-first {
+  background-image: url('themes/mediawiki/images/icons/move-end-ltr.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-ltr.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-ltr.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-end-ltr.png');
+}
+.oo-ui-image-invert.oo-ui-icon-first {
+  background-image: url('themes/mediawiki/images/icons/move-end-ltr-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-ltr-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-ltr-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-end-ltr-invert.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-first {
+  background-image: url('themes/mediawiki/images/icons/move-end-ltr-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-ltr-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/move-end-ltr-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/move-end-ltr-progressive.png');
 }
 .oo-ui-icon-upTriangle {
   background-image: url('themes/mediawiki/images/icons/upTriangle.png');

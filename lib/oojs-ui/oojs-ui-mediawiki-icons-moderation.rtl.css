@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.21.2
+ * OOjs UI v0.21.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-26T01:05:15Z
+ * Date: 2017-05-10T00:55:45Z
  */
 .oo-ui-icon-block {
   background-image: url('themes/mediawiki/images/icons/block.png');
@@ -49,6 +49,42 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unBlock-rtl-progressive.svg');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unBlock-rtl-progressive.svg');
   background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/unBlock-rtl-progressive.png');
+}
+.oo-ui-icon-clip {
+  background-image: url('themes/mediawiki/images/icons/clip.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/clip.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/clip.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/clip.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-clip {
+  background-image: url('themes/mediawiki/images/icons/clip-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/clip-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/clip-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/clip-progressive.png');
+}
+.oo-ui-image-invert.oo-ui-icon-clip {
+  background-image: url('themes/mediawiki/images/icons/clip-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/clip-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/clip-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/clip-invert.png');
+}
+.oo-ui-icon-unClip {
+  background-image: url('themes/mediawiki/images/icons/unClip.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unClip.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unClip.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/unClip.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-unClip {
+  background-image: url('themes/mediawiki/images/icons/unClip-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unClip-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unClip-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/unClip-progressive.png');
+}
+.oo-ui-image-invert.oo-ui-icon-unClip {
+  background-image: url('themes/mediawiki/images/icons/unClip-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unClip-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unClip-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/unClip-invert.png');
 }
 .oo-ui-icon-flag {
   background-image: url('themes/mediawiki/images/icons/flag-rtl.png');
@@ -241,6 +277,24 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unTrash-rtl-progressive.svg');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/unTrash-rtl-progressive.svg');
   background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/unTrash-rtl-progressive.png');
+}
+.oo-ui-icon-pushPin {
+  background-image: url('themes/mediawiki/images/icons/pushPin.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/pushPin.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/pushPin.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/pushPin.png');
+}
+.oo-ui-image-progressive.oo-ui-icon-pushPin {
+  background-image: url('themes/mediawiki/images/icons/pushPin-progressive.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/pushPin-progressive.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/pushPin-progressive.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/pushPin-progressive.png');
+}
+.oo-ui-image-invert.oo-ui-icon-pushPin {
+  background-image: url('themes/mediawiki/images/icons/pushPin-invert.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/pushPin-invert.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/mediawiki/images/icons/pushPin-invert.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/mediawiki/images/icons/pushPin-invert.png');
 }
 .oo-ui-icon-ongoingConversation {
   background-image: url('themes/mediawiki/images/icons/ongoingConversation-rtl.png');

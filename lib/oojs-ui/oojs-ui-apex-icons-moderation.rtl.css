@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.21.2
+ * OOjs UI v0.21.3
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-04-26T01:05:15Z
+ * Date: 2017-05-10T00:55:45Z
  */
 .oo-ui-icon-block {
   background-image: url('themes/apex/images/icons/block.png');
@@ -19,6 +19,18 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unBlock-rtl.svg');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unBlock-rtl.svg');
   background-image: -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/unBlock-rtl.png');
+}
+.oo-ui-icon-clip {
+  background-image: url('themes/apex/images/icons/clip.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/clip.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/clip.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/clip.png');
+}
+.oo-ui-icon-unClip {
+  background-image: url('themes/apex/images/icons/unClip.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unClip.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unClip.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/unClip.png');
 }
 .oo-ui-icon-flag {
   background-image: url('themes/apex/images/icons/flag-rtl.png');
@@ -73,6 +85,12 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unTrash-rtl.svg');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unTrash-rtl.svg');
   background-image: -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/unTrash-rtl.png');
+}
+.oo-ui-icon-pushPin {
+  background-image: url('themes/apex/images/icons/pushPin.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/pushPin.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/pushPin.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/pushPin.png');
 }
 .oo-ui-icon-ongoingConversation {
   background-image: url('themes/apex/images/icons/ongoingConversation-rtl.png');
