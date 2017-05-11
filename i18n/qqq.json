@@ -45,6 +45,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Tooltip text for underline button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Underline}}",
 	"visualeditor-changedesc-align": "Fallback description of an item's 'align' attribute value change for visual diffing, if no specific i18n exists for that kind of item.\n\nValues:\n* $1 – Previous align value, like 'left'\n* $2 – New align value, like 'center'",
 	"visualeditor-changedesc-changed": "Fallback description of an attribute value change for visual diffing, if no specific i18n exists for that kind of change.\n\nValues:\n* $1 – Attribute name, like 'lang' or 'dir'\n* $2 – Previous attribute value, like 'ar' or 'rtl'\n* $3 – New attribute value, like 'fa' or 'auto'",
+	"visualeditor-changedesc-comment": "Description of a comment's change for visual diffing.\n\nValues:\n* $1 – Previous comment\n* $2 – New comment",
 	"visualeditor-changedesc-image-size": "Description of an image's size change for visual diffing.\n\nValues:\n* $1 – Previous size, like '200x133px'\n* $2 – New size, like '300x200px'",
 	"visualeditor-changedesc-language": "Description of a language annotation's language change for visual diffing.\n\nValues:\n* $1 – Previous language, like 'ar' or 'fr'\n* $2 – New language, like 'de' or 'fa'",
 	"visualeditor-changedesc-link-href": "Description of a links's target change for visual diffing.\n\nValues:\n* $1 – Previous target, like 'Hello world' or 'https://www.wikimedia.org/'\n* $2 – New target, like 'Hello Earth' or 'https://www.mediawiki.org/'",
