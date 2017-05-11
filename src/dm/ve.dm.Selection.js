@@ -37,7 +37,7 @@ ve.dm.Selection.static.newFromJSON = function ( doc, json ) {
 		constructor = ve.dm.selectionFactory.lookup( hash.type );
 
 	if ( !constructor ) {
-		throw new Error( 'Unknown selection type ' + hash.name );
+		throw new Error( 'Unknown selection type ' + hash.type );
 	}
 
 	return constructor.static.newFromHash( doc, hash );

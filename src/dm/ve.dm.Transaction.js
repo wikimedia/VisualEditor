@@ -69,13 +69,61 @@ ve.dm.Transaction.static.reversers = {
 /**
  * Deserialize a transaction from a JSONable object
  *
+ * The serialization format is experimental and subject to change
+ *
  * @param {Object} data Transaction serialized as a JSONable object
  * @return {ve.dm.Transaction} Deserialized transaction
  */
 ve.dm.Transaction.static.deserialize = function ( data ) {
+	function deserializeOp( op ) {
+		var insert = [], remove = [];
+		if ( typeof op === 'number' ) {
+			return {
+				type: 'retain',
+				length: op
+			};
+		}
+		if ( !Array.isArray( op ) ) {
+			return op;
+		}
+		switch ( op[ 0 ] ) {
+			case '-+':
+			case '-':
+			case '+':
+				insert = op[ op[ 0 ] === '+' ? 1 : 2 ] || [];
+				remove = op[ op[ 0 ] === '-' ? 1 : 2 ] || [];
+				return {
+					type: 'replace',
+					insert: insert,
+					remove: remove,
+					insertedDataOffset: 0,
+					insertedDataLength: insert.length
+				};
+			case '[+':
+			case '[-':
+			case ']+':
+			case ']-':
+				return {
+					type: 'annotate',
+					bias: op[ 0 ].charAt( 0 ) === '[' ? 'start' : 'stop',
+					method: op[ 0 ].charAt( 1 ) === '+' ? 'set' : 'clear',
+					index: op[ 1 ]
+				};
+			case '=':
+				return {
+					type: 'attribute',
+					key: op[ 1 ],
+					from: op[ 2 ],
+					to: op[ 3 ]
+				};
+			default:
+				throw new Error( 'Unrecognized shorthand serialization ' + op[ 0 ] );
+		}
+
+	}
 	return new ve.dm.Transaction(
 		// For this plain, serializable array, stringify+parse profiles faster than ve.copy
-		JSON.parse( JSON.stringify( data.operations ) ),
+		JSON.parse( JSON.stringify( data.operations ) ).map( deserializeOp ),
 		data.author
 	);
 };
@@ -85,12 +133,44 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
 /**
  * Serialize the transaction into a JSONable object
  *
- * Values are not necessarily deep copied
+ * Values are not necessarily deep copied. The serialization format is experimental and subject
+ * to change.
+ *
  * @return {Object} Serialized transaction
  */
 ve.dm.Transaction.prototype.serialize = function () {
+	function serializeOp( op ) {
+		switch ( op.type ) {
+			case 'retain':
+				return op.length;
+			case 'replace':
+				if (
+					( op.insertedDataOffset !== undefined && op.insertedDataOffset !== 0 ) ||
+					( op.insertedDataLength !== undefined && op.insertedDataLength !== op.insert.length )
+				) {
+					return op;
+				}
+				if ( op.remove.length === 0 ) {
+					return [ '+', op.insert ];
+				}
+				if ( op.insert.length === 0 ) {
+					return [ '-', op.remove ];
+				}
+				return [ '-+', op.remove, op.insert ];
+			case 'annotate':
+				return [
+					// [+ for start setting, [- for start clearing, ]+ / ]- for stop setting/clearing
+					( op.bias === 'start' ? '[' : ']' ) + ( op.method === 'set' ? '+' : '-' ),
+					op.index
+				];
+			case 'attribute':
+				return [ '=', op.key, op.from, op.to ];
+		}
+		return op;
+	}
+
 	return {
-		operations: this.operations,
+		operations: this.operations.map( serializeOp ),
 		author: this.author
 	};
 };
