@@ -99,8 +99,10 @@ ve.ui.DiffDialog.prototype.positionDiffElement = function () {
 	var dialog = this;
 	setTimeout( function () {
 		dialog.withoutSizeTransitions( function () {
-			dialog.diffElement.positionDescriptions();
-			dialog.updateSize();
+			if ( dialog.diffElement && dialog.isVisible() ) {
+				dialog.diffElement.positionDescriptions();
+				dialog.updateSize();
+			}
 		} );
 	}, OO.ui.theme.getDialogTransitionDuration() );
 };
