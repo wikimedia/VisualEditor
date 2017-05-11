@@ -18,11 +18,13 @@
 	}
 	OO.inheritClass( DummyPlatform, ve.init.Platform );
 	DummyPlatform.prototype.getUserLanguages = function () { return [ 'en' ]; };
-	DummyPlatform.prototype.getMessage = function ( msg ) { return msg; };
-	DummyPlatform.prototype.getLanguageName = function () { return 'English'; };
+	DummyPlatform.prototype.getMessage = function () { return Array.prototype.join.call( arguments, ',' ); };
+	DummyPlatform.prototype.getLanguageName = function ( lang ) { return 'langname-' + lang; };
 	DummyPlatform.prototype.getLanguageDirection = function () { return 'ltr'; };
 	DummyPlatform.prototype.getExternalLinkUrlProtocolsRegExp = function () { return /^https?\:\/\//i; };
 	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () { return /https?\:\/\//i; };
+	DummyPlatform.prototype.getUserConfig = function () { return undefined; };
+	DummyPlatform.prototype.setUserConfig = function () {};
 
 	ve.test.utils.DummyPlatform = DummyPlatform;
 
