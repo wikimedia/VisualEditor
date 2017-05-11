@@ -43,7 +43,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "위 첨자",
 	"visualeditor-annotationbutton-underline-tooltip": "밑줄",
 	"visualeditor-changedesc-align": "정렬이 $1에서 $2(으)로 변경되었습니다",
-	"visualeditor-changedesc-changed": "$1(이)가  $2에서 $3(으)로 변경되었습니다",
+	"visualeditor-changedesc-changed": "$1(이)가 $2에서 $3(으)로 변경되었습니다",
 	"visualeditor-changedesc-image-size": "크기가 $1에서 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-language": "언어가 $1에서 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-no-key": "$1(이)가 $2(으)로 바뀌었습니다",

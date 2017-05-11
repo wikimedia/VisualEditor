@@ -23,7 +23,8 @@
 			"JasterTDC",
 			"YoViajo",
 			"Lemondoge",
-			"Dgstranz"
+			"Dgstranz",
+			"AlvaroMolina"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -90,6 +91,8 @@
 	"visualeditor-dialog-table-caption": "Leyenda",
 	"visualeditor-dialog-table-title": "Propiedades de la tabla",
 	"visualeditor-diff-no-changes": "Sin cambios",
+	"visualeditor-find-and-replace-diacritic": "Insensible diacrítico",
+	"visualeditor-find-and-replace-diacritic-unavailable": "La búsqueda insensible diacrítica no esta disponible en este navegador",
 	"visualeditor-find-and-replace-done": "Hecho",
 	"visualeditor-find-and-replace-find-text": "Buscar",
 	"visualeditor-find-and-replace-invalid-regex": "Expresión regular no válida",
