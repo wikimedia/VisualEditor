@@ -14,6 +14,7 @@
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-label {
 	min-width: auto;
+	line-height: 1.225em;
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-title {
