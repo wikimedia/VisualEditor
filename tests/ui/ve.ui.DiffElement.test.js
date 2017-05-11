@@ -413,14 +413,18 @@ QUnit.test( 'describeChange', function ( assert ) {
 				testedKey: 'foo',
 				before: new ve.dm.LinkAnnotation( {
 					type: 'link',
-					attributes: { href: 'https://www.example.org/foo' }
+					attributes: {
+						href: 'https://www.example.org/foo'
+					}
 				} ),
 				after: new ve.dm.LinkAnnotation( {
 					type: 'link',
-					foo: '!!',
-					attributes: { href: 'https://www.example.org/foo' }
+					attributes: {
+						href: 'https://www.example.org/foo',
+						foo: '!!'
+					}
 				} ),
-				expected: 'visualeditor-changedesc-set'
+				expected: 'visualeditor-changedesc-set,foo,!!'
 			},
 			{
 				msg: 'LinkAnnotation: Href change',
@@ -433,7 +437,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'link',
 					attributes: { href: 'https://www.example.org/bar' }
 				} ),
-				expected: 'visualeditor-changedesc-link-href'
+				expected: 'visualeditor-changedesc-link-href,https://www.example.org/foo,https://www.example.org/bar'
 			},
 			{
 				msg: 'LinkAnnotation: Href fragment change',
@@ -446,7 +450,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'link',
 					attributes: { href: 'https://www.example.org/foo#baz' }
 				} ),
-				expected: 'visualeditor-changedesc-link-href'
+				expected: 'visualeditor-changedesc-link-href,https://www.example.org/foo#bar,https://www.example.org/foo#baz'
 			},
 			{
 				msg: 'LanguageAnnotation: Lang change',
@@ -459,7 +463,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'meta/language',
 					attributes: { lang: 'fr', dir: 'ltr' }
 				} ),
-				expected: 'visualeditor-changedesc-language'
+				expected: 'visualeditor-changedesc-language,langname-en,langname-fr'
 			},
 			{
 				msg: 'LanguageAnnotation: Dir change (fallback)',
@@ -472,7 +476,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'meta/language',
 					attributes: { lang: 'en', dir: 'rtl' }
 				} ),
-				expected: 'visualeditor-changedesc-changed'
+				expected: 'visualeditor-changedesc-changed,dir,ltr,rtl'
 			}
 		];
 
