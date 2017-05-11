@@ -49,9 +49,7 @@ function makeConnectionHandler( docName ) {
 		// comments in the /raw handler. Keeping an updated linmod on the server could be
 		// feasible if TransactionProcessor was modified to have a "don't sync, just apply"
 		// mode and ve.dm.Document was faked with { data: ..., metadata: ..., store: ... }
-		// FIXME this will also cause the client to write the entire history to the log in
-		// the form of an acceptChange log event
-		socket.emit( 'newChange', history.serialize( true ) );
+		socket.emit( 'initDoc', history.serialize( true ) );
 		socket.on( 'submitChange', setTimeout.bind( null, function ( data ) {
 			var change, applied;
 			try {

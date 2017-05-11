@@ -32,12 +32,15 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.authorSelections = {};
 	this.documentId = documentId;
 
+	// Whether the document has been initialized
+	this.initialized = false;
 	// Whether we are currently synchronizing the model
 	this.applying = false;
 
 	// HACK
 	this.socket = io( ( config.server || '' ) + '/' + this.documentId, { query: { docName: this.documentId } } );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
+	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
 
 	// Events
@@ -132,6 +135,11 @@ ve.dm.SurfaceSynchronizer.prototype.removeFromHistory = function ( change ) {
 ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
 	// Serialize the event data and pass it on to the server for logging
 	var key;
+	if ( !this.initialized ) {
+		// Do not log before initialization is complete; this prevents us from logging the entire
+		// document history during initialization
+		return;
+	}
 	for ( key in event ) {
 		if ( event[ key ] instanceof ve.dm.Change ) {
 			event[ key ] = event[ key ].serialize();
@@ -148,8 +156,8 @@ ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
  * @param {ve.dm.Transaction} tx Transaction that was applied
  */
 ve.dm.SurfaceSynchronizer.prototype.onDocumentTransact = function ( tx ) {
-	if ( this.applying ) {
-		// Ignore our own synchronization transactions
+	if ( this.applying || !this.initialized ) {
+		// Ignore our own synchronization or initialization transactions
 		return;
 	}
 	// HACK annotate transaction with authorship information
@@ -208,6 +216,22 @@ ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( author ) {
 	this.surface.setAuthor( this.author );
 	// HACK
 	$( '.ve-demo-editor' ).prepend( $( '<span style="position: absolute; top: 1.5em;">' ).text( this.author ) );
+};
+
+/**
+ * Respond to an initDoc event from the server, catching us up on the prior history of the document.
+ *
+ * @param {Object} serializedHistory Serialized change representing the server's history
+ */
+ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( serializedHistory ) {
+	var history;
+	if ( this.initialized ) {
+		// Ignore attempt to initialize a second time
+		return;
+	}
+	history = ve.dm.Change.static.deserialize( serializedHistory, this.doc );
+	this.acceptChange( history );
+	this.initialized = true;
 };
 
 /**
