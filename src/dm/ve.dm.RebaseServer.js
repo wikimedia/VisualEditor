@@ -35,6 +35,21 @@ ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
 	return this.stateForDoc.get( doc );
 };
 
+ve.dm.RebaseServer.prototype.getAuthorData = function ( doc, author ) {
+	var state = this.getDocState( doc );
+	if ( !state.authors.has( author ) ) {
+		state.authors.set( author, {
+			displayName: '',
+			rejections: 0,
+			continueBase: null,
+			// TODO use cryptographic randomness here and convert to hex
+			token: Math.random(),
+			active: true
+		} );
+	}
+	return state.authors.get( author );
+};
+
 /**
  * Update document history
  *
@@ -45,16 +60,33 @@ ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
  * @param {ve.dm.Change} [continueBase] Continue base for author
  */
 ve.dm.RebaseServer.prototype.updateDocState = function ( doc, author, newHistory, rejections, continueBase ) {
-	var state = this.getDocState( doc );
+	var state = this.getDocState( doc ),
+		authorData = state.authors.get( author );
 	if ( newHistory ) {
 		state.history.push( newHistory );
 	}
 	if ( rejections !== undefined ) {
-		state.rejections.set( author, rejections );
+		authorData.rejections = rejections;
 	}
 	if ( continueBase ) {
-		state.continueBases.set( author, continueBase );
+		authorData.continueBase = continueBase;
 	}
+};
+
+ve.dm.RebaseServer.prototype.setAuthorName = function ( doc, authorId, authorName ) {
+	var authorData = this.getAuthorData( doc, authorId );
+	authorData.displayName = authorName;
+};
+
+ve.dm.RebaseServer.prototype.getAllNames = function ( doc ) {
+	var result = {},
+		state = this.getDocState( doc );
+	state.authors.forEach( function ( authorData, authorId ) {
+		if ( authorData.active ) {
+			result[ authorId ] = authorData.displayName;
+		}
+	} );
+	return result;
 };
 
 /**
@@ -72,10 +104,11 @@ ve.dm.RebaseServer.prototype.updateDocState = function ( doc, author, newHistory
  */
 ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, author, backtrack, change ) {
 	var base, rejections, result, appliedChange,
-		state = this.getDocState( doc );
+		state = this.getDocState( doc ),
+		authorData = this.getAuthorData( doc, author );
 
-	base = state.continueBases.get( author ) || change.truncate( 0 );
-	rejections = state.rejections.get( author ) || 0;
+	base = authorData.continueBase || change.truncate( 0 );
+	rejections = authorData.rejections || 0;
 	if ( rejections > backtrack ) {
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;
@@ -110,17 +143,7 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, author, ba
 	return appliedChange;
 };
 
-/**
- * Apply a change that nulls out the given author's selection.
- *
- * @param {string} doc Document name
- * @param {string} author Author ID
- * @return {ve.dm.Change} Change that was applied
- */
-ve.dm.RebaseServer.prototype.applyUnselect = function ( doc, author ) {
-	var state = this.getDocState( doc ),
-		change = state.history.mostRecent( state.history.start + state.history.getLength() );
-	change.selections[ author ] = new ve.dm.NullSelection( null );
-	this.updateDocState( doc, author, change );
-	return change;
+ve.dm.RebaseServer.prototype.removeAuthor = function ( doc, author ) {
+	var state = this.getDocState( doc );
+	state.authors.delete( author );
 };

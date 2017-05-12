@@ -30,6 +30,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.doc = surface.documentModel;
 	this.store = this.doc.getStore();
 	this.authorSelections = {};
+	this.authorNames = {};
 	this.documentId = documentId;
 
 	// Whether the document has been initialized
@@ -42,6 +43,9 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
 	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
+	this.socket.on( 'nameChange', this.onNameChange.bind( this ) );
+	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
+	this.tryUsurp();
 
 	// Events
 	this.doc.connect( this, {
@@ -199,37 +203,73 @@ ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelection
 		} else {
 			translatedSelection = newSelections[ author ];
 		}
-		// Test equality before assigning, in case this.authorSelections === newSelections
-		// changed = !translatedSelection.equals( this.authorSelections[ author ] );
-		this.authorSelections[ author ] = translatedSelection;
-		this.emit( 'authorSelect', author );
+		if ( !translatedSelection.equals( this.authorSelections[ author ] ) ) {
+			this.authorSelections[ author ] = translatedSelection;
+			this.emit( 'authorSelect', author );
+		}
 	}
+};
+
+ve.dm.SurfaceSynchronizer.prototype.onNameChange = function ( data ) {
+	this.authorNames[ data.authorId ] = data.authorName;
+	this.emit( 'authorNameChange', data.authorId );
+};
+
+ve.dm.SurfaceSynchronizer.prototype.changeName = function ( newName ) {
+	this.socket.emit( 'changeName', newName );
+};
+
+ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
+	delete this.authorSelections[ authorId ];
+	this.emit( 'authorDisconnect', authorId );
 };
 
 /**
  * Respond to a "registered" event from the server
  *
- * @param {number} author The author ID allocated by the server
+ * @param {Object} data
+ * @param {number} data.authorId The author ID allocated by the server
  */
-ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( author ) {
-	this.setAuthor( author );
+ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
+	this.setAuthor( data.authorId );
 	this.surface.setAuthor( this.author );
-	// HACK
-	$( '.ve-demo-editor' ).prepend( $( '<span style="position: absolute; top: 1.5em;">' ).text( this.author ) );
+
+	if ( window.sessionStorage ) {
+		window.sessionStorage.setItem( 'visualeditor-author', JSON.stringify( data ) );
+	}
+};
+
+ve.dm.SurfaceSynchronizer.prototype.tryUsurp = function () {
+	var storedData = window.sessionStorage && window.sessionStorage.getItem( 'visualeditor-author' );
+	if ( !storedData ) {
+		return;
+	}
+	try {
+		storedData = JSON.parse( storedData );
+		this.socket.emit( 'usurp', storedData );
+	} catch ( e ) {
+		// eslint-disable-next-line no-console
+		console.warn( 'Failed to parse data in session storage', e );
+	}
 };
 
 /**
  * Respond to an initDoc event from the server, catching us up on the prior history of the document.
  *
- * @param {Object} serializedHistory Serialized change representing the server's history
+ * @param {Object} data
+ * @param {Object} data.history Serialized change representing the server's history
+ * @param {Object} data.names Object mapping author IDs to names
  */
-ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( serializedHistory ) {
-	var history;
+ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
+	var history, authorId;
 	if ( this.initialized ) {
 		// Ignore attempt to initialize a second time
 		return;
 	}
-	history = ve.dm.Change.static.deserialize( serializedHistory, this.doc );
+	for ( authorId in data.names ) {
+		this.onNameChange( { authorId: authorId, authorName: data.names[ authorId ] } );
+	}
+	history = ve.dm.Change.static.deserialize( data.history, this.doc );
 	this.acceptChange( history );
 	this.initialized = true;
 };

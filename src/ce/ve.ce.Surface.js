@@ -3971,15 +3971,18 @@ ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer ) {
 		this.synchronizer.disconnect( this );
 	}
 	this.synchronizer = synchronizer;
-	this.synchronizer.connect( this, { authorSelect: 'onSynchronizerAuthorSelect' } );
+	this.synchronizer.connect( this, {
+		authorSelect: 'onSynchronizerAuthorUpdate',
+		authorNameChange: 'onSynchronizerAuthorUpdate'
+	} );
 };
 
 /**
- * Called when the synchronizer receives a remote author selection change
+ * Called when the synchronizer receives a remote author selection or name change
  *
  * @param {number} author The author ID
  */
-ve.ce.Surface.prototype.onSynchronizerAuthorSelect = function ( author ) {
+ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( author ) {
 	try {
 		this.paintAuthor( author );
 	} catch ( error ) {
@@ -4000,10 +4003,18 @@ ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 			'0',
 		selection = this.synchronizer.authorSelections[ author ];
 
+	if ( author === this.author ) {
+		return;
+	}
+
 	if ( !this.userSelectionOverlays[ author ] ) {
 		this.userSelectionOverlays[ author ] = {
 			$cursor: $( '<div>' ),
-			$selection: $( '<div>' )
+			$selection: $( '<div>' ),
+			clearDebounced: ve.debounce( function () {
+				overlays.$cursor.detach();
+				overlays.$selection.detach();
+			}, 2000 )
 		};
 	}
 	overlays = this.userSelectionOverlays[ author ];
@@ -4045,13 +4056,14 @@ ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 		} ).append(
 			$( '<span>' )
 			.addClass( 've-ce-surface-highlights-user-cursor-label' )
-			.text( author )
+			.text( this.synchronizer.authorNames[ author ] )
 			.css( { background: color } )
 		)
 	);
 
 	this.$highlightsUserCursors.append( overlays.$cursor );
 	this.$highlightsUserSelections.append( overlays.$selection );
+	overlays.clearDebounced();
 };
 
 /**
@@ -4067,7 +4079,7 @@ ve.ce.Surface.prototype.onPosition = function () {
 		var author,
 			authorSelections = surface.synchronizer.authorSelections;
 		for ( author in authorSelections ) {
-			surface.onSynchronizerAuthorSelect( author );
+			surface.onSynchronizerAuthorUpdate( author );
 		}
 	} );
 };

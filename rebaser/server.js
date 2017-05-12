@@ -36,20 +36,54 @@ artificialDelay = parseInt( process.argv[ 2 ] ) || 0;
 function makeConnectionHandler( docName ) {
 	return function handleConnection( socket ) {
 		var history = rebaseServer.getDocState( docName ).history,
-			author = 1 + ( lastAuthorForDoc.get( docName ) || 0 );
+			author = 1 + ( lastAuthorForDoc.get( docName ) || 0 ),
+			authorData = rebaseServer.getAuthorData( docName, author );
 		lastAuthorForDoc.set( docName, author );
+		rebaseServer.setAuthorName( docName, author, 'Anonymous coward ' + author );
 		logServerEvent( {
 			type: 'newClient',
 			doc: docName,
 			author: author
 		} );
-		socket.emit( 'registered', author );
+		socket.emit( 'registered', {
+			authorId: author,
+			authorName: authorData.displayName,
+			token: authorData.token
+		} );
+		docNamespaces.get( docName ).emit( 'nameChange', { authorId: author, authorName: authorData.displayName } );
+		socket.on( 'usurp', function ( data ) {
+			var newAuthorData = rebaseServer.getAuthorData( docName, data.authorId );
+			if ( newAuthorData.token !== data.token ) {
+				socket.emit( 'usurpFailed' );
+				return;
+			}
+			newAuthorData.active = true;
+			socket.emit( 'registered', {
+				authorId: data.authorId,
+				authorName: newAuthorData.displayName,
+				token: newAuthorData.token
+			} );
+			docNamespaces.get( docName ).emit( 'nameChange', { authorId: data.authorId, authorName: newAuthorData.displayName } );
+			docNamespaces.get( docName ).emit( 'authorDisconnect', author );
+			rebaseServer.removeAuthor( docName, author );
+			author = data.authorId;
+		} );
 		// HACK Catch the client up on the current state by sending it the entire history
 		// Ideally we'd be able to initialize the client using HTML, but that's hard, see
 		// comments in the /raw handler. Keeping an updated linmod on the server could be
 		// feasible if TransactionProcessor was modified to have a "don't sync, just apply"
 		// mode and ve.dm.Document was faked with { data: ..., metadata: ..., store: ... }
-		socket.emit( 'initDoc', history.serialize( true ) );
+		socket.emit( 'initDoc', { history: history.serialize( true ), names: rebaseServer.getAllNames( docName ) } );
+		socket.on( 'changeName', function ( newName ) {
+			logServerEvent( {
+				type: 'nameChange',
+				doc: docName,
+				author: author,
+				newName: newName
+			} );
+			rebaseServer.setAuthorName( docName, author, newName );
+			docNamespaces.get( docName ).emit( 'nameChange', { authorId: author, authorName: newName } );
+		} );
 		socket.on( 'submitChange', setTimeout.bind( null, function ( data ) {
 			var change, applied;
 			try {
@@ -68,8 +102,9 @@ function makeConnectionHandler( docName ) {
 			logEvent( event );
 		} );
 		socket.on( 'disconnect', function () {
-			var change = rebaseServer.applyUnselect( docName, author );
-			docNamespaces.get( docName ).emit( 'newChange', change.serialize( true ) );
+			var authorData = rebaseServer.getAuthorData( docName, author );
+			authorData.active = false;
+			docNamespaces.get( docName ).emit( 'authorDisconnect', author );
 			logServerEvent( {
 				type: 'disconnect',
 				doc: docName,

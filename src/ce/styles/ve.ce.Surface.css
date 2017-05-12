@@ -77,6 +77,10 @@
 	top: -1.4em;
 	height: 1em;
 	line-height: 1;
+	white-space: nowrap;
+	max-width: 10em;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .ve-ce-surface-paste {
