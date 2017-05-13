@@ -2218,7 +2218,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								{ type: 'alienTableCell', attributes: { cellable: true, style: 'data' } },
+								{ type: 'alienTableCell', attributes: { style: 'data' } },
 								{ type: '/alienTableCell' }
 							],
 							remove: [
@@ -2258,7 +2258,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							remove: [
-								{ type: 'alienTableCell', attributes: { cellable: true, style: 'data' } },
+								{ type: 'alienTableCell', attributes: { style: 'data' } },
 								{ type: '/alienTableCell' }
 							],
 							insert: [
