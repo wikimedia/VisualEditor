@@ -66,24 +66,6 @@ ve.ce.TableCellNode.static.name = 'tableCell';
 /* Methods */
 
 /**
- * Get the HTML tag name.
- *
- * Tag name is selected based on the model's style attribute.
- *
- * @return {string} HTML tag name
- * @throws {Error} Invalid style
- */
-ve.ce.TableCellNode.prototype.getTagName = function () {
-	var style = this.model.getAttribute( 'style' ),
-		types = { data: 'td', header: 'th' };
-
-	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
-		throw new Error( 'Invalid style' );
-	}
-	return types[ style ];
-};
-
-/**
  * Set the editing mode of a table cell node
  *
  * @param {boolean} enable Enable editing

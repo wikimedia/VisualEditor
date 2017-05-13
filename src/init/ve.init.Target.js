@@ -176,7 +176,7 @@ ve.init.Target.static.importRules = {
 			// Annotations
 			'textStyle/span', 'textStyle/font',
 			// Nodes
-			'alienInline', 'alienBlock', 'comment', 'div'
+			'alienInline', 'alienBlock', 'alienTableCell', 'comment', 'div'
 		],
 		// Selectors to filter. Runs before model type blacklist above.
 		htmlBlacklist: {

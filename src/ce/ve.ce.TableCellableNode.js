@@ -33,3 +33,21 @@ OO.initClass( ve.ce.TableCellableNode );
  */
 ve.ce.TableCellableNode.prototype.setEditing = function () {
 };
+
+/**
+ * Get the HTML tag name.
+ *
+ * Tag name is selected based on the model's style attribute.
+ *
+ * @return {string} HTML tag name
+ * @throws {Error} Invalid style
+ */
+ve.ce.TableCellableNode.prototype.getTagName = function () {
+	var style = this.model.getAttribute( 'style' ),
+		types = { data: 'td', header: 'th' };
+
+	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {
+		throw new Error( 'Invalid style' );
+	}
+	return types[ style ];
+};
