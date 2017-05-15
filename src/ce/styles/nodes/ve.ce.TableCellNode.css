@@ -4,10 +4,15 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ce-tableCellNode {
+.ve-ce-tableCellableNode {
 	border: 1px dotted #ccc;
 	padding: 0.25em 0.5em;
 	min-width: 1em;
+}
+
+/* Use child selectors to avoid making nested tables look active */
+.ve-ce-tableNode-active > * > tr > .ve-ce-tableCellableNode {
+	border-style: solid;
 }
 
 .ve-ce-tableCellNode-editing {
@@ -29,13 +34,6 @@
 
 .ve-ce-tableCellNode-editing > .ve-ce-branchNode-blockSlug {
 	visibility: visible;
-}
-
-/* Use child selectors to avoid making nested tables look active */
-.ve-ce-tableNode-active > thead > tr > .ve-ce-tableCellNode,
-.ve-ce-tableNode-active > tfoot > tr > .ve-ce-tableCellNode,
-.ve-ce-tableNode-active > tbody > tr > .ve-ce-tableCellNode {
-	border-style: solid;
 }
 
 .ve-ce-tableCellNode .ve-ce-paragraphNode {
