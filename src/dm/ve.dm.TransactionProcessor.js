@@ -40,6 +40,7 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	// inserted or retained.
 	this.set = new ve.dm.AnnotationSet( this.document.getStore() );
 	this.clear = new ve.dm.AnnotationSet( this.document.getStore() );
+	this.annotatedRanges = [];
 	// State tracking for unbalanced replace operations
 	this.replaceRemoveLevel = 0;
 	this.replaceInsertLevel = 0;
@@ -97,6 +98,7 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	try {
 		completed = false;
 		this.applyModifications();
+		this.queueAnnotateEvents();
 		completed = true;
 	} finally {
 		// Don't catch and re-throw errors so that they are reported properly
@@ -298,12 +300,24 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			} );
 		}
 	}
-	// Queue a "modification" that emits annotate events
 	if ( this.cursor < to ) {
-		this.queueModification( {
-			type: 'emitAnnotate',
-			args: [ new ve.Range( this.cursor, to ) ]
-		} );
+		this.annotatedRanges.push( new ve.Range( this.cursor, to ) );
+	}
+};
+
+/**
+ * Queue annotate and update events on all leaf nodes whose annotations have changed
+ */
+ve.dm.TransactionProcessor.prototype.queueAnnotateEvents = function () {
+	var i, iLen, range, j, jLen, selection, node;
+	for ( i = 0, iLen = this.annotatedRanges.length; i < iLen; i++ ) {
+		range = this.transaction.translateRange( this.annotatedRanges[ i ] );
+		selection = this.document.selectNodes( range, 'leaves' );
+		for ( j = 0, jLen = selection.length; j < jLen; j++ ) {
+			node = selection[ j ].node;
+			this.queueEvent( node, 'annotation' );
+			this.queueEvent( node, 'update', this.isStaging );
+		}
 	}
 };
 
@@ -553,22 +567,6 @@ ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index
 	this.queueUndoFunction( function () {
 		metadata.setAnnotationsAtOffsetAndIndex( offset, index, oldAnnotations );
 	} );
-};
-
-/**
- * Emit annotate and update events on all leaf nodes in the given range.
- *
- * @param {ve.Range} range Range that was annotated (unadjusted)
- */
-ve.dm.TransactionProcessor.modifiers.emitAnnotate = function ( range ) {
-	var i, selection;
-	range = range.translate( this.adjustment );
-
-	selection = this.document.selectNodes( range, 'leaves' );
-	for ( i = 0; i < selection.length; i++ ) {
-		this.queueEvent( selection[ i ].node, 'annotation' );
-		this.queueEvent( selection[ i ].node, 'update', this.isStaging );
-	}
 };
 
 /**
