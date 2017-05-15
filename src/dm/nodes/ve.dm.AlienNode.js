@@ -44,28 +44,26 @@ ve.dm.AlienNode.static.enableAboutGrouping = true;
 ve.dm.AlienNode.static.matchRdfaTypes = [ 've:Alien' ];
 
 ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
-	var element,
+	var element, attributes,
 		isInline = this.isHybridInline( domElements, converter ),
 		type = isInline ? 'alienInline' : 'alienBlock';
 
-	element = { type: type };
-
 	if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[ 0 ].nodeName.toLowerCase() ) !== -1 ) {
-		element.type = 'alienTableCell';
-		element.attributes = { cellable: true };
-		ve.dm.TableCellableNode.static.setAttributes( element.attributes, domElements );
+		attributes = {};
+		ve.dm.TableCellableNode.static.setAttributes( attributes, domElements );
+		element = {
+			type: 'alienTableCell',
+			attributes: attributes
+		};
+	} else {
+		element = { type: type };
 	}
+
 	return element;
 };
 
 ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	return ve.copyDomElements( converter.getStore().value( dataElement.originalDomElementsIndex ) || [], doc );
-};
-
-/* Methods */
-
-ve.dm.AlienNode.prototype.isCellable = function () {
-	return !!this.getAttribute( 'cellable' );
 };
 
 /* Concrete subclasses */
@@ -125,6 +123,8 @@ ve.dm.AlienTableCellNode = function VeDmAlienTableCellNode() {
 OO.inheritClass( ve.dm.AlienTableCellNode, ve.dm.AlienNode );
 
 ve.dm.AlienTableCellNode.static.name = 'alienTableCell';
+
+ve.dm.AlienTableCellNode.static.isCellable = true;
 
 /* Registration */
 
