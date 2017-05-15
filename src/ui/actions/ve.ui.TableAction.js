@@ -258,7 +258,7 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importInternalList ) {
-	var i, l, row, col, cell, importedCell, cellRange, txs,
+	var i, l, row, col, cell, importedCell, cellRange, txBuilders,
 		importedMatrix = importedTableNode.getMatrix(),
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
@@ -305,30 +305,32 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 				surfaceModel.change( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, cellRange ) );
 				// Attribute changes are performed separately, and removing the whole
 				// cell could change the dimensions of the table
-				txs = [
-					ve.dm.TransactionBuilder.static.newFromAttributeChanges(
+				txBuilders = [
+					ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null,
 						documentModel, cellRange.start - 1,
 						ve.copy( importedCell.node.element.attributes )
 					)
 				];
 				if ( importInternalList ) {
-					txs.push(
-						ve.dm.TransactionBuilder.static.newFromDocumentInsertion(
+					txBuilders.push(
+						ve.dm.TransactionBuilder.static.newFromDocumentInsertion.bind( null,
 							documentModel, cellRange.start,
 							importedTableNode.getDocument(),
 							importedCell.node.getRange()
 						)
 					);
 				} else {
-					txs.push(
-						ve.dm.TransactionBuilder.static.newFromInsertion(
+					txBuilders.push(
+						ve.dm.TransactionBuilder.static.newFromInsertion.bind( null,
 							documentModel, cellRange.start,
 							importedTableNode.getDocument().getData( importedCell.node.getRange() )
 						)
 					);
 				}
 				// Perform the insertion as a separate change so the internalList offsets are correct
-				surfaceModel.change( txs );
+				txBuilders.forEach( function ( txBuilder ) {
+					surfaceModel.change( txBuilder() );
+				} );
 			} else {
 				// Remove the existing cell completely
 				surfaceModel.change( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, cell.node.getOuterRange() ) );
@@ -354,7 +356,7 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
  */
 ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 	var i, ranges,
-		txs = [],
+		txBuilders = [],
 		surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 
@@ -364,13 +366,15 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 
 	ranges = selection.getOuterRanges();
 	for ( i = ranges.length - 1; i >= 0; i-- ) {
-		txs.push(
-			ve.dm.TransactionBuilder.static.newFromAttributeChanges(
+		txBuilders.push(
+			ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null,
 				surfaceModel.getDocument(), ranges[ i ].start, { style: style }
 			)
 		);
 	}
-	surfaceModel.change( txs );
+	txBuilders.forEach( function ( txBuilder ) {
+		surfaceModel.change( txBuilder() );
+	} );
 	return true;
 };
 
@@ -381,7 +385,7 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
  */
 ve.ui.TableAction.prototype.mergeCells = function () {
 	var i, l, r, c, cell, cells, hasNonPlaceholders, contentData,
-		txs = [],
+		txBuilders = [],
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
@@ -401,8 +405,8 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 			return false;
 		}
 		cells = selection.getMatrixCells();
-		txs.push(
-			ve.dm.TransactionBuilder.static.newFromAttributeChanges(
+		txBuilders.push(
+			ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null,
 				documentModel, cells[ 0 ].node.getOuterRange().start,
 				{
 					colspan: 1 + selection.endCol - selection.startCol,
@@ -427,21 +431,23 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		}
 		// Remove placeholders
 		for ( i = cells.length - 1; i >= 1; i-- ) {
-			txs.push(
-				ve.dm.TransactionBuilder.static.newFromRemoval(
+			txBuilders.push(
+				ve.dm.TransactionBuilder.static.newFromRemoval.bind( null,
 					documentModel, cells[ i ].node.getOuterRange()
 				)
 			);
 		}
 		// Move the first-found content to the merged cell
 		if ( contentData ) {
-			txs.push(
-				ve.dm.TransactionBuilder.static.newFromReplacement(
+			txBuilders.push(
+				ve.dm.TransactionBuilder.static.newFromReplacement.bind( null,
 					documentModel, cells[ 0 ].node.getRange(), contentData.data
 				)
 			);
 		}
-		surfaceModel.change( txs );
+		txBuilders.forEach( function ( txBuilder ) {
+			surfaceModel.change( txBuilder() );
+		} );
 
 		// Check for rows filled with entirely placeholders. If such a row exists, delete it.
 		for ( r = selection.endRow; r >= selection.startRow; r-- ) {
@@ -512,14 +518,14 @@ ve.ui.TableAction.prototype.deleteTable = function ( tableNode ) {
  */
 ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
 	var col, row, cell,
-		txs = [],
+		txBuilders = [],
 		colspan = ownerCell.node.getColspan(),
 		rowspan = ownerCell.node.getRowspan(),
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument();
 
-	txs.push(
-		ve.dm.TransactionBuilder.static.newFromAttributeChanges(
+	txBuilders.push(
+		ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null,
 			documentModel, ownerCell.node.getOuterRange().start,
 			{ colspan: 1, rowspan: 1 }
 		)
@@ -528,7 +534,7 @@ ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
 		for ( col = ownerCell.col + colspan - 1; col >= ownerCell.col; col-- ) {
 			cell = matrix.getCell( row, col );
 			if ( cell.isPlaceholder() ) {
-				txs.push(
+				txBuilders.push(
 					this.replacePlaceholder(
 						matrix,
 						cell,
@@ -538,7 +544,9 @@ ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
 			}
 		}
 	}
-	surfaceModel.change( txs );
+	txBuilders.forEach( function ( txBuilder ) {
+		surfaceModel.change( txBuilder() );
+	} );
 };
 
 /**
@@ -563,7 +571,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		matrix = tableNode.matrix,
 		insertCells = [],
 		insertData = [],
-		txs = [],
+		txBuilders = [],
 		updated = {},
 		inserts = [],
 		surfaceModel = this.surface.getModel();
@@ -609,7 +617,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 				cell = cell.owner || cell;
 				if ( !updated[ cell.key ] ) {
 					// Note: we can safely record span modifications as they do not affect range offsets.
-					txs.push( this.incrementSpan( cell, mode ) );
+					txBuilders.push( this.incrementSpan( cell, mode ) );
 					updated[ cell.key ] = true;
 				}
 				// Resolve merged cell conflicts when moving
@@ -657,7 +665,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		}
 		range = matrix.getRowNode( index ).getOuterRange();
 		offset = before ? range.start : range.end;
-		txs.push( ve.dm.TransactionBuilder.static.newFromInsertion( surfaceModel.getDocument(), offset, insertData ) );
+		txBuilders.push( ve.dm.TransactionBuilder.static.newFromInsertion.bind( null, surfaceModel.getDocument(), offset, insertData ) );
 	} else {
 		// Make sure that the inserts are in descending offset order
 		// so that the transactions do not affect subsequent range offsets.
@@ -701,10 +709,17 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 					cellData = ve.dm.TableCellNode.static.createData();
 				}
 			}
-			txs.push( ve.dm.TransactionBuilder.static.newFromInsertion( surfaceModel.getDocument(), offset, cellData ) );
+			txBuilders.push( ve.dm.TransactionBuilder.static.newFromInsertion.bind( null, surfaceModel.getDocument(), offset, cellData ) );
 		}
 	}
-	surfaceModel.change( txs, selection ? selection.translateByTransactions( txs ) : null );
+	txBuilders.forEach( function ( txBuilder ) {
+		var tx = txBuilder();
+		selection = selection && selection.translateByTransaction( tx );
+		surfaceModel.change( tx );
+	} );
+	if ( selection ) {
+		surfaceModel.change( null, selection );
+	}
 };
 
 /**
@@ -712,7 +727,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
  *
  * @param {ve.dm.TableMatrixCell} cell Table matrix cell
  * @param {string} mode Span to increment; 'row' or 'col'
- * @return {ve.dm.Transaction} Transaction
+ * @return {Function} Zero-argument function returning a ve.dm.Transaction
  */
 ve.ui.TableAction.prototype.incrementSpan = function ( cell, mode ) {
 	var data,
@@ -724,7 +739,7 @@ ve.ui.TableAction.prototype.incrementSpan = function ( cell, mode ) {
 		data = { colspan: cell.node.getColspan() + 1 };
 	}
 
-	return ve.dm.TransactionBuilder.static.newFromAttributeChanges( surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
+	return ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null, surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
 };
 
 /**
@@ -734,7 +749,7 @@ ve.ui.TableAction.prototype.incrementSpan = function ( cell, mode ) {
  * @param {string} mode Span to decrement 'row' or 'col'
  * @param {number} minIndex Smallest row or column index (inclusive)
  * @param {number} maxIndex Largest row or column index (inclusive)
- * @return {ve.dm.Transaction} Transaction
+ * @return {Function} Zero-argument function returning a ve.dm.Transaction
  */
 ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, maxIndex ) {
 	var span, data,
@@ -747,7 +762,7 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
 		data = { colspan: span };
 	}
 
-	return ve.dm.TransactionBuilder.static.newFromAttributeChanges( surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
+	return ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null, surfaceModel.getDocument(), cell.node.getOuterRange().start, data );
 };
 
 /**
@@ -769,7 +784,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		rowNode, rowRange, rowData,
 		removedMatrix = [],
 		cells = [],
-		txs = [],
+		txBuilders = [],
 		adapted = {},
 		actions = [],
 		surfaceModel = this.surface.getModel(),
@@ -804,7 +819,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			if ( !adapted[ key ] ) {
 				// Note: we can record this transaction immediately, as it does not have an effect on the
 				// node range
-				txs.push( this.decrementSpan( cell.owner, mode, minIndex, maxIndex ) );
+				txBuilders.push( this.decrementSpan( cell.owner, mode, minIndex, maxIndex ) );
 				adapted[ key ] = true;
 			}
 			continue;
@@ -853,12 +868,12 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		// First replace orphaned placeholders which are below the last deleted row,
 		// thus, this works with regard to transaction offsets
 		for ( i = 0; i < actions.length; i++ ) {
-			txs.push( this.replacePlaceholder( matrix, actions[ i ].cell, actions[ i ] ) );
+			txBuilders.push( this.replacePlaceholder( matrix, actions[ i ].cell, actions[ i ] ) );
 		}
 		// Remove rows in reverse order to have valid transaction offsets
 		for ( row = maxIndex; row >= minIndex; row-- ) {
 			rowNode = matrix.getRowNode( row );
-			txs.push( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, rowNode.getOuterRange() ) );
+			txBuilders.push( ve.dm.TransactionBuilder.static.newFromRemoval.bind( null, documentModel, rowNode.getOuterRange() ) );
 
 			// Store removed data for moving
 			cells = matrix.getRow( row );
@@ -885,9 +900,9 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 	} else {
 		for ( i = 0; i < actions.length; i++ ) {
 			if ( actions[ i ].action === 'insert' ) {
-				txs.push( this.replacePlaceholder( matrix, actions[ i ].cell, actions[ i ] ) );
+				txBuilders.push( this.replacePlaceholder( matrix, actions[ i ].cell, actions[ i ] ) );
 			} else {
-				txs.push( ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, actions[ i ].cell.node.getOuterRange() ) );
+				txBuilders.push( ve.dm.TransactionBuilder.static.newFromRemoval.bind( null, documentModel, actions[ i ].cell.node.getOuterRange() ) );
 				col = actions[ i ].cell.col - minIndex;
 				actions[ i ].cell.data = documentModel.getData( actions[ i ].cell.node.getOuterRange(), true );
 			}
@@ -907,7 +922,10 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			};
 		}
 	}
-	surfaceModel.change( txs, new ve.dm.NullSelection( surfaceModel.getDocument() ) );
+	surfaceModel.change( null, new ve.dm.NullSelection( surfaceModel.getDocument() ) );
+	txBuilders.forEach( function ( txBuilder ) {
+		surfaceModel.change( txBuilder() );
+	} );
 	return removedMatrix;
 };
 
@@ -917,7 +935,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
  * @param {ve.dm.TableMatrix} matrix Table matrix
  * @param {ve.dm.TableMatrixCell} placeholder Placeholder cell to replace
  * @param {Object} [options] Options to pass to ve.dm.TableCellNode.static.createData
- * @return {ve.dm.Transaction} Transaction
+ * @return {Function} Zero-argument function returning a ve.dm.Transaction
  */
 ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder, options ) {
 	var range, offset, data,
@@ -935,7 +953,7 @@ ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder,
 		offset = range.start;
 	}
 	data = ve.dm.TableCellNode.static.createData( options );
-	return ve.dm.TransactionBuilder.static.newFromInsertion( surfaceModel.getDocument(), offset, data );
+	return ve.dm.TransactionBuilder.static.newFromInsertion.bind( null, surfaceModel.getDocument(), offset, data );
 };
 
 /* Registration */
