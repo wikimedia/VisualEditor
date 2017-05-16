@@ -1005,14 +1005,12 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 			);
 			if ( !tx.isNoOp() ) {
 				// Move contents of endNode into startNode, and delete nodeToDelete
-				this.change( [
-					tx,
-					ve.dm.TransactionBuilder.static.newFromInsertion(
-						this.document,
-						rangeAfterRemove.start,
-						endNodeData
-					)
-				] );
+				this.change( tx );
+				this.change( ve.dm.TransactionBuilder.static.newFromInsertion(
+					this.document,
+					rangeAfterRemove.start,
+					endNodeData
+				) );
 			}
 		}
 	}
