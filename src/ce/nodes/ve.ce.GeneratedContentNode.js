@@ -108,7 +108,12 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	// Filter out link and style tags for bug 50043
 	// Previously filtered out meta tags, but restore these as they
 	// can be made visible.
-	$rendering.filter( 'link, style' ).remove();
+	// As of jQuery 3 we can't use $.not( 'tagName' ) as that doesn't
+	// match text nodes. Also we can't $.remove these elements as they
+	// aren't attached to anything.
+	$rendering = $rendering.filter( function ( i, node ) {
+		return node.tagName !== 'LINK' && node.tagName !== 'STYLE';
+	} );
 	// Also remove link and style tags nested inside other tags
 	$rendering.find( 'link, style' ).remove();
 
