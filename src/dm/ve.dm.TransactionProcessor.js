@@ -545,7 +545,7 @@ ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
  * @param {Object} op Operation object
  * @param {string} op.method Annotation method, either 'set' to add or 'clear' to remove
  * @param {string} op.bias End point of marker, either 'start' to begin or 'stop' to end
- * @param {string} op.index Index in store of annotation object to set or clear from content
+ * @param {string} op.annotation Annotation object to set or clear from content
  * @throws {Error} Invalid annotation method
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
