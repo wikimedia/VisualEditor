@@ -44,18 +44,19 @@ OO.initClass( ve.dm.IndexValueStore );
 /**
  * Deserialize a store from a JSONable object
  *
+ * The serialization format is experimental and subject to change
+ *
  * @param {Function} deserializeValue Deserializer for arbitrary store values
- * @param {Object} data Store serialized as a JSONable object
+ * @param {Array} data Store serialized as a JSONable object
  * @return {ve.dm.IndexValueStore} Deserialized store
  */
 ve.dm.IndexValueStore.static.deserialize = function ( deserializeValue, data ) {
-	var hash,
+	var i,
 		store = new ve.dm.IndexValueStore();
 
-	store.hashes = data.hashes.slice();
-	store.hashStore = {};
-	for ( hash in data.hashStore ) {
-		store.hashStore[ hash ] = deserializeValue( data.hashStore[ hash ] );
+	for ( i = 0; i < data.length; i++ ) {
+		store.hashes.push( data[ i ][ 0 ] );
+		store.hashStore[ data[ i ][ 0 ] ] = deserializeValue( data[ i ][ 1 ] );
 	}
 	return store;
 };
@@ -64,6 +65,8 @@ ve.dm.IndexValueStore.static.deserialize = function ( deserializeValue, data ) {
 
 /**
  * Serialize the store into a JSONable object
+ *
+ * The serialization format is experimental and subject to change
  *
  * @param {Function} serializeValue Serializer for arbitrary store values
  * @return {Object} Serialized store
@@ -75,10 +78,9 @@ ve.dm.IndexValueStore.prototype.serialize = function ( serializeValue ) {
 	for ( hash in this.hashStore ) {
 		serialized[ hash ] = serializeValue( this.hashStore[ hash ] );
 	}
-	return {
-		hashes: this.hashes.slice(),
-		hashStore: serialized
-	};
+	return this.hashes.map( function ( hash ) {
+		return [ hash, serialized[ hash ] ];
+	} );
 };
 
 /**
