@@ -271,27 +271,50 @@ QUnit.test( 'Serialize/deserialize', 6, function ( assert ) {
 			transactions: [
 				{
 					author: null,
-					operations: [ 1, [ '+', [ [ 'f', bIndex ] ] ], 4 ]
+					operations: [
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							remove: [],
+							insert: [ [ 'f', bIndex ] ],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
+						},
+						{ type: 'retain', length: 4 }
+					]
 				},
 				{
 					author: null,
-					operations: [ 2, [ '+', [ [ 'u', bIndex ] ] ], 4 ]
+					operations: [
+						{ type: 'retain', length: 2 },
+						{
+							type: 'replace',
+							remove: [],
+							insert: [ [ 'u', bIndex ] ],
+							insertedDataOffset: 0,
+							insertedDataLength: 1
+						},
+						{ type: 'retain', length: 4 }
+					]
 				}
 			],
 			stores: [
-				[
-					[
-						'h49981eab0f8056ff',
-						{
+				{
+					hashStore: {
+						h49981eab0f8056ff: {
 							type: 'plain',
 							value: {
 								type: 'textStyle/bold',
 								attributes: { nodeName: 'b' }
 							}
 						}
-					]
-				],
-				[]
+					},
+					hashes: bIndex
+				},
+				{
+					hashStore: {},
+					hashes: []
+				}
 			],
 			selections: {}
 		},
@@ -299,35 +322,29 @@ QUnit.test( 'Serialize/deserialize', 6, function ( assert ) {
 			start: 0,
 			transactions: [ {
 				author: 'fred',
-				operations: [ 2 ]
+				operations: [ { type: 'retain', length: 2 } ]
 			} ],
-			stores: [ [ [
-				'xx',
-				{
-					type: 'domNodeArray',
-					value: [
-						'<script></script>',
-						'<p onclick="alert(\'gotcha!\')"></p>'
-					]
-				}
-			] ] ],
+			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
+				type: 'domNodeArray',
+				value: [
+					'<script></script>',
+					'<p onclick="alert(\'gotcha!\')"></p>'
+				]
+			} } } ],
 			selections: {}
 		},
 		sanitized = {
 			start: 0,
 			transactions: [ {
 				author: 'fred',
-				operations: [ 2 ]
+				operations: [ { type: 'retain', length: 2 } ]
 			} ],
-			stores: [ [ [
-				'xx',
-				{
-					type: 'domNodeArray',
-					value: [
-						'<p></p>'
-					]
-				}
-			] ] ],
+			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
+				type: 'domNodeArray',
+				value: [
+					'<p></p>'
+				]
+			} } } ],
 			selections: {}
 		};
 
@@ -343,13 +360,12 @@ QUnit.test( 'Serialize/deserialize', 6, function ( assert ) {
 	);
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( serialized, doc, true ).stores.map( function (
-store ) {
-			return Object.keys( store.hashStore ).map( function ( hash ) {
-				return [ hash, store.hashStore[ hash ] ];
-			} );
+		ve.dm.Change.static.deserialize( serialized, doc, true ).stores.map( function ( store ) {
+			return store.hashStore;
 		} ),
-		serialized.stores,
+		serialized.stores.map( function ( store ) {
+			return store.hashStore;
+		} ),
 		'Deserialize, preserving store values'
 	);
 
