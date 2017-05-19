@@ -10,7 +10,12 @@ QUnit.test( 'Rebase', function ( assert ) {
 	var cases = [
 		{
 			name: 'Concurrent insertions',
-			initialData: [ { type: 'paragraph' }, { type: '/paragraph' } ],
+			initialData: [
+				{ type: 'paragraph' },
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
 			clients: [ '1', '2' ],
 			ops: [
 				// Client 1 submits abc
@@ -108,7 +113,9 @@ QUnit.test( 'Rebase', function ( assert ) {
 			initialData: [
 				{ type: 'paragraph' },
 				'a', 'b', 'c', 'A', 'B', 'd', 'e', 'f', 'C', 'D', 'g', 'h', 'i',
-				{ type: '/paragraph' }
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
 			],
 			clients: [ '1', '2' ],
 			ops: [
@@ -148,7 +155,7 @@ QUnit.test( 'Rebase', function ( assert ) {
 
 				// Client 2 applies a "doomed" change built on top of a change that will conflict
 				[ '2', 'apply', [
-					[ 'insert', 1, [ 'V' ], 18 ]
+					[ 'insert', 1, [ 'V' ], 16 ]
 				] ],
 				[ '2', 'assertHist', '-(Bd)/WX?/V!' ],
 				[ '2', 'submit' ],
@@ -167,7 +174,7 @@ QUnit.test( 'Rebase', function ( assert ) {
 
 				// Client 2 inserts and submits P, server accepts
 				[ '2', 'apply', [
-					[ 'insert', 1, [ 'P' ], 16 ]
+					[ 'insert', 1, [ 'P' ], 13 ]
 				] ],
 				[ '2', 'assertHist', '-(Bd)-(cA)/W?/P!' ],
 				[ '2', 'submit' ],

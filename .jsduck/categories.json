@@ -63,6 +63,8 @@
 					"ve.dm.*Selection",
 					"ve.dm.Transaction",
 					"ve.dm.TransactionBuilder",
+					"ve.dm.TreeCursor",
+					"ve.dm.TreeModifier",
 					"ve.dm.TransactionProcessor",
 					"ve.dm.TransactionProcessor.*"
 				]
