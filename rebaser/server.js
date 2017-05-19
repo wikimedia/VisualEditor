@@ -39,7 +39,7 @@ function makeConnectionHandler( docName ) {
 			author = 1 + ( lastAuthorForDoc.get( docName ) || 0 ),
 			authorData = rebaseServer.getAuthorData( docName, author );
 		lastAuthorForDoc.set( docName, author );
-		rebaseServer.setAuthorName( docName, author, 'Anonymous coward ' + author );
+		rebaseServer.setAuthorName( docName, author, 'User ' + author ); // TODO: i18n
 		logServerEvent( {
 			type: 'newClient',
 			doc: docName,

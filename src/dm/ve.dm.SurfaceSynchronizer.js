@@ -71,6 +71,20 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
  * @param {string} author The author whose selection has changed
  */
 
+/* Static methods */
+
+/**
+ * TODO: Let authors choose color
+ *
+ * @param {number} authorId
+ * @return {string} Color, RRGGBB
+ */
+ve.dm.SurfaceSynchronizer.static.getAuthorColor = function ( authorId ) {
+	return ( 8 * ( 1 - Math.sin( 5 * authorId ) ) ).toString( 16 ).slice( 0, 1 ) +
+		( 6 * ( 1 - Math.cos( 3 * authorId ) ) ).toString( 16 ).slice( 0, 1 ) +
+		'0';
+};
+
 /* Methods */
 
 /**
@@ -267,7 +281,7 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 		return;
 	}
 	for ( authorId in data.names ) {
-		this.onNameChange( { authorId: authorId, authorName: data.names[ authorId ] } );
+		this.onNameChange( { authorId: +authorId, authorName: data.names[ authorId ] } );
 	}
 	history = ve.dm.Change.static.deserialize( data.history, this.doc );
 	this.acceptChange( history );

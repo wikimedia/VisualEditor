@@ -3983,11 +3983,7 @@ ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer ) {
  * @param {number} author The author ID
  */
 ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( author ) {
-	try {
-		this.paintAuthor( author );
-	} catch ( error ) {
-		return;
-	}
+	this.paintAuthor( author );
 };
 
 /**
@@ -3997,10 +3993,7 @@ ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( author ) {
  */
 ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 	var i, l, rects, rect, overlays,
-		color = '#' +
-			( 8 * ( 1 - Math.sin( 5 * author ) ) ).toString( 16 ).slice( 0, 1 ) +
-			( 6 * ( 1 - Math.cos( 3 * author ) ) ).toString( 16 ).slice( 0, 1 ) +
-			'0',
+		color = '#' + this.synchronizer.constructor.static.getAuthorColor( author ),
 		selection = this.synchronizer.authorSelections[ author ];
 
 	if ( author === this.author ) {
@@ -4011,22 +4004,23 @@ ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 		this.userSelectionOverlays[ author ] = {
 			$cursor: $( '<div>' ),
 			$selection: $( '<div>' ),
-			clearDebounced: ve.debounce( function () {
-				overlays.$cursor.detach();
-				overlays.$selection.detach();
-			}, 2000 )
+			deactivateDebounced: ve.debounce( function () {
+				// TODO: Transition away the user label when inactive, maybe dim selection
+				overlays.$cursor.addClass( 've-ce-surface-highlights-user-cursor-inactive' );
+				overlays.$selection.addClass( 've-ce-surface-highlights-user-selection-inactive' );
+			}, 5000 )
 		};
 	}
 	overlays = this.userSelectionOverlays[ author ];
 
-	if ( selection.isNull() ) {
+	if ( !selection || selection.isNull() ) {
 		overlays.$cursor.detach();
 		overlays.$selection.detach();
 		return;
 	}
 
-	overlays.$cursor.empty();
-	overlays.$selection.empty();
+	overlays.$cursor.empty().removeClass( 've-ce-surface-highlights-user-cursor-inactive' );
+	overlays.$selection.empty().removeClass( 've-ce-surface-highlights-user-selection-inactive' );
 
 	if ( !selection.isCollapsed() ) {
 		rects = ve.ce.Selection.static.newFromModel( selection, this ).getSelectionRects();
@@ -4063,7 +4057,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 
 	this.$highlightsUserCursors.append( overlays.$cursor );
 	this.$highlightsUserSelections.append( overlays.$selection );
-	overlays.clearDebounced();
+	overlays.deactivateDebounced();
 };
 
 /**
