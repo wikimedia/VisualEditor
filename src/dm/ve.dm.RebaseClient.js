@@ -147,7 +147,8 @@ ve.dm.RebaseClient.prototype.submitChange = function () {
  */
 ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
 	var uncommitted, unsent, result,
-		author = change.firstAuthor();
+		author = change.firstAuthor(),
+		logResult = {};
 	if ( !author ) {
 		return;
 	}
@@ -178,14 +179,22 @@ ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
 	}
 	this.commitLength += change.getLength();
 
-	this.logEvent( {
+	// Only log the result if it's "interesting", i.e. we rebased or rejected something of nonzero length
+	if ( result ) {
+		if ( result.rebased.getLength() > 0 || result.rejected ) {
+			logResult.rebased = result.rebased;
+			logResult.transposedHistory = result.transposedHistory;
+		}
+		if ( result.rejected ) {
+			logResult.rejected = result.rejected;
+		}
+	}
+	if ( unsent.getLength() > 0 ) {
+		logResult.unsent = unsent;
+	}
+	this.logEvent( ve.extendObject( {
 		type: 'acceptChange',
 		author: author,
-		change: change,
-		unsent: unsent,
-		// The below are undefined if it's our own change
-		rebased: result && result.rebased,
-		transposedHistory: result && result.transposedHistory,
-		rejected: result && result.rejected
-	} );
+		change: [ change.start, change.getLength() ]
+	}, logResult ) );
 };
