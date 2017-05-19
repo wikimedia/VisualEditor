@@ -27,30 +27,6 @@ body {
 	margin-top: 1em;
 }
 
-.ve-pad-menu > .oo-ui-fieldLayout {
-	width: 20em;
-}
-
-.ve-pad-menu > .oo-ui-fieldLayout,
-.ve-pad-menu > .oo-ui-popupButtonWidget {
-	margin-right: 1em;
-	display: inline-block;
-	vertical-align: top;
-}
-
-.ve-pad-menu-author {
-	pointer-events: none;
-}
-
-.ve-pad-menu-author.oo-ui-iconElement .oo-ui-iconElement-icon {
-	top: 0.3em;
-	height: 1.875em;
-}
-
-.ve-pad-menu-author-self .oo-ui-labelElement-label {
-	font-weight: bold;
-}
-
 .ve-pad-logo {
 	background-image: url( VisualEditor-pad-logo.svg );
 	width: 8.5em;

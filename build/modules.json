@@ -632,7 +632,11 @@
 			"src/dm/ve.dm.RebaseDocState.js",
 			"src/dm/ve.dm.RebaseServer.js",
 			"src/dm/ve.dm.RebaseClient.js",
-			"src/dm/ve.dm.SurfaceSynchronizer.js"
+			"src/dm/ve.dm.SurfaceSynchronizer.js",
+			"src/ui/widgets/ve.ui.AuthorListWidget.js"
+		],
+		"styles": [
+			"src/ui/styles/widgets/ve.ui.AuthorListWidget.css"
 		],
 		"dependencies": [
 			"dompurify",
