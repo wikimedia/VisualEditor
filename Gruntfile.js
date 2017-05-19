@@ -59,12 +59,19 @@ module.exports = function ( grunt ) {
 				dest: 'dist/ve-rebaser.js',
 				src: rebaserBuildFiles.scripts
 			},
-			'visualEditor.rebase': {
+			'visualEditor.rebase.scripts': {
 				options: {
 					banner: grunt.file.read( 'build/banner.txt' )
 				},
 				dest: 'dist/visualEditor-rebase.js',
 				src: veRebaseFiles.scripts
+			},
+			'visualEditor.rebase.styles': {
+				options: {
+					banner: grunt.file.read( 'build/banner.txt' )
+				},
+				dest: 'dist/visualEditor-rebase.css',
+				src: veRebaseFiles.styles
 			},
 			js: {
 				options: {
