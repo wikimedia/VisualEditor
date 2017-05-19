@@ -29,7 +29,7 @@ ve.ui.AuthorListWidget = function VeUiAuthorListWidget( synchronizer, config ) {
 		authorLabels = {},
 		listPopup = new OO.ui.PopupButtonWidget( {
 			classes: [ 've-ui-authorListWidget-listPopup' ],
-			label: 'Users',
+			icon: 'speechBubbles', // TODO: Change to userAvatar once it is available in Apex
 			indicator: 'down',
 			popup: {
 				label: 'Users',
@@ -48,6 +48,10 @@ ve.ui.AuthorListWidget = function VeUiAuthorListWidget( synchronizer, config ) {
 		}
 	}
 
+	function updateListCount() {
+		listPopup.setLabel( Object.keys( authorLabels ).length.toString() );
+	}
+
 	synchronizer.on( 'authorNameChange', function ( authorId ) {
 		var authorLabel = authorLabels[ authorId ],
 			newName = synchronizer.authorNames[ authorId ];
@@ -61,6 +65,7 @@ ve.ui.AuthorListWidget = function VeUiAuthorListWidget( synchronizer, config ) {
 			} );
 			authorLabel.$icon.css( 'background', '#' + synchronizer.constructor.static.getAuthorColor( authorId ) );
 			authorLabels[ authorId ] = authorLabel;
+			updateListCount();
 			$authorList.append( authorLabel.$element );
 		}
 		authorLabel.setLabel( newName );
@@ -83,6 +88,7 @@ ve.ui.AuthorListWidget = function VeUiAuthorListWidget( synchronizer, config ) {
 		if ( authorLabel ) {
 			authorLabel.$element.remove();
 			delete authorLabels[ authorId ];
+			updateListCount();
 		}
 	} );
 
