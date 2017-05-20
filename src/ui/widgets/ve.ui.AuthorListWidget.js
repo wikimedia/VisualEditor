@@ -22,7 +22,7 @@ ve.ui.AuthorListWidget = function VeUiAuthorListWidget( synchronizer, config ) {
 		editNameLayout = new OO.ui.FieldLayout( nameInput, {
 			classes: [ 've-ui-authorListWidget-editName' ],
 			align: 'right',
-			label: 'Name'
+			label: ve.msg( 'visualeditor-rebase-client-author-name' )
 		} ),
 		oldName = '',
 		$authorList = $( '<div>' ),
@@ -32,7 +32,6 @@ ve.ui.AuthorListWidget = function VeUiAuthorListWidget( synchronizer, config ) {
 			icon: 'speechBubbles', // TODO: Change to userAvatar once it is available in Apex
 			indicator: 'down',
 			popup: {
-				label: 'Users',
 				$content: $authorList,
 				padded: true,
 				align: 'center'
