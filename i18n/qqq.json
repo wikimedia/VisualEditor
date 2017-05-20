@@ -73,6 +73,7 @@
 	"visualeditor-debugbar-inputdebug": "Label for the button in the debug toolbar to run keyboard input in debug mode.",
 	"visualeditor-debugbar-logrange": "Label for the button in the debug toolbar to output the current selection to the JavaScript console.\n{{Identical|Log}}",
 	"visualeditor-debugbar-showmodel": "Label for the button in the debug toolbar to show the document model.",
+	"visualeditor-debugbar-showtransactions": "Label for the button in the debug toolbar to show the transaction history.",
 	"visualeditor-debugbar-startfilibuster": "Label for the button in the debug toolbar to begin the input response trace debugger.",
 	"visualeditor-debugbar-stopfilibuster": "Label for the button in the debug toolbar to stop the input response trace debugger.",
 	"visualeditor-debugbar-updatemodel": "Label for the button in the debug toolbar to update the shown document model as it changes.",
