@@ -5,7 +5,7 @@
  */
 
 // Set up the platform and wait for i18n messages to load
-new ve.init.sa.Platform( ve.messagePaths ).initialize()
+new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise()
 	.fail( function () {
 		$( '.ve-instance' ).text( 'Sorry, this browser is not supported.' );
 	} )
