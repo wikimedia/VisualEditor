@@ -16,6 +16,7 @@ new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 	target.addSurface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
 	synchronizer = new ve.dm.SurfaceSynchronizer( target.surface.model, ve.docName );
 	target.surface.view.setSynchronizer( synchronizer );
+	target.surface.view.focus();
 
 	authorList = new ve.ui.AuthorListWidget( synchronizer );
 
