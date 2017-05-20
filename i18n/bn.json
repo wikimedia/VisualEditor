@@ -33,6 +33,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "নিম্নরেখ",
 	"visualeditor-changedesc-align": "প্রান্তিক বিন্যাস $1 থেকে $2-এ পরিবর্তিত হয়েছে",
 	"visualeditor-changedesc-changed": "$1 $2 থেকে $3-এ পরিবর্তিত হয়েছে",
+	"visualeditor-changedesc-comment": "মন্তব্য $1 থেকে $2-এ পরিবর্তিত হয়েছে",
 	"visualeditor-changedesc-image-size": "আকার $1 থেকে $2-এ পরিবর্তিত হয়েছে",
 	"visualeditor-changedesc-language": "ভাষা $1 থেকে $2-এ পরিবর্তিত হয়েছে",
 	"visualeditor-changedesc-link-href": "সংযোগের লক্ষ্য $1 থেকে $2-এ পরিবর্তিত হয়েছে",

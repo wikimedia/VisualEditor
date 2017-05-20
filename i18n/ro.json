@@ -5,7 +5,8 @@
 			"Firilacroco",
 			"Minisarm",
 			"Stelistcristi",
-			"Ion"
+			"Ion",
+			"Matrafox"
 		]
 	},
 	"visualeditor": "EditorVizual",
@@ -26,6 +27,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Indice",
 	"visualeditor-annotationbutton-superscript-tooltip": "Exponent",
 	"visualeditor-annotationbutton-underline-tooltip": "Subliniere",
+	"visualeditor-changedesc-comment": "Comentariu schimbat de la $1 la $2",
 	"visualeditor-clearbutton-tooltip": "Elimină stilurile aplicate",
 	"visualeditor-clipboard-copy": "Copiază",
 	"visualeditor-clipboard-cut": "Taie",

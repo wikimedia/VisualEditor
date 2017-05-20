@@ -23,7 +23,8 @@
 			"Mailman",
 			"Ctac",
 			"Kareyac",
-			"Redredsonia"
+			"Redredsonia",
+			"Esukhovnina"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -46,6 +47,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Надстрочный индекс",
 	"visualeditor-annotationbutton-underline-tooltip": "Подчёркнутый",
 	"visualeditor-changedesc-align": "Выравнивание изменено с $1 на $2",
+	"visualeditor-changedesc-comment": "комментарий изменен с $1 на $2",
 	"visualeditor-changedesc-image-size": "Размер изменён с $1 на $2",
 	"visualeditor-changedesc-language": "Язык изменён с $1 на $2",
 	"visualeditor-changedir": "Изменить направленность",
@@ -68,6 +70,8 @@
 	"visualeditor-debugbar-inputdebug": "Отладка ввода",
 	"visualeditor-debugbar-logrange": "Журнал",
 	"visualeditor-debugbar-showmodel": "Показать модель",
+	"visualeditor-debugbar-startfilibuster": "Филибастер",
+	"visualeditor-debugbar-stopfilibuster": "Остановить Филибастер",
 	"visualeditor-debugbar-updatemodel": "Обновлять при изменениях",
 	"visualeditor-dialog-action-apply": "Применить изменения",
 	"visualeditor-dialog-action-cancel": "Отмена",

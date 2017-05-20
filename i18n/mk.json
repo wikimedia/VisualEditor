@@ -27,6 +27,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Потцртано",
 	"visualeditor-changedesc-align": "Порамнетоста изменета од $1 на $2",
 	"visualeditor-changedesc-changed": "$1 изменето од $2 на $3",
+	"visualeditor-changedesc-comment": "Коментарот променет од $1 во $2",
 	"visualeditor-changedesc-image-size": "Големината изменета од $1 на $2",
 	"visualeditor-changedesc-language": "Јазикот сменет од $1 на $2",
 	"visualeditor-changedesc-link-href": "Целната врска сменета од $1 во $2",

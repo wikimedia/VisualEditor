@@ -36,6 +36,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Unterstreichen",
 	"visualeditor-changedesc-align": "Ausrichtung geändert von $1 zu $2",
 	"visualeditor-changedesc-changed": "$1 von $2 zu $3 geändert",
+	"visualeditor-changedesc-comment": "Kommentar geändert von $1 in $2",
 	"visualeditor-changedesc-image-size": "Größe geändert von $1 zu $2",
 	"visualeditor-changedesc-language": "Sprache geändert von $1 zu $2",
 	"visualeditor-changedesc-link-href": "Linkziel geändert von $1 zu $2",

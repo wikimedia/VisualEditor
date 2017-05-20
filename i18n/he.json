@@ -38,6 +38,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "קו תחתי",
 	"visualeditor-changedesc-align": "היישור שוּנה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-changed": "{{GRAMMAR:תחילית|$1}} השתנה מ{{GRAMMAR:תחילית|$2}} ל{{GRAMMAR:תחילית|$3}}",
+	"visualeditor-changedesc-comment": "ההערה שונתה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-image-size": "הגודל שוּנה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-language": "השפה השתנתה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-link-href": "יעד הקישור שוּנה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
