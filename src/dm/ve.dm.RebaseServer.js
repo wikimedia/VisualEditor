@@ -113,7 +113,8 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, author, ba
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;
 		this.updateDocState( doc, author, null, rejections, null );
-		appliedChange = change.truncate( 0 );
+		// FIXME argh this publishes an empty change, which is not what we want
+		appliedChange = state.history.truncate( 0 );
 	} else if ( rejections < backtrack ) {
 		throw new Error( 'Backtrack=' + backtrack + ' > ' + rejections + '=rejections' );
 	} else {
