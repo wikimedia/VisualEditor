@@ -476,4 +476,7 @@ ve.ce.ContentBranchNode.prototype.onTeardown = function () {
  */
 ve.ce.ContentBranchNode.prototype.destroy = function () {
 	this.$element.off( 'click', this.onClickHandler );
+
+	// Parent method
+	ve.ce.ContentBranchNode.super.prototype.destroy.call( this );
 };
