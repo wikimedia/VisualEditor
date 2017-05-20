@@ -389,11 +389,6 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		throw new Error( 'Different starts: ' + history.start + ' and ' + uncommitted.start );
 	}
 
-	for ( author in selectionsB ) {
-		author = parseInt( author );
-		delete selectionsA[ author ];
-		selectionsB[ author ] = selectionsB[ author ].translateByChange( history, author );
-	}
 	// For each element b_i of transactionsB, rebase the whole list transactionsA over b_i.
 	// To rebase a1, a2, a3, ..., aN over b_i, first we rebase a1 onto b_i. Then we rebase
 	// a2 onto some b', defined as
@@ -445,10 +440,6 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	}
 
 	// Length calculations below assume no removal of empty rebased transactions
-	for ( author in selectionsB ) {
-		author = parseInt( author );
-		selectionsB[ author ] = selectionsB[ author ].translateByChange( history, author );
-	}
 	rebased = new ve.dm.Change(
 		uncommitted.start + transactionsA.length,
 		transactionsB,
