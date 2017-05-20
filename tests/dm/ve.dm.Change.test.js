@@ -152,13 +152,17 @@ QUnit.test( 'Change operations', function ( assert ) {
 			TxInsert( doc, 2, [ [ 'n', bIndex ] ] ),
 			TxInsert( doc, 3, [ [ 'e', bIndex ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
-		], [ new ve.dm.IndexValueStore( [ b ] ), noVals, noVals, noVals ], {} ),
+		], [ new ve.dm.IndexValueStore( [ b ] ), noVals, noVals, noVals ], {
+			1: new ve.dm.LinearSelection( doc, new ve.Range( 7, 7 ) )
+		} ),
 		insert2 = new ve.dm.Change( 0, [
 			TxInsert( doc, 1, [ [ 't', iIndex ] ] ),
 			TxInsert( doc, 2, [ [ 'w', iIndex ] ] ),
 			TxInsert( doc, 3, [ [ 'o', iIndex ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
-		], [ new ve.dm.IndexValueStore( [ i ] ), noVals, noVals, noVals ], {} ),
+		], [ new ve.dm.IndexValueStore( [ i ] ), noVals, noVals, noVals ], {
+			2: new ve.dm.LinearSelection( doc, new ve.Range( 1, 1 ) )
+		} ),
 		underline3 = new ve.dm.Change( 0, [
 			TxAnnotate( doc, new ve.Range( 1, 6 ), 'set', u )
 		], [ new ve.dm.IndexValueStore( [ u ] ) ], {} );
@@ -245,6 +249,30 @@ QUnit.test( 'Change operations', function ( assert ) {
 		ve.dm.Change.static.rebaseUncommittedChange( remove2, replace2 ).rebased.transactions,
 		[],
 		'Conflict rebasing replace2 onto remove2'
+	);
+
+	assert.deepEqual(
+		{ type: 'range', from: 1, to: 1 },
+		ve.dm.Change.static.rebaseUncommittedChange( insert1, insert2 ).rebased.selections[ 2 ].range.toJSON(),
+		'Selection before insertion is not adjusted when rebasing (1)'
+	);
+
+	assert.deepEqual(
+		{ type: 'range', from: 1, to: 1 },
+		ve.dm.Change.static.rebaseUncommittedChange( insert2, insert1 ).transposedHistory.selections[ 2 ].range.toJSON(),
+		'Selection before insertion is not adjusted when rebasing (2)'
+	);
+
+	assert.deepEqual(
+		ve.dm.Change.static.rebaseUncommittedChange( insert1, insert2 ).transposedHistory.selections[ 1 ].range.toJSON(),
+		{ type: 'range', from: 11, to: 11 },
+		'Selection after insertion is adjusted when rebasing (1)'
+	);
+
+	assert.deepEqual(
+		ve.dm.Change.static.rebaseUncommittedChange( insert2, insert1 ).rebased.selections[ 1 ].range.toJSON(),
+		{ type: 'range', from: 11, to: 11 },
+		'Selection after insertion is adjusted when rebasing (2)'
 	);
 } );
 
