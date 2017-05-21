@@ -1384,15 +1384,16 @@ ve.getStartAndEndRects = function ( rects ) {
 /**
  * Find the length of the common start sequence of one or more sequences
  *
+ * Items are tested for sameness using === .
  *
  * @param {Array} sequences Array of sequences (arrays, strings etc)
- * @return {number} Common start sequence length
+ * @return {number} Common start sequence length (0 if sequences is empty)
  */
 ve.getCommonStartSequenceLength = function ( sequences ) {
 	var i, len, val,
 		commonLength = 0;
 	if ( sequences.length === 0 ) {
-		throw new Error( 'Need at least one sequence' );
+		return 0;
 	}
 	commonLengthLoop:
 	while ( true ) {

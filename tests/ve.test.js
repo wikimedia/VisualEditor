@@ -956,6 +956,11 @@ QUnit.test( 'getCommonStartSequenceLength', function ( assert ) {
 			sequences: [ 'Cymru', 'Cymry', 'Cymraes', 'Cymro', 'Cymraeg' ],
 			commonLength: 4,
 			title: 'String sequences'
+		},
+		{
+			sequences: [],
+			commonLength: 0,
+			title: 'No sequences'
 		}
 	];
 
