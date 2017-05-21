@@ -177,7 +177,9 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	var i, j,
 		length,
 		args = [],
-		$anchor,
+		anchorCeNode,
+		prevCeNode,
+		anchorDomNode,
 		afterAnchor,
 		node,
 		parentNode,
@@ -201,16 +203,28 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		removals[ i ].$element.detach();
 	}
 	if ( args.length >= 3 ) {
-		if ( index ) {
-			// Get the element before the insertion point
-			$anchor = this.children[ index - 1 ].$element.last();
+		if ( index > 0 ) {
+			// Get the element before the insertion
+			anchorCeNode = this.children[ index - 1 ];
+			// If the CE node is a text node, its $element will be empty
+			// Look at its previous sibling, which cannot be a text node
+			if ( anchorCeNode.getType() === 'text' ) {
+				prevCeNode = this.children[ index - 2 ];
+				if ( prevCeNode ) {
+					anchorDomNode = prevCeNode.$element.last()[ 0 ].nextSibling;
+				} else {
+					anchorDomNode = this.$element[ 0 ].firstChild;
+				}
+			} else {
+				anchorDomNode = anchorCeNode.$element.last()[ 0 ];
+			}
 		}
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[ i ].attach( this );
-			if ( index ) {
-				// DOM equivalent of $anchor.after( args[i].$element );
-				afterAnchor = $anchor[ 0 ].nextSibling;
-				parentNode = $anchor[ 0 ].parentNode;
+			if ( anchorDomNode ) {
+				// DOM equivalent of $( anchorDomNode ).after( args[i].$element );
+				afterAnchor = anchorDomNode.nextSibling;
+				parentNode = anchorDomNode.parentNode;
 				for ( j = 0, length = args[ i ].$element.length; j < length; j++ ) {
 					parentNode.insertBefore( args[ i ].$element[ j ], afterAnchor );
 				}
