@@ -22,7 +22,8 @@
 			"Statix64",
 			"Wikitoni",
 			"Nemo bis",
-			"Fringio"
+			"Fringio",
+			"Kaspo"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -68,6 +69,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Modifica",
 	"visualeditor-debugbar-close": "Chiudi",
 	"visualeditor-debugbar-logrange": "Registro",
+	"visualeditor-debugbar-showmodel": "Mostra modello",
 	"visualeditor-dialog-action-apply": "Applica modifiche",
 	"visualeditor-dialog-action-cancel": "Annulla",
 	"visualeditor-dialog-action-done": "Fatto",
