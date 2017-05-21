@@ -105,6 +105,18 @@ ve.dm.SurfaceSynchronizer.prototype.getChangeSince = function ( start, toSubmit 
 /**
  * @inheritdoc
  */
+ve.dm.SurfaceSynchronizer.prototype.submitChange = function () {
+	// Prevent submission before initialization is complete
+	if ( !this.initialized ) {
+		return;
+	}
+	// Parent method
+	ve.dm.RebaseClient.prototype.submitChange.apply( this, arguments );
+};
+
+/**
+ * @inheritdoc
+ */
 ve.dm.SurfaceSynchronizer.prototype.sendChange = function ( backtrack, change ) {
 	this.socket.emit( 'submitChange', {
 		backtrack: this.backtrack,
@@ -285,7 +297,10 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 	}
 	history = ve.dm.Change.static.deserialize( data.history, this.doc );
 	this.acceptChange( history );
+
+	// Mark ourselves as initialized and retry any prevented submissions
 	this.initialized = true;
+	this.submitChangeThrottled();
 };
 
 /**
