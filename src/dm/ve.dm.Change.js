@@ -611,6 +611,8 @@ ve.dm.Change.prototype.mostRecent = function ( start ) {
 /**
  * Build a change from the first (least recent) transactions of this change.
  *
+ * Always removes selections.
+ *
  * @param {number} length Number of transactions
  * @return {ve.dm.Change} Subset of this change with only the least recent transactions
  */
@@ -622,7 +624,7 @@ ve.dm.Change.prototype.truncate = function ( length ) {
 		this.start,
 		this.transactions.slice( 0, length ),
 		this.stores.slice( 0, length ),
-		length < this.stores.length ? {} : OO.cloneObject( this.selections )
+		{}
 	);
 };
 
