@@ -583,7 +583,18 @@ QUnit.test( 'isBlockElement/isVoidElement', function ( assert ) {
 	assert.strictEqual( ve.isVoidElement( document.createElement( 'div' ) ), false, '<div> is not a void element' );
 } );
 
-// TODO: ve.isUnattachedCombiningMark
+QUnit.test( 'isUnattachedCombiningMark', function ( assert ) {
+	assert.strictEqual( ve.isUnattachedCombiningMark( 'Ú' ), false, '"Ú" is not an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( 'é' ), false, '"é" is not an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( '\u02FF' ), false, '"\u02FF" is not an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( '\u0300' ), true, '"\u0300" is an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( '̀' ), true, '" ̀" is an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( '́' ), true, '" ́" is an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( '\u036F' ), true, '"\u036F" is an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( 'ͯ' ), true, '" ͯ" is an unattached combining mark' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( '̀ͯ' ), true, '"̀ͯ" is an unattached combining mark (even though it is two attached to each other)' );
+	assert.strictEqual( ve.isUnattachedCombiningMark( '\u0370' ), false, '"\u0370" is not an unattached combining mark' );
+} );
 
 // TODO: ve.getByteOffset
 
