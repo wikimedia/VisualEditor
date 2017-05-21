@@ -366,8 +366,8 @@ ve.Node.prototype.setDocument = function ( doc ) {
  */
 ve.Node.prototype.attach = function ( parent ) {
 	this.parent = parent;
-	this.setRoot( parent.getRoot() );
 	this.setDocument( parent.getDocument() );
+	this.setRoot( parent.getRoot() );
 	this.emit( 'attach', parent );
 };
 
