@@ -571,6 +571,18 @@ QUnit.test( 'fixBase', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'isUriComponentValid', function ( assert ) {
+	assert.strictEqual( ve.isUriComponentValid( 'Foo' ), true, '"Foo" is a valid URI component' );
+	assert.strictEqual( ve.isUriComponentValid( 'Foo%20Bar' ), true, '"Foo%20Bar" is a valid URI component' );
+	assert.strictEqual( ve.isUriComponentValid( '%E0%A4%A' ), false, '"%E0%A4%A" is an invalid URI component' );
+} );
+
+QUnit.test( 'safeDecodeURIComponent', function ( assert ) {
+	assert.strictEqual( ve.safeDecodeURIComponent( 'Foo' ), 'Foo', '"Foo" is successfully URI decoded' );
+	assert.strictEqual( ve.safeDecodeURIComponent( 'Foo%20Bar' ), 'Foo Bar', '"Foo%20Bar" is successfully URI decoded' );
+	assert.strictEqual( ve.safeDecodeURIComponent( '%E0%A4%A' ), '%E0%A4%A', '"%E0%A4%A" is not URI decoded, just returned as-is' );
+} );
+
 QUnit.test( 'isBlockElement/isVoidElement', function ( assert ) {
 	assert.strictEqual( ve.isBlockElement( 'div' ), true, '"div" is a block element' );
 	assert.strictEqual( ve.isBlockElement( 'SPAN' ), false, '"SPAN" is not a block element' );
