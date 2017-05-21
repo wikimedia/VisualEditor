@@ -39,6 +39,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.logRangeButton = new OO.ui.ButtonWidget( { label: ve.msg( 'visualeditor-debugbar-logrange' ), disabled: true } );
 	this.showModelToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-showmodel' ) } );
 	this.updateModelToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-updatemodel' ) } );
+	this.transactionsToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-showtransactions' ) } );
 	this.inputDebuggingToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-inputdebug' ) } );
 	this.filibusterToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-startfilibuster' ) } );
 
@@ -55,6 +56,8 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 			)
 		).hide();
 
+	this.$transactions = $( '<div class="ve-ui-debugBar-transactions"><ol></ol></div>' );
+
 	this.$filibuster = $( '<div class="ve-ui-debugBar-filibuster"></div>' );
 
 	// Events
@@ -63,9 +66,13 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.updateModelToggle.on( 'change', this.onUpdateModelToggleChange.bind( this ) );
 	this.inputDebuggingToggle.on( 'change', this.onInputDebuggingToggleChange.bind( this ) );
 	this.filibusterToggle.on( 'click', this.onFilibusterToggleClick.bind( this ) );
+	this.transactionsToggle.on( 'change', this.onTransactionsToggleChange.bind( this ) );
 	closeButton.on( 'click', this.$element.remove.bind( this.$element ) );
 
-	this.getSurface().getModel().connect( this, { select: 'onSurfaceSelect' } );
+	this.getSurface().getModel().connect( this, {
+		select: 'onSurfaceSelect',
+		history: 'onHistory'
+	} );
 	this.onSurfaceSelect( this.getSurface().getModel().getSelection() );
 
 	this.$element.addClass( 've-ui-debugBar' );
@@ -77,10 +84,12 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 			this.showModelToggle.$element,
 			this.inputDebuggingToggle.$element,
 			this.filibusterToggle.$element,
+			this.transactionsToggle.$element,
 			$( this.constructor.static.dividerTemplate ),
 			closeButton.$element
 		),
 		this.$dump,
+		this.$transactions,
 		this.$filibuster
 	);
 
@@ -120,6 +129,16 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function () {
 		( selection instanceof ve.dm.LinearSelection && !selection.isCollapsed() ) ||
 		selection instanceof ve.dm.TableSelection
 	) );
+};
+
+/**
+ * Handle history events on the attached surface
+ */
+ve.ui.DebugBar.prototype.onHistory = function () {
+	if ( !this.$transactions.is( ':visible' ) ) {
+		return;
+	}
+	this.updateTransactions();
 };
 
 /**
@@ -331,6 +350,35 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 		} );
 		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-startfilibuster' ) );
 	}
+};
+
+/**
+ * Handle click events on the filibuster toggle button
+ *
+ * @param {boolean} value Value
+ */
+ve.ui.DebugBar.prototype.onTransactionsToggleChange = function ( value ) {
+	if ( value ) {
+		this.updateTransactions();
+		this.$transactions.show();
+	} else {
+		this.$transactions.hide();
+	}
+};
+
+/**
+ * Update the transaction dump
+ */
+ve.ui.DebugBar.prototype.updateTransactions = function () {
+	var surface = this.getSurface(),
+		$transactionsList = this.$transactions.children( 'ol' ).empty();
+
+	surface.getModel().getHistory().forEach( function ( item ) {
+		var $state = $( '<ol>' ).appendTo( $( '<li>' ).appendTo( $transactionsList ) );
+		item.transactions.forEach( function ( tx ) {
+			$state.append( $( '<li>' ).text( ve.summarizeTransaction( tx ) ) );
+		} );
+	} );
 };
 
 /**

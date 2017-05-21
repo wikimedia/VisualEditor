@@ -129,3 +129,20 @@
 	color: #555;
 	text-shadow: 0 1px 1px #fff;
 }
+
+.ve-ui-debugBar-transactions {
+	display: none;
+}
+
+.ve-ui-debugBar-transactions > ol > li {
+	border-left: #f3f3f3 2em solid;
+}
+
+.ve-ui-debugBar-transactions ol ol {
+	margin: 1em 0;
+	padding-left: 0;
+}
+
+.ve-ui-debugBar-transactions ol ol li {
+	padding-left: 1ex;
+}
