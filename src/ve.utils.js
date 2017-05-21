@@ -1426,7 +1426,7 @@ ve.getCommonAncestor = function () {
 		args = Array.prototype.slice.call( arguments );
 	nodeCount = args.length;
 	if ( nodeCount === 0 ) {
-		throw new Error( 'Need at least one node' );
+		return null;
 	}
 	// Build every chain
 	for ( i = 0; i < nodeCount; i++ ) {

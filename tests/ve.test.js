@@ -924,6 +924,9 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 			test.nodes + ' -> ' + test.ancestor
 		);
 	}
+
+	// Test no-argument case
+	assert.equal( ve.getCommonAncestor(), null, 'No nodes' );
 } );
 
 QUnit.test( 'getCommonStartSequenceLength', function ( assert ) {
