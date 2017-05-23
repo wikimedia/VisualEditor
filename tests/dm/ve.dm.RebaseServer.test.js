@@ -181,6 +181,97 @@ QUnit.test( 'Rebase', function ( assert ) {
 				[ '2', 'receive' ],
 				[ '2', 'assertHist', '-(Bd)-(cA)WP' ]
 			]
+		},
+		{
+			name: 'Double client-side rebase with annotation',
+			initialData: [
+				{ type: 'paragraph' },
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			clients: [ '1', '2' ],
+			ops: [
+				// Client 1 applies a local change that introduces an annotation
+				[ '1', 'apply', {
+					start: 0,
+					transactions: [
+						{
+							operations: [
+								{ type: 'retain', length: 1 },
+								{ type: 'replace', remove: [], insert: [
+									[ 'X', [ 'h123' ] ],
+									[ 'Y', [ 'h123' ] ],
+									[ 'Z', [ 'h123' ] ]
+								] },
+								{ type: 'retain', length: 3 }
+							],
+							author: '1'
+						}
+					],
+					stores: [
+						{
+							hashes: [ 'h123' ],
+							hashStore: {
+								h123: {
+									type: 'annotation',
+									value: {
+										type: 'textStyle/bold'
+									}
+								}
+							}
+						}
+					],
+					selections: {
+						1: {
+							type: 'linear',
+							range: {
+								type: 'range',
+								from: 4,
+								to: 4
+							}
+						}
+					}
+				} ],
+				[ '1', 'assert', function ( assert, client ) {
+					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is in the store' );
+				} ],
+
+				// Client 2 submits two changes
+				[ '2', 'apply', [
+					[ 'insert', 1, [ 'a' ], 3 ]
+				] ],
+				[ '2', 'submit' ],
+				[ '2', 'apply', [
+					[ 'insert', 2, [ 'b' ], 3 ]
+				] ],
+				[ '2', 'submit' ],
+
+				// Client 1 rebases its local change twice
+				[ '2', 'deliver' ],
+				[ 'server', 'assertHist', 'a' ],
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', 'a/XYZ!' ],
+				[ '1', 'assert', function ( assert, client ) {
+					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after the first rebase' );
+				} ],
+
+				[ '2', 'deliver' ],
+				[ 'server', 'assertHist', 'ab' ],
+				[ '1', 'receive' ],
+				[ '1', 'assertHist', 'ab/XYZ!' ],
+				[ '1', 'assert', function ( assert, client ) {
+					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after the second rebase' );
+				} ],
+
+				// Client 1 submits its local change
+				[ '1', 'submit' ],
+				[ '1', 'deliver' ],
+				[ 'server', 'assertHist', 'abXYZ' ]
+			]
 		} ],
 		i, j, op, server, client, clients, action, txs;
 
@@ -241,6 +332,8 @@ QUnit.test( 'Rebase', function ( assert ) {
 				client.deliverOne();
 			} else if ( action === 'receive' ) {
 				client.receiveOne();
+			} else if ( action === 'assert' ) {
+				op[ 2 ]( assert, client );
 			}
 		}
 	}

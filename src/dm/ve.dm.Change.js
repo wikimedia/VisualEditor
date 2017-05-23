@@ -674,10 +674,12 @@ ve.dm.Change.prototype.addToHistory = function ( documentModel ) {
 		throw new Error( 'this starts at ' + this.start +
 			' but history ends at ' + documentModel.completeHistory.length );
 	}
+	// FIXME this code should probably be in dm.Document
 	this.stores.forEach( function ( store ) {
 		documentModel.store.merge( store );
 	} );
 	ve.batchPush( documentModel.completeHistory, this.transactions );
+	documentModel.storeLengthAtHistoryLength[ documentModel.completeHistory.length ] = documentModel.store.getLength();
 };
 
 /**
