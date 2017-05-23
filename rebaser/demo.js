@@ -4,21 +4,45 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
-	var synchronizer, authorList,
-		$editor = $( '.ve-demo-editor' ),
-		$menu = $( '.ve-pad-menu' ),
-		// eslint-disable-next-line new-cap
-		target = new ve.demo.target();
+( function () {
+	function RebaserTarget() {
+		RebaserTarget.super.apply( this, arguments );
+	}
 
-	$editor.append( target.$element );
+	OO.inheritClass( RebaserTarget, ve.init.sa.Target );
 
-	target.addSurface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
-	synchronizer = new ve.dm.SurfaceSynchronizer( target.surface.model, ve.docName );
-	target.surface.view.setSynchronizer( synchronizer );
-	target.surface.view.focus();
+	RebaserTarget.static.actionGroups = ve.copy( RebaserTarget.static.actionGroups );
+	RebaserTarget.static.actionGroups.unshift(
+		{ include: [ 'authorList' ] }
+	);
 
-	authorList = new ve.ui.AuthorListWidget( synchronizer );
+	RebaserTarget.prototype.setSurface = function ( surface ) {
+		var synchronizer, surfaceView;
 
-	$menu.append( authorList.$element );
-} );
+		if ( surface !== this.surface ) {
+			surfaceView = surface.getView();
+
+			synchronizer = new ve.dm.SurfaceSynchronizer(
+				surface.getModel(),
+				ve.docName,
+				{ server: this.rebaserUrl }
+			);
+
+			surfaceView.setSynchronizer( synchronizer );
+		}
+
+		// Parent method
+		RebaserTarget.super.prototype.setSurface.apply( this, arguments );
+	};
+
+	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
+		var $editor = $( '.ve-demo-editor' ),
+			// eslint-disable-next-line new-cap
+			target = new RebaserTarget();
+
+		$editor.append( target.$element );
+
+		target.addSurface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
+		target.surface.view.focus();
+	} );
+}() );

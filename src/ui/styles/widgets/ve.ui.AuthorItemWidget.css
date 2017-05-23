@@ -1,0 +1,23 @@
+/*!
+ * VisualEditor AuthorInterface AuthorItemWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-authorItemWidget {
+	position: relative;
+	margin: 0.2em 0;
+	padding-left: 2.5em;
+	line-height: 2em;
+}
+
+.ve-ui-authorItemWidget-color {
+	position: absolute;
+	width: 2em;
+	height: 2em;
+	left: 0;
+}
+
+.ve-ui-authorItemWidget-editable .ve-ui-authorItemWidget-color {
+	top: 0.25em;
+}

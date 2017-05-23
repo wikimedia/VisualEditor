@@ -631,10 +631,11 @@
 			"src/dm/ve.dm.RebaseServer.js",
 			"src/dm/ve.dm.RebaseClient.js",
 			"src/dm/ve.dm.SurfaceSynchronizer.js",
-			"src/ui/widgets/ve.ui.AuthorListWidget.js"
+			"src/ui/widgets/ve.ui.AuthorItemWidget.js",
+			"src/ui/tools/ve.ui.AuthorListPopupTool.js"
 		],
 		"styles": [
-			"src/ui/styles/widgets/ve.ui.AuthorListWidget.css"
+			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.css"
 		],
 		"dependencies": [
 			"dompurify",
