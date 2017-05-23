@@ -15,6 +15,13 @@ ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeIndexes ) {
 	// Parent constructor
 	this.store = store;
 	this.storeIndexes = storeIndexes || [];
+
+	if ( this.get().indexOf( undefined ) !== -1 ) {
+		throw new Error( 'Annotation with index ' +
+			this.storeIndexes[ this.get().indexOf( undefined ) ] +
+			' not found in store'
+		);
+	}
 };
 
 /* Methods */
