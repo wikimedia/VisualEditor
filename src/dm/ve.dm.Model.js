@@ -266,7 +266,7 @@ ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
  *
  * @param {string} key Attribute key
  * @param {Object} change Change object with from and to properties
- * @return {string} Description
+ * @return {string|null} Description, or null if nothing to describe
  */
 ve.dm.Model.static.describeChange = function ( key, change ) {
 	if ( ( typeof change.from === 'object' && change.from !== null ) || ( typeof change.to === 'object' && change.to !== null ) ) {
