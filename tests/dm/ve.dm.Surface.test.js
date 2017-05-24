@@ -188,6 +188,22 @@ QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
 
 } );
 
+QUnit.test( 'change rollback', function ( assert ) {
+	var tx,
+		range = new ve.Range( 1, 3 ),
+		surface = new ve.dm.SurfaceStub( null, range ),
+		doc = surface.getDocument();
+
+	tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ { type: '/heading' } ] );
+	assert.throws(
+		function () { surface.change( tx ); },
+		new Error( 'Expected closing for paragraph but got closing for heading' ),
+		'Transaction throws an exception'
+	);
+
+	assert.deepEqual( surface.canUndo(), false, 'No history to undo after failed change' );
+} );
+
 QUnit.test( 'range translation', function ( assert ) {
 	var sel, range,
 		surface = new ve.dm.SurfaceStub( null, new ve.Range( 3 ) ),
