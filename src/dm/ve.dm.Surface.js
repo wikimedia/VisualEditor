@@ -811,7 +811,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @fires contextChange
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
-	var i, len, selectionAfter,
+	var i, len, selectionAfter, committed,
 		selectionBefore = this.selection.clone(),
 		contextChange = false;
 
@@ -829,6 +829,16 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 		this.transacting = true;
 		for ( i = 0, len = transactions.length; i < len; i++ ) {
 			if ( !transactions[ i ].isNoOp() ) {
+				// The .commit() call below indirectly invokes setSelection()
+				try {
+					committed = false;
+					this.getDocument().commit( transactions[ i ], this.isStaging() );
+					committed = true;
+				} finally {
+					if ( !committed ) {
+						this.stopQueueingContextChanges();
+					}
+				}
 				if ( !skipUndoStack ) {
 					if ( this.isStaging() ) {
 						if ( !this.getStagingTransactions().length ) {
@@ -843,8 +853,6 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 						this.newTransactions.push( transactions[ i ] );
 					}
 				}
-				// The .commit() call below indirectly invokes setSelection()
-				this.getDocument().commit( transactions[ i ], this.isStaging() );
 				if ( transactions[ i ].hasElementAttributeOperations() ) {
 					contextChange = true;
 				}
