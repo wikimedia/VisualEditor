@@ -115,6 +115,15 @@ ve.ui.TableLineContext.prototype.onDocumentMouseDown = function ( e ) {
 };
 
 /**
+ * Handle model select events
+ *
+ * @param {ve.dm.Selection} selection
+ */
+ve.ui.TableLineContext.prototype.onModelSelect = function () {
+	this.toggleMenu();
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
@@ -126,7 +135,7 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
 	this.popup.toggle( show );
 	if ( this.popup.isVisible() ) {
 		this.tableNode.setEditing( false );
-		surfaceModel.connect( this, { select: 'toggleMenu' } );
+		surfaceModel.connect( this, { select: 'onModelSelect' } );
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
 		dir = surfaceView.getSelection().getDirection();
 		this.$element
