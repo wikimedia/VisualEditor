@@ -20,7 +20,8 @@
 			"고솜",
 			"Namoroka",
 			"Ykhwong",
-			"Libattery"
+			"Libattery",
+			"Jerrykim306"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -67,6 +68,7 @@
 	"visualeditor-debugbar-close": "닫기",
 	"visualeditor-debugbar-logrange": "로그",
 	"visualeditor-debugbar-showmodel": "모델 보기",
+	"visualeditor-debugbar-showtransactions": "트랜잭션 표시",
 	"visualeditor-debugbar-updatemodel": "변경사항에 대한 업데이트",
 	"visualeditor-dialog-action-apply": "바뀜 적용",
 	"visualeditor-dialog-action-cancel": "취소",
@@ -129,6 +131,9 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "사용자 지정",
 	"visualeditor-mediasizewidget-sizeoptions-default": "기본값",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "비율",
+	"visualeditor-rebase-client-author-name": "이름",
+	"visualeditor-rebase-client-document-name": "문서 제목",
+	"visualeditor-rebase-client-document-create-edit": "생성/편집",
 	"visualeditor-shortcuts-clipboard": "클립보드",
 	"visualeditor-shortcuts-dialog": "대화상자 창",
 	"visualeditor-shortcuts-formatting": "문단 서식",

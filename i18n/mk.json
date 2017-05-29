@@ -55,6 +55,7 @@
 	"visualeditor-debugbar-inputdebug": "Поправка на грешки при внос",
 	"visualeditor-debugbar-logrange": "Дневник",
 	"visualeditor-debugbar-showmodel": "Прикажи модел",
+	"visualeditor-debugbar-showtransactions": "Прикажи трансакции",
 	"visualeditor-debugbar-startfilibuster": "Филибастер",
 	"visualeditor-debugbar-stopfilibuster": "Запри го Филибастер",
 	"visualeditor-debugbar-updatemodel": "Поднови со измените",

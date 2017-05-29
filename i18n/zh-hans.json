@@ -70,6 +70,7 @@
 	"visualeditor-debugbar-inputdebug": "输入调试",
 	"visualeditor-debugbar-logrange": "日志",
 	"visualeditor-debugbar-showmodel": "显示模型",
+	"visualeditor-debugbar-showtransactions": "显示事务",
 	"visualeditor-debugbar-startfilibuster": "冗长辩论",
 	"visualeditor-debugbar-stopfilibuster": "停止冗长辩论",
 	"visualeditor-debugbar-updatemodel": "更改上的更新",

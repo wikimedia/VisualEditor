@@ -17,7 +17,8 @@
 			"Ата",
 			"Piramidion",
 			"Dars",
-			"Choomaq"
+			"Choomaq",
+			"Bunyk"
 		]
 	},
 	"visualeditor": "Візуальний редактор",
@@ -135,6 +136,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Особливий",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Типовий",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Масштаб",
+	"visualeditor-rebase-client-author-name": "Ім'я",
+	"visualeditor-rebase-client-document-name": "Назва документа",
 	"visualeditor-shortcuts-clipboard": "Буфер обміну",
 	"visualeditor-shortcuts-dialog": "Діалогові вікна",
 	"visualeditor-shortcuts-formatting": "Форматування абзацу",
