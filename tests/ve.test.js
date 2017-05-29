@@ -211,7 +211,7 @@ QUnit.test( 'setDomAttributes', function ( assert ) {
 } );
 
 QUnit.test( 'sparseSplice', function ( assert ) {
-	var tests, i, len, test;
+	var tests, i, len, test, scratch;
 	// Convert a sparse array of primitives to an array of strings, with '' for holes.
 	// This is needed because QUnit.equiv treats holes as equivalent to undefined.
 	function mapToString( flatArray ) {
@@ -238,8 +238,9 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 			msg + ': modification'
 		);
 	}
+	/* eslint-disable no-sparse-arrays */
+	scratch = [ 4, , 5, , 6 ];
 	tests =	[
-		/* eslint-disable no-sparse-arrays */
 		// arr, offset, remove, data, expectedReturn, expectedArray, msg
 		[ [], 0, 0, [ , 3 ], [], [ , 3 ], 'insert empty, leading hole' ],
 		[ [], 0, 0, [ 1, , 3 ], [], [ 1, , 3 ], 'insert empty, middle hole' ],
@@ -259,9 +260,10 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 
 		[ [ 4, , 5, , 6 ], 0, 3, [ 1, , 3 ], [ 4, , 5 ], [ 1, , 3, , 6 ], 'diff=0 start' ],
 		[ [ 4, , 5, , 6 ], 1, 3, [ 1, , 3 ], [ , 5, , ], [ 4, 1, , 3, 6 ], 'diff=0 mid' ],
-		[ [ 4, , 5, , 6 ], 2, 3, [ 1, , 3 ], [ 5, , 6 ], [ 4, , 1, , 3 ], 'diff=0 end' ]
-		/* eslint-enable no-sparse-arrays */
+		[ [ 4, , 5, , 6 ], 2, 3, [ 1, , 3 ], [ 5, , 6 ], [ 4, , 1, , 3 ], 'diff=0 end' ],
+		[ scratch, 0, 0, scratch, [], [ 4, , 5, , 6, 4, , 5, , 6 ], 'reference-identical arr and data' ]
 	];
+	/* eslint-enable no-sparse-arrays */
 
 	assert.notDeepEqual(
 		// eslint-disable-next-line no-sparse-arrays
