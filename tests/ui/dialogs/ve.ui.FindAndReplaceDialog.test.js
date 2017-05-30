@@ -74,11 +74,11 @@ QUnit.test( 'find fragments', function ( assert ) {
 			}
 		];
 
-	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).done( function ( dialog ) {
+	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).then( function ( dialog ) {
 		dialog.open( {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
-		} ).done( function () {
+		} ).then( function () {
 			var i, ranges;
 			for ( i = 0; i < cases.length; i++ ) {
 				dialog.matchCaseToggle.setValue( !!cases[ i ].matchCase );
@@ -125,7 +125,7 @@ QUnit.test( 'replace all', function ( assert ) {
 		dialog.open( {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
-		} ).done( function () {
+		} ).then( function () {
 			var i;
 			for ( i = 0; i < cases.length; i++ ) {
 				dialog.matchCaseToggle.setValue( !!cases[ i ].matchCase );

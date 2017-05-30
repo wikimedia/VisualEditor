@@ -288,9 +288,8 @@
 					"OO.ui.Element",
 					"OO.ui.HtmlSnippet",
 					"OO.ui.Toolbar",
-					"OO.ui.Window",
+					"OO.ui.Window*",
 					"OO.ui.Dialog",
-					"OO.ui.WindowManager",
 					"OO.ui.Process",
 					"OO.ui.Error",
 					"OO.ui.ActionSet"

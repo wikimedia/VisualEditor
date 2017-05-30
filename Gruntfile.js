@@ -13,7 +13,7 @@ module.exports = function ( grunt ) {
 		veRebaseFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.rebase.build' ] ),
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
 		coreBuildFilesApex = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.apex' ] ),
-		coreBuildFilesMediaWiki = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.mediawiki' ] ),
+		coreBuildFilesWikimediaUI = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.wikimediaui' ] ),
 		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts,
 		demoPages = ( function () {
 			var pages = {},
@@ -87,12 +87,12 @@ module.exports = function ( grunt ) {
 				dest: 'dist/visualEditor-apex.css',
 				src: coreBuildFilesApex.styles
 			},
-			'css-mediawiki': {
+			'css-wikimediaui': {
 				options: {
 					banner: grunt.file.read( 'build/banner.txt' )
 				},
-				dest: 'dist/visualEditor-mediawiki.css',
-				src: coreBuildFilesMediaWiki.styles
+				dest: 'dist/visualEditor-wikimediaui.css',
+				src: coreBuildFilesWikimediaUI.styles
 			},
 			// HACK: Ideally these libraries would provide their own distribution files (T95667)
 			'jquery.i18n': {
@@ -109,9 +109,9 @@ module.exports = function ( grunt ) {
 				dest: 'dist/visualEditor-apex.rtl.css',
 				src: 'dist/visualEditor-apex.css'
 			},
-			mediawiki: {
-				dest: 'dist/visualEditor-mediawiki.rtl.css',
-				src: 'dist/visualEditor-mediawiki.css'
+			wikimediaui: {
+				dest: 'dist/visualEditor-wikimediaui.rtl.css',
+				src: 'dist/visualEditor-wikimediaui.css'
 			}
 		},
 		cssUrlEmbed: {
@@ -124,8 +124,8 @@ module.exports = function ( grunt ) {
 				files: {
 					'dist/visualEditor-apex.css': 'dist/visualEditor-apex.css',
 					'dist/visualEditor-apex.rtl.css': 'dist/visualEditor-apex.rtl.css',
-					'dist/visualEditor-mediawiki.css': 'dist/visualEditor-mediawiki.css',
-					'dist/visualEditor-mediawiki.rtl.css': 'dist/visualEditor-mediawiki.rtl.css'
+					'dist/visualEditor-wikimediaui.css': 'dist/visualEditor-wikimediaui.css',
+					'dist/visualEditor-wikimediaui.rtl.css': 'dist/visualEditor-wikimediaui.rtl.css'
 				}
 			}
 		},
@@ -208,7 +208,7 @@ module.exports = function ( grunt ) {
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.standalone.mediawiki.dist',
+					'visualEditor.standalone.wikimediaui.dist',
 					'visualEditor.standalone.read'
 				],
 				run: [ 'visualEditor.mobile.standalone.demo' ],

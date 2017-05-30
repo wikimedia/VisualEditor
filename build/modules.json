@@ -73,16 +73,16 @@
 			"oojs-ui"
 		]
 	},
-	"oojs-ui-mediawiki": {
+	"oojs-ui-wikimediaui": {
 		"scripts": [
-			"lib/oojs-ui/oojs-ui-mediawiki.js"
+			"lib/oojs-ui/oojs-ui-wikimediaui.js"
 		],
 		"styles": [
-			"lib/oojs-ui/oojs-ui-mediawiki.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-core.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-advanced.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-styling.css",
-			"lib/oojs-ui/oojs-ui-mediawiki-icons-editing-list.css"
+			"lib/oojs-ui/oojs-ui-wikimediaui.css",
+			"lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-core.css",
+			"lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-advanced.css",
+			"lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-styling.css",
+			"lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-list.css"
 		],
 		"dependencies": [
 			"oojs-ui"
@@ -771,10 +771,10 @@
 			"src/themes/apex/widgets.css"
 		]
 	},
-	"visualEditor.theme.mediawiki": {
+	"visualEditor.theme.wikimediaui": {
 		"styles": [
-			"src/themes/mediawiki/dialogs.css",
-			"src/themes/mediawiki/widgets.css"
+			"src/themes/wikimediaui/dialogs.css",
+			"src/themes/wikimediaui/widgets.css"
 		]
 	},
 	"visualEditor.desktop": {
@@ -800,10 +800,10 @@
 	},
 	"visualEditor.mobile": {
 		"dependencies": [
-			"oojs-ui-mediawiki",
+			"oojs-ui-wikimediaui",
 			"visualEditor.core",
 			"visualEditor.mobile.build",
-			"visualEditor.theme.mediawiki",
+			"visualEditor.theme.wikimediaui",
 			"visualEditor.diffing.standalone"
 		]
 	},
@@ -945,10 +945,10 @@
 			"visualEditor.theme.apex"
 		]
 	},
-	"visualEditor.build.mediawiki": {
+	"visualEditor.build.wikimediaui": {
 		"dependencies": [
 			"visualEditor.build",
-			"visualEditor.theme.mediawiki"
+			"visualEditor.theme.wikimediaui"
 		]
 	},
 	"visualEditor.dist.apex": {
@@ -960,9 +960,9 @@
 			"visualEditor.dist"
 		]
 	},
-	"visualEditor.dist.mediawiki": {
+	"visualEditor.dist.wikimediaui": {
 		"styles": [
-			"dist/visualEditor-mediawiki.css"
+			"dist/visualEditor-wikimediaui.css"
 		],
 		"styleGroup": "ve",
 		"dependencies": [
@@ -981,11 +981,11 @@
 			"visualEditor.dist.apex"
 		]
 	},
-	"visualEditor.standalone.mediawiki.dist": {
+	"visualEditor.standalone.wikimediaui.dist": {
 		"dependencies": [
 			"baselibs.dist",
-			"oojs-ui-mediawiki",
-			"visualEditor.dist.mediawiki"
+			"oojs-ui-wikimediaui",
+			"visualEditor.dist.wikimediaui"
 		]
 	}
 }

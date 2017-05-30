@@ -1,0 +1,11 @@
+/*!
+ * VisualEditor WikimediaUI theme dialog customizations.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* ve.ui.ToolbarDialog */
+
+.ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
+	outline: 0;
+}

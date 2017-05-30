@@ -6,7 +6,7 @@
  */
 
 /**
- * MediaWiki meta dialog Languages page.
+ * Special character toolbar dialog.
  *
  * @class
  * @extends OO.ui.PageLayout
