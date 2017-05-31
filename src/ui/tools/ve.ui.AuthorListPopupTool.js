@@ -114,7 +114,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 
 ve.ui.AuthorListPopupTool.static.name = 'authorList';
 ve.ui.AuthorListPopupTool.static.group = 'utility';
-ve.ui.AuthorListPopupTool.static.icon = 'speechBubbles'; // TODO: Change to userAvatar once it is available in Apex
+ve.ui.AuthorListPopupTool.static.icon = 'userAvatar';
 ve.ui.AuthorListPopupTool.static.title = '1';
 ve.ui.AuthorListPopupTool.static.autoAddToCatchall = false;
 ve.ui.AuthorListPopupTool.static.autoAddToGroup = false;

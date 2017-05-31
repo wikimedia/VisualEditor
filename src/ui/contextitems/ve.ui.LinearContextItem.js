@@ -47,7 +47,7 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem() {
 		} );
 		this.deleteButton = new OO.ui.ButtonWidget( {
 			framed: false,
-			icon: 'remove',
+			icon: 'trash',
 			flags: [ 'destructive' ]
 		} );
 	}

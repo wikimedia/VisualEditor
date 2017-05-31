@@ -188,7 +188,7 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 		OO.inheritClass( ve.ui[ className ], ve.ui.TableLineContextItem );
 		ve.ui[ className ].static.name = 'delete' + modeName;
 		ve.ui[ className ].static.group = 'table-' + mode;
-		ve.ui[ className ].static.icon = 'remove';
+		ve.ui[ className ].static.icon = 'trash';
 		ve.ui[ className ].static.commandName = 'delete' + modeName;
 		ve.ui[ className ].prototype.getTitle = function () {
 			var count,

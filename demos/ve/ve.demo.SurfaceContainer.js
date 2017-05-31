@@ -33,7 +33,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		input: pageDropdown
 	} );
 	removeButton = new OO.ui.ButtonWidget( {
-		icon: 'remove',
+		icon: 'trash',
 		label: 'Remove surface'
 	} );
 	saveButton = new OO.ui.ButtonWidget( {
