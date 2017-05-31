@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1426,14 +1426,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2513,14 +2513,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -3073,14 +3073,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
   background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
@@ -3488,14 +3488,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-indicator-alert {
   background-image: url('themes/apex/images/indicators/alert.png');

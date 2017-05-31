@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1984,14 +1984,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-draggableElement {
   padding: 1.0546875em 0.9375em 0.9375em;
@@ -3291,14 +3291,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-tool.oo-ui-widget-enabled {
   -webkit-transition: background-color 100ms;
@@ -3821,14 +3821,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOjs UI v0.22.0
+ * OOjs UI v0.22.1
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-05-30T22:04:14Z
+ * Date: 2017-05-31T19:07:44Z
  */
 .oo-ui-window {
   background: transparent;
