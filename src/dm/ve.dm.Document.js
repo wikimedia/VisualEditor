@@ -1199,6 +1199,10 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		parentsOK,
 		// Whether childType matches allowedChildren
 		childrenOK,
+		// Stores the return value of getSuggestedParentNodeTypes
+		suggestedParents,
+		// Whether parentType matches suggestedParents
+		suggestedParentsOK,
 		// Array of opening elements to insert (for wrapping the to-be-inserted element)
 		openings,
 		// Array of closing elements to insert (for splitting nodes)
@@ -1290,6 +1294,40 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		newData.push( element );
 	}
 
+	/**
+	 * Close the current element on the stack and arrange for its later reopening
+	 *
+	 * This function updates parentNode, parentType, closingStack, reopenElements, and closings.
+	 *
+	 * @private
+	 * @method
+	 * @param {string} childType Current element type we're considering (for error reporting only)
+	 */
+	function closeElement( childType ) {
+		var popped;
+		// Close the parent and try one level up
+		closings.push( { type: '/' + parentType } );
+		if ( openingStack.length > 0 ) {
+			popped = openingStack.pop();
+			parentType = popped.type;
+			reopenElements.push( ve.copy( popped ) );
+			// The opening was on openingStack, so we're closing a node that was opened
+			// within data. Don't track that on closingStack
+		} else {
+			if ( !parentNode.getParent() ) {
+				throw new Error( 'Cannot insert ' + childType + ' even after closing ' +
+					'all containing nodes (at index ' + i + ')' );
+			}
+			// openingStack is empty, so we're closing a node that was already in the
+			// document. This means we have to reopen it later, so track this on
+			// closingStack
+			closingStack.push( parentNode );
+			reopenElements.push( parentNode.getClonedElement() );
+			parentNode = parentNode.getParent();
+			parentType = parentNode.getType();
+		}
+	}
+
 	parentNode = this.getBranchNodeFromOffset( offset );
 	parentType = parentNode.getType();
 	inTextNode = false;
@@ -1336,6 +1374,18 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				}
 			} while ( !parentsOK );
 
+			// Check that the node is allowed to have the containing node as
+			// its parent. If not, close surrounding nodes until the node is
+			// contained in an acceptable parent.
+			suggestedParents = ve.dm.nodeFactory.getSuggestedParentNodeTypes( childType );
+			do {
+				suggestedParentsOK = suggestedParents === null ||
+					suggestedParents.indexOf( parentType ) !== -1;
+				if ( !suggestedParentsOK ) {
+					closeElement( childType );
+				}
+			} while ( !suggestedParentsOK );
+
 			// Check that the containing node can have this node as its child. If not, close nodes
 			// until it's fixed
 			do {
@@ -1357,26 +1407,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					}
 
 					// Close the parent and try one level up
-					closings.push( { type: '/' + parentType } );
-					if ( openingStack.length > 0 ) {
-						popped = openingStack.pop();
-						parentType = popped.type;
-						reopenElements.push( ve.copy( popped ) );
-						// The opening was on openingStack, so we're closing a node that was opened
-						// within data. Don't track that on closingStack
-					} else {
-						if ( !parentNode.getParent() ) {
-							throw new Error( 'Cannot insert ' + childType + ' even after closing ' +
-								'all containing nodes (at index ' + i + ')' );
-						}
-						// openingStack is empty, so we're closing a node that was already in the
-						// document. This means we have to reopen it later, so track this on
-						// closingStack
-						closingStack.push( parentNode );
-						reopenElements.push( parentNode.getClonedElement() );
-						parentNode = parentNode.getParent();
-						parentType = parentNode.getType();
-					}
+					closeElement( childType );
 				}
 			} while ( !childrenOK );
 

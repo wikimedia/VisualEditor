@@ -1269,3 +1269,68 @@ QUnit.test( 'Find text', function ( assert ) {
 		}
 	}
 } );
+
+QUnit.test( 'fixupInsertion', function ( assert ) {
+	var doc = new ve.dm.Document( [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{ type: 'listItem' },
+			{ type: 'paragraph' },
+			'a',
+			'b',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			{ type: '/list' }
+		] ),
+		surface = new ve.dm.Surface( doc ),
+		fragment = surface.getLinearFragment( new ve.Range( 4, 4 ) ),
+		nodeData = [ { type: 'listlessNode' }, 'x', { type: '/listlessNode' } ];
+
+	// TODO: test other parts of fixupInsertion; childNodes and parentNodes.
+	// Currently they're mostly tested implicitly in the paste tests
+	// elsewhere.
+
+	// We need a node with suggestedParentNodeTypes, and nothing in core actually uses this. So stub one out:
+	function ListlessNode() {
+		ListlessNode.super.apply( this, arguments );
+	}
+	OO.inheritClass( ListlessNode, ve.dm.ContentBranchNode );
+	ListlessNode.static.name = 'listlessNode';
+	ListlessNode.static.suggestedParentNodeTypes = [ 'document', 'tableCell', 'div' ];
+
+	ve.dm.modelRegistry.register( ListlessNode );
+
+	fragment.insertContent( nodeData );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 3, 14 ) ),
+		[
+			'a',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			{ type: '/list' },
+			{ type: 'listlessNode' },
+			'x',
+			{ type: '/listlessNode' },
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{ type: 'listItem' },
+			{ type: 'paragraph' },
+			'b'
+		],
+		'inserting a listlessNode into a listitem should isolate it from the list'
+	);
+
+	surface.undo();
+	fragment = surface.getLinearFragment( new ve.Range( 8, 8 ) );
+	fragment.insertContent( nodeData );
+	assert.deepEqual(
+		doc.getData( new ve.Range( 7, 11 ) ),
+		[
+			{ type: '/list' },
+			{ type: 'listlessNode' },
+			'x',
+			{ type: '/listlessNode' }
+		],
+		'inserting a listlessNode to the document root should not add any extra closing elements'
+	);
+
+	ve.dm.modelRegistry.unregister( ListlessNode );
+} );
