@@ -16,7 +16,8 @@
 			"Matik7",
 			"Rezonansowy",
 			"Openbk",
-			"The Polish"
+			"The Polish",
+			"Mazab IZW"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -131,6 +132,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Niestandardowy",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Domyślnie",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skala",
+	"visualeditor-rebase-client-author-name": "Imię",
 	"visualeditor-rebase-client-document-create-edit": "Utwórz/edytuj",
 	"visualeditor-shortcuts-clipboard": "Schowek",
 	"visualeditor-shortcuts-dialog": "Okna dialogowe",

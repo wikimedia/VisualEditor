@@ -24,7 +24,8 @@
 			"Ctac",
 			"Kareyac",
 			"Redredsonia",
-			"Esukhovnina"
+			"Esukhovnina",
+			"ЛосЯш"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -70,6 +71,7 @@
 	"visualeditor-debugbar-inputdebug": "Отладка ввода",
 	"visualeditor-debugbar-logrange": "Журнал",
 	"visualeditor-debugbar-showmodel": "Показать модель",
+	"visualeditor-debugbar-showtransactions": "Показать транзакции",
 	"visualeditor-debugbar-startfilibuster": "Филибастер",
 	"visualeditor-debugbar-stopfilibuster": "Остановить Филибастер",
 	"visualeditor-debugbar-updatemodel": "Обновлять при изменениях",
@@ -136,6 +138,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Настраиваемый",
 	"visualeditor-mediasizewidget-sizeoptions-default": "По умолчанию",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Масштаб",
+	"visualeditor-rebase-client-author-name": "Имя",
+	"visualeditor-rebase-client-document-create-edit": "Создать/редактировать",
 	"visualeditor-shortcuts-clipboard": "Буфер обмена",
 	"visualeditor-shortcuts-dialog": "Диалоговые окна",
 	"visualeditor-shortcuts-formatting": "Форматирование абзаца",
