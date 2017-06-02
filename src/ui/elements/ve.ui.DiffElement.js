@@ -363,29 +363,29 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 	 * this document child
 	 */
 	function highlightRemovedNode( nodeIndex ) {
-		var i, ilen, node, removeData, siblingNodes,
+		var i, ilen, orderedNode, node, removeData, siblingNodes,
 			newPreviousNodeIndex, oldPreviousNodeIndex, insertIndex,
 			highestRemovedAncestor;
 
-		function findRemovedAncestor( node ) {
-			if ( !node.parent || structuralRemoves.indexOf( node.parent.index ) === -1 ) {
-				return node.index;
+		function findRemovedAncestor( orderedNode ) {
+			if ( !orderedNode.parent || structuralRemoves.indexOf( orderedNode.parent.index ) === -1 ) {
+				return orderedNode.index;
 			} else {
-				return findRemovedAncestor( node.parent );
+				return findRemovedAncestor( orderedNode.parent );
 			}
 		}
 
-		function getRemoveData( node, index ) {
+		function getRemoveData( orderedNode, index ) {
 			var removeData, tempData;
 
-			removeData = this.oldDoc.getData( node.node.getOuterRange() );
+			removeData = this.oldDoc.getData( orderedNode.node.getOuterRange() );
 			removeData[ 0 ] = this.addAttributesToNode( removeData[ 0 ], this.oldDoc, {
 				'data-diff-action': 'remove'
 			} );
 
-			while ( node && node.index !== index ) {
-				node = node.parent;
-				tempData = this.oldDoc.getData( node.node.getOuterRange() );
+			while ( orderedNode && orderedNode.index !== index ) {
+				orderedNode = orderedNode.parent;
+				tempData = this.oldDoc.getData( orderedNode.node.getOuterRange() );
 				removeData.unshift( tempData[ 0 ] );
 				removeData.push( tempData[ tempData.length - 1 ] );
 				removeData[ 0 ] = this.addAttributesToNode( removeData[ 0 ], this.oldDoc, {
@@ -396,9 +396,10 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 			return removeData;
 		}
 
-		node = oldNodes[ nodeIndex ];
+		orderedNode = oldNodes[ nodeIndex ];
+		node = orderedNode.node;
 
-		if ( !node.node.canContainContent() ) {
+		if ( !node.canContainContent() ) {
 
 			// Record that the node has been removed, but don't display it, for now
 			// TODO: describe the change for the attribute diff
@@ -408,8 +409,8 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 
 			// Display the removed node, and all its ancestors, up to the first ancestor that
 			// hasn't been removed.
-			highestRemovedAncestor = oldNodes[ findRemovedAncestor( node ) ];
-			removeData = getRemoveData.call( this, node, highestRemovedAncestor.index );
+			highestRemovedAncestor = oldNodes[ findRemovedAncestor( orderedNode ) ];
+			removeData = getRemoveData.call( this, orderedNode, highestRemovedAncestor.index );
 
 			// Work out where to insert the removed subtree
 			if ( highestRemovedAncestor.index in highestRemovedAncestors ) {
@@ -477,13 +478,13 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		var node, nodeRangeStart;
 
 		// Find index of first data element for this node
-		node = newNodes[ nodeIndex ];
-		nodeRangeStart = node.node.getOuterRange().from - nodeRange.from;
+		node = newNodes[ nodeIndex ].node;
+		nodeRangeStart = node.getOuterRange().from - nodeRange.from;
 
 		// Add insert class
 		nodeData[ nodeRangeStart ] = this.addAttributesToNode(
 			nodeData[ nodeRangeStart ], this.newDoc, {
-				'data-diff-action': node.node.canContainContent() ? 'insert' : 'structural-insert'
+				'data-diff-action': node.canContainContent() ? 'insert' : 'structural-insert'
 			}
 		);
 	}
@@ -501,14 +502,14 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 
 		// The new node was changed.
 		// Get data for this node
-		node = newNodes[ nodeIndex ];
-		nodeRangeStart = node.node.getOuterRange().from - nodeRange.from;
+		node = newNodes[ nodeIndex ].node;
+		nodeRangeStart = node.getOuterRange().from - nodeRange.from;
 
 		if ( diffInfo.linearDiff ) {
 			// If there is a content change, splice it in
 			nodeDiffData = diffInfo.linearDiff;
 			annotatedData = this.annotateNode( nodeDiffData );
-			ve.batchSplice( nodeData, nodeRangeStart + 1, node.node.length, annotatedData );
+			ve.batchSplice( nodeData, nodeRangeStart + 1, node.length, annotatedData );
 		}
 		if ( diffInfo.attributeChange ) {
 			// If there is no content change, just add change class
