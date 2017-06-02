@@ -96,7 +96,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		// trying to open.
 		// TODO: Make auto-close a window manager setting
 		if ( currentWindow && currentWindow.constructor.static.name !== name ) {
-			autoClosePromises.push( windowManager.closeWindow( currentWindow ) );
+			autoClosePromises.push( windowManager.closeWindow( currentWindow ).closed );
 		}
 	}
 
@@ -105,7 +105,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		inspectorWindowManager = windowAction.getWindowManager( 'inspector' );
 		currentInspector = inspectorWindowManager.getCurrentWindow();
 		if ( currentInspector ) {
-			autoClosePromises.push( inspectorWindowManager.closeWindow( currentInspector ) );
+			autoClosePromises.push( inspectorWindowManager.closeWindow( currentInspector ).closed );
 		}
 	}
 
@@ -114,7 +114,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 
 		$.when.apply( $, autoClosePromises ).always( function () {
 			windowManager.getWindow( name ).then( function ( win ) {
-				var opening = windowManager.openWindow( win, data );
+				var instance = windowManager.openWindow( win, data );
 
 				if ( sourceMode ) {
 					win.sourceMode = sourceMode;
@@ -124,32 +124,38 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 					surface.getView().deactivate();
 				}
 
-				opening.then( function ( closing ) {
+				instance.opened.then( function () {
 					if ( sourceMode ) {
 						// HACK: previousSelection is assumed to be in the visible surface
 						win.previousSelection = null;
 					}
-					closing.then( function ( closed ) {
-						if ( !win.constructor.static.activeSurface ) {
-							surface.getView().activate();
-						}
-						closed.then( function ( closedData ) {
-							// Sequence-triggered window closed without action, undo
-							if ( data.strippedSequence && !( closedData && closedData.action ) ) {
-								surface.getModel().undo();
-							}
-							if ( sourceMode && fragment && fragment.getSurface().hasBeenModified() ) {
-								// Action may be async, so we use auto select to ensure the content is selected
-								originalFragment.setAutoSelect( true );
-								originalFragment.insertDocument( fragment.getDocument() );
-							}
-							surface.getView().emit( 'position' );
-						} );
-					} );
-				} ).always( function () {
+				} );
+				instance.opened.always( function () {
+					// This uses .always() so that the action is executed even if the window is already open
+					// (in which case opening it again fails). Hopefully we'll never have a situation where
+					// it's closed, the opening fails for some reason, and then weird things happen.
 					if ( action ) {
 						win.executeAction( action );
 					}
+				} );
+
+				instance.closing.then( function () {
+					if ( !win.constructor.static.activeSurface ) {
+						surface.getView().activate();
+					}
+				} );
+
+				instance.closed.then( function ( closedData ) {
+					// Sequence-triggered window closed without action, undo
+					if ( data.strippedSequence && !( closedData && closedData.action ) ) {
+						surface.getModel().undo();
+					}
+					if ( sourceMode && fragment && fragment.getSurface().hasBeenModified() ) {
+						// Action may be async, so we use auto select to ensure the content is selected
+						originalFragment.setAutoSelect( true );
+						originalFragment.insertDocument( fragment.getDocument() );
+					}
+					surface.getView().emit( 'position' );
 				} );
 			} );
 		} );

@@ -108,7 +108,7 @@ ve.ui.Tool.prototype.onSelect = function () {
 		surface = this.toolbar.getSurface();
 	if ( command instanceof ve.ui.Command ) {
 		if ( surface.context.inspector ) {
-			surface.context.inspector.close().done( function () {
+			surface.context.inspector.close().closed.done( function () {
 				command.execute( surface );
 			} );
 		} else {

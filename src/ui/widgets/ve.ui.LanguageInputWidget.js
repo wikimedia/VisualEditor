@@ -31,7 +31,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.dir = null;
 
 	this.overlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global' ] } );
-	this.dialogs = config.dialogManager || new ve.ui.WindowManager( { factory: ve.ui.windowFactory, isolate: true } );
+	this.dialogs = config.dialogManager || new ve.ui.WindowManager( { factory: ve.ui.windowFactory } );
 	this.availableLanguages = config.availableLanguages;
 
 	this.findLanguageButton = new OO.ui.ButtonWidget( {
@@ -123,17 +123,16 @@ OO.inheritClass( ve.ui.LanguageInputWidget, OO.ui.Widget );
  */
 ve.ui.LanguageInputWidget.prototype.onFindLanguageButtonClick = function () {
 	var widget = this;
-	this.dialogs.openWindow( 'languageSearch', { availableLanguages: this.availableLanguages, $returnFocusTo: null } )
-		.then( function ( opened ) {
-			opened.then( function ( closing ) {
-				closing.then( function ( data ) {
-					data = data || {};
-					if ( data.action === 'apply' ) {
-						widget.setLangAndDir( data.lang, data.dir );
-					}
-				} );
-			} );
-		} );
+
+	this.dialogs.openWindow( 'languageSearch', {
+		availableLanguages: this.availableLanguages,
+		$returnFocusTo: null
+	} ).closed.then( function ( data ) {
+		data = data || {};
+		if ( data.action === 'apply' ) {
+			widget.setLangAndDir( data.lang, data.dir );
+		}
+	} );
 };
 
 /**
