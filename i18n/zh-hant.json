@@ -19,7 +19,8 @@
 			"LNDDYL",
 			"Yejianfei",
 			"Jdforrester",
-			"Wehwei"
+			"Wehwei",
+			"Wwycheuk"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -137,6 +138,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "自訂",
 	"visualeditor-mediasizewidget-sizeoptions-default": "預設",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "比例",
+	"visualeditor-rebase-client-document-name": "文件名稱",
 	"visualeditor-shortcuts-clipboard": "剪貼簿",
 	"visualeditor-shortcuts-dialog": "對話視窗",
 	"visualeditor-shortcuts-formatting": "段落格式",
