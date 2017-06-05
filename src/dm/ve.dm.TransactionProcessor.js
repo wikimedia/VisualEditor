@@ -46,7 +46,8 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.replaceInsertLevel = 0;
 	this.replaceMinInsertLevel = 0;
 	this.retainDepth = 0;
-	this.replaceSpliceQueue = [];
+	this.balanced = true;
+	this.treeModifier = null;
 };
 
 /* Static members */
@@ -84,26 +85,35 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 ve.dm.TransactionProcessor.prototype.process = function () {
 	var i, completed;
 
+	// Ensure the pre-modification document tree has been generated
+	this.document.getDocumentNode();
+
 	// First process each operation to gather modifications in the modification queue.
 	// If an exception occurs during this stage, we don't need to do anything to recover,
 	// because no modifications were made yet.
 	for ( i = 0; i < this.operations.length; i++ ) {
 		this.executeOperation( this.operations[ i ] );
 	}
-	if ( this.replaceSpliceQueue.length > 0 ) {
+	if ( !this.balanced ) {
 		throw new Error( 'Unbalanced set of replace operations found' );
 	}
 
 	// Apply the queued modifications
 	try {
 		completed = false;
+		this.treeModifier = null;
 		this.applyModifications();
+		this.treeModifier = new ve.dm.TreeModifier( this.document, this.transaction );
+		this.treeModifier.process();
 		this.queueAnnotateEvents();
 		completed = true;
 	} finally {
 		// Don't catch and re-throw errors so that they are reported properly
 		if ( !completed ) {
 			// Restore the linear model to its original state
+			if ( this.treeModifier ) {
+				this.treeModifier.undoLinearSplices();
+			}
 			this.rollbackModifications();
 			// The tree may have been left in some sort of half-baked state, so rebuild it
 			// from scratch
@@ -345,19 +355,14 @@ ve.dm.TransactionProcessor.prototype.queueAnnotateEvents = function () {
  *  {number} splices[].offset Offset to remove/insert at (unadjusted)
  *  {number} splices[].removeLength Number of elements to remove
  *  {Array} splices[].insert Data to insert; for efficiency, objects are inserted without cloning
- * @param {number} splitAncestorLevel How many levels of ancestors were split (closed by inserted data)
- *  For example, if inserting `</p><p>` splitAncestorLevel=1, and if inserting `</p></li></ul><ul><li><p>`
- *  splitAncestorLevel=3
  */
-ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorLevel ) {
-	var i, s, selection, node, parent, textNode, splitAncestor, index, numNodes,
-		startOffset, newLength,
+ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
+	var i, s,
 		lengthDiffs = {
 			data: 0,
 			metadata: 0
 		},
-		dataSplices = [],
-		syncCompleted = false;
+		dataSplices = [];
 
 	// We're about to do lots of things that can go wrong, so queue an undo function now
 	// that undoes all splices that we got to
@@ -392,121 +397,6 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorL
 		}
 	}
 	this.adjustment += lengthDiffs.data;
-
-	// Synchronize the tree. There are three cases:
-	// - If the splice only deleted and inserted text, find the text node and resize it
-	// - If the splice only inserted text in a place where a text node doesn't currently exist, create one
-	// - Otherwise, rebuild the affected nodes
-	// Because in the first two cases the removal and insertion only contain text, those cases can only arise
-	// when there is only one data splice (because a multi-splice only happens if the first splice
-	// is unbalanced, which means it must remove/insert openings/closings).
-	if (
-		// There is only one data splice
-		dataSplices.length === 1 &&
-		// The data it removes does not contain openings/closings
-		!new ve.dm.FlatLinearData(
-			this.document.getStore(),
-			dataSplices[ 0 ].removedData
-		).containsElementData() &&
-		// The data it inserts does not contain openings/closings
-		!new ve.dm.FlatLinearData(
-			this.document.getStore(),
-			dataSplices[ 0 ].insert
-		).containsElementData()
-	) {
-		selection = this.document.selectNodes(
-			new ve.Range(
-				dataSplices[ 0 ].treeOffset,
-				dataSplices[ 0 ].treeOffset + dataSplices[ 0 ].removeLength
-			),
-			'leaves'
-		);
-		if ( selection.length === 1 ) {
-			node = selection[ 0 ].node;
-			if ( node && node.getType() === 'text' ) {
-				// Resize the text node
-				parent = node.getParent();
-				if ( parent && node.getLength() + lengthDiffs.data === 0 ) {
-					// Automatically delete empty text nodes
-					parent.splice( parent.indexOf( node ), 1 );
-				} else {
-					node.adjustLength( lengthDiffs.data );
-				}
-				syncCompleted = true;
-			} else if (
-				// Pure insertion
-				dataSplices[ 0 ].insert.length > 0 &&
-				dataSplices[ 0 ].removeLength === 0 &&
-				// at a structural offset in a ContentBranchNode
-				node && node.canContainContent() &&
-				( selection[ 0 ].indexInNode !== undefined || node.getLength() === 0 )
-			) {
-				// Insert a new text node
-				textNode = new ve.dm.TextNode();
-				textNode.setLength( dataSplices[ 0 ].insert.length );
-				node.splice( selection[ 0 ].indexInNode || 0, 0, textNode );
-				syncCompleted = true;
-			}
-		}
-	}
-
-	if ( !syncCompleted && dataSplices.length > 0 ) {
-		// None of the special cases triggered, so we need to do a rebuild
-		if ( splitAncestorLevel > 0 ) {
-			// The insertion closes a pre-existing node. Find that node so we can ensure it gets rebuilt.
-			splitAncestor = this.document.getBranchNodeFromOffset( dataSplices[ 0 ].treeOffset );
-			// splitAncestor is now set to the node containing the insertion point.
-			// If splitAncestorLevel=1, then this is the node we need to rebuild;
-			// if splitAncestorLevel > 1 then we need to ascend splitAncestorLevel-1 times.
-			for ( i = 0; i < splitAncestorLevel - 1; i++ ) {
-				splitAncestor = splitAncestor.getParent() || splitAncestor;
-			}
-		}
-
-		// To determine which nodes to rebuild, we select the covering range of the splice
-		// (from the start of the first splice to the end of the last splice) in the tree,
-		// get the set of siblings containing this range, and rebuild those siblings.
-		// However, if we have a splitAncestor, we also need to ensure it gets rebuilt. To do that,
-		// we move the start of the range back to right before the opening of splitAncestor, which
-		// ensures that the first returned sibling will be splitAncestor or one of its ancestors.
-		// We know this won't move the start forwards because splitAncestor was identified using
-		// getBranchNodeFromOffset( dataSplices[ 0 ].treeOffset ), and splitAncestor.getOffset() + 1
-		// is the lowest value of x such that getBranchNodeFromOffset( x ) returns splitAncestor, so
-		// splitAncestor.getOffset() + 1 <= dataSplices[ 0 ].treeOffset,
-		// so splitAncestor.getOffset() < dataSplices[ 0 ].treeOffset
-		selection = this.document.selectNodes(
-			new ve.Range(
-				splitAncestor ? splitAncestor.getOffset() : dataSplices[ 0 ].treeOffset,
-				dataSplices[ dataSplices.length - 1 ].treeOffset + dataSplices[ dataSplices.length - 1 ].removeLength
-			),
-			'siblings'
-		);
-
-		node = selection[ 0 ].node;
-		if ( selection[ 0 ].indexInNode !== undefined || !node.getParent() ) {
-			// If indexInNode is set, this is a pure insertion in a structural position in node
-			parent = node;
-			// If we are inserting into an empty document, node will be the root node
-			// but indexInNode won't be set due to a bug in selectNodes(), so use 0 in that case.
-			index = selection[ 0 ].indexInNode || 0;
-			numNodes = 0;
-			startOffset = selection[ 0 ].range.start;
-			// If indexInNode is set or node is the root, then the input range must have been zero-length,
-			// so selection.length must be 1 and selection[ 0 ].range.end must equal startOffset.
-			// This means selection[ selection.length - 1 ].range.end - startOffset + lengthDiffs.data
-			// is really just lengthDiffs.data.
-			newLength = lengthDiffs.data;
-		} else {
-			// Otherwise, this is a rebuild of a set of siblings
-			parent = node.getParent();
-			index = selection[ 0 ].index; // === node.getParent().indexOf( node )
-			numNodes = selection.length;
-			startOffset = selection[ 0 ].nodeOuterRange.start;
-			newLength = selection[ selection.length - 1 ].nodeOuterRange.end - startOffset + lengthDiffs.data;
-		}
-
-		this.document.rebuildNodes( parent, index, numNodes, startOffset, newLength );
-	}
 };
 
 /**
@@ -617,7 +507,7 @@ ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, valu
  */
 ve.dm.TransactionProcessor.processors.retain = function ( op ) {
 	var i, type, retainedData;
-	if ( this.replaceSpliceQueue.length > 0 ) {
+	if ( !this.balanced ) {
 		// Track the depth of retained data when in the middle of an unbalanced replace
 		retainedData = this.document.getData( new ve.Range( this.cursor, this.cursor + op.length ) );
 		for ( i = 0; i < retainedData.length; i++ ) {
@@ -710,30 +600,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 };
 
 /**
- * Execute a replace operation.
- *
- * This method is called within the context of a transaction processor instance.
- *
- * This replaces a range of linear model data with another at this.cursor, and either queues up
- * splice modifications for this immediately, or stores these modification in a buffer until
- * a later replace operation restores nesting balance, at which point all buffered splices
- * are added to the queue as one big multi-splice modification.
- *
- * Counting from the start of a replacement, nesting balance is considered lost when there is a
- * non-zero net nesting change (i.e. open tag count minus close tag count) in either inserted data
- * or removed data; for instance `[+<p>+][-<h1>-]` causes nesting balance to be lost. Nesting
- * balance is then considered restored when the cumulative nesting change returns to zero for all
- * of: inserted data, removed data, and retained data. For instance,
- * `[+<div>+]<ul><li><div><p>foo</p>[+</div>+]<p>bar</p>[+<div>+]<p>baz</p></div></li></ul>[+</div>+]`
- * is a minimal operation sequence causing a loss then restoration of nesting balance. For most
- * plausible operation sequences, this criterion is sufficient to ensure that the multi-splice
- * modification as a whole preserves tree validity of the linear model data; however, for certain
- * sequences such as `<p>foo[+</p><h1>+]bar[+</h1><p>+]baz</p>` it is not sufficient.
- *
- * op.remove isn't checked against the actual data (instead, op.remove.length things are removed
- * starting at this.cursor), but it's used instead of op.insert in reverse mode. So if
- * op.remove is incorrect but of the right length, the transaction will commit fine, but won't roll
- * back correctly.
+ * Verify a replace operation (the actual processing is now done in ve.dm.TreeModifier)
  *
  * @method
  * @param {Object} op Operation object
@@ -743,13 +610,7 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 	var i, type;
 
-	// It's possible that multiple replace operations are needed before the
-	// model is back in a consistent state. In this case, we want to enqueue
-	// a single multi-splice modification that applies all these replacements
-	// at once, so that the code executing that modification has enough information
-	// to synchronize the tree. We perform this grouping by buffering unbalanced
-	// replacements in this.replaceSpliceQueue until we encounter a balancing replace,
-	// at which point we flush this buffer.
+	// Track balancedness for verification purposes only
 
 	// Walk through the remove and insert data
 	// and keep track of the element depth change (level)
@@ -773,43 +634,18 @@ ve.dm.TransactionProcessor.processors.replace = function ( op ) {
 			if ( type.charAt( 0 ) === '/' ) {
 				// Closing element
 				this.replaceInsertLevel--;
-				// Keep track of the lowest (most negative) insert level
-				if ( this.replaceInsertLevel < this.replaceMinInsertLevel ) {
-					this.replaceMinInsertLevel = this.replaceInsertLevel;
-				}
 			} else {
 				// Opening element
 				this.replaceInsertLevel++;
 			}
 		}
 	}
-	// Queue up splice operations
-	this.replaceSpliceQueue.push(
-		{
-			type: 'data',
-			offset: this.cursor,
-			removeLength: op.remove.length,
-			insert: op.insert
-		},
-		{
-			type: 'metadata',
-			offset: this.cursor,
-			removeLength: ( op.removeMetadata || op.remove ).length,
-			insert: op.insertMetadata || new Array( op.insert.length )
-		}
-	);
-
 	this.advanceCursor( op.remove.length );
 
-	if ( this.replaceRemoveLevel === 0 && this.replaceInsertLevel === 0 && this.retainDepth === 0 ) {
-		// Things are balanced again, flush the queue
-		this.queueModification( {
-			type: 'splice',
-			args: [ this.replaceSpliceQueue, -this.replaceMinInsertLevel ]
-		} );
-		this.replaceSpliceQueue = [];
-		this.replaceMinInsertLevel = 0;
-	}
+	this.balanced =
+		this.replaceRemoveLevel === 0 &&
+		this.replaceInsertLevel === 0 &&
+		this.retainDepth === 0;
 };
 
 /**

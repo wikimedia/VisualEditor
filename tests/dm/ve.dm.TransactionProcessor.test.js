@@ -179,7 +179,7 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushStartAnnotating', 'clear', store.index( bold ) ],
 					[ 'pushRetain', 2 ],
 					[ 'pushStopAnnotating', 'clear', store.index( bold ) ],
-					[ 'pushRetain', 6 ]
+					[ 'pushRetain', 1 ]
 				],
 				expected: function ( data ) {
 					data[ 2 ] = 'b';
@@ -321,7 +321,7 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushRetain', 5 ],
 					[ 'pushReplace', 5, 0, [ { type: '/inlineImage' } ] ]
 				],
-				exception: /Opening element for node that cannot have children must be followed by closing element/
+				exception: /Cannot add a child to inlineImage node/
 			},
 			'converting an element': {
 				calls: [
