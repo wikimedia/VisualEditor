@@ -13,12 +13,13 @@
  *
  * @constructor
  * @param {ve.dm.VisualDiff} [visualDiff] Diff to visualize
+ * @param {Object} [config]
  */
-ve.ui.DiffElement = function VeUiDiffElement( visualDiff ) {
+ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	var diff = visualDiff.diff;
 
 	// Parent constructor
-	ve.ui.DiffElement.super.call( this );
+	ve.ui.DiffElement.super.call( this, config );
 
 	this.elementId = 0;
 
