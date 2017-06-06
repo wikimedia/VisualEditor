@@ -16,7 +16,8 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
-	var character, characterNode, characters, $characters, charactersNode;
+	var character, characterNode, characters, $characters, charactersNode,
+		source = config.source;
 
 	// Parent constructor
 	ve.ui.SpecialCharacterPage.super.apply( this, arguments );
@@ -31,10 +32,16 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 	// The body of this loop is executed a few thousand times when opening
 	// ve.ui.SpecialCharacterDialog, avoid jQuery wrappers.
 	for ( character in characters ) {
+		if ( !source && characters[ character ].source ) {
+			continue;
+		}
 		characterNode = document.createElement( 'div' );
 		characterNode.className = 've-ui-specialCharacterPage-character';
 		if ( characters[ character ].titleMsg ) {
 			characterNode.setAttribute( 'title', ve.msg( characters[ character ].titleMsg ) );
+		}
+		if ( characters[ character ].source ) {
+			characterNode.classList.add( 've-ui-specialCharacterPage-character-source' );
 		}
 		characterNode.textContent = character;
 		$.data( characterNode, 'character', characters[ character ] );
