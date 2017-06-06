@@ -11,7 +11,6 @@
  * @abstract
  * @extends ve.dm.LeafNode
  * @mixins ve.dm.FocusableNode
- * @mixins ve.dm.TableCellableNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -20,9 +19,8 @@ ve.dm.AlienNode = function VeDmAlienNode() {
 	// Parent constructor
 	ve.dm.AlienNode.super.apply( this, arguments );
 
-	// Mixin constructors
+	// Mixin constructor
 	ve.dm.FocusableNode.call( this );
-	ve.dm.TableCellableNode.call( this );
 };
 
 /* Inheritance */
@@ -30,8 +28,6 @@ ve.dm.AlienNode = function VeDmAlienNode() {
 OO.inheritClass( ve.dm.AlienNode, ve.dm.LeafNode );
 
 OO.mixinClass( ve.dm.AlienNode, ve.dm.FocusableNode );
-
-OO.mixinClass( ve.dm.AlienNode, ve.dm.TableCellableNode );
 
 /* Static members */
 
@@ -111,6 +107,7 @@ ve.dm.AlienInlineNode.static.isContent = true;
  *
  * @class
  * @extends ve.dm.AlienNode
+ * @mixins ve.dm.TableCellableNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model
@@ -118,13 +115,16 @@ ve.dm.AlienInlineNode.static.isContent = true;
 ve.dm.AlienTableCellNode = function VeDmAlienTableCellNode() {
 	// Parent constructor
 	ve.dm.AlienTableCellNode.super.apply( this, arguments );
+
+	// Mixin constructor
+	ve.dm.TableCellableNode.call( this );
 };
 
 OO.inheritClass( ve.dm.AlienTableCellNode, ve.dm.AlienNode );
 
-ve.dm.AlienTableCellNode.static.name = 'alienTableCell';
+OO.mixinClass( ve.dm.AlienTableCellNode, ve.dm.TableCellableNode );
 
-ve.dm.AlienTableCellNode.static.isCellable = true;
+ve.dm.AlienTableCellNode.static.name = 'alienTableCell';
 
 /* Registration */
 

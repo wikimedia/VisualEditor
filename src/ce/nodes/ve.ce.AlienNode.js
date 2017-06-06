@@ -11,7 +11,6 @@
  * @abstract
  * @extends ve.ce.LeafNode
  * @mixins ve.ce.FocusableNode
- * @mixins ve.ce.TableCellableNode
  *
  * @constructor
  * @param {ve.dm.AlienNode} model
