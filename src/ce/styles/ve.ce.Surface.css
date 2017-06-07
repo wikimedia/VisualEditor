@@ -110,19 +110,6 @@
 	color: #06c;
 }
 
-/* MediaWiki PHP Parser does not wrap text inside image captions in <p> but we do (cause we have to).
- * Let's make those <p> looks like they are not there by proper CSS styling.
- */
-.ve-ce-surface .thumbcaption p.ve-ce-generated-wrapper {
-	display: inline;
-	padding: 0;
-	line-height: inherit;
-}
-
-.ve-ce-surface .thumbcaption .ve-ce-branchNode-slug {
-	display: none;
-}
-
 .ve-ce-cursorHolder {
 	position: absolute;
 	width: 0;
