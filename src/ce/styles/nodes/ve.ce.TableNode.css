@@ -69,28 +69,6 @@
 	background: transparent;
 }
 
-.ve-ce-tableNodeOverlay-row-bracket,
-.ve-ce-tableNodeOverlay-column-bracket {
-	position: absolute;
-	border: solid 3px #6da9f7;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	opacity: 0.6;
-}
-
-.ve-ce-tableNodeOverlay-row-bracket {
-	left: -12px;
-	width: 6px;
-	border-right: 0;
-}
-
-.ve-ce-tableNodeOverlay-column-bracket {
-	top: -12px;
-	height: 6px;
-	border-bottom: 0;
-}
-
 .ve-ce-tableNode-missingCell {
 	background-repeat: no-repeat;
 	background-position: center center;
