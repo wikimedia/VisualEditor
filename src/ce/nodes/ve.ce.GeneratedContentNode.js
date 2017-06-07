@@ -108,7 +108,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	// Filter out link and style tags for bug 50043
 	// Previously filtered out meta tags, but restore these as they
 	// can be made visible.
-	$rendering = $rendering.not( 'link, style' );
+	$rendering.filter( 'link, style' ).remove();
 	// Also remove link and style tags nested inside other tags
 	$rendering.find( 'link, style' ).remove();
 
