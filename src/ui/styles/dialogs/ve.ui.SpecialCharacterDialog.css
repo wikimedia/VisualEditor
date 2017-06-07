@@ -44,6 +44,7 @@
 	height: 1.8em;
 	text-align: center;
 	display: inline-block;
+	vertical-align: top;
 	margin: 0 3px 3px 0;
 	border: 1px solid #e6e6e6;
 	-webkit-transition: border-color 200ms;
@@ -53,4 +54,13 @@
 
 .ve-ui-specialCharacterPage-character:hover {
 	border-color: #ccc;
+}
+
+.ve-ui-specialCharacterPage-character-source {
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+	font-size: 1em;
+	line-height: 2.7em;
+	height: 2.7em;
+	padding: 0 0.2em;
 }

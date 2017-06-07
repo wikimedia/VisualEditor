@@ -124,7 +124,8 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
 		this.pages.push(
 			new ve.ui.SpecialCharacterPage( category, {
 				label: category,
-				characters: this.characters[ category ]
+				characters: this.characters[ category ],
+				source: this.surface.getMode() === 'source'
 			} )
 		);
 	}
@@ -146,13 +147,12 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
  * @param {jQuery.Event} e Mouse click event
  */
 ve.ui.SpecialCharacterDialog.prototype.onListClick = function ( e ) {
-	var
-		character = $( e.target ).data( 'character' ),
+	var character = $( e.target ).data( 'character' ),
 		fragment = this.surface.getModel().getFragment();
 
 	if ( character ) {
-		if ( typeof character === 'string' ) {
-			fragment.insertContent( character, true ).collapseToEnd().select();
+		if ( typeof character === 'string' || character.string ) {
+			fragment.insertContent( character.string || character, true ).collapseToEnd().select();
 		} else if ( character.action.type === 'replace' ) {
 			fragment.insertContent( character.action.options.peri, true ).collapseToEnd().select();
 		} else if ( character.action.type === 'encapsulate' ) {
