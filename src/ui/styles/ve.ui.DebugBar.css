@@ -118,18 +118,6 @@
 	border-top-left-radius: 0.25em;
 }
 
-.ve-ui-debugBar-filibuster td {
-	padding: 0.25em 1em;
-	background-color: #fff;
-	vertical-align: top;
-}
-
-.ve-ui-debugBar-filibuster th {
-	padding: 0.5em 1em;
-	color: #555;
-	text-shadow: 0 1px 1px #fff;
-}
-
 .ve-ui-debugBar-transactions {
 	display: none;
 }
