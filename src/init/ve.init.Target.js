@@ -188,6 +188,37 @@ ve.init.Target.static.importRules = {
 	all: null
 };
 
+/* Static methods */
+
+/**
+ * Parse document string into an HTML document
+ *
+ * @param {string} documentString Document
+ * @param {string} mode Editing mode
+ * @return {HTMLDocument} HTML document
+ */
+ve.init.Target.static.parseDocument = function ( documentString, mode ) {
+	var doc;
+	if ( mode === 'source' ) {
+		// Parse as plain text in source mode
+		doc = ve.createDocumentFromHtml( '' );
+
+		documentString.split( '\n' ).forEach( function ( line ) {
+			var p = doc.createElement( 'p' );
+			p.appendChild( doc.createTextNode( line ) );
+			doc.body.appendChild( p );
+		} );
+	} else {
+		doc = ve.createDocumentFromHtml( documentString );
+	}
+	return doc;
+};
+
+// Deprecated alias
+ve.init.Target.prototype.parseDocument = function () {
+	return this.constructor.static.parseDocument.apply( this.constructor.static, arguments );
+};
+
 /* Methods */
 
 /**
@@ -412,30 +443,6 @@ ve.init.Target.prototype.clearSurfaces = function () {
 	while ( this.surfaces.length ) {
 		this.surfaces.pop().destroy();
 	}
-};
-
-/**
- * Parse document string into an HTML document
- *
- * @param {string} documentString Document
- * @param {string} mode Editing mode
- * @return {HTMLDocument} HTML document
- */
-ve.init.Target.prototype.parseDocument = function ( documentString, mode ) {
-	var doc;
-	if ( mode === 'source' ) {
-		// Parse as plain text in source mode
-		doc = ve.createDocumentFromHtml( '' );
-
-		documentString.split( '\n' ).forEach( function ( line ) {
-			var p = doc.createElement( 'p' );
-			p.appendChild( doc.createTextNode( line ) );
-			doc.body.appendChild( p );
-		} );
-	} else {
-		doc = ve.createDocumentFromHtml( documentString );
-	}
-	return doc;
 };
 
 /**
