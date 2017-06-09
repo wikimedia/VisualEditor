@@ -987,7 +987,12 @@ ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
 ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
 	var baseNode = targetDoc.getElementsByTagName( 'base' )[ 0 ];
 	if ( baseNode ) {
-		if ( !targetDoc.baseURI ) {
+		// Support: Safari
+		// In Safari a base node with an invalid href (e.g. protocol-relative)
+		// in a document which has been dynamically created results in
+		// 'about:blank' rather than '' or null. The base's href will also be '',
+		// but that works out just setting the base to fallbackBase, so it's okay.
+		if ( !targetDoc.baseURI || targetDoc.baseURI === 'about:blank' ) {
 			// <base> tag present but not valid, try resolving its URL
 			baseNode.setAttribute( 'href', ve.resolveUrl( baseNode.getAttribute( 'href' ), sourceDoc ) );
 			if ( !targetDoc.baseURI && fallbackBase ) {
