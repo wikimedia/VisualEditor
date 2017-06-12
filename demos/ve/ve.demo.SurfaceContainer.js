@@ -268,7 +268,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 
 	this.surface = this.target.addSurface(
 		ve.dm.converter.getModelFromDom(
-			this.target.parseDocument( pageHtml, mode ),
+			this.target.constructor.static.parseDocument( pageHtml, mode ),
 			{ lang: this.lang, dir: this.dir }
 		),
 		{ placeholder: 'Start your document', mode: mode }
