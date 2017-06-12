@@ -163,7 +163,7 @@ ve.dm.VisualDiff.prototype.computeDiff = function () {
 ve.dm.VisualDiff.prototype.compareDocChildren = function ( oldDocChild, newDocChild ) {
 	var i, ilen, oldData, newData, oldStore, newStore;
 
-	if ( oldDocChild.length !== newDocChild.length || oldDocChild.type !== newDocChild.type ) {
+	if ( oldDocChild.length !== newDocChild.length || !oldDocChild.isDiffComparable( newDocChild ) ) {
 		return false;
 	}
 
@@ -327,7 +327,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 			if ( !oldNode.canContainContent() && !newNode.canContainContent() ) {
 
 				// There is no content change
-				replacement = oldNode.type !== newNode.type;
+				replacement = !oldNode.isDiffComparable( newNode );
 				diffInfo[ i ] = {
 					linearDiff: null,
 					replacement: replacement,
@@ -362,7 +362,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 			// If we got this far, they are both CBNs
 			} else {
-				replacement = oldNode.type !== newNode.type;
+				replacement = !oldNode.isDiffComparable( newNode );
 
 				if ( !replacement && new Date().getTime() < this.endTime ) {
 					linearDiff = this.linearDiffer.getCleanDiff(

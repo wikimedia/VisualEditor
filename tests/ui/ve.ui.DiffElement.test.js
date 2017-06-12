@@ -431,8 +431,41 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<li><p>foo</p></li>' +
 						'</ul>' +
 					'</div>'
+			},
+			{
+				msg: 'Inline widget with same type but not diff comparable is marked as a remove/insert',
+				oldDoc: '<p>Foo bar baz<span rel="test:inlineWidget" data-name="FooWidget"></span></p>',
+				newDoc: '<p>Foo bar baz<span rel="test:inlineWidget" data-name="BarWidget"></span></p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>Foo bar baz' +
+							'<del data-diff-action="remove"><span rel="test:inlineWidget" data-name="FooWidget"></span></del>' +
+							'<ins data-diff-action="insert"><span rel="test:inlineWidget" data-name="BarWidget"></span></ins>' +
+						'</p>' +
+					'</div>'
 			}
 		];
+
+	function InlineWidgetNode() {
+		InlineWidgetNode.super.apply( this, arguments );
+	}
+	OO.inheritClass( InlineWidgetNode, ve.dm.LeafNode );
+	InlineWidgetNode.static.name = 'testInlineWidget';
+	InlineWidgetNode.static.matchTagNames = [ 'span' ];
+	InlineWidgetNode.static.matchRdfaTypes = [ 'test:inlineWidget' ];
+	InlineWidgetNode.static.isContent = true;
+	InlineWidgetNode.static.toDataElement = function ( domElements ) {
+		return {
+			type: this.name,
+			attributes: {
+				name: domElements[ 0 ].getAttribute( 'data-name' )
+			}
+		};
+	};
+	InlineWidgetNode.static.isDiffComparable = function ( element, other ) {
+		return element.attributes.name === other.attributes.name;
+	};
+	ve.dm.modelRegistry.register( InlineWidgetNode );
 
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		oldDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].oldDoc ) );

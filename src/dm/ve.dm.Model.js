@@ -280,6 +280,18 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 	}
 };
 
+/**
+ * Check if this element is of the same type as another element for the purposes of diffing.
+ *
+ * @static
+ * @param {Object} element This element
+ * @param {Object} other Another element
+ * @return {boolean} Elements are of a comparable type
+ */
+ve.dm.Model.static.isDiffComparable = function ( element, other ) {
+	return element.type === other.type;
+};
+
 /* Methods */
 
 /**
@@ -416,4 +428,17 @@ ve.dm.Model.prototype.getClonedElement = function () {
  */
 ve.dm.Model.prototype.getHashObject = function () {
 	return this.constructor.static.getHashObject( this.element );
+};
+
+/**
+ * Check if this element is of the same type as another element for the purposes of diffing.
+ *
+ * Elements which aren't of the same type will always be shown as removal and an insertion,
+ * whereas comarable elements will be shown as an attribute change.
+ *
+ * @param {Object} other Another element
+ * @return {boolean} Elements are of a comparable type
+ */
+ve.dm.Model.prototype.isDiffComparable = function ( other ) {
+	return this.constructor.static.isDiffComparable( this.element, other.element );
 };
