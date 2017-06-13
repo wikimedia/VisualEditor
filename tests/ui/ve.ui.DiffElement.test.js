@@ -142,20 +142,20 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Attributes added to ClassAttributeNodes',
-				oldDoc: '<figure><img src="foo.jpg"><figcaption>bar</figcaption></figure>',
-				newDoc: '<figure><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
+				oldDoc: '<figure><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
 					'</div>'
 			},
 			{
 				msg: 'Attributes added to ClassAttributeNodes with classes',
-				oldDoc: '<figure class="ve-align-right"><img src="foo.jpg"><figcaption>bar</figcaption></figure>',
-				newDoc: '<figure class="ve-align-right"><img src="boo.jpg"><figcaption>bar</figcaption></figure>',
+				oldDoc: '<figure class="ve-align-right"><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure class="ve-align-right"><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
 					'</div>'
 			},
 			{
@@ -323,20 +323,20 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Annotation attribute change',
-				oldDoc: '<p>foo <a href="quuz">bar</a> baz</p>',
-				newDoc: '<p>foo <a href="whee">bar</a> baz</p>',
+				oldDoc: '<p>foo <a href="http://example.org/quuz">bar</a> baz</p>',
+				newDoc: '<p>foo <a href="http://example.org/whee">bar</a> baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <span data-diff-action="change-remove"><a href="quuz" target="_blank">bar</a></span><span data-diff-action="change-insert" data-diff-id="0"><a href="whee" target="_blank">bar</a></span> baz</p>' +
+						'<p>foo <span data-diff-action="change-remove"><a href="http://example.org/quuz" target="_blank">bar</a></span><span data-diff-action="change-insert" data-diff-id="0"><a href="http://example.org/whee" target="_blank">bar</a></span> baz</p>' +
 					'</div>'
 			},
 			{
 				msg: 'Nested annotation change',
-				oldDoc: '<p><a href="#">foo bar baz</a></p>',
-				newDoc: '<p><a href="#">foo <b>bar</b> baz</a></p>',
+				oldDoc: '<p><a href="http://example.org/">foo bar baz</a></p>',
+				newDoc: '<p><a href="http://example.org/">foo <b>bar</b> baz</a></p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p><a href="#" target="_blank">foo <del data-diff-action="remove">bar</del><ins data-diff-action="insert"><b>bar</b></ins> baz</a></p>' +
+						'<p><a href="http://example.org/" target="_blank">foo <del data-diff-action="remove">bar</del><ins data-diff-action="insert"><b>bar</b></ins> baz</a></p>' +
 					'</div>'
 			},
 			{
