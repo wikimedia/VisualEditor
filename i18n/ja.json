@@ -10,7 +10,8 @@
 			"赤城。",
 			"Sujiniku",
 			"Otokoume",
-			"Endres"
+			"Endres",
+			"Iwai.masaharu"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -32,6 +33,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "下付き",
 	"visualeditor-annotationbutton-superscript-tooltip": "上付き",
 	"visualeditor-annotationbutton-underline-tooltip": "下線",
+	"visualeditor-changedir-tool-rtl": "書字方向の変更（左右）",
 	"visualeditor-clearbutton-tooltip": "書式を消去",
 	"visualeditor-clipboard-copy": "コピー",
 	"visualeditor-clipboard-cut": "切り取り",
