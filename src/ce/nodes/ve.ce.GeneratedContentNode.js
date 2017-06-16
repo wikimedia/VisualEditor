@@ -95,47 +95,41 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function ( s
  * implementation, otherwise you should call the parent implementation first and modify its
  * return value.
  *
- * @param {HTMLElement[]} domElements Clones of the DOM elements from the store
+ * @param {Node[]} domElements Clones of the DOM elements from the store
  * @return {HTMLElement[]} Clones of the DOM elements in the right document, with modifications
  */
 ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElements ) {
-	var i, len, $rendering,
+	var rendering,
 		doc = this.getElementDocument();
 
-	// Clone the elements into the target document
-	$rendering = $( ve.copyDomElements( domElements, doc ) );
+	rendering = ve.filterMetaElements(
+		// Clone the elements into the target document
+		ve.copyDomElements( domElements, doc )
+	);
 
-	// Filter out link and style tags for bug 50043
-	// Previously filtered out meta tags, but restore these as they
-	// can be made visible.
-	// As of jQuery 3 we can't use $.not( 'tagName' ) as that doesn't
-	// match text nodes. Also we can't $.remove these elements as they
-	// aren't attached to anything.
-	$rendering = $rendering.filter( function ( i, node ) {
-		return node.tagName !== 'LINK' && node.tagName !== 'STYLE';
-	} );
-	// Also remove link and style tags nested inside other tags
-	$rendering.find( 'link, style' ).remove();
-
-	if ( $rendering.length ) {
+	if ( rendering.length ) {
 		// Span wrap root text nodes so they can be measured
-		for ( i = 0, len = $rendering.length; i < len; i++ ) {
-			if ( $rendering[ i ].nodeType === Node.TEXT_NODE ) {
-				$rendering[ i ] = $( '<span>' ).append( $rendering[ i ] )[ 0 ];
+		rendering = rendering.map( function ( node ) {
+			var span;
+			if ( node.nodeType === Node.TEXT_NODE ) {
+				span = document.createElement( 'span' );
+				span.appendChild( node );
+				return span;
 			}
-		}
+			return node;
+		} );
 	} else {
-		$rendering = $( '<span>' );
+		rendering = [ document.createElement( 'span' ) ];
 	}
 
 	// Render the computed values of some attributes
 	ve.resolveAttributes(
-		$rendering.toArray(),
+		rendering,
 		domElements[ 0 ].ownerDocument,
 		ve.dm.Converter.static.computedAttributes
 	);
 
-	return $rendering.toArray();
+	return rendering;
 };
 
 /**

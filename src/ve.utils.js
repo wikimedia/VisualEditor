@@ -752,6 +752,27 @@ ve.isContentEditable = function ( node ) {
 };
 
 /**
+ * Filter out metadata elements
+ *
+ * @param {Node[]} contents DOM nodes
+ * @return {Node[]} Filtered DOM nodes
+ */
+ve.filterMetaElements = function ( contents ) {
+	// Filter out link and style tags for T52043
+	// Previously filtered out meta tags, but restore these as they
+	// can be made visible with CSS.
+	// As of jQuery 3 we can't use $.not( 'tagName' ) as that doesn't
+	// match text nodes. Also we can't $.remove these elements as they
+	// aren't attached to anything.
+	contents = contents.filter( function ( node ) {
+		return node.tagName !== 'LINK' && node.tagName !== 'STYLE';
+	} );
+	// Also remove link and style tags nested inside other tags
+	$( contents ).find( 'link, style' ).remove();
+	return contents;
+};
+
+/**
  * Create an HTMLDocument from an HTML string.
  *
  * The html parameter is supposed to be a full HTML document with a doctype and an `<html>` tag.
