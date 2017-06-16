@@ -106,8 +106,7 @@ ve.ui.triggerRegistry.register(
 ve.ui.triggerRegistry.register(
 	'clear', {
 		mac: [
-			new ve.ui.Trigger( 'cmd+\\' ),
-			new ve.ui.Trigger( 'cmd+m' )
+			new ve.ui.Trigger( 'cmd+\\' )
 		],
 		pc: [
 			new ve.ui.Trigger( 'ctrl+\\' ),
