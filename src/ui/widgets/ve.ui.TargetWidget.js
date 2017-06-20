@@ -22,6 +22,7 @@
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
  * @cfg {boolean} [multiline] Multi-line surface
+ * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
  * @cfg {string} [inDialog] The name of the dialog this surface widget is in
  */
 ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
@@ -40,6 +41,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	this.includeCommands = config.includeCommands;
 	this.excludeCommands = config.excludeCommands;
 	this.multiline = config.multiline !== false;
+	this.placeholder = config.placeholder;
 	this.importRules = config.importRules;
 	this.inDialog = config.inDialog;
 	// TODO: Support source widgets
@@ -97,6 +99,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		excludeCommands: this.excludeCommands,
 		importRules: this.importRules,
 		multiline: this.multiline,
+		placeholder: this.placeholder,
 		inDialog: this.inDialog
 	} );
 
