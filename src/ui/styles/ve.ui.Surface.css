@@ -26,12 +26,6 @@
 	padding: 0.9375em 1.875em;
 }
 
-.ve-ui-surface-placeholder > * {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 .ve-ui-surface-placeholder,
 .ve-ui-surface .ve-ce-documentNode {
 	padding: 0.5em 1.5em;

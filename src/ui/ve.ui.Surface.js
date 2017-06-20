@@ -76,6 +76,8 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.filibuster = null;
 	this.debugBar = null;
+	this.placeholder = null;
+	this.placeholderVisible = false;
 	this.setPlaceholder( config.placeholder );
 	this.scrollPosition = null;
 
@@ -90,6 +92,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
 	this.dialogs.connect( this, { opening: 'onWindowOpening' } );
 	this.context.getInspectors().connect( this, { opening: 'onWindowOpening' } );
+	this.getView().connect( this, { position: 'onViewPosition' } );
 
 	// Initialization
 	this.$menus.append( this.context.$element );
@@ -619,6 +622,8 @@ ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
 		this.updatePlaceholder();
 	} else {
 		this.$placeholder.detach();
+		this.placeholderVisible = false;
+		this.getView().$element.css( 'min-height', '' );
 	}
 };
 
@@ -630,6 +635,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 		hasContent = this.getModel().getDocument().data.hasContent();
 
 	this.$placeholder.toggleClass( 'oo-ui-element-hidden', hasContent );
+	this.placeholderVisible = !hasContent;
 	if ( !hasContent ) {
 		// Use a clone of the first node in the document so the placeholder
 		// styling matches the text the users sees when they start typing
@@ -644,6 +650,17 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 			$wrapper = $( '<p>' );
 		}
 		this.$placeholder.empty().append( $wrapper.text( this.placeholder ) );
+	} else {
+		this.getView().$element.css( 'min-height', '' );
+	}
+};
+
+/**
+ * Handle position events from the view
+ */
+ve.ui.Surface.prototype.onViewPosition = function () {
+	if ( this.placeholderVisible ) {
+		this.getView().$element.css( 'min-height', this.$placeholder.outerHeight() );
 	}
 };
 
