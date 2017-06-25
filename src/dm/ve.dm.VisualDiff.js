@@ -235,6 +235,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 	var i, ilen, j, jlen,
 		treeDiff, linearDiff,
 		oldNode, newNode,
+		replacement,
 		oldDocChildTree,
 		newDocChildTree,
 		removeLength,
@@ -277,9 +278,11 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 			if ( !oldNode.canContainContent() && !newNode.canContainContent() ) {
 
 				// There is no content change
+				replacement = oldNode.type !== newNode.type;
 				diffInfo[ i ] = {
-					typeChange: oldNode.type !== newNode.type,
-					attributeChange: !ve.compare( oldNode.getAttributes(), newNode.getAttributes() ) ?
+					linearDiff: null,
+					replacement: replacement,
+					attributeChange: !replacement && !ve.compare( oldNode.getAttributes(), newNode.getAttributes() ) ?
 					{
 						oldAttributes: oldNode.getAttributes(),
 						newAttributes: newNode.getAttributes()
@@ -291,18 +294,28 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 			} else if ( !newNode.canContainContent() ) {
 
 				// Content was removed
-				diffInfo[ i ] = { replacement: true };
+				diffInfo[ i ] = {
+					linearDiff: null,
+					replacement: true,
+					attributeChange: false
+				};
 				removeLength = oldNode.length;
 
 			} else if ( !oldNode.canContainContent() ) {
 
 				// Content was inserted
-				diffInfo[ i ] = { replacement: true };
+				diffInfo[ i ] = {
+					linearDiff: null,
+					replacement: true,
+					attributeChange: false
+				};
 				insertLength = newNode.length;
 
 			// If we got this far, they are both CBNs
 			} else {
-				if ( new Date().getTime() < this.endTime ) {
+				replacement = oldNode.type !== newNode.type;
+
+				if ( !replacement && new Date().getTime() < this.endTime ) {
 					linearDiff = this.linearDiffer.getCleanDiff(
 						this.oldDoc.getData( oldNode.getRange() ),
 						this.newDoc.getData( newNode.getRange() )
@@ -315,8 +328,8 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 				diffInfo[ i ] = {
 					linearDiff: linearDiff,
-					typeChange: oldNode.type !== newNode.type,
-					attributeChange: !ve.compare( oldNode.getAttributes(), newNode.getAttributes() ) ?
+					replacement: replacement,
+					attributeChange: !replacement && !ve.compare( oldNode.getAttributes(), newNode.getAttributes() ) ?
 					{
 						oldAttributes: oldNode.getAttributes(),
 						newAttributes: newNode.getAttributes()

@@ -400,7 +400,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		orderedNode = oldNodes[ nodeIndex ];
 		node = orderedNode.node;
 
-		if ( !node.canContainContent() ) {
+		if ( !node.canContainContent() && node.hasChildren() ) {
 
 			// Record that the node has been removed, but don't display it, for now
 			// TODO: describe the change for the attribute diff
@@ -485,7 +485,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		// Add insert class
 		nodeData[ nodeRangeStart ] = this.addAttributesToNode(
 			nodeData[ nodeRangeStart ], this.newDoc, {
-				'data-diff-action': node.canContainContent() ? 'insert' : 'structural-insert'
+				'data-diff-action': ( !node.canContainContent() && node.hasChildren() ) ? 'structural-insert' : 'insert'
 			}
 		);
 	}
@@ -552,8 +552,8 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 					if ( diffInfo[ k ].replacement ) {
 
 						// We are treating these nodes as removed and inserted
-						highlightRemovedNode.call( this, oldIndex );
 						highlightInsertedNode.call( this, newIndex );
+						highlightRemovedNode.call( this, oldIndex );
 
 					} else {
 
