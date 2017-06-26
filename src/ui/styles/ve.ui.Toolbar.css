@@ -9,11 +9,16 @@
 	position: relative;
 }
 
+.ve-ui-toolbar > .oo-ui-toolbar-bar {
+	/* Make sure the toolbar is shown on top of surface contents even when not floating,
+	   for correct rendering of dropdowns, popups etc. */
+	z-index: 2;
+}
+
 /* PositionedTargetToolbar */
 
 .ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
 	position: fixed;
 	top: 0;
-	z-index: 2;
 	border-top: 0;
 }
