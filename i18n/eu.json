@@ -5,7 +5,8 @@
 			"Unai Fdz. de Betoño",
 			"Xabier Armendaritz",
 			"Subi",
-			"Sator"
+			"Sator",
+			"Mikel Ibaiba"
 		]
 	},
 	"visualeditor": "Ikusizko editorea",
@@ -104,6 +105,9 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Pertsonalizatua",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Lehenetsia",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Eskala",
+	"visualeditor-rebase-client-author-name": "Izena",
+	"visualeditor-rebase-client-document-name": "Dokumentu izena",
+	"visualeditor-rebase-client-document-create-edit": "Sortu/Aldatu",
 	"visualeditor-shortcuts-clipboard": "Arbela",
 	"visualeditor-shortcuts-formatting": "Paragrafo formatua",
 	"visualeditor-shortcuts-history": "Historia",
