@@ -4,13 +4,8 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-tableLineContext {
-	position: absolute;
-	/* Ensure it is placed above the table context */
-	z-index: 2;
-}
-
 .ve-ui-tableLineContext-indicator {
+	position: absolute;
 	display: block;
 	background-color: #d3e5fd;
 	-webkit-box-sizing: border-box;
@@ -24,20 +19,13 @@
 	width: 100%;
 	height: 1em;
 	/* Context height + 0.2em gap */
-	margin-top: -1.2em;
+	top: -1.2em;
 	border-bottom: 0;
 }
 
 .ve-ui-tableLineContext-row .ve-ui-tableLineContext-indicator {
 	width: 1em;
 	/* Context width + 0.2em gap */
-	margin-left: -1.2em;
+	left: -1.2em;
 	border-right: 0;
-}
-
-/* Position the row context menu popup anchor below the center of the indicator */
-.ve-ui-tableLineContext-row .oo-ui-popupWidget {
-	/* Gap + half context width: 0.2em + 1em/2 */
-	left: -0.7em;
-	top: 0.4em;
 }

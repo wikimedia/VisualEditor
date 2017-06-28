@@ -34,6 +34,8 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 	this.popup = new OO.ui.PopupWidget( {
 		classes: [ 've-ui-tableLineContext-menu' ],
 		$container: this.surface.$element,
+		$floatableContainer: this.indicator.$element,
+		position: itemGroup === 'col' ? 'below' : 'after',
 		width: 180
 	} );
 
@@ -146,6 +148,9 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
 		surfaceView.$document.off( 'mousedown', this.onDocumentMouseDownHandler );
 	}
 
-	// Parent method - call after selection has been possible modified above
+	// Parent method - call after selection has been possibly modified above
 	ve.ui.TableLineContext.super.prototype.toggleMenu.call( this, show );
+
+	// Update popup positioning after the parent method fills in its contents
+	this.popup.position();
 };
