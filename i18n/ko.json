@@ -48,7 +48,7 @@
 	"visualeditor-changedesc-comment": "댓글이 $1에서 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-image-size": "크기가 $1에서 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-language": "언어가 $1에서 $2(으)로 바뀌었습니다",
-	"visualeditor-changedesc-link-href": "링크가 $1에서 $2(으)로 바뀌었습니다",
+	"visualeditor-changedesc-link-href": "링크 대상이 $1에서 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-no-key": "$1(이)가 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-set": "$1(이)가 $2(으)로 설정되었습니다",
 	"visualeditor-changedesc-unknown": "$1(이)가 변경되었습니다",

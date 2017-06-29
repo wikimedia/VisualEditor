@@ -19,7 +19,8 @@
 			"Jaumeortola",
 			"Ssola",
 			"Stanqo",
-			"Luchibsl1"
+			"Luchibsl1",
+			"Xavier Dengra"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -122,7 +123,7 @@
 	"visualeditor-shortcuts-other": "Altres",
 	"visualeditor-shortcuts-sequence-notice": "Escriu",
 	"visualeditor-shortcuts-text-style": "Estil del text",
-	"visualeditor-slug-insert": "Inserta paràgraf",
+	"visualeditor-slug-insert": "Insereix un paràgraf",
 	"visualeditor-specialcharacter-button-tooltip": "Caràcter especial",
 	"visualeditor-specialcharacterinspector-title": "Caràcter especial",
 	"visualeditor-table-caption": "Llegenda",
