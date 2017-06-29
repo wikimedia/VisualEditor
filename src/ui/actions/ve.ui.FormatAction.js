@@ -51,9 +51,10 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	var selected, i, length, contentBranch,
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment(),
+		fragmentSelection = fragment.getSelection(),
 		fragments = [];
 
-	if ( !( fragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
+	if ( !( fragmentSelection instanceof ve.dm.LinearSelection ) ) {
 		return;
 	}
 
@@ -73,6 +74,15 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 	}
 
 	fragment.convertNodes( type, attributes );
+	if ( fragmentSelection.isCollapsed() ) {
+		// Converting an empty node needs a small selection fixup afterwards,
+		// otherwise the selection will be displayed outside the new empty
+		// node. This causes issues with the display of the current format in
+		// the toolbar, and with hitting enter if no content is entered. Don't
+		// always reapply the selection, because the automatic behavior is
+		// better if isolateAndUnwrap has actually acted. (T151594)
+		surfaceModel.setSelection( fragmentSelection );
+	}
 	this.surface.getView().focus();
 	return true;
 };
