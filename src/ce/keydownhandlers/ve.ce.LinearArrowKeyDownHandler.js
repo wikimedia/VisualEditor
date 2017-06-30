@@ -186,8 +186,8 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			}
 			newRange = (
 				afterDirection > 0 ?
-				viewNode.getOuterRange() :
-				viewNode.getOuterRange().flip()
+					viewNode.getOuterRange() :
+					viewNode.getOuterRange().flip()
 			);
 		} else {
 			// Check where the range has moved to

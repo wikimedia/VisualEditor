@@ -405,14 +405,14 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices, splitAncestorL
 		dataSplices.length === 1 &&
 		// The data it removes does not contain openings/closings
 		!new ve.dm.FlatLinearData(
-				this.document.getStore(),
-				dataSplices[ 0 ].removedData
-			).containsElementData() &&
+			this.document.getStore(),
+			dataSplices[ 0 ].removedData
+		).containsElementData() &&
 		// The data it inserts does not contain openings/closings
 		!new ve.dm.FlatLinearData(
-				this.document.getStore(),
-				dataSplices[ 0 ].insert
-			).containsElementData()
+			this.document.getStore(),
+			dataSplices[ 0 ].insert
+		).containsElementData()
 	) {
 		selection = this.document.selectNodes(
 			new ve.Range(

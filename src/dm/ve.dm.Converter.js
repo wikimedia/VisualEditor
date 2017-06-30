@@ -579,7 +579,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 				if ( wrappedMetaItems[ i ].internal && wrappedMetaItems[ i ].internal.whitespace ) {
 					if ( whitespaceTreatment === 'restore' ) {
 						ve.batchPush( toInsert, ve.dm.Converter.static.getDataContentFromText(
-								wrappedMetaItems[ i ].internal.whitespace[ 0 ], context.annotations
+							wrappedMetaItems[ i ].internal.whitespace[ 0 ], context.annotations
 						) );
 						delete wrappedMetaItems[ i ].internal;
 					} else if ( whitespaceTreatment === 'fixup' ) {
@@ -1431,7 +1431,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							break;
 						case 'empty':
 							// 'empty' elements - first ensure they are actually empty
-							if ( domElement.childNodes.length === 0 && (
+							if (
+								domElement.childNodes.length === 0 &&
+								(
 									// then check that we are the last child
 									// before unwrapping (and therefore destroying)
 									data[ i + 1 ] === undefined ||

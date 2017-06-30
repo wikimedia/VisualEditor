@@ -152,8 +152,8 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
  */
 ve.ui.LinkAnnotationWidget.prototype.setAnnotation = function ( annotation, fromText ) {
 	if ( ve.compare(
-			annotation ? annotation.getComparableObject() : {},
-			this.annotation ? this.annotation.getComparableObject() : {}
+		annotation ? annotation.getComparableObject() : {},
+		this.annotation ? this.annotation.getComparableObject() : {}
 	) ) {
 		// No change
 		return this;

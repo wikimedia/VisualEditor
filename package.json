@@ -30,7 +30,7 @@
     "grunt-contrib-watch": "1.0.0",
     "grunt-css-url-embed": "1.10.0",
     "grunt-cssjanus": "0.4.0",
-    "grunt-eslint": "19.0.0",
+    "grunt-eslint": "20.0.0",
     "grunt-jsonlint": "1.1.0",
     "grunt-karma": "2.0.0",
     "grunt-stylelint": "0.8.0",

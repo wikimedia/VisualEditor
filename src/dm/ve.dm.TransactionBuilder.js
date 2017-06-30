@@ -970,8 +970,8 @@ ve.dm.TransactionBuilder.prototype.pushReplace = function ( doc, offset, removeL
 				mergedMetadata
 			).concat(
 				( insertMetadata === undefined || isInsertEmpty ) ?
-				new Array( insert.length - mergedMetadata.length ) :
-				insertMetadata
+					new Array( insert.length - mergedMetadata.length ) :
+					insertMetadata
 			),
 			insertedDataOffset,
 			insertedDataLength

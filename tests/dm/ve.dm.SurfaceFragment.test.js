@@ -414,10 +414,12 @@ QUnit.test( 'delete', function ( assert ) {
 				range: new ve.Range( 0, 63 ),
 				directionAfterRemove: -1,
 				expectedData: function ( data ) {
-					data.splice( 0, 61,
-							{ type: 'paragraph' },
-							{ type: '/paragraph' }
-						);
+					data.splice(
+						0,
+						61,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
 				},
 				expectedRange: new ve.Range( 1 ),
 				msg: 'Backspace after select all spanning entire document creates empty paragraph'
@@ -427,10 +429,12 @@ QUnit.test( 'delete', function ( assert ) {
 				range: new ve.Range( 0, 6 ),
 				directionAfterRemove: -1,
 				expectedData: function ( data ) {
-					data.splice( 0, 7,
-							{ type: 'paragraph' },
-							{ type: '/paragraph' }
-						);
+					data.splice(
+						0,
+						7,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
 				},
 				expectedRange: new ve.Range( 1 ),
 				msg: 'Delete all when document starts with a focusable node'
@@ -440,10 +444,12 @@ QUnit.test( 'delete', function ( assert ) {
 				range: new ve.Range( 0, 9 ),
 				directionAfterRemove: -1,
 				expectedData: function ( data ) {
-					data.splice( 0, 9,
-							{ type: 'paragraph' },
-							{ type: '/paragraph' }
-						);
+					data.splice(
+						0,
+						9,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
 				},
 				expectedRange: new ve.Range( 1 ),
 				msg: 'Delete all when document starts and ends with a focusable node'

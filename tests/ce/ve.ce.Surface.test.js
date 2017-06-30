@@ -330,10 +330,12 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				rangeOrSelection: new ve.Range( 0, 63 ),
 				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
-					data.splice( 0, 61,
-							{ type: 'paragraph' },
-							{ type: '/paragraph' }
-						);
+					data.splice(
+						0,
+						61,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'Backspace after select all spanning entire document creates empty paragraph'
