@@ -96,6 +96,19 @@ QUnit.test( 'convert', function ( assert ) {
 				},
 				undo: true,
 				msg: 'converting preformatted in list item to paragraph'
+			},
+			{
+				html: '<p>a</p><p></p>',
+				rangeOrSelection: new ve.Range( 4, 4 ),
+				type: 'heading',
+				attributes: { level: 2 },
+				expectedRangeOrSelection: new ve.Range( 4, 4 ),
+				expectedData: function ( data ) {
+					data.splice( 3, 1, { type: 'heading', attributes: { level: 2 } } );
+					data.splice( 4, 1, { type: '/heading' } );
+				},
+				undo: true,
+				msg: 'converting empty paragraph to heading'
 			}
 		];
 
