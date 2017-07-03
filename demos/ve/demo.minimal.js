@@ -32,7 +32,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise()
 			convertText.setValue( target.getSurface().getHtml() );
 		} );
 
-		convertText = new OO.ui.TextInputWidget( { multiline: true, autosize: true, classes: [ 've-demo-html' ] } );
+		convertText = new OO.ui.MultilineTextInputWidget( { autosize: true, classes: [ 've-demo-html' ] } );
 
 		$( '.ve-demo-output' ).append(
 			convertButton.$element,
