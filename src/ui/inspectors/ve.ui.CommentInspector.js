@@ -52,7 +52,6 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 	ve.ui.CommentInspector.super.prototype.initialize.call( this );
 
 	this.textWidget = new ve.ui.WhitespacePreservingTextInputWidget( {
-		multiline: true,
 		autosize: true
 	} );
 	this.textWidget.connect( this, { resize: 'updateSize' } );

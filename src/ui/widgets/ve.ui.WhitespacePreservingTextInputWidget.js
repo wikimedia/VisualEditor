@@ -8,7 +8,7 @@
  * Text input widget which hides but preserves leading and trailing whitespace
  *
  * @class
- * @extends OO.ui.TextInputWidget
+ * @extends OO.ui.MultilineTextInputWidget
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -32,7 +32,7 @@ ve.ui.WhitespacePreservingTextInputWidget = function VeUiWhitespacePreservingTex
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.WhitespacePreservingTextInputWidget, OO.ui.TextInputWidget );
+OO.inheritClass( ve.ui.WhitespacePreservingTextInputWidget, OO.ui.MultilineTextInputWidget );
 
 /* Methods */
 
