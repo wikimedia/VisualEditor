@@ -1021,7 +1021,11 @@ ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
 				baseNode.setAttribute( 'href', fallbackBase );
 			}
 		}
-		// else: <base> tag present and valid, do nothing
+		// Support: Chrome
+		// Chrome just entirely ignores <base> tags with a protocol-relative href attribute.
+		// Code below is *not a no-op*; reading the href property and setting it back
+		// will expand the href *attribute* to use an absolute URL if it was relative.
+		baseNode.href = baseNode.href;
 	} else if ( fallbackBase ) {
 		// Support: Firefox
 		// No <base> tag, add one
