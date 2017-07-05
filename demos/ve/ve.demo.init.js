@@ -23,7 +23,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 		} ),
 
 		languageInput = new ve.ui.LanguageInputWidget( {
-			requireDir: true,
+			dirInput: 'no-auto',
 			hideCodeInput: true,
 			availableLanguages: ve.availableLanguages,
 			dialogManager: new OO.ui.WindowManager( { factory: ve.ui.windowFactory, classes: [ 've-demo-languageSearchDialogManager' ] } )

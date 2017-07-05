@@ -12,16 +12,18 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [requireDir] Require directionality to be set (no 'auto' value)
+ * @cfg {string} [dirInput="auto"] Set to "none" to hide the directionality input; set to "no-auto" to select between LTR and RTL; set to "auto" to add "auto" to directionality options.
  * @cfg {boolean} [hideCodeInput] Prevent user from entering a language code as free text
  * @cfg {ve.ui.WindowManager} [dialogManager] Window manager to launch the language search dialog in
  * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
-	var dirItems;
+	var dirItems,
+		dirInput;
 
 	// Configuration initialization
 	config = config || {};
+	dirInput = ( config.dirInput === undefined ) ? 'auto' : config.dirInput;
 
 	// Parent constructor
 	ve.ui.LanguageInputWidget.super.call( this, config );
@@ -84,7 +86,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 			icon: 'textDirLTR'
 		} )
 	];
-	if ( !config.requireDir ) {
+	if ( dirInput === 'auto' ) {
 		dirItems.splice(
 			1, 0, new OO.ui.ButtonOptionWidget( {
 				data: null,
@@ -98,10 +100,10 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	this.$element
 		.addClass( 've-ui-languageInputWidget' )
-		.append(
-			this.languageLayout.$element,
-			this.directionField.$element
-		);
+		.append( this.languageLayout.$element );
+	if ( dirInput !== 'none' ) {
+		this.$element.append( this.directionField.$element );
+	}
 };
 
 /* Inheritance */
