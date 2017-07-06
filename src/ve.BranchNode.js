@@ -155,13 +155,13 @@ ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 	while ( currentNode.children.length ) {
 		for ( i = 0, length = currentNode.children.length; i < length; i++ ) {
 			childNode = currentNode.children[ i ];
-			if ( childNode instanceof ve.ce.InternalListNode ) {
-				break;
-			}
 			if ( offset === nodeOffset ) {
 				// The requested offset is right before childNode, so it's not
 				// inside any of currentNode's children, but is inside currentNode
 				return currentNode;
+			}
+			if ( childNode instanceof ve.ce.InternalListNode ) {
+				break SIBLINGS;
 			}
 			nodeLength = childNode.getOuterLength();
 			if ( offset >= nodeOffset && offset < nodeOffset + nodeLength ) {

@@ -39,7 +39,7 @@ ve.Document.prototype.getDocumentNode = function () {
 };
 
 /**
- * Get a node a an offset.
+ * Get a node at an offset.
  *
  * @method
  * @param {number} offset Offset to get node at

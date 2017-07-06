@@ -35,7 +35,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 // TODO: getDirectionFromRange
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
-	var tests, i, iLen, test, parts, view, data, ceDoc, rootNode, offsetCount, offset, j, jLen, node;
+	var tests, i, iLen, test, parts, view, data, dmDoc, ceDoc, rootNode, offsetCount, offset, j, jLen, node, ex;
 
 	// Each test below has the following:
 	// html: an input document
@@ -63,6 +63,14 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			html: '<div><p>x</p></div>',
 			data: [ '<div>', '<paragraph>', 'x', '</paragraph>', '</div>' ],
 			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div><div class='ve-ce-branchNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|x|</#text></p>|</div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div></div>"
+		},
+		{
+			title: 'Empty document',
+			html: '<p></p>',
+			unwrap: [ { type: 'paragraph' } ],
+			data: [],
+			positions: "",
+			dies: [ 1 ]
 		},
 		{
 			title: 'Slugless emptied paragraph',
@@ -121,7 +129,20 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		test = tests[ i ];
 		parts = test.positions.split( /[|]/ );
 		view = ve.test.utils.createSurfaceViewFromHtml( test.html );
-		data = view.getModel().getDocument().data.data
+		dmDoc = view.getModel().getDocument();
+		if ( test.unwrap ) {
+			new ve.dm.Surface( dmDoc ).change(
+				ve.dm.TransactionBuilder.static.newFromWrap(
+					dmDoc,
+					new ve.Range( 0, dmDoc.data.countNonInternalElements() ),
+					[],
+					[],
+					test.unwrap,
+					[]
+				)
+			);
+		}
+		data = dmDoc.data.data
 			.slice( 0, -2 )
 			.map( showModelItem );
 		ceDoc = view.documentView;
@@ -147,19 +168,6 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		}
 
 		for ( offset = 0; offset < offsetCount; offset++ ) {
-			try {
-				if ( test.dies && test.dies.indexOf( offset ) !== -1 ) {
-					assert.ok( false, test.title + ' (' + offset + ') does not die' );
-					continue;
-				}
-			} catch ( ex ) {
-				assert.ok(
-					test.dies && test.dies.indexOf( offset ) !== -1,
-					test.title + ' (' + offset + ') dies'
-				);
-				continue;
-			}
-
 			assert.strictEqual(
 				ve.test.utils.serializePosition(
 					rootNode,
@@ -173,6 +181,16 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 				).join( '' ),
 				test.title + ' (' + offset + ')'
 			);
+		}
+		for ( j = 0; test.dies && j < test.dies.length; j++ ) {
+			offset = test.dies[ j ];
+			ex = null;
+			try {
+				ceDoc.getNodeAndOffset( offset, test.outsideNails );
+			} catch ( e ) {
+				ex = e;
+			}
+			assert.ok( ex !== null, test.title + ' (' + offset + ') dies' );
 		}
 		view.destroy();
 	}
