@@ -207,22 +207,10 @@ ve.ui.Surface.prototype.initialize = function () {
  * @return {HTMLDocument} HTML document
  */
 ve.ui.Surface.prototype.getDom = function () {
-	var i, l, text, data;
-
 	// Optimized converter for source mode, which contains only
 	// plain text or paragraphs.
 	if ( this.getMode() === 'source' ) {
-		text = '';
-		data = this.getModel().getDocument().data.data;
-		for ( i = 0, l = data.length; i < l; i++ ) {
-			if ( data[ i ].type === '/paragraph' && data[ i + 1 ].type === 'paragraph' ) {
-				text += '\n';
-			} else if ( !data[ i ].type ) {
-				text += data[ i ];
-			}
-		}
-
-		return text;
+		return this.getModel().getDocument().data.getSourceText();
 	}
 	return ve.dm.converter.getDomFromModel( this.getModel().getDocument() );
 };
