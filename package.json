@@ -24,7 +24,7 @@
     "eslint-config-wikimedia": "0.4.0",
     "grunt": "1.0.1",
     "grunt-banana-checker": "0.6.0",
-    "grunt-contrib-clean": "1.0.0",
+    "grunt-contrib-clean": "1.1.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-watch": "1.0.0",
@@ -33,7 +33,7 @@
     "grunt-eslint": "19.0.0",
     "grunt-jsonlint": "1.1.0",
     "grunt-karma": "2.0.0",
-    "grunt-stylelint": "0.7.0",
+    "grunt-stylelint": "0.8.0",
     "grunt-tyops": "0.1.0",
     "karma": "1.1.2",
     "karma-chrome-launcher": "1.0.1",
@@ -42,6 +42,7 @@
     "karma-mocha-reporter": "2.2.3",
     "karma-qunit": "1.0.0",
     "qunitjs": "1.23.1",
+    "stylelint": "7.8.0",
     "stylelint-config-wikimedia": "0.4.1"
   }
 }
