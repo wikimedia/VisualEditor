@@ -375,7 +375,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
  * @return {HTMLElement[]} Elements (not owned by window.document)
  */
 ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
-	var nodeData, doc, body, element,
+	var nodeData, doc, body, element, annIndex, annType,
 		nodeDoc = action === 'remove' ? this.oldDoc : this.newDoc,
 		documentSlice = nodeDoc.cloneFromRange( node.getOuterRange() );
 
@@ -385,9 +385,24 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
 	// Add the classes to the outer element (in case there was a move)
 	nodeData[ 0 ] = this.addAttributesToNode( nodeData[ 0 ], nodeDoc, { 'data-diff-action': action, 'data-diff-move': move } );
 
+	if ( action !== 'none' ) {
+		// Add <del> or <ins> annotation
+		annType = action === 'remove' ? 'textStyle/delete' : 'textStyle/insert';
+		annIndex = documentSlice.getStore().index(
+			ve.dm.annotationFactory.create( annType, {
+				type: annType
+			} )
+		);
+		ve.dm.Document.static.addAnnotationsToData(
+			nodeData,
+			new ve.dm.AnnotationSet( documentSlice.getStore(), [ annIndex ] )
+		);
+	}
+
 	// Get the html for the linear model with classes
 	// Doc is always the new doc when inserting into the store
 	documentSlice.getStore().merge( this.newDoc.getStore() );
+
 	// forClipboard is true, so that we can render otherwise invisible nodes
 	doc = ve.dm.converter.getDomFromModel( documentSlice, true );
 	body = doc.body;

@@ -120,10 +120,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>boo</p><p>bar</p><p>baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p data-diff-action="remove">foo</p>' +
+						'<p data-diff-action="remove"><del>foo</del></p>' +
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p data-diff-action="insert">boo</p>' +
+						'<p data-diff-action="insert"><ins>boo</ins></p>' +
 					'</div>' +
 					'<p data-diff-action="none">bar</p>' +
 					spacer
@@ -134,10 +134,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: 'boo',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p data-diff-action="remove">foo</p>' +
+						'<p data-diff-action="remove"><del>foo</del></p>' +
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p data-diff-action="insert">boo</p>' +
+						'<p data-diff-action="insert"><ins>boo</ins></p>' +
 					'</div>'
 			},
 			{
@@ -187,7 +187,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<div rel="ve:Alien" data-diff-action="remove">Alien</div>' +
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p data-diff-action="insert">Foo</p>' +
+						'<p data-diff-action="insert"><ins>Foo</ins></p>' +
 					'</div>'
 			},
 			{
