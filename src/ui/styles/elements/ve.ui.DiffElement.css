@@ -99,6 +99,9 @@ figure[data-diff-action='remove'] > figcaption {
 del[data-diff-action='remove'] {
 	text-decoration: line-through;
 }
+del[data-diff-action='remove']:hover {
+	text-decoration: none;
+}
 
 [data-diff-action='insert'] [rel='ve:Comment'],
 [data-diff-action='remove'] [rel='ve:Comment'],
