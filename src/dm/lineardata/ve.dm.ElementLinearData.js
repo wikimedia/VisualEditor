@@ -774,7 +774,7 @@ ve.dm.ElementLinearData.prototype.getSourceText = function ( range ) {
 	range = range || new ve.Range( 0, this.getLength() );
 
 	for ( i = range.start; i < range.end; i++ ) {
-		if ( data[ i ].type === '/paragraph' && data[ i + 1 ].type === 'paragraph' ) {
+		if ( data[ i ].type === '/paragraph' && data[ i + 1 ] && data[ i + 1 ].type === 'paragraph' ) {
 			text += '\n';
 		} else if ( !data[ i ].type ) {
 			text += data[ i ];
