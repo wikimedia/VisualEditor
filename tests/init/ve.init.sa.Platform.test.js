@@ -7,7 +7,7 @@
 QUnit.module( 've.init.sa.Platform', ( function () {
 	var dummyPlatform;
 	return {
-		setup: function () {
+		beforeEach: function () {
 			// Ensure that ve.init.platform is not permanently overwritten
 			// by creating an sa.Platform
 			dummyPlatform = ve.init.platform;
@@ -25,7 +25,7 @@ QUnit.module( 've.init.sa.Platform', ( function () {
 			};
 			this.purgeKeys();
 		},
-		teardown: function () {
+		afterEach: function () {
 			ve.init.platform = dummyPlatform;
 			this.purgeKeys();
 		}

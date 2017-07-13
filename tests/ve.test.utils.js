@@ -62,18 +62,18 @@
 		QUnit.module = function ( name, localEnv ) {
 			localEnv = localEnv || {};
 			orgModule( name, {
-				setup: function () {
+				beforeEach: function () {
 					this.fixture = document.createElement( 'div' );
 					this.fixture.id = 'qunit-fixture';
 					document.body.appendChild( this.fixture );
 
-					if ( localEnv.setup ) {
-						localEnv.setup.call( this );
+					if ( localEnv.beforeEach ) {
+						localEnv.beforeEach.call( this );
 					}
 				},
-				teardown: function () {
-					if ( localEnv.teardown ) {
-						localEnv.teardown.call( this );
+				afterEach: function () {
+					if ( localEnv.afterEach ) {
+						localEnv.afterEach.call( this );
 					}
 
 					this.fixture.parentNode.removeChild( this.fixture );

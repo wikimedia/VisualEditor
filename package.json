@@ -40,8 +40,8 @@
     "karma-firefox-launcher": "1.0.0",
     "karma-coverage": "1.1.1",
     "karma-mocha-reporter": "2.2.3",
-    "karma-qunit": "1.0.0",
-    "qunitjs": "1.23.1",
+    "karma-qunit": "1.2.1",
+    "qunitjs": "2.4.0",
     "stylelint": "7.8.0",
     "stylelint-config-wikimedia": "0.4.1"
   }
