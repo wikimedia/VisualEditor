@@ -70,11 +70,10 @@ QUnit.test( 'setUserConfig', function ( assert ) {
 	);
 } );
 
-QUnit.asyncTest( 'messages', function ( assert ) {
+QUnit.test( 'messages', function ( assert ) {
 	var platform = new ve.init.sa.Platform();
 
-	platform.getInitializedPromise().done( function () {
-		QUnit.start();
+	return platform.getInitializedPromise().then( function () {
 		assert.ok(
 			/^<?platformtest-foo\>?$/.test( platform.getMessage( 'platformtest-foo' ) ),
 			'return plain key as fallback, possibly wrapped in brackets'
@@ -104,11 +103,10 @@ QUnit.asyncTest( 'messages', function ( assert ) {
 	} );
 } );
 
-QUnit.asyncTest( 'parsedMessage', function ( assert ) {
+QUnit.test( 'parsedMessage', function ( assert ) {
 	var platform = new ve.init.sa.Platform();
 
-	platform.getInitializedPromise().done( function () {
-		QUnit.start();
+	return platform.getInitializedPromise().then( function () {
 		assert.ok(
 			/^(&lt;)?platformtest-quux(&gt;)?$/.test( platform.getParsedMessage( 'platformtest-quux' ) ),
 			'any brackets in fallbacks are HTML-escaped'
