@@ -142,9 +142,12 @@
 		}
 		actualSummary = getNodeTreeSummary( actual, shallow );
 		expectedSummary = getNodeTreeSummary( expected, shallow );
-		QUnit.push(
-			QUnit.equiv( actualSummary, expectedSummary ), actualSummary, expectedSummary, message
-		);
+		this.pushResult( {
+			result: QUnit.equiv( actualSummary, expectedSummary ),
+			actual: actualSummary,
+			expected: expectedSummary,
+			message: message
+		} );
 	};
 
 	/**
@@ -161,15 +164,21 @@
 
 		for ( i = 0; i < actual.length; i++ ) {
 			if ( expected[ i ] && expected[ i ].node !== actual[ i ].node ) {
-				QUnit.push( false, actualSummary, expectedSummary,
-					message + ' (reference equality for selection[' + i + '].node)'
-				);
+				this.pushResult( {
+					result: false,
+					actual: actualSummary,
+					expected: expectedSummary,
+					message: message + ' (reference equality for selection[' + i + '].node)'
+				} );
 				return;
 			}
 		}
-		QUnit.push(
-			QUnit.equiv( actualSummary, expectedSummary ), actualSummary, expectedSummary, message
-		);
+		this.pushResult( {
+			result: QUnit.equiv( actualSummary, expectedSummary ),
+			actual: actualSummary,
+			expected: expectedSummary,
+			message: message
+		} );
 	};
 
 	/**
@@ -185,9 +194,12 @@
 			actualSummaryHtml = ve.getDomElementSummary( actual, true ),
 			expectedSummaryHtml = ve.getDomElementSummary( expected, true );
 
-		QUnit.push(
-			QUnit.equiv( actualSummary, expectedSummary ), actualSummaryHtml, expectedSummaryHtml, message
-		);
+		this.pushResult( {
+			result: QUnit.equiv( actualSummary, expectedSummary ),
+			actual: actualSummaryHtml,
+			expected: expectedSummaryHtml,
+			message: message
+		} );
 	};
 
 	QUnit.assert.equalLinearData = function ( actual, expected, message ) {
@@ -205,7 +217,12 @@
 		actual = ve.copy( actual, null, removeOriginalDomElements );
 		expected = ve.copy( expected, null, removeOriginalDomElements );
 
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	};
 
 	QUnit.assert.equalLinearDataWithDom = function ( store, actual, expected, message ) {
@@ -221,7 +238,12 @@
 		actual = ve.copy( actual, ve.convertDomElements, addOriginalDomElements );
 		expected = ve.copy( expected, ve.convertDomElements, addOriginalDomElements );
 
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	};
 
 	/**
@@ -238,7 +260,12 @@
 		actual = ve.copy( actual, ve.convertDomElements );
 		expected = ve.copy( expected, ve.convertDomElements );
 
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	};
 
 	/**
@@ -255,7 +282,12 @@
 		actual = ve.copy( actual, convertNodes );
 		expected = ve.copy( expected, convertNodes );
 
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	};
 
 	QUnit.assert.equalRange = function ( actual, expected, message ) {
@@ -267,13 +299,23 @@
 			from: expected.from,
 			to: expected.to
 		};
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	};
 
 	QUnit.assert.equalHash = function ( actual, expected, message ) {
 		actual = JSON.parse( JSON.stringify( actual ) );
 		expected = JSON.parse( JSON.stringify( expected ) );
-		QUnit.push( QUnit.equiv( actual, expected ), actual, expected, message );
+		this.pushResult( {
+			result: QUnit.equiv( actual, expected ),
+			actual: actual,
+			expected: expected,
+			message: message
+		} );
 	};
 
 	QUnit.diff = function ( o, n ) {
