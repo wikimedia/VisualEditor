@@ -64,6 +64,7 @@
 }
 
 [data-diff-action='insert'],
+[data-diff-action='insert'] > ins,
 [data-diff-action='remove'],
 [data-diff-action='change-insert'],
 [data-diff-action='change-remove'] {
@@ -96,10 +97,13 @@ figure[data-diff-action='remove'] > figcaption {
 	display: none;
 }
 
-del[data-diff-action='remove'] {
+del[data-diff-action='remove'],
+[data-diff-action='remove'] > del {
 	text-decoration: line-through;
 }
-del[data-diff-action='remove']:hover {
+
+del[data-diff-action='remove']:hover,
+[data-diff-action='remove']:hover > del {
 	text-decoration: none;
 }
 
