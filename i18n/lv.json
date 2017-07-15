@@ -10,7 +10,7 @@
 		]
 	},
 	"visualeditor": "Vizuālais redaktors",
-	"visualeditor-aliencontextitem-title": "Ieraksts",
+	"visualeditor-aliencontextitem-title": "Vienums",
 	"visualeditor-aliennode-tooltip": "Atvainojiet, pagaidām šo elementu var labot tikai pirmkoda režīmā.",
 	"visualeditor-align-widget-center": "Centrā",
 	"visualeditor-align-widget-default": "Noklusējuma vērtība",
@@ -116,6 +116,9 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Pielāgots",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Noklusējuma vērtība",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Mērogs",
+	"visualeditor-rebase-client-author-name": "Vārds",
+	"visualeditor-rebase-client-document-name": "Dokumenta nosaukums",
+	"visualeditor-rebase-client-document-create-edit": "Izveidot/labot",
 	"visualeditor-shortcuts-clipboard": "Starpliktuve",
 	"visualeditor-shortcuts-dialog": "Dialoglogi",
 	"visualeditor-shortcuts-formatting": "Rindkopas formatējums",
