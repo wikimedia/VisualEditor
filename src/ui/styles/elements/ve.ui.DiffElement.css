@@ -71,6 +71,13 @@
 	text-decoration: inherit;
 }
 
+ins[data-diff-action='insert'],
+[data-diff-action='insert'] > ins,
+del[data-diff-action='remove'],
+[data-diff-action='remove'] > del {
+	white-space: pre-wrap;
+}
+
 [data-diff-action='insert'],
 /* elements using display:table-caption need separate backgrounds */
 table[data-diff-action='insert'] > caption,
