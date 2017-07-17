@@ -4,33 +4,29 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-QUnit.module( 've.init.sa.Platform', ( function () {
-	var dummyPlatform;
-	return {
-		beforeEach: function () {
-			// Ensure that ve.init.platform is not permanently overwritten
-			// by creating an sa.Platform
-			dummyPlatform = ve.init.platform;
-			this.purgeKeys = function () {
-				var i, keys = [];
-				for ( i = 0; i < localStorage.length; i++ ) {
-					keys.push( localStorage.key( i ) );
+QUnit.module( 've.init.sa.Platform', {
+	beforeEach: function () {
+		// Ensure that ve.init.platform is not permanently overwritten
+		// by creating an sa.Platform
+		this.originalPlatform = ve.init.platform;
+		this.purgeKeys = function () {
+			var key,
+				i = localStorage.length;
+			// Loop backwards since removal affects the key index
+			while ( i-- ) {
+				key = localStorage.key( i );
+				if ( key.indexOf( 've-test-' ) === 0 ) {
+					localStorage.removeItem( key );
 				}
-				// Get keys first since key index is live
-				keys.forEach( function ( key ) {
-					if ( key.indexOf( 've-test-' ) === 0 ) {
-						localStorage.removeItem( key );
-					}
-				} );
-			};
-			this.purgeKeys();
-		},
-		afterEach: function () {
-			ve.init.platform = dummyPlatform;
-			this.purgeKeys();
-		}
-	};
-}() ) );
+			}
+		};
+		this.purgeKeys();
+	},
+	afterEach: function () {
+		ve.init.platform = this.originalPlatform;
+		this.purgeKeys();
+	}
+} );
 
 QUnit.test( 'getUserConfig', function ( assert ) {
 	var platform = new ve.init.sa.Platform();
