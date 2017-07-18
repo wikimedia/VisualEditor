@@ -174,9 +174,9 @@ ve.dm.MetaList.prototype.onTransact = function ( tx ) {
 					// No metadata handling specified, which means we just have to deal with offset
 					// adjustments, same as a retain
 					for ( ;
-							itemIndex < numItems &&
-								this.items[ itemIndex ].offset < offset + rm.length;
-							itemIndex++
+						itemIndex < numItems &&
+							this.items[ itemIndex ].offset < offset + rm.length;
+						itemIndex++
 					) {
 						newItems.push( {
 							item: this.items[ itemIndex ],

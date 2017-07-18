@@ -519,10 +519,12 @@ ve.dm.Scalable.prototype.getCurrentScale = function () {
  * @return {boolean} Current dimensions are greater than maximum dimensions
  */
 ve.dm.Scalable.prototype.isTooSmall = function () {
-	return !!( this.getCurrentDimensions() && this.getMinDimensions() && (
+	return !!( this.getCurrentDimensions() && this.getMinDimensions() &&
+		(
 			this.getCurrentDimensions().width < this.getMinDimensions().width ||
 			this.getCurrentDimensions().height < this.getMinDimensions().height
-		) );
+		)
+	);
 };
 
 /**
@@ -533,10 +535,12 @@ ve.dm.Scalable.prototype.isTooSmall = function () {
  * @return {boolean} Current dimensions are greater than maximum dimensions
  */
 ve.dm.Scalable.prototype.isTooLarge = function () {
-	return !!( this.getCurrentDimensions() && this.getMaxDimensions() && (
+	return !!( this.getCurrentDimensions() && this.getMaxDimensions() &&
+		(
 			this.getCurrentDimensions().width > this.getMaxDimensions().width ||
 			this.getCurrentDimensions().height > this.getMaxDimensions().height
-		) );
+		)
+	);
 };
 
 /**

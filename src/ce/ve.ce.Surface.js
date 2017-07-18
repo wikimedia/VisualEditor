@@ -285,7 +285,7 @@ ve.ce.Surface.static.unsafeAttributes = [
  * @static
  * @property {HTMLElement}
  */
-ve.ce.Surface.static.cursorHolderTemplate = (
+ve.ce.Surface.static.cursorHolderTemplate =
 	$( '<div>' )
 		.addClass( 've-ce-cursorHolder' )
 		.prop( 'contentEditable', 'true' )
@@ -296,8 +296,7 @@ ve.ce.Surface.static.cursorHolderTemplate = (
 			// https://bugzilla.mozilla.org/show_bug.cgi?id=1155031 )
 			$( '<img>' ).addClass( 've-ce-cursorHolder-img' )
 		)
-		.get( 0 )
-);
+		.get( 0 );
 
 /* Static methods */
 
@@ -311,12 +310,13 @@ ve.ce.Surface.static.cursorHolderTemplate = (
  */
 ve.ce.Surface.static.getClipboardHash = function ( $elements, beforePasteData ) {
 	beforePasteData = beforePasteData || {};
-	return $elements.text().slice(
-		beforePasteData.leftText ? beforePasteData.leftText.length : 0,
-		beforePasteData.rightText ? -beforePasteData.rightText.length : undefined
-	)
-	// Whitespace may be modified (e.g. ' ' to '&nbsp;'), so strip it all
-	.replace( /\s/gm, '' );
+	return $elements.text()
+		.slice(
+			beforePasteData.leftText ? beforePasteData.leftText.length : 0,
+			beforePasteData.rightText ? -beforePasteData.rightText.length : undefined
+		)
+		// Whitespace may be modified (e.g. ' ' to '&nbsp;'), so strip it all
+		.replace( /\s/gm, '' );
 };
 
 /* Methods */
@@ -648,8 +648,8 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 						// Collapsed selections can have a width of 0, so expand
 						width: Math.max( rects[ i ].width, 1 ),
 						height: rects[ i ].height
-					}
-				) ).toggleClass( 've-ce-surface-deactivatedSelection-collapsed', selection.getModel().isCollapsed() );
+					} )
+				).toggleClass( 've-ce-surface-deactivatedSelection-collapsed', selection.getModel().isCollapsed() );
 			}
 		}
 	}
@@ -4049,9 +4049,9 @@ ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 			background: color
 		} ).append(
 			$( '<span>' )
-			.addClass( 've-ce-surface-highlights-user-cursor-label' )
-			.text( this.synchronizer.authorNames[ author ] )
-			.css( { background: color } )
+				.addClass( 've-ce-surface-highlights-user-cursor-label' )
+				.text( this.synchronizer.authorNames[ author ] )
+				.css( { background: color } )
 		)
 	);
 

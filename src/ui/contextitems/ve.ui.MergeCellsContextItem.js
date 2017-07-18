@@ -64,8 +64,8 @@ ve.ui.MergeCellsContextItem.prototype.setup = function () {
 	} else {
 		this.editButton.setLabel(
 			isMergeable && selection.isSingleCell() ?
-			ve.msg( 'visualeditor-table-merge-cells-unmerge' ) :
-			ve.msg( 'visualeditor-table-merge-cells-merge' )
+				ve.msg( 'visualeditor-table-merge-cells-unmerge' ) :
+				ve.msg( 'visualeditor-table-merge-cells-merge' )
 		);
 	}
 };

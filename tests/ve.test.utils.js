@@ -21,8 +21,8 @@
 	DummyPlatform.prototype.getMessage = function () { return Array.prototype.join.call( arguments, ',' ); };
 	DummyPlatform.prototype.getLanguageName = function ( lang ) { return 'langname-' + lang; };
 	DummyPlatform.prototype.getLanguageDirection = function () { return 'ltr'; };
-	DummyPlatform.prototype.getExternalLinkUrlProtocolsRegExp = function () { return /^https?\:\/\//i; };
-	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () { return /https?\:\/\//i; };
+	DummyPlatform.prototype.getExternalLinkUrlProtocolsRegExp = function () { return /^https?:\/\//i; };
+	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () { return /https?:\/\//i; };
 	DummyPlatform.prototype.getUserConfig = function () { return undefined; };
 	DummyPlatform.prototype.setUserConfig = function () {};
 
@@ -376,8 +376,8 @@
 	 */
 	ve.test.utils.selectionFromRangeOrSelection = function ( doc, rangeOrSelection ) {
 		return rangeOrSelection instanceof ve.Range ?
-				new ve.dm.LinearSelection( doc, rangeOrSelection ) :
-				ve.dm.Selection.static.newFromJSON( doc, rangeOrSelection );
+			new ve.dm.LinearSelection( doc, rangeOrSelection ) :
+			ve.dm.Selection.static.newFromJSON( doc, rangeOrSelection );
 	};
 
 	/**

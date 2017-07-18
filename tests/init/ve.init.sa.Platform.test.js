@@ -71,7 +71,7 @@ QUnit.test( 'messages', function ( assert ) {
 
 	return platform.getInitializedPromise().then( function () {
 		assert.ok(
-			/^<?platformtest-foo\>?$/.test( platform.getMessage( 'platformtest-foo' ) ),
+			/^<?platformtest-foo>?$/.test( platform.getMessage( 'platformtest-foo' ) ),
 			'return plain key as fallback, possibly wrapped in brackets'
 		);
 
@@ -93,7 +93,7 @@ QUnit.test( 'messages', function ( assert ) {
 		);
 
 		assert.ok(
-			/^<?platformtest-quux\>?$/.test( platform.getMessage( 'platformtest-quux' ) ),
+			/^<?platformtest-quux>?$/.test( platform.getMessage( 'platformtest-quux' ) ),
 			'return plain key as fallback, possibly wrapped in brackets (after set up)'
 		);
 	} );

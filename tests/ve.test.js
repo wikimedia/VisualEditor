@@ -1090,8 +1090,8 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 				offsetPaths,
 				(
 					direction === 'backward' ?
-					test.expectedOffsetPaths.slice().reverse() :
-					test.expectedOffsetPaths
+						test.expectedOffsetPaths.slice().reverse() :
+						test.expectedOffsetPaths
 				),
 				test.title + ' (' + direction + ')'
 			);

@@ -358,7 +358,8 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 	// The table is active if there is a linear selection inside a cell being edited
 	// or a table selection matching this table.
-	var active = (
+	var active =
+		(
 			this.editingFragment !== null &&
 			selection instanceof ve.dm.LinearSelection &&
 			this.editingFragment.getSelection().getRanges()[ 0 ].containsRange( selection.getRange() )

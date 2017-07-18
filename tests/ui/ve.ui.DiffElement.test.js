@@ -261,9 +261,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<table><tbody>' +
 							'<tr><td>A</td>' +
-							'<td data-diff-action="structural-insert"><p data-diff-action=\"insert\">B</p></td></tr>' +
+							'<td data-diff-action="structural-insert"><p data-diff-action="insert">B</p></td></tr>' +
 							'<tr><td>C</td>' +
-							'<td data-diff-action="structural-insert"><p data-diff-action=\"insert\">D</p></td></tr>' +
+							'<td data-diff-action="structural-insert"><p data-diff-action="insert">D</p></td></tr>' +
 						'</tbody></table>' +
 					'</div>'
 			},
@@ -274,8 +274,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<table><tbody>' +
-							'<tr><td>A</td><td data-diff-action="structural-remove"><p data-diff-action=\"remove\">B</p></td></tr>' +
-							'<tr><td>C</td><td data-diff-action="structural-remove"><p data-diff-action=\"remove\">D</p></td></tr>' +
+							'<tr><td>A</td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
+							'<tr><td>C</td><td data-diff-action="structural-remove"><p data-diff-action="remove">D</p></td></tr>' +
 						'</tbody></table>' +
 					'</div>'
 			},
@@ -295,9 +295,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<table><tbody>' +
 							'<tr><td>A</td><td>B</td><td><del data-diff-action="remove">C</del><ins data-diff-action="insert">X</ins></td></tr>' +
 							'<tr data-diff-action="structural-remove">' +
-								'<td data-diff-action="structural-remove"><p data-diff-action=\"remove\">D</p></td>' +
-								'<td data-diff-action="structural-remove"><p data-diff-action=\"remove\">E</p></td>' +
-								'<td data-diff-action="structural-remove"><p data-diff-action=\"remove\">F</p></td>' +
+								'<td data-diff-action="structural-remove"><p data-diff-action="remove">D</p></td>' +
+								'<td data-diff-action="structural-remove"><p data-diff-action="remove">E</p></td>' +
+								'<td data-diff-action="structural-remove"><p data-diff-action="remove">F</p></td>' +
 							'</tr>' +
 							'<tr><td>G</td><td>H</td><td><del data-diff-action="remove">I</del><ins data-diff-action="insert">Y</ins></td></tr>' +
 						'</tbody></table>' +
@@ -391,7 +391,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
 							'<li><p>foo</p></li>' +
-							'<li data-diff-action=\"structural-insert\"><p data-diff-action=\"insert\">bar</p></li>' +
+							'<li data-diff-action="structural-insert"><p data-diff-action="insert">bar</p></li>' +
 							'<li><p>baz</p></li>' +
 						'</ul>' +
 					'</div>'
@@ -404,7 +404,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
 							'<li><p>foo</p></li>' +
-							'<li data-diff-action=\"structural-remove\"><p data-diff-action=\"remove\">bar</p></li>' +
+							'<li data-diff-action="structural-remove"><p data-diff-action="remove">bar</p></li>' +
 							'<li><p>baz</p></li>' +
 						'</ul>' +
 					'</div>'
@@ -415,8 +415,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ul><li><ul><li><p>foo</p></li></ul></li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul data-diff-action=\"structural-insert\">' +
-							'<li data-diff-action=\"structural-insert\"><ul><li><p>foo</p></li></ul></li>' +
+						'<ul data-diff-action="structural-insert">' +
+							'<li data-diff-action="structural-insert"><ul><li><p>foo</p></li></ul></li>' +
 						'</ul>' +
 					'</div>'
 			},

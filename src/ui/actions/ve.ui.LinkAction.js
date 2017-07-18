@@ -166,7 +166,7 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
  *   stripped from an autolink.
  */
 ve.ui.LinkAction.prototype.getTrailingPunctuation = function () {
-	return /[,;.:!?)\]\}"'”’»]+$/;
+	return /[,;.:!?)\]}"'”’»]+$/;
 };
 
 /**

@@ -1191,10 +1191,12 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 
 		// Create annotation set to remove from blacklist
 		setToRemove = allAnnotations.filter( function ( annotation ) {
-			return ( rules.blacklist && rules.blacklist.indexOf( annotation.name ) !== -1 ) || (
-					// If original DOM element references are being removed, remove spans
-					annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
-				);
+			return (
+				rules.blacklist && rules.blacklist.indexOf( annotation.name ) !== -1
+			) || (
+				// If original DOM element references are being removed, remove spans
+				annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
+			);
 		} );
 	}
 

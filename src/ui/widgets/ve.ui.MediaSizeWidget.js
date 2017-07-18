@@ -188,8 +188,8 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
 	// to support that as well
 	this.setSizeType(
 		isDefault ?
-		'default' :
-		'custom'
+			'default' :
+			'custom'
 	);
 	this.validateDimensions();
 };
@@ -356,11 +356,7 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 		this.sizeTypeSelectWidget.getItemFromData( 'default' ).setDisabled( false );
 
 		// Call for the set size type according to default or custom settings of the scalable
-		this.setSizeType(
-			this.scalable.isDefault() ?
-			'default' :
-			'custom'
-		);
+		this.setSizeType( this.scalable.isDefault() ? 'default' : 'custom' );
 	}
 	this.validateDimensions();
 };

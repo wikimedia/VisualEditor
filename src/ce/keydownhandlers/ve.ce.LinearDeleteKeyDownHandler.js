@@ -82,8 +82,8 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		// then preventDefault
 		if (
 			direction > 0 ?
-			skipNode.classList.contains( 've-ce-nail-pre-open' ) :
-			skipNode.classList.contains( 've-ce-nail-post-close' )
+				skipNode.classList.contains( 've-ce-nail-pre-open' ) :
+				skipNode.classList.contains( 've-ce-nail-post-close' )
 		) {
 			position = ve.adjacentDomPosition(
 				position,
@@ -104,19 +104,19 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			skipNode.classList &&
 			skipNode.classList.contains(
 				direction > 0 ?
-				've-ce-nail-pre-close' :
-				've-ce-nail-post-open'
+					've-ce-nail-pre-close' :
+					've-ce-nail-post-open'
 			) &&
 			( pairNode = (
 				direction > 0 ?
-				skipNode.previousSibling :
-				skipNode.nextSibling
+					skipNode.previousSibling :
+					skipNode.nextSibling
 			) ) &&
 			pairNode.classList &&
 			pairNode.classList.contains(
 				direction > 0 ?
-				've-ce-nail-post-open' :
-				've-ce-nail-pre-close'
+					've-ce-nail-post-open' :
+					've-ce-nail-pre-close'
 			)
 		) {
 			linkNode = skipNode.parentNode;
@@ -142,8 +142,8 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		// then preventDefault
 		if (
 			direction > 0 ?
-			skipNode.classList.contains( 've-ce-nail-pre-close' ) :
-			skipNode.classList.contains( 've-ce-nail-post-open' )
+				skipNode.classList.contains( 've-ce-nail-pre-close' ) :
+				skipNode.classList.contains( 've-ce-nail-post-open' )
 		) {
 			position = ve.adjacentDomPosition(
 				position,

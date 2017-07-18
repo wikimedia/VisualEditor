@@ -152,7 +152,7 @@ ve.dm.IndexValueStore.prototype.index = function ( value, stringified ) {
 	return hash;
 };
 
- /**
+/**
  * Replace a value's stored hash, e.g. if the value has changed and you want to discard the old one.
  *
  * @param {string} oldHash The value's previously stored hash

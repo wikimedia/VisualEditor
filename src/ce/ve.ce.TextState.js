@@ -234,7 +234,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		// annotations, then matching characters at their end potentially form part of
 		// the unchanged end region.
 		if ( oldChunks[ oldChunks.length - 1 - change.end ].hasEqualElements(
-				newChunks[ newChunks.length - 1 - change.end ]
+			newChunks[ newChunks.length - 1 - change.end ]
 		) ) {
 			oldChunk = oldChunks[ oldChunks.length - 1 - change.end ];
 			newChunk = newChunks[ newChunks.length - 1 - change.end ];
