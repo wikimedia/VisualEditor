@@ -59,8 +59,14 @@ ve.ce.ActiveNode.prototype.onActiveNodeSetup = function () {
  * Handle node teardown
  */
 ve.ce.ActiveNode.prototype.onActiveNodeTeardown = function () {
+	var surface = this.activeNodeSurface;
+
 	// Events
-	this.activeNodeSurface.getModel().disconnect( this );
+	surface.getModel().disconnect( this );
+
+	if ( surface.getActiveNode() === this ) {
+		surface.setActiveNode( null );
+	}
 
 	this.isActiveNodeSetup = false;
 };
