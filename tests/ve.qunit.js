@@ -341,5 +341,4 @@
 
 		return $div.html();
 	};
-
 }( QUnit ) );

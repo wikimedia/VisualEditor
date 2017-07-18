@@ -52,36 +52,6 @@
 	// Disable scroll animatinos
 	ve.scrollIntoView = function () {};
 
-	// Extend QUnit.module to provide a fixture element. This used to be in tests/index.html, but
-	// dynamic test runners like Karma build their own web page.
-	( function () {
-		var orgModule = QUnit.module;
-
-		QUnit.dump.maxDepth = 10;
-
-		QUnit.module = function ( name, localEnv ) {
-			localEnv = localEnv || {};
-			orgModule( name, {
-				beforeEach: function () {
-					this.fixture = document.createElement( 'div' );
-					this.fixture.id = 'qunit-fixture';
-					document.body.appendChild( this.fixture );
-
-					if ( localEnv.beforeEach ) {
-						localEnv.beforeEach.call( this );
-					}
-				},
-				afterEach: function () {
-					if ( localEnv.afterEach ) {
-						localEnv.afterEach.call( this );
-					}
-
-					this.fixture.parentNode.removeChild( this.fixture );
-				}
-			} );
-		};
-	}() );
-
 	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {
 		var data,
 			doc = ve.dm.example.createExampleDocument( 'isolationData' ),
