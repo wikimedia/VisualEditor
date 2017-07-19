@@ -182,3 +182,7 @@ del[data-diff-action='remove']:hover,
 	color: #72777d;
 	clear: both;
 }
+
+.ve-ui-diffElement-internalListSpacer {
+	list-style-type: none !important; /* stylelint-disable-line declaration-no-important */
+}
