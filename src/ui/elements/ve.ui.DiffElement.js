@@ -189,15 +189,15 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
  * Render the diff
  */
 ve.ui.DiffElement.prototype.renderDiff = function () {
-	var i, j, k, ilen, jlen, klen, nodes, move, spacerNode, groupName,
+	var i, j, k, ilen, jlen, klen, nodes, move, documentSpacerNode, internalListSpacerNode, li, groupName,
 		noChanges, group, headingNode, names, category, internalListGroup,
-		referenceDiffDiv, anyInternalListChanges, internalListItem,
+		internalListDiffDiv, anyInternalListChanges, internalListItem,
 		documentNode = this.$document[ 0 ],
 		anyChanges = false,
 		diffQueue = [],
 		internalListDiffQueue = [];
 
-	function processQueue( queue, parentNode ) {
+	function processQueue( queue, parentNode, spacerNode ) {
 		var spacer, elements, i, ilen;
 
 		function isUnchanged( item ) {
@@ -230,15 +230,23 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		return elements;
 	}
 
-	spacerNode = document.createElement( 'div' );
-	spacerNode.setAttribute( 'class', 've-ui-diffElement-spacer' );
-	spacerNode.appendChild( document.createTextNode( '⋮' ) );
+	documentSpacerNode = document.createElement( 'div' );
+	documentSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer' );
+	documentSpacerNode.appendChild( document.createTextNode( '⋮' ) );
+
+	// Wrap iternal list spacer in <ol> to match indentation
+	internalListSpacerNode = document.createElement( 'ol' );
+	internalListSpacerNode.setAttribute( 'class', 've-ui-diffElement-internalListSpacer' );
+	li = document.createElement( 'li' );
+	internalListSpacerNode.appendChild( li );
+	li.appendChild( documentSpacerNode.cloneNode( true ) );
 
 	// Render the internal list diff, i.e. all reflists with changed nodes.
 	// TODO: It would be nice if the reflists could be rendered in place in the document; however,
 	// they could be hard to find if they are within a template, so for now they are just shown at
 	// the end of the diff.
-	referenceDiffDiv = document.createElement( 'div' );
+	internalListDiffDiv = document.createElement( 'div' );
+	internalListDiffDiv.setAttribute( 'class', 've-ui-diffElement-internalListDiff' );
 	for ( group in this.internalListDiff ) {
 
 		internalListGroup = this.internalListDiff[ group ];
@@ -259,7 +267,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		headingNode = document.createElement( 'h2' );
 		headingNode.setAttribute( 'data-diff-action', 'none' );
 		headingNode.appendChild( document.createTextNode( groupName ) );
-		referenceDiffDiv.appendChild( headingNode );
+		internalListDiffDiv.appendChild( headingNode );
 		for ( i = 0, ilen = internalListGroup.length; i < ilen; i++ ) {
 			internalListItem = internalListGroup[ i ];
 
@@ -282,9 +290,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			}
 		}
 
-		processQueue.call( this, internalListDiffQueue, referenceDiffDiv );
+		processQueue.call( this, internalListDiffQueue, internalListDiffDiv, internalListSpacerNode );
 		internalListDiffQueue = [];
-
 	}
 
 	ilen = Math.max( this.oldDocChildren.length, this.newDocChildren.length );
@@ -340,12 +347,12 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		}
 	}
 
-	processQueue.call( this, diffQueue, documentNode );
+	processQueue.call( this, diffQueue, documentNode, documentSpacerNode );
 	this.descriptions.addItems( this.descriptionItemsStack );
 	this.descriptionItemsStack = [];
 
 	if ( anyInternalListChanges ) {
-		documentNode.appendChild( referenceDiffDiv );
+		documentNode.appendChild( internalListDiffDiv );
 	}
 
 	ve.resolveAttributes( documentNode, this.newDoc.getHtmlDocument(), ve.dm.Converter.static.computedAttributes );
