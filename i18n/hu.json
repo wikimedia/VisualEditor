@@ -11,7 +11,8 @@
 			"Nyuszika7H",
 			"Rodrigo",
 			"Tgr",
-			"Notramo"
+			"Notramo",
+			"Bencemac"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -125,6 +126,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Egyéni",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Alapértelmezett",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Méretarány",
+	"visualeditor-rebase-client-author-name": "Név",
 	"visualeditor-shortcuts-clipboard": "Vágólap",
 	"visualeditor-shortcuts-dialog": "Párbeszédablakok",
 	"visualeditor-shortcuts-formatting": "Bekezdésformázás",
