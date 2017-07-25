@@ -12,7 +12,11 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {string} [dirInput="auto"] Set to "none" to hide the directionality input; set to "no-auto" to select between LTR and RTL; set to "auto" to add "auto" to directionality options.
+ * @cfg {string} [dirInput='auto'] How to display the directionality input. Options are:
+ *      - none: Directionality input is hidden.
+ *      - no-auto: Directionality input is visible and options are LTR or RTL.
+ *      - auto: Directionality input is visible and options include "auto" in
+ *            addition to LTR and RTL.
  * @cfg {boolean} [hideCodeInput] Prevent user from entering a language code as free text
  * @cfg {ve.ui.WindowManager} [dialogManager] Window manager to launch the language search dialog in
  * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
