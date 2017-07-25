@@ -1430,7 +1430,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 				// (this applies even if we cursored up/down)
 				focusableNode = (
 					this.model.documentModel.documentNode
-					.getNodeFromOffset( ( startOffset + endOffset ) / 2 )
+						.getNodeFromOffset( ( startOffset + endOffset ) / 2 )
 				);
 
 				if ( focusableNode.isFocusable() ) {
