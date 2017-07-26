@@ -22,6 +22,10 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 	ve.ce.TableCellableNode.call( this );
 	ve.ce.ContentEditableNode.call( this );
 
+	this.editing = false;
+	// CE nodes initialize to true
+	this.setContentEditable();
+
 	// Events
 	this.model.connect( this, {
 		update: 'onUpdate',
@@ -79,9 +83,19 @@ ve.ce.TableCellNode.prototype.initialize = function () {
  * @param {boolean} enable Enable editing
  */
 ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
+	this.editing = enable;
 	this.$element.toggleClass( 've-ce-tableCellNode-editing', enable );
-	this.setContentEditable( enable );
+	this.setContentEditable();
 	this.getRoot().getSurface().setActiveNode( enable ? this : null );
+};
+
+/**
+ * @inheritdoc ve.ce.ContentEditableNode
+ */
+ve.ce.TableCellNode.prototype.setContentEditable = function () {
+	// Overwite any state passed to setContentEditable with this.editing, so that
+	// setContentEditable doesn't override the editing state.
+	return ve.ce.ContentEditableNode.prototype.setContentEditable.call( this, this.editing );
 };
 
 /**
