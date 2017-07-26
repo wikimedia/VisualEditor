@@ -9,7 +9,6 @@
  *
  * @class
  * @extends ve.ce.BranchNode
- * @mixins ve.ce.ContentEditableNode
  * @mixins ve.ce.ActiveNode
  *
  * @constructor
@@ -21,7 +20,6 @@ ve.ce.BlockImageCaptionNode = function VeCeBlockImageCaptionNode() {
 	ve.ce.BlockImageCaptionNode.super.apply( this, arguments );
 
 	// Mixin constructor
-	ve.ce.ContentEditableNode.call( this );
 	ve.ce.ActiveNode.call( this );
 };
 
@@ -29,7 +27,6 @@ ve.ce.BlockImageCaptionNode = function VeCeBlockImageCaptionNode() {
 
 OO.inheritClass( ve.ce.BlockImageCaptionNode, ve.ce.BranchNode );
 
-OO.mixinClass( ve.ce.BlockImageCaptionNode, ve.ce.ContentEditableNode );
 OO.mixinClass( ve.ce.BlockImageCaptionNode, ve.ce.ActiveNode );
 
 /* Static Properties */
