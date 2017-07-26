@@ -205,42 +205,17 @@ ve.ui.commandRegistry.register(
 		{ args: [ 'paragraph' ], supportedSelections: [ 'linear' ] }
 	)
 );
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'heading1', 'format', 'convert',
-		{ args: [ 'heading', { level: 1 } ], supportedSelections: [ 'linear' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'heading2', 'format', 'convert',
-		{ args: [ 'heading', { level: 2 } ], supportedSelections: [ 'linear' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'heading3', 'format', 'convert',
-		{ args: [ 'heading', { level: 3 } ], supportedSelections: [ 'linear' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'heading4', 'format', 'convert',
-		{ args: [ 'heading', { level: 4 } ], supportedSelections: [ 'linear' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'heading5', 'format', 'convert',
-		{ args: [ 'heading', { level: 5 } ], supportedSelections: [ 'linear' ] }
-	)
-);
-ve.ui.commandRegistry.register(
-	new ve.ui.Command(
-		'heading6', 'format', 'convert',
-		{ args: [ 'heading', { level: 6 } ], supportedSelections: [ 'linear' ] }
-	)
-);
+( function () {
+	var level;
+	for ( level = 1; level <= 6; level++ ) {
+		ve.ui.commandRegistry.register(
+			new ve.ui.Command(
+				'heading' + level, 'format', 'convert',
+				{ args: [ 'heading', { level: level } ], supportedSelections: [ 'linear' ] }
+			)
+		);
+	}
+}() );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
 		'preformatted', 'format', 'convert',
