@@ -34,10 +34,10 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	this.oldDocInternalListNode = visualDiff.oldDocInternalListNode;
 
 	// Diff
-	this.oldToNew = diff.docChildrenOldToNew;
-	this.newToOld = diff.docChildrenNewToOld;
-	this.insert = diff.docChildrenInsert;
-	this.remove = diff.docChildrenRemove;
+	this.oldToNew = diff.docDiff.rootChildrenOldToNew;
+	this.newToOld = diff.docDiff.rootChildrenNewToOld;
+	this.insert = diff.docDiff.rootChildrenInsert;
+	this.remove = diff.docDiff.rootChildrenRemove;
 	this.internalListDiff = diff.internalListDiff;
 
 	this.$overlays = $( '<div>' ).addClass( 've-ui-diffElement-overlays' );
