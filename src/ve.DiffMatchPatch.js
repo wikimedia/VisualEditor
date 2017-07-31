@@ -141,12 +141,21 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			remove = [],
 			insert = [];
 
-		function equalUnannotated( element, index, other ) {
+		function equalUnannotated( other, element, index ) {
 			return ve.dm.ElementLinearData.static.compareElementsUnannotated( element, other[ index ] );
 		}
 
-		function equalElements( element, index, other ) {
-			return element.type && other[ index ].type && element.type === other[ index ].type;
+		function equalElements( other, element, index ) {
+			// Non-elements can't be equal to other elements
+			if ( !element.type || !other[ index ].type ) {
+				return false;
+			}
+			if ( ve.dm.LinearData.static.isOpenElementData( element ) ) {
+				return ve.dm.modelRegistry.lookup( element.type ).static.isDiffComparable( element, other[ index ] );
+			} else {
+				// Ignore close elements
+				return true;
+			}
 		}
 
 		function isWhitespace( element ) {
@@ -294,7 +303,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 				aData.length === bData.length &&
 				( ( aAction === DIFF_DELETE && bAction === DIFF_INSERT ) || ( aAction === DIFF_INSERT && bAction === DIFF_DELETE ) )
 			) {
-				if ( aData.every( equalUnannotated.bind( bData ) ) ) {
+				if ( aData.every( equalUnannotated.bind( this, bData ) ) ) {
 					aAnnotations = new ve.dm.ElementLinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
 					bAnnotations = new ve.dm.ElementLinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
 
@@ -313,7 +322,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 						cleanDiff[ i + 1 ][ 0 ] = bAction === DIFF_DELETE ? DIFF_CHANGE_DELETE : DIFF_CHANGE_INSERT;
 					}
 				}
-				if ( aData.every( equalElements.bind( bData ) ) ) {
+				if ( aData.every( equalElements.bind( this, bData ) ) ) {
 					attributeChanges = [];
 					// eslint-disable-next-line no-loop-func
 					bData.forEach( function ( element, i ) {
