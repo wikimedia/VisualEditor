@@ -396,7 +396,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 					modelClass = ve.dm.modelRegistry.lookup(
 						ve.dm.modelRegistry.matchElement( element )
 					);
-					if ( !( modelClass.prototype instanceof ve.dm.Annotation ) ) {
+					if ( !( modelClass && modelClass.prototype instanceof ve.dm.Annotation ) ) {
 						// Erroneous element; nothing we can do with it
 						continue;
 					}
