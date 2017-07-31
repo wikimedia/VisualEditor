@@ -29,6 +29,8 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 
 	// DOM changes
 	this.$element.addClass( 've-ce-documentNode' );
+	// Prevent Grammarly from polluting the DOM (T165746)
+	this.$element.attr( 'data-gramm', 'false' );
 };
 
 /* Inheritance */
