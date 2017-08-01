@@ -193,7 +193,8 @@ ve.init.Target.static.importRules = {
 /**
  * Parse document string into an HTML document
  *
- * @param {string} documentString Document
+ * @param {string} documentString Document. Note that this must really be a whole document
+ *   with a single root tag.
  * @param {string} mode Editing mode
  * @return {HTMLDocument} HTML document
  */
