@@ -11,10 +11,15 @@
 	"--external": "HTMLDocument,Window,Node,Text,Set,Range,Selection,ClientRect,File,Blob,DataTransfer,DataTransferItem,KeyboardEvent,MouseEvent",
 	"--": [
 		".jsduck/external.js",
-		"lib/oojs",
-		"lib/oojs-ui",
-		"lib/unicodejs",
-		"lib/treeDiffer",
+		"lib/oojs/oojs.jquery.js",
+		"lib/oojs-ui/oojs-ui-core.js",
+		"lib/oojs-ui/oojs-ui-widgets.js",
+		"lib/oojs-ui/oojs-ui-toolbars.js",
+		"lib/oojs-ui/oojs-ui-windows.js",
+		"lib/oojs-ui/oojs-ui-wikimediaui.js",
+		"lib/oojs-ui/oojs-ui-apex.js",
+		"lib/unicodejs/unicodejs.js",
+		"lib/treeDiffer/treeDiffer-dist.js",
 		"src",
 		"tests"
 	]
