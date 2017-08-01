@@ -1179,7 +1179,8 @@ ve.normalizeAttributeValue = function ( name, value, nodeName ) {
  * Map attributes that are broken in IE to attributes prefixed with data-ve-
  * or vice versa.
  *
- * @param {string} html HTML string. Must also be valid XML
+ * @param {string} html HTML string. Must also be valid XML. Must only have
+ *   one root node (e.g. be a complete document).
  * @param {boolean} unmask Map the masked attributes back to their originals
  * @return {string} HTML string modified to mask/unmask broken attributes
  */
@@ -1241,7 +1242,8 @@ ve.transformStyleAttributes = function ( html, unmask ) {
  * normalization bugs if a broken browser is detected.
  * Since this process uses an XML parser, the input must be valid XML as well as HTML.
  *
- * @param {string} html HTML string. Must also be valid XML
+ * @param {string} html HTML string. Must also be valid XML. Must only have
+ *   one root node (e.g. be a complete document).
  * @return {HTMLDocument} HTML DOM
  */
 ve.parseXhtml = function ( html ) {
