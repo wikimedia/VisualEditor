@@ -1,19 +1,25 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pahles"
+			"Pahles",
+			"Ooswesthoesbes"
 		]
 	},
 	"visualeditor": "Visuele teksverwirker",
+	"visualeditor-aliencontextitem-title": "Deil",
+	"visualeditor-aliennode-tooltip": "Dit element kan allein waere bewirk inne bróncodemodus.",
 	"visualeditor-align-widget-center": "Gecentreerd",
+	"visualeditor-align-widget-default": "Standerd",
 	"visualeditor-align-widget-left": "Links",
 	"visualeditor-align-widget-right": "Rechs",
 	"visualeditor-alignablecontextitem-title": "Oetliening",
+	"visualeditor-annotationbutton-big-tooltip": "Groeat",
 	"visualeditor-annotationbutton-bold-tooltip": "Vèt",
 	"visualeditor-annotationbutton-code-tooltip": "Computercode",
 	"visualeditor-annotationbutton-italic-tooltip": "Sjuuns",
 	"visualeditor-annotationbutton-language-tooltip": "Sjpraok",
 	"visualeditor-annotationbutton-link-tooltip": "Link",
+	"visualeditor-annotationbutton-small-tooltip": "Klein",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Doorhaole",
 	"visualeditor-annotationbutton-subscript-tooltip": "Subscript",
 	"visualeditor-annotationbutton-superscript-tooltip": "Superscript",
