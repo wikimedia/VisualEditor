@@ -18,8 +18,8 @@
  * @param {Number} [timeout=1000] Timeout after which to stop performing linear diffs (in ms)
  */
 ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc, timeout ) {
-	this.oldDoc = oldDoc.cloneFromRange();
-	this.newDoc = newDoc.cloneFromRange();
+	this.oldDoc = oldDoc.cloneFromRange( undefined, true );
+	this.newDoc = newDoc.cloneFromRange( undefined, true );
 	this.oldDocNode = this.oldDoc.getDocumentNode();
 	this.newDocNode = this.newDoc.getDocumentNode();
 	this.oldDocChildren = this.getDocChildren( this.oldDocNode );

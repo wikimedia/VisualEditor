@@ -656,16 +656,17 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
  * will be clones of the ones in this document.
  *
  * @param {ve.Range} [range] Range of data to clone, clones the whole document if ommitted.
+ * @param {boolean} [detachedCopy] The copy is not intended to be merged into the original
  * @return {ve.dm.Document} New document
  */
-ve.dm.Document.prototype.cloneFromRange = function ( range ) {
+ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy ) {
 	var listRange = this.getInternalList().getListNode().getOuterRange(),
 		data = ve.copy( this.getFullData( range, true ) );
 	if ( range && ( range.start > listRange.start || range.end < listRange.end ) ) {
 		// The range does not include the entire internal list, so add it
 		data = data.concat( this.getFullData( listRange ) );
 	}
-	return this.cloneWithData( data, true );
+	return this.cloneWithData( data, true, detachedCopy );
 };
 
 /**
@@ -675,9 +676,10 @@ ve.dm.Document.prototype.cloneFromRange = function ( range ) {
  * @param {Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data Raw linear model data,
  *  ElementLinearData or FlatLinearData
  * @param {boolean} [copyInternalList] Copy the internal list
+ * @param {boolean} [detachedCopy] The copy is not intended to be merged into the original
  * @return {ve.dm.Document} New document
  */
-ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList ) {
+ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, detachedCopy ) {
 	var newDoc;
 
 	if ( Array.isArray( data ) ) {
@@ -697,7 +699,7 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList ) {
 		// lang+dir
 		this.getLang(), this.getDir()
 	);
-	if ( copyInternalList ) {
+	if ( copyInternalList && !detachedCopy ) {
 		// Record the length of the internal list at the time the slice was created so we can
 		// reconcile additions properly
 		newDoc.origDoc = this;

@@ -16,7 +16,7 @@
  * @param {Object} [config]
  */
 ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
-	var diff = visualDiff.diff;
+	var tx, diff = visualDiff.diff;
 
 	// Parent constructor
 	ve.ui.DiffElement.super.call( this, config );
@@ -28,6 +28,11 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	this.newDoc = visualDiff.newDoc;
 	this.oldDocChildren = visualDiff.oldDocChildren;
 	this.newDocChildren = visualDiff.newDocChildren;
+
+	// Merge the old internal list into the new document, so that it knows
+	// about removed references
+	tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( this.newDoc, 0, this.oldDoc, new ve.Range( 0 ) );
+	this.newDoc.commit( tx );
 
 	// Internal list
 	this.newDocInternalListNode = visualDiff.newDocInternalListNode;
