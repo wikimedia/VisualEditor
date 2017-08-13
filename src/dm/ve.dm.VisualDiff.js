@@ -45,7 +45,7 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc, timeout ) {
  * Get the children of the document that are not internal list nodes
  *
  * @param {ve.dm.Node} docNode The document node
- * @returns {Array} The children of the document node
+ * @return {Array} The children of the document node
  */
 ve.dm.VisualDiff.prototype.getDocChildren = function ( docNode ) {
 	var i, ilen,
@@ -98,7 +98,7 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
  *
  * @param {Array} oldRootChildren Children of the old root node
  * @param {Array} newRootChildren Children of the new root node
- * @returns {Object} Object containing diff information
+ * @return {Object} Object containing diff information
  */
 ve.dm.VisualDiff.prototype.computeDiff = function ( oldRootChildren, newRootChildren ) {
 	var i, ilen, j, jlen,

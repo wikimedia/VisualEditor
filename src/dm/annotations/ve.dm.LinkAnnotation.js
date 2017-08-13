@@ -93,7 +93,7 @@ ve.dm.LinkAnnotation.prototype.getDisplayTitle = function () {
 /**
  * Get the fragment / hash for the current href
  *
- * @returns {string|null} The fragment, or null if none is present
+ * @return {string|null} The fragment, or null if none is present
  */
 ve.dm.LinkAnnotation.prototype.getFragment = function () {
 	var href = this.getHref(),
