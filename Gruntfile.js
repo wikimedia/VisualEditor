@@ -379,7 +379,7 @@ module.exports = function ( grunt ) {
 		},
 		runwatch: {
 			files: [
-				'.{stylelintrc,eslintrc.json}',
+				'.{stylelintrc,eslintrc}.json',
 				'**/*.js',
 				'!coverage/**',
 				'!dist/**',
