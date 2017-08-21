@@ -48,6 +48,41 @@ OO.initClass( ve.ce.GeneratedContentNode );
 // We handle rendering ourselves, no need to render attributes from originalDomElements
 ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;
 
+/* Static methods */
+
+/**
+ * Wait for all content-generation within a given node to finish
+ *
+ * If no GeneratedContentNodes are within the node, a resolved promise will be
+ * returned.
+ *
+ * @param  {ve.ce.View} view Any view node
+ * @return {jQuery.Promise} Promise, resolved when content is generated
+ */
+ve.ce.GeneratedContentNode.static.awaitGeneratedContent = function ( view ) {
+	var promises = [];
+
+	function queueNode( node ) {
+		var promise;
+		if ( typeof node.generateContents === 'function' ) {
+			if ( node.isGenerating() ) {
+				promise = $.Deferred();
+				node.once( 'rerender', promise.resolve );
+				promises.push( promise );
+			}
+		}
+	}
+
+	// Traverse children to see when they are all rerendered
+	if ( view instanceof ve.ce.BranchNode ) {
+		view.traverse( queueNode );
+	} else {
+		queueNode( view );
+	}
+
+	return $.when.apply( $, promises );
+};
+
 /* Abstract methods */
 
 /**

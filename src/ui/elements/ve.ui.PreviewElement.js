@@ -98,32 +98,13 @@ ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
  * Update the preview
  */
 ve.ui.PreviewElement.prototype.updatePreview = function () {
-	var promises = [],
-		element = this;
+	var element = this;
 
 	// Initial CE node
 	this.view = ve.ce.nodeFactory.create( this.model.getType(), this.model );
 
-	function queueNode( node ) {
-		var promise;
-		if ( typeof node.generateContents === 'function' ) {
-			if ( node.isGenerating() ) {
-				promise = $.Deferred();
-				node.once( 'rerender', promise.resolve );
-				promises.push( promise );
-			}
-		}
-	}
-
-	// Traverse children to see when they are all rerendered
-	if ( this.view instanceof ve.ce.BranchNode ) {
-		this.view.traverse( queueNode );
-	} else {
-		queueNode( this.view );
-	}
-
 	// When all children are rerendered, replace with dm DOM
-	$.when.apply( $, promises )
+	ve.ce.GeneratedContentNode.static.awaitGeneratedContent( this.view )
 		.then( function () {
 			// Verify that the element and/or the ce node weren't destroyed
 			if ( element.view ) {
