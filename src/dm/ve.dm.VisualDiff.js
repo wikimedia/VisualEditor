@@ -456,7 +456,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
  */
 ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 	var i, ilen, j, jlen, diff, item, group,
-		newItems, oldItems, nodeIndices,
+		newItems, oldItems, itemIndex,
 		oldDocNodeGroups = this.oldDoc.getInternalList().getNodeGroups(),
 		newDocNodeGroups = this.newDoc.getInternalList().getNodeGroups(),
 		oldDocInternalListItems,
@@ -575,29 +575,26 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 					// There are changes.
 					// Mark each new doc internal list item as unchanged, changed or inserted
 					newItems = newDocInternalListItems.indices;
-					nodeIndices = {}; // For finding removed internalListItems
 					for ( j = 0, jlen = newItems.length; j < jlen; j++ ) {
 						item = newItems[ j ];
-						if ( typeof diff.rootChildrenNewToOld[ item.indexOrder ] === 'number' ) {
+						itemIndex = item.indexOrder;
+						if ( typeof diff.rootChildrenNewToOld[ itemIndex ] === 'number' ) {
 
 							// Item hasn't changed
 							item.diff = 0;
-							nodeIndices[ item.nodeIndex ] = true;
 
-						} else if ( diff.rootChildrenNewToOld[ item.indexOrder ] === undefined ) {
+						} else if ( diff.rootChildrenNewToOld[ itemIndex ] === undefined ) {
 
 							// Item was inserted
 							item.diff = 1;
-							nodeIndices[ item.nodeIndex ] = true;
 
 						} else {
 
 							// Item has changed
 							// (The diff object is stored in rootChildrenOldToNew)
 							item.diff = diff.rootChildrenOldToNew[
-								diff.rootChildrenNewToOld[ item.indexOrder ].node
+								diff.rootChildrenNewToOld[ itemIndex ].node
 							].diff;
-							nodeIndices[ item.nodeIndex ] = true;
 
 						}
 					}
@@ -606,9 +603,11 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 					oldItems = oldDocInternalListItems.indices;
 					for ( j = 0, jlen = oldItems.length; j < jlen; j++ ) {
 						item = oldItems[ j ];
-						if ( !( item.nodeIndex in nodeIndices ) ) {
+						itemIndex = item.nodeIndex;
+						if ( diff.rootChildrenRemove.indexOf( j ) !== -1 ) {
 
-							// Item was removed
+							// Item is either not in the new internal list, or has been marked
+							// as a remove-insert, so mark as removed
 							item.diff = -1;
 							newItems.push( item );
 
