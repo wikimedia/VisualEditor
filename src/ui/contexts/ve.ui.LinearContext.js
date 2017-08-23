@@ -22,6 +22,7 @@ ve.ui.LinearContext = function VeUiLinearContext() {
 	// Properties
 	this.inspector = null;
 	this.inspectors = this.createInspectorWindowManager();
+	this.isOpening = false;
 	this.lastSelectedNode = null;
 	this.afterContextChangeTimeout = null;
 	this.afterContextChangeHandler = this.afterContextChange.bind( this );
@@ -153,6 +154,8 @@ ve.ui.LinearContext.prototype.afterContextChange = function () {
 ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 	var context = this,
 		observer = this.surface.getView().surfaceObserver;
+
+	this.isOpening = true;
 	this.inspector = win;
 
 	// Shut down the SurfaceObserver as soon as possible, so it doesn't get confused
@@ -163,6 +166,7 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 
 	opening
 		.progress( function ( data ) {
+			context.isOpening = false;
 			if ( data.state === 'setup' ) {
 				if ( !context.isVisible() ) {
 					// Change state: closed -> inspector
@@ -178,14 +182,18 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 		.always( function ( opened ) {
 			opened.always( function ( closed ) {
 				closed.always( function () {
-					var inspectable = context.isInspectable();
+					// Don't try to close the inspector if a second
+					// opening has already been triggered
+					if ( context.isOpening ) {
+						return;
+					}
 
 					context.inspector = null;
 
 					// Reenable observer
 					observer.startTimerLoop();
 
-					if ( inspectable ) {
+					if ( context.isInspectable() ) {
 						// Change state: inspector -> menu
 						context.toggleMenu( true );
 						context.updateDimensionsDebounced();
