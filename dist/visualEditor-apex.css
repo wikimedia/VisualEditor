@@ -1,0 +1,1907 @@
+/*!
+ * VisualEditor v0.0.0
+ * https://www.mediawiki.org/wiki/VisualEditor
+ *
+ * Copyright 2011–2017 VisualEditor Team and others.
+ * Released under the MIT license
+ * http://ve.mit-license.org
+ *
+ * Date: 2017-08-24T00:44:19Z
+ */
+/*!
+ * VisualEditor ContentEditable FocusableNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-focusableNode {
+	cursor: default;
+}
+
+/* We have to use a * selector because user-select isn't inherited by absolutely positioned
+   children in Firefox. */
+.ve-ce-focusableNode * {
+	/* Support: Firefox */
+	/* T70537: work around Firefox bug */
+	-moz-user-select: none;
+}
+
+.ve-ce-focusableNode-highlight {
+	background: #6da9f7;
+	box-shadow: inset 0 0 0 1px #4c76ac;
+	position: absolute;
+	/* Clip extra span added for selectability */
+	overflow: hidden;
+}
+
+.ve-ce-focusableNode-highlight-error {
+	background: #f00;
+}
+
+.ve-ce-focusableNode-highlight-relocatable-marker {
+	width: 100%;
+	height: 100%;
+}
+
+.ve-ce-focusableNode-highlights-relocating .ve-ce-focusableNode-highlight-relocatable-marker {
+	background: #000;
+	background: rgba( 0, 0, 0, 1 );
+}
+
+/* Prevent 'copy image' appearing in context menu */
+.ve-ce-focusableNode-highlights-contextOpen .ve-ce-focusableNode-highlight-relocatable-marker {
+	display: none;
+}
+
+.ve-ce-focusableNode-highlight-selectable {
+	position: absolute;
+	top: -1000px;
+}
+
+.ve-ce-focusableNode-invisible {
+	display: inline-block;
+	vertical-align: middle;
+	/* Negative margins ensure icon height doesn't exceed line height in paragraphs */
+	margin: -6px 0 -2px 0;
+	width: 24px;
+	height: 24px;
+}
+
+.ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement {
+	display: block;
+	/* Don't scale icon in headings etc. */
+	width: 24px;
+	height: 24px;
+	background-size: 24px 24px;
+	/* Make native selection match fake selection */
+	font-size: 24px;
+	line-height: 1em;
+	opacity: 0.5;
+}
+
+/* Highlights group opacity */
+
+.ve-ce-surface-highlights-focused .ve-ce-focusableNode-highlights {
+	opacity: 0.5;
+}
+
+.ve-ce-surface-highlights-blurred .ve-ce-focusableNode-highlights {
+	opacity: 0.15;
+}
+
+/* Support: IE, Edge */
+/* Set opacity directly on the highlights, rather than their containers,
+   otherwise the opacity isn't applied at all */
+.ve-init-target-ie-or-edge .ve-ce-surface-highlights-focused .ve-ce-focusableNode-highlight {
+	opacity: 0.5;
+}
+
+.ve-init-target-ie-or-edge .ve-ce-surface-highlights-blurred .ve-ce-focusableNode-highlight {
+	opacity: 0.15;
+}
+
+/*!
+ * VisualEditor ContentEditable SectionNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-focusableNode .ve-ce-activeNode {
+	cursor: text;
+}
+
+.ve-ce-focusableNode .ve-ce-activeNode,
+.ve-ce-focusableNode .ve-ce-activeNode * {
+	-moz-user-select: text;
+}
+
+/*!
+ * VisualEditor ContentEditable AlienNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
+	background-color: #95d14f;
+	background-image: -webkit-repeating-linear-gradient( -45deg, #fff 0, #fff 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -moz-repeating-linear-gradient( -45deg, #fff 0, #fff 5px, #95d14f 5px, #95d14f 10px );
+	background-image: repeating-linear-gradient( -45deg, #fff 0, #fff 5px, #95d14f 5px, #95d14f 10px );
+	background-size: 14px 14px;
+	cursor: not-allowed;
+}
+
+.ve-ce-surface-highlights-focused .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
+	background-image: -webkit-repeating-linear-gradient( -45deg, #6da9f7 0, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -moz-repeating-linear-gradient( -45deg, #6da9f7 0, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
+	background-image: repeating-linear-gradient( -45deg, #6da9f7 0, #6da9f7 5px, #95d14f 5px, #95d14f 10px );
+}
+
+.ve-ce-surface-highlights-blurred .ve-ce-alienNode-highlights {
+	opacity: 0.5;
+}
+
+/*!
+ * VisualEditor ContentEditable BranchNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* Prevent focus outline on editable sections */
+.ve-ce-branchNode:focus {
+	outline: 0;
+}
+
+.ve-ce-branchNode-blockSlug {
+	visibility: hidden;
+	opacity: 0;
+	cursor: pointer;
+	-webkit-transition: opacity 200ms ease-out;
+	-moz-transition: opacity 200ms ease-out;
+	transition: opacity 200ms ease-out;
+}
+
+.ve-ce-branchNode-blockSlug,
+.ve-ce-branchNode-newSlug {
+	margin: -0.3em 0 -0.1em 0;
+	outline: 1px dashed #ccc;
+	/* rgba( #f1f7fb, 0.75 ) */
+	background-color: rgba( 241, 247, 251, 0.75 );
+}
+
+.ve-ce-surface-enabled .ve-ce-branchNode-blockSlug {
+	visibility: visible;
+}
+
+.ve-ce-branchNode-blockSlug:hover,
+.ve-ce-branchNode-blockSlug.ve-ce-branchNode-blockSlug-focused {
+	opacity: 1;
+}
+
+.ve-ce-branchNode-newSlug-open {
+	margin: 1em 0;
+	background-color: transparent;
+	outline-color: transparent;
+	outline-offset: 1em;
+	-webkit-transition: all 400ms ease-out;
+	-moz-transition: all 400ms ease-out;
+	transition: all 400ms ease-out;
+}
+
+.ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget {
+	margin-left: 0.25em;
+	opacity: 0.5;
+	display: block;
+}
+
+.ve-ce-branchNode-blockSlug > .oo-ui-buttonWidget > .oo-ui-buttonElement-button {
+	display: block;
+}
+
+.ve-ce-chimera {
+	width: 0;
+	height: 0;
+}
+
+.ve-ce-chimera-webkit {
+	/* Cursor positioning tweak */
+	width: 1px;
+	height: 1em;
+}
+
+.ve-ce-chimera-gecko {
+	/* Force height in empty branch */
+	border: 1px solid transparent;
+}
+
+.ve-ce-chimera-debug {
+	width: auto;
+	height: auto;
+}
+
+.ve-ce-unicorn:not( .ve-ce-unicorn-debug ) {
+	width: 0;
+	height: 0;
+}
+
+/* Pre-formatted node styling */
+
+pre.ve-ce-branchNode {
+	/* Support: Chrome, Safari */
+	/* Prevent silly wrapping on Safari and Chrome (https://bugs.webkit.org/show_bug.cgi?id=35935) */
+	word-wrap: normal;
+}
+
+/* Emulate the first paragraph in each list item being unwrapped */
+
+/* TODO use CSS class for wrapper paragraph */
+li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
+	margin: 0;
+	padding: 0;
+}
+
+/*!
+ * VisualEditor ContentEditable ContentBranchNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/*
+ * So that we don't need to use &nbsp; when rendering text with multiple consecutive spaces, and
+ * that the browser doesn't insert &nbsp; when typing regular spaces, and that we can let the user
+ * input actual non-breaking spaces in the text without having to guess if they're really needed.
+ */
+.ve-ce-contentBranchNode {
+	white-space: pre-wrap;
+}
+
+/* Hack for empty headings and paragraphs; can't use min-height because of IE */
+
+.ve-ce-contentBranchNode:empty:before {
+	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
+}
+
+/*
+ * Undo this hack on focusable nodes
+ */
+.ve-ce-focusableNode:not( pre ) {
+	white-space: normal;
+}
+
+/*!
+ * VisualEditor ContentEditable DocumentNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-documentNode {
+	cursor: default;
+}
+
+.ve-ce-surface-enabled .ve-ce-documentNode {
+	cursor: text;
+}
+
+/*
+ * Don't bother with -moz-selection becase Firefox 24 only
+ * supports overriding text selection colour, not images
+ * (i.e. any focusable nodes)
+ */
+.ve-ce-documentNode::selection,
+.ve-ce-documentNode *::selection {
+	background: rgba( 109, 169, 247, 0.5 ); /* #6da9f7 */
+}
+
+/*!
+ * VisualEditor ContentEditable GeneratedContentNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-generatedContentNode-generating {
+	opacity: 0.5;
+}
+
+/*!
+ * VisualEditor ContentEditable HorizontalRuleNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-horizontalRuleNode {
+	/* Prevent margin collapse of child <hr> so the node has a reasonable height to click on */
+	overflow: auto;
+}
+
+/*!
+ * VisualEditor ContentEditable CommentNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement {
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+	font-size: 0.8125em;
+	width: auto;
+}
+
+.ve-ce-commentNode.ve-ce-focusableNode-invisible {
+	width: auto;
+}
+
+.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement .oo-ui-labelElement-label {
+	margin-left: 0;
+	margin-right: 0.25em;
+}
+.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement .oo-ui-iconElement-icon {
+	height: auto;
+}
+
+/*!
+ * VisualEditor ContentEditable LanguageAnnotation styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-languageAnnotation {
+	border-bottom: 1px dashed #ccc;
+	background-color: #ebf3f5;
+}
+
+/* Support: IE */
+/* Don't apply a background color to language annotations, otherwise the
+   text disappears if the span has dir="rtl" */
+.ve-init-target-ie .ve-ce-languageAnnotation {
+	background: none;
+}
+
+/*!
+ * VisualEditor ContentEditable LanguageAnnotation styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-linkAnnotation-active {
+	box-shadow: 0 0 0 1px #c6e0ff;
+	border-radius: 0.2em;
+	padding: 2px;
+	margin: -2px;
+	background-color: #e6f1ff;
+}
+
+.ve-ce-nail:not( .ve-ce-nail-debug ) {
+	width: 0;
+	height: 0;
+}
+
+/*!
+ * VisualEditor ContentEditable ResizableNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-resizableNode-handles {
+	position: absolute;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.ve-ce-resizableNode-handles-resizing {
+	box-shadow: inset 0 0 0 1px rgba( 0, 0, 0, 0.2 );
+	background: rgba( 0, 0, 0, 0.1 );
+}
+
+.ve-ce-resizableNode-handles div {
+	position: absolute;
+	width: 11px;
+	height: 11px;
+	background-repeat: no-repeat;
+}
+
+.ve-ce-resizableNode-nwHandle {
+	cursor: nw-resize;
+	left: -6px;
+	top: -6px;
+}
+
+.ve-ce-resizableNode-neHandle {
+	cursor: ne-resize;
+	right: -6px;
+	top: -6px;
+}
+
+.ve-ce-resizableNode-swHandle {
+	cursor: sw-resize;
+	bottom: -6px;
+	left: -6px;
+}
+
+.ve-ce-resizableNode-seHandle {
+	cursor: se-resize;
+	bottom: -6px;
+	right: -6px;
+}
+
+.ve-ce-resizableNode-nwHandle,
+.ve-ce-resizableNode-seHandle {
+	/* @embed */
+	background-image: url( ../../../ui/styles/images/resize-nw-se.svg );
+}
+
+.ve-ce-resizableNode-neHandle,
+.ve-ce-resizableNode-swHandle {
+	/* @embed */
+	background-image: url( ../../../ui/styles/images/resize-ne-sw.svg );
+}
+
+.ve-ce-resizableNode-hide-nw .ve-ce-resizableNode-nwHandle,
+.ve-ce-resizableNode-hide-ne .ve-ce-resizableNode-neHandle,
+.ve-ce-resizableNode-hide-sw .ve-ce-resizableNode-swHandle,
+.ve-ce-resizableNode-hide-se .ve-ce-resizableNode-seHandle {
+	display: none;
+}
+
+.ve-ce-resizableNode-sizeLabel {
+	position: absolute;
+	text-align: center;
+	opacity: 0;
+	-webkit-transition: opacity 200ms;
+	-moz-transition: opacity 200ms;
+	transition: opacity 200ms;
+}
+
+.ve-ce-resizableNode-sizeLabel-resizing {
+	opacity: 1;
+}
+
+.ve-ce-resizableNode-sizeText {
+	padding: 0.25em 0.5em;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	border-radius: 0.3em;
+	white-space: nowrap;
+}
+
+.ve-ce-resizableNode-sizeText span:not( :first-child ) {
+	margin-left: 0.4em;
+	padding-left: 0.4em;
+	border-left: 1px solid #ccc;
+}
+
+.ve-ce-resizableNode-sizeText-warning {
+	background-color: #ecc;
+	border-color: #caa;
+}
+
+/*!
+ * VisualEditor ContentEditable SectionNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* Prevent margin collapse across sections */
+.ve-ce-sectionNode:before,
+.ve-ce-sectionNode:after {
+	content: '\00a0';
+	display: block;
+	overflow: hidden;
+	height: 0;
+}
+
+.ve-ce-sectionNode {
+	opacity: 1;
+	-webkit-transition: opacity 250ms ease;
+	-moz-transition: opacity 250ms ease;
+	transition: opacity 250ms ease;
+}
+
+.ve-ce-surface-enabled .ve-ce-sectionNode:not( .ve-ce-activeNode-active ) {
+	opacity: 0.5;
+}
+
+/*!
+ * VisualEditor ContentEditable TableCellNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-tableCellableNode {
+	border: 1px dotted #ccc;
+	padding: 0.25em 0.5em;
+	min-width: 1em;
+}
+
+/* Use child selectors to avoid making nested tables look active */
+.ve-ce-tableNode-active > * > tr > .ve-ce-tableCellableNode {
+	border-style: solid;
+}
+
+.ve-ce-tableCellNode-editing {
+	cursor: text;
+}
+
+.ve-ce-tableCellNode a {
+	/* TODO: Suport IE10 with JS mouse events */
+	pointer-events: none;
+}
+
+.ve-ce-tableCellNode-editing a {
+	pointer-events: auto;
+}
+
+.ve-ce-tableCellNode > .ve-ce-branchNode-blockSlug {
+	visibility: hidden;
+}
+
+.ve-ce-tableCellNode-editing > .ve-ce-branchNode-blockSlug {
+	visibility: visible;
+}
+
+.ve-ce-tableCellNode .ve-ce-paragraphNode {
+	margin: 0;
+}
+
+/*!
+ * VisualEditor ContentEditable TableNode styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-tableNode {
+	border-spacing: 0;
+	border-collapse: collapse;
+	cursor: default;
+}
+
+.ve-ce-tableCaptionNode {
+	cursor: text;
+}
+
+.ve-ce-tableCaptionNode.ve-ce-activeNode-active {
+	border: 1px dotted #ccc;
+	border-bottom: 0;
+	margin-top: -1px;
+}
+
+.ve-ce-tableNodeOverlay {
+	position: absolute;
+	/* TODO: Suport IE10 with JS mouse events */
+	pointer-events: none;
+}
+
+.ve-ce-tableNodeOverlay .ve-ui-tableLineContext {
+	pointer-events: auto;
+}
+
+.ve-ce-tableNodeOverlay-selection-box {
+	position: absolute;
+	border: solid 0 #6da9f7;
+	background: rgba( 109, 169, 247, 0.3 ); /* #6da9f7 */
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	opacity: 0.6;
+}
+
+.ve-ce-tableNodeOverlay-selection-box-fullCol {
+	border-left-width: 2px;
+	border-right-width: 2px;
+}
+
+.ve-ce-tableNodeOverlay-selection-box-fullRow {
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+}
+
+.ve-ce-tableNodeOverlay-selection-box-notEditable {
+	background-image: -webkit-repeating-linear-gradient( -45deg, transparent 0 transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: -moz-repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
+	background-image: repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
+}
+
+.ve-ce-tableNodeOverlay-selection-box-anchor {
+	position: absolute;
+	border: solid 1px #6da9f7;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.ve-ce-tableNodeOverlay-editing .ve-ce-tableNodeOverlay-selection-box {
+	border-width: 1px;
+	background: transparent;
+}
+
+.ve-ce-tableNode-missingCell {
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 0 !important; /* stylelint-disable-line declaration-no-important */
+}
+
+/*!
+ * VisualEditor ContentEditable general styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-bidi-isolate {
+	unicode-bidi: isolate;
+	unicode-bidi: -moz-isolate;
+	unicode-bidi: -webkit-isolate;
+}
+
+/*!
+ * VisualEditor ContentEditable Surface styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ce-surface {
+	/* Create a new stacking context for elements inside the surface */
+	position: relative;
+	z-index: 0;
+	/*
+	Remember, don't set font-size here.
+	Should be inherited from the VE target container.
+	*/
+}
+
+/* @noflip */
+.ve-ce-surface-deactivatedSelection {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.ve-ce-surface-deactivatedSelection > div {
+	position: absolute;
+	background: #6da9f7;
+	margin-top: -0.15em;
+	padding: 0.15em 0;
+}
+.ve-ce-surface-deactivatedSelection-collapsed > div {
+	background: #000;
+}
+
+/* Support: IE, Edge */
+/* Set opacity directly on the highlights, rather than their containers,
+   otherwise the opacity isn't applied at all */
+.ve-init-target-ie-or-edge .ve-ce-surface-deactivatedSelection > div {
+	opacity: 0.5;
+}
+
+.ve-ce-surface-dropMarker {
+	height: 1px;
+	background: #999;
+	pointer-events: none;
+	position: absolute;
+}
+
+.ve-ce-surface-highlights-user-selections {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.ve-ce-surface-highlights-user-cursors {
+	pointer-events: none;
+}
+
+.ve-ce-surface-highlights-user-selection {
+	position: absolute;
+	background: #faa;
+	box-shadow: inset 0 0 0 1px #a66;
+}
+
+.ve-ce-surface-highlights-user-cursor {
+	position: absolute;
+	background: #a66;
+	width: 2px;
+}
+
+.ve-ce-surface-highlights-user-cursor-label {
+	position: absolute;
+	font-size: 0.7em;
+	background: #a66;
+	color: #fff;
+	padding: 0.2em;
+	top: -1.4em;
+	height: 1em;
+	line-height: 1;
+	white-space: nowrap;
+	max-width: 10em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ve-ce-surface-highlights-user-cursor-inactive,
+.ve-ce-surface-highlights-user-selection-inactive {
+	opacity: 0.5;
+}
+
+.ve-ce-surface-paste {
+	position: fixed;
+	/* FIXME T126024: Stop the viewport scrolling when the paste target is typed into */
+	top: 3em;
+	left: 0;
+	/* Try to avoid wrapping by not setting a width because of https://code.google.com/p/chromium/issues/detail?id=318925 */
+	height: 1px;
+	opacity: 0;
+	overflow: hidden;
+}
+
+.ve-ce-surface-paste * {
+	height: 1px !important; /* stylelint-disable-line declaration-no-important */
+}
+
+/* Support: IE */
+/* Prevent IE from wrapping link text in <u> and <font color> tags */
+.ve-init-target-ie-or-edge .ve-ce-surface-paste a {
+	text-decoration: underline !important; /* stylelint-disable-line declaration-no-important */
+	color: #06c;
+}
+
+.ve-ce-cursorHolder {
+	position: absolute;
+	width: 0;
+	height: 0;
+}
+
+.ve-ce-cursorHolder-img {
+	width: 0;
+	height: 0;
+}
+
+.ve-ce-cursorHolder-debug {
+	width: 2px;
+	height: 1em;
+	border: 1px solid #f00;
+}
+
+/*!
+ * VisualEditor UserInterface ToolbarDialog styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-toolbarDialog-padded .oo-ui-window-body {
+	padding: 0.375em; /* 0.3em / 0.8 */
+}
+
+.ve-ui-toolbarDialog-position-above {
+	overflow-y: hidden;
+	max-height: 0;
+	-webkit-transition: max-height 250ms;
+	-moz-transition: max-height 250ms;
+	transition: max-height 250ms;
+}
+
+.oo-ui-toolbar-position-top .ve-ui-toolbarDialog-position-above {
+	border-top: 1px solid #ddd;
+}
+
+.oo-ui-toolbar-position-bottom .ve-ui-toolbarDialog-position-above {
+	border-bottom: 1px solid #ddd;
+}
+
+.ve-ui-toolbarDialog-position-above.oo-ui-window-ready {
+	/* approximate max height for transition */
+	max-height: 150px;
+}
+
+.ve-ui-toolbarDialog-position-side {
+	position: absolute;
+	right: 0;
+	background: #fff;
+	border-left: 1px solid #ddd;
+	overflow-x: hidden;
+	width: 0;
+	margin-top: 1px;
+	-webkit-transition: width 250ms;
+	-moz-transition: width 250ms;
+	transition: width 250ms;
+}
+
+.ve-ui-surface {
+	min-height: 0;
+	-webkit-transition: margin 250ms, min-height 250ms;
+	-moz-transition: margin 250ms, min-height 250ms;
+	transition: margin 250ms, min-height 250ms;
+}
+
+.ve-ui-surface-toolbarDialog-side {
+	min-height: 40em;
+}
+
+.ve-ui-toolbarDialog-shield {
+	display: none;
+}
+
+.ve-ui-toolbarDialog-disabled {
+	opacity: 0.2;
+}
+
+.ve-ui-toolbarDialog-disabled .ve-ui-toolbarDialog-shield {
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+/* Override ProcessDialog styles */
+.ve-ui-toolbarDialog .oo-ui-window-head {
+	height: 0;
+}
+
+.ve-ui-toolbarDialog .oo-ui-window-body {
+	top: 0;
+}
+
+/* TODO: fix this upstream */
+.ve-ui-toolbarDialog .oo-ui-window-frame {
+	position: relative;
+}
+
+/*!
+ * VisualEditor UserInterface CommandHelpDialog styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-commandHelpDialog-container {
+	-ms-column-count: 3;
+	-moz-column-count: 3;
+	-webkit-column-count: 3;
+	column-count: 3;
+}
+
+.ve-ui-commandHelpDialog-section {
+	/*
+	 * Hack 1: Prevent splitting over columns. This should be done with
+	 * column-break-inside but it's not well supported yet.
+	 */
+	display: inline-block;
+	width: 100%;
+}
+
+.ve-ui-commandHelpDialog-section h3 {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+.ve-ui-commandHelpDialog-list {
+	margin: 0.5em 0 1.5em 0;
+}
+
+.ve-ui-commandHelpDialog-list dd {
+	display: inline-block;
+	vertical-align: top;
+	width: 45%;
+	margin: 0;
+}
+
+.ve-ui-commandHelpDialog-list dt {
+	display: inline-block;
+	vertical-align: top;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 55%;
+	padding-right: 1em;
+	text-align: right;
+}
+
+.ve-ui-commandHelpDialog-list dt kbd {
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+	font-size: 0.8125em;
+	font-weight: bold;
+	font-style: normal;
+}
+
+.ve-ui-commandHelpDialog-list dt > kbd {
+	display: block;
+	clear: right;
+}
+
+/* Enlarge vertical spacing in a list of shortcuts for one action */
+.ve-ui-commandHelpDialog-list dt kbd ~ kbd {
+	margin-top: 0.5em;
+}
+
+.ve-ui-commandHelpDialog-list dt kbd > kbd {
+	font-size: 1em; /* Prevent double shrinking */
+	background-color: #f7f7f7;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	box-shadow: 0 1px 0 rgba( 0, 0, 0, 0.2 ), 0 0 0 2px #fff inset;
+	color: #333;
+	display: inline-block;
+	line-height: 1.4;
+	padding: 0.1em 0.4em;
+	margin: -0.1em 0.3em 0;
+	text-shadow: 0 1px 0 #fff;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.ve-ui-commandHelpDialog-list dt kbd[data-label]:before {
+	content: attr( data-label );
+	font-weight: normal;
+	font-style: italic;
+	padding-right: 3px;
+}
+
+.ve-ui-commandHelpDialog-sequence kbd:not( [data-key='space'] ) {
+	box-shadow: none;
+	text-transform: none;
+}
+.ve-ui-commandHelpDialog-sequence kbd:not( [data-key='space'] ) + kbd:not( [data-key='space'] ) {
+	margin-left: -0.5em;
+	padding-left: 0;
+	border-left: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.ve-ui-commandHelpDialog-list dd,
+.ve-ui-commandHelpDialog-list dt {
+	line-height: 1.4;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+/*!
+ * VisualEditor UserInterface FindAndReplaceDialog styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-findAndReplaceDialog-row {
+	display: table;
+	min-width: 30em;
+	padding-bottom: 0.3em;
+}
+
+.ve-ui-findAndReplaceDialog-row:last-child {
+	/* Extra pixel for button shadows */
+	padding-bottom: 1px;
+}
+
+.ve-ui-findAndReplaceDialog-cell {
+	display: table-cell;
+	vertical-align: middle;
+	white-space: nowrap;
+	padding-right: 1em;
+}
+
+.ve-ui-findAndReplaceDialog-cell:last-child {
+	padding-right: 0;
+}
+
+.ve-ui-findAndReplaceDialog-cell-input {
+	width: 100%;
+}
+
+.ve-ui-findAndReplaceDialog-cell-input .oo-ui-textInputWidget {
+	max-width: none;
+}
+
+/* @noflip */
+.ve-ui-findAndReplaceDialog-findResults {
+	position: absolute;
+	top: 0;
+	left: 0;
+	/* TODO: Suport IE10 with JS mouse events */
+	pointer-events: none;
+}
+
+.ve-ui-findAndReplaceDialog-findResult {
+	opacity: 0.2;
+}
+
+.ve-ui-findAndReplaceDialog-findResult > div {
+	background: #28bb0b;
+	position: absolute;
+	margin-top: -0.15em;
+	padding: 0.15em 0;
+	border-radius: 0.15em;
+}
+
+.ve-ui-findAndReplaceDialog-findResult-focused {
+	opacity: 0.4;
+}
+
+.ve-ui-findAndReplaceDialog-findResult-focused > div {
+	background: #1f850b;
+}
+
+/* Support: IE, Edge */
+/* Set opacity directly on the highlights, rather than their containers,
+   otherwise the opacity isn't applied at all */
+.ve-init-target-ie-or-edge .ve-ui-findAndReplaceDialog-findResult > div {
+	opacity: 0.2;
+}
+
+.ve-init-target-ie-or-edge .ve-ui-findAndReplaceDialog-findResult-focused > div {
+	opacity: 0.4;
+}
+
+/*!
+ * VisualEditor UserInterface ProgressDialog styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-progressDialog-row {
+	display: table;
+	width: 100%;
+}
+
+.ve-ui-progressDialog-row:not( :last-child ) {
+	margin-bottom: 1em;
+}
+
+.ve-ui-progressDialog-row .oo-ui-fieldLayout {
+	display: table-cell;
+	padding-bottom: 0.45em;
+}
+
+.ve-ui-progressDialog-row .oo-ui-buttonWidget {
+	display: table-cell;
+	vertical-align: bottom;
+	width: 1.9em;
+	padding-left: 1em;
+}
+
+/*!
+ * VisualEditor UserInterface SpecialCharacterDialog styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-specialCharacterDialog .oo-ui-outlineOptionWidget {
+	padding: 0.25em 0.5em;
+}
+
+.ve-ui-specialCharacterDialog .oo-ui-bookletLayout {
+	height: 150px;
+}
+
+/* When displaying inside another dialog, make the menu narrower */
+.oo-ui-dialog .ve-ui-specialCharacterDialog .oo-ui-bookletLayout .oo-ui-menuLayout-menu {
+	width: 10em;
+}
+
+.oo-ui-dialog .ve-ui-specialCharacterDialog .oo-ui-bookletLayout .oo-ui-menuLayout-content {
+	left: 10em;
+}
+
+.oo-ui-bookletLayout-stackLayout > .ve-ui-specialCharacterPage {
+	padding: 0.5em;
+}
+
+.ve-ui-specialCharacterPage h3 {
+	margin: 0 0 0.5em 0;
+	color: #888;
+	font-weight: normal;
+	font-size: 1em;
+}
+
+.ve-ui-specialCharacterPage-characters {
+	white-space: normal;
+}
+
+.ve-ui-specialCharacterPage-character {
+	cursor: pointer;
+	font-size: 1.5em;
+	line-height: 1.8em;
+	min-width: 1.8em;
+	height: 1.8em;
+	text-align: center;
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 3px 3px 0;
+	border: 1px solid #e6e6e6;
+	-webkit-transition: border-color 200ms;
+	-moz-transition: border-color 200ms;
+	transition: border-color 200ms;
+}
+
+.ve-ui-specialCharacterPage-character:hover {
+	border-color: #ccc;
+}
+
+.ve-ui-specialCharacterPage-character-source {
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+	font-size: 1em;
+	line-height: 2.7em;
+	height: 2.7em;
+	padding: 0 0.2em;
+}
+
+/*!
+ * VisualEditor FormatTool styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-paragraph .oo-ui-tool-title {
+	font-weight: normal;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title {
+	font-size: 190%;
+	font-weight: normal;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title {
+	font-size: 150%;
+	font-weight: normal;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title {
+	font-size: 130%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title {
+	font-size: 115%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title {
+	font-size: 100%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
+	font-size: 80%;
+	font-weight: bold;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
+	/* FIXME T126030: Use px so padding is not changed by font size */
+	padding-left: 6.4px;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-tool-title {
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-blockquote .oo-ui-tool-title {
+	padding-left: 1.5em;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-tableCellHeader .oo-ui-tool-title {
+	font-weight: bold;
+}
+
+/*!
+ * VisualEditor UserInterface LanguageInputWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-languageInputWidget-findLanguageButton .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
+	width: 9.5em;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.ve-ui-languageInputWidget .oo-ui-fieldLayout.oo-ui-labelElement > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
+	width: 7em;
+}
+
+.ve-ui-languageInputWidget-languageCodeTextInput {
+	width: 6em;
+}
+
+.ve-ui-languageInputWidget-directionSelect {
+	margin-bottom: 0.5em;
+}
+
+/*!
+ * VisualEditor UserInterface LanguageSearchWidget/LanguageResultWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* ve.ui.LanguageResultWidget */
+
+.ve-ui-languageResultWidget-otherMatch {
+	float: right;
+	color: #777;
+}
+
+.ve-ui-languageResultWidget .oo-ui-labelWidget {
+	cursor: inherit;
+}
+
+/*!
+ * VisualEditor UserInterface ContextOptionWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-contextOptionWidget {
+	padding: 0.5em 1em 0.5em 3em;
+}
+
+.ve-ui-contextOptionWidget .oo-ui-labelElement-label {
+	color: #666;
+	/* Size required to match menu and inspector widths */
+	max-width: 19.4em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.ve-ui-contextOptionWidget .oo-ui-iconElement-icon {
+	opacity: 0.8;
+}
+
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-highlighted,
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-selected,
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-pressed {
+	background-color: transparent;
+}
+
+.ve-ui-contextOptionWidget.oo-ui-optionWidget-highlighted .oo-ui-iconElement-icon {
+	opacity: 1;
+}
+
+/*!
+ * VisualEditor UserInterface ContextSelectWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-contextSelectWidget {
+	padding: 0;
+}
+
+/*!
+ * VisualEditor UserInterface DimensionsWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-dimensionsWidget,
+.ve-ui-dimensionsWidget > .oo-ui-textInputWidget {
+	display: inline-block;
+}
+
+.ve-ui-dimensionsWidget .oo-ui-textInputWidget {
+	width: 5em;
+}
+
+.ve-ui-dimensionsWidget .oo-ui-labelWidget {
+	padding-right: 0.5em;
+	line-height: 2.35em;
+	vertical-align: middle;
+}
+
+.ve-ui-dimensionsWidget .oo-ui-labelWidget:last-child {
+	padding-right: 0;
+}
+
+/*!
+ * VisualEditor UserInterface MediaSizeWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-mediaSizeWidget .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-labelElement-label {
+	width: 6em;
+}
+
+.ve-ui-mediaSizeWidget-section-sizetype {
+	margin-bottom: 1em;
+}
+
+.ve-ui-mediaSizeWidget-section-scale .oo-ui-fieldLayout-field > .oo-ui-textInputWidget input {
+	width: 5em;
+	margin-right: 0.5em;
+}
+
+/*!
+ * VisualEditor UserInterface CommentInspector styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-commentInspector-content .oo-ui-textInputWidget {
+	width: 100%;
+}
+
+/*!
+ * VisualEditor UserInterface FragmentInspector styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-fragmentInspector-form {
+	margin: 0.75em;
+	padding: 0;
+}
+
+.ve-ui-fragmentInspector-container .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout-padded {
+	padding: 0.75em;
+}
+
+.ve-ui-fragmentInspector-content .oo-ui-processDialog-actions-other .oo-ui-buttonElement-framed {
+	margin-top: 0;
+}
+
+/* Don't show scroll bars before ready for accurate measurement */
+.oo-ui-window-content-setup:not( .oo-ui-window-content-ready ) .ve-ui-fragmentInspector-container {
+	overflow: hidden;
+}
+
+/*!
+ * VisualEditor UserInterface ContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-contextItem {
+	/* Disable selection to avoid stealing focus from the surface */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+.ve-ui-contextItem + .ve-ui-contextItem {
+	border-top: 1px solid #eee;
+}
+
+/*!
+ * VisualEditor UserInterface LinearContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-linearContextItem-head {
+	display: table;
+	width: 100%;
+}
+
+.ve-ui-linearContextItem-title {
+	display: table-cell;
+	width: 1%;
+	text-align: left;
+	padding: 0.5em 1em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.ve-ui-linearContextItem-icon {
+	display: inline-block;
+	vertical-align: middle;
+	width: 1.875em;
+	height: 1.875em;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.ve-ui-linearContextItem-label {
+	min-width: 4em;
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.5em;
+}
+
+.ve-ui-linearContextItem-info {
+	display: table-cell;
+	position: relative;
+	width: 99%;
+}
+
+.ve-ui-linearContextItem-description {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	line-height: 3.6em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #888;
+}
+
+.ve-ui-linearContextItem-actions {
+	display: table-cell;
+	width: 1%;
+	padding: 0.5em;
+}
+
+.ve-ui-linearContextItem-body {
+	max-height: 15em;
+	overflow: auto;
+}
+
+.ve-ui-linearContextItem-body:not( :empty ) {
+	padding: 0 1em 1em 1em;
+}
+
+/*!
+ * VisualEditor UserInterface TableLineContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-tableLineContextItem-actionButton {
+	display: block;
+}
+
+.ve-ui-tableLineContextItem-actionButton.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button {
+	display: block;
+	padding: 0.5em;
+}
+
+.ve-ui-tableLineContextItem-actionButton.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+	display: inline-block;
+	position: static;
+}
+
+.ve-ui-tableLineContextItem-actionButton.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
+	margin-left: 0.25em;
+}
+
+/*!
+ * VisualEditor UserInterface AlignableContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-alignableContextItem .ve-ui-linearContextItem-body {
+	text-align: center;
+}
+
+.ve-ui-alignableContextItem .ve-ui-linearContextItem-info {
+	vertical-align: middle;
+}
+
+.ve-ui-mobileContext .ve-ui-alignableContextItem .ve-ui-linearContextItem-description {
+	line-height: 1em;
+	padding-top: 0.3em;
+}
+
+/*!
+ * VisualEditor UserInterface CommentContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-commentContextItem .ve-ui-linearContextItem-body {
+	padding: 0.5em 0.5em 0 0.5em;
+	margin: 0 0.5em 1em 0.5em;
+	overflow: auto;
+	max-height: 10em;
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+	white-space: pre-wrap;
+	line-height: 1.25em;
+	color: #555;
+}
+
+/*!
+ * VisualEditor UserInterface LanguageContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-languageContextItem .ve-ui-linearContextItem-body {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #555;
+}
+
+/*!
+ * VisualEditor UserInterface LinkContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-linkContextItem .ve-ui-linearContextItem-body {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/*!
+ * VisualEditor UserInterface ToolContextItem styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-toolContextItem .ve-ui-linearContextItem-body {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/*!
+ * VisualEditor UserInterface icon styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+.oo-ui-icon-tableMoveColumnBefore {
+	/* @embed */
+	background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+CiAgICA8cGF0aCBkPSJNMTIgNXYyLjQ3bDEtLjcyVjZoMWwxLjM3NS0xSDEyem0zLjM3NSAwdjFIMTZ2M2gtLjYyNXYxSDE2djNoLS42MjV2MUgxNnYzaC0uNjI1djFIMTdWNWgtMS42MjV6bTAgMTNMMTQgMTdoLTF2LS43NWwtMS0uNzJWMThoMy4zNzV6IiBpZD0iY29sdW1uLWZyb20iLz4KICAgIDxwYXRoIGQ9Ik02IDV2MTNoNXYtMy4yMmwtMS0uNzE3VjE3SDd2LTNoMi45MDZsLTEuMzQ0LTFIN3YtMS4xMjVsLS41LS4zNzUuNS0uMzc1VjEwaDEuNTYzbDEuMzQzLTFIN1Y2aDN2Mi45MzhsMS0uNzJWNUg2eiIgaWQ9ImNvbHVtbi10byIvPgogICAgPHBhdGggZD0iTTE0IDcuNzFsLTUuMTg4IDMuNzhMMTQgMTUuMjl6IiBpZD0iYXJyb3ciLz4KPC9zdmc+Cg==");
+}
+
+.oo-ui-icon-tableMoveColumnAfter {
+	/* @embed */
+	background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+CiAgICA8cGF0aCBkPSJNMTEgNXYyLjQ3bC0xLS43MlY2SDlMNy42MjUgNUgxMXpNNy42MjUgNXYxSDd2M2guNjI1djFIN3YzaC42MjV2MUg3djNoLjYyNXYxSDZWNWgxLjYyNXptMCAxM0w5IDE3aDF2LS43NWwxLS43MlYxOEg3LjYyNXoiIGlkPSJjb2x1bW4tZnJvbSIvPgogICAgPHBhdGggZD0iTTE3IDV2MTNoLTV2LTMuMjJsMS0uNzE3VjE3aDN2LTNoLTIuOTA2bDEuMzQ0LTFIMTZ2LTEuMTI1bC41LS4zNzUtLjUtLjM3NVYxMGgtMS41NjNsLTEuMzQzLTFIMTZWNmgtM3YyLjkzOGwtMS0uNzJWNWg1eiIgaWQ9ImNvbHVtbi10byIvPgogICAgPHBhdGggZD0iTTkgNy43MWw1LjE4OCAzLjc4TDkgMTUuMjl6IiBpZD0iYXJyb3ciLz4KPC9zdmc+Cg==");
+}
+
+.oo-ui-icon-tableMoveRowBefore {
+	/* @embed */
+	background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgaWQ9InN2ZzMwNDMiPgogICAgPHBhdGggZD0iTTE4IDEyaC0yLjQ3bC43MiAxSDE3djFsMSAxLjM3NVYxMnptMCAzLjM3NWgtMVYxNmgtM3YtLjYyNWgtMVYxNmgtM3YtLjYyNUg5VjE2SDZ2LS42MjVINVYxN2gxM3YtMS42MjV6bS0xMyAwTDYgMTR2LTFoLjc1bC43Mi0xSDV2My4zNzV6IiBpZD0iY29sdW1uLWZyb20iLz4KICAgIDxwYXRoIGQ9Ik0xOCA2SDV2NWgzLjIybC43MTctMUg2VjdoM3YyLjkwNmwxLTEuMzQ0VjdoMS4xMjVsLjM3NS0uNS4zNzUuNUgxM3YxLjU2M2wxIDEuMzQzVjdoM3YzaC0yLjkzOGwuNzIgMUgxOFY2eiIgaWQ9ImNvbHVtbi10byIvPgogICAgPHBhdGggZD0iTTE1LjI5IDE0bC0zLjc4LTUuMTg4TDcuNzEgMTR6IiBpZD0iYXJyb3ciLz4KPC9zdmc+Cg==");
+}
+
+.oo-ui-icon-tableMoveRowAfter {
+	/* @embed */
+	background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+CiAgICA8cGF0aCBkPSJNMTggMTFoLTIuNDdsLjcyLTFIMTdWOWwxLTEuMzc1VjExem0wLTMuMzc1aC0xVjdoLTN2LjYyNWgtMVY3aC0zdi42MjVIOVY3SDZ2LjYyNUg1VjZoMTN2MS42MjV6bS0xMyAwTDYgOXYxaC43NWwuNzIgMUg1VjcuNjI1eiIgaWQ9ImNvbHVtbi1mcm9tIi8+CiAgICA8cGF0aCBkPSJNMTggMTdINXYtNWgzLjIybC43MTcgMUg2djNoM3YtMi45MDZsMSAxLjM0NFYxNmgxLjEyNWwuMzc1LjUuMzc1LS41SDEzdi0xLjU2M2wxLTEuMzQzVjE2aDN2LTNoLTIuOTM4bC43Mi0xSDE4djV6IiBpZD0iY29sdW1uLWZyb20tdG8iLz4KICAgIDxwYXRoIGQ9Ik0xNS4yOSA5bC0zLjc4IDUuMTg4TDcuNzEgOXoiIGlkPSJhcnJvdyIvPgo8L3N2Zz4K");
+}
+
+/*!
+ * VisualEditor Overlay styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-overlay {
+	font-family: sans-serif;
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.ve-ui-overlay > * {
+	z-index: 1;
+}
+
+.ve-ui-overlay-global {
+	/* Toolbar is z-index 1 */
+	z-index: 2;
+}
+
+/* Most vendor prefixes are not needed on mobile devices */
+
+.ve-ui-overlay-global-mobile {
+	background: #fff;
+	height: 100%;
+	-webkit-transform: translate3d( 0, -100%, 0 );
+	transform: translate3d( 0, -100%, 0 );
+
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+}
+
+.ve-ui-overlay-global-mobile-visible {
+	-webkit-transform: none;
+	transform: none;
+}
+
+.ve-ui-overlay-global-mobile-enabled {
+	height: 100%;
+	overflow: hidden;
+}
+
+/*!
+ * VisualEditor Surface styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-surface {
+	position: relative;
+}
+
+.ve-ui-surface:after {
+	content: '.';
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+.ve-ui-surface-placeholder {
+	opacity: 0.33;
+	position: absolute;
+	left: 0;
+	right: 0;
+	/* Match .ve-ce-documentNode */
+	padding: 0.9375em 1.875em;
+}
+
+.ve-ui-surface-placeholder,
+.ve-ui-surface .ve-ce-documentNode {
+	padding: 0.5em 1.5em;
+}
+
+.ve-ui-surface-source .ve-ce-documentNode {
+	/* Specify a valid second value to fix size in Chrome/FF */
+	font-family: monospace, 'Courier';
+}
+
+.ve-ui-surface-source .ve-ce-paragraphNode {
+	margin: 0;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+/*!
+ * VisualEditor UserInterface targetWidget styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-targetWidget .ve-ui-surface .ve-ce-documentNode,
+.ve-ui-targetWidget .ve-ui-surface .ve-ui-surface-placeholder {
+	/* 0.5/0.8, 1/0.8 */
+	padding: 0.625em 1.25em;
+}
+
+.ve-ui-targetWidget .ve-ui-debugBar {
+	padding: 1em;
+}
+
+/*!
+ * VisualEditor UserInterface Table Context styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-tableLineContext {
+	position: absolute;
+	/* Ensure it is placed above the table context */
+	z-index: 2;
+}
+
+.ve-ui-tableLineContext-indicator {
+	position: absolute;
+	display: block;
+	background-color: #d3e5fd;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	cursor: pointer;
+	margin: 0;
+}
+
+.ve-ui-tableLineContext-col .ve-ui-tableLineContext-indicator {
+	width: 100%;
+	height: 1em;
+	/* Context height + 0.2em gap */
+	top: -1.2em;
+	border-bottom: 0;
+}
+
+.ve-ui-tableLineContext-row .ve-ui-tableLineContext-indicator {
+	width: 1em;
+	/* Context width + 0.2em gap */
+	left: -1.2em;
+	border-right: 0;
+}
+
+/*!
+ * VisualEditor Toolbar styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-toolbar {
+	/* Used by mobile context position hack */
+	position: relative;
+}
+
+.ve-ui-toolbar > .oo-ui-toolbar-bar {
+	/* Make sure the toolbar is shown on top of surface contents even when not floating,
+	   for correct rendering of dropdowns, popups etc. */
+	z-index: 2;
+}
+
+/* PositionedTargetToolbar */
+
+.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
+	position: fixed;
+	top: 0;
+	border-top: 0;
+}
+
+.ve-ui-toolbar.oo-ui-toolbar-position-bottom > .oo-ui-toolbar-bar {
+	/* For bottom toolbars though (e.g. Flow), we apparently want the toolbar to be below the surface
+	   overlay, but its dropdowns, popups etc. to be above it - this seems to work... (T169076) */
+	z-index: auto;
+}
+
+.ve-ui-toolbar > .oo-ui-toolbar-bar .oo-ui-toolbar-bar {
+	/* Dumb broken nested toolbars ruin everything again (T169617) */
+	z-index: auto;
+}
+
+/*!
+ * VisualEditor UserInterface Context styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-desktopContext {
+	position: absolute;
+}
+
+.ve-ui-desktopContext .ve-ui-contextItem-description {
+	display: none;
+}
+
+.ve-ui-desktopContext-menu {
+	position: absolute;
+	width: 400px;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-toolbar-bar {
+	white-space: nowrap;
+	border: 0;
+	background: none;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-toolGroup {
+	border: 0;
+	margin: 0;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-tool,
+.ve-ui-desktopContext-menu .oo-ui-tool:hover {
+	border: 0;
+}
+
+.ve-ui-desktopContext-menu .oo-ui-tool:active,
+.ve-ui-desktopContext-menu .oo-ui-tool-active {
+	background-image: none;
+}
+
+.ve-ui-desktopContext-floating {
+	position: fixed;
+}
+
+.ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
+	margin-top: 0.25em;
+}
+
+/* @noflip */
+.ve-ui-surface-dir-ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
+	margin-left: -0.5em;
+}
+
+/* @noflip */
+.ve-ui-surface-dir-rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
+	margin-left: 0.5em;
+}
+
+.ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-context-menu {
+	right: 0;
+}
+
+/*!
+ * VisualEditor UserInterface MobileContext styles.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-body {
+	display: none;
+}
+
+.ve-ui-mobileContext-menu {
+	border-top: 1px solid #ddd;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-label {
+	min-width: auto;
+	line-height: 1.225em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-title {
+	padding: 0.625em 1em 0.625em 0.5em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-description {
+	line-height: 3.125em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions {
+	vertical-align: top;
+	padding: 0;
+	height: 100%;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget {
+	border-left: 1px solid #ddd;
+	vertical-align: top;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonElement-button {
+	padding: 1.538em 1.2em;
+	vertical-align: top;
+	height: 100%;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-labelElement .oo-ui-buttonElement-button {
+	padding: 0.86em 1.2em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement .oo-ui-buttonElement-button {
+	padding-left: 2.03125em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement .oo-ui-iconElement-icon {
+	left: 0.65em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement.oo-ui-labelElement .oo-ui-buttonElement-button {
+	padding-left: 2.63125em;
+}
+
+/*!
+ * VisualEditor Apex theme dialog customizations.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* ve.ui.ToolbarDialog */
+
+.ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
+	box-shadow: none;
+}
+
+.ve-ui-toolbarDialog-padded {
+	padding-top: 0;
+	border-top: 0;
+}
+
+/*!
+ * VisualEditor Apex theme widget customizations.
+ *
+ * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/* ve.ui.TargetWidget */
+
+.ve-ui-targetWidget {
+	border: 1px solid #ccc;
+	border-radius: 0.25em;
+}
+
+.ve-ui-targetWidget > .ve-ui-surface {
+	border-bottom: 1px solid #ccc;
+}
+
+.ve-ui-targetWidget > :last-child {
+	border-bottom: 0;
+}
