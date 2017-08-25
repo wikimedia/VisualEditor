@@ -194,7 +194,7 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
  * Render the diff
  */
 ve.ui.DiffElement.prototype.renderDiff = function () {
-	var i, j, k, ilen, jlen, klen, nodes, move, documentSpacerNode, internalListSpacerNode, li, groupName,
+	var i, j, ilen, jlen, move, documentSpacerNode, internalListSpacerNode, li, groupName,
 		noChanges, group, headingNode, names, category, internalListGroup,
 		internalListDiffDiv, anyInternalListChanges, internalListItem,
 		documentNode = this.$document[ 0 ],
@@ -306,17 +306,17 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		if ( this.oldDocChildren[ i ] === undefined ) {
 
 			// Everything else in the new doc is an insert
-			nodes = this.newDocChildren.slice( j );
-			for ( k = 0, klen = nodes.length; k < klen; k++ ) {
-				diffQueue.push( [ 'getNodeElements', nodes[ k ], 'insert' ] );
+			while ( j < this.newDocChildren.length ) {
+				diffQueue.push( [ 'getNodeElements', this.newDocChildren[ j ], 'insert' ] );
+				j++;
 			}
 
 		} else if ( this.newDocChildren[ j ] === undefined ) {
 
 			// Everything else in the old doc is a remove
-			nodes = this.oldDocChildren.slice( i );
-			for ( k = 0, klen = nodes.length; k < klen; k++ ) {
-				diffQueue.push( [ 'getNodeElements', nodes[ k ], 'remove' ] );
+			while ( i < this.oldDocChildren.length ) {
+				diffQueue.push( [ 'getNodeElements', this.oldDocChildren[ i ], 'remove' ] );
+				i++;
 			}
 
 		} else if ( this.remove.indexOf( i ) !== -1 ) {

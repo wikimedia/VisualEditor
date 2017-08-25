@@ -191,6 +191,36 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Multi-node insert',
+				oldDoc: '',
+				newDoc: '<p>foo</p><p>bar</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>foo</ins></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>bar</ins></p>' +
+					'</div>'
+			},
+			{
+				msg: 'Multi-node remove',
+				oldDoc: '<p>foo</p><p>bar</p>',
+				newDoc: '',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>foo</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>bar</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"></p>' +
+					'</div>'
+			},
+			{
 				msg: 'Inline node inserted',
 				oldDoc: '<p>foo bar baz quux</p>',
 				newDoc: '<p>foo bar <!--whee--> baz quux</p>',
