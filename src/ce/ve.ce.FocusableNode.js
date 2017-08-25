@@ -669,8 +669,12 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.redrawHighlights = function () {
-	this.clearHighlights();
-	this.createHighlights();
+	if ( this.focused ) {
+		// setFocused will call clearHighlights/createHighlights
+		// and also re-bind events.
+		this.setFocused( false );
+		this.setFocused( true );
+	}
 };
 
 /**
