@@ -45,6 +45,10 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 		this.$highlights.addClass( config.classes.join( ' ' ) );
 	}
 
+	// Use a debounced handler as some actions can trigger redrawHighlights
+	// twice in quick succession resizeEnd+rerender
+	this.redrawHighlightsDebounced = ve.debounce( this.redrawHighlights.bind( this ), 100 );
+
 	// DOM changes
 	this.$element
 		.addClass( 've-ce-focusableNode' )
@@ -564,7 +568,7 @@ ve.ce.FocusableNode.prototype.onFocusableResizeStart = function () {
  * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableResizeEnd = function () {
-	this.redrawHighlights();
+	this.redrawHighlightsDebounced();
 };
 
 /**
@@ -574,7 +578,7 @@ ve.ce.FocusableNode.prototype.onFocusableResizeEnd = function () {
  */
 ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
 	if ( this.focused && this.focusableSurface ) {
-		this.redrawHighlights();
+		this.redrawHighlightsDebounced();
 		// reposition menu
 		this.focusableSurface.getSurface().getContext().updateDimensions( true );
 	}
