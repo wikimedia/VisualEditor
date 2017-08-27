@@ -4,6 +4,8 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* eslint-env es6 */
+
 /**
  * Rebase client used for testing
  *
@@ -134,14 +136,19 @@ ve.dm.TestRebaseClient.prototype.removeFromHistory = function ( change ) {
 	change.removeFromHistory( this.doc );
 };
 
-ve.dm.TestRebaseClient.prototype.deliverOne = function () {
+ve.dm.TestRebaseClient.prototype.deliverOne = ve.async( function* () {
 	var item, rebased;
 	item = this.outgoing[ this.outgoingPointer++ ];
-	rebased = this.server.applyChange( 'foo', this.getAuthor(), item.backtrack, item.change );
+	rebased = yield this.server.applyChange(
+		ve.dm.TestRebaseServer.static.fakeDocName,
+		this.getAuthor(),
+		item.backtrack,
+		item.change
+	);
 	if ( !rebased.isEmpty() ) {
 		this.server.incoming.push( rebased );
 	}
-};
+} );
 
 ve.dm.TestRebaseClient.prototype.receiveOne = function () {
 	this.acceptChange( this.server.incoming[ this.incomingPointer++ ] );

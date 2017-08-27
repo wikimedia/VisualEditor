@@ -4,6 +4,8 @@
  * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* eslint-env es6 */
+
 /**
  * Rebase client used for testing
  *
@@ -20,6 +22,10 @@ ve.dm.TestRebaseServer = function VeDmRebaseServer() {
 
 OO.inheritClass( ve.dm.TestRebaseServer, ve.dm.RebaseServer );
 
-ve.dm.TestRebaseServer.prototype.getHistorySummary = function historySummary() {
-	return ve.dm.TestRebaseClient.static.historySummary( this.getDocState( 'foo' ).history );
-};
+ve.dm.TestRebaseServer.static.fakeDocName = 'foo';
+
+ve.dm.TestRebaseServer.prototype.getHistorySummary = ve.async( function* historySummary() {
+	return ve.dm.TestRebaseClient.static.historySummary(
+		( yield this.getDocState( this.constructor.static.fakeDocName ) ).history
+	);
+} );
