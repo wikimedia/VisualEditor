@@ -473,6 +473,20 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<ins data-diff-action="insert"><span rel="test:inlineWidget" data-name="BarWidget"></span></ins>' +
 						'</p>' +
 					'</div>'
+			},
+			{
+				msg: 'Adjacent inline node removed with common prefix modified',
+				oldDoc: '<p>foo bar <!--whee--><!--wibble--></p>',
+				newDoc: '<p>foo quux bar <!--whee--></p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>foo ' +
+							'<ins data-diff-action="insert">quux </ins>' +
+							'bar ' +
+							'<span rel="ve:Comment" data-ve-comment="whee">&nbsp;</span>' +
+							'<del data-diff-action="remove"><span rel="ve:Comment" data-ve-comment="wibble">&nbsp;</span></del>' +
+						'</p>' +
+					'</div>'
 			}
 		];
 

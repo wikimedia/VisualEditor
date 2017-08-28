@@ -562,8 +562,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 				// Diff internal list items
 				diff = this.computeDiff(
 					oldDocInternalListItems.toDiff,
-					newDocInternalListItems.toDiff,
-					this.internalListDiff
+					newDocInternalListItems.toDiff
 				);
 
 				// Check there actually are any changes
