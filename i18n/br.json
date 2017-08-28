@@ -5,7 +5,8 @@
 			"Fulup",
 			"Y-M D",
 			"Maoris",
-			"VIGNERON"
+			"VIGNERON",
+			"Gwendal"
 		]
 	},
 	"visualeditor": "Gwelaozer",
@@ -110,6 +111,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Personelaet",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Dre ziouer",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skeuliad",
+	"visualeditor-rebase-client-author-name": "Anv",
+	"visualeditor-rebase-client-document-create-edit": "Krouiñ/kemmañ",
 	"visualeditor-shortcuts-clipboard": "Golver",
 	"visualeditor-shortcuts-dialog": "Prenestr kaozeal",
 	"visualeditor-shortcuts-formatting": "Furmaozañ ar rannbennad",
