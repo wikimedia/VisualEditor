@@ -70,14 +70,39 @@ ve.DiffMatchPatch.prototype.getEmptyString = function () {
 	return [];
 };
 
-ve.DiffMatchPatch.prototype.getCleanDiff = function () {
-	var diffs = this.diff_main.apply( this, arguments ),
+ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options ) {
+	var cleanDiff, i, ilen, j,
 		store = this.store,
 		DIFF_DELETE = this.constructor.static.DIFF_DELETE,
 		DIFF_INSERT = this.constructor.static.DIFF_INSERT,
 		DIFF_EQUAL = this.constructor.static.DIFF_EQUAL,
 		DIFF_CHANGE_DELETE = this.constructor.static.DIFF_CHANGE_DELETE,
 		DIFF_CHANGE_INSERT = this.constructor.static.DIFF_CHANGE_INSERT;
+
+	/**
+	 * Remove the close elements from the linear data, to force a balanced diff.
+	 *
+	 * Otherwise, for example, removing the second of two consecutive comment
+	 * nodes could result in a diff where [{type: '/comment'}, {type: 'comment'}]
+	 * is removed, which is unbalanced.
+	 *
+	 * Warning: this step assumes that, within a content branch node, an element
+	 * is always immediately followed by its close element.
+	 *
+	 * @param {Array} data Linear data
+	 * @return {Array} Linear data without close elements
+	 */
+	function removeCloseElements( data ) {
+		var i, ilen;
+		for ( i = 0, ilen = data.length; i < ilen; i++ ) {
+			if ( data[ i ].type && data[ i ].type[ 0 ] === '/' ) {
+				data.splice( i, 1 );
+				ilen--;
+				i--;
+			}
+		}
+		return data;
+	}
 
 	/**
 	 * Get the index of the the first or last wordbreak in a data array
@@ -285,8 +310,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 			cleanDiff.push( [ DIFF_INSERT, insert ] );
 		}
 
-		// Finally, go over any consecutive remove-inserts (also insert-removes?)
-		// and if they have the same character data, or are modified content nodes,
+		// Now go over any consecutive remove-inserts (also insert-removes?) and
+		// if they have the same character data, or are modified content nodes,
 		// make them changes instead
 		for ( i = 0, ilen = cleanDiff.length - 1; i < ilen; i++ ) {
 			aItem = cleanDiff[ i ];
@@ -345,5 +370,24 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function () {
 		return cleanDiff;
 	}
 
-	return getCleanDiff( diffs );
+	// Remove the close elements
+	oldData = removeCloseElements( oldData );
+	newData = removeCloseElements( newData );
+
+	// Get the diff
+	cleanDiff = getCleanDiff( this.diff_main( oldData, newData, options ) );
+
+	// Re-insert the close elements
+	for ( i = 0, ilen = cleanDiff.length; i < ilen; i++ ) {
+		for ( j = 0; j < cleanDiff[ i ][ 1 ].length; j++ ) {
+			if ( cleanDiff[ i ][ 1 ][ j ].type ) {
+				cleanDiff[ i ][ 1 ].splice( j + 1, 0, {
+					type: '/' + cleanDiff[ i ][ 1 ][ j ].type
+				} );
+				j++;
+			}
+		}
+	}
+
+	return cleanDiff;
 };
