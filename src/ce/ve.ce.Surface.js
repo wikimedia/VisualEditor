@@ -1655,19 +1655,18 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// by adding a dummy class, which we can remove after paste.
 	this.$pasteTarget.find( 'span' ).addClass( 've-pasteProtect' );
 
-	// When paste has no text content browsers do extreme noramlization...
+	// When paste has no text content browsers do extreme normalization...
 	if ( this.$pasteTarget.text() === '' ) {
 		// ...so put nbsp's in empty leaves
 		this.$pasteTarget.find( '*:not( :has( * ) )' ).html( '&nbsp;' );
 	}
 
-	// href absolutization either doesn't occur (because we copy HTML to the clipboard
-	// directly with clipboardData#setData) or it resolves against the wrong document
-	// (window.document instead of ve.dm.Document#getHtmlDocument) so do it manually
-	// with ve#resolveUrl
-	this.$pasteTarget.find( 'a' ).attr( 'href', function ( i, href ) {
-		return ve.resolveUrl( href, htmlDoc );
-	} );
+	// Resolve attributes (in particular, expand 'href' and 'src' using the right base)
+	ve.resolveAttributes(
+		this.$pasteTarget[ 0 ],
+		htmlDoc,
+		ve.dm.Converter.static.computedAttributes
+	);
 
 	// Support: Firefox
 	// Some attributes (e.g RDFa attributes in Firefox) aren't preserved by copy

@@ -65,11 +65,15 @@ ve.ui.PreviewElement.prototype.setModel = function ( model ) {
  * @fires render
  */
 ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
-	var htmlDocument = ve.dm.converter.getDomFromNode( this.model, true ),
+	var
+		// FIXME: The 'true' means 'for clipboard'. This is not really true, but changing it to 'false'
+		// breaks the rendering of pretty much everything that checks for 'converter.isForClipboard()',
+		// e.g. nodes in MW like MWTransclusionNode and MWNumberedExternalLinkNode.
+		htmlDocument = ve.dm.converter.getDomFromNode( this.model, true ),
 		body = htmlDocument.body,
 		element = this.$element[ 0 ];
 
-	// Resolve attributes
+	// Resolve attributes (in particular, expand 'href' and 'src' using the right base)
 	ve.resolveAttributes(
 		body,
 		this.model.getDocument().getHtmlDocument(),
