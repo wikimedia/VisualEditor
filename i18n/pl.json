@@ -42,6 +42,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Podkreślenie",
 	"visualeditor-changedesc-align": "Zmieniono wyrównanie z $1 na $2",
 	"visualeditor-changedesc-changed": "Zmieniono $1 z $2 na $3",
+	"visualeditor-changedesc-comment": "Zmieniono komentarz z $1 na $2",
 	"visualeditor-changedesc-image-size": "Zmieniono rozmiar z $1 na $2",
 	"visualeditor-changedesc-language": "Zmieniono język z $1 na $2",
 	"visualeditor-changedesc-link-href": "Zmieniono element docelowy linku z $1 na $2",
