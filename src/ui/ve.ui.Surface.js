@@ -14,7 +14,7 @@
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [mode] Editing mode
+ * @cfg {string} [mode] Editing mode
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
  * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
