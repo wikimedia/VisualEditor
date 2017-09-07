@@ -1428,10 +1428,8 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 			if ( Math.abs( offsetDiff ) === 2 ) {
 				// Test whether we crossed a focusable node
 				// (this applies even if we cursored up/down)
-				focusableNode = (
-					this.model.documentModel.documentNode
-						.getNodeFromOffset( ( startOffset + endOffset ) / 2 )
-				);
+				focusableNode = this.model.documentModel.documentNode
+					.getNodeFromOffset( ( startOffset + endOffset ) / 2 );
 
 				if ( focusableNode.isFocusable() ) {
 					range = new ve.Range( startOffset, endOffset );
