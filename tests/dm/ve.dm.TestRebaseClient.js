@@ -115,10 +115,10 @@ ve.dm.TestRebaseClient.prototype.applyChange = function ( change ) {
 };
 
 ve.dm.TestRebaseClient.prototype.applyTransactions = function ( txs ) {
-	var author = this.getAuthor();
+	var authorId = this.getAuthorId();
 	txs.forEach( function ( transaction ) {
-		if ( transaction.author === null ) {
-			transaction.author = author;
+		if ( transaction.authorId === null ) {
+			transaction.authorId = authorId;
 		}
 	} );
 	this.surface.change( txs );
@@ -141,7 +141,7 @@ ve.dm.TestRebaseClient.prototype.deliverOne = ve.async( function* () {
 	item = this.outgoing[ this.outgoingPointer++ ];
 	rebased = yield this.server.applyChange(
 		ve.dm.TestRebaseServer.static.fakeDocName,
-		this.getAuthor(),
+		this.getAuthorId(),
 		item.backtrack,
 		item.change
 	);

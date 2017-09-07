@@ -78,7 +78,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 		var authorItem = authorItems[ authorId ],
 			newName = synchronizer.authorNames[ authorId ];
 
-		if ( authorId !== synchronizer.author ) {
+		if ( authorId !== synchronizer.getAuthorId() ) {
 			if ( !authorItem ) {
 				authorItem = new ve.ui.AuthorItemWidget( synchronizer, { authorId: authorId } );
 				authorItems[ authorId ] = authorItem;
@@ -92,7 +92,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 			if ( tool.selfItem.input.getValue() === oldName ) {
 				// Don't send this "new" name back to the server
 				updatingName = true;
-				tool.selfItem.setAuthor( synchronizer.author );
+				tool.selfItem.setAuthorId( synchronizer.getAuthorId() );
 				tool.selfItem.update();
 				updatingName = false;
 			}

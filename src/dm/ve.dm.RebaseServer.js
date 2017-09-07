@@ -40,22 +40,22 @@ ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
  * Update document history
  *
  * @param {string} doc Name of a document
- * @param {number} author Author ID
+ * @param {number} authorId Author ID
  * @param {ve.dm.Change} [newHistory] New history to append
  * @param {Object} [authorDataChanges] New values for author data (modified keys only)
  * @return {Promise<undefined>}
  */
-ve.dm.RebaseServer.prototype.updateDocState = ve.async( function* updateDocState( doc, author, newHistory, authorDataChanges ) {
+ve.dm.RebaseServer.prototype.updateDocState = ve.async( function* updateDocState( doc, authorId, newHistory, authorDataChanges ) {
 	var key, authorData,
 		state = yield this.getDocState( doc );
 	if ( newHistory ) {
 		state.history.push( newHistory );
 	}
 
-	authorData = state.authors.get( author );
+	authorData = state.authors.get( authorId );
 	if ( !authorData ) {
 		authorData = state.constructor.static.newAuthorData();
-		state.authors.set( author, authorData );
+		state.authors.set( authorId, authorData );
 	}
 	if ( authorDataChanges ) {
 		for ( key in authorData ) {
@@ -74,22 +74,22 @@ ve.dm.RebaseServer.prototype.updateDocState = ve.async( function* updateDocState
  * rebased onto some more recent committed history.
  *
  * @param {string} doc Document name
- * @param {number} author Author ID
+ * @param {number} authorId Author ID
  * @param {number} backtrack How many transactions are backtracked from the previous submission
  * @param {ve.dm.Change} change Change to apply
  * @return {Promise<ve.dm.Change>} Accepted change (or initial segment thereof), as rebased
  */
-ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc, author, backtrack, change ) {
+ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc, authorId, backtrack, change ) {
 	var base, rejections, result, appliedChange,
 		state = yield this.getDocState( doc ),
-		authorData = state.authors.get( author );
+		authorData = state.authors.get( authorId );
 
 	base = authorData.continueBase || change.truncate( 0 );
 	rejections = authorData.rejections || 0;
 	if ( rejections > backtrack ) {
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;
-		yield this.updateDocState( doc, author, null, { rejections: rejections } );
+		yield this.updateDocState( doc, authorId, null, { rejections: rejections } );
 		// FIXME argh this publishes an empty change, which is not what we want
 		appliedChange = state.history.truncate( 0 );
 	} else if ( rejections < backtrack ) {
@@ -106,7 +106,7 @@ ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc,
 
 		result = ve.dm.Change.static.rebaseUncommittedChange( base, change );
 		rejections = result.rejected ? result.rejected.getLength() : 0;
-		yield this.updateDocState( doc, author, result.rebased, {
+		yield this.updateDocState( doc, authorId, result.rebased, {
 			rejections: rejections,
 			continueBase: result.transposedHistory
 		} );
@@ -115,7 +115,7 @@ ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc,
 	this.logEvent( {
 		type: 'applyChange',
 		doc: doc,
-		author: author,
+		authorId: authorId,
 		incoming: change,
 		applied: appliedChange,
 		backtrack: backtrack,

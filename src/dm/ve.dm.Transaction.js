@@ -21,12 +21,12 @@
  * @class
  * @constructor
  * @param {Object[]} [operations] Operations preserving tree validity as a whole; default []
- * @param {Number|null} [author] Positive integer author ID; default null
+ * @param {number|null} [authorId] Positive integer author ID; default null
  */
-ve.dm.Transaction = function VeDmTransaction( operations, author ) {
+ve.dm.Transaction = function VeDmTransaction( operations, authorId ) {
 	this.operations = operations || [];
 	this.applied = false;
-	this.author = author || null;
+	this.authorId = authorId || null;
 };
 
 /* Inheritance */
@@ -76,7 +76,7 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
 	return new ve.dm.Transaction(
 		// For this plain, serializable array, stringify+parse profiles faster than ve.copy
 		JSON.parse( JSON.stringify( data.operations ) ),
-		data.author
+		data.authorId
 	);
 };
 
@@ -91,7 +91,7 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
 ve.dm.Transaction.prototype.serialize = function () {
 	return {
 		operations: this.operations,
-		author: this.author
+		authorId: this.authorId
 	};
 };
 
@@ -187,7 +187,7 @@ ve.dm.Transaction.prototype.clone = function () {
 	return new this.constructor(
 		// For this plain, serializable array, stringify+parse profiles faster than ve.copy
 		JSON.parse( JSON.stringify( this.operations ) ),
-		this.author
+		this.authorId
 	);
 };
 
@@ -215,7 +215,7 @@ ve.dm.Transaction.prototype.reversed = function () {
 		}
 		tx.operations.push( newOp );
 	}
-	tx.author = this.author;
+	tx.authorId = this.authorId;
 	return tx;
 };
 
@@ -402,15 +402,15 @@ ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion 
 /**
  * Translate a range based on the transaction, with bias depending on author ID comparison
  *
- * Biases backward if !author || !this.author || author <= this.author
+ * Biases backward if !authorId || !this.authorId || authorId <= this.authorId
  *
  * @see #translateOffset
  * @param {ve.Range} range Range in the linear model before the transaction has been processed
- * @param {number} [author] Author ID of the range
+ * @param {number} [authorId] Author ID of the range
  * @return {ve.Range} Translated range, as it will be after processing transaction
  */
-ve.dm.Transaction.prototype.translateRangeWithAuthor = function ( range, author ) {
-	var backward = !this.author || !author || author < this.author,
+ve.dm.Transaction.prototype.translateRangeWithAuthor = function ( range, authorId ) {
+	var backward = !this.authorId || !authorId || authorId < this.authorId,
 		start = this.translateOffset( range.start, backward ),
 		end = this.translateOffset( range.end, backward );
 	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );

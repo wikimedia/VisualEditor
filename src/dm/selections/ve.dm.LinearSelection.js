@@ -106,8 +106,8 @@ ve.dm.LinearSelection.prototype.translateByTransaction = function ( tx, excludeI
 /**
  * @inheritdoc
  */
-ve.dm.LinearSelection.prototype.translateByTransactionWithAuthor = function ( tx, author ) {
-	return new this.constructor( this.getDocument(), tx.translateRangeWithAuthor( this.getRange(), author ) );
+ve.dm.LinearSelection.prototype.translateByTransactionWithAuthor = function ( tx, authorId ) {
+	return new this.constructor( this.getDocument(), tx.translateRangeWithAuthor( this.getRange(), authorId ) );
 };
 
 /**

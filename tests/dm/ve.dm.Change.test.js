@@ -298,7 +298,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 			start: 0,
 			transactions: [
 				{
-					author: null,
+					authorId: null,
 					operations: [
 						{ type: 'retain', length: 1 },
 						{
@@ -312,7 +312,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 					]
 				},
 				{
-					author: null,
+					authorId: null,
 					operations: [
 						{ type: 'retain', length: 2 },
 						{
@@ -349,7 +349,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		unsanitized = {
 			start: 0,
 			transactions: [ {
-				author: 'fred',
+				authorId: 'fred',
 				operations: [ { type: 'retain', length: 2 } ]
 			} ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
@@ -364,7 +364,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		sanitized = {
 			start: 0,
 			transactions: [ {
-				author: 'fred',
+				authorId: 'fred',
 				operations: [ { type: 'retain', length: 2 } ]
 			} ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
@@ -438,16 +438,16 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 
 	// 'ab' and 'cd' typed at the same offset
 	a = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ noVals ], {} );
-	a.transactions[ 0 ].author = 1;
+	a.transactions[ 0 ].authorId = 1;
 	a.applyTo( surface );
 	b = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'b' ] ) ], [ noVals ], {} );
-	b.transactions[ 0 ].author = 1;
+	b.transactions[ 0 ].authorId = 1;
 	clear();
 	c = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'c' ] ) ], [ noVals ], {} );
-	c.transactions[ 0 ].author = 2;
+	c.transactions[ 0 ].authorId = 2;
 	c.applyTo( surface );
 	d = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'd' ] ) ], [ noVals ], {} );
-	d.transactions[ 0 ].author = 2;
+	d.transactions[ 0 ].authorId = 2;
 	c.reversed().applyTo( surface );
 
 	tests = [

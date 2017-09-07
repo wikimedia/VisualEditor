@@ -27,24 +27,24 @@ function parseLog( log ) {
 }
 
 function toTestCase( parsedLog ) {
-	var i, type, author, clientId, changes, unsent, newChanges,
+	var i, type, authorId, clientId, changes, unsent, newChanges,
 		clients = [],
 		ops = [],
 		clientStates = {};
 	for ( i = 0; i < parsedLog.length; i++ ) {
 		type = parsedLog[ i ].type;
-		author = parsedLog[ i ].author;
+		authorId = parsedLog[ i ].authorId;
 		clientId = parsedLog[ i ].clientId;
 		if ( type === 'newClient' ) {
-			clients.push( author );
-			clientStates[ author ] = {
+			clients.push( authorId );
+			clientStates[ authorId ] = {
 				unsent: 0,
 				submitting: false
 			};
 		} else if ( type === 'applyChange' ) {
-			if ( clientStates[ author ].submitting ) {
-				ops.push( [ author, 'deliver' ] );
-				clientStates[ author ].submitting = false;
+			if ( clientStates[ authorId ].submitting ) {
+				ops.push( [ authorId, 'deliver' ] );
+				clientStates[ authorId ].submitting = false;
 			}
 		} else if ( type === 'acceptChange' ) {
 			unsent = ve.dm.Change.static.deserialize( parsedLog[ i ].unsent, null, true );

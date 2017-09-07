@@ -216,7 +216,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 									] },
 									{ type: 'retain', length: 3 }
 								],
-								author: '1'
+								authorId: '1'
 							}
 						],
 						stores: [
@@ -316,7 +316,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 		clients = {};
 		for ( j = 0; j < cases[ i ].clients.length; j++ ) {
 			client = new ve.dm.TestRebaseClient( server, cases[ i ].initialData );
-			client.setAuthor( cases[ i ].clients[ j ] );
+			client.setAuthorId( cases[ i ].clients[ j ] );
 			clients[ cases[ i ].clients[ j ] ] = client;
 			// Initialize
 			server.updateDocState( ve.dm.TestRebaseServer.static.fakeDocName, cases[ i ].clients[ j ] );

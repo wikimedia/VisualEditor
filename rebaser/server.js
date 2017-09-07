@@ -52,22 +52,22 @@ lastAuthorForDoc = new Map();
 pendingForDoc = new Map();
 artificialDelay = parseInt( process.argv[ 2 ] ) || 0;
 
-function* welcomeNewClient( socket, docName, author ) {
+function* welcomeNewClient( socket, docName, authorId ) {
 	var state, authorData;
-	yield rebaseServer.updateDocState( docName, author, null, {
-		displayName: 'User ' + author // TODO: i18n
+	yield rebaseServer.updateDocState( docName, authorId, null, {
+		displayName: 'User ' + authorId // TODO: i18n
 	} );
 
 	state = yield rebaseServer.getDocState( docName );
-	authorData = state.authors.get( author );
+	authorData = state.authors.get( authorId );
 
 	socket.emit( 'registered', {
-		authorId: author,
+		authorId: authorId,
 		authorName: authorData.displayName,
 		token: authorData.token
 	} );
 	docNamespaces.get( docName ).emit( 'nameChange', {
-		authorId: author,
+		authorId: authorId,
 		authorName: authorData.displayName
 	} );
 	// HACK Catch the client up on the current state by sending it the entire history
@@ -85,24 +85,24 @@ function* onSubmitChange( context, data ) {
 	var change, applied;
 	yield wait( artificialDelay );
 	change = ve.dm.Change.static.deserialize( data.change, null, true );
-	applied = yield rebaseServer.applyChange( context.docName, context.author, data.backtrack, change );
+	applied = yield rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
 	if ( !applied.isEmpty() ) {
 		docNamespaces.get( context.docName ).emit( 'newChange', applied.serialize( true ) );
 	}
 }
 
 function* onChangeName( context, newName ) {
-	yield rebaseServer.updateDocState( context.docName, context.author, null, {
+	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayName: newName
 	} );
 	docNamespaces.get( context.docName ).emit( 'nameChange', {
-		authorId: context.author,
+		authorId: context.authorId,
 		authorName: newName
 	} );
 	logServerEvent( {
 		type: 'nameChange',
 		doc: context.docName,
-		author: context.author,
+		authorId: context.authorId,
 		newName: newName
 	} );
 }
@@ -118,7 +118,7 @@ function* onUsurp( context, data ) {
 		active: true
 	} );
 	// TODO either delete this author, or reimplement usurp in a client-initiated way
-	yield rebaseServer.updateDocState( context.docName, context.author, null, {
+	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false
 	} );
 	context.socket.emit( 'registered', {
@@ -130,20 +130,20 @@ function* onUsurp( context, data ) {
 		authorId: data.authorId,
 		authorName: newAuthorData.displayName
 	} );
-	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.author );
+	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.authorId );
 
-	context.author = data.authorId;
+	context.authorId = data.authorId;
 }
 
 function* onDisconnect( context ) {
-	yield rebaseServer.updateDocState( context.docName, context.author, null, {
+	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false
 	} );
-	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.author );
+	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.authorId );
 	logServerEvent( {
 		type: 'disconnect',
 		doc: context.docName,
-		author: context.author
+		authorId: context.authorId
 	} );
 }
 
@@ -174,18 +174,18 @@ function makeConnectionHandler( docName ) {
 		var context = {
 				socket: socket,
 				docName: docName,
-				author: 1 + ( lastAuthorForDoc.get( docName ) || 0 )
+				authorId: 1 + ( lastAuthorForDoc.get( docName ) || 0 )
 			},
 			eventName;
-		lastAuthorForDoc.set( docName, context.author );
+		lastAuthorForDoc.set( docName, context.authorId );
 		logServerEvent( {
 			type: 'newClient',
 			doc: docName,
-			author: context.author
+			authorId: context.authorId
 		} );
 
 		// Kick off welcome process
-		addStep( docName, welcomeNewClient( socket, docName, context.author ) );
+		addStep( docName, welcomeNewClient( socket, docName, context.authorId ) );
 
 		// Attach event handlers
 		for ( eventName in handlers ) {
@@ -193,7 +193,7 @@ function makeConnectionHandler( docName ) {
 			socket.on( eventName, handleEvent.bind( null, context, eventName ) );
 		}
 		socket.on( 'logEvent', function ( event ) {
-			event.clientId = context.author;
+			event.clientId = context.authorId;
 			event.doc = docName;
 			logEvent( event );
 		} );

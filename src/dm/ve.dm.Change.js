@@ -97,13 +97,13 @@ ve.dm.Change.static = {};
  * @return {ve.dm.Change} Deserialized change
  */
 ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues ) {
-	var author, deserializeStore,
+	var authorId, deserializeStore,
 		selections = {};
 
-	for ( author in data.selections ) {
-		selections[ author ] = ve.dm.Selection.static.newFromJSON(
+	for ( authorId in data.selections ) {
+		selections[ authorId ] = ve.dm.Selection.static.newFromJSON(
 			doc,
-			data.selections[ author ]
+			data.selections[ authorId ]
 		);
 	}
 	deserializeStore = ve.dm.IndexValueStore.static.deserialize.bind(
@@ -376,7 +376,7 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  */
 ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) {
 	var i, iLen, b, j, jLen, a, rebases, rebasedTransactionsA, rebased, transposedHistory,
-		storeB, rebasedStoresA, storeA, author,
+		storeB, rebasedStoresA, storeA, authorId,
 		transactionsA = history.transactions.slice(),
 		transactionsB = uncommitted.transactions.slice(),
 		storesA = history.stores.slice(),
@@ -417,7 +417,7 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		for ( j = 0, jLen = transactionsA.length; j < jLen; j++ ) {
 			a = transactionsA[ j ];
 			storeA = storesA[ j ];
-			if ( b.author < a.author ) {
+			if ( b.authorId < a.authorId ) {
 				rebases = ve.dm.Change.static.rebaseTransactions( b, a ).reverse();
 			} else {
 				rebases = ve.dm.Change.static.rebaseTransactions( a, b );
@@ -452,13 +452,13 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		storesA,
 		{}
 	);
-	for ( author in selectionsB ) {
-		author = parseInt( author );
-		rebased.selections[ author ] = selectionsB[ author ].translateByChange( transposedHistory, author );
+	for ( authorId in selectionsB ) {
+		authorId = +authorId;
+		rebased.selections[ authorId ] = selectionsB[ authorId ].translateByChange( transposedHistory, authorId );
 	}
-	for ( author in selectionsA ) {
-		author = parseInt( author );
-		transposedHistory.selections[ author ] = selectionsA[ author ].translateByChange( rebased, author );
+	for ( authorId in selectionsA ) {
+		authorId = +authorId;
+		transposedHistory.selections[ authorId ] = selectionsA[ authorId ].translateByChange( rebased, authorId );
 	}
 	return {
 		rebased: rebased,
@@ -486,14 +486,14 @@ ve.dm.Change.prototype.getLength = function () {
 /**
  * @return {number|null} The first author in a transaction or selection change, or null if empty
  */
-ve.dm.Change.prototype.firstAuthor = function () {
+ve.dm.Change.prototype.firstAuthorId = function () {
 	var authors;
 	if ( this.transactions.length ) {
-		return this.transactions[ 0 ].author;
+		return this.transactions[ 0 ].authorId;
 	}
 	authors = Object.keys( this.selections );
 	if ( authors.length ) {
-		return parseInt( authors[ 0 ] );
+		return +authors[ 0 ];
 	}
 	return null;
 };
@@ -712,11 +712,11 @@ ve.dm.Change.prototype.removeFromHistory = function ( documentModel ) {
  * @return {ve.dm.Change} Deserialized change
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
-	var author, serializeStoreValues, serializeStore,
+	var authorId, serializeStoreValues, serializeStore,
 		selections = {};
 
-	for ( author in this.selections ) {
-		selections[ author ] = this.selections[ author ].toJSON();
+	for ( authorId in this.selections ) {
+		selections[ authorId ] = this.selections[ authorId ].toJSON();
 	}
 	serializeStoreValues = preserveStoreValues ? function noop( x ) {
 		return x;

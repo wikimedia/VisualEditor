@@ -150,7 +150,7 @@ ve.dm.Selection.prototype.translateByTransaction = null;
  * @abstract
  * @method
  * @param {ve.dm.Transaction} tx Transaction
- * @param {number} author The selection's author ID
+ * @param {number} authorId The selection's author ID
  * @return {ve.dm.Selection} A new translated selection
  */
 ve.dm.Selection.prototype.translateByTransactionWithAuthor = null;
@@ -174,16 +174,16 @@ ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInser
  * Apply translations from a change
  *
  * @param {ve.dm.Change} change The change
- * @param {number} author The author ID of this selection
+ * @param {number} authorId The author ID of this selection
  * @return {ve.dm.Selection} A new translated selection
  */
-ve.dm.Selection.prototype.translateByChange = function ( change, author ) {
+ve.dm.Selection.prototype.translateByChange = function ( change, authorId ) {
 	var i, len,
 		selection = this;
 	for ( i = 0, len = change.transactions.length; i < len; i++ ) {
 		selection = selection.translateByTransactionWithAuthor(
 			change.transactions[ i ],
-			author
+			authorId
 		);
 	}
 	return selection;

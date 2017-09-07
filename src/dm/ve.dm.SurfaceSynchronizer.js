@@ -38,7 +38,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	// Whether we are currently synchronizing the model
 	this.applying = false;
 
-	// HACK
+	// SocketIO events
 	this.socket = io( ( config.server || '' ) + '/' + this.documentId, { query: { docName: this.documentId } } );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
 	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
@@ -68,7 +68,12 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
 
 /**
  * @event authorSelect
- * @param {string} author The author whose selection has changed
+ * @param {number} authorId The author whose selection has changed
+ */
+
+/**
+ * @event authorNameChange
+ * @param {number} authorId The author whose name has changed
  */
 
 /* Static methods */
@@ -94,7 +99,7 @@ ve.dm.SurfaceSynchronizer.prototype.getChangeSince = function ( start, toSubmit 
 	var change = this.doc.getChangeSince( start ),
 		selection = this.surface.getSelection();
 	if ( !selection.equals( this.lastSubmittedSelection ) ) {
-		change.selections[ this.getAuthor() ] = selection;
+		change.selections[ this.getAuthorId() ] = selection;
 		if ( toSubmit ) {
 			this.lastSubmittedSelection = selection;
 		}
@@ -128,11 +133,11 @@ ve.dm.SurfaceSynchronizer.prototype.sendChange = function ( backtrack, change ) 
  * @inheritdoc
  */
 ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
-	var author;
+	var authorId;
 	// Author selections are superseded by change.selections, so no need to translate them
-	for ( author in change.selections ) {
-		author = parseInt( author );
-		delete this.authorSelections[ author ];
+	for ( authorId in change.selections ) {
+		authorId = +authorId;
+		delete this.authorSelections[ authorId ];
 	}
 	change.applyTo( this.surface );
 	this.applyNewSelections( change.selections );
@@ -193,7 +198,7 @@ ve.dm.SurfaceSynchronizer.prototype.onDocumentTransact = function ( tx ) {
 	// HACK annotate transaction with authorship information
 	// This relies on being able to access the transaction object by reference;
 	// we should probably set the author deeper in dm.Surface or dm.Document instead.
-	tx.author = this.author;
+	tx.authorId = this.authorId;
 	// TODO deal with staged transactions somehow
 	this.applyNewSelections( this.authorSelections, tx );
 	this.submitChangeThrottled();
@@ -214,24 +219,24 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceSelect = function () {
  * @fires authorSelect
  */
 ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelections, changeOrTx ) {
-	var author, translatedSelection,
+	var authorId, translatedSelection,
 		change = changeOrTx instanceof ve.dm.Change ? changeOrTx : null,
 		tx = changeOrTx instanceof ve.dm.Transaction ? changeOrTx : null;
-	for ( author in newSelections ) {
-		author = parseInt( author );
-		if ( author === this.author ) {
+	for ( authorId in newSelections ) {
+		authorId = +authorId;
+		if ( authorId === this.authorId ) {
 			continue;
 		}
 		if ( change ) {
-			translatedSelection = newSelections[ author ].translateByChange( change, author );
+			translatedSelection = newSelections[ authorId ].translateByChange( change, authorId );
 		} else if ( tx ) {
-			translatedSelection = newSelections[ author ].translateByTransactionWithAuthor( tx, author );
+			translatedSelection = newSelections[ authorId ].translateByTransactionWithAuthor( tx, authorId );
 		} else {
-			translatedSelection = newSelections[ author ];
+			translatedSelection = newSelections[ authorId ];
 		}
-		if ( !translatedSelection.equals( this.authorSelections[ author ] ) ) {
-			this.authorSelections[ author ] = translatedSelection;
-			this.emit( 'authorSelect', author );
+		if ( !translatedSelection.equals( this.authorSelections[ authorId ] ) ) {
+			this.authorSelections[ authorId ] = translatedSelection;
+			this.emit( 'authorSelect', authorId );
 		}
 	}
 };
@@ -257,8 +262,8 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
  * @param {number} data.authorId The author ID allocated by the server
  */
 ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
-	this.setAuthor( data.authorId );
-	this.surface.setAuthor( this.author );
+	this.setAuthorId( data.authorId );
+	this.surface.setAuthorId( this.authorId );
 
 	if ( window.sessionStorage ) {
 		window.sessionStorage.setItem( 'visualeditor-author', JSON.stringify( data ) );

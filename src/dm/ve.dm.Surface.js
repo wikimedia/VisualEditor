@@ -42,7 +42,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.transacting = false;
 	this.queueingContextChanges = false;
 	this.contextChangeQueued = false;
-	this.author = null;
+	this.authorId = null;
 
 	// Events
 	this.getDocument().connect( this, {
@@ -966,7 +966,7 @@ ve.dm.Surface.prototype.redo = function () {
  * @fires documentUpdate
  */
 ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
-	this.setSelection( this.getSelection().translateByTransactionWithAuthor( tx, this.author ) );
+	this.setSelection( this.getSelection().translateByTransactionWithAuthor( tx, this.authorId ) );
 	this.emit( 'documentUpdate', tx );
 };
 
@@ -1061,19 +1061,19 @@ ve.dm.Surface.prototype.getModifiedRanges = function ( includeCollapsed, include
 };
 
 /**
- * Get the author id
+ * Get the author ID
  *
- * @return {string} The author id
+ * @return {number} The author ID
  */
-ve.dm.Surface.prototype.getAuthor = function () {
-	return this.author;
+ve.dm.Surface.prototype.getAuthorId = function () {
+	return this.authorId;
 };
 
 /**
- * Set the author id
+ * Set the author ID
  *
- * @param {string} author The new author id
+ * @param {number} authorId The new author ID
  */
-ve.dm.Surface.prototype.setAuthor = function ( author ) {
-	this.author = author;
+ve.dm.Surface.prototype.setAuthorId = function ( authorId ) {
+	this.authorId = authorId;
 };

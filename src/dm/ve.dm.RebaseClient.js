@@ -11,9 +11,9 @@
  */
 ve.dm.RebaseClient = function VeDmRebaseClient() {
 	/**
-	 * @property {number} author Author ID
+	 * @property {number} authorId Author ID
 	 */
-	this.author = null;
+	this.authorId = null;
 
 	/**
 	 * @property {number} commitLength Offset up to which we know we have no differences with the server
@@ -96,15 +96,15 @@ ve.dm.RebaseClient.prototype.logEvent = function () {};
 /**
  * @return {number} Author ID
  */
-ve.dm.RebaseClient.prototype.getAuthor = function () {
-	return this.author;
+ve.dm.RebaseClient.prototype.getAuthorId = function () {
+	return this.authorId;
 };
 
 /**
- * @param {number} author Author ID
+ * @param {number} authorId Author ID
  */
-ve.dm.RebaseClient.prototype.setAuthor = function ( author ) {
-	this.author = author;
+ve.dm.RebaseClient.prototype.setAuthorId = function ( authorId ) {
+	this.authorId = authorId;
 };
 
 /**
@@ -147,14 +147,14 @@ ve.dm.RebaseClient.prototype.submitChange = function () {
  */
 ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
 	var uncommitted, unsent, result,
-		author = change.firstAuthor(),
+		authorId = change.firstAuthorId(),
 		logResult = {};
-	if ( !author ) {
+	if ( !authorId ) {
 		return;
 	}
 
 	unsent = this.getChangeSince( this.sentLength, false );
-	if ( author !== this.getAuthor() ) {
+	if ( authorId !== this.getAuthorId() ) {
 		uncommitted = this.getChangeSince( this.commitLength, false );
 		result = ve.dm.Change.static.rebaseUncommittedChange( change, uncommitted );
 		if ( result.rejected ) {
@@ -167,7 +167,7 @@ ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
 			this.sentLength = result.rejected.start;
 		}
 		// We are already right by definition about our own selection
-		delete result.transposedHistory.selections[ this.getAuthor() ];
+		delete result.transposedHistory.selections[ this.getAuthorId() ];
 		this.applyChange( result.transposedHistory );
 		// Rewrite history
 		this.removeFromHistory( result.transposedHistory );
@@ -194,7 +194,7 @@ ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
 	}
 	this.logEvent( ve.extendObject( {
 		type: 'acceptChange',
-		author: author,
+		authorId: authorId,
 		change: [ change.start, change.getLength() ]
 	}, logResult ) );
 };

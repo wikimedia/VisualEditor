@@ -3980,28 +3980,28 @@ ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer ) {
 /**
  * Called when the synchronizer receives a remote author selection or name change
  *
- * @param {number} author The author ID
+ * @param {number} authorId The author ID
  */
-ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( author ) {
-	this.paintAuthor( author );
+ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( authorId ) {
+	this.paintAuthor( authorId );
 };
 
 /**
  * Paint a remote author's current selection, as stored in the synchronizer
  *
- * @param {number} author The author ID
+ * @param {number} authorId The author ID
  */
-ve.ce.Surface.prototype.paintAuthor = function ( author ) {
+ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 	var i, l, rects, rect, overlays,
-		color = '#' + this.synchronizer.constructor.static.getAuthorColor( author ),
-		selection = this.synchronizer.authorSelections[ author ];
+		color = '#' + this.synchronizer.constructor.static.getAuthorColor( authorId ),
+		selection = this.synchronizer.authorSelections[ authorId ];
 
-	if ( author === this.author ) {
+	if ( authorId === this.authorId ) {
 		return;
 	}
 
-	if ( !this.userSelectionOverlays[ author ] ) {
-		this.userSelectionOverlays[ author ] = {
+	if ( !this.userSelectionOverlays[ authorId ] ) {
+		this.userSelectionOverlays[ authorId ] = {
 			$cursor: $( '<div>' ),
 			$selection: $( '<div>' ),
 			deactivateDebounced: ve.debounce( function () {
@@ -4011,7 +4011,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 			}, 5000 )
 		};
 	}
-	overlays = this.userSelectionOverlays[ author ];
+	overlays = this.userSelectionOverlays[ authorId ];
 
 	if ( !selection || selection.isNull() ) {
 		overlays.$cursor.detach();
@@ -4050,7 +4050,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( author ) {
 		} ).append(
 			$( '<span>' )
 				.addClass( 've-ce-surface-highlights-user-cursor-label' )
-				.text( this.synchronizer.authorNames[ author ] )
+				.text( this.synchronizer.authorNames[ authorId ] )
 				.css( { background: color } )
 		)
 	);
@@ -4070,10 +4070,10 @@ ve.ce.Surface.prototype.onPosition = function () {
 	}
 	// Defer to allow surface synchronizer to adjust for transactions
 	setTimeout( function () {
-		var author,
+		var authorId,
 			authorSelections = surface.synchronizer.authorSelections;
-		for ( author in authorSelections ) {
-			surface.onSynchronizerAuthorUpdate( author );
+		for ( authorId in authorSelections ) {
+			surface.onSynchronizerAuthorUpdate( authorId );
 		}
 	} );
 };

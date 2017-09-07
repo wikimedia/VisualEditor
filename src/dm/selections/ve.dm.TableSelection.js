@@ -312,8 +312,8 @@ ve.dm.TableSelection.prototype.translateByTransaction = function ( tx, excludeIn
 /**
  * @inheritdoc
  */
-ve.dm.TableSelection.prototype.translateByTransactionWithAuthor = function ( tx, author ) {
-	var newRange = tx.translateRangeWithAuthor( this.tableRange, author );
+ve.dm.TableSelection.prototype.translateByTransactionWithAuthor = function ( tx, authorId ) {
+	var newRange = tx.translateRangeWithAuthor( this.tableRange, authorId );
 
 	if ( newRange.isCollapsed() ) {
 		return new ve.dm.NullSelection( this.getDocument() );

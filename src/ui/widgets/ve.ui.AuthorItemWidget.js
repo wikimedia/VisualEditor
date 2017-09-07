@@ -62,7 +62,7 @@ OO.mixinClass( ve.ui.AuthorItemWidget, OO.ui.mixin.LabelElement );
  *
  * @param {number} authorId Author ID
  */
-ve.ui.AuthorItemWidget.prototype.setAuthor = function ( authorId ) {
+ve.ui.AuthorItemWidget.prototype.setAuthorId = function ( authorId ) {
 	this.authorId = authorId;
 };
 
