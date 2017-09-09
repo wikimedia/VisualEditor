@@ -10,5 +10,8 @@
 
 .ve-ce-focusableNode .ve-ce-activeNode,
 .ve-ce-focusableNode .ve-ce-activeNode * {
-	-moz-user-select: text;
+	/* T174774: We're using the vender prefixed form of `text` here since it
+	   has the semantics that it won't be overridden by ancestors having the
+	   value `all` */
+	-moz-user-select: -moz-text;
 }
