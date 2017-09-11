@@ -92,7 +92,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 		return;
 	}
 	if ( oldRoot ) {
-		// Null the root, then recurse into children, then emit root/unroot.
+		// Null the root, then recurse into children, then emit unroot.
 		// That way, at emit time, all this node's ancestors and descendants have
 		// null root.
 		this.root = null;
@@ -103,7 +103,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 	}
 	this.root = root;
 	if ( root ) {
-		// We've set the new root, so recurse into children, then emit root/unroot.
+		// We've set the new root, so recurse into children, then emit root.
 		// That way, at emit time, all this node's ancestors and descendants have
 		// the new root.
 		for ( i = 0, len = this.children.length; i < len; i++ ) {
@@ -121,14 +121,31 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
  * @param {ve.Document} doc Document this node is a part of
  */
 ve.BranchNode.prototype.setDocument = function ( doc ) {
-	var i;
+	var i, len,
+		oldDoc = this.doc;
 	if ( doc === this.doc ) {
 		// Nothing to do, don't recurse into all descendants
 		return;
 	}
+	if ( oldDoc ) {
+		// Null the doc, then recurse into children, then notify the doc.
+		// That way, at notify time, all this node's ancestors and descendants have
+		// null doc.
+		this.doc = null;
+		for ( i = 0, len = this.children.length; i < len; i++ ) {
+			this.children[ i ].setDocument( null );
+		}
+		oldDoc.nodeDetached( this );
+	}
 	this.doc = doc;
-	for ( i = 0; i < this.children.length; i++ ) {
-		this.children[ i ].setDocument( doc );
+	if ( doc ) {
+		// We've set the new doc, so recurse into children, then notify the doc.
+		// That way, at notify time, all this node's ancestors and descendants have
+		// the new root.
+		for ( i = 0, len = this.children.length; i < len; i++ ) {
+			this.children[ i ].setDocument( doc );
+		}
+		doc.nodeAttached( this );
 	}
 };
 

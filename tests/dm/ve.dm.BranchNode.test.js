@@ -19,6 +19,14 @@ ve.dm.BranchNodeStub.static.name = 'branch-stub';
 
 ve.dm.BranchNodeStub.static.matchTagNames = [];
 
+// Throw in nodeAttached so BranchNodeStub better passes duck type scrutiny as a Document
+// (e.g. for setDocument test below)
+ve.dm.BranchNodeStub.prototype.nodeAttached = ve.Document.prototype.nodeAttached;
+
+// Throw in nodeDetached so BranchNodeStub better passes duck type scrutiny as a Document
+// (e.g. for setDocument test below)
+ve.dm.BranchNodeStub.prototype.nodeDetached = ve.Document.prototype.nodeDetached;
+
 ve.dm.nodeFactory.register( ve.dm.BranchNodeStub );
 
 /* Tests */

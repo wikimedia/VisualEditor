@@ -351,10 +351,21 @@ ve.Node.prototype.getDocument = function () {
  * This method is overridden by nodes with children.
  *
  * @method
- * @param {ve.Document} doc Document this node is a part of
+ * @param {ve.Document|null} doc Document this node is a part of
  */
 ve.Node.prototype.setDocument = function ( doc ) {
+	var oldDoc = this.doc;
+	if ( doc === oldDoc ) {
+		return;
+	}
+	if ( oldDoc ) {
+		this.doc = null;
+		oldDoc.nodeDetached( this );
+	}
 	this.doc = doc;
+	if ( doc ) {
+		doc.nodeAttached( this );
+	}
 };
 
 /**
