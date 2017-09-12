@@ -35,7 +35,7 @@ OO.inheritClass( ve.ui.HistoryTool, ve.ui.Tool );
  */
 ve.ui.HistoryTool.prototype.onSurfaceChange = function ( oldSurface, newSurface ) {
 	if ( oldSurface ) {
-		oldSurface.getModel().disconnet( this );
+		oldSurface.getModel().disconnect( this );
 	}
 	if ( newSurface ) {
 		newSurface.getModel().connect( this, { history: 'onHistory' } );
