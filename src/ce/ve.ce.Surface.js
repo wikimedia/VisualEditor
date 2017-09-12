@@ -283,13 +283,36 @@ ve.ce.Surface.static.unsafeAttributes = [
  * Values of InputEvent.inputType which map to a command
  *
  * Currently these are triggered when the user selects
- * undo/redo from the context menu in Chrome.
+ * undo/redo from the context menu in Chrome, or uses the
+ * selection formatting tools on iOS.
+ *
+ * See https://w3c.github.io/input-events/
+ *
+ * Values of null will perform no action and preventDefault.
  *
  * @type {Object}
  */
 ve.ce.Surface.static.inputTypeCommands = {
 	historyUndo: 'undo',
-	historyRedo: 'redo'
+	historyRedo: 'redo',
+	formatBold: 'bold',
+	formatItalic: 'italic',
+	formatUnderline: 'underline',
+	formatStrikeThrough: 'strikethrough',
+	formatSuperscript: 'superscript',
+	formatSubscript: 'subscript',
+	formatJustifyFull: null,
+	formatJustifyCenter: null,
+	formatJustifyRight: null,
+	formatJustifyLeft: null,
+	formatIndent: 'indent',
+	formatOutdent: 'outdent',
+	formatRemove: 'clear',
+	formatSetBlockTextDirection: null,
+	formatSetInlineTextDirection: null,
+	formatBackColor: null,
+	formatFontColor: null,
+	formatFontName: null
 };
 
 /**
@@ -2453,10 +2476,14 @@ ve.ce.Surface.prototype.selectAll = function () {
  * @param {jQuery.Event} e The input event
  */
 ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
-	var inputType = e.originalEvent.inputType;
+	var inputType = e.originalEvent.inputType,
+		inputTypeCommands = this.constructor.static.inputTypeCommands;
 
-	if ( inputType && inputType in this.constructor.static.inputTypeCommands ) {
-		this.getSurface().executeCommand( this.constructor.static.inputTypeCommands[ inputType ] );
+	if ( inputType && inputTypeCommands.hasOwnProperty( inputType ) ) {
+		// Value can be null, in which case we still want to preventDefault.
+		if ( inputTypeCommands[ inputType ] ) {
+			this.getSurface().executeCommand( this.constructor.static.inputTypeCommands[ inputType ] );
+		}
 		e.preventDefault();
 		return;
 	}
