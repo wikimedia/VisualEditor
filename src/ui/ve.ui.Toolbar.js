@@ -65,7 +65,8 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  * @param {ve.ui.Surface} [surface] Surface to attach to
  */
 ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
-	var oldSurface;
+	var oldSurface,
+		surfaceChange = false;
 
 	this.detach();
 
@@ -73,7 +74,7 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 		// this.surface should be changed before we fire the event
 		oldSurface = this.surface;
 		this.surface = surface;
-		this.emit( 'surfaceChange', oldSurface, surface );
+		surfaceChange = true;
 	}
 
 	// The parent method just rebuilds the tool groups so only
@@ -84,6 +85,11 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 	}
 
 	this.groups = groups;
+
+	if ( surfaceChange ) {
+		// Emit surface change event after tools have been setup
+		this.emit( 'surfaceChange', oldSurface, surface );
+	}
 
 	// Events
 	this.getSurface().getModel().connect( this, { contextChange: 'onContextChange' } );
