@@ -43,6 +43,7 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	this.newToOld = diff.docDiff.rootChildrenNewToOld;
 	this.insert = diff.docDiff.rootChildrenInsert;
 	this.remove = diff.docDiff.rootChildrenRemove;
+	this.moves = diff.docDiff.moves;
 	this.internalListDiff = diff.internalListDiff;
 
 	this.$overlays = $( '<div>' ).addClass( 've-ui-diffElement-overlays' );
@@ -335,18 +336,14 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 
 		} else if ( typeof this.newToOld[ j ] === 'number' ) {
 
-			// The old and new node are exactly the same, but still
-			// need to check if there has been a move
-			move = this.newToOld[ j ] === i ? undefined :
-				( this.newToOld[ j ] > i ? 'up' : 'down' );
+			// The old and new node are exactly the same, but there may be a move
+			move = this.moves[ j ] === 0 ? undefined : this.moves[ j ];
 			diffQueue.push( [ 'getNodeElements', this.newDocChildren[ j ], 'none', move ] );
 
 		} else {
 
-			// The new node is modified from the old node. Get the
-			// diff and also check if there has been a move
-			move = this.newToOld[ j ].node === i ? undefined :
-				( this.newToOld[ j ].node > i ? 'up' : 'down' );
+			// The new node is modified from the old node, and there may be a move
+			move = this.moves[ j ] === 0 ? undefined : this.moves[ j ];
 			diffQueue.push( [ 'getChangedNodeElements', this.newToOld[ j ].node, move ] );
 
 		}
