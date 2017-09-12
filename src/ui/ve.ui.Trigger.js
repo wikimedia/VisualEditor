@@ -193,7 +193,6 @@ ve.ui.Trigger.static.platformMapping = {
 		meta: '⌘',
 		'page-down': '⇟',
 		'page-up': '⇞',
-		'return': '↵',
 		right: '→',
 		shift: '⇧',
 		space: '␣',
