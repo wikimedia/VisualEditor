@@ -169,6 +169,8 @@ ve.ce.TestRunner.prototype.endLoop = function () {
  * @param {Object} ev Fake event object with any necessary properties
  */
 ve.ce.TestRunner.prototype.sendEvent = function ( eventName, ev ) {
+	// Ensure ev has an originalEvent property.
+	ev.originalEvent = ev.originalEvent || {};
 	this.view.eventSequencer.onEvent( eventName, ev );
 };
 
