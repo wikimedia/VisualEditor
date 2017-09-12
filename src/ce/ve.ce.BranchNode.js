@@ -198,6 +198,8 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[ i ].model.disconnect( this, { update: 'onModelUpdate' } );
+		// Stop child listening to its model (e.g. for splice event)
+		removals[ i ].model.disconnect( removals[ i ] );
 		removals[ i ].setLive( false );
 		removals[ i ].detach();
 		removals[ i ].$element.detach();
