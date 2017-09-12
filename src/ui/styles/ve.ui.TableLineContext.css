@@ -5,9 +5,8 @@
  */
 
 .ve-ui-tableLineContext {
-	position: absolute;
 	/* Ensure it is placed above the table context */
-	z-index: 2;
+	z-index: 3;
 }
 
 .ve-ui-tableLineContext-indicator {
