@@ -89,11 +89,11 @@
 	padding-right: 3px;
 }
 
-.ve-ui-commandHelpDialog-sequence kbd:not( [data-key='space'] ) {
+.ve-ui-commandHelpDialog-sequence kbd:not( .ve-ui-commandHelpDialog-specialKey ) {
 	box-shadow: none;
 	text-transform: none;
 }
-.ve-ui-commandHelpDialog-sequence kbd:not( [data-key='space'] ) + kbd:not( [data-key='space'] ) {
+.ve-ui-commandHelpDialog-sequence kbd:not( .ve-ui-commandHelpDialog-specialKey ) + kbd:not( .ve-ui-commandHelpDialog-specialKey ) {
 	margin-left: -0.5em;
 	padding-left: 0;
 	border-left: 0;
