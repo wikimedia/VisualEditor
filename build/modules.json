@@ -287,6 +287,7 @@
 			"src/dm/ve.dm.TransactionProcessor.js",
 			"src/dm/ve.dm.Transaction.js",
 			"src/dm/ve.dm.TransactionBuilder.js",
+			"src/dm/ve.dm.Change.js",
 			"src/dm/ve.dm.TreeCursor.js",
 			"src/dm/ve.dm.TreeModifier.js",
 			"src/dm/ve.dm.Selection.js",
@@ -641,7 +642,6 @@
 	"visualEditor.rebase": {
 		"scripts": [
 			"src/ve.utils-es6.js",
-			"src/dm/ve.dm.Change.js",
 			"src/dm/ve.dm.RebaseDocState.js",
 			"src/dm/ve.dm.RebaseServer.js",
 			"src/dm/ve.dm.RebaseClient.js",
