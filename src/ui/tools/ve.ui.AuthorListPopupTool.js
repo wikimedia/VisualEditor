@@ -31,8 +31,6 @@ ve.ui.AuthorListPopupTool = function VeUiAuthorListPopupTool( toolGroup, config 
 	// Events
 	this.toolbar.connect( this, { surfaceChange: 'onSurfaceChange' } );
 
-	this.setup( this.toolbar.getSurface() );
-
 	this.$element.addClass( 've-ui-authorListPopupTool' );
 };
 
@@ -42,8 +40,8 @@ OO.inheritClass( ve.ui.AuthorListPopupTool, OO.ui.PopupTool );
 
 /* Methods */
 
-ve.ui.AuthorListPopupTool.prototype.onSurfaceChange = function ( surface ) {
-	this.setup( surface );
+ve.ui.AuthorListPopupTool.prototype.onSurfaceChange = function ( oldSurface, newSurface ) {
+	this.setup( newSurface );
 };
 
 /**
