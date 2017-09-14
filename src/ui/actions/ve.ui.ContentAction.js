@@ -110,6 +110,7 @@ ve.ui.ContentAction.prototype.changeDirectionality = function () {
 	var documentView = this.surface.getView().getDocument();
 	documentView.setDir( documentView.getDir() === 'ltr' ? 'rtl' : 'ltr' );
 	this.surface.getModel().emit( 'contextChange' );
+	this.surface.getView().emit( 'position' );
 	return true;
 };
 
