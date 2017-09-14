@@ -160,7 +160,132 @@ ve.dm.VisualDiff.prototype.computeDiff = function ( oldRootChildren, newRootChil
 		}
 	}
 
+	// STEP 3: Compute moves (up, down, no move)
+	if ( Object.keys( diff.rootChildrenNewToOld ).length > 0 ) {
+		diff.moves = this.calculateDiffMoves( diff.rootChildrenOldToNew, diff.rootChildrenNewToOld );
+	} else {
+		diff.moves = [];
+	}
+
 	return diff;
+};
+
+/**
+ * Calculate how children of the new root node have moved, compared to the children of
+ * the old root node. More specifically, calculate the minimal moves, keeping the
+ * maximum possible number of nodes unmoved. Do this by finding the longest increasing
+ * subsequence in the sequence of oldDoc node indices, sorted by their corresponding
+ * newDoc nodes' indices. Those indices in the longest increasing subsequence represent
+ * the unmoved nodes.
+ *
+ * @param {Object} oldToNew Index map of oldDoc nodes to corresponding newDoc nodes
+ * @param {Object} newToOld Index map of newDoc nodes to corresponding oldDoc nodes
+ * @return {Array} Record of whether and how each newDoc node has moved
+ */
+ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) {
+	var i, ilen, sortedKeys, moves, latestUnmoved, oldIndex,
+		oldPermuted = [],
+		unmoved = 0,
+		up = 'up',
+		down = 'down';
+
+	// See https://en.wikipedia.org/wiki/Longest_increasing_subsequence
+	function longestIncreasingSubsequence( sequence, oldToNew ) {
+		var i, ilen, k, low, high, middle, newLength, oldIndex, newIndex,
+			currentLength = 0,
+			moves = [],
+			// finalIndices[i] holds:
+			// - if i is 0, 0
+			// - if there's an increasing subsequence of length i, the final item in that subsequence
+			// - if i > length of longest increasing subsequence, undefined
+			finalIndices = [],
+			// previousIndices[i] holds:
+			// - if i is in the longest increasing subsequence, the item before i in that subsequence
+			// - otherwise, 0
+			previousIndices = [];
+
+		finalIndices[ 0 ] = 0;
+
+		// Perform algorithm (i.e. populate finalIndices and previousIndices)
+		for ( i = 0, ilen = sequence.length; i < ilen; i++ ) {
+			low = 1;
+			high = currentLength;
+			while ( low <= high ) {
+				middle = Math.ceil( ( low + high ) / 2 );
+				if ( sequence[ finalIndices[ middle ] ] < sequence[ i ] ) {
+					low = middle + 1;
+				} else {
+					high = middle - 1;
+				}
+			}
+			newLength = low;
+			previousIndices[ i ] = finalIndices[ newLength - 1 ];
+			finalIndices[ newLength ] = i;
+			if ( newLength > currentLength ) {
+				currentLength = newLength;
+			}
+		}
+
+		// Items in the longest increasing subsequence are oldDoc indices of unmoved nodes.
+		// Mark corresponding newDoc indices of these unmoved nodes, in moves array.
+		k = finalIndices[ currentLength ];
+		for ( i = currentLength, ilen = 0; i > ilen; i-- ) {
+			oldIndex = sequence[ k ];
+			newIndex = oldToNew[ oldIndex ];
+			newIndex = typeof newIndex === 'number' ? newIndex : newIndex.node;
+			moves[ newIndex ] = unmoved;
+			k = previousIndices[ k ];
+		}
+
+		return moves;
+	}
+
+	// Get oldDoc indices, sorted according to their order in the new doc
+	sortedKeys = Object.keys( newToOld ).sort( function ( a, b ) {
+		return Number( a ) - Number( b );
+	} );
+	for ( i = 0, ilen = sortedKeys.length; i < ilen; i++ ) {
+		oldIndex = newToOld[ sortedKeys[ i ] ];
+		oldPermuted.push( typeof oldIndex === 'number' ? oldIndex : oldIndex.node );
+	}
+
+	// Record which newDoc nodes have NOT moved. NB nodes inserted at the end of the
+	// newDoc will be treated as not moved by default.
+	moves = longestIncreasingSubsequence( oldPermuted, oldToNew );
+
+	// Record whether the remaining newDoc nodes have moved up or down
+	// (or not at all, e.g. if they are an insert)
+	ilen = Number( sortedKeys[ sortedKeys.length - 1 ] ) + 1;
+	for ( i = 0; i < ilen; i++ ) {
+
+		if ( !( i in newToOld ) ) {
+
+			// This node must be an insert, so wasn't moved
+			moves[ i ] = unmoved;
+
+		} else if ( moves[ i ] === unmoved ) {
+
+			// This is the latest unmoved node so far
+			latestUnmoved = i;
+
+		} else {
+
+			// The node has moved
+			if ( latestUnmoved === undefined ) {
+				// This node comes before any unmoved nodes so must have moved up
+				moves[ i ] = up;
+			} else {
+				// If this node's oldDoc index is higher than the latest unmoved
+				// node's oldDoc index, then it must have moved up; otherwise it
+				// must have moved down
+				moves[ i ] = newToOld[ i ] > newToOld[ latestUnmoved ] ? up : down;
+			}
+
+		}
+
+	}
+
+	return moves;
 };
 
 /**
