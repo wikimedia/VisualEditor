@@ -34,3 +34,7 @@
 	left: -1.2em;
 	border-right: 0;
 }
+
+.ve-ui-tableLineContext-menu {
+	z-index: 2;
+}
