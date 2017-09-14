@@ -233,8 +233,8 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  */
 
 /**
- * When the surface changes its position (only if it happens
- * after initialize has already been called).
+ * When the surface or its contents changes position
+ * (only after initialize has already been called).
  *
  * @event position
  */
