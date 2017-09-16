@@ -649,6 +649,9 @@ ve.dm.TreeModifier.prototype.insertText = function ( data ) {
  */
 ve.dm.TreeModifier.prototype.create = function ( data ) {
 	var node = ve.dm.nodeFactory.createFromElement( data[ 0 ] );
+	if ( node instanceof ve.dm.BranchNode ) {
+		node.setupBlockSlugs();
+	}
 	this.ensureNotTextNode();
 	this.insertNode( node, data );
 };
