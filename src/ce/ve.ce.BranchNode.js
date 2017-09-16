@@ -243,7 +243,9 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		}
 	}
 
+	// TODO: restructure to clarify the logic (exactly one of these is a no-op)
 	this.setupBlockSlugs();
+	this.setupInlineSlugs();
 };
 
 /**
