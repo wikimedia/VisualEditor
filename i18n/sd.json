@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mehtab ahmed"
+			"Mehtab ahmed",
+			"Indus Asia"
 		]
 	},
 	"visualeditor": "وزيوئل ايڊيٽر",
@@ -50,6 +51,7 @@
 	"visualeditor-find-and-replace-done": "ٿي ويو",
 	"visualeditor-find-and-replace-find-text": "لهو",
 	"visualeditor-find-and-replace-invalid-regex": "ناقابلِ ڪار عام اظھار",
+	"visualeditor-find-and-replace-match-case": "اکرن کي ڀيٽيو",
 	"visualeditor-find-and-replace-next-button": "اڳيون لهو",
 	"visualeditor-find-and-replace-previous-button": "پويون لهو",
 	"visualeditor-find-and-replace-regular-expression": "عام اظھار",
@@ -107,6 +109,7 @@
 	"visualeditor-table-delete-col": "ڊاهيو {{PLURAL:$1|ڪالمُ|ڪالمَ}}",
 	"visualeditor-table-delete-row": "ڊاهيو {{PLURAL:$1|قطار|قطارون}}",
 	"visualeditor-table-format-data": "مواد جي جڳھ",
+	"visualeditor-table-format-header": "سرنامي وارو خانو",
 	"visualeditor-table-insert-col-after": "کانپوءِ وجھو",
 	"visualeditor-table-insert-col-before": "کان اڳ وجھو",
 	"visualeditor-table-insert-row-after": "هيٺان وجھو",
