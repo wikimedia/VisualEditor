@@ -114,3 +114,25 @@ QUnit.test( 'modify', function ( assert ) {
 		'Modified tree matches rebuilt tree, reversed'
 	);
 } );
+
+QUnit.test( 'setupBlockSlugs', function ( assert ) {
+	var doc = new ve.dm.Surface(
+		ve.dm.example.createExampleDocumentFromData( [] )
+	).documentModel;
+
+	assert.expect( 1 );
+
+	doc.commit( new ve.dm.Transaction( [ {
+		type: 'replace',
+		remove: [],
+		insert: [ { type: 'paragraph' }, { type: '/paragraph' } ],
+		insertedDataOffset: 0,
+		insertedDataLength: 2
+	} ] ) );
+
+	assert.deepEqual(
+		doc.getDocumentNode().getChildren()[ 0 ].slugPositions,
+		{ 0: true },
+		'Modified paragraph node contains a slug'
+	);
+} );

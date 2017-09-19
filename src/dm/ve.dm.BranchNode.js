@@ -155,6 +155,8 @@ ve.dm.BranchNode.prototype.splice = function () {
 
 /**
  * Setup a sparse array of booleans indicating where to place slugs
+ *
+ * TODO: The function name is misleading: in ContentBranchNodes it sets up inline slugs
  */
 ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
 	var i, len,
