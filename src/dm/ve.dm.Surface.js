@@ -262,7 +262,7 @@ ve.dm.Surface.prototype.popStaging = function () {
 		transaction = transactions[ i ].reversed();
 		reverseTransactions.push( transaction );
 	}
-	this.changeInternal( reverseTransactions, undefined, true );
+	this.changeInternal( reverseTransactions, staging.selectionBefore, true );
 
 	if ( !this.isStaging() ) {
 		this.startHistoryTracking();
