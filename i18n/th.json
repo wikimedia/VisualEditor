@@ -3,7 +3,8 @@
 		"authors": [
 			"Supasate",
 			"Taweetham",
-			"Horus"
+			"Horus",
+			"Ans"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -100,6 +101,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "อักขระพิเศษ",
 	"visualeditor-specialcharacterinspector-title": "อักขระพิเศษ",
 	"visualeditor-table-caption": "คำบรรยาย",
+	"visualeditor-table-contextitem-properties": "คุณลักษณะ",
 	"visualeditor-table-delete-col": "ลบสดมภ์",
 	"visualeditor-table-delete-row": "ลบแถว",
 	"visualeditor-table-format-data": "เซลล์เนื้อหา",
