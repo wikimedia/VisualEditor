@@ -119,7 +119,7 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 		if ( query === '' || matchedProperty ) {
 			items.push(
 				languageResult
-					.updateLabel( query, matchedProperty )
+					.updateLabel( query, matchedProperty, compare )
 					.setSelected( false )
 					.setHighlighted( false )
 			);
