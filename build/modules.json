@@ -736,7 +736,6 @@
 			"tests/ui/dialogs/ve.ui.FindAndReplaceDialog.test.js",
 			"tests/ce/ve.ce.TestRunner.js",
 			"tests/ce/ve.ce.imetests.test.js",
-			"tests/ce/imetests/backspace-chromium-ubuntu-none.js",
 			"tests/ce/imetests/backspace-firefox-ubuntu-none.js",
 			"tests/ce/imetests/backspace-ie9-win7-none.js",
 			"tests/ce/imetests/home-firefox-win7-none.js",
