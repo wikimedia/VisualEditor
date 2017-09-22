@@ -13,4 +13,5 @@
 
 .ve-ui-languageResultWidget .oo-ui-labelWidget {
 	cursor: inherit;
+	padding: 0.5em 0;
 }

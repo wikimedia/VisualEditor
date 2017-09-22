@@ -96,7 +96,9 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 	var i, iLen, j, jLen, languageResult, data, matchedProperty,
 		matchProperties = [ 'name', 'autonym', 'code' ],
 		query = this.query.getValue().trim(),
-		queryLower = query.toLowerCase(),
+		compare = ve.supportsIntl ?
+			new Intl.Collator( this.lang, { sensitivity: 'base' } ).compare :
+			function ( a, b ) { return a.toLowerCase() === b.toLowerCase() ? 0 : 1; },
 		hasQuery = !!query.length,
 		items = [];
 
@@ -108,7 +110,7 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 		matchedProperty = null;
 
 		for ( j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
-			if ( data[ matchProperties[ j ] ] && data[ matchProperties[ j ] ].toLowerCase().indexOf( queryLower ) === 0 ) {
+			if ( data[ matchProperties[ j ] ] && compare( data[ matchProperties[ j ] ].slice( 0, query.length ), query ) === 0 ) {
 				matchedProperty = matchProperties[ j ];
 				break;
 			}
