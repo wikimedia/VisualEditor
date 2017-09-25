@@ -182,34 +182,33 @@ ve.ce.TestRunner.prototype.sendEvent = function ( eventName, ev ) {
  * @param {string} text The new text
  */
 ve.ce.TestRunner.prototype.changeText = function ( text ) {
-	var focusNode, focusOffset;
+	var paragraph, range, textNode;
 	// TODO: This method doesn't handle arbitrary text changes in a paragraph
 	// with non-text nodes. It just works for the main cases that are important
 	// in the existing IME tests.
 
-	// Store the focus before the selection gets clobbered
-	focusNode = this.nativeSelection.focusNode;
-	focusOffset = this.nativeSelection.focusOffset;
-
-	// Empty all descendent text nodes
+	// Remove all descendent text nodes
 	// This may clobber the selection, so the test had better call changeSel next.
-	$( this.getParagraph() ).find( '*' ).addBack().contents().each( function () {
+	paragraph = this.getParagraph();
+	$( paragraph ).find( '*' ).addBack().contents().each( function () {
 		if ( this.nodeType === Node.TEXT_NODE ) {
-			this.textContent = '';
+			this.parentNode.removeChild( this );
 		}
 	} );
 
-	// Insert text at the focus
-	if ( focusNode === null ) {
-		throw new Error( 'No focus node' );
-	} else if ( focusNode.nodeType === Node.TEXT_NODE ) {
-		focusNode.textContent = text;
+	range = document.createRange();
+	if ( text === '' ) {
+		range.setStart( paragraph, 0 );
 	} else {
-		focusNode.insertBefore(
-			document.createTextNode( text ),
-			focusNode.childNodes[ focusOffset ]
-		);
+		// Insert the text at the start of the paragraph, and put the cursor after
+		// the insertion, to ensure consistency across test environments.
+		// See T176453
+		textNode = document.createTextNode( text );
+		paragraph.insertBefore( textNode, paragraph.firstChild );
+		range.setStart( textNode, text.length );
 	}
+	this.nativeSelection.removeAllRanges();
+	this.nativeSelection.addRange( range );
 	this.lastText = text;
 };
 
