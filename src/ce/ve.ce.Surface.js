@@ -2761,7 +2761,6 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  * @param {ve.ce.RangeState|null} oldState The prior range state, if any
  * @param {ve.ce.RangeState} newState The changed range state
  */
-
 ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
 	var newSelection, transaction, removedUnicorns,
 		activeNode, coveringRange, nodeRange, containsStart, containsEnd,
@@ -3231,7 +3230,7 @@ ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
 };
 
 /**
- * Restore the selection from the model if it is outside the active table node
+ * Restore the selection from the model if it is outside the active node
  *
  * This is only useful if the DOM selection and the model selection are out of sync.
  *
