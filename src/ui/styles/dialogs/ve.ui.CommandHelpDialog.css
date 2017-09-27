@@ -49,8 +49,9 @@
 }
 
 .ve-ui-commandHelpDialog-list dt kbd {
-	/* Specify a valid second value to fix size in Chrome/FF */
-	font-family: monospace, 'Courier';
+	/* Support: Blink, Gecko, Webkit */
+	/* Specify a valid second value to fix size, see T176636 */
+	font-family: monospace, monospace;
 	font-size: 0.8125em;
 	font-weight: bold;
 	font-style: normal;

@@ -26,8 +26,9 @@
 
 .ve-ui-debugBar-selectionLabel {
 	min-width: 20em;
-	/* Specify a valid second value to fix size in Chrome/FF */
-	font-family: monospace, 'Courier';
+	/* Support: Blink, Gecko, Webkit */
+	/* Specify a valid second value to fix size, see T176636 */
+	font-family: monospace, monospace;
 }
 
 .ve-ui-debugBar-commands-divider {
