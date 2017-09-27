@@ -161,6 +161,7 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
  */
 ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 	// Respect render lock
+	// TODO: Can this check be moved into the parent method?
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked()
@@ -169,6 +170,22 @@ ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 	}
 	// Parent method
 	ve.ce.ContentBranchNode.super.prototype.setupBlockSlugs.apply( this, arguments );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.ContentBranchNode.prototype.setupInlineSlugs = function () {
+	// Respect render lock
+	// TODO: Can this check be moved into the parent method?
+	if (
+		this.root instanceof ve.ce.DocumentNode &&
+		this.root.getSurface().isRenderingLocked()
+	) {
+		return;
+	}
+	// Parent method
+	ve.ce.ContentBranchNode.super.prototype.setupInlineSlugs.apply( this, arguments );
 };
 
 /**
