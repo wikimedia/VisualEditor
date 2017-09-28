@@ -2807,7 +2807,17 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 		oldState.veRange.equalsSelection( newState.veRange )
 	) ) {
 		if ( newState.veRange ) {
-			newSelection = new ve.dm.LinearSelection( dmDoc, newState.veRange );
+			if ( newState.veRange.isCollapsed() ) {
+				// If we're placing the cursor, make sure it winds up in a
+				// cursorable location. Failure to do this can result in
+				// strange behavior when inserting content immediately after
+				// clicking on the surface.
+				newSelection = new ve.dm.LinearSelection( dmDoc, new ve.Range(
+					dmDoc.getNearestCursorOffset( newState.veRange.from, 1 )
+				) );
+			} else {
+				newSelection = new ve.dm.LinearSelection( dmDoc, newState.veRange );
+			}
 		} else {
 			newSelection = new ve.dm.NullSelection( dmDoc );
 		}
