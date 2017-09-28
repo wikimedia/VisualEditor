@@ -323,6 +323,10 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 		return;
 	}
 
+	// Make sure any existing icon is detached before measuring
+	if ( this.$icon ) {
+		this.$icon.detach();
+	}
 	showIcon = !this.hasRendering();
 
 	// Defer updating the DOM. If we don't do this, the hasRendering() call for the next
