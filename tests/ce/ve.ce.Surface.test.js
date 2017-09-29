@@ -1233,6 +1233,16 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 				expectedOps: [],
 				expectsBreakpoint: false,
 				msg: 'Just moving the selection'
+			},
+			{
+				prevHtml: '<p>Foo</p><p>Bar</p>',
+				prevRange: new ve.Range( 4 ),
+				nextHtml: '<p>Foo</p><p>Bar</p>',
+				nextRange: new ve.Range( 5 ),
+				expectedOps: [],
+				expectsBreakpoint: false,
+				expectedRangeOrSelection: new ve.Range( 6 ),
+				msg: 'Moving the selection to a non-cursorable location'
 			}
 		];
 
