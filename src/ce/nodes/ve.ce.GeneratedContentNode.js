@@ -198,8 +198,10 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 	}
 
 	// Update focusable and resizable elements if necessary
+	// TODO: Move these method definitions to their respective mixins.
 	if ( this.$focusable ) {
 		this.$focusable = this.getFocusableElement();
+		this.$bounding = this.getBoundingElement();
 	}
 	if ( this.$resizable ) {
 		this.$resizable = this.getResizableElement();
@@ -367,6 +369,15 @@ ve.ce.GeneratedContentNode.prototype.isGenerating = function () {
  * @return {jQuery} Focusable element
  */
 ve.ce.GeneratedContentNode.prototype.getFocusableElement = function () {
+	return this.$element;
+};
+
+/**
+ * Get the bounding element
+ *
+ * @return {jQuery} Bounding element
+ */
+ve.ce.GeneratedContentNode.prototype.getBoundingElement = function () {
 	return this.$element;
 };
 
