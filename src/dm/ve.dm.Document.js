@@ -920,11 +920,17 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
  *
  * @method
  * @param {number} offset Offset to start looking at
- * @param {number} [direction=-1] Direction to look in, +1 or -1
+ * @param {number} [direction=-1] Direction to look in, +1 or -1; if 0, find the closest offset
  * @return {number} Nearest offset a cursor can be placed at
  */
 ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction ) {
-	var contentOffset, structuralOffset;
+	var contentOffset, structuralOffset, left, right;
+
+	if ( direction === 0 ) {
+		left = this.getNearestCursorOffset( offset, -1 );
+		right = this.getNearestCursorOffset( offset, 1 );
+		return offset - left < right - offset ? left : right;
+	}
 
 	direction = direction > 0 ? 1 : -1;
 	if (
