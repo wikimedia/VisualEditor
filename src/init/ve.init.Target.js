@@ -288,14 +288,26 @@ ve.init.Target.prototype.unbindHandlers = function () {
 };
 
 /**
+ * Teardown the target, removing all surfaces, toolbars and handlers
+ *
+ * @return {jQuery.Promise} Promise which resolves when the target has been torn down
+ */
+ve.init.Target.prototype.teardown = function () {
+	this.unbindHandlers();
+	// Wait for the toolbar to teardown before clearing surfaces,
+	// as it may want to transition away
+	return this.teardownToolbar().then( this.clearSurfaces.bind( this ) );
+};
+
+/**
  * Destroy the target
  */
 ve.init.Target.prototype.destroy = function () {
-	this.clearSurfaces();
-	this.teardownToolbar();
-	this.$element.remove();
-	this.unbindHandlers();
-	ve.init.target = null;
+	var target = this;
+	this.teardown().then( function () {
+		target.$element.remove();
+		ve.init.target = null;
+	} );
 };
 
 /**
@@ -524,6 +536,8 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 
 /**
  * Teardown the toolbar
+ *
+ * @return {jQuery.Promise} Promise which resolves when the toolbar has been torn down
  */
 ve.init.Target.prototype.teardownToolbar = function () {
 	if ( this.toolbar ) {
@@ -534,6 +548,7 @@ ve.init.Target.prototype.teardownToolbar = function () {
 		this.actionsToolbar.destroy();
 		this.actionsToolbar = null;
 	}
+	return $.Deferred().resolve().promise();
 };
 
 /**
