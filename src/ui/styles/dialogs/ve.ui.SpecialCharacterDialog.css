@@ -26,8 +26,8 @@
 }
 
 .ve-ui-specialCharacterPage h3 {
+	color: #54595d;
 	margin: 0 0 0.5em 0;
-	color: #888;
 	font-weight: normal;
 	font-size: 1em;
 }
@@ -46,14 +46,14 @@
 	display: inline-block;
 	vertical-align: top;
 	margin: 0 3px 3px 0;
-	border: 1px solid #e6e6e6;
+	border: 1px solid #eaecf0;
 	-webkit-transition: border-color 200ms;
 	-moz-transition: border-color 200ms;
 	transition: border-color 200ms;
 }
 
 .ve-ui-specialCharacterPage-character:hover {
-	border-color: #ccc;
+	border-color: #c8ccd1;
 }
 
 .ve-ui-specialCharacterPage-character-source {

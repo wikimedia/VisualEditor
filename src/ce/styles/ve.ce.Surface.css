@@ -42,7 +42,7 @@
 
 .ve-ce-surface-dropMarker {
 	height: 1px;
-	background: #999;
+	background: #72777d;
 	pointer-events: none;
 	position: absolute;
 }
@@ -106,8 +106,8 @@
 /* Support: IE */
 /* Prevent IE from wrapping link text in <u> and <font color> tags */
 .ve-init-target-ie-or-edge .ve-ce-surface-paste a {
+	color: #36c;
 	text-decoration: underline !important; /* stylelint-disable-line declaration-no-important */
-	color: #06c;
 }
 
 .ve-ce-cursorHolder {
@@ -124,5 +124,5 @@
 .ve-ce-cursorHolder-debug {
 	width: 2px;
 	height: 1em;
-	border: 1px solid #f00;
+	border: 1px solid #d33;
 }

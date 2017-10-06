@@ -81,7 +81,7 @@
 
 .ve-ce-resizableNode-sizeText {
 	padding: 0.25em 0.5em;
-	border: 1px solid #ccc;
+	border: 1px solid #c8ccd1;
 	background-color: #fff;
 	border-radius: 0.3em;
 	white-space: nowrap;
@@ -90,7 +90,7 @@
 .ve-ce-resizableNode-sizeText span:not( :first-child ) {
 	margin-left: 0.4em;
 	padding-left: 0.4em;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid #c8ccd1;
 }
 
 .ve-ce-resizableNode-sizeText-warning {

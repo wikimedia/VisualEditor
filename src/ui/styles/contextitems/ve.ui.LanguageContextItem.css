@@ -5,8 +5,8 @@
  */
 
 .ve-ui-languageContextItem .ve-ui-linearContextItem-body {
+	color: #54595d;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	color: #555;
 }
