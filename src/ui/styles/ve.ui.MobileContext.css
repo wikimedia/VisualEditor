@@ -9,7 +9,7 @@
 }
 
 .ve-ui-mobileContext-menu {
-	border-top: 1px solid #ddd;
+	border-top: 1px solid #c8ccd1;
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-label {
@@ -32,7 +32,7 @@
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget {
-	border-left: 1px solid #ddd;
+	border-left: 1px solid #c8ccd1;
 	vertical-align: top;
 }
 

@@ -17,11 +17,11 @@
 }
 
 .oo-ui-toolbar-position-top .ve-ui-toolbarDialog-position-above {
-	border-top: 1px solid #ddd;
+	border-top: 1px solid #c8ccd1;
 }
 
 .oo-ui-toolbar-position-bottom .ve-ui-toolbarDialog-position-above {
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #c8ccd1;
 }
 
 .ve-ui-toolbarDialog-position-above.oo-ui-window-ready {
@@ -33,7 +33,7 @@
 	position: absolute;
 	right: 0;
 	background: #fff;
-	border-left: 1px solid #ddd;
+	border-left: 1px solid #c8ccd1;
 	overflow-x: hidden;
 	width: 0;
 	margin-top: 1px;

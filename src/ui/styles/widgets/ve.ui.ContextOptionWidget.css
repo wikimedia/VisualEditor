@@ -9,7 +9,7 @@
 }
 
 .ve-ui-contextOptionWidget .oo-ui-labelElement-label {
-	color: #666;
+	color: #54595d;
 	/* Size required to match menu and inspector widths */
 	max-width: 19.4em;
 	text-overflow: ellipsis;

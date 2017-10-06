@@ -7,8 +7,8 @@
 /* ve.ui.LanguageResultWidget */
 
 .ve-ui-languageResultWidget-otherMatch {
+	color: #72777d;
 	float: right;
-	color: #777;
 }
 
 .ve-ui-languageResultWidget .oo-ui-labelWidget {

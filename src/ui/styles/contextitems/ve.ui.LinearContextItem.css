@@ -42,6 +42,7 @@
 }
 
 .ve-ui-linearContextItem-description {
+	color: #72777d;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -51,7 +52,6 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	color: #888;
 }
 
 .ve-ui-linearContextItem-actions {

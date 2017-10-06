@@ -5,6 +5,7 @@
  */
 
 .ve-ui-commentContextItem .ve-ui-linearContextItem-body {
+	color: #54595d;
 	padding: 0.5em 0.5em 0 0.5em;
 	margin: 0 0.5em 1em 0.5em;
 	overflow: auto;
@@ -14,5 +15,4 @@
 	font-family: monospace, monospace;
 	white-space: pre-wrap;
 	line-height: 1.25em;
-	color: #555;
 }
