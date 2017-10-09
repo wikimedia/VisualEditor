@@ -11,7 +11,8 @@
 			"Sujiniku",
 			"Otokoume",
 			"Endres",
-			"Iwai.masaharu"
+			"Iwai.masaharu",
+			"Hinaloe"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -141,6 +142,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "既定",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "拡大・縮小",
 	"visualeditor-rebase-client-author-name": "名前",
+	"visualeditor-rebase-client-document-name": "ドキュメント名",
 	"visualeditor-rebase-client-document-create-edit": "作成/編集",
 	"visualeditor-shortcuts-clipboard": "クリップボード",
 	"visualeditor-shortcuts-formatting": "段落の書式設定",
