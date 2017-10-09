@@ -131,16 +131,23 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 };
 
 ve.dm.Change.static.deserializeValue = function ( serialized ) {
-	var rdfaAttrs;
+	var addTags, addAttrs;
 	if ( serialized.type === 'annotation' ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
 	} else if ( serialized.type === 'domNodeArray' ) {
-		rdfaAttrs = [ 'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof' ];
+		// TODO: Move MW-specific rules to ve-mw
+		addTags = [ 'figure-inline' ];
+		addAttrs = [
+			'srcset',
+			// RDFa
+			'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof'
+		];
 
 		return serialized.value.map( function ( nodeHtml ) {
 			return DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
-				ADD_ATTR: rdfaAttrs,
-				ADD_URI_SAFE_ATTR: rdfaAttrs,
+				ADD_TAGS: addTags,
+				ADD_ATTR: addAttrs,
+				ADD_URI_SAFE_ATTR: addAttrs,
 				FORBID_TAGS: [ 'style' ],
 				RETURN_DOM_FRAGMENT: true
 			} ).childNodes[ 0 ];
