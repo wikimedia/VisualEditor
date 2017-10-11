@@ -365,6 +365,13 @@ ve.ce.Surface.static.getClipboardHash = function ( $elements, beforePasteData ) 
 ve.ce.Surface.prototype.destroy = function () {
 	var documentNode = this.documentView.getDocumentNode();
 
+	// Support: Firefox, iOS
+	// FIXME T126041: Blur to make selection/cursor disappear (needed in Firefox
+	// in some cases, and in iOS to hide the keyboard)
+	if ( this.isFocused() ) {
+		this.blur();
+	}
+
 	// Detach observer and event sequencer
 	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.detach();
@@ -385,13 +392,6 @@ ve.ce.Surface.prototype.destroy = function () {
 
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
-
-	// Support: Firefox, iOS
-	// FIXME T126041: Blur to make selection/cursor disappear (needed in Firefox
-	// in some cases, and in iOS to hide the keyboard)
-	if ( this.isFocused() ) {
-		this.blur();
-	}
 
 	// Remove DOM elements (also disconnects their events)
 	this.$element.remove();
