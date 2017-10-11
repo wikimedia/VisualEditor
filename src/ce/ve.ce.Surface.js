@@ -2809,13 +2809,21 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 	) ) {
 		if ( newState.veRange ) {
 			if ( newState.veRange.isCollapsed() ) {
-				// If we're placing the cursor, make sure it winds up in a
-				// cursorable location. Failure to do this can result in
-				// strange behavior when inserting content immediately after
-				// clicking on the surface.
-				newSelection = new ve.dm.LinearSelection( dmDoc, new ve.Range(
-					dmDoc.getNearestCursorOffset( newState.veRange.from, 1 )
-				) );
+				if ( dmDoc.data.getNearestContentOffset( newState.veRange.from ) === -1 ) {
+					// First, if we're in a document which outright doesn't
+					// have any content to select, don't try to set one. These
+					// would be niche documents, since slugs normally exist
+					// and catch those cases.
+					newSelection = new ve.dm.NullSelection( dmDoc );
+				} else {
+					newSelection = new ve.dm.LinearSelection( dmDoc, new ve.Range(
+						// If we're placing the cursor, make sure it winds up in a
+						// cursorable location. Failure to do this can result in
+						// strange behavior when inserting content immediately after
+						// clicking on the surface.
+						dmDoc.getNearestCursorOffset( newState.veRange.from, 0 )
+					) );
+				}
 			} else {
 				newSelection = new ve.dm.LinearSelection( dmDoc, newState.veRange );
 			}
