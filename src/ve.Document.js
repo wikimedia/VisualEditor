@@ -26,6 +26,26 @@ ve.Document = function VeDocument( documentNode ) {
 
 OO.mixinClass( ve.Document, OO.EventEmitter );
 
+/* Events */
+
+/**
+ * A node has been attached with ve.Node#setDocument . Its descendants are guaranteed
+ * to be attached too (and the event is emitted for descendants first, and for siblings
+ * in their order in the children list)
+ *
+ * @event nodeAttached
+ * @param {ve.Node} node The node that has been attached
+ */
+
+/**
+ * A node has been detached with ve.Node#setDocument . Its descendants are guaranteed
+ * to be detached too (and the event is emitted for descendants first, and for siblings
+ * in their order in the children list)
+ *
+ * @event nodeDetached
+ * @param {ve.Node} node The node that has been detached
+ */
+
 /* Methods */
 
 /**
@@ -562,4 +582,28 @@ ve.Document.prototype.getCoveredSiblingGroups = function ( range ) {
 ve.Document.prototype.rangeInsideOneLeafNode = function ( range ) {
 	var selected = this.selectNodes( range, 'leaves' );
 	return selected.length === 1 && selected[ 0 ].nodeRange.containsRange( range ) && selected[ 0 ].indexInNode === undefined;
+};
+
+/**
+ * Callback when a node is attached with ve.Node#setDocument
+ *
+ * The node and all its children are guaranteed to be attached
+ *
+ * @method
+ * @param {ve.Node} node The node attached
+ */
+ve.Document.prototype.nodeAttached = function ( node ) {
+	this.emit( 'nodeAttached', node );
+};
+
+/**
+ * Callback when a node is attached with ve.Node#setDocument
+ *
+ * The node and all its children are guaranteed to be attached
+ *
+ * @method
+ * @param {ve.Node} node The node detached
+ */
+ve.Document.prototype.nodeDetached = function ( node ) {
+	this.emit( 'nodeDetached', node );
 };
