@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.23.3
+ * OOjs UI v0.23.4
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2017 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2017-10-04T01:20:45Z
+ * Date: 2017-10-12T01:29:23Z
  */
 .oo-ui-icon-add {
   background-image: url('themes/apex/images/icons/add.png');
@@ -129,6 +129,12 @@
   background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/printer-rtl.svg');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/printer-rtl.svg');
   background-image: -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/printer-rtl.png');
+}
+.oo-ui-icon-reload {
+  background-image: url('themes/apex/images/icons/reload-rtl.png');
+  background-image: -webkit-linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/reload-rtl.svg');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/reload-rtl.svg');
+  background-image: -o-linear-gradient(transparent, transparent), url('themes/apex/images/icons/reload-rtl.png');
 }
 .oo-ui-icon-search {
   background-image: url('themes/apex/images/icons/search-rtl.png');
