@@ -6,17 +6,12 @@
 
 @import '../../../lib/codex-design-tokens/theme-wikimedia-ui.less';
 
-/* stylelint-disable no-descending-specificity */
-
 .ve-ui-toolbar {
 	/* Used by mobile context position hack */
 	position: relative;
-
-	> .oo-ui-toolbar-bar {
-		/* Make sure the toolbar is shown on top of surface contents even when not floating,
-		   for correct rendering of dropdowns, popups etc. */
-		z-index: 2;
-	}
+	/* Make sure the toolbar is shown on top of surface contents even when not floating,
+	   for correct rendering of dropdowns, popups etc. */
+	z-index: 2;
 
 	&.ve-ui-toolbar-empty > .oo-ui-toolbar-bar {
 		border: 0;
@@ -26,10 +21,20 @@
 
 /* PositionedTargetToolbar */
 
-.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
-	position: fixed;
+.ve-ui-positionedTargetToolbar-floatable {
+	position: -webkit-sticky;
+	position: sticky;
 	top: 0;
-	border-top: 0;
+
+	&.ve-ui-toolbar-floating {
+		// Support: Firefox
+		// Using a top position of 0 sometimes renders the tooblar 1px away
+		// from the viewport edge (presumably a rounding error). To avoid
+		// this transparent gap, add a 1px white border to the top and
+		// use a negative top position.
+		top: -1px;
+		border-top: 1px solid @background-color-base;
+	}
 }
 
 .ve-ui-toolbar.oo-ui-toolbar-position-bottom > .oo-ui-toolbar-bar {
