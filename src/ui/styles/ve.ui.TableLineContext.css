@@ -9,7 +9,7 @@
 	z-index: 3;
 }
 
-.ve-ui-tableLineContext-indicator {
+.oo-ui-indicatorWidget.oo-ui-indicatorElement.ve-ui-tableLineContext-indicator {
 	position: absolute;
 	display: block;
 	background-color: #d3e5fd;
@@ -20,7 +20,7 @@
 	margin: 0;
 }
 
-.ve-ui-tableLineContext-col .ve-ui-tableLineContext-indicator {
+.ve-ui-tableLineContext-col .oo-ui-indicatorWidget.oo-ui-indicatorElement.ve-ui-tableLineContext-indicator {
 	width: 100%;
 	height: 1em;
 	/* Context height + 0.2em gap */
@@ -28,7 +28,7 @@
 	border-bottom: 0;
 }
 
-.ve-ui-tableLineContext-row .ve-ui-tableLineContext-indicator {
+.ve-ui-tableLineContext-row .oo-ui-indicatorWidget.oo-ui-indicatorElement.ve-ui-tableLineContext-indicator {
 	width: 1em;
 	/* Context width + 0.2em gap */
 	left: -1.2em;

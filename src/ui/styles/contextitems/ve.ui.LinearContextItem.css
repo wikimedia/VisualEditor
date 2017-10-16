@@ -19,7 +19,8 @@
 	white-space: nowrap;
 }
 
-.ve-ui-linearContextItem-icon {
+.oo-ui-widget.oo-ui-iconElement .ve-ui-linearContextItem-icon {
+	position: static;
 	display: inline-block;
 	vertical-align: middle;
 	width: 1.875em;
