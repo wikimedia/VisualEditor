@@ -39,7 +39,7 @@ While the distribution directory is chock-full of files, you will normally only 
 * One of `oojs-ui-wikimediaui.css` or `oojs-ui-apex.css`, containing theme-specific styles; and
 * One of `oojs-ui-wikimediaui.js` or  `oojs-ui-apex.js`, containing theme-specific code
 
-You can load additional icon packs from files named `oojs-ui-mediawiki-icons-*.css` or  `oojs-ui-apex-icons-*.css`.
+You can load additional icon packs from files named `oojs-ui-wikimediaui-icons-*.css` or  `oojs-ui-apex-icons-*.css`.
 
 The remaining files make it possible to load only parts of the whole library.
 
