@@ -69,8 +69,3 @@
 .ve-ui-linearContextItem-body:not( :empty ) {
 	padding: 0 1em 1em 1em;
 }
-
-/* Temporary workaround for T178336 */
-.ve-ui-linearContextItem-actions .oo-ui-buttonWidget:not( .oo-ui-iconElement ) .oo-ui-iconElement-icon {
-	display: none;
-}
