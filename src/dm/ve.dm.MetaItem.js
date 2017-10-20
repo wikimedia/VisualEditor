@@ -6,10 +6,11 @@
 
 /**
  * DataModel meta item.
+ * TODO: rename to MetaNode to reflect the fact it is now a node
  *
  * @class
  * @abstract
- * @extends ve.dm.Model
+ * @extends ve.dm.LeafNode
  * @mixins OO.EventEmitter
  *
  * @constructor
@@ -20,21 +21,23 @@ ve.dm.MetaItem = function VeDmMetaItem() {
 	ve.dm.MetaItem.super.apply( this, arguments );
 	// Mixin
 	OO.EventEmitter.call( this );
-
 	// Properties
 	this.list = null;
-	this.offset = null;
-	this.index = null;
-	this.move = null;
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.MetaItem, ve.dm.Model );
+OO.inheritClass( ve.dm.MetaItem, ve.dm.LeafNode );
 
 OO.mixinClass( ve.dm.MetaItem, OO.EventEmitter );
 
 /* Static members */
+
+ve.dm.MetaItem.static.isContent = false;
+
+ve.dm.MetaItem.static.isMetaData = true;
+
+ve.dm.MetaItem.static.canSerializeAsContent = true;
 
 /**
  * Symbolic name for the group this meta item type will be grouped in in ve.dm.MetaList.
@@ -67,12 +70,7 @@ ve.dm.MetaItem.prototype.remove = function () {
  * @param {Object|ve.dm.MetaItem} item Item to replace this item with
  */
 ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
-	var offset = this.getOffset(),
-		index = this.getIndex(),
-		list = this.list;
-
-	list.removeMeta( this );
-	list.insertMeta( item, offset, index );
+	this.list.replaceMeta( this, item );
 };
 
 /**
@@ -86,79 +84,22 @@ ve.dm.MetaItem.prototype.getGroup = function () {
 };
 
 /**
- * Get the MetaList this item is attached to.
- *
- * @return {ve.dm.MetaList|null} Reference to the parent list, or null if not attached
- */
-ve.dm.MetaItem.prototype.getParentList = function () {
-	return this.list;
-};
-
-/**
- * Get this item's offset in the linear model.
- *
- * This is only known if the item is attached to a MetaList.
- *
- * @return {number|null} Offset, or null if not attached
- */
-ve.dm.MetaItem.prototype.getOffset = function () {
-	return this.offset;
-};
-
-/**
- * Get this item's index in the metadata array at the offset.
- *
- * This is only known if the item is attached to a MetaList.
- *
- * @return {number|null} Index, or null if not attached
- */
-ve.dm.MetaItem.prototype.getIndex = function () {
-	return this.index;
-};
-
-/**
- * Set the offset. This is used by the parent list to synchronize the item with the document state.
- *
- * @param {number} offset New offset
- */
-ve.dm.MetaItem.prototype.setOffset = function ( offset ) {
-	this.offset = offset;
-};
-
-/**
- * Set the index. This is used by the parent list to synchronize the item with the document state.
- *
- * @param {number} index New index
- */
-ve.dm.MetaItem.prototype.setIndex = function ( index ) {
-	this.index = index;
-};
-
-/**
  * Attach this item to a MetaList.
  *
  * @param {ve.dm.MetaList} list Parent list to attach to
- * @param {number} offset Offset of this item in the parent list's document
- * @param {number} index Index of this item in the metadata array at the offset
  */
-ve.dm.MetaItem.prototype.attach = function ( list, offset, index ) {
+ve.dm.MetaItem.prototype.attachToMetaList = function ( list ) {
 	this.list = list;
-	this.offset = offset;
-	this.index = index;
 };
 
 /**
  * Detach this item from its parent list.
  *
- * This clears the stored offset and index, unless the item has already been attached to another list.
- *
  * @param {ve.dm.MetaList} list List to detach from
  */
-ve.dm.MetaItem.prototype.detach = function ( list ) {
+ve.dm.MetaItem.prototype.detachFromMetaList = function ( list ) {
 	if ( this.list === list ) {
 		this.list = null;
-		this.offset = null;
-		this.index = null;
 	}
 };
 

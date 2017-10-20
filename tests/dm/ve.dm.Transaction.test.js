@@ -16,15 +16,15 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		doc = new ve.dm.Document( '-----defg---h--'.split( '' ) ),
 		txBuilder = new ve.dm.TransactionBuilder();
 
-	txBuilder.pushReplace( doc, 0, 0, [ 'a', 'b', 'c' ] );
+	txBuilder.pushReplacement( doc, 0, 0, [ 'a', 'b', 'c' ] );
 	txBuilder.pushRetain( 5 );
-	txBuilder.pushReplace( doc, 5, 4, [] );
+	txBuilder.pushReplacement( doc, 5, 4, [] );
 	txBuilder.pushRetain( 2 );
 	txBuilder.pushStartAnnotating( 'set', { type: 'textStyle/bold' } );
 	txBuilder.pushRetain( 1 );
-	txBuilder.pushReplace( doc, 12, 1, [ 'i', 'j', 'k', 'l', 'm' ] );
+	txBuilder.pushReplacement( doc, 12, 1, [ 'i', 'j', 'k', 'l', 'm' ] );
 	txBuilder.pushRetain( 2 );
-	txBuilder.pushReplace( doc, 15, 0, [ 'n', 'o', 'p' ] );
+	txBuilder.pushReplacement( doc, 15, 0, [ 'n', 'o', 'p' ] );
 	tx = txBuilder.getTransaction();
 
 	mapping = {
@@ -59,14 +59,14 @@ QUnit.test( 'translateRange', function ( assert ) {
 		doc = ve.dm.example.createExampleDocument(),
 		txBuilder = new ve.dm.TransactionBuilder();
 	txBuilder.pushRetain( 55 );
-	txBuilder.pushReplace( doc, 55, 0, [ { type: 'list', attributes: { style: 'number' } } ] );
-	txBuilder.pushReplace( doc, 55, 0, [ { type: 'listItem' } ] );
+	txBuilder.pushReplacement( doc, 55, 0, [ { type: 'list', attributes: { style: 'number' } } ] );
+	txBuilder.pushReplacement( doc, 55, 0, [ { type: 'listItem' } ] );
 	txBuilder.pushRetain( 3 );
-	txBuilder.pushReplace( doc, 58, 0, [ { type: '/listItem' } ] );
-	txBuilder.pushReplace( doc, 58, 0, [ { type: 'listItem' } ] );
+	txBuilder.pushReplacement( doc, 58, 0, [ { type: '/listItem' } ] );
+	txBuilder.pushReplacement( doc, 58, 0, [ { type: 'listItem' } ] );
 	txBuilder.pushRetain( 3 );
-	txBuilder.pushReplace( doc, 61, 0, [ { type: '/listItem' } ] );
-	txBuilder.pushReplace( doc, 61, 0, [ { type: '/list' } ] );
+	txBuilder.pushReplacement( doc, 61, 0, [ { type: '/listItem' } ] );
+	txBuilder.pushReplacement( doc, 61, 0, [ { type: '/list' } ] );
 	tx = txBuilder.getTransaction();
 
 	cases = [
@@ -112,7 +112,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplace', doc, 5, 0, [ 'a', 'b', 'c' ] ],
+					[ 'pushReplacement', doc, 5, 0, [ 'a', 'b', 'c' ] ],
 					[ 'pushRetain', 42 ]
 				],
 				range: new ve.Range( 5, 8 ),
@@ -121,7 +121,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplace', doc, 5, 13, [] ],
+					[ 'pushReplacement', doc, 5, 13, [] ],
 					[ 'pushRetain', 42 ]
 				],
 				range: new ve.Range( 5 ),
@@ -130,7 +130,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplace', doc, 5, 3, [ 'a', 'b', 'c', 'd' ] ],
+					[ 'pushReplacement', doc, 5, 3, [ 'a', 'b', 'c', 'd' ] ],
 					[ 'pushRetain', 42 ]
 				],
 				range: new ve.Range( 5, 9 ),
@@ -139,7 +139,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplace', doc, 5, 13, [ 'a', 'b', 'c', 'd' ] ],
+					[ 'pushReplacement', doc, 5, 13, [ 'a', 'b', 'c', 'd' ] ],
 					[ 'pushRetain', 42 ]
 				],
 				range: new ve.Range( 5, 9 ),
@@ -148,9 +148,9 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplace', doc, 5, 3, [] ],
+					[ 'pushReplacement', doc, 5, 3, [] ],
 					[ 'pushRetain', 42 ],
-					[ 'pushReplace', doc, 50, 0, [ 'h', 'e', 'l', 'l', 'o' ] ],
+					[ 'pushReplacement', doc, 50, 0, [ 'h', 'e', 'l', 'l', 'o' ] ],
 					[ 'pushRetain', 108 ]
 				],
 				range: new ve.Range( 5, 52 ),
@@ -159,9 +159,9 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			{
 				calls: [
 					[ 'pushRetain', 5 ],
-					[ 'pushReplace', doc, 5, 3, [ 'a', 'b', 'c', 'd' ] ],
+					[ 'pushReplacement', doc, 5, 3, [ 'a', 'b', 'c', 'd' ] ],
 					[ 'pushRetain', 54 ],
-					[ 'pushReplace', doc, 62, 0, [ 'h', 'e', 'l', 'l', 'o' ] ],
+					[ 'pushReplacement', doc, 62, 0, [ 'h', 'e', 'l', 'l', 'o' ] ],
 					[ 'pushRetain', 1 ]
 				],
 				range: new ve.Range( 5, 9 ),
@@ -169,14 +169,14 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			},
 			{
 				calls: [
-					[ 'pushReplace', doc, 0, 3, [] ]
+					[ 'pushReplacement', doc, 0, 3, [] ]
 				],
 				range: new ve.Range( 0 ),
 				msg: 'removal without retains'
 			},
 			{
 				calls: [
-					[ 'pushReplace', doc, 0, 0, [ 'a', 'b', 'c' ] ]
+					[ 'pushReplacement', doc, 0, 0, [ 'a', 'b', 'c' ] ]
 				],
 				range: new ve.Range( 0, 3 ),
 				msg: 'insertion without retains'
@@ -207,4 +207,92 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 		}
 		assert.equalRange( txBuilder.getTransaction().getModifiedRange( doc ), cases[ i ].range, cases[ i ].msg );
 	}
+} );
+
+QUnit.test( 'Metadata transactions', function ( assert ) {
+	var doc, surface,
+		fooMeta = { type: 'alienMeta', attributes: { label: 'foo' } },
+		barMeta = { type: 'alienMeta', attributes: { label: 'bar' } },
+		data = [
+			{ type: 'paragraph' },
+			'x',
+			{ type: '/paragraph' },
+			fooMeta,
+			{ type: '/alienMeta' },
+			barMeta,
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		events = [];
+
+	function getElements( metaList ) {
+		return metaList.items.map( function ( item ) {
+			return item.element;
+		} );
+	}
+
+	assert.expect( 8 );
+
+	doc = new ve.dm.Document( [] );
+	surface = new ve.dm.Surface( doc );
+	surface.metaList.connect( null, {
+		insert: function ( item ) {
+			events.push( [ 'insert', item.element ] );
+		},
+		remove: function ( item ) {
+			events.push( [ 'remove', item.element ] );
+		}
+	} );
+	surface.change( ve.dm.TransactionBuilder.static.newFromInsertion( doc, 0, data ) );
+	assert.deepEqual(
+		getElements( surface.metaList ),
+		[ fooMeta, barMeta ],
+		'Metadata inserted into meta list'
+	);
+	doc.documentNode.children[ 1 ].remove();
+	assert.deepEqual(
+		doc.data.data,
+		data.slice( 0, 3 ).concat( data.slice( 5 ) ),
+		'Metadata removed from linear data'
+	);
+	assert.deepEqual(
+		getElements( surface.metaList ),
+		[ barMeta ],
+		'Metadata removed from meta list'
+	);
+	doc.documentNode.children[ 1 ].replaceWith( fooMeta );
+	assert.deepEqual(
+		doc.data.data,
+		data.slice( 0, 5 ).concat( data.slice( 7 ) ),
+		'Metadata replaced in linear data'
+	);
+	assert.deepEqual(
+		getElements( surface.metaList ),
+		[ fooMeta ],
+		'Metadata replaced in meta list'
+	);
+	surface.metaList.insertMeta( barMeta );
+	assert.deepEqual(
+		doc.data.data,
+		data,
+		'Metadata re-inserted into linear data'
+	);
+	assert.deepEqual(
+		getElements( surface.metaList ),
+		[ fooMeta, barMeta ],
+		'Metadata re-inserted into meta list'
+	);
+	assert.deepEqual(
+		events,
+		[
+			[ 'insert', fooMeta ],
+			[ 'insert', barMeta ],
+			[ 'remove', fooMeta ],
+			[ 'remove', barMeta ],
+			[ 'insert', fooMeta ],
+			[ 'insert', barMeta ]
+		],
+		'Meta list events'
+	);
 } );

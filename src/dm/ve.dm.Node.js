@@ -128,6 +128,27 @@ ve.dm.Node.static.isUnwrappable = true;
 ve.dm.Node.static.isContent = false;
 
 /**
+ * Whether this node type is a metadata node. This means the node represents a leaf node that
+ * has no explicit view representation, and should be treated differently for the purposes of
+ * round-tripping, copy/paste etc.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isMetaData = false;
+
+/**
+ * For a non-content node type, whether this node type can be serialized in a content
+ * position (e.g. for round tripping). This value is ignored if isContent is true.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.canSerializeAsContent = false;
+
+/**
  * Whether this node type can be focused. Focusable nodes react to selections differently.
  *
  * @static

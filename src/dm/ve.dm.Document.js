@@ -27,13 +27,12 @@
  * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  */
 ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir ) {
-	var fullData, result, split, doc, root;
+	var doc, root;
 
 	// Parent constructor
 	ve.dm.Document.super.call( this, new ve.dm.DocumentNode() );
 
 	// Initialization
-	split = true;
 	doc = parentDocument || this;
 	root = this.documentNode;
 
@@ -54,30 +53,17 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.nodesByType = {};
 
 	if ( data instanceof ve.dm.ElementLinearData ) {
-		// Pre-split ElementLinearData
-		split = false;
-		fullData = data;
+		this.data = data;
 	} else if ( data instanceof ve.dm.FlatLinearData ) {
-		// Element + Meta linear data
-		fullData = data;
+		this.data = new ve.dm.ElementLinearData( data.getStore(), data.getData() );
 	} else {
-		// Raw linear model data
-		fullData = new ve.dm.FlatLinearData(
+		this.data = new ve.dm.ElementLinearData(
 			new ve.dm.IndexValueStore(),
 			Array.isArray( data ) ? data : []
 		);
 	}
-	this.store = fullData.getStore();
+	this.store = this.data.getStore();
 	this.htmlDocument = htmlDocument || ve.createDocumentFromHtml( '' );
-
-	if ( split ) {
-		result = this.constructor.static.splitData( fullData );
-		this.data = result.elementData;
-		this.metadata = result.metaData;
-	} else {
-		this.data = fullData;
-		this.metadata = new ve.dm.MetaLinearData( this.data.getStore(), new Array( 1 + this.data.getLength() ) );
-	}
 };
 
 /* Inheritance */
@@ -99,62 +85,6 @@ OO.inheritClass( ve.dm.Document, ve.Document );
  */
 
 /* Static methods */
-
-/**
- * Split data into element data and meta data.
- *
- * @static
- * @param {ve.dm.FlatLinearData} fullData Full data from converter
- * @return {Object} Object containing element linear data and meta linear data (if processed)
- */
-ve.dm.Document.static.splitData = function ( fullData ) {
-	var i, len, offset, meta, elementData, metaData;
-
-	elementData = new ve.dm.ElementLinearData( fullData.getStore() );
-	// Sparse array containing the metadata for each offset
-	// Each element is either undefined, or an array of metadata elements
-	// Because the indexes in the metadata array represent offsets in the data array, the
-	// metadata array has one element more than the data array.
-	metaData = new ve.dm.MetaLinearData( fullData.getStore() );
-
-	// Separate element data and metadata and build node tree
-	for ( i = 0, len = fullData.getLength(); i < len; i++ ) {
-		if ( !fullData.isElementData( i ) ) {
-			// Add to element linear data
-			elementData.push( fullData.getData( i ) );
-		} else {
-			// Element data
-			if ( fullData.isOpenElementData( i ) &&
-				ve.dm.metaItemFactory.lookup( fullData.getType( i ) )
-			) {
-				// Metadata
-				meta = fullData.getData( i );
-				offset = elementData.getLength();
-				// Put the meta data in the meta-linmod
-				if ( !metaData.getData( offset ) ) {
-					metaData.setData( offset, [] );
-				}
-				metaData.getData( offset ).push( meta );
-				// Skip close element
-				i++;
-				continue;
-			}
-			// Add to element linear data
-			elementData.push( fullData.getData( i ) );
-		}
-	}
-	// Pad out the metadata length to element data length + 1
-	if ( metaData.getLength() < elementData.getLength() + 1 ) {
-		metaData.data = metaData.data.concat(
-			new Array( 1 + elementData.getLength() - metaData.getLength() )
-		);
-	}
-
-	return {
-		elementData: elementData,
-		metaData: metaData
-	};
-};
 
 /**
  * Apply annotations to content data.
@@ -266,14 +196,12 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 	currentNode = this.documentNode;
 	doc = this.documentNode.getDocument();
 
-	// Separate element data and metadata and build node tree
 	for ( i = 0, len = this.data.getLength(); i < len; i++ ) {
 		if ( !this.data.isElementData( i ) ) {
 			// Text node opening
 			if ( !inTextNode ) {
 				// Create a lengthless text node
 				node = new ve.dm.TextNode();
-				node.setDocument( doc );
 				// Put the node on the current inner stack
 				currentStack.push( node );
 				currentNode = node;
@@ -297,7 +225,6 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 				// Branch or leaf node opening
 				// Create a childless node
 				node = ve.dm.nodeFactory.createFromElement( this.data.getData( i ) );
-				node.setDocument( doc );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
 				if ( ve.dm.nodeFactory.canNodeHaveChildren( node.getType() ) ) {
@@ -404,15 +331,34 @@ ve.dm.Document.prototype.getData = function ( range, deep ) {
 };
 
 /**
- * Get a slice or copy of the document metadata.
+ * Get a copy of the document metadata.
  *
- * @method
+ * This is just a sparse shallow copy of the document data, with meta-item open tags only (i.e.
+ * with blanks in place of non-meta-items and meta-item close tags).
+ *
  * @param {ve.Range} [range] Range of metadata to get, all metadata will be given by default
- * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
- * @return {Array} Slice or copy of document metadata
+ * @return {ve.dm.MetaItem[]} Sparse array of ve.dm.MetaItems.
  */
-ve.dm.Document.prototype.getMetadata = function ( range, deep ) {
-	return this.metadata.getDataSlice( range, deep );
+ve.dm.Document.prototype.getMetadata = function ( range ) {
+	var data = [],
+		documentNode = this.getDocumentNode();
+	if ( arguments.length > 1 ) {
+		throw new Error( 'Argument "deep" is no longer supported' );
+	}
+	if ( !range ) {
+		range = new ve.Range( 0, documentNode.length );
+	}
+	documentNode.traverse( function ( node ) {
+		var offset;
+		if ( node instanceof ve.dm.MetaItem ) {
+			offset = node.getOffset();
+			if ( range.start <= offset && offset < range.end ) {
+				data[ offset - range.start ] = node;
+			}
+		}
+	} );
+	data.length = range.end - range.start;
+	return data;
 };
 
 /**
@@ -709,36 +655,73 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
 };
 
 /**
- * Get the full document data including metadata.
- *
- * Metadata will be into the document data to produce the "full data" result. If a range is passed,
- * metadata at the edges of the range won't be included unless edgeMetadata is set to true. If
- * no range is passed, the entire document's data is returned and metadata at the edges is
- * included.
+ * Get document data, possibly with inline MetaItem load offsets restored
  *
  * @param {ve.Range} [range] Range to get full data for. If omitted, all data will be returned
- * @param {boolean} [edgeMetadata=false] Include metadata at the edges of the range
- * @return {Array} Data with metadata interleaved
+ * @param {boolean} [roundTrip] If true, restore load offsets of inlined meta items from unchanged branches
+ * @return {Array} Data, with load offset info removed (some items are referenced, others copied)
  */
-ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
-	var j, jLen,
-		i = range ? range.start : 0,
+ve.dm.Document.prototype.getFullData = function ( range, roundTrip ) {
+	var i, j, jLen, item, metaItems, metaItem, offset,
+		insertedMetaItems = [],
+		insertions = {},
 		iLen = range ? range.end : this.data.getLength(),
 		result = [];
-	if ( edgeMetadata === undefined ) {
-		edgeMetadata = !range;
+
+	function stripMetaLoadInfo( item ) {
+		if ( !item || !item.internal ) {
+			return item;
+		}
+		item = ve.cloneObject( item );
+		item.internal = ve.cloneObject( item.internal );
+		delete item.internal.changesSinceLoad;
+		delete item.internal.metaItems;
+		delete item.internal.loadMetaParentIndex;
+		delete item.internal.loadMetaParentOffset;
+		if ( Object.keys( item.internal ).length === 0 ) {
+			delete item.internal;
+		}
+		return item;
 	}
-	while ( i <= iLen ) {
-		if ( this.metadata.getData( i ) && ( edgeMetadata || ( i !== range.start && i !== range.end ) ) ) {
-			for ( j = 0, jLen = this.metadata.getData( i ).length; j < jLen; j++ ) {
-				result.push( this.metadata.getData( i )[ j ] );
-				result.push( { type: '/' + this.metadata.getData( i )[ j ].type } );
+
+	for ( i = range ? range.start : 0; i < iLen; i++ ) {
+		item = this.data.getData( i );
+		if (
+			roundTrip &&
+			ve.dm.LinearData.static.isOpenElementData( item ) &&
+			ve.dm.nodeFactory.isMetaData( item.type ) &&
+			insertedMetaItems.indexOf( item ) !== -1
+		) {
+			// Already inserted; skip this item and its matching close tag
+			i += 1;
+			continue;
+		}
+		metaItems = ve.getProp( item, 'internal', 'metaItems' ) || [];
+		if ( roundTrip && !ve.getProp( item, 'internal', 'changesSinceLoad' ) ) {
+			// No changes, so restore meta item offsets
+			for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
+				metaItem = metaItems[ j ];
+				offset = i + metaItem.internal.loadMetaParentOffset;
+				if ( !insertions[ offset ] ) {
+					insertions[ offset ] = [];
+				}
+				delete metaItem.internal.loadBranchNodeIndex;
+				delete metaItem.internal.loadBranchNodeOffset;
+				if ( Object.keys( metaItem.internal ).length === 0 ) {
+					delete metaItem.internal;
+				}
+				insertions[ offset ].push( metaItem );
+				insertedMetaItems.push( metaItem );
 			}
 		}
-		if ( i < iLen ) {
-			result.push( this.data.getData( i ) );
+		result.push( stripMetaLoadInfo( item ) );
+		if ( roundTrip && insertions[ i ] ) {
+			for ( j = 0, jLen = insertions[ i ].length; j < jLen; j++ ) {
+				metaItem = insertions[ i ][ j ];
+				result.push( stripMetaLoadInfo( metaItem ) );
+				result.push( { type: '/' + metaItem.type } );
+			}
 		}
-		i++;
 	}
 	return result;
 };
@@ -1531,11 +1514,6 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 			fromClipboard: !!importRules
 		} ),
 		data = doc.data;
-
-	// FIXME T126020: This is a paste-specific thing and possibly should not be in the generic
-	// newFromHtml() function. Maybe make this be triggered by a pasteRules property?
-	// Clear metadata
-	doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
 
 	if ( importRules ) {
 		data.sanitize( importRules.external || {} );

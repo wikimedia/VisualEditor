@@ -16,37 +16,6 @@ QUnit.test( 'commit', function ( assert ) {
 		italic = ve.dm.example.createAnnotation( ve.dm.example.italic ),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
 		link = ve.dm.example.createAnnotation( ve.dm.example.link( 'x' ) ),
-		metaElementInsert = {
-			type: 'alienMeta',
-			attributes: {
-				style: 'comment',
-				text: ' inline '
-			}
-		},
-		metaElementInsertClose = { type: '/alienMeta' },
-		metadataExample = [
-			{ type: 'paragraph' },
-			'a', 'b',
-			{
-				type: 'alienMeta',
-				originalDomElements: $( '<!-- comment -->' ).toArray()
-			},
-			{ type: '/alienMeta' },
-			'c', 'd',
-			{
-				type: 'alienMeta',
-				originalDomElements: $( '<!-- comment -->' ).toArray()
-			},
-			{ type: '/alienMeta' },
-			'e', 'f',
-			{
-				type: 'alienMeta',
-				originalDomElements: $( '<!-- comment -->' ).toArray()
-			},
-			{ type: '/alienMeta' },
-			'g', 'h',
-			{ type: '/paragraph' }
-		],
 		cases = {
 			'no operations': {
 				calls: [],
@@ -84,7 +53,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'annotating after inserting': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 1, 0, [ 'x', 'y', 'z' ] ],
+					[ 'pushReplacement', 1, 0, [ 'x', 'y', 'z' ] ],
 					[ 'pushRetain', 55 ],
 					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
 					[ 'pushRetain', 1 ],
@@ -119,76 +88,6 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'update', 2, 1 ],
 					[ 'annotation', 2, 2 ],
 					[ 'update', 2, 2 ]
-				]
-			},
-			'annotating across metadata': {
-				data: metadataExample,
-				calls: [
-					[ 'pushRetain', 2 ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
-					[ 'pushRetain', 2 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ],
-					[ 'pushRetain', 6 ]
-				],
-				expected: function ( data ) {
-					data[ 2 ] = [ 'b', store.indexes( [ bold ] ) ];
-					data[ 3 ].annotations = store.indexes( [ bold ] );
-					data[ 5 ] = [ 'c', store.indexes( [ bold ] ) ];
-				},
-				events: [
-					[ 'annotation', 0, 0 ],
-					[ 'update', 0, 0 ]
-				]
-			},
-			'annotating with metadata at edges': {
-				data: metadataExample,
-				calls: [
-					[ 'pushRetain', 3 ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
-					[ 'pushRetain', 4 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ],
-					[ 'pushRetain', 3 ]
-				],
-				expected: function ( data ) {
-					data[ 7 ].annotations = store.indexes( [ bold ] );
-					data[ 5 ] = [ 'c', store.indexes( [ bold ] ) ];
-					data[ 6 ] = [ 'd', store.indexes( [ bold ] ) ];
-					data[ 9 ] = [ 'e', store.indexes( [ bold ] ) ];
-					data[ 10 ] = [ 'f', store.indexes( [ bold ] ) ];
-				},
-				events: [
-					[ 'annotation', 0, 0 ],
-					[ 'update', 0, 0 ]
-				]
-			},
-			'unannotating metadata': {
-				data: [
-					{ type: 'paragraph' },
-					'a', [ 'b', store.indexes( [ bold ] ) ],
-					{
-						type: 'alienMeta',
-						originalDomElements: $( '<!-- comment -->' ).toArray(),
-						annotations: store.indexes( [ bold ] )
-					},
-					{ type: '/alienMeta' },
-					[ 'c', store.indexes( [ bold ] ) ], 'd',
-					{ type: '/paragraph' }
-				],
-				calls: [
-					[ 'pushRetain', 2 ],
-					[ 'pushStartAnnotating', 'clear', store.index( bold ) ],
-					[ 'pushRetain', 2 ],
-					[ 'pushStopAnnotating', 'clear', store.index( bold ) ],
-					[ 'pushRetain', 1 ]
-				],
-				expected: function ( data ) {
-					data[ 2 ] = 'b';
-					data[ 5 ] = 'c';
-					delete data[ 3 ].annotations;
-				},
-				events: [
-					[ 'annotation', 0, 0 ],
-					[ 'update', 0, 0 ]
 				]
 			},
 			'using an annotation method other than set or clear throws an exception': {
@@ -260,7 +159,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'inserting text': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 1, 0, [ 'F', 'O', 'O' ] ]
+					[ 'pushReplacement', 1, 0, [ 'F', 'O', 'O' ] ]
 				],
 				expected: function ( data ) {
 					data.splice( 1, 0, 'F', 'O', 'O' );
@@ -269,7 +168,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'removing text': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 1, 1, [] ]
+					[ 'pushReplacement', 1, 1, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 1, 1 );
@@ -278,7 +177,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'replacing text': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 1, 1, [ 'F', 'O', 'O' ] ]
+					[ 'pushReplacement', 1, 1, [ 'F', 'O', 'O' ] ]
 				],
 				expected: function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O' );
@@ -287,7 +186,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'emptying text': {
 				calls: [
 					[ 'pushRetain', 10 ],
-					[ 'pushReplace', 10, 1, [] ]
+					[ 'pushReplacement', 10, 1, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 10, 1 );
@@ -296,7 +195,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'inserting mixed content': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 1, 1, [ 'F', 'O', 'O', { type: 'inlineImage' }, { type: '/inlineImage' }, 'B', 'A', 'R' ] ]
+					[ 'pushReplacement', 1, 1, [ 'F', 'O', 'O', { type: 'inlineImage' }, { type: '/inlineImage' }, 'B', 'A', 'R' ] ]
 				],
 				expected: function ( data ) {
 					data.splice( 1, 1, 'F', 'O', 'O', { type: 'inlineImage' }, { type: '/inlineImage' }, 'B', 'A', 'R' );
@@ -304,30 +203,30 @@ QUnit.test( 'commit', function ( assert ) {
 			},
 			'inserting unbalanced data': {
 				calls: [
-					[ 'pushReplace', 0, 0, [ { type: 'table' } ] ]
+					[ 'pushReplacement', 0, 0, [ { type: 'table' } ] ]
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
 			'inserting unclosed inline node': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 1, 1, [ 'F', { type: 'inlineImage' }, 'O', 'O' ] ]
+					[ 'pushReplacement', 1, 1, [ 'F', { type: 'inlineImage' }, 'O', 'O' ] ]
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
 			'wrapping a heading in an inline node': {
 				calls: [
-					[ 'pushReplace', 0, 0, [ { type: 'inlineImage' } ] ],
+					[ 'pushReplacement', 0, 0, [ { type: 'inlineImage' } ] ],
 					[ 'pushRetain', 5 ],
-					[ 'pushReplace', 5, 0, [ { type: '/inlineImage' } ] ]
+					[ 'pushReplacement', 5, 0, [ { type: '/inlineImage' } ] ]
 				],
 				exception: /Cannot add a child to inlineImage node/
 			},
 			'converting an element': {
 				calls: [
-					[ 'pushReplace', 0, 1, [ { type: 'paragraph' } ] ],
+					[ 'pushReplacement', 0, 1, [ { type: 'paragraph' } ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 4, 1, [ { type: '/paragraph' } ] ]
+					[ 'pushReplacement', 4, 1, [ { type: '/paragraph' } ] ]
 				],
 				expected: function ( data ) {
 					data[ 0 ].type = 'paragraph';
@@ -337,9 +236,9 @@ QUnit.test( 'commit', function ( assert ) {
 			},
 			'conversion with wrong closing': {
 				calls: [
-					[ 'pushReplace', 0, 1, [ { type: 'paragraph' } ] ],
+					[ 'pushReplacement', 0, 1, [ { type: 'paragraph' } ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 4, 1, [ { type: '/paragraph' }, { type: 'paragraph' } ] ]
+					[ 'pushReplacement', 4, 1, [ { type: '/paragraph' }, { type: 'paragraph' } ] ]
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
@@ -347,7 +246,7 @@ QUnit.test( 'commit', function ( assert ) {
 				calls: [
 					[ 'pushRetain', 2 ],
 					[
-						'pushReplace', 2, 0,
+						'pushReplacement', 2, 0,
 						[ { type: '/heading' }, { type: 'heading', attributes: { level: 1 } } ]
 					]
 				],
@@ -363,7 +262,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'merging an element': {
 				calls: [
 					[ 'pushRetain', 57 ],
-					[ 'pushReplace', 57, 2, [] ]
+					[ 'pushReplacement', 57, 2, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 57, 2 );
@@ -372,9 +271,9 @@ QUnit.test( 'commit', function ( assert ) {
 			'stripping elements': {
 				calls: [
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 3, 1, [] ],
+					[ 'pushReplacement', 3, 1, [] ],
 					[ 'pushRetain', 6 ],
-					[ 'pushReplace', 10, 1, [] ]
+					[ 'pushReplacement', 10, 1, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 10, 1 );
@@ -384,11 +283,11 @@ QUnit.test( 'commit', function ( assert ) {
 			'wrapping elements': {
 				calls: [
 					[ 'pushRetain', 55 ],
-					[ 'pushReplace', 55, 0, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
+					[ 'pushReplacement', 55, 0, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 58, 0, [ { type: '/listItem' }, { type: 'listItem' } ] ],
+					[ 'pushReplacement', 58, 0, [ { type: '/listItem' }, { type: 'listItem' } ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 61, 0, [ { type: '/listItem' }, { type: '/list' } ] ]
+					[ 'pushReplacement', 61, 0, [ { type: '/listItem' }, { type: '/list' } ] ]
 				],
 				expected: function ( data ) {
 					data.splice( 61, 0, { type: '/listItem' }, { type: '/list' } );
@@ -399,11 +298,11 @@ QUnit.test( 'commit', function ( assert ) {
 			'unwrapping elements': {
 				calls: [
 					[ 'pushRetain', 43 ],
-					[ 'pushReplace', 43, 2, [] ],
+					[ 'pushReplacement', 43, 2, [] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 48, 2, [] ],
+					[ 'pushReplacement', 48, 2, [] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 53, 2, [] ]
+					[ 'pushReplacement', 53, 2, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 53, 2 );
@@ -414,11 +313,11 @@ QUnit.test( 'commit', function ( assert ) {
 			'rewrapping elements': {
 				calls: [
 					[ 'pushRetain', 43 ],
-					[ 'pushReplace', 43, 2, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
+					[ 'pushReplacement', 43, 2, [ { type: 'list', attributes: { style: 'number' } }, { type: 'listItem' } ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 48, 2, [ { type: '/listItem' }, { type: 'listItem' } ] ],
+					[ 'pushReplacement', 48, 2, [ { type: '/listItem' }, { type: 'listItem' } ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 53, 2, [ { type: '/listItem' }, { type: '/list' } ] ]
+					[ 'pushReplacement', 53, 2, [ { type: '/listItem' }, { type: '/list' } ] ]
 				],
 				expected: function ( data ) {
 					data.splice( 53, 2, { type: '/listItem' }, { type: '/list' } );
@@ -429,7 +328,7 @@ QUnit.test( 'commit', function ( assert ) {
 			'merging a nested element': {
 				calls: [
 					[ 'pushRetain', 47 ],
-					[ 'pushReplace', 47, 4, [] ]
+					[ 'pushReplacement', 47, 4, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 47, 4 );
@@ -438,9 +337,9 @@ QUnit.test( 'commit', function ( assert ) {
 			'merging an element that also has a content insertion': {
 				calls: [
 					[ 'pushRetain', 56 ],
-					[ 'pushReplace', 56, 0, [ 'x' ] ],
+					[ 'pushReplacement', 56, 0, [ 'x' ] ],
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 57, 2, [] ]
+					[ 'pushReplacement', 57, 2, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 57, 2 );
@@ -450,9 +349,9 @@ QUnit.test( 'commit', function ( assert ) {
 			'merging a nested element that also has a structural insertion': {
 				calls: [
 					[ 'pushRetain', 45 ],
-					[ 'pushReplace', 45, 0, [ { type: 'paragraph' }, 'x', { type: '/paragraph' } ] ],
+					[ 'pushReplacement', 45, 0, [ { type: 'paragraph' }, 'x', { type: '/paragraph' } ] ],
 					[ 'pushRetain', 2 ],
-					[ 'pushReplace', 47, 4, [] ]
+					[ 'pushReplacement', 47, 4, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 47, 4 );
@@ -476,9 +375,9 @@ QUnit.test( 'commit', function ( assert ) {
 				],
 				calls: [
 					[ 'pushRetain', 2 ],
-					[ 'pushReplace', 2, 2, [] ],
+					[ 'pushReplacement', 2, 2, [] ],
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 5, 2, [] ]
+					[ 'pushReplacement', 5, 2, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 5, 2 );
@@ -499,9 +398,9 @@ QUnit.test( 'commit', function ( assert ) {
 				],
 				calls: [
 					[ 'pushRetain', 2 ],
-					[ 'pushReplace', 2, 2, [] ],
+					[ 'pushReplacement', 2, 2, [] ],
 					[ 'pushRetain', 1 ],
-					[ 'pushReplace', 5, 2, [] ]
+					[ 'pushReplacement', 5, 2, [] ]
 				],
 				expected: function ( data ) {
 					data.splice( 5, 2 );
@@ -530,13 +429,13 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' }
 				],
 				calls: [
-					[ 'pushReplace', 0, 0, [ { type: 'div' } ] ],
+					[ 'pushReplacement', 0, 0, [ { type: 'div' } ] ],
 					[ 'pushRetain', 6 ],
-					[ 'pushReplace', 6, 0, [ { type: '/div' } ] ],
+					[ 'pushReplacement', 6, 0, [ { type: '/div' } ] ],
 					[ 'pushRetain', 3 ],
-					[ 'pushReplace', 9, 0, [ { type: 'div' } ] ],
+					[ 'pushReplacement', 9, 0, [ { type: 'div' } ] ],
 					[ 'pushRetain', 6 ],
-					[ 'pushReplace', 15, 0, [ { type: '/div' } ] ]
+					[ 'pushReplacement', 15, 0, [ { type: '/div' } ] ]
 				],
 				expected: function ( data ) {
 					data.splice( 15, 0, { type: '/div' } );
@@ -581,116 +480,32 @@ QUnit.test( 'commit', function ( assert ) {
 				],
 				calls: [
 					[ 'pushRetain', 4 ],
-					[ 'pushReplace', 4, 0, [ 'b' ] ]
+					[ 'pushReplacement', 4, 0, [ 'b' ] ]
 				],
 				expected: function ( data ) {
 					data.splice( 4, 0, 'b' );
-				}
-			},
-			'inserting metadata element into existing element list': {
-				data: ve.dm.example.withMeta,
-				calls: [
-					[ 'pushRetain', 11 ],
-					[ 'pushRetainMetadata', 2 ],
-					[ 'pushReplaceMetadata', [], [ metaElementInsert ] ],
-					[ 'pushRetainMetadata', 2 ],
-					[ 'pushRetain', 1 ]
-				],
-				expected: function ( data ) {
-					data.splice( 25, 0, metaElementInsert, metaElementInsertClose );
-				}
-			},
-			'inserting metadata element into empty list': {
-				data: ve.dm.example.withMeta,
-				calls: [
-					[ 'pushRetain', 3 ],
-					[ 'pushReplaceMetadata', [], [ metaElementInsert ] ],
-					[ 'pushRetain', 9 ]
-				],
-				expected: function ( data ) {
-					data.splice( 7, 0, metaElementInsert, metaElementInsertClose );
-				}
-			},
-			'removing all metadata elements from a metadata list': {
-				data: ve.dm.example.withMeta,
-				calls: [
-					[ 'pushRetain', 11 ],
-					[ 'pushReplaceMetadata', ve.dm.example.withMetaMetaData[ 11 ], [] ],
-					[ 'pushRetain', 1 ]
-				],
-				expected: function ( data ) {
-					data.splice( 21, 8 );
-				}
-			},
-			'removing some metadata elements from metadata list': {
-				data: ve.dm.example.withMeta,
-				calls: [
-					[ 'pushRetain', 11 ],
-					[ 'pushRetainMetadata', 1 ],
-					[ 'pushReplaceMetadata', ve.dm.example.withMetaMetaData[ 11 ].slice( 1, 3 ), [] ],
-					[ 'pushRetainMetadata', 1 ],
-					[ 'pushRetain', 1 ]
-				],
-				expected: function ( data ) {
-					data.splice( 23, 4 );
-				}
-			},
-			'replacing metadata at end of list': {
-				data: ve.dm.example.withMeta,
-				calls: [
-					[ 'pushRetain', 11 ],
-					[ 'pushRetainMetadata', 3 ],
-					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[ 11 ][ 3 ] ], [ metaElementInsert ] ],
-					[ 'pushRetain', 1 ]
-				],
-				expected: function ( data ) {
-					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
-				}
-			},
-			'replacing metadata twice at the same offset': {
-				data: ve.dm.example.withMeta,
-				calls: [
-					[ 'pushRetain', 11 ],
-					[ 'pushRetainMetadata', 1 ],
-					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[ 11 ][ 1 ] ], [ metaElementInsert ] ],
-					[ 'pushRetainMetadata', 1 ],
-					[ 'pushReplaceMetadata', [ ve.dm.example.withMetaMetaData[ 11 ][ 3 ] ], [ metaElementInsert ] ],
-					[ 'pushRetain', 1 ]
-				],
-				expected: function ( data ) {
-					data.splice( 23, 2, metaElementInsert, metaElementInsertClose );
-					data.splice( 27, 2, metaElementInsert, metaElementInsertClose );
-				}
-			},
-			'removing data from between metadata merges metadata': {
-				data: ve.dm.example.withMeta,
-				calls: [
-					[ 'pushRetain', 7 ],
-					[ 'pushReplace', 7, 2, [] ],
-					[ 'pushRetain', 2 ]
-				],
-				expected: function ( data ) {
-					data.splice( 15, 2 );
 				}
 			},
 			'structural replacement starting at an offset without metadata': {
 				data: [
 					{ type: 'paragraph' },
 					'F',
+					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
 						originalDomElements: $( '<!-- foo -->' ).toArray()
 					},
 					{ type: '/alienMeta' },
+					{ type: 'paragraph' },
 					'o', 'o',
 					{ type: '/paragraph' }
 				],
 				calls: [
-					[ 'pushReplace', 0, 5, [ { type: 'table' }, { type: '/table' } ] ]
+					[ 'pushReplacement', 0, 9, [ { type: 'table' }, { type: '/table' } ] ]
 				],
 				expected: function ( data ) {
-					data.splice( 0, 2 );
-					data.splice( 2, 3, { type: 'table' }, { type: '/table' } );
+					data.splice( 0, 3 );
+					data.splice( 2, 4, { type: 'table' }, { type: '/table' } );
 				}
 			},
 			'structural replacement starting at an offset with metadata': {
@@ -714,7 +529,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' }
 				],
 				calls: [
-					[ 'pushReplace', 0, 5, [ { type: 'table' }, { type: '/table' } ] ]
+					[ 'pushReplacement', 0, 9, [ { type: 'table' }, { type: '/table' } ] ]
 				],
 				expected: function ( data ) {
 					// metadata  is merged.
@@ -751,7 +566,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' }
 				],
 				calls: [
-					[ 'pushReplace', 0, 5, [ { type: 'table' }, { type: '/table' } ] ],
+					[ 'pushReplacement', 0, 9, [ { type: 'table' }, { type: '/table' } ] ],
 					[ 'pushRetain', 5 ]
 				],
 				expected: function ( data ) {
@@ -789,7 +604,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' }
 				],
 				calls: [
-					[ 'pushReplace', 0, 5, [] ],
+					[ 'pushReplacement', 0, 11, [] ],
 					[ 'pushRetain', 5 ]
 				],
 				expected: function ( data ) {
@@ -798,10 +613,10 @@ QUnit.test( 'commit', function ( assert ) {
 					data.splice( 4, 3 );
 				}
 			},
-			'preserves metadata on unwrap': {
+			'preserves surrounding metadata on unwrap': {
 				data: ve.dm.example.listWithMeta,
 				calls: [
-					[ 'newFromWrap', new ve.Range( 1, 11 ),
+					[ 'newFromWrap', new ve.Range( 5, 33 ),
 						[ { type: 'list' } ], [],
 						[ { type: 'listItem', attributes: { styles: [ 'bullet' ] } } ], []
 					]
@@ -815,63 +630,27 @@ QUnit.test( 'commit', function ( assert ) {
 					data.splice( 2, 1 ); // remove 'list'
 				}
 			},
-			'inserting trailing metadata (1)': {
+			'preserves interleaved metadata on unwrap': {
 				data: ve.dm.example.listWithMeta,
 				calls: [
-					[ 'newFromMetadataInsertion', 12, 0, [
-						{
-							type: 'alienMeta',
-							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
-						}
-					] ]
+					[ 'newFromWrap', new ve.Range( 5, 35 ),
+						[ { type: 'list' } ], [],
+						[ { type: 'listItem', attributes: { styles: [ 'bullet' ] } } ], []
+					]
 				],
 				expected: function ( data ) {
-					ve.batchSplice( data, data.length - 4, 0, [
-						{
-							type: 'alienMeta',
-							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
-						},
-						{
-							type: '/alienMeta'
-						}
-					] );
-				}
-			},
-			'inserting trailing metadata (2)': {
-				data: ve.dm.example.listWithMeta,
-				calls: [
-					[ 'newFromMetadataInsertion', 12, 1, [
-						{
-							type: 'alienMeta',
-							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
-						}
-					] ]
-				],
-				expected: function ( data ) {
-					ve.batchSplice( data, data.length - 2, 0, [
-						{
-							type: 'alienMeta',
-							originalDomElements: $( '<meta property="fourteen" />' ).toArray()
-						},
-						{
-							type: '/alienMeta'
-						}
-					] );
-				}
-			},
-			'removing trailing metadata': {
-				data: ve.dm.example.listWithMeta,
-				calls: [
-					[ 'newFromMetadataRemoval', 12, new ve.Range( 0, 1 ) ]
-				],
-				expected: function ( data ) {
-					ve.batchSplice( data, data.length - 4, 2, [] );
+					data.splice( 35, 1 ); // remove '/list'
+					data.splice( 32, 1 ); // remove '/listItem'
+					data.splice( 20, 1 ); // remove 'listItem'
+					data.splice( 17, 1 ); // remove '/listItem'
+					data.splice( 5, 1 ); // remove 'listItem'
+					data.splice( 2, 1 ); // remove 'list'
 				}
 			},
 			'preserves trailing metadata': {
 				data: ve.dm.example.listWithMeta,
 				calls: [
-					[ 'newFromInsertion', 4, [ 'b' ] ]
+					[ 'newFromInsertion', 12, [ 'b' ] ]
 				],
 				expected: function ( data ) {
 					ve.batchSplice( data, 12, 0, [ 'b' ] );
@@ -896,10 +675,10 @@ QUnit.test( 'commit', function ( assert ) {
 		tx = null;
 		for ( i = 0; i < cases[ msg ].calls.length; i++ ) {
 			// some calls need the document as its first argument
-			if ( /^(pushReplace$|new)/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
+			if ( /^(pushReplacement$|new)/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
 				cases[ msg ].calls[ i ].splice( 1, 0, testDoc );
 			}
-			// special case static methods of Transaction
+			// special case static methods of TransactionBuilder
 			if ( /^new/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
 				tx = ve.dm.TransactionBuilder.static[ cases[ msg ].calls[ i ][ 0 ] ].apply( null, cases[ msg ].calls[ i ].slice( 1 ) );
 				break;

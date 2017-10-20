@@ -1152,6 +1152,7 @@ ve.dm.ElementLinearData.prototype.remapAnnotationIndex = function ( oldIndex, ne
  * @param {boolean} [rules.nodeSanitization] Apply per-type node sanitizations via ve.dm.Node#sanitize
  * @param {boolean} [rules.keepEmptyContentBranches] Preserve empty content branch nodes
  * @param {boolean} [rules.singleLine] Don't allow more that one ContentBranchNode
+ * @param {boolean} [rules.allowMetaData] Don't strip metadata
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 	var i, len, annotations, emptySet, setToRemove, type, oldHash, newHash,
@@ -1225,10 +1226,11 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				} );
 			}
 
-			// Remove blacklisted nodes
+			// Remove blacklisted nodes, and metadata if disallowed
 			if (
 				( rules.blacklist && rules.blacklist.indexOf( type ) !== -1 ) ||
-				( rules.plainText && type !== 'paragraph' && type !== 'internalList' )
+				( rules.plainText && type !== 'paragraph' && type !== 'internalList' ) ||
+				( !rules.allowMetadata && ve.dm.nodeFactory.isMetaData( type ) )
 			) {
 				this.splice( i, 1 );
 				len--;

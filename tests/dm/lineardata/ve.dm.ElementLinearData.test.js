@@ -1795,6 +1795,38 @@ QUnit.test( 'sanitize', function ( assert ) {
 				],
 				rules: { keepEmptyContentBranches: true },
 				msg: 'Blank line (Firefox style) preserved with keepEmptyContentBranches'
+			},
+			{
+				html: '<p>A<meta foo="bar" />B</p>',
+				data: [
+					{ type: 'paragraph' },
+					'A', 'B',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: {},
+				msg: 'Metadata is sanitized if allowMetadata is false'
+			},
+			{
+				html: '<p>A<meta foo="bar" />B</p>',
+				data: [
+					{ type: 'paragraph' },
+					'A', 'B',
+					{ type: '/paragraph' },
+					{
+						type: 'alienMeta',
+						internal: {
+							loadMetaParentIndex: 'h069d094b1fb89d8a',
+							loadMetaParentOffset: 1
+						}
+					},
+					{ type: '/alienMeta' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { allowMetadata: true },
+				msg: 'Metadata is not sanitized if allowMetadata is true'
 			}
 		];
 

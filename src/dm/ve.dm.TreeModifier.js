@@ -21,14 +21,15 @@ ve.dm.TreeModifier = function VeDmTreeModifier( doc, transaction ) {
 	// Properties
 	this.document = doc;
 	this.data = doc.data;
-	this.metadata = doc.metadata;
 	this.transaction = transaction;
+	this.isReversed = transaction.isReversed;
 	this.operations = transaction.getOperations();
 	this.deletions = [];
 	this.insertions = [];
 	this.remover = new ve.dm.TreeCursor( doc.getDocumentNode(), this.insertions );
 	this.inserter = new ve.dm.TreeCursor( doc.getDocumentNode(), this.deletions );
 	this.undoSplices = [];
+	this.changedBranchNodes = [];
 };
 
 /**
@@ -55,54 +56,42 @@ ve.dm.TreeModifier.prototype.process = function () {
  * @param {Object} op The operation
  */
 ve.dm.TreeModifier.prototype.processOperation = function ( op ) {
-	var retainLength, removeMetadata, insertMetadata, i, iLen, item, data, metadata;
+	var retainLength, i, iLen, item, data;
 	if ( op.type === 'retain' ) {
 		retainLength = op.length;
 		while ( retainLength > 0 ) {
 			retainLength -= this.processRetain( retainLength );
 		}
 	} else if ( op.type === 'replace' ) {
-		removeMetadata = op.removeMetadata || new Array( op.remove.length );
-		insertMetadata = op.insertMetadata || new Array( op.insert.length );
-		if ( removeMetadata && removeMetadata.length !== op.remove.length ) {
-			throw new Error( 'Different removeMetadata and remove lengths' );
-		}
-		if ( insertMetadata.length !== op.insert.length ) {
-			throw new Error( 'Different insertMetadata and insert lengths' );
-		}
 		for ( i = 0, iLen = op.remove.length; i < iLen; i++ ) {
 			item = op.remove[ i ];
 			if ( item.type ) {
-				this.processRemove( item, removeMetadata[ i ] );
+				this.processRemove( item );
 				continue;
 			}
 			// Group the whole current run of text, and process it
 			data = [ item ];
-			metadata = [ removeMetadata[ i ] ];
 			while ( ++i < iLen && !op.remove[ i ].type ) {
 				item = op.remove[ i ];
 				data.push( item );
-				metadata.push( removeMetadata[ i ] );
 			}
 			i--;
-			this.processRemove( data, metadata );
+			this.processRemove( data );
 		}
 		for ( i = 0, iLen = op.insert.length; i < iLen; i++ ) {
 			item = op.insert[ i ];
 			if ( item.type ) {
-				this.processInsert( item, insertMetadata[ i ] );
+				this.processInsert( item );
 				continue;
 			}
 			// Group the whole current run of text, and process it
 			data = [ item ];
-			metadata = [ insertMetadata[ i ] ];
 			while ( ++i < iLen && !op.insert[ i ].type ) {
 				item = op.insert[ i ];
 				data.push( item );
-				metadata.push( insertMetadata[ i ] );
 			}
 			i--;
-			this.processInsert( data, metadata );
+			this.processInsert( data );
 		}
 	}
 	// Else another type of operation: do nothing
@@ -145,19 +134,12 @@ ve.dm.TreeModifier.prototype.processImplicitFinalRetain = function () {
  * @param {number} offset Offset to splice at. This MUST NOT be negative, unlike Array#splice
  * @param {number} remove Number of elements to remove at the offset
  * @param {Array} data Items to insert at the offset
- * @param {Array[]} [data.metadata] Metadata to insert; default new Array(data.length)
  * @return {Array} Items removed
- * @return {Array[]} return.metadata Metadata removed
  */
 ve.dm.TreeModifier.prototype.spliceLinear = function ( offset, remove, data ) {
 	var removed = ve.batchSplice( this.data, offset, remove, data );
-	removed.metadata = ve.batchSplice(
-		this.metadata,
-		offset,
-		remove,
-		data.metadata || new Array( data.length )
-	);
 	this.undoSplices.push( [ offset, data.length, removed ] );
+	this.markBranchNodeChanged( offset );
 	return removed;
 };
 
@@ -165,11 +147,14 @@ ve.dm.TreeModifier.prototype.spliceLinear = function ( offset, remove, data ) {
  * Undo the linear splices applied
  */
 ve.dm.TreeModifier.prototype.undoLinearSplices = function () {
-	var i, splice;
+	var i, splice,
+		adjustment = this.isReversed ? -1 : 1;
 	for ( i = this.undoSplices.length - 1; i >= 0; i-- ) {
 		splice = this.undoSplices[ i ];
 		ve.batchSplice( this.data, splice[ 0 ], splice[ 1 ], splice[ 2 ] );
-		ve.batchSplice( this.metadata, splice[ 0 ], splice[ 1 ], splice[ 2 ].metadata );
+	}
+	for ( i = this.changedBranchNodes.length - 1; i >= 0; i-- ) {
+		this.changedBranchNodes[ i ].internal.changesSinceLoad -= adjustment;
 	}
 };
 
@@ -395,10 +380,9 @@ inserterStep.item.type );
  * Process the removal of some items
  *
  * @param {Object|Array} itemOrData An open tag, a close tag, or an array of text items
- * @param {Array|Array[]} metaItemsOrData One metaItem array for a tag, or of array them for text items
  */
-ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData, metaItemsOrData ) {
-	var removal, removalMetadata,
+ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData ) {
+	var removal,
 		store = this.document.getStore(),
 		step = this.remover.stepAtMost( itemOrData.length || 1 );
 
@@ -435,22 +419,17 @@ ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData, metaItemsOrD
 
 	if ( step.type === 'crosstext' ) {
 		removal = this.removeLastCrossText();
-		removalMetadata = removal.metadata;
 	} else if ( step.type === 'cross' ) {
 		removal = this.removeLast().data;
-		removalMetadata = removal.metadata;
 	} else if ( step.type === 'open' ) {
 		this.deletions.push( step.item );
 		// Don't use step.item.getClonedElement(), as a subclass can legitimately make
 		// the checkExpected calls below fail
 		removal = step.item.element;
-		removalMetadata = this.metadata.data[ this.remover.linearOffset - step.length ];
 	} else if ( step.type === 'close' ) {
 		removal = { type: '/' + step.item.type };
-		removalMetadata = this.metadata.data[ this.remover.linearOffset - step.length ];
 	}
 	checkExpected( itemOrData, removal, 'Removed data not as expected' );
-	checkExpected( metaItemsOrData, removalMetadata, 'Removed metadata not as expected' );
 	this.removeLastIfInDeletions();
 };
 
@@ -458,20 +437,17 @@ ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData, metaItemsOrD
  * Process the insertion an open tag, a close tag, or an array of text items
  *
  * @param {Object|Array} itemOrData An open tag, a close tag, or an array of text items
- * @param {Array|Array[]} [metaItemsOrData] One metaItem array for a tag, or of array them for text items
  */
-ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData, metaItemsOrData ) {
-	var type, item, data, metaItems, metadata, step,
+ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
+	var type, item, data, step,
 		inserter = this.inserter;
 
 	if ( itemOrData.type ) {
 		item = itemOrData;
 		type = item.type.slice( 0, 1 ) === '/' ? 'close' : 'open';
-		metaItems = metaItemsOrData;
 	} else {
 		data = itemOrData;
 		type = 'crosstext';
-		metadata = metaItemsOrData;
 	}
 
 	if ( type === 'open' ) {
@@ -483,12 +459,10 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData, metaItemsOrD
 		}
 		data = [ item, { type: '/' + item.type } ];
 		// Put undefined at the close tag offset, for the time being
-		data.metadata = [ metaItems, undefined ];
 		this.create( data );
 		inserter.stepIn();
 	} else if ( type === 'crosstext' ) {
 		data = data.slice();
-		data.metadata = metadata;
 		this.insertText( data );
 	} else if ( type === 'close' ) {
 		// Step past the next close tag, even if that skips past some content (in which
@@ -497,7 +471,6 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData, metaItemsOrD
 		if ( inserter.node instanceof ve.dm.TextNode ) {
 			inserter.stepOut();
 		}
-		ve.batchSplice( this.metadata, this.inserter.linearOffset, 1, [ metaItems ] );
 		step = inserter.stepOut();
 		if ( step.item.type !== item.type.slice( 1 ) ) {
 			throw new Error( 'Expected closing for ' + step.item.type +
@@ -645,7 +618,6 @@ ve.dm.TreeModifier.prototype.insertText = function ( data ) {
  * Create a node and attach it at the inserter (without moving the cursor)
  *
  * @param {Object[]} data Linear model open and close tags
- * @param {Array[]} [data.metadata] Metadata
  */
 ve.dm.TreeModifier.prototype.create = function ( data ) {
 	var node = ve.dm.nodeFactory.createFromElement( data[ 0 ] );
@@ -654,4 +626,38 @@ ve.dm.TreeModifier.prototype.create = function ( data ) {
 	}
 	this.ensureNotTextNode();
 	this.insertNode( node, data );
+};
+
+/**
+ * Increment the change counter on the closest containing branch node at this offset
+ *
+ * (This is used when converting to/from HTML, to decide whether loaded metadata offsets
+ * need round tripping)
+ *
+ * @param {number} offset The offset in the document
+ */
+ve.dm.TreeModifier.prototype.markBranchNodeChanged = function ( offset ) {
+	var item,
+		adjustment = this.isReversed ? -1 : 1,
+		i = offset - 1;
+
+	while ( i >= 0 ) {
+		item = this.data.getData( i-- );
+		if ( !(
+			ve.dm.LinearData.static.isOpenElementData( item ) &&
+			ve.dm.nodeFactory.lookup(
+				ve.dm.LinearData.static.getType( item )
+			).prototype instanceof ve.dm.BranchNode
+		) ) {
+			continue;
+		}
+		if ( item.internal && item.internal.changesSinceLoad !== undefined ) {
+			if ( this.changedBranchNodes.indexOf( item ) === -1 ) {
+				this.changedBranchNodes.push( item );
+				item.internal.changesSinceLoad += adjustment;
+			}
+		}
+		// This is a branch node boundary, so go no further
+		break;
+	}
 };

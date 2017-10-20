@@ -155,6 +155,21 @@ ve.dm.NodeFactory.prototype.isNodeUnwrappable = function ( type ) {
 };
 
 /**
+ * Check if a node is a meta item element
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} Whether the node is meta data
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isMetaData = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isMetaData;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
  * Check if a node can contain content.
  *
  * @method
@@ -204,6 +219,22 @@ ve.dm.NodeFactory.prototype.canNodeTakeAnnotation = function ( type, annotation 
 ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
 	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		return this.registry[ type ].static.isContent;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if a node can be serialized into a content position
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} The node is content or can be round-tripped into a content position
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.canNodeSerializeAsContent = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isContent ||
+			this.registry[ type ].static.canSerializeAsContent;
 	}
 	throw new Error( 'Unknown node type: ' + type );
 };
