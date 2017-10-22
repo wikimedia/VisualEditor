@@ -404,8 +404,8 @@ ve.dm.VisualDiff.prototype.findModifiedRootChildren = function ( oldIndices, new
  * been changed to make the new child, and the diff should be discarded.
  * Otherwise the diff should be cleaned and returned.
  *
- * TODO: It would be possible to discover moves by comparing removed and
- * inserted nodes from the tree differ.
+ * TODO: It would be possible to discover within-child moves by comparing
+ * removed and inserted nodes from the tree differ.
  *
  * @param {ve.dm.Node} oldDocChild Child of the old document node
  * @param {ve.dm.Node} newDocChild Child of the new document node
@@ -661,12 +661,10 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 		}
 	}
 
-	// TODO: Work out how to calculate moves; for now, keep in the same order
-	// as new doc, with removes at the end
-
 	// Diff the internal list items for each group
 	for ( i = 0, ilen = groups.length; i < ilen; i++ ) {
 		group = groups[ i ];
+
 		switch ( group.action ) {
 			case 'diff':
 
@@ -689,7 +687,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 				// Check there actually are any changes
 				if (
 					( diff.rootChildrenRemove.length > 0 || diff.rootChildrenInsert.length > 0 ) ||
-					( containsDiff( diff.rootChildrenOldToNew ) )
+					( containsDiff( diff.rootChildrenOldToNew ) || containsDiff( diff.moves ) )
 				) {
 
 					// There are changes.
@@ -746,6 +744,8 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 					} );
 
 					internalListDiffInfo[ group.group ].changes = true;
+					internalListDiffInfo[ group.group ].moves = diff.moves;
+
 				}
 
 				break;
