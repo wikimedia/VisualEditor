@@ -414,7 +414,7 @@ ve.dm.VisualDiff.prototype.findModifiedRootChildren = function ( oldIndices, new
  */
 ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild, threshold ) {
 	var i, ilen, j, jlen,
-		treeDiff, linearDiff,
+		transactions, treeDiff, linearDiff,
 		oldNode, newNode,
 		replacement,
 		oldDocChildTree,
@@ -432,20 +432,16 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 	oldDocChildTree = new this.treeDiffer.Tree( oldDocChild, ve.DiffTreeNode );
 	newDocChildTree = new this.treeDiffer.Tree( newDocChild, ve.DiffTreeNode );
 
-	treeDiff = new this.treeDiffer.Differ( oldDocChildTree, newDocChildTree )
-		.transactions[ oldDocChildTree.orderedNodes.length - 1 ][ newDocChildTree.orderedNodes.length - 1 ];
+	transactions = new this.treeDiffer.Differ( oldDocChildTree, newDocChildTree ).transactions;
+	if ( transactions === null ) {
+		// Tree diff timed out
+		return false;
+	}
 
+	treeDiff = transactions[ oldDocChildTree.orderedNodes.length - 1 ][ newDocChildTree.orderedNodes.length - 1 ];
 	// Length of old content is length of old node minus the open and close
 	// tags for each child node
 	keepLength = oldDocChild.length - 2 * ( oldDocChildTree.orderedNodes.length - 1 );
-
-	// Tree diff timed out: record as full remove and insert
-	if ( !treeDiff ) {
-		treeDiff = [];
-		linearDiff = null;
-		diffLength = oldDocChild.length + newDocChild.length;
-		keepLength = 0;
-	}
 
 	for ( i = 0, ilen = treeDiff.length; i < ilen; i++ ) {
 
