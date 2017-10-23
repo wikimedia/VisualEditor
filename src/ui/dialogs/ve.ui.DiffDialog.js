@@ -87,7 +87,9 @@ ve.ui.DiffDialog.prototype.setDimensions = function () {
 	// Parent method
 	ve.ui.DiffDialog.parent.prototype.setDimensions.apply( this, arguments );
 
-	this.positionDiffElement();
+	if ( !this.positioning ) {
+		this.positionDiffElement();
+	}
 };
 
 /**
@@ -99,10 +101,12 @@ ve.ui.DiffDialog.prototype.positionDiffElement = function () {
 	var dialog = this;
 	setTimeout( function () {
 		dialog.withoutSizeTransitions( function () {
+			dialog.positioning = true;
 			if ( dialog.diffElement && dialog.isVisible() ) {
 				dialog.diffElement.positionDescriptions();
 				dialog.updateSize();
 			}
+			dialog.positioning = false;
 		} );
 	}, OO.ui.theme.getDialogTransitionDuration() );
 };
