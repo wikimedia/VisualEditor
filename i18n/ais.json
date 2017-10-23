@@ -6,7 +6,7 @@
 			"Tokoabibi"
 		]
 	},
-	"visualeditor": "aazihen sakawaw-kalumyiti",
+	"visualeditor": "palakuliten ku aazihen sakawaw-kalumyiti-sakaluk",
 	"visualeditor-aliencontextitem-title": "kasacacay",
 	"visualeditor-aliennode-tooltip": "ahicanaca, tina yinsu wiza satu micaliw yuensma-mima muse mikawaway-kalumyiti ayza.",
 	"visualeditor-align-widget-center": "iteban",
@@ -55,7 +55,7 @@
 	"visualeditor-debugbar-showmodel": "paazih tatudungen misanga’",
 	"visualeditor-debugbar-startfilibuster": "matenes matatengil",
 	"visualeditor-debugbar-stopfilibuster": "saluimeng tanayuay a matatengil",
-	"visualeditor-debugbar-updatemodel": "izaw misumad ta misabaluhay",
+	"visualeditor-debugbar-updatemodel": "izaw misumad sa misabaluh",
 	"visualeditor-dialog-action-apply": "caedung tu sumad",
 	"visualeditor-dialog-action-cancel": "palawpes",
 	"visualeditor-dialog-action-done": "malahecitu",
@@ -110,7 +110,7 @@
 	"visualeditor-mediasizewidget-label-custom": "pakuniza misanga’",
 	"visualeditor-mediasizewidget-label-defaulterror": "ditek sulyang la’cus.",
 	"visualeditor-mediasizewidget-label-scale": "pili",
-	"visualeditor-mediasizewidget-label-scale-percent": "sukep tu zunga hicica-tabaki a %",
+	"visualeditor-mediasizewidget-label-scale-percent": "sukep tu zunga haica tabaki’ a %",
 	"visualeditor-mediasizewidget-sizeoptions-custom": "pakuniza misanga’",
 	"visualeditor-mediasizewidget-sizeoptions-default": "pataayaw tu kawaw",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "pili",
