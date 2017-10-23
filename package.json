@@ -30,10 +30,10 @@
     "grunt-contrib-watch": "1.0.0",
     "grunt-css-url-embed": "1.10.0",
     "grunt-cssjanus": "0.4.0",
-    "grunt-eslint": "20.0.0",
+    "grunt-eslint": "20.1.0",
     "grunt-jsonlint": "1.1.0",
     "grunt-karma": "2.0.0",
-    "grunt-stylelint": "0.8.0",
+    "grunt-stylelint": "0.9.0",
     "grunt-tyops": "0.1.0",
     "karma": "1.1.2",
     "karma-chrome-launcher": "1.0.1",
@@ -41,7 +41,7 @@
     "karma-coverage": "1.1.1",
     "karma-mocha-reporter": "2.2.3",
     "karma-qunit": "1.2.1",
-    "qunitjs": "2.4.0",
+    "qunitjs": "2.4.1",
     "stylelint": "7.8.0",
     "stylelint-config-wikimedia": "0.4.1"
   }
