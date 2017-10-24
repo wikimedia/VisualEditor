@@ -598,6 +598,9 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
 
 	this.clearRenderedResultsCache();
 	this.renderFragments();
+
+	// Wherever we end up, scroll to whatever we've got focused
+	this.highlightFocused( true );
 };
 
 /**
