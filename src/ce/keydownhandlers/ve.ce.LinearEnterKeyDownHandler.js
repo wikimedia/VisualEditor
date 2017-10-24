@@ -35,12 +35,13 @@ ve.ce.LinearEnterKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
-	var txRemove, txInsert, outerParent, outerChildrenCount, list, prevContentOffset,
+	var txRemove, txInsert, outerParent, outerChildrenCount, list, listParent, prevContentOffset,
 		insertEmptyParagraph, node, focusedNode,
 		range = surface.model.getSelection().getRange(),
 		cursor = range.from,
 		documentModel = surface.model.getDocument(),
 		emptyParagraph = [ { type: 'paragraph' }, { type: '/paragraph' } ],
+		emptyListItem = [ { type: 'listItem' }, { type: 'paragraph' }, { type: '/paragraph' }, { type: '/listItem' } ],
 		advanceCursor = true,
 		stack = [],
 		outermostNode = null,
@@ -179,6 +180,8 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		) {
 			// Enter was pressed in an empty list item.
 			list = outermostNode.getModel().getParent();
+			listParent = list.getParent();
+			advanceCursor = false;
 			if ( list.getChildren().length === 1 ) {
 				// The list item we're about to remove is the only child of the list
 				// Remove the list
@@ -190,14 +193,32 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 				txInsert = ve.dm.TransactionBuilder.static.newFromRemoval(
 					documentModel, outermostNode.getModel().getOuterRange()
 				);
+			}
+
+			if (
+				// The removed item was in a nested list node
+				listParent.type === 'listItem' &&
+				// This was the last item in the nested list
+				listParent.getChildren()[ listParent.getChildren().length - 1 ] === list
+			) {
 				surface.model.change( txInsert );
 				range = txInsert.translateRange( range );
-				// Insert a paragraph
+				// Add a new listItem to the parent list
+				txInsert = ve.dm.TransactionBuilder.static.newFromInsertion(
+					documentModel, listParent.getOuterRange().to, emptyListItem
+				);
+				// ...and push forward to be within it
+				advanceCursor = true;
+			} else if ( list.getChildren().length !== 1 ) {
+				// Otherwise, if we just removed a list item, insert a paragraph
+
+				surface.model.change( txInsert );
+				range = txInsert.translateRange( range );
+
 				txInsert = ve.dm.TransactionBuilder.static.newFromInsertion(
 					documentModel, list.getOuterRange().to, emptyParagraph
 				);
 			}
-			advanceCursor = false;
 		} else {
 			// We must process the transaction first because getRelativeContentOffset can't help us yet
 			txInsert = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, range.from, stack );
