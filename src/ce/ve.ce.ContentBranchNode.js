@@ -475,17 +475,18 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 };
 
 /**
- * Handle teardown event.
- *
- * @method
+ * @inheritdoc
  */
-ve.ce.ContentBranchNode.prototype.onTeardown = function () {
-	var ceSurface = this.getRoot().getSurface();
+ve.ce.ContentBranchNode.prototype.detach = function () {
+	if ( this.getRoot() ) {
+		// This should be true, as the root is removed in the parent detach
+		// method which hasn't run yet. However, just in case a node gets
+		// double-detached...
+		this.getRoot().getSurface().setNotUnicorning( this );
+	}
 
 	// Parent method
-	ve.ce.ContentBranchNode.super.prototype.onTeardown.call( this );
-
-	ceSurface.setNotUnicorning( this );
+	ve.ce.ContentBranchNode.super.prototype.detach.call( this );
 };
 
 /**
