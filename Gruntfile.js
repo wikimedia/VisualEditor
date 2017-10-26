@@ -324,7 +324,7 @@ module.exports = function ( grunt ) {
 					dir: 'coverage/',
 					subdir: '.',
 					reporters: [
-						{ type: 'json-summary', file: 'coverage-summary.json' },
+						{ type: 'clover' },
 						{ type: 'html' },
 						{ type: 'text-summary' }
 					],
