@@ -321,10 +321,12 @@ module.exports = function ( grunt ) {
 				},
 				reporters: [ 'mocha', 'coverage' ],
 				coverageReporter: {
+					dir: 'coverage/',
+					subdir: '.',
 					reporters: [
-						{ type: 'json-summary', dir: 'coverage/' },
-						{ type: 'html', dir: 'coverage/' },
-						{ type: 'text-summary', dir: 'coverage/' }
+						{ type: 'json-summary', file: 'coverage-summary.json' },
+						{ type: 'html' },
+						{ type: 'text-summary' }
 					],
 					// https://github.com/karma-runner/karma-coverage/blob/v1.1.1/docs/configuration.md#check
 					check: {
