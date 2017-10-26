@@ -1014,17 +1014,32 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				msg: 'List item not split by shift+enter'
 			},
 			{
+				rangeOrSelection: new ve.Range( 30 ),
+				keys: [ 'ENTER', 'ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						33, 0,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 34 ),
+				msg: 'Two enters breaks out of a list and starts a new paragraph'
+			},
+			{
 				rangeOrSelection: new ve.Range( 21 ),
 				keys: [ 'ENTER', 'ENTER' ],
 				expectedData: function ( data ) {
 					data.splice(
 						24, 0,
+						{ type: '/listItem' },
+						{ type: 'listItem' },
 						{ type: 'paragraph' },
 						{ type: '/paragraph' }
 					);
 				},
-				expectedRangeOrSelection: new ve.Range( 25 ),
-				msg: 'Two enters breaks out of a list and starts a new paragraph'
+				expectedRangeOrSelection: new ve.Range( 27 ),
+				msg: 'Two enters in nested list breaks out of inner list and starts a new list item'
 			},
 			{
 				htmlOrDoc: '<p>foo</p>' + emptyList + '<p>bar</p>',
@@ -1069,6 +1084,19 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'Enter in an empty list with no adjacent content destroys it and creates a paragraph'
+			},
+			{
+				htmlOrDoc: '<p>foo</p><ul><li>bar' + emptyList + '</li></ul><p>baz</p>',
+				rangeOrSelection: new ve.Range( 15 ),
+				keys: [ 'ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						12, 6,
+						{ type: '/listItem' }, { type: 'listItem' }, { type: 'paragraph' }, { type: '/paragraph' }
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 15 ),
+				msg: 'Enter in a completely empty nested list destroys it and adds a new list item to the parent'
 			}
 		];
 
