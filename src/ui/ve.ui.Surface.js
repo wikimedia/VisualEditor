@@ -204,7 +204,7 @@ ve.ui.Surface.prototype.initialize = function () {
 /**
  * Get the DOM representation of the surface's current state.
  *
- * @return {HTMLDocument} HTML document
+ * @return {HTMLDocument|string} HTML document (visual mode) or text (source mode)
  */
 ve.ui.Surface.prototype.getDom = function () {
 	// Optimized converter for source mode, which contains only
