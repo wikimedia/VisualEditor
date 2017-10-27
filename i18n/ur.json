@@ -5,7 +5,8 @@
 			"පසිඳු කාවින්ද",
 			"عثمان خان شاہ",
 			"Obaid Raza",
-			"Muhammad Shuaib"
+			"Muhammad Shuaib",
+			"BukhariSaeed"
 		]
 	},
 	"visualeditor": "بصری خانہ ترمیم",
@@ -94,7 +95,7 @@
 	"visualeditor-inspector-close-tooltip": "بند کریں",
 	"visualeditor-inspector-remove-tooltip": "حذف کریں",
 	"visualeditor-key-alt": "Alt",
-	"visualeditor-key-backspace": "Backspace",
+	"visualeditor-key-backspace": "بیک اسپیس",
 	"visualeditor-key-ctrl": "Ctrl",
 	"visualeditor-key-delete": "حذف کریں",
 	"visualeditor-language-search-input-placeholder": "تلاش بذریعہ نام یا رمز زبان",
