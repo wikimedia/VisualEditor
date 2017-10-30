@@ -141,7 +141,7 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
 	if ( doc ) {
 		// We've set the new doc, so recurse into children, then notify the doc.
 		// That way, at notify time, all this node's ancestors and descendants have
-		// the new root.
+		// the new doc.
 		for ( i = 0, len = this.children.length; i < len; i++ ) {
 			this.children[ i ].setDocument( doc );
 		}
