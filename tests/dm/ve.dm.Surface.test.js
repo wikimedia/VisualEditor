@@ -323,6 +323,37 @@ QUnit.test( 'staging', function ( assert ) {
 
 } );
 
+QUnit.test( 'getOffsetFromSourceOffset /  getRangeFromSourceOffsets', function ( assert ) {
+	var i,
+		surface = new ve.dm.SurfaceStub( [
+			{ type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' },
+			{ type: 'paragraph' }, 'b', 'a', { type: '/paragraph' },
+			{ type: 'paragraph' }, 'q', 'u', 'u', 'x', { type: '/paragraph' }
+		] ),
+		expectedOffsets = [
+			1, 2, 3, 4,
+			6, 7, 8,
+			10, 11, 12, 13, 14
+		];
+
+	for ( i = 0; i < expectedOffsets.length; i++ ) {
+		assert.strictEqual( surface.getOffsetFromSourceOffset( i ), expectedOffsets[ i ], 'Correct offset at ' + i );
+	}
+
+	assert.throws(
+		function () { surface.getOffsetFromSourceOffset( i ); },
+		Error, 'Offset -1 is out of bounds' );
+	assert.throws(
+		function () { surface.getOffsetFromSourceOffset( expectedOffsets.length ); },
+		Error, 'Offset ' + expectedOffsets.length + ' is out of bounds'
+	);
+
+	assert.equalRange( surface.getRangeFromSourceOffsets( 1, 5 ), new ve.Range( 2, 7 ), 'Simple forwards range' );
+	assert.equalRange( surface.getRangeFromSourceOffsets( 6, 2 ), new ve.Range( 8, 3 ), 'Simple backwards range' );
+	assert.equalRange( surface.getRangeFromSourceOffsets( 7, 7 ), new ve.Range( 10 ), 'Collapsed range (2 args)' );
+	assert.equalRange( surface.getRangeFromSourceOffsets( 8 ), new ve.Range( 11 ), 'Collapsed range (1 arg)' );
+} );
+
 // TODO: ve.dm.Surface#getHistory
 // TODO: ve.dm.Surface#canRedo
 // TODO: ve.dm.Surface#canUndo
