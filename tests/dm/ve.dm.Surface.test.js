@@ -341,7 +341,7 @@ QUnit.test( 'getOffsetFromSourceOffset /  getRangeFromSourceOffsets', function (
 	}
 
 	assert.throws(
-		function () { surface.getOffsetFromSourceOffset( i ); },
+		function () { surface.getOffsetFromSourceOffset( -1 ); },
 		Error, 'Offset -1 is out of bounds' );
 	assert.throws(
 		function () { surface.getOffsetFromSourceOffset( expectedOffsets.length ); },
