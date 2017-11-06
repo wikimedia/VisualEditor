@@ -225,7 +225,7 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
  */
 ve.dm.SourceSurfaceFragment.prototype.convertToSource = function ( doc ) {
 	if ( !doc.data.hasContent() ) {
-		return $.Deferred().reject().promise();
+		return $.Deferred().resolve( '' ).promise();
 	} else {
 		return $.Deferred().resolve(
 			ve.properInnerHtml(
