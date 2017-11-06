@@ -159,7 +159,7 @@ ve.dm.Change.static.deserializeValue = function ( serialized ) {
 	} else if ( serialized.type === 'plain' ) {
 		return serialized.value;
 	} else {
-		throw new Error( 'Unrecognised type: ' + serialized.type );
+		throw new Error( 'Unrecognized type: ' + serialized.type );
 	}
 };
 

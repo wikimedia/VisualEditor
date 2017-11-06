@@ -15,7 +15,7 @@
  * @param {ve.dm.Model} model Model item is related to
  * @param {Object} config Configuration options
  */
-ve.ui.AnnotationContextItem = function VeUiAnnotationontextItem( context, model, config ) {
+ve.ui.AnnotationContextItem = function VeUiAnnotationContextItem( context, model, config ) {
 	// Parent constructor
 	ve.ui.AnnotationContextItem.super.call( this, context, model, config );
 
