@@ -106,6 +106,7 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 
 	// Initial CE node
 	this.view = ve.ce.nodeFactory.create( this.model.getType(), this.model );
+	this.$element.append( this.view.$element );
 
 	// When all children are rerendered, replace with dm DOM
 	ve.ce.GeneratedContentNode.static.awaitGeneratedContent( this.view )
