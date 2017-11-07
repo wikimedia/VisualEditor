@@ -3,43 +3,40 @@
 OOjs UI
 =================
 
-OOjs UI is a modern JavaScript UI toolkit. It provides common widgets, layouts, dialogs and icons that are ready to use, as well as many useful and convenient classes for constructing custom user interfaces. It is the standard user-interface library in Wikimedia Foundation Web products, having been originally created for use by [VisualEditor](https://www.mediawiki.org/wiki/VisualEditor), which uses it for its entire user interface.
+OOjs UI is a modern JavaScript UI library. It provides common widgets, layouts, dialogs and icons that are ready to use, as well as many useful and convenient classes for constructing custom user interfaces. It is the standard user-interface library in Wikimedia Foundation Web products, having been originally created for use by [VisualEditor](https://www.mediawiki.org/wiki/VisualEditor), which uses it for its entire user interface.
+
 
 Quick start
 ----------
 
-This library is available as an [npm](https://npmjs.org/) package! Install it right away:
+The library is available on [npm](https://www.npmjs.com/package/oojs-ui). To install:
+
 <pre lang="bash">
-npm install oojs-ui
+$ npm install oojs-ui
 </pre>
 
-If you don't want to use npm, you can:
+Once installed, include the following scripts and styles to get started:
 
-1. Clone the repo and move into it, `$ git clone https://phabricator.wikimedia.org/diffusion/GOJU/oojs-ui.git oojs-ui && cd oojs-ui`.
+<pre lang="html">
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/oojs/dist/oojs.min.js"></script>
 
-2. Install Grunt command-line utility:<br>`$ npm install -g grunt-cli`
-
-3. Install [composer](https://getcomposer.org/download/) and make sure running `composer` will execute it (*e.g.* add it to `$PATH` in POSIX environments).
-
-4. Install dev dependencies:<br>`$ npm install`
-
-5. Build the library (you can alternatively use `grunt quick-build` if you don't need to rebuild the PNGs):<br>`$ grunt build`
-
-6. You can now copy the distribution files from the dist directory into your project.
-
-7. You can see a suite of demos in `/demos` by executing:<br>`$ npm run-script demos`
+<script src="node_modules/oojs-ui/dist/oojs-ui.min.js"></script>
+<script src="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.js"></script>
+<link rel="stylesheet" href="node_modules/oojs-ui/dist/oojs-ui-wikimediaui.min.css">
+</pre>
 
 
 Loading the library
 -------------------
 
-While the distribution directory is chock-full of files, you will normally only need to load three:
+While the distribution directory is chock-full of files, you will normally load only the following three:
 
 * `oojs-ui.js`, containing the full library;
 * One of `oojs-ui-wikimediaui.css` or `oojs-ui-apex.css`, containing theme-specific styles; and
 * One of `oojs-ui-wikimediaui.js` or  `oojs-ui-apex.js`, containing theme-specific code
 
-You can load additional icon packs from files named `oojs-ui-wikimediaui-icons-*.css` or  `oojs-ui-apex-icons-*.css`.
+You can load additional icon packs from files named `oojs-ui-wikimediaui-icons-*.css` or `oojs-ui-apex-icons-*.css`.
 
 The remaining files make it possible to load only parts of the whole library.
 
@@ -55,14 +52,31 @@ Found a bug or missing feature? Please report it in our [issue tracker Phabricat
 Contributing
 ------------
 
-We are always delighted when people contribute patches. We recommend a few things to make it quicker and easier for you to contribute:
+We are always delighted when people contribute patches. To setup your development environment:
 
-* You will need a [Wikitech account](https://wikitech.wikimedia.org/w/index.php?title=Special:UserLogin&returnto=Help%3AGetting+Started&type=signup) which you can use to login to [Gerrit](https://gerrit.wikimedia.org/), our code review system.
-* You will need a [Wikimedia account](https://www.mediawiki.org/w/index.php?title=Special:UserLogin&type=signup), which you can [use to login to Phabricator](https://www.mediawiki.org/w/index.php?title=Special:UserLogin&returnto=Special%3AOAuth%2Fauthorize&returntoquery=oauth_token%3D2fa60627878b83173e0196040b983326%26oauth_consumer_key%3D038ec949b263dc807b0079fd88538f37).
-* You should [create a Phabricator ticket](https://phabricator.wikimedia.org/maniphest/task/edit/form/1/?projects=PHID-PROJ-dgmoevjqeqlerleqzzx5) describing the issue you wish to change.
+
+1. Clone the repo: `$ git clone https://phabricator.wikimedia.org/diffusion/GOJU/oojs-ui.git oojs-ui`
+
+2. Move into the library directory:<br>`$ cd oojs-ui`
+
+3. Install [composer](https://getcomposer.org/download/) and make sure running `composer` will execute it (*e.g.* add it to `$PATH` in POSIX environments).
+
+4. Install dev dependencies:<br>`$ npm install`
+
+5. Build the library (you can alternatively use `grunt quick-build` if you don't need to rebuild the PNGs):<br>`$ grunt build`
+
+6. You can see a suite of demos in `/demos` by executing:<br>`$ npm run-script demos`
+
+7. You can also copy the distribution files from the dist directory into your project.
+
+
+We use [Gerrit](https://gerrit.wikimedia.org/) for code review, and [Phabricator](https://phabricator.wikimedia.org) to track issues. To contribute patches or join discussions all you need is a [developer account](https://wikitech.wikimedia.org/w/index.php?title=Special:CreateAccount&returnto=Help%3AGetting+Started).
+
+* If you've found a bug, or wish to request a feature [raise a ticket on Phabricator](https://phabricator.wikimedia.org/maniphest/task/edit/form/1/?projects=PHID-PROJ-dgmoevjqeqlerleqzzx5).
+* To submit your patch, follow [the "getting started" quick-guide](https://www.mediawiki.org/wiki/Gerrit/Getting_started). We try to review patches within a week.
 * We automatically lint and style-check changes to JavaScript, PHP, LESS/CSS, Ruby and JSON files. You can test these yourself with `npm test` and `composer test` locally before pushing changes. SVG files should be squashed in advance of committing with [SVGO](https://github.com/svg/svgo) using `svgo --pretty --disable=removeXMLProcInst --disable=cleanupIDs <filename>`.
-* To submit your patch, follow [the "getting started" quick-guide](https://www.mediawiki.org/wiki/Gerrit/Getting_started). You should expect to get code review within a day or two.
-* A new version of the library is released most weeks on Tuesdays.
+
+A new version of the library is released most weeks on Tuesdays.
 
 
 Versioning
@@ -79,7 +93,8 @@ Release
 ----------
 
 Release process:
-```bash
+<pre lang="bash">
+
     $ cd path/to/oojs-ui/
     $ git remote update
     $ git checkout -B release -t origin/master
@@ -114,4 +129,5 @@ Release process:
     $ git checkout origin/master
     $ git tag "vX.X.X"
     $ npm run publish-build && git push --tags && npm publish
-```
+
+</pre>
