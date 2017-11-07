@@ -2137,6 +2137,8 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
 				// Remove the pasteProtect class. See #onCopy.
 				$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
+				// Remove the clipboard key
+				$( htmlDoc ).find( 'span[data-ve-clipboard-key]' ).remove();
 				beforePasteData.context = null;
 			}
 		}
