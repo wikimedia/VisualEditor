@@ -13,7 +13,7 @@ This library is available as an [npm](https://npmjs.org/) package! Install it ri
 npm install unicodejs
 </pre>
 
-Or clone the repo, `git clone https://gerrit.wikimedia.org/r/unicodejs`.
+Or clone the repo, `git clone https://git.wikimedia.org/git/unicodejs.git`.
 
 Versioning
 ----------
