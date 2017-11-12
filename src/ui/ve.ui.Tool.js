@@ -104,23 +104,31 @@ ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
  * @inheritdoc
  */
 ve.ui.Tool.prototype.onSelect = function () {
-	var command = this.getCommand(),
-		surface = this.toolbar.getSurface();
+	var contextClosePromise,
+		command = this.getCommand(),
+		surface = this.toolbar.getSurface(),
+		tool = this;
+
 	if ( command instanceof ve.ui.Command ) {
 		if ( surface.context.inspector ) {
-			surface.context.inspector.close().closed.done( function () {
-				command.execute( surface );
-			} );
+			contextClosePromise = surface.context.inspector.close().closed;
 		} else {
+			contextClosePromise = $.Deferred().resolve().promise();
 			command.execute( surface );
 		}
 	}
 	if ( this.constructor.static.deactivateOnSelect ) {
-		// Even if the promise route was taken above, it's fine to call setActive here; it
+		// It's fine to call setActive here before the promise resolves; it
 		// just disables the button, stopping double-clicks and making it feel more responsive
 		// if the promise is slow.
 		this.setActive( false );
 	}
+	contextClosePromise.done( function () {
+		if ( !command.execute( surface ) ) {
+			// If the command fails, ensure the tool is not active
+			tool.setActive( false );
+		}
+	} );
 };
 
 /**

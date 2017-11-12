@@ -101,6 +101,8 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 		} else {
 			fragment.annotateContent( 'clear', name );
 		}
+	} else if ( surfaceModel.sourceMode ) {
+		return false;
 	} else {
 		insertionAnnotations = surfaceModel.getInsertionAnnotations();
 		existingAnnotations = insertionAnnotations.getAnnotationsByName( annotation.name );
