@@ -2026,6 +2026,28 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Span cleanups: only meaningful attributes kept'
 			},
 			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<span data-ve-clipboard-key="0.13811087369534492-4">&nbsp;</span><s>Foo</s>',
+				fromVe: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'F', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
+								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
+								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 29 }
+					]
+				],
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				msg: 'Span cleanups: clipboard key stripped'
+			},
+			{
 				rangeOrSelection: new ve.Range( 0 ),
 				pasteHtml: 'foo\n<!-- StartFragment --><p>Bar</p><!--EndFragment-->baz',
 				useClipboardData: true,
@@ -2099,6 +2121,27 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				],
 				expectedRangeOrSelection: new ve.Range( 3 ),
 				msg: 'Paste API HTML used if important attributes dropped'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<span data-ve-clipboard-key="0.13811087369534492-4">&nbsp;</span><s rel="ve:Alien">Alien</s>',
+				fromVe: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'alienInline' },
+								{ type: '/alienInline' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				msg: 'Paste API HTML still cleaned up if used when important attributes dropped'
 			},
 			{
 				rangeOrSelection: {
