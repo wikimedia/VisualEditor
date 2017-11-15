@@ -13,7 +13,7 @@ This library is available as an [npm](https://npmjs.org/) package! Install it ri
 npm install unicodejs
 </pre>
 
-Or clone the repo, `git clone https://git.wikimedia.org/git/unicodejs.git`.
+Or clone the repo, `git clone https://gerrit.wikimedia.org/r/p/unicodejs.git`.
 
 Versioning
 ----------
@@ -29,7 +29,7 @@ For more information on SemVer, please visit http://semver.org/.
 Bug tracker
 -----------
 
-Found a bug? Please report it in the [issue tracker](https://bugzilla.wikimedia.org/enter_bug.cgi?product=Utilities&component=UnicodeJS)!
+Found a bug? Please report it in the [issue tracker](https://phabricator.wikimedia.org/maniphest/task/edit/form/1/?project=Utilities-UnicodeJS)!
 
 Release
 ----------
