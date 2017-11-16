@@ -8,7 +8,8 @@
 			"Kalyanasundar",
 			"ElangoRamanujam",
 			"Info-farmer",
-			"Dineshkumar Ponnusamy"
+			"Dineshkumar Ponnusamy",
+			"Balajijagadesh"
 		]
 	},
 	"visualeditor": "காட்சிசார்த் தொகுப்பி",
@@ -78,6 +79,7 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "முன்னிடைவெளி குறை",
 	"visualeditor-inspector-close-tooltip": "மூடுக",
 	"visualeditor-inspector-remove-tooltip": "நீக்குக",
+	"visualeditor-key-home": "முகப்பு",
 	"visualeditor-language-search-input-placeholder": "மொழியின் பெயர் அல்லது குறியீட்டால் தேடல்",
 	"visualeditor-languageinspector-title": "மொழி",
 	"visualeditor-languageinspector-widget-changelang": "மொழியைக் கண்டறி",
