@@ -28,6 +28,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Azpiindizea",
 	"visualeditor-annotationbutton-superscript-tooltip": "Goi indizea",
 	"visualeditor-annotationbutton-underline-tooltip": "Azpimarratu",
+	"visualeditor-changedesc-align": "Lerroketzea $1tik $2ra aldatu egin da",
 	"visualeditor-changedesc-changed": "$1 aldatu egin da $2tik $3ra",
 	"visualeditor-changedesc-comment": "Iruzkina aldatu egin da $1tik $2ra",
 	"visualeditor-changedesc-image-size": "Tamainia aldatu egin da $1tik $2ra",

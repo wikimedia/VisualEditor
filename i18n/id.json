@@ -66,6 +66,8 @@
 	"visualeditor-debugbar-logrange": "Log",
 	"visualeditor-debugbar-showmodel": "Perlihatkan model",
 	"visualeditor-debugbar-showtransactions": "Lihat transaksi",
+	"visualeditor-debugbar-startfilibuster": "Filibuster",
+	"visualeditor-debugbar-stopfilibuster": "Hentikan filibuster",
 	"visualeditor-debugbar-updatemodel": "Perbarui perubahan",
 	"visualeditor-dialog-action-apply": "Terapkan perubahan",
 	"visualeditor-dialog-action-cancel": "Batal",
