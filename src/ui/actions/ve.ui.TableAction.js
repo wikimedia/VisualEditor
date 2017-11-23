@@ -44,6 +44,7 @@ ve.ui.TableAction.static.methods = [
  * Creates a new table.
  *
  * @param {Object} [options] Table creation options
+ * @param {boolean} [options.caption] Include a caption
  * @param {boolean} [options.header] Include a header row
  * @param {number} [options.cols=4] Number of columns
  * @param {number} [options.rows=3] Number of rows (not including optional header row)
@@ -73,6 +74,14 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 	}
 
 	data.push( tableElement );
+	if ( options.caption ) {
+		data.push(
+			{ type: 'tableCaption' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			{ type: '/paragraph' },
+			{ type: '/tableCaption' }
+		);
+	}
 	data.push( { type: 'tableSection', attributes: { style: 'body' } } );
 	if ( options.header ) {
 		data = data.concat( ve.dm.TableRowNode.static.createData( { style: 'header', cellCount: numberOfCols } ) );
