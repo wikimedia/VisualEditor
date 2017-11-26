@@ -203,6 +203,8 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		removals[ i ].setLive( false );
 		removals[ i ].detach();
 		removals[ i ].$element.detach();
+		// And fare thee weel a while
+		removals[ i ].destroy();
 	}
 	if ( args.length >= 3 ) {
 		if ( index > 0 ) {
