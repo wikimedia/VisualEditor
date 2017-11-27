@@ -134,12 +134,12 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function () {
 /**
  * Handle history events on the attached surface
  */
-ve.ui.DebugBar.prototype.onHistory = function () {
+ve.ui.DebugBar.prototype.onHistory = ve.debounce( function () {
 	if ( !this.$transactions.is( ':visible' ) ) {
 		return;
 	}
 	this.updateTransactions();
-};
+} );
 
 /**
  * Handle click events on the log range button
