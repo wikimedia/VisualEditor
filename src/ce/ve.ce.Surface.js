@@ -2025,6 +2025,43 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 	// All $pasteTarget sanitization can be skipped for internal paste
 	if ( !slice ) {
+		// Do some simple transforms to catch content that is using
+		// spans+styles instead of regular tags. This is very much targeted at
+		// the output of Google Docs, but should work with anything fairly-
+		// similar. This is *fragile*, but more in the sense that small
+		// deviations will stop it from working, rather than it being terribly
+		// likely to incorrectly over-format things.
+		// TODO: This might be cleaner if we could move the sanitization into
+		// dm.converter entirely.
+		this.$pasteTarget.find( 'span' ).each( function ( i, node ) {
+			var $node;
+			// Later sanitization will replace completely-empty spans with
+			// their contents, so we can lazily-wrap here without cleaning
+			// up.
+			if ( !node.style ) {
+				return;
+			}
+			$node = $( node );
+			if ( node.style.fontWeight === '700' ) {
+				$node.wrap( '<b>' );
+			}
+			if ( node.style.fontStyle === 'italic' ) {
+				$node.wrap( '<i>' );
+			}
+			if ( node.style.textDecoration === 'underline' ) {
+				$node.wrap( '<u>' );
+			}
+			if ( node.style.textDecoration === 'strikethrough' ) {
+				$node.wrap( '<del>' );
+			}
+			if ( node.style.verticalAlign === 'super' ) {
+				$node.wrap( '<sup>' );
+			}
+			if ( node.style.verticalAlign === 'sub' ) {
+				$node.wrap( '<sub>' );
+			}
+		} );
+
 		// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
 		this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
 

@@ -2048,6 +2048,26 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Span cleanups: clipboard key stripped'
 			},
 			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<span style="font-weight:700; font-style:italic;">A</span>',
+				fromVe: true,
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'A', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } }, { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 29 }
+					]
+				],
+				expectedRangeOrSelection: new ve.Range( 2 ),
+				msg: 'Span cleanups: style converted into markup'
+			},
+			{
 				rangeOrSelection: new ve.Range( 0 ),
 				pasteHtml: 'foo\n<!-- StartFragment --><p>Bar</p><!--EndFragment-->baz',
 				useClipboardData: true,
