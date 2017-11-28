@@ -2048,11 +2048,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			if ( node.style.fontStyle === 'italic' ) {
 				$node.wrap( '<i>' );
 			}
-			if ( node.style.textDecoration === 'underline' ) {
+			if ( node.style.textDecorationLine === 'underline' ) {
 				$node.wrap( '<u>' );
 			}
-			if ( node.style.textDecoration === 'strikethrough' ) {
-				$node.wrap( '<del>' );
+			if ( node.style.textDecorationLine === 'line-through' ) {
+				$node.wrap( '<s>' );
 			}
 			if ( node.style.verticalAlign === 'super' ) {
 				$node.wrap( '<sup>' );
