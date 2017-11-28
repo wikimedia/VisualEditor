@@ -111,7 +111,8 @@ QUnit.test( 'getDomPosition', function ( assert ) {
 } );
 
 QUnit.test( 'onSplice', function ( assert ) {
-	var modelA = new ve.dm.BranchNodeStub(),
+	var viewB, viewC,
+		modelA = new ve.dm.BranchNodeStub(),
 		modelB = new ve.dm.BranchNodeStub(),
 		modelC = new ve.dm.BranchNodeStub(),
 		viewA = new ve.ce.BranchNodeStub( modelA );
@@ -120,18 +121,21 @@ QUnit.test( 'onSplice', function ( assert ) {
 	modelA.splice( 0, 0, modelB, modelC );
 
 	assert.strictEqual( viewA.getChildren().length, 2 );
-	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelB );
-	assert.deepEqual( viewA.getChildren()[ 1 ].getModel(), modelC );
+	viewB = viewA.getChildren()[ 0 ];
+	viewC = viewA.getChildren()[ 1 ];
+	assert.deepEqual( viewB.getModel(), modelB, 'First view child matches model tree' );
+	assert.deepEqual( viewC.getModel(), modelC, 'Second view child matches model tree' );
 
 	// Removal tests
 	modelA.splice( 0, 1 );
-
 	assert.strictEqual( viewA.getChildren().length, 1 );
-	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelC );
+	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelC, 'Only view child matches model tree' );
+	assert.strictEqual( !viewB.getModel(), true, 'Removed view node was destroyed' );
 
 	// Removal and insertion tests
 	modelA.splice( 0, 1, modelB );
 
 	assert.strictEqual( viewA.getChildren().length, 1 );
-	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelB );
+	assert.deepEqual( viewA.getChildren()[ 0 ].getModel(), modelB, 'Replaced view child matches model tree' );
+	assert.strictEqual( !viewC.getModel(), true, 'Replaced view node was destroyed' );
 } );
