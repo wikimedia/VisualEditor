@@ -3,7 +3,16 @@
 OOjs UI
 =================
 
-OOjs UI is a modern JavaScript UI library. It provides common widgets, layouts, dialogs and icons that are ready to use, as well as many useful and convenient classes for constructing custom user interfaces. It is the standard user-interface library in Wikimedia Foundation Web products, having been originally created for use by [VisualEditor](https://www.mediawiki.org/wiki/VisualEditor), which uses it for its entire user interface.
+OOjs UI is a component-based JavaScript UI library. Key features:
+
+* Common widgets, layouts, and dialogs
+* Classes, elements, and mixins to create custom interfaces
+* Internationalization and localization, like right-to-left (RTL) languages support
+* Theme-ability
+* Built-in icons
+* Accessibility features
+
+It is the standard library for Web products at the Wikimedia Foundation, having been originally created for use by [VisualEditor](https://www.mediawiki.org/wiki/VisualEditor).
 
 
 Quick start
@@ -77,6 +86,16 @@ We use [Gerrit](https://gerrit.wikimedia.org/) for code review, and [Phabricator
 * We automatically lint and style-check changes to JavaScript, PHP, LESS/CSS, Ruby and JSON files. You can test these yourself with `npm test` and `composer test` locally before pushing changes. SVG files should be squashed in advance of committing with [SVGO](https://github.com/svg/svgo) using `svgo --pretty --disable=removeXMLProcInst --disable=cleanupIDs <filename>`.
 
 A new version of the library is released most weeks on Tuesdays.
+
+Community
+---------
+
+Get updates, ask questions and join the discussion with maintainers and contributors:
+
+* Join the Wikimedia Developers mailing list, [wikitech-l](https://lists.wikimedia.org/mailman/listinfo/wikitech-l).
+* Chat with the maintainers on `#wikimedia-dev` on `irc.freenode.net`.
+* Ask questions on [StackOverflow](https://stackoverflow.com/tags/oojs-ui/info).
+* Watchlist the [documentation](https://www.mediawiki.org/wiki/OOjs_UI) on MediaWiki to stay updated.
 
 
 Versioning
