@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Yejianfei",
-			"Ztl8702"
+			"Ztl8702",
+			"LNDDYL"
 		]
 	},
 	"visualeditor": "可視化編輯器",
@@ -37,7 +38,7 @@
 	"visualeditor-dialog-action-done": "完成",
 	"visualeditor-dialog-action-goback": "返回",
 	"visualeditor-dialog-action-insert": "插入",
-	"visualeditor-dialog-command-help-title": "鍵盤快捷鍵",
+	"visualeditor-dialog-command-help-title": "鍵盤快速鍵",
 	"visualeditor-dialog-error": "什乇出毛病了……",
 	"visualeditor-dialog-error-dismiss": "轉去",
 	"visualeditor-dialog-language-auto-direction": "自動",
