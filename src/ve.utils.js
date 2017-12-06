@@ -1043,8 +1043,30 @@ ve.fixBase = function ( targetDoc, sourceDoc, fallbackBase ) {
 ve.targetLinksToNewWindow = function ( container ) {
 	// Make all links open in a new window
 	Array.prototype.forEach.call( container.querySelectorAll( 'a[href]' ), function ( el ) {
+		ve.appendToRel( el, 'noopener' );
 		el.setAttribute( 'target', '_blank' );
 	} );
+};
+
+/**
+ * Add a value to an element's rel attribute if it's not already present
+ *
+ * Rel is like class: it's actually a set, represented as a string. We don't
+ * want to add the same value to the attribute if this function is called
+ * repeatedly. This is mostly a placeholder for the relList property someday
+ * becoming widely supported.
+ *
+ * @param  {HTMLElement} element DOM element whose attribute should be checked
+ * @param  {string} value New rel value to be added
+ */
+ve.appendToRel = function ( element, value ) {
+	var rel = element.getAttribute( 'rel' );
+	if ( !rel ) {
+		// Avoid all that string-creation if it's not needed
+		element.setAttribute( 'rel', value );
+	} else if ( ( ' ' + rel + ' ' ).indexOf( ' ' + value + ' ' ) === -1 ) {
+		element.setAttribute( 'rel', rel + ' ' + value );
+	}
 };
 
 /**
