@@ -114,7 +114,6 @@ ve.ui.Tool.prototype.onSelect = function () {
 			contextClosePromise = surface.context.inspector.close().closed;
 		} else {
 			contextClosePromise = $.Deferred().resolve().promise();
-			command.execute( surface );
 		}
 	}
 	if ( this.constructor.static.deactivateOnSelect ) {
@@ -123,12 +122,16 @@ ve.ui.Tool.prototype.onSelect = function () {
 		// if the promise is slow.
 		this.setActive( false );
 	}
-	contextClosePromise.done( function () {
-		if ( !command.execute( surface ) ) {
-			// If the command fails, ensure the tool is not active
-			tool.setActive( false );
-		}
-	} );
+	if ( contextClosePromise ) {
+		// N.B. If contextClosePromise is already resolved, then the handler is called
+		// before the call to .done returns
+		contextClosePromise.done( function () {
+			if ( !command.execute( surface ) ) {
+				// If the command fails, ensure the tool is not active
+				tool.setActive( false );
+			}
+		} );
+	}
 };
 
 /**
