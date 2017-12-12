@@ -31,6 +31,7 @@ ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, selection, noAuto
 	this.surface = surface;
 	this.selection = selection || surface.getSelection();
 	this.leafNodes = null;
+	this.pending = [];
 
 	// Initialization
 	this.historyPointer = this.document.getCompleteHistoryLength();
@@ -642,6 +643,31 @@ ve.dm.SurfaceFragment.prototype.hasMatchingAncestor = function ( type, attribute
 	}
 
 	return all;
+};
+
+/**
+ * Clear a fragment's pending list
+ */
+ve.dm.SurfaceFragment.prototype.clearPending = function () {
+	this.pending = [];
+};
+
+/**
+ * Push a promise to the fragment's pending list
+ *
+ * @param {jQuery.Promise} promise Promise
+ */
+ve.dm.SurfaceFragment.prototype.pushPending = function ( promise ) {
+	this.pending.push( promise );
+};
+
+/**
+ * Get a promise that resolves when the pending list is complete
+ *
+ * @return {jQuery.Promise} Promise
+ */
+ve.dm.SurfaceFragment.prototype.getPending = function () {
+	return $.when.apply( $, this.pending );
 };
 
 /**

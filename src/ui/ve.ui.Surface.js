@@ -743,10 +743,9 @@ ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, lab
 };
 
 ve.ui.Surface.prototype.showProgress = function () {
-	var dialogs = this.dialogs,
-		progresses = this.progresses;
+	var progresses = this.progresses;
 
-	dialogs.openWindow( 'progress', { progresses: progresses, $returnFocusTo: null } );
+	this.dialogs.openWindow( 'progress', { progresses: progresses, $returnFocusTo: null } );
 	this.progresses = [];
 };
 

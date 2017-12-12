@@ -31,7 +31,7 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 		fragment = this,
 		text = this.getText( true );
 
-	this.convertFromSource( text ).then( function ( selectionDocument ) {
+	this.pushPending( this.convertFromSource( text ).then( function ( selectionDocument ) {
 		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
 		tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
@@ -39,8 +39,10 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 		);
 		tempFragment.annotateContent.apply( tempFragment, args );
 
+		fragment.clearPending();
 		fragment.insertDocument( tempFragment.getDocument() );
-	} );
+		return fragment.getPending();
+	} ) );
 
 	return this;
 };
@@ -54,7 +56,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 		fragment = this,
 		text = this.getText( true );
 
-	this.convertFromSource( text ).then( function ( selectionDocument ) {
+	this.pushPending( this.convertFromSource( text ).then( function ( selectionDocument ) {
 		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
 		tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
@@ -62,8 +64,10 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 		);
 		tempFragment.convertNodes.apply( tempFragment, args );
 
+		fragment.clearPending();
 		fragment.insertDocument( tempFragment.getDocument() );
-	} );
+		return fragment.getPending();
+	} ) );
 
 	return this;
 };
@@ -146,18 +150,19 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 		return ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( this, data );
 	}
 
-	this.convertToSource( doc )
-		.done( function ( source ) {
-			if ( source ) {
-				// Parent method
-				ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( fragment, source.trim() );
-			} else {
-				fragment.removeContent();
-			}
-		} )
-		.fail( function () {
-			ve.error( 'Failed to convert document', arguments );
-		} );
+	this.pushPending(
+		this.convertToSource( doc )
+			.done( function ( source ) {
+				if ( source ) {
+					// Parent method
+					ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( fragment, source.trim() );
+				} else {
+					fragment.removeContent();
+				}
+			} ).fail( function () {
+				ve.error( 'Failed to convert document', arguments );
+			} )
+	);
 
 	return this;
 };

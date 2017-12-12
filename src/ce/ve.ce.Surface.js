@@ -1825,18 +1825,21 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 	this.pasting = true;
 	// setTimeout: postpone until after the default paste action
 	setTimeout( function () {
+		var afterPastePromise = $.Deferred().resolve().promise();
 		try {
 			if ( !e.isDefaultPrevented() ) {
-				surface.afterPaste( e );
+				afterPastePromise = surface.afterPaste( e );
 			}
 		} finally {
-			surface.surfaceObserver.clear();
-			surface.surfaceObserver.enable();
+			afterPastePromise.then( function () {
+				surface.surfaceObserver.clear();
+				surface.surfaceObserver.enable();
 
-			// Allow pasting again
-			surface.pasting = false;
-			surface.pasteSpecial = false;
-			surface.beforePasteData = null;
+				// Allow pasting again
+				surface.pasting = false;
+				surface.pasteSpecial = false;
+				surface.beforePasteData = null;
+			} );
 		}
 	} );
 };
@@ -1956,7 +1959,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  * Handle post-paste events.
  *
  * @param {jQuery.Event} e Paste event
- * @return {boolean} False if the event is cancelled
+ * @return {jQuery.Promise} Promise which resolves when the content has been pasted
  */
 ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardHash,
@@ -1964,6 +1967,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange,
 		tableAction, htmlBlacklist, pastedNodes, targetViewNode, isMultiline,
+		done = $.Deferred().resolve().promise(),
 		items = [],
 		metadataIdRegExp = ve.init.platform.getMetadataIdRegExp(),
 		importantElement = '[id],[typeof],[rel]',
@@ -1985,11 +1989,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 	// If the selection doesn't collapse after paste then nothing was inserted
 	if ( !this.nativeSelection.isCollapsed ) {
-		return;
+		return done;
 	}
 
 	if ( fragment.isNull() ) {
-		return null;
+		return done;
 	}
 
 	// Find the clipboard key
@@ -2121,7 +2125,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		if ( fragment.getSelection() instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
 			tableAction = new ve.ui.TableAction( this.getSurface() );
 			tableAction.importTable( slice.getTableNode() );
-			return;
+			return done;
 		}
 
 		// For table selections the target is the first cell
@@ -2234,7 +2238,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				) );
 			}
 			if ( this.handleDataTransferItems( items, true ) ) {
-				return;
+				return done;
 			}
 		}
 
@@ -2291,7 +2295,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			) {
 				tableAction = new ve.ui.TableAction( this.getSurface() );
 				tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ], true );
-				return;
+				return done;
 			}
 
 			// Pasting non-table content into table: just replace the the first cell with the pasted content
@@ -2364,22 +2368,24 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		targetFragment.insertDocument( pastedDocumentModel, contextRange, true );
 	}
 
-	if ( this.getSelection().isNativeCursor() ) {
-		// Restore focus and scroll position
-		this.$documentNode[ 0 ].focus();
-		this.$window.scrollTop( beforePasteData.scrollTop );
-		// setTimeout: Firefox sometimes doesn't change scrollTop immediately when pasting
-		// line breaks at the end of a line so do it again later.
-		setTimeout( function () {
+	return targetFragment.getPending().then( function () {
+		if ( view.getSelection().isNativeCursor() ) {
+			// Restore focus and scroll position
+			view.$documentNode[ 0 ].focus();
 			view.$window.scrollTop( beforePasteData.scrollTop );
-		} );
-	}
+			// setTimeout: Firefox sometimes doesn't change scrollTop immediately when pasting
+			// line breaks at the end of a line so do it again later.
+			setTimeout( function () {
+				view.$window.scrollTop( beforePasteData.scrollTop );
+			} );
+		}
 
-	// If orignal selection was linear, switch to end of pasted text
-	if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
-		targetFragment.collapseToEnd().select();
-		this.checkSequences( /* isPaste */ true );
-	}
+		// If orignal selection was linear, switch to end of pasted text
+		if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
+			targetFragment.collapseToEnd().select();
+			view.checkSequences( /* isPaste */ true );
+		}
+	} );
 };
 
 /**

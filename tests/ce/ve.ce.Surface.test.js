@@ -4,7 +4,11 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-QUnit.module( 've.ce.Surface' );
+QUnit.module( 've.ce.Surface', {
+	beforeEach: function () {
+		return ve.init.platform.getInitializedPromise();
+	}
+} );
 
 /* Tests */
 
@@ -71,14 +75,16 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	view.destroy();
 };
 
-ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, reuseView, msg ) {
+ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, msg ) {
 	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent,
+		afterPastePromise = $.Deferred().resolve().promise(),
 		e = ve.extendObject( {}, pasteData ),
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView ) :
 			htmlOrView,
 		model = view.getModel(),
-		doc = model.getDocument();
+		doc = model.getDocument(),
+		done = assert.async();
 
 	function summary( el ) {
 		return ve.getDomElementSummary( el, true );
@@ -112,52 +118,51 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 		} else if ( e[ 'text/plain' ] ) {
 			document.execCommand( 'insertText', false, e[ 'text/plain' ] );
 		}
-		view.afterPaste( testEvent );
+		afterPastePromise = view.afterPaste( testEvent );
 	}
 
-	if ( expectedOps ) {
-		ops = [];
-		if ( model.getHistory().length ) {
-			txs = model.getHistory()[ 0 ].transactions;
-			for ( i = 0; i < txs.length; i++ ) {
-				txops = ve.copy( txs[ i ].getOperations() );
-				for ( j = 0; j < txops.length; j++ ) {
-					if ( txops[ j ].remove ) {
-						ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
-						ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
+	// Use #done to run immediately after paste promise
+	// TODO: Ideally these tests would run in series use 'await' to
+	// avoid selection issues with running parallel surface tests.
+	afterPastePromise.done( function () {
+		if ( expectedOps ) {
+			ops = [];
+			if ( model.getHistory().length ) {
+				txs = model.getHistory()[ 0 ].transactions;
+				for ( i = 0; i < txs.length; i++ ) {
+					txops = ve.copy( txs[ i ].getOperations() );
+					for ( j = 0; j < txops.length; j++ ) {
+						if ( txops[ j ].remove ) {
+							ve.dm.example.postprocessAnnotations( txops[ j ].remove, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[ j ].remove );
+						}
+						if ( txops[ j ].insert ) {
+							ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore() );
+							ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
+						}
 					}
-					if ( txops[ j ].insert ) {
-						ve.dm.example.postprocessAnnotations( txops[ j ].insert, doc.getStore() );
-						ve.dm.example.removeOriginalDomElements( txops[ j ].insert );
-					}
+					ops.push( txops );
 				}
-				ops.push( txops );
+			}
+			assert.equalLinearData( ops, expectedOps, msg + ': data' );
+			if ( store ) {
+				for ( i in store ) {
+					assert.deepEqual( doc.getStore().value( i ).map( summary ), store[ i ].map( summary ), ': store value ' + i );
+				}
 			}
 		}
-		assert.equalLinearData( ops, expectedOps, msg + ': data' );
-		if ( store ) {
-			for ( i in store ) {
-				assert.deepEqual( doc.getStore().value( i ).map( summary ), store[ i ].map( summary ), ': store value ' + i );
-			}
+		if ( expectedRangeOrSelection ) {
+			expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), expectedRangeOrSelection );
+			assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
 		}
-	}
-	if ( expectedRangeOrSelection ) {
-		expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), expectedRangeOrSelection );
-		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
-	}
-	if ( expectedHtml ) {
-		htmlDoc = ve.dm.converter.getDomFromModel( doc );
-		assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
-	}
-	assert.strictEqual( testEvent.defaultPrevented(), !!expectedDefaultPrevented, msg + ': default action ' + ( expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
-	if ( reuseView ) {
-		while ( model.hasBeenModified() ) {
-			model.undo();
+		if ( expectedHtml ) {
+			htmlDoc = ve.dm.converter.getDomFromModel( doc );
+			assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
 		}
-		model.truncateUndoStack();
-	} else {
+		assert.strictEqual( testEvent.defaultPrevented(), !!expectedDefaultPrevented, msg + ': default action ' + ( expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
 		view.destroy();
-	}
+		done();
+	} );
 };
 
 ve.test.utils.TestEvent = function TestEvent( data ) {
@@ -1506,7 +1511,6 @@ QUnit.test( 'onCopy', function ( assert ) {
 QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	var i,
 		exampleDoc = '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table><p><b>Quux</b></p>',
-		exampleSurface = ve.test.utils.createSurfaceViewFromHtml( exampleDoc ),
 		docLen = 30,
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
@@ -2989,7 +2993,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfacePasteTest(
-			assert, cases[ i ].documentHtml || exampleSurface,
+			assert, cases[ i ].documentHtml || ve.test.utils.createSurfaceViewFromHtml( exampleDoc ),
 			{
 				'text/html': cases[ i ].pasteHtml,
 				'text/plain': cases[ i ].pasteText
@@ -2997,12 +3001,9 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			cases[ i ].internalSourceRangeOrSelection, cases[ i ].fromVe, cases[ i ].useClipboardData,
 			cases[ i ].pasteTargetHtml, cases[ i ].rangeOrSelection, cases[ i ].pasteSpecial,
 			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection, cases[ i ].expectedHtml,
-			cases[ i ].expectedDefaultPrevented, cases[ i ].store, !cases[ i ].documentHtml, cases[ i ].msg
+			cases[ i ].expectedDefaultPrevented, cases[ i ].store, cases[ i ].msg
 		);
 	}
-
-	exampleSurface.destroy();
-
 } );
 
 QUnit.test( 'special key down: table arrow keys', function ( assert ) {
