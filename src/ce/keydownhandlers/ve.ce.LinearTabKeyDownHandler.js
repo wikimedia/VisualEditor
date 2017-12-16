@@ -34,7 +34,7 @@ ve.ce.LinearTabKeyDownHandler.static.supportedSelections = [ 'linear' ];
 /**
  * @inheritdoc
  *
- * Handle escape key down events with a linear selection while table editing.
+ * Handle tab key down events with a linear selection while table editing.
  */
 ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 	var activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode );
