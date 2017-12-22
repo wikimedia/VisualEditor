@@ -202,7 +202,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		position = this.getDomPosition( index );
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[ i ].attach( this );
-			for ( j = 0, length = args[ i ].$element.length; j < length; j++ ) {
+			for ( j = args[ i ].$element.length - 1; j >= 0; j-- ) {
 				position.node.insertBefore(
 					args[ i ].$element[ j ],
 					position.node.children[ position.offset ]
