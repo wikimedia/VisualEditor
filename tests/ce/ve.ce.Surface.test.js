@@ -1433,7 +1433,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 0, 61 ),
-				expectedText: 'abc\n\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n',
+				expectedText: 'abc\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n',
 				msg: 'Plain text of entire document'
 			}
 		];
