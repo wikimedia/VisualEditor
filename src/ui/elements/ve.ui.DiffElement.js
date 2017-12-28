@@ -158,7 +158,7 @@ ve.ui.DiffElement.prototype.onDocumentMouseMove = function ( e ) {
 	var elementId = $( e.target ).closest( '[data-diff-id]' ).attr( 'data-diff-id' );
 	if ( elementId !== undefined ) {
 		this.descriptions.highlightItem(
-			this.descriptions.getItemFromData( +elementId )
+			this.descriptions.findItemFromData( +elementId )
 		);
 	} else {
 		this.descriptions.highlightItem();
