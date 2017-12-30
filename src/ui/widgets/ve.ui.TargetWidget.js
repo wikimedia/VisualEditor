@@ -75,6 +75,12 @@ OO.inheritClass( ve.ui.TargetWidget, OO.ui.Widget );
  */
 
 /**
+ * A document has been attached to the target, and a toolbar and surface created.
+ *
+ * @event setup
+ */
+
+/**
  * Set the document to edit
  *
  * @param {ve.dm.Document} doc Document
@@ -114,6 +120,8 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	if ( this.tools ) {
 		this.toolbar.setup( this.tools, this.surface );
 	}
+
+	this.emit( 'setup' );
 };
 
 /**
