@@ -1694,7 +1694,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Breaks split content branch nodes'
 			},
 			{
-				html: '<p>Foo\nBar\n <b>Baz \nQuux</b></p>',
+				html: '<p>Foo\nBar\n <b>Baz \nQu&nbsp;ux</b></p>',
 				data: [
 					{ type: 'paragraph' },
 					'F', 'o', 'o', ' ', 'B', 'a', 'r', ' ',
@@ -1704,30 +1704,34 @@ QUnit.test( 'sanitize', function ( assert ) {
 					[ ' ', [ ve.dm.example.annIndex( 'b' ) ] ],
 					[ 'Q', [ ve.dm.example.annIndex( 'b' ) ] ],
 					[ 'u', [ ve.dm.example.annIndex( 'b' ) ] ],
+					[ ' ', [ ve.dm.example.annIndex( 'b' ) ] ],
 					[ 'u', [ ve.dm.example.annIndex( 'b' ) ] ],
 					[ 'x', [ ve.dm.example.annIndex( 'b' ) ] ],
 					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				msg: 'Newline characters are stripped and replaced with spaces where necessary'
+				msg: 'Newline characters and NBSPs are replaced with spaces and/or stripped where necessary'
 			},
 			{
-				html: '<p>Foo\nBar\n </p><pre>Baz \nQuux<!--comment-->\nWhee</pre>',
+				html: '<p>Foo\nBar\n </p><pre>Baz \nQu&nbsp;ux<!--comment-->\nWhee</pre><p>A&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;C</p>',
 				data: [
 					{ type: 'paragraph' },
 					'F', 'o', 'o', ' ', 'B', 'a', 'r',
 					{ type: '/paragraph' },
 					{ type: 'preformatted' },
-					'B', 'a', 'z', ' ', '\n', 'Q', 'u', 'u', 'x',
+					'B', 'a', 'z', ' ', '\n', 'Q', 'u', '\u00a0', 'u', 'x',
 					{ type: 'comment', attributes: { text: 'comment' } },
 					{ type: '/comment' },
 					'\n', 'W', 'h', 'e', 'e',
 					{ type: '/preformatted' },
+					{ type: 'paragraph' },
+					'A', ' ', '\u00a0', 'B', ' ', '\u00a0', ' ', 'C',
+					{ type: '/paragraph' },
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				msg: 'Newline characters are not stripped when they are meaningful'
+				msg: 'Newline characters and NBSPs are not stripped when they are meaningful'
 			},
 			{
 				html: '<p>Foo</p> \n\t <p>Bar</p>',
