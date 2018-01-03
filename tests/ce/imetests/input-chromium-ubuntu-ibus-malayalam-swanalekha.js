@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Chromium on Ubuntu in Malayalam using iBus Swanalekha.
  *
- * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'input-chromium-ubuntu-ibus-malayalam-swanalekha', [

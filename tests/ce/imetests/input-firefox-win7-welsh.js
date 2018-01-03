@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Firefox on Windows in Welsh.
  *
- * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'input-firefox-win7-welsh', [

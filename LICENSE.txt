@@ -1,4 +1,4 @@
-Copyright (c) 2011-2017 VisualEditor Team and others
+Copyright (c) 2011-2018 VisualEditor Team and others
 
 https://phabricator.wikimedia.org/diffusion/GVED/browse/master/AUTHORS.txt
 
