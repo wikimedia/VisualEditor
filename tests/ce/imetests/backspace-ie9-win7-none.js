@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME backspace test for Internet Explorer on Windows.
  *
- * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'backspace-ie9-win7-none', [

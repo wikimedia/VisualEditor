@@ -1,7 +1,7 @@
 /*!
  * VisualEditor core-only plugin for QUnit.
  *
- * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 // Extend QUnit.module to provide a fixture element. This used to be in tests/index.html, but

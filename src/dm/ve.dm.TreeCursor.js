@@ -1,7 +1,7 @@
 /*!
  * VisualEditor DataModel TreeCursor class
  *
- * @copyright 2011-2017 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 // TODO identify a core of "trusted" code that is guaranteed to detect tree invalidation.
