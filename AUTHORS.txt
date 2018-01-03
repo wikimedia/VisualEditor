@@ -1,5 +1,6 @@
 Principal Authors (major contributors, alphabetically)
 
+Bartosz Dziewoński <matma.rex@gmail.com>
 Christian Williams <orbit@framezero.com>
 David Chan <david@troi.org>
 Ed Sanders <esanders@wikimedia.org>
@@ -19,23 +20,27 @@ Alex Monk <krenair@gmail.com>
 Alexander Emsenhuber <ialex.wiki@gmail.com>
 Amir E. Aharoni <amir.aharoni@mail.huji.ac.il>
 Antoine Musso <hashar@free.fr>
+Arlo Breault <abreault@wikimedia.org>
 Audrey Tang <audreyt@audreyt.org>
-Bartosz Dziewoński <matma.rex@gmail.com>
+Brad Jorsch <bjorsch@wikimedia.org>
 Brion Vibber <brion@wikimedia.org>
 C. Scott Ananian <cscott@cscott.net>
 Carl Fürstenberg <azatoth@gmail.com>
+Chad Horohoe <chadh@wikimedia.org>
 Chris McMahon <cmcmahon@wikimedia.org>
 David Lynch <dlynch@wikimedia.org>
+Deskana <dgarry@wikimedia.org>
 Erick Guan <fantasticfears@gmail.com>
 Erik Bernhardson <ebernhardson@wikimedia.org>
 Erik Moeller <erik@wikimedia.org>
-Florianschmidtwelzow <florian.schmidt.stargatewissen@gmail.com>
-Frédéric Bolduc <bolducfrederic@gmail.com>
+Florian <florian.schmidt.stargatewissen@gmail.com>
+Frédéric Bolduc <bolducfrederic@gmail.com>
 Helder <he7d3r@gmail.com>
 Jeff Hall <jeffreyehall@gmail.com>
 Jiabao <jiabao.foss@gmail.com>
 John Du Hart <johnduhart@users.mediawiki.org>
 Juliusz Gonera <jgonera@gmail.com>
+Kaartic Sivaraam <kaartic.sivaraam@gmail.com>
 Kunal Mehta <legoktm@gmail.com>
 Kyle Florence <kyle.florence@gmail.com>
 Mark A. Hershberger <mah@everybody.org>
@@ -43,12 +48,14 @@ Mark Holmquist <mtraceur@member.fsf.org>
 Matthew Flaschen <mflaschen@wikimedia.org>
 mayankmadan <maddiemadan@gmail.com>
 Moriel Schottlender <mschottlender@wikimedia.org>
+Neil Kandalgaonkar <neilk@users.mediawiki.org>
 Niklas Laxström <niklas.laxstrom@gmail.com>
 Oliver Buchtala <oliver.buchtala@gmail.com>
 Ori Livneh <ori@wikimedia.org>
-paladox <thomasmulhall410@yahoo.com>
+Paladox <thomasmulhall410@yahoo.com>
 Pavel Selitskas <p.selitskas@gmail.com>
 Peter Coti <petercoti@gmail.com>
+Prateek Saxena <prtksxna@gmail.com>
 Quim Gil <quimgil@gmail.com>
 rachel99 <rachelqa99@gmail.com>
 Raimond Spekking <raimond.spekking@gmail.com>
@@ -57,9 +64,12 @@ Sam Reed <reedy@wikimedia.org>
 shirayuki <shirayuking@gmail.com>
 Siebrand Mazeland <s.mazeland@xs4all.nl>
 Steven Zhang <cro0016@gmail.com>
+Subramanya Sastry <ssastry@wikimedia.org>
 Sucheta Ghoshal <sghoshal@wikimedia.org>
 Thalia Chan <thalia.e.chan@googlemail.com>
 Tongbo Sui <beanixster@gmail.com>
+Umherirrender <umherirrender_de.wp@web.de>
+Volker E <volker.e@wikimedia.org>
 Yuki Shira <shirayuking@gmail.com>
 Željko Filipin <zeljko.filipin@gmail.com>
 
