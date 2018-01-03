@@ -1324,6 +1324,23 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 					}
 				}
 			}
+			// Support: Chrome, Safari
+			// Sometimes all spaces are replaced with NBSP by the browser, so replace those
+			// which aren't adjacent to plain spaces. T183647
+			if (
+				this.getCharacterData( i ) === '\u00a0' &&
+				// Get last open type from the stack
+				!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( elementStack[ elementStack.length - 1 ].type )
+			) {
+				if ( !( this.getCharacterData( i + 1 ) === ' ' || this.getCharacterData( i - 1 ) === ' ' ) ) {
+					// Replace with a space
+					if ( typeof this.getData( i ) === 'string' ) {
+						this.data[ i ] = ' ';
+					} else {
+						this.data[ i ][ 0 ] = ' ';
+					}
+				}
+			}
 		}
 		annotations = this.getAnnotationsFromOffset( i, true );
 		if ( !annotations.isEmpty() ) {
