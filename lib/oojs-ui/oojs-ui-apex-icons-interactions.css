@@ -1,12 +1,12 @@
 /*!
- * OOjs UI v0.24.4
+ * OOjs UI v0.25.0
  * https://www.mediawiki.org/wiki/OOjs_UI
  *
  * Copyright 2011–2018 OOjs UI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-01-02T19:09:04Z
+ * Date: 2018-01-10T00:26:07Z
  */
 .oo-ui-icon-add {
   background-image: url('themes/apex/images/icons/add.png');
@@ -109,8 +109,4 @@
 .oo-ui-icon-subtract {
   background-image: url('themes/apex/images/icons/subtract.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/subtract.svg');
-}
-.oo-ui-icon-watchlist {
-  background-image: url('themes/apex/images/icons/watchlist-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/watchlist-ltr.svg');
 }
