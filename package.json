@@ -42,7 +42,7 @@
     "karma-mocha-reporter": "2.2.5",
     "karma-qunit": "1.2.1",
     "qunitjs": "2.4.1",
-    "stylelint": "7.8.0",
-    "stylelint-config-wikimedia": "0.4.1"
+    "stylelint": "8.2.0",
+    "stylelint-config-wikimedia": "0.4.2"
   }
 }
