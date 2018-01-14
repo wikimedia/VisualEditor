@@ -101,7 +101,6 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 			continue;
 		}
 		// Else no child nodes; do nothing
-		// jscs:enable disallowEmptyBlocks
 
 		// Step out of this node, then keep stepping outwards until there is a next sibling
 		while ( true ) {
