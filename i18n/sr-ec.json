@@ -8,7 +8,8 @@
 			"Сербијана",
 			"Zoranzoki21",
 			"Obsuser",
-			"Prevodim"
+			"Prevodim",
+			"Acamicamacaraca"
 		]
 	},
 	"visualeditor": "Визуелни уређивач",
@@ -109,6 +110,18 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Смањи увлачење",
 	"visualeditor-inspector-close-tooltip": "Затвори",
 	"visualeditor-inspector-remove-tooltip": "Уклони",
+	"visualeditor-key-ctrl": "Ctrl",
+	"visualeditor-key-delete": "Обриши",
+	"visualeditor-key-down": "Доле",
+	"visualeditor-key-end": "Крај",
+	"visualeditor-key-enter": "Унеси",
+	"visualeditor-key-home": "Почетна",
+	"visualeditor-key-insert": "Убаци",
+	"visualeditor-key-left": "Лево",
+	"visualeditor-key-page-down": "Page Down",
+	"visualeditor-key-right": "Десно",
+	"visualeditor-key-shift": "Shift",
+	"visualeditor-key-space": "Размак",
 	"visualeditor-language-search-input-placeholder": "Претражи по имену или коду језика",
 	"visualeditor-languageinspector-title": "Језик",
 	"visualeditor-languageinspector-widget-changelang": "Пронађи језик",
