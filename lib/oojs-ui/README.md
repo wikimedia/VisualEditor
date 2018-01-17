@@ -1,9 +1,9 @@
 [![npm](https://img.shields.io/npm/v/oojs-ui.svg?style=flat)](https://www.npmjs.com/package/oojs-ui) [![Packagist](https://img.shields.io/packagist/v/oojs/oojs-ui.svg?style=flat)](https://packagist.org/packages/oojs/oojs-ui) [![David](https://img.shields.io/david/dev/wikimedia/oojs-ui.svg?style=flat)](https://david-dm.org/wikimedia/oojs-ui#info=devDependencies)
 
-OOjs UI
+OOUI
 =================
 
-OOjs UI is a component-based JavaScript UI library. Key features:
+OOUI is a component-based JavaScript UI library. Key features:
 
 * Common widgets, layouts, and dialogs
 * Classes, elements, and mixins to create custom interfaces
@@ -95,7 +95,7 @@ Get updates, ask questions and join the discussion with maintainers and contribu
 * Join the Wikimedia Developers mailing list, [wikitech-l](https://lists.wikimedia.org/mailman/listinfo/wikitech-l).
 * Chat with the maintainers on `#wikimedia-dev` on `irc.freenode.net`.
 * Ask questions on [StackOverflow](https://stackoverflow.com/tags/oojs-ui/info).
-* Watchlist the [documentation](https://www.mediawiki.org/wiki/OOjs_UI) on MediaWiki to stay updated.
+* Watchlist the [documentation](https://www.mediawiki.org/wiki/OOUI) on MediaWiki to stay updated.
 
 
 Versioning
