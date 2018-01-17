@@ -151,7 +151,7 @@ ve.ui.LanguageInputWidget.prototype.onChange = function () {
 		return;
 	}
 
-	selectedItem = this.directionSelect.getSelectedItem();
+	selectedItem = this.directionSelect.findSelectedItem();
 	this.setLangAndDir(
 		this.languageCodeTextInput.getValue(),
 		selectedItem ? selectedItem.getData() : null

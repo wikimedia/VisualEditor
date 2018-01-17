@@ -128,7 +128,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 		}
 		if ( history.replaceState ) {
 			for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
-				pages.push( ve.demo.surfaceContainers[ i ].pageMenu.getSelectedItem().getData() );
+				pages.push( ve.demo.surfaceContainers[ i ].pageMenu.findSelectedItem().getData() );
 			}
 			history.replaceState( null, document.title, '#!' + pages.join( ',' ) );
 		}
@@ -138,7 +138,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 		var surfaceContainer;
 
 		if ( !page && ve.demo.surfaceContainers.length ) {
-			page = ve.demo.surfaceContainers[ ve.demo.surfaceContainers.length - 1 ].pageMenu.getSelectedItem().getData();
+			page = ve.demo.surfaceContainers[ ve.demo.surfaceContainers.length - 1 ].pageMenu.findSelectedItem().getData();
 		}
 
 		surfaceContainer = new ve.demo.SurfaceContainer( target, page, currentLang, currentDir );

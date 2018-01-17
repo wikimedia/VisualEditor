@@ -320,7 +320,7 @@ ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
  * @return {string} The size type
  */
 ve.ui.MediaSizeWidget.prototype.getSizeType = function () {
-	return this.sizeTypeSelectWidget.getSelectedItem() ? this.sizeTypeSelectWidget.getSelectedItem().getData() : '';
+	return this.sizeTypeSelectWidget.findSelectedItem() ? this.sizeTypeSelectWidget.findSelectedItem().getData() : '';
 };
 
 /**
@@ -593,8 +593,8 @@ ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
  * @return {boolean} Valid or invalid dimension values
  */
 ve.ui.MediaSizeWidget.prototype.isValid = function () {
-	var itemType = this.sizeTypeSelectWidget.getSelectedItem() ?
-		this.sizeTypeSelectWidget.getSelectedItem().getData() : 'custom';
+	var itemType = this.sizeTypeSelectWidget.findSelectedItem() ?
+		this.sizeTypeSelectWidget.findSelectedItem().getData() : 'custom';
 
 	// TODO: when upright is supported by Parsoid add validation for scale
 
