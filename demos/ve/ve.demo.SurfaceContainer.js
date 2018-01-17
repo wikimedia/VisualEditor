@@ -339,5 +339,5 @@ ve.demo.SurfaceContainer.prototype.save = function () {
 	}
 	localStorage.setItem( 've-demo-saved-markup', html );
 	this.pageMenu.selectItemByData( 'localStorage/ve-demo-saved-markup' );
-	this.pageMenu.getSelectedItem().setDisabled( false );
+	this.pageMenu.findSelectedItem().setDisabled( false );
 };
