@@ -63,85 +63,85 @@
 	overflow-wrap: break-word;
 }
 
-[data-diff-action='insert'],
-[data-diff-action='insert'] > ins,
-[data-diff-action='remove'],
-[data-diff-action='change-insert'],
-[data-diff-action='change-remove'] {
+[ data-diff-action='insert' ],
+[ data-diff-action='insert' ] > ins,
+[ data-diff-action='remove' ],
+[ data-diff-action='change-insert' ],
+[ data-diff-action='change-remove' ] {
 	text-decoration: inherit;
 }
 
-ins[data-diff-action='insert'],
-[data-diff-action='insert'] > ins,
-del[data-diff-action='remove'],
-[data-diff-action='remove'] > del {
+ins[ data-diff-action='insert' ],
+[ data-diff-action='insert' ] > ins,
+del[ data-diff-action='remove' ],
+[ data-diff-action='remove' ] > del {
 	white-space: pre-wrap;
 }
 
-[data-diff-action='insert'],
+[ data-diff-action='insert' ],
 /* elements using display:table-caption need separate backgrounds */
-table[data-diff-action='insert'] > caption,
-figure[data-diff-action='insert'] > figcaption {
+table[ data-diff-action='insert' ] > caption,
+figure[ data-diff-action='insert' ] > figcaption {
 	background-color: #7fd7c4 !important; /* stylelint-disable-line declaration-no-important */
 	box-shadow: 0 0 0 1px #7fd7c4;
 }
 
-[data-diff-action='remove'],
+[ data-diff-action='remove' ],
 /* elements using display:table-caption need separate backgrounds */
-table[data-diff-action='remove'] > caption,
-figure[data-diff-action='remove'] > figcaption {
+table[ data-diff-action='remove' ] > caption,
+figure[ data-diff-action='remove' ] > figcaption {
 	background-color: #e88e89 !important; /* stylelint-disable-line declaration-no-important */
 	box-shadow: 0 0 0 1px #e88e89;
 }
 
-[data-diff-action='change'],
-[data-diff-action='change-insert'] {
+[ data-diff-action='change' ],
+[ data-diff-action='change-insert' ] {
 	background-color: #b6d4fb !important; /* stylelint-disable-line declaration-no-important */
 	box-shadow: 0 0 0 1px #b6d4fb;
 }
 
-[data-diff-action='change-remove'] {
+[ data-diff-action='change-remove' ] {
 	display: none;
 }
 
-del[data-diff-action='remove'],
-[data-diff-action='remove'] > del {
+del[ data-diff-action='remove' ],
+[ data-diff-action='remove' ] > del {
 	text-decoration: line-through;
 }
 
-del[data-diff-action='remove']:hover,
-[data-diff-action='remove']:hover > del {
+del[ data-diff-action='remove' ]:hover,
+[ data-diff-action='remove' ]:hover > del {
 	text-decoration: none;
 }
 
-[data-diff-action='insert'] [rel='ve:Comment'],
-[data-diff-action='remove'] [rel='ve:Comment'],
-[data-diff-action='change-insert'] [rel='ve:Comment'],
-[data-diff-action='change-remove'] [rel='ve:Comment'] {
+[ data-diff-action='insert' ] [ rel='ve:Comment' ],
+[ data-diff-action='remove' ] [ rel='ve:Comment' ],
+[ data-diff-action='change-insert' ] [ rel='ve:Comment' ],
+[ data-diff-action='change-remove' ] [ rel='ve:Comment' ] {
 	display: inline-block;
 	width: 1em;
 }
 
 /* TODO: These sibling selectors still match when there is a text node in-between, should be fixed in JS */
-[data-diff-action='remove'] + [data-diff-action='insert'],
-[data-diff-action='insert'] + [data-diff-action='remove'],
-[data-diff-action='remove'] + [data-diff-action='change-insert'],
-[data-diff-action='insert'] + [data-diff-action='change-remove'] {
+[ data-diff-action='remove' ] + [ data-diff-action='insert' ],
+[ data-diff-action='insert' ] + [ data-diff-action='remove' ],
+[ data-diff-action='remove' ] + [ data-diff-action='change-insert' ],
+[ data-diff-action='insert' ] + [ data-diff-action='change-remove' ] {
 	margin-left: 4px;
 }
 
-[data-diff-action='none'] {
+[ data-diff-action='none' ] {
 	opacity: 0.4;
 }
 
-[data-diff-move='up'],
-[data-diff-move='down'] {
+[ data-diff-move='up' ],
+[ data-diff-move='down' ] {
 	position: relative;
 	opacity: 1;
 }
 
-[data-diff-move='up']:before,
-[data-diff-move='down']:before {
+[ data-diff-move='up' ]:before,
+[ data-diff-move='down' ]:before {
 	position: absolute;
 	left: -15px;
 	content: ' ';
@@ -154,22 +154,22 @@ del[data-diff-action='remove']:hover,
 	background: #fff;
 }
 
-[data-diff-move='down']:before {
+[ data-diff-move='down' ]:before {
 	border-top: 6px solid #36c;
 }
 
-[data-diff-move='up']:before {
+[ data-diff-move='up' ]:before {
 	border-bottom: 6px solid #36c;
 }
 
-[data-diff-action='insert']:empty:before,
-[data-diff-action='remove']:empty:before,
-[data-diff-move='up']:empty:before,
-[data-diff-move='down']:empty:before,
-[data-diff-action='insert'] *:empty:before,
-[data-diff-action='remove'] *:empty:before,
-[data-diff-move='up'] *:empty:before,
-[data-diff-move='down'] *:empty:before {
+[ data-diff-action='insert' ]:empty:before,
+[ data-diff-action='remove' ]:empty:before,
+[ data-diff-move='up' ]:empty:before,
+[ data-diff-move='down' ]:empty:before,
+[ data-diff-action='insert' ] *:empty:before,
+[ data-diff-action='remove' ] *:empty:before,
+[ data-diff-move='up' ] *:empty:before,
+[ data-diff-move='down' ] *:empty:before {
 	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
 }
 

@@ -83,7 +83,7 @@
 	text-align: center;
 }
 
-.ve-ui-commandHelpDialog-list dt kbd[data-label]:before {
+.ve-ui-commandHelpDialog-list dt kbd[ data-label ]:before {
 	content: attr( data-label );
 	font-weight: normal;
 	font-style: italic;
