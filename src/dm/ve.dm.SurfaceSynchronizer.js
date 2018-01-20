@@ -140,6 +140,8 @@ ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
 		delete this.authorSelections[ authorId ];
 	}
 	change.applyTo( this.surface );
+	// HACK: After applyTo(), the selections are wrong and applying them could crash.
+	// The only reason this doesn't happen is because everything that tries to do that uses setTimeout().
 	this.applyNewSelections( change.selections );
 };
 
@@ -147,13 +149,11 @@ ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
  * @inheritdoc
  */
 ve.dm.SurfaceSynchronizer.prototype.unapplyChange = function ( change ) {
-	var authorId, nullSelections = {};
-	// Author selections are potentially invalid now, null them all out
-	for ( authorId in this.authorSelections ) {
-		nullSelections[ authorId ] = new ve.dm.NullSelection( this.doc );
-	}
-	this.applyNewSelections( nullSelections );
 	change.unapplyTo( this.surface );
+	// Translate all selections for what we just unapplied
+	// HACK: After unapplyTo(), the selections are wrong and applying them could crash.
+	// The only reason this doesn't happen is because everything that tries to do that uses setTimeout().
+	this.applyNewSelections( this.authorSelections, change.reversed() );
 };
 
 /**
