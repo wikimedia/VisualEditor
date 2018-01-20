@@ -147,6 +147,12 @@ ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
  * @inheritdoc
  */
 ve.dm.SurfaceSynchronizer.prototype.unapplyChange = function ( change ) {
+	var authorId, nullSelections = {};
+	// Author selections are potentially invalid now, null them all out
+	for ( authorId in this.authorSelections ) {
+		nullSelections[ authorId ] = new ve.dm.NullSelection( this.doc );
+	}
+	this.applyNewSelections( nullSelections );
 	change.unapplyTo( this.surface );
 };
 
