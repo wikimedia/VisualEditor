@@ -11,6 +11,7 @@ QUnit.module( 've.dm.Document' );
 QUnit.test( 'constructor', function ( assert ) {
 	var data, htmlDoc,
 		doc = ve.dm.example.createExampleDocument();
+	assert.expect( 11 );
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
 		function () {
@@ -69,9 +70,7 @@ QUnit.test( 'constructor', function ( assert ) {
 		new ve.dm.DocumentNode( [ new ve.dm.TextNode( 4 ) ] ),
 		'plain text input is handled correctly'
 	);
-	assert.deepEqualWithDomElements( doc.getMetadata(), new Array( 5 ),
-		'sparse metadata array is created'
-	);
+	assert.strictEqual( doc.getMetadata().join( ',' ), ',,,', 'Empty metadata array' );
 	assert.strictEqual( doc.getHtmlDocument().body.innerHTML, '', 'Empty HTML document is created' );
 
 	htmlDoc = ve.createDocumentFromHtml( 'abcd' );
@@ -89,22 +88,6 @@ QUnit.test( 'constructor', function ( assert ) {
 		'empty paragraph no longer has a text node'
 	);
 	assert.strictEqual( doc.data, data, 'ElementLinearData is stored by reference' );
-
-	doc = ve.dm.example.createExampleDocument( 'withMeta' );
-	assert.equalLinearDataWithDom( doc.getStore(), doc.getData(), ve.dm.example.withMetaPlainData,
-		'metadata is stripped out of the linear model'
-	);
-	assert.equalLinearDataWithDom( doc.getStore(), doc.getMetadata(), ve.dm.example.withMetaMetaData,
-		'metadata is put in the meta-linmod'
-	);
-	assert.equalNodeTree(
-		doc.getDocumentNode(),
-		new ve.dm.DocumentNode( [
-			new ve.dm.ParagraphNode( ve.dm.example.withMetaPlainData[ 0 ], [ new ve.dm.TextNode( 9 ) ] ),
-			new ve.dm.InternalListNode( ve.dm.example.withMetaPlainData[ 11 ] )
-		] ),
-		'node tree does not contain metadata'
-	);
 } );
 
 QUnit.test( 'newBlankDocument', function ( assert ) {
@@ -942,7 +925,7 @@ QUnit.test( 'protection against double application of transactions', function ( 
 	var testDocument = ve.dm.example.createExampleDocument(),
 		txBuilder = new ve.dm.TransactionBuilder();
 	txBuilder.pushRetain( 1 );
-	txBuilder.pushReplace( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
+	txBuilder.pushReplacement( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
 	testDocument.commit( txBuilder.getTransaction() );
 	assert.throws(
 		function () {

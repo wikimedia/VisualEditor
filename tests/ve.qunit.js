@@ -210,6 +210,13 @@
 			if ( val && val.originalDomElements !== undefined ) {
 				delete val.originalDomElements;
 			}
+			if ( val && val.internal ) {
+				delete val.internal.changesSinceLoad;
+				delete val.internal.metaItems;
+				if ( Object.keys( val.internal ).length === 0 ) {
+					delete val.internal;
+				}
+			}
 		}
 
 		actual = ve.copy( actual );
