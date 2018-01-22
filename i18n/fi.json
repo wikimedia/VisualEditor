@@ -42,6 +42,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Yläindeksi",
 	"visualeditor-annotationbutton-underline-tooltip": "Alleviivaus",
 	"visualeditor-changedesc-unknown": "$1 muutettiin",
+	"visualeditor-changedir": "Muuta suuntausta",
 	"visualeditor-changedir-tool-ltr": "Näytä vasemmalta oikealle",
 	"visualeditor-changedir-tool-rtl": "Näytä oikealta vasemmalle",
 	"visualeditor-clearbutton-tooltip": "Poista muotoilu",
