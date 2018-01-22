@@ -2013,6 +2013,9 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	// Remove the clipboard key
 	this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).remove();
 
+	// Remove style tags (T185532)
+	this.$pasteTarget.find( 'style' ).remove();
+
 	// If we have a clipboard key, validate it and fetch data
 	if ( clipboardKey === this.clipboardId + '-' + this.clipboardIndex ) {
 		// Hash validation: either text/xcustom was used or the hash must be
