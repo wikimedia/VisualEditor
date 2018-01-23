@@ -142,6 +142,9 @@ ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
 	change.applyTo( this.surface );
 	// HACK: After applyTo(), the selections are wrong and applying them could crash.
 	// The only reason this doesn't happen is because everything that tries to do that uses setTimeout().
+	// Translate the selections that aren't going to be overwritten by change.selections
+	this.applyNewSelections( this.authorSelections, change );
+	// Apply the overwrites from change.selections
 	this.applyNewSelections( change.selections );
 };
 
@@ -241,6 +244,7 @@ ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelection
 			translatedSelection = newSelections[ authorId ];
 		}
 		if ( !translatedSelection.equals( this.authorSelections[ authorId ] ) ) {
+			// This works correctly even if newSelections === this.authorSelections
 			this.authorSelections[ authorId ] = translatedSelection;
 			this.emit( 'authorSelect', authorId );
 		}
