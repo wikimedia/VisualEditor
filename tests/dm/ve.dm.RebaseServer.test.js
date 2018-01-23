@@ -282,6 +282,123 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					[ '1', 'deliver' ],
 					[ 'server', 'assertHist', 'abXYZ' ]
 				]
+			},
+			{
+				name: 'Double client-side rebase with annotation and other preceding transaction',
+				initialData: [
+					{ type: 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				clients: [ '1', '2' ],
+				ops: [
+					// Client 1 applies a local change that inserts 'Q'
+					[ '1', 'apply', [
+						[ 'insert', 1, [ 'Q' ], 3 ]
+					] ],
+
+					// Client 2 submits two changes
+					[ '2', 'apply', [
+						[ 'insert', 1, [ 'a' ], 3 ]
+					] ],
+					[ '2', 'submit' ],
+					[ '2', 'apply', [
+						[ 'insert', 2, [ 'b' ], 3 ]
+					] ],
+					[ '2', 'submit' ],
+
+					// Client 1 rebases its local change over client 2's first change
+					[ '2', 'deliver' ],
+					[ 'server', 'assertHist', 'a' ],
+					[ '1', 'receive' ],
+					[ '1', 'assertHist', 'a/Q!' ],
+					// Client 1 submits its local change
+					[ '1', 'submit' ],
+
+					// Client 1 applies a local change that introduces an annotation
+					[ '1', 'apply', {
+						start: 1,
+						transactions: [
+							{
+								operations: [
+									{ type: 'retain', length: 2 },
+									{ type: 'replace', remove: [], insert: [
+										[ 'X', [ 'h123' ] ],
+										[ 'Y', [ 'h123' ] ],
+										[ 'Z', [ 'h123' ] ]
+									] },
+									{ type: 'retain', length: 3 }
+								],
+								authorId: '1'
+							}
+						],
+						stores: [
+							{
+								hashes: [ 'h123' ],
+								hashStore: {
+									h123: {
+										type: 'annotation',
+										value: {
+											type: 'textStyle/bold'
+										}
+									}
+								}
+							}
+						],
+						selections: {
+							1: {
+								type: 'linear',
+								range: {
+									type: 'range',
+									from: 4,
+									to: 4
+								}
+							}
+						}
+					} ],
+					[ '1', 'assert', function ( assert, client ) {
+						var unsubmitted = client.getChangeSince( client.sentLength, false );
+						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is in the store' );
+					} ],
+
+					// Client 1 rebases its local changes over client 2's second change
+					[ '2', 'deliver' ],
+					[ 'server', 'assertHist', 'ab' ],
+					[ '1', 'receive' ],
+					[ '1', 'assertHist', 'ab/Q?/XYZ!' ],
+					[ '1', 'assert', function ( assert, client ) {
+						var unsubmitted = client.getChangeSince( client.sentLength, false );
+						// FIXME this fails. If uncommitted = client.getChangeSince( client.commitLength, false );
+						// then we expect uncommitted.stores[1] to contain 'h123', but instead uncommitted.stores[0] does.
+						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after receiving a foreign change' );
+					} ],
+
+					// Client 1 receives its first change
+					[ '1', 'deliver' ],
+					[ 'server', 'assertHist', 'abQ' ],
+					[ '1', 'receive' ],
+					[ '1', 'assertHist', 'abQ/XYZ!' ],
+					[ '1', 'assert', function ( assert, client ) {
+						var unsubmitted = client.getChangeSince( client.sentLength, false );
+						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after receiving our own change' );
+					} ],
+
+					// Client 1 submits its second change
+					[ '1', 'submit' ],
+					[ '1', 'deliver' ],
+					[ 'server', 'assertHist', 'abQXYZ' ],
+
+					// Client 2 catches up, and receives the annotation correctly
+					[ '2', 'receive' ],
+					[ '2', 'receive' ],
+					[ '2', 'receive' ],
+					[ '2', 'receive' ],
+					[ '2', 'assert', function ( assert, client ) {
+						var lastChange = client.getChangeSince( 3, false );
+						assert.deepEqual( lastChange.stores[ 0 ].hashes, [ 'h123' ], 'h123 is in the store on the other side' );
+					} ]
+				]
 			}
 		];
 
