@@ -83,7 +83,6 @@ function* welcomeNewClient( socket, docName, authorId ) {
 
 function* onSubmitChange( context, data ) {
 	var change, applied;
-	yield wait( artificialDelay );
 	change = ve.dm.Change.static.deserialize( data.change, null, true );
 	applied = yield rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
 	if ( !applied.isEmpty() ) {
@@ -148,13 +147,14 @@ function* onDisconnect( context ) {
 }
 
 function addStep( docName, generatorFunc ) {
-	var pending = Promise.resolve( pendingForDoc.get( docName ) );
-	pending = pending
+	var pending = Promise.resolve( pendingForDoc.get( docName ) ),
+		delayPromise = wait( artificialDelay );
+	pending = Promise.all( [ pending, delayPromise ] )
 		.then( function () {
 			return ve.spawn( generatorFunc );
 		} )
 		.catch( logError );
-	pendingForDoc.set( pending );
+	pendingForDoc.set( docName, pending );
 }
 
 handlers = {
