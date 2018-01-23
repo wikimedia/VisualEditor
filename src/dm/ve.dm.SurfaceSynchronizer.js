@@ -27,6 +27,10 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 
 	// Properties
 	this.surface = surface;
+	// HACK disable undo/redo
+	this.surface.canUndo = this.surface.canRedo = function () {
+		return false;
+	};
 	this.doc = surface.documentModel;
 	this.store = this.doc.getStore();
 	this.authorSelections = {};
@@ -45,7 +49,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
 	this.socket.on( 'nameChange', this.onNameChange.bind( this ) );
 	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
-	this.tryUsurp();
+	// TODO: unbreak then re-enable usurp
+	// this.tryUsurp();
 
 	// Events
 	this.doc.connect( this, {
