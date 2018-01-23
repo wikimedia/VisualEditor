@@ -55,7 +55,3 @@
 .ve-ui-surface-dir-rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
 	margin-left: 0.5em;
 }
-
-.ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-context-menu {
-	right: 0;
-}
