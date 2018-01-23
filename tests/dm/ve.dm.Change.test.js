@@ -276,6 +276,46 @@ QUnit.test( 'Change operations', function ( assert ) {
 	);
 } );
 
+QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
+	var setBold, remove, result,
+		origData = [ { type: 'paragraph' }, 'A', { type: '/paragraph' } ],
+		newSurface = function () {
+			return new ve.dm.Surface(
+				ve.dm.example.createExampleDocumentFromData( origData )
+			);
+		},
+		surface = newSurface(),
+		doc = surface.documentModel,
+		TxRemove = ve.dm.TransactionBuilder.static.newFromRemoval,
+		TxAnnotate = ve.dm.TransactionBuilder.static.newFromAnnotation,
+		b = ve.dm.example.bold,
+		emptyStore = new ve.dm.IndexValueStore(),
+		bStore = new ve.dm.IndexValueStore( [ b ] );
+
+	assert.expect( 3 );
+
+	// Canonical history: text gets removed
+	remove = new ve.dm.Change( 1, [ TxRemove( doc, new ve.Range( 1, 2 ) ) ], [ emptyStore ], {} );
+	// Doomed conflicting history: text gets bolded
+	setBold = new ve.dm.Change( 1, [ TxAnnotate( doc, new ve.Range( 1, 2 ), 'set', b ) ], [ bStore ], {} );
+	result = ve.dm.Change.static.rebaseUncommittedChange( remove, setBold );
+	assert.deepEqual(
+		result.rebased.serialize(),
+		new ve.dm.Change( 2, [], [], {} ).serialize(),
+		'Nothing got rebased'
+	);
+	assert.deepEqual(
+		result.rejected.serialize(),
+		setBold.serialize(),
+		'setBold got rejected'
+	);
+	assert.deepEqual(
+		result.transposedHistory.serialize(),
+		remove.serialize(),
+		'remove got transposed'
+	);
+} );
+
 QUnit.test( 'Serialize/deserialize', function ( assert ) {
 	var origData = [ { type: 'paragraph' }, 'b', 'a', 'r', { type: '/paragraph' } ],
 		newSurface = function () {

@@ -432,6 +432,7 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 			if ( rebases[ 0 ] === null ) {
 				rejected = uncommitted.mostRecent( uncommitted.start + i );
 				transactionsB.length = i;
+				storesB.length = i;
 				selectionsB = {};
 				break bLoop;
 			}
@@ -658,16 +659,13 @@ ve.dm.Change.prototype.applyTo = function ( surface ) {
  */
 ve.dm.Change.prototype.unapplyTo = function ( surface ) {
 	var doc = surface.documentModel,
-		historyLength = doc.completeHistory.length - this.getLength(),
-		storeLength = doc.store.getLength();
-	this.stores.forEach( function ( store ) {
-		storeLength -= store.getLength();
-	} );
+		historyLength = doc.completeHistory.length - this.getLength();
 	this.transactions.slice().reverse().forEach( function ( tx ) {
 		surface.change( tx.reversed() );
 	} );
 	doc.completeHistory.length = historyLength;
-	doc.store.truncate( storeLength );
+	doc.storeLengthAtHistoryLength.length = historyLength + 1;
+	doc.store.truncate( doc.storeLengthAtHistoryLength[ historyLength ] );
 };
 
 /**
