@@ -146,10 +146,13 @@ function* onDisconnect( context ) {
 	} );
 }
 
-function addStep( docName, generatorFunc ) {
-	var pending = Promise.resolve( pendingForDoc.get( docName ) ),
-		delayPromise = wait( artificialDelay );
-	pending = Promise.all( [ pending, delayPromise ] )
+function addStep( docName, generatorFunc, addDelay ) {
+	var pending,
+		parallel = [ Promise.resolve( pendingForDoc.get( docName ) ) ];
+	if ( addDelay && artificialDelay > 0 ) {
+		parallel.push( wait( artificialDelay ) );
+	}
+	pending = Promise.all( parallel )
 		.then( function () {
 			return ve.spawn( generatorFunc );
 		} )
@@ -165,7 +168,8 @@ handlers = {
 };
 
 function handleEvent( context, eventName, data ) {
-	addStep( context.docName, handlers[ eventName ]( context, data ) );
+	var addDelay = eventName === 'submitChange';
+	addStep( context.docName, handlers[ eventName ]( context, data ), addDelay );
 }
 
 function makeConnectionHandler( docName ) {
