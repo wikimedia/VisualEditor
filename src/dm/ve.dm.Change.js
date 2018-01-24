@@ -690,21 +690,17 @@ ve.dm.Change.prototype.addToHistory = function ( documentModel ) {
 /**
  * Remove change transactions from history
  *
- * @param {ve.dm.Document} documentModel
+ * @param {ve.dm.Document} doc
  * @throws {Error} If this change does not end at the top of the history
  */
-ve.dm.Change.prototype.removeFromHistory = function ( documentModel ) {
-	var storeLength;
-	if ( this.start + this.getLength() !== documentModel.completeHistory.length ) {
+ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
+	if ( this.start + this.getLength() !== doc.completeHistory.length ) {
 		throw new Error( 'this ends at ' + ( this.start + this.getLength() ) +
-			' but history ends at ' + documentModel.completeHistory.length );
+			' but history ends at ' + doc.completeHistory.length );
 	}
-	documentModel.completeHistory.length -= this.transactions.length;
-	storeLength = documentModel.store.getLength();
-	this.stores.forEach( function ( store ) {
-		storeLength -= store.getLength();
-	} );
-	documentModel.store.truncate( storeLength );
+	doc.completeHistory.length -= this.transactions.length;
+	doc.storeLengthAtHistoryLength -= this.transactions.length;
+	doc.store.truncate( doc.storeLengthAtHistoryLength[ doc.completeHistory.length ] );
 };
 
 /**
