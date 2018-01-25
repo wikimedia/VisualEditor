@@ -41,17 +41,3 @@
 .ve-ui-desktopContext-floating {
 	position: fixed;
 }
-
-.ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
-	margin-top: 0.25em;
-}
-
-/* @noflip */
-.ve-ui-surface-dir-ltr .ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
-	margin-left: -0.5em;
-}
-
-/* @noflip */
-.ve-ui-surface-dir-rtl .ve-ui-desktopContext > .oo-ui-popupWidget:not( .oo-ui-popupWidget-anchored ) .oo-ui-popupWidget-popup {
-	margin-left: 0.5em;
-}
