@@ -27,10 +27,6 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 
 	// Properties
 	this.surface = surface;
-	// HACK disable undo/redo
-	this.surface.canUndo = this.surface.canRedo = function () {
-		return false;
-	};
 	this.doc = surface.documentModel;
 	this.store = this.doc.getStore();
 	this.authorSelections = {};

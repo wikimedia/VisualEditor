@@ -7,6 +7,10 @@
 ( function () {
 	function RebaserTarget() {
 		RebaserTarget.super.apply( this, arguments );
+
+		// HACK: Disable history commands until supported (T185706)
+		ve.ui.commandRegistry.unregister( 'undo' );
+		ve.ui.commandRegistry.unregister( 'redo' );
 	}
 
 	OO.inheritClass( RebaserTarget, ve.init.sa.Target );
