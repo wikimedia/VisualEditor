@@ -50,7 +50,8 @@ ve.ui.AuthorListPopupTool.prototype.onSurfaceChange = function ( oldSurface, new
  * @param {ve.ui.Surface} surface Surface
  */
 ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
-	var tool = this,
+	var debounceSynchronizerChangeName,
+		tool = this,
 		synchronizer = surface.getView().synchronizer,
 		updatingName = false,
 		oldName = '',
@@ -60,9 +61,13 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 
 	function updateName() {
 		if ( !updatingName ) {
-			synchronizer.changeName( tool.selfItem.input.getValue() );
+			debounceSynchronizerChangeName();
 		}
 	}
+
+	debounceSynchronizerChangeName = ve.debounce( function () {
+		synchronizer.changeName( tool.selfItem.input.getValue() );
+	}, 250 );
 
 	function updateListCount() {
 		tool.setTitle( ( Object.keys( authorItems ).length + 1 ).toString() );
@@ -70,7 +75,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 
 	this.selfItem = new ve.ui.AuthorItemWidget( synchronizer, { editable: true } );
 	this.$authorList.prepend( this.selfItem.$element );
-	this.selfItem.input.on( 'change', ve.debounce( updateName, 250 ) );
+	this.selfItem.input.on( 'change', updateName );
 
 	synchronizer.on( 'authorNameChange', function ( authorId ) {
 		var authorItem = authorItems[ authorId ],
@@ -90,9 +95,12 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 			if ( tool.selfItem.input.getValue() === oldName ) {
 				// Don't send this "new" name back to the server
 				updatingName = true;
-				tool.selfItem.setAuthorId( synchronizer.getAuthorId() );
-				tool.selfItem.update();
-				updatingName = false;
+				try {
+					tool.selfItem.setAuthorId( synchronizer.getAuthorId() );
+					tool.selfItem.update();
+				} finally {
+					updatingName = false;
+				}
 			}
 		}
 		oldName = newName;
