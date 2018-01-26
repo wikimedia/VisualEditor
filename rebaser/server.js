@@ -136,7 +136,9 @@ function* onUsurp( context, data ) {
 
 function* onDisconnect( context ) {
 	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
-		active: false
+		active: false,
+		continueBase: null,
+		rejections: null
 	} );
 	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.authorId );
 	logServerEvent( {
