@@ -179,19 +179,22 @@ ve.dm.SurfaceSynchronizer.prototype.removeFromHistory = function ( change ) {
  */
 ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
 	// Serialize the event data and pass it on to the server for logging
-	var key;
+	var key,
+		ob = {};
 	if ( !this.initialized ) {
 		// Do not log before initialization is complete; this prevents us from logging the entire
 		// document history during initialization
 		return;
 	}
+	ob.sendTimestamp = Date.now();
 	for ( key in event ) {
 		if ( event[ key ] instanceof ve.dm.Change ) {
-			event[ key ] = event[ key ].serialize();
+			ob[ key ] = event[ key ].serialize();
+		} else {
+			ob[ key ] = event[ key ];
 		}
 	}
-
-	this.socket.emit( 'logEvent', event );
+	this.socket.emit( 'logEvent', ob );
 };
 
 /**

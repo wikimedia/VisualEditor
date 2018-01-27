@@ -8,6 +8,7 @@
 
 var rebaseServer, pendingForDoc, artificialDelay, logStream, handlers,
 	port = 8081,
+	startTimestamp,
 	fs = require( 'fs' ),
 	express = require( 'express' ),
 	app = express(),
@@ -26,14 +27,18 @@ function logEvent( event ) {
 }
 
 function logServerEvent( event ) {
-	var key;
+	var key,
+		ob = {};
+	ob.timestamp = Date.now() - startTimestamp;
+	ob.clientId = 'server';
 	for ( key in event ) {
 		if ( event[ key ] instanceof ve.dm.Change ) {
-			event[ key ] = event[ key ].serialize( true );
+			ob[ key ] = event[ key ].serialize( true );
+		} else {
+			ob[ key ] = event[ key ];
 		}
 	}
-	event.clientId = 'server';
-	logEvent( event );
+	logEvent( ob );
 }
 
 function wait( timeout ) {
@@ -199,9 +204,15 @@ function makeConnectionHandler( docName ) {
 			socket.on( eventName, handleEvent.bind( null, context, eventName ) );
 		}
 		socket.on( 'logEvent', function ( event ) {
-			event.clientId = context.authorId;
-			event.doc = docName;
-			logEvent( event );
+			var key,
+				ob = {};
+			ob.recvTimestamp = Date.now() - startTimestamp;
+			ob.clientId = context.authorId;
+			ob.doc = docName;
+			for ( key in event ) {
+				ob[ key ] = event[ key ];
+			}
+			logEvent( ob );
 		} );
 	};
 }
@@ -237,5 +248,7 @@ io.on( 'connection', function ( socket ) {
 	}
 } );
 
+startTimestamp = Date.now();
+logServerEvent( { type: 'restart' } );
 http.listen( port );
 console.log( 'Listening on ' + port + ' (artificial delay ' + artificialDelay + ' ms)' );
