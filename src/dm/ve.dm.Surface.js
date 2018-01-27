@@ -1064,7 +1064,7 @@ ve.dm.Surface.prototype.getModifiedRanges = function ( includeCollapsed, include
  * Get a VE source-mode surface offset from a plaintext source offset.
  *
  * @param {number} offset Source text offset
- * @return {number} Source surface offset
+ * @return {number} Surface offset
  * @throws {Error} Offset out of bounds
  */
 ve.dm.Surface.prototype.getOffsetFromSourceOffset = function ( offset ) {
@@ -1077,13 +1077,39 @@ ve.dm.Surface.prototype.getOffsetFromSourceOffset = function ( offset ) {
 	}
 
 	while ( lineOffset < offset + 1 ) {
-		if ( !lines[ line ] ) {
+		if ( !lines[ line ] || lines[ line ].isInternal() ) {
 			throw new Error( 'Offset out of bounds' );
 		}
 		lineOffset += lines[ line ].getLength() + 1;
 		line++;
 	}
 	return offset + line;
+};
+
+/**
+ * Get a plaintext source offset from a VE source-mode surface offset.
+ *
+ * @param {number} offset Surface offset
+ * @return {number} Source text offset
+ * @throws {Error} Offset out of bounds
+ */
+ve.dm.Surface.prototype.getSourceOffsetFromOffset = function ( offset ) {
+	var lineOffset = 0,
+		line = 0,
+		lines = this.getDocument().getDocumentNode().getChildren();
+
+	if ( offset < 0 ) {
+		throw new Error( 'Offset out of bounds' );
+	}
+
+	while ( lineOffset < offset ) {
+		if ( !lines[ line ] || lines[ line ].isInternal() ) {
+			throw new Error( 'Offset out of bounds' );
+		}
+		lineOffset += lines[ line ].getOuterLength();
+		line++;
+	}
+	return offset - line;
 };
 
 /**
