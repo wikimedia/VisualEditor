@@ -78,7 +78,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 					// TODO: Select all content using content offset methods
 					new ve.Range(
 						1,
-						Math.max( 1, selectionDocument.getInternalList().getListNode().getOuterRange().start - 1 )
+						Math.max( 1, selectionDocument.getDocumentRange().end - 1 )
 					)
 				);
 

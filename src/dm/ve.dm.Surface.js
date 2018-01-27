@@ -775,8 +775,8 @@ ve.dm.Surface.prototype.selectFirstContentOffset = function () {
  */
 ve.dm.Surface.prototype.selectLastContentOffset = function () {
 	var data = this.getDocument().data,
-		listOffset = this.getDocument().getInternalList().getListNode().getOuterRange().start,
-		lastOffset = data.getNearestContentOffset( listOffset, -1 );
+		documentRange = this.getDocument().getDocumentRange(),
+		lastOffset = data.getNearestContentOffset( documentRange.end, -1 );
 
 	if ( lastOffset !== -1 ) {
 		// Found a content offset

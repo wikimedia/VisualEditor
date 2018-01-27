@@ -178,6 +178,15 @@ ve.dm.Document.prototype.getDocumentNode = function () {
 };
 
 /**
+ * Get a range that spans the entire document (excluding the internal list)
+ *
+ * @return {ve.Range} Document range
+ */
+ve.dm.Document.prototype.getDocumentRange = function () {
+	return new ve.Range( 0, this.getInternalList().getListNode().getOuterRange().start );
+};
+
+/**
  * Build the node tree.
  */
 ve.dm.Document.prototype.buildNodeTree = function () {
@@ -446,7 +455,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
  * @return {ve.dm.DocumentSlice} New document
  */
 ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
-	var listRange, i, first, last, firstNode, lastNode,
+	var i, first, last, firstNode, lastNode,
 		linearData, slice, originalRange, balancedRange,
 		balancedNodes, needsContext, contextElement, isContent,
 		startNode, endNode, selection,
@@ -455,12 +464,10 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		contextOpenings = [],
 		contextClosings = [];
 
-	listRange = this.getInternalList().getListNode().getOuterRange();
-
 	if ( !range ) {
 		// Default to the whole document
 		linearData = this.data.sliceObject();
-		originalRange = balancedRange = new ve.Range( 0, listRange.start );
+		originalRange = balancedRange = this.getDocumentRange();
 	} else {
 		startNode = this.getBranchNodeFromOffset( range.start );
 		endNode = this.getBranchNodeFromOffset( range.end );
@@ -586,7 +593,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		// Shallow copy over the internal list
 		ve.batchSplice(
 			linearData.data, linearData.getLength(), 0,
-			this.getData( listRange )
+			this.getData( this.getInternalList().getListNode().getOuterRange() )
 		);
 	}
 
@@ -1543,17 +1550,14 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
 ve.dm.Document.prototype.findText = function ( query, options ) {
 	var i, j, l, qLen, match, offset, lines, dataString, sensitivity, compare, text,
 		data = this.data,
-		docLen = this.getInternalList().getListNode().getOuterRange().start,
+		documentRange = this.getDocumentRange(),
 		ranges = [];
 
 	options = options || {};
 
 	if ( query instanceof RegExp ) {
 		// Convert whole doucment to plain-text for regex matching
-		text = data.getText(
-			true,
-			new ve.Range( 0, docLen )
-		);
+		text = data.getText( true, documentRange );
 		offset = 0;
 		// Avoid multi-line matching by only matching within newlines
 		lines = text.split( '\n' );
@@ -1600,7 +1604,7 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 		}
 		// Iterate up to (and including) offset textLength - queryLength. Beyond that point
 		// there is not enough room for the query to exist
-		for ( offset = 0, l = docLen - qLen; offset <= l; offset++ ) {
+		for ( offset = 0, l = documentRange.getLength() - qLen; offset <= l; offset++ ) {
 			j = 0;
 			while ( compare( data.getCharacterData( offset + j ), query[ j ] ) === 0 ) {
 				j++;

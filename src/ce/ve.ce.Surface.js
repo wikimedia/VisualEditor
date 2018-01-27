@@ -1952,7 +1952,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  */
 ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardHash,
-		$elements, pasteData, slice, internalListRange,
+		$elements, pasteData, slice, documentRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange, pastedText, handled,
 		tableAction, htmlBlacklist, pastedNodes,
@@ -2268,7 +2268,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			targetFragment.removeContent();
 		}
 
-		internalListRange = pastedDocumentModel.getInternalList().getListNode().getOuterRange();
+		documentRange = pastedDocumentModel.getDocumentRange();
 
 		// If the paste was given context, calculate the range of the inserted data
 		if ( beforePasteData.context ) {
@@ -2293,7 +2293,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			}
 
 			// Remove matching context from the right
-			right = internalListRange.start;
+			right = documentRange.end;
 			while (
 				right > 0 &&
 				context.getLength() &&
@@ -2312,7 +2312,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			}
 			contextRange = new ve.Range( left, right );
 		} else {
-			contextRange = new ve.Range( 0, internalListRange.start );
+			contextRange = documentRange;
 		}
 		pastedNodes = pastedDocumentModel.selectNodes( contextRange, 'siblings' ).filter( function ( node ) {
 			// Ignore nodes where nothing is selected
@@ -2479,7 +2479,7 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
  * Select all the contents within the current context
  */
 ve.ce.Surface.prototype.selectAll = function () {
-	var internalListRange, range, matrix, activeNode,
+	var documentRange, range, matrix, activeNode,
 		selection = this.getModel().getSelection(),
 		dmDoc = this.getModel().getDocument();
 
@@ -2489,10 +2489,10 @@ ve.ce.Surface.prototype.selectAll = function () {
 			range = activeNode.getRange();
 			range = new ve.Range( range.from + 1, range.to - 1 );
 		} else {
-			internalListRange = this.getModel().getDocument().getInternalList().getListNode().getOuterRange();
+			documentRange = this.getModel().getDocument().getDocumentRange();
 			range = new ve.Range(
 				dmDoc.getNearestCursorOffset( 0, 1 ),
-				dmDoc.getNearestCursorOffset( internalListRange.start, -1 )
+				dmDoc.getNearestCursorOffset( documentRange.end, -1 )
 			);
 		}
 		this.getModel().setLinearSelection( range );
@@ -3492,7 +3492,7 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 		padding = 50,
 		top = Math.max( 0, dimensions.top - padding ),
 		bottom = dimensions.bottom + ( padding * 2 ),
-		documentRange = new ve.Range( 0, this.getModel().getDocument().getInternalList().getListNode().getOuterRange().start );
+		documentRange = this.getModel().getDocument().getDocumentRange();
 
 	function highestIgnoreChildrenNode( childNode ) {
 		var ignoreChildrenNode = null;

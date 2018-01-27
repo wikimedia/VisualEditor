@@ -143,7 +143,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset ) {
 	}
 	closeMeta = { type: '/' + meta.type };
 	if ( offset === undefined ) {
-		offset = this.document.getInternalList().getListNode().getOuterRange().start;
+		offset = this.document.getDocumentRange().end;
 	}
 	tx = ve.dm.TransactionBuilder.static.newFromInsertion( this.document, offset, [ meta, closeMeta ] );
 	this.surface.change( tx );

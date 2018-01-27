@@ -89,7 +89,7 @@ ve.dm.TransactionBuilder.static.newFromRemoval = function ( doc, range, removeMe
 		endOffset = txBuilder.pushRemoval( doc, 0, range, removeMetadata );
 
 	// Ensure no transaction leaves the document in a completely empty state
-	if ( range.start === 0 && range.end >= doc.getInternalList().getListNode().getOuterRange().start ) {
+	if ( range.start === 0 && range.end >= doc.getDocumentRange().end ) {
 		endOffset = txBuilder.pushInsertion( doc, endOffset, endOffset, [
 			{ type: 'paragraph' },
 			{ type: '/paragraph' }
