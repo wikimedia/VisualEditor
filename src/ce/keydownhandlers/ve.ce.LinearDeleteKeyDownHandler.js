@@ -204,7 +204,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		}
 
 		offset = rangeToRemove.start;
-		docLength = documentModel.getInternalList().getListNode().getOuterRange().start;
+		docLength = documentModel.getDocumentRange().getLength();
 		if ( offset < docLength - 1 ) {
 			while ( offset < docLength - 1 && data.isCloseElementData( offset ) ) {
 				offset++;

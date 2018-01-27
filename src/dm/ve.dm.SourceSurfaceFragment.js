@@ -35,7 +35,7 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
 		tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
-			new ve.Range( 0, selectionDocument.getInternalList().getListNode().getOuterRange().start )
+			selectionDocument.getDocumentRange()
 		);
 		tempFragment.annotateContent.apply( tempFragment, args );
 
@@ -58,7 +58,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
 		tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
-			new ve.Range( 0, selectionDocument.getInternalList().getListNode().getOuterRange().start )
+			selectionDocument.getDocumentRange()
 		);
 		tempFragment.convertNodes.apply( tempFragment, args );
 

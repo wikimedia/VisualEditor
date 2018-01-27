@@ -368,7 +368,7 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 			}
 			break;
 		case 'root':
-			newRange = new ve.Range( 0, this.getDocument().getInternalList().getListNode().getOuterRange().start );
+			newRange = this.getDocument().getDocumentRange();
 			break;
 		case 'siblings':
 			// Grow range to cover all siblings
