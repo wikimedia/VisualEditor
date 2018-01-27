@@ -26,12 +26,12 @@ QUnit.test( 'getDomFromModel', function ( assert ) {
 
 QUnit.test( 'roundTripMetadata', function ( assert ) {
 	var doc, tx,
-		beforeHtml = '<p>ab<meta foo="x">cd</p><p>ef<meta foo="y">gh</p>',
-		afterHtml = '<p>abc</p><meta foo="x"><p>ef<meta foo="y">gh</p>';
+		beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
+		afterHtml = '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>';
 
 	assert.expect( 2 );
-	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( beforeHtml ) );
-	tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 4, 5 ) );
+	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + beforeHtml ) );
+	tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
 	doc.commit( tx );
 	assert.equal(
 		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,

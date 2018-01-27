@@ -255,17 +255,24 @@ ve.dm.Converter.static.moveInlineMetaItems = function ( data ) {
 				// This is an inline meta item: move it
 				delete item.internal.isInlineMeta;
 				metaParent = closestMetaParent();
-				metaParent.item.internal.metaItems.push( item );
-				pendingMetaItems.push( {
-					item: item,
-					closeItem: data[ i + 1 ],
-					metaParent: metaParent,
-					offset: i - metaParent.offset - 1
-				} );
-				// Remove this item and the immediately following close item
-				data.splice( i, 2 );
-				// Prepare to rescan this index
-				i--;
+				if ( metaParent ) {
+					metaParent.item.internal.metaItems.push( item );
+					pendingMetaItems.push( {
+						item: item,
+						closeItem: data[ i + 1 ],
+						metaParent: metaParent,
+						offset: i - metaParent.offset - 1
+					} );
+					// Remove this item and the immediately following close item
+					data.splice( i, 2 );
+					// Prepare to rescan this index
+					i--;
+				} else {
+					// Inline meta outside meta parent. This can happen if, say,
+					// the document starts with a comment then a meta item.
+					// Skip this item and the immediately following close item
+					i++;
+				}
 			} else {
 				ancestors.push( {
 					item: item,
