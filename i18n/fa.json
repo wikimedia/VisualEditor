@@ -19,7 +19,8 @@
 			"Leyth",
 			"الناز",
 			"فلورانس",
-			"Hosseinblue"
+			"Hosseinblue",
+			"Alifakoor"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -88,7 +89,7 @@
 	"visualeditor-dialog-table-caption": "عنوان",
 	"visualeditor-dialog-table-title": "ويژگی‌های جدول",
 	"visualeditor-diff-no-changes": "بدون تغییر",
-	"visualeditor-find-and-replace-diacritic": "تشخیص غیرحساس",
+	"visualeditor-find-and-replace-diacritic": "غیرحساس نسبت به اعراب‌گذاری",
 	"visualeditor-find-and-replace-diacritic-unavailable": "جستجوی تشخیص غیرحساس در این مرورگر وجود ندارد",
 	"visualeditor-find-and-replace-done": "انجام شد",
 	"visualeditor-find-and-replace-find-text": "یافتن",

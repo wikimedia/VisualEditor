@@ -41,6 +41,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Alaindeksi",
 	"visualeditor-annotationbutton-superscript-tooltip": "Yläindeksi",
 	"visualeditor-annotationbutton-underline-tooltip": "Alleviivaus",
+	"visualeditor-changedesc-language": "Kieli vaihdettu kielestä $1 kieleen $2",
 	"visualeditor-changedesc-unknown": "$1 muutettiin",
 	"visualeditor-changedir": "Muuta suuntausta",
 	"visualeditor-changedir-tool-ltr": "Näytä vasemmalta oikealle",
