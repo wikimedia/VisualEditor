@@ -41,6 +41,14 @@
 			"lib/dompurify/purify.js"
 		]
 	},
+	"color-picker": {
+		"scripts": [
+			"lib/color-picker/color-picker.js"
+		],
+		"styles": [
+			"lib/color-picker/color-picker.css"
+		]
+	},
 	"oojs": {
 		"scripts": [
 			"lib/oojs/oojs.jquery.js"
@@ -650,7 +658,8 @@
 		],
 		"dependencies": [
 			"dompurify",
-			"socket.io"
+			"socket.io",
+			"color-picker"
 		]
 	},
 	"visualEditor.rebase.build": {

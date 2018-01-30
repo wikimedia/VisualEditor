@@ -18,6 +18,19 @@
 	left: 0;
 }
 
+.ve-ui-authorItemWidget-colorPicker {
+	margin-top: 3em;
+}
+
+.ve-ui-authorItemWidget-colorPicker .color-picker-control {
+	border-color: #ccc;
+	padding: 3px;
+	background: #fff;
+}
+
 .ve-ui-authorItemWidget-editable .ve-ui-authorItemWidget-color {
 	top: 0.25em;
+	cursor: pointer;
+	outline: 1px solid #ccc;
+	outline-offset: 1px;
 }
