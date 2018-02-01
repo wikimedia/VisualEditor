@@ -61,6 +61,7 @@
 					"ve.dm.*Selection",
 					"ve.dm.Transaction",
 					"ve.dm.TransactionBuilder",
+					"ve.dm.TransactionSquasher",
 					"ve.dm.TreeCursor",
 					"ve.dm.TreeModifier",
 					"ve.dm.TransactionProcessor",
