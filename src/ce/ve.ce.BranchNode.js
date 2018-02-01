@@ -205,10 +205,13 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		removals[ i ].destroy();
 	}
 	if ( args.length >= 3 ) {
-		position = this.getDomPosition( index );
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[ i ].attach( this );
 			for ( j = args[ i ].$element.length - 1; j >= 0; j-- ) {
+				if ( !position ) {
+					// Only calculate this if it's needed, this function looks expensive
+					position = this.getDomPosition( index );
+				}
 				position.node.insertBefore(
 					args[ i ].$element[ j ],
 					position.node.children[ position.offset ]
