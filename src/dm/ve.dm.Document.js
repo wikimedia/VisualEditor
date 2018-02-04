@@ -20,7 +20,7 @@
  * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
  *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
  *  ignored.
- * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
+ * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes, used in #rebuildNodes
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
  * @param {string} [lang] Language code
@@ -439,7 +439,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 
 		// The internalList is rebuilt by the document constructor
 		return new ve.dm.TableSlice(
-			linearData, undefined, undefined, this.getInternalList(), tableRange
+			linearData, this.getHtmlDocument(), undefined, this.getInternalList(), tableRange
 		);
 	} else {
 		return this.shallowCloneFromRange( new ve.Range( 0 ) );
@@ -599,7 +599,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 	// The internalList is rebuilt by the document constructor
 	slice = new ve.dm.DocumentSlice(
-		linearData, undefined, undefined, this.getInternalList(), originalRange, balancedRange
+		linearData, this.getHtmlDocument(), undefined, this.getInternalList(), originalRange, balancedRange
 	);
 	return slice;
 };
@@ -1033,9 +1033,9 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 	// Get a slice of the document where it's been changed
 	var data = this.data.sliceObject( offset, offset + newLength ),
 		// Build document fragment from data
-		fragment = new this.constructor( data, this.htmlDocument, this ),
+		documentFragment = new this.constructor( data, this.htmlDocument, this ),
 		// Get generated child nodes from the document fragment
-		addedNodes = fragment.getDocumentNode().getChildren(),
+		addedNodes = documentFragment.getDocumentNode().getChildren(),
 		// Replace nodes in the model tree
 		removedNodes = ve.batchSplice( parent, index, numNodes, addedNodes );
 
