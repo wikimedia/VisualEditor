@@ -25,8 +25,9 @@
  * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
  * @param {string} [lang] Language code
  * @param {string} [dir='ltr'] Directionality (ltr/rtl)
+ * @param {ve.dm.Document} [originalDocument] Original document form which this was cloned.
  */
-ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir ) {
+ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir, originalDocument ) {
 	var doc, root;
 
 	// Parent constructor
@@ -47,10 +48,12 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.innerWhitespace = innerWhitespace ? ve.copy( innerWhitespace ) : new Array( 2 );
 
 	// Properties
-	this.parentDocument = parentDocument;
+	this.parentDocument = parentDocument || null;
+	this.originalDocument = originalDocument || null;
 	this.completeHistory = [];
 	this.storeLengthAtHistoryLength = [ 0 ];
 	this.nodesByType = {};
+	this.origInternalListLength = null;
 
 	if ( data instanceof ve.dm.ElementLinearData ) {
 		this.data = data;
@@ -381,6 +384,16 @@ ve.dm.Document.prototype.getHtmlDocument = function () {
 };
 
 /**
+ * Get the document model form which this document was cloned.
+ *
+ * @method
+ * @return {ve.dm.Document|null} Original document
+ */
+ve.dm.Document.prototype.getOriginalDocument = function () {
+	return this.originalDocument;
+};
+
+/**
  * Get the document's index-value store
  *
  * @method
@@ -439,7 +452,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 
 		// The internalList is rebuilt by the document constructor
 		return new ve.dm.TableSlice(
-			linearData, this.getHtmlDocument(), undefined, this.getInternalList(), tableRange
+			linearData, this.getHtmlDocument(), undefined, this.getInternalList(), tableRange, this
 		);
 	} else {
 		return this.shallowCloneFromRange( new ve.Range( 0 ) );
@@ -599,7 +612,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 
 	// The internalList is rebuilt by the document constructor
 	slice = new ve.dm.DocumentSlice(
-		linearData, this.getHtmlDocument(), undefined, this.getInternalList(), originalRange, balancedRange
+		linearData, this.getHtmlDocument(), undefined, this.getInternalList(), originalRange, balancedRange, this
 	);
 	return slice;
 };
@@ -650,12 +663,13 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
 		// innerWhitespace
 		undefined,
 		// lang+dir
-		this.getLang(), this.getDir()
+		this.getLang(), this.getDir(),
+		// originalDocument
+		this
 	);
 	if ( copyInternalList && !detachedCopy ) {
 		// Record the length of the internal list at the time the slice was created so we can
 		// reconcile additions properly
-		newDoc.origDoc = this;
 		newDoc.origInternalListLength = this.internalList.getItemNodeCount();
 	}
 	return newDoc;

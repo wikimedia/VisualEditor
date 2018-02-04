@@ -142,7 +142,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 	// Remap the indexes in the data
 	data.remapInternalListIndexes( listMerge.mapping, doc.internalList );
 	// Get data for the new internal list
-	if ( newDoc.origDoc === doc ) {
+	if ( newDoc.origInternalListLength !== null ) {
 		// newDoc is a document slice based on doc, so all the internal list items present in doc
 		// when it was cloned are also in newDoc. We need to get the newDoc version of these items
 		// so that changes made in newDoc are reflected.
@@ -212,7 +212,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 			i++;
 		}
 
-		if ( newDoc.origDoc === doc ) {
+		if ( newDoc.origInternalListLength !== null ) {
 			// Get spliceItemRange from newDoc
 			spliceItemRange = newDoc.internalList.getItemNode( i ).getRange();
 			spliceListNodeRange = newListNodeRange;

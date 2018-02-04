@@ -15,10 +15,11 @@
  * @param {ve.dm.Document} [parentDocument]
  * @param {ve.dm.InternalList} [internalList]
  * @param {ve.Range} [tableRange] Table range
+ * @param {ve.dm.Document} [originalDocument]
  */
-ve.dm.TableSlice = function VeDmTableSlice( data, htmlDocument, parentDocument, internalList, tableRange ) {
+ve.dm.TableSlice = function VeDmTableSlice( data, htmlDocument, parentDocument, internalList, tableRange, originalDocument ) {
 	// Parent constructor
-	ve.dm.TableSlice.super.call( this, data, htmlDocument, parentDocument, internalList, tableRange, tableRange );
+	ve.dm.TableSlice.super.call( this, data, htmlDocument, parentDocument, internalList, tableRange, tableRange, originalDocument );
 };
 
 /* Inheritance */
