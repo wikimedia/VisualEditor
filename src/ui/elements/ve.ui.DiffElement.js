@@ -195,9 +195,9 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
  * Render the diff
  */
 ve.ui.DiffElement.prototype.renderDiff = function () {
-	var i, j, ilen, jlen, move, documentSpacerNode, internalListSpacerNode, li, groupName,
-		noChanges, group, headingNode, names, category, internalListGroup,
-		internalListDiffDiv, anyInternalListChanges, internalListItem,
+	var i, j, ilen, jlen, move, documentSpacerNode, internalListSpacerNode,
+		li, noChanges, group, internalListGroup, referencesListDiffDivs,
+		referencesListDiffDiv, internalListItem,
 		documentNode = this.$document[ 0 ],
 		hasMoves = false,
 		hasChanges = false,
@@ -248,33 +248,13 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	internalListSpacerNode.appendChild( li );
 	li.appendChild( documentSpacerNode.cloneNode( true ) );
 
-	// Render the internal list diff, i.e. all reflists with changed nodes.
-	// TODO: It would be nice if the reflists could be rendered in place in the document; however,
-	// they could be hard to find if they are within a template, so for now they are just shown at
-	// the end of the diff.
-	internalListDiffDiv = document.createElement( 'div' );
-	internalListDiffDiv.setAttribute( 'class', 've-ui-diffElement-internalListDiff' );
+	referencesListDiffDivs = {};
 	for ( group in this.internalListDiff ) {
 
+		referencesListDiffDiv = document.createElement( 'div' );
+
 		internalListGroup = this.internalListDiff[ group ];
-		names = group.split( '/' );
-		category = names[ 0 ].toLowerCase();
-		groupName = names[ 1 ];
-		if ( groupName ) {
-			groupName = ve.msg( 'visualeditor-internal-list-diff-group-name-' + category, groupName );
-		} else {
-			groupName = ve.msg( 'visualeditor-internal-list-diff-default-group-name-' + category );
-		}
 
-		if ( !internalListGroup.changes ) {
-			continue;
-		}
-
-		anyInternalListChanges = true;
-		headingNode = document.createElement( 'h2' );
-		headingNode.setAttribute( 'data-diff-action', 'none' );
-		headingNode.appendChild( document.createTextNode( groupName ) );
-		internalListDiffDiv.appendChild( headingNode );
 		for ( i = 0, ilen = internalListGroup.length; i < ilen; i++ ) {
 			internalListItem = internalListGroup[ i ];
 
@@ -297,7 +277,12 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			}
 		}
 
-		processQueue.call( this, internalListDiffQueue, internalListDiffDiv, internalListSpacerNode );
+		processQueue.call( this, internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
+		referencesListDiffDivs[ group ] = {
+			elements: referencesListDiffDiv,
+			action: internalListGroup.changes ? 'change' : 'none'
+		};
+
 		internalListDiffQueue = [];
 	}
 
@@ -306,7 +291,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 
 	for ( i = 0, j = 0; i < ilen || j < jlen; i++, j++ ) {
 
-		move = null;
+		move = this.moves[ j ] === 0 ? undefined : this.moves[ j ];
 
 		if ( this.oldDocChildren[ i ] === undefined ) {
 
@@ -338,16 +323,28 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			diffQueue.push( [ 'getNodeElements', this.newDocChildren[ j ], 'insert' ] );
 			i--;
 
+		} else if (
+			this.newDocChildren[ j ].type === 'mwReferencesList' &&
+			this.internalListDiff[ this.newDocChildren[ j ].element.attributes.listGroup ]
+		) {
+
+			// New node is a references list node. If a reference has
+			// changed, the references list nodes appear unchanged,
+			// because of how the internal list works. However, we
+			// already have the HTML for the diffed references list,
+			// (which contains details of changes if there are any) so
+			// just get that.
+			referencesListDiffDiv = referencesListDiffDivs[ this.newDocChildren[ j ].element.attributes.listGroup ];
+			diffQueue.push( [ 'getRefListNodeElements', referencesListDiffDiv.elements, referencesListDiffDiv.action, move ] );
+
 		} else if ( typeof this.newToOld[ j ] === 'number' ) {
 
-			// The old and new node are exactly the same, but there may be a move
-			move = this.moves[ j ] === 0 ? undefined : this.moves[ j ];
+			// The old and new node are exactly the same
 			diffQueue.push( [ 'getNodeElements', this.newDocChildren[ j ], 'none', move ] );
 
 		} else {
 
-			// The new node is modified from the old node, and there may be a move
-			move = this.moves[ j ] === 0 ? undefined : this.moves[ j ];
+			// The new node is modified from the old node
 			diffQueue.push( [ 'getChangedNodeElements', this.newToOld[ j ].node, move ] );
 
 		}
@@ -360,10 +357,6 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	processQueue.call( this, diffQueue, documentNode, documentSpacerNode );
 	this.descriptions.addItems( this.descriptionItemsStack );
 	this.descriptionItemsStack = [];
-
-	if ( anyInternalListChanges ) {
-		documentNode.appendChild( internalListDiffDiv );
-	}
 
 	ve.resolveAttributes( documentNode, this.newDoc.getHtmlDocument(), ve.dm.Converter.static.computedAttributes );
 	ve.targetLinksToNewWindow( documentNode );
@@ -710,6 +703,26 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 	}
 
 	return [ element ];
+};
+
+/**
+ * Add the relevant attributes to references list node HTML, whether changed or
+ * unchanged (but not inserted or removed - in these cases we just use
+ * getNodeElements).
+ *
+ * @param {HTMLElement} referencesListDiffDiv Div containing the references list
+ * @param {string} action 'change' or 'none'
+ * @param {string} move 'up' or 'down' if the node has moved
+ * @return {HTMLElement[]} Elements to display
+ */
+ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDiffDiv, action, move ) {
+	if ( action !== 'none' ) {
+		referencesListDiffDiv.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
+	}
+
+	referencesListDiffDiv.setAttribute( 'data-diff-move', move );
+
+	return [ referencesListDiffDiv ];
 };
 
 /**
