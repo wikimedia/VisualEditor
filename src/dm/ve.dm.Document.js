@@ -1047,7 +1047,8 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 	// Get a slice of the document where it's been changed
 	var data = this.data.sliceObject( offset, offset + newLength ),
 		// Build document fragment from data
-		documentFragment = new this.constructor( data, this.htmlDocument, this ),
+		// Use plain ve.dm.Document, instead of whatever this.constructor is.
+		documentFragment = new ve.dm.Document( data, this.htmlDocument, this ),
 		// Get generated child nodes from the document fragment
 		addedNodes = documentFragment.getDocumentNode().getChildren(),
 		// Replace nodes in the model tree
