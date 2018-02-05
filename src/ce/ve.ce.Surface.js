@@ -1155,7 +1155,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 		selection = this.getModel().getSelection(),
 		updateFromModel = false;
 
-	if ( selection instanceof ve.dm.NullSelection ) {
+	if ( selection.isNull() ) {
 		return;
 	}
 
@@ -1247,7 +1247,7 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 		// We're only aware of cases of this happening with uncommitted candidate text,
 		// which implies a native selection. But we instead perform a weaker test - for
 		// a non-null selection - to match that same test in onDocumentKeyDown
-		!( ( selection = this.getModel().getSelection() ) instanceof ve.dm.NullSelection )
+		!( ( selection = this.getModel().getSelection() ).isNull() )
 	) {
 		this.surfaceObserver.stopTimerLoop();
 		if ( ve.ce.keyDownHandlerFactory.executeHandlersForKey( e.keyCode, selection.getName(), this, e ) ) {
@@ -2504,7 +2504,6 @@ ve.ce.Surface.prototype.selectAll = function () {
 				0, 0, matrix.getMaxColCount() - 1, matrix.getRowCount() - 1
 			)
 		);
-
 	}
 };
 
@@ -2577,7 +2576,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 	this.contentBranchNodeChanged = false;
 	this.selection = null;
 
-	if ( selection instanceof ve.dm.NullSelection ) {
+	if ( selection.isNull() ) {
 		this.removeCursorHolders();
 	}
 

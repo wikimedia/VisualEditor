@@ -716,7 +716,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	} else if ( selection instanceof ve.dm.TableSelection ) {
 		selectedNode = selection.getMatrixCells()[ 0 ].node;
 		contextChange = true;
-	} else if ( selection instanceof ve.dm.NullSelection ) {
+	} else if ( selection.isNull() ) {
 		contextChange = true;
 	}
 

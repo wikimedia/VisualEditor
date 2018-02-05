@@ -246,11 +246,11 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			this.surface.getView().$window.off( 'scroll', this.onWindowScrollThrottled );
 
 			// If the surface isn't selected, put the selection back in a sensible place
-			if ( surfaceModel.getSelection() instanceof ve.dm.NullSelection ) {
+			if ( surfaceModel.getSelection().isNull() ) {
 				if ( this.fragments.length ) {
 					// Either the active search result...
 					selection = this.fragments[ this.focusedIndex ].getSelection();
-				} else if ( this.initialFragment && !( this.initialFragment.getSelection() instanceof ve.dm.NullSelection ) ) {
+				} else if ( this.initialFragment && !( this.initialFragment.getSelection().isNull() ) ) {
 					// ... or the initial selection
 					selection = this.initialFragment.getSelection();
 				}
