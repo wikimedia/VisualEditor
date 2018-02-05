@@ -502,16 +502,16 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 	}
 
 	// We only care about the focus end of the selection, the anchor never
-	// moves and should be allowed off screen. Thus, we get the start/end
-	// rects, and calculate based on the end.
-	clientRect = this.getView().getSelection().getSelectionStartAndEndRects();
+	// moves and should be allowed off screen. Thus, we collapse the selection
+	// to the anchor point (collapseToTo) before measuring.
+	clientRect = this.getView().getSelection( this.getModel().getSelection().collapseToTo() ).getSelectionBoundingRect();
 	if ( !clientRect ) {
 		return;
 	}
 
 	// We want viewport-relative coordinates, so we need to translate it
 	surfaceRect = this.getBoundingClientRect();
-	clientRect = ve.translateRect( clientRect.end, surfaceRect.left, surfaceRect.top );
+	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
 
 	// TODO: this has some long-standing assumptions that we're going to be in
 	// the context we expect. If we get VE in a scrollable div or suchlike,
