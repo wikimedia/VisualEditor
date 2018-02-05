@@ -62,7 +62,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			title: 'Nested block nodes',
 			html: '<div><p>x</p></div>',
 			data: [ '<div>', '<paragraph>', 'x', '</paragraph>', '</div>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div><div class='ve-ce-branchNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|x|</#text></p>|</div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div></div>"
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<div class='ve-ce-branchNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|x|</#text></p>|</div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div></div>"
 		},
 		{
 			title: 'Empty document',
@@ -109,6 +109,18 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			html: "<p><span rel='ve:Alien' about='x'>Foo</span><span rel='ve:Alien' about='y'>Bar</span></p>",
 			data: [ '<paragraph>', '<alienInline>', '</alienInline>', '<alienInline>', '</alienInline>', '</paragraph>' ],
 			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Foo</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Bar</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
+		},
+		{
+			title: 'Meta outside of CBN',
+			html: "<p>X</p><!----><p>Y</p>",
+			data: [ '<paragraph>', 'X', '</paragraph>', '<commentMeta>', '</commentMeta>', '<paragraph>', 'Y', '</paragraph>' ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|X|</#text></p>|||<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|Y|</#text></p></div>"
+		},
+		{
+			title: 'Meta causing double block slug',
+			html: "<p rel='ve:Alien'>X</p><!---->",
+			data: [ '<alienBlock>', '</alienBlock>', '<commentMeta>', '</commentMeta>' ],
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<p class='ve-ce-focusableNode ve-ce-leafNode'>|<#text>X</#text></p><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>||</div>"
 		}
 	];
 	/* eslint-enable quotes */
