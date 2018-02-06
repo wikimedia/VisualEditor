@@ -50,14 +50,13 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	e.preventDefault();
 
-	if ( !surface.getSurface().isMultiline() ) {
+	if ( e.ctrlKey || e.metaKey ) {
+		// CTRL+Enter emits a 'submit' event from the surface
+		surface.getSurface().emit( 'submit' );
 		return true;
 	}
 
-	if ( ( e.ctrlKey || e.metaKey ) && surface.getSurface().getInDialog() ) {
-		// We're inside a dialog. OOUI behavior is to close+submit a dialog if
-		// ctrl/cmd+enter is pressed. If this dialog is going to close, we
-		// don't want to perform any actions.
+	if ( !surface.getSurface().isMultiline() ) {
 		return true;
 	}
 

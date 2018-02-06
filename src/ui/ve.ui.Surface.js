@@ -125,6 +125,12 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  * @event scroll
  */
 
+/**
+ * The surface has been submitted by user action, e.g. Ctrl+Enter
+ *
+ * @event submit
+ */
+
 /* Static Properties */
 
 /**
