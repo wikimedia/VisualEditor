@@ -1401,6 +1401,8 @@ ve.translateRect = function ( rect, x, y ) {
 /**
  * Get the start and end rectangles (in a text flow sense) from a list of rectangles
  *
+ * The start rectangle is the top-most, and the end rectangle is the bottom-most.
+ *
  * @param {Array} rects Full list of rectangles
  * @return {Object|null} Object containing two rectangles: start and end, or null if there are no rectangles
  */
