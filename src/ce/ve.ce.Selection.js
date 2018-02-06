@@ -95,7 +95,7 @@ ve.ce.Selection.prototype.isFocusedNode = null;
  * Check if the selection is a native cursor selection
  *
  * @abstract
- * @return {boolean} The selection covers a focused node
+ * @return {boolean} The selection is represented by a native cursor
  */
 ve.ce.Selection.prototype.isNativeCursor = null;
 
