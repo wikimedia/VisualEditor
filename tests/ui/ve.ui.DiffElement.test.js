@@ -147,7 +147,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
-					'</div>'
+					'</div>',
+				expectedDescriptions: [
+					'visualeditor-changedesc-changed,src,http://example.org/foo.jpg,http://example.org/boo.jpg'
+				]
 			},
 			{
 				msg: 'Attributes added to ClassAttributeNodes with classes',
@@ -156,7 +159,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
-					'</div>'
+					'</div>',
+				expectedDescriptions: [
+					'visualeditor-changedesc-changed,src,http://example.org/foo.jpg,http://example.org/boo.jpg'
+				]
 			},
 			{
 				msg: 'Node inserted',
@@ -269,7 +275,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>bar</p><p>foo</p>',
 				expected:
 					'<p data-diff-action="none" data-diff-move="up">bar</p>' +
-					'<p data-diff-action="none">foo</p>'
+					'<p data-diff-action="none">foo</p>',
+				hasMoves: true
 			},
 			{
 				msg: 'Paragraphs moved, with insert',
@@ -278,7 +285,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change"><p data-diff-action="insert"><ins>baz</ins></p></div>' +
 					'<p data-diff-action="none" data-diff-move="up">bar</p>' +
-					'<p data-diff-action="none">foo</p>'
+					'<p data-diff-action="none">foo</p>',
+				hasMoves: true
 			},
 			{
 				msg: 'Paragraphs moved, with remove',
@@ -287,7 +295,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change"><p data-diff-action="remove"><del>baz</del></p></div>' +
 					'<p data-diff-action="none" data-diff-move="up">bar</p>' +
-					'<p data-diff-action="none">foo</p>'
+					'<p data-diff-action="none">foo</p>',
+				hasMoves: true
 			},
 			{
 				msg: 'Paragraphs moved and modified',
@@ -299,7 +308,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>foo bar baz<ins data-diff-action="insert">!</ins></p>' +
-					'</div>'
+					'</div>',
+				hasMoves: true
 			},
 			{
 				msg: 'Insert table column',
@@ -376,7 +386,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>foo <span data-diff-action="change-remove"><a href="http://example.org/quuz" rel="noopener" target="_blank">bar</a></span><span data-diff-action="change-insert" data-diff-id="0"><a href="http://example.org/whee" rel="noopener" target="_blank">bar</a></span> baz</p>' +
-					'</div>'
+					'</div>',
+				expectedDescriptions: [
+					'visualeditor-changedesc-link-href,http://example.org/quuz,http://example.org/whee'
+				]
 			},
 			{
 				msg: 'Nested annotation change',
@@ -538,6 +551,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
 		diffElement = new ve.ui.DiffElement( visualDiff );
 		assert.strictEqual( diffElement.$document.html(), cases[ i ].expected, cases[ i ].msg );
+		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasMoves' ), !!cases[ i ].hasMoves, cases[ i ].msg + ': hasMoves' );
+		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasDescriptions' ), !!cases[ i ].expectedDescriptions, cases[ i ].msg + ': hasDescriptions' );
 		if ( cases[ i ].expectedDescriptions !== undefined ) {
 			assert.deepEqual(
 				diffElement.descriptions.items.map( function ( item ) { return item.$label.text(); } ),

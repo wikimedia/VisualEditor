@@ -9,7 +9,7 @@
 	position: relative;
 }
 
-.ve-ui-diffElement-content {
+.ve-ui-diffElement-hasMoves .ve-ui-diffElement-content {
 	margin-left: 15px;
 }
 
