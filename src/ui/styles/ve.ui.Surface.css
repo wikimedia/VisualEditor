@@ -42,9 +42,3 @@
 	word-wrap: break-word;
 	white-space: pre-wrap;
 }
-
-/* HACK: Fix missing child selector in OOUI (T185544) */
-.oo-ui-menuLayout-expanded .oo-ui-menuLayout:not( .oo-ui-menuLayout-expanded ) .oo-ui-menuLayout-content,
-.oo-ui-menuLayout-expanded .oo-ui-menuLayout:not( .oo-ui-menuLayout-expanded ) .oo-ui-menuLayout-menu {
-	position: static;
-}
