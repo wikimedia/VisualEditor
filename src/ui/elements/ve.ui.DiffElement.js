@@ -199,7 +199,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		noChanges, group, headingNode, names, category, internalListGroup,
 		internalListDiffDiv, anyInternalListChanges, internalListItem,
 		documentNode = this.$document[ 0 ],
-		anyChanges = false,
+		hasMoves = false,
+		hasChanges = false,
 		diffQueue = [],
 		internalListDiffQueue = [];
 
@@ -217,7 +218,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 				!isUnchanged( queue[ i + 1 ] )
 			) {
 				spacer = false;
-				anyChanges = true;
+				hasChanges = true;
 				elements = this[ queue[ i ][ 0 ] ].apply( this, queue[ i ].slice( 1 ) );
 				while ( elements.length ) {
 					parentNode.appendChild(
@@ -304,6 +305,9 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	jlen = ilen;
 
 	for ( i = 0, j = 0; i < ilen || j < jlen; i++, j++ ) {
+
+		move = null;
+
 		if ( this.oldDocChildren[ i ] === undefined ) {
 
 			// Everything else in the new doc is an insert
@@ -347,6 +351,10 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			diffQueue.push( [ 'getChangedNodeElements', this.newToOld[ j ].node, move ] );
 
 		}
+
+		if ( move ) {
+			hasMoves = true;
+		}
 	}
 
 	processQueue.call( this, diffQueue, documentNode, documentSpacerNode );
@@ -360,7 +368,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	ve.resolveAttributes( documentNode, this.newDoc.getHtmlDocument(), ve.dm.Converter.static.computedAttributes );
 	ve.targetLinksToNewWindow( documentNode );
 
-	if ( !anyChanges ) {
+	if ( !hasChanges ) {
 		noChanges = document.createElement( 'div' );
 		noChanges.setAttribute( 'class', 've-ui-diffElement-no-changes' );
 		noChanges.appendChild( document.createTextNode( ve.msg( 'visualeditor-diff-no-changes' ) ) );
@@ -368,7 +376,9 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		documentNode.appendChild( noChanges );
 	}
 
-	this.$element.toggleClass( 've-ui-diffElement-hasDescriptions', !this.descriptions.isEmpty() );
+	this.$element
+		.toggleClass( 've-ui-diffElement-hasDescriptions', !this.descriptions.isEmpty() )
+		.toggleClass( 've-ui-diffElement-hasMoves', hasMoves );
 };
 
 /**
