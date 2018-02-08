@@ -105,7 +105,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	);
 
 	this.pageMenu.selectItem(
-		this.pageMenu.getItemFromData( page ) ||
+		this.pageMenu.findItemFromData( page ) ||
 		this.pageMenu.findFirstSelectableItem()
 	);
 };
