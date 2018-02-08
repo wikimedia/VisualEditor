@@ -107,7 +107,8 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
-	var branchNode, position, count, step, node, model, steps, found, prevNode, $viewNodes,
+	var branchNode, count, i, ceChild, position, step, node, model, steps, found, prevNode,
+		$viewNodes,
 		countedNodes = [];
 
 	// 1. Step with ve.adjacentDomPosition( ..., { stop: function () { return true; } } )
@@ -130,8 +131,55 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	// coordinates than any of its containers.
 
 	branchNode = this.getBranchNodeFromOffset( offset );
-	position = { node: branchNode.$element[ 0 ], offset: 0 };
 	count = branchNode.getOffset() + ( ( branchNode.isWrapped() ) ? 1 : 0 );
+
+	if ( !( branchNode instanceof ve.ce.ContentBranchNode ) ) {
+		// The cursor does not lie in a ContentBranchNode, so we can determine
+		// everything from the DM tree
+		for ( i = 0; ; i++ ) {
+			ceChild = branchNode.children[ i ];
+			if ( count === offset ) {
+				break;
+			}
+			if ( !ceChild ) {
+				throw new Error( 'Offset lies beyond branchNode' );
+			}
+			count += ceChild.getOuterLength();
+			if ( count > offset ) {
+				if ( ceChild.getOuterLength() !== 2 ) {
+					throw new Error( 'Offset lies inside child of strange size' );
+				}
+				node = ceChild.$element[ 0 ];
+				if ( node ) {
+					return { node: node, offset: 0 };
+				}
+				// Else ceChild has no DOM representation; step forwards
+				break;
+			}
+		}
+		// Offset lies directly in branchNode, just before ceChild
+		node = branchNode.$element[ 0 ];
+		while ( ceChild && !ceChild.$element[ 0 ] ) {
+			// Node does not have a DOM representation; move forwards past it
+			i++;
+			ceChild = branchNode.children[ i ];
+		}
+		if ( !ceChild || !ceChild.$element[ 0 ] ) {
+			// Offset lies just at the end of branchNode
+			return { node: node, offset: node.childNodes.length };
+		}
+		return {
+			node: node,
+			offset: Array.prototype.indexOf.call(
+				node.childNodes,
+				ceChild.$element[ 0 ]
+			)
+		};
+	}
+
+	// Else the cursor lies in a ContentBranchNode, so we must traverse the DOM, keeping
+	// count of the corresponding DM position until it reaches offset.
+	position = { node: branchNode.$element[ 0 ], offset: 0 };
 
 	function noDescend() {
 		return this.classList.contains( 've-ce-branchNode-blockSlug' ) ||
