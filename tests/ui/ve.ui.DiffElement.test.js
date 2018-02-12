@@ -1,5 +1,5 @@
 /*!
- * VisualEditor DiffElement Trigger tests.
+ * VisualEditor DiffElement tests.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -9,8 +9,7 @@ QUnit.module( 've.ui.DiffElement' );
 /* Tests */
 
 QUnit.test( 'Diffing', function ( assert ) {
-	var i, len, visualDiff, diffElement,
-		oldDoc, newDoc,
+	var i, len,
 		spacer = '<div class="ve-ui-diffElement-spacer">⋮</div>',
 		comment = function ( text ) {
 			return '<span rel="ve:Comment" data-ve-comment="' + text + '">&nbsp;</span>';
@@ -543,24 +542,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 	ve.dm.modelRegistry.register( InlineWidgetNode );
 
 	for ( i = 0, len = cases.length; i < len; i++ ) {
-		oldDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].oldDoc ) );
-		newDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].newDoc ) );
-		// TODO: Differ expects newDoc to be derived from oldDoc and contain all its store data.
-		// We may want to remove that assumption from the differ?
-		newDoc.getStore().merge( oldDoc.getStore() );
-		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
-		diffElement = new ve.ui.DiffElement( visualDiff );
-		assert.strictEqual( diffElement.$document.html(), cases[ i ].expected, cases[ i ].msg );
-		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasMoves' ), !!cases[ i ].hasMoves, cases[ i ].msg + ': hasMoves' );
-		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasDescriptions' ), !!cases[ i ].expectedDescriptions, cases[ i ].msg + ': hasDescriptions' );
-		if ( cases[ i ].expectedDescriptions !== undefined ) {
-			assert.deepEqual(
-				diffElement.descriptions.items.map( function ( item ) { return item.$label.text(); } ),
-				cases[ i ].expectedDescriptions,
-				cases[ i ].msg + ': sidebar'
-			);
-		}
+		ve.test.utils.runDiffElementTest( assert, cases[ i ] );
 	}
+
+	ve.dm.modelRegistry.unregister( InlineWidgetNode );
 } );
 
 QUnit.test( 'describeChange', function ( assert ) {
