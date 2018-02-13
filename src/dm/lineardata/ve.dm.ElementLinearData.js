@@ -1235,11 +1235,8 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				this.splice( i, 1 );
 				len--;
 				// Make sure you haven't just unwrapped a wrapper paragraph
-				if ( isOpen && ve.getProp( this.getData( i ), 'internal', 'generated' ) ) {
-					delete this.getData( i ).internal.generated;
-					if ( ve.isEmptyObject( this.getData( i ).internal ) ) {
-						delete this.getData( i ).internal;
-					}
+				if ( isOpen ) {
+					ve.deleteProp( this.getData( i ), 'internal', 'generated' );
 				}
 				// Move pointer back and continue
 				i--;
@@ -1276,12 +1273,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			}
 
 			if ( !rules.preserveHtmlWhitespace ) {
-				if ( ve.getProp( this.getData( i ), 'internal', 'whitespace' ) ) {
-					delete this.getData( i ).internal.whitespace;
-					if ( ve.isEmptyObject( this.getData( i ).internal ) ) {
-						delete this.getData( i ).internal;
-					}
-				}
+				ve.deleteProp( this.getData( i ), 'internal', 'whitespace' );
 			}
 
 			if ( canContainContent && !isOpen && rules.singleLine ) {

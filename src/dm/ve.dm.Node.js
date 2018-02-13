@@ -344,11 +344,8 @@ ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated ) 
 		modified = false,
 		clone = ve.copy( element );
 
-	if ( !preserveGenerated && clone.internal ) {
-		delete clone.internal.generated;
-		if ( ve.isEmptyObject( clone.internal ) ) {
-			delete clone.internal;
-		}
+	if ( !preserveGenerated ) {
+		ve.deleteProp( clone, 'internal', 'generated' );
 	}
 	originalDomElements = store.value( clone.originalDomElementsIndex );
 	// Generate a new about attribute to prevent about grouping of cloned nodes

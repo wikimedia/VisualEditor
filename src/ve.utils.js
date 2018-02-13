@@ -40,6 +40,12 @@ ve.setProp = OO.setProp;
 
 /**
  * @method
+ * @inheritdoc OO#deleteProp
+ */
+ve.deleteProp = OO.deleteProp;
+
+/**
+ * @method
  * @inheritdoc OO#cloneObject
  */
 ve.cloneObject = OO.cloneObject;
