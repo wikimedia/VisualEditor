@@ -257,20 +257,13 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		surfaceModel.getLinearFragment( new ve.Range( listItemRange.start + 1, listItemRange.end - 1 ), true )
 			.unwrapNodes( 2 );
 
-		// ensure paragraphs are not wrapper paragraphs now
+		// ensure paragraphs are not generated paragraphs now
 		// that they are not in a list
 		children = fragment.getSiblingNodes();
 		for ( i = 0, length = children.length; i < length; i++ ) {
 			child = children[ i ].node;
-			if (
-				child.type === 'paragraph' &&
-				child.element.internal &&
-				child.element.internal.generated === 'wrapper'
-			) {
-				delete child.element.internal.generated;
-				if ( ve.isEmptyObject( child.element.internal ) ) {
-					delete child.element.internal;
-				}
+			if ( child.type === 'paragraph' ) {
+				ve.deleteProp( child.element, 'internal', 'generated' );
 			}
 		}
 	} else {
