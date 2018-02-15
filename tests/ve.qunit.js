@@ -204,10 +204,12 @@
 
 	QUnit.assert.equalLinearData = function ( actual, expected, message ) {
 		function removeOriginalDomElements( val ) {
-			ve.deleteProp( val, 'originalDomElementsIndex' );
-			ve.deleteProp( val, 'originalDomElements' );
-			ve.deleteProp( val, 'internal', 'changesSinceLoad' );
-			ve.deleteProp( val, 'internal', 'metaItems' );
+			if ( val && val.type ) {
+				ve.deleteProp( val, 'originalDomElementsIndex' );
+				ve.deleteProp( val, 'originalDomElements' );
+				ve.deleteProp( val, 'internal', 'changesSinceLoad' );
+				ve.deleteProp( val, 'internal', 'metaItems' );
+			}
 		}
 
 		actual = ve.copy( actual );
