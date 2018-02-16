@@ -11,7 +11,7 @@ $( function () {
 			} );
 
 		function onSubmit() {
-			var docName = documentNameInput.getValue().replace( / /g, '_' );
+			var docName = documentNameInput.getValue().trim().replace( / /g, '_' ) || Math.random().toString( 36 ).slice( 2 );
 			if ( docName ) {
 				window.location.href = '/doc/edit/' + encodeURIComponent( docName );
 			} else {
