@@ -453,7 +453,7 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  *  were a handlesOwnChildren node.
  */
 ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc, childDomElements ) {
-	var domElements, originalDomElements,
+	var domElements, originalDomElements, key,
 		dataElement = Array.isArray( dataElements ) ? dataElements[ 0 ] : dataElements,
 		nodeClass = this.modelRegistry.lookup( dataElement.type );
 
@@ -481,6 +481,12 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 				!this.nodeFactory.canNodeHaveChildren( dataElement.type ) ||
 				this.nodeFactory.doesNodeHandleOwnChildren( dataElement.type )
 		);
+	}
+	// TODO: This is only for the diff. Eventually should make a DiffConverter subclass
+	if ( dataElement.internal && dataElement.internal.diff ) {
+		for ( key in dataElement.internal.diff ) {
+			domElements[ 0 ].setAttribute( key, dataElement.internal.diff[ key ] );
+		}
 	}
 	return domElements;
 };
