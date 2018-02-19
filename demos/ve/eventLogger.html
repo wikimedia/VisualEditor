@@ -73,18 +73,6 @@
 					comments,
 					log = [];
 
-				function makeEventHandler( eventName ) {
-					return function ( e ) {
-						logEvent( 'sendEvent', eventName, e );
-					};
-				}
-
-				function makeAfterLoopHandler() {
-					return function () {
-						logEvent( 'endLoop' );
-					};
-				}
-
 				function eventToObject( e ) {
 					// TODO: flesh this out more
 					if ( !e || e.keyCode === undefined ) {
@@ -94,9 +82,24 @@
 					}
 				}
 
+				function showLog() {
+					var i, len, jsons = [];
+					jsons.push( JSON.stringify( comments ) );
+					for ( i = 0, len = log.length; i < len; i++ ) {
+						jsons.push( JSON.stringify( log[ i ] ) );
+					}
+					$log.val( '[\n\t' + jsons.join( ',\n\t' ) + '\n]' );
+					$log[ 0 ].scrollTop = $log[ 0 ].scrollHeight;
+				}
+
+				function logWrite( val ) {
+					log.push( val );
+					showLog();
+				}
+
 				function logEvent( methodName, eventName, e ) {
 					var args = [],
-						msUtc = (new Date().getTime() - startTime) / 1000,
+						msUtc = ( new Date().getTime() - startTime ) / 1000,
 						newHtml = $content.html(),
 						newStartOffset = document.getSelection().anchorOffset,
 						newEndOffset = document.getSelection().focusOffset;
@@ -139,19 +142,16 @@
 					} );
 				}
 
-				function logWrite( val ) {
-					log.push( val );
-					showLog();
+				function makeEventHandler( eventName ) {
+					return function ( e ) {
+						logEvent( 'sendEvent', eventName, e );
+					};
 				}
 
-				function showLog() {
-					var i, len, jsons = [];
-					jsons.push( JSON.stringify( comments ) );
-					for ( i = 0, len = log.length; i < len; i++ ) {
-						jsons.push( JSON.stringify( log[i] ) );
-					}
-					$log.val( '[\n\t' + jsons.join(',\n\t') + '\n]' );
-					$log[0].scrollTop = $log[0].scrollHeight;
+				function makeAfterLoopHandler() {
+					return function () {
+						logEvent( 'endLoop' );
+					};
 				}
 
 				/** @param {jQuery.Event} e Halo form submit event */
@@ -169,7 +169,8 @@
 				}
 
 				function init() {
-					var i, len, eventSequencer, handlers = {},
+					var i, len,
+						handlers = {},
 						eventNames = [
 							'compositionstart',
 							'compositionend',
@@ -184,11 +185,12 @@
 					$log = $( '.ve-demo-log' ).val( '' );
 
 					for ( i = 0, len = eventNames.length; i < len; i++ ) {
-						handlers[ eventNames[i] ] =
-							makeEventHandler( eventNames[i] );
+						handlers[ eventNames[ i ] ] =
+							makeEventHandler( eventNames[ i ] );
 					}
 
-					eventSequencer = new ve.EventSequencer( eventNames )
+					// eslint-disable no-new
+					new ve.EventSequencer( eventNames )
 						.attach( $content )
 						.on( handlers )
 						.afterLoop( makeAfterLoopHandler() );

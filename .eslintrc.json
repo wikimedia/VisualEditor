@@ -15,5 +15,9 @@
 	},
 	"rules": {
 		"dot-notation": [ "error", { "allowKeywords": true } ]
+	},
+	"plugins": [ "html" ],
+	"settings": {
+		"html/indent": "+tab"
 	}
 }

@@ -111,7 +111,10 @@ module.exports = function ( grunt ) {
 			configScript = indent + '<script>\n';
 
 			if ( i18n.length ) {
-				configScript += indent + '\tve.messagePaths = ' +
+				configScript +=
+					// TODO: Build real JS, instead of using JSON.stringify
+					indent + '\t/* eslint-disable */\n' +
+					indent + '\tve.messagePaths = ' +
 					JSON.stringify(
 						i18n.map( function ( path ) { return pathPrefix + path; } )
 					) + ';\n';
@@ -132,7 +135,9 @@ module.exports = function ( grunt ) {
 				configScript += indent + '\tve.demoPages = ' + JSON.stringify( demoPages ) + ';\n';
 			}
 
-			configScript += indent + '</script>';
+			configScript +=
+				indent + '\t/* eslint-enable */\n' +
+				indent + '</script>';
 			scripts.push( configScript );
 		}
 
