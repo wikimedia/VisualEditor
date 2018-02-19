@@ -118,10 +118,6 @@
 	border-top-left-radius: 0.25em;
 }
 
-.ve-ui-debugBar-transactions {
-	display: none;
-}
-
 .ve-ui-debugBar-transactions > ol > li {
 	border-left: 2em solid #f8f9fa;
 }

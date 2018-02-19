@@ -11,6 +11,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 		// eslint-disable-next-line new-cap
 		target = new ve.demo.target(),
 		hashChanging = false,
+		$divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' ),
 
 		currentLang = ve.init.platform.getUserLanguages()[ 0 ],
 		currentDir = target.$element.css( 'direction' ) || 'ltr',
@@ -112,9 +113,9 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 	$toolbar.append(
 		$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
 			addSurfaceContainerButton.$element,
-			$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+			$divider.clone(),
 			languageInput.$element,
-			$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+			$divider.clone(),
 			deviceSelect.$element
 		)
 	);
