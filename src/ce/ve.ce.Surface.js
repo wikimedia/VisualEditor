@@ -4143,7 +4143,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		rect = ve.ce.Selection.static.newFromModel( selection.collapseToTo(), this ).getSelectionRects()[ 0 ];
 	}
 	overlays.$cursor.append(
-		$( '<div class="ve-ce-surface-highlights-user-cursor">' ).css( {
+		$( '<div>' ).addClass( 've-ce-surface-highlights-user-cursor' ).css( {
 			left: rect.left,
 			top: rect.top,
 			height: rect.height,

@@ -43,10 +43,14 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.filibusterToggle = new OO.ui.ToggleButtonWidget( { label: ve.msg( 'visualeditor-debugbar-startfilibuster' ) } );
 
 	this.$dump =
-		$( '<div class="ve-ui-debugBar-dump">' ).append(
+		$( '<div>' ).addClass( 've-ui-debugBar-dump' ).append(
 			this.updateModelToggle.$element,
-			$( '<table></table>' ).append(
-				$( '<thead><th>Linear model data</th><th>View tree</th><th>Model tree</th></thead>' ),
+			$( '<table>' ).append(
+				$( '<thead>' ).append(
+					$( '<th>' ).text( 'Linear model data' ),
+					$( '<th>' ).text( 'View tree' ),
+					$( '<th>' ).text( 'Model tree' )
+				),
 				$( '<tbody>' ).append(
 					$( '<tr>' ).append(
 						this.$linmodData, this.$viewTree, this.$modelTree
@@ -55,9 +59,9 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 			)
 		).hide();
 
-	this.$transactions = $( '<div class="ve-ui-debugBar-transactions"><ol></ol></div>' );
+	this.$transactions = $( '<div>' ).addClass( 've-ui-debugBar-transactions' );
 
-	this.$filibuster = $( '<div class="ve-ui-debugBar-filibuster"></div>' );
+	this.$filibuster = $( '<div>' ).addClass( 've-ui-debugBar-filibuster' );
 
 	// Events
 	this.logRangeButton.on( 'click', this.onLogRangeButtonClick.bind( this ) );
@@ -134,10 +138,9 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function () {
  * Handle history events on the attached surface
  */
 ve.ui.DebugBar.prototype.onHistory = ve.debounce( function () {
-	if ( !this.$transactions.is( ':visible' ) ) {
-		return;
+	if ( this.transactionsToggle.getValue() ) {
+		this.updateTransactions();
 	}
-	this.updateTransactions();
 } );
 
 /**
@@ -196,7 +199,7 @@ ve.ui.DebugBar.prototype.updateDump = function () {
  */
 ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 	var i, $li, $label, element, text, annotations, data,
-		$ol = $( '<ol start="0"></ol>' );
+		$ol = $( '<ol>' ).attr( 'start', '0' );
 
 	data = linearData instanceof ve.dm.LinearData ? linearData.data : linearData;
 
@@ -264,7 +267,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
  */
 ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
 	var $li, i, $label,
-		$ol = $( '<ol start="0"></ol>' );
+		$ol = $( '<ol>' ).attr( 'start', '0' );
 
 	for ( i = 0; i < node.children.length; i++ ) {
 		$li = $( '<li>' );
@@ -371,10 +374,8 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 ve.ui.DebugBar.prototype.onTransactionsToggleChange = function ( value ) {
 	if ( value ) {
 		this.updateTransactions();
-		this.$transactions.show();
-	} else {
-		this.$transactions.hide();
 	}
+	this.$transactions.toggleClass( 'oo-ui-element-hidden', !value );
 };
 
 /**
@@ -382,7 +383,7 @@ ve.ui.DebugBar.prototype.onTransactionsToggleChange = function ( value ) {
  */
 ve.ui.DebugBar.prototype.updateTransactions = function () {
 	var surface = this.getSurface(),
-		$transactionsList = this.$transactions.children( 'ol' ).empty();
+		$transactionsList = $( '<ol>' );
 
 	surface.getModel().getHistory().forEach( function ( item ) {
 		var $state = $( '<ol>' ).appendTo( $( '<li>' ).appendTo( $transactionsList ) );
@@ -390,6 +391,8 @@ ve.ui.DebugBar.prototype.updateTransactions = function () {
 			$state.append( $( '<li>' ).text( ve.summarizeTransaction( tx ) ) );
 		} );
 	} );
+
+	this.$transactions.empty().append( $transactionsList );
 };
 
 /**

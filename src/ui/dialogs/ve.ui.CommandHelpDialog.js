@@ -138,7 +138,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 				for ( k = 0, kLen = commands[ j ].sequences.length; k < kLen; k++ ) {
 					sequence = sequenceRegistry.lookup( commands[ j ].sequences[ k ] );
 					if ( sequence ) {
-						$shortcut.append( $( '<kbd class="ve-ui-commandHelpDialog-sequence">' )
+						$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-sequence' )
 							.attr( 'data-label', ve.msg( 'visualeditor-shortcuts-sequence-notice' ) )
 							.append(
 								sequence.getMessage( true ).map( this.constructor.static.buildKeyNode )

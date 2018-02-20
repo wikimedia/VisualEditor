@@ -29,27 +29,29 @@
 	for ( i = 0, len = modifierKeys.length; i < len; i++ ) {
 		$modifiers.append(
 			$( '<li>' ).append(
-				$( '<span class="key"></span>' )
-					.text( modifierKeys[ i ] )
+				$( '<span>' )
+					.addClass( 'key' )
 					.attr( 'rel', modifierKeys[ i ] )
+					.text( modifierKeys[ i ] )
 			)
 		);
 	}
 	for ( i = 0, len = primaryKeys.length; i < len; i++ ) {
 		$primary.append(
 			$( '<li>' ).append(
-				$( '<span class="key"></span>' )
-					.text( primaryKeys[ i ] )
+				$( '<span>' )
+					.addClass( 'key' )
 					.attr( 'rel', primaryKeys[ i ] )
+					.text( primaryKeys[ i ] )
 			)
 		);
 	}
 	for ( key in keyAliases ) {
 		$aliases.append(
 			$( '<li>' )
-				.append( $( '<span class="key alias"></span>' ).text( key ) )
+				.append( $( '<span>' ).addClass( 'key alias' ).text( key ) )
 				.append( '⇢' )
-				.append( $( '<span class="key"></span>' ).text( keyAliases[ key ] ) )
+				.append( $( '<span>' ).addClass( 'key' ).text( keyAliases[ key ] ) )
 		);
 	}
 

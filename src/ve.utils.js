@@ -838,7 +838,7 @@ ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
  * @return {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
  */
 ve.createDocumentFromHtmlUsingIframe = function ( html ) {
-	var newDocument, $iframe, iframe;
+	var newDocument, iframe;
 
 	// Here's what this fallback code should look like:
 	//
@@ -872,8 +872,10 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	html = html || '<body></body>';
 
 	// Create an invisible iframe
-	$iframe = $( '<iframe frameborder="0" width="0" height="0" />' );
-	iframe = $iframe.get( 0 );
+	iframe = document.createElement( 'iframe' );
+	iframe.setAttribute( 'frameborder', '0' );
+	iframe.setAttribute( 'width', '0' );
+	iframe.setAttribute( 'height', '0' );
 	// Attach it to the document. We have to do this to get a new document out of it
 	document.documentElement.appendChild( iframe );
 	// Write the HTML to it

@@ -13,7 +13,8 @@
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
 	var pageDropdown, pageLabel, removeButton, saveButton, diffButton, $exitReadButton,
-		container = this;
+		container = this,
+		$divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' );
 
 	// Parent constructor
 	ve.demo.SurfaceContainer.super.call( this );
@@ -42,7 +43,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	diffButton = new OO.ui.ButtonWidget( {
 		label: 'Show changes'
 	} );
-	$exitReadButton = $( '<a href="#">' ).text( 'Back to editor' ).on( 'click', function () {
+	$exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', function () {
 		container.modeSelect.selectItemByData( 'visual' );
 		return false;
 	} );
@@ -87,13 +88,13 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 			$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
 				pageLabel.$element,
 				pageDropdown.$element,
-				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				$divider.clone(),
 				this.modeSelect.$element,
-				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				$divider.clone(),
 				removeButton.$element,
-				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				$divider.clone(),
 				saveButton.$element,
-				$( '<span class="ve-demo-toolbar-divider">&nbsp;</span>' ),
+				$divider.clone(),
 				diffButton.$element
 			)
 		),
