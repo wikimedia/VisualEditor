@@ -183,7 +183,8 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
 		}
 		elementRect = ve.ce.FocusableNode.static.getRectsForElement( $element ).boundingRect;
 
-		if ( elementRect.top > itemRect.top ) {
+		// elementRect can currently be null for meta items, e.g. <link>
+		if ( elementRect && elementRect.top > itemRect.top ) {
 			item.$element.css( 'margin-top', elementRect.top - itemRect.top - 5 );
 		}
 
