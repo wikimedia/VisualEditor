@@ -143,7 +143,7 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
 	);
 	items.push(
 		new OO.ui.MenuOptionWidget( {
-			data: 'sessionStorage/ve-docstate',
+			data: 'sessionStorage/ve-dochtml',
 			label: 'Session auto-save'
 		} )
 	);
@@ -293,7 +293,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSav
 
 	if ( autoSave ) {
 		dmDoc.on( 'transact', ve.debounce( function () {
-			ve.init.platform.setSession( 've-docstate', container.surface.getHtml() );
+			ve.init.platform.setSession( 've-dochtml', container.surface.getHtml() );
 		}, 3000 ) );
 	}
 
