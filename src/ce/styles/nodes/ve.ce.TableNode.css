@@ -23,7 +23,6 @@
 
 .ve-ce-tableNodeOverlay {
 	position: absolute;
-	/* TODO: Suport IE10 with JS mouse events */
 	pointer-events: none;
 }
 

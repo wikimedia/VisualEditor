@@ -30,7 +30,6 @@
 	position: absolute;
 	opacity: 0.5;
 	z-index: 1;
-	/* TODO: Suport IE10 with JS mouse events */
 	pointer-events: none;
 }
 
@@ -48,7 +47,6 @@
 	outline: 3px solid #6da9f7;
 	padding: 2px;
 	margin: -2px 0 0 -2px;
-	/* TODO: Suport IE10 with JS mouse events */
 	pointer-events: none;
 }
 
