@@ -214,7 +214,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 				}
 				position.node.insertBefore(
 					args[ i ].$element[ j ],
-					position.node.children[ position.offset ]
+					position.node.children[ position.offset ] || null
 				);
 			}
 			if ( this.live !== args[ i ].isLive() ) {
