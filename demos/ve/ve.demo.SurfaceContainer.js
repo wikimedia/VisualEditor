@@ -141,6 +141,12 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
 			disabled: !localStorage.getItem( 've-demo-saved-markup' )
 		} )
 	);
+	items.push(
+		new OO.ui.MenuOptionWidget( {
+			data: 'sessionStorage/ve-docstate',
+			label: 'Session auto-save'
+		} )
+	);
 	return items;
 };
 
@@ -230,9 +236,13 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
 
 	ve.init.platform.getInitializedPromise().done( function () {
 		( container.surface ? container.surface.$element.slideUp().promise() : $.Deferred().resolve().promise() ).done( function () {
-			var localMatch = src.match( /^localStorage\/(.+)$/ );
+			var localMatch = src.match( /^localStorage\/(.+)$/ ),
+				sessionMatch = src.match( /^sessionStorage\/(.+)$/ );
 			if ( localMatch ) {
 				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
+				return;
+			} else if ( sessionMatch ) {
+				container.loadHtml( ve.init.platform.getSession( sessionMatch[ 1 ] ) || '', mode, true );
 				return;
 			}
 			$.ajax( {
@@ -258,8 +268,9 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
  *
  * @param {string} pageHtml HTML string
  * @param {string} mode Edit mode
+ * @param {boolean} autoSave Auto save
  */
-ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
+ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSave ) {
 	var dmDoc,
 		container = this;
 
@@ -279,6 +290,12 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 
 	dmDoc = this.surface.getModel().getDocument();
 	this.oldDoc = dmDoc.cloneFromRange();
+
+	if ( autoSave ) {
+		dmDoc.on( 'transact', ve.debounce( function () {
+			ve.init.platform.setSession( 've-docstate', container.surface.getHtml() );
+		}, 3000 ) );
+	}
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() );
 	this.surface.$element.hide().slideDown().promise().done( function () {

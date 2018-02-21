@@ -169,6 +169,26 @@ ve.init.Platform.prototype.getUserConfig = null;
 ve.init.Platform.prototype.setUserConfig = null;
 
 /**
+ * Get a session storage value
+ *
+ * @method
+ * @abstract
+ * @param {string} key Key to get
+ * @return {Mixed|Object} Config value
+ */
+ve.init.Platform.prototype.getSession = null;
+
+/**
+ * Set a session storage value
+ *
+ * @method
+ * @abstract
+ * @param {string} keyOrValueMap Key to set value for
+ * @param {Mixed} [value] Value to set
+ */
+ve.init.Platform.prototype.setSession = null;
+
+/**
  * Add multiple messages to the localization system.
  *
  * @method

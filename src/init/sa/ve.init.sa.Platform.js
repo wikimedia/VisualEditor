@@ -125,6 +125,20 @@ ve.init.sa.Platform.prototype.setUserConfig = function ( keyOrValueMap, value ) 
 /**
  * @inheritdoc
  */
+ve.init.sa.Platform.prototype.getSession = function ( key ) {
+	return window.sessionStorage.getItem( key );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.init.sa.Platform.prototype.setSession = function ( key, value ) {
+	return window.sessionStorage.setItem( key, value );
+};
+
+/**
+ * @inheritdoc
+ */
 ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
 	var key;
 	for ( key in messages ) {
