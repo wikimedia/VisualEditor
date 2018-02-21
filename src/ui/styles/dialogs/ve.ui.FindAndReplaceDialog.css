@@ -39,7 +39,6 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	/* TODO: Suport IE10 with JS mouse events */
 	pointer-events: none;
 }
 
