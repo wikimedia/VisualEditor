@@ -162,6 +162,11 @@ del[ data-diff-action='remove' ]:hover,
 	border-bottom: 6px solid #36c;
 }
 
+li [ data-diff-move='up' ]:before,
+li [ data-diff-move='down' ]:before {
+	left: -30px;
+}
+
 [ data-diff-action='insert' ]:empty:before,
 [ data-diff-action='remove' ]:empty:before,
 [ data-diff-move='up' ]:empty:before,

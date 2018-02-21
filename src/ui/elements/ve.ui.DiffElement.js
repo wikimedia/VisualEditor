@@ -269,11 +269,13 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 
 			} else if ( internalListItem.diff === 0 ) {
 
-				internalListDiffQueue.push( [ 'getInternalListNodeElements', internalListItem, 'none' ] );
+				move = internalListGroup.moves[ i ] === 0 ? undefined : internalListGroup.moves[ i ];
+				internalListDiffQueue.push( [ 'getInternalListNodeElements', internalListItem, 'none', move ] );
 
 			} else {
 
-				internalListDiffQueue.push( [ 'getInternalListChangedNodeElements', internalListItem ] );
+				move = internalListGroup.moves[ i ] === 0 ? undefined : internalListGroup.moves[ i ];
+				internalListDiffQueue.push( [ 'getInternalListChangedNodeElements', internalListItem, move ] );
 
 			}
 		}
@@ -732,9 +734,10 @@ ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDi
  *
  * @param {Object} internalListItem Information about the internal list item's diff
  * @param {string} action 'remove', 'insert' or 'none'
+ * @param {string} [move] 'up' or 'down' if the node has moved
  * @return {HTMLElement[]} Elements (not owned by window.document)
  */
-ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalListItem, action ) {
+ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalListItem, action, move ) {
 	var elements,
 		internalListNode = action === 'remove' ? this.oldDocInternalListNode : this.newDocInternalListNode,
 		node = internalListNode.children[ internalListItem.nodeIndex ].children[ 0 ],
@@ -742,7 +745,7 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
 		listItemNode = document.createElement( 'li' );
 
 	if ( node && node.length ) {
-		elements = this.getNodeElements( node, action );
+		elements = this.getNodeElements( node, action, move );
 
 		listItemNode.appendChild(
 			listItemNode.ownerDocument.adoptNode( elements[ 0 ] )
@@ -767,9 +770,10 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
  * from the old document to the new document.
  *
  * @param {Object} internalListItem Information about the internal list item's diff
+ * @param {string} [move] 'up' or 'down' if the node has moved
  * @return {HTMLElement[]} HTML elements to display the linear diff
  */
-ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( internalListItem ) {
+ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( internalListItem, move ) {
 	var element, documentSlice, nodeData, body,
 		listNode = document.createElement( 'ol' ),
 		listItemNode = document.createElement( 'li' ),
@@ -778,6 +782,9 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( inte
 
 	element = document.createElement( 'div' );
 	element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
+	if ( move ) {
+		element.setAttribute( 'data-diff-move', move );
+	}
 	documentSlice = this.newDoc.cloneFromRange( { from: 0, to: 0 } );
 	documentSlice.getStore().merge( this.newDoc.getStore() );
 	nodeData = documentSlice.data.data;
