@@ -57,7 +57,7 @@
 	height: 24px;
 }
 
-.ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement {
+.ve-ce-focusableNode-invisibleIcon.oo-ui-iconWidget.oo-ui-iconElement {
 	display: block;
 	/* Don't scale icon in headings etc. */
 	width: 24px;
