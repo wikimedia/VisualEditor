@@ -111,15 +111,6 @@ ve.dm.Transaction.prototype.pushRetainOp = function ( length ) {
 // TODO: Bring in adjustRetain from ve.dm.Change and replace ve.dm.TransactionBuilder#pushRetain
 
 /**
- * Push a metadata retain operation
- *
- * @param {number} length Length > 0 of content data to retain
- */
-ve.dm.Transaction.prototype.pushRetainMetadataOp = function ( length ) {
-	this.operations.push( { type: 'retainMetadata', length: length } );
-};
-
-/**
  * Build a replace operation
  *
  * The `insertedDataOffset` and `insertedDataLength` parameters indicate the intended insertion
@@ -138,16 +129,6 @@ ve.dm.Transaction.prototype.pushReplaceOp = function ( remove, insert, insertedD
 		op.insertedDataLength = insertedDataLength;
 	}
 	this.operations.push( op );
-};
-
-/**
- * Build a replaceMetadata operation
- *
- * @param {Array} remove Metadata to remove
- * @param {Array} insert Metadata to insert
- */
-ve.dm.Transaction.prototype.pushReplaceMetadataOp = function ( remove, insert ) {
-	this.operations.push( { type: 'replaceMetadata', remove: remove, insert: insert } );
 };
 
 /**
