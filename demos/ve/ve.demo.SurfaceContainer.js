@@ -61,6 +61,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.dir = dir;
 	this.$surfaceWrapper = $( '<div>' ).addClass( 've-demo-surfaceWrapper' );
 	this.mode = null;
+	this.start = null;
 	this.pageMenu = pageDropdown.getMenu();
 	this.$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
 
@@ -236,13 +237,22 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
 
 	ve.init.platform.getInitializedPromise().done( function () {
 		( container.surface ? container.surface.$element.slideUp().promise() : $.Deferred().resolve().promise() ).done( function () {
-			var localMatch = src.match( /^localStorage\/(.+)$/ ),
+			var surfaceModel, changes,
+				localMatch = src.match( /^localStorage\/(.+)$/ ),
 				sessionMatch = src.match( /^sessionStorage\/(.+)$/ );
 			if ( localMatch ) {
 				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
 				return;
 			} else if ( sessionMatch ) {
-				container.loadHtml( ve.init.platform.getSession( sessionMatch[ 1 ] ) || '', mode, true );
+				container.loadHtml( ve.init.platform.getSession( 've-dochtml' ) || '', mode, true );
+				surfaceModel = container.surface.getModel();
+				changes = ve.init.platform.getSessionList( 've-changes' );
+				changes.forEach( function ( changeString ) {
+					var data = JSON.parse( changeString ),
+						change = ve.dm.Change.static.deserialize( data, surfaceModel.getDocument() );
+					change.applyTo( surfaceModel );
+				} );
+				container.start = surfaceModel.getDocument().getCompleteHistoryLength();
 				return;
 			}
 			$.ajax( {
@@ -278,6 +288,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSav
 		this.surface.destroy();
 	}
 
+	this.start = 0;
 	this.surface = this.target.addSurface(
 		ve.dm.converter.getModelFromDom(
 			this.target.constructor.static.parseDocument( pageHtml, mode ),
@@ -292,9 +303,14 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSav
 	this.oldDoc = dmDoc.cloneFromRange();
 
 	if ( autoSave ) {
+		ve.init.platform.setSession( 've-dochtml', pageHtml );
 		dmDoc.on( 'transact', ve.debounce( function () {
-			ve.init.platform.setSession( 've-dochtml', container.surface.getHtml() );
-		}, 3000 ) );
+			var change = dmDoc.getChangeSince( container.start );
+			if ( !change.isEmpty() ) {
+				ve.init.platform.appendToSessionList( 've-changes', JSON.stringify( change.serialize() ) );
+				container.start = dmDoc.getCompleteHistoryLength();
+			}
+		}, 500 ) );
 	}
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() );
