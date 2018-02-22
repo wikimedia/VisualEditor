@@ -185,6 +185,7 @@ ve.init.Platform.prototype.getSession = null;
  * @abstract
  * @param {string} key Key to set value for
  * @param {string} value Value to set
+ * @return {boolean} The value was set
  */
 ve.init.Platform.prototype.setSession = null;
 
@@ -203,14 +204,16 @@ ve.init.Platform.prototype.removeSession = null;
  * @method
  * @param {string} key Key of list to set value for
  * @param {string} value Value to set
+ * @return {boolean} The value was set
  */
 ve.init.Platform.prototype.appendToSessionList = function ( key, value ) {
 	var length = this.getSessionListLength( key );
 
-	this.setSession( key + '__' + length, value );
-
-	length++;
-	this.setSession( key + '__length', length.toString() );
+	if ( this.setSession( key + '__' + length, value ) ) {
+		length++;
+		return this.setSession( key + '__length', length.toString() );
+	}
+	return false;
 };
 
 /**
