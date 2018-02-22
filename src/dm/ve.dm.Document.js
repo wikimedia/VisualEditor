@@ -1608,7 +1608,7 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 			}
 			compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
 		} else {
-			// Support: IE<=10
+			// Support: Firefox<29, Chrome<24, Safari<10
 			compare = options.caseSensitiveString ?
 				function ( a, b ) {
 					return a === b ? 0 : 1;

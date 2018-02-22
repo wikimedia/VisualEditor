@@ -4026,23 +4026,6 @@ ve.ce.Surface.prototype.selectionSplitsLink = function () {
 };
 
 /**
- * Check if the surface supports the pointer-events CSS rule
- *
- * Support: IE<=10
- *
- * @return {boolean} The surface supports pointer-events
- */
-ve.ce.Surface.prototype.supportsPointerEvents = function () {
-	var element;
-	if ( this.pointerEvents === null ) {
-		element = this.getElementDocument().createElement( 'div' );
-		element.style.cssText = 'pointer-events:auto';
-		this.pointerEvents = element.style.pointerEvents === 'auto';
-	}
-	return this.pointerEvents;
-};
-
-/**
  * Listen to a surface synchronizer, for remote author selection changes to display
  *
  * Document content itself is handled by the synchronizer, as is document history.

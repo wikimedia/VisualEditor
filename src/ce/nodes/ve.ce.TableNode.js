@@ -192,7 +192,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
  * @return {ve.ce.TableCellNode|null} Table cell node
  */
 ve.ce.TableNode.prototype.getCellNodeFromEvent = function ( e ) {
-	var touch, cellNode;
+	var touch;
 
 	// 'touchmove' doesn't give a correct e.target, so calculate it from coordinates
 	if ( e.type === 'touchstart' && e.originalEvent.touches.length > 1 ) {
@@ -205,14 +205,6 @@ ve.ce.TableNode.prototype.getCellNodeFromEvent = function ( e ) {
 		}
 		touch = e.originalEvent.touches[ 0 ];
 		return this.getCellNodeFromPoint( touch.clientX, touch.clientY );
-	} else if ( OO.ui.contains( this.$overlay[ 0 ], e.target, true ) ) {
-		// Support: IE<=10
-		// Browsers which don't support pointer-events:none will still fire events
-		// on the overlay. Hide the overlay and get the target from the event coords.
-		this.$overlay.addClass( 'oo-ui-element-hidden' );
-		cellNode = this.getCellNodeFromPoint( e.clientX, e.clientY );
-		this.$overlay.removeClass( 'oo-ui-element-hidden' );
-		return cellNode;
 	} else {
 		return this.getNearestCellNode( e.target );
 	}
@@ -342,12 +334,6 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 		this.$element.prop( 'contentEditable', isEditing.toString() );
 	}
 	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-editing', isEditing );
-	// Support: IE<=10
-	// If the browser doesn't support pointer-events:none, hide the selection boxes.
-	if ( !this.surface.supportsPointerEvents() ) {
-		this.$selectionBox.toggleClass( 'oo-ui-element-hidden', isEditing );
-		this.$selectionBoxAnchor.toggleClass( 'oo-ui-element-hidden', isEditing );
-	}
 };
 
 /**
