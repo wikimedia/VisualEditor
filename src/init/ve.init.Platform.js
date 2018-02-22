@@ -174,7 +174,7 @@ ve.init.Platform.prototype.setUserConfig = null;
  * @method
  * @abstract
  * @param {string} key Key to get
- * @return {Mixed|Object} Config value
+ * @return {string} Value
  */
 ve.init.Platform.prototype.getSession = null;
 
@@ -183,10 +183,84 @@ ve.init.Platform.prototype.getSession = null;
  *
  * @method
  * @abstract
- * @param {string} keyOrValueMap Key to set value for
- * @param {Mixed} [value] Value to set
+ * @param {string} key Key to set value for
+ * @param {string} value Value to set
  */
 ve.init.Platform.prototype.setSession = null;
+
+/**
+ * Remove a session storage value
+ *
+ * @method
+ * @abstract
+ * @param {string} key Key to remove
+ */
+ve.init.Platform.prototype.removeSession = null;
+
+/**
+ * Append a value to a list stored in session storage
+ *
+ * @method
+ * @param {string} key Key of list to set value for
+ * @param {string} value Value to set
+ */
+ve.init.Platform.prototype.appendToSessionList = function ( key, value ) {
+	var length = this.getSessionListLength( key );
+
+	this.setSession( key + '__' + length, value );
+
+	length++;
+	this.setSession( key + '__length', length.toString() );
+};
+
+/**
+ * Get the length of a list in session storage
+ *
+ * @method
+ * @param {string} key Key of list
+ * @return {number} List length, 0 if the list doesn't exist
+ */
+ve.init.Platform.prototype.getSessionListLength = function ( key ) {
+	return +this.getSession( key + '__length' ) || 0;
+};
+
+/**
+ * Append a value to a list stored in session storage
+ *
+ * Internally this will use items with the keys:
+ *  - key__length
+ *  - key__0 ... key__N
+ *
+ * @method
+ * @param {string} key Key of list
+ * @return {string[]} List
+ */
+ve.init.Platform.prototype.getSessionList = function ( key ) {
+	var i,
+		list = [],
+		length = this.getSessionListLength( key );
+
+	for ( i = 0; i < length; i++ ) {
+		list.push( this.getSession( key + '__' + i ) );
+	}
+	return list;
+};
+
+/**
+ * Remove a list stored in session storage
+ *
+ * @method
+ * @param {string} key Key of list
+ */
+ve.init.Platform.prototype.removeSessionList = function ( key ) {
+	var i,
+		length = this.getSessionListLength( key );
+
+	for ( i = 0; i < length; i++ ) {
+		this.removeSession( key + '__' + i );
+	}
+	this.removeSession( key + '__length' );
+};
 
 /**
  * Add multiple messages to the localization system.

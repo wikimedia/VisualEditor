@@ -139,6 +139,13 @@ ve.init.sa.Platform.prototype.setSession = function ( key, value ) {
 /**
  * @inheritdoc
  */
+ve.init.sa.Platform.prototype.removeSession = function ( key ) {
+	return window.sessionStorage.removeItem( key );
+};
+
+/**
+ * @inheritdoc
+ */
 ve.init.sa.Platform.prototype.addParsedMessages = function ( messages ) {
 	var key;
 	for ( key in messages ) {
