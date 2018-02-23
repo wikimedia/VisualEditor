@@ -133,7 +133,11 @@ ve.init.sa.Platform.prototype.getSession = function ( key ) {
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.setSession = function ( key, value ) {
-	return window.sessionStorage.setItem( key, value );
+	try {
+		window.sessionStorage.setItem( key, value );
+		return true;
+	} catch ( e ) {}
+	return false;
 };
 
 /**
