@@ -126,7 +126,10 @@ ve.init.sa.Platform.prototype.setUserConfig = function ( keyOrValueMap, value ) 
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.getSession = function ( key ) {
-	return window.sessionStorage.getItem( key );
+	try {
+		return window.sessionStorage.getItem( key );
+	} catch ( e ) {}
+	return false;
 };
 
 /**
@@ -144,7 +147,11 @@ ve.init.sa.Platform.prototype.setSession = function ( key, value ) {
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.removeSession = function ( key ) {
-	return window.sessionStorage.removeItem( key );
+	try {
+		window.sessionStorage.removeItem( key );
+		return true;
+	} catch ( e ) {}
+	return false;
 };
 
 /**

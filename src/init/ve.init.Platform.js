@@ -174,7 +174,7 @@ ve.init.Platform.prototype.setUserConfig = null;
  * @method
  * @abstract
  * @param {string} key Key to get
- * @return {string} Value
+ * @return {string|boolean} Value, false if storage not available
  */
 ve.init.Platform.prototype.getSession = null;
 
@@ -195,6 +195,7 @@ ve.init.Platform.prototype.setSession = null;
  * @method
  * @abstract
  * @param {string} key Key to remove
+ * @return {boolean} Key was removed
  */
 ve.init.Platform.prototype.removeSession = null;
 
