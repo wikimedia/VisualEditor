@@ -63,9 +63,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, '1', { type: '/paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 3
+						insert: [ { type: 'paragraph' }, '1', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 63 }
 				]
@@ -77,9 +75,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, '1', { type: '/paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 3
+						insert: [ { type: 'paragraph' }, '1', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 2 }
 				]
@@ -91,9 +87,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ '1', { type: '/paragraph' }, { type: 'paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 3
+						insert: [ '1', { type: '/paragraph' }, { type: 'paragraph' } ]
 					},
 					{ type: 'retain', length: 53 }
 				]
@@ -120,9 +114,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 5
+						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 51 }
 				],
@@ -179,9 +171,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O' ],
-						insertedDataOffset: 0,
-						insertedDataLength: 3
+						insert: [ 'F', 'O', 'O' ]
 					},
 					{ type: 'retain', length: 47 }
 				]
@@ -193,9 +183,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O' ],
-						insertedDataOffset: 0,
-						insertedDataLength: 3
+						insert: [ 'F', 'O', 'O' ]
 					},
 					{ type: 'retain', length: 61 }
 				]
@@ -207,9 +195,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', { type: '/paragraph' }, { type: 'paragraph' }, 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'O' ],
-						insertedDataOffset: 0,
-						insertedDataLength: 7
+						insert: [ 'F', { type: '/paragraph' }, { type: 'paragraph' }, 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'O' ]
 					},
 					{ type: 'retain', length: 47 }
 				],
@@ -237,9 +223,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 10
+						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 54 }
 				],
@@ -286,9 +270,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R' ],
-						insertedDataOffset: 0,
-						insertedDataLength: 8
+						insert: [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R' ]
 					},
 					{ type: 'retain', length: 3 }
 				]
@@ -300,9 +282,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'Z' ],
-						insertedDataOffset: 0,
-						insertedDataLength: 13
+						insert: [ 'F', 'O', 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' }, { type: 'paragraph' }, 'B', 'A', 'Z' ]
 					},
 					{ type: 'retain', length: 3 }
 				]
@@ -313,9 +293,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 5
+						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 4 }
 				],
@@ -328,9 +306,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 5
+						insert: [ { type: 'paragraph' }, 'B', 'A', 'R', { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 2 }
 				],
@@ -746,8 +722,6 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 					{
 						type: 'replace',
 						insert: [ 'X', 'Y' ],
-						insertedDataLength: 2,
-						insertedDataOffset: 0,
 						remove: metaDoc.getData( new ve.Range( 6, 21 ) )
 					},
 					{ type: 'retain', length: 14 }
@@ -760,8 +734,6 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 					{
 						type: 'replace',
 						insert: [ 'X', 'Y' ],
-						insertedDataLength: 2,
-						insertedDataOffset: 0,
 						remove: metaDoc.getData( new ve.Range( 6, 21 ) )
 					},
 					{ type: 'retain', length: 14 }
@@ -2085,9 +2057,7 @@ QUnit.test( 'operations/build from operations', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [ 'a', [ 'b', [ ve.dm.example.boldIndex ] ], [ 'c', [ ve.dm.example.italicIndex ] ] ],
-						insert: [ 'F', 'o', 'o' ],
-						insertedDataOffset: 0,
-						insertedDataLength: 3
+						insert: [ 'F', 'o', 'o' ]
 					},
 					{ type: 'retain', length: 59 }
 				]
@@ -2101,9 +2071,7 @@ QUnit.test( 'operations/build from operations', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, { type: '/paragraph' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 2
+						insert: [ { type: 'paragraph' }, { type: '/paragraph' } ]
 					},
 					{ type: 'retain', length: 63 }
 				]
@@ -2116,9 +2084,7 @@ QUnit.test( 'operations/build from operations', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'alienBlock' }, { type: '/alienBlock' } ],
-						insertedDataOffset: 0,
-						insertedDataLength: 2
+						insert: [ { type: 'alienBlock' }, { type: '/alienBlock' } ]
 					},
 					{ type: 'retain', length: 63 }
 				]

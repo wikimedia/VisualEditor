@@ -1123,9 +1123,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [ 'A' ],
-							remove: [],
-							insertedDataOffset: 0,
-							insertedDataLength: 1
+							remove: []
 						},
 						{ type: 'retain', length: 3 }
 					]
@@ -1143,9 +1141,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [ 'B' ],
-							remove: [ 'A' ],
-							insertedDataLength: 1,
-							insertedDataOffset: 0
+							remove: [ 'A' ]
 						},
 						{ type: 'retain', length: 3 }
 					]
@@ -1163,9 +1159,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [ [ 'B', [ linkIndex ] ] ],
-							remove: [ [ 'X', [ linkIndex ] ] ],
-							insertedDataLength: 1,
-							insertedDataOffset: 0
+							remove: [ [ 'X', [ linkIndex ] ] ]
 						},
 						{ type: 'retain', length: 4 }
 					]
@@ -1183,9 +1177,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [ [ 'Y', [ 'hd72ee073faddca4e' ] ] ],
-							remove: [],
-							insertedDataOffset: 0,
-							insertedDataLength: 1
+							remove: []
 						},
 						{ type: 'retain', length: 3 }
 					]
@@ -1204,9 +1196,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [ 'Y' ],
-							remove: [],
-							insertedDataOffset: 0,
-							insertedDataLength: 1
+							remove: []
 						},
 						{ type: 'retain', length: 3 }
 					]
@@ -1224,9 +1214,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [ ' ' ],
-							remove: [],
-							insertedDataOffset: 0,
-							insertedDataLength: 1
+							remove: []
 						},
 						{ type: 'retain', length: 3 }
 					]
@@ -1571,8 +1559,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								[ 'o', [ bold ] ],
 								[ 'o', [ bold ] ]
 							],
-							insertedDataLength: 3,
-							insertedDataOffset: 0,
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 25 }
@@ -2342,9 +2328,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								{ type: 'paragraph', internal: { generated: 'empty' } },
 								{ type: '/paragraph' },
 								{ type: '/tableCell' }
-							],
-							insertedDataLength: 2,
-							insertedDataOffset: 0
+							]
 						},
 						{ type: 'retain', length: docLen - 19 }
 					]
@@ -2383,9 +2367,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								'Y',
 								{ type: '/paragraph' },
 								{ type: '/tableCell' }
-							],
-							insertedDataLength: 5,
-							insertedDataOffset: 0
+							]
 						},
 						{ type: 'retain', length: 5 }
 					]
@@ -2433,8 +2415,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 									type: '/tableCell'
 								}
 							],
-							insertedDataLength: 4,
-							insertedDataOffset: 0,
 							remove: [],
 							type: 'replace'
 						},
@@ -2464,8 +2444,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 									type: '/tableCell'
 								}
 							],
-							insertedDataLength: 4,
-							insertedDataOffset: 0,
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 19 }
@@ -2619,8 +2597,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								{ type: '/tableCell' },
 								{ type: '/tableRow' }
 							],
-							insertedDataLength: 6,
-							insertedDataOffset: 0,
 							remove: [],
 							type: 'replace'
 						},
@@ -2650,8 +2626,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								{ type: '/tableCell' },
 								{ type: '/tableRow' }
 							],
-							insertedDataLength: 6,
-							insertedDataOffset: 0,
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 20 }
@@ -2949,8 +2923,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								'B',
 								{ type: '/paragraph' }
 							],
-							insertedDataLength: 8,
-							insertedDataOffset: 0,
 							remove: []
 						},
 						{ type: 'retain', length: 2 }

@@ -767,8 +767,10 @@ ve.dm.TransactionBuilder.prototype.pushReplacement = function ( doc, offset, rem
 		remove: remove,
 		insert: insert
 	};
-	if ( insertedDataOffset !== undefined && insertedDataLength !== undefined ) {
+	if ( insertedDataOffset !== undefined ) {
 		op.insertedDataOffset = insertedDataOffset;
+	}
+	if ( insertedDataLength !== undefined ) {
 		op.insertedDataLength = insertedDataLength;
 	}
 	this.transaction.operations.push( op );

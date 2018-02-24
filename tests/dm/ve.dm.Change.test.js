@@ -28,9 +28,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 		{
 			type: 'replace',
 			remove: [ [ 'b', [ ve.dm.example.boldIndex ] ] ],
-			insert: [ 'b', 'a', 'r' ],
-			insertedDataOffset: 0,
-			insertedDataLength: 3
+			insert: [ 'b', 'a', 'r' ]
 		},
 		{
 			type: 'retain',
@@ -46,9 +44,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 		{
 			type: 'replace',
 			remove: [ 'a' ],
-			insert: [ 'f', 'o', 'o' ],
-			insertedDataOffset: 0,
-			insertedDataLength: 3
+			insert: [ 'f', 'o', 'o' ]
 		},
 		{
 			type: 'retain',
@@ -64,9 +60,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 		{
 			type: 'replace',
 			remove: [ 'a' ],
-			insert: [ 'f', 'o', 'o' ],
-			insertedDataOffset: 0,
-			insertedDataLength: 3
+			insert: [ 'f', 'o', 'o' ]
 		},
 		{
 			type: 'retain',
@@ -97,9 +91,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 		{
 			type: 'replace',
 			remove: [],
-			insert: [ 'x' ],
-			insertedDataOffset: 0,
-			insertedDataLength: 1
+			insert: [ 'x' ]
 		},
 		{
 			type: 'retain',
@@ -115,9 +107,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 		{
 			type: 'replace',
 			remove: [],
-			insert: [ 'y' ],
-			insertedDataOffset: 0,
-			insertedDataLength: 1
+			insert: [ 'y' ]
 		},
 		{
 			type: 'retain',
@@ -344,9 +334,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 						{
 							type: 'replace',
 							remove: [],
-							insert: [ [ 'f', bIndex ] ],
-							insertedDataOffset: 0,
-							insertedDataLength: 1
+							insert: [ [ 'f', bIndex ] ]
 						},
 						{ type: 'retain', length: 4 }
 					]
@@ -358,9 +346,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 						{
 							type: 'replace',
 							remove: [],
-							insert: [ [ 'u', bIndex ] ],
-							insertedDataOffset: 0,
-							insertedDataLength: 1
+							insert: [ [ 'u', bIndex ] ]
 						},
 						{ type: 'retain', length: 4 }
 					]

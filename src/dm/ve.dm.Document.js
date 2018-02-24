@@ -1516,8 +1516,8 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		offset: offset,
 		data: newData,
 		remove: remove,
-		insertedDataOffset: insertedDataOffset,
-		insertedDataLength: insertedDataLength
+		insertedDataOffset: insertedDataOffset !== 0 ? insertedDataOffset : undefined,
+		insertedDataLength: insertedDataLength !== newData.length ? insertedDataLength : undefined
 	};
 };
 
