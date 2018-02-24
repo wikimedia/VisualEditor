@@ -40,14 +40,16 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
  * Compare two elements' basic properties
  *
  * Elements are comparable if they have the same type and attributes, or
- * have the same text data.
+ * have the same text data. Anything semantically irrelevant is filtered
+ * out first.
  *
  * @param {Object|Array|string} a First element
  * @param {Object|Array|string} b Second element
  * @return {boolean} Elements are comparable
  */
 ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
-	var aPlain = a,
+	var aType, bType,
+		aPlain = a,
 		bPlain = b;
 
 	if ( a === undefined || b === undefined ) {
@@ -64,16 +66,28 @@ ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
 		return true;
 	}
 	if ( a && a.type ) {
-		aPlain = {
-			type: a.type,
-			attributes: a.attributes
-		};
+		aType = a.type;
+		if ( ve.dm.LinearData.static.isOpenElementData( a ) ) {
+			// Ignore semantically irrelevant differences
+			aPlain = ve.dm.modelRegistry.lookup( aType ).static.getHashObject( a );
+			delete aPlain.originalDomElementsIndex;
+		} else {
+			aPlain = {
+				type: aType
+			};
+		}
 	}
 	if ( b && b.type ) {
-		bPlain = {
-			type: b.type,
-			attributes: b.attributes
-		};
+		bType = b.type;
+		if ( ve.dm.LinearData.static.isOpenElementData( b ) ) {
+			// Ignore semantically irrelevant differences
+			bPlain = ve.dm.modelRegistry.lookup( bType ).static.getHashObject( b );
+			delete bPlain.originalDomElementsIndex;
+		} else {
+			bPlain = {
+				type: bType
+			};
+		}
 	}
 	return ve.compare( aPlain, bPlain );
 };
