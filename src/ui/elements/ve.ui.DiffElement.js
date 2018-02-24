@@ -765,7 +765,7 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
  * @return {HTMLElement[]} HTML elements to display the linear diff
  */
 ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( internalListItem, move ) {
-	var element, documentSlice, nodeData, body,
+	var element, documentSlice, body,
 		listNode = document.createElement( 'ol' ),
 		listItemNode = document.createElement( 'li' ),
 		linearDiff = internalListItem.diff.diffInfo[ 0 ].linearDiff,
@@ -776,10 +776,7 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( inte
 	if ( move ) {
 		element.setAttribute( 'data-diff-move', move );
 	}
-	documentSlice = this.newDoc.shallowCloneFromRange( { from: 0, to: 0 } );
-	documentSlice.getStore().merge( this.newDoc.getStore() );
-	nodeData = documentSlice.data.data;
-	ve.batchSplice( nodeData, 0, 0, annotatedData );
+	documentSlice = this.newDoc.cloneWithData( annotatedData, true, true );
 	body = ve.dm.converter.getDomFromModel( documentSlice, true ).body;
 	while ( body.childNodes.length ) {
 		element.appendChild(
