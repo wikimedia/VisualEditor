@@ -29,7 +29,9 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc, timeout ) {
 	this.treeDiffer = treeDiffer;
 	// eslint-disable-next-line camelcase,new-cap
 	this.linearDiffer = new ve.DiffMatchPatch( this.oldDoc.getStore(), this.newDoc.getStore() );
+
 	this.endTime = new Date().getTime() + ( timeout || 1000 );
+	this.timedOut = false;
 
 	this.freezeInternalListIndices( this.oldDoc );
 	this.freezeInternalListIndices( this.newDoc );
@@ -435,6 +437,7 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 	transactions = new this.treeDiffer.Differ( oldDocChildTree, newDocChildTree ).transactions;
 	if ( transactions === null ) {
 		// Tree diff timed out
+		this.timedOut = true;
 		return false;
 	}
 
@@ -500,7 +503,9 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 						this.newDoc.getData( newNode.getRange() ),
 						{ keepOldText: false }
 					);
+					this.timedOut = !!linearDiff.timedOut;
 				} else {
+					this.timedOut = true;
 					linearDiff = null;
 					removeLength += oldNode.getLength();
 					insertLength += newNode.getLength();
@@ -553,7 +558,9 @@ ve.dm.VisualDiff.prototype.getDocChildDiff = function ( oldDocChild, newDocChild
 
 	}
 
-	// Only return the diff if enough content has changed
+	// Only return the diff if a high enough proportion of the content is
+	// unchanged; otherwise, these nodes don't correspond and shouldn't be
+	// diffed.
 	if ( keepLength < threshold * diffLength ) {
 		return false;
 	}

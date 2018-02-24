@@ -33,6 +33,14 @@
 	pointer-events: none;
 }
 
+.ve-ui-diffElement-warning {
+	font-style: italic;
+}
+
+.ve-ui-diffElement-warning > .oo-ui-iconWidget {
+	margin-right: 0.3em;
+}
+
 .ve-ui-changeDescriptionsSelectWidget > .oo-ui-optionWidget {
 	cursor: default;
 }

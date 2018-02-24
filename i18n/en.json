@@ -84,6 +84,7 @@
 	"visualeditor-dialog-table-caption": "Caption",
 	"visualeditor-dialog-table-title": "Table properties",
 	"visualeditor-diff-no-changes": "No changes",
+	"visualeditor-diff-timed-out": "It took too long to compute your changes, so the description below may not be optimal.",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-diacritic": "Diacritic insensitive",
