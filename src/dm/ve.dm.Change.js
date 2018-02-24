@@ -94,10 +94,12 @@ ve.dm.Change.static = {};
  * @param {Object} data Change serialized as a JSONable object
  * @param {ve.dm.Document} [doc] Document, used for creating proper selections if deserializing in the client
  * @param {boolean} [preserveStoreValues] Keep store values verbatim instead of deserializing
+ * @param {boolean} [unsafe] Use unsafe deserialization (skipping DOMPurify), used via #unsafeDeserialize
  * @return {ve.dm.Change} Deserialized change
  */
-ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues ) {
+ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues, unsafe ) {
 	var authorId, deserializeStore,
+		deserializeValue = this.deserializeValue,
 		selections = {};
 
 	for ( authorId in data.selections ) {
@@ -110,7 +112,7 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues ) {
 		null,
 		preserveStoreValues ? function noop( x ) {
 			return x;
-		} : this.deserializeValue
+		} : function ( x ) { return deserializeValue( x, unsafe ); }
 	);
 	return new ve.dm.Change(
 		data.start,
@@ -118,6 +120,17 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues ) {
 		data.stores.map( deserializeStore ),
 		selections
 	);
+};
+
+/**
+ * Deserialize a change from a JSONable object without sanitizing DOM nodes
+ *
+ * @param {Object} data
+ * @param {ve.dm.Document} [doc]
+ * @return {ve.dm.Change} Deserialized change
+ */
+ve.dm.Change.static.unsafeDeserialize = function ( data, doc ) {
+	return this.deserialize( data, doc, false, true );
 };
 
 ve.dm.Change.static.serializeValue = function ( value ) {
@@ -130,32 +143,37 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 	}
 };
 
-ve.dm.Change.static.deserializeValue = function ( serialized ) {
+ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
 	var addTags, addAttrs;
 	if ( serialized.type === 'annotation' ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
 	} else if ( serialized.type === 'domNodeArray' ) {
-		// TODO: Move MW-specific rules to ve-mw
-		addTags = [ 'figure-inline' ];
-		addAttrs = [
-			'srcset',
-			// RDFa
-			'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof'
-		];
-
-		return serialized.value.map( function ( nodeHtml ) {
-			return DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
-				ADD_TAGS: addTags,
-				ADD_ATTR: addAttrs,
-				ADD_URI_SAFE_ATTR: addAttrs,
-				FORBID_TAGS: [ 'style' ],
-				RETURN_DOM_FRAGMENT: true
-			} ).childNodes[ 0 ];
-		} ).filter( function ( node ) {
-			// Nodes can be sanitized to nothing (empty string or undefined)
-			// so check it is truthy
-			return node;
-		} );
+		if ( unsafe ) {
+			return serialized.value.map( function ( nodeHtml ) {
+				return $.parseHTML( nodeHtml )[ 0 ];
+			} );
+		} else {
+			// TODO: Move MW-specific rules to ve-mw
+			addTags = [ 'figure-inline' ];
+			addAttrs = [
+				'srcset',
+				// RDFa
+				'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof'
+			];
+			return serialized.value.map( function ( nodeHtml ) {
+				return DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
+					ADD_TAGS: addTags,
+					ADD_ATTR: addAttrs,
+					ADD_URI_SAFE_ATTR: addAttrs,
+					FORBID_TAGS: [ 'style' ],
+					RETURN_DOM_FRAGMENT: true
+				} ).childNodes[ 0 ];
+			} ).filter( function ( node ) {
+				// Nodes can be sanitized to nothing (empty string or undefined)
+				// so check it is truthy
+				return node;
+			} );
+		}
 	} else if ( serialized.type === 'plain' ) {
 		return serialized.value;
 	} else {
