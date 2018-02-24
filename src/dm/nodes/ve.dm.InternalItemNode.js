@@ -37,8 +37,18 @@ ve.dm.InternalItemNode.static.isDeletable = false;
 
 /* Methods */
 
+/**
+ * @inheritdoc
+ */
 ve.dm.InternalItemNode.static.describeChanges = function () {
 	return [];
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.InternalItemNode.static.getHashObject = function ( dataElement ) {
+	return { type: dataElement.type };
 };
 
 /* Registration */
