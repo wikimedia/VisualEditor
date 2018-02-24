@@ -331,10 +331,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 					authorId: null,
 					operations: [ 1, [ '', [ [ 'f', bIndex ] ] ], 4 ]
 				},
-				{
-					authorId: null,
-					operations: [ 2, [ '', [ [ 'u', bIndex ] ] ], 4 ]
-				}
+				'u'
 			],
 			stores: [
 				{
@@ -418,6 +415,131 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		ve.dm.Change.static.deserialize( unsanitized ).serialize(),
 		sanitized,
 		'Unsanitized round trips into sanitized'
+	);
+} );
+
+QUnit.test( 'Minified serialization', function ( assert ) {
+	var serialized, deserialized;
+	serialized = {
+		start: 0,
+		transactions: [
+			// Type some individual code units
+			{ operations: [ 1, [ '', 'T' ], 3 ], authorId: null },
+			'h', 'e', ' ', 'r', 'e',
+			// Type in whole words like some IMEs
+			'd panda jumps over', 'the ', 'automaton',
+			// Italicize some text
+			{ operations: [
+				5,
+				{
+					type: 'annotate',
+					method: 'set',
+					bias: 'start',
+					index: 'he4e7c54e2204d10b'
+				},
+				9,
+				{
+					type: 'annotate',
+					method: 'set',
+					bias: 'stop',
+					index: 'he4e7c54e2204d10b'
+				},
+				28
+			] },
+			// Type over the italicized text
+			{ operations: [
+				5,
+				[
+					[
+						[ 'r', [ 'he4e7c54e2204d10b' ] ],
+						[ 'e', [ 'he4e7c54e2204d10b' ] ],
+						[ 'd', [ 'he4e7c54e2204d10b' ] ],
+						[ ' ', [ 'he4e7c54e2204d10b' ] ],
+						[ 'p', [ 'he4e7c54e2204d10b' ] ],
+						[ 'a', [ 'he4e7c54e2204d10b' ] ],
+						[ 'n', [ 'he4e7c54e2204d10b' ] ],
+						[ 'd', [ 'he4e7c54e2204d10b' ] ],
+						[ 'a', [ 'he4e7c54e2204d10b' ] ]
+					],
+					[
+						[ 'q', [ 'he4e7c54e2204d10b' ] ]
+					]
+				],
+				28
+			] },
+			'u', 'i', 'c', 'k', ' ', 'bro', 'wn ', 'fox',
+			// Bold some text
+			{ operations: [
+				36,
+				{
+					type: 'annotate',
+					method: 'set',
+					bias: 'start',
+					index: 'hfbe3cfe099b83e1e'
+				},
+				9,
+				{
+					type: 'annotate',
+					method: 'set',
+					bias: 'stop',
+					index: 'hfbe3cfe099b83e1e'
+				},
+				3
+			] },
+			// Type over the bolded text
+			{ operations: [
+				36,
+				[
+					[
+						[ 'a', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 'u', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 't', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 'o', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 'm', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 'a', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 't', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 'o', [ 'hfbe3cfe099b83e1e' ] ],
+						[ 'n', [ 'hfbe3cfe099b83e1e' ] ]
+					],
+					[
+						[ 'l', [ 'hfbe3cfe099b83e1e' ] ]
+					]
+				],
+				3
+			] },
+			'a', 'z', 'y', ' ', 'd', 'o', 'g', '.'
+		],
+		stores: [
+			null, null, null, null, null, null, null, null, null,
+			{
+				hashes: [ 'he4e7c54e2204d10b' ],
+				hashStore: {
+					he4e7c54e2204d10b: {
+						type: 'annotation',
+						value: { type: 'textStyle/italic' }
+					}
+				}
+			},
+			null, null, null, null, null, null, null, null, null,
+			{
+				hashes: [ 'hfbe3cfe099b83e1e' ],
+				hashStore: {
+					hfbe3cfe099b83e1e: {
+						type: 'annotation',
+						value: { type: 'textStyle/bold' }
+					}
+				}
+			},
+			null, null, null, null, null, null, null, null, null
+		],
+		selections: {}
+	};
+	assert.expect( 1 );
+	deserialized = ve.dm.Change.static.deserialize( serialized );
+	assert.deepEqual(
+		deserialized.serialize(),
+		serialized,
+		'Deserialize-serialize round trip'
 	);
 } );
 
