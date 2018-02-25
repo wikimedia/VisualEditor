@@ -44,6 +44,7 @@ OO.initClass( ve.dm.RebaseDocState );
 ve.dm.RebaseDocState.static.newAuthorData = function () {
 	return {
 		displayName: '',
+		displayColor: '',
 		rejections: 0,
 		continueBase: null,
 		// TODO use cryptographic randomness here and convert to hex
