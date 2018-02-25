@@ -51,7 +51,6 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.parentDocument = parentDocument || null;
 	this.originalDocument = originalDocument || null;
 	this.completeHistory = [];
-	this.storeLengthAtHistoryLength = [ 0 ];
 	this.nodesByType = {};
 	this.origInternalListLength = null;
 
@@ -67,6 +66,8 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	}
 	this.store = this.data.getStore();
 	this.htmlDocument = htmlDocument || ve.createDocumentFromHtml( '' );
+
+	this.storeLengthAtHistoryLength = [ this.store.getLength() ];
 };
 
 /* Inheritance */
