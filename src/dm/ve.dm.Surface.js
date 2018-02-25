@@ -95,6 +95,12 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 
 /**
  * @event history
+ * Emitted when the history stacks change, or the ability to use them changes.
+ */
+
+/**
+ * @event undoStackChange
+ * Emitted when the main undo stack changes.
  */
 
 /* Methods */
@@ -504,11 +510,14 @@ ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excl
  * Prevent future states from being redone.
  *
  * Callers should eventually emit a 'history' event after using this method.
+ *
+ * @fires undoStackChange
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
 	if ( this.undoIndex ) {
 		this.undoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
 		this.undoIndex = 0;
+		this.emit( 'undoStackChange' );
 	}
 };
 
@@ -892,6 +901,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
  * Set a history state breakpoint.
  *
  * @return {boolean} A breakpoint was added
+ * @fires undoStackChange
  */
 ve.dm.Surface.prototype.breakpoint = function () {
 	if ( !this.enabled ) {
@@ -905,6 +915,7 @@ ve.dm.Surface.prototype.breakpoint = function () {
 			selectionBefore: this.selectionBefore.clone()
 		} );
 		this.newTransactions = [];
+		this.emit( 'undoStackChange' );
 		return true;
 	} else if ( this.selectionBefore.isNull() && !this.selection.isNull() ) {
 		this.selectionBefore = this.selection.clone();
@@ -914,6 +925,7 @@ ve.dm.Surface.prototype.breakpoint = function () {
 
 /**
  * Step backwards in history.
+ * @fires undoStackChange
  */
 ve.dm.Surface.prototype.undo = function () {
 	var i, item, transaction, transactions = [];
@@ -936,11 +948,13 @@ ve.dm.Surface.prototype.undo = function () {
 			transactions.push( transaction );
 		}
 		this.changeInternal( transactions, item.selectionBefore, true );
+		this.emit( 'undoStackChange' );
 	}
 };
 
 /**
  * Step forwards in history.
+ * @fires undoStackChange
  */
 ve.dm.Surface.prototype.redo = function () {
 	var item;
@@ -955,6 +969,7 @@ ve.dm.Surface.prototype.redo = function () {
 		this.undoIndex--;
 		// ve.copy( item.transactions ) invokes .clone() on each transaction in item.transactions
 		this.changeInternal( ve.copy( item.transactions ), item.selection, true );
+		this.emit( 'undoStackChange' );
 	}
 };
 
