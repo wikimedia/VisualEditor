@@ -251,6 +251,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
 					var data = JSON.parse( changeString ),
 						change = ve.dm.Change.static.deserialize( data, surfaceModel.getDocument() );
 					change.applyTo( surfaceModel );
+					surfaceModel.breakpoint();
 				} );
 				container.start = surfaceModel.getDocument().getCompleteHistoryLength();
 				return;
@@ -304,13 +305,13 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSav
 
 	if ( autoSave ) {
 		ve.init.platform.setSession( 've-dochtml', pageHtml );
-		dmDoc.on( 'transact', ve.debounce( function () {
+		this.surface.model.on( 'undoStackChange', function () {
 			var change = dmDoc.getChangeSince( container.start );
 			if ( !change.isEmpty() ) {
 				ve.init.platform.appendToSessionList( 've-changes', JSON.stringify( change.serialize() ) );
 				container.start = dmDoc.getCompleteHistoryLength();
 			}
-		}, 500 ) );
+		} );
 	}
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() );
