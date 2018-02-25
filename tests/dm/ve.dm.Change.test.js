@@ -329,27 +329,11 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 			transactions: [
 				{
 					authorId: null,
-					operations: [
-						{ type: 'retain', length: 1 },
-						{
-							type: 'replace',
-							remove: [],
-							insert: [ [ 'f', bIndex ] ]
-						},
-						{ type: 'retain', length: 4 }
-					]
+					operations: [ 1, [ '', [ [ 'f', bIndex ] ] ], 4 ]
 				},
 				{
 					authorId: null,
-					operations: [
-						{ type: 'retain', length: 2 },
-						{
-							type: 'replace',
-							remove: [],
-							insert: [ [ 'u', bIndex ] ]
-						},
-						{ type: 'retain', length: 4 }
-					]
+					operations: [ 2, [ '', [ [ 'u', bIndex ] ] ], 4 ]
 				}
 			],
 			stores: [
@@ -371,10 +355,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		},
 		unsanitized = {
 			start: 0,
-			transactions: [ {
-				authorId: 'fred',
-				operations: [ { type: 'retain', length: 2 } ]
-			} ],
+			transactions: [ { authorId: 'fred', operations: [ 2 ] } ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
 				type: 'domNodeArray',
 				value: [
@@ -386,10 +367,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		},
 		sanitized = {
 			start: 0,
-			transactions: [ {
-				authorId: 'fred',
-				operations: [ { type: 'retain', length: 2 } ]
-			} ],
+			transactions: [ { authorId: 'fred', operations: [ 2 ] } ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
 				type: 'domNodeArray',
 				value: [

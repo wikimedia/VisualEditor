@@ -73,13 +73,38 @@ ve.dm.Transaction.static.reversers = {
 /**
  * Deserialize a transaction from a JSONable object
  *
+ * Values are either new or deep copied, so there is no reference into the serialized structure
  * @param {Object} data Transaction serialized as a JSONable object
  * @return {ve.dm.Transaction} Deserialized transaction
  */
 ve.dm.Transaction.static.deserialize = function ( data ) {
+	function deminifyLinearData( data ) {
+		if ( typeof data === 'string' ) {
+			return data.split( '' );
+		}
+		// Else deep copy. For this plain, serializable array, stringify+parse profiles
+		// faster than ve.copy
+		return JSON.parse( JSON.stringify( data ) );
+	}
+
+	function deminify( op ) {
+		if ( typeof op === 'number' ) {
+			return { type: 'retain', length: op };
+		}
+		if ( Array.isArray( op ) ) {
+			return {
+				type: 'replace',
+				remove: deminifyLinearData( op[ 0 ] ),
+				insert: deminifyLinearData( op[ 1 ] )
+			};
+		}
+		// Else deep copy. For this plain, serializable array, stringify+parse profiles
+		// faster than ve.copy
+		return JSON.parse( JSON.stringify( op ) );
+	}
+
 	return new ve.dm.Transaction(
-		// For this plain, serializable array, stringify+parse profiles faster than ve.copy
-		JSON.parse( JSON.stringify( data.operations ) ),
+		data.operations.map( deminify ),
 		data.authorId
 	);
 };
@@ -93,8 +118,35 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
  * @return {Object} Serialized transaction
  */
 ve.dm.Transaction.prototype.serialize = function () {
+	function isSingleCodePoint( x ) {
+		return typeof x === 'string' && x.length === 1;
+	}
+	function minifyLinearData( data ) {
+		if ( data.every( isSingleCodePoint ) ) {
+			return data.join( '' );
+		}
+		return data;
+	}
+
+	function minify( op ) {
+		if ( op.type === 'retain' ) {
+			return op.length;
+		}
+		if (
+			op.type === 'replace' &&
+			!op.insertedDataOffset &&
+			(
+				op.insertedDataLength === undefined ||
+				op.insertedDataLength === op.insert.length
+			)
+		) {
+			return [ minifyLinearData( op.remove ), minifyLinearData( op.insert ) ];
+		}
+		return op;
+	}
+
 	return {
-		operations: this.operations,
+		operations: this.operations.map( minify ),
 		authorId: this.authorId
 	};
 };
