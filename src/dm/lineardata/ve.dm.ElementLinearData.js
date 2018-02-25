@@ -145,6 +145,24 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 	return aSet.compareTo( bSet );
 };
 
+/**
+ * Read the array of annotation store indexes from an item of linear data
+ *
+ * @param {string|Array|Object} item of linear data
+ * @return {number[]} An array of annotation store indexes
+ */
+ve.dm.ElementLinearData.static.getAnnotationIndexesFromItem = function ( item ) {
+	if ( typeof item === 'string' ) {
+		return [];
+	} else if ( item.annotations ) {
+		return item.annotations.slice();
+	} else if ( item[ 1 ] ) {
+		return item[ 1 ].slice();
+	} else {
+		return [];
+	}
+};
+
 /* Methods */
 
 /**
@@ -384,7 +402,7 @@ ve.dm.ElementLinearData.prototype.canTakeAnnotationAtOffset = function ( offset,
  * @throws {Error} offset out of bounds
  */
 ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( offset, ignoreClose ) {
-	var element;
+	var item;
 	if ( offset < 0 || offset > this.getLength() ) {
 		throw new Error( 'offset ' + offset + ' out of bounds' );
 	}
@@ -399,17 +417,8 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 		offset = this.getRelativeContentOffset( offset, -1 );
 	}
 
-	element = this.getData( offset );
-
-	if ( element === undefined || typeof element === 'string' ) {
-		return [];
-	} else if ( element.annotations ) {
-		return element.annotations.slice();
-	} else if ( element[ 1 ] ) {
-		return element[ 1 ].slice();
-	} else {
-		return [];
-	}
+	item = this.getData( offset );
+	return this.constructor.static.getAnnotationIndexesFromItem( item ) || [];
 };
 
 /**
