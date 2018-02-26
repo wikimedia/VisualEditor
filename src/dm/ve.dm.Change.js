@@ -554,8 +554,21 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
  * @return {string} return.uniformInsert.annotationString Comma-separated annotation indexes
  */
 ve.dm.Change.static.getTransactionInfo = function ( tx ) {
-	var op0, op1, op2, replaceOp, start, end, docLength,
-		getAnnotations = ve.dm.ElementLinearData.static.getAnnotationIndexesFromItem;
+	var op0, op1, op2, replaceOp, start, end, docLength;
+
+	// Copy of ve.dm.ElementLinearData.static.getAnnotationIndexesFromItem, but we
+	// don't want to load all of ElementLinearData and its dependencies on the server-side.
+	function getAnnotations( item ) {
+		if ( typeof item === 'string' ) {
+			return [];
+		} else if ( item.annotations ) {
+			return item.annotations.slice();
+		} else if ( item[ 1 ] ) {
+			return item[ 1 ].slice();
+		} else {
+			return [];
+		}
+	}
 
 	/**
 	 * Get an item's single code unit (without annotation), or null if not a code unit
