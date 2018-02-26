@@ -73,7 +73,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 		tool.setTitle( ( Object.keys( authorItems ).length + 1 ).toString() );
 	}
 
-	this.selfItem = new ve.ui.AuthorItemWidget( synchronizer, { editable: true } );
+	this.selfItem = new ve.ui.AuthorItemWidget( synchronizer, this.popup.$element, { editable: true } );
 	this.$authorList.prepend( this.selfItem.$element );
 	this.selfItem.input.on( 'change', updateName );
 
@@ -83,7 +83,7 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 
 		if ( authorId !== synchronizer.getAuthorId() ) {
 			if ( !authorItem ) {
-				authorItem = new ve.ui.AuthorItemWidget( synchronizer, { authorId: authorId } );
+				authorItem = new ve.ui.AuthorItemWidget( synchronizer, tool.popup.$element, { authorId: authorId } );
 				authorItems[ authorId ] = authorItem;
 				updateListCount();
 				tool.$authorList.append( authorItem.$element );

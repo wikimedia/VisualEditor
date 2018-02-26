@@ -5,6 +5,8 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* global CP */
+
 /**
  * UserInterface AuthorItemWidget
  *
@@ -15,9 +17,12 @@
  *
  * @constructor
  * @param {ve.dm.SurfaceSynchronizer} synchronizer Surface synchronizer
+ * @param {jQuery} $overlay Overlay in which to attach popups (e.g. color picker)
  * @param {Object} [config] Configuration options
  */
-ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, config ) {
+ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, config ) {
+	var item = this;
+
 	config = config || {};
 
 	// Parent constructor
@@ -29,12 +34,32 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, config ) {
 	this.synchronizer = synchronizer;
 	this.editable = !!config.editable;
 	this.authorId = config.authorId;
+	this.color = null;
 
 	this.$color = $( '<div>' ).addClass( 've-ui-authorItemWidget-color' );
 	this.$element.append( this.$color );
 
 	if ( this.editable ) {
-		this.input = new OO.ui.TextInputWidget();
+		this.input = new OO.ui.TextInputWidget( {
+			classes: [ 've-ui-authorItemWidget-nameInput' ]
+		} );
+
+		this.colorPicker = new CP( this.$color[ 0 ] );
+		this.colorPicker.on( 'change', function ( color ) {
+			item.color = color;
+			item.$color.css( 'background-color', '#' + color );
+		} );
+		this.colorPicker.on( 'exit', function () {
+			// TODO: synchronizer.changeColor( item.color )
+		} );
+
+		this.colorPicker.picker.classList.add( 've-ui-authorItemWidget-colorPicker' );
+		this.colorPicker.fit = function () {
+			this.picker.style.left = item.$element[ 0 ].offsetLeft + 'px';
+			this.picker.style.top = item.$element[ 0 ].offsetTop + 'px';
+			$overlay.append( this.picker );
+		};
+
 		this.$element
 			.addClass( 've-ui-authorItemWidget-editable' )
 			.append( this.input.$element );
@@ -70,13 +95,14 @@ ve.ui.AuthorItemWidget.prototype.setAuthorId = function ( authorId ) {
  * Update name and color from synchronizer
  */
 ve.ui.AuthorItemWidget.prototype.update = function () {
-	var name = this.synchronizer.authorNames[ this.authorId ],
-		color = this.synchronizer.constructor.static.getAuthorColor( this.authorId );
+	var name = this.synchronizer.authorNames[ this.authorId ];
 
-	this.$color.css( 'background-color', '#' + color );
+	this.color = this.synchronizer.constructor.static.getAuthorColor( this.authorId );
+	this.$color.css( 'background-color', '#' + this.color );
 
 	if ( this.editable ) {
 		this.input.setValue( name );
+		this.colorPicker.set( '#' + this.color );
 	} else {
 		this.setLabel( name );
 	}

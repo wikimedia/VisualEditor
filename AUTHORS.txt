@@ -76,6 +76,11 @@ Yuki Shira <shirayuking@gmail.com>
 
 Libraries used (alphabetically)
 
+Color Picker
+ – https://tovic.github.io/color-picker
+ – MIT license
+ – Taufik Nurrohman and other contributors
+
 Diff Match and Patch
  – https://code.google.com/p/google-diff-match-patch/
  – Apache license 2.0

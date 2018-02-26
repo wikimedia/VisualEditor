@@ -80,7 +80,7 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
 /* Static methods */
 
 /**
- * TODO: Let authors choose color
+ * Get a default color for the user from a pre-defined palette
  *
  * @param {number} authorId
  * @return {string} Color, RRGGBB
