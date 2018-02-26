@@ -124,7 +124,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 				ve.dm.example.createExampleDocumentFromData( origData )
 			);
 		},
-		noVals = new ve.dm.IndexValueStore(),
+		emptyStore = new ve.dm.IndexValueStore(),
 		surface = newSurface(),
 		doc = surface.documentModel,
 		b = ve.dm.example.bold,
@@ -142,7 +142,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 			TxInsert( doc, 2, [ [ 'n', bIndex ] ] ),
 			TxInsert( doc, 3, [ [ 'e', bIndex ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
-		], [ new ve.dm.IndexValueStore( [ b ] ), noVals, noVals, noVals ], {
+		], [ new ve.dm.IndexValueStore( [ b ] ), emptyStore, emptyStore, emptyStore ], {
 			1: new ve.dm.LinearSelection( doc, new ve.Range( 7, 7 ) )
 		} ),
 		insert2 = new ve.dm.Change( 0, [
@@ -150,7 +150,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 			TxInsert( doc, 2, [ [ 'w', iIndex ] ] ),
 			TxInsert( doc, 3, [ [ 'o', iIndex ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
-		], [ new ve.dm.IndexValueStore( [ i ] ), noVals, noVals, noVals ], {
+		], [ new ve.dm.IndexValueStore( [ i ] ), emptyStore, emptyStore, emptyStore ], {
 			2: new ve.dm.LinearSelection( doc, new ve.Range( 1, 1 ) )
 		} ),
 		underline3 = new ve.dm.Change( 0, [
@@ -166,11 +166,11 @@ QUnit.test( 'Change operations', function ( assert ) {
 
 	replace2 = new ve.dm.Change( 4, [
 		TxReplace( doc, new ve.Range( 1, 4 ), [ 'T', 'W', 'O' ] )
-	], [ noVals ], {} );
+	], [ emptyStore ], {} );
 
 	remove2 = new ve.dm.Change( 4, [
 		TxRemove( doc, new ve.Range( 1, 4 ) )
-	], [ noVals ], {} );
+	], [ emptyStore ], {} );
 
 	change = insert2.reversed();
 	assert.deepEqual( change.start, 4, 'start for insert2.reversed()' );
@@ -314,7 +314,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 			);
 		},
 		surface = newSurface(),
-		noVals = new ve.dm.IndexValueStore(),
+		emptyStore = new ve.dm.IndexValueStore(),
 		doc = surface.documentModel,
 		b = ve.dm.example.bold,
 		bIndex = [ ve.dm.example.boldIndex ],
@@ -323,7 +323,8 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 			TxInsert( doc, 1, [ [ 'f', bIndex ] ] ),
 			// Second insert is too short, as first insert wasn't applied to the doc
 			TxInsert( doc, 2, [ [ 'u', bIndex ] ] )
-		], [ new ve.dm.IndexValueStore( [ b ] ), noVals ], {} ),
+		], [ new ve.dm.IndexValueStore( [ b ] ), emptyStore ], {} ),
+		simpleChange = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ emptyStore ] ),
 		serialized = {
 			start: 0,
 			transactions: [
@@ -344,8 +345,11 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 					hashes: bIndex
 				},
 				null
-			],
-			selections: {}
+			]
+		},
+		simpleSerialized = {
+			start: 0,
+			transactions: [ [ 1, [ '', 'a' ], 4 ] ]
 		},
 		unsanitized = {
 			start: 0,
@@ -356,8 +360,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 					'<script></script>',
 					'<p onclick="alert(\'gotcha!\')"></p>'
 				]
-			} } } ],
-			selections: {}
+			} } } ]
 		},
 		sanitized = {
 			start: 0,
@@ -367,8 +370,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 				value: [
 					'<p></p>'
 				]
-			} } } ],
-			selections: {}
+			} } } ]
 		};
 
 	// Fixup second insert
@@ -413,6 +415,23 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		sanitized,
 		'Unsanitized round trips into sanitized'
 	);
+
+	assert.deepEqual( simpleChange.serialize(), simpleSerialized, 'Serialize (simple)' );
+
+	assert.deepEqual(
+		ve.dm.Change.static.deserialize( simpleSerialized, doc ).serialize(),
+		simpleSerialized,
+		'Deserialize and reserialize (simple)'
+	);
+
+	assert.deepEqual(
+		ve.dm.Change.static.deserialize( simpleSerialized, doc, true ).stores.map( function ( store ) {
+			return store.hashStore;
+		} ),
+		[ {} ],
+		'Deserialize, preserving store values (simple)'
+	);
+
 } );
 
 QUnit.test( 'Minified serialization', function ( assert ) {
@@ -528,8 +547,7 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 				}
 			},
 			null, null, null, null, null, null, null, null, null
-		],
-		selections: {}
+		]
 	};
 	assert.expect( 1 );
 	deserialized = ve.dm.Change.static.deserialize( serialized );
@@ -546,7 +564,7 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 			{ type: 'paragraph' },
 			{ type: '/paragraph' }
 		] ) ),
-		noVals = new ve.dm.IndexValueStore(),
+		emptyStore = new ve.dm.IndexValueStore(),
 		doc = surface.documentModel,
 		clear = function () {
 			surface.change( doc.completeHistory.map( function ( tx ) {
@@ -557,16 +575,16 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion;
 
 	// 'ab' and 'cd' typed at the same offset
-	a = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ noVals ], {} );
+	a = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ emptyStore ], {} );
 	a.transactions[ 0 ].authorId = 1;
 	a.applyTo( surface );
-	b = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'b' ] ) ], [ noVals ], {} );
+	b = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'b' ] ) ], [ emptyStore ], {} );
 	b.transactions[ 0 ].authorId = 1;
 	clear();
-	c = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'c' ] ) ], [ noVals ], {} );
+	c = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'c' ] ) ], [ emptyStore ], {} );
 	c.transactions[ 0 ].authorId = 2;
 	c.applyTo( surface );
-	d = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'd' ] ) ], [ noVals ], {} );
+	d = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'd' ] ) ], [ emptyStore ], {} );
 	d.transactions[ 0 ].authorId = 2;
 	c.reversed().applyTo( surface );
 

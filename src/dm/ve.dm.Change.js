@@ -104,7 +104,9 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues, uns
 		getTransactionInfo = this.getTransactionInfo,
 		deserializeValue = this.deserializeValue,
 		selections = {},
-		transactions = [];
+		transactions = [],
+		// If stores is undefined, create an array of nulls
+		stores = data.stores || data.transactions.map( function () { return null; } );
 
 	/**
 	 * Apply annotations in-place to array of code units
@@ -162,7 +164,7 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues, uns
 	return new ve.dm.Change(
 		data.start,
 		transactions,
-		data.stores.map( deserializeStore ),
+		stores.map( deserializeStore ),
 		selections
 	);
 };
@@ -904,7 +906,7 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	var authorId, serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
-		txSerialized,
+		txSerialized, stores, data,
 		getTransactionInfo = this.constructor.static.getTransactionInfo,
 		selections = {},
 		transactions = [];
@@ -940,10 +942,17 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		}
 		prevInfo = info;
 	}
-	return {
+	stores = this.stores.map( serializeStore );
+	data = {
 		start: this.start,
-		transactions: transactions,
-		stores: this.stores.map( serializeStore ),
-		selections: selections
+		transactions: transactions
 	};
+	// Only set stores if at least one is non-null
+	if ( stores.some( function ( store ) { return store !== null; } ) ) {
+		data.stores = stores;
+	}
+	if ( Object.keys( selections ).length ) {
+		data.selections = selections;
+	}
+	return data;
 };
