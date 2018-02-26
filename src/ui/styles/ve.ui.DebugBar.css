@@ -75,18 +75,15 @@
 	padding-left: 1.5em;
 }
 
-.ve-ui-debugBar-dump li > span {
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-element,
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-char,
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-achar {
 	background-color: #f8f9fa;
 	color: #000;
 	display: inline-block;
 	border-radius: 2px;
-	margin: 0.25em 0 0.25em 0;
+	margin: 0.25em 0.25em 0.25em 0;
 	padding: 0.125em 0.5em;
-	text-shadow: 0 1px 1px #fff;
-}
-
-.ve-ui-debugBar-dump li > span > span {
-	color: #a2a9b1;
 	text-shadow: 0 1px 1px #fff;
 }
 
@@ -100,6 +97,10 @@
 
 .ve-ui-debugBar-dump li .ve-ui-debugBar-dump-achar {
 	background-color: #fed;
+}
+
+.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-note {
+	color: #a2a9b1;
 }
 
 .ve-ui-debugBar-filibuster {
