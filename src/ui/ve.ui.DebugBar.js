@@ -217,30 +217,8 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			text = element[ 0 ];
 			annotations = element[ 1 ];
 		} else {
-			if ( element.type ) {
-				$label.addClass( 've-ui-debugBar-dump-element' );
-				text = element.type;
-				annotations = element.annotations;
-			} else if ( Array.isArray( element ) ) {
-				$label.addClass( 've-ui-debugBar-dump-achar' );
-				text = element[ 0 ];
-				annotations = element[ 1 ];
-			} else {
-				$label.addClass( 've-ui-debugBar-dump-char' );
-				text = element;
-			}
-			$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
-			if ( annotations ) {
-				$label.append(
-					$( '<span>' ).text(
-						'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( function ( ann ) {
-							return JSON.stringify( ann.getComparableObject() );
-						} ).join( ', ' ) + ']'
-					)
-				);
-			}
-
-			$li.append( $label );
+			$label.addClass( 've-ui-debugBar-dump-char' );
+			text = element;
 		}
 		$label.html( ( text.match( /\S/ ) ? text : '&nbsp;' ) + ' ' );
 		if ( annotations ) {

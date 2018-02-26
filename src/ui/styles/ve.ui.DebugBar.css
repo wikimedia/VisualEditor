@@ -90,10 +90,6 @@
 	text-shadow: 0 1px 1px #fff;
 }
 
-.ve-ui-debugBar-dump li .ve-ui-debugBar-dump-undefined {
-	color: #a2a9b1;
-}
-
 .ve-ui-debugBar-dump li .ve-ui-debugBar-dump-element {
 	background-color: #def;
 }
