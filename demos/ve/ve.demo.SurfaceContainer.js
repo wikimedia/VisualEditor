@@ -237,23 +237,13 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
 
 	ve.init.platform.getInitializedPromise().done( function () {
 		( container.surface ? container.surface.$element.slideUp().promise() : $.Deferred().resolve().promise() ).done( function () {
-			var surfaceModel, changes,
-				localMatch = src.match( /^localStorage\/(.+)$/ ),
+			var localMatch = src.match( /^localStorage\/(.+)$/ ),
 				sessionMatch = src.match( /^sessionStorage\/(.+)$/ );
 			if ( localMatch ) {
 				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
 				return;
 			} else if ( sessionMatch ) {
-				container.loadHtml( ve.init.platform.getSession( 've-dochtml' ) || '', mode, true );
-				surfaceModel = container.surface.getModel();
-				changes = ve.init.platform.getSessionList( 've-changes' );
-				changes.forEach( function ( changeString ) {
-					var data = JSON.parse( changeString ),
-						change = ve.dm.Change.static.deserialize( data, surfaceModel.getDocument() );
-					change.applyTo( surfaceModel );
-					surfaceModel.breakpoint();
-				} );
-				container.start = surfaceModel.getDocument().getCompleteHistoryLength();
+				container.loadHtml( '', mode, true );
 				return;
 			}
 			$.ajax( {
@@ -282,7 +272,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
  * @param {boolean} autoSave Auto save
  */
 ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSave ) {
-	var dmDoc,
+	var dmDoc, changes, surfaceModel,
 		container = this;
 
 	if ( this.surface ) {
@@ -304,7 +294,15 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSav
 	this.oldDoc = dmDoc.cloneFromRange();
 
 	if ( autoSave ) {
-		ve.init.platform.setSession( 've-dochtml', pageHtml );
+		surfaceModel = this.surface.getModel();
+		changes = ve.init.platform.getSessionList( 've-changes' );
+		changes.forEach( function ( changeString ) {
+			var data = JSON.parse( changeString ),
+				change = ve.dm.Change.static.deserialize( data, surfaceModel.getDocument() );
+			change.applyTo( surfaceModel );
+			surfaceModel.breakpoint();
+		} );
+		this.start = surfaceModel.getDocument().getCompleteHistoryLength();
 		this.surface.model.on( 'undoStackChange', function () {
 			var change = dmDoc.getChangeSince( container.start );
 			if ( !change.isEmpty() ) {
