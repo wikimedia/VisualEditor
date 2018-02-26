@@ -50,7 +50,9 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 			item.$color.css( 'background-color', '#' + color );
 		} );
 		this.colorPicker.on( 'exit', function () {
-			// TODO: synchronizer.changeColor( item.color )
+			if ( item.color !== null ) {
+				synchronizer.changeColor( item.color );
+			}
 		} );
 
 		this.colorPicker.picker.classList.add( 've-ui-authorItemWidget-colorPicker' );
@@ -97,7 +99,7 @@ ve.ui.AuthorItemWidget.prototype.setAuthorId = function ( authorId ) {
 ve.ui.AuthorItemWidget.prototype.update = function () {
 	var name = this.synchronizer.authorNames[ this.authorId ];
 
-	this.color = this.synchronizer.constructor.static.getAuthorColor( this.authorId );
+	this.color = this.synchronizer.authorColors[ this.authorId ];
 	this.$color.css( 'background-color', '#' + this.color );
 
 	if ( this.editable ) {

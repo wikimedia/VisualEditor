@@ -4039,7 +4039,8 @@ ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer ) {
 	this.synchronizer = synchronizer;
 	this.synchronizer.connect( this, {
 		authorSelect: 'onSynchronizerAuthorUpdate',
-		authorNameChange: 'onSynchronizerAuthorUpdate'
+		authorNameChange: 'onSynchronizerAuthorUpdate',
+		authorColorChange: 'onSynchronizerAuthorUpdate'
 	} );
 };
 
@@ -4059,7 +4060,7 @@ ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( authorId ) {
  */
 ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 	var i, l, rects, rect, overlays,
-		color = '#' + this.synchronizer.constructor.static.getAuthorColor( authorId ),
+		color = '#' + this.synchronizer.authorColors[ authorId ],
 		selection = this.synchronizer.authorSelections[ authorId ];
 
 	if ( authorId === this.authorId ) {

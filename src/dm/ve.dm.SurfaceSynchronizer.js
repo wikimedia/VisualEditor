@@ -31,6 +31,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.store = this.doc.getStore();
 	this.authorSelections = {};
 	this.authorNames = {};
+	this.authorColors = {};
 	this.documentId = documentId;
 
 	// Whether the document has been initialized
@@ -44,6 +45,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
 	this.socket.on( 'nameChange', this.onNameChange.bind( this ) );
+	this.socket.on( 'colorChange', this.onColorChange.bind( this ) );
 	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
 	// TODO: unbreak then re-enable usurp
 	// this.tryUsurp();
@@ -76,25 +78,6 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
  * @event authorNameChange
  * @param {number} authorId The author whose name has changed
  */
-
-/* Static methods */
-
-/**
- * Get a default color for the user from a pre-defined palette
- *
- * @param {number} authorId
- * @return {string} Color, RRGGBB
- */
-ve.dm.SurfaceSynchronizer.static.getAuthorColor = function ( authorId ) {
-	var palette = [
-		'1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd',
-		'8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf',
-		'aec7e8', 'ffbb78', '98df8a', 'ff9896', 'c5b0d5',
-		'c49c94', 'f7b6d2', 'c7c7c7', 'dbdb8d', '9edae5'
-	];
-
-	return palette[ authorId % palette.length ];
-};
 
 /* Methods */
 
@@ -265,8 +248,17 @@ ve.dm.SurfaceSynchronizer.prototype.onNameChange = function ( data ) {
 	this.emit( 'authorNameChange', data.authorId );
 };
 
+ve.dm.SurfaceSynchronizer.prototype.onColorChange = function ( data ) {
+	this.authorColors[ data.authorId ] = data.authorColor;
+	this.emit( 'authorColorChange', data.authorId );
+};
+
 ve.dm.SurfaceSynchronizer.prototype.changeName = function ( newName ) {
 	this.socket.emit( 'changeName', newName );
+};
+
+ve.dm.SurfaceSynchronizer.prototype.changeColor = function ( newColor ) {
+	this.socket.emit( 'changeColor', newColor );
 };
 
 ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
