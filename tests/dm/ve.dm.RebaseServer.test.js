@@ -207,7 +207,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 						start: 0,
 						transactions: [
 							{
-								operations: [
+								o: [
 									{ type: 'retain', length: 1 },
 									{ type: 'replace', remove: [], insert: [
 										[ 'X', [ 'h123' ] ],
@@ -216,7 +216,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 									] },
 									{ type: 'retain', length: 3 }
 								],
-								authorId: '1'
+								a: '1'
 							}
 						],
 						stores: [
@@ -321,7 +321,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 						start: 1,
 						transactions: [
 							{
-								operations: [
+								o: [
 									{ type: 'retain', length: 2 },
 									{ type: 'replace', remove: [], insert: [
 										[ 'X', [ 'h123' ] ],
@@ -330,7 +330,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 									] },
 									{ type: 'retain', length: 3 }
 								],
-								authorId: '1'
+								a: '1'
 							}
 						],
 						stores: [

@@ -74,7 +74,7 @@ ve.dm.Transaction.static.reversers = {
  * Deserialize a transaction from a JSONable object
  *
  * Values are either new or deep copied, so there is no reference into the serialized structure
- * @param {Object} data Transaction serialized as a JSONable object
+ * @param {Object|Array} data Transaction serialized as a JSONable object
  * @return {ve.dm.Transaction} Deserialized transaction
  */
 ve.dm.Transaction.static.deserialize = function ( data ) {
@@ -103,10 +103,19 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
 		return JSON.parse( JSON.stringify( op ) );
 	}
 
-	return new ve.dm.Transaction(
-		data.operations.map( deminify ),
-		data.authorId
-	);
+	if ( Array.isArray( data ) ) {
+		return new ve.dm.Transaction(
+			data.map( deminify )
+		);
+	} else {
+		return new ve.dm.Transaction(
+			// operations
+			data.o.map( deminify ),
+			// authorId
+			data.a
+		);
+	}
+
 };
 
 /* Methods */
@@ -115,9 +124,11 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
  * Serialize the transaction into a JSONable object
  *
  * Values are not necessarily deep copied
- * @return {Object} Serialized transaction
+ * @return {Object|Array} Serialized transaction
  */
 ve.dm.Transaction.prototype.serialize = function () {
+	var operations;
+
 	function isSingleCodePoint( x ) {
 		return typeof x === 'string' && x.length === 1;
 	}
@@ -145,10 +156,16 @@ ve.dm.Transaction.prototype.serialize = function () {
 		return op;
 	}
 
-	return {
-		operations: this.operations.map( minify ),
-		authorId: this.authorId
-	};
+	operations = this.operations.map( minify );
+
+	if ( this.authorId !== null ) {
+		return {
+			o: operations,
+			a: this.authorId
+		};
+	} else {
+		return operations;
+	}
 };
 
 /**

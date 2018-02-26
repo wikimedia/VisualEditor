@@ -327,10 +327,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		serialized = {
 			start: 0,
 			transactions: [
-				{
-					authorId: null,
-					operations: [ 1, [ '', [ [ 'f', bIndex ] ] ], 4 ]
-				},
+				[ 1, [ '', [ [ 'f', bIndex ] ] ], 4 ],
 				'u'
 			],
 			stores: [
@@ -352,7 +349,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		},
 		unsanitized = {
 			start: 0,
-			transactions: [ { authorId: 'fred', operations: [ 2 ] } ],
+			transactions: [ { a: 'fred', o: [ 2 ] } ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
 				type: 'domNodeArray',
 				value: [
@@ -364,7 +361,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		},
 		sanitized = {
 			start: 0,
-			transactions: [ { authorId: 'fred', operations: [ 2 ] } ],
+			transactions: [ { a: 'fred', o: [ 2 ] } ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
 				type: 'domNodeArray',
 				value: [
@@ -424,12 +421,12 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 		start: 0,
 		transactions: [
 			// Type some individual code units
-			{ operations: [ 1, [ '', 'T' ], 3 ], authorId: null },
+			[ 1, [ '', 'T' ], 3 ],
 			'h', 'e', ' ', 'r', 'e',
 			// Type in whole words like some IMEs
 			'd panda jumps over', 'the ', 'automaton',
 			// Italicize some text
-			{ operations: [
+			[
 				5,
 				{
 					type: 'annotate',
@@ -445,9 +442,9 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 					index: 'he4e7c54e2204d10b'
 				},
 				28
-			] },
+			],
 			// Type over the italicized text
-			{ operations: [
+			[
 				5,
 				[
 					[
@@ -466,10 +463,10 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 					]
 				],
 				28
-			] },
+			],
 			'u', 'i', 'c', 'k', ' ', 'bro', 'wn ', 'fox',
 			// Bold some text
-			{ operations: [
+			[
 				36,
 				{
 					type: 'annotate',
@@ -485,9 +482,9 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 					index: 'hfbe3cfe099b83e1e'
 				},
 				3
-			] },
+			],
 			// Type over the bolded text
-			{ operations: [
+			[
 				36,
 				[
 					[
@@ -506,7 +503,7 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 					]
 				],
 				3
-			] },
+			],
 			'a', 'z', 'y', ' ', 'd', 'o', 'g', '.'
 		],
 		stores: [
