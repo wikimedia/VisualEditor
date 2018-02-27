@@ -213,12 +213,7 @@ ve.ui.Surface.prototype.initialize = function () {
  * @return {HTMLDocument|string} HTML document (visual mode) or text (source mode)
  */
 ve.ui.Surface.prototype.getDom = function () {
-	// Optimized converter for source mode, which contains only
-	// plain text or paragraphs.
-	if ( this.getMode() === 'source' ) {
-		return this.getModel().getDocument().data.getSourceText();
-	}
-	return ve.dm.converter.getDomFromModel( this.getModel().getDocument() );
+	return this.getModel().getDom();
 };
 
 /**
@@ -227,9 +222,7 @@ ve.ui.Surface.prototype.getDom = function () {
  * @return {string} HTML
  */
 ve.ui.Surface.prototype.getHtml = function () {
-	return this.getMode() === 'source' ?
-		this.getDom() :
-		ve.properInnerHtml( this.getDom().body );
+	return this.getModel().getHtml();
 };
 
 /**

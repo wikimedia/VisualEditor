@@ -138,6 +138,31 @@ ve.dm.Surface.prototype.initialize = function () {
 };
 
 /**
+ * Get the DOM representation of the surface's current state.
+ *
+ * @return {HTMLDocument|string} HTML document (visual mode) or text (source mode)
+ */
+ve.dm.Surface.prototype.getDom = function () {
+	// Optimized converter for source mode, which contains only
+	// plain text or paragraphs.
+	if ( this.sourceMode ) {
+		return this.getDocument().data.getSourceText();
+	}
+	return ve.dm.converter.getDomFromModel( this.getDocument() );
+};
+
+/**
+ * Get the HTML representation of the surface's current state.
+ *
+ * @return {string} HTML
+ */
+ve.dm.Surface.prototype.getHtml = function () {
+	return this.sourceMode ?
+		this.getDom() :
+		ve.properInnerHtml( this.getDom().body );
+};
+
+/**
  * Start tracking state changes in history.
  */
 ve.dm.Surface.prototype.startHistoryTracking = function () {
