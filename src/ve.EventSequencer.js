@@ -338,7 +338,7 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 	var i, len, afterLoopListeners, afterLoopOneListeners;
 
 	if ( this.afterLoopTimeoutId !== myTimeoutId ) {
-		// cancelled; do nothing
+		// Cancelled; do nothing
 		return;
 	}
 	this.afterLoopTimeoutId = null;
@@ -392,7 +392,7 @@ ve.EventSequencer.prototype.runPendingCalls = function ( eventName ) {
 		// function indirectly recurses.
 		pendingCall = this.pendingCalls[ i ];
 		if ( pendingCall.id === null ) {
-			// the call has already run
+			// The call has already run
 			continue;
 		}
 		if ( eventName === 'keypress' && pendingCall.eventName === 'keydown' ) {

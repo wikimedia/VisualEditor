@@ -54,11 +54,11 @@ ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 		surface.getModel().setSelection( surface.getModel().getSelection().collapseToStart() );
 		ve.ce.TableArrowKeyDownHandler.static.moveTableSelection(
 			surface,
-			0, // rows
-			e.shiftKey ? -1 : 1, // columns
-			false, // logical direction, not visual
-			false, // don't expand the current selection,
-			true // wrap to next/previous row
+			0, // Rows
+			e.shiftKey ? -1 : 1, // Columns
+			false, // Logical direction, not visual
+			false, // Don't expand the current selection,
+			true // Wrap to next/previous row
 		);
 		activeTableNode.setEditing( true );
 		return true;

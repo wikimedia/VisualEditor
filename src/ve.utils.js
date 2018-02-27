@@ -406,7 +406,7 @@ ve.batchPush = function ( arr, data ) {
  * @param {...Mixed} [args] Data to log
  */
 ve.log = ve.log || function () {
-	// don't do anything, this is just a stub
+	// Don't do anything, this is just a stub
 };
 
 /**
@@ -417,7 +417,7 @@ ve.log = ve.log || function () {
  * @param {...Mixed} [args] Data to log
  */
 ve.error = ve.error || function () {
-	// don't do anything, this is just a stub
+	// Don't do anything, this is just a stub
 };
 
 /**
@@ -428,7 +428,7 @@ ve.error = ve.error || function () {
  * @param {Object} obj
  */
 ve.dir = ve.dir || function () {
-	// don't do anything, this is just a stub
+	// Don't do anything, this is just a stub
 };
 
 /**
@@ -725,16 +725,16 @@ ve.isVoidElement = function ( element ) {
 ve.elementTypes = {
 	block: [
 		'div', 'p',
-		// tables
+		// Tables
 		'table', 'tbody', 'thead', 'tfoot', 'caption', 'th', 'tr', 'td',
-		// lists
+		// Lists
 		'ul', 'ol', 'li', 'dl', 'dt', 'dd',
 		// HTML5 heading content
 		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hgroup',
 		// HTML5 sectioning content
 		'article', 'aside', 'body', 'nav', 'section', 'footer', 'header', 'figure',
 		'figcaption', 'fieldset', 'details', 'blockquote',
-		// other
+		// Other
 		'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
 		'map', 'object', 'pre', 'progress', 'video'
 	],
@@ -1506,7 +1506,7 @@ ve.getCommonAncestor = function () {
 			return null;
 		}
 		if ( i > 0 && chain[ 0 ] !== chains[ chains.length - 1 ][ 0 ] ) {
-			// no common ancestor (different documents or unattached branches)
+			// No common ancestor (different documents or unattached branches)
 			return null;
 		}
 		if ( minHeight === null || minHeight > chain.length ) {

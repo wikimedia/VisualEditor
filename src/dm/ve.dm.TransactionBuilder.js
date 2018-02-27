@@ -709,7 +709,7 @@ ve.dm.TransactionBuilder.prototype.addSafeRemoveOps = function ( doc, removeStar
  */
 ve.dm.TransactionBuilder.prototype.pushReplaceInternal = function ( remove, insert, insertedDataOffset, insertedDataLength ) {
 	if ( remove.length === 0 && insert.length === 0 ) {
-		return; // no-op
+		return; // No-op
 	}
 	this.transaction.pushReplaceOp( remove, insert, insertedDataOffset, insertedDataLength );
 };

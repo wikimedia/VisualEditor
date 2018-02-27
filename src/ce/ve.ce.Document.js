@@ -202,24 +202,24 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		node = step.node;
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			if ( step.type === 'leave' ) {
-				// skip without incrementing
+				// Skip without incrementing
 				continue;
 			}
-			// Else the code below always breaks or skips over the text node;
+			// else the code below always breaks or skips over the text node;
 			// therefore it is guaranteed that step.type === 'enter' (we just
 			// stepped in)
 			// TODO: what about zero-length text nodes?
 			if ( offset <= count + node.data.length ) {
-				// match the appropriate offset in the text node
+				// Match the appropriate offset in the text node
 				position = { node: node, offset: offset - count };
 				break;
 			} else {
-				// skip over the text node
+				// Skip over the text node
 				count += node.data.length;
 				position = { node: node, offset: node.data.length };
 				continue;
 			}
-		} // else is an element node (TODO: handle comment etc)
+		} // else it is an element node (TODO: handle comment etc)
 
 		if ( !(
 			node.classList.contains( 've-ce-branchNode' ) ||
@@ -365,7 +365,7 @@ ve.ce.Document.prototype.getDirectionFromRange = function ( range ) {
 		// Get the common parent node
 		effectiveNode = this.selectNodes( range, 'siblings' )[ 0 ].node.getParent();
 	} else {
-		// selection of a single node
+		// Selection of a single node
 		effectiveNode = selectedNodes[ 0 ].node;
 
 		while ( effectiveNode.isContent() ) {

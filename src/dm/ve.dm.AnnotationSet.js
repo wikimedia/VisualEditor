@@ -416,16 +416,16 @@ ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
  */
 ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
 	var storeIndex = this.getStore().index( annotation );
-	// negative offset
+	// Negative offset
 	if ( offset < 0 ) {
 		offset = this.getLength() + offset;
 	}
-	// greater than length, add to end
+	// Greater than length, add to end
 	if ( offset >= this.getLength() ) {
 		this.push( annotation );
 		return;
 	}
-	// if not in set already, splice in place
+	// If not in set already, splice in place
 	if ( !this.containsIndex( storeIndex ) ) {
 		this.storeIndexes.splice( offset, 0, storeIndex );
 	}

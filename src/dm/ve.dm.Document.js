@@ -773,7 +773,7 @@ ve.dm.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 ve.dm.Document.prototype.getRelativeOffset = function ( offset, direction, unit ) {
 	var relativeContentOffset, relativeStructuralOffset, newOffset, adjacentDataOffset, isFocusable,
 		data = this.data;
-	if ( unit === 'word' ) { // word
+	if ( unit === 'word' ) { // Word
 		// Method getSiblingWordBoundary does not "move/jump" over element data. If passed offset is
 		// an element data offset then the same offset is returned - and in such case this method
 		// fallback to the other path (character) which does "move/jump" over element data.
@@ -782,7 +782,7 @@ ve.dm.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 			newOffset = this.getRelativeOffset( offset, direction, 'character' );
 		}
 		return newOffset;
-	} else { // character
+	} else { // Character
 		// Check if we are adjacent to a focusable node
 		adjacentDataOffset = offset + ( direction > 0 ? 0 : -1 );
 		if (

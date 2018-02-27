@@ -112,9 +112,9 @@ ve.ce.View.prototype.initialize = function () {
 			this.model.getOriginalDomElements( this.model.getStore() ),
 			this.$element,
 			this.constructor.static.renderHtmlAttributes,
-			// computed attributes
+			// Computed
 			true,
-			// deep
+			// Deep
 			!( this.model instanceof ve.dm.Node ) ||
 			!this.model.canHaveChildren() ||
 			this.model.handlesOwnChildren()

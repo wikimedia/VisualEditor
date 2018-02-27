@@ -257,7 +257,7 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		surfaceModel.getLinearFragment( new ve.Range( listItemRange.start + 1, listItemRange.end - 1 ), true )
 			.unwrapNodes( 2 );
 
-		// ensure paragraphs are not generated paragraphs now
+		// Ensure paragraphs are not generated paragraphs now
 		// that they are not in a list
 		children = fragment.getSiblingNodes();
 		for ( i = 0, length = children.length; i < length; i++ ) {

@@ -107,7 +107,7 @@ ve.dm.InternalList.prototype.getDocument = function () {
  */
 ve.dm.InternalList.prototype.getListNode = function () {
 	var i, nodes;
-	// find listNode if not set, or unattached
+	// Find listNode if not set, or unattached
 	if ( !this.listNode || !this.listNode.doc ) {
 		nodes = this.getDocument().getDocumentNode().children;
 		for ( i = nodes.length; i >= 0; i-- ) {

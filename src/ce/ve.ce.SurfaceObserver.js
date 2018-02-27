@@ -58,7 +58,7 @@ ve.ce.SurfaceObserver.prototype.detach = function () {
  */
 ve.ce.SurfaceObserver.prototype.startTimerLoop = function () {
 	this.polling = true;
-	this.timerLoop( true ); // will not sync immediately, because timeoutId should be null
+	this.timerLoop( true ); // Will not sync immediately, because timeoutId should be null
 };
 
 /**
@@ -69,14 +69,14 @@ ve.ce.SurfaceObserver.prototype.startTimerLoop = function () {
  */
 ve.ce.SurfaceObserver.prototype.timerLoop = function ( firstTime ) {
 	if ( this.timeoutId ) {
-		// in case we're not running from setTimeout
+		// In case we're not running from setTimeout
 		clearTimeout( this.timeoutId );
 		this.timeoutId = null;
 	}
 	if ( !firstTime ) {
 		this.pollOnce();
 	}
-	// only reach this point if pollOnce does not throw an exception
+	// Only reach this point if pollOnce does not throw an exception
 	if ( this.pollInterval !== null ) {
 		this.timeoutId = this.setTimeout(
 			this.timerLoop.bind( this ),

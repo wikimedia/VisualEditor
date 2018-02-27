@@ -214,7 +214,7 @@ ve.ui.TableAction.prototype.move = function ( mode, index ) {
 	// Only set selection once for performance
 	surfaceModel.setSelection( new ve.dm.TableSelection(
 		selection.getDocument(),
-		// table node range was changed by deletion
+		// tableNode range was changed by deletion
 		tableNode.getOuterRange(),
 		newOffsets[ 0 ], newOffsets[ 1 ], newOffsets[ 2 ], newOffsets[ 3 ]
 	) );
@@ -249,7 +249,7 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
 			maxIndex = selection.endRow;
 			isFull = selection.isFullCol();
 		}
-		// delete the whole table if all rows or cols get deleted
+		// Delete the whole table if all rows or cols get deleted
 		if ( isFull ) {
 			this.deleteTable( tableNode );
 		} else {
@@ -600,7 +600,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 
 	// The index of the reference row or column
 	refIndex = index + ( before ? -1 : 1 );
-	// cells of the selected row or column
+	// Cells of the selected row or column
 	if ( mode === 'row' ) {
 		cells = matrix.getRow( index ) || [];
 		refCells = matrix.getRow( refIndex ) || [];
@@ -613,10 +613,10 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		cell = cells[ i ];
 		if ( !cell ) {
 			if ( dataMatrixLine && dataMatrixLine.cells[ i ] ) {
-				// if we've been given data to fill the empty cells with, do so
+				// If we've been given data to fill the empty cells with, do so
 				insertCells.push( dataMatrixLine.cells[ i ] );
 			}
-			// either way, continue on to the next cell
+			// Either way, continue on to the next cell
 			continue;
 		}
 		refCell = refCells[ i ];
@@ -691,7 +691,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 			refCell = matrix.findClosestCell( cell );
 			if ( refCell ) {
 				range = refCell.node.getOuterRange();
-				// if the found cell is before the base cell the new cell must be placed after it, in any case,
+				// If the found cell is before the base cell the new cell must be placed after it, in any case,
 				// Only if the base cell is not a placeholder we have to consider the insert mode.
 				if ( refCell.col < cell.col || ( refCell.col === cell.col && !before ) ) {
 					offset = range.end;
@@ -700,7 +700,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 				}
 				style = refCell.node.getStyle();
 			} else {
-				// if there are only placeholders in the row, we use the row node's inner range
+				// If there are only placeholders in the row, we use the row node's inner range
 				// for the insertion offset
 				range = matrix.getRowNode( cell.row ).getRange();
 				offset = before ? range.start : range.end;

@@ -350,7 +350,7 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 					this.document.data.getWordRange( oldRange.end )
 				], oldRange.isBackwards() );
 			} else {
-				// optimisation for zero-length ranges
+				// Optimisation for zero-length ranges
 				newRange = this.document.data.getWordRange( oldRange.start );
 			}
 			break;
@@ -480,7 +480,7 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 					annotations = matchingAnnotations;
 					break;
 				} else {
-					// match in the other direction, to keep all distinct compatible annotations (e.g. both b and strong)
+					// Match in the other direction, to keep all distinct compatible annotations (e.g. both b and strong)
 					annotations = annotations.getComparableAnnotationsFromSet( rangeAnnotations );
 					annotations.addSet( matchingAnnotations );
 				}

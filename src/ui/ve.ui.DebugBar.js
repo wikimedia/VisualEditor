@@ -181,7 +181,7 @@ ve.ui.DebugBar.prototype.updateDump = function () {
 		documentModel = surface.getModel().getDocument(),
 		documentView = surface.getView().getDocument();
 
-	// linear model dump
+	// Linear model dump
 	this.$linmodData.html( this.generateListFromLinearData( documentModel.data ) );
 	this.$modelTree.html(
 		this.generateListFromNode( documentModel.getDocumentNode() )

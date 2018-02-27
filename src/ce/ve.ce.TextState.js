@@ -92,7 +92,7 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 			add( '', 'unicorn' );
 		} else if ( node.firstChild ) {
 			if ( ve.ce.isAnnotationElement( node ) ) {
-				// push a new element stack state
+				// Push a new element stack state
 				elementListStack.push( elementListStack[ stackTop ].concat( node ) );
 				annotationStack.push( node );
 				stackTop++;
@@ -100,7 +100,7 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 			node = node.firstChild;
 			continue;
 		}
-		// Else no child nodes; do nothing
+		// else no child nodes; do nothing
 
 		// Step out of this node, then keep stepping outwards until there is a next sibling
 		while ( true ) {

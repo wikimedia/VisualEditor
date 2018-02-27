@@ -81,7 +81,7 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			break;
 		case OO.ui.Keys.TAB:
 			colOffset = e.shiftKey ? -1 : 1;
-			expand = false; // shift-tab is a movement, not an expansion
+			expand = false; // Shift-tab is a movement, not an expansion
 			wrap = true;
 			break;
 	}

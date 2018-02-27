@@ -379,7 +379,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
 					var paragraph = data.splice( 14, 5 );
-					data.splice( 13, 2 ); // remove the empty listItem
+					data.splice( 13, 2 ); // Remove the empty listItem
 					data.splice.apply( data, [ 14, 0 ].concat( paragraph ) );
 				},
 				expectedRangeOrSelection: new ve.Range( 15 ),
@@ -1219,7 +1219,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{ type: 'retain', length: 3 }
 					]
 				],
-				expectsBreakpoint: true, // adding a word break triggers a breakpoint
+				expectsBreakpoint: true, // Adding a word break triggers a breakpoint
 				msg: 'Inserting a word break'
 			},
 			{
@@ -1238,7 +1238,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{ type: 'retain', length: 3 }
 					]
 				],
-				expectsBreakpoint: true, // any delete triggers a breakpoint
+				expectsBreakpoint: true, // Any delete triggers a breakpoint
 				msg: 'Deleting text'
 			},
 			{

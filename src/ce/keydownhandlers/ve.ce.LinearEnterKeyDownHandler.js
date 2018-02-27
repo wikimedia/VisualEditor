@@ -78,7 +78,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	node = surface.documentView.getBranchNodeFromOffset( range.from );
 	if ( node !== null ) {
-		// assertion: node is certainly a contentBranchNode
+		// Assertion: node is certainly a contentBranchNode
 		nodeModel = node.getModel();
 		nodeModelRange = nodeModel.getRange();
 	}

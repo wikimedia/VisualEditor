@@ -59,10 +59,10 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			directionality = $( surface.focusedBlockSlug ).css( 'direction' );
 			// eslint-disable-next-line no-bitwise
 			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
-				// leftarrow in ltr, or rightarrow in rtl
+				// Left arrow in ltr, or right arrow in rtl
 				direction = -1;
 			} else {
-				// leftarrow in rtl, or rightarrow in ltr
+				// Left arrow in rtl, or right arrow in ltr
 				direction = 1;
 			}
 		}
@@ -85,10 +85,10 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			directionality = surface.getFocusedNodeDirectionality();
 			// eslint-disable-next-line no-bitwise
 			if ( e.keyCode === OO.ui.Keys.LEFT ^ directionality === 'rtl' ) {
-				// leftarrow in ltr, or rightarrow in rtl
+				// Left arrow in ltr, or right arrow in rtl
 				direction = -1;
 			} else {
-				// leftarrow in rtl, or rightarrow in ltr
+				// Left arrow in rtl, or right arrow in ltr
 				direction = 1;
 			}
 		}
@@ -124,7 +124,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			range = new ve.Range( direction === 1 ? range.end : range.start );
 			surface.model.setLinearSelection( range );
 			if ( !isBlockMove ) {
-				// un-shifted left/right: we've already moved so preventDefault
+				// Un-shifted left/right: we've already moved so preventDefault
 				e.preventDefault();
 				return true;
 			}

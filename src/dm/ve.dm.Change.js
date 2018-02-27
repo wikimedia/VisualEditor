@@ -303,7 +303,7 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
 			if ( active && start === undefined ) {
 				start = offset;
 			}
-			// adjust offset and diff
+			// Adjust offset and diff
 			if ( op.type === 'retain' ) {
 				offset += op.length;
 			} else if ( op.type === 'replace' ) {

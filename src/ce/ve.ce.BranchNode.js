@@ -52,13 +52,13 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
 ve.ce.BranchNode.inlineSlugTemplate = ( function () {
 	var profile = $.client.profile(),
 		// The following classes can be used here:
-		// ve-ce-chimera-gecko
-		// ve-ce-chimera-konqueror
-		// ve-ce-chimera-msie
-		// ve-ce-chimera-trident
-		// ve-ce-chimera-edge
-		// ve-ce-chimera-opera
-		// ve-ce-chimera-webkit
+		// * ve-ce-chimera-gecko
+		// * ve-ce-chimera-konqueror
+		// * ve-ce-chimera-msie
+		// * ve-ce-chimera-trident
+		// * ve-ce-chimera-edge
+		// * ve-ce-chimera-opera
+		// * ve-ce-chimera-webkit
 		$img = $( '<img>' )
 			.addClass( 've-ce-chimera ve-ce-chimera-' + profile.layout ),
 		$span = $( '<span>' )

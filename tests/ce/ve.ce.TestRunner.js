@@ -60,7 +60,7 @@ ve.ce.TestOffset.static = {};
 ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	var i, len, found, slice, offset, childNode, childNodes, consumed = 0;
 	if ( node.nodeType === node.TEXT_NODE ) {
-		// test >= n because one more boundaries than code units
+		// Test length >= n because one more boundaries than code units
 		if ( node.textContent.length >= n ) {
 			offset = reversed ? node.textContent.length - n : n;
 			slice = node.textContent.slice( 0, offset ) + '|' +

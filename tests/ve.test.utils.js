@@ -157,7 +157,7 @@
 			ve.dm.example.postprocessAnnotations( actualData, model.getStore(), caseItem.preserveAnnotationDomElements );
 			assert.equalLinearData( actualData, caseItem.data, msg + ': data' );
 			assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
-			// check storeItems have been added to store
+			// Check storeItems have been added to store
 			if ( caseItem.storeItems ) {
 				for ( hash in caseItem.storeItems ) {
 					assert.deepEqualWithDomElements(
