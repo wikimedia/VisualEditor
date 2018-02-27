@@ -46,7 +46,7 @@ QUnit.test( 'Basic usage', function ( assert ) {
 	assert.strictEqual( annotationSet2.offsetOf( bold ), 0, 'set2 contains bold at 0 after add at 0' );
 	annotationSet2.add( bold, 0 );
 	assert.strictEqual( annotationSet2.getLength(), 3, 'adding existing annotation doesn\'t change length' );
-	// set is now [ bold, italic, underline ]
+	// Set is now [ bold, italic, underline ]
 	annotationSet2.removeAt( 2 );
 	assert.strictEqual( annotationSet2.contains( underline ), false, 'set2 doesn\'t contain underline after removeAt 2' );
 	annotationSet2.removeAll();

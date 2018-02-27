@@ -358,7 +358,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		view = ve.test.utils.createSurfaceViewFromHtml( testInfo.startDom || '' );
 		view.getModel().setLinearSelection( new ve.Range( 1 ) );
 		testRunner = new ve.ce.TestRunner( view );
-		// start at 1 to omit the testInfo
+		// Start at 1 to omit the testInfo
 		died = false;
 		for ( j = 1, jlen = testActions.length; j < jlen; j++ ) {
 			action = testActions[ j ].action;

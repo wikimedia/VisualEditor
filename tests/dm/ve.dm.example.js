@@ -51,7 +51,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 	store = store || new ve.dm.IndexValueStore();
 	for ( i = 0; i < data.length; i++ ) {
 		key = data[ i ].annotations ? 'annotations' : 1;
-		// check for shorthand annotation objects in array
+		// Check for shorthand annotation objects in array
 		if ( Array.isArray( data[ i ][ key ] ) && data[ i ][ key ][ 0 ].type ) {
 			data[ i ][ key ].forEach( preprocessOriginalDomElements );
 			data[ i ][ key ] = ve.dm.example.createAnnotationSet( store, data[ i ][ key ] ).getIndexes();
@@ -318,7 +318,7 @@ ve.dm.example.blockImage = {
 ve.dm.example.html =
 	'<h1>a<b>b</b><i>c</i></h1>' +
 	'<table>' +
-		// implicit <tbody>
+		// Implicit <tbody>
 		'<tr>' +
 			'<td>' +
 				'<p>d</p>' +
@@ -4054,7 +4054,7 @@ ve.dm.example.selectNodesCases = [
 			{
 				node: [],
 				range: new ve.Range( 5 ),
-				// no 'index' because documentNode has no parent
+				// No 'index' because documentNode has no parent
 				indexInNode: 1,
 				nodeRange: new ve.Range( 0, 63 ),
 				nodeOuterRange: new ve.Range( 0, 63 )
@@ -4070,7 +4070,7 @@ ve.dm.example.selectNodesCases = [
 			{
 				node: [],
 				range: new ve.Range( 0 ),
-				// no 'index' because documentNode has no parent
+				// No 'index' because documentNode has no parent
 				indexInNode: 0,
 				nodeRange: new ve.Range( 0, 63 ),
 				nodeOuterRange: new ve.Range( 0, 63 )
@@ -4094,7 +4094,7 @@ ve.dm.example.selectNodesCases = [
 			// preformatted/text
 			{
 				node: [ 2, 0 ],
-				// no 'range' because the text node is covered completely
+				// No 'range' because the text node is covered completely
 				index: 0,
 				nodeRange: new ve.Range( 38, 39 ),
 				nodeOuterRange: new ve.Range( 38, 39 ),
@@ -4128,7 +4128,7 @@ ve.dm.example.selectNodesCases = [
 			// preformatted
 			{
 				node: [ 2 ],
-				// no 'range' because the node is covered completely
+				// No 'range' because the node is covered completely
 				index: 2,
 				nodeRange: new ve.Range( 38, 42 ),
 				nodeOuterRange: new ve.Range( 37, 43 ),
@@ -4137,7 +4137,7 @@ ve.dm.example.selectNodesCases = [
 			// definitionList
 			{
 				node: [ 3 ],
-				// no 'range' because the node is covered completely
+				// No 'range' because the node is covered completely
 				index: 3,
 				nodeRange: new ve.Range( 44, 54 ),
 				nodeOuterRange: new ve.Range( 43, 55 ),
@@ -4146,7 +4146,7 @@ ve.dm.example.selectNodesCases = [
 			// paragraph/text
 			{
 				node: [ 4, 0 ],
-				// no 'range' because the text node is covered completely
+				// No 'range' because the text node is covered completely
 				index: 0,
 				nodeRange: new ve.Range( 56, 57 ),
 				nodeOuterRange: new ve.Range( 56, 57 ),

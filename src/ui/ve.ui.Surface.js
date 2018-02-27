@@ -198,8 +198,8 @@ ve.ui.Surface.prototype.initialize = function () {
 	}
 
 	// The following classes can be used here:
-	// ve-ui-surface-dir-ltr
-	// ve-ui-surface-dir-rtl
+	// * ve-ui-surface-dir-ltr
+	// * ve-ui-surface-dir-rtl
 	this.$element.addClass( 've-ui-surface-dir-' + this.getDir() );
 
 	this.getView().initialize();
@@ -786,14 +786,14 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 	this.filibuster = new ve.Filibuster()
 		.wrapClass( ve.EventSequencer )
 		.wrapNamespace( ve.dm, 've.dm', [
-			// blacklist
+			// Blacklist
 			ve.dm.LinearSelection.prototype.getDescription,
 			ve.dm.TableSelection.prototype.getDescription,
 			ve.dm.NullSelection.prototype.getDescription
 		] )
 		.wrapNamespace( ve.ce, 've.ce' )
 		.wrapNamespace( ve.ui, 've.ui', [
-			// blacklist
+			// Blacklist
 			ve.ui.Surface.prototype.startFilibuster,
 			ve.ui.Surface.prototype.stopFilibuster
 		] )

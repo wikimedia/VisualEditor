@@ -34,11 +34,11 @@ QUnit.test( 'contextChange events', function ( assert ) {
 	var surface = new ve.dm.SurfaceStub( ve.dm.example.preprocessAnnotations( [
 			{ type: 'paragraph' },
 			'F', 'o', 'o',
-			// bold "bar"
+			// Bold "bar"
 			[ 'b', [ ve.dm.example.bold ] ],
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'r', [ ve.dm.example.bold ] ],
-			// italic "baz"
+			// Italic "baz"
 			[ 'b', [ ve.dm.example.italic ] ],
 			[ 'a', [ ve.dm.example.italic ] ],
 			[ 'z', [ ve.dm.example.italic ] ],
@@ -72,7 +72,7 @@ QUnit.test( 'contextChange events', function ( assert ) {
 			expected: 0
 		},
 		{
-			// going from collapsed to not is a context change
+			// Going from collapsed to not is a context change
 			title: 'setSelection, expands over plain text',
 			initialSelection: new ve.Range( 1 ),
 			selection: new ve.Range( 1, 2 ),
@@ -100,19 +100,19 @@ QUnit.test( 'contextChange events', function ( assert ) {
 			title: 'setSelection, non-collapsed selection expands into annotated text, other direction',
 			initialSelection: new ve.Range( 12, 11 ),
 			selection: new ve.Range( 12, 8 ),
-			expected: 2 // move + insertion annotations change
+			expected: 2 // Move + insertion annotations change
 		},
 		{
 			title: 'setSelection, move collapsed selection to edge of annotated text',
 			initialSelection: new ve.Range( 2 ),
 			selection: new ve.Range( 4 ),
-			expected: 1 // move + no insertion annotations change
+			expected: 1 // Move + no insertion annotations change
 		},
 		{
 			title: 'setSelection, move collapsed selection to within annotated text',
 			initialSelection: new ve.Range( 2 ),
 			selection: new ve.Range( 5 ),
-			expected: 2 // move + insertion annotations change
+			expected: 2 // Move + insertion annotations change
 		}
 	];
 	for ( i = 0, iLen = tests.length; i < iLen; i++ ) {

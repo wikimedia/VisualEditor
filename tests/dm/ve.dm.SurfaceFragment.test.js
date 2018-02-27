@@ -738,14 +738,14 @@ QUnit.test( 'rewrapNodes', function ( assert ) {
 		expectedFragment = expectedSurface.getLinearFragment( new ve.Range( 43, 55 ) ),
 		expectedData;
 
-	// set up wrapped nodes in example document
+	// Set up wrapped nodes in example document
 	fragment.wrapNodes(
 		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
 	expectedFragment.wrapNodes(
 		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
-	// range is now 43, 59
+	// Range is now 43, 59
 
 	// Compare a rewrap operation with its equivalent unwrap + wrap
 	// This type of test can only exist if the intermediate state is valid

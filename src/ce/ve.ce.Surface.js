@@ -104,7 +104,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 
 	this.onDocumentMouseUpHandler = this.onDocumentMouseUp.bind( this );
 	this.$documentNode.on( {
-		// mouse events shouldn't be sequenced as the event sequencer
+		// Mouse events shouldn't be sequenced as the event sequencer
 		// is detached on blur
 		mousedown: this.onDocumentMouseDown.bind( this ),
 		// mouseup is bound to the whole document on mousedown
@@ -1573,11 +1573,11 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 		preUnicorn.parentNode,
 		ve.parentIndex( preUnicorn )
 	) <= 0 ) {
-		// before the pre-unicorn (including in the equality case, because the selection
+		// Before the pre-unicorn (including in the equality case, because the selection
 		// endpoint is an offset between sibling positions)
 		fixup = -1;
 	} else {
-		// at or after the pre-unicorn (actually must be after the post-unicorn)
+		// At or after the pre-unicorn (actually must be after the post-unicorn)
 		fixup = 1;
 	}
 
@@ -3704,9 +3704,9 @@ ve.ce.Surface.prototype.selectNodeContents = function ( node ) {
 	focus = ve.ce.previousCursorOffset( node.childNodes[ node.childNodes.length - 1 ] );
 	return this.showSelectionState( new ve.SelectionState( {
 		anchorNode: anchor.node,
-		anchorOffset: anchor.offset, // past the nail
+		anchorOffset: anchor.offset, // Past the nail
 		focusNode: focus.node,
-		focusOffset: focus.offset, // before the nail
+		focusOffset: focus.offset, // Before the nail
 		isCollapsed: false
 	} ) );
 };

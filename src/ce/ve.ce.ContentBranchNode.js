@@ -268,7 +268,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		dmSurface = ceSurface.getModel();
 		dmSelection = dmSurface.getTranslatedSelection();
 		if ( dmSelection instanceof ve.dm.LinearSelection && dmSelection.isCollapsed() ) {
-			// subtract 1 for CBN opening tag
+			// Subtract 1 for CBN opening tag
 			relCursor = dmSelection.getRange().start - this.getOffset() - 1;
 		}
 	}
@@ -285,7 +285,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			childLength = ( typeof htmlItem === 'string' ) ? 1 : 2;
 			if ( offset <= relCursor && relCursor < offset + childLength ) {
 				unicorn = [
-					{}, // unique object, for testing object equality later
+					{}, // Unique object, for testing object equality later
 					dmSurface.getInsertionAnnotations().storeIndexes
 				];
 				annotatedHtml.splice( i, 0, unicorn );
@@ -296,7 +296,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		// Special case for final position
 		if ( i === ilen && offset === relCursor ) {
 			unicorn = [
-				{}, // unique object, for testing object equality later
+				{}, // Unique object, for testing object equality later
 				dmSurface.getInsertionAnnotations().storeIndexes
 			];
 			annotatedHtml.push( unicorn );

@@ -97,7 +97,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				method: 'autolinkUrl',
 				expectedRangeOrSelection: new ve.Range( 1, 19 ),
 				expectedData: function () {
-					/* no change, no link */
+					// No change, no link
 				},
 				msg: 'Don\'t link if followed by word characters'
 			},
@@ -107,7 +107,7 @@ QUnit.test( 'autolink', function ( assert ) {
 				method: 'autolinkUrl',
 				expectedRangeOrSelection: new ve.Range( 1, 10 ),
 				expectedData: function () {
-					/* no change, no link */
+					// No change, no link
 				},
 				msg: 'Don\'t link if stripping leaves bare protocol'
 			}

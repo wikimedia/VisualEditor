@@ -412,7 +412,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( of
 	if (
 		!ignoreClose &&
 		this.isCloseElementData( offset ) &&
-		!ve.dm.nodeFactory.canNodeHaveChildren( this.getType( offset ) ) // leaf node
+		!ve.dm.nodeFactory.canNodeHaveChildren( this.getType( offset ) ) // Leaf node
 	) {
 		offset = this.getRelativeContentOffset( offset, -1 );
 	}
@@ -1147,7 +1147,7 @@ ve.dm.ElementLinearData.prototype.remapAnnotationIndex = function ( oldIndex, ne
 	var i, ilen, attrIndex;
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.data[ i ] === undefined || typeof this.data[ i ] === 'string' ) {
-			// common case, cheap, avoid the isArray check
+			// Common case, cheap, avoid the isArray check
 			continue;
 		} else if ( Array.isArray( this.data[ i ] ) ) {
 			attrIndex = this.data[ i ][ 1 ].indexOf( oldIndex );

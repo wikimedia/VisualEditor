@@ -39,7 +39,7 @@ ve.dm.DatetimeAnnotation.static.toDataElement = function ( domElements ) {
 ve.dm.DatetimeAnnotation.static.toDomElements = function ( dataElement, doc ) {
 	var domElement = doc.createElement( 'time' );
 	if ( dataElement.attributes.datetime ) {
-		// if it's null, don't bother creating a blank attribute; <time> alone is valid
+		// If it's null, don't bother creating a blank attribute; <time> alone is valid
 		domElement.setAttribute( 'datetime', dataElement.attributes.datetime );
 	}
 	return [ domElement ];

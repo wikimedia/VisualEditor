@@ -47,7 +47,7 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', function ( assert ) {
 		'slice: store equal by reference to original object'
 	);
 
-	// reset data
+	// Reset data
 	data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
 	expectedData = ve.copy( ve.dm.example.data );
 
@@ -68,7 +68,7 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', function ( assert ) {
 		'splice: store equal by reference to original object'
 	);
 
-	// reset data
+	// Reset data
 	data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
 	expectedData = ve.copy( ve.dm.example.data );
 

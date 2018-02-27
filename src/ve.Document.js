@@ -249,7 +249,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				// All of node is covered
 				retval.push( {
 					node: node,
-					// no 'range' because the entire node is covered
+					// No 'range' because the entire node is covered
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
 					nodeOuterRange: new ve.Range( left - isWrapped, right + isWrapped ),
@@ -366,7 +366,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				// All of node is covered
 				retval.push( {
 					node: node,
-					// no 'range' because the entire node is covered
+					// No 'range' because the entire node is covered
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
 					nodeOuterRange: new ve.Range( left - isWrapped, right + isWrapped ),
@@ -437,7 +437,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 				// All of node is covered
 				retval.push( {
 					node: node,
-					// no 'range' because the entire node is covered
+					// No 'range' because the entire node is covered
 					index: currentFrame.index,
 					nodeRange: new ve.Range( left, right ),
 					nodeOuterRange: new ve.Range( left - isWrapped, right + isWrapped ),

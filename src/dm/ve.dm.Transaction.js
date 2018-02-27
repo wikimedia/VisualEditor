@@ -58,9 +58,9 @@ OO.initClass( ve.dm.Transaction );
  * @type {Object.<string,Object.<string,string|Object.<string, string>>>}
  */
 ve.dm.Transaction.static.reversers = {
-	annotate: { method: { set: 'clear', clear: 'set' } }, // swap 'set' with 'clear'
-	attribute: { from: 'to', to: 'from' }, // swap .from with .to
-	replace: { // swap .insert with .remove
+	annotate: { method: { set: 'clear', clear: 'set' } }, // Swap 'set' with 'clear'
+	attribute: { from: 'to', to: 'from' }, // Swap .from with .to
+	replace: { // Swap .insert with .remove
 		insert: 'remove',
 		remove: 'insert'
 	}

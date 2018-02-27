@@ -81,9 +81,9 @@ ve.dm.TableMatrix.prototype.update = function () {
 	iterator.on( 'newRow', function ( rowNode ) {
 		row++;
 		col = -1;
-		// initialize a matrix row
+		// Initialize a matrix row
 		matrix[ row ] = matrix[ row ] || [];
-		// store the row node
+		// Store the row node
 		rowNodes.push( rowNode );
 	} );
 
@@ -91,7 +91,7 @@ ve.dm.TableMatrix.prototype.update = function () {
 	// so called placeholders into the matrix.
 	while ( ( cellNode = iterator.next() ) !== undefined ) {
 		col++;
-		// skip placeholders
+		// Skip placeholders
 		while ( matrix[ row ][ col ] ) {
 			col++;
 		}
@@ -100,9 +100,9 @@ ve.dm.TableMatrix.prototype.update = function () {
 			continue;
 		}
 		cell = new ve.dm.TableMatrixCell( cellNode, row, col );
-		// store the cell in the matrix
+		// Store the cell in the matrix
 		matrix[ row ][ col ] = cell;
-		// add place holders for spanned cells
+		// Add place holders for spanned cells
 		rowSpan = cellNode.getRowspan();
 		colSpan = cellNode.getColspan();
 
@@ -117,7 +117,7 @@ ve.dm.TableMatrix.prototype.update = function () {
 				}
 				r = row + i;
 				c = col + j;
-				// initialize the cell matrix row if not yet present
+				// Initialize the cell matrix row if not yet present
 				matrix[ r ] = matrix[ r ] || [];
 				matrix[ r ][ c ] = new ve.dm.TableMatrixCell( cellNode, r, c, cell );
 			}
