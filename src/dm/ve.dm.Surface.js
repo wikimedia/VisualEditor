@@ -43,12 +43,15 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.queueingContextChanges = false;
 	this.contextChangeQueued = false;
 	this.authorId = null;
+	this.lastStoredChange = 0;
+	this.autosaveFailed = false;
 
 	// Events
 	this.getDocument().connect( this, {
 		transact: 'onDocumentTransact',
 		precommit: 'onDocumentPreCommit'
 	} );
+	this.storeChangesListener = this.storeChanges.bind( this );
 };
 
 /* Inheritance */
@@ -101,6 +104,11 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 /**
  * @event undoStackChange
  * Emitted when the main undo stack changes.
+ */
+
+/**
+ * @event autosaveFailed
+ * Auto-save failed to store a change
  */
 
 /* Methods */
@@ -1186,4 +1194,95 @@ ve.dm.Surface.prototype.getAuthorId = function () {
  */
 ve.dm.Surface.prototype.setAuthorId = function ( authorId ) {
 	this.authorId = authorId;
+};
+
+/**
+ * Store latest transactions into session storage
+ */
+ve.dm.Surface.prototype.storeChanges = function () {
+	var dmDoc, change;
+
+	if ( this.autosaveFailed ) {
+		return;
+	}
+
+	dmDoc = this.getDocument();
+	change = dmDoc.getChangeSince( this.lastStoredChange );
+	if ( !change.isEmpty() ) {
+		if ( ve.init.platform.appendToSessionList( 've-changes', JSON.stringify( change.serialize() ) ) ) {
+			this.lastStoredChange = dmDoc.getCompleteHistoryLength();
+		} else {
+			// Auto-save failed probably because of memory limits
+			// so flag it so we don't keep trying in vain.
+			this.autosaveFailed = true;
+			this.emit( 'autosaveFailed' );
+		}
+	}
+};
+
+/**
+ * Start storing changes after very undoStackChange
+ */
+ve.dm.Surface.prototype.startStoringChanges = function () {
+	this.on( 'undoStackChange', this.storeChangesListener );
+};
+
+/**
+ * Stop storing changes
+ */
+ve.dm.Surface.prototype.stopStoringChanges = function () {
+	this.off( 'undoStackChange', this.storeChangesListener );
+};
+
+/**
+ * Restore transactions from session storage
+ *
+ * @return {boolean} Some changes were restored
+ * @throws {Error} Failed to restore auto-saved session
+ */
+ve.dm.Surface.prototype.restoreChanges = function () {
+	var surface = this,
+		restored = false,
+		changes = ve.init.platform.getSessionList( 've-changes' );
+
+	try {
+		changes.forEach( function ( changeString ) {
+			var data = JSON.parse( changeString ),
+				change = ve.dm.Change.static.deserialize( data, surface.getDocument() );
+			change.applyTo( surface );
+			surface.breakpoint();
+		} );
+		restored = !!changes.length;
+	} catch ( e ) {
+		throw new Error( 'Failed to restore auto-saved session: ' + e );
+	}
+
+	this.lastStoredChange = this.getDocument().getCompleteHistoryLength();
+
+	return restored;
+};
+
+/**
+ * Store a snapshot of the current document state.
+ *
+ * @param {Object} [state] JSONable object describing document state
+ * @param {string} [html] Document HTML, will generate from current state if not provided
+ */
+ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
+	// Clear any changes that may have stored up to this point
+	this.removeDocStateAndChanges();
+	if ( state ) {
+		ve.init.platform.setSession( 've-docstate', JSON.stringify( state ) );
+	}
+	// Store HTML separately to avoid wasteful JSON encoding
+	ve.init.platform.setSession( 've-dochtml', html || this.getHtml() );
+};
+
+/**
+ * Remove the auto-saved document state and stashed changes
+ */
+ve.dm.Surface.prototype.removeDocStateAndChanges = function () {
+	ve.init.platform.removeSession( 've-docstate' );
+	ve.init.platform.removeSession( 've-dochtml' );
+	ve.init.platform.removeSessionList( 've-changes' );
 };

@@ -37,6 +37,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		icon: 'trash',
 		label: 'Remove surface'
 	} );
+	this.autosaveToggle = new OO.ui.ToggleButtonWidget( {
+		label: 'Auto-save',
+		value: !!ve.init.platform.getSession( 've-dochtml' )
+	} );
 	saveButton = new OO.ui.ButtonWidget( {
 		label: 'Save HTML'
 	} );
@@ -57,11 +61,11 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	this.target = target;
 	this.surface = null;
+	this.page = '';
 	this.lang = lang;
 	this.dir = dir;
 	this.$surfaceWrapper = $( '<div>' ).addClass( 've-demo-surfaceWrapper' );
 	this.mode = null;
-	this.start = null;
 	this.pageMenu = pageDropdown.getMenu();
 	this.$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
 
@@ -94,6 +98,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 				$divider.clone(),
 				removeButton.$element,
 				$divider.clone(),
+				this.autosaveToggle.$element,
 				saveButton.$element,
 				$divider.clone(),
 				diffButton.$element
@@ -140,12 +145,6 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
 			data: 'localStorage/ve-demo-saved-markup',
 			label: 'Saved',
 			disabled: !localStorage.getItem( 've-demo-saved-markup' )
-		} )
-	);
-	items.push(
-		new OO.ui.MenuOptionWidget( {
-			data: 'sessionStorage/ve-dochtml',
-			label: 'Session auto-save'
 		} )
 	);
 	return items;
@@ -233,17 +232,15 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
 	var container = this;
 
+	this.page = src;
+
 	container.emit( 'changePage' );
 
 	ve.init.platform.getInitializedPromise().done( function () {
 		( container.surface ? container.surface.$element.slideUp().promise() : $.Deferred().resolve().promise() ).done( function () {
-			var localMatch = src.match( /^localStorage\/(.+)$/ ),
-				sessionMatch = src.match( /^sessionStorage\/(.+)$/ );
+			var localMatch = src.match( /^localStorage\/(.+)$/ );
 			if ( localMatch ) {
 				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
-				return;
-			} else if ( sessionMatch ) {
-				container.loadHtml( '', mode, true );
 				return;
 			}
 			$.ajax( {
@@ -269,17 +266,27 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
  *
  * @param {string} pageHtml HTML string
  * @param {string} mode Edit mode
- * @param {boolean} autoSave Auto save
  */
-ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSave ) {
-	var dmDoc, changes, surfaceModel,
+ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
+	var surfaceModel, state, page,
+		restored = false,
 		container = this;
 
 	if ( this.surface ) {
 		this.surface.destroy();
 	}
 
-	this.start = 0;
+	if ( this.autosaveToggle.getValue() ) {
+		state = ve.init.platform.getSession( 've-docstate' );
+		try {
+			page = JSON.parse( state ).page;
+		} catch ( e ) {}
+		if ( page === this.page ) {
+			pageHtml = ve.init.platform.getSession( 've-dochtml' );
+			restored = true;
+		}
+	}
+
 	this.surface = this.target.addSurface(
 		ve.dm.converter.getModelFromDom(
 			this.target.constructor.static.parseDocument( pageHtml, mode ),
@@ -290,27 +297,24 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode, autoSav
 
 	this.target.setSurface( this.surface );
 
-	dmDoc = this.surface.getModel().getDocument();
-	this.oldDoc = dmDoc.cloneFromRange();
-
-	if ( autoSave ) {
-		surfaceModel = this.surface.getModel();
-		changes = ve.init.platform.getSessionList( 've-changes' );
-		changes.forEach( function ( changeString ) {
-			var data = JSON.parse( changeString ),
-				change = ve.dm.Change.static.deserialize( data, surfaceModel.getDocument() );
-			change.applyTo( surfaceModel );
-			surfaceModel.breakpoint();
-		} );
-		this.start = surfaceModel.getDocument().getCompleteHistoryLength();
-		this.surface.model.on( 'undoStackChange', function () {
-			var change = dmDoc.getChangeSince( container.start );
-			if ( !change.isEmpty() ) {
-				ve.init.platform.appendToSessionList( 've-changes', JSON.stringify( change.serialize() ) );
-				container.start = dmDoc.getCompleteHistoryLength();
-			}
-		} );
+	surfaceModel = this.surface.getModel();
+	this.oldDoc = surfaceModel.getDocument().cloneFromRange();
+	if ( this.autosaveToggle.getValue() ) {
+		if ( restored ) {
+			surfaceModel.restoreChanges();
+		}
+		surfaceModel.storeDocState( { page: this.page }, pageHtml );
+		surfaceModel.startStoringChanges();
 	}
+	this.autosaveToggle.on( 'change', function ( val ) {
+		if ( val ) {
+			surfaceModel.storeDocState( { page: container.page } );
+			surfaceModel.startStoringChanges();
+		} else {
+			surfaceModel.stopStoringChanges();
+			surfaceModel.removeDocStateAndChanges();
+		}
+	} );
 
 	this.$surfaceWrapper.empty().append( this.surface.$element.parent() );
 	this.surface.$element.hide().slideDown().promise().done( function () {
