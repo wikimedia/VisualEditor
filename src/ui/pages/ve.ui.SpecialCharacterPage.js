@@ -35,6 +35,9 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 		if ( !source && characters[ character ].source ) {
 			continue;
 		}
+		if ( character === 'attributes' ) {
+			continue;
+		}
 		characterNode = document.createElement( 'div' );
 		characterNode.className = 've-ui-specialCharacterPage-character';
 		if ( characters[ character ].titleMsg ) {
@@ -46,6 +49,11 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 		characterNode.textContent = character;
 		$.data( characterNode, 'character', characters[ character ] );
 		charactersNode.appendChild( characterNode );
+	}
+
+	if ( characters.attributes ) {
+		$characters.attr( 'lang', characters.attributes.lang );
+		$characters.attr( 'dir', characters.attributes.dir );
 	}
 
 	this.$element
