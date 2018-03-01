@@ -9,7 +9,8 @@
 			"Sayak Sarkar",
 			"Aftabuzzaman",
 			"RYasmeen (WMF)",
-			"Elias Ahmmad"
+			"Elias Ahmmad",
+			"Ahm masum"
 		]
 	},
 	"visualeditor": "দৃশ্যমান সম্পাদনা",
@@ -118,6 +119,8 @@
 	"visualeditor-key-insert": "যোগ করুন",
 	"visualeditor-key-left": "বামে",
 	"visualeditor-key-meta": "মেটা",
+	"visualeditor-key-page-down": "পৃষ্ঠা নিচে নামানো",
+	"visualeditor-key-page-up": "উপরের পাতা",
 	"visualeditor-key-right": "ডানে",
 	"visualeditor-key-space": "শূন্যস্থান",
 	"visualeditor-key-tab": "ট্যাব",

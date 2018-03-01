@@ -23,7 +23,8 @@
 			"Wikitoni",
 			"Nemo bis",
 			"Fringio",
-			"Kaspo"
+			"Kaspo",
+			"S4b1nuz E.656"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -70,6 +71,8 @@
 	"visualeditor-debugbar-close": "Chiudi",
 	"visualeditor-debugbar-logrange": "Registro",
 	"visualeditor-debugbar-showmodel": "Mostra modello",
+	"visualeditor-debugbar-startfilibuster": "Filibustiere",
+	"visualeditor-debugbar-stopfilibuster": "Ferma il filibustiere",
 	"visualeditor-dialog-action-apply": "Applica modifiche",
 	"visualeditor-dialog-action-cancel": "Annulla",
 	"visualeditor-dialog-action-done": "Fatto",
