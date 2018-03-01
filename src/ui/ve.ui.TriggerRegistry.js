@@ -197,6 +197,9 @@ ve.ui.triggerRegistry.register(
 	'selectAll', { mac: new ve.ui.Trigger( 'cmd+a' ), pc: new ve.ui.Trigger( 'ctrl+a' ) }
 );
 ve.ui.triggerRegistry.register(
+	'delete', { mac: new ve.ui.Trigger( 'ctrl+d' ) }
+);
+ve.ui.triggerRegistry.register(
 	'pasteSpecial', {
 		mac: new ve.ui.Trigger( 'cmd+option+shift+v' ),
 		pc: new ve.ui.Trigger( 'ctrl+shift+v' )
