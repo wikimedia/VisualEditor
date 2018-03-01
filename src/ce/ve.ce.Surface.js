@@ -1212,7 +1212,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 ve.ce.Surface.prototype.isBlockedTrigger = function ( trigger ) {
 	var platformKey = ve.getSystemPlatform() === 'mac' ? 'mac' : 'pc',
 		blocked = {
-			mac: [ 'meta+b', 'meta+i', 'meta+u', 'meta+z', 'meta+y', 'meta+shift+z', 'tab', 'shift+tab', 'meta+[', 'meta+]' ],
+			mac: [ 'cmd+b', 'cmd+i', 'cmd+u', 'cmd+z', 'cmd+y', 'cmd+shift+z', 'tab', 'shift+tab', 'cmd+[', 'cmd+]' ],
 			pc: [ 'ctrl+b', 'ctrl+i', 'ctrl+u', 'ctrl+z', 'ctrl+y', 'ctrl+shift+z', 'tab', 'shift+tab' ]
 		};
 
