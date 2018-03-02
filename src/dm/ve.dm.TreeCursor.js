@@ -51,7 +51,7 @@ ve.dm.TreeCursor.prototype.normalize = function ( tooShort ) {
 		tooShort = -1;
 	}
 	// If at the end of a text node, step out
-	if ( this.node instanceof ve.dm.TextNode && this.offset === this.node.length ) {
+	if ( this.node.type === 'text' && this.offset === this.node.length ) {
 		this.nodes.pop();
 		this.node = this.nodes[ this.nodes.length - 1 ];
 		this.offset = this.path.pop() + 1;
@@ -71,7 +71,7 @@ ve.dm.TreeCursor.prototype.normalize = function ( tooShort ) {
 	if (
 		this.node.hasChildren() &&
 		( item = this.node.children[ this.offset ] ) &&
-		item instanceof ve.dm.TextNode &&
+		item.type === 'text' &&
 		item.length > tooShort
 	) {
 		this.node = item;
@@ -90,7 +90,7 @@ ve.dm.TreeCursor.prototype.normalize = function ( tooShort ) {
  */
 ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
 	var expected = this.node.getOffset();
-	if ( this.node instanceof ve.dm.TextNode ) {
+	if ( this.node.type === 'text' ) {
 		expected += this.offset;
 	} else {
 		if ( this.node !== this.root ) {
@@ -135,7 +135,7 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 	}
 	this.checkLinearOffset();
 	this.normalize( maxLength );
-	if ( this.node instanceof ve.dm.TextNode ) {
+	if ( this.node.type === 'text' ) {
 		// We cannot be the end, because we just normalized
 		length = Math.min( maxLength, this.node.length - this.offset );
 		step = {
@@ -232,14 +232,14 @@ ve.dm.TreeCursor.prototype.adjustPath = function ( path, offset, adjustment, lin
 ve.dm.TreeCursor.prototype.stepIn = function () {
 	var item, length, step;
 	if (
-		this.node instanceof ve.dm.TextNode ||
+		this.node.type === 'text' ||
 		!this.node.hasChildren() ||
 		this.offset >= this.node.children.length
 	) {
 		throw new Error( 'No node to step into' );
 	}
 	item = this.node.children[ this.offset ];
-	length = item instanceof ve.dm.TextNode ? 0 : 1;
+	length = item.type === 'text' ? 0 : 1;
 	step = {
 		type: 'open',
 		length: length,
@@ -273,7 +273,7 @@ ve.dm.TreeCursor.prototype.stepOut = function () {
 		this.lastStep = undefined;
 		return undefined;
 	}
-	if ( item instanceof ve.dm.TextNode ) {
+	if ( item.type === 'text' ) {
 		this.linearOffset += item.getLength() - priorOffset;
 	} else {
 		if ( item.hasChildren() ) {
@@ -287,7 +287,7 @@ ve.dm.TreeCursor.prototype.stepOut = function () {
 	}
 	step = {
 		type: 'close',
-		length: item instanceof ve.dm.TextNode ? 0 : 1,
+		length: item.type === 'text' ? 0 : 1,
 		path: this.path.slice(),
 		node: this.node,
 		offset: this.offset,
