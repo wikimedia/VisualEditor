@@ -303,8 +303,9 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 		if ( restored ) {
 			surfaceModel.restoreChanges();
 		}
-		surfaceModel.storeDocState( { page: this.page }, pageHtml );
 		surfaceModel.startStoringChanges();
+		// storeDocState can call stopStoringChanges if it fails.
+		surfaceModel.storeDocState( { page: this.page }, pageHtml );
 	}
 	this.autosaveToggle.on( 'change', function ( val ) {
 		if ( val ) {

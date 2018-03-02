@@ -1267,15 +1267,25 @@ ve.dm.Surface.prototype.restoreChanges = function () {
  *
  * @param {Object} [state] JSONable object describing document state
  * @param {string} [html] Document HTML, will generate from current state if not provided
+ * @return {boolean} Doc state was successfully stored
  */
 ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 	// Clear any changes that may have stored up to this point
 	this.removeDocStateAndChanges();
 	if ( state ) {
-		ve.init.platform.setSession( 've-docstate', JSON.stringify( state ) );
+		if ( !ve.init.platform.setSession( 've-docstate', JSON.stringify( state ) ) ) {
+			this.stopStoringChanges();
+			return false;
+		}
 	}
 	// Store HTML separately to avoid wasteful JSON encoding
-	ve.init.platform.setSession( 've-dochtml', html || this.getHtml() );
+	if ( !ve.init.platform.setSession( 've-dochtml', html || this.getHtml() ) ) {
+		// If we failed to store the html, wipe the docstate
+		ve.init.platform.removeSession( 've-docstate' );
+		this.stopStoringChanges();
+		return false;
+	}
+	return true;
 };
 
 /**
