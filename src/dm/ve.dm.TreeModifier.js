@@ -114,7 +114,7 @@ ve.dm.TreeModifier.prototype.processImplicitFinalRetain = function () {
 		) ) {
 			return;
 		}
-		if ( node instanceof ve.dm.TextNode ) {
+		if ( node.type === 'text' ) {
 			// Retain all remaining text; if there is no remaining text then
 			// retain a single offset.
 			retainLength = Math.max( 1, node.length - this.remover.offset );
@@ -164,20 +164,23 @@ ve.dm.TreeModifier.prototype.undoLinearSplices = function () {
  * This may require creating a new text node
  */
 ve.dm.TreeModifier.prototype.ensureTextNode = function () {
-	if ( this.inserter.node instanceof ve.dm.TextNode ) {
+	var pre, post;
+	if ( this.inserter.node.type === 'text' ) {
 		return;
 	}
 	if ( !this.inserter.node.hasChildren() ) {
 		throw new Error( 'Cannot ensureTextNode in childless node' );
 	}
+	pre = this.inserter.node.children[ this.inserter.offset - 1 ];
+	post = this.inserter.node.children[ this.inserter.offset ];
 	// Position the cursor inside a text node
-	if ( this.inserter.node.children[ this.inserter.offset ] instanceof ve.dm.TextNode ) {
+	if ( post && post.type === 'text' ) {
 		// The next node is a text node; step in
 		if ( this.cursorsMatch() ) {
 			this.remover.stepIn();
 		}
 		this.inserter.stepIn();
-	} else if ( this.inserter.node.children[ this.inserter.offset - 1 ] instanceof ve.dm.TextNode ) {
+	} else if ( pre && pre.type === 'text' ) {
 		// The previous node is a text node; move backwards, step in and jump to the end
 		if ( this.cursorsMatch() ) {
 			this.remover.offset--;
@@ -206,7 +209,7 @@ ve.dm.TreeModifier.prototype.ensureNotTextNode = function () {
 	var length, newNode,
 		node = this.inserter.node,
 		offset = this.inserter.offset;
-	if ( !( node instanceof ve.dm.TextNode ) ) {
+	if ( !( node.type === 'text' ) ) {
 		return;
 	}
 	this.inserter.stepOut();
@@ -249,7 +252,7 @@ ve.dm.TreeModifier.prototype.removeNode = function () {
 	// If the removal caused two text nodes to be adjacent, then merge them
 	pre = this.remover.node.children[ this.remover.offset - 1 ];
 	post = this.remover.node.children[ this.remover.offset ];
-	if ( pre instanceof ve.dm.TextNode && post instanceof ve.dm.TextNode ) {
+	if ( pre && pre.type === 'text' && post && post.type === 'text' ) {
 		// Lengthen the text node before the remover, and remove the text node after it
 
 		// TODO: these operations are not tree synchronization safe. Should do two
@@ -360,7 +363,7 @@ ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
 		this.inserter.stepIn();
 		this.deletions.push( removerStep.item );
 	} else if ( removerStep.type === 'close' ) {
-		if ( inserter.node instanceof ve.dm.TextNode ) {
+		if ( inserter.node.type === 'text' ) {
 			inserter.stepOut();
 		}
 		inserterStep = inserter.stepOut();
@@ -451,7 +454,7 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 	}
 
 	if ( type === 'open' ) {
-		if ( inserter.node instanceof ve.dm.TextNode ) {
+		if ( inserter.node.type === 'text' ) {
 			// Step past the end of the text node, even if that skips past some
 			// content (in which case the remover logically must later cross that
 			// content in either processRemove or processRetain).
@@ -468,7 +471,7 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 		// Step past the next close tag, even if that skips past some content (in which
 		// case the remover logically must later cross that content in either
 		// processRemove or processRetain).
-		if ( inserter.node instanceof ve.dm.TextNode ) {
+		if ( inserter.node.type === 'text' ) {
 			inserter.stepOut();
 		}
 		step = inserter.stepOut();
@@ -490,7 +493,7 @@ ve.dm.TreeModifier.prototype.cloneLastOpen = function () {
 	}
 	element = step.item.getClonedElement();
 	node = ve.dm.nodeFactory.createFromElement( element );
-	if ( this.inserter.node instanceof ve.dm.TextNode ) {
+	if ( this.inserter.node.type === 'text' ) {
 		this.inserter.stepOut();
 	}
 	// This will crash if not a BranchNode (showing the tx is invalid)

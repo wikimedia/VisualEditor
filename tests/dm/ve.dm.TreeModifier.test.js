@@ -17,7 +17,7 @@ ve.dm.TreeModifier.prototype.dump = function () {
 	}
 	function appendNodeLines( indent, node, idx ) {
 		var sp = '-\t'.repeat( indent );
-		if ( node instanceof ve.dm.TextNode ) {
+		if ( node.type === 'text' ) {
 			lines.push( sp + nodeTag( idx, node ) + 'VeDmTextNode(' + node.getOuterLength() + ')' );
 			return;
 		}
