@@ -133,7 +133,10 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 		this.lastStep = undefined;
 		return undefined;
 	}
-	this.checkLinearOffset();
+	// On very large pages this is a performance bottleneck, so only run in tests
+	if ( ve.test ) {
+		this.checkLinearOffset();
+	}
 	this.normalize( maxLength );
 	if ( this.node instanceof ve.dm.TextNode ) {
 		// We cannot be the end, because we just normalized
