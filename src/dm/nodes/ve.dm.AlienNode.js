@@ -62,6 +62,25 @@ ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc, converter ) 
 	return ve.copyDomElements( converter.getStore().value( dataElement.originalDomElementsHash ) || [], doc );
 };
 
+/**
+ * @inheritdoc
+ */
+ve.dm.AlienNode.static.isDiffComparable = function ( element, other ) {
+	return element.type === other.type && element.originalDomElementsHash === other.originalDomElementsHash;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.AlienNode.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		// Some comparison methods ignore the originalDomElementsHash
+		// property. Rename it so it doesn't get ignored for alien nodes.
+		alienDomElementsHash: dataElement.originalDomElementsHash
+	};
+};
+
 /* Concrete subclasses */
 
 /**

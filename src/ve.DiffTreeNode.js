@@ -43,7 +43,7 @@ ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
 			JSON.stringify( otherNode.doc.getData( otherNode.node.getOuterRange() ) );
 	} else {
 		return ( this.node.getType() === otherNode.node.getType() &&
-			ve.compare( this.node.getAttributes(), otherNode.node.getAttributes() ) );
+			ve.compare( this.node.getHashObject(), otherNode.node.getHashObject() ) );
 	}
 };
 
