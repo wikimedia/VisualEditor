@@ -4,7 +4,7 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconWidget.oo-ui-iconElement {
+.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement {
 	/* Support: Blink, Gecko, Webkit */
 	/* Specify a valid second value to fix size, see T176636 */
 	font-family: monospace, monospace;
@@ -16,10 +16,10 @@
 	width: auto;
 }
 
-.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconWidget.oo-ui-iconElement .oo-ui-labelElement-label {
+.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement .oo-ui-labelElement-label {
 	margin-left: 0;
 	margin-right: 0.25em;
 }
-.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconWidget.oo-ui-iconElement .oo-ui-iconElement-icon {
+.ve-ce-commentNode > .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement .oo-ui-iconElement-icon {
 	height: auto;
 }
