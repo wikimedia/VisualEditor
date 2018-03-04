@@ -279,18 +279,30 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
  * @return {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, method, annotation ) {
-	var covered, annotatable,
-		txBuilder = new ve.dm.TransactionBuilder(),
+	var i, iLen, covered, annotatable, txBuilder,
+		clear = method === 'clear',
+		run = null,
+		runs = [],
 		data = doc.data,
 		hash = doc.getStore().hash( annotation ),
-		i = range.start,
-		span = i,
-		on = false,
 		insideContentNode = false,
 		ignoreChildrenDepth = 0;
 
-	// Iterate over all data in range, annotating where appropriate
-	while ( i < range.end ) {
+	function startRun() {
+		run = {
+			start: i,
+			end: null
+		};
+	}
+
+	function endRun() {
+		run.end = i;
+		runs.push( run );
+		run = null;
+	}
+
+	// Iterate over all data in range, finding "runs" to annotate
+	for ( i = range.start; i < range.end; i++ ) {
 		if ( data.isElementData( i ) && ve.dm.nodeFactory.shouldIgnoreChildren( data.getType( i ) ) ) {
 			ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
 		}
@@ -301,58 +313,63 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 			( insideContentNode && !data.isCloseElementData( i ) )
 		) {
 			// Structural element opening or closing, or entering a content node
-			if ( on ) {
-				txBuilder.pushRetain( span );
-				txBuilder.pushStopAnnotating( method, hash );
-				span = 0;
-				on = false;
+			if ( run ) {
+				endRun();
 			}
-		} else if (
-			( !data.isElementData( i ) || !data.isCloseElementData( i ) ) &&
-			!insideContentNode
-		) {
-			// Character or content element opening
-			if ( data.isElementData( i ) ) {
-				insideContentNode = true;
-			}
-			if ( method === 'set' ) {
-				// Don't re-apply matching annotation
-				covered = data.getAnnotationsFromOffset( i ).containsComparable( annotation );
-			} else {
-				// Expect comparable annotations to be removed individually otherwise
-				// we might try to remove more than one annotation per character, which
-				// a single transaction can't do.
-				covered = data.getAnnotationsFromOffset( i ).contains( annotation );
-			}
-			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
-				// Skip annotated content
-				if ( on ) {
-					txBuilder.pushRetain( span );
-					txBuilder.pushStopAnnotating( method, hash );
-					span = 0;
-					on = false;
-				}
-			} else {
-				// Cover non-annotated content
-				if ( !on ) {
-					txBuilder.pushRetain( span );
-					txBuilder.pushStartAnnotating( method, hash );
-					span = 0;
-					on = true;
-				}
-			}
-		} else if ( data.isCloseElementData( i ) ) {
+			continue;
+		}
+
+		if ( data.isCloseElementData( i ) ) {
 			// Content closing, skip
 			insideContentNode = false;
+			continue;
 		}
-		span++;
-		i++;
+
+		if ( insideContentNode ) {
+			continue;
+		}
+
+		// Else we're annotatable, not inside a content node, and have character or
+		// content element opening
+		if ( data.isElementData( i ) ) {
+			insideContentNode = true;
+		}
+		if ( !clear ) {
+			// Don't re-apply matching annotation
+			covered = data.getAnnotationsFromOffset( i ).containsComparable( annotation );
+		} else {
+			// Expect comparable annotations to be removed individually otherwise
+			// we might try to remove more than one annotation per character, which
+			// a single transaction can't do.
+			covered = data.getAnnotationsFromOffset( i ).contains( annotation );
+		}
+		if ( run && (
+			( clear && !covered ) ||
+			( !clear && covered )
+		) ) {
+			// Don't clear already unannotated content, or set already annotated content
+			endRun();
+		}
+		if ( !run && (
+			( clear && covered ) ||
+			( !clear && !covered )
+		) ) {
+			// Clear annotated content, or set unannotated content
+			startRun();
+		}
 	}
-	txBuilder.pushRetain( span );
-	if ( on ) {
+	if ( run ) {
+		endRun();
+	}
+	txBuilder = new ve.dm.TransactionBuilder();
+	for ( i = 0, iLen = runs.length; i < iLen; i++ ) {
+		run = runs[ i ];
+		txBuilder.pushRetain( run.start - ( i > 0 ? runs[ i - 1 ].end : 0 ) );
+		txBuilder.pushStartAnnotating( method, hash );
+		txBuilder.pushRetain( run.end - run.start );
 		txBuilder.pushStopAnnotating( method, hash );
 	}
-	txBuilder.pushFinalRetain( doc, range.end );
+	txBuilder.pushFinalRetain( doc, runs.length > 0 ? runs[ runs.length - 1 ].end : 0 );
 	return txBuilder.getTransaction();
 };
 
