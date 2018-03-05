@@ -279,7 +279,7 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
  * @return {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, method, annotation ) {
-	var i, iLen, covered, annotatable, txBuilder,
+	var i, iLen, covered, arrayIndex, annotatable, txBuilder,
 		clear = method === 'clear',
 		run = null,
 		runs = [],
@@ -288,15 +288,31 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 		insideContentNode = false,
 		ignoreChildrenDepth = 0;
 
+	/**
+	 * Return the array index of the annotation in the annotation array for the offset
+	 *
+	 * @param {number} offset Document offset
+	 * @return {number} Index in the annotation array (-1 if not present)
+	 */
+	function findAnnotation() {
+		return data.getAnnotationHashesFromOffset( i ).lastIndexOf( hash );
+	}
+
 	function startRun() {
 		run = {
 			start: i,
-			end: null
+			end: null,
+			spliceAt: clear ? findAnnotation() : null
 		};
 	}
 
 	function endRun() {
 		run.end = i;
+		if ( !clear ) {
+			run.spliceAt = data.getCommonAnnotationArrayLength(
+				new ve.Range( run.start, i )
+			);
+		}
 		runs.push( run );
 		run = null;
 	}
@@ -341,33 +357,38 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 			// Expect comparable annotations to be removed individually otherwise
 			// we might try to remove more than one annotation per character, which
 			// a single transaction can't do.
-			covered = data.getAnnotationsFromOffset( i ).contains( annotation );
+			arrayIndex = findAnnotation();
 		}
 		if ( run && (
-			( clear && !covered ) ||
+			( clear && arrayIndex !== run.spliceAt ) ||
 			( !clear && covered )
 		) ) {
-			// Don't clear already unannotated content, or set already annotated content
+			// Inside a run and:
+			// - if clearing, annotation is absent entirely or at a new array index
+			// - if setting, Matching annotation is present already
 			endRun();
 		}
 		if ( !run && (
-			( clear && covered ) ||
+			( clear && arrayIndex > -1 ) ||
 			( !clear && !covered )
 		) ) {
-			// Clear annotated content, or set unannotated content
+			// Not inside a run, and:
+			// - if clearing, annotation is present
+			// - if setting, annotation is not present
 			startRun();
 		}
 	}
 	if ( run ) {
 		endRun();
 	}
+
 	txBuilder = new ve.dm.TransactionBuilder();
 	for ( i = 0, iLen = runs.length; i < iLen; i++ ) {
 		run = runs[ i ];
 		txBuilder.pushRetain( run.start - ( i > 0 ? runs[ i - 1 ].end : 0 ) );
-		txBuilder.pushStartAnnotating( method, hash );
+		txBuilder.pushStartAnnotating( method, hash, run.spliceAt );
 		txBuilder.pushRetain( run.end - run.start );
-		txBuilder.pushStopAnnotating( method, hash );
+		txBuilder.pushStopAnnotating( method, hash, run.spliceAt );
 	}
 	txBuilder.pushFinalRetain( doc, runs.length > 0 ? runs[ runs.length - 1 ].end : 0 );
 	return txBuilder.getTransaction();
@@ -825,10 +846,11 @@ ve.dm.TransactionBuilder.prototype.pushAttributeChanges = function ( changes, ol
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} hash Store hash of annotation object to start setting or clearing from content data
+ * @param {string} hash Store hash of annotation object to start setting or clearing from content data
+ * @param {number} spliceAt Annotation array index at which to splice
  */
-ve.dm.TransactionBuilder.prototype.pushStartAnnotating = function ( method, hash ) {
-	this.transaction.pushAnnotateOp( method, 'start', hash );
+ve.dm.TransactionBuilder.prototype.pushStartAnnotating = function ( method, hash, spliceAt ) {
+	this.transaction.pushAnnotateOp( method, 'start', hash, spliceAt );
 };
 
 /**
@@ -836,10 +858,11 @@ ve.dm.TransactionBuilder.prototype.pushStartAnnotating = function ( method, hash
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} hash Store hash of annotation object to stop setting or clearing from content data
+ * @param {string} hash Store hash of annotation object to stop setting or clearing from content data
+ * @param {number} spliceAt Annotation array hash at which to splice
  */
-ve.dm.TransactionBuilder.prototype.pushStopAnnotating = function ( method, hash ) {
-	this.transaction.pushAnnotateOp( method, 'stop', hash );
+ve.dm.TransactionBuilder.prototype.pushStopAnnotating = function ( method, hash, spliceAt ) {
+	this.transaction.pushAnnotateOp( method, 'stop', hash, spliceAt );
 };
 
 /**
