@@ -30,6 +30,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Pakelti",
 	"visualeditor-annotationbutton-underline-tooltip": "Pabraukti",
 	"visualeditor-changedesc-changed": "$1 pakeistas iš $2 į $3",
+	"visualeditor-changedesc-comment": "Komentaras pakeistas iš $1 į $2",
 	"visualeditor-changedesc-image-size": "Dydis pakeistas iš $1 į $2",
 	"visualeditor-changedesc-language": "Kalba pakeista iš $1 į $2",
 	"visualeditor-changedesc-link-href": "Nuoroda pakeista iš $1 į $2",
