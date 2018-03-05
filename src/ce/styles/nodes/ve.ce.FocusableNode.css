@@ -57,6 +57,8 @@
 	height: 24px;
 }
 
+/* Selector for comment node, which isn't an iconWidget */
+.ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement,
 .ve-ce-focusableNode-invisibleIcon.oo-ui-iconWidget.oo-ui-iconElement {
 	display: block;
 	/* Don't scale icon in headings etc. */
