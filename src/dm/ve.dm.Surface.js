@@ -648,20 +648,20 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
 	// Search for links at start/end that don't cover the whole range.
 	// Assume at most one such link at each end.
 	rangeAnnotations = linearData.getAnnotationsFromRange( range );
-	startLink = getLinks( start ).diffWith( rangeAnnotations ).getIndex( 0 );
-	endLink = getLinks( end ).diffWith( rangeAnnotations ).getIndex( 0 );
+	startLink = getLinks( start ).diffWith( rangeAnnotations ).getHash( 0 );
+	endLink = getLinks( end ).diffWith( rangeAnnotations ).getHash( 0 );
 
 	if ( startLink === undefined && endLink === undefined ) {
 		return range;
 	}
 
 	if ( startLink !== undefined ) {
-		while ( start > 0 && getLinks( start - 1 ).containsIndex( startLink ) ) {
+		while ( start > 0 && getLinks( start - 1 ).containsHash( startLink ) ) {
 			start--;
 		}
 	}
 	if ( endLink !== undefined ) {
-		while ( end < linearData.getLength() && getLinks( end ).containsIndex( endLink ) ) {
+		while ( end < linearData.getLength() && getLinks( end ).containsHash( endLink ) ) {
 			end++;
 		}
 	}

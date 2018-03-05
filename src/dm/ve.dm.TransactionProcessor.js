@@ -248,7 +248,7 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var annotationsForOffset, setIndex, isElement, annotations, i;
+	var annotationHashesForOffset, setIndex, isElement, annotations, i;
 
 	function setAndClear( anns, set, clear, index ) {
 		if ( anns.containsAnyOf( set ) ) {
@@ -267,16 +267,12 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		return;
 	}
 	// Set/clear annotations on data
-	annotationsForOffset = [];
+	annotationHashesForOffset = [];
 	for ( i = this.cursor; i < to; i++ ) {
-		annotationsForOffset[ i - this.cursor ] = this.document.data.getAnnotationsFromOffset( i );
+		annotationHashesForOffset[ i - this.cursor ] = this.document.data.getAnnotationHashesFromOffset( i );
 	}
 	// Calculate highest offset below which annotations are uniform across the whole range
-	setIndex = ve.getCommonStartSequenceLength(
-		annotationsForOffset.map( function ( annotations ) {
-			return annotations.storeIndexes;
-		} )
-	);
+	setIndex = ve.getCommonStartSequenceLength( annotationHashesForOffset );
 
 	for ( i = this.cursor; i < to; i++ ) {
 		isElement = this.document.data.isElementData( i );
@@ -291,7 +287,7 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 		}
 		annotations = this.document.data.getAnnotationsFromOffset( i );
 		setAndClear( annotations, this.set, this.clear, setIndex );
-		// Store annotation indexes in linear model
+		// Store annotation hashes in linear model
 		this.queueModification( {
 			type: 'annotateData',
 			args: [ i, annotations ]

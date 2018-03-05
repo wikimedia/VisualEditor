@@ -1,7 +1,7 @@
 /*!
  * VisualEditor LinearData class.
  *
- * Class containing linear data and an index-value store.
+ * Class containing linear data and an hash-value store.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -11,7 +11,7 @@
  *
  * @class
  * @constructor
- * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {ve.dm.HashValueStore} store Hash-value store
  * @param {Array} [data] Linear data
  */
 ve.dm.LinearData = function VeDmLinearData( store, data ) {
@@ -125,10 +125,10 @@ ve.dm.LinearData.prototype.getLength = function () {
 };
 
 /**
- * Gets the index-value store
+ * Gets the hash-value store
  *
  * @method
- * @return {ve.dm.IndexValueStore} The index-value store
+ * @return {ve.dm.HashValueStore} The hash-value store
  */
 ve.dm.LinearData.prototype.getStore = function () {
 	return this.store;

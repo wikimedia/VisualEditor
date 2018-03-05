@@ -247,7 +247,7 @@ ve.ce.GeneratedContentNode.prototype.validateGeneratedContents = function () {
  */
 ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
 	var store = this.model.doc.getStore(),
-		contents = store.value( store.indexOfValue( null, OO.getHash( [ this.model.getHashObjectForRendering(), config ] ) ) );
+		contents = store.value( store.hashOfValue( null, OO.getHash( [ this.model.getHashObjectForRendering(), config ] ) ) );
 	if ( contents ) {
 		this.render( contents, staged );
 	} else {
@@ -336,7 +336,7 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 	if ( this.model && this.model.doc ) {
 		store = this.model.doc.getStore();
 		hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
-		store.index( generatedContents, hash );
+		store.hash( generatedContents, hash );
 	}
 
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );

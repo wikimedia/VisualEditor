@@ -216,10 +216,10 @@ ve.dm.Transaction.prototype.pushAttributeOp = function ( key, from, to ) {
  *
  * @param {string} method Method to use, either "set" or "clear"
  * @param {string} bias Bias, either "start" or "stop"
- * @param {Object} index Store index of annotation object
+ * @param {Object} hash Store hash of annotation object
  */
-ve.dm.Transaction.prototype.pushAnnotateOp = function ( method, bias, index ) {
-	this.operations.push( { type: 'annotate', method: method, bias: bias, index: index } );
+ve.dm.Transaction.prototype.pushAnnotateOp = function ( method, bias, hash ) {
+	this.operations.push( { type: 'annotate', method: method, bias: bias, index: hash } );
 };
 
 /**

@@ -177,7 +177,7 @@
 
 	ve.test.utils.getModelFromTestCase = function ( caseItem ) {
 		var hash, model,
-			store = new ve.dm.IndexValueStore();
+			store = new ve.dm.HashValueStore();
 
 		// Load storeItems into store
 		if ( caseItem.storeItems ) {

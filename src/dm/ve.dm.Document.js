@@ -60,7 +60,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		this.data = new ve.dm.ElementLinearData( data.getStore(), data.getData() );
 	} else {
 		this.data = new ve.dm.ElementLinearData(
-			new ve.dm.IndexValueStore(),
+			new ve.dm.HashValueStore(),
 			Array.isArray( data ) ? data : []
 		);
 	}
@@ -99,7 +99,7 @@ OO.inheritClass( ve.dm.Document, ve.Document );
  * @param {ve.dm.ElementLinearData|Array} data Data to apply annotations to
  * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
  * @param {boolean} [replaceComparable] Whether to remove annotations from the data which are comparable to those in annotationSet
- * @param {ve.dm.IndexValueStore} [store] Store associated with the data; only needs to be provided if that data is associated with a different store than annotationSet
+ * @param {ve.dm.HashValueStore} [store] Store associated with the data; only needs to be provided if that data is associated with a different store than annotationSet
  * @param {boolean} [prepend] Whether to prepend annotationSet to the existing annotations
  */
 ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, replaceComparable, store, prepend ) {
@@ -395,10 +395,10 @@ ve.dm.Document.prototype.getOriginalDocument = function () {
 };
 
 /**
- * Get the document's index-value store
+ * Get the document's hash-value store
  *
  * @method
- * @return {ve.dm.IndexValueStore} The document's index-value store
+ * @return {ve.dm.HashValueStore} The document's hash-value store
  */
 ve.dm.Document.prototype.getStore = function () {
 	return this.store;
@@ -698,7 +698,7 @@ ve.dm.Document.prototype.getFullData = function ( range, roundTrip ) {
 		item.internal = ve.cloneObject( item.internal );
 		delete item.internal.changesSinceLoad;
 		delete item.internal.metaItems;
-		delete item.internal.loadMetaParentIndex;
+		delete item.internal.loadMetaParentHash;
 		delete item.internal.loadMetaParentOffset;
 		if ( Object.keys( item.internal ).length === 0 ) {
 			delete item.internal;
@@ -727,7 +727,7 @@ ve.dm.Document.prototype.getFullData = function ( range, roundTrip ) {
 				if ( !insertions[ offset ] ) {
 					insertions[ offset ] = [];
 				}
-				delete metaItem.internal.loadBranchNodeIndex;
+				delete metaItem.internal.loadBranchNodeHash;
 				delete metaItem.internal.loadBranchNodeOffset;
 				if ( Object.keys( metaItem.internal ).length === 0 ) {
 					delete metaItem.internal;
@@ -1440,7 +1440,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					offset--;
 					remove++;
 					insert = doc.data.getCharacterData( offset ) + data[ i ];
-					annotations = doc.data.getAnnotationIndexesFromOffset( offset );
+					annotations = doc.data.getAnnotationHashesFromOffset( offset );
 					if ( annotations.length ) {
 						insert = [ insert, annotations ];
 					}

@@ -335,7 +335,7 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  *
  * @static
  * @param {Object} element Element object
- * @param {ve.dm.IndexValueStore} store Index-value store used by element
+ * @param {ve.dm.HashValueStore} store Hash-value store used by element
  * @param {boolean} preserveGenerated Preserve internal.generated property of element
  * @return {Object} Cloned element object
  */
@@ -347,7 +347,7 @@ ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated ) 
 	if ( !preserveGenerated ) {
 		ve.deleteProp( clone, 'internal', 'generated' );
 	}
-	originalDomElements = store.value( clone.originalDomElementsIndex );
+	originalDomElements = store.value( clone.originalDomElementsHash );
 	// Generate a new about attribute to prevent about grouping of cloned nodes
 	if ( originalDomElements ) {
 		// TODO: The '#mwtNNN' is required by Parsoid. Make the name used here
@@ -363,7 +363,7 @@ ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated ) 
 			return elClone;
 		} );
 		if ( modified ) {
-			clone.originalDomElementsIndex = store.index( domElements, domElements.map( ve.getNodeHtml ).join( '' ) );
+			clone.originalDomElementsHash = store.hash( domElements, domElements.map( ve.getNodeHtml ).join( '' ) );
 		}
 	}
 	return clone;

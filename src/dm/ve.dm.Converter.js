@@ -72,8 +72,8 @@ ve.dm.Converter.static.getDataContentFromText = function ( text, annotations ) {
 	}
 	// Apply annotations to characters
 	for ( i = 0, len = characters.length; i < len; i++ ) {
-		// Just store the annotations' indexes from the index-value store
-		characters[ i ] = [ characters[ i ], annotations.getIndexes().slice() ];
+		// Just store the annotations' hashes from the hash-value store
+		characters[ i ] = [ characters[ i ], annotations.getHashes().slice() ];
 	}
 	return characters;
 };
@@ -92,7 +92,7 @@ ve.dm.Converter.static.getDataContentFromText = function ( text, annotations ) {
  * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
  */
 ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
-	var i, len, index, startClosingAt, currentSetOpen, targetSetOpen;
+	var i, len, hash, startClosingAt, currentSetOpen, targetSetOpen;
 
 	// Close annotations as needed
 	// Go through annotationStack from bottom to top (low to high),
@@ -100,14 +100,14 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
 	if ( currentSet.getLength() ) {
 		targetSetOpen = targetSet.clone();
 		for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
-			index = currentSet.getIndex( i );
+			hash = currentSet.getHash( i );
 			// containsComparableForSerialization is expensive,
 			// so do a simple contains check first
 			if (
-				targetSetOpen.containsIndex( index ) ||
+				targetSetOpen.containsHash( hash ) ||
 				targetSetOpen.containsComparableForSerialization( currentSet.get( i ) )
 			) {
-				targetSetOpen.removeIndex( index );
+				targetSetOpen.removeHash( hash );
 			} else {
 				startClosingAt = i;
 				break;
@@ -128,21 +128,21 @@ ve.dm.Converter.static.openAndCloseAnnotations = function ( currentSet, targetSe
 		currentSetOpen = currentSet.clone();
 		// Open annotations as needed
 		for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
-			index = targetSet.getIndex( i );
+			hash = targetSet.getHash( i );
 			// containsComparableForSerialization is expensive,
 			// so do a simple contains check first
 			if (
-				currentSetOpen.containsIndex( index ) ||
+				currentSetOpen.containsHash( hash ) ||
 				currentSetOpen.containsComparableForSerialization( targetSet.get( i ) )
 			) {
 				// If an annotation is already open remove it from the currentSetOpen list
 				// as it may exist multiple times in the targetSet, and so may need to be
 				// opened again
-				currentSetOpen.removeIndex( index );
+				currentSetOpen.removeHash( hash );
 			} else {
 				open( targetSet.get( i ) );
 				// Add to currentClone
-				currentSet.pushIndex( index );
+				currentSet.pushHash( hash );
 			}
 		}
 	}
@@ -217,7 +217,7 @@ ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements,
  *
  * After the method completes, each inline meta item will be moved downward to the nearest legal
  * block position (i.e. just after the close meta parent item), and has these properties:
- * item.internal.loadMetaParentIndex - corresponding meta parent's item.originalDomElementsIndex
+ * item.internal.loadMetaParentHash - corresponding meta parent's item.originalDomElementsHash
  * item.internal.loadMetaParentOffset - offset at load time within the meta parent (0 for start).
  * Each meta item is appended to the corresponding meta parent's item.internal.metaItems .
  *
@@ -289,7 +289,7 @@ ve.dm.Converter.static.moveInlineMetaItems = function ( data ) {
 					if ( pending.metaParent.item !== metaParent.item ) {
 						continue;
 					}
-					pending.item.internal.loadMetaParentIndex = metaParent.item.originalDomElementsIndex;
+					pending.item.internal.loadMetaParentHash = metaParent.item.originalDomElementsHash;
 					pending.item.internal.loadMetaParentOffset = pending.offset;
 					pendingMetaItems.splice( j, 1 );
 					j--;
@@ -315,10 +315,10 @@ ve.dm.Converter.prototype.isConverting = function () {
 };
 
 /**
- * Get the IndexValueStore used for the current conversion.
+ * Get the HashValueStore used for the current conversion.
  *
  * @method
- * @return {ve.dm.IndexValueStore|null} Current store, or null if not converting
+ * @return {ve.dm.HashValueStore|null} Current store, or null if not converting
  */
 ve.dm.Converter.prototype.getStore = function () {
 	return this.store;
@@ -467,7 +467,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	if ( !Array.isArray( domElements ) && !( nodeClass.prototype instanceof ve.dm.Annotation ) ) {
 		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
 	}
-	originalDomElements = this.store.value( dataElement.originalDomElementsIndex );
+	originalDomElements = this.store.value( dataElement.originalDomElementsHash );
 	// Optimization: don't call renderHtmlAttributeList if returned domElements are equal to the originals
 	if ( originalDomElements && !ve.isEqualDomElements( domElements, originalDomElements ) ) {
 		ve.dm.Converter.static.renderHtmlAttributeList(
@@ -517,7 +517,7 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 		} else {
 			serializer = ve.getNodeHtml;
 		}
-		dataElements[ 0 ].originalDomElementsIndex = this.store.index(
+		dataElements[ 0 ].originalDomElementsHash = this.store.hash(
 			domElements,
 			domElements.map( serializer ).join( '' )
 		);
@@ -559,7 +559,7 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  */
 ve.dm.Converter.prototype.getModelFromDom = function ( doc, options ) {
 	var data, linearData, refData, innerWhitespace,
-		store = new ve.dm.IndexValueStore(),
+		store = new ve.dm.HashValueStore(),
 		internalList = new ve.dm.InternalList();
 
 	options = options || {};
@@ -838,7 +838,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						childDataElements.push( { type: '/' + childDataElements[ 0 ].type } );
 						// Annotate meta item
 						if ( !context.annotations.isEmpty() ) {
-							childDataElements[ 0 ].annotations = context.annotations.getIndexes().slice();
+							childDataElements[ 0 ].annotations = context.annotations.getHashes().slice();
 						}
 					}
 					outputWrappedMetaItems( 'restore' );
@@ -859,7 +859,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						}
 						// Annotate meta item
 						if ( !context.annotations.isEmpty() ) {
-							childDataElements[ 0 ].annotations = context.annotations.getIndexes().slice();
+							childDataElements[ 0 ].annotations = context.annotations.getHashes().slice();
 						}
 						// Queue wrapped meta items only if it's actually possible for us to move them out
 						// of the wrapper
@@ -912,7 +912,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 
 					// Annotate child
 					if ( childIsContent && !context.annotations.isEmpty() ) {
-						childDataElements[ 0 ].annotations = context.annotations.getIndexes().slice();
+						childDataElements[ 0 ].annotations = context.annotations.getHashes().slice();
 					}
 
 					// Output child and process children if needed

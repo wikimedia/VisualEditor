@@ -306,7 +306,7 @@
 			"src/dm/ve.dm.DocumentSlice.js",
 			"src/dm/ve.dm.TableSlice.js",
 			"src/dm/ve.dm.LinearData.js",
-			"src/dm/ve.dm.IndexValueStore.js",
+			"src/dm/ve.dm.HashValueStore.js",
 			"src/dm/ve.dm.Converter.js",
 			"src/dm/selections/ve.dm.LinearSelection.js",
 			"src/dm/selections/ve.dm.NullSelection.js",
@@ -692,7 +692,7 @@
 			"tests/dm/ve.dm.LeafNode.test.js",
 			"tests/dm/nodes/ve.dm.TextNode.test.js",
 			"tests/dm/ve.dm.Document.test.js",
-			"tests/dm/ve.dm.IndexValueStore.test.js",
+			"tests/dm/ve.dm.HashValueStore.test.js",
 			"tests/dm/ve.dm.InternalList.test.js",
 			"tests/dm/ve.dm.LinearData.test.js",
 			"tests/dm/ve.dm.Transaction.test.js",
@@ -940,7 +940,7 @@
 	"rebaser.build": {
 		"scripts": [
 			"src/ve.utils-es6.js",
-			"src/dm/ve.dm.IndexValueStore.js",
+			"src/dm/ve.dm.HashValueStore.js",
 			"src/dm/ve.dm.Transaction.js",
 			"src/dm/ve.dm.Change.js",
 			"src/dm/ve.dm.RebaseDocState.js",

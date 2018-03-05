@@ -71,7 +71,7 @@
  * @constructor
  * @param {number} start Length of the history stack at change start
  * @param {ve.dm.Transaction[]} transactions Transactions to apply
- * @param {ve.dm.IndexValueStore[]} stores For each transaction, a collection of new store items
+ * @param {ve.dm.HashValueStore[]} stores For each transaction, a collection of new store items
  * @param {Object} selections For each author ID (key), latest ve.dm.Selection
  */
 ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
@@ -130,7 +130,7 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues, uns
 			data.selections[ authorId ]
 		);
 	}
-	deserializeStore = ve.dm.IndexValueStore.static.deserialize.bind(
+	deserializeStore = ve.dm.HashValueStore.static.deserialize.bind(
 		null,
 		preserveStoreValues ? function noop( x ) {
 			return x;
@@ -552,13 +552,13 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
  * @return {number} return.authorId The author ID
  * @return {Object|null} return.uniformInsert The insertion as uniform text, or null if not
  * @return {string} return.uniformInsert.text The plain text of the uniform text
- * @return {string} return.uniformInsert.annotations Annotation indexes for all text
- * @return {string} return.uniformInsert.annotationString Comma-separated annotation indexes
+ * @return {string} return.uniformInsert.annotations Annotation hashes for all text
+ * @return {string} return.uniformInsert.annotationString Comma-separated annotation hashes
  */
 ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 	var op0, op1, op2, replaceOp, start, end, docLength;
 
-	// Copy of ve.dm.ElementLinearData.static.getAnnotationIndexesFromItem, but we
+	// Copy of ve.dm.ElementLinearData.static.getAnnotationHashesFromItem, but we
 	// don't want to load all of ElementLinearData and its dependencies on the server-side.
 	function getAnnotations( item ) {
 		if ( typeof item === 'string' ) {
@@ -597,8 +597,8 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 	 * @param {Array} items The items
 	 * @return {Object|null} Info about the uniform text, or null if not uniform text
 	 * @return {string} return.text The code units, in a single string
-	 * @return {string} return.annotations Annotation indexes for all text
-	 * @return {string} return.annotationString Comma-separated annotation indexes
+	 * @return {string} return.annotations Annotation hashes for all text
+	 * @return {string} return.annotationString Comma-separated annotation hashes
 	 */
 	function getUniformText( items ) {
 		var annotations, annotationString, i, iLen, codeUnit,
@@ -725,7 +725,7 @@ ve.dm.Change.prototype.reversed = function () {
 		} ).reverse(),
 		// Empty store for each transaction (reverting cannot possibly add new annotations)
 		this.transactions.map( function () {
-			return new ve.dm.IndexValueStore();
+			return new ve.dm.HashValueStore();
 		} ),
 		{}
 	);

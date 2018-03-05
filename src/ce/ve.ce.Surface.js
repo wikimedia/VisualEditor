@@ -1868,7 +1868,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		contextElement = startNode.getClonedElement();
 		// Make sure that context doesn't have any attributes that might confuse
 		// the importantElement check in afterPaste.
-		$( documentModel.getStore().value( contextElement.originalDomElementsIndex ) ).removeAttr( 'id typeof rel' );
+		$( documentModel.getStore().value( contextElement.originalDomElementsHash ) ).removeAttr( 'id typeof rel' );
 		context = [ contextElement ];
 		// If there is content to the left of the cursor, put a placeholder
 		// character to the left of the cursor

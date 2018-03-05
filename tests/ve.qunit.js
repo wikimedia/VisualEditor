@@ -205,7 +205,7 @@
 	QUnit.assert.equalLinearData = function ( actual, expected, message ) {
 		function removeOriginalDomElements( val ) {
 			if ( val && val.type ) {
-				ve.deleteProp( val, 'originalDomElementsIndex' );
+				ve.deleteProp( val, 'originalDomElementsHash' );
 				ve.deleteProp( val, 'originalDomElements' );
 				ve.deleteProp( val, 'internal', 'changesSinceLoad' );
 				ve.deleteProp( val, 'internal', 'metaItems' );
@@ -227,9 +227,9 @@
 
 	QUnit.assert.equalLinearDataWithDom = function ( store, actual, expected, message ) {
 		function addOriginalDomElements( val ) {
-			if ( val && val.originalDomElementsIndex !== undefined ) {
-				val.originalDomElements = store.value( val.originalDomElementsIndex );
-				delete val.originalDomElementsIndex;
+			if ( val && val.originalDomElementsHash !== undefined ) {
+				val.originalDomElements = store.value( val.originalDomElementsHash );
+				delete val.originalDomElementsHash;
 			}
 		}
 

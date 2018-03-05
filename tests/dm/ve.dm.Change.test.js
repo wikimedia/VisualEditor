@@ -27,7 +27,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 		},
 		{
 			type: 'replace',
-			remove: [ [ 'b', [ ve.dm.example.boldIndex ] ] ],
+			remove: [ [ 'b', [ ve.dm.example.boldHash ] ] ],
 			insert: [ 'b', 'a', 'r' ]
 		},
 		{
@@ -124,43 +124,43 @@ QUnit.test( 'Change operations', function ( assert ) {
 				ve.dm.example.createExampleDocumentFromData( origData )
 			);
 		},
-		emptyStore = new ve.dm.IndexValueStore(),
+		emptyStore = new ve.dm.HashValueStore(),
 		surface = newSurface(),
 		doc = surface.documentModel,
 		b = ve.dm.example.bold,
 		i = ve.dm.example.italic,
 		u = ve.dm.example.underline,
-		bIndex = [ ve.dm.example.boldIndex ],
-		iIndex = [ ve.dm.example.italicIndex ],
-		uIndex = [ ve.dm.example.underlineIndex ],
+		bHash = [ ve.dm.example.boldHash ],
+		iHash = [ ve.dm.example.italicHash ],
+		uHash = [ ve.dm.example.underlineHash ],
 		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion,
 		TxReplace = ve.dm.TransactionBuilder.static.newFromReplacement,
 		TxRemove = ve.dm.TransactionBuilder.static.newFromRemoval,
 		TxAnnotate = ve.dm.TransactionBuilder.static.newFromAnnotation,
 		insert1 = new ve.dm.Change( 0, [
-			TxInsert( doc, 1, [ [ 'o', bIndex ] ] ),
-			TxInsert( doc, 2, [ [ 'n', bIndex ] ] ),
-			TxInsert( doc, 3, [ [ 'e', bIndex ] ] ),
+			TxInsert( doc, 1, [ [ 'o', bHash ] ] ),
+			TxInsert( doc, 2, [ [ 'n', bHash ] ] ),
+			TxInsert( doc, 3, [ [ 'e', bHash ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
-		], [ new ve.dm.IndexValueStore( [ b ] ), emptyStore, emptyStore, emptyStore ], {
+		], [ new ve.dm.HashValueStore( [ b ] ), emptyStore, emptyStore, emptyStore ], {
 			1: new ve.dm.LinearSelection( doc, new ve.Range( 7, 7 ) )
 		} ),
 		insert2 = new ve.dm.Change( 0, [
-			TxInsert( doc, 1, [ [ 't', iIndex ] ] ),
-			TxInsert( doc, 2, [ [ 'w', iIndex ] ] ),
-			TxInsert( doc, 3, [ [ 'o', iIndex ] ] ),
+			TxInsert( doc, 1, [ [ 't', iHash ] ] ),
+			TxInsert( doc, 2, [ [ 'w', iHash ] ] ),
+			TxInsert( doc, 3, [ [ 'o', iHash ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
-		], [ new ve.dm.IndexValueStore( [ i ] ), emptyStore, emptyStore, emptyStore ], {
+		], [ new ve.dm.HashValueStore( [ i ] ), emptyStore, emptyStore, emptyStore ], {
 			2: new ve.dm.LinearSelection( doc, new ve.Range( 1, 1 ) )
 		} ),
 		underline3 = new ve.dm.Change( 0, [
 			TxAnnotate( doc, new ve.Range( 1, 6 ), 'set', u )
-		], [ new ve.dm.IndexValueStore( [ u ] ) ], {} );
+		], [ new ve.dm.HashValueStore( [ u ] ) ], {} );
 
 	insert2.applyTo( surface );
 	assert.deepEqual(
 		doc.data.data.slice( 1, -1 ),
-		[ [ 't', iIndex ], [ 'w', iIndex ], [ 'o', iIndex ], ' ', 't', 'h', 'r', 'e', 'e' ],
+		[ [ 't', iHash ], [ 'w', iHash ], [ 'o', iHash ], ' ', 't', 'h', 'r', 'e', 'e' ],
 		'Apply insert2'
 	);
 
@@ -183,13 +183,13 @@ QUnit.test( 'Change operations', function ( assert ) {
 	assert.deepEqual(
 		surface.documentModel.data.data.slice( 1, -1 ),
 		[
-			[ 'o', bIndex ],
-			[ 'n', bIndex ],
-			[ 'e', bIndex ],
+			[ 'o', bHash ],
+			[ 'n', bHash ],
+			[ 'e', bHash ],
 			' ',
-			[ 't', iIndex ],
-			[ 'w', iIndex ],
-			[ 'o', iIndex ],
+			[ 't', iHash ],
+			[ 'w', iHash ],
+			[ 'o', iHash ],
 			' ',
 			't',
 			'h',
@@ -212,19 +212,19 @@ QUnit.test( 'Change operations', function ( assert ) {
 	assert.deepEqual(
 		surface.documentModel.data.data.slice( 1, -1 ),
 		[
-			[ 'o', bIndex ],
-			[ 'n', bIndex ],
-			[ 'e', bIndex ],
+			[ 'o', bHash ],
+			[ 'n', bHash ],
+			[ 'e', bHash ],
 			' ',
 			'T',
 			'W',
 			'O',
 			' ',
-			[ 't', uIndex ],
-			[ 'h', uIndex ],
-			[ 'r', uIndex ],
-			[ 'e', uIndex ],
-			[ 'e', uIndex ]
+			[ 't', uHash ],
+			[ 'h', uHash ],
+			[ 'r', uHash ],
+			[ 'e', uHash ],
+			[ 'e', uHash ]
 		],
 		'Apply insert1 then insert2*replace2 then underline3'
 	);
@@ -279,8 +279,8 @@ QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
 		TxRemove = ve.dm.TransactionBuilder.static.newFromRemoval,
 		TxAnnotate = ve.dm.TransactionBuilder.static.newFromAnnotation,
 		b = ve.dm.example.bold,
-		emptyStore = new ve.dm.IndexValueStore(),
-		bStore = new ve.dm.IndexValueStore( [ b ] );
+		emptyStore = new ve.dm.HashValueStore(),
+		bStore = new ve.dm.HashValueStore( [ b ] );
 
 	assert.expect( 3 );
 
@@ -314,21 +314,21 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 			);
 		},
 		surface = newSurface(),
-		emptyStore = new ve.dm.IndexValueStore(),
+		emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
 		b = ve.dm.example.bold,
-		bIndex = [ ve.dm.example.boldIndex ],
+		bHash = [ ve.dm.example.boldHash ],
 		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion,
 		change = new ve.dm.Change( 0, [
-			TxInsert( doc, 1, [ [ 'f', bIndex ] ] ),
+			TxInsert( doc, 1, [ [ 'f', bHash ] ] ),
 			// Second insert is too short, as first insert wasn't applied to the doc
-			TxInsert( doc, 2, [ [ 'u', bIndex ] ] )
-		], [ new ve.dm.IndexValueStore( [ b ] ), emptyStore ], {} ),
+			TxInsert( doc, 2, [ [ 'u', bHash ] ] )
+		], [ new ve.dm.HashValueStore( [ b ] ), emptyStore ], {} ),
 		simpleChange = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ emptyStore ] ),
 		serialized = {
 			start: 0,
 			transactions: [
-				[ 1, [ '', [ [ 'f', bIndex ] ] ], 4 ],
+				[ 1, [ '', [ [ 'f', bHash ] ] ], 4 ],
 				'u'
 			],
 			stores: [
@@ -342,7 +342,7 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 							}
 						}
 					},
-					hashes: bIndex
+					hashes: bHash
 				},
 				null
 			]
@@ -564,7 +564,7 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 			{ type: 'paragraph' },
 			{ type: '/paragraph' }
 		] ) ),
-		emptyStore = new ve.dm.IndexValueStore(),
+		emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
 		clear = function () {
 			surface.change( doc.completeHistory.map( function ( tx ) {

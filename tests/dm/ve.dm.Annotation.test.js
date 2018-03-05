@@ -25,12 +25,12 @@ QUnit.test( 'getHashObject', function ( assert ) {
 				annotation: new ve.dm.ItalicAnnotation( {
 					type: 'textStyle/italic',
 					attributes: { nodeName: 'i' },
-					originalDomElementsIndex: 1
+					originalDomElementsHash: 1
 				} ),
 				expected: {
 					type: 'textStyle/italic',
 					attributes: { nodeName: 'i' },
-					originalDomElementsIndex: 1
+					originalDomElementsHash: 1
 				}
 			}
 		];
