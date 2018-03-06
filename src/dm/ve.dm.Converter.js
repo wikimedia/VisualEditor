@@ -196,8 +196,8 @@ ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements,
 			}
 		}
 
-		// Descend into element children only (skipping text nodes and comment nodes)
-		if ( deep && originalDomElements[ i ].children.length > 0 ) {
+		// Descend into element children only (skipping text nodes, comment nodes and nodes we just created)
+		if ( deep && !targetDomElements[ i ].veFromDataElement && originalDomElements[ i ].children.length > 0 ) {
 			ve.dm.Converter.static.renderHtmlAttributeList(
 				originalDomElements[ i ].children,
 				targetDomElements[ i ].children,
@@ -477,9 +477,11 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 			// computed
 			false,
 			// deep
-			!this.nodeFactory.lookup( dataElement.type ) ||
+			(
+				!this.nodeFactory.lookup( dataElement.type ) ||
 				!this.nodeFactory.canNodeHaveChildren( dataElement.type ) ||
 				this.nodeFactory.doesNodeHandleOwnChildren( dataElement.type )
+			)
 		);
 	}
 	// TODO: This is only for the diff. Eventually should make a DiffConverter subclass
@@ -487,6 +489,12 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 		for ( key in dataElement.internal.diff ) {
 			domElements[ 0 ].setAttribute( key, dataElement.internal.diff[ key ] );
 		}
+	}
+	// Mark branch nodes as generated from dataElement, so we don't try and descend into them in a deep renderHtmlAttributeList call
+	if ( this.nodeFactory.lookup( dataElement.type ) && this.nodeFactory.canNodeHaveChildren( dataElement.type ) ) {
+		domElements.forEach( function ( domElement ) {
+			domElement.veFromDataElement = true;
+		} );
 	}
 	return domElements;
 };
