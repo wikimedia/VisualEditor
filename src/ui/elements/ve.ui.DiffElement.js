@@ -868,7 +868,7 @@ ve.ui.DiffElement.prototype.addAttributesToNode = function ( node, attributes ) 
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 	var i, ilen, range, type, typeAsString, annType, domElementType, changes, item,
-		annIndex, annIndexLists, j, height, element,
+		annHash, annHashLists, j, height, element,
 		DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
 		DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT,
 		DIFF_CHANGE_DELETE = ve.DiffMatchPatch.static.DIFF_CHANGE_DELETE,
@@ -876,7 +876,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 		items = [],
 		start = 0, // The starting index for a range for building an annotation
 		end, annotatedLinearDiff,
-		domElement, domElements, originalDomElementsIndex,
+		domElement, domElements, originalDomElementsHash,
 		diffDoc, diffDocData,
 		diffElement = this;
 
@@ -956,47 +956,47 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 					items.push( item );
 				}
 
-				originalDomElementsIndex = diffDoc.getStore().index(
+				originalDomElementsHash = diffDoc.getStore().hash(
 					domElements,
 					domElements.map( ve.getNodeHtml ).join( '' )
 				);
-				annIndex = diffDoc.getStore().index(
+				annHash = diffDoc.getStore().hash(
 					ve.dm.annotationFactory.create( annType, {
 						type: annType,
-						originalDomElementsIndex: originalDomElementsIndex
+						originalDomElementsHash: originalDomElementsHash
 					} )
 				);
 
 				// Insert annotation above annotations that span the entire range
 				// and at least one character more
-				annIndexLists = [];
+				annHashLists = [];
 				for (
 					j = Math.max( 0, range.start - 1 );
 					j < Math.min( range.end + 1, diffDoc.data.getLength() );
 					j++
 				) {
-					annIndexLists[ j ] =
-						diffDoc.data.getAnnotationIndexesFromOffset( j );
+					annHashLists[ j ] =
+						diffDoc.data.getAnnotationHashesFromOffset( j );
 				}
 				height = Math.min(
 					ve.getCommonStartSequenceLength(
-						annIndexLists.slice(
+						annHashLists.slice(
 							Math.max( 0, range.start - 1 ),
 							range.end
 						)
 					),
 					ve.getCommonStartSequenceLength(
-						annIndexLists.slice(
+						annHashLists.slice(
 							range.start,
 							Math.min( range.end + 1, diffDoc.data.getLength() )
 						)
 					)
 				);
 				for ( j = range.start; j < range.end; j++ ) {
-					annIndexLists[ j ].splice( height, 0, annIndex );
-					diffDoc.data.setAnnotationIndexesAtOffset(
+					annHashLists[ j ].splice( height, 0, annHash );
+					diffDoc.data.setAnnotationHashesAtOffset(
 						j,
-						annIndexLists[ j ]
+						annHashLists[ j ]
 					);
 				}
 			}

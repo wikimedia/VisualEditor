@@ -10,9 +10,9 @@ QUnit.module( 've.ce.TextState' );
 
 QUnit.test( 'getChangeTransaction', function ( assert ) {
 	var i, view, documentView, documentNode, test, oldState, newState, change, tests,
-		underlineIndex = ve.dm.example.underlineIndex,
-		boldIndex = ve.dm.example.boldIndex,
-		annIndex = ve.dm.example.annIndex;
+		underlineHash = ve.dm.example.underlineHash,
+		boldHash = ve.dm.example.boldHash,
+		annHash = ve.dm.example.annHash;
 
 	tests = [
 		{
@@ -24,7 +24,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{ type: 'retain', length: 5 },
 				{
 					type: 'replace',
-					remove: [ [ 'b', [ annIndex( 'b' ) ] ], [ 'a', [ annIndex( 'b' ) ] ], [ 'r', [ annIndex( 'b' ) ] ] ],
+					remove: [ [ 'b', [ annHash( 'b' ) ] ], [ 'a', [ annHash( 'b' ) ] ], [ 'r', [ annHash( 'b' ) ] ] ],
 					insert: [ 'b', 'a', 'r' ]
 				},
 				{ type: 'retain', length: 7 }
@@ -40,7 +40,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'r', [ annIndex( 'b' ) ] ] ]
+					insert: [ [ 'r', [ annHash( 'b' ) ] ] ]
 				},
 				{ type: 'retain', length: 7 }
 			]
@@ -55,7 +55,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [ 'b', 'a', 'r' ],
-					insert: [ [ 'b', [ boldIndex ] ], [ 'a', [ boldIndex ] ], [ 'r', [ boldIndex ] ] ]
+					insert: [ [ 'b', [ boldHash ] ], [ 'a', [ boldHash ] ], [ 'r', [ boldHash ] ] ]
 				},
 				{ type: 'retain', length: 7 }
 			]
@@ -70,7 +70,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'z', [ annIndex( 'b' ) ] ] ]
+					insert: [ [ 'z', [ annHash( 'b' ) ] ] ]
 				},
 				{ type: 'retain', length: 4 }
 			]
@@ -117,9 +117,9 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 					type: 'replace',
 					remove: [ 'b', 'a', 'r' ],
 					insert: [
-						[ 'b', [ annIndex( 'u' ), boldIndex ] ],
-						[ 'a', [ annIndex( 'u' ), boldIndex ] ],
-						[ 'r', [ annIndex( 'u' ), boldIndex ] ]
+						[ 'b', [ annHash( 'u' ), boldHash ] ],
+						[ 'a', [ annHash( 'u' ), boldHash ] ],
+						[ 'r', [ annHash( 'u' ), boldHash ] ]
 					]
 				},
 				{ type: 'retain', length: 6 }
@@ -135,14 +135,14 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [
-						[ 'b', [ annIndex( 'i' ), annIndex( 'b' ) ] ],
-						[ 'a', [ annIndex( 'i' ), annIndex( 'b' ) ] ],
-						[ 'r', [ annIndex( 'i' ), annIndex( 'b' ) ] ]
+						[ 'b', [ annHash( 'i' ), annHash( 'b' ) ] ],
+						[ 'a', [ annHash( 'i' ), annHash( 'b' ) ] ],
+						[ 'r', [ annHash( 'i' ), annHash( 'b' ) ] ]
 					],
 					insert: [
-						[ 'b', [ annIndex( 'i' ) ] ],
-						[ 'a', [ annIndex( 'i' ) ] ],
-						[ 'r', [ annIndex( 'i' ) ] ]
+						[ 'b', [ annHash( 'i' ) ] ],
+						[ 'a', [ annHash( 'i' ) ] ],
+						[ 'r', [ annHash( 'i' ) ] ]
 					]
 				},
 				{ type: 'retain', length: 7 }
@@ -158,7 +158,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'r', [ annIndex( 'i' ), annIndex( 'b' ) ] ] ]
+					insert: [ [ 'r', [ annHash( 'i' ), annHash( 'b' ) ] ] ]
 				},
 				{ type: 'retain', length: 7 }
 			]
@@ -173,14 +173,14 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [
-						[ 'b', [ annIndex( 'i' ) ] ],
-						[ 'a', [ annIndex( 'i' ) ] ],
-						[ 'r', [ annIndex( 'i' ) ] ]
+						[ 'b', [ annHash( 'i' ) ] ],
+						[ 'a', [ annHash( 'i' ) ] ],
+						[ 'r', [ annHash( 'i' ) ] ]
 					],
 					insert: [
-						[ 'b', [ annIndex( 'i' ), boldIndex ] ],
-						[ 'a', [ annIndex( 'i' ), boldIndex ] ],
-						[ 'r', [ annIndex( 'i' ), boldIndex ] ]
+						[ 'b', [ annHash( 'i' ), boldHash ] ],
+						[ 'a', [ annHash( 'i' ), boldHash ] ],
+						[ 'r', [ annHash( 'i' ), boldHash ] ]
 					]
 				},
 				{ type: 'retain', length: 7 }
@@ -196,7 +196,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'z', [ annIndex( 'i' ), annIndex( 'b' ) ] ] ]
+					insert: [ [ 'z', [ annHash( 'i' ), annHash( 'b' ) ] ] ]
 				},
 				{ type: 'retain', length: 4 }
 			]
@@ -211,7 +211,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'z', [ annIndex( 'i' ) ] ] ]
+					insert: [ [ 'z', [ annHash( 'i' ) ] ] ]
 				},
 				{ type: 'retain', length: 4 }
 			]
@@ -242,14 +242,14 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [
-						[ 'b', [ annIndex( 'i' ) ] ],
-						[ 'a', [ annIndex( 'i' ) ] ],
-						[ 'r', [ annIndex( 'i' ) ] ]
+						[ 'b', [ annHash( 'i' ) ] ],
+						[ 'a', [ annHash( 'i' ) ] ],
+						[ 'r', [ annHash( 'i' ) ] ]
 					],
 					insert: [
-						[ 'b', [ annIndex( 'i' ), annIndex( 'u' ), boldIndex ] ],
-						[ 'a', [ annIndex( 'i' ), annIndex( 'u' ), boldIndex ] ],
-						[ 'r', [ annIndex( 'i' ), annIndex( 'u' ), boldIndex ] ]
+						[ 'b', [ annHash( 'i' ), annHash( 'u' ), boldHash ] ],
+						[ 'a', [ annHash( 'i' ), annHash( 'u' ), boldHash ] ],
+						[ 'r', [ annHash( 'i' ), annHash( 'u' ), boldHash ] ]
 					]
 				},
 				{ type: 'retain', length: 6 }
@@ -268,7 +268,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 					// TODO: Reuse bold instead of creating a new bold?
 					// (Some annotation types may need specific rules as to
 					// when this can be done)
-					insert: [ [ 'b', [ boldIndex ] ], [ 'a', [ boldIndex ] ], [ 'z', [ boldIndex ] ] ]
+					insert: [ [ 'b', [ boldHash ] ], [ 'a', [ boldHash ] ], [ 'z', [ boldHash ] ] ]
 				},
 				{ type: 'retain', length: 3 }
 			]
@@ -283,12 +283,12 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [
-						[ 'c', [ annIndex( 'i' ), annIndex( 'b' ) ] ],
-						[ 'd', [ annIndex( 'i' ) ] ]
+						[ 'c', [ annHash( 'i' ), annHash( 'b' ) ] ],
+						[ 'd', [ annHash( 'i' ) ] ]
 					],
 					insert: [
-						[ 'c', [ annIndex( 'i' ), annIndex( 'b' ), underlineIndex ] ],
-						[ 'd', [ annIndex( 'i' ), underlineIndex ] ]
+						[ 'c', [ annHash( 'i' ), annHash( 'b' ), underlineHash ] ],
+						[ 'd', [ annHash( 'i' ), underlineHash ] ]
 					]
 				},
 				{ type: 'retain', length: 4 }
@@ -308,17 +308,17 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 					// then replaces the entire interior. In real life usage
 					// there won't usually be two separate changed regions.
 					remove: [
-						[ 'b', [ annIndex( 'i' ) ] ],
-						[ 'a', [ annIndex( 'i' ) ] ],
-						[ 'r', [ annIndex( 'i' ) ] ],
+						[ 'b', [ annHash( 'i' ) ] ],
+						[ 'a', [ annHash( 'i' ) ] ],
+						[ 'r', [ annHash( 'i' ) ] ],
 						' ', 'b', 'a', 'z'
 					],
 					// The first insertion get
 					insert: [
 						'b', 'a', 'r', ' ',
-						[ 'b', [ annIndex( 'b' ) ] ],
-						[ 'a', [ annIndex( 'b' ) ] ],
-						[ 'z', [ annIndex( 'b' ) ] ]
+						[ 'b', [ annHash( 'b' ) ] ],
+						[ 'a', [ annHash( 'b' ) ] ],
+						[ 'z', [ annHash( 'b' ) ] ]
 					]
 				},
 				{ type: 'retain', length: 3 }
@@ -334,7 +334,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ 'y', [ 'w', [ annIndex( 'u' ) ] ] ]
+					insert: [ 'y', [ 'w', [ annHash( 'u' ) ] ] ]
 				},
 				{ type: 'retain', length: 5 }
 			]
@@ -349,7 +349,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 				{
 					type: 'replace',
 					remove: [],
-					insert: [ [ 'x', [ underlineIndex ] ], 'a', 'b' ]
+					insert: [ [ 'x', [ underlineHash ] ], 'a', 'b' ]
 				},
 				{ type: 'retain', length: 3 }
 			]

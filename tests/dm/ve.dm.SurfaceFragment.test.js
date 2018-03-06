@@ -78,14 +78,14 @@ QUnit.test( 'getSelectedModels', function ( assert ) {
 	);
 	assert.deepEqual(
 		surface.getLinearFragment( new ve.Range( 2, 3 ) ).getSelectedModels(),
-		[ doc.data.store.value( ve.dm.example.boldIndex ) ],
+		[ doc.data.store.value( ve.dm.example.boldHash ) ],
 		'Bold annotation'
 	);
 	assert.deepEqual(
 		surface.getLinearFragment( new ve.Range( 1, 3 ) ).getSelectedModels( true ),
 		[
 			doc.getDocumentNode().children[ 0 ].children[ 0 ],
-			doc.data.store.value( ve.dm.example.boldIndex )
+			doc.data.store.value( ve.dm.example.boldHash )
 		],
 		'Bold annotation and text node'
 	);
@@ -104,16 +104,16 @@ QUnit.test( 'getAnnotations', function ( assert ) {
 
 	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 1, 0 );
 
-	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getIndexes(), [ ve.dm.example.boldIndex, ve.dm.example.strongIndex ], 'Comparable annotations: [B] ∩ [Strong] = [B,Strong] ' );
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getHashes(), [ ve.dm.example.boldHash, ve.dm.example.strongHash ], 'Comparable annotations: [B] ∩ [Strong] = [B,Strong] ' );
 
 	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 2, 0 );
-	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getIndexes(), [], 'Non-comparable annotations: [B] ∩ [Strong] ∩ [I] = [] ' );
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getHashes(), [], 'Non-comparable annotations: [B] ∩ [Strong] ∩ [I] = [] ' );
 
 	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 1, 1, 1 );
-	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getIndexes(), [ ve.dm.example.boldIndex, ve.dm.example.strongIndex ], 'Non-comparable in first cell: [B,I] ∩ [Strong] = [B,Strong]' );
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getHashes(), [ ve.dm.example.boldHash, ve.dm.example.strongHash ], 'Non-comparable in first cell: [B,I] ∩ [Strong] = [B,Strong]' );
 
 	tableSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 2, 0 );
-	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations( true ).getIndexes(), [ ve.dm.example.boldIndex, ve.dm.example.strongIndex, ve.dm.example.italicIndex ], 'Get all annotations' );
+	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations( true ).getHashes(), [ ve.dm.example.boldHash, ve.dm.example.strongHash, ve.dm.example.italicHash ], 'Get all annotations' );
 } );
 
 QUnit.test( 'hasAnnotations', function ( assert ) {
@@ -472,7 +472,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 	fragment.insertContent( [ 'a' ], true );
 	assert.deepEqual(
 		doc.getData( new ve.Range( 3, 4 ) ),
-		[ [ 'a', [ ve.dm.example.italicIndex ] ] ],
+		[ [ 'a', [ ve.dm.example.italicHash ] ] ],
 		'inserting content (annotate=true) replaces selection with new annotated content'
 	);
 
@@ -572,7 +572,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 		[
 			{ type: 'exampleUnboldable' },
 			{ type: '/exampleUnboldable' },
-			[ 'x', [ ve.dm.example.boldIndex ] ]
+			[ 'x', [ ve.dm.example.boldHash ] ]
 		],
 		'Unboldable node pasted into bold doesn\'t get bolded'
 	);
@@ -586,7 +586,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 3, 5 ) ),
 		[
-			{ type: 'alienInline', annotations: [ ve.dm.example.italicIndex ] },
+			{ type: 'alienInline', annotations: [ ve.dm.example.italicHash ] },
 			{ type: '/alienInline' }
 		],
 		'Inline node inserted in annotation gets annotated'
@@ -613,7 +613,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 2, 3 ) ),
 		[
-			[ 'x', [ ve.dm.example.boldIndex ] ]
+			[ 'x', [ ve.dm.example.boldHash ] ]
 		],
 		'inserting content (annotate=true) reuses comparable annotations on existing content'
 	);
@@ -636,7 +636,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 	assert.deepEqual(
 		doc.getData( new ve.Range( 2, 3 ) ),
 		[
-			[ 'x', [ ve.dm.example.boldIndex ] ]
+			[ 'x', [ ve.dm.example.boldHash ] ]
 		],
 		'inserting document (annotate=true) reuses comparable annotations on existing content'
 	);

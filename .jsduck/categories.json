@@ -53,7 +53,7 @@
 					"ve.dm.NodeFactory",
 					"ve.dm.Converter",
 					"ve.dm.DataString",
-					"ve.dm.IndexValueStore",
+					"ve.dm.HashValueStore",
 					"ve.dm.Scalable",
 					"ve.dm.APIResultsProvider",
 					"ve.dm.APIResultsQueue",

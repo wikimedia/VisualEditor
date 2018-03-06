@@ -12,8 +12,8 @@
  * @class
  * @extends diff_match_patch
  * @constructor
- * @param {ve.dm.IndexValueStore} oldStore
- * @param {ve.dm.IndexValueStore} newStore
+ * @param {ve.dm.HashValueStore} oldStore
+ * @param {ve.dm.HashValueStore} newStore
  */
 ve.DiffMatchPatch = function VeDiffMatchPatch( oldStore, newStore ) {
 	// Parent constructor

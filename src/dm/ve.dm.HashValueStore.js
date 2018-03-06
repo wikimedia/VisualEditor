@@ -1,5 +1,5 @@
 /*!
- * VisualEditor IndexValueStore class.
+ * VisualEditor HashValueStore class.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -19,25 +19,23 @@
  * will (with high probability) have the same hash only if equal. In this case, equivalent
  * values can have two different hashes.
  *
- * TODO: rename the class to reflect that it is no longer an index-value store
- *
  * @class
  * @constructor
  * @param {Object[]} [values] Values to insert
  */
-ve.dm.IndexValueStore = function VeDmIndexValueStore( values ) {
+ve.dm.HashValueStore = function VeDmHashValueStore( values ) {
 	// Maps hashes to values
 	this.hashStore = {};
 	// Hashes in order of insertion (used for slicing)
 	this.hashes = [];
 	if ( values ) {
-		this.indexes( values );
+		this.hashAll( values );
 	}
 };
 
 /* Inheritance */
 
-OO.initClass( ve.dm.IndexValueStore );
+OO.initClass( ve.dm.HashValueStore );
 
 /* Static Methods */
 
@@ -46,11 +44,11 @@ OO.initClass( ve.dm.IndexValueStore );
  *
  * @param {Function} deserializeValue Deserializer for arbitrary store values
  * @param {Object|null} data Store serialized as a JSONable object
- * @return {ve.dm.IndexValueStore} Deserialized store
+ * @return {ve.dm.HashValueStore} Deserialized store
  */
-ve.dm.IndexValueStore.static.deserialize = function ( deserializeValue, data ) {
+ve.dm.HashValueStore.static.deserialize = function ( deserializeValue, data ) {
 	var hash,
-		store = new ve.dm.IndexValueStore();
+		store = new ve.dm.HashValueStore();
 
 	if ( !data ) {
 		return store;
@@ -72,7 +70,7 @@ ve.dm.IndexValueStore.static.deserialize = function ( deserializeValue, data ) {
  * @param {Function} serializeValue Serializer for arbitrary store values
  * @return {Object|null} Serialized store, null if empty
  */
-ve.dm.IndexValueStore.prototype.serialize = function ( serializeValue ) {
+ve.dm.HashValueStore.prototype.serialize = function ( serializeValue ) {
 	var hash,
 		serialized = {};
 
@@ -90,11 +88,11 @@ ve.dm.IndexValueStore.prototype.serialize = function ( serializeValue ) {
  *
  * @return {number} Number of values in the store
  */
-ve.dm.IndexValueStore.prototype.getLength = function () {
+ve.dm.HashValueStore.prototype.getLength = function () {
 	return this.hashes.length;
 };
 
-ve.dm.IndexValueStore.prototype.truncate = function ( start ) {
+ve.dm.HashValueStore.prototype.truncate = function ( start ) {
 	var i, len,
 		removedHashes = this.hashes.splice( start );
 	for ( i = 0, len = removedHashes.length; i < len; i++ ) {
@@ -107,9 +105,9 @@ ve.dm.IndexValueStore.prototype.truncate = function ( start ) {
  *
  * @param {number} [start] Include values from position start onwards (default: 0)
  * @param {number} [end] Include values to position end exclusive (default: slice to end)
- * @return {ve.dm.IndexValueStore} Slice of the current store (with non-cloned value references)
+ * @return {ve.dm.HashValueStore} Slice of the current store (with non-cloned value references)
  */
-ve.dm.IndexValueStore.prototype.slice = function ( start, end ) {
+ve.dm.HashValueStore.prototype.slice = function ( start, end ) {
 	var i, len, hash,
 		sliced = new this.constructor();
 
@@ -125,9 +123,9 @@ ve.dm.IndexValueStore.prototype.slice = function ( start, end ) {
  * Clone a store.
  *
  * @deprecated Use #slice with no arguments.
- * @return {ve.dm.IndexValueStore} New store with the same contents as this one
+ * @return {ve.dm.HashValueStore} New store with the same contents as this one
  */
-ve.dm.IndexValueStore.prototype.clone = function () {
+ve.dm.HashValueStore.prototype.clone = function () {
 	return this.slice();
 };
 
@@ -139,8 +137,8 @@ ve.dm.IndexValueStore.prototype.clone = function () {
  * @param {string} [stringified] Stringified version of value; default OO.getHash( value )
  * @return {string} Hash value with low collision probability
  */
-ve.dm.IndexValueStore.prototype.index = function ( value, stringified ) {
-	var hash = this.indexOfValue( value, stringified );
+ve.dm.HashValueStore.prototype.hash = function ( value, stringified ) {
+	var hash = this.hashOfValue( value, stringified );
 
 	if ( !this.hashStore[ hash ] ) {
 		if ( Array.isArray( value ) ) {
@@ -164,11 +162,10 @@ ve.dm.IndexValueStore.prototype.index = function ( value, stringified ) {
  * @throws {Error} Old hash not found
  * @return {string} New hash
  */
-ve.dm.IndexValueStore.prototype.replaceHash = function ( oldHash, value ) {
-	var newHash = this.indexOfValue( value ),
-		index = this.hashStore[ oldHash ];
+ve.dm.HashValueStore.prototype.replaceHash = function ( oldHash, value ) {
+	var newHash = this.hashOfValue( value );
 
-	if ( index === undefined ) {
+	if ( !Object.prototype.hasOwnProperty.call( this.hashStore, oldHash ) ) {
 		throw new Error( 'Old hash not found: ' + oldHash );
 	}
 
@@ -190,7 +187,7 @@ ve.dm.IndexValueStore.prototype.replaceHash = function ( oldHash, value ) {
  * @param {string} [stringified] Stringified version of value; default OO.getHash( value )
  * @return {string} Hash value with low collision probability
  */
-ve.dm.IndexValueStore.prototype.indexOfValue = function ( value, stringified ) {
+ve.dm.HashValueStore.prototype.hashOfValue = function ( value, stringified ) {
 	if ( typeof stringified !== 'string' ) {
 		stringified = OO.getHash( value );
 	}
@@ -209,16 +206,16 @@ ve.dm.IndexValueStore.prototype.indexOfValue = function ( value, stringified ) {
 /**
  * Get the hashes of values in the store
  *
- * Same as index but with arrays.
+ * Same as hash but with arrays.
  *
  * @method
  * @param {Object[]} values Values to lookup or store
  * @return {string[]} The hashes of the values in the store
  */
-ve.dm.IndexValueStore.prototype.indexes = function ( values ) {
+ve.dm.HashValueStore.prototype.hashAll = function ( values ) {
 	var i, length, hashes = [];
 	for ( i = 0, length = values.length; i < length; i++ ) {
-		hashes.push( this.index( values[ i ] ) );
+		hashes.push( this.hash( values[ i ] ) );
 	}
 	return hashes;
 };
@@ -230,7 +227,7 @@ ve.dm.IndexValueStore.prototype.indexes = function ( values ) {
  * @param {string} hash Hash to look up
  * @return {Object|undefined} Value stored for this hash if present, else undefined
  */
-ve.dm.IndexValueStore.prototype.value = function ( hash ) {
+ve.dm.HashValueStore.prototype.value = function ( hash ) {
 	return this.hashStore[ hash ];
 };
 
@@ -243,7 +240,7 @@ ve.dm.IndexValueStore.prototype.value = function ( hash ) {
  * @param {string[]} hashes Hashes to lookup
  * @return {Array} Values for these hashes (undefined for any not present)
  */
-ve.dm.IndexValueStore.prototype.values = function ( hashes ) {
+ve.dm.HashValueStore.prototype.values = function ( hashes ) {
 	var i, length, values = [];
 	for ( i = 0, length = hashes.length; i < length; i++ ) {
 		values.push( this.value( hashes[ i ] ) );
@@ -259,11 +256,11 @@ ve.dm.IndexValueStore.prototype.values = function ( hashes ) {
  * values can have two different hashes.
  *
  * Values are added in the order they appear in the other store. Objects added to the store are
- * added by reference, not cloned, unlike in .index()
+ * added by reference, not cloned, unlike in .hash()
  *
- * @param {ve.dm.IndexValueStore} other Store to merge into this one
+ * @param {ve.dm.HashValueStore} other Store to merge into this one
  */
-ve.dm.IndexValueStore.prototype.merge = function ( other ) {
+ve.dm.HashValueStore.prototype.merge = function ( other ) {
 	var i, len, hash;
 
 	for ( i = 0, len = other.hashes.length; i < len; i++ ) {
@@ -278,14 +275,14 @@ ve.dm.IndexValueStore.prototype.merge = function ( other ) {
 /**
  * Clone this store excluding certain values, like a set difference operation
  *
- * @param {ve.dm.IndexValueStore|Object} omit Store of values to omit, or object whose keys are hashes to emit
- * @return {ve.dm.IndexValueStore} All values in this that do not appear in other
+ * @param {ve.dm.HashValueStore|Object} omit Store of values to omit, or object whose keys are hashes to emit
+ * @return {ve.dm.HashValueStore} All values in this that do not appear in other
  */
-ve.dm.IndexValueStore.prototype.difference = function ( omit ) {
+ve.dm.HashValueStore.prototype.difference = function ( omit ) {
 	var i, len, hash,
 		store = new this.constructor();
 
-	if ( omit instanceof ve.dm.IndexValueStore ) {
+	if ( omit instanceof ve.dm.HashValueStore ) {
 		omit = omit.hashStore;
 	}
 	for ( i = 0, len = this.hashes.length; i < len; i++ ) {
@@ -300,11 +297,11 @@ ve.dm.IndexValueStore.prototype.difference = function ( omit ) {
 
 /**
  * @param {ve.dm.Transaction[]} transactions List of transactions
- * @return {ve.dm.IndexValueStore} The values in the transactions, in the order they occur
+ * @return {ve.dm.HashValueStore} The values in the transactions, in the order they occur
  */
-ve.dm.IndexValueStore.prototype.filter = function ( transactions ) {
+ve.dm.HashValueStore.prototype.filter = function ( transactions ) {
 	var t, tLen, operations, o, oLen, op, hash, e, eLen, annotations, a, aLen,
-		store = new ve.dm.IndexValueStore();
+		store = new ve.dm.HashValueStore();
 
 	for ( t = 0, tLen = transactions.length; t < tLen; t++ ) {
 		operations = transactions[ t ].operations;

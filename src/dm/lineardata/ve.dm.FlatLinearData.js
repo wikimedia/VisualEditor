@@ -1,7 +1,7 @@
 /*!
  * VisualEditor FlatLinearData classes.
  *
- * Class containing Flat linear data and an index-value store.
+ * Class containing Flat linear data and a hash-value store.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -12,7 +12,7 @@
  * @class
  * @extends ve.dm.LinearData
  * @constructor
- * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {ve.dm.HashValueStore} store Hash-value store
  * @param {Array} [data] Linear data
  */
 ve.dm.FlatLinearData = function VeDmFlatLinearData() {

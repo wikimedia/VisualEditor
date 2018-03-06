@@ -282,7 +282,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 	var covered, annotatable,
 		txBuilder = new ve.dm.TransactionBuilder(),
 		data = doc.data,
-		index = doc.getStore().index( annotation ),
+		hash = doc.getStore().hash( annotation ),
 		i = range.start,
 		span = i,
 		on = false,
@@ -303,7 +303,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 			// Structural element opening or closing, or entering a content node
 			if ( on ) {
 				txBuilder.pushRetain( span );
-				txBuilder.pushStopAnnotating( method, index );
+				txBuilder.pushStopAnnotating( method, hash );
 				span = 0;
 				on = false;
 			}
@@ -328,7 +328,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 				// Skip annotated content
 				if ( on ) {
 					txBuilder.pushRetain( span );
-					txBuilder.pushStopAnnotating( method, index );
+					txBuilder.pushStopAnnotating( method, hash );
 					span = 0;
 					on = false;
 				}
@@ -336,7 +336,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 				// Cover non-annotated content
 				if ( !on ) {
 					txBuilder.pushRetain( span );
-					txBuilder.pushStartAnnotating( method, index );
+					txBuilder.pushStartAnnotating( method, hash );
 					span = 0;
 					on = true;
 				}
@@ -350,7 +350,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 	}
 	txBuilder.pushRetain( span );
 	if ( on ) {
-		txBuilder.pushStopAnnotating( method, index );
+		txBuilder.pushStopAnnotating( method, hash );
 	}
 	txBuilder.pushFinalRetain( doc, range.end );
 	return txBuilder.getTransaction();
@@ -808,10 +808,10 @@ ve.dm.TransactionBuilder.prototype.pushAttributeChanges = function ( changes, ol
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} index Store index of annotation object to start setting or clearing from content data
+ * @param {Object} hash Store hash of annotation object to start setting or clearing from content data
  */
-ve.dm.TransactionBuilder.prototype.pushStartAnnotating = function ( method, index ) {
-	this.transaction.pushAnnotateOp( method, 'start', index );
+ve.dm.TransactionBuilder.prototype.pushStartAnnotating = function ( method, hash ) {
+	this.transaction.pushAnnotateOp( method, 'start', hash );
 };
 
 /**
@@ -819,10 +819,10 @@ ve.dm.TransactionBuilder.prototype.pushStartAnnotating = function ( method, inde
  *
  * @method
  * @param {string} method Method to use, either "set" or "clear"
- * @param {Object} index Store index of annotation object to stop setting or clearing from content data
+ * @param {Object} hash Store hash of annotation object to stop setting or clearing from content data
  */
-ve.dm.TransactionBuilder.prototype.pushStopAnnotating = function ( method, index ) {
-	this.transaction.pushAnnotateOp( method, 'stop', index );
+ve.dm.TransactionBuilder.prototype.pushStopAnnotating = function ( method, hash ) {
+	this.transaction.pushAnnotateOp( method, 'stop', hash );
 };
 
 /**

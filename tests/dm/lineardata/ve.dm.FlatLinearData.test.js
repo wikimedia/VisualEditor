@@ -10,7 +10,7 @@ QUnit.module( 've.dm.FlatLinearData' );
 
 QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) {
 	var i,
-		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), [
+		data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'paragraph' },
 			'a', [ 'b', [ 0 ] ],
 			{ type: '/paragraph' }
@@ -28,7 +28,7 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) 
 
 QUnit.test( 'isElementData', function ( assert ) {
 	var i,
-		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), [
+		data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'heading' },
 			'a',
 			{ type: 'inlineImage' },
@@ -103,7 +103,7 @@ QUnit.test( 'containsElementData', function ( assert ) {
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.FlatLinearData( new ve.dm.IndexValueStore(), cases[ i ].data );
+		data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), cases[ i ].data );
 		assert.strictEqual(
 			data.containsElementData(), cases[ i ].expected, cases[ i ].msg
 		);

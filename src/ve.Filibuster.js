@@ -505,7 +505,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 	} else if ( val.constructor === ve.dm.AnnotationSet ) {
 		return {
 			've.dm.AnnotationSet': val.getStore()
-				.values( val.getIndexes() )
+				.values( val.getHashes() )
 				.map( function ( annotation ) {
 					return annotation.name;
 				} )

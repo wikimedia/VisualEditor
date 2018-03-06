@@ -1110,7 +1110,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 
 QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 	var i,
-		linkIndex = 'h3f6906f71a963fc3',
+		linkHash = 'hdee7b89d544aa584',
 		cases = [
 			{
 				prevHtml: '<p></p>',
@@ -1158,8 +1158,8 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{ type: 'retain', length: 5 },
 						{
 							type: 'replace',
-							insert: [ [ 'B', [ linkIndex ] ] ],
-							remove: [ [ 'X', [ linkIndex ] ] ]
+							insert: [ [ 'B', [ linkHash ] ] ],
+							remove: [ [ 'X', [ linkHash ] ] ]
 						},
 						{ type: 'retain', length: 4 }
 					]
@@ -1176,7 +1176,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 						{ type: 'retain', length: 2 },
 						{
 							type: 'replace',
-							insert: [ [ 'Y', [ 'hd72ee073faddca4e' ] ] ],
+							insert: [ [ 'Y', [ 'h96560f31226e3199' ] ] ],
 							remove: []
 						},
 						{ type: 'retain', length: 3 }
@@ -1327,7 +1327,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 		linkAction = ve.ui.actionFactory.create( 'link', surface ),
 		link = linkAction.getLinkAnnotation( 'http://foo.com' ),
 		// Don't hard-code link index as it may depend on the LinkAction used
-		linkIndex = model.getDocument().getStore().indexOfValue( link ),
+		linkHash = model.getDocument().getStore().hashOfValue( link ),
 		fragment = model.getLinearFragment( new ve.Range( 1 ) ),
 		cases = [
 			{
@@ -1345,20 +1345,20 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 				},
 				isPaste: true,
 				expectedData: [
-					[ 'h', [ linkIndex ] ],
-					[ 't', [ linkIndex ] ],
-					[ 't', [ linkIndex ] ],
-					[ 'p', [ linkIndex ] ],
-					[ ':', [ linkIndex ] ],
-					[ '/', [ linkIndex ] ],
-					[ '/', [ linkIndex ] ],
-					[ 'f', [ linkIndex ] ],
-					[ 'o', [ linkIndex ] ],
-					[ 'o', [ linkIndex ] ],
-					[ '.', [ linkIndex ] ],
-					[ 'c', [ linkIndex ] ],
-					[ 'o', [ linkIndex ] ],
-					[ 'm', [ linkIndex ] ]
+					[ 'h', [ linkHash ] ],
+					[ 't', [ linkHash ] ],
+					[ 't', [ linkHash ] ],
+					[ 'p', [ linkHash ] ],
+					[ ':', [ linkHash ] ],
+					[ '/', [ linkHash ] ],
+					[ '/', [ linkHash ] ],
+					[ 'f', [ linkHash ] ],
+					[ 'o', [ linkHash ] ],
+					[ 'o', [ linkHash ] ],
+					[ '.', [ linkHash ] ],
+					[ 'c', [ linkHash ] ],
+					[ 'o', [ linkHash ] ],
+					[ 'm', [ linkHash ] ]
 				]
 			}
 		];

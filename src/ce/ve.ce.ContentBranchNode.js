@@ -286,7 +286,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			if ( offset <= relCursor && relCursor < offset + childLength ) {
 				unicorn = [
 					{}, // Unique object, for testing object equality later
-					dmSurface.getInsertionAnnotations().storeIndexes
+					dmSurface.getInsertionAnnotations().storeHashes
 				];
 				annotatedHtml.splice( i, 0, unicorn );
 				break;
@@ -297,7 +297,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		if ( i === ilen && offset === relCursor ) {
 			unicorn = [
 				{}, // Unique object, for testing object equality later
-				dmSurface.getInsertionAnnotations().storeIndexes
+				dmSurface.getInsertionAnnotations().storeHashes
 			];
 			annotatedHtml.push( unicorn );
 		}

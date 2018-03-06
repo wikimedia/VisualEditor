@@ -25,7 +25,7 @@ ve.dm.example = {};
  *
  * @method
  * @param {Array} data Linear model data
- * @param {ve.dm.IndexValueStore} [store] Index-value store to use, creates one if undefined
+ * @param {ve.dm.HashValueStore} [store] Hash-value store to use, creates one if undefined
  * @return {ve.dm.FlatLinearData} Linear data store
  * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
@@ -43,18 +43,18 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 	function preprocessOriginalDomElements( el ) {
 		var originalDomElements = el.originalDomElements;
 		if ( originalDomElements ) {
-			el.originalDomElementsIndex = store.index( originalDomElements, originalDomElements.map( ve.getNodeHtml ).join( '' ) );
+			el.originalDomElementsHash = store.hash( originalDomElements, originalDomElements.map( ve.getNodeHtml ).join( '' ) );
 			delete el.originalDomElements;
 		}
 	}
 
-	store = store || new ve.dm.IndexValueStore();
+	store = store || new ve.dm.HashValueStore();
 	for ( i = 0; i < data.length; i++ ) {
 		key = data[ i ].annotations ? 'annotations' : 1;
 		// Check for shorthand annotation objects in array
 		if ( Array.isArray( data[ i ][ key ] ) && data[ i ][ key ][ 0 ].type ) {
 			data[ i ][ key ].forEach( preprocessOriginalDomElements );
-			data[ i ][ key ] = ve.dm.example.createAnnotationSet( store, data[ i ][ key ] ).getIndexes();
+			data[ i ][ key ] = ve.dm.example.createAnnotationSet( store, data[ i ][ key ] ).getHashes();
 		}
 		preprocessOriginalDomElements( data[ i ] );
 	}
@@ -68,7 +68,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
  * originalDomElements removed.
  *
  * @param {Array} data Linear model data. Will be modified.
- * @param {ve.dm.IndexValueStore} store Index-value store to resolve annotations in
+ * @param {ve.dm.HashValueStore} store Hash-value store to resolve annotations in
  * @param {boolean} [preserveDomElements] Preserve original DOM elements
  * @return {Array} The given `data` parameter.
  */
@@ -82,10 +82,10 @@ ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElemen
 			data[ i ][ key ] = new ve.dm.AnnotationSet( store, data[ i ][ key ] ).get();
 			for ( j = 0; j < data[ i ][ key ].length; j++ ) {
 				data[ i ][ key ][ j ] = data[ i ][ key ][ j ].element;
-				if ( !preserveDomElements && data[ i ][ key ][ j ].originalDomElementsIndex !== undefined ) {
+				if ( !preserveDomElements && data[ i ][ key ][ j ].originalDomElementsHash !== undefined ) {
 					// Make a shallow clone and remove originalDomElements from it
 					data[ i ][ key ][ j ] = $.extend( {}, data[ i ][ key ][ j ] );
-					delete data[ i ][ key ][ j ].originalDomElementsIndex;
+					delete data[ i ][ key ][ j ].originalDomElementsHash;
 				}
 			}
 		}
@@ -102,8 +102,8 @@ ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElemen
 ve.dm.example.removeOriginalDomElements = function ( data ) {
 	var i, len;
 	for ( i = 0, len = data.length; i < len; i++ ) {
-		if ( data[ i ].originalDomElementsIndex !== undefined ) {
-			delete data[ i ].originalDomElementsIndex;
+		if ( data[ i ].originalDomElementsHash !== undefined ) {
+			delete data[ i ].originalDomElementsHash;
 		}
 	}
 	return data;
@@ -114,7 +114,7 @@ ve.dm.example.removeOriginalDomElements = function ( data ) {
  *
  * @method
  * @param {Object} annotation Plain object with type and attributes properties
- * @param {ve.dm.IndexValueStore} [store] Index value store
+ * @param {ve.dm.HashValueStore} [store] Hash value store
  * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
  */
 ve.dm.example.createAnnotation = function ( annotation, store ) {
@@ -128,7 +128,7 @@ ve.dm.example.createAnnotation = function ( annotation, store ) {
  * AnnotationSet.
  *
  * @method
- * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {ve.dm.HashValueStore} store Hash-value store
  * @param {Array} annotations Array of annotations in shorthand format
  * @return {ve.dm.AnnotationSet}
  */
@@ -137,7 +137,7 @@ ve.dm.example.createAnnotationSet = function ( store, annotations ) {
 	for ( i = 0; i < annotations.length; i++ ) {
 		annotations[ i ] = ve.dm.example.createAnnotation( annotations[ i ], store );
 	}
-	return new ve.dm.AnnotationSet( store, store.indexes( annotations ) );
+	return new ve.dm.AnnotationSet( store, store.hashAll( annotations ) );
 };
 
 /* Some common annotations in shorthand format */
@@ -156,22 +156,22 @@ ve.dm.example.language = function ( lang, dir ) {
 	return { type: 'meta/language', attributes: { lang: lang, dir: dir } };
 };
 
-ve.dm.example.annIndex = function ( tagName ) {
+ve.dm.example.annHash = function ( tagName ) {
 	var ann = ve.copy( {
 		b: ve.dm.example.bold,
 		i: ve.dm.example.italic,
 		u: ve.dm.example.underline
 	}[ tagName ] );
 
-	ann.originalDomElementsIndex = ve.dm.IndexValueStore.prototype.indexOfValue( null, '<' + tagName + '></' + tagName + '>' );
-	return ve.dm.IndexValueStore.prototype.indexOfValue( ann );
+	ann.originalDomElementsHash = ve.dm.HashValueStore.prototype.hashOfValue( null, '<' + tagName + '></' + tagName + '>' );
+	return ve.dm.HashValueStore.prototype.hashOfValue( ann );
 };
 
-// index = store.indexOfValue( ve.dm.example.bold )
-ve.dm.example.boldIndex = 'h49981eab0f8056ff';
-ve.dm.example.italicIndex = 'hefd27ef3bf2041dd';
-ve.dm.example.underlineIndex = 'hf214c680fbc361da';
-ve.dm.example.strongIndex = 'ha5aaf526d1c3af54';
+// hash = store.hashOfValue( ve.dm.example.bold )
+ve.dm.example.boldHash = 'h49981eab0f8056ff';
+ve.dm.example.italicHash = 'hefd27ef3bf2041dd';
+ve.dm.example.underlineHash = 'hf214c680fbc361da';
+ve.dm.example.strongHash = 'ha5aaf526d1c3af54';
 
 ve.dm.example.inlineSlug = '<span class="ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug"></span>';
 ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>';
@@ -182,7 +182,7 @@ ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-bl
  * Defaults to ve.dm.example.data if no name is supplied.
  *
  * @param {string} [name='data'] Named element of ve.dm.example
- * @param {ve.dm.IndexValueStore} [store] A specific index-value store to use, optionally.
+ * @param {ve.dm.HashValueStore} [store] A specific hash-value store to use, optionally.
  * @return {ve.dm.Document} Document
  * @throws {Error} Example data not found
  */
@@ -194,7 +194,7 @@ ve.dm.example.createExampleDocument = function ( name, store ) {
  * Helper function for ve.dm.createExampleDocument.
  *
  * @param {string} [name='data'] Named element of ve.dm.example
- * @param {ve.dm.IndexValueStore} [store] A specific index-value store to use, optionally.
+ * @param {ve.dm.HashValueStore} [store] A specific hash-value store to use, optionally.
  * @param {Object} object Collection of test documents, keyed by name
  * @return {ve.dm.Document} Document
  * @throws {Error} Example data not found
@@ -209,7 +209,7 @@ ve.dm.example.createExampleDocumentFromObject = function ( name, store, object )
 
 ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
 	var doc, i;
-	store = store || new ve.dm.IndexValueStore();
+	store = store || new ve.dm.HashValueStore();
 	doc = new ve.dm.Document(
 		ve.dm.example.preprocessAnnotations( ve.copy( data ), store )
 	);

@@ -9,7 +9,7 @@ QUnit.module( 've.dm.LinearData' );
 /* Tests */
 
 QUnit.test( 'basic usage', function ( assert ) {
-	var store = new ve.dm.IndexValueStore(),
+	var store = new ve.dm.HashValueStore(),
 		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
 
 	assert.strictEqual( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
@@ -26,7 +26,7 @@ QUnit.test( 'basic usage', function ( assert ) {
 QUnit.test( 'slice(Object)/splice(Object)/batchSplice', function ( assert ) {
 	var dataSlice, expectedDataSlice,
 		dataSplice, expectedDataSplice,
-		store = new ve.dm.IndexValueStore(),
+		store = new ve.dm.HashValueStore(),
 		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) ),
 		expectedData = ve.copy( ve.dm.example.data );
 

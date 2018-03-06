@@ -10,7 +10,7 @@ QUnit.module( 've.ce.TextNode' );
 
 QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 	var i, len, cases, doc,
-		store = new ve.dm.IndexValueStore();
+		store = new ve.dm.HashValueStore();
 
 	cases = [
 		{

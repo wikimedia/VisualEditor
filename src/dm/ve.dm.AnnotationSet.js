@@ -8,17 +8,17 @@
  * Annotation set.
  *
  * @constructor
- * @param {ve.dm.IndexValueStore} store Index-value store
- * @param {number[]} [storeIndexes] Array of store indexes
+ * @param {ve.dm.HashValueStore} store Hash-value store
+ * @param {number[]} [storeHashes] Array of store hashes
  */
-ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeIndexes ) {
+ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeHashes ) {
 	// Parent constructor
 	this.store = store;
-	this.storeIndexes = storeIndexes || [];
+	this.storeHashes = storeHashes || [];
 
 	if ( this.get().indexOf( undefined ) !== -1 ) {
-		throw new Error( 'Annotation with index ' +
-			this.storeIndexes[ this.get().indexOf( undefined ) ] +
+		throw new Error( 'Annotation with hash ' +
+			this.storeHashes[ this.get().indexOf( undefined ) ] +
 			' not found in store'
 		);
 	}
@@ -27,10 +27,10 @@ ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeIndexes ) {
 /* Methods */
 
 /**
- * Get the index-value store.
+ * Get the hash-value store.
  *
  * @method
- * @return {ve.dm.IndexValueStore} Index-value store
+ * @return {ve.dm.HashValueStore} Hash-value store
  */
 ve.dm.AnnotationSet.prototype.getStore = function () {
 	return this.store;
@@ -43,7 +43,7 @@ ve.dm.AnnotationSet.prototype.getStore = function () {
  * @return {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.clone = function () {
-	return new ve.dm.AnnotationSet( this.getStore(), this.storeIndexes.slice() );
+	return new ve.dm.AnnotationSet( this.getStore(), this.storeHashes.slice() );
 };
 
 /**
@@ -112,29 +112,29 @@ ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
  */
 ve.dm.AnnotationSet.prototype.get = function ( offset ) {
 	if ( offset !== undefined ) {
-		return this.getStore().value( this.getIndex( offset ) );
+		return this.getStore().value( this.getHash( offset ) );
 	} else {
-		return this.getStore().values( this.getIndexes() );
+		return this.getStore().values( this.getHashes() );
 	}
 };
 
 /**
- * Get store index from offset within annotation set.
+ * Get store hash from offset within annotation set.
  *
  * @param {number} offset Offset within annotation set
- * @return {number} Store index at specified offset
+ * @return {number} Store hash at specified offset
  */
-ve.dm.AnnotationSet.prototype.getIndex = function ( offset ) {
-	return this.storeIndexes[ offset ];
+ve.dm.AnnotationSet.prototype.getHash = function ( offset ) {
+	return this.storeHashes[ offset ];
 };
 
 /**
- * Get all store indexes.
+ * Get all store hashes.
  *
- * @return {Array} Store indexes
+ * @return {Array} Store hashes
  */
-ve.dm.AnnotationSet.prototype.getIndexes = function () {
-	return this.storeIndexes;
+ve.dm.AnnotationSet.prototype.getHashes = function () {
+	return this.storeHashes;
 };
 
 /**
@@ -144,7 +144,7 @@ ve.dm.AnnotationSet.prototype.getIndexes = function () {
  * @return {number} The number of annotations in the set
  */
 ve.dm.AnnotationSet.prototype.getLength = function () {
-	return this.storeIndexes.length;
+	return this.storeHashes.length;
 };
 
 /**
@@ -160,7 +160,7 @@ ve.dm.AnnotationSet.prototype.isEmpty = function () {
 /**
  * Check whether a given annotation occurs in the set.
  *
- * Annotations are compared by store index.
+ * Annotations are compared by store hash.
  *
  * @method
  * @param {ve.dm.Annotation} annotation Annotation
@@ -171,14 +171,14 @@ ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
 };
 
 /**
- * Check whether a given store index occurs in the set.
+ * Check whether a given store hash occurs in the set.
  *
  * @method
- * @param {number} storeIndex Store index of annotation
- * @return {boolean} There is an annotation in the set with this store index
+ * @param {number} storeHash Store hash of annotation
+ * @return {boolean} There is an annotation in the set with this store hash
  */
-ve.dm.AnnotationSet.prototype.containsIndex = function ( storeIndex ) {
-	return this.getIndexes().indexOf( storeIndex ) !== -1;
+ve.dm.AnnotationSet.prototype.containsHash = function ( storeHash ) {
+	return this.getHashes().indexOf( storeHash ) !== -1;
 };
 
 /**
@@ -190,10 +190,10 @@ ve.dm.AnnotationSet.prototype.containsIndex = function ( storeIndex ) {
  */
 ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
 	var i, length,
-		setIndexes = set.getIndexes(),
-		thisIndexes = this.getIndexes();
-	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
-		if ( thisIndexes.indexOf( setIndexes[ i ] ) !== -1 ) {
+		setHashes = set.getHashes(),
+		thisHashes = this.getHashes();
+	for ( i = 0, length = setHashes.length; i < length; i++ ) {
+		if ( thisHashes.indexOf( setHashes[ i ] ) !== -1 ) {
 			return true;
 		}
 	}
@@ -209,10 +209,10 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
  */
 ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
 	var i, length,
-		setIndexes = set.getIndexes(),
-		thisIndexes = this.getIndexes();
-	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
-		if ( thisIndexes.indexOf( setIndexes[ i ] ) === -1 ) {
+		setHashes = set.getHashes(),
+		thisHashes = this.getHashes();
+	for ( i = 0, length = setHashes.length; i < length; i++ ) {
+		if ( thisHashes.indexOf( setHashes[ i ] ) === -1 ) {
 			return false;
 		}
 	}
@@ -227,18 +227,18 @@ ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
  * @return {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
 ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
-	return this.offsetOfIndex( this.getStore().indexOfValue( annotation ) );
+	return this.offsetOfHash( this.getStore().hashOfValue( annotation ) );
 };
 
 /**
- * Get the offset of a given annotation in the set by store index.
+ * Get the offset of a given annotation in the set by store hash.
  *
  * @method
- * @param {number} storeIndex Store index of annotation to search for
+ * @param {number} storeHash Store hash of annotation to search for
  * @return {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
-ve.dm.AnnotationSet.prototype.offsetOfIndex = function ( storeIndex ) {
-	return this.getIndexes().indexOf( storeIndex );
+ve.dm.AnnotationSet.prototype.offsetOfHash = function ( storeHash ) {
+	return this.getHashes().indexOf( storeHash );
 };
 
 /**
@@ -252,7 +252,7 @@ ve.dm.AnnotationSet.prototype.offsetOfIndex = function ( storeIndex ) {
  * @return {ve.dm.AnnotationSet|boolean} New set containing only the matching annotations
  */
 ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
-	var i, length, result, storeIndex, annotation;
+	var i, length, result, storeHash, annotation;
 
 	if ( !returnBool ) {
 		result = this.clone();
@@ -262,13 +262,13 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 		result.removeAll();
 	}
 	for ( i = 0, length = this.getLength(); i < length; i++ ) {
-		storeIndex = this.getIndex( i );
-		annotation = this.getStore().value( storeIndex );
+		storeHash = this.getHash( i );
+		annotation = this.getStore().value( storeHash );
 		if ( callback( annotation ) ) {
 			if ( returnBool ) {
 				return true;
 			} else {
-				result.storeIndexes.push( storeIndex );
+				result.storeHashes.push( storeHash );
 			}
 		}
 	}
@@ -299,7 +299,7 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
 ve.dm.AnnotationSet.prototype.getComparable = function ( annotation ) {
 	var i, len, ann;
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
-		ann = this.getStore().value( this.getIndex( i ) );
+		ann = this.getStore().value( this.getHash( i ) );
 		if ( ann.compareTo( annotation ) ) {
 			return ann;
 		}
@@ -348,7 +348,7 @@ ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
  * @return {boolean} The annotations are the same
  */
 ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
-	var i, length = this.getIndexes().length;
+	var i, length = this.getHashes().length;
 
 	if ( length === annotationSet.getLength() ) {
 		for ( i = 0; i < length; i++ ) {
@@ -380,7 +380,7 @@ ve.dm.AnnotationSet.prototype.withoutComparableSet = function ( set ) {
  * Strictly compare two annotation sets for equality.
  *
  * This method only considers two annotation sets to be equal if they contain exactly the same
- * annotations (not just comparable, but with the same index in the IndexValueStore)
+ * annotations (not just comparable, but with the same hash in the HashValueStore)
  * in exactly the same order.
  *
  * @param {ve.dm.AnnotationSet} set The annotation set to compare this one to
@@ -388,13 +388,13 @@ ve.dm.AnnotationSet.prototype.withoutComparableSet = function ( set ) {
  */
 ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
 	var i, len,
-		ourIndexes = this.getIndexes(),
-		theirIndexes = set.getIndexes();
-	if ( ourIndexes.length !== theirIndexes.length ) {
+		ourHashes = this.getHashes(),
+		theirHashes = set.getHashes();
+	if ( ourHashes.length !== theirHashes.length ) {
 		return false;
 	}
-	for ( i = 0, len = ourIndexes.length; i < len; i++ ) {
-		if ( ourIndexes[ i ] !== theirIndexes[ i ] ) {
+	for ( i = 0, len = ourHashes.length; i < len; i++ ) {
+		if ( ourHashes[ i ] !== theirHashes[ i ] ) {
 			return false;
 		}
 	}
@@ -415,7 +415,7 @@ ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
  * @param {number} offset Offset to add the annotation at
  */
 ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
-	var storeIndex = this.getStore().index( annotation );
+	var storeHash = this.getStore().hash( annotation );
 	// Negative offset
 	if ( offset < 0 ) {
 		offset = this.getLength() + offset;
@@ -426,8 +426,8 @@ ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
 		return;
 	}
 	// If not in set already, splice in place
-	if ( !this.containsIndex( storeIndex ) ) {
-		this.storeIndexes.splice( offset, 0, storeIndex );
+	if ( !this.containsHash( storeHash ) ) {
+		this.storeHashes.splice( offset, 0, storeHash );
 	}
 };
 
@@ -442,14 +442,14 @@ ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
 
  */
 ve.dm.AnnotationSet.prototype.addSet = function ( set, offset ) {
-	var indexes = this.getIndexes();
+	var hashes = this.getHashes();
 	if ( offset === undefined ) {
-		offset = indexes.length;
+		offset = hashes.length;
 	}
-	this.storeIndexes = OO.simpleArrayUnion(
-		indexes.slice( 0, offset ),
-		set.getIndexes(),
-		indexes.slice( offset )
+	this.storeHashes = OO.simpleArrayUnion(
+		hashes.slice( 0, offset ),
+		set.getHashes(),
+		hashes.slice( offset )
 	);
 };
 
@@ -460,17 +460,17 @@ ve.dm.AnnotationSet.prototype.addSet = function ( set, offset ) {
  * @param {ve.dm.Annotation} annotation Annotation to add
  */
 ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
-	this.pushIndex( this.getStore().index( annotation ) );
+	this.pushHash( this.getStore().hash( annotation ) );
 };
 
 /**
- * Add an annotation at the end of the set by store index.
+ * Add an annotation at the end of the set by store hash.
  *
  * @method
- * @param {number} storeIndex Store index of annotation to add
+ * @param {number} storeHash Store hash of annotation to add
  */
-ve.dm.AnnotationSet.prototype.pushIndex = function ( storeIndex ) {
-	this.storeIndexes.push( storeIndex );
+ve.dm.AnnotationSet.prototype.pushHash = function ( storeHash ) {
+	this.storeHashes.push( storeHash );
 };
 
 /**
@@ -487,21 +487,21 @@ ve.dm.AnnotationSet.prototype.removeAt = function ( offset ) {
 	if ( offset >= this.getLength() ) {
 		throw new Error( 'Offset out of bounds' );
 	}
-	this.storeIndexes.splice( offset, 1 );
+	this.storeHashes.splice( offset, 1 );
 };
 
 /**
- * Remove a given annotation from the set by store index.
+ * Remove a given annotation from the set by store hash.
  *
  * If the annotation isn't in the set, nothing happens.
  *
  * @method
- * @param {number} storeIndex Store index of annotation to remove
+ * @param {number} storeHash Store hash of annotation to remove
  */
-ve.dm.AnnotationSet.prototype.removeIndex = function ( storeIndex ) {
-	var offset = this.offsetOfIndex( storeIndex );
+ve.dm.AnnotationSet.prototype.removeHash = function ( storeHash ) {
+	var offset = this.offsetOfHash( storeHash );
 	if ( offset !== -1 ) {
-		this.storeIndexes.splice( offset, 1 );
+		this.storeHashes.splice( offset, 1 );
 	}
 };
 
@@ -516,7 +516,7 @@ ve.dm.AnnotationSet.prototype.removeIndex = function ( storeIndex ) {
 ve.dm.AnnotationSet.prototype.remove = function ( annotation ) {
 	var offset = this.offsetOf( annotation );
 	if ( offset !== -1 ) {
-		this.storeIndexes.splice( offset, 1 );
+		this.storeHashes.splice( offset, 1 );
 	}
 };
 
@@ -526,7 +526,7 @@ ve.dm.AnnotationSet.prototype.remove = function ( annotation ) {
  * @method
  */
 ve.dm.AnnotationSet.prototype.removeAll = function () {
-	this.storeIndexes = [];
+	this.storeHashes = [];
 };
 
 /**
@@ -538,7 +538,7 @@ ve.dm.AnnotationSet.prototype.removeAll = function () {
  * @param {ve.dm.AnnotationSet} set Set to remove from the set
  */
 ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
-	this.storeIndexes = OO.simpleArrayDifference( this.getIndexes(), set.getIndexes() );
+	this.storeHashes = OO.simpleArrayDifference( this.getHashes(), set.getHashes() );
 };
 
 /**
@@ -548,7 +548,7 @@ ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
  * @param {ve.dm.AnnotationSet} set Set to intersect with the set
  */
 ve.dm.AnnotationSet.prototype.removeNotInSet = function ( set ) {
-	this.storeIndexes = OO.simpleArrayIntersection( this.getIndexes(), set.getIndexes() );
+	this.storeHashes = OO.simpleArrayIntersection( this.getHashes(), set.getHashes() );
 };
 
 /**
@@ -561,7 +561,7 @@ ve.dm.AnnotationSet.prototype.removeNotInSet = function ( set ) {
  */
 ve.dm.AnnotationSet.prototype.reversed = function () {
 	var newSet = this.clone();
-	newSet.storeIndexes.reverse();
+	newSet.storeHashes.reverse();
 	return newSet;
 };
 

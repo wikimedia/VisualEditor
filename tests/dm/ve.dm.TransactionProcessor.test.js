@@ -28,22 +28,22 @@ QUnit.test( 'commit', function ( assert ) {
 			'annotating content': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ],
+					[ 'pushStopAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStartAnnotating', 'clear', store.index( italic ) ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
-					[ 'pushStartAnnotating', 'set', store.index( underline ) ],
+					[ 'pushStartAnnotating', 'clear', store.hash( italic ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( underline ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'clear', store.index( italic ) ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ],
-					[ 'pushStopAnnotating', 'set', store.index( underline ) ]
+					[ 'pushStopAnnotating', 'clear', store.hash( italic ) ],
+					[ 'pushStopAnnotating', 'set', store.hash( bold ) ],
+					[ 'pushStopAnnotating', 'set', store.hash( underline ) ]
 				],
 				expected: function ( data ) {
-					data[ 1 ] = [ 'a', store.indexes( [ bold ] ) ];
-					data[ 2 ] = [ 'b', store.indexes( [ bold ] ) ];
-					data[ 3 ] = [ 'c', store.indexes( [ bold, underline ] ) ];
+					data[ 1 ] = [ 'a', store.hashAll( [ bold ] ) ];
+					data[ 2 ] = [ 'b', store.hashAll( [ bold ] ) ];
+					data[ 3 ] = [ 'c', store.hashAll( [ bold, underline ] ) ];
 				},
 				events: [
 					[ 'annotation', 0, 0 ],
@@ -55,12 +55,12 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushRetain', 1 ],
 					[ 'pushReplacement', 1, 0, [ 'x', 'y', 'z' ] ],
 					[ 'pushRetain', 55 ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ]
+					[ 'pushStopAnnotating', 'set', store.hash( bold ) ]
 				],
 				expected: function ( data ) {
-					data[ 56 ] = [ 'l', store.indexes( [ bold ] ) ];
+					data[ 56 ] = [ 'l', store.hashAll( [ bold ] ) ];
 					data.splice( 1, 0, 'x', 'y', 'z' );
 				},
 				events: [
@@ -72,14 +72,14 @@ QUnit.test( 'commit', function ( assert ) {
 			'annotating content and leaf elements': {
 				calls: [
 					[ 'pushRetain', 38 ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushRetain', 4 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ]
+					[ 'pushStopAnnotating', 'set', store.hash( bold ) ]
 				],
 				expected: function ( data ) {
-					data[ 38 ] = [ 'h', store.indexes( [ bold ] ) ];
-					data[ 39 ].annotations = store.indexes( [ bold ] );
-					data[ 41 ] = [ 'i', store.indexes( [ bold ] ) ];
+					data[ 38 ] = [ 'h', store.hashAll( [ bold ] ) ];
+					data[ 39 ].annotations = store.hashAll( [ bold ] );
+					data[ 41 ] = [ 'i', store.hashAll( [ bold ] ) ];
 				},
 				events: [
 					[ 'annotation', 2, 0 ],
@@ -92,44 +92,44 @@ QUnit.test( 'commit', function ( assert ) {
 			},
 			'using an annotation method other than set or clear throws an exception': {
 				calls: [
-					[ 'pushStartAnnotating', 'invalid-method', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'invalid-method', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'invalid-method', store.index( bold ) ]
+					[ 'pushStopAnnotating', 'invalid-method', store.hash( bold ) ]
 				],
 				exception: /Invalid annotation method/
 			},
 			'annotating branch opening element throws an exception': {
 				calls: [
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ]
+					[ 'pushStopAnnotating', 'set', store.hash( bold ) ]
 				],
 				exception: /Invalid transaction, cannot annotate a non-content element/
 			},
 			'annotating branch closing element throws an exception': {
 				calls: [
 					[ 'pushRetain', 4 ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ]
+					[ 'pushStopAnnotating', 'set', store.hash( bold ) ]
 				],
 				exception: /Invalid transaction, cannot annotate a non-content element/
 			},
 			'setting duplicate annotations throws an exception': {
 				calls: [
 					[ 'pushRetain', 2 ],
-					[ 'pushStartAnnotating', 'set', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'set', store.index( bold ) ]
+					[ 'pushStopAnnotating', 'set', store.hash( bold ) ]
 				],
 				exception: /Invalid transaction, annotation to be set is already set/
 			},
 			'removing non-existent annotations throws an exception': {
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushStartAnnotating', 'clear', store.index( bold ) ],
+					[ 'pushStartAnnotating', 'clear', store.hash( bold ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'clear', store.index( bold ) ]
+					[ 'pushStopAnnotating', 'clear', store.hash( bold ) ]
 				],
 				exception: /Invalid transaction, annotation to be cleared is not set/
 			},
@@ -447,26 +447,26 @@ QUnit.test( 'commit', function ( assert ) {
 			'applying a link across an existing annotation boundary': {
 				data: [
 					{ type: 'paragraph' },
-					[ 'f', store.indexes( [ bold, italic ] ) ],
-					[ 'o', store.indexes( [ bold, italic ] ) ],
-					[ 'o', store.indexes( [ bold, italic ] ) ],
-					[ 'b', store.indexes( [ bold ] ) ],
-					[ 'a', store.indexes( [ bold ] ) ],
-					[ 'r', store.indexes( [ bold ] ) ],
+					[ 'f', store.hashAll( [ bold, italic ] ) ],
+					[ 'o', store.hashAll( [ bold, italic ] ) ],
+					[ 'o', store.hashAll( [ bold, italic ] ) ],
+					[ 'b', store.hashAll( [ bold ] ) ],
+					[ 'a', store.hashAll( [ bold ] ) ],
+					[ 'r', store.hashAll( [ bold ] ) ],
 					{ type: '/paragraph' }
 				],
 				calls: [
 					[ 'pushRetain', 1 ],
-					[ 'pushStartAnnotating', 'set', store.index( link ) ],
+					[ 'pushStartAnnotating', 'set', store.hash( link ) ],
 					[ 'pushRetain', 6 ],
-					[ 'pushStopAnnotating', 'set', store.index( link ) ],
+					[ 'pushStopAnnotating', 'set', store.hash( link ) ],
 					[ 'pushRetain', 1 ]
 				],
 				expected: function ( data ) {
 					var i, annotations;
 					for ( i = 1; i <= 6; i++ ) {
 						annotations = data[ i ][ 1 ];
-						annotations.splice( 1, 0, store.index( link ) );
+						annotations.splice( 1, 0, store.hash( link ) );
 					}
 				}
 			},
