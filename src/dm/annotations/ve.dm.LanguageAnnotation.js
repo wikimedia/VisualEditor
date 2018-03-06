@@ -66,6 +66,15 @@ ve.dm.LanguageAnnotation.static.describeChange = function ( key, change ) {
 			ve.init.platform.getLanguageName( change.to.toLowerCase() )
 		);
 	}
+
+	// TODO: Show something nicer than 'null', 'ltr', and 'rtl'.
+	if ( key === 'dir' ) {
+		return ve.msg( 'visualeditor-changedesc-direction',
+			change.from.toLowerCase(),
+			change.to.toLowerCase()
+		);
+	}
+
 	// Parent method
 	return ve.dm.LanguageAnnotation.parent.static.describeChange.apply( this, arguments );
 };

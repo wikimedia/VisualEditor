@@ -609,7 +609,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 				expected: 'visualeditor-changedesc-language,langname-en,langname-fr'
 			},
 			{
-				msg: 'LanguageAnnotation: Dir change (fallback)',
+				msg: 'LanguageAnnotation: Dir change',
 				testedKey: 'dir',
 				before: new ve.dm.LanguageAnnotation( {
 					type: 'meta/language',
@@ -619,7 +619,42 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'meta/language',
 					attributes: { lang: 'en', dir: 'rtl' }
 				} ),
-				expected: 'visualeditor-changedesc-changed,dir,ltr,rtl'
+				expected: 'visualeditor-changedesc-direction,ltr,rtl'
+			},
+			{
+				msg: 'LanguageAnnotation: Style change (fallback)',
+				testedKey: 'style',
+				before: new ve.dm.LanguageAnnotation( {
+					type: 'meta/language',
+					attributes: { lang: 'en', dir: 'ltr', style: 'font-weight:800' }
+				} ),
+				after: new ve.dm.LanguageAnnotation( {
+					type: 'meta/language',
+					attributes: { lang: 'en', dir: 'ltr', style: 'font-weight:700' }
+				} ),
+				expected: 'visualeditor-changedesc-changed,style,font-weight:800,font-weight:700'
+			},
+			{
+				msg: 'SpanAnnotation: Style change',
+				testedKey: 'style',
+				before: new ve.dm.SpanAnnotation( {
+					attributes: { style: 'font-weight:800' }
+				} ),
+				after: new ve.dm.SpanAnnotation( {
+					attributes: { style: 'font-weight:700' }
+				} ),
+				expected: 'visualeditor-changedesc-style,font-weight:800,font-weight:700'
+			},
+			{
+				msg: 'SpanAnnotation: Title change (fallback)',
+				testedKey: 'title',
+				before: new ve.dm.SpanAnnotation( {
+					attributes: { style: 'font-weight:800', title: 'Hello' }
+				} ),
+				after: new ve.dm.SpanAnnotation( {
+					attributes: { style: 'font-weight:800', title: 'Farewell' }
+				} ),
+				expected: 'visualeditor-changedesc-changed,title,Hello,Farewell'
 			}
 		];
 
