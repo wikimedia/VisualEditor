@@ -223,7 +223,7 @@
 		newDoc.getStore().merge( oldDoc.getStore() );
 		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
 		diffElement = new ve.ui.DiffElement( visualDiff );
-		assert.strictEqual( diffElement.$document.html(), caseItem.expected, caseItem.msg );
+		assert.equalDomElement( diffElement.$document[ 0 ], $( '<div>' ).addClass( 've-ui-diffElement-document' ).html( caseItem.expected )[ 0 ], caseItem.msg );
 		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasMoves' ), !!caseItem.hasMoves, caseItem.msg + ': hasMoves' );
 		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasDescriptions' ), !!caseItem.expectedDescriptions, caseItem.msg + ': hasDescriptions' );
 		if ( caseItem.expectedDescriptions !== undefined ) {

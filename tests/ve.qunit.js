@@ -202,6 +202,27 @@
 		} );
 	};
 
+	/**
+	 * @method
+	 * @static
+	 * @param {HTMLElement} actual
+	 * @param {HTMLElement} expected
+	 * @param {string} message
+	 */
+	QUnit.assert.notEqualDomElement = function ( actual, expected, message ) {
+		var actualSummary = ve.getDomElementSummary( actual ),
+			expectedSummary = ve.getDomElementSummary( expected ),
+			actualSummaryHtml = ve.getDomElementSummary( actual, true ),
+			expectedSummaryHtml = ve.getDomElementSummary( expected, true );
+
+		this.pushResult( {
+			result: !QUnit.equiv( actualSummary, expectedSummary ),
+			actual: actualSummaryHtml,
+			expected: 'Not: ' + expectedSummaryHtml,
+			message: message
+		} );
+	};
+
 	QUnit.assert.equalLinearData = function ( actual, expected, message ) {
 		function removeOriginalDomElements( val ) {
 			if ( val && val.type ) {

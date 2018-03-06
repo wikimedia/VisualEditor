@@ -9,7 +9,7 @@ QUnit.module( 've.ce.TextState' );
 /* Tests */
 
 QUnit.test( 'getChangeTransaction', function ( assert ) {
-	var i, view, documentView, documentNode, test, oldState, newState, change, tests,
+	var i, view, documentView, documentNode, contentNode, test, oldState, newState, change, tests,
 		underlineHash = ve.dm.example.underlineHash,
 		boldHash = ve.dm.example.boldHash,
 		annHash = ve.dm.example.annHash;
@@ -361,15 +361,16 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 		view = ve.test.utils.createSurfaceViewFromHtml( test.oldRawHtml );
 		documentView = view.getDocument();
 		documentNode = documentView.getDocumentNode();
-		( test.willFail ? assert.notDeepEqual : assert.deepEqual ).call(
+		contentNode = documentNode.children[ 0 ];
+		( test.willFail ? assert.notEqualDomElement : assert.equalDomElement ).call(
 			assert,
-			documentNode.$element.find( ':first' ).html(),
-			test.oldInnerHtml,
+			$( '<div>' ).append( contentNode.$element.clone().contents() )[ 0 ],
+			$( '<div>' ).html( test.oldInnerHtml )[ 0 ],
 			test.msg + ' (oldInnerHtml)'
 		);
 		view.model.setSelection( new ve.dm.LinearSelection( documentView.model, new ve.Range( 1 ) ) );
 		oldState = new ve.ce.RangeState( null, documentNode, false );
-		documentNode.$element.find( ':first' ).html( test.newInnerHtml );
+		contentNode.$element.html( test.newInnerHtml );
 		view.model.setSelection( new ve.dm.LinearSelection( documentView.model, new ve.Range( 1 ) ) );
 		newState = new ve.ce.RangeState( oldState, documentNode, false );
 		change = newState.textState.getChangeTransaction(
