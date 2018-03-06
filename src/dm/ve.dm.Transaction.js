@@ -214,6 +214,19 @@ ve.dm.Transaction.prototype.pushAttributeOp = function ( key, from, to ) {
 /**
  * Build an annotate operation
  *
+ * It is an error to set an annotation on content that already has a matching annotation (in
+ * the sense of ve.dm.AnnotationSet#containsComparable ), or to clear an annotation on content
+ * that does not have the exact same annotation (in the sense of matching hashes)
+ *
+ * When processing transactions, annotation changes are applied individually to the item at
+ * each linear model offset. When setting, the annotation is inserted into the item's annotation
+ * array at the offset `spliceAt`. When clearing, the matching annotation must be at the offset
+ * `spliceAt`, and is removed.
+ *
+ * When multiple annotate actions are operating at once, they are applied in the order in which
+ * their start operations occur in the transaction. This matters because of ordering in the
+ * annotation array.
+ *
  * @param {string} method Method to use, either "set" or "clear"
  * @param {string} bias Bias, either "start" or "stop"
  * @param {string} hash Store hash of annotation object

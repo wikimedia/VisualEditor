@@ -35,10 +35,10 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	// unadjusted offsets; this is needed to adjust those offsets after other modifications have been
 	// made to the linear model that have caused offsets to shift.
 	this.adjustment = 0;
-	// Set and clear are sets of annotations which should be added or removed to content being
-	// inserted or retained.
-	this.set = new ve.dm.AnnotationSet( this.document.getStore() );
-	this.clear = new ve.dm.AnnotationSet( this.document.getStore() );
+	// Annotations that should be added or removed to content being inserted or retained,
+	// in the order in which their starts appear in the transaction operations list;
+	// Array of { method: 'set'|'clear', annotation: ve.dm.Annotation, spliceAt: number }
+	this.changes = [];
 	this.annotatedRanges = [];
 	// State tracking for unbalanced replace operations
 	this.replaceRemoveLevel = 0;
@@ -237,9 +237,9 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
 /**
  * Apply the current annotation stacks.
  *
- * This will set all annotations in this.set and clear all annotations in `this.clear` on the data
- * between the offsets `this.cursor` and `this.cursor + to`. Annotations are set at the highest
- * annotation set offset below which annotations are uniform across the whole range.
+ * This will set/clear all annotations in this.changes on the data between the offsets
+ * `this.cursor` and `this.cursor + to`. Annotations are set at the highest annotation set
+ * offset below which annotations are uniform across the whole range.
  *
  * @private
  * @param {number} to Offset to stop annotating at, annotating starts at this.cursor
@@ -248,32 +248,31 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  * @throws {Error} Annotation to be cleared is not set
  */
 ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
-	var annotationHashesForOffset, setIndex, isElement, annotations, i;
+	var isElement, annotations, i;
 
-	function setAndClear( anns, set, clear, index ) {
-		if ( anns.containsAnyOf( set ) ) {
-			throw new Error( 'Invalid transaction, annotation to be set is already set' );
-		} else {
-			anns.addSet( set, index );
-		}
-		if ( !anns.containsAllOf( clear ) ) {
-			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
-		} else {
-			anns.removeSet( clear );
+	function setAndClear( anns, changes ) {
+		var j, jLen, change;
+		for ( j = 0, jLen = changes.length; j < jLen; j++ ) {
+			change = changes[ j ];
+			if ( change.method === 'set' ) {
+				if ( anns.contains( change.annotation ) ) {
+					throw new Error( 'Invalid transaction, annotation to be set is already set' );
+				}
+				anns.add( change.annotation, change.spliceAt );
+			} else {
+				if ( !anns.contains( change.annotation ) ) {
+					throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
+				}
+				// TODO: check the removal offset is correct
+				anns.remove( change.annotation );
+			}
 		}
 	}
 
-	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
+	if ( this.changes.length === 0 ) {
 		return;
 	}
 	// Set/clear annotations on data
-	annotationHashesForOffset = [];
-	for ( i = this.cursor; i < to; i++ ) {
-		annotationHashesForOffset[ i - this.cursor ] = this.document.data.getAnnotationHashesFromOffset( i );
-	}
-	// Calculate highest offset below which annotations are uniform across the whole range
-	setIndex = ve.getCommonStartSequenceLength( annotationHashesForOffset );
-
 	for ( i = this.cursor; i < to; i++ ) {
 		isElement = this.document.data.isElementData( i );
 		if ( isElement ) {
@@ -286,7 +285,10 @@ ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
 			}
 		}
 		annotations = this.document.data.getAnnotationsFromOffset( i );
-		setAndClear( annotations, this.set, this.clear, setIndex );
+		setAndClear(
+			annotations,
+			this.changes
+		);
 		// Store annotation hashes in linear model
 		this.queueModification( {
 			type: 'annotateData',
@@ -460,7 +462,7 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
  *
  * This method is called within the context of a transaction processor instance.
  *
- * This will add an annotation to or remove an annotation from `this.set` or `this.clear`.
+ * This will add an annotation to or remove an annotation in `this.changes`.
  * This will then cause those annotations to be set or cleared from text and elements
  * when a retain passes over them.
  *
@@ -472,11 +474,12 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
  * @throws {Error} Invalid annotation method
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
-	var target, annotation;
+	var method, annotation, index;
+
 	if ( op.method === 'set' ) {
-		target = this.set;
+		method = 'set';
 	} else if ( op.method === 'clear' ) {
-		target = this.clear;
+		method = 'clear';
 	} else {
 		throw new Error( 'Invalid annotation method ' + op.method );
 	}
@@ -485,9 +488,19 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 		throw new Error( 'No annotation stored for ' + op.hash );
 	}
 	if ( op.bias === 'start' ) {
-		target.push( annotation );
+		this.changes.push( {
+			method: method,
+			annotation: annotation,
+			spliceAt: op.spliceAt
+		} );
 	} else {
-		target.remove( annotation );
+		index = this.changes.find( function ( change ) {
+			return change.method === method && change.annotation === annotation;
+		} );
+		if ( index === undefined ) {
+			throw new Error( 'Trying to stop an unstarted change' );
+		}
+		this.changes.splice( index, 1 );
 	}
 	// Actual changes are done by applyAnnotations() called from the retain processor
 };
