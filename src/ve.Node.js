@@ -138,6 +138,15 @@ ve.Node.prototype.canContainContent = null;
 ve.Node.prototype.isContent = null;
 
 /**
+ * Check if the node is an internal node
+ *
+ * @method
+ * @abstract
+ * @return {boolean} Node is an internal node
+ */
+ve.Node.prototype.isInternal = null;
+
+/**
  * Check if the node has a wrapped element in the document data.
  *
  * @method

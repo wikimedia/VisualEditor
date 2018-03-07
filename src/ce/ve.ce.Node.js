@@ -106,6 +106,13 @@ ve.ce.Node.prototype.canHaveChildrenNotContent = function () {
 /**
  * @inheritdoc ve.Node
  */
+ve.ce.Node.prototype.isInternal = function () {
+	return this.model.isInternal();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
 ve.ce.Node.prototype.isWrapped = function () {
 	return this.model.isWrapped();
 };
