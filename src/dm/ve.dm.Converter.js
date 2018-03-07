@@ -477,7 +477,7 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 			// computed
 			false,
 			// deep
-			!( nodeClass instanceof ve.dm.Node ) ||
+			!this.nodeFactory.lookup( dataElement.type ) ||
 				!this.nodeFactory.canNodeHaveChildren( dataElement.type ) ||
 				this.nodeFactory.doesNodeHandleOwnChildren( dataElement.type )
 		);
