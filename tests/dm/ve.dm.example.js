@@ -155,6 +155,7 @@ ve.dm.example.link = function ( href ) {
 ve.dm.example.language = function ( lang, dir ) {
 	return { type: 'meta/language', attributes: { lang: lang, dir: dir } };
 };
+ve.dm.example.boldWithStyle = ve.extendObject( {}, ve.dm.example.bold, { originalDomElements: $( '<b style="color:red;" />' ).toArray() } );
 
 ve.dm.example.annHash = function ( tagName ) {
 	var ann = ve.copy( {
@@ -286,7 +287,10 @@ ve.dm.example.image = {
 };
 
 ve.dm.example.blockImage = {
-	html: '<figure class="ve-align-right"><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50"><figcaption>caption</figcaption></figure>',
+	html:
+		'<figure class="ve-align-right"><img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">' +
+			'<figcaption>foo <b style="color:red;">red</b></figcaption>' +
+		'</figure>',
 	data: [
 		{
 			type: 'blockImage',
@@ -302,7 +306,10 @@ ve.dm.example.blockImage = {
 		},
 		{ type: 'imageCaption' },
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
-		'c', 'a', 'p', 't', 'i', 'o', 'n',
+		'f', 'o', 'o', ' ',
+		[ 'r', [ ve.dm.example.boldWithStyle ] ],
+		[ 'e', [ ve.dm.example.boldWithStyle ] ],
+		[ 'd', [ ve.dm.example.boldWithStyle ] ],
 		{ type: '/paragraph' },
 		{ type: '/imageCaption' },
 		{ type: '/blockImage' }
@@ -1612,10 +1619,32 @@ ve.dm.example.domToDataCases = {
 			'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
 				'<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
 				'<figcaption class="ve-ce-branchNode ve-ce-activeNode" contenteditable="true" spellcheck="true">' +
-					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">caption</p>' +
+					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
+						'foo ' +
+						'<b style="color:red;" class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">red</b>' +
+					'</p>' +
 				'</figcaption>' +
 			'</figure>' +
 			ve.dm.example.blockSlug
+	},
+	'block image modified': {
+		body: ve.dm.example.blockImage.html,
+		data: ve.dm.example.blockImage.data.concat( [
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		] ),
+		modify: function ( doc ) {
+			doc.commit( ve.dm.TransactionBuilder.static.newFromAnnotation(
+				doc,
+				new ve.Range( 3, 6 ),
+				'set',
+				ve.dm.example.createAnnotation( ve.dm.example.bold, doc.getStore() )
+			) );
+		},
+		normalizedBody:
+			'<figure class="ve-align-right"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" width="100" height="50" alt="Example">' +
+				'<figcaption><b>foo</b> <b style="color:red;">red</b></figcaption>' +
+			'</figure>'
 	},
 	'paragraph with alienInline inside': {
 		body: '<p>a<foobar class="foo">b</foobar>c</p>',
