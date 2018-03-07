@@ -26,7 +26,7 @@ ve.dm.example = {};
  * @method
  * @param {Array} data Linear model data
  * @param {ve.dm.HashValueStore} [store] Hash-value store to use, creates one if undefined
- * @return {ve.dm.FlatLinearData} Linear data store
+ * @return {ve.dm.ElementLinearData} Linear data store
  * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
 ve.dm.example.preprocessAnnotations = function ( data, store ) {
@@ -58,7 +58,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 		}
 		preprocessOriginalDomElements( data[ i ] );
 	}
-	return new ve.dm.FlatLinearData( store, data );
+	return new ve.dm.ElementLinearData( store, data );
 };
 
 /**

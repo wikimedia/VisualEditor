@@ -15,8 +15,7 @@
  * @class
  * @extends ve.Document
  * @constructor
- * @param {Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data Raw linear model data,
- *  ElementLinearData or FlatLinearData to be split
+ * @param {Array|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
  * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
  *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
  *  ignored.
@@ -640,8 +639,7 @@ ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy ) {
  * Create a sub-document associated with this document like #cloneFromRange, but without cloning
  * any data from a range in this document: instead, use the specified data.
  *
- * @param {Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data Raw linear model data,
- *  ElementLinearData or FlatLinearData
+ * @param {Array|ve.dm.ElementLinearData} data Raw linear model data or ElementLinearData
  * @param {boolean} [copyInternalList] Copy the internal list
  * @param {boolean} [detachedCopy] The copy is not intended to be merged into the original
  * @return {ve.dm.Document} New document
@@ -650,7 +648,7 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
 	var newDoc;
 
 	if ( Array.isArray( data ) ) {
-		data = new ve.dm.FlatLinearData( this.getStore().clone(), data );
+		data = new ve.dm.ElementLinearData( this.getStore().clone(), data );
 	}
 
 	newDoc = new this.constructor(

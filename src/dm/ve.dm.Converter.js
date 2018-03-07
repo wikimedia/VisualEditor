@@ -585,7 +585,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc, options ) {
 	data = this.getDataFromDomSubtree( doc.body );
 	this.constructor.static.moveInlineMetaItems( data );
 
-	linearData = new ve.dm.FlatLinearData( store, data );
+	linearData = new ve.dm.ElementLinearData( store, data );
 	refData = this.internalList.convertToData( this, doc );
 	linearData.batchSplice( linearData.getLength(), 0, refData );
 	innerWhitespace = this.getInnerWhitespace( linearData );
@@ -1130,7 +1130,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 /**
  * Get inner whitespace from linear data
  *
- * @param {ve.dm.FlatLinearData} data Linear model data
+ * @param {ve.dm.ElementLinearData} data Linear model data
  * @return {Array} innerWhitespace Inner whitespace
  */
 ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {

@@ -12,7 +12,7 @@
  * @extends OO.ui.Widget
  *
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.LinearData|ve.dm.Document} dataOrDoc Document data to edit
+ * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.Document} dataOrDoc Document data to edit
  * @param {Object} [config] Configuration options
  * @cfg {string} [mode] Editing mode
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
@@ -59,7 +59,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	if ( dataOrDoc instanceof ve.dm.Document ) {
 		// ve.dm.Document
 		documentModel = dataOrDoc;
-	} else if ( dataOrDoc instanceof ve.dm.LinearData || Array.isArray( dataOrDoc ) ) {
+	} else if ( dataOrDoc instanceof ve.dm.ElementLinearData || Array.isArray( dataOrDoc ) ) {
 		// LinearData or raw linear data
 		documentModel = new ve.dm.Document( dataOrDoc );
 	} else {

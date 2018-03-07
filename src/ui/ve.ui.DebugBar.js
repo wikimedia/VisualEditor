@@ -194,15 +194,14 @@ ve.ui.DebugBar.prototype.updateDump = function () {
 /**
  * Get an ordered list representation of some linear data
  *
- * @param {ve.dm.LinearData} linearData Linear data
+ * @param {ve.dm.ElementLinearData} linearData Linear data
  * @return {jQuery} Ordered list
  */
 ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
-	var i, $chunk, $annotations, $label, element, text, annotations, data,
+	var i, $chunk, $annotations, $label, element, text, annotations,
 		prevType, prevAnnotations,
-		$ol = $( '<ol>' ).attr( 'start', '0' );
-
-	data = linearData instanceof ve.dm.LinearData ? linearData.data : linearData;
+		$ol = $( '<ol>' ).attr( 'start', '0' ),
+		data = linearData.data;
 
 	for ( i = 0; i < data.length; i++ ) {
 		$label = $( '<span>' );
