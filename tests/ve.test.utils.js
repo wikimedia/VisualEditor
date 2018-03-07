@@ -16,6 +16,8 @@
 	function DummyPlatform() {
 		DummyPlatform.super.apply( this, arguments );
 		this.sessionStorage = {};
+		// Set this to true to test session methods failing and returning false
+		this.sessionDisabled = false;
 	}
 	OO.inheritClass( DummyPlatform, ve.init.Platform );
 	DummyPlatform.prototype.getUserLanguages = function () { return [ 'en' ]; };
@@ -26,9 +28,18 @@
 	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () { return /https?:\/\//i; };
 	DummyPlatform.prototype.getUserConfig = function () { return undefined; };
 	DummyPlatform.prototype.setUserConfig = function () {};
-	DummyPlatform.prototype.getSession = function ( key ) { return this.sessionStorage.hasOwnProperty( key ) ? this.sessionStorage[ key ] : null; };
-	DummyPlatform.prototype.setSession = function ( key, value ) { this.sessionStorage[ key ] = value.toString(); return true; };
-	DummyPlatform.prototype.removeSession = function ( key ) { delete this.sessionStorage[ key ]; return true; };
+	DummyPlatform.prototype.getSession = function ( key ) {
+		if ( this.sessionDisabled ) { return false; }
+		return this.sessionStorage.hasOwnProperty( key ) ? this.sessionStorage[ key ] : null;
+	};
+	DummyPlatform.prototype.setSession = function ( key, value ) {
+		if ( this.sessionDisabled || value === '__FAIL__' ) { return false; }
+		this.sessionStorage[ key ] = value.toString(); return true;
+	};
+	DummyPlatform.prototype.removeSession = function ( key ) {
+		if ( this.sessionDisabled ) { return false; }
+		delete this.sessionStorage[ key ]; return true;
+	};
 
 	ve.test.utils.DummyPlatform = DummyPlatform;
 
