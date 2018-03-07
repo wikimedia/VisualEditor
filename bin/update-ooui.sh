@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-# This script generates a commit that updates our copy of OOjs UI
+# This script generates a commit that updates our copy of OOUI
 
 if [ -n "${2:-}" ]
 then
@@ -11,14 +11,14 @@ fi
 
 REPO_DIR=$(cd "$(dirname $0)/.."; pwd) # Root dir of the git repo working tree
 TARGET_DIR="lib/oojs-ui" # Destination relative to the root of the repo
-NPM_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'update-oojs-ui') # e.g. /tmp/update-oojs-ui.rI0I5Vir
+NPM_DIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'update-ooui') # e.g. /tmp/update-ooui.rI0I5Vir
 
 # Prepare working tree
 cd "$REPO_DIR"
 git reset -- $TARGET_DIR
 git checkout -- $TARGET_DIR
 git fetch origin
-git checkout -B upstream-oojs-ui origin/master
+git checkout -B upstream-ooui origin/master
 
 # Fetch upstream version
 cd $NPM_DIR
@@ -29,10 +29,10 @@ else
 	npm install oojs-ui
 fi
 
-OOJSUI_VERSION=$(node -e 'console.log(require("./node_modules/oojs-ui/package.json").version);')
-if [ "$OOJSUI_VERSION" == "" ]
+OOUI_VERSION=$(node -e 'console.log(require("./node_modules/oojs-ui/package.json").version);')
+if [ "$OOUI_VERSION" == "" ]
 then
-	echo 'Could not find OOjs UI version'
+	echo 'Could not find OOUI version'
 	exit 1
 fi
 
@@ -47,10 +47,10 @@ rm -rf "$NPM_DIR"
 cd $REPO_DIR
 
 COMMITMSG=$(cat <<END
-Update OOjs UI to v$OOJSUI_VERSION
+Update OOUI to v$OOUI_VERSION
 
 Release notes:
- https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/History.md;v$OOJSUI_VERSION
+ https://phabricator.wikimedia.org/diffusion/GOJU/browse/master/History.md;v$OOUI_VERSION
 END
 )
 
