@@ -429,10 +429,7 @@ ve.dm.Node.prototype.canHaveChildrenNotContent = function () {
 };
 
 /**
- * Check if the node is an internal node
- *
- * @method
- * @return {boolean} Node is an internal node
+ * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.isInternal = function () {
 	return this.constructor.static.isInternal;
