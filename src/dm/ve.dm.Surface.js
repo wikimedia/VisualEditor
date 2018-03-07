@@ -1285,6 +1285,9 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 		this.stopStoringChanges();
 		return false;
 	}
+
+	this.lastStoredChange = this.getDocument().getCompleteHistoryLength();
+
 	return true;
 };
 

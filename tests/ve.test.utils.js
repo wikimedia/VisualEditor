@@ -15,6 +15,7 @@
 	// Create a dummy platform and target so ve.init.platform/target are available
 	function DummyPlatform() {
 		DummyPlatform.super.apply( this, arguments );
+		this.sessionStorage = {};
 	}
 	OO.inheritClass( DummyPlatform, ve.init.Platform );
 	DummyPlatform.prototype.getUserLanguages = function () { return [ 'en' ]; };
@@ -25,6 +26,9 @@
 	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () { return /https?:\/\//i; };
 	DummyPlatform.prototype.getUserConfig = function () { return undefined; };
 	DummyPlatform.prototype.setUserConfig = function () {};
+	DummyPlatform.prototype.getSession = function ( key ) { return this.sessionStorage.hasOwnProperty( key ) ? this.sessionStorage[ key ] : null; };
+	DummyPlatform.prototype.setSession = function ( key, value ) { this.sessionStorage[ key ] = value.toString(); return true; };
+	DummyPlatform.prototype.removeSession = function ( key ) { delete this.sessionStorage[ key ]; return true; };
 
 	ve.test.utils.DummyPlatform = DummyPlatform;
 
