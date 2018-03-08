@@ -61,6 +61,10 @@
 	overflow-wrap: break-word;
 }
 
+.ve-ui-diffElement-attributeChange.oo-ui-labelElement .oo-ui-labelElement-label ol {
+	margin-left: 1.8em;
+}
+
 [ data-diff-action='insert' ],
 [ data-diff-action='insert' ] > ins,
 [ data-diff-action='remove' ],
