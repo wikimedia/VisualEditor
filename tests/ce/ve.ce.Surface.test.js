@@ -73,7 +73,6 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 
 ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, store, reuseView, msg ) {
 	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent,
-		layout = $.client.profile().layout,
 		e = {},
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView ) :
@@ -83,13 +82,6 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, in
 
 	function summary( el ) {
 		return ve.getDomElementSummary( el, true );
-	}
-
-	function getLayoutSpecific( expected ) {
-		if ( $.isPlainObject( expected ) && !expected.type ) {
-			return expected[ layout ] || expected.default;
-		}
-		return expected;
 	}
 
 	// Paste sequence
@@ -118,7 +110,6 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, in
 	view.afterPaste( testEvent );
 
 	if ( expectedOps ) {
-		expectedOps = getLayoutSpecific( expectedOps );
 		ops = [];
 		if ( model.getHistory().length ) {
 			txs = model.getHistory()[ 0 ].transactions;
@@ -145,7 +136,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, in
 		}
 	}
 	if ( expectedRangeOrSelection ) {
-		expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), getLayoutSpecific( expectedRangeOrSelection ) );
+		expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), expectedRangeOrSelection );
 		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
 	}
 	if ( expectedHtml ) {
@@ -1458,6 +1449,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 			);
 		}
 		if ( expectedText ) {
+			if ( $.client.profile().layout === 'gecko' ) {
+				expectedText = expectedText.trim();
+			}
 			assert.strictEqual( clipboardData.getData( 'text/plain' ), expectedText, msg + ': text' );
 		}
 		assert.strictEqual( clipboardData.getData( 'text/xcustom' ), view.clipboardId + '-' + view.clipboardIndex, msg + ': clipboardId set' );
@@ -1720,151 +1714,69 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 4 ),
 				pasteHtml: '<p>Bar</p>',
-				expectedRangeOrSelection: {
-					gecko: new ve.Range( 11 ),
-					'default': new ve.Range( 7 )
-				},
-				expectedOps: {
-					gecko: [
-						[
-							{ type: 'retain', length: 4 },
-							{
-								type: 'replace',
-								insert: [
-									{ type: '/paragraph' },
-									{ type: 'paragraph' },
-									'B', 'a', 'r',
-									{ type: '/paragraph' },
-									{ type: 'paragraph' }
-								],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 4 }
-						]
-					],
-					'default': [
-						[
-							{ type: 'retain', length: 4 },
-							{
-								type: 'replace',
-								insert: [ 'B', 'a', 'r' ],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 4 }
-						]
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 4 }
 					]
-				},
+				],
 				msg: 'Paragraph into paragraph'
 			},
 			{
 				rangeOrSelection: new ve.Range( 6 ),
 				pasteHtml: '<p>Bar</p>',
-				expectedRangeOrSelection: {
-					gecko: new ve.Range( 6 ),
-					'default': new ve.Range( 9 )
-				},
-				expectedOps: {
-					gecko: [
-						[
-							{ type: 'retain', length: 7 },
-							{
-								type: 'replace',
-								insert: [
-									{ type: 'paragraph' },
-									'B', 'a', 'r',
-									{ type: '/paragraph' }
-								],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 7 }
-						]
-					],
-					'default': [
-						[
-							{ type: 'retain', length: 6 },
-							{
-								type: 'replace',
-								insert: [ 'B', 'a', 'r' ],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 6 }
-						]
+				expectedRangeOrSelection: new ve.Range( 9 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 6 },
+						{
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 6 }
 					]
-				},
+				],
 				msg: 'Paragraph at end of paragraph'
 			},
 			{
 				rangeOrSelection: new ve.Range( 3 ),
 				pasteHtml: '<p>Bar</p>',
-				expectedRangeOrSelection: {
-					gecko: new ve.Range( 8 ),
-					'default': new ve.Range( 6 )
-				},
-				expectedOps: {
-					gecko: [
-						[
-							{ type: 'retain', length: 3 },
-							{
-								type: 'replace',
-								insert: [
-									'B', 'a', 'r',
-									{ type: '/paragraph' },
-									{ type: 'paragraph' }
-								],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 3 }
-						]
-					],
-					'default': [
-						[
-							{ type: 'retain', length: 3 },
-							{
-								type: 'replace',
-								insert: [ 'B', 'a', 'r' ],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 3 }
-						]
+				expectedRangeOrSelection: new ve.Range( 6 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 3 },
+						{
+							type: 'replace',
+							insert: [ 'B', 'a', 'r' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 3 }
 					]
-				},
+				],
 				msg: 'Paragraph at start of paragraph'
 			},
 			{
 				rangeOrSelection: new ve.Range( 11 ),
 				pasteHtml: '<h2>Quux</h2>',
-				expectedRangeOrSelection: {
-					gecko: new ve.Range( 11 ),
-					'default': new ve.Range( 15 )
-				},
-				expectedOps: {
-					gecko: [
-						[
-							{ type: 'retain', length: 12 },
-							{
-								type: 'replace',
-								insert: [
-									{ type: 'heading', attributes: { level: 2 } },
-									'Q', 'u', 'u', 'x',
-									{ type: '/heading' }
-								],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 12 }
-						]
-					],
-					'default': [
-						[
-							{ type: 'retain', length: 11 },
-							{
-								type: 'replace',
-								insert: [ 'Q', 'u', 'u', 'x' ],
-								remove: []
-							},
-							{ type: 'retain', length: docLen - 11 }
-						]
+				expectedRangeOrSelection: new ve.Range( 15 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 11 },
+						{
+							type: 'replace',
+							insert: [ 'Q', 'u', 'u', 'x' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 11 }
 					]
-				},
+				],
 				msg: 'Heading into heading with whitespace'
 			},
 			{
