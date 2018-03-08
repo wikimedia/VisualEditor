@@ -2125,7 +2125,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				pasteHtml: '<table><tbody><tr><td>X</td></tr></table>',
+				pasteHtml: '<table><tbody><tr><td>X</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -2169,7 +2169,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				pasteHtml: '<table><tbody><tr><th>X</th></tr></table>',
+				pasteHtml: '<table><tbody><tr><th>X</th></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -2218,7 +2218,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				pasteHtml: '<table><tbody><tr><td rel="ve:Alien">X</td></tr></table>',
+				pasteHtml: '<table><tbody><tr><td rel="ve:Alien">X</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -2255,8 +2255,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				documentHtml: '<table><tbody><tr><td rel="ve:Alien">X</td></tr></table>',
-				pasteHtml: '<table><tbody><tr><td>Y</td></tr></table>',
+				documentHtml: '<table><tbody><tr><td rel="ve:Alien">X</td></tr></tbody></table>',
+				pasteHtml: '<table><tbody><tr><td>Y</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -2293,7 +2293,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				pasteHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></table>',
+				pasteHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -2475,7 +2475,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				pasteHtml: '<table><tbody><tr><td>X</td></tr><tr><td>Y</td></tr><tr><td>Z</td></tr></table>',
+				pasteHtml: '<table><tbody><tr><td>X</td></tr><tr><td>Y</td></tr><tr><td>Z</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -2657,7 +2657,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				pasteHtml: '<p>Foo</p><table><tbody><tr><td>X</td></tr></table><p>Bar</p>',
+				pasteHtml: '<p>Foo</p><table><tbody><tr><td>X</td></tr></tbody></table><p>Bar</p>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
