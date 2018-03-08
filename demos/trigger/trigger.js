@@ -20,7 +20,7 @@
 		$( '#trigger' ).text( trigger );
 		for ( i = 0, len = parts.length; i < len; i++ ) {
 			key = parts[ i ].replace( '\\', '\\\\' ).replace( '"', '\\"' );
-			$( '.key[rel="' + key + '"]' ).addClass( 'active' );
+			$( '.key[rel~="' + key + '"]' ).addClass( 'active' );
 		}
 	}
 

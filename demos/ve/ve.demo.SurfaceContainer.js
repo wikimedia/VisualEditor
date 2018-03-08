@@ -191,7 +191,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 	return closePromise.done( function () {
 		var isRead = mode === 'read',
 			otherDir = currentDir === 'ltr' ? 'rtl' : 'ltr',
-			$editStylesheets = $( 'link[rel=stylesheet]:not(.stylesheet-read):not(.stylesheet-' + otherDir + ')' );
+			$editStylesheets = $( 'link[rel~=stylesheet]:not(.stylesheet-read):not(.stylesheet-' + otherDir + ')' );
 
 		if ( container.surface ) {
 			container.surface.destroy();
