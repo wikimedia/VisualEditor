@@ -40,6 +40,7 @@
 	"visualeditor-changedesc-unknown": "$1 зьменены",
 	"visualeditor-changedesc-unset": "З $1 прыбранае значэньне $2",
 	"visualeditor-changedir": "Зьмена кірунку",
+	"visualeditor-changedir-tool-ltr": "Паказваць зьлева направа",
 	"visualeditor-clearbutton-tooltip": "Прыбраць стыль",
 	"visualeditor-clipboard-copy": "Капіяваць",
 	"visualeditor-clipboard-cut": "Выразаць",

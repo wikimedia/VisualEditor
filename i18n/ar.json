@@ -21,7 +21,8 @@
 			"JoyfulEditing",
 			"Shbib Al-Subaie",
 			"Meno25",
-			"ASHmed"
+			"ASHmed",
+			"ديفيد"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -46,11 +47,13 @@
 	"visualeditor-changedesc-align": "المحاذاة تغيرت من $1 إلى $2",
 	"visualeditor-changedesc-changed": "$1 تغيرت من $2 إلى $3",
 	"visualeditor-changedesc-comment": "تغير التعليق من \"$1\" إلى \"$2\"",
+	"visualeditor-changedesc-direction": "تغير تغيير الاتجاه من $1 إلى $2",
 	"visualeditor-changedesc-image-size": "الحجم تغير من $1 إلى $2",
 	"visualeditor-changedesc-language": "اللغة تغيرت من $1 إلى $2",
 	"visualeditor-changedesc-link-href": "هدف الوصلة تغير من $1 إلى $2",
 	"visualeditor-changedesc-no-key": "$1 تغيرت إلى $2",
 	"visualeditor-changedesc-set": "$1 ضبطت ك $2",
+	"visualeditor-changedesc-style": "تم تغيير النمط من $1 إلى $2",
 	"visualeditor-changedesc-unknown": "$1 تغيرت",
 	"visualeditor-changedesc-unset": "$1 لم تعد مضبوطة ك $2",
 	"visualeditor-changedir": "تغيير الاتجاه",

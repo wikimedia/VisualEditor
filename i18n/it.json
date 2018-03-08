@@ -52,6 +52,7 @@
 	"visualeditor-changedesc-language": "Lingua modificata da $1 a $2",
 	"visualeditor-changedesc-no-key": "$1 modificato a $2",
 	"visualeditor-changedesc-set": "$1 impostato a $2",
+	"visualeditor-changedesc-style": "Stile modificato da $1 a $2",
 	"visualeditor-changedesc-unknown": "$1 modificato",
 	"visualeditor-changedir-tool-ltr": "Vedi da sinistra a destra",
 	"visualeditor-changedir-tool-rtl": "Vedi da destra a sinistra",

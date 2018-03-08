@@ -12,7 +12,8 @@
 			"Otokoume",
 			"Endres",
 			"Iwai.masaharu",
-			"Hinaloe"
+			"Hinaloe",
+			"Yusuke1109"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -44,6 +45,7 @@
 	"visualeditor-changedesc-set": "$1 に $2 を設定しました",
 	"visualeditor-changedesc-unknown": "$1 を変更しました",
 	"visualeditor-changedesc-unset": "$1 を $2 から設定解除しました",
+	"visualeditor-changedir-tool-ltr": "左から右への表示",
 	"visualeditor-changedir-tool-rtl": "書字方向の変更（左右）",
 	"visualeditor-clearbutton-tooltip": "書式を消去",
 	"visualeditor-clipboard-copy": "コピー",
@@ -146,6 +148,7 @@
 	"visualeditor-rebase-client-document-name": "ドキュメント名",
 	"visualeditor-rebase-client-document-create-edit": "作成/編集",
 	"visualeditor-shortcuts-clipboard": "クリップボード",
+	"visualeditor-shortcuts-dialog": "ダイアログウィンドウ",
 	"visualeditor-shortcuts-formatting": "段落の書式設定",
 	"visualeditor-shortcuts-history": "履歴",
 	"visualeditor-shortcuts-other": "その他",
