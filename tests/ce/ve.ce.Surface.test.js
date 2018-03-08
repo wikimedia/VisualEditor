@@ -2293,7 +2293,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				pasteHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></tbody></table>',
+				// Firefox doesn't like using execCommand for this test for some reason
+				pasteTargetHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
@@ -2730,7 +2731,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 0 ),
-				pasteHtml: '<ul><li>A</li><ul><li>B</li></ul></ul>',
+				// Firefox doesn't like using execCommand for this test for some reason
+				pasteTargetHtml: '<ul><li>A</li><ul><li>B</li></ul></ul>',
 				expectedRangeOrSelection: new ve.Range( 14 ),
 				expectedOps: [
 					[
