@@ -485,6 +485,13 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.deepEqual( autosaveFailed, 1, 'Subsequent failures don\'t fire autosaveFailed again' );
 	assert.deepEqual( ve.init.platform.getSessionList( 've-changes' ).length, 0, 'No changes recorded after storeChanges failure' );
 	ve.init.platform.sessionDisabled = false;
+
+	surface.storeDocState( state, '<p>foo</p>' );
+	// This allows callers to call storeDocState after startStoringChanges, e.g. after the first transaction
+	assert.deepEqual( surface.lastStoredChange, 1, 'storeDocState with custom HTML doesn\'t advance the lastStoredChange pointer' );
+	surface.storeDocState( state );
+	assert.deepEqual( surface.lastStoredChange, 5, 'storeDocState without custom HTML advances the lastStoredChange pointer' );
+
 } );
 
 // TODO: ve.dm.Surface#getHistory

@@ -1286,7 +1286,11 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 		return false;
 	}
 
-	this.lastStoredChange = this.getDocument().getCompleteHistoryLength();
+	if ( !html ) {
+		// If storing the latest HTML, reset the lastStoreChange pointer,
+		// otherwise assume will be handled by the caller.
+		this.lastStoredChange = this.getDocument().getCompleteHistoryLength();
+	}
 
 	return true;
 };
