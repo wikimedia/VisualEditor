@@ -35,6 +35,8 @@ ve.ce.BlockImageCaptionNode.static.name = 'imageCaption';
 
 ve.ce.BlockImageCaptionNode.static.tagName = 'figcaption';
 
+ve.ce.BlockImageCaptionNode.static.isMultiline = false;
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.BlockImageCaptionNode );
