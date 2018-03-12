@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Delim"
+			"Delim",
+			"Garam"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -63,6 +64,7 @@
 	"visualeditor-languageinspector-widget-changelang": "언어 찾기",
 	"visualeditor-languageinspector-widget-label-direction": "서자방향",
 	"visualeditor-languageinspector-widget-label-langcode": "언어 부호",
+	"visualeditor-languageinspector-widget-label-language": "언어",
 	"visualeditor-linkinspector-title": "련결",
 	"visualeditor-listbutton-bullet-tooltip": "항목부호 목록",
 	"visualeditor-listbutton-number-tooltip": "수자 목록",
