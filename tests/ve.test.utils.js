@@ -243,7 +243,7 @@
 		// TODO: Differ expects newDoc to be derived from oldDoc and contain all its store data.
 		// We may want to remove that assumption from the differ?
 		newDoc.getStore().merge( oldDoc.getStore() );
-		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc );
+		visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc, caseItem.forceTimeout ? -1 : undefined );
 		diffElement = new ve.ui.DiffElement( visualDiff );
 		assert.equalDomElement( diffElement.$document[ 0 ], $( '<div>' ).addClass( 've-ui-diffElement-document' ).html( caseItem.expected )[ 0 ], caseItem.msg );
 		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasMoves' ), !!caseItem.hasMoves, caseItem.msg + ': hasMoves' );
@@ -255,6 +255,10 @@
 				caseItem.msg + ': sidebar'
 			);
 		}
+		assert.deepEqual(
+			diffElement.$messages.children().length, caseItem.forceTimeout ? 1 : 0,
+			'Timeout message ' + ( caseItem.forceTimeout ? 'shown' : 'not shown' )
+		);
 	};
 
 	/**
