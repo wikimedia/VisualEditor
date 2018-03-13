@@ -152,7 +152,7 @@
 	};
 
 	ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {
-		var model, hash, html, htmlDoc, actualData, actualRtDoc, expectedRtDoc,
+		var model, hash, html, htmlDoc, actualDataReal, actualDataMeta, actualRtDoc, expectedRtDoc,
 			// Make sure we've always got a <base> tag
 			defaultHead = '<base href="' + ve.dm.example.baseUri + '">';
 
@@ -160,17 +160,24 @@
 			html = '<head>' + ( caseItem.head || defaultHead ) + '</head><body>' + caseItem.body + '</body>';
 			htmlDoc = ve.createDocumentFromHtml( html );
 			model = ve.dm.converter.getModelFromDom( htmlDoc, { fromClipboard: !!caseItem.fromClipboard } );
-			actualData = getSerializableData( model );
+			actualDataReal = model.getFullData();
+			actualDataMeta = getSerializableData( model );
+
 			// Round-trip here, check round-trip later
 			if ( caseItem.modify ) {
-				actualData = ve.copy( actualData );
+				actualDataReal = ve.copy( actualDataReal );
+				actualDataMeta = ve.copy( actualDataMeta );
 				caseItem.modify( model );
 			}
 			actualRtDoc = ve.dm.converter.getDomFromModel( model );
 
 			// Normalize and verify data
-			ve.dm.example.postprocessAnnotations( actualData, model.getStore(), caseItem.preserveAnnotationDomElements );
-			assert.equalLinearData( actualData, caseItem.data, msg + ': data' );
+			ve.dm.example.postprocessAnnotations( actualDataReal, model.getStore(), caseItem.preserveAnnotationDomElements );
+			ve.dm.example.postprocessAnnotations( actualDataMeta, model.getStore(), caseItem.preserveAnnotationDomElements );
+
+			assert.equalLinearData( actualDataReal, ( caseItem.realData || caseItem.data ), msg + ': real data' );
+			assert.equalLinearData( actualDataMeta, caseItem.data, msg + ': data with metaItems restored' );
+
 			assert.deepEqual( model.getInnerWhitespace(), caseItem.innerWhitespace || new Array( 2 ), msg + ': inner whitespace' );
 			// Check storeItems have been added to store
 			if ( caseItem.storeItems ) {
