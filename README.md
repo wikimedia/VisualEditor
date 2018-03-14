@@ -18,7 +18,7 @@ see [CONTRIBUTING.md][].  Patch submissions are reviewed and managed with
 [Gerrit][].  There is also [API documentation][] available for the
 VisualEditor.
 
-[VisualEditor]:      http://www.mediawiki.org/wiki/VisualEditor
+[VisualEditor]:      https://www.mediawiki.org/wiki/VisualEditor
 [CONTRIBUTING.md]:   CONTRIBUTING.md
 [API documentation]: https://doc.wikimedia.org/VisualEditor/master/
 [Gerrit]:            https://www.mediawiki.org/wiki/Gerrit
