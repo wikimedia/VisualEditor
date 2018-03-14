@@ -42,7 +42,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	// The following classes are used here:
 	// * ve-ui-overlay-global-mobile
 	// * ve-ui-overlay-global-desktop
-	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global', 've-ui-overlay-global-' + OO.ui.isMobile() ? 'mobile' : 'desktop' ] } );
+	this.globalOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global', 've-ui-overlay-global-' + ( OO.ui.isMobile() ? 'mobile' : 'desktop' ) ] } );
 	this.localOverlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-local' ] } );
 	this.$selections = $( '<div>' );
 	this.$blockers = $( '<div>' );
