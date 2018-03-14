@@ -389,5 +389,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		}
 	}
 
+	cleanDiff.timedOut = this.lastDiffTimedOut;
+
 	return cleanDiff;
 };

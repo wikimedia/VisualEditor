@@ -93,6 +93,7 @@
 	"visualeditor-dialog-table-caption": "Label for caption toggle in table dialog.\n{{Identical|Caption}}",
 	"visualeditor-dialog-table-title": "Title for the table dialog.",
 	"visualeditor-diff-no-changes": "Label displayed in the diff view when no net changes have been made.",
+	"visualeditor-diff-timed-out": "Label displayed in the diff view if the diff took too long to compute accurately.",
 	"visualeditor-dimensionswidget-px": "{{optional}}\nLabel for the dimensions properties denoting pixel units.",
 	"visualeditor-dimensionswidget-times": "{{optional}}\nLabel for the dimensions properties denoting 'by', as in width x height.",
 	"visualeditor-find-and-replace-diacritic": "Label for diacritic insensitive toggle in find and replace",

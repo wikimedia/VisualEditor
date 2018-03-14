@@ -45,9 +45,11 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	this.remove = diff.docDiff.rootChildrenRemove;
 	this.moves = diff.docDiff.moves;
 	this.internalListDiff = diff.internalListDiff;
+	this.timedOut = visualDiff.timedOut;
 
 	this.$overlays = $( '<div>' ).addClass( 've-ui-diffElement-overlays' );
 	this.$content = $( '<div>' ).addClass( 've-ui-diffElement-content' );
+	this.$messages = $( '<div>' ).addClass( 've-ui-diffElement-messages' );
 	this.$document = $( '<div>' ).addClass( 've-ui-diffElement-document' );
 	this.$sidebar = $( '<div>' ).addClass( 've-ui-diffElement-sidebar' );
 
@@ -59,16 +61,23 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 		mousemove: this.onDocumentMouseMove.bind( this )
 	} );
 
+	this.renderDiff();
+
+	if ( this.timedOut ) {
+		this.$messages.append(
+			this.constructor.static.createWarning( ve.msg( 'visualeditor-diff-timed-out' ) )
+		);
+	}
+
 	// DOM
 	this.$element
 		.append(
 			this.$overlays,
+			this.$messages,
 			this.$content.append( this.$document ),
 			this.$sidebar.append( this.descriptions.$element )
 		)
 		.addClass( 've-ui-diffElement' );
-
-	this.renderDiff();
 };
 
 /* Inheritance */
@@ -76,6 +85,21 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 OO.inheritClass( ve.ui.DiffElement, OO.ui.Element );
 
 /* Static methods */
+
+/**
+ * Create a formatted warning message
+ *
+ * @param {string} msg Warning message text
+ * @return {jQuery} Warning message DOM
+ */
+ve.ui.DiffElement.static.createWarning = function ( msg ) {
+	var $warning = $( '<div>' ).addClass( 've-ui-diffElement-warning' ),
+		alertIcon = new OO.ui.IconWidget( {
+			icon: 'alert',
+			flags: [ 'warning' ]
+		} );
+	return $warning.append( alertIcon.$element, $( '<span>' ).text( msg ) );
+};
 
 /**
  * Compare attribute sets between two elements
