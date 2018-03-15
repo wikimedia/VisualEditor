@@ -6,7 +6,8 @@
 			"Xabier Armendaritz",
 			"Subi",
 			"Sator",
-			"Mikel Ibaiba"
+			"Mikel Ibaiba",
+			"Iñaki LL"
 		]
 	},
 	"visualeditor": "Ikusizko editorea",
@@ -85,12 +86,12 @@
 	"visualeditor-find-and-replace-word": "Hitz osoa",
 	"visualeditor-formatdropdown-format-blockquote": "Aipamen blokea",
 	"visualeditor-formatdropdown-format-heading-label": "Idazpurua (1-6)",
-	"visualeditor-formatdropdown-format-heading1": "1. izenburua",
-	"visualeditor-formatdropdown-format-heading2": "2. izenburua",
-	"visualeditor-formatdropdown-format-heading3": "3. izenburua",
-	"visualeditor-formatdropdown-format-heading4": "4. izenburua",
-	"visualeditor-formatdropdown-format-heading5": "5. izenburua",
-	"visualeditor-formatdropdown-format-heading6": "6. izenburua",
+	"visualeditor-formatdropdown-format-heading1": "Atalburua",
+	"visualeditor-formatdropdown-format-heading2": "Azpiatalburua",
+	"visualeditor-formatdropdown-format-heading3": "2. azpiatalburua",
+	"visualeditor-formatdropdown-format-heading4": "3. azpiatalburua",
+	"visualeditor-formatdropdown-format-heading5": "4. azpiatalburua",
+	"visualeditor-formatdropdown-format-heading6": "5. azpiatalburua",
 	"visualeditor-formatdropdown-format-paragraph": "Paragrafoa",
 	"visualeditor-formatdropdown-format-preformatted": "Aurrez zehaztutako formatuarekin",
 	"visualeditor-formatdropdown-title": "Formatua aldatu",

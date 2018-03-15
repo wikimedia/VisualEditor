@@ -21,7 +21,8 @@
 			"Namoroka",
 			"Ykhwong",
 			"Libattery",
-			"Jerrykim306"
+			"Jerrykim306",
+			"Garam"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -172,14 +173,14 @@
 	"visualeditor-table-contextitem-properties": "속성",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|열}} 삭제",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|행}} 삭제",
-	"visualeditor-table-format-data": "내용 셀",
-	"visualeditor-table-format-header": "머릿글 셀",
+	"visualeditor-table-format-data": "내용 칸",
+	"visualeditor-table-format-header": "머리글 칸",
 	"visualeditor-table-insert-col-after": "오른쪽에 열 넣기",
 	"visualeditor-table-insert-col-before": "왼쪽에 열 넣기",
 	"visualeditor-table-insert-row-after": "아래에 행 넣기",
 	"visualeditor-table-insert-row-before": "위에 행 넣기",
 	"visualeditor-table-insert-table": "표",
-	"visualeditor-table-merge-cells": "셀 병합",
+	"visualeditor-table-merge-cells": "칸 병합",
 	"visualeditor-table-merge-cells-merge": "합치기",
 	"visualeditor-table-merge-cells-unmerge": "합치기 해제",
 	"visualeditor-table-move-col-after": "다음으로 이동",

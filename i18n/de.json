@@ -83,6 +83,7 @@
 	"visualeditor-dialog-table-caption": "Überschrift",
 	"visualeditor-dialog-table-title": "Tabelleneigenschaften",
 	"visualeditor-diff-no-changes": "Keine Änderungen",
+	"visualeditor-diff-timed-out": "Die Berechnung deiner Änderungen hat zu lang gedauert. Deshalb könnte die unten stehende Beschreibung nicht optimal sein.",
 	"visualeditor-find-and-replace-diacritic": "Diakritisch schreibungsunabhängig",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Die diakritische schreibungsunabhängige Suche ist in diesem Browser nicht verfügbar",
 	"visualeditor-find-and-replace-done": "Fertig",

@@ -107,6 +107,7 @@
 	"visualeditor-dialog-table-caption": "Légende",
 	"visualeditor-dialog-table-title": "Propriétés du tableau",
 	"visualeditor-diff-no-changes": "Pas de modifications",
+	"visualeditor-diff-timed-out": "Un temps trop long a été nécessaire pour réaliser vos modifications, aussi la description ci-dessous peut ne pas être optimale.",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-diacritic": "Insensible aux diacritiques",

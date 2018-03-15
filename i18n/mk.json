@@ -74,6 +74,7 @@
 	"visualeditor-dialog-table-caption": "Опис",
 	"visualeditor-dialog-table-title": "Табела на својства",
 	"visualeditor-diff-no-changes": "Нема промени",
+	"visualeditor-diff-timed-out": "Пресметката на вашите промени одзеде предолго време, па затоа описот може да не е оптимален.",
 	"visualeditor-dimensionswidget-px": "пиксели",
 	"visualeditor-find-and-replace-diacritic": "Без оглед на надредни знаци",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Пребарувањето без оглед на надредни знаци не е достапно на овој прелистувач",

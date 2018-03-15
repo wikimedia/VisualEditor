@@ -9,7 +9,8 @@
 			"Zoranzoki21",
 			"Obsuser",
 			"Prevodim",
-			"Acamicamacaraca"
+			"Acamicamacaraca",
+			"BadDog"
 		]
 	},
 	"visualeditor": "Визуелни уређивач",
@@ -84,7 +85,7 @@
 	"visualeditor-find-and-replace-diacritic": "Неосетљиво на дијакритике",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Претрага неосетљива на дијакритике није доступна у овом прегледачу",
 	"visualeditor-find-and-replace-done": "Готово",
-	"visualeditor-find-and-replace-find-text": "Тражи",
+	"visualeditor-find-and-replace-find-text": "Потражите",
 	"visualeditor-find-and-replace-invalid-regex": "Неважећи регуларни излаз",
 	"visualeditor-find-and-replace-match-case": "Пази на величину слова",
 	"visualeditor-find-and-replace-next-button": "Пронађи следеће",
@@ -92,7 +93,7 @@
 	"visualeditor-find-and-replace-regular-expression": "Регуларни израз",
 	"visualeditor-find-and-replace-replace-all-button": "Замени све",
 	"visualeditor-find-and-replace-replace-button": "Замени",
-	"visualeditor-find-and-replace-replace-text": "Замени",
+	"visualeditor-find-and-replace-replace-text": "Замените",
 	"visualeditor-find-and-replace-results": "$1 од $2",
 	"visualeditor-find-and-replace-title": "Тражи и замени",
 	"visualeditor-find-and-replace-word": "Цела реч",
@@ -108,8 +109,8 @@
 	"visualeditor-formatdropdown-format-preformatted": "Преформатирано",
 	"visualeditor-formatdropdown-title": "Измените формат",
 	"visualeditor-help-tool": "Помоћ",
-	"visualeditor-historybutton-redo-tooltip": "Понови",
-	"visualeditor-historybutton-undo-tooltip": "Опозови",
+	"visualeditor-historybutton-redo-tooltip": "Поновите",
+	"visualeditor-historybutton-undo-tooltip": "Опозовите",
 	"visualeditor-indentationbutton-indent-tooltip": "Повећај увлачење",
 	"visualeditor-indentationbutton-outdent-tooltip": "Смањи увлачење",
 	"visualeditor-inspector-close-tooltip": "Затвори",
