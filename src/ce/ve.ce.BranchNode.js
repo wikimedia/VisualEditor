@@ -174,7 +174,7 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
  * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
  */
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
-	var i, length, type, removals, position, j,
+	var i, length, type, removals, position, j, fragment,
 		args = [];
 
 	for ( i = 0, length = arguments.length; i < length; i++ ) {
@@ -205,18 +205,22 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		removals[ i ].destroy();
 	}
 	if ( args.length >= 3 ) {
+		fragment = document.createDocumentFragment();
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[ i ].attach( this );
 			for ( j = args[ i ].$element.length - 1; j >= 0; j-- ) {
-				if ( !position ) {
-					// Only calculate this if it's needed, this function looks expensive
-					position = this.getDomPosition( index );
-				}
-				position.node.insertBefore(
-					args[ i ].$element[ j ],
-					position.node.children[ position.offset ] || null
-				);
+				fragment.insertBefore( args[ i ].$element[ j ], fragment.childNodes[ 0 ] || null );
 			}
+		}
+		if ( fragment.childNodes.length ) {
+			// Only calculate this if it's needed, this function looks expensive
+			position = this.getDomPosition( index );
+			position.node.insertBefore(
+				fragment,
+				position.node.children[ position.offset ] || null
+			);
+		}
+		for ( i = args.length - 1; i >= 2; i-- ) {
 			if ( this.live !== args[ i ].isLive() ) {
 				args[ i ].setLive( this.live );
 			}
