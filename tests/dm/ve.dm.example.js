@@ -1771,6 +1771,27 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph' },
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				originalDomElements: $( '<meta />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				originalDomElements: $( '<meta />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'annotated metadata in a wrapper': {
@@ -1805,6 +1826,37 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			[ 'b', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'r', [ ve.dm.example.bold ] ],
+			[ 'q', [ ve.dm.example.bold ] ],
+			[ 'u', [ ve.dm.example.bold ] ],
+			[ 'u', [ ve.dm.example.bold ] ],
+			[ 'x', [ ve.dm.example.bold ] ],
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				originalDomElements: $( '<meta />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				originalDomElements: $( '<meta />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				originalDomElements: $( '<meta />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'annotated element metadata in a wrapper with content': {
@@ -1829,6 +1881,27 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			[ 'f', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			[ 'o', [ ve.dm.example.bold ] ],
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				originalDomElements: $( '<link />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{
+				type: 'alienMeta',
+				annotations: [ ve.dm.example.bold ],
+				originalDomElements: $( '<link />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'metadata in a wrapper followed by annotated text': {
@@ -1847,6 +1920,23 @@ ve.dm.example.domToDataCases = {
 			[ 'a', [ ve.dm.example.bold ] ],
 			[ 'z', [ ve.dm.example.bold ] ],
 			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'F',
+			'o',
+			'o',
+			[ 'B', [ ve.dm.example.bold ] ],
+			[ 'a', [ ve.dm.example.bold ] ],
+			[ 'z', [ ve.dm.example.bold ] ],
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<meta />' ).toArray()
+			},
+			{ type: '/alienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
@@ -2120,6 +2210,19 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph' },
+			'F', 'o', 'o',
+			'B', 'a', 'r',
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'empty annotation in wrapper paragraph': {
@@ -2134,6 +2237,19 @@ ve.dm.example.domToDataCases = {
 			{ type: '/alienMeta' },
 			'B', 'a', 'r',
 			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'F', 'o', 'o',
+			'B', 'a', 'r',
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
+			},
+			{ type: '/alienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
@@ -2152,6 +2268,19 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph' },
+			'F', 'o', 'o',
+			'B', 'a', 'r',
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<i><b><u></u></b></i>' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'empty annotation inside nonempty annotation': {
@@ -2168,6 +2297,21 @@ ve.dm.example.domToDataCases = {
 			},
 			{ type: '/alienMeta' },
 			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph' },
+			[ 'F', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			[ 'o', [ ve.dm.example.italic ] ],
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<b></b>' ).toArray(),
+				annotations: [ ve.dm.example.italic ]
+			},
+			{ type: '/alienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
@@ -2204,6 +2348,19 @@ ve.dm.example.domToDataCases = {
 			{ type: '/alienMeta' },
 			'B', 'a', 'z',
 			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'paragraph' },
+			'F', 'o', 'o',
+			'B', 'a', 'z',
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<b><meta /></b>' ).toArray()
+			},
+			{ type: '/alienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
@@ -2882,6 +3039,43 @@ ve.dm.example.domToDataCases = {
 			{ type: '/list' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{
+				type: 'listItem',
+				internal: {
+					whitespace: [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				type: 'paragraph',
+				internal: {
+					generated: 'wrapper',
+					whitespace: [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			'b', 'a', 'r',
+			'q', 'u', 'u', 'x',
+			{ type: '/paragraph' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<meta />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{ type: '/listItem' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'whitespace preservation with meta at end of wrapper paragraph': {
@@ -2923,6 +3117,48 @@ ve.dm.example.domToDataCases = {
 			},
 			{ type: '/alienMeta' },
 			{ type: '/listItem' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{
+				type: 'listItem',
+				internal: {
+					whitespace: [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				type: 'paragraph',
+				internal: {
+					generated: 'wrapper',
+					whitespace: [
+						' '
+					]
+				}
+			},
+			'b', 'a', 'r',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			// FIXME! <alienMeta></alienMeta> should be before </listItem>. T189826
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<meta />' ).toArray(),
+				internal: {
+					whitespace: [
+						undefined,
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			{ type: '/alienMeta' },
 			{ type: '/list' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2983,6 +3219,64 @@ ve.dm.example.domToDataCases = {
 			},
 			{ type: '/alienMeta' },
 			{ type: '/listItem' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{
+				type: 'listItem',
+				internal: {
+					whitespace: [
+						undefined,
+						' ',
+						' '
+					]
+				}
+			},
+			{
+				type: 'paragraph',
+				internal: {
+					generated: 'wrapper',
+					whitespace: [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			'f', 'o', 'o',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			// FIXME! <alienMeta></alienMeta> should be before </listItem>. T189826
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<meta />' ).toArray(),
+				internal: {
+					whitespace: [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			{ type: '/alienMeta' },
+			{
+				type: 'alienMeta',
+				originalDomElements: $( '<meta />' ).toArray(),
+				internal: {
+					whitespace: [
+						' ',
+						undefined,
+						undefined,
+						' '
+					]
+				}
+			},
+			{ type: '/alienMeta' },
 			{ type: '/list' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -3434,6 +3728,40 @@ ve.dm.example.domToDataCases = {
 			{ type: '/table' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'table' },
+			{ type: 'tableSection', attributes: { style: 'body' } },
+			{ type: 'tableRow' },
+			{
+				type: 'tableCell',
+				attributes: { style: 'data' },
+				internal: { whitespace: [ undefined, undefined, '\n' ] }
+			},
+			{
+				type: 'paragraph',
+				internal: {
+					generated: 'wrapper',
+					whitespace: [ undefined, undefined, undefined, '\n' ]
+				}
+			},
+			'F',
+			'o',
+			'o',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			// FIXME! <alienMeta></alienMeta> should be before </tableCell>. T189826
+			{
+				type: 'alienMeta',
+				internal: { whitespace: [ '\n' ] },
+				originalDomElements: $( '<meta content="bar" />' ).toArray()
+			},
+			{ type: '/alienMeta' },
+			{ type: '/tableRow' },
+			{ type: '/tableSection' },
+			{ type: '/table' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
 		]
 	},
 	'table with merged cells': {
@@ -3485,6 +3813,82 @@ ve.dm.example.domToDataCases = {
 		],
 		normalizedBody: '<p><!--&#62;Foo-bar-&#45;>b&#38;r&#45;--></p>',
 		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-">&nbsp;</span></p>'
+	},
+	'comment as a child of node that can not handle comments (list)': {
+		body: '<ul><li>foo</li><!--bar--></ul>',
+		data: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{ type: 'listItem' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'f',
+			'o',
+			'o',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			{ type: 'commentMeta', attributes: { text: 'bar' } },
+			{ type: '/commentMeta' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{ type: 'listItem' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'f',
+			'o',
+			'o',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			// FIXME! 'commentMeta' should not be a child of 'list'. T189543
+			{ type: 'commentMeta', attributes: { text: 'bar' } },
+			{ type: '/commentMeta' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
+	'comment as a child of node that can not handle comments (table row)': {
+		body: '<table><tbody><tr><td>foo</td><!--bar--></tr></tbody></table>',
+		data: [
+			{ type: 'table' },
+			{ type: 'tableSection', attributes: { style: 'body' } },
+			{ type: 'tableRow' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'f',
+			'o',
+			'o',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: 'commentMeta', attributes: { text: 'bar' } },
+			{ type: '/commentMeta' },
+			{ type: '/tableRow' },
+			{ type: '/tableSection' },
+			{ type: '/table' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		realData: [
+			{ type: 'table' },
+			{ type: 'tableSection', attributes: { style: 'body' } },
+			{ type: 'tableRow' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'f',
+			'o',
+			'o',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			// FIXME! 'commentMeta' should not be a child of 'tableRow'. T189543
+			{ type: 'commentMeta', attributes: { text: 'bar' } },
+			{ type: '/commentMeta' },
+			{ type: '/tableRow' },
+			{ type: '/tableSection' },
+			{ type: '/table' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
 	},
 	'article and sections': {
 		body: '<article><header>Foo</header><section>Bar</section><footer>Baz</footer></article>',
