@@ -19,7 +19,8 @@
 			"Alluk.",
 			"Olimar",
 			"01miki10",
-			"Pyscowicz"
+			"Pyscowicz",
+			"Pahkiqaz"
 		]
 	},
 	"visualeditor": "Visuaalinen muokkain",
@@ -41,6 +42,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Alaindeksi",
 	"visualeditor-annotationbutton-superscript-tooltip": "Yläindeksi",
 	"visualeditor-annotationbutton-underline-tooltip": "Alleviivaus",
+	"visualeditor-changedesc-image-size": "Koko vaihdettu koosta $1 kokoon $2",
 	"visualeditor-changedesc-language": "Kieli vaihdettu kielestä $1 kieleen $2",
 	"visualeditor-changedesc-unknown": "$1 muutettiin",
 	"visualeditor-changedir": "Muuta suuntausta",

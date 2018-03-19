@@ -89,6 +89,7 @@
 	"visualeditor-dialog-table-caption": "说明",
 	"visualeditor-dialog-table-title": "表格属性",
 	"visualeditor-diff-no-changes": "没有更改",
+	"visualeditor-diff-timed-out": "计算您的更改花费了太长时间，因此下方的描述可能并不理想。",
 	"visualeditor-find-and-replace-diacritic": "附加符号不敏感",
 	"visualeditor-find-and-replace-diacritic-unavailable": "附加符号不敏感搜索在该浏览器不可用",
 	"visualeditor-find-and-replace-done": "完成",

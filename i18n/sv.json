@@ -89,6 +89,7 @@
 	"visualeditor-dialog-table-caption": "Tabellrubrik",
 	"visualeditor-dialog-table-title": "Tabellegenskaper",
 	"visualeditor-diff-no-changes": "Inga ändringar",
+	"visualeditor-diff-timed-out": "Det tog för lång tid att beräkna dina ändringar, så beskrivningen nedan kanske inte är optimal.",
 	"visualeditor-find-and-replace-diacritic": "Ignorera diakritiska tecken",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Diakritisk teckensökning är inte tillgänglig i denna webbläsare",
 	"visualeditor-find-and-replace-done": "Klart",

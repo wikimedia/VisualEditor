@@ -89,6 +89,7 @@
 	"visualeditor-dialog-table-caption": "Legenda",
 	"visualeditor-dialog-table-title": "Propriedades da página",
 	"visualeditor-diff-no-changes": "Sem alterações",
+	"visualeditor-diff-timed-out": "Demorou muito tempo para calcular suas alterações, então a descrição abaixo pode não ser otimizada.",
 	"visualeditor-dimensionswidget-px": "px",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-diacritic": "Insensível diacrítico",

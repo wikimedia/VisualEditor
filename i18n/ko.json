@@ -88,6 +88,7 @@
 	"visualeditor-dialog-table-caption": "설명",
 	"visualeditor-dialog-table-title": "표 속성",
 	"visualeditor-diff-no-changes": "변경사항 없음",
+	"visualeditor-diff-timed-out": "변경사항 계산에 너무 긴 시간이 소요되었으므로 아래의 설명이 최적이 아닐 수 있습니다.",
 	"visualeditor-find-and-replace-done": "완료",
 	"visualeditor-find-and-replace-find-text": "찾기",
 	"visualeditor-find-and-replace-invalid-regex": "잘못된 정규 표현식",

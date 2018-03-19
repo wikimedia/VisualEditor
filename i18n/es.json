@@ -95,6 +95,7 @@
 	"visualeditor-dialog-table-caption": "Leyenda",
 	"visualeditor-dialog-table-title": "Propiedades de la tabla",
 	"visualeditor-diff-no-changes": "Sin cambios",
+	"visualeditor-diff-timed-out": "La descripción siguiente puede no ser la mejor debido a que el cómputo de los cambios demoró demasiado.",
 	"visualeditor-find-and-replace-diacritic": "Sin distinción de diacríticos",
 	"visualeditor-find-and-replace-diacritic-unavailable": "La búsqueda sin distinción de diacríticos no está disponible en este navegador",
 	"visualeditor-find-and-replace-done": "Hecho",

@@ -87,6 +87,7 @@
 	"visualeditor-dialog-table-caption": "Legenda",
 	"visualeditor-dialog-table-title": "Propriedades da tabela",
 	"visualeditor-diff-no-changes": "Sem alterações",
+	"visualeditor-diff-timed-out": "A identificação das suas mudanças demorou demasiado tempo, por isso a descrição abaixo pode estar imprecisa.",
 	"visualeditor-find-and-replace-diacritic": "Insensível diacrítico",
 	"visualeditor-find-and-replace-diacritic-unavailable": "A pesquisa insensível diacrítica não está disponível neste navegador",
 	"visualeditor-find-and-replace-done": "Concluído",
