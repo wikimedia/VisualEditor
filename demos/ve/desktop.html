@@ -12,33 +12,6 @@
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<title>VisualEditor Standalone Demo</title>
 
-		<!-- visualEditor.standalone.build -->
-		<link rel=stylesheet href="../../src/ui/styles/ve.ui.DebugBar.css">
-
-		<!-- oojs-ui-apex -->
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-alerts.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-alerts.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-interactions.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-interactions.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-layout.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-layout.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-moderation.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-moderation.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-movement.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-movement.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-user.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-user.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-core.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-core.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-advanced.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-advanced.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-styling.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-styling.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-list.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-list.rtl.css" class="stylesheet-rtl">
-
 		<!-- visualEditor.core.build -->
 		<link rel=stylesheet href="../../src/ce/styles/nodes/ve.ce.FocusableNode.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ce/styles/nodes/ve.ce.ActiveNode.css" class="stylesheet-ve">
@@ -86,15 +59,42 @@
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.TableLineContext.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.Toolbar.css" class="stylesheet-ve">
 
+		<!-- visualEditor.diffing -->
+		<link rel=stylesheet href="../../src/ui/styles/elements/ve.ui.DiffElement.css">
+
+		<!-- visualEditor.standalone.build -->
+		<link rel=stylesheet href="../../src/ui/styles/ve.ui.DebugBar.css">
+
+		<!-- oojs-ui-apex -->
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-alerts.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-alerts.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-interactions.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-interactions.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-layout.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-layout.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-moderation.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-moderation.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-movement.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-movement.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-user.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-user.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-core.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-core.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-advanced.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-advanced.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-styling.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-styling.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-list.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex-icons-editing-list.rtl.css" class="stylesheet-rtl">
+
 		<!-- visualEditor.desktop.build -->
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.DesktopContext.css">
 
 		<!-- visualEditor.theme.apex -->
 		<link rel=stylesheet href="../../src/themes/apex/dialogs.css">
 		<link rel=stylesheet href="../../src/themes/apex/widgets.css">
-
-		<!-- visualEditor.diffing -->
-		<link rel=stylesheet href="../../src/ui/styles/elements/ve.ui.DiffElement.css">
 
 		<!-- visualEditor.standalone.read -->
 		<link rel=stylesheet href="../../src/init/sa/styles/ve.init.sa.css" class="stylesheet-read">
@@ -180,14 +180,6 @@
 		<script src="../../src/init/ve.init.js"></script>
 		<script src="../../src/init/ve.init.Platform.js"></script>
 		<script src="../../src/init/ve.init.Target.js"></script>
-
-		<!-- visualEditor.standalone.build -->
-		<script src="../../src/init/sa/ve.init.sa.js"></script>
-		<script src="../../src/init/sa/ve.init.sa.Platform.js"></script>
-		<script src="../../src/init/sa/ve.init.sa.Target.js"></script>
-
-		<!-- oojs-ui-apex -->
-		<script src="../../lib/oojs-ui/oojs-ui-apex.js"></script>
 
 		<!-- visualEditor.core.build -->
 		<script src="../../src/ve.Range.js"></script>
@@ -502,10 +494,6 @@
 		<script src="../../src/ui/inspectors/ve.ui.LanguageInspector.js"></script>
 		<script src="../../src/ui/pages/ve.ui.SpecialCharacterPage.js"></script>
 
-		<!-- visualEditor.desktop.build -->
-		<script src="../../src/ui/contexts/ve.ui.DesktopContext.js"></script>
-		<script src="../../src/ui/windowmanagers/ve.ui.DesktopInspectorWindowManager.js"></script>
-
 		<!-- treeDiffer -->
 		<script src="../../lib/treeDiffer/treeDiffer-dist.js"></script>
 
@@ -521,6 +509,18 @@
 
 		<!-- visualEditor.diffing.standalone -->
 		<script src="../../src/ui/dialogs/ve.ui.DiffDialog.js"></script>
+
+		<!-- visualEditor.standalone.build -->
+		<script src="../../src/init/sa/ve.init.sa.js"></script>
+		<script src="../../src/init/sa/ve.init.sa.Platform.js"></script>
+		<script src="../../src/init/sa/ve.init.sa.Target.js"></script>
+
+		<!-- oojs-ui-apex -->
+		<script src="../../lib/oojs-ui/oojs-ui-apex.js"></script>
+
+		<!-- visualEditor.desktop.build -->
+		<script src="../../src/ui/contexts/ve.ui.DesktopContext.js"></script>
+		<script src="../../src/ui/windowmanagers/ve.ui.DesktopInspectorWindowManager.js"></script>
 
 		<!-- visualEditor.desktop.standalone -->
 		<script src="../../src/init/sa/ve.init.sa.DesktopTarget.js"></script>

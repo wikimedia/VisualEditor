@@ -804,8 +804,7 @@
 			"oojs-ui-apex",
 			"visualEditor.core",
 			"visualEditor.desktop.build",
-			"visualEditor.theme.apex",
-			"visualEditor.diffing.standalone"
+			"visualEditor.theme.apex"
 		]
 	},
 	"visualEditor.desktop.build": {
@@ -864,7 +863,8 @@
 			{ "file": "src/ui/styles/ve.ui.DebugBar.css", "debug": true }
 		],
 		"dependencies": [
-			"visualEditor.base.build"
+			"visualEditor.base.build",
+			"visualEditor.diffing.standalone"
 		]
 	},
 	"visualEditor.desktop.standalone": {
@@ -891,6 +891,14 @@
 		"dependencies": [
 			"visualEditor.standalone",
 			"visualEditor.mobile"
+		]
+	},
+	"visualEditor.mobile.standalone.dist": {
+		"scripts": [
+			"src/init/sa/ve.init.sa.MobileTarget.js"
+		],
+		"dependencies": [
+			"visualEditor.standalone.wikimediaui.dist"
 		]
 	},
 	"visualEditor.standalone.demo": {

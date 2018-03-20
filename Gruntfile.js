@@ -243,7 +243,7 @@ module.exports = function ( grunt ) {
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.standalone.wikimediaui.dist',
+					'visualEditor.mobile.standalone.dist',
 					'visualEditor.standalone.read'
 				],
 				run: [ 'visualEditor.mobile.standalone.demo' ],

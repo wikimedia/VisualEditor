@@ -12,33 +12,6 @@
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<title>VisualEditor Standalone Demo</title>
 
-		<!-- visualEditor.standalone.build -->
-		<link rel=stylesheet href="../../src/ui/styles/ve.ui.DebugBar.css">
-
-		<!-- oojs-ui-wikimediaui -->
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-alerts.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-alerts.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-interactions.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-interactions.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-layout.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-layout.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-moderation.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-moderation.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-movement.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-movement.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-user.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-user.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-core.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-core.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-advanced.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-advanced.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-styling.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-styling.rtl.css" class="stylesheet-rtl">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-list.css" class="stylesheet-ltr">
-		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-list.rtl.css" class="stylesheet-rtl">
-
 		<!-- visualEditor.core.build -->
 		<link rel=stylesheet href="../../src/ce/styles/nodes/ve.ce.FocusableNode.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ce/styles/nodes/ve.ce.ActiveNode.css" class="stylesheet-ve">
@@ -86,15 +59,42 @@
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.TableLineContext.css" class="stylesheet-ve">
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.Toolbar.css" class="stylesheet-ve">
 
+		<!-- visualEditor.diffing -->
+		<link rel=stylesheet href="../../src/ui/styles/elements/ve.ui.DiffElement.css">
+
+		<!-- visualEditor.standalone.build -->
+		<link rel=stylesheet href="../../src/ui/styles/ve.ui.DebugBar.css">
+
+		<!-- oojs-ui-wikimediaui -->
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-alerts.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-alerts.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-interactions.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-interactions.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-layout.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-layout.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-moderation.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-moderation.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-movement.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-movement.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-user.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-user.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-core.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-core.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-advanced.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-advanced.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-styling.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-styling.rtl.css" class="stylesheet-rtl">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-list.css" class="stylesheet-ltr">
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-list.rtl.css" class="stylesheet-rtl">
+
 		<!-- visualEditor.mobile.build -->
 		<link rel=stylesheet href="../../src/ui/styles/ve.ui.MobileContext.css">
 
 		<!-- visualEditor.theme.wikimediaui -->
 		<link rel=stylesheet href="../../src/themes/wikimediaui/dialogs.css">
 		<link rel=stylesheet href="../../src/themes/wikimediaui/widgets.css">
-
-		<!-- visualEditor.diffing -->
-		<link rel=stylesheet href="../../src/ui/styles/elements/ve.ui.DiffElement.css">
 
 		<!-- visualEditor.standalone.read -->
 		<link rel=stylesheet href="../../src/init/sa/styles/ve.init.sa.css" class="stylesheet-read">
@@ -180,14 +180,6 @@
 		<script src="../../src/init/ve.init.js"></script>
 		<script src="../../src/init/ve.init.Platform.js"></script>
 		<script src="../../src/init/ve.init.Target.js"></script>
-
-		<!-- visualEditor.standalone.build -->
-		<script src="../../src/init/sa/ve.init.sa.js"></script>
-		<script src="../../src/init/sa/ve.init.sa.Platform.js"></script>
-		<script src="../../src/init/sa/ve.init.sa.Target.js"></script>
-
-		<!-- oojs-ui-wikimediaui -->
-		<script src="../../lib/oojs-ui/oojs-ui-wikimediaui.js"></script>
 
 		<!-- visualEditor.core.build -->
 		<script src="../../src/ve.Range.js"></script>
@@ -502,11 +494,6 @@
 		<script src="../../src/ui/inspectors/ve.ui.LanguageInspector.js"></script>
 		<script src="../../src/ui/pages/ve.ui.SpecialCharacterPage.js"></script>
 
-		<!-- visualEditor.mobile.build -->
-		<script src="../../src/ui/contexts/ve.ui.MobileContext.js"></script>
-		<script src="../../src/ui/contextitems/ve.ui.MobileTableCellContextItem.js"></script>
-		<script src="../../src/ui/windowmanagers/ve.ui.MobileWindowManager.js"></script>
-
 		<!-- treeDiffer -->
 		<script src="../../lib/treeDiffer/treeDiffer-dist.js"></script>
 
@@ -522,6 +509,19 @@
 
 		<!-- visualEditor.diffing.standalone -->
 		<script src="../../src/ui/dialogs/ve.ui.DiffDialog.js"></script>
+
+		<!-- visualEditor.standalone.build -->
+		<script src="../../src/init/sa/ve.init.sa.js"></script>
+		<script src="../../src/init/sa/ve.init.sa.Platform.js"></script>
+		<script src="../../src/init/sa/ve.init.sa.Target.js"></script>
+
+		<!-- oojs-ui-wikimediaui -->
+		<script src="../../lib/oojs-ui/oojs-ui-wikimediaui.js"></script>
+
+		<!-- visualEditor.mobile.build -->
+		<script src="../../src/ui/contexts/ve.ui.MobileContext.js"></script>
+		<script src="../../src/ui/contextitems/ve.ui.MobileTableCellContextItem.js"></script>
+		<script src="../../src/ui/windowmanagers/ve.ui.MobileWindowManager.js"></script>
 
 		<!-- visualEditor.mobile.standalone -->
 		<script src="../../src/init/sa/ve.init.sa.MobileTarget.js"></script>
