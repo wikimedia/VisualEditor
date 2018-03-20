@@ -118,10 +118,10 @@ ve.ce.LinearSelection.prototype.getSelectionBoundingRect = function () {
 
 	try {
 		boundingRect = RangeFix.getBoundingClientRect( nativeRange );
-		if ( !boundingRect ) {
-			throw new Error( 'getBoundingClientRect returned null' );
-		}
 	} catch ( e ) {
+		boundingRect = null;
+	}
+	if ( !boundingRect ) {
 		boundingRect = this.getNodeClientRectFromRange( nativeRange );
 	}
 
