@@ -2191,16 +2191,14 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	} else {
 		if ( clipboardKey && beforePasteData.html ) {
 			// If the clipboardKey is set (paste from other VE instance), and clipboard
-			// data is available, then make sure important spans haven't been dropped
+			// data is available, then make sure important elements haven't been dropped
 			if ( !$elements ) {
 				$elements = $( $.parseHTML( beforePasteData.html ) );
 			}
 			if (
 				// FIXME T126045: Allow the test runner to force the use of clipboardData
-				clipboardKey === 'useClipboardData-0' || (
-					$elements.find( importantElement ).addBack().filter( importantElement ).length > 0 &&
-					this.$pasteTarget.find( importantElement ).length === 0
-				)
+				clipboardKey === 'useClipboardData-0' ||
+				$elements.find( importantElement ).addBack().filter( importantElement ).length > this.$pasteTarget.find( importantElement ).length
 			) {
 				// CE destroyed an important element, so revert to using clipboard data
 				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );

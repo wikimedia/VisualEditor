@@ -2030,8 +2030,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: '<span rel="ve:Alien">Alien</span>',
-				pasteTargetHtml: '<p><span>Alien</span></p>',
+				pasteHtml: '<span rel="ve:Alien">Alien</span><span rel="ve:Alien">Alien2</span>',
+				pasteTargetHtml: '<p><span>Alien</span><span rel="ve:Alien">Alien2</span></p>',
 				fromVe: true,
 				expectedOps: [
 					[
@@ -2043,6 +2043,8 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'replace',
 							insert: [
 								{ type: 'alienInline' },
+								{ type: '/alienInline' },
+								{ type: 'alienInline' },
 								{ type: '/alienInline' }
 							],
 							remove: []
@@ -2050,7 +2052,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: docLen - 1 }
 					]
 				],
-				expectedRangeOrSelection: new ve.Range( 3 ),
+				expectedRangeOrSelection: new ve.Range( 5 ),
 				msg: 'Paste API HTML used if important attributes dropped'
 			},
 			{
