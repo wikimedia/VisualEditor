@@ -30,7 +30,7 @@ ve.ui.AlignWidget = function VeUiAlignWidget( config ) {
 		} ),
 		new OO.ui.ButtonOptionWidget( {
 			data: 'center',
-			icon: 'alignCentre',
+			icon: 'alignCenter',
 			label: ve.msg( 'visualeditor-align-widget-center' )
 		} ),
 		new OO.ui.ButtonOptionWidget( {
