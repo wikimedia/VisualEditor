@@ -247,7 +247,7 @@ ve.dm.Model.static.getAllowedRdfaTypes = function () {
  * @param {Object} attributeChanges Attribute changes, keyed list containing objects with from and to properties
  * @param {Object} attributes New attributes
  * @param {Object} element New element
- * @return {string[]} Descriptions
+ * @return {Array} Descriptions, list of strings or jQuery objects
  */
 ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
 	var key, change,
@@ -266,7 +266,7 @@ ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
  *
  * @param {string} key Attribute key
  * @param {Object} change Change object with from and to properties
- * @return {string|null} Description, or null if nothing to describe
+ * @return {string|jQuery|null} Description (string or jQuery object), or null if nothing to describe
  */
 ve.dm.Model.static.describeChange = function ( key, change ) {
 	if ( ( typeof change.from === 'object' && change.from !== null ) || ( typeof change.to === 'object' && change.to !== null ) ) {

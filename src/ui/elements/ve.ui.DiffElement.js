@@ -843,7 +843,7 @@ ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, doc
 /**
  * Get a change description item from a set of changes
  *
- * @param {Mixed[]} changes List of changes, each change being either text or a jQuery object
+ * @param {Array} changes List of changes, each change being either text or a jQuery object
  * @return {OO.ui.OptionWidget} Change description item
  */
 ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes ) {
