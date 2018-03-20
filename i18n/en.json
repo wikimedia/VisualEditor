@@ -65,7 +65,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Edit",
 	"visualeditor-debugbar-close": "Close",
 	"visualeditor-debugbar-inputdebug": "Input debugging",
-	"visualeditor-debugbar-logrange": "Log",
+	"visualeditor-debugbar-logrange": "Log selected",
 	"visualeditor-debugbar-showmodel": "Show model",
 	"visualeditor-debugbar-showtransactions": "Show transactions",
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
