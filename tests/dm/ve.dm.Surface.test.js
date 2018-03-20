@@ -372,6 +372,7 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 
 QUnit.test( 'autosave', function ( assert ) {
 	var autosaveFailed = 0,
+		done = assert.async(),
 		surface = new ve.dm.SurfaceStub(),
 		fragment = surface.getLinearFragment( new ve.Range( 3 ) ),
 		state = {
@@ -410,6 +411,7 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.deepEqual( ve.init.platform.getSessionList( 've-changes' ).length, 1, 'No extra change stored if no changes since last store' );
 
 	fragment.convertNodes( 'heading', { level: 1 } );
+	surface.setLinearSelection( new ve.Range( 5 ) );
 	surface.breakpoint();
 	assert.deepEqual(
 		ve.init.platform.getSessionList( 've-changes' ).map( JSON.parse )[ 1 ],
@@ -422,6 +424,11 @@ QUnit.test( 'autosave', function ( assert ) {
 			] ]
 		},
 		'Second change stored'
+	);
+	assert.deepEqual(
+		ve.init.platform.getSession( 've-selection' ),
+		JSON.stringify( { type: 'linear', range: { type: 'range', from: 5, to: 5 } } ),
+		'Selection state stored'
 	);
 
 	surface.stopStoringChanges();
@@ -445,6 +452,10 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.deepEqual( surface.restoreChanges(), true, 'restoreChanges returns true on success' );
 	assert.deepEqual( surface.getHtml(), '<h1>hi bar</h1>', 'Document HTML restored' );
 	assert.deepEqual( surface.getDocument().getCompleteHistoryLength(), 2, 'Document history restored' );
+	setTimeout( function ( surface ) {
+		assert.equalHash( surface.getSelection(), { type: 'linear', range: { type: 'range', from: 5, to: 5 } }, 'Document selection restored (async)' );
+		done();
+	}.bind( this, surface ) );
 
 	ve.init.platform.sessionDisabled = true;
 	assert.deepEqual( surface.restoreChanges(), false, 'restoreChanges returns false if session storage disabled' );

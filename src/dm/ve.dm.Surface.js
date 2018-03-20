@@ -1211,6 +1211,7 @@ ve.dm.Surface.prototype.storeChanges = function () {
 	if ( !change.isEmpty() ) {
 		if ( ve.init.platform.appendToSessionList( 've-changes', JSON.stringify( change.serialize() ) ) ) {
 			this.lastStoredChange = dmDoc.getCompleteHistoryLength();
+			ve.init.platform.setSession( 've-selection', JSON.stringify( this.getSelection() ) );
 		} else {
 			// Auto-save failed probably because of memory limits
 			// so flag it so we don't keep trying in vain.
@@ -1241,7 +1242,8 @@ ve.dm.Surface.prototype.stopStoringChanges = function () {
  * @throws {Error} Failed to restore auto-saved session
  */
 ve.dm.Surface.prototype.restoreChanges = function () {
-	var surface = this,
+	var selection,
+		surface = this,
 		restored = false,
 		changes = ve.init.platform.getSessionList( 've-changes' );
 
@@ -1253,6 +1255,20 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 			surface.breakpoint();
 		} );
 		restored = !!changes.length;
+		try {
+			selection = ve.dm.Selection.static.newFromJSON(
+				this.getDocument(),
+				ve.init.platform.getSession( 've-selection' )
+			);
+		} catch ( e ) {
+			// Didn't restore the selection, not a big deal.
+		}
+		if ( selection ) {
+			// Wait for surface to observe selection change
+			setTimeout( function () {
+				surface.setSelection( selection );
+			} );
+		}
 	} catch ( e ) {
 		throw new Error( 'Failed to restore auto-saved session: ' + e );
 	}
@@ -1301,5 +1317,6 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 ve.dm.Surface.prototype.removeDocStateAndChanges = function () {
 	ve.init.platform.removeSession( 've-docstate' );
 	ve.init.platform.removeSession( 've-dochtml' );
+	ve.init.platform.removeSession( 've-selection' );
 	ve.init.platform.removeSessionList( 've-changes' );
 };
