@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.25.3
+ * OOUI v0.26.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-07T06:52:40Z
+ * Date: 2018-03-21T00:00:57Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -40,41 +40,29 @@
   background-image: url('themes/wikimediaui/images/icons/bell-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bell-progressive.svg');
 }
-.oo-ui-icon-bellOn {
-  background-image: url('themes/wikimediaui/images/icons/bellOn-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bellOn-ltr.svg');
-}
-.oo-ui-image-invert.oo-ui-icon-bellOn {
-  background-image: url('themes/wikimediaui/images/icons/bellOn-ltr-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bellOn-ltr-invert.svg');
-}
-.oo-ui-image-progressive.oo-ui-icon-bellOn {
-  background-image: url('themes/wikimediaui/images/icons/bellOn-ltr-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bellOn-ltr-progressive.svg');
-}
 .oo-ui-icon-comment {
-  background-image: url('themes/wikimediaui/images/icons/comment.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/comment.svg');
+  background-image: url('themes/wikimediaui/images/icons/speechBubble-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/speechBubble-ltr.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-comment {
-  background-image: url('themes/wikimediaui/images/icons/comment-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/comment-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/speechBubble-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/speechBubble-ltr-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-comment {
-  background-image: url('themes/wikimediaui/images/icons/comment-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/comment-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/speechBubble-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/speechBubble-ltr-progressive.svg');
 }
 .oo-ui-icon-message {
-  background-image: url('themes/wikimediaui/images/icons/message-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/message-ltr.svg');
+  background-image: url('themes/wikimediaui/images/icons/message.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/message.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-message {
-  background-image: url('themes/wikimediaui/images/icons/message-ltr-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/message-ltr-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/message-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/message-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-message {
-  background-image: url('themes/wikimediaui/images/icons/message-ltr-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/message-ltr-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/message-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/message-progressive.svg');
 }
 .oo-ui-icon-notice {
   background-image: url('themes/wikimediaui/images/icons/notice.png');

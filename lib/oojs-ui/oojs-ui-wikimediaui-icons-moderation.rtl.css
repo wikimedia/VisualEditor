@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.25.3
+ * OOUI v0.26.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-07T06:52:40Z
+ * Date: 2018-03-21T00:00:57Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -29,16 +29,16 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/block-progressive.svg');
 }
 .oo-ui-icon-unBlock {
-  background-image: url('themes/wikimediaui/images/icons/unBlock-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unBlock-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/unBlock.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unBlock.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-unBlock {
-  background-image: url('themes/wikimediaui/images/icons/unBlock-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unBlock-rtl-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/unBlock-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unBlock-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-unBlock {
-  background-image: url('themes/wikimediaui/images/icons/unBlock-rtl-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unBlock-rtl-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/unBlock-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unBlock-progressive.svg');
 }
 .oo-ui-icon-clip {
   background-image: url('themes/wikimediaui/images/icons/clip.png');
@@ -89,36 +89,36 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unFlag-rtl-progressive.svg');
 }
 .oo-ui-icon-lock {
-  background-image: url('themes/wikimediaui/images/icons/lock-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/lock.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock.svg');
 }
 .oo-ui-image-destructive.oo-ui-icon-lock {
-  background-image: url('themes/wikimediaui/images/icons/lock-rtl-destructive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock-rtl-destructive.svg');
+  background-image: url('themes/wikimediaui/images/icons/lock-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock-destructive.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-lock {
-  background-image: url('themes/wikimediaui/images/icons/lock-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock-rtl-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/lock-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-lock {
-  background-image: url('themes/wikimediaui/images/icons/lock-rtl-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock-rtl-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/lock-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lock-progressive.svg');
 }
 .oo-ui-icon-unLock {
-  background-image: url('themes/wikimediaui/images/icons/unLock-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/unLock.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock.svg');
 }
 .oo-ui-image-destructive.oo-ui-icon-unLock {
-  background-image: url('themes/wikimediaui/images/icons/unLock-rtl-destructive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock-rtl-destructive.svg');
+  background-image: url('themes/wikimediaui/images/icons/unLock-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock-destructive.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-unLock {
-  background-image: url('themes/wikimediaui/images/icons/unLock-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock-rtl-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/unLock-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-unLock {
-  background-image: url('themes/wikimediaui/images/icons/unLock-rtl-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock-rtl-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/unLock-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLock-progressive.svg');
 }
 .oo-ui-icon-star {
   background-image: url('themes/wikimediaui/images/icons/star.png');
@@ -173,16 +173,16 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/trash-progressive.svg');
 }
 .oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/unTrash-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unTrash-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/unTrash.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unTrash.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/unTrash-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unTrash-rtl-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/unTrash-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unTrash-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/unTrash-rtl-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unTrash-rtl-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/unTrash-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unTrash-progressive.svg');
 }
 .oo-ui-icon-pushPin {
   background-image: url('themes/wikimediaui/images/icons/pushPin.png');

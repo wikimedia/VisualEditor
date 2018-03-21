@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.25.3
+ * OOUI v0.26.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-07T06:52:40Z
+ * Date: 2018-03-21T00:00:57Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -29,36 +29,20 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/clear-invert.svg');
 }
 .oo-ui-indicator-up {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-up.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-up.svg');
+  background-image: url('themes/wikimediaui/images/indicators/up.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/up.svg');
 }
 .oo-ui-image-invert.oo-ui-indicator-up {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-up-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-up-invert.svg');
+  background-image: url('themes/wikimediaui/images/indicators/up-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/up-invert.svg');
 }
 .oo-ui-indicator-down {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-down.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-down.svg');
+  background-image: url('themes/wikimediaui/images/indicators/down.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/down.svg');
 }
 .oo-ui-image-invert.oo-ui-indicator-down {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-down-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-down-invert.svg');
-}
-.oo-ui-indicator-next {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-rtl.svg');
-}
-.oo-ui-image-invert.oo-ui-indicator-next {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-rtl-invert.svg');
-}
-.oo-ui-indicator-previous {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-ltr.svg');
-}
-.oo-ui-image-invert.oo-ui-indicator-previous {
-  background-image: url('themes/wikimediaui/images/indicators/arrow-ltr-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/arrow-ltr-invert.svg');
+  background-image: url('themes/wikimediaui/images/indicators/down-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/down-invert.svg');
 }
 .oo-ui-indicator-required {
   background-image: url('themes/wikimediaui/images/indicators/required.png');
@@ -69,12 +53,12 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/required-invert.svg');
 }
 .oo-ui-indicator-search {
-  background-image: url('themes/wikimediaui/images/indicators/search-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/search-rtl.svg');
+  background-image: url('themes/wikimediaui/images/indicators/search.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/search.svg');
 }
 .oo-ui-image-invert.oo-ui-indicator-search {
-  background-image: url('themes/wikimediaui/images/indicators/search-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/search-rtl-invert.svg');
+  background-image: url('themes/wikimediaui/images/indicators/search-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/search-invert.svg');
 }
 
 /**

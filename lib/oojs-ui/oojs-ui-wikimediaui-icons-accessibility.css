@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.25.3
+ * OOUI v0.26.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-07T06:52:40Z
+ * Date: 2018-03-21T00:00:57Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -20,13 +20,21 @@
   background-image: url('themes/wikimediaui/images/icons/bright-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bright-invert.svg');
 }
+.oo-ui-image-progressive.oo-ui-icon-bright {
+  background-image: url('themes/wikimediaui/images/icons/bright-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bright-progressive.svg');
+}
 .oo-ui-icon-halfBright {
-  background-image: url('themes/wikimediaui/images/icons/halfBright.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/halfBright.svg');
+  background-image: url('themes/wikimediaui/images/icons/halfBright-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/halfBright-ltr.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-halfBright {
-  background-image: url('themes/wikimediaui/images/icons/halfBright-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/halfBright-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/halfBright-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/halfBright-ltr-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-halfBright {
+  background-image: url('themes/wikimediaui/images/icons/halfBright-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/halfBright-ltr-progressive.svg');
 }
 .oo-ui-icon-notBright {
   background-image: url('themes/wikimediaui/images/icons/notBright.png');
@@ -36,6 +44,10 @@
   background-image: url('themes/wikimediaui/images/icons/notBright-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/notBright-invert.svg');
 }
+.oo-ui-image-progressive.oo-ui-icon-notBright {
+  background-image: url('themes/wikimediaui/images/icons/notBright-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/notBright-progressive.svg');
+}
 .oo-ui-icon-eye {
   background-image: url('themes/wikimediaui/images/icons/eye.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/eye.svg');
@@ -43,6 +55,10 @@
 .oo-ui-image-invert.oo-ui-icon-eye {
   background-image: url('themes/wikimediaui/images/icons/eye-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/eye-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-eye {
+  background-image: url('themes/wikimediaui/images/icons/eye-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/eye-progressive.svg');
 }
 .oo-ui-icon-eyeClosed {
   background-image: url('themes/wikimediaui/images/icons/eyeClosed.png');
@@ -52,6 +68,10 @@
   background-image: url('themes/wikimediaui/images/icons/eyeClosed-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/eyeClosed-invert.svg');
 }
+.oo-ui-image-progressive.oo-ui-icon-eyeClosed {
+  background-image: url('themes/wikimediaui/images/icons/eyeClosed-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/eyeClosed-progressive.svg');
+}
 .oo-ui-icon-moon {
   background-image: url('themes/wikimediaui/images/icons/moon.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/moon.svg');
@@ -60,21 +80,33 @@
   background-image: url('themes/wikimediaui/images/icons/moon-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/moon-invert.svg');
 }
+.oo-ui-image-progressive.oo-ui-icon-moon {
+  background-image: url('themes/wikimediaui/images/icons/moon-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/moon-progressive.svg');
+}
 .oo-ui-icon-largerText {
-  background-image: url('themes/wikimediaui/images/icons/largerText-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/largerText-ltr.svg');
+  background-image: url('themes/wikimediaui/images/icons/largerText.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/largerText.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-largerText {
-  background-image: url('themes/wikimediaui/images/icons/largerText-ltr-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/largerText-ltr-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/largerText-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/largerText-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-largerText {
+  background-image: url('themes/wikimediaui/images/icons/largerText-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/largerText-progressive.svg');
 }
 .oo-ui-icon-smallerText {
-  background-image: url('themes/wikimediaui/images/icons/smallerText-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/smallerText-ltr.svg');
+  background-image: url('themes/wikimediaui/images/icons/smallerText.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/smallerText.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-smallerText {
-  background-image: url('themes/wikimediaui/images/icons/smallerText-ltr-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/smallerText-ltr-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/smallerText-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/smallerText-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-smallerText {
+  background-image: url('themes/wikimediaui/images/icons/smallerText-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/smallerText-progressive.svg');
 }
 .oo-ui-icon-visionSimulator {
   background-image: url('themes/wikimediaui/images/icons/visionSimulator.png');
@@ -83,4 +115,8 @@
 .oo-ui-image-invert.oo-ui-icon-visionSimulator {
   background-image: url('themes/wikimediaui/images/icons/visionSimulator-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/visionSimulator-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-visionSimulator {
+  background-image: url('themes/wikimediaui/images/icons/visionSimulator-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/visionSimulator-progressive.svg');
 }

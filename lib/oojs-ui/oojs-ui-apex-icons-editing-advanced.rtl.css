@@ -1,18 +1,14 @@
 /*!
- * OOUI v0.25.3
+ * OOUI v0.26.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-07T06:52:40Z
+ * Date: 2018-03-21T00:00:57Z
  */
 .oo-ui-icon-alignCenter {
-  background-image: url('themes/apex/images/icons/align-center.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/align-center.svg');
-}
-.oo-ui-icon-alignCentre {
   background-image: url('themes/apex/images/icons/align-center.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/align-center.svg');
 }
@@ -71,14 +67,6 @@
 .oo-ui-icon-quotes {
   background-image: url('themes/apex/images/icons/quotes-rtl.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/quotes-rtl.svg');
-}
-.oo-ui-icon-quotesAdd {
-  background-image: url('themes/apex/images/icons/quotesAdd-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/quotesAdd-rtl.svg');
-}
-.oo-ui-icon-redirect {
-  background-image: url('themes/apex/images/icons/articleRedirect-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/articleRedirect-rtl.svg');
 }
 .oo-ui-icon-searchCaseSensitive {
   background-image: url('themes/apex/images/icons/case-sensitive.png');
