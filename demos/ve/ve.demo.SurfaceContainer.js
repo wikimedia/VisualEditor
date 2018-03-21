@@ -39,7 +39,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	} );
 	this.autosaveToggle = new OO.ui.ToggleButtonWidget( {
 		label: 'Auto-save',
-		value: !!ve.init.platform.getSession( 've-dochtml' )
+		value: !!ve.init.platform.getSession( 've-docstate' )
 	} );
 	saveButton = new OO.ui.ButtonWidget( {
 		label: 'Save HTML'
