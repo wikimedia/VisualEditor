@@ -69,7 +69,8 @@
 	overflow-wrap: break-word;
 }
 
-.ve-ui-diffElement-attributeChange.oo-ui-labelElement .oo-ui-labelElement-label ol {
+.ve-ui-diffElement-attributeChange.oo-ui-labelElement .oo-ui-labelElement-label ol,
+.ve-ui-diffElement-attributeChange.oo-ui-labelElement .oo-ui-labelElement-label ul {
 	margin-left: 1.8em;
 }
 
