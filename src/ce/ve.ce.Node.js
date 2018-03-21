@@ -38,10 +38,22 @@ OO.mixinClass( ve.ce.Node, ve.Node );
  * if splittable, and continue traversing up the tree and stop at the first non-splittable node.
  *
  * @static
- * @property
+ * @property {boolean}
  * @inheritable
  */
 ve.ce.Node.static.splitOnEnter = false;
+
+/**
+ * Whether a node supports multiline input at all.
+ *
+ * If set to false, pressing Enter will not perform any splitting at all. If set to null, traverse
+ * up the tree until a boolean value is found.
+ *
+ * @static
+ * @property {boolean|null}
+ * @inheritable
+ */
+ve.ce.Node.static.isMultiline = null;
 
 /**
  * Command to execute when Enter is pressed while this node is selected, or when the node is double-clicked.
@@ -220,6 +232,25 @@ ve.ce.Node.prototype.getOffset = function () {
  */
 ve.ce.Node.prototype.splitOnEnter = function () {
 	return this.constructor.static.splitOnEnter;
+};
+
+/**
+ * Check if the node is supports multiline input.
+ *
+ * Traverses upstream until a boolean value is found. If no value
+ * is found, reads the default from the surface.
+ *
+ * @return {boolean} Node supports multiline input
+ */
+ve.ce.Node.prototype.isMultiline = function () {
+	var booleanNode = this.traverseUpstream( function ( node ) {
+		return node.constructor.static.isMultiline === null;
+	} );
+	if ( booleanNode ) {
+		return booleanNode.constructor.static.isMultiline;
+	} else {
+		return !this.root || this.getRoot().getSurface().getSurface().isMultiline();
+	}
 };
 
 /**

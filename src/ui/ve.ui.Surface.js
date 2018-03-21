@@ -756,11 +756,7 @@ ve.ui.Surface.prototype.showProgress = function () {
  * @return {Object} Import rules
  */
 ve.ui.Surface.prototype.getImportRules = function () {
-	var singleLine = { singleLine: !this.multiline };
-	return {
-		all: ve.extendObject( {}, this.importRules.all, singleLine ),
-		external: ve.extendObject( {}, this.importRules.external, singleLine )
-	};
+	return this.importRules;
 };
 
 /**

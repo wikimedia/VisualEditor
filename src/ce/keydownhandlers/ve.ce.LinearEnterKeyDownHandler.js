@@ -56,15 +56,17 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
-	if ( !surface.getSurface().isMultiline() ) {
-		return true;
-	}
-
 	focusedNode = surface.getFocusedNode();
 	if ( focusedNode ) {
 		if ( focusedNode.getModel().isEditable() ) {
 			focusedNode.executeCommand();
 		}
+		return true;
+	}
+
+	node = surface.getDocument().getBranchNodeFromOffset( range.from );
+
+	if ( !node.isMultiline() ) {
 		return true;
 	}
 
@@ -74,9 +76,10 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		range = txRemove.translateRange( range );
 		// We do want this to propagate to the surface
 		surface.model.change( txRemove, new ve.dm.LinearSelection( documentModel, range ) );
+		// Remove may have changed node at range.from
+		node = surface.getDocument().getBranchNodeFromOffset( range.from );
 	}
 
-	node = surface.documentView.getBranchNodeFromOffset( range.from );
 	if ( node !== null ) {
 		// Assertion: node is certainly a contentBranchNode
 		nodeModel = node.getModel();

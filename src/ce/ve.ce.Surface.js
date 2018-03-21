@@ -1050,6 +1050,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
 	var selectionJSON, dragSelection, dragRange, originFragment, originData,
 		targetRange, targetOffset, targetFragment,
+		targetViewNode, isMultiline, slice, linearData,
 		surfaceModel = this.getModel(),
 		dataTransfer = e.originalEvent.dataTransfer,
 		$dropTarget = this.$lastDropTarget,
@@ -1107,11 +1108,32 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		}
 	}
 
+	targetViewNode = this.getSurface().getView().getDocument().getBranchNodeFromOffset(
+		targetFragment.getSelection().getCoveringRange().from
+	);
+	// TODO: Support sanitized drop on a single line node (removing line breaks)
+	isMultiline = !targetViewNode.isMultiline();
+
 	// Internal drop
 	if ( dragRange ) {
 		// Get a fragment and data of the node being dragged
 		originFragment = surfaceModel.getLinearFragment( dragRange );
-		originData = originFragment.getData();
+		if ( !isMultiline ) {
+			// Data needs to be balanced to be sanitized
+			slice = this.model.documentModel.shallowCloneFromRange( dragRange );
+			linearData = new ve.dm.ElementLinearData(
+				originFragment.getDocument().getStore(),
+				slice.getBalancedData()
+			);
+			linearData.sanitize( { singleLine: true } );
+			originData = linearData.data;
+			// Unwrap CBN
+			if ( originData[ 0 ].type ) {
+				originData = originData.slice( 1, originData.length - 1 );
+			}
+		} else {
+			originData = originFragment.getData();
+		}
 
 		// Start staging so we can abort in the catch later
 		surfaceModel.pushStaging();
@@ -1131,8 +1153,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 
 	} else {
 		// External drop
-		// TODO: Support sanitized drop on single line surfaces
-		if ( this.getSurface().isMultiline() ) {
+		// TODO: Support sanitized external drop into single line contexts
+		if ( isMultiline ) {
 			this.handleDataTransfer( dataTransfer, false, targetFragment );
 		}
 	}
@@ -1937,7 +1959,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		$elements, pasteData, slice, documentRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange, pastedText, handled,
-		tableAction, htmlBlacklist, pastedNodes,
+		tableAction, htmlBlacklist, pastedNodes, targetViewNode, isMultiline,
 		items = [],
 		metadataIdRegExp = ve.init.platform.getMetadataIdRegExp(),
 		importantElement = '[id],[typeof],[rel]',
@@ -2102,6 +2124,17 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		targetFragment = surfaceModel.getLinearFragment( fragment.getSelection().getRanges()[ 0 ], true );
 	}
 
+	targetViewNode = this.getSurface().getView().getDocument().getBranchNodeFromOffset(
+		targetFragment.getSelection().getCoveringRange().from
+	);
+	isMultiline = targetViewNode.isMultiline();
+	if ( !isMultiline ) {
+		importRules = {
+			all: ve.extendObject( {}, importRules.all, { singleLine: true } ),
+			external: ve.extendObject( {}, importRules.external, { singleLine: true } )
+		};
+	}
+
 	if ( slice ) {
 		// Pasting non-table content into table: just replace the the first cell with the pasted content
 		if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
@@ -2120,6 +2153,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getOriginalData() )
 			);
 
+			if ( !isMultiline ) {
+				// Force a jump to the catch branch
+				throw new Error( 'Must use balanced data' );
+			}
+
 			if ( this.pasteSpecial ) {
 				sanitize( pasteData );
 			}
@@ -2134,12 +2172,21 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				ve.copy( slice.getBalancedData() )
 			);
 
-			if ( this.pasteSpecial ) {
+			if ( this.pasteSpecial || !isMultiline ) {
 				sanitize( pasteData );
 			}
 
+			data = pasteData.getData();
+
+			if ( !isMultiline ) {
+				// Unwrap CBN
+				if ( data[ 0 ].type ) {
+					data = data.slice( 1, data.length - 1 );
+				}
+			}
+
 			// Insert content
-			targetFragment.insertContent( pasteData.getData(), true );
+			targetFragment.insertContent( data, true );
 		}
 	} else {
 		if ( clipboardKey && beforePasteData.html ) {
