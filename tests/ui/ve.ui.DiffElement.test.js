@@ -286,6 +286,17 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'Alien node modified',
+				oldDoc: '<p>foo</p><div rel="ve:Alien">Alien old</div>',
+				newDoc: '<p>foo</p><div rel="ve:Alien">Alien new</div>',
+				expected:
+					'<p data-diff-action="none">foo</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<div rel="ve:Alien" data-diff-action="remove">Alien old</div>' +
+						'<div rel="ve:Alien" data-diff-action="insert">Alien new</div>' +
+					'</div>'
+			},
+			{
 				msg: 'Paragraphs moved',
 				oldDoc: '<p>foo</p><p>bar</p>',
 				newDoc: '<p>bar</p><p>foo</p>',
