@@ -1281,11 +1281,15 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 /**
  * Store a snapshot of the current document state.
  *
+ * If custom HTML is provided, the caller must manually set the
+ * lastStoredChange pointer to the correct value.
+ *
  * @param {Object} [state] JSONable object describing document state
  * @param {string} [html] Document HTML, will generate from current state if not provided
  * @return {boolean} Doc state was successfully stored
  */
 ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
+	var useLatestHtml = html === undefined;
 	// Clear any changes that may have stored up to this point
 	this.removeDocStateAndChanges();
 	if ( state ) {
@@ -1295,16 +1299,16 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 		}
 	}
 	// Store HTML separately to avoid wasteful JSON encoding
-	if ( !ve.init.platform.setSession( 've-dochtml', html || this.getHtml() ) ) {
+	if ( !ve.init.platform.setSession( 've-dochtml', useLatestHtml ? this.getHtml() : html ) ) {
 		// If we failed to store the html, wipe the docstate
 		ve.init.platform.removeSession( 've-docstate' );
 		this.stopStoringChanges();
 		return false;
 	}
 
-	if ( !html ) {
+	if ( useLatestHtml ) {
 		// If storing the latest HTML, reset the lastStoreChange pointer,
-		// otherwise assume will be handled by the caller.
+		// otherwise assume this will be handled by the caller.
 		this.lastStoredChange = this.getDocument().getCompleteHistoryLength();
 	}
 
