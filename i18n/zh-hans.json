@@ -70,7 +70,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "编辑",
 	"visualeditor-debugbar-close": "关闭",
 	"visualeditor-debugbar-inputdebug": "输入调试",
-	"visualeditor-debugbar-logrange": "日志",
+	"visualeditor-debugbar-logrange": "选择的日志",
 	"visualeditor-debugbar-showmodel": "显示模型",
 	"visualeditor-debugbar-showtransactions": "显示事务",
 	"visualeditor-debugbar-startfilibuster": "冗长辩论",

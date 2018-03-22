@@ -78,7 +78,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Править",
 	"visualeditor-debugbar-close": "Закрыть",
 	"visualeditor-debugbar-inputdebug": "Отладка ввода",
-	"visualeditor-debugbar-logrange": "Журнал",
+	"visualeditor-debugbar-logrange": "Отладка выделенного",
 	"visualeditor-debugbar-showmodel": "Показать модель",
 	"visualeditor-debugbar-showtransactions": "Показать транзакции",
 	"visualeditor-debugbar-startfilibuster": "Филибастер",

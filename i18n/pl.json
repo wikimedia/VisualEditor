@@ -19,7 +19,8 @@
 			"The Polish",
 			"Mazab IZW",
 			"InternerowyGołąb",
-			"Wojtas"
+			"Wojtas",
+			"DeRudySoulStorm"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -49,6 +50,7 @@
 	"visualeditor-changedesc-link-href": "Zmieniono element docelowy linku z $1 na $2",
 	"visualeditor-changedesc-no-key": "$1 zmieniono na $2",
 	"visualeditor-changedesc-set": "$1 ustawiono na $2",
+	"visualeditor-changedesc-style": "Zmieniono język z $1 na $2",
 	"visualeditor-changedesc-unknown": "Zmieniono $1",
 	"visualeditor-changedir": "Zmień kierunek tekstu",
 	"visualeditor-changedir-tool-ltr": "Widok od lewej do prawej",
