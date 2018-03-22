@@ -48,10 +48,10 @@
 
 				function makeListener( message ) {
 					return function ( e ) {
-						console.log( message + showEventCode( e ) +
-							' ' + JSON.stringify(
-							$goodDiv[ 0 ].innerHTML
-						)
+						console.log(
+							message + showEventCode( e ) + ' ' + JSON.stringify(
+								$goodDiv[ 0 ].innerHTML
+							)
 						);
 					};
 				}
