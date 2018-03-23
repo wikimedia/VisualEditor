@@ -16,7 +16,6 @@
  * @param {ve.ce.TableNode} tableNode
  * @param {string} itemGroup Tool group to use, 'col' or 'row'
  * @param {Object} [config] Configuration options
- * @cfg {string} [indicator] Indicator to use on button
  */
 ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, config ) {
 	config = config || {};
@@ -27,19 +26,19 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 	// Properties
 	this.tableNode = tableNode;
 	this.itemGroup = itemGroup;
-	this.indicator = new OO.ui.IndicatorWidget( {
-		indicator: itemGroup === 'col' ? 'down' : 'next'
+	this.icon = new OO.ui.IconWidget( {
+		icon: itemGroup === 'col' ? 'expand' : 'next'
 	} );
 	this.popup = new OO.ui.PopupWidget( {
 		classes: [ 've-ui-tableLineContext-menu' ],
 		$container: this.surface.$element,
-		$floatableContainer: this.indicator.$element,
+		$floatableContainer: this.icon.$element,
 		position: itemGroup === 'col' ? 'below' : 'after',
 		width: 180
 	} );
 
 	// Events
-	this.indicator.$element.on( 'mousedown', this.onIndicatorMouseDown.bind( this ) );
+	this.icon.$element.on( 'mousedown', this.onIconMouseDown.bind( this ) );
 	this.onDocumentMouseDownHandler = this.onDocumentMouseDown.bind( this );
 
 	// Initialization
@@ -49,7 +48,7 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 	// * ve-ui-tableLineContext-row
 	this.$element
 		.addClass( 've-ui-tableLineContext ve-ui-tableLineContext-' + itemGroup )
-		.append( this.indicator.$element, this.popup.$element );
+		.append( this.icon.$element, this.popup.$element );
 	// Visibility is handled by the table overlay
 	this.toggle( true );
 };
@@ -95,11 +94,11 @@ ve.ui.TableLineContext.prototype.onContextItemCommand = function () {
 };
 
 /**
- * Handle mouse down events on the indicator
+ * Handle mouse down events on the icon
  *
  * @param {jQuery.Event} e Mouse down event
  */
-ve.ui.TableLineContext.prototype.onIndicatorMouseDown = function ( e ) {
+ve.ui.TableLineContext.prototype.onIconMouseDown = function ( e ) {
 	e.preventDefault();
 	this.toggleMenu();
 };
