@@ -69,6 +69,15 @@ body {
 	margin: 0;
 }
 
+.ve-demo-toolbar-commands {
+	margin-bottom: -0.5em;
+}
+
+.ve-demo-toolbar-divider,
+.ve-demo-toolbar-commands > .oo-ui-widget {
+	margin-bottom: 0.5em;
+}
+
 .ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout {
 	display: inline-block;
 	margin: 0;
