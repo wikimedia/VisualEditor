@@ -28,7 +28,6 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 	this.tableNode = tableNode;
 	this.itemGroup = itemGroup;
 	this.indicator = new OO.ui.IndicatorWidget( {
-		classes: [ 've-ui-tableLineContext-indicator' ],
 		indicator: itemGroup === 'col' ? 'down' : 'next'
 	} );
 	this.popup = new OO.ui.PopupWidget( {
