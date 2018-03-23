@@ -17,11 +17,15 @@
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} [model] Model item is related to
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [basic] Render only basic information
  */
-ve.ui.LinearContextItem = function VeUiLinearContextItem() {
+ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config ) {
 	// Parent constructor
 	ve.ui.LinearContextItem.super.apply( this, arguments );
+
+	// Mixin constructors
+	OO.ui.mixin.IconElement.call( this, config );
+	OO.ui.mixin.LabelElement.call( this, config );
+	OO.ui.mixin.PendingElement.call( this, config );
 
 	// Properties
 	this.$head = $( '<div>' );
@@ -88,6 +92,9 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem() {
 /* Inheritance */
 
 OO.inheritClass( ve.ui.LinearContextItem, ve.ui.ContextItem );
+OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.IconElement );
+OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.LabelElement );
+OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.PendingElement );
 
 /* Events */
 
