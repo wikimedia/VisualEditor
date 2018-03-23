@@ -6,6 +6,10 @@
 
 /* Demo */
 
+body {
+	font: normal 0.875em/1.5 sans-serif;
+}
+
 .ve-demo-logo {
 	padding-right: 1.1em;
 }
