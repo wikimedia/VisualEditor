@@ -1,13 +1,21 @@
 /*!
- * OOUI v0.26.0
+ * OOUI v0.26.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-21T00:00:57Z
+ * Date: 2018-03-23T23:42:37Z
  */
+.oo-ui-icon-bookmarkOutline {
+  background-image: url('themes/apex/images/icons/bookmarkOutline.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/bookmarkOutline.svg');
+}
+.oo-ui-icon-bookmark {
+  background-image: url('themes/apex/images/icons/bookmark.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/bookmark.svg');
+}
 .oo-ui-icon-block {
   background-image: url('themes/apex/images/icons/block.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/block.svg');
@@ -17,12 +25,12 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unBlock-rtl.svg');
 }
 .oo-ui-icon-clip {
-  background-image: url('themes/apex/images/icons/clip.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/clip.svg');
+  background-image: url('themes/apex/images/icons/bookmarkOutline.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/bookmarkOutline.svg');
 }
 .oo-ui-icon-unClip {
-  background-image: url('themes/apex/images/icons/unClip.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/unClip.svg');
+  background-image: url('themes/apex/images/icons/bookmark.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/bookmark.svg');
 }
 .oo-ui-icon-flag {
   background-image: url('themes/apex/images/icons/flag-rtl.png');

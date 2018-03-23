@@ -1,4 +1,28 @@
 # OOUI Release History
+## v0.26.1 / 2018-03-23
+### Deprecations
+* [DEPRECATING CHANGE] icons: Flag 'comment' as to be removed (James D. Forrester)
+* [DEPRECATING CHANGE] icons: Rename 'clip'/'unClip' to 'bookmark'/'bookmarkOutline' (Volker E.)
+
+### Styles
+* ButtonElement (framed): Remove `padding` on icon + indicator variant (Volker E.)
+* WikimediaUI theme: Reduce distance of Tools in BarToolGroup (Volker E.)
+* WikimediaUI theme: Reduce necessary widths for narrow toolbar elements (Volker E.)
+* WikimediaUI icons: Amend 'help' icon to address feedback (Volker E.)
+* WikimediaUI icons: Fix 'speechBubbles' icons (Volker E.)
+* WikimediaUI icons: Fix 'underline-a' icon to be an 'a', not a 'u' (Ed Sanders)
+* WikimediaUI icons: Slightly adapted size of 'clip'/'unClip' for algnment to other icons (Volker E.)
+* WikimediaUI icons: Swap 'advanced' and 'settings' icons (Volker E.)
+
+### Code
+* WikimediaUI theme: Remove unused RTL variants of alignLeft/Right icons (Ed Sanders)
+* WikimediaUI theme: Fix/remove unused icon files (Bartosz Dziewoński)
+* demos: Add alert popout to toolbars demos (Volker E.)
+* demos: Add specialCharacter terminal tool to toolbars demos (James D. Forrester)
+* docs: Add Demos to JSDuck navigation menu (Timo Tijhof)
+* build: Replace grunt-image with grunt-imagemin (James D. Forrester)
+* icons: Re-crush SVGs (James D. Forrester)
+
 ## v0.26.0 / 2018-03-20
 ### Breaking changes
 * [BREAKING CHANGE] WikimediaUI: Unify available variants across icon packs (Ed Sanders)

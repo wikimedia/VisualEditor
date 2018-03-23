@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.0
+ * OOUI v0.26.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-21T00:00:57Z
+ * Date: 2018-03-23T23:42:37Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -257,8 +257,7 @@
 .oo-ui-buttonElement-framed.oo-ui-indicatorElement > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
   right: 1.07142857em;
 }
-.oo-ui-buttonElement-framed.oo-ui-indicatorElement.oo-ui-labelElement > .oo-ui-buttonElement-button,
-.oo-ui-buttonElement-framed.oo-ui-indicatorElement.oo-ui-iconElement > .oo-ui-buttonElement-button {
+.oo-ui-buttonElement-framed.oo-ui-indicatorElement.oo-ui-labelElement > .oo-ui-buttonElement-button {
   padding-right: 2.28571429em;
 }
 .oo-ui-buttonElement-framed.oo-ui-labelElement > .oo-ui-buttonElement-button {
@@ -1930,14 +1929,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.0
+ * OOUI v0.26.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-21T00:00:57Z
+ * Date: 2018-03-23T23:42:37Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -3241,14 +3240,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.0
+ * OOUI v0.26.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-21T00:00:57Z
+ * Date: 2018-03-23T23:42:37Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -3267,12 +3266,18 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding-top: 3em;
   padding-left: 3em;
 }
+.oo-ui-toolbar-narrow .oo-ui-tool .oo-ui-tool-link {
+  padding-left: 2.85714286em;
+}
 .oo-ui-tool-with-label .oo-ui-tool-link {
   padding: 1em 0.85714286em 0.92857143em 2.64285714em;
 }
 .oo-ui-tool.oo-ui-iconElement .oo-ui-iconElement-icon {
   display: block;
   left: 0.78571429em;
+}
+.oo-ui-toolbar-narrow .oo-ui-tool.oo-ui-iconElement .oo-ui-iconElement-icon {
+  left: 0.71428571em;
 }
 .oo-ui-tool .oo-ui-tool-title {
   line-height: 1.07142857em;
@@ -3364,6 +3369,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool.iconElement > .oo-ui-tool-link > .oo-ui-iconElement-icon {
   display: block;
 }
+.oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool + .oo-ui-tool {
+  margin-left: -2px;
+}
 .oo-ui-barToolGroup.oo-ui-widget-enabled > .oo-ui-toolGroup-tools > .oo-ui-tool:not( .oo-ui-toolGroupTool ).oo-ui-widget-enabled:hover {
   background-color: #eaecf0;
 }
@@ -3429,6 +3437,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel {
   text-align: right;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup {
+  min-width: 2.85714286em;
+}
 .oo-ui-popupToolGroup.oo-ui-indicatorElement:not( .oo-ui-labelElement ):not( .oo-ui-iconElement ) {
   min-width: 1.85714286em;
 }
@@ -3439,6 +3450,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-popupToolGroup-handle .oo-ui-iconElement-icon {
   left: 0.78571429em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup-handle .oo-ui-iconElement-icon {
+  left: 0.71428571em;
 }
 .oo-ui-popupToolGroup-handle .oo-ui-indicatorElement-indicator {
   background-position: center 52%;
@@ -3454,14 +3468,24 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupToolGroup.oo-ui-iconElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle {
   padding-left: 3em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-iconElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle {
+  padding-left: 2.85714286em;
+}
 .oo-ui-popupToolGroup.oo-ui-labelElement .oo-ui-popupToolGroup-handle {
   padding: 1em 0.85714286em 0.92857143em;
 }
 .oo-ui-popupToolGroup.oo-ui-labelElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
   line-height: 1.07142857em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement .oo-ui-popupToolGroup-handle {
+  padding-left: 0.71428571em;
+  padding-right: 0.71428571em;
+}
 .oo-ui-popupToolGroup.oo-ui-iconElement.oo-ui-labelElement .oo-ui-popupToolGroup-handle {
   padding-left: 2.64285714em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-iconElement.oo-ui-labelElement .oo-ui-popupToolGroup-handle {
+  padding-left: 2.5em;
 }
 .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle {
   padding-right: 1.85714286em;
@@ -3484,6 +3508,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   font-weight: bold;
   line-height: 2.28571429em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup-header {
+  padding: 0 0.71428571em;
+}
 .oo-ui-popupToolGroup .oo-ui-toolGroup-tools {
   margin: 0 -1px;
   border: 1px solid #c8ccd1;
@@ -3500,6 +3527,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupToolGroup .oo-ui-tool-link {
   padding: 1em 0.85714286em 0.92857143em 2.64285714em;
 }
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup .oo-ui-tool-link {
+  padding-left: 0.71428571em;
+  padding-right: 2.5em;
+}
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title {
   color: #222;
 }
@@ -3509,6 +3540,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel:not( :empty ) {
   padding-left: 1.28571429em;
+}
+.oo-ui-toolbar-narrow .oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel:not( :empty ) {
+  padding-left: 1.14285714em;
 }
 .oo-ui-popupToolGroup.oo-ui-widget-enabled > .oo-ui-popupToolGroup-handle {
   -webkit-transition: background-color 100ms, box-shadow 100ms;
@@ -3586,13 +3620,16 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   display: block;
 }
 .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
-  min-width: 10em;
+  min-width: 140px;
 }
 .oo-ui-toolbar-narrow .oo-ui-menuToolGroup .oo-ui-popupToolGroup-handle {
-  min-width: 8.125em;
+  min-width: 100px;
 }
 .oo-ui-menuToolGroup .oo-ui-tool-link .oo-ui-iconElement-icon {
   left: 0.78571429em;
+}
+.oo-ui-toolbar-narrow .oo-ui-menuToolGroup .oo-ui-tool-link .oo-ui-iconElement-icon {
+  left: 0.71428571em;
 }
 .oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconElement-icon {
   background-image: url('themes/wikimediaui/images/icons/check-progressive.png');
@@ -3734,14 +3771,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.0
+ * OOUI v0.26.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-21T00:00:57Z
+ * Date: 2018-03-23T23:42:37Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -4140,14 +4177,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.0
+ * OOUI v0.26.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-21T00:00:57Z
+ * Date: 2018-03-23T23:42:37Z
  */
 /**
  * WikimediaUI Base v0.10.0
