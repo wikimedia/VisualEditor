@@ -52,6 +52,9 @@
 	"oojs": {
 		"scripts": [
 			"lib/oojs/oojs.jquery.js"
+		],
+		"dependencies": [
+			"jquery"
 		]
 	},
 	"oojs-ui": {
@@ -801,7 +804,6 @@
 	},
 	"visualEditor.desktop": {
 		"dependencies": [
-			"oojs-ui-apex",
 			"visualEditor.core",
 			"visualEditor.desktop.build",
 			"visualEditor.theme.apex"
@@ -821,7 +823,6 @@
 	},
 	"visualEditor.mobile": {
 		"dependencies": [
-			"oojs-ui-wikimediaui",
 			"visualEditor.core",
 			"visualEditor.mobile.build",
 			"visualEditor.theme.wikimediaui",
@@ -872,6 +873,7 @@
 			"src/init/sa/ve.init.sa.DesktopTarget.js"
 		],
 		"dependencies": [
+			"oojs-ui-apex",
 			"visualEditor.standalone",
 			"visualEditor.desktop"
 		]
@@ -889,6 +891,7 @@
 			"src/init/sa/ve.init.sa.MobileTarget.js"
 		],
 		"dependencies": [
+			"oojs-ui-wikimediaui",
 			"visualEditor.standalone",
 			"visualEditor.mobile"
 		]
