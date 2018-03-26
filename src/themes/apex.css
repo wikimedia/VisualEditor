@@ -1,19 +1,25 @@
 /*!
- * VisualEditor Apex theme dialog customizations.
+ * VisualEditor Apex theme customizations.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* ve.ui.ToolbarDialog */
+/* ve.ui.TargetWidget */
 
-.ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
-	box-shadow: none;
+.ve-ui-targetWidget {
+	border: 1px solid #ccc;
+	border-radius: 0.25em;
 }
 
-.ve-ui-toolbarDialog-padded {
-	padding-top: 0;
-	border-top: 0;
+.ve-ui-targetWidget > .ve-ui-surface {
+	border-bottom: 1px solid #ccc;
 }
+
+.ve-ui-targetWidget > :last-child {
+	border-bottom: 0;
+}
+
+/* Format tools */
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title,
 .oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title,
@@ -25,7 +31,13 @@
 	padding-left: 6.4px;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-blockquote .oo-ui-tool-title {
-	/* Add 1.5em for blockquote to the default 0.5em for tool styling. */
-	padding-left: 2em;
+/* ve.ui.ToolbarDialog */
+
+.ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
+	box-shadow: none;
+}
+
+.ve-ui-toolbarDialog-padded {
+	padding-top: 0;
+	border-top: 0;
 }

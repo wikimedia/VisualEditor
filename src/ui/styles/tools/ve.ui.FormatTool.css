@@ -45,7 +45,8 @@
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-blockquote .oo-ui-tool-title {
-	padding-left: 1.5em;
+	/* Indent in addition to padding */
+	text-indent: 1.5em;
 }
 
 .oo-ui-menuToolGroup .oo-ui-tool-name-tableCellHeader .oo-ui-tool-title {

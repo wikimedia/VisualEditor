@@ -1,8 +1,24 @@
 /*!
- * VisualEditor WikimediaUI theme dialog customizations.
+ * VisualEditor WikimediaUI theme customizations.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
+
+/* ve.ui.TargetWidget */
+
+.ve-ui-targetWidget {
+	border: 1px solid #ccc;
+}
+
+.ve-ui-targetWidget > :last-child {
+	border-bottom: 0;
+}
+
+/* Context item */
+
+.ve-ui-linearContextItem-body {
+	min-height: 0.2em;
+}
 
 /* ve.ui.ToolbarDialog */
 

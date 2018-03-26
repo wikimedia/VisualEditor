@@ -792,14 +792,12 @@
 	},
 	"visualEditor.theme.apex": {
 		"styles": [
-			"src/themes/apex/dialogs.css",
-			"src/themes/apex/widgets.css"
+			"src/themes/apex.css"
 		]
 	},
 	"visualEditor.theme.wikimediaui": {
 		"styles": [
-			"src/themes/wikimediaui/dialogs.css",
-			"src/themes/wikimediaui/widgets.css"
+			"src/themes/wikimediaui.css"
 		]
 	},
 	"visualEditor.desktop": {
