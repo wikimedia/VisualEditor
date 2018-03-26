@@ -105,7 +105,9 @@ ve.ce.CommentNode.prototype.createInvisibleIcon = function () {
 		classes: [ 've-ce-focusableNode-invisibleIcon' ],
 		framed: false,
 		icon: this.constructor.static.iconWhenInvisible,
-		label: this.constructor.static.getTextPreview( this.getModel().getAttribute( 'text' ) )
+		// If the label is empty, it's most likely because we've just inserted
+		// this; use a zero-width space for consistent rendering
+		label: this.constructor.static.getTextPreview( this.getModel().getAttribute( 'text' ) ) || new OO.ui.HtmlSnippet( '&#8203;' )
 	} );
 	this.icon = icon;
 	return icon.$element;
