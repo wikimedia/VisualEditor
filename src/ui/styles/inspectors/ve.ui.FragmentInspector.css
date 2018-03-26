@@ -10,7 +10,8 @@
 }
 
 .ve-ui-fragmentInspector-content .oo-ui-processDialog-actions-other .oo-ui-buttonElement-framed {
-	margin-top: 0;
+	margin-left: 0;
+	margin-bottom: 0;
 }
 
 /* Don't show scroll bars before ready for accurate measurement */
