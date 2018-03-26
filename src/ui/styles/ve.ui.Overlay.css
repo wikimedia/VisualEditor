@@ -25,7 +25,6 @@
 /* Most vendor prefixes are not needed on mobile devices */
 
 .ve-ui-overlay-global-mobile {
-	background: #fff;
 	height: 100%;
 	-webkit-transform: translate3d( 0, -100%, 0 );
 	transform: translate3d( 0, -100%, 0 );

@@ -29,10 +29,10 @@ OO.inheritClass( ve.ui.MobileWindowManager, ve.ui.SurfaceWindowManager );
 
 /* Static Properties */
 
+// Only allow 'small' and 'full' sizes, defaulting to 'full'
 ve.ui.MobileWindowManager.static.sizes = {
-	full: {
-		width: '100%',
-		height: '100%'
-	}
+	small: ve.ui.MobileWindowManager.super.static.sizes.small,
+	full: ve.ui.MobileWindowManager.super.static.sizes.full
 };
+
 ve.ui.MobileWindowManager.static.defaultSize = 'full';
