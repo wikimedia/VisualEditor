@@ -771,7 +771,7 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
 		$( listItemNode ).append(
 			$( '<span>' )
 				.addClass( 've-ce-mwReferencesListNode-muted' )
-				.text( ve.msg( 'cite-ve-referenceslist-missingref' ) )
+				.text( ve.msg( 'cite-ve-referenceslist-missingref-in-list' ) )
 		).attr( 'data-diff-action', action );
 	}
 	listNode.setAttribute( 'start', internalListItem.indexOrder + 1 );
