@@ -9,3 +9,9 @@
 .ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
 	outline: 0;
 }
+
+/* Temporary workaround for T190694 */
+.ve-ui-toolbar.oo-ui-toolbar-narrow .oo-ui-popupToolGroup .oo-ui-tool-link {
+	padding-left: 2.5em;
+	padding-right: 0.71428571em;
+}
