@@ -14,3 +14,18 @@
 	padding-top: 0;
 	border-top: 0;
 }
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title,
+.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
+	/* Use px so padding is not changed by font size. This is normally 0.5em. */
+	padding-left: 6.4px;
+}
+
+.oo-ui-menuToolGroup .oo-ui-tool-name-blockquote .oo-ui-tool-title {
+	/* Add 1.5em for blockquote to the default 0.5em for tool styling. */
+	padding-left: 2em;
+}

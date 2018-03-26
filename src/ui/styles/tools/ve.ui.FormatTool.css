@@ -38,16 +38,6 @@
 	font-weight: bold;
 }
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
-	/* FIXME T126030: Use px so padding is not changed by font size */
-	padding-left: 6.4px;
-}
-
 .oo-ui-menuToolGroup .oo-ui-tool-name-preformatted .oo-ui-tool-title {
 	/* Support: Blink, Gecko, Webkit */
 	/* Specify a valid second value to fix size, see T176636 */
