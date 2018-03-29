@@ -76,7 +76,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Editar",
 	"visualeditor-debugbar-close": "Cerrar",
 	"visualeditor-debugbar-inputdebug": "Depuración de entrada",
-	"visualeditor-debugbar-logrange": "Registro",
+	"visualeditor-debugbar-logrange": "Registro seleccionado",
 	"visualeditor-debugbar-showmodel": "Mostrar modelo",
 	"visualeditor-debugbar-showtransactions": "Mostrar transacciones",
 	"visualeditor-debugbar-startfilibuster": "Filibustero",

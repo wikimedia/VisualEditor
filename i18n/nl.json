@@ -26,7 +26,8 @@
 			"MrLeopold",
 			"Mainframe98",
 			"Huhbakker",
-			"Rcdeboer"
+			"Rcdeboer",
+			"Patio"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -76,7 +77,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Bewerken",
 	"visualeditor-debugbar-close": "Sluiten",
 	"visualeditor-debugbar-inputdebug": "Input voor foutopsporing",
-	"visualeditor-debugbar-logrange": "Logboek",
+	"visualeditor-debugbar-logrange": "Geselecteerd logboek",
 	"visualeditor-debugbar-showmodel": "Toon model",
 	"visualeditor-debugbar-showtransactions": "Vertalingen tonen",
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
