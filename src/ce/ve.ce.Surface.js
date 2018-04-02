@@ -1112,7 +1112,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		targetFragment.getSelection().getCoveringRange().from
 	);
 	// TODO: Support sanitized drop on a single line node (removing line breaks)
-	isMultiline = !targetViewNode.isMultiline();
+	isMultiline = targetViewNode.isMultiline();
 
 	// Internal drop
 	if ( dragRange ) {
@@ -1128,7 +1128,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 			linearData.sanitize( { singleLine: true } );
 			originData = linearData.data;
 			// Unwrap CBN
-			if ( originData[ 0 ].type ) {
+			if ( originData[ 0 ].type && ve.dm.nodeFactory.canNodeContainContent( originData[ 0 ].type ) ) {
 				originData = originData.slice( 1, originData.length - 1 );
 			}
 		} else {
