@@ -415,6 +415,9 @@ ve.dm.ElementLinearData.prototype.getAnnotationHashesFromOffset = function ( off
 		!ve.dm.nodeFactory.canNodeHaveChildren( this.getType( offset ) ) // Leaf node
 	) {
 		offset = this.getRelativeContentOffset( offset, -1 );
+		if ( offset === -1 ) {
+			return [];
+		}
 	}
 
 	item = this.getData( offset );
