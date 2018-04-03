@@ -35,6 +35,8 @@ ve.dm.InternalItemNode.static.isInternal = true;
 
 ve.dm.InternalItemNode.static.isDeletable = false;
 
+ve.dm.InternalItemNode.static.parentNodeTypes = [ 'internalList' ];
+
 /* Methods */
 
 /**
