@@ -23,9 +23,7 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 	ve.ce.TableCellableNode.call( this );
 	ve.ce.ContentEditableNode.call( this );
 
-	this.editing = false;
-	// CE nodes initialize to true
-	this.setContentEditable();
+	this.setEditing( false );
 
 	// Events
 	this.model.connect( this, {
@@ -87,7 +85,14 @@ ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
 	this.editing = enable;
 	this.$element.toggleClass( 've-ce-tableCellNode-editing', enable );
 	this.setContentEditable();
-	this.getRoot().getSurface().setActiveNode( enable ? this : null );
+	if ( this.getRoot() ) {
+		this.getRoot().getSurface().setActiveNode( enable ? this : null );
+	}
+	if ( enable ) {
+		this.$element.removeAttr( 'title' );
+	} else {
+		this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
+	}
 };
 
 /**
