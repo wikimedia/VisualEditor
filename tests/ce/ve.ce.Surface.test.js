@@ -71,9 +71,9 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	view.destroy();
 };
 
-ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, store, reuseView, msg ) {
+ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, reuseView, msg ) {
 	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent,
-		e = {},
+		e = ve.extendObject( {}, pasteData ),
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView ) :
 			htmlOrView,
@@ -89,25 +89,31 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, in
 		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), internalSourceRangeOrSelection ) );
 		testEvent = new ve.test.utils.TestEvent();
 		view.onCopy( testEvent );
+		// A fresh event with the copied data, because of defaultPrevented:
+		testEvent = new ve.test.utils.TestEvent( testEvent.testData );
 	} else {
 		if ( useClipboardData ) {
-			e[ 'text/html' ] = pasteHtml;
 			e[ 'text/xcustom' ] = 'useClipboardData-0';
 		} else if ( fromVe ) {
-			e[ 'text/html' ] = pasteHtml;
 			e[ 'text/xcustom' ] = '0.123-0';
 		}
 		testEvent = new ve.test.utils.TestEvent( e );
 	}
 	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
 	view.pasteSpecial = pasteSpecial;
+
+	// Replicate the sequencing of ce.Surface.onPaste, without any setTimeouts:
 	view.beforePaste( testEvent );
-	if ( pasteTargetHtml ) {
-		view.$pasteTarget.html( pasteTargetHtml );
-	} else {
-		document.execCommand( 'insertHTML', false, pasteHtml );
+	if ( !testEvent.defaultPrevented() ) {
+		if ( pasteTargetHtml ) {
+			view.$pasteTarget.html( pasteTargetHtml );
+		} else if ( e[ 'text/html' ] ) {
+			document.execCommand( 'insertHTML', false, e[ 'text/html' ] );
+		} else if ( e[ 'text/plain' ] ) {
+			document.execCommand( 'insertText', false, e[ 'text/plain' ] );
+		}
+		view.afterPaste( testEvent );
 	}
-	view.afterPaste( testEvent );
 
 	if ( expectedOps ) {
 		ops = [];
@@ -143,6 +149,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, in
 		htmlDoc = ve.dm.converter.getDomFromModel( doc );
 		assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
 	}
+	assert.strictEqual( testEvent.defaultPrevented(), !!expectedDefaultPrevented, msg + ': default action ' + ( expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
 	if ( reuseView ) {
 		while ( model.hasBeenModified() ) {
 			model.undo();
@@ -154,20 +161,39 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteHtml, in
 };
 
 ve.test.utils.TestEvent = function TestEvent( data ) {
-	data = data || {};
+	var defaultPrevented, key,
+		internalData = {};
+	this.testData = internalData;
 	this.originalEvent = {
 		clipboardData: {
 			getData: function ( prop ) {
-				return data[ prop ];
+				return internalData[ prop ];
 			},
 			setData: function ( prop, val ) {
-				data[ prop ] = val;
+				if ( internalData[ prop ] === undefined ) {
+					this.items.push( {
+						kind: 'string',
+						type: prop
+					} );
+				}
+				internalData[ prop ] = val;
 				return true;
 			},
 			items: []
 		}
 	};
-	this.preventDefault = this.stopPropagation = function () {};
+	this.preventDefault = this.stopPropagation = function () {
+		defaultPrevented = true;
+	};
+	this.defaultPrevented = function () {
+		return !!defaultPrevented;
+	};
+	if ( data ) {
+		for ( key in data ) {
+			// Don't directly use the data, so we get items set up
+			this.originalEvent.clipboardData.setData( key, data[ key ] );
+		}
+	}
 };
 
 QUnit.test( 'special key down: backspace/delete', function ( assert ) {
@@ -2902,16 +2928,68 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Non-paragraph content branch node converted to paragraph at end of paragraph'
+			},
+			{
+				rangeOrSelection: { type: 'null' },
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: { type: 'null' },
+				expectedOps: [],
+				expectedDefaultPrevented: true,
+				msg: 'Pasting without a selection does nothing'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteText: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								'F', 'o', 'o'
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				expectedDefaultPrevented: true,
+				msg: 'Plain text paste into empty paragraph'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteText: '<b>Foo</b>',
+				expectedRangeOrSelection: new ve.Range( 11 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								'<', 'b', '>', 'F', 'o', 'o', '<', '/', 'b', '>'
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				expectedDefaultPrevented: true,
+				msg: 'Plain text paste doesn\'t become HTML'
 			}
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
 		ve.test.utils.runSurfacePasteTest(
 			assert, cases[ i ].documentHtml || exampleSurface,
-			cases[ i ].pasteHtml, cases[ i ].internalSourceRangeOrSelection, cases[ i ].fromVe, cases[ i ].useClipboardData,
+			{
+				'text/html': cases[ i ].pasteHtml,
+				'text/plain': cases[ i ].pasteText
+			},
+			cases[ i ].internalSourceRangeOrSelection, cases[ i ].fromVe, cases[ i ].useClipboardData,
 			cases[ i ].pasteTargetHtml, cases[ i ].rangeOrSelection, cases[ i ].pasteSpecial,
 			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection, cases[ i ].expectedHtml,
-			cases[ i ].store, !cases[ i ].documentHtml, cases[ i ].msg
+			cases[ i ].expectedDefaultPrevented, cases[ i ].store, !cases[ i ].documentHtml, cases[ i ].msg
 		);
 	}
 
