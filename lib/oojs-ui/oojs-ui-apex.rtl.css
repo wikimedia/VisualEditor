@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.1
+ * OOUI v0.26.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-23T23:42:37Z
+ * Date: 2018-04-04T17:22:48Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1018,6 +1018,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-textInputWidget textarea {
   overflow: auto;
+}
+.oo-ui-textInputWidget textarea.oo-ui-textInputWidget-autosized {
   resize: none;
 }
 .oo-ui-textInputWidget [type='number'] {
@@ -1519,14 +1521,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.1
+ * OOUI v0.26.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-23T23:42:37Z
+ * Date: 2018-04-04T17:22:48Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2700,14 +2702,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.1
+ * OOUI v0.26.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-23T23:42:37Z
+ * Date: 2018-04-04T17:22:48Z
  */
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
@@ -3229,14 +3231,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.1
+ * OOUI v0.26.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-23T23:42:37Z
+ * Date: 2018-04-04T17:22:48Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
   background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
@@ -3629,14 +3631,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.1
+ * OOUI v0.26.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-23T23:42:37Z
+ * Date: 2018-04-04T17:22:48Z
  */
 .oo-ui-indicator-alert {
   background-image: url('themes/apex/images/indicators/alert.png');

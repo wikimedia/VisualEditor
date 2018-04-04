@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.1
+ * OOUI v0.26.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-23T23:42:37Z
+ * Date: 2018-04-04T17:22:48Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -177,16 +177,46 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/heart-progressive.svg');
 }
 .oo-ui-icon-help {
-  background-image: url('themes/wikimediaui/images/icons/help.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help.svg');
+  background-image: url('themes/wikimediaui/images/icons/help-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr.svg');
+}
+/* @noflip */
+.oo-ui-icon-help:lang(he) {
+  background-image: url('themes/wikimediaui/images/icons/help-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr.svg');
+}
+/* @noflip */
+.oo-ui-icon-help:lang(yi) {
+  background-image: url('themes/wikimediaui/images/icons/help-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-help {
-  background-image: url('themes/wikimediaui/images/icons/help-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/help-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr-invert.svg');
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-help:lang(he) {
+  background-image: url('themes/wikimediaui/images/icons/help-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr-invert.svg');
+}
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-help:lang(yi) {
+  background-image: url('themes/wikimediaui/images/icons/help-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-help {
-  background-image: url('themes/wikimediaui/images/icons/help-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/help-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-help:lang(he) {
+  background-image: url('themes/wikimediaui/images/icons/help-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-help:lang(yi) {
+  background-image: url('themes/wikimediaui/images/icons/help-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/help-ltr-progressive.svg');
 }
 .oo-ui-icon-key {
   background-image: url('themes/wikimediaui/images/icons/key.png');

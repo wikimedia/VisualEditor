@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.1
+ * OOUI v0.26.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-03-23T23:42:37Z
+ * Date: 2018-04-04T17:22:48Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -1147,6 +1147,11 @@
   background-image: url('themes/wikimediaui/images/icons/underline-u.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-u.svg');
 }
+/* @noflip */
+.oo-ui-icon-underline:lang(de) {
+  background-image: url('themes/wikimediaui/images/icons/underline-u.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-u.svg');
+}
 .oo-ui-image-invert.oo-ui-icon-underline {
   background-image: url('themes/wikimediaui/images/icons/underline-a-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-a-invert.svg');
@@ -1166,6 +1171,11 @@
   background-image: url('themes/wikimediaui/images/icons/underline-u-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-u-invert.svg');
 }
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-underline:lang(de) {
+  background-image: url('themes/wikimediaui/images/icons/underline-u-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-u-invert.svg');
+}
 .oo-ui-image-progressive.oo-ui-icon-underline {
   background-image: url('themes/wikimediaui/images/icons/underline-a-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-a-progressive.svg');
@@ -1182,6 +1192,11 @@
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-underline:lang(en-gb) {
+  background-image: url('themes/wikimediaui/images/icons/underline-u-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-u-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-underline:lang(de) {
   background-image: url('themes/wikimediaui/images/icons/underline-u-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/underline-u-progressive.svg');
 }
