@@ -517,6 +517,10 @@ ve.ce.Surface.prototype.focus = function () {
 		surface = this,
 		selection = this.getSelection();
 
+	if ( this.disabled ) {
+		return;
+	}
+
 	if ( selection.getModel().isNull() ) {
 		this.getModel().selectFirstContentOffset();
 		selection = this.getSelection();
