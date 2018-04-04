@@ -32,13 +32,7 @@
 	padding-left: 0.85714286em;
 }
 
-/* Temporary workaround for T190694 */
-.ve-ui-toolbar.oo-ui-toolbar-narrow .oo-ui-popupToolGroup .oo-ui-tool-link {
-	padding-left: 2.5em;
-	padding-right: 0.71428571em;
-}
-
-.ve-ui-toolbar.oo-ui-toolbar-narrow .ve-test-toolbar-format .oo-ui-tool-link {
+.oo-ui-toolbar-narrow .ve-test-toolbar-format .oo-ui-tool-link {
 	padding-left: 0.71428571em;
 }
 
