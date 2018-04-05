@@ -22,8 +22,7 @@
  * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
-	var dirItems,
-		dirInput;
+	var languageLayoutConfig, dirItems, dirInput;
 
 	// Configuration initialization
 	config = config || {};
@@ -42,8 +41,11 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	this.findLanguageButton = new OO.ui.ButtonWidget( {
 		classes: [ 've-ui-languageInputWidget-findLanguageButton' ],
-		label: ve.msg( 'visualeditor-languageinspector-widget-changelang' ),
-		indicator: 'next'
+		icon: 'ellipsis'
+	} );
+	this.selectedLanguageLabel = new OO.ui.LabelWidget( {
+		classes: [ 've-ui-languageInputWidget-selectedLanguageLabel' ],
+		label: ve.msg( 'visualeditor-languageinspector-widget-changelang' )
 	} );
 	this.languageCodeTextInput = new OO.ui.TextInputWidget( {
 		classes: [ 've-ui-languageInputWidget-languageCodeTextInput' ]
@@ -51,7 +53,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.directionSelect = new OO.ui.ButtonSelectWidget( {
 		classes: [ 've-ui-languageInputWidget-directionSelect' ]
 	} );
-	this.languageLabel = {
+	languageLayoutConfig = {
 		align: 'left',
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-language' )
 	};
@@ -59,15 +61,16 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	if ( config.hideCodeInput ) {
 		this.languageLayout = new OO.ui.FieldLayout(
 			this.findLanguageButton,
-			this.languageLabel
+			languageLayoutConfig
 		);
 	} else {
 		this.languageLayout = new OO.ui.ActionFieldLayout(
 			this.languageCodeTextInput,
 			this.findLanguageButton,
-			this.languageLabel
+			languageLayoutConfig
 		);
 	}
+	this.findLanguageButton.$element.before( this.selectedLanguageLabel.$element );
 
 	this.directionField = new OO.ui.FieldLayout( this.directionSelect, {
 		align: 'left',
@@ -178,18 +181,20 @@ ve.ui.LanguageInputWidget.prototype.setLangAndDir = function ( lang, dir ) {
 	if ( lang || dir ) {
 		lang = lang || '';
 		this.languageCodeTextInput.setValue( lang );
-		this.findLanguageButton.setLabel(
+		this.selectedLanguageLabel.setLabel(
 			ve.init.platform.getLanguageName( lang.toLowerCase() ) ||
 			ve.msg( 'visualeditor-languageinspector-widget-changelang' )
 		);
 		this.directionSelect.selectItemByData( dir );
 	} else {
 		this.languageCodeTextInput.setValue( '' );
-		this.findLanguageButton.setLabel(
+		this.selectedLanguageLabel.setLabel(
 			ve.msg( 'visualeditor-languageinspector-widget-changelang' )
 		);
 		this.directionSelect.selectItem( null );
 	}
+	// Set title as long language may be truncated
+	this.selectedLanguageLabel.setTitle( this.selectedLanguageLabel.$label.text() );
 	this.updating = false;
 
 	this.emit( 'change', lang, dir );
