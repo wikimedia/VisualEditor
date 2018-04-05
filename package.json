@@ -34,7 +34,7 @@
     "grunt-eslint": "20.1.0",
     "grunt-jsonlint": "1.1.0",
     "grunt-karma": "2.0.0",
-    "grunt-stylelint": "0.9.0",
+    "grunt-stylelint": "0.10.0",
     "grunt-svgmin": "5.0.0",
     "grunt-tyops": "0.1.0",
     "karma": "2.0.0",
@@ -44,7 +44,7 @@
     "karma-mocha-reporter": "2.2.5",
     "karma-qunit": "1.2.1",
     "qunitjs": "2.4.1",
-    "stylelint": "8.2.0",
-    "stylelint-config-wikimedia": "0.4.2"
+    "stylelint": "9.2.0",
+    "stylelint-config-wikimedia": "0.4.3"
   }
 }
