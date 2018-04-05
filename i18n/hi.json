@@ -14,7 +14,8 @@
 			"Upendradutt93",
 			"Jayprakash12345",
 			"चक्रपाणी",
-			"Rishi.Singh"
+			"Rishi.Singh",
+			"Smtchahal"
 		]
 	},
 	"visualeditor": "यथादृश्य संपादिका",
@@ -64,7 +65,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "संपादित करें",
 	"visualeditor-debugbar-close": "बंद",
 	"visualeditor-debugbar-inputdebug": "इनपुट डिबगिंग",
-	"visualeditor-debugbar-logrange": "लॉग",
+	"visualeditor-debugbar-logrange": "चयनित लॉग",
 	"visualeditor-debugbar-showmodel": "मॉडल दिखाएँ",
 	"visualeditor-debugbar-showtransactions": "लेनदेन दिखाएँ",
 	"visualeditor-debugbar-startfilibuster": "फिलिबस्टर",

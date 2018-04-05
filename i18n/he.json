@@ -85,6 +85,7 @@
 	"visualeditor-dialog-table-caption": "כותרת",
 	"visualeditor-dialog-table-title": "מאפייני טבלה",
 	"visualeditor-diff-no-changes": "אין שינויים",
+	"visualeditor-diff-timed-out": "לקח יותר מדי זמן לחשב את השינויים שלך, ולכן התיאור להלן יכול להיות לא מושלם.",
 	"visualeditor-dimensionswidget-px": "פיקסל",
 	"visualeditor-find-and-replace-diacritic": "ללא רגישות לסימנים דיאקריטיים",
 	"visualeditor-find-and-replace-diacritic-unavailable": "חיפוש ללא רגישות לסימנים דיאקריטיים אינו אפשרי בדפדפן הזה",

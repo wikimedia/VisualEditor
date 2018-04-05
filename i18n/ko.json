@@ -22,7 +22,8 @@
 			"Ykhwong",
 			"Libattery",
 			"Jerrykim306",
-			"Garam"
+			"Garam",
+			"Nuevo Paso"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -71,7 +72,7 @@
 	"visualeditor-contextitemwidget-label-remove": "삭제",
 	"visualeditor-contextitemwidget-label-secondary": "편집",
 	"visualeditor-debugbar-close": "닫기",
-	"visualeditor-debugbar-logrange": "로그",
+	"visualeditor-debugbar-logrange": "로그 선택됨",
 	"visualeditor-debugbar-showmodel": "모델 보기",
 	"visualeditor-debugbar-showtransactions": "트랜잭션 표시",
 	"visualeditor-debugbar-updatemodel": "변경사항에 대한 업데이트",
