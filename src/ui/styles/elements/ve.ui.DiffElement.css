@@ -143,6 +143,9 @@ del[ data-diff-action='remove' ]:hover,
 
 [ data-diff-action='none' ] {
 	opacity: 0.4;
+	/* opacity increases stacking order, so reduce it again */
+	z-index: -1;
+	position: relative;
 }
 
 [ data-diff-move='up' ],
