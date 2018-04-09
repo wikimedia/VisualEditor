@@ -11,7 +11,7 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {ve.Node} documentNode Document node
+ * @param {ve.BranchNode} documentNode Document node
  */
 ve.Document = function VeDocument( documentNode ) {
 	// Mixin constructors
@@ -52,7 +52,7 @@ OO.mixinClass( ve.Document, OO.EventEmitter );
  * Get the root of the document's node tree.
  *
  * @method
- * @return {ve.Node} Root of node tree
+ * @return {ve.BranchNode} Root of node tree
  */
 ve.Document.prototype.getDocumentNode = function () {
 	return this.documentNode;
