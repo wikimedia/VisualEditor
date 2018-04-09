@@ -29,7 +29,7 @@ OO.mixinClass( ve.dm.ImageNode, ve.dm.ResizableNode );
 /* Static Methods */
 
 /**
- * @inheritdoc ve.dm.Node
+ * @inheritdoc ve.dm.Model
  */
 ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes ) {
 	var key, sizeFrom, sizeTo, change,
