@@ -27,7 +27,8 @@
 			"Esukhovnina",
 			"ЛосЯш",
 			"Contra ventum",
-			"Patrick Star"
+			"Patrick Star",
+			"Happy13241"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -52,6 +53,7 @@
 	"visualeditor-changedesc-align": "Выравнивание изменено с $1 на $2",
 	"visualeditor-changedesc-changed": "$1 изменён с $2 на $3",
 	"visualeditor-changedesc-comment": "комментарий изменен с $1 на $2",
+	"visualeditor-changedesc-direction": "Направление переопределения изменилось с $1 до $2",
 	"visualeditor-changedesc-image-size": "Размер изменён с $1 на $2",
 	"visualeditor-changedesc-language": "Язык изменён с $1 на $2",
 	"visualeditor-changedesc-link-href": "Цель ссылки поменялась с $1 на $2",
@@ -97,6 +99,7 @@
 	"visualeditor-dialog-table-caption": "Подпись",
 	"visualeditor-dialog-table-title": "Свойства таблицы",
 	"visualeditor-diff-no-changes": "Никаких изменений",
+	"visualeditor-diff-timed-out": "Для вычисления ваших изменений потребовалось слишком много времени, поэтому приведенное ниже описание может оказаться не оптимальным.",
 	"visualeditor-find-and-replace-diacritic": "Не учитывать диакритические знаки",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Поиск без учета диакритики недоступен в этом браузере",
 	"visualeditor-find-and-replace-done": "Готово",
