@@ -2415,6 +2415,41 @@ ve.dm.example.domToDataCases = {
 		],
 		fromDataBody: '<p><b>xx</b></p>'
 	},
+	'plain href-less anchors (e.g. on paste) are converted to spans': {
+		body: '<a name="foo">ab</a>',
+		data: [
+			{
+				type: 'paragraph',
+				internal: {
+					generated: 'wrapper'
+				}
+			},
+			[
+				'a',
+				[ {
+					type: 'textStyle/span',
+					attributes: { nodeName: 'a' }
+				} ]
+			],
+			[
+				'b',
+				[ {
+					type: 'textStyle/span',
+					attributes: { nodeName: 'a' }
+				} ]
+			],
+			{
+				type: '/paragraph'
+			},
+			{
+				type: 'internalList'
+			},
+			{
+				type: '/internalList'
+			}
+		],
+		fromDataBody: '<a>ab</a>'
+	},
 	'list item with space followed by link': {
 		body: '<ul><li><p> <a href="Foobar">bar</a></p></li></ul>',
 		head: '<base href="http://example.com/Foo" />',

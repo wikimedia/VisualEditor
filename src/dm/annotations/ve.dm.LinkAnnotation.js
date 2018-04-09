@@ -30,6 +30,9 @@ ve.dm.LinkAnnotation.static.name = 'link';
 ve.dm.LinkAnnotation.static.matchTagNames = [ 'a' ];
 
 ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
+	if ( !domElements[ 0 ].hasAttribute( 'href' ) ) {
+		return ve.dm.SpanAnnotation.static.toDataElement.apply( ve.dm.SpanAnnotation.static, arguments );
+	}
 	return {
 		type: this.name,
 		attributes: {
