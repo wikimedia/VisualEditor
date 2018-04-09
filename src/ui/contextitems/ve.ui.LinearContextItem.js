@@ -9,8 +9,6 @@
  *
  * @class
  * @extends ve.ui.ContextItem
- * @mixins OO.ui.mixin.IconElement
- * @mixins OO.ui.mixin.LabelElement
  * @mixins OO.ui.mixin.PendingElement
  *
  * @constructor
@@ -19,12 +17,12 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config ) {
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.LinearContextItem.super.apply( this, arguments );
 
 	// Mixin constructors
-	OO.ui.mixin.IconElement.call( this, config );
-	OO.ui.mixin.LabelElement.call( this, config );
 	OO.ui.mixin.PendingElement.call( this, config );
 
 	// Properties
@@ -34,6 +32,10 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 	this.$body = $( '<div>' );
 	this.$info = $( '<div>' );
 	this.$description = $( '<div>' );
+	// Don't use mixins as they expect the icon and label to be children of this.$element.
+	this.icon = new OO.ui.IconWidget( { icon: config.icon || this.constructor.static.icon } );
+	this.label = new OO.ui.LabelWidget( { label: config.label || this.constructor.static.label } );
+
 	if ( !this.context.isMobile() ) {
 		this.editButton = new OO.ui.ButtonWidget( {
 			label: ve.msg( 'visualeditor-contextitemwidget-label-secondary' ),
@@ -68,15 +70,13 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 	this.deleteButton.connect( this, { click: 'onDeleteButtonClick' } );
 
 	// Initialization
-	this.$label.addClass( 've-ui-linearContextItem-label' );
-	this.$icon.addClass( 've-ui-linearContextItem-icon' );
 	this.$description.addClass( 've-ui-linearContextItem-description' );
 	this.$info
 		.addClass( 've-ui-linearContextItem-info' )
 		.append( this.$description );
 	this.$title
 		.addClass( 've-ui-linearContextItem-title' )
-		.append( this.$icon, this.$label );
+		.append( this.icon.$element, this.label.$element );
 	this.$actions
 		.addClass( 've-ui-linearContextItem-actions' )
 		.append( this.actionButtons.$element );
@@ -92,8 +92,6 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 /* Inheritance */
 
 OO.inheritClass( ve.ui.LinearContextItem, ve.ui.ContextItem );
-OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.IconElement );
-OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.LabelElement );
 OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.PendingElement );
 
 /* Events */
@@ -169,6 +167,14 @@ ve.ui.LinearContextItem.prototype.isDeletable = function () {
  */
 ve.ui.LinearContextItem.prototype.getDescription = function () {
 	return '';
+};
+
+ve.ui.LinearContextItem.prototype.setIcon = function ( icon ) {
+	return this.icon.setIcon( icon );
+};
+
+ve.ui.LinearContextItem.prototype.setLabel = function ( label ) {
+	return this.label.setLabel( label );
 };
 
 /**

@@ -10,28 +10,13 @@
 }
 
 .ve-ui-linearContextItem-title {
-	display: table-cell;
-	width: 1%;
-	text-align: left;
 	padding: 0.5em 1em;
-	overflow: hidden;
-	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-.oo-ui-widget.oo-ui-iconElement .ve-ui-linearContextItem-icon {
-	position: static;
-	display: inline-block;
+.ve-ui-linearContextItem-title > .oo-ui-labelWidget {
 	vertical-align: middle;
-	background-position: center center;
-	background-repeat: no-repeat;
-}
-
-.ve-ui-linearContextItem-label {
-	min-width: 4em;
-	display: inline-block;
-	vertical-align: middle;
-	margin-left: 0.5em;
+	margin-left: 0.3em;
 }
 
 .ve-ui-linearContextItem-info {
