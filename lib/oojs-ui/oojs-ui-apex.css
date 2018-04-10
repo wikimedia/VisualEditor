@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.2
+ * OOUI v0.26.3
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-04T17:22:48Z
+ * Date: 2018-04-10T22:15:43Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -271,9 +271,9 @@
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
-  min-width: 24px;
+  min-width: 20px;
   width: 1.875em;
-  min-height: 24px;
+  min-height: 20px;
   height: 100%;
 }
 .oo-ui-iconElement .oo-ui-iconElement-icon,
@@ -934,6 +934,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border: 0;
   padding: 0;
 }
+.oo-ui-checkboxInputWidget .oo-ui-checkboxInputWidget-checkIcon.oo-ui-iconElement-icon {
+  display: none;
+}
 .oo-ui-checkboxMultiselectInputWidget .oo-ui-fieldLayout {
   margin-top: 0;
 }
@@ -1205,25 +1208,26 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-menuSelectWidget-invisible {
   display: none;
 }
+.oo-ui-menuOptionWidget.oo-ui-optionWidget .oo-ui-iconElement-icon.oo-ui-menuOptionWidget-checkIcon {
+  display: none;
+}
 .oo-ui-menuOptionWidget.oo-ui-optionWidget > .oo-ui-indicatorElement-indicator {
   display: none;
 }
 .oo-ui-menuOptionWidget.oo-ui-optionWidget-selected {
   background-color: transparent;
 }
-.oo-ui-menuOptionWidget.oo-ui-optionWidget-selected > .oo-ui-iconElement-icon {
-  background-image: url('themes/apex/images/icons/check.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/check.svg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
+.oo-ui-menuOptionWidget.oo-ui-optionWidget-selected.oo-ui-optionWidget .oo-ui-iconElement-icon {
+  display: none;
+}
+.oo-ui-menuOptionWidget.oo-ui-optionWidget-selected.oo-ui-optionWidget .oo-ui-iconElement-icon.oo-ui-menuOptionWidget-checkIcon {
   display: block;
   position: absolute;
   left: 0.5em;
   top: 0;
-  min-width: 24px;
-  width: 1.875em;
-  min-height: 24px;
+  min-width: 20px;
+  width: 1.5625em;
+  min-height: 20px;
   height: 100%;
 }
 .oo-ui-menuOptionWidget.oo-ui-optionWidget-highlighted,
@@ -1521,14 +1525,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.2
+ * OOUI v0.26.3
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-04T17:22:48Z
+ * Date: 2018-04-10T22:15:43Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2435,8 +2439,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding: 0;
 }
 .oo-ui-tagItemWidget > .oo-ui-buttonElement > .oo-ui-buttonElement-button .oo-ui-iconElement-icon {
-  min-width: 20px;
-  width: 1.5625em;
+  min-width: 14px;
+  width: 1.09375em;
   margin-right: -0.3em;
 }
 .oo-ui-tagItemWidget > .oo-ui-buttonElement > .oo-ui-buttonElement-button .oo-ui-labelElement-label,
@@ -2618,8 +2622,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding: 0;
 }
 .oo-ui-capsuleItemWidget > .oo-ui-buttonElement > .oo-ui-buttonElement-button .oo-ui-iconElement-icon {
-  min-width: 20px;
-  width: 1.5625em;
+  min-width: 14px;
+  width: 1.09375em;
   margin-right: -0.3em;
 }
 .oo-ui-capsuleItemWidget > .oo-ui-buttonElement > .oo-ui-buttonElement-button .oo-ui-labelElement-label,
@@ -2702,15 +2706,18 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.2
+ * OOUI v0.26.3
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-04T17:22:48Z
+ * Date: 2018-04-10T22:15:43Z
  */
+.oo-ui-tool.oo-ui-widget > .oo-ui-tool-link > .oo-ui-iconWidget.oo-ui-iconElement-icon.oo-ui-tool-checkIcon {
+  display: none;
+}
 .oo-ui-popupTool .oo-ui-popupWidget-popup,
 .oo-ui-popupTool .oo-ui-popupWidget-anchor {
   z-index: 4;
@@ -2994,27 +3001,27 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-toolbar-position-bottom .oo-ui-popupToolGroup .oo-ui-toolGroup-tools {
   bottom: 2.5em;
 }
-.oo-ui-popupToolGroup .oo-ui-tool-link {
+.oo-ui-popupToolGroup .oo-ui-tool.oo-ui-widget .oo-ui-tool-link {
   padding: 0.3125em 0 0.3125em 0.3125em;
 }
-.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-iconElement-icon {
-  display: table-cell !important;
+.oo-ui-popupToolGroup .oo-ui-tool.oo-ui-widget .oo-ui-tool-link .oo-ui-iconElement-icon {
+  display: table-cell;
   min-width: 1.5625em;
   width: 1.5625em;
   height: 1.5625em;
   vertical-align: middle;
 }
-.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title {
+.oo-ui-popupToolGroup .oo-ui-tool.oo-ui-widget .oo-ui-tool-link .oo-ui-tool-title {
   padding-left: 0.5em;
 }
-.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel,
-.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-title {
+.oo-ui-popupToolGroup .oo-ui-tool.oo-ui-widget .oo-ui-tool-link .oo-ui-tool-accel,
+.oo-ui-popupToolGroup .oo-ui-tool.oo-ui-widget .oo-ui-tool-link .oo-ui-tool-title {
   line-height: 2em;
 }
-.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel {
+.oo-ui-popupToolGroup .oo-ui-tool.oo-ui-widget .oo-ui-tool-link .oo-ui-tool-accel {
   color: #767676;
 }
-.oo-ui-popupToolGroup .oo-ui-tool-link .oo-ui-tool-accel:not( :empty ) {
+.oo-ui-popupToolGroup .oo-ui-tool.oo-ui-widget .oo-ui-tool-link .oo-ui-tool-accel:not( :empty ) {
   padding-left: 3em;
 }
 .oo-ui-listToolGroup .oo-ui-tool {
@@ -3096,24 +3103,24 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-menuToolGroup .oo-ui-tool {
   padding: 0 1.25em 0 0.3125em;
 }
-.oo-ui-menuToolGroup .oo-ui-tool-link .oo-ui-iconElement-icon {
-  background-image: none;
+.oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget > .oo-ui-tool-link > .oo-ui-iconElement-icon {
+  opacity: 0;
 }
-.oo-ui-menuToolGroup .oo-ui-tool-active .oo-ui-tool-link .oo-ui-iconElement-icon {
-  background-image: url('themes/apex/images/icons/check.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/icons/check.svg');
-  background-size: contain;
-  background-position: center center;
-  background-repeat: no-repeat;
+.oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget > .oo-ui-tool-link > .oo-ui-iconElement-icon.oo-ui-tool-checkIcon {
+  display: none;
+}
+.oo-ui-menuToolGroup .oo-ui-tool-active.oo-ui-widget > .oo-ui-tool-link > .oo-ui-iconElement-icon {
+  display: none;
+}
+.oo-ui-menuToolGroup .oo-ui-tool-active.oo-ui-widget > .oo-ui-tool-link > .oo-ui-iconElement-icon.oo-ui-tool-checkIcon {
+  display: table-cell;
+  opacity: 1;
 }
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-enabled:hover {
   background-color: #e1f3ff;
 }
 .oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-tool-title {
   color: #ccc;
-}
-.oo-ui-menuToolGroup .oo-ui-tool.oo-ui-widget-disabled .oo-ui-tool-link .oo-ui-iconElement-icon {
-  opacity: 0.2;
 }
 .oo-ui-menuToolGroup.oo-ui-widget-disabled {
   color: #ccc;
@@ -3231,14 +3238,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.2
+ * OOUI v0.26.3
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-04T17:22:48Z
+ * Date: 2018-04-10T22:15:43Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
   background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
@@ -3631,45 +3638,45 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.2
+ * OOUI v0.26.3
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-04T17:22:48Z
+ * Date: 2018-04-10T22:15:43Z
  */
 .oo-ui-indicator-alert {
-  background-image: url('themes/apex/images/indicators/alert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/alert.svg');
+  background-image: url('themes/wikimediaui/images/indicators/alert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/alert.svg');
 }
 .oo-ui-indicator-clear {
-  background-image: url('themes/apex/images/indicators/clear.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/clear.svg');
+  background-image: url('themes/wikimediaui/images/indicators/clear.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/clear.svg');
 }
 .oo-ui-indicator-up {
-  background-image: url('themes/apex/images/indicators/arrow-up.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-up.svg');
+  background-image: url('themes/wikimediaui/images/indicators/up.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/up.svg');
 }
 .oo-ui-indicator-down {
-  background-image: url('themes/apex/images/indicators/arrow-down.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/arrow-down.svg');
+  background-image: url('themes/wikimediaui/images/indicators/down.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/down.svg');
 }
 .oo-ui-indicator-required {
-  background-image: url('themes/apex/images/indicators/required.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/required.svg');
+  background-image: url('themes/wikimediaui/images/indicators/required.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/required.svg');
 }
 .oo-ui-indicator-search {
-  background-image: url('themes/apex/images/indicators/search-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/indicators/search-ltr.svg');
+  background-image: url('themes/wikimediaui/images/indicators/search.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/search.svg');
 }
 
 .oo-ui-texture-pending {
-  background-image: url('themes/apex/images/textures/pending.gif');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/textures/pending.gif');
+  background-image: url('themes/wikimediaui/images/textures/pending.gif');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/textures/pending.gif');
 }
 .oo-ui-texture-transparency {
-  background-image: url('themes/apex/images/textures/transparency.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/apex/images/textures/transparency.svg');
+  background-image: url('themes/wikimediaui/images/textures/transparency.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/textures/transparency.svg');
 }

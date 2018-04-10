@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.2
+ * OOUI v0.26.3
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-04T17:22:48Z
+ * Date: 2018-04-10T22:15:43Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -335,6 +335,54 @@
 .oo-ui-image-progressive.oo-ui-icon-tableMergeCells {
   background-image: url('themes/wikimediaui/images/icons/tableMergeCells-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMergeCells-progressive.svg');
+}
+.oo-ui-icon-tableMoveColumnAfter {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveColumnAfter.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveColumnAfter.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-tableMoveColumnAfter {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveColumnAfter-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveColumnAfter-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-tableMoveColumnAfter {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveColumnAfter-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveColumnAfter-progressive.svg');
+}
+.oo-ui-icon-tableMoveColumnBefore {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveColumnBefore.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveColumnBefore.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-tableMoveColumnBefore {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveColumnBefore-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveColumnBefore-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-tableMoveColumnBefore {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveColumnBefore-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveColumnBefore-progressive.svg');
+}
+.oo-ui-icon-tableMoveRowAfter {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveRowAfter.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveRowAfter.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-tableMoveRowAfter {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveRowAfter-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveRowAfter-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-tableMoveRowAfter {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveRowAfter-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveRowAfter-progressive.svg');
+}
+.oo-ui-icon-tableMoveRowBefore {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveRowBefore.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveRowBefore.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-tableMoveRowBefore {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveRowBefore-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveRowBefore-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-tableMoveRowBefore {
+  background-image: url('themes/wikimediaui/images/icons/tableMoveRowBefore-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tableMoveRowBefore-progressive.svg');
 }
 .oo-ui-icon-templateAdd {
   background-image: url('themes/wikimediaui/images/icons/templateAdd-ltr.png');
