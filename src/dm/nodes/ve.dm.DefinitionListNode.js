@@ -31,6 +31,8 @@ ve.dm.DefinitionListNode.static.childNodeTypes = [ 'definitionListItem' ];
 
 ve.dm.DefinitionListNode.static.matchTagNames = [ 'dl' ];
 
+ve.dm.DefinitionListNode.static.isDiffedAsList = true;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.DefinitionListNode );

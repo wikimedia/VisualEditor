@@ -306,6 +306,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<p data-diff-action="none">foo</p>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<div rel="ve:Alien" data-diff-action="remove">Alien old</div>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<div rel="ve:Alien" data-diff-action="insert">Alien new</div>' +
 					'</div>'
 			},
@@ -352,8 +354,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<p>foo bar baz</p><p>quux whee</p>',
 				newDoc: '<p>quux whee!</p><p>foo bar baz!</p>',
 				expected:
-					'<div class="ve-ui-diffElement-doc-child-change" data-diff-move="up">' +
-						'<p>quux whee<ins data-diff-action="insert">!</ins></p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-move="up">quux whee<ins data-diff-action="insert">!</ins></p>' +
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>foo bar baz<ins data-diff-action="insert">!</ins></p>' +
@@ -500,9 +502,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
-							'<li><p>foo</p></li>' +
-							'<li data-diff-action="structural-insert"><p data-diff-action="insert">bar</p></li>' +
-							'<li><p>baz</p></li>' +
+							'<li><p data-diff-action="none">foo</p></li>' +
+							'<li><p data-diff-action="insert">bar</p></li>' +
+							'<li><p data-diff-action="none">baz</p></li>' +
 						'</ul>' +
 					'</div>'
 			},
@@ -513,34 +515,57 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
-							'<li><p>foo</p></li>' +
-							'<li data-diff-action="structural-remove"><p data-diff-action="remove">bar</p></li>' +
-							'<li><p>baz</p></li>' +
+							'<li><p data-diff-action="none">foo</p></li>' +
+							'<li><p data-diff-action="remove">bar</p></li>' +
+							'<li><p data-diff-action="none">baz</p></li>' +
 						'</ul>' +
 					'</div>'
 			},
 			{
 				msg: 'List item indentation',
-				oldDoc: '<ul><li><p>foo</p></li></ul>',
-				newDoc: '<ul><li><ul><li><p>foo</p></li></ul></li></ul>',
-				expected:
-					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul data-diff-action="structural-insert">' +
-							'<li data-diff-action="structural-insert"><ul><li><p>foo</p></li></ul></li>' +
-						'</ul>' +
-					'</div>'
-			},
-			{
-				msg: 'List item deindentation',
-				oldDoc: '<ul><li><ul><li><p>foo</p></li></ul></li></ul>',
-				newDoc: '<ul><li><p>foo</p></li></ul>',
+				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				newDoc: '<ul><li><p>foo</p><ul><li><p>bar</p></li></ul></li><li><p>baz</p></li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
-							// TODO: Add remove classes here
-							'<li><p>foo</p></li>' +
+							'<li>' +
+								'<p data-diff-action="none">foo</p>' +
+								'<ul>' +
+									'<li>' +
+										'<p data-diff-action="structural-change" data-diff-id="0">bar</p>' +
+									'</li>' +
+								'</ul>' +
+							'</li>' +
+							'<li>' +
+								'<p data-diff-action="none">baz</p>' +
+							'</li>' +
 						'</ul>' +
-					'</div>'
+					'</div>',
+				expectedDescriptions: [
+					'visualeditor-changedesc-changed,listItemDepth,0,1'
+				]
+			},
+			{
+				msg: 'List item deindentation',
+				oldDoc: '<ul><li><p>foo</p><ul><li><p>bar</p></li></ul></li><li><p>baz</p></li></ul>',
+				newDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li>' +
+								'<p data-diff-action="none">foo</p>' +
+							'</li>' +
+							'<li>' +
+								'<p data-diff-action="structural-change" data-diff-id="0">bar</p>' +
+							'</li>' +
+							'<li>' +
+								'<p data-diff-action="none">baz</p>' +
+							'</li>' +
+						'</ul>' +
+					'</div>',
+				expectedDescriptions: [
+					'visualeditor-changedesc-changed,listItemDepth,1,0'
+				]
 			},
 			{
 				msg: 'Full list replacement',

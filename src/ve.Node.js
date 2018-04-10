@@ -203,6 +203,24 @@ ve.Node.prototype.isCellable = null;
 ve.Node.prototype.isCellEditable = null;
 
 /**
+ * Check if the node behaves like a list for diffing
+ *
+ * @method
+ * @abstract
+ * @return {boolean} Node behaves like a list
+ */
+ve.Node.prototype.isDiffedAsList = null;
+
+/**
+ * Check if the node behaves like a leaf for diffing
+ *
+ * @method
+ * @abstract
+ * @return {boolean} Node behaves like a leaf
+ */
+ve.Node.prototype.isDiffedAsLeaf = null;
+
+/**
  * Check if the node has significant whitespace.
  *
  * Can only be true if canContainContent is also true.

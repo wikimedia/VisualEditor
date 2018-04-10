@@ -27,3 +27,5 @@ OO.inheritClass( ve.dm.ContentBranchNode, ve.dm.BranchNode );
 /* Static Properties */
 
 ve.dm.ContentBranchNode.static.canContainContent = true;
+
+ve.dm.ContentBranchNode.static.isDiffedAsLeaf = true;
