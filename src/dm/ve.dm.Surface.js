@@ -26,6 +26,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.sourceMode = !!config.sourceMode;
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = new ve.dm.NullSelection( this.getDocument() );
+	// The selection before the most recent stack of changes was applied
 	this.selectionBefore = new ve.dm.NullSelection( this.getDocument() );
 	this.translatedSelection = null;
 	this.branchNodes = {};
@@ -274,7 +275,9 @@ ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
 	}
 	this.stagingStack.push( {
 		transactions: [],
-		selectionBefore: new ve.dm.NullSelection( this.getDocument() ),
+		// Will get overridden after the first transaction, but while the
+		// stack is empty, should be equal to the previous selectionBefore.
+		selectionBefore: this.isStaging() ? this.getStaging().selectionBefore : this.selectionBefore,
 		allowUndo: !!allowUndo
 	} );
 };
