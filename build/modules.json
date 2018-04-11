@@ -617,7 +617,6 @@
 			"src/ui/styles/contextitems/ve.ui.LanguageContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.LinkContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.ToolContextItem.css",
-			"src/ui/styles/ve.ui.Icons.css",
 			"src/ui/styles/ve.ui.Overlay.css",
 			"src/ui/styles/ve.ui.Surface.css",
 			"src/ui/styles/widgets/ve.ui.TargetWidget.css",
