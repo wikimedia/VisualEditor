@@ -243,6 +243,21 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'About-grouped node inserted',
+				oldDoc: '<p>Foo</p>',
+				newDoc: '<p>Foo</p>' +
+					'<div rel="ve:Alien" about="#group1">A</div>' +
+					'<div rel="ve:Alien" about="#group1">B</div>' +
+					'<div rel="ve:Alien" about="#group1">C</div>',
+				expected:
+					'<p data-diff-action="none">Foo</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<div data-diff-action="insert" rel="ve:Alien" about="#group1">A</div>' +
+						'<div data-diff-action="insert" rel="ve:Alien" about="#group1">B</div>' +
+						'<div data-diff-action="insert" rel="ve:Alien" about="#group1">C</div>' +
+					'</div>'
+			},
+			{
 				msg: 'Inline node inserted',
 				oldDoc: '<p>foo bar baz quux</p>',
 				newDoc: '<p>foo bar <!--whee--> baz quux</p>',
