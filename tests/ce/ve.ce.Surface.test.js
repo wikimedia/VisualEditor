@@ -75,8 +75,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, ran
 	view.destroy();
 };
 
-ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, msg ) {
-	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent,
+ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, noClipboardData, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, msg ) {
+	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent, isClipboardDataFormatsSupported,
 		afterPastePromise = $.Deferred().resolve().promise(),
 		e = ve.extendObject( {}, pasteData ),
 		view = typeof htmlOrView === 'string' ?
@@ -94,7 +94,14 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 	if ( internalSourceRangeOrSelection ) {
 		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), internalSourceRangeOrSelection ) );
 		testEvent = new ve.test.utils.TestEvent();
+		if ( noClipboardData ) {
+			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
+			ve.isClipboardDataFormatsSupported = function () { return false; };
+		}
 		view.onCopy( testEvent );
+		if ( noClipboardData ) {
+			ve.isClipboardDataFormatsSupported = isClipboardDataFormatsSupported;
+		}
 		// A fresh event with the copied data, because of defaultPrevented:
 		testEvent = new ve.test.utils.TestEvent( testEvent.testData );
 	} else {
@@ -1448,6 +1455,12 @@ QUnit.test( 'onCopy', function ( assert ) {
 					'</p>',
 				expectedText: 'Foo\n\n',
 				msg: 'RDFa attributes encoded into data-ve-attributes'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1, 4 ),
+				expectedHtml: '<span data-ve-clipboard-key="">&nbsp;</span>a<b>b</b><i>c</i>',
+				noClipboardData: true,
+				msg: 'Clipboard span'
 			}
 			/*
 			// Our CI environment uses either Chrome 57 (mediawiki/extensions/VisualEditor)
@@ -1462,18 +1475,28 @@ QUnit.test( 'onCopy', function ( assert ) {
 			*/
 		];
 
-	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, msg ) {
-		var slice,
+	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
+		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey,
 			testEvent = new ve.test.utils.TestEvent(),
 			clipboardData = testEvent.originalEvent.clipboardData,
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
 
+		if ( noClipboardData ) {
+			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
+			ve.isClipboardDataFormatsSupported = function () { return false; };
+		}
+
 		// Paste sequence
 		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
 		view.onCopy( testEvent );
 
+		if ( noClipboardData ) {
+			ve.isClipboardDataFormatsSupported = isClipboardDataFormatsSupported;
+		}
+
 		slice = view.clipboard.slice;
+		clipboardKey = view.clipboardId + '-' + view.clipboardIndex;
 
 		assert.equalRange( slice.originalRange, expectedOriginalRange || rangeOrSelection, msg + ': originalRange' );
 		assert.equalRange( slice.balancedRange, expectedBalancedRange || rangeOrSelection, msg + ': balancedRange' );
@@ -1481,9 +1504,12 @@ QUnit.test( 'onCopy', function ( assert ) {
 			assert.equalLinearData( slice.data.data, expectedData, msg + ': data' );
 		}
 		if ( expectedHtml ) {
+			$expected = $( '<div>' ).html( expectedHtml );
+			// Clipboard key is random, so update it
+			$expected.find( '[data-ve-clipboard-key]' ).attr( 'data-ve-clipboard-key', clipboardKey );
 			assert.equalDomElement(
 				$( '<div>' ).html( clipboardData.getData( 'text/html' ) )[ 0 ],
-				$( '<div>' ).html( expectedHtml )[ 0 ],
+				$expected[ 0 ],
 				msg + ': html'
 			);
 		}
@@ -1493,7 +1519,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 			}
 			assert.strictEqual( clipboardData.getData( 'text/plain' ), expectedText, msg + ': text' );
 		}
-		assert.strictEqual( clipboardData.getData( 'text/xcustom' ), view.clipboardId + '-' + view.clipboardIndex, msg + ': clipboardId set' );
+		if ( !noClipboardData ) {
+			assert.strictEqual( clipboardData.getData( 'text/xcustom' ), clipboardKey, msg + ': clipboardId set' );
+		}
 
 		view.destroy();
 	}
@@ -1502,7 +1530,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		testRunner(
 			cases[ i ].doc, cases[ i ].rangeOrSelection, cases[ i ].expectedData,
 			cases[ i ].expectedOriginalRange, cases[ i ].expectedBalancedRange,
-			cases[ i ].expectedHtml, cases[ i ].expectedText, cases[ i ].msg
+			cases[ i ].expectedHtml, cases[ i ].expectedText, cases[ i ].noClipboardData, cases[ i ].msg
 		);
 	}
 
@@ -1597,6 +1625,28 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Internal text into annotated content'
+			},
+			{
+				rangeOrSelection: new ve.Range( 25 ),
+				internalSourceRangeOrSelection: new ve.Range( 3, 6 ),
+				noClipboardData: true,
+				expectedRangeOrSelection: new ve.Range( 28 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 25 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'F', [ bold ] ],
+								[ 'o', [ bold ] ],
+								[ 'o', [ bold ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 25 }
+					]
+				],
+				msg: 'Internal text into annotated content (noClipboardData)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 25 ),
@@ -1988,6 +2038,27 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				],
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				msg: 'Span cleanups: clipboard key stripped'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteHtml: '<span data-ve-clipboard-key="0.13811087369534492-4">&nbsp;</span><s>Foo</s>',
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'F', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
+								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
+								[ 'o', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 29 }
+					]
+				],
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				msg: 'Span cleanups: clipboard key stripped (external)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -2998,7 +3069,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				'text/html': cases[ i ].pasteHtml,
 				'text/plain': cases[ i ].pasteText
 			},
-			cases[ i ].internalSourceRangeOrSelection, cases[ i ].fromVe, cases[ i ].useClipboardData,
+			cases[ i ].internalSourceRangeOrSelection, cases[ i ].noClipboardData, cases[ i ].fromVe, cases[ i ].useClipboardData,
 			cases[ i ].pasteTargetHtml, cases[ i ].rangeOrSelection, cases[ i ].pasteSpecial,
 			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection, cases[ i ].expectedHtml,
 			cases[ i ].expectedDefaultPrevented, cases[ i ].store, cases[ i ].msg
