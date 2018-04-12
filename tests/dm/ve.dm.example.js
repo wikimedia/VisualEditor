@@ -4099,7 +4099,9 @@ ve.dm.example.domToDataCases = {
 			{ type: 'horizontalRule' },
 			{ type: '/horizontalRule' },
 			{ type: 'blockquote' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'B', 'a', 'r',
+			{ type: '/paragraph' },
 			{ type: '/blockquote' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -4108,7 +4110,9 @@ ve.dm.example.domToDataCases = {
 			'<center class="ve-ce-branchNode"><p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Foo</p></center>' +
 			'<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
 			'<div class="ve-ce-focusableNode ve-ce-horizontalRuleNode" contenteditable="false"><hr class="ve-ce-leafNode"></div>' +
-			'<blockquote class="ve-ce-branchNode ve-ce-contentBranchNode">Bar</blockquote>'
+			'<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
+			'<blockquote class="ve-ce-branchNode"><p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Bar</p></blockquote>' +
+			'<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>'
 	}
 };
 
