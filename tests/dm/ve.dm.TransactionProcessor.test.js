@@ -43,7 +43,7 @@ QUnit.test( 'commit', function ( assert ) {
 				expected: function ( data ) {
 					data[ 1 ] = [ 'a', store.hashAll( [ bold ] ) ];
 					data[ 2 ] = [ 'b', store.hashAll( [ bold ] ) ];
-					data[ 3 ] = [ 'c', store.hashAll( [ bold, underline ] ) ];
+					data[ 3 ] = [ 'c', store.hashAll( [ underline, bold ] ) ];
 				},
 				events: [
 					[ 'annotation', 0, 0 ],
@@ -447,9 +447,9 @@ QUnit.test( 'commit', function ( assert ) {
 			'applying a link across an existing annotation boundary': {
 				data: [
 					{ type: 'paragraph' },
-					[ 'f', store.hashAll( [ bold, italic ] ) ],
-					[ 'o', store.hashAll( [ bold, italic ] ) ],
-					[ 'o', store.hashAll( [ bold, italic ] ) ],
+					[ 'f', store.hashAll( [ italic, bold ] ) ],
+					[ 'o', store.hashAll( [ italic, bold ] ) ],
+					[ 'o', store.hashAll( [ italic, bold ] ) ],
 					[ 'b', store.hashAll( [ bold ] ) ],
 					[ 'a', store.hashAll( [ bold ] ) ],
 					[ 'r', store.hashAll( [ bold ] ) ],
@@ -466,7 +466,7 @@ QUnit.test( 'commit', function ( assert ) {
 					var i, annotations;
 					for ( i = 1; i <= 6; i++ ) {
 						annotations = data[ i ][ 1 ];
-						annotations.splice( 1, 0, store.hash( link ) );
+						annotations.splice( 0, 0, store.hash( link ) );
 					}
 				}
 			},
@@ -777,5 +777,5 @@ QUnit.test( 'undo clear annotation', function ( assert ) {
 	);
 	doc.commit( tx );
 	doc.commit( tx.reversed() );
-	assert.notDeepEqual( doc.data.data, origData, 'Roundtrip difference undoing unbold under italic' );
+	assert.deepEqual( doc.data.data, origData, 'Roundtrip difference undoing unbold under italic' );
 } );
