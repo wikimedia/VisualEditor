@@ -558,6 +558,7 @@ QUnit.test( 'special key down: backspace/delete', function ( assert ) {
 QUnit.test( 'special key down: table cells', function ( assert ) {
 	var i,
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
+		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		cases = [
 			{
 				htmlOrDoc: mergedCellsDoc,
@@ -668,6 +669,13 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 				keys: [ 'DOWN' ],
 				expectedRangeOrSelection: new ve.Range( 171 ),
 				msg: 'Down in last row of table moves out of table'
+			},
+			{
+				htmlOrDoc: complexTableDoc,
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'TAB' ],
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				msg: 'Tab inside a table caption does nothing'
 			}
 		];
 

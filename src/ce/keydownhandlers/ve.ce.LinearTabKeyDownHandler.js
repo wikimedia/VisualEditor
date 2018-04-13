@@ -38,7 +38,8 @@ ve.ce.LinearTabKeyDownHandler.static.supportedSelections = [ 'linear' ];
  */
 ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 	var activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode );
-	if ( activeTableNode ) {
+	// Check we have an active table node and that we are inside a cell (editingFragment), and not just a caption
+	if ( activeTableNode && activeTableNode.editingFragment ) {
 		if ( e.ctrlKey || e.altKey || e.metaKey ) {
 			// Support: Firefox
 			// In Firefox, ctrl-tab to switch browser-tabs still triggers the
