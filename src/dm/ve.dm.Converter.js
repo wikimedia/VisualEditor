@@ -486,9 +486,11 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	}
 	// TODO: This is only for the diff. Eventually should make a DiffConverter subclass
 	if ( dataElement.internal && dataElement.internal.diff ) {
-		for ( key in dataElement.internal.diff ) {
-			domElements[ 0 ].setAttribute( key, dataElement.internal.diff[ key ] );
-		}
+		Array.prototype.forEach.call( domElements, function ( domElement ) {
+			for ( key in dataElement.internal.diff ) {
+				domElement.setAttribute( key, dataElement.internal.diff[ key ] );
+			}
+		} );
 	}
 	// Mark branch nodes as generated from dataElement, so we don't try and descend into them in a deep renderHtmlAttributeList call
 	if ( this.nodeFactory.lookup( dataElement.type ) && this.nodeFactory.canNodeHaveChildren( dataElement.type ) ) {
