@@ -1451,3 +1451,18 @@ ve.dm.ElementLinearData.prototype.hasContent = function () {
 			!ve.dm.nodeFactory.isNodeInternal( this.getType( 0 ) )
 		);
 };
+
+/**
+ * Get the length of the common start sequence of annotations that applies to a whole range
+ *
+ * @param {ve.Range} range The document range
+ * @return {number} Common start sequence length (0 if the range is empty)
+ */
+ve.dm.ElementLinearData.prototype.getCommonAnnotationArrayLength = function ( range ) {
+	var i,
+		annotationHashesForOffset = [];
+	for ( i = range.start; i < range.end; i++ ) {
+		annotationHashesForOffset.push( this.getAnnotationHashesFromOffset( i ) );
+	}
+	return ve.getCommonStartSequenceLength( annotationHashesForOffset );
+};

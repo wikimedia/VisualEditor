@@ -757,3 +757,25 @@ QUnit.test( 'commit', function ( assert ) {
 		}
 	}
 } );
+
+// TODO: Fix the code so undoing unbold roundtrips properly, then fix this test to reflect that
+QUnit.test( 'undo clear annotation', function ( assert ) {
+	var doc, tx,
+		origData = [
+			{ type: 'paragraph' },
+			[ 'x', [ ve.dm.example.boldHash, ve.dm.example.italicHash ] ],
+			{ type: '/paragraph' }
+		];
+	doc = ve.dm.example.createExampleDocumentFromData( origData );
+	doc.store.hash( ve.dm.example.italic );
+	doc.store.hash( ve.dm.example.bold );
+	tx = ve.dm.TransactionBuilder.static.newFromAnnotation(
+		doc,
+		new ve.Range( 1, 2 ),
+		'clear',
+		ve.dm.example.bold
+	);
+	doc.commit( tx );
+	doc.commit( tx.reversed() );
+	assert.notDeepEqual( doc.data.data, origData, 'Roundtrip difference undoing unbold under italic' );
+} );
