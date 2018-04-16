@@ -2104,15 +2104,19 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 		// Restore attributes. See #onCopy.
 		this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
-			var attrs;
+			var attrs,
+				attrsJSON = this.getAttribute( 'data-ve-attributes' );
+
+			// Always remove the attribute, even if the JSON has been corrupted
+			this.removeAttribute( 'data-ve-attributes' );
+
 			try {
-				attrs = JSON.parse( this.getAttribute( 'data-ve-attributes' ) );
+				attrs = JSON.parse( attrsJSON );
 			} catch ( e ) {
 				// Invalid JSON
 				return;
 			}
 			$( this ).attr( attrs );
-			this.removeAttribute( 'data-ve-attributes' );
 		} );
 	} else {
 		// Clone again. The elements were cloned on copy, but we need to clone

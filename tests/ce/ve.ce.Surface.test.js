@@ -1988,6 +1988,16 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 1 ),
 				documentHtml: '<p></p>',
+				pasteHtml: '<span data-ve-attributes="{{invalid">foo</span>' +
+					'<span data-ve-attributes="{&quot;about&quot;:&quot;quux&quot;}">bar</span>',
+				fromVe: true,
+				expectedHtml: '<p><span>foo</span><span about="quux">bar</span></p>',
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				msg: 'Span cleanups: data-ve-attributes always stripped'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				documentHtml: '<p></p>',
 				pasteHtml:
 					'<span class="ve-pasteProtect" id="meaningful">F</span>' +
 					'<span class="ve-pasteProtect" style="color: red;">o</span>' +
