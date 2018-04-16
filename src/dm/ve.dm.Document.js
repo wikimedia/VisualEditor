@@ -1562,7 +1562,7 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, options ) {
-	var i, j, l, qLen, match, offset, lines, dataString, sensitivity, compare, text,
+	var j, l, qLen, match, offset, dataString, sensitivity, compare, matchText,
 		data = this.data,
 		documentRange = this.getDocumentRange(),
 		ranges = [];
@@ -1570,15 +1570,14 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 	options = options || {};
 
 	if ( query instanceof RegExp ) {
-		// Convert whole doucment to plain-text for regex matching
-		text = data.getText( true, documentRange );
-		offset = 0;
-		// Avoid multi-line matching by only matching within newlines
-		lines = text.split( '\n' );
-		for ( i = 0, l = lines.length; i < l; i++ ) {
-			while ( lines[ i ] && ( match = query.exec( lines[ i ] ) ) !== null ) {
+		// Avoid multi-line matching by only matching within content (text or content elements)
+		data.forEachRunOfContent( function ( offset, line ) {
+			query.lastIndex = 0;
+			while ( ( match = query.exec( line ) ) !== null ) {
+				matchText = match[ 0 ];
+
 				// Skip empty string matches (e.g. with .*)
-				if ( match[ 0 ].length === 0 ) {
+				if ( matchText.length === 0 ) {
 					// Set lastIndex to the next character to avoid an infinite
 					// loop. Browsers differ in whether they do this for you
 					// for empty matches; see
@@ -1586,17 +1585,45 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 					query.lastIndex = match.index + 1;
 					continue;
 				}
+
+				// Content elements' open/close data is replaced by the replacement character U+FFFC.
+				// Ensure that matches of U+FFFC contain the entire element (opening and closing data).
+				// The U+FFFC placeholder is only used for elements which "are content" (.static.isContent
+				// is true), and such elements are guaranteed to not contain content, so this is safe.
+				// Note, however, that this character is allowed to appear in normal text (eww),
+				// so we consult the actual document data to make sure we actually matched an element.
+
+				// 1/2: If we matched opening U+FFFC at the end, extend the match forwards by 1.
+				if (
+					matchText[ matchText.length - 1 ] === '\uFFFC' &&
+					data.isOpenElementData( offset + match.index + matchText.length - 1 ) &&
+					data.isCloseElementData( offset + match.index + matchText.length )
+				) {
+					matchText += '\uFFFC';
+					query.lastIndex += 1;
+				}
+
+				// 2/2: If we matched closing U+FFFC at the beginning, skip the match.
+				// (We do not extend the match backwards to avoid overlapping matches.)
+				if (
+					matchText[ 0 ] === '\uFFFC' &&
+					data.isOpenElementData( offset + match.index - 1 ) &&
+					data.isCloseElementData( offset + match.index )
+				) {
+					// Continue matching at the next character, rather than the end of this match.
+					query.lastIndex = match.index + 1;
+					continue;
+				}
+
 				ranges.push( new ve.Range(
 					offset + match.index,
-					offset + match.index + match[ 0 ].length
+					offset + match.index + matchText.length
 				) );
 				if ( !options.noOverlaps ) {
 					query.lastIndex = match.index + 1;
 				}
 			}
-			offset += lines[ i ].length + 1;
-			query.lastIndex = 0;
-		}
+		} );
 	} else {
 		qLen = query.length;
 		if ( ve.supportsIntl ) {

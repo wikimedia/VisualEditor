@@ -1024,14 +1024,14 @@ QUnit.test( 'Selection equality', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'Find text', function ( assert ) {
+QUnit.test( 'findText (plain text)', function ( assert ) {
 	var i, ranges,
 		supportsIntl = ve.supportsIntl,
 		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
 			// 0
 			'<p>Foo bar fooq.</p>' +
 			// 15
-			'<p>baz foob</p>' +
+			'<p>baz\nfoob</p>' +
 			// 25
 			'<p>Liberté, Égalité, Fraternité.</p>' +
 			// 56
@@ -1101,7 +1101,7 @@ QUnit.test( 'Find text', function ( assert ) {
 			},
 			{
 				msg: 'Overlapping regex',
-				query: /.*/g,
+				query: /[\s\S]*/g,
 				options: {
 					noOverlaps: true
 				},
@@ -1112,6 +1112,40 @@ QUnit.test( 'Find text', function ( assert ) {
 					new ve.Range( 57, 60 ),
 					new ve.Range( 62, 74 ),
 					new ve.Range( 76, 83 )
+				]
+			},
+			{
+				msg: 'Literal newline',
+				query: /\n/g,
+				options: {},
+				ranges: [
+					new ve.Range( 19, 20 )
+				]
+			},
+			{
+				msg: 'Anchor "^" matches at start of line, but does not match after literal newlines',
+				query: /^./g,
+				options: {},
+				ranges: [
+					new ve.Range( 1, 2 ),
+					new ve.Range( 16, 17 ),
+					new ve.Range( 26, 27 ),
+					new ve.Range( 57, 58 ),
+					new ve.Range( 62, 63 ),
+					new ve.Range( 76, 77 )
+				]
+			},
+			{
+				msg: 'Anchor "$" matches at end of line, but does not match before literal newlines',
+				query: /.$/g,
+				options: {},
+				ranges: [
+					new ve.Range( 13, 14 ),
+					new ve.Range( 23, 24 ),
+					new ve.Range( 54, 55 ),
+					new ve.Range( 59, 60 ),
+					new ve.Range( 73, 74 ),
+					new ve.Range( 82, 83 )
 				]
 			},
 			{
@@ -1249,6 +1283,85 @@ QUnit.test( 'Find text', function ( assert ) {
 			assert.deepEqual( ranges, cases[ i ].ranges, cases[ i ].msg + ': without Intl API' );
 			ve.supportsIntl = supportsIntl;
 		}
+	}
+} );
+
+QUnit.test( 'findText (non-text content)', function ( assert ) {
+	var i, ranges,
+		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
+			//   1 3     5     7 9
+			//  / /     /     / /
+			'<p>ab<img/><img/>cd</p>'
+		) ),
+		cases = [
+			{
+				msg: 'Start of line anchor "^" does not match after nodes',
+				query: /^./g,
+				options: {
+					noOverlaps: true
+				},
+				ranges: [
+					new ve.Range( 1, 2 )
+				]
+			},
+			{
+				msg: 'End of line anchor "$" does not match before nodes',
+				query: /.$/g,
+				options: {
+					noOverlaps: true
+				},
+				ranges: [
+					new ve.Range( 8, 9 )
+				]
+			},
+			{
+				msg: 'A dot in regexp matches each node once',
+				query: /./g,
+				options: {
+					noOverlaps: true
+				},
+				ranges: [
+					new ve.Range( 1, 2 ),
+					new ve.Range( 2, 3 ),
+					new ve.Range( 3, 5 ),
+					new ve.Range( 5, 7 ),
+					new ve.Range( 7, 8 ),
+					new ve.Range( 8, 9 )
+				]
+			},
+			{
+				msg: 'Partial match of a node (start) is extended',
+				query: /ab./g,
+				options: {
+					noOverlaps: true
+				},
+				ranges: [
+					new ve.Range( 1, 5 )
+				]
+			},
+			{
+				msg: 'Partial match of a node (end) is skipped',
+				query: /.cd/g,
+				options: {
+					noOverlaps: true
+				},
+				ranges: []
+			},
+			{
+				msg: 'Partial match of a node (end) is skipped, but a shorter match is found',
+				query: /.?cd/g,
+				options: {
+					noOverlaps: true
+				},
+				ranges: [
+					new ve.Range( 7, 9 )
+				]
+			}
+		];
+
+	for ( i = 0; i < cases.length; i++ ) {
+		ranges = doc.findText( cases[ i ].query, cases[ i ].options );
+		assert.deepEqual( ranges, cases[ i ].ranges, cases[ i ].msg );
 	}
 } );
 
