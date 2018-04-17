@@ -53,22 +53,20 @@
 	vertical-align: middle;
 	/* Negative margins ensure icon height doesn't exceed line height in paragraphs */
 	margin: -6px 0 -2px 0;
-	width: 24px;
-	height: 24px;
 }
 
 /* Selector for comment node, which isn't an iconWidget */
 .ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement,
 .ve-ce-focusableNode-invisibleIcon.oo-ui-iconWidget.oo-ui-iconElement {
-	display: block;
-	/* Don't scale icon in headings etc. */
-	width: 24px;
-	height: 24px;
-	background-size: 24px 24px;
+	display: inline-block;
 	/* Make native selection match fake selection */
 	font-size: 24px;
 	line-height: 1em;
 	opacity: 0.5;
+}
+/* Requires high specificity to override OOUI: */
+.ve-ce-focusableNode-invisibleIcon.oo-ui-iconElement.oo-ui-buttonElement-frameless.oo-ui-labelElement.oo-ui-iconElement:first-child {
+	margin-left: 0;
 }
 
 /* Highlights group opacity */
