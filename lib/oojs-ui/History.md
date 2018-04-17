@@ -1,4 +1,12 @@
 # OOUI Release History
+## v0.26.4 / 2018-04-17
+### Code
+* Apex theme: Point pending.gif texture to a directory that exists (Kunal Mehta)
+* Remove white canvases from table move icons (Ed Sanders)
+* WindowManager: Return focus to element after resize (Prateek Saxena)
+* build: Updating mediawiki/mediawiki-codesniffer to 18.0.0 (libraryupgrader)
+
+
 ## v0.26.3 / 2018-04-10
 ### Styles
 * WikimediaUI theme: Restore background-size transition when checking a checkbox (Bartosz Dziewoński)

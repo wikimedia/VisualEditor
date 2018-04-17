@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.3
+ * OOUI v0.26.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-10T22:15:43Z
+ * Date: 2018-04-17T22:24:02Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -316,7 +316,7 @@
   font-weight: bold;
 }
 .oo-ui-pendingElement-pending {
-  background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
+  background-image: /* @embed */ url(themes/wikimediaui/images/textures/pending.gif);
 }
 .oo-ui-fieldLayout {
   display: block;
@@ -1525,14 +1525,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.3
+ * OOUI v0.26.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-10T22:15:43Z
+ * Date: 2018-04-17T22:24:02Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2706,14 +2706,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.3
+ * OOUI v0.26.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-10T22:15:43Z
+ * Date: 2018-04-17T22:24:02Z
  */
 .oo-ui-tool.oo-ui-widget > .oo-ui-tool-link > .oo-ui-iconWidget.oo-ui-iconElement-icon.oo-ui-tool-checkIcon {
   display: none;
@@ -3238,17 +3238,17 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.3
+ * OOUI v0.26.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-10T22:15:43Z
+ * Date: 2018-04-17T22:24:02Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
-  background-image: /* @embed */ url(themes/apex/images/textures/pending.gif);
+  background-image: /* @embed */ url(themes/wikimediaui/images/textures/pending.gif);
 }
 .oo-ui-window {
   background-color: transparent;
@@ -3638,14 +3638,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.26.3
+ * OOUI v0.26.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-10T22:15:43Z
+ * Date: 2018-04-17T22:24:02Z
  */
 .oo-ui-indicator-alert {
   background-image: url('themes/wikimediaui/images/indicators/alert.png');
