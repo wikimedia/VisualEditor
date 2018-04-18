@@ -3047,7 +3047,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: docLen - 1 }
 					]
 				],
-				expectedDefaultPrevented: true,
+				expectedDefaultPrevented: false,
 				msg: 'Plain text paste into empty paragraph'
 			},
 			{
@@ -3067,7 +3067,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: docLen - 1 }
 					]
 				],
-				expectedDefaultPrevented: true,
+				expectedDefaultPrevented: false,
 				msg: 'Plain text paste doesn\'t become HTML'
 			}
 		];

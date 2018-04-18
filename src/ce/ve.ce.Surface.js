@@ -1965,7 +1965,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	var clipboardKey, clipboardHash,
 		$elements, pasteData, slice, documentRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
-		context, left, right, contextRange,
+		context, left, right, contextRange, handled, pastedText,
 		tableAction, htmlBlacklist, pastedNodes, targetViewNode, isMultiline,
 		done = $.Deferred().resolve().promise(),
 		items = [],
@@ -2369,7 +2369,23 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			}
 		}
 
-		targetFragment.insertDocument( pastedDocumentModel, contextRange, true );
+		// If the external HTML turned out to be plain text after sanitization
+		// then run it as a plain text transfer item. In core this will never
+		// do anything, but implementations can provide their own handler for
+		// conversion actions here.
+		if ( pastedDocumentModel.data.isPlainText( contextRange, true, undefined, true ) ) {
+			pastedText = pastedDocumentModel.data.getText( true, contextRange );
+			if ( pastedText ) {
+				handled = this.handleDataTransferItems(
+					[ ve.ui.DataTransferItem.static.newFromString( pastedText ) ],
+					true,
+					targetFragment
+				);
+			}
+		}
+		if ( !handled ) {
+			targetFragment.insertDocument( pastedDocumentModel, contextRange, true );
+		}
 	}
 
 	return targetFragment.getPending().then( function () {

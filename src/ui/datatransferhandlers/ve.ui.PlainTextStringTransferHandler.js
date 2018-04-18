@@ -29,7 +29,7 @@ ve.ui.PlainTextStringTransferHandler.static.name = 'plainTextString';
 
 ve.ui.PlainTextStringTransferHandler.static.types = [ 'text/plain' ];
 
-ve.ui.PlainTextStringTransferHandler.static.handlesPaste = true;
+ve.ui.PlainTextStringTransferHandler.static.handlesPaste = false;
 
 /* Methods */
 
