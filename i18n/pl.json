@@ -20,7 +20,8 @@
 			"Mazab IZW",
 			"InternerowyGołąb",
 			"Wojtas",
-			"DeRudySoulStorm"
+			"DeRudySoulStorm",
+			"Railfail536"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -70,7 +71,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Edytuj",
 	"visualeditor-debugbar-close": "Zamknij",
 	"visualeditor-debugbar-inputdebug": "Debugowanie wprowadzania",
-	"visualeditor-debugbar-logrange": "Rejestr",
+	"visualeditor-debugbar-logrange": "Wybrano rejestr",
 	"visualeditor-debugbar-showmodel": "Pokaż model",
 	"visualeditor-debugbar-showtransactions": "Pokaż transakcje",
 	"visualeditor-debugbar-updatemodel": "Aktualizacja dotycząca zmian",

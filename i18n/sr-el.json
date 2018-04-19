@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Milicevic01",
-			"Srdjan m"
+			"Srdjan m",
+			"Obsuser"
 		]
 	},
 	"visualeditor": "Vizuelni uređivač",
@@ -76,7 +77,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Jezični kod",
 	"visualeditor-languageinspector-widget-label-language": "Jezik",
 	"visualeditor-linkinspector-title": "Veza",
-	"visualeditor-listbutton-bullet-tooltip": "Nabrojivi spisak",
+	"visualeditor-listbutton-bullet-tooltip": "Spisak s buletima",
 	"visualeditor-listbutton-number-tooltip": "Numerisani spisak",
 	"visualeditor-mediasizewidget-button-originaldimensions": "Puna veličina",
 	"visualeditor-mediasizewidget-label-custom": "Prilagođeno",

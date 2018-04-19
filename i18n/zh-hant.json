@@ -21,7 +21,8 @@
 			"Jdforrester",
 			"Wehwei",
 			"Wwycheuk",
-			"A2093064"
+			"A2093064",
+			"Kly"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -71,7 +72,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "編輯",
 	"visualeditor-debugbar-close": "關閉",
 	"visualeditor-debugbar-inputdebug": "輸入除錯",
-	"visualeditor-debugbar-logrange": "日誌",
+	"visualeditor-debugbar-logrange": "所選日誌",
 	"visualeditor-debugbar-showmodel": "顯示模型",
 	"visualeditor-debugbar-startfilibuster": "冗長辯論",
 	"visualeditor-debugbar-stopfilibuster": "停止冗長辯論",
