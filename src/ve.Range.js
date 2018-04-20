@@ -102,16 +102,6 @@ ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
 /* Methods */
 
 /**
- * Get a clone.
- *
- * @deprecated Ranges are immutable and never need to be cloned
- * @return {ve.Range} Clone of range
- */
-ve.Range.prototype.clone = function () {
-	return this;
-};
-
-/**
  * Check if an offset is within the range.
  *
  * Specifically we mean the whole element at a specific offset, so in effect
