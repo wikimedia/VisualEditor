@@ -1017,7 +1017,6 @@ QUnit.test( 'Selection equality', function ( assert ) {
 		if ( !( iSel instanceof ve.dm.Selection ) ) {
 			continue;
 		}
-		iSel = iSel.clone();
 		for ( j = 0, jLen = selections.length; j < jLen; j++ ) {
 			jSel = selections[ j ];
 			assert.strictEqual( iSel.equals( jSel ), i === j, 'Selections ' + i + ' and ' + j );

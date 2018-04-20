@@ -8,7 +8,7 @@ QUnit.module( 've.Range' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange, touchesRange)', function ( assert ) {
+QUnit.test( 'Basic usage (isCollapsed, isBackwards, getLength, equals, equalsSelection, containsOffset, containsRange, touchesRange)', function ( assert ) {
 	var range = new ve.Range( 100, 200 );
 
 	assert.strictEqual( range.isCollapsed(), false, 'forwards range is not collapsed' );
@@ -63,14 +63,11 @@ QUnit.test( 'Basic usage (clone, isCollapsed, isBackwards, getLength, equals, eq
 
 } );
 
-QUnit.test( 'Modification (flip, truncate, expand, translate, clone)', function ( assert ) {
+QUnit.test( 'Modification (flip, truncate, expand, translate)', function ( assert ) {
 	var range = new ve.Range( 100, 200 );
 
 	assert.equalRange( range.flip(), new ve.Range( 200, 100 ), 'flip reverses the range' );
 	assert.equalRange( range.flip().flip(), range, 'double flip does nothing' );
-
-	assert.equalRange( range, range.clone(), 'clone produces an equal range' );
-	assert.equalRange( range.flip().clone(), range.flip(), 'clone produces an equal range backwards' );
 
 	assert.equalRange( range.truncate( 50 ), new ve.Range( 100, 150 ), 'truncate 50' );
 	assert.equalRange( range.truncate( 150 ), range, 'truncate 150 does nothing' );

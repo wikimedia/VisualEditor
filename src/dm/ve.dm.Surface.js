@@ -27,7 +27,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = new ve.dm.NullSelection( this.getDocument() );
 	// The selection before the most recent stack of changes was applied
-	this.selectionBefore = new ve.dm.NullSelection( this.getDocument() );
+	this.selectionBefore = this.selection;
 	this.translatedSelection = null;
 	this.branchNodes = {};
 	this.selectedNode = null;
@@ -786,7 +786,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 
 	// If selection changed emit a select
 	if ( selectionChange ) {
-		this.emit( 'select', this.selection.clone() );
+		this.emit( 'select', this.selection );
 		if ( oldSelection.isNull() ) {
 			this.emit( 'focus' );
 		}
@@ -857,7 +857,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
 	var i, len, selectionAfter, committed,
-		selectionBefore = this.selection.clone(),
+		selectionBefore = this.selection,
 		contextChange = false;
 
 	if ( !this.enabled ) {
@@ -923,7 +923,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 		!selectionBefore.equals( selectionAfter ) &&
 		selectionAfter.equals( this.selection )
 	) {
-		this.emit( 'select', this.selection.clone() );
+		this.emit( 'select', this.selection );
 	}
 
 	if ( contextChange ) {
@@ -947,14 +947,14 @@ ve.dm.Surface.prototype.breakpoint = function () {
 	if ( this.newTransactions.length > 0 ) {
 		this.undoStack.push( {
 			transactions: this.newTransactions,
-			selection: this.selection.clone(),
-			selectionBefore: this.selectionBefore.clone()
+			selection: this.selection,
+			selectionBefore: this.selectionBefore
 		} );
 		this.newTransactions = [];
 		this.emit( 'undoStackChange' );
 		return true;
 	} else if ( this.selectionBefore.isNull() && !this.selection.isNull() ) {
-		this.selectionBefore = this.selection.clone();
+		this.selectionBefore = this.selection;
 	}
 	return false;
 };

@@ -103,19 +103,17 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 
 } );
 
-QUnit.test( 'Basic methods (clone, expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', function ( assert ) {
+QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		doc2 = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
 		selection = new ve.dm.TableSelection( doc, tableRange, 1, 2, 0, 1, true ),
-		expandedSelection = new ve.dm.TableSelection( doc, tableRange, 2, 2, 0, 1 ),
 		selection2 = new ve.dm.TableSelection( doc2, tableRange, 1, 2, 0, 1, true ),
 		startSelection = new ve.dm.TableSelection( doc, tableRange, 0, 1 ),
 		endSelection = new ve.dm.TableSelection( doc, tableRange, 2, 2 ),
 		mergedSingleCell = new ve.dm.TableSelection( doc, tableRange, 1, 3, 3, 5, true ),
 		largeSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 3, 6 );
 
-	assert.deepEqual( selection.clone(), expandedSelection, 'clone' );
 	assert.deepEqual( selection.collapseToStart(), startSelection, 'collapseToStart' );
 	assert.deepEqual( selection.collapseToEnd(), endSelection, 'collapseToEnd' );
 	assert.deepEqual( selection.collapseToFrom(), endSelection, 'collapseToFrom' );

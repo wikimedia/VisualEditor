@@ -54,7 +54,7 @@ ve.dm.NullSelection.prototype.getDescription = function () {
  * @inheritdoc
  */
 ve.dm.NullSelection.prototype.clone = function () {
-	return new this.constructor( this.getDocument() );
+	return this;
 };
 
 ve.dm.NullSelection.prototype.collapseToStart = ve.dm.NullSelection.prototype.clone;
