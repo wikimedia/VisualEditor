@@ -1058,7 +1058,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		surfaceModel = this.getModel(),
 		dataTransfer = e.originalEvent.dataTransfer,
 		$dropTarget = this.$lastDropTarget,
-		dropPosition = this.lastDropPosition;
+		dropPosition = this.lastDropPosition,
+		platformKey = ve.getSystemPlatform() === 'mac' ? 'mac' : 'pc';
 
 	// Prevent native drop event from modifying view
 	e.preventDefault();
@@ -1142,8 +1143,11 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 		// Start staging so we can abort in the catch later
 		surfaceModel.pushStaging();
 
-		// Remove node from old location
-		originFragment.removeContent();
+		// Dragging performs cut-and-paste by default (remove content from old location).
+		// If Ctrl on PC, or Opt (alt) on Mac, is held, it performs copy-and-paste instead.
+		if ( ( platformKey === 'pc' && !e.ctrlKey ) || ( platformKey === 'mac' && !e.altKey ) ) {
+			originFragment.removeContent();
+		}
 
 		try {
 			// Re-insert data at new location
