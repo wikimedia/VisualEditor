@@ -52,6 +52,7 @@
 	"visualeditor-changedesc-link-href": "連結目標已更改從 $1 為 $2",
 	"visualeditor-changedesc-no-key": "$1 已更改為 $2",
 	"visualeditor-changedesc-set": "$1 已設為 $2",
+	"visualeditor-changedesc-style": "樣式已從 $1 更改為 $2",
 	"visualeditor-changedesc-unknown": "$1 已變更",
 	"visualeditor-changedesc-unset": "$1 已取消設定自 $2",
 	"visualeditor-changedir": "變更方向",

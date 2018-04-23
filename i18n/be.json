@@ -4,7 +4,8 @@
 			"Чаховіч Уладзіслаў",
 			"Artificial123",
 			"Mikalai Udodau",
-			"Goshaproject"
+			"Goshaproject",
+			"Artsiom91"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -31,6 +32,7 @@
 	"visualeditor-commentinspector-tooltip": "Каментаваць",
 	"visualeditor-content-select-all": "Выбраць усе",
 	"visualeditor-contextitemwidget-label-secondary": "Правіць",
+	"visualeditor-debugbar-close": "Закрыць",
 	"visualeditor-dialog-action-apply": "Захаваць змены",
 	"visualeditor-dialog-action-cancel": "Адмена",
 	"visualeditor-dialog-action-done": "Гатова",
@@ -92,6 +94,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "Спецыяльны сімвал",
 	"visualeditor-specialcharacterinspector-title": "Спецыяльны сімвал",
 	"visualeditor-table-caption": "Загаловак",
+	"visualeditor-table-contextitem-properties": "Уласцівасці",
 	"visualeditor-table-delete-col": "Выдаліць {{PLURAL:$1|слупок|слупкі}}",
 	"visualeditor-table-delete-row": "Выдаліць {{PLURAL:$1|радок|радкі}}",
 	"visualeditor-table-format-data": "Змесціва ячэйкі",
