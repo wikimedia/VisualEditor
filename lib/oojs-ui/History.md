@@ -1,4 +1,21 @@
 # OOUI Release History
+## v0.26.5 / 2018-04-24
+### Styles
+* Add `overflow:hidden;` to dialog content (Ed Sanders)
+* TagItemWidget: Make applying cutoff and ellipsis actually work (Bartosz Dziewoński)
+* Use `vertical-align:top;` for check/radio label alignment (Ed Sanders)
+* WikimediaUI theme: De-emphasize toolgroup borders (Volker E.)
+* Apex theme: Ensure consistent height of PopupToolGroup handle (not zero) (Bartosz Dziewoński)
+* Apex theme: Remove drop shadow from framed PanelLayout (Ed Sanders)
+
+### Code
+* MenuSelectWidget: Start positioning before starting to handle events (Bartosz Dziewoński)
+* NumberInputWidget: Set inputs to empty if their DOM value is empty (Sam Wilson)
+* PopupTool: Set active state depending on whether popup is open (Bartosz Dziewoński)
+* Toolbar: Put all popups (from PopupToolGroup and PopupTool) into an overlay (Bartosz Dziewoński)
+* build: Switch QUnit package from deprecated 'qunitjs' to 'qunit' (James D. Forrester)
+
+
 ## v0.26.4 / 2018-04-17
 ### Code
 * Apex theme: Point pending.gif texture to a directory that exists (Kunal Mehta)
