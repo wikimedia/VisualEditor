@@ -21,12 +21,12 @@
 
 /* Format tools */
 
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading1 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading2 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading3 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading4 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading5 .oo-ui-tool-title,
-.oo-ui-menuToolGroup .oo-ui-tool-name-heading6 .oo-ui-tool-title {
+.oo-ui-menuToolGroup-tools .oo-ui-tool-name-heading1 .oo-ui-tool-title,
+.oo-ui-menuToolGroup-tools .oo-ui-tool-name-heading2 .oo-ui-tool-title,
+.oo-ui-menuToolGroup-tools .oo-ui-tool-name-heading3 .oo-ui-tool-title,
+.oo-ui-menuToolGroup-tools .oo-ui-tool-name-heading4 .oo-ui-tool-title,
+.oo-ui-menuToolGroup-tools .oo-ui-tool-name-heading5 .oo-ui-tool-title,
+.oo-ui-menuToolGroup-tools .oo-ui-tool-name-heading6 .oo-ui-tool-title {
 	/* Use px so padding is not changed by font size. This is normally 0.5em. */
 	padding-left: 6.4px;
 }
