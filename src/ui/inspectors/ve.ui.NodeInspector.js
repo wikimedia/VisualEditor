@@ -28,6 +28,15 @@ OO.inheritClass( ve.ui.NodeInspector, ve.ui.FragmentInspector );
 
 OO.mixinClass( ve.ui.NodeInspector, ve.ui.NodeWindow );
 
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ui.NodeInspector.prototype.getMode = function () {
+	return this.getSelectedNode() ? 'edit' : 'insert';
+};
+
 /**
  * @inheritdoc
  */
