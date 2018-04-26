@@ -17,13 +17,12 @@ QUnit.test( 'Construction and getters (getDocument, getRanges)', function ( asse
 	assert.strictEqual( selection.getName(), 'null', 'getName' );
 } );
 
-QUnit.test( 'Basic methods (clone, collapse*, isCollased, equals, isNull)', function ( assert ) {
+QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', function ( assert ) {
 	var dummyDoc = { a: 1 },
 		dummyDoc2 = { a: 1 },
 		selection = new ve.dm.NullSelection( dummyDoc ),
 		selection2 = new ve.dm.NullSelection( dummyDoc2 );
 
-	assert.deepEqual( selection.clone(), selection, 'clone' );
 	assert.deepEqual( selection.collapseToStart(), selection, 'collapseToStart' );
 	assert.deepEqual( selection.collapseToEnd(), selection, 'collapseToEnd' );
 	assert.deepEqual( selection.collapseToFrom(), selection, 'collapseToFrom' );

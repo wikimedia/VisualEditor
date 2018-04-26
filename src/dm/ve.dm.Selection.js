@@ -84,6 +84,7 @@ ve.dm.Selection.prototype.getDescription = null;
  *
  * @abstract
  * @method
+ * @deprecated Selections are immutable and never need to be cloned
  * @return {ve.dm.Selection} Cloned selection
  */
 ve.dm.Selection.prototype.clone = null;

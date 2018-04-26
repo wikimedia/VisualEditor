@@ -112,14 +112,7 @@ ve.dm.TableSelection.prototype.expand = function () {
  * @inheritdoc
  */
 ve.dm.TableSelection.prototype.clone = function () {
-	return new this.constructor(
-		this.getDocument(),
-		this.tableRange,
-		this.fromCol,
-		this.fromRow,
-		this.toCol,
-		this.toRow
-	);
+	return this;
 };
 
 /**

@@ -104,10 +104,11 @@ ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
 /**
  * Get a clone.
  *
+ * @deprecated Ranges are immutable and never need to be cloned
  * @return {ve.Range} Clone of range
  */
 ve.Range.prototype.clone = function () {
-	return new this.constructor( this.from, this.to );
+	return this;
 };
 
 /**
