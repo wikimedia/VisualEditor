@@ -14,7 +14,9 @@
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
  */
-ve.ui.DesktopContext = function VeUiDesktopContext() {
+ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.DesktopContext.super.apply( this, arguments );
 
@@ -22,7 +24,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext() {
 	this.popup = new OO.ui.PopupWidget( {
 		hideWhenOutOfView: false,
 		autoFlip: false,
-		$container: this.surface.$element
+		$container: config.$popupContainer || this.surface.$element
 	} );
 	this.position = null;
 	this.embeddable = null;

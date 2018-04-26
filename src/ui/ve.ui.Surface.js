@@ -16,6 +16,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {string} [mode] Editing mode
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
+ * @cfg {jQuery} [$overlayContainer] Clipping container for local overlays, defaults to surface view
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
  * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
  * @cfg {ve.ui.DataTransferHandlerFactory} [dataTransferHandlerFactory] Data transfer handler factory to use
@@ -71,7 +72,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 	this.dialogs = this.createDialogWindowManager();
 	this.importRules = config.importRules || {};
 	this.multiline = config.multiline !== false;
-	this.context = this.createContext();
+	this.context = this.createContext( { $popupContainer: config.$overlayContainer } );
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.filibuster = null;
@@ -238,10 +239,11 @@ ve.ui.Surface.prototype.getMode = function () {
  * Create a context.
  *
  * @method
+ * @param {Object} config Configuration options
  * @return {ve.ui.Context} Context
  */
-ve.ui.Surface.prototype.createContext = function () {
-	return OO.ui.isMobile() ? new ve.ui.MobileContext( this ) : new ve.ui.DesktopContext( this );
+ve.ui.Surface.prototype.createContext = function ( config ) {
+	return OO.ui.isMobile() ? new ve.ui.MobileContext( this, config ) : new ve.ui.DesktopContext( this, config );
 };
 
 /**
