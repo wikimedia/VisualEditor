@@ -686,8 +686,44 @@ QUnit.test( 'special key down: table cells', function ( assert ) {
 				htmlOrDoc: complexTableDoc,
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'TAB' ],
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 51 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				msg: 'Tab inside a table caption moves to first row of table'
+			},
+			{
+				htmlOrDoc: complexTableDoc,
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'SHIFT+TAB' ],
+				expectedRangeOrSelection: new ve.Range( 0 ),
+				msg: 'Shift+tab inside a table caption moves out of table'
+			},
+			{
+				htmlOrDoc: complexTableDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 51 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				keys: [ 'SHIFT+TAB' ],
 				expectedRangeOrSelection: new ve.Range( 3 ),
-				msg: 'Tab inside a table caption does nothing'
+				msg: 'Shift+tab inside the first cell of a table moves into the caption'
+			},
+			{
+				htmlOrDoc: complexTableDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 51 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				keys: [ 'UP' ],
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				msg: 'Up in first row of table moves into caption if present'
 			}
 		];
 

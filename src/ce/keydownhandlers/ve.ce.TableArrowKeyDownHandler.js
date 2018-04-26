@@ -135,9 +135,15 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 
 	// If moving up/down didn't move, we must be at the start/end of the table,
 	// so move outside
-	if ( rowOffset !== 0 && selection.equals( newSelection ) ) {
+	if ( ( rowOffset !== 0 || ( rowOffset === 0 && colOffset === -1 && wrap ) ) && selection.equals( newSelection ) ) {
 		documentModel = selection.getDocument();
-		newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( selection.tableRange, rowOffset ) );
+		if ( ( rowOffset === -1 || ( colOffset === -1 && wrap ) ) && selection.tableNode.children[ 0 ] instanceof ve.dm.TableCaptionNode ) {
+			// If we're moving up/backwards, and there's a caption node, put the selection in it
+			newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( selection.tableNode.children[ 0 ].getRange().truncate( 0 ), 1 ) );
+		} else {
+			// Otherwise, go outside the table
+			newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( selection.tableRange, rowOffset || colOffset ) );
+		}
 	}
 
 	surface.getModel().setSelection( newSelection );
