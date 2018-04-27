@@ -80,16 +80,6 @@ ve.dm.Selection.prototype.toJSON = null;
 ve.dm.Selection.prototype.getDescription = null;
 
 /**
- * Create a copy of this selection
- *
- * @abstract
- * @method
- * @deprecated Selections are immutable and never need to be cloned
- * @return {ve.dm.Selection} Cloned selection
- */
-ve.dm.Selection.prototype.clone = null;
-
-/**
  * Get a new selection at the start point of this one
  *
  * @abstract

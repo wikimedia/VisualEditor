@@ -111,13 +111,6 @@ ve.dm.TableSelection.prototype.expand = function () {
 /**
  * @inheritdoc
  */
-ve.dm.TableSelection.prototype.clone = function () {
-	return this;
-};
-
-/**
- * @inheritdoc
- */
 ve.dm.TableSelection.prototype.toJSON = function () {
 	return {
 		type: this.constructor.static.name,
@@ -371,7 +364,7 @@ ve.dm.TableSelection.prototype.getTableNode = function () {
 };
 
 /**
- * Clone this selection with adjusted row and column positions
+ * Get a new selection with adjusted row and column positions
  *
  * Placeholder cells are skipped over so this method can be used for cursoring.
  *
