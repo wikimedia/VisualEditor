@@ -510,7 +510,10 @@ ve.init.Target.prototype.getToolbar = function () {
  */
 ve.init.Target.prototype.getActions = function () {
 	if ( !this.actionsToolbar ) {
-		this.actionsToolbar = new ve.ui.TargetToolbar( this, { position: this.toolbarConfig.position } );
+		this.actionsToolbar = new ve.ui.TargetToolbar( this, {
+			position: this.toolbarConfig.position,
+			$overlay: this.toolbarConfig.$overlay
+		} );
 	}
 	return this.actionsToolbar;
 };
