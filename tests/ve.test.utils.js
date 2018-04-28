@@ -229,7 +229,7 @@
 			msg
 		);
 		assert.equalDomElement(
-			ve.dm.converter.getDomFromModel( model, true ),
+			ve.dm.converter.getDomFromModel( model, ve.dm.Converter.static.CLIPBOARD_MODE ),
 			ve.createDocumentFromHtml( clipboardHtml ),
 			msg + ' (clipboard mode)'
 		);

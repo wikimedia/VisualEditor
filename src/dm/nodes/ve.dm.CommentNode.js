@@ -52,7 +52,8 @@ ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
 
 ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	var span, data;
-	if ( converter.isForClipboard() ) {
+	// TODO: Create a different rendering when converter.isForPreview()
+	if ( converter.doesModeNeedRendering() ) {
 		// Fake comment node
 		span = doc.createElement( 'span' );
 		span.setAttribute( 'rel', 've:Comment' );

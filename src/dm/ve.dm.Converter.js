@@ -24,7 +24,7 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 	this.documentData = null;
 	this.store = null;
 	this.internalList = null;
-	this.forClipboard = null;
+	this.mode = null;
 	this.fromClipboard = null;
 	this.contextStack = null;
 };
@@ -52,6 +52,10 @@ ve.dm.Converter.static.computedAttributes = [ 'href', 'src' ];
  * @type {RegExp}
  */
 ve.dm.Converter.static.whitespaceList = ' \\t\\f\\u200b\\r\\n';
+
+ve.dm.Converter.static.PARSER_MODE = 0;
+ve.dm.Converter.static.CLIPBOARD_MODE = 1;
+ve.dm.Converter.static.PREVIEW_MODE = 2;
 
 /* Static Methods */
 
@@ -345,13 +349,51 @@ ve.dm.Converter.prototype.getTargetHtmlDocument = function () {
 };
 
 /**
+ * Get the converter mode, one of PARSER_MODE, CLIPBOARD_MODE or PREVIEW_MODE
+ *
+ * @return {number} Converter mode
+ */
+ve.dm.Converter.prototype.getMode = function () {
+	return this.mode;
+};
+
+/**
+ * Checks if the current mode needs a full view rendering in the HTML
+ *
+ * @return {boolean} Mode needs a rendering
+ */
+ve.dm.Converter.prototype.doesModeNeedRendering = function () {
+	return this.getMode() !== this.constructor.static.PARSER_MODE;
+};
+
+/**
+ * Is the current conversion for the parser
+ *
+ * @method
+ * @return {boolean} The conversion is for the paser
+ */
+ve.dm.Converter.prototype.isForParser = function () {
+	return this.getMode() === this.constructor.static.PARSER_MODE;
+};
+
+/**
  * Is the current conversion for the clipboard
  *
  * @method
- * @return {boolean|null} The conversion is for the clipboard, or null if not converting
+ * @return {boolean} The conversion is for the clipboard
  */
 ve.dm.Converter.prototype.isForClipboard = function () {
-	return this.forClipboard;
+	return this.getMode() === this.constructor.static.CLIPBOARD_MODE;
+};
+
+/**
+ * Is the current conversion for the preview
+ *
+ * @method
+ * @return {boolean} The conversion is for the preview
+ */
+ve.dm.Converter.prototype.isForPreview = function () {
+	return this.getMode() === this.constructor.static.PREVIEW_MODE;
 };
 
 /**
@@ -1173,13 +1215,19 @@ ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
  *
  * @method
  * @param {ve.dm.Document} model Document model
- * @param {boolean} [forClipboard=false] Conversion is for clipboard
+ * @param {number} [mode=PARSER_MODE] Conversion mode, defaults to ve.dm.Converter.static.PARSER_MODE
  * @return {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromModel = function ( model, forClipboard ) {
+ve.dm.Converter.prototype.getDomFromModel = function ( model, mode ) {
 	var doc = ve.createDocumentFromHtml( '' );
 
-	this.getDomSubtreeFromModel( model, doc.body, forClipboard );
+	// Backwards compatibility with 'forClipboard' argument
+	if ( typeof mode === 'boolean' ) {
+		mode = mode ? ve.dm.Converter.static.CLIPBOARD_MODE : ve.dm.Converter.static.PARSER_MODE;
+	}
+	mode = mode || this.constructor.static.PARSER_MODE;
+
+	this.getDomSubtreeFromModel( model, doc.body, mode );
 
 	return doc;
 };
@@ -1189,13 +1237,18 @@ ve.dm.Converter.prototype.getDomFromModel = function ( model, forClipboard ) {
  *
  * @method
  * @param {ve.dm.Node} node Model node
- * @param {boolean} [forClipboard=false] Conversion is for clipboard
+ * @param {number} [mode=PARSER_MODE] Conversion mode, defaults to ve.dm.Converter.static.PARSER_MODE
  * @return {HTMLDocument} Document containing the resulting HTML
  */
-ve.dm.Converter.prototype.getDomFromNode = function ( node, forClipboard ) {
+ve.dm.Converter.prototype.getDomFromNode = function ( node, mode ) {
+	// Backwards compatibility with 'forClipboard' argument
+	if ( typeof mode === 'boolean' ) {
+		mode = mode ? ve.dm.Converter.static.CLIPBOARD_MODE : ve.dm.Converter.static.PARSER_MODE;
+	}
+	mode = mode || this.constructor.static.PARSER_MODE;
 	return this.getDomFromModel(
 		node.getDocument().shallowCloneFromRange( node.isInternal() ? node.getRange() : node.getOuterRange() ),
-		forClipboard
+		mode
 	);
 };
 
@@ -1205,16 +1258,20 @@ ve.dm.Converter.prototype.getDomFromNode = function ( node, forClipboard ) {
  * @method
  * @param {ve.dm.Document} model Document model
  * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
- * @param {boolean} [forClipboard=false] Conversion is for clipboard
+ * @param {number} [mode=PARSER_MODE] Conversion mode, defaults to ve.dm.Converter.static.PARSER_MODE
  */
-ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, forClipboard ) {
+ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, mode ) {
+	if ( typeof mode === 'boolean' ) {
+		mode = mode ? this.constructor.static.CLIPBOARD_MODE : this.constructor.static.PARSER_MODE;
+	}
+	mode = mode || this.constructor.static.PARSER_MODE;
 	// Set up the converter state
 	this.documentData = model.getFullData( undefined, true );
 	this.store = model.getStore();
 	this.internalList = model.getInternalList();
 	// Internal list of the doc this was cloned from, or itself if not cloned
 	this.originalDocInternalList = model.getOriginalDocument() ? model.getOriginalDocument().getInternalList() : this.internalList;
-	this.forClipboard = !!forClipboard;
+	this.mode = mode;
 
 	this.getDomSubtreeFromData( this.documentData, container, model.getInnerWhitespace() );
 
@@ -1223,7 +1280,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, 
 	this.store = null;
 	this.internalList = null;
 	this.originalDocInternalList = null;
-	this.forClipboard = null;
+	this.mode = null;
 };
 
 /**
@@ -1380,7 +1437,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			while ( typeof data[ i ] === 'string' ) {
 				// HACK: Skip over leading whitespace (T53462/T142132) in non-whitespace-preserving tags
 				// This should possibly be handled by Parsoid or in the UI.
-				if ( !( isStart && data[ i ].match( new RegExp( '[' + whitespaceList + ']' ) ) && !this.forClipboard ) ) {
+				if ( !( isStart && data[ i ].match( new RegExp( '[' + whitespaceList + ']' ) ) && this.isForParser() ) ) {
 					text += data[ i ];
 					isStart = false;
 				}

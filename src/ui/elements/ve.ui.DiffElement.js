@@ -425,7 +425,7 @@ ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
 	this.addAttributesToNode( nodeData[ 0 ], { 'data-diff-action': action, 'data-diff-move': move } );
 
 	// forClipboard is true, so that we can render otherwise invisible nodes
-	doc = ve.dm.converter.getDomFromModel( documentSlice, true );
+	doc = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE );
 	body = doc.body;
 
 	if ( action !== 'none' ) {
@@ -712,7 +712,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 
 	documentSlice.getStore().merge( this.newDoc.getStore() );
 	// forClipboard is true, so that we can render otherwise invisible nodes
-	body = ve.dm.converter.getDomFromModel( documentSlice, true ).body;
+	body = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
 
 	while ( body.childNodes.length ) {
 		element.appendChild(
@@ -801,7 +801,7 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( inte
 		element.setAttribute( 'data-diff-move', move );
 	}
 	documentSlice = this.newDoc.cloneWithData( annotatedData, true, true );
-	body = ve.dm.converter.getDomFromModel( documentSlice, true ).body;
+	body = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
 	while ( body.childNodes.length ) {
 		element.appendChild(
 			element.ownerDocument.adoptNode( body.childNodes[ 0 ] )
