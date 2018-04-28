@@ -468,7 +468,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo bar' +
-							'<ins data-diff-action="insert"><span rel="ve:Comment" data-ve-comment="comment">&nbsp;</span></ins>' +
+							'<ins data-diff-action="insert">' + comment( 'comment' ) + '</ins>' +
 							' baz' +
 						'</p>' +
 					'</div>'
@@ -481,7 +481,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>' +
 							'foo bar' +
-							'<del data-diff-action="remove"><span rel="ve:Comment" data-ve-comment="comment">&nbsp;</span></del>' +
+							'<del data-diff-action="remove">' + comment( 'comment' ) + '</del>' +
 							' baz' +
 						'</p>' +
 					'</div>'
@@ -556,8 +556,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<p>foo ' +
 							'<ins data-diff-action="insert">quux </ins>' +
 							'bar ' +
-							'<span rel="ve:Comment" data-ve-comment="whee">&nbsp;</span>' +
-							'<del data-diff-action="remove"><span rel="ve:Comment" data-ve-comment="wibble">&nbsp;</span></del>' +
+							comment( 'whee' ) +
+							'<del data-diff-action="remove">' + comment( 'wibble' ) + '</del>' +
 						'</p>' +
 					'</div>'
 			}
