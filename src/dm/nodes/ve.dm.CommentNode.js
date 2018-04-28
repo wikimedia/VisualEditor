@@ -51,15 +51,26 @@ ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
 };
 
 ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter ) {
-	var span, data;
-	// TODO: Create a different rendering when converter.isForPreview()
-	if ( converter.doesModeNeedRendering() ) {
+	var span, data, modelNode, viewNode, els;
+	if ( converter.isForClipboard() ) {
 		// Fake comment node
 		span = doc.createElement( 'span' );
 		span.setAttribute( 'rel', 've:Comment' );
 		span.setAttribute( 'data-ve-comment', dataElement.attributes.text );
 		span.appendChild( doc.createTextNode( '\u00a0' ) );
 		return [ span ];
+	} else if ( converter.isForPreview() ) {
+		// isForPreview(), use CE rendering
+		modelNode = new ve.dm.RealCommentNode( dataElement );
+		modelNode.setDocument( converter.internalList.getDocument() );
+		viewNode = new ve.ce.CommentNode( modelNode );
+		// Force rendering
+		viewNode.$element
+			.append( viewNode.createInvisibleIcon() )
+			.attr( 'title', dataElement.attributes.text );
+		els = viewNode.$element.toArray();
+		viewNode.destroy();
+		return els;
 	} else {
 		// Real comment node
 		// Encode '&', and certain '-' and '>' characters (see T95040)
