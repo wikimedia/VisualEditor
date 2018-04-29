@@ -1012,7 +1012,8 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 } );
 
 QUnit.test( 'newFromAttributeChanges', function ( assert ) {
-	var doc = ve.dm.example.createExampleDocument(),
+	var val, tx,
+		doc = ve.dm.example.createExampleDocument(),
 		cases = {
 			'first element': {
 				args: [ doc, 0, { level: 2 } ],
@@ -1069,6 +1070,18 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 		};
 
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAttributeChanges, cases );
+
+	val = { foo: { bar: 'baz' } };
+	tx = ve.dm.TransactionBuilder.static.newFromAttributeChanges( doc, 0, val );
+	val.foo.bar = 'qux';
+	assert.deepEqual(
+		tx.getOperations(),
+		[
+			{ type: 'attribute', key: 'foo', from: undefined, to: { bar: 'baz' } },
+			{ type: 'retain', length: 63 }
+		],
+		'Attribute value mutated after transaction built (T193062)'
+	);
 } );
 
 QUnit.test( 'newFromAnnotation', function ( assert ) {
