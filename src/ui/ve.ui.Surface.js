@@ -155,8 +155,8 @@ ve.ui.Surface.static.isMobile = false;
  * @fires destroy
  */
 ve.ui.Surface.prototype.destroy = function () {
-	// Stop periodic history tracking in model
-	this.model.stopHistoryTracking();
+	// Disable the surface to avoid issues during teardown (e.g. T193103)
+	this.setDisabled( true );
 
 	// Destroy the ce.Surface, the ui.Context and window managers
 	this.context.destroy();
