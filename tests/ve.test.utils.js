@@ -50,6 +50,7 @@
 	DummyTarget.prototype.addSurface = function () {
 		// Parent method
 		var surface = DummyTarget.super.prototype.addSurface.apply( this, arguments );
+		this.$element.append( surface.$element );
 		if ( !this.getSurface() ) {
 			this.setSurface( surface );
 		}
@@ -61,7 +62,7 @@
 
 	/* eslint-disable no-new */
 	new ve.test.utils.DummyPlatform();
-	new ve.test.utils.DummyTarget();
+	new ve.test.utils.DummyTarget(); // Target gets appended to qunit-fixture in ve.qunit.local.js
 	/* eslint-enable no-new */
 
 	// Disable scroll animatinos
@@ -285,10 +286,7 @@
 	 * @return {ve.ui.Surface} UI surface
 	 */
 	ve.test.utils.createSurfaceFromDocument = function ( doc ) {
-		var target = new ve.init.sa.Target();
-		$( '#qunit-fixture' ).append( target.$element );
-		target.addSurface( doc );
-		return target.surface;
+		return ve.init.target.addSurface( doc );
 	};
 
 	/**

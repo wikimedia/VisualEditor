@@ -7,17 +7,19 @@
 // Extend QUnit.module to provide a fixture element. This used to be in tests/index.html, but
 // dynamic test runners like Karma build their own web page.
 ( function ( QUnit ) {
-	var orgModule = QUnit.module;
+	var origModule = QUnit.module;
 
 	QUnit.dump.maxDepth = 10;
 
 	QUnit.module = function ( name, localEnv ) {
 		localEnv = localEnv || {};
-		orgModule( name, {
+		origModule( name, {
 			beforeEach: function () {
 				this.fixture = document.createElement( 'div' );
 				this.fixture.id = 'qunit-fixture';
 				document.body.appendChild( this.fixture );
+
+				this.fixture.appendChild( ve.init.target.$element[ 0 ] );
 
 				if ( localEnv.beforeEach ) {
 					localEnv.beforeEach.call( this );
