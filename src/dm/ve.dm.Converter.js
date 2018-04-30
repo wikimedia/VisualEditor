@@ -530,7 +530,11 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	if ( dataElement.internal && dataElement.internal.diff ) {
 		Array.prototype.forEach.call( domElements, function ( domElement ) {
 			for ( key in dataElement.internal.diff ) {
-				domElement.setAttribute( key, dataElement.internal.diff[ key ] );
+				// toDomElements is a misnomer, it can actually return other nodes,
+				// such as comment nodes or text nodes.
+				if ( domElement.setAttribute ) {
+					domElement.setAttribute( key, dataElement.internal.diff[ key ] );
+				}
 			}
 		} );
 	}

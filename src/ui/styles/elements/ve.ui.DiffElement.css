@@ -125,14 +125,6 @@ del[ data-diff-action='remove' ]:hover,
 	text-decoration: none;
 }
 
-[ data-diff-action='insert' ] [ rel='ve:Comment' ],
-[ data-diff-action='remove' ] [ rel='ve:Comment' ],
-[ data-diff-action='change-insert' ] [ rel='ve:Comment' ],
-[ data-diff-action='change-remove' ] [ rel='ve:Comment' ] {
-	display: inline-block;
-	width: 1em;
-}
-
 /* TODO: These sibling selectors still match when there is a text node in-between, should be fixed in JS */
 [ data-diff-action='remove' ] + [ data-diff-action='insert' ],
 [ data-diff-action='insert' ] + [ data-diff-action='remove' ],
