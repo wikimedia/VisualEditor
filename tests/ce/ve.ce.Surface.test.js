@@ -1922,20 +1922,72 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 4 ),
-				pasteHtml: '☂foo☀',
+				pasteHtml: '☀foo☂',
 				expectedRangeOrSelection: new ve.Range( 9 ),
 				expectedOps: [
 					[
 						{ type: 'retain', length: 4 },
 						{
 							type: 'replace',
-							insert: [ '☂', 'f', 'o', 'o', '☀' ],
+							insert: [ '☀', 'f', 'o', 'o', '☂' ],
 							remove: []
 						},
 						{ type: 'retain', length: docLen - 4 }
 					]
 				],
-				msg: 'Left/right placeholder characters'
+				msg: 'Left/right placeholder characters not accidentally removed'
+			},
+			{
+				rangeOrSelection: new ve.Range( 4 ),
+				pasteHtml: '☀foo☂',
+				expectedRangeOrSelection: new ve.Range( 9 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [ '☀', 'f', 'o', 'o', '☂' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 4 }
+					]
+				],
+				msg: 'Pasted left/right placeholder characters kept'
+			},
+			{
+				rangeOrSelection: new ve.Range( 4 ),
+				pasteTargetHtml: '☀foo☂',
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [ 'f', 'o', 'o' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 4 }
+					]
+				],
+				msg: 'Left/right placeholder characters removed'
+			},
+			{
+				rangeOrSelection: new ve.Range( 4 ),
+				pasteHtml: 'foo',
+				pasteTargetHtml: '☀☂foo',
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [ 'f', 'o', 'o' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 4 }
+					]
+				],
+				msg: 'Corrupted paste target ignored'
 			},
 			{
 				rangeOrSelection: new ve.Range( 6 ),

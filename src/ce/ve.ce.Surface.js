@@ -1963,14 +1963,16 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  * Handle post-paste events.
  *
  * @param {jQuery.Event} e Paste event
+ * @param {boolean} [useClipboardData] Use clipboard data over the paste target
  * @return {jQuery.Promise} Promise which resolves when the content has been pasted
  */
-ve.ce.Surface.prototype.afterPaste = function () {
+ve.ce.Surface.prototype.afterPaste = function ( e, useClipboardData ) {
 	var clipboardKey, clipboardHash,
 		$elements, pasteData, slice, documentRange,
 		data, pastedDocumentModel, htmlDoc, $body, $images, i,
 		context, left, right, contextRange, handled, pastedText,
 		tableAction, htmlBlacklist, pastedNodes, targetViewNode, isMultiline,
+		leftText, rightText,
 		done = $.Deferred().resolve().promise(),
 		items = [],
 		metadataIdRegExp = ve.init.platform.getMetadataIdRegExp(),
@@ -2116,7 +2118,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 			try {
 				attrs = JSON.parse( attrsJSON );
-			} catch ( e ) {
+			} catch ( err ) {
 				// Invalid JSON
 				return;
 			}
@@ -2205,13 +2207,14 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			targetFragment.insertContent( data, true );
 		}
 	} else {
-		if ( clipboardKey && beforePasteData.html ) {
+		if ( ( clipboardKey || useClipboardData ) && beforePasteData.html ) {
 			// If the clipboardKey is set (paste from other VE instance), and clipboard
 			// data is available, then make sure important elements haven't been dropped
 			if ( !$elements ) {
 				$elements = $( $.parseHTML( beforePasteData.html ) );
 			}
 			if (
+				useClipboardData ||
 				// FIXME T126045: Allow the test runner to force the use of clipboardData
 				clipboardKey === 'useClipboardData-0' ||
 				$elements.find( importantElement ).addBack().filter( importantElement ).length > this.$pasteTarget.find( importantElement ).length
@@ -2322,15 +2325,22 @@ ve.ce.Surface.prototype.afterPaste = function () {
 			// Sanitize context to match data
 			sanitize( context );
 
+			leftText = beforePasteData.leftText;
+			rightText = beforePasteData.rightText;
+
 			// Remove matching context from the left
 			left = 0;
 			while (
 				context.getLength() &&
 				ve.dm.ElementLinearData.static.compareElementsUnannotated(
 					data.getData( left ),
-					data.isElementData( left ) ? context.getData( 0 ) : beforePasteData.leftText
+					data.isElementData( left ) ? context.getData( 0 ) : leftText
 				)
 			) {
+				if ( !data.isElementData( left ) ) {
+					// Text context is removed
+					leftText = '';
+				}
 				left++;
 				context.splice( 0, 1 );
 			}
@@ -2342,11 +2352,20 @@ ve.ce.Surface.prototype.afterPaste = function () {
 				context.getLength() &&
 				ve.dm.ElementLinearData.static.compareElementsUnannotated(
 					data.getData( right - 1 ),
-					data.isElementData( right - 1 ) ? context.getData( context.getLength() - 1 ) : beforePasteData.rightText
+					data.isElementData( right - 1 ) ? context.getData( context.getLength() - 1 ) : rightText
 				)
 			) {
+				if ( !data.isElementData( right - 1 ) ) {
+					// Text context is removed
+					rightText = '';
+				}
 				right--;
 				context.splice( context.getLength() - 1, 1 );
+			}
+			if ( ( leftText || rightText ) && !useClipboardData ) {
+				// If any text context is left over, assume the paste target got corrupted
+				// so we should start again and try to use clipboardData instead. T193110
+				return this.afterPaste( e, true );
 			}
 			// Support: Chrome
 			// FIXME T126046: Strip trailing linebreaks probably introduced by Chrome bug
