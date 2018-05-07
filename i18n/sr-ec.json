@@ -175,7 +175,7 @@
 	"visualeditor-table-insert-col-before": "Убаци испред",
 	"visualeditor-table-insert-row-after": "Убаци испод",
 	"visualeditor-table-insert-row-before": "Убаци изнад",
-	"visualeditor-table-insert-table": "Табелу",
+	"visualeditor-table-insert-table": "Табела",
 	"visualeditor-table-merge-cells": "Спајање ћелија",
 	"visualeditor-table-merge-cells-merge": "Споји",
 	"visualeditor-table-merge-cells-unmerge": "Растави",
@@ -191,6 +191,6 @@
 	"visualeditor-toolbar-paragraph-format": "Форматирање",
 	"visualeditor-toolbar-structure": "Структура",
 	"visualeditor-toolbar-style-tooltip": "Стил текста",
-	"visualeditor-toolbar-table": "Табелу",
+	"visualeditor-toolbar-table": "Табела",
 	"visualeditor-toolbar-text-style": "Стил"
 }

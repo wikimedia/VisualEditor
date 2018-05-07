@@ -53,7 +53,7 @@
 	"visualeditor-changedesc-align": "Выравнивание изменено с $1 на $2",
 	"visualeditor-changedesc-changed": "$1 изменён с $2 на $3",
 	"visualeditor-changedesc-comment": "комментарий изменен с $1 на $2",
-	"visualeditor-changedesc-direction": "Направление переопределения изменилось с $1 до $2",
+	"visualeditor-changedesc-direction": "Направление переопределения изменилось с $1 на $2",
 	"visualeditor-changedesc-image-size": "Размер изменён с $1 на $2",
 	"visualeditor-changedesc-language": "Язык изменён с $1 на $2",
 	"visualeditor-changedesc-link-href": "Цель ссылки поменялась с $1 на $2",
