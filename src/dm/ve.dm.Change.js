@@ -891,7 +891,7 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
 			' but history ends at ' + doc.completeHistory.length );
 	}
 	doc.completeHistory.length -= this.transactions.length;
-	doc.storeLengthAtHistoryLength -= this.transactions.length;
+	doc.storeLengthAtHistoryLength.length -= this.transactions.length;
 	doc.store.truncate( doc.storeLengthAtHistoryLength[ doc.completeHistory.length ] );
 };
 
