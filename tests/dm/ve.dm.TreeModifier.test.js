@@ -47,7 +47,7 @@ QUnit.module( 've.dm.TreeModifier' );
 QUnit.test( 'modify', function ( assert ) {
 	var origData, surface, doc, tx, expectedTreeDump, actualTreeDump;
 
-	assert.expect( 2 );
+	assert.expect( 3 );
 
 	function dumpTree( doc ) {
 		// Build a tree modifier just for the .dump method (don't modify anything)
@@ -112,6 +112,10 @@ QUnit.test( 'modify', function ( assert ) {
 		actualTreeDump,
 		expectedTreeDump,
 		'Modified tree matches rebuilt tree, reversed'
+	);
+	assert.ok(
+		tx.operations[ 3 ].remove[ 1 ] !== doc.data.data[ 6 ],
+		'Inserted transaction data is not referenced into the linear data'
 	);
 } );
 
