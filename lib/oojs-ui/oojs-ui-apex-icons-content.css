@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.26.5
+ * OOUI v0.27.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-04-24T23:29:05Z
+ * Date: 2018-05-09T00:44:50Z
  */
 .oo-ui-icon-article {
   background-image: url('themes/wikimediaui/images/icons/article-ltr.png');
@@ -33,8 +33,8 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/book-ltr.svg');
 }
 .oo-ui-icon-citeArticle {
-  background-image: url('themes/wikimediaui/images/icons/citeArticle.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/citeArticle.svg');
+  background-image: url('themes/wikimediaui/images/icons/reference.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/reference.svg');
 }
 .oo-ui-icon-die {
   background-image: url('themes/wikimediaui/images/icons/die.png');
