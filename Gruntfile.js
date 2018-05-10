@@ -190,15 +190,15 @@ module.exports = function ( grunt ) {
 				indent: '\t\t',
 				dir: 'ltr'
 			},
-			desktopDemo: {
+			desktopDemoApex: {
 				targetFile: 'demos/ve/desktop.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.desktop.standalone',
+					'visualEditor.desktop.standalone.apex',
 					'visualEditor.standalone.read'
 				],
-				run: [ 'visualEditor.desktop.standalone.demo' ],
+				run: [ 'visualEditor.desktop.standalone.apex.demo' ],
 				env: {
 					debug: true
 				},
@@ -207,15 +207,46 @@ module.exports = function ( grunt ) {
 				indent: '\t\t',
 				demoPages: demoPages
 			},
-			desktopDemoDist: {
+			desktopDemoApexDist: {
 				targetFile: 'demos/ve/desktop-dist.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
-					'visualEditor.desktop.standalone.dist',
+					'visualEditor.desktop.standalone.apex.dist',
 					'visualEditor.standalone.read'
 				],
-				run: [ 'visualEditor.desktop.standalone.demo' ],
+				run: [ 'visualEditor.desktop.standalone.apex.demo' ],
+				pathPrefix: '../../',
+				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
+				indent: '\t\t',
+				demoPages: demoPages
+			},
+			desktopDemoWikimediaUI: {
+				targetFile: 'demos/ve/desktop-wikimediaui.html',
+				template: 'demos/ve/demo.html.template',
+				modules: modules,
+				load: [
+					'visualEditor.desktop.standalone.wikimediaui',
+					'visualEditor.standalone.read'
+				],
+				run: [ 'visualEditor.desktop.standalone.wikimediaui.demo' ],
+				env: {
+					debug: true
+				},
+				pathPrefix: '../../',
+				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
+				indent: '\t\t',
+				demoPages: demoPages
+			},
+			desktopDemoWikimediaUIDist: {
+				targetFile: 'demos/ve/desktop-wikimediaui-dist.html',
+				template: 'demos/ve/demo.html.template',
+				modules: modules,
+				load: [
+					'visualEditor.desktop.standalone.wikimediaui.dist',
+					'visualEditor.standalone.read'
+				],
+				run: [ 'visualEditor.desktop.standalone.wikimediaui.demo' ],
 				pathPrefix: '../../',
 				i18n: [ 'dist/i18n/', 'lib/oojs-ui/i18n/' ],
 				indent: '\t\t',

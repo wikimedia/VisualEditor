@@ -24,15 +24,10 @@
 	margin: 0 2.5em 2.5em 2.5em;
 }
 
-.ve-demo-read {
-	border: 1px solid #ccc;
-	box-shadow: 0 0.25em 1.5em 0 #ddd;
+.ve-demo-surfaceWrapper {
+	overflow: hidden;
 }
 
-/* Editor */
-
-.ve-init-sa-target-surfaceWrapper {
-	border: 1px solid #ccc;
-	border-radius: 0.25em;
-	box-shadow: 0 0.25em 1.5em 0 #ddd;
+.ve-ui-toolbar-floating > .oo-ui-toolbar-bar {
+	margin: 0 1px;
 }

@@ -64,10 +64,18 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.page = '';
 	this.lang = lang;
 	this.dir = dir;
-	this.$surfaceWrapper = $( '<div>' ).addClass( 've-demo-surfaceWrapper' );
+	this.surfaceWrapper = new OO.ui.PanelLayout( {
+		classes: [ 've-demo-surfaceWrapper' ],
+		expanded: false,
+		framed: true
+	} );
 	this.mode = null;
 	this.pageMenu = pageDropdown.getMenu();
-	this.$readView = $( '<div>' ).addClass( 've-demo-read' ).hide();
+	this.readView = new OO.ui.PanelLayout( {
+		classes: [ 've-demo-read' ],
+		expanded: false,
+		framed: true
+	} );
 
 	// Events
 	this.pageMenu.on( 'select', function ( item ) {
@@ -107,8 +115,8 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(
 			$exitReadButton
 		),
-		this.$surfaceWrapper,
-		this.$readView
+		this.surfaceWrapper.$element,
+		this.readView.$element.hide()
 	);
 
 	this.pageMenu.selectItem(
@@ -177,9 +185,9 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 			break;
 
 		case 'read':
-			closePromise = this.$readView.slideUp().promise();
+			closePromise = this.readView.$element.slideUp().promise();
 			if ( !page ) {
-				html = ve.properInnerHtml( this.$readView[ 0 ] );
+				html = ve.properInnerHtml( this.readView.$element[ 0 ] );
 			}
 			break;
 
@@ -206,7 +214,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 		switch ( mode ) {
 			case 'visual':
 			case 'source':
-				container.$surfaceWrapper.show();
+				container.surfaceWrapper.toggle( true );
 				if ( page ) {
 					container.loadPage( page, mode );
 				} else if ( html !== undefined ) {
@@ -215,8 +223,8 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 				break;
 
 			case 'read':
-				container.$surfaceWrapper.hide();
-				container.$readView.html( html ).css( 'direction', currentDir ).slideDown();
+				container.surfaceWrapper.toggle( false );
+				container.readView.$element.html( html ).css( 'direction', currentDir ).slideDown();
 				break;
 		}
 		container.mode = mode;
@@ -319,7 +327,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 		}
 	} );
 
-	this.$surfaceWrapper.empty().append( this.surface.$element.parent() );
+	this.surfaceWrapper.$element.empty().append( this.surface.$element.parent() );
 	this.surface.$element.hide().slideDown().promise().done( function () {
 		// Check surface still exists
 		if ( container.surface ) {
@@ -372,7 +380,7 @@ ve.demo.SurfaceContainer.prototype.save = function () {
 			html = this.surface.getHtml();
 			break;
 		case 'read':
-			html = ve.properInnerHtml( this.$readView[ 0 ] );
+			html = ve.properInnerHtml( this.readView.$element[ 0 ] );
 			break;
 		default:
 			return;

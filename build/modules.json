@@ -91,6 +91,7 @@
 			"lib/oojs-ui/oojs-ui-apex-icons-editing-styling.css",
 			"lib/oojs-ui/oojs-ui-apex-icons-editing-list.css"
 		],
+		"styleGroup": "read",
 		"dependencies": [
 			"oojs-ui"
 		]
@@ -112,6 +113,7 @@
 			"lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-styling.css",
 			"lib/oojs-ui/oojs-ui-wikimediaui-icons-editing-list.css"
 		],
+		"styleGroup": "read",
 		"dependencies": [
 			"oojs-ui"
 		]
@@ -793,7 +795,7 @@
 		"dependencies": [
 			"jsdifflib",
 			"qunit",
-			"visualEditor.desktop.standalone",
+			"visualEditor.desktop.standalone.apex",
 			"visualEditor.rebase"
 		]
 	},
@@ -805,13 +807,6 @@
 	"visualEditor.theme.wikimediaui": {
 		"styles": [
 			"src/themes/wikimediaui.css"
-		]
-	},
-	"visualEditor.desktop": {
-		"dependencies": [
-			"visualEditor.core",
-			"visualEditor.desktop.build",
-			"visualEditor.theme.apex"
 		]
 	},
 	"visualEditor.desktop.build": {
@@ -878,17 +873,39 @@
 			"src/init/sa/ve.init.sa.DesktopTarget.js"
 		],
 		"dependencies": [
-			"oojs-ui-apex",
 			"visualEditor.standalone",
-			"visualEditor.desktop"
+			"visualEditor.core",
+			"visualEditor.desktop.build"
 		]
 	},
-	"visualEditor.desktop.standalone.dist": {
+	"visualEditor.desktop.standalone.apex": {
+		"dependencies": [
+			"oojs-ui-apex",
+			"visualEditor.desktop.standalone",
+			"visualEditor.theme.apex"
+		]
+	},
+	"visualEditor.desktop.standalone.apex.dist": {
 		"scripts": [
 			"src/init/sa/ve.init.sa.DesktopTarget.js"
 		],
 		"dependencies": [
 			"visualEditor.standalone.apex.dist"
+		]
+	},
+	"visualEditor.desktop.standalone.wikimediaui": {
+		"dependencies": [
+			"oojs-ui-wikimediaui",
+			"visualEditor.desktop.standalone",
+			"visualEditor.theme.wikimediaui"
+		]
+	},
+	"visualEditor.desktop.standalone.wikimediaui.dist": {
+		"scripts": [
+			"src/init/sa/ve.init.sa.DesktopTarget.js"
+		],
+		"dependencies": [
+			"visualEditor.standalone.wikimediaui.dist"
 		]
 	},
 	"visualEditor.mobile.standalone": {
@@ -932,13 +949,30 @@
 			"visualEditor.standalone.demo"
 		]
 	},
+	"visualEditor.desktop.standalone.apex.demo": {
+		"styles": [
+			"demos/ve/demo.apex.css"
+		],
+		"dependencies": [
+			"visualEditor.desktop.standalone.demo"
+		]
+	},
+	"visualEditor.desktop.standalone.wikimediaui.demo": {
+		"styles": [
+			"demos/ve/demo.wikimediaui.css"
+		],
+		"dependencies": [
+			"visualEditor.desktop.standalone.demo"
+		]
+	},
 	"visualEditor.mobile.standalone.demo": {
 		"scripts": [
 			"demos/ve/demo.mobile.js",
 			"demos/ve/ve.demo.init.js"
 		],
 		"styles": [
-			"demos/ve/demo.mobile.css"
+			"demos/ve/demo.mobile.css",
+			"demos/ve/demo.wikimediaui.css"
 		],
 		"styleGroup": "read",
 		"dependencies": [
