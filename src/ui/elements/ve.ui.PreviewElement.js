@@ -101,7 +101,7 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 	var element = this;
 
 	// Initial CE node
-	this.view = ve.ce.nodeFactory.create( this.model.getType(), this.model );
+	this.view = ve.ce.nodeFactory.createFromModel( this.model );
 	this.$element.append( this.view.$element );
 
 	// When all children are rerendered, replace with dm DOM
