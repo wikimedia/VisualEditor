@@ -117,6 +117,8 @@
 	"visualeditor-key-ctrl": "Ctrl",
 	"visualeditor-key-delete": "Delete",
 	"visualeditor-key-down": "Уніз",
+	"visualeditor-key-end": "End",
+	"visualeditor-key-enter": "Enter",
 	"visualeditor-language-search-input-placeholder": "Шукаць паводле назвы або коду мовы",
 	"visualeditor-languageinspector-title": "Мова",
 	"visualeditor-languageinspector-widget-changelang": "Зьмяніць мову",

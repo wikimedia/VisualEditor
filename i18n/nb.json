@@ -32,6 +32,7 @@
 	"visualeditor-changedesc-align": "Justeringsverdi endret fra $1 til $2",
 	"visualeditor-changedesc-changed": "$1 endret fra $2 til $3",
 	"visualeditor-changedesc-comment": "Kommentar endret fra $1 til $2",
+	"visualeditor-changedesc-direction": "Omgjøring av retning endret fra $1 to $2",
 	"visualeditor-changedesc-image-size": "Størrelse endret fra $1 til $2",
 	"visualeditor-changedesc-language": "Språk endret fra $1 til $2",
 	"visualeditor-changedesc-link-href": "Lenkemål endret fra $1 til $2",
