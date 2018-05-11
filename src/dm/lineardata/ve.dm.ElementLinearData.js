@@ -763,6 +763,36 @@ ve.dm.ElementLinearData.prototype.isPlainText = function ( range, allowNonConten
 };
 
 /**
+ * Execute a callback function for each group of consecutive content data (text or content element).
+ *
+ * @param {Function} callback Function called with the following parameters:
+ * @param {number} callback.offset Offset of the first datum of the run.
+ * @param {string} callback.text Text of the run (with content element opening/closing data
+ *   replaced with U+FFFC).
+ */
+ve.dm.ElementLinearData.prototype.forEachRunOfContent = function ( callback ) {
+	var i,
+		text = '',
+		length = this.getLength();
+
+	for ( i = 0; i < length; i++ ) {
+		if ( !this.isElementData( i ) ) {
+			text += this.getCharacterData( i );
+		} else if ( ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
+			text += '\uFFFC'; // U+FFFC OBJECT REPLACEMENT CHARACTER
+		} else {
+			if ( text ) {
+				callback( i - text.length, text );
+			}
+			text = '';
+		}
+	}
+	if ( text ) {
+		callback( length - text.length, text );
+	}
+};
+
+/**
  * Get the data as plain text
  *
  * @param {boolean} [maintainIndices] Maintain data offset to string index alignment by replacing elements with line breaks
