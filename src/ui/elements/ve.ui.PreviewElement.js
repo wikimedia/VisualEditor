@@ -15,13 +15,18 @@
  * @constructor
  * @param {ve.dm.Node} [model] Model from which to create a preview
  * @param {Object} [config] Configuration options
+ * @cfg {boolean} [useView] Use the view HTML, and don't bother generating model HTML, which is a bit slower
  */
 ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
+	config = config || {};
+
 	// Parent constructor
 	ve.ui.PreviewElement.super.call( this, config );
 
 	// Mixin constructor
 	OO.EventEmitter.call( this );
+
+	this.useView = !!config.useView;
 
 	if ( model ) {
 		this.setModel( model );
@@ -103,15 +108,22 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 	// Initial CE node
 	this.view = ve.ce.nodeFactory.createFromModel( this.model );
 	this.$element.append( this.view.$element );
+	this.view.setLive( true );
 
-	// When all children are rerendered, replace with dm DOM
-	ve.ce.GeneratedContentNode.static.awaitGeneratedContent( this.view )
-		.then( function () {
-			// Verify that the element and/or the ce node weren't destroyed
-			if ( element.view ) {
-				element.replaceWithModelDom();
-			}
-		} );
+	if ( !this.useView ) {
+		// When all children are rerendered, replace with DM DOM
+		// Conversion should be pretty fast, but avoid this (by setting useView to true)
+		// if you generating a lot of previews, e.g. in a list
+		ve.ce.GeneratedContentNode.static.awaitGeneratedContent( this.view )
+			.then( function () {
+				// Verify that the element and/or the ce node weren't destroyed
+				if ( element.view ) {
+					element.replaceWithModelDom();
+				}
+			} );
+	} else {
+		this.view.destroy();
+	}
 };
 
 /**

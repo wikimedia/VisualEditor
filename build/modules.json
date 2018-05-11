@@ -602,6 +602,7 @@
 			"src/ui/styles/dialogs/ve.ui.FindAndReplaceDialog.css",
 			"src/ui/styles/dialogs/ve.ui.ProgressDialog.css",
 			"src/ui/styles/dialogs/ve.ui.SpecialCharacterDialog.css",
+			"src/ui/styles/elements/ve.ui.PreviewElement.css",
 			"src/ui/styles/tools/ve.ui.FormatTool.css",
 			"src/ui/styles/widgets/ve.ui.LanguageInputWidget.css",
 			"src/ui/styles/widgets/ve.ui.LanguageSearchWidget.css",
