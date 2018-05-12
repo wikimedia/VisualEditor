@@ -48,6 +48,7 @@ OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 
 ve.init.sa.Target.static.actionGroups = [
 	{
+		name: 'pageMenu',
 		type: 'list',
 		icon: 'menu',
 		indicator: null,

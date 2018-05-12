@@ -87,10 +87,12 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
 ve.init.Target.static.modes = [ 'visual' ];
 
 ve.init.Target.static.toolbarGroups = [
-	// History
-	{ include: [ 'undo', 'redo' ] },
-	// Format
 	{
+		name: 'history',
+		include: [ 'undo', 'redo' ]
+	},
+	{
+		name: 'format',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-paragraph-format' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-format-tooltip' ),
 		type: 'menu',
@@ -98,16 +100,18 @@ ve.init.Target.static.toolbarGroups = [
 		promote: [ 'paragraph' ],
 		demote: [ 'preformatted', 'blockquote' ]
 	},
-	// Text style
 	{
+		name: 'style',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
 		include: [ 'bold', 'italic', 'moreTextStyle' ]
 	},
-	// Link
-	{ include: [ 'link' ] },
-	// Structure
 	{
+		name: 'link',
+		include: [ 'link' ]
+	},
+	{
+		name: 'structure',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		type: 'list',
@@ -115,8 +119,8 @@ ve.init.Target.static.toolbarGroups = [
 		include: [ { group: 'structure' } ],
 		demote: [ 'outdent', 'indent' ]
 	},
-	// Insert
 	{
+		name: 'insert',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		type: 'list',
@@ -124,8 +128,10 @@ ve.init.Target.static.toolbarGroups = [
 		label: '',
 		include: '*'
 	},
-	// Special character toolbar
-	{ include: [ 'specialCharacter' ] }
+	{
+		name: 'specialCharacter',
+		include: [ 'specialCharacter' ]
+	}
 ];
 
 ve.init.Target.static.actionGroups = [];

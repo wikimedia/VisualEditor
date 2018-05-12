@@ -26,13 +26,14 @@ OO.inheritClass( ve.init.sa.MobileTarget, ve.init.sa.Target );
 /* Static Properties */
 
 ve.init.sa.MobileTarget.static.toolbarGroups = [
-	// History
-	{ include: [ 'undo' ] },
-	// Style
 	{
+		name: 'history',
+		include: [ 'undo' ]
+	},
+	{
+		name: 'style',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
-		classes: [ 've-test-toolbar-style' ],
 		type: 'list',
 		icon: 'textStyle',
 		include: [ { group: 'textStyle' }, 'language', 'clear' ],
@@ -40,10 +41,12 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		promote: [ 'bold', 'italic' ],
 		demote: [ 'strikethrough', 'code', 'underline', 'language', 'clear' ]
 	},
-	// Link
-	{ include: [ 'link' ] },
-	// Structure
 	{
+		name: 'link',
+		include: [ 'link' ]
+	},
+	{
+		name: 'structure',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		type: 'list',
@@ -51,8 +54,8 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		include: [ { group: 'structure' } ],
 		demote: [ 'outdent', 'indent' ]
 	},
-	// Insert
 	{
+		name: 'insert',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		type: 'list',
