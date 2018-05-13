@@ -40,8 +40,24 @@ OO.inheritClass( ve.ui.AuthorListPopupTool, OO.ui.PopupTool );
 
 /* Methods */
 
+/**
+ * Handle surfaceChange event fromt the toolbar
+ *
+ * @param {ve.dm.Surface|null} oldSurface Old surface
+ * @param {ve.dm.Surface|null} newSurface New surface
+ */
 ve.ui.AuthorListPopupTool.prototype.onSurfaceChange = function ( oldSurface, newSurface ) {
+	// TODO: Disconnect oldSurface. Currently in the CollabTarget life-cycle the surface is never changed.
 	this.setup( newSurface );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
+	if ( visible ) {
+		this.selfItem.focus();
+	}
 };
 
 /**

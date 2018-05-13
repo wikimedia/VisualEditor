@@ -85,6 +85,15 @@ OO.mixinClass( ve.ui.AuthorItemWidget, OO.ui.mixin.LabelElement );
 /* Methods */
 
 /**
+ * Focus the widget, if possible
+ */
+ve.ui.AuthorItemWidget.prototype.focus = function () {
+	if ( this.editable ) {
+		this.input.focus();
+	}
+};
+
+/**
  * Set author ID
  *
  * @param {number} authorId Author ID
