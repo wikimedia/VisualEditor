@@ -15,6 +15,7 @@
 }
 
 .ve-demo-surfaceWrapper,
+.ve-init-sa-target-toolbar > .oo-ui-toolbar-bar,
 .ve-demo-read {
 	border-radius: 0;
 	border-left: 0;

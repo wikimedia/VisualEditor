@@ -7,3 +7,8 @@
 body {
 	font: normal 0.875em/1.5 sans-serif;
 }
+
+.ve-init-sa-target-toolbar > .oo-ui-toolbar-bar {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}
