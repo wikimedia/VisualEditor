@@ -40,11 +40,14 @@
 	};
 
 	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
-		var $editor = $( '.ve-demo-editor' ),
-			// eslint-disable-next-line new-cap
+		var panel = new OO.ui.PanelLayout( {
+				$element: $( '.ve-demo-editor' ),
+				expanded: false,
+				framed: true
+			} ),
 			target = new RebaserTarget();
 
-		$editor.append( target.$element );
+		panel.$element.append( target.$element );
 
 		target.addSurface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
 		target.surface.view.focus();
