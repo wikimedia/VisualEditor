@@ -16,8 +16,11 @@
 	OO.inheritClass( RebaserTarget, ve.init.sa.Target );
 
 	RebaserTarget.static.actionGroups = ve.copy( RebaserTarget.static.actionGroups );
-	RebaserTarget.static.actionGroups.unshift(
-		{ include: [ 'authorList' ] }
+	RebaserTarget.static.actionGroups.push(
+		{
+			name: 'authorList',
+			include: [ 'authorList' ]
+		}
 	);
 
 	RebaserTarget.prototype.setSurface = function ( surface ) {
