@@ -66,9 +66,11 @@ ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes
  */
 ve.dm.ImageNode.static.describeChange = function ( key, change ) {
 	if ( key === 'align' ) {
+		// Messages used:
+		// visualeditor-align-desc-left, visualeditor-align-desc-right, visualeditor-align-desc-center
 		return ve.msg( 'visualeditor-changedesc-align',
-			ve.msg( 'visualeditor-align-widget-' + change.from ),
-			ve.msg( 'visualeditor-align-widget-' + change.to )
+			ve.msg( 'visualeditor-align-desc-' + change.from ),
+			ve.msg( 'visualeditor-align-desc-' + change.to )
 		);
 	}
 	// Parent method
