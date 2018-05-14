@@ -41,7 +41,8 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 
 	if ( this.editable ) {
 		this.input = new OO.ui.TextInputWidget( {
-			classes: [ 've-ui-authorItemWidget-nameInput' ]
+			classes: [ 've-ui-authorItemWidget-nameInput' ],
+			placeholder: ve.msg( 'visualeditor-rebase-client-author-name' )
 		} );
 
 		this.colorPicker = new CP( this.$color[ 0 ] );
