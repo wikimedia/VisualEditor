@@ -15,6 +15,12 @@
 
 	OO.inheritClass( RebaserTarget, ve.init.sa.Target );
 
+	RebaserTarget.static.toolbarGroups = ve.copy( RebaserTarget.static.toolbarGroups );
+	RebaserTarget.static.toolbarGroups.splice( 4, 0, {
+		name: 'commentAnnotation',
+		include: [ 'commentAnnotation' ]
+	} );
+
 	RebaserTarget.static.actionGroups = ve.copy( RebaserTarget.static.actionGroups );
 	RebaserTarget.static.actionGroups.push(
 		{

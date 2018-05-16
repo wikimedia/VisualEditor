@@ -1534,6 +1534,25 @@ ve.dm.example.domToDataCases = {
 			'<time class="' + ve.dm.example.textStyleClasses + ' ve-ce-datetimeAnnotation">b</time>' +
 		'</p>'
 	},
+	'comment annotation': {
+		body: '<p>' +
+			'<span rel="ve:CommentAnnotation" data-text="Test">a</span>' +
+		'</p>',
+		data: [
+			{ type: 'paragraph' },
+			[ 'a', [ { type: 'commentAnnotation', attributes: { text: 'Test' } } ] ],
+			{ type: '/paragraph' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
+			'<span class="ve-ce-annotation ve-ce-commentAnnotation">a</span>' +
+		'</p>',
+		normalizedBody: '<p>a</p>',
+		clipboardBody: '<p>' +
+			'<span rel="ve:CommentAnnotation" data-text="Test">a</span>' +
+		'</p>'
+	},
 	'other textStyle annotations': {
 		body: '<p>' +
 			'<abbr>a</abbr>' +
