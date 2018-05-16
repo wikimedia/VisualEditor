@@ -414,8 +414,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	if ( this.rendered ) {
 		oldWrapper = this.$element[ 0 ].cloneNode( true );
 		$( oldWrapper )
-			.find( '.ve-ce-linkAnnotation-active' )
-			.removeClass( 've-ce-linkAnnotation-active' );
+			.find( '.ve-ce-annotation-active' )
+			.removeClass( 've-ce-annotation-active' );
 		$( oldWrapper )
 			.find( '.ve-ce-branchNode-inlineSlug' )
 			.children()

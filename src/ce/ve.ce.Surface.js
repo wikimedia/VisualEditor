@@ -77,6 +77,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.pointerEvents = null;
 	this.focusedBlockSlug = null;
 	this.focusedNode = null;
+	this.activeAnnotations = [];
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
 	this.newModelSelection = null;
@@ -881,7 +882,7 @@ ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
 		return;
 	}
 	this.fixupCursorPosition( 0, this.dragging );
-	this.updateActiveLink();
+	this.updateActiveAnnotations();
 	this.surfaceObserver.pollOnceSelection();
 };
 
@@ -3693,7 +3694,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 	}
 
 	if ( newSel.equalsSelection( sel ) ) {
-		this.updateActiveLink();
+		this.updateActiveAnnotations();
 		return false;
 	}
 
@@ -3717,7 +3718,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 			// Fallback: Apply the corresponding forward selection
 			newSel = newSel.flip();
 			if ( newSel.equalsSelection( sel ) ) {
-				this.updateActiveLink();
+				this.updateActiveAnnotations();
 				return false;
 			}
 		}
@@ -3750,26 +3751,45 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 			$( newSel.focusNode ).closest( '*' ).get( 0 )
 		);
 	}
-	this.updateActiveLink();
+	this.updateActiveAnnotations();
 	return true;
 };
 
 /**
- * Update the activeLink property and apply CSS classes accordingly
+ * Update the activeAnnotations property and apply CSS classes accordingly
+ *
+ * An active annotation is one containing the DOM cursor, which may not be well
+ * defined at annotation boundaries, except for links which use nails.
+ *
+ * Also the order of .activeAnnotations may not be well defined.
  */
-ve.ce.Surface.prototype.updateActiveLink = function () {
-	var activeLink = this.linkAnnotationAtFocus();
-	if ( activeLink === this.activeLink ) {
-		return;
+ve.ce.Surface.prototype.updateActiveAnnotations = function () {
+	var changed = false,
+		surface = this,
+		activeAnnotations = this.annotationsAtFocus();
+
+	// Iterate over previously active annotations
+	this.activeAnnotations.forEach( function ( annotation ) {
+		// If not in the new list, turn off
+		if ( activeAnnotations.indexOf( annotation ) === -1 ) {
+			annotation.$element.removeClass( 've-ce-annotation-active' );
+			changed = true;
+		}
+	} );
+
+	// Iterate over newly active annotations
+	activeAnnotations.forEach( function ( annotation ) {
+		// If not in the old list, turn on
+		if ( surface.activeAnnotations.indexOf( annotation ) === -1 ) {
+			annotation.$element.addClass( 've-ce-annotation-active' );
+			changed = true;
+		}
+	} );
+
+	if ( changed ) {
+		this.activeAnnotations = activeAnnotations;
+		this.model.emit( 'contextChange' );
 	}
-	if ( this.activeLink ) {
-		this.activeLink.classList.remove( 've-ce-linkAnnotation-active' );
-	}
-	this.activeLink = activeLink;
-	if ( activeLink ) {
-		this.activeLink.classList.add( 've-ce-linkAnnotation-active' );
-	}
-	this.model.emit( 'contextChange' );
 };
 
 /**
@@ -3795,24 +3815,19 @@ ve.ce.Surface.prototype.selectNodeContents = function ( node ) {
 };
 
 /**
- * Update the selection to contain the contents of the activeLink, if it exists
+ * Get the annotation views containing the cursor focus
  *
- * @return {boolean} Whether the selection changed
+ * @return {ve.ce.Annotation[]} The annotations containing the focus
  */
-ve.ce.Surface.prototype.selectActiveLinkContents = function () {
-	return this.selectLinkContents( this.activeLink );
-};
-
-/**
- * Get the linkAnnotation node containing the cursor focus
- *
- * If there is no focus, or it is not inside a linkAnnotation, return null
- *
- * @return {Node|null} the linkAnnotation node containing the focus
- *
- */
-ve.ce.Surface.prototype.linkAnnotationAtFocus = function () {
-	return $( this.nativeSelection.focusNode ).closest( '.ve-ce-linkAnnotation' )[ 0 ] || null;
+ve.ce.Surface.prototype.annotationsAtFocus = function () {
+	var annotations = [];
+	$( this.nativeSelection.focusNode ).parents( '.ve-ce-annotation' ).each( function () {
+		var view = $( this ).data( 'view' );
+		if ( view && view.canBeActive() ) {
+			annotations.push( view );
+		}
+	} );
+	return annotations;
 };
 
 /**
@@ -4064,13 +4079,13 @@ ve.ce.Surface.prototype.setNotUnicorningAll = function ( node ) {
 /**
  * Get list of selected nodes and annotations.
  *
- * Exclude link annotations unless the CE focus is inside a link
+ * Exclude active annotations unless the CE focus is inside a link
  *
  * @param {boolean} [all] Include nodes and annotations which only cover some of the fragment
  * @return {ve.dm.Model[]} Selected models
  */
 ve.ce.Surface.prototype.getSelectedModels = function () {
-	var models, fragmentAfter;
+	var models, fragmentAfter, activeModels;
 	if ( !( this.model.selection instanceof ve.dm.LinearSelection ) ) {
 		return [];
 	}
@@ -4090,11 +4105,12 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 		) );
 	}
 
-	if ( this.activeLink ) {
-		return models;
-	}
+	activeModels = this.activeAnnotations.map( function ( view ) {
+		return view.getModel();
+	} );
+
 	return models.filter( function ( annModel ) {
-		return !( annModel instanceof ve.dm.LinkAnnotation );
+		return activeModels.indexOf( annModel ) !== -1;
 	} );
 };
 

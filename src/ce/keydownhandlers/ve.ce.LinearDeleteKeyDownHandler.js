@@ -94,7 +94,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			range.setStart( position.node, position.offset );
 			surface.nativeSelection.removeAllRanges();
 			surface.nativeSelection.addRange( range );
-			surface.updateActiveLink();
+			surface.updateActiveAnnotations();
 			e.preventDefault();
 			return true;
 		}
@@ -132,7 +132,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 
 			surface.nativeSelection.removeAllRanges();
 			surface.nativeSelection.addRange( range );
-			surface.updateActiveLink();
+			surface.updateActiveAnnotations();
 			e.preventDefault();
 			return true;
 		}
@@ -154,7 +154,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			range.setStart( position.node, position.offset );
 			surface.nativeSelection.removeAllRanges();
 			surface.nativeSelection.addRange( range );
-			surface.updateActiveLink();
+			surface.updateActiveAnnotations();
 			e.preventDefault();
 			return true;
 		}

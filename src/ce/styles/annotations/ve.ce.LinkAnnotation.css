@@ -4,7 +4,7 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ce-linkAnnotation-active {
+.ve-ce-linkAnnotation.ve-ce-annotation-active {
 	box-shadow: 0 0 0 1px #c6e0ff;
 	border-radius: 2px;
 	padding: 2px;

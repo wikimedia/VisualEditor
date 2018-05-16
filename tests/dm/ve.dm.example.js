@@ -177,6 +177,8 @@ ve.dm.example.strongHash = 'ha5aaf526d1c3af54';
 ve.dm.example.inlineSlug = '<span class="ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug"></span>';
 ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>';
 
+ve.dm.example.textStyleClasses = 've-ce-annotation ve-ce-textStyleAnnotation';
+
 /**
  * Creates a document from example data.
  *
@@ -1376,9 +1378,9 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
-			'<b class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">a</b>' +
-			'<i class="ve-ce-textStyleAnnotation ve-ce-italicAnnotation">b</i>' +
-			'<u class="ve-ce-textStyleAnnotation ve-ce-underlineAnnotation">c</u>' +
+			'<b class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">a</b>' +
+			'<i class="' + ve.dm.example.textStyleClasses + ' ve-ce-italicAnnotation">b</i>' +
+			'<u class="' + ve.dm.example.textStyleClasses + ' ve-ce-underlineAnnotation">c</u>' +
 		'</p>'
 	},
 	'annotation from data': {
@@ -1507,11 +1509,11 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
-			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="en" title="visualeditor-languageannotation-description,langname-en">ten</span>' +
-			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="fr" dir="ltr" title="visualeditor-languageannotation-description,langname-fr">dix</span>' +
-			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="cy" dir="ltr" title="visualeditor-languageannotation-description,langname-cy">deg</span>' +
-			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="rtl" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">12</span>' +
-			'<span class="ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="RtL" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">34</span>' +
+			'<span class="ve-ce-annotation ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="en" title="visualeditor-languageannotation-description,langname-en">ten</span>' +
+			'<span class="ve-ce-annotation ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="fr" dir="ltr" title="visualeditor-languageannotation-description,langname-fr">dix</span>' +
+			'<span class="ve-ce-annotation ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="cy" dir="ltr" title="visualeditor-languageannotation-description,langname-cy">deg</span>' +
+			'<span class="ve-ce-annotation ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="rtl" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">12</span>' +
+			'<span class="ve-ce-annotation ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="RtL" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">34</span>' +
 		'</p>'
 	},
 	'datetime annotation': {
@@ -1528,8 +1530,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
-			'<time class="ve-ce-textStyleAnnotation ve-ce-datetimeAnnotation">a</time>' +
-			'<time class="ve-ce-textStyleAnnotation ve-ce-datetimeAnnotation">b</time>' +
+			'<time class="' + ve.dm.example.textStyleClasses + ' ve-ce-datetimeAnnotation">a</time>' +
+			'<time class="' + ve.dm.example.textStyleClasses + ' ve-ce-datetimeAnnotation">b</time>' +
 		'</p>'
 	},
 	'other textStyle annotations': {
@@ -1560,15 +1562,15 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
-			'<abbr class="ve-ce-textStyleAnnotation ve-ce-abbreviationAnnotation">a</abbr>' +
-			'<var class="ve-ce-textStyleAnnotation ve-ce-variableAnnotation">b</var>' +
-			'<kbd class="ve-ce-textStyleAnnotation ve-ce-userInputAnnotation">c</kbd>' +
-			'<q class="ve-ce-textStyleAnnotation ve-ce-quotationAnnotation">d</q>' +
-			'<samp class="ve-ce-textStyleAnnotation ve-ce-codeSampleAnnotation">e</samp>' +
-			'<dfn class="ve-ce-textStyleAnnotation ve-ce-definitionAnnotation">f</dfn>' +
-			'<mark class="ve-ce-textStyleAnnotation ve-ce-highlightAnnotation">g</mark>' +
-			'<font class="ve-ce-textStyleAnnotation ve-ce-fontAnnotation">h</font>' +
-			'<bdi class="ve-ce-textStyleAnnotation ve-ce-bidiAnnotation">i</bdi>' +
+			'<abbr class="' + ve.dm.example.textStyleClasses + ' ve-ce-abbreviationAnnotation">a</abbr>' +
+			'<var class="' + ve.dm.example.textStyleClasses + ' ve-ce-variableAnnotation">b</var>' +
+			'<kbd class="' + ve.dm.example.textStyleClasses + ' ve-ce-userInputAnnotation">c</kbd>' +
+			'<q class="' + ve.dm.example.textStyleClasses + ' ve-ce-quotationAnnotation">d</q>' +
+			'<samp class="' + ve.dm.example.textStyleClasses + ' ve-ce-codeSampleAnnotation">e</samp>' +
+			'<dfn class="' + ve.dm.example.textStyleClasses + ' ve-ce-definitionAnnotation">f</dfn>' +
+			'<mark class="' + ve.dm.example.textStyleClasses + ' ve-ce-highlightAnnotation">g</mark>' +
+			'<font class="' + ve.dm.example.textStyleClasses + ' ve-ce-fontAnnotation">h</font>' +
+			'<bdi class="' + ve.dm.example.textStyleClasses + ' ve-ce-bidiAnnotation">i</bdi>' +
 		'</p>'
 	},
 	'strip leading whitespace in non-whitespace preserving nodes': {
@@ -1621,7 +1623,7 @@ ve.dm.example.domToDataCases = {
 				'<figcaption class="ve-ce-branchNode ve-ce-activeNode" contenteditable="true" spellcheck="true">' +
 					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
 						'foo ' +
-						'<b style="color:red;" class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">red</b>' +
+						'<b style="color:red;" class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">red</b>' +
 					'</p>' +
 				'</figcaption>' +
 			'</figure>' +
@@ -1740,7 +1742,7 @@ ve.dm.example.domToDataCases = {
 		],
 		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment="baz">&nbsp;</span></b></p>',
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
-			'<b class="ve-ce-textStyleAnnotation ve-ce-boldAnnotation">' +
+			'<b class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">' +
 				ve.dm.example.inlineSlug +
 				'<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode" contenteditable="false"></span>' +
 				'bar' +

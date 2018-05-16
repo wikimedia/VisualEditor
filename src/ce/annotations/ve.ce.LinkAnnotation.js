@@ -14,20 +14,20 @@
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
  * @param {Object} [config] Configuration options
  */
-ve.ce.LinkAnnotation = function VeCeLinkAnnotation() {
+ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) {
 	// Parent constructor
-	ve.ce.LinkAnnotation.super.apply( this, arguments );
+	ve.ce.LinkAnnotation.super.call( this, model, parentNode, ve.extendObject( { $element: $( '<a>' ) }, config ) );
 
 	// Initialization
 	this.contentFragment = document.createDocumentFragment();
 
-	this.$anchor = $( '<a>' )
-		.addClass( 've-ce-linkAnnotation' )
+	this.$element.addClass( 've-ce-linkAnnotation' )
 		.prop( {
 			href: ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ),
 			title: this.constructor.static.getDescription( this.model )
-		} )
-		.data( 'view', this );
+		} );
+	// Deprecated, use this.$element
+	this.$anchor = this.$element;
 };
 
 /* Inheritance */
@@ -39,6 +39,8 @@ OO.inheritClass( ve.ce.LinkAnnotation, ve.ce.Annotation );
 ve.ce.LinkAnnotation.static.name = 'link';
 
 ve.ce.LinkAnnotation.static.tagName = 'span';
+
+ve.ce.LinkAnnotation.static.canBeActive = true;
 
 /* Static Methods */
 
@@ -86,7 +88,7 @@ ve.ce.LinkAnnotation.prototype.getContentContainer = function () {
  * @inheritdoc
  */
 ve.ce.LinkAnnotation.prototype.attachContents = function () {
-	var anchor = this.$anchor[ 0 ];
+	var anchor = this.$element[ 0 ];
 	// Insert post-open nail, annotation contents, and pre-close nail into the anchor
 	anchor.appendChild( this.constructor.static.makeNail( 'post-open' ) );
 	anchor.appendChild( this.contentFragment );
@@ -99,7 +101,7 @@ ve.ce.LinkAnnotation.prototype.attachContents = function () {
 ve.ce.LinkAnnotation.prototype.appendTo = function ( node ) {
 	// Insert pre-open nail, anchor, and post-close nail into a parent node
 	node.appendChild( this.constructor.static.makeNail( 'pre-open' ) );
-	node.appendChild( this.$anchor[ 0 ] );
+	node.appendChild( this.$element[ 0 ] );
 	node.appendChild( this.constructor.static.makeNail( 'post-close' ) );
 };
 
