@@ -564,6 +564,8 @@
 			"src/ui/tools/ve.ui.WindowTool.js",
 			"src/ui/tools/ve.ui.FragmentWindowTool.js",
 			"src/ui/tools/ve.ui.FragmentInspectorTool.js",
+			"src/ui/tools/ve.ui.LinkInspectorTool.js",
+			"src/ui/tools/ve.ui.CommentInspectorTool.js",
 			"src/ui/tools/ve.ui.ToolbarDialogTool.js",
 			"src/ui/tools/ve.ui.FormatTool.js",
 			"src/ui/tools/ve.ui.HistoryTool.js",
