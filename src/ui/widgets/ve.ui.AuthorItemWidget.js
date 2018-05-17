@@ -107,9 +107,9 @@ ve.ui.AuthorItemWidget.prototype.setAuthorId = function ( authorId ) {
  * Update name and color from synchronizer
  */
 ve.ui.AuthorItemWidget.prototype.update = function () {
-	var name = this.synchronizer.authorNames[ this.authorId ];
+	var name = this.synchronizer.getAuthorName( this.authorId );
 
-	this.color = this.synchronizer.authorColors[ this.authorId ];
+	this.color = this.synchronizer.getAuthorColor( this.authorId );
 	this.$color.css( 'background-color', '#' + this.color );
 
 	if ( this.editable ) {

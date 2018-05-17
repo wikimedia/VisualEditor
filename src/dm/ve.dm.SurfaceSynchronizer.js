@@ -243,6 +243,14 @@ ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelection
 	}
 };
 
+ve.dm.SurfaceSynchronizer.prototype.getAuthorName = function ( authorId ) {
+	return this.authorNames[ authorId ];
+};
+
+ve.dm.SurfaceSynchronizer.prototype.getAuthorColor = function ( authorId ) {
+	return this.authorColors[ authorId ];
+};
+
 ve.dm.SurfaceSynchronizer.prototype.onNameChange = function ( data ) {
 	this.authorNames[ data.authorId ] = data.authorName;
 	this.emit( 'authorNameChange', data.authorId );
