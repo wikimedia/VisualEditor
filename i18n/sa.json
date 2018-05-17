@@ -1,10 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
-			"NehalDaveND"
+			"NehalDaveND",
+			"Charunandan16"
 		]
 	},
 	"visualeditor": "यथादृश्यसम्पादिका",
+	"visualeditor-align-desc-center": "केन्द्रं",
+	"visualeditor-align-desc-left": "वामतः",
+	"visualeditor-align-desc-none": "नैकमपि",
+	"visualeditor-align-desc-right": "दक्षिणतः",
 	"visualeditor-align-widget-center": "केन्द्रं",
 	"visualeditor-align-widget-left": "वामतः",
 	"visualeditor-align-widget-right": "दक्षिणतः",
