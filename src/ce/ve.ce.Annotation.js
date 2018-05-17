@@ -26,7 +26,11 @@ ve.ce.Annotation = function VeCeAnnotation( model, parentNode, config ) {
 
 	// Properties
 	this.parentNode = parentNode || null;
-	this.$element.data( 'view', this );
+
+	this.$element
+		// Make data available before setup
+		.data( 'view', this )
+		.addClass( 've-ce-annotation' );
 };
 
 /* Inheritance */
@@ -36,6 +40,11 @@ OO.inheritClass( ve.ce.Annotation, ve.ce.View );
 /* Static Properties */
 
 ve.ce.Annotation.static.tagName = 'span';
+
+/**
+ * Annotations which can be active get a ve-ce-annotation-active class when focused.
+ */
+ve.ce.Annotation.static.canBeActive = false;
 
 /* Static Methods */
 
@@ -105,6 +114,15 @@ ve.ce.Annotation.prototype.attachContents = function () {
  */
 ve.ce.Annotation.prototype.appendTo = function ( node ) {
 	node.appendChild( this.$element[ 0 ] );
+};
+
+/**
+ * Check if the annotation can be active
+ *
+ * @return {boolean}
+ */
+ve.ce.Annotation.prototype.canBeActive = function () {
+	return this.constructor.static.canBeActive;
 };
 
 /**

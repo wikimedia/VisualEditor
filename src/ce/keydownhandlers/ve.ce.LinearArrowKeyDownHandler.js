@@ -200,7 +200,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			newRange = new ve.Range( range.from, newRange.to );
 			surface.getModel().setLinearSelection( newRange );
 		}
-		surface.updateActiveLink();
+		surface.updateActiveAnnotations();
 		surface.surfaceObserver.pollOnce();
 	} } );
 
