@@ -4216,7 +4216,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		} ).append(
 			$( '<span>' )
 				.addClass( 've-ce-surface-highlights-user-cursor-label' )
-				.text( this.synchronizer.authorNames[ authorId ] )
+				.text( this.synchronizer.getAuthorName( authorId ) )
 				.css( { background: color } )
 		)
 	);
