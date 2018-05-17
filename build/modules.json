@@ -658,6 +658,21 @@
 			"visualEditor.diffing"
 		]
 	},
+	"visualEditor.commentAnnotation": {
+		"scripts": [
+			"src/dm/annotations/ve.dm.CommentAnnotation.js",
+			"src/ce/annotations/ve.ce.CommentAnnotation.js",
+			"src/ui/contextitems/ve.ui.CommentAnnotationContextItem.js",
+			"src/ui/tools/ve.ui.CommentAnnotationInspectorTool.js",
+			"src/ui/inspectors/ve.ui.CommentAnnotationInspector.js"
+		],
+		"styles": [
+			"src/ce/styles/annotations/ve.ce.CommentAnnotation.css"
+		],
+		"dependencies": [
+			"visualEditor.core.build"
+		]
+	},
 	"visualEditor.rebase": {
 		"scripts": [
 			"src/dm/ve.dm.RebaseClient.js",
@@ -671,7 +686,8 @@
 		"dependencies": [
 			"dompurify",
 			"socket.io",
-			"color-picker"
+			"color-picker",
+			"visualEditor.commentAnnotation"
 		]
 	},
 	"visualEditor.rebase.build": {
