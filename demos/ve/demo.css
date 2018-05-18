@@ -33,9 +33,9 @@ body {
 }
 
 .ve-demo-logo {
-	background-image: url( VisualEditor-logo.svg );
 	width: 10.75em;
 	height: 3.75em;
+	background-image: url( VisualEditor-logo.svg );
 }
 
 .ve-demo-surfaceToolbar-read {
@@ -45,7 +45,6 @@ body {
 /* Hack: should generate demo.rtl.css */
 .ve-demo-dir-rtl .ve-demo-logo {
 	float: left;
-	margin: -0.4em 0 0 -0.3em;
 }
 
 .ve-demo-toolbar {
@@ -89,12 +88,28 @@ body {
 	float: none;
 	display: inline-block;
 	vertical-align: middle;
+}
+
+.ve-demo-dir-ltr .ve-demo-toolbar-commands > .oo-ui-widget,
+.ve-demo-dir-ltr .ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field,
+.ve-demo-dir-ltr .ve-demo-toolbar-divider {
 	margin-right: 1em;
 }
 
-.ve-demo-toolbar-commands > .oo-ui-widget:last-child,
-.ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout:last-child > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field {
+.ve-demo-dir-rtl .ve-demo-toolbar-commands > .oo-ui-widget,
+.ve-demo-dir-rtl .ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field,
+.ve-demo-dir-rtl .ve-demo-toolbar-divider {
+	margin-left: 1em;
+}
+
+.ve-demo-dir-ltr .ve-demo-toolbar-commands > .oo-ui-widget:last-child,
+.ve-demo-dir-ltr .ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout:last-child > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field {
 	margin-right: 0;
+}
+
+.ve-demo-dir-rtl .ve-demo-toolbar-commands > .oo-ui-widget:last-child,
+.ve-demo-dir-rtl .ve-demo-toolbar-commands > .oo-ui-widget > .oo-ui-fieldLayout:last-child > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-field {
+	margin-left: 0;
 }
 
 .ve-demo-toolbar .oo-ui-textInputWidget {
@@ -105,9 +120,13 @@ body {
 	z-index: 3;
 }
 
-.ve-demo-toolbar-divider {
+.ve-demo-dir-ltr .ve-demo-toolbar-divider {
 	border-right: 1px solid #ddd;
 	width: 0;
+}
+
+.ve-demo-dir-rtl .ve-demo-toolbar-divider {
+	border-left: 1px solid #ddd;
 }
 
 .ve-demo-read {
