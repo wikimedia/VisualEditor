@@ -4110,7 +4110,11 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 	} );
 
 	return models.filter( function ( annModel ) {
-		return activeModels.indexOf( annModel ) !== -1;
+		// If the model is an annotation that can be active, only show it if it *is* active
+		if ( annModel instanceof ve.dm.Annotation && ve.ce.annotationFactory.canAnnotationBeActive( annModel.getType() ) ) {
+			return activeModels.indexOf( annModel ) !== -1;
+		}
+		return true;
 	} );
 };
 

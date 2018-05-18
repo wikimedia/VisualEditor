@@ -50,6 +50,19 @@ ve.ce.AnnotationFactory.prototype.isAnnotationContinuationForced = function ( ty
 	return false;
 };
 
+/**
+ * Check if an annotation can be active
+ *
+ * @param {string} type Annotation type
+ * @return {boolean}
+ */
+ve.ce.AnnotationFactory.prototype.canAnnotationBeActive = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.canBeActive;
+	}
+	throw new Error( 'Unknown annotation type: ' + type );
+};
+
 /* Initialization */
 
 // TODO: Move instantiation to a different file
