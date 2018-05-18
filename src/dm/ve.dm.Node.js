@@ -583,6 +583,15 @@ ve.dm.Node.prototype.shouldIgnoreChildren = function () {
 };
 
 /**
+ * Check if the node can be the root of a branch exposed in a ve.ce.Surface
+ *
+ * @return {boolean} Node can be the root of a surfaced branch
+ */
+ve.dm.Node.prototype.isSurfaceable = function () {
+	return this.hasChildren() && !this.canContainContent() && !this.isMetaData() && !this.getChildNodeTypes();
+};
+
+/**
  * Check if the node has an ancestor with matching type and attribute values.
  *
  * @method

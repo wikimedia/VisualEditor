@@ -37,7 +37,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	/* eslint-disable quotes */
 	var tests, i, iLen, test, parts, view, data, dmDoc, ceDoc, rootNode, offsetCount, offset, j, jLen, node, ex,
-		docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-rootNode'>",
+		docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode'>",
 		pNodeStart = "<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>";
 
 	// Each test below has the following:

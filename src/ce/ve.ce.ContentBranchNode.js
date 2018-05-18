@@ -145,6 +145,7 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 	// sufficient to keep this.slugNodes valid - only text changes can occur, which
 	// cannot create a requirement for a new slug (it can make an existing slug
 	// redundant, but it is harmless to leave it there).
+	// TODO fix the use of ve.ce.DocumentNode and getSurface
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked
@@ -162,6 +163,7 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 	// Respect render lock
 	// TODO: Can this check be moved into the parent method?
+	// TODO fix the use of ve.ce.DocumentNode and getSurface
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked()
@@ -178,6 +180,7 @@ ve.ce.ContentBranchNode.prototype.setupBlockSlugs = function () {
 ve.ce.ContentBranchNode.prototype.setupInlineSlugs = function () {
 	// Respect render lock
 	// TODO: Can this check be moved into the parent method?
+	// TODO fix the use of ve.ce.DocumentNode and getSurface
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked()
@@ -378,6 +381,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 };
 
 ve.ce.ContentBranchNode.prototype.onModelDetach = function () {
+	// TODO fix the use of ve.ce.DocumentNode and getSurface
 	if ( this.root instanceof ve.ce.DocumentNode ) {
 		this.root.getSurface().setContentBranchNodeChanged();
 	}
@@ -392,6 +396,7 @@ ve.ce.ContentBranchNode.prototype.onModelDetach = function () {
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	var i, len, element, rendered, unicornInfo, oldWrapper, newWrapper,
 		node = this;
+	// TODO fix the use of ve.ce.DocumentNode and getSurface
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked()

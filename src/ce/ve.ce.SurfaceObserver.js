@@ -15,8 +15,7 @@
 ve.ce.SurfaceObserver = function VeCeSurfaceObserver( surface ) {
 	// Properties
 	this.surface = surface;
-	this.documentView = surface.getDocument();
-	this.domDocument = this.documentView.getDocumentNode().getElementDocument();
+	this.domDocument = surface.attachedRoot.getElementDocument();
 	this.polling = false;
 	this.disabled = false;
 	this.timeoutId = null;
@@ -46,7 +45,6 @@ ve.ce.SurfaceObserver.prototype.clear = function () {
  */
 ve.ce.SurfaceObserver.prototype.detach = function () {
 	this.surface = null;
-	this.documentView = null;
 	this.domDocument = null;
 	this.rangeState = null;
 };
@@ -159,7 +157,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, sel
 	oldState = this.rangeState;
 	newState = new ve.ce.RangeState(
 		oldState,
-		this.documentView.getDocumentNode(),
+		this.surface.attachedRoot,
 		selectionOnly
 	);
 	this.rangeState = newState;
