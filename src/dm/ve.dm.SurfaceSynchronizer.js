@@ -79,6 +79,10 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
  * @param {number} authorId The author whose name has changed
  */
 
+/**
+ * @event initDoc
+ */
+
 /* Methods */
 
 /**
@@ -321,6 +325,7 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 	}
 	history = ve.dm.Change.static.deserialize( data.history, this.doc );
 	this.acceptChange( history );
+	this.emit( 'initDoc' );
 
 	// Mark ourselves as initialized and retry any prevented submissions
 	this.initialized = true;
