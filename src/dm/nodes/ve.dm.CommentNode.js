@@ -34,10 +34,12 @@ ve.dm.CommentNode.static.isContent = true;
 ve.dm.CommentNode.static.preserveHtmlAttributes = false;
 
 ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
-	var text;
+	var textarea, text;
 	if ( domElements[ 0 ].nodeType === Node.COMMENT_NODE ) {
 		// Decode HTML entities, safely (no elements permitted inside textarea)
-		text = $( '<textarea/>' ).html( domElements[ 0 ].data ).text();
+		textarea = document.createElement( 'textarea' );
+		textarea.innerHTML = domElements[ 0 ].data;
+		text = textarea.textContent;
 	} else {
 		text = domElements[ 0 ].getAttribute( 'data-ve-comment' );
 	}
