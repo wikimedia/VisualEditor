@@ -140,10 +140,10 @@ ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
 	}
 
 	// Calculate the opposite size if needed
-	if ( !dimensions.height && ratio !== null && $.isNumeric( dimensions.width ) ) {
+	if ( !dimensions.height && ratio !== null && +dimensions.width ) {
 		dimensions.height = Math.round( dimensions.width / ratio );
 	}
-	if ( !dimensions.width && ratio !== null && $.isNumeric( dimensions.height ) ) {
+	if ( !dimensions.width && ratio !== null && +dimensions.height ) {
 		dimensions.width = Math.round( dimensions.height * ratio );
 	}
 
@@ -609,8 +609,9 @@ ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
 
 	this.valid = (
 		!!dimensions &&
-		$.isNumeric( dimensions.width ) &&
-		$.isNumeric( dimensions.height ) &&
+		// Dimensions must be non-zero
+		+dimensions.width &&
+		+dimensions.height &&
 		(
 			!minDimensions || (
 				dimensions.width >= minDimensions.width &&
