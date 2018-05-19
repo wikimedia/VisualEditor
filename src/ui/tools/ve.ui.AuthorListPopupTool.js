@@ -55,6 +55,9 @@ ve.ui.AuthorListPopupTool.prototype.onSurfaceChange = function ( oldSurface, new
  * @inheritdoc
  */
 ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
+	// Parent method
+	ve.ui.AuthorListPopupTool.super.prototype.onPopupToggle.apply( this, arguments );
+
 	if ( visible ) {
 		this.selfItem.focus();
 	}
