@@ -157,7 +157,7 @@ OO.inheritClass( ve.ui.MediaSizeWidget, OO.ui.Widget );
  * @param {Object} dimensions Original dimensions
  */
 ve.ui.MediaSizeWidget.prototype.onScalableOriginalSizeChange = function ( dimensions ) {
-	var disabled = !dimensions || $.isEmptyObject( dimensions );
+	var disabled = !dimensions || ve.isEmptyObject( dimensions );
 	this.fullSizeButton.setDisabled( disabled );
 	this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled( disabled );
 	// Revalidate current dimensions
@@ -170,7 +170,7 @@ ve.ui.MediaSizeWidget.prototype.onScalableOriginalSizeChange = function ( dimens
  * @param {Object} dimensions Original dimensions
  */
 ve.ui.MediaSizeWidget.prototype.onScalableCurrentSizeChange = function ( dimensions ) {
-	if ( !$.isEmptyObject( dimensions ) ) {
+	if ( !ve.isEmptyObject( dimensions ) ) {
 		this.setCurrentDimensions( dimensions );
 		this.validateDimensions();
 	}
@@ -254,7 +254,7 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 	if ( selectedType === 'default' ) {
 		this.scaleInput.setDisabled( true );
 		// If there are defaults, put them into the values
-		if ( !$.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
+		if ( !ve.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
 			this.dimensionsWidget.clear();
 		}
 	} else if ( selectedType === 'scale' ) {
@@ -268,7 +268,7 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 		// Disable the scale input
 		this.scaleInput.setDisabled( true );
 		// If we were default size before, set the current dimensions to the default size
-		if ( wasDefault && !$.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
+		if ( wasDefault && !ve.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
 			this.setCurrentDimensions( this.dimensionsWidget.getDefaults() );
 		}
 		this.validateDimensions();
@@ -536,13 +536,13 @@ ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 ve.ui.MediaSizeWidget.prototype.updateDefaultDimensions = function () {
 	var defaultDimensions = this.scalable.getDefaultDimensions();
 
-	if ( !$.isEmptyObject( defaultDimensions ) ) {
+	if ( !ve.isEmptyObject( defaultDimensions ) ) {
 		this.dimensionsWidget.setDefaults( defaultDimensions );
 	} else {
 		this.dimensionsWidget.removeDefaults();
 	}
 	this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled(
-		$.isEmptyObject( defaultDimensions )
+		ve.isEmptyObject( defaultDimensions )
 	);
 	this.validateDimensions();
 };
