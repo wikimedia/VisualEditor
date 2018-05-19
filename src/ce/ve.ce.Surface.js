@@ -1964,455 +1964,52 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  * Handle post-paste events.
  *
  * @param {jQuery.Event} e Paste event
- * @param {boolean} [useClipboardData] Use clipboard data over the paste target
  * @return {jQuery.Promise} Promise which resolves when the content has been pasted
  */
-ve.ce.Surface.prototype.afterPaste = function ( e, useClipboardData ) {
-	var clipboardKey, clipboardHash,
-		$elements, pasteData, slice, documentRange,
-		data, pastedDocumentModel, htmlDoc, $body, $images, i,
-		context, left, right, contextRange, handled, pastedText,
-		tableAction, htmlBlacklist, pastedNodes, targetViewNode, isMultiline,
-		leftText, rightText,
-		done = $.Deferred().resolve().promise(),
-		items = [],
-		metadataIdRegExp = ve.init.platform.getMetadataIdRegExp(),
-		importantElement = '[id],[typeof],[rel]',
-		importRules = !this.pasteSpecial ? this.getSurface().getImportRules() : { all: { plainText: true, keepEmptyContentBranches: true } },
-		beforePasteData = this.beforePasteData || {},
+ve.ce.Surface.prototype.afterPaste = function () {
+	var pasteData, isMultiline, pending, tableAction,
 		surfaceModel = this.getModel(),
 		fragment = surfaceModel.getFragment(),
 		targetFragment = surfaceModel.getFragment( null, true ),
-		documentModel = surfaceModel.getDocument(),
-		view = this;
-
-	function sanitize( linearData ) {
-		// If the clipboardKey isn't set (paste from non-VE instance) use external import rules
-		if ( !clipboardKey ) {
-			linearData.sanitize( importRules.external || {} );
-		}
-		linearData.sanitize( importRules.all || {} );
-	}
+		view = this,
+		beforePasteData = this.beforePasteData || {},
+		done = $.Deferred().resolve().promise();
 
 	// If the selection doesn't collapse after paste then nothing was inserted
 	if ( !this.nativeSelection.isCollapsed ) {
 		return done;
 	}
 
-	if ( fragment.isNull() ) {
+	if ( this.getModel().getFragment().isNull() ) {
 		return done;
 	}
 
-	// Find the clipboard key
-	if ( beforePasteData.custom ) {
-		clipboardKey = beforePasteData.custom;
-	} else {
-		if ( beforePasteData.html ) {
-			$elements = $( $.parseHTML( beforePasteData.html ) );
+	pasteData = this.afterPasteExtractClipboardData();
 
-			// Try to find the clipboard key hidden in the HTML
-			$elements = $elements.filter( function () {
-				var val = this.getAttribute && this.getAttribute( 'data-ve-clipboard-key' );
-				if ( val ) {
-					clipboardKey = val;
-					// Remove the clipboard key span once read
-					return false;
-				}
-				return true;
-			} );
-			clipboardHash = this.constructor.static.getClipboardHash( $elements );
-		} else {
-			// HTML in pasteTarget my get wrapped, so use the recursive $.find to look for the clipboard key
-			clipboardKey = this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).data( 've-clipboard-key' );
-			// Pass beforePasteData so context gets stripped
-			clipboardHash = this.constructor.static.getClipboardHash( this.$pasteTarget, beforePasteData );
-		}
-	}
-
-	// Remove the clipboard key
-	this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).remove();
-
-	// Remove style tags (T185532)
-	this.$pasteTarget.find( 'style' ).remove();
-
-	// If we have a clipboard key, validate it and fetch data
-	if ( clipboardKey === this.clipboardId + '-' + this.clipboardIndex ) {
-		// Hash validation: either text/xcustom was used or the hash must be
-		// equal to the hash of the pasted HTML to assert that the HTML
-		// hasn't been modified in another editor before being pasted back.
-		if ( beforePasteData.custom || clipboardHash === this.clipboard.hash ) {
-			slice = this.clipboard.slice;
-		}
-	}
-
-	// All $pasteTarget sanitization can be skipped for internal paste
-	if ( !slice ) {
-		// Do some simple transforms to catch content that is using
-		// spans+styles instead of regular tags. This is very much targeted at
-		// the output of Google Docs, but should work with anything fairly-
-		// similar. This is *fragile*, but more in the sense that small
-		// deviations will stop it from working, rather than it being terribly
-		// likely to incorrectly over-format things.
-		// TODO: This might be cleaner if we could move the sanitization into
-		// dm.converter entirely.
-		this.$pasteTarget.find( 'span' ).each( function ( i, node ) {
-			var $node;
-			// Later sanitization will replace completely-empty spans with
-			// their contents, so we can lazily-wrap here without cleaning
-			// up.
-			if ( !node.style ) {
-				return;
-			}
-			$node = $( node );
-			if ( node.style.fontWeight === '700' ) {
-				$node.wrap( '<b>' );
-			}
-			if ( node.style.fontStyle === 'italic' ) {
-				$node.wrap( '<i>' );
-			}
-			if ( node.style.textDecorationLine === 'underline' ) {
-				$node.wrap( '<u>' );
-			}
-			if ( node.style.textDecorationLine === 'line-through' ) {
-				$node.wrap( '<s>' );
-			}
-			if ( node.style.verticalAlign === 'super' ) {
-				$node.wrap( '<sup>' );
-			}
-			if ( node.style.verticalAlign === 'sub' ) {
-				$node.wrap( '<sub>' );
-			}
-		} );
-
-		// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
-		this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
-
-		if ( metadataIdRegExp ) {
-			this.$pasteTarget.find( '[id]' ).each( function () {
-				var $this = $( this );
-				if ( $this.attr( 'id' ).match( metadataIdRegExp ) ) {
-					$this.removeAttr( 'id' );
-				}
-			} );
-		}
-
-		// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
-		this.$pasteTarget.find( 'span' ).each( function () {
-			var $this = $( this );
-			$this.removeClass( 've-pasteProtect' );
-			if ( $this.attr( 'class' ) === '' ) {
-				$this.removeAttr( 'class' );
-			}
-			// Unwrap empty spans
-			if ( !this.attributes.length ) {
-				$this.replaceWith( this.childNodes );
-			}
-		} );
-
-		// Restore attributes. See #onCopy.
-		this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
-			var attrs,
-				attrsJSON = this.getAttribute( 'data-ve-attributes' );
-
-			// Always remove the attribute, even if the JSON has been corrupted
-			this.removeAttribute( 'data-ve-attributes' );
-
-			try {
-				attrs = JSON.parse( attrsJSON );
-			} catch ( err ) {
-				// Invalid JSON
-				return;
-			}
-			$( this ).attr( attrs );
-		} );
-	} else {
-		// Clone again. The elements were cloned on copy, but we need to clone
-		// on paste too in case the same thing is pasted multiple times.
-		slice.data.cloneElements( true );
-	}
-
+	// Handle pastes into a table
 	if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
-		// Internal table-into-table paste
-		if ( fragment.getSelection() instanceof ve.dm.TableSelection && slice instanceof ve.dm.TableSlice ) {
+		// Internal table-into-table paste can be shortcut
+		if ( fragment.getSelection() instanceof ve.dm.TableSelection && pasteData.slice instanceof ve.dm.TableSlice ) {
 			tableAction = new ve.ui.TableAction( this.getSurface() );
-			tableAction.importTable( slice.getTableNode() );
-			return done;
+			tableAction.importTable( pasteData.slice.getTableNode() );
+			return $.Deferred().resolve().promise();
 		}
 
 		// For table selections the target is the first cell
 		targetFragment = surfaceModel.getLinearFragment( fragment.getSelection().getRanges()[ 0 ], true );
 	}
 
-	targetViewNode = this.getSurface().getView().getDocument().getBranchNodeFromOffset(
+	// Are we pasting into a multiline context?
+	isMultiline = this.getSurface().getView().getDocument().getBranchNodeFromOffset(
 		targetFragment.getSelection().getCoveringRange().from
-	);
-	isMultiline = targetViewNode.isMultiline();
-	if ( !isMultiline ) {
-		importRules = {
-			all: ve.extendObject( {}, importRules.all, { singleLine: true } ),
-			external: ve.extendObject( {}, importRules.external, { singleLine: true } )
-		};
-	}
+	).isMultiline();
 
-	if ( slice ) {
-		// Pasting non-table content into table: just replace the the first cell with the pasted content
-		if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
-			// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is
-			// about to be triggered.
-			targetFragment.removeContent();
-		}
-
-		// Internal paste
-		try {
-			// Try to paste in the original data
-			// Take a copy to prevent the data being annotated a second time in the catch block
-			// and to prevent actions in the data model affecting view.clipboard
-			pasteData = new ve.dm.ElementLinearData(
-				slice.getStore(),
-				ve.copy( slice.getOriginalData() )
-			);
-
-			if ( !isMultiline ) {
-				// Force a jump to the catch branch
-				throw new Error( 'Must use balanced data' );
-			}
-
-			if ( this.pasteSpecial ) {
-				sanitize( pasteData );
-			}
-
-			// Insert content
-			targetFragment.insertContent( pasteData.getData(), true );
-		} catch ( err ) {
-			// If that fails, use the balanced data
-			// Take a copy to prevent actions in the data model affecting view.clipboard
-			pasteData = new ve.dm.ElementLinearData(
-				slice.getStore(),
-				ve.copy( slice.getBalancedData() )
-			);
-
-			if ( this.pasteSpecial || !isMultiline ) {
-				sanitize( pasteData );
-			}
-
-			data = pasteData.getData();
-
-			if ( !isMultiline ) {
-				// Unwrap CBN
-				if ( data[ 0 ].type ) {
-					data = data.slice( 1, data.length - 1 );
-				}
-			}
-
-			// Insert content
-			targetFragment.insertContent( data, true );
-		}
+	if ( pasteData.slice ) {
+		pending = this.afterPasteAddToFragmentFromInternal( pasteData.slice, fragment, targetFragment, isMultiline );
 	} else {
-		if ( ( clipboardKey || useClipboardData ) && beforePasteData.html ) {
-			// If the clipboardKey is set (paste from other VE instance), and clipboard
-			// data is available, then make sure important elements haven't been dropped
-			if ( !$elements ) {
-				$elements = $( $.parseHTML( beforePasteData.html ) );
-			}
-			if (
-				useClipboardData ||
-				// FIXME T126045: Allow the test runner to force the use of clipboardData
-				clipboardKey === 'useClipboardData-0' ||
-				$elements.find( importantElement ).addBack().filter( importantElement ).length > this.$pasteTarget.find( importantElement ).length
-			) {
-				// CE destroyed an important element, so revert to using clipboard data
-				htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
-				// Remove the pasteProtect class. See #onCopy.
-				$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
-				// Remove the clipboard key
-				$( htmlDoc ).find( 'span[data-ve-clipboard-key]' ).remove();
-				beforePasteData.context = null;
-			}
-		}
-		if ( !htmlDoc ) {
-			// If there were no problems, let CE do its sanitizing as it may
-			// contain all sorts of horrible metadata (head tags etc.)
-			// TODO: IE will always take this path, and so may have bugs with span unwrapping
-			// in edge cases (e.g. pasting a single MWReference)
-			htmlDoc = ve.createDocumentFromHtml( this.$pasteTarget.html() );
-		}
-		// Some browsers don't provide pasted image data through the clipboardData API and
-		// instead create img tags with data URLs, so detect those here
-		$body = $( htmlDoc.body );
-		$images = $body.children( 'img[src^=data\\:]' );
-		// Check the body contained just children.
-		// TODO: In the future this may want to trigger image uploads *and* paste the HTML.
-		if ( $images.length === $body.children().length ) {
-			for ( i = 0; i < $images.length; i++ ) {
-				items.push( ve.ui.DataTransferItem.static.newFromDataUri(
-					$images.eq( i ).attr( 'src' ),
-					$images[ i ].outerHTML
-				) );
-			}
-			if ( this.handleDataTransferItems( items, true ) ) {
-				return done;
-			}
-		}
-
-		// HACK: Fix invalid HTML from Google Docs nested lists (T98100).
-		// Converts
-		// <ul><li>A</li><ul><li>B</li></ul></ul>
-		// to
-		// <ul><li>A<ul><li>B</li></ul></li></ul>
-		$( htmlDoc.body ).find( 'ul > ul, ul > ol, ol > ul, ol > ol' ).each( function () {
-			if ( this.previousSibling ) {
-				this.previousSibling.appendChild( this );
-			} else {
-				// List starts double indented. This is invalid and a semantic nightmare.
-				// Just wrap with an extra list item
-				$( this ).wrap( '<li>' );
-			}
-		} );
-
-		// HTML sanitization
-		htmlBlacklist = ve.getProp( importRules, 'external', 'htmlBlacklist' );
-		if ( htmlBlacklist && !clipboardKey ) {
-			if ( htmlBlacklist.remove ) {
-				htmlBlacklist.remove.forEach( function ( selector ) {
-					$( htmlDoc.body ).find( selector ).remove();
-				} );
-			}
-			if ( htmlBlacklist.unwrap ) {
-				htmlBlacklist.unwrap.forEach( function ( selector ) {
-					$( htmlDoc.body ).find( selector ).contents().unwrap();
-				} );
-			}
-		}
-
-		// External paste
-		pastedDocumentModel = ve.dm.converter.getModelFromDom( htmlDoc, {
-			targetDoc: documentModel.getHtmlDocument(),
-			fromClipboard: true
-		} );
-		data = pastedDocumentModel.data;
-		// Clone again
-		data.cloneElements( true );
-		// Sanitize
-		sanitize( data );
-		data.remapInternalListKeys( documentModel.getInternalList() );
-
-		// Initialize node tree
-		pastedDocumentModel.buildNodeTree();
-
-		if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
-			// External table-into-table paste
-			if (
-				pastedDocumentModel.documentNode.children.length === 2 &&
-				pastedDocumentModel.documentNode.children[ 0 ] instanceof ve.dm.TableNode
-			) {
-				tableAction = new ve.ui.TableAction( this.getSurface() );
-				tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ], true );
-				return done;
-			}
-
-			// Pasting non-table content into table: just replace the the first cell with the pasted content
-			// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is about to be triggered.
-			targetFragment.removeContent();
-		}
-
-		documentRange = pastedDocumentModel.getDocumentRange();
-
-		// If the paste was given context, calculate the range of the inserted data
-		if ( beforePasteData.context ) {
-			context = new ve.dm.ElementLinearData(
-				pastedDocumentModel.getStore(),
-				ve.copy( beforePasteData.context )
-			);
-			// Sanitize context to match data
-			sanitize( context );
-
-			leftText = beforePasteData.leftText;
-			rightText = beforePasteData.rightText;
-
-			// Remove matching context from the left
-			left = 0;
-			while (
-				context.getLength() &&
-				ve.dm.ElementLinearData.static.compareElementsUnannotated(
-					data.getData( left ),
-					data.isElementData( left ) ? context.getData( 0 ) : leftText
-				)
-			) {
-				if ( !data.isElementData( left ) ) {
-					// Text context is removed
-					leftText = '';
-				}
-				left++;
-				context.splice( 0, 1 );
-			}
-
-			// Remove matching context from the right
-			right = documentRange.end;
-			while (
-				right > 0 &&
-				context.getLength() &&
-				ve.dm.ElementLinearData.static.compareElementsUnannotated(
-					data.getData( right - 1 ),
-					data.isElementData( right - 1 ) ? context.getData( context.getLength() - 1 ) : rightText
-				)
-			) {
-				if ( !data.isElementData( right - 1 ) ) {
-					// Text context is removed
-					rightText = '';
-				}
-				right--;
-				context.splice( context.getLength() - 1, 1 );
-			}
-			if ( ( leftText || rightText ) && !useClipboardData ) {
-				// If any text context is left over, assume the paste target got corrupted
-				// so we should start again and try to use clipboardData instead. T193110
-				return this.afterPaste( e, true );
-			}
-			// Support: Chrome
-			// FIXME T126046: Strip trailing linebreaks probably introduced by Chrome bug
-			while ( right > 0 && data.getType( right - 1 ) === 'break' ) {
-				right--;
-			}
-			contextRange = new ve.Range( left, right );
-		} else {
-			contextRange = documentRange;
-		}
-		pastedNodes = pastedDocumentModel.selectNodes( contextRange, 'siblings' ).filter( function ( node ) {
-			// Ignore nodes where nothing is selected
-			return !( node.range && node.range.isCollapsed() );
-		} );
-
-		// Unwrap single content branch nodes to match internal copy/paste behaviour
-		// (which wouldn't put the open and close tags in the clipboard to begin with).
-		if (
-			pastedNodes.length === 1 &&
-			pastedNodes[ 0 ].node.canContainContent()
-		) {
-			if ( contextRange.containsRange( pastedNodes[ 0 ].nodeRange ) ) {
-				contextRange = pastedNodes[ 0 ].nodeRange;
-			}
-		}
-
-		// If the external HTML turned out to be plain text after sanitization
-		// then run it as a plain text transfer item. In core this will never
-		// do anything, but implementations can provide their own handler for
-		// conversion actions here.
-		if ( pastedDocumentModel.data.isPlainText( contextRange, true, undefined, true ) ) {
-			pastedText = pastedDocumentModel.data.getText( true, contextRange );
-			if ( pastedText ) {
-				handled = this.handleDataTransferItems(
-					[ ve.ui.DataTransferItem.static.newFromString( pastedText ) ],
-					true,
-					targetFragment
-				);
-			}
-		}
-		if ( !handled ) {
-			targetFragment.insertDocument( pastedDocumentModel, contextRange, true );
-		}
+		pending = this.afterPasteAddToFragmentFromExternal( pasteData.clipboardKey, pasteData.$clipboardHtml, fragment, targetFragment, isMultiline );
 	}
-
-	return targetFragment.getPending().then( function () {
+	return pending.then( function () {
 		if ( view.getSelection().isNativeCursor() ) {
 			// Restore focus and scroll position
 			view.$documentNode[ 0 ].focus();
@@ -2424,11 +2021,523 @@ ve.ce.Surface.prototype.afterPaste = function ( e, useClipboardData ) {
 			} );
 		}
 
-		// If orignal selection was linear, switch to end of pasted text
+		// If original selection was linear, switch to end of pasted text
 		if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
 			targetFragment.collapseToEnd().select();
 			view.checkSequences( /* isPaste */ true );
 		}
+	} );
+};
+
+/**
+ * Extract the clipboard key and other relevant data from beforePasteData / the paste target
+ * @return {Object} Data
+ * @return {String|undefined} return.clipboardKey Clipboard key, if present
+ * @return {jQuery|undefined} return.$clipboardHtml Clipboard html, if used to extract the clipboard key
+ * @return {ve.dm.DocumentSlice|undefined} return.slice Relevant slice of this document, if the key points to it
+ */
+ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
+	var clipboardKey, clipboardHash, $clipboardHtml, slice,
+		beforePasteData = this.beforePasteData || {};
+
+	// Find the clipboard key
+	if ( beforePasteData.custom ) {
+		// text/xcustom was present, and requires no further processing
+		clipboardKey = beforePasteData.custom;
+	} else {
+		if ( beforePasteData.html ) {
+			// text/html was present, so we can check if a key was hidden in it
+			$clipboardHtml = $( $.parseHTML( beforePasteData.html ) ).filter( function () {
+				var val = this.getAttribute && this.getAttribute( 'data-ve-clipboard-key' );
+				if ( val ) {
+					clipboardKey = val;
+					// Remove the clipboard key span once read
+					return false;
+				}
+				return true;
+			} );
+			clipboardHash = this.constructor.static.getClipboardHash( $clipboardHtml );
+		} else {
+			// fall back on checking the pasteTarget
+
+			// HTML in pasteTarget may get wrapped, so use the recursive $.find to look for the clipboard key
+			clipboardKey = this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).data( 've-clipboard-key' );
+			// Pass beforePasteData so context gets stripped
+			clipboardHash = this.constructor.static.getClipboardHash( this.$pasteTarget, beforePasteData );
+		}
+	}
+
+	// If we have a clipboard key, validate it and fetch data
+	if ( clipboardKey === this.clipboardId + '-' + this.clipboardIndex ) {
+		// Hash validation: either text/xcustom was used or the hash must be
+		// equal to the hash of the pasted HTML to assert that the HTML
+		// hasn't been modified in another editor before being pasted back.
+		if ( beforePasteData.custom || clipboardHash === this.clipboard.hash ) {
+			slice = this.clipboard.slice;
+			// Clone again. The elements were cloned on copy, but we need to clone
+			// on paste too in case the same thing is pasted multiple times.
+			slice.data.cloneElements( true );
+		}
+	}
+
+	if ( !slice && !$clipboardHtml && beforePasteData.html ) {
+		$clipboardHtml = $( $.parseHTML( beforePasteData.html ) );
+	}
+
+	return {
+		clipboardKey: clipboardKey,
+		$clipboardHtml: $clipboardHtml,
+		slice: slice
+	};
+};
+
+/**
+ * LinearData sanitize helper, for pasted data
+ *
+ * @param  {ve.dm.LinearData} linearData Data to sanitize
+ * @param  {Boolean} isMultiline Sanitize for a multiline context
+ * @param  {Boolean} isExternal Treat as external content
+ */
+ve.ce.Surface.prototype.afterPasteSanitize = function ( linearData, isMultiline, isExternal ) {
+	var importRules = this.afterPasteImportRules( isMultiline );
+	if ( isExternal ) {
+		linearData.sanitize( importRules.external || {} );
+	}
+	linearData.sanitize( importRules.all || {} );
+};
+
+/**
+ * Helper to build import rules for pasted data
+ * @param  {Boolean} isMultiline Get rules for a multiline context
+ * @return {Object} Import rules
+ */
+ve.ce.Surface.prototype.afterPasteImportRules = function ( isMultiline ) {
+	var importRules = !this.pasteSpecial ? this.getSurface().getImportRules() : { all: { plainText: true, keepEmptyContentBranches: true } };
+	if ( !isMultiline ) {
+		importRules = {
+			all: ve.extendObject( {}, importRules.all, { singleLine: true } ),
+			external: ve.extendObject( {}, importRules.external, { singleLine: true } )
+		};
+	}
+	return importRules;
+};
+
+/**
+ * After paste handler for pastes from the same document
+ * @param  {ve.dm.DocumentSlice} slice Slice of document to paste
+ * @param  {ve.dm.SurfaceFragment} fragment Current fragment
+ * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param  {Boolean} isMultiline Pasting to a multiline context
+ * @return {jQuery.Promise} Promise which resolves when the content has been inserted
+ */
+ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, fragment, targetFragment, isMultiline ) {
+	var linearData, data;
+
+	// Pasting non-table content into table: just replace the the first cell with the pasted content
+	if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
+		// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is
+		// about to be triggered.
+		targetFragment.removeContent();
+	}
+
+	// Internal paste
+	try {
+		// Try to paste in the original data
+		// Take a copy to prevent the data being annotated a second time in the catch block
+		// and to prevent actions in the data model affecting view.clipboard
+		linearData = new ve.dm.ElementLinearData(
+			slice.getStore(),
+			ve.copy( slice.getOriginalData() )
+		);
+
+		if ( !isMultiline ) {
+			// Force a jump to the catch branch
+			throw new Error( 'Must use balanced data' );
+		}
+
+		if ( this.pasteSpecial ) {
+			this.afterPasteSanitize( linearData, isMultiline );
+		}
+
+		data = linearData.getData();
+	} catch ( err ) {
+		// If that fails, use the balanced data
+		// Take a copy to prevent actions in the data model affecting view.clipboard
+		linearData = new ve.dm.ElementLinearData(
+			slice.getStore(),
+			ve.copy( slice.getBalancedData() )
+		);
+
+		if ( this.pasteSpecial || !isMultiline ) {
+			this.afterPasteSanitize( linearData, isMultiline );
+		}
+
+		data = linearData.getData();
+
+		if ( !isMultiline ) {
+			// Unwrap CBN
+			if ( data[ 0 ].type ) {
+				data = data.slice( 1, data.length - 1 );
+			}
+		}
+	}
+
+	return this.afterPasteInsertInternalData( targetFragment, data );
+};
+
+/**
+ * Insert some pasted data from an internal source
+ * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param  {Array} data Data to insert
+ * @return {jQuery.Promise} Promise which resolves when the content has been inserted
+ */
+ve.ce.Surface.prototype.afterPasteInsertInternalData = function ( targetFragment, data ) {
+	targetFragment.insertContent( data, true );
+	return targetFragment.getPending();
+};
+
+/**
+ * After paste handler for pastes from the another document
+ * @param  {String|undefined} clipboardKey] Clipboard key for pasted data
+ * @param  {jQuery|undefined} $clipboardHtml Clipboard HTML, if used to find the key
+ * @param  {ve.dm.SurfaceFragment} fragment Current fragment
+ * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param  {Boolean} [isMultiline] Pasting to a multiline context
+ * @param  {Boolean} [forceClipboardData] Ignore the paste target, and use only clipboard html
+ * @return {jQuery.Promise} Promise which resolves when the content has been inserted
+ */
+ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboardKey, $clipboardHtml, fragment, targetFragment, isMultiline, forceClipboardData ) {
+	var data, $body, $images, i, htmlDoc, htmlBlacklist, pastedDocumentModel, tableAction, contextRange, pastedNodes,
+		importantElement = '[id],[typeof],[rel]',
+		items = [],
+		surfaceModel = this.getModel(),
+		documentModel = surfaceModel.getDocument(),
+		beforePasteData = this.beforePasteData || {};
+
+	this.afterPasteSanitizePasteTarget( this.$pasteTarget );
+
+	if ( ( clipboardKey || forceClipboardData ) && $clipboardHtml ) {
+		// If the clipboardKey is set (paste from other VE instance), and clipboard
+		// data is available, then make sure important elements haven't been dropped
+		if (
+			forceClipboardData ||
+			// FIXME T126045: Allow the test runner to force the use of clipboardData
+			clipboardKey === 'useClipboardData-0' ||
+			$clipboardHtml.find( importantElement ).addBack().filter( importantElement ).length > this.$pasteTarget.find( importantElement ).length
+		) {
+			// CE destroyed an important element, so revert to using clipboard data
+			htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
+			// Remove the pasteProtect class. See #onCopy.
+			$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
+			// Remove the clipboard key
+			$( htmlDoc ).find( 'span[data-ve-clipboard-key]' ).remove();
+			beforePasteData.context = null;
+		}
+	}
+	if ( !htmlDoc ) {
+		// If there were no problems, let CE do its sanitizing as it may
+		// contain all sorts of horrible metadata (head tags etc.)
+		// TODO: IE will always take this path, and so may have bugs with span unwrapping
+		// in edge cases (e.g. pasting a single MWReference)
+		htmlDoc = ve.createDocumentFromHtml( this.$pasteTarget.html() );
+	}
+	// Some browsers don't provide pasted image data through the clipboardData API and
+	// instead create img tags with data URLs, so detect those here
+	$body = $( htmlDoc.body );
+	$images = $body.children( 'img[src^=data\\:]' );
+	// Check the body contained just children.
+	// TODO: In the future this may want to trigger image uploads *and* paste the HTML.
+	if ( $images.length === $body.children().length ) {
+		for ( i = 0; i < $images.length; i++ ) {
+			items.push( ve.ui.DataTransferItem.static.newFromDataUri(
+				$images.eq( i ).attr( 'src' ),
+				$images[ i ].outerHTML
+			) );
+		}
+		if ( this.handleDataTransferItems( items, true ) ) {
+			return $.Deferred().resolve().promise();
+		}
+	}
+
+	// HACK: Fix invalid HTML from Google Docs nested lists (T98100).
+	// Converts
+	// <ul><li>A</li><ul><li>B</li></ul></ul>
+	// to
+	// <ul><li>A<ul><li>B</li></ul></li></ul>
+	$( htmlDoc.body ).find( 'ul > ul, ul > ol, ol > ul, ol > ol' ).each( function () {
+		if ( this.previousSibling ) {
+			this.previousSibling.appendChild( this );
+		} else {
+			// List starts double indented. This is invalid and a semantic nightmare.
+			// Just wrap with an extra list item
+			$( this ).wrap( '<li>' );
+		}
+	} );
+
+	// HTML sanitization
+	htmlBlacklist = ve.getProp( this.afterPasteImportRules( isMultiline ), 'external', 'htmlBlacklist' );
+	if ( htmlBlacklist && !clipboardKey ) {
+		if ( htmlBlacklist.remove ) {
+			htmlBlacklist.remove.forEach( function ( selector ) {
+				$( htmlDoc.body ).find( selector ).remove();
+			} );
+		}
+		if ( htmlBlacklist.unwrap ) {
+			htmlBlacklist.unwrap.forEach( function ( selector ) {
+				$( htmlDoc.body ).find( selector ).contents().unwrap();
+			} );
+		}
+	}
+
+	// External paste
+	pastedDocumentModel = ve.dm.converter.getModelFromDom( htmlDoc, {
+		targetDoc: documentModel.getHtmlDocument(),
+		fromClipboard: true
+	} );
+	data = pastedDocumentModel.data;
+	// Clone again
+	data.cloneElements( true );
+
+	// Sanitize
+	this.afterPasteSanitize( data, isMultiline, !clipboardKey );
+
+	data.remapInternalListKeys( documentModel.getInternalList() );
+
+	// Initialize node tree
+	pastedDocumentModel.buildNodeTree();
+
+	if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
+		// External table-into-table paste
+		if (
+			pastedDocumentModel.documentNode.children.length === 2 &&
+			pastedDocumentModel.documentNode.children[ 0 ] instanceof ve.dm.TableNode
+		) {
+			tableAction = new ve.ui.TableAction( this.getSurface() );
+			tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ], true );
+			return $.Deferred().resolve().promise();
+		}
+
+		// Pasting non-table content into table: just replace the the first cell with the pasted content
+		// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is about to be triggered.
+		targetFragment.removeContent();
+	}
+
+	if ( beforePasteData.context ) {
+		// If the paste was given context, calculate the range of the inserted data
+		contextRange = this.afterPasteFromExternalContextRange( pastedDocumentModel, isMultiline, forceClipboardData );
+		if ( !contextRange ) {
+			return this.afterPasteAddToFragmentFromExternal( clipboardKey, $clipboardHtml, fragment, targetFragment, isMultiline, true );
+		}
+	} else {
+		contextRange = pastedDocumentModel.getDocumentRange();
+	}
+	pastedNodes = pastedDocumentModel.selectNodes( contextRange, 'siblings' ).filter( function ( node ) {
+		// Ignore nodes where nothing is selected
+		return !( node.range && node.range.isCollapsed() );
+	} );
+
+	// Unwrap single content branch nodes to match internal copy/paste behaviour
+	// (which wouldn't put the open and close tags in the clipboard to begin with).
+	if (
+		pastedNodes.length === 1 &&
+		pastedNodes[ 0 ].node.canContainContent()
+	) {
+		if ( contextRange.containsRange( pastedNodes[ 0 ].nodeRange ) ) {
+			contextRange = pastedNodes[ 0 ].nodeRange;
+		}
+	}
+
+	return this.afterPasteInsertExternalData( targetFragment, pastedDocumentModel, contextRange );
+};
+
+/**
+ * Insert some pasted data from an external source
+ * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param  {ve.dm.Document} pastedDocumentModel Model generated from pasted data
+ * @param  {ve.Range} contextRange Range of data in generated model to consider
+ * @return {jQuery.Promise} Promise which resolves when the content has been inserted
+ */
+ve.ce.Surface.prototype.afterPasteInsertExternalData = function ( targetFragment, pastedDocumentModel, contextRange ) {
+	var pastedText, handled;
+	// If the external HTML turned out to be plain text after sanitization
+	// then run it as a plain text transfer item. In core this will never
+	// do anything, but implementations can provide their own handler for
+	// conversion actions here.
+	if ( pastedDocumentModel.data.isPlainText( contextRange, true, undefined, true ) ) {
+		pastedText = pastedDocumentModel.data.getText( true, contextRange );
+		if ( pastedText ) {
+			handled = this.handleDataTransferItems(
+				[ ve.ui.DataTransferItem.static.newFromString( pastedText ) ],
+				true,
+				targetFragment
+			);
+		}
+	}
+	if ( !handled ) {
+		targetFragment.insertDocument( pastedDocumentModel, contextRange, true );
+	}
+	return targetFragment.getPending();
+};
+
+/**
+ * Helper to work out the context range for an external paste
+ * @param  {ve.dm.Document} pastedDocumentModel Model for pasted data
+ * @param  {Boolean} isMultiline Whether pasting to a multiline context
+ * @param  {Boolean} forceClipboardData Whether the current attempted paste is the result of forcing use of clipboard data
+ * @return {ve.Range|Boolean} Context range, or false if data appeared corrupted
+ */
+ve.ce.Surface.prototype.afterPasteFromExternalContextRange = function ( pastedDocumentModel, isMultiline, forceClipboardData ) {
+	var leftText, rightText, left, right,
+		data = pastedDocumentModel.data,
+		documentRange = pastedDocumentModel.getDocumentRange(),
+		beforePasteData = this.beforePasteData || {},
+		context = new ve.dm.ElementLinearData(
+			pastedDocumentModel.getStore(),
+			ve.copy( beforePasteData.context )
+		);
+	// Sanitize context to match data
+	this.afterPasteSanitize( context, isMultiline );
+
+	leftText = beforePasteData.leftText;
+	rightText = beforePasteData.rightText;
+
+	// Remove matching context from the left
+	left = 0;
+	while (
+		context.getLength() &&
+		ve.dm.ElementLinearData.static.compareElementsUnannotated(
+			data.getData( left ),
+			data.isElementData( left ) ? context.getData( 0 ) : leftText
+		)
+	) {
+		if ( !data.isElementData( left ) ) {
+			// Text context is removed
+			leftText = '';
+		}
+		left++;
+		context.splice( 0, 1 );
+	}
+
+	// Remove matching context from the right
+	right = documentRange.end;
+	while (
+		right > 0 &&
+		context.getLength() &&
+		ve.dm.ElementLinearData.static.compareElementsUnannotated(
+			data.getData( right - 1 ),
+			data.isElementData( right - 1 ) ? context.getData( context.getLength() - 1 ) : rightText
+		)
+	) {
+		if ( !data.isElementData( right - 1 ) ) {
+			// Text context is removed
+			rightText = '';
+		}
+		right--;
+		context.splice( context.getLength() - 1, 1 );
+	}
+	if ( ( leftText || rightText ) && !forceClipboardData ) {
+		// If any text context is left over, assume the paste target got corrupted
+		// so we should start again and try to use clipboardData instead. T193110
+		return false;
+	}
+	// Support: Chrome
+	// FIXME T126046: Strip trailing linebreaks probably introduced by Chrome bug
+	while ( right > 0 && data.getType( right - 1 ) === 'break' ) {
+		right--;
+	}
+	return new ve.Range( left, right );
+};
+
+/**
+ * Helper to clean up the pasteTarget
+ * @param  {jQuery} $pasteTarget Target to sanitize
+ */
+ve.ce.Surface.prototype.afterPasteSanitizePasteTarget = function ( $pasteTarget ) {
+	var metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
+
+	// Remove the clipboard key
+	this.$pasteTarget.find( 'span[data-ve-clipboard-key]' ).remove();
+	// Remove style tags (T185532)
+	this.$pasteTarget.find( 'style' ).remove();
+	// If this is from external, run extra sanitization:
+
+	// Do some simple transforms to catch content that is using
+	// spans+styles instead of regular tags. This is very much targeted at
+	// the output of Google Docs, but should work with anything fairly-
+	// similar. This is *fragile*, but more in the sense that small
+	// deviations will stop it from working, rather than it being terribly
+	// likely to incorrectly over-format things.
+	// TODO: This might be cleaner if we could move the sanitization into
+	// dm.converter entirely.
+	$pasteTarget.find( 'span' ).each( function ( i, node ) {
+		var $node;
+		// Later sanitization will replace completely-empty spans with
+		// their contents, so we can lazily-wrap here without cleaning
+		// up.
+		if ( !node.style ) {
+			return;
+		}
+		$node = $( node );
+		if ( node.style.fontWeight === '700' ) {
+			$node.wrap( '<b>' );
+		}
+		if ( node.style.fontStyle === 'italic' ) {
+			$node.wrap( '<i>' );
+		}
+		if ( node.style.textDecorationLine === 'underline' ) {
+			$node.wrap( '<u>' );
+		}
+		if ( node.style.textDecorationLine === 'line-through' ) {
+			$node.wrap( '<s>' );
+		}
+		if ( node.style.verticalAlign === 'super' ) {
+			$node.wrap( '<sup>' );
+		}
+		if ( node.style.verticalAlign === 'sub' ) {
+			$node.wrap( '<sub>' );
+		}
+	} );
+
+	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
+	$pasteTarget.find( '[style]' ).removeAttr( 'style' );
+
+	if ( metadataIdRegExp ) {
+		$pasteTarget.find( '[id]' ).each( function () {
+			var $this = $( this );
+			if ( $this.attr( 'id' ).match( metadataIdRegExp ) ) {
+				$this.removeAttr( 'id' );
+			}
+		} );
+	}
+
+	// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
+	$pasteTarget.find( 'span' ).each( function () {
+		var $this = $( this );
+		$this.removeClass( 've-pasteProtect' );
+		if ( $this.attr( 'class' ) === '' ) {
+			$this.removeAttr( 'class' );
+		}
+		// Unwrap empty spans
+		if ( !this.attributes.length ) {
+			$this.replaceWith( this.childNodes );
+		}
+	} );
+
+	// Restore attributes. See #onCopy.
+	$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
+		var attrs,
+			attrsJSON = this.getAttribute( 'data-ve-attributes' );
+
+		// Always remove the attribute, even if the JSON has been corrupted
+		this.removeAttribute( 'data-ve-attributes' );
+
+		try {
+			attrs = JSON.parse( attrsJSON );
+		} catch ( err ) {
+			// Invalid JSON
+			return;
+		}
+		$( this ).attr( attrs );
 	} );
 };
 
