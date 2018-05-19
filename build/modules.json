@@ -11,10 +11,10 @@
 	},
 	"qunit": {
 		"scripts": [
-			"node_modules/qunitjs/qunit/qunit.js"
+			"node_modules/qunit/qunit/qunit.js"
 		],
 		"styles": [
-			{ "file": "node_modules/qunitjs/qunit/qunit.css", "test": true }
+			{ "file": "node_modules/qunit/qunit/qunit.css", "test": true }
 		]
 	},
 	"jsdifflib": {

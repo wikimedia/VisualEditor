@@ -48,7 +48,7 @@ echo "$html" > index.html
 touch .nojekyll
 
 git add index.html .nojekyll
-git add -f node_modules/qunitjs dist/
+git add -f node_modules/qunit dist/
 
 git commit -m "Create gh-pages branch"
 git push origin -f HEAD
