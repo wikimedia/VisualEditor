@@ -34,7 +34,7 @@ ve.ui.LanguageSearchDialog.static.title =
 ve.ui.LanguageSearchDialog.static.actions = [
 	{
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
-		flags: [ 'back' ]
+		flags: [ 'safe', 'back' ]
 	}
 ];
 
