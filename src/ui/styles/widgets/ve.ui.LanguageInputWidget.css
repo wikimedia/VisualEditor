@@ -10,16 +10,15 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	vertical-align: middle;
-}
-
-.ve-ui-languageInputWidget .oo-ui-fieldLayout.oo-ui-labelElement > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
-	width: 7em;
+	white-space: nowrap;
 }
 
 .ve-ui-languageInputWidget-languageCodeTextInput {
 	width: 6em;
+	display: inline-block;
 }
 
-.ve-ui-languageInputWidget-directionSelect {
-	margin-bottom: 0.5em;
+.ve-ui-languageInputWidget-directionLabel {
+	margin-top: 0.5em;
+	display: block;
 }

@@ -59,12 +59,18 @@ body {
 	text-transform: capitalize;
 }
 
-.ve-demo-toolbar .ve-ui-languageInputWidget .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
+.ve-demo-toolbar .ve-ui-languageInputWidget-languageInput,
+.ve-demo-toolbar .ve-ui-languageInputWidget-directionSelect {
+	margin: 0;
+	display: inline-block;
+}
+
+.ve-demo-toolbar .ve-ui-languageInputWidget-directionLabel {
 	display: none;
 }
 
-.ve-demo-toolbar .ve-ui-languageInputWidget-directionSelect {
-	margin: 0;
+.ve-demo-toolbar .ve-ui-languageInputWidget-languageInput {
+	margin-right: 0.5em;
 }
 
 .ve-demo-toolbar-commands {
