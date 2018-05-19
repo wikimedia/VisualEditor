@@ -160,7 +160,7 @@ ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
 ve.dm.Scalable.static.isDimensionsObjectValid = function ( dimensions ) {
 	if (
 		dimensions &&
-		!$.isEmptyObject( dimensions ) &&
+		!ve.isEmptyObject( dimensions ) &&
 		(
 			dimensions.width !== undefined ||
 			dimensions.height !== undefined
@@ -604,8 +604,8 @@ ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
  */
 ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
 	var dimensions = this.getCurrentDimensions(),
-		minDimensions = this.isEnforcedMin() && !$.isEmptyObject( this.getMinDimensions() ) && this.getMinDimensions(),
-		maxDimensions = this.isEnforcedMax() && !$.isEmptyObject( this.getMaxDimensions() ) && this.getMaxDimensions();
+		minDimensions = this.isEnforcedMin() && !ve.isEmptyObject( this.getMinDimensions() ) && this.getMinDimensions(),
+		maxDimensions = this.isEnforcedMax() && !ve.isEmptyObject( this.getMaxDimensions() ) && this.getMaxDimensions();
 
 	this.valid = (
 		!!dimensions &&

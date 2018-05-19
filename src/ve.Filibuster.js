@@ -298,7 +298,7 @@ ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, blacklist ) {
 		}
 		isConstructor = (
 			typeof prop === 'function' &&
-			!$.isEmptyObject( prop.prototype )
+			!ve.isEmptyObject( prop.prototype )
 		);
 		if ( isConstructor ) {
 			this.wrapClass( prop, blacklist );
