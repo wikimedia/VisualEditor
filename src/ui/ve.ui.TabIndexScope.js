@@ -15,7 +15,7 @@
  * @cfg {boolean} [skipAriaDisabled] Whether to skip elements that are just aria-disabled from the order
  */
 ve.ui.TabIndexScope = function VeUiTabIndexScope( config ) {
-	config = $.extend( {
+	config = ve.extendObject( {
 		root: false,
 		skipAriaDisabled: true,
 		skipAriaHidden: true
