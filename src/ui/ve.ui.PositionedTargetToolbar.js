@@ -56,7 +56,7 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 		opening: 'onToolbarDialogsOpeningOrClosing',
 		closing: 'onToolbarDialogsOpeningOrClosing'
 	} );
-	this.$window.on( 'scroll', this.onWindowScrollThrottled );
+	ve.addPassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
 };
 
 /**
@@ -70,7 +70,7 @@ ve.ui.PositionedTargetToolbar.prototype.detach = function () {
 		this.getSurface().getToolbarDialogs().disconnect( this );
 		this.getSurface().getToolbarDialogs().clearWindows();
 	}
-	this.$window.off( 'scroll', this.onWindowScrollThrottled );
+	ve.removePassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
 
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.detach.apply( this, arguments );
