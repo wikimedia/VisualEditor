@@ -22,7 +22,8 @@
  * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
-	var languageLayoutConfig, dirItems, dirInput;
+	var dirItems, dirInput,
+		$language = $( '<div>' ).addClass( 've-ui-languageInputWidget-languageInput' );
 
 	// Configuration initialization
 	config = config || {};
@@ -53,29 +54,18 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.directionSelect = new OO.ui.ButtonSelectWidget( {
 		classes: [ 've-ui-languageInputWidget-directionSelect' ]
 	} );
-	languageLayoutConfig = {
-		align: 'left',
-		label: ve.msg( 'visualeditor-languageinspector-widget-label-language' )
-	};
-
-	if ( config.hideCodeInput ) {
-		this.languageLayout = new OO.ui.FieldLayout(
-			this.findLanguageButton,
-			languageLayoutConfig
-		);
-	} else {
-		this.languageLayout = new OO.ui.ActionFieldLayout(
-			this.languageCodeTextInput,
-			this.findLanguageButton,
-			languageLayoutConfig
-		);
-	}
-	this.findLanguageButton.$element.before( this.selectedLanguageLabel.$element );
-
-	this.directionField = new OO.ui.FieldLayout( this.directionSelect, {
-		align: 'left',
+	this.directionLabel = new OO.ui.LabelWidget( {
+		classes: [ 've-ui-languageInputWidget-directionLabel' ],
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-direction' )
 	} );
+
+	$language.append(
+		this.findLanguageButton.$element
+	);
+	if ( !config.hideCodeInput ) {
+		$language.prepend( this.languageCodeTextInput.$element );
+	}
+	this.findLanguageButton.$element.before( this.selectedLanguageLabel.$element );
 
 	// Events
 	this.findLanguageButton.connect( this, { click: 'onFindLanguageButtonClick' } );
@@ -107,9 +97,10 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 
 	this.$element
 		.addClass( 've-ui-languageInputWidget' )
-		.append( this.languageLayout.$element );
+		.append( $language );
+
 	if ( dirInput !== 'none' ) {
-		this.$element.append( this.directionField.$element );
+		this.$element.append( this.directionLabel.$element, this.directionSelect.$element );
 	}
 };
 
@@ -197,9 +188,9 @@ ve.ui.LanguageInputWidget.prototype.setLangAndDir = function ( lang, dir ) {
 	this.selectedLanguageLabel.setTitle( this.selectedLanguageLabel.$label.text() );
 	this.updating = false;
 
-	this.emit( 'change', lang, dir );
 	this.lang = lang;
 	this.dir = dir;
+	this.emit( 'change', lang, dir );
 };
 
 /**
