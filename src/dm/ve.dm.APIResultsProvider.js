@@ -56,21 +56,11 @@ OO.mixinClass( ve.dm.APIResultsProvider, OO.EventEmitter );
 ve.dm.APIResultsProvider.prototype.getResults = function () {
 	var xhr,
 		deferred = $.Deferred(),
-		allParams = $.extend( {}, this.getStaticParams(), this.getUserParams() );
+		allParams = ve.extendObject( {}, this.getStaticParams(), this.getUserParams() );
 
 	xhr = $.getJSON( this.getAPIurl(), allParams )
 		.done( function ( data ) {
-			if (
-				$.type( data ) !== 'array' ||
-				(
-					$.type( data ) === 'array' &&
-					data.length === 0
-				)
-			) {
-				deferred.resolve();
-			} else {
-				deferred.resolve( data );
-			}
+			deferred.resolve( Array.isArray( data ) && data.length ? data : undefined );
 		} );
 	return deferred.promise( { abort: xhr.abort } );
 };
@@ -119,7 +109,7 @@ ve.dm.APIResultsProvider.prototype.getUserParams = function () {
 ve.dm.APIResultsProvider.prototype.setUserParams = function ( params ) {
 	// Asymmetrically compare (params is subset of this.userParams)
 	if ( !ve.compare( params, this.userParams, true ) ) {
-		this.userParams = $.extend( {}, this.userParams, params );
+		this.userParams = ve.extendObject( {}, this.userParams, params );
 		this.reset();
 	}
 };
