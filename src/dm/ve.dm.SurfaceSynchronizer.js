@@ -95,6 +95,16 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
 /* Methods */
 
 /**
+ * Destroy the synchronizer
+ */
+ve.dm.SurfaceSynchronizer.prototype.destroy = function () {
+	this.socket.disconnect();
+	this.doc.disconnect( this );
+	this.surface.disconnect( this );
+	this.initialized = false;
+};
+
+/**
  * @inheritdoc
  */
 ve.dm.SurfaceSynchronizer.prototype.getChangeSince = function ( start, toSubmit ) {

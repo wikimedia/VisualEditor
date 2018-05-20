@@ -386,6 +386,11 @@ ve.ce.Surface.prototype.destroy = function () {
 		this.$document.off( 'selectionchange', this.onDocumentSelectionChangeDebounced );
 	}
 
+	if ( this.synchronizer ) {
+		this.synchronizer.destroy();
+		this.synchronizer.disconnect( this );
+	}
+
 	// Disconnect DOM events on the window
 	this.$window.off( 'resize', this.onWindowResizeHandler );
 
@@ -4243,10 +4248,11 @@ ve.ce.Surface.prototype.selectionSplitsLink = function () {
  * Document content itself is handled by the synchronizer, as is document history.
  *
  * @param {ve.dm.SurfaceSynchronizer} synchronizer The synchronizer to listen to
+ * @throws {Error} Synchronizer already set
  */
 ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer ) {
 	if ( this.synchronizer ) {
-		this.synchronizer.disconnect( this );
+		throw new Error( 'Synchronizer already set' );
 	}
 	this.synchronizer = synchronizer;
 	this.synchronizer.connect( this, {
