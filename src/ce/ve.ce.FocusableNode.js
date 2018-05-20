@@ -239,16 +239,12 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 		.addClass( 've-ce-focusableNode-highlight' + extraClasses )
 		.prop( {
 			title: this.constructor.static.getDescription( this.model ),
-			draggable: false
+			draggable: true
 		} )
-		.append( $( '<img>' )
-			.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
-			.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' )
-			.on( {
-				dragstart: this.onFocusableDragStart.bind( this ),
-				dragend: this.onFocusableDragEnd.bind( this )
-			} )
-		);
+		.on( {
+			dragstart: this.onFocusableDragStart.bind( this ),
+			dragend: this.onFocusableDragEnd.bind( this )
+		} );
 };
 
 /**
@@ -409,14 +405,11 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 	}
 
 	if ( e.which === OO.ui.MouseButtons.RIGHT ) {
-		// Hide images, and select spans so context menu shows 'copy', but not 'copy image'
-		this.$highlights.addClass( 've-ce-focusableNode-highlights-contextOpen' );
 		// Make ce=true so we get cut/paste options in context menu
 		this.$highlights.prop( 'contentEditable', 'true' );
 		ve.selectElement( this.$highlights[ 0 ] );
 		setTimeout( function () {
-			// Undo everything as soon as the context menu is show
-			node.$highlights.removeClass( 've-ce-focusableNode-highlights-contextOpen' );
+			// Undo ce=true as soon as the context menu is shown
 			node.$highlights.prop( 'contentEditable', 'false' );
 			node.focusableSurface.preparePasteTargetForCopy();
 		} );
@@ -474,12 +467,13 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
  * @method
  * @param {jQuery.Event} e Drag start event
  */
-ve.ce.FocusableNode.prototype.onFocusableDragStart = function () {
+ve.ce.FocusableNode.prototype.onFocusableDragStart = function ( e ) {
+	// Set dummy transfer data so that the element can be dragged into text locations
+	e.originalEvent.dataTransfer.setData( 'Text', ' ' );
 	if ( this.focusableSurface ) {
 		// Allow dragging this node in the surface
 		this.focusableSurface.startRelocation( this );
 	}
-	this.$highlights.addClass( 've-ce-focusableNode-highlights-relocating' );
 };
 
 /**
@@ -496,7 +490,6 @@ ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
 	if ( this.focusableSurface ) {
 		this.focusableSurface.endRelocation();
 	}
-	this.$highlights.removeClass( 've-ce-focusableNode-highlights-relocating' );
 };
 
 /**
