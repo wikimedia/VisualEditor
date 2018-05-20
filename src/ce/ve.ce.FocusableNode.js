@@ -245,7 +245,6 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 			.addClass( 've-ce-focusableNode-highlight-relocatable-marker' )
 			.attr( 'src', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==' )
 			.on( {
-				mousedown: this.onFocusableMouseDown.bind( this ),
 				dragstart: this.onFocusableDragStart.bind( this ),
 				dragend: this.onFocusableDragEnd.bind( this )
 			} )
@@ -418,7 +417,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		setTimeout( function () {
 			// Undo everything as soon as the context menu is show
 			node.$highlights.removeClass( 've-ce-focusableNode-highlights-contextOpen' );
-			node.$highlights.prop( 'contentEditable', 'true' );
+			node.$highlights.prop( 'contentEditable', 'false' );
 			node.focusableSurface.preparePasteTargetForCopy();
 		} );
 	}
