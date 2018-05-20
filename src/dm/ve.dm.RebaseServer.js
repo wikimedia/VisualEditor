@@ -4,7 +4,7 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* eslint-env es6 */
+/* eslint-env node, es6 */
 
 /**
  * DataModel rebase server
@@ -27,13 +27,13 @@ OO.initClass( ve.dm.RebaseServer );
  * Get the state of a document by name.
  *
  * @param {string} doc Name of a document
- * @return {Promise<ve.dm.RebaseDocState>} Document state
+ * @return {ve.dm.RebaseDocState} Document state
  */
 ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
 	if ( !this.stateForDoc.has( doc ) ) {
 		this.stateForDoc.set( doc, new ve.dm.RebaseDocState() );
 	}
-	return Promise.resolve( this.stateForDoc.get( doc ) );
+	return this.stateForDoc.get( doc );
 };
 
 /**
@@ -43,11 +43,10 @@ ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
  * @param {number} authorId Author ID
  * @param {ve.dm.Change} [newHistory] New history to append
  * @param {Object} [authorDataChanges] New values for author data (modified keys only)
- * @return {Promise<undefined>}
  */
-ve.dm.RebaseServer.prototype.updateDocState = ve.async( function* updateDocState( doc, authorId, newHistory, authorDataChanges ) {
+ve.dm.RebaseServer.prototype.updateDocState = function updateDocState( doc, authorId, newHistory, authorDataChanges ) {
 	var key, authorData,
-		state = yield this.getDocState( doc );
+		state = this.getDocState( doc );
 	if ( newHistory ) {
 		state.history.push( newHistory );
 	}
@@ -64,7 +63,7 @@ ve.dm.RebaseServer.prototype.updateDocState = ve.async( function* updateDocState
 			}
 		}
 	}
-} );
+};
 
 /**
  * Attempt to rebase and apply a change to a document.
@@ -77,11 +76,11 @@ ve.dm.RebaseServer.prototype.updateDocState = ve.async( function* updateDocState
  * @param {number} authorId Author ID
  * @param {number} backtrack How many transactions are backtracked from the previous submission
  * @param {ve.dm.Change} change Change to apply
- * @return {Promise<ve.dm.Change>} Accepted change (or initial segment thereof), as rebased
+ * @return {ve.dm.Change} Accepted change (or initial segment thereof), as rebased
  */
-ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc, authorId, backtrack, change ) {
+ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, authorId, backtrack, change ) {
 	var base, rejections, result, appliedChange,
-		state = yield this.getDocState( doc ),
+		state = this.getDocState( doc ),
 		authorData = state.authors.get( authorId );
 
 	base = authorData.continueBase || change.truncate( 0 );
@@ -89,7 +88,7 @@ ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc,
 	if ( rejections > backtrack ) {
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;
-		yield this.updateDocState( doc, authorId, null, { rejections: rejections } );
+		this.updateDocState( doc, authorId, null, { rejections: rejections } );
 		// FIXME argh this publishes an empty change, which is not what we want
 		appliedChange = state.history.truncate( 0 );
 	} else if ( rejections < backtrack ) {
@@ -106,7 +105,7 @@ ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc,
 
 		result = ve.dm.Change.static.rebaseUncommittedChange( base, change );
 		rejections = result.rejected ? result.rejected.getLength() : 0;
-		yield this.updateDocState( doc, authorId, result.rebased, {
+		this.updateDocState( doc, authorId, result.rebased, {
 			rejections: rejections,
 			continueBase: result.transposedHistory
 		} );
@@ -122,4 +121,4 @@ ve.dm.RebaseServer.prototype.applyChange = ve.async( function* applyChange( doc,
 		rejections: rejections
 	} );
 	return appliedChange;
-} );
+};

@@ -6,7 +6,7 @@
 
 /* eslint-disable no-console */
 
-var rebaseServer, pendingForDoc, artificialDelay, palette, logStream, handlers,
+var rebaseServer, palette, logStream, handlers,
 	port = 8081,
 	startTimestamp,
 	fs = require( 'fs' ),
@@ -40,21 +40,9 @@ function logServerEvent( event ) {
 	logEvent( ob );
 }
 
-function wait( timeout ) {
-	return new Promise( function ( resolve ) {
-		setTimeout( resolve, timeout );
-	} );
-}
-
-function logError( err ) {
-	console.log( err.stack );
-}
-
 rebaseServer = new ve.dm.RebaseServer( logServerEvent );
 docNamespaces = new Map();
 lastAuthorForDoc = new Map();
-pendingForDoc = new Map();
-artificialDelay = parseInt( process.argv[ 2 ] ) || 0;
 palette = [
 	'1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd',
 	'8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf',
@@ -62,15 +50,15 @@ palette = [
 	'c49c94', 'f7b6d2', 'c7c7c7', 'dbdb8d', '9edae5'
 ];
 
-function* welcomeNewClient( socket, docName, authorId ) {
+function welcomeNewClient( socket, docName, authorId ) {
 	var state, authorData;
-	yield rebaseServer.updateDocState( docName, authorId, null, {
+	rebaseServer.updateDocState( docName, authorId, null, {
 		// TODO: i18n
 		displayName: 'User ' + authorId,
 		displayColor: palette[ authorId % palette.length ]
 	} );
 
-	state = yield rebaseServer.getDocState( docName );
+	state = rebaseServer.getDocState( docName );
 	authorData = state.authors.get( authorId );
 
 	socket.emit( 'registered', {
@@ -98,17 +86,17 @@ function* welcomeNewClient( socket, docName, authorId ) {
 	} );
 }
 
-function* onSubmitChange( context, data ) {
+function onSubmitChange( context, data ) {
 	var change, applied;
 	change = ve.dm.Change.static.deserialize( data.change, null, true );
-	applied = yield rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
+	applied = rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
 	if ( !applied.isEmpty() ) {
 		docNamespaces.get( context.docName ).emit( 'newChange', applied.serialize( true ) );
 	}
 }
 
-function* onChangeName( context, newName ) {
-	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
+function onChangeName( context, newName ) {
+	rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayName: newName
 	} );
 	docNamespaces.get( context.docName ).emit( 'nameChange', {
@@ -123,8 +111,8 @@ function* onChangeName( context, newName ) {
 	} );
 }
 
-function* onChangeColor( context, newColor ) {
-	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
+function onChangeColor( context, newColor ) {
+	rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayColor: newColor
 	} );
 	docNamespaces.get( context.docName ).emit( 'colorChange', {
@@ -139,18 +127,18 @@ function* onChangeColor( context, newColor ) {
 	} );
 }
 
-function* onUsurp( context, data ) {
-	var state = yield rebaseServer.getDocState( context.docName ),
+function onUsurp( context, data ) {
+	var state = rebaseServer.getDocState( context.docName ),
 		newAuthorData = state.authors.get( data.authorId );
 	if ( newAuthorData.token !== data.token ) {
 		context.socket.emit( 'usurpFailed' );
 		return;
 	}
-	yield rebaseServer.updateDocState( context.docName, data.authorId, null, {
+	rebaseServer.updateDocState( context.docName, data.authorId, null, {
 		active: true
 	} );
 	// TODO either delete this author, or reimplement usurp in a client-initiated way
-	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
+	rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false
 	} );
 	context.socket.emit( 'registered', {
@@ -167,9 +155,9 @@ function* onUsurp( context, data ) {
 	context.authorId = data.authorId;
 }
 
-function* onDisconnect( context ) {
+function onDisconnect( context ) {
 	console.log( 'disconnect ' + context.socket.client.conn.remoteAddress + ' ' + context.socket.handshake.url );
-	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
+	rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false,
 		continueBase: null,
 		rejections: null
@@ -182,20 +170,6 @@ function* onDisconnect( context ) {
 	} );
 }
 
-function addStep( docName, generatorFunc, addDelay ) {
-	var pending,
-		parallel = [ Promise.resolve( pendingForDoc.get( docName ) ) ];
-	if ( addDelay && artificialDelay > 0 ) {
-		parallel.push( wait( artificialDelay ) );
-	}
-	pending = Promise.all( parallel )
-		.then( function () {
-			return ve.spawn( generatorFunc );
-		} )
-		.catch( logError );
-	pendingForDoc.set( docName, pending );
-}
-
 handlers = {
 	submitChange: onSubmitChange,
 	changeName: onChangeName,
@@ -205,8 +179,7 @@ handlers = {
 };
 
 function handleEvent( context, eventName, data ) {
-	var addDelay = eventName === 'submitChange';
-	addStep( context.docName, handlers[ eventName ]( context, data ), addDelay );
+	handlers[ eventName ]( context, data );
 }
 
 function makeConnectionHandler( docName ) {
@@ -226,7 +199,7 @@ function makeConnectionHandler( docName ) {
 		} );
 
 		// Kick off welcome process
-		addStep( docName, welcomeNewClient( socket, docName, context.authorId ) );
+		welcomeNewClient( socket, docName, context.authorId );
 
 		// Attach event handlers
 		for ( eventName in handlers ) {
@@ -282,4 +255,4 @@ io.on( 'connection', function ( socket ) {
 startTimestamp = Date.now();
 logServerEvent( { type: 'restart' } );
 http.listen( port );
-console.log( 'Listening on ' + port + ' (artificial delay ' + artificialDelay + ' ms)' );
+console.log( 'Listening on ' + port );

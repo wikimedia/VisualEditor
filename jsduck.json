@@ -10,11 +10,8 @@
 	"--warnings-exit-nonzero": true,
 	"--external": "HTMLDocument,Window,Node,Text,Set,Range,Selection,ClientRect,File,Blob,DataTransfer,DataTransferItem,KeyboardEvent,MouseEvent",
 	"--exclude": [
-		"src/dm/ve.dm.RebaseServer.js",
 		"src/ve.utils-es6.js",
-		"tests/dm/ve.dm.RebaseServer.test.js",
-		"tests/dm/ve.dm.TestRebaseClient.js",
-		"tests/dm/ve.dm.TestRebaseServer.js"
+		"tests/ve.utils-es6.test.js"
 	],
 	"--": [
 		".jsduck/external.js",

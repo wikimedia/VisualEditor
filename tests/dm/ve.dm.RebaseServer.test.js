@@ -4,12 +4,9 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* eslint-env es6 */
-
 QUnit.module( 've.dm.RebaseServer' );
 
-// eslint-disable-next-line qunit/resolve-async
-QUnit.test( 'Rebase', ( assert ) => ve.spawn( function* () {
+QUnit.test( 'Rebase', function ( assert ) {
 	var i, j, op, server, client, clients, action, txs, summary,
 		cases = [
 			{
@@ -429,9 +426,6 @@ QUnit.test( 'Rebase', ( assert ) => ve.spawn( function* () {
 		return builder.getTransaction();
 	}
 
-	// HACK: A version of spawn that supports this would be better
-	ve.dm.RebaseServer.qunitAssertAsync = assert.async();
-
 	for ( i = 0; i < cases.length; i++ ) {
 		server = new ve.dm.TestRebaseServer();
 		clients = {};
@@ -462,7 +456,7 @@ QUnit.test( 'Rebase', ( assert ) => ve.spawn( function* () {
 				}
 			} else if ( action === 'assertHist' ) {
 				if ( op[ 0 ] === 'server' ) {
-					summary = yield server.getHistorySummary();
+					summary = server.getHistorySummary();
 				} else {
 					summary = client.getHistorySummary();
 				}
@@ -470,7 +464,7 @@ QUnit.test( 'Rebase', ( assert ) => ve.spawn( function* () {
 			} else if ( action === 'submit' ) {
 				client.submitChange();
 			} else if ( action === 'deliver' ) {
-				yield client.deliverOne();
+				client.deliverOne();
 			} else if ( action === 'receive' ) {
 				client.receiveOne();
 			} else if ( action === 'assert' ) {
@@ -478,8 +472,4 @@ QUnit.test( 'Rebase', ( assert ) => ve.spawn( function* () {
 			}
 		}
 	}
-}() ).catch( function ( err ) {
-	assert.ok( false, err.stack );
-} ).then( function () {
-	ve.dm.RebaseServer.qunitAssertAsync();
-} ) );
+} );

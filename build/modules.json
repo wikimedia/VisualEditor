@@ -714,6 +714,7 @@
 			"tests/ve.qunit.local.js",
 			"tests/ve.test.utils.js",
 			"tests/ve.test.js",
+			"tests/ve.utils-es6.test.js",
 			"tests/ve.EventSequencer.test.js",
 			"tests/ve.Scheduler.test.js",
 			"tests/ve.Range.test.js",
