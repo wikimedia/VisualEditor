@@ -19,6 +19,8 @@
  * @cfg {string} [server] IO server
  */
 ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config ) {
+	var path, options;
+
 	config = config || {};
 
 	// Mixin constructors
@@ -40,7 +42,14 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.applying = false;
 
 	// SocketIO events
-	this.socket = io( ( config.server || '' ) + '/' + this.documentId, { query: { docName: this.documentId } } );
+	path = ( config.server || '' ) + '/' + this.documentId;
+	options = { query: { docName: this.documentId } };
+	this.socket = io( path, options );
+	// HACK: SocketIO caches the options from the last request.
+	// Connecting twice appears to overwrite this cache.
+	// See https://github.com/socketio/socket.io/issues/1677
+	this.socket.disconnect();
+	this.socket = io( path, options );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
 	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
