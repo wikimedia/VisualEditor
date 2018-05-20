@@ -281,7 +281,7 @@ ve.init.Target.prototype.isModeAvailable = function ( mode ) {
 ve.init.Target.prototype.bindHandlers = function () {
 	$( this.getElementDocument() ).on( 'keydown', this.onDocumentKeyDownHandler );
 	this.$element.on( 'keydown', this.onTargetKeyDownHandler );
-	this.$scrollContainer.on( 'scroll', this.onContainerScrollHandler );
+	ve.addPassiveEventListener( this.$scrollContainer[ 0 ], 'scroll', this.onContainerScrollHandler );
 };
 
 /**
@@ -290,7 +290,7 @@ ve.init.Target.prototype.bindHandlers = function () {
 ve.init.Target.prototype.unbindHandlers = function () {
 	$( this.getElementDocument() ).off( 'keydown', this.onDocumentKeyDownHandler );
 	this.$element.off( 'keydown', this.onTargetKeyDownHandler );
-	this.$scrollContainer.off( 'scroll', this.onContainerScrollHandler );
+	ve.removePassiveEventListener( this.$scrollContainer[ 0 ], 'scroll', this.onContainerScrollHandler );
 };
 
 /**

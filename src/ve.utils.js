@@ -1895,3 +1895,49 @@ ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
 
 	return ve.isClipboardDataFormatsSupported[ cacheKey ];
 };
+
+/**
+ * Register a passive event listener
+ *
+ * @param {HTMLElement} elem Element to register event on
+ * @param {String} event Name of event to register
+ * @param {Function} handler Event handler (which cannot call event.preventDefault)
+ */
+ve.addPassiveEventListener = function ( elem, event, handler ) {
+	elem.addEventListener( event, handler, ve.isPassiveEventsSupported() ? { passive: true } : false );
+};
+
+/**
+ * Remove a passive event listener
+ *
+ * @param {HTMLElement} elem Element to remove event from
+ * @param {String} event Name of event to remove
+ * @param {Function} handler Event handler to remove
+ */
+ve.removePassiveEventListener = function ( elem, event, handler ) {
+	elem.removeEventListener( event, handler, ve.isPassiveEventsSupported() ? { passive: true } : false );
+};
+
+/**
+ * Test whether passive event listeners are supported
+ *
+ * @return {Boolean} Whether passive event listeners are supported
+ */
+ve.isPassiveEventsSupported = function () {
+	var opts;
+	if ( ve.isPassiveEventsSupported.supported === undefined ) {
+		try {
+			opts = Object.defineProperty( {}, 'passive', {
+				get: function () {
+					ve.isPassiveEventsSupported.supported = true;
+				}
+			} );
+			window.addEventListener( 'testPassive', null, opts );
+			window.removeEventListener( 'testPassive', null, opts );
+		} catch ( e ) {}
+		if ( ve.isPassiveEventsSupported.supported !== true ) {
+			ve.isPassiveEventsSupported.supported = false;
+		}
+	}
+	return ve.isPassiveEventsSupported.supported;
+};

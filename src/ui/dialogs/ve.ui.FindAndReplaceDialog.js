@@ -216,7 +216,7 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 			// Events
 			this.surface.getModel().connect( this, { documentUpdate: 'onSurfaceModelDocumentUpdate' } );
 			this.surface.getView().connect( this, { position: 'onSurfaceViewPosition' } );
-			this.surface.getView().$window.on( 'scroll', this.onWindowScrollThrottled );
+			ve.addPassiveEventListener( this.surface.getView().$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
 		}, this );
 };
 
@@ -243,7 +243,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			// Events
 			this.surface.getModel().disconnect( this );
 			surfaceView.disconnect( this );
-			this.surface.getView().$window.off( 'scroll', this.onWindowScrollThrottled );
+			ve.removePassiveEventListener( this.surface.getView().$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
 
 			// If the surface isn't selected, put the selection back in a sensible place
 			if ( surfaceModel.getSelection().isNull() ) {
