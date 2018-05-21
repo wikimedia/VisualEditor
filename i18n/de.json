@@ -159,7 +159,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standard",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Maßstab",
 	"visualeditor-rebase-client-author-name": "Name",
-	"visualeditor-rebase-client-document-name": "Name des Dokuments",
+	"visualeditor-rebase-client-document-name": "Name des Dokuments (optional)",
 	"visualeditor-rebase-client-document-create-edit": "Erstellen/Bearbeiten",
 	"visualeditor-shortcuts-clipboard": "Zwischenablage",
 	"visualeditor-shortcuts-dialog": "Dialogfenster",

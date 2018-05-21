@@ -166,7 +166,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "默认",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "比例",
 	"visualeditor-rebase-client-author-name": "名称",
-	"visualeditor-rebase-client-document-name": "文档名称",
+	"visualeditor-rebase-client-document-name": "文档名称（可选）",
 	"visualeditor-rebase-client-document-create-edit": "创建/编辑",
 	"visualeditor-shortcuts-clipboard": "剪贴板",
 	"visualeditor-shortcuts-dialog": "对话窗口",

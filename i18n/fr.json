@@ -186,7 +186,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Par défaut",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Échelle",
 	"visualeditor-rebase-client-author-name": "Nom",
-	"visualeditor-rebase-client-document-name": "Nom du document",
+	"visualeditor-rebase-client-document-name": "Nom du document (optionnel)",
 	"visualeditor-rebase-client-document-create-edit": "Créer/modifier",
 	"visualeditor-shortcuts-clipboard": "Presse-papier",
 	"visualeditor-shortcuts-dialog": "Fenêtre de dialogue",

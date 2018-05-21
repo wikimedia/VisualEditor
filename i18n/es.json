@@ -24,12 +24,18 @@
 			"YoViajo",
 			"Lemondoge",
 			"Dgstranz",
-			"AlvaroMolina"
+			"AlvaroMolina",
+			"MarcoAurelio"
 		]
 	},
 	"visualeditor": "Editor visual",
 	"visualeditor-aliencontextitem-title": "Elemento",
 	"visualeditor-aliennode-tooltip": "Este elemento puede editarse solo en el modo de código por ahora.",
+	"visualeditor-align-desc-center": "centro",
+	"visualeditor-align-desc-default": "predeterminada",
+	"visualeditor-align-desc-left": "izquierda",
+	"visualeditor-align-desc-none": "ninguna",
+	"visualeditor-align-desc-right": "derecha",
 	"visualeditor-align-widget-center": "Centrar",
 	"visualeditor-align-widget-default": "Predeterminado",
 	"visualeditor-align-widget-left": "Alinear a la izquierda",
@@ -166,7 +172,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Predeterminado",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Escala",
 	"visualeditor-rebase-client-author-name": "Nombre",
-	"visualeditor-rebase-client-document-name": "Nombre del documento",
+	"visualeditor-rebase-client-document-name": "Nombre del documento (opcional)",
 	"visualeditor-rebase-client-document-create-edit": "Crear/editar",
 	"visualeditor-shortcuts-clipboard": "Portapapeles",
 	"visualeditor-shortcuts-dialog": "Ventanas de diálogo",
