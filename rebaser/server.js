@@ -6,7 +6,7 @@
 
 /* eslint-disable no-console */
 
-var rebaseServer, palette, logStream, handlers,
+var logStream, transportServer,
 	port = 8081,
 	startTimestamp,
 	fs = require( 'fs' ),
@@ -14,9 +14,7 @@ var rebaseServer, palette, logStream, handlers,
 	app = express(),
 	http = require( 'http' ).Server( app ),
 	io = require( 'socket.io' )( http ),
-	ve = require( '../dist/ve-rebaser.js' ),
-	docNamespaces = new Map(),
-	lastAuthorForDoc = new Map();
+	ve = require( '../dist/ve-rebaser.js' );
 
 function logEvent( event ) {
 	if ( !logStream ) {
@@ -40,25 +38,61 @@ function logServerEvent( event ) {
 	logEvent( ob );
 }
 
-rebaseServer = new ve.dm.RebaseServer( logServerEvent );
-docNamespaces = new Map();
-lastAuthorForDoc = new Map();
-palette = [
+function ProtocolServer() {
+	this.rebaseServer = new ve.dm.RebaseServer( logServerEvent );
+	this.docNamespaces = new Map();
+	this.lastAuthorForDoc = new Map();
+}
+
+ProtocolServer.static = {};
+ProtocolServer.static.palette = [
 	'1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd',
 	'8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf',
 	'aec7e8', 'ffbb78', '98df8a', 'ff9896', 'c5b0d5',
 	'c49c94', 'f7b6d2', 'c7c7c7', 'dbdb8d', '9edae5'
 ];
 
-function welcomeNewClient( socket, docName, authorId ) {
-	var state, authorData;
-	rebaseServer.updateDocState( docName, authorId, null, {
+ProtocolServer.prototype.authenticate = function ( docName, socket ) {
+	// HACK: Always succeed, with a new author ID
+	var context = {
+		docName: docName,
+		socket: socket,
+		authorId: 1 + ( this.lastAuthorForDoc.get( docName ) || 0 )
+	};
+	this.lastAuthorForDoc.set( docName, context.authorId );
+	logServerEvent( {
+		type: 'newClient',
+		doc: docName,
+		authorId: context.authorId
+	} );
+	return context;
+};
+
+ProtocolServer.prototype.onLogEvent = function ( context, event ) {
+	var key,
+		ob = {};
+	ob.recvTimestamp = Date.now() - startTimestamp;
+	ob.clientId = context.authorId;
+	ob.doc = context.docName;
+	for ( key in event ) {
+		ob[ key ] = event[ key ];
+	}
+	logEvent( ob );
+};
+
+ProtocolServer.prototype.welcomeNewClient = function ( context, socket ) {
+	var state, authorData,
+		docName = context.docName,
+		authorId = context.authorId;
+	this.rebaseServer.updateDocState( docName, authorId, null, {
 		// TODO: i18n
 		displayName: 'User ' + authorId,
-		displayColor: palette[ authorId % palette.length ]
+		displayColor: this.constructor.static.palette[
+			authorId % this.constructor.static.palette.length
+		]
 	} );
 
-	state = rebaseServer.getDocState( docName );
+	state = this.rebaseServer.getDocState( docName );
 	authorData = state.authors.get( authorId );
 
 	socket.emit( 'registered', {
@@ -67,11 +101,11 @@ function welcomeNewClient( socket, docName, authorId ) {
 		authorColor: authorData.displayColor,
 		token: authorData.token
 	} );
-	docNamespaces.get( docName ).emit( 'nameChange', {
+	context.broadcast( 'nameChange', {
 		authorId: authorId,
 		authorName: authorData.displayName
 	} );
-	docNamespaces.get( docName ).emit( 'colorChange', {
+	context.broadcast( 'colorChange', {
 		authorId: authorId,
 		authorColor: authorData.displayColor
 	} );
@@ -84,22 +118,22 @@ function welcomeNewClient( socket, docName, authorId ) {
 		history: state.history.serialize( true ),
 		names: state.getActiveNames()
 	} );
-}
+};
 
-function onSubmitChange( context, data ) {
+ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
 	var change, applied;
 	change = ve.dm.Change.static.deserialize( data.change, null, true );
-	applied = rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
+	applied = this.rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
 	if ( !applied.isEmpty() ) {
-		docNamespaces.get( context.docName ).emit( 'newChange', applied.serialize( true ) );
+		context.broadcast( 'newChange', applied.serialize( true ) );
 	}
-}
+};
 
-function onChangeName( context, newName ) {
-	rebaseServer.updateDocState( context.docName, context.authorId, null, {
+ProtocolServer.prototype.onChangeName = function ( context, newName ) {
+	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayName: newName
 	} );
-	docNamespaces.get( context.docName ).emit( 'nameChange', {
+	this.docNamespaces.get( context.docName ).emit( 'nameChange', {
 		authorId: context.authorId,
 		authorName: newName
 	} );
@@ -109,13 +143,13 @@ function onChangeName( context, newName ) {
 		authorId: context.authorId,
 		newName: newName
 	} );
-}
+};
 
-function onChangeColor( context, newColor ) {
-	rebaseServer.updateDocState( context.docName, context.authorId, null, {
+ProtocolServer.prototype.onChangeColor = function ( context, newColor ) {
+	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayColor: newColor
 	} );
-	docNamespaces.get( context.docName ).emit( 'colorChange', {
+	context.broadcast( 'colorChange', {
 		authorId: context.authorId,
 		authorColor: newColor
 	} );
@@ -125,100 +159,53 @@ function onChangeColor( context, newColor ) {
 		authorId: context.authorId,
 		newColor: newColor
 	} );
-}
+};
 
-function onUsurp( context, data ) {
-	var state = rebaseServer.getDocState( context.docName ),
-		newAuthorData = state.authors.get( data.authorId );
-	if ( newAuthorData.token !== data.token ) {
-		context.socket.emit( 'usurpFailed' );
-		return;
-	}
-	rebaseServer.updateDocState( context.docName, data.authorId, null, {
-		active: true
-	} );
-	// TODO either delete this author, or reimplement usurp in a client-initiated way
-	rebaseServer.updateDocState( context.docName, context.authorId, null, {
-		active: false
-	} );
-	context.socket.emit( 'registered', {
-		authorId: data.authorId,
-		authorName: newAuthorData.displayName,
-		token: newAuthorData.token
-	} );
-	docNamespaces.get( context.docName ).emit( 'nameChange', {
-		authorId: data.authorId,
-		authorName: newAuthorData.displayName
-	} );
-	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.authorId );
-
-	context.authorId = data.authorId;
-}
-
-function onDisconnect( context ) {
+ProtocolServer.prototype.onDisconnect = function ( context ) {
 	console.log( 'disconnect ' + context.socket.client.conn.remoteAddress + ' ' + context.socket.handshake.url );
-	rebaseServer.updateDocState( context.docName, context.authorId, null, {
+	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false,
 		continueBase: null,
 		rejections: null
 	} );
-	docNamespaces.get( context.docName ).emit( 'authorDisconnect', context.authorId );
+	context.broadcast( 'authorDisconnect', context.authorId );
 	logServerEvent( {
 		type: 'disconnect',
 		doc: context.docName,
 		authorId: context.authorId
 	} );
-}
-
-handlers = {
-	submitChange: onSubmitChange,
-	changeName: onChangeName,
-	changeColor: onChangeColor,
-	usurp: onUsurp,
-	disconnect: onDisconnect
 };
 
-function handleEvent( context, eventName, data ) {
-	handlers[ eventName ]( context, data );
+function TransportServer( protocolServer ) {
+	this.protocolServer = protocolServer;
+	this.docNamespaces = new Map();
 }
 
-function makeConnectionHandler( docName ) {
-	return function handleConnection( socket ) {
-		// Allocate new author ID
-		var context = {
-				socket: socket,
-				docName: docName,
-				authorId: 1 + ( lastAuthorForDoc.get( docName ) || 0 )
-			},
-			eventName;
-		lastAuthorForDoc.set( docName, context.authorId );
-		logServerEvent( {
-			type: 'newClient',
-			doc: docName,
-			authorId: context.authorId
-		} );
+TransportServer.prototype.onConnection = function ( socket ) {
+	var namespace,
+		docName = socket.handshake.query.docName;
+	console.log( 'connection ' + socket.client.conn.remoteAddress + ' ' + socket.handshake.url );
+	if ( docName && !this.docNamespaces.has( docName ) ) {
+		namespace = io.of( '/' + docName );
+		this.docNamespaces.set( docName, namespace );
+		// We must bind methods separately, using a namespace handler, because
+		// the socket object passed into namespace handlers is different
+		namespace.on( 'connection', this.onDocConnection.bind( this, namespace ) );
+	}
+};
 
-		// Kick off welcome process
-		welcomeNewClient( socket, docName, context.authorId );
-
-		// Attach event handlers
-		for ( eventName in handlers ) {
-			// eslint-disable-next-line no-loop-func
-			socket.on( eventName, handleEvent.bind( null, context, eventName ) );
-		}
-		socket.on( 'logEvent', function ( event ) {
-			var key,
-				ob = {};
-			ob.recvTimestamp = Date.now() - startTimestamp;
-			ob.clientId = context.authorId;
-			ob.doc = docName;
-			for ( key in event ) {
-				ob[ key ] = event[ key ];
-			}
-			logEvent( ob );
-		} );
-	};
-}
+TransportServer.prototype.onDocConnection = function ( namespace, socket ) {
+	var server = this.protocolServer,
+		docName = socket.handshake.query.docName,
+		context = server.authenticate( docName, socket );
+	context.broadcast = namespace.emit.bind( namespace );
+	socket.on( 'submitChange', server.onSubmitChange.bind( server, context ) );
+	socket.on( 'changeName', server.onChangeName.bind( server, context ) );
+	socket.on( 'changeColor', server.onChangeColor.bind( server, context ) );
+	socket.on( 'disconnect', server.onDisconnect.bind( server, context ) );
+	socket.on( 'logEvent', server.onLogEvent.bind( server, context ) );
+	server.welcomeNewClient( context, socket );
+};
 
 app.use( express.static( __dirname + '/..' ) );
 app.set( 'view engine', 'ejs' );
@@ -240,17 +227,8 @@ app.get( '/doc/raw/:docName', function ( req, res ) {
 	res.status( 401 ).send( 'DOM in nodejs is hard' );
 } );
 
-io.on( 'connection', function ( socket ) {
-	var nsp,
-		docName = socket.handshake.query.docName;
-
-	console.log( 'connection ' + socket.client.conn.remoteAddress + ' ' + socket.handshake.url );
-	if ( docName && !docNamespaces.has( docName ) ) {
-		nsp = io.of( '/' + docName );
-		docNamespaces.set( docName, nsp );
-		nsp.on( 'connection', makeConnectionHandler( docName ) );
-	}
-} );
+transportServer = new TransportServer( new ProtocolServer() );
+io.on( 'connection', transportServer.onConnection.bind( transportServer ) );
 
 startTimestamp = Date.now();
 logServerEvent( { type: 'restart' } );
