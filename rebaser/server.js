@@ -38,6 +38,11 @@ function logServerEvent( event ) {
 	logEvent( ob );
 }
 
+/**
+ * Protocol server
+ *
+ * Handles the abstract protocol without knowing the specific transport
+ */
 function ProtocolServer() {
 	this.rebaseServer = new ve.dm.RebaseServer( logServerEvent );
 	this.docNamespaces = new Map();
@@ -45,6 +50,7 @@ function ProtocolServer() {
 }
 
 ProtocolServer.static = {};
+
 ProtocolServer.static.palette = [
 	'1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd',
 	'8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf',
@@ -52,14 +58,31 @@ ProtocolServer.static.palette = [
 	'c49c94', 'f7b6d2', 'c7c7c7', 'dbdb8d', '9edae5'
 ];
 
-ProtocolServer.prototype.authenticate = function ( docName, socket ) {
-	// HACK: Always succeed, with a new author ID
-	var context = {
+/**
+ * Check the client's credentials, and return a connection context object
+ *
+ * If the client is not recognised and authenticated, a new client ID and token are assigned.
+ *
+ * @param {string} docName The document name
+ * @param {number|null} authorId The author ID, if any
+ * @param {token|null} token The secret token, if any
+ *
+ * @return {Object} The connection context
+ */
+ProtocolServer.prototype.authenticate = function ( docName, authorId, token ) {
+	var context,
+		state = this.rebaseServer.stateForDoc.get( docName ),
+		authorData = state && state.authors.get( authorId );
+
+	if ( !authorData || token !== authorData.token ) {
+		authorId = 1 + ( this.lastAuthorForDoc.get( docName ) || 0 );
+		this.lastAuthorForDoc.set( docName, authorId );
+		token = Math.random().toString( 36 ).slice( 2 );
+	}
+	context = {
 		docName: docName,
-		socket: socket,
-		authorId: 1 + ( this.lastAuthorForDoc.get( docName ) || 0 )
+		authorId: authorId
 	};
-	this.lastAuthorForDoc.set( docName, context.authorId );
 	logServerEvent( {
 		type: 'newClient',
 		doc: docName,
@@ -68,6 +91,12 @@ ProtocolServer.prototype.authenticate = function ( docName, socket ) {
 	return context;
 };
 
+/**
+ * Add an event to the log
+ *
+ * @param {Object} context The connection context
+ * @param {Object} event Event data
+ */
 ProtocolServer.prototype.onLogEvent = function ( context, event ) {
 	var key,
 		ob = {};
@@ -80,10 +109,17 @@ ProtocolServer.prototype.onLogEvent = function ( context, event ) {
 	logEvent( ob );
 };
 
-ProtocolServer.prototype.welcomeNewClient = function ( context, socket ) {
+/**
+ * Setup author on the server and send initialization events
+ *
+ * @param {Object} context The connection context
+ */
+ProtocolServer.prototype.welcomeClient = function ( context ) {
 	var state, authorData,
 		docName = context.docName,
 		authorId = context.authorId;
+
+	console.log( 'connection ' + context.connectionId );
 	this.rebaseServer.updateDocState( docName, authorId, null, {
 		// TODO: i18n
 		displayName: 'User ' + authorId,
@@ -95,7 +131,7 @@ ProtocolServer.prototype.welcomeNewClient = function ( context, socket ) {
 	state = this.rebaseServer.getDocState( docName );
 	authorData = state.authors.get( authorId );
 
-	socket.emit( 'registered', {
+	context.sendAuthor( 'registered', {
 		authorId: authorId,
 		authorName: authorData.displayName,
 		authorColor: authorData.displayColor,
@@ -114,12 +150,18 @@ ProtocolServer.prototype.welcomeNewClient = function ( context, socket ) {
 	// comments in the /raw handler. Keeping an updated linmod on the server could be
 	// feasible if TransactionProcessor was modified to have a "don't sync, just apply"
 	// mode and ve.dm.Document was faked with { data: ..., metadata: ..., store: ... }
-	socket.emit( 'initDoc', {
+	context.sendAuthor( 'initDoc', {
 		history: state.history.serialize( true ),
 		names: state.getActiveNames()
 	} );
 };
 
+/**
+ * Try to apply a received change, and broadcast the successful portion as rebased
+ *
+ * @param {Object} context The connection context
+ * @param {Object} data The change data
+ */
 ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
 	var change, applied;
 	change = ve.dm.Change.static.deserialize( data.change, null, true );
@@ -129,6 +171,12 @@ ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
 	}
 };
 
+/**
+ * Apply and broadcast a name change,
+ *
+ * @param {Object} context The connection context
+ * @param {string} newName The new name
+ */
 ProtocolServer.prototype.onChangeName = function ( context, newName ) {
 	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayName: newName
@@ -145,6 +193,12 @@ ProtocolServer.prototype.onChangeName = function ( context, newName ) {
 	} );
 };
 
+/**
+ * Apply and broadcast a color change,
+ *
+ * @param {Object} context The connection context
+ * @param {string} newColor The new color
+ */
 ProtocolServer.prototype.onChangeColor = function ( context, newColor ) {
 	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayColor: newColor
@@ -161,8 +215,13 @@ ProtocolServer.prototype.onChangeColor = function ( context, newColor ) {
 	} );
 };
 
+/**
+ * Apply and broadcast a disconnection (which may be temporary)
+ *
+ * @param {Object} context The connection context
+ */
 ProtocolServer.prototype.onDisconnect = function ( context ) {
-	console.log( 'disconnect ' + context.socket.client.conn.remoteAddress + ' ' + context.socket.handshake.url );
+	console.log( 'disconnect ' + context.connectionId );
 	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false,
 		continueBase: null,
@@ -176,15 +235,26 @@ ProtocolServer.prototype.onDisconnect = function ( context ) {
 	} );
 };
 
-function TransportServer( protocolServer ) {
-	this.protocolServer = protocolServer;
+/**
+ * Transport server for Socket IO transport
+ *
+ * @constructor
+ */
+function TransportServer() {
+	this.protocolServer = new ProtocolServer();
 	this.docNamespaces = new Map();
 }
 
+/**
+ * Generic connection handler
+ *
+ * This just creates a namespace handler for the docName, if one does not already exist
+ *
+ * @param {Object} socket The io socket
+ */
 TransportServer.prototype.onConnection = function ( socket ) {
 	var namespace,
 		docName = socket.handshake.query.docName;
-	console.log( 'connection ' + socket.client.conn.remoteAddress + ' ' + socket.handshake.url );
 	if ( docName && !this.docNamespaces.has( docName ) ) {
 		namespace = io.of( '/' + docName );
 		this.docNamespaces.set( docName, namespace );
@@ -194,17 +264,32 @@ TransportServer.prototype.onConnection = function ( socket ) {
 	}
 };
 
+/**
+ * Namespace connection handler
+ *
+ * This sends events to initialize the client, and adds handlers to the client's socket
+ *
+ * @param {Object} namespace The io namespace
+ * @param {Object} socket The io socket (specific to one client's current connection)
+ */
 TransportServer.prototype.onDocConnection = function ( namespace, socket ) {
-	var server = this.protocolServer,
+	var context,
+		server = this.protocolServer,
 		docName = socket.handshake.query.docName,
-		context = server.authenticate( docName, socket );
+		authorId = +socket.handshake.query.authorId || null,
+		token = socket.handshake.query.token || null;
+
+	context = server.authenticate( docName, authorId, token );
 	context.broadcast = namespace.emit.bind( namespace );
+	context.sendAuthor = socket.emit.bind( socket );
+	context.connectionId = socket.client.conn.remoteAddress + ' ' + socket.handshake.url;
+
 	socket.on( 'submitChange', server.onSubmitChange.bind( server, context ) );
 	socket.on( 'changeName', server.onChangeName.bind( server, context ) );
 	socket.on( 'changeColor', server.onChangeColor.bind( server, context ) );
 	socket.on( 'disconnect', server.onDisconnect.bind( server, context ) );
 	socket.on( 'logEvent', server.onLogEvent.bind( server, context ) );
-	server.welcomeNewClient( context, socket );
+	server.welcomeClient( context );
 };
 
 app.use( express.static( __dirname + '/..' ) );
@@ -227,7 +312,7 @@ app.get( '/doc/raw/:docName', function ( req, res ) {
 	res.status( 401 ).send( 'DOM in nodejs is hard' );
 } );
 
-transportServer = new TransportServer( new ProtocolServer() );
+transportServer = new TransportServer();
 io.on( 'connection', transportServer.onConnection.bind( transportServer ) );
 
 startTimestamp = Date.now();

@@ -40,10 +40,16 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.initialized = false;
 	// Whether we are currently synchronizing the model
 	this.applying = false;
+	this.token = null;
+	this.tryLoadSessionKey();
 
 	// SocketIO events
 	path = ( config.server || '' ) + '/' + this.documentId;
-	options = { query: { docName: this.documentId } };
+	options = { query: {
+		docName: this.documentId,
+		authorId: this.getAuthorId() || '',
+		token: this.token || ''
+	} };
 	this.socket = io( path, options );
 	// HACK: SocketIO caches the options from the last request.
 	// Connecting twice appears to overwrite this cache.
@@ -56,8 +62,6 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'nameChange', this.onNameChange.bind( this ) );
 	this.socket.on( 'colorChange', this.onColorChange.bind( this ) );
 	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
-	// TODO: unbreak then re-enable usurp
-	// this.tryUsurp();
 
 	// Events
 	this.doc.connect( this, {
@@ -89,7 +93,15 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
  */
 
 /**
+ * @event wrongDoc
+ */
+
+/**
  * @event initDoc
+ */
+
+/**
+ * @event disconnect
  */
 
 /* Methods */
@@ -304,22 +316,37 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
  * @param {number} data.authorId The author ID allocated by the server
  */
 ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
+	if ( this.token && this.token !== data.token ) {
+		this.socket.disconnect();
+		this.emit( 'wrongDoc' );
+		return;
+	}
 	this.setAuthorId( data.authorId );
 	this.surface.setAuthorId( this.authorId );
+	this.token = data.token;
+	this.trySaveSessionKey();
+};
 
+ve.dm.SurfaceSynchronizer.prototype.trySaveSessionKey = function () {
 	if ( window.sessionStorage ) {
-		window.sessionStorage.setItem( 'visualeditor-author', JSON.stringify( data ) );
+		window.sessionStorage.setItem( 'visualeditor-session-key', JSON.stringify( {
+			authorId: this.getAuthorId(),
+			token: this.token
+		} ) );
 	}
 };
 
-ve.dm.SurfaceSynchronizer.prototype.tryUsurp = function () {
-	var storedData = window.sessionStorage && window.sessionStorage.getItem( 'visualeditor-author' );
-	if ( !storedData ) {
+ve.dm.SurfaceSynchronizer.prototype.tryLoadSessionKey = function () {
+	var data,
+		dataString = window.sessionStorage &&
+			window.sessionStorage.getItem( 'visualeditor-session-key' );
+	if ( !dataString ) {
 		return;
 	}
 	try {
-		storedData = JSON.parse( storedData );
-		this.socket.emit( 'usurp', storedData );
+		data = JSON.parse( dataString );
+		this.setAuthorId( data.authorId );
+		this.token = data.token;
 	} catch ( e ) {
 		// eslint-disable-next-line no-console
 		console.warn( 'Failed to parse data in session storage', e );
@@ -377,4 +404,9 @@ ve.dm.SurfaceSynchronizer.prototype.onNewChange = function ( serializedChange ) 
 	}
 	// Schedule submission of unsent local changes, if any
 	this.submitChangeThrottled();
+};
+
+ve.dm.SurfaceSynchronizer.prototype.onDisconnect = function () {
+	this.initialized = false;
+	this.emit( 'disconnect' );
 };

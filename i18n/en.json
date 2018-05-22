@@ -167,6 +167,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Custom",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Default",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Scale",
+	"visualeditor-missing-document-error": "Document missing on server. To avoid data loss, copy and paste the contents.",
+	"visualeditor-missing-document-title": "Missing document",
 	"visualeditor-rebase-client-author-name": "Name",
 	"visualeditor-rebase-client-connecting": "Connecting...",
 	"visualeditor-rebase-client-document-name": "Document name (optional)",

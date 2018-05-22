@@ -177,6 +177,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Label for the media size widget size select for custom size.\n{{Identical|Custom}}",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Label for the media size widget size select for default size.\n{{Identical|Default}}",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Label for the media size widget size select for scaled size. The expected input is a percentage - see [[MediaWiki:Visualeditor-mediasizewidget-label-scale/en]].\n{{Identical|Scale}}",
+	"visualeditor-missing-document-error": "Error message shown when a document is missing on the rebase server",
+	"visualeditor-missing-document-title": "Title for the missing document alert",
 	"visualeditor-rebase-client-author-name": "Label for the input to set or change the user's account display name.\n{{Identical|Name}}",
 	"visualeditor-rebase-client-connecting": "Title of progress bar shown while waiting to connect to the rebase server",
 	"visualeditor-rebase-client-document-name": "Label for document name input",
