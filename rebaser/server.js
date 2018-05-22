@@ -12,7 +12,6 @@ var rebaseServer, pendingForDoc, artificialDelay, palette, logStream, handlers,
 	fs = require( 'fs' ),
 	express = require( 'express' ),
 	app = express(),
-	url = require( 'url' ),
 	http = require( 'http' ).Server( app ),
 	io = require( 'socket.io' )( http ),
 	ve = require( '../dist/ve-rebaser.js' ),
@@ -169,6 +168,7 @@ function* onUsurp( context, data ) {
 }
 
 function* onDisconnect( context ) {
+	console.log( 'disconnect ' + context.socket.client.conn.remoteAddress + ' ' + context.socket.handshake.url );
 	yield rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false,
 		continueBase: null,
@@ -269,8 +269,9 @@ app.get( '/doc/raw/:docName', function ( req, res ) {
 
 io.on( 'connection', function ( socket ) {
 	var nsp,
-		docName = url.parse( socket.handshake.url, true ).query.docName;
+		docName = socket.handshake.query.docName;
 
+	console.log( 'connection ' + socket.client.conn.remoteAddress + ' ' + socket.handshake.url );
 	if ( docName && !docNamespaces.has( docName ) ) {
 		nsp = io.of( '/' + docName );
 		docNamespaces.set( docName, nsp );
