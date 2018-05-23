@@ -4248,17 +4248,31 @@ ve.ce.Surface.prototype.selectionSplitsLink = function () {
  * Document content itself is handled by the synchronizer, as is document history.
  *
  * @param {ve.dm.SurfaceSynchronizer} synchronizer The synchronizer to listen to
+ * @param {jQuery.Promise} [initPromise] A promise which resolves when the surface is initialized
  * @throws {Error} Synchronizer already set
  */
-ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer ) {
+ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer, initPromise ) {
+	var progressDeferred = $.Deferred();
+	initPromise = initPromise || $.Deferred().resolve().promise();
+
 	if ( this.synchronizer ) {
 		throw new Error( 'Synchronizer already set' );
 	}
+
+	this.getModel().setNullSelection();
+	this.getSurface().createProgress( progressDeferred.promise(), ve.msg( 'visualeditor-rebase-client-connecting' ), true );
+
 	this.synchronizer = synchronizer;
 	this.synchronizer.connect( this, {
 		authorSelect: 'onSynchronizerAuthorUpdate',
 		authorNameChange: 'onSynchronizerAuthorUpdate',
 		authorColorChange: 'onSynchronizerAuthorUpdate'
+	} );
+
+	synchronizer.once( 'initDoc', function () {
+		initPromise.then( function () {
+			progressDeferred.resolve();
+		} );
 	} );
 };
 
