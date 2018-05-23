@@ -849,7 +849,6 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	//     return newDocument;
 	//
 	// Sadly, it's impossible:
-	// * On IE 9, calling open()/write() on such a document throws an "Unspecified error" (sic).
 	// * On Firefox 20, calling open()/write() doesn't actually do anything, including writing.
 	//   This is reported as Firefox bug 867102.
 	// * On Opera 12, calling open()/write() behaves as if called on window.document, replacing the
