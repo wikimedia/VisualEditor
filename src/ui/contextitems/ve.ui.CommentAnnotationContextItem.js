@@ -30,7 +30,7 @@ OO.inheritClass( ve.ui.CommentAnnotationContextItem, ve.ui.LinearContextItem );
 
 ve.ui.CommentAnnotationContextItem.static.name = 'commentAnnotation';
 
-ve.ui.CommentAnnotationContextItem.static.icon = 'comment';
+ve.ui.CommentAnnotationContextItem.static.icon = 'speechBubble';
 
 ve.ui.CommentAnnotationContextItem.static.label = OO.ui.deferMsg( 'visualeditor-commentinspector-title' );
 
