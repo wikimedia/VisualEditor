@@ -2099,9 +2099,9 @@ ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
 /**
  * LinearData sanitize helper, for pasted data
  *
- * @param  {ve.dm.LinearData} linearData Data to sanitize
- * @param  {Boolean} isMultiline Sanitize for a multiline context
- * @param  {Boolean} isExternal Treat as external content
+ * @param {ve.dm.LinearData} linearData Data to sanitize
+ * @param {boolean} isMultiline Sanitize for a multiline context
+ * @param {boolean} isExternal Treat as external content
  */
 ve.ce.Surface.prototype.afterPasteSanitize = function ( linearData, isMultiline, isExternal ) {
 	var importRules = this.afterPasteImportRules( isMultiline );
@@ -2113,7 +2113,7 @@ ve.ce.Surface.prototype.afterPasteSanitize = function ( linearData, isMultiline,
 
 /**
  * Helper to build import rules for pasted data
- * @param  {Boolean} isMultiline Get rules for a multiline context
+ * @param {boolean} isMultiline Get rules for a multiline context
  * @return {Object} Import rules
  */
 ve.ce.Surface.prototype.afterPasteImportRules = function ( isMultiline ) {
@@ -2129,10 +2129,10 @@ ve.ce.Surface.prototype.afterPasteImportRules = function ( isMultiline ) {
 
 /**
  * After paste handler for pastes from the same document
- * @param  {ve.dm.DocumentSlice} slice Slice of document to paste
- * @param  {ve.dm.SurfaceFragment} fragment Current fragment
- * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
- * @param  {Boolean} isMultiline Pasting to a multiline context
+ * @param {ve.dm.DocumentSlice} slice Slice of document to paste
+ * @param {ve.dm.SurfaceFragment} fragment Current fragment
+ * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param {boolean} isMultiline Pasting to a multiline context
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, fragment, targetFragment, isMultiline ) {
@@ -2192,8 +2192,8 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, 
 
 /**
  * Insert some pasted data from an internal source
- * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
- * @param  {Array} data Data to insert
+ * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param {Array} data Data to insert
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.Surface.prototype.afterPasteInsertInternalData = function ( targetFragment, data ) {
@@ -2203,12 +2203,12 @@ ve.ce.Surface.prototype.afterPasteInsertInternalData = function ( targetFragment
 
 /**
  * After paste handler for pastes from the another document
- * @param  {String|undefined} clipboardKey] Clipboard key for pasted data
- * @param  {jQuery|undefined} $clipboardHtml Clipboard HTML, if used to find the key
- * @param  {ve.dm.SurfaceFragment} fragment Current fragment
- * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
- * @param  {Boolean} [isMultiline] Pasting to a multiline context
- * @param  {Boolean} [forceClipboardData] Ignore the paste target, and use only clipboard html
+ * @param {String|undefined} clipboardKey] Clipboard key for pasted data
+ * @param {jQuery|undefined} $clipboardHtml Clipboard HTML, if used to find the key
+ * @param {ve.dm.SurfaceFragment} fragment Current fragment
+ * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param {boolean} [isMultiline] Pasting to a multiline context
+ * @param {boolean} [forceClipboardData] Ignore the paste target, and use only clipboard html
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboardKey, $clipboardHtml, fragment, targetFragment, isMultiline, forceClipboardData ) {
@@ -2219,7 +2219,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 		documentModel = surfaceModel.getDocument(),
 		beforePasteData = this.beforePasteData || {};
 
-	this.afterPasteSanitizePasteTarget( this.$pasteTarget );
+	this.afterPasteSanitizePasteTarget();
 
 	if ( ( clipboardKey || forceClipboardData ) && $clipboardHtml ) {
 		// If the clipboardKey is set (paste from other VE instance), and clipboard
@@ -2357,9 +2357,9 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 
 /**
  * Insert some pasted data from an external source
- * @param  {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
- * @param  {ve.dm.Document} pastedDocumentModel Model generated from pasted data
- * @param  {ve.Range} contextRange Range of data in generated model to consider
+ * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
+ * @param {ve.dm.Document} pastedDocumentModel Model generated from pasted data
+ * @param {ve.Range} contextRange Range of data in generated model to consider
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.Surface.prototype.afterPasteInsertExternalData = function ( targetFragment, pastedDocumentModel, contextRange ) {
@@ -2386,9 +2386,9 @@ ve.ce.Surface.prototype.afterPasteInsertExternalData = function ( targetFragment
 
 /**
  * Helper to work out the context range for an external paste
- * @param  {ve.dm.Document} pastedDocumentModel Model for pasted data
- * @param  {Boolean} isMultiline Whether pasting to a multiline context
- * @param  {Boolean} forceClipboardData Whether the current attempted paste is the result of forcing use of clipboard data
+ * @param {ve.dm.Document} pastedDocumentModel Model for pasted data
+ * @param {boolean} isMultiline Whether pasting to a multiline context
+ * @param {boolean} forceClipboardData Whether the current attempted paste is the result of forcing use of clipboard data
  * @return {ve.Range|Boolean} Context range, or false if data appeared corrupted
  */
 ve.ce.Surface.prototype.afterPasteFromExternalContextRange = function ( pastedDocumentModel, isMultiline, forceClipboardData ) {
@@ -2455,9 +2455,8 @@ ve.ce.Surface.prototype.afterPasteFromExternalContextRange = function ( pastedDo
 
 /**
  * Helper to clean up the pasteTarget
- * @param  {jQuery} $pasteTarget Target to sanitize
  */
-ve.ce.Surface.prototype.afterPasteSanitizePasteTarget = function ( $pasteTarget ) {
+ve.ce.Surface.prototype.afterPasteSanitizePasteTarget = function () {
 	var metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
 
 	// Remove the clipboard key
@@ -2474,7 +2473,7 @@ ve.ce.Surface.prototype.afterPasteSanitizePasteTarget = function ( $pasteTarget 
 	// likely to incorrectly over-format things.
 	// TODO: This might be cleaner if we could move the sanitization into
 	// dm.converter entirely.
-	$pasteTarget.find( 'span' ).each( function ( i, node ) {
+	this.$pasteTarget.find( 'span' ).each( function ( i, node ) {
 		var $node;
 		// Later sanitization will replace completely-empty spans with
 		// their contents, so we can lazily-wrap here without cleaning
@@ -2504,10 +2503,10 @@ ve.ce.Surface.prototype.afterPasteSanitizePasteTarget = function ( $pasteTarget 
 	} );
 
 	// Remove style attributes. Any valid styles will be restored by data-ve-attributes.
-	$pasteTarget.find( '[style]' ).removeAttr( 'style' );
+	this.$pasteTarget.find( '[style]' ).removeAttr( 'style' );
 
 	if ( metadataIdRegExp ) {
-		$pasteTarget.find( '[id]' ).each( function () {
+		this.$pasteTarget.find( '[id]' ).each( function () {
 			var $this = $( this );
 			if ( $this.attr( 'id' ).match( metadataIdRegExp ) ) {
 				$this.removeAttr( 'id' );
@@ -2516,7 +2515,7 @@ ve.ce.Surface.prototype.afterPasteSanitizePasteTarget = function ( $pasteTarget 
 	}
 
 	// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
-	$pasteTarget.find( 'span' ).each( function () {
+	this.$pasteTarget.find( 'span' ).each( function () {
 		var $this = $( this );
 		$this.removeClass( 've-pasteProtect' );
 		if ( $this.attr( 'class' ) === '' ) {
@@ -2529,7 +2528,7 @@ ve.ce.Surface.prototype.afterPasteSanitizePasteTarget = function ( $pasteTarget 
 	} );
 
 	// Restore attributes. See #onCopy.
-	$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
+	this.$pasteTarget.find( '[data-ve-attributes]' ).each( function () {
 		var attrs,
 			attrsJSON = this.getAttribute( 'data-ve-attributes' );
 
