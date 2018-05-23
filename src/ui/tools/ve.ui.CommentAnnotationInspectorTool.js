@@ -19,7 +19,7 @@ ve.ui.CommentAnnotationInspectorTool = function VeUiCommentAnnotationInspectorTo
 OO.inheritClass( ve.ui.CommentAnnotationInspectorTool, ve.ui.FragmentInspectorTool );
 ve.ui.CommentAnnotationInspectorTool.static.name = 'commentAnnotation';
 ve.ui.CommentAnnotationInspectorTool.static.group = 'meta';
-ve.ui.CommentAnnotationInspectorTool.static.icon = 'comment';
+ve.ui.CommentAnnotationInspectorTool.static.icon = 'speechBubble';
 ve.ui.CommentAnnotationInspectorTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-commentinspector-tooltip' );
 ve.ui.CommentAnnotationInspectorTool.static.modelClasses = [ ve.dm.CommentAnnotation ];
