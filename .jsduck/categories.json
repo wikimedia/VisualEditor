@@ -55,8 +55,6 @@
 					"ve.dm.DataString",
 					"ve.dm.HashValueStore",
 					"ve.dm.Scalable",
-					"ve.dm.APIResultsProvider",
-					"ve.dm.APIResultsQueue",
 					"ve.dm.Surface",
 					"ve.dm.*SurfaceFragment",
 					"ve.dm.*Selection",
