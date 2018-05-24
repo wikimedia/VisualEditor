@@ -6,20 +6,10 @@
 
 .ve-ui-tableLineContextItem-actionButton {
 	display: block;
+	margin-left: 0 !important; /* stylelint-disable-line declaration-no-important */
 }
 
 .ve-ui-tableLineContextItem-actionButton.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button {
 	display: block;
-	padding: 0.5em;
-}
-
-.ve-ui-tableLineContextItem-actionButton.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
-	display: inline-block;
-	position: static;
-	vertical-align: middle;
-}
-
-.ve-ui-tableLineContextItem-actionButton.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-	margin-left: 0.25em;
-	vertical-align: middle;
+	border: 0.2em solid transparent;
 }
