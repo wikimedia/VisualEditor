@@ -176,7 +176,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 				return false;
 			}
 			if ( ve.dm.LinearData.static.isOpenElementData( element ) ) {
-				return ve.dm.modelRegistry.lookup( element.type ).static.isDiffComparable( element, other[ index ] );
+				return ve.dm.modelRegistry.lookup( element.type ).static.isDiffComparable( element, other[ index ], store, store );
 			} else {
 				// Ignore close elements
 				return true;

@@ -286,6 +286,8 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
  * @static
  * @param {Object} element This element
  * @param {Object} other Another element
+ * @param {ve.dm.HashValueStore} elementStore Store used by this element
+ * @param {ve.dm.HashValueStore} otherStore Store used by other elements
  * @return {boolean} Elements are of a comparable type
  */
 ve.dm.Model.static.isDiffComparable = function ( element, other ) {
@@ -440,5 +442,5 @@ ve.dm.Model.prototype.getHashObject = function () {
  * @return {boolean} Elements are of a comparable type
  */
 ve.dm.Model.prototype.isDiffComparable = function ( other ) {
-	return this.constructor.static.isDiffComparable( this.element, other.element );
+	return this.constructor.static.isDiffComparable( this.element, other.element, this.getStore(), other.getStore() );
 };
