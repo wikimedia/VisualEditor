@@ -184,6 +184,8 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 		className = 'Delete' + modeName + 'ContextItem';
 		ve.ui[ className ] = function VeUiDeleteRowOrColumnContextItem() {
 			ve.ui.TableLineContextItem.apply( this, arguments );
+
+			this.actionButton.setFlags( { destructive: true } );
 		};
 		OO.inheritClass( ve.ui[ className ], ve.ui.TableLineContextItem );
 		ve.ui[ className ].static.name = 'delete' + modeName;
