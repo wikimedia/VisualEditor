@@ -65,8 +65,33 @@ ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc, converter ) 
 /**
  * @inheritdoc
  */
-ve.dm.AlienNode.static.isDiffComparable = function ( element, other ) {
-	return element.type === other.type && element.originalDomElementsHash === other.originalDomElementsHash;
+ve.dm.AlienNode.static.isDiffComparable = function ( element, other, elementStore, otherStore ) {
+	var elementOriginalDomElements, otherOriginalDomElements;
+	if ( element.type === other.type && element.originalDomElementsHash === other.originalDomElementsHash ) {
+		return true;
+	}
+
+	// HACK: We can't strip 'about' attributes before converting, as we need them
+	// for about grouping, but we should ignore them for diffing as they can be
+	// non-persistent in historical diffs.
+
+	function removeAboutAttributes( element ) {
+		Array.prototype.forEach.call( element.querySelectorAll( '[about]' ), function ( el ) {
+			el.removeAttribute( 'about' );
+		} );
+	}
+
+	// Deep copy DOM nodes from store
+	elementOriginalDomElements = ve.copy( elementStore.value( element.originalDomElementsHash ) );
+	otherOriginalDomElements = ve.copy( otherStore.value( other.originalDomElementsHash ) );
+	// Remove about attributes
+	elementOriginalDomElements.forEach( removeAboutAttributes );
+	otherOriginalDomElements.forEach( removeAboutAttributes );
+	// Compare DOM trees
+	return ve.compare(
+		ve.copy( elementOriginalDomElements, ve.convertDomElements ),
+		ve.copy( otherOriginalDomElements, ve.convertDomElements )
+	);
 };
 
 /**

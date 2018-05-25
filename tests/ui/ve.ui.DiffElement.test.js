@@ -320,6 +320,15 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: '`about` attribute ignored inside alien nodes',
+				oldDoc: '<div rel="ve:Alien"><span about="old">Alien</span></div>',
+				newDoc: '<div rel="ve:Alien"><span about="new">Alien</span></div>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<div rel="ve:Alien"><span about="new">Alien</span></div>' +
+					'</div>'
+			},
+			{
 				msg: 'Paragraphs moved',
 				oldDoc: '<p>foo</p><p>bar</p>',
 				newDoc: '<p>bar</p><p>foo</p>',
