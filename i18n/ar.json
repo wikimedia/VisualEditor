@@ -22,12 +22,14 @@
 			"Shbib Al-Subaie",
 			"Meno25",
 			"ASHmed",
-			"ديفيد"
+			"ديفيد",
+			"Sonic N800"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
 	"visualeditor-aliencontextitem-title": "العنصر",
 	"visualeditor-aliennode-tooltip": "عذرا، لا يمكن حاليا تحرير هذا العنصر إلا عن طريق تعديل المصدر.",
+	"visualeditor-align-desc-right": "يمين",
 	"visualeditor-align-widget-center": "وسط",
 	"visualeditor-align-widget-default": "افتراضي",
 	"visualeditor-align-widget-left": "يسار",
@@ -164,7 +166,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "افتراضي",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "مقياس",
 	"visualeditor-rebase-client-author-name": "الاسم",
-	"visualeditor-rebase-client-document-name": "اسم الملف",
+	"visualeditor-rebase-client-document-name": "اسم الملف (اختياري)",
 	"visualeditor-rebase-client-document-create-edit": "أنشئ/عدل",
 	"visualeditor-shortcuts-clipboard": "الحافظة",
 	"visualeditor-shortcuts-dialog": "نوافذ الحوار",

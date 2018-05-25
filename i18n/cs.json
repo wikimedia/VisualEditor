@@ -159,7 +159,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standardní",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Zvětšení",
 	"visualeditor-rebase-client-author-name": "Jméno",
-	"visualeditor-rebase-client-document-name": "Název dokumentu",
+	"visualeditor-rebase-client-document-name": "Název dokumentu (volitelný)",
 	"visualeditor-rebase-client-document-create-edit": "Vytvořit/editovat",
 	"visualeditor-shortcuts-clipboard": "Schránka",
 	"visualeditor-shortcuts-dialog": "Dialogová okna",

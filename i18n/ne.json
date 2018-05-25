@@ -4,7 +4,8 @@
 			"RajeshPandey",
 			"सरोज कुमार ढकाल",
 			"NehalDaveND",
-			"बिप्लब आनन्द"
+			"बिप्लब आनन्द",
+			"Nirajan pant"
 		]
 	},
 	"visualeditor": "दृष्टि सम्पादक",
@@ -77,6 +78,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "अनुकुल",
 	"visualeditor-mediasizewidget-sizeoptions-default": "पूर्वनिर्धारित",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "स्केल",
+	"visualeditor-rebase-client-document-name": "कागजात नाम (ऐच्छिक)",
 	"visualeditor-shortcuts-clipboard": "क्लिपबोर्ड",
 	"visualeditor-shortcuts-history": "इतिहास",
 	"visualeditor-shortcuts-other": "अन्य",

@@ -165,6 +165,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standard",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skala",
 	"visualeditor-rebase-client-author-name": "Namn",
+	"visualeditor-rebase-client-connecting": "Ansluter...",
 	"visualeditor-rebase-client-document-name": "Dokumentnamn (valfritt)",
 	"visualeditor-rebase-client-document-create-edit": "Skapa/redigera",
 	"visualeditor-shortcuts-clipboard": "Urklipp",
