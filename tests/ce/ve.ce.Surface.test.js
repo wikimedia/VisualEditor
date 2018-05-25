@@ -2939,6 +2939,39 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Paste paragraphs and a table into table cell'
 			},
 			{
+				rangeOrSelection: new ve.Range( 2 ),
+				documentHtml: '<p>A</p><ul><li>B</li><li>C</li></ul>',
+				internalSourceRangeOrSelection: new ve.Range( 6, 12 ),
+				expectedRangeOrSelection: new ve.Range( 14 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 3 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph' },
+								'B',
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'C',
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: '/list' }
+							],
+							remove: [],
+							insertedDataLength: 10,
+							insertedDataOffset: 1
+						},
+						{ type: 'retain', length: 14 }
+					]
+				],
+				msg: 'Unbalanced data can\'t be fixed by fixupInsertion'
+			},
+			{
 				rangeOrSelection: new ve.Range( 0 ),
 				// Firefox doesn't like using execCommand for this test for some reason
 				pasteTargetHtml: '<ul><li>A</li><ul><li>B</li></ul></ul>',
