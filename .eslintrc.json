@@ -20,7 +20,6 @@
 	"rules": {
 		"qunit/no-async-in-loops": 0,
 		"qunit/no-global-stop-start": 0,
-		"qunit/no-ok-equality": 0,
 		"qunit/require-expect": 0,
 		"qunit/resolve-async": 0,
 		"dot-notation": [ "error", { "allowKeywords": true } ]

@@ -202,7 +202,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			} catch ( e ) {
 				ex = e;
 			}
-			assert.ok( ex !== null, test.title + ' (' + offset + ') dies' );
+			assert.notStrictEqual( ex, null, test.title + ' (' + offset + ') dies' );
 		}
 		view.destroy();
 	}

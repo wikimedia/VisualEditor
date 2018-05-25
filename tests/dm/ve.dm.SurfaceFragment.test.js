@@ -130,7 +130,7 @@ QUnit.test( 'adjustLinearSelection', function ( assert ) {
 		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
 		adjustedFragment = fragment.adjustLinearSelection( -19, 35 );
 
-	assert.ok( fragment !== adjustedFragment, 'adjustLinearSelection produces a new fragment' );
+	assert.notStrictEqual( fragment, adjustedFragment, 'adjustLinearSelection produces a new fragment' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
 	assert.equalRange( adjustedFragment.getSelection().getRange(), new ve.Range( 1, 56 ), 'new range is used' );
 
@@ -156,12 +156,12 @@ QUnit.test( 'collapseToStart/End', function ( assert ) {
 		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
 		collapsedFragment = fragment.collapseToStart();
 
-	assert.ok( fragment !== collapsedFragment, 'collapseToStart produces a new fragment' );
+	assert.notStrictEqual( fragment, collapsedFragment, 'collapseToStart produces a new fragment' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
 	assert.equalRange( collapsedFragment.getSelection().getRange(), new ve.Range( 20 ), 'new range is used' );
 
 	collapsedFragment = fragment.collapseToEnd();
-	assert.ok( fragment !== collapsedFragment, 'collapseToEnd produces a new fragment' );
+	assert.notStrictEqual( fragment, collapsedFragment, 'collapseToEnd produces a new fragment' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
 	assert.equalRange( collapsedFragment.getSelection().getRange(), new ve.Range( 21 ), 'range is at end when collapseToEnd is set' );
 } );

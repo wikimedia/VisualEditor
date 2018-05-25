@@ -500,7 +500,7 @@ QUnit.test( 'getBranchNodeFromOffset', function ( assert ) {
 		for ( j = 0; j < expected[ i ].length; j++ ) {
 			node = node.children[ expected[ i ][ j ] ];
 		}
-		assert.ok( node === doc.getBranchNodeFromOffset( i ), 'reference at offset ' + i );
+		assert.strictEqual( node, doc.getBranchNodeFromOffset( i ), 'reference at offset ' + i );
 	}
 } );
 

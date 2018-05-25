@@ -113,8 +113,9 @@ QUnit.test( 'modify', function ( assert ) {
 		expectedTreeDump,
 		'Modified tree matches rebuilt tree, reversed'
 	);
-	assert.ok(
-		tx.operations[ 3 ].remove[ 1 ] !== doc.data.data[ 6 ],
+	assert.notStrictEqual(
+		tx.operations[ 3 ].remove[ 1 ],
+		doc.data.data[ 6 ],
 		'Inserted transaction data is not referenced into the linear data'
 	);
 } );
