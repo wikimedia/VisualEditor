@@ -22,15 +22,17 @@
 				this.fixture.appendChild( ve.init.target.$element[ 0 ] );
 
 				if ( localEnv.beforeEach ) {
-					localEnv.beforeEach.call( this );
+					return localEnv.beforeEach.apply( this, arguments );
 				}
 			},
 			afterEach: function () {
+				var res;
 				if ( localEnv.afterEach ) {
-					localEnv.afterEach.call( this );
+					res = localEnv.afterEach.apply( this, arguments );
 				}
 
 				this.fixture.parentNode.removeChild( this.fixture );
+				return res;
 			}
 		} );
 	};

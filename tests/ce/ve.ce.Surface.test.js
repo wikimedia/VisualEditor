@@ -5,8 +5,9 @@
  */
 
 QUnit.module( 've.ce.Surface', {
-	beforeEach: function () {
-		return ve.init.platform.getInitializedPromise();
+	beforeEach: function ( assert ) {
+		var done = assert.async();
+		return ve.init.platform.getInitializedPromise().then( done );
 	}
 } );
 
