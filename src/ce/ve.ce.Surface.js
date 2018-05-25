@@ -2136,7 +2136,7 @@ ve.ce.Surface.prototype.afterPasteImportRules = function ( isMultiline ) {
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, fragment, targetFragment, isMultiline ) {
-	var linearData, data;
+	var linearData, data, insertionPromise;
 
 	// Pasting non-table content into table: just replace the the first cell with the pasted content
 	if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
@@ -2145,28 +2145,29 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, 
 		targetFragment.removeContent();
 	}
 
-	// Internal paste
-	try {
-		// Try to paste in the original data
-		// Take a copy to prevent the data being annotated a second time in the catch block
+	// Only try original data in multiline contexts, for single line we must use balanced data
+
+	// Original data + fixupInsertion
+	if ( isMultiline ) {
+		// Take a copy to prevent the data being annotated a second time in the balanced data path
 		// and to prevent actions in the data model affecting view.clipboard
 		linearData = new ve.dm.ElementLinearData(
 			slice.getStore(),
 			ve.copy( slice.getOriginalData() )
 		);
 
-		if ( !isMultiline ) {
-			// Force a jump to the catch branch
-			throw new Error( 'Must use balanced data' );
-		}
-
 		if ( this.pasteSpecial ) {
 			this.afterPasteSanitize( linearData, isMultiline );
 		}
 
-		data = linearData.getData();
-	} catch ( err ) {
-		// If that fails, use the balanced data
+		// ve.dm.Document#fixupInsertion may fail, in which case we fall back to balanced data
+		try {
+			insertionPromise = this.afterPasteInsertInternalData( targetFragment, linearData.getData() );
+		} catch ( e ) {}
+	}
+
+	// Balanaced data
+	if ( !insertionPromise ) {
 		// Take a copy to prevent actions in the data model affecting view.clipboard
 		linearData = new ve.dm.ElementLinearData(
 			slice.getStore(),
@@ -2180,14 +2181,16 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, 
 		data = linearData.getData();
 
 		if ( !isMultiline ) {
-			// Unwrap CBN
+			// Unwrap single CBN
 			if ( data[ 0 ].type ) {
 				data = data.slice( 1, data.length - 1 );
 			}
 		}
+
+		insertionPromise = this.afterPasteInsertInternalData( targetFragment, data );
 	}
 
-	return this.afterPasteInsertInternalData( targetFragment, data );
+	return insertionPromise;
 };
 
 /**
