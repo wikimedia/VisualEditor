@@ -3514,6 +3514,7 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 		for ( j = 0, l = internalListNode.getOuterRange().start; j < l; j++ ) {
 			node = view.getDocument().getDocumentNode().getNodeFromOffset( j );
 			if ( node.isFocusable() ) {
+				// eslint-disable-next-line qunit/literal-compare-order
 				assert.strictEqual( null, cases[ i ].expected[ j ], 'Focusable node at ' + j );
 			} else {
 				selection = view.getSelectionState( new ve.Range( j ) );
