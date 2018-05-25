@@ -1,5 +1,9 @@
 {
-	"extends": "wikimedia",
+	"extends": [
+		"wikimedia",
+		"plugin:qunit/recommended",
+		"plugin:qunit/two"
+	],
 	"env": {
 		"browser": true,
 		"jquery": true,
@@ -14,9 +18,15 @@
 		"Papa": false
 	},
 	"rules": {
+		"qunit/literal-compare-order": 0,
+		"qunit/no-async-in-loops": 0,
+		"qunit/no-global-stop-start": 0,
+		"qunit/no-ok-equality": 0,
+		"qunit/require-expect": 0,
+		"qunit/resolve-async": 0,
 		"dot-notation": [ "error", { "allowKeywords": true } ]
 	},
-	"plugins": [ "html" ],
+	"plugins": [ "html", "qunit" ],
 	"settings": {
 		"html/indent": "+tab"
 	}
