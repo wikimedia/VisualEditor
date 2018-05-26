@@ -1,8 +1,6 @@
 {
 	"extends": [
-		"wikimedia",
-		"plugin:qunit/recommended",
-		"plugin:qunit/two"
+		"wikimedia"
 	],
 	"env": {
 		"browser": true,
@@ -18,13 +16,9 @@
 		"Papa": false
 	},
 	"rules": {
-		"qunit/no-async-in-loops": 0,
-		"qunit/no-global-stop-start": 0,
-		"qunit/require-expect": 0,
-		"qunit/resolve-async": 0,
 		"dot-notation": [ "error", { "allowKeywords": true } ]
 	},
-	"plugins": [ "html", "qunit" ],
+	"plugins": [ "html" ],
 	"settings": {
 		"html/indent": "+tab"
 	}
