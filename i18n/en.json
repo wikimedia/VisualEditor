@@ -168,7 +168,7 @@
 	"visualeditor-rebase-client-document-name": "Document name (optional)",
 	"visualeditor-rebase-client-document-create-edit": "Create/edit",
 	"visualeditor-shortcuts-clipboard": "Clipboard",
-	"visualeditor-shortcuts-dialog": "Dialog windows",
+	"visualeditor-shortcuts-dialog": "Window controls",
 	"visualeditor-shortcuts-formatting": "Paragraph formatting",
 	"visualeditor-shortcuts-history": "History",
 	"visualeditor-shortcuts-other": "Other",
