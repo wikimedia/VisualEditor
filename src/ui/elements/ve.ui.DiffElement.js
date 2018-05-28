@@ -468,11 +468,9 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 		diff = this.oldToNew[ oldNodeIndex ].diff,
 		treeDiff = diff.treeDiff,
 		diffInfo = diff.diffInfo,
-		oldTree = diff.oldTree,
-		newTree = diff.newTree,
-		oldNodes = oldTree.orderedNodes,
-		newNodes = newTree.orderedNodes,
-		correspondingNodes = this.oldToNew[ oldNodeIndex ].correspondingNodes,
+		oldNodes = diff.oldTreeOrderedNodes,
+		newNodes = diff.newTreeOrderedNodes,
+		correspondingNodes = diff.correspondingNodes,
 		structuralRemoves = [],
 		highestRemovedAncestors = {};
 
@@ -669,7 +667,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
 			for ( k = 0, klen = treeDiff.length; k < klen; k++ ) {
 				if ( treeDiff[ k ][ 0 ] === oldIndex && treeDiff[ k ][ 1 ] === newIndex ) {
 
-					if ( diffInfo[ k ].replacement ) {
+					if ( !diffInfo[ k ] ) {
 
 						// We are treating these nodes as removed and inserted
 						highlightInsertedNode.call( this, newIndex );
