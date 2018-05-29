@@ -104,6 +104,7 @@ ve.ui.FragmentInspector.prototype.initialize = function () {
 	this.container = new OO.ui.PanelLayout( {
 		classes: [ 've-ui-fragmentInspector-container' ],
 		scrollable: true,
+		expanded: false,
 		padded: this.padded
 	} );
 	this.form = new OO.ui.FormLayout( {
