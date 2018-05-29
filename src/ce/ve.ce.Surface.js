@@ -3937,7 +3937,7 @@ ve.ce.Surface.prototype.selectNodeContents = function ( node ) {
  */
 ve.ce.Surface.prototype.annotationsAtFocus = function () {
 	var annotations = [];
-	$( this.nativeSelection.focusNode ).parents( '.ve-ce-annotation' ).each( function () {
+	$( this.nativeSelection.focusNode ).closest( '.ve-ce-annotation' ).each( function () {
 		var view = $( this ).data( 'view' );
 		if ( view && view.canBeActive() ) {
 			annotations.push( view );
