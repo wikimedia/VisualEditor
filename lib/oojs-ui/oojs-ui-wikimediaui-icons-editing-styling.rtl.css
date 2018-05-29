@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.27.0
+ * OOUI v0.27.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-05-09T00:44:50Z
+ * Date: 2018-05-29T23:24:53Z
  */
 /**
  * WikimediaUI Base v0.10.0
@@ -73,6 +73,11 @@
 .oo-ui-icon-bold:lang(be) {
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-te.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-te.svg');
+}
+/* @noflip */
+.oo-ui-icon-bold:lang(ce) {
+  background-image: url('themes/wikimediaui/images/icons/bold-cyrl-palochka.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-palochka.svg');
 }
 /* @noflip */
 .oo-ui-icon-bold:lang(cs) {
@@ -229,6 +234,11 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-te-invert.svg');
 }
 /* @noflip */
+.oo-ui-image-invert.oo-ui-icon-bold:lang(ce) {
+  background-image: url('themes/wikimediaui/images/icons/bold-cyrl-palochka-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-palochka-invert.svg');
+}
+/* @noflip */
 .oo-ui-image-invert.oo-ui-icon-bold:lang(cs) {
   background-image: url('themes/wikimediaui/images/icons/bold-b-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-b-invert.svg');
@@ -381,6 +391,11 @@
 .oo-ui-image-progressive.oo-ui-icon-bold:lang(be) {
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-te-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-te-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-bold:lang(ce) {
+  background-image: url('themes/wikimediaui/images/icons/bold-cyrl-palochka-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-palochka-progressive.svg');
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-bold:lang(cs) {
@@ -589,6 +604,11 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k.svg');
 }
 /* @noflip */
+.oo-ui-icon-italic:lang(ce) {
+  background-image: url('themes/wikimediaui/images/icons/italic-k.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k.svg');
+}
+/* @noflip */
 .oo-ui-icon-italic:lang(da) {
   background-image: url('themes/wikimediaui/images/icons/italic-k.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k.svg');
@@ -743,6 +763,11 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k-invert.svg');
 }
 /* @noflip */
+.oo-ui-image-invert.oo-ui-icon-italic:lang(ce) {
+  background-image: url('themes/wikimediaui/images/icons/italic-k-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k-invert.svg');
+}
+/* @noflip */
 .oo-ui-image-invert.oo-ui-icon-italic:lang(da) {
   background-image: url('themes/wikimediaui/images/icons/italic-k-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k-invert.svg');
@@ -893,6 +918,11 @@
 }
 /* @noflip */
 .oo-ui-image-progressive.oo-ui-icon-italic:lang(be) {
+  background-image: url('themes/wikimediaui/images/icons/italic-k-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-italic:lang(ce) {
   background-image: url('themes/wikimediaui/images/icons/italic-k-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-k-progressive.svg');
 }
