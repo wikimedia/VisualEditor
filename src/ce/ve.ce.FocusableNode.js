@@ -327,16 +327,26 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 	// Defer updating the DOM. If we don't do this, the hasRendering() call for the next
 	// FocusableNode will force a reflow, which is slow.
 	rAF( function () {
-		if ( showIcon ) {
-			node.createInvisibleIcon();
-			node.$element.first()
-				.addClass( 've-ce-focusableNode-invisible' )
-				.prepend( node.icon.$element );
-		} else if ( node.icon ) {
-			node.$element.first().removeClass( 've-ce-focusableNode-invisible' );
-			node.icon.$element.detach();
-		}
+		node.updateInvisibleIconSync( showIcon );
 	} );
+};
+
+/**
+ * Synchronous part of #updateInvisibleIconSync
+ *
+ * @param {boolean} showIcon Show the icon
+ * @private
+ */
+ve.ce.FocusableNode.prototype.updateInvisibleIconSync = function ( showIcon ) {
+	if ( showIcon ) {
+		this.createInvisibleIcon();
+		this.$element.first()
+			.addClass( 've-ce-focusableNode-invisible' )
+			.prepend( this.icon.$element );
+	} else if ( this.icon ) {
+		this.$element.first().removeClass( 've-ce-focusableNode-invisible' );
+		this.icon.$element.detach();
+	}
 };
 
 /**

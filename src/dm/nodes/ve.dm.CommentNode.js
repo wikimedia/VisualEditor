@@ -66,11 +66,8 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 		modelNode = ve.dm.nodeFactory.createFromElement( dataElement );
 		modelNode.setDocument( converter.internalList.getDocument() );
 		viewNode = ve.ce.nodeFactory.createFromModel( modelNode );
-		// Force sync rendering (updateInvisibleIcon is async)
-		viewNode.createInvisibleIcon();
-		viewNode.$element
-			.prepend( viewNode.icon.$element )
-			.attr( 'title', dataElement.attributes.text );
+		viewNode.updateInvisibleIconSync( true );
+		viewNode.$element.attr( 'title', dataElement.attributes.text );
 		els = viewNode.$element.toArray();
 		viewNode.destroy();
 		return els;
