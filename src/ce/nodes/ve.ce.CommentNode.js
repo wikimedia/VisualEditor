@@ -113,6 +113,16 @@ ve.ce.CommentNode.prototype.createInvisibleIcon = function () {
 	return icon.$element;
 };
 
+/* Method */
+
+/**
+ * @inheritdoc ve.ce.FocusableNode
+ */
+ve.ce.CommentNode.prototype.hasRendering = function () {
+	// Comment nodes never have a rendering, don't bother with expensive DOM inspection
+	return false;
+};
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.CommentNode );
