@@ -78,7 +78,7 @@ QUnit.test( 'find fragments', function ( assert ) {
 		dialog.open( {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
-		} ).then( function () {
+		} ).opening.then( function () {
 			var i, ranges;
 			for ( i = 0; i < cases.length; i++ ) {
 				dialog.matchCaseToggle.setValue( !!cases[ i ].matchCase );
@@ -125,7 +125,7 @@ QUnit.test( 'replace all', function ( assert ) {
 		dialog.open( {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
-		} ).then( function () {
+		} ).opening.then( function () {
 			var i;
 			for ( i = 0; i < cases.length; i++ ) {
 				dialog.matchCaseToggle.setValue( !!cases[ i ].matchCase );
