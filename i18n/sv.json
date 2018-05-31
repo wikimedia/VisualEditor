@@ -169,7 +169,7 @@
 	"visualeditor-rebase-client-document-name": "Dokumentnamn (valfritt)",
 	"visualeditor-rebase-client-document-create-edit": "Skapa/redigera",
 	"visualeditor-shortcuts-clipboard": "Urklipp",
-	"visualeditor-shortcuts-dialog": "Dialogfönster",
+	"visualeditor-shortcuts-dialog": "Fönsterkontroller",
 	"visualeditor-shortcuts-formatting": "Styckesformatering",
 	"visualeditor-shortcuts-history": "Historik",
 	"visualeditor-shortcuts-other": "Andra",

@@ -163,7 +163,7 @@
 	"visualeditor-rebase-client-document-name": "Name des Dokuments (optional)",
 	"visualeditor-rebase-client-document-create-edit": "Erstellen/Bearbeiten",
 	"visualeditor-shortcuts-clipboard": "Zwischenablage",
-	"visualeditor-shortcuts-dialog": "Dialogfenster",
+	"visualeditor-shortcuts-dialog": "Fenster-Steuerungselemente",
 	"visualeditor-shortcuts-formatting": "Absatzformatierung",
 	"visualeditor-shortcuts-history": "Verlauf",
 	"visualeditor-shortcuts-other": "Andere",
