@@ -96,7 +96,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 	// Paste sequence
 	if ( internalSourceRangeOrSelection ) {
 		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), internalSourceRangeOrSelection ) );
-		testEvent = new ve.test.utils.TestEvent();
+		testEvent = new ve.test.utils.TestEvent( 'copy' );
 		if ( noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
 			ve.isClipboardDataFormatsSupported = function () { return false; };
@@ -106,14 +106,14 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 			ve.isClipboardDataFormatsSupported = isClipboardDataFormatsSupported;
 		}
 		// A fresh event with the copied data, because of defaultPrevented:
-		testEvent = new ve.test.utils.TestEvent( testEvent.testData );
+		testEvent = new ve.test.utils.TestEvent( 'paste', testEvent.testData );
 	} else {
 		if ( useClipboardData ) {
 			e[ 'text/xcustom' ] = 'useClipboardData-0';
 		} else if ( fromVe ) {
 			e[ 'text/xcustom' ] = '0.123-0';
 		}
-		testEvent = new ve.test.utils.TestEvent( e );
+		testEvent = new ve.test.utils.TestEvent( 'paste', e );
 	}
 	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
 	view.pasteSpecial = pasteSpecial;
@@ -175,10 +175,11 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 	} );
 };
 
-ve.test.utils.TestEvent = function TestEvent( data ) {
+ve.test.utils.TestEvent = function TestEvent( type, data ) {
 	var defaultPrevented, key,
 		internalData = {};
 	this.testData = internalData;
+	this.type = type;
 	this.originalEvent = {
 		clipboardData: {
 			getData: function ( prop ) {
@@ -1516,7 +1517,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
 		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey,
-			testEvent = new ve.test.utils.TestEvent(),
+			testEvent = new ve.test.utils.TestEvent( 'copy' ),
 			clipboardData = testEvent.originalEvent.clipboardData,
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
@@ -3379,7 +3380,10 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 				msg: 'Simple drag and drop',
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				targetOffset: 10,
-				expectedTransfer: { 'application-x/VisualEditor': JSON.stringify( selection ) },
+				expectedTransfer: {
+					'text/html': 'a<b>b</b><i>c</i>',
+					'text/plain': 'abc'
+				},
 				expectedData: function ( data ) {
 					var removed = data.splice( 1, 3 );
 					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
@@ -3391,7 +3395,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				targetOffset: 10,
 				isIE: true,
-				expectedTransfer: { text: '__ve__' + JSON.stringify( selection ) },
+				expectedTransfer: {},
 				expectedData: function ( data ) {
 					var removed = data.splice( 1, 3 );
 					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
@@ -3402,7 +3406,10 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 				msg: 'Invalid target offset',
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				targetOffset: -1,
-				expectedTransfer: { 'application-x/VisualEditor': JSON.stringify( selection ) },
+				expectedTransfer: {
+					'text/html': 'a<b>b</b><i>c</i>',
+					'text/plain': 'abc'
+				},
 				expectedData: function () {},
 				expectedSelection: selection
 			}
@@ -3567,8 +3574,6 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 // TODO: ve.ce.Surface#onSurfaceObserverSelectionChange
 // TODO: ve.ce.Surface#onLock
 // TODO: ve.ce.Surface#onUnlock
-// TODO: ve.ce.Surface#startRelocation
-// TODO: ve.ce.Surface#endRelocation
 // TODO: ve.ce.Surface#handleInsertion
 // TODO: ve.ce.Surface#showModelSelection
 // TODO: ve.ce.Surface#appendHighlights

@@ -500,11 +500,9 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
  * @param {jQuery.Event} e Drag start event
  */
 ve.ce.FocusableNode.prototype.onFocusableDragStart = function ( e ) {
-	// Set dummy transfer data so that the element can be dragged into text locations
-	e.originalEvent.dataTransfer.setData( 'Text', ' ' );
 	if ( this.focusableSurface ) {
-		// Allow dragging this node in the surface
-		this.focusableSurface.startRelocation( this );
+		// Pass event up to the surface
+		this.focusableSurface.onDocumentDragStart( e );
 	}
 };
 
