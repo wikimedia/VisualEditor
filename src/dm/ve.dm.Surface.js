@@ -1033,7 +1033,7 @@ ve.dm.Surface.prototype.getSelectedNode = function () {
 /**
  * Get the selected node covering a specific selection, or null
  *
- * @param {ve.dm.Selection} selection Selection
+ * @param {ve.dm.Selection} [selection] Selection, defaults to the current selection
  * @return {ve.dm.Node|null} Selected node
  */
 ve.dm.Surface.prototype.getSelectedNodeFromSelection = function ( selection ) {

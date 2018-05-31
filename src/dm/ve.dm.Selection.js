@@ -57,11 +57,6 @@ ve.dm.Selection.static.newFromHash = null;
 /* Methods */
 
 /**
- * Test for selection equality
- */
-ve.dm.Selection.prototype.equals = null;
-
-/**
  * Get a JSON serialization of this selection
  *
  * @abstract
