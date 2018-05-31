@@ -11,17 +11,7 @@ QUnit.module( 've.ui.DiffElement' );
 QUnit.test( 'Diffing', function ( assert ) {
 	var i, len,
 		spacer = '<div class="ve-ui-diffElement-spacer">⋮</div>',
-		comment = function ( text ) {
-			return '<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode" contenteditable="false" title="' + text + '">' +
-				'<span class="ve-ce-focusableNode-invisibleIcon oo-ui-widget oo-ui-widget-enabled oo-ui-buttonElement oo-ui-buttonElement-frameless oo-ui-iconElement oo-ui-labelElement oo-ui-buttonWidget" aria-disabled="false">' +
-					'<a class="oo-ui-buttonElement-button" role="button" tabindex="0" aria-disabled="false" rel="nofollow">' +
-						'<span class="oo-ui-iconElement-icon oo-ui-icon-notice"></span>' +
-						'<span class="oo-ui-labelElement-label">' + text + '</span>' +
-						'<span class="oo-ui-indicatorElement-indicator"></span>' +
-					'</a>' +
-				'</span>' +
-			'</span>';
-		},
+		comment = ve.dm.example.commentNodePreview,
 		cases = [
 			{
 				msg: 'Simple text change',

@@ -217,13 +217,14 @@
 	};
 
 	ve.test.utils.runGetDomFromModelTest = function ( assert, caseItem, msg ) {
-		var originalData, model, html, fromDataBody, clipboardHtml;
+		var originalData, model, html, fromDataBody, clipboardHtml, previewHtml;
 
 		model = ve.test.utils.getModelFromTestCase( caseItem );
 		originalData = ve.copy( getSerializableData( model ) );
 		fromDataBody = caseItem.fromDataBody || caseItem.normalizedBody || caseItem.body;
 		html = '<body>' + fromDataBody + '</body>';
 		clipboardHtml = '<body>' + ( caseItem.clipboardBody || fromDataBody ) + '</body>';
+		previewHtml = '<body>' + ( caseItem.previewBody || fromDataBody ) + '</body>';
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromModel( model ),
 			ve.createDocumentFromHtml( html ),
@@ -234,6 +235,16 @@
 			ve.createDocumentFromHtml( clipboardHtml ),
 			msg + ' (clipboard mode)'
 		);
+		// Make this conditional on previewBody being present until downstream test-suites have been fixed.
+		// This should be changed to:
+		// if ( caseItem.previewBody !== false ) {
+		if ( caseItem.previewBody ) {
+			assert.equalDomElement(
+				ve.dm.converter.getDomFromModel( model, ve.dm.Converter.static.PREVIEW_MODE ),
+				ve.createDocumentFromHtml( previewHtml ),
+				msg + ' (preview mode)'
+			);
+		}
 		assert.deepEqualWithDomElements( getSerializableData( model ), originalData, msg + ' (data hasn\'t changed)' );
 	};
 

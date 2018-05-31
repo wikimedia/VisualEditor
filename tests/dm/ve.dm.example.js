@@ -179,6 +179,18 @@ ve.dm.example.blockSlug = '<div class="ve-ce-branchNode-slug ve-ce-branchNode-bl
 
 ve.dm.example.textStyleClasses = 've-ce-annotation ve-ce-textStyleAnnotation';
 
+ve.dm.example.commentNodePreview = function ( text ) {
+	return '<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode" contenteditable="false" title="' + text + '">' +
+		'<span class="ve-ce-focusableNode-invisibleIcon oo-ui-widget oo-ui-widget-enabled oo-ui-buttonElement oo-ui-buttonElement-frameless oo-ui-iconElement oo-ui-labelElement oo-ui-buttonWidget" aria-disabled="false">' +
+			'<a class="oo-ui-buttonElement-button" role="button" tabindex="0" aria-disabled="false" rel="nofollow">' +
+				'<span class="oo-ui-iconElement-icon oo-ui-icon-notice"></span>' +
+				'<span class="oo-ui-labelElement-label">' + text.trim() + '</span>' +
+				'<span class="oo-ui-indicatorElement-indicator"></span>' +
+			'</a>' +
+		'</span>' +
+	'</span>';
+};
+
 /**
  * Creates a document from example data.
  *
@@ -1551,7 +1563,8 @@ ve.dm.example.domToDataCases = {
 		normalizedBody: '<p>a</p>',
 		clipboardBody: '<p>' +
 			'<span rel="ve:CommentAnnotation" data-text="Test">a</span>' +
-		'</p>'
+		'</p>',
+		previewBody: '<p>a</p>'
 	},
 	'other textStyle annotations': {
 		body: '<p>' +
@@ -1611,7 +1624,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		normalizedBody: '<p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre>',
-		clipboardBody: '<p> foo</p><p> \t \tbar</p><h2>  baz</h2><pre> \tquux</pre>'
+		clipboardBody: '<p> foo</p><p> \t \tbar</p><h2>  baz</h2><pre> \tquux</pre>',
+		previewBody: '<p> foo</p><p> \t \tbar</p><h2>  baz</h2><pre> \tquux</pre>'
 	},
 	image: {
 		body: ve.dm.example.image.html,
@@ -1760,6 +1774,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		clipboardBody: '<p><b><span rel="ve:Comment" data-ve-comment="foo">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment="baz">&nbsp;</span></b></p>',
+		previewBody: '<p><b>' + ve.dm.example.commentNodePreview( 'foo' ) + 'bar' + ve.dm.example.commentNodePreview( 'baz' ) + '</b></p>',
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">' +
 			'<b class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">' +
 				ve.dm.example.inlineSlug +
@@ -2170,7 +2185,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" comment ">&nbsp;</span>'
+		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" comment ">&nbsp;</span>',
+		previewBody: ve.dm.example.commentNodePreview( ' comment ' )
 	},
 	'empty document with content added by the editor': {
 		data: [
@@ -2355,7 +2371,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p>Foo<b><span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span></b>Baz</p>'
+		clipboardBody: '<p>Foo<b><span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span></b>Baz</p>',
+		previewBody: '<p>Foo<b>' + ve.dm.example.commentNodePreview( ' Bar ' ) + '</b>Baz</p>'
 	},
 	'empty annotation with metadata': {
 		body: '<p>Foo<b><meta /></b>Baz</p>',
@@ -3012,7 +3029,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" Foo ">&nbsp;</span> <span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span>\nFoo'
+		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" Foo ">&nbsp;</span> <span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span>\nFoo',
+		previewBody: ve.dm.example.commentNodePreview( ' Foo ' ) + ' ' + ve.dm.example.commentNodePreview( ' Bar ' ) + '\nFoo'
 	},
 	'whitespace preservation with comments at end of wrapper paragraph': {
 		body: '<ul><li> bar<!-- baz -->quux </li></ul>',
@@ -3055,7 +3073,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<ul><li> bar<span rel="ve:Comment" data-ve-comment=" baz ">&nbsp;</span>quux </li></ul>'
+		clipboardBody: '<ul><li> bar<span rel="ve:Comment" data-ve-comment=" baz ">&nbsp;</span>quux </li></ul>',
+		previewBody: '<ul><li> bar' + ve.dm.example.commentNodePreview( ' baz ' ) + 'quux </li></ul>'
 	},
 	'whitespace preservation with metadata and space at end of wrapper paragraph': {
 		body: '<ul><li> bar<meta />quux </li></ul>',
@@ -3370,7 +3389,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p> <span rel="ve:Comment" data-ve-comment=" foo ">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment=" baz ">&nbsp;</span> </p>'
+		clipboardBody: '<p> <span rel="ve:Comment" data-ve-comment=" foo ">&nbsp;</span>bar<span rel="ve:Comment" data-ve-comment=" baz ">&nbsp;</span> </p>',
+		previewBody: '<p> ' + ve.dm.example.commentNodePreview( ' foo ' ) + 'bar' + ve.dm.example.commentNodePreview( ' baz ' ) + ' </p>'
 	},
 	'non-breaking spaces not treated as whitespace': {
 		body: '<p>  &nbsp;&nbsp;foo&nbsp;\t</p>',
@@ -3855,7 +3875,8 @@ ve.dm.example.domToDataCases = {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		],
-		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="-Foo-bar-->b&amp;r-">&nbsp;</span></p>'
+		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="-Foo-bar-->b&amp;r-">&nbsp;</span></p>',
+		previewBody: '<p>' + ve.dm.example.commentNodePreview( '&#45;Foo-bar-&#45;>b&#38;r&#45;' ) + '</p>'
 	},
 	'comment escaping is normalized': {
 		body: '<p><!--&gt;Foo-bar--&gt;b&amp;r---></p>',
@@ -3868,7 +3889,8 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		normalizedBody: '<p><!--&#62;Foo-bar-&#45;>b&#38;r&#45;--></p>',
-		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-">&nbsp;</span></p>'
+		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-">&nbsp;</span></p>',
+		previewBody: '<p>' + ve.dm.example.commentNodePreview( '&gt;Foo-bar--&gt;b&amp;r-' ) + '</p>'
 	},
 	'comment as a child of node that can not handle comments (list)': {
 		body: '<ul><li>foo</li><!--bar--></ul>',
