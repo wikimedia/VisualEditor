@@ -41,7 +41,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	this.rects = null;
 	this.boundingRect = null;
 	this.startAndEndRects = null;
-	this.$icon = null;
+	this.icon = null;
 	this.touchMoved = false;
 
 	if ( Array.isArray( config.classes ) ) {
@@ -319,8 +319,8 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 	}
 
 	// Make sure any existing icon is detached before measuring
-	if ( this.$icon ) {
-		this.$icon.detach();
+	if ( this.icon ) {
+		this.icon.$element.detach();
 	}
 	showIcon = !this.hasRendering();
 
@@ -328,32 +328,51 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 	// FocusableNode will force a reflow, which is slow.
 	rAF( function () {
 		if ( showIcon ) {
-			if ( !node.$icon ) {
-				node.$icon = node.createInvisibleIcon();
-			}
+			node.createInvisibleIcon();
 			node.$element.first()
 				.addClass( 've-ce-focusableNode-invisible' )
-				.prepend( node.$icon );
-		} else if ( node.$icon ) {
+				.prepend( node.icon.$element );
+		} else if ( node.icon ) {
 			node.$element.first().removeClass( 've-ce-focusableNode-invisible' );
-			node.$icon.detach();
+			node.icon.$element.detach();
 		}
 	} );
 };
 
 /**
  * Create a element to show if the node is invisible
- *
- * @return {jQuery} Element to show
  */
 ve.ce.FocusableNode.prototype.createInvisibleIcon = function () {
-	var icon = new OO.ui.IconWidget( {
+	// Check the node hasn't been destroyed, as this method is called after an rAF
+	if ( !this.getModel() || this.icon ) {
+		return;
+	}
+	this.icon = new OO.ui.ButtonWidget( {
 		classes: [ 've-ce-focusableNode-invisibleIcon' ],
+		framed: false,
 		icon: this.constructor.static.iconWhenInvisible
 	} );
-	// Add em space for selection highlighting
-	icon.$element.text( '\u2003' );
-	return icon.$element;
+	this.updateInvisibleIconLabel();
+};
+
+/**
+ * Get a label for the invisible icon
+ *
+ * Defaults to #getDescription
+ *
+ * @return {jQuery|string|OO.ui.HtmlSnippet|Function|null} Invisible icon label
+ */
+ve.ce.FocusableNode.prototype.getInvisibleIconLabel = function () {
+	return this.model ? this.constructor.static.getDescription( this.model ) : '';
+};
+
+/**
+ * Update the invisible icon's label
+ */
+ve.ce.FocusableNode.prototype.updateInvisibleIconLabel = function () {
+	if ( this.icon ) {
+		this.icon.setLabel( this.getInvisibleIconLabel() || null );
+	}
 };
 
 /**
