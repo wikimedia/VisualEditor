@@ -170,7 +170,7 @@
 	"visualeditor-rebase-client-document-name": "文档名称（可选）",
 	"visualeditor-rebase-client-document-create-edit": "创建/编辑",
 	"visualeditor-shortcuts-clipboard": "剪贴板",
-	"visualeditor-shortcuts-dialog": "对话窗口",
+	"visualeditor-shortcuts-dialog": "窗口控制",
 	"visualeditor-shortcuts-formatting": "段落格式",
 	"visualeditor-shortcuts-history": "历史",
 	"visualeditor-shortcuts-other": "其他",

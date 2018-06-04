@@ -175,7 +175,7 @@
 	"visualeditor-rebase-client-document-name": "문서 제목 (선택사항)",
 	"visualeditor-rebase-client-document-create-edit": "생성/편집",
 	"visualeditor-shortcuts-clipboard": "클립보드",
-	"visualeditor-shortcuts-dialog": "대화상자 창",
+	"visualeditor-shortcuts-dialog": "창 컨트롤",
 	"visualeditor-shortcuts-formatting": "문단 서식",
 	"visualeditor-shortcuts-history": "역사",
 	"visualeditor-shortcuts-other": "기타",
