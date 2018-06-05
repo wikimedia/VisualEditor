@@ -2097,13 +2097,31 @@ QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert 
 				b: [ 'F', [ ve.dm.example.italicHash ] ],
 				comparison: false,
 				comparisonUnannotated: true,
-				msg: 'Identical characters, non-identically-annotated'
+				msg: 'Identical characters, differently-annotated'
 			},
 			{
 				a: [ 'F', [ ve.dm.example.boldHash ] ],
 				b: [ 'F', [ ve.dm.example.strongHash ] ],
 				comparison: true,
 				msg: 'Identical characters, comparably-annotated'
+			},
+			{
+				a: [ 'F', [ ve.dm.example.boldHash ] ],
+				b: [ 'G', [ ve.dm.example.boldHash ] ],
+				comparison: false,
+				msg: 'Different characters, identically-annotated'
+			},
+			{
+				a: [ 'F', [ ve.dm.example.boldHash ] ],
+				b: [ 'G', [ ve.dm.example.strongHash ] ],
+				comparison: false,
+				msg: 'Different characters, comparably-annotated'
+			},
+			{
+				a: 'F',
+				b: [ 'G', [ ve.dm.example.boldHash ] ],
+				comparison: false,
+				msg: 'Different characters, one annotated, one not'
 			},
 			{
 				a: 'F',
@@ -2114,9 +2132,47 @@ QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert 
 			},
 			{
 				a: { type: 'paragraph' },
+				b: 'F',
+				comparison: false,
+				msg: 'Element with character'
+			},
+			{
+				a: { type: 'paragraph' },
+				b: [ 'F', [ ve.dm.example.boldHash ] ],
+				comparison: false,
+				msg: 'Element with annotated character'
+			},
+			{
+				a: { type: 'paragraph' },
 				b: { type: 'paragraph' },
 				comparison: true,
 				msg: 'Identical opening paragraphs'
+			},
+			{
+				a: { type: 'inlineImage', annotations: [ ve.dm.example.boldHash ] },
+				b: { type: 'inlineImage', annotations: [ ve.dm.example.boldHash ] },
+				comparison: true,
+				msg: 'Identical elements, identically-annotated'
+			},
+			{
+				a: { type: 'inlineImage', annotations: [ ve.dm.example.boldHash ] },
+				b: { type: 'inlineImage', annotations: [ ve.dm.example.strongHash ] },
+				comparison: true,
+				msg: 'Identical elements, comparably-annotated'
+			},
+			{
+				a: { type: 'inlineImage', annotations: [ ve.dm.example.boldHash ] },
+				b: { type: 'inlineImage', annotations: [ ve.dm.example.italicHash ] },
+				comparison: false,
+				comparisonUnannotated: true,
+				msg: 'Identical elements, differently-annotated'
+			},
+			{
+				a: { type: 'inlineImage', annotations: [ ve.dm.example.boldHash ] },
+				b: { type: 'inlineImage' },
+				comparison: false,
+				comparisonUnannotated: true,
+				msg: 'Identical elements, one annotated, one not'
 			},
 			{
 				a: { type: 'heading' },
@@ -2155,12 +2211,12 @@ QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert 
 	store.hash( new ve.dm.ItalicAnnotation( ve.dm.example.italic ) );
 
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.equal(
+		assert.strictEqual(
 			ve.dm.ElementLinearData.static.compareElements( cases[ i ].a, cases[ i ].b, store ),
 			cases[ i ].comparison,
 			cases[ i ].msg
 		);
-		assert.equal(
+		assert.strictEqual(
 			ve.dm.ElementLinearData.static.compareElementsUnannotated( cases[ i ].a, cases[ i ].b ),
 			cases[ i ].comparisonUnannotated || cases[ i ].comparison,
 			cases[ i ].msg + ' (unannotated)'
