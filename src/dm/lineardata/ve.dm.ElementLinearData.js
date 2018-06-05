@@ -48,13 +48,8 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
  * @return {boolean} Elements are comparable
  */
 ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
-	var aType, bType,
-		aPlain = a,
+	var aPlain = a,
 		bPlain = b;
-
-	if ( a === undefined || b === undefined ) {
-		return false;
-	}
 
 	if ( Array.isArray( a ) ) {
 		aPlain = a[ 0 ];
@@ -62,34 +57,35 @@ ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
 	if ( Array.isArray( b ) ) {
 		bPlain = b[ 0 ];
 	}
-	if ( aPlain === bPlain ) {
+	if ( typeof aPlain === 'string' && typeof bPlain === 'string' ) {
+		return aPlain === bPlain;
+	}
+
+	if ( typeof a !== typeof b ) {
+		// Different types
+		return false;
+	}
+
+	// By this point, both must be objects, so must have equal types
+	if ( a.type !== b.type ) {
+		return false;
+	}
+
+	// Both objects are open elements, so compare hashes.
+	// (NB we only need to check one as they have equal .type)
+	if ( ve.dm.LinearData.static.isOpenElementData( a ) ) {
+		// As we are using hashes, we don't need to worry about annotations
+		aPlain = ve.dm.modelRegistry.lookup( a.type ).static.getHashObject( a );
+		delete aPlain.originalDomElementsHash;
+
+		bPlain = ve.dm.modelRegistry.lookup( b.type ).static.getHashObject( b );
+		delete bPlain.originalDomElementsHash;
+
+		return ve.compare( aPlain, bPlain );
+	} else {
+		// Both objects are close elements, no need to compare attributes
 		return true;
 	}
-	if ( a && a.type ) {
-		aType = a.type;
-		if ( ve.dm.LinearData.static.isOpenElementData( a ) ) {
-			// Ignore semantically irrelevant differences
-			aPlain = ve.dm.modelRegistry.lookup( aType ).static.getHashObject( a );
-			delete aPlain.originalDomElementsHash;
-		} else {
-			aPlain = {
-				type: aType
-			};
-		}
-	}
-	if ( b && b.type ) {
-		bType = b.type;
-		if ( ve.dm.LinearData.static.isOpenElementData( b ) ) {
-			// Ignore semantically irrelevant differences
-			bPlain = ve.dm.modelRegistry.lookup( bType ).static.getHashObject( b );
-			delete bPlain.originalDomElementsHash;
-		} else {
-			bPlain = {
-				type: bType
-			};
-		}
-	}
-	return ve.compare( aPlain, bPlain );
 };
 
 /**
@@ -106,19 +102,19 @@ ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
  * @return {boolean} Elements are comparable
  */
 ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore ) {
-	var aType, aSet, bSet, aAnnotations, bAnnotations;
+	var typeofA, aSet, bSet, aAnnotations, bAnnotations;
 
 	if ( a === b ) {
 		return true;
 	}
 
-	aType = typeof a;
+	typeofA = typeof a;
 
-	if ( aType !== typeof b ) {
+	if ( typeofA !== typeof b ) {
 		// Different types
 		return false;
 	}
-	if ( aType === 'string' ) {
+	if ( typeofA === 'string' ) {
 		// Both strings, and not equal
 		return false;
 	}
