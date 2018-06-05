@@ -4,8 +4,7 @@
 	],
 	"env": {
 		"browser": true,
-		"jquery": true,
-		"qunit": true
+		"jquery": true
 	},
 	"globals": {
 		"ve": true,

@@ -4,6 +4,9 @@
 		"plugin:qunit/recommended",
 		"plugin:qunit/two"
 	],
+	"env": {
+		"qunit": true
+	},
 	"rules": {
 		"qunit/no-assert-equal": "error",
 		"qunit/no-early-return": "error",
