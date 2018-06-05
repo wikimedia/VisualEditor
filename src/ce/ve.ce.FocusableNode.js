@@ -338,6 +338,10 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
  * @private
  */
 ve.ce.FocusableNode.prototype.updateInvisibleIconSync = function ( showIcon ) {
+	if ( !this.getModel() ) {
+		// Check the node hasn't been destroyed, as this method is called after an rAF
+		return;
+	}
 	if ( showIcon ) {
 		this.createInvisibleIcon();
 		this.$element.first()
@@ -353,8 +357,7 @@ ve.ce.FocusableNode.prototype.updateInvisibleIconSync = function ( showIcon ) {
  * Create a element to show if the node is invisible
  */
 ve.ce.FocusableNode.prototype.createInvisibleIcon = function () {
-	// Check the node hasn't been destroyed, as this method is called after an rAF
-	if ( !this.getModel() || this.icon ) {
+	if ( this.icon ) {
 		return;
 	}
 	this.icon = new OO.ui.ButtonWidget( {
