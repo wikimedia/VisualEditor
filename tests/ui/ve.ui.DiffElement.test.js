@@ -160,7 +160,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<figure><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>' +
 					'</div>',
 				expectedDescriptions: [
 					'visualeditor-changedesc-changed,src,http://example.org/foo.jpg,http://example.org/boo.jpg'
@@ -172,7 +172,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<figure class="ve-align-right"><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg" width="0" height="0" alt="null"><figcaption>bar</figcaption></figure>' +
+						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>' +
 					'</div>',
 				expectedDescriptions: [
 					'visualeditor-changedesc-changed,src,http://example.org/foo.jpg,http://example.org/boo.jpg'
