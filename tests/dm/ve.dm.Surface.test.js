@@ -119,7 +119,7 @@ QUnit.test( 'contextChange events', function ( assert ) {
 		surface.setLinearSelection( tests[ i ].initialSelection || new ve.Range( 1 ) );
 		contextChanges = 0;
 		surface.setLinearSelection( tests[ i ].selection );
-		assert.equal( contextChanges, tests[ i ].expected, tests[ i ].title );
+		assert.strictEqual( contextChanges, tests[ i ].expected, tests[ i ].title );
 	}
 } );
 

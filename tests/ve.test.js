@@ -186,7 +186,7 @@ QUnit.test( 'setDomAttributes', function ( assert ) {
 
 	target = sample.cloneNode();
 	ve.setDomAttributes( target, { onclick: 'alert(1);', foo: 'update', add: 'whee' }, [ 'foo', 'add' ] );
-	assert.ok( !target.hasAttribute( 'onclick' ), 'whitelist affects creating attributes' );
+	assert.strictEqual( target.hasAttribute( 'onclick' ), false, 'whitelist affects creating attributes' );
 	assert.deepEqual(
 		ve.getDomAttributes( target ),
 		{ foo: 'update', bar: 'two', baz: 'three', add: 'whee' },
@@ -930,7 +930,7 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 		test = tests[ i ];
 		testNodes = test.nodes.split( /\s+/ ).map( getNode );
 		ancestorNode = nodes[ test.ancestor ];
-		assert.equal(
+		assert.strictEqual(
 			ve.getCommonAncestor.apply( null, testNodes ),
 			ancestorNode,
 			test.nodes + ' -> ' + test.ancestor
@@ -938,7 +938,7 @@ QUnit.test( 'getCommonAncestor', function ( assert ) {
 	}
 
 	// Test no-argument case
-	assert.equal( ve.getCommonAncestor(), null, 'No nodes' );
+	assert.strictEqual( ve.getCommonAncestor(), null, 'No nodes' );
 } );
 
 QUnit.test( 'getCommonStartSequenceLength', function ( assert ) {

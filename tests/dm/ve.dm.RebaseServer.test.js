@@ -465,7 +465,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 				} else {
 					summary = client.getHistorySummary();
 				}
-				assert.equal( summary, op[ 2 ], cases[ i ].name + ': ' + ( op[ 3 ] || j ) );
+				assert.strictEqual( summary, op[ 2 ], cases[ i ].name + ': ' + ( op[ 3 ] || j ) );
 			} else if ( action === 'submit' ) {
 				client.submitChange();
 			} else if ( action === 'deliver' ) {

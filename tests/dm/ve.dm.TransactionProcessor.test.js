@@ -723,7 +723,7 @@ QUnit.test( 'commit', function ( assert ) {
 			);
 			if ( 'events' in cases[ msg ] ) {
 				for ( i = 0; i < cases[ msg ].events.length; i++ ) {
-					assert.equal(
+					assert.strictEqual(
 						cases[ msg ].events[ i ].fired,
 						1,
 						'event ' + cases[ msg ].events[ i ][ 0 ] + ' on ' +

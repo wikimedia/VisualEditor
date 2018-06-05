@@ -33,13 +33,13 @@ QUnit.test( 'roundTripMetadata', function ( assert ) {
 	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + beforeHtml ) );
 	tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
 	doc.commit( tx );
-	assert.equal(
+	assert.strictEqual(
 		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
 		afterHtml,
 		'Metadata in ContentBranchNode gets moved outside by change to ContentBranchNode'
 	);
 	doc.commit( tx.reversed() );
-	assert.equal(
+	assert.strictEqual(
 		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
 		beforeHtml,
 		'Undo restores metadata to inside ContentBranchNode'
