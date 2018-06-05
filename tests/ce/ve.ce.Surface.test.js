@@ -5,6 +5,8 @@
  */
 
 QUnit.module( 've.ce.Surface', {
+	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
+	// eslint-disable-next-line qunit/resolve-async
 	beforeEach: function ( assert ) {
 		var done = assert.async();
 		return ve.init.platform.getInitializedPromise().then( done );
