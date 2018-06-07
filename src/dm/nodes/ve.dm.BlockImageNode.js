@@ -23,6 +23,11 @@ ve.dm.BlockImageNode = function VeDmBlockImageNode() {
 	// Mixin constructors
 	ve.dm.ImageNode.call( this );
 	ve.dm.AlignableNode.call( this );
+
+	// <figure>
+	//   <img/>
+	//   [<figcaption/>]
+	// </figure>
 };
 
 /* Inheritance */
@@ -41,7 +46,7 @@ OO.mixinClass( ve.dm.BlockImageNode, ve.dm.AlignableNode );
 ve.dm.BlockImageNode.static.name = 'blockImage';
 
 ve.dm.BlockImageNode.static.preserveHtmlAttributes = function ( attribute ) {
-	var attributes = [ 'class', 'src', 'width', 'height', 'href' ];
+	var attributes = [ 'class', 'src', 'width', 'height' ];
 	return attributes.indexOf( attribute ) === -1;
 };
 
@@ -53,36 +58,28 @@ ve.dm.BlockImageNode.static.childNodeTypes = [ 'imageCaption' ];
 
 ve.dm.BlockImageNode.static.matchTagNames = [ 'figure' ];
 
-ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) {
-	var dataElement, figure, classAttr, img, caption, attributes, width, height, altText;
+ve.dm.BlockImageNode.static.matchFunction = function ( element ) {
+	return element.children[ 0 ] && element.children[ 0 ].nodeName === 'IMG';
+};
 
-	// Workaround for jQuery's .children() being expensive due to
-	// https://github.com/jquery/sizzle/issues/311
-	function findChildren( parent, nodeNames ) {
-		return Array.prototype.filter.call( parent.childNodes, function ( element ) {
-			return nodeNames.indexOf( element.nodeName.toLowerCase() ) !== -1;
-		} );
-	}
+ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) {
+	var dataElement, figure, classAttr, img, caption, attributes, width, height;
 
 	figure = domElements[ 0 ];
 	classAttr = figure.getAttribute( 'class' );
-	img = findChildren( figure, 'img' )[ 0 ] || null;
-	caption = findChildren( figure, 'figcaption' )[ 0 ] || null;
-	attributes = {
-		src: img && img.getAttribute( 'src' )
-	};
-	width = img && img.getAttribute( 'width' );
-	height = img && img.getAttribute( 'height' );
-	altText = img && img.getAttribute( 'alt' );
+	img = figure.children[ 0 ];
+	width = img.getAttribute( 'width' );
+	height = img.getAttribute( 'height' );
+	caption = figure.children[ 1 ];
 
-	if ( altText !== undefined ) {
-		attributes.alt = altText;
-	}
+	attributes = {
+		src: img.getAttribute( 'src' ),
+		width: width !== null && width !== '' ? +width : null,
+		height: height !== null && height !== '' ? +height : null,
+		alt: img.getAttribute( 'alt' )
+	};
 
 	this.setClassAttributes( attributes, classAttr );
-
-	attributes.width = width !== undefined && width !== '' ? Number( width ) : null;
-	attributes.height = height !== undefined && height !== '' ? Number( height ) : null;
 
 	dataElement = {
 		type: this.name,
@@ -108,20 +105,14 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 // should be more conditional.
 ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 	var dataElement = data[ 0 ],
-		width = dataElement.attributes.width,
-		height = dataElement.attributes.height,
 		classAttr = this.getClassAttrFromAttributes( dataElement.attributes ),
 		figure = doc.createElement( 'figure' ),
 		img = doc.createElement( 'img' ),
 		wrapper = doc.createElement( 'div' ),
 		captionData = data.slice( 1, -1 );
 
-	img.setAttribute( 'src', dataElement.attributes.src );
-	img.setAttribute( 'width', width );
-	img.setAttribute( 'height', height );
-	if ( dataElement.attributes.alt !== undefined ) {
-		img.setAttribute( 'alt', dataElement.attributes.alt );
-	}
+	ve.setDomAttributes( img, dataElement.attributes, [ 'alt', 'src', 'width', 'height' ] );
+
 	figure.appendChild( img );
 
 	if ( classAttr ) {
