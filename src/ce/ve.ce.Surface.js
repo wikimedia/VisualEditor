@@ -2235,10 +2235,13 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 		) {
 			// CE destroyed an important element, so revert to using clipboard data
 			htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
-			// Remove the pasteProtect class. See #onCopy.
-			$( htmlDoc ).find( 'span' ).removeClass( 've-pasteProtect' );
-			// Remove the clipboard key
-			$( htmlDoc ).find( 'span[data-ve-clipboard-key]' ).remove();
+			$( htmlDoc )
+				// Remove the pasteProtect class. See #onCopy.
+				.find( 'span' ).removeClass( 've-pasteProtect' ).end()
+				// Remove the clipboard key
+				.find( 'span[data-ve-clipboard-key]' ).remove().end()
+				// Remove ve-attributes
+				.find( '[data-ve-attributes]' ).removeAttr( 'data-ve-attributes' );
 			beforePasteData.context = null;
 		}
 	}
