@@ -115,6 +115,11 @@
 		if ( !( constructor.prototype instanceof ve.dm.Model ) ) {
 			throw new Error( 'Models must be subclasses of ve.dm.Model' );
 		}
+		if ( this.lookup( name ) === constructor ) {
+			// Don't allow double registration as it would create duplicate
+			// entries in various caches.
+			return;
+		}
 
 		// Register the model with the right factory
 		if ( constructor.prototype instanceof ve.dm.Annotation ) {
