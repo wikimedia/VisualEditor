@@ -178,10 +178,45 @@ QUnit.test( 'register/unregister/matchElement', function ( assert ) {
 	element.setAttribute( 'rel', 'ext:abbr' );
 	assert.strictEqual( registry.matchElement( element ), 'stub-abbr', 'String match overrides RegExp match' );
 
+	assert.strictEqual(
+		registry.registrationOrder[ ve.dm.example.StubNothingSetAnnotation.static.name ],
+		0,
+		'Model given a registration order'
+	);
+	registry.register( ve.dm.example.StubNothingSetAnnotation );
+	assert.strictEqual(
+		registry.registrationOrder[ ve.dm.example.StubNothingSetAnnotation.static.name ],
+		0,
+		'Double registration is a no-op (doesn\'t affect registration order)'
+	);
+
 	registry.unregister( ve.dm.example.StubAbbrNode );
 	element.removeAttribute( 'typeof' );
 	element.setAttribute( 'rel', 'ext:abbr' );
 	assert.strictEqual( registry.matchElement( element ), 'stub-regexp', 'RegExp type match after string match is unregistered' );
+
+	assert.deepEqual(
+		registry.modelsByTag[ 1 ].a,
+		[ 'stubsingletagandtypeandfunc', 'stubsingletagandfunc' ],
+		'tag and func creates entries in modelsByTag[ 1 ]'
+	);
+	assert.deepEqual(
+		registry.modelsByTypeAndTag[ 1 ][ 'ext:foo' ].a,
+		[ 'stubsingletagandtypeandfunc' ],
+		'tag and func creates entries in modelsByTypeAndTag[ 1 ]'
+	);
+	registry.unregister( ve.dm.example.StubSingleTagAndFuncAnnotation );
+	registry.unregister( ve.dm.example.StubSingleTagAndTypeAndFuncAnnotation );
+	assert.deepEqual(
+		registry.modelsByTag[ 1 ][ ve.dm.example.StubSingleTagAndFuncAnnotation.static.matchTagNames[ 0 ] ],
+		[],
+		'unregister removes entries in modelsByTag[ 1 ]'
+	);
+	assert.deepEqual(
+		registry.modelsByTypeAndTag[ 1 ][ 'ext:foo' ].a,
+		[],
+		'unregister removes entries in modelsByTypeAndTag[ 1 ]'
+	);
 
 } );
 
