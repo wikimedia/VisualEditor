@@ -31,6 +31,14 @@ OO.mixinClass( ve.dm.ImageNode, ve.dm.ResizableNode );
 /**
  * @inheritdoc ve.dm.Model
  */
+ve.dm.ImageNode.static.isDiffComparable = function ( element, other ) {
+	// Images with different src's shouldn't be diffed
+	return element.type === other.type && element.attributes.src === other.attributes.src;
+};
+
+/**
+ * @inheritdoc ve.dm.Model
+ */
 ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes ) {
 	var key, sizeFrom, sizeTo, change,
 		customKeys = [ 'width', 'height' ],

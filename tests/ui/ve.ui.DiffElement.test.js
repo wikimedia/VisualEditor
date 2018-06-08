@@ -179,6 +179,18 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'Changed src on an image is considered a delete + insert',
+				oldDoc: '<figure class="ve-align-right"><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure class="ve-align-right"><img src="http://example.org/bar.jpg"><figcaption>bar</figcaption></figure>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<figure class="ve-align-right" data-diff-action="remove"><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<figure class="ve-align-right" data-diff-action="insert"><img src="http://example.org/bar.jpg"><figcaption>bar</figcaption></figure>' +
+					'</div>'
+			},
+			{
 				msg: 'Node inserted',
 				oldDoc: '<p>foo</p>',
 				newDoc: '<p>foo</p><div rel="ve:Alien">Alien</div>',
