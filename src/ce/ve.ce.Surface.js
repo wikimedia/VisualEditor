@@ -114,13 +114,13 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		copy: this.onCopy.bind( this )
 	} );
 
-	this.onWindowResizeHandler = this.onWindowResize.bind( this );
+	this.onWindowResizeHandler = ve.debounce( this.onWindowResize.bind( this ), 50 );
 	this.$window.on( 'resize', this.onWindowResizeHandler );
 
 	this.onDocumentFocusInOutHandler = this.onDocumentFocusInOut.bind( this );
 	this.$document.on( 'focusin focusout', this.onDocumentFocusInOutHandler );
 
-	this.debounceFocusChange = ve.debounce( this.onFocusChange ).bind( this );
+	this.debounceFocusChange = ve.debounce( this.onFocusChange.bind( this ) );
 	// If the document is blurred (but still has a selection) it is
 	// possible to clear the selection by clicking elsewhere without
 	// triggering a focus or blur event, so listen to mousedown globally.
@@ -3321,9 +3321,9 @@ ve.ce.Surface.prototype.maybeSetBreakpoint = function () {
  *
  * @param {jQuery.Event} e Window resize event
  */
-ve.ce.Surface.prototype.onWindowResize = ve.debounce( function () {
+ve.ce.Surface.prototype.onWindowResize = function () {
 	this.emit( 'position' );
-}, 50 );
+};
 
 /* Relocation */
 
