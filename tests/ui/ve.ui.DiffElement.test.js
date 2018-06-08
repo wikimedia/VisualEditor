@@ -156,26 +156,26 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Attributes added to ClassAttributeNodes',
-				oldDoc: '<figure><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
-				newDoc: '<figure><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>',
+				oldDoc: '<figure><img src="http://example.org/foo.jpg" alt="foo"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>' +
+						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-changed,src,http://example.org/foo.jpg,http://example.org/boo.jpg'
+					'visualeditor-changedesc-changed,alt,foo,bar'
 				]
 			},
 			{
 				msg: 'Attributes added to ClassAttributeNodes with classes',
-				oldDoc: '<figure class="ve-align-right"><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
-				newDoc: '<figure class="ve-align-right"><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>',
+				oldDoc: '<figure class="ve-align-right"><img src="http://example.org/foo.jpg" alt="foo"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure class="ve-align-right"><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/boo.jpg"><figcaption>bar</figcaption></figure>' +
+						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-changed,src,http://example.org/foo.jpg,http://example.org/boo.jpg'
+					'visualeditor-changedesc-changed,alt,foo,bar'
 				]
 			},
 			{
