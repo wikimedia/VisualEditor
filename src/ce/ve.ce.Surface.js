@@ -47,7 +47,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.clipboardIndex = 0;
 	this.renderLocks = 0;
 	this.dragging = false;
-	this.relocatingNode = false;
+	this.relocatingSelection = null;
+	this.relocatingNode = null;
 	this.allowedFile = null;
 	this.resizing = false;
 	this.focused = false;
@@ -896,17 +897,11 @@ ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
  *
  * @method
  * @param {jQuery.Event} e Drag start event
+ * @fires relocationStart
  */
 ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
-	var dataTransfer = e.originalEvent.dataTransfer;
-	try {
-		dataTransfer.setData( 'application-x/VisualEditor', JSON.stringify( this.getModel().getSelection() ) );
-	} catch ( err ) {
-		// Support: IE, Edge
-		// IE doesn't support custom data types, but overwriting the actual drag data should be avoided
-		// TODO: Do this with an internal state to avoid overwriting drag data even in IE
-		dataTransfer.setData( 'text', '__ve__' + JSON.stringify( this.getModel().getSelection() ) );
-	}
+	this.onCopy( e );
+	this.startRelocation();
 };
 
 /**
@@ -1055,10 +1050,11 @@ ve.ce.Surface.prototype.onDocumentDragLeave = function () {
  *
  * @method
  * @param {jQuery.Event} e Drop event
+ * @fires relocationEnd
  */
 ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
-	var selectionJSON, dragSelection, dragRange, originFragment, originData,
+	var originFragment, originData,
 		targetRange, targetOffset, targetFragment,
 		targetViewNode, isMultiline, slice, linearData,
 		surfaceModel = this.getModel(),
@@ -1091,34 +1087,6 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	}
 	targetFragment = surfaceModel.getLinearFragment( new ve.Range( targetOffset ) );
 
-	// Get source range from drag data
-	try {
-		selectionJSON = dataTransfer.getData( 'application-x/VisualEditor' );
-	} catch ( err ) {
-		// Support: IE
-		// IE throws an error when trying to read custom data.
-		// Edge also fails but doesn't throw an error.
-	}
-
-	if ( !selectionJSON ) {
-		// Support: IE, Edge (selectionJSON not set; T75240)
-		selectionJSON = dataTransfer.getData( 'text' );
-		if ( selectionJSON && selectionJSON.slice( 0, 6 ) === '__ve__' ) {
-			selectionJSON = selectionJSON.slice( 6 );
-		} else {
-			selectionJSON = null;
-		}
-	}
-
-	if ( this.relocatingNode ) {
-		dragRange = this.relocatingNode.getModel().getOuterRange();
-	} else if ( selectionJSON ) {
-		dragSelection = ve.dm.Selection.static.newFromJSON( surfaceModel.getDocument(), selectionJSON );
-		if ( dragSelection instanceof ve.dm.LinearSelection ) {
-			dragRange = dragSelection.getRange();
-		}
-	}
-
 	targetViewNode = this.getSurface().getView().getDocument().getBranchNodeFromOffset(
 		targetFragment.getSelection().getCoveringRange().from
 	);
@@ -1126,12 +1094,12 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	isMultiline = targetViewNode.isMultiline();
 
 	// Internal drop
-	if ( dragRange ) {
+	if ( this.relocatingSelection ) {
 		// Get a fragment and data of the node being dragged
-		originFragment = surfaceModel.getLinearFragment( dragRange );
+		originFragment = surfaceModel.getFragment( this.relocatingSelection );
 		if ( !isMultiline ) {
 			// Data needs to be balanced to be sanitized
-			slice = this.model.documentModel.shallowCloneFromRange( dragRange );
+			slice = this.model.documentModel.shallowCloneFromRange( originFragment.getSelection().getCoveringRange() );
 			linearData = new ve.dm.ElementLinearData(
 				originFragment.getDocument().getStore(),
 				slice.getBalancedData()
@@ -1693,10 +1661,11 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  */
 ve.ce.Surface.prototype.onCopy = function ( e ) {
 	var originalSelection, clipboardKey, scrollTop, unsafeSelector, slice,
+		isClipboard = e.type === 'copy' || e.type === 'cut',
 		selection = this.getModel().getSelection(),
 		view = this,
 		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
-		clipboardData = e.originalEvent.clipboardData;
+		clipboardData = isClipboard ? e.originalEvent.clipboardData : e.originalEvent.dataTransfer;
 
 	this.$pasteTarget.empty();
 
@@ -1753,7 +1722,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// Support: IE, Firefox<48
 	// Writing the key to text/xcustom won't work in IE & Firefox<48, so write
 	// it to the HTML instead
-	if ( !ve.isClipboardDataFormatsSupported( e ) ) {
+	if ( isClipboard && !ve.isClipboardDataFormatsSupported( e ) ) {
 		this.$pasteTarget.prepend(
 			$( '<span>' ).attr( 'data-ve-clipboard-key', clipboardKey ).html( '&nbsp;' )
 		);
@@ -1767,19 +1736,25 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// Support: Edge
 	// Despite having the clipboard API, Edge only supports Text and URL types.
 	if ( clipboardData && !ve.init.platform.constructor.static.isEdge() ) {
-		// Disable the default event so we can override the data
-		e.preventDefault();
+		if ( isClipboard ) {
+			// Disable the default event so we can override the data
+			e.preventDefault();
+		}
 
 		// Only write a custom mime type if we think the browser supports it, otherwise
 		// we will have already written a key to the HTML above.
-		if ( ve.isClipboardDataFormatsSupported( e, true ) ) {
+		if ( isClipboard && ve.isClipboardDataFormatsSupported( e, true ) ) {
 			clipboardData.setData( 'text/xcustom', clipboardKey );
 		}
-		clipboardData.setData( 'text/html', this.$pasteTarget.html() );
-		// innerText "approximates the text the user would get if they highlighted the
-		// contents of the element with the cursor and then copied to the clipboard." - MDN
-		// Use $.text as a fallback for Firefox <= 44
-		clipboardData.setData( 'text/plain', this.$pasteTarget[ 0 ].innerText || this.$pasteTarget.text() );
+		try {
+			// Support IE
+			// This fails when dragging in IE.
+			clipboardData.setData( 'text/html', this.$pasteTarget.html() );
+			// innerText "approximates the text the user would get if they highlighted the
+			// contents of the element with the cursor and then copied to the clipboard." - MDN
+			// Use $.text as a fallback for Firefox <= 44
+			clipboardData.setData( 'text/plain', this.$pasteTarget[ 0 ].innerText || this.$pasteTarget.text() || ' ' );
+		} catch ( err ) {}
 	} else {
 		// Support: IE
 		// If direct clipboard editing is not allowed, we must use the pasteTarget to
@@ -3354,28 +3329,24 @@ ve.ce.Surface.prototype.onWindowResize = ve.debounce( function () {
 
 /**
  * Start a relocation action.
- *
- * @see ve.ce.FocusableNode
- *
- * @param {ve.ce.Node} node Node being relocated
  */
-ve.ce.Surface.prototype.startRelocation = function ( node ) {
-	this.relocatingNode = node;
-	this.emit( 'relocationStart', node );
+ve.ce.Surface.prototype.startRelocation = function () {
+	// Cache the selection and selectedNode when the drag starts, to
+	// avoid having to recompute them while dragging.
+	this.relocatingSelection = this.getModel().getSelection();
+	this.relocatingNode = this.getModel().getSelectedNode();
+	this.emit( 'relocationStart' );
 };
 
 /**
  * Complete a relocation action.
- *
- * @see ve.ce.FocusableNode
  */
 ve.ce.Surface.prototype.endRelocation = function () {
-	if ( this.relocatingNode ) {
-		this.emit( 'relocationEnd', this.relocatingNode );
-		this.relocatingNode = null;
-	}
+	this.relocatingSelection = null;
+	this.relocatingNode = null;
 	// Trigger a drag leave event to clear markers
 	this.onDocumentDragLeave();
+	this.emit( 'relocationEnd' );
 };
 
 /**

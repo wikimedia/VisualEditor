@@ -1879,7 +1879,7 @@ ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
 
 	if ( ve.isClipboardDataFormatsSupported[ cacheKey ] === undefined ) {
 		profile = $.client.profile();
-		clipboardData = e.originalEvent.clipboardData;
+		clipboardData = e.originalEvent.clipboardData || e.originalEvent.dataTransfer;
 		ve.isClipboardDataFormatsSupported[ cacheKey ] = !!(
 			clipboardData &&
 			( !customTypes || profile.name !== 'edge' ) && (
