@@ -72,9 +72,11 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.transactionsToggle.on( 'change', this.onTransactionsToggleChange.bind( this ) );
 	closeButton.on( 'click', this.$element.remove.bind( this.$element ) );
 
+	this.onHistoryDebounced = ve.debounce( this.onHistory.bind( this ) );
+
 	this.getSurface().getModel().connect( this, {
 		select: 'onSurfaceSelect',
-		history: 'onHistory'
+		history: 'onHistoryDebounced'
 	} );
 	this.onSurfaceSelect( this.getSurface().getModel().getSelection() );
 
@@ -137,11 +139,11 @@ ve.ui.DebugBar.prototype.onSurfaceSelect = function () {
 /**
  * Handle history events on the attached surface
  */
-ve.ui.DebugBar.prototype.onHistory = ve.debounce( function () {
+ve.ui.DebugBar.prototype.onHistory = function () {
 	if ( this.transactionsToggle.getValue() ) {
 		this.updateTransactions();
 	}
-} );
+};
 
 /**
  * Handle click events on the log range button
