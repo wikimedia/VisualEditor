@@ -522,6 +522,61 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'List item removal from both ends',
+				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				newDoc: '<ul><li><p>bar</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p data-diff-action="remove">foo</p></li>' +
+							'<li><p data-diff-action="none">bar</p></li>' +
+							'<li><p data-diff-action="remove">baz</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
+				msg: 'List item move up',
+				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li><li><p>quux</p></li></ul>',
+				newDoc: '<ul><li><p>baz</p></li><li><p>foo</p></li><li><p>bar</p></li><li><p>quux</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p data-diff-action="none" data-diff-move="up">baz</p></li>' +
+							'<li><p data-diff-action="none">foo</p></li>' +
+							'<li><p data-diff-action="none">bar</p></li>' +
+							'<li><p data-diff-action="none">quux</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
+				msg: 'List item move down',
+				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li><li><p>quux</p></li></ul>',
+				newDoc: '<ul></li><li><p>foo</p></li><li><p>baz</p><li><p>quux</p></li><li><p>bar</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p data-diff-action="none">foo</p></li>' +
+							'<li><p data-diff-action="none">baz</p></li>' +
+							'<li><p data-diff-action="none">quux</p></li>' +
+							'<li><p data-diff-action="none" data-diff-move="down">bar</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
+				msg: 'List item move and change',
+				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz baz</p></li><li><p>quux</p></li></ul>',
+				newDoc: '<ul><li><p>baz bat</p></li><li><p>foo</p></li><li><p>bar</p></li><li><p>quux</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p data-diff-move="up">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
+							'<li><p data-diff-action="none">foo</p></li>' +
+							'<li><p data-diff-action="none">bar</p></li>' +
+							'<li><p data-diff-action="none">quux</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
 				msg: 'List item indentation',
 				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
 				newDoc: '<ul><li><p>foo</p><ul><li><p>bar</p></li></ul></li><li><p>baz</p></li></ul>',
