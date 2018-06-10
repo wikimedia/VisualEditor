@@ -543,6 +543,26 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Full list replacement',
+				oldDoc: '<ul><li><p>one</p></li><li><p>two</p></li><li><p>three</p></li></ul>',
+				newDoc: '<ul><li><p>four</p></li><li><p>five</p></li><li><p>six</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul data-diff-action="remove">' +
+							'<li><p>one</p></li>' +
+							'<li><p>two</p></li>' +
+							'<li><p>three</p></li>' +
+						'</ul>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul data-diff-action="insert">' +
+							'<li><p>four</p></li>' +
+							'<li><p>five</p></li>' +
+							'<li><p>six</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
 				msg: 'Inline widget with same type but not diff comparable is marked as a remove/insert',
 				oldDoc: '<p>Foo bar baz<span rel="test:inlineWidget" data-name="FooWidget"></span></p>',
 				newDoc: '<p>Foo bar baz<span rel="test:inlineWidget" data-name="BarWidget"></span></p>',
