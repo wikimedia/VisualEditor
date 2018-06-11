@@ -679,6 +679,29 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<del data-diff-action="remove">' + comment( 'wibble' ) + '</del>' +
 						'</p>' +
 					'</div>'
+			},
+			{
+				msg: 'Similar item added to list and indented, introducing whitespace (T187632)',
+				oldDoc:
+					'<ul>' +
+						'<li>foo</li>' +
+						'<li>bar baz quux whee one</li>' +
+					'</ul>',
+				newDoc:
+					'<ul>' +
+						'<li>foo</li>' +
+						'<li>bar baz quux whee one\n' +
+							'<ul><li>bar baz quux whee won</li></ul>' +
+						'</li>' +
+					'</ul>',
+				expected: '<div class="ve-ui-diffElement-doc-child-change">' +
+					'<ul>' +
+						'<li><p data-diff-action="none">foo</p></li>' +
+						'<li><p data-diff-action="none">bar baz quux whee one</p>\n' +
+							'<ul><li><p data-diff-action="insert">bar baz quux whee won</p></li></ul>' +
+						'</li>' +
+					'</ul>' +
+				'</div>'
 			}
 		];
 
