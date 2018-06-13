@@ -153,12 +153,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 	this.pushPending(
 		this.convertToSource( doc )
 			.done( function ( source ) {
-				if ( source ) {
-					// Parent method
-					ve.dm.SourceSurfaceFragment.super.prototype.insertContent.call( fragment, source.trim() );
-				} else {
-					fragment.removeContent();
-				}
+				fragment.insertContent( source.trim() );
 			} ).fail( function () {
 				ve.error( 'Failed to convert document', arguments );
 			} )
