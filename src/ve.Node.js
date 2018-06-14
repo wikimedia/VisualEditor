@@ -147,6 +147,14 @@ ve.Node.prototype.isContent = null;
 ve.Node.prototype.isInternal = null;
 
 /**
+ * Check if the node is a meta data node
+ * @method
+ * @abstract
+ * @return {boolean} Node is a meta data node
+ */
+ve.Node.prototype.isMetaData = null;
+
+/**
  * Check if the node has a wrapped element in the document data.
  *
  * @method
