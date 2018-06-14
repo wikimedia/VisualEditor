@@ -72,23 +72,36 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		}( this ) ),
 		tabIndex: 1
 	} );
+
+	this.previousButton = new OO.ui.ButtonWidget( {
+		icon: 'previous',
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
+			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' ),
+		tabIndex: 2
+	} );
+	this.nextButton = new OO.ui.ButtonWidget( {
+		icon: 'next',
+		iconTitle: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
+			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' ),
+		tabIndex: 2
+	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchCaseSensitive',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-matchCase' ),
-		tabIndex: 8
+		tabIndex: 2
 	} );
 	this.regexToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchRegularExpression',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-regex' ),
-		tabIndex: 9
+		tabIndex: 2
 	} );
 	this.wordToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'quotes',
 		iconTitle: ve.msg( 'visualeditor-find-and-replace-word' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-word' ),
-		tabIndex: 10
+		tabIndex: 2
 	} );
 	this.diacriticToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchDiacritics',
@@ -96,33 +109,26 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			ve.msg( 'visualeditor-find-and-replace-diacritic' ) :
 			ve.msg( 'visualeditor-find-and-replace-diacritic-unavailable' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-diacritic' ),
-		tabIndex: 11
+		tabIndex: 2
 	} );
 
-	this.previousButton = new OO.ui.ButtonWidget( {
-		icon: 'previous',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
-			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' ),
-		tabIndex: 6
-	} );
-	this.nextButton = new OO.ui.ButtonWidget( {
-		icon: 'next',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
-			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' ),
-		tabIndex: 7
-	} );
 	this.replaceText = new OO.ui.TextInputWidget( {
 		placeholder: ve.msg( 'visualeditor-find-and-replace-replace-text' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-replaceText' ),
-		tabIndex: 2
+		tabIndex: 1
 	} );
 	this.replaceButton = new OO.ui.ButtonWidget( {
 		label: ve.msg( 'visualeditor-find-and-replace-replace-button' ),
-		tabIndex: 3
+		tabIndex: 1
 	} );
 	this.replaceAllButton = new OO.ui.ButtonWidget( {
 		label: ve.msg( 'visualeditor-find-and-replace-replace-all-button' ),
-		tabIndex: 4
+		tabIndex: 1
+	} );
+	doneButton = new OO.ui.ButtonWidget( {
+		classes: [ 've-ui-findAndReplaceDialog-cell' ],
+		label: ve.msg( 'visualeditor-find-and-replace-done' ),
+		tabIndex: 1
 	} );
 
 	optionsGroup = new OO.ui.ButtonGroupWidget( {
@@ -147,11 +153,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 			this.replaceButton,
 			this.replaceAllButton
 		]
-	} );
-	doneButton = new OO.ui.ButtonWidget( {
-		classes: [ 've-ui-findAndReplaceDialog-cell' ],
-		label: ve.msg( 'visualeditor-find-and-replace-done' ),
-		tabIndex: 5
 	} );
 	$findRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
 	$replaceRow = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-row' );
