@@ -5,24 +5,31 @@
 			"Artificial123",
 			"Mikalai Udodau",
 			"Goshaproject",
-			"Artsiom91"
+			"Artsiom91",
+			"Maksim L."
 		]
 	},
 	"visualeditor": "VisualEditor",
+	"visualeditor-aliencontextitem-title": "Элемент",
 	"visualeditor-aliennode-tooltip": "Прабачце, гэты элемент можна правіць толькі ў рэжыме зыходнага коду.",
 	"visualeditor-align-widget-center": "Цэнтрыраваны",
+	"visualeditor-align-widget-default": "Па змаўчанні",
 	"visualeditor-align-widget-left": "Злева",
 	"visualeditor-align-widget-right": "Справа",
+	"visualeditor-annotationbutton-big-tooltip": "Буйней",
 	"visualeditor-annotationbutton-bold-tooltip": "Цёмны",
 	"visualeditor-annotationbutton-code-tooltip": "Камп'ютарны код",
 	"visualeditor-annotationbutton-italic-tooltip": "Курсіў",
 	"visualeditor-annotationbutton-language-tooltip": "Мова",
 	"visualeditor-annotationbutton-link-tooltip": "Спасылка",
+	"visualeditor-annotationbutton-small-tooltip": "Драбней",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Закрэслены",
 	"visualeditor-annotationbutton-subscript-tooltip": "Ніжні індэкс",
 	"visualeditor-annotationbutton-superscript-tooltip": "Верхні індэкс",
 	"visualeditor-annotationbutton-underline-tooltip": "Падкрэслены",
-	"visualeditor-clearbutton-tooltip": "Ачысціць стыль",
+	"visualeditor-changedir-tool-ltr": "Паказваць злева направа",
+	"visualeditor-changedir-tool-rtl": "Паказваць справа налева",
+	"visualeditor-clearbutton-tooltip": "Ачысціць фарматаванне",
 	"visualeditor-clipboard-copy": "Капіраваць",
 	"visualeditor-clipboard-cut": "Выразаць",
 	"visualeditor-clipboard-paste": "Уставіць",
@@ -110,5 +117,6 @@
 	"visualeditor-toolbar-insert": "Уставіць",
 	"visualeditor-toolbar-paragraph-format": "Фарматаванне",
 	"visualeditor-toolbar-style-tooltip": "Стыль тэксту",
-	"visualeditor-toolbar-table": "Табліца"
+	"visualeditor-toolbar-table": "Табліца",
+	"visualeditor-toolbar-text-style": "Фарматаванне"
 }

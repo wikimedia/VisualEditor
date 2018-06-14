@@ -65,7 +65,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Szerkesztés",
 	"visualeditor-debugbar-close": "Bezárás",
 	"visualeditor-debugbar-inputdebug": "Bevitel hibakeresése",
-	"visualeditor-debugbar-logrange": "Naplózás",
+	"visualeditor-debugbar-logrange": "Kiválasztottak naplózása",
 	"visualeditor-debugbar-showmodel": "Modell megjelenítése",
 	"visualeditor-debugbar-showtransactions": "Tranzakciók mutatása",
 	"visualeditor-debugbar-updatemodel": "Frissítés változtatáskor",
