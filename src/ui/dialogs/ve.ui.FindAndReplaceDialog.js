@@ -75,37 +75,37 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 
 	this.previousButton = new OO.ui.ButtonWidget( {
 		icon: 'previous',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
+		title: ve.msg( 'visualeditor-find-and-replace-previous-button' ) + ' ' +
 			ve.ui.triggerRegistry.getMessages( 'findPrevious' ).join( ', ' ),
 		tabIndex: 2
 	} );
 	this.nextButton = new OO.ui.ButtonWidget( {
 		icon: 'next',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
+		title: ve.msg( 'visualeditor-find-and-replace-next-button' ) + ' ' +
 			ve.ui.triggerRegistry.getMessages( 'findNext' ).join( ', ' ),
 		tabIndex: 2
 	} );
 	this.matchCaseToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchCaseSensitive',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-match-case' ),
+		title: ve.msg( 'visualeditor-find-and-replace-match-case' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-matchCase' ),
 		tabIndex: 2
 	} );
 	this.regexToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchRegularExpression',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
+		title: ve.msg( 'visualeditor-find-and-replace-regular-expression' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-regex' ),
 		tabIndex: 2
 	} );
 	this.wordToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'quotes',
-		iconTitle: ve.msg( 'visualeditor-find-and-replace-word' ),
+		title: ve.msg( 'visualeditor-find-and-replace-word' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-word' ),
 		tabIndex: 2
 	} );
 	this.diacriticToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchDiacritics',
-		iconTitle: ve.supportsIntl ?
+		title: ve.supportsIntl ?
 			ve.msg( 'visualeditor-find-and-replace-diacritic' ) :
 			ve.msg( 'visualeditor-find-and-replace-diacritic-unavailable' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-diacritic' ),
