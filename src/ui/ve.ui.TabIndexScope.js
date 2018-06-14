@@ -67,7 +67,7 @@ ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
 			if ( self.skipAriaDisabled && this.getAttribute( 'aria-disabled' ) === 'true' ) {
 				return false;
 			}
-			if ( self.skipAriaHidden && $( this ).closest( '[aria-hidden="true"]' ).length ) {
+			if ( self.skipAriaHidden && $( this ).closest( '[aria-hidden="true"]', self.$root[ 0 ] ).length ) {
 				return false;
 			}
 			return OO.ui.isFocusableElement( $( this ) );
