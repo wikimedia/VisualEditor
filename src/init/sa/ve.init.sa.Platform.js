@@ -72,6 +72,30 @@ ve.init.sa.Platform.prototype.getMessage = $.i18n;
 /**
  * @inheritdoc
  */
+ve.init.sa.Platform.prototype.getHtmlMessage = function ( key ) {
+	var $message = $( [] ),
+		lastOffset = 0,
+		args = arguments,
+		message = this.getMessage( key );
+	message.replace( /\$[0-9]+/g, function ( placeholder, offset ) {
+		var arg,
+			placeholderIndex = +( placeholder.slice( 1 ) );
+		$message = $message.add( $.parseHTML( message.slice( lastOffset, offset ) ) );
+		arg = args[ placeholderIndex ];
+		$message = $message.add(
+			typeof arg === 'string' ?
+				$.parseHTML( arg ) :
+				arg
+		);
+		lastOffset = offset + placeholder.length;
+	} );
+	$message = $message.add( $.parseHTML( message.slice( lastOffset ) ) );
+	return $message;
+};
+
+/**
+ * @inheritdoc
+ */
 ve.init.sa.Platform.prototype.getConfig = function () {
 	/* Standalone has no config yet */
 	return null;

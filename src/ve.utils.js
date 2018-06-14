@@ -460,6 +460,19 @@ ve.msg = function () {
 };
 
 /**
+ * Get an HTML localized message with HTML or DOM arguments.
+ *
+ * @param {string} key Message key
+ * @param {...Mixed} [params] Message parameters
+ * @return {jQuery} Localized message
+ */
+ve.htmlMsg = function () {
+	// Avoid using bind because ve.init.platform doesn't exist yet.
+	// TODO: Fix dependency issues between ve.js and ve.init.platform
+	return ve.init.platform.getHtmlMessage.apply( ve.init.platform, arguments );
+};
+
+/**
  * Get platform config value(s)
  *
  * @param {string|string[]} key Config key, or list of keys
