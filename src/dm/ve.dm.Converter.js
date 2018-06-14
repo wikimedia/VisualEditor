@@ -182,6 +182,7 @@ ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements,
 		}
 		for ( j = 0, jlen = attrs.length; j < jlen; j++ ) {
 			if (
+				targetDomElements[ i ].nodeType === Node.ELEMENT_NODE &&
 				!targetDomElements[ i ].hasAttribute( attrs[ j ].name ) &&
 				( filter === true || filter( attrs[ j ].name ) )
 			) {
