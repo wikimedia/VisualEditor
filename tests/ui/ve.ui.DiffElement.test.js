@@ -818,28 +818,6 @@ QUnit.test( 'describeChange', function ( assert ) {
 					attributes: { lang: 'en', dir: 'ltr', style: 'font-weight:700' }
 				} ),
 				expected: 'visualeditor-changedesc-changed,style,font-weight:800,font-weight:700'
-			},
-			{
-				msg: 'SpanAnnotation: Style change',
-				testedKey: 'style',
-				before: new ve.dm.SpanAnnotation( {
-					attributes: { style: 'font-weight:800' }
-				} ),
-				after: new ve.dm.SpanAnnotation( {
-					attributes: { style: 'font-weight:700' }
-				} ),
-				expected: 'visualeditor-changedesc-style,font-weight:800,font-weight:700'
-			},
-			{
-				msg: 'SpanAnnotation: Title change (fallback)',
-				testedKey: 'title',
-				before: new ve.dm.SpanAnnotation( {
-					attributes: { style: 'font-weight:800', title: 'Hello' }
-				} ),
-				after: new ve.dm.SpanAnnotation( {
-					attributes: { style: 'font-weight:800', title: 'Farewell' }
-				} ),
-				expected: 'visualeditor-changedesc-changed,title,Hello,Farewell'
 			}
 		];
 
