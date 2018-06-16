@@ -163,7 +163,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-changed,alt,foo,bar'
+					'<div>visualeditor-changedesc-changed,alt,<del>foo</del>,<ins>bar</ins></div>'
 				]
 			},
 			{
@@ -175,7 +175,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<figure class="ve-align-right" data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-changed,alt,foo,bar'
+					'<div>visualeditor-changedesc-changed,alt,<del>foo</del>,<ins>bar</ins></div>'
 				]
 			},
 			{
@@ -307,7 +307,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</p>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-comment,whee,wibble'
+					'<div>visualeditor-changedesc-comment,<del>whee</del>,<ins>wibble</ins></div>'
 				]
 			},
 			{
@@ -451,7 +451,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<p>foo <span data-diff-action="change-remove"><a href="http://example.org/quuz" rel="noopener" target="_blank">bar</a></span><span data-diff-action="change-insert" data-diff-id="0"><a href="http://example.org/whee" rel="noopener" target="_blank">bar</a></span> baz</p>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-link-href,http://example.org/quuz,http://example.org/whee'
+					'<div>visualeditor-changedesc-link-href,<del>http://example.org/quuz</del>,<ins>http://example.org/whee</ins></div>'
 				]
 			},
 			{
@@ -609,7 +609,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</ul>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-changed,listItemDepth,0,1'
+					'<div>visualeditor-changedesc-changed,listItemDepth,<del>0</del>,<ins>1</ins></div>'
 				]
 			},
 			{
@@ -631,7 +631,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</ul>' +
 					'</div>',
 				expectedDescriptions: [
-					'visualeditor-changedesc-changed,listItemDepth,1,0'
+					'<div>visualeditor-changedesc-changed,listItemDepth,<del>1</del>,<ins>0</ins></div>'
 				]
 			},
 			{
@@ -734,7 +734,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 } );
 
 QUnit.test( 'describeChange', function ( assert ) {
-	var i, l, key,
+	var i, l, key, change,
 		cases = [
 			{
 				msg: 'LinkAnnotation: Random attribute test (fallback)',
@@ -752,7 +752,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 						foo: '!!'
 					}
 				} ),
-				expected: 'visualeditor-changedesc-set,foo,!!'
+				expected: 'visualeditor-changedesc-set,foo,<ins>!!</ins>'
 			},
 			{
 				msg: 'LinkAnnotation: Href change',
@@ -765,7 +765,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'link',
 					attributes: { href: 'https://www.example.org/bar' }
 				} ),
-				expected: 'visualeditor-changedesc-link-href,https://www.example.org/foo,https://www.example.org/bar'
+				expected: 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo</del>,<ins>https://www.example.org/bar</ins>'
 			},
 			{
 				msg: 'LinkAnnotation: Href fragment change',
@@ -778,7 +778,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'link',
 					attributes: { href: 'https://www.example.org/foo#baz' }
 				} ),
-				expected: 'visualeditor-changedesc-link-href,https://www.example.org/foo#bar,https://www.example.org/foo#baz'
+				expected: 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo#bar</del>,<ins>https://www.example.org/foo#baz</ins>'
 			},
 			{
 				msg: 'LanguageAnnotation: Lang change',
@@ -791,7 +791,7 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'meta/language',
 					attributes: { lang: 'fr', dir: 'ltr' }
 				} ),
-				expected: 'visualeditor-changedesc-language,langname-en,langname-fr'
+				expected: 'visualeditor-changedesc-language,<del>langname-en</del>,<ins>langname-fr</ins>'
 			},
 			{
 				msg: 'LanguageAnnotation: Dir change',
@@ -804,31 +804,32 @@ QUnit.test( 'describeChange', function ( assert ) {
 					type: 'meta/language',
 					attributes: { lang: 'en', dir: 'rtl' }
 				} ),
-				expected: 'visualeditor-changedesc-direction,ltr,rtl'
+				expected: 'visualeditor-changedesc-direction,<del>ltr</del>,<ins>rtl</ins>'
 			},
 			{
-				msg: 'LanguageAnnotation: Style change (fallback)',
-				testedKey: 'style',
+				msg: 'LanguageAnnotation: Other attribute change (fallback)',
+				testedKey: 'foo',
 				before: new ve.dm.LanguageAnnotation( {
 					type: 'meta/language',
-					attributes: { lang: 'en', dir: 'ltr', style: 'font-weight:800' }
+					attributes: { lang: 'en', dir: 'ltr', foo: 'bar' }
 				} ),
 				after: new ve.dm.LanguageAnnotation( {
 					type: 'meta/language',
-					attributes: { lang: 'en', dir: 'ltr', style: 'font-weight:700' }
+					attributes: { lang: 'en', dir: 'ltr', foo: 'baz' }
 				} ),
-				expected: 'visualeditor-changedesc-changed,style,font-weight:800,font-weight:700'
+				expected: 'visualeditor-changedesc-changed,foo,<del>bar</del>,<ins>baz</ins>'
 			}
 		];
 
 	for ( i = 0, l = cases.length; i < l; i++ ) {
 		key = cases[ i ].testedKey;
-		assert.deepEqual(
-			cases[ i ].before.constructor.static.describeChange(
-				key,
-				{ from: cases[ i ].before.getAttribute( key ), to: cases[ i ].after.getAttribute( key ) }
-			),
-			cases[ i ].expected,
+		change = cases[ i ].before.constructor.static.describeChange(
+			key,
+			{ from: cases[ i ].before.getAttribute( key ), to: cases[ i ].after.getAttribute( key ) }
+		);
+		assert.deepEqualWithDomElements(
+			change instanceof jQuery ? change.toArray() : change,
+			$.parseHTML( cases[ i ].expected ),
 			cases[ i ].msg
 		);
 	}

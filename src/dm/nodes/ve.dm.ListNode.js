@@ -49,10 +49,10 @@ ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
 
 ve.dm.ListNode.static.describeChange = function ( key, change ) {
 	if ( key === 'style' ) {
-		return ve.msg( 'visualeditor-changedesc-no-key',
+		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
 			// Either visualeditor-listbutton-bullet-tooltip or visualeditor-listbutton-number-tooltip
-			ve.msg( 'visualeditor-listbutton-' + change.from + '-tooltip' ),
-			ve.msg( 'visualeditor-listbutton-' + change.to + '-tooltip' )
+			$( '<del>' ).text( ve.msg( 'visualeditor-listbutton-' + change.from + '-tooltip' ) ),
+			$( '<ins>' ).text( ve.msg( 'visualeditor-listbutton-' + change.to + '-tooltip' ) )
 		);
 	}
 	// Parent method

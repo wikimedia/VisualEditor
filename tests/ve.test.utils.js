@@ -273,9 +273,9 @@
 		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasMoves' ), !!caseItem.hasMoves, caseItem.msg + ': hasMoves' );
 		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasDescriptions' ), !!caseItem.expectedDescriptions, caseItem.msg + ': hasDescriptions' );
 		if ( caseItem.expectedDescriptions !== undefined ) {
-			assert.deepEqual(
-				diffElement.descriptions.items.map( function ( item ) { return item.$label.text(); } ),
-				caseItem.expectedDescriptions,
+			assert.deepEqualWithDomElements(
+				diffElement.descriptions.items.map( function ( item ) { return item.$label.contents().toArray(); } ),
+				caseItem.expectedDescriptions.map( function ( expected ) { return $.parseHTML( expected ); } ),
 				caseItem.msg + ': sidebar'
 			);
 		}

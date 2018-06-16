@@ -61,17 +61,17 @@ ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement, doc ) {
 
 ve.dm.LanguageAnnotation.static.describeChange = function ( key, change ) {
 	if ( key === 'lang' ) {
-		return ve.msg( 'visualeditor-changedesc-language',
-			ve.init.platform.getLanguageName( change.from.toLowerCase() ),
-			ve.init.platform.getLanguageName( change.to.toLowerCase() )
+		return ve.htmlMsg( 'visualeditor-changedesc-language',
+			$( '<del>' ).text( ve.init.platform.getLanguageName( change.from.toLowerCase() ) ),
+			$( '<ins>' ).text( ve.init.platform.getLanguageName( change.to.toLowerCase() ) )
 		);
 	}
 
 	// TODO: Show something nicer than 'null', 'ltr', and 'rtl'.
 	if ( key === 'dir' ) {
-		return ve.msg( 'visualeditor-changedesc-direction',
-			change.from.toLowerCase(),
-			change.to.toLowerCase()
+		return ve.htmlMsg( 'visualeditor-changedesc-direction',
+			$( '<del>' ).text( change.from.toLowerCase() ),
+			$( '<ins>' ).text( change.to.toLowerCase() )
 		);
 	}
 
