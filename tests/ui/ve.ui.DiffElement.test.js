@@ -733,104 +733,70 @@ QUnit.test( 'Diffing', function ( assert ) {
 	ve.dm.modelRegistry.unregister( InlineWidgetNode );
 } );
 
-QUnit.test( 'describeChange', function ( assert ) {
-	var i, l, key, change,
+QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
+	var i, l, attributeChanges, changes,
 		cases = [
 			{
 				msg: 'LinkAnnotation: Random attribute test (fallback)',
-				testedKey: 'foo',
-				before: new ve.dm.LinkAnnotation( {
-					type: 'link',
-					attributes: {
-						href: 'https://www.example.org/foo'
-					}
-				} ),
-				after: new ve.dm.LinkAnnotation( {
-					type: 'link',
-					attributes: {
-						href: 'https://www.example.org/foo',
-						foo: '!!'
-					}
-				} ),
-				expected: 'visualeditor-changedesc-set,foo,<ins>!!</ins>'
+				type: 'link',
+				before: {
+					href: 'https://www.example.org/foo'
+				},
+				after: {
+					href: 'https://www.example.org/foo',
+					foo: '!!'
+				},
+				expected: [ 'visualeditor-changedesc-set,foo,<ins>!!</ins>' ]
 			},
 			{
 				msg: 'LinkAnnotation: Href change',
-				testedKey: 'href',
-				before: new ve.dm.LinkAnnotation( {
-					type: 'link',
-					attributes: { href: 'https://www.example.org/foo' }
-				} ),
-				after: new ve.dm.LinkAnnotation( {
-					type: 'link',
-					attributes: { href: 'https://www.example.org/bar' }
-				} ),
-				expected: 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo</del>,<ins>https://www.example.org/bar</ins>'
+				type: 'link',
+				before: { href: 'https://www.example.org/foo' },
+				after: { href: 'https://www.example.org/bar' },
+				expected: [ 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo</del>,<ins>https://www.example.org/bar</ins>' ]
 			},
 			{
 				msg: 'LinkAnnotation: Href fragment change',
-				testedKey: 'href',
-				before: new ve.dm.LinkAnnotation( {
-					type: 'link',
-					attributes: { href: 'https://www.example.org/foo#bar' }
-				} ),
-				after: new ve.dm.LinkAnnotation( {
-					type: 'link',
-					attributes: { href: 'https://www.example.org/foo#baz' }
-				} ),
-				expected: 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo#bar</del>,<ins>https://www.example.org/foo#baz</ins>'
+				type: 'link',
+				before: { href: 'https://www.example.org/foo#bar' },
+				after: { href: 'https://www.example.org/foo#baz' },
+				expected: [ 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo#bar</del>,<ins>https://www.example.org/foo#baz</ins>' ]
 			},
 			{
 				msg: 'LanguageAnnotation: Lang change',
-				testedKey: 'lang',
-				before: new ve.dm.LanguageAnnotation( {
-					type: 'meta/language',
-					attributes: { lang: 'en', dir: 'ltr' }
-				} ),
-				after: new ve.dm.LanguageAnnotation( {
-					type: 'meta/language',
-					attributes: { lang: 'fr', dir: 'ltr' }
-				} ),
-				expected: 'visualeditor-changedesc-language,<del>langname-en</del>,<ins>langname-fr</ins>'
+				type: 'meta/language',
+				before: { lang: 'en', dir: 'ltr' },
+				after: { lang: 'fr', dir: 'ltr' },
+				expected: [ 'visualeditor-changedesc-language,<del>langname-en</del>,<ins>langname-fr</ins>' ]
 			},
 			{
 				msg: 'LanguageAnnotation: Dir change',
-				testedKey: 'dir',
-				before: new ve.dm.LanguageAnnotation( {
-					type: 'meta/language',
-					attributes: { lang: 'en', dir: 'ltr' }
-				} ),
-				after: new ve.dm.LanguageAnnotation( {
-					type: 'meta/language',
-					attributes: { lang: 'en', dir: 'rtl' }
-				} ),
-				expected: 'visualeditor-changedesc-direction,<del>ltr</del>,<ins>rtl</ins>'
+				type: 'meta/language',
+				before: { lang: 'en', dir: 'ltr' },
+				after: { lang: 'en', dir: 'rtl' },
+				expected: [ 'visualeditor-changedesc-direction,<del>ltr</del>,<ins>rtl</ins>' ]
 			},
 			{
 				msg: 'LanguageAnnotation: Other attribute change (fallback)',
-				testedKey: 'foo',
-				before: new ve.dm.LanguageAnnotation( {
-					type: 'meta/language',
-					attributes: { lang: 'en', dir: 'ltr', foo: 'bar' }
-				} ),
-				after: new ve.dm.LanguageAnnotation( {
-					type: 'meta/language',
-					attributes: { lang: 'en', dir: 'ltr', foo: 'baz' }
-				} ),
-				expected: 'visualeditor-changedesc-changed,foo,<del>bar</del>,<ins>baz</ins>'
+				type: 'meta/language',
+				before: { lang: 'en', dir: 'ltr', foo: 'bar' },
+				after: { lang: 'en', dir: 'ltr', foo: 'baz' },
+				expected: [ 'visualeditor-changedesc-changed,foo,<del>bar</del>,<ins>baz</ins>' ]
 			}
 		];
 
 	for ( i = 0, l = cases.length; i < l; i++ ) {
-		key = cases[ i ].testedKey;
-		change = cases[ i ].before.constructor.static.describeChange(
-			key,
-			{ from: cases[ i ].before.getAttribute( key ), to: cases[ i ].after.getAttribute( key ) }
+		attributeChanges = ve.ui.DiffElement.static.compareAttributes( cases[ i ].before, cases[ i ].after );
+		changes = ve.dm.modelRegistry.lookup( cases[ i ].type ).static.describeChanges(
+			attributeChanges, cases[ i ].after, { type: cases[ i ].type, attributes: cases[ i ].after }
 		);
-		assert.deepEqualWithDomElements(
-			change instanceof jQuery ? change.toArray() : change,
-			$.parseHTML( cases[ i ].expected ),
-			cases[ i ].msg
-		);
+		// eslint-disable-next-line no-loop-func
+		changes.forEach( function ( change, j ) {
+			assert.deepEqualWithDomElements(
+				change instanceof jQuery ? change.toArray() : change,
+				$.parseHTML( cases[ i ].expected[ j ] ),
+				cases[ i ].msg + ', message ' + j
+			);
+		} );
 	}
 } );
