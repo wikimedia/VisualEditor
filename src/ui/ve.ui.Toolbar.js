@@ -107,6 +107,10 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 		opening: 'onInspectorOrDialogOpeningOrClosing',
 		closing: 'onInspectorOrDialogOpeningOrClosing'
 	} );
+	this.getSurface().getToolbarDialogs().connect( this, {
+		opening: 'onInspectorOrDialogOpeningOrClosing',
+		closing: 'onInspectorOrDialogOpeningOrClosing'
+	} );
 	this.getSurface().getContext().getInspectors().connect( this, {
 		opening: 'onInspectorOrDialogOpeningOrClosing',
 		closing: 'onInspectorOrDialogOpeningOrClosing'

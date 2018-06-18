@@ -204,7 +204,6 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 
 	openingOrClosing.then( function () {
 		var originalMargin;
-		toolbar.updateToolState();
 		if ( win.constructor.static.position === 'side' ) {
 			// win.isOpened after promise means we are opening
 			if ( win.isOpened() ) {
