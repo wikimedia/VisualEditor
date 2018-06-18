@@ -249,7 +249,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					} ],
 					[ '1', 'assert', function ( assert, client ) {
 						var unsubmitted = client.getChangeSince( client.sentLength, false );
-						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is in the store' );
+						assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store' );
 					} ],
 
 					// Client 2 submits two changes
@@ -269,7 +269,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					[ '1', 'assertHist', 'a/XYZ!' ],
 					[ '1', 'assert', function ( assert, client ) {
 						var unsubmitted = client.getChangeSince( client.sentLength, false );
-						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after the first rebase' );
+						assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after the first rebase' );
 					} ],
 
 					[ '2', 'deliver' ],
@@ -278,7 +278,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					[ '1', 'assertHist', 'ab/XYZ!' ],
 					[ '1', 'assert', function ( assert, client ) {
 						var unsubmitted = client.getChangeSince( client.sentLength, false );
-						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after the second rebase' );
+						assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after the second rebase' );
 					} ],
 
 					// Client 1 submits its local change
@@ -363,7 +363,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					} ],
 					[ '1', 'assert', function ( assert, client ) {
 						var unsubmitted = client.getChangeSince( client.sentLength, false );
-						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is in the store' );
+						assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store' );
 					} ],
 
 					// Client 1 rebases its local changes over client 2's second change
@@ -374,8 +374,8 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					[ '1', 'assert', function ( assert, client ) {
 						var unsubmitted = client.getChangeSince( client.sentLength, false );
 						// FIXME this fails. If uncommitted = client.getChangeSince( client.commitLength, false );
-						// then we expect uncommitted.stores[1] to contain 'h123', but instead uncommitted.stores[0] does.
-						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after receiving a foreign change' );
+						// then we expect uncommitted.getStore( 1 ) to contain 'h123', but instead uncommitted.getStore( 0 ) does.
+						assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after receiving a foreign change' );
 					} ],
 
 					// Client 1 receives its first change
@@ -385,7 +385,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					[ '1', 'assertHist', 'abQ/XYZ!' ],
 					[ '1', 'assert', function ( assert, client ) {
 						var unsubmitted = client.getChangeSince( client.sentLength, false );
-						assert.deepEqual( unsubmitted.stores[ 0 ].hashes, [ 'h123' ], 'h123 is still in the store after receiving our own change' );
+						assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after receiving our own change' );
 					} ],
 
 					// Client 1 submits its second change
@@ -400,7 +400,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					[ '2', 'receive' ],
 					[ '2', 'assert', function ( assert, client ) {
 						var lastChange = client.getChangeSince( 3, false );
-						assert.deepEqual( lastChange.stores[ 0 ].hashes, [ 'h123' ], 'h123 is in the store on the other side' );
+						assert.deepEqual( lastChange.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store on the other side' );
 					} ]
 				]
 			}
