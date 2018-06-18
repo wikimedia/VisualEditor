@@ -19,6 +19,8 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 	// Parent constructor
 	ve.ui.Toolbar.super.call( this, ve.ui.toolFactory, ve.ui.toolGroupFactory, config );
 
+	this.updateToolStateDebounced = ve.debounce( this.updateToolState.bind( this ) );
+
 	this.groups = null;
 	// Default directions
 	this.contextDirection = { inline: 'ltr', block: 'ltr' };
@@ -146,7 +148,7 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 ve.ui.Toolbar.prototype.onInspectorOrDialogOpeningOrClosing = function ( win, openingOrClosing ) {
 	var toolbar = this;
 	openingOrClosing.then( function () {
-		toolbar.updateToolState();
+		toolbar.updateToolStateDebounced();
 	} );
 };
 
@@ -156,7 +158,7 @@ ve.ui.Toolbar.prototype.onInspectorOrDialogOpeningOrClosing = function ( win, op
  * @fires updateState
  */
 ve.ui.Toolbar.prototype.onContextChange = function () {
-	this.updateToolState();
+	this.updateToolStateDebounced();
 };
 
 /**
