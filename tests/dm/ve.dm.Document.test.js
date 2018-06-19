@@ -11,7 +11,7 @@ QUnit.module( 've.dm.Document' );
 QUnit.test( 'constructor', function ( assert ) {
 	var data, htmlDoc,
 		doc = ve.dm.example.createExampleDocument();
-	assert.expect( 11 );
+
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
 		function () {

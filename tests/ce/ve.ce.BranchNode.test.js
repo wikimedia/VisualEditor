@@ -101,8 +101,6 @@ QUnit.test( 'getDomPosition', function ( assert ) {
 		.append( ceParent.children[ 4 ].$element )
 		.append( 'bar<b>baz</b>qux' );
 
-	assert.expect( 2 * ceParent.children.length + 2 );
-
 	for ( i = 0, len = ceParent.children.length + 1; i < len; i++ ) {
 		position = ceParent.getDomPosition( i );
 		assert.strictEqual( position.node, ceParent.$element.last()[ 0 ], 'i=' + i + ' node' );

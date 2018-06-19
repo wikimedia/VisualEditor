@@ -47,8 +47,6 @@ QUnit.module( 've.dm.TreeModifier' );
 QUnit.test( 'modify', function ( assert ) {
 	var origData, surface, doc, tx, expectedTreeDump, actualTreeDump;
 
-	assert.expect( 3 );
-
 	function dumpTree( doc ) {
 		// Build a tree modifier just for the .dump method (don't modify anything)
 		return new ve.dm.TreeModifier( doc, new ve.dm.Transaction() ).dump();
@@ -124,8 +122,6 @@ QUnit.test( 'setupBlockSlugs', function ( assert ) {
 	var doc = new ve.dm.Surface(
 		ve.dm.example.createExampleDocumentFromData( [] )
 	).documentModel;
-
-	assert.expect( 1 );
 
 	doc.commit( new ve.dm.Transaction( [ {
 		type: 'replace',
