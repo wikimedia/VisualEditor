@@ -159,7 +159,7 @@ ve.dm.BranchNode.prototype.splice = function () {
  * TODO: The function name is misleading: in ContentBranchNodes it sets up inline slugs
  */
 ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
-	var i, len,
+	var i, j, len, canHaveSlugAfter, canHaveSlugBefore,
 		isBlock = this.canHaveChildrenNotContent();
 
 	this.slugPositions = {};
@@ -169,37 +169,36 @@ ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
 		return;
 	}
 
+	// Consider every position between two child nodes, before first child and after last child.
+	// Skip over metadata children. Add slugs in appropriate places.
+
 	// Support: Firefox
-	// If this content branch no longer has any non-internal items, insert a slug to keep the node
-	// from becoming invisible/unfocusable. In Firefox, backspace after Ctrl+A leaves the document
-	// completely empty, so this ensures DocumentNode gets a slug.
-	if (
-		this.getLength() === 0 ||
-		( this.children.length === 1 && this.children[ 0 ].isInternal() )
-	) {
-		this.slugPositions[ 0 ] = true;
-	} else {
-		// Iterate over all children of this branch and add slugs in appropriate places
-		for ( i = 0, len = this.children.length; i < len; i++ ) {
-			// Don't put slugs after internal nodes
-			if ( this.children[ i ].isInternal() ) {
-				continue;
-			}
-			// First sluggable child (left side)
-			if ( i === 0 && this.children[ i ].canHaveSlugBefore() ) {
-				this.slugPositions[ i ] = true;
-			}
-			if ( this.children[ i ].canHaveSlugAfter() ) {
-				if (
-					// Last sluggable child (right side)
-					i === this.children.length - 1 ||
-					// Sluggable child followed by another sluggable child (in between)
-					( this.children[ i + 1 ] && this.children[ i + 1 ].canHaveSlugBefore() )
-				) {
-					this.slugPositions[ i + 1 ] = true;
-				}
-			}
+	// Note that this inserts a slug at position 0 if this content branch has no items or only
+	// internal items, keeping the node from becoming invisible/unfocusable. In Firefox, backspace
+	// after Ctrl+A leaves the document completely empty, so this ensures DocumentNode gets a slug.
+
+	len = this.children.length;
+	i = -1; // from -1 to len-1
+	j = 0; // from 0 to len
+	while ( i < len ) {
+		// If the next node is a meta item, find the first non-meta node after it, and consider that
+		// one instead when deciding to insert a slug. Meta nodes themselves don't have slugs.
+		while ( j < len && this.children[ j ].isMetaData() ) {
+			j++;
 		}
+
+		// Can have slug at the beginning, or after every node which allows it (except internal nodes)
+		canHaveSlugAfter = i === -1 || ( this.children[ i ].canHaveSlugAfter() &&
+			!this.children[ i ].isInternal() );
+		// Can have slug at the end, or before every node which allows it
+		canHaveSlugBefore = j === len || this.children[ j ].canHaveSlugBefore();
+
+		if ( canHaveSlugAfter && canHaveSlugBefore ) {
+			this.slugPositions[ j ] = true;
+		}
+
+		i = j;
+		j++;
 	}
 };
 

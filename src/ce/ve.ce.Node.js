@@ -125,6 +125,13 @@ ve.ce.Node.prototype.isInternal = function () {
 /**
  * @inheritdoc ve.Node
  */
+ve.ce.Node.prototype.isMetaData = function () {
+	return this.model.isMetaData();
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
 ve.ce.Node.prototype.isWrapped = function () {
 	return this.model.isWrapped();
 };

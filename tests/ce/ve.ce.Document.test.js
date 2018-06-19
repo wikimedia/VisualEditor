@@ -117,10 +117,10 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|X|</#text></p>|||<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|Y|</#text></p></div>"
 		},
 		{
-			title: 'Meta causing double block slug',
+			title: 'Meta does not cause double block slug',
 			html: "<p rel='ve:Alien'>X</p><!---->",
 			data: [ '<alienBlock>', '</alienBlock>', '<commentMeta>', '</commentMeta>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<p class='ve-ce-focusableNode ve-ce-leafNode'>|<#text>X</#text></p><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>||</div>"
+			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<p class='ve-ce-focusableNode ve-ce-leafNode'>|<#text>X</#text></p><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>||</div>"
 		}
 	];
 	/* eslint-enable quotes */
