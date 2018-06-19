@@ -285,6 +285,15 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 			}
 		} );
 	}
+	// Note that preventing default on mousedown doesn't suppress click
+	// events, so link navigation would still occur:
+	this.$element.on( {
+		'click.ve-ce-focusableNode': function ( e ) {
+			if ( !ve.isContentEditable( e.target ) && e.which === OO.ui.MouseButtons.LEFT ) {
+				e.preventDefault();
+			}
+		}
+	} );
 
 	if ( this.constructor.static.iconWhenInvisible ) {
 		// Set up the invisible icon, and watch for its continued necessity if
