@@ -143,7 +143,7 @@ ve.dm.HashValueStore.prototype.hash = function ( value, stringified ) {
 	if ( !this.hashStore[ hash ] ) {
 		if ( Array.isArray( value ) ) {
 			this.hashStore[ hash ] = ve.copy( value );
-		} else if ( typeof value === 'object' ) {
+		} else if ( value !== null && typeof value === 'object' ) {
 			this.hashStore[ hash ] = ve.cloneObject( value );
 		} else {
 			this.hashStore[ hash ] = value;
