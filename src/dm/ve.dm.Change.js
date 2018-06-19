@@ -182,7 +182,7 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 	if ( value instanceof ve.dm.Annotation ) {
 		return { type: 'annotation', value: value.element };
 	} else if ( Array.isArray( value ) && value[ 0 ] instanceof Node ) {
-		return { type: 'domNodeArray', value: value.map( ve.getNodeHtml ) };
+		return { type: 'domNodes', value: value.map( ve.getNodeHtml ).join( '' ) };
 	} else {
 		return { type: 'plain', value: value };
 	}
@@ -192,7 +192,16 @@ ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
 	var nodes;
 	if ( serialized.type === 'annotation' ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
+	} else if ( serialized.type === 'domNodes' ) {
+		if ( unsafe ) {
+			return $.parseHTML( serialized.value, undefined, true );
+		} else {
+			// Convert NodeList to Array
+			return Array.prototype.slice.call( ve.sanitizeHtml( serialized.value ) );
+		}
 	} else if ( serialized.type === 'domNodeArray' ) {
+		// Backwards compatibility, for auto-save sessions created before
+		// 'domNodeArray' was changed to 'domNodes'.
 		if ( unsafe ) {
 			return $.parseHTML( serialized.value.join( '' ), undefined, true );
 		} else {

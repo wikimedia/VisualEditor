@@ -353,21 +353,16 @@ QUnit.test( 'Serialize/deserialize/unsafeDeserialize', function ( assert ) {
 			start: 0,
 			transactions: [ { a: 'fred', o: [ 2 ] } ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
-				type: 'domNodeArray',
-				value: [
-					'<script></script>',
-					'<p onclick="alert(\'gotcha!\')"></p>'
-				]
+				type: 'domNodes',
+				value: '<script></script><p onclick="alert(\'gotcha!\')"></p>'
 			} } } ]
 		},
 		sanitized = {
 			start: 0,
 			transactions: [ { a: 'fred', o: [ 2 ] } ],
 			stores: [ { hashes: [ 'xx' ], hashStore: { xx: {
-				type: 'domNodeArray',
-				value: [
-					'<p></p>'
-				]
+				type: 'domNodes',
+				value: '<p></p>'
 			} } } ]
 		};
 
