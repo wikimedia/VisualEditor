@@ -70,11 +70,11 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 
 	assert.deepEqual( rebasedOnto( replace24, annotate12 ).operations, replace24.operations, 'Rebase onto upwind annotate' );
 
-	assert.deepEqual( rebasedOnto( replace12, annotate12 ), null, 'Rebase conflict with overlapping annotate' );
-	assert.deepEqual( rebasedOnto( replace12, replace13 ), null, 'Rebase conflict with surrounding replace' );
-	assert.deepEqual( rebasedOnto( replace13, replace12 ), null, 'Rebase conflict with surrounded replace' );
-	assert.deepEqual( rebasedOnto( replace13, replace24 ), null, 'Rebase conflict with overlapping downwind replace' );
-	assert.deepEqual( rebasedOnto( replace24, replace13 ), null, 'Rebase conflict with overlapping upwind replace' );
+	assert.strictEqual( rebasedOnto( replace12, annotate12 ), null, 'Rebase conflict with overlapping annotate' );
+	assert.strictEqual( rebasedOnto( replace12, replace13 ), null, 'Rebase conflict with surrounding replace' );
+	assert.strictEqual( rebasedOnto( replace13, replace12 ), null, 'Rebase conflict with surrounded replace' );
+	assert.strictEqual( rebasedOnto( replace13, replace24 ), null, 'Rebase conflict with overlapping downwind replace' );
+	assert.strictEqual( rebasedOnto( replace24, replace13 ), null, 'Rebase conflict with overlapping upwind replace' );
 
 	assert.deepEqual(
 		rebasedOnto( rebasedOnto( replace12, replace23 ), replace23.reversed() ).operations,
@@ -173,7 +173,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 	], [ emptyStore ], {} );
 
 	change = insert2.reversed();
-	assert.deepEqual( change.start, 4, 'start for insert2.reversed()' );
+	assert.strictEqual( change.start, 4, 'start for insert2.reversed()' );
 	change.applyTo( surface );
 	assert.deepEqual( doc.data.data, origData, 'Apply insert2.reversed()' );
 
@@ -241,27 +241,27 @@ QUnit.test( 'Change operations', function ( assert ) {
 		'Conflict rebasing replace2 onto remove2'
 	);
 
-	assert.deepEqual(
-		{ type: 'range', from: 1, to: 1 },
-		ve.dm.Change.static.rebaseUncommittedChange( insert1, insert2 ).rebased.selections[ 2 ].range.toJSON(),
+	assert.equalRange(
+		ve.dm.Change.static.rebaseUncommittedChange( insert1, insert2 ).rebased.selections[ 2 ].range,
+		new ve.Range( 1 ),
 		'Selection before insertion is not adjusted when rebasing (1)'
 	);
 
-	assert.deepEqual(
-		{ type: 'range', from: 1, to: 1 },
-		ve.dm.Change.static.rebaseUncommittedChange( insert2, insert1 ).transposedHistory.selections[ 2 ].range.toJSON(),
+	assert.equalRange(
+		ve.dm.Change.static.rebaseUncommittedChange( insert2, insert1 ).transposedHistory.selections[ 2 ].range,
+		new ve.Range( 1 ),
 		'Selection before insertion is not adjusted when rebasing (2)'
 	);
 
-	assert.deepEqual(
-		ve.dm.Change.static.rebaseUncommittedChange( insert1, insert2 ).transposedHistory.selections[ 1 ].range.toJSON(),
-		{ type: 'range', from: 11, to: 11 },
+	assert.equalRange(
+		ve.dm.Change.static.rebaseUncommittedChange( insert1, insert2 ).transposedHistory.selections[ 1 ].range,
+		new ve.Range( 11 ),
 		'Selection after insertion is adjusted when rebasing (1)'
 	);
 
-	assert.deepEqual(
-		ve.dm.Change.static.rebaseUncommittedChange( insert2, insert1 ).rebased.selections[ 1 ].range.toJSON(),
-		{ type: 'range', from: 11, to: 11 },
+	assert.equalRange(
+		ve.dm.Change.static.rebaseUncommittedChange( insert2, insert1 ).rebased.selections[ 1 ].range,
+		new ve.Range( 11 ),
 		'Selection after insertion is adjusted when rebasing (2)'
 	);
 } );
@@ -641,9 +641,9 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 	c.rebasedOnto( a.concat( b ) ).applyTo( surface );
 	d.rebasedOnto( a.concat( b ).rebasedOnto( c ) ).applyTo( surface );
 	assert.deepEqual( doc.data.data, expected, 'a,b,c,d' );
-	assert.deepEqual(
-		[ surface.getSelection().getRange().from, surface.getSelection().getRange().to ],
-		[ 1, 1 ],
+	assert.equalRange(
+		surface.getSelection().getRange(),
+		new ve.Range( 1 ),
 		'a,b,c,d range'
 	);
 

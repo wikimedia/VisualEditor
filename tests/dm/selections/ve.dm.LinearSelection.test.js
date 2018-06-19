@@ -14,7 +14,7 @@ QUnit.test( 'Construction and getters (getDocument, getRange(s))', function ( as
 		selection = new ve.dm.LinearSelection( dummyDoc, range );
 
 	assert.strictEqual( selection.getDocument(), dummyDoc, 'getDocument' );
-	assert.deepEqual( selection.getRange(), range, 'getRange' );
+	assert.equalRange( selection.getRange(), range, 'getRange' );
 	assert.deepEqual( selection.getRanges(), [ range ], 'getRanges' );
 	assert.strictEqual( selection.getName(), 'linear', 'getName' );
 } );

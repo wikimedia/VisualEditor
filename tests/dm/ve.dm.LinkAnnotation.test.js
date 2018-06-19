@@ -60,6 +60,6 @@ QUnit.test( 'getFragment', function ( assert ) {
 		];
 
 	for ( i = 0, l = cases.length; i < l; i++ ) {
-		assert.deepEqual( cases[ i ].annotation.getFragment(), cases[ i ].expected, cases[ i ].msg );
+		assert.strictEqual( cases[ i ].annotation.getFragment(), cases[ i ].expected, cases[ i ].msg );
 	}
 } );
