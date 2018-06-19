@@ -4,8 +4,6 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* global DOMPurify */
-
 /**
  * DataModel change.
  *
@@ -191,35 +189,18 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 };
 
 ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
-	var addTags, addAttrs;
+	var nodes;
 	if ( serialized.type === 'annotation' ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
 	} else if ( serialized.type === 'domNodeArray' ) {
 		if ( unsafe ) {
-			return serialized.value.map( function ( nodeHtml ) {
-				return $.parseHTML( nodeHtml )[ 0 ];
-			} );
+			return $.parseHTML( serialized.value.join( '' ), undefined, true );
 		} else {
-			// TODO: Move MW-specific rules to ve-mw
-			addTags = [ 'figure-inline' ];
-			addAttrs = [
-				'srcset',
-				// RDFa
-				'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof'
-			];
-			return serialized.value.map( function ( nodeHtml ) {
-				return DOMPurify.sanitize( $.parseHTML( nodeHtml )[ 0 ], {
-					ADD_TAGS: addTags,
-					ADD_ATTR: addAttrs,
-					ADD_URI_SAFE_ATTR: addAttrs,
-					FORBID_TAGS: [ 'style' ],
-					RETURN_DOM_FRAGMENT: true
-				} ).childNodes[ 0 ];
-			} ).filter( function ( node ) {
-				// Nodes can be sanitized to nothing (empty string or undefined)
-				// so check it is truthy
-				return node;
+			nodes = [];
+			serialized.value.forEach( function ( nodeHtml ) {
+				nodes = nodes.concat( Array.prototype.slice.call( ve.sanitizeHtml( nodeHtml ) ) );
 			} );
+			return nodes;
 		}
 	} else if ( serialized.type === 'plain' ) {
 		return serialized.value;

@@ -80,16 +80,17 @@ ve.init.sa.Platform.prototype.getHtmlMessage = function ( key ) {
 	message.replace( /\$[0-9]+/g, function ( placeholder, offset ) {
 		var arg,
 			placeholderIndex = +( placeholder.slice( 1 ) );
-		$message = $message.add( $.parseHTML( message.slice( lastOffset, offset ) ) );
+		$message = $message.add( ve.sanitizeHtml( message.slice( lastOffset, offset ) ) );
 		arg = args[ placeholderIndex ];
 		$message = $message.add(
 			typeof arg === 'string' ?
-				$.parseHTML( arg ) :
+				// Arguments come from the code so shouldn't be sanitized
+				document.createTextNode( arg ) :
 				arg
 		);
 		lastOffset = offset + placeholder.length;
 	} );
-	$message = $message.add( $.parseHTML( message.slice( lastOffset ) ) );
+	$message = $message.add( ve.sanitizeHtml( message.slice( lastOffset ) ) );
 	return $message;
 };
 

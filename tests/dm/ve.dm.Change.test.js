@@ -304,7 +304,7 @@ QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'Serialize/deserialize', function ( assert ) {
+QUnit.test( 'Serialize/deserialize/unsafeDeserialize', function ( assert ) {
 	var origData = [ { type: 'paragraph' }, 'b', 'a', 'r', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
@@ -412,6 +412,12 @@ QUnit.test( 'Serialize/deserialize', function ( assert ) {
 		ve.dm.Change.static.deserialize( unsanitized ).serialize(),
 		sanitized,
 		'Unsanitized round trips into sanitized'
+	);
+
+	assert.deepEqual(
+		ve.dm.Change.static.unsafeDeserialize( unsanitized ).serialize(),
+		unsanitized,
+		'Unsanitized round trips into unsanitized in unsafe mode'
 	);
 
 	assert.deepEqual( simpleChange.serialize(), simpleSerialized, 'Serialize (simple)' );

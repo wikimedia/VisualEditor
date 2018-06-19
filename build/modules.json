@@ -235,6 +235,15 @@
 			"src/init/ve.init.SupportCheck.js"
 		]
 	},
+	"visualEditor.sanitize": {
+		"scripts": [
+			"src/ve.sanitize.js"
+		],
+		"dependencies": [
+			"visualEditor.base",
+			"dompurify"
+		]
+	},
 	"visualEditor.base": {
 		"dependencies": [
 			"baselibs",
@@ -683,7 +692,7 @@
 			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.css"
 		],
 		"dependencies": [
-			"dompurify",
+			"visualEditor.sanitize",
 			"socket.io",
 			"color-picker",
 			"visualEditor.commentAnnotation"
@@ -882,7 +891,8 @@
 		],
 		"dependencies": [
 			"visualEditor.base.build",
-			"visualEditor.diffing.standalone"
+			"visualEditor.diffing.standalone",
+			"visualEditor.sanitize"
 		]
 	},
 	"visualEditor.desktop.standalone": {
