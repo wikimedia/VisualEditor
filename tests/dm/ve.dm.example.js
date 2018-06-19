@@ -1265,6 +1265,48 @@ ve.dm.example.annotatedTable = [
 	{ type: '/internalList' }
 ];
 
+ve.dm.example.figcaptionHtml =
+	'<p>a</p>' +
+	'<figure>' +
+		ve.dm.example.image.html +
+		'<figcaption><p>b</p></figcaption>' +
+	'</figure>' +
+	'<p>c</p>';
+
+ve.dm.example.figcaption = [
+	// 0 - Beginning of paragraph
+	{ type: 'paragraph' },
+	// 1 - Plain "a"
+	'a',
+	// 2 - End of paragraph
+	{ type: '/paragraph' },
+	// 3 - Beginning of figure
+	{ type: 'blockImage', attributes: ve.dm.example.image.data.attributes },
+	// 4 - Beginning of figure caption
+	{ type: 'imageCaption' },
+	// 5 - Beginning of paragraph
+	{ type: 'paragraph' },
+	// 6 - Plain "b"
+	'b',
+	// 7 - End of paragraph
+	{ type: '/paragraph' },
+	// 8 - End of figure caption
+	{ type: '/imageCaption' },
+	// 9 - End of figure
+	{ type: '/blockImage' },
+	// 10 - Beginning of paragraph
+	{ type: 'paragraph' },
+	// 11 - Plain "c"
+	'c',
+	// 12 - End of paragraph
+	{ type: '/paragraph' },
+	// 13 - Beginning of internalList
+	{ type: 'internalList' },
+	// 14 - End of internalList
+	{ type: '/internalList' }
+	// 15 - End of document
+];
+
 ve.dm.example.emptyBranch = [
 	{ type: 'table' },
 	{ type: '/table' },
@@ -2232,6 +2274,10 @@ ve.dm.example.domToDataCases = {
 	'example document': {
 		body: ve.dm.example.html,
 		data: ve.dm.example.data
+	},
+	'example document (figure/figcaption)': {
+		body: ve.dm.example.figcaptionHtml,
+		data: ve.dm.example.figcaption
 	},
 	'empty annotation': {
 		body: '<p>Foo<span id="anchorTarget"></span>Bar</p>',

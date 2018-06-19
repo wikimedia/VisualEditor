@@ -937,39 +937,62 @@ QUnit.test( 'protection against double application of transactions', function ( 
 } );
 
 QUnit.test( 'getNearestCursorOffset', function ( assert ) {
-	var i, dir,
-		doc = ve.dm.converter.getModelFromDom(
-			ve.createDocumentFromHtml( ve.dm.example.html )
-		),
-		expected = {
-			// 10 offsets per row
-			'-1': [
-				1, 1, 2, 3, 4, 4, 4, 4, 4, 4,
-				10, 11, 11, 11, 11, 15, 16, 16, 16, 16,
-				20, 21, 21, 21, 21, 21, 21, 21, 21, 29,
-				30, 30, 30, 30, 30, 30, 30, 30, 38, 39,
-				39, 41, 42, 42, 42, 42, 46, 47, 47, 47,
-				47, 51, 52, 52, 52, 52, 56, 57, 57, 59,
-				60, 60, 60
-			],
-			1: [
-				1, 1, 2, 3, 4, 10, 10, 10, 10, 10,
-				10, 11, 15, 15, 15, 15, 16, 20, 20, 20,
-				20, 21, 29, 29, 29, 29, 29, 29, 29, 29,
-				30, 38, 38, 38, 38, 38, 38, 38, 38, 39,
-				41, 41, 42, 46, 46, 46, 46, 47, 51, 51,
-				51, 51, 52, 56, 56, 56, 56, 57, 59, 59,
-				60, 60, 60
-			]
-		};
+	var i, c, dir, doc, cases = [
+		{
+			name: 'example',
+			htmlDoc: ve.dm.example.html,
+			expected: {
+				// 10 offsets per row
+				'-1': [
+					1, 1, 2, 3, 4, 4, 4, 4, 4, 4,
+					10, 11, 11, 11, 11, 15, 16, 16, 16, 16,
+					20, 21, 21, 21, 21, 21, 21, 21, 21, 29,
+					30, 30, 30, 30, 30, 30, 30, 30, 38, 39,
+					39, 41, 42, 42, 42, 42, 46, 47, 47, 47,
+					47, 51, 52, 52, 52, 52, 56, 57, 57, 59,
+					60, 60, 60
+				],
+				1: [
+					1, 1, 2, 3, 4, 10, 10, 10, 10, 10,
+					10, 11, 15, 15, 15, 15, 16, 20, 20, 20,
+					20, 21, 29, 29, 29, 29, 29, 29, 29, 29,
+					30, 38, 38, 38, 38, 38, 38, 38, 38, 39,
+					41, 41, 42, 46, 46, 46, 46, 47, 51, 51,
+					51, 51, 52, 56, 56, 56, 56, 57, 59, 59,
+					60, 60, 60
+				]
+			}
+		},
+		{
+			name: 'figcaption',
+			htmlDoc: ve.dm.example.figcaptionHtml,
+			expected: {
+				// 10 offsets per row
+				'-1': [
+					// The results here look incorrect.
+					// Should be `6, 6` instead of `-1, -1`?
+					1, 1, 2, 2, -1, -1, 6, 7, 7, 7,
+					2, 11, 12, 12, 12
+				],
+				1: [
+					// Should be `7, 7` instead of `-1, -1`?
+					1, 1, 2, 11, 6, 6, 6, 7, -1, -1,
+					11, 11, 12, 12, 12
+				]
+			}
+		}
+	];
 
-	for ( dir = -1; dir <= 1; dir += 2 ) {
-		for ( i = 0; i < doc.data.getLength(); i++ ) {
-			assert.strictEqual(
-				doc.getNearestCursorOffset( i, dir ),
-				expected[ dir ][ i ],
-				'Direction: ' + dir + ' Offset: ' + i
-			);
+	for ( c = 0; c < cases.length; c++ ) {
+		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ c ].htmlDoc ) );
+		for ( dir = -1; dir <= 1; dir += 2 ) {
+			for ( i = 0; i < doc.data.getLength(); i++ ) {
+				assert.strictEqual(
+					doc.getNearestCursorOffset( i, dir ),
+					cases[ c ].expected[ dir ][ i ],
+					'Document "' + cases[ c ].name + '" - Direction: ' + dir + ' Offset: ' + i
+				);
+			}
 		}
 	}
 } );

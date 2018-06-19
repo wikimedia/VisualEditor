@@ -928,10 +928,14 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 /**
  * Get the nearest offset that a cursor can be placed at.
  *
+ * Note that an offset in the other direction can be returned if there are no valid offsets in the
+ * preferred direction.
+ *
  * @method
  * @param {number} offset Offset to start looking at
- * @param {number} [direction=-1] Direction to look in, +1 or -1; if 0, find the closest offset
- * @return {number} Nearest offset a cursor can be placed at
+ * @param {number} [direction=-1] Direction to check first, +1 or -1; if 0, find the closest offset
+ * @return {number} Nearest offset a cursor can be placed at, or -1 if there are no valid offsets in
+ *     data
  */
 ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction ) {
 	var contentOffset, structuralOffset, left, right;
@@ -939,6 +943,13 @@ ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction )
 	if ( direction === 0 ) {
 		left = this.getNearestCursorOffset( offset, -1 );
 		right = this.getNearestCursorOffset( offset, 1 );
+		// If only one of `left` and `right` is valid, return the valid one.
+		// If neither is valid, this returns -1.
+		if ( right === -1 ) {
+			return left;
+		} else if ( left === -1 ) {
+			return right;
+		}
 		return offset - left < right - offset ? left : right;
 	}
 
@@ -953,8 +964,12 @@ ve.dm.Document.prototype.getNearestCursorOffset = function ( offset, direction )
 	contentOffset = this.data.getNearestContentOffset( offset, direction );
 	structuralOffset = this.data.getNearestStructuralOffset( offset, direction, true );
 
-	if ( !this.hasSlugAtOffset( structuralOffset ) && contentOffset !== -1 ) {
+	// If only one of `contentOffset` and `structuralOffset` is valid, return the valid one.
+	// If neither is valid, this returns -1.
+	if ( structuralOffset === -1 || !this.hasSlugAtOffset( structuralOffset ) ) {
 		return contentOffset;
+	} else if ( contentOffset === -1 ) {
+		return structuralOffset;
 	}
 
 	if ( direction === 1 ) {

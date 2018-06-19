@@ -880,6 +880,8 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 					'b'
 				],
 				callback: ve.dm.ElementLinearData.prototype.isContentOffset,
+				// The results here look incorrect. It should "turn around" and return 7.
+				// It should only return -1 if the imageCaption has no valid offsets inside (it is empty).
 				expected: -1
 			}
 		];
