@@ -612,7 +612,7 @@ QUnit.test( 'trimOuterSpaceFromRange', function ( assert ) {
 	linearData = ve.dm.example.preprocessAnnotations( data );
 	elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() );
 	for ( i = 0; i < cases.length; i++ ) {
-		assert.deepEqual(
+		assert.equalRange(
 			elementData.trimOuterSpaceFromRange( cases[ i ].range ),
 			cases[ i ].trimmed,
 			cases[ i ].msg

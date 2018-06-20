@@ -52,7 +52,7 @@ QUnit.test( 'getParentNodeTypes', function ( assert ) {
 		'throws an exception when getting allowed parent nodes of a node of an unregistered type'
 	);
 	factory.register( ve.dm.NodeFactoryNodeStub );
-	assert.deepEqual(
+	assert.strictEqual(
 		factory.getParentNodeTypes( 'node-factory-node-stub' ),
 		null,
 		'gets parent type rules for registered nodes'

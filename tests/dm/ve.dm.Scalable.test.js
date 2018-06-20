@@ -38,6 +38,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', functio
 		clone = scalable.clone();
 
 	assert.deepEqual( scalable, clone, 'Clone is deepEqual' );
+	assert.notStrictEqual( scalable, clone, 'Clone is not reference equal' );
 	assert.deepEqual( scalable.getCurrentDimensions(), currentDimensions, 'getCurrentDimensions' );
 	assert.deepEqual( scalable.getOriginalDimensions(), originalDimensions, 'getOriginalDimensions' );
 	assert.deepEqual( scalable.getDefaultDimensions(), defaultDimensions, 'getDefaultDimensions' );

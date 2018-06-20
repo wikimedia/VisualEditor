@@ -267,7 +267,7 @@
 				caseItem.msg + ': sidebar'
 			);
 		}
-		assert.deepEqual(
+		assert.strictEqual(
 			diffElement.$messages.children().length, caseItem.forceTimeout ? 1 : 0,
 			'Timeout message ' + ( caseItem.forceTimeout ? 'shown' : 'not shown' )
 		);
