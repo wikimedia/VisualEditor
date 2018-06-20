@@ -2050,7 +2050,6 @@ QUnit.test( 'isNoOp', function ( assert ) {
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' );
 
-	assert.expect( 3 * 6 - 1 );
 	[ doc, metaDoc, listMetaDoc ].forEach( function ( d, i ) {
 		var isListMetaDoc = ( i === 2 );
 
@@ -2296,7 +2295,6 @@ QUnit.test( 'newFromRemoval preserving metadata', function ( assert ) {
 			]
 		}
 	];
-	assert.expect( cases.length );
 
 	for ( i = 0, len = cases.length; i < len; i++ ) {
 		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].html ) );

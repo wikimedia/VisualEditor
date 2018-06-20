@@ -232,8 +232,6 @@ QUnit.test( 'Metadata transactions', function ( assert ) {
 		} );
 	}
 
-	assert.expect( 8 );
-
 	doc = new ve.dm.Document( [] );
 	surface = new ve.dm.Surface( doc );
 	surface.metaList.connect( null, {

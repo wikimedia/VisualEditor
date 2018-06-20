@@ -282,8 +282,6 @@ QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
 		emptyStore = new ve.dm.HashValueStore(),
 		bStore = new ve.dm.HashValueStore( [ b ] );
 
-	assert.expect( 3 );
-
 	// Canonical history: text gets removed
 	remove = new ve.dm.Change( 1, [ TxRemove( doc, new ve.Range( 1, 2 ) ) ], [ emptyStore ], {} );
 	// Doomed conflicting history: text gets bolded
@@ -549,7 +547,7 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 			null, null, null, null, null, null, null, null, null
 		]
 	};
-	assert.expect( 1 );
+
 	deserialized = ve.dm.Change.static.deserialize( serialized );
 	assert.deepEqual(
 		deserialized.serialize(),

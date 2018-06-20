@@ -30,8 +30,6 @@ QUnit.test( 'Call with no real async', function ( assert ) {
 		begun = assert.async(),
 		done = assert.async();
 
-	assert.expect( 2 );
-
 	scheduler.schedule(
 		function () {
 			assert.ok( true, 'initial action was called' );
@@ -51,8 +49,6 @@ QUnit.test( 'Call with delay', function ( assert ) {
 		begun = assert.async(),
 		done = assert.async(),
 		delayed = false;
-
-	assert.expect( 3 );
 
 	scheduler.schedule(
 		function () {
@@ -77,8 +73,6 @@ QUnit.test( 'Test that throws an exception', function ( assert ) {
 		begun = assert.async(),
 		done = assert.async();
 
-	assert.expect( 2 );
-
 	scheduler.schedule(
 		function () {
 			assert.ok( true, 'initial action was called' );
@@ -99,8 +93,6 @@ QUnit.test( 'Test that never succeeds', function ( assert ) {
 	var scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async();
-
-	assert.expect( 2 );
 
 	scheduler.schedule(
 		function () {
