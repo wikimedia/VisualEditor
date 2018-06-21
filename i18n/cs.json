@@ -53,7 +53,6 @@
 	"visualeditor-changedesc-link-href": "Cíl odkazu změněn z $1 na $2",
 	"visualeditor-changedesc-no-key": "$1 změněno na $2",
 	"visualeditor-changedesc-set": "$1 nastaveno na $2",
-	"visualeditor-changedesc-style": "Styl změněn z $1 na $2",
 	"visualeditor-changedesc-unknown": "Změněno $1",
 	"visualeditor-changedesc-unset": "Odebrána hodnota $2 z $1",
 	"visualeditor-changedir": "Změnit směr textu",

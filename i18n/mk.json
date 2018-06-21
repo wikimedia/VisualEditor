@@ -39,7 +39,6 @@
 	"visualeditor-changedesc-link-href": "Целната врска сменета од $1 во $2",
 	"visualeditor-changedesc-no-key": "$1 изменето на $2",
 	"visualeditor-changedesc-set": "Зададено $2 на $1",
-	"visualeditor-changedesc-style": "Стилот е сменет од $1 во $2",
 	"visualeditor-changedesc-unknown": "$1 е изменето",
 	"visualeditor-changedesc-unset": "Отстрането зададеното $2 на $1",
 	"visualeditor-changedir": "Смени насока",

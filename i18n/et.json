@@ -34,7 +34,6 @@
 	"visualeditor-changedesc-link-href": "Muudetud lingi sihtlehekülg: $1 → $2",
 	"visualeditor-changedesc-no-key": "Muudetud: $1 → $2",
 	"visualeditor-changedesc-set": "$1: määramata → $2",
-	"visualeditor-changedesc-style": "Muudetud laad: $1 → $2",
 	"visualeditor-changedesc-unknown": "$1: muudetud",
 	"visualeditor-changedesc-unset": "$1: $2 → määramata",
 	"visualeditor-changedir": "Muuda kirjutamise suunda",

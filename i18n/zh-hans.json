@@ -54,7 +54,6 @@
 	"visualeditor-changedesc-link-href": "已将链接目标从$1更改为$2",
 	"visualeditor-changedesc-no-key": "$1已更改为$2",
 	"visualeditor-changedesc-set": "$1已设置为$2",
-	"visualeditor-changedesc-style": "样式已从$1更改为$2",
 	"visualeditor-changedesc-unknown": "$1已更改",
 	"visualeditor-changedesc-unset": "$1已从$2复位",
 	"visualeditor-changedir": "更改书写方向",

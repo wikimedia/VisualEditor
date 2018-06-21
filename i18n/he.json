@@ -50,7 +50,6 @@
 	"visualeditor-changedesc-link-href": "יעד הקישור שוּנה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-no-key": "$1 שוּנה ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-set": "$1 הוגדר ל{{GRAMMAR:תחילית|$2}}",
-	"visualeditor-changedesc-style": "הסגנון השתנה מ־$1 ל־$2",
 	"visualeditor-changedesc-unknown": "$1 שוּנה",
 	"visualeditor-changedesc-unset": "הגדרת $1 שונתה מ{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedir": "שינוי כיוון",

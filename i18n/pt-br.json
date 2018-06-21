@@ -55,7 +55,6 @@
 	"visualeditor-changedesc-link-href": "Destino da ligação alterado de $1 para $2",
 	"visualeditor-changedesc-no-key": "$1 alterado para $2",
 	"visualeditor-changedesc-set": "$1 definido para $2",
-	"visualeditor-changedesc-style": "O estilo foi modificado de $1 para $2",
 	"visualeditor-changedesc-unknown": "$1 alterado",
 	"visualeditor-changedesc-unset": "$1 já não é $2",
 	"visualeditor-changedir": "Alterar direcionalidade",

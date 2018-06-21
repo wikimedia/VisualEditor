@@ -57,7 +57,6 @@
 	"visualeditor-changedesc-link-href": "Bağlantı hedefi, $1 hedefinden $2 hedefine dönüştürüldü",
 	"visualeditor-changedesc-no-key": "$1 değeri $2 değerine dönüştürüldü",
 	"visualeditor-changedesc-set": "$1 adı, $2 değerine ayarlandı",
-	"visualeditor-changedesc-style": "Stil, $1 stilinden $2 stiline dönüştürüldü",
 	"visualeditor-changedesc-unknown": "$1 değiştirildi",
 	"visualeditor-changedesc-unset": "$1 adı, $2 değerine ayarlanamadı",
 	"visualeditor-changedir": "Yönünü değiştir",
