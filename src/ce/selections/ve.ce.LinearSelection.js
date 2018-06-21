@@ -145,19 +145,21 @@ ve.ce.LinearSelection.prototype.getSelectionBoundingRect = function () {
  * @return {Object|null} ClientRect-like object
  */
 ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) {
-	var rect, side, x, adjacentNode, unicornRect, annotationNode, fixHeight, middle,
-		node = range.endContainer,
+	var rect, side, x, adjacentNode, unicornRect, annotationNode, fixHeight, middle, node,
+		containerNode = range.endContainer,
 		offset = range.endOffset;
 
-	if ( node.nodeType === Node.TEXT_NODE && ( offset === 0 || offset === node.length ) ) {
-		node = offset ? node.previousSibling : node.nextSibling;
-	} else if ( node.nodeType === Node.ELEMENT_NODE && ( offset === 0 || offset === node.childNodes.length ) ) {
-		node = offset ? node.lastChild : node.firstChild;
+	if ( containerNode.nodeType === Node.TEXT_NODE && ( offset === 0 || offset === containerNode.length ) ) {
+		node = offset ? containerNode.previousSibling : containerNode.nextSibling;
+	} else if ( containerNode.nodeType === Node.ELEMENT_NODE ) {
+		node = offset === containerNode.childNodes.length ? containerNode.lastChild : containerNode.childNodes[ offset ];
 		// Nail heights are 0, so use the annotation's height
-		if ( node.classList.contains( 've-ce-nail' ) ) {
+		if ( node.nodeType === Node.ELEMENT_NODE && node.classList.contains( 've-ce-nail' ) ) {
 			annotationNode = offset ? node.previousSibling : node.nextSibling;
 			fixHeight = annotationNode.getClientRects()[ 0 ].height;
 		}
+	} else {
+		node = containerNode;
 	}
 
 	while ( node && node.nodeType !== Node.ELEMENT_NODE ) {
