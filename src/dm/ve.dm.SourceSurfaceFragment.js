@@ -93,9 +93,11 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annota
 		if ( lines.length > 1 ) {
 			content = [];
 			for ( i = 0, l = lines.length; i < l; i++ ) {
-				content.push( { type: 'paragraph' } );
+				if ( i > 0 ) {
+					content.push( { type: '/paragraph' } );
+					content.push( { type: 'paragraph' } );
+				}
 				ve.batchPush( content, lines[ i ].split( '' ) );
-				content.push( { type: '/paragraph' } );
 			}
 		} else {
 			content = content.split( '' );
