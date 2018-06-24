@@ -97,24 +97,18 @@ ve.ui.commandHelpRegistry.register( 'textStyle', 'clear', { trigger: 'clear', la
 
 // Clipboard
 ve.ui.commandHelpRegistry.register( 'clipboard', 'cut', {
-	shortcuts: [ {
-		mac: 'cmd+x',
-		pc: 'ctrl+x'
-	} ],
+	trigger: 'cut',
+	ignoreCommand: true,
 	label: OO.ui.deferMsg( 'visualeditor-clipboard-cut' )
 } );
 ve.ui.commandHelpRegistry.register( 'clipboard', 'copy', {
-	shortcuts: [ {
-		mac: 'cmd+c',
-		pc: 'ctrl+c'
-	} ],
+	trigger: 'copy',
+	ignoreCommand: true,
 	label: OO.ui.deferMsg( 'visualeditor-clipboard-copy' )
 } );
 ve.ui.commandHelpRegistry.register( 'clipboard', 'paste', {
-	shortcuts: [ {
-		mac: 'cmd+v',
-		pc: 'ctrl+v'
-	} ],
+	trigger: 'paste',
+	ignoreCommand: true,
 	label: OO.ui.deferMsg( 'visualeditor-clipboard-paste' )
 } );
 ve.ui.commandHelpRegistry.register( 'clipboard', 'pasteSpecial', { trigger: 'pasteSpecial', label: OO.ui.deferMsg( 'visualeditor-clipboard-paste-special' ) } );
