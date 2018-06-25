@@ -49,7 +49,6 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	// Properties
 	this.parentDocument = parentDocument || null;
 	this.originalDocument = originalDocument || null;
-	this.completeHistory = [];
 	this.nodesByType = {};
 	this.origInternalListLength = null;
 
@@ -64,9 +63,18 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		);
 	}
 	this.store = this.data.getStore();
+	this.completeHistory = new ve.dm.Change( 0, [], [], {} );
+	// Use the store by reference inside the completeHistory
+	this.completeHistory.store = this.store;
+	if ( this.store.getLength() > 0 ) {
+		// Push an identity transaction and the initial store
+		this.completeHistory.transactions.push( new ve.dm.Transaction( [ {
+			type: 'retain',
+			length: this.data.data.length
+		} ] ) );
+		this.completeHistory.storeLengthAtTransaction.push( this.store.getLength() );
+	}
 	this.htmlDocument = htmlDocument || ve.createDocumentFromHtml( '' );
-
-	this.storeLengthAtHistoryLength = [ this.store.getLength() ];
 };
 
 /* Inheritance */
@@ -325,8 +333,7 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 	}
 	this.emit( 'precommit', transaction );
 	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process();
-	this.completeHistory.push( transaction );
-	this.storeLengthAtHistoryLength[ this.completeHistory.length ] = this.store.getLength();
+	this.completeHistory.pushTransaction( transaction );
 	this.emit( 'transact', transaction );
 };
 
@@ -1670,22 +1677,22 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 };
 
 /**
- * Get the length of the complete history stack. This is also the current pointer.
+ * Get the length of the complete history. This is also the current pointer.
  *
  * @return {number} Length of the complete history stack
  */
 ve.dm.Document.prototype.getCompleteHistoryLength = function () {
-	return this.completeHistory.length;
+	return this.completeHistory.getLength();
 };
 
 /**
- * Get all the items in the complete history stack since a specified pointer.
+ * Get all the transactions in the complete history since a specified pointer.
  *
  * @param {number} start Pointer from where to start the slice
- * @return {ve.dm.Transaction[]} Array of transaction objects with undo flag
+ * @return {ve.dm.Transaction[]} Array of transaction objects
  */
 ve.dm.Document.prototype.getCompleteHistorySince = function ( start ) {
-	return this.completeHistory.slice( start );
+	return this.completeHistory.transactions.slice( start );
 };
 
 /**
@@ -1695,18 +1702,7 @@ ve.dm.Document.prototype.getCompleteHistorySince = function ( start ) {
  * @return {ve.dm.Change} Single change containing transactions since pointer
  */
 ve.dm.Document.prototype.getChangeSince = function ( start ) {
-	var t, len, transaction,
-		transactions = [],
-		stores = [];
-	for ( t = start, len = this.completeHistory.length; t < len; t++ ) {
-		transaction = this.completeHistory[ t ];
-		transactions.push( transaction );
-		stores.push( this.store.slice(
-			this.storeLengthAtHistoryLength[ t ],
-			this.storeLengthAtHistoryLength[ t + 1 ]
-		) );
-	}
-	return new ve.dm.Change( start, transactions, stores, {} );
+	return this.completeHistory.mostRecent( start );
 };
 
 /**
