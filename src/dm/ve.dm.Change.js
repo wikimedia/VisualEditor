@@ -73,9 +73,15 @@
  * @param {Object} selections For each author ID (key), latest ve.dm.Selection
  */
 ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
+	var change = this;
 	this.start = start;
 	this.transactions = transactions;
-	this.stores = stores;
+	this.store = new ve.dm.HashValueStore();
+	this.storeLengthAtTransaction = [];
+	stores.forEach( function ( store ) {
+		change.store.merge( store );
+		change.storeLengthAtTransaction.push( change.store.getLength() );
+	} );
 	this.selections = selections;
 };
 
@@ -441,8 +447,8 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		storeB, rebasedStoresA, storeA, authorId,
 		transactionsA = history.transactions.slice(),
 		transactionsB = uncommitted.transactions.slice(),
-		storesA = history.stores.slice(),
-		storesB = uncommitted.stores.slice(),
+		storesA = history.getStores(),
+		storesB = uncommitted.getStores(),
 		selectionsA = OO.cloneObject( history.selections ),
 		selectionsB = OO.cloneObject( uncommitted.selections ),
 		rejected = null;
@@ -674,6 +680,36 @@ ve.dm.Change.prototype.getLength = function () {
 };
 
 /**
+ * Get the store items introduced by transaction n
+ *
+ * @param {number} n The index of a transaction within the change
+ * @return {ve.dm.HashValueStore} The store items introduced by transaction n
+ */
+ve.dm.Change.prototype.getStore = function ( n ) {
+	return this.store.slice(
+		n > 0 ? this.storeLengthAtTransaction[ n - 1 ] : 0,
+		this.storeLengthAtTransaction[ n ]
+	);
+};
+
+/**
+ * Get the stores for each transaction
+ *
+ * @return {ve.dm.HashValueStore[]} Each transaction's store items (shallow copied store)
+ */
+ve.dm.Change.prototype.getStores = function () {
+	var i, len, end,
+		stores = [],
+		start = 0;
+	for ( i = 0, len = this.getLength(); i < len; i++ ) {
+		end = this.storeLengthAtTransaction[ i ];
+		stores.push( this.store.slice( start, end ) );
+		start = end;
+	}
+	return stores;
+};
+
+/**
  * @return {number|null} The first author in a transaction or selection change, or null if empty
  */
 ve.dm.Change.prototype.firstAuthorId = function () {
@@ -748,7 +784,7 @@ ve.dm.Change.prototype.concat = function ( other ) {
 	return new ve.dm.Change(
 		this.start,
 		this.transactions.concat( other.transactions ),
-		this.stores.concat( other.stores ),
+		this.getStores().concat( other.getStores() ),
 		other.selections
 	);
 };
@@ -760,12 +796,16 @@ ve.dm.Change.prototype.concat = function ( other ) {
  * @throws {Error} If other does not start immediately after this
  */
 ve.dm.Change.prototype.push = function ( other ) {
+	var change = this;
 	if ( other.start !== this.start + this.getLength() ) {
 		throw new Error( 'this ends at ' + ( this.start + this.getLength() ) +
 			' but other starts at ' + other.start );
 	}
 	Array.prototype.push.apply( this.transactions, other.transactions );
-	Array.prototype.push.apply( this.stores, other.stores );
+	other.getStores().forEach( function ( store ) {
+		change.store.merge( store );
+		change.storeLengthAtTransaction.push( change.store.getLength() );
+	} );
 	this.selections = OO.cloneObject( other.selections );
 };
 
@@ -793,7 +833,7 @@ ve.dm.Change.prototype.mostRecent = function ( start ) {
 	return new ve.dm.Change(
 		start,
 		this.transactions.slice( start - this.start ),
-		this.stores.slice( start - this.start ),
+		this.getStores().slice( start - this.start ),
 		OO.cloneObject( this.selections )
 	);
 };
@@ -813,7 +853,7 @@ ve.dm.Change.prototype.truncate = function ( length ) {
 	return new ve.dm.Change(
 		this.start,
 		this.transactions.slice( 0, length ),
-		this.stores.slice( 0, length ),
+		this.getStores().slice( 0, length ),
 		{}
 	);
 };
@@ -824,7 +864,7 @@ ve.dm.Change.prototype.truncate = function ( length ) {
  * @param {ve.dm.Surface} surface Surface in change start state
  */
 ve.dm.Change.prototype.applyTo = function ( surface ) {
-	this.stores.forEach( function ( store ) {
+	this.getStores().forEach( function ( store ) {
 		surface.documentModel.store.merge( store );
 	} );
 	this.transactions.forEach( function ( tx ) {
@@ -862,7 +902,7 @@ ve.dm.Change.prototype.addToHistory = function ( documentModel ) {
 			' but history ends at ' + documentModel.completeHistory.length );
 	}
 	// FIXME this code should probably be in dm.Document
-	this.stores.forEach( function ( store ) {
+	this.getStores().forEach( function ( store ) {
 		documentModel.store.merge( store );
 	} );
 	ve.batchPush( documentModel.completeHistory, this.transactions );
@@ -932,7 +972,7 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		}
 		prevInfo = info;
 	}
-	stores = this.stores.map( serializeStore );
+	stores = this.getStores().map( serializeStore );
 	data = {
 		start: this.start,
 		transactions: transactions
