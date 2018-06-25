@@ -565,11 +565,11 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 		] ) ),
 		emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
+		saved = doc.completeHistory.serialize(),
 		clear = function () {
-			surface.change( doc.completeHistory.map( function ( tx ) {
-				return tx.reversed();
-			} ).reverse() );
-			doc.completeHistory.length = 0;
+			doc.getChangeSince( 0 ).reversed().applyTo( surface );
+			doc.completeHistory = ve.dm.Change.static.deserialize( saved, doc );
+			doc.store = doc.completeHistory.store;
 		},
 		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion;
 

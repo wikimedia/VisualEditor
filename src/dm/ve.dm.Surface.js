@@ -44,7 +44,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.queueingContextChanges = false;
 	this.contextChangeQueued = false;
 	this.authorId = null;
-	this.lastStoredChange = 0;
+	this.lastStoredChange = doc.getCompleteHistoryLength();
 	this.autosaveFailed = false;
 
 	// Events

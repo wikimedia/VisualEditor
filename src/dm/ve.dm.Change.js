@@ -790,6 +790,16 @@ ve.dm.Change.prototype.concat = function ( other ) {
 };
 
 /**
+ * Push a transaction, after having pushed to the hash value store if it needs to grow
+ *
+ * @param {ve.dm.Transaction} transaction The transaction
+ */
+ve.dm.Change.prototype.pushTransaction = function ( transaction ) {
+	this.transactions.push( transaction );
+	this.storeLengthAtTransaction.push( this.store.getLength() );
+};
+
+/**
  * Push another change onto this change
  *
  * @param {ve.dm.Change} other Change that starts immediately after this
@@ -881,13 +891,13 @@ ve.dm.Change.prototype.applyTo = function ( surface ) {
  */
 ve.dm.Change.prototype.unapplyTo = function ( surface ) {
 	var doc = surface.documentModel,
-		historyLength = doc.completeHistory.length - this.getLength();
+		historyLength = doc.completeHistory.getLength() - this.getLength();
 	this.transactions.slice().reverse().forEach( function ( tx ) {
 		surface.change( tx.reversed() );
 	} );
-	doc.completeHistory.length = historyLength;
-	doc.storeLengthAtHistoryLength.length = historyLength + 1;
-	doc.store.truncate( doc.storeLengthAtHistoryLength[ historyLength ] );
+	doc.completeHistory.transactions.length = historyLength;
+	doc.completeHistory.storeLengthAtTransaction.length = historyLength;
+	doc.store.truncate( doc.completeHistory.storeLengthAtTransaction[ historyLength - 1 ] );
 };
 
 /**
@@ -897,16 +907,7 @@ ve.dm.Change.prototype.unapplyTo = function ( surface ) {
  * @throws {Error} If this change does not start at the top of the history
  */
 ve.dm.Change.prototype.addToHistory = function ( documentModel ) {
-	if ( this.start !== documentModel.completeHistory.length ) {
-		throw new Error( 'this starts at ' + this.start +
-			' but history ends at ' + documentModel.completeHistory.length );
-	}
-	// FIXME this code should probably be in dm.Document
-	this.getStores().forEach( function ( store ) {
-		documentModel.store.merge( store );
-	} );
-	ve.batchPush( documentModel.completeHistory, this.transactions );
-	documentModel.storeLengthAtHistoryLength[ documentModel.completeHistory.length ] = documentModel.store.getLength();
+	documentModel.completeHistory.push( this );
 };
 
 /**
@@ -916,13 +917,13 @@ ve.dm.Change.prototype.addToHistory = function ( documentModel ) {
  * @throws {Error} If this change does not end at the top of the history
  */
 ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
-	if ( this.start + this.getLength() !== doc.completeHistory.length ) {
+	if ( this.start + this.getLength() !== doc.completeHistory.getLength() ) {
 		throw new Error( 'this ends at ' + ( this.start + this.getLength() ) +
-			' but history ends at ' + doc.completeHistory.length );
+			' but history ends at ' + doc.completeHistory.getLength() );
 	}
-	doc.completeHistory.length -= this.transactions.length;
-	doc.storeLengthAtHistoryLength.length -= this.transactions.length;
-	doc.store.truncate( doc.storeLengthAtHistoryLength[ doc.completeHistory.length ] );
+	doc.completeHistory.transactions.length -= this.transactions.length;
+	doc.completeHistory.storeLengthAtTransaction.length -= this.transactions.length;
+	doc.store.truncate( doc.completeHistory.storeLengthAtTransaction[ doc.completeHistory.getLength() - 1 ] );
 };
 
 /**

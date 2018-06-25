@@ -71,7 +71,7 @@ QUnit.test( 'Rebase', assert => ve.spawn( function* () {
 					// Client 2 receives abc and rebases over it
 					[ '2', 'receive' ],
 					[ '2', 'assert', function ( assert, client ) {
-						assert.ok( Array.isArray( client.doc.storeLengthAtHistoryLength ), 'storeLengthAtHistoryLength array not clobbered by rebase' );
+						assert.ok( Array.isArray( client.doc.completeHistory.storeLengthAtTransaction ), 'storeLengthAtTransaction array not clobbered by rebase' );
 					} ],
 					[ '2', 'assertHist', 'abc/AB?/CD!' ],
 					// Client 2 receives confirmation of AB
