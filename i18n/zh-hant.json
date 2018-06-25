@@ -22,7 +22,8 @@
 			"Wehwei",
 			"Wwycheuk",
 			"A2093064",
-			"Kly"
+			"Kly",
+			"Deathkon"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -52,6 +53,7 @@
 	"visualeditor-changedesc-align": "對齊已從 $1 變更為 $2",
 	"visualeditor-changedesc-changed": "已將 $1 從 $2 變更為 $3",
 	"visualeditor-changedesc-comment": "已將評論從 $1 變更為 $2",
+	"visualeditor-changedesc-direction": "方向覆蓋已從$1更改為$2",
 	"visualeditor-changedesc-image-size": "已將 $1 的尺寸變更為 $2",
 	"visualeditor-changedesc-language": "已將 $1 語言變更為 $2",
 	"visualeditor-changedesc-link-href": "連結目標已從 $1 變更為 $2",
@@ -79,6 +81,7 @@
 	"visualeditor-debugbar-inputdebug": "輸入除錯",
 	"visualeditor-debugbar-logrange": "所選日誌",
 	"visualeditor-debugbar-showmodel": "顯示模型",
+	"visualeditor-debugbar-showtransactions": "檢視事務",
 	"visualeditor-debugbar-startfilibuster": "冗長辯論",
 	"visualeditor-debugbar-stopfilibuster": "停止冗長辯論",
 	"visualeditor-debugbar-updatemodel": "有變更時更新",
@@ -95,6 +98,7 @@
 	"visualeditor-dialog-table-caption": "標題",
 	"visualeditor-dialog-table-title": "表格屬性",
 	"visualeditor-diff-no-changes": "沒有變更",
+	"visualeditor-diff-timed-out": "計算您的更改花費的時間太長，因此下面的描述可能不是最佳的。",
 	"visualeditor-find-and-replace-diacritic": "不區分讀音符號",
 	"visualeditor-find-and-replace-diacritic-unavailable": "此瀏覽器不支援不區分讀音符號搜尋",
 	"visualeditor-find-and-replace-done": "完成",
