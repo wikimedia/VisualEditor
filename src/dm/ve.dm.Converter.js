@@ -892,7 +892,11 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					childDataElements = this.getDataFromDomSubtree( childNode, undefined, childAnnotations );
 					if ( !childDataElements.length || isAllInstanceOf( childDataElements, ve.dm.AlienMetaItem ) ) {
 						// Empty annotation, create a meta item
-						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childNodes );
+						if ( !childDataElements.length || isAllInstanceOf( childDataElements, ve.dm.RemovableAlienMetaItem ) ) {
+							childDataElements = this.createDataElements( ve.dm.RemovableAlienMetaItem, childNodes );
+						} else {
+							childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childNodes );
+						}
 						childDataElements.push( { type: '/' + childDataElements[ 0 ].type } );
 						// Annotate meta item
 						if ( !context.annotations.isEmpty() ) {

@@ -421,6 +421,7 @@
 			"src/dm/annotations/ve.dm.UserInputAnnotation.js",
 			"src/dm/annotations/ve.dm.VariableAnnotation.js",
 			"src/dm/metaitems/ve.dm.AlienMetaItem.js",
+			"src/dm/metaitems/ve.dm.RemovableAlienMetaItem.js",
 			"src/dm/metaitems/ve.dm.CommentMetaItem.js",
 			"src/dm/nodes/ve.dm.CommentNode.js",
 			"src/dm/nodes/ve.dm.FakeCommentNode.js",

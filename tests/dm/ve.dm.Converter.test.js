@@ -24,23 +24,45 @@ QUnit.test( 'getDomFromModel', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'roundTripMetadata', function ( assert ) {
-	var doc, tx,
-		beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
-		afterHtml = '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>';
+QUnit.test( 'getFullData', function ( assert ) {
+	var doc, tx, cases, msg, caseItem;
 
-	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + beforeHtml ) );
-	tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
-	doc.commit( tx );
-	assert.strictEqual(
-		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
-		afterHtml,
-		'Metadata in ContentBranchNode gets moved outside by change to ContentBranchNode'
-	);
-	doc.commit( tx.reversed() );
-	assert.strictEqual(
-		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
-		beforeHtml,
-		'Undo restores metadata to inside ContentBranchNode'
-	);
+	cases = {
+		'Metadata in ContentBranchNode gets moved outside by any change': {
+			beforeHtml: '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
+			transaction: function ( doc ) {
+				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
+			},
+			afterHtml: '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>'
+		},
+		'Removable metadata (empty annotation) in ContentBranchNode is removed by any change': {
+			beforeHtml: '<p>ab<i></i>cd</p><p>efgh</p>',
+			transaction: function ( doc ) {
+				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 4, 5 ) );
+			},
+			afterHtml: '<p>abc</p><p>efgh</p>'
+		}
+	};
+
+	for ( msg in cases ) {
+		caseItem = cases[ msg ];
+
+		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + caseItem.beforeHtml ) );
+		tx = caseItem.transaction( doc );
+
+		doc.commit( tx );
+		assert.strictEqual(
+			ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
+			caseItem.afterHtml,
+			msg
+		);
+
+		doc.commit( tx.reversed() );
+		assert.strictEqual(
+			ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
+			caseItem.beforeHtml,
+			msg + ' (undo)'
+		);
+	}
+
 } );

@@ -170,6 +170,21 @@ ve.dm.NodeFactory.prototype.isMetaData = function ( type ) {
 };
 
 /**
+ * Check if a given type of meta item is removable
+ *
+ * @method
+ * @param {string} type Meta item type
+ * @return {boolean} The type is removable
+ * @throws {Error} Unknown item type
+ */
+ve.dm.NodeFactory.prototype.isRemovableMetaData = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.removable;
+	}
+	throw new Error( 'Unknown item type: ' + type );
+};
+
+/**
  * Check if a node can contain content.
  *
  * @method

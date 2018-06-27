@@ -723,10 +723,10 @@ ve.dm.example.withMeta = [
 	'z',
 	{ type: '/paragraph' },
 	{
-		type: 'alienMeta',
-		originalDomElements: $( '<!-- inline -->' ).toArray()
+		type: 'removableAlienMeta',
+		originalDomElements: $( '<b></b>' ).toArray()
 	},
-	{ type: '/alienMeta' },
+	{ type: '/removableAlienMeta' },
 	// 25
 	{
 		type: 'alienMeta',
@@ -2324,10 +2324,10 @@ ve.dm.example.domToDataCases = {
 			{ type: 'paragraph' },
 			'F', 'o', 'o',
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			'B', 'a', 'r',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2339,10 +2339,10 @@ ve.dm.example.domToDataCases = {
 			'B', 'a', 'r',
 			{ type: '/paragraph' },
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
@@ -2353,10 +2353,10 @@ ve.dm.example.domToDataCases = {
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'F', 'o', 'o',
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			'B', 'a', 'r',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2368,10 +2368,10 @@ ve.dm.example.domToDataCases = {
 			'B', 'a', 'r',
 			{ type: '/paragraph' },
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<span id="anchorTarget"></span>' ).toArray()
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
@@ -2382,10 +2382,10 @@ ve.dm.example.domToDataCases = {
 			{ type: 'paragraph' },
 			'F', 'o', 'o',
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<i><b><u></u></b></i>' ).toArray()
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			'B', 'a', 'r',
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
@@ -2397,10 +2397,10 @@ ve.dm.example.domToDataCases = {
 			'B', 'a', 'r',
 			{ type: '/paragraph' },
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<i><b><u></u></b></i>' ).toArray()
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]
@@ -2413,11 +2413,11 @@ ve.dm.example.domToDataCases = {
 			[ 'o', [ ve.dm.example.italic ] ],
 			[ 'o', [ ve.dm.example.italic ] ],
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<b></b>' ).toArray(),
 				annotations: [ ve.dm.example.italic ]
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			{ type: '/paragraph' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
@@ -2429,11 +2429,11 @@ ve.dm.example.domToDataCases = {
 			[ 'o', [ ve.dm.example.italic ] ],
 			{ type: '/paragraph' },
 			{
-				type: 'alienMeta',
+				type: 'removableAlienMeta',
 				originalDomElements: $( '<b></b>' ).toArray(),
 				annotations: [ ve.dm.example.italic ]
 			},
-			{ type: '/alienMeta' },
+			{ type: '/removableAlienMeta' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		]

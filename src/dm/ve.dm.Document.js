@@ -752,6 +752,15 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 				insertions[ offset ].push( metaItem );
 				insertedMetaItems.push( metaItem );
 			}
+		} else if ( mode === 'roundTrip' ) {
+			metaItems = ve.getProp( item, 'internal', 'metaItems' ) || [];
+			// Had changes, so remove removable meta items that are out of place now
+			for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
+				metaItem = metaItems[ j ];
+				if ( ve.dm.nodeFactory.isRemovableMetaData( metaItem.type ) ) {
+					insertedMetaItems.push( metaItem );
+				}
+			}
 		}
 		result.push( stripMetaLoadInfo( item ) );
 		if ( mode === 'roundTrip' && insertions[ i ] ) {

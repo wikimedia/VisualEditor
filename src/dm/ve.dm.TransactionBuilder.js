@@ -786,10 +786,11 @@ ve.dm.TransactionBuilder.prototype.pushReplacement = function ( doc, offset, rem
 
 	remove = doc.getData( new ve.Range( offset, offset + removeLength ) );
 	collapse = removeMetadata ? [] : remove.filter( function ( item ) {
-		return ve.dm.LinearData.static.isElementData( item ) &&
-			ve.dm.nodeFactory.isMetaData(
-				ve.dm.LinearData.static.getType( item )
-			);
+		var type = ve.dm.LinearData.static.isElementData( item ) &&
+			ve.dm.LinearData.static.getType( item );
+		return type &&
+			ve.dm.nodeFactory.isMetaData( type ) &&
+			!ve.dm.nodeFactory.isRemovableMetaData( type );
 	} );
 	if ( removeLength === collapse.length && insert.length === 0 ) {
 		// Don't push no-ops
