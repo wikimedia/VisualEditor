@@ -185,7 +185,7 @@ ve.dm.example.commentNodePreview = function ( text ) {
 			'<a class="oo-ui-buttonElement-button" role="button" tabindex="0" aria-disabled="false" rel="nofollow">' +
 				'<span class="oo-ui-iconElement-icon oo-ui-icon-notice"></span>' +
 				'<span class="oo-ui-labelElement-label">' + text + '</span>' +
-				'<span class="oo-ui-indicatorElement-indicator"></span>' +
+				'<span class="oo-ui-indicatorElement-indicator oo-ui-indicatorElement-noIndicator"></span>' +
 			'</a>' +
 		'</span>' +
 	'</span>';
