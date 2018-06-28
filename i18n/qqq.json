@@ -162,7 +162,7 @@
 	"visualeditor-languageinspector-widget-label-language": "Label for the language inspector widget, to denote the current block language.\n{{Identical|Language}}",
 	"visualeditor-linkcontext-label-change": "Text for the change label button. This sets the current selection to the entire contents of the link, so it can be easily edited.",
 	"visualeditor-linkcontext-label-fallback": "Fallback for the preview of a link label if it's not displayable as text",
-	"visualeditor-linkcontext-label-label": "Label for the \"label\" field of a link",
+	"visualeditor-linkcontext-label-label": "Label for the \"label\" field of a link\n{{Label}}",
 	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Link}}",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",
 	"visualeditor-listbutton-number-tooltip": "Tooltip text for the numbered list button",
