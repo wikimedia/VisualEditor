@@ -72,6 +72,7 @@
 	"visualeditor-debugbar-logrange": "Log selected",
 	"visualeditor-debugbar-showmodel": "Show model",
 	"visualeditor-debugbar-showtransactions": "Show transactions",
+	"visualeditor-debugbar-testsquasher": "Test squasher",
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
 	"visualeditor-debugbar-stopfilibuster": "Stop Filibuster",
 	"visualeditor-debugbar-updatemodel": "Update on changes",

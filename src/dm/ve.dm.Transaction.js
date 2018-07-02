@@ -560,10 +560,12 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, includeInternalLi
  * @return {Object} Active range and length change
  * @return {number|undefined} return.start Start offset of the active range
  * @return {number|undefined} return.end End offset of the active range
+ * @return {number|undefined} return.startOpIndex Start operation index of the active range
+ * @return {number|undefined} return.endOpIndex End operation index of the active range
  * @return {number} return.diff Length change the transaction causes
  */
 ve.dm.Transaction.prototype.getActiveRangeAndLengthDiff = function () {
-	var i, len, op, start, end, active,
+	var i, len, op, start, end, startOpIndex, endOpIndex, active,
 		offset = 0,
 		annotations = 0,
 		diff = 0;
@@ -580,6 +582,7 @@ ve.dm.Transaction.prototype.getActiveRangeAndLengthDiff = function () {
 		// Place start marker
 		if ( active && start === undefined ) {
 			start = offset;
+			startOpIndex = i;
 		}
 		// Adjust offset and diff
 		if ( op.type === 'retain' ) {
@@ -592,11 +595,19 @@ ve.dm.Transaction.prototype.getActiveRangeAndLengthDiff = function () {
 		if ( op.type === 'attribute' || op.type === 'replaceMetadata' ) {
 			// Op with length 0 but that effectively modifies 1 position
 			end = offset + 1;
+			endOpIndex = i + 1;
 		} else if ( active ) {
 			end = offset;
+			endOpIndex = i + 1;
 		}
 	}
-	return { start: start, end: end, diff: diff };
+	return {
+		start: start,
+		end: end,
+		startOpIndex: startOpIndex,
+		endOpIndex: endOpIndex,
+		diff: diff
+	};
 };
 
 // TODO: Use adjustRetain to replace ve.dm.TransactionBuilder#pushRetain
@@ -631,4 +642,84 @@ ve.dm.Transaction.prototype.adjustRetain = function ( place, diff ) {
 		throw new Error( 'Negative retain length' );
 	}
 	ops.splice( start ? 0 : ops.length, 0, { type: 'retain', length: diff } );
+};
+
+/**
+ * Split (in place) the retain at the given offset, if any
+ *
+ * Offset cannot be in the interior of a replace operation (i.e. the interior of its removed content).
+ *
+ * @param {number} offset The offset at which to split
+ * @return {number} Index in operations starting at offset
+ * @throws {Error} Offset is in the interior of a replace operation
+ */
+ve.dm.Transaction.prototype.trySplit = function ( offset ) {
+	var i, iLen, op, opLen,
+		n = 0;
+	for ( i = 0, iLen = this.operations.length; i < iLen; i++ ) {
+		op = this.operations[ i ];
+		opLen = ( op.type === 'retain' ? op.length : op.type === 'replace' ? op.remove.length : 0 );
+		if ( n + opLen <= offset ) {
+			n += opLen;
+			continue;
+		}
+		if ( n === offset ) {
+			// At start edge; no need to split
+			return i;
+		}
+		// Else n < offset < n + opLen
+		if ( op.type !== 'retain' ) {
+			throw new Error( 'Cannot split operation of type ' + op.type );
+		}
+		// Split the retain operation
+		op.length -= n + opLen - offset;
+		this.operations.splice( i + 1, 0, { type: 'retain', length: n + opLen - offset } );
+		return i + 1;
+	}
+	if ( n === offset ) {
+		return iLen + 1;
+	}
+	throw new Error( 'Offset beyond end of transaction' );
+};
+
+/**
+ * Unsplit (in place) the two operations around the given index, if possible
+ *
+ * @param {number} index The index at which to unsplit
+ */
+ve.dm.Transaction.prototype.tryUnsplit = function ( index ) {
+	var op1 = this.operations[ index - 1 ],
+		op2 = this.operations[ index ];
+	if ( !op1 || !op2 || op1.type !== op2.type ) {
+		return;
+	}
+	if ( op1.type === 'retain' ) {
+		op1.length += op2.length;
+		this.operations.splice( index, 1 );
+	} else if ( op1.type === 'replace' ) {
+		ve.batchSplice( op1.remove, op1.remove.length, 0, op2.remove );
+		ve.batchSplice( op1.insert, op1.insert.length, 0, op2.insert );
+		this.operations.splice( index, 1 );
+	}
+};
+
+/**
+ * Insert (in place) operations at the given offset
+ *
+ * Merges into existing operations where possible. Offset cannot be in the interior of a replace
+ * operation (i.e. the interior of its removed content).
+ *
+ * @param {number} offset The offset at which to insert
+ * @param {Object[]} operations The operations to insert
+ * @throws {Error} Offset is in the interior of a replace operation
+ */
+ve.dm.Transaction.prototype.insertOperations = function ( offset, operations ) {
+	var opIndex;
+	if ( operations.length === 0 ) {
+		return;
+	}
+	opIndex = this.trySplit( offset );
+	ve.batchSplice( this.operations, opIndex, 0, ve.copy( operations ) );
+	this.tryUnsplit( opIndex + operations.length );
+	this.tryUnsplit( opIndex );
 };

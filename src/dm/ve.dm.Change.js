@@ -589,6 +589,20 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 /* Methods */
 
 /**
+ * Create a clone of this Change
+ *
+ * @return {ve.dm.Change} Clone of this change
+ */
+ve.dm.Change.prototype.clone = function () {
+	var authorId, doc;
+	for ( authorId in this.selections ) {
+		doc = this.selections[ authorId ].getDocument();
+		break;
+	}
+	return this.constructor.static.unsafeDeserialize( this.serialize(), doc );
+};
+
+/**
  * @return {boolean} True if this change has no transactions or selections
  */
 ve.dm.Change.prototype.isEmpty = function () {
@@ -909,4 +923,57 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		data.selections = selections;
 	}
 	return data;
+};
+
+/**
+ * Squash a change in-place, to use as few transactions as possible
+ */
+ve.dm.Change.prototype.squash = function () {
+	var transactionA, transactionB, infoA, infoB, offset,
+		i = 0;
+	while ( i < this.transactions.length - 1 ) {
+		transactionA = this.transactions[ i ];
+		// (re)calculate infoA (it can change between iterations, even if i does not)
+		infoA = transactionA.getActiveRangeAndLengthDiff();
+		if ( infoA.start === undefined ) {
+			// No-op: remove, putting any store items into the next transaction
+			this.transactions.splice( i, 1 );
+			this.storeLengthAtTransaction[ i + 1 ] += this.storeLengthAtTransaction[ i ];
+			this.storeLengthAtTransaction.splice( i, 1 );
+			continue;
+		}
+		transactionB = this.transactions[ i + 1 ];
+		infoB = transactionB.getActiveRangeAndLengthDiff();
+		if ( infoB.start === undefined ) {
+			// No-op: remove, putting any store items into the previous transaction
+			this.transactions.splice( i + 1, 1 );
+			this.storeLengthAtTransaction[ i ] += this.storeLengthAtTransaction[ i + 1 ];
+			this.storeLengthAtTransaction.splice( i + 1, 1 );
+			continue;
+		}
+
+		if ( infoB.end <= infoA.start ) {
+			// Remove from A's start the retained content affected by B
+			transactionA.adjustRetain( 'start', infoB.start - infoB.end );
+			offset = infoB.start;
+		} else if ( infoA.end <= infoB.start - infoA.diff ) {
+			// Remove from A's end the retained content affected by B
+			transactionA.adjustRetain( 'end', infoB.start - infoB.end );
+			offset = infoB.start - infoA.diff;
+		} else {
+			// The active ranges overlap: continue without squashing this pair
+			i++;
+			continue;
+		}
+		transactionA.insertOperations(
+			offset,
+			transactionB.operations.slice(
+				infoB.startOpIndex,
+				infoB.endOpIndex
+			)
+		);
+		this.transactions.splice( i + 1, 1 );
+		this.storeLengthAtTransaction[ i ] += this.storeLengthAtTransaction[ i + 1 ];
+		this.storeLengthAtTransaction.splice( i + 1, 1 );
+	}
 };
