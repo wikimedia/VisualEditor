@@ -30,7 +30,8 @@
 			"Patrick Star",
 			"Happy13241",
 			"Movses",
-			"Stjn"
+			"Stjn",
+			"Silicium Power"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -164,6 +165,8 @@
 	"visualeditor-languageinspector-widget-label-direction": "Направление",
 	"visualeditor-languageinspector-widget-label-langcode": "Код языка",
 	"visualeditor-languageinspector-widget-label-language": "Язык",
+	"visualeditor-linkcontext-label-fallback": "Нет предварительного просмотра",
+	"visualeditor-linkcontext-label-label": "Ярлык",
 	"visualeditor-linkinspector-title": "Ссылка",
 	"visualeditor-listbutton-bullet-tooltip": "Маркированный список",
 	"visualeditor-listbutton-number-tooltip": "Нумерованный список",

@@ -22,7 +22,8 @@
 			"Deryck Chan",
 			"Nemo bis",
 			"Skyllful",
-			"Woytecr"
+			"Woytecr",
+			"Matma Rex"
 		]
 	},
 	"visualeditor": "The name of the VisualEditor extension.\n{{Identical|VisualEditor}}",
@@ -81,7 +82,7 @@
 	"visualeditor-debugbar-logrange": "Label for the button in the debug toolbar to output the current selection to the JavaScript console.",
 	"visualeditor-debugbar-showmodel": "Label for the button in the debug toolbar to show the document model.",
 	"visualeditor-debugbar-showtransactions": "Label for the button in the debug toolbar to show the transaction history.",
-	"visualeditor-debugbar-startfilibuster": "Label for the button in the debug toolbar to begin the input response trace debugger.",
+	"visualeditor-debugbar-startfilibuster": "Label for the button in the debug toolbar to begin the input response trace debugger (extremely detailed logging of the editor's behavior).",
 	"visualeditor-debugbar-stopfilibuster": "Label for the button in the debug toolbar to stop the input response trace debugger.",
 	"visualeditor-debugbar-updatemodel": "Label for the button in the debug toolbar to update the shown document model as it changes.",
 	"visualeditor-dialog-action-apply": "Label text for button to apply changes made in dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-done}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n* {{msg-mw|Visualeditor-dialog-action-insert}}\n{{Identical|Apply change}}",
@@ -163,7 +164,7 @@
 	"visualeditor-languageinspector-widget-label-language": "Label for the language inspector widget, to denote the current block language.\n{{Identical|Language}}",
 	"visualeditor-linkcontext-label-change": "Text for the change label button. This sets the current selection to the entire contents of the link, so it can be easily edited.",
 	"visualeditor-linkcontext-label-fallback": "Fallback for the preview of a link label if it's not displayable as text",
-	"visualeditor-linkcontext-label-label": "Label for the \"label\" field of a link\n{{Label}}",
+	"visualeditor-linkcontext-label-label": "Label for the \"label\" field of a link\n{{Identical|Label}}",
 	"visualeditor-linkcontext-remove": "Title for the remove link button on the link context popup",
 	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Link}}",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",

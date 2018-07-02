@@ -25,7 +25,8 @@
 			"Lemondoge",
 			"Dgstranz",
 			"AlvaroMolina",
-			"MarcoAurelio"
+			"MarcoAurelio",
+			"Esteban"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -159,6 +160,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "Dirección",
 	"visualeditor-languageinspector-widget-label-langcode": "Código de idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
+	"visualeditor-linkcontext-label-fallback": "Sin previsualización",
 	"visualeditor-linkinspector-title": "Enlace",
 	"visualeditor-listbutton-bullet-tooltip": "Lista con viñetas",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",
