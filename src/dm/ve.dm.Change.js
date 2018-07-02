@@ -271,102 +271,25 @@ ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
  */
 ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB ) {
 	var infoA, infoB;
-	/**
-	 * Calculate a transaction's active range and length change
-	 *
-	 * @param {ve.dm.Transaction} transaction The transaction
-	 * @return {Object} Active range and length change
-	 * @return {number|undefined} return.start Start offset of the active range
-	 * @return {number|undefined} return.end End offset of the active range
-	 * @return {number} return.diff Length change the transaction causes
-	 */
-	function getActiveRangeAndLengthDiff( transaction ) {
-		var i, len, op, start, end, active,
-			offset = 0,
-			annotations = 0,
-			diff = 0;
-
-		for ( i = 0, len = transaction.operations.length; i < len; i++ ) {
-			op = transaction.operations[ i ];
-			if ( op.type === 'annotate' ) {
-				annotations += ( op.bias === 'start' ? 1 : -1 );
-				continue;
-			}
-			active = annotations > 0 || (
-				op.type !== 'retain' && op.type !== 'retainMetadata'
-			);
-			// Place start marker
-			if ( active && start === undefined ) {
-				start = offset;
-			}
-			// Adjust offset and diff
-			if ( op.type === 'retain' ) {
-				offset += op.length;
-			} else if ( op.type === 'replace' ) {
-				offset += op.remove.length;
-				diff += op.insert.length - op.remove.length;
-			}
-			// Place/move end marker
-			if ( op.type === 'attribute' || op.type === 'replaceMetadata' ) {
-				// Op with length 0 but that effectively modifies 1 position
-				end = offset + 1;
-			} else if ( active ) {
-				end = offset;
-			}
-		}
-		return { start: start, end: end, diff: diff };
-	}
-
-	/**
-	 * Adjust (in place) the retain length at the start/end of an operations list
-	 *
-	 * @param {Object[]} ops Operations list
-	 * @param {string} place Where to adjust, start|end
-	 * @param {number} diff Adjustment; must not cause negative retain length
-	 */
-	function adjustRetain( ops, place, diff ) {
-		var start = place === 'start',
-			i = start ? 0 : ops.length - 1;
-
-		if ( diff === 0 ) {
-			return;
-		}
-		if ( !start && ops[ i ] && ops[ i ].type === 'retainMetadata' ) {
-			i = ops.length - 2;
-		}
-		if ( ops[ i ] && ops[ i ].type === 'retain' ) {
-			ops[ i ].length += diff;
-			if ( ops[ i ].length < 0 ) {
-				throw new Error( 'Negative retain length' );
-			} else if ( ops[ i ].length === 0 ) {
-				ops.splice( i, 1 );
-			}
-			return;
-		}
-		if ( diff < 0 ) {
-			throw new Error( 'Negative retain length' );
-		}
-		ops.splice( start ? 0 : ops.length, 0, { type: 'retain', length: diff } );
-	}
 
 	transactionA = transactionA.clone();
 	transactionB = transactionB.clone();
-	infoA = getActiveRangeAndLengthDiff( transactionA );
-	infoB = getActiveRangeAndLengthDiff( transactionB );
+	infoA = transactionA.getActiveRangeAndLengthDiff();
+	infoB = transactionB.getActiveRangeAndLengthDiff();
 
 	if ( infoA.start === undefined || infoB.start === undefined ) {
 		// One of the transactions is a no-op: only need to adjust its retain length.
 		// We can safely adjust both, because the no-op must have diff 0
-		adjustRetain( transactionA.operations, 'start', infoB.diff );
-		adjustRetain( transactionB.operations, 'start', infoA.diff );
+		transactionA.adjustRetain( 'start', infoB.diff );
+		transactionB.adjustRetain( 'start', infoA.diff );
 	} else if ( infoA.end <= infoB.start ) {
 		// This includes the case where both transactions are insertions at the same
 		// point
-		adjustRetain( transactionB.operations, 'start', infoA.diff );
-		adjustRetain( transactionA.operations, 'end', infoB.diff );
+		transactionB.adjustRetain( 'start', infoA.diff );
+		transactionA.adjustRetain( 'end', infoB.diff );
 	} else if ( infoB.end <= infoA.start ) {
-		adjustRetain( transactionA.operations, 'start', infoB.diff );
-		adjustRetain( transactionB.operations, 'end', infoA.diff );
+		transactionA.adjustRetain( 'start', infoB.diff );
+		transactionB.adjustRetain( 'end', infoA.diff );
 	} else {
 		// The active ranges overlap: conflict
 		return [ null, null ];
