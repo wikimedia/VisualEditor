@@ -770,6 +770,7 @@
 			"tests/ui/ve.ui.DataTransferHandlerFactory.test.js",
 			"tests/ui/ve.ui.Trigger.test.js",
 			"tests/ui/ve.ui.DiffElement.test.js",
+			"tests/ui/ve.ui.PreviewElement.test.js",
 			"tests/ui/actions/ve.ui.AnnotationAction.test.js",
 			"tests/ui/actions/ve.ui.ContentAction.test.js",
 			"tests/ui/actions/ve.ui.FormatAction.test.js",
