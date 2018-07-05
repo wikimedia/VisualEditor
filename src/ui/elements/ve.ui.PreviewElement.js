@@ -66,8 +66,6 @@ ve.ui.PreviewElement.prototype.setModel = function ( model ) {
  * Replace the content of the body with the model DOM
  *
  * Doesn't use jQuery to avoid document switching performance bug
- *
- * @fires render
  */
 ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 	var htmlDocument = ve.dm.converter.getDomFromNode( this.model, ve.dm.Converter.static.PREVIEW_MODE ),
@@ -91,12 +89,7 @@ ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
 		);
 	}
 
-	// Cleanup
-	this.view.destroy();
-	this.view = null;
-
-	// Event
-	this.emit( 'render' );
+	this.afterRender();
 };
 
 /**
@@ -110,20 +103,34 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 	this.$element.append( this.view.$element );
 	this.view.setLive( true );
 
-	if ( !this.useView ) {
-		// When all children are rerendered, replace with DM DOM
-		// Conversion should be pretty fast, but avoid this (by setting useView to true)
-		// if you generating a lot of previews, e.g. in a list
-		ve.ce.GeneratedContentNode.static.awaitGeneratedContent( this.view )
-			.then( function () {
-				// Verify that the element and/or the ce node weren't destroyed
+	ve.ce.GeneratedContentNode.static.awaitGeneratedContent( this.view )
+		.then( function () {
+			// When all children are rerendered, replace with DM DOM for a better preview.
+			// Conversion should be pretty fast, but avoid this (by setting useView to true)
+			// if you generating a lot of previews, e.g. in a list
+			if ( !element.useView ) {
+				// Verify that the PreviewElement hasn't been destroyed.
 				if ( element.view ) {
 					element.replaceWithModelDom();
 				}
-			} );
-	} else {
-		this.view.destroy();
-	}
+			} else {
+				element.afterRender();
+			}
+		} );
+};
+
+/**
+ * Cleanup and emit events after render
+ *
+ * @fires render
+ */
+ve.ui.PreviewElement.prototype.afterRender = function () {
+	// Cleanup
+	this.view.destroy();
+	this.view = null;
+
+	// Event
+	this.emit( 'render' );
 };
 
 /**
