@@ -45,6 +45,11 @@
 	opacity: 0.5;
 }
 
+.ve-ce-focusableNode-invisibleIcon > .oo-ui-buttonElement-button {
+	/* Button can sometimes be exposed (T198912), but it shouldn't interact like one */
+	cursor: default;
+}
+
 .ve-ce-focusableNode-invisibleIcon.oo-ui-labelElement {
 	width: auto;
 }
