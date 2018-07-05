@@ -26,6 +26,8 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) 
 			href: ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ),
 			title: this.constructor.static.getDescription( this.model )
 		} );
+
+	this.$element.on( 'click', this.onClick.bind( this ) );
 	// Deprecated, use this.$element
 	this.$anchor = this.$element;
 };
@@ -76,6 +78,19 @@ ve.ce.LinkAnnotation.static.makeNail = function ( type ) {
 };
 
 /* Methods */
+
+/**
+ * Handle click events.
+ *
+ * @param {jQuery.Event} e Mouse click event
+ */
+ve.ce.LinkAnnotation.prototype.onClick = function ( e ) {
+	if ( e.which === OO.ui.MouseButtons.LEFT && ( e.ctrlKey || e.metaKey ) ) {
+		window.open( this.$element.prop( 'href' ) );
+		// Prevent multiple windows being opened, or other action being performed (e.g. middle click paste)
+		e.preventDefault();
+	}
+};
 
 /**
  * @inheritdoc
