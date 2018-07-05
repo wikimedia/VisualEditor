@@ -169,7 +169,7 @@
 	"visualeditor-table-delete-col": "Обриши {{PLURAL:$1|колону|колоне}}",
 	"visualeditor-table-delete-row": "Обриши {{PLURAL:$1|ред|редове}}",
 	"visualeditor-table-format-data": "Поље са садржајем",
-	"visualeditor-table-format-header": "Ћелија наслова",
+	"visualeditor-table-format-header": "Ћелија заглавља",
 	"visualeditor-table-insert-col-after": "Убаци иза",
 	"visualeditor-table-insert-col-before": "Убаци испред",
 	"visualeditor-table-insert-row-after": "Убаци испод",

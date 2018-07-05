@@ -64,7 +64,7 @@
 	"visualeditor-changedir": "Label for tool to change directionality",
 	"visualeditor-changedir-tool-ltr": "Label for tool to change rendered directionality to LTR",
 	"visualeditor-changedir-tool-rtl": "Label for tool to change rendered directionality to RTL",
-	"visualeditor-clearbutton-tooltip": "Tooltip text for the remove button. Clears whatever formatting is associated with the context popup.",
+	"visualeditor-clearbutton-tooltip": "Tooltip text for the remove button. Clears whatever formatting is associated with the context popup.\n{{Identical|Remove}}",
 	"visualeditor-clipboard-copy": "Label for copy command.\n{{Identical|Copy}}",
 	"visualeditor-clipboard-cut": "Label for cut command.\n{{Identical|Cut}}",
 	"visualeditor-clipboard-paste": "Label for paste command.\n{{Identical|Paste}}",

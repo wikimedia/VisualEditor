@@ -154,6 +154,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "Напрямок",
 	"visualeditor-languageinspector-widget-label-langcode": "Код мови",
 	"visualeditor-languageinspector-widget-label-language": "Мова",
+	"visualeditor-linkcontext-label-fallback": "Немає попереднього перегляду",
 	"visualeditor-linkcontext-remove": "Вилучити посилання",
 	"visualeditor-linkinspector-title": "Посилання",
 	"visualeditor-listbutton-bullet-tooltip": "Маркований список",

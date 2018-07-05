@@ -16,7 +16,8 @@
 			"Ti4goc",
 			"Diego Queiroz",
 			"Macofe",
-			"Athena in Wonderland"
+			"Athena in Wonderland",
+			"Ldacosta"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -145,15 +146,15 @@
 	"visualeditor-key-tab": "Tab",
 	"visualeditor-key-up": "Para cima",
 	"visualeditor-language-search-input-placeholder": "Pesquisar por nome ou código de língua",
-	"visualeditor-languagecontext-remove": "Remover língua",
+	"visualeditor-languagecontext-remove": "Remover idioma",
 	"visualeditor-languageinspector-title": "Língua",
 	"visualeditor-languageinspector-widget-changelang": "Encontrar uma língua",
 	"visualeditor-languageinspector-widget-label-direction": "Direção",
 	"visualeditor-languageinspector-widget-label-langcode": "Código da língua",
 	"visualeditor-languageinspector-widget-label-language": "Língua",
-	"visualeditor-linkcontext-label-change": "Alterar texto da hiperligação",
+	"visualeditor-linkcontext-label-change": "Alterar a etiqueta",
 	"visualeditor-linkcontext-label-fallback": "Sem antevisão",
-	"visualeditor-linkcontext-label-label": "Texto da hiperligação",
+	"visualeditor-linkcontext-label-label": "Etiqueta",
 	"visualeditor-linkcontext-remove": "Remover hiperligação",
 	"visualeditor-linkinspector-title": "Hiperligação",
 	"visualeditor-listbutton-bullet-tooltip": "Lista com marcadores",

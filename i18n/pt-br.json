@@ -19,7 +19,8 @@
 			"Felipe L. Ewald",
 			"Trigonometria87",
 			"Walesson",
-			"NMaia"
+			"NMaia",
+			"Pedrofariasm"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -160,7 +161,7 @@
 	"visualeditor-linkcontext-label-change": "Alterar texto da hiperligação",
 	"visualeditor-linkcontext-label-fallback": "Não há visualização",
 	"visualeditor-linkcontext-label-label": "Texto da hiperligação",
-	"visualeditor-linkcontext-remove": "Remover ligação",
+	"visualeditor-linkcontext-remove": "Remover link",
 	"visualeditor-linkinspector-title": "Link",
 	"visualeditor-listbutton-bullet-tooltip": "Lista com marcadores",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",
