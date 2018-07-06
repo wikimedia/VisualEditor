@@ -15,7 +15,8 @@
 		"Papa": false
 	},
 	"rules": {
-		"dot-notation": [ "error", { "allowKeywords": true } ]
+		"dot-notation": [ "error", { "allowKeywords": true } ],
+		"max-len": 0
 	},
 	"plugins": [ "html" ],
 	"settings": {

@@ -129,7 +129,7 @@ ve.init.sa.Platform.prototype.setUserConfig = function ( keyOrValueMap, value ) 
 	var i;
 	if ( typeof keyOrValueMap === 'object' ) {
 		for ( i in keyOrValueMap ) {
-			if ( keyOrValueMap.hasOwnProperty( i ) ) {
+			if ( Object.prototype.hasOwnProperty.call( keyOrValueMap, i ) ) {
 				if ( !this.setUserConfig( i, keyOrValueMap[ i ] ) ) {
 					// localStorage will fail if the quota is full, so further
 					// sets won't work anyway.

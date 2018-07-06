@@ -42,7 +42,9 @@
 	DummyPlatform.prototype.setUserConfig = function () {};
 	DummyPlatform.prototype.getSession = function ( key ) {
 		if ( this.sessionDisabled ) { return false; }
-		return this.sessionStorage.hasOwnProperty( key ) ? this.sessionStorage[ key ] : null;
+		return Object.prototype.hasOwnProperty.call( this.sessionStorage, key ) ?
+			this.sessionStorage[ key ] :
+			null;
 	};
 	DummyPlatform.prototype.setSession = function ( key, value ) {
 		if ( this.sessionDisabled || value === '__FAIL__' ) { return false; }

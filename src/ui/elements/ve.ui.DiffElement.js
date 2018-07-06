@@ -126,7 +126,7 @@ ve.ui.DiffElement.static.compareAttributes = function ( oldAttributes, newAttrib
 		}
 	}
 	for ( key in newAttributes ) {
-		if ( !oldAttributes.hasOwnProperty( key ) && newAttributes[ key ] !== undefined ) {
+		if ( !Object.prototype.hasOwnProperty.call( oldAttributes, key ) && newAttributes[ key ] !== undefined ) {
 			attributeChanges[ key ] = { from: oldAttributes[ key ], to: newAttributes[ key ] };
 		}
 	}

@@ -218,7 +218,7 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 		var j, jLen,
 			strings = [];
 		for ( j = 0, jLen = flatArray.length; j < jLen; j++ ) {
-			strings.push( flatArray.hasOwnProperty( j ) ? String( flatArray[ j ] ) : '' );
+			strings.push( Object.prototype.hasOwnProperty.call( flatArray, j ) ? String( flatArray[ j ] ) : '' );
 		}
 		return strings;
 	}

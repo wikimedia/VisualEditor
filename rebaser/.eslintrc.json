@@ -1,5 +1,5 @@
 {
-	"extends": "wikimedia",
+	"extends": "../.eslintrc.json",
 	"env": {
 		"node": true,
 		"es6": true,
@@ -8,8 +8,5 @@
 	"globals": {
 		"ve": true,
 		"OO": false
-	},
-	"rules": {
-		"dot-notation": [ "error", { "allowKeywords": true } ]
 	}
 }

@@ -48,8 +48,8 @@ ve.spawn = function ( iterator ) {
 				reject( err );
 			}
 		}
-		resumeNext = result => resume( iterator.next, result );
-		resumeThrow = err => resume( iterator.throw, err );
+		resumeNext = ( result ) => resume( iterator.next, result );
+		resumeThrow = ( err ) => resume( iterator.throw, err );
 		resumeNext();
 	} );
 };

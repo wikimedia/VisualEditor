@@ -2678,7 +2678,10 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 	var inputType = e.originalEvent ? e.originalEvent.inputType : null,
 		inputTypeCommands = this.constructor.static.inputTypeCommands;
 
-	if ( inputType && inputTypeCommands.hasOwnProperty( inputType ) ) {
+	if (
+		inputType &&
+		Object.prototype.hasOwnProperty.call( inputTypeCommands, inputType )
+	) {
 		// Value can be null, in which case we still want to preventDefault.
 		if ( inputTypeCommands[ inputType ] ) {
 			this.getSurface().executeCommand( this.constructor.static.inputTypeCommands[ inputType ] );

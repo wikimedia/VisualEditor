@@ -9,7 +9,7 @@
 QUnit.module( 've.dm.RebaseServer' );
 
 // eslint-disable-next-line qunit/resolve-async
-QUnit.test( 'Rebase', assert => ve.spawn( function* () {
+QUnit.test( 'Rebase', ( assert ) => ve.spawn( function* () {
 	var i, j, op, server, client, clients, action, txs, summary,
 		cases = [
 			{

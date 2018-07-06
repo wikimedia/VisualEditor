@@ -114,7 +114,7 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 
 	for ( i = 0, ilen = oldNodes.length; i < ilen; i++ ) {
 		for ( j = 0, jlen = newNodes.length; j < jlen; j++ ) {
-			if ( !diff.newToOld.hasOwnProperty( j ) &&
+			if ( !Object.prototype.hasOwnProperty.call( diff.newToOld, j ) &&
 				this.compareNodes( oldNodes[ i ], newNodes[ j ] )
 			) {
 
@@ -131,7 +131,7 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 	}
 
 	for ( j = 0; j < jlen; j++ ) {
-		if ( !diff.newToOld.hasOwnProperty( j ) ) {
+		if ( !Object.prototype.hasOwnProperty.call( diff.newToOld, j ) ) {
 			newNodesToDiff.push( j );
 		}
 	}

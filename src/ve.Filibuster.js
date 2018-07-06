@@ -112,7 +112,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
 		}
 
 		if ( this.states[ name ] !== newState ) {
-			if ( this.states.hasOwnProperty( name ) ) {
+			if ( Object.prototype.hasOwnProperty.call( this.states, name ) ) {
 				// State change: write observation
 				changes[ name ] = {
 					oldState: oldState,

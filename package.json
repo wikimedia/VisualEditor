@@ -21,10 +21,10 @@
     }
   ],
   "devDependencies": {
-    "eslint-config-wikimedia": "0.5.0",
-    "eslint-plugin-html": "4.0.3",
+    "eslint-config-wikimedia": "0.6.0",
+    "eslint-plugin-html": "4.0.5",
     "eslint-plugin-qunit": "3.2.1",
-    "grunt": "1.0.2",
+    "grunt": "1.0.3",
     "grunt-banana-checker": "0.6.0",
     "grunt-contrib-clean": "1.1.0",
     "grunt-contrib-concat": "1.0.1",
@@ -32,20 +32,20 @@
     "grunt-contrib-watch": "1.1.0",
     "grunt-css-url-embed": "1.10.0",
     "grunt-cssjanus": "0.4.0",
-    "grunt-eslint": "20.1.0",
+    "grunt-eslint": "21.0.0",
     "grunt-jsonlint": "1.1.0",
     "grunt-karma": "2.0.0",
     "grunt-stylelint": "0.10.0",
     "grunt-svgmin": "5.0.0",
     "grunt-tyops": "0.1.0",
-    "karma": "2.0.2",
+    "karma": "2.0.4",
     "karma-chrome-launcher": "2.2.0",
     "karma-coverage": "1.1.2",
     "karma-firefox-launcher": "1.1.0",
     "karma-mocha-reporter": "2.2.5",
     "karma-qunit": "2.1.0",
     "qunit": "2.6.1",
-    "stylelint": "9.2.1",
+    "stylelint": "9.2.0",
     "stylelint-config-wikimedia": "0.4.3"
   }
 }
