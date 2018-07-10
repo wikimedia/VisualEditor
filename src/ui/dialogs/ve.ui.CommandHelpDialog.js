@@ -108,7 +108,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
 			if ( commands[ j ].trigger ) {
-				if ( !commandRegistry.lookup( commands[ j ].trigger ) ) {
+				if ( !commands[ j ].ignoreCommand && !commandRegistry.lookup( commands[ j ].trigger ) ) {
 					// Trigger is specified by unavailable command
 					continue;
 				}

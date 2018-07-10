@@ -205,6 +205,26 @@ ve.ui.triggerRegistry.register(
 		pc: new ve.ui.Trigger( 'ctrl+shift+v' )
 	}
 );
+// Clipboard handlers are registered for use by the commandHelpRegistry.
+// Cut/copy/paste are handled by native events.
+ve.ui.triggerRegistry.register(
+	'cut', {
+		mac: new ve.ui.Trigger( 'cmd+x' ),
+		pc: new ve.ui.Trigger( 'ctrl+x' )
+	}
+);
+ve.ui.triggerRegistry.register(
+	'copy', {
+		mac: new ve.ui.Trigger( 'cmd+c' ),
+		pc: new ve.ui.Trigger( 'ctrl+c' )
+	}
+);
+ve.ui.triggerRegistry.register(
+	'paste', {
+		mac: new ve.ui.Trigger( 'cmd+v' ),
+		pc: new ve.ui.Trigger( 'ctrl+v' )
+	}
+);
 ve.ui.triggerRegistry.register(
 	'findAndReplace', { mac: new ve.ui.Trigger( 'cmd+f' ), pc: new ve.ui.Trigger( 'ctrl+f' ) }
 );
