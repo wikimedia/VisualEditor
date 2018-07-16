@@ -148,6 +148,7 @@
 	"visualeditor-key-tab": "Tab",
 	"visualeditor-key-up": "Yukarı",
 	"visualeditor-language-search-input-placeholder": "Dil adına ya da koduna göre arama",
+	"visualeditor-languagecontext-remove": "Dili kaldır",
 	"visualeditor-languageinspector-title": "Dil",
 	"visualeditor-languageinspector-widget-changelang": "Dil bul",
 	"visualeditor-languageinspector-widget-label-direction": "Yön",

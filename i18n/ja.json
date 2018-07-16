@@ -14,7 +14,8 @@
 			"Iwai.masaharu",
 			"Hinaloe",
 			"Yusuke1109",
-			"Omotecho"
+			"Omotecho",
+			"Kumikami"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -48,7 +49,7 @@
 	"visualeditor-changedesc-unset": "$1 を $2 から設定解除しました",
 	"visualeditor-changedir-tool-ltr": "左から右への表示",
 	"visualeditor-changedir-tool-rtl": "書字方向の変更（左右）",
-	"visualeditor-clearbutton-tooltip": "書式を消去",
+	"visualeditor-clearbutton-tooltip": "消去します",
 	"visualeditor-clipboard-copy": "コピー",
 	"visualeditor-clipboard-cut": "切り取り",
 	"visualeditor-clipboard-paste": "貼り付け",

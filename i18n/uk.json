@@ -19,7 +19,8 @@
 			"Dars",
 			"Choomaq",
 			"Bunyk",
-			"Esk78"
+			"Esk78",
+			"Vlad5250"
 		]
 	},
 	"visualeditor": "Візуальний редактор",
@@ -154,7 +155,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "Напрямок",
 	"visualeditor-languageinspector-widget-label-langcode": "Код мови",
 	"visualeditor-languageinspector-widget-label-language": "Мова",
+	"visualeditor-linkcontext-label-change": "Змінити мітку",
 	"visualeditor-linkcontext-label-fallback": "Немає попереднього перегляду",
+	"visualeditor-linkcontext-label-label": "Мітка",
 	"visualeditor-linkcontext-remove": "Вилучити посилання",
 	"visualeditor-linkinspector-title": "Посилання",
 	"visualeditor-listbutton-bullet-tooltip": "Маркований список",

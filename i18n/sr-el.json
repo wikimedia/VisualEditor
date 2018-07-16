@@ -3,7 +3,8 @@
 		"authors": [
 			"Milicevic01",
 			"Srdjan m",
-			"Obsuser"
+			"Obsuser",
+			"Zoranzoki21"
 		]
 	},
 	"visualeditor": "Vizuelni uređivač",
@@ -20,7 +21,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Indeks",
 	"visualeditor-annotationbutton-superscript-tooltip": "Eksponent",
 	"visualeditor-annotationbutton-underline-tooltip": "Podvučeno",
-	"visualeditor-clearbutton-tooltip": "Ukloni formatiranje",
+	"visualeditor-clearbutton-tooltip": "Ukloni",
 	"visualeditor-clipboard-copy": "Kopiraj",
 	"visualeditor-clipboard-cut": "Iseci",
 	"visualeditor-clipboard-paste": "Nalepi",

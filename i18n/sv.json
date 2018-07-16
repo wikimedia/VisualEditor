@@ -168,6 +168,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Anpassad",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standard",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skala",
+	"visualeditor-missing-document-error": "Dokument saknas på servern. För att undvika dataförlust, kopiera och klistra in innehållet.",
+	"visualeditor-missing-document-title": "Dokument saknas",
 	"visualeditor-rebase-client-author-name": "Namn",
 	"visualeditor-rebase-client-connecting": "Ansluter...",
 	"visualeditor-rebase-client-document-name": "Dokumentnamn (valfritt)",
