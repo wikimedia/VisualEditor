@@ -440,16 +440,16 @@ ve.ce.veRangeFromSelection = function ( selection ) {
 };
 
 /**
- * Find the link in which a node lies
+ * Find the closest nailed annotation in which a node lies
  *
  * @param {Node|null} node The node to test
- * @return {Node|null} The link within which the node lies (possibly the node itself)
+ * @return {Node|null} The closest nailed annotation within which the node lies (possibly the node itself)
  */
-ve.ce.linkAt = function ( node ) {
+ve.ce.nailedAnnotationAt = function ( node ) {
 	if ( node && node.nodeType === Node.TEXT_NODE ) {
 		node = node.parentNode;
 	}
-	return $( node ).closest( '.ve-ce-linkAnnotation' )[ 0 ];
+	return $( node ).closest( '.ve-ce-nailedAnnotation' )[ 0 ];
 };
 
 /**

@@ -3616,7 +3616,7 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 
 	// Handles removing expanded selection before inserting new text
 	if (
-		this.selectionSplitsLink() ||
+		this.selectionSplitsNailedAnnotation() ||
 		( !range.isCollapsed() && !this.documentView.rangeInsideOneLeafNode( range ) )
 	) {
 		// Remove the selection to force its re-application from the DM (even if the
@@ -4212,13 +4212,13 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 };
 
 /**
- * Tests whether the selection covers part but not all of a link
+ * Tests whether the selection covers part but not all of a nailed annotation
  *
- * @return {boolean} True if a link is split either at the focus or at the anchor (or both)
+ * @return {boolean} True if a nailed annotation is split either at the focus or at the anchor (or both)
  */
-ve.ce.Surface.prototype.selectionSplitsLink = function () {
-	return ve.ce.linkAt( this.nativeSelection.anchorNode ) !==
-		ve.ce.linkAt( this.nativeSelection.focusNode );
+ve.ce.Surface.prototype.selectionSplitsNailedAnnotation = function () {
+	return ve.ce.nailedAnnotationAt( this.nativeSelection.anchorNode ) !==
+		ve.ce.nailedAnnotationAt( this.nativeSelection.focusNode );
 };
 
 /**

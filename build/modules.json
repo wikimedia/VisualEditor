@@ -455,6 +455,7 @@
 			"src/ce/nodes/ve.ce.BlockImageNode.js",
 			"src/ce/nodes/ve.ce.BlockImageCaptionNode.js",
 			"src/ce/nodes/ve.ce.InlineImageNode.js",
+			"src/ce/annotations/ve.ce.NailedAnnotation.js",
 			"src/ce/annotations/ve.ce.LanguageAnnotation.js",
 			"src/ce/annotations/ve.ce.LinkAnnotation.js",
 			"src/ce/annotations/ve.ce.TextStyleAnnotation.js",
