@@ -51,6 +51,7 @@ ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
 	this.stagingStack = [];
 	this.undoStack = [];
 	this.undoIndex = 0;
+	this.undoConflict = false;
 	this.historyTrackingInterval = null;
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.selectedAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
@@ -124,7 +125,7 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 
 /**
  * @event undoStackChange
- * Emitted when the main undo stack changes.
+ * Emitted when the main undo stack changes (this.undoStack or this.undoIndex).
  */
 
 /**
@@ -522,7 +523,7 @@ ve.dm.Surface.prototype.canRedo = function () {
  * @return {boolean} Undo is allowed
  */
 ve.dm.Surface.prototype.canUndo = function () {
-	return this.hasBeenModified() && !this.readOnly && ( !this.isStaging() || this.doesStagingAllowUndo() );
+	return this.hasBeenModified() && !this.readOnly && ( !this.isStaging() || this.doesStagingAllowUndo() ) && !this.undoConflict;
 };
 
 /**
@@ -970,6 +971,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
 			}
 		}
 		this.transacting = false;
+		this.undoConflict = false;
 		this.emit( 'history' );
 	}
 	selectionAfter = this.selection;
@@ -1013,6 +1015,7 @@ ve.dm.Surface.prototype.breakpoint = function () {
 	this.resetHistoryTrackingInterval();
 	if ( this.newTransactions.length > 0 ) {
 		this.undoStack.push( {
+			start: this.getDocument().getCompleteHistoryLength() - this.newTransactions.length,
 			transactions: this.newTransactions,
 			selection: this.selection,
 			selectionBefore: this.selectionBefore
@@ -1031,7 +1034,10 @@ ve.dm.Surface.prototype.breakpoint = function () {
  * @fires undoStackChange
  */
 ve.dm.Surface.prototype.undo = function () {
-	var i, item, transaction, transactions = [];
+	var i, item, transaction, authorId,
+		history, done, result, selection,
+		transactions = [];
+
 	if ( !this.canUndo() ) {
 		return;
 	}
@@ -1043,15 +1049,57 @@ ve.dm.Surface.prototype.undo = function () {
 	this.breakpoint();
 	this.undoIndex++;
 
-	item = this.undoStack[ this.undoStack.length - this.undoIndex ];
-	if ( item ) {
-		// Apply reversed transactions in reversed order
-		for ( i = item.transactions.length - 1; i >= 0; i-- ) {
-			transaction = item.transactions[ i ].reversed();
-			transactions.push( transaction );
+	if ( !this.isMultiUser() ) {
+		item = this.undoStack[ this.undoStack.length - this.undoIndex ];
+		if ( item ) {
+			// Apply reversed transactions in reversed order
+			for ( i = item.transactions.length - 1; i >= 0; i-- ) {
+				transaction = item.transactions[ i ].reversed();
+				transactions.push( transaction );
+			}
+			this.changeInternal( transactions, item.selectionBefore, true );
+			this.emit( 'undoStackChange' );
 		}
-		this.changeInternal( transactions, item.selectionBefore, true );
-		this.emit( 'undoStackChange' );
+	} else {
+		// Find the most recent stack item by this user
+		while ( this.undoIndex <= this.undoStack.length ) {
+			item = this.undoStack[ this.undoStack.length - this.undoIndex ];
+			// Assume every transaction in the stack item has the same author (see ve.dm.Change#applyTo)
+			authorId = item.transactions[ 0 ].authorId;
+			if ( authorId === null || authorId === this.getAuthorId() ) {
+				break;
+			}
+			item = null;
+			this.undoIndex++;
+		}
+		if ( item ) {
+			history = this.getDocument().getChangeSince( item.start + item.transactions.length );
+			done = new ve.dm.Change(
+				item.start,
+				item.transactions,
+				item.transactions.map( function () {
+					// Undo cannot add store items, so we don't need to worry here
+					return new ve.dm.HashValueStore();
+				} ),
+				{}
+			);
+			result = ve.dm.Change.static.rebaseUncommittedChange( history, done.reversed() );
+			if ( result.rejected ) {
+				// Rebasing conflict: move pointer back and don't try again until next transaction
+				this.undoIndex--;
+				this.undoConflict = true;
+				// Undo stack didn't change, but ability to undo did
+				this.emit( 'history' );
+			} else {
+				selection = item.selectionBefore.translateByChange( result.transposedHistory );
+				// Undo cannot add store items, so we can safely apply just transactions
+				this.changeInternal( result.rebased.transactions, selection, true );
+				this.emit( 'undoStackChange' );
+			}
+		} else {
+			// Undo stack didn't change, but ability to undo did
+			this.emit( 'history' );
+		}
 	}
 };
 
@@ -1308,7 +1356,7 @@ ve.dm.Surface.prototype.setAutosaveDocId = function ( docId ) {
 };
 
 /**
- * Start storing changes after very undoStackChange
+ * Start storing changes after every undoStackChange
  */
 ve.dm.Surface.prototype.startStoringChanges = function () {
 	this.on( 'undoStackChange', this.storeChangesListener );
