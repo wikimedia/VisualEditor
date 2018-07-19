@@ -68,8 +68,6 @@ ve.dm.Transaction.static.reversers = {
 
 /* Static Methods */
 
-// ve.dm.Transaction.newFrom* methods are added by ve.dm.TransactionBuilder for legacy support.
-
 /**
  * Deserialize a transaction from a JSONable object
  *
