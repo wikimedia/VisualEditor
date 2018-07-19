@@ -630,11 +630,12 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
  *
  * @param {ve.Range} [range] Range of data to clone, clones the whole document if ommitted.
  * @param {boolean} [detachedCopy] The copy is not intended to be merged into the original
+ * @param {string} [mode] Mode for getting data, see #getFullData
  * @return {ve.dm.Document} New document
  */
-ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy ) {
+ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy, mode ) {
 	var listRange = this.getInternalList().getListNode().getOuterRange(),
-		data = ve.copy( this.getFullData( range, true ) );
+		data = ve.copy( this.getFullData( range, mode || 'roundTrip' ) );
 	if ( range && ( range.start > listRange.start || range.end < listRange.end ) ) {
 		// The range does not include the entire internal list, so add it
 		data = data.concat( this.getFullData( listRange ) );
@@ -682,13 +683,14 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
 };
 
 /**
- * Get document data, possibly with inline MetaItem load offsets restored
+ * Get document data, possibly with inline MetaItem load offsets restored, possibly without metadata
  *
  * @param {ve.Range} [range] Range to get full data for. If omitted, all data will be returned
- * @param {boolean} [roundTrip] If true, restore load offsets of inlined meta items from unchanged branches
+ * @param {string} [mode] If 'roundTrip', restore load offsets of inlined meta items from unchanged
+ * branches. If 'noMetadata', don't include metadata items.
  * @return {Array} Data, with load offset info removed (some items are referenced, others copied)
  */
-ve.dm.Document.prototype.getFullData = function ( range, roundTrip ) {
+ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 	var i, j, jLen, item, metaItems, metaItem, offset,
 		insertedMetaItems = [],
 		insertions = {},
@@ -714,17 +716,20 @@ ve.dm.Document.prototype.getFullData = function ( range, roundTrip ) {
 	for ( i = range ? range.start : 0; i < iLen; i++ ) {
 		item = this.data.getData( i );
 		if (
-			roundTrip &&
 			ve.dm.LinearData.static.isOpenElementData( item ) &&
 			ve.dm.nodeFactory.isMetaData( item.type ) &&
-			insertedMetaItems.indexOf( item ) !== -1
+			(
+				mode === 'noMetadata' ||
+				mode === 'roundTrip' &&
+				insertedMetaItems.indexOf( item ) !== -1
+			)
 		) {
 			// Already inserted; skip this item and its matching close tag
 			i += 1;
 			continue;
 		}
-		metaItems = ve.getProp( item, 'internal', 'metaItems' ) || [];
-		if ( roundTrip && !ve.getProp( item, 'internal', 'changesSinceLoad' ) ) {
+		if ( mode === 'roundTrip' && !ve.getProp( item, 'internal', 'changesSinceLoad' ) ) {
+			metaItems = ve.getProp( item, 'internal', 'metaItems' ) || [];
 			// No changes, so restore meta item offsets
 			for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
 				metaItem = metaItems[ j ];
@@ -742,7 +747,7 @@ ve.dm.Document.prototype.getFullData = function ( range, roundTrip ) {
 			}
 		}
 		result.push( stripMetaLoadInfo( item ) );
-		if ( roundTrip && insertions[ i ] ) {
+		if ( mode === 'roundTrip' && insertions[ i ] ) {
 			for ( j = 0, jLen = insertions[ i ].length; j < jLen; j++ ) {
 				metaItem = insertions[ i ][ j ];
 				result.push( stripMetaLoadInfo( metaItem ) );

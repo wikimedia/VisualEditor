@@ -1271,7 +1271,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, 
 	}
 	mode = mode || this.constructor.static.PARSER_MODE;
 	// Set up the converter state
-	this.documentData = model.getFullData( undefined, true );
+	this.documentData = model.getFullData( undefined, 'roundTrip' );
 	this.store = model.getStore();
 	this.internalList = model.getInternalList();
 	// Internal list of the doc this was cloned from, or itself if not cloned
