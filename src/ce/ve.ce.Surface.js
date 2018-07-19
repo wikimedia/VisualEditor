@@ -4239,6 +4239,7 @@ ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer, initPromise )
 	}
 
 	this.getModel().setNullSelection();
+	this.getModel().setMultiUser( true );
 	this.getSurface().createProgress( progressDeferred.promise(), ve.msg( 'visualeditor-rebase-client-connecting' ), true );
 
 	this.synchronizer = synchronizer;

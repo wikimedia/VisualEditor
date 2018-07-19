@@ -39,6 +39,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.selectedAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	this.isCollapsed = null;
+	this.multiUser = false;
 	this.enabled = true;
 	this.transacting = false;
 	this.queueingContextChanges = false;
@@ -169,6 +170,24 @@ ve.dm.Surface.prototype.getHtml = function () {
 	return this.sourceMode ?
 		this.getDom() :
 		ve.properInnerHtml( this.getDom().body );
+};
+
+/**
+ * Set the surface multi-user mode
+ *
+ * @param {boolean} multiUser Multi-user mode
+ */
+ve.dm.Surface.prototype.setMultiUser = function ( multiUser ) {
+	this.multiUser = multiUser;
+};
+
+/**
+ * Check if the surface is in multi-user mode
+ *
+ * @return {boolean} Surface is in multi-user mode
+ */
+ve.dm.Surface.prototype.isMultiUser = function () {
+	return this.multiUser;
 };
 
 /**
