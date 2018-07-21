@@ -22,6 +22,10 @@ ve.ce.NailedAnnotation = function VeCeNailedAnnotation() {
 
 OO.initClass( ve.ce.NailedAnnotation );
 
+/* Static Properties */
+
+ve.ce.NailedAnnotation.static.canBeActive = true;
+
 /* Static Methods */
 
 /**
