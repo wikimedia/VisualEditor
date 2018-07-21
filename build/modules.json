@@ -642,6 +642,21 @@
 			"visualEditor.base.build"
 		]
 	},
+	"visualEditor.checkList": {
+		"scripts": [
+			"src/dm/nodes/ve.dm.CheckListNode.js",
+			"src/dm/nodes/ve.dm.CheckListItemNode.js",
+			"src/ce/nodes/ve.ce.CheckListNode.js",
+			"src/ce/nodes/ve.ce.CheckListItemNode.js",
+			"src/ui/tools/ve.ui.CheckListTool.js"
+		],
+		"styles": [
+			"src/ce/styles/nodes/ve.ce.CheckListNode.css"
+		],
+		"dependencies": [
+			"visualEditor.core.build"
+		]
+	},
 	"visualEditor.diffing": {
 		"scripts": [
 			"src/ve.DiffTreeNode.js",
@@ -696,7 +711,8 @@
 			"visualEditor.sanitize",
 			"socket.io",
 			"color-picker",
-			"visualEditor.commentAnnotation"
+			"visualEditor.commentAnnotation",
+			"visualEditor.checkList"
 		]
 	},
 	"visualEditor.rebase.build": {

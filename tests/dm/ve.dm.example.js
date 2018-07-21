@@ -1647,6 +1647,38 @@ ve.dm.example.domToDataCases = {
 			'<bdi class="' + ve.dm.example.textStyleClasses + ' ve-ce-bidiAnnotation">i</bdi>' +
 		'</p>'
 	},
+	'check list': {
+		body: '<ul rel="ve:checkList">' +
+			'<li rel="ve:checkList" checked="checked"><p>foo</p></li>' +
+			'<li rel="ve:checkList"><p>bar</p></li>' +
+		'</ul>',
+		data: [
+			{ type: 'checkList' },
+			{ type: 'checkListItem', attributes: { checked: true } },
+			{ type: 'paragraph' },
+			'f', 'o', 'o',
+			{ type: '/paragraph' },
+			{ type: '/checkListItem' },
+			{ type: 'checkListItem', attributes: { checked: false } },
+			{ type: 'paragraph' },
+			'b', 'a', 'r',
+			{ type: '/paragraph' },
+			{ type: '/checkListItem' },
+			{ type: '/checkList' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		ceHtml: '<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>' +
+			'<ul class="ve-ce-branchNode ve-ce-checkListNode">' +
+				'<li class="ve-ce-branchNode ve-ce-checkListItemNode ve-ce-checkListItemNode-checked">' +
+					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">foo</p>' +
+				'</li>' +
+				'<li class="ve-ce-branchNode ve-ce-checkListItemNode">' +
+					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">bar</p>' +
+				'</li>' +
+			'</ul>' +
+			'<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>'
+	},
 	'strip leading whitespace in non-whitespace preserving nodes': {
 		// T53462/T142132
 		data: [

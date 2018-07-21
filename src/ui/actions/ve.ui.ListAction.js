@@ -40,18 +40,21 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
  *
  * @method
  * @param {string|null} style List style, e.g. 'number' or 'bullet', or null for any style
+ * @param {string} [listType='list'] List type
  * @return {boolean} Current selection is all wrapped in a list
  */
-ve.ui.ListAction.prototype.allWrapped = function ( style ) {
+ve.ui.ListAction.prototype.allWrapped = function ( style, listType ) {
 	var i, len,
 		attributes = style ? { style: style } : undefined,
 		nodes = this.surface.getModel().getFragment().getLeafNodes(),
 		all = !!nodes.length;
 
+	listType = listType || 'list';
+
 	for ( i = 0, len = nodes.length; i < len; i++ ) {
 		if (
 			( len === 1 || !nodes[ i ].range || nodes[ i ].range.getLength() ) &&
-			!nodes[ i ].node.hasMatchingAncestor( 'list', attributes )
+			!nodes[ i ].node.hasMatchingAncestor( listType, attributes )
 		) {
 			all = false;
 			break;
@@ -66,10 +69,15 @@ ve.ui.ListAction.prototype.allWrapped = function ( style ) {
  * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
  * @param {boolean} noBreakpoints Don't create breakpoints
+ * @param {string} [listType='list'] List type
  * @return {boolean} Action was executed
  */
-ve.ui.ListAction.prototype.toggle = function ( style, noBreakpoints ) {
-	return this[ this.allWrapped( style ) ? 'unwrap' : 'wrap' ]( style, noBreakpoints );
+ve.ui.ListAction.prototype.toggle = function ( style, noBreakpoints, listType ) {
+	if ( this.allWrapped( style, listType ) ) {
+		return this.unwrap( noBreakpoints, listType );
+	} else {
+		return this.wrap( style, noBreakpoints, listType );
+	}
 };
 
 /**
@@ -78,12 +86,13 @@ ve.ui.ListAction.prototype.toggle = function ( style, noBreakpoints ) {
  * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
  * @param {boolean} noBreakpoints Don't create breakpoints
+ * @param {string} [listType='list'] List type
  * @return {boolean} Action was executed
  */
-ve.ui.ListAction.prototype.wrapOnce = function ( style, noBreakpoints ) {
+ve.ui.ListAction.prototype.wrapOnce = function ( style, noBreakpoints, listType ) {
 	// Check for a list of any style
-	if ( !this.allWrapped() ) {
-		return this.wrap( style, noBreakpoints );
+	if ( !this.allWrapped( null, listType ) ) {
+		return this.wrap( style, noBreakpoints, listType );
 	}
 	return false;
 };
@@ -96,15 +105,18 @@ ve.ui.ListAction.prototype.wrapOnce = function ( style, noBreakpoints ) {
  * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
  * @param {boolean} noBreakpoints Don't create breakpoints
+ * @param {string} [listType='list'] List type
  * @return {boolean} Action was executed
  */
-ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
-	var i, previousList, groupRange, group, range,
+ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
+	var i, previousList, groupRange, group, range, element, itemElement,
 		surfaceModel = this.surface.getModel(),
 		fragment = surfaceModel.getFragment( null, true ),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
 		groups;
+
+	listType = listType || 'list';
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return false;
@@ -139,7 +151,8 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
 	groups = documentModel.getCoveredSiblingGroups( range );
 	for ( i = 0; i < groups.length; i++ ) {
 		group = groups[ i ];
-		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
+		// TODO: Allow conversion between different list types
+		if ( group.grandparent && group.grandparent.getType() === listType ) {
 			if ( group.grandparent !== previousList ) {
 				surfaceModel.getLinearFragment( group.grandparent.getOuterRange(), true )
 					// Change the list style
@@ -152,11 +165,16 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
 				group.nodes[ 0 ].getOuterRange().start,
 				group.nodes[ group.nodes.length - 1 ].getOuterRange().end
 			);
+			element = { type: listType };
+			if ( style ) {
+				element.attributes = { style: style };
+			}
+			itemElement = ve.dm.modelRegistry.lookup( listType ).static.createItem();
 			surfaceModel.getLinearFragment( groupRange, true )
 				// Convert everything to paragraphs first
 				.convertNodes( 'paragraph' )
 				// Wrap everything in a list and each content branch in a listItem
-				.wrapAllNodes( { type: 'list', attributes: { style: style } }, { type: 'listItem' } );
+				.wrapAllNodes( element, itemElement );
 		}
 	}
 
@@ -173,13 +191,16 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints ) {
  *
  * @method
  * @param {boolean} noBreakpoints Don't create breakpoints
+ * @param {string} [listType='list'] List type
  * @return {boolean} Action was executed
  */
-ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints ) {
+ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints, listType ) {
 	var node,
 		indentationAction = ve.ui.actionFactory.create( 'indentation', this.surface ),
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument();
+
+	listType = listType || 'list';
 
 	if ( !( surfaceModel.getSelection() instanceof ve.dm.LinearSelection ) ) {
 		return false;
@@ -191,7 +212,7 @@ ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints ) {
 
 	do {
 		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().getRange().start );
-	} while ( node.hasMatchingAncestor( 'list' ) && indentationAction.decrease() );
+	} while ( node.hasMatchingAncestor( listType ) && indentationAction.decrease() );
 
 	if ( !noBreakpoints ) {
 		surfaceModel.breakpoint();

@@ -169,6 +169,7 @@
 	"visualeditor-linkcontext-remove": "Title for the remove link button on the link context popup",
 	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Link}}",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",
+	"visualeditor-listbutton-check-tooltip": "Tooltip text for the check list button",
 	"visualeditor-listbutton-number-tooltip": "Tooltip text for the numbered list button",
 	"visualeditor-mediasizewidget-button-originaldimensions": "Label for the button that resizes a media item to its full original size (width and height).",
 	"visualeditor-mediasizewidget-label-custom": "Label for the media size widget custom size section.\n{{Identical|Custom}}",

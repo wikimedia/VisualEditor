@@ -37,6 +37,15 @@ ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
 
 ve.dm.ListNode.static.isDiffedAsList = true;
 
+/**
+ * Creates a list item element
+ *
+ * @return {Object} Element data
+ */
+ve.dm.ListNode.static.createItem = function () {
+	return { type: 'listItem' };
+};
+
 ve.dm.ListNode.static.toDataElement = function ( domElements ) {
 	var style = domElements[ 0 ].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
 	return { type: this.name, attributes: { style: style } };
