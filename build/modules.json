@@ -702,7 +702,8 @@
 	"visualEditor.rebase.build": {
 		"dependencies": [
 			"visualEditor.build",
-			"visualEditor.rebase"
+			"visualEditor.rebase",
+			"visualEditor.theme.apex"
 		]
 	},
 	"visualEditor.test": {
