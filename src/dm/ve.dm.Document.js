@@ -1152,6 +1152,9 @@ ve.dm.Document.prototype.updateNodesByType = function ( addedNodes, removedNodes
 ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
 	var t, nodeType,
 		nodes = [];
+	if ( !this.documentNode.length && !this.documentNode.getDocument().buildingNodeTree ) {
+		this.buildNodeTree();
+	}
 	if ( type instanceof Function ) {
 		for ( t in this.nodesByType ) {
 			nodeType = ve.dm.nodeFactory.lookup( t );
