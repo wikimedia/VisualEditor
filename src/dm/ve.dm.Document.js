@@ -1720,7 +1720,10 @@ ve.dm.Document.prototype.getCompleteHistorySince = function ( start ) {
  * @return {ve.dm.Change} Single change containing transactions since pointer
  */
 ve.dm.Document.prototype.getChangeSince = function ( start ) {
-	return this.completeHistory.mostRecent( start );
+	var change = this.completeHistory.mostRecent( start );
+	// Remove any selections that might have been added by e.g. ve.dm.Change#addToHistory
+	change.selections = {};
+	return change;
 };
 
 /**
