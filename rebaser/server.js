@@ -45,7 +45,6 @@ function logServerEvent( event ) {
  */
 function ProtocolServer() {
 	this.rebaseServer = new ve.dm.RebaseServer( logServerEvent );
-	this.docNamespaces = new Map();
 	this.lastAuthorForDoc = new Map();
 }
 
@@ -181,7 +180,7 @@ ProtocolServer.prototype.onChangeName = function ( context, newName ) {
 	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		displayName: newName
 	} );
-	this.docNamespaces.get( context.docName ).emit( 'nameChange', {
+	context.broadcast( 'nameChange', {
 		authorId: context.authorId,
 		authorName: newName
 	} );
