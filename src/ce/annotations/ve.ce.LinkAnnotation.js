@@ -45,8 +45,6 @@ ve.ce.LinkAnnotation.static.name = 'link';
 
 ve.ce.LinkAnnotation.static.tagName = 'span';
 
-ve.ce.LinkAnnotation.static.canBeActive = true;
-
 /* Static Methods */
 
 /**
