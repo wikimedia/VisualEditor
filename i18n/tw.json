@@ -3,12 +3,15 @@
 		"authors": [
 			"Celestinesucess",
 			"Ed g2s",
-			"SAgbley"
+			"SAgbley",
+			"Jdforrester"
 		]
 	},
 	"visualeditor-align-desc-center": "mfinimfini",
+	"visualeditor-align-desc-left": "benkum",
 	"visualeditor-align-desc-right": "nifa",
 	"visualeditor-align-widget-center": "Mfinimfini",
+	"visualeditor-align-widget-left": "Benkum",
 	"visualeditor-align-widget-right": "Twe kor nifa",
 	"visualeditor-annotationbutton-big-tooltip": "Kɛse",
 	"visualeditor-annotationbutton-bold-tooltip": "Ani yɛ den",
@@ -17,13 +20,13 @@
 	"visualeditor-annotationbutton-small-tooltip": "Ketewaa",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Twa mfinimfini",
 	"visualeditor-annotationbutton-subscript-tooltip": "Kyerewee a yetwa fa kyerewee foforo ase",
-	"visualeditor-annotationbutton-superscript-tooltip": "Kyerewee a yetwa fa kyerewee foforo Atifi",
+	"visualeditor-annotationbutton-superscript-tooltip": "Kyerewee a yetwa fa kyerewee foforo atifi",
 	"visualeditor-annotationbutton-underline-tooltip": "Twa ase",
 	"visualeditor-changedir-tool-ltr": "Hwe nu sɛɛ benkum kɔ nifa",
-	"visualeditor-changedir-tool-rtl": "Hwe nu sɛɛ benkum kɔ nifa",
+	"visualeditor-changedir-tool-rtl": "Hwe nu sɛɛ nifa kɔ benkum",
 	"visualeditor-clearbutton-tooltip": "Yi",
 	"visualeditor-clipboard-copy": "Hwɛ so",
-	"visualeditor-clipboard-cut": "Hwɛ so",
+	"visualeditor-clipboard-cut": "Twa",
 	"visualeditor-clipboard-paste": "Tare",
 	"visualeditor-contextitemwidget-label-secondary": "Sesa",
 	"visualeditor-debugbar-close": "To mu",

@@ -26,7 +26,8 @@
 			"Dgstranz",
 			"AlvaroMolina",
 			"MarcoAurelio",
-			"Esteban"
+			"Esteban",
+			"Yllelder"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -176,6 +177,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Personalizar",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Predeterminado",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Escala",
+	"visualeditor-missing-document-error": "No se encuentra el documento en el servidor. Para evitar la pérdida de datos, copia y pega los contenidos.",
+	"visualeditor-missing-document-title": "Documento desaparecido",
 	"visualeditor-rebase-client-author-name": "Nombre",
 	"visualeditor-rebase-client-connecting": "Conectando…",
 	"visualeditor-rebase-client-document-name": "Nombre del documento (opcional)",
