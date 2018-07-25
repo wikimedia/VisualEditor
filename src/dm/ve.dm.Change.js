@@ -36,10 +36,10 @@
  * is no reasonable way to do this; e.g. when f and g both change the same word to something
  * different. In this case we make f.rebasedOnto(g) return null and we say it conflicts.
  *
- * Given f: D1 -> D2 , g: D1 -> D3, and x: D1 -> D4, we give three guarantees about rebasing:
+ * Given f: D1 -> D2 , g: D2 -> D3, and x: D1 -> D4, we give three guarantees about rebasing:
  *
- * 1. g.rebasedOnto(f) conflicts if and only if f.rebasedOnto(g) conflicts.
- * 2. If there is no conflict, f.concat(g.rebasedOnto(f)) equals g.concat(f.rebasedOnto(g)).
+ * 1. x.rebasedOnto(f) conflicts if and only if f.rebasedOnto(x) conflicts.
+ * 2. If there is no conflict, f.concat(x.rebasedOnto(f)) equals x.concat(f.rebasedOnto(x)).
  * 3. If there is no conflict, x.rebasedOnto(f).rebasedOnto(g) equals x.rebasedOnto(f * g).
  *
  * We can consider a conflicting transaction starting at some document D to be 0: D->null,
@@ -48,9 +48,9 @@
  *
  * x|y := x.rebasedOnto(y),
  *
- * we can write our guarantees. Given f: D1 -> D2 , g: D1 -> D3, and x: D1 -> D4:
+ * we can write our guarantees. Given f: D1 -> D2 , g: D2 -> D3, and x: D1 -> D4:
  *
- * 1. Change conflict well definedness: g|f = 0 if and only if f|g = 0.
+ * 1. Change conflict well definedness: x|f = 0 if and only if f|x = 0.
  * 2. Change commutativity: f * g|f equals g * f|g .
  * 3. Rebasing piecewise: if (x|f)|g != 0, then (x|f)|g equals x|(f * g) .
  *
@@ -60,8 +60,8 @@
  * maps from D1 to some D4, and conceptually it is g modified to apply without f having been
  * applied.
  *
- * Note that rebasing piecewise is *not* equivalent for changes that conflict: if you conflict
- * with f you might not conflict with f*g. For example, if x|f = 0 then
+ * Note that rebasing piecewise is *not* equivalent for changes that conflict: if a change
+ * conflicts f, it might not conflict with f*g. For example, if x|f = 0 then
  *
  * (x|f)|inv(f) = 0 but x|(f * inv(f)) = x.
  *
