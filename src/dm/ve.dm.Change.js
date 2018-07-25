@@ -39,8 +39,8 @@
  * Given f: D1 -> D2 , g: D1 -> D3, and x: D1 -> D4, we give three guarantees about rebasing:
  *
  * 1. g.rebasedOnto(f) conflicts if and only if f.rebasedOnto(g) conflicts.
- * 2. If there is no conflict, f.concat(g.rebasedOnto(f)) equals g.concat(g.rebasedOnto(f)).
- * 3. If there is no conflict, x.rebasedOnto(f).rebasedOnto(g) equals x.rebasedOnto(f + g).
+ * 2. If there is no conflict, f.concat(g.rebasedOnto(f)) equals g.concat(f.rebasedOnto(g)).
+ * 3. If there is no conflict, x.rebasedOnto(f).rebasedOnto(g) equals x.rebasedOnto(f * g).
  *
  * We can consider a conflicting transaction starting at some document D to be 0: D->null,
  * and regard any two conflicting transactions starting at D to be equal, and just write 0
