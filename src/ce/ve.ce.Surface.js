@@ -97,7 +97,9 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.hasSelectionChangeEvents = 'onselectionchange' in this.getElementDocument();
 
 	// Events
-	this.connect( this, { position: 'onPosition' } );
+	// Debounce to prevent trying to draw every cursor position in history.
+	this.onPositionDebounced = ve.debounce( this.onPosition.bind( this ) );
+	this.connect( this, { position: this.onPositionDebounced } );
 	this.model.connect( this, {
 		select: 'onModelSelect',
 		documentUpdate: 'onModelDocumentUpdate',
