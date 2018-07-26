@@ -444,7 +444,7 @@ QUnit.test( 'autosave', function ( assert ) {
 			surface.restoreChanges();
 		},
 		/Failed to restore/,
-		'Calling restoreChanges on the wrong document state throws "Failed to restore..." error'
+		'Calling restoreChanges on the wrong document state throws "Failed to restore…" error'
 	);
 
 	surface = new ve.dm.SurfaceStub();

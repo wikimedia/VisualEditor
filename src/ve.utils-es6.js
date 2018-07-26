@@ -14,8 +14,8 @@
  * until the thenable resolves.
  *
  * Both ve.spawn and ve.async bridge between async functions using yield and normal functions
- * using explicit promises. Use ve.spawn( iterator ).then( ... ) to wrap the iterator of an
- * async function that is already running, and funcName = ve.async( function* (...) {...} ) to
+ * using explicit promises. Use ve.spawn( iterator ).then( … ) to wrap the iterator of an
+ * async function that is already running, and funcName = ve.async( function* (…) {…} ) to
  * get a promise-returning function from an async function.
  *
  *     @example
@@ -58,8 +58,8 @@ ve.spawn = function ( iterator ) {
  * Wrap a thenable-yielding generator function to make an async function
  *
  * Both ve.spawn and ve.async bridge between async functions using yield and normal functions
- * using explicit promises. Use ve.spawn( iterator ).then( ... ) to wrap the iterator of an
- * async function that is already running, and funcName = ve.async( function* (...) {...} ) to
+ * using explicit promises. Use ve.spawn( iterator ).then( … ) to wrap the iterator of an
+ * async function that is already running, and funcName = ve.async( function* (…) {…} ) to
  * get a promise-returning function from an async function.
  *
  *     @example

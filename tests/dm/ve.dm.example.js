@@ -18,7 +18,7 @@ ve.dm.example = {};
  * annotation objects, and wraps the result in a ve.dm.ElementLinearData object.
  *
  * Shorthand notation for annotations is:
- * [ 'a', [ { type: 'link', attributes: { href: '...' } ] ]
+ * [ 'a', [ { type: 'link', attributes: { href: '…' } ] ]
  *
  * The actual storage format has an instance of ve.dm.LinkAnnotation instead of the plain object,
  * and an instance of ve.dm.AnnotationSet instead of the array.

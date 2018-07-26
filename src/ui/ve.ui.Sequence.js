@@ -161,7 +161,7 @@ ve.ui.Sequence.prototype.getCommandName = function () {
  * @param {boolean} explode Whether to return the message split up into some
  *        reasonable sequence of inputs required to trigger the sequence (regexps
  *        in sequences will be considered a single "input" as a toString of
- *        the regexp, because they're hard to display no matter what...)
+ *        the regexp, because they're hard to display no matter what…)
  * @return {string} Message for display
  */
 ve.ui.Sequence.prototype.getMessage = function ( explode ) {

@@ -148,7 +148,7 @@ ProtocolServer.prototype.welcomeClient = function ( context ) {
 	// Ideally we'd be able to initialize the client using HTML, but that's hard, see
 	// comments in the /raw handler. Keeping an updated linmod on the server could be
 	// feasible if TransactionProcessor was modified to have a "don't sync, just apply"
-	// mode and ve.dm.Document was faked with { data: ..., metadata: ..., store: ... }
+	// mode and ve.dm.Document was faked with { data: …, metadata: …, store: … }
 	context.sendAuthor( 'initDoc', {
 		history: state.history.serialize( true ),
 		names: state.getActiveNames()

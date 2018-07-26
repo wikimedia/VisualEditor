@@ -309,18 +309,18 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  * 2. Transaction commutativity: a * x|a equals x * a|x .
  * 3. Rebasing piecewise: if (x|a)|b != 0, then (x|a)|b equals x|(a * b) .
  *
- * Given committed history consisting of transactions a1,a2,...,aN, and an uncommitted update
- * consisting of transactions b1,b2,...,bM, our approach is to rebase the whole list a1,...,aN
- * over b1, and at the same time rebase b1 onto a1*...*aN.
- * Then we repeat the process for b2, and so on. To rebase a1,...,aN over b1, the the following
+ * Given committed history consisting of transactions a1,a2,…,aN, and an uncommitted update
+ * consisting of transactions b1,b2,…,bM, our approach is to rebase the whole list a1,…,aN
+ * over b1, and at the same time rebase b1 onto a1*…*aN.
+ * Then we repeat the process for b2, and so on. To rebase a1,…,aN over b1, the the following
  * approach would work:
  *
  * a1' := a1|b1
  * a2' := a2|(inv(a1) * b1 * a1')
  * a3' := a3|(inv(a2) * inv(a1) * b1 * a1' * a2')
- * ...
+ * ⋮
  *
- * That is, rebase a_i under a_i-1,...,a_1, then over b1,...,bM, then over a'1,...,a_i-1' .
+ * That is, rebase a_i under a_i-1,…,a_1, then over b1,…,bM, then over a'1,…,a_i-1' .
  *
  * However, because of the way transactions are written, it's not actually easy to implement
  * transaction concatenation, so we would want to calculate a2' as piecewise rebases
@@ -346,12 +346,12 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  * a3' := a3|b1''
  * b1''' := a1''|a3
  *
- * Continuing in this way, we obtain a1',...,aN' rebased over b1, and b1''''''' (N primes)
- * rebased onto a1 * ... * aN . Iteratively we can take the same approach to rebase over
- * b2,...,bM, giving both rebased lists as required.
+ * Continuing in this way, we obtain a1',…,aN' rebased over b1, and b1''''''' (N primes)
+ * rebased onto a1 * … * aN . Iteratively we can take the same approach to rebase over
+ * b2,…,bM, giving both rebased lists as required.
  *
  * If any of the transaction rebases conflict, then we rebase the largest possible
- * non-conflicting initial segment b1,...,bK onto all of a1,...,aN (so clearly K < M).
+ * non-conflicting initial segment b1,…,bK onto all of a1,…,aN (so clearly K < M).
  *
  * If there are two parallel inserts at the same location, then ordering is ambiguous. We
  * resolve this by putting the insert for the transaction with the highest author ID
@@ -381,7 +381,7 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	}
 
 	// For each element b_i of transactionsB, rebase the whole list transactionsA over b_i.
-	// To rebase a1, a2, a3, ..., aN over b_i, first we rebase a1 onto b_i. Then we rebase
+	// To rebase a1, a2, a3, …, aN over b_i, first we rebase a1 onto b_i. Then we rebase
 	// a2 onto some b', defined as
 	//
 	// b_i' := b_i|a1 , that is b_i.rebasedOnto(a1)

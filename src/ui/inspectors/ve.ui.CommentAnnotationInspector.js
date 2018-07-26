@@ -69,7 +69,7 @@ ve.ui.CommentAnnotationInspector.prototype.shouldRemoveAnnotation = function () 
  * @inheritdoc
  */
 ve.ui.CommentAnnotationInspector.prototype.getInsertionText = function () {
-	return '...';
+	return '…';
 };
 
 /**

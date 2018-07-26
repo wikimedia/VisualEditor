@@ -1362,7 +1362,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 					i--;
 					continue;
 				} else {
-					// ...otherwise replace it with a space
+					// …otherwise replace it with a space
 					if ( typeof this.getData( i ) === 'string' ) {
 						this.data[ i ] = ' ';
 					} else {

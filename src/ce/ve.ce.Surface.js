@@ -795,7 +795,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 			.collapseToStart()
 			// Cover the CBN we're in
 			.expandLinearSelection( 'closest', ve.dm.ContentBranchNode )
-			// ...but that covered the entire CBN, we only want the contents
+			// …but that covered the entire CBN, we only want the contents
 			.adjustLinearSelection( 1, -1 );
 		// If something weird happened (e.g. no CBN found), newFragment will be null.
 		// Don't select it in that case, because that'll blur the surface.
@@ -1687,9 +1687,9 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// by adding a dummy class, which we can remove after paste.
 	this.$pasteTarget.find( 'span' ).addClass( 've-pasteProtect' );
 
-	// When paste has no text content browsers do extreme normalization...
+	// When paste has no text content browsers do extreme normalization…
 	if ( this.$pasteTarget.text() === '' ) {
-		// ...so put nbsp's in empty leaves
+		// …so put nbsp's in empty leaves
 		this.$pasteTarget.find( '*:not( :has( * ) )' ).html( '&nbsp;' );
 	}
 
@@ -1789,7 +1789,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 				view.surfaceObserver.enable();
 			} );
 		} else {
-			// If the selection is non-native, the pasteTarget *should* already be selected...
+			// If the selection is non-native, the pasteTarget *should* already be selected…
 			ve.selectElement( this.$pasteTarget[ 0 ] );
 		}
 	}
@@ -3516,7 +3516,7 @@ ve.ce.Surface.prototype.findAdjacentUneditableBranchNode = function ( direction 
 				$.data( node, 'view' ) instanceof ve.ce.ContentBranchNode ||
 				// We shouldn't ever hit a raw text node, because they
 				// should all be wrapped in CBNs or focusable nodes, but
-				// just in case...
+				// just in case…
 				node.nodeType === Node.TEXT_NODE
 			) {
 				// This is cursorable (must have content or slugs)

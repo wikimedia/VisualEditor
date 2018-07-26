@@ -42,7 +42,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	// data: the expected DM content
 	// positions: the node+offset corresponding to each DM offset, shown by marking pipe
 	// characters on a modified HTML representation in which text nodes are wrapped in
-	// <#text>...</#text> tags (and most attributes are omitted)
+	// <#text>…</#text> tags (and most attributes are omitted)
 	// dies (optional): a list of DM offsets where getNodeAndOffset is expected to die
 	/* eslint-disable quotes */
 	tests = [

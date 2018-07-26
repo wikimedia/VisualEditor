@@ -233,7 +233,7 @@ ve.init.Platform.prototype.getSessionListLength = function ( key ) {
  *
  * Internally this will use items with the keys:
  *  - key__length
- *  - key__0 ... key__N
+ *  - key__0 … key__N
  *
  * @method
  * @param {string} key Key of list

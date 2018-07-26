@@ -25,7 +25,7 @@
 
 .ve-ui-toolbar.oo-ui-toolbar-position-bottom > .oo-ui-toolbar-bar {
 	/* For bottom toolbars though (e.g. Flow), we apparently want the toolbar to be below the surface
-	   overlay, but its dropdowns, popups etc. to be above it - this seems to work... (T169076) */
+	   overlay, but its dropdowns, popups etc. to be above it - this seems to work… (T169076) */
 	z-index: auto;
 }
 

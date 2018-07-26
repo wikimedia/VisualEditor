@@ -232,7 +232,7 @@ ve.supportsSplice = ( function () {
 /**
  * Splice one array into another.
  *
- * This is the equivalent of arr.splice( offset, remove, d1, d2, d3, ... ) except that arguments are
+ * This is the equivalent of arr.splice( offset, remove, d1, d2, d3, … ) except that arguments are
  * specified as an array rather than separate parameters.
  *
  * This method has been proven to be faster than using slice and concat to create a new array, but
@@ -264,7 +264,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 			splice = Array.prototype.splice;
 		} else {
 			// Standard Array.prototype.splice() function implemented using .slice() and .push().
-			splice = function ( offset, remove /* , data... */ ) {
+			splice = function ( offset, remove /* , data… */ ) {
 				var data, begin, removed, end;
 
 				data = Array.prototype.slice.call( arguments, 2 );
@@ -290,7 +290,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 	}
 
 	while ( index < data.length ) {
-		// Call arr.splice( offset, remove, i0, i1, i2, ..., i1023 );
+		// Call arr.splice( offset, remove, i0, i1, i2, …, i1023 );
 		// Only set remove on the first call, and set it to zero on subsequent calls
 		spliced = splice.apply(
 			arr, [ index + offset, toRemove ].concat( data.slice( index, index + batchSize ) )
@@ -371,7 +371,7 @@ ve.insertIntoArray = function ( arr, offset, src ) {
 /**
  * Push one array into another.
  *
- * This is the equivalent of arr.push( d1, d2, d3, ... ) except that arguments are
+ * This is the equivalent of arr.push( d1, d2, d3, … ) except that arguments are
  * specified as an array rather than separate parameters.
  *
  * @param {Array|ve.dm.BranchNode} arr Object supporting .push() to insert at the end of the array. Will be modified
@@ -389,7 +389,7 @@ ve.batchPush = function ( arr, data ) {
 		return arr.push.apply( arr, data );
 	}
 	while ( index < data.length ) {
-		// Call arr.push( i0, i1, i2, ..., i1023 );
+		// Call arr.push( i0, i1, i2, …, i1023 );
 		length = arr.push.apply(
 			arr, data.slice( index, index + batchSize )
 		);
@@ -876,7 +876,7 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	// There is one more way - create an <iframe>, append it to current document, and access its
 	// contentDocument. The only browser having issues with that is Opera (sometimes the accessible
 	// value is not actually a Document, but something which behaves just like an empty regular
-	// object...), so we're detecting that and using the innerHTML hack described above.
+	// object…), so we're detecting that and using the innerHTML hack described above.
 
 	// Support: Firefox 20
 	// Support: Opera 12

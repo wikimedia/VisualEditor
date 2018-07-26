@@ -209,7 +209,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 				txInsert = ve.dm.TransactionBuilder.static.newFromInsertion(
 					documentModel, listParent.getOuterRange().to, emptyListItem
 				);
-				// ...and push forward to be within it
+				// …and push forward to be within it
 				advanceCursor = true;
 			} else if ( list.getChildren().length !== 1 ) {
 				// Otherwise, if we just removed a list item, insert a paragraph
