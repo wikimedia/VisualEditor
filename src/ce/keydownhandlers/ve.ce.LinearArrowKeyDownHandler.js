@@ -71,7 +71,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			direction,
 			'character',
 			e.shiftKey,
-			surface.getActiveNode() ? surface.getActiveNode().getRange() : null
+			e.shiftKey && surface.getActiveNode() ? surface.getActiveNode().getRange() : null
 		);
 		surface.model.setLinearSelection( range );
 		e.preventDefault();
@@ -100,7 +100,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 				direction,
 				'character',
 				e.shiftKey,
-				surface.getActiveNode() ? surface.getActiveNode().getRange() : null
+				e.shiftKey && surface.getActiveNode() ? surface.getActiveNode().getRange() : null
 			);
 			surface.model.setLinearSelection( range );
 			e.preventDefault();

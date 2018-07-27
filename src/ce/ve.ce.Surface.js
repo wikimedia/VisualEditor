@@ -3054,8 +3054,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 			containsEnd = nodeRange.containsRange( new ve.Range( coveringRange.end ) );
 			// If the range starts xor ends in the active node, but not both, then it must
 			// span an active node boundary, so fixup.
-			// eslint-disable-next-line no-bitwise
-			if ( containsStart ^ containsEnd ) {
+			if ( containsStart !== containsEnd ) {
 				newSelection = oldState && oldState.veRange ?
 					new ve.dm.LinearSelection( dmDoc, oldState.veRange ) :
 					new ve.dm.NullSelection( dmDoc );
@@ -3449,17 +3448,19 @@ ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
 };
 
 /**
- * Restore the selection from the model if it is outside the active node
+ * Restore the selection from the model if expands outside the active node
  *
  * This is only useful if the DOM selection and the model selection are out of sync.
  *
  * @return {boolean} Whether the selection was restored
  */
 ve.ce.Surface.prototype.restoreActiveNodeSelection = function () {
-	var range;
+	var range, currentRange;
 	if (
 		( range = this.getActiveNode() && this.getActiveNode().getRange() ) &&
-		!range.containsRange( ve.ce.veRangeFromSelection( this.nativeSelection ) )
+		( currentRange = ve.ce.veRangeFromSelection( this.nativeSelection ) ) &&
+		!currentRange.isCollapsed() &&
+		!range.containsRange( currentRange )
 	) {
 		this.showModelSelection();
 		return true;
