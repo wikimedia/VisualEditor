@@ -83,7 +83,7 @@
 	ve.scrollIntoView = function () {};
 
 	function getSerializableData( model ) {
-		return model.getFullData( undefined, true );
+		return model.getFullData( undefined, 'roundTrip' );
 	}
 
 	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {

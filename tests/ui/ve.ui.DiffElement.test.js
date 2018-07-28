@@ -702,6 +702,30 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</li>' +
 					'</ul>' +
 				'</div>'
+			},
+			{
+				msg: 'Metadata change inside paragraph (no diff)',
+				oldDoc: '<p>foo bar baz<meta foo="a"></p>',
+				newDoc: '<p>foo bar baz<meta foo="b"></p>',
+				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+			},
+			{
+				msg: 'Metadata change between list items (no diff)',
+				oldDoc: '<ul><li><p>foo</p></li><meta foo="a"><li><p>baz</p></li></ul>',
+				newDoc: '<ul><li><p>foo</p></li><meta foo="b"><li><p>baz</p></li></ul>',
+				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+			},
+			{
+				msg: 'Insert metadata inside paragraph (no diff)',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo bar baz<meta foo="a"></p>',
+				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+			},
+			{
+				msg: 'Remove metadata inside paragraph (no diff)',
+				oldDoc: '<p>foo bar baz<meta foo="a"></p>',
+				newDoc: '<p>foo bar baz</p>',
+				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
 			}
 		];
 
