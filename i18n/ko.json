@@ -165,6 +165,7 @@
 	"visualeditor-linkcontext-remove": "링크 제거",
 	"visualeditor-linkinspector-title": "링크",
 	"visualeditor-listbutton-bullet-tooltip": "점 목록",
+	"visualeditor-listbutton-check-tooltip": "체크리스트",
 	"visualeditor-listbutton-number-tooltip": "숫자 목록",
 	"visualeditor-mediasizewidget-button-originaldimensions": "전체 크기로 만들기",
 	"visualeditor-mediasizewidget-label-custom": "사용자 지정",

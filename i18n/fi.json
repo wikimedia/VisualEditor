@@ -20,7 +20,8 @@
 			"Olimar",
 			"01miki10",
 			"Pyscowicz",
-			"Pahkiqaz"
+			"Pahkiqaz",
+			"OneMember"
 		]
 	},
 	"visualeditor": "Visuaalinen muokkain",
@@ -70,6 +71,7 @@
 	"visualeditor-debugbar-inputdebug": "Syötteen debuggaus",
 	"visualeditor-debugbar-logrange": "Loki valittu",
 	"visualeditor-debugbar-showmodel": "Näytä malli",
+	"visualeditor-debugbar-showtransactions": "Näytä tapahtumat",
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
 	"visualeditor-debugbar-stopfilibuster": "Lopeta Filibuster",
 	"visualeditor-dialog-action-apply": "Hyväksy muutokset",
