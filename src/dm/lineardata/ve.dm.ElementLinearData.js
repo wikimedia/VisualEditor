@@ -761,17 +761,17 @@ ve.dm.ElementLinearData.prototype.isPlainText = function ( range, allowNonConten
 /**
  * Execute a callback function for each group of consecutive content data (text or content element).
  *
+ * @param {ve.Range} range Range in which to search
  * @param {Function} callback Function called with the following parameters:
  * @param {number} callback.offset Offset of the first datum of the run.
  * @param {string} callback.text Text of the run (with content element opening/closing data
  *   replaced with U+FFFC).
  */
-ve.dm.ElementLinearData.prototype.forEachRunOfContent = function ( callback ) {
+ve.dm.ElementLinearData.prototype.forEachRunOfContent = function ( range, callback ) {
 	var i,
-		text = '',
-		length = this.getLength();
+		text = '';
 
-	for ( i = 0; i < length; i++ ) {
+	for ( i = range.start; i < range.end; i++ ) {
 		if ( !this.isElementData( i ) ) {
 			text += this.getCharacterData( i );
 		} else if ( ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
@@ -784,7 +784,7 @@ ve.dm.ElementLinearData.prototype.forEachRunOfContent = function ( callback ) {
 		}
 	}
 	if ( text ) {
-		callback( length - text.length, text );
+		callback( range.end - text.length, text );
 	}
 };
 

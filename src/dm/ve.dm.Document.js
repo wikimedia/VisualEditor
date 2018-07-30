@@ -1601,7 +1601,7 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 
 	if ( query instanceof RegExp ) {
 		// Avoid multi-line matching by only matching within content (text or content elements)
-		data.forEachRunOfContent( function ( offset, line ) {
+		data.forEachRunOfContent( documentRange, function ( offset, line ) {
 			query.lastIndex = 0;
 			while ( ( match = query.exec( line ) ) !== null ) {
 				matchText = match[ 0 ];
