@@ -3510,11 +3510,47 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 				]
 			},
 			{
+				msg: 'No cursorable offset (no native selection)',
+				html: '<article><section rel="ve:SectionPlaceholder"></section></article>',
+				expected: [
+					false,
+					false,
+					false,
+					false
+				]
+			},
+			{
 				msg: 'Simple example doc',
 				html: ve.dm.example.html,
 				expected: ve.dm.example.offsetPaths
 			}
 		];
+
+	function TestDmSectionPlaceholderNode() {
+		TestDmSectionPlaceholderNode.super.apply( this, arguments );
+	}
+	OO.inheritClass( TestDmSectionPlaceholderNode, ve.dm.LeafNode );
+	TestDmSectionPlaceholderNode.static.name = 'sectionPlaceholder';
+	TestDmSectionPlaceholderNode.static.matchTagNames = [ 'section' ];
+	TestDmSectionPlaceholderNode.static.matchRdfaTypes = [ 've:SectionPlaceholder' ];
+	TestDmSectionPlaceholderNode.prototype.canHaveSlugBefore = function () {
+		return false;
+	};
+	TestDmSectionPlaceholderNode.prototype.canHaveSlugAfter = function () {
+		return false;
+	};
+	ve.dm.modelRegistry.register( TestDmSectionPlaceholderNode );
+
+	function TestCeSectionPlaceholderNode() {
+		TestCeSectionPlaceholderNode.super.apply( this, arguments );
+		this.$element
+			.addClass( 'test-ce-sectionPlaceholderNode' )
+			.append( $( '<hr>' ) );
+	}
+	OO.inheritClass( TestCeSectionPlaceholderNode, ve.ce.LeafNode );
+	TestCeSectionPlaceholderNode.static.tagName = 'section';
+	TestCeSectionPlaceholderNode.static.name = 'sectionPlaceholder';
+	ve.ce.nodeFactory.register( TestCeSectionPlaceholderNode );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		view = ve.test.utils.createSurfaceViewFromHtml( cases[ i ].html );
@@ -3522,21 +3558,28 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 		rootElement = view.getDocument().getDocumentNode().$element[ 0 ];
 		for ( j = 0, l = internalListNode.getOuterRange().start; j < l; j++ ) {
 			node = view.getDocument().getDocumentNode().getNodeFromOffset( j );
-			if ( node.isFocusable() ) {
-				// eslint-disable-next-line qunit/literal-compare-order
-				assert.strictEqual( null, cases[ i ].expected[ j ], 'Focusable node at ' + j );
+			if ( cases[ i ].expected[ j ] === null ) {
+				assert.strictEqual( node.isFocusable(), true, 'Focusable node at ' + j );
 			} else {
 				selection = view.getSelectionState( new ve.Range( j ) );
-				assert.deepEqual(
-					ve.getOffsetPath( rootElement, selection.anchorNode, selection.anchorOffset ),
-					cases[ i ].expected[ j ],
-					'Path at ' + j + ' in ' + cases[ i ].msg
-				);
+				if ( cases[ i ].expected[ j ] === false ) {
+					assert.strictEqual( selection.anchorNode, null, 'No selection at ' + j );
+				} else {
+					assert.deepEqual(
+						ve.getOffsetPath( rootElement, selection.anchorNode, selection.anchorOffset ),
+						cases[ i ].expected[ j ],
+						'Path at ' + j + ' in ' + cases[ i ].msg
+					);
+				}
+				// Check that this doesn't throw exceptions
+				view.showSelectionState( selection );
 			}
 		}
 		view.destroy();
 	}
 
+	ve.dm.modelRegistry.unregister( TestDmSectionPlaceholderNode );
+	ve.ce.nodeFactory.unregister( TestCeSectionPlaceholderNode );
 } );
 
 /* Methods with return values */

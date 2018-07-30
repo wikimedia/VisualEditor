@@ -3794,6 +3794,13 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 		return false;
 	}
 
+	if ( !newSel.getNativeRange( this.getElementDocument() ) ) {
+		// You can still set a linear selection if the document doesn't have any cursorable positions.
+		// That's when you end up here.
+		sel.removeAllRanges();
+		return true;
+	}
+
 	if ( newSel.isBackwards ) {
 		if ( sel.extend ) {
 			// Set the range at the anchor, and extend backwards to the focus
@@ -3936,30 +3943,38 @@ ve.ce.Surface.prototype.annotationsAtFocus = function () {
  *
  * @method
  * @param {ve.Range} range Range to get selection for
- * @return {Object} The selection
- * @return {Node} return.anchorNode The anchor node
+ * @return {ve.SelectionState} The selection
+ * @return {Node|null} return.anchorNode The anchor node
  * @return {number} return.anchorOffset The anchor offset
- * @return {Node} return.focusNode The focus node
+ * @return {Node|null} return.focusNode The focus node
  * @return {number} return.focusOffset The focus offset
  * @return {boolean} return.isCollapsed True if the focus and anchor are in the same place
  * @return {boolean} return.isBackwards True if the focus is before the anchor
  */
 ve.ce.Surface.prototype.getSelectionState = function ( range ) {
-	var anchor, focus,
+	var anchor, focus, from, to,
 		dmDoc = this.getModel().getDocument();
 
 	// Anchor/focus at the nearest correct position in the direction that
 	// grows the selection. If we're not yet fully focused, move the selection
 	// outside any nails to avoid popping up a context menu.
+	from = dmDoc.getNearestCursorOffset( range.from, range.isBackwards() ? 1 : -1 );
+	if ( from === -1 ) {
+		return ve.SelectionState.static.newNullSelection();
+	}
 	anchor = this.documentView.getNodeAndOffset(
-		dmDoc.getNearestCursorOffset( range.from, range.isBackwards() ? 1 : -1 ),
+		from,
 		!this.focused
 	);
 	if ( range.isCollapsed() ) {
 		focus = anchor;
 	} else {
+		to = dmDoc.getNearestCursorOffset( range.to, range.isBackwards() ? -1 : 1 );
+		if ( to === -1 ) {
+			return ve.SelectionState.static.newNullSelection();
+		}
 		focus = this.documentView.getNodeAndOffset(
-			dmDoc.getNearestCursorOffset( range.to, range.isBackwards() ? -1 : 1 ),
+			to,
 			!this.focused
 		);
 	}
