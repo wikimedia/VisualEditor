@@ -474,7 +474,7 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
  * @throws {Error} Invalid annotation method
  */
 ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
-	var method, annotation, index;
+	var method, annotation, i, change, index;
 
 	if ( op.method === 'set' ) {
 		method = 'set';
@@ -494,9 +494,13 @@ ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
 			spliceAt: op.spliceAt
 		} );
 	} else {
-		index = this.changes.find( function ( change ) {
-			return change.method === method && change.annotation === annotation;
-		} );
+		for ( i = 0; i < this.changes.length; i++ ) {
+			change = this.changes[ i ];
+			if ( change.method === method && change.annotation === annotation ) {
+				index = i;
+				break;
+			}
+		}
 		if ( index === undefined ) {
 			throw new Error( 'Trying to stop an unstarted change' );
 		}
