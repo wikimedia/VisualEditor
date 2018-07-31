@@ -36,8 +36,8 @@ QUnit.test( 'commit', function ( assert ) {
 					[ 'pushStartAnnotating', 'set', store.hash( bold ) ],
 					[ 'pushStartAnnotating', 'set', store.hash( underline ) ],
 					[ 'pushRetain', 1 ],
-					[ 'pushStopAnnotating', 'clear', store.hash( italic ) ],
 					[ 'pushStopAnnotating', 'set', store.hash( bold ) ],
+					[ 'pushStopAnnotating', 'clear', store.hash( italic ) ],
 					[ 'pushStopAnnotating', 'set', store.hash( underline ) ]
 				],
 				expected: function ( data ) {
