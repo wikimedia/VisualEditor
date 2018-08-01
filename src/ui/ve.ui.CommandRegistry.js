@@ -266,6 +266,23 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'insertHorizontalRule', 'content', 'insert', {
+			args: [
+				[
+					{ type: 'horizontalRule' },
+					{ type: '/horizontalRule' }
+				],
+				// annotate
+				false,
+				// collapseToEnd
+				false
+			],
+			supportedSelections: [ 'linear' ]
+		}
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'insertTable', 'table', 'create',
 		{
 			args: [ {
