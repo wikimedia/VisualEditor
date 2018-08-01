@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.27.5
+ * OOUI v0.27.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-07-11T18:13:08Z
+ * Date: 2018-08-01T22:18:03Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -585,7 +585,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-panelLayout-framed {
   border: 1px solid #ccc;
-  border-radius: 0.5em;
+  border-radius: 3px;
 }
 .oo-ui-panelLayout-padded.oo-ui-panelLayout-framed {
   margin: 1em 0;
@@ -1592,14 +1592,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.27.5
+ * OOUI v0.27.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-07-11T18:13:08Z
+ * Date: 2018-08-01T22:18:03Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -1859,7 +1859,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   width: 4em;
   height: 2em;
   margin-right: 0.5em;
-  border: 1px;
+  border: 1px solid #ccc;
   border-radius: 1em;
   box-shadow: 0 0 0 #fff, inset 0 0.1em 0.2em #ddd;
 }
@@ -2309,8 +2309,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-color: transparent;
   border-style: solid;
   border-width: 1px 1px 0 1px;
-  border-top-left-radius: 0.5em;
-  border-top-right-radius: 0.5em;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
   padding: 0.5em 1em;
 }
 .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected {
@@ -2733,14 +2733,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.27.5
+ * OOUI v0.27.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-07-11T18:13:08Z
+ * Date: 2018-08-01T22:18:03Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3268,14 +3268,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.27.5
+ * OOUI v0.27.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-07-11T18:13:08Z
+ * Date: 2018-08-01T22:18:03Z
  */
 .oo-ui-actionWidget.oo-ui-pendingElement-pending {
   background-image: /* @embed */ url(themes/wikimediaui/images/textures/pending.gif);
@@ -3675,19 +3675,19 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   max-height: 100%;
   max-height: calc( 100% - 2em );
   border: 1px solid #ccc;
-  border-radius: 0.5em;
+  border-radius: 3px;
   box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.3);
 }
 
 /*!
- * OOUI v0.27.5
+ * OOUI v0.27.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-07-11T18:13:08Z
+ * Date: 2018-08-01T22:18:03Z
  */
 .oo-ui-indicator-clear {
   background-image: url('themes/wikimediaui/images/indicators/clear.png');
