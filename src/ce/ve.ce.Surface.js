@@ -4250,6 +4250,7 @@ ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer, initPromise )
 		authorSelect: 'onSynchronizerAuthorUpdate',
 		authorNameChange: 'onSynchronizerAuthorUpdate',
 		authorColorChange: 'onSynchronizerAuthorUpdate',
+		authorDisconnect: 'onSynchronizerAuthorDisconnect',
 		wrongDoc: 'onSynchronizerWrongDoc'
 	} );
 
@@ -4267,6 +4268,21 @@ ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer, initPromise )
  */
 ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( authorId ) {
 	this.paintAuthor( authorId );
+};
+
+/**
+ * Called when the synchronizer receives a remote author disconnect
+ *
+ * @param {number} authorId The author ID
+ */
+ve.ce.Surface.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
+	var overlays = this.userSelectionOverlays[ authorId ];
+
+	if ( overlays ) {
+		overlays.$cursor.detach();
+		overlays.$selection.detach();
+		delete this.userSelectionOverlays[ authorId ];
+	}
 };
 
 /**
@@ -4289,7 +4305,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		color = '#' + this.synchronizer.authorColors[ authorId ],
 		selection = this.synchronizer.authorSelections[ authorId ];
 
-	if ( authorId === this.authorId ) {
+	if ( authorId === this.synchronizer.getAuthorId() ) {
 		return;
 	}
 
