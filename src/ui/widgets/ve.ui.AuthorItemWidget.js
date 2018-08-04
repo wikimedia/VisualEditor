@@ -34,6 +34,7 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 	this.synchronizer = synchronizer;
 	this.editable = !!config.editable;
 	this.authorId = config.authorId;
+	this.name = null;
 	this.color = null;
 
 	this.$color = $( '<div>' ).addClass( 've-ui-authorItemWidget-color' );
@@ -44,6 +45,8 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 			classes: [ 've-ui-authorItemWidget-nameInput' ],
 			placeholder: ve.msg( 'visualeditor-rebase-client-author-name' )
 		} );
+		// Re-emit change events
+		this.input.on( 'change', this.emit.bind( this, 'change' ) );
 
 		this.colorPicker = new CP( this.$color[ 0 ] );
 		this.colorPicker.on( 'change', function ( color ) {
@@ -52,7 +55,7 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 		} );
 		this.colorPicker.on( 'exit', function () {
 			if ( item.color !== null ) {
-				synchronizer.changeColor( item.color );
+				item.emit( 'changeColor', item.color );
 			}
 		} );
 
@@ -95,6 +98,19 @@ ve.ui.AuthorItemWidget.prototype.focus = function () {
 };
 
 /**
+ * Get the user's name
+ *
+ * @return {string} User's name
+ */
+ve.ui.AuthorItemWidget.prototype.getName = function () {
+	if ( this.editable ) {
+		return this.input.getValue();
+	} else {
+		return this.name;
+	}
+};
+
+/**
  * Set author ID
  *
  * @param {number} authorId Author ID
@@ -107,15 +123,14 @@ ve.ui.AuthorItemWidget.prototype.setAuthorId = function ( authorId ) {
  * Update name and color from synchronizer
  */
 ve.ui.AuthorItemWidget.prototype.update = function () {
-	var name = this.synchronizer.getAuthorName( this.authorId );
-
+	this.name = this.synchronizer.getAuthorName( this.authorId );
 	this.color = this.synchronizer.getAuthorColor( this.authorId );
 	this.$color.css( 'background-color', '#' + this.color );
 
 	if ( this.editable ) {
-		this.input.setValue( name );
+		this.input.setValue( this.name );
 		this.colorPicker.set( '#' + this.color );
 	} else {
-		this.setLabel( name );
+		this.setLabel( this.name );
 	}
 };
