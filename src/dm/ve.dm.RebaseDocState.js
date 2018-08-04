@@ -55,11 +55,14 @@ ve.dm.RebaseDocState.static.newAuthorData = function () {
 
 /* Methods */
 
-ve.dm.RebaseDocState.prototype.getActiveNames = function () {
+ve.dm.RebaseDocState.prototype.getActiveAuthors = function () {
 	var result = {};
 	this.authors.forEach( function ( authorData, authorId ) {
 		if ( authorData.active ) {
-			result[ authorId ] = authorData.displayName;
+			result[ authorId ] = {
+				displayName: authorData.displayName,
+				displayColor: authorData.displayColor
+			};
 		}
 	} );
 	return result;

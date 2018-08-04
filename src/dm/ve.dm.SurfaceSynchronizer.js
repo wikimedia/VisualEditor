@@ -358,7 +358,7 @@ ve.dm.SurfaceSynchronizer.prototype.tryLoadSessionKey = function () {
  *
  * @param {Object} data
  * @param {Object} data.history Serialized change representing the server's history
- * @param {Object} data.names Object mapping author IDs to names
+ * @param {Object} data.authors Object mapping author IDs to author data objects (displayName/displayColor)
  */
 ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 	var history, authorId;
@@ -366,8 +366,9 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 		// Ignore attempt to initialize a second time
 		return;
 	}
-	for ( authorId in data.names ) {
-		this.onNameChange( { authorId: +authorId, authorName: data.names[ authorId ] } );
+	for ( authorId in data.authors ) {
+		this.onNameChange( { authorId: +authorId, authorName: data.authors[ authorId ].displayName } );
+		this.onColorChange( { authorId: +authorId, authorColor: data.authors[ authorId ].displayColor } );
 	}
 	history = ve.dm.Change.static.deserialize( data.history, this.doc );
 	this.acceptChange( history );

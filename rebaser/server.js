@@ -152,7 +152,7 @@ ProtocolServer.prototype.welcomeClient = function ( context ) {
 	// mode and ve.dm.Document was faked with { data: …, metadata: …, store: … }
 	context.sendAuthor( 'initDoc', {
 		history: state.history.serialize( true ),
-		names: state.getActiveNames()
+		authors: state.getActiveAuthors()
 	} );
 };
 
