@@ -17,9 +17,10 @@
  * @param {string} documentId Document ID
  * @param {Object} [config] Configuration options
  * @cfg {string} [server] IO server
+ * @cfg {string} [defaultName] Default username
  */
 ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config ) {
-	var path, options;
+	var path, options, name, color;
 
 	config = config || {};
 
@@ -62,6 +63,15 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'nameChange', this.onNameChange.bind( this ) );
 	this.socket.on( 'colorChange', this.onColorChange.bind( this ) );
 	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
+
+	name = ve.init.platform.getSession( 've-collab-username' ) || config.defaultName;
+	if ( name ) {
+		this.changeName( name );
+	}
+	color = ve.init.platform.getSession( 've-collab-color' );
+	if ( color ) {
+		this.changeColor( color );
+	}
 
 	// Events
 	this.doc.connect( this, {
@@ -289,11 +299,19 @@ ve.dm.SurfaceSynchronizer.prototype.getAuthorColor = function ( authorId ) {
 ve.dm.SurfaceSynchronizer.prototype.onNameChange = function ( data ) {
 	this.authorNames[ data.authorId ] = data.authorName;
 	this.emit( 'authorNameChange', data.authorId );
+
+	if ( data.authorId === this.getAuthorId() ) {
+		ve.init.platform.setSession( 've-collab-username', data.authorName );
+	}
 };
 
 ve.dm.SurfaceSynchronizer.prototype.onColorChange = function ( data ) {
 	this.authorColors[ data.authorId ] = data.authorColor;
 	this.emit( 'authorColorChange', data.authorId );
+
+	if ( data.authorId === this.getAuthorId() ) {
+		ve.init.platform.setSession( 've-collab-color', data.authorColor );
+	}
 };
 
 ve.dm.SurfaceSynchronizer.prototype.changeName = function ( newName ) {
