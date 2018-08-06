@@ -77,6 +77,7 @@
 	"visualeditor-debugbar-logrange": "Vald logg",
 	"visualeditor-debugbar-showmodel": "Visa modell",
 	"visualeditor-debugbar-showtransactions": "Visa transaktioner",
+	"visualeditor-debugbar-testsquasher": "Testa squasher",
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
 	"visualeditor-debugbar-stopfilibuster": "Stoppa Filibuster",
 	"visualeditor-debugbar-updatemodel": "Uppdatera vid ändringar",
