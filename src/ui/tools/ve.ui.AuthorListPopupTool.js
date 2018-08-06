@@ -55,11 +55,21 @@ ve.ui.AuthorListPopupTool.prototype.onSurfaceChange = function ( oldSurface, new
  * @inheritdoc
  */
 ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
+	var view = this.surface.getView();
+
 	// Parent method
 	ve.ui.AuthorListPopupTool.super.prototype.onPopupToggle.apply( this, arguments );
 
 	if ( visible ) {
 		this.selfItem.focus();
+		this.wasDeactivated = view.deactivated;
+		if ( !this.wasDeactivated ) {
+			this.surface.getView().deactivate();
+		}
+	} else {
+		if ( !this.wasDeactivated ) {
+			this.surface.getView().activate();
+		}
 	}
 };
 
@@ -73,6 +83,8 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 	this.updatingName = false;
 	this.synchronizer = surface.getView().synchronizer;
 	this.authorItems = {};
+
+	this.surface = surface;
 
 	// TODO: Unbind from an existing surface if one is set
 
