@@ -124,7 +124,8 @@ ProtocolServer.prototype.welcomeClient = function ( context ) {
 		displayName: 'User ' + authorId,
 		displayColor: this.constructor.static.palette[
 			authorId % this.constructor.static.palette.length
-		]
+		],
+		active: true
 	} );
 
 	state = this.rebaseServer.getDocState( docName );
