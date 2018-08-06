@@ -183,7 +183,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			assert.strictEqual(
 				ve.test.utils.serializePosition(
 					rootNode,
-					ceDoc.getNodeAndOffset( offset, test.outsideNails ),
+					ceDoc.getNodeAndOffset( offset ),
 					{ ignore: '.ve-ce-branchNode-slug>*' }
 				),
 				[].concat(
@@ -198,7 +198,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			offset = test.dies[ j ];
 			ex = null;
 			try {
-				ceDoc.getNodeAndOffset( offset, test.outsideNails );
+				ceDoc.getNodeAndOffset( offset );
 			} catch ( e ) {
 				ex = e;
 			}
