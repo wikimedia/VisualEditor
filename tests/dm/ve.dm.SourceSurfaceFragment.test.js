@@ -80,8 +80,6 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 			{ type: '/paragraph' },
 			{ type: 'paragraph' },
 			'r',
-			{ type: '/paragraph' },
-			{ type: 'paragraph' },
 			{ type: '/paragraph' }
 		],
 		'Newline in string split to paragraphs'
