@@ -43,6 +43,8 @@ OO.mixinClass( ve.ce.TableCellNode, ve.ce.ContentEditableNode );
 
 ve.ce.TableCellNode.static.name = 'tableCell';
 
+ve.ce.TableCellNode.static.trapsCursor = true;
+
 /* Methods */
 
 /**

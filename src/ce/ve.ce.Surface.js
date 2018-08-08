@@ -3455,12 +3455,14 @@ ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
  * @return {boolean} Whether the selection was restored
  */
 ve.ce.Surface.prototype.restoreActiveNodeSelection = function () {
-	var range, currentRange;
+	var currentRange,
+		activeNode = this.getActiveNode(),
+		activeRange = activeNode && activeNode.getRange();
 	if (
-		( range = this.getActiveNode() && this.getActiveNode().getRange() ) &&
+		activeRange &&
 		( currentRange = ve.ce.veRangeFromSelection( this.nativeSelection ) ) &&
-		!currentRange.isCollapsed() &&
-		!range.containsRange( currentRange )
+		( !currentRange.isCollapsed() || activeNode.trapsCursor() ) &&
+		!activeRange.containsRange( currentRange )
 	) {
 		this.showModelSelection();
 		return true;

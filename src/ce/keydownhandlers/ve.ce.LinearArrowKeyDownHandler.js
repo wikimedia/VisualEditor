@@ -44,7 +44,8 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			e.keyCode === OO.ui.Keys.PAGEUP || e.keyCode === OO.ui.Keys.PAGEDOWN ||
 			e.keyCode === OO.ui.Keys.HOME || e.keyCode === OO.ui.Keys.END,
 		keyBlockDirection = e.keyCode === OO.ui.Keys.DOWN || e.keyCode === OO.ui.Keys.PAGEDOWN || e.keyCode === OO.ui.Keys.END ? 1 : -1,
-		range = surface.model.getSelection().getRange();
+		range = surface.model.getSelection().getRange(),
+		activeNode = surface.getActiveNode();
 
 	// TODO: onDocumentKeyDown did this already
 	surface.surfaceObserver.stopTimerLoop();
@@ -71,7 +72,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 			direction,
 			'character',
 			e.shiftKey,
-			e.shiftKey && surface.getActiveNode() ? surface.getActiveNode().getRange() : null
+			activeNode && ( e.shiftKey || activeNode.trapsCursor() ) ? activeNode.getRange() : null
 		);
 		surface.model.setLinearSelection( range );
 		e.preventDefault();
@@ -100,7 +101,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 				direction,
 				'character',
 				e.shiftKey,
-				e.shiftKey && surface.getActiveNode() ? surface.getActiveNode().getRange() : null
+				activeNode && ( e.shiftKey || activeNode.trapsCursor() ) ? activeNode.getRange() : null
 			);
 			surface.model.setLinearSelection( range );
 			e.preventDefault();
