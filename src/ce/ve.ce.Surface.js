@@ -2115,7 +2115,7 @@ ve.ce.Surface.prototype.afterPasteImportRules = function ( isMultiline ) {
 ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, fragment, targetFragment, isMultiline ) {
 	var linearData, data, insertionPromise;
 
-	// Pasting non-table content into table: just replace the the first cell with the pasted content
+	// Pasting non-table content into table: just replace the first cell with the pasted content
 	if ( fragment.getSelection() instanceof ve.dm.TableSelection ) {
 		// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is
 		// about to be triggered.
@@ -2305,7 +2305,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 			return $.Deferred().resolve().promise();
 		}
 
-		// Pasting non-table content into table: just replace the the first cell with the pasted content
+		// Pasting non-table content into table: just replace the first cell with the pasted content
 		// Cell was not deleted in beforePaste to prevent flicker when table-into-table paste is about to be triggered.
 		targetFragment.removeContent();
 	}
