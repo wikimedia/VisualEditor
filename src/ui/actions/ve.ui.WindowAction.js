@@ -149,6 +149,9 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 					// Sequence-triggered window closed without action, undo
 					if ( data.strippedSequence && !( closedData && closedData.action ) ) {
 						surface.getModel().undo();
+						// Prevent redoing (which would remove the typed text)
+						surface.getModel().truncateUndoStack();
+						surface.getModel().emit( 'history' );
 					}
 					if ( sourceMode && fragment && fragment.getSurface().hasBeenModified() ) {
 						// Action may be async, so we use auto select to ensure the content is selected
