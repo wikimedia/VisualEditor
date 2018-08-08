@@ -105,7 +105,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	}
 
 	/**
-	 * Get the index of the the first or last wordbreak in a data array
+	 * Get the index of the first or last wordbreak in a data array
 	 *
 	 * @param {Array} data Linear data
 	 * @param {boolean} reversed Get the index of the last wordbreak

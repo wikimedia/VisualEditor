@@ -312,7 +312,7 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  * Given committed history consisting of transactions a1,a2,…,aN, and an uncommitted update
  * consisting of transactions b1,b2,…,bM, our approach is to rebase the whole list a1,…,aN
  * over b1, and at the same time rebase b1 onto a1*…*aN.
- * Then we repeat the process for b2, and so on. To rebase a1,…,aN over b1, the the following
+ * Then we repeat the process for b2, and so on. To rebase a1,…,aN over b1, the following
  * approach would work:
  *
  * a1' := a1|b1

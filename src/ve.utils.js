@@ -1017,7 +1017,7 @@ ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
  * Take a target document with a possibly relative base URL, and modify it to be absolute.
  * The base URL of the target document is resolved using the base URL of the source document.
  *
- * Note that the the fallbackBase parameter will be used if there is no <base> tag, even if
+ * Note that the fallbackBase parameter will be used if there is no <base> tag, even if
  * the document does have a valid base URL: this is to work around Firefox's behavior of having
  * documents created by DOMParser inherit the base URL of the main document.
  *
