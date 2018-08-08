@@ -77,7 +77,7 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
  * @return {boolean} The command executed
  */
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {
-	var command, stripRange, executed, stripFragment, stripRemainder, originalSelectionFragment, args,
+	var command, stripRange, executed, stripFragment, originalSelectionFragment, args,
 		surfaceModel = surface.getModel();
 
 	if ( surface.getCommands().indexOf( this.getCommandName() ) === -1 ) {
@@ -121,23 +121,6 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		// Strip the typed text. This will be undone if the action triggered was
 		// window/open and the window is dismissed
 		stripFragment.removeContent();
-		stripRemainder = stripFragment.getLeafNodes();
-		if (
-			stripRemainder.length === 1 &&
-			stripRemainder[ 0 ].range.isCollapsed() &&
-			stripRemainder[ 0 ].node.canContainContent() &&
-			// I don't think a sequence should ever result in a NullSelection,
-			// but just in case...
-			surfaceModel.getSelection().getCoveringRange() &&
-			!stripRemainder[ 0 ].range.containsRange( surfaceModel.getSelection().getCoveringRange() )
-		) {
-			// Stripping the text left us with an empty node, probably a
-			// paragraph or heading, which we should remove. We think it's
-			// safe to remove because the current selection is outside it.
-			// (Which avoids cases like the "* " list node sequence which
-			// inserts an empty paragraph within the list node.)
-			surfaceModel.getLinearFragment( stripRemainder[ 0 ].node.getOuterRange(), true, true ).removeContent();
-		}
 	}
 
 	// Restore user's selection if:
