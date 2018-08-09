@@ -15,7 +15,8 @@
 			"Hinaloe",
 			"Yusuke1109",
 			"Omotecho",
-			"Kumikami"
+			"Kumikami",
+			"Kkairri"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -47,9 +48,10 @@
 	"visualeditor-changedesc-set": "$1 に $2 を設定しました",
 	"visualeditor-changedesc-unknown": "$1 を変更しました",
 	"visualeditor-changedesc-unset": "$1 を $2 から設定解除しました",
+	"visualeditor-changedir": "書字方向の変更",
 	"visualeditor-changedir-tool-ltr": "左から右への表示",
 	"visualeditor-changedir-tool-rtl": "書字方向の変更（左右）",
-	"visualeditor-clearbutton-tooltip": "消去します",
+	"visualeditor-clearbutton-tooltip": "装飾解除",
 	"visualeditor-clipboard-copy": "コピー",
 	"visualeditor-clipboard-cut": "切り取り",
 	"visualeditor-clipboard-paste": "貼り付け",
@@ -78,6 +80,7 @@
 	"visualeditor-dialog-table-caption": "キャプション",
 	"visualeditor-dialog-table-title": "表のプロパティ",
 	"visualeditor-diff-no-changes": "相違点なし",
+	"visualeditor-find-and-replace-diacritic": "ダイアクリティカルマークの有無を区別する",
 	"visualeditor-find-and-replace-done": "完了",
 	"visualeditor-find-and-replace-find-text": "検索",
 	"visualeditor-find-and-replace-invalid-regex": "無効な正規表現",
