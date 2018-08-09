@@ -1187,8 +1187,12 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
  * @method
  * @param {Array} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
- * @return {Object} A (possibly modified) copy of data, a (possibly modified) offset,
- * and a number of elements to remove and the position of the original data in the new data
+ * @return {Object}
+ * @return {Array} return.data Possibly modified copy of `data`
+ * @return {number} return.offset Possibly modified offset
+ * @return {number} return.remove Number of elements to remove after the modified `offset`
+ * @return {number} [return.insertedDataOffset] Offset of intended insertion within fixed up data
+ * @return {number} [return.insertedDataLength] Length of intended insertion within fixed up data
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	var
@@ -1198,7 +1202,8 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// Temporary variables for handling combining marks
 		insert, annotations,
 		// An unattached combining mark may require the insertion to remove a character,
-		// so we send this counter back in the result
+		// so we send this counter back in the result.
+		// Inserting block element into an empty content branch will replace it.
 		remove = 0,
 
 		// *** Stacks ***
