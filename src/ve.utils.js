@@ -1174,7 +1174,7 @@ ve.fixupPreBug = function ( element ) {
 		return element;
 	}
 
-	// Workaround for bug 42469: if a `<pre>` starts with a newline, that means .innerHTML will
+	// Workaround for T44469: if a `<pre>` starts with a newline, that means .innerHTML will
 	// screw up and stringify it with one fewer newline. Work around this by adding a newline.
 	// If we don't see a leading newline, we still don't know if the original HTML was
 	// `<pre>Foo</pre>` or `<pre>\nFoo</pre>`, but that's a syntactic difference, not a
