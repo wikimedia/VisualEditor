@@ -2968,7 +2968,7 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  */
 ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
 	var newSelection, transaction, removedUnicorns,
-		activeNode, coveringRange, nodeRange, containsStart, containsEnd,
+		activeNode, coveringRange, nodeRange, containsStart, containsEnd, blockSlug,
 		surface = this,
 		dmDoc = this.getModel().getDocument(),
 		insertedText = false;
@@ -3037,6 +3037,15 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 		this.incRenderLock();
 		try {
 			this.changeModel( null, newSelection );
+			if ( newSelection instanceof ve.dm.LinearSelection && newSelection.isCollapsed() ) {
+				blockSlug = this.findBlockSlug( newSelection.getRange() );
+				if ( blockSlug ) {
+					// Set the DOM selection, in case the model selection did not change but
+					// the DOM selection did (T201599).
+					this.preparePasteTargetForCopy();
+					this.surfaceObserver.pollOnceNoCallback();
+				}
+			}
 		} finally {
 			this.decRenderLock();
 		}
