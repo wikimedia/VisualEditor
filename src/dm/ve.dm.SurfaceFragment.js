@@ -721,7 +721,7 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
 /**
  * Apply an annotation to content in the fragment.
  *
- * To avoid problems identified in bug 33108, use the {ve.dm.SurfaceFragment.trimLinearSelection} method.
+ * To avoid problems identified in T35108, use the {ve.dm.SurfaceFragment.trimLinearSelection} method.
  *
  * TODO: Optionally take an annotation set instead of name and data arguments and set/clear multiple
  * annotations in a single transaction.
