@@ -356,6 +356,13 @@
 				getView: function () {
 					return view;
 				},
+				getCommands: function () {
+					return ve.ui.commandRegistry.getNames();
+				},
+				isDisabled: function () {
+					return false;
+				},
+				execute: ve.ui.Surface.prototype.execute,
 				commandRegistry: ve.ui.commandRegistry,
 				sequenceRegistry: ve.ui.sequenceRegistry,
 				dataTransferHandlerFactory: ve.ui.dataTransferHandlerFactory
