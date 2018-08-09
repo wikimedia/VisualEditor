@@ -287,15 +287,15 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{ type: 'retain', length: 3 }
 				]
 			},
-			'inserting one paragraph into empty paragraph moves insertion before': {
+			'inserting one paragraph into empty paragraph replaces it': {
 				args: [ doc2, 1, [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ] ],
 				ops: [
 					{
 						type: 'replace',
-						remove: [],
+						remove: [ { type: 'paragraph' }, { type: '/paragraph' } ],
 						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ]
 					},
-					{ type: 'retain', length: 4 }
+					{ type: 'retain', length: 2 }
 				],
 				range: new ve.Range( 0, 5 )
 			},
