@@ -348,6 +348,7 @@ ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
 ve.dm.SurfaceSynchronizer.prototype.trySaveSessionKey = function () {
 	if ( window.sessionStorage ) {
 		window.sessionStorage.setItem( 'visualeditor-session-key', JSON.stringify( {
+			docName: this.documentId,
 			authorId: this.getAuthorId(),
 			token: this.token
 		} ) );
@@ -363,8 +364,10 @@ ve.dm.SurfaceSynchronizer.prototype.tryLoadSessionKey = function () {
 	}
 	try {
 		data = JSON.parse( dataString );
-		this.setAuthorId( data.authorId );
-		this.token = data.token;
+		if ( data.docName === this.documentId ) {
+			this.setAuthorId( data.authorId );
+			this.token = data.token;
+		}
 	} catch ( e ) {
 		// eslint-disable-next-line no-console
 		console.warn( 'Failed to parse data in session storage', e );
