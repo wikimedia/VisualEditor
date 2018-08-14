@@ -37,6 +37,17 @@ QUnit.test( 'checkSequences', function ( assert ) {
 				],
 				expectedRangeOrSelection: new ve.Range( 3 ),
 				msg: 'Numbered list'
+			},
+			{
+				content: '----',
+				expectedData: [
+					{ type: 'horizontalRule' },
+					{ type: '/horizontalRule' },
+					{ type: 'paragraph' },
+					{ type: '/paragraph' }
+				],
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				msg: 'Horizontal rule'
 			}
 		];
 

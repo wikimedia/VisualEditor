@@ -270,12 +270,15 @@ ve.ui.commandRegistry.register(
 			args: [
 				[
 					{ type: 'horizontalRule' },
-					{ type: '/horizontalRule' }
+					{ type: '/horizontalRule' },
+					{ type: 'paragraph' }
+					// omit /p to leave the cursor in the correct place,
+					// fixupInsertion will balance the insertion
 				],
 				// annotate
 				false,
 				// collapseToEnd
-				false
+				true
 			],
 			supportedSelections: [ 'linear' ]
 		}
