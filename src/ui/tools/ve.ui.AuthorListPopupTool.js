@@ -61,11 +61,11 @@ ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
 	ve.ui.AuthorListPopupTool.super.prototype.onPopupToggle.apply( this, arguments );
 
 	if ( visible ) {
-		this.selfItem.focus();
 		this.wasDeactivated = view.deactivated;
 		if ( !this.wasDeactivated ) {
 			this.surface.getView().deactivate();
 		}
+		this.selfItem.focus();
 	} else {
 		if ( !this.wasDeactivated ) {
 			this.surface.getView().activate();

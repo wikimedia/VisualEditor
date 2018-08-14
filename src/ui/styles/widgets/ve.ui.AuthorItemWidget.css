@@ -29,8 +29,8 @@
 }
 
 .ve-ui-authorItemWidget-editable .ve-ui-authorItemWidget-color {
-	top: 0.25em;
 	cursor: pointer;
 	outline: 1px solid #ccc;
 	outline-offset: 1px;
+	top: 2px; /* outline + outline-offset */
 }

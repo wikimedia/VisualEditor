@@ -73,6 +73,7 @@
 	font-size: 0.7em;
 	background: #a66;
 	color: #fff;
+	text-shadow: 0 0 1px rgba( 0, 0, 0, 0.5 );
 	padding: 0.2em;
 	top: -1.4em;
 	height: 1em;

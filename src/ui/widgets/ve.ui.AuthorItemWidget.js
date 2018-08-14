@@ -131,6 +131,7 @@ ve.ui.AuthorItemWidget.prototype.update = function () {
 		this.input.setValue( this.name );
 		this.colorPicker.set( '#' + this.color );
 	} else {
-		this.setLabel( this.name );
+		// TODO: Handle empty names with a message
+		this.setLabel( this.name || '…' );
 	}
 };
