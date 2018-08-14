@@ -15,7 +15,7 @@
  * @constructor
  * @param {ve.dm.Document} oldDoc
  * @param {ve.dm.Document} newDoc
- * @param {Number} [timeout=1000] Timeout after which to stop performing linear diffs (in ms)
+ * @param {number} [timeout=1000] Timeout after which to stop performing linear diffs (in ms)
  */
 ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc, timeout ) {
 	this.oldDoc = oldDoc.cloneFromRange( undefined, true, 'noMetadata' );
@@ -549,7 +549,7 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
  *
  * @param {ve.dm.Node} listNode A list node, possibly nested inside another list
  * @param {Object} flatList Flat structure describing the entire list
- * @param {Number} depth Depth of this list node with respect to the outermost
+ * @param {number} depth Depth of this list node with respect to the outermost
  */
 ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) {
 	var i, ilen, j, jlen, listItem,
@@ -777,7 +777,7 @@ ve.dm.VisualDiff.prototype.diffContent = function ( oldNode, newNode ) {
  * a node, given the length the removed or inserted content in one of its
  * descendants
  *
- * @param {Number} length Length of removed or inserted content
+ * @param {number} length Length of removed or inserted content
  * @param {boolean} removed The content was removed (if false, was inserted)
  * @param {Object} changeRecord Record of the running totals for changed and
  * unchanged content

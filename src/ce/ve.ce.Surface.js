@@ -2014,7 +2014,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 /**
  * Extract the clipboard key and other relevant data from beforePasteData / the paste target
  * @return {Object} Data
- * @return {String|undefined} return.clipboardKey Clipboard key, if present
+ * @return {string|undefined} return.clipboardKey Clipboard key, if present
  * @return {jQuery|undefined} return.$clipboardHtml Clipboard html, if used to extract the clipboard key
  * @return {ve.dm.DocumentSlice|undefined} return.slice Relevant slice of this document, if the key points to it
  */
@@ -2183,7 +2183,7 @@ ve.ce.Surface.prototype.afterPasteInsertInternalData = function ( targetFragment
 
 /**
  * After paste handler for pastes from the another document
- * @param {String|undefined} clipboardKey] Clipboard key for pasted data
+ * @param {string|undefined} clipboardKey] Clipboard key for pasted data
  * @param {jQuery|undefined} $clipboardHtml Clipboard HTML, if used to find the key
  * @param {ve.dm.SurfaceFragment} fragment Current fragment
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
@@ -2372,7 +2372,7 @@ ve.ce.Surface.prototype.afterPasteInsertExternalData = function ( targetFragment
  * @param {ve.dm.Document} pastedDocumentModel Model for pasted data
  * @param {boolean} isMultiline Whether pasting to a multiline context
  * @param {boolean} forceClipboardData Whether the current attempted paste is the result of forcing use of clipboard data
- * @return {ve.Range|Boolean} Context range, or false if data appeared corrupted
+ * @return {ve.Range|boolean} Context range, or false if data appeared corrupted
  */
 ve.ce.Surface.prototype.afterPasteFromExternalContextRange = function ( pastedDocumentModel, isMultiline, forceClipboardData ) {
 	var leftText, rightText, left, right,

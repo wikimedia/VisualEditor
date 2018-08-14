@@ -1913,7 +1913,7 @@ ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
  * Register a passive event listener
  *
  * @param {HTMLElement} elem Element to register event on
- * @param {String} event Name of event to register
+ * @param {string} event Name of event to register
  * @param {Function} handler Event handler (which cannot call event.preventDefault)
  */
 ve.addPassiveEventListener = function ( elem, event, handler ) {
@@ -1924,7 +1924,7 @@ ve.addPassiveEventListener = function ( elem, event, handler ) {
  * Remove a passive event listener
  *
  * @param {HTMLElement} elem Element to remove event from
- * @param {String} event Name of event to remove
+ * @param {string} event Name of event to remove
  * @param {Function} handler Event handler to remove
  */
 ve.removePassiveEventListener = function ( elem, event, handler ) {
@@ -1934,7 +1934,7 @@ ve.removePassiveEventListener = function ( elem, event, handler ) {
 /**
  * Test whether passive event listeners are supported
  *
- * @return {Boolean} Whether passive event listeners are supported
+ * @return {boolean} Whether passive event listeners are supported
  */
 ve.isPassiveEventsSupported = function () {
 	var opts;
