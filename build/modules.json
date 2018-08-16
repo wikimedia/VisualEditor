@@ -81,6 +81,7 @@
 		"styles": [
 			"lib/oojs-ui/oojs-ui-apex.css",
 			"lib/oojs-ui/oojs-ui-apex-icons-alerts.css",
+			"lib/oojs-ui/oojs-ui-apex-icons-content.css",
 			"lib/oojs-ui/oojs-ui-apex-icons-interactions.css",
 			"lib/oojs-ui/oojs-ui-apex-icons-layout.css",
 			"lib/oojs-ui/oojs-ui-apex-icons-moderation.css",
@@ -103,6 +104,7 @@
 		"styles": [
 			"lib/oojs-ui/oojs-ui-wikimediaui.css",
 			"lib/oojs-ui/oojs-ui-wikimediaui-icons-alerts.css",
+			"lib/oojs-ui/oojs-ui-wikimediaui-icons-content.css",
 			"lib/oojs-ui/oojs-ui-wikimediaui-icons-interactions.css",
 			"lib/oojs-ui/oojs-ui-wikimediaui-icons-layout.css",
 			"lib/oojs-ui/oojs-ui-wikimediaui-icons-moderation.css",
