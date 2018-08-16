@@ -534,13 +534,30 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 		actions = this.getActions(),
 		rAF = window.requestAnimationFrame || setTimeout;
 
-	toolbar.connect( this, { resize: 'onToolbarResize' } );
+	toolbar.connect( this, {
+		resize: 'onToolbarResize',
+		active: 'onToolbarActive'
+	} );
+	actions.connect( this, { active: 'onToolbarActive' } );
 
 	toolbar.setup( this.constructor.static.toolbarGroups, surface );
 	actions.setup( this.constructor.static.actionGroups, surface );
 	this.attachToolbar();
 	toolbar.$actions.append( actions.$element );
 	rAF( this.onContainerScrollHandler );
+};
+
+/**
+ * Handle active events from the toolbar
+ *
+ * @param {boolean} active The toolbar is active
+ */
+ve.init.Target.prototype.onToolbarActive = function ( active ) {
+	// Deactivate the surface when the toolbar is active (T109529, T201329)
+	if ( active ) {
+		this.getSurface().getView().deactivate();
+	}
+	// Don't worry about re-activating - that will be triggered by a document focus
 };
 
 /**
