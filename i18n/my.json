@@ -20,6 +20,7 @@
 	"visualeditor-annotationbutton-language-tooltip": "ဘာသာစကား",
 	"visualeditor-annotationbutton-link-tooltip": "လင့်",
 	"visualeditor-annotationbutton-small-tooltip": "အသေး",
+	"visualeditor-changedesc-unknown": "$1 ပြောင်းလဲသွားသည်",
 	"visualeditor-changedir-tool-ltr": "ဘယ်မှညာသို့ ကြည့်ရန်",
 	"visualeditor-changedir-tool-rtl": "ညာမှဘယ်သို့ ကြည့်ရန်",
 	"visualeditor-clearbutton-tooltip": "ဖယ်ရှား",
@@ -71,11 +72,15 @@
 	"visualeditor-key-space": "Space",
 	"visualeditor-key-tab": "Tab",
 	"visualeditor-key-up": "Up",
+	"visualeditor-language-search-input-placeholder": "ဘာသာစကားအမည် သို့ ကုဒ်အလိုက် ရှာဖွေရန်",
 	"visualeditor-languagecontext-remove": "ဘာသာစကား ဖယ်ရှားရန်",
 	"visualeditor-languageinspector-title": "ဘာသာစကား",
 	"visualeditor-languageinspector-widget-changelang": "ဘာသာစကား ရှာဖွေရန်",
+	"visualeditor-languageinspector-widget-label-langcode": "ဘာသာစကားကုဒ်",
 	"visualeditor-languageinspector-widget-label-language": "ဘာသာစကား",
 	"visualeditor-mediasizewidget-sizeoptions-default": "နဂိုအတိုင်း",
+	"visualeditor-shortcuts-history": "ရာဇဝင်",
 	"visualeditor-shortcuts-other": "အခြား",
-	"visualeditor-shortcuts-sequence-notice": "စာရိုက်ပါ"
+	"visualeditor-shortcuts-sequence-notice": "စာရိုက်ပါ",
+	"visualeditor-toolbar-history": "ရာဇဝင်"
 }
