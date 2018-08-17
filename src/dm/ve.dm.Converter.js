@@ -1301,6 +1301,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		whitespaceList = this.constructor.static.whitespaceList,
+		whitespaceHtmlChars = ve.ce.TextNode.static.whitespaceHtmlCharacters,
 		dataLen = data.length,
 		converter = this,
 		doc = container.ownerDocument,
@@ -1429,6 +1430,16 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		return dataSlice;
 	}
 
+	function getChar( char ) {
+		if (
+			converter.isForPreview() &&
+			Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, char )
+		) {
+			char = whitespaceHtmlChars[ char ];
+		}
+		return char;
+	}
+
 	for ( i = 0; i < dataLen; i++ ) {
 		if ( typeof data[ i ] === 'string' ) {
 			// Text
@@ -1443,7 +1454,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				// HACK: Skip over leading whitespace (T53462/T142132) in non-whitespace-preserving tags
 				// This should possibly be handled by Parsoid or in the UI.
 				if ( !( isStart && data[ i ].match( new RegExp( '[' + whitespaceList + ']' ) ) && this.isForParser() ) ) {
-					text += data[ i ];
+					text += getChar( data[ i ] );
 					isStart = false;
 				}
 				i++;
@@ -1483,7 +1494,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 
 				if ( data[ i ].annotations === undefined ) {
 					// Annotated text
-					text += data[ i ][ 0 ];
+					text += getChar( data[ i ][ 0 ] );
 				} else {
 					// Annotated node
 					// Add text if needed
