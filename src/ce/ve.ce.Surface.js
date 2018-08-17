@@ -2817,7 +2817,7 @@ ve.ce.Surface.prototype.preparePasteTargetForCopy = function () {
 	// whitespace, use a single unicode character as this is required for programmatic
 	// selection to work correctly in all browsers (e.g. Safari won't select a single space).
 	// #onCopy will ignore this native selection and use the DM selection
-	if ( !this.getSurface().isMobile() ) {
+	if ( !OO.ui.isMobile() ) {
 		this.$pasteTarget.text( ( this.focusedNode && this.focusedNode.$element.text().trim() ) || '☢' );
 		ve.selectElement( this.$pasteTarget[ 0 ] );
 		this.$pasteTarget[ 0 ].focus();

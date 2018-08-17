@@ -132,17 +132,6 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  * @event submit
  */
 
-/* Static Properties */
-
-/**
- * The surface is for use on mobile devices
- *
- * @static
- * @inheritable
- * @property {boolean}
- */
-ve.ui.Surface.static.isMobile = false;
-
 /* Methods */
 
 /* eslint-disable valid-jsdoc */
@@ -279,15 +268,6 @@ ve.ui.Surface.prototype.createModel = function ( doc ) {
  */
 ve.ui.Surface.prototype.createView = function ( model ) {
 	return new ve.ce.Surface( model, this );
-};
-
-/**
- * Check if the surface is for use on mobile devices
- *
- * @return {boolean} The surface is for use on mobile devices
- */
-ve.ui.Surface.prototype.isMobile = function () {
-	return this.constructor.static.isMobile;
 };
 
 /**
