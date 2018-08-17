@@ -372,6 +372,8 @@ ve.ce.FocusableNode.prototype.createInvisibleIcon = function () {
 	this.icon = new OO.ui.ButtonWidget( {
 		classes: [ 've-ce-focusableNode-invisibleIcon' ],
 		framed: false,
+		// Make button unfocusable, T198912
+		tabIndex: null,
 		icon: this.constructor.static.iconWhenInvisible
 	} );
 	this.updateInvisibleIconLabel();
