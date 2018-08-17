@@ -41,6 +41,8 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.toolbarConfig = config.toolbarConfig || {};
 	this.$scrollContainer = this.getScrollContainer();
 	this.toolbarScrollOffset = 0;
+	this.activeToolbars = 0;
+	this.wasSurfaceActive = null;
 
 	this.modes = config.modes || this.constructor.static.modes;
 	this.setDefaultMode( config.defaultMode );
@@ -553,11 +555,24 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
  * @param {boolean} active The toolbar is active
  */
 ve.init.Target.prototype.onToolbarActive = function ( active ) {
+	var view = this.getSurface().getView();
 	// Deactivate the surface when the toolbar is active (T109529, T201329)
 	if ( active ) {
-		this.getSurface().getView().deactivate();
+		this.activeToolbars++;
+		if ( this.activeToolbars === 1 ) {
+			// Surface may already be deactived (e.g. link inspector is open)
+			this.wasSurfaceActive = !view.deactivated;
+			if ( this.wasSurfaceActive ) {
+				this.getSurface().getView().deactivate();
+			}
+		}
+	} else {
+		this.activeToolbars--;
+		// Re-active surface if it was active when the toolbar first became active
+		if ( !this.activeToolbars && this.wasSurfaceActive ) {
+			this.getSurface().getView().activate();
+		}
 	}
-	// Don't worry about re-activating - that will be triggered by a document focus
 };
 
 /**
