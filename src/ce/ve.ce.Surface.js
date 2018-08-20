@@ -572,14 +572,24 @@ ve.ce.Surface.prototype.blur = function () {
 		this.getModel().setNullSelection();
 		this.activate();
 	}
-	this.nativeSelection.removeAllRanges();
-	if ( this.getElementDocument().activeElement ) {
-		// Support: IE<=11
-		// While switching between editor modes, there's sometimes no activeElement.
-		this.getElementDocument().activeElement.blur();
-	}
+	this.removeRangesAndBlur();
 	// This won't trigger focusin/focusout events, so trigger focus change manually
 	this.onFocusChange();
+};
+
+/**
+ * Remove all native selection ranges, and blur any active element
+ *
+ * This should hide all virtual keyboards when present.
+ */
+ve.ce.Surface.prototype.removeRangesAndBlur = function () {
+	this.nativeSelection.removeAllRanges();
+	// Support: IE<=11
+	// While switching between editor modes, there's sometimes no activeElement.
+	if ( this.getElementDocument().activeElement ) {
+		// Blurring the activeElement ensures the keyboard is hidden on iOS
+		this.getElementDocument().activeElement.blur();
+	}
 };
 
 /**
@@ -645,8 +655,9 @@ ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy ) {
 		this.surfaceObserver.disable();
 		this.deactivated = true;
 		this.checkDelayedSequences();
-		// Remove ranges so the user can't accidentally type into the document
-		this.nativeSelection.removeAllRanges();
+		// Remove ranges so the user can't accidentally type into the document,
+		// and so virtual keyboards are hidden.
+		this.removeRangesAndBlur();
 		this.updateDeactivatedSelection();
 		this.clearKeyDownState();
 	}
