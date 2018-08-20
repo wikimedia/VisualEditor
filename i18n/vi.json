@@ -9,7 +9,8 @@
 			"Dinhxuanduyet",
 			"Anh88",
 			"Nguyên Lê",
-			"Phjtieudoc"
+			"Phjtieudoc",
+			"Leducthn"
 		]
 	},
 	"visualeditor": "Trình soạn thảo trực quan",
@@ -139,11 +140,13 @@
 	"visualeditor-key-tab": "Tab",
 	"visualeditor-key-up": "Phím lên",
 	"visualeditor-language-search-input-placeholder": "Tìm kiếm theo tên hoặc mã ngôn ngữ",
+	"visualeditor-languagecontext-remove": "Xóa ngôn ngữ",
 	"visualeditor-languageinspector-title": "Ngôn ngữ",
 	"visualeditor-languageinspector-widget-changelang": "Tìm ngôn ngữ",
 	"visualeditor-languageinspector-widget-label-direction": "Hướng viết",
 	"visualeditor-languageinspector-widget-label-langcode": "Mã ngôn ngữ",
 	"visualeditor-languageinspector-widget-label-language": "Ngôn ngữ",
+	"visualeditor-linkcontext-label-fallback": "Không có xem trước",
 	"visualeditor-linkinspector-title": "Liên kết",
 	"visualeditor-listbutton-bullet-tooltip": "Danh sách không đánh số",
 	"visualeditor-listbutton-number-tooltip": "Danh sách đánh số",
