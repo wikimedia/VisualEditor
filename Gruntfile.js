@@ -383,7 +383,7 @@ module.exports = function ( grunt ) {
 				autoWatch: false
 			},
 			main: {
-				browsers: [ 'Chrome', 'Firefox' ],
+				browsers: [ 'Chrome' ], // T200347: Temporarily disabled `, 'Firefox'*/ ],`
 				preprocessors: {
 					'src/**/*.js': [ 'coverage' ]
 				},
