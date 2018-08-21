@@ -1699,7 +1699,7 @@ ve.dm.example.domToDataCases = {
 		],
 		normalizedBody: '<p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre>',
 		clipboardBody: '<p> foo</p><p> \t \tbar</p><h2>  baz</h2><pre> \tquux</pre>',
-		previewBody: '<p> foo</p><p> \t \tbar</p><h2>  baz</h2><pre> \tquux</pre>'
+		previewBody: '<p> foo</p><p> ➞ ➞bar</p><h2>  baz</h2><pre> ➞quux</pre>'
 	},
 	image: {
 		body: ve.dm.example.image.html,
@@ -3108,7 +3108,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		clipboardBody: '<span rel="ve:Comment" data-ve-comment=" Foo ">&nbsp;</span> <span rel="ve:Comment" data-ve-comment=" Bar ">&nbsp;</span>\nFoo',
-		previewBody: ve.dm.example.commentNodePreview( ' Foo ' ) + ' ' + ve.dm.example.commentNodePreview( ' Bar ' ) + '\nFoo'
+		previewBody: ve.dm.example.commentNodePreview( ' Foo ' ) + ' ' + ve.dm.example.commentNodePreview( ' Bar ' ) + '↵Foo'
 	},
 	'whitespace preservation with comments at end of wrapper paragraph': {
 		body: '<ul><li> bar<!-- baz -->quux </li></ul>',
