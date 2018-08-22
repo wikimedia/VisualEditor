@@ -559,15 +559,18 @@ ve.ui.Surface.prototype.onWindowOpening = function ( win, opening ) {
  * @param {boolean} show Show the global overlay.
  */
 ve.ui.Surface.prototype.toggleMobileGlobalOverlay = function ( show ) {
-	var $body = $( 'body' );
+	var $scrollContainer;
 
 	if ( !OO.ui.isMobile() ) {
 		return;
 	}
 
+	// TODO: Avoid accessing ve.init.target from the surface?
+	$scrollContainer = ve.init.target.getScrollContainer();
+
 	// Store current position before we set overflow: hidden on body
 	if ( show ) {
-		this.scrollPosition = $body.scrollTop();
+		this.scrollPosition = $scrollContainer.scrollTop();
 	}
 
 	$( 'html, body' ).toggleClass( 've-ui-overlay-global-mobile-enabled', show );
@@ -575,7 +578,7 @@ ve.ui.Surface.prototype.toggleMobileGlobalOverlay = function ( show ) {
 
 	// Restore previous position after we remove overflow: hidden on body
 	if ( !show ) {
-		$body.scrollTop( this.scrollPosition );
+		$scrollContainer.scrollTop( this.scrollPosition );
 	}
 };
 
