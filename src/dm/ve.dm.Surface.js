@@ -959,6 +959,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
  * @fires undoStackChange
  */
 ve.dm.Surface.prototype.breakpoint = function () {
+	var breakpointSet = false;
 	if ( !this.enabled ) {
 		return false;
 	}
@@ -971,11 +972,11 @@ ve.dm.Surface.prototype.breakpoint = function () {
 		} );
 		this.newTransactions = [];
 		this.emit( 'undoStackChange' );
-		return true;
-	} else if ( this.selectionBefore.isNull() && !this.selection.isNull() ) {
-		this.selectionBefore = this.selection;
+		breakpointSet = true;
 	}
-	return false;
+	// Update selectionBefore even if nothing has changed
+	this.selectionBefore = this.selection;
+	return breakpointSet;
 };
 
 /**
