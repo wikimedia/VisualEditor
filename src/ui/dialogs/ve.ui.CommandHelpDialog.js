@@ -76,6 +76,12 @@ ve.ui.CommandHelpDialog.static.commandGroups = {
 	}
 };
 
+ve.ui.CommandHelpDialog.static.commandGroupsOrder = [
+	'textStyle', 'clipboard',
+	'formatting', 'history',
+	'dialog', 'other', 'insert'
+];
+
 /* Methods */
 
 /**
@@ -89,8 +95,8 @@ ve.ui.CommandHelpDialog.prototype.getBodyHeight = function () {
  * @inheritdoc
  */
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
-	var i, j, jLen, k, kLen, triggerList, commands, shortcut,
-		$list, $shortcut, commandGroups, sequence, hasCommand, hasShortcut,
+	var i, iLen, j, jLen, k, kLen, triggerList, commands, shortcut,
+		$list, $shortcut, groupName, commandGroup, commandGroups, commandGroupsOrder, sequence, hasCommand, hasShortcut,
 		surface = ve.init.target.getSurface(),
 		sequenceRegistry = surface.sequenceRegistry,
 		commandRegistry = surface.commandRegistry;
@@ -99,6 +105,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
 
 	commandGroups = this.constructor.static.commandGroups;
+	commandGroupsOrder = this.constructor.static.commandGroupsOrder;
 
 	this.contentLayout = new OO.ui.PanelLayout( {
 		scrollable: true,
@@ -107,9 +114,11 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	} );
 	this.$container = $( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
-	for ( i in commandGroups ) {
+	for ( i = 0, iLen = commandGroupsOrder.length; i < iLen; i++ ) {
 		hasCommand = false;
-		commands = this.constructor.static.sortedCommandsFromGroup( i, commandGroups[ i ].promote, commandGroups[ i ].demote );
+		groupName = commandGroupsOrder[ i ];
+		commandGroup = commandGroups[ groupName ];
+		commands = this.constructor.static.sortedCommandsFromGroup( groupName, commandGroup.promote, commandGroup.demote );
 		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
 			if ( commands[ j ].trigger ) {
@@ -166,7 +175,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 				$( '<div>' )
 					.addClass( 've-ui-commandHelpDialog-section' )
 					.append(
-						$( '<h3>' ).text( OO.ui.resolveMsg( commandGroups[ i ].title ) ),
+						$( '<h3>' ).text( OO.ui.resolveMsg( commandGroup.title ) ),
 						$list
 					)
 			);
