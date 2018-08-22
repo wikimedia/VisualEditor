@@ -147,3 +147,6 @@ ve.ui.commandHelpRegistry.register( 'other', 'findPrevious', { trigger: 'findPre
 ve.ui.commandHelpRegistry.register( 'other', 'selectAll', { trigger: 'selectAll', label: OO.ui.deferMsg( 'visualeditor-content-select-all' ) } );
 ve.ui.commandHelpRegistry.register( 'other', 'changeDirectionality', { trigger: 'changeDirectionality', label: OO.ui.deferMsg( 'visualeditor-changedir' ) } );
 ve.ui.commandHelpRegistry.register( 'other', 'commandHelp', { trigger: 'commandHelp', label: OO.ui.deferMsg( 'visualeditor-dialog-command-help-title' ) } );
+
+// Insert
+ve.ui.commandHelpRegistry.register( 'insert', 'horizontalRule', { sequences: [ 'horizontalRule' ], label: OO.ui.deferMsg( 'visualeditor-horizontalrule-tooltip' ) } );

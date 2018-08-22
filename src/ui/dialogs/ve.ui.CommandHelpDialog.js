@@ -68,6 +68,11 @@ ve.ui.CommandHelpDialog.static.commandGroups = {
 		title: OO.ui.deferMsg( 'visualeditor-shortcuts-other' ),
 		promote: [ 'findAndReplace', 'findNext', 'findPrevious' ],
 		demote: [ 'commandHelp' ]
+	},
+	insert: {
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-insert' ),
+		promote: [],
+		demote: []
 	}
 };
 
