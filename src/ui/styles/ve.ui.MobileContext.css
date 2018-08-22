@@ -40,6 +40,11 @@
 	vertical-align: top;
 }
 
+.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child {
+	/* Reset negative margin */
+	margin-left: 0;
+}
+
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement:not( .oo-ui-labelElement ) .oo-ui-buttonElement-button {
 	padding-left: 2.875em;
 	padding-top: 2.875em;
