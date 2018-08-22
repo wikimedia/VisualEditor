@@ -101,7 +101,7 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
  * @param {boolean} wrap Wrap to the next/previous row at edges, insert new row at end
  */
 ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand, wrap ) {
-	var tableNode, newSelection, documentModel,
+	var tableNode, newSelection, documentModel, captionNode,
 		selection = surface.getModel().getSelection();
 	if ( colOffset && checkDir ) {
 		tableNode = surface.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
@@ -137,9 +137,9 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 	// so move outside
 	if ( ( rowOffset !== 0 || ( rowOffset === 0 && colOffset === -1 && wrap ) ) && selection.equals( newSelection ) ) {
 		documentModel = selection.getDocument();
-		if ( ( rowOffset === -1 || ( colOffset === -1 && wrap ) ) && selection.tableNode.children[ 0 ] instanceof ve.dm.TableCaptionNode ) {
+		if ( ( rowOffset === -1 || ( colOffset === -1 && wrap ) ) && ( captionNode = selection.tableNode.getCaptionNode() ) ) {
 			// If we're moving up/backwards, and there's a caption node, put the selection in it
-			newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( selection.tableNode.children[ 0 ].getRange().truncate( 0 ), 1 ) );
+			newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( new ve.Range( captionNode.getRange().start ), 1 ) );
 		} else {
 			// Otherwise, go outside the table
 			newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( selection.tableRange, rowOffset || colOffset ) );
