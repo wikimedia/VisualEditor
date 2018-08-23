@@ -8,7 +8,8 @@
 			"Sagan",
 			"Рустам Нурыев",
 			"Азат Хәлилов",
-			"Lizalizaufa"
+			"Lizalizaufa",
+			"Янмурза Баки"
 		]
 	},
 	"visualeditor": "Күҙләгес мөхәррир",
@@ -106,6 +107,7 @@
 	"visualeditor-shortcuts-clipboard": "Алмашыу буферы",
 	"visualeditor-shortcuts-formatting": "Абзацты форматлау",
 	"visualeditor-shortcuts-history": "Тарих",
+	"visualeditor-shortcuts-insert": "Өҫтәргә",
 	"visualeditor-shortcuts-other": "Башҡалар",
 	"visualeditor-shortcuts-sequence-notice": "Төрө",
 	"visualeditor-shortcuts-text-style": "Текст стиле",

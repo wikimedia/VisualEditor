@@ -62,6 +62,8 @@
 	"visualeditor-contextitemwidget-label-remove": "తొలగించు",
 	"visualeditor-contextitemwidget-label-secondary": "మార్చు",
 	"visualeditor-debugbar-close": "మూసివేయి",
+	"visualeditor-debugbar-startfilibuster": "విస్తారంగా",
+	"visualeditor-debugbar-stopfilibuster": "విస్తారంగా వద్దు",
 	"visualeditor-dialog-action-apply": "మార్పులు అమలుచేయి",
 	"visualeditor-dialog-action-cancel": "రద్దు",
 	"visualeditor-dialog-action-done": "పూర్తయ్యింది",

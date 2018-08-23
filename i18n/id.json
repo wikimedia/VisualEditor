@@ -13,7 +13,8 @@
 			"BaconSenpai",
 			"Rachmat.Wahidi",
 			"Rachmat04",
-			"Gombang"
+			"Gombang",
+			"Beeyan"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -161,6 +162,7 @@
 	"visualeditor-shortcuts-dialog": "Jendela dialog",
 	"visualeditor-shortcuts-formatting": "Format paragraf",
 	"visualeditor-shortcuts-history": "Riwayat",
+	"visualeditor-shortcuts-insert": "Sisipkan",
 	"visualeditor-shortcuts-other": "Lainnya",
 	"visualeditor-shortcuts-sequence-notice": "Jenis",
 	"visualeditor-shortcuts-text-style": "Gaya teks",
