@@ -49,6 +49,58 @@ ve.init.sa.Platform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = func
 	return this.unanchoredExternalLinkUrlProtocolsRegExp;
 };
 
+/** @inheritdoc */
+ve.init.sa.Platform.prototype.notify = function ( message, title ) {
+	var closeId,
+		rAF = window.requestAnimationFrame || setTimeout,
+		$notificationWrapper = $( '<div>' ).addClass( 've-init-notification-wrapper' ),
+		$notification = $( '<div>' ).addClass( 've-init-notification' );
+
+	if ( title ) {
+		$notification.append(
+			$( '<div>' ).addClass( 've-init-notification-title' ).append(
+				typeof title === 'string' ? document.createTextNode( title ) : title
+			)
+		);
+	}
+	$notification.append(
+		$( '<div>' ).addClass( 've-init-notification-message' ).append(
+			typeof message === 'string' ? document.createTextNode( message ) : message
+		)
+	);
+
+	$notificationWrapper.append( $notification );
+
+	if ( !this.$notifications ) {
+		this.$notifications = $( '<div>' ).addClass( 've-init-notifications' );
+		$( 'body' ).append( this.$notifications );
+	}
+
+	function remove() {
+		$notificationWrapper.remove();
+	}
+	function collapse() {
+		$notificationWrapper.addClass( 've-init-notification-collapse' );
+		setTimeout( remove, 250 );
+	}
+	function close() {
+		clearTimeout( closeId );
+		$notificationWrapper.removeClass( 've-init-notification-open' );
+		$notificationWrapper.css( 'height', $notificationWrapper[ 0 ].clientHeight );
+		setTimeout( collapse, 250 );
+	}
+	function open() {
+		$notificationWrapper.addClass( 've-init-notification-open' );
+		closeId = setTimeout( close, 5000 );
+	}
+
+	rAF( open );
+
+	$notification.on( 'click', close );
+
+	this.$notifications.append( $notificationWrapper );
+};
+
 /**
  * Get message folder paths
  *
