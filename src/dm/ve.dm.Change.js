@@ -811,6 +811,10 @@ ve.dm.Change.prototype.truncate = function ( length ) {
  * @param {ve.dm.Surface} surface Surface in change start state
  */
 ve.dm.Change.prototype.applyTo = function ( surface ) {
+	var doc = surface.documentModel;
+	if ( this.start !== doc.completeHistory.getLength() ) {
+		throw new Error( 'Change starts at ' + this.start + ', but doc is at ' + doc.completeHistory.getLength() );
+	}
 	this.getStores().forEach( function ( store ) {
 		surface.documentModel.store.merge( store );
 	} );
@@ -829,6 +833,9 @@ ve.dm.Change.prototype.applyTo = function ( surface ) {
 ve.dm.Change.prototype.unapplyTo = function ( surface ) {
 	var doc = surface.documentModel,
 		historyLength = doc.completeHistory.getLength() - this.getLength();
+	if ( this.start !== historyLength ) {
+		throw new Error( 'Invalid start: change starts at ' + this.start + ', but doc would be at ' + historyLength );
+	}
 	this.transactions.slice().reverse().forEach( function ( tx ) {
 		surface.change( tx.reversed() );
 	} );

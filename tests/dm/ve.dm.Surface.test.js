@@ -441,6 +441,7 @@ QUnit.test( 'autosave', function ( assert ) {
 
 	assert.throws(
 		function () {
+			surface.documentModel.completeHistory = new ve.dm.Change( 0, [], [], {} );
 			surface.restoreChanges();
 		},
 		/Failed to restore/,

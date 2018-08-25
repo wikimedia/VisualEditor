@@ -319,7 +319,7 @@ QUnit.test( 'Rebase', function ( assert ) {
 
 					// Client 1 applies a local change that introduces an annotation
 					[ '1', 'apply', {
-						start: 1,
+						start: 2,
 						transactions: [
 							{
 								o: [
