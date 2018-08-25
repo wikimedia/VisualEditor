@@ -910,6 +910,7 @@
 			"src/init/sa/ve.init.sa.Target.js"
 		],
 		"styles": [
+			"src/init/sa/styles/ve.init.sa.Platform.css",
 			{ "file": "src/ui/styles/ve.ui.DebugBar.css", "debug": true }
 		],
 		"dependencies": [
