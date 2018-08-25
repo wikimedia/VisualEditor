@@ -29,27 +29,10 @@
 		}
 	);
 
-	RebaserTarget.prototype.setSurface = function ( surface ) {
-		var synchronizer, surfaceView;
-
-		if ( surface !== this.surface ) {
-			surfaceView = surface.getView();
-
-			synchronizer = new ve.dm.SurfaceSynchronizer(
-				surface.getModel(),
-				ve.docName,
-				{ server: this.rebaserUrl }
-			);
-
-			surfaceView.setSynchronizer( synchronizer );
-		}
-
-		// Parent method
-		RebaserTarget.super.prototype.setSurface.apply( this, arguments );
-	};
-
 	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
-		var panel = new OO.ui.PanelLayout( {
+		var surfaceModel, dummySurface,
+			progressDeferred = $.Deferred(),
+			panel = new OO.ui.PanelLayout( {
 				$element: $( '.ve-demo-editor' ),
 				expanded: false,
 				framed: true
@@ -58,7 +41,26 @@
 
 		panel.$element.append( target.$element );
 
-		target.addSurface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
-		target.surface.view.focus();
+		// Add a dummy surface while the doc is loading
+		dummySurface = target.addSurface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
+		dummySurface.setDisabled( true );
+
+		// TODO: Create the correct model surface type (ve.ui.Surface#createModel)
+		surfaceModel = new ve.dm.Surface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
+		surfaceModel.createSynchronizer(
+			ve.docName,
+			{ server: this.rebaserUrl }
+		);
+
+		dummySurface.createProgress( progressDeferred.promise(), ve.msg( 'visualeditor-rebase-client-connecting' ), true );
+
+		surfaceModel.synchronizer.once( 'initDoc', function () {
+			progressDeferred.resolve();
+			target.clearSurfaces();
+			// Don't add the surface until the history has been applied
+			target.addSurface( surfaceModel );
+			target.getSurface().getView().focus();
+		} );
+
 	} );
 }() );

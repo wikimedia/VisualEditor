@@ -47,6 +47,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.authorId = null;
 	this.lastStoredChange = doc.getCompleteHistoryLength();
 	this.autosaveFailed = false;
+	this.synchronizer = null;
 
 	// Events
 	this.getDocument().connect( this, {
@@ -188,6 +189,23 @@ ve.dm.Surface.prototype.setMultiUser = function ( multiUser ) {
  */
 ve.dm.Surface.prototype.isMultiUser = function () {
 	return this.multiUser;
+};
+
+/**
+ * Create a surface synchronizer.
+ *
+ * @param {string} documentId Document ID
+ * @param {Object} [config] Configuration options
+ */
+ve.dm.Surface.prototype.createSynchronizer = function ( documentId, config ) {
+	if ( this.synchronizer ) {
+		throw new Error( 'Synchronizer already set' );
+	}
+
+	this.setNullSelection();
+	this.setMultiUser( true );
+
+	this.synchronizer = new ve.dm.SurfaceSynchronizer( this, documentId, config );
 };
 
 /**

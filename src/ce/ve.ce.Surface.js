@@ -31,7 +31,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
 	this.selection = null;
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this );
-	this.synchronizer = null;
 	this.$window = $( this.getElementWindow() );
 	this.$document = $( this.getElementDocument() );
 	this.$documentNode = this.getDocument().getDocumentNode().$element;
@@ -106,6 +105,16 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		documentUpdate: 'onModelDocumentUpdate',
 		insertionAnnotationsChange: 'onInsertionAnnotationsChange'
 	} );
+
+	if ( this.model.synchronizer ) {
+		this.model.synchronizer.connect( this, {
+			authorSelect: 'onSynchronizerAuthorUpdate',
+			authorNameChange: 'onSynchronizerAuthorUpdate',
+			authorColorChange: 'onSynchronizerAuthorUpdate',
+			authorDisconnect: 'onSynchronizerAuthorDisconnect',
+			wrongDoc: 'onSynchronizerWrongDoc'
+		} );
+	}
 
 	this.onDocumentMouseUpHandler = this.onDocumentMouseUp.bind( this );
 	this.$documentNode.on( {
@@ -390,9 +399,10 @@ ve.ce.Surface.prototype.destroy = function () {
 		this.$document.off( 'selectionchange', this.onDocumentSelectionChangeDebounced );
 	}
 
-	if ( this.synchronizer ) {
-		this.synchronizer.destroy();
-		this.synchronizer.disconnect( this );
+	if ( this.model.synchronizer ) {
+		// TODO: Move destroy to ve.dm.Surface#destroy
+		this.model.synchronizer.destroy();
+		this.model.synchronizer.disconnect( this );
 	}
 
 	// Disconnect DOM events on the window
@@ -4284,43 +4294,6 @@ ve.ce.Surface.prototype.selectionSplitsNailedAnnotation = function () {
 };
 
 /**
- * Listen to a surface synchronizer, for remote author selection changes to display
- *
- * Document content itself is handled by the synchronizer, as is document history.
- *
- * @param {ve.dm.SurfaceSynchronizer} synchronizer The synchronizer to listen to
- * @param {jQuery.Promise} [initPromise] A promise which resolves when the surface is initialized
- * @throws {Error} Synchronizer already set
- */
-ve.ce.Surface.prototype.setSynchronizer = function ( synchronizer, initPromise ) {
-	var progressDeferred = $.Deferred();
-	initPromise = initPromise || $.Deferred().resolve().promise();
-
-	if ( this.synchronizer ) {
-		throw new Error( 'Synchronizer already set' );
-	}
-
-	this.getModel().setNullSelection();
-	this.getModel().setMultiUser( true );
-	this.getSurface().createProgress( progressDeferred.promise(), ve.msg( 'visualeditor-rebase-client-connecting' ), true );
-
-	this.synchronizer = synchronizer;
-	this.synchronizer.connect( this, {
-		authorSelect: 'onSynchronizerAuthorUpdate',
-		authorNameChange: 'onSynchronizerAuthorUpdate',
-		authorColorChange: 'onSynchronizerAuthorUpdate',
-		authorDisconnect: 'onSynchronizerAuthorDisconnect',
-		wrongDoc: 'onSynchronizerWrongDoc'
-	} );
-
-	synchronizer.once( 'initDoc', function () {
-		initPromise.then( function () {
-			progressDeferred.resolve();
-		} );
-	} );
-};
-
-/**
  * Called when the synchronizer receives a remote author selection or name change
  *
  * @param {number} authorId The author ID
@@ -4361,10 +4334,11 @@ ve.ce.Surface.prototype.onSynchronizerWrongDoc = function () {
  */
 ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 	var i, l, rects, rect, overlays,
-		color = '#' + this.synchronizer.authorColors[ authorId ],
-		selection = this.synchronizer.authorSelections[ authorId ];
+		synchronizer = this.model.synchronizer,
+		color = '#' + synchronizer.authorColors[ authorId ],
+		selection = synchronizer.authorSelections[ authorId ];
 
-	if ( authorId === this.synchronizer.getAuthorId() ) {
+	if ( authorId === synchronizer.getAuthorId() ) {
 		return;
 	}
 
@@ -4418,7 +4392,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		} ).append(
 			$( '<span>' )
 				.addClass( 've-ce-surface-highlights-user-cursor-label' )
-				.text( this.synchronizer.getAuthorName( authorId ) )
+				.text( synchronizer.getAuthorName( authorId ) )
 				.css( { background: color } )
 		)
 	);
@@ -4433,13 +4407,13 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
  */
 ve.ce.Surface.prototype.onPosition = function () {
 	var surface = this;
-	if ( !this.synchronizer ) {
+	if ( !this.model.synchronizer ) {
 		return;
 	}
 	// Defer to allow surface synchronizer to adjust for transactions
 	setTimeout( function () {
 		var authorId,
-			authorSelections = surface.synchronizer.authorSelections;
+			authorSelections = surface.model.synchronizer.authorSelections;
 		for ( authorId in authorSelections ) {
 			surface.onSynchronizerAuthorUpdate( authorId );
 		}
