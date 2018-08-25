@@ -12,7 +12,7 @@
  * @extends OO.ui.Widget
  *
  * @constructor
- * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.Document} dataOrDoc Document data to edit
+ * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.Document|ve.dm.Surface} dataOrDocOrSurface Document data, document model, or surface model to edit
  * @param {Object} [config] Configuration options
  * @cfg {string} [mode] Editing mode
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
@@ -27,7 +27,7 @@
  * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
  * @cfg {string} [inDialog] The name of the dialog this surface is in
  */
-ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
+ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	var documentModel;
 
 	config = config || {};
@@ -57,17 +57,21 @@ ve.ui.Surface = function VeUiSurface( dataOrDoc, config ) {
 		config.includeCommands || this.commandRegistry.getNames(), config.excludeCommands || []
 	);
 	this.triggerListener = new ve.TriggerListener( this.commands, this.commandRegistry );
-	if ( dataOrDoc instanceof ve.dm.Document ) {
-		// ve.dm.Document
-		documentModel = dataOrDoc;
-	} else if ( dataOrDoc instanceof ve.dm.ElementLinearData || Array.isArray( dataOrDoc ) ) {
-		// LinearData or raw linear data
-		documentModel = new ve.dm.Document( dataOrDoc );
+	if ( dataOrDocOrSurface instanceof ve.dm.Surface ) {
+		this.model = dataOrDocOrSurface;
 	} else {
-		// HTMLDocument
-		documentModel = ve.dm.converter.getModelFromDom( dataOrDoc );
+		if ( dataOrDocOrSurface instanceof ve.dm.Document ) {
+			// ve.dm.Document
+			documentModel = dataOrDocOrSurface;
+		} else if ( dataOrDocOrSurface instanceof ve.dm.ElementLinearData || Array.isArray( dataOrDocOrSurface ) ) {
+			// LinearData or raw linear data
+			documentModel = new ve.dm.Document( dataOrDocOrSurface );
+		} else {
+			// HTMLDocument
+			documentModel = ve.dm.converter.getModelFromDom( dataOrDocOrSurface );
+		}
+		this.model = this.createModel( documentModel );
 	}
-	this.model = this.createModel( documentModel );
 	this.view = this.createView( this.model );
 	this.dialogs = this.createDialogWindowManager();
 	this.importRules = config.importRules || {};
