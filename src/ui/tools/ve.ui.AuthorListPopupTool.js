@@ -81,10 +81,15 @@ ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
 ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 	this.oldName = '';
 	this.updatingName = false;
-	this.synchronizer = surface.getView().synchronizer;
+	this.synchronizer = surface.getModel().synchronizer;
 	this.authorItems = {};
 
 	this.surface = surface;
+
+	if ( !this.synchronizer ) {
+		this.setDisabled( true );
+		return;
+	}
 
 	// TODO: Unbind from an existing surface if one is set
 
@@ -102,6 +107,8 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 		authorColorChange: 'onSynchronizerAuthorUpdate',
 		authorDisconnect: 'onSynchronizerAuthorDisconnect'
 	} );
+
+	this.onSynchronizerAuthorUpdate();
 };
 
 /**
