@@ -129,6 +129,7 @@
 	"visualeditor-help-tool": "說明",
 	"visualeditor-historybutton-redo-tooltip": "重做",
 	"visualeditor-historybutton-undo-tooltip": "還原",
+	"visualeditor-horizontalrule-tooltip": "水平線",
 	"visualeditor-indentationbutton-indent-tooltip": "增加縮排",
 	"visualeditor-indentationbutton-outdent-tooltip": "減少縮排",
 	"visualeditor-inspector-close-tooltip": "關閉",

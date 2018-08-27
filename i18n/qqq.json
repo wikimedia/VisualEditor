@@ -23,7 +23,8 @@
 			"Nemo bis",
 			"Skyllful",
 			"Woytecr",
-			"Matma Rex"
+			"Matma Rex",
+			"McDutchie"
 		]
 	},
 	"visualeditor": "The name of the VisualEditor extension.\n{{Identical|VisualEditor}}",
@@ -79,7 +80,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "Label for the edit action on a context item.\n{{Identical|Edit}}",
 	"visualeditor-debugbar-close": "Label for the button to dismiss the debug toolbar.\n{{Identical|Close}}",
 	"visualeditor-debugbar-inputdebug": "Label for the button in the debug toolbar to run keyboard input in debug mode.",
-	"visualeditor-debugbar-logrange": "Label for the button in the debug toolbar to output the current selection to the JavaScript console.",
+	"visualeditor-debugbar-logrange": "Label for the button in the debug toolbar to output the current selection to the JavaScript console.\n{{doc-important|\"Log\" is a verb here. Translate as \"log the selected (text)\", and NOT as \"the log (that was) selected\".}}",
 	"visualeditor-debugbar-showmodel": "Label for the button in the debug toolbar to show the document model.",
 	"visualeditor-debugbar-showtransactions": "Label for the button in the debug toolbar to show the transaction history.",
 	"visualeditor-debugbar-testsquasher": "Label for the button in the debug toolbar to test the transaction squasher.",

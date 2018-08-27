@@ -74,6 +74,7 @@
 	"visualeditor-debugbar-close": "閉じる",
 	"visualeditor-debugbar-logrange": "ログ選択済み",
 	"visualeditor-debugbar-showmodel": "モデルを表示",
+	"visualeditor-debugbar-showtransactions": "トランザクションを参照",
 	"visualeditor-dialog-action-apply": "変更内容を適用",
 	"visualeditor-dialog-action-cancel": "キャンセル",
 	"visualeditor-dialog-action-done": "完了",
