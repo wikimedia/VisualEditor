@@ -159,6 +159,7 @@ ve.BranchNode.prototype.setDocument = function ( doc ) {
  * @param {number} offset Offset get node for
  * @param {boolean} [shallow] Do not iterate into child nodes of child nodes
  * @return {ve.Node|null} Node at offset, or null if none was found
+ * @throws {Error} If offset is out of bounds
  */
 ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 	var i, length, nodeLength, childNode,
@@ -166,6 +167,9 @@ ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 		nodeOffset = 0;
 	if ( offset === 0 ) {
 		return currentNode;
+	}
+	if ( offset < 0 ) {
+		throw new Error( 'Offset out of bounds' );
 	}
 	// TODO a lot of logic is duplicated in selectNodes(), abstract that into a traverser or something
 	SIBLINGS:
