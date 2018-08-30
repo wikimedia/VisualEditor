@@ -357,7 +357,8 @@ ve.dm.TableSelection.prototype.isMergeable = function () {
  * @return {ve.dm.TableNode} Table node
  */
 ve.dm.TableSelection.prototype.getTableNode = function () {
-	if ( !this.tableNode ) {
+	// Also check if tableNode has been detached
+	if ( !this.tableNode || !this.tableNode.root ) {
 		this.tableNode = this.getDocument().getBranchNodeFromOffset( this.tableRange.start + 1 );
 	}
 	return this.tableNode;
