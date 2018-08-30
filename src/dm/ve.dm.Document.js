@@ -1199,10 +1199,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// Array where we build the return value
 		newData = [],
 
-		// Temporary variables for handling combining marks
-		insert, annotations,
-		// An unattached combining mark may require the insertion to remove a character,
-		// so we send this counter back in the result.
 		// Inserting block element into an empty content branch will replace it.
 		remove = 0,
 
@@ -1465,29 +1461,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					closeElement( childType );
 				}
 			} while ( !childrenOK );
-
-			if (
-				i === 0 &&
-				childType === 'text' &&
-				ve.isUnattachedCombiningMark( data[ i ] )
-			) {
-				// Note we only need to check data[0] as combining marks further
-				// along should already have been merged
-				if ( doc.data.isElementData( offset - 1 ) ) {
-					// Inserting a unattached combining mark is generally pretty badly
-					// supported (browser rendering bugs), so we'll just prevent it.
-					continue;
-				} else {
-					offset--;
-					remove++;
-					insert = doc.data.getCharacterData( offset ) + data[ i ];
-					annotations = doc.data.getAnnotationHashesFromOffset( offset );
-					if ( annotations.length ) {
-						insert = [ insert, annotations ];
-					}
-					data[ i ] = insert;
-				}
-			}
 
 			for ( j = 0; j < closings.length; j++ ) {
 				// writeElement() would update openingStack/closingStack, but we've already done

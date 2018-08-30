@@ -503,16 +503,6 @@ ve.userConfig = function ( key ) {
 };
 
 /**
- * Determine if the text consists of only unattached combining marks.
- *
- * @param {string} text Text to test
- * @return {boolean} The text is unattached combining marks
- */
-ve.isUnattachedCombiningMark = function ( text ) {
-	return ( /^[\u0300-\u036F]+$/ ).test( text );
-};
-
-/**
  * Convert a grapheme cluster offset to a byte offset.
  *
  * @param {string} text Text in which to calculate offset
