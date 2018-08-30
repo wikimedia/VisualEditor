@@ -128,7 +128,7 @@ var self = module.exports = {
 			}
 
 			// Add in any dependencies
-			if ( Object.prototype.hasOwnProperty.call( modules[ module ], 'dependencies' ) ) {
+			if ( modules[ module ].dependencies ) {
 				self.buildDependencyList( modules, modules[ module ].dependencies, list );
 			}
 
