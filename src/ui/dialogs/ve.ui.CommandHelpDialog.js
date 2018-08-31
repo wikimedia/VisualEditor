@@ -45,24 +45,18 @@ ve.ui.CommandHelpDialog.static.commandGroups = {
 		demote: [ 'clear' ]
 	},
 	clipboard: {
-		title: OO.ui.deferMsg( 'visualeditor-shortcuts-clipboard' ),
-		promote: [],
-		demote: []
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-clipboard' )
 	},
 	formatting: {
 		title: OO.ui.deferMsg( 'visualeditor-shortcuts-formatting' ),
-		promote: [ 'paragraph', 'pre', 'blockquote' ],
-		demote: []
+		promote: [ 'paragraph', 'pre', 'blockquote' ]
 	},
 	history: {
 		title: OO.ui.deferMsg( 'visualeditor-shortcuts-history' ),
-		promote: [ 'undo', 'redo' ],
-		demote: []
+		promote: [ 'undo', 'redo' ]
 	},
 	dialog: {
-		title: OO.ui.deferMsg( 'visualeditor-shortcuts-dialog' ),
-		promote: [],
-		demote: []
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-dialog' )
 	},
 	other: {
 		title: OO.ui.deferMsg( 'visualeditor-shortcuts-other' ),
@@ -70,9 +64,7 @@ ve.ui.CommandHelpDialog.static.commandGroups = {
 		demote: [ 'commandHelp' ]
 	},
 	insert: {
-		title: OO.ui.deferMsg( 'visualeditor-shortcuts-insert' ),
-		promote: [],
-		demote: []
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-insert' )
 	}
 };
 
@@ -212,8 +204,8 @@ ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {
  *
  * @static
  * @param {string} groupName The dialog-category in which to display this
- * @param {string[]} promote Commands which should be displayed first
- * @param {string[]} demote Commands which should be displayed last
+ * @param {string[]} [promote] Commands which should be displayed first
+ * @param {string[]} [demote] Commands which should be displayed last
  * @return {Object[]} List of commands in order
  */
 ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, promote, demote ) {
@@ -225,16 +217,23 @@ ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, p
 		promoted = [],
 		demoted = [];
 	keys.sort();
-	for ( i = 0; i < promote.length; i++ ) {
-		promoted.push( commands[ promote[ i ] ] );
-		used[ promote[ i ] ] = true;
-	}
-	for ( i = 0; i < demote.length; i++ ) {
-		if ( used[ demote[ i ] ] ) {
-			continue;
+	if ( promote ) {
+		for ( i = 0; i < promote.length; i++ ) {
+			if ( !commands[ promote[ i ] ] ) {
+				continue;
+			}
+			promoted.push( commands[ promote[ i ] ] );
+			used[ promote[ i ] ] = true;
 		}
-		demoted.push( commands[ demote[ i ] ] );
-		used[ demote[ i ] ] = true;
+	}
+	if ( demote ) {
+		for ( i = 0; i < demote.length; i++ ) {
+			if ( used[ demote[ i ] ] || !commands[ demote[ i ] ] ) {
+				continue;
+			}
+			demoted.push( commands[ demote[ i ] ] );
+			used[ demote[ i ] ] = true;
+		}
 	}
 	for ( i = 0; i < keys.length; i++ ) {
 		if ( used[ keys[ i ] ] ) {
