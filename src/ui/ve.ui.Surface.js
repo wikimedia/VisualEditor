@@ -85,6 +85,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.placeholderVisible = false;
 	this.setPlaceholder( config.placeholder );
 	this.scrollPosition = null;
+	this.windowStackDepth = 0;
 
 	this.toolbarHeight = 0;
 	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
@@ -544,13 +545,19 @@ ve.ui.Surface.prototype.onWindowOpening = function ( win, opening ) {
 		opening
 			.progress( function ( data ) {
 				if ( data.state === 'setup' ) {
-					surface.toggleMobileGlobalOverlay( true );
+					surface.windowStackDepth++;
+					if ( surface.windowStackDepth === 1 ) {
+						surface.toggleMobileGlobalOverlay( true );
+					}
 				}
 			} )
 			.always( function ( opened ) {
 				opened.always( function ( closed ) {
 					closed.always( function () {
-						surface.toggleMobileGlobalOverlay( false );
+						surface.windowStackDepth--;
+						if ( surface.windowStackDepth === 0 ) {
+							surface.toggleMobileGlobalOverlay( false );
+						}
 					} );
 				} );
 			} );
