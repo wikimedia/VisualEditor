@@ -260,7 +260,7 @@ TransportServer.prototype.onConnection = function ( socket ) {
 		this.docNamespaces.set( docName, namespace );
 		// We must bind methods separately, using a namespace handler, because
 		// the socket object passed into namespace handlers is different
-		namespace.on( 'connection', this.onDocConnection.bind( this, namespace ) );
+		namespace.on( 'connection', this.onDocConnection.bind( this, docName, namespace ) );
 	}
 };
 
@@ -269,13 +269,13 @@ TransportServer.prototype.onConnection = function ( socket ) {
  *
  * This sends events to initialize the client, and adds handlers to the client's socket
  *
+ * @param {string} docName The name of the document
  * @param {Object} namespace The io namespace
  * @param {Object} socket The io socket (specific to one client's current connection)
  */
-TransportServer.prototype.onDocConnection = function ( namespace, socket ) {
+TransportServer.prototype.onDocConnection = function ( docName, namespace, socket ) {
 	var context,
 		server = this.protocolServer,
-		docName = socket.handshake.query.docName,
 		authorId = +socket.handshake.query.authorId || null,
 		token = socket.handshake.query.token || null;
 
