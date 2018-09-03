@@ -21,7 +21,8 @@
 			"01miki10",
 			"Pyscowicz",
 			"Pahkiqaz",
-			"OneMember"
+			"OneMember",
+			"Surjection"
 		]
 	},
 	"visualeditor": "Visuaalinen muokkain",
@@ -48,9 +49,15 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Alaindeksi",
 	"visualeditor-annotationbutton-superscript-tooltip": "Yläindeksi",
 	"visualeditor-annotationbutton-underline-tooltip": "Alleviivaus",
+	"visualeditor-changedesc-changed": "$1 muutettu arvosta $2 arvoon $3",
+	"visualeditor-changedesc-comment": "Kommentti muutettu arvosta $1 arvoon $2",
 	"visualeditor-changedesc-image-size": "Koko vaihdettu koosta $1 kokoon $2",
 	"visualeditor-changedesc-language": "Kieli vaihdettu kielestä $1 kieleen $2",
+	"visualeditor-changedesc-link-href": "Linkin kohde vaihdettu kohteesta $1 kohteeseen $2",
+	"visualeditor-changedesc-no-key": "$1 vaihdettu arvoon $2",
+	"visualeditor-changedesc-set": "Kenttä $1 asetettu arvoon $2",
 	"visualeditor-changedesc-unknown": "$1 muutettiin",
+	"visualeditor-changedesc-unset": "Kentän $1 arvo $2 poistettu",
 	"visualeditor-changedir": "Muuta suuntausta",
 	"visualeditor-changedir-tool-ltr": "Näytä vasemmalta oikealle",
 	"visualeditor-changedir-tool-rtl": "Näytä oikealta vasemmalle",
@@ -74,6 +81,7 @@
 	"visualeditor-debugbar-showtransactions": "Näytä tapahtumat",
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
 	"visualeditor-debugbar-stopfilibuster": "Lopeta Filibuster",
+	"visualeditor-debugbar-updatemodel": "Päivitä muokattaessa",
 	"visualeditor-dialog-action-apply": "Hyväksy muutokset",
 	"visualeditor-dialog-action-cancel": "Peru",
 	"visualeditor-dialog-action-done": "Valmis",

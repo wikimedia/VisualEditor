@@ -163,6 +163,7 @@
 	"visualeditor-missing-document-title": "Дакумэнт адсутнічае",
 	"visualeditor-rebase-client-author-name": "Імя",
 	"visualeditor-rebase-client-connecting": "Злучэньне…",
+	"visualeditor-rebase-client-document-name": "Назва дакумэнту (неабавязкова)",
 	"visualeditor-shortcuts-clipboard": "Буфэр абмену",
 	"visualeditor-shortcuts-formatting": "Фарматаваньне абзацу",
 	"visualeditor-shortcuts-history": "Гісторыя",
