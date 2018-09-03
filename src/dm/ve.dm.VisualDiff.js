@@ -27,7 +27,6 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc, timeout ) {
 	this.oldDocInternalListNode = this.oldDoc.getInternalList().getListNode();
 	this.newDocInternalListNode = this.newDoc.getInternalList().getListNode();
 	this.treeDiffer = treeDiffer;
-	// eslint-disable-next-line camelcase,new-cap
 	this.linearDiffer = new ve.DiffMatchPatch( this.oldDoc.getStore(), this.newDoc.getStore() );
 
 	// Minimum ratio of content (same : different) allowed between two corresponding nodes
