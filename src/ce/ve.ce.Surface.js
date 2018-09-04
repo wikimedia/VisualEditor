@@ -1836,6 +1836,8 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 			ve.selectElement( this.$pasteTarget[ 0 ] );
 		}
 	}
+
+	ve.track( 'activity.clipboard', { action: e.type } );
 };
 
 /**
@@ -1869,6 +1871,8 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 				surface.pasting = false;
 				surface.pasteSpecial = false;
 				surface.beforePasteData = null;
+
+				ve.track( 'activity.clipboard', { action: 'paste' } );
 			} );
 		}
 	} );
