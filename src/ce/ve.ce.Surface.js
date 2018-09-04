@@ -2250,7 +2250,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 			forceClipboardData ||
 			// FIXME T126045: Allow the test runner to force the use of clipboardData
 			clipboardKey === 'useClipboardData-0' ||
-			$clipboardHtml.find( importantElement ).addBack().filter( importantElement ).length > this.$pasteTarget.find( importantElement ).length
+			$clipboardHtml.find( importantElement ).addBack( importantElement ).length > this.$pasteTarget.find( importantElement ).length
 		) {
 			// CE destroyed an important element, so revert to using clipboard data
 			htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
