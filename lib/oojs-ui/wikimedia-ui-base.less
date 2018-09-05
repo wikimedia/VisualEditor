@@ -1,5 +1,5 @@
 /**
- * WikimediaUI Base v0.11.0
+ * WikimediaUI Base v0.12.0
  * Wikimedia Foundation user interface base variables
  */
 
@@ -58,6 +58,7 @@
 
 // Background Colors
 @background-color-base:           @wmui-color-base100;
+@background-color-base--hover:    @wmui-color-base80;
 @background-color-base--disabled: @wmui-color-base80;
 @background-color-code:           @wmui-color-base90;
 // 'Framed' UI elements (Framed Buttons, Dropdowns, ToggleSwitches…)
@@ -126,8 +127,20 @@
 
 
 // == Box Model properties ==
+// `@*size` variables are used for `*width` & `*height` properties
+@size-base:                       32px;
+
+@min-size-icon:                   20px; // values used for `min-*` are defined in `px`, see T130691
+@min-size-indicator:              12px;
+
+@size-icon:                       20px;
+@size-indicator:                  12px;
+@size-tool:                       42px;
+
 // Max Widths
+@max-width-base:                  50em;
 @max-width-button:                28.75em; // = `460px` at `16px` base, see T95367
+@max-width-input:                 @max-width-base;
 @max-width-input-inline:          100%;
 
 // Border
