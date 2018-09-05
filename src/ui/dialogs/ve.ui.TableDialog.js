@@ -16,6 +16,8 @@
 ve.ui.TableDialog = function VeUiTableDialog( config ) {
 	// Parent constructor
 	ve.ui.TableDialog.super.call( this, config );
+
+	this.$element.addClass( 've-ui-tableDialog' );
 };
 
 /* Inheritance */
@@ -55,7 +57,8 @@ ve.ui.TableDialog.prototype.initialize = function () {
 
 	this.panel = new OO.ui.PanelLayout( {
 		padded: true,
-		expanded: false
+		expanded: false,
+		classes: [ 've-ui-tableDialog-panel' ]
 	} );
 
 	this.captionToggle = new OO.ui.ToggleSwitchWidget();
