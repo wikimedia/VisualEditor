@@ -22,6 +22,19 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 
 	surface.undo();
 
+	fragment.insertContent( 'foo' );
+	assert.deepEqual(
+		doc.getData( doc.getDocumentRange() ),
+		[
+			{ type: 'paragraph' },
+			'f', 'o', 'o',
+			{ type: '/paragraph' }
+		],
+		'Simple text insert'
+	);
+
+	surface.undo();
+
 	fragment.insertContent( 'foo\nbar' );
 	assert.deepEqual(
 		doc.getData( doc.getDocumentRange() ),
