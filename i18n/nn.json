@@ -67,6 +67,8 @@
 	"visualeditor-languageinspector-widget-label-direction": "Retning",
 	"visualeditor-languageinspector-widget-label-langcode": "Språkkode",
 	"visualeditor-languageinspector-widget-label-language": "Språk",
+	"visualeditor-linkcontext-label-change": "Endra lenkjetekst",
+	"visualeditor-linkcontext-label-label": "Lenkjetekst",
 	"visualeditor-linkinspector-title": "Lenkje",
 	"visualeditor-listbutton-bullet-tooltip": "Punktliste",
 	"visualeditor-listbutton-number-tooltip": "Nummerert liste",

@@ -19,7 +19,8 @@
 			"Duolaimi",
 			"Nbdd0121",
 			"Yejianfei",
-			"Hanyanbo98"
+			"Hanyanbo98",
+			"夢蝶葬花"
 		]
 	},
 	"visualeditor": "可视化编辑器",
@@ -125,6 +126,7 @@
 	"visualeditor-help-tool": "帮助",
 	"visualeditor-historybutton-redo-tooltip": "重做",
 	"visualeditor-historybutton-undo-tooltip": "撤销",
+	"visualeditor-horizontalrule-tooltip": "水平线",
 	"visualeditor-indentationbutton-indent-tooltip": "增加缩进",
 	"visualeditor-indentationbutton-outdent-tooltip": "减少缩进",
 	"visualeditor-inspector-close-tooltip": "关闭",
