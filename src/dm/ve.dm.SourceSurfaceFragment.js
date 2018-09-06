@@ -219,11 +219,11 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
  *
  * The default implementation converts to HTML synchronously.
  *
- * If the conversion is asynchornous it should lock the surface
+ * If the conversion is asynchronous it should lock the surface
  * until complete.
  *
  * @param {ve.dm.Document} doc Document
- * @return {jQuery.Promise} Promise with resolves with source, or rejects
+ * @return {jQuery.Promise} Promise which resolves with source, or rejects
  */
 ve.dm.SourceSurfaceFragment.prototype.convertToSource = function ( doc ) {
 	if ( !doc.data.hasContent() ) {
@@ -242,11 +242,11 @@ ve.dm.SourceSurfaceFragment.prototype.convertToSource = function ( doc ) {
  *
  * The default implementation converts from HTML synchronously.
  *
- * If the conversion is asynchornous it should lock the surface
+ * If the conversion is asynchronous it should lock the surface
  * until complete.
  *
  * @param {string} source Source text
- * @return {jQuery.Promise} Promise with resolves with source
+ * @return {jQuery.Promise} Promise which resolves with document model
  */
 ve.dm.SourceSurfaceFragment.prototype.convertFromSource = function ( source ) {
 	var lang = this.getDocument().getLang(),
