@@ -808,6 +808,48 @@ QUnit.test( 'getText', function ( assert ) {
 	);
 } );
 
+QUnit.test( 'getSourceText', function ( assert ) {
+	var i,
+		data = new ve.dm.ElementLinearData(
+			new ve.dm.HashValueStore(),
+			[
+				{ type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' },
+				{ type: 'paragraph' }, 'b', 'a', 'r', { type: '/paragraph' },
+				{ type: 'internalList' }, { type: '/internalList' }
+			]
+		),
+		cases = [
+			{
+				msg: 'Whole document',
+				range: undefined,
+				expected: 'foo\nbar'
+			},
+			{
+				msg: 'Simple text range',
+				range: new ve.Range( 1, 4 ),
+				expected: 'foo'
+			},
+			{
+				msg: 'Newline spanning',
+				range: new ve.Range( 3, 7 ),
+				expected: 'o\nb'
+			},
+			{
+				msg: 'Whole line',
+				range: new ve.Range( 0, 5 ),
+				expected: 'foo\n'
+			}
+		];
+
+	for ( i = 0; i < cases.length; i++ ) {
+		assert.strictEqual(
+			data.getSourceText( cases[ i ].range ),
+			cases[ i ].expected,
+			cases[ i ].msg
+		);
+	}
+} );
+
 QUnit.test( 'isContentData', function ( assert ) {
 	var i, data,
 		cases = [
