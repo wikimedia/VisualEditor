@@ -154,12 +154,11 @@ ve.dm.Surface.prototype.initialize = function () {
  * @return {HTMLDocument|string} HTML document (visual mode) or text (source mode)
  */
 ve.dm.Surface.prototype.getDom = function () {
-	// Optimized converter for source mode, which contains only
-	// plain text or paragraphs.
 	if ( this.sourceMode ) {
-		return this.getDocument().data.getSourceText();
+		return ve.dm.sourceConverter.getSourceTextFromModel( this.getDocument() );
+	} else {
+		return ve.dm.converter.getDomFromModel( this.getDocument() );
 	}
-	return ve.dm.converter.getDomFromModel( this.getDocument() );
 };
 
 /**

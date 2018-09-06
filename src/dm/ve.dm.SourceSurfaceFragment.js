@@ -76,7 +76,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annotate ) {
-	var i, l, data, lines;
+	var data;
 
 	if ( typeof content !== 'string' ) {
 		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), content );
@@ -86,22 +86,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annota
 			return this;
 		}
 	} else {
-		// Similar to parent method's handling of strings, but doesn't
-		// remove empty lines.
-		lines = content.split( /\r?\n/ );
-
-		if ( lines.length > 1 ) {
-			content = [];
-			for ( i = 0, l = lines.length; i < l; i++ ) {
-				if ( i > 0 ) {
-					content.push( { type: '/paragraph' } );
-					content.push( { type: 'paragraph' } );
-				}
-				ve.batchPush( content, lines[ i ].split( '' ) );
-			}
-		} else {
-			content = content.split( '' );
-		}
+		content = ve.dm.sourceConverter.getDataFromSourceText( content, true );
 	}
 
 	// Parent method

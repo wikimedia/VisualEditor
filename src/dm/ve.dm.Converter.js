@@ -607,7 +607,7 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * Convert an HTML document to a document model.
  *
  * @param {HTMLDocument} doc HTML document to convert
- * @param {Object} options Conversion options
+ * @param {Object} [options] Conversion options
  * @param {HTMLDocument} [options.targetDoc=doc] Target HTML document we are converting for, if different from doc
  * @param {boolean} [options.fromClipboard=false] Conversion is from clipboard
  * @param {string} [options.lang] Document language code
