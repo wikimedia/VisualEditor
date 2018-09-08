@@ -432,11 +432,12 @@ ve.ui.MediaSizeWidget.prototype.getCurrentDimensions = function () {
 };
 
 /**
- * Disable or enable the entire widget
- *
- * @param {boolean} isDisabled Disable the widget
+ * @inheritdoc
  */
-ve.ui.MediaSizeWidget.prototype.setDisabled = function ( isDisabled ) {
+ve.ui.MediaSizeWidget.prototype.setDisabled = function ( disabled ) {
+	// Parent method
+	ve.ui.MediaSizeWidget.super.prototype.setDisabled.call( this, disabled );
+
 	// The 'setDisabled' method seems to be called before the widgets
 	// are fully defined. So, before disabling/enabling anything,
 	// make sure the objects exist
@@ -446,15 +447,15 @@ ve.ui.MediaSizeWidget.prototype.setDisabled = function ( isDisabled ) {
 		this.fullSizeButton
 	) {
 		// Disable the type select
-		this.sizeTypeSelectWidget.setDisabled( isDisabled );
+		this.sizeTypeSelectWidget.setDisabled( disabled );
 
 		// Disable the dimensions widget
-		this.dimensionsWidget.setDisabled( isDisabled );
+		this.dimensionsWidget.setDisabled( disabled );
 
 		// Double negatives aren't never fun!
 		this.fullSizeButton.setDisabled(
 			// Disable if asked to disable
-			isDisabled ||
+			disabled ||
 			// Only enable if the scalable has
 			// the original dimensions available
 			!this.scalable.getOriginalDimensions()
