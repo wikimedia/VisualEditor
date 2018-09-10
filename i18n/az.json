@@ -4,7 +4,8 @@
 			"Cekli829",
 			"Interfase",
 			"Jduranboger",
-			"Wertuose"
+			"Wertuose",
+			"Serkanland"
 		]
 	},
 	"visualeditor": "Vizual redaktor",
@@ -31,6 +32,7 @@
 	"visualeditor-dialog-action-cancel": "İmtina",
 	"visualeditor-dialog-action-goback": "Geri qayıt",
 	"visualeditor-dialog-command-help-title": "Klavişlərin birləşməsi",
+	"visualeditor-find-and-replace-match-case": "Böyük/kiçik hərf həssaslığı",
 	"visualeditor-formatdropdown-format-blockquote": "İstinad bloku",
 	"visualeditor-formatdropdown-format-heading-label": "Başlıq (1-6)",
 	"visualeditor-formatdropdown-format-heading1": "Başlıq 1",
