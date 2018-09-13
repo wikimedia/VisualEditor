@@ -1291,7 +1291,7 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 		changes.forEach( function ( changeString ) {
 			var data = JSON.parse( changeString ),
 				change = ve.dm.Change.static.unsafeDeserialize( data, surface.getDocument() );
-			change.applyTo( surface );
+			change.applyTo( surface, true );
 			surface.breakpoint();
 		} );
 		restored = !!changes.length;

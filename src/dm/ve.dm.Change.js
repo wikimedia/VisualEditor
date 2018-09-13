@@ -809,9 +809,10 @@ ve.dm.Change.prototype.truncate = function ( length ) {
  * Apply change to surface
  *
  * @param {ve.dm.Surface} surface Surface in change start state
+ * @param {boolean} [applySelection] Apply a selection based on the modified range
  */
-ve.dm.Change.prototype.applyTo = function ( surface ) {
-	var doc = surface.documentModel;
+ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
+	var doc = surface.getDocument();
 	if ( this.start !== doc.completeHistory.getLength() ) {
 		throw new Error( 'Change starts at ' + this.start + ', but doc is at ' + doc.completeHistory.getLength() );
 	}
@@ -819,9 +820,18 @@ ve.dm.Change.prototype.applyTo = function ( surface ) {
 		surface.documentModel.store.merge( store );
 	} );
 	this.transactions.forEach( function ( tx ) {
+		var offset;
 		surface.change( tx );
 		// Don't mark as applied: this.start already tracks this
 		tx.applied = false;
+
+		// TODO: This would be better fixed by T202730
+		if ( applySelection ) {
+			offset = doc.getNearestCursorOffset( tx.getModifiedRange( doc ).end, -1 );
+			if ( offset !== -1 ) {
+				surface.setSelection( new ve.dm.LinearSelection( doc, new ve.Range( offset ) ) );
+			}
+		}
 	} );
 };
 
@@ -831,7 +841,7 @@ ve.dm.Change.prototype.applyTo = function ( surface ) {
  * @param {ve.dm.Surface} surface Surface in change end state
  */
 ve.dm.Change.prototype.unapplyTo = function ( surface ) {
-	var doc = surface.documentModel,
+	var doc = surface.getDocument(),
 		historyLength = doc.completeHistory.getLength() - this.getLength();
 	if ( this.start !== historyLength ) {
 		throw new Error( 'Invalid start: change starts at ' + this.start + ', but doc would be at ' + historyLength );

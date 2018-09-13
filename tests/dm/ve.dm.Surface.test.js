@@ -412,7 +412,6 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.strictEqual( ve.init.platform.getSessionList( 've-changes' ).length, 1, 'No extra change stored if no changes since last store' );
 
 	fragment.convertNodes( 'heading', { level: 1 } );
-	surface.setLinearSelection( new ve.Range( 5 ) );
 	surface.breakpoint();
 	assert.deepEqual(
 		ve.init.platform.getSessionList( 've-changes' ).map( JSON.parse )[ 1 ],
@@ -426,6 +425,12 @@ QUnit.test( 'autosave', function ( assert ) {
 		},
 		'Second change stored'
 	);
+	fragment.collapseToEnd().insertContent( ' baz' );
+	surface.setLinearSelection( new ve.Range( 5 ) );
+	surface.breakpoint();
+	assert.strictEqual(
+		ve.init.platform.getSessionList( 've-changes' ).length, 3, 'Fourth change stored'
+	);
 	assert.strictEqual(
 		ve.init.platform.getSession( 've-selection' ),
 		JSON.stringify( { type: 'linear', range: { type: 'range', from: 5, to: 5 } } ),
@@ -436,7 +441,7 @@ QUnit.test( 'autosave', function ( assert ) {
 	fragment.collapseToEnd().insertContent( ' quux' );
 	surface.breakpoint();
 	assert.strictEqual(
-		ve.init.platform.getSessionList( 've-changes' ).length, 2, 'Change not stored after stopStoringChanges'
+		ve.init.platform.getSessionList( 've-changes' ).length, 3, 'Change not stored after stopStoringChanges'
 	);
 
 	assert.throws(
@@ -452,10 +457,12 @@ QUnit.test( 'autosave', function ( assert ) {
 	fragment = null;
 	assert.strictEqual( surface.getHtml(), '<p>hi</p>', 'Document HTML before restoreChanges' );
 	assert.strictEqual( surface.restoreChanges(), true, 'restoreChanges returns true on success' );
-	assert.strictEqual( surface.getHtml(), '<h1>hi bar</h1>', 'Document HTML restored' );
-	assert.strictEqual( surface.getDocument().getCompleteHistoryLength(), 2, 'Document history restored' );
+	assert.strictEqual( surface.getHtml(), '<h1>hi bar baz</h1>', 'Document HTML restored' );
+	assert.strictEqual( surface.getDocument().getCompleteHistoryLength(), 3, 'Document history restored' );
 	setTimeout( function ( surface ) {
 		assert.equalHash( surface.getSelection(), { type: 'linear', range: { type: 'range', from: 5, to: 5 } }, 'Document selection restored (async)' );
+		surface.undo();
+		assert.equalHash( surface.getSelection(), { type: 'linear', range: { type: 'range', from: 7, to: 7 } }, 'Document selection guessed after undo' );
 		done();
 	}.bind( this, surface ) );
 
