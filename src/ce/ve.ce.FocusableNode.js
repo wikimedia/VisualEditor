@@ -650,9 +650,9 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 			this.emit( 'focus' );
 			this.$element.addClass( 've-ce-focusableNode-focused' );
 			this.createHighlights();
+			// this.focused may have changed, so re-attach in the correct container
 			this.focusableSurface.appendHighlights( this.$highlights, this.focused );
 			this.focusableSurface.$element.off( '.ve-ce-focusableNode' );
-			this.focusableSurface.connect( this, { position: 'positionHighlights' } );
 		} else {
 			this.emit( 'blur' );
 			this.$element.removeClass( 've-ce-focusableNode-focused' );
@@ -681,6 +681,7 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
 	this.positionHighlights();
 
 	this.focusableSurface.appendHighlights( this.$highlights, this.focused );
+	this.focusableSurface.connect( this, { position: 'positionHighlights' } );
 
 	// Events
 	if ( !this.focused ) {
