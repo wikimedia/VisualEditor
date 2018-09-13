@@ -25,6 +25,7 @@ ve.sanitizeHtml = function ( html ) {
 		ADD_ATTR: addAttrs,
 		ADD_URI_SAFE_ATTR: addAttrs,
 		FORBID_TAGS: [ 'style' ],
+		FORCE_BODY: true,
 		RETURN_DOM_FRAGMENT: true
 	} ).childNodes;
 };
