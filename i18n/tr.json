@@ -21,7 +21,8 @@
 			"Alikaan",
 			"1917 Ekim Devrimi",
 			"Vito Genovese",
-			"Hedda"
+			"Hedda",
+			"TmY e12"
 		]
 	},
 	"visualeditor": "Görsel Düzenleyici",
@@ -62,7 +63,7 @@
 	"visualeditor-changedir": "Yönünü değiştir",
 	"visualeditor-changedir-tool-ltr": "Soldan sağa olarak görüntüle",
 	"visualeditor-changedir-tool-rtl": "Sağdan sola olarak görüntüle",
-	"visualeditor-clearbutton-tooltip": "Biçemi temizle",
+	"visualeditor-clearbutton-tooltip": "Kaldır",
 	"visualeditor-clipboard-copy": "Kopyala",
 	"visualeditor-clipboard-cut": "Kes",
 	"visualeditor-clipboard-paste": "Yapıştır",
@@ -154,6 +155,8 @@
 	"visualeditor-languageinspector-widget-label-direction": "Yön",
 	"visualeditor-languageinspector-widget-label-langcode": "Dil kodu",
 	"visualeditor-languageinspector-widget-label-language": "Dil",
+	"visualeditor-linkcontext-label-label": "Etiket",
+	"visualeditor-linkcontext-remove": "Bağlantıyı kaldır",
 	"visualeditor-linkinspector-title": "Bağlantı",
 	"visualeditor-listbutton-bullet-tooltip": "Madde imli liste",
 	"visualeditor-listbutton-number-tooltip": "Numaralı liste",
