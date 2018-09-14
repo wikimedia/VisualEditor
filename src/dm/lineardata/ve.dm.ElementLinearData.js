@@ -819,21 +819,7 @@ ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) 
  * @return {string} Data as original source text
  */
 ve.dm.ElementLinearData.prototype.getSourceText = function ( range ) {
-	var i,
-		data = this.data,
-		text = '';
-
-	range = range || new ve.Range( 0, this.getLength() );
-
-	for ( i = range.start; i < range.end; i++ ) {
-		if ( data[ i ].type === '/paragraph' && ( !data[ i + 1 ] || data[ i + 1 ].type === 'paragraph' ) ) {
-			text += '\n';
-		} else if ( !data[ i ].type ) {
-			text += data[ i ];
-		}
-	}
-
-	return text;
+	return ve.dm.sourceConverter.getSourceTextFromDataRange( this.data, range );
 };
 
 /**

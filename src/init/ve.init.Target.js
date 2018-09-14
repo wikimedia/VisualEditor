@@ -199,28 +199,34 @@ ve.init.Target.static.importRules = {
 /* Static methods */
 
 /**
+ * Create a document model from an HTML document.
+ *
+ * @param {HTMLDocument|string} doc HTML document or source text
+ * @param {string} mode Editing mode
+ * @param {Object} options Conversion options
+ * @return {ve.dm.Document} Document model
+ */
+ve.init.Target.static.createModelFromDom = function ( doc, mode, options ) {
+	if ( mode === 'source' ) {
+		return ve.dm.sourceConverter.getModelFromSourceText( doc, options );
+	} else {
+		return ve.dm.converter.getModelFromDom( doc, options );
+	}
+};
+
+/**
  * Parse document string into an HTML document
  *
  * @param {string} documentString Document. Note that this must really be a whole document
  *   with a single root tag.
  * @param {string} mode Editing mode
- * @return {HTMLDocument} HTML document
+ * @return {HTMLDocument|string} HTML document, or document string (source mode)
  */
 ve.init.Target.static.parseDocument = function ( documentString, mode ) {
-	var doc;
 	if ( mode === 'source' ) {
-		// Parse as plain text in source mode
-		doc = ve.createDocumentFromHtml( '' );
-
-		documentString.split( '\n' ).forEach( function ( line ) {
-			var p = doc.createElement( 'p' );
-			p.appendChild( doc.createTextNode( line ) );
-			doc.body.appendChild( p );
-		} );
-	} else {
-		doc = ve.createDocumentFromHtml( documentString );
+		return documentString;
 	}
-	return doc;
+	return ve.createDocumentFromHtml( documentString );
 };
 
 // Deprecated alias
