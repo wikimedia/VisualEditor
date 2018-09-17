@@ -17,7 +17,8 @@
 			"Omotecho",
 			"Kumikami",
 			"Kkairri",
-			"Suyama"
+			"Suyama",
+			"Wat"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -141,6 +142,7 @@
 	"visualeditor-key-up": "上",
 	"visualeditor-language-search-input-placeholder": "言語名または言語コードで検索",
 	"visualeditor-languageannotation-description-with-dir": "$1 ($2)",
+	"visualeditor-languagecontext-remove": "言語を削除",
 	"visualeditor-languageinspector-title": "言語",
 	"visualeditor-languageinspector-widget-changelang": "言語を探す",
 	"visualeditor-languageinspector-widget-label-direction": "書字方向",

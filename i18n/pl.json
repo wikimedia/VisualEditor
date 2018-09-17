@@ -80,6 +80,7 @@
 	"visualeditor-debugbar-logrange": "Wypisz zaznaczone",
 	"visualeditor-debugbar-showmodel": "Pokaż model",
 	"visualeditor-debugbar-showtransactions": "Pokaż transakcje",
+	"visualeditor-debugbar-testsquasher": "Testuj kombinator",
 	"visualeditor-debugbar-startfilibuster": "Skrupulant",
 	"visualeditor-debugbar-stopfilibuster": "Wyłącz Skrupulanta",
 	"visualeditor-debugbar-updatemodel": "Aktualizuj po zmianach",

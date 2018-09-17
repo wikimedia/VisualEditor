@@ -134,6 +134,7 @@
 	"visualeditor-help-tool": "Ayuda",
 	"visualeditor-historybutton-redo-tooltip": "Rehacer",
 	"visualeditor-historybutton-undo-tooltip": "Deshacer",
+	"visualeditor-horizontalrule-tooltip": "Línea horizontal",
 	"visualeditor-indentationbutton-indent-tooltip": "Aumentar sangría",
 	"visualeditor-indentationbutton-outdent-tooltip": "Disminuir sangría",
 	"visualeditor-inspector-close-tooltip": "Cerrar",
