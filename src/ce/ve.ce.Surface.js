@@ -1115,7 +1115,7 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	}
 	targetFragment = surfaceModel.getLinearFragment( new ve.Range( targetOffset ) );
 
-	targetViewNode = this.getSurface().getView().getDocument().getBranchNodeFromOffset(
+	targetViewNode = this.getDocument().getBranchNodeFromOffset(
 		targetFragment.getSelection().getCoveringRange().from
 	);
 	// TODO: Support sanitized drop on a single line node (removing line breaks)
@@ -2026,7 +2026,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 	}
 
 	// Are we pasting into a multiline context?
-	isMultiline = this.getSurface().getView().getDocument().getBranchNodeFromOffset(
+	isMultiline = this.getDocument().getBranchNodeFromOffset(
 		targetFragment.getSelection().getCoveringRange().from
 	).isMultiline();
 
