@@ -3388,6 +3388,11 @@ ve.ce.Surface.prototype.maybeSetBreakpoint = function () {
  */
 ve.ce.Surface.prototype.onWindowResize = function () {
 	this.emit( 'position' );
+	if ( OO.ui.isMobile() ) {
+		// A resize event on mobile is probably a keyboard open/close (or rotate).
+		// Either way, ensure the cursor is still visible (T204388).
+		this.getSurface().scrollCursorIntoView();
+	}
 };
 
 /* Relocation */
