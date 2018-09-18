@@ -515,6 +515,8 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 		// above the selection. We don't want this to obscure the toolbar so add on an
 		// estimate of its height. (T202723)
 		topBound += 60;
+		// Also assume there are selection handles below on Android. (T204718)
+		bottomBound -= 30;
 	}
 
 	cursorTop = clientRect.top - 5;
