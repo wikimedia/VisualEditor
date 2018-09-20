@@ -79,6 +79,8 @@ ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
  * @param {ve.ui.Surface} surface Surface
  */
 ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
+	var authorId;
+
 	this.oldName = '';
 	this.updatingName = false;
 	this.synchronizer = surface.getModel().synchronizer;
@@ -108,7 +110,9 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 		authorDisconnect: 'onSynchronizerAuthorDisconnect'
 	} );
 
-	this.onSynchronizerAuthorUpdate();
+	for ( authorId in this.synchronizer.authorNames ) {
+		this.onSynchronizerAuthorUpdate( +authorId );
+	}
 };
 
 /**
