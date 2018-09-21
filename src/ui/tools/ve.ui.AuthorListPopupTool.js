@@ -97,7 +97,11 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 
 	this.changeNameDebounced = ve.debounce( this.changeName.bind( this ), 250 );
 
-	this.selfItem = new ve.ui.AuthorItemWidget( this.synchronizer, this.popup.$element, { editable: true } );
+	this.selfItem = new ve.ui.AuthorItemWidget(
+		this.synchronizer,
+		this.popup.$element,
+		{ editable: true, authorId: this.synchronizer.getAuthorId() }
+	);
 	this.$authorList.prepend( this.selfItem.$element );
 	this.selfItem.connect( this, {
 		change: 'onSelfItemChange',
@@ -105,12 +109,11 @@ ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 	} );
 
 	this.synchronizer.connect( this, {
-		authorNameChange: 'onSynchronizerAuthorUpdate',
-		authorColorChange: 'onSynchronizerAuthorUpdate',
+		authorChange: 'onSynchronizerAuthorUpdate',
 		authorDisconnect: 'onSynchronizerAuthorDisconnect'
 	} );
 
-	for ( authorId in this.synchronizer.authorNames ) {
+	for ( authorId in this.synchronizer.authors ) {
 		this.onSynchronizerAuthorUpdate( +authorId );
 	}
 };
@@ -132,14 +135,14 @@ ve.ui.AuthorListPopupTool.prototype.onSelfItemChange = function () {
  * @param {string} color
  */
 ve.ui.AuthorListPopupTool.prototype.onSelfItemChangeColor = function ( color ) {
-	this.synchronizer.changeColor( color );
+	this.synchronizer.changeAuthor( { color: color } );
 };
 
 /**
  * Notify the server of a name change
  */
 ve.ui.AuthorListPopupTool.prototype.changeName = function () {
-	this.synchronizer.changeName( this.selfItem.getName() );
+	this.synchronizer.changeAuthor( { name: this.selfItem.getName() } );
 };
 
 /**
@@ -155,8 +158,7 @@ ve.ui.AuthorListPopupTool.prototype.updateAuthorCount = function () {
  * @param {number} authorId The author ID
  */
 ve.ui.AuthorListPopupTool.prototype.onSynchronizerAuthorUpdate = function ( authorId ) {
-	var authorItem = this.authorItems[ authorId ],
-		newName = this.synchronizer.authorNames[ authorId ];
+	var authorItem = this.authorItems[ authorId ];
 
 	if ( authorId !== this.synchronizer.getAuthorId() ) {
 		if ( !authorItem ) {
@@ -180,7 +182,7 @@ ve.ui.AuthorListPopupTool.prototype.onSynchronizerAuthorUpdate = function ( auth
 			}
 		}
 	}
-	this.oldName = newName;
+	this.oldName = this.synchronizer.getAuthorData( authorId ).name;
 };
 
 /**
