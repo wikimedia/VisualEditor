@@ -253,34 +253,18 @@ function TransportServer() {
  * @param {Object} socket The io socket
  */
 TransportServer.prototype.onConnection = function ( socket ) {
-	var namespace,
-		docName = socket.handshake.query.docName;
-	if ( docName && !this.docNamespaces.has( docName ) ) {
-		namespace = io.of( '/' + docName );
-		this.docNamespaces.set( docName, namespace );
-		// We must bind methods separately, using a namespace handler, because
-		// the socket object passed into namespace handlers is different
-		namespace.on( 'connection', this.onDocConnection.bind( this, docName, namespace ) );
-	}
-};
-
-/**
- * Namespace connection handler
- *
- * This sends events to initialize the client, and adds handlers to the client's socket
- *
- * @param {string} docName The name of the document
- * @param {Object} namespace The io namespace
- * @param {Object} socket The io socket (specific to one client's current connection)
- */
-TransportServer.prototype.onDocConnection = function ( docName, namespace, socket ) {
 	var context,
 		server = this.protocolServer,
+		docName = socket.handshake.query.docName,
 		authorId = +socket.handshake.query.authorId || null,
 		token = socket.handshake.query.token || null;
 
+	socket.join( docName );
 	context = server.authenticate( docName, authorId, token );
-	context.broadcast = namespace.emit.bind( namespace );
+	context.broadcast = function () {
+		var room = io.sockets.in( docName );
+		room.emit.apply( room, arguments );
+	};
 	context.sendAuthor = socket.emit.bind( socket );
 	context.connectionId = socket.client.conn.remoteAddress + ' ' + socket.handshake.url;
 

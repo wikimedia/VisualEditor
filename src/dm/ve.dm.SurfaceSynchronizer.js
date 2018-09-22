@@ -45,7 +45,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.tryLoadSessionKey();
 
 	// SocketIO events
-	path = ( config.server || '' ) + '/' + this.documentId;
+	path = ( config.server || '' );
 	options = { query: {
 		docName: this.documentId,
 		authorId: this.getAuthorId() || '',
