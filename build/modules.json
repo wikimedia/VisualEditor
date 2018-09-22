@@ -253,21 +253,12 @@
 		]
 	},
 	"visualEditor.base.build": {
-		"scripts": [
-			"src/ve.js",
-			"src/ve.utils.js",
-			"src/ve.TriggerListener.js",
-			{ "file": "src/ve.debug.js", "debug": true },
-			"src/ve.track.js",
-			"src/init/ve.init.js",
-			"src/init/ve.init.Platform.js",
-			"src/init/ve.init.Target.js"
-		],
 		"dependencies": [
-			"visualEditor.supportCheck",
 			"unicodejs",
 			"rangefix",
-			"spark-md5"
+			"spark-md5",
+			"visualEditor.core.utils",
+			"visualEditor.core.init"
 		]
 	},
 	"visualEditor.core": {
@@ -276,7 +267,35 @@
 			"visualEditor.core.build"
 		]
 	},
+	"visualEditor.core.utils": {
+		"scripts": [
+			"src/ve.js",
+			"src/ve.utils.js",
+			"src/ve.TriggerListener.js",
+			{ "file": "src/ve.debug.js", "debug": true },
+			"src/ve.track.js"
+		]
+	},
+	"visualEditor.core.init": {
+		"scripts": [
+			"src/init/ve.init.js",
+			"src/init/ve.init.Platform.js",
+			"src/init/ve.init.Target.js"
+		],
+		"dependencies": [
+			"visualEditor.supportCheck"
+		]
+	},
 	"visualEditor.core.build": {
+		"dependencies": [
+			"visualEditor.base.build",
+			"visualEditor.core.root",
+			"visualEditor.core.model",
+			"visualEditor.core.view",
+			"visualEditor.core.ui"
+		]
+	},
+	"visualEditor.core.root": {
 		"scripts": [
 			"src/ve.Range.js",
 			"src/ve.SelectionState.js",
@@ -287,7 +306,11 @@
 			"src/ve.Document.js",
 			"src/ve.EventSequencer.js",
 			"src/ve.Scheduler.js",
-			{ "file": "src/ve.Filibuster.js", "debug": true },
+			{ "file": "src/ve.Filibuster.js", "debug": true }
+		]
+	},
+	"visualEditor.core.model": {
+		"scripts": [
 			"src/dm/ve.dm.js",
 			"src/dm/ve.dm.Model.js",
 			"src/dm/ve.dm.ModelFactory.js",
@@ -389,7 +412,11 @@
 			"src/dm/annotations/ve.dm.VariableAnnotation.js",
 			"src/dm/metaitems/ve.dm.AlienMetaItem.js",
 			"src/dm/metaitems/ve.dm.CommentMetaItem.js",
-			"src/dm/nodes/ve.dm.CommentNode.js",
+			"src/dm/nodes/ve.dm.CommentNode.js"
+		]
+	},
+	"visualEditor.core.view": {
+		"scripts": [
 			"src/ce/ve.ce.js",
 			{ "file": "src/ce/ve.ce.debug.js", "debug": true },
 			"src/ce/ve.ce.TextStateChunk.js",
@@ -483,7 +510,31 @@
 			"src/ce/annotations/ve.ce.SuperscriptAnnotation.js",
 			"src/ce/annotations/ve.ce.UnderlineAnnotation.js",
 			"src/ce/annotations/ve.ce.UserInputAnnotation.js",
-			"src/ce/annotations/ve.ce.VariableAnnotation.js",
+			"src/ce/annotations/ve.ce.VariableAnnotation.js"
+		],
+		"styles": [
+			"src/ce/styles/nodes/ve.ce.FocusableNode.css",
+			"src/ce/styles/nodes/ve.ce.ActiveNode.css",
+			"src/ce/styles/nodes/ve.ce.AlienNode.css",
+			"src/ce/styles/nodes/ve.ce.BranchNode.css",
+			"src/ce/styles/nodes/ve.ce.ContentBranchNode.css",
+			"src/ce/styles/nodes/ve.ce.DocumentNode.css",
+			"src/ce/styles/nodes/ve.ce.GeneratedContentNode.css",
+			"src/ce/styles/nodes/ve.ce.HorizontalRuleNode.css",
+			"src/ce/styles/nodes/ve.ce.CommentNode.css",
+			"src/ce/styles/annotations/ve.ce.LanguageAnnotation.css",
+			"src/ce/styles/annotations/ve.ce.LinkAnnotation.css",
+			"src/ce/styles/nodes/ve.ce.ResizableNode.css",
+			"src/ce/styles/nodes/ve.ce.SectionNode.css",
+			"src/ce/styles/nodes/ve.ce.TableCellNode.css",
+			"src/ce/styles/nodes/ve.ce.TableNode.css",
+			"src/ce/styles/ve.ce.css",
+			"src/ce/styles/ve.ce.Surface.css"
+		],
+		"styleGroup": "ve"
+	},
+	"visualEditor.core.ui": {
+		"scripts": [
 			"src/ui/ve.ui.js",
 			"src/ui/ve.ui.Overlay.js",
 			"src/ui/ve.ui.Surface.js",
@@ -593,23 +644,6 @@
 			"src/ui/pages/ve.ui.SpecialCharacterPage.js"
 		],
 		"styles": [
-			"src/ce/styles/nodes/ve.ce.FocusableNode.css",
-			"src/ce/styles/nodes/ve.ce.ActiveNode.css",
-			"src/ce/styles/nodes/ve.ce.AlienNode.css",
-			"src/ce/styles/nodes/ve.ce.BranchNode.css",
-			"src/ce/styles/nodes/ve.ce.ContentBranchNode.css",
-			"src/ce/styles/nodes/ve.ce.DocumentNode.css",
-			"src/ce/styles/nodes/ve.ce.GeneratedContentNode.css",
-			"src/ce/styles/nodes/ve.ce.HorizontalRuleNode.css",
-			"src/ce/styles/nodes/ve.ce.CommentNode.css",
-			"src/ce/styles/annotations/ve.ce.LanguageAnnotation.css",
-			"src/ce/styles/annotations/ve.ce.LinkAnnotation.css",
-			"src/ce/styles/nodes/ve.ce.ResizableNode.css",
-			"src/ce/styles/nodes/ve.ce.SectionNode.css",
-			"src/ce/styles/nodes/ve.ce.TableCellNode.css",
-			"src/ce/styles/nodes/ve.ce.TableNode.css",
-			"src/ce/styles/ve.ce.css",
-			"src/ce/styles/ve.ce.Surface.css",
 			"src/ui/styles/dialogs/ve.ui.ToolbarDialog.css",
 			"src/ui/styles/dialogs/ve.ui.CommandHelpDialog.css",
 			"src/ui/styles/dialogs/ve.ui.FindAndReplaceDialog.css",
@@ -641,10 +675,7 @@
 			"src/ui/styles/ve.ui.TableLineContext.css",
 			"src/ui/styles/ve.ui.Toolbar.css"
 		],
-		"styleGroup": "ve",
-		"dependencies": [
-			"visualEditor.base.build"
-		]
+		"styleGroup": "ve"
 	},
 	"visualEditor.checkList": {
 		"scripts": [
