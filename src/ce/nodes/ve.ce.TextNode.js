@@ -30,10 +30,8 @@ ve.ce.TextNode.static.name = 'text';
 
 ve.ce.TextNode.static.splitOnEnter = true;
 
-ve.ce.TextNode.static.whitespaceHtmlCharacters = {
-	'\n': '\u21b5', // &crarr; / ↵
-	'\t': '\u279e' // &#10142; / ➞
-};
+// Deprecated alias
+ve.ce.TextNode.static.whitespaceHtmlCharacters = ve.visibleWhitespaceCharacters;
 
 /* Methods */
 
@@ -46,7 +44,7 @@ ve.ce.TextNode.static.whitespaceHtmlCharacters = {
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 	var i, chr,
 		data = this.model.getDocument().getDataFromNode( this.model ),
-		whitespaceHtmlChars = this.constructor.static.whitespaceHtmlCharacters,
+		whitespaceHtmlChars = ve.visibleWhitespaceCharacters,
 		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace();
 
 	function setChar( chr, index, data ) {

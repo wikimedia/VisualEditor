@@ -703,6 +703,11 @@ ve.convertDomElements = function ( value ) {
 	return value;
 };
 
+ve.visibleWhitespaceCharacters = {
+	'\n': '\u21b5', // ↵
+	'\t': '\u279e' // ➞
+};
+
 /**
  * Check whether a given DOM element has a block element type.
  *

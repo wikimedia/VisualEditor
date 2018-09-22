@@ -1302,7 +1302,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		whitespaceList = this.constructor.static.whitespaceList,
-		whitespaceHtmlChars = ve.ce.TextNode.static.whitespaceHtmlCharacters,
+		whitespaceHtmlChars = ve.visibleWhitespaceCharacters,
 		dataLen = data.length,
 		converter = this,
 		doc = container.ownerDocument,
