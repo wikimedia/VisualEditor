@@ -276,6 +276,11 @@
 			"src/ve.track.js"
 		]
 	},
+	"visualEditor.core.utils.client": {
+		"scripts": [
+			"src/ve.utils.client.js"
+		]
+	},
 	"visualEditor.core.init": {
 		"scripts": [
 			"src/init/ve.init.js",
@@ -289,6 +294,7 @@
 	"visualEditor.core.build": {
 		"dependencies": [
 			"visualEditor.base.build",
+			"visualEditor.core.utils.client",
 			"visualEditor.core.root",
 			"visualEditor.core.model",
 			"visualEditor.core.view",
