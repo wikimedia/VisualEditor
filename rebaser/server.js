@@ -264,16 +264,17 @@ app.get( '/', function ( req, res ) {
 	res.render( 'index' );
 } );
 
-app.get( '/doc/edit/:docName', function ( req, res ) {
-	var docName = req.params.docName;
+app.get( new RegExp( '/doc/edit/(.*)' ), function ( req, res ) {
+	var docName = req.params[ 0 ];
 	res.render( 'editor', { docName: docName } );
 } );
 
-app.get( '/doc/raw/:docName', function ( req, res ) {
+app.get( new RegExp( '/doc/raw/(.*)' ), function ( req, res ) {
 	// TODO return real data
 	// In order to provide HTML here, we'd need all of ve.dm (Document, Converter, all nodes)
 	// and none of that code is likely to work in nodejs without some work because of how heavily
 	// it uses the DOM.
+	// var docName = req.params[ 0 ];
 	res.status( 401 ).send( 'DOM in nodejs is hard' );
 } );
 
