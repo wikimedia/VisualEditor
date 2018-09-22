@@ -121,8 +121,8 @@ ProtocolServer.prototype.welcomeClient = function ( context ) {
 	console.log( 'connection ' + context.connectionId );
 	this.rebaseServer.updateDocState( docName, authorId, null, {
 		// TODO: i18n
-		displayName: 'User ' + authorId,
-		displayColor: this.constructor.static.palette[
+		name: 'User ' + authorId,
+		color: this.constructor.static.palette[
 			authorId % this.constructor.static.palette.length
 		],
 		active: true
@@ -133,17 +133,14 @@ ProtocolServer.prototype.welcomeClient = function ( context ) {
 
 	context.sendAuthor( 'registered', {
 		authorId: authorId,
-		authorName: authorData.displayName,
-		authorColor: authorData.displayColor,
 		token: authorData.token
 	} );
-	context.broadcast( 'nameChange', {
+	context.broadcast( 'authorChange', {
 		authorId: authorId,
-		authorName: authorData.displayName
-	} );
-	context.broadcast( 'colorChange', {
-		authorId: authorId,
-		authorColor: authorData.displayColor
+		authorData: {
+			name: authorData.name,
+			color: authorData.color
+		}
 	} );
 	// HACK Catch the client up on the current state by sending it the entire history
 	// Ideally we'd be able to initialize the client using HTML, but that's hard, see
@@ -172,46 +169,31 @@ ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
 };
 
 /**
- * Apply and broadcast a name change,
+ * Apply and broadcast an author change
  *
  * @param {Object} context The connection context
- * @param {string} newName The new name
+ * @param {string} newData The new author data
  */
-ProtocolServer.prototype.onChangeName = function ( context, newName ) {
+ProtocolServer.prototype.onChangeAuthor = function ( context, newData ) {
 	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
-		displayName: newName
+		displayName: newData.name,
+		displayColor: newData.color
 	} );
-	context.broadcast( 'nameChange', {
+	context.broadcast( 'authorChange', {
 		authorId: context.authorId,
-		authorName: newName
+		authorData: {
+			name: newData.name,
+			color: newData.color
+		}
 	} );
 	logServerEvent( {
-		type: 'nameChange',
+		type: 'authorChange',
 		doc: context.docName,
 		authorId: context.authorId,
-		newName: newName
-	} );
-};
-
-/**
- * Apply and broadcast a color change,
- *
- * @param {Object} context The connection context
- * @param {string} newColor The new color
- */
-ProtocolServer.prototype.onChangeColor = function ( context, newColor ) {
-	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
-		displayColor: newColor
-	} );
-	context.broadcast( 'colorChange', {
-		authorId: context.authorId,
-		authorColor: newColor
-	} );
-	logServerEvent( {
-		type: 'colorChange',
-		doc: context.docName,
-		authorId: context.authorId,
-		newColor: newColor
+		authorData: {
+			name: newData.name,
+			color: newData.color
+		}
 	} );
 };
 
@@ -269,8 +251,7 @@ TransportServer.prototype.onConnection = function ( socket ) {
 	context.connectionId = socket.client.conn.remoteAddress + ' ' + socket.handshake.url;
 
 	socket.on( 'submitChange', server.onSubmitChange.bind( server, context ) );
-	socket.on( 'changeName', server.onChangeName.bind( server, context ) );
-	socket.on( 'changeColor', server.onChangeColor.bind( server, context ) );
+	socket.on( 'changeAuthor', server.onChangeAuthor.bind( server, context ) );
 	socket.on( 'disconnect', server.onDisconnect.bind( server, context ) );
 	socket.on( 'logEvent', server.onLogEvent.bind( server, context ) );
 	server.welcomeClient( context );

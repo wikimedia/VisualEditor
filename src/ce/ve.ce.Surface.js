@@ -109,8 +109,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	if ( this.model.synchronizer ) {
 		this.model.synchronizer.connect( this, {
 			authorSelect: 'onSynchronizerAuthorUpdate',
-			authorNameChange: 'onSynchronizerAuthorUpdate',
-			authorColorChange: 'onSynchronizerAuthorUpdate',
+			authorChange: 'onSynchronizerAuthorUpdate',
 			authorDisconnect: 'onSynchronizerAuthorDisconnect',
 			wrongDoc: 'onSynchronizerWrongDoc'
 		} );
@@ -4342,7 +4341,8 @@ ve.ce.Surface.prototype.onSynchronizerWrongDoc = function () {
 ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 	var i, l, rects, rect, overlays,
 		synchronizer = this.model.synchronizer,
-		color = '#' + synchronizer.authorColors[ authorId ],
+		authorData = synchronizer.getAuthorData( authorId ),
+		color = '#' + authorData.color,
 		selection = synchronizer.authorSelections[ authorId ];
 
 	if ( authorId === synchronizer.getAuthorId() ) {
@@ -4399,7 +4399,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		} ).append(
 			$( '<span>' )
 				.addClass( 've-ce-surface-highlights-user-cursor-label' )
-				.text( synchronizer.getAuthorName( authorId ) )
+				.text( authorData.name )
 				.css( { background: color } )
 		)
 	);

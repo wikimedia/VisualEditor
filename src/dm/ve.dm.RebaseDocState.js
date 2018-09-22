@@ -35,7 +35,8 @@ OO.initClass( ve.dm.RebaseDocState );
  * Get new empty author data object
  *
  * @return {Object} New empty author data object
- * @return {string} return.displayName Display name
+ * @return {string} return.name Name
+ * @return {string} return.color Color
  * @return {number} return.rejections Number of unacknowledged rejections
  * @return {ve.dm.Change|null} return.continueBase Continue base
  * @return {string} return.token Secret token for usurping sessions
@@ -43,8 +44,8 @@ OO.initClass( ve.dm.RebaseDocState );
  */
 ve.dm.RebaseDocState.static.newAuthorData = function () {
 	return {
-		displayName: '',
-		displayColor: '',
+		name: '',
+		color: '',
 		rejections: 0,
 		continueBase: null,
 		// TODO use cryptographic randomness here and convert to hex
@@ -60,8 +61,8 @@ ve.dm.RebaseDocState.prototype.getActiveAuthors = function () {
 	this.authors.forEach( function ( authorData, authorId ) {
 		if ( authorData.active ) {
 			result[ authorId ] = {
-				displayName: authorData.displayName,
-				displayColor: authorData.displayColor
+				name: authorData.name,
+				color: authorData.color
 			};
 		}
 	} );
