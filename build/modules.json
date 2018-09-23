@@ -364,6 +364,9 @@
 			"src/dm/lineardata/ve.dm.ElementLinearData.js",
 			"src/dm/nodes/ve.dm.GeneratedContentNode.js",
 			"src/dm/nodes/ve.dm.AlienNode.js",
+			"src/dm/nodes/ve.dm.AlienBlockNode.js",
+			"src/dm/nodes/ve.dm.AlienInlineNode.js",
+			"src/dm/nodes/ve.dm.AlienTableCellNode.js",
 			"src/dm/nodes/ve.dm.ArticleNode.js",
 			"src/dm/nodes/ve.dm.BlockquoteNode.js",
 			"src/dm/nodes/ve.dm.BreakNode.js",
@@ -418,7 +421,9 @@
 			"src/dm/annotations/ve.dm.VariableAnnotation.js",
 			"src/dm/metaitems/ve.dm.AlienMetaItem.js",
 			"src/dm/metaitems/ve.dm.CommentMetaItem.js",
-			"src/dm/nodes/ve.dm.CommentNode.js"
+			"src/dm/nodes/ve.dm.CommentNode.js",
+			"src/dm/nodes/ve.dm.FakeCommentNode.js",
+			"src/dm/nodes/ve.dm.RealCommentNode.js"
 		]
 	},
 	"visualEditor.core.view": {
@@ -463,6 +468,9 @@
 			"src/ce/nodes/ve.ce.ContentEditableNode.js",
 			"src/ce/nodes/ve.ce.ActiveNode.js",
 			"src/ce/nodes/ve.ce.AlienNode.js",
+			"src/ce/nodes/ve.ce.AlienBlockNode.js",
+			"src/ce/nodes/ve.ce.AlienInlineNode.js",
+			"src/ce/nodes/ve.ce.AlienTableCellNode.js",
 			"src/ce/nodes/ve.ce.ArticleNode.js",
 			"src/ce/nodes/ve.ce.BlockquoteNode.js",
 			"src/ce/nodes/ve.ce.BreakNode.js",

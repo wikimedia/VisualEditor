@@ -1,5 +1,5 @@
 /*!
- * VisualEditor ContentEditable AlienNode, AlienBlockNode and AlienInlineNode classes.
+ * VisualEditor ContentEditable AlienNode class.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -52,85 +52,3 @@ ve.ce.AlienNode.static.iconWhenInvisible = 'puzzle';
 ve.ce.AlienNode.static.getDescription = function () {
 	return ve.msg( 'visualeditor-aliennode-tooltip' );
 };
-
-/* Concrete subclasses */
-
-/**
- * ContentEditable alien block node.
- *
- * @class
- * @extends ve.ce.AlienNode
- *
- * @constructor
- * @param {ve.dm.AlienBlockNode} model
- * @param {Object} [config]
- */
-ve.ce.AlienBlockNode = function VeCeAlienBlockNode() {
-	// Parent constructor
-	ve.ce.AlienBlockNode.super.apply( this, arguments );
-};
-
-/* Inheritance */
-
-OO.inheritClass( ve.ce.AlienBlockNode, ve.ce.AlienNode );
-
-/* Static Properties */
-
-ve.ce.AlienBlockNode.static.name = 'alienBlock';
-
-/**
- * ContentEditable alien inline node.
- *
- * @class
- * @extends ve.ce.AlienNode
- *
- * @constructor
- * @param {ve.dm.AlienInlineNode} model
- * @param {Object} [config]
- */
-ve.ce.AlienInlineNode = function VeCeAlienInlineNode() {
-	// Parent constructor
-	ve.ce.AlienInlineNode.super.apply( this, arguments );
-};
-
-/* Inheritance */
-
-OO.inheritClass( ve.ce.AlienInlineNode, ve.ce.AlienNode );
-
-/* Static Properties */
-
-ve.ce.AlienInlineNode.static.name = 'alienInline';
-
-/**
- * ContentEditable alien block node.
- *
- * @class
- * @extends ve.ce.AlienNode
- *
- * @constructor
- * @param {ve.dm.AlienTableCellNode} model
- * @param {Object} [config]
- */
-ve.ce.AlienTableCellNode = function VeCeAlienTableCellNode() {
-	// Parent constructor
-	ve.ce.AlienTableCellNode.super.apply( this, arguments );
-
-	// Mixin constructors
-	ve.ce.TableCellableNode.call( this );
-};
-
-/* Inheritance */
-
-OO.inheritClass( ve.ce.AlienTableCellNode, ve.ce.AlienNode );
-
-OO.mixinClass( ve.ce.AlienTableCellNode, ve.ce.TableCellableNode );
-
-/* Static Properties */
-
-ve.ce.AlienTableCellNode.static.name = 'alienTableCell';
-
-/* Registration */
-
-ve.ce.nodeFactory.register( ve.ce.AlienBlockNode );
-ve.ce.nodeFactory.register( ve.ce.AlienInlineNode );
-ve.ce.nodeFactory.register( ve.ce.AlienTableCellNode );

@@ -1,5 +1,5 @@
 /*!
- * VisualEditor DataModel AlienNode, AlienBlockNode and AlienInlineNode classes.
+ * VisualEditor DataModel AlienNode class.
  *
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
@@ -105,73 +105,3 @@ ve.dm.AlienNode.static.getHashObject = function ( dataElement ) {
 		alienDomElementsHash: dataElement.originalDomElementsHash
 	};
 };
-
-/* Concrete subclasses */
-
-/**
- * DataModel alienBlock node.
- *
- * @class
- * @extends ve.dm.AlienNode
- *
- * @constructor
- * @param {Object} [element] Reference to element in linear model
- */
-ve.dm.AlienBlockNode = function VeDmAlienBlockNode() {
-	// Parent constructor
-	ve.dm.AlienBlockNode.super.apply( this, arguments );
-};
-
-OO.inheritClass( ve.dm.AlienBlockNode, ve.dm.AlienNode );
-
-ve.dm.AlienBlockNode.static.name = 'alienBlock';
-
-/**
- * DataModel alienInline node.
- *
- * @class
- * @extends ve.dm.AlienNode
- *
- * @constructor
- * @param {Object} [element] Reference to element in linear model
- */
-ve.dm.AlienInlineNode = function VeDmAlienInlineNode() {
-	// Parent constructor
-	ve.dm.AlienInlineNode.super.apply( this, arguments );
-};
-
-OO.inheritClass( ve.dm.AlienInlineNode, ve.dm.AlienNode );
-
-ve.dm.AlienInlineNode.static.name = 'alienInline';
-
-ve.dm.AlienInlineNode.static.isContent = true;
-
-/**
- * DataModel alienTableCell node.
- *
- * @class
- * @extends ve.dm.AlienNode
- * @mixins ve.dm.TableCellableNode
- *
- * @constructor
- * @param {Object} [element] Reference to element in linear model
- */
-ve.dm.AlienTableCellNode = function VeDmAlienTableCellNode() {
-	// Parent constructor
-	ve.dm.AlienTableCellNode.super.apply( this, arguments );
-
-	// Mixin constructor
-	ve.dm.TableCellableNode.call( this );
-};
-
-OO.inheritClass( ve.dm.AlienTableCellNode, ve.dm.AlienNode );
-
-OO.mixinClass( ve.dm.AlienTableCellNode, ve.dm.TableCellableNode );
-
-ve.dm.AlienTableCellNode.static.name = 'alienTableCell';
-
-/* Registration */
-
-ve.dm.modelRegistry.register( ve.dm.AlienBlockNode );
-ve.dm.modelRegistry.register( ve.dm.AlienInlineNode );
-ve.dm.modelRegistry.register( ve.dm.AlienTableCellNode );

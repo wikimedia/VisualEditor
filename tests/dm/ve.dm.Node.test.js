@@ -21,6 +21,11 @@ ve.dm.NodeStub.static.matchTagNames = [];
 
 ve.dm.nodeFactory.register( ve.dm.NodeStub );
 
+// FakeCommentNode is never instantiated, so create
+// one here to bypass code coverage warnings.
+// eslint-disable-next-line no-new
+new ve.dm.FakeCommentNode();
+
 /* Tests */
 
 QUnit.test( 'canHaveChildren', function ( assert ) {
