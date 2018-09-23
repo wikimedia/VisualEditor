@@ -1251,7 +1251,7 @@ ve.dm.Surface.prototype.storeChanges = function () {
 	if ( !change.isEmpty() ) {
 		if ( ve.init.platform.appendToSessionList( 've-changes', JSON.stringify( change.serialize() ) ) ) {
 			this.lastStoredChange = dmDoc.getCompleteHistoryLength();
-			ve.init.platform.setSession( 've-selection', JSON.stringify( this.getSelection() ) );
+			ve.init.platform.setSessionObject( 've-selection', this.getSelection() );
 		} else {
 			// Auto-save failed probably because of memory limits
 			// so flag it so we don't keep trying in vain.
@@ -1298,7 +1298,7 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 		try {
 			selection = ve.dm.Selection.static.newFromJSON(
 				this.getDocument(),
-				ve.init.platform.getSession( 've-selection' )
+				ve.init.platform.getSessionObject( 've-selection' )
 			);
 		} catch ( e ) {
 			// Didn't restore the selection, not a big deal.

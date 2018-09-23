@@ -184,7 +184,7 @@ ve.init.Platform.prototype.setUserConfig = null;
  * @method
  * @abstract
  * @param {string} key Key to get
- * @return {string|boolean} Value, false if storage not available
+ * @return {string|null|boolean} Value, null if not set, false if storage not available
  */
 ve.init.Platform.prototype.getSession = null;
 
@@ -208,6 +208,42 @@ ve.init.Platform.prototype.setSession = null;
  * @return {boolean} Key was removed
  */
 ve.init.Platform.prototype.removeSession = null;
+
+/**
+ * Get a session storage object
+ *
+ * Object must be JSON-able.
+ *
+ * @param {string} key Key to get
+ * @return {Object|null|boolean}  Value, null if not set, false if storage not available
+ */
+ve.init.Platform.prototype.getSessionObject = function ( key ) {
+	var value,
+		json = this.getSession( key );
+	if ( json ) {
+		try {
+			value = JSON.parse( json );
+			return value;
+		} catch ( e ) {}
+	}
+	return json;
+};
+
+/**
+ * Set a session storage object
+ *
+ * @param {string} key Key to set value for
+ * @param {Object} value Value to set
+ * @return {boolean} The value was set
+ */
+ve.init.Platform.prototype.setSessionObject = function ( key, value ) {
+	var json;
+	try {
+		json = JSON.stringify( value );
+		return this.setSession( key, json );
+	} catch ( e ) {}
+	return false;
+};
 
 /**
  * Append a value to a list stored in session storage

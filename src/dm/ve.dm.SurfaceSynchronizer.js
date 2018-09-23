@@ -20,7 +20,7 @@
  * @cfg {string} [defaultName] Default username
  */
 ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config ) {
-	var path, options, authorDataJSON;
+	var path, options, authorData;
 
 	config = config || {};
 
@@ -42,7 +42,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	// Whether we are currently synchronizing the model
 	this.applying = false;
 	this.token = null;
-	this.tryLoadSessionKey();
+	this.loadSessionKey();
 
 	// SocketIO events
 	path = ( config.server || '' );
@@ -63,9 +63,9 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'authorChange', this.onAuthorChange.bind( this ) );
 	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
 
-	authorDataJSON = ve.init.platform.getSession( 've-collab-author' );
-	if ( authorDataJSON ) {
-		this.changeAuthor( JSON.parse( authorDataJSON ) );
+	authorData = ve.init.platform.getSessionObject( 've-collab-author' );
+	if ( authorData ) {
+		this.changeAuthor( authorData );
 	}
 
 	// Events
@@ -297,7 +297,7 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorChange = function ( data ) {
 	this.emit( 'authorChange', data.authorId );
 
 	if ( data.authorId === this.getAuthorId() ) {
-		ve.init.platform.setSession( 've-collab-author', JSON.stringify( data.authorData ) );
+		ve.init.platform.setSessionObject( 've-collab-author', data.authorData );
 	}
 };
 
@@ -327,35 +327,22 @@ ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
 	this.setAuthorId( data.authorId );
 	this.surface.setAuthorId( this.authorId );
 	this.token = data.token;
-	this.trySaveSessionKey();
+	this.saveSessionKey();
 };
 
-ve.dm.SurfaceSynchronizer.prototype.trySaveSessionKey = function () {
-	if ( window.sessionStorage ) {
-		window.sessionStorage.setItem( 'visualeditor-session-key', JSON.stringify( {
-			docName: this.documentId,
-			authorId: this.getAuthorId(),
-			token: this.token
-		} ) );
-	}
+ve.dm.SurfaceSynchronizer.prototype.saveSessionKey = function () {
+	ve.init.platform.setSessionObject( 'visualeditor-session-key', {
+		docName: this.documentId,
+		authorId: this.getAuthorId(),
+		token: this.token
+	} );
 };
 
-ve.dm.SurfaceSynchronizer.prototype.tryLoadSessionKey = function () {
-	var data,
-		dataString = window.sessionStorage &&
-			window.sessionStorage.getItem( 'visualeditor-session-key' );
-	if ( !dataString ) {
-		return;
-	}
-	try {
-		data = JSON.parse( dataString );
-		if ( data.docName === this.documentId ) {
-			this.setAuthorId( data.authorId );
-			this.token = data.token;
-		}
-	} catch ( e ) {
-		// eslint-disable-next-line no-console
-		console.warn( 'Failed to parse data in session storage', e );
+ve.dm.SurfaceSynchronizer.prototype.loadSessionKey = function () {
+	var data = ve.init.platform.getSessionObject( 'visualeditor-session-key' );
+	if ( data && data.docName === this.documentId ) {
+		this.setAuthorId( data.authorId );
+		this.token = data.token;
 	}
 };
 
