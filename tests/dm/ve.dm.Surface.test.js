@@ -381,13 +381,13 @@ QUnit.test( 'autosave', function ( assert ) {
 
 	assert.strictEqual( surface.restoreChanges(), false, 'restoreChanges returns false when nothing to restore' );
 	assert.strictEqual( surface.storeDocState( state, '<p>foo</p>' ), true, 'storeDocState returns true' );
-	assert.strictEqual( ve.init.platform.getSession( 've-docstate' ), JSON.stringify( state ), 'storeDocState writes doc state to session storage' );
+	assert.deepEqual( ve.init.platform.getSessionObject( 've-docstate' ), state, 'storeDocState writes doc state to session storage' );
 	assert.strictEqual( ve.init.platform.getSession( 've-dochtml' ), '<p>foo</p>', 'storeDocState writes custom HTML to session storage' );
 	surface.storeDocState( state, '' );
 	assert.strictEqual( ve.init.platform.getSession( 've-dochtml' ), '', 'storeDocState can set HTML to empty string' );
 	surface.storeDocState();
 	assert.strictEqual( ve.init.platform.getSession( 've-dochtml' ), '<p>hi</p>', 'storeDocState writes current HTML to session storage' );
-	assert.strictEqual( ve.init.platform.getSession( 've-docstate' ), null, 'docstate is empty if not provided' );
+	assert.strictEqual( ve.init.platform.getSessionObject( 've-docstate' ), null, 'docstate is empty if not provided' );
 
 	fragment.insertContent( ' bar' );
 	surface.breakpoint();
@@ -431,9 +431,9 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.strictEqual(
 		ve.init.platform.getSessionList( 've-changes' ).length, 3, 'Fourth change stored'
 	);
-	assert.strictEqual(
-		ve.init.platform.getSession( 've-selection' ),
-		JSON.stringify( { type: 'linear', range: { type: 'range', from: 5, to: 5 } } ),
+	assert.deepEqual(
+		ve.init.platform.getSessionObject( 've-selection' ),
+		{ type: 'linear', range: { type: 'range', from: 5, to: 5 } },
 		'Selection state stored'
 	);
 
@@ -472,7 +472,7 @@ QUnit.test( 'autosave', function ( assert ) {
 
 	surface.removeDocStateAndChanges();
 	assert.strictEqual( ve.init.platform.getSession( 've-html' ), null, 'HTML empty after removeDocStateAndChanges' );
-	assert.strictEqual( ve.init.platform.getSession( 've-docstate' ), null, 'Doc state empty after removeDocStateAndChanges' );
+	assert.strictEqual( ve.init.platform.getSessionObject( 've-docstate' ), null, 'Doc state empty after removeDocStateAndChanges' );
 	assert.deepEqual( ve.init.platform.getSessionList( 've-changes' ), [], 'Changes empty after removeDocStateAndChanges' );
 
 	surface = new ve.dm.SurfaceStub();
@@ -480,7 +480,7 @@ QUnit.test( 'autosave', function ( assert ) {
 	surface.startStoringChanges();
 	// Pass magic string to only fail when writing HTML
 	assert.strictEqual( surface.storeDocState( state, '__FAIL__' ), false, 'storeDocState returns false when HTML can\'t be stored' );
-	assert.strictEqual( ve.init.platform.getSession( 've-docstate' ), null, 'docstate is wiped if HTML storage failed' );
+	assert.strictEqual( ve.init.platform.getSessionObject( 've-docstate' ), null, 'docstate is wiped if HTML storage failed' );
 
 	ve.init.platform.sessionDisabled = true;
 	surface = new ve.dm.SurfaceStub();
