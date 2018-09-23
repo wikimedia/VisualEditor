@@ -242,7 +242,7 @@
 			"src/ve.sanitize.js"
 		],
 		"dependencies": [
-			"visualEditor.base.build",
+			"visualEditor.core.utils",
 			"dompurify"
 		]
 	},
