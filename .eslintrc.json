@@ -20,6 +20,7 @@
 	},
 	"plugins": [ "html" ],
 	"settings": {
-		"html/indent": "+tab"
+		"html/indent": "+tab",
+		"html/report-bad-indent": "error"
 	}
 }
