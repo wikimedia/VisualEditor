@@ -41,7 +41,7 @@ $ git remote update
 $ git checkout -b release -t origin/master
 
 # Ensure tests pass
-$ npm install && npm test
+$ npm install-test
 
 # Avoid using "npm version patch" because that creates
 # both a commit and a tag, and we shouldn't tag until after
@@ -49,7 +49,7 @@ $ npm install && npm test
 
 # Update release notes
 # Copy the resulting list into a new section on History.md
-$ git log --format='* %s (%aN)' --no-merges --reverse v$(node -e 'console.log(JSON.parse(require("fs").readFileSync("package.json")).version);')...HEAD
+$ git log --format='* %s (%aN)' --no-merges --reverse v$(node -e 'console.log(require("./package.json").version);')...HEAD
 $ edit History.md
 
 # Update the version number
