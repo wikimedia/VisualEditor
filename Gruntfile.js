@@ -16,14 +16,10 @@ module.exports = function ( grunt ) {
 		coreBuildFilesWikimediaUI = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.wikimediaui' ] ),
 		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts,
 		demoPages = ( function () {
-			var pages = {},
+			var pages = [],
 				files = grunt.file.expand( 'demos/ve/pages/*.html' );
-			files.forEach( function ( file ) {
-				var matches = file.match( /^.*(pages\/(.+).html)$/ ),
-					path = matches[ 1 ],
-					name = matches[ 2 ];
-
-				pages[ name ] = path;
+			pages = files.map( function ( file ) {
+				return file.match( /^.*pages\/(.+).html$/ )[ 1 ];
 			} );
 			return pages;
 		}() );

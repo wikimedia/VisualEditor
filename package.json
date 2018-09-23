@@ -45,6 +45,7 @@
     "karma-mocha-reporter": "2.2.5",
     "karma-qunit": "2.1.0",
     "qunit": "2.6.2",
+    "stringify-object": "3.2.2",
     "stylelint": "9.2.0",
     "stylelint-config-wikimedia": "0.4.3"
   }

@@ -139,15 +139,12 @@ OO.mixinClass( ve.demo.SurfaceContainer, OO.EventEmitter );
  * @return {OO.ui.MenuOptionWidget[]} Menu items
  */
 ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
-	var name, items = [];
-	for ( name in ve.demoPages ) {
-		items.push(
-			new OO.ui.MenuOptionWidget( {
-				data: ve.demoPages[ name ],
-				label: name
-			} )
-		);
-	}
+	var items = ve.demoPages.map( function ( name ) {
+		return new OO.ui.MenuOptionWidget( {
+			data: name,
+			label: name
+		} );
+	} );
 	items.push(
 		new OO.ui.MenuOptionWidget( {
 			data: 'localStorage/ve-demo-saved-markup',
@@ -234,31 +231,31 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 /**
  * Load a page into the editor
  *
- * @param {string} src Path of html to load
+ * @param {string} page Page to load
  * @param {string} mode Edit mode
  */
-ve.demo.SurfaceContainer.prototype.loadPage = function ( src, mode ) {
+ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
 	var container = this;
 
-	this.page = src;
+	this.page = page;
 
 	container.emit( 'changePage' );
 
 	ve.init.platform.getInitializedPromise().done( function () {
 		( container.surface ? container.surface.$element.slideUp().promise() : $.Deferred().resolve().promise() ).done( function () {
-			var localMatch = src.match( /^localStorage\/(.+)$/ );
+			var localMatch = page.match( /^localStorage\/(.+)$/ );
 			if ( localMatch ) {
 				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
 				return;
 			}
 			$.ajax( {
-				url: src,
+				url: 'pages/' + page + '.html',
 				dataType: 'text'
 			} ).always( function ( result, status ) {
 				var pageHtml;
 
 				if ( status === 'error' ) {
-					pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( src ).html() + '</i></p>';
+					pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( page ).html() + '</i></p>';
 				} else {
 					pageHtml = result;
 				}

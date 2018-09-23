@@ -24,7 +24,8 @@ module.exports = function ( grunt ) {
 			langList = this.data.langList !== undefined ? this.data.langList : true,
 			text = grunt.file.read( this.data.template ),
 			done = this.async(),
-			moduleUtils = require( '../moduleUtils' );
+			moduleUtils = require( '../moduleUtils' ),
+			stringifyObject = require( 'stringify-object' );
 
 		function scriptTag( src ) {
 			return indent + '<script src="' + pathPrefix + src.file + '"></script>';
@@ -78,8 +79,8 @@ module.exports = function ( grunt ) {
 		}
 
 		function addModules( load ) {
-			var module, moduleStyles, moduleScripts, dependency, dependencies;
-			dependencies = moduleUtils.buildDependencyList( modules, load );
+			var module, moduleStyles, moduleScripts, dependency,
+				dependencies = moduleUtils.buildDependencyList( modules, load );
 			for ( dependency in dependencies ) {
 				module = dependencies[ dependency ];
 				if ( loadedModules.indexOf( module ) > -1 ) {
@@ -112,31 +113,28 @@ module.exports = function ( grunt ) {
 
 			if ( i18n.length ) {
 				configScript +=
-					// TODO: Build real JS, instead of using JSON.stringify
-					indent + '\t/* eslint-disable */\n' +
 					indent + '\tve.messagePaths = ' +
-					JSON.stringify(
+					stringifyObject(
 						i18n.map( function ( path ) { return pathPrefix + path; } )
-					) + ';\n';
+					).replace( /\n/g, '\n\t' + indent ) + ';\n';
 
 				if ( langList ) {
 					configScript += indent + '\tve.availableLanguages = ' +
-						JSON.stringify(
+						stringifyObject(
 							grunt.file.expand(
 								i18n.map( function ( path ) { return path + '*.json'; } )
 							).map( function ( file ) {
 								return file.split( '/' ).pop().slice( 0, -5 );
 							} )
-						) +
+						).replace( /\n\t*/g, ' ' ) +
 						';\n';
 				}
 			}
 			if ( demoPages ) {
-				configScript += indent + '\tve.demoPages = ' + JSON.stringify( demoPages ) + ';\n';
+				configScript += indent + '\tve.demoPages = ' + stringifyObject( demoPages ).replace( /\n/g, '\n\t' + indent ) + ';\n';
 			}
 
 			configScript +=
-				indent + '\t/* eslint-enable */\n' +
 				indent + '</script>';
 			scripts.push( configScript );
 		}
