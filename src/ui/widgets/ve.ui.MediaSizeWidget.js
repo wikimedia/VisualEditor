@@ -16,9 +16,10 @@
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [noDefaultDimensions] The item being sized doesn't have default dimensions
  * @cfg {boolean} [noOriginalDimensions] The item being sized doesn't have original dimensions
+ * @cfg {string} [dimensionsAlign] Alignment for the dimensions widget
  */
 ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
-	var fieldCustom;
+	var fieldCustom, fullSizeButtonField;
 
 	// Configuration
 	config = config || {};
@@ -35,6 +36,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	this.valid = null;
 	this.noDefaultDimensions = !!config.noDefaultDimensions;
 	this.noOriginalDimensions = !!config.noOriginalDimensions;
+	this.dimensionsAlign = config.dimensionsAlign || 'right';
 
 	// Define button select widget
 	this.sizeTypeSelectWidget = new OO.ui.ButtonSelectWidget( {
@@ -84,7 +86,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	// this.scaleInput.$element.append( scalePercentLabel.$element );
 	fieldCustom = new OO.ui.FieldLayout(
 		this.dimensionsWidget, {
-			align: 'right',
+			align: this.dimensionsAlign,
 			classes: [ 've-ui-mediaSizeWidget-section-custom' ]
 		}
 	);
@@ -97,6 +99,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 		label: ve.msg( 'visualeditor-mediasizewidget-button-originaldimensions' ),
 		classes: [ 've-ui-mediaSizeWidget-button-fullsize' ]
 	} );
+	fullSizeButtonField = new OO.ui.FieldLayout( this.fullSizeButton );
 
 	// Build GUI
 	this.$element.addClass( 've-ui-mediaSizeWidget' );
@@ -108,7 +111,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 		this.$element.append(
 			// TODO: when upright is supported by Parsoid
 			// fieldScale.$element,
-			this.fullSizeButton.$element,
+			fullSizeButtonField.$element,
 			$( '<div>' )
 				.addClass( 've-ui-mediaSizeWidget-label-error' )
 				.append( this.errorLabel.$element )
