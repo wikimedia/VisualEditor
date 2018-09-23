@@ -14,7 +14,7 @@ var logStream, transportServer,
 	app = express(),
 	http = require( 'http' ).Server( app ),
 	io = require( 'socket.io' )( http ),
-	ve = require( '../dist/ve-rebaser.js' );
+	ve = require( '../../dist/ve-rebaser.js' );
 
 function logEvent( event ) {
 	if ( !logStream ) {
@@ -257,7 +257,7 @@ TransportServer.prototype.onConnection = function ( socket ) {
 	server.welcomeClient( context );
 };
 
-app.use( express.static( __dirname + '/..' ) );
+app.use( express.static( __dirname + '/../..' ) );
 app.set( 'view engine', 'ejs' );
 
 app.get( '/', function ( req, res ) {
