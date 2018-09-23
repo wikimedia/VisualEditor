@@ -195,16 +195,19 @@ ve.ui.DimensionsWidget.prototype.getDimensions = function () {
 /**
  * Disable or enable the inputs
  *
- * @param {boolean} isDisabled Set disabled or enabled
+ * @param {boolean} disabled Set disabled or enabled
  */
-ve.ui.DimensionsWidget.prototype.setDisabled = function ( isDisabled ) {
+ve.ui.DimensionsWidget.prototype.setDisabled = function ( disabled ) {
+	// Parent method
+	ve.ui.DimensionsWidget.super.prototype.setDisabled.call( this, disabled );
+
 	// The 'setDisabled' method runs in the constructor before the
 	// inputs are initialized
 	if ( this.widthInput ) {
-		this.widthInput.setDisabled( isDisabled );
+		this.widthInput.setDisabled( disabled );
 	}
 	if ( this.heightInput ) {
-		this.heightInput.setDisabled( isDisabled );
+		this.heightInput.setDisabled( disabled );
 	}
 };
 
