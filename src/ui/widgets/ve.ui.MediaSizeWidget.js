@@ -57,7 +57,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	] );
 
 	// Define scale
-	this.scaleInput = new OO.ui.TextInputWidget();
+	// this.scaleInput = new OO.ui.TextInputWidget();
 	// scalePercentLabel = new OO.ui.LabelWidget( {
 	// 	input: this.scaleInput,
 	// 	label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
@@ -156,11 +156,9 @@ OO.inheritClass( ve.ui.MediaSizeWidget, OO.ui.Widget );
  *
  * @param {Object} dimensions Original dimensions
  */
-ve.ui.MediaSizeWidget.prototype.onScalableOriginalSizeChange = function ( dimensions ) {
-	var disabled = !dimensions || ve.isEmptyObject( dimensions );
-	this.fullSizeButton.setDisabled( disabled );
-	this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled( disabled );
+ve.ui.MediaSizeWidget.prototype.onScalableOriginalSizeChange = function () {
 	// Revalidate current dimensions
+	this.updateDisabled();
 	this.validateDimensions();
 };
 
@@ -226,18 +224,18 @@ ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	}
 };
 
-/**
- * Respond to change of the scale input
- */
-ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
-	// If the input changed (and not empty), set to 'custom'
-	// Otherwise, set to 'default'
-	if ( !this.dimensionsWidget.isEmpty() ) {
-		this.sizeTypeSelectWidget.selectItemByData( 'scale' );
-	} else {
-		this.sizeTypeSelectWidget.selectItemByData( 'default' );
-	}
-};
+// /**
+//  * Respond to change of the scale input
+//  */
+// ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
+// 	// If the input changed (and not empty), set to 'custom'
+// 	// Otherwise, set to 'default'
+// 	if ( !this.dimensionsWidget.isEmpty() ) {
+// 		this.sizeTypeSelectWidget.selectItemByData( 'scale' );
+// 	} else {
+// 		this.sizeTypeSelectWidget.selectItemByData( 'default' );
+// 	}
+// };
 
 /**
  * Respond to size type change
@@ -252,21 +250,11 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 	this.scalable.toggleDefault( selectedType === 'default' );
 
 	if ( selectedType === 'default' ) {
-		this.scaleInput.setDisabled( true );
 		// If there are defaults, put them into the values
 		if ( !ve.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
 			this.dimensionsWidget.clear();
 		}
-	} else if ( selectedType === 'scale' ) {
-		// Disable the dimensions widget
-		this.dimensionsWidget.setDisabled( true );
-		// Enable the scale input
-		this.scaleInput.setDisabled( false );
 	} else if ( selectedType === 'custom' ) {
-		// Enable the dimensions widget
-		this.dimensionsWidget.setDisabled( false );
-		// Disable the scale input
-		this.scaleInput.setDisabled( true );
 		// If we were default size before, set the current dimensions to the default size
 		if ( wasDefault && !ve.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
 			this.setCurrentDimensions( this.dimensionsWidget.getDefaults() );
@@ -275,26 +263,27 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 	}
 
 	this.emit( 'changeSizeType', selectedType );
+	this.updateDisabled();
 	this.validateDimensions();
 };
 
-/**
- * Set the placeholder value of the scale input
- *
- * @param {number} value Placeholder value
- */
-ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
-	this.scaleInput.$element.prop( 'placeholder', value );
-};
+// /**
+//  * Set the placeholder value of the scale input
+//  *
+//  * @param {number} value Placeholder value
+//  */
+// ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
+// 	this.scaleInput.$element.prop( 'placeholder', value );
+// };
 
-/**
- * Get the placeholder value of the scale input
- *
- * @return {string} Placeholder value
- */
-ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
-	return this.scaleInput.$element.prop( 'placeholder' );
-};
+// /**
+//  * Get the placeholder value of the scale input
+//  *
+//  * @return {string} Placeholder value
+//  */
+// ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
+// 	return this.scaleInput.$element.prop( 'placeholder' );
+// };
 
 /**
  * Select a size type in the select widget
@@ -347,17 +336,11 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 		this.setCurrentDimensions( this.scalable.getCurrentDimensions() );
 	}
 
-	// If we don't have original dimensions, disable the full size button
-	if ( !this.scalable.getOriginalDimensions() ) {
-		this.fullSizeButton.setDisabled( true );
-		this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled( true );
-	} else {
-		this.fullSizeButton.setDisabled( false );
-		this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled( false );
-
-		// Call for the set size type according to default or custom settings of the scalable
+	// Call for the set size type according to default or custom settings of the scalable
+	if ( this.scalable.getOriginalDimensions() ) {
 		this.setSizeType( this.scalable.isDefault() ? 'default' : 'custom' );
 	}
+	this.updateDisabled();
 	this.validateDimensions();
 };
 
@@ -380,7 +363,6 @@ ve.ui.MediaSizeWidget.prototype.onFullSizeButtonClick = function () {
 		this.sizeTypeSelectWidget.findItemFromData( 'custom' )
 	);
 	this.setCurrentDimensions( this.scalable.getOriginalDimensions() );
-	this.dimensionsWidget.setDisabled( false );
 };
 
 /**
@@ -438,7 +420,17 @@ ve.ui.MediaSizeWidget.prototype.setDisabled = function ( disabled ) {
 	// Parent method
 	ve.ui.MediaSizeWidget.super.prototype.setDisabled.call( this, disabled );
 
-	// The 'setDisabled' method seems to be called before the widgets
+	this.updateDisabled();
+};
+
+/**
+ * Update the disabled state of sub widgets
+ */
+ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
+	var sizeType,
+		disabled = this.isDisabled();
+
+	// The 'updateDisabled' method may called before the widgets
 	// are fully defined. So, before disabling/enabling anything,
 	// make sure the objects exist
 	if ( this.sizeTypeSelectWidget &&
@@ -446,11 +438,21 @@ ve.ui.MediaSizeWidget.prototype.setDisabled = function ( disabled ) {
 		this.scalable &&
 		this.fullSizeButton
 	) {
+		sizeType = this.getSizeType();
+
 		// Disable the type select
 		this.sizeTypeSelectWidget.setDisabled( disabled );
 
+		// Disable the default type options
+		this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled(
+			ve.isEmptyObject( this.scalable.getDefaultDimensions() )
+		);
+
 		// Disable the dimensions widget
-		this.dimensionsWidget.setDisabled( disabled );
+		this.dimensionsWidget.setDisabled( disabled || sizeType !== 'custom' );
+
+		// Disable the scale widget
+		// this.scaleInput.setDisabled( disabled || sizeType !== 'scale' );
 
 		// Double negatives aren't never fun!
 		this.fullSizeButton.setDisabled(
@@ -542,9 +544,7 @@ ve.ui.MediaSizeWidget.prototype.updateDefaultDimensions = function () {
 	} else {
 		this.dimensionsWidget.removeDefaults();
 	}
-	this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled(
-		ve.isEmptyObject( defaultDimensions )
-	);
+	this.updateDisabled();
 	this.validateDimensions();
 };
 
@@ -557,23 +557,14 @@ ve.ui.MediaSizeWidget.prototype.isCustomEmpty = function () {
 	return this.dimensionsWidget.isEmpty();
 };
 
-/**
- * Toggle a disabled state for the full size button
- *
- * @param {boolean} isDisabled Disabled or not
- */
-ve.ui.MediaSizeWidget.prototype.toggleFullSizeButtonDisabled = function ( isDisabled ) {
-	this.fullSizeButton.setDisabled( isDisabled );
-};
-
-/**
- * Check if the scale input is empty.
- *
- * @return {boolean} Scale input value is empty
- */
-ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
-	return ( this.scaleInput.getValue() === '' );
-};
+// /**
+//  * Check if the scale input is empty.
+//  *
+//  * @return {boolean} Scale input value is empty
+//  */
+// ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
+// 	return ( this.scaleInput.getValue() === '' );
+// };
 
 /**
  * Check if all inputs are empty.
@@ -581,7 +572,8 @@ ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
  * @return {boolean} All input values are empty
  */
 ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
-	return ( this.isCustomEmpty() && this.isScaleEmpty() );
+	return this.isCustomEmpty();
+	// return this.isCustomEmpty() && this.isScaleEmpty();
 };
 
 /**
