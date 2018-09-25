@@ -172,7 +172,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 
 	function createSurfacesFromHash( hash ) {
 		var i, pages = [];
-		if ( /^#!(?:pages|localStorage|sessionStorage)\/.+$/.test( hash ) ) {
+		if ( hash.slice( 0, 2 ) === '#!' ) {
 			pages = hash.slice( 2 ).split( ',' );
 		}
 		if ( pages.length ) {
@@ -180,7 +180,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 				addSurfaceContainer( pages[ i ] );
 			}
 		} else {
-			addSurfaceContainer( 'pages/simple.html' );
+			addSurfaceContainer( 'simple' );
 		}
 	}
 
