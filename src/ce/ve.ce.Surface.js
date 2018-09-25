@@ -4437,15 +4437,16 @@ ve.ce.Surface.prototype.onSynchronizerWrongDoc = function () {
  * @param {number} authorId The author ID
  */
 ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
-	var i, l, rects, rect, overlays,
+	var i, l, rects, rect, overlays, color,
 		synchronizer = this.model.synchronizer,
 		authorData = synchronizer.getAuthorData( authorId ),
-		color = '#' + authorData.color,
 		selection = synchronizer.authorSelections[ authorId ];
 
-	if ( authorId === synchronizer.getAuthorId() ) {
+	if ( !authorData || !selection || authorId === synchronizer.getAuthorId() ) {
 		return;
 	}
+
+	color = '#' + authorData.color;
 
 	if ( !this.userSelectionOverlays[ authorId ] ) {
 		this.userSelectionOverlays[ authorId ] = {
@@ -4520,7 +4521,7 @@ ve.ce.Surface.prototype.onPosition = function () {
 		var authorId,
 			authorSelections = surface.model.synchronizer.authorSelections;
 		for ( authorId in authorSelections ) {
-			surface.onSynchronizerAuthorUpdate( authorId );
+			surface.onSynchronizerAuthorUpdate( +authorId );
 		}
 	} );
 };
