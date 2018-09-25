@@ -53,11 +53,6 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 		token: this.token || ''
 	} };
 	this.socket = io( path, options );
-	// HACK: SocketIO caches the options from the last request.
-	// Connecting twice appears to overwrite this cache.
-	// See https://github.com/socketio/socket.io/issues/1677
-	this.socket.disconnect();
-	this.socket = io( path, options );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
 	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
 	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
