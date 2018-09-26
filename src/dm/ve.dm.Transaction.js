@@ -58,7 +58,6 @@ OO.initClass( ve.dm.Transaction );
  * @type {Object.<string,Object.<string,string|Object.<string, string>>>}
  */
 ve.dm.Transaction.static.reversers = {
-	annotate: { method: { set: 'clear', clear: 'set' } }, // Swap 'set' with 'clear'
 	attribute: { from: 'to', to: 'from' }, // Swap .from with .to
 	replace: { // Swap .insert with .remove
 		insert: 'remove',
@@ -208,37 +207,6 @@ ve.dm.Transaction.prototype.pushAttributeOp = function ( key, from, to ) {
 };
 
 /**
- * Build an annotate operation
- *
- * It is an error to set an annotation on content that already has a matching annotation (in
- * the sense of ve.dm.AnnotationSet#containsComparable ), or to clear an annotation on content
- * that does not have the exact same annotation (in the sense of matching hashes)
- *
- * When processing transactions, annotation changes are applied individually to the item at
- * each linear model offset. When setting, the annotation is inserted into the item's annotation
- * array at the offset `spliceAt`. When clearing, the matching annotation must be at the offset
- * `spliceAt`, and is removed.
- *
- * When multiple annotate actions are operating at once, they are applied in the order in which
- * their start operations occur in the transaction. This matters because of ordering in the
- * annotation array.
- *
- * @param {string} method Method to use, either "set" or "clear"
- * @param {string} bias Bias, either "start" or "stop"
- * @param {string} hash Store hash of annotation object
- * @param {number} spliceAt Annotation array offset at which to splice
- */
-ve.dm.Transaction.prototype.pushAnnotateOp = function ( method, bias, hash, spliceAt ) {
-	this.operations.push( {
-		type: 'annotate',
-		method: method,
-		bias: bias,
-		hash: hash,
-		spliceAt: spliceAt
-	} );
-};
-
-/**
  * Create a clone of this transaction.
  *
  * The returned transaction will be exactly the same as this one, except that its 'applied' flag
@@ -350,16 +318,6 @@ ve.dm.Transaction.prototype.hasContentDataOperations = function () {
  */
 ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
 	return this.hasOperationWithType( 'attribute' );
-};
-
-/**
- * Check if the transaction has any annotation operations.
- *
- * @method
- * @return {boolean} Has annotation operations
- */
-ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
-	return this.hasOperationWithType( 'annotate' );
 };
 
 /**
@@ -565,18 +523,11 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, includeInternalLi
 ve.dm.Transaction.prototype.getActiveRangeAndLengthDiff = function () {
 	var i, len, op, start, end, startOpIndex, endOpIndex, active,
 		offset = 0,
-		annotations = 0,
 		diff = 0;
 
 	for ( i = 0, len = this.operations.length; i < len; i++ ) {
 		op = this.operations[ i ];
-		if ( op.type === 'annotate' ) {
-			annotations += ( op.bias === 'start' ? 1 : -1 );
-			continue;
-		}
-		active = annotations > 0 || (
-			op.type !== 'retain' && op.type !== 'retainMetadata'
-		);
+		active = op.type !== 'retain';
 		// Place start marker
 		if ( active && start === undefined ) {
 			start = offset;
