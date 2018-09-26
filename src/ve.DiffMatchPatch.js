@@ -129,7 +129,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		}
 	}
 
-	/*
+	/**
 	 * Determine whether there is a wordbreak at an offset
 	 *
 	 * @param {Array} data Linear data
