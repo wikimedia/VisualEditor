@@ -102,6 +102,10 @@ ve.dm.example.removeOriginalDomElements = function ( data ) {
 	var i, len;
 	for ( i = 0, len = data.length; i < len; i++ ) {
 		if ( data[ i ].originalDomElementsHash !== undefined ) {
+			if ( Object.isFrozen( data[ i ] ) ) {
+				// Unfreeze, this data is just for testing
+				data[ i ] = ve.copy( data[ i ] );
+			}
 			delete data[ i ].originalDomElementsHash;
 		}
 	}

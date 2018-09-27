@@ -306,18 +306,21 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
  * @param {Mixed} value New attribute value
  */
 ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, value ) {
-	var item, oldValue, node,
+	var oldItem, oldValue, node,
 		data = this.document.data;
 	offset += this.adjustment;
 
-	item = data.getData( offset );
-	oldValue = item.attributes && item.attributes[ key ];
+	oldItem = data.getData( offset );
+	oldValue = oldItem.attributes && oldItem.attributes[ key ];
 	data.setAttributeAtOffset( offset, key, value );
 	this.queueUndoFunction( function () {
 		data.setAttributeAtOffset( offset, key, oldValue );
 	} );
 
 	node = this.document.getDocumentNode().getNodeFromOffset( offset + 1 );
+	// Update node element pointer
+	node.element = data.getData( offset );
+
 	this.queueEvent( node, 'attributeChange', key, oldValue, value );
 	this.queueEvent( node, 'update', this.isStaging );
 };

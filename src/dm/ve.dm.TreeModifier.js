@@ -266,7 +266,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	// (This is used when converting to/from HTML, to decide whether loaded metadata offsets
 	// need round tripping)
 	function markBranchNodeChanged( offset ) {
-		var item,
+		var item, newItem,
 			adj = isReversed ? -1 : 1,
 			i = offset - 1;
 
@@ -283,8 +283,10 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			if ( item.internal && item.internal.changesSinceLoad !== undefined ) {
 				// Guard against marking the same node twice
 				if ( changedBranchNodes.indexOf( item ) === -1 ) {
-					changedBranchNodes.push( item );
-					item.internal.changesSinceLoad += adj;
+					newItem = ve.copy( item );
+					changedBranchNodes.push( newItem );
+					newItem.internal.changesSinceLoad += adj;
+					document.data.splice( i + 1, 1, newItem );
 				}
 			}
 			// This is a branch node boundary, so go no further

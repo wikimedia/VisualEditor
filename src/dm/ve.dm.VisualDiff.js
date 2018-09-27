@@ -108,7 +108,10 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 			nodeIndex = groupIndexOrder[ i ];
 			refNodes = nodes[ groupName ].keyedNodes[ nodes[ groupName ].firstNodes[ nodeIndex ].registeredListKey ];
 			for ( j = 0, jlen = refNodes.length; j < jlen; j++ ) {
-				ve.setProp( refNodes[ j ].element, 'internal', 'overrideIndex', i + 1 );
+				// eslint-disable-next-line no-loop-func
+				doc.data.modifyData( refNodes[ j ].getOffset(), function ( item ) {
+					ve.setProp( item, 'internal', 'overrideIndex', i + 1 );
+				} );
 			}
 		}
 	}

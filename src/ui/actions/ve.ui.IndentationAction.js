@@ -253,7 +253,9 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		for ( i = 0, length = children.length; i < length; i++ ) {
 			child = children[ i ].node;
 			if ( child.type === 'paragraph' ) {
-				ve.deleteProp( child.element, 'internal', 'generated' );
+				documentModel.data.modifyData( child.getOuterRange().start, function ( item ) {
+					ve.deleteProp( item, 'internal', 'generated' );
+				} );
 			}
 		}
 	} else {
