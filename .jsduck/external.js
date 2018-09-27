@@ -44,3 +44,7 @@
 /**
  * @class Map
  */
+
+/**
+ * @class Set
+ */

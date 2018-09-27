@@ -1085,3 +1085,73 @@ QUnit.test( 'adjacentDomPosition', function ( assert ) {
 		}
 	}
 } );
+
+QUnit.test( 'deepFreeze', function ( assert ) {
+	var frozen, originalData,
+		data = [
+			{ type: 'heading', attributes: { level: 1 } },
+			'F', 'o', 'o',
+			{ type: '/heading' }
+		];
+
+	originalData = ve.copy( data );
+	frozen = ve.deepFreeze( data, true );
+
+	assert.deepEqual( frozen, originalData, 'Frozen data is equal to original data' );
+	assert.strictEqual( frozen, data, 'Result is same object as input' );
+
+	assert.throws( function () {
+		data[ 0 ].attributes.level = 2;
+	}, Error, 'Can\'t change data attribute' );
+
+	assert.throws( function () {
+		delete frozen[ 0 ].attributes;
+	}, Error, 'Can\'t delete property' );
+
+	frozen.splice( 3, 1, 'b' );
+
+	assert.strictEqual( frozen[ 3 ], 'b', 'Data can be spliced' );
+	assert.strictEqual( data[ 3 ], 'b', 'Original object affected by splice' );
+
+	frozen = ve.deepFreeze( data );
+
+	assert.throws( function () {
+		frozen.splice( 3, 1, 'c' );
+	}, Error, 'Can\'t splice if root is frozen' );
+
+	frozen = ve.deepFreeze( data );
+	assert.ok( true, 'Freezing for a second time does not throw' );
+} );
+
+QUnit.test( 'deepFreeze (on cyclic structure)', function ( assert ) {
+	var cyclic, count,
+		realFreeze = ve.deepFreeze;
+
+	cyclic = { foo: 'bar' };
+	cyclic.self = cyclic;
+
+	ve.deepFreeze = function () {
+		count++;
+		return realFreeze.apply( ve, arguments );
+	};
+	try {
+		count = 0;
+		ve.deepFreeze( cyclic );
+		assert.strictEqual( count, 1, 'Did not recurse into self' );
+	} finally {
+		ve.deepFreeze = realFreeze;
+	}
+} );
+
+QUnit.test( 'deepFreeze (recursive, aliased)', function ( assert ) {
+	var foo = { bar: {} },
+		realFreeze = ve.deepFreeze;
+
+	ve.deepFreeze = function ( x ) { return x; };
+	try {
+		foo = realFreeze( foo );
+		assert.ok( Object.isFrozen( foo.bar ), 'Recursed into aliased version' );
+	} finally {
+		ve.deepFreeze = realFreeze;
+	}
+} );

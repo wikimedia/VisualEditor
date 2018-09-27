@@ -436,6 +436,20 @@ ve.dir = ve.dir || function () {
 };
 
 /**
+ * Deep freeze an object, making it immutable
+ *
+ * This implementation does nothing, to add a real implementation ve.freeze needs to be loaded.
+ *
+ * @param {Object} obj
+ * @param {boolean} onlyProperties
+ * @return {Object}
+ */
+ve.deepFreeze = ve.deepFreeze || function ( obj ) {
+	// Don't do anything, this is just a stub
+	return obj;
+};
+
+/**
  * Get a localized message.
  *
  * @param {string} key Message key
