@@ -32,7 +32,7 @@
 		} );
 		// Merge text nodes
 		$wrapper[ 0 ].normalize();
-		return $wrapper.contents();
+		return $wrapper.contents().toArray();
 	};
 	DummyPlatform.prototype.getLanguageName = function ( lang ) { return 'langname-' + lang; };
 	DummyPlatform.prototype.getLanguageDirection = function () { return 'ltr'; };

@@ -143,7 +143,7 @@ ve.init.sa.Platform.prototype.getHtmlMessage = function ( key ) {
 		lastOffset = offset + placeholder.length;
 	} );
 	$message = $message.add( ve.sanitizeHtml( message.slice( lastOffset ) ) );
-	return $message;
+	return $message.toArray();
 };
 
 /**

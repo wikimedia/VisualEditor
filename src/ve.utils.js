@@ -467,7 +467,7 @@ ve.msg = function () {
  *
  * @param {string} key Message key
  * @param {...Mixed} [params] Message parameters
- * @return {jQuery} Localized message
+ * @return {Node[]} Localized message
  */
 ve.htmlMsg = function () {
 	// Avoid using bind because ve.init.platform doesn't exist yet.

@@ -1106,7 +1106,7 @@ ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, doc
 /**
  * Get a change description item from a set of changes
  *
- * @param {Array} changes List of changes, each change being either text or a jQuery object
+ * @param {Array} changes List of changes, each change being either text or a Node array
  * @return {OO.ui.OptionWidget} Change description item
  */
 ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes ) {
@@ -1116,10 +1116,10 @@ ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes ) {
 
 	for ( i = 0, l = changes.length; i < l; i++ ) {
 		$change = $( '<div>' );
-		if ( changes[ i ] instanceof jQuery ) {
-			$change.append( changes[ i ] );
-		} else {
+		if ( typeof changes[ i ] === 'string' ) {
 			$change.text( changes[ i ] );
+		} else {
+			$change.append( changes[ i ] );
 		}
 		$label = $label.add( $change );
 	}
