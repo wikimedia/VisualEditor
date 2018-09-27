@@ -272,12 +272,25 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 	if ( ( typeof change.from === 'object' && change.from !== null ) || ( typeof change.to === 'object' && change.to !== null ) ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unknown', key );
 	} else if ( change.from === undefined ) {
-		return ve.htmlMsg( 'visualeditor-changedesc-set', key, $( '<ins>' ).text( change.to ) );
+		return ve.htmlMsg( 'visualeditor-changedesc-set', key, this.wrapText( 'ins', change.to ) );
 	} else if ( change.to === undefined ) {
-		return ve.htmlMsg( 'visualeditor-changedesc-unset', key, $( '<del>' ).text( change.from ) );
+		return ve.htmlMsg( 'visualeditor-changedesc-unset', key, this.wrapText( 'del', change.from ) );
 	} else {
-		return ve.htmlMsg( 'visualeditor-changedesc-changed', key, $( '<del>' ).text( change.from ), $( '<ins>' ).text( change.to ) );
+		return ve.htmlMsg( 'visualeditor-changedesc-changed', key, this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
 	}
+};
+
+/**
+ * Utility function for wrapping text in a tag, equivalent to `$( '<tag>' ).text( text )`
+ *
+ * @param {string} tag Wrapping element's tag
+ * @param {string} text Text
+ * @return {HTMLElement} Element wrapping text
+ */
+ve.dm.Model.static.wrapText = function ( tag, text ) {
+	var wrapper = document.createElement( tag );
+	wrapper.appendChild( document.createTextNode( text ) );
+	return wrapper;
 };
 
 /**

@@ -103,8 +103,8 @@ ve.dm.TableCellNode.static.describeChange = function ( key, change ) {
 	if ( key === 'style' ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
 			// Either visualeditor-table-format-data or visualeditor-table-format-header
-			$( '<del>' ).text( ve.msg( 'visualeditor-table-format-' + change.from ) ),
-			$( '<ins>' ).text( ve.msg( 'visualeditor-table-format-' + change.to ) )
+			this.wrapText( 'del', ve.msg( 'visualeditor-table-format-' + change.from ) ),
+			this.wrapText( 'ins', ve.msg( 'visualeditor-table-format-' + change.to ) )
 		);
 	}
 	// Parent method
