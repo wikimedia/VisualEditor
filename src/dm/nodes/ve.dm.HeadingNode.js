@@ -54,8 +54,8 @@ ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {
 ve.dm.HeadingNode.static.describeChange = function ( key, change ) {
 	if ( key === 'level' ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
-			$( '<del>' ).text( ve.msg( 'visualeditor-formatdropdown-format-heading' + change.from ) ),
-			$( '<ins>' ).text( ve.msg( 'visualeditor-formatdropdown-format-heading' + change.to ) )
+			this.wrapText( 'del', ve.msg( 'visualeditor-formatdropdown-format-heading' + change.from ) ),
+			this.wrapText( 'ins', ve.msg( 'visualeditor-formatdropdown-format-heading' + change.to ) )
 		);
 	}
 	// Parent method

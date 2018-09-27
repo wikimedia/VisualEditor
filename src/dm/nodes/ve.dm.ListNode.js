@@ -60,8 +60,8 @@ ve.dm.ListNode.static.describeChange = function ( key, change ) {
 	if ( key === 'style' ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
 			// Either visualeditor-listbutton-bullet-tooltip or visualeditor-listbutton-number-tooltip
-			$( '<del>' ).text( ve.msg( 'visualeditor-listbutton-' + change.from + '-tooltip' ) ),
-			$( '<ins>' ).text( ve.msg( 'visualeditor-listbutton-' + change.to + '-tooltip' ) )
+			this.wrapText( 'del', ve.msg( 'visualeditor-listbutton-' + change.from + '-tooltip' ) ),
+			this.wrapText( 'ins', ve.msg( 'visualeditor-listbutton-' + change.to + '-tooltip' ) )
 		);
 	}
 	// Parent method

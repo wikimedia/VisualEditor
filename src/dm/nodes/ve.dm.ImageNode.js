@@ -58,7 +58,7 @@ ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes
 			'height' in attributeChanges ? attributeChanges.height.to : attributes.height
 		);
 
-		descriptions.push( ve.htmlMsg( 'visualeditor-changedesc-image-size', $( '<del>' ).text( sizeFrom ), $( '<ins>' ).text( sizeTo ) ) );
+		descriptions.push( ve.htmlMsg( 'visualeditor-changedesc-image-size', this.wrapText( 'del', sizeFrom ), this.wrapText( 'ins', sizeTo ) ) );
 	}
 	for ( key in attributeChanges ) {
 		if ( customKeys.indexOf( key ) === -1 ) {
@@ -77,8 +77,8 @@ ve.dm.ImageNode.static.describeChange = function ( key, change ) {
 		// Messages used:
 		// visualeditor-align-desc-left, visualeditor-align-desc-right, visualeditor-align-desc-center
 		return ve.htmlMsg( 'visualeditor-changedesc-align',
-			$( '<del>' ).text( ve.msg( 'visualeditor-align-desc-' + change.from ) ),
-			$( '<ins>' ).text( ve.msg( 'visualeditor-align-desc-' + change.to ) )
+			this.wrapText( 'del', ve.msg( 'visualeditor-align-desc-' + change.from ) ),
+			this.wrapText( 'ins', ve.msg( 'visualeditor-align-desc-' + change.to ) )
 		);
 	}
 	// Parent method

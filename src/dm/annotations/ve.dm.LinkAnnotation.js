@@ -49,7 +49,7 @@ ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
 
 ve.dm.LinkAnnotation.static.describeChange = function ( key, change ) {
 	if ( key === 'href' ) {
-		return ve.htmlMsg( 'visualeditor-changedesc-link-href', $( '<del>' ).text( change.from ), $( '<ins>' ).text( change.to ) );
+		return ve.htmlMsg( 'visualeditor-changedesc-link-href', this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
 	}
 	// Parent method
 	return ve.dm.LinkAnnotation.parent.static.describeChange.apply( this, arguments );
