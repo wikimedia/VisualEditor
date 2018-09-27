@@ -195,7 +195,6 @@ ve.dm.Change.static.serializeValue = function ( value ) {
 };
 
 ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
-	var nodes;
 	if ( serialized.type === 'annotation' ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
 	} else if ( serialized.type === 'domNodes' ) {
@@ -204,18 +203,6 @@ ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
 		} else {
 			// Convert NodeList to Array
 			return Array.prototype.slice.call( ve.sanitizeHtml( serialized.value ) );
-		}
-	} else if ( serialized.type === 'domNodeArray' ) {
-		// Backwards compatibility, for auto-save sessions created before
-		// 'domNodeArray' was changed to 'domNodes'.
-		if ( unsafe ) {
-			return $.parseHTML( serialized.value.join( '' ), undefined, true );
-		} else {
-			nodes = [];
-			serialized.value.forEach( function ( nodeHtml ) {
-				nodes = nodes.concat( Array.prototype.slice.call( ve.sanitizeHtml( nodeHtml ) ) );
-			} );
-			return nodes;
 		}
 	} else if ( serialized.type === 'plain' ) {
 		return serialized.value;
