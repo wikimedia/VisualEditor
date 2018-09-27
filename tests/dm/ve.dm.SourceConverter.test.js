@@ -39,6 +39,25 @@ QUnit.test( 'conversion', function ( assert ) {
 					{ type: 'paragraph' },
 					{ type: '/paragraph' }
 				]
+			},
+			{
+				msg: 'Different newlines are all converted to paragraphs (CR/LF/CRLF)',
+				text: 'asd\nasd\rasd\r\nasd',
+				data: [
+					{ type: 'paragraph' },
+					'a', 's', 'd',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'a', 's', 'd',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'a', 's', 'd',
+					{ type: '/paragraph' },
+					{ type: 'paragraph' },
+					'a', 's', 'd',
+					{ type: '/paragraph' }
+				],
+				textRoundtrip: 'asd\nasd\nasd\nasd'
 			}
 		];
 
@@ -58,7 +77,7 @@ QUnit.test( 'conversion', function ( assert ) {
 		}
 		assert.deepEqual(
 			ve.dm.sourceConverter.getSourceTextFromModel( doc ),
-			cases[ i ].text,
+			cases[ i ].textRoundtrip || cases[ i ].text,
 			cases[ i ].msg + ': getSourceTextFromModel'
 		);
 		assert.deepEqual(
@@ -73,7 +92,7 @@ QUnit.test( 'conversion', function ( assert ) {
 		);
 		assert.strictEqual(
 			ve.dm.sourceConverter.getSourceTextFromDataRange( cases[ i ].data ),
-			cases[ i ].text,
+			cases[ i ].textRoundtrip || cases[ i ].text,
 			cases[ i ].msg + ': getSourceTextFromDataRange'
 		);
 		// getSourceTextFromDataRange with a range argument is currently tested by ElementLinearData#getSourceText tests
