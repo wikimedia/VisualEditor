@@ -403,13 +403,13 @@
 		types = [];
 		if ( node.getAttribute ) {
 			if ( node.getAttribute( 'rel' ) ) {
-				types = types.concat( node.getAttribute( 'rel' ).split( ' ' ) );
+				types = types.concat( node.getAttribute( 'rel' ).trim().split( /\s+/ ) );
 			}
 			if ( node.getAttribute( 'typeof' ) ) {
-				types = types.concat( node.getAttribute( 'typeof' ).split( ' ' ) );
+				types = types.concat( node.getAttribute( 'typeof' ).trim().split( /\s+/ ) );
 			}
 			if ( node.getAttribute( 'property' ) ) {
-				types = types.concat( node.getAttribute( 'property' ).split( ' ' ) );
+				types = types.concat( node.getAttribute( 'property' ).trim().split( /\s+/ ) );
 			}
 		}
 
