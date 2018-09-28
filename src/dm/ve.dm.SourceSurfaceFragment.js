@@ -138,12 +138,14 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 	}
 
 	this.pushPending(
-		this.convertToSource( doc )
-			.done( function ( source ) {
+		this.convertToSource( doc ).then(
+			function ( source ) {
 				fragment.insertContent( source.trim() );
-			} ).fail( function () {
+			},
+			function () {
 				ve.error( 'Failed to convert document', arguments );
-			} )
+			}
+		)
 	);
 
 	return this;
