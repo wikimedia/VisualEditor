@@ -6,9 +6,8 @@
 
 /* eslint-disable no-console */
 
-var logStream, transportServer,
+var logger, transportServer,
 	port = 8081,
-	startTimestamp,
 	fs = require( 'fs' ),
 	express = require( 'express' ),
 	app = express(),
@@ -16,17 +15,35 @@ var logStream, transportServer,
 	io = require( 'socket.io' )( http ),
 	ve = require( '../../dist/ve-rebaser.js' );
 
-function logEvent( event ) {
-	if ( !logStream ) {
-		logStream = fs.createWriteStream( 'rebaser.log', { flags: 'a' } );
-	}
-	logStream.write( JSON.stringify( event ) + '\n' );
+function Logger( filename ) {
+	this.filename = filename;
+	this.logStream = null;
+	this.startTimestamp = null;
 }
 
-function logServerEvent( event ) {
+Logger.prototype.getRelativeTimestamp = function () {
+	return Date.now() - this.startTimestamp;
+};
+
+/**
+ * @param {Object} event The event to log
+ */
+Logger.prototype.logEvent = function ( event ) {
+	if ( !this.logStream ) {
+		this.logStream = fs.createWriteStream( 'rebaser.log', { flags: 'a' } );
+	}
+	this.logStream.write( JSON.stringify( event ) + '\n' );
+};
+
+/**
+ * Log a server event
+ *
+ * @param {Object} event The server event to log
+ */
+Logger.prototype.logServerEvent = function ( event ) {
 	var key,
 		ob = {};
-	ob.timestamp = Date.now() - startTimestamp;
+	ob.timestamp = this.getRelativeTimestamp();
 	ob.clientId = 'server';
 	for ( key in event ) {
 		if ( event[ key ] instanceof ve.dm.Change ) {
@@ -35,17 +52,21 @@ function logServerEvent( event ) {
 			ob[ key ] = event[ key ];
 		}
 	}
-	logEvent( ob );
-}
+	this.logEvent( ob );
+};
 
 /**
  * Protocol server
  *
  * Handles the abstract protocol without knowing the specific transport
+ *
+ * @param {Logger} logger Logger class
  */
-function ProtocolServer() {
-	this.rebaseServer = new ve.dm.RebaseServer( logServerEvent );
+function ProtocolServer( logger ) {
+	this.logger = logger;
+	this.rebaseServer = new ve.dm.RebaseServer();
 	this.lastAuthorForDoc = new Map();
+	this.logger.logServerEvent( { type: 'restart' } );
 }
 
 ProtocolServer.static = {};
@@ -82,7 +103,7 @@ ProtocolServer.prototype.authenticate = function ( docName, authorId, token ) {
 		docName: docName,
 		authorId: authorId
 	};
-	logServerEvent( {
+	this.logger.logServerEvent( {
 		type: 'newClient',
 		doc: docName,
 		authorId: context.authorId
@@ -99,13 +120,13 @@ ProtocolServer.prototype.authenticate = function ( docName, authorId, token ) {
 ProtocolServer.prototype.onLogEvent = function ( context, event ) {
 	var key,
 		ob = {};
-	ob.recvTimestamp = Date.now() - startTimestamp;
+	ob.recvTimestamp = this.logger.getRelativeTimestamp();
 	ob.clientId = context.authorId;
 	ob.doc = context.docName;
 	for ( key in event ) {
 		ob[ key ] = event[ key ];
 	}
-	logEvent( ob );
+	this.logger.logEvent( ob );
 };
 
 /**
@@ -118,7 +139,6 @@ ProtocolServer.prototype.welcomeClient = function ( context ) {
 		docName = context.docName,
 		authorId = context.authorId;
 
-	console.log( 'connection ' + context.connectionId );
 	this.rebaseServer.updateDocState( docName, authorId, null, {
 		// TODO: i18n
 		name: 'User ' + authorId,
@@ -186,7 +206,7 @@ ProtocolServer.prototype.onChangeAuthor = function ( context, newData ) {
 			color: newData.color
 		}
 	} );
-	logServerEvent( {
+	this.logger.logServerEvent( {
 		type: 'authorChange',
 		doc: context.docName,
 		authorId: context.authorId,
@@ -203,14 +223,13 @@ ProtocolServer.prototype.onChangeAuthor = function ( context, newData ) {
  * @param {Object} context The connection context
  */
 ProtocolServer.prototype.onDisconnect = function ( context ) {
-	console.log( 'disconnect ' + context.connectionId );
 	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
 		active: false,
 		continueBase: null,
 		rejections: null
 	} );
 	context.broadcast( 'authorDisconnect', context.authorId );
-	logServerEvent( {
+	this.logger.logServerEvent( {
 		type: 'disconnect',
 		doc: context.docName,
 		authorId: context.authorId
@@ -221,9 +240,10 @@ ProtocolServer.prototype.onDisconnect = function ( context ) {
  * Transport server for Socket IO transport
  *
  * @constructor
+ * @param {Logger} logger The logger class
  */
-function TransportServer() {
-	this.protocolServer = new ProtocolServer();
+function TransportServer( logger ) {
+	this.protocolServer = new ProtocolServer( logger );
 	this.docNamespaces = new Map();
 }
 
@@ -278,10 +298,8 @@ app.get( new RegExp( '/doc/raw/(.*)' ), function ( req, res ) {
 	res.status( 401 ).send( 'DOM in nodejs is hard' );
 } );
 
-transportServer = new TransportServer();
+logger = new Logger( 'rebaser.log' );
+transportServer = new TransportServer( logger );
 io.on( 'connection', transportServer.onConnection.bind( transportServer ) );
-
-startTimestamp = Date.now();
-logServerEvent( { type: 'restart' } );
 http.listen( port );
 console.log( 'Listening on ' + port );
