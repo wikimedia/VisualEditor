@@ -775,6 +775,8 @@
 		"scripts": [
 			"rebaser/src/dm/ve.dm.RebaseDocState.js",
 			"rebaser/src/dm/ve.dm.RebaseServer.js",
+			"rebaser/src/dm/ve.dm.ProtocolServer.js",
+			"rebaser/src/dm/ve.dm.TransportServer.js",
 
 			"tests/ve.qunit.js",
 			"tests/ve.qunit.local.js",
@@ -1091,6 +1093,8 @@
 			"src/dm/ve.dm.Change.js",
 			"rebaser/src/dm/ve.dm.RebaseDocState.js",
 			"rebaser/src/dm/ve.dm.RebaseServer.js",
+			"rebaser/src/dm/ve.dm.ProtocolServer.js",
+			"rebaser/src/dm/ve.dm.TransportServer.js",
 			"src/ve.Range.js",
 			"src/dm/ve.dm.Selection.js",
 			"src/dm/selections/ve.dm.NullSelection.js",

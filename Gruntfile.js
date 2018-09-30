@@ -381,6 +381,7 @@ module.exports = function ( grunt ) {
 			main: {
 				browsers: [ 'Chrome' ], // T200347: Temporarily disabled `, 'Firefox'*/ ],`
 				preprocessors: {
+					'rebaser/src/**/*.js': [ 'coverage' ],
 					'src/**/*.js': [ 'coverage' ]
 				},
 				reporters: [ 'mocha', 'coverage' ],
@@ -420,11 +421,13 @@ module.exports = function ( grunt ) {
 							statements: 20,
 							lines: 20,
 							excludes: [
+								'rebaser/src/dm/ve.dm.ProtocolServer.js',
+								'rebaser/src/dm/ve.dm.RebaseDocState.js',
+								'rebaser/src/dm/ve.dm.TransportServer.js',
 								'src/ve.track.js',
 								'src/init/**/*.js',
 								'src/ce/**/*.js',
 								'src/ui/**/*.js',
-								'src/dm/ve.dm.RebaseDocState.js',
 								'src/dm/ve.dm.SurfaceSynchronizer.js',
 								'src/dm/ve.dm.TableSlice.js',
 								'src/dm/annotations/ve.dm.BidiAnnotation.js',
