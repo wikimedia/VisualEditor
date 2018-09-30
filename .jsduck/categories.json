@@ -105,6 +105,7 @@
 					"ve.dm.RebaseDocState",
 					"ve.dm.RebaseClient",
 					"ve.dm.RebaseServer",
+					"ve.dm.ProtocolServer",
 					"ve.dm.SurfaceSynchronizer"
 				]
 			}
