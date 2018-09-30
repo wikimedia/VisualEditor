@@ -35,7 +35,7 @@ ve.ui.TableDialog.static.title = OO.ui.deferMsg( 'visualeditor-dialog-table-titl
 ve.ui.TableDialog.static.actions = [
 	{
 		action: 'done',
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-apply' ),
 		flags: [ 'primary', 'progressive' ]
 	},
 	{
