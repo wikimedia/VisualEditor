@@ -107,16 +107,16 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 		this.$element.append( this.sizeTypeSelectWidget.$element );
 	}
 	this.$element.append( fieldCustom.$element );
+	// TODO: when upright is supported by Parsoid
+	// this.$element.append( fieldScale.$element );
 	if ( !config.noOriginalDimensions ) {
-		this.$element.append(
-			// TODO: when upright is supported by Parsoid
-			// fieldScale.$element,
-			fullSizeButtonField.$element,
-			$( '<div>' )
-				.addClass( 've-ui-mediaSizeWidget-label-error' )
-				.append( this.errorLabel.$element )
-		);
+		this.$element.append( fullSizeButtonField.$element );
 	}
+	this.$element.append(
+		$( '<div>' )
+			.addClass( 've-ui-mediaSizeWidget-label-error' )
+			.append( this.errorLabel.$element )
+	);
 
 	// Events
 	this.dimensionsWidget.connect( this, {
