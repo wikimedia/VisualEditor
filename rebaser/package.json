@@ -6,6 +6,7 @@
 		"ejs": "2.6",
 		"express": "4.16",
 		"oojs": "2.2",
+		"mongodb": "3.1.6",
 		"socket.io": "2.1"
 	},
 	"devDependencies": {},

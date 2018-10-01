@@ -6,13 +6,14 @@
 
 /* eslint-disable no-console */
 
-var logger, protocolServer, transportServer,
+var logger, mongoClient, documentStore, protocolServer, transportServer,
 	port = 8081,
 	fs = require( 'fs' ),
 	express = require( 'express' ),
 	app = express(),
 	http = require( 'http' ).Server( app ),
 	io = require( 'socket.io' )( http ),
+	mongodb = require( 'mongodb' ),
 	ve = require( '../../dist/ve-rebaser.js' );
 
 function Logger( filename ) {
@@ -77,7 +78,10 @@ app.get( new RegExp( '/doc/raw/(.*)' ), function ( req, res ) {
 } );
 
 logger = new Logger( 'rebaser.log' );
-protocolServer = new ve.dm.ProtocolServer( logger );
+// eslint-disable-next-line camelcase
+mongoClient = new mongodb.MongoClient( new mongodb.Server( 'localhost', 27017 ), { native_parser: true } );
+documentStore = new ve.dm.DocumentStore( mongoClient, 'test', logger );
+protocolServer = new ve.dm.ProtocolServer( documentStore, logger );
 transportServer = new ve.dm.TransportServer( protocolServer );
 io.on(
 	'connection',
@@ -86,5 +90,16 @@ io.on(
 		io.sockets.in.bind( io.sockets )
 	)
 );
-http.listen( port );
-console.log( 'Listening on ' + port );
+console.log( 'Connecting to document store' );
+documentStore.connect().then( function () {
+	var dropDatabase = ( process.argv.indexOf( '--drop' ) !== -1 );
+	if ( dropDatabase ) {
+		console.log( 'Dropping database' );
+	}
+	return ( dropDatabase ? documentStore.dropDatabase() : Promise.resolve() ).then( function () {
+		http.listen( port );
+		console.log( 'Listening on ' + port );
+	} );
+} ).catch( function ( error ) {
+	console.log( 'Connection failure: ', error );
+} );

@@ -12,6 +12,7 @@
  */
 ve.dm.TransportServer = function VeDmTransportServer( protocolServer ) {
 	this.protocolServer = protocolServer;
+	this.docNamespaces = new Map();
 };
 
 OO.initClass( ve.dm.TransportServer );
@@ -23,26 +24,56 @@ OO.initClass( ve.dm.TransportServer );
  *
  * @param {Function} getRoom One-argument function taking docName, returning the corresponding room
  * @param {Object} socket The io socket
+ * @return {Promise}
  */
 ve.dm.TransportServer.prototype.onConnection = function ( getRoom, socket ) {
-	var context,
-		server = this.protocolServer,
+	var server = this.protocolServer,
 		docName = socket.handshake.query.docName,
 		authorId = +socket.handshake.query.authorId || null,
 		token = socket.handshake.query.token || null;
 
-	socket.join( docName );
-	context = server.authenticate( docName, authorId, token );
-	context.broadcast = function () {
-		var room = getRoom( docName );
-		room.emit.apply( room, arguments );
-	};
-	context.sendAuthor = socket.emit.bind( socket );
-	context.connectionId = socket.client.conn.remoteAddress + ' ' + socket.handshake.url;
+	/**
+	 * Ensure the doc is loaded when calling f
+	 *
+	 * @param {Function} f A method of server
+	 * @param {Object} context Connection context object passed to f as first argument
+	 * @return {Function} Function returning a promise resolving with f's return value
+	 */
+	function ensureLoadedWrap( f, context ) {
+		// In theory, some protection is needed to ensure the document cannot unload
+		// between the ensureLoaded promise resolving and f running. In practice,
+		// this should not happen if the unloading is not too aggressive.
+		return function () {
+			var args = Array.prototype.slice.call( arguments );
+			args.splice( 0, 0, context );
+			return server.ensureLoaded( docName ).then( function () {
+				return f.apply( server, args );
+			} );
+		};
+	}
 
-	socket.on( 'submitChange', server.onSubmitChange.bind( server, context ) );
-	socket.on( 'changeAuthor', server.onChangeAuthor.bind( server, context ) );
-	socket.on( 'disconnect', server.onDisconnect.bind( server, context ) );
-	socket.on( 'logEvent', server.onLogEvent.bind( server, context ) );
-	server.welcomeClient( context );
+	socket.join( docName );
+	return server.ensureLoaded( docName ).then( function () {
+		var context = server.authenticate( docName, authorId, token );
+		context.broadcast = function () {
+			var room = getRoom( docName );
+			room.emit.apply( room, arguments );
+		};
+		context.sendAuthor = socket.emit.bind( socket );
+		context.connectionId = socket.client.conn.remoteAddress + ' ' + socket.handshake.url;
+		socket.on( 'submitChange', ensureLoadedWrap( server.onSubmitChange, context ) );
+		socket.on( 'changeName', ensureLoadedWrap( server.onChangeName, context ) );
+		socket.on( 'changeColor', ensureLoadedWrap( server.onChangeColor, context ) );
+		socket.on( 'disconnect', ensureLoadedWrap( server.onDisconnect, context ) );
+		socket.on( 'logEvent', ensureLoadedWrap( server.onLogEvent, context ) );
+		server.welcomeClient( context );
+	} );
+};
+
+ve.dm.TransportServer.prototype.broadcast = function ( docName, namespace, eventName, object ) {
+	namespace.emit( eventName, object );
+};
+
+ve.dm.TransportServer.prototype.onClose = function () {
+	this.documentStore.onClose();
 };

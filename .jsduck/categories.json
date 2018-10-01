@@ -105,6 +105,7 @@
 					"ve.dm.RebaseDocState",
 					"ve.dm.RebaseClient",
 					"ve.dm.RebaseServer",
+					"ve.dm.DocumentStore",
 					"ve.dm.ProtocolServer",
 					"ve.dm.TransportServer",
 					"ve.dm.SurfaceSynchronizer"
