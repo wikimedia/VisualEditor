@@ -350,14 +350,17 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
  * @throws {Error}
  */
 ve.ce.getOffsetOfSlug = function ( element ) {
-	var model, $element = $( element );
+	var model, $prev, $element = $( element );
 	if ( $element.index() === 0 ) {
 		model = $element.parent().data( 'view' ).getModel();
 		return model.getOffset() + ( model.isWrapped() ? 1 : 0 );
-	} else if ( $element.prev().length ) {
-		model = $element.prev().data( 'view' ).getModel();
-		return model.getOffset() + model.getOuterLength();
 	} else {
+		// Don't pick up DOM nodes not from the view tree e.g. cursorHolders (T202103)
+		$prev = $element.prevAll( '.ve-ce-leafNode,.ve-ce-branchNode' ).first();
+		if ( $prev.length ) {
+			model = $prev.data( 'view' ).getModel();
+			return model.getOffset() + model.getOuterLength();
+		}
 		throw new Error( 'Incorrect slug location' );
 	}
 };
