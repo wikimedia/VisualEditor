@@ -38,7 +38,7 @@ ve.dm.SourceConverter.prototype.getModelFromSourceText = function ( sourceText, 
  */
 ve.dm.SourceConverter.prototype.getDataFromSourceText = function ( sourceText, inline ) {
 	var i, l,
-		lines = sourceText.split( '\n' ),
+		lines = sourceText.split( /\r\n|\r|\n/ ),
 		content = [];
 
 	for ( i = 0, l = lines.length; i < l; i++ ) {
