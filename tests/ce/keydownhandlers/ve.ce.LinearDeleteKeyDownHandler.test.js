@@ -323,7 +323,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
-				expectedRangeOrSelection: { type: 'null' },
+				expectedRangeOrSelection: new ve.Range( 0 ),
 				msg: 'Backspace with an alien selected deletes it, with only aliens in the document'
 			},
 			{
@@ -333,7 +333,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
-				expectedRangeOrSelection: { type: 'null' },
+				expectedRangeOrSelection: new ve.Range( 0 ),
 				msg: 'Delete with an alien selected deletes it, with only aliens in the document'
 			},
 			{

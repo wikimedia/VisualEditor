@@ -3022,7 +3022,7 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  * @param {ve.ce.RangeState} newState The changed range state
  */
 ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
-	var newSelection, transaction, removedUnicorns,
+	var newSelection, transaction, removedUnicorns, offset,
 		activeNode, coveringRange, nodeRange, containsStart, containsEnd, blockSlug,
 		surface = this,
 		dmDoc = this.getModel().getDocument(),
@@ -3068,20 +3068,21 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 	) ) {
 		if ( newState.veRange ) {
 			if ( newState.veRange.isCollapsed() ) {
-				if ( dmDoc.data.getNearestContentOffset( newState.veRange.from ) === -1 ) {
+				offset = dmDoc.getNearestCursorOffset( newState.veRange.from, 0 );
+				if ( offset === -1 ) {
 					// First, if we're in a document which outright doesn't
 					// have any content to select, don't try to set one. These
 					// would be niche documents, since slugs normally exist
 					// and catch those cases.
 					newSelection = new ve.dm.NullSelection( dmDoc );
+					// TODO: Unset whatever native selection got us here, to match
+					// the model state (assuming it is in the CE document)
 				} else {
-					newSelection = new ve.dm.LinearSelection( dmDoc, new ve.Range(
-						// If we're placing the cursor, make sure it winds up in a
-						// cursorable location. Failure to do this can result in
-						// strange behavior when inserting content immediately after
-						// clicking on the surface.
-						dmDoc.getNearestCursorOffset( newState.veRange.from, 0 )
-					) );
+					// If we're placing the cursor, make sure it winds up in a
+					// cursorable location. Failure to do this can result in
+					// strange behavior when inserting content immediately after
+					// clicking on the surface.
+					newSelection = new ve.dm.LinearSelection( dmDoc, new ve.Range( offset ) );
 				}
 			} else {
 				newSelection = new ve.dm.LinearSelection( dmDoc, newState.veRange );
