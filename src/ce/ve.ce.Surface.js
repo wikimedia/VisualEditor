@@ -1863,7 +1863,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 	this.pasting = true;
 	// setTimeout: postpone until after the default paste action
 	setTimeout( function () {
-		var afterPastePromise = $.Deferred().resolve().promise();
+		var afterPastePromise = ve.createDeferred().resolve().promise();
 		try {
 			if ( !e.isDefaultPrevented() ) {
 				afterPastePromise = surface.afterPaste( e );
@@ -2009,7 +2009,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		targetFragment = surfaceModel.getFragment( null, true ),
 		view = this,
 		beforePasteData = this.beforePasteData || {},
-		done = $.Deferred().resolve().promise();
+		done = ve.createDeferred().resolve().promise();
 
 	// If the selection doesn't collapse after paste then nothing was inserted
 	if ( !this.nativeSelection.isCollapsed ) {
@@ -2028,7 +2028,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		if ( fragment.getSelection() instanceof ve.dm.TableSelection && pasteData.slice instanceof ve.dm.TableSlice ) {
 			tableAction = new ve.ui.TableAction( this.getSurface() );
 			tableAction.importTable( pasteData.slice.getTableNode( documentModel ) );
-			return $.Deferred().resolve().promise();
+			return ve.createDeferred().resolve().promise();
 		}
 
 		// For table selections the target is the first cell
@@ -2295,7 +2295,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 			) );
 		}
 		if ( this.handleDataTransferItems( items, true ) ) {
-			return $.Deferred().resolve().promise();
+			return ve.createDeferred().resolve().promise();
 		}
 	}
 
@@ -2356,7 +2356,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 		) {
 			tableAction = new ve.ui.TableAction( this.getSurface() );
 			tableAction.importTable( pastedDocumentModel.documentNode.children[ 0 ], true );
-			return $.Deferred().resolve().promise();
+			return ve.createDeferred().resolve().promise();
 		}
 
 		// Pasting non-table content into table: just replace the first cell with the pasted content

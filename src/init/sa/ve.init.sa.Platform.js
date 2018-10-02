@@ -310,7 +310,7 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		fallbacks = $.i18n.fallbacks[ locale ];
 
 	if ( !VisualEditorSupportCheck() ) {
-		return $.Deferred().reject().promise();
+		return ve.createDeferred().reject().promise();
 	}
 
 	if ( !fallbacks ) {
@@ -344,11 +344,11 @@ ve.init.sa.Platform.prototype.initialize = function () {
 		filename = languages[ i ].toLowerCase() + '.json';
 
 		for ( j = 0, jLen = messagePaths.length; j < jLen; j++ ) {
-			deferred = $.Deferred();
+			deferred = ve.createDeferred();
 			$.i18n().load( messagePaths[ j ] + filename, languages[ i ] )
 				.always( deferred.resolve );
 			promises.push( deferred.promise() );
 		}
 	}
-	return $.when.apply( $, promises );
+	return ve.promiseAll( promises );
 };

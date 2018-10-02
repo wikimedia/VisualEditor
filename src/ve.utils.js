@@ -87,6 +87,25 @@ ve.debounce = OO.ui.debounce;
 ve.throttle = OO.ui.throttle;
 
 /**
+ * Create a jQuery.Deferred-compatible object
+ *
+ * @method
+ * @source <http://api.jquery.com/jQuery.Deferred/>
+ * @return {jQuery.Deferred}
+ */
+ve.createDeferred = $.Deferred;
+
+/**
+ * Create a promise which resolves when the list of promises has resolved
+ *
+ * @param {jQuery.Promise[]} promises List of promises
+ * @return {jQuery.Promise} Promise which resolves when the list of promises has resolved
+ */
+ve.promiseAll = function ( promises ) {
+	return $.when.apply( $, promises );
+};
+
+/**
  * Copy an array of DOM elements, optionally into a different document.
  *
  * @param {HTMLElement[]} domElements DOM elements to copy

@@ -171,10 +171,10 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
 	}
 	show = show === undefined ? !this.visible : !!show;
 	if ( show === this.visible ) {
-		return $.Deferred().resolve().promise();
+		return ve.createDeferred().resolve().promise();
 	}
 
-	this.transitioning = $.Deferred();
+	this.transitioning = ve.createDeferred();
 	promise = this.transitioning.promise();
 
 	// Parent method

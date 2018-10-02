@@ -69,7 +69,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	ve.track( 'activity.' + name, { action: 'window-open' } );
 
 	if ( !mayContainFragment ) {
-		fragmentPromise = $.Deferred().resolve().promise();
+		fragmentPromise = ve.createDeferred().resolve().promise();
 	} else if ( sourceMode ) {
 		text = fragment.getText( true );
 		originalFragment = fragment;
@@ -87,7 +87,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 			return tempFragment;
 		} );
 	} else {
-		fragmentPromise = $.Deferred().resolve( fragment ).promise();
+		fragmentPromise = ve.createDeferred().resolve( fragment ).promise();
 	}
 
 	data = ve.extendObject( { dir: dir }, data, { $returnFocusTo: null } );
@@ -114,7 +114,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	fragmentPromise.then( function ( fragment ) {
 		ve.extendObject( data, { fragment: fragment } );
 
-		$.when.apply( $, autoClosePromises ).always( function () {
+		ve.promiseAll( autoClosePromises ).always( function () {
 			windowManager.getWindow( name ).then( function ( win ) {
 				var instance = windowManager.openWindow( win, data );
 

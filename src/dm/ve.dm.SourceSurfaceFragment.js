@@ -214,13 +214,9 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
  */
 ve.dm.SourceSurfaceFragment.prototype.convertToSource = function ( doc ) {
 	if ( !doc.data.hasContent() ) {
-		// TODO: Abstract promise generation
-		// eslint-disable-next-line no-undef
-		return $.Deferred().resolve( '' ).promise();
+		return ve.createDeferred().resolve( '' ).promise();
 	} else {
-		// TODO: Abstract promise generation
-		// eslint-disable-next-line no-undef
-		return $.Deferred().resolve(
+		return ve.createDeferred().resolve(
 			ve.properInnerHtml(
 				ve.dm.converter.getDomFromModel( doc ).body
 			)
@@ -244,9 +240,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertFromSource = function ( source ) {
 		dir = this.getDocument().getDir();
 
 	if ( !source ) {
-		// TODO: Abstract promise generation
-		// eslint-disable-next-line no-undef
-		return $.Deferred().resolve(
+		return ve.createDeferred().resolve(
 			new ve.dm.Document(
 				[
 					{ type: 'paragraph', internal: { generated: 'wrapper' } }, { type: '/paragraph' },
@@ -257,9 +251,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertFromSource = function ( source ) {
 			)
 		).promise();
 	} else {
-		// TODO: Abstract promise generation
-		// eslint-disable-next-line no-undef
-		return $.Deferred().resolve(
+		return ve.createDeferred().resolve(
 			ve.dm.converter.getModelFromDom(
 				ve.createDocumentFromHtml( source, { lang: lang, dir: dir } )
 			)

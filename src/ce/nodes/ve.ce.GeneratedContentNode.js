@@ -66,7 +66,7 @@ ve.ce.GeneratedContentNode.static.awaitGeneratedContent = function ( view ) {
 		var promise;
 		if ( typeof node.generateContents === 'function' ) {
 			if ( node.isGenerating() ) {
-				promise = $.Deferred();
+				promise = ve.createDeferred();
 				node.once( 'rerender', promise.resolve );
 				promises.push( promise );
 			}
@@ -80,7 +80,7 @@ ve.ce.GeneratedContentNode.static.awaitGeneratedContent = function ( view ) {
 		queueNode( view );
 	}
 
-	return $.when.apply( $, promises );
+	return ve.promiseAll( promises );
 };
 
 /* Abstract methods */

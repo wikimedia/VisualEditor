@@ -69,7 +69,7 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 			this.cancelDeferreds = [];
 
 			for ( i = 0, l = progresses.length; i < l; i++ ) {
-				cancelDeferred = $.Deferred();
+				cancelDeferred = ve.createDeferred();
 				$row = $( '<div>' ).addClass( 've-ui-progressDialog-row' );
 				progressBar = new OO.ui.ProgressBarWidget();
 				fieldLayout = new OO.ui.FieldLayout(
