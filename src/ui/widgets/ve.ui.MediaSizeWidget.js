@@ -15,11 +15,10 @@
  * @param {ve.dm.Scalable} [scalable] A scalable object
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [noDefaultDimensions] The item being sized doesn't have default dimensions
- * @cfg {boolean} [noOriginalDimensions] The item being sized doesn't have original dimensions
  * @cfg {string} [dimensionsAlign] Alignment for the dimensions widget
  */
 ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
-	var fieldCustom, fullSizeButtonField;
+	var fieldCustom;
 
 	// Configuration
 	config = config || {};
@@ -35,7 +34,6 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	this.maxDimensions = {};
 	this.valid = null;
 	this.noDefaultDimensions = !!config.noDefaultDimensions;
-	this.noOriginalDimensions = !!config.noOriginalDimensions;
 	this.dimensionsAlign = config.dimensionsAlign || 'right';
 
 	// Define button select widget
@@ -90,16 +88,9 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 			classes: [ 've-ui-mediaSizeWidget-section-custom' ]
 		}
 	);
-	if ( !this.noDefaultDimensions || !this.noOriginalDimensions ) {
+	if ( !this.noDefaultDimensions ) {
 		fieldCustom.setLabel( ve.msg( 'visualeditor-mediasizewidget-label-custom' ) );
 	}
-
-	// Buttons
-	this.fullSizeButton = new OO.ui.ButtonWidget( {
-		label: ve.msg( 'visualeditor-mediasizewidget-button-originaldimensions' ),
-		classes: [ 've-ui-mediaSizeWidget-button-fullsize' ]
-	} );
-	fullSizeButtonField = new OO.ui.FieldLayout( this.fullSizeButton );
 
 	// Build GUI
 	this.$element.addClass( 've-ui-mediaSizeWidget' );
@@ -109,9 +100,6 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	this.$element.append( fieldCustom.$element );
 	// TODO: when upright is supported by Parsoid
 	// this.$element.append( fieldScale.$element );
-	if ( !config.noOriginalDimensions ) {
-		this.$element.append( fullSizeButtonField.$element );
-	}
 	this.$element.append(
 		$( '<div>' )
 			.addClass( 've-ui-mediaSizeWidget-label-error' )
@@ -126,7 +114,6 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	// TODO: when upright is supported by Parsoid
 	// this.scaleInput.connect( this, { change: 'onScaleChange' } );
 	this.sizeTypeSelectWidget.connect( this, { choose: 'onSizeTypeChoose' } );
-	this.fullSizeButton.connect( this, { click: 'onFullSizeButtonClick' } );
 
 };
 
@@ -358,17 +345,6 @@ ve.ui.MediaSizeWidget.prototype.getScalable = function () {
 };
 
 /**
- * Handle click events on the full size button.
- * Set the width/height values to the original media dimensions
- */
-ve.ui.MediaSizeWidget.prototype.onFullSizeButtonClick = function () {
-	this.sizeTypeSelectWidget.chooseItem(
-		this.sizeTypeSelectWidget.findItemFromData( 'custom' )
-	);
-	this.setCurrentDimensions( this.scalable.getOriginalDimensions() );
-};
-
-/**
  * Set the image aspect ratio explicitly
  *
  * @param {number} ratio Numerical value of an aspect ratio
@@ -438,8 +414,7 @@ ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
 	// make sure the objects exist
 	if ( this.sizeTypeSelectWidget &&
 		this.dimensionsWidget &&
-		this.scalable &&
-		this.fullSizeButton
+		this.scalable
 	) {
 		sizeType = this.getSizeType();
 
@@ -456,15 +431,6 @@ ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
 
 		// Disable the scale widget
 		// this.scaleInput.setDisabled( disabled || sizeType !== 'scale' );
-
-		// Double negatives aren't never fun!
-		this.fullSizeButton.setDisabled(
-			// Disable if asked to disable
-			disabled ||
-			// Only enable if the scalable has
-			// the original dimensions available
-			!this.scalable.getOriginalDimensions()
-		);
 	}
 };
 
