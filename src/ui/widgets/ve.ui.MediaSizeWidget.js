@@ -142,7 +142,7 @@ OO.inheritClass( ve.ui.MediaSizeWidget, OO.ui.Widget );
 
 /**
  * Respond to change in original dimensions in the scalable object.
- * Specifically, enable or disable to 'set full size' button and the 'default' option.
+ * Specifically, enable or disable the 'default' option.
  *
  * @param {Object} dimensions Original dimensions
  */
@@ -189,7 +189,8 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
  * This is triggered every time the dimension widget has its values changed
  * either by the user or externally. The external call to 'setCurrentDimensions'
  * will result in this event being evoked if the dimension inputs have changed,
- * and same with clicking the 'full size' button and changing dimensions type.
+ * and same with changing dimensions type.
+ *
  * The 'change' event for the entire widget is emitted through this method, as
  * it means that the actual values have changed, regardless of whether they
  * are valid or not.
