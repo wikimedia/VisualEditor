@@ -60,6 +60,10 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	// Initialization
 	this.$element.addClass( 've-ui-targetWidget' )
 		.append( this.$toolbarContainer, this.$surfaceContainer );
+
+	// Events
+	this.$element.on( 'focusin focusout', this.onFocusChange.bind( this ) );
+
 };
 
 /* Inheritance */
@@ -202,6 +206,17 @@ ve.ui.TargetWidget.prototype.clear = function () {
 		this.toolbar.destroy();
 		this.toolbar = null;
 	}
+};
+
+/**
+ * Handle focusin and focusout events
+ *
+ * @param {jQuery.Event} e Focus event
+ */
+ve.ui.TargetWidget.prototype.onFocusChange = function ( e ) {
+	// Replacement for the :focus pseudo selector one would be able to
+	// use on a regular input widget
+	this.$element.toggleClass( 've-ui-targetWidget-focused', e.type === 'focusin' );
 };
 
 /**
