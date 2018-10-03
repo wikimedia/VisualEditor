@@ -19,11 +19,23 @@
 	border-right: 1px solid #c8ccd1;
 }
 
+@media ( max-width: 400px ) {
+	.ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-content {
+		margin-right: 6em;
+	}
+}
+
 .ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-sidebar {
 	position: absolute;
 	top: 0;
 	right: 0;
 	width: 15em;
+}
+
+@media ( max-width: 400px ) {
+	.ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-sidebar {
+		width: 5em;
+	}
 }
 
 .ve-ui-diffElement-overlays {
