@@ -33,7 +33,8 @@
 			"Stjn",
 			"Silicium Power",
 			"Evs",
-			"Vlad5250"
+			"Vlad5250",
+			"Infovarius"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -140,6 +141,7 @@
 	"visualeditor-help-tool": "Справка",
 	"visualeditor-historybutton-redo-tooltip": "Вернуть",
 	"visualeditor-historybutton-undo-tooltip": "Отменить",
+	"visualeditor-horizontalrule-tooltip": "Горизонтальная линия",
 	"visualeditor-indentationbutton-indent-tooltip": "Увеличить отступ",
 	"visualeditor-indentationbutton-outdent-tooltip": "Уменьшить отступ",
 	"visualeditor-inspector-close-tooltip": "Закрыть",
@@ -179,7 +181,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Маркированный список",
 	"visualeditor-listbutton-check-tooltip": "Контрольный список",
 	"visualeditor-listbutton-number-tooltip": "Нумерованный список",
-	"visualeditor-mediasizewidget-button-originaldimensions": "Показать в полном размере",
 	"visualeditor-mediasizewidget-label-custom": "Настраиваемый",
 	"visualeditor-mediasizewidget-label-defaulterror": "Значения размеров недопустимы.",
 	"visualeditor-mediasizewidget-label-scale": "Масштаб",

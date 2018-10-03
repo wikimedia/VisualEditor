@@ -167,7 +167,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "점 목록",
 	"visualeditor-listbutton-check-tooltip": "체크리스트",
 	"visualeditor-listbutton-number-tooltip": "숫자 목록",
-	"visualeditor-mediasizewidget-button-originaldimensions": "전체 크기로 만들기",
 	"visualeditor-mediasizewidget-label-custom": "사용자 지정",
 	"visualeditor-mediasizewidget-label-defaulterror": "크기 값이 올바르지 않습니다.",
 	"visualeditor-mediasizewidget-label-scale": "비율",

@@ -8,7 +8,8 @@
 			"Breogan2008",
 			"Beninho",
 			"Banjo",
-			"McDutchie"
+			"McDutchie",
+			"Navhy"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -86,9 +87,9 @@
 	"visualeditor-diff-no-changes": "Sen cambios",
 	"visualeditor-diff-timed-out": "O cómputo dos seus cambios levou moito tempo, polo que a descrición de abaixo pode ser imprecisa.",
 	"visualeditor-find-and-replace-diacritic": "Insensible ós diacríticos",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Busca insensible ós diacríticos non dispoñible neste navegador",
+	"visualeditor-find-and-replace-diacritic-unavailable": "Procura insensible ós diacríticos non dispoñible neste navegador",
 	"visualeditor-find-and-replace-done": "Feito",
-	"visualeditor-find-and-replace-find-text": "Buscar",
+	"visualeditor-find-and-replace-find-text": "Procurar",
 	"visualeditor-find-and-replace-invalid-regex": "Expresión regular non válida",
 	"visualeditor-find-and-replace-match-case": "Facer coincidir as maiúsculas e as minúsculas",
 	"visualeditor-find-and-replace-next-button": "Atopar o seguinte",
@@ -98,7 +99,7 @@
 	"visualeditor-find-and-replace-replace-button": "Substituír",
 	"visualeditor-find-and-replace-replace-text": "Substituír",
 	"visualeditor-find-and-replace-results": "$1 de $2",
-	"visualeditor-find-and-replace-title": "Buscar e substituír",
+	"visualeditor-find-and-replace-title": "Procurar e substituír",
 	"visualeditor-find-and-replace-word": "Palabra enteira",
 	"visualeditor-formatdropdown-format-blockquote": "Bloque de cita",
 	"visualeditor-formatdropdown-format-heading-label": "Cabeceira (1-6)",
@@ -153,7 +154,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Lista con asteriscos",
 	"visualeditor-listbutton-check-tooltip": "Lista de verificación",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",
-	"visualeditor-mediasizewidget-button-originaldimensions": "Poñer a tamaño completo",
 	"visualeditor-mediasizewidget-label-custom": "Personalizado",
 	"visualeditor-mediasizewidget-label-defaulterror": "Os valores de tamaño non son válidos.",
 	"visualeditor-mediasizewidget-label-scale": "Escala",
