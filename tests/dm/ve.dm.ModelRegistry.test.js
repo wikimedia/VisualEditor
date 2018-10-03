@@ -155,8 +155,12 @@ QUnit.test( 'register/unregister/matchElement', function ( assert ) {
 	assert.strictEqual( registry.matchElement( element ), 'stubnothingset', 'nothingset matches anything' );
 	element.setAttribute( 'rel', 'ext:foo' );
 	assert.strictEqual( registry.matchElement( element ), 'stubsingletype', 'type-only match' );
+	element.setAttribute( 'rel', ' ext:foo ' );
+	assert.strictEqual( registry.matchElement( element ), 'stubsingletype', 'type-only match (extra spaces)' );
 	element.setAttribute( 'rel', 'ext:foo bar' );
 	assert.strictEqual( registry.matchElement( element ), 'stubsingletypewithallowed', 'type-only match with extra allowed type' );
+	element.setAttribute( 'rel', 'ext:foo  bar' );
+	assert.strictEqual( registry.matchElement( element ), 'stubsingletypewithallowed', 'type-only match with extra allowed type (extra spaces)' );
 	element.setAttribute( 'rel', 'ext:foo bar baz quux whee' );
 	assert.strictEqual( registry.matchElement( element ), 'stubsingletypewithanyallowed', 'type-only match with many extra types' );
 	element = document.createElement( 'a' );
