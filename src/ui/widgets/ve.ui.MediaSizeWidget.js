@@ -18,7 +18,7 @@
  * @cfg {string} [dimensionsAlign] Alignment for the dimensions widget
  */
 ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
-	var fieldCustom;
+	var dimensionsField, sizeTypeField;
 
 	// Configuration
 	config = config || {};
@@ -37,10 +37,10 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	this.dimensionsAlign = config.dimensionsAlign || 'right';
 
 	// Define button select widget
-	this.sizeTypeSelectWidget = new OO.ui.ButtonSelectWidget( {
+	this.sizeTypeSelect = new OO.ui.ButtonSelectWidget( {
 		classes: [ 've-ui-mediaSizeWidget-section-sizetype' ]
 	} );
-	this.sizeTypeSelectWidget.addItems( [
+	this.sizeTypeSelect.addItems( [
 		new OO.ui.ButtonOptionWidget( {
 			data: 'default',
 			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-default' )
@@ -55,6 +55,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-custom' )
 		} )
 	] );
+	sizeTypeField = new OO.ui.FieldLayout( this.sizeTypeSelect );
 
 	// Define scale
 	// this.scaleInput = new OO.ui.TextInputWidget();
@@ -63,7 +64,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	// 	label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
 	// } );
 
-	this.dimensionsWidget = new ve.ui.DimensionsWidget( { validate: this.isValid.bind( this ) } );
+	this.dimensions = new ve.ui.DimensionsWidget( { validate: this.isValid.bind( this ) } );
 
 	// Error label is available globally so it can be displayed and
 	// hidden as needed
@@ -72,7 +73,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	} );
 
 	// Field layouts
-	// fieldScale = new OO.ui.FieldLayout(
+	// scaleField = new OO.ui.FieldLayout(
 	// 	this.scaleInput, {
 	// 		align: 'right',
 	// 		// TODO: when upright is supported by Parsoid
@@ -82,24 +83,21 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	// );
 	// TODO: when upright is supported by Parsoid
 	// this.scaleInput.$element.append( scalePercentLabel.$element );
-	fieldCustom = new OO.ui.FieldLayout(
-		this.dimensionsWidget, {
+	dimensionsField = new OO.ui.FieldLayout(
+		this.dimensions, {
 			align: this.dimensionsAlign,
 			classes: [ 've-ui-mediaSizeWidget-section-custom' ]
 		}
 	);
-	if ( !this.noDefaultDimensions ) {
-		fieldCustom.setLabel( ve.msg( 'visualeditor-mediasizewidget-label-custom' ) );
-	}
 
 	// Build GUI
 	this.$element.addClass( 've-ui-mediaSizeWidget' );
 	if ( !this.noDefaultDimensions ) {
-		this.$element.append( this.sizeTypeSelectWidget.$element );
+		this.$element.append( sizeTypeField.$element );
 	}
-	this.$element.append( fieldCustom.$element );
+	this.$element.append( dimensionsField.$element );
 	// TODO: when upright is supported by Parsoid
-	// this.$element.append( fieldScale.$element );
+	// this.$element.append( scaleField.$element );
 	this.$element.append(
 		$( '<div>' )
 			.addClass( 've-ui-mediaSizeWidget-label-error' )
@@ -107,13 +105,13 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	);
 
 	// Events
-	this.dimensionsWidget.connect( this, {
+	this.dimensions.connect( this, {
 		widthChange: [ 'onDimensionsChange', 'width' ],
 		heightChange: [ 'onDimensionsChange', 'height' ]
 	} );
 	// TODO: when upright is supported by Parsoid
 	// this.scaleInput.connect( this, { change: 'onScaleChange' } );
-	this.sizeTypeSelectWidget.connect( this, { choose: 'onSizeTypeChoose' } );
+	this.sizeTypeSelect.connect( this, { choose: 'onSizeTypeChoose' } );
 
 };
 
@@ -221,10 +219,10 @@ ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 // ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
 // 	// If the input changed (and not empty), set to 'custom'
 // 	// Otherwise, set to 'default'
-// 	if ( !this.dimensionsWidget.isEmpty() ) {
-// 		this.sizeTypeSelectWidget.selectItemByData( 'scale' );
+// 	if ( !this.dimensions.isEmpty() ) {
+// 		this.sizeTypeSelect.selectItemByData( 'scale' );
 // 	} else {
-// 		this.sizeTypeSelectWidget.selectItemByData( 'default' );
+// 		this.sizeTypeSelect.selectItemByData( 'default' );
 // 	}
 // };
 
@@ -242,13 +240,13 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 
 	if ( selectedType === 'default' ) {
 		// If there are defaults, put them into the values
-		if ( !ve.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
-			this.dimensionsWidget.clear();
+		if ( !ve.isEmptyObject( this.dimensions.getDefaults() ) ) {
+			this.dimensions.clear();
 		}
 	} else if ( selectedType === 'custom' ) {
 		// If we were default size before, set the current dimensions to the default size
-		if ( wasDefault && !ve.isEmptyObject( this.dimensionsWidget.getDefaults() ) ) {
-			this.setCurrentDimensions( this.dimensionsWidget.getDefaults() );
+		if ( wasDefault && !ve.isEmptyObject( this.dimensions.getDefaults() ) ) {
+			this.setCurrentDimensions( this.dimensions.getDefaults() );
 		}
 		this.validateDimensions();
 	}
@@ -286,11 +284,11 @@ ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
 		this.getSizeType() !== sizeType ||
 		// If the dimensions widget has zeros make sure to
 		// allow for the change in size type
-		Number( this.dimensionsWidget.getWidth() ) === 0 ||
-		Number( this.dimensionsWidget.getHeight() ) === 0
+		Number( this.dimensions.getWidth() ) === 0 ||
+		Number( this.dimensions.getHeight() ) === 0
 	) {
-		this.sizeTypeSelectWidget.chooseItem(
-			this.sizeTypeSelectWidget.findItemFromData( sizeType )
+		this.sizeTypeSelect.chooseItem(
+			this.sizeTypeSelect.findItemFromData( sizeType )
 		);
 	}
 };
@@ -300,7 +298,7 @@ ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
  * @return {string} The size type
  */
 ve.ui.MediaSizeWidget.prototype.getSizeType = function () {
-	return this.sizeTypeSelectWidget.findSelectedItem() ? this.sizeTypeSelectWidget.findSelectedItem().getData() : '';
+	return this.sizeTypeSelect.findSelectedItem() ? this.sizeTypeSelect.findSelectedItem().getData() : '';
 };
 
 /**
@@ -413,22 +411,22 @@ ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
 	// The 'updateDisabled' method may called before the widgets
 	// are fully defined. So, before disabling/enabling anything,
 	// make sure the objects exist
-	if ( this.sizeTypeSelectWidget &&
-		this.dimensionsWidget &&
+	if ( this.sizeTypeSelect &&
+		this.dimensions &&
 		this.scalable
 	) {
 		sizeType = this.getSizeType();
 
 		// Disable the type select
-		this.sizeTypeSelectWidget.setDisabled( disabled );
+		this.sizeTypeSelect.setDisabled( disabled );
 
 		// Disable the default type options
-		this.sizeTypeSelectWidget.findItemFromData( 'default' ).setDisabled(
+		this.sizeTypeSelect.findItemFromData( 'default' ).setDisabled(
 			ve.isEmptyObject( this.scalable.getDefaultDimensions() )
 		);
 
 		// Disable the dimensions widget
-		this.dimensionsWidget.setDisabled( disabled || sizeType !== 'custom' );
+		this.dimensions.setDisabled( disabled || sizeType !== 'custom' );
 
 		// Disable the scale widget
 		// this.scaleInput.setDisabled( disabled || sizeType !== 'scale' );
@@ -466,8 +464,8 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 		this.currentDimensions = normalizedDimensions;
 		// This will only update if the value has changed
 		// Set width & height individually as they may be 0
-		this.dimensionsWidget.setWidth( this.currentDimensions.width );
-		this.dimensionsWidget.setHeight( this.currentDimensions.height );
+		this.dimensions.setWidth( this.currentDimensions.width );
+		this.dimensions.setHeight( this.currentDimensions.height );
 
 		// Update scalable object
 		this.scalable.setCurrentDimensions( this.currentDimensions );
@@ -494,7 +492,7 @@ ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 	if ( this.valid !== isValid ) {
 		this.valid = isValid;
 		this.errorLabel.toggle( !isValid );
-		this.dimensionsWidget.setValidityFlag();
+		this.dimensions.setValidityFlag();
 		// Emit change event
 		this.emit( 'valid', this.valid );
 	}
@@ -510,9 +508,9 @@ ve.ui.MediaSizeWidget.prototype.updateDefaultDimensions = function () {
 	var defaultDimensions = this.scalable.getDefaultDimensions();
 
 	if ( !ve.isEmptyObject( defaultDimensions ) ) {
-		this.dimensionsWidget.setDefaults( defaultDimensions );
+		this.dimensions.setDefaults( defaultDimensions );
 	} else {
-		this.dimensionsWidget.removeDefaults();
+		this.dimensions.removeDefaults();
 	}
 	this.updateDisabled();
 	this.validateDimensions();
@@ -524,7 +522,7 @@ ve.ui.MediaSizeWidget.prototype.updateDefaultDimensions = function () {
  * @return {boolean} Both width/height values are empty
  */
 ve.ui.MediaSizeWidget.prototype.isCustomEmpty = function () {
-	return this.dimensionsWidget.isEmpty();
+	return this.dimensions.isEmpty();
 };
 
 // /**
@@ -556,20 +554,20 @@ ve.ui.MediaSizeWidget.prototype.isEmpty = function () {
  * @return {boolean} Valid or invalid dimension values
  */
 ve.ui.MediaSizeWidget.prototype.isValid = function () {
-	var itemType = this.sizeTypeSelectWidget.findSelectedItem() ?
-		this.sizeTypeSelectWidget.findSelectedItem().getData() : 'custom';
+	var itemType = this.sizeTypeSelect.findSelectedItem() ?
+		this.sizeTypeSelect.findSelectedItem().getData() : 'custom';
 
 	// TODO: when upright is supported by Parsoid add validation for scale
 
 	if ( itemType === 'custom' ) {
 		if (
-			this.dimensionsWidget.getDefaults() &&
-			this.dimensionsWidget.isEmpty()
+			this.dimensions.getDefaults() &&
+			this.dimensions.isEmpty()
 		) {
 			return true;
 		} else if (
-			$.isNumeric( this.dimensionsWidget.getWidth() ) &&
-			$.isNumeric( this.dimensionsWidget.getHeight() )
+			$.isNumeric( this.dimensions.getWidth() ) &&
+			$.isNumeric( this.dimensions.getHeight() )
 		) {
 			return this.scalable.isCurrentDimensionsValid();
 		} else {

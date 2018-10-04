@@ -173,7 +173,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",
 	"visualeditor-listbutton-check-tooltip": "Tooltip text for the check list button. A \"check list\" is todo-style list with checkboxes.",
 	"visualeditor-listbutton-number-tooltip": "Tooltip text for the numbered list button",
-	"visualeditor-mediasizewidget-label-custom": "Label for the media size widget custom size section.\n{{Identical|Custom}}",
 	"visualeditor-mediasizewidget-label-defaulterror": "An error label notifying the user the size inputs are invalid.",
 	"visualeditor-mediasizewidget-label-scale": "Label for the media size widget scale size section.\n{{Identical|Scale}}\n\nTranslated in conjunction with {{msg-mw|Visualeditor-mediasizewidget-label-scale-percent}}: \"Scale ____ % of thumbnail size\", meaning the scale of the displayed image shall be x% of the default thumbnail size.",
 	"visualeditor-mediasizewidget-label-scale-percent": "Label for the media size widget scale section indicating a scaling of an image based on thumbnail size.\n\nTranslated in conjunction with {{msg-mw|Visualeditor-mediasizewidget-label-scale}}: \"Scale ____ % of thumbnail size\", meaning the scale of the displayed image shall be x% of the default thumbnail size.",
