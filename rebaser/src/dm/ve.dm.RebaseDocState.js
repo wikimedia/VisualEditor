@@ -4,8 +4,6 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* eslint-env node, es6 */
-
 /**
  * DataModel rebase document state
  *
