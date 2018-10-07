@@ -773,7 +773,6 @@
 	},
 	"visualEditor.test": {
 		"scripts": [
-			"src/ve.utils-es6.js",
 			"rebaser/src/dm/ve.dm.RebaseDocState.js",
 			"rebaser/src/dm/ve.dm.RebaseServer.js",
 
@@ -781,7 +780,6 @@
 			"tests/ve.qunit.local.js",
 			"tests/ve.test.utils.js",
 			"tests/ve.test.js",
-			"tests/ve.utils-es6.test.js",
 			"tests/ve.EventSequencer.test.js",
 			"tests/ve.Scheduler.test.js",
 			"tests/ve.Range.test.js",
@@ -1088,7 +1086,6 @@
 	},
 	"rebaser.build": {
 		"scripts": [
-			"src/ve.utils-es6.js",
 			"src/dm/ve.dm.HashValueStore.js",
 			"src/dm/ve.dm.Transaction.js",
 			"src/dm/ve.dm.Change.js",

@@ -9,10 +9,6 @@
 	"--processes": "0",
 	"--warnings-exit-nonzero": true,
 	"--external": "HTMLDocument,Window,Node,Text,Set,Range,Selection,ClientRect,File,Blob,DataTransfer,DataTransferItem,KeyboardEvent,MouseEvent",
-	"--exclude": [
-		"src/ve.utils-es6.js",
-		"tests/ve.utils-es6.test.js"
-	],
 	"--": [
 		".jsduck/external.js",
 		"lib/oojs/oojs.jquery.js",
