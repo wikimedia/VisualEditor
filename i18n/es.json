@@ -173,7 +173,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Lista con viñetas",
 	"visualeditor-listbutton-check-tooltip": "Lista de comprobación",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",
-	"visualeditor-mediasizewidget-label-custom": "Personalizar",
 	"visualeditor-mediasizewidget-label-defaulterror": "Los valores de tamaño no son válidos.",
 	"visualeditor-mediasizewidget-label-scale": "Escala",
 	"visualeditor-mediasizewidget-label-scale-percent": "% del tamaño de las miniaturas",

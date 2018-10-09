@@ -21,7 +21,8 @@
 			"InternerowyGołąb",
 			"Wojtas",
 			"DeRudySoulStorm",
-			"Railfail536"
+			"Railfail536",
+			"Sutan"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -127,6 +128,7 @@
 	"visualeditor-help-tool": "Pomoc",
 	"visualeditor-historybutton-redo-tooltip": "Ponów",
 	"visualeditor-historybutton-undo-tooltip": "Cofnij",
+	"visualeditor-horizontalrule-tooltip": "Linijka pozioma",
 	"visualeditor-indentationbutton-indent-tooltip": "Zwiększ wcięcie",
 	"visualeditor-indentationbutton-outdent-tooltip": "Zmniejsz wcięcie",
 	"visualeditor-inspector-close-tooltip": "Zamknij",
@@ -165,7 +167,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Lista wypunktowana",
 	"visualeditor-listbutton-check-tooltip": "Sprawdź listę",
 	"visualeditor-listbutton-number-tooltip": "Lista numerowana",
-	"visualeditor-mediasizewidget-label-custom": "Niestandardowy",
 	"visualeditor-mediasizewidget-label-defaulterror": "Wartość rozmiaru jest nieprawidłowa.",
 	"visualeditor-mediasizewidget-label-scale": "Skala",
 	"visualeditor-mediasizewidget-label-scale-percent": "% rozmiaru miniaturki",

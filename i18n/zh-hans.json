@@ -166,7 +166,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "无序列表",
 	"visualeditor-listbutton-check-tooltip": "监视列表",
 	"visualeditor-listbutton-number-tooltip": "有序列表",
-	"visualeditor-mediasizewidget-label-custom": "自定义",
 	"visualeditor-mediasizewidget-label-defaulterror": "尺寸值无效。",
 	"visualeditor-mediasizewidget-label-scale": "比例：",
 	"visualeditor-mediasizewidget-label-scale-percent": "%",

@@ -181,7 +181,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Маркированный список",
 	"visualeditor-listbutton-check-tooltip": "Контрольный список",
 	"visualeditor-listbutton-number-tooltip": "Нумерованный список",
-	"visualeditor-mediasizewidget-label-custom": "Настраиваемый",
 	"visualeditor-mediasizewidget-label-defaulterror": "Значения размеров недопустимы.",
 	"visualeditor-mediasizewidget-label-scale": "Масштаб",
 	"visualeditor-mediasizewidget-label-scale-percent": "% от размера эскиза",

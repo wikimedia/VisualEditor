@@ -184,7 +184,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Liste à puces",
 	"visualeditor-listbutton-check-tooltip": "Liste de vérification",
 	"visualeditor-listbutton-number-tooltip": "Liste numérotée",
-	"visualeditor-mediasizewidget-label-custom": "Personnalisé",
 	"visualeditor-mediasizewidget-label-defaulterror": "Les valeurs de taille ne sont pas valides.",
 	"visualeditor-mediasizewidget-label-scale": "Échelle",
 	"visualeditor-mediasizewidget-label-scale-percent": "% de la taille d'une vignette",

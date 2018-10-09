@@ -158,7 +158,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "番号なし箇条書き",
 	"visualeditor-listbutton-check-tooltip": "チェックリスト",
 	"visualeditor-listbutton-number-tooltip": "番号付き箇条書き",
-	"visualeditor-mediasizewidget-label-custom": "カスタム",
 	"visualeditor-mediasizewidget-label-defaulterror": "サイズの値が無効です。",
 	"visualeditor-mediasizewidget-label-scale": "サムネイルのサイズから拡大・縮小:",
 	"visualeditor-mediasizewidget-label-scale-percent": "%",

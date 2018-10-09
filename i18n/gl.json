@@ -154,7 +154,6 @@
 	"visualeditor-listbutton-bullet-tooltip": "Lista con asteriscos",
 	"visualeditor-listbutton-check-tooltip": "Lista de verificación",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",
-	"visualeditor-mediasizewidget-label-custom": "Personalizado",
 	"visualeditor-mediasizewidget-label-defaulterror": "Os valores de tamaño non son válidos.",
 	"visualeditor-mediasizewidget-label-scale": "Escala",
 	"visualeditor-mediasizewidget-label-scale-percent": "% do tamaño da miniatura",
