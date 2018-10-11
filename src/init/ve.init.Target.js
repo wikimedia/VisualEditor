@@ -346,16 +346,27 @@ ve.init.Target.prototype.getScrollContainer = function () {
  * Handle scroll container scroll events
  */
 ve.init.Target.prototype.onContainerScroll = function () {
-	var scrollTop,
+	var scrollTop, wasFloating,
 		toolbar = this.getToolbar();
 
 	if ( toolbar.isFloatable() ) {
+		wasFloating = toolbar.isFloating();
 		scrollTop = this.$scrollContainer.scrollTop();
 
 		if ( scrollTop + this.toolbarScrollOffset > toolbar.getElementOffset().top ) {
 			toolbar.float();
 		} else {
 			toolbar.unfloat();
+		}
+
+		if ( toolbar.isFloating() !== wasFloating ) {
+			// HACK: Re-position any active toolgroup popups. We can't rely on normal event handler order
+			// because we're mixing jQuery and non-jQuery events. T205924#4657203
+			toolbar.getItems().forEach( function ( toolgroup ) {
+				if ( toolgroup instanceof OO.ui.PopupToolGroup && toolgroup.isActive() ) {
+					toolgroup.position();
+				}
+			} );
 		}
 	}
 };
