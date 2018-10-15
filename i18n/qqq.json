@@ -83,7 +83,7 @@
 	"visualeditor-debugbar-logrange": "Label for the button in the debug toolbar to output the current selection to the JavaScript console.\n{{doc-important|\"Log\" is a verb here. Translate as \"log the selected (text)\", and NOT as \"the log (that was) selected\".}}",
 	"visualeditor-debugbar-showmodel": "Label for the button in the debug toolbar to show the document model.",
 	"visualeditor-debugbar-showtransactions": "Label for the button in the debug toolbar to show the transaction history.",
-	"visualeditor-debugbar-testsquasher": "Label for the button in the debug toolbar to test the transaction squasher.",
+	"visualeditor-debugbar-testsquasher": "Label for the button in the debug toolbar to test the transaction squasher.\n\nAlternative words for \"squasher\" could be \"compactor\" or \"combiner\". See [[phab:T202465#4557136]] for an explanation of what the transaction squasher does.",
 	"visualeditor-debugbar-startfilibuster": "Label for the button in the debug toolbar to begin the input response trace debugger (extremely detailed logging of the editor's behavior).",
 	"visualeditor-debugbar-stopfilibuster": "Label for the button in the debug toolbar to stop the input response trace debugger.",
 	"visualeditor-debugbar-updatemodel": "Label for the button in the debug toolbar to update the shown document model as it changes.",
