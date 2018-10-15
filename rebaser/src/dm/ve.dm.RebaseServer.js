@@ -38,7 +38,7 @@ ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
  * Update document history
  *
  * @param {string} doc Name of a document
- * @param {number} authorId Author ID
+ * @param {number|null} authorId Author ID
  * @param {ve.dm.Change} [newHistory] New history to append
  * @param {Object} [authorDataChanges] New values for author data (modified keys only)
  */
@@ -48,7 +48,9 @@ ve.dm.RebaseServer.prototype.updateDocState = function updateDocState( doc, auth
 	if ( newHistory ) {
 		state.history.push( newHistory );
 	}
-
+	if ( !authorId ) {
+		return;
+	}
 	authorData = state.authors.get( authorId );
 	if ( !authorData ) {
 		authorData = state.constructor.static.newAuthorData();
@@ -61,6 +63,19 @@ ve.dm.RebaseServer.prototype.updateDocState = function updateDocState( doc, auth
 			}
 		}
 	}
+};
+
+/**
+ * Forget all history for a document
+ *
+ * @param {string} doc Name of a document
+ */
+ve.dm.RebaseServer.prototype.clearDocState = function clearDocState( doc ) {
+	var state = this.stateForDoc.get( doc );
+	if ( !state ) {
+		return;
+	}
+	state.clearHistory();
 };
 
 /**
@@ -81,8 +96,8 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, authorId, 
 		state = this.getDocState( doc ),
 		authorData = state.authors.get( authorId );
 
-	base = authorData.continueBase || change.truncate( 0 );
-	rejections = authorData.rejections || 0;
+	base = ( authorData && authorData.continueBase ) || change.truncate( 0 );
+	rejections = ( authorData && authorData.rejections ) || 0;
 	if ( rejections > backtrack ) {
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;

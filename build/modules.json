@@ -775,6 +775,7 @@
 		"scripts": [
 			"rebaser/src/dm/ve.dm.RebaseDocState.js",
 			"rebaser/src/dm/ve.dm.RebaseServer.js",
+			"rebaser/src/dm/ve.dm.DocumentStore.js",
 			"rebaser/src/dm/ve.dm.ProtocolServer.js",
 			"rebaser/src/dm/ve.dm.TransportServer.js",
 
@@ -810,6 +811,8 @@
 			"tests/dm/ve.dm.TestRebaseClient.js",
 			"tests/dm/ve.dm.TestRebaseServer.js",
 			"tests/dm/ve.dm.RebaseServer.test.js",
+			"tests/dm/ve.dm.FakeMongo.js",
+			"tests/dm/ve.dm.DocumentStore.test.js",
 			"tests/dm/ve.dm.TreeModifier.test.js",
 			"tests/dm/ve.dm.TransactionProcessor.test.js",
 			"tests/dm/ve.dm.Surface.test.js",
@@ -1093,6 +1096,7 @@
 			"src/dm/ve.dm.Change.js",
 			"rebaser/src/dm/ve.dm.RebaseDocState.js",
 			"rebaser/src/dm/ve.dm.RebaseServer.js",
+			"rebaser/src/dm/ve.dm.DocumentStore.js",
 			"rebaser/src/dm/ve.dm.ProtocolServer.js",
 			"rebaser/src/dm/ve.dm.TransportServer.js",
 			"src/ve.Range.js",

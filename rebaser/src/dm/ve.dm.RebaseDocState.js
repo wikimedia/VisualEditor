@@ -66,3 +66,10 @@ ve.dm.RebaseDocState.prototype.getActiveAuthors = function () {
 	} );
 	return result;
 };
+
+ve.dm.RebaseDocState.prototype.clearHistory = function () {
+	this.history = new ve.dm.Change( 0, [], [], {} );
+	this.authors.forEach( function ( authorData ) {
+		authorData.continueBase = null;
+	} );
+};
