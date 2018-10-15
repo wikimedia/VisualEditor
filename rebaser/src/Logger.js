@@ -1,8 +1,5 @@
-var fs = require( 'fs' );
-
-function Logger( filename ) {
-	this.filename = filename;
-	this.logStream = null;
+function Logger( logger ) {
+	this.logger = logger;
 	this.startTimestamp = null;
 }
 
@@ -14,10 +11,7 @@ Logger.prototype.getRelativeTimestamp = function () {
  * @param {Object} event The event to log
  */
 Logger.prototype.logEvent = function ( event ) {
-	if ( !this.logStream ) {
-		this.logStream = fs.createWriteStream( 'rebaser.log', { flags: 'a' } );
-	}
-	this.logStream.write( JSON.stringify( event ) + '\n' );
+	this.logger.log( 'info', { msg: event } );
 };
 
 /**
@@ -28,7 +22,6 @@ Logger.prototype.logEvent = function ( event ) {
 Logger.prototype.logServerEvent = function ( event ) {
 	var key,
 		ob = {};
-	ob.timestamp = this.getRelativeTimestamp();
 	ob.clientId = 'server';
 	for ( key in event ) {
 		// e.g. ve.dm.Change
