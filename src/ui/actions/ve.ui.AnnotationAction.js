@@ -45,23 +45,8 @@ ve.ui.AnnotationAction.static.methods = [ 'set', 'clear', 'toggle', 'clearAll' ]
  * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
-	var i, trimmedFragment,
-		fragment = this.surface.getModel().getFragment(),
-		annotationClass = ve.dm.annotationFactory.lookup( name ),
-		removes = annotationClass.static.removes;
-
-	if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
-		trimmedFragment = fragment.trimLinearSelection();
-		if ( !trimmedFragment.getSelection().isCollapsed() ) {
-			fragment = trimmedFragment;
-		}
-	}
-
-	for ( i = removes.length - 1; i >= 0; i-- ) {
-		fragment.annotateContent( 'clear', removes[ i ] );
-	}
-	fragment.annotateContent( 'set', name, data );
-	return true;
+	ve.track( 'activity.' + name, { action: 'set' } );
+	return this.setInternal( name, data );
 };
 
 /**
@@ -73,6 +58,7 @@ ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
  * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.clear = function ( name, data ) {
+	ve.track( 'activity.' + name, { action: 'clear' } );
 	this.surface.getModel().getFragment().annotateContent( 'clear', name, data );
 	return true;
 };
@@ -96,14 +82,16 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 		removes = annotation.constructor.static.removes;
 
 	if ( !fragment.getSelection().isCollapsed() ) {
+		ve.track( 'activity.' + name, { action: 'toggle-selection' } );
 		if ( !fragment.getAnnotations().containsComparable( annotation ) ) {
-			this.set( name, data );
+			this.setInternal( name, data );
 		} else {
 			fragment.annotateContent( 'clear', name );
 		}
 	} else if ( surfaceModel.sourceMode ) {
 		return false;
 	} else {
+		ve.track( 'activity.' + name, { method: 'toggle-insertion' } );
 		insertionAnnotations = surfaceModel.getInsertionAnnotations();
 		existingAnnotations = insertionAnnotations.getAnnotationsByName( annotation.name );
 		if ( existingAnnotations.isEmpty() ) {
@@ -131,6 +119,8 @@ ve.ui.AnnotationAction.prototype.clearAll = function () {
 		fragment = surfaceModel.getFragment(),
 		annotations = fragment.getAnnotations( true );
 
+	ve.track( 'activity.allAnnotations', { method: 'clear-all' } );
+
 	arr = annotations.get();
 	// TODO: Allow multiple annotations to be set or cleared by ve.dm.SurfaceFragment, probably
 	// using an annotation set and ideally building a single transaction
@@ -138,6 +128,35 @@ ve.ui.AnnotationAction.prototype.clearAll = function () {
 		fragment.annotateContent( 'clear', arr[ i ].name, arr[ i ].data );
 	}
 	surfaceModel.setInsertionAnnotations( null );
+	return true;
+};
+
+/**
+ * Internal implementation of set(). Do not use this, use set() instead.
+ *
+ * @private
+ * @method
+ * @param {string} name Annotation name, for example: 'textStyle/bold'
+ * @param {Object} [data] Additional annotation data
+ * @return {boolean} Action was executed
+ */
+ve.ui.AnnotationAction.prototype.setInternal = function ( name, data ) {
+	var i, trimmedFragment,
+		fragment = this.surface.getModel().getFragment(),
+		annotationClass = ve.dm.annotationFactory.lookup( name ),
+		removes = annotationClass.static.removes;
+
+	if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
+		trimmedFragment = fragment.trimLinearSelection();
+		if ( !trimmedFragment.getSelection().isCollapsed() ) {
+			fragment = trimmedFragment;
+		}
+	}
+
+	for ( i = removes.length - 1; i >= 0; i-- ) {
+		fragment.annotateContent( 'clear', removes[ i ] );
+	}
+	fragment.annotateContent( 'set', name, data );
 	return true;
 };
 
