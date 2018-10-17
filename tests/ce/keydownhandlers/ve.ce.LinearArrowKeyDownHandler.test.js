@@ -16,11 +16,26 @@ QUnit.module( 've.ce.LinearArrowKeyDownHandler', {
 QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 	var i,
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
+		slugDoc = ve.dm.example.createExampleDocumentFromData(
+			[
+				{ type: 'alienBlock' }, { type: '/alienBlock' },
+				{ type: 'internalList' }, { type: '/internalList' }
+			]
+		),
+		inlineFocusableDoc = ve.dm.example.createExampleDocumentFromData(
+			[
+				{ type: 'paragraph' }, 'F', 'o', 'o', ' ', { type: 'alienInline' }, { type: '/alienInline' }, ' ', 'b', 'a', 'r', { type: '/paragraph' },
+				{ type: 'internalList' }, { type: '/internalList' }
+			]
+		),
 		blockImageDoc = ve.dm.example.createExampleDocumentFromData(
 			[ { type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' } ].concat(
 				ve.dm.example.blockImage.data.slice()
 			).concat(
-				[ { type: 'paragraph' }, 'B', 'a', 'r', { type: '/paragraph' } ]
+				[
+					{ type: 'paragraph' }, 'B', 'a', 'r', { type: '/paragraph' },
+					{ type: 'internalList' }, { type: '/internalList' }
+				]
 			)
 		),
 		cases = [
@@ -231,6 +246,72 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+TAB' ],
 				expectedRangeOrSelection: new ve.Range( 0 ),
 				msg: 'Shift+tab inside a table caption moves out of table'
+			},
+			{
+				htmlOrDoc: slugDoc,
+				rangeOrSelection: new ve.Range( 0 ),
+				keys: [ 'DOWN' ],
+				expectedRangeOrSelection: new ve.Range( 0, 2 ),
+				msg: 'Down from a block slug'
+			},
+			{
+				htmlOrDoc: slugDoc,
+				rangeOrSelection: new ve.Range( 0 ),
+				keys: [ 'RIGHT' ],
+				expectedRangeOrSelection: new ve.Range( 0, 2 ),
+				msg: 'Right from a block slug'
+			},
+			{
+				htmlOrDoc: slugDoc,
+				rangeOrSelection: new ve.Range( 2 ),
+				keys: [ 'UP' ],
+				expectedRangeOrSelection: new ve.Range( 2, 0 ),
+				msg: 'Up from a block slug'
+			},
+			{
+				htmlOrDoc: slugDoc,
+				rangeOrSelection: new ve.Range( 2 ),
+				keys: [ 'LEFT' ],
+				expectedRangeOrSelection: new ve.Range( 2, 0 ),
+				msg: 'Left from a block slug'
+			},
+			{
+				htmlOrDoc: inlineFocusableDoc,
+				rangeOrSelection: new ve.Range( 5, 7 ),
+				keys: [ 'LEFT' ],
+				expectedRangeOrSelection: new ve.Range( 5 ),
+				msg: 'Left off an inline focusable'
+			},
+			{
+				htmlOrDoc: inlineFocusableDoc,
+				rangeOrSelection: new ve.Range( 5, 7 ),
+				keys: [ 'RIGHT' ],
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				msg: 'Right off an inline focusable'
+			},
+			{
+				htmlOrDoc: inlineFocusableDoc,
+				rangeOrSelection: new ve.Range( 5, 7 ),
+				keys: [ 'SHIFT+RIGHT' ],
+				forceSelection: new ve.Range( 8 ),
+				expectedRangeOrSelection: new ve.Range( 5, 8 ),
+				msg: 'Shift+right off an inline focusable'
+			},
+			{
+				htmlOrDoc: inlineFocusableDoc,
+				rangeOrSelection: new ve.Range( 5, 7 ),
+				keys: [ 'SHIFT+RIGHT' ],
+				forceSelection: new ve.Range( 4 ),
+				expectedRangeOrSelection: new ve.Range( 5, 4 ),
+				msg: 'Shift+left off an inline focusable'
+			},
+			{
+				htmlOrDoc: inlineFocusableDoc,
+				rangeOrSelection: new ve.Range( 7, 5 ),
+				keys: [ 'SHIFT+RIGHT' ],
+				forceSelection: new ve.Range( 4 ),
+				expectedRangeOrSelection: new ve.Range( 5, 4 ),
+				msg: 'Shift+left off an inline focusable (backwards selection)'
 			}
 		];
 
