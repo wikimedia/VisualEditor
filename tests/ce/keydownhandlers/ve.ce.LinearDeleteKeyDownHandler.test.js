@@ -18,6 +18,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 		promise = $.Deferred().resolve().promise(),
 		noChange = function () {},
 		emptyList = '<ul><li><p></p></li></ul>',
+		link = '<p>foo <a href="#">bar</a> baz</p>',
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 4 ),
@@ -347,6 +348,56 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				},
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'Backspace with an alien selected deletes it and replaces it with a paragraph, when the alien is the entire document'
+			},
+			{
+				htmlOrDoc: link,
+				rangeOrSelection: new ve.Range( 8 ),
+				keys: [ 'BACKSPACE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 8 ),
+				msg: 'Backspace from outside a link just activates the link'
+			},
+			{
+				htmlOrDoc: link,
+				rangeOrSelection: new ve.Range( 5 ),
+				keys: [ 'DELETE' ],
+				expectedData: function () {
+				},
+				expectedRangeOrSelection: new ve.Range( 5 ),
+				msg: 'Delete from outside a link just activates the link'
+			},
+			{
+				htmlOrDoc: link,
+				rangeOrSelection: new ve.Range( 6 ),
+				keys: [ 'BACKSPACE', 'BACKSPACE' ],
+				expectedData: function ( data ) {
+					data.splice( 5, 1 );
+				},
+				expectedRangeOrSelection: new ve.Range( 5 ),
+				expectedDefaultPrevented: [ false, true ],
+				msg: 'Backspace from inside a link just de-activates the link'
+			},
+			{
+				htmlOrDoc: link,
+				rangeOrSelection: new ve.Range( 7 ),
+				keys: [ 'DELETE', 'DELETE' ],
+				expectedData: function ( data ) {
+					data.splice( 7, 1 );
+				},
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				expectedDefaultPrevented: [ false, true ],
+				msg: 'Delete from inside a link just de-activates the link'
+			},
+			{
+				htmlOrDoc: link,
+				rangeOrSelection: new ve.Range( 8 ),
+				keys: [ 'BACKSPACE', 'BACKSPACE', 'BACKSPACE', 'BACKSPACE', 'BACKSPACE' ],
+				expectedData: function ( data ) {
+					data.splice( 5, 3 );
+				},
+				expectedRangeOrSelection: new ve.Range( 5 ),
+				expectedDefaultPrevented: [ true, false, false, false, true ],
+				msg: 'Deleting an empty link prevents default and just removes the insertionAnnotation'
 			}
 		];
 
