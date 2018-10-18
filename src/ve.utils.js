@@ -224,6 +224,16 @@ ve.supportsSplice = ( function () {
 }() );
 
 /**
+ * Feature detect if the browser supports extending selections
+ *
+ * Should work everywhere except IE
+ *
+ * @private
+ * @property {boolean}
+ */
+ve.supportsSelectionExtend = !!window.getSelection().extend;
+
+/**
  * Splice one array into another.
  *
  * This is the equivalent of arr.splice( offset, remove, d1, d2, d3, … ) except that arguments are

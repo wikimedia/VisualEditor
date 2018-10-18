@@ -3873,7 +3873,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 	}
 
 	if ( newSel.isBackwards ) {
-		if ( sel.extend ) {
+		if ( ve.supportsSelectionExtend ) {
 			// Set the range at the anchor, and extend backwards to the focus
 			range = this.getElementDocument().createRange();
 			range.setStart( newSel.anchorNode, newSel.anchorOffset );
