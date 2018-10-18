@@ -63,9 +63,6 @@ QUnit.test( 'special key down: table backspace/delete', function ( assert ) {
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runSurfaceHandleSpecialKeyTest(
-			assert, cases[ i ].htmlOrDoc, cases[ i ].rangeOrSelection, cases[ i ].keys,
-			cases[ i ].expectedData, cases[ i ].expectedRangeOrSelection, cases[ i ].msg
-		);
+		ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, cases[ i ] );
 	}
 } );

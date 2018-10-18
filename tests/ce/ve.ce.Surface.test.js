@@ -15,8 +15,15 @@ QUnit.module( 've.ce.Surface', {
 
 /* Tests */
 
-ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, htmlOrDoc, rangeOrSelection, keys, expectedData, expectedRangeOrSelection, msg, forceSelection, fullEvents ) {
+ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem, fullEvents ) {
 	var i, e, expectedSelection, key,
+		htmlOrDoc = caseItem.htmlOrDoc,
+		rangeOrSelection = caseItem.rangeOrSelection,
+		keys = caseItem.keys,
+		expectedData = caseItem.expectedData,
+		expectedRangeOrSelection = caseItem.expectedRangeOrSelection,
+		msg = caseItem.msg,
+		forceSelection = caseItem.forceSelection,
 		view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
 			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ) ),
