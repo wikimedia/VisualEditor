@@ -5,13 +5,13 @@
 	"dependencies": {
 		"ejs": "2.6",
 		"express": "4.16",
-		"oojs": "2.2",
 		"mongodb": "3.1.6",
+		"oojs": "2.2",
+		"service-runner": "2.6.4",
 		"socket.io": "2.1"
 	},
-	"devDependencies": {},
 	"scripts": {
-		"start": "node src/app.js"
+		"start": "node src/server.js"
 	},
 	"repository": {
 		"type": "git"

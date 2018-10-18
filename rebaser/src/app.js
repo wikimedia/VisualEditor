@@ -4,62 +4,105 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* eslint-disable no-console */
-
-var logger, mongoClient, documentStore, protocolServer, transportServer,
-	port = 8081,
+const
 	express = require( 'express' ),
-	app = express(),
-	http = require( 'http' ).Server( app ),
-	io = require( 'socket.io' )( http ),
+	http = require( 'http' ),
+	socketIO = require( 'socket.io' ),
 	mongodb = require( 'mongodb' ),
 	Logger = require( './Logger.js' ),
-	ve = require( '../../dist/ve-rebaser.js' );
+	ve = require( '../../dist/ve-rebaser.js' ),
+	packageInfo = require( '../package.json' );
 
-app.use( express.static( __dirname + '/../..' ) );
-app.set( 'view engine', 'ejs' );
+function initApp( options ) {
+	var logger, mongoClient, documentStore, protocolServer,
+		app = express();
 
-app.get( '/', function ( req, res ) {
-	res.render( 'index' );
-} );
+	// get the options and make them available in the app
+	app.logger = options.logger; // the logging device
+	app.metrics = options.metrics; // the metrics
+	app.conf = options.config; // this app's config options
+	app.info = packageInfo; // this app's package info
 
-app.get( new RegExp( '/doc/edit/(.*)' ), function ( req, res ) {
-	var docName = req.params[ 0 ];
-	res.render( 'editor', { docName: docName } );
-} );
+	app.use( express.static( __dirname + '/../..' ) );
+	app.set( 'view engine', 'ejs' );
 
-app.get( new RegExp( '/doc/raw/(.*)' ), function ( req, res ) {
-	// TODO return real data
-	// In order to provide HTML here, we'd need all of ve.dm (Document, Converter, all nodes)
-	// and none of that code is likely to work in nodejs without some work because of how heavily
-	// it uses the DOM.
-	// var docName = req.params[ 0 ];
-	res.status( 401 ).send( 'DOM in nodejs is hard' );
-} );
-
-logger = new Logger( 'rebaser.log' );
-// eslint-disable-next-line camelcase
-mongoClient = new mongodb.MongoClient( new mongodb.Server( 'localhost', 27017 ), { native_parser: true } );
-documentStore = new ve.dm.DocumentStore( mongoClient, 'test', logger );
-protocolServer = new ve.dm.ProtocolServer( documentStore, logger );
-transportServer = new ve.dm.TransportServer( protocolServer );
-io.on(
-	'connection',
-	transportServer.onConnection.bind(
-		transportServer,
-		io.sockets.in.bind( io.sockets )
-	)
-);
-console.log( 'Connecting to document store' );
-documentStore.connect().then( function () {
-	var dropDatabase = ( process.argv.indexOf( '--drop' ) !== -1 );
-	if ( dropDatabase ) {
-		console.log( 'Dropping database' );
-	}
-	return ( dropDatabase ? documentStore.dropDatabase() : Promise.resolve() ).then( function () {
-		http.listen( port );
-		console.log( 'Listening on ' + port );
+	app.get( '/', function ( req, res ) {
+		res.render( 'index' );
 	} );
-} ).catch( function ( error ) {
-	console.log( 'Connection failure: ', error );
-} );
+
+	app.get( new RegExp( '/doc/edit/(.*)' ), function ( req, res ) {
+		var docName = req.params[ 0 ];
+		res.render( 'editor', { docName: docName } );
+	} );
+
+	app.get( new RegExp( '/doc/raw/(.*)' ), function ( req, res ) {
+		// TODO return real data
+		// In order to provide HTML here, we'd need all of ve.dm (Document, Converter, all nodes)
+		// and none of that code is likely to work in nodejs without some work because of how heavily
+		// it uses the DOM.
+		// var docName = req.params[ 0 ];
+		res.status( 401 ).send( 'DOM in nodejs is hard' );
+	} );
+
+	logger = new Logger( app.logger );
+	mongoClient = new mongodb.MongoClient(
+		new mongodb.Server( app.conf.mongodb.host, app.conf.mongodb.port ),
+		// eslint-disable-next-line camelcase
+		{ native_parser: true }
+	);
+	documentStore = new ve.dm.DocumentStore( mongoClient, 'test', logger );
+	protocolServer = new ve.dm.ProtocolServer( documentStore, logger );
+	app.transportServer = new ve.dm.TransportServer( protocolServer );
+	app.logger.log( 'info', 'Connecting to document store' );
+
+	return documentStore.connect().then( function () {
+		var dropDatabase = ( process.argv.indexOf( '--drop' ) !== -1 );
+		if ( dropDatabase ) {
+			app.logger.log( 'info', 'Dropping database' );
+		}
+		return ( dropDatabase ? documentStore.dropDatabase() : Promise.resolve() ).then( function () {
+			return app;
+		} );
+	} );
+}
+
+function createServer( app ) {
+	// return a promise which creates an HTTP server,
+	// attaches the app to it, and starts accepting
+	// incoming client requests
+	var io, server;
+
+	return new Promise( function ( resolve ) {
+		server = http.createServer( app ).listen(
+			app.conf.port,
+			app.conf.interface,
+			resolve
+		);
+		io = socketIO( server );
+		io.on(
+			'connection',
+			app.transportServer.onConnection.bind(
+				app.transportServer,
+				io.sockets.in.bind( io.sockets )
+			)
+		);
+	} ).then( function () {
+		app.logger.log( 'info',
+			'Worker ' + process.pid + ' listening on ' + ( app.conf.interface || '*' ) + ':' + app.conf.port );
+		return server;
+	} );
+}
+
+/**
+ * The service's entry point. It takes over the configuration
+ * options and the logger and metrics-reporting objects from
+ * service-runner and starts an HTTP server, attaching the application
+ * object to it.
+ *
+ * @param {Object} options
+ * @return {Promise} a promise for an http server.
+ */
+module.exports = function ( options ) {
+	return initApp( options )
+		.then( createServer );
+};
