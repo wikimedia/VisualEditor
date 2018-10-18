@@ -14,7 +14,8 @@ QUnit.module( 've.ce.TableArrowKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: table arrow keys (complex movements)', function ( assert ) {
-	var i,
+	var done = assert.async(),
+		promise = $.Deferred().resolve().promise(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		cases = [
@@ -125,15 +126,19 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, cases[ i ] );
-	}
+	cases.forEach( function ( caseItem ) {
+		promise = promise.then( function () {
+			return ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem );
+		} );
+	} );
+
+	promise.always( function () { done(); } );
 
 	// Allow the real surface created with createSurfaceFromDocument for the
 	// 'Tab at end of table inserts new row' case to get properly initialized
 	// before we end the test and kill it.
 	// FIXME Oh no eww gross
-	setTimeout( assert.async() );
+	// setTimeout( assert.async() );
 } );
 
 QUnit.test( 'special key down: table arrow keys (simple movements)', function ( assert ) {

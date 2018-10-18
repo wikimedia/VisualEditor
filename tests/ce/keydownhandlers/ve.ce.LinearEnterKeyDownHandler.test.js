@@ -14,7 +14,9 @@ QUnit.module( 've.ce.LinearEnterKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: linear enter', function ( assert ) {
-	var i,
+	var done = assert.async(),
+		noChange = function () {},
+		promise = $.Deferred().resolve().promise(),
 		emptyList = '<ul><li><p></p></li></ul>',
 		cases = [
 			{
@@ -38,7 +40,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 					view.surface.isMultiline = function () { return false; };
 					return view;
 				}() ),
-				expectedData: function () {},
+				expectedData: noChange,
 				expectedRangeOrSelection: new ve.Range( 57 ),
 				msg: 'Enter does nothing in single line mode'
 			},
@@ -235,7 +237,11 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, cases[ i ] );
-	}
+	cases.forEach( function ( caseItem ) {
+		promise = promise.then( function () {
+			return ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem );
+		} );
+	} );
+
+	promise.always( function () { done(); } );
 } );

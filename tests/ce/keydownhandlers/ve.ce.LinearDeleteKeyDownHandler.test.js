@@ -14,9 +14,29 @@ QUnit.module( 've.ce.LinearDeleteKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
-	var i,
+	var done = assert.async(),
+		promise = $.Deferred().resolve().promise(),
+		noChange = function () {},
 		emptyList = '<ul><li><p></p></li></ul>',
 		cases = [
+			{
+				rangeOrSelection: new ve.Range( 4 ),
+				keys: [ 'BACKSPACE' ],
+				expectedData: function ( data ) {
+					data.splice( 3, 1 );
+				},
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				msg: 'Character deleted by backspace'
+			},
+			{
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'DELETE' ],
+				expectedData: function ( data ) {
+					data.splice( 3, 1 );
+				},
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				msg: 'Character deleted by delete'
+			},
 			{
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				keys: [ 'BACKSPACE' ],
@@ -65,14 +85,14 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 41 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function () {},
+				expectedData: noChange,
 				expectedRangeOrSelection: new ve.Range( 39, 41 ),
 				msg: 'Focusable node selected but not deleted by backspace'
 			},
 			{
 				rangeOrSelection: new ve.Range( 39 ),
 				keys: [ 'DELETE' ],
-				expectedData: function () {},
+				expectedData: noChange,
 				expectedRangeOrSelection: new ve.Range( 39, 41 ),
 				msg: 'Focusable node selected but not deleted by delete'
 			},
@@ -88,7 +108,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 38 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: function () {},
+				expectedData: noChange,
 				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 5, 37 ),
@@ -100,7 +120,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'DELETE' ],
-				expectedData: function () {},
+				expectedData: noChange,
 				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 5, 37 ),
@@ -292,7 +312,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
-				expectedRangeOrSelection: new ve.Range( 2 ),
+				expectedRangeOrSelection: { type: 'null' },
 				msg: 'Backspace with an alien selected deletes it, with only aliens in the document'
 			},
 			{
@@ -302,7 +322,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				expectedData: function ( data ) {
 					data.splice( 2, 2 );
 				},
-				expectedRangeOrSelection: new ve.Range( 2 ),
+				expectedRangeOrSelection: { type: 'null' },
 				msg: 'Delete with an alien selected deletes it, with only aliens in the document'
 			},
 			{
@@ -320,7 +340,11 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, cases[ i ] );
-	}
+	cases.forEach( function ( caseItem ) {
+		promise = promise.then( function () {
+			return ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem );
+		} );
+	} );
+
+	promise.always( function () { done(); } );
 } );

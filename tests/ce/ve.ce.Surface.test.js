@@ -15,8 +15,15 @@ QUnit.module( 've.ce.Surface', {
 
 /* Tests */
 
-ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem, fullEvents ) {
-	var i, e, expectedSelection, key,
+ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
+	var keyData, keyDownEvent, expectedSelection,
+		promise = $.Deferred().resolve().promise(),
+		defer = function ( f ) {
+			// Execute immediately
+			f();
+			// TODO: instead append to the promise chain, and fix ensuing bugs
+			// promise = promise.then( f );
+		},
 		htmlOrDoc = caseItem.htmlOrDoc,
 		rangeOrSelection = caseItem.rangeOrSelection,
 		keys = caseItem.keys,
@@ -28,29 +35,52 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem, full
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
 			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ) ),
 		model = view.getModel(),
-		data = ve.copy( model.getDocument().getFullData() );
-
-	ve.test.utils.hijackEventSequencerTimeouts( view.eventSequencer );
-
-	model.setSelection(
-		ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection )
-	);
-	for ( i = 0; i < keys.length; i++ ) {
-		key = keys[ i ].split( '+' );
-		e = {
-			keyCode: OO.ui.Keys[ key.pop() ],
-			shiftKey: key.indexOf( 'SHIFT' ) !== -1,
-			ctrlKey: key.indexOf( 'CTRL' ) !== -1,
-			preventDefault: function () {},
-			stopPropagation: function () {}
+		data = ve.copy( model.getDocument().getFullData() ),
+		execCommands = {
+			BACKSPACE: 'delete',
+			'SHIFT+BACKSPACE': 'delete',
+			DELETE: 'forwardDelete',
+			'SHIFT+DELETE': 'cut',
+			// There are no execCommands for CTRL+BACKSPACE/DELETE (delete word)
+			// These enter commands should always be prevented
+			ENTER: 'insertParagraph',
+			'SHIFT+ENTER': 'insertParagraph',
+			'CTRL+ENTER': 'insertParagraph'
 		};
-		if ( fullEvents ) {
-			// Some key handlers do things like schedule after-event handlers,
-			// and so we want to fake the full sequence.
-			// TODO: Could probably switch to using this for every test, but it
-			// would need the faked testing surface to be improved.
-			view.eventSequencer.onEvent( 'keydown', $.Event( 'keydown', e ) );
-			view.eventSequencer.onEvent( 'keypress', $.Event( 'keypress', e ) );
+
+	if ( caseItem.setup ) {
+		caseItem.setup();
+	}
+	// Below this point, any code that might throw an exception should run deferred,
+	// so the asynchronous cleanup at the lexical end of this function will always run
+
+	defer( function () {
+		ve.test.utils.hijackEventSequencerTimeouts( view.eventSequencer );
+		model.setSelection(
+			ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection )
+		);
+	} );
+
+	keys.forEach( function ( keyString ) {
+		defer( function () {
+			var deferred = $.Deferred(),
+				keyParts = keyString.split( '+' ),
+				key = keyParts.pop(),
+				keyCode = OO.ui.Keys[ key ];
+			keyData = {
+				keyCode: keyCode,
+				which: keyCode,
+				shiftKey: keyParts.indexOf( 'SHIFT' ) !== -1,
+				ctrlKey: keyParts.indexOf( 'CTRL' ) !== -1
+			};
+			keyDownEvent = ve.test.utils.createTestEvent( { type: 'keydown' }, keyData );
+			view.eventSequencer.onEvent( 'keydown', keyDownEvent );
+			if ( !keyDownEvent.isDefaultPrevented() ) {
+				if ( execCommands[ keyString ] ) {
+					document.execCommand( execCommands[ keyString ] );
+				}
+				view.eventSequencer.onEvent( 'keypress', ve.test.utils.createTestEvent( { type: 'keypress' }, keyData ) );
+			}
 			if ( forceSelection instanceof ve.Range ) {
 				view.showSelectionState( view.getSelectionState( forceSelection ) );
 			} else if ( forceSelection && forceSelection.focusNode ) {
@@ -61,34 +91,46 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem, full
 					focusOffset: forceSelection.focusOffset
 				} ) );
 			}
-			view.eventSequencer.onEvent( 'keyup', $.Event( 'keyup', e ) );
+			view.eventSequencer.onEvent( 'keyup', ve.test.utils.createTestEvent( { type: 'keyup' }, keyData ) );
 			view.eventSequencer.endLoop();
-		} else {
-			if ( forceSelection ) {
-				view.showSelectionState( view.getSelectionState( forceSelection ) );
-			}
-			ve.ce.keyDownHandlerFactory.executeHandlersForKey(
-				e.keyCode, model.getSelection().getName(), view, e
-			);
-		}
-	}
-	if ( expectedData ) {
-		expectedData( data );
-		assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
-	}
+			// setTimeout before the next key in the loop
+			setTimeout( function () {
+				deferred.resolve();
+			} );
+			return deferred.promise();
+		} );
+	} );
 
-	expectedSelection = ve.dm.Selection.static.newFromJSON( model.getDocument(), expectedRangeOrSelection instanceof ve.Range ?
-		{ type: 'linear', range: expectedRangeOrSelection } :
-		expectedRangeOrSelection
-	);
-	assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
-	view.destroy();
+	defer( function () {
+		if ( expectedData ) {
+			expectedData( data );
+			assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
+		}
+
+		expectedSelection = ve.dm.Selection.static.newFromJSON( model.getDocument(), expectedRangeOrSelection instanceof ve.Range ?
+			{ type: 'linear', range: expectedRangeOrSelection } :
+			expectedRangeOrSelection
+		);
+		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
+		view.destroy();
+	} );
+	return promise.catch( function ( error ) {
+		assert.notOk( true, caseItem.msg + ': throws ' + error );
+	} ).always( function () {
+		if ( caseItem.teardown ) {
+			try {
+				caseItem.teardown();
+			} catch ( error ) {
+				assert.notOk( true, caseItem.msg + ': teardown throws ' + error );
+			}
+		}
+	} );
 };
 
 ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, noClipboardData, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, msg ) {
 	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent, isClipboardDataFormatsSupported,
 		afterPastePromise = $.Deferred().resolve().promise(),
-		e = ve.extendObject( {}, pasteData ),
+		clipboardData = new ve.test.utils.DataTransfer( ve.copy( pasteData ) ),
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView ) :
 			htmlOrView,
@@ -103,7 +145,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 	// Paste sequence
 	if ( internalSourceRangeOrSelection ) {
 		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), internalSourceRangeOrSelection ) );
-		testEvent = new ve.test.utils.TestEvent( 'copy' );
+		testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } );
 		if ( noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
 			ve.isClipboardDataFormatsSupported = function () { return false; };
@@ -112,28 +154,27 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 		if ( noClipboardData ) {
 			ve.isClipboardDataFormatsSupported = isClipboardDataFormatsSupported;
 		}
-		// A fresh event with the copied data, because of defaultPrevented:
-		testEvent = new ve.test.utils.TestEvent( 'paste', testEvent.testData );
+		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	} else {
 		if ( useClipboardData ) {
-			e[ 'text/xcustom' ] = 'useClipboardData-0';
+			clipboardData.setData( 'text/xcustom', 'useClipboardData-0' );
 		} else if ( fromVe ) {
-			e[ 'text/xcustom' ] = '0.123-0';
+			clipboardData.setData( 'text/xcustom', '0.123-0' );
 		}
-		testEvent = new ve.test.utils.TestEvent( 'paste', e );
+		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	}
 	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
 	view.pasteSpecial = pasteSpecial;
 
 	// Replicate the sequencing of ce.Surface.onPaste, without any setTimeouts:
 	view.beforePaste( testEvent );
-	if ( !testEvent.defaultPrevented() ) {
+	if ( !testEvent.isDefaultPrevented() ) {
 		if ( pasteTargetHtml ) {
 			view.$pasteTarget.html( pasteTargetHtml );
-		} else if ( e[ 'text/html' ] ) {
-			document.execCommand( 'insertHTML', false, e[ 'text/html' ] );
-		} else if ( e[ 'text/plain' ] ) {
-			document.execCommand( 'insertText', false, e[ 'text/plain' ] );
+		} else if ( clipboardData.getData( 'text/html' ) ) {
+			document.execCommand( 'insertHTML', false, clipboardData.getData( 'text/html' ) );
+		} else if ( clipboardData.getData( 'text/plain' ) ) {
+			document.execCommand( 'insertText', false, clipboardData.getData( 'text/plain' ) );
 		}
 		afterPastePromise = view.afterPaste( testEvent );
 	}
@@ -176,45 +217,52 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 			htmlDoc = ve.dm.converter.getDomFromModel( doc );
 			assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
 		}
-		assert.strictEqual( testEvent.defaultPrevented(), !!expectedDefaultPrevented, msg + ': default action ' + ( expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
+		assert.strictEqual( testEvent.isDefaultPrevented(), !!expectedDefaultPrevented, msg + ': default action ' + ( expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
 		view.destroy();
 		done();
 	} );
 };
 
-ve.test.utils.TestEvent = function TestEvent( type, data ) {
-	var defaultPrevented, key,
-		internalData = {};
-	this.testData = internalData;
-	this.type = type;
-	this.originalEvent = {
-		clipboardData: {
-			getData: function ( prop ) {
-				return internalData[ prop ];
-			},
-			setData: function ( prop, val ) {
-				if ( internalData[ prop ] === undefined ) {
-					this.items.push( {
-						kind: 'string',
-						type: prop
-					} );
-				}
-				internalData[ prop ] = val;
-				return true;
-			},
-			items: []
+/**
+ * Creates a simulated jQuery Event
+ *
+ * @param {string|Object} src Event type, or original event object
+ * @param {Object} props jQuery event properties
+ * @return {jQuery.Event} Event
+ */
+ve.test.utils.createTestEvent = function TestEvent( src, props ) {
+	var event;
+	if ( props && !( 'which' in props ) ) {
+		props.which = props.keyCode;
+	}
+	event = $.Event( src, props );
+	event.isSimulated = true;
+	return event;
+};
+
+ve.test.utils.DataTransfer = function DataTransfer( initialData ) {
+	var key,
+		data = {},
+		items = [];
+
+	this.items = items;
+	this.getData = function ( prop ) {
+		return data[ prop ];
+	};
+	this.setData = function ( prop, val ) {
+		if ( data[ prop ] === undefined ) {
+			items.push( {
+				kind: 'string',
+				type: prop
+			} );
 		}
+		data[ prop ] = val;
+		return true;
 	};
-	this.preventDefault = this.stopPropagation = function () {
-		defaultPrevented = true;
-	};
-	this.defaultPrevented = function () {
-		return !!defaultPrevented;
-	};
-	if ( data ) {
-		for ( key in data ) {
+	if ( initialData ) {
+		for ( key in initialData ) {
 			// Don't directly use the data, so we get items set up
-			this.originalEvent.clipboardData.setData( key, data[ key ] );
+			this.setData( key, initialData[ key ] );
 		}
 	}
 };
@@ -551,8 +599,8 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
 		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey,
-			testEvent = new ve.test.utils.TestEvent( 'copy' ),
-			clipboardData = testEvent.originalEvent.clipboardData,
+			clipboardData = new ve.test.utils.DataTransfer(),
+			testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } ),
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
 			model = view.getModel();
 
@@ -2250,6 +2298,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 	var i,
+		noChange = function () {},
 		selection = new ve.dm.LinearSelection( {}, new ve.Range( 1, 4 ) ),
 		expectedSelection = new ve.dm.LinearSelection( {}, new ve.Range( 7, 10 ) ),
 		cases = [
@@ -2287,7 +2336,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 					'text/html': 'a<b>b</b><i>c</i>',
 					'text/plain': 'abc'
 				},
-				expectedData: function () {},
+				expectedData: noChange,
 				expectedSelection: selection
 			}
 		];
