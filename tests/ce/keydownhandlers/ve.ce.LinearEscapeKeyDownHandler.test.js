@@ -16,6 +16,7 @@ QUnit.module( 've.ce.LinearEscapeKeyDownHandler', {
 QUnit.test( 'special key down: linear escape', function ( assert ) {
 	var done = assert.async(),
 		promise = $.Deferred().resolve().promise(),
+		noChange = function () {},
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [
 			{
@@ -27,6 +28,7 @@ QUnit.test( 'special key down: linear escape', function ( assert ) {
 					fromRow: 0
 				},
 				keys: [ 'ENTER', 'ESCAPE' ],
+				expectedData: noChange,
 				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
@@ -34,6 +36,14 @@ QUnit.test( 'special key down: linear escape', function ( assert ) {
 					fromRow: 0
 				},
 				msg: 'Escape to leave a table cell'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				keys: [ 'ESCAPE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				expectedDefaultPrevented: [ false ],
+				msg: 'Escape elsewhere does nothing'
 			}
 		];
 

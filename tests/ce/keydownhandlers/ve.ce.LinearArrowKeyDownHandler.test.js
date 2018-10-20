@@ -286,6 +286,20 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				msg: 'Shift+tab inside a table caption moves out of table'
 			},
 			{
+				htmlOrDoc: complexTableDoc,
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'CTRL+TAB' ],
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				expectedDefaultPrevented: [ false ],
+				msg: 'Ctrl+tab is always ignored'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				keys: [ 'TAB' ],
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'Tab outside a table prevents default'
+			},
+			{
 				htmlOrDoc: slugDoc,
 				rangeOrSelection: new ve.Range( 0 ),
 				keys: [ 'DOWN' ],

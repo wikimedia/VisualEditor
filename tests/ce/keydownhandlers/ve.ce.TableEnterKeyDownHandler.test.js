@@ -29,6 +29,23 @@ QUnit.test( 'special key down: table enter', function ( assert ) {
 				keys: [ 'ENTER' ],
 				expectedRangeOrSelection: new ve.Range( 11 ),
 				msg: 'Enter to edit a table cell'
+			},
+			{
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 0
+				},
+				keys: [ 'CTRL+ENTER' ],
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 1,
+					fromRow: 0
+				},
+				msg: 'Ctrl + Enter does nothing (emits submit)'
 			}
 		];
 

@@ -81,6 +81,24 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 5,
+					fromRow: 6
+				},
+				keys: [ 'CTRL+TAB' ],
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
+					fromCol: 5,
+					fromRow: 6
+				},
+				expectedDefaultPrevented: [ false ],
+				msg: 'Ctrl+tab is always ignored'
+			},
+			{
+				htmlOrDoc: mergedCellsDoc,
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 171 ),
 					fromCol: 2,
 					fromRow: 0
 				},
