@@ -832,6 +832,7 @@
 			"tests/ce/ve.ce.RangeState.test.js",
 			"tests/ce/ve.ce.TextState.test.js",
 			"tests/ce/ve.ce.NodeFactory.test.js",
+			"tests/ce/ve.ce.AnnotationFactory.test.js",
 			"tests/ce/ve.ce.Node.test.js",
 			"tests/ce/ve.ce.BranchNode.test.js",
 			"tests/ce/ve.ce.ContentBranchNode.test.js",

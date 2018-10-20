@@ -38,19 +38,6 @@ ve.ce.AnnotationFactory.prototype.getDescription = function ( annotation ) {
 };
 
 /**
- * Check if an annotation needs to force continuation.
- *
- * @param {string} type Annotation type
- * @return {boolean} Whether the annotation needs to force continuation
- */
-ve.ce.AnnotationFactory.prototype.isAnnotationContinuationForced = function ( type ) {
-	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
-		return this.registry[ type ].static.forceContinuation;
-	}
-	return false;
-};
-
-/**
  * Check if an annotation can be active
  *
  * @param {string} type Annotation type
