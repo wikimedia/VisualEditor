@@ -365,6 +365,7 @@
 				execute: ve.ui.Surface.prototype.execute,
 				commandRegistry: ve.ui.commandRegistry,
 				sequenceRegistry: ve.ui.sequenceRegistry,
+				triggerListener: new ve.TriggerListener( ve.ui.commandRegistry.getNames(), ve.ui.commandRegistry ),
 				dataTransferHandlerFactory: ve.ui.dataTransferHandlerFactory
 			};
 

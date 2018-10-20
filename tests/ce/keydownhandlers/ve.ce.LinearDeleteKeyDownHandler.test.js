@@ -40,6 +40,14 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				msg: 'Character deleted by delete'
 			},
 			{
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'SHIFT+DELETE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				expectedDefaultPrevented: [ false ],
+				msg: 'Shift delete does nothing (expected to cut)'
+			},
+			{
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
