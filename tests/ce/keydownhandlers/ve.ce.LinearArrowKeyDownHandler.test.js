@@ -51,6 +51,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'LEFT' ],
 				forceSelection: new ve.Range( 1 ),
 				expectedRangeOrSelection: new ve.Range( 1 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor left in text'
 			},
 			{
@@ -59,6 +60,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'RIGHT' ],
 				forceSelection: new ve.Range( 3 ),
 				expectedRangeOrSelection: new ve.Range( 3 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor right in text'
 			},
 			{
@@ -67,6 +69,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'UP' ],
 				forceSelection: new ve.Range( 1 ),
 				expectedRangeOrSelection: new ve.Range( 1 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor up in text'
 			},
 			{
@@ -75,6 +78,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'DOWN' ],
 				forceSelection: new ve.Range( 22 ),
 				expectedRangeOrSelection: new ve.Range( 22 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor down in text'
 			},
 			// Cursor with shift held to adjust selection
@@ -84,6 +88,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+LEFT' ],
 				forceSelection: new ve.Range( 1 ),
 				expectedRangeOrSelection: new ve.Range( 2, 1 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor left in text with shift'
 			},
 			{
@@ -92,6 +97,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+LEFT' ],
 				// No forceSelection, so just check the selection is preserved
 				expectedRangeOrSelection: new ve.Range( 3, 2 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor left in text with shift on a backwards selection'
 			},
 			{
@@ -106,6 +112,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+LEFT' ],
 				// No forceSelection, so just check the selection is preserved
 				expectedRangeOrSelection: new ve.Range( 3, 2 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor left in text with shift on a backwards selection with no extend'
 			},
 			{
@@ -114,6 +121,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+RIGHT' ],
 				forceSelection: new ve.Range( 3 ),
 				expectedRangeOrSelection: new ve.Range( 2, 3 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor right in text with shift'
 			},
 			{
@@ -122,6 +130,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+UP' ],
 				forceSelection: new ve.Range( 1 ),
 				expectedRangeOrSelection: new ve.Range( 4, 1 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor up in text with shift'
 			},
 			{
@@ -130,6 +139,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+DOWN' ],
 				forceSelection: new ve.Range( 22 ),
 				expectedRangeOrSelection: new ve.Range( 20, 22 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor down in text with shift'
 			},
 			// While focusing a block node
@@ -205,6 +215,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 					focusOffset: 0
 				},
 				expectedRangeOrSelection: new ve.Range( 5, 18 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor right onto a block node'
 			},
 			{
@@ -220,6 +231,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 					focusOffset: 1
 				},
 				expectedRangeOrSelection: new ve.Range( 18, 5 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor left onto a block node'
 			},
 			{
@@ -235,6 +247,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 					focusOffset: 0
 				},
 				expectedRangeOrSelection: new ve.Range( 5, 18 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor down onto a block node'
 			},
 			{
@@ -250,6 +263,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 					focusOffset: 0
 				},
 				expectedRangeOrSelection: new ve.Range( 18, 5 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Cursor up onto a block node'
 			},
 			{
@@ -319,6 +333,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+RIGHT' ],
 				forceSelection: new ve.Range( 8 ),
 				expectedRangeOrSelection: new ve.Range( 5, 8 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Shift+right off an inline focusable'
 			},
 			{
@@ -327,6 +342,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+RIGHT' ],
 				forceSelection: new ve.Range( 4 ),
 				expectedRangeOrSelection: new ve.Range( 5, 4 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Shift+left off an inline focusable'
 			},
 			{
@@ -335,6 +351,7 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 				keys: [ 'SHIFT+RIGHT' ],
 				forceSelection: new ve.Range( 4 ),
 				expectedRangeOrSelection: new ve.Range( 5, 4 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Shift+left off an inline focusable (backwards selection)'
 			}
 		];

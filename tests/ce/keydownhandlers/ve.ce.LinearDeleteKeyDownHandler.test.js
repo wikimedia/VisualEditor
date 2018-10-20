@@ -26,6 +26,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 					data.splice( 3, 1 );
 				},
 				expectedRangeOrSelection: new ve.Range( 3 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Character deleted by backspace'
 			},
 			{
@@ -35,6 +36,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 					data.splice( 3, 1 );
 				},
 				expectedRangeOrSelection: new ve.Range( 3 ),
+				expectedDefaultPrevented: [ false ],
 				msg: 'Character deleted by delete'
 			},
 			{
