@@ -362,6 +362,7 @@
 				isDisabled: function () {
 					return false;
 				},
+				emit: function () {},
 				execute: ve.ui.Surface.prototype.execute,
 				commandRegistry: ve.ui.commandRegistry,
 				sequenceRegistry: ve.ui.sequenceRegistry,

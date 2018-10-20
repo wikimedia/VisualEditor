@@ -18,6 +18,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 		noChange = function () {},
 		promise = $.Deferred().resolve().promise(),
 		emptyList = '<ul><li><p></p></li></ul>',
+		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 57 ),
@@ -31,6 +32,21 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				},
 				expectedRangeOrSelection: new ve.Range( 59 ),
 				msg: 'End of paragraph split by enter'
+			},
+			{
+				rangeOrSelection: new ve.Range( 57 ),
+				keys: [ 'CTRL+ENTER' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 57 ),
+				msg: 'Ctrl + Enter does nothing (emits submit)'
+			},
+			{
+				htmlOrDoc: alienDoc,
+				rangeOrSelection: new ve.Range( 0, 2 ),
+				keys: [ 'ENTER' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 0, 2 ),
+				msg: 'Enter does nothing on focusable (executes command)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 57 ),
@@ -69,6 +85,17 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				},
 				expectedRangeOrSelection: new ve.Range( 58 ),
 				msg: 'Start of paragraph split by enter'
+			},
+			{
+				rangeOrSelection: new ve.Range( 39 ),
+				keys: [ 'SHIFT+ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						39, 0, '\n'
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 40 ),
+				msg: 'Shift+enter in a hasSignificantWhitespace node adds a linebreak character'
 			},
 			{
 				rangeOrSelection: new ve.Range( 3 ),
