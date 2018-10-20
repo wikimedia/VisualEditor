@@ -13,8 +13,8 @@
  * @constructor
  */
 ve.ce.TableArrowKeyDownHandler = function VeCeTableArrowKeyDownHandler() {
-	// Parent constructor
-	ve.ui.TableArrowKeyDownHandler.super.apply( this, arguments );
+	// Parent constructor - never called because class is fully static
+	// ve.ui.TableArrowKeyDownHandler.super.apply( this, arguments );
 };
 
 /* Inheritance */

@@ -13,8 +13,8 @@
  * @constructor
  */
 ve.ce.LinearEnterKeyDownHandler = function VeCeLinearEnterKeyDownHandler() {
-	// Parent constructor
-	ve.ui.LinearEnterKeyDownHandler.super.apply( this, arguments );
+	// Parent constructor - never called because class is fully static
+	// ve.ui.LinearEnterKeyDownHandler.super.apply( this, arguments );
 };
 
 /* Inheritance */

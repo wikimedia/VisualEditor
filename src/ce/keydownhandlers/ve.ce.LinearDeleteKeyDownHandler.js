@@ -13,8 +13,8 @@
  * @constructor
  */
 ve.ce.LinearDeleteKeyDownHandler = function VeCeLinearDeleteKeyDownHandler() {
-	// Parent constructor
-	ve.ui.LinearDeleteKeyDownHandler.super.apply( this, arguments );
+	// Parent constructor - never called because class is fully static
+	// ve.ui.LinearDeleteKeyDownHandler.super.apply( this, arguments );
 };
 
 /* Inheritance */
