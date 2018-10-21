@@ -19,10 +19,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	var keyData, keyDownEvent, expectedSelection,
 		promise = $.Deferred().resolve().promise(),
 		defer = function ( f ) {
-			// Execute immediately
-			f();
-			// TODO: instead append to the promise chain, and fix ensuing bugs
-			// promise = promise.then( f );
+			promise = promise.then( f );
 		},
 		htmlOrDoc = caseItem.htmlOrDoc,
 		rangeOrSelection = caseItem.rangeOrSelection,
