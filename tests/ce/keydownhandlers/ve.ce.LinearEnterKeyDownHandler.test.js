@@ -4,6 +4,8 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* global Promise */
+
 QUnit.module( 've.ce.LinearEnterKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
@@ -16,7 +18,7 @@ QUnit.module( 've.ce.LinearEnterKeyDownHandler', {
 QUnit.test( 'special key down: linear enter', function ( assert ) {
 	var done = assert.async(),
 		noChange = function () {},
-		promise = $.Deferred().resolve().promise(),
+		promise = Promise.resolve(),
 		emptyList = '<ul><li><p></p></li></ul>',
 		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
 		cases = [
@@ -270,5 +272,5 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 		} );
 	} );
 
-	promise.always( function () { done(); } );
+	promise.finally( function () { done(); } );
 } );

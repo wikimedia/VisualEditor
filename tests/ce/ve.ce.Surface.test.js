@@ -4,6 +4,8 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* global Promise */
+
 QUnit.module( 've.ce.Surface', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
@@ -17,7 +19,7 @@ QUnit.module( 've.ce.Surface', {
 
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	var keyData, keyDownEvent, expectedSelection,
-		promise = $.Deferred().resolve().promise(),
+		promise = Promise.resolve(),
 		defer = function ( f ) {
 			promise = promise.then( f );
 		},
@@ -61,9 +63,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	} );
 
 	keys.forEach( function ( keyString ) {
-		defer( function () {
-			var deferred = $.Deferred(),
-				keyParts = keyString.split( '+' ),
+		function doKey( resolve ) {
+			var keyParts = keyString.split( '+' ),
 				key = keyParts.pop(),
 				keyCode = OO.ui.Keys[ key ];
 			keyData = {
@@ -95,9 +96,11 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 			view.eventSequencer.endLoop();
 			// setTimeout before the next key in the loop
 			setTimeout( function () {
-				deferred.resolve();
+				resolve();
 			} );
-			return deferred.promise();
+		}
+		defer( function () {
+			return new Promise( doKey );
 		} );
 	} );
 
@@ -117,7 +120,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	} );
 	return promise.catch( function ( error ) {
 		assert.notOk( true, caseItem.msg + ': throws ' + error );
-	} ).always( function () {
+	} ).finally( function () {
 		if ( caseItem.teardown ) {
 			try {
 				caseItem.teardown();

@@ -4,6 +4,8 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* global Promise */
+
 QUnit.module( 've.ce.TableArrowKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
@@ -15,7 +17,7 @@ QUnit.module( 've.ce.TableArrowKeyDownHandler', {
 
 QUnit.test( 'special key down: table arrow keys (complex movements)', function ( assert ) {
 	var done = assert.async(),
-		promise = $.Deferred().resolve().promise(),
+		promise = Promise.resolve(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		cases = [
@@ -150,7 +152,7 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 		} );
 	} );
 
-	promise.always( function () { done(); } );
+	promise.finally( function () { done(); } );
 
 	// Allow the real surface created with createSurfaceFromDocument for the
 	// 'Tab at end of table inserts new row' case to get properly initialized

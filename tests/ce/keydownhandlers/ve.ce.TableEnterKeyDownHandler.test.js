@@ -4,6 +4,8 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* global Promise */
+
 QUnit.module( 've.ce.TableEnterKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
@@ -15,7 +17,7 @@ QUnit.module( 've.ce.TableEnterKeyDownHandler', {
 
 QUnit.test( 'special key down: table enter', function ( assert ) {
 	var done = assert.async(),
-		promise = $.Deferred().resolve().promise(),
+		promise = Promise.resolve(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [
 			{
@@ -55,5 +57,5 @@ QUnit.test( 'special key down: table enter', function ( assert ) {
 		} );
 	} );
 
-	promise.always( function () { done(); } );
+	promise.finally( function () { done(); } );
 } );

@@ -4,6 +4,8 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* global Promise */
+
 QUnit.module( 've.ce.LinearArrowKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
@@ -15,7 +17,7 @@ QUnit.module( 've.ce.LinearArrowKeyDownHandler', {
 
 QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 	var done = assert.async(),
-		promise = $.Deferred().resolve().promise(),
+		promise = Promise.resolve(),
 		supportsSelectionExtend = ve.supportsSelectionExtend,
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		slugDoc = ve.dm.example.createExampleDocumentFromData(
@@ -376,5 +378,5 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 		} );
 	} );
 
-	promise.always( function () { done(); } );
+	promise.finally( function () { done(); } );
 } );
