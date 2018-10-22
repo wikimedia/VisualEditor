@@ -52,8 +52,13 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 				msg: 'Shift+tab while in a table cell moves inside the previous cell'
 			},
 			{
-				// Create a full surface and return the view, as the UI surface is required for the insert action
-				htmlOrDoc: ve.test.utils.createSurfaceFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) ).view,
+				htmlOrDoc: ( function () {
+					// Create a full surface and return the view, as the UI surface is required for the insert action
+					var surface = ve.test.utils.createSurfaceFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) );
+					// Detach $blockers so selections aren't rendered, resulting in false code coverage
+					surface.$blockers.detach();
+					return surface.view;
+				}() ),
 				rangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
