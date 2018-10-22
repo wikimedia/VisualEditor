@@ -263,6 +263,18 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				},
 				expectedRangeOrSelection: new ve.Range( 15 ),
 				msg: 'Enter in a completely empty nested list destroys it and adds a new list item to the parent'
+			},
+			{
+				htmlOrDoc: '<div rel="ve:Alien">Bar</div><div rel="ve:Alien">Baz</div>',
+				rangeOrSelection: new ve.Range( 2 ),
+				keys: [ 'ENTER' ],
+				expectedData: function ( data ) {
+					data.splice( 2, 0, { type: 'paragraph' }, { type: '/paragraph' } );
+				},
+				expectedRangeOrSelection: new ve.Range( 3 ),
+				// This should really result in a slug being focused, but in some
+				// browsers an observed selection can end up here.
+				msg: 'Enter between two block nodes (and somehow not in the slug) creates a new paragraph'
 			}
 		];
 
