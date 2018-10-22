@@ -21,10 +21,10 @@ QUnit.test( 'Rects', function ( assert ) {
 		cases = [
 			{
 				rangeOrSelection: { type: 'null' },
-				msg: 'Null selection',
 				expectedRects: null,
 				expectedBoundingRect: null,
-				expectedStartAndEndRects: null
+				expectedStartAndEndRects: null,
+				msg: 'Null selection'
 			},
 			{
 				rangeOrSelection: new ve.Range( 0, 2 ),
@@ -87,6 +87,62 @@ QUnit.test( 'Rects', function ( assert ) {
 				caseItem.expectedStartAndEndRects :
 				{ start: caseItem.expectedRects[ 0 ], end: caseItem.expectedRects[ 0 ] },
 			caseItem.msg + ': start and end rects'
+		);
+	} );
+
+	view.destroy();
+} );
+
+QUnit.test( 'getDirection', function ( assert ) {
+	var html =
+			'<p>Foo</p>' +
+			'<p style="direction: rtl;">Bar</p>' +
+			'<table style="direction: rtl;"><tr><td>Baz</td></tr></table>',
+		view = ve.test.utils.createSurfaceViewFromHtml( html ),
+		model = view.getModel(),
+		cases = [
+			{
+				rangeOrSelection: { type: 'null' },
+				expected: 'ltr',
+				msg: 'Null selection'
+			},
+			{
+				rangeOrSelection: new ve.Range( 2 ),
+				expected: 'ltr',
+				msg: 'LTR linear selection'
+			},
+			{
+				rangeOrSelection: new ve.Range( 8 ),
+				expected: 'rtl',
+				msg: 'RTL linear selection'
+			},
+			{
+				rangeOrSelection: new ve.Range( 2, 8 ),
+				expected: 'ltr',
+				msg: 'Linear selection spanning different directions uses parent direction'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 10, 23 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				expected: 'rtl',
+				msg: 'RTL table selection'
+			}
+
+		];
+
+	cases.forEach( function ( caseItem ) {
+		model.setSelection(
+			ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.rangeOrSelection )
+		);
+
+		assert.deepEqual(
+			view.getSelection().getDirection(),
+			caseItem.expected,
+			caseItem.msg
 		);
 	} );
 
