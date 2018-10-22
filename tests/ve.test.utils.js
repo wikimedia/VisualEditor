@@ -71,6 +71,7 @@
 		surface.initialize();
 		return surface;
 	};
+	DummyTarget.prototype.setupToolbar = function () {};
 
 	ve.test.utils.DummyTarget = DummyTarget;
 
