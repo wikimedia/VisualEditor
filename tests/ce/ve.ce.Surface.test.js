@@ -602,7 +602,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		];
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
-		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey,
+		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey, profile,
 			clipboardData = new ve.test.utils.DataTransfer(),
 			testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } ),
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
@@ -640,7 +640,8 @@ QUnit.test( 'onCopy', function ( assert ) {
 			);
 		}
 		if ( expectedText ) {
-			if ( $.client.profile().layout === 'gecko' ) {
+			profile = $.client.profile();
+			if ( profile.layout === 'gecko' || ( profile.name === 'chrome' && profile.versionNumber >= 70 ) ) {
 				expectedText = expectedText.trim();
 			}
 			assert.strictEqual( clipboardData.getData( 'text/plain' ), expectedText, msg + ': text' );
