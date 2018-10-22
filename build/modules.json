@@ -837,6 +837,7 @@
 			"tests/ce/ve.ce.BranchNode.test.js",
 			"tests/ce/ve.ce.ContentBranchNode.test.js",
 			"tests/ce/ve.ce.LeafNode.test.js",
+			"tests/ce/ve.ce.Selection.test.js",
 			"tests/ce/keydownhandlers/ve.ce.LinearArrowKeyDownHandler.test.js",
 			"tests/ce/keydownhandlers/ve.ce.LinearDeleteKeyDownHandler.test.js",
 			"tests/ce/keydownhandlers/ve.ce.LinearEnterKeyDownHandler.test.js",
