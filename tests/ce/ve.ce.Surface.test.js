@@ -63,7 +63,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	} );
 
 	keys.forEach( function ( keyString ) {
-		function doKey( resolve ) {
+		function doKey() {
 			var keyParts = keyString.split( '+' ),
 				key = keyParts.pop(),
 				keyCode = OO.ui.Keys[ key ];
@@ -94,14 +94,12 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 			}
 			view.eventSequencer.onEvent( 'keyup', ve.test.utils.createTestEvent( { type: 'keyup' }, keyData ) );
 			view.eventSequencer.endLoop();
-			// setTimeout before the next key in the loop
-			setTimeout( function () {
-				resolve();
-			} );
 		}
-		defer( function () {
-			return new Promise( doKey );
-		} );
+		// TODO: It seems likely this would break without the deferral below, because some
+		// event handlers use setTimeout for delayed execution of parts of their code.
+		// Ideally the timing of that execution would be made less obscure and fragile, e.g.
+		// by using promises instead.
+		defer( doKey );
 	} );
 
 	defer( function () {
