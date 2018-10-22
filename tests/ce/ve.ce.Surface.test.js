@@ -20,7 +20,7 @@ QUnit.module( 've.ce.Surface', {
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	var keyData, keyDownEvent, expectedSelection,
 		promise = Promise.resolve(),
-		defer = function ( f ) {
+		then = function ( f ) {
 			promise = promise.then( f );
 		},
 		htmlOrDoc = caseItem.htmlOrDoc,
@@ -52,10 +52,10 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	if ( caseItem.setup ) {
 		caseItem.setup();
 	}
+
 	// Below this point, any code that might throw an exception should run deferred,
 	// so the asynchronous cleanup at the lexical end of this function will always run
-
-	defer( function () {
+	then( function () {
 		ve.test.utils.hijackEventSequencerTimeouts( view.eventSequencer );
 		model.setSelection(
 			ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection )
@@ -99,10 +99,10 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		// event handlers use setTimeout for delayed execution of parts of their code.
 		// Ideally the timing of that execution would be made less obscure and fragile, e.g.
 		// by using promises instead.
-		defer( doKey.bind( this, keyString ) );
+		then( doKey.bind( this, keyString ) );
 	} );
 
-	defer( function () {
+	then( function () {
 		if ( expectedData ) {
 			expectedData( data );
 			assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
