@@ -405,7 +405,11 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	var i, l, anchorNode, anchorOffset, selectionOffset, selection, selectionRect, tableOffset, surfaceOffset, cells,
 		editable = true;
 
-	if ( !this.active || !this.root ) {
+	if (
+		!this.active || !this.root ||
+		// Overlay isn't attached, e.g. in tests
+		!this.surface.surface.$blockers[ 0 ].parentNode
+	) {
 		return;
 	}
 
