@@ -2,5 +2,8 @@
 	"extends": [
 		"wikimedia/qunit",
 		"../.eslintrc.json"
-	]
+	],
+	"env": {
+		"es6": true
+	}
 }
