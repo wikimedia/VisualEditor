@@ -22,7 +22,8 @@
 			"Wojtas",
 			"DeRudySoulStorm",
 			"Railfail536",
-			"Sutan"
+			"Sutan",
+			"Masti"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -135,7 +136,7 @@
 	"visualeditor-inspector-remove-tooltip": "Usuń",
 	"visualeditor-key-alt": "Alt",
 	"visualeditor-key-backspace": "Backspace",
-	"visualeditor-key-ctrl": "Crtl",
+	"visualeditor-key-ctrl": "Ctrl",
 	"visualeditor-key-delete": "Del",
 	"visualeditor-key-down": "W dół",
 	"visualeditor-key-end": "End",
