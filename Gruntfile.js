@@ -393,27 +393,13 @@ module.exports = function ( grunt ) {
 						{ type: 'html' },
 						{ type: 'text-summary' }
 					],
-					// https://github.com/karma-runner/karma-coverage/blob/v1.1.1/docs/configuration.md#check
+					// https://github.com/karma-runner/karma-coverage/blob/v1.1.2/docs/configuration.md#check
 					check: {
 						global: {
 							functions: 60,
 							branches: 60,
 							statements: 60,
-							lines: 60,
-							overrides: {
-								'src/dm/*.js': {
-									functions: 80,
-									branches: 80,
-									statements: 80,
-									lines: 80
-								},
-								'src/dm/**/*.js': {
-									functions: 80,
-									branches: 80,
-									statements: 80,
-									lines: 80
-								}
-							}
+							lines: 60
 						},
 						each: {
 							functions: 20,
