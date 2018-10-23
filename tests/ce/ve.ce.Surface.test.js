@@ -559,7 +559,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 				expectedOriginalRange: new ve.Range( 1, 6 ),
 				expectedBalancedRange: new ve.Range( 1, 6 ),
 				expectedHtml: '<ol><li><p>g</p></li></ol>',
-				expectedText: 'g\n\n',
+				expectedText: 'g',
 				msg: 'Copy list item'
 			},
 			{
@@ -575,7 +575,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;}">' +
 						'Foo' +
 					'</p>',
-				expectedText: 'Foo\n\n',
+				expectedText: 'Foo',
 				msg: 'RDFa attributes encoded into data-ve-attributes'
 			},
 			{
@@ -598,7 +598,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		];
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
-		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey, profile,
+		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey,
 			clipboardData = new ve.test.utils.DataTransfer(),
 			testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } ),
 			view = ve.test.utils.createSurfaceViewFromDocument( doc || ve.dm.example.createExampleDocument() ),
@@ -636,11 +636,8 @@ QUnit.test( 'onCopy', function ( assert ) {
 			);
 		}
 		if ( expectedText ) {
-			profile = $.client.profile();
-			if ( profile.layout === 'gecko' || ( profile.name === 'chrome' && profile.versionNumber >= 70 ) ) {
-				expectedText = expectedText.trim();
-			}
-			assert.strictEqual( clipboardData.getData( 'text/plain' ), expectedText, msg + ': text' );
+			// Different browsers and browser versions will produce different trailing whitespace, so just trim.
+			assert.strictEqual( clipboardData.getData( 'text/plain' ).trim(), expectedText, msg + ': text' );
 		}
 		if ( !noClipboardData ) {
 			assert.strictEqual( clipboardData.getData( 'text/xcustom' ), clipboardKey, msg + ': clipboardId set' );
