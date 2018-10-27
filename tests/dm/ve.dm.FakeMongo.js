@@ -4,14 +4,14 @@
  * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* global Promise */
-
 // Fake mongo class, with limited query API, that stores a single collection in memory
 ve.dm.FakeMongo = function VeDmFakeMongo() {
 	this.storedDataForDoc = {};
 	this.dataForDoc = undefined;
 	this.log = [];
 };
+
+OO.initClass( ve.dm.FakeMongo );
 
 ve.dm.FakeMongo.prototype.connect = function () {
 	this.dataForDoc = this.storedDataForDoc;
