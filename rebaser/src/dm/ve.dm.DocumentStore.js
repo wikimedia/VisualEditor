@@ -18,6 +18,7 @@ ve.dm.DocumentStore = function VeDmDocumentStore( storageClient, dbName, logger 
 	this.db = null;
 	this.collection = null;
 	this.startForDoc = new Map();
+	this.serverId = null;
 };
 
 /**
@@ -30,6 +31,13 @@ ve.dm.DocumentStore.prototype.connect = function () {
 		documentStore.logger.logServerEvent( { type: 'DocumentStore#connected', dbName: documentStore.dbName } );
 		documentStore.db = db;
 		documentStore.collection = db.collection( 'vedocstore' );
+		return documentStore.collection.findOneAndUpdate(
+			{ config: 'options' },
+			{ $setOnInsert: { serverId: Math.random().toString( 36 ).slice( 2 ) } },
+			{ upsert: true, returnOriginal: false }
+		);
+	} ).then( function ( result ) {
+		documentStore.serverId = result.value.serverId;
 	} );
 };
 

@@ -42,6 +42,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	// Whether we are currently synchronizing the model
 	this.applying = false;
 	this.token = null;
+	this.serverId = null;
 	this.loadSessionKey();
 
 	// SocketIO events
@@ -319,11 +320,12 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
  * @param {string} data.token
  */
 ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
-	if ( this.token && this.token !== data.token ) {
+	if ( this.serverId && this.serverId !== data.serverId ) {
 		this.socket.disconnect();
 		this.emit( 'wrongDoc' );
 		return;
 	}
+	this.serverId = data.serverId;
 	this.setAuthorId( data.authorId );
 	this.surface.setAuthorId( this.authorId );
 	this.token = data.token;
@@ -332,6 +334,7 @@ ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
 
 ve.dm.SurfaceSynchronizer.prototype.saveSessionKey = function () {
 	ve.init.platform.setSessionObject( 'visualeditor-session-key', {
+		serverId: this.serverId,
 		docName: this.documentId,
 		authorId: this.getAuthorId(),
 		token: this.token
@@ -341,6 +344,7 @@ ve.dm.SurfaceSynchronizer.prototype.saveSessionKey = function () {
 ve.dm.SurfaceSynchronizer.prototype.loadSessionKey = function () {
 	var data = ve.init.platform.getSessionObject( 'visualeditor-session-key' );
 	if ( data && data.docName === this.documentId ) {
+		this.serverId = data.serverId;
 		this.setAuthorId( data.authorId );
 		this.token = data.token;
 	}
