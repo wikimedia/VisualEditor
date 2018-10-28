@@ -356,6 +356,7 @@
 					"Number",
 					"Object",
 					"RegExp",
+					"Set",
 					"String"
 				]
 			}
