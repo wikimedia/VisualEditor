@@ -77,7 +77,9 @@ QUnit.test( 'EventSequencer', function ( assert ) {
 	);
 
 	calls.length = 0;
-	sequencer.afterLoopOne( function () { calls.push( 'afterLoopOne' ); } );
+	sequencer.afterLoopOne( function () {
+		calls.push( 'afterLoopOne' );
+	} );
 
 	sequencer.onEvent( 'event1' );
 	sequencer.onEvent( 'event2' );

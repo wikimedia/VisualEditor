@@ -55,5 +55,7 @@ QUnit.test( 'special key down: table enter', function ( assert ) {
 		} );
 	} );
 
-	promise.finally( function () { done(); } );
+	promise.finally( function () {
+		done();
+	} );
 } );

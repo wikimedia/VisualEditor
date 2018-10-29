@@ -16,6 +16,7 @@
 	},
 	"rules": {
 		"dot-notation": [ "error", { "allowKeywords": true } ],
+		"max-statements-per-line": [ "error", { "max": 1 } ],
 		"max-len": 0
 	},
 	"plugins": [ "html" ],

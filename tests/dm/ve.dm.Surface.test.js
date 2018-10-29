@@ -492,7 +492,9 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.strictEqual( ve.init.platform.getSessionList( 've-changes' ).length, 0, 'No changes recorded after storeDocState failure' );
 	ve.init.platform.sessionDisabled = false;
 
-	surface.on( 'autosaveFailed', function () { autosaveFailed++; } );
+	surface.on( 'autosaveFailed', function () {
+		autosaveFailed++;
+	} );
 	surface.startStoringChanges();
 	surface.storeDocState( state );
 	ve.init.platform.sessionDisabled = true;

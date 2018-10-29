@@ -53,7 +53,9 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				keys: [ 'ENTER' ],
 				htmlOrDoc: ( function () {
 					var view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() );
-					view.surface.isMultiline = function () { return false; };
+					view.surface.isMultiline = function () {
+						return false;
+					};
 					return view;
 				}() ),
 				expectedData: noChange,
@@ -282,5 +284,7 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 		} );
 	} );
 
-	promise.finally( function () { done(); } );
+	promise.finally( function () {
+		done();
+	} );
 } );

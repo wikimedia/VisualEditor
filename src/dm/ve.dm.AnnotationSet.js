@@ -54,7 +54,9 @@ ve.dm.AnnotationSet.prototype.clone = function () {
  * @return {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
-	return this.filter( function ( annotation ) { return annotation.name === name; } );
+	return this.filter( function ( annotation ) {
+		return annotation.name === name;
+	} );
 };
 
 /**
@@ -96,7 +98,9 @@ ve.dm.AnnotationSet.prototype.getComparableAnnotationsFromSet = function ( annot
  * @return {boolean} Annotation of given type exists in the set
  */
 ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
-	return this.containsMatching( function ( annotation ) { return annotation.name === name; } );
+	return this.containsMatching( function ( annotation ) {
+		return annotation.name === name;
+	} );
 };
 
 /**

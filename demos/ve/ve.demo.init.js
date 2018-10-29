@@ -107,7 +107,9 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 
 		// HACK: Override/restore message functions for qqx mode
 		if ( lang === 'qqx' ) {
-			ve.init.platform.getMessage = function ( key ) { return key; };
+			ve.init.platform.getMessage = function ( key ) {
+				return key;
+			};
 		} else {
 			ve.init.platform.getMessage = ve.init.sa.Platform.prototype.getMessage;
 		}
