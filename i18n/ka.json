@@ -110,6 +110,7 @@
 	"visualeditor-key-backspace": "Backspace",
 	"visualeditor-key-ctrl": "Ctrl",
 	"visualeditor-key-delete": "Delete",
+	"visualeditor-key-insert": "ჩასმა",
 	"visualeditor-key-shift": "Shift",
 	"visualeditor-language-search-input-placeholder": "ძიება ენის სახელის ან კოდის მიხედვით",
 	"visualeditor-languageannotation-description-with-dir": "$1 ($2)",
