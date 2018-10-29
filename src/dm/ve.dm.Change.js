@@ -130,7 +130,6 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues, uns
 
 	for ( authorId in data.selections ) {
 		selections[ authorId ] = ve.dm.Selection.static.newFromJSON(
-			doc,
 			data.selections[ authorId ]
 		);
 	}
@@ -816,7 +815,7 @@ ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 		if ( applySelection ) {
 			offset = doc.getNearestCursorOffset( tx.getModifiedRange( doc ).end, -1 );
 			if ( offset !== -1 ) {
-				surface.setSelection( new ve.dm.LinearSelection( doc, new ve.Range( offset ) ) );
+				surface.setSelection( new ve.dm.LinearSelection( new ve.Range( offset ) ) );
 			}
 		}
 	} );

@@ -8,12 +8,14 @@
  * @class
  * @extends ve.dm.Selection
  * @constructor
- * @param {ve.dm.Document} doc Document
  * @param {ve.Range} range Range
  */
-ve.dm.LinearSelection = function VeDmLinearSelection( doc, range ) {
+ve.dm.LinearSelection = function VeDmLinearSelection( range ) {
 	// Parent constructor
-	ve.dm.LinearSelection.super.call( this, doc );
+	if ( arguments[ 0 ] instanceof ve.dm.Document ) {
+		throw new Error( 'Got obsolete ve.dm.Document argument' );
+	}
+	ve.dm.LinearSelection.super.call( this );
 
 	this.range = range;
 };
@@ -31,8 +33,8 @@ ve.dm.LinearSelection.static.name = 'linear';
 /**
  * @inheritdoc
  */
-ve.dm.LinearSelection.static.newFromHash = function ( doc, hash ) {
-	return new ve.dm.LinearSelection( doc, ve.Range.static.newFromHash( hash.range ) );
+ve.dm.LinearSelection.static.newFromHash = function ( hash ) {
+	return new ve.dm.LinearSelection( ve.Range.static.newFromHash( hash.range ) );
 };
 
 /* Methods */
@@ -58,28 +60,28 @@ ve.dm.LinearSelection.prototype.getDescription = function () {
  * @inheritdoc
  */
 ve.dm.LinearSelection.prototype.collapseToStart = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().start ) );
+	return new this.constructor( new ve.Range( this.getRange().start ) );
 };
 
 /**
  * @inheritdoc
  */
 ve.dm.LinearSelection.prototype.collapseToEnd = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().end ) );
+	return new this.constructor( new ve.Range( this.getRange().end ) );
 };
 
 /**
  * @inheritdoc
  */
 ve.dm.LinearSelection.prototype.collapseToFrom = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().from ) );
+	return new this.constructor( new ve.Range( this.getRange().from ) );
 };
 
 /**
  * @inheritdoc
  */
 ve.dm.LinearSelection.prototype.collapseToTo = function () {
-	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().to ) );
+	return new this.constructor( new ve.Range( this.getRange().to ) );
 };
 
 /**
@@ -93,14 +95,14 @@ ve.dm.LinearSelection.prototype.isCollapsed = function () {
  * @inheritdoc
  */
 ve.dm.LinearSelection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
-	return new this.constructor( this.getDocument(), tx.translateRange( this.getRange(), excludeInsertion ) );
+	return new this.constructor( tx.translateRange( this.getRange(), excludeInsertion ) );
 };
 
 /**
  * @inheritdoc
  */
 ve.dm.LinearSelection.prototype.translateByTransactionWithAuthor = function ( tx, authorId ) {
-	return new this.constructor( this.getDocument(), tx.translateRangeWithAuthor( this.getRange(), authorId ) );
+	return new this.constructor( tx.translateRangeWithAuthor( this.getRange(), authorId ) );
 };
 
 /**
@@ -133,7 +135,6 @@ ve.dm.LinearSelection.prototype.equals = function ( other ) {
 	return this === other || (
 		!!other &&
 		other.constructor === this.constructor &&
-		this.getDocument() === other.getDocument() &&
 		this.getRange().equals( other.getRange() )
 	);
 };

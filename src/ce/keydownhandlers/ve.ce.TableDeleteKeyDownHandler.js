@@ -41,8 +41,9 @@ ve.ce.TableDeleteKeyDownHandler.static.supportedSelections = [ 'table' ];
 ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	var i, l,
 		surfaceModel = surface.getModel(),
+		documentModel = surfaceModel.getDocument(),
 		fragments = [],
-		cells = surfaceModel.getSelection().getMatrixCells();
+		cells = surfaceModel.getSelection().getMatrixCells( documentModel );
 
 	if ( e ) {
 		e.preventDefault();

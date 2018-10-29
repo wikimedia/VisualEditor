@@ -998,38 +998,13 @@ QUnit.test( 'getNearestCursorOffset', function ( assert ) {
 } );
 
 QUnit.test( 'Selection equality', function ( assert ) {
-	var selections, i, iLen, j, jLen, iSel, jSel, doc;
-	doc = new ve.dm.Document( [
-		{ type: 'paragraph' }, 'h', 'i', { type: '/paragraph' },
-		{ type: 'table' },
-		{ type: 'tableSection' },
-		{ type: 'tableRow' },
-		{ type: 'tableCell', attributes: { colspan: 2, rowspan: 2 } },
-		{ type: '/tableCell' },
-		{ type: 'tableCell', attributes: {} },
-		{ type: '/tableCell' },
-		{ type: '/tableRow' },
-		{ type: 'tableRow' },
-		{ type: 'tableCell', attributes: {} },
-		{ type: '/tableCell' },
-		{ type: '/tableRow' },
-		{ type: 'tableRow' },
-		{ type: 'tableCell', attributes: {} },
-		{ type: '/tableCell' },
-		{ type: 'tableCell', attributes: {} },
-		{ type: '/tableCell' },
-		{ type: 'tableCell', attributes: {} },
-		{ type: '/tableCell' },
-		{ type: '/tableRow' },
-		{ type: '/tableSection' },
-		{ type: '/table' }
-	] );
+	var selections, i, iLen, j, jLen, iSel, jSel;
 	selections = [
-		new ve.dm.LinearSelection( doc, new ve.Range( 1, 1 ) ),
-		new ve.dm.LinearSelection( doc, new ve.Range( 1, 3 ) ),
-		new ve.dm.LinearSelection( doc, new ve.Range( 3, 1 ) ),
-		new ve.dm.TableSelection( doc, new ve.Range( 4, 25 ), 0, 1, 2, 2, true ),
-		new ve.dm.NullSelection( doc ),
+		new ve.dm.LinearSelection( new ve.Range( 1, 1 ) ),
+		new ve.dm.LinearSelection( new ve.Range( 1, 3 ) ),
+		new ve.dm.LinearSelection( new ve.Range( 3, 1 ) ),
+		new ve.dm.TableSelection( new ve.Range( 4, 25 ), 0, 1, 2, 2 ),
+		new ve.dm.NullSelection(),
 		undefined,
 		null,
 		'foo'

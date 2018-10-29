@@ -541,7 +541,9 @@ ve.ui.FindAndReplaceDialog.prototype.findFirst = function () {
 		fragment = this.surface.getModel().getFragment( null, true );
 
 	this.initialFragment = fragment;
-	this.startOffset = ve.getProp( this.initialFragment.getSelection().getRanges(), 0, 'start' ) || 0;
+	this.startOffset = ve.getProp( this.initialFragment.getSelection().getRanges(
+		this.initialFragment.getDocument()
+	), 0, 'start' ) || 0;
 
 	text = fragment.getText();
 	if ( text && text !== this.findText.getValue() ) {

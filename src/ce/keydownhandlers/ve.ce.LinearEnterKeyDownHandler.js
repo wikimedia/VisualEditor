@@ -75,7 +75,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		txRemove = ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, range );
 		range = txRemove.translateRange( range );
 		// We do want this to propagate to the surface
-		surface.model.change( txRemove, new ve.dm.LinearSelection( documentModel, range ) );
+		surface.model.change( txRemove, new ve.dm.LinearSelection( range ) );
 		// Remove may have changed node at range.from
 		node = surface.getDocument().getBranchNodeFromOffset( range.from );
 	}

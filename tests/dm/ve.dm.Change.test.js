@@ -143,7 +143,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 			TxInsert( doc, 3, [ [ 'e', bHash ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
 		], [ new ve.dm.HashValueStore( [ b ] ), emptyStore, emptyStore, emptyStore ], {
-			1: new ve.dm.LinearSelection( doc, new ve.Range( 7, 7 ) )
+			1: new ve.dm.LinearSelection( new ve.Range( 7, 7 ) )
 		} ),
 		insert2 = new ve.dm.Change( 0, [
 			TxInsert( doc, 1, [ [ 't', iHash ] ] ),
@@ -151,7 +151,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 			TxInsert( doc, 3, [ [ 'o', iHash ] ] ),
 			TxInsert( doc, 4, [ ' ' ] )
 		], [ new ve.dm.HashValueStore( [ i ] ), emptyStore, emptyStore, emptyStore ], {
-			2: new ve.dm.LinearSelection( doc, new ve.Range( 1, 1 ) )
+			2: new ve.dm.LinearSelection( new ve.Range( 1, 1 ) )
 		} ),
 		underline3 = new ve.dm.Change( 0, [
 			TxAnnotate( doc, new ve.Range( 1, 6 ), 'set', u )
@@ -634,7 +634,7 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 	expected = [ { type: 'paragraph' }, 'a', 'b', 'c', 'd', { type: '/paragraph' } ];
 
 	clear();
-	surface.setSelection( new ve.dm.LinearSelection( doc, new ve.Range( 1 ) ) );
+	surface.setSelection( new ve.dm.LinearSelection( new ve.Range( 1 ) ) );
 	a.applyTo( surface );
 	b.applyTo( surface );
 	c.rebasedOnto( a.concat( b ) ).applyTo( surface );

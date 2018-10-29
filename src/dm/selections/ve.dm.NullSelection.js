@@ -7,12 +7,11 @@
 /**
  * @class
  * @extends ve.dm.Selection
- * @param {ve.dm.Document} doc
  * @constructor
  */
-ve.dm.NullSelection = function VeDmNullSelection( doc ) {
+ve.dm.NullSelection = function VeDmNullSelection() {
 	// Parent constructor
-	ve.dm.NullSelection.super.call( this, doc );
+	ve.dm.NullSelection.super.call( this );
 };
 
 /* Inheritance */
@@ -28,8 +27,8 @@ ve.dm.NullSelection.static.name = 'null';
 /**
  * @inheritdoc
  */
-ve.dm.NullSelection.static.newFromHash = function ( doc ) {
-	return new ve.dm.NullSelection( doc );
+ve.dm.NullSelection.static.newFromHash = function () {
+	return new ve.dm.NullSelection();
 };
 
 /* Methods */
@@ -99,8 +98,7 @@ ve.dm.NullSelection.prototype.getCoveringRange = function () {
 ve.dm.NullSelection.prototype.equals = function ( other ) {
 	return this === other || (
 		!!other &&
-		other.constructor === this.constructor &&
-		this.getDocument() === other.getDocument()
+		other.constructor === this.constructor
 	);
 };
 

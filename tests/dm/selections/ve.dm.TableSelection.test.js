@@ -16,7 +16,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 		cases = [
 			{
 				msg: 'single cell selection',
-				selection: new ve.dm.TableSelection( doc, tableRange, 1, 2 ),
+				selection: new ve.dm.TableSelection( tableRange, 1, 2 ),
 				fromCol: 1,
 				fromRow: 2,
 				toCol: 1,
@@ -34,7 +34,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 			},
 			{
 				msg: 'multi cell selection',
-				selection: new ve.dm.TableSelection( doc, tableRange, 1, 2, 0, 1 ),
+				selection: new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 ),
 				fromCol: 1,
 				fromRow: 2,
 				toCol: 0,
@@ -58,7 +58,11 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 			},
 			{
 				msg: 'multi cell selection (expanded)',
-				selection: new ve.dm.TableSelection( doc, tableRange, 1, 2, 0, 1, true ),
+				selection: ( function () {
+					var sel = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 );
+					sel.expand( doc );
+					return sel;
+				}() ),
 				fromCol: 2,
 				fromRow: 2,
 				toCol: 0,
@@ -86,11 +90,10 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 
 	for ( i in cases ) {
 		selection = cases[ i ].selection;
-		assert.strictEqual( selection.getDocument(), doc, 'getDocument' );
-		assert.strictEqual( selection.getTableNode(), tableNode, 'getTableNode' );
+		assert.strictEqual( selection.getTableNode( doc ), tableNode, 'getTableNode' );
 		assert.strictEqual( selection.getName(), 'table', 'getName' );
-		assert.deepEqual( selection.getRanges(), cases[ i ].ranges, cases[ i ].msg + ': getRanges' );
-		assert.deepEqual( selection.getOuterRanges(), cases[ i ].outerRanges, cases[ i ].msg + ': getOuterRanges' );
+		assert.deepEqual( selection.getRanges( doc ), cases[ i ].ranges, cases[ i ].msg + ': getRanges' );
+		assert.deepEqual( selection.getOuterRanges( doc ), cases[ i ].outerRanges, cases[ i ].msg + ': getOuterRanges' );
 		assert.strictEqual( selection.fromCol, cases[ i ].fromCol, cases[ i ].msg + ': fromCol set' );
 		assert.strictEqual( selection.fromRow, cases[ i ].fromRow, cases[ i ].msg + ': fromRow set' );
 		assert.strictEqual( selection.toCol, cases[ i ].toCol, cases[ i ].msg + ': toCol set' );
@@ -105,14 +108,15 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 
 QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
-		doc2 = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
-		selection = new ve.dm.TableSelection( doc, tableRange, 1, 2, 0, 1, true ),
-		selection2 = new ve.dm.TableSelection( doc2, tableRange, 1, 2, 0, 1, true ),
-		startSelection = new ve.dm.TableSelection( doc, tableRange, 0, 1 ),
-		endSelection = new ve.dm.TableSelection( doc, tableRange, 2, 2 ),
-		mergedSingleCell = new ve.dm.TableSelection( doc, tableRange, 1, 3, 3, 5, true ),
-		largeSelection = new ve.dm.TableSelection( doc, tableRange, 0, 0, 3, 6 );
+		selection = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 ),
+		startSelection = new ve.dm.TableSelection( tableRange, 0, 1 ),
+		endSelection = new ve.dm.TableSelection( tableRange, 2, 2 ),
+		mergedSingleCell = new ve.dm.TableSelection( tableRange, 1, 3, 3, 5 ),
+		largeSelection = new ve.dm.TableSelection( tableRange, 0, 0, 3, 6 );
+
+	selection.expand( doc );
+	mergedSingleCell.expand( doc );
 
 	assert.deepEqual( selection.collapseToStart(), startSelection, 'collapseToStart' );
 	assert.deepEqual( selection.collapseToEnd(), endSelection, 'collapseToEnd' );
@@ -120,22 +124,21 @@ QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingle
 	assert.deepEqual( selection.collapseToTo(), startSelection, 'collapseToTo' );
 	assert.strictEqual( selection.isCollapsed(), false, 'multi cell is not collapsed' );
 	assert.strictEqual( startSelection.isCollapsed(), false, 'single cell is not collapsed' );
-	assert.strictEqual( selection.isSingleCell(), false, 'multi cell selection is not a single cell' );
-	assert.strictEqual( startSelection.isSingleCell(), true, 'single cell selection is a single cell' );
-	assert.strictEqual( mergedSingleCell.isSingleCell(), true, 'merged single cell selection is a single cell' );
+	assert.strictEqual( selection.isSingleCell( doc ), false, 'multi cell selection is not a single cell' );
+	assert.strictEqual( startSelection.isSingleCell( doc ), true, 'single cell selection is a single cell' );
+	assert.strictEqual( mergedSingleCell.isSingleCell( doc ), true, 'merged single cell selection is a single cell' );
 	assert.strictEqual( selection.equals( selection ), true, 'equals' );
-	assert.strictEqual( selection.equals( selection2 ), false, 'not equal when docs are not reference equal' );
 	assert.strictEqual( selection.isNull(), false, 'not null' );
 	assert.strictEqual( largeSelection.getColCount(), 4, 'getColCount' );
 	assert.strictEqual( largeSelection.getRowCount(), 7, 'getRowCount' );
-	assert.strictEqual( largeSelection.isFullCol(), true, 'isFullCol' );
-	assert.strictEqual( largeSelection.isFullRow(), false, 'isFullRow' );
+	assert.strictEqual( largeSelection.isFullCol( doc ), true, 'isFullCol' );
+	assert.strictEqual( largeSelection.isFullRow( doc ), false, 'isFullRow' );
 } );
 
 QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
-		selection = new ve.dm.TableSelection( doc, tableRange, 1, 2, 3, 4 ),
+		selection = new ve.dm.TableSelection( tableRange, 1, 2, 3, 4 ),
 		json = {
 			type: 'table',
 			tableRange: tableRange,
@@ -148,7 +151,7 @@ QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescriptio
 	assert.deepEqual( selection.toJSON(), json, 'toJSON' );
 
 	assert.deepEqual(
-		ve.dm.Selection.static.newFromJSON( doc, JSON.stringify( json ) ),
+		ve.dm.Selection.static.newFromJSON( JSON.stringify( json ) ),
 		selection,
 		'newFromJSON'
 	);
