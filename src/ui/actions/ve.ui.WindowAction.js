@@ -54,7 +54,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		autoClosePromises = [],
 		surface = this.surface,
 		fragment = surface.getModel().getFragment( undefined, true ),
-		dir = surface.getView().getSelection().getDirection(),
+		dir = surface.getSelectionDirectionality(),
 		windowClass = ve.ui.windowFactory.lookup( name ),
 		mayContainFragment = windowClass.prototype instanceof ve.ui.FragmentDialog ||
 			windowClass.prototype instanceof ve.ui.FragmentInspector ||

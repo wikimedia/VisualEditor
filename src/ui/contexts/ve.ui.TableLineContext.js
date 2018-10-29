@@ -137,7 +137,7 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
 		this.tableNode.setEditing( false );
 		surfaceModel.connect( this, { select: 'onModelSelect' } );
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
-		dir = surfaceView.getSelection().getDirection();
+		dir = surfaceView.getSelectionDirectionality();
 		this.$element
 			.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' )
 			.addClass( 've-ui-dir-block-' + dir );

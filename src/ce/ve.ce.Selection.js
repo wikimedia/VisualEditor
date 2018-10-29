@@ -118,9 +118,10 @@ ve.ce.Selection.prototype.equals = function ( other ) {
  * selection depends on both this and the browser's implementation of BIDI algorithm.
  *
  * @abstract
+ * @param {ve.ce.Document} doc The document to which this selection applies
  * @return {string} 'rtl', 'ltr'
  */
-ve.ce.Selection.prototype.getDirection = null;
+ve.ce.Selection.prototype.getDirectionality = null;
 
 /* Factory */
 
