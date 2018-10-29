@@ -339,7 +339,7 @@ ve.init.Platform.prototype.getMessage = null;
  * @abstract
  * @param {string} key Message key
  * @param {...Mixed} [args] List of arguments which will be injected at $1, $2, etc. in the message
- * @return {jQuery} Localized message, or key or '<' + key + '>' if message not found
+ * @return {Node[]} Localized message, or key or '<' + key + '>' if message not found
  */
 ve.init.Platform.prototype.getHtmlMessage = null;
 

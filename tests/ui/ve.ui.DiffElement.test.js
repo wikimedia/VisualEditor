@@ -817,7 +817,7 @@ QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
 		// eslint-disable-next-line no-loop-func
 		changes.forEach( function ( change, j ) {
 			assert.deepEqualWithDomElements(
-				change instanceof jQuery ? change.toArray() : change,
+				change,
 				$.parseHTML( cases[ i ].expected[ j ] ),
 				cases[ i ].msg + ', message ' + j
 			);
