@@ -156,12 +156,6 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 	} );
 
 	promise.finally( function () { done(); } );
-
-	// Allow the real surface created with createSurfaceFromDocument for the
-	// 'Tab at end of table inserts new row' case to get properly initialized
-	// before we end the test and kill it.
-	// FIXME Oh no eww gross
-	// setTimeout( assert.async() );
 } );
 
 QUnit.test( 'special key down: table arrow keys (simple movements)', function ( assert ) {
