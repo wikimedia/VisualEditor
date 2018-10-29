@@ -447,7 +447,7 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		return this.shallowCloneFromRange( selection.getRange() );
 	} else if ( selection instanceof ve.dm.TableSelection ) {
-		ranges = selection.getTableSliceRanges();
+		ranges = selection.getTableSliceRanges( this );
 		for ( i = 0, l = ranges.length; i < l; i++ ) {
 			data = data.concat( this.data.slice( ranges[ i ].start, ranges[ i ].end ) );
 		}

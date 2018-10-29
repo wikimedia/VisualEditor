@@ -107,7 +107,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		}
 		assert.deepEqual( wereDefaultsPrevented, expectedDefaultPrevented || Array( keys.length ).fill( true ), msg + ': defaultsPrevented' );
 
-		expectedSelection = ve.dm.Selection.static.newFromJSON( model.getDocument(), expectedRangeOrSelection instanceof ve.Range ?
+		expectedSelection = ve.dm.Selection.static.newFromJSON( expectedRangeOrSelection instanceof ve.Range ?
 			{ type: 'linear', range: expectedRangeOrSelection } :
 			expectedRangeOrSelection
 		);
@@ -2301,8 +2301,8 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 	var i,
 		noChange = function () {},
-		selection = new ve.dm.LinearSelection( {}, new ve.Range( 1, 4 ) ),
-		expectedSelection = new ve.dm.LinearSelection( {}, new ve.Range( 7, 10 ) ),
+		selection = new ve.dm.LinearSelection( new ve.Range( 1, 4 ) ),
+		expectedSelection = new ve.dm.LinearSelection( new ve.Range( 7, 10 ) ),
 		cases = [
 			{
 				msg: 'Simple drag and drop',

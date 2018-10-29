@@ -109,12 +109,13 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 			colOffset *= -1;
 		}
 	}
-	if ( !expand && !selection.isSingleCell() ) {
+	if ( !expand && !selection.isSingleCell( surface.getModel().getDocument() ) ) {
 		selection = selection.collapseToFrom();
 	}
 
 	function adjust() {
 		newSelection = selection.newFromAdjustment(
+			surface.getModel().getDocument(),
 			expand ? 0 : colOffset,
 			expand ? 0 : rowOffset,
 			colOffset,
@@ -136,13 +137,13 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 	// If moving up/down didn't move, we must be at the start/end of the table,
 	// so move outside
 	if ( ( rowOffset !== 0 || ( rowOffset === 0 && colOffset === -1 && wrap ) ) && selection.equals( newSelection ) ) {
-		documentModel = selection.getDocument();
-		if ( ( rowOffset === -1 || ( colOffset === -1 && wrap ) ) && ( captionNode = selection.tableNode.getCaptionNode() ) ) {
+		documentModel = surface.getModel().getDocument();
+		if ( ( rowOffset === -1 || ( colOffset === -1 && wrap ) ) && ( captionNode = selection.getTableNode( documentModel ).getCaptionNode() ) ) {
 			// If we're moving up/backwards, and there's a caption node, put the selection in it
-			newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( new ve.Range( captionNode.getRange().start ), 1 ) );
+			newSelection = new ve.dm.LinearSelection( documentModel.getRelativeRange( new ve.Range( captionNode.getRange().start ), 1 ) );
 		} else {
 			// Otherwise, go outside the table
-			newSelection = new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( selection.tableRange, rowOffset || colOffset ) );
+			newSelection = new ve.dm.LinearSelection( documentModel.getRelativeRange( selection.tableRange, rowOffset || colOffset ) );
 		}
 	}
 
