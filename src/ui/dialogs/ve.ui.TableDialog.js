@@ -101,9 +101,7 @@ ve.ui.TableDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.TableDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			this.initialValues = {
-				caption: !!this.getFragment().getSelection().getTableNode(
-					this.getFragment().getDocument()
-				).getCaptionNode()
+				caption: !!this.getFragment().getSelection().getTableNode().getCaptionNode()
 			};
 			this.captionToggle.setValue( this.initialValues.caption );
 			this.closingFragment = null;
@@ -122,9 +120,7 @@ ve.ui.TableDialog.prototype.getActionProcess = function ( action ) {
 			if ( action === 'done' ) {
 				surfaceModel = this.getFragment().getSurface();
 				selection = surfaceModel.getSelection();
-				captionNode = this.getFragment().getSelection().getTableNode(
-					this.getFragment().getDocument()
-				).getCaptionNode();
+				captionNode = this.getFragment().getSelection().getTableNode().getCaptionNode();
 				if ( this.captionToggle.getValue() !== this.initialValues.caption ) {
 					if ( this.initialValues.caption ) {
 						fragment = surfaceModel.getLinearFragment( captionNode.getOuterRange(), true );

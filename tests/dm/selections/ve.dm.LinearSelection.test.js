@@ -8,20 +8,25 @@ QUnit.module( 've.dm.LinearSelection' );
 
 /* Tests */
 
-QUnit.test( 'Construction and getters (getRange(s))', function ( assert ) {
-	var range = new ve.Range( 200, 100 ),
-		selection = new ve.dm.LinearSelection( range );
+QUnit.test( 'Construction and getters (getDocument, getRange(s))', function ( assert ) {
+	var dummyDoc = { a: 1 },
+		range = new ve.Range( 200, 100 ),
+		selection = new ve.dm.LinearSelection( dummyDoc, range );
 
+	assert.strictEqual( selection.getDocument(), dummyDoc, 'getDocument' );
 	assert.equalRange( selection.getRange(), range, 'getRange' );
 	assert.deepEqual( selection.getRanges(), [ range ], 'getRanges' );
 	assert.strictEqual( selection.getName(), 'linear', 'getName' );
 } );
 
 QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', function ( assert ) {
-	var range = new ve.Range( 200, 100 ),
-		selection = new ve.dm.LinearSelection( range ),
-		startSelection = new ve.dm.LinearSelection( new ve.Range( 100 ) ),
-		endSelection = new ve.dm.LinearSelection( new ve.Range( 200 ) );
+	var dummyDoc = { a: 1 },
+		dummyDoc2 = { a: 1 },
+		range = new ve.Range( 200, 100 ),
+		selection = new ve.dm.LinearSelection( dummyDoc, range ),
+		selection2 = new ve.dm.LinearSelection( dummyDoc2, range ),
+		startSelection = new ve.dm.LinearSelection( dummyDoc, new ve.Range( 100 ) ),
+		endSelection = new ve.dm.LinearSelection( dummyDoc, new ve.Range( 200 ) );
 
 	assert.deepEqual( selection.collapseToStart(), startSelection, 'collapseToStart' );
 	assert.deepEqual( selection.collapseToEnd(), endSelection, 'collapseToEnd' );
@@ -30,16 +35,18 @@ QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', function ( 
 	assert.strictEqual( selection.isCollapsed(), false, '200-100 is not collapsed' );
 	assert.strictEqual( startSelection.isCollapsed(), true, '100-100 is collapsed' );
 	assert.strictEqual( selection.equals( selection ), true, 'equals' );
+	assert.strictEqual( selection.equals( selection2 ), false, 'not equal when docs are not reference equal' );
 	assert.strictEqual( selection.isNull(), false, 'not null' );
 } );
 
 QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', function ( assert ) {
-	var range = new ve.Range( 200, 100 ),
-		selection = new ve.dm.LinearSelection( range );
+	var dummyDoc = { a: 1 },
+		range = new ve.Range( 200, 100 ),
+		selection = new ve.dm.LinearSelection( dummyDoc, range );
 
 	assert.deepEqual( selection.toJSON(), { type: 'linear', range: range }, 'toJSON' );
 	assert.deepEqual(
-		ve.dm.Selection.static.newFromJSON( JSON.stringify( { type: 'linear', range: range } ) ),
+		ve.dm.Selection.static.newFromJSON( dummyDoc, JSON.stringify( { type: 'linear', range: range } ) ),
 		selection,
 		'newFromJSON'
 	);
