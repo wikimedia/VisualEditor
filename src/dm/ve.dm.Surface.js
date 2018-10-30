@@ -25,7 +25,7 @@ ve.dm.Surface = function VeDmSurface( doc, config ) {
 	this.documentModel = doc;
 	this.sourceMode = !!config.sourceMode;
 	this.metaList = new ve.dm.MetaList( this );
-	this.selection = new ve.dm.NullSelection( this.getDocument() );
+	this.selection = new ve.dm.NullSelection();
 	// The selection before the most recent stack of changes was applied
 	this.selectionBefore = this.selection;
 	this.translatedSelection = null;
@@ -575,7 +575,7 @@ ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, exclud
  * @return {ve.dm.SurfaceFragment} Surface fragment
  */
 ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excludeInsertions ) {
-	return this.getFragment( new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect, excludeInsertions );
+	return this.getFragment( new ve.dm.LinearSelection( range ), noAutoSelect, excludeInsertions );
 };
 
 /**
@@ -652,14 +652,14 @@ ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
  * @param {ve.Range} range Range to create linear selection at
  */
 ve.dm.Surface.prototype.setLinearSelection = function ( range ) {
-	this.setSelection( new ve.dm.LinearSelection( this.getDocument(), range ) );
+	this.setSelection( new ve.dm.LinearSelection( range ) );
 };
 
 /**
  * Set a null selection on the model
  */
 ve.dm.Surface.prototype.setNullSelection = function () {
-	this.setSelection( new ve.dm.NullSelection( this.getDocument() ) );
+	this.setSelection( new ve.dm.NullSelection() );
 };
 
 /**
@@ -795,7 +795,7 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 			}
 		}
 	} else if ( selection instanceof ve.dm.TableSelection ) {
-		selectedNode = selection.getMatrixCells()[ 0 ].node;
+		selectedNode = selection.getMatrixCells( this.getDocument() )[ 0 ].node;
 		contextChange = true;
 	} else if ( selection.isNull() ) {
 		contextChange = true;
@@ -1301,7 +1301,6 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 		restored = !!changes.length;
 		try {
 			selection = ve.dm.Selection.static.newFromJSON(
-				this.getDocument(),
 				ve.init.platform.getSessionObject( 've-selection' )
 			);
 		} catch ( e ) {

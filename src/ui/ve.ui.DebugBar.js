@@ -154,9 +154,11 @@ ve.ui.DebugBar.prototype.onHistory = function () {
  * @param {jQuery.Event} e Event
  */
 ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
-	var i, ranges, selection = this.getSurface().getModel().getSelection();
+	var i, ranges,
+		selection = this.getSurface().getModel().getSelection(),
+		documentModel = this.getSurface().getModel().getDocument();
 	if ( selection instanceof ve.dm.LinearSelection || selection instanceof ve.dm.TableSelection ) {
-		ranges = selection.getRanges();
+		ranges = selection.getRanges( documentModel );
 		for ( i = 0; i < ranges.length; i++ ) {
 			ve.dir( this.getSurface().view.documentView.model.data.slice( ranges[ i ].start, ranges[ i ].end ) );
 		}

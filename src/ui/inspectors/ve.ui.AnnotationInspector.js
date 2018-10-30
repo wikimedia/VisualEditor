@@ -308,7 +308,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 					fragment.insertContent( insertion, true );
 					// Move cursor to the end of the inserted content, even if back button is used
 					fragment.adjustLinearSelection( -insertion.length, 0 );
-					this.previousSelection = new ve.dm.LinearSelection( fragment.getDocument(), new ve.Range(
+					this.previousSelection = new ve.dm.LinearSelection( new ve.Range(
 						this.initialSelection.getRange().start + insertion.length
 					) );
 				}

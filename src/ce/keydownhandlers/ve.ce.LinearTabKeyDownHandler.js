@@ -76,10 +76,10 @@ ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 			e.stopPropagation();
 			if ( e.shiftKey ) {
 				// back out of the table
-				surface.getModel().setSelection( new ve.dm.LinearSelection( documentModel, documentModel.getRelativeRange( activeTableNode.getRange(), -1 ) ) );
+				surface.getModel().setSelection( new ve.dm.LinearSelection( documentModel.getRelativeRange( activeTableNode.getRange(), -1 ) ) );
 			} else {
 				// move to the first cell
-				surface.getModel().setSelection( new ve.dm.TableSelection( documentModel, activeTableNode.getOuterRange(), 0, 0 ) );
+				surface.getModel().setSelection( new ve.dm.TableSelection( activeTableNode.getOuterRange(), 0, 0 ) );
 			}
 			return true;
 		}
