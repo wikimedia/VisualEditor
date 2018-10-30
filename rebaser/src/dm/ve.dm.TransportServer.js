@@ -12,7 +12,6 @@
  */
 ve.dm.TransportServer = function VeDmTransportServer( protocolServer ) {
 	this.protocolServer = protocolServer;
-	this.docNamespaces = new Map();
 };
 
 OO.initClass( ve.dm.TransportServer );
@@ -62,18 +61,9 @@ ve.dm.TransportServer.prototype.onConnection = function ( getRoom, socket ) {
 		context.sendAuthor = socket.emit.bind( socket );
 		context.connectionId = socket.client.conn.remoteAddress + ' ' + socket.handshake.url;
 		socket.on( 'submitChange', ensureLoadedWrap( server.onSubmitChange, context ) );
-		socket.on( 'changeName', ensureLoadedWrap( server.onChangeName, context ) );
-		socket.on( 'changeColor', ensureLoadedWrap( server.onChangeColor, context ) );
+		socket.on( 'changeAuthor', ensureLoadedWrap( server.onChangeAuthor, context ) );
 		socket.on( 'disconnect', ensureLoadedWrap( server.onDisconnect, context ) );
 		socket.on( 'logEvent', ensureLoadedWrap( server.onLogEvent, context ) );
 		server.welcomeClient( context );
 	} );
-};
-
-ve.dm.TransportServer.prototype.broadcast = function ( docName, namespace, eventName, object ) {
-	namespace.emit( eventName, object );
-};
-
-ve.dm.TransportServer.prototype.onClose = function () {
-	this.documentStore.onClose();
 };
