@@ -52,6 +52,9 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.nodesByType = {};
 	this.origInternalListLength = null;
 
+	// Sparse array
+	this.branchNodeFromOffsetCache = [];
+
 	if ( data instanceof ve.dm.ElementLinearData ) {
 		this.data = data;
 	} else if ( data instanceof ve.dm.FlatLinearData ) {
@@ -332,6 +335,7 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 		throw new Error( 'Cannot commit a transaction that has already been committed' );
 	}
 	this.emit( 'precommit', transaction );
+	this.branchNodeFromOffsetCache = [];
 	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process();
 	this.completeHistory.pushTransaction( transaction );
 	this.emit( 'transact', transaction );
@@ -999,7 +1003,10 @@ ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
 	if ( offset < 0 || offset > this.data.getLength() ) {
 		throw new Error( 've.dm.Document.getBranchNodeFromOffset(): offset ' + offset + ' is out of bounds' );
 	}
-	return ve.Document.prototype.getBranchNodeFromOffset.call( this, offset );
+	if ( !this.branchNodeFromOffsetCache[ offset ] ) {
+		this.branchNodeFromOffsetCache[ offset ] = ve.Document.prototype.getBranchNodeFromOffset.call( this, offset );
+	}
+	return this.branchNodeFromOffsetCache[ offset ];
 };
 
 /**
