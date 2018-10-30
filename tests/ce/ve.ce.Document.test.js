@@ -32,7 +32,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 
 // TODO: getNodeFromOffset
 // TODO: getSlugAtOffset
-// TODO: getDirectionFromRange
+// TODO: getDirectionalityFromRange
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	var tests, i, iLen, test, parts, view, data, dmDoc, ceDoc, rootNode, offsetCount, offset, j, jLen, node, ex;

@@ -480,6 +480,15 @@ ve.ce.Surface.prototype.getSelection = function ( selection ) {
 	return this.selection;
 };
 
+/**
+ * Get block directionality at selection
+ *
+ * @return {string} 'rtl' or 'ltr'
+ */
+ve.ce.Surface.prototype.getSelectionDirectionality = function () {
+	return this.getSelection().getDirectionality( this.getDocument() );
+};
+
 /* Initialization */
 
 /**

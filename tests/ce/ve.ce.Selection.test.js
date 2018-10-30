@@ -93,7 +93,7 @@ QUnit.test( 'Rects', function ( assert ) {
 	view.destroy();
 } );
 
-QUnit.test( 'getDirection', function ( assert ) {
+QUnit.test( 'getDirectionality', function ( assert ) {
 	var html =
 			'<p>Foo</p>' +
 			'<p style="direction: rtl;">Bar</p>' +
@@ -140,7 +140,7 @@ QUnit.test( 'getDirection', function ( assert ) {
 		);
 
 		assert.deepEqual(
-			view.getSelection().getDirection(),
+			view.getSelectionDirectionality(),
 			caseItem.expected,
 			caseItem.msg
 		);
