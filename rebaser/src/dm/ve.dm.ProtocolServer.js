@@ -82,6 +82,7 @@ ve.dm.ProtocolServer.prototype.authenticate = function ( docName, authorId, toke
 		token = Math.random().toString( 36 ).slice( 2 );
 	}
 	context = {
+		serverId: this.documentStore.serverId,
 		docName: docName,
 		authorId: authorId
 	};
@@ -119,6 +120,7 @@ ve.dm.ProtocolServer.prototype.onLogEvent = function ( context, event ) {
 ve.dm.ProtocolServer.prototype.welcomeClient = function ( context ) {
 	var state, authorData,
 		docName = context.docName,
+		serverId = context.serverId,
 		authorId = context.authorId;
 
 	this.rebaseServer.updateDocState( docName, authorId, null, {
@@ -134,6 +136,7 @@ ve.dm.ProtocolServer.prototype.welcomeClient = function ( context ) {
 	authorData = state.authors.get( authorId );
 
 	context.sendAuthor( 'registered', {
+		serverId: serverId,
 		authorId: authorId,
 		token: authorData.token
 	} );
