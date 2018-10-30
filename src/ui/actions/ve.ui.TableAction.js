@@ -94,7 +94,7 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 
 	fragment.insertContent( data, false );
 	surfaceModel.setSelection( new ve.dm.TableSelection(
-		fragment.getSelection().getRange(), 0, 0, 0, 0
+		fragment.getDocument(), fragment.getSelection().getRange(), 0, 0, 0, 0
 	) );
 	return true;
 };
@@ -110,7 +110,6 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 	var index,
 		surfaceModel = this.surface.getModel(),
-		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
@@ -123,13 +122,13 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 	}
 	if ( position === 'before' ) {
 		if ( mode === 'col' ) {
-			selection = selection.newFromAdjustment( documentModel, 1, 0 );
+			selection = selection.newFromAdjustment( 1, 0 );
 		} else {
-			selection = selection.newFromAdjustment( documentModel, 0, 1 );
+			selection = selection.newFromAdjustment( 0, 1 );
 		}
 		surfaceModel.setSelection( selection );
 	}
-	this.insertRowOrCol( selection.getTableNode( documentModel ), mode, index, position, selection );
+	this.insertRowOrCol( selection.getTableNode(), mode, index, position, selection );
 	return true;
 };
 
@@ -143,9 +142,8 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 ve.ui.TableAction.prototype.moveRelative = function ( mode, direction ) {
 	var index,
 		surfaceModel = this.surface.getModel(),
-		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
-		matrix = selection.getTableNode( documentModel ).getMatrix();
+		matrix = selection.getTableNode().getMatrix();
 
 	if ( mode === 'row' ) {
 		if ( direction === 'before' ) {
@@ -173,9 +171,8 @@ ve.ui.TableAction.prototype.moveRelative = function ( mode, direction ) {
 ve.ui.TableAction.prototype.move = function ( mode, index ) {
 	var i, removedMatrix, position, newOffsets,
 		surfaceModel = this.surface.getModel(),
-		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
-		tableNode = selection.getTableNode( documentModel ),
+		tableNode = selection.getTableNode(),
 		matrix = tableNode.getMatrix();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
@@ -216,6 +213,7 @@ ve.ui.TableAction.prototype.move = function ( mode, index ) {
 	}
 	// Only set selection once for performance
 	surfaceModel.setSelection( new ve.dm.TableSelection(
+		selection.getDocument(),
 		// tableNode range was changed by deletion
 		tableNode.getOuterRange(),
 		newOffsets[ 0 ], newOffsets[ 1 ], newOffsets[ 2 ], newOffsets[ 3 ]
@@ -231,14 +229,13 @@ ve.ui.TableAction.prototype.move = function ( mode, index ) {
  */
 ve.ui.TableAction.prototype.delete = function ( mode ) {
 	var tableNode, minIndex, maxIndex, isFull,
-		documentModel = this.surface.getModel().getDocument(),
 		selection = this.surface.getModel().getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
 		return false;
 	}
 
-	tableNode = selection.getTableNode( documentModel );
+	tableNode = selection.getTableNode();
 	// Either delete the table or rows or columns
 	if ( mode === 'table' ) {
 		this.deleteTable( tableNode );
@@ -246,11 +243,11 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
 		if ( mode === 'col' ) {
 			minIndex = selection.startCol;
 			maxIndex = selection.endCol;
-			isFull = selection.isFullRow( documentModel );
+			isFull = selection.isFullRow();
 		} else {
 			minIndex = selection.startRow;
 			maxIndex = selection.endRow;
-			isFull = selection.isFullCol( documentModel );
+			isFull = selection.isFullCol();
 		}
 		// Delete the whole table if all rows or cols get deleted
 		if ( isFull ) {
@@ -275,7 +272,7 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
-		tableNode = selection.getTableNode( documentModel ),
+		tableNode = selection.getTableNode(),
 		matrix = tableNode.getMatrix();
 
 	// Increase size of table to fit imported table
@@ -351,7 +348,7 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 	}
 	surfaceModel.setSelection(
 		new ve.dm.TableSelection(
-			tableNode.getOuterRange(),
+			documentModel, tableNode.getOuterRange(),
 			selection.startCol, selection.startRow,
 			selection.startCol + importedMatrix.getMaxColCount() - 1,
 			selection.startRow + importedMatrix.getRowCount() - 1
@@ -370,18 +367,17 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 	var i, ranges,
 		txBuilders = [],
 		surfaceModel = this.surface.getModel(),
-		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
 		return false;
 	}
 
-	ranges = selection.getOuterRanges( documentModel );
+	ranges = selection.getOuterRanges();
 	for ( i = ranges.length - 1; i >= 0; i-- ) {
 		txBuilders.push(
 			ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null,
-				documentModel, ranges[ i ].start, { style: style }
+				surfaceModel.getDocument(), ranges[ i ].start, { style: style }
 			)
 		);
 	}
@@ -402,22 +398,22 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		selection = surfaceModel.getSelection(),
-		matrix = selection.getTableNode( documentModel ).getMatrix();
+		matrix = selection.getTableNode().getMatrix();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
 		return false;
 	}
 
-	if ( selection.isSingleCell( documentModel ) ) {
+	if ( selection.isSingleCell() ) {
 		// Split
-		cells = selection.getMatrixCells( documentModel );
+		cells = selection.getMatrixCells();
 		this.unmergeCell( matrix, cells[ 0 ] );
 	} else {
 		// Merge
-		if ( !selection.isMergeable( documentModel ) ) {
+		if ( !selection.isMergeable() ) {
 			return false;
 		}
-		cells = selection.getMatrixCells( documentModel );
+		cells = selection.getMatrixCells();
 		txBuilders.push(
 			ve.dm.TransactionBuilder.static.newFromAttributeChanges.bind( null,
 				documentModel, cells[ 0 ].node.getOuterRange().start,
@@ -935,7 +931,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			};
 		}
 	}
-	surfaceModel.change( null, new ve.dm.NullSelection() );
+	surfaceModel.change( null, new ve.dm.NullSelection( surfaceModel.getDocument() ) );
 	txBuilders.forEach( function ( txBuilder ) {
 		surfaceModel.change( txBuilder() );
 	} );

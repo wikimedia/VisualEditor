@@ -258,7 +258,7 @@ ve.dm.SurfaceFragment.prototype.adjustLinearSelection = function ( start, end ) 
 	}
 	oldRange = this.getSelection().getRange();
 	newRange = oldRange && new ve.Range( oldRange.start + ( start || 0 ), oldRange.end + ( end || 0 ) );
-	return this.clone( new ve.dm.LinearSelection( newRange ) );
+	return this.clone( new ve.dm.LinearSelection( this.getDocument(), newRange ) );
 };
 
 /**
@@ -274,7 +274,7 @@ ve.dm.SurfaceFragment.prototype.truncateLinearSelection = function ( limit ) {
 		return this.clone();
 	}
 	range = this.getSelection().getRange();
-	return this.clone( new ve.dm.LinearSelection( range.truncate( limit ) ) );
+	return this.clone( new ve.dm.LinearSelection( this.getDocument(), range.truncate( limit ) ) );
 };
 
 /**
@@ -318,7 +318,7 @@ ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
 		newRange = this.document.data.trimOuterSpaceFromRange( oldRange );
 	}
 
-	return this.clone( new ve.dm.LinearSelection( newRange ) );
+	return this.clone( new ve.dm.LinearSelection( this.getDocument(), newRange ) );
 };
 
 /**
@@ -413,8 +413,8 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 	}
 	return this.clone(
 		newRange ?
-			new ve.dm.LinearSelection( newRange ) :
-			new ve.dm.NullSelection()
+			new ve.dm.LinearSelection( this.getDocument(), newRange ) :
+			new ve.dm.NullSelection( this.getDocument() )
 	);
 };
 
@@ -466,7 +466,7 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 	if ( selection.isCollapsed() ) {
 		return this.surface.getInsertionAnnotations();
 	} else {
-		ranges = selection.getRanges( this.getDocument() );
+		ranges = selection.getRanges();
 		for ( i = 0, l = ranges.length; i < l; i++ ) {
 			rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( ranges[ i ], all );
 			if ( !i ) {
@@ -501,7 +501,7 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
  * @return {boolean} The fragment contains at least one annotation
  */
 ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
-	var i, l, ranges = this.getSelection().getRanges( this.getDocument() );
+	var i, l, ranges = this.getSelection().getRanges();
 
 	for ( i = 0, l = ranges.length; i < l; i++ ) {
 		if ( this.getDocument().data.hasAnnotationsInRange( ranges[ i ] ) ) {
@@ -632,7 +632,7 @@ ve.dm.SurfaceFragment.prototype.hasMatchingAncestor = function ( type, attribute
 			}
 		}
 	} else if ( selection instanceof ve.dm.TableSelection ) {
-		cells = selection.getMatrixCells( this.getDocument() );
+		cells = selection.getMatrixCells();
 		all = true;
 		for ( i = cells.length - 1; i >= 0; i-- ) {
 			if ( !cells[ i ].node.matches( type, attributes ) ) {
@@ -736,7 +736,7 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
 ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotations, data ) {
 	var annotation, i, ilen, j, jlen, tx, range,
 		annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() ),
-		ranges = this.getSelection().getRanges( this.getDocument() ),
+		ranges = this.getSelection().getRanges(),
 		txs = [];
 
 	if ( nameOrAnnotations instanceof ve.dm.AnnotationSet ) {
@@ -850,7 +850,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
 		newRange = tx.getModifiedRange( doc );
-		this.change( tx, newRange ? new ve.dm.LinearSelection( newRange ) : new ve.dm.NullSelection() );
+		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
 	}
 
 	return this;
@@ -926,7 +926,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 		// Set the range to cover the inserted content; the offset translation will be wrong
 		// if newFromInsertion() decided to move the insertion point
 		newRange = tx.getModifiedRange( doc );
-		this.change( tx, newRange ? new ve.dm.LinearSelection( newRange ) : new ve.dm.NullSelection() );
+		this.change( tx, newRange ? new ve.dm.LinearSelection( doc, newRange ) : new ve.dm.NullSelection( doc ) );
 	}
 	return this;
 };
@@ -1058,7 +1058,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 		rangeAfterRemove = new ve.Range( rangeAfterRemove.start );
 	}
 
-	this.change( [], new ve.dm.LinearSelection( rangeAfterRemove ) );
+	this.change( [], new ve.dm.LinearSelection( this.getDocument(), rangeAfterRemove ) );
 
 	return this;
 };

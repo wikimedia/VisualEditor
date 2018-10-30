@@ -65,7 +65,7 @@ QUnit.test( 'insert/remove/select/selectAll', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 0 ),
 				method: 'select',
-				args: [ new ve.dm.LinearSelection( new ve.Range( 1, 4 ) ) ],
+				args: [ new ve.dm.LinearSelection( null, new ve.Range( 1, 4 ) ) ],
 				expectedRangeOrSelection: new ve.Range( 1, 4 ),
 				msg: 'select'
 			},

@@ -452,8 +452,8 @@
 	 */
 	ve.test.utils.selectionFromRangeOrSelection = function ( doc, rangeOrSelection ) {
 		return rangeOrSelection instanceof ve.Range ?
-			new ve.dm.LinearSelection( rangeOrSelection ) :
-			ve.dm.Selection.static.newFromJSON( rangeOrSelection );
+			new ve.dm.LinearSelection( doc, rangeOrSelection ) :
+			ve.dm.Selection.static.newFromJSON( doc, rangeOrSelection );
 	};
 
 	/**

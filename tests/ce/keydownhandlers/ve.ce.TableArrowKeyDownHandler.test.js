@@ -295,7 +295,7 @@ QUnit.test( 'special key down: table arrow keys (simple movements)', function ( 
 		view = table.view;
 		model = view.getModel();
 		model.setSelection( new ve.dm.TableSelection(
-			table.tableRange, offsets[ 0 ], offsets[ 1 ], offsets[ 2 ], offsets[ 3 ] )
+			model.getDocument(), table.tableRange, offsets[ 0 ], offsets[ 1 ], offsets[ 2 ], offsets[ 3 ] )
 		);
 		ve.ce.keyDownHandlerFactory.executeHandlersForKey(
 			OO.ui.Keys[ cases[ i ].key ], model.getSelection().getName(), view,

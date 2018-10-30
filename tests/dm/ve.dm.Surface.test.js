@@ -143,7 +143,7 @@ QUnit.test( 'documentUpdate/select events', function ( assert ) {
 	assert.deepEqual( events, { documentUpdate: 1, select: 0 }, 'change with transaction only' );
 	surface.setLinearSelection( new ve.Range( 2 ) );
 	assert.deepEqual( events, { documentUpdate: 1, select: 1 }, 'setSelection' );
-	surface.change( tx.clone(), new ve.dm.LinearSelection( new ve.Range( 3 ) ) );
+	surface.change( tx.clone(), new ve.dm.LinearSelection( doc, new ve.Range( 3 ) ) );
 	assert.deepEqual( events, { documentUpdate: 2, select: 2 }, 'change with transaction and selection' );
 } );
 
@@ -152,7 +152,7 @@ QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
 		surface = new ve.dm.SurfaceStub( null, range ),
 		fragment = surface.getFragment(),
 		doc = surface.getDocument(),
-		selection = new ve.dm.LinearSelection( range ),
+		selection = new ve.dm.LinearSelection( doc, range ),
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ 'x' ] );
 
 	assert.strictEqual( surface.breakpoint(), false, 'Returns false if no transactions applied' );
@@ -167,7 +167,7 @@ QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
 	assert.deepEqual(
 		surface.undoStack, [ {
 			transactions: [ tx ],
-			selection: new ve.dm.LinearSelection( tx.translateRange( selection.getRange() ) ),
+			selection: new ve.dm.LinearSelection( doc, tx.translateRange( selection.getRange() ) ),
 			selectionBefore: selection
 		} ],
 		'Undo stack data matches after breakpoint'

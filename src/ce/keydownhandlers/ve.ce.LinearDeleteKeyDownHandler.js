@@ -188,14 +188,14 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			if ( node instanceof ve.dm.TableNode ) {
 				if ( rangeToRemove.containsOffset( nodeOuterRange.start ) ) {
 					surface.getModel().setSelection( new ve.dm.TableSelection(
-						nodeOuterRange, 0, 0
+						documentModel, nodeOuterRange, 0, 0
 					) );
 				} else {
 					matrix = node.getMatrix();
 					row = matrix.getRowCount() - 1;
 					col = matrix.getColCount( row ) - 1;
 					surface.getModel().setSelection( new ve.dm.TableSelection(
-						nodeOuterRange, col, row
+						documentModel, nodeOuterRange, col, row
 					) );
 				}
 				e.preventDefault();

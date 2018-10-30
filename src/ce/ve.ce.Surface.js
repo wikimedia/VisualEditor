@@ -1516,7 +1516,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	) {
 		// We cursored down out of the table caption; move to the first table cell
 		tableNode = this.getActiveNode().getParent();
-		this.model.setSelection( new ve.dm.TableSelection( tableNode.getOuterRange(), 0, 0 ) );
+		this.model.setSelection( new ve.dm.TableSelection( documentModel, tableNode.getOuterRange(), 0, 0 ) );
 	}
 
 	if ( focusableNode ) {
@@ -1534,7 +1534,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 					);
 				} else {
 					this.model.setSelection( new ve.dm.TableSelection(
-						range, 0, 0
+						documentModel, range, 0, 0
 					) );
 				}
 			} else {
@@ -1542,7 +1542,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 				row = matrix.getRowCount() - 1;
 				col = matrix.getColCount( row ) - 1;
 				this.model.setSelection( new ve.dm.TableSelection(
-					range, col, row
+					documentModel, range, col, row
 				) );
 			}
 		} else {
@@ -1649,7 +1649,10 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 			// The most likely reason for this condition to not-pass is if we
 			// try to cleanup unicorns while the native selection is outside
 			// the model momentarily, as sometimes happens during paste.
-			this.changeModel( null, new ve.dm.LinearSelection( veRange ) );
+			this.changeModel( null, new ve.dm.LinearSelection(
+				this.model.getDocument(),
+				veRange
+			) );
 			if ( fixupCursor ) {
 				this.moveModelCursor( fixup );
 			}
@@ -1901,7 +1904,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		range = fragment.getSelection().getRange();
 	} else if ( selection instanceof ve.dm.TableSelection ) {
-		range = new ve.Range( selection.getRanges( documentModel )[ 0 ].start );
+		range = new ve.Range( selection.getRanges()[ 0 ].start );
 	} else {
 		e.preventDefault();
 		return;
@@ -2004,7 +2007,6 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 ve.ce.Surface.prototype.afterPaste = function () {
 	var pasteData, isMultiline, pending, tableAction,
 		surfaceModel = this.getModel(),
-		documentModel = surfaceModel.getDocument(),
 		fragment = surfaceModel.getFragment(),
 		targetFragment = surfaceModel.getFragment( null, true ),
 		view = this,
@@ -2027,12 +2029,12 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		// Internal table-into-table paste can be shortcut
 		if ( fragment.getSelection() instanceof ve.dm.TableSelection && pasteData.slice instanceof ve.dm.TableSlice ) {
 			tableAction = new ve.ui.TableAction( this.getSurface() );
-			tableAction.importTable( pasteData.slice.getTableNode( documentModel ) );
+			tableAction.importTable( pasteData.slice.getTableNode() );
 			return $.Deferred().resolve().promise();
 		}
 
 		// For table selections the target is the first cell
-		targetFragment = surfaceModel.getLinearFragment( fragment.getSelection().getRanges( documentModel )[ 0 ], true );
+		targetFragment = surfaceModel.getLinearFragment( fragment.getSelection().getRanges()[ 0 ], true );
 	}
 
 	// Are we pasting into a multiline context?
@@ -2715,10 +2717,10 @@ ve.ce.Surface.prototype.selectAll = function () {
 		}
 		this.getModel().setLinearSelection( range );
 	} else if ( selection instanceof ve.dm.TableSelection ) {
-		matrix = selection.getTableNode( dmDoc ).getMatrix();
+		matrix = selection.getTableNode().getMatrix();
 		this.getModel().setSelection(
 			new ve.dm.TableSelection(
-				selection.tableRange,
+				selection.getDocument(), selection.tableRange,
 				0, 0, matrix.getMaxColCount() - 1, matrix.getRowCount() - 1
 			)
 		);
@@ -3081,7 +3083,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 					// have any content to select, don't try to set one. These
 					// would be niche documents, since slugs normally exist
 					// and catch those cases.
-					newSelection = new ve.dm.NullSelection();
+					newSelection = new ve.dm.NullSelection( dmDoc );
 					// TODO: Unset whatever native selection got us here, to match
 					// the model state (assuming it is in the CE document)
 				} else {
@@ -3089,13 +3091,13 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 					// cursorable location. Failure to do this can result in
 					// strange behavior when inserting content immediately after
 					// clicking on the surface.
-					newSelection = new ve.dm.LinearSelection( new ve.Range( offset ) );
+					newSelection = new ve.dm.LinearSelection( dmDoc, new ve.Range( offset ) );
 				}
 			} else {
-				newSelection = new ve.dm.LinearSelection( newState.veRange );
+				newSelection = new ve.dm.LinearSelection( dmDoc, newState.veRange );
 			}
 		} else {
-			newSelection = new ve.dm.NullSelection();
+			newSelection = new ve.dm.NullSelection( dmDoc );
 		}
 		this.incRenderLock();
 		try {
@@ -3128,8 +3130,8 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 			// span an active node boundary, so fixup.
 			if ( containsStart !== containsEnd ) {
 				newSelection = oldState && oldState.veRange ?
-					new ve.dm.LinearSelection( oldState.veRange ) :
-					new ve.dm.NullSelection();
+					new ve.dm.LinearSelection( dmDoc, oldState.veRange ) :
+					new ve.dm.NullSelection( dmDoc );
 				// TODO: setTimeout: document purpose
 				setTimeout( function () {
 					surface.changeModel( null, newSelection );
@@ -3189,7 +3191,7 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
 			{ type: 'paragraph', internal: { generated: 'slug' } },
 			{ type: '/paragraph' }
 		]
-	), new ve.dm.LinearSelection( new ve.Range( offset + 1 ) ) );
+	), new ve.dm.LinearSelection( documentModel, new ve.Range( offset + 1 ) ) );
 
 	// Animate the slug open
 	$slug = this.getDocument().getDocumentNode().getNodeFromOffset( offset + 1 ).$element;
@@ -3763,7 +3765,7 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 				mid = data.getNearestContentOffset( mid );
 			}
 
-			rect = surface.getSelection( new ve.dm.LinearSelection( new ve.Range( mid ) ) ).getSelectionBoundingRect();
+			rect = surface.getSelection( new ve.dm.LinearSelection( documentModel, new ve.Range( mid ) ) ).getSelectionBoundingRect();
 			if ( rect[ side ] > offset ) {
 				end = mid;
 				range = new ve.Range( range.start, end );
@@ -4276,6 +4278,7 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 
 	if ( this.model.selection.isCollapsed() ) {
 		fragmentAfter = this.model.getFragment( new ve.dm.LinearSelection(
+			this.model.getDocument(),
 			new ve.Range(
 				this.model.selection.range.start,
 				this.model.selection.range.start + 1
