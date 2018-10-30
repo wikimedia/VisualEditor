@@ -108,7 +108,9 @@ ve.dm.MetaList.prototype.indexOf = function ( item, group ) {
  * @return {ve.dm.MetaItem[]} Array of items in the group (shallow copy)
  */
 ve.dm.MetaList.prototype.getItemsInGroup = function ( group ) {
-	return this.items.filter( function ( item ) { return item.getGroup() === group; } );
+	return this.items.filter( function ( item ) {
+		return item.getGroup() === group;
+	} );
 };
 
 /**

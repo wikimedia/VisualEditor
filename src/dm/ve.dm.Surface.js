@@ -1134,16 +1134,20 @@ ve.dm.Surface.prototype.getModifiedRanges = function ( includeCollapsed, include
 		} );
 	} );
 
-	ranges.sort( function ( a, b ) { return a.start - b.start; } ).forEach( function ( range ) {
-		if ( includeCollapsed || !range.isCollapsed() ) {
-			if ( lastRange && lastRange.touchesRange( range ) ) {
-				compactRanges.pop();
-				range = lastRange.expand( range );
+	ranges
+		.sort( function ( a, b ) {
+			return a.start - b.start;
+		} )
+		.forEach( function ( range ) {
+			if ( includeCollapsed || !range.isCollapsed() ) {
+				if ( lastRange && lastRange.touchesRange( range ) ) {
+					compactRanges.pop();
+					range = lastRange.expand( range );
+				}
+				compactRanges.push( range );
+				lastRange = range;
 			}
-			compactRanges.push( range );
-			lastRange = range;
-		}
-	} );
+		} );
 
 	return compactRanges;
 };

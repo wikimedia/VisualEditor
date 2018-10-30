@@ -178,7 +178,9 @@ ve.ui.Sequence.prototype.getMessage = function ( explode ) {
 	} else if ( this.data instanceof RegExp ) {
 		data = [ this.data.toString() ];
 	} else {
-		data = this.data.filter( function ( key ) { return !ve.isPlainObject( key ); } );
+		data = this.data.filter( function ( key ) {
+			return !ve.isPlainObject( key );
+		} );
 	}
 	return explode ? data : data.join( '' );
 };

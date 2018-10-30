@@ -920,7 +920,9 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		transactions: transactions
 	};
 	// Only set stores if at least one is non-null
-	if ( stores.some( function ( store ) { return store !== null; } ) ) {
+	if ( stores.some( function ( store ) {
+		return store !== null;
+	} ) ) {
 		data.stores = stores;
 	}
 	if ( Object.keys( selections ).length ) {

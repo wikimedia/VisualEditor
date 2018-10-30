@@ -148,7 +148,9 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 		testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } );
 		if ( noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
-			ve.isClipboardDataFormatsSupported = function () { return false; };
+			ve.isClipboardDataFormatsSupported = function () {
+				return false;
+			};
 		}
 		view.onCopy( testEvent );
 		if ( noClipboardData ) {
@@ -606,7 +608,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 
 		if ( noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
-			ve.isClipboardDataFormatsSupported = function () { return false; };
+			ve.isClipboardDataFormatsSupported = function () {
+				return false;
+			};
 		}
 
 		// Paste sequence

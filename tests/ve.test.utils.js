@@ -20,8 +20,12 @@
 		this.sessionDisabled = false;
 	}
 	OO.inheritClass( DummyPlatform, ve.init.Platform );
-	DummyPlatform.prototype.getUserLanguages = function () { return [ 'en' ]; };
-	DummyPlatform.prototype.getMessage = function () { return Array.prototype.join.call( arguments, ',' ); };
+	DummyPlatform.prototype.getUserLanguages = function () {
+		return [ 'en' ];
+	};
+	DummyPlatform.prototype.getMessage = function () {
+		return Array.prototype.join.call( arguments, ',' );
+	};
 	DummyPlatform.prototype.getHtmlMessage = function () {
 		var $wrapper = $( '<div>' );
 		Array.prototype.forEach.call( arguments, function ( arg, i, args ) {
@@ -34,25 +38,43 @@
 		$wrapper[ 0 ].normalize();
 		return $wrapper.contents().toArray();
 	};
-	DummyPlatform.prototype.getLanguageName = function ( lang ) { return 'langname-' + lang; };
-	DummyPlatform.prototype.getLanguageDirection = function () { return 'ltr'; };
-	DummyPlatform.prototype.getExternalLinkUrlProtocolsRegExp = function () { return /^https?:\/\//i; };
-	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () { return /https?:\/\//i; };
-	DummyPlatform.prototype.getUserConfig = function () { return undefined; };
+	DummyPlatform.prototype.getLanguageName = function ( lang ) {
+		return 'langname-' + lang;
+	};
+	DummyPlatform.prototype.getLanguageDirection = function () {
+		return 'ltr';
+	};
+	DummyPlatform.prototype.getExternalLinkUrlProtocolsRegExp = function () {
+		return /^https?:\/\//i;
+	};
+	DummyPlatform.prototype.getUnanchoredExternalLinkUrlProtocolsRegExp = function () {
+		return /https?:\/\//i;
+	};
+	DummyPlatform.prototype.getUserConfig = function () {
+		return undefined;
+	};
 	DummyPlatform.prototype.setUserConfig = function () {};
 	DummyPlatform.prototype.getSession = function ( key ) {
-		if ( this.sessionDisabled ) { return false; }
+		if ( this.sessionDisabled ) {
+			return false;
+		}
 		return Object.prototype.hasOwnProperty.call( this.sessionStorage, key ) ?
 			this.sessionStorage[ key ] :
 			null;
 	};
 	DummyPlatform.prototype.setSession = function ( key, value ) {
-		if ( this.sessionDisabled || value === '__FAIL__' ) { return false; }
-		this.sessionStorage[ key ] = value.toString(); return true;
+		if ( this.sessionDisabled || value === '__FAIL__' ) {
+			return false;
+		}
+		this.sessionStorage[ key ] = value.toString();
+		return true;
 	};
 	DummyPlatform.prototype.removeSession = function ( key ) {
-		if ( this.sessionDisabled ) { return false; }
-		delete this.sessionStorage[ key ]; return true;
+		if ( this.sessionDisabled ) {
+			return false;
+		}
+		delete this.sessionStorage[ key ];
+		return true;
 	};
 
 	ve.test.utils.DummyPlatform = DummyPlatform;
