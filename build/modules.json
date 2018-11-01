@@ -852,6 +852,7 @@
 			"tests/ce/keydownhandlers/ve.ce.TableDeleteKeyDownHandler.test.js",
 			"tests/ce/keydownhandlers/ve.ce.TableEnterKeyDownHandler.test.js",
 			"tests/ce/keydownhandlers/ve.ce.TableF2KeyDownHandler.test.js",
+			"tests/ce/nodes/ve.ce.ResizableNode.test.js",
 			"tests/ce/nodes/ve.ce.TextNode.test.js",
 			"tests/ce/nodes/ve.ce.TableNode.test.js",
 			"tests/init/ve.init.sa.Platform.test.js",

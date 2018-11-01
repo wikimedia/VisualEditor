@@ -196,6 +196,7 @@ ve.ce.ResizableNode.prototype.updateSizeLabel = function () {
 	if ( this.showSizeLabel ) {
 		this.$sizeText.append( $( '<span>' )
 			.addClass( 've-ce-resizableNode-sizeText-size' )
+			// TODO: i18n?
 			.text( Math.round( dimensions.width ) + ' × ' + Math.round( dimensions.height ) )
 		);
 	}
