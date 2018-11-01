@@ -129,6 +129,7 @@
 	"visualeditor-help-tool": "도움말",
 	"visualeditor-historybutton-redo-tooltip": "다시 실행",
 	"visualeditor-historybutton-undo-tooltip": "실행 취소",
+	"visualeditor-horizontalrule-tooltip": "수평 눈금자",
 	"visualeditor-indentationbutton-indent-tooltip": "들여쓰기 높이기",
 	"visualeditor-indentationbutton-outdent-tooltip": "들여쓰기 낮추기",
 	"visualeditor-inspector-close-tooltip": "닫기",
