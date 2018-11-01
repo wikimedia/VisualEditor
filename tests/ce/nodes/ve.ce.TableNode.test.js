@@ -87,7 +87,7 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 			toRow: 5
 		}
 	);
-	assert.equalHash( model.getSelection(), expectedSelection, ': selection' );
+	assert.equalHash( model.getSelection(), expectedSelection, 'Selection after mouse up' );
 
 	tableNode.onTableDblClick( e );
 
@@ -95,7 +95,7 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 		model.getDocument(),
 		new ve.Range( 94 )
 	);
-	assert.equalHash( model.getSelection(), expectedSelection, ': selection' );
+	assert.equalHash( model.getSelection(), expectedSelection, 'Selection after double click' );
 } );
 
 QUnit.test( 'onTableMouseDown', function ( assert ) {

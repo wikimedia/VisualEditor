@@ -60,7 +60,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 				msg: 'multi cell selection (expanded)',
 				selection: ( function () {
 					var sel = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 );
-					sel.expand( doc );
+					sel = sel.expand( doc );
 					return sel;
 				}() ),
 				fromCol: 2,
@@ -115,8 +115,8 @@ QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingle
 		mergedSingleCell = new ve.dm.TableSelection( tableRange, 1, 3, 3, 5 ),
 		largeSelection = new ve.dm.TableSelection( tableRange, 0, 0, 3, 6 );
 
-	selection.expand( doc );
-	mergedSingleCell.expand( doc );
+	selection = selection.expand( doc );
+	mergedSingleCell = mergedSingleCell.expand( doc );
 
 	assert.deepEqual( selection.collapseToStart(), startSelection, 'collapseToStart' );
 	assert.deepEqual( selection.collapseToEnd(), endSelection, 'collapseToEnd' );
@@ -161,5 +161,3 @@ QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescriptio
 // TODO: getMatrixCells
 // TODO: translateByTransaction
 // TODO: newFromAdjustment
-// TODO: isFullRow
-// TODO: isFullCol

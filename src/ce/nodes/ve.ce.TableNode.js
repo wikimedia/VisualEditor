@@ -164,7 +164,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		endCell.col,
 		endCell.row
 	);
-	newSelection.expand( this.getModel().getDocument() );
+	newSelection = newSelection.expand( this.getModel().getDocument() );
 	if ( this.editingFragment ) {
 		if ( newSelection.equals( this.editingFragment.getSelection() ) ) {
 			// Clicking on the editing cell, don't prevent default
@@ -264,7 +264,7 @@ ve.ce.TableNode.prototype.onTableMouseMove = function ( e ) {
 		this.getModel().getOuterRange(),
 		this.startCell.col, this.startCell.row, cell.col, cell.row
 	);
-	selection.expand( this.getModel().getDocument() );
+	selection = selection.expand( this.getModel().getDocument() );
 	this.surface.getModel().setSelection( selection );
 };
 

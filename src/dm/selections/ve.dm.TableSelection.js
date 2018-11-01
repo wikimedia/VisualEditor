@@ -67,6 +67,38 @@ ve.dm.TableSelection.static.newFromHash = function ( hash ) {
 	);
 };
 
+/**
+ * Retrieves all cells within a given selection.
+ *
+ * @static
+ * @param {ve.dm.TableMatrix} matrix The table matrix
+ * @param {Object} selectionOffsets Selection col/row offsets (startRow/endRow/startCol/endCol)
+ * @param {boolean} [includePlaceholders] Include placeholders in result
+ * @return {ve.dm.TableMatrixCell[]} List of table cells
+ */
+ve.dm.TableSelection.static.getTableMatrixCells = function ( matrix, selectionOffsets, includePlaceholders ) {
+	var row, col, cell,
+		cells = [],
+		visited = {};
+
+	for ( row = selectionOffsets.startRow; row <= selectionOffsets.endRow; row++ ) {
+		for ( col = selectionOffsets.startCol; col <= selectionOffsets.endCol; col++ ) {
+			cell = matrix.getCell( row, col );
+			if ( !cell ) {
+				continue;
+			}
+			if ( !includePlaceholders && cell.isPlaceholder() ) {
+				cell = cell.owner;
+			}
+			if ( !visited[ cell.key ] ) {
+				cells.push( cell );
+				visited[ cell.key ] = true;
+			}
+		}
+	}
+	return cells;
+};
+
 /* Methods */
 
 /**
@@ -74,9 +106,11 @@ ve.dm.TableSelection.static.newFromHash = function ( hash ) {
  *
  * @private
  * @param {ve.dm.Document} doc The document to which this selection applies
+ * @return {ve.dm.TableSelection} Expanded table selection
  */
 ve.dm.TableSelection.prototype.expand = function ( doc ) {
 	var cell, i,
+		matrix = this.getTableNode( doc ).getMatrix(),
 		lastCellCount = 0,
 		startCol = Infinity,
 		startRow = Infinity,
@@ -94,18 +128,22 @@ ve.dm.TableSelection.prototype.expand = function ( doc ) {
 			endCol = Math.max( endCol, cell.col + cell.node.getColspan() - 1 );
 			endRow = Math.max( endRow, cell.row + cell.node.getRowspan() - 1 );
 		}
-		this.startCol = startCol;
-		this.startRow = startRow;
-		this.endCol = endCol;
-		this.endRow = endRow;
-		this.fromCol = colBackwards ? endCol : startCol;
-		this.fromRow = rowBackwards ? endRow : startRow;
-		this.toCol = colBackwards ? startCol : endCol;
-		this.toRow = rowBackwards ? startRow : endRow;
 
 		lastCellCount = cells.length;
-		cells = this.getMatrixCells( doc );
+		cells = this.constructor.static.getTableMatrixCells( matrix, {
+			startCol: startCol,
+			startRow: startRow,
+			endCol: endCol,
+			endRow: endRow
+		} );
 	}
+	return new this.constructor(
+		this.tableRange,
+		colBackwards ? endCol : startCol,
+		rowBackwards ? endRow : startRow,
+		colBackwards ? startCol : endCol,
+		rowBackwards ? startRow : endRow
+	);
 };
 
 /**
@@ -247,34 +285,23 @@ ve.dm.TableSelection.prototype.getOuterRanges = function ( doc ) {
 };
 
 /**
- * Retrieves all cells (no placeholders) within a given selection.
+ * Retrieves all cells within a given selection.
  *
  * @param {ve.dm.Document} doc The document to which this selection applies
  * @param {boolean} [includePlaceholders] Include placeholders in result
  * @return {ve.dm.TableMatrixCell[]} List of table cells
  */
 ve.dm.TableSelection.prototype.getMatrixCells = function ( doc, includePlaceholders ) {
-	var row, col, cell,
-		matrix = this.getTableNode( doc ).getMatrix(),
-		cells = [],
-		visited = {};
-
-	for ( row = this.startRow; row <= this.endRow; row++ ) {
-		for ( col = this.startCol; col <= this.endCol; col++ ) {
-			cell = matrix.getCell( row, col );
-			if ( !cell ) {
-				continue;
-			}
-			if ( !includePlaceholders && cell.isPlaceholder() ) {
-				cell = cell.owner;
-			}
-			if ( !visited[ cell.key ] ) {
-				cells.push( cell );
-				visited[ cell.key ] = true;
-			}
-		}
-	}
-	return cells;
+	return this.constructor.static.getTableMatrixCells(
+		this.getTableNode( doc ).getMatrix(),
+		{
+			startCol: this.startCol,
+			startRow: this.startRow,
+			endCol: this.endCol,
+			endRow: this.endRow
+		},
+		includePlaceholders
+	);
 };
 
 /**
@@ -463,7 +490,7 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( doc, fromColOffset
 		toCell.col,
 		toCell.row
 	);
-	selection.expand( doc );
+	selection = selection.expand( doc );
 	return selection;
 };
 
