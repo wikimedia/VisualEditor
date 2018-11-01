@@ -44,6 +44,60 @@ QUnit.test( 'getNearestCellNode', function ( assert ) {
 	view.destroy();
 } );
 
+QUnit.test( 'getFirstSectionNode', function ( assert ) {
+	var view = ve.test.utils.createSurfaceViewFromHtml(
+			'<table>' +
+				'<caption>Caption</caption>' +
+				'<tr><td>Foo</td></tr>' +
+			'</table>'
+		),
+		documentNode = view.getDocument().getDocumentNode(),
+		tableNode = documentNode.children[ 0 ],
+		result = tableNode.getFirstSectionNode();
+
+	assert.strictEqual( result instanceof ve.ce.TableSectionNode, true, 'result is a TableSectionNode' );
+	assert.strictEqual( result, tableNode.children[ 1 ], 'result is 2nd child of table' );
+} );
+
+QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', function ( assert ) {
+	var expectedSelection,
+		view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) ),
+		model = view.getModel(),
+		documentNode = view.getDocument().getDocumentNode(),
+		tableNode = documentNode.children[ 0 ],
+		cell = tableNode.children[ 0 ].children[ 3 ].children[ 1 ],
+		e = {
+			target: cell.$element[ 0 ],
+			originalEvent: { pageX: 0, pageY: 0 },
+			preventDefault: function () {}
+		};
+
+	tableNode.onTableMouseDown( e );
+	tableNode.onTableMouseMove( e );
+	tableNode.onTableMouseUp( e );
+
+	expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+		model.getDocument(),
+		{
+			type: 'table',
+			tableRange: new ve.Range( 0, 171 ),
+			fromCol: 1,
+			fromRow: 3,
+			toCol: 3,
+			toRow: 5
+		}
+	);
+	assert.equalHash( model.getSelection(), expectedSelection, ': selection' );
+
+	tableNode.onTableDblClick( e );
+
+	expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+		model.getDocument(),
+		new ve.Range( 94 )
+	);
+	assert.equalHash( model.getSelection(), expectedSelection, ': selection' );
+} );
+
 QUnit.test( 'onTableMouseDown', function ( assert ) {
 	var i,
 		view = ve.test.utils.createSurfaceViewFromHtml(
