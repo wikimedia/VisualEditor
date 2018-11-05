@@ -198,6 +198,9 @@ ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
 		return ve.dm.annotationFactory.createFromElement( serialized.value );
 	} else if ( serialized.type === 'domNodes' ) {
 		if ( unsafe ) {
+			// We can use jQuery here because unsafe sanitization
+			// only happens in browser clients.
+			// eslint-disable-next-line no-undef
 			return $.parseHTML( serialized.value, undefined, true );
 		} else {
 			// Convert NodeList to Array
