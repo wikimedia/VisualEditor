@@ -260,6 +260,12 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'submit', 'content', 'submit',
+		{ supportedSelections: [ 'linear', 'table' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'comment', 'window', 'open',
 		{ args: [ 'comment' ], supportedSelections: [ 'linear' ] }
 	)

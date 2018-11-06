@@ -32,7 +32,7 @@ ve.ui.ContentAction.static.name = 'content';
  * @static
  * @property
  */
-ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial', 'selectAll', 'changeDirectionality' ];
+ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial', 'selectAll', 'changeDirectionality', 'submit' ];
 
 /* Methods */
 
@@ -129,6 +129,17 @@ ve.ui.ContentAction.prototype.changeDirectionality = function () {
 	documentView.setDir( documentView.getDir() === 'ltr' ? 'rtl' : 'ltr' );
 	this.surface.getModel().emit( 'contextChange' );
 	this.surface.getView().emit( 'position' );
+	return true;
+};
+
+/**
+ * Emit a surface submit event
+ *
+ * @method
+ * @return {boolean} Action was executed
+ */
+ve.ui.ContentAction.prototype.submit = function () {
+	this.surface.emit( 'submit' );
 	return true;
 };
 
