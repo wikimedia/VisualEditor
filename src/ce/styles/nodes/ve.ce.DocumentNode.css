@@ -21,3 +21,11 @@
 .ve-ce-documentNode *::selection {
 	background: rgba( 109, 169, 247, 0.5 ); /* #6da9f7 */
 }
+
+/*
+ * Reset styles applied to ce=true by Chrome (T207426)
+ */
+.ve-ce-documentNode [ contentEditable='false' ] {
+	overflow-wrap: initial;
+	-webkit-line-break: initial;
+}
