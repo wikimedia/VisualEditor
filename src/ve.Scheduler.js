@@ -49,7 +49,7 @@ ve.Scheduler.static.maxDelay = 1000;
  *         guarantee that your `done` call on it will be delayed.
  */
 ve.Scheduler.prototype.schedule = function ( immediateAction, completionTest, delayHint ) {
-	var deferred = $.Deferred(),
+	var deferred = ve.createDeferred(),
 		startTime = this.now(),
 		testThenAct = function () {
 			var complete;

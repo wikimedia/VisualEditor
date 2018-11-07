@@ -113,7 +113,7 @@ ve.ui.Tool.prototype.onSelect = function () {
 		if ( surface.context.inspector ) {
 			contextClosePromise = surface.context.inspector.close().closed;
 		} else {
-			contextClosePromise = $.Deferred().resolve().promise();
+			contextClosePromise = ve.createDeferred().resolve().promise();
 		}
 	}
 	if ( this.constructor.static.deactivateOnSelect ) {

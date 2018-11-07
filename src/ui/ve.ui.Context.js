@@ -199,7 +199,7 @@ ve.ui.Context.prototype.toggle = function ( show ) {
 		this.$element.toggleClass( 'oo-ui-element-hidden', !this.visible );
 	}
 	this.emit( 'resize' );
-	return $.Deferred().resolve().promise();
+	return ve.createDeferred().resolve().promise();
 };
 
 /**

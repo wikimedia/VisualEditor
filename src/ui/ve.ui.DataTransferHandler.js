@@ -21,7 +21,7 @@ ve.ui.DataTransferHandler = function VeUiDataTransferHandler( surface, item ) {
 	this.progress = false;
 	this.progressBar = null;
 
-	this.insertableDataDeferred = $.Deferred();
+	this.insertableDataDeferred = ve.createDeferred();
 };
 
 /* Inheritance */
