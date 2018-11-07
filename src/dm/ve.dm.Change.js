@@ -809,16 +809,20 @@ ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 		surface.documentModel.store.merge( store );
 	} );
 	this.transactions.forEach( function ( tx ) {
-		var offset;
+		var range, offset;
 		surface.change( tx );
 		// Don't mark as applied: this.start already tracks this
 		tx.applied = false;
 
 		// TODO: This would be better fixed by T202730
 		if ( applySelection ) {
-			offset = doc.getNearestCursorOffset( tx.getModifiedRange( doc ).end, -1 );
-			if ( offset !== -1 ) {
-				surface.setSelection( new ve.dm.LinearSelection( new ve.Range( offset ) ) );
+			range = tx.getModifiedRange( doc );
+			// If the transaction only touched the internal list, there is no modified range within the main document
+			if ( range ) {
+				offset = doc.getNearestCursorOffset( range.end, -1 );
+				if ( offset !== -1 ) {
+					surface.setSelection( new ve.dm.LinearSelection( new ve.Range( offset ) ) );
+				}
 			}
 		}
 	} );
