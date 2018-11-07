@@ -15,7 +15,7 @@
  * @param {number} [toRow] End row
  */
 ve.dm.TableSelection = function VeDmTableSelection( tableRange, fromCol, fromRow, toCol, toRow ) {
-	if ( arguments[ 0 ] instanceof ve.dm.Document ) {
+	if ( ve.dm.Document && arguments[ 0 ] instanceof ve.dm.Document ) {
 		throw new Error( 'Got obsolete ve.dm.Document argument' );
 	}
 	if ( arguments.length > 5 ) {

@@ -31,7 +31,7 @@ ve.dm.Selection.static.type = null;
  */
 ve.dm.Selection.static.newFromJSON = function ( json ) {
 	var hash, constructor;
-	if ( arguments[ 0 ] instanceof ve.dm.Document ) {
+	if ( ve.dm.Document && arguments[ 0 ] instanceof ve.dm.Document ) {
 		throw new Error( 'Got obsolete ve.dm.Document argument' );
 	}
 	hash = typeof json === 'string' ? JSON.parse( json ) : json;
