@@ -667,6 +667,8 @@ ve.dm.SurfaceFragment.prototype.pushPending = function ( promise ) {
  * @return {jQuery.Promise} Promise
  */
 ve.dm.SurfaceFragment.prototype.getPending = function () {
+	// TODO: Abstract promise usage
+	// eslint-disable-next-line no-undef
 	return $.when.apply( $, this.pending );
 };
 

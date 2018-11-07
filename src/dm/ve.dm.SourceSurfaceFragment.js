@@ -214,8 +214,12 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
  */
 ve.dm.SourceSurfaceFragment.prototype.convertToSource = function ( doc ) {
 	if ( !doc.data.hasContent() ) {
+		// TODO: Abstract promise generation
+		// eslint-disable-next-line no-undef
 		return $.Deferred().resolve( '' ).promise();
 	} else {
+		// TODO: Abstract promise generation
+		// eslint-disable-next-line no-undef
 		return $.Deferred().resolve(
 			ve.properInnerHtml(
 				ve.dm.converter.getDomFromModel( doc ).body
@@ -240,6 +244,8 @@ ve.dm.SourceSurfaceFragment.prototype.convertFromSource = function ( source ) {
 		dir = this.getDocument().getDir();
 
 	if ( !source ) {
+		// TODO: Abstract promise generation
+		// eslint-disable-next-line no-undef
 		return $.Deferred().resolve(
 			new ve.dm.Document(
 				[
@@ -251,6 +257,8 @@ ve.dm.SourceSurfaceFragment.prototype.convertFromSource = function ( source ) {
 			)
 		).promise();
 	} else {
+		// TODO: Abstract promise generation
+		// eslint-disable-next-line no-undef
 		return $.Deferred().resolve(
 			ve.dm.converter.getModelFromDom(
 				ve.createDocumentFromHtml( source, { lang: lang, dir: dir } )

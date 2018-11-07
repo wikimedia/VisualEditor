@@ -1,0 +1,11 @@
+{
+	"env": {
+		"browser": false,
+		"jquery": false,
+		"shared-node-browser": true
+	},
+	"globals": {
+		"Node": false,
+		"document": false
+	}
+}
