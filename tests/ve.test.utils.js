@@ -382,6 +382,12 @@
 				getCommands: function () {
 					return ve.ui.commandRegistry.getNames();
 				},
+				getContext: function () {
+					return {
+						toggle: function () {},
+						updateDimensions: function () {}
+					};
+				},
 				isDisabled: function () {
 					return false;
 				},
