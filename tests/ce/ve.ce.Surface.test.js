@@ -15,6 +15,16 @@ QUnit.module( 've.ce.Surface', {
 
 /* Tests */
 
+ve.test.utils.triggerKeys = ( function () {
+	var keyCode,
+		keys = {},
+		keyMap = ve.ui.Trigger.static.primaryKeyMap;
+	for ( keyCode in keyMap ) {
+		keys[ keyMap[ keyCode ].toUpperCase() ] = keyCode;
+	}
+	return keys;
+}() );
+
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	var keyData, keyDownEvent, expectedSelection,
 		promise = Promise.resolve(),
@@ -63,7 +73,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	function doKey( keyString ) {
 		var keyParts = keyString.split( '+' ),
 			key = keyParts.pop(),
-			keyCode = OO.ui.Keys[ key ];
+			keyCode = OO.ui.Keys[ key ] || ve.test.utils.triggerKeys[ key ];
 		keyData = {
 			keyCode: keyCode,
 			which: keyCode,

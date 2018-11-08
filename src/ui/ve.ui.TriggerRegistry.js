@@ -265,3 +265,16 @@ ve.ui.triggerRegistry.register(
 		]
 	}
 );
+ve.ui.triggerRegistry.register(
+	'enterTableCell', [
+		new ve.ui.Trigger( 'enter' ),
+		new ve.ui.Trigger( 'shift+enter' ),
+		new ve.ui.Trigger( 'f2' )
+	]
+);
+ve.ui.triggerRegistry.register(
+	'submit', {
+		mac: new ve.ui.Trigger( 'cmd+enter' ),
+		pc: new ve.ui.Trigger( 'ctrl+enter' )
+	}
+);

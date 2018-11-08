@@ -51,9 +51,8 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	e.preventDefault();
 
 	if ( e.ctrlKey || e.metaKey ) {
-		// CTRL+Enter emits a 'submit' event from the surface
-		surface.getSurface().emit( 'submit' );
-		return true;
+		// CTRL+Enter triggers the submit command
+		return false;
 	}
 
 	focusedNode = surface.getFocusedNode();
