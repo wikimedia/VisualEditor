@@ -8,7 +8,7 @@
 	position: absolute;
 }
 
-.ve-ui-desktopContext .ve-ui-contextItem-description {
+.ve-ui-desktopContext .ve-ui-linearContextItem-info {
 	display: none;
 }
 
