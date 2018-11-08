@@ -17,6 +17,12 @@
 	width: 400px;
 }
 
+.ve-ui-linearContextItem-title > .oo-ui-labelWidget {
+	word-wrap: break-word;
+	white-space: pre-line;
+	vertical-align: top;
+}
+
 .ve-ui-desktopContext-menu .oo-ui-toolbar-bar {
 	white-space: nowrap;
 	border: 0;
