@@ -19,9 +19,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	txBuilder.pushReplacement( doc, 0, 0, [ 'a', 'b', 'c' ] );
 	txBuilder.pushRetain( 5 );
 	txBuilder.pushReplacement( doc, 5, 4, [] );
-	txBuilder.pushRetain( 2 );
-	txBuilder.pushStartAnnotating( 'set', { type: 'textStyle/bold' } );
-	txBuilder.pushRetain( 1 );
+	txBuilder.pushRetain( 3 );
 	txBuilder.pushReplacement( doc, 12, 1, [ 'i', 'j', 'k', 'l', 'm' ] );
 	txBuilder.pushRetain( 2 );
 	txBuilder.pushReplacement( doc, 15, 0, [ 'n', 'o', 'p' ] );

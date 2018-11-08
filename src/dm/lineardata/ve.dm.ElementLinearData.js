@@ -144,7 +144,7 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 /**
  * Read the array of annotation store hashes from an item of linear data
  *
- * @param {string|Array|Object} item of linear data
+ * @param {string|Array|Object} item Item of linear data
  * @return {string[]} An array of annotation store hashes
  */
 ve.dm.ElementLinearData.static.getAnnotationHashesFromItem = function ( item ) {
@@ -157,6 +157,53 @@ ve.dm.ElementLinearData.static.getAnnotationHashesFromItem = function ( item ) {
 	} else {
 		return [];
 	}
+};
+
+/**
+ * Set annotations' store hashes at a specified offset.
+ *
+ * Cleans up data structure if hashes array is empty.
+ *
+ * @method
+ * @param {string|Array|Object} item Item of linear data
+ * @param {string[]} hashes Annotations' store hashes
+ * @return {string|Array|Object} Deep-copied, modified item
+ */
+ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem = function ( item, hashes ) {
+	var character,
+		isElement = ve.dm.LinearData.static.isElementData( item );
+	item = ve.copy( item );
+	hashes = hashes.slice();
+	if ( hashes.length > 0 ) {
+		if ( isElement ) {
+			// New element annotation
+			item.annotations = hashes;
+		} else {
+			// New character annotation
+			character = ve.dm.ElementLinearData.static.getCharacterDataFromItem( item );
+			item = [ character, hashes ];
+		}
+	} else {
+		if ( isElement ) {
+			// Cleanup empty element annotation
+			delete item.annotations;
+		} else {
+			// Cleanup empty character annotation
+			item = ve.dm.ElementLinearData.static.getCharacterDataFromItem( item );
+		}
+	}
+	return item;
+};
+
+/**
+ * Get character data from an item
+ *
+ * @param {string|Array|Object} item Item to get character data from
+ * @return {string} Character data, or '' if no character data
+ */
+ve.dm.ElementLinearData.static.getCharacterDataFromItem = function ( item ) {
+	var data = Array.isArray( item ) ? item[ 0 ] : item;
+	return typeof data === 'string' ? data : '';
 };
 
 /* Methods */
@@ -458,28 +505,9 @@ ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset = function ( offset, an
  * @param {string[]} hashes Annotations' store hashes
  */
 ve.dm.ElementLinearData.prototype.setAnnotationHashesAtOffset = function ( offset, hashes ) {
-	var character,
-		item = this.getData( offset ),
-		isElement = this.isElementData( offset );
-	if ( hashes.length > 0 ) {
-		if ( isElement ) {
-			// New element annotation
-			item.annotations = hashes;
-		} else {
-			// New character annotation
-			character = this.getCharacterData( offset );
-			this.setData( offset, [ character, hashes ] );
-		}
-	} else {
-		if ( isElement ) {
-			// Cleanup empty element annotation
-			delete item.annotations;
-		} else {
-			// Cleanup empty character annotation
-			character = this.getCharacterData( offset );
-			this.setData( offset, character );
-		}
-	}
+	var item = this.getData( offset );
+	item = this.constructor.static.replaceAnnotationHashesForItem( item, hashes );
+	this.setData( offset, item );
 };
 
 /**
@@ -516,9 +544,8 @@ ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key,
  * @return {string} Character data
  */
 ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
-	var item = this.getData( offset ),
-		data = Array.isArray( item ) ? item[ 0 ] : item;
-	return typeof data === 'string' ? data : '';
+	var item = this.getData( offset );
+	return ve.dm.ElementLinearData.static.getCharacterDataFromItem( item );
 };
 
 /**

@@ -279,7 +279,7 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
  * @return {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, method, annotation ) {
-	var i, iLen, covered, arrayIndex, annotatable, txBuilder,
+	var i, iLen, covered, arrayIndex, annotatable, txBuilder, j, jLen, item, anns,
 		clear = method === 'clear',
 		run = null,
 		runs = [],
@@ -302,6 +302,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 		run = {
 			start: i,
 			end: null,
+			data: null,
 			spliceAt: clear ? findAnnotation() : null
 		};
 	}
@@ -312,6 +313,21 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 			run.spliceAt = data.getCommonAnnotationArrayLength(
 				new ve.Range( run.start, i )
 			);
+		}
+		run.data = doc.getData( new ve.Range( run.start, run.end ) );
+		for ( j = 0, jLen = run.data.length; j < jLen; j++ ) {
+			item = ve.copy( run.data[ j ] );
+			anns = new ve.dm.AnnotationSet(
+				doc.getStore(),
+				ve.dm.ElementLinearData.static.getAnnotationHashesFromItem( item )
+			);
+			if ( clear ) {
+				anns.remove( annotation );
+			} else {
+				anns.add( annotation, run.spliceAt );
+			}
+			item = ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem( item, anns.getHashes() );
+			run.data[ j ] = item;
 		}
 		runs.push( run );
 		run = null;
@@ -386,9 +402,7 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
 	for ( i = 0, iLen = runs.length; i < iLen; i++ ) {
 		run = runs[ i ];
 		txBuilder.pushRetain( run.start - ( i > 0 ? runs[ i - 1 ].end : 0 ) );
-		txBuilder.pushStartAnnotating( method, hash, run.spliceAt );
-		txBuilder.pushRetain( run.end - run.start );
-		txBuilder.pushStopAnnotating( method, hash, run.spliceAt );
+		txBuilder.pushReplacement( doc, run.start, run.end - run.start, run.data, false );
 	}
 	txBuilder.pushFinalRetain( doc, runs.length > 0 ? runs[ runs.length - 1 ].end : 0 );
 	return txBuilder.getTransaction();
@@ -842,30 +856,6 @@ ve.dm.TransactionBuilder.prototype.pushAttributeChanges = function ( changes, ol
 			);
 		}
 	}
-};
-
-/**
- * Add a start annotating operation.
- *
- * @method
- * @param {string} method Method to use, either "set" or "clear"
- * @param {string} hash Store hash of annotation object to start setting or clearing from content data
- * @param {number} spliceAt Annotation array index at which to splice
- */
-ve.dm.TransactionBuilder.prototype.pushStartAnnotating = function ( method, hash, spliceAt ) {
-	this.transaction.pushAnnotateOp( method, 'start', hash, spliceAt );
-};
-
-/**
- * Add a stop annotating operation.
- *
- * @method
- * @param {string} method Method to use, either "set" or "clear"
- * @param {string} hash Store hash of annotation object to stop setting or clearing from content data
- * @param {number} spliceAt Annotation array hash at which to splice
- */
-ve.dm.TransactionBuilder.prototype.pushStopAnnotating = function ( method, hash, spliceAt ) {
-	this.transaction.pushAnnotateOp( method, 'stop', hash, spliceAt );
 };
 
 /**
