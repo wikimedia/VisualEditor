@@ -114,7 +114,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	} );
 
 	// Events
-	this.getSurface().getModel().connect( this, { history: 'onSurfaceModelHistory' } );
+	doc.connect( this, { transact: 'onDocumentTransact' } );
 
 	// DOM changes
 	this.$surfaceContainer.append( this.surface.$element );
@@ -129,13 +129,11 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 };
 
 /**
- * Handle history events from the surface model.
+ * Handle transact events from the document model.
  *
  * @fires change
  */
-ve.ui.TargetWidget.prototype.onSurfaceModelHistory = function () {
-	// Rethrow this event so users don't have to re-bind to
-	// surface model 'history' when the surface is changed in #setDocument
+ve.ui.TargetWidget.prototype.onDocumentTransact = function () {
 	this.emit( 'change' );
 };
 
