@@ -168,7 +168,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 		currentDir = 'ltr';
 
 	if ( mode === this.mode && !page ) {
-		return $.Deferred().resolve().promise();
+		return ve.createDeferred().resolve().promise();
 	}
 
 	switch ( this.mode ) {
@@ -189,7 +189,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 			break;
 
 		default:
-			closePromise = $.Deferred().resolve().promise();
+			closePromise = ve.createDeferred().resolve().promise();
 			break;
 	}
 
@@ -242,7 +242,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
 	container.emit( 'changePage' );
 
 	ve.init.platform.getInitializedPromise().done( function () {
-		( container.surface ? container.surface.$element.slideUp().promise() : $.Deferred().resolve().promise() ).done( function () {
+		( container.surface ? container.surface.$element.slideUp().promise() : ve.createDeferred().resolve().promise() ).done( function () {
 			var localMatch = page.match( /^localStorage\/(.+)$/ );
 			if ( localMatch ) {
 				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );

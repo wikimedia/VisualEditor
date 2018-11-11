@@ -19,9 +19,9 @@ QUnit.test( 'getInsertableData', function ( assert ) {
 		},
 		mockSurface = {
 			createProgress: function () {
-				return $.Deferred().resolve(
+				return ve.createDeferred().resolve(
 					{ setProgress: fn },
-					$.Deferred().resolve().promise()
+					ve.createDeferred().resolve().promise()
 				).promise();
 			}
 		},

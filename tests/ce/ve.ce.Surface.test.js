@@ -139,7 +139,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 
 ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, noClipboardData, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, msg ) {
 	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent, isClipboardDataFormatsSupported,
-		afterPastePromise = $.Deferred().resolve().promise(),
+		afterPastePromise = ve.createDeferred().resolve().promise(),
 		clipboardData = new ve.test.utils.DataTransfer( ve.copy( pasteData ) ),
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView ) :
