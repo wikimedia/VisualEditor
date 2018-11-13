@@ -31,7 +31,7 @@
 
 	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
 		var surfaceModel, dummySurface,
-			progressDeferred = $.Deferred(),
+			progressDeferred = ve.createDeferred(),
 			panel = new OO.ui.PanelLayout( {
 				$element: $( '.ve-demo-editor' ),
 				expanded: false,
