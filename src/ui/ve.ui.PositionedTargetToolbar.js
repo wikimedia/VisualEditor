@@ -21,6 +21,12 @@ ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, co
 	// Parent constructor
 	ve.ui.PositionedTargetToolbar.super.apply( this, arguments );
 
+	// Change default overlay to be this.$bar, instead of this.$element (T209192)
+	// TODO: Upstream to OOUI
+	if ( !config.$overlay ) {
+		this.$overlay = this.$bar.append( this.$popups );
+	}
+
 	// Properties
 	this.floating = false;
 	this.floatable = !!config.floatable;
