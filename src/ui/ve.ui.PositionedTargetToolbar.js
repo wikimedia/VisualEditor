@@ -62,7 +62,9 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 		opening: 'onToolbarDialogsOpeningOrClosing',
 		closing: 'onToolbarDialogsOpeningOrClosing'
 	} );
-	ve.addPassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
+	if ( this.isFloatable() ) {
+		ve.addPassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
+	}
 };
 
 /**
