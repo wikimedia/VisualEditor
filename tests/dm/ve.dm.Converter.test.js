@@ -75,5 +75,25 @@ QUnit.test( 'getFullData', function ( assert ) {
 			msg + ' (undo)'
 		);
 	}
+} );
 
+QUnit.test( 'roundTripMetadata', function ( assert ) {
+	var doc, tx,
+		beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
+		afterHtml = '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>';
+
+	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + beforeHtml ) );
+	tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
+	doc.commit( tx );
+	assert.strictEqual(
+		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
+		afterHtml,
+		'Metadata in ContentBranchNode gets moved outside by change to ContentBranchNode'
+	);
+	doc.commit( tx.reversed() );
+	assert.strictEqual(
+		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
+		beforeHtml,
+		'Undo restores metadata to inside ContentBranchNode'
+	);
 } );

@@ -43,13 +43,14 @@ OO.initClass( ve.dm.TreeCursor );
  * @param {number} [tooShort] Only step into text nodes longer than this
  */
 ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
-	var len, item;
+	var item;
 	if ( !this.node ) {
 		return;
 	}
 	if ( tooShort === undefined ) {
 		tooShort = -1;
 	}
+
 	// If at the end of a text node, step out
 	if ( this.node.type === 'text' && this.offset === this.node.length ) {
 		this.nodes.pop();
@@ -57,16 +58,8 @@ ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
 		this.offset = this.path.pop() + 1;
 		return;
 	}
-	// Cross any ignored nodes
-	len = ( this.node && this.node.hasChildren() && this.node.children.length ) || 0;
-	while (
-		this.offset < len &&
-		( item = this.node.children[ this.offset ] ) &&
-		this.liveIgnoreNodes.indexOf( item ) !== -1
-	) {
-		this.offset++;
-		this.linearOffset += item.getOuterLength();
-	}
+	this.crossIgnoredNodes();
+
 	// If at the start of long enough text node, step in
 	if (
 		this.node.hasChildren() &&
@@ -78,6 +71,22 @@ ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
 		this.nodes.push( item );
 		this.path.push( this.offset );
 		this.offset = 0;
+	}
+};
+
+/**
+ * Cross any immediately following nodes that are in liveIgnoreNodes
+ */
+ve.dm.TreeCursor.prototype.crossIgnoredNodes = function () {
+	var item,
+		len = ( this.node && this.node.hasChildren() && this.node.children.length ) || 0;
+	while (
+		this.offset < len &&
+		( item = this.node.children[ this.offset ] ) &&
+		this.liveIgnoreNodes.indexOf( item ) !== -1
+	) {
+		this.offset++;
+		this.linearOffset += item.getOuterLength();
 	}
 };
 
@@ -181,50 +190,6 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 	this.lastStep = step;
 	this.linearOffset += length;
 	return step;
-};
-
-/**
- * Adjust own position to account for an insertion/deletion
- *
- * @param {number[]} path The path to the node in which the insertion/deletion occurs
- * @param {number} offset The offset at which the insertion/deletion occurs
- * @param {number} adjustment The number of nodes inserted (if > 0) or deleted (if < 0)
- * @param {number} linearAdjustment The linear adjustment made at the offset
- */
-ve.dm.TreeCursor.prototype.adjustPath = function ( path, offset, adjustment, linearAdjustment ) {
-	var i, len;
-
-	len = path.length;
-	// Find the first offset i where this.path[ i ] is undefined or differs from path[ i ]
-	// If there is such an offset, then own position lies outside the adjusted node
-	for ( i = 0; i < len; i++ ) {
-		if ( this.path[ i ] === path[ i ] ) {
-			continue;
-		}
-		if ( path[ i ] < ( i === this.path.length ? this.offset : this.path[ i ] ) ) {
-			// Own position lies after the adjusted node
-			this.linearOffset += linearAdjustment;
-		}
-		return;
-	}
-	// Else own position is in the adjusted node or one of its children
-
-	// Temporarily push offset onto path to simplify the logic
-	this.path.push( this.offset );
-
-	if ( this.path[ len ] > offset || (
-		this.path[ len ] === offset && ( adjustment || linearAdjustment ) > 0
-	) ) {
-		// Own position lies inside the adjusted node, after the adjustment
-		if ( this.path[ len ] + adjustment < offset ) {
-			throw new Error( 'Cursor lies within deleted range' );
-		}
-		this.path[ len ] += adjustment;
-		// Need not adjust this.nodes, because the actual node object is unchanged
-		this.linearOffset += linearAdjustment;
-	}
-	// Restore offset
-	this.offset = this.path.pop();
 };
 
 /**

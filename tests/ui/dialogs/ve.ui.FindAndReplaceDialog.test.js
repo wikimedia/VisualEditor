@@ -138,6 +138,9 @@ QUnit.test( 'replace all', function ( assert ) {
 				dialog.replaceText.setValue( '' );
 			}
 			done();
+		} ).fail( function ( ex ) {
+			assert.ok( false, 'Error thrown: ' + ex.stack );
+			done();
 		} );
 	} );
 

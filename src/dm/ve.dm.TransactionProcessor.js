@@ -41,7 +41,6 @@ ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction
 	this.replaceMinInsertLevel = 0;
 	this.retainDepth = 0;
 	this.balanced = true;
-	this.treeModifier = null;
 };
 
 /* Static members */
@@ -108,10 +107,8 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	// Apply the queued modifications
 	try {
 		completed = false;
-		this.treeModifier = null;
 		this.applyModifications();
-		this.treeModifier = new ve.dm.TreeModifier( this.document, this.transaction );
-		this.treeModifier.process();
+		ve.dm.treeModifier.process( this.document, this.transaction );
 		completed = true;
 	} finally {
 		// Don't catch and re-throw errors so that they are reported properly

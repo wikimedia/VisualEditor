@@ -102,11 +102,21 @@ QUnit.test( 'commit', function ( assert ) {
 				],
 				exception: /Unbalanced set of replace operations found/
 			},
+			'inserting an inline node in a structure position': {
+				calls: [
+					[ 'pushReplacement', 0, 0, [
+						{ type: 'inlineImage' },
+						{ type: '/inlineNode' }
+					] ]
+				],
+				exception: /Cannot add content node \(inlineImage\) to a document node/
+			},
 			'wrapping a heading in an inline node': {
 				calls: [
-					[ 'pushReplacement', 0, 0, [ { type: 'inlineImage' } ] ],
-					[ 'pushRetain', 5 ],
-					[ 'pushReplacement', 5, 0, [ { type: '/inlineImage' } ] ]
+					[ 'pushRetain', 39 ],
+					[ 'pushReplacement', 39, 0, [ { type: 'inlineImage' } ] ],
+					[ 'pushRetain', 2 ],
+					[ 'pushReplacement', 42, 0, [ { type: '/inlineImage' } ] ]
 				],
 				exception: /Cannot add a child to inlineImage node/
 			},
