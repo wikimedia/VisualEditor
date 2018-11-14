@@ -2552,6 +2552,19 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 	ve.ce.nodeFactory.unregister( TestCeSectionPlaceholderNode );
 } );
 
+QUnit.test( 'findBlockSlug', function ( assert ) {
+	var i,
+		view = ve.test.utils.createSurfaceViewFromHtml( '<div><div><p>Foo</p></div></div><div><p>Bar</p></div>' ),
+		slugOffsets = [ 0, 1, 8, 9, 16 ];
+
+	for ( i = 0; i < slugOffsets.length; i++ ) {
+		assert.ok(
+			view.findBlockSlug( new ve.Range( slugOffsets[ i ] ) ),
+			'Block slug found at offset ' + slugOffsets[ i ]
+		);
+	}
+} );
+
 /* Methods with return values */
 // TODO: ve.ce.Surface#getSelection
 // TODO: ve.ce.Surface#getSurface

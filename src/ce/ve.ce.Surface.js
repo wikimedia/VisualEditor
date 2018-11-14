@@ -2927,10 +2927,16 @@ ve.ce.Surface.prototype.getFocusedNode = function ( range ) {
  * @return {HTMLElement|null} Slug, or null if no slug or if range is not collapsed
  */
 ve.ce.Surface.prototype.findBlockSlug = function ( range ) {
+	var node;
 	if ( !range.isCollapsed() ) {
 		return null;
 	}
-	return this.documentView.getDocumentNode().getSlugAtOffset( range.end );
+	node = this.documentView.getBranchNodeFromOffset( range.end );
+	if ( !node.canHaveChildrenNotContent() ) {
+		// Node can not have block slugs (only inline slugs)
+		return null;
+	}
+	return node.getSlugAtOffset( range.end );
 };
 
 /**
