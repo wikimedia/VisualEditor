@@ -36,6 +36,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$documentNode = this.getDocument().getDocumentNode().$element;
 	// Window.getSelection returns a live singleton representing the document's selection
 	this.nativeSelection = this.getElementWindow().getSelection();
+	ve.fixSelectionNodes( this.nativeSelection );
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup',
 		'compositionstart', 'compositionend',

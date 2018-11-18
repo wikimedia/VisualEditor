@@ -153,6 +153,49 @@ ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
 };
 
 /**
+ * Workaround for catastrophic Firefox bug (T209646)
+ *
+ * anchorNode and focusNode return unusable 'Restricted' object
+ * when focus is in a number input:
+ * https://bugzilla.mozilla.org/show_bug.cgi?id=1495482
+ *
+ * @param {Selection} selection Native selection
+ */
+ve.fixSelectionNodes = function ( selection ) {
+	var profile = $.client.profile();
+
+	if ( profile.layout !== 'gecko' ) {
+		return;
+	}
+
+	function fixNodeProperty( prop ) {
+		Object.defineProperty( selection, prop, {
+			get: function () {
+				var node = Object.getOwnPropertyDescriptor( Selection.prototype, prop ).get.call( this );
+				try {
+					// Try to read a property out of node if it not null
+					// Throws an exception in FF
+					// eslint-disable-next-line no-unused-expressions
+					node && node.prop;
+				} catch ( e ) {
+					// When an input is focused, the selection becomes the input itself,
+					// so the anchor/focusNode is the input's parent.
+					// Fall back to null if that doesn't exist.
+					ve.log( 'Worked around Firefox bug with getSelection().anchorNode/focusNode. See https://phabricator.wikimedia.org/T209646.' );
+					return ( document.activeElement && document.activeElement.parentNode ) || null;
+				}
+				return node;
+			}
+		} );
+	}
+
+	if ( !Object.getOwnPropertyDescriptor( selection, 'anchorNode' ) ) {
+		fixNodeProperty( 'anchorNode' );
+		fixNodeProperty( 'focusNode' );
+	}
+};
+
+/**
  * Register a passive event listener
  *
  * @param {HTMLElement} elem Element to register event on
