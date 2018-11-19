@@ -323,7 +323,7 @@ ve.ce.GeneratedContentNode.prototype.abortGenerating = function () {
 		// Unset this.generatingPromise first so that if the promise is resolved or rejected
 		// from within .abort(), this is ignored as it should be
 		this.generatingPromise = null;
-		if ( $.isFunction( promise.abort ) ) {
+		if ( typeof promise.abort === 'function' ) {
 			promise.abort();
 		}
 	}
