@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.Annotation' );
 
 QUnit.test( 'getHashObject', function ( assert ) {
-	var	i, l,
+	var i, l,
 		cases = [
 			{
 				msg: 'Bold',

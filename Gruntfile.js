@@ -142,7 +142,7 @@ module.exports = function ( grunt ) {
 		svgmin: {
 			options: {
 				js2svg: {
-					indent: '	',
+					indent: '\t',
 					pretty: true
 				},
 				multipass: true,
