@@ -29,7 +29,7 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 	this.primary = false;
 
 	// Initialization
-	if ( e instanceof jQuery.Event ) {
+	if ( e instanceof $.Event ) {
 		this.modifiers.meta = e.metaKey || false;
 		this.modifiers.ctrl = e.ctrlKey || false;
 		this.modifiers.alt = e.altKey || false;

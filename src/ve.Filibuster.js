@@ -504,6 +504,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 		return { 've.dm.Selection': val.getDescription() };
 	} else if ( val.constructor === ve.dm.AnnotationSet ) {
 		return {
+			// eslint-disable-next-line no-restricted-syntax
 			've.dm.AnnotationSet': val.getStore()
 				.values( val.getHashes() )
 				.map( function ( annotation ) {

@@ -58,11 +58,13 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	sizeTypeField = new OO.ui.FieldLayout( this.sizeTypeSelect );
 
 	// Define scale
-	// this.scaleInput = new OO.ui.TextInputWidget();
-	// scalePercentLabel = new OO.ui.LabelWidget( {
-	// 	input: this.scaleInput,
-	// 	label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
-	// } );
+	/*
+	this.scaleInput = new OO.ui.TextInputWidget();
+	scalePercentLabel = new OO.ui.LabelWidget( {
+		input: this.scaleInput,
+		label: ve.msg( 'visualeditor-mediasizewidget-label-scale-percent' )
+	} );
+	*/
 
 	this.dimensions = new ve.ui.DimensionsWidget( { validate: this.isValid.bind( this ) } );
 
@@ -73,16 +75,18 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	} );
 
 	// Field layouts
-	// scaleField = new OO.ui.FieldLayout(
-	// 	this.scaleInput, {
-	// 		align: 'right',
-	// 		// TODO: when upright is supported by Parsoid
-	// 		// classes: ['ve-ui-mediaSizeWidget-section-scale'],
-	// 		label: ve.msg( 'visualeditor-mediasizewidget-label-scale' )
-	// 	}
-	// );
-	// TODO: when upright is supported by Parsoid
-	// this.scaleInput.$element.append( scalePercentLabel.$element );
+	/*
+	scaleField = new OO.ui.FieldLayout(
+		this.scaleInput, {
+			align: 'right',
+			// TODO: when upright is supported by Parsoid
+			// classes: ['ve-ui-mediaSizeWidget-section-scale'],
+			label: ve.msg( 'visualeditor-mediasizewidget-label-scale' )
+		}
+	);
+	TODO: when upright is supported by Parsoid
+	this.scaleInput.$element.append( scalePercentLabel.$element );
+	*/
 	dimensionsField = new OO.ui.FieldLayout(
 		this.dimensions, {
 			align: this.dimensionsAlign,
@@ -216,15 +220,17 @@ ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 // /**
 //  * Respond to change of the scale input
 //  */
-// ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
-// 	// If the input changed (and not empty), set to 'custom'
-// 	// Otherwise, set to 'default'
-// 	if ( !this.dimensions.isEmpty() ) {
-// 		this.sizeTypeSelect.selectItemByData( 'scale' );
-// 	} else {
-// 		this.sizeTypeSelect.selectItemByData( 'default' );
-// 	}
-// };
+/*
+ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
+	// If the input changed (and not empty), set to 'custom'
+	// Otherwise, set to 'default'
+	if ( !this.dimensions.isEmpty() ) {
+		this.sizeTypeSelect.selectItemByData( 'scale' );
+	} else {
+		this.sizeTypeSelect.selectItemByData( 'default' );
+	}
+};
+*/
 
 /**
  * Respond to size type change
@@ -261,18 +267,22 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 //  *
 //  * @param {number} value Placeholder value
 //  */
-// ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
-// 	this.scaleInput.$element.prop( 'placeholder', value );
-// };
+/*
+ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
+	this.scaleInput.$element.prop( 'placeholder', value );
+};
+*/
 
 // /**
 //  * Get the placeholder value of the scale input
 //  *
 //  * @return {string} Placeholder value
 //  */
-// ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
-// 	return this.scaleInput.$element.prop( 'placeholder' );
-// };
+/*
+ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
+	return this.scaleInput.$element.prop( 'placeholder' );
+};
+*/
 
 /**
  * Select a size type in the select widget
@@ -530,9 +540,11 @@ ve.ui.MediaSizeWidget.prototype.isCustomEmpty = function () {
 //  *
 //  * @return {boolean} Scale input value is empty
 //  */
-// ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
-// 	return ( this.scaleInput.getValue() === '' );
-// };
+/*
+ve.ui.MediaSizeWidget.prototype.isScaleEmpty = function () {
+	return ( this.scaleInput.getValue() === '' );
+};
+*/
 
 /**
  * Check if all inputs are empty.

@@ -42,7 +42,7 @@ OO.initClass( ve.dm.TreeCursor );
  *
  * @param {number} [tooShort] Only step into text nodes longer than this
  */
-ve.dm.TreeCursor.prototype.normalize = function ( tooShort ) {
+ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
 	var len, item;
 	if ( !this.node ) {
 		return;
@@ -137,7 +137,7 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 	if ( ve.test ) {
 		this.checkLinearOffset();
 	}
-	this.normalize( maxLength );
+	this.normalizeCursor( maxLength );
 	if ( this.node.type === 'text' ) {
 		// We cannot be the end, because we just normalized
 		length = Math.min( maxLength, this.node.length - this.offset );

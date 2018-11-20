@@ -1,9 +1,10 @@
 {
 	"extends": [
+		"../.eslintrc.json",
 		"wikimedia/qunit",
-		"../.eslintrc.json"
+		"wikimedia/language/es6"
 	],
-	"env": {
-		"es6": true
+	"rules": {
+		"max-len": 0
 	}
 }

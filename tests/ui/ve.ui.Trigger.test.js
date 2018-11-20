@@ -11,7 +11,7 @@ QUnit.module( 've.ui.Trigger' );
 QUnit.test( 'constructor', function ( assert ) {
 	var i, len, tests;
 	function event( options ) {
-		return jQuery.Event( 'keydown', options );
+		return $.Event( 'keydown', options );
 	}
 
 	tests = [

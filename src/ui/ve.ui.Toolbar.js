@@ -203,6 +203,8 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.contextDirection.block = dirBlock;
 	}
 
+	// Array#map doesn't filter null elements
+	// eslint-disable-next-line jquery/no-map-util
 	activeDialogs = $.map(
 		[
 			this.surface.getDialogs(),
