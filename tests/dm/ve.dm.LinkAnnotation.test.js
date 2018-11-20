@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.LinkAnnotation' );
 
 QUnit.test( 'getFragment', function ( assert ) {
-	var	i, l,
+	var i, l,
 		cases = [
 			{
 				msg: 'No fragment returns null',

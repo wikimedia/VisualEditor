@@ -240,7 +240,7 @@ QUnit.test( 'sparseSplice', function ( assert ) {
 	}
 	/* eslint-disable no-sparse-arrays */
 	scratch = [ 4, , 5, , 6 ];
-	tests =	[
+	tests = [
 		// arr, offset, remove, data, expectedReturn, expectedArray, msg
 		[ [], 0, 0, [ , 3 ], [], [ , 3 ], 'insert empty, leading hole' ],
 		[ [], 0, 0, [ 1, , 3 ], [], [ 1, , 3 ], 'insert empty, middle hole' ],

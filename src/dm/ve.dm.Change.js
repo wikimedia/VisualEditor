@@ -323,7 +323,7 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  * So observe that by transaction commutivity we can rewrite a2' as:
  *
  * a2' := a2|(inv(a1) * a1 * b1|a1)
- * 	= a2|(b1|a1)
+ *      = a2|(b1|a1)
  *
  * and that b1|a1 conflicts only if a1|b1 conflicts (so this introduces no new conflicts). In
  * general we can write:
