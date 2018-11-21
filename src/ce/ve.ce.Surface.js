@@ -768,6 +768,8 @@ ve.ce.Surface.prototype.onDocumentBlur = function () {
 	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.pollOnce();
 	this.surfaceObserver.clear();
+	// Setting focused to false blocks selection change handler, so fire one last time here
+	this.onDocumentSelectionChange();
 	this.dragging = false;
 	this.focused = false;
 	if ( this.focusedNode ) {
@@ -920,7 +922,9 @@ ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
  * @param {jQuery.Event} e Selection change event
  */
 ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
-	if ( this.disabled ) {
+	// selectionChange events are only emitted from window.document, so ignore
+	// any events which are fired when the document is blurred or deactivated.
+	if ( this.disabled || !this.focused || this.deactivated ) {
 		return;
 	}
 	this.fixupCursorPosition( 0, this.dragging );
