@@ -17,7 +17,8 @@
 			"Dvorapa",
 			"Martin Urbanec",
 			"Ilimanaq29",
-			"Patriccck"
+			"Patriccck",
+			"Frettie"
 		]
 	},
 	"visualeditor": "Vizuální editor",
@@ -58,7 +59,7 @@
 	"visualeditor-changedir": "Změnit směr textu",
 	"visualeditor-changedir-tool-ltr": "Zobrazit psané zleva doprava",
 	"visualeditor-changedir-tool-rtl": "Zobrazit psané zprava doleva",
-	"visualeditor-clearbutton-tooltip": "Odstranit",
+	"visualeditor-clearbutton-tooltip": "Vymazat formátování",
 	"visualeditor-clipboard-copy": "Kopírovat",
 	"visualeditor-clipboard-cut": "Vyjmout",
 	"visualeditor-clipboard-paste": "Vložit",
