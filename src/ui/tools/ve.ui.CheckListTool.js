@@ -35,21 +35,13 @@ ve.ui.CheckListTool.static.deactivateOnSelect = false;
  * @inheritdoc
  */
 ve.ui.CheckListTool.prototype.onUpdateState = function ( fragment ) {
-	var i, len, nodes, all;
+	var isMatching;
 
 	// Parent method
 	ve.ui.CheckListTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	nodes = fragment ? fragment.getSelectedLeafNodes() : [];
-	all = !!nodes.length;
-
-	for ( i = 0, len = nodes.length; i < len; i++ ) {
-		if ( !nodes[ i ].hasMatchingAncestor( 'checkList' ) ) {
-			all = false;
-			break;
-		}
-	}
-	this.setActive( all );
+	isMatching = fragment.hasMatchingAncestor( 'checkList' );
+	this.setActive( isMatching );
 };
 
 ve.ui.CheckListTool.static.name = 'checkList';

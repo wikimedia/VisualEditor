@@ -617,10 +617,8 @@ ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
  * @return {boolean} Nodes have a matching ancestor
  */
 ve.dm.SurfaceFragment.prototype.hasMatchingAncestor = function ( type, attributes ) {
-	var i, len, cells,
-		selection = this.getSelection(),
-		nodes = this.getSelectedLeafNodes(),
-		all = !!nodes.length;
+	var i, len, nodes, cells, all,
+		selection = this.getSelection();
 
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		nodes = this.getSelectedLeafNodes();
