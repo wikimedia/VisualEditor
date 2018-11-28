@@ -93,6 +93,7 @@
 	box-shadow: none;
 	text-transform: none;
 }
+
 .ve-ui-commandHelpDialog-sequence kbd:not( .ve-ui-commandHelpDialog-specialKey ) + kbd:not( .ve-ui-commandHelpDialog-specialKey ) {
 	margin-left: -0.5em;
 	padding-left: 0;

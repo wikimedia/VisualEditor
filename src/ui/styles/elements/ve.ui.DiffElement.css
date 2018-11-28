@@ -63,7 +63,7 @@
 
 .ve-ui-diffElement-highlight {
 	position: absolute;
-	/*background: #6da9f7;*/
+	/* background: #6da9f7; */
 	outline: 3px solid #6da9f7;
 	padding: 2px;
 	margin: -2px 0 0 -2px;

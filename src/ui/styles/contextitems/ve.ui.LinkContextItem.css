@@ -15,24 +15,28 @@
 	margin: 0.7em -1em 0;
 	padding: 0.7em 1em 0;
 	border-top: 1px solid #eaecf0;
-
 	display: table;
 	width: 100%;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label > div {
 	display: table-cell;
 	width: 1%;
 	white-space: nowrap;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-preview {
 	width: 99%;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-label .oo-ui-iconWidget {
 	margin-top: -2px;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-label .oo-ui-labelElement-label {
 	padding-left: 0.3em;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-preview .oo-ui-labelElement-label {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -42,13 +46,16 @@
 	max-width: 16em;
 	padding-left: 0.6em;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-buttonElement {
 	margin-top: -4px;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-buttonElement-button {
 	padding: 0;
 	border: 0;
 }
+
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-labelElement-label {
 	line-height: normal;
 }
