@@ -8,7 +8,8 @@
 			"Ochilov",
 			"Psychoslave",
 			"Robin van der Vliet",
-			"NMaia"
+			"NMaia",
+			"Surfo"
 		]
 	},
 	"visualeditor": "VidRedaktilo",
@@ -29,7 +30,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Malalta skribo",
 	"visualeditor-annotationbutton-superscript-tooltip": "Alta skribo",
 	"visualeditor-annotationbutton-underline-tooltip": "Substrekita",
-	"visualeditor-clearbutton-tooltip": "Forigi stiligon",
+	"visualeditor-clearbutton-tooltip": "Forigi",
 	"visualeditor-clipboard-copy": "Kopii",
 	"visualeditor-clipboard-cut": "Tondi",
 	"visualeditor-clipboard-paste": "Alglui",
@@ -41,7 +42,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Forigi",
 	"visualeditor-contextitemwidget-label-secondary": "Redakti",
 	"visualeditor-debugbar-close": "Fermi",
-	"visualeditor-debugbar-logrange": "Protokolo",
+	"visualeditor-debugbar-logrange": "Protokolu la markitan",
 	"visualeditor-dialog-action-apply": "Apliki ŝanĝojn",
 	"visualeditor-dialog-action-cancel": "Nuligi",
 	"visualeditor-dialog-action-done": "Apliki",

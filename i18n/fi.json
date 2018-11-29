@@ -22,7 +22,8 @@
 			"Pyscowicz",
 			"Pahkiqaz",
 			"OneMember",
-			"Surjection"
+			"Surjection",
+			"Valtlait"
 		]
 	},
 	"visualeditor": "Visuaalinen muokkain",
@@ -124,6 +125,7 @@
 	"visualeditor-help-tool": "Ohje",
 	"visualeditor-historybutton-redo-tooltip": "Tee uudelleen",
 	"visualeditor-historybutton-undo-tooltip": "Kumoa",
+	"visualeditor-horizontalrule-tooltip": "Vaakaviiva",
 	"visualeditor-indentationbutton-indent-tooltip": "Suurenna sisennystä",
 	"visualeditor-indentationbutton-outdent-tooltip": "Pienennä sisennystä",
 	"visualeditor-inspector-close-tooltip": "Sulje",
