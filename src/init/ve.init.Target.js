@@ -43,6 +43,7 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.toolbarScrollOffset = 0;
 	this.activeToolbars = 0;
 	this.wasSurfaceActive = null;
+	this.teardownPromise = null;
 
 	this.modes = config.modes || this.constructor.static.modes;
 	this.setDefaultMode( config.defaultMode );
@@ -307,10 +308,13 @@ ve.init.Target.prototype.unbindHandlers = function () {
  * @return {jQuery.Promise} Promise which resolves when the target has been torn down
  */
 ve.init.Target.prototype.teardown = function () {
-	this.unbindHandlers();
-	// Wait for the toolbar to teardown before clearing surfaces,
-	// as it may want to transition away
-	return this.teardownToolbar().then( this.clearSurfaces.bind( this ) );
+	if ( !this.teardownPromise ) {
+		this.unbindHandlers();
+		// Wait for the toolbar to teardown before clearing surfaces,
+		// as it may want to transition away
+		this.teardownPromise = this.teardownToolbar().then( this.clearSurfaces.bind( this ) );
+	}
+	return this.teardownPromise;
 };
 
 /**
