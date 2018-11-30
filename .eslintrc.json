@@ -13,8 +13,11 @@
 		"Papa": false
 	},
 	"rules": {
+		"jquery/no-hide": "error",
+		"jquery/no-show": "error",
+		"jquery/no-toggle": "error",
 		"max-statements-per-line": [ "error", { "max": 1 } ],
-		"max-len": 0
+		"max-len": "off"
 	},
 	"plugins": [ "html" ],
 	"settings": {

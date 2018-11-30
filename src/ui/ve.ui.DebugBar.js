@@ -58,11 +58,11 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 					)
 				)
 			)
-		).hide();
+		).addClass( 'oo-ui-element-hidden' );
 
 	this.$transactions = $( '<div>' ).addClass( 've-ui-debugBar-transactions' );
 
-	this.$filibuster = $( '<div>' ).addClass( 've-ui-debugBar-filibuster' );
+	this.$filibuster = $( '<div>' ).addClass( [ 've-ui-debugBar-filibuster', 'oo-ui-element-hidden' ] );
 
 	// Events
 	this.logRangeButton.on( 'click', this.onLogRangeButtonClick.bind( this ) );
@@ -173,11 +173,10 @@ ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
 ve.ui.DebugBar.prototype.onShowModelToggleChange = function ( value ) {
 	if ( value ) {
 		this.updateDump();
-		this.$dump.show();
 	} else {
 		this.updateModelToggle.setValue( false );
-		this.$dump.hide();
 	}
+	this.$dump.toggleClass( 'oo-ui-element-hidden', !value );
 };
 
 /**
@@ -342,17 +341,16 @@ ve.ui.DebugBar.prototype.onInputDebuggingToggleChange = function ( value ) {
  * @param {jQuery.Event} e Event
  */
 ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
-	var debugBar = this;
-	if ( this.filibusterToggle.getValue() ) {
+	var debugBar = this,
+		value = this.filibusterToggle.getValue();
+	if ( value ) {
 		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-stopfilibuster' ) );
 		this.$filibuster.off( 'click' );
-		this.$filibuster.hide();
 		this.$filibuster.empty();
 		this.getSurface().startFilibuster();
 	} else {
 		this.getSurface().stopFilibuster();
 		this.$filibuster.html( this.getSurface().filibuster.getObservationsHtml() );
-		this.$filibuster.show();
 		this.$filibuster.on( 'click', function ( e ) {
 			var path,
 				$li = $( e.target ).closest( '.ve-filibuster-frame' );
@@ -374,6 +372,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 		} );
 		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-startfilibuster' ) );
 	}
+	this.$filibuster.toggleClass( 'oo-ui-element-hidden', !!value );
 };
 
 /**

@@ -47,6 +47,7 @@
 				overflow-y: auto;
 			}
 		</style>
+		<link rel=stylesheet href="../../lib/oojs-ui/oojs-ui-apex.css" class="stylesheet-ltr stylesheet-read">
 	</head>
 	<body>
 		<form class="ve-demo-form">
@@ -164,8 +165,8 @@
 						startDom: $content.html()
 					};
 
-					$form.hide();
-					$content.show().focus();
+					$form.addClass( 'oo-ui-element-hidden' );
+					$content.removeClass( 'oo-ui-element-hidden' ).focus();
 				}
 
 				function init() {
@@ -181,7 +182,7 @@
 						];
 
 					$form = $( '.ve-demo-form' );
-					$content = $( '.ve-demo-content' ).hide();
+					$content = $( '.ve-demo-content' ).addClass( 'oo-ui-element-hidden' );
 					$log = $( '.ve-demo-log' ).val( '' );
 
 					for ( i = 0, len = eventNames.length; i < len; i++ ) {
