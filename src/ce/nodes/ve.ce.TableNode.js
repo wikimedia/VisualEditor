@@ -156,7 +156,19 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		return;
 	}
 	selection = this.surface.getModel().getSelection();
-	startCell = e.shiftKey && this.active ? { col: selection.fromCol, row: selection.fromRow } : endCell;
+
+	if ( e.shiftKey && this.active ) {
+		// Extend selection from the anchor cell
+		if ( selection instanceof ve.dm.TableSelection ) {
+			startCell = { col: selection.fromCol, row: selection.fromRow };
+		} else {
+			startCell = this.getModel().getMatrix().lookupCell( this.getActiveCellNode().getModel() );
+		}
+	} else {
+		// Select single cell
+		startCell = endCell;
+	}
+
 	newSelection = new ve.dm.TableSelection(
 		this.getModel().getOuterRange(),
 		startCell.col,
