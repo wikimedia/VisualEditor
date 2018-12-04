@@ -13,6 +13,7 @@
 		"Papa": false
 	},
 	"rules": {
+		"jquery/no-extend": "error",
 		"jquery/no-hide": "error",
 		"jquery/no-show": "error",
 		"jquery/no-toggle": "error",

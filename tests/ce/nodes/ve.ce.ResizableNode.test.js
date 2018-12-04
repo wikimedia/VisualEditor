@@ -53,7 +53,7 @@ QUnit.test( 'resize events', function ( assert ) {
 	// Sets up the handles
 	resizableNode.onResizableFocus();
 
-	resizableNode.onResizeHandlesCornerMouseDown( $.extend( mockEvent, {
+	resizableNode.onResizeHandlesCornerMouseDown( ve.extendObject( mockEvent, {
 		screenX: 80,
 		screenY: 100,
 		target: resizableNode.$resizeHandles.find( '.ve-ce-resizableNode-seHandle' )[ 0 ]
@@ -75,7 +75,7 @@ QUnit.test( 'resize events', function ( assert ) {
 	assert.strictEqual( resizableNode.resizing, true, 'node is resizing' );
 	assert.strictEqual( resizableNode.root.getSurface().resizing, true, 'surface is resizing' );
 
-	resizableNode.onDocumentMouseMove( $.extend( mockEvent, {
+	resizableNode.onDocumentMouseMove( ve.extendObject( mockEvent, {
 		screenX: 100, // +20
 		screenY: 150, // +50
 		shiftKey: false
@@ -85,7 +85,7 @@ QUnit.test( 'resize events', function ( assert ) {
 	assert.strictEqual( resizableNode.$resizeHandles.css( 'width' ), '120px', 'handles sized: width' );
 	assert.strictEqual( resizableNode.$resizeHandles.css( 'height' ), '60px', 'handles sizer: height' );
 
-	resizableNode.onDocumentMouseUp( $.extend( mockEvent, {
+	resizableNode.onDocumentMouseUp( ve.extendObject( mockEvent, {
 		screenX: 100, // +20
 		screenY: 150, // +50
 		shiftKey: false

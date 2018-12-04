@@ -78,13 +78,13 @@ ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElemen
 	for ( i = 0; i < data.length; i++ ) {
 		key = data[ i ].annotations ? 'annotations' : 1;
 		if ( Array.isArray( data[ i ][ key ] ) ) {
-			data[ i ] = $.extend( Array.isArray( data[ i ] ) ? [] : {}, data[ i ] );
+			data[ i ] = ve.extendObject( Array.isArray( data[ i ] ) ? [] : {}, data[ i ] );
 			data[ i ][ key ] = new ve.dm.AnnotationSet( store, data[ i ][ key ] ).get();
 			for ( j = 0; j < data[ i ][ key ].length; j++ ) {
 				data[ i ][ key ][ j ] = data[ i ][ key ][ j ].element;
 				if ( !preserveDomElements && data[ i ][ key ][ j ].originalDomElementsHash !== undefined ) {
 					// Make a shallow clone and remove originalDomElements from it
-					data[ i ][ key ][ j ] = $.extend( {}, data[ i ][ key ][ j ] );
+					data[ i ][ key ][ j ] = ve.extendObject( {}, data[ i ][ key ][ j ] );
 					delete data[ i ][ key ][ j ].originalDomElementsHash;
 				}
 			}

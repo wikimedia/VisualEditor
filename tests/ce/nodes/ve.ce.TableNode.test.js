@@ -160,7 +160,7 @@ QUnit.test( 'onTableMouseDown', function ( assert ) {
 		];
 
 	for ( i = 0; i < cases.length; i++ ) {
-		tableNode.onTableMouseDown( $.extend( mockEvent, cases[ i ].event ) );
+		tableNode.onTableMouseDown( ve.extendObject( mockEvent, cases[ i ].event ) );
 		assert.deepEqual(
 			tableNode.surface.getModel().getSelection().toJSON(),
 			cases[ i ].expectedSelection,
