@@ -96,6 +96,24 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 		new ve.Range( 94 )
 	);
 	assert.equalHash( model.getSelection(), expectedSelection, 'Selection after double click' );
+
+	ve.extendObject( e, { target: e.target.previousSibling, shiftKey: true } );
+	tableNode.onTableMouseDown( e );
+	tableNode.onTableMouseUp( e );
+
+	expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+		model.getDocument(),
+		{
+			type: 'table',
+			tableRange: new ve.Range( 0, 171 ),
+			fromCol: 3,
+			fromRow: 3,
+			toCol: 0,
+			toRow: 5
+		}
+	);
+
+	assert.equalHash( model.getSelection(), expectedSelection, 'Selection after Shift-click on another cell' );
 } );
 
 QUnit.test( 'onTableMouseDown', function ( assert ) {
