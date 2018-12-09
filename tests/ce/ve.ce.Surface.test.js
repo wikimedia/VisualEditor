@@ -2139,6 +2139,38 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 0 ),
+				// Nested list copied from macOS Notes has newline before ul element
+				pasteTargetHtml: '<ul><li>A</li>\n<ul><li>B</li></ul></ul>',
+				expectedRangeOrSelection: new ve.Range( 14 ),
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'A',
+								{ type: '/paragraph' },
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'B',
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: '/list' },
+								{ type: '/listItem' },
+								{ type: '/list' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				msg: 'Broken nested lists (macOS Notes style)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 0 ),
 				pasteTargetHtml: '<p>A</p><p></p><p>B</p>',
 				expectedOps: [
 					[
