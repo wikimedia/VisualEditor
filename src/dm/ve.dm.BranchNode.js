@@ -160,6 +160,7 @@ ve.dm.BranchNode.prototype.splice = function () {
  */
 ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
 	var i, j, len, canHaveSlugAfter, canHaveSlugBefore,
+		suppressSlugTypeAfter, suppressSlugTypeBefore,
 		isBlock = this.canHaveChildrenNotContent();
 
 	this.slugPositions = {};
@@ -194,7 +195,12 @@ ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
 		canHaveSlugBefore = j === len || this.children[ j ].canHaveSlugBefore();
 
 		if ( canHaveSlugAfter && canHaveSlugBefore ) {
-			this.slugPositions[ j ] = true;
+			suppressSlugTypeAfter = this.children[ j ] && this.children[ j ].suppressSlugType();
+			suppressSlugTypeBefore = this.children[ i ] && this.children[ i ].suppressSlugType();
+			// Slugs are suppressed if they have the same string type, e.g. for adjacent floated images
+			if ( !( typeof suppressSlugTypeAfter === 'string' && suppressSlugTypeAfter === suppressSlugTypeBefore ) ) {
+				this.slugPositions[ j ] = true;
+			}
 		}
 
 		i = j;

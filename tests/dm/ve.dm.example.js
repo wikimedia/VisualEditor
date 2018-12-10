@@ -327,7 +327,17 @@ ve.dm.example.blockImage = {
 		{ type: '/paragraph' },
 		{ type: '/imageCaption' },
 		{ type: '/blockImage' }
-	]
+	],
+	ceHtml:
+		'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
+			'<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
+			'<figcaption class="ve-ce-branchNode ve-ce-activeNode" contenteditable="true" spellcheck="true">' +
+				'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
+					'foo ' +
+					'<b style="color:red;" class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">red</b>' +
+				'</p>' +
+			'</figcaption>' +
+		'</figure>'
 };
 
 /**
@@ -1718,22 +1728,19 @@ ve.dm.example.domToDataCases = {
 			ve.dm.example.inlineSlug +
 			'</p>'
 	},
-	'block image': {
-		body: ve.dm.example.blockImage.html,
-		data: ve.dm.example.blockImage.data.concat( [
-			{ type: 'internalList' },
-			{ type: '/internalList' }
-		] ),
+	'block images': {
+		body: ve.dm.example.blockImage.html + ve.dm.example.blockImage.html,
+		data: ve.dm.example.blockImage.data.concat(
+			ve.dm.example.blockImage.data,
+			[
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			]
+		),
 		ceHtml: ve.dm.example.blockSlug +
-			'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
-				'<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
-				'<figcaption class="ve-ce-branchNode ve-ce-activeNode" contenteditable="true" spellcheck="true">' +
-					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
-						'foo ' +
-						'<b style="color:red;" class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation">red</b>' +
-					'</p>' +
-				'</figcaption>' +
-			'</figure>' +
+			ve.dm.example.blockImage.ceHtml +
+			// No block slug between two floated images
+			ve.dm.example.blockImage.ceHtml +
 			ve.dm.example.blockSlug
 	},
 	'block image modified': {

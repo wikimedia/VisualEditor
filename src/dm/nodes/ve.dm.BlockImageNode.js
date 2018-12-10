@@ -144,6 +144,14 @@ ve.dm.BlockImageNode.prototype.getCaptionNode = function () {
 	return node instanceof ve.dm.BlockImageCaptionNode ? node : null;
 };
 
+/**
+ * @inheritdoc
+ */
+ve.dm.BlockImageNode.prototype.suppressSlugType = function () {
+	// TODO: Have alignment attribute changes trigger a parent branch node re-render
+	return this.getAttribute( 'align' ) !== 'center' ? 'float' : null;
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.BlockImageNode );

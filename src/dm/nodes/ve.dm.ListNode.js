@@ -71,6 +71,7 @@ ve.dm.ListNode.static.describeChange = function ( key, change ) {
 /* Methods */
 
 ve.dm.ListNode.prototype.canHaveSlugAfter = function () {
+	// A paragraph can be added after a list by pressing enter in an empty list item
 	return false;
 };
 
