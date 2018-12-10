@@ -9,7 +9,8 @@
 			"Psychoslave",
 			"Robin van der Vliet",
 			"NMaia",
-			"Surfo"
+			"Surfo",
+			"YvesNevelsteen"
 		]
 	},
 	"visualeditor": "VidRedaktilo",
@@ -42,7 +43,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Forigi",
 	"visualeditor-contextitemwidget-label-secondary": "Redakti",
 	"visualeditor-debugbar-close": "Fermi",
-	"visualeditor-debugbar-logrange": "Protokolu la markitan",
+	"visualeditor-debugbar-logrange": "Protokolo elektita",
 	"visualeditor-dialog-action-apply": "Apliki ŝanĝojn",
 	"visualeditor-dialog-action-cancel": "Nuligi",
 	"visualeditor-dialog-action-done": "Apliki",
