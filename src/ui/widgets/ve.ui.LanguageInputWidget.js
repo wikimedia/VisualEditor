@@ -93,7 +93,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	}
 	this.directionSelect.addItems( dirItems );
 	this.overlay.$element.append( this.dialogs.$element );
-	$( 'body' ).append( this.overlay.$element );
+	$( document.body ).append( this.overlay.$element );
 
 	this.$element
 		.addClass( 've-ui-languageInputWidget' )

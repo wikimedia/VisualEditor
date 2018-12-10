@@ -10,7 +10,7 @@
  *     @example
  *     var platform = new ve.init.sa.Platform( ve.messagePaths );
  *     platform.initialize().done( function () {
- *         $( 'body' ).append( $( '<p>' ).text(
+ *         $( document.body ).append( $( '<p>' ).text(
  *             platform.getMessage( 'visualeditor' )
  *         ) );
  *     } );
@@ -73,7 +73,7 @@ ve.init.sa.Platform.prototype.notify = function ( message, title ) {
 
 	if ( !this.$notifications ) {
 		this.$notifications = $( '<div>' ).addClass( 've-init-notifications' );
-		$( 'body' ).append( this.$notifications );
+		$( document.body ).append( this.$notifications );
 	}
 
 	function remove() {
