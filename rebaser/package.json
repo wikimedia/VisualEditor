@@ -5,10 +5,10 @@
 	"dependencies": {
 		"ejs": "2.6",
 		"express": "4.16",
-		"mongodb": "3.1.6",
+		"mongodb": "3.1.10",
 		"oojs": "2.2",
-		"service-runner": "2.6.4",
-		"socket.io": "2.1"
+		"service-runner": "2.6.7",
+		"socket.io": "2.2"
 	},
 	"scripts": {
 		"start": "node src/server.js"
