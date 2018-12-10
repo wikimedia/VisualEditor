@@ -186,7 +186,7 @@ ve.ui.Surface.prototype.destroy = function () {
  */
 ve.ui.Surface.prototype.initialize = function () {
 	// Attach globalOverlay to the global <body>, not the local frame's <body>
-	$( 'body' ).append( this.globalOverlay.$element );
+	$( document.body ).append( this.globalOverlay.$element );
 
 	if ( ve.debug ) {
 		this.setupDebugBar();

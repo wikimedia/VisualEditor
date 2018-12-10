@@ -42,7 +42,7 @@ OO.inheritClass( ve.ui.WindowManager, OO.ui.WindowManager );
  * @return {string} UI directionality
  */
 ve.ui.WindowManager.prototype.getDir = function () {
-	return $( 'body' ).css( 'direction' );
+	return $( document.body ).css( 'direction' );
 };
 
 /**

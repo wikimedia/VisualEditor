@@ -17,7 +17,7 @@
  *                 ve.createDocumentFromHtml( '<p>Hello, World!</p>' )
  *             )
  *         );
- *         $( 'body' ).append( target.$element );
+ *         $( document.body ).append( target.$element );
  *     } );
  *
  * @abstract
