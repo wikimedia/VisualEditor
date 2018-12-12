@@ -42,14 +42,10 @@
 	transition: width 250ms;
 }
 
-.ve-ui-surface {
-	min-height: 0;
+.ve-ui-surface-toolbarDialog-side {
 	-webkit-transition: margin 250ms, min-height 250ms;
 	-moz-transition: margin 250ms, min-height 250ms;
 	transition: margin 250ms, min-height 250ms;
-}
-
-.ve-ui-surface-toolbarDialog-side {
 	min-height: 40em;
 }
 
