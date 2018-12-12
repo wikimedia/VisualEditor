@@ -200,13 +200,18 @@ ve.ui.PositionedTargetToolbar.prototype.isFloatable = function () {
  */
 ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = function ( win, openingOrClosing ) {
 	var width,
+		margin,
+		$surface = this.getSurface().$element,
 		transitionDuration = OO.ui.theme.getDialogTransitionDuration(),
 		toolbar = this;
 
 	// win.isOpened before promise means we are closing
 	if ( win.constructor.static.position === 'side' && win.isOpened() ) {
 		// First closing transition
-		toolbar.getSurface().$element.css( 'margin-right', '' );
+		$surface.css(
+			$surface.css( 'direction' ) === 'rtl' ? 'margin-left' : 'margin-right',
+			''
+		);
 		win.$element.css( 'width', '' );
 	}
 
@@ -215,11 +220,12 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 		if ( win.constructor.static.position === 'side' ) {
 			// win.isOpened after promise means we are opening
 			if ( win.isOpened() ) {
-				originalMargin = parseFloat( toolbar.getSurface().$element.css( 'margin-right' ) );
+				margin = $surface.css( 'direction' ) === 'rtl' ? 'margin-left' : 'margin-right';
+				originalMargin = parseFloat( $surface.css( margin ) );
 				width = win.getSizeProperties().width;
 				toolbar.getSurface().$element
 					.addClass( 've-ui-surface-toolbarDialog-side' )
-					.css( 'margin-right', width + originalMargin );
+					.css( margin, width + originalMargin );
 				win.$element.css( 'width', width );
 			} else {
 				// Second closing transition
