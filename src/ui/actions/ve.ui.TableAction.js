@@ -661,8 +661,9 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		if ( !dataMatrixLine ) {
 			insertData = ve.dm.TableRowNode.static.createData( {
 				cellCount: inserts.length,
-				// Take the style of the first cell of the selected row
-				style: cells[ 0 ].node.getStyle()
+				style: cells.map( function ( cell ) {
+					return cell.node.getStyle();
+				} )
 			} );
 		} else {
 			insertData.push( dataMatrixLine.row[ 0 ] );

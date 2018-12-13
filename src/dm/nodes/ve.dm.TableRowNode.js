@@ -47,7 +47,7 @@ ve.dm.TableRowNode.static.matchTagNames = [ 'tr' ];
  * Creates data that can be inserted into the model to create a new table row.
  *
  * @param {Object} [options] Creation options
- * @param {string} [options.style='data'] Cell style; 'data' or 'header'
+ * @param {string|string[]} [options.style='data'] Cell style; 'data' or 'header', or array of styles
  * @param {number} [options.cellCount=1] Number of cells to create
  * @return {Array} Model data for a new table row
  */
@@ -61,7 +61,9 @@ ve.dm.TableRowNode.static.createData = function ( options ) {
 
 	data.push( { type: 'tableRow' } );
 	for ( i = 0; i < cellCount; i++ ) {
-		data = data.concat( ve.dm.TableCellNode.static.createData( options ) );
+		data = data.concat( ve.dm.TableCellNode.static.createData( {
+			style: Array.isArray( options.style ) ? options.style[ i ] : options.style
+		} ) );
 	}
 	data.push( { type: '/tableRow' } );
 	return data;
