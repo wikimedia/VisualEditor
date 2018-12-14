@@ -106,7 +106,6 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 		} else {
 			fragment.insertContent( caseItem.insert );
 		}
-		// eslint-disable-next-line no-loop-func
 		fragment.getPending().then( function () {
 			assert.deepEqual(
 				doc.getData( doc.getDocumentRange() ),

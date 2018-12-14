@@ -338,6 +338,9 @@ module.exports = function ( grunt ) {
 			]
 		},
 		eslint: {
+			options: {
+				reportUnusedDisableDirectives: true
+			},
 			main: [
 				'*.{js,html}',
 				'{bin,build,demos,src,tests,rebaser}/**/*.{js,html}',
@@ -472,13 +475,11 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'ci', [ '_test', 'svgmin', 'git-status' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 
-	/* eslint-disable no-process-env */
 	if ( process.env.JENKINS_HOME ) {
 		grunt.registerTask( 'test', 'ci' );
 	} else {
 		grunt.registerTask( 'test', '_test' );
 	}
-	/* eslint-enable no-process-env */
 
 	grunt.registerTask( 'default', 'test' );
 };

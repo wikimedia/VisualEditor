@@ -30,7 +30,6 @@
 		Bad (setTimeout):
 		<div id="bad" contenteditable="true"></div>
 		<script>
-			/* eslint-disable no-console */
 			$( function () {
 				var i, len, eventName,
 					onEvents = {},
@@ -76,7 +75,6 @@
 					addSetTimeoutListeners( $badDiv[ 0 ], eventName );
 				}
 
-				// eslint-disable-next-line no-new
 				new ve.EventSequencer( eventNames )
 					.on( onEvents )
 					.after( afterEvents )
