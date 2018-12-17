@@ -36,6 +36,8 @@ ve.ui.MergeCellsContextItem.static.label = OO.ui.deferMsg( 'visualeditor-table-m
 
 ve.ui.MergeCellsContextItem.static.commandName = 'mergeCells';
 
+ve.ui.MergeCellsContextItem.static.deletable = false;
+
 ve.ui.MergeCellsContextItem.static.embeddable = false;
 
 /* Methods */
@@ -60,7 +62,7 @@ ve.ui.MergeCellsContextItem.prototype.setup = function () {
 		isMergeable = ( selection instanceof ve.dm.TableSelection ) && selection.isMergeable( documentModel );
 
 	if ( !isMergeable ) {
-		// Ideally we Could check this in isCompatibleWith, but on the model node is available there
+		// Ideally we would check this in isCompatibleWith, but only the model node is available there
 		this.$element.detach();
 	} else {
 		this.editButton.setLabel(
