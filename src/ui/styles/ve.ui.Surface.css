@@ -22,13 +22,12 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	/* Match .ve-ce-documentNode */
-	padding: 0.9375em 1.875em;
 }
 
 .ve-ui-surface-placeholder,
 .ve-ui-surface .ve-ce-documentNode {
-	padding: 0.5em 1.5em;
+	/* Use an non-zero padding to disable margin collapse */
+	padding: 0.05px 0;
 }
 
 .ve-ui-surface-source .ve-ui-surface-placeholder,
@@ -36,7 +35,6 @@
 	/* Support: Blink, Gecko, Webkit */
 	/* Specify a valid second value to fix size, see T176636 */
 	font-family: monospace, monospace;
-	padding: 1.5em;
 }
 
 .ve-ui-surface-source .ve-ce-paragraphNode {
