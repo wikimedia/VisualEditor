@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.29.6
+ * OOUI v0.30.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-12-05T00:16:02Z
+ * Date: 2018-12-20T06:10:36Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -395,6 +395,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   min-height: 3.125em;
+  -webkit-overflow-scrolling: touch;
 }
 
 .oo-ui-floatableElement {
@@ -721,6 +722,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-panelLayout-scrollable {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .oo-ui-panelLayout-expanded {
   position: absolute;
@@ -1723,18 +1725,26 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   position: relative;
   width: 100%;
   display: block;
-  white-space: nowrap;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
   overflow: hidden;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: right;
   text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: default;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+}
+.oo-ui-dropdownWidget-handle::-moz-focus-inner {
+  border-color: transparent;
+  padding: 0;
 }
 .oo-ui-dropdownWidget.oo-ui-widget-enabled .oo-ui-dropdownWidget-handle {
   cursor: pointer;
@@ -1753,7 +1763,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   right: 0.85714286em;
 }
 .oo-ui-dropdownWidget-handle .oo-ui-indicatorElement-indicator {
-  left: 0.85714286em;
+  left: 0.78571429em;
 }
 .oo-ui-dropdownWidget-handle .oo-ui-labelElement-label {
   line-height: 1.07142857em;
@@ -2074,14 +2084,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.29.6
+ * OOUI v0.30.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-12-05T00:16:02Z
+ * Date: 2018-12-20T06:10:36Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2126,6 +2136,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   left: 0;
   bottom: 2.5em;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .oo-ui-bookletLayout-outlinePanel > .oo-ui-outlineControlsWidget {
   position: absolute;
@@ -2847,6 +2858,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   text-align: right;
   overflow-x: auto;
   overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   background-color: #eaecf0;
 }
 .oo-ui-tabSelectWidget.oo-ui-widget-enabled:focus {
@@ -3186,6 +3198,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   left: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .oo-ui-searchWidget-query {
   height: 4em;
@@ -3203,14 +3216,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.29.6
+ * OOUI v0.30.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-12-05T00:16:02Z
+ * Date: 2018-12-20T06:10:36Z
  */
 .oo-ui-tool {
   -webkit-box-sizing: border-box;
@@ -3754,14 +3767,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.29.6
+ * OOUI v0.30.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-12-05T00:16:02Z
+ * Date: 2018-12-20T06:10:36Z
  */
 
 .oo-ui-window {
@@ -3820,6 +3833,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-dialog-content > .oo-ui-window-body {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   z-index: 2;
   top: 0;
   bottom: 0;
@@ -3963,6 +3977,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   z-index: 4;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .oo-ui-processDialog-content .oo-ui-window-head {
   height: 3.14285714em;
@@ -4112,6 +4127,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   top: 0;
   bottom: 0;
 }
+.oo-ui-windowManager-modal-active {
+  overflow: hidden;
+  position: relative;
+}
 .oo-ui-windowManager-modal > .oo-ui-dialog {
   background-color: rgba(255, 255, 255, 0.5);
   opacity: 0;
@@ -4151,14 +4170,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.29.6
+ * OOUI v0.30.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-12-05T00:16:02Z
+ * Date: 2018-12-20T06:10:36Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-rtl.png');
@@ -4440,6 +4459,18 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: url('themes/wikimediaui/images/icons/lightbulb-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lightbulb-progressive.svg');
 }
+.oo-ui-icon-robot {
+  background-image: url('themes/wikimediaui/images/icons/robot.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/robot.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-robot {
+  background-image: url('themes/wikimediaui/images/icons/robot-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/robot-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-robot {
+  background-image: url('themes/wikimediaui/images/icons/robot-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/robot-progressive.svg');
+}
 .oo-ui-icon-tag {
   background-image: url('themes/wikimediaui/images/icons/tag-rtl.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tag-rtl.svg');
@@ -4597,18 +4628,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-progressive.oo-ui-icon-add {
   background-image: url('themes/wikimediaui/images/icons/add-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/add-progressive.svg');
-}
-.oo-ui-icon-advanced {
-  background-image: url('themes/wikimediaui/images/icons/settings.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/settings.svg');
-}
-.oo-ui-image-invert.oo-ui-icon-advanced {
-  background-image: url('themes/wikimediaui/images/icons/settings-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/settings-invert.svg');
-}
-.oo-ui-image-progressive.oo-ui-icon-advanced {
-  background-image: url('themes/wikimediaui/images/icons/settings-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/settings-progressive.svg');
 }
 .oo-ui-icon-browser {
   background-image: url('themes/wikimediaui/images/icons/browser-rtl.png');
@@ -5472,6 +5491,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-be.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-be.svg');
 }
+/* @noflip */
+.oo-ui-icon-bold:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/bold-arab-jeem.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-arab-jeem.svg');
+}
 .oo-ui-image-invert.oo-ui-icon-bold {
   background-image: url('themes/wikimediaui/images/icons/bold-a-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-a-invert.svg');
@@ -5631,6 +5655,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-be-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-be-invert.svg');
 }
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-bold:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/bold-arab-jeem-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-arab-jeem-invert.svg');
+}
 .oo-ui-image-progressive.oo-ui-icon-bold {
   background-image: url('themes/wikimediaui/images/icons/bold-a-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-a-progressive.svg');
@@ -5789,6 +5818,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-progressive.oo-ui-icon-bold:lang(os) {
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-be-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-be-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-bold:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/bold-arab-jeem-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-arab-jeem-progressive.svg');
 }
 .oo-ui-icon-highlight {
   background-image: url('themes/wikimediaui/images/icons/highlight.png');
@@ -5961,6 +5995,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: url('themes/wikimediaui/images/icons/italic-geor-kan.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-geor-kan.svg');
 }
+/* @noflip */
+.oo-ui-icon-italic:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/italic-arab-teh.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-arab-teh.svg');
+}
 .oo-ui-image-invert.oo-ui-icon-italic {
   background-image: url('themes/wikimediaui/images/icons/italic-a-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-a-invert.svg');
@@ -6120,6 +6159,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: url('themes/wikimediaui/images/icons/italic-geor-kan-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-geor-kan-invert.svg');
 }
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-italic:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/italic-arab-teh-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-arab-teh-invert.svg');
+}
 .oo-ui-image-progressive.oo-ui-icon-italic {
   background-image: url('themes/wikimediaui/images/icons/italic-a-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-a-progressive.svg');
@@ -6278,6 +6322,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-progressive.oo-ui-icon-italic:lang(ka) {
   background-image: url('themes/wikimediaui/images/icons/italic-geor-kan-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-geor-kan-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-italic:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/italic-arab-teh-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-arab-teh-progressive.svg');
 }
 .oo-ui-icon-strikethrough {
   background-image: url('themes/wikimediaui/images/icons/strikethrough-a.png');

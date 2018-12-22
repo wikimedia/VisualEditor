@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.29.6
+ * OOUI v0.30.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-12-05T00:16:02Z
+ * Date: 2018-12-20T06:10:36Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -102,6 +102,10 @@
   background-image: url('themes/wikimediaui/images/icons/lightbulb.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lightbulb.svg');
 }
+.oo-ui-icon-robot {
+  background-image: url('themes/wikimediaui/images/icons/robot.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/robot.svg');
+}
 .oo-ui-icon-tag {
   background-image: url('themes/wikimediaui/images/icons/tag-ltr.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tag-ltr.svg');
@@ -151,10 +155,6 @@
 .oo-ui-icon-add {
   background-image: url('themes/wikimediaui/images/icons/add.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/add.svg');
-}
-.oo-ui-icon-advanced {
-  background-image: url('themes/wikimediaui/images/icons/settings.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/settings.svg');
 }
 .oo-ui-icon-browser {
   background-image: url('themes/wikimediaui/images/icons/browser-ltr.png');
@@ -542,6 +542,11 @@
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-be.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-be.svg');
 }
+/* @noflip */
+.oo-ui-icon-bold:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/bold-arab-jeem.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-arab-jeem.svg');
+}
 .oo-ui-icon-highlight {
   background-image: url('themes/wikimediaui/images/icons/highlight.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/highlight.svg');
@@ -704,6 +709,11 @@
 .oo-ui-icon-italic:lang(ka) {
   background-image: url('themes/wikimediaui/images/icons/italic-geor-kan.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-geor-kan.svg');
+}
+/* @noflip */
+.oo-ui-icon-italic:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/italic-arab-teh.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-arab-teh.svg');
 }
 .oo-ui-icon-strikethrough {
   background-image: url('themes/wikimediaui/images/icons/strikethrough-a.png');

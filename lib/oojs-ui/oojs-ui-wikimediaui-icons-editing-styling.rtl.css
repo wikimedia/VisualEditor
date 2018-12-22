@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.29.6
+ * OOUI v0.30.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2018 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2018-12-05T00:16:02Z
+ * Date: 2018-12-20T06:10:36Z
  */
 .oo-ui-icon-bigger {
   background-image: url('themes/wikimediaui/images/icons/bigger.png');
@@ -215,6 +215,11 @@
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-be.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-be.svg');
 }
+/* @noflip */
+.oo-ui-icon-bold:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/bold-arab-jeem.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-arab-jeem.svg');
+}
 .oo-ui-image-invert.oo-ui-icon-bold {
   background-image: url('themes/wikimediaui/images/icons/bold-a-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-a-invert.svg');
@@ -374,6 +379,11 @@
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-be-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-be-invert.svg');
 }
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-bold:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/bold-arab-jeem-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-arab-jeem-invert.svg');
+}
 .oo-ui-image-progressive.oo-ui-icon-bold {
   background-image: url('themes/wikimediaui/images/icons/bold-a-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-a-progressive.svg');
@@ -532,6 +542,11 @@
 .oo-ui-image-progressive.oo-ui-icon-bold:lang(os) {
   background-image: url('themes/wikimediaui/images/icons/bold-cyrl-be-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-cyrl-be-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-bold:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/bold-arab-jeem-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/bold-arab-jeem-progressive.svg');
 }
 .oo-ui-icon-highlight {
   background-image: url('themes/wikimediaui/images/icons/highlight.png');
@@ -704,6 +719,11 @@
   background-image: url('themes/wikimediaui/images/icons/italic-geor-kan.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-geor-kan.svg');
 }
+/* @noflip */
+.oo-ui-icon-italic:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/italic-arab-teh.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-arab-teh.svg');
+}
 .oo-ui-image-invert.oo-ui-icon-italic {
   background-image: url('themes/wikimediaui/images/icons/italic-a-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-a-invert.svg');
@@ -863,6 +883,11 @@
   background-image: url('themes/wikimediaui/images/icons/italic-geor-kan-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-geor-kan-invert.svg');
 }
+/* @noflip */
+.oo-ui-image-invert.oo-ui-icon-italic:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/italic-arab-teh-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-arab-teh-invert.svg');
+}
 .oo-ui-image-progressive.oo-ui-icon-italic {
   background-image: url('themes/wikimediaui/images/icons/italic-a-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-a-progressive.svg');
@@ -1021,6 +1046,11 @@
 .oo-ui-image-progressive.oo-ui-icon-italic:lang(ka) {
   background-image: url('themes/wikimediaui/images/icons/italic-geor-kan-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-geor-kan-progressive.svg');
+}
+/* @noflip */
+.oo-ui-image-progressive.oo-ui-icon-italic:lang(ur) {
+  background-image: url('themes/wikimediaui/images/icons/italic-arab-teh-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/italic-arab-teh-progressive.svg');
 }
 .oo-ui-icon-strikethrough {
   background-image: url('themes/wikimediaui/images/icons/strikethrough-a.png');
