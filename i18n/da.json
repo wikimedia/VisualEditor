@@ -68,6 +68,8 @@
 	"visualeditor-debugbar-logrange": "Log valgt",
 	"visualeditor-debugbar-showmodel": "Vis model",
 	"visualeditor-debugbar-showtransactions": "Vis transaktioner",
+	"visualeditor-debugbar-startfilibuster": "Filibuster",
+	"visualeditor-debugbar-stopfilibuster": "Stop Filibuster",
 	"visualeditor-debugbar-updatemodel": "Opdater ved ændringer",
 	"visualeditor-dialog-action-apply": "Anvend ændringer",
 	"visualeditor-dialog-action-cancel": "Annuller",

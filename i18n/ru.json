@@ -34,7 +34,8 @@
 			"Silicium Power",
 			"Evs",
 			"Vlad5250",
-			"Infovarius"
+			"Infovarius",
+			"Nk88"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -93,6 +94,7 @@
 	"visualeditor-debugbar-logrange": "Отладка выделенного",
 	"visualeditor-debugbar-showmodel": "Показать модель",
 	"visualeditor-debugbar-showtransactions": "Показать транзакции",
+	"visualeditor-debugbar-testsquasher": "Проверить обработчик транзакций",
 	"visualeditor-debugbar-startfilibuster": "Филибастер",
 	"visualeditor-debugbar-stopfilibuster": "Остановить Филибастер",
 	"visualeditor-debugbar-updatemodel": "Обновлять при изменениях",
