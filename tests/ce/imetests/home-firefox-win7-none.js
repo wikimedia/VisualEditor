@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME 'Home' key test for Firefox on Windows.
  *
- * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 ve.ce.imetests.push( [ 'home-firefox-win7-none', [

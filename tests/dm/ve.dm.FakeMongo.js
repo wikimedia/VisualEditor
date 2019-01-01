@@ -1,7 +1,7 @@
 /*!
  * VisualEditor DataModel Fake mongo-like class for testing
  *
- * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 // Fake mongo class, with limited query API, that stores a single collection in memory

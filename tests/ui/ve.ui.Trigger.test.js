@@ -1,7 +1,7 @@
 /*!
  * VisualEditor UserInterface Trigger tests.
  *
- * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 QUnit.module( 've.ui.Trigger' );
