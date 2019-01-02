@@ -2925,6 +2925,7 @@ ve.ce.Surface.prototype.getFocusedNode = function ( range ) {
  *
  * @param {ve.Range} range Range to check
  * @return {HTMLElement|null} Slug, or null if no slug or if range is not collapsed
+ * @throws {Error} If range is inside internal list
  */
 ve.ce.Surface.prototype.findBlockSlug = function ( range ) {
 	var node;
