@@ -241,29 +241,6 @@
 		]
 	},
 	{
-		"name": "Tests",
-		"groups": [
-			{
-				"name": "QUnit",
-				"classes": ["ve.QUnit", "ve.QUnit.assert"]
-			},
-			{
-				"name": "IME",
-				"classes": [
-					"ve.ce.TestOffset",
-					"ve.ce.TestRunner"
-				]
-			},
-			{
-				"name": "Rebasing",
-				"classes": [
-					"ve.dm.TestRebaseClient",
-					"ve.dm.TestRebaseServer"
-				]
-			}
-		]
-	},
-	{
 		"name": "Upstream",
 		"groups": [
 			{

@@ -21,7 +21,6 @@
 		"lib/unicodejs/unicodejs.js",
 		"lib/treeDiffer/treeDiffer-dist.js",
 		"src",
-		"rebaser/src/dm",
-		"tests"
+		"rebaser/src/dm"
 	]
 }
