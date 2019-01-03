@@ -16,6 +16,8 @@
 	-webkit-transition: opacity 200ms ease-out;
 	-moz-transition: opacity 200ms ease-out;
 	transition: opacity 200ms ease-out;
+	/* Create a block formatting context to avoid overlapping floated elements (T211844) */
+	overflow: hidden;
 }
 
 .ve-ce-branchNode-blockSlug,
