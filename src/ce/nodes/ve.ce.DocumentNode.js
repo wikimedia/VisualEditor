@@ -29,7 +29,7 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 	this.setRoot( this );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-documentNode' );
+	this.$element.addClass( 've-ce-documentNode ve-ce-rootNode' );
 	// Prevent Grammarly from polluting the DOM (T165746)
 	this.$element.attr( 'data-gramm', 'false' );
 };

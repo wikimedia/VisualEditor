@@ -4,7 +4,7 @@
  * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-targetWidget .ve-ui-surface .ve-ce-documentNode,
+.ve-ui-targetWidget .ve-ui-surface .ve-ce-rootNode,
 .ve-ui-targetWidget .ve-ui-surface .ve-ui-surface-placeholder {
 	/* 0.5/0.8, 1/0.8 */
 	padding: 0.625em 1.25em;

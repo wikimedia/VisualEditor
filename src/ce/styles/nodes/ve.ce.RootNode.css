@@ -1,14 +1,14 @@
 /*!
- * VisualEditor ContentEditable DocumentNode styles.
+ * VisualEditor ContentEditable root node styles.
  *
  * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ce-documentNode {
+.ve-ce-rootNode {
 	cursor: default;
 }
 
-.ve-ce-surface-enabled .ve-ce-documentNode {
+.ve-ce-surface-enabled .ve-ce-rootNode {
 	cursor: text;
 }
 
@@ -17,15 +17,15 @@
  * supports overriding text selection colour, not images
  * (i.e. any focusable nodes)
  */
-.ve-ce-documentNode::selection,
-.ve-ce-documentNode *::selection {
+.ve-ce-rootNode::selection,
+.ve-ce-rootNode *::selection {
 	background: rgba( 109, 169, 247, 0.5 ); /* #6da9f7 */
 }
 
 /*
  * Reset styles applied to ce=true by Chrome (T207426)
  */
-.ve-ce-documentNode [ contentEditable='false' ] {
+.ve-ce-rootNode [ contentEditable='false' ] {
 	overflow-wrap: initial;
 	-webkit-line-break: initial;
 }
