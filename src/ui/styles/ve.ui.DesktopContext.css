@@ -47,3 +47,8 @@
 .ve-ui-desktopContext-floating {
 	position: fixed;
 }
+
+.ve-ui-desktopContext-embedded > .oo-ui-popupWidget > .oo-ui-popupWidget-popup {
+	margin-top: 0.25em;
+	margin-right: 0.25em;
+}

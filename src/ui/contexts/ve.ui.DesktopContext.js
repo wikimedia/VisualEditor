@@ -235,6 +235,8 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 		surface.getSelection( startingSelection ).getTableBoundingRect() :
 		surface.getSelection( startingSelection ).getSelectionBoundingRect();
 
+	this.$element.removeClass( 've-ui-desktopContext-embedded' );
+
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.
 		// This shouldn't happen because the context is only supposed to be
@@ -248,6 +250,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 			boundingRect.height > this.$group.outerHeight() + 5 &&
 			boundingRect.width > this.$group.outerWidth() + 10;
 		this.popup.toggleAnchor( !embeddable );
+		this.$element.toggleClass( 've-ui-desktopContext-embedded', !!embeddable );
 		if ( embeddable ) {
 			// Embedded context position depends on directionality
 			position = {
