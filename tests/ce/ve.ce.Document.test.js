@@ -35,7 +35,10 @@ QUnit.test( 'Converter tests', function ( assert ) {
 // TODO: getDirectionalityFromRange
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
-	var tests, i, iLen, test, parts, view, data, dmDoc, ceDoc, rootNode, offsetCount, offset, j, jLen, node, ex;
+	/* eslint-disable quotes */
+	var tests, i, iLen, test, parts, view, data, dmDoc, ceDoc, rootNode, offsetCount, offset, j, jLen, node, ex,
+		docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-rootNode'>",
+		pNodeStart = "<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>";
 
 	// Each test below has the following:
 	// html: an input document
@@ -44,25 +47,24 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	// characters on a modified HTML representation in which text nodes are wrapped in
 	// <#text>…</#text> tags (and most attributes are omitted)
 	// dies (optional): a list of DM offsets where getNodeAndOffset is expected to die
-	/* eslint-disable quotes */
 	tests = [
 		{
 			title: 'Simple para',
 			html: '<p>x</p>',
 			data: [ '<paragraph>', 'x', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|x|</#text></p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "<#text>|x|</#text></p></div>"
 		},
 		{
 			title: 'Bold',
 			html: '<p>x<b>y</b>z</p>',
 			data: [ '<paragraph>', 'x', 'y', 'z', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|x|</#text><b class='ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>y|</#text></b><#text>z|</#text></p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "<#text>|x|</#text><b class='ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>y|</#text></b><#text>z|</#text></p></div>"
 		},
 		{
 			title: 'Nested block nodes',
 			html: '<div><p>x</p></div>',
 			data: [ '<div>', '<paragraph>', 'x', '</paragraph>', '</div>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<div class='ve-ce-branchNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|x|</#text></p>|</div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div></div>"
+			positions: docNodeStart + "<div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<div class='ve-ce-branchNode'>|" + pNodeStart + "<#text>|x|</#text></p>|</div><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div></div>"
 		},
 		{
 			title: 'Empty document',
@@ -77,50 +79,50 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 			html: '<p></p>',
 			replacement: { path: [ 0 ], innerHtml: '' },
 			data: [ '<paragraph>', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|</p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "|</p></div>"
 		},
 		{
 			title: 'Slugless emptied paragraph with raw <br> in DOM only',
 			html: '<p></p>',
 			replacement: { path: [ 0 ], innerHtml: '<br>' },
 			data: [ '<paragraph>', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|<br></br></p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "|<br></br></p></div>"
 		},
 		{
 			title: 'Paragraph with links',
 			html: '<p><a href="A">A</a><a href="B">B</a></p>',
 			data: [ '<paragraph>', 'A', 'B', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>A</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>B</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|</p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>A</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><#text>B</#text><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>|</p></div>"
 		},
 		{
 			title: 'Paragraph with links, non-text nodes',
 			html: '<p><a href="A"><b>A<img></b></a></p>',
 			data: [ '<paragraph>', 'A', '<inlineImage>', '</inlineImage>', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><b class='ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>A|</#text><img class='ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode'></img></b><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>||<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "|<img class='ve-ce-nail ve-ce-nail-pre-open'></img><a class='ve-ce-annotation ve-ce-nailedAnnotation ve-ce-linkAnnotation'><img class='ve-ce-nail ve-ce-nail-post-open'></img><b class='ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-boldAnnotation'><#text>A|</#text><img class='ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode'></img></b><img class='ve-ce-nail ve-ce-nail-pre-close'></img></a><img class='ve-ce-nail ve-ce-nail-post-close'></img>||<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
 		},
 		{
 			title: 'About grouped aliens',
 			html: "<p><span rel='ve:Alien' about='x'>Foo</span><span rel='ve:Alien' about='x'>Bar</span></p>",
 			data: [ '<paragraph>', '<alienInline>', '</alienInline>', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Foo</#text></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>Bar</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Foo</#text></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>Bar</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
 		},
 		{
 			title: 'Non-about grouped aliens',
 			html: "<p><span rel='ve:Alien' about='x'>Foo</span><span rel='ve:Alien' about='y'>Bar</span></p>",
 			data: [ '<paragraph>', '<alienInline>', '</alienInline>', '<alienInline>', '</alienInline>', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Foo</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Bar</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Foo</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span><span class='ve-ce-focusableNode ve-ce-leafNode'><#text>|Bar</#text></span>|<span class='ve-ce-branchNode-slug ve-ce-branchNode-inlineSlug'></span></p></div>"
 		},
 		{
 			title: 'Meta outside of CBN',
 			html: "<p>X</p><!----><p>Y</p>",
 			data: [ '<paragraph>', 'X', '</paragraph>', '<commentMeta>', '</commentMeta>', '<paragraph>', 'Y', '</paragraph>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'>|<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|X|</#text></p>|||<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'><#text>|Y|</#text></p></div>"
+			positions: docNodeStart + "|" + pNodeStart + "<#text>|X|</#text></p>|||" + pNodeStart + "<#text>|Y|</#text></p></div>"
 		},
 		{
 			title: 'Meta does not cause double block slug',
 			html: "<p rel='ve:Alien'>X</p><!---->",
 			data: [ '<alienBlock>', '</alienBlock>', '<commentMeta>', '</commentMeta>' ],
-			positions: "<div class='ve-ce-branchNode ve-ce-documentNode'><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<p class='ve-ce-focusableNode ve-ce-leafNode'>|<#text>X</#text></p><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>||</div>"
+			positions: docNodeStart + "<div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>|<p class='ve-ce-focusableNode ve-ce-leafNode'>|<#text>X</#text></p><div class='ve-ce-branchNode-slug ve-ce-branchNode-blockSlug'></div>||</div>"
 		}
 	];
 	/* eslint-enable quotes */

@@ -143,9 +143,9 @@ ve.ce.TestRunner = function VeCeTestRunner( surface ) {
  * @return {Node} The paragraph node
  */
 ve.ce.TestRunner.prototype.getParagraph = function () {
-	var p = this.view.$element.find( '.ve-ce-documentNode > p' )[ 0 ];
+	var p = this.view.$element.find( '.ve-ce-rootNode > p' )[ 0 ];
 	if ( p === undefined ) {
-		if ( this.view.$element.find( '.ve-ce-documentNode' )[ 0 ] === undefined ) {
+		if ( this.view.$element.find( '.ve-ce-rootNode' )[ 0 ] === undefined ) {
 			throw new Error( 'no CE div' );
 		}
 		throw new Error( 'CE div but no p' );

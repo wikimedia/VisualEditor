@@ -25,13 +25,13 @@
 }
 
 .ve-ui-surface-placeholder,
-.ve-ui-surface .ve-ce-documentNode {
+.ve-ui-surface .ve-ce-rootNode {
 	/* Use an non-zero padding to disable margin collapse */
 	padding: 0.05px 0;
 }
 
 .ve-ui-surface-source .ve-ui-surface-placeholder,
-.ve-ui-surface-source .ve-ce-documentNode {
+.ve-ui-surface-source .ve-ce-rootNode {
 	/* Support: Blink, Gecko, Webkit */
 	/* Specify a valid second value to fix size, see T176636 */
 	font-family: monospace, monospace;
