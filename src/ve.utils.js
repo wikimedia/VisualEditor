@@ -768,7 +768,7 @@ ve.elementTypes = {
 		'hr', 'button', 'canvas', 'center', 'col', 'colgroup', 'embed',
 		'map', 'object', 'pre', 'progress', 'video'
 	],
-	'void': [
+	void: [
 		'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img',
 		'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
 	]

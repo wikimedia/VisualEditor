@@ -5,6 +5,7 @@
 		"wikimedia/language/es6"
 	],
 	"rules": {
-		"max-len": 0
+		"max-len": 0,
+		"jquery/no-parse-html-literal": 0
 	}
 }

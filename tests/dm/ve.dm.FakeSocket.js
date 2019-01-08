@@ -39,7 +39,7 @@ ve.dm.FakeSocket.static.makeServer = function () {
 		sockets.length = 0;
 		log.length = 0;
 	};
-	return { sockets: { sockets: sockets, log: log, 'in': getRoom, reset: reset } };
+	return { sockets: { sockets: sockets, log: log, in: getRoom, reset: reset } };
 };
 
 ve.dm.FakeSocket.prototype.join = function ( roomName ) {

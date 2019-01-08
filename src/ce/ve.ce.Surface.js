@@ -454,6 +454,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 			textRange = document.body.createTextRange();
 			textRange.moveToPoint( x, y );
 			textRange.pasteHTML( '<span class="ve-ce-textRange-drop-marker">&nbsp;</span>' );
+			// eslint-disable-next-line jquery/no-global-selector
 			$marker = $( '.ve-ce-textRange-drop-marker' );
 			offset = ve.ce.getOffset( $marker.get( 0 ), 0 );
 			$marker.remove();
@@ -560,6 +561,7 @@ ve.ce.Surface.prototype.focus = function () {
 		this.$pasteTarget[ 0 ].focus();
 	} else if ( selection.isNativeCursor() ) {
 		node = this.getDocument().getNodeAndOffset( selection.getModel().getRange().start ).node;
+		// eslint-disable-next-line jquery/no-event-shorthand
 		$( node ).closest( '[contenteditable=true]' )[ 0 ].focus();
 	}
 
@@ -3938,7 +3940,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 		// common case for getting here is when pressing backspace when the
 		// cursor is in the middle of a block of text (thus both are a <div>),
 		// and we don't want to scroll away from the caret.
-		$focusTarget.focus();
+		$focusTarget.trigger( 'focus' );
 	} else {
 		// Scroll the node into view
 		ve.scrollIntoView(

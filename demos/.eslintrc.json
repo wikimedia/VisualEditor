@@ -1,6 +1,7 @@
 {
 	"extends": "../.eslintrc.json",
 	"rules": {
-		"no-console": "off"
+		"no-console": "off",
+		"jquery/no-global-selector": "off"
 	}
 }

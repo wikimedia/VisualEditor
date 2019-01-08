@@ -181,7 +181,7 @@ ve.ui.Trigger.static.platformMapping = {
 		alt: '⌥',
 		backspace: '⌫',
 		ctrl: '^',
-		'delete': '⌦',
+		delete: '⌦',
 		down: '↓',
 		end: '↗',
 		// Technically 'enter' is ⌤, but JS doesn't distinguish between 'enter' and
@@ -209,7 +209,7 @@ ve.ui.Trigger.static.platformMapping = {
  * @inheritable
  */
 ve.ui.Trigger.static.platformStringJoiners = {
-	'default': '+',
+	default: '+',
 	mac: ''
 };
 
@@ -255,7 +255,7 @@ ve.ui.Trigger.static.keyAliases = {
 	apple: 'meta',
 	windows: 'meta',
 	option: 'alt',
-	'return': 'enter',
+	return: 'enter',
 	// Shorthand
 	esc: 'escape',
 	cmd: 'meta',

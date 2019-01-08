@@ -40,11 +40,11 @@ var self = module.exports = {
 		// (which will compile the less code) and the concat task
 		// (which will prepend intro.css without it being stripped
 		// like recess would).
-		var targets = { 'default': [] };
+		var targets = { default: [] };
 		resources.forEach( function ( filepath ) {
 			var variant, buffer;
 			if ( typeof filepath !== 'object' ) {
-				filepath = { 'default': filepath };
+				filepath = { default: filepath };
 			}
 			// Fetch copy of buffer before filepath/variant loop, otherwise
 			// it can incorrectly include the default file in a non-default variant.

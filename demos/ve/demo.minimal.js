@@ -22,7 +22,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise()
 			ve.dm.converter.getModelFromDom(
 				ve.createDocumentFromHtml( '<p><b>Hello,</b> <i>World!</i></p>' ),
 				// Optional: Document language, directionality (ltr/rtl)
-				{ lang: $.i18n().locale, dir: $( 'body' ).css( 'direction' ) }
+				{ lang: $.i18n().locale, dir: $( document.body ).css( 'direction' ) }
 			)
 		);
 

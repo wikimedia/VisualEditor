@@ -404,6 +404,7 @@
 
 		view.surface = mockSurface;
 		mockSurface.$element.append( view.$element );
+		// eslint-disable-next-line jquery/no-global-selector
 		$( '#qunit-fixture' ).append( mockSurface.$element );
 
 		view.initialize();

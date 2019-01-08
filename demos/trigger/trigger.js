@@ -57,7 +57,7 @@
 
 	// Events
 
-	$( 'body' ).on( {
+	$( document.body ).on( {
 		keydown: function ( e ) {
 			$( '.active' ).removeClass( 'active' );
 			setTrigger( new ve.ui.Trigger( e ) );
