@@ -379,10 +379,17 @@ module.exports = function ( grunt ) {
 				browserDisconnectTimeout: 5000,
 				browserDisconnectTolerance: 2,
 				browserNoActivityTimeout: 30000,
+				customLaunchers: {
+					ChromeCustom: {
+						base: 'ChromeHeadless',
+						// Chrome requires --no-sandbox in Docker/CI.
+						flags: ( process.env.CHROMIUM_FLAGS || '' ).split( ' ' )
+					}
+				},
 				autoWatch: false
 			},
 			main: {
-				browsers: [ 'Chrome' ], // T200347: Temporarily disabled `, 'Firefox'*/ ],`
+				browsers: [ 'ChromeCustom' ], // T200347: Temporarily disabled `, 'Firefox'*/ ],`
 				preprocessors: {
 					'rebaser/src/**/*.js': [ 'coverage' ],
 					'src/**/*.js': [ 'coverage' ]
