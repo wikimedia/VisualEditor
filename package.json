@@ -24,7 +24,7 @@
     "eslint-config-wikimedia": "0.10.0",
     "eslint-plugin-html": "5.0.0",
     "grunt": "1.0.3",
-    "grunt-banana-checker": "0.6.0",
+    "grunt-banana-checker": "0.7.0",
     "grunt-contrib-clean": "2.0.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-copy": "1.0.0",
