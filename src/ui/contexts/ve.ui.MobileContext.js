@@ -18,9 +18,6 @@ ve.ui.MobileContext = function VeUiMobileContext() {
 	// Parent constructor
 	ve.ui.MobileContext.super.apply( this, arguments );
 
-	// Properties
-	this.transitioning = null;
-
 	// Events
 	this.inspectors.connect( this, {
 		setup: [ 'toggle', true ],
