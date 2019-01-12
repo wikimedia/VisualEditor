@@ -22,6 +22,7 @@
 	margin-top: 3em;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .ve-ui-authorItemWidget-colorPicker .color-picker-control {
 	border-color: #ccc;
 	padding: 3px;
