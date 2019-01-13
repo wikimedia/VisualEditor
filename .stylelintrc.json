@@ -1,6 +1,6 @@
 {
 	"extends": "stylelint-config-wikimedia",
 	"rules": {
-		"selector-class-pattern": "(ve|oo-ui)-"
+		"selector-class-pattern": "^(ve|oo-ui)-"
 	}
 }
