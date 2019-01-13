@@ -30,7 +30,8 @@
 		Bad (setTimeout):
 		<div id="bad" contenteditable="true"></div>
 		<script>
-			$( function () {
+			/* eslint-disable no-console */
+			( function () {
 				var i, len, eventName,
 					onEvents = {},
 					afterEvents = {},
@@ -38,8 +39,10 @@
 						'compositionstart', 'compositionend',
 						'keydown', 'keyup', 'keypress'
 					],
-					$badDiv = $( '#bad' ),
-					$goodDiv = $( '#good' );
+					/* eslint-disable jquery/no-global-selector */
+					$bad = $( '#bad' ),
+					$good = $( '#good' );
+					/* eslint-enable jquery/no-global-selector */
 
 				function showEventCode( e ) {
 					return ( e && e.keyCode ) ? '(keyCode=' + e.keyCode + ')' : '';
@@ -49,7 +52,7 @@
 					return function ( e ) {
 						console.log(
 							message + showEventCode( e ) + ' ' + JSON.stringify(
-								$goodDiv[ 0 ].innerHTML
+								$good[ 0 ].innerHTML
 							)
 						);
 					};
@@ -72,14 +75,14 @@
 					onEvents[ eventName ] = makeListener( 'on ' + eventName );
 					afterEvents[ eventName ] = makeListener(
 						'after ' + eventName );
-					addSetTimeoutListeners( $badDiv[ 0 ], eventName );
+					addSetTimeoutListeners( $bad[ 0 ], eventName );
 				}
 
 				new ve.EventSequencer( eventNames )
 					.on( onEvents )
 					.after( afterEvents )
-					.attach( $goodDiv );
-				$goodDiv.trigger( 'focus' );
+					.attach( $good );
+				$good.trigger( 'focus' );
 			}() );
 		</script>
 	</body>

@@ -67,7 +67,13 @@
 		<script src="../../src/ve.EventSequencer.js"></script>
 		<script>
 			( function () {
-				var $form, $content, $log, startTime,
+				var startTime,
+					/* eslint-disable jquery/no-global-selector */
+					$form = $( '.ve-demo-form' ),
+					$content = $( '.ve-demo-content' ).addClass( 'oo-ui-element-hidden' ),
+					$log = $( '.ve-demo-log' ).val( '' ),
+					$imeIdentifier = $( '.ve-demo-identifier' ),
+					/* eslint-enable jquery/no-global-selector */
 					oldHtml = '',
 					oldStartOffset = 0,
 					oldEndOffset = 0,
@@ -160,7 +166,7 @@
 					e.preventDefault();
 
 					comments = {
-						imeIdentifier: $( '.ve-demo-identifier' ).val(),
+						imeIdentifier: $imeIdentifier.val(),
 						userAgent: navigator.userAgent,
 						startDom: $content.html()
 					};
@@ -169,7 +175,7 @@
 					$content.removeClass( 'oo-ui-element-hidden' ).trigger( 'focus' );
 				}
 
-				function init() {
+				( function () {
 					var i, len,
 						handlers = {},
 						eventNames = [
@@ -180,10 +186,6 @@
 							'keypress',
 							'input'
 						];
-
-					$form = $( '.ve-demo-form' );
-					$content = $( '.ve-demo-content' ).addClass( 'oo-ui-element-hidden' );
-					$log = $( '.ve-demo-log' ).val( '' );
 
 					for ( i = 0, len = eventNames.length; i < len; i++ ) {
 						handlers[ eventNames[ i ] ] =
@@ -205,9 +207,8 @@
 							this.select();
 						}
 					} );
-				}
+				}() );
 
-				init();
 			}() );
 		</script>
 	</body>

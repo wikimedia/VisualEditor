@@ -203,6 +203,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 			container.surface = null;
 		}
 
+		// eslint-disable-next-line jquery/no-global-selector
 		$( '.ve-demo-targetToolbar' ).toggleClass( 'oo-ui-element-hidden', isRead );
 		container.$element.find( '.ve-demo-surfaceToolbar-edit' ).toggleClass( 'oo-ui-element-hidden', isRead );
 		container.$element.find( '.ve-demo-surfaceToolbar-read' ).toggleClass( 'oo-ui-element-hidden', !isRead );
