@@ -470,7 +470,7 @@ ve.ui.Surface.prototype.onDocumentTransact = function () {
  * This is required when the cursor disappears under the floating toolbar.
  */
 ve.ui.Surface.prototype.scrollCursorIntoView = function () {
-	var view, clientRect, surfaceRect, cursorTop, cursorBottom, scrollTo, bottomBound, topBound;
+	var profile, view, clientRect, surfaceRect, cursorTop, cursorBottom, scrollTo, bottomBound, topBound;
 
 	view = this.getView();
 
@@ -511,10 +511,15 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 		!ve.init.platform.constructor.static.isIos() &&
 		!this.getModel().getSelection().isCollapsed()
 	) {
-		// Assume that if the selection has been expanded, then a context menu is visible
-		// above the selection. We don't want this to obscure the toolbar so add on an
-		// estimate of its height. (T202723)
-		topBound += 60;
+		profile = $.client.profile();
+		if ( profile.name === 'android' && profile.versionNumber >= 6 ) {
+			// Assume that if the selection has been expanded, then a context menu is visible
+			// above the selection. We don't want this to obscure the toolbar so add on an
+			// estimate of its height. (T202723)
+			// Older versions of Android draw the context menu in the address bar and so
+			// don't need to be fixed.
+			topBound += 60;
+		}
 		// Also assume there are selection handles below on Android. (T204718)
 		bottomBound -= 30;
 	}
