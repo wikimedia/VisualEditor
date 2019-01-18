@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test": "grunt test",
-    "prepublish": "grunt build",
+    "prepare": "grunt build",
     "doc": "jsduck"
   },
   "homepage": "https://www.mediawiki.org/wiki/VisualEditor",
