@@ -10,7 +10,8 @@
 			"Anh88",
 			"Nguyên Lê",
 			"Phjtieudoc",
-			"Leducthn"
+			"Leducthn",
+			"Vinhtantran"
 		]
 	},
 	"visualeditor": "Trình soạn thảo trực quan",
@@ -86,7 +87,7 @@
 	"visualeditor-dialog-table-caption": "Chú thích",
 	"visualeditor-dialog-table-title": "Thuộc tính bảng",
 	"visualeditor-diff-no-changes": "Không có thay đổi",
-	"visualeditor-diff-timed-out": "Tính các thay đổi của bạn tốn quá lâu, nên miêu tả bên dưới có thể không tối ưu.",
+	"visualeditor-diff-timed-out": "Việc tính toán các thay đổi của bạn mất quá nhiều thời gian, nên miêu tả bên dưới có thể không tối ưu.",
 	"visualeditor-dimensionswidget-px": "điểm ảnh",
 	"visualeditor-find-and-replace-diacritic": "Không phân biệt dấu phụ",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Trình duyệt này không hỗ trợ tìm kiếm mà không phân biệt dấu phụ",
