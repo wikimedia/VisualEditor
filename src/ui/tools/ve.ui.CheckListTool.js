@@ -63,3 +63,15 @@ ve.ui.commandRegistry.register(
 		{ args: [ null, false, 'checkList' ], supportedSelections: [ 'linear' ] }
 	)
 );
+
+/* Command help */
+
+ve.ui.commandHelpRegistry.register( 'formatting', 'listCheckList', {
+	sequences: [ 'checkList' ], label: OO.ui.deferMsg( 'visualeditor-listbutton-check-tooltip' )
+} );
+
+/* Sequence */
+
+ve.ui.sequenceRegistry.register(
+	new ve.ui.Sequence( 'checkList', 'checkList', [ { type: 'paragraph' }, '[', ']', ' ' ], 3 )
+);
