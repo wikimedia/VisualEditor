@@ -560,7 +560,7 @@ ve.dm.Surface.prototype.getTranslatedSelection = function () {
  */
 ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, excludeInsertions ) {
 	selection = selection || this.selection;
-	// TODO: Use a factory pattery to generate fragments
+	// TODO: Use a factory pattern to generate fragments
 	return this.sourceMode ?
 		new ve.dm.SourceSurfaceFragment( this, selection, noAutoSelect, excludeInsertions ) :
 		new ve.dm.SurfaceFragment( this, selection, noAutoSelect, excludeInsertions );
