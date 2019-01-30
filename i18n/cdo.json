@@ -3,7 +3,8 @@
 		"authors": [
 			"Yejianfei",
 			"Ztl8702",
-			"LNDDYL"
+			"LNDDYL",
+			"Davidzdh"
 		]
 	},
 	"visualeditor": "可視化編輯器",
@@ -37,7 +38,7 @@
 	"visualeditor-dialog-action-cancel": "取消",
 	"visualeditor-dialog-action-done": "完成",
 	"visualeditor-dialog-action-goback": "返回",
-	"visualeditor-dialog-action-insert": "插入",
+	"visualeditor-dialog-action-insert": "插裏",
 	"visualeditor-dialog-command-help-title": "鍵盤快速鍵",
 	"visualeditor-dialog-error": "什乇出毛病了……",
 	"visualeditor-dialog-error-dismiss": "轉去",

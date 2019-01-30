@@ -9,12 +9,16 @@
 			"Vahe Gharakhanyan",
 			"Aram1985",
 			"Kareyac",
-			"Narek"
+			"Narek",
+			"Azniv Stepanian"
 		]
 	},
 	"visualeditor": "Վիզուալ խմբագրիչ",
 	"visualeditor-aliencontextitem-title": "Տարր",
 	"visualeditor-aliennode-tooltip": "Ցավում եմ, սակայն այս տարրը կարելի է խմբագրել միայն ելատեքստում։",
+	"visualeditor-align-desc-center": "Կենտրոն",
+	"visualeditor-align-desc-left": "Ձախ",
+	"visualeditor-align-desc-right": "Աջ",
 	"visualeditor-align-widget-center": "Կենտրոն",
 	"visualeditor-align-widget-default": "Լռելյայն",
 	"visualeditor-align-widget-left": "Ձախ",
@@ -37,7 +41,7 @@
 	"visualeditor-changedesc-image-size": "Չափսը $1-ից փոխվել է $2",
 	"visualeditor-changedesc-language": "Լեզուն $1ից փոխվել է $2",
 	"visualeditor-changedir-tool-rtl": "Ցուցադրել աջից ձախ",
-	"visualeditor-clearbutton-tooltip": "Մաքրել ձևավորումը",
+	"visualeditor-clearbutton-tooltip": "Հեռացնել",
 	"visualeditor-clipboard-copy": "Պատճենել",
 	"visualeditor-clipboard-cut": "Կտրել",
 	"visualeditor-clipboard-paste": "Փակցնել",
