@@ -91,7 +91,7 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 	} else if ( surfaceModel.sourceMode ) {
 		return false;
 	} else {
-		ve.track( 'activity.' + name, { method: 'toggle-insertion' } );
+		ve.track( 'activity.' + name, { action: 'toggle-insertion' } );
 		insertionAnnotations = surfaceModel.getInsertionAnnotations();
 		existingAnnotations = insertionAnnotations.getAnnotationsByName( annotation.name );
 		if ( existingAnnotations.isEmpty() ) {
@@ -119,7 +119,7 @@ ve.ui.AnnotationAction.prototype.clearAll = function () {
 		fragment = surfaceModel.getFragment(),
 		annotations = fragment.getAnnotations( true );
 
-	ve.track( 'activity.allAnnotations', { method: 'clear-all' } );
+	ve.track( 'activity.allAnnotations', { action: 'clear-all' } );
 
 	arr = annotations.get();
 	// TODO: Allow multiple annotations to be set or cleared by ve.dm.SurfaceFragment, probably
