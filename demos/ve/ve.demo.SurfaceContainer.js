@@ -116,7 +116,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 			$exitReadButton
 		),
 		this.surfaceWrapper.$element,
-		this.readView.$element.hide()
+		this.readView.$element.css( 'display', 'none' )
 	);
 
 	this.pageMenu.selectItem(
@@ -174,6 +174,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 	switch ( this.mode ) {
 		case 'visual':
 		case 'source':
+			// eslint-disable-next-line jquery/no-slide
 			closePromise = this.surface.$element.slideUp().promise();
 			if ( !page ) {
 				html = this.surface.getHtml();
@@ -182,6 +183,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 			break;
 
 		case 'read':
+			// eslint-disable-next-line jquery/no-slide
 			closePromise = this.readView.$element.slideUp().promise();
 			if ( !page ) {
 				html = ve.properInnerHtml( this.readView.$element[ 0 ] );
@@ -222,6 +224,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 
 			case 'read':
 				container.surfaceWrapper.toggle( false );
+				// eslint-disable-next-line jquery/no-slide
 				container.readView.$element.html( html ).css( 'direction', currentDir ).slideDown();
 				break;
 		}
@@ -243,6 +246,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
 	container.emit( 'changePage' );
 
 	ve.init.platform.getInitializedPromise().done( function () {
+		// eslint-disable-next-line jquery/no-slide
 		( container.surface ? container.surface.$element.slideUp().promise() : ve.createDeferred().resolve().promise() ).done( function () {
 			var localMatch = page.match( /^localStorage\/(.+)$/ );
 			if ( localMatch ) {
@@ -325,7 +329,8 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	} );
 
 	this.surfaceWrapper.$element.empty().append( this.surface.$element.parent() );
-	this.surface.$element.hide().slideDown().promise().done( function () {
+	// eslint-disable-next-line jquery/no-slide
+	this.surface.$element.css( 'display', 'none' ).slideDown().promise().done( function () {
 		// Check surface still exists
 		if ( container.surface ) {
 			container.surface.getView().emit( 'position' );
@@ -356,6 +361,7 @@ ve.demo.SurfaceContainer.prototype.reload = function ( lang, dir ) {
  */
 ve.demo.SurfaceContainer.prototype.destroy = function () {
 	var container = this;
+	// eslint-disable-next-line jquery/no-slide
 	this.$element.slideUp().promise().done( function () {
 		if ( container.surface ) {
 			container.surface.destroy();
