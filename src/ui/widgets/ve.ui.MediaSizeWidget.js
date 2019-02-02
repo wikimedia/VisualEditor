@@ -204,12 +204,12 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
 ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	var dimensions = {};
 
-	if ( Number( value ) === 0 && !this.noDefaultDimensions ) {
+	if ( +value === 0 && !this.noDefaultDimensions ) {
 		this.setSizeType( 'default' );
 	} else {
 		this.setSizeType( 'custom' );
-		if ( $.isNumeric( value ) ) {
-			dimensions[ type ] = Number( value );
+		if ( !isNaN( +value ) ) {
+			dimensions[ type ] = +value;
 			this.setCurrentDimensions( dimensions );
 		} else {
 			this.validateDimensions();
@@ -294,8 +294,8 @@ ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
 		this.getSizeType() !== sizeType ||
 		// If the dimensions widget has zeros make sure to
 		// allow for the change in size type
-		Number( this.dimensions.getWidth() ) === 0 ||
-		Number( this.dimensions.getHeight() ) === 0
+		+this.dimensions.getWidth() === 0 ||
+		+this.dimensions.getHeight() === 0
 	) {
 		this.sizeTypeSelect.chooseItem(
 			this.sizeTypeSelect.findItemFromData( sizeType )
@@ -578,8 +578,8 @@ ve.ui.MediaSizeWidget.prototype.isValid = function () {
 		) {
 			return true;
 		} else if (
-			$.isNumeric( this.dimensions.getWidth() ) &&
-			$.isNumeric( this.dimensions.getHeight() )
+			!isNaN( +this.dimensions.getWidth() ) &&
+			!isNaN( +this.dimensions.getHeight() )
 		) {
 			return this.scalable.isCurrentDimensionsValid();
 		} else {

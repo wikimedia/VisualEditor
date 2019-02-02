@@ -561,7 +561,6 @@ ve.ce.Surface.prototype.focus = function () {
 		this.$pasteTarget[ 0 ].focus();
 	} else if ( selection.isNativeCursor() ) {
 		node = this.getDocument().getNodeAndOffset( selection.getModel().getRange().start ).node;
-		// eslint-disable-next-line jquery/no-event-shorthand
 		$( node ).closest( '[contenteditable=true]' )[ 0 ].focus();
 	}
 
