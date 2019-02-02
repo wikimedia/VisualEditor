@@ -72,6 +72,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		}( this ) ),
 		tabIndex: 1
 	} );
+	this.updateUserConfigDebounced = ve.debounce( this.updateUserConfig.bind( this ), 500 );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
 		icon: 'previous',
@@ -310,20 +311,28 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	this.renderFragments();
 	this.highlightFocused( true );
 	this.diacriticToggle.setDisabled( !ve.supportsIntl || this.regexToggle.getValue() );
-	ve.userConfig( {
-		'visualeditor-findAndReplace-findText': this.findText.getValue(),
-		'visualeditor-findAndReplace-matchCase': this.matchCaseToggle.getValue(),
-		'visualeditor-findAndReplace-regex': this.regexToggle.getValue(),
-		'visualeditor-findAndReplace-word': this.wordToggle.getValue(),
-		'visualeditor-findAndReplace-diacritic': this.diacriticToggle.getValue()
-	} );
+	this.updateUserConfigDebounced();
 };
 
 /**
  * Handle change events to the replace input
  */
 ve.ui.FindAndReplaceDialog.prototype.onReplaceChange = function () {
-	ve.userConfig( 'visualeditor-findAndReplace-replaceText', this.replaceText.getValue() );
+	this.updateUserConfigDebounced();
+};
+
+/**
+ * Remember inputs in the dialog in user config.
+ */
+ve.ui.FindAndReplaceDialog.prototype.updateUserConfig = function () {
+	ve.userConfig( {
+		'visualeditor-findAndReplace-findText': this.findText.getValue(),
+		'visualeditor-findAndReplace-matchCase': this.matchCaseToggle.getValue(),
+		'visualeditor-findAndReplace-regex': this.regexToggle.getValue(),
+		'visualeditor-findAndReplace-word': this.wordToggle.getValue(),
+		'visualeditor-findAndReplace-diacritic': this.diacriticToggle.getValue(),
+		'visualeditor-findAndReplace-replaceText': this.replaceText.getValue()
+	} );
 };
 
 /**
