@@ -1258,7 +1258,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: '<span style="font-weight:700;">A</span><span style="font-style:italic;">B</span><span style="text-decoration:underline">C</span><span style="text-decoration:line-through;">D</span><span style="vertical-align:super;">E</span><span style="vertical-align:sub;">F</span><span style="font-weight:700; font-style:italic;">G</span><span style="color:red;">H</span>',
+				pasteHtml: '<span style="font-weight:700;">A</span><span style="font-style:italic;">B</span><span style="text-decoration:underline">C</span><span style="text-decoration:line-through;">D</span><span style="vertical-align:super;">E</span><span style="vertical-align:sub;">F</span><span style="font-weight:700; font-style:italic;">G</span><span style="color:red;">H</span><span style="font-weight:bold;">I</span>',
 				fromVe: true,
 				expectedOps: [
 					[
@@ -1273,14 +1273,15 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 								[ 'E', [ { type: 'textStyle/superscript', attributes: { nodeName: 'sup' } } ] ],
 								[ 'F', [ { type: 'textStyle/subscript', attributes: { nodeName: 'sub' } } ] ],
 								[ 'G', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } }, { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
-								'H'
+								'H',
+								[ 'I', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ]
 							],
 							remove: []
 						},
 						{ type: 'retain', length: 29 }
 					]
 				],
-				expectedRangeOrSelection: new ve.Range( 9 ),
+				expectedRangeOrSelection: new ve.Range( 10 ),
 				msg: 'Span cleanups: style converted into markup'
 			},
 			{
