@@ -2527,7 +2527,7 @@ ve.ce.Surface.prototype.afterPasteSanitizeExternal = function ( $element ) {
 			return;
 		}
 		$node = $( node );
-		if ( node.style.fontWeight === '700' || node.style.fontWeight === 'bold' ) {
+		if ( +node.style.fontWeight >= 700 || node.style.fontWeight === 'bold' ) {
 			$node.wrap( '<b>' );
 		}
 		if ( node.style.fontStyle === 'italic' ) {

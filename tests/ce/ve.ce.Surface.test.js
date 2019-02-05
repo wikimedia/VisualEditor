@@ -1258,7 +1258,17 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: '<span style="font-weight:700;">A</span><span style="font-style:italic;">B</span><span style="text-decoration:underline">C</span><span style="text-decoration:line-through;">D</span><span style="vertical-align:super;">E</span><span style="vertical-align:sub;">F</span><span style="font-weight:700; font-style:italic;">G</span><span style="color:red;">H</span><span style="font-weight:bold;">I</span>',
+				pasteHtml:
+					'<span style="font-weight:700;">A</span>' +
+					'<span style="font-weight:900;">2</span>' +
+					'<span style="font-weight:bold;">3</span>' +
+					'<span style="font-style:italic;">B</span>' +
+					'<span style="text-decoration:underline">C</span>' +
+					'<span style="text-decoration:line-through;">D</span>' +
+					'<span style="vertical-align:super;">E</span>' +
+					'<span style="vertical-align:sub;">F</span>' +
+					'<span style="font-weight:700; font-style:italic;">G</span>' +
+					'<span style="color:red;">H</span>',
 				fromVe: true,
 				expectedOps: [
 					[
@@ -1267,21 +1277,22 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'replace',
 							insert: [
 								[ 'A', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
+								[ '2', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
+								[ '3', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
 								[ 'B', [ { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
 								[ 'C', [ { type: 'textStyle/underline', attributes: { nodeName: 'u' } } ] ],
 								[ 'D', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
 								[ 'E', [ { type: 'textStyle/superscript', attributes: { nodeName: 'sup' } } ] ],
 								[ 'F', [ { type: 'textStyle/subscript', attributes: { nodeName: 'sub' } } ] ],
 								[ 'G', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } }, { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
-								'H',
-								[ 'I', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ]
+								'H'
 							],
 							remove: []
 						},
 						{ type: 'retain', length: 29 }
 					]
 				],
-				expectedRangeOrSelection: new ve.Range( 10 ),
+				expectedRangeOrSelection: new ve.Range( 11 ),
 				msg: 'Span cleanups: style converted into markup'
 			},
 			{
