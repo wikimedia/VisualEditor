@@ -14,7 +14,7 @@
  * @param {HTMLElement[]} elements Annotation elements in force
  * @param {string} type If this is a unicorn then 'unicorn', else 'text'
  */
-ve.ce.TextStateChunk = function VeCeTextState( text, elements, type ) {
+ve.ce.TextStateChunk = function VeCeTextStateChunk( text, elements, type ) {
 	/**
 	 * @property {string} text The plain text of this chunk
 	 */
