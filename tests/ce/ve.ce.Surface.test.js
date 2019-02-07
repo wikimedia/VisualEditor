@@ -491,7 +491,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 } );
 
 QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
-	var i,
+	var i, ImageTransferHandler,
 		surface = ve.test.utils.createViewOnlySurfaceFromHtml( '' ),
 		view = surface.getView(),
 		model = surface.getModel(),
@@ -500,6 +500,11 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 		// Don't hard-code link index as it may depend on the LinkAction used
 		linkHash = model.getDocument().getStore().hashOfValue( link ),
 		fragment = model.getLinearFragment( new ve.Range( 1 ) ),
+		image = {
+			name: 'image.jpg',
+			type: 'image/jpeg',
+			size: 30 * 1024
+		},
 		cases = [
 			{
 				msg: 'URL',
@@ -531,8 +536,61 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 					[ 'o', [ linkHash ] ],
 					[ 'm', [ linkHash ] ]
 				]
+			},
+			{
+				msg: 'Image only',
+				dataTransfer: {
+					items: [
+						{
+							kind: 'file',
+							type: 'image/jpeg',
+							getAsFile: function () {
+								return image;
+							}
+						}
+					],
+					files: [ image ],
+					getData: function () {
+						return '';
+					}
+				},
+				isPaste: true,
+				expectedData: 'image.jpg'.split( '' )
+			},
+			{
+				msg: 'Image with HTML fallbacks',
+				dataTransfer: {
+					items: [
+						{
+							kind: 'file',
+							type: 'image/jpeg',
+							getAsFile: function () {
+								return image;
+							}
+						}
+					],
+					files: [ image ],
+					getData: function ( type ) {
+						return type === 'text/html' ? '<img src="image.jpg" alt="fallback"><!-- image fallback metadata -->' : '';
+					}
+				},
+				isPaste: true,
+				expectedData: 'image.jpg'.split( '' )
 			}
 		];
+
+	ImageTransferHandler = function () {
+		// Parent constructor
+		ImageTransferHandler.super.apply( this, arguments );
+	};
+	OO.inheritClass( ImageTransferHandler, ve.ui.DataTransferHandler );
+	ImageTransferHandler.static.name = 'imageTest';
+	ImageTransferHandler.static.kinds = [ 'file' ];
+	ImageTransferHandler.static.types = [ 'image/jpeg' ];
+	ImageTransferHandler.prototype.process = function () {
+		this.insertableDataDeferred.resolve( this.item.getAsFile().name.split( '' ) );
+	};
+	ve.ui.dataTransferHandlerFactory.register( ImageTransferHandler );
 
 	for ( i = 0; i < cases.length; i++ ) {
 		fragment.select();
@@ -540,6 +598,8 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 		assert.equalLinearData( model.getDocument().getFullData( fragment.getSelection().getRange() ), cases[ i ].expectedData, cases[ i ].msg );
 		model.undo();
 	}
+
+	ve.ui.dataTransferHandlerFactory.unregister( ImageTransferHandler );
 } );
 
 QUnit.test( 'getClipboardHash', function ( assert ) {
