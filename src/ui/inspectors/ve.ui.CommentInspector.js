@@ -100,6 +100,7 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 				] ).select();
 				this.commentNode = this.getSelectedNode();
 			}
+			this.textWidget.setReadOnly( this.isReadOnly() );
 		}, this );
 };
 

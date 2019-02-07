@@ -33,6 +33,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		model.getAttachedRoot().getOffset() + ( model.getAttachedRoot().isWrapped() ? 1 : 0 )
 	);
 	this.selection = null;
+	this.readOnly = false;
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this );
 	this.$window = $( this.getElementWindow() );
 	this.$document = $( this.getElementDocument() );
@@ -224,7 +225,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$element.append( this.$attachedRootNode, this.$pasteTarget );
 	this.surface.$blockers.append( this.$highlights );
 	this.surface.$selections.append( this.$deactivatedSelection );
-	this.enable();
 };
 
 /* Inheritance */
@@ -520,25 +520,24 @@ ve.ce.Surface.prototype.initialize = function () {
 };
 
 /**
- * Enable editing.
+ * Set the read-only state of the surface
  *
- * @method
+ * @param {boolean} readOnly Make surface read-only
  */
-ve.ce.Surface.prototype.enable = function () {
-	this.disabled = false;
-	this.$element.addClass( 've-ce-surface-enabled' );
-	this.attachedRoot.enable();
+ve.ce.Surface.prototype.setReadOnly = function ( readOnly ) {
+	this.readOnly = !!readOnly;
+	this.$element.toggleClass( 've-ce-surface-readOnly', this.readOnly );
+	// TODO: Remove this deprecated class name
+	this.$element.toggleClass( 've-ce-surface-enabled', !this.readOnly );
 };
 
 /**
- * Disable editing.
+ * Check if the surface is read-only
  *
- * @method
+ * @return {boolean}
  */
-ve.ce.Surface.prototype.disable = function () {
-	this.disabled = true;
-	this.$element.removeClass( 've-ce-surface-enabled' );
-	this.attachedRoot.disable();
+ve.ce.Surface.prototype.isReadOnly = function () {
+	return this.readOnly;
 };
 
 /**
@@ -552,10 +551,6 @@ ve.ce.Surface.prototype.focus = function () {
 	var node,
 		surface = this,
 		selection = this.getSelection();
-
-	if ( this.disabled ) {
-		return;
-	}
 
 	if ( selection.getModel().isNull() ) {
 		this.getModel().selectFirstContentOffset();
@@ -932,7 +927,7 @@ ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
 ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
 	// selectionChange events are only emitted from window.document, so ignore
 	// any events which are fired when the document is blurred or deactivated.
-	if ( this.disabled || !this.focused || this.deactivated ) {
+	if ( !this.focused || this.deactivated ) {
 		return;
 	}
 	this.fixupCursorPosition( 0, this.dragging );
@@ -1114,6 +1109,10 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Prevent native drop event from modifying view
 	e.preventDefault();
 
+	if ( this.readOnly ) {
+		return;
+	}
+
 	// Determine drop position
 	if ( $dropTarget ) {
 		// Block level drag and drop: use the lastDropTarget to get the targetOffset
@@ -1235,6 +1234,24 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 				updateFromModel = true;
 			}
 		}
+	}
+
+	if (
+		this.readOnly && !(
+			// Allowed keystrokes in readonly mode:
+			// Arrows, simple navigation
+			ve.ce.LinearArrowKeyDownHandler.static.keys.indexOf( e.keyCode ) !== -1 ||
+			// Potential commands:
+			// Function keys...
+			( e.keyCode >= 112 && e.keyCode <= 123 ) ||
+			// ... or anything modified (e.g. copy / select-all), excluding shift
+			e.metaKey || e.ctrlKey || e.altKey
+			// Keys already handled in keyDownHandlers above do not need to be exempt here
+		)
+	) {
+		e.preventDefault();
+		e.stopPropagation();
+		return;
 	}
 
 	if ( !updateFromModel ) {
@@ -1867,7 +1884,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 ve.ce.Surface.prototype.onPaste = function ( e ) {
 	var surface = this;
 	// Prevent pasting until after we are done
-	if ( this.pasting ) {
+	if ( this.pasting || this.readOnly ) {
 		return false;
 	}
 	this.beforePaste( e );
@@ -3092,26 +3109,33 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 		insertedText = false;
 
 	if ( newState.contentChanged ) {
-		transaction = newState.textState.getChangeTransaction(
-			oldState.textState,
-			dmDoc,
-			newState.node.getOffset(),
-			newState.node.unicornAnnotations
-		);
-		if ( transaction ) {
-			this.incRenderLock();
-			try {
-				this.changeModel( transaction );
-			} finally {
-				this.decRenderLock();
+		if ( this.readOnly ) {
+			newState.node.renderContents();
+			this.showModelSelection();
+			return;
+		} else {
+			transaction = newState.textState.getChangeTransaction(
+				oldState.textState,
+				dmDoc,
+				newState.node.getOffset(),
+				newState.node.unicornAnnotations
+			);
+			if ( transaction ) {
+				this.incRenderLock();
+				try {
+					this.changeModel( transaction );
+				} finally {
+					this.decRenderLock();
+				}
+				insertedText = transaction.operations.filter( function ( op ) {
+					return op.type === 'replace' && op.insert.length;
+				} ).length > 0;
 			}
-			insertedText = transaction.operations.filter( function ( op ) {
-				return op.type === 'replace' && op.insert.length;
-			} ).length > 0;
 		}
 	}
 
 	if (
+		!this.readOnly &&
 		newState.branchNodeChanged &&
 		oldState &&
 		oldState.node &&
@@ -3920,10 +3944,6 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 		sel = this.nativeSelection,
 		newSel = selection;
 
-	if ( this.disabled ) {
-		return false;
-	}
-
 	if ( newSel.equalsSelection( sel ) ) {
 		this.updateActiveAnnotations();
 		return false;
@@ -4195,7 +4215,7 @@ ve.ce.Surface.prototype.getDocument = function () {
  * @return {boolean} Render is locked
  */
 ve.ce.Surface.prototype.isRenderingLocked = function () {
-	return this.renderLocks > 0;
+	return this.renderLocks > 0 && !this.readOnly;
 };
 
 /**

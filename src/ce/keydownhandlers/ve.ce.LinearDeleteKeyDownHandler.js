@@ -51,10 +51,15 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		documentModel = surface.getModel().getDocument(),
 		data = documentModel.data;
 
+	if ( surface.isReadOnly() ) {
+		e.preventDefault();
+		return true;
+	}
+
 	if ( direction === 1 && e.shiftKey && ve.getSystemPlatform() !== 'mac' ) {
 		// Shift+Del on non-Mac platforms performs 'cut', so
 		// don't handle it here.
-		return;
+		return false;
 	}
 
 	// Use native behaviour then poll if collapsed, unless we are adjacent to some hard tag

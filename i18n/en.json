@@ -67,6 +67,7 @@
 	"visualeditor-content-select-all": "Select all",
 	"visualeditor-contextitemwidget-label-remove": "Delete",
 	"visualeditor-contextitemwidget-label-secondary": "Edit",
+	"visualeditor-contextitemwidget-label-view": "View",
 	"visualeditor-debugbar-close": "Close",
 	"visualeditor-debugbar-inputdebug": "Input debugging",
 	"visualeditor-debugbar-logrange": "Log selected",

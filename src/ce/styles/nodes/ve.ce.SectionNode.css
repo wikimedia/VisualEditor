@@ -20,6 +20,6 @@
 	transition: opacity 250ms ease;
 }
 
-.ve-ce-surface-enabled .ve-ce-sectionNode:not( .ve-ce-activeNode-active ) {
+.ve-ce-sectionNode:not( .ve-ce-activeNode-active ) {
 	opacity: 0.5;
 }

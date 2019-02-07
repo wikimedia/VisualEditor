@@ -96,7 +96,14 @@ ve.ui.Tool.static.getCommand = function ( surface ) {
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
 	var command = this.getCommand();
 	if ( command !== null ) {
-		this.setDisabled( !command || !fragment || !command.isExecutable( fragment ) );
+		this.setDisabled(
+			!command || !fragment || !command.isExecutable( fragment ) ||
+			// Show command as disabled if a selection is required and the surface
+			// is read-only. Don't do this in Command as some are actually allowed
+			// to run, e.g. selectAll
+			// TODO: Add an allowedInReadOnly flag to some commands
+			( command.supportedSelections && fragment.getSurface() && fragment.getSurface().isReadOnly() )
+		);
 	}
 };
 

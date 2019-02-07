@@ -63,6 +63,10 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
+	if ( surface.isReadOnly() ) {
+		return true;
+	}
+
 	node = surface.getDocument().getBranchNodeFromOffset( range.from );
 
 	if ( !node.isMultiline() ) {

@@ -25,6 +25,10 @@
 	box-shadow: 0 0 2px 2px #ace;
 }
 
+.ve-ui-targetWidget-readOnly {
+	background: #f3f3f3;
+}
+
 /* Format tools */
 
 .oo-ui-menuToolGroup-tools .oo-ui-tool-name-heading1 .oo-ui-tool-title,

@@ -35,7 +35,7 @@ ve.ui.AnnotationContextItem = function VeUiAnnotationContextItem( context, model
 			flags: [ 'destructive' ]
 		} );
 	}
-	if ( this.isClearable() ) {
+	if ( this.isClearable() && !this.isReadOnly() ) {
 		this.actionButtons.addItems( [ this.clearButton ], 0 );
 	}
 	this.clearButton.connect( this, { click: 'onClearButtonClick' } );

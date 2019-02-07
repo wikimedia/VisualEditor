@@ -59,7 +59,9 @@ ve.ui.MergeCellsContextItem.prototype.setup = function () {
 		// There's some situations involving transclusion table cells which
 		// can make us have a LinearSelection here, so make sure this will
 		// work:
-		isMergeable = ( selection instanceof ve.dm.TableSelection ) && selection.isMergeable( documentModel );
+		isMergeable = ( selection instanceof ve.dm.TableSelection ) &&
+			selection.isMergeable( documentModel ) &&
+			!this.isReadOnly();
 
 	if ( !isMergeable ) {
 		// Ideally we would check this in isCompatibleWith, but only the model node is available there

@@ -97,7 +97,8 @@ OO.initClass( ve.ce.ResizableNode );
  * @return {boolean} The node is currently resizable
  */
 ve.ce.ResizableNode.prototype.isResizable = function () {
-	return this.$resizable && !!this.$resizable.length && !OO.ui.isMobile();
+	return this.$resizable && !!this.$resizable.length && !OO.ui.isMobile() &&
+		!( this.root && this.root.getSurface() && this.root.getSurface().isReadOnly() );
 };
 
 /**

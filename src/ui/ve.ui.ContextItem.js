@@ -113,6 +113,15 @@ ve.ui.ContextItem.prototype.getFragment = function () {
 	return this.fragment;
 };
 
+/**
+ * Check if the context's surface is readOnly
+ *
+ * @return {boolean} Context's surface is readOnly
+ */
+ve.ui.ContextItem.prototype.isReadOnly = function () {
+	return this.context.getSurface().isReadOnly();
+};
+
 /* eslint-disable valid-jsdoc */
 
 /**

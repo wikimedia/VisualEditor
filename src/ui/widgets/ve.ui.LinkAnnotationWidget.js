@@ -189,3 +189,12 @@ ve.ui.LinkAnnotationWidget.prototype.getAnnotation = function () {
 ve.ui.LinkAnnotationWidget.prototype.getHref = function () {
 	return this.constructor.static.getTextFromAnnotation( this.annotation );
 };
+
+/**
+ * Set the read-only state of the widget
+ *
+ * @param {boolean} readOnly Make widget read-only
+ */
+ve.ui.LinkAnnotationWidget.prototype.setReadOnly = function ( readOnly ) {
+	this.input.setReadOnly( readOnly );
+};

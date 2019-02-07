@@ -49,6 +49,10 @@ ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		e.preventDefault();
 	}
 
+	if ( surface.isReadOnly() ) {
+		return true;
+	}
+
 	for ( i = 0, l = cells.length; i < l; i++ ) {
 		if ( cells[ i ].node.isCellEditable() ) {
 			// Create auto-updating fragments from ranges

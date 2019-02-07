@@ -219,6 +219,8 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 			this.surface.getModel().connect( this, { documentUpdate: 'onSurfaceModelDocumentUpdate' } );
 			this.surface.getView().connect( this, { position: 'onSurfaceViewPosition' } );
 			ve.addPassiveEventListener( this.surface.getView().$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
+
+			this.updateFragments();
 		}, this );
 };
 
@@ -358,6 +360,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 	var i, l, startIndex,
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
+		isReadOnly = surfaceModel.isReadOnly(),
 		ranges = [],
 		matchCase = this.matchCaseToggle.getValue(),
 		isRegex = this.regexToggle.getValue(),
@@ -398,8 +401,9 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 	this.focusedIndex = startIndex || 0;
 	this.nextButton.setDisabled( !this.results );
 	this.previousButton.setDisabled( !this.results );
-	this.replaceButton.setDisabled( !this.results );
-	this.replaceAllButton.setDisabled( !this.results );
+	this.replaceText.setDisabled( isReadOnly );
+	this.replaceButton.setDisabled( !this.results || isReadOnly );
+	this.replaceAllButton.setDisabled( !this.results || isReadOnly );
 };
 
 /**

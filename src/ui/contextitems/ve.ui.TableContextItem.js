@@ -53,7 +53,7 @@ ve.ui.TableContextItem.static.isCompatibleWith = function ( model ) {
  * @inheritdoc
  */
 ve.ui.TableContextItem.prototype.isDeletable = function () {
-	return true;
+	return !this.isReadOnly();
 };
 
 /**

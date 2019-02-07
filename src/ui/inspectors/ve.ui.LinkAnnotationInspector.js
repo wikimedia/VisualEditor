@@ -125,6 +125,7 @@ ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			this.annotationInput.setAnnotation( this.initialAnnotation );
+			this.annotationInput.setReadOnly( this.isReadOnly() );
 			this.updateActions();
 		}, this );
 };

@@ -62,13 +62,30 @@ ve.ui.FragmentWindow.prototype.getTeardownProcess = function ( data, process ) {
 };
 
 /**
+ * Check if the fragment's surface is readOnly
+ *
+ * @return {boolean} Fragment's surface is readOnly
+ */
+ve.ui.FragmentWindow.prototype.isReadOnly = function () {
+	var fragment = this.getFragment(),
+		surface = fragment && fragment.getSurface();
+
+	return surface && surface.isReadOnly();
+};
+
+/**
  * Get a symbolic mode name.
  *
  * By default will return 'edit' if #isEditing is true, and 'insert' otherwise.
  *
+ * If the surface model is in read-only mode, will return 'readonly'.
+ *
  * @return {string} Symbolic mode name
  */
 ve.ui.FragmentWindow.prototype.getMode = function () {
+	if ( this.isReadOnly() ) {
+		return 'readonly';
+	}
 	if ( this.getFragment() ) {
 		return this.isEditing() ? 'edit' : 'insert';
 	}

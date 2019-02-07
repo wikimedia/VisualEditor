@@ -21,6 +21,10 @@
 	box-shadow: inset 0 0 0 1px #36c;
 }
 
+.ve-ui-targetWidget-readOnly {
+	background: #f8f9fa;
+}
+
 .ve-ui-targetWidget-toolbar > .oo-ui-toolbar {
 	margin: 1px;
 }

@@ -10,7 +10,6 @@
 }
 
 .ve-ce-branchNode-blockSlug {
-	visibility: hidden;
 	opacity: 0;
 	cursor: pointer;
 	-webkit-transition: opacity 200ms ease-out;
@@ -28,8 +27,8 @@
 	background-color: rgba( 241, 247, 251, 0.75 );
 }
 
-.ve-ce-surface-enabled .ve-ce-branchNode-blockSlug {
-	visibility: visible;
+.ve-ce-surface-readOnly .ve-ce-branchNode-blockSlug {
+	visibility: hidden;
 }
 
 .ve-ce-branchNode-blockSlug:hover,

@@ -23,6 +23,7 @@
  * @cfg {Object} [importRules] Import rules
  * @cfg {boolean} [multiline] Multi-line surface
  * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
+ * @cfg {boolean} [readOnly] Surface is read-only
  * @cfg {string} [inDialog] The name of the dialog this surface widget is in
  */
 ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
@@ -42,6 +43,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	this.excludeCommands = config.excludeCommands;
 	this.multiline = config.multiline !== false;
 	this.placeholder = config.placeholder;
+	this.readOnly = config.readOnly;
 	this.importRules = config.importRules;
 	this.inDialog = config.inDialog;
 	// TODO: Support source widgets
@@ -110,6 +112,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		importRules: this.importRules,
 		multiline: this.multiline,
 		placeholder: this.placeholder,
+		readOnly: this.readOnly,
 		inDialog: this.inDialog
 	} );
 
@@ -146,6 +149,26 @@ ve.ui.TargetWidget.prototype.onSurfaceModelHistory = function () {
  */
 ve.ui.TargetWidget.prototype.hasBeenModified = function () {
 	return !!this.getSurface() && this.getSurface().getModel().hasBeenModified();
+};
+
+/**
+ * Set the read-only state of the widget
+ *
+ * @param {boolean} readOnly Make widget read-only
+ */
+ve.ui.TargetWidget.prototype.setReadOnly = function ( readOnly ) {
+	this.readOnly = !!readOnly;
+	this.getSurface().setReadOnly( this.readOnly );
+	this.$element.toggleClass( 've-ui-targetWidget-readOnly', this.readOnly );
+};
+
+/**
+ * Check if the widget is read-only
+ *
+ * @return {boolean}
+ */
+ve.ui.TargetWidget.prototype.isReadOnly = function () {
+	return this.readOnly;
 };
 
 /**

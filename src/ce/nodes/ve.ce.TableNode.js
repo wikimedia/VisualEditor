@@ -493,6 +493,9 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		height: selectionOffset.height
 	} );
 
+	this.colContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
+	this.rowContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
+
 	// Classes
 	this.$selectionBox
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullRow', selection.isFullRow( documentModel ) )

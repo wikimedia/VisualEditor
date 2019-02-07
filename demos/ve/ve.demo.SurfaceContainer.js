@@ -12,7 +12,8 @@
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
-	var pageDropdown, pageLabel, removeButton, saveButton, diffButton, $exitReadButton,
+	var pageDropdown, pageLabel, removeButton, saveButton, diffButton,
+		$exitReadButton,
 		container = this,
 		$divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' );
 
@@ -46,6 +47,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	} );
 	diffButton = new OO.ui.ButtonWidget( {
 		label: 'Show changes'
+	} );
+	this.readOnlyToggle = new OO.ui.ToggleButtonWidget( {
+		label: 'Read-only'
 	} );
 	$exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', function () {
 		container.modeSelect.selectItemByData( 'visual' );
@@ -95,6 +99,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 			newDoc: container.surface.model.documentModel
 		} );
 	} );
+	this.readOnlyToggle.on( 'change', function ( val ) {
+		container.surface.setReadOnly( val );
+	} );
 
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
 		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar-edit' ).append(
@@ -109,7 +116,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 				this.autosaveToggle.$element,
 				saveButton.$element,
 				$divider.clone(),
-				diffButton.$element
+				diffButton.$element,
+				$divider.clone(),
+				this.readOnlyToggle.$element
 			)
 		),
 		$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(
@@ -305,6 +314,8 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	);
 
 	this.target.setSurface( this.surface );
+
+	this.surface.setReadOnly( this.readOnlyToggle.getValue() );
 
 	surfaceModel = this.surface.getModel();
 	this.oldDoc = surfaceModel.getDocument().cloneFromRange();

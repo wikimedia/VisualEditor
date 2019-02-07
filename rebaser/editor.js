@@ -44,7 +44,7 @@
 
 		// Add a dummy surface while the doc is loading
 		dummySurface = target.addSurface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
-		dummySurface.setDisabled( true );
+		dummySurface.setReadOnly( true );
 
 		// TODO: Create the correct model surface type (ve.ui.Surface#createModel)
 		surfaceModel = new ve.dm.Surface( ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '' ) ) );
