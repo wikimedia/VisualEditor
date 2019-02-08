@@ -37,31 +37,6 @@ OO.inheritClass( ve.ui.AnnotationInspector, ve.ui.FragmentInspector );
  */
 ve.ui.AnnotationInspector.static.modelClasses = [];
 
-// Override the parent action array to only have a 'cancel' button
-// on insert, since the annotation inspectors immediately apply the
-// action and 'cancel' is meaningless. Instead, they use 'done' to
-// perform the same dismissal after applying action that clicking away
-// from the inspector performs.
-ve.ui.AnnotationInspector.static.actions = [
-	{
-		action: 'done',
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		flags: [ 'progressive', 'primary' ],
-		modes: 'edit'
-	},
-	{
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
-		flags: [ 'safe', 'back' ],
-		modes: [ 'edit', 'insert' ]
-	},
-	{
-		action: 'done',
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-insert' ),
-		flags: [ 'progressive', 'primary' ],
-		modes: 'insert'
-	}
-];
-
 /* Methods */
 
 /**
