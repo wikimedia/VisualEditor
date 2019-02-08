@@ -119,8 +119,6 @@ ve.ui.CommentAnnotationInspector.prototype.initialize = function () {
 ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			// Disable surface until animation is complete; will be reenabled in ready()
-			this.getFragment().getSurface().disable();
 			this.textInput.setValue( this.initialAnnotation.getAttribute( 'text' ) );
 			this.updateActions();
 		}, this );
@@ -133,7 +131,6 @@ ve.ui.CommentAnnotationInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
 			this.textInput.focus().select();
-			this.getFragment().getSurface().enable();
 
 			// Clear validation state, so that we don't get "invalid" state immediately on focus
 			this.textInput.setValidityFlag( true );
