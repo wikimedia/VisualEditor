@@ -427,3 +427,21 @@ ve.ce.BranchNode.prototype.getDomPosition = function ( offset ) {
 	// Oh no, there's a text node in both directions
 	throw new Error( 'Cannot calculate DOM position: adjacent text nodes' );
 };
+
+/**
+ * Disable editing. Only do this on the topmost node being disabled
+ *
+ * @method
+ */
+ve.ce.BranchNode.prototype.disable = function () {
+	this.setContentEditable( false );
+};
+
+/**
+ * Enable editing. Only do this on the topmost node being enabled
+ *
+ * @method
+ */
+ve.ce.BranchNode.prototype.enable = function () {
+	this.setContentEditable( true );
+};

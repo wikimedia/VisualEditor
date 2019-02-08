@@ -5,24 +5,40 @@
  */
 
 /**
- * DataModel surface.
+ * DataModel surface for a node within a document
+ *
+ * Methods do not check that ranges actually lie inside the surfaced node
  *
  * @class
  * @mixins OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Document} doc Document model to create surface for
+ * @param {ve.dm.BranchNode} [attachedRoot] Node to surface; default is document node
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [sourceMode] Source editing mode
  */
-ve.dm.Surface = function VeDmSurface( doc, config ) {
+ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
+	// Support old (doc, config) argument order
+	// TODO: Remove this once all callers are updated
+	if ( !config && ve.isPlainObject( attachedRoot ) ) {
+		config = attachedRoot;
+		attachedRoot = undefined;
+	}
+
+	attachedRoot = attachedRoot || doc.getDocumentNode();
 	config = config || {};
+
+	if ( !( attachedRoot instanceof ve.dm.BranchNode ) ) {
+		throw new Error( 'Expected ve.dm.BranchNode for attachedRoot' );
+	}
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
 	// Properties
 	this.documentModel = doc;
+	this.attachedRoot = attachedRoot;
 	this.sourceMode = !!config.sourceMode;
 	this.metaList = new ve.dm.MetaList( this );
 	this.selection = new ve.dm.NullSelection();
@@ -524,6 +540,15 @@ ve.dm.Surface.prototype.getDocument = function () {
 };
 
 /**
+ * Get the surfaced node
+ *
+ * @return {ve.dm.BranchNode} The surfaced node
+ */
+ve.dm.Surface.prototype.getAttachedRoot = function () {
+	return this.attachedRoot;
+};
+
+/**
  * Get the meta list.
  *
  * @return {ve.dm.MetaList} Meta list of the surface
@@ -841,7 +866,10 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
  * Place the selection at the first content offset in the document.
  */
 ve.dm.Surface.prototype.selectFirstContentOffset = function () {
-	var firstOffset = this.getDocument().data.getNearestContentOffset( 0, 1 );
+	var firstOffset = this.getDocument().data.getNearestContentOffset(
+		this.getAttachedRoot().getOffset(),
+		1
+	);
 	if ( firstOffset !== -1 ) {
 		// Found a content offset
 		this.setLinearSelection( new ve.Range( firstOffset ) );

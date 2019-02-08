@@ -9,6 +9,7 @@
  *
  * @class
  * @extends ve.ce.BranchNode
+ * @mixins ve.ce.ContentEditableNode
  * @constructor
  * @param {ve.dm.DefinitionListItemNode} model Model to observe
  * @param {Object} [config] Configuration options
@@ -24,6 +25,7 @@ ve.ce.DefinitionListItemNode = function VeCeDefinitionListItemNode() {
 /* Inheritance */
 
 OO.inheritClass( ve.ce.DefinitionListItemNode, ve.ce.BranchNode );
+OO.mixinClass( ve.ce.DefinitionListItemNode, ve.ce.ContentEditableNode );
 
 /* Static Properties */
 
