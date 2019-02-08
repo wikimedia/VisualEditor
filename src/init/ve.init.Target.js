@@ -319,10 +319,12 @@ ve.init.Target.prototype.teardown = function () {
 
 /**
  * Destroy the target
+ *
+ * @return {jQuery.Promise} Promise which resolves when the target has been destroyed
  */
 ve.init.Target.prototype.destroy = function () {
 	var target = this;
-	this.teardown().then( function () {
+	return this.teardown().then( function () {
 		target.$element.remove();
 		ve.init.target = null;
 	} );
