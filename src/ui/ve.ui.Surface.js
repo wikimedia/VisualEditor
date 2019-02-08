@@ -429,28 +429,6 @@ ve.ui.Surface.prototype.setDisabled = function ( disabled ) {
 };
 
 /**
- * Disable editing.
- *
- * @deprecated Use #setDisabled
- * @method
- * @chainable
- */
-ve.ui.Surface.prototype.disable = function () {
-	return this.setDisabled( true );
-};
-
-/**
- * Enable editing.
- *
- * @deprecated Use #setDisabled
- * @method
- * @chainable
- */
-ve.ui.Surface.prototype.enable = function () {
-	return this.setDisabled( false );
-};
-
-/**
  * Give focus to the surface
  */
 ve.ui.Surface.prototype.focus = function () {
