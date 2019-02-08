@@ -33,8 +33,8 @@ OO.mixinClass( ve.ui.NodeInspector, ve.ui.NodeWindow );
 /**
  * @inheritdoc
  */
-ve.ui.NodeInspector.prototype.getMode = function () {
-	return this.getSelectedNode() ? 'edit' : 'insert';
+ve.ui.NodeInspector.prototype.isEditing = function () {
+	return !!this.getSelectedNode();
 };
 
 /**

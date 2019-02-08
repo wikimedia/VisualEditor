@@ -141,11 +141,8 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
 /**
  * @inheritdoc
  */
-ve.ui.AnnotationInspector.prototype.getMode = function () {
-	if ( this.initialSelection ) {
-		return this.initialSelection.isCollapsed() ? 'insert' : 'edit';
-	}
-	return '';
+ve.ui.AnnotationInspector.prototype.isEditing = function () {
+	return !!this.initialSelection && !this.initialSelection.isCollapsed();
 };
 
 /**

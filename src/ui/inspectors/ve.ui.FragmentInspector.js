@@ -81,16 +81,26 @@ ve.ui.FragmentInspector.prototype.getFragment = function () {
 /**
  * Get a symbolic mode name.
  *
- * @localdoc If the fragment being inspected selects at least one model the mode will be `edit`,
- *   otherwise the mode will be `insert`
+ * By default will return 'edit' if #isEditing is true, and 'insert' otherwise.
  *
  * @return {string} Symbolic mode name
  */
 ve.ui.FragmentInspector.prototype.getMode = function () {
 	if ( this.fragment ) {
-		return this.fragment.getSelectedModels().length ? 'edit' : 'insert';
+		return this.isEditing() ? 'edit' : 'insert';
 	}
 	return '';
+};
+
+/**
+ * Check if the current fragment is editable by this inspector.
+ *
+ * @localdoc Returns true if the fragment being inspected selects at least one model,
+ *
+ * @return {boolean} Fragment is editable by this inspector
+ */
+ve.ui.FragmentInspector.prototype.isEditing = function () {
+	return !!this.fragment.getSelectedModels().length;
 };
 
 /**
