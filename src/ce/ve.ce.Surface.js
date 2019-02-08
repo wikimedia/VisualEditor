@@ -692,7 +692,7 @@ ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy ) {
  * Reactivate the surface and restore the native selection
  */
 ve.ce.Surface.prototype.activate = function () {
-	if ( this.deactivated && this.getModel().enabled ) {
+	if ( this.deactivated ) {
 		this.deactivated = false;
 		this.deactivatedForCopy = false;
 		this.updateDeactivatedSelection();

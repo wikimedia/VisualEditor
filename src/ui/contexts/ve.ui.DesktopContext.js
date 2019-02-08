@@ -434,6 +434,8 @@ ve.ui.DesktopContext.prototype.setPopupSizeAndPosition = function ( repositionOn
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.destroy = function () {
+	// Hide, so a debounced updateDimensions does nothing
+	this.toggle( false );
 	// Disconnect
 	this.surface.getView().disconnect( this );
 	this.surface.getModel().disconnect( this );

@@ -149,9 +149,6 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  * @fires destroy
  */
 ve.ui.Surface.prototype.destroy = function () {
-	// Disable the surface to avoid issues during teardown (e.g. T193103)
-	this.setDisabled( true );
-
 	// Destroy the ce.Surface, the ui.Context and window managers
 	this.context.destroy();
 	this.dialogs.destroy();
