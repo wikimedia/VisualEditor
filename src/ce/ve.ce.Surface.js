@@ -37,8 +37,9 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$window = $( this.getElementWindow() );
 	this.$document = $( this.getElementDocument() );
 	this.$attachedRootNode = this.attachedRoot.$element.addClass( 've-ce-attachedRootNode' );
-	// Deprecated alias
+	// Deprecated aliases
 	this.$documentNode = this.$attachedRootNode;
+	this.root = this.attachedRoot;
 	// Window.getSelection returns a live singleton representing the document's selection
 	this.nativeSelection = this.getElementWindow().getSelection();
 	ve.fixSelectionNodes( this.nativeSelection );
