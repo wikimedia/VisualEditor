@@ -627,7 +627,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
 	if ( !hasContent ) {
 		// Use a clone of the first node in the document so the placeholder
 		// styling matches the text the users sees when they start typing
-		firstNode = this.getView().root.getNodeFromOffset( 1 );
+		firstNode = this.getView().attachedRoot.children[ 0 ];
 		if ( firstNode ) {
 			$wrapper = firstNode.$element.clone();
 			if ( ve.debug ) {
