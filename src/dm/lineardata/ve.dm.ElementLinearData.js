@@ -1192,8 +1192,7 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
 			// Common case, cheap, avoid the isArray check
 			continue;
 		} else if ( Array.isArray( this.data[ i ] ) ) {
-			spliceAt = this.data[ i ][ 1 ].indexOf( oldHash );
-			if ( spliceAt !== -1 ) {
+			while ( ( spliceAt = this.data[ i ][ 1 ].indexOf( oldHash ) ) !== -1 ) {
 				if ( this.data[ i ][ 1 ].indexOf( newHash ) === -1 ) {
 					this.data[ i ][ 1 ].splice( spliceAt, 1, newHash );
 				} else {

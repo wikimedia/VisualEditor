@@ -1714,6 +1714,18 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Span stripped when removing original DOM elements'
 			},
 			{
+				html: '<p><span style="color:red;"><span style="color:red;">Foo</span></span></p>',
+				data: [
+					{ type: 'paragraph' },
+					'F', 'o', 'o',
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { removeOriginalDomElements: true },
+				msg: 'Double annotation sanitized'
+			},
+			{
 				html: '<p>F<br>o</p><h1>B<br>a</h1><p>B<br></p>',
 				data: [
 					{ type: 'paragraph' },
