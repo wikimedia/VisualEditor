@@ -1237,7 +1237,8 @@ ve.normalizeAttributeValue = function ( name, value, nodeName ) {
  * Helper function for #parseXhtml and #serializeXhtml.
  *
  * Map attributes that are broken in IE to attributes prefixed with data-ve-
- * or vice versa.
+ * or vice versa. rowspan/colspan are also broken in Firefox 38 and below, but
+ * we don't consider that serious enough to run this function for Firefox.
  *
  * @param {string} html HTML string. Must also be valid XML. Must only have
  *   one root node (e.g. be a complete document).
@@ -1253,8 +1254,7 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 			'color', // IE normalizes 'Red' to 'red'
 			'width', // IE normalizes '240px' to '240'
 			'height', // Same as width
-			// Support: Firefox
-			'rowspan', // IE and Firefox normalize rowspan="02" to rowspan="2"
+			'rowspan', // IE (and FF 38 and below) normalizes rowspan="02" to rowspan="2"
 			'colspan' // Same as rowspan
 		];
 
@@ -1287,8 +1287,8 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 		} );
 	}
 
-	// FIXME T126032: Inject empty text nodes into empty non-void tags to prevent
-	// things like <a></a> from being serialized as <a /> and wreaking havoc
+	// Inject empty text nodes into empty non-void tags to prevent things like <a></a> from
+	// being serialized as <a /> and wreaking havoc
 	$( xmlDoc ).find( ':empty:not(' + ve.elementTypes.void.join( ',' ) + ')' ).each( function () {
 		this.appendChild( xmlDoc.createTextNode( '' ) );
 	} );
@@ -1341,6 +1341,8 @@ ve.serializeXhtmlElement = function ( element ) {
 	// Support: IE
 	// Feature-detect style attribute breakage in IE
 	if ( ve.isStyleAttributeBroken === undefined ) {
+		// Note this doesn't catch the rowspan/colspan normalization in Firefox 38 and below
+		// We don't think FF<38 is sufficiently broken to justify going through all this XML parsing stuff
 		ve.isStyleAttributeBroken = ve.normalizeAttributeValue( 'style', 'color:#ffd' ) !== 'color:#ffd';
 	}
 	if ( !ve.isStyleAttributeBroken ) {
