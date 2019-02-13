@@ -505,6 +505,13 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 			type: 'image/jpeg',
 			size: 30 * 1024
 		},
+		imageItem = {
+			kind: 'file',
+			type: 'image/jpeg',
+			getAsFile: function () {
+				return image;
+			}
+		},
 		cases = [
 			{
 				msg: 'URL',
@@ -540,15 +547,18 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 			{
 				msg: 'Image only',
 				dataTransfer: {
-					items: [
-						{
-							kind: 'file',
-							type: 'image/jpeg',
-							getAsFile: function () {
-								return image;
-							}
-						}
-					],
+					items: [ imageItem ],
+					files: [ image ],
+					getData: function () {
+						return '';
+					}
+				},
+				isPaste: true,
+				expectedData: 'image.jpg'.split( '' )
+			},
+			{
+				msg: 'Image only (no items API)',
+				dataTransfer: {
 					files: [ image ],
 					getData: function () {
 						return '';
@@ -560,15 +570,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 			{
 				msg: 'Image with HTML fallbacks',
 				dataTransfer: {
-					items: [
-						{
-							kind: 'file',
-							type: 'image/jpeg',
-							getAsFile: function () {
-								return image;
-							}
-						}
-					],
+					items: [ imageItem ],
 					files: [ image ],
 					getData: function ( type ) {
 						return type === 'text/html' ? '<img src="image.jpg" alt="fallback"><!-- image fallback metadata -->' : '';
@@ -576,6 +578,32 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 				},
 				isPaste: true,
 				expectedData: 'image.jpg'.split( '' )
+			},
+			{
+				msg: 'Image ignored when HTML contains content',
+				dataTransfer: {
+					items: [ imageItem ],
+					files: [ image ],
+					getData: function ( type ) {
+						return type === 'text/html' ? 'html' : '';
+					}
+				},
+				isPaste: true,
+				// HTML is not handled by handleDataTransfer
+				expectedData: []
+			},
+			{
+				msg: 'Image ignored when HTML contains extra images',
+				dataTransfer: {
+					items: [ imageItem ],
+					files: [ image ],
+					getData: function ( type ) {
+						return type === 'text/html' ? '<img src="image.jpg"><img src="image2.jpg">' : '';
+					}
+				},
+				isPaste: true,
+				// HTML is not handled by handleDataTransfer
+				expectedData: []
 			}
 		];
 
