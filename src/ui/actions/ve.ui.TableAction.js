@@ -96,6 +96,9 @@ ve.ui.TableAction.prototype.create = function ( options ) {
 	surfaceModel.setSelection( new ve.dm.TableSelection(
 		fragment.getSelection().getRange(), 0, 0, 0, 0
 	) );
+
+	ve.track( 'activity.table', { action: 'create' } );
+
 	return true;
 };
 
@@ -130,6 +133,9 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
 		surfaceModel.setSelection( selection );
 	}
 	this.insertRowOrCol( selection.getTableNode( documentModel ), mode, index, position, selection );
+
+	ve.track( 'activity.table', { action: 'insert-' + mode } );
+
 	return true;
 };
 
@@ -220,6 +226,9 @@ ve.ui.TableAction.prototype.move = function ( mode, index ) {
 		tableNode.getOuterRange(),
 		newOffsets[ 0 ], newOffsets[ 1 ], newOffsets[ 2 ], newOffsets[ 3 ]
 	) );
+
+	ve.track( 'activity.table', { action: 'move-' + mode } );
+
 	return true;
 };
 
@@ -259,6 +268,9 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
 			this.deleteRowsOrColumns( tableNode.matrix, mode, minIndex, maxIndex );
 		}
 	}
+
+	ve.track( 'activity.table', { action: 'delete-' + mode } );
+
 	return true;
 };
 
@@ -388,6 +400,9 @@ ve.ui.TableAction.prototype.changeCellStyle = function ( style ) {
 	txBuilders.forEach( function ( txBuilder ) {
 		surfaceModel.change( txBuilder() );
 	} );
+
+	ve.track( 'activity.table', { action: 'style-' + style } );
+
 	return true;
 };
 
@@ -412,6 +427,8 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 		// Split
 		cells = selection.getMatrixCells( documentModel );
 		this.unmergeCell( matrix, cells[ 0 ] );
+
+		ve.track( 'activity.table', { action: 'cell-split' } );
 	} else {
 		// Merge
 		if ( !selection.isMergeable( documentModel ) ) {
@@ -489,6 +506,8 @@ ve.ui.TableAction.prototype.mergeCells = function () {
 				this.deleteRowsOrColumns( matrix, 'col', c, c );
 			}
 		}
+
+		ve.track( 'activity.table', { action: 'cell-merge' } );
 	}
 	return true;
 };

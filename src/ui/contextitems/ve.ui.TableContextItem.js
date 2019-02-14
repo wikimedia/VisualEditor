@@ -65,6 +65,8 @@ ve.ui.TableContextItem.prototype.onDeleteButtonClick = function () {
 	surfaceModel.getLinearFragment(
 		surfaceModel.getSelectedNode().findParent( ve.dm.TableNode ).getOuterRange()
 	).delete();
+
+	ve.track( 'activity.table', { action: 'delete' } );
 };
 
 /* Registration */
