@@ -1364,7 +1364,7 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 	// Clear any changes that may have stored up to this point
 	this.removeDocStateAndChanges();
 	if ( state ) {
-		if ( !ve.init.platform.setSession( 've-docstate', JSON.stringify( state ) ) ) {
+		if ( !this.updateDocState( state ) ) {
 			this.stopStoringChanges();
 			return false;
 		}
@@ -1384,6 +1384,16 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 	}
 
 	return true;
+};
+
+/**
+ * Update stored document state metadata, without changing the HTML
+ *
+ * @param {Object} state Document state
+ * @return {boolean} Document metadata was successfully stored
+ */
+ve.dm.Surface.prototype.updateDocState = function ( state ) {
+	return ve.init.platform.setSession( 've-docstate', JSON.stringify( state ) );
 };
 
 /**
