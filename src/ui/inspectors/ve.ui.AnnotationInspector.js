@@ -114,7 +114,7 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
 };
 
 /**
- * @inheritdoc
+ * @inheritdoc ve.ui.FragmentWindow
  */
 ve.ui.AnnotationInspector.prototype.isEditing = function () {
 	return !!this.initialSelection && !this.initialSelection.isCollapsed();

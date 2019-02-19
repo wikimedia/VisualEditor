@@ -69,7 +69,7 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
 ve.ui.LanguageSearchDialog.prototype.onSearchResultsChoose = function ( item ) {
 	var data = item.getData();
 	this.close( {
-		action: 'apply',
+		action: 'done',
 		lang: data.code,
 		dir: ve.init.platform.getLanguageDirection( data.code )
 	} );

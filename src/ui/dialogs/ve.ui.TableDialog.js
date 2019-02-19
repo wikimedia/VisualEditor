@@ -32,18 +32,6 @@ ve.ui.TableDialog.static.size = 'medium';
 
 ve.ui.TableDialog.static.title = OO.ui.deferMsg( 'visualeditor-dialog-table-title' );
 
-ve.ui.TableDialog.static.actions = [
-	{
-		action: 'done',
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-apply' ),
-		flags: [ 'primary', 'progressive' ]
-	},
-	{
-		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
-		flags: [ 'safe', 'back' ]
-	}
-];
-
 /* Methods */
 
 /**

@@ -589,6 +589,7 @@
 			"src/ui/ve.ui.DataTransferHandlerFactory.js",
 			"src/ui/ve.ui.DataTransferItem.js",
 			"src/ui/ve.ui.WindowManager.js",
+			"src/ui/ve.ui.FragmentWindow.js",
 			"src/ui/ve.ui.NodeWindow.js",
 			"src/ui/ve.ui.TabIndexScope.js",
 			"src/ui/windowmanagers/ve.ui.SurfaceWindowManager.js",
