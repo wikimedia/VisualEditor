@@ -6,6 +6,6 @@
 	],
 	"rules": {
 		"max-len": 0,
-		"jquery/no-parse-html-literal": 0
+		"no-jquery/no-parse-html-literal": 0
 	}
 }

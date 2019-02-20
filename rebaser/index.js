@@ -23,7 +23,7 @@ $( function () {
 		submitButton.on( 'click', onSubmit );
 		documentNameInput.on( 'enter', onSubmit );
 
-		// eslint-disable-next-line jquery/no-global-selector
+		// eslint-disable-next-line no-jquery/no-global-selector
 		$( '.ve-demo-index' ).append( documentNameField.$element );
 
 		documentNameInput.focus();

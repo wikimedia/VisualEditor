@@ -204,7 +204,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 	}
 
 	// Array#map doesn't filter null elements
-	// eslint-disable-next-line jquery/no-map-util
+	// eslint-disable-next-line no-jquery/no-map-util
 	activeDialogs = $.map(
 		[
 			this.surface.getDialogs(),

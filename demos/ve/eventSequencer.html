@@ -39,10 +39,10 @@
 						'compositionstart', 'compositionend',
 						'keydown', 'keyup', 'keypress'
 					],
-					/* eslint-disable jquery/no-global-selector */
+					/* eslint-disable no-jquery/no-global-selector */
 					$bad = $( '#bad' ),
 					$good = $( '#good' );
-					/* eslint-enable jquery/no-global-selector */
+					/* eslint-enable no-jquery/no-global-selector */
 
 				function showEventCode( e ) {
 					return ( e && e.keyCode ) ? '(keyCode=' + e.keyCode + ')' : '';

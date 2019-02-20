@@ -13,10 +13,10 @@
 		"Papa": false
 	},
 	"rules": {
-		"jquery/no-extend": "error",
-		"jquery/no-hide": "error",
-		"jquery/no-show": "error",
-		"jquery/no-toggle": "error",
+		"no-jquery/no-extend": "error",
+		"no-jquery/no-hide": "error",
+		"no-jquery/no-show": "error",
+		"no-jquery/no-toggle": "error",
 		"max-statements-per-line": [ "error", { "max": 1 } ],
 		"max-len": "off"
 	},
