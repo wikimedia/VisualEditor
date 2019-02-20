@@ -84,6 +84,9 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 		surfaceModel.setSelection( fragmentSelection );
 	}
 	this.surface.getView().focus();
+
+	ve.track( 'activity.format', { action: type + ( attributes && attributes.level ? ( '-' + attributes.level ) : '' ) } );
+
 	return true;
 };
 
