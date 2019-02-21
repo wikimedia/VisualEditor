@@ -6,10 +6,10 @@
 
 new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( function () {
 
-	/* eslint-disable jquery/no-global-selector */
+	/* eslint-disable no-jquery/no-global-selector */
 	var $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),
-		/* eslint-enable jquery/no-global-selector */
+		/* eslint-enable no-jquery/no-global-selector */
 		// eslint-disable-next-line new-cap
 		target = new ve.demo.target(),
 		hashChanging = false,

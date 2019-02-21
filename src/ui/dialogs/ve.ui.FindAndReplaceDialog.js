@@ -530,7 +530,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 		windowScrollHeight = surfaceView.$window.height() - this.surface.toolbarHeight;
 
 		if ( offset < windowScrollTop || offset > windowScrollTop + windowScrollHeight ) {
-			// eslint-disable-next-line jquery/no-global-selector, jquery/no-animate
+			// eslint-disable-next-line no-jquery/no-global-selector
 			$( 'body, html' ).animate( { scrollTop: offset - ( windowScrollHeight / 2 ) }, 'fast' );
 		}
 	}

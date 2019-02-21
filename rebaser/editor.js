@@ -33,7 +33,7 @@
 		var surfaceModel, dummySurface,
 			progressDeferred = ve.createDeferred(),
 			panel = new OO.ui.PanelLayout( {
-				// eslint-disable-next-line jquery/no-global-selector
+				// eslint-disable-next-line no-jquery/no-global-selector
 				$element: $( '.ve-demo-editor' ),
 				expanded: false,
 				framed: true

@@ -6,12 +6,12 @@
 
 ( function () {
 	var i, len, key,
-		/* eslint-disable jquery/no-global-selector */
+		/* eslint-disable no-jquery/no-global-selector */
 		$primary = $( '#primary' ),
 		$modifiers = $( '#modifiers' ),
 		$aliases = $( '#aliases' ),
 		$trigger = $( '#trigger' ),
-		/* eslint-enable jquery/no-global-selector */
+		/* eslint-enable no-jquery/no-global-selector */
 		primaryKeys = ve.ui.Trigger.static.primaryKeys,
 		modifierKeys = ve.ui.Trigger.static.modifierKeys,
 		keyAliases = ve.ui.Trigger.static.keyAliases;
@@ -62,13 +62,13 @@
 
 	$( document.body ).on( {
 		keydown: function ( e ) {
-			// eslint-disable-next-line jquery/no-global-selector
+			// eslint-disable-next-line no-jquery/no-global-selector
 			$( '.active' ).removeClass( 'active' );
 			setTrigger( new ve.ui.Trigger( e ) );
 			e.preventDefault();
 		}
 	} );
-	// eslint-disable-next-line jquery/no-global-selector
+	// eslint-disable-next-line no-jquery/no-global-selector
 	$( '#primary .key, #modifiers .key' ).on( {
 		mousedown: function ( e ) {
 			var $target = $( e.target );
@@ -89,7 +89,7 @@
 					$target.removeClass( 'active' );
 				}
 				$target.removeClass( 'activating' );
-				// eslint-disable-next-line jquery/no-global-selector
+				// eslint-disable-next-line no-jquery/no-global-selector
 				$( '.active' ).each( function () {
 					parts.push( $( this ).attr( 'rel' ) );
 				} );

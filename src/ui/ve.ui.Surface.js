@@ -588,7 +588,7 @@ ve.ui.Surface.prototype.toggleMobileGlobalOverlay = function ( show ) {
 		this.scrollPosition = $scrollContainer.scrollTop();
 	}
 
-	// eslint-disable-next-line jquery/no-global-selector
+	// eslint-disable-next-line no-jquery/no-global-selector
 	$( 'html, body' ).toggleClass( 've-ui-overlay-global-mobile-enabled', show );
 	this.globalOverlay.$element.toggleClass( 've-ui-overlay-global-mobile-visible', show );
 

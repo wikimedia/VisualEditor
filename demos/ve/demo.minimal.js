@@ -5,11 +5,11 @@
  */
 
 ( function () {
-	/* eslint-disable jquery/no-global-selector */
+	/* eslint-disable no-jquery/no-global-selector */
 	var $instance = $( '.ve-instance' ),
 		$output = $( '.ve-demo-output' );
 
-	/* eslint-enable jquery/no-global-selector */
+	/* eslint-enable no-jquery/no-global-selector */
 	// Set up the platform and wait for i18n messages to load
 	new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise()
 		.fail( function () {

@@ -460,7 +460,7 @@ ve.ce.Surface.prototype.getOffsetFromCoords = function ( x, y ) {
 			textRange = document.body.createTextRange();
 			textRange.moveToPoint( x, y );
 			textRange.pasteHTML( '<span class="ve-ce-textRange-drop-marker">&nbsp;</span>' );
-			// eslint-disable-next-line jquery/no-global-selector
+			// eslint-disable-next-line no-jquery/no-global-selector
 			$marker = $( '.ve-ce-textRange-drop-marker' );
 			offset = ve.ce.getOffset( $marker.get( 0 ), 0 );
 			$marker.remove();
