@@ -21,8 +21,10 @@ ve.ui.FragmentInspector = function VeUiFragmentInspector( config ) {
 	// Parent constructor
 	ve.ui.FragmentInspector.super.call( this, config );
 
+	// Mixin constructor
+	ve.ui.FragmentWindow.call( this, config );
+
 	// Properties
-	this.fragment = null;
 	this.previousSelection = null;
 	this.padded = config.padded !== false;
 };
@@ -31,9 +33,11 @@ ve.ui.FragmentInspector = function VeUiFragmentInspector( config ) {
 
 OO.inheritClass( ve.ui.FragmentInspector, OO.ui.ProcessDialog );
 
+OO.mixinClass( ve.ui.FragmentInspector, ve.ui.FragmentWindow );
+
 /* Static Properties */
 
-ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.actions.concat( [
+ve.ui.FragmentInspector.static.actions = [
 	{
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' ),
 		flags: [ 'safe', 'back' ],
@@ -51,7 +55,7 @@ ve.ui.FragmentInspector.static.actions = ve.ui.FragmentInspector.super.static.ac
 		flags: [ 'progressive', 'primary' ],
 		modes: 'insert'
 	}
-] );
+];
 
 ve.ui.FragmentInspector.static.size = 'large';
 
@@ -66,41 +70,6 @@ ve.ui.FragmentInspector.static.size = 'large';
  */
 ve.ui.FragmentInspector.prototype.onFormSubmit = function () {
 	this.executeAction( 'done' );
-};
-
-/**
- * Get the surface fragment the inspector is for.
- *
- * @return {ve.dm.SurfaceFragment|null} Surface fragment the inspector is for, null if the
- *   inspector is closed
- */
-ve.ui.FragmentInspector.prototype.getFragment = function () {
-	return this.fragment;
-};
-
-/**
- * Get a symbolic mode name.
- *
- * By default will return 'edit' if #isEditing is true, and 'insert' otherwise.
- *
- * @return {string} Symbolic mode name
- */
-ve.ui.FragmentInspector.prototype.getMode = function () {
-	if ( this.fragment ) {
-		return this.isEditing() ? 'edit' : 'insert';
-	}
-	return '';
-};
-
-/**
- * Check if the current fragment is editable by this inspector.
- *
- * @localdoc Returns true if the fragment being inspected selects at least one model,
- *
- * @return {boolean} Fragment is editable by this inspector
- */
-ve.ui.FragmentInspector.prototype.isEditing = function () {
-	return !!this.fragment.getSelectedModels().length;
 };
 
 /**
@@ -151,29 +120,20 @@ ve.ui.FragmentInspector.prototype.getActionProcess = function ( action ) {
  * @inheritdoc
  */
 ve.ui.FragmentInspector.prototype.getSetupProcess = function ( data ) {
-	data = data || {};
-	return ve.ui.FragmentInspector.super.prototype.getSetupProcess.call( this, data )
-		.first( function () {
-			if ( !( data.fragment instanceof ve.dm.SurfaceFragment ) ) {
-				throw new Error( 'Cannot open inspector: opening data must contain a fragment' );
-			}
-			this.fragment = data.fragment;
-			this.previousSelection = this.fragment.getSelection();
-		}, this )
-		.next( function () {
-			this.actions.setMode( this.getMode() );
-		}, this );
+	// Parent method
+	var process = ve.ui.FragmentInspector.super.prototype.getSetupProcess.call( this, data );
+	// Mixin method
+	return ve.ui.FragmentWindow.prototype.getSetupProcess.call( this, data, process );
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.FragmentInspector.prototype.getTeardownProcess = function ( data ) {
-	return ve.ui.FragmentDialog.super.prototype.getTeardownProcess.apply( this, data )
-		.next( function () {
-			this.fragment = null;
-			this.previousSelection = null;
-		}, this );
+	// Parent method
+	var process = ve.ui.FragmentInspector.super.prototype.getTeardownProcess.call( this, data );
+	// Mixin method
+	return ve.ui.FragmentWindow.prototype.getTeardownProcess.call( this, data, process );
 };
 
 /**

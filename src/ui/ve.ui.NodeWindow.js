@@ -9,18 +9,22 @@
  *
  * @class
  * @abstract
+ * @extends ve.ui.FragmentWindow
  *
  * @constructor
  * @param {Object} [config] Configuration options
  */
 ve.ui.NodeWindow = function VeUiNodeWindow() {
+	// Parent method
+	ve.ui.NodeWindow.super.apply( this, arguments );
+
 	// Properties
 	this.selectedNode = null;
 };
 
 /* Inheritance */
 
-OO.initClass( ve.ui.NodeWindow );
+OO.inheritClass( ve.ui.NodeWindow, ve.ui.FragmentWindow );
 
 /* Static Properties */
 
@@ -36,6 +40,13 @@ ve.ui.NodeWindow.static.modelClasses = [];
 /* Methods */
 
 /**
+ * @inheritdoc
+ */
+ve.ui.NodeWindow.prototype.isEditing = function () {
+	return !!this.getSelectedNode();
+};
+
+/**
  * Get the selected node.
  *
  * Should only be called after setup and before teardown.
@@ -45,32 +56,37 @@ ve.ui.NodeWindow.static.modelClasses = [];
  * @return {ve.dm.Node|null} Selected node
  */
 ve.ui.NodeWindow.prototype.getSelectedNode = function () {
-	var i, len,
-		modelClasses = this.constructor.static.modelClasses,
+	var modelClasses = this.constructor.static.modelClasses,
 		selectedNode = this.getFragment().getSelectedNode();
 
-	for ( i = 0, len = modelClasses.length; i < len; i++ ) {
-		if ( selectedNode instanceof modelClasses[ i ] ) {
-			return selectedNode;
-		}
+	if (
+		selectedNode &&
+		modelClasses.some( function ( modelClass ) {
+			return selectedNode instanceof modelClass;
+		} )
+	) {
+		return selectedNode;
 	}
 	return null;
 };
 
 /**
- * @inheritdoc OO.ui.Window
+ * @inheritdoc
  */
 ve.ui.NodeWindow.prototype.getSetupProcess = function ( data, process ) {
-	return process.next( function () {
-		this.selectedNode = this.getSelectedNode( data );
-	}, this );
+	// Parent method
+	return ve.ui.NodeWindow.super.prototype.getSetupProcess.call( this, data, process )
+		.next( function () {
+			this.selectedNode = this.getSelectedNode( data );
+		}, this );
 };
 
 /**
- * @inheritdoc OO.ui.Window
+ * @inheritdoc
  */
 ve.ui.NodeWindow.prototype.getTeardownProcess = function ( data, process ) {
-	return process.first( function () {
-		this.selectedNode = null;
-	}, this );
+	return ve.ui.NodeWindow.super.prototype.getTeardownProcess.call( this, data, process )
+		.next( function () {
+			this.selectedNode = null;
+		}, this );
 };

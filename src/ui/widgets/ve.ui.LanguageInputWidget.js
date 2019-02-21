@@ -129,7 +129,7 @@ ve.ui.LanguageInputWidget.prototype.onFindLanguageButtonClick = function () {
 		$returnFocusTo: null
 	} ).closed.then( function ( data ) {
 		data = data || {};
-		if ( data.action === 'apply' ) {
+		if ( data.action === 'done' ) {
 			widget.setLangAndDir( data.lang, data.dir );
 		}
 	} );
