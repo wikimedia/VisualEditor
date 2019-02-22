@@ -63,6 +63,7 @@ ve.ui.DiffDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.DiffDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			this.diffElement = new ve.ui.DiffElement( new ve.dm.VisualDiff( data.oldDoc, data.newDoc ) );
+			ve.targetLinksToNewWindow( this.diffElement.$document[ 0 ] );
 
 			this.content.$element.append(
 				this.diffElement.$element

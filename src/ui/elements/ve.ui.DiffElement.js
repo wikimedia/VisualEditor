@@ -386,7 +386,6 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	this.descriptionItemsStack = [];
 
 	ve.resolveAttributes( documentNode, this.newDoc.getHtmlDocument(), ve.dm.Converter.static.computedAttributes );
-	ve.targetLinksToNewWindow( documentNode );
 
 	if ( !hasChanges ) {
 		noChanges = document.createElement( 'div' );
