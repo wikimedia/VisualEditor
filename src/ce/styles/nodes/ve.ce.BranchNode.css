@@ -60,6 +60,11 @@
 	display: block;
 }
 
+.ve-ce-surface-dragging .ve-ce-branchNode-blockSlug > .oo-ui-buttonElement > .oo-ui-buttonElement-button {
+	/* -moz-user-select:none is applied in OOUI, but cases FF to create multi-range selections (T214976) */
+	-moz-user-select: text;
+}
+
 .ve-ce-chimera {
 	width: 0;
 	height: 0;
