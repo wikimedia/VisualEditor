@@ -9,7 +9,8 @@
 			"Apple farmer",
 			"Jon Harald Søby",
 			"Orf3us",
-			"McDutchie"
+			"McDutchie",
+			"Kingu"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -63,6 +64,7 @@
 	"visualeditor-content-select-all": "Marker alt",
 	"visualeditor-contextitemwidget-label-remove": "Slett",
 	"visualeditor-contextitemwidget-label-secondary": "Rediger",
+	"visualeditor-contextitemwidget-label-view": "Vis",
 	"visualeditor-debugbar-close": "Lukk",
 	"visualeditor-debugbar-inputdebug": "Inndatadebugging",
 	"visualeditor-debugbar-logrange": "Logg de valgte",

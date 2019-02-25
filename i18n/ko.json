@@ -24,7 +24,8 @@
 			"Jerrykim306",
 			"Garam",
 			"Nuevo Paso",
-			"Jay94ks"
+			"Jay94ks",
+			"렌즈"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -78,6 +79,7 @@
 	"visualeditor-content-select-all": "모두 선택",
 	"visualeditor-contextitemwidget-label-remove": "삭제",
 	"visualeditor-contextitemwidget-label-secondary": "편집",
+	"visualeditor-contextitemwidget-label-view": "보기",
 	"visualeditor-debugbar-close": "닫기",
 	"visualeditor-debugbar-inputdebug": "입력 디버깅",
 	"visualeditor-debugbar-logrange": "로그 선택됨",
@@ -141,7 +143,7 @@
 	"visualeditor-key-down": "아래쪽",
 	"visualeditor-key-end": "End",
 	"visualeditor-key-enter": "Enter",
-	"visualeditor-key-escape": "이스케이프",
+	"visualeditor-key-escape": "ESC",
 	"visualeditor-key-home": "홈",
 	"visualeditor-key-insert": "Insert",
 	"visualeditor-key-left": "왼쪽",

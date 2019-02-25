@@ -20,7 +20,8 @@
 			"Nbdd0121",
 			"Yejianfei",
 			"Hanyanbo98",
-			"夢蝶葬花"
+			"夢蝶葬花",
+			"94rain"
 		]
 	},
 	"visualeditor": "可视化编辑器",
@@ -74,6 +75,7 @@
 	"visualeditor-content-select-all": "全选",
 	"visualeditor-contextitemwidget-label-remove": "删除",
 	"visualeditor-contextitemwidget-label-secondary": "编辑",
+	"visualeditor-contextitemwidget-label-view": "查看",
 	"visualeditor-debugbar-close": "关闭",
 	"visualeditor-debugbar-inputdebug": "输入调试",
 	"visualeditor-debugbar-logrange": "选择的日志",

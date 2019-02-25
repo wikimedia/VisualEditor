@@ -9,7 +9,8 @@
 			"Лорд Бъмбъри",
 			"StanProg",
 			"Vodnokon4e",
-			"ShockD"
+			"ShockD",
+			"Vlad5250"
 		]
 	},
 	"visualeditor": "Визуален редактор",
@@ -55,6 +56,7 @@
 	"visualeditor-content-select-all": "Избиране на всички",
 	"visualeditor-contextitemwidget-label-remove": "Изтриване",
 	"visualeditor-contextitemwidget-label-secondary": "Редактиране",
+	"visualeditor-contextitemwidget-label-view": "Преглед",
 	"visualeditor-debugbar-close": "Затваряне",
 	"visualeditor-debugbar-logrange": "Записване на избраното в дневника",
 	"visualeditor-debugbar-showmodel": "Показване на модела",
