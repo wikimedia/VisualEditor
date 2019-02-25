@@ -47,6 +47,10 @@ ve.ui.FragmentWindow.prototype.getSetupProcess = function ( data, process ) {
 		this.fragment = data.fragment;
 		this.previousSelection = this.fragment.getSelection();
 	}, this ).next( function () {
+		// Don't allow windows to be opened for insertion in readonly mode
+		if ( !this.isEditing() && this.isReadOnly() ) {
+			return ve.createDeferred().reject().promise();
+		}
 		this.actions.setMode( this.getMode() );
 	}, this );
 };
