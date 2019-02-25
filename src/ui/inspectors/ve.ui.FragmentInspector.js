@@ -9,6 +9,7 @@
  *
  * @class
  * @extends OO.ui.ProcessDialog
+ * @mixins ve.ui.FragmentWindow
  *
  * @constructor
  * @param {Object} [config] Configuration options
