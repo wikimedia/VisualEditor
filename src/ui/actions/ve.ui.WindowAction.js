@@ -56,9 +56,10 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		fragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getSelectionDirectionality(),
 		windowClass = ve.ui.windowFactory.lookup( name ),
-		mayContainFragment = windowClass.prototype instanceof ve.ui.FragmentDialog ||
-			windowClass.prototype instanceof ve.ui.FragmentInspector ||
-			windowType === 'toolbar' || windowType === 'inspector',
+		isFragmentWindow = !!windowClass.prototype.getFragment,
+		mayRequireFragment = isFragmentWindow ||
+			// HACK: Pass fragment to toolbar dialogs as well
+			windowType === 'toolbar',
 		// TODO: Add 'doesHandleSource' method to factory
 		sourceMode = surface.getMode() === 'source' && !windowClass.static.handlesSource;
 
@@ -68,7 +69,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 
 	ve.track( 'activity.' + name, { action: 'window-open' } );
 
-	if ( !mayContainFragment ) {
+	if ( !mayRequireFragment ) {
 		fragmentPromise = ve.createDeferred().resolve().promise();
 	} else if ( sourceMode ) {
 		text = fragment.getText( true );
