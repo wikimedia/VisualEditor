@@ -773,7 +773,7 @@ ve.ce.Surface.prototype.onDocumentBlur = function () {
 	this.surfaceObserver.clear();
 	// Setting focused to false blocks selection change handler, so fire one last time here
 	this.onDocumentSelectionChange();
-	this.dragging = false;
+	this.setDragging( false );
 	this.focused = false;
 	if ( this.focusedNode ) {
 		this.focusedNode.setFocused( false );
@@ -806,7 +806,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	}
 
 	// Remember the mouse is down
-	this.dragging = true;
+	this.setDragging( true );
 
 	// Bind mouseup to the whole document in case of dragging out of the surface
 	this.$document.on( 'mouseup', this.onDocumentMouseUpHandler );
@@ -885,7 +885,7 @@ ve.ce.Surface.prototype.afterDocumentMouseUp = function ( e, selectionBefore ) {
 	if ( e.shiftKey ) {
 		this.fixShiftClickSelect( selectionBefore );
 	}
-	this.dragging = false;
+	this.setDragging( false );
 };
 
 /**
@@ -916,6 +916,17 @@ ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
 			)
 		);
 	}
+};
+
+/**
+ * Set a flag when the user is dragging a selection
+ *
+ * @param {boolean} dragging Dragging (mouse is down)
+ */
+ve.ce.Surface.prototype.setDragging = function ( dragging ) {
+	this.dragging = !!dragging;
+	// Class can be used to suppress hover states, such as branch slugs.
+	this.$element.toggleClass( 've-ce-surface-dragging', this.dragging );
 };
 
 /**

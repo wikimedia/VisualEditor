@@ -27,7 +27,8 @@
 	background-color: rgba( 241, 247, 251, 0.75 );
 }
 
-.ve-ce-surface-readOnly .ve-ce-branchNode-blockSlug {
+.ve-ce-surface-readOnly .ve-ce-branchNode-blockSlug,
+.ve-ce-surface-dragging .ve-ce-branchNode-blockSlug {
 	visibility: hidden;
 }
 
