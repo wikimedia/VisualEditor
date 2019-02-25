@@ -179,8 +179,8 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 			}
 			context.updateDimensionsDebounced();
 		} )
-		.always( function ( opened ) {
-			opened.always( function ( closed ) {
+		.then( function ( opened ) {
+			opened.then( function ( closed ) {
 				closed.always( function () {
 					// Don't try to close the inspector if a second
 					// opening has already been triggered
