@@ -19,6 +19,18 @@
 	overflow: hidden;
 }
 
+/* Don't draw selection highlight inside block slug after selecting across it */
+.ve-ce-branchNode-blockSlug .oo-ui-labelElement-label::selection {
+	background: transparent;
+}
+
+/* Must be in a separate block, because otherwise entire rule is ignored
+ * by browsers that don't know ::-moz-selection */
+/* stylelint-disable-next-line selector-no-vendor-prefix */
+.ve-ce-branchNode-blockSlug .oo-ui-labelElement-label::-moz-selection {
+	background: transparent;
+}
+
 .ve-ce-branchNode-blockSlug,
 .ve-ce-branchNode-newSlug {
 	margin: -0.3em 0 -0.1em 0;
