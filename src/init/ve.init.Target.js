@@ -65,6 +65,8 @@ ve.init.Target = function VeInitTarget( config ) {
 
 	// Events
 	this.onDocumentKeyDownHandler = this.onDocumentKeyDown.bind( this );
+	this.onDocumentKeyUpHandler = this.onDocumentKeyUp.bind( this );
+	this.onDocumentVisibilityChangeHandler = this.onDocumentVisibilityChange.bind( this );
 	this.onTargetKeyDownHandler = this.onTargetKeyDown.bind( this );
 	this.onContainerScrollHandler = this.onContainerScroll.bind( this );
 	this.bindHandlers();
@@ -288,7 +290,11 @@ ve.init.Target.prototype.isModeAvailable = function ( mode ) {
  * Bind event handlers to target and document
  */
 ve.init.Target.prototype.bindHandlers = function () {
-	$( this.getElementDocument() ).on( 'keydown', this.onDocumentKeyDownHandler );
+	$( this.getElementDocument() ).on( {
+		keydown: this.onDocumentKeyDownHandler,
+		keyup: this.onDocumentKeyUpHandler,
+		visibilitychange: this.onDocumentVisibilityChangeHandler
+	} );
 	this.$element.on( 'keydown', this.onTargetKeyDownHandler );
 	ve.addPassiveEventListener( this.$scrollContainer[ 0 ], 'scroll', this.onContainerScrollHandler );
 };
@@ -297,7 +303,11 @@ ve.init.Target.prototype.bindHandlers = function () {
  * Unbind event handlers on target and document
  */
 ve.init.Target.prototype.unbindHandlers = function () {
-	$( this.getElementDocument() ).off( 'keydown', this.onDocumentKeyDownHandler );
+	$( this.getElementDocument() ).off( {
+		keydown: this.onDocumentKeyDownHandler,
+		keyup: this.onDocumentKeyUpHandler,
+		visibilitychange: this.onDocumentVisibilityChangeHandler
+	} );
 	this.$element.off( 'keydown', this.onTargetKeyDownHandler );
 	ve.removePassiveEventListener( this.$scrollContainer[ 0 ], 'scroll', this.onContainerScrollHandler );
 };
@@ -391,6 +401,27 @@ ve.init.Target.prototype.onDocumentKeyDown = function ( e ) {
 			e.preventDefault();
 		}
 	}
+	// Allows elements to re-style for ctrl+click behaviour, e.g. ve.ce.LinkAnnotation
+	this.$element.toggleClass( 've-init-target-ctrl-meta-down', e.ctrlKey || e.metaKey );
+};
+
+/**
+ * Handle key up events on the document
+ *
+ * @param {jQuery.Event} e Key up event
+ */
+ve.init.Target.prototype.onDocumentKeyUp = function ( e ) {
+	this.$element.toggleClass( 've-init-target-ctrl-meta-down', e.ctrlKey || e.metaKey );
+};
+
+/**
+ * Handle visibility change events on the document
+ *
+ * @param {jQuery.Event} e Visibility change event
+ */
+ve.init.Target.prototype.onDocumentVisibilityChange = function () {
+	// keyup event will be missed if you ctrl+tab away from the page
+	this.$element.removeClass( 've-init-target-ctrl-meta-down' );
 };
 
 /**

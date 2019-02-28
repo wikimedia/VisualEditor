@@ -20,3 +20,7 @@
 .ve-ce-nail-debug {
 	vertical-align: middle;
 }
+
+.ve-init-target-ctrl-meta-down .ve-ce-linkAnnotation {
+	cursor: pointer;
+}
