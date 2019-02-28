@@ -8,13 +8,9 @@
 	cursor: default;
 }
 
-/* We have to use a * selector because user-select isn't inherited by absolutely positioned
-   children in Firefox. */
-.ve-ce-focusableNode * {
-	/* Support: Firefox */
-	/* T70537: work around Firefox bug */
-	-moz-user-select: none;
-}
+/* We previously applied -moz-user-select: none to all descendants of focuasbleNode
+   to prevent them from ever taking a cursor (T70537) but that causes FF to create
+   multi-range selections (T214976) which is worse */
 
 .ve-ce-focusableNode-highlight {
 	background: #6da9f7;
