@@ -182,8 +182,8 @@ ve.dm.ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
  */
 ve.dm.ProtocolServer.prototype.onChangeAuthor = function ( context, newData ) {
 	this.rebaseServer.updateDocState( context.docName, context.authorId, null, {
-		displayName: newData.name,
-		displayColor: newData.color
+		name: newData.name,
+		color: newData.color
 	} );
 	context.broadcast( 'authorChange', {
 		authorId: context.authorId,
