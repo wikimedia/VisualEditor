@@ -58,7 +58,8 @@ module.exports = function ( grunt ) {
 			},
 			'visualEditor.rebase.scripts': {
 				options: {
-					banner: grunt.file.read( 'build/banner.txt' )
+					banner: grunt.file.read( 'build/banner.txt' ),
+					sourceMap: true
 				},
 				dest: 'dist/visualEditor-rebase.js',
 				src: veRebaseFiles.scripts
@@ -72,7 +73,8 @@ module.exports = function ( grunt ) {
 			},
 			js: {
 				options: {
-					banner: grunt.file.read( 'build/banner.txt' )
+					banner: grunt.file.read( 'build/banner.txt' ),
+					sourceMap: true
 				},
 				dest: 'dist/visualEditor.js',
 				src: coreBuildFiles.scripts
