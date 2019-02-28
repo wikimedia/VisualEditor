@@ -9,17 +9,19 @@ Logger.prototype.getRelativeTimestamp = function () {
 
 /**
  * @param {Object} event The event to log
+ * @param {string} [level] Log level
  */
-Logger.prototype.logEvent = function ( event ) {
-	this.logger.log( 'info', { msg: event } );
+Logger.prototype.logEvent = function ( event, level ) {
+	this.logger.log( level || 'trace', event );
 };
 
 /**
  * Log a server event
  *
  * @param {Object} event The server event to log
+ * @param {string} [level] Log level
  */
-Logger.prototype.logServerEvent = function ( event ) {
+Logger.prototype.logServerEvent = function ( event, level ) {
 	var key,
 		ob = {};
 	ob.clientId = 'server';
@@ -31,7 +33,7 @@ Logger.prototype.logServerEvent = function ( event ) {
 			ob[ key ] = event[ key ];
 		}
 	}
-	this.logEvent( ob );
+	this.logEvent( ob, level );
 };
 
 module.exports = Logger;

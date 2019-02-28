@@ -5,7 +5,7 @@ num_workers: 0
 
 # Logger info
 logging:
-  level: trace
+  level: info
 
 services:
   - name: rebaser

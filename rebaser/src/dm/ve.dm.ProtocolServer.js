@@ -21,7 +21,7 @@ ve.dm.ProtocolServer = function VeDmProtocolServer( documentStore, logger ) {
 	this.lastAuthorForDoc = new Map();
 	this.loadingForDoc = new Map();
 	this.documentStore = documentStore;
-	this.logger.logServerEvent( { type: 'restart' } );
+	this.logger.logServerEvent( { type: 'restart' }, 'info' );
 };
 
 OO.initClass( ve.dm.ProtocolServer );

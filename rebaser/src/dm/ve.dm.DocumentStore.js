@@ -28,7 +28,7 @@ ve.dm.DocumentStore.prototype.connect = function () {
 	var documentStore = this;
 	return this.storageClient.connect().then( function ( client ) {
 		var db = client.db( documentStore.dbName );
-		documentStore.logger.logServerEvent( { type: 'DocumentStore#connected', dbName: documentStore.dbName } );
+		documentStore.logger.logServerEvent( { type: 'DocumentStore#connected', dbName: documentStore.dbName }, 'info' );
 		documentStore.db = db;
 		documentStore.collection = db.collection( 'vedocstore' );
 		return documentStore.collection.findOneAndUpdate(
@@ -45,7 +45,7 @@ ve.dm.DocumentStore.prototype.connect = function () {
  * @return {Promise} Drops the entire database
  */
 ve.dm.DocumentStore.prototype.dropDatabase = function () {
-	this.logger.logServerEvent( { type: 'DocumentStore#dropDatabase', dbName: this.dbName } );
+	this.logger.logServerEvent( { type: 'DocumentStore#dropDatabase', dbName: this.dbName }, 'info' );
 	return this.db.dropDatabase();
 };
 
@@ -111,6 +111,6 @@ ve.dm.DocumentStore.prototype.onNewChange = function ( docName, change ) {
 };
 
 ve.dm.DocumentStore.prototype.onClose = function () {
-	this.logger.logServerEvent( { type: 'DocumentStore#onClose' } );
+	this.logger.logServerEvent( { type: 'DocumentStore#onClose' }, 'info' );
 	this.storageClient.close();
 };
