@@ -69,16 +69,38 @@
 			( function () {
 				var startTime,
 					/* eslint-disable no-jquery/no-global-selector */
+					sel = document.getSelection(),
 					$form = $( '.ve-demo-form' ),
 					$content = $( '.ve-demo-content' ).addClass( 'oo-ui-element-hidden' ),
+					content = $content[ 0 ],
 					$log = $( '.ve-demo-log' ).val( '' ),
 					$imeIdentifier = $( '.ve-demo-identifier' ),
 					/* eslint-enable no-jquery/no-global-selector */
 					oldHtml = '',
-					oldStartOffset = 0,
-					oldEndOffset = 0,
+					oldAnchorPosition = null,
+					oldFocusPosition = null,
 					comments,
 					log = [];
+
+				function getPosition( node, offset ) {
+					var position;
+					if ( node === null ) {
+						return null;
+					}
+					position = [ offset ];
+					while ( node.parentNode !== null && node !== content ) {
+						position.splice(
+							0,
+							0,
+							Array.prototype.indexOf.call(
+								node.parentNode.childNodes,
+								node
+							)
+						);
+						node = node.parentNode;
+					}
+					return position;
+				}
 
 				function eventToObject( e ) {
 					// TODO: flesh this out more
@@ -108,8 +130,8 @@
 					var args = [],
 						msUtc = ( new Date().getTime() - startTime ) / 1000,
 						newHtml = $content.html(),
-						newStartOffset = document.getSelection().anchorOffset,
-						newEndOffset = document.getSelection().focusOffset;
+						newAnchorPosition = getPosition( sel.anchorNode, sel.anchorOffset ),
+						newFocusPosition = getPosition( sel.focusNode, sel.focusOffset );
 
 					if ( oldHtml !== newHtml ) {
 						logWrite( {
@@ -121,20 +143,20 @@
 						oldHtml = newHtml;
 					}
 					if (
-						oldStartOffset !== newStartOffset ||
-						oldEndOffset !== newEndOffset
+						JSON.stringify( oldAnchorPosition ) !== JSON.stringify( newAnchorPosition ) ||
+						JSON.stringify( oldFocusPosition ) !== JSON.stringify( newFocusPosition )
 					) {
 						logWrite( {
 							seq: log.length,
 							time: msUtc,
 							action: 'changeSel',
 							args: [
-								newStartOffset,
-								newEndOffset
+								newAnchorPosition,
+								newFocusPosition
 							]
 						} );
-						oldStartOffset = newStartOffset;
-						oldEndOffset = newEndOffset;
+						oldAnchorPosition = newAnchorPosition;
+						oldFocusPosition = newFocusPosition;
 					}
 					if ( eventName !== undefined ) {
 						args.push( eventName );
@@ -197,6 +219,9 @@
 						.attach( $content )
 						.on( handlers )
 						.afterLoop( makeAfterLoopHandler() );
+
+					$( document ).on( 'selectstart', makeEventHandler( 'selectstart' ) );
+					$( document ).on( 'selectionchange', makeEventHandler( 'selectionchange' ) );
 
 					startTime = new Date().getTime();
 
