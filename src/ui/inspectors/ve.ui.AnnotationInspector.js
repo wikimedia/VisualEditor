@@ -117,7 +117,9 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
  * @inheritdoc ve.ui.FragmentWindow
  */
 ve.ui.AnnotationInspector.prototype.isEditing = function () {
-	return !!this.initialSelection && !this.initialSelection.isCollapsed();
+	// If initialSelection isn't set yet, default to assume we are editing,
+	// especially for the check in FragmentWindow#getSetupProcess
+	return !this.initialSelection || !this.initialSelection.isCollapsed();
 };
 
 /**
@@ -211,9 +213,12 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 
 			this.fragment = fragment;
 
-			// Set the mode - this was done already in FragmentInspector but now that we may have
-			// changed what the fragment is covering we need to run it again
+			// Duplicate calls from FragmentWindow#getSetupProcess after
+			// changing the fragment
 			this.actions.setMode( this.getMode() );
+			if ( !this.isEditing() && this.isReadOnly() ) {
+				return ve.createDeferred().reject().promise();
+			}
 		}, this );
 };
 
