@@ -8,6 +8,11 @@
 	cursor: text;
 }
 
+/* Hide the caret (text cursor) when read-only */
+.ve-ce-surface-readOnly .ve-ce-attachedRootNode {
+	caret-color: transparent;
+}
+
 /*
  * Don't bother with -moz-selection becase Firefox 24 only
  * supports overriding text selection colour, not images
