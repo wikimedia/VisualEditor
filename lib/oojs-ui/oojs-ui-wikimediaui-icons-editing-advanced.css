@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.30.3
+ * OOUI v0.30.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-02-21T10:57:15Z
+ * Date: 2019-03-07T09:14:26Z
  */
 .oo-ui-icon-alignCenter {
   background-image: url('themes/wikimediaui/images/icons/alignCenter.png');
@@ -103,6 +103,54 @@
 .oo-ui-image-progressive.oo-ui-icon-hieroglyph {
   background-image: url('themes/wikimediaui/images/icons/hieroglyph-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/hieroglyph-progressive.svg');
+}
+.oo-ui-icon-imageLayoutBasic {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutBasic.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutBasic.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-imageLayoutBasic {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutBasic-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutBasic-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-imageLayoutBasic {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutBasic-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutBasic-progressive.svg');
+}
+.oo-ui-icon-imageLayoutFrame {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrame.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrame.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-imageLayoutFrame {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrame-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrame-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-imageLayoutFrame {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrame-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrame-progressive.svg');
+}
+.oo-ui-icon-imageLayoutFrameless {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrameless.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrameless.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-imageLayoutFrameless {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrameless-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrameless-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-imageLayoutFrameless {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrameless-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrameless-progressive.svg');
+}
+.oo-ui-icon-imageLayoutThumbnail {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutThumbnail.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutThumbnail.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-imageLayoutThumbnail {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutThumbnail-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutThumbnail-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-imageLayoutThumbnail {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutThumbnail-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutThumbnail-progressive.svg');
 }
 .oo-ui-icon-language {
   background-image: url('themes/wikimediaui/images/icons/language.png');

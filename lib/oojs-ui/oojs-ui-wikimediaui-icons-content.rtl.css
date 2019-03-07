@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.30.3
+ * OOUI v0.30.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-02-21T10:57:15Z
+ * Date: 2019-03-07T09:14:26Z
  */
 .oo-ui-icon-article {
   background-image: url('themes/wikimediaui/images/icons/article-rtl.png');
@@ -31,6 +31,18 @@
 .oo-ui-image-progressive.oo-ui-icon-articles {
   background-image: url('themes/wikimediaui/images/icons/articles-rtl-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articles-rtl-progressive.svg');
+}
+.oo-ui-icon-articleAdd {
+  background-image: url('themes/wikimediaui/images/icons/articleAdd.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleAdd.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-articleAdd {
+  background-image: url('themes/wikimediaui/images/icons/articleAdd-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleAdd-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-articleAdd {
+  background-image: url('themes/wikimediaui/images/icons/articleAdd-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleAdd-progressive.svg');
 }
 .oo-ui-icon-articleCheck {
   background-image: url('themes/wikimediaui/images/icons/articleCheck.png');
@@ -162,6 +174,10 @@
 .oo-ui-image-destructive.oo-ui-icon-tag {
   background-image: url('themes/wikimediaui/images/icons/tag-rtl-destructive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tag-rtl-destructive.svg');
+}
+.oo-ui-image-error.oo-ui-icon-tag {
+  background-image: url('themes/wikimediaui/images/icons/tag-rtl-error.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/tag-rtl-error.svg');
 }
 .oo-ui-image-warning.oo-ui-icon-tag {
   background-image: url('themes/wikimediaui/images/icons/tag-rtl-warning.png');
