@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.30.3
+ * OOUI v0.30.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-02-21T10:57:15Z
+ * Date: 2019-03-07T09:14:26Z
  */
 .oo-ui-icon-book {
   background-image: url('themes/wikimediaui/images/icons/book-rtl.png');
@@ -44,18 +44,6 @@
   background-image: url('themes/wikimediaui/images/icons/newspaper-rtl-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/newspaper-rtl-progressive.svg');
 }
-.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web.svg');
-}
-.oo-ui-image-invert.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web-invert.svg');
-}
-.oo-ui-image-progressive.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web-progressive.svg');
-}
 .oo-ui-icon-reference {
   background-image: url('themes/wikimediaui/images/icons/reference.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/reference.svg');
@@ -91,4 +79,16 @@
 .oo-ui-image-progressive.oo-ui-icon-references {
   background-image: url('themes/wikimediaui/images/icons/references-rtl-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/references-rtl-progressive.svg');
+}
+.oo-ui-icon-web {
+  background-image: url('themes/wikimediaui/images/icons/web.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-web {
+  background-image: url('themes/wikimediaui/images/icons/web-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-web {
+  background-image: url('themes/wikimediaui/images/icons/web-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web-progressive.svg');
 }
