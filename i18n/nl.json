@@ -29,7 +29,8 @@
 			"Rcdeboer",
 			"Patio",
 			"KlaasZ4usV",
-			"Marcelhospers"
+			"Marcelhospers",
+			"Elroy"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -82,6 +83,7 @@
 	"visualeditor-content-select-all": "Alles selecteren",
 	"visualeditor-contextitemwidget-label-remove": "Verwijderen",
 	"visualeditor-contextitemwidget-label-secondary": "Bewerken",
+	"visualeditor-contextitemwidget-label-view": "Weergeven",
 	"visualeditor-debugbar-close": "Sluiten",
 	"visualeditor-debugbar-inputdebug": "Input voor foutopsporing",
 	"visualeditor-debugbar-logrange": "Selectie loggen",

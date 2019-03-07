@@ -89,6 +89,7 @@
 	"visualeditor-content-select-all": "Выбрать всё",
 	"visualeditor-contextitemwidget-label-remove": "Удалить",
 	"visualeditor-contextitemwidget-label-secondary": "Править",
+	"visualeditor-contextitemwidget-label-view": "Просмотр",
 	"visualeditor-debugbar-close": "Закрыть",
 	"visualeditor-debugbar-inputdebug": "Отладка ввода",
 	"visualeditor-debugbar-logrange": "Отладка выделенного",

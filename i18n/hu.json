@@ -12,7 +12,8 @@
 			"Rodrigo",
 			"Tgr",
 			"Notramo",
-			"Bencemac"
+			"Bencemac",
+			"Máté"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -83,7 +84,7 @@
 	"visualeditor-dialog-table-caption": "Cím",
 	"visualeditor-dialog-table-title": "Táblázattulajdonságok",
 	"visualeditor-diff-no-changes": "Nincs változás",
-	"visualeditor-diff-timed-out": "Túl sokáig tartott a változtatásaid számítása, ezért az összegzés alant nem biztos, hogy optimális.",
+	"visualeditor-diff-timed-out": "Túl sokáig tartott a változtatásaid számítása, ezért a lenti összegzés nem biztos, hogy optimális.",
 	"visualeditor-find-and-replace-diacritic": "Ékezetek figyelmen kívül hagyása",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Az ékezetek figyelmen kívül hagyása nem lehetséges ebben a böngészőben",
 	"visualeditor-find-and-replace-done": "Kész",
