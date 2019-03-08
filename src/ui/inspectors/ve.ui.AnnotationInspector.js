@@ -141,6 +141,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			var initialCoveringAnnotation,
+				isNew = false,
 				inspector = this,
 				annotationSet, annotations,
 				fragment = this.getFragment(),
@@ -202,6 +203,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			// Fallback to a default annotation
 			if ( !this.initialAnnotation ) {
 				this.initialAnnotation = this.getAnnotationFromFragment( fragment );
+				isNew = true;
 			} else if (
 				initialCoveringAnnotation &&
 				initialCoveringAnnotation.compareTo( this.initialAnnotation )
@@ -216,7 +218,9 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			// Duplicate calls from FragmentWindow#getSetupProcess after
 			// changing the fragment
 			this.actions.setMode( this.getMode() );
-			if ( !this.isEditing() && this.isReadOnly() ) {
+			// isEditing is true when we are applying a new annotation because a
+			// stub is applied immediately, so use isNew instead
+			if ( isNew && this.isReadOnly() ) {
 				return ve.createDeferred().reject().promise();
 			}
 		}, this );
