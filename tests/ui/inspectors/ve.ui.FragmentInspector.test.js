@@ -35,6 +35,14 @@ QUnit.test( 'find fragments', function ( assert ) {
 				}
 			},
 			{
+				msg: 'Collapsed selection in word (noExpand)',
+				name: 'link',
+				range: new ve.Range( 2 ),
+				setupData: { noExpand: true },
+				expectedRange: new ve.Range( 2 ),
+				expectedData: function () {}
+			},
+			{
 				msg: 'Cancel restores original data & selection',
 				name: 'link',
 				range: new ve.Range( 2 ),
@@ -169,9 +177,9 @@ QUnit.test( 'find fragments', function ( assert ) {
 				input: function () {
 					this.textWidget.setValue( 'new' );
 				},
+				actionData: {},
 				expectedRange: new ve.Range( 17, 19 ),
-				expectedData: function () {},
-				actionData: {}
+				expectedData: function () {}
 			},
 			{
 				msg: 'Comment clear (empty input)',
@@ -189,11 +197,31 @@ QUnit.test( 'find fragments', function ( assert ) {
 				msg: 'Comment delete (action button)',
 				name: 'comment',
 				range: new ve.Range( 17, 19 ),
+				actionData: { action: 'remove' },
 				expectedRange: new ve.Range( 17 ),
 				expectedData: function ( data ) {
 					data.splice( 17, 2 );
-				},
-				actionData: { action: 'remove' }
+				}
+			},
+			{
+				msg: 'Language annotation doesn\'t expand',
+				name: 'language',
+				range: new ve.Range( 2, 3 ),
+				expectedRange: new ve.Range( 2, 3 ),
+				expectedData: function ( data ) {
+					data.splice(
+						2, 1,
+						[ 'o', [ 'h785e2045ecc398c1' ] ]
+					);
+				}
+			},
+			{
+				msg: 'Collapsed language annotation becomes insertion annotation',
+				name: 'language',
+				range: new ve.Range( 13 ),
+				expectedRange: new ve.Range( 13 ),
+				expectedData: function () {},
+				expectedInsertionAnnotations: [ 'h785e2045ecc398c1' ]
 			}
 		];
 
@@ -202,13 +230,13 @@ QUnit.test( 'find fragments', function ( assert ) {
 	cases.forEach( function ( caseItem ) {
 		promise = promise.then( function () {
 			return surface.context.inspectors.getWindow( caseItem.name ).then( function ( inspector ) {
-				var windowData,
+				var setupData,
 					linearData = ve.copy( surfaceModel.getDocument().getFullData() );
 
 				surfaceModel.setLinearSelection( caseItem.range );
-				windowData = { surface: surface, fragment: surfaceModel.getFragment() };
-				return inspector.setup( windowData ).then( function () {
-					return inspector.ready( windowData ).then( function () {
+				setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
+				return inspector.setup( setupData ).then( function () {
+					return inspector.ready( setupData ).then( function () {
 						if ( caseItem.input ) {
 							caseItem.input.call( inspector );
 						}
@@ -224,9 +252,18 @@ QUnit.test( 'find fragments', function ( assert ) {
 									caseItem.msg + ': data'
 								);
 							}
+							if ( caseItem.expectedInsertionAnnotations ) {
+								assert.deepEqual(
+									surfaceModel.getInsertionAnnotations().getHashes(),
+									caseItem.expectedInsertionAnnotations,
+									caseItem.msg + ': insertion annotations'
+								);
+							}
 							while ( surfaceModel.canUndo() ) {
 								surfaceModel.undo();
 							}
+							// Insertion annotations are not cleared by undo
+							surfaceModel.setInsertionAnnotations( null );
 						} );
 					} );
 				} );
