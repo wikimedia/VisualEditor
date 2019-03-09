@@ -43,6 +43,13 @@ ve.ui.CommentAnnotationInspector.prototype.onTextInputChange = function () {
 };
 
 /**
+ * Handle annotation input resize events
+ */
+ve.ui.CommentAnnotationInspector.prototype.onTextInputResize = function () {
+	this.updateSize();
+};
+
+/**
  * Update the actions based on the annotation state
  */
 ve.ui.CommentAnnotationInspector.prototype.updateActions = function () {
@@ -104,10 +111,13 @@ ve.ui.CommentAnnotationInspector.prototype.initialize = function () {
 	ve.ui.CommentAnnotationInspector.super.prototype.initialize.call( this );
 
 	// Properties
-	this.textInput = new OO.ui.TextInputWidget();
+	this.textInput = new OO.ui.MultilineTextInputWidget( { autosize: true } );
 
 	// Events
-	this.textInput.connect( this, { change: 'onTextInputChange' } );
+	this.textInput.connect( this, {
+		change: 'onTextInputChange',
+		resize: 'onTextInputResize'
+	} );
 
 	// Initialization
 	this.form.$element.append( this.textInput.$element );
