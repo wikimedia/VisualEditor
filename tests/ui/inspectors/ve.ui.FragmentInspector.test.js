@@ -101,6 +101,23 @@ QUnit.test( 'find fragments', function ( assert ) {
 				expectedData: function () {}
 			},
 			{
+				msg: 'Link modified',
+				name: 'link',
+				range: new ve.Range( 5, 8 ),
+				input: function () {
+					this.annotationInput.getTextInputWidget().setValue( 'quux' );
+				},
+				expectedRange: new ve.Range( 5, 8 ),
+				expectedData: function ( data ) {
+					data.splice(
+						5, 3,
+						[ 'b', [ quuxHash ] ],
+						[ 'a', [ quuxHash ] ],
+						[ 'r', [ quuxHash ] ]
+					);
+				}
+			},
+			{
 				msg: 'Link removed (clear input)',
 				name: 'link',
 				range: new ve.Range( 5, 8 ),

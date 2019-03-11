@@ -234,6 +234,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
 			var i, len, annotations, insertion, annotationNodeAndOffset, $annotationNode,
+				inspector = this,
 				insertionAnnotation = false,
 				replace = false,
 				annotation = this.getAnnotation(),
@@ -245,16 +246,20 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				isEditing = this.isEditing(),
 				insertText = !remove && !isEditing;
 
+			function clear() {
+				// Clear all existing annotations
+				annotations = inspector.getMatchingAnnotations( fragment, true ).get();
+				for ( i = 0, len = annotations.length; i < len; i++ ) {
+					fragment.annotateContent( 'clear', annotations[ i ] );
+				}
+			}
+
 			if ( remove ) {
 				surfaceModel.popStaging();
 				if ( !isEditing ) {
 					return;
 				}
-				// Clear all existing annotations
-				annotations = this.getMatchingAnnotations( fragment, true ).get();
-				for ( i = 0, len = annotations.length; i < len; i++ ) {
-					fragment.annotateContent( 'clear', annotations[ i ] );
-				}
+				clear();
 			} else {
 				if ( data.action !== 'done' ) {
 					surfaceModel.popStaging();
@@ -289,6 +294,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 							) );
 						}
 					}
+					clear();
 					// Apply new annotation
 					if ( fragment.getSelection().isCollapsed() ) {
 						insertionAnnotation = true;
