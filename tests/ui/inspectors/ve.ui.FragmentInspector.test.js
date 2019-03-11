@@ -8,12 +8,13 @@ QUnit.module( 've.ui.FragmentInspector' );
 
 /* Tests */
 
-QUnit.test( 'find fragments', function ( assert ) {
+QUnit.test( 'Different selections and inputs', function ( assert ) {
 	var done = assert.async(),
 		promise = Promise.resolve(),
 		surface = ve.test.utils.createSurfaceFromHtml(
 			'<p>Foo <a href="bar">bar</a> baz  x</p>' +
-			'<p><!-- comment --> comment</p>'
+			'<p><!-- comment --> comment</p>' +
+			'<p>Fo<a href="bar">o bar</a></p>'
 		),
 		surfaceModel = surface.getModel(),
 		fooHash = 'hd5a13e54366d44db',
@@ -74,6 +75,19 @@ QUnit.test( 'find fragments', function ( assert ) {
 						8, 2,
 						[ ' ', [ barHash ] ],
 						[ 'b', [ barHash ] ]
+					);
+				}
+			},
+			{
+				msg: 'Collapsed selection inside a word that is partially linked',
+				name: 'link',
+				range: new ve.Range( 30 ),
+				expectedRange: new ve.Range( 29, 36 ),
+				expectedData: function ( data ) {
+					data.splice(
+						29, 2,
+						[ 'F', [ barHash ] ],
+						[ 'o', [ barHash ] ]
 					);
 				}
 			},
