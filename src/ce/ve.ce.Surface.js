@@ -29,7 +29,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.surface = ui;
 	this.model = model;
 	this.documentView = new ve.ce.Document( model.getDocument(), this );
-	this.attachedRoot = this.documentView.getDocumentNode().getNodeFromOffset(
+	this.attachedRoot = this.getDocument().getDocumentNode().getNodeFromOffset(
 		model.getAttachedRoot().getOffset() + ( model.getAttachedRoot().isWrapped() ? 1 : 0 )
 	);
 	this.selection = null;
@@ -3020,7 +3020,7 @@ ve.ce.Surface.prototype.findBlockSlug = function ( range ) {
  */
 ve.ce.Surface.prototype.findFocusedNode = function ( range ) {
 	var startNode, endNode,
-		documentNode = this.documentView.getDocumentNode();
+		documentNode = this.getDocument().getDocumentNode();
 	// Detect when only a single focusable element is selected
 	if ( !range.isCollapsed() ) {
 		startNode = documentNode.getNodeFromOffset( range.start + 1 );

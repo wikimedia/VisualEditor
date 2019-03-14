@@ -367,6 +367,9 @@
 				isMultiline: function () {
 					return true;
 				},
+				isReadOnly: function () {
+					return false;
+				},
 				getBoundingClientRect: function () {
 					return this.$element[ 0 ].getClientRects()[ 0 ] || null;
 				},
@@ -392,6 +395,8 @@
 					return false;
 				},
 				emit: function () {},
+				connect: function () {},
+				disconnect: function () {},
 				execute: ve.ui.Surface.prototype.execute,
 				commandRegistry: ve.ui.commandRegistry,
 				sequenceRegistry: ve.ui.sequenceRegistry,

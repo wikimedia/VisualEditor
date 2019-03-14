@@ -82,7 +82,7 @@ ve.BranchNode.prototype.indexOf = function ( node ) {
  *
  * @method
  * @see ve.Node#setRoot
- * @param {ve.Node|null} root Node to use as root
+ * @param {ve.BranchNode|null} root Node to use as root
  */
 ve.BranchNode.prototype.setRoot = function ( root ) {
 	var i, len,

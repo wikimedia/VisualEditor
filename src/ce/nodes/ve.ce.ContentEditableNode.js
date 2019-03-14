@@ -13,10 +13,13 @@
  * @constructor
  */
 ve.ce.ContentEditableNode = function VeCeContentEditableNode() {
-	this.$element.prop( { contentEditable: 'true', spellcheck: true } );
+	this.ceSurface = null;
+	this.setContentEditable( true );
+	this.setReadOnly( false );
+
 	this.connect( this, {
-		root: 'onNodeRoot',
-		unroot: 'onNodeUnroot'
+		setup: 'onContentEditableSetup',
+		teardown: 'onContentEditableTeardown'
 	} );
 };
 
@@ -27,21 +30,49 @@ OO.initClass( ve.ce.ContentEditableNode );
 
 /* Methods */
 
-ve.ce.ContentEditableNode.prototype.onNodeRoot = function ( root ) {
-	root.connect( this, { contentEditable: 'onRootContentEditable' } );
-};
+/**
+ * Handle setup events on the node
+ */
+ve.ce.ContentEditableNode.prototype.onContentEditableSetup = function () {
+	// Exit if already setup or not attached
+	if ( this.ceSurface || !this.root ) {
+		return;
+	}
+	this.ceSurface = this.root.getSurface().getSurface();
 
-ve.ce.ContentEditableNode.prototype.onNodeUnroot = function ( root ) {
-	root.disconnect( this, { contentEditable: 'onRootContentEditable' } );
+	this.ceSurface.connect( this, { readOnly: 'onSurfaceReadOnly' } );
+	// Set initial state
+	this.setReadOnly( this.ceSurface.isReadOnly() );
 };
 
 /**
- * Called when the documentNode is enabled / disabled
- *
- * @param {boolean} disabled Whether the documentNode is disabled
+ * Handle teardown events on the node
  */
-ve.ce.ContentEditableNode.prototype.onRootContentEditable = function () {
-	this.setContentEditable( this.getRoot().isContentEditable() );
+ve.ce.ContentEditableNode.prototype.onContentEditableTeardown = function () {
+	// Exit if not setup
+	if ( !this.ceSurface ) {
+		return;
+	}
+	this.ceSurface.disconnect( this, { readOnly: 'onSurfaceReadOnly' } );
+	this.ceSurface = null;
+};
+
+/**
+ * Handle readOnly events from the surface
+ *
+ * @param {boolean} readOnly Surface is read-only
+ */
+ve.ce.ContentEditableNode.prototype.onSurfaceReadOnly = function ( readOnly ) {
+	this.setReadOnly( readOnly );
+};
+
+/**
+ * Called when the surface read-only state changes
+ *
+ * @param {boolean} readOnly Surface is read-only
+ */
+ve.ce.ContentEditableNode.prototype.setReadOnly = function ( readOnly ) {
+	this.$element.prop( 'spellcheck', !readOnly );
 };
 
 /**
@@ -50,13 +81,14 @@ ve.ce.ContentEditableNode.prototype.onRootContentEditable = function () {
  * @param {boolean} enabled Whether to enable editing
  */
 ve.ce.ContentEditableNode.prototype.setContentEditable = function ( enabled ) {
-	if ( enabled === this.isContentEditable() ) {
-		return;
-	}
-	this.$element.prop( 'contentEditable', enabled ? 'true' : 'false' );
-	this.emit( 'contentEditable' );
+	this.$element.prop( 'contentEditable', ( !!enabled ).toString() );
 };
 
+/**
+ * Check if the node is currently editable
+ *
+ * @return {boolean} Node is currently editable
+ */
 ve.ce.ContentEditableNode.prototype.isContentEditable = function () {
 	return this.$element.prop( 'contentEditable' ) === 'true';
 };

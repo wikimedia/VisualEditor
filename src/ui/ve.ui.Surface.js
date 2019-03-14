@@ -139,6 +139,13 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  * @event submit
  */
 
+/**
+ * The surface read-only state has changed
+ *
+ * @event readOnly
+ * @param {boolean} readOnly The surface is read-only
+ */
+
 /* Methods */
 
 /* eslint-disable valid-jsdoc */
@@ -431,6 +438,7 @@ ve.ui.Surface.prototype.setReadOnly = function ( readOnly ) {
 	this.readOnly = !!readOnly;
 	this.model.setReadOnly( readOnly );
 	this.view.setReadOnly( readOnly );
+	this.emit( 'readOnly', readOnly );
 };
 
 /**
