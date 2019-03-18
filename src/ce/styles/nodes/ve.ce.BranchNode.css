@@ -84,7 +84,10 @@
 
 .ve-ce-chimera-webkit {
 	/* Cursor positioning tweak */
-	width: 1px;
+	/*
+	 * Leaving width at 0 causes a small horizontal wobble, but using a
+	 * non-zero value can cause it to be visible on high-DPI devices (T218331)
+	 */
 	height: 1em;
 }
 

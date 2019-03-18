@@ -68,9 +68,10 @@ ve.ce.BranchNode.inlineSlugTemplate = ( function () {
 	// Support: Firefox
 	// Firefox <=37 misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
 	// Firefox misbehaves if we don't set an src and there is no sizing at node creation time: https://bugzilla.mozilla.org/show_bug.cgi?id=1267906
-	// Support: Chrome
-	// On high DPI displays, a 1px wide image with no src has an outline (T218331)
-	$img.prop( 'src', ve.ce.minImgDataUri );
+	// Setting an src in Chrome is slow, so only set it in affected versions of Firefox
+	if ( profile.layout === 'gecko' ) {
+		$img.prop( 'src', ve.ce.minImgDataUri );
+	}
 	return $span.get( 0 );
 }() );
 
