@@ -4,7 +4,8 @@
 			"Basharh",
 			"Bishnu Saikia",
 			"Xuacu",
-			"McDutchie"
+			"McDutchie",
+			"Fitoschido"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -124,7 +125,7 @@
 	"visualeditor-key-enter": "Intro",
 	"visualeditor-key-escape": "Esc",
 	"visualeditor-key-home": "Aniciu",
-	"visualeditor-key-insert": "Insert",
+	"visualeditor-key-insert": "Inxertar",
 	"visualeditor-key-left": "Izquierda",
 	"visualeditor-key-meta": "Meta",
 	"visualeditor-key-page-down": "AvPáx",
