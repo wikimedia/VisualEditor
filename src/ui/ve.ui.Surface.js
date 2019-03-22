@@ -833,21 +833,19 @@ ve.ui.Surface.prototype.initFilibuster = function () {
 			return ve.serializeNodeDebug( surface.view.$element[ 0 ] );
 		} )
 		.setObserver( 'DOM selection', function () {
-			var nativeRange,
-				nativeSelection = surface.view.nativeSelection;
-			if ( nativeSelection.rangeCount === 0 ) {
+			var nativeSelection = surface.view.nativeSelection;
+			if ( nativeSelection.focusNode === null ) {
 				return 'null';
 			}
-			nativeRange = nativeSelection.getRangeAt( 0 );
 			return JSON.stringify( {
-				startContainer: ve.serializeNodeDebug( nativeRange.startContainer ),
-				startOffset: nativeRange.startOffset,
-				endContainer: (
-					nativeRange.startContainer === nativeRange.endContainer ?
-						'(=startContainer)' :
-						ve.serializeNodeDebug( nativeRange.endContainer )
+				anchorNode: ve.serializeNodeDebug( nativeSelection.anchorNode ),
+				anchorOffset: nativeSelection.anchorOffset,
+				focusNode: (
+					nativeSelection.focusNode === nativeSelection.anchorNode ?
+						'(=anchorNode)' :
+						ve.serializeNodeDebug( nativeSelection.focusNode )
 				),
-				endOffset: nativeRange.endOffset
+				focusOffset: nativeSelection.focusOffset
 			} );
 		} );
 };
