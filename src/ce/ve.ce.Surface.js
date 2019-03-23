@@ -47,7 +47,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup',
 		'compositionstart', 'compositionend',
-		'input', 'mousedown'
+		'beforeinput', 'input', 'mousedown'
 	] );
 	this.clipboard = null;
 	this.clipboardId = Math.random().toString();
@@ -197,6 +197,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		keydown: this.onDocumentKeyDown.bind( this ),
 		keyup: this.onDocumentKeyUp.bind( this ),
 		keypress: this.onDocumentKeyPress.bind( this ),
+		beforeinput: this.onDocumentBeforeInput.bind( this ),
 		input: this.onDocumentInput.bind( this ),
 		compositionstart: this.onDocumentCompositionStart.bind( this )
 	} ).after( {
@@ -1458,6 +1459,17 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
 		return;
 	}
 
+	this.handleInsertion();
+};
+
+/**
+ * Handle document beforeinput events.
+ *
+ * @method
+ * @param {jQuery.Event} e beforeinput event
+ */
+ve.ce.Surface.prototype.onDocumentBeforeInput = function () {
+	// Fixes the case where an input event deletes a CBN boundary. See T217223
 	this.handleInsertion();
 };
 
