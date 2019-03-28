@@ -712,26 +712,40 @@ ve.ce.Surface.prototype.activate = function () {
  * While the surface is deactivated, all calls to showModelSelection will get redirected here.
  */
 ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
-	var i, l, rects,
-		selection = this.getSelection();
+	var rects, textColor, currentNode,
+		surface = this,
+		selection = this.getSelection(),
+		isCollapsed = selection.getModel().isCollapsed();
 
 	this.$deactivatedSelection.empty();
 
 	// Check we have a deactivated surface and a native selection
 	if ( this.deactivated && selection.isNativeCursor() ) {
+		if ( isCollapsed ) {
+			currentNode = this.getDocument().getBranchNodeFromOffset(
+				selection.getModel().getCoveringRange().start
+			);
+			if ( currentNode ) {
+				// This isn't perfect as it doesn't take into account annotations.
+				textColor = currentNode.$element.css( 'color' );
+			}
+		}
 		rects = selection.getSelectionRects();
 		if ( rects ) {
-			for ( i = 0, l = rects.length; i < l; i++ ) {
-				this.$deactivatedSelection.append(
-					$( '<div>' ).css( {
-						top: rects[ i ].top,
-						left: rects[ i ].left,
-						// Collapsed selections can have a width of 0, so expand
-						width: Math.max( rects[ i ].width, 1 ),
-						height: rects[ i ].height
-					} )
-				).toggleClass( 've-ce-surface-deactivatedSelection-collapsed', selection.getModel().isCollapsed() );
-			}
+			rects.forEach( function ( rect ) {
+				var $rect = $( '<div>' ).css( {
+					top: rect.top,
+					left: rect.left,
+					// Collapsed selections can have a width of 0, so expand
+					width: Math.max( rect.width, 1 ),
+					height: rect.height
+				} );
+				if ( textColor ) {
+					$rect.css( 'background-color', textColor );
+				}
+				surface.$deactivatedSelection.append( $rect );
+			} );
+			this.$deactivatedSelection.toggleClass( 've-ce-surface-deactivatedSelection-collapsed', isCollapsed );
 		}
 	}
 };
