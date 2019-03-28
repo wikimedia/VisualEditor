@@ -30,8 +30,9 @@
 	padding: 0.15em 0;
 }
 
-.ve-ce-surface-deactivatedSelection-collapsed > div {
-	background: #000;
+.ve-ce-surface-deactivatedSelection-collapsed {
+	opacity: 1;
+	/* Color is matched to font in ve.ce.Surface.js */
 }
 
 /* Support: IE, Edge */
