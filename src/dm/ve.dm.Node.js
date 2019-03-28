@@ -29,8 +29,15 @@ ve.dm.Node = function VeDmNode( element ) {
 };
 
 /**
+ * @event attributeChange
+ * @param {string} key
+ * @param {Mixed} oldValue
+ * @param {Mixed} newValue
+ */
+
+/**
  * @event lengthChange
- * @param diff
+ * @param {number} diff
  */
 
 /**
