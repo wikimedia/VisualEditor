@@ -604,27 +604,47 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 };
 
 /**
+ * Deactivate the surface. Maybe save some properties that should be restored when it's activated.
+ *
+ * @protected
+ */
+ve.init.Target.prototype.deactivateSurfaceForToolbar = function () {
+	var view = this.getSurface().getView();
+	// Surface may already be deactivated (e.g. link inspector is open)
+	this.wasSurfaceActive = !view.deactivated;
+	if ( this.wasSurfaceActive ) {
+		view.deactivate();
+	}
+};
+
+/**
+ * Activate the surface. Restore any properties saved in #deactivate.
+ *
+ * @protected
+ */
+ve.init.Target.prototype.activateSurfaceForToolbar = function () {
+	var view = this.getSurface().getView();
+	if ( this.wasSurfaceActive ) {
+		view.activate();
+	}
+};
+
+/**
  * Handle active events from the toolbar
  *
  * @param {boolean} active The toolbar is active
  */
 ve.init.Target.prototype.onToolbarActive = function ( active ) {
-	var view = this.getSurface().getView();
 	// Deactivate the surface when the toolbar is active (T109529, T201329)
 	if ( active ) {
 		this.activeToolbars++;
 		if ( this.activeToolbars === 1 ) {
-			// Surface may already be deactived (e.g. link inspector is open)
-			this.wasSurfaceActive = !view.deactivated;
-			if ( this.wasSurfaceActive ) {
-				this.getSurface().getView().deactivate();
-			}
+			this.deactivateSurfaceForToolbar();
 		}
 	} else {
 		this.activeToolbars--;
-		// Re-active surface if it was active when the toolbar first became active
-		if ( !this.activeToolbars && this.wasSurfaceActive ) {
-			this.getSurface().getView().activate();
+		if ( !this.activeToolbars ) {
+			this.activateSurfaceForToolbar();
 		}
 	}
 };
