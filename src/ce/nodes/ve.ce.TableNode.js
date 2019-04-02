@@ -83,7 +83,10 @@ ve.ce.TableNode.prototype.onSetup = function () {
 	// sure that this.selectedRectangle is up to date before redrawing.
 	this.updateOverlayDebounced = ve.debounce( this.updateOverlay.bind( this ) );
 	this.surface.getModel().connect( this, { select: 'onSurfaceModelSelect' } );
-	this.surface.connect( this, { position: this.updateOverlayDebounced } );
+	this.surface.connect( this, {
+		position: this.updateOverlayDebounced,
+		activation: 'onSurfaceActivation'
+	} );
 };
 
 /**
@@ -407,6 +410,13 @@ ve.ce.TableNode.prototype.getActiveCellNode = function () {
 		tableNodeOfActiveCellNode = activeNode && activeNode instanceof ve.ce.TableCellNode && activeNode.findParent( ve.ce.TableNode );
 
 	return tableNodeOfActiveCellNode === this ? activeNode : null;
+};
+
+/**
+ * Handle activation events from the surface
+ */
+ve.ce.TableNode.prototype.onSurfaceActivation = function () {
+	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-deactivated', !!this.surface.deactivated );
 };
 
 /**

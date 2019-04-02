@@ -37,6 +37,10 @@
 	border-right: 0;
 }
 
+.ve-ce-tableNodeOverlay-deactivated .ve-ui-tableLineContext > .oo-ui-iconWidget.oo-ui-iconElement.oo-ui-iconElement-icon {
+	background-color: #ddd;
+}
+
 .ve-ui-tableLineContext-menu {
 	z-index: 2;
 }

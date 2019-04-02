@@ -268,6 +268,12 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
  * a pair of blur-focus events is emitted anyway.
  */
 
+/**
+ * Surface activation state has changed (i.e. on activate or deactivate)
+ *
+ * @event activation
+ */
+
 /* Static properties */
 
 /**
@@ -667,6 +673,7 @@ ve.ce.Surface.prototype.onFocusChange = function () {
  * Used by dialogs so they can take focus without losing the original document selection.
  *
  * @param {boolean} [deactivatedForCopy] Surface was deactivated by preparePasteTargetForCopy
+ * @fires activation
  */
 ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy ) {
 	this.deactivatedForCopy = !!deactivatedForCopy;
@@ -681,11 +688,14 @@ ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy ) {
 		this.removeRangesAndBlur();
 		this.updateDeactivatedSelection();
 		this.clearKeyDownState();
+		this.emit( 'activation' );
 	}
 };
 
 /**
  * Reactivate the surface and restore the native selection
+ *
+ * @fires activation
  */
 ve.ce.Surface.prototype.activate = function () {
 	if ( this.deactivated ) {
@@ -703,6 +713,7 @@ ve.ce.Surface.prototype.activate = function () {
 			this.focusedNode = null;
 			this.onModelSelect();
 		}
+		this.emit( 'activation' );
 	}
 };
 
