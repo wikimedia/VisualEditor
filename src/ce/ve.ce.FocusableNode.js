@@ -469,6 +469,8 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 				nodeRange
 		).select();
 		node.focusableSurface.updateActiveAnnotations();
+		// Ensure surface is active as native 'focus' event won't be fired
+		node.focusableSurface.activate();
 	} );
 };
 

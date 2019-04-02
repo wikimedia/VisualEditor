@@ -189,6 +189,8 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		}
 	}
 	this.surface.getModel().setSelection( newSelection );
+	// Ensure surface is active as native 'focus' event won't be fired
+	this.surface.activate();
 	this.startCell = startCell;
 	this.surface.$document.on( {
 		'mouseup touchend': this.onTableMouseUpHandler,
