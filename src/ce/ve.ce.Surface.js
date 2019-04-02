@@ -4529,15 +4529,17 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
  */
 ve.ce.Surface.prototype.onPosition = function () {
 	var surface = this;
-	if ( !this.model.synchronizer ) {
-		return;
+
+	this.updateDeactivatedSelection();
+
+	if ( this.model.synchronizer ) {
+		// Defer to allow surface synchronizer to adjust for transactions
+		setTimeout( function () {
+			var authorId,
+				authorSelections = surface.model.synchronizer.authorSelections;
+			for ( authorId in authorSelections ) {
+				surface.onSynchronizerAuthorUpdate( +authorId );
+			}
+		} );
 	}
-	// Defer to allow surface synchronizer to adjust for transactions
-	setTimeout( function () {
-		var authorId,
-			authorSelections = surface.model.synchronizer.authorSelections;
-		for ( authorId in authorSelections ) {
-			surface.onSynchronizerAuthorUpdate( +authorId );
-		}
-	} );
 };
