@@ -47,6 +47,7 @@
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonElement-button {
 	vertical-align: top;
+	border-radius: 0;
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child {
