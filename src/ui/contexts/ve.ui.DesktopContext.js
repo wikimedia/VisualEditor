@@ -40,8 +40,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.surface.getView().connect( this, {
 		relocationStart: 'onSuppress',
 		relocationEnd: 'onUnsuppress',
-		blur: 'onSuppress',
-		focus: 'onUnsuppress',
 		position: 'onPosition'
 	} );
 	this.surface.getModel().connect( this, {
