@@ -673,9 +673,10 @@ ve.ce.Surface.prototype.onFocusChange = function () {
  * Used by dialogs so they can take focus without losing the original document selection.
  *
  * @param {boolean} [deactivatedForCopy] Surface was deactivated by preparePasteTargetForCopy
+ * @param {boolean} [noSelectionChange] Don't change the native selection.
  * @fires activation
  */
-ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy ) {
+ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy, noSelectionChange ) {
 	this.deactivatedForCopy = !!deactivatedForCopy;
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
@@ -685,7 +686,9 @@ ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy ) {
 		this.checkDelayedSequences();
 		// Remove ranges so the user can't accidentally type into the document,
 		// and so virtual keyboards are hidden.
-		this.removeRangesAndBlur();
+		if ( !noSelectionChange ) {
+			this.removeRangesAndBlur();
+		}
 		this.updateDeactivatedSelection();
 		this.clearKeyDownState();
 		this.emit( 'activation' );
@@ -792,6 +795,12 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
  * @fires blur
  */
 ve.ce.Surface.prototype.onDocumentBlur = function () {
+	var nullSelectionOnBlur = this.surface.nullSelectionOnBlur;
+	if ( !nullSelectionOnBlur ) {
+		// Set noSelectionChange as we already know the selection has left
+		// the document and we don't want #deactivate to move it again.
+		this.deactivate( false, true );
+	}
 	this.eventSequencer.detach();
 	this.surfaceObserver.stopTimerLoop();
 	this.surfaceObserver.pollOnce();
@@ -800,11 +809,13 @@ ve.ce.Surface.prototype.onDocumentBlur = function () {
 	this.onDocumentSelectionChange();
 	this.setDragging( false );
 	this.focused = false;
-	if ( this.focusedNode ) {
-		this.focusedNode.setFocused( false );
-		this.focusedNode = null;
+	if ( nullSelectionOnBlur ) {
+		if ( this.focusedNode ) {
+			this.focusedNode.setFocused( false );
+			this.focusedNode = null;
+		}
+		this.getModel().setNullSelection();
 	}
-	this.getModel().setNullSelection();
 	this.$element.removeClass( 've-ce-surface-focused' );
 	this.emit( 'blur' );
 };

@@ -51,6 +51,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.readOnlyToggle = new OO.ui.ToggleButtonWidget( {
 		label: 'Read-only'
 	} );
+	this.nullSelectionOnBlurToggle = new OO.ui.ToggleButtonWidget( {
+		label: 'Null selection on blur',
+		value: true
+	} );
 	$exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', function () {
 		container.modeSelect.selectItemByData( 'visual' );
 		return false;
@@ -102,6 +106,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	this.readOnlyToggle.on( 'change', function ( val ) {
 		container.surface.setReadOnly( val );
 	} );
+	this.nullSelectionOnBlurToggle.on( 'change', function ( val ) {
+		container.surface.nullSelectionOnBlur = val;
+	} );
 
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
 		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar-edit' ).append(
@@ -118,7 +125,9 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 				$divider.clone(),
 				diffButton.$element,
 				$divider.clone(),
-				this.readOnlyToggle.$element
+				this.readOnlyToggle.$element,
+				$divider.clone(),
+				this.nullSelectionOnBlurToggle.$element
 			)
 		),
 		$( '<div>' ).addClass( 've-demo-toolbar-commands ve-demo-surfaceToolbar-read' ).append(

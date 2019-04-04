@@ -26,6 +26,7 @@
  * @cfg {boolean} [multiline=true] Multi-line surface
  * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
  * @cfg {string} [readOnly] Surface is read-only
+ * @cfg {string} [nullSelectionOnBlur=true] Surface selection is set to null on blur
  * @cfg {string} [inDialog] The name of the dialog this surface is in
  */
 ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
@@ -86,6 +87,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.placeholderVisible = false;
 	this.setPlaceholder( config.placeholder );
 	this.setReadOnly( !!config.readOnly );
+	this.nullSelectionOnBlur = config.nullSelectionOnBlur !== false;
 	this.scrollPosition = null;
 	this.windowStackDepth = 0;
 
