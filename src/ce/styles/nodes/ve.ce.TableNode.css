@@ -40,6 +40,12 @@
 	opacity: 0.6;
 }
 
+.ve-ce-tableNodeOverlay-deactivated .ve-ce-tableNodeOverlay-selection-box {
+	background: rgba( 0, 0, 0, 0.3 );
+	border-color: #000;
+	opacity: 0.3;
+}
+
 .ve-ce-tableNodeOverlay-selection-box-fullCol {
 	border-left-width: 2px;
 	border-right-width: 2px;
@@ -62,6 +68,10 @@
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+}
+
+.ve-ce-tableNodeOverlay-deactivated .ve-ce-tableNodeOverlay-selection-box-anchor {
+	border: solid 1px rgba( 0, 0, 0, 0.3 );
 }
 
 .ve-ce-tableNodeOverlay-editing .ve-ce-tableNodeOverlay-selection-box {

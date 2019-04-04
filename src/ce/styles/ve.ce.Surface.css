@@ -19,13 +19,13 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	opacity: 0.5;
+	opacity: 0.15;
 	pointer-events: none;
 }
 
 .ve-ce-surface-deactivatedSelection > div {
 	position: absolute;
-	background: #6da9f7;
+	background: #000;
 	margin-top: -0.15em;
 	padding: 0.15em 0;
 }
