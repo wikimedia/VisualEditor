@@ -76,6 +76,18 @@ ve.ce.Selection.prototype.getSelectionStartAndEndRects = function () {
 };
 
 /**
+ * Get the rectangle for the selection's focus end
+ *
+ * The default gives the bounding rectanagle after using collapseToTo.
+ *
+ * @return {Object[]|null} Selection rectangle
+ */
+ve.ce.Selection.prototype.getSelectionFocusRect = function () {
+	var toSelection = new this.constructor( this.getModel().collapseToTo(), this.surface );
+	return toSelection.getSelectionBoundingRect();
+};
+
+/**
  * Get the coordinates of the selection's bounding rectangle relative to the surface.
  *
  * @abstract

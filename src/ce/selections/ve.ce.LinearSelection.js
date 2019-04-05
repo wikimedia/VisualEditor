@@ -220,6 +220,16 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 /**
  * @inheritdoc
  */
+ve.ce.LinearSelection.prototype.getSelectionFocusRect = function () {
+	return !this.isNativeCursor() ?
+		// Don't collapse selection for focus rect if we are on a focusable node.
+		this.getSelectionBoundingRect() :
+		ve.ce.LinearSelection.super.prototype.getSelectionFocusRect.call( this );
+};
+
+/**
+ * @inheritdoc
+ */
 ve.ce.LinearSelection.prototype.isFocusedNode = function () {
 	return !!this.focusedNode;
 };

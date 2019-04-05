@@ -24,6 +24,7 @@ QUnit.test( 'Rects', function ( assert ) {
 				expectedRects: null,
 				expectedBoundingRect: null,
 				expectedStartAndEndRects: null,
+				expectedFocusRect: null,
 				msg: 'Null selection'
 			},
 			{
@@ -80,6 +81,13 @@ QUnit.test( 'Rects', function ( assert ) {
 				caseItem.expectedBoundingRect :
 				caseItem.expectedRects[ 0 ],
 			caseItem.msg + ': bounding rect'
+		);
+		assert.deepEqual(
+			ve.copy( view.getSelection().getSelectionFocusRect(), null, filterProps ),
+			caseItem.expectedFocusRect !== undefined ?
+				caseItem.expectedFocusRect :
+				caseItem.expectedBoundingRect || caseItem.expectedRects[ 0 ],
+			caseItem.msg + ': focus rect'
 		);
 		assert.deepEqual(
 			ve.copy( view.getSelection().getSelectionStartAndEndRects(), null, filterProps ),
