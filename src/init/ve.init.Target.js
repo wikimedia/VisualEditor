@@ -40,6 +40,10 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.actionsToolbar = null;
 	this.toolbarConfig = config.toolbarConfig || {};
 	this.$scrollContainer = this.getScrollContainer();
+	this.$scrollListener = this.$scrollContainer.is( 'html, body' ) ?
+		$( OO.ui.Element.static.getWindow( this.$scrollContainer[ 0 ] ) ) :
+		this.$scrollContainer;
+
 	this.toolbarScrollOffset = 0;
 	this.activeToolbars = 0;
 	this.wasSurfaceActive = null;
@@ -304,7 +308,7 @@ ve.init.Target.prototype.bindHandlers = function () {
 		visibilitychange: this.onDocumentVisibilityChangeHandler
 	} );
 	this.$element.on( 'keydown', this.onTargetKeyDownHandler );
-	ve.addPassiveEventListener( this.$scrollContainer[ 0 ], 'scroll', this.onContainerScrollHandler );
+	ve.addPassiveEventListener( this.$scrollListener[ 0 ], 'scroll', this.onContainerScrollHandler );
 };
 
 /**
@@ -317,7 +321,7 @@ ve.init.Target.prototype.unbindHandlers = function () {
 		visibilitychange: this.onDocumentVisibilityChangeHandler
 	} );
 	this.$element.off( 'keydown', this.onTargetKeyDownHandler );
-	ve.removePassiveEventListener( this.$scrollContainer[ 0 ], 'scroll', this.onContainerScrollHandler );
+	ve.removePassiveEventListener( this.$scrollListener[ 0 ], 'scroll', this.onContainerScrollHandler );
 };
 
 /**
@@ -363,7 +367,7 @@ ve.init.Target.prototype.setupTriggerListeners = function () {
  * @return {jQuery} The target's scroll container
  */
 ve.init.Target.prototype.getScrollContainer = function () {
-	return $( this.getElementWindow() );
+	return $( OO.ui.Element.static.getClosestScrollableContainer( document.body ) );
 };
 
 /**
