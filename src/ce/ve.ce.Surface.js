@@ -3040,8 +3040,6 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 					// in exactly the same place where it was before, the observer won't consider that a change.
 					this.surfaceObserver.clear();
 				}
-				// If the node is outside the view, scroll to it
-				ve.scrollIntoView( this.focusedNode.$element.get( 0 ) );
 			}
 		}
 	} else {

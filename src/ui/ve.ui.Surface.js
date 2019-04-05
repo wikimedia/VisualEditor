@@ -97,7 +97,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	} );
 
 	// Events
-	this.getModel().connect( this, { select: 'scrollCursorIntoView' } );
+	this.getModel().connect( this, { select: 'scrollSelectionIntoView' } );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
 	this.dialogs.connect( this, { opening: 'onWindowOpening' } );
 	this.context.getInspectors().connect( this, { opening: 'onWindowOpening' } );
@@ -130,6 +130,7 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
 
 /**
  * The surface was scrolled programmatically
+ * as a result of a native selection change
  *
  * @event scroll
  */
@@ -470,22 +471,27 @@ ve.ui.Surface.prototype.onDocumentTransact = function () {
 };
 
 /**
- * Scroll the cursor into view
+ * Scroll the selection into view
  *
  * Called in response to selection events.
  *
- * This is required when the cursor disappears under the floating toolbar.
+ * This is done for all selections, even native ones, to account
+ * for the extra padding of the floating toolbar.
+ *
+ * @fires scroll
  */
-ve.ui.Surface.prototype.scrollCursorIntoView = function () {
-	var profile, view, clientRect, surfaceRect, cursorTop, cursorBottom, scrollTo, bottomBound, topBound;
+ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
+	var profile, clientRect, surfaceRect, padding,
+		animate = true,
+		view = this.getView(),
+		selection = view.getSelection( this.getModel().getSelection() ),
+		surface = this;
 
-	view = this.getView();
-
-	if ( !view.nativeSelection.focusNode || OO.ui.contains( view.$pasteTarget[ 0 ], view.nativeSelection.focusNode, true ) ) {
+	if ( selection.getModel().isNull() ) {
 		return;
 	}
 
-	if ( this.getView().dragging ) {
+	if ( view.dragging ) {
 		// Allow native scroll behavior while dragging, as the start/end
 		// points are unreliable until we're finished. Without this, trying to
 		// drag a selection larger than a single screen will sometimes lock
@@ -496,7 +502,7 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen.
-	clientRect = this.getView().getSelection().getSelectionFocusRect();
+	clientRect = selection.getSelectionFocusRect();
 	if ( !clientRect ) {
 		return;
 	}
@@ -505,57 +511,55 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 	surfaceRect = this.getBoundingClientRect();
 	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
 
-	// TODO: this has some long-standing assumptions that we're going to be in
-	// the context we expect. If we get VE in a scrollable div or suchlike,
-	// we'd no longer be able to make these assumptions about top/bottom of
-	// window.
-	topBound = this.toolbarHeight; // top of the window + height of the toolbar
-	bottomBound = window.innerHeight; // bottom of the window
-	if (
-		OO.ui.isMobile() &&
-		!this.getModel().getSelection().isCollapsed()
-	) {
-		profile = $.client.profile();
-		// Assume that if the selection has been expanded, then a context menu is visible
-		// above the selection. We don't want this to obscure the toolbar so add on an
-		// estimate of its height. Note that scrolling on iOS closes the context, but it
-		// will re-open when the user touches the selection. (T202723)
+	padding = {
+		top: this.toolbarHeight,
+		bottom: 0
+	};
+
+	if ( selection.isNativeCursor() ) {
+		animate = false;
 		if (
-			ve.init.platform.constructor.static.isIos() ||
-			// Older versions of Android draw the context menu in the address bar and so
-			// don't need to be fixed.
-			( profile.name === 'android' && profile.versionNumber >= 6 )
+			OO.ui.isMobile() &&
+			!this.getModel().getSelection().isCollapsed()
 		) {
-			topBound += 60;
+			profile = $.client.profile();
+			// Assume that if the selection has been expanded, then a context menu is visible
+			// above the selection. We don't want this to obscure the toolbar so add on an
+			// estimate of its height. Note that scrolling on iOS closes the context, but it
+			// will re-open when the user touches the selection. (T202723)
+			if (
+				ve.init.platform.constructor.static.isIos() ||
+				// Older versions of Android draw the context menu in the address bar and so
+				// don't need to be fixed.
+				( profile.name === 'android' && profile.versionNumber >= 6 )
+			) {
+				padding.top += 60;
+			}
+			// Also assume there are selection handles below on Android. (T204718)
+			if ( profile.name === 'android' || profile.name === 'firefox' ) {
+				padding.bottom += 30;
+			}
 		}
-		// Also assume there are selection handles below on Android. (T204718)
-		if ( profile.name === 'android' || profile.name === 'firefox' ) {
-			bottomBound -= 30;
-		}
+
+		clientRect.top -= 5;
+		clientRect.bottom += 5;
 	}
 
-	cursorTop = clientRect.top - 5;
-	cursorBottom = clientRect.bottom + 5;
-
-	if ( cursorTop < topBound ) {
-		scrollTo = this.$scrollContainer.scrollTop() + ( cursorTop - topBound );
-		this.scrollTo( scrollTo );
-	} else if ( cursorBottom > bottomBound ) {
-		scrollTo = this.$scrollContainer.scrollTop() + ( cursorBottom - bottomBound );
-		this.scrollTo( scrollTo );
-	}
+	ve.scrollIntoView( clientRect, {
+		animate: animate,
+		scrollContainer: this.$scrollContainer[ 0 ],
+		padding: padding
+	} ).then( function () {
+		if ( selection.isNativeCursor() ) {
+			// TODO: This event has only even been emitted for native selection
+			// scroll changes. Perhaps rename it.
+			surface.emit( 'scroll' );
+		}
+	} );
 };
 
-/**
- * Scroll the scroll container to a specific offset
- *
- * @param {number} offset Scroll offset
- * @fires scroll
- */
-ve.ui.Surface.prototype.scrollTo = function ( offset ) {
-	this.$scrollContainer.scrollTop( offset );
-	this.emit( 'scroll' );
-};
+// Deprecated alias
+ve.ui.Surface.prototype.scrollCursorIntoView = ve.ui.Surface.prototype.scrollSelectionIntoView;
 
 /**
  * Handle an dialog opening event.

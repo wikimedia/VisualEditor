@@ -103,7 +103,9 @@
 	/* eslint-enable no-new */
 
 	// Disable scroll animatinos
-	ve.scrollIntoView = function () {};
+	ve.scrollIntoView = function () {
+		return ve.createDeferred().resolve().promise();
+	};
 
 	function getSerializableData( model ) {
 		return model.getFullData( undefined, 'roundTrip' );
