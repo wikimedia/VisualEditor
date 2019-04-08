@@ -5,11 +5,9 @@
  */
 
 .ve-ui-contextItem {
-	/* Disable selection to avoid stealing focus from the surface */
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+	/* Use cursor::default as this label text, and not intended to
+	be selected, but don't prevent it (with user-select:none) if
+	the user really wants to. */
 	cursor: default;
 }
 
