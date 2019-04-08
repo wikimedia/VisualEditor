@@ -133,3 +133,66 @@ ve.summarizeTransaction = function ( tx ) {
 		}
 	} ).join( ', ' ) + ')';
 };
+
+/**
+ * Initialize ve.filibuster
+ *
+ * ve.filibuster will monitor calls in ve.{dm,ce,ui} and DM / DOM changes
+ */
+ve.initFilibuster = function () {
+	var surface = ve.init.target.surface;
+
+	if ( ve.filibuster ) {
+		ve.filibuster.clearLogs();
+		return;
+	}
+	ve.filibuster = new ve.Filibuster()
+		.wrapClass( ve.EventSequencer )
+		.wrapNamespace( ve.dm, 've.dm', [
+			// Blacklist
+			ve.dm.LinearSelection.prototype.getDescription,
+			ve.dm.TableSelection.prototype.getDescription,
+			ve.dm.NullSelection.prototype.getDescription
+		] )
+		.wrapNamespace( ve.ce, 've.ce' )
+		.wrapNamespace( ve.ui, 've.ui', [
+			// Blacklist
+			ve.ui.Surface.prototype.startFilibuster,
+			ve.ui.Surface.prototype.stopFilibuster
+		] )
+		.setObserver( 'dm doc', function () {
+			// Cannot use wrapped methods here
+			return JSON.stringify( ve.Filibuster.static.clonePlain(
+				surface.model.documentModel.data.data
+			) );
+		} )
+		.setObserver( 'dm selection', function () {
+			// Cannot use wrapped methods here
+			var selection = surface.model.selection;
+			if ( !selection ) {
+				return 'null';
+			}
+			return selection.getDescription();
+		} )
+		.setObserver( 'DOM doc', function () {
+			// Cannot use wrapped methods here
+			return ve.serializeNodeDebug( surface.view.$element[ 0 ] );
+		} )
+		.setObserver( 'DOM selection', function () {
+			// Cannot use wrapped methods here
+			var nativeSelection = surface.view.nativeSelection;
+			if ( nativeSelection.focusNode === null ) {
+				return 'null';
+			}
+			return JSON.stringify( {
+				anchorNode: ve.serializeNodeDebug( nativeSelection.anchorNode ),
+				anchorOffset: nativeSelection.anchorOffset,
+				focusNode: (
+					nativeSelection.focusNode === nativeSelection.anchorNode ?
+						'(=anchorNode)' :
+						ve.serializeNodeDebug( nativeSelection.focusNode )
+				),
+				focusOffset: nativeSelection.focusOffset
+			} );
+		} );
+};

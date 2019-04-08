@@ -1,5 +1,5 @@
 /*!
- * VisualEditor Logger class.
+ * Extremely detailed logging of function calls and state changes
  *
  * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */

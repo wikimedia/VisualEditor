@@ -347,9 +347,10 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-stopfilibuster' ) );
 		this.$filibuster.off( 'click' );
 		this.$filibuster.empty();
-		this.getSurface().startFilibuster();
+		ve.initFilibuster();
+		ve.filibuster.start();
 	} else {
-		this.getSurface().stopFilibuster();
+		ve.filibuster.stop();
 		this.$filibuster.html( this.getSurface().filibuster.getObservationsHtml() );
 		this.$filibuster.on( 'click', function ( e ) {
 			var path,

@@ -81,7 +81,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.context = this.createContext( { $popupContainer: config.$overlayContainer } );
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
-	this.filibuster = null;
 	this.debugBar = null;
 	this.placeholder = null;
 	this.placeholderVisible = false;
@@ -799,68 +798,6 @@ ve.ui.Surface.prototype.isMultiline = function () {
  */
 ve.ui.Surface.prototype.getDir = function () {
 	return this.$element.css( 'direction' );
-};
-
-ve.ui.Surface.prototype.initFilibuster = function () {
-	var surface = this;
-	this.filibuster = new ve.Filibuster()
-		.wrapClass( ve.EventSequencer )
-		.wrapNamespace( ve.dm, 've.dm', [
-			// Blacklist
-			ve.dm.LinearSelection.prototype.getDescription,
-			ve.dm.TableSelection.prototype.getDescription,
-			ve.dm.NullSelection.prototype.getDescription
-		] )
-		.wrapNamespace( ve.ce, 've.ce' )
-		.wrapNamespace( ve.ui, 've.ui', [
-			// Blacklist
-			ve.ui.Surface.prototype.startFilibuster,
-			ve.ui.Surface.prototype.stopFilibuster
-		] )
-		.setObserver( 'dm doc', function () {
-			return JSON.stringify( ve.Filibuster.static.clonePlain(
-				surface.model.documentModel.data.data
-			) );
-		} )
-		.setObserver( 'dm selection', function () {
-			var selection = surface.model.selection;
-			if ( !selection ) {
-				return 'null';
-			}
-			return selection.getDescription();
-		} )
-		.setObserver( 'DOM doc', function () {
-			return ve.serializeNodeDebug( surface.view.$element[ 0 ] );
-		} )
-		.setObserver( 'DOM selection', function () {
-			var nativeSelection = surface.view.nativeSelection;
-			if ( nativeSelection.focusNode === null ) {
-				return 'null';
-			}
-			return JSON.stringify( {
-				anchorNode: ve.serializeNodeDebug( nativeSelection.anchorNode ),
-				anchorOffset: nativeSelection.anchorOffset,
-				focusNode: (
-					nativeSelection.focusNode === nativeSelection.anchorNode ?
-						'(=anchorNode)' :
-						ve.serializeNodeDebug( nativeSelection.focusNode )
-				),
-				focusOffset: nativeSelection.focusOffset
-			} );
-		} );
-};
-
-ve.ui.Surface.prototype.startFilibuster = function () {
-	if ( !this.filibuster ) {
-		this.initFilibuster();
-	} else {
-		this.filibuster.clearLogs();
-	}
-	this.filibuster.start();
-};
-
-ve.ui.Surface.prototype.stopFilibuster = function () {
-	this.filibuster.stop();
 };
 
 /**
