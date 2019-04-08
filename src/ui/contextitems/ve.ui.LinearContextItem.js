@@ -158,7 +158,7 @@ ve.ui.LinearContextItem.prototype.isEditable = function () {
  * @return {boolean} Item is deletable
  */
 ve.ui.LinearContextItem.prototype.isDeletable = function () {
-	return this.constructor.static.deletable && this.isNode() && this.context.showDeleteButton() && this.isReadOnly();
+	return this.constructor.static.deletable && this.isNode() && this.context.showDeleteButton() && !this.isReadOnly();
 };
 
 /**
