@@ -702,7 +702,7 @@ ve.ce.FocusableNode.prototype.createHighlights = function () {
  * Handle activation events from the surface
  */
 ve.ce.FocusableNode.prototype.onSurfaceActivation = function () {
-	this.$highlights.toggleClass( 've-ce-focusableNode-highlights-deactivated', !!this.focusableSurface.deactivated );
+	this.$highlights.toggleClass( 've-ce-focusableNode-highlights-deactivated', !!this.focusableSurface.isShownAsDeactivated() );
 };
 
 /**

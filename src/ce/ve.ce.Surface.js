@@ -667,6 +667,31 @@ ve.ce.Surface.prototype.onFocusChange = function () {
 };
 
 /**
+ * Check if the surface is deactivated.
+ *
+ * @return {boolean} Surface is deactivated
+ */
+ve.ce.Surface.prototype.isDeactivated = function () {
+	return this.deactivated;
+};
+
+/**
+ * Check if the surface is visible deactivated.
+ *
+ * Only true if the surface was decativated by the user
+ * in a way that is expected to change the rendering.
+ *
+ * Tricks that deactivate the surface for other reasons,
+ * such as deactivatedForCopy, do not count as visibly
+ * deactviated
+ *
+ * @return {boolean} Surface is deactivated
+ */
+ve.ce.Surface.prototype.isShownAsDeactivated = function () {
+	return this.deactivated && !this.deactivatedForCopy;
+};
+
+/**
  * Deactivate the surface, stopping the surface observer and replacing the native
  * range with a fake rendered one.
  *
@@ -759,7 +784,9 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 				}
 				surface.$deactivatedSelection.append( $rect );
 			} );
-			this.$deactivatedSelection.toggleClass( 've-ce-surface-deactivatedSelection-collapsed', isCollapsed );
+			this.$deactivatedSelection
+				.toggleClass( 've-ce-surface-deactivatedSelection-showAsDeactivated', this.isShownAsDeactivated() )
+				.toggleClass( 've-ce-surface-deactivatedSelection-collapsed', isCollapsed );
 		}
 	}
 };

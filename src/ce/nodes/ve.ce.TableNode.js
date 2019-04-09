@@ -418,7 +418,7 @@ ve.ce.TableNode.prototype.getActiveCellNode = function () {
  * Handle activation events from the surface
  */
 ve.ce.TableNode.prototype.onSurfaceActivation = function () {
-	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-deactivated', !!this.surface.deactivated );
+	this.$overlay.toggleClass( 've-ce-tableNodeOverlay-deactivated', !!this.surface.isShownAsDeactivated() );
 };
 
 /**

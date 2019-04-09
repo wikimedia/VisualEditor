@@ -19,15 +19,23 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	opacity: 0.15;
+	opacity: 0.5;
 	pointer-events: none;
+}
+
+.ve-ce-surface-deactivatedSelection-showAsDeactivated {
+	opacity: 0.15;
 }
 
 .ve-ce-surface-deactivatedSelection > div {
 	position: absolute;
-	background: #000;
+	background: #6da9f7;
 	margin-top: -0.15em;
 	padding: 0.15em 0;
+}
+
+.ve-ce-surface-deactivatedSelection-showAsDeactivated > div {
+	background: #000;
 }
 
 .ve-ce-surface-deactivatedSelection-collapsed {
@@ -40,6 +48,10 @@
    otherwise the opacity isn't applied at all */
 .ve-init-target-ie-or-edge .ve-ce-surface-deactivatedSelection > div {
 	opacity: 0.5;
+}
+
+.ve-init-target-ie-or-edge .ve-ce-surface-deactivatedSelection-showAsDeactivated > div {
+	opacity: 0.15;
 }
 
 .ve-ce-surface-dropMarker {
