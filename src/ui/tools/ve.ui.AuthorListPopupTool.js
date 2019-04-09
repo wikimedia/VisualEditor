@@ -55,21 +55,11 @@ ve.ui.AuthorListPopupTool.prototype.onSurfaceChange = function ( oldSurface, new
  * @inheritdoc
  */
 ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
-	var view = this.surface.getView();
-
 	// Parent method
 	ve.ui.AuthorListPopupTool.super.prototype.onPopupToggle.apply( this, arguments );
 
 	if ( visible ) {
-		this.wasDeactivated = view.deactivated;
-		if ( !this.wasDeactivated ) {
-			this.surface.getView().deactivate();
-		}
 		this.selfItem.focus();
-	} else {
-		if ( !this.wasDeactivated ) {
-			this.surface.getView().activate();
-		}
 	}
 };
 
