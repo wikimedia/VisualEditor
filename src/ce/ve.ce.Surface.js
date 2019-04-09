@@ -2419,13 +2419,17 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 	htmlBlacklist = ve.getProp( this.afterPasteImportRules( isMultiline ), 'external', 'htmlBlacklist' );
 	if ( htmlBlacklist && !clipboardKey ) {
 		if ( htmlBlacklist.remove ) {
-			htmlBlacklist.remove.forEach( function ( selector ) {
-				$( htmlDoc.body ).find( selector ).remove();
+			Object.keys( htmlBlacklist.remove ).forEach( function ( selector ) {
+				if ( htmlBlacklist.remove[ selector ] ) {
+					$( htmlDoc.body ).find( selector ).remove();
+				}
 			} );
 		}
 		if ( htmlBlacklist.unwrap ) {
-			htmlBlacklist.unwrap.forEach( function ( selector ) {
-				$( htmlDoc.body ).find( selector ).contents().unwrap();
+			Object.keys( htmlBlacklist.unwrap ).forEach( function ( selector ) {
+				if ( htmlBlacklist.unwrap[ selector ] ) {
+					$( htmlDoc.body ).find( selector ).contents().unwrap();
+				}
 			} );
 		}
 	}

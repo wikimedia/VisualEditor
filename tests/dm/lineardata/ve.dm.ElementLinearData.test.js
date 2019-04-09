@@ -1589,7 +1589,12 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				rules: { blacklist: [ 'alienInline', 'inlineImage' ] },
+				rules: {
+					blacklist: {
+						alienInline: true,
+						inlineImage: true
+					}
+				},
 				msg: 'Blacklisted nodes removed'
 			},
 			{
@@ -1698,7 +1703,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 					{ type: 'internalList' },
 					{ type: '/internalList' }
 				],
-				rules: { blacklist: [ 'div' ] },
+				rules: { blacklist: { div: true } },
 				msg: 'Wrapper paragraph becomes real paragraph when unwrapped due to blacklist'
 			},
 			{

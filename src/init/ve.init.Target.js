@@ -183,16 +183,24 @@ ve.init.Target.static.excludeCommands = [];
  */
 ve.init.Target.static.importRules = {
 	external: {
-		blacklist: [
+		blacklist: {
 			// Annotations
-			'textStyle/span', 'textStyle/font',
+			'textStyle/span': true,
+			'textStyle/font': true,
 			// Nodes
-			'alienInline', 'alienBlock', 'alienTableCell', 'comment', 'div'
-		],
+			alienInline: true,
+			alienBlock: true,
+			alienTableCell: true,
+			comment: true,
+			div: true
+		},
 		// Selectors to filter. Runs before model type blacklist above.
 		htmlBlacklist: {
-			// remove: [ 'selectorToRemove' ]
-			unwrap: [ 'fieldset', 'legend' ]
+			// remove: { '.selectorToRemove': true }
+			unwrap: {
+				fieldset: true,
+				legend: true
+			}
 		},
 		nodeSanitization: true
 	},

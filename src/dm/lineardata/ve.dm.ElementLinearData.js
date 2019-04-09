@@ -1257,7 +1257,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 		// Create annotation set to remove from blacklist
 		setToRemove = allAnnotations.filter( function ( annotation ) {
 			return (
-				rules.blacklist && rules.blacklist.indexOf( annotation.name ) !== -1
+				rules.blacklist && rules.blacklist[ annotation.name ]
 			) || (
 				// If original DOM element references are being removed, remove spans
 				annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
@@ -1292,7 +1292,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 
 			// Remove blacklisted nodes, and metadata if disallowed
 			if (
-				( rules.blacklist && rules.blacklist.indexOf( type ) !== -1 ) ||
+				( rules.blacklist && rules.blacklist[ type ] ) ||
 				( rules.plainText && type !== 'paragraph' && type !== 'internalList' ) ||
 				( !rules.allowMetadata && ve.dm.nodeFactory.isMetaData( type ) )
 			) {
