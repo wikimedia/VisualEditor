@@ -60,7 +60,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.resizing = false;
 	this.focused = false;
 	this.deactivated = false;
-	this.deactivatedForCopy = false;
+	this.showAsActivated = false;
 	this.$deactivatedSelection = $( '<div>' );
 	this.activeNode = null;
 	this.contentBranchNodeChanged = false;
@@ -681,14 +681,10 @@ ve.ce.Surface.prototype.isDeactivated = function () {
  * Only true if the surface was decativated by the user
  * in a way that is expected to change the rendering.
  *
- * Tricks that deactivate the surface for other reasons,
- * such as deactivatedForCopy, do not count as visibly
- * deactviated
- *
  * @return {boolean} Surface is deactivated
  */
 ve.ce.Surface.prototype.isShownAsDeactivated = function () {
-	return this.deactivated && !this.deactivatedForCopy;
+	return this.deactivated && !this.showAsActivated;
 };
 
 /**
@@ -697,12 +693,12 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  *
  * Used by dialogs so they can take focus without losing the original document selection.
  *
- * @param {boolean} [deactivatedForCopy] Surface was deactivated by preparePasteTargetForCopy
+ * @param {boolean} [showAsActivated=true] Surface should still show as activated
  * @param {boolean} [noSelectionChange] Don't change the native selection.
  * @fires activation
  */
-ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy, noSelectionChange ) {
-	this.deactivatedForCopy = !!deactivatedForCopy;
+ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange ) {
+	this.showAsActivated = showAsActivated;
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
 		// until the surface is activated
@@ -728,7 +724,7 @@ ve.ce.Surface.prototype.deactivate = function ( deactivatedForCopy, noSelectionC
 ve.ce.Surface.prototype.activate = function () {
 	if ( this.deactivated ) {
 		this.deactivated = false;
-		this.deactivatedForCopy = false;
+		this.showAsActivated = false;
 		this.updateDeactivatedSelection();
 		this.surfaceObserver.enable();
 		if ( OO.ui.contains( this.$attachedRootNode[ 0 ], this.nativeSelection.anchorNode, true ) ) {
@@ -2959,12 +2955,6 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 		}
 
 		focusedNode = this.findFocusedNode( selection.getRange() );
-
-		if ( this.deactivatedForCopy && !blockSlug && !focusedNode ) {
-			// If preparePasteTargetForCopy deactivated the surface then
-			// reactivate it here (no-op if already active). See T147304
-			this.activate();
-		}
 
 		// If focus has changed, update nodes and this.focusedNode
 		if ( focusedNode !== this.focusedNode ) {
