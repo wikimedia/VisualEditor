@@ -636,7 +636,8 @@ ve.init.Target.prototype.deactivateSurfaceForToolbar = function () {
  */
 ve.init.Target.prototype.activateSurfaceForToolbar = function () {
 	var view = this.getSurface().getView();
-	if ( this.wasSurfaceActive ) {
+	// For non-collapsed mobile selections, don't reactivate
+	if ( this.wasSurfaceActive && !( OO.ui.isMobile() && !view.getModel().getSelection().isCollapsed() ) ) {
 		view.activate();
 	}
 };
