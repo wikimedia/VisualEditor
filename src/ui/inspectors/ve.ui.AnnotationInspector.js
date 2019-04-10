@@ -240,7 +240,6 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				annotation = this.getAnnotation(),
 				remove = data.action === 'done' && this.shouldRemoveAnnotation(),
 				surfaceModel = this.fragment.getSurface(),
-				surfaceView = this.manager.getSurface().getView(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
 				selection = this.fragment.getSelection(),
 				isEditing = this.isEditing(),
@@ -314,9 +313,6 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			}
 			if ( data.action ) {
 				surfaceModel.setSelection( selection );
-				surfaceView.selectAnnotation( function ( view ) {
-					return view.model instanceof annotation.constructor;
-				} );
 			}
 
 			if ( insertionAnnotation ) {

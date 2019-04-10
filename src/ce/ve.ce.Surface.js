@@ -87,6 +87,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.focusedBlockSlug = null;
 	this.focusedNode = null;
 	this.activeAnnotations = [];
+	this.previousActiveAnnotations = [];
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
 	this.newModelSelection = null;
@@ -704,6 +705,7 @@ ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChan
 		// until the surface is activated
 		this.surfaceObserver.disable();
 		this.deactivated = true;
+		this.previousActiveAnnotations = this.activeAnnotations;
 		this.checkDelayedSequences();
 		// Remove ranges so the user can't accidentally type into the document,
 		// and so virtual keyboards are hidden.
@@ -722,11 +724,15 @@ ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChan
  * @fires activation
  */
 ve.ce.Surface.prototype.activate = function () {
+	var previousSelection, newSelection, annotationClasses;
 	if ( this.deactivated ) {
 		this.deactivated = false;
 		this.showAsActivated = false;
 		this.updateDeactivatedSelection();
 		this.surfaceObserver.enable();
+
+		previousSelection = this.getModel().getSelection();
+
 		if ( OO.ui.contains( this.$attachedRootNode[ 0 ], this.nativeSelection.anchorNode, true ) ) {
 			// The selection has been placed back in the document, either by the user clicking
 			// or by the closing window updating the model. Poll in case it was the user clicking.
@@ -737,6 +743,29 @@ ve.ce.Surface.prototype.activate = function () {
 			this.focusedNode = null;
 			this.onModelSelect();
 		}
+
+		newSelection = this.getModel().getSelection();
+
+		if (
+			previousSelection.getCoveringRange() &&
+			newSelection.getCoveringRange() &&
+			previousSelection.getCoveringRange().containsRange(
+				newSelection.getCoveringRange()
+			)
+		) {
+			// If the user reactivates by clicking on their previous selection, use that selection.
+			this.getModel().setSelection( previousSelection );
+			// Restore active annotations
+			if ( this.previousActiveAnnotations.length ) {
+				annotationClasses = this.previousActiveAnnotations.map( function ( ann ) {
+					return ann.constructor;
+				} );
+				this.selectAnnotation( function ( view ) {
+					return ve.isInstanceOfAny( view, annotationClasses );
+				} );
+			}
+		}
+
 		this.emit( 'activation' );
 	}
 };
