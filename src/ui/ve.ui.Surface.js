@@ -497,9 +497,8 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 	}
 
 	// We only care about the focus end of the selection, the anchor never
-	// moves and should be allowed off screen. Thus, we collapse the selection
-	// to the anchor point (collapseToTo) before measuring.
-	clientRect = this.getView().getSelection( this.getModel().getSelection().collapseToTo() ).getSelectionBoundingRect();
+	// moves and should be allowed off screen.
+	clientRect = this.getView().getSelection().getSelectionFocusRect();
 	if ( !clientRect ) {
 		return;
 	}
