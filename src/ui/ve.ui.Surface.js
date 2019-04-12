@@ -531,7 +531,7 @@ ve.ui.Surface.prototype.scrollCursorIntoView = function () {
 			topBound += 60;
 		}
 		// Also assume there are selection handles below on Android. (T204718)
-		if ( profile.name === 'android' ) {
+		if ( profile.name === 'android' || profile.name === 'firefox' ) {
 			bottomBound -= 30;
 		}
 	}

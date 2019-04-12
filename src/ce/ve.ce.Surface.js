@@ -910,10 +910,33 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
  * @param {ve.ce.Selection} selectionBefore Selection before the mouse event
  */
 ve.ce.Surface.prototype.afterDocumentMouseDown = function ( e, selectionBefore ) {
+	var scrollTop,
+		view = this;
+
 	// TODO: guard with incRenderLock?
 	this.surfaceObserver.pollOnce();
 	if ( e.shiftKey ) {
 		this.fixShiftClickSelect( selectionBefore );
+	}
+
+	function blockScroll() {
+		view.$window.scrollTop( scrollTop );
+	}
+
+	if ( OO.ui.isMobile() && $.client.profile().layout === 'gecko' ) {
+		// Support: Firefox Mobile
+		// Firefox scrolls back to the top of the page *every time*
+		// you tap on the CE document. This makes things slightly
+		// more usable by restoring your scroll offset every time
+		// the page scrolls for the next 1000ms.
+		// The page will still flicker every time the user touches
+		// to place the cursor, but this is better than completely
+		// losing your scroll offset.
+		scrollTop = this.$window.scrollTop();
+		view.$window.on( 'scroll', blockScroll );
+		setTimeout( function () {
+			view.$window.off( 'scroll', blockScroll );
+		}, 1000 );
 	}
 };
 
