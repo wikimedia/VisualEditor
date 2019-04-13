@@ -25,7 +25,11 @@ ve.ui.ContextItem = function VeUiContextItem( context, model, config ) {
 	this.fragment = null;
 
 	// Events
-	this.$element.on( 'mousedown', false );
+	this.$element.on( 'mousedown', function () {
+		// Deactivate so context is not automatically closed
+		// by null selection
+		context.getSurface().getView().deactivate();
+	} );
 
 	// Initialization
 	this.$element.addClass( 've-ui-contextItem' );
