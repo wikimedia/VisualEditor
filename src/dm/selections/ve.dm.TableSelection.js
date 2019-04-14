@@ -495,6 +495,18 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( doc, fromColOffset
 };
 
 /**
+ * Check if a given cell is within this selection
+ *
+ * @param {ve.dm.TableMatrixCell} cell Table matrix cell
+ * @return {boolean} Cell is within this selection
+ */
+ve.dm.TableSelection.prototype.containsCell = function ( cell ) {
+	return cell.node.findParent( ve.dm.TableNode ).getOuterRange().equals( this.tableRange ) &&
+		cell.col >= this.startCol && cell.col <= this.endCol &&
+		cell.row >= this.startRow && cell.row <= this.endRow;
+};
+
+/**
  * @inheritdoc
  */
 ve.dm.TableSelection.prototype.equals = function ( other ) {

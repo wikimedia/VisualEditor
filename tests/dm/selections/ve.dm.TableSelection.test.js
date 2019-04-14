@@ -107,13 +107,15 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 } );
 
 QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', function ( assert ) {
-	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
+	var matrixCell,
+		doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
 		selection = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 ),
 		startSelection = new ve.dm.TableSelection( tableRange, 0, 1 ),
 		endSelection = new ve.dm.TableSelection( tableRange, 2, 2 ),
 		mergedSingleCell = new ve.dm.TableSelection( tableRange, 1, 3, 3, 5 ),
-		largeSelection = new ve.dm.TableSelection( tableRange, 0, 0, 3, 6 );
+		largeSelection = new ve.dm.TableSelection( tableRange, 0, 0, 3, 6 ),
+		otherTableSelection = new ve.dm.TableSelection( new ve.Range( 100, 200 ), 0, 0, 3, 6 );
 
 	selection = selection.expand( doc );
 	mergedSingleCell = mergedSingleCell.expand( doc );
@@ -133,6 +135,11 @@ QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingle
 	assert.strictEqual( largeSelection.getRowCount(), 7, 'getRowCount' );
 	assert.strictEqual( largeSelection.isFullCol( doc ), true, 'isFullCol' );
 	assert.strictEqual( largeSelection.isFullRow( doc ), false, 'isFullRow' );
+
+	matrixCell = startSelection.getMatrixCells( doc )[ 0 ];
+	assert.strictEqual( largeSelection.containsCell( matrixCell ), true, '[1,3;3,5] contains [0,1]' );
+	assert.strictEqual( endSelection.containsCell( matrixCell ), false, '[2,2] doesn\'t contain [0,1]' );
+	assert.strictEqual( otherTableSelection.containsCell( matrixCell ), false, 'Selection in other table doesn\'t contain cell' );
 } );
 
 QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', function ( assert ) {
