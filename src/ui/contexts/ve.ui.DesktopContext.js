@@ -56,7 +56,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	// Initialization
 	this.$element
 		.addClass( 've-ui-desktopContext' )
-		.append( this.popup.$element );
+		.append( this.$focusTrapBefore, this.popup.$element, this.$focusTrapAfter );
 	this.$group.addClass( 've-ui-desktopContext-menu' );
 	this.popup.$body.append( this.$group, this.inspectors.$element );
 };

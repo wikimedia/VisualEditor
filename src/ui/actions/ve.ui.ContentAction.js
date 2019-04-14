@@ -32,7 +32,7 @@ ve.ui.ContentAction.static.name = 'content';
  * @static
  * @property
  */
-ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial', 'selectAll', 'changeDirectionality', 'submit' ];
+ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpecial', 'selectAll', 'changeDirectionality', 'submit', 'focusContext' ];
 
 /* Methods */
 
@@ -141,6 +141,29 @@ ve.ui.ContentAction.prototype.changeDirectionality = function () {
 ve.ui.ContentAction.prototype.submit = function () {
 	this.surface.emit( 'submit' );
 	return true;
+};
+
+/**
+ * Emit a surface submit event
+ *
+ * @method
+ * @return {boolean} Action was executed
+ */
+ve.ui.ContentAction.prototype.focusContext = function () {
+	var $focusable;
+	if ( this.surface.getContext().isVisible() ) {
+		// Disable $focusTrapBefore so it doesn't get matched as the first
+		// focusable item.
+		this.surface.getContext().$focusTrapBefore.prop( 'disabled', true );
+		$focusable = OO.ui.findFocusable( this.surface.getContext().$element );
+		this.surface.getContext().$focusTrapBefore.prop( 'disabled', false );
+		if ( $focusable.length ) {
+			this.surface.getView().deactivate();
+			$focusable[ 0 ].focus();
+			return true;
+		}
+	}
+	return false;
 };
 
 /* Registration */

@@ -278,3 +278,9 @@ ve.ui.triggerRegistry.register(
 		pc: new ve.ui.Trigger( 'ctrl+enter' )
 	}
 );
+ve.ui.triggerRegistry.register(
+	'focusContext', {
+		mac: new ve.ui.Trigger( 'cmd+shift+enter' ),
+		pc: new ve.ui.Trigger( 'ctrl+shift+enter' )
+	}
+);

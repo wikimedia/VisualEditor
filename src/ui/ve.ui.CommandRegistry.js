@@ -266,6 +266,12 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
+		'focusContext', 'content', 'focusContext',
+		{ supportedSelections: [ 'linear', 'table' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
 		'comment', 'window', 'open',
 		{ args: [ 'comment' ], supportedSelections: [ 'linear' ] }
 	)

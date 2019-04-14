@@ -30,6 +30,14 @@ ve.ui.ContextItem = function VeUiContextItem( context, model, config ) {
 		// by null selection
 		context.getSurface().getView().deactivate();
 	} );
+	this.$element.on( 'keydown', function ( e ) {
+		// Pressing escape while focus is in the context should
+		// return focus to the surface
+		if ( e.keyCode === OO.ui.Keys.ESCAPE && context.getSurface().getView().isDeactivated() ) {
+			context.getSurface().getView().activate();
+			return false;
+		}
+	} );
 
 	// Initialization
 	this.$element.addClass( 've-ui-contextItem' );

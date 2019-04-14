@@ -125,6 +125,10 @@ ve.ui.commandHelpRegistry.register( 'dialog', 'dialogConfirm', {
 	} ],
 	label: OO.ui.deferMsg( 'visualeditor-command-dialog-confirm' )
 } );
+ve.ui.commandHelpRegistry.register( 'dialog', 'focusContext', {
+	trigger: 'focusContext',
+	label: OO.ui.deferMsg( 'visualeditor-command-dialog-focus-context' )
+} );
 
 // Formatting
 ve.ui.commandHelpRegistry.register( 'formatting', 'paragraph', { trigger: 'paragraph', label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-paragraph' ) } );

@@ -30,13 +30,19 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	this.visible = false;
 	this.choosing = false;
 
+	this.$focusTrapBefore = $( '<div>' ).prop( 'tabIndex', 0 );
+	this.$focusTrapAfter = $( '<div>' ).prop( 'tabIndex', 0 );
+	this.$focusTrapBefore.add( this.$focusTrapAfter ).on( 'focus', function () {
+		surface.getView().activate();
+	} );
+
 	// Initialization
 	// Hide element using a class, not this.toggle, as child implementations
 	// of toggle may require the instance to be fully constructed before running.
 	this.$group.addClass( 've-ui-context-menu' );
 	this.$element
 		.addClass( 've-ui-context oo-ui-element-hidden' )
-		.append( this.$group );
+		.append( this.$focusTrapBefore, this.$group, this.$focusTrapAfter );
 };
 
 /* Inheritance */
