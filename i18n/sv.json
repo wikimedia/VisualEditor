@@ -19,7 +19,8 @@
 			"Hannibal-reserv",
 			"André Costa (WMSE)",
 			"Bengtsson96",
-			"McDutchie"
+			"McDutchie",
+			"Ed g2s"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -132,7 +133,7 @@
 	"visualeditor-inspector-close-tooltip": "Stäng",
 	"visualeditor-inspector-remove-tooltip": "Ta bort",
 	"visualeditor-key-alt": "Alt",
-	"visualeditor-key-backspace": "Backsteg (backspace)",
+	"visualeditor-key-backspace": "Backsteg",
 	"visualeditor-key-ctrl": "Ctrl",
 	"visualeditor-key-delete": "Delete",
 	"visualeditor-key-down": "Ned",

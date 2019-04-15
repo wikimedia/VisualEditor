@@ -24,7 +24,8 @@
 			"Nemo bis",
 			"Fringio",
 			"Kaspo",
-			"S4b1nuz E.656"
+			"S4b1nuz E.656",
+			"Ed g2s"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -138,9 +139,9 @@
 	"visualeditor-key-page-down": "Pagina giù",
 	"visualeditor-key-page-up": "Pagina su",
 	"visualeditor-key-right": "Destra",
-	"visualeditor-key-shift": "Tasto maiuscolo",
+	"visualeditor-key-shift": "Maiusc",
 	"visualeditor-key-space": "Spazio",
-	"visualeditor-key-tab": "Tabulatore",
+	"visualeditor-key-tab": "Tab",
 	"visualeditor-key-up": "Su",
 	"visualeditor-language-search-input-placeholder": "Cerca per nome della lingua o codice",
 	"visualeditor-languagecontext-remove": "Rimuovi lingua",

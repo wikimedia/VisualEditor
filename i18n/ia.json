@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"McDutchie"
+			"McDutchie",
+			"Ed g2s"
 		]
 	},
 	"visualeditor": "Editor visual",
@@ -127,7 +128,7 @@
 	"visualeditor-key-page-down": "Pagina a basso",
 	"visualeditor-key-page-up": "Pagina in alto",
 	"visualeditor-key-right": "Dextra",
-	"visualeditor-key-shift": "Shift/Majus.",
+	"visualeditor-key-shift": "Shift",
 	"visualeditor-key-space": "Spatio",
 	"visualeditor-key-tab": "Tab",
 	"visualeditor-key-up": "In alto",
