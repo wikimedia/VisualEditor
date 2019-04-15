@@ -142,17 +142,6 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		return;
 	}
 
-	// Right-click on a cell which isn't being edited
-	if ( e.which === OO.ui.MouseButtons.RIGHT && !this.getActiveCellNode() ) {
-		// Select the cell to the browser renders the correct context menu
-		ve.selectElement( cellNode.$element[ 0 ] );
-		setTimeout( function () {
-			// Trigger onModelSelect to restore the selection
-			node.surface.onModelSelect();
-		} );
-		return;
-	}
-
 	endCell = this.getModel().getMatrix().lookupCell( cellNode.getModel() );
 	if ( !endCell ) {
 		e.preventDefault();
@@ -167,19 +156,25 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		} else {
 			startCell = this.getModel().getMatrix().lookupCell( this.getActiveCellNode().getModel() );
 		}
+	} else if ( e.which === OO.ui.MouseButtons.RIGHT && selection.containsCell( endCell ) ) {
+		// Right click within the current selection, leave selection as is
+		newSelection = selection;
 	} else {
 		// Select single cell
 		startCell = endCell;
 	}
 
-	newSelection = new ve.dm.TableSelection(
-		this.getModel().getOuterRange(),
-		startCell.col,
-		startCell.row,
-		endCell.col,
-		endCell.row
-	);
-	newSelection = newSelection.expand( this.getModel().getDocument() );
+	if ( !newSelection ) {
+		newSelection = new ve.dm.TableSelection(
+			this.getModel().getOuterRange(),
+			startCell.col,
+			startCell.row,
+			endCell.col,
+			endCell.row
+		);
+		newSelection = newSelection.expand( this.getModel().getDocument() );
+	}
+
 	if ( this.editingFragment ) {
 		if ( newSelection.equals( this.editingFragment.getSelection() ) ) {
 			// Clicking on the editing cell, don't prevent default
@@ -191,6 +186,18 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 	this.surface.getModel().setSelection( newSelection );
 	// Ensure surface is active as native 'focus' event won't be fired
 	this.surface.activate();
+
+	// Right-click on a cell which isn't being edited
+	if ( e.which === OO.ui.MouseButtons.RIGHT && !this.getActiveCellNode() ) {
+		// Select the cell so the browser renders text in the context menu
+		ve.selectElement( cellNode.$element[ 0 ] );
+		setTimeout( function () {
+			// Trigger onModelSelect to restore the selection
+			node.surface.onModelSelect();
+		} );
+		return;
+	}
+
 	this.startCell = startCell;
 	this.surface.$document.on( {
 		'mouseup touchend': this.onTableMouseUpHandler,
