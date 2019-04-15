@@ -189,9 +189,14 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 
 	// Right-click on a cell which isn't being edited
 	if ( e.which === OO.ui.MouseButtons.RIGHT && !this.getActiveCellNode() ) {
-		// Select the cell so the browser renders text in the context menu
+		// The same technique is used in ve.ce.FocusableNode
+		// Make ce=true so we get cut/paste options in the context menu
+		cellNode.$element.prop( 'contentEditable', true );
+		// Select the clicked element so we get a copy option in the context menu
 		ve.selectElement( cellNode.$element[ 0 ] );
 		setTimeout( function () {
+			// Undo ce=true as soon as the context menu is shown
+			cellNode.$element.prop( 'contentEditable', 'false' );
 			// Trigger onModelSelect to restore the selection
 			node.surface.onModelSelect();
 		} );

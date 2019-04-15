@@ -448,8 +448,10 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 	}
 
 	if ( e.which === OO.ui.MouseButtons.RIGHT ) {
-		// Make ce=true so we get cut/paste options in context menu
+		// The same technique is used in ve.ce.TableNode:
+		// Make ce=true so we get cut/paste options in the context menu
 		this.$highlights.prop( 'contentEditable', 'true' );
+		// Select the clicked element so we get a copy option in the context menu
 		ve.selectElement( this.$highlights[ 0 ] );
 		setTimeout( function () {
 			// Undo ce=true as soon as the context menu is shown
