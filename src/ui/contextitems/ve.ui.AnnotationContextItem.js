@@ -114,14 +114,11 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
  * @return {ve.ce.Annotation|undefined} The annotation view, if it's found, or undefined if not
  */
 ve.ui.AnnotationContextItem.prototype.getAnnotationView = function () {
-	var annotation,
+	var annotations,
 		model = this.model;
 
-	this.context.getSurface().getView().annotationsAtFocus().some( function ( ann ) {
-		if ( model === ann.model ) {
-			annotation = ann;
-			return true;
-		}
+	annotations = this.context.getSurface().getView().annotationsAtModelSelection( function ( view ) {
+		return model === view.model;
 	} );
-	return annotation;
+	return annotations.length ? annotations[ 0 ] : undefined;
 };

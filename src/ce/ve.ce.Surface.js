@@ -4117,7 +4117,9 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 ve.ce.Surface.prototype.updateActiveAnnotations = function () {
 	var changed = false,
 		surface = this,
-		activeAnnotations = this.annotationsAtFocus();
+		activeAnnotations = this.annotationsAtFocus( function ( view ) {
+			return view.canBeActive();
+		} );
 
 	// Iterate over previously active annotations
 	this.activeAnnotations.forEach( function ( annotation ) {
@@ -4166,15 +4168,61 @@ ve.ce.Surface.prototype.selectNodeContents = function ( node ) {
 };
 
 /**
+ * Select the inner contents of the closest annotation
+ *
+ * @param {Function} [filter] Function to filter view nodes by.
+ */
+ve.ce.Surface.prototype.selectAnnotation = function ( filter ) {
+	var annotations = this.annotationsAtModelSelection( filter );
+
+	if ( annotations.length ) {
+		this.selectNodeContents( annotations[ 0 ].$element[ 0 ] );
+	}
+};
+
+/**
+ * Get the annotation views at the current model selection
+ *
+ * TODO: This doesn't work for annotations that span fewer
+ * than one character, as getNodeAndOffset will never return
+ * an offset inside that annotation.
+ *
+ * @param {Function} [filter] Function to filter view nodes by.
+ * @return {ve.ce.Annotation[]} Annotation views
+ */
+ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter ) {
+	var nodeAndOffset = this.getDocument().getNodeAndOffset(
+		this.getModel().getSelection().getCoveringRange().start + 1
+	);
+
+	return nodeAndOffset ? this.annotationsAtNode( nodeAndOffset.node, filter ) : [];
+};
+
+/**
  * Get the annotation views containing the cursor focus
  *
- * @return {ve.ce.Annotation[]} The annotations containing the focus
+ * @param {Function} [filter] Function to filter view nodes by.
+ * @return {ve.ce.Annotation[]} Annotation views
  */
-ve.ce.Surface.prototype.annotationsAtFocus = function () {
+ve.ce.Surface.prototype.annotationsAtFocus = function ( filter ) {
+	return this.annotationsAtNode( this.nativeSelection.focusNode, filter );
+};
+
+/**
+ * Get the annotation views containing the cursor focus
+ *
+ * Only returns annotations which can be active.
+ *
+ * @param {Node} node Node at which to search for annotations
+ * @param {Function} [filter] Function to filter view nodes by. Takes one argument which
+ *  is the view node and returns a boolean.
+ * @return {ve.ce.Annotation[]} Annotation views
+ */
+ve.ce.Surface.prototype.annotationsAtNode = function ( node, filter ) {
 	var annotations = [];
-	$( this.nativeSelection.focusNode ).parents( '.ve-ce-annotation' ).addBack( '.ve-ce-annotation' ).each( function () {
+	$( node ).parents( '.ve-ce-annotation' ).addBack( '.ve-ce-annotation' ).each( function () {
 		var view = $( this ).data( 'view' );
-		if ( view && view.canBeActive() ) {
+		if ( view && ( !filter || filter( view ) ) ) {
 			annotations.push( view );
 		}
 	} );

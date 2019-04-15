@@ -233,7 +233,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
-			var i, len, annotations, insertion, annotationNodeAndOffset, $annotationNode,
+			var i, len, annotations, insertion,
 				inspector = this,
 				insertionAnnotation = false,
 				replace = false,
@@ -314,14 +314,9 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			}
 			if ( data.action ) {
 				surfaceModel.setSelection( selection );
-				// Then tweak the selection to be within the annotation (this will produce the same model-selection)
-				annotationNodeAndOffset = surfaceView.getDocument().getNodeAndOffset( selection.range.start + 1 );
-				if ( annotationNodeAndOffset ) {
-					$annotationNode = $( annotationNodeAndOffset.node ).closest( '.ve-ce-nailedAnnotation' );
-					if ( $annotationNode.length ) {
-						surfaceView.selectNodeContents( $annotationNode[ 0 ] );
-					}
-				}
+				surfaceView.selectAnnotation( function ( view ) {
+					return view.model instanceof annotation.constructor;
+				} );
 			}
 
 			if ( insertionAnnotation ) {
