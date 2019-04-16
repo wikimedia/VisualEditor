@@ -38,7 +38,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	ve.ui.Surface.super.call( this, config );
 
 	// Properties
-	this.$scrollContainer = config.$scrollContainer || $( this.getElementWindow() );
+	this.$scrollContainer = config.$scrollContainer || $( this.getClosestScrollableElementContainer() );
 	this.inDialog = config.inDialog || '';
 	this.mode = config.mode;
 
