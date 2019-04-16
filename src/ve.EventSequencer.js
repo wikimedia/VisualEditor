@@ -124,13 +124,12 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 	this.afterLoopTimeoutId = null;
 };
 
-/* eslint-disable valid-jsdoc */
-
 /**
  * Attach to a node, to listen to its jQuery events
  *
  * @method
  * @param {jQuery} $node The node to attach to
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.attach = function ( $node ) {
@@ -143,6 +142,7 @@ ve.EventSequencer.prototype.attach = function ( $node ) {
  * Detach from a node (if attached), to stop listen to its jQuery events
  *
  * @method
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.detach = function () {
@@ -160,6 +160,7 @@ ve.EventSequencer.prototype.detach = function () {
  *
  * @method
  * @param {Function|Function[]} listeners Listener(s) that take no arguments
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.onLoop = function ( listeners ) {
@@ -175,6 +176,7 @@ ve.EventSequencer.prototype.onLoop = function ( listeners ) {
  *
  * @method
  * @param {Object.<string,Function>} listeners Function for each event
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.on = function ( listeners ) {
@@ -190,6 +192,7 @@ ve.EventSequencer.prototype.on = function ( listeners ) {
  *
  * @method
  * @param {Object.<string,Function>} listeners Function for each event
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.after = function ( listeners ) {
@@ -205,6 +208,7 @@ ve.EventSequencer.prototype.after = function ( listeners ) {
  *
  * @method
  * @param {Object.<string,Function[]>} listeners Function for each event
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.afterOne = function ( listeners ) {
@@ -220,6 +224,7 @@ ve.EventSequencer.prototype.afterOne = function ( listeners ) {
  *
  * @method
  * @param {Function|Function[]} listeners Listener(s) that take no arguments
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
@@ -235,6 +240,7 @@ ve.EventSequencer.prototype.afterLoop = function ( listeners ) {
  *
  * @method
  * @param {Function|Function[]} listeners Listener(s) that take no arguments
+ * @return {ve.EventSequencer}
  * @chainable
  */
 ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {

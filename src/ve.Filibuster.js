@@ -69,7 +69,6 @@ ve.Filibuster.prototype.clearLogs = function () {
 	this.callPath.length = 0;
 };
 
-// eslint-disable-next-line valid-jsdoc
 /**
  * Attaches an observer callback. The callback returns a value representing the current state,
  * which must be a string (this ensures state values are immutable, comparable with strict
@@ -80,6 +79,7 @@ ve.Filibuster.prototype.clearLogs = function () {
  *
  * @param {string} name The name of the observer, for display in the logs.
  * @param {Function} callback The callback; must return a string
+ * @return {ve.Filibuster}
  * @chainable
  */
 ve.Filibuster.prototype.setObserver = function ( name, callback ) {
@@ -221,9 +221,9 @@ ve.Filibuster.prototype.log = function ( funcName, action, args, returned ) {
  * @param {Object} container The container with the function as a property
  * @param {string} klassName The name of the container, for display in the logs
  * @param {string} fnName The property name of the function in the container
+ * @return {ve.Filibuster}
  * @chainable
  */
-
 ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName ) {
 	var wrapper, fn, filibuster = this,
 		fullName = ( klassName || 'unknown' ) + '.' + fnName;
@@ -249,12 +249,12 @@ ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName )
 	return this;
 };
 
-// eslint-disable-next-line valid-jsdoc
 /**
  * Wrap the functions in a class with wrappers that perform logging.
  *
  * @param {Object} klass The class with the function as a property
  * @param {Function[]} [blacklist] Functions that should not be wrapped
+ * @return {ve.Filibuster}
  * @chainable
  */
 ve.Filibuster.prototype.wrapClass = function ( klass, blacklist ) {
@@ -278,13 +278,13 @@ ve.Filibuster.prototype.wrapClass = function ( klass, blacklist ) {
 	return this;
 };
 
-// eslint-disable-next-line valid-jsdoc
 /**
  * Recursively wrap the functions in a namespace with wrappers that perform logging.
  *
  * @param {Object} ns The namespace whose functions should be wrapped
  * @param {string} nsName The name of the namespace, for display in logs
  * @param {Function[]} [blacklist] Functions that should not be wrapped
+ * @return {ve.Filibuster}
  * @chainable
  */
 ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, blacklist ) {

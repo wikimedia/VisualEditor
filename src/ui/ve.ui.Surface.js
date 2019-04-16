@@ -149,12 +149,11 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
 
 /* Methods */
 
-/* eslint-disable valid-jsdoc */
-
 /**
  * Destroy the surface, releasing all memory and removing all DOM elements.
  *
  * @method
+ * @return {ve.ui.Surface}
  * @chainable
  * @fires destroy
  */
@@ -189,6 +188,7 @@ ve.ui.Surface.prototype.destroy = function () {
  *
  * This must be called after the surface has been attached to the DOM.
  *
+ * @return {ve.ui.Surface}
  * @chainable
  */
 ve.ui.Surface.prototype.initialize = function () {
@@ -457,8 +457,6 @@ ve.ui.Surface.prototype.isReadOnly = function () {
 ve.ui.Surface.prototype.focus = function () {
 	this.getView().focus();
 };
-
-/* eslint-enable valid-jsdoc */
 
 /**
  * Handle transact events from the document model

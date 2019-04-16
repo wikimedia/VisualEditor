@@ -4,9 +4,6 @@
  * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-// HACK: eslint valid-jsdoc doesn't yet support @chainable: https://github.com/eslint/eslint/issues/6681
-/* eslint-disable valid-jsdoc */
-
 /**
  * DataModel surface fragment.
  *
@@ -86,6 +83,7 @@ ve.dm.SurfaceFragment.prototype.getSelectedModels = function ( all ) {
  *
  * @method
  * @param {ve.dm.Selection} [selection] Optional selection to set
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.update = function ( selection ) {
@@ -162,6 +160,7 @@ ve.dm.SurfaceFragment.prototype.getDocument = function () {
  * This method also calls update to make sure the selection returned is current.
  *
  * @method
+ * @return {ve.dm.Selection} The selection
  */
 ve.dm.SurfaceFragment.prototype.getSelection = function () {
 	this.update();
@@ -193,6 +192,7 @@ ve.dm.SurfaceFragment.prototype.willAutoSelect = function () {
  *
  * @method
  * @param {boolean} [autoSelect=true] Automatically update surface selection
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( autoSelect ) {
@@ -230,6 +230,7 @@ ve.dm.SurfaceFragment.prototype.willExcludeInsertions = function () {
  * boundaries of the selection; if it is disabled, insertions will be included.
  *
  * @param {boolean} excludeInsertions Whether to exclude insertions
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.setExcludeInsertions = function ( excludeInsertions ) {
@@ -672,6 +673,7 @@ ve.dm.SurfaceFragment.prototype.getPending = function () {
  * Apply the fragment's range to the surface as a selection.
  *
  * @method
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.select = function () {
@@ -685,6 +687,7 @@ ve.dm.SurfaceFragment.prototype.select = function () {
  * @method
  * @param {Object} attr List of attributes to change, use undefined to remove an attribute
  * @param {string} [type] Node type to restrict changes to
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
@@ -729,6 +732,7 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
  * @param {string|ve.dm.Annotation|ve.dm.AnnotationSet} nameOrAnnotations Annotation name, for example: 'textStyle/bold',
  *  Annotation object or AnnotationSet
  * @param {Object} [data] Additional annotation data (not used if annotation object is given)
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotations, data ) {
@@ -788,6 +792,7 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
@@ -864,6 +869,7 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
  * @method
  * @param {string} html HTML to insert
  * @param {Object} [importRules] The import rules for the target surface, if importing
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
@@ -882,6 +888,7 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  * @param {ve.dm.Document} newDoc Document to insert
  * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
  * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange, annotate ) {
@@ -933,6 +940,7 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
  * Remove content in the fragment.
  *
  * @method
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.removeContent = function () {
@@ -953,6 +961,7 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
  *
  * @method
  * @param {number} [directionAfterDelete=-1] Direction to move after delete: 1 or -1 or 0
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
@@ -1067,6 +1076,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
  * @method
  * @param {string} type Element type to convert to
  * @param {Object} [attr] Initial attributes for new element
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
@@ -1099,6 +1109,7 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
@@ -1128,6 +1139,7 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
  * @method
  * @param {number} outerDepth Number of nodes outside the selection to unwrap
  * @param {number} innerDepth Number of nodes inside the selection to unwrap
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth ) {
@@ -1177,6 +1189,7 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
@@ -1231,6 +1244,7 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
  * @method
  * @param {Object|Object[]} wrapOuter Opening element(s) to wrap around the range
  * @param {Object|Object[]} wrapEach Opening element(s) to wrap around each top-level element in the range
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) {
@@ -1272,6 +1286,7 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) 
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
@@ -1318,6 +1333,7 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
  *
  * @method
  * @param {string} isolateForType Node type to isolate for
+ * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
