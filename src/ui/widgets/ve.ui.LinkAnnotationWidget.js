@@ -110,6 +110,7 @@ ve.ui.LinkAnnotationWidget.prototype.setDisabled = function () {
 	ve.ui.LinkAnnotationWidget.super.prototype.setDisabled.apply( this, arguments );
 
 	this.getTextInputWidget().setDisabled( this.isDisabled() );
+	return this;
 };
 
 /**
@@ -139,7 +140,6 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 		} );
 };
 
-// eslint-disable-next-line valid-jsdoc
 /**
  * Sets the annotation value.
  *
@@ -148,6 +148,7 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
  * @method
  * @param {ve.dm.LinkAnnotation|null} annotation Link annotation
  * @param {boolean} [fromText] Annotation was generated from text input
+ * @return {ve.ui.LinkAnnotationWidget}
  * @chainable
  */
 ve.ui.LinkAnnotationWidget.prototype.setAnnotation = function ( annotation, fromText ) {
@@ -194,7 +195,10 @@ ve.ui.LinkAnnotationWidget.prototype.getHref = function () {
  * Set the read-only state of the widget
  *
  * @param {boolean} readOnly Make widget read-only
+ * @return {ve.ui.LinkAnnotationWidget}
+ * @chainable
  */
 ve.ui.LinkAnnotationWidget.prototype.setReadOnly = function ( readOnly ) {
 	this.input.setReadOnly( readOnly );
+	return this;
 };
