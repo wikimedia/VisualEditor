@@ -15,6 +15,7 @@
  * @param {Object} [config] Configuration options
  * @cfg {Object} [defaults] Default dimensions
  * @cfg {Object} [validate] Validation pattern passed to TextInputWidgets
+ * @cfg {boolean} [readOnly=false] Prevent changes to the value of the widget.
  */
 ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	var labelTimes, labelPx;
@@ -33,6 +34,7 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	} );
 
 	this.defaults = config.defaults || { width: '', height: '' };
+	this.setReadOnly( !!config.readOnly );
 	this.renderDefaults();
 
 	labelTimes = new OO.ui.LabelWidget( {
@@ -229,6 +231,29 @@ ve.ui.DimensionsWidget.prototype.setDisabled = function ( disabled ) {
 	if ( this.heightInput ) {
 		this.heightInput.setDisabled( disabled );
 	}
+	return this;
+};
+
+/**
+ * Check if the widget is read-only
+ *
+ * @return {boolean}
+ */
+ve.ui.DimensionsWidget.prototype.isReadOnly = function () {
+	return this.readOnly;
+};
+
+/**
+ * Set the read-only state of the widget
+ *
+ * @param {boolean} readOnly Make widget read-only
+ * @return {ve.ui.DimensionsWidget}
+ * @chainable
+ */
+ve.ui.DimensionsWidget.prototype.setReadOnly = function ( readOnly ) {
+	this.readOnly = readOnly;
+	this.widthInput.setReadOnly( readOnly );
+	this.heightInput.setReadOnly( readOnly );
 	return this;
 };
 
