@@ -1053,6 +1053,10 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 		isContent = true,
 		dataTransfer = e.originalEvent.dataTransfer;
 
+	if ( this.readOnly ) {
+		return;
+	}
+
 	if ( this.relocatingNode ) {
 		isContent = this.relocatingNode.isContent();
 		nodeType = this.relocatingNode.getType();
