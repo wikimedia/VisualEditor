@@ -40,9 +40,3 @@
 .ve-ui-linearContextItem-body {
 	min-height: 0.2em;
 }
-
-/* ve.ui.ToolbarDialog */
-
-.ve-ui-toolbarDialog .oo-ui-dialog-content > .oo-ui-window-body {
-	outline: 0;
-}
