@@ -97,7 +97,7 @@ ve.ui.LanguageInspector.prototype.getSetupProcess = function ( data ) {
 			this.languageInput.setLangAndDir(
 				this.initialAnnotation.getAttribute( 'lang' ),
 				this.initialAnnotation.getAttribute( 'dir' )
-			);
+			).setReadOnly( this.isReadOnly() );
 		}, this );
 };
 
