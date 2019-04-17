@@ -63,6 +63,7 @@ ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
 	this.authorId = null;
 	this.lastStoredChange = doc.getCompleteHistoryLength();
 	this.autosaveFailed = false;
+	this.autosavePrefix = '';
 	this.synchronizer = null;
 
 	// Events
@@ -1278,9 +1279,9 @@ ve.dm.Surface.prototype.storeChanges = function () {
 	dmDoc = this.getDocument();
 	change = dmDoc.getChangeSince( this.lastStoredChange );
 	if ( !change.isEmpty() ) {
-		if ( ve.init.platform.appendToSessionList( 've-changes', JSON.stringify( change.serialize() ) ) ) {
+		if ( ve.init.platform.appendToSessionList( this.autosavePrefix + 've-changes', JSON.stringify( change.serialize() ) ) ) {
 			this.lastStoredChange = dmDoc.getCompleteHistoryLength();
-			ve.init.platform.setSessionObject( 've-selection', this.getSelection() );
+			ve.init.platform.setSessionObject( this.autosavePrefix + 've-selection', this.getSelection() );
 		} else {
 			// Auto-save failed probably because of memory limits
 			// so flag it so we don't keep trying in vain.
@@ -1288,6 +1289,18 @@ ve.dm.Surface.prototype.storeChanges = function () {
 			this.emit( 'autosaveFailed' );
 		}
 	}
+};
+
+/**
+ * Set an document ID for autosave.
+ *
+ * For session storage this is only required if there is more
+ * than one document on the page.
+ *
+ * @param {string} docId Document ID.
+ */
+ve.dm.Surface.prototype.setAutosaveDocId = function ( docId ) {
+	this.autosavePrefix = docId + '/';
 };
 
 /**
@@ -1314,7 +1327,7 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 	var selection,
 		surface = this,
 		restored = false,
-		changes = ve.init.platform.getSessionList( 've-changes' );
+		changes = ve.init.platform.getSessionList( this.autosavePrefix + 've-changes' );
 
 	try {
 		changes.forEach( function ( changeString ) {
@@ -1326,7 +1339,7 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 		restored = !!changes.length;
 		try {
 			selection = ve.dm.Selection.static.newFromJSON(
-				ve.init.platform.getSessionObject( 've-selection' )
+				ve.init.platform.getSessionObject( this.autosavePrefix + 've-selection' )
 			);
 		} catch ( e ) {
 			// Didn't restore the selection, not a big deal.
@@ -1367,9 +1380,9 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 		}
 	}
 	// Store HTML separately to avoid wasteful JSON encoding
-	if ( !ve.init.platform.setSession( 've-dochtml', useLatestHtml ? this.getHtml() : html ) ) {
+	if ( !ve.init.platform.setSession( this.autosavePrefix + 've-dochtml', useLatestHtml ? this.getHtml() : html ) ) {
 		// If we failed to store the html, wipe the docstate
-		ve.init.platform.removeSession( 've-docstate' );
+		ve.init.platform.removeSession( this.autosavePrefix + 've-docstate' );
 		this.stopStoringChanges();
 		return false;
 	}
@@ -1390,15 +1403,15 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
  * @return {boolean} Document metadata was successfully stored
  */
 ve.dm.Surface.prototype.updateDocState = function ( state ) {
-	return ve.init.platform.setSession( 've-docstate', JSON.stringify( state ) );
+	return ve.init.platform.setSession( this.autosavePrefix + 've-docstate', JSON.stringify( state ) );
 };
 
 /**
  * Remove the auto-saved document state and stashed changes
  */
 ve.dm.Surface.prototype.removeDocStateAndChanges = function () {
-	ve.init.platform.removeSession( 've-docstate' );
-	ve.init.platform.removeSession( 've-dochtml' );
-	ve.init.platform.removeSession( 've-selection' );
-	ve.init.platform.removeSessionList( 've-changes' );
+	ve.init.platform.removeSession( this.autosavePrefix + 've-docstate' );
+	ve.init.platform.removeSession( this.autosavePrefix + 've-dochtml' );
+	ve.init.platform.removeSession( this.autosavePrefix + 've-selection' );
+	ve.init.platform.removeSessionList( this.autosavePrefix + 've-changes' );
 };
