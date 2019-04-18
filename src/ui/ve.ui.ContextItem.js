@@ -134,11 +134,10 @@ ve.ui.ContextItem.prototype.isReadOnly = function () {
 	return this.context.getSurface().isReadOnly();
 };
 
-/* eslint-disable valid-jsdoc */
-
 /**
  * Setup the item.
  *
+ * @return {ve.ui.ContextItem}
  * @chainable
  */
 ve.ui.ContextItem.prototype.setup = function () {
@@ -148,6 +147,7 @@ ve.ui.ContextItem.prototype.setup = function () {
 /**
  * Teardown the item.
  *
+ * @return {ve.ui.ContextItem}
  * @chainable
  */
 ve.ui.ContextItem.prototype.teardown = function () {

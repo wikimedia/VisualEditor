@@ -112,12 +112,11 @@ ve.ui.Context.prototype.getSurface = function () {
 	return this.surface;
 };
 
-/* eslint-disable valid-jsdoc */
-
 /**
  * Toggle the menu.
  *
  * @param {boolean} [show] Show the menu, omit to toggle
+ * @return {ve.ui.Context}
  * @chainable
  */
 ve.ui.Context.prototype.toggleMenu = function ( show ) {
@@ -140,6 +139,7 @@ ve.ui.Context.prototype.toggleMenu = function ( show ) {
  * Setup menu items.
  *
  * @protected
+ * @return {ve.ui.Context}
  * @chainable
  */
 ve.ui.Context.prototype.setupMenuItems = function () {
@@ -173,6 +173,7 @@ ve.ui.Context.prototype.setupMenuItems = function () {
  * Teardown menu items.
  *
  * @protected
+ * @return {ve.ui.Context}
  * @chainable
  */
 ve.ui.Context.prototype.teardownMenuItems = function () {
@@ -211,6 +212,7 @@ ve.ui.Context.prototype.toggle = function ( show ) {
 /**
  * Update the size and position of the context.
  *
+ * @return {ve.ui.Context}
  * @chainable
  * @fires resize
  */
@@ -223,6 +225,7 @@ ve.ui.Context.prototype.updateDimensions = function () {
 /**
  * Destroy the context, removing all DOM elements.
  *
+ * @return {ve.ui.Context}
  * @chainable
  */
 ve.ui.Context.prototype.destroy = function () {
