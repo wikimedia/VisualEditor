@@ -71,6 +71,7 @@
 	"visualeditor-clipboard-paste-special": "لصق كنص خام",
 	"visualeditor-command-dialog-cancel": "إغلاق / إلغاء التغيير",
 	"visualeditor-command-dialog-confirm": "تأكيد التغيير",
+	"visualeditor-command-dialog-focus-context": "نقل التركيز إلى النافذة المنبثقة السياقية",
 	"visualeditor-commentinspector-edit": "عدل التعليق",
 	"visualeditor-commentinspector-title": "تعليق مخفي",
 	"visualeditor-commentinspector-tooltip": "تعليق مخفي",

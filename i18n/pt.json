@@ -65,6 +65,7 @@
 	"visualeditor-clipboard-paste-special": "Inserir como texto simples",
 	"visualeditor-command-dialog-cancel": "Fechar/cancelar alteração",
 	"visualeditor-command-dialog-confirm": "Confirmar alteração",
+	"visualeditor-command-dialog-focus-context": "Mover o foco para janela contextual",
 	"visualeditor-commentinspector-edit": "Editar comentário",
 	"visualeditor-commentinspector-title": "Comentário",
 	"visualeditor-commentinspector-tooltip": "Comentário",

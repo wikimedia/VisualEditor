@@ -51,6 +51,7 @@
 	"visualeditor-clipboard-paste-special": "Вметни како прост текст",
 	"visualeditor-command-dialog-cancel": "Затвори / откажи промена",
 	"visualeditor-command-dialog-confirm": "Потврди промена",
+	"visualeditor-command-dialog-focus-context": "Сосредоточи на контексниот отскочник",
 	"visualeditor-commentinspector-edit": "Измени коментар",
 	"visualeditor-commentinspector-title": "Коментар",
 	"visualeditor-commentinspector-tooltip": "Коментар",

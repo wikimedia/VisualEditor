@@ -71,6 +71,7 @@
 	"visualeditor-clipboard-paste-special": "以純文字格式貼上",
 	"visualeditor-command-dialog-cancel": "關閉 / 取消變更",
 	"visualeditor-command-dialog-confirm": "確認變更",
+	"visualeditor-command-dialog-focus-context": "移動焦點至上下文彈跳視窗",
 	"visualeditor-commentinspector-edit": "編輯評論",
 	"visualeditor-commentinspector-title": "評論",
 	"visualeditor-commentinspector-tooltip": "評論",
