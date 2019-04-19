@@ -1407,7 +1407,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 1 ),
 				documentHtml: '<p></p>',
-				pasteHtml: '<blockquote><div rel="ve:Alien"><p>Foo</p><div><br></div></div></blockquote>',
+				pasteHtml: '<h3><div rel="ve:Alien"><p>Foo</p><div><br></div></div></h3>',
 				expectedOps: [],
 				expectedRangeOrSelection: new ve.Range( 1 ),
 				msg: 'Pasting block content that is fully stripped does nothing'

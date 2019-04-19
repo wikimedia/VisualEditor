@@ -21,7 +21,7 @@ ve.dm.BlockquoteNode = function VeDmBlockquoteNode() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.BlockquoteNode, ve.dm.ContentBranchNode );
+OO.inheritClass( ve.dm.BlockquoteNode, ve.dm.BranchNode );
 
 /* Static Properties */
 

@@ -224,8 +224,14 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
-		'blockquote', 'format', 'convert',
-		{ args: [ 'blockquote' ], supportedSelections: [ 'linear' ] }
+		'blockquote', 'blockquote', 'toggle',
+		{ supportedSelections: [ 'linear' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
+		'blockquoteWrap', 'blockquote', 'wrap',
+		{ supportedSelections: [ 'linear' ] }
 	)
 );
 ve.ui.commandRegistry.register(
