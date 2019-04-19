@@ -35,15 +35,13 @@ ve.ce.LinearEnterKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
-	var txRemove, txInsert, outerParent, outerChildrenCount, list, listParent, prevContentOffset,
-		insertEmptyParagraph, node, focusedNode,
+	var txRemove, txInsert, outerParent, outerChildrenCount, container, prevContentOffset,
+		insertEmptyParagraph, node, focusedNode, splitData,
 		range = surface.model.getSelection().getRange(),
 		cursor = range.from,
 		documentModel = surface.model.getDocument(),
 		emptyParagraph = [ { type: 'paragraph' }, { type: '/paragraph' } ],
-		emptyListItem = [ { type: 'listItem' }, { type: 'paragraph' }, { type: '/paragraph' }, { type: '/listItem' } ],
 		advanceCursor = true,
-		stack = [],
 		outermostNode = null,
 		nodeModel = null,
 		nodeModelRange = null;
@@ -147,11 +145,8 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	// Assertion: if txInsert === undefined then node.splitOnEnter() === true
 
-	if ( txInsert === undefined ) {
-		// This node has splitOnEnter = true. Traverse upstream until the first node
-		// that has splitOnEnter = false, splitting each node as it is reached. Set
-		// outermostNode to the last splittable node.
-
+	function getSplitData( node ) {
+		var stack = [];
 		node.traverseUpstream( function ( node ) {
 			if ( !node.splitOnEnter() ) {
 				return false;
@@ -169,70 +164,74 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 				return true;
 			}
 		} );
+		return stack;
+	}
 
-		outerParent = outermostNode.getModel().getParent();
+	if ( txInsert === undefined ) {
+		// This node has splitOnEnter = true. Traverse upstream until the first node
+		// that has splitOnEnter = false, splitting each node as it is reached. Set
+		// outermostNode to the last splittable node.
+		splitData = getSplitData( node );
+
+		outerParent = outermostNode.getParent();
 		outerChildrenCount = outerParent.getChildren().length;
 
 		if (
-			// This is a list item
-			outermostNode.type === 'listItem' &&
-			// This is the last list item
-			outerParent.getChildren()[ outerChildrenCount - 1 ] === outermostNode.getModel() &&
-			// There is one child
-			outermostNode.children.length === 1 &&
-			// The child is empty
-			node.getModel().length === 0
+			// Parent removes empty last children
+			outerParent.removeEmptyLastChildOnEnter() &&
+			// This is the last child
+			outerParent.getChildren()[ outerChildrenCount - 1 ] === outermostNode && (
+				// Contains one empty ContentBranchNode
+				( outermostNode.children.length === 1 && node.getModel().length === 0 ) ||
+				// ..or is an empty ContentBranchNode
+				( outermostNode.canContainContent() && outermostNode.getModel().length === 0 )
+			)
 		) {
-			// Enter was pressed in an empty list item.
-			list = outermostNode.getModel().getParent();
-			listParent = list.getParent();
+			// Enter was pressed in an empty last child
+			container = outerParent.getParent();
 			advanceCursor = false;
-			if ( list.getChildren().length === 1 ) {
-				// The list item we're about to remove is the only child of the list
-				// Remove the list
+			if ( outerChildrenCount === 1 ) {
+				// The item we're about to remove is the only child
+				// Remove the ouerParent
 				txInsert = ve.dm.TransactionBuilder.static.newFromRemoval(
-					documentModel, list.getOuterRange()
+					documentModel, outerParent.getOuterRange()
 				);
 			} else {
-				// Remove the list item
+				// Remove the item
 				txInsert = ve.dm.TransactionBuilder.static.newFromRemoval(
-					documentModel, outermostNode.getModel().getOuterRange()
+					documentModel, outermostNode.getOuterRange()
 				);
 			}
 
-			if (
-				// The removed item was in a nested list node
-				listParent.type === 'listItem' &&
-				// This was the last item in the nested list
-				listParent.getChildren()[ listParent.getChildren().length - 1 ] === list
-			) {
-				surface.model.change( txInsert );
-				range = txInsert.translateRange( range );
-				// Add a new listItem to the parent list
-				txInsert = ve.dm.TransactionBuilder.static.newFromInsertion(
-					documentModel, listParent.getOuterRange().to, emptyListItem
-				);
-				// …and push forward to be within it
-				advanceCursor = true;
-			} else if ( list.getChildren().length !== 1 ) {
-				// Otherwise, if we just removed a list item, insert a paragraph
+			surface.model.change( txInsert );
+			range = txInsert.translateRange( range );
 
-				surface.model.change( txInsert );
-				range = txInsert.translateRange( range );
-
+			// The removed item was in a splitOnEnter node, split it
+			if ( container.splitOnEnter() ) {
+				splitData = getSplitData( container ).concat( emptyParagraph );
+				txInsert = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, container.getOuterRange().to - 1, splitData );
+			} else if ( outerParent.getChildren().length ) {
+				// Otherwise just insert a paragraph
 				txInsert = ve.dm.TransactionBuilder.static.newFromInsertion(
-					documentModel, list.getOuterRange().to, emptyParagraph
+					documentModel, outerParent.getOuterRange().to, emptyParagraph
 				);
+			} else {
+				// Parent was emptied, nothing more to do
+				txInsert = null;
 			}
+			// Advance the cursor into the new paragraph
+			advanceCursor = true;
 		} else {
 			// We must process the transaction first because getRelativeContentOffset can't help us yet
-			txInsert = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, range.from, stack );
+			txInsert = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, range.from, splitData );
 		}
 	}
 
 	// Commit the transaction
-	surface.model.change( txInsert );
-	range = txInsert.translateRange( range );
+	if ( txInsert ) {
+		surface.model.change( txInsert );
+		range = txInsert.translateRange( range );
+	}
 
 	// Now we can move the cursor forward
 	if ( advanceCursor ) {

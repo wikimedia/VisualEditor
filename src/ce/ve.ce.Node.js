@@ -44,6 +44,18 @@ OO.mixinClass( ve.ce.Node, ve.Node );
 ve.ce.Node.static.splitOnEnter = false;
 
 /**
+ * Whether Enter removes the empty last child of this node.
+ *
+ * Set true on the parent of a splitOnEnter node (e.g. a ListNode) to ensure that the last splittable
+ * child (e.g a ListItemNode) is removed when empty and enter is pressed.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.ce.Node.static.removeEmptyLastChildOnEnter = false;
+
+/**
  * Whether a node supports multiline input at all.
  *
  * If set to false, pressing Enter will not perform any splitting at all. If set to null, traverse
@@ -248,6 +260,15 @@ ve.ce.Node.prototype.getOffset = function () {
  */
 ve.ce.Node.prototype.splitOnEnter = function () {
 	return this.constructor.static.splitOnEnter;
+};
+
+/**
+ * Check if the node removes its empty last child on 'enter'.
+ *
+ * @return {boolean} Node removes empty last child on 'enter'
+ */
+ve.ce.Node.prototype.removeEmptyLastChildOnEnter = function () {
+	return this.constructor.static.removeEmptyLastChildOnEnter;
 };
 
 /**

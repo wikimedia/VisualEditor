@@ -28,6 +28,8 @@ ve.ce.DefinitionListNode.static.name = 'definitionList';
 
 ve.ce.DefinitionListNode.static.tagName = 'dl';
 
+ve.ce.DefinitionListNode.static.removeEmptyLastChildOnEnter = true;
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.DefinitionListNode );
