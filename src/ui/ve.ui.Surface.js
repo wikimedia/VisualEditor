@@ -604,11 +604,14 @@ ve.ui.Surface.prototype.toggleMobileGlobalOverlay = function ( show ) {
 		return;
 	}
 
+	// This is called in response to a window closing, so make sure that other
+	// reactions to this haven't destroyed the target. (See: MobileFrontend
+	// VisualEditorOverlay onSaveComplete.)
 	// TODO: Avoid accessing ve.init.target from the surface?
-	$scrollContainer = ve.init.target.getScrollContainer();
+	$scrollContainer = ve.init.target && ve.init.target.getScrollContainer();
 
 	// Store current position before we set overflow: hidden on body
-	if ( show ) {
+	if ( show && $scrollContainer ) {
 		this.scrollPosition = $scrollContainer.scrollTop();
 	}
 
@@ -617,7 +620,7 @@ ve.ui.Surface.prototype.toggleMobileGlobalOverlay = function ( show ) {
 	this.globalOverlay.$element.toggleClass( 've-ui-overlay-global-mobile-visible', show );
 
 	// Restore previous position after we remove overflow: hidden on body
-	if ( !show ) {
+	if ( !show && $scrollContainer ) {
 		$scrollContainer.scrollTop( this.scrollPosition );
 	}
 };
