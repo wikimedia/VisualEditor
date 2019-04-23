@@ -3016,6 +3016,12 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 
 		focusedNode = this.findFocusedNode( selection.getRange() );
 
+		if ( this.isDeactivated() && !this.isShownAsDeactivated() && !blockSlug && !focusedNode ) {
+			// If deactivated without showing (e.g. by preparePasteTargetForCopy),
+			// reactivate when changing selection (T221291)
+			this.activate();
+		}
+
 		// If focus has changed, update nodes and this.focusedNode
 		if ( focusedNode !== this.focusedNode ) {
 			if ( this.focusedNode ) {
