@@ -156,8 +156,12 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		} else {
 			startCell = this.getModel().getMatrix().lookupCell( this.getActiveCellNode().getModel() );
 		}
-	} else if ( e.which === OO.ui.MouseButtons.RIGHT && selection.containsCell( endCell ) ) {
-		// Right click within the current selection, leave selection as is
+	} else if (
+		( e.which === OO.ui.MouseButtons.RIGHT || this.surface.isDeactivated() ) &&
+		selection.containsCell( endCell )
+	) {
+		// Right click within the current selection, or any click in deactviated selection:
+		// leave selection as is
 		newSelection = selection;
 	} else {
 		// Select single cell
