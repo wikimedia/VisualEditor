@@ -137,7 +137,7 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
 		this.tableNode.setEditing( false );
 		surfaceModel.connect( this, { select: 'onModelSelect' } );
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
-		surfaceView.activate();
+		surfaceView.deactivate();
 		dir = surfaceView.getSelectionDirectionality();
 		this.$element
 			.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' )
@@ -145,6 +145,7 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
 	} else {
 		surfaceModel.disconnect( this );
 		surfaceView.$document.off( 'mousedown', this.onDocumentMouseDownHandler );
+		surfaceView.activate();
 	}
 
 	// Parent method - call after selection has been possibly modified above
