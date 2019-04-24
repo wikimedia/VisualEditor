@@ -59,7 +59,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'authorChange', this.onAuthorChange.bind( this ) );
 	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
 
-	authorData = ve.init.platform.getSessionObject( 've-collab-author' );
+	authorData = ve.init.platform.sessionStorage.getObject( 've-collab-author' );
 	if ( authorData ) {
 		this.changeAuthor( authorData );
 	}
@@ -293,7 +293,7 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorChange = function ( data ) {
 	this.emit( 'authorChange', data.authorId );
 
 	if ( data.authorId === this.getAuthorId() ) {
-		ve.init.platform.setSessionObject( 've-collab-author', data.authorData );
+		ve.init.platform.sessionStorage.setObject( 've-collab-author', data.authorData );
 	}
 };
 
@@ -328,7 +328,7 @@ ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
 };
 
 ve.dm.SurfaceSynchronizer.prototype.saveSessionKey = function () {
-	ve.init.platform.setSessionObject( 'visualeditor-session-key', {
+	ve.init.platform.sessionStorage.setObject( 'visualeditor-session-key', {
 		serverId: this.serverId,
 		docName: this.documentId,
 		authorId: this.getAuthorId(),
@@ -337,7 +337,7 @@ ve.dm.SurfaceSynchronizer.prototype.saveSessionKey = function () {
 };
 
 ve.dm.SurfaceSynchronizer.prototype.loadSessionKey = function () {
-	var data = ve.init.platform.getSessionObject( 'visualeditor-session-key' );
+	var data = ve.init.platform.sessionStorage.getObject( 'visualeditor-session-key' );
 	if ( data && data.docName === this.documentId ) {
 		this.serverId = data.serverId;
 		this.setAuthorId( data.authorId );

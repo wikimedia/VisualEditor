@@ -285,6 +285,8 @@
 	"visualEditor.core.init": {
 		"scripts": [
 			"src/init/ve.init.js",
+			"src/init/ve.init.SafeStorage.js",
+			"src/init/ve.init.ListStorage.js",
 			"src/init/ve.init.Platform.js",
 			"src/init/ve.init.Target.js"
 		],
@@ -977,6 +979,7 @@
 	"visualEditor.standalone.build": {
 		"scripts": [
 			"src/init/sa/ve.init.sa.js",
+			"src/init/sa/ve.init.sa.SafeStorage.js",
 			"src/init/sa/ve.init.sa.Platform.js",
 			"src/init/sa/ve.init.sa.Target.js"
 		],

@@ -15,9 +15,8 @@
 	// Create a dummy platform and target so ve.init.platform/target are available
 	function DummyPlatform() {
 		DummyPlatform.super.apply( this, arguments );
-		this.sessionStorage = {};
-		// Set this to true to test session methods failing and returning false
-		this.sessionDisabled = false;
+		// Set this to true to test storage methods failing and returning false
+		this.storageDisabled = false;
 	}
 	OO.inheritClass( DummyPlatform, ve.init.Platform );
 	DummyPlatform.prototype.getUserLanguages = function () {
@@ -54,27 +53,41 @@
 		return undefined;
 	};
 	DummyPlatform.prototype.setUserConfig = function () {};
-	DummyPlatform.prototype.getSession = function ( key ) {
-		if ( this.sessionDisabled ) {
-			return false;
-		}
-		return Object.prototype.hasOwnProperty.call( this.sessionStorage, key ) ?
-			this.sessionStorage[ key ] :
-			null;
-	};
-	DummyPlatform.prototype.setSession = function ( key, value ) {
-		if ( this.sessionDisabled || value === '__FAIL__' ) {
-			return false;
-		}
-		this.sessionStorage[ key ] = value.toString();
-		return true;
-	};
-	DummyPlatform.prototype.removeSession = function ( key ) {
-		if ( this.sessionDisabled ) {
-			return false;
-		}
-		delete this.sessionStorage[ key ];
-		return true;
+	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function () {
+		var platform = this,
+			storage = {},
+			safeStore = {
+				get: function ( key ) {
+					if ( platform.storageDisabled ) {
+						return false;
+					}
+					return Object.prototype.hasOwnProperty.call( storage, key ) ?
+						storage[ key ] :
+						null;
+				},
+				set: function ( key, value ) {
+					if ( platform.storageDisabled || value === '__FAIL__' ) {
+						return false;
+					}
+					storage[ key ] = value.toString();
+					return true;
+				},
+				remove: function ( key ) {
+					if ( platform.storageDisabled ) {
+						return false;
+					}
+					delete storage[ key ];
+					return true;
+				},
+				getObject: function ( key ) {
+					return JSON.parse( safeStore.get( key ) );
+				},
+				setObject: function ( key, value ) {
+					safeStore.set( key, JSON.stringify( value ) );
+				}
+			};
+
+		return new ve.init.ListStorage( safeStore );
 	};
 
 	ve.test.utils.DummyPlatform = DummyPlatform;

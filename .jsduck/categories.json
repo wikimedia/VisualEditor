@@ -30,6 +30,7 @@
 					"ve.init",
 					"ve.init.Platform",
 					"ve.init.Target",
+					"ve.init.*Storage",
 					"global"
 				]
 			},

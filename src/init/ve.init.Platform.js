@@ -16,6 +16,9 @@ ve.init.Platform = function VeInitPlatform() {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
+	this.localStorage = this.createLocalStorage();
+	this.sessionStorage = this.createSessionStorage();
+
 	// Register
 	ve.init.platform = this;
 
@@ -179,137 +182,87 @@ ve.init.Platform.prototype.getUserConfig = null;
 ve.init.Platform.prototype.setUserConfig = null;
 
 /**
- * Get a session storage value
+ * Create a safe storage object
  *
  * @method
  * @abstract
- * @param {string} key Key to get
- * @return {string|null|boolean} Value, null if not set, false if storage not available
+ * @return {ve.init.SafeStorage}
  */
-ve.init.Platform.prototype.getSession = null;
+ve.init.Platform.prototype.createSafeStorage = null;
 
 /**
- * Set a session storage value
+ * Create a list storage object from a safe storage object
  *
- * @method
- * @abstract
- * @param {string} key Key to set value for
- * @param {string} value Value to set
- * @return {boolean} The value was set
+ * @param {ve.init.SafeStorage} safeStorage
+ * @return {ve.init.ListStorage}
  */
-ve.init.Platform.prototype.setSession = null;
+ve.init.Platform.prototype.createListStorage = function ( safeStorage ) {
+	return new ve.init.ListStorage( safeStorage );
+};
 
-/**
- * Remove a session storage value
- *
- * @method
- * @abstract
- * @param {string} key Key to remove
- * @return {boolean} Key was removed
- */
-ve.init.Platform.prototype.removeSession = null;
+// Deprecated
+ve.init.Platform.prototype.getSession = function ( key ) {
+	return this.sessionStorage.get( key );
+};
 
-/**
- * Get a session storage object
- *
- * Object must be JSON-able.
- *
- * @param {string} key Key to get
- * @return {Object|null|boolean}  Value, null if not set, false if storage not available
- */
+// Deprecated
+ve.init.Platform.prototype.setSession = function ( key, value ) {
+	return this.sessionStorage.set( key, value );
+};
+
+// Deprecated
+ve.init.Platform.prototype.removeSession = function ( key ) {
+	return this.sessionStorage.remove( key );
+};
+
+// Deprecated
 ve.init.Platform.prototype.getSessionObject = function ( key ) {
-	var value,
-		json = this.getSession( key );
-	if ( json ) {
-		try {
-			value = JSON.parse( json );
-			return value;
-		} catch ( e ) {}
-	}
-	return json;
+	return this.sessionStorage.getObject( key );
 };
 
-/**
- * Set a session storage object
- *
- * @param {string} key Key to set value for
- * @param {Object} value Value to set
- * @return {boolean} The value was set
- */
+// Deprecated
 ve.init.Platform.prototype.setSessionObject = function ( key, value ) {
-	var json;
-	try {
-		json = JSON.stringify( value );
-		return this.setSession( key, json );
-	} catch ( e ) {}
-	return false;
+	return this.sessionStorage.setObject( key, value );
 };
 
-/**
- * Append a value to a list stored in session storage
- *
- * @method
- * @param {string} key Key of list to set value for
- * @param {string} value Value to set
- * @return {boolean} The value was set
- */
+// Deprecated
 ve.init.Platform.prototype.appendToSessionList = function ( key, value ) {
-	var length = this.getSessionListLength( key );
-
-	if ( this.setSession( key + '__' + length, value ) ) {
-		length++;
-		return this.setSession( key + '__length', length.toString() );
-	}
-	return false;
+	return this.sessionStorage.appendToList( key, value );
 };
 
-/**
- * Get the length of a list in session storage
- *
- * @method
- * @param {string} key Key of list
- * @return {number} List length, 0 if the list doesn't exist
- */
+// Deprecated
 ve.init.Platform.prototype.getSessionListLength = function ( key ) {
-	return +this.getSession( key + '__length' ) || 0;
+	return this.sessionStorage.getListLength( key );
 };
 
-/**
- * Append a value to a list stored in session storage
- *
- * Internally this will use items with the keys:
- *  - key__length
- *  - key__0 … key__N
- *
- * @method
- * @param {string} key Key of list
- * @return {string[]} List
- */
+// Deprecated
 ve.init.Platform.prototype.getSessionList = function ( key ) {
-	var i,
-		list = [],
-		length = this.getSessionListLength( key );
-
-	for ( i = 0; i < length; i++ ) {
-		list.push( this.getSession( key + '__' + i ) );
-	}
-	return list;
+	return this.sessionStorage.getList( key );
 };
 
-/**
- * Remove a list stored in session storage
- *
- * @method
- * @param {string} key Key of list
- */
+// Deprecated
 ve.init.Platform.prototype.removeSessionList = function ( key ) {
-	var i,
-		length = this.getSessionListLength( key );
+	return this.sessionStorage.removeList( key );
+};
 
-	for ( i = 0; i < length; i++ ) {
-		this.removeSession( key + '__' + i );
-	}
-	this.removeSession( key + '__length' );
+ve.init.Platform.prototype.createLocalStorage = function () {
+	var localStorage;
+
+	try {
+		localStorage = window.localStorage;
+	} catch ( e ) {}
+
+	return this.createListStorage( this.createSafeStorage( localStorage ) );
+};
+
+ve.init.Platform.prototype.createSessionStorage = function () {
+	var sessionStorage;
+
+	try {
+		sessionStorage = window.sessionStorage;
+	} catch ( e ) {}
+
+	return this.createListStorage( this.createSafeStorage( sessionStorage ) );
 };
 
 /**

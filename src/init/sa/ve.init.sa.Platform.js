@@ -199,36 +199,8 @@ ve.init.sa.Platform.prototype.setUserConfig = function ( keyOrValueMap, value ) 
 	return true;
 };
 
-/**
- * @inheritdoc
- */
-ve.init.sa.Platform.prototype.getSession = function ( key ) {
-	try {
-		return window.sessionStorage.getItem( key );
-	} catch ( e ) {}
-	return false;
-};
-
-/**
- * @inheritdoc
- */
-ve.init.sa.Platform.prototype.setSession = function ( key, value ) {
-	try {
-		window.sessionStorage.setItem( key, value );
-		return true;
-	} catch ( e ) {}
-	return false;
-};
-
-/**
- * @inheritdoc
- */
-ve.init.sa.Platform.prototype.removeSession = function ( key ) {
-	try {
-		window.sessionStorage.removeItem( key );
-		return true;
-	} catch ( e ) {}
-	return false;
+ve.init.sa.Platform.prototype.createSafeStorage = function ( storage ) {
+	return new ve.init.sa.SafeStorage( storage );
 };
 
 /**
