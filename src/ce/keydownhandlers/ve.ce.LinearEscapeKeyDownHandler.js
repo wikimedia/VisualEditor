@@ -4,6 +4,7 @@
  * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* istanbul ignore next */
 /**
  * Escape key down handler for linear selections.
  *

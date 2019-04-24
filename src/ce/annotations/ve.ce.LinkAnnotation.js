@@ -56,6 +56,7 @@ ve.ce.LinkAnnotation.static.getDescription = function ( model ) {
 
 /* Methods */
 
+/* istanbul ignore next */
 /**
  * Handle click events.
  *
