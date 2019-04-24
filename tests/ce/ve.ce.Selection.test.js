@@ -156,3 +156,42 @@ QUnit.test( 'getDirectionality', function ( assert ) {
 
 	view.destroy();
 } );
+
+QUnit.test( 'equals', function ( assert ) {
+	var surface1 = {
+			getFocusedNode: function () {
+				return null;
+			}
+		},
+		surface2 = {
+			getFocusedNode: function () {
+				return null;
+			}
+		},
+		modelSelection1 = new ve.dm.LinearSelection( new ve.Range( 1, 2 ) ),
+		modelSelection2 = new ve.dm.LinearSelection( new ve.Range( 2, 1 ) );
+
+	assert.strictEqual(
+		new ve.ce.LinearSelection( modelSelection1, surface1 ).equals(
+			new ve.ce.LinearSelection( modelSelection1, surface1 )
+		),
+		true,
+		'Same model selection on same surface is equal'
+	);
+
+	assert.strictEqual(
+		new ve.ce.LinearSelection( modelSelection1, surface1 ).equals(
+			new ve.ce.LinearSelection( modelSelection1, surface2 )
+		),
+		false,
+		'Same model selection on different surface is not equal'
+	);
+
+	assert.strictEqual(
+		new ve.ce.LinearSelection( modelSelection1, surface1 ).equals(
+			new ve.ce.LinearSelection( modelSelection2, surface1 )
+		),
+		false,
+		'Different model selection on same surface is not equal'
+	);
+} );
