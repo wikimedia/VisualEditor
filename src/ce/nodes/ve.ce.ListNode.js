@@ -29,6 +29,8 @@ OO.inheritClass( ve.ce.ListNode, ve.ce.BranchNode );
 
 ve.ce.ListNode.static.name = 'list';
 
+ve.ce.ListNode.static.removeEmptyLastChildOnEnter = true;
+
 /* Methods */
 
 /**

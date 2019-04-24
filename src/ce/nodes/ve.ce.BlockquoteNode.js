@@ -29,6 +29,8 @@ ve.ce.BlockquoteNode.static.name = 'blockquote';
 
 ve.ce.BlockquoteNode.static.tagName = 'blockquote';
 
+ve.ce.BlockquoteNode.static.removeEmptyLastChildOnEnter = true;
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.BlockquoteNode );

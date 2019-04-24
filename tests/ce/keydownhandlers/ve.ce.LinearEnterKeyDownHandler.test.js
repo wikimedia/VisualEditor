@@ -275,7 +275,22 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 				// This should really result in a slug being focused, but in some
 				// browsers an observed selection can end up here.
 				msg: 'Enter between two block nodes (and somehow not in the slug) creates a new paragraph'
+			},
+			{
+				htmlOrDoc: '<blockquote><p>Foo</p></blockquote>',
+				rangeOrSelection: new ve.Range( 5 ),
+				keys: [ 'ENTER', 'ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						7, 0,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 8 ),
+				msg: 'Two enters at end of <blockquote> breaks out into paragraph below'
 			}
+
 		];
 
 	cases.forEach( function ( caseItem ) {
