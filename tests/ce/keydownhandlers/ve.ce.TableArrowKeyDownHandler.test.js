@@ -268,6 +268,30 @@ QUnit.test( 'special key down: table arrow keys (simple movements)', function ( 
 				expectedSelectionOffsets: [ 3, 0, 3, 2 ]
 			},
 			{
+				msg: 'Move from merged cell to non-merged cell (horizontal)',
+				key: 'RIGHT',
+				selectionOffsets: [ 4, 1, 4, 4 ],
+				expectedSelectionOffsets: [ 5, 1, 5, 1 ]
+			},
+			{
+				msg: 'Move from merged cell to non-merged cell (vertical)',
+				key: 'DOWN',
+				selectionOffsets: [ 1, 1, 2, 1 ],
+				expectedSelectionOffsets: [ 1, 2, 1, 2 ]
+			},
+			{
+				msg: 'Move from merged cell to non-merged cell (horizontal)',
+				key: 'HOME',
+				selectionOffsets: [ 4, 1, 4, 4 ],
+				expectedSelectionOffsets: [ 0, 1, 0, 1 ]
+			},
+			{
+				msg: 'Move from merged cell to non-merged cell (vertical)',
+				key: 'PAGEDOWN',
+				selectionOffsets: [ 1, 1, 2, 1 ],
+				expectedSelectionOffsets: [ 1, 6, 1, 6 ]
+			},
+			{
 				msg: 'Shift-select through merged cells',
 				key: 'PAGEDOWN',
 				shiftKey: true,
