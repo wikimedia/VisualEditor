@@ -158,6 +158,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		}
 	} else if (
 		( e.which === OO.ui.MouseButtons.RIGHT || this.surface.isDeactivated() ) &&
+		selection instanceof ve.dm.TableSelection &&
 		selection.containsCell( endCell )
 	) {
 		// Right click within the current selection, or any click in deactviated selection:
