@@ -325,6 +325,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	this.target.setSurface( this.surface );
 
 	this.surface.setReadOnly( this.readOnlyToggle.getValue() );
+	this.surface.nullSelectionOnBlur = this.nullSelectionOnBlurToggle.getValue();
 
 	surfaceModel = this.surface.getModel();
 	this.oldDoc = surfaceModel.getDocument().cloneFromRange();
