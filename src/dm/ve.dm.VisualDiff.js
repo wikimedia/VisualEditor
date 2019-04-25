@@ -13,13 +13,29 @@
  *
  * @class
  * @constructor
- * @param {ve.dm.Document} oldDoc
- * @param {ve.dm.Document} newDoc
+ * @param {ve.dm.Document|ve.dm.BranchNode} oldDocOrNode
+ * @param {ve.dm.Document|ve.dm.BranchNode} newDocOrNode
  * @param {number} [timeout=1000] Timeout after which to stop performing linear diffs (in ms)
  */
-ve.dm.VisualDiff = function VeDmVisualDiff( oldDoc, newDoc, timeout ) {
-	this.oldDoc = oldDoc.cloneFromRange( undefined, true, 'noMetadata' );
-	this.newDoc = newDoc.cloneFromRange( undefined, true, 'noMetadata' );
+ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout ) {
+	var oldDoc = oldDocOrNode instanceof ve.dm.Document ? oldDocOrNode : oldDocOrNode.getDocument(),
+		newDoc = newDocOrNode instanceof ve.dm.Document ? newDocOrNode : newDocOrNode.getDocument();
+
+	this.oldDoc = oldDoc.cloneFromRange(
+		oldDocOrNode instanceof ve.dm.DocumentNode || oldDocOrNode instanceof ve.dm.Document ?
+			undefined :
+			oldDocOrNode.getRange(),
+		true,
+		'noMetadata'
+	);
+	this.newDoc = newDoc.cloneFromRange(
+		newDocOrNode instanceof ve.dm.DocumentNode || newDocOrNode instanceof ve.dm.Document ?
+			undefined :
+			newDocOrNode.getRange(),
+		true,
+		'noMetadata'
+	);
+
 	this.oldDocNode = this.oldDoc.getDocumentNode();
 	this.newDocNode = this.newDoc.getDocumentNode();
 	this.oldDocChildren = this.getDocChildren( this.oldDocNode );
