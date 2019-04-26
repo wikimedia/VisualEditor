@@ -4152,13 +4152,18 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
  * defined at annotation boundaries, except for links which use nails.
  *
  * Also the order of .activeAnnotations may not be well defined.
+ *
+ * @param {boolean} [fromModel] Gather annotations from the model, instead of the cusor focus point
  */
-ve.ce.Surface.prototype.updateActiveAnnotations = function () {
+ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModel ) {
 	var changed = false,
 		surface = this,
-		activeAnnotations = this.annotationsAtFocus( function ( view ) {
+		canBeActive = function ( view ) {
 			return view.canBeActive();
-		} );
+		},
+		activeAnnotations = fromModel ?
+			this.annotationsAtModelSelection( canBeActive ) :
+			this.annotationsAtFocus( canBeActive );
 
 	// Iterate over previously active annotations
 	this.activeAnnotations.forEach( function ( annotation ) {
