@@ -143,14 +143,24 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 				} );
 
 				if ( !win.constructor.static.activeSurface ) {
-					// Use windowManager events, instead of instance.closing, as the re-activation needs
-					// to happen in the same event cycle as the user click event that closed the window (T203517).
-					windowManager.once( 'closing', function () {
-						// For non-collapsed mobile selections, don't reactivate
-						if ( !( OO.ui.isMobile() && !surface.getModel().getSelection().isCollapsed() ) ) {
+					// Collapse mobile selection: We need to re-activate the surface in case an insertion
+					// annotation was generated. We also need to do it during the same event cycle otherwise
+					// the device may not open the virtual keyboard, so use the 'closing' event. (T203517)
+					if ( OO.ui.isMobile() && surface.getModel().getSelection().isCollapsed() ) {
+						windowManager.once( 'closing', function () {
 							surface.getView().activate();
-						}
-					} );
+						} );
+					} else {
+						// Otherwise use the closing promise to wait until the dialog has performed its actions,
+						// such as creating new annotations, before re-activating.
+						instance.closing.then( function () {
+							// Don't activate if mobile and expanded
+							if ( !( OO.ui.isMobile() && !surface.getModel().getSelection().isCollapsed() ) ) {
+								surface.getView().activate();
+							}
+						} );
+
+					}
 				}
 
 				instance.closed.then( function ( closedData ) {
