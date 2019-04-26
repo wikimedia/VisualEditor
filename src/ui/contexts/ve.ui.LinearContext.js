@@ -201,12 +201,6 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 						// Change state: inspector -> closed
 						context.toggle( false );
 					}
-
-					// Restore selection
-					// For non-collapsed mobile selections, don't reactivate
-					if ( !( OO.ui.isMobile() && !context.getSurface().getModel().getSelection().isCollapsed() ) ) {
-						context.getSurface().getView().focus();
-					}
 				} );
 			} );
 		} );
