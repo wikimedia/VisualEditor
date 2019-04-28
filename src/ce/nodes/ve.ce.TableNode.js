@@ -444,9 +444,8 @@ ve.ce.TableNode.prototype.onSurfaceActivation = function () {
  * @param {boolean} selectionChanged The update was triggered by a selection change
  */
 ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
-	var i, l, anchorNode, anchorOffset, selectionOffset, selection, documentModel,
-		selectionRect, tableOffset, surfaceOffset, cells,
-		editable = true;
+	var anchorNode, anchorOffset, selectionOffset, selection, documentModel,
+		selectionRect, tableOffset, surfaceOffset;
 
 	if (
 		!this.active || !this.root ||
@@ -477,16 +476,10 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		return;
 	}
 
-	cells = selection.getMatrixCells( documentModel );
 	anchorNode = this.getCellNodesFromSelection( selection.collapseToFrom() )[ 0 ];
 	anchorOffset = ve.translateRect( anchorNode.$element[ 0 ].getBoundingClientRect(), -tableOffset.left, -tableOffset.top );
 
 	// Compute a bounding box for the given cell elements
-	for ( i = 0, l = cells.length; i < l; i++ ) {
-		if ( editable && !cells[ i ].node.isCellEditable() ) {
-			editable = false;
-		}
-	}
 
 	selectionOffset = ve.translateRect(
 		selectionRect,
@@ -529,7 +522,7 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	this.$selectionBox
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullRow', selection.isFullRow( documentModel ) )
 		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullCol', selection.isFullCol( documentModel ) )
-		.toggleClass( 've-ce-tableNodeOverlay-selection-box-notEditable', !editable );
+		.toggleClass( 've-ce-tableNodeOverlay-selection-box-notEditable', !selection.isEditable( documentModel ) );
 
 	if ( selectionChanged ) {
 		ve.scrollIntoView( this.$selectionBox.get( 0 ) );

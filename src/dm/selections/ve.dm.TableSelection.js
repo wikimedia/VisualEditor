@@ -305,6 +305,18 @@ ve.dm.TableSelection.prototype.getMatrixCells = function ( doc, includePlacehold
 };
 
 /**
+ * Check the selected cells are all editable
+ *
+ * @param {ve.dm.Document} doc The document to which this selection applies
+ * @return {boolean} Cells are all editable
+ */
+ve.dm.TableSelection.prototype.isEditable = function ( doc ) {
+	return this.getMatrixCells( doc ).every( function ( cell ) {
+		return cell.node.isCellEditable();
+	} );
+};
+
+/**
  * @inheritdoc
  */
 ve.dm.TableSelection.prototype.isCollapsed = function () {
@@ -359,6 +371,10 @@ ve.dm.TableSelection.prototype.isSingleCell = function ( doc ) {
  */
 ve.dm.TableSelection.prototype.isMergeable = function ( doc ) {
 	var r, sectionNode, lastSectionNode, matrix;
+
+	if ( !this.isEditable( doc ) ) {
+		return false;
+	}
 
 	if ( this.getMatrixCells( doc, true ).length <= 1 ) {
 		return false;
