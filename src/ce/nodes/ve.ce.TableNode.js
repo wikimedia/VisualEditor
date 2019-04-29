@@ -54,6 +54,7 @@ ve.ce.TableNode.prototype.onSetup = function () {
 	// Overlay
 	this.$selectionBox = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box' );
 	this.$selectionBoxAnchor = $( '<div>' ).addClass( 've-ce-tableNodeOverlay-selection-box-anchor' );
+	this.nodeContext = new ve.ui.TableLineContext( this, 'table' );
 	this.colContext = new ve.ui.TableLineContext( this, 'col' );
 	this.rowContext = new ve.ui.TableLineContext( this, 'row' );
 
@@ -62,6 +63,7 @@ ve.ce.TableNode.prototype.onSetup = function () {
 		.append( [
 			this.$selectionBox,
 			this.$selectionBoxAnchor,
+			this.nodeContext.$element,
 			this.colContext.$element,
 			this.rowContext.$element,
 			this.$rowBracket,
@@ -511,6 +513,7 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		left: tableOffset.left - surfaceOffset.left,
 		width: tableOffset.width
 	} );
+	// this.nodeContext doesn't need to adjust to the line
 	this.colContext.icon.$element.css( {
 		left: selectionOffset.left,
 		width: selectionOffset.width
@@ -520,6 +523,7 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		height: selectionOffset.height
 	} );
 
+	this.nodeContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
 	this.colContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
 	this.rowContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
 

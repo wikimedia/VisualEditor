@@ -269,7 +269,7 @@ ve.ui.TableAction.prototype.delete = function ( mode ) {
 		}
 	}
 
-	ve.track( 'activity.table', { action: 'delete-' + mode } );
+	ve.track( 'activity.table', { action: 'delete' + ( mode !== 'table' ? ( '-' + mode ) : '' ) } );
 
 	return true;
 };

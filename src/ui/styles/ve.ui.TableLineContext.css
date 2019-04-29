@@ -37,6 +37,18 @@
 	border-right: 0;
 }
 
+.ve-ui-tableLineContext-table > .oo-ui-iconWidget.oo-ui-iconElement.oo-ui-iconElement-icon {
+	height: 1em;
+	width: 1em;
+	min-width: auto;
+	min-height: auto;
+	/* Context width/height + 0.2em gap */
+	top: -1.2em;
+	left: -1.2em;
+	border-bottom: 0;
+	border-right: 0;
+}
+
 .ve-ce-tableNodeOverlay-deactivated .ve-ui-tableLineContext > .oo-ui-iconWidget.oo-ui-iconElement.oo-ui-iconElement-icon {
 	background-color: #ddd;
 }

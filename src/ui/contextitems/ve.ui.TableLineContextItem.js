@@ -214,4 +214,30 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 
 	} );
 
+	ve.ui.TablePropertiesContextItem = function VeUiTablePropertiesContextItem() {
+		ve.ui.TableLineContextItem.apply( this, arguments );
+
+		this.actionButton.setFlags( { progressive: true } );
+	};
+	OO.inheritClass( ve.ui.TablePropertiesContextItem, ve.ui.TableLineContextItem );
+	ve.ui.TablePropertiesContextItem.static.name = 'tableProperties';
+	ve.ui.TablePropertiesContextItem.static.group = 'table';
+	ve.ui.TablePropertiesContextItem.static.icon = 'edit';
+	ve.ui.TablePropertiesContextItem.static.commandName = 'table';
+	ve.ui.TablePropertiesContextItem.static.title = OO.ui.deferMsg( 'visualeditor-table-contextitem-properties' );
+	ve.ui.contextItemFactory.register( ve.ui.TablePropertiesContextItem );
+
+	ve.ui.DeleteTableContextItem = function VeUiDeleteTableContextItem() {
+		ve.ui.TableLineContextItem.apply( this, arguments );
+
+		this.actionButton.setFlags( { destructive: true } );
+	};
+	OO.inheritClass( ve.ui.DeleteTableContextItem, ve.ui.TableLineContextItem );
+	ve.ui.DeleteTableContextItem.static.name = 'deleteTable';
+	ve.ui.DeleteTableContextItem.static.group = 'table';
+	ve.ui.DeleteTableContextItem.static.icon = 'trash';
+	ve.ui.DeleteTableContextItem.static.commandName = 'deleteTable';
+	ve.ui.DeleteTableContextItem.static.title = OO.ui.deferMsg( 'visualeditor-contextitemwidget-label-remove' );
+	ve.ui.contextItemFactory.register( ve.ui.DeleteTableContextItem );
+
 }() );
