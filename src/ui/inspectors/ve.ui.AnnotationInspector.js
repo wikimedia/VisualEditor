@@ -240,6 +240,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				annotation = this.getAnnotation(),
 				remove = data.action === 'done' && this.shouldRemoveAnnotation(),
 				surfaceModel = this.fragment.getSurface(),
+				surfaceView = this.manager.getSurface().getView(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
 				selection = this.fragment.getSelection(),
 				isEditing = this.isEditing(),
@@ -313,6 +314,11 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			}
 			if ( data.action ) {
 				surfaceModel.setSelection( selection );
+				// Update active annotaions from model as the document may be deactivated
+				surfaceView.updateActiveAnnotations( true );
+				// Update previousActiveAnnotations so the annotation stays active
+				// after re-activation
+				surfaceView.previousActiveAnnotations = surfaceView.activeAnnotations;
 			}
 
 			if ( insertionAnnotation ) {
