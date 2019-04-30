@@ -952,7 +952,6 @@
 	"visualEditor.mobile.build": {
 		"scripts": [
 			"src/ui/contexts/ve.ui.MobileContext.js",
-			"src/ui/contextitems/ve.ui.MobileTableCellContextItem.js",
 			"src/ui/windowmanagers/ve.ui.MobileWindowManager.js"
 		],
 		"styles": [

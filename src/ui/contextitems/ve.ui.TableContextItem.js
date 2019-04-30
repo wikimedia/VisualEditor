@@ -46,7 +46,7 @@ ve.ui.TableContextItem.static.embeddable = false;
  * @inheritdoc
  */
 ve.ui.TableContextItem.static.isCompatibleWith = function ( model ) {
-	return model instanceof ve.dm.Node && model.isCellable();
+	return model instanceof ve.dm.Node && model.isCellable() && !OO.ui.isMobile();
 };
 
 /**
