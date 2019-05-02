@@ -21,6 +21,7 @@ ve.ce.TableNode = function VeCeTableNode() {
 	this.surface = null;
 	this.active = false;
 	this.startCell = null;
+	this.endCell = null;
 	// Stores the original table selection as
 	// a fragment when entering cell edit mode
 	this.editingFragment = null;
@@ -209,6 +210,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 	}
 
 	this.startCell = startCell;
+	this.endCell = endCell;
 	this.surface.$document.on( {
 		'mouseup touchend': this.onTableMouseUpHandler,
 		'mousemove touchmove': this.onTableMouseMoveHandler
@@ -282,21 +284,23 @@ ve.ce.TableNode.prototype.getNearestCellNode = function ( element ) {
  * @param {jQuery.Event} e Mouse/touch move event
  */
 ve.ce.TableNode.prototype.onTableMouseMove = function ( e ) {
-	var cell, selection, cellNode;
+	var endCellNode, endCell, selection;
 
-	cellNode = this.getCellNodeFromEvent( e );
-	if ( !cellNode ) {
+	endCellNode = this.getCellNodeFromEvent( e );
+	if ( !endCellNode ) {
 		return;
 	}
 
-	cell = this.getModel().matrix.lookupCell( cellNode.getModel() );
-	if ( !cell ) {
+	endCell = this.getModel().matrix.lookupCell( endCellNode.getModel() );
+	if ( !endCell || endCell === this.endCell ) {
 		return;
 	}
+
+	this.endCell = endCell;
 
 	selection = new ve.dm.TableSelection(
 		this.getModel().getOuterRange(),
-		this.startCell.col, this.startCell.row, cell.col, cell.row
+		this.startCell.col, this.startCell.row, endCell.col, endCell.row
 	);
 	selection = selection.expand( this.getModel().getDocument() );
 	this.surface.getModel().setSelection( selection );
@@ -309,6 +313,7 @@ ve.ce.TableNode.prototype.onTableMouseMove = function ( e ) {
  */
 ve.ce.TableNode.prototype.onTableMouseUp = function () {
 	this.startCell = null;
+	this.endCell = null;
 	this.surface.$document.off( {
 		'mouseup touchend': this.onTableMouseUpHandler,
 		'mousemove touchmove': this.onTableMouseMoveHandler
