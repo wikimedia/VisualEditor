@@ -24,7 +24,6 @@ module.exports = function ( grunt ) {
 			return pages;
 		}() );
 
-	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
@@ -351,11 +350,16 @@ module.exports = function ( grunt ) {
 		eslint: {
 			options: {
 				reportUnusedDisableDirectives: true,
+				extensions: [ '.js', '.json' ],
 				cache: true
 			},
 			main: [
-				'*.js',
-				'{bin,build,demos,src,tests,rebaser}/**/*.js',
+				'**/*.js{on,}',
+				'!coverage/**',
+				'!dist/**',
+				'!docs/**',
+				'!lib/**',
+				'!node_modules/**',
 				'!rebaser/node_modules/**'
 			],
 			html: {
@@ -376,16 +380,6 @@ module.exports = function ( grunt ) {
 			all: [
 				'**/*.css',
 				'!coverage/**',
-				'!dist/**',
-				'!docs/**',
-				'!lib/**',
-				'!node_modules/**'
-			]
-		},
-		jsonlint: {
-			all: [
-				'.eslintrc.json',
-				'**/*.json',
 				'!dist/**',
 				'!docs/**',
 				'!lib/**',
@@ -545,7 +539,7 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
-	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'jsonlint', 'banana' ] );
+	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:main' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
 	grunt.registerTask( 'ci', [ '_test', 'svgmin', 'git-status' ] );
