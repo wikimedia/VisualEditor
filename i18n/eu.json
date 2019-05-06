@@ -8,12 +8,14 @@
 			"Sator",
 			"Mikel Ibaiba",
 			"Iñaki LL",
-			"Amaia"
+			"Amaia",
+			"Theklan"
 		]
 	},
 	"visualeditor": "Ikusizko editorea",
 	"visualeditor-aliencontextitem-title": "Elementua",
 	"visualeditor-aliennode-tooltip": "Sentitzen dugu, elementu hau iturburu moduan baino ezin da editatu oraingoz.",
+	"visualeditor-align-desc-center": "erdian",
 	"visualeditor-align-desc-default": "lehenetsia",
 	"visualeditor-align-desc-left": "ezkerra",
 	"visualeditor-align-desc-none": "bat ere ez",
