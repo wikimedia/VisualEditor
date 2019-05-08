@@ -1,20 +1,16 @@
 /*!
- * OOUI v0.31.5
+ * OOUI v0.31.6
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-04-24T18:29:15Z
+ * Date: 2019-05-08T10:08:44Z
  */
 .oo-ui-icon-alert {
   background-image: url('themes/wikimediaui/images/icons/alert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/alert.svg');
-}
-.oo-ui-image-error.oo-ui-icon-alert {
-  background-image: url('themes/wikimediaui/images/icons/alert-error.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/alert-error.svg');
 }
 .oo-ui-image-warning.oo-ui-icon-alert {
   background-image: url('themes/wikimediaui/images/icons/alert-warning.png');
@@ -43,6 +39,10 @@
 .oo-ui-icon-error {
   background-image: url('themes/wikimediaui/images/icons/error.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/error.svg');
+}
+.oo-ui-image-error.oo-ui-icon-error {
+  background-image: url('themes/wikimediaui/images/icons/error-error.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/error-error.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-error {
   background-image: url('themes/wikimediaui/images/icons/error-invert.png');
