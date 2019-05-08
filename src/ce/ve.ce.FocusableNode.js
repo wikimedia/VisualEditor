@@ -460,20 +460,21 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		} );
 	}
 
-	// Wait for native selection to change before correcting
-	setTimeout( function () {
-		range = selection instanceof ve.dm.LinearSelection && selection.getRange();
-		surfaceModel.getLinearFragment(
-			e.shiftKey && range ?
-				ve.Range.static.newCoveringRange(
-					[ range, nodeRange ], range.from > nodeRange.from
-				) :
-				nodeRange
-		).select();
-		node.focusableSurface.updateActiveAnnotations();
-		// Ensure surface is active as native 'focus' event won't be fired
-		node.focusableSurface.activate();
-	} );
+	// Prevent native selection from changing (T108013)
+	// (especially if this node is already focussed and the selection is inside .ve-ce-surface-paste)
+	e.preventDefault();
+
+	range = selection instanceof ve.dm.LinearSelection && selection.getRange();
+	surfaceModel.getLinearFragment(
+		e.shiftKey && range ?
+			ve.Range.static.newCoveringRange(
+				[ range, nodeRange ], range.from > nodeRange.from
+			) :
+			nodeRange
+	).select();
+	node.focusableSurface.updateActiveAnnotations();
+	// Ensure surface is active as native 'focus' event won't be fired
+	node.focusableSurface.activate();
 };
 
 /**
