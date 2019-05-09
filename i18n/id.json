@@ -63,6 +63,7 @@
 	"visualeditor-clipboard-paste-special": "Tempel sebagai teks biasa",
 	"visualeditor-command-dialog-cancel": "Tutup / batalkan perubahan",
 	"visualeditor-command-dialog-confirm": "Terapkan perubahan",
+	"visualeditor-command-dialog-focus-context": "Pindahkan fokus ke sembulan kontekstual",
 	"visualeditor-commentinspector-edit": "Sunting komentar",
 	"visualeditor-commentinspector-title": "Komentar",
 	"visualeditor-commentinspector-tooltip": "Komentar",
