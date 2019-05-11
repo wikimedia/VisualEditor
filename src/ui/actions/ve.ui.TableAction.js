@@ -35,7 +35,7 @@ ve.ui.TableAction.static.name = 'table';
  */
 ve.ui.TableAction.static.methods = [
 	'create', 'insert', 'moveRelative', 'move', 'delete', 'importTable',
-	'changeCellStyle', 'mergeCells', 'enterTableCell'
+	'changeCellStyle', 'mergeCells', 'enterTableCell', 'exitTableCell'
 ];
 
 /* Methods */
@@ -241,7 +241,7 @@ ve.ui.TableAction.prototype.move = function ( mode, index ) {
 ve.ui.TableAction.prototype.delete = function ( mode ) {
 	var tableNode, minIndex, maxIndex, isFull,
 		documentModel = this.surface.getModel().getDocument(),
-		selection = this.surface.getModel().getSelection();
+		selection = this.getTableSelectionFromSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
 		return false;
@@ -518,14 +518,30 @@ ve.ui.TableAction.prototype.mergeCells = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.enterTableCell = function () {
-	var tableNode,
-		selection = this.surface.getModel().getSelection();
+	var tableNode = this.findClosestTable();
 
-	if ( !( selection instanceof ve.dm.TableSelection ) ) {
+	if ( !tableNode ) {
 		return false;
 	}
-	tableNode = this.surface.getView().documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+
 	tableNode.setEditing( true );
+	this.surface.getView().focus();
+	return true;
+};
+
+/**
+ * Exit a table cell for table-structure-editing
+ *
+ * @return {boolean} Action was executed
+ */
+ve.ui.TableAction.prototype.exitTableCell = function () {
+	var tableNode = this.findClosestTable();
+
+	if ( !tableNode ) {
+		return false;
+	}
+
+	tableNode.setEditing( false );
 	this.surface.getView().focus();
 	return true;
 };
@@ -987,6 +1003,66 @@ ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder,
 	}
 	data = ve.dm.TableCellNode.static.createData( options );
 	return ve.dm.TransactionBuilder.static.newFromInsertion.bind( null, surfaceModel.getDocument(), offset, data );
+};
+
+/**
+ * Find the closest table node to the current selection
+ *
+ * @return {ve.ce.TableNode|null} a TableNode, if one is found
+ */
+ve.ui.TableAction.prototype.findClosestTable = function () {
+	var tableNode, node,
+		selection = this.surface.getModel().getSelection();
+
+	if ( selection instanceof ve.dm.TableSelection ) {
+		tableNode = this.surface.getView().documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+	} else if ( selection instanceof ve.dm.LinearSelection ) {
+		node = this.surface.getView().documentView.getBranchNodeFromOffset( selection.getRange().start );
+		if ( node ) {
+			tableNode = node.$element.closest( 'table' ).data( 'view' );
+		}
+	}
+
+	return tableNode;
+};
+
+/**
+ * Get a TableSelection that contains the current selection
+ *
+ * @return {ve.dm.TableSelection|boolean}
+ */
+ve.ui.TableAction.prototype.getTableSelectionFromSelection = function () {
+	// If the current selection is contained within a table, we'd like the relevant TableSelection.
+	var tableNode, cellNode, cell,
+		surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
+
+	if ( selection instanceof ve.dm.TableSelection ) {
+		return selection;
+	}
+
+	tableNode = this.findClosestTable();
+	if ( !tableNode ) {
+		return false;
+	}
+
+	cellNode = tableNode.getActiveCellNode();
+	if ( !cellNode ) {
+		// This is actually strange -- we've got a selection inside a table, but no active table cell.
+		return false;
+	}
+
+	cell = tableNode.getModel().matrix.lookupCell( cellNode.getModel() );
+	if ( !cell ) {
+		return false;
+	}
+
+	selection = new ve.dm.TableSelection(
+		tableNode.getModel().getOuterRange(),
+		cell.col, cell.row
+	);
+	selection = selection.expand( surfaceModel.getDocument() );
+	return selection;
 };
 
 /* Registration */

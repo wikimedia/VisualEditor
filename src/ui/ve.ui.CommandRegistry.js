@@ -318,7 +318,7 @@ ve.ui.commandRegistry.register(
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
 		'deleteTable', 'table', 'delete',
-		{ args: [ 'table' ], supportedSelections: [ 'table' ] }
+		{ args: [ 'table' ], supportedSelections: [ 'linear', 'table' ] }
 	)
 );
 
@@ -391,5 +391,11 @@ ve.ui.commandRegistry.register(
 	new ve.ui.Command(
 		'enterTableCell', 'table', 'enterTableCell',
 		{ supportedSelections: [ 'table' ] }
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
+		'exitTableCell', 'table', 'exitTableCell',
+		{ supportedSelections: [ 'linear' ] }
 	)
 );

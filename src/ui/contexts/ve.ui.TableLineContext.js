@@ -62,7 +62,7 @@ OO.inheritClass( ve.ui.TableLineContext, ve.ui.Context );
 ve.ui.TableLineContext.static.groups = {
 	col: [ 'insertColumnBefore', 'insertColumnAfter', 'moveColumnBefore', 'moveColumnAfter', 'deleteColumn' ],
 	row: [ 'insertRowBefore', 'insertRowAfter', 'moveRowBefore', 'moveRowAfter', 'deleteRow' ],
-	table: [ 'tableProperties', 'deleteTable' ]
+	table: [ 'tableProperties', 'toggleTableEditing', 'deleteTable' ]
 };
 
 ve.ui.TableLineContext.static.icons = {
@@ -113,7 +113,7 @@ ve.ui.TableLineContext.prototype.onContextItemCommand = function () {
  */
 ve.ui.TableLineContext.prototype.onIconMouseDown = function ( e ) {
 	e.preventDefault();
-	this.toggleMenu();
+	this.toggleMenu( undefined, true );
 };
 
 /**
@@ -123,7 +123,7 @@ ve.ui.TableLineContext.prototype.onIconMouseDown = function ( e ) {
  */
 ve.ui.TableLineContext.prototype.onDocumentMouseDown = function ( e ) {
 	if ( !$( e.target ).closest( this.$element ).length ) {
-		this.toggleMenu( false );
+		this.toggleMenu( false, true );
 	}
 };
 
@@ -139,15 +139,29 @@ ve.ui.TableLineContext.prototype.onModelSelect = function () {
 /**
  * @inheritdoc
  */
-ve.ui.TableLineContext.prototype.toggleMenu = function ( show ) {
+ve.ui.TableLineContext.prototype.toggleMenu = function ( show, restoreEditing ) {
 	var dir, surfaceModel, surfaceView;
 	show = show === undefined ? !this.popup.isVisible() : !!show;
 
 	surfaceModel = this.surface.getModel();
 	surfaceView = this.surface.getView();
 
+	// Remember whether the table was in editing mode, because some itemGroups
+	// will force it into editing mode so their commands can work on a
+	// TableSelection.
+	this.wasEditing = !!this.tableNode.editingFragment;
+
+	// Kick the table into/out of editing mode if needed:
+	if ( this.itemGroup !== 'table' ) {
+		if ( show ) {
+			this.tableNode.setEditing( false );
+		} else if ( restoreEditing && surfaceModel.getSelection() instanceof ve.dm.TableSelection ) {
+			this.tableNode.setEditing( this.wasEditing );
+		}
+	}
+
+	// Set up the close-if-anything-happens handlers:
 	if ( show ) {
-		this.tableNode.setEditing( false );
 		surfaceModel.connect( this, { select: 'onModelSelect' } );
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
 		surfaceView.deactivate();

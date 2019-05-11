@@ -167,6 +167,8 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		// Right click within the current selection, or any click in deactviated selection:
 		// leave selection as is
 		newSelection = selection;
+		// Make sure there's a startCell
+		startCell = this.startCell || endCell;
 	} else {
 		// Select single cell
 		startCell = endCell;
@@ -213,10 +215,17 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 
 	this.startCell = startCell;
 	this.endCell = endCell;
-	this.surface.$document.on( {
-		'mouseup touchend': this.onTableMouseUpHandler,
-		'mousemove touchmove': this.onTableMouseMoveHandler
-	} );
+	if ( !( selection instanceof ve.dm.TableSelection ) && OO.ui.isMobile() ) {
+		// On mobile, fall through to the double-click behavior on a single tap --
+		// this will place the cursor within the cell, rather than remaining in
+		// table-selection mode.
+		this.onTableDblClick( e );
+	} else {
+		this.surface.$document.on( {
+			'mouseup touchend': this.onTableMouseUpHandler,
+			'mousemove touchmove': this.onTableMouseMoveHandler
+		} );
+	}
 	e.preventDefault();
 };
 

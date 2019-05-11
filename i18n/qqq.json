@@ -201,6 +201,8 @@
 	"visualeditor-specialcharinspector-characterlist-insert": "This is a JSON string defining the special characters that can be inserted using the special character insertion tool. It is not used in the MediaWiki version of VisualEditor.\n{{doc-important|Please make sure it is a valid JSON string.}}\n{{Optional}}",
 	"visualeditor-table-caption": "Label for table caption tool\n{{Identical|Caption}}",
 	"visualeditor-table-contextitem-properties": "Label for the properties button in the table context\n{{Identical|Property}}",
+	"visualeditor-table-contextitem-selectionmode-cells": "Label for the select cells button in the table context",
+	"visualeditor-table-contextitem-selectionmode-contents": "Label for the select cell contents button in the table context",
 	"visualeditor-table-delete-col": "Label for delete column tool\n\n* $1 is the number of columns",
 	"visualeditor-table-delete-row": "Label for delete row tool\n\n* $1 is the number of rows",
 	"visualeditor-table-format-data": "Label for table cell data tool",
