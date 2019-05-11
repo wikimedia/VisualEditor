@@ -14,7 +14,7 @@
  *
  * @constructor
  * @param {ve.ce.TableNode} tableNode
- * @param {string} itemGroup Tool group to use, 'col' or 'row'
+ * @param {string} itemGroup Tool group to use, 'col', 'row', or 'table'
  * @param {Object} [config] Configuration options
  */
 ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, config ) {
@@ -27,13 +27,13 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 	this.tableNode = tableNode;
 	this.itemGroup = itemGroup;
 	this.icon = new OO.ui.IconWidget( {
-		icon: itemGroup === 'col' ? 'expand' : 'next'
+		icon: this.constructor.static.icons[ itemGroup ]
 	} );
 	this.popup = new OO.ui.PopupWidget( {
 		classes: [ 've-ui-tableLineContext-menu' ],
 		$container: this.surface.$element,
 		$floatableContainer: this.icon.$element,
-		position: itemGroup === 'col' ? 'below' : 'after',
+		position: this.constructor.static.positions[ this.itemGroup ],
 		width: null
 	} );
 
@@ -61,7 +61,20 @@ OO.inheritClass( ve.ui.TableLineContext, ve.ui.Context );
 
 ve.ui.TableLineContext.static.groups = {
 	col: [ 'insertColumnBefore', 'insertColumnAfter', 'moveColumnBefore', 'moveColumnAfter', 'deleteColumn' ],
-	row: [ 'insertRowBefore', 'insertRowAfter', 'moveRowBefore', 'moveRowAfter', 'deleteRow' ]
+	row: [ 'insertRowBefore', 'insertRowAfter', 'moveRowBefore', 'moveRowAfter', 'deleteRow' ],
+	table: [ 'tableProperties', 'deleteTable' ]
+};
+
+ve.ui.TableLineContext.static.icons = {
+	col: 'expand',
+	row: 'next',
+	table: 'table'
+};
+
+ve.ui.TableLineContext.static.positions = {
+	col: 'below',
+	row: 'after',
+	table: 'after'
 };
 
 /* Methods */
