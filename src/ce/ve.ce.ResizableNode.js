@@ -244,7 +244,8 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
  * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
-	if ( !this.isResizable() ) {
+	// Also check the node is focused as this method is also triggered by rerender.
+	if ( !this.isResizable() || !this.isFocused() ) {
 		return;
 	}
 	this.$resizeHandles.appendTo( this.resizableSurface.getSurface().$controls );
