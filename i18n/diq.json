@@ -184,6 +184,8 @@
 	"visualeditor-specialcharacterinspector-title": "Karakterê xısusiy",
 	"visualeditor-table-caption": "Bınnuşte",
 	"visualeditor-table-contextitem-properties": "Xısusiyi",
+	"visualeditor-table-contextitem-selectionmode-cells": "Hucreyan weçine",
+	"visualeditor-table-contextitem-selectionmode-contents": "Zerreki weçine",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|Ustıne|$1 Ustınan}} bestere",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Rêze|$1 Rêzan}} bestere",
 	"visualeditor-table-format-data": "Zerreka hucra",

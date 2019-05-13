@@ -21,7 +21,8 @@
 			"Yejianfei",
 			"Hanyanbo98",
 			"夢蝶葬花",
-			"94rain"
+			"94rain",
+			"D41D8CD98F"
 		]
 	},
 	"visualeditor": "可视化编辑器",
@@ -95,7 +96,7 @@
 	"visualeditor-dialog-error-dismiss": "返回",
 	"visualeditor-dialog-language-auto-direction": "自动",
 	"visualeditor-dialog-language-search-title": "选择语言",
-	"visualeditor-dialog-table-caption": "说明",
+	"visualeditor-dialog-table-caption": "表格标题",
 	"visualeditor-dialog-table-title": "表格属性",
 	"visualeditor-diff-no-changes": "没有更改",
 	"visualeditor-diff-timed-out": "计算您的更改花费了太长时间，因此下方的描述可能并不理想。",

@@ -18,7 +18,8 @@
 			"Kumikami",
 			"Kkairri",
 			"Suyama",
-			"Wat"
+			"Wat",
+			"Delim"
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
@@ -194,8 +195,8 @@
 	"visualeditor-table-insert-row-before": "上に行を挿入",
 	"visualeditor-table-insert-table": "表",
 	"visualeditor-table-merge-cells": "セルを結合",
-	"visualeditor-table-merge-cells-merge": "統合",
-	"visualeditor-table-merge-cells-unmerge": "統合解除",
+	"visualeditor-table-merge-cells-merge": "結合",
+	"visualeditor-table-merge-cells-unmerge": "結合解除",
 	"visualeditor-table-move-col-after": "後に移動",
 	"visualeditor-table-move-col-before": "前に移動",
 	"visualeditor-table-move-row-after": "下に移動",

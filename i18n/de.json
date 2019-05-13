@@ -184,6 +184,8 @@
 	"visualeditor-specialcharacterinspector-title": "Sonderzeichen",
 	"visualeditor-table-caption": "Beschriftung",
 	"visualeditor-table-contextitem-properties": "Eigenschaften",
+	"visualeditor-table-contextitem-selectionmode-cells": "Zellen auswählen",
+	"visualeditor-table-contextitem-selectionmode-contents": "Inhalte auswählen",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|Spalte|Spalten}} löschen",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Zeile|Zeilen}} löschen",
 	"visualeditor-table-format-data": "Inhaltszelle",

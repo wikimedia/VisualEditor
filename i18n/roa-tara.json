@@ -173,6 +173,8 @@
 	"visualeditor-specialcharacterinspector-title": "Carattere speciale",
 	"visualeditor-table-caption": "'Ndestazione",
 	"visualeditor-table-contextitem-properties": "Probbietà",
+	"visualeditor-table-contextitem-selectionmode-cells": "Scacchie le celle",
+	"visualeditor-table-contextitem-selectionmode-contents": "Scacchie le condenute",
 	"visualeditor-table-delete-col": "Scangìlle {{PLURAL:$1|'a colonne|le culonne}}",
 	"visualeditor-table-delete-row": "Scangìlle {{PLURAL:$1|'a righe|le righe}}",
 	"visualeditor-table-format-data": "Celle cu 'u condenute",

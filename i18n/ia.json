@@ -172,6 +172,8 @@
 	"visualeditor-specialcharacterinspector-title": "Character special",
 	"visualeditor-table-caption": "Legenda",
 	"visualeditor-table-contextitem-properties": "Proprietates",
+	"visualeditor-table-contextitem-selectionmode-cells": "Seliger cellulas",
+	"visualeditor-table-contextitem-selectionmode-contents": "Seliger contento",
 	"visualeditor-table-delete-col": "Deler {{PLURAL:$1|columna|columnas}}",
 	"visualeditor-table-delete-row": "Deler {{PLURAL:$1|linea|lineas}}",
 	"visualeditor-table-format-data": "Cellula de contento",
