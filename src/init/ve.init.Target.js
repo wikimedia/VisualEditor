@@ -67,6 +67,10 @@ ve.init.Target = function VeInitTarget( config ) {
 		this.$element.addClass( 've-init-target-ie-or-edge' );
 	}
 
+	if ( ve.init.platform.constructor.static.isIos() ) {
+		this.$element.addClass( 've-init-target-ios' );
+	}
+
 	// Events
 	this.onDocumentKeyDownHandler = this.onDocumentKeyDown.bind( this );
 	this.onDocumentKeyUpHandler = this.onDocumentKeyUp.bind( this );

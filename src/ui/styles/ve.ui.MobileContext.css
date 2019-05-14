@@ -8,7 +8,7 @@
 	display: none;
 }
 
-.ve-ui-mobileContext-menu {
+.ve-ui-mobileContext .ve-ui-mobileContext-menu {
 	border-top: 1px solid #c8ccd1;
 }
 
@@ -66,4 +66,25 @@
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement.oo-ui-labelElement .oo-ui-buttonElement-button {
 	padding: 0.90625em 0.5em 0.90625em 2.875em;
+}
+
+.ve-ui-mobileContext-new {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #fff;
+	/* Match toolbar border & shadow */
+	border-top: 1px solid #c8ccd1;
+	box-shadow: 0 -1px 1px 0 rgba( 0, 0, 0, 0.1 );
+	display: none;
+}
+
+.ve-ui-surface-deactivated .ve-ui-mobileContext-new {
+	display: block;
+}
+
+/* Don't render buttons in bottom 44px of iOS as this can trigger the bottom nav */
+.ve-init-target-ios .ve-ui-mobileContext-new {
+	padding-bottom: 44px;
 }

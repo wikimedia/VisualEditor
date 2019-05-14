@@ -61,6 +61,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.focused = false;
 	this.deactivated = false;
 	this.showAsActivated = false;
+	this.hideSelection = false;
 	this.$deactivatedSelection = $( '<div>' );
 	this.activeNode = null;
 	this.contentBranchNodeChanged = false;
@@ -697,14 +698,17 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  *
  * @param {boolean} [showAsActivated=true] Surface should still show as activated
  * @param {boolean} [noSelectionChange] Don't change the native selection.
+ * @param {boolean} [hideSelection] Completely hide the selection
  * @fires activation
  */
-ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange ) {
+ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
 	this.showAsActivated = showAsActivated;
+	this.hideSelection = hideSelection;
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
 		// until the surface is activated
 		this.surfaceObserver.disable();
+		this.surface.$element.addClass( 've-ui-surface-deactivated' );
 		this.deactivated = true;
 		this.previousActiveAnnotations = this.activeAnnotations;
 		this.checkDelayedSequences();
@@ -729,8 +733,10 @@ ve.ce.Surface.prototype.activate = function () {
 	if ( this.deactivated ) {
 		this.deactivated = false;
 		this.showAsActivated = false;
+		this.hideSelection = false;
 		this.updateDeactivatedSelection();
 		this.surfaceObserver.enable();
+		this.surface.$element.removeClass( 've-ui-surface-deactivated' );
 
 		previousSelection = this.getModel().getSelection();
 
@@ -785,7 +791,7 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 	this.$deactivatedSelection.empty();
 
 	// Check we have a deactivated surface and a native selection
-	if ( this.deactivated && selection.isNativeCursor() ) {
+	if ( this.deactivated && selection.isNativeCursor() && !this.hideSelection ) {
 		if ( isCollapsed ) {
 			currentNode = this.getDocument().getBranchNodeFromOffset(
 				selection.getModel().getCoveringRange().start
@@ -1036,9 +1042,17 @@ ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
  * @param {boolean} dragging Dragging (mouse is down)
  */
 ve.ce.Surface.prototype.setDragging = function ( dragging ) {
+	var surface = this;
 	this.dragging = !!dragging;
 	// Class can be used to suppress hover states, such as branch slugs.
 	this.$element.toggleClass( 've-ce-surface-dragging', this.dragging );
+	if ( dragging ) {
+		this.inMouseDownCycle = true;
+	} else {
+		setTimeout( function () {
+			surface.inMouseDownCycle = false;
+		} );
+	}
 };
 
 /**
@@ -4194,6 +4208,16 @@ ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModel ) {
 	} );
 
 	if ( changed ) {
+		if ( ve.newMobileContext ) {
+			// Hide the keyboard and the selection when first clicking on a link
+			// If inMouseDownCycle has been cleared, then assume this is a selection drag.
+			if ( OO.ui.isMobile() && activeAnnotations.length && this.inMouseDownCycle ) {
+				// setTimeout required on iOS to prevent intermittent triggering of another contextChange
+				setTimeout( function () {
+					surface.deactivate( false, false, true );
+				} );
+			}
+		}
 		this.activeAnnotations = activeAnnotations;
 		this.model.emit( 'contextChange' );
 	}
