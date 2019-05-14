@@ -319,6 +319,10 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				// Update previousActiveAnnotations so the annotation stays active
 				// after re-activation
 				surfaceView.previousActiveAnnotations = surfaceView.activeAnnotations;
+				// Restore context-only view on mobile
+				if ( OO.ui.isMobile() ) {
+					surfaceView.deactivate( false, false, true );
+				}
 			}
 
 			if ( insertionAnnotation ) {
