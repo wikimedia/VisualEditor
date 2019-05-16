@@ -63,6 +63,20 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 		right = Math.max( right, cellOffset.right );
 	}
 
+	// Browser tweaks
+	if ( !ve.test ) {
+		switch ( $.client.profile().layout ) {
+			case 'webkit':
+				right += 1;
+				bottom += 1;
+				break;
+			case 'gecko':
+				left -= 1;
+				top -= 1;
+				break;
+		}
+	}
+
 	boundingRect = {
 		top: top,
 		bottom: bottom,

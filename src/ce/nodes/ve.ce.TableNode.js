@@ -460,7 +460,7 @@ ve.ce.TableNode.prototype.onSurfaceActivation = function () {
  * @param {boolean} selectionChanged The update was triggered by a selection change
  */
 ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
-	var anchorNode, anchorOffset, selectionOffset, selection, documentModel,
+	var anchorOffset, selectionOffset, selection, documentModel,
 		selectionRect, tableOffset, surfaceOffset;
 
 	if (
@@ -492,15 +492,21 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 		return;
 	}
 
-	anchorNode = this.getCellNodesFromSelection( selection.collapseToFrom() )[ 0 ];
-	anchorOffset = ve.translateRect( anchorNode.$element[ 0 ].getBoundingClientRect(), -tableOffset.left, -tableOffset.top );
-
 	// Compute a bounding box for the given cell elements
-
 	selectionOffset = ve.translateRect(
 		selectionRect,
 		surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
 	);
+
+	if ( selection.isSingleCell( documentModel ) ) {
+		// Optimization, use same rects as whole selection
+		anchorOffset = selectionOffset;
+	} else {
+		anchorOffset = ve.translateRect(
+			this.surface.getSelection( selection.collapseToFrom() ).getSelectionBoundingRect(),
+			surfaceOffset.left - tableOffset.left, surfaceOffset.top - tableOffset.top
+		);
+	}
 
 	// Resize controls
 	this.$selectionBox.css( {
