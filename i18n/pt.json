@@ -189,6 +189,8 @@
 	"visualeditor-specialcharacterinspector-title": "Carácter especial",
 	"visualeditor-table-caption": "Legenda",
 	"visualeditor-table-contextitem-properties": "Propriedades",
+	"visualeditor-table-contextitem-selectionmode-cells": "Selecionar células",
+	"visualeditor-table-contextitem-selectionmode-contents": "Selecionar conteúdo",
 	"visualeditor-table-delete-col": "Eliminar {{PLURAL:$1|coluna|colunas}}",
 	"visualeditor-table-delete-row": "Eliminar {{PLURAL:$1|linha|linhas}}",
 	"visualeditor-table-format-data": "Célula de conteúdo",

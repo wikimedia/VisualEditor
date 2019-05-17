@@ -162,6 +162,8 @@
 	"visualeditor-specialcharacterinspector-title": "Speciālā rakstzīme",
 	"visualeditor-table-caption": "Virsraksts",
 	"visualeditor-table-contextitem-properties": "Īpašības",
+	"visualeditor-table-contextitem-selectionmode-cells": "Izvēlēties šūnas",
+	"visualeditor-table-contextitem-selectionmode-contents": "Izvēlēties saturu",
 	"visualeditor-table-delete-col": "Dzēst {{PLURAL:$1|kolonnas|kolonnu|kolonnas}}",
 	"visualeditor-table-delete-row": "Dzēst {{PLURAL:$1|rindas|rindu|rindas}}",
 	"visualeditor-table-format-data": "Satura šūna",

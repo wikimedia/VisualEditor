@@ -178,6 +178,8 @@
 	"visualeditor-specialcharacterinspector-title": "Carattere speciale",
 	"visualeditor-table-caption": "Didascalia",
 	"visualeditor-table-contextitem-properties": "Proprietà",
+	"visualeditor-table-contextitem-selectionmode-cells": "Seleziona celle",
+	"visualeditor-table-contextitem-selectionmode-contents": "Seleziona contenuti",
 	"visualeditor-table-delete-col": "Cancella {{PLURAL:$1|colonna|colonne}}",
 	"visualeditor-table-delete-row": "Cancella {{PLURAL:$1|riga|righe}}",
 	"visualeditor-table-format-data": "Cella di contenuto",
