@@ -543,10 +543,7 @@ ve.ce.TableNode.prototype.updateOverlay = function ( selectionChanged ) {
 	this.rowContext.$element.toggleClass( 'oo-ui-element-hidden', this.surface.isReadOnly() );
 
 	// Classes
-	this.$selectionBox
-		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullRow', selection.isFullRow( documentModel ) )
-		.toggleClass( 've-ce-tableNodeOverlay-selection-box-fullCol', selection.isFullCol( documentModel ) )
-		.toggleClass( 've-ce-tableNodeOverlay-selection-box-notEditable', !selection.isEditable( documentModel ) );
+	this.$selectionBox.toggleClass( 've-ce-tableNodeOverlay-selection-box-notEditable', !selection.isEditable( documentModel ) );
 
 	if ( selectionChanged ) {
 		ve.scrollIntoView( this.$selectionBox.get( 0 ) );

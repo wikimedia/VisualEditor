@@ -63,7 +63,7 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 		right = Math.max( right, cellOffset.right );
 	}
 
-	// Browser tweaks
+	// Browser tweaks to adjust for border-collapse:collapse
 	if ( !ve.test ) {
 		switch ( $.client.profile().layout ) {
 			case 'webkit':
