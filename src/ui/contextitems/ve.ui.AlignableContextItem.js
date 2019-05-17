@@ -28,6 +28,12 @@ ve.ui.AlignableContextItem = function VeUiAlignableContextItem( context, model, 
 	this.align.selectItemByData( align );
 	this.align.connect( this, { choose: 'onAlignChoose' } );
 
+	if ( OO.ui.isMobile() ) {
+		this.align.items.forEach( function ( item ) {
+			item.setLabel( null );
+		} );
+	}
+
 	// Initialization
 	this.$element.addClass( 've-ui-alignableContextItem' );
 };
