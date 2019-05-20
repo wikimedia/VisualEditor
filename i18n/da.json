@@ -16,7 +16,8 @@
 			"SimmeD",
 			"Joedalton",
 			"Saederup92",
-			"McDutchie"
+			"McDutchie",
+			"Weblars"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -33,7 +34,7 @@
 	"visualeditor-alignablecontextitem-title": "Justering",
 	"visualeditor-annotationbutton-big-tooltip": "Stor",
 	"visualeditor-annotationbutton-bold-tooltip": "Fed",
-	"visualeditor-annotationbutton-code-tooltip": "Computer kode",
+	"visualeditor-annotationbutton-code-tooltip": "Computerkode",
 	"visualeditor-annotationbutton-italic-tooltip": "Kursiv",
 	"visualeditor-annotationbutton-language-tooltip": "Sprog",
 	"visualeditor-annotationbutton-link-tooltip": "Link",
