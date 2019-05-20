@@ -131,7 +131,7 @@ ve.ui.LinearContextItem.prototype.onEditButtonClick = function () {
 	var command = this.getCommand();
 
 	if ( command ) {
-		command.execute( this.context.getSurface() );
+		command.execute( this.context.getSurface(), undefined, 'context' );
 		this.emit( 'command' );
 	}
 };
@@ -141,6 +141,8 @@ ve.ui.LinearContextItem.prototype.onEditButtonClick = function () {
  */
 ve.ui.LinearContextItem.prototype.onDeleteButtonClick = function () {
 	this.getFragment().removeContent();
+
+	ve.track( 'activity.' + this.constructor.static.name, { action: 'context-delete' } );
 };
 
 /**
@@ -206,6 +208,8 @@ ve.ui.LinearContextItem.prototype.setup = function () {
 	} else {
 		this.renderBody();
 	}
+
+	ve.track( 'activity.' + this.constructor.static.name, { action: 'context-show' } );
 
 	return this;
 };

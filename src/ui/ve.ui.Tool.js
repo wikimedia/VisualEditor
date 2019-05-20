@@ -133,7 +133,7 @@ ve.ui.Tool.prototype.onSelect = function () {
 		// N.B. If contextClosePromise is already resolved, then the handler is called
 		// before the call to .done returns
 		contextClosePromise.done( function () {
-			if ( !command.execute( surface ) ) {
+			if ( !command.execute( surface, undefined, 'tool' ) ) {
 				// If the command fails, ensure the tool is not active
 				tool.setActive( false );
 			}

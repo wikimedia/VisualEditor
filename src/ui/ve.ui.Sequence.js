@@ -121,7 +121,7 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		stripFragment.removeContent();
 	}
 
-	executed = command.execute( surface, args );
+	executed = command.execute( surface, args, 'sequence' );
 
 	// Restore user's selection if:
 	// * This sequence was not executed after all

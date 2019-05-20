@@ -112,6 +112,7 @@ ve.ui.LinkContextItem.prototype.onLabelButtonClick = function () {
 	var surface = this.context.getSurface().getView(),
 		annotationView = this.getAnnotationView();
 	surface.selectNodeContents( annotationView.$element[ 0 ] );
+	ve.track( 'activity.' + this.constructor.static.name, { action: 'context-label' } );
 };
 
 /* Registration */
