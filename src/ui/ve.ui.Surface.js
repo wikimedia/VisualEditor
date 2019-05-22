@@ -90,7 +90,14 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.scrollPosition = null;
 	this.windowStackDepth = 0;
 
+	// Deprecated, use this.padding.top
 	this.toolbarHeight = 0;
+	this.padding = {
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0
+	};
 	this.toolbarDialogs = new ve.ui.ToolbarDialogWindowManager( this, {
 		factory: ve.ui.windowFactory,
 		modal: false
@@ -327,7 +334,7 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
 		return null;
 	}
 
-	top = Math.max( this.toolbarHeight - rect.top, 0 );
+	top = Math.max( this.padding.top - rect.top, 0 );
 	bottom = $( this.getElementWindow() ).height() - rect.top;
 
 	return {
@@ -511,10 +518,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 	surfaceRect = this.getBoundingClientRect();
 	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
 
-	padding = {
-		top: this.toolbarHeight,
-		bottom: 0
-	};
+	padding = ve.copy( this.padding );
 
 	if ( selection.isNativeCursor() ) {
 		animate = false;
@@ -736,15 +740,25 @@ ve.ui.Surface.prototype.executeCommand = function ( commandName ) {
 	return false;
 };
 
-/**
- * Set the current height of the toolbar.
- *
- * Used for scroll-into-view calculations.
- *
- * @param {number} toolbarHeight Toolbar height
- */
+// Deprecated, use #setPadding
 ve.ui.Surface.prototype.setToolbarHeight = function ( toolbarHeight ) {
-	this.toolbarHeight = toolbarHeight;
+	this.setPadding( { top: toolbarHeight } );
+};
+
+/**
+ * Set content area padding.
+ *
+ * When UI components obscure the surface (e.g. the toolbar),
+ * set the appropriate amount of padding here so that
+ * scroll-into-view calculations can be adjusted.
+ *
+ * @param {Object} padding Padding object containing top, right, bottom
+ *  and/or left values. Omit properties to leave unchanged.
+ */
+ve.ui.Surface.prototype.setPadding = function ( padding ) {
+	ve.extendObject( this.padding, padding );
+	// Deprecated, use this.padding.top
+	this.toolbarHeight = this.padding.top;
 };
 
 /**

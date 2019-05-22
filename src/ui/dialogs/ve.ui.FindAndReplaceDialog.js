@@ -530,8 +530,8 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 	if ( scrollIntoView ) {
 		surfaceView = this.surface.getView();
 		offset = top + surfaceView.$element.offset().top;
-		windowScrollTop = surfaceView.$window.scrollTop() + this.surface.toolbarHeight;
-		windowScrollHeight = surfaceView.$window.height() - this.surface.toolbarHeight;
+		windowScrollTop = surfaceView.$window.scrollTop() + this.surface.padding.top;
+		windowScrollHeight = surfaceView.$window.height() - this.surface.padding.top;
 
 		if ( offset < windowScrollTop || offset > windowScrollTop + windowScrollHeight ) {
 			// eslint-disable-next-line no-jquery/no-global-selector

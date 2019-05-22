@@ -378,7 +378,7 @@ ve.ui.DesktopContext.prototype.setPopupSizeAndPosition = function ( repositionOn
 				} else {
 					this.$element.css( {
 						left: this.position.x + viewport.left,
-						top: this.surface.toolbarHeight + margin,
+						top: this.surface.padding.top + margin,
 						bottom: ''
 					} );
 				}
