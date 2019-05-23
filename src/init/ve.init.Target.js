@@ -456,7 +456,7 @@ ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
  * Handle toolbar resize events
  */
 ve.init.Target.prototype.onToolbarResize = function () {
-	this.getSurface().setSurfacePadding( {
+	this.getSurface().setPadding( {
 		top: this.getToolbar().getHeight() + this.toolbarScrollOffset
 	} );
 };
