@@ -87,8 +87,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.setPlaceholder( config.placeholder );
 	this.setReadOnly( !!config.readOnly );
 	this.nullSelectionOnBlur = config.nullSelectionOnBlur !== false;
-	this.scrollPosition = null;
-	this.windowStackDepth = 0;
 
 	// Deprecated, use this.padding.top
 	this.toolbarHeight = 0;
@@ -106,8 +104,6 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	// Events
 	this.getModel().connect( this, { select: 'scrollSelectionIntoView' } );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
-	this.dialogs.connect( this, { opening: 'onWindowOpening' } );
-	this.context.getInspectors().connect( this, { opening: 'onWindowOpening' } );
 	this.getView().connect( this, { position: 'onViewPosition' } );
 
 	// Initialization
@@ -178,8 +174,6 @@ ve.ui.Surface.prototype.destroy = function () {
 	// Disconnect events
 	this.dialogs.disconnect( this );
 	this.context.getInspectors().disconnect( this );
-
-	this.toggleMobileGlobalOverlay( false );
 
 	// Remove DOM elements
 	this.$element.remove();
@@ -564,74 +558,6 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 
 // Deprecated alias
 ve.ui.Surface.prototype.scrollCursorIntoView = ve.ui.Surface.prototype.scrollSelectionIntoView;
-
-/**
- * Handle an dialog opening event.
- *
- * @param {OO.ui.Window} win Window that's being opened
- * @param {jQuery.Promise} opening Promise resolved when window is opened; when the promise is
- *   resolved the first argument will be a promise which will be resolved when the window begins
- *   closing, the second argument will be the opening data
- * @param {Object} data Window opening data
- */
-ve.ui.Surface.prototype.onWindowOpening = function ( win, opening ) {
-	var surface = this;
-
-	if ( OO.ui.isMobile() ) {
-		opening
-			.progress( function ( data ) {
-				if ( data.state === 'setup' ) {
-					surface.windowStackDepth++;
-					if ( surface.windowStackDepth === 1 ) {
-						surface.toggleMobileGlobalOverlay( true );
-					}
-				}
-			} )
-			.always( function ( opened ) {
-				opened.always( function ( closed ) {
-					closed.always( function () {
-						surface.windowStackDepth--;
-						if ( surface.windowStackDepth === 0 ) {
-							surface.toggleMobileGlobalOverlay( false );
-						}
-					} );
-				} );
-			} );
-	}
-};
-
-/**
- * Show or hide mobile global overlay.
- *
- * @param {boolean} show Show the global overlay.
- */
-ve.ui.Surface.prototype.toggleMobileGlobalOverlay = function ( show ) {
-	var $scrollContainer;
-
-	if ( !OO.ui.isMobile() ) {
-		return;
-	}
-
-	// This is called in response to a window closing, so make sure that other
-	// reactions to this haven't destroyed the target. (See: MobileFrontend
-	// VisualEditorOverlay onSaveComplete.)
-	// TODO: Avoid accessing ve.init.target from the surface?
-	$scrollContainer = ve.init.target && ve.init.target.getScrollContainer();
-
-	// Store current position before we set overflow: hidden on body
-	if ( show && $scrollContainer ) {
-		this.scrollPosition = $scrollContainer.scrollTop();
-	}
-
-	// eslint-disable-next-line no-jquery/no-global-selector
-	$( 'html, body' ).toggleClass( 've-ui-overlay-global-mobile-enabled', show );
-	this.globalOverlay.$element.toggleClass( 've-ui-overlay-global-mobile-visible', show );
-
-	// Restore previous position after we remove overflow: hidden on body
-	if ( !show && $scrollContainer ) {
-		$scrollContainer.scrollTop( this.scrollPosition );
-	}
-};
 
 /**
  * Set placeholder text
