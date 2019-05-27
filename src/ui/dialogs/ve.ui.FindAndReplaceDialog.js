@@ -249,22 +249,15 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			surfaceView.disconnect( this );
 			ve.removePassiveEventListener( this.surface.getView().$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
 
-			// If the surface isn't selected, put the selection back in a sensible place
-			if ( surfaceModel.getSelection().isNull() ) {
-				if ( this.fragments.length ) {
-					// Either the active search result…
-					selection = this.fragments[ this.focusedIndex ].getSelection();
-				} else if ( this.initialFragment && !( this.initialFragment.getSelection().isNull() ) ) {
-					// … or the initial selection
-					selection = this.initialFragment.getSelection();
-				}
-			}
-			if ( selection ) {
-				surfaceModel.setSelection( selection );
+			if ( this.fragments.length ) {
+				// Either the active search result…
+				selection = this.fragments[ this.focusedIndex ].getSelection();
 			} else {
-				// If the selection wasn't changed, focus anyway
-				surfaceView.focus();
+				// … or the initial selection
+				selection = this.initialFragment.getSelection();
 			}
+			surfaceModel.setSelection( selection );
+
 			this.$findResults.empty().detach();
 			this.fragments = [];
 			this.surface = null;
