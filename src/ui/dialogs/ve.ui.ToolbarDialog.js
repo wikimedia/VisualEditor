@@ -36,8 +36,6 @@ OO.inheritClass( ve.ui.ToolbarDialog, OO.ui.Dialog );
 
 ve.ui.ToolbarDialog.static.size = 'full';
 
-ve.ui.ToolbarDialog.static.activeSurface = true;
-
 ve.ui.ToolbarDialog.static.padded = true;
 
 /**
