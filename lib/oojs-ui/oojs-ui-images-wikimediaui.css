@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.31.6
+ * OOUI v0.32.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-05-08T10:08:44Z
+ * Date: 2019-05-29T00:38:49Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -3017,18 +3017,6 @@
 .oo-ui-image-progressive.oo-ui-icon-references {
   background-image: url('themes/wikimediaui/images/icons/references-ltr-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/references-ltr-progressive.svg');
-}
-.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web.svg');
-}
-.oo-ui-image-invert.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web-invert.svg');
-}
-.oo-ui-image-progressive.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web-progressive.svg');
 }
 
 .oo-ui-icon-camera {

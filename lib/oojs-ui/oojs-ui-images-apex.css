@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.31.6
+ * OOUI v0.32.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-05-08T10:08:44Z
+ * Date: 2019-05-29T00:38:49Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -72,6 +72,24 @@
 .oo-ui-icon-articleCheck {
   background-image: url('themes/wikimediaui/images/icons/articleCheck.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleCheck.svg');
+}
+.oo-ui-icon-articleDisambiguation {
+  background-image: url('themes/wikimediaui/images/icons/articleDisambiguation-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleDisambiguation-ltr.svg');
+}
+.oo-ui-icon-articleNotFound {
+  background-image: url('themes/wikimediaui/images/icons/articleNotFound-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleNotFound-ltr.svg');
+}
+/* @noflip */
+.oo-ui-icon-articleNotFound:lang(he) {
+  background-image: url('themes/wikimediaui/images/icons/articleNotFound-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleNotFound-ltr.svg');
+}
+/* @noflip */
+.oo-ui-icon-articleNotFound:lang(yi) {
+  background-image: url('themes/wikimediaui/images/icons/articleNotFound-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleNotFound-ltr.svg');
 }
 .oo-ui-icon-articleSearch {
   background-image: url('themes/wikimediaui/images/icons/articleSearch.png');
@@ -817,6 +835,22 @@
   background-image: url('themes/wikimediaui/images/icons/hieroglyph.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/hieroglyph.svg');
 }
+.oo-ui-icon-imageLayoutBasic {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutBasic.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutBasic.svg');
+}
+.oo-ui-icon-imageLayoutFrame {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrame.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrame.svg');
+}
+.oo-ui-icon-imageLayoutFrameless {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrameless.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrameless.svg');
+}
+.oo-ui-icon-imageLayoutThumbnail {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutThumbnail.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutThumbnail.svg');
+}
 .oo-ui-icon-language {
   background-image: url('themes/wikimediaui/images/icons/language.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/language.svg');
@@ -965,10 +999,6 @@
 .oo-ui-icon-references {
   background-image: url('themes/wikimediaui/images/icons/references-ltr.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/references-ltr.svg');
-}
-.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web.svg');
 }
 
 .oo-ui-icon-camera {

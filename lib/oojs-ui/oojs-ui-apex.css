@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.31.6
+ * OOUI v0.32.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-05-08T10:08:44Z
+ * Date: 2019-05-29T00:38:49Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1086,8 +1086,12 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   max-width: 50em;
 }
 .oo-ui-dropdownInputWidget .oo-ui-dropdownWidget,
-.oo-ui-dropdownInputWidget.oo-ui-dropdownInputWidget-php select {
+.oo-ui-dropdownInputWidget.oo-ui-dropdownInputWidget-php select,
+.oo-ui-dropdownInputWidget.oo-ui-isMobile select {
   display: block;
+}
+.oo-ui-dropdownInputWidget.oo-ui-isMobile .oo-ui-dropdownWidget {
+  display: none;
 }
 .oo-ui-dropdownInputWidget select {
   display: none;
@@ -1381,26 +1385,18 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   position: relative;
   width: 100%;
   display: block;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 0;
-  overflow: hidden;
-  font-family: inherit;
-  font-size: inherit;
-  text-align: left;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   cursor: default;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-.oo-ui-dropdownWidget-handle::-moz-focus-inner {
-  border-color: transparent;
-  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .oo-ui-dropdownWidget.oo-ui-widget-enabled .oo-ui-dropdownWidget-handle {
   cursor: pointer;
@@ -1763,14 +1759,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.31.6
+ * OOUI v0.32.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-05-08T10:08:44Z
+ * Date: 2019-05-29T00:38:49Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2308,9 +2304,39 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   text-align: left;
   overflow-x: auto;
   overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: auto;
+}
+.oo-ui-tabSelectWidget-mobile {
+  white-space: nowrap;
+}
+.oo-ui-tabSelectWidget-framed {
   background-color: #eee;
   box-shadow: inset 0 -0.015em 0.1em rgba(0, 0, 0, 0.1);
+}
+.oo-ui-tabSelectWidget-frameless {
+  box-shadow: inset 0 -1px 0 0 #ccc;
+}
+.oo-ui-tabSelectWidget-mobile:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 2em;
+  height: 100%;
+  pointer-events: none;
+}
+.oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-framed:after {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(238, 238, 238, 0)), color-stop(100%, #eee));
+  background-image: -webkit-linear-gradient(left, rgba(238, 238, 238, 0) 0, #eee 100%);
+  background-image: -moz-linear-gradient(left, rgba(238, 238, 238, 0) 0, #eee 100%);
+  background-image: linear-gradient(to right, rgba(238, 238, 238, 0) 0, #eee 100%);
+  border-right: 1px solid #ccc;
+}
+.oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-frameless:after {
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(255, 255, 255, 0)), color-stop(100%, #fff));
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0, #fff 100%);
+  background-image: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0, #fff 100%);
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 0, #fff 100%);
 }
 .oo-ui-tabSelectWidget.oo-ui-widget-enabled:focus {
   outline: 0;
@@ -2326,33 +2352,55 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin: 0.5em 0 0 0.75em;
   border-color: transparent;
   border-style: solid;
-  border-width: 1px 1px 0 1px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
   padding: 0.5em 1em;
 }
 .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected {
   background-color: #fff;
   color: #000;
   border-color: #ddd;
+  cursor: default;
 }
-.oo-ui-tabOptionWidget.oo-ui-widget-enabled:hover {
+.oo-ui-tabSelectWidget-mobile .oo-ui-tabOptionWidget:last-child {
+  margin-right: 2em;
+}
+.oo-ui-tabSelectWidget-framed .oo-ui-tabOptionWidget {
+  border-width: 1px 1px 0 1px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.oo-ui-tabSelectWidget-framed .oo-ui-tabOptionWidget.oo-ui-widget-enabled:hover {
   background-color: rgba(255, 255, 255, 0.2);
   color: #000;
   border-color: #ddd;
 }
-.oo-ui-tabOptionWidget.oo-ui-widget-enabled:active {
+.oo-ui-tabSelectWidget-framed .oo-ui-tabOptionWidget.oo-ui-widget-enabled:active {
   background-color: #fff;
   color: #000;
   border-color: #ddd;
 }
-.oo-ui-tabOptionWidget.oo-ui-widget-enabled.oo-ui-optionWidget-selected:hover {
+.oo-ui-tabSelectWidget-framed .oo-ui-tabOptionWidget.oo-ui-widget-enabled.oo-ui-optionWidget-selected:hover {
   background-color: #fff;
   color: #000;
-  cursor: default;
 }
-.oo-ui-tabSelectWidget.oo-ui-widget-enabled:focus .oo-ui-tabOptionWidget.oo-ui-widget-enabled.oo-ui-optionWidget-selected {
-  box-shadow: 0 0 2px 2px #ace;
+.oo-ui-tabSelectWidget-frameless .oo-ui-tabOptionWidget {
+  border-width: 0;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 0 #087ecc;
+  -webkit-transition: color 100ms, box-shadow 100ms;
+  -moz-transition: color 100ms, box-shadow 100ms;
+  transition: color 100ms, box-shadow 100ms;
+}
+.oo-ui-tabSelectWidget-frameless .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected {
+  color: #087ecc;
+  box-shadow: inset 0 -3px 0 0 #087ecc;
+}
+.oo-ui-tabSelectWidget-frameless .oo-ui-tabOptionWidget.oo-ui-widget-enabled:hover,
+.oo-ui-tabSelectWidget-frameless .oo-ui-tabOptionWidget.oo-ui-widget-enabled:active {
+  color: #087ecc;
+  box-shadow: inset 0 -3px 0 0 #087ecc;
+}
+.oo-ui-tabSelectWidget.oo-ui-widget-enabled:focus .oo-ui-tabOptionWidget.oo-ui-optionWidget-selected {
+  box-shadow: 0 0 2px 2px #ace, inset 0 -3px 0 0 #087ecc;
 }
 
 .oo-ui-tagMultiselectWidget {
@@ -2605,14 +2653,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.31.6
+ * OOUI v0.32.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-05-08T10:08:44Z
+ * Date: 2019-05-29T00:38:49Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -2707,6 +2755,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-bottom-right-radius: 3px;
 }
 .oo-ui-barToolGroup-tools > .oo-ui-tool > .oo-ui-tool-link {
+  color: inherit;
   height: 1.875em;
   padding: 0.3125em;
 }
@@ -2870,26 +2919,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-toolbar-narrow .oo-ui-popupToolGroup.oo-ui-labelElement.oo-ui-indicatorElement .oo-ui-popupToolGroup-handle .oo-ui-labelElement-label {
   margin-right: 1.75em;
-}
-.oo-ui-buttonGroupWidget .oo-ui-popupToolGroup {
-  margin-left: 0;
-}
-.oo-ui-buttonGroupWidget .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle {
-  height: 2.4em;
-  border-radius: 0;
-  margin-left: -2px;
-}
-.oo-ui-buttonGroupWidget .oo-ui-popupToolGroup:first-child > .oo-ui-popupToolGroup-handle {
-  border-bottom-left-radius: 3px;
-  border-top-left-radius: 3px;
-  margin-left: 0;
-}
-.oo-ui-buttonGroupWidget .oo-ui-popupToolGroup:last-child {
-  margin-right: 0.5em;
-}
-.oo-ui-buttonGroupWidget .oo-ui-popupToolGroup:last-child > .oo-ui-popupToolGroup-handle {
-  border-bottom-right-radius: 3px;
-  border-top-right-radius: 3px;
 }
 .oo-ui-popupToolGroup-handle {
   height: 2.5em;
@@ -3166,61 +3195,16 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background: none;
   box-shadow: none;
 }
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-framed,
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-framed:last-child {
-  margin-top: 0.4em;
-  margin-bottom: 0.4em;
-  margin-right: 0.5em;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-frameless.oo-ui-labelElement,
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-frameless:last-child.oo-ui-labelElement {
-  margin: 0;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button,
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-frameless:last-child.oo-ui-labelElement > .oo-ui-buttonElement-button {
-  margin: 0;
-  padding: 0 0.3125em;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label,
-.oo-ui-toolbar-actions > .oo-ui-buttonElement-frameless:last-child.oo-ui-labelElement > .oo-ui-buttonElement-button > .oo-ui-labelElement-label {
-  margin: 0 1em;
-  line-height: 3.40625em;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonGroupWidget > .oo-ui-popupToolGroup,
-.oo-ui-toolbar-actions > .oo-ui-buttonGroupWidget > .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle {
-  height: 2.34375em;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonGroupWidget > .oo-ui-popupToolGroup.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive {
-  border: 0;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonGroupWidget > .oo-ui-popupToolGroup.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-popupToolGroup-handle {
-  background-color: #cde7f4;
-  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0, #eaf4fa), color-stop(100%, #b0d9ee));
-  background-image: -webkit-linear-gradient(top, #eaf4fa 0, #b0d9ee 100%);
-  background-image: -moz-linear-gradient(top, #eaf4fa 0, #b0d9ee 100%);
-  background-image: linear-gradient(to bottom, #eaf4fa 0, #b0d9ee 100%);
-  border: 1px solid #a6cee1;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonGroupWidget > .oo-ui-popupToolGroup.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-popupToolGroup-handle:hover {
-  border-color: #9dc2d4;
-}
-.oo-ui-toolbar-actions > .oo-ui-buttonGroupWidget > .oo-ui-popupToolGroup.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-popupToolGroup-active > .oo-ui-popupToolGroup-handle {
-  background-color: #cde7f4;
-  background-image: -webkit-gradient(linear, right top, right bottom, color-stop(0, #b0d9ee), color-stop(100%, #eaf4fa));
-  background-image: -webkit-linear-gradient(top, #b0d9ee 0, #eaf4fa 100%);
-  background-image: -moz-linear-gradient(top, #b0d9ee 0, #eaf4fa 100%);
-  background-image: linear-gradient(to bottom, #b0d9ee 0, #eaf4fa 100%);
-}
 
 /*!
- * OOUI v0.31.6
+ * OOUI v0.32.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-05-08T10:08:44Z
+ * Date: 2019-05-29T00:38:49Z
  */
 
 .oo-ui-window {
@@ -3633,14 +3617,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.31.6
+ * OOUI v0.32.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-05-08T10:08:44Z
+ * Date: 2019-05-29T00:38:49Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -3706,6 +3690,24 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-icon-articleCheck {
   background-image: url('themes/wikimediaui/images/icons/articleCheck.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleCheck.svg');
+}
+.oo-ui-icon-articleDisambiguation {
+  background-image: url('themes/wikimediaui/images/icons/articleDisambiguation-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleDisambiguation-ltr.svg');
+}
+.oo-ui-icon-articleNotFound {
+  background-image: url('themes/wikimediaui/images/icons/articleNotFound-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleNotFound-ltr.svg');
+}
+/* @noflip */
+.oo-ui-icon-articleNotFound:lang(he) {
+  background-image: url('themes/wikimediaui/images/icons/articleNotFound-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleNotFound-ltr.svg');
+}
+/* @noflip */
+.oo-ui-icon-articleNotFound:lang(yi) {
+  background-image: url('themes/wikimediaui/images/icons/articleNotFound-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleNotFound-ltr.svg');
 }
 .oo-ui-icon-articleSearch {
   background-image: url('themes/wikimediaui/images/icons/articleSearch.png');
@@ -4451,6 +4453,22 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: url('themes/wikimediaui/images/icons/hieroglyph.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/hieroglyph.svg');
 }
+.oo-ui-icon-imageLayoutBasic {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutBasic.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutBasic.svg');
+}
+.oo-ui-icon-imageLayoutFrame {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrame.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrame.svg');
+}
+.oo-ui-icon-imageLayoutFrameless {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutFrameless.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutFrameless.svg');
+}
+.oo-ui-icon-imageLayoutThumbnail {
+  background-image: url('themes/wikimediaui/images/icons/imageLayoutThumbnail.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutThumbnail.svg');
+}
 .oo-ui-icon-language {
   background-image: url('themes/wikimediaui/images/icons/language.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/language.svg');
@@ -4599,10 +4617,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-icon-references {
   background-image: url('themes/wikimediaui/images/icons/references-ltr.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/references-ltr.svg');
-}
-.oo-ui-icon-web {
-  background-image: url('themes/wikimediaui/images/icons/web.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/web.svg');
 }
 
 .oo-ui-icon-camera {
