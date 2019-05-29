@@ -200,51 +200,6 @@ ve.init.Platform.prototype.createListStorage = function ( safeStorage ) {
 	return new ve.init.ListStorage( safeStorage );
 };
 
-// Deprecated
-ve.init.Platform.prototype.getSession = function ( key ) {
-	return this.sessionStorage.get( key );
-};
-
-// Deprecated
-ve.init.Platform.prototype.setSession = function ( key, value ) {
-	return this.sessionStorage.set( key, value );
-};
-
-// Deprecated
-ve.init.Platform.prototype.removeSession = function ( key ) {
-	return this.sessionStorage.remove( key );
-};
-
-// Deprecated
-ve.init.Platform.prototype.getSessionObject = function ( key ) {
-	return this.sessionStorage.getObject( key );
-};
-
-// Deprecated
-ve.init.Platform.prototype.setSessionObject = function ( key, value ) {
-	return this.sessionStorage.setObject( key, value );
-};
-
-// Deprecated
-ve.init.Platform.prototype.appendToSessionList = function ( key, value ) {
-	return this.sessionStorage.appendToList( key, value );
-};
-
-// Deprecated
-ve.init.Platform.prototype.getSessionListLength = function ( key ) {
-	return this.sessionStorage.getListLength( key );
-};
-
-// Deprecated
-ve.init.Platform.prototype.getSessionList = function ( key ) {
-	return this.sessionStorage.getList( key );
-};
-
-// Deprecated
-ve.init.Platform.prototype.removeSessionList = function ( key ) {
-	return this.sessionStorage.removeList( key );
-};
-
 ve.init.Platform.prototype.createLocalStorage = function () {
 	var localStorage;
 
