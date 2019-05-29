@@ -25,8 +25,9 @@
  * @param {string} [lang] Language code
  * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  * @param {ve.dm.Document} [originalDocument] Original document form which this was cloned.
+ * @param {boolean} [sourceMode] Document is in source mode
  */
-ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir, originalDocument ) {
+ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir, originalDocument, sourceMode ) {
 	var doc, root;
 
 	// Parent constructor
@@ -38,6 +39,8 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 
 	this.lang = lang || 'en';
 	this.dir = dir || 'ltr';
+
+	this.sourceMode = !!sourceMode;
 
 	this.documentNode.setRoot( root );
 	// ve.Document already called setDocument(), but it could be that doc !== this

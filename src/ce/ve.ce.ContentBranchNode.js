@@ -221,6 +221,17 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		buffer = '',
 		node = this;
 
+	// Source mode optimization
+	if ( this.getModel().getDocument().sourceMode ) {
+		wrapper.appendChild(
+			document.createTextNode(
+				this.getModel().getDocument().getDataFromNode( this.getModel() ).join( '' )
+			)
+		);
+		wrapper.unicornInfo = unicornInfo;
+		return wrapper;
+	}
+
 	function openAnnotation( annotation ) {
 		var ann;
 		annotationsChanged = true;

@@ -785,40 +785,43 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		}
 		selectedNode = this.getSelectedNodeFromSelection( selection );
 
-		// Reset insertionAnnotations based on the neighbouring document data
-		insertionAnnotations = linearData.getInsertionAnnotationsFromRange( range );
-		// If there's *any* difference in insertion annotations (even order), then:
-		// * emit insertionAnnotationsChange
-		// * emit contextChange (TODO: is this desirable?)
-		if ( !insertionAnnotations.equalsInOrder( this.insertionAnnotations ) ) {
-			this.setInsertionAnnotations( insertionAnnotations );
-		}
+		// Source mode optimization
+		if ( !this.sourceMode ) {
+			// Reset insertionAnnotations based on the neighbouring document data
+			insertionAnnotations = linearData.getInsertionAnnotationsFromRange( range );
+			// If there's *any* difference in insertion annotations (even order), then:
+			// * emit insertionAnnotationsChange
+			// * emit contextChange (TODO: is this desirable?)
+			if ( !insertionAnnotations.equalsInOrder( this.insertionAnnotations ) ) {
+				this.setInsertionAnnotations( insertionAnnotations );
+			}
 
-		// Reset selectedAnnotations
-		if ( range.isCollapsed() ) {
-			selectedAnnotations = linearData.getAnnotationsFromOffset( range.start );
-		} else {
-			selectedAnnotations = linearData.getAnnotationsFromRange( range, true );
-		}
-		if ( !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
-			this.selectedAnnotations = selectedAnnotations;
-			contextChange = true;
-		}
-
-		// Did the annotations at the focus point of a non-collapsed selection
-		// change? (i.e. did the selection move in/out of an annotation as it
-		// expanded?)
-		if ( selectionChange && !range.isCollapsed() && oldSelection instanceof ve.dm.LinearSelection ) {
-			rangeFocus = new ve.Range( range.to );
-			oldRangeFocus = new ve.Range( oldSelection.getRange().to );
-			focusRangeMovingBack = rangeFocus.to < oldRangeFocus.to;
-			// If we're moving back in the document, getInsertionAnnotationsFromRange
-			// needs to be told to fetch the annotations after the cursor, otherwise
-			// it'll trigger one position too soon.
-			if (
-				!linearData.getInsertionAnnotationsFromRange( rangeFocus, focusRangeMovingBack ).compareTo( linearData.getInsertionAnnotationsFromRange( oldRangeFocus, focusRangeMovingBack ) )
-			) {
+			// Reset selectedAnnotations
+			if ( range.isCollapsed() ) {
+				selectedAnnotations = linearData.getAnnotationsFromOffset( range.start );
+			} else {
+				selectedAnnotations = linearData.getAnnotationsFromRange( range, true );
+			}
+			if ( !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
+				this.selectedAnnotations = selectedAnnotations;
 				contextChange = true;
+			}
+
+			// Did the annotations at the focus point of a non-collapsed selection
+			// change? (i.e. did the selection move in/out of an annotation as it
+			// expanded?)
+			if ( selectionChange && !range.isCollapsed() && oldSelection instanceof ve.dm.LinearSelection ) {
+				rangeFocus = new ve.Range( range.to );
+				oldRangeFocus = new ve.Range( oldSelection.getRange().to );
+				focusRangeMovingBack = rangeFocus.to < oldRangeFocus.to;
+				// If we're moving back in the document, getInsertionAnnotationsFromRange
+				// needs to be told to fetch the annotations after the cursor, otherwise
+				// it'll trigger one position too soon.
+				if (
+					!linearData.getInsertionAnnotationsFromRange( rangeFocus, focusRangeMovingBack ).compareTo( linearData.getInsertionAnnotationsFromRange( oldRangeFocus, focusRangeMovingBack ) )
+				) {
+					contextChange = true;
+				}
 			}
 		}
 	} else if ( selection instanceof ve.dm.TableSelection ) {

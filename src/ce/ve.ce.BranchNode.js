@@ -268,8 +268,14 @@ ve.ce.BranchNode.prototype.removeSlugs = function () {
  * @param {boolean} isBlock Set up block slugs, otherwise setup inline slugs
  */
 ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
-	var i, slugTemplate, slugNode, child, slugButton,
-		doc = this.getElementDocument();
+	var i, slugTemplate, slugNode, child, slugButton, doc;
+
+	// Source mode optimization
+	if ( this.getModel().getDocument() && this.getModel().getDocument().sourceMode ) {
+		return;
+	}
+
+	doc = this.getElementDocument();
 
 	this.removeSlugs();
 

@@ -26,7 +26,7 @@ ve.dm.SourceConverter.prototype.getModelFromSourceText = function ( sourceText, 
 	// TODO: Internal lists are completely unused in source mode
 	data.push( { type: 'internalList' }, { type: '/internalList' } );
 
-	return new ve.dm.Document( data, undefined, undefined, undefined, undefined, options.lang, options.dir );
+	return new ve.dm.Document( data, undefined, undefined, undefined, undefined, options.lang, options.dir, undefined, true );
 };
 
 /**
