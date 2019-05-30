@@ -47,11 +47,14 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 
 	// SocketIO events
 	path = ( config.server || '' );
-	options = { query: {
-		docName: this.documentId,
-		authorId: this.getAuthorId() || '',
-		token: this.token || ''
-	} };
+	options = {
+		query: {
+			docName: this.documentId,
+			authorId: this.getAuthorId() || '',
+			token: this.token || ''
+		},
+		transports: [ 'websocket' ]
+	};
 	this.socket = io( path, options );
 	this.socket.on( 'registered', this.onRegistered.bind( this ) );
 	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
