@@ -1066,7 +1066,8 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
  * @return {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
  */
 ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
-	var dataString = new ve.dm.DataString( this.getData() );
+	var range,
+		dataString = new ve.dm.DataString( this.getData() );
 
 	offset = this.getNearestContentOffset( offset );
 
@@ -1081,7 +1082,7 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
 			( dataString.read( offset - 1 ) || ' ' )
 		) ) {
 			// Cursor is immediately after a word codepoint: expand backwards
-			return new ve.Range(
+			range = new ve.Range(
 				unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
 				offset
 			);
@@ -1090,7 +1091,7 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
 			( dataString.read( offset + 1 ) || ' ' )
 		) ) {
 			// Cursor is immediately before a word codepoint: expand forwards
-			return new ve.Range(
+			range = new ve.Range(
 				offset,
 				unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
 			);
@@ -1100,11 +1101,16 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
 		}
 	} else {
 		// Cursor is inside a word: expand both backwards and forwards
-		return new ve.Range(
+		range = new ve.Range(
 			unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
 			unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
 		);
 	}
+	// Range expanded to all whitespace: collapse
+	if ( this.getText( false, range ).trim().length === 0 ) {
+		return new ve.Range( offset );
+	}
+	return range;
 };
 
 /**
