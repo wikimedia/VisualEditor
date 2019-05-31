@@ -50,6 +50,13 @@ ve.dm.CheckListNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ list ];
 };
 
+/* Methods */
+
+ve.dm.CheckListNode.prototype.canHaveSlugAfter = function () {
+	// A paragraph can be added after a list by pressing enter in an empty list item
+	return false;
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.CheckListNode );

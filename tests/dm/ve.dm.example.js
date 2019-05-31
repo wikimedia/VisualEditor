@@ -1686,8 +1686,7 @@ ve.dm.example.domToDataCases = {
 				'<li class="ve-ce-branchNode ve-ce-checkListItemNode">' +
 					'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">bar</p>' +
 				'</li>' +
-			'</ul>' +
-			'<div class="ve-ce-branchNode-slug ve-ce-branchNode-blockSlug"></div>'
+			'</ul>'
 	},
 	'strip leading whitespace in non-whitespace preserving nodes': {
 		// T53462/T142132
