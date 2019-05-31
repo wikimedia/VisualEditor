@@ -6,7 +6,6 @@
 
 /* Increase specificity for MW */
 ul.ve-ce-checkListNode {
-	margin-left: 2em;
 	padding: 0;
 }
 
@@ -22,10 +21,32 @@ ul.ve-ce-checkListNode {
 	position: absolute;
 	width: 1.5em;
 	height: 1.5em;
-	left: -2em;
 	background: url( ../../../ui/styles/images/unchecked.svg ) center center no-repeat;
 	/* TODO: Fix paths in standalone builds */
 	background-image: url( data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBpZD0ic3ZnOCI+CiAgICA8cmVjdCB5PSIuNSIgeD0iLjUiIGhlaWdodD0iMTUiIHdpZHRoPSIxNSIgaWQ9InJlY3Q4MjEiIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlOiMwMDA7c3Ryb2tlLXdpZHRoOjE7Ii8+Cjwvc3ZnPgo= );
+}
+
+/* Flip based on content language, not interface */
+/* This could be done with margin-block-start but it isn't supported in IE/Edge */
+
+/* @noflip */
+.ve-ce-documentNode[ dir='ltr' ] ul.ve-ce-checkListNode {
+	margin-left: 2em;
+}
+
+/* @noflip */
+.ve-ce-documentNode[ dir='rtl' ] ul.ve-ce-checkListNode {
+	margin-right: 2em;
+}
+
+/* @noflip */
+.ve-ce-documentNode[ dir='ltr' ] .ve-ce-checkListItemNode:before {
+	left: -2em;
+}
+
+/* @noflip */
+.ve-ce-documentNode[ dir='rtl' ] .ve-ce-checkListItemNode:before {
+	right: -2em;
 }
 
 .ve-ce-checkListItemNode-checked:before {
