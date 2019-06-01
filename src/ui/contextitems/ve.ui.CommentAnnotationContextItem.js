@@ -8,7 +8,7 @@
  * Context item for a comment.
  *
  * @class
- * @extends ve.ui.LinearContextItem
+ * @extends ve.ui.AnnotationContextItem
  *
  * @param {ve.ui.Context} context Context item is in
  * @param {ve.dm.Model} model Model item is related to
@@ -24,7 +24,7 @@ ve.ui.CommentAnnotationContextItem = function VeUiCommentAnnotationContextItem( 
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.CommentAnnotationContextItem, ve.ui.LinearContextItem );
+OO.inheritClass( ve.ui.CommentAnnotationContextItem, ve.ui.AnnotationContextItem );
 
 /* Static Properties */
 
@@ -39,6 +39,10 @@ ve.ui.CommentAnnotationContextItem.static.modelClasses = [ ve.dm.CommentAnnotati
 ve.ui.CommentAnnotationContextItem.static.embeddable = false;
 
 ve.ui.CommentAnnotationContextItem.static.commandName = 'commentAnnotation';
+
+ve.ui.CommentAnnotationContextItem.static.clearable = true;
+
+ve.ui.CommentAnnotationContextItem.static.clearIcon = 'trash';
 
 /* Methods */
 
