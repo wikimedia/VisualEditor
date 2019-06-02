@@ -30,6 +30,8 @@ ve.ce.CheckListNode.static.name = 'checkList';
 
 ve.ce.CheckListNode.static.tagName = 'ul';
 
+ve.ce.CheckListNode.static.removeEmptyLastChildOnEnter = true;
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.CheckListNode );
