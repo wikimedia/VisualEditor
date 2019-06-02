@@ -35,7 +35,6 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.authors = {};
 	this.authorSelections = {};
 	this.documentId = documentId;
-	this.defaultName = config.defaultName;
 
 	// Whether the document has been initialized
 	this.initialized = false;
@@ -65,6 +64,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	authorData = ve.init.platform.sessionStorage.getObject( 've-collab-author' );
 	if ( authorData ) {
 		this.changeAuthor( authorData );
+	} else if ( config.defaultName ) {
+		this.changeAuthor( { name: config.defaultName } );
 	}
 
 	// Events
@@ -284,10 +285,13 @@ ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelection
 
 /**
  * Get author data object
- * @param {number} authorId Author ID
+ * @param {number} [authorId] Author ID, defaults to current author
  * @return {Object} Author object, containing 'name' and 'color'
  */
 ve.dm.SurfaceSynchronizer.prototype.getAuthorData = function ( authorId ) {
+	if ( authorId === undefined ) {
+		authorId = this.getAuthorId();
+	}
 	return this.authors[ authorId ];
 };
 
