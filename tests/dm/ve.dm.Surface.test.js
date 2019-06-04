@@ -166,6 +166,7 @@ QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
 
 	assert.deepEqual(
 		surface.undoStack, [ {
+			start: 0,
 			transactions: [ tx ],
 			selection: new ve.dm.LinearSelection( tx.translateRange( selection.getRange() ) ),
 			selectionBefore: selection
@@ -185,6 +186,78 @@ QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
 	surface.redo();
 	assert.equalHash( surface.getSelection(), fragment.getSelection(), 'Range changed after redo' );
 	assert.strictEqual( fragment.getText(), 'xhi', 'Text changed after redo' );
+
+} );
+
+QUnit.test( 'multi-user undo', function ( assert ) {
+	var i, tx,
+		range, surface, doc,
+		surfaces = [];
+
+	// Create two surfaces owned by authors 1 & 2, consisting of interleaved
+	// transactions by both users, each adding to their own paragraph
+	for ( i = 1; i <= 2; i++ ) {
+		range = new ve.Range( 1 );
+		surface = new ve.dm.SurfaceStub( [
+			{ type: 'paragraph' }, { type: '/paragraph' },
+			{ type: 'paragraph' }, { type: '/paragraph' }
+		], range );
+		surface.setAuthorId( i );
+		surface.setMultiUser( true );
+
+		doc = surface.getDocument();
+
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, 'foo'.split( '' ) );
+		tx.authorId = 1;
+		surface.change( tx );
+		surface.breakpoint();
+
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 6, '123'.split( '' ) );
+		tx.authorId = 2;
+		surface.change( tx );
+		surface.breakpoint();
+
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 4, 'bar'.split( '' ) );
+		tx.authorId = 1;
+		surface.change( tx );
+		surface.breakpoint();
+
+		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 12, '456'.split( '' ) );
+		tx.authorId = 2;
+		surface.change( tx );
+		surface.breakpoint();
+
+		surfaces.push( surface );
+	}
+
+	// User on surface 1 presses undo twice, reverting only their changes
+	surfaces[ 0 ].undo();
+	surfaces[ 0 ].undo();
+	assert.equalLinearData(
+		surfaces[ 0 ].getDocument().getData(),
+		[
+			{ type: 'paragraph' }, { type: '/paragraph' },
+			{ type: 'paragraph' }, '1', '2', '3', '4', '5', '6', { type: '/paragraph' }
+		]
+	);
+	assert.strictEqual( surfaces[ 0 ].canUndo(), false, 'No more steps for user on surface 1 to undo' );
+
+	// User on surface 2 presses undo twice, reverting only their changes
+	surfaces[ 1 ].undo();
+	surfaces[ 1 ].undo();
+	assert.equalLinearData(
+		surfaces[ 1 ].getDocument().getData(),
+		[
+			{ type: 'paragraph' }, 'f', 'o', 'o', 'b', 'a', 'r', { type: '/paragraph' },
+			{ type: 'paragraph' }, { type: '/paragraph' }
+		]
+	);
+	// TODO: We should disable undo as soon as the user runs out of transactions of their own
+	assert.strictEqual( surfaces[ 1 ].canUndo(), true, 'User on surface 2 thinks they can still undo' );
+	surfaces[ 1 ].undo();
+	assert.strictEqual( surfaces[ 1 ].canUndo(), false, 'User on surface 2 realises they can\'t undo' );
+	// Count complete history: 4 transactions + 2 undos
+	assert.strictEqual( surfaces[ 1 ].getDocument().getCompleteHistoryLength(), 6, 'Final undo was a no-op' );
 
 } );
 

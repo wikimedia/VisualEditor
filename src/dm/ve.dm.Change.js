@@ -807,6 +807,8 @@ ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 	this.getStores().forEach( function ( store ) {
 		surface.documentModel.store.merge( store );
 	} );
+	// Isolate other users' changes from ours with a breakpoint
+	surface.breakpoint();
 	this.transactions.forEach( function ( tx ) {
 		var range, offset;
 		surface.change( tx );
@@ -825,6 +827,7 @@ ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 			}
 		}
 	} );
+	surface.breakpoint();
 };
 
 /**
