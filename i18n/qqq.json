@@ -172,6 +172,8 @@
 	"visualeditor-linkcontext-label-label": "Label for the \"label\" field of a link\n{{Identical|Label}}",
 	"visualeditor-linkcontext-remove": "Title for the remove link button on the link context popup",
 	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Link}}",
+	"visualeditor-linkinspector-title-add": "Title of the link inspector dialog when adding a link.",
+	"visualeditor-linkinspector-title-edit": "Title of the link inspector dialog when editing a link.",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",
 	"visualeditor-listbutton-check-tooltip": "Tooltip text for the check list button. A \"check list\" is todo-style list with checkboxes.",
 	"visualeditor-listbutton-number-tooltip": "Tooltip text for the numbered list button",
