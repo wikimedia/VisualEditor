@@ -161,6 +161,8 @@
 	"visualeditor-linkcontext-label-label": "Label",
 	"visualeditor-linkcontext-remove": "Remove link",
 	"visualeditor-linkinspector-title": "Link",
+	"visualeditor-linkinspector-title-add": "Add a link",
+	"visualeditor-linkinspector-title-edit": "Edit link",
 	"visualeditor-listbutton-bullet-tooltip": "Bullet list",
 	"visualeditor-listbutton-check-tooltip": "Check list",
 	"visualeditor-listbutton-number-tooltip": "Numbered list",
