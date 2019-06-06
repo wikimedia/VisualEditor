@@ -148,6 +148,8 @@
 	"visualeditor-linkcontext-label-label": "Натпис",
 	"visualeditor-linkcontext-remove": "Отстрани врска",
 	"visualeditor-linkinspector-title": "Врска",
+	"visualeditor-linkinspector-title-add": "Додај врска",
+	"visualeditor-linkinspector-title-edit": "Уреди врска",
 	"visualeditor-listbutton-bullet-tooltip": "Список со потточки",
 	"visualeditor-listbutton-check-tooltip": "Контролен список",
 	"visualeditor-listbutton-number-tooltip": "Список со редни броеви",

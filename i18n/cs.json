@@ -164,6 +164,8 @@
 	"visualeditor-linkcontext-label-label": "Text",
 	"visualeditor-linkcontext-remove": "Odstranit odkaz",
 	"visualeditor-linkinspector-title": "Odkaz",
+	"visualeditor-linkinspector-title-add": "Přidat odkaz",
+	"visualeditor-linkinspector-title-edit": "Upravit odkaz",
 	"visualeditor-listbutton-bullet-tooltip": "Seznam s odrážkami",
 	"visualeditor-listbutton-check-tooltip": "Zkontrolovat seznam",
 	"visualeditor-listbutton-number-tooltip": "Číslovaný seznam",

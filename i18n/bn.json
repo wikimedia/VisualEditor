@@ -149,6 +149,8 @@
 	"visualeditor-linkcontext-label-label": "লেবেল",
 	"visualeditor-linkcontext-remove": "সংযোগ সরান",
 	"visualeditor-linkinspector-title": "লিংক",
+	"visualeditor-linkinspector-title-add": "সংযোগ যোগ করুন",
+	"visualeditor-linkinspector-title-edit": "সংযোগ পরিবর্তন করুন",
 	"visualeditor-listbutton-bullet-tooltip": "বুলেটকৃত তালিকা",
 	"visualeditor-listbutton-check-tooltip": "তালিকায় টিক দিন",
 	"visualeditor-listbutton-number-tooltip": "সংখ্যায়িত তালিকা",

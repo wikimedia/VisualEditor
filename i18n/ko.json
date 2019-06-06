@@ -167,6 +167,8 @@
 	"visualeditor-linkcontext-label-label": "레이블",
 	"visualeditor-linkcontext-remove": "링크 제거",
 	"visualeditor-linkinspector-title": "링크",
+	"visualeditor-linkinspector-title-add": "링크 추가",
+	"visualeditor-linkinspector-title-edit": "링크 편집",
 	"visualeditor-listbutton-bullet-tooltip": "점 목록",
 	"visualeditor-listbutton-check-tooltip": "체크리스트",
 	"visualeditor-listbutton-number-tooltip": "숫자 목록",

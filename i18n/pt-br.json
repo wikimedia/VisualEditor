@@ -168,6 +168,8 @@
 	"visualeditor-linkcontext-label-label": "Texto da hiperligação",
 	"visualeditor-linkcontext-remove": "Remover link",
 	"visualeditor-linkinspector-title": "Link",
+	"visualeditor-linkinspector-title-add": "Adicionar um link",
+	"visualeditor-linkinspector-title-edit": "Editar link",
 	"visualeditor-listbutton-bullet-tooltip": "Lista com marcadores",
 	"visualeditor-listbutton-check-tooltip": "Lista de Verificação",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",

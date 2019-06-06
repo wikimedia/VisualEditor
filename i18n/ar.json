@@ -170,6 +170,8 @@
 	"visualeditor-linkcontext-label-label": "التسمية",
 	"visualeditor-linkcontext-remove": "أزل الوصلة",
 	"visualeditor-linkinspector-title": "وصلة",
+	"visualeditor-linkinspector-title-add": "إضافة رابط",
+	"visualeditor-linkinspector-title-edit": "عدل الوصلة",
 	"visualeditor-listbutton-bullet-tooltip": "قائمة منقطة",
 	"visualeditor-listbutton-check-tooltip": "قائمة التدقيق",
 	"visualeditor-listbutton-number-tooltip": "قائمة مرقمة",

@@ -136,6 +136,8 @@
 	"visualeditor-linkcontext-label-fallback": "Nav pirmskata",
 	"visualeditor-linkcontext-remove": "Noņemt saiti",
 	"visualeditor-linkinspector-title": "Saite",
+	"visualeditor-linkinspector-title-add": "Pievienot saiti",
+	"visualeditor-linkinspector-title-edit": "Labot saiti",
 	"visualeditor-listbutton-bullet-tooltip": "Nenumurēts saraksts",
 	"visualeditor-listbutton-number-tooltip": "Numurēts saraksts",
 	"visualeditor-mediasizewidget-label-defaulterror": "Izmēra vērtības ir nederīgas.",

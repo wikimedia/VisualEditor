@@ -170,6 +170,8 @@
 	"visualeditor-linkcontext-label-label": "Label",
 	"visualeditor-linkcontext-remove": "Koppeling verwijderen",
 	"visualeditor-linkinspector-title": "Koppeling",
+	"visualeditor-linkinspector-title-add": "Koppeling toevoegen",
+	"visualeditor-linkinspector-title-edit": "Koppeling bewerken",
 	"visualeditor-listbutton-bullet-tooltip": "Ongenummerde lijst",
 	"visualeditor-listbutton-check-tooltip": "Checklist",
 	"visualeditor-listbutton-number-tooltip": "Genummerde lijst",

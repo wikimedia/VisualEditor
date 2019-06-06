@@ -154,6 +154,8 @@
 	"visualeditor-linkcontext-label-fallback": "Nessuna anteprima",
 	"visualeditor-linkcontext-label-label": "Etichetta",
 	"visualeditor-linkinspector-title": "Collegamento",
+	"visualeditor-linkinspector-title-add": "Aggiungi un collegamento",
+	"visualeditor-linkinspector-title-edit": "Modifica collegamento",
 	"visualeditor-listbutton-bullet-tooltip": "Elenco puntato",
 	"visualeditor-listbutton-number-tooltip": "Elenco numerato",
 	"visualeditor-mediasizewidget-label-defaulterror": "I valori delle dimensioni non sono validi.",
