@@ -4,7 +4,8 @@
 			"Supasate",
 			"Taweetham",
 			"Horus",
-			"Ans"
+			"Ans",
+			"Karit"
 		]
 	},
 	"visualeditor": "วิชวลเอดิเตอร์",
@@ -121,6 +122,8 @@
 	"visualeditor-linkcontext-label-label": "ป้าย",
 	"visualeditor-linkcontext-remove": "ลบลิงก์",
 	"visualeditor-linkinspector-title": "เชื่อมโยง",
+	"visualeditor-linkinspector-title-add": "เพิ่มลิงก์",
+	"visualeditor-linkinspector-title-edit": "ปรับปรุงลิงก์",
 	"visualeditor-listbutton-bullet-tooltip": "รายการสัญลักษณ์",
 	"visualeditor-listbutton-number-tooltip": "รายการลำดับเลข",
 	"visualeditor-mediasizewidget-label-defaulterror": "ค่าขนาดไม่สมเหตุสมผล",

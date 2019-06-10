@@ -163,6 +163,8 @@
 	"visualeditor-linkcontext-label-label": "Etikett",
 	"visualeditor-linkcontext-remove": "Ta bort länk",
 	"visualeditor-linkinspector-title": "Länk",
+	"visualeditor-linkinspector-title-add": "Lägg till en länk",
+	"visualeditor-linkinspector-title-edit": "Redigera länk",
 	"visualeditor-listbutton-bullet-tooltip": "Punktlista",
 	"visualeditor-listbutton-check-tooltip": "Checklista",
 	"visualeditor-listbutton-number-tooltip": "Numrerad lista",

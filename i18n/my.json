@@ -90,6 +90,8 @@
 	"visualeditor-languageinspector-widget-label-language": "ဘာသာစကား",
 	"visualeditor-linkcontext-remove": "လင့်ခ် ဖယ်ရှားရန်",
 	"visualeditor-linkinspector-title": "လင့်",
+	"visualeditor-linkinspector-title-add": "လင့်ခ်တစ်ခု ပေါင်းထည့်ရန်",
+	"visualeditor-linkinspector-title-edit": "လင့်ခ်ကို တည်းဖြတ်ရန်",
 	"visualeditor-mediasizewidget-sizeoptions-default": "နဂိုအတိုင်း",
 	"visualeditor-rebase-client-author-name": "အမည်",
 	"visualeditor-rebase-client-connecting": "ချိတ်ဆက်နေသည်...",
