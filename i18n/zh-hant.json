@@ -167,6 +167,8 @@
 	"visualeditor-linkcontext-label-label": "標籤",
 	"visualeditor-linkcontext-remove": "移除連結",
 	"visualeditor-linkinspector-title": "連結",
+	"visualeditor-linkinspector-title-add": "新增一個連結",
+	"visualeditor-linkinspector-title-edit": "編輯連結",
 	"visualeditor-listbutton-bullet-tooltip": "符號清單",
 	"visualeditor-listbutton-check-tooltip": "核對清單",
 	"visualeditor-listbutton-number-tooltip": "編號清單",

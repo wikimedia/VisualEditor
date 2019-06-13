@@ -21,7 +21,8 @@
 			"فلورانس",
 			"Hosseinblue",
 			"Alifakoor",
-			"Alireza Ivaz"
+			"Alireza Ivaz",
+			"FarsiNevis"
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
@@ -84,7 +85,7 @@
 	"visualeditor-debugbar-testsquasher": "آزمایش اسکواشر",
 	"visualeditor-debugbar-startfilibuster": "اشکال‌یابی",
 	"visualeditor-debugbar-stopfilibuster": "توقف اشکال‌یابی",
-	"visualeditor-debugbar-updatemodel": "به‌روزرسانی تغییرات",
+	"visualeditor-debugbar-updatemodel": "روزامدسازی تغییرات",
 	"visualeditor-dialog-action-apply": "اعمال تغییرات",
 	"visualeditor-dialog-action-cancel": "لغو",
 	"visualeditor-dialog-action-done": "انجام شد",
