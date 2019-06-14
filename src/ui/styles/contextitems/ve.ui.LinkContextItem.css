@@ -27,6 +27,7 @@
 
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-preview {
 	width: 99%;
+	position: relative;
 }
 
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-label .oo-ui-iconWidget {
@@ -38,12 +39,16 @@
 }
 
 .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-preview .oo-ui-labelElement-label {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	color: #777;
 	display: block;
-	max-width: 16em;
 	padding-left: 0.6em;
 }
 
