@@ -8,19 +8,9 @@
 	position: absolute;
 }
 
-.ve-ui-desktopContext .ve-ui-linearContextItem-info {
-	display: none;
-}
-
 .ve-ui-desktopContext-menu {
 	position: absolute;
 	width: 400px;
-}
-
-.ve-ui-linearContextItem-title > .oo-ui-labelWidget {
-	word-wrap: break-word;
-	white-space: pre-line;
-	vertical-align: top;
 }
 
 .ve-ui-desktopContext-menu .oo-ui-toolbar-bar {

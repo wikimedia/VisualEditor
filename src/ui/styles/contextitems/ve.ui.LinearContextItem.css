@@ -18,11 +18,16 @@
 	margin-left: 0.3em;
 }
 
-/* Only used in mobile contexts (hidden in ve.ui.DesktopContext) */
+/* Only used in mobile contexts */
 .ve-ui-linearContextItem-info {
 	display: table-cell;
 	position: relative;
 	width: 99%;
+}
+
+.ve-ui-desktopContext .ve-ui-linearContextItem-info,
+.ve-ui-mobileContext-new .ve-ui-linearContextItem-info {
+	display: none;
 }
 
 .ve-ui-linearContextItem-description {
@@ -45,12 +50,27 @@
 	padding: 0.5em;
 }
 
-/* Only used in desktop contexts (hidden in ve.ui.MobileContext) */
+/* Only used in desktop contexts */
 .ve-ui-linearContextItem-body {
 	max-height: 15em;
 	overflow: auto;
 }
 
+.ve-ui-mobileContext .ve-ui-linearContextItem-body {
+	display: none;
+}
+
 .ve-ui-linearContextItem-body:not( :empty ) {
 	padding: 0 1em 1em 1em;
+}
+
+.ve-ui-desktopContext .ve-ui-linearContextItem-title > .oo-ui-labelWidget,
+.ve-ui-mobileContext-new .ve-ui-linearContextItem-title > .oo-ui-labelWidget {
+	word-wrap: break-word;
+	white-space: pre-line;
+	vertical-align: top;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-title > .oo-ui-labelWidget {
+	display: inline;
 }
