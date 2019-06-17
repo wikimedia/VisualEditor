@@ -81,6 +81,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.context = this.createContext( { $popupContainer: config.$overlayContainer } );
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
+	this.scrollSelectionIntoViewDebounced = ve.debounce( this.scrollSelectionIntoView.bind( this ), 500 );
 	this.debugBar = null;
 	this.placeholder = null;
 	this.placeholderVisible = false;
@@ -102,7 +103,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	} );
 
 	// Events
-	this.getModel().connect( this, { select: 'scrollSelectionIntoView' } );
+	this.getModel().connect( this, { select: 'onModelSelect' } );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
 	this.getView().connect( this, { position: 'onViewPosition' } );
 
@@ -472,6 +473,26 @@ ve.ui.Surface.prototype.onDocumentTransact = function () {
 };
 
 /**
+ * Handle select events from the model
+ */
+ve.ui.Surface.prototype.onModelSelect = function () {
+	// eslint-disable-next-line no-bitwise
+	if ( this.getView().dragging ^ OO.ui.isMobile() ) {
+		// Allow native scroll behavior while dragging, as the start/end
+		// points are unreliable until we're finished. Without this, trying to
+		// drag a selection larger than a single screen will sometimes lock
+		// the viewport in place, as it tries to keep the wrong end of the
+		// selection on-screen.
+		// On mobile the dragging flag is essentially reversed in meaning, as
+		// it is set during mouse down, which happens when you are tapping
+		// to select, but when you drag selection handles no mousedown event
+		// occurs (or any event other 'selectionchange') so the flag is unset.
+		return;
+	}
+	this.scrollSelectionIntoViewDebounced();
+};
+
+/**
  * Scroll the selection into view
  *
  * Called in response to selection events.
@@ -487,15 +508,6 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 		view = this.getView(),
 		selection = view.getSelection(),
 		surface = this;
-
-	if ( view.dragging ) {
-		// Allow native scroll behavior while dragging, as the start/end
-		// points are unreliable until we're finished. Without this, trying to
-		// drag a selection larger than a single screen will sometimes lock
-		// the viewport in place, as it tries to keep the wrong end of the
-		// selection on-screen.
-		return;
-	}
 
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen.
