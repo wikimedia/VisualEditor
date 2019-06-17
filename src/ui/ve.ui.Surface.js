@@ -485,12 +485,8 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 	var profile, clientRect, surfaceRect, padding,
 		animate = true,
 		view = this.getView(),
-		selection = view.getSelection( this.getModel().getSelection() ),
+		selection = view.getSelection(),
 		surface = this;
-
-	if ( selection.getModel().isNull() ) {
-		return;
-	}
 
 	if ( view.dragging ) {
 		// Allow native scroll behavior while dragging, as the start/end
