@@ -173,6 +173,8 @@
 	"visualeditor-linkcontext-label-label": "Etiqueta",
 	"visualeditor-linkcontext-remove": "Quitar enlace",
 	"visualeditor-linkinspector-title": "Enlace",
+	"visualeditor-linkinspector-title-add": "Añadir enlace",
+	"visualeditor-linkinspector-title-edit": "Editar enlace",
 	"visualeditor-listbutton-bullet-tooltip": "Lista con viñetas",
 	"visualeditor-listbutton-check-tooltip": "Lista de comprobación",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",

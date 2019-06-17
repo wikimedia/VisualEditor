@@ -24,6 +24,7 @@
 	"visualeditor-annotationbutton-link-tooltip": "Յղում",
 	"visualeditor-annotationbutton-small-tooltip": "Փոքր",
 	"visualeditor-annotationbutton-underline-tooltip": "Ընդգծուած",
+	"visualeditor-changedesc-changed": "$1-ը փոխուած է «$2»-էն «$3»",
 	"visualeditor-changedesc-comment": "$1 մեկնաբանութիւնը փոխուած է $2-ի",
 	"visualeditor-changedesc-no-key": "\n$1-ը փոխուած $2-ի",
 	"visualeditor-changedir-tool-ltr": "Տեսնել աջէն ձախ",
