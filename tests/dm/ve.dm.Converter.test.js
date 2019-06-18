@@ -16,6 +16,17 @@ QUnit.test( 'getModelFromDom', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'getModelFromDom with store argument', function ( assert ) {
+	var model,
+		store = new ve.dm.HashValueStore();
+	model = ve.dm.converter.getModelFromDom(
+		ve.createDocumentFromHtml( '<p>foo</p>' ),
+		{ lang: 'en', dir: 'ltr' },
+		store
+	);
+	assert.strictEqual( model.getStore() === store, true, 'Document store is reference-equal to store argument' );
+} );
+
 QUnit.test( 'getDomFromModel', function ( assert ) {
 	var msg, cases = ve.dm.example.domToDataCases;
 

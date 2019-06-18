@@ -612,13 +612,14 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @param {boolean} [options.fromClipboard=false] Conversion is from clipboard
  * @param {string} [options.lang] Document language code
  * @param {string} [options.dir] Document directionality (ltr/rtl)
+ * @param {ve.dm.HashValueStore} [store] Hash value store
  * @return {ve.dm.Document} Document model
  */
-ve.dm.Converter.prototype.getModelFromDom = function ( doc, options ) {
+ve.dm.Converter.prototype.getModelFromDom = function ( doc, options, store ) {
 	var data, linearData, refData, innerWhitespace,
-		store = new ve.dm.HashValueStore(),
 		internalList = new ve.dm.InternalList();
 
+	store = store || new ve.dm.HashValueStore();
 	options = options || {};
 
 	// Set up the converter state
