@@ -69,11 +69,14 @@
 	/* Match toolbar border & shadow */
 	border-top: 1px solid #c8ccd1;
 	box-shadow: 0 -1px 1px 0 rgba( 0, 0, 0, 0.1 );
-	display: none;
+	transform: translateY( 100% );
+	transition: transform 250ms;
 }
 
 .ve-ui-surface-deactivated .ve-ui-mobileContext-new {
-	display: block;
+	transform: translateY( 0% );
+	/* Transition out faster, as keyboard may be coming up */
+	transition: transform 100ms;
 }
 
 /* Don't render buttons in bottom 44px of iOS as this can trigger the bottom nav */

@@ -88,6 +88,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.focusedBlockSlug = null;
 	this.focusedNode = null;
 	this.activeAnnotations = [];
+	this.contexedAnnotations = [];
 	this.previousActiveAnnotations = [];
 	// This is set on entering changeModel, then unset when leaving.
 	// It is used to test whether a reflected change event is emitted.
@@ -702,13 +703,21 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  * @fires activation
  */
 ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
+	var surface = this;
 	this.showAsActivated = showAsActivated;
 	this.hideSelection = hideSelection;
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
 		// until the surface is activated
 		this.surfaceObserver.disable();
-		this.surface.$element.addClass( 've-ui-surface-deactivated' );
+		// Wait for keyboard to hide before adding deactivated class (which shows
+		// mobile context)
+		setTimeout( function () {
+			if ( surface.deactivated ) {
+				// Check surface is still deactivated
+				surface.surface.$element.addClass( 've-ui-surface-deactivated' );
+			}
+		}, 250 );
 		this.deactivated = true;
 		this.previousActiveAnnotations = this.activeAnnotations;
 		this.checkDelayedSequences();
@@ -895,9 +904,40 @@ ve.ce.Surface.prototype.isFocused = function () {
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
-	var newFragment;
+	var newFragment, contexedAnnotations, offset,
+		surface = this;
+
 	if ( e.which !== OO.ui.MouseButtons.LEFT ) {
 		return;
+	}
+
+	function isContexedNode( view ) {
+		return surface.surface.context.getRelatedSourcesFromModels( [ view.model ] ).length;
+	}
+
+	if ( OO.ui.isMobile() && ve.newMobileContext ) {
+		offset = this.getOffsetFromEventCoords( e );
+		if ( offset !== -1 ) {
+			contexedAnnotations = this.annotationsAtNode( e.target, isContexedNode );
+			if ( !contexedAnnotations.length ) {
+				// Occasionally on iOS, e.target is outside the to-be focused annotation, so check
+				// using the model offset as well.
+				contexedAnnotations = this.annotationsAtModelSelection( isContexedNode, offset );
+			}
+			if ( contexedAnnotations.length && !OO.compare( contexedAnnotations, this.contexedAnnotations ) ) {
+				setTimeout( function () {
+					surface.getModel().setLinearSelection( new ve.Range( offset ) );
+					// HACK: Re-activate flag so selection is repositioned
+					surface.activate();
+					surface.deactivate( false, false, true );
+					surface.updateActiveAnnotations( true );
+				} );
+				this.contexedAnnotations = contexedAnnotations;
+				e.preventDefault();
+				return;
+			}
+		}
+		this.contexedAnnotations = contexedAnnotations;
 	}
 
 	// Remember the mouse is down
@@ -1042,17 +1082,9 @@ ve.ce.Surface.prototype.fixShiftClickSelect = function ( selectionBefore ) {
  * @param {boolean} dragging Dragging (mouse is down)
  */
 ve.ce.Surface.prototype.setDragging = function ( dragging ) {
-	var surface = this;
 	this.dragging = !!dragging;
 	// Class can be used to suppress hover states, such as branch slugs.
 	this.$element.toggleClass( 've-ce-surface-dragging', this.dragging );
-	if ( dragging ) {
-		this.inMouseDownCycle = true;
-	} else {
-		setTimeout( function () {
-			surface.inMouseDownCycle = false;
-		} );
-	}
 };
 
 /**
@@ -4208,16 +4240,6 @@ ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModel ) {
 	} );
 
 	if ( changed ) {
-		if ( ve.newMobileContext ) {
-			// Hide the keyboard and the selection when first clicking on a link
-			// If inMouseDownCycle has been cleared, then assume this is a selection drag.
-			if ( OO.ui.isMobile() && activeAnnotations.length && this.inMouseDownCycle ) {
-				// setTimeout required on iOS to prevent intermittent triggering of another contextChange
-				setTimeout( function () {
-					surface.deactivate( false, false, true );
-				} );
-			}
-		}
 		this.activeAnnotations = activeAnnotations;
 		this.model.emit( 'contextChange' );
 	}
@@ -4266,12 +4288,16 @@ ve.ce.Surface.prototype.selectAnnotation = function ( filter ) {
  * an offset inside that annotation.
  *
  * @param {Function} [filter] Function to filter view nodes by.
+ * @param {number} [offset] Model offset. Defaults to start of current selection.
  * @return {ve.ce.Annotation[]} Annotation views
  */
-ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter ) {
+ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter, offset ) {
 	var nodeAndOffset,
-		annotations,
+		annotations;
+
+	if ( offset === undefined ) {
 		offset = this.getModel().getSelection().getCoveringRange().start;
+	}
 
 	// TODO: For annotation boundaries we have to search one place left and right
 	// to find the text inside the annotation. This will give too many results for
