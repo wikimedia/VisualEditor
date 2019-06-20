@@ -271,7 +271,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 	var i, slugTemplate, slugNode, child, slugButton, doc;
 
 	// Source mode optimization
-	if ( this.getModel().getDocument() && this.getModel().getDocument().sourceMode ) {
+	if ( this.getModel().getDocument() && this.getModel().getDocument().sourceMode && isBlock ) {
 		return;
 	}
 
