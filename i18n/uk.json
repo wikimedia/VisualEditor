@@ -163,6 +163,8 @@
 	"visualeditor-linkcontext-label-label": "Мітка",
 	"visualeditor-linkcontext-remove": "Вилучити посилання",
 	"visualeditor-linkinspector-title": "Посилання",
+	"visualeditor-linkinspector-title-add": "Додати посилання",
+	"visualeditor-linkinspector-title-edit": "Редагувати посилання",
 	"visualeditor-listbutton-bullet-tooltip": "Маркований список",
 	"visualeditor-listbutton-check-tooltip": "Контрольний список",
 	"visualeditor-listbutton-number-tooltip": "Нумерований список",

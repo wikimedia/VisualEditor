@@ -149,6 +149,8 @@
 	"visualeditor-linkcontext-label-label": "Címke",
 	"visualeditor-linkcontext-remove": "Hivatkozás eltávolítása",
 	"visualeditor-linkinspector-title": "Hivatkozás",
+	"visualeditor-linkinspector-title-add": "Hivatkozás hozzáadása",
+	"visualeditor-linkinspector-title-edit": "Hivatkozás szerkesztése",
 	"visualeditor-listbutton-bullet-tooltip": "Felsorolásjeles lista",
 	"visualeditor-listbutton-check-tooltip": "Lista ellenőrzése",
 	"visualeditor-listbutton-number-tooltip": "Számozott lista",
