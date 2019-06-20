@@ -3670,7 +3670,7 @@ ve.ce.Surface.prototype.onWindowResize = function () {
 		// Either way, ensure the cursor is still visible (T204388).
 		// On iOS, window is resized whenever you start scrolling down and the "address bar" is
 		// minimized. So don't scroll back up…
-		this.getSurface().scrollCursorIntoView();
+		this.getSurface().scrollSelectionIntoView();
 	}
 };
 
