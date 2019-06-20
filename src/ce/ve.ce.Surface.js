@@ -4342,7 +4342,11 @@ ve.ce.Surface.prototype.getSelectionState = function ( range ) {
 	if ( from === -1 ) {
 		return ve.SelectionState.static.newNullSelection();
 	}
-	anchor = this.documentView.getNodeAndOffset( from );
+	try {
+		anchor = this.documentView.getNodeAndOffset( from );
+	} catch ( e ) {
+		return ve.SelectionState.static.newNullSelection();
+	}
 	if ( range.isCollapsed() ) {
 		focus = anchor;
 	} else {
@@ -4350,7 +4354,11 @@ ve.ce.Surface.prototype.getSelectionState = function ( range ) {
 		if ( to === -1 ) {
 			return ve.SelectionState.static.newNullSelection();
 		}
-		focus = this.documentView.getNodeAndOffset( to );
+		try {
+			focus = this.documentView.getNodeAndOffset( to );
+		} catch ( e ) {
+			return ve.SelectionState.static.newNullSelection();
+		}
 	}
 	return new ve.SelectionState( {
 		anchorNode: anchor.node,
