@@ -165,6 +165,9 @@ ve.BranchNode.prototype.getNodeFromOffset = function ( offset, shallow ) {
 	var i, length, nodeLength, childNode,
 		currentNode = this,
 		nodeOffset = 0;
+	if ( typeof offset !== 'number' ) {
+		throw new Error( 'Offset must be a number' );
+	}
 	if ( offset === 0 ) {
 		return currentNode;
 	}
