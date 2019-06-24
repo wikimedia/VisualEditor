@@ -531,14 +531,14 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 			profile = $.client.profile();
 			// Assume that if the selection has been expanded, then a context menu is visible
 			// above the selection. We don't want this to obscure the toolbar so add on an
-			// estimate of its height. Note that scrolling on iOS closes the context, but it
-			// will re-open when the user touches the selection. (T202723)
-			if (
-				ve.init.platform.constructor.static.isIos() ||
-				// Older versions of Android draw the context menu in the address bar and so
-				// don't need to be fixed.
-				( profile.name === 'android' && profile.versionNumber >= 6 )
-			) {
+			// estimate of its height.
+			// Previously we applied this fix to iOS, even though scrolling closed the context,
+			// because the user could touch the selection to re-open it. However sometime between
+			// iOS 12 and 12.3, scrolling stopped closing the context, but it doesn't move it either,
+			// so this fix became useless.
+			// Older versions of Android draw the context menu in the address bar and so
+			// don't need to be fixed.
+			if ( profile.name === 'android' && profile.versionNumber >= 6 ) {
 				padding.top += 60;
 			}
 			// Also assume there are selection handles below on Android. (T204718)
