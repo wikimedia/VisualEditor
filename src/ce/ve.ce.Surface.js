@@ -606,6 +606,10 @@ ve.ce.Surface.prototype.blur = function () {
 	this.removeRangesAndBlur();
 	// This won't trigger focusin/focusout events, so trigger focus change manually
 	this.onFocusChange();
+	if ( OO.ui.isMobile() ) {
+		this.updateActiveAnnotations();
+		this.contexedAnnotations = [];
+	}
 };
 
 /**
