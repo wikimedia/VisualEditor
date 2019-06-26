@@ -123,9 +123,9 @@ module.exports = function ( grunt ) {
 		},
 		cssUrlEmbed: {
 			options: {
-				// TODO: A few image paths aren't relative to src/ui/styles
-				failOnMissingUrl: false,
-				baseDir: 'src/ui/styles'
+				// TODO: Image paths are relative to their folders, but the files have already been
+				// flattened as this point, so supporting more that one baseDir is not possible.
+				baseDir: 'src/ui/styles/nodes'
 			},
 			dist: {
 				files: {
