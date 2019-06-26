@@ -67,8 +67,6 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		return false;
 	}
 
-	ve.track( 'activity.' + name, { action: 'window-open' } );
-
 	if ( !mayRequireFragment ) {
 		fragmentPromise = ve.createDeferred().resolve().promise();
 	} else if ( sourceMode ) {

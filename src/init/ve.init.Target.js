@@ -413,7 +413,7 @@ ve.init.Target.prototype.onDocumentKeyDown = function ( e ) {
 	if ( trigger.isComplete() ) {
 		command = this.documentTriggerListener.getCommandByTrigger( trigger.toString() );
 		surface = this.getSurface();
-		if ( surface && command && command.execute( surface ) ) {
+		if ( surface && command && command.execute( surface, undefined, 'trigger' ) ) {
 			e.preventDefault();
 		}
 	}
@@ -450,7 +450,7 @@ ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
 	if ( trigger.isComplete() ) {
 		command = this.targetTriggerListener.getCommandByTrigger( trigger.toString() );
 		surface = this.getSurface();
-		if ( surface && command && command.execute( surface ) ) {
+		if ( surface && command && command.execute( surface, undefined, 'trigger' ) ) {
 			e.preventDefault();
 		}
 	}
