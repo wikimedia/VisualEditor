@@ -181,6 +181,8 @@
 	"visualeditor-linkcontext-label-label": "Текст",
 	"visualeditor-linkcontext-remove": "Удалить ссылку",
 	"visualeditor-linkinspector-title": "Ссылка",
+	"visualeditor-linkinspector-title-add": "Добавить ссылку",
+	"visualeditor-linkinspector-title-edit": "Редактировать ссылку",
 	"visualeditor-listbutton-bullet-tooltip": "Маркированный список",
 	"visualeditor-listbutton-check-tooltip": "Контрольный список",
 	"visualeditor-listbutton-number-tooltip": "Нумерованный список",

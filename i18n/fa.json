@@ -70,6 +70,7 @@
 	"visualeditor-clipboard-paste-special": "چسباندن به عنوان متن ساده",
 	"visualeditor-command-dialog-cancel": "بستن/ لغو تغییرات",
 	"visualeditor-command-dialog-confirm": "تأیید تغییرات",
+	"visualeditor-command-dialog-focus-context": "انتقال تمرکز به پنجره بالا روندهٔ متنی",
 	"visualeditor-commentinspector-edit": "ویرایش نظر",
 	"visualeditor-commentinspector-title": "نظر",
 	"visualeditor-commentinspector-tooltip": "نظر",

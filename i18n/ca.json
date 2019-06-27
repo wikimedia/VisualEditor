@@ -131,6 +131,8 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Codi d'idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
 	"visualeditor-linkinspector-title": "Enllaç",
+	"visualeditor-linkinspector-title-add": "Afegeix un enllaç",
+	"visualeditor-linkinspector-title-edit": "Edita l’enllaç",
 	"visualeditor-listbutton-bullet-tooltip": "Llista puntejada",
 	"visualeditor-listbutton-number-tooltip": "Llista numerada",
 	"visualeditor-mediasizewidget-label-defaulterror": "Els valors de la mida no són vàlids.",
