@@ -76,7 +76,8 @@
 .ve-ui-surface-deactivated .ve-ui-mobileContext-new {
 	transform: translateY( 0% );
 	/* Transition out faster, as keyboard may be coming up */
-	transition: transform 100ms;
+	/* Transition padding-bottom for iOS menu bar fix */
+	transition: transform 100ms, padding-bottom 100ms;
 }
 
 /* Don't render buttons in bottom 44px of iOS as this can trigger the bottom nav */
