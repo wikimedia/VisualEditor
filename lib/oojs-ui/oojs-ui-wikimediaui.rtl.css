@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.32.1
+ * OOUI v0.33.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-06-05T16:24:16Z
+ * Date: 2019-06-27T03:27:33Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -211,6 +211,52 @@
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
   color: #b32424;
   box-shadow: none;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button {
+  color: #fff;
+  background-color: #36c;
+  border-color: #36c;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:hover {
+  background-color: #447ff5;
+  border-color: #447ff5;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:active,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:active:focus,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
+  color: #fff;
+  background-color: #2a4b8d;
+  border-color: #2a4b8d;
+  box-shadow: none;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-progressive > .oo-ui-buttonElement-button:focus {
+  border-color: #36c;
+  box-shadow: inset 0 0 0 1px #36c, inset 0 0 0 2px #fff;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button {
+  color: #fff;
+  background-color: #d33;
+  border-color: #d33;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:hover {
+  background-color: #ff4242;
+  border-color: #ff4242;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:active,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:active:focus,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-buttonElement-active > .oo-ui-buttonElement-button,
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-popupToolGroup-active > .oo-ui-buttonElement-button {
+  color: #fff;
+  background-color: #b32424;
+  border-color: #b32424;
+  box-shadow: none;
+}
+.oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive > .oo-ui-buttonElement-button:focus {
+  border-color: #d33;
+  box-shadow: inset 0 0 0 1px #d33, inset 0 0 0 2px #fff;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled[class*='oo-ui-flaggedElement'] > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled[class*='oo-ui-flaggedElement'] > .oo-ui-buttonElement-button > .oo-ui-indicatorElement-indicator {
@@ -618,7 +664,7 @@
   box-sizing: border-box;
   max-width: 50em;
   margin: 0;
-  padding: 0.28571429em 0.85714286em;
+  padding: 0.28571429em 0;
 }
 .oo-ui-fieldLayout-messages > [class|='oo-ui-fieldLayout-messages'] {
   color: #000;
@@ -675,10 +721,11 @@
   margin-right: 0.14285714em;
 }
 .oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget > .oo-ui-inputWidget-input:hover,
-.oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget > .oo-ui-inputWidget-input:hover ~ *,
 .oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget > .oo-ui-inputWidget-input:focus,
+.oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget.oo-ui-flaggedElement-invalid > .oo-ui-inputWidget-input,
+.oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget > .oo-ui-inputWidget-input:hover ~ *,
 .oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget > .oo-ui-inputWidget-input:focus ~ *,
-.oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget.oo-ui-flaggedElement-invalid > .oo-ui-inputWidget-input {
+.oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-input > .oo-ui-textInputWidget.oo-ui-flaggedElement-invalid > .oo-ui-inputWidget-input ~ * {
   z-index: 1;
 }
 .oo-ui-actionFieldLayout .oo-ui-actionFieldLayout-button > .oo-ui-buttonElement > .oo-ui-buttonElement-button:hover,
@@ -916,6 +963,47 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   display: block;
   color: #54595d;
   font-size: 0.92857143em;
+}
+
+.oo-ui-messageWidget {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0.28571429em 0.85714286em;
+  font-weight: bold;
+}
+.oo-ui-messageWidget .oo-ui-labelElement-label {
+  display: block;
+}
+.oo-ui-messageWidget.oo-ui-messageWidget-block {
+  border: 1px solid;
+  padding: 1.42857143em 1.71428571em;
+}
+.oo-ui-messageWidget.oo-ui-messageWidget-block.oo-ui-flaggedElement-error {
+  background-color: #fee7e6;
+  border-color: #d33;
+}
+.oo-ui-messageWidget.oo-ui-messageWidget-block.oo-ui-flaggedElement-warning {
+  background-color: #fef6e7;
+  border-color: #fc3;
+}
+.oo-ui-messageWidget.oo-ui-messageWidget-block.oo-ui-flaggedElement-success {
+  background-color: #d5fdf4;
+  border-color: #14866d;
+}
+.oo-ui-messageWidget.oo-ui-messageWidget-block.oo-ui-flaggedElement-notice {
+  background-color: #eaecf0;
+  border-color: #a2a9b1;
+}
+.oo-ui-messageWidget.oo-ui-flaggedElement-error {
+  color: #d33;
+}
+.oo-ui-messageWidget.oo-ui-flaggedElement-success:not( .oo-ui-messageWidget-block ) {
+  color: #14866d;
+}
+.oo-ui-messageWidget .oo-ui-labelElement-label {
+  margin-right: 2em;
 }
 
 .oo-ui-iconWidget {
@@ -1550,14 +1638,12 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-textInputWidget .oo-ui-inputWidget-input {
   -webkit-appearance: none;
+  -moz-appearance: textfield;
   display: block;
   width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-}
-.oo-ui-textInputWidget input {
-  -moz-appearance: textfield;
 }
 .oo-ui-textInputWidget input::-ms-clear {
   display: none;
@@ -2236,14 +2322,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.32.1
+ * OOUI v0.33.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-06-05T16:24:16Z
+ * Date: 2019-06-27T03:27:33Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2855,10 +2941,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-tabSelectWidget-mobile:after {
   content: '';
   position: absolute;
-  top: 0;
-  left: -1px;
+  bottom: 0;
+  left: 0;
   width: 1.28571429em;
-  height: 100%;
+  height: 2.28571429em;
   pointer-events: none;
 }
 .oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-framed:after {
@@ -2866,13 +2952,13 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: -webkit-linear-gradient(right, rgba(234, 236, 240, 0) 0, #eaecf0 100%);
   background-image: -moz-linear-gradient(right, rgba(234, 236, 240, 0) 0, #eaecf0 100%);
   background-image: linear-gradient(to left, rgba(234, 236, 240, 0) 0, #eaecf0 100%);
-  border-left: 1px solid #a2a9b1;
 }
 .oo-ui-tabSelectWidget-mobile.oo-ui-tabSelectWidget-frameless:after {
   background-image: -webkit-gradient(linear, right top, left top, color-stop(0, rgba(255, 255, 255, 0)), color-stop(100%, #fff));
   background-image: -webkit-linear-gradient(right, rgba(255, 255, 255, 0) 0, #fff 100%);
   background-image: -moz-linear-gradient(right, rgba(255, 255, 255, 0) 0, #fff 100%);
   background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 0, #fff 100%);
+  bottom: 0.14285714em;
 }
 .oo-ui-tabSelectWidget.oo-ui-widget-enabled:focus {
   outline: 0;
@@ -3267,14 +3353,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.32.1
+ * OOUI v0.33.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-06-05T16:24:16Z
+ * Date: 2019-06-27T03:27:33Z
  */
 .oo-ui-tool {
   -webkit-box-sizing: border-box;
@@ -3441,6 +3527,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-tool.oo-ui-widget-enabled.oo-ui-flaggedElement-primary.oo-ui-flaggedElement-destructive.oo-ui-widget-disabled > .oo-ui-tool-link:active:focus {
   background-color: #c8ccd1;
   color: #fff;
+}
+.oo-ui-tool.oo-ui-widget-enabled.oo-ui-flaggedElement-primary > .oo-ui-tool-link {
+  font-weight: bold;
 }
 .oo-ui-tool.oo-ui-widget-enabled.oo-ui-flaggedElement-primary > .oo-ui-tool-link > .oo-ui-iconElement-icon,
 .oo-ui-tool.oo-ui-widget-enabled.oo-ui-flaggedElement-primary > .oo-ui-tool-link > .oo-ui-indicatorElement-indicator {
@@ -3961,14 +4050,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.32.1
+ * OOUI v0.33.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-06-05T16:24:16Z
+ * Date: 2019-06-27T03:27:33Z
  */
 
 .oo-ui-window {
@@ -4174,94 +4263,75 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-overflow-scrolling: touch;
 }
 .oo-ui-processDialog-content .oo-ui-window-head {
-  height: 3.14285714em;
+  min-height: 2.85714286em;
 }
 .oo-ui-processDialog-content .oo-ui-window-body {
-  top: 3.14285714em;
+  top: 2.85714286em;
   outline: 1px solid #c8ccd1;
 }
 .oo-ui-processDialog-navigation {
   position: relative;
-  height: 3.14285714em;
+  min-height: 2.85714286em;
 }
 .oo-ui-processDialog-location {
-  height: 3.14285714em;
-  cursor: default;
+  min-height: 2.85714286em;
   text-align: center;
+  cursor: default;
 }
 .oo-ui-processDialog-title {
+  font-size: 1.1em;
   font-weight: bold;
-  line-height: 3.14285714em;
+  line-height: 2.5974026em;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-framed,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-framed,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-framed {
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-framed {
   margin: 0.42857143em;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child {
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless > .oo-ui-buttonElement-button {
+  border-radius: 0;
+}
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child {
   margin-right: 0;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button {
-  padding-right: 2.42857143em;
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button {
+  min-height: 2.85714286em;
   padding-top: 0;
-  min-height: 3.14285714em;
+  padding-right: 3.14285714em;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
-  right: 0.5em;
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button > .oo-ui-iconElement-icon {
+  right: 0.85714286em;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement:first-child,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement:first-child,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement:first-child {
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement:first-child {
   margin-right: 0;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button {
-  padding: 0.75em 1em;
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button {
+  padding: 0.71428571em 0.85714286em;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button {
-  padding-right: 2.17857143em;
+.oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button {
+  padding-right: 2.28571429em;
 }
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless .oo-ui-labelElement-label,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless .oo-ui-labelElement-label,
-.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless .oo-ui-labelElement-label {
-  line-height: 1.42857143em;
+.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:hover,
+.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:hover {
+  background-color: rgba(8, 126, 204, 0.05);
+}
+.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:active,
+.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:active {
+  background-color: rgba(8, 126, 204, 0.1);
+}
+.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:hover,
+.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:hover {
+  background-color: rgba(212, 83, 83, 0.05);
+}
+.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:active,
+.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:active {
+  background-color: rgba(212, 83, 83, 0.1);
 }
 .oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless:hover,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless:hover {
+.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 .oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless:active,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless:active {
+.oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement-frameless:active {
   background-color: rgba(0, 0, 0, 0.1);
-}
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:hover,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:hover {
-  background-color: rgba(8, 126, 204, 0.05);
-}
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:active,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive:active {
-  background-color: rgba(8, 126, 204, 0.1);
-}
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive .oo-ui-labelElement-label,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-progressive .oo-ui-labelElement-label {
-  font-weight: bold;
-}
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:hover,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:hover {
-  background-color: rgba(212, 83, 83, 0.05);
-}
-.oo-ui-processDialog-actions-safe .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:active,
-.oo-ui-processDialog-actions-primary .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-flaggedElement-destructive:active {
-  background-color: rgba(212, 83, 83, 0.1);
 }
 .oo-ui-processDialog-actions-other .oo-ui-actionWidget.oo-ui-buttonElement {
   margin-left: 0;
@@ -4289,6 +4359,27 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border: 1px solid #d33;
   background-color: #fff7f7;
   border-radius: 2px;
+}
+.oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-content .oo-ui-window-head,
+.oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-navigation,
+.oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-location {
+  min-height: 3.14285714em;
+}
+.oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-location {
+  text-align: right;
+}
+.oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-title {
+  line-height: 2.85714286em;
+}
+.oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-content .oo-ui-window-body {
+  top: 3.14285714em;
+}
+.oo-ui-processDialog.oo-ui-isMobile [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-iconElement > .oo-ui-buttonElement-button {
+  min-height: 3.14285714em;
+  padding-right: 3.14285714em;
+}
+.oo-ui-processDialog.oo-ui-isMobile [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-buttonElement-frameless.oo-ui-labelElement > .oo-ui-buttonElement-button {
+  padding: 0.85714286em 0.85714286em;
 }
 
 .oo-ui-windowManager-modal > .oo-ui-dialog {
@@ -4364,14 +4455,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.32.1
+ * OOUI v0.33.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-06-05T16:24:16Z
+ * Date: 2019-06-27T03:27:33Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-rtl.png');
@@ -5545,6 +5636,22 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-progressive.oo-ui-icon-link {
   background-image: url('themes/wikimediaui/images/icons/link-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/link-progressive.svg');
+}
+.oo-ui-icon-unLink {
+  background-image: url('themes/wikimediaui/images/icons/unLink.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLink.svg');
+}
+.oo-ui-image-destructive.oo-ui-icon-unLink {
+  background-image: url('themes/wikimediaui/images/icons/unLink-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLink-destructive.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-unLink {
+  background-image: url('themes/wikimediaui/images/icons/unLink-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLink-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-unLink {
+  background-image: url('themes/wikimediaui/images/icons/unLink-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/unLink-progressive.svg');
 }
 .oo-ui-icon-linkExternal {
   background-image: url('themes/wikimediaui/images/icons/linkExternal-rtl.png');
@@ -7952,13 +8059,4 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-invert.oo-ui-indicator-required {
   background-image: url('themes/wikimediaui/images/indicators/required-invert.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/indicators/required-invert.svg');
-}
-
-.oo-ui-texture-pending {
-  background-image: url('themes/wikimediaui/images/textures/pending.gif');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/textures/pending.gif');
-}
-.oo-ui-texture-transparency {
-  background-image: url('themes/wikimediaui/images/textures/transparency.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/textures/transparency.svg');
 }
