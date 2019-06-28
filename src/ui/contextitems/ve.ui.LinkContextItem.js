@@ -63,6 +63,8 @@ ve.ui.LinkContextItem.static.clearable = true;
 
 ve.ui.LinkContextItem.static.clearMsg = OO.ui.deferMsg( 'visualeditor-linkcontext-remove' );
 
+ve.ui.LinkContextItem.static.clearIcon = 'unLink';
+
 /* Methods */
 
 /**
