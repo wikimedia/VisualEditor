@@ -114,11 +114,22 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
  * @return {ve.ce.Annotation|undefined} The annotation view, if it's found, or undefined if not
  */
 ve.ui.AnnotationContextItem.prototype.getAnnotationView = function () {
-	var annotations,
-		model = this.model;
+	var annotations = [],
+		model = this.model,
+		surfaceView = this.context.getSurface().getView();
 
-	annotations = this.context.getSurface().getView().annotationsAtModelSelection( function ( view ) {
-		return model === view.model;
-	} );
+	function isThisModel( annotationView ) {
+		return model === annotationView.model;
+	}
+
+	// Use surfaceView.contexedAnnotations when available, i.e. when
+	// the user clicked/tapped on the annotation.
+	if ( surfaceView.contexedAnnotations ) {
+		annotations = surfaceView.contexedAnnotations.filter( isThisModel );
+	}
+	if ( !annotations.length ) {
+		annotations = surfaceView.annotationsAtModelSelection( isThisModel );
+	}
+
 	return annotations.length ? annotations[ 0 ] : undefined;
 };

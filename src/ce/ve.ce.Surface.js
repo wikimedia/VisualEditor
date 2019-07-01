@@ -919,18 +919,18 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		return surface.surface.context.getRelatedSourcesFromModels( [ view.model ] ).length;
 	}
 
-	if ( OO.ui.isMobile() && ve.newMobileContext ) {
-		offset = this.getOffsetFromEventCoords( e );
-		if ( offset !== -1 ) {
-			contexedAnnotations = this.annotationsAtNode( e.target, isContexedNode );
-			if ( contexedAnnotations.length ) {
-				// Store target node for use in updateActiveAnnotations
-				node = e.target;
-			} else {
-				// Occasionally on iOS, e.target is outside the to-be focused annotation, so check
-				// using the model offset as well.
-				contexedAnnotations = this.annotationsAtModelSelection( isContexedNode, offset );
-			}
+	offset = this.getOffsetFromEventCoords( e );
+	if ( offset !== -1 ) {
+		contexedAnnotations = this.annotationsAtNode( e.target, isContexedNode );
+		if ( contexedAnnotations.length ) {
+			// Store target node for use in updateActiveAnnotations
+			node = e.target;
+		} else {
+			// Occasionally on iOS, e.target is outside the to-be focused annotation, so check
+			// using the model offset as well.
+			contexedAnnotations = this.annotationsAtModelSelection( isContexedNode, offset );
+		}
+		if ( OO.ui.isMobile() && ve.newMobileContext ) {
 			if (
 				// The user has clicked on contexed annotations and ...
 				contexedAnnotations.length && (
