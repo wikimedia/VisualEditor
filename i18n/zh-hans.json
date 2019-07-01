@@ -22,7 +22,8 @@
 			"Hanyanbo98",
 			"夢蝶葬花",
 			"94rain",
-			"D41D8CD98F"
+			"D41D8CD98F",
+			"神樂坂秀吉"
 		]
 	},
 	"visualeditor": "可视化编辑器",
@@ -166,6 +167,8 @@
 	"visualeditor-linkcontext-label-label": "标签",
 	"visualeditor-linkcontext-remove": "移除链接",
 	"visualeditor-linkinspector-title": "链接",
+	"visualeditor-linkinspector-title-add": "添加链接",
+	"visualeditor-linkinspector-title-edit": "编辑链接",
 	"visualeditor-listbutton-bullet-tooltip": "无序列表",
 	"visualeditor-listbutton-check-tooltip": "监视列表",
 	"visualeditor-listbutton-number-tooltip": "有序列表",
