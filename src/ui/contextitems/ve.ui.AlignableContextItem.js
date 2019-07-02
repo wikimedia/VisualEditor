@@ -77,13 +77,6 @@ ve.ui.AlignableContextItem.prototype.renderBody = function () {
 	this.$body.empty().append( this.align.$element );
 };
 
-/**
- * @inheritdoc
- */
-ve.ui.AlignableContextItem.prototype.renderDescription = function () {
-	this.$description.empty().append( this.align.$element );
-};
-
 ve.ui.AlignableContextItem.prototype.onAlignChoose = function ( item ) {
 	this.getFragment().changeAttributes( { align: item.getData() } );
 };

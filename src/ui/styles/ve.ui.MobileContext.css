@@ -4,63 +4,7 @@
  * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-mobileContext .ve-ui-mobileContext-menu {
-	border-top: 1px solid #c8ccd1;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-label {
-	min-width: auto;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-title {
-	padding: 0 1em 0 0.5em;
-	line-height: 3em;
-	max-width: 45vw;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-description {
-	line-height: 3em;
-	padding-right: 0.5em;
-	text-align: right;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-actions {
-	vertical-align: top;
-	padding: 0;
-	height: 100%;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget {
-	border-left: 1px solid #c8ccd1;
-	vertical-align: top;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonElement-button {
-	vertical-align: top;
-	border-radius: 0;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child {
-	/* Reset negative margin */
-	margin-left: 0;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement:not( .oo-ui-labelElement ) .oo-ui-buttonElement-button {
-	padding-left: 2.875em;
-	padding-top: 2.875em;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement .oo-ui-iconElement-icon {
-	left: 0.7232em;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-actions .oo-ui-buttonWidget.oo-ui-iconElement.oo-ui-labelElement .oo-ui-buttonElement-button {
-	padding: 0.90625em 0.5em 0.90625em 2.875em;
-}
-
-.ve-ui-mobileContext-new {
+.ve-ui-mobileContext {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -73,7 +17,7 @@
 	transition: transform 250ms;
 }
 
-.ve-ui-surface-deactivated .ve-ui-mobileContext-new {
+.ve-ui-surface-deactivated .ve-ui-mobileContext {
 	transform: translateY( 0% );
 	/* Transition out faster, as keyboard may be coming up */
 	/* Transition padding-bottom for iOS menu bar fix */
@@ -81,6 +25,6 @@
 }
 
 /* Don't render buttons in bottom 44px of iOS as this can trigger the bottom nav */
-.ve-init-target-ios .ve-ui-mobileContext-new {
+.ve-init-target-ios .ve-ui-mobileContext {
 	padding-bottom: 44px;
 }

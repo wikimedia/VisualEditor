@@ -929,7 +929,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 			// using the model offset as well.
 			contexedAnnotations = this.annotationsAtModelSelection( isContexedNode, offset );
 		}
-		if ( OO.ui.isMobile() && ve.newMobileContext ) {
+		if ( OO.ui.isMobile() ) {
 			if (
 				// The user has clicked on contexed annotations and ...
 				contexedAnnotations.length && (
