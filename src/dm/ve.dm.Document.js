@@ -340,7 +340,7 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 	this.emit( 'precommit', transaction );
 	this.branchNodeFromOffsetCache = [];
 	new ve.dm.TransactionProcessor( this, transaction, isStaging ).process();
-	this.completeHistory.pushTransaction( transaction );
+	this.completeHistory.pushTransaction( transaction, this.store.getLength() );
 	this.emit( 'transact', transaction );
 };
 

@@ -717,13 +717,17 @@ ve.dm.Change.prototype.concat = function ( other ) {
 };
 
 /**
- * Push a transaction, after having pushed to the hash value store if it needs to grow
+ * Push a transaction, after having grown the hash value store if required
  *
  * @param {ve.dm.Transaction} transaction The transaction
+ * @param {number} storeLength The corresponding store length required
  */
-ve.dm.Change.prototype.pushTransaction = function ( transaction ) {
+ve.dm.Change.prototype.pushTransaction = function ( transaction, storeLength ) {
+	if ( typeof storeLength !== 'number' ) {
+		throw new Error( 'Expected numerical storeLength argument, not ' + storeLength );
+	}
 	this.transactions.push( transaction );
-	this.storeLengthAtTransaction.push( this.store.getLength() );
+	this.storeLengthAtTransaction.push( storeLength );
 };
 
 /**
@@ -733,16 +737,19 @@ ve.dm.Change.prototype.pushTransaction = function ( transaction ) {
  * @throws {Error} If other does not start immediately after this
  */
 ve.dm.Change.prototype.push = function ( other ) {
-	var change = this;
+	var i, iLen, stores, transaction, store,
+		change = this;
 	if ( other.start !== this.start + this.getLength() ) {
 		throw new Error( 'this ends at ' + ( this.start + this.getLength() ) +
 			' but other starts at ' + other.start );
 	}
-	Array.prototype.push.apply( this.transactions, other.transactions );
-	other.getStores().forEach( function ( store ) {
+	stores = other.getStores();
+	for ( i = 0, iLen = other.transactions.length; i < iLen; i++ ) {
+		transaction = other.transactions[ i ];
+		store = stores[ i ];
 		change.store.merge( store );
-		change.storeLengthAtTransaction.push( change.store.getLength() );
-	} );
+		this.pushTransaction( transaction, change.store.getLength() );
+	}
 	this.selections = OO.cloneObject( other.selections );
 };
 
