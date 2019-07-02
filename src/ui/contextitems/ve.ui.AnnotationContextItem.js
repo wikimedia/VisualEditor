@@ -22,14 +22,25 @@ ve.ui.AnnotationContextItem = function VeUiAnnotationContextItem( context, model
 	// Initialization
 	this.$element.addClass( 've-ui-annotationContextItem' );
 
-	this.clearButton = new OO.ui.ButtonWidget( {
-		title: this.constructor.static.clearMsg,
-		icon: this.constructor.static.clearIcon,
-		flags: [ 'destructive' ]
-	} );
-
-	if ( this.isClearable() && !this.isReadOnly() ) {
-		this.actionButtons.addItems( [ this.clearButton ], 0 );
+	if ( this.context.isMobile() ) {
+		this.clearButton = new OO.ui.ButtonWidget( {
+			framed: false,
+			label: this.constructor.static.clearMsg,
+			icon: this.constructor.static.clearIcon,
+			flags: [ 'destructive' ]
+		} );
+		if ( this.isClearable() && !this.isReadOnly() ) {
+			this.$foot.append( this.clearButton.$element );
+		}
+	} else {
+		this.clearButton = new OO.ui.ButtonWidget( {
+			title: this.constructor.static.clearMsg,
+			icon: this.constructor.static.clearIcon,
+			flags: [ 'destructive' ]
+		} );
+		if ( this.isClearable() && !this.isReadOnly() ) {
+			this.actionButtons.addItems( [ this.clearButton ], 0 );
+		}
 	}
 	this.clearButton.connect( this, { click: 'onClearButtonClick' } );
 };
