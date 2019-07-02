@@ -931,7 +931,13 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 				// using the model offset as well.
 				contexedAnnotations = this.annotationsAtModelSelection( isContexedNode, offset );
 			}
-			if ( contexedAnnotations.length && !OO.compare( contexedAnnotations, this.contexedAnnotations ) ) {
+			if ( contexedAnnotations.length && !(
+				// Shallow strict equality check
+				this.contexedAnnotations.length === contexedAnnotations.length &&
+				this.contexedAnnotations.every( function ( ann, i ) {
+					return ann === contexedAnnotations[ i ];
+				} )
+			) ) {
 				setTimeout( function () {
 					surface.getModel().setLinearSelection( new ve.Range( offset ) );
 					// HACK: Re-activate flag so selection is repositioned
