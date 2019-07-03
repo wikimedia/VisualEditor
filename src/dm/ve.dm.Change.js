@@ -67,22 +67,24 @@
  *
  * @class
  * @constructor
- * @param {number} start Length of the history stack at change start
- * @param {ve.dm.Transaction[]} transactions Transactions to apply
- * @param {ve.dm.HashValueStore[]} stores For each transaction, a collection of new store items
- * @param {Object} selections For each author ID (key), latest ve.dm.Selection
+ * @param {number} [start] Length of the history stack at change start
+ * @param {ve.dm.Transaction[]} [transactions] Transactions to apply
+ * @param {ve.dm.HashValueStore[]} [stores] For each transaction, a collection of new store items
+ * @param {Object} [selections] For each author ID (key), latest ve.dm.Selection
  */
 ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
 	var change = this;
-	this.start = start;
-	this.transactions = transactions;
+	this.start = start || 0;
+	this.transactions = transactions || [];
 	this.store = new ve.dm.HashValueStore();
 	this.storeLengthAtTransaction = [];
-	stores.forEach( function ( store ) {
-		change.store.merge( store );
-		change.storeLengthAtTransaction.push( change.store.getLength() );
-	} );
-	this.selections = selections;
+	if ( stores ) {
+		stores.forEach( function ( store ) {
+			change.store.merge( store );
+			change.storeLengthAtTransaction.push( change.store.getLength() );
+		} );
+	}
+	this.selections = selections || {};
 };
 
 /* Static methods */
