@@ -17,7 +17,7 @@ QUnit.test( 'Create', function ( assert ) {
 		return documentStore.load( 'Foo' );
 	} ).then( function ( change ) {
 		assert.deepEqual(
-			change.serialize(),
+			change.toJSON(),
 			{ start: 0, transactions: [] },
 			'Load new empty document'
 		);
@@ -34,7 +34,7 @@ QUnit.test( 'Create', function ( assert ) {
 		return documentStore.load( 'Bar' );
 	} ).then( function ( change ) {
 		assert.deepEqual(
-			change.serialize(),
+			change.toJSON(),
 			{ start: 0, transactions: [] },
 			'Different document is empty'
 		);
@@ -50,7 +50,7 @@ QUnit.test( 'Create', function ( assert ) {
 		return documentStore.load( 'Foo' );
 	} ).then( function ( change ) {
 		assert.deepEqual(
-			change.serialize(),
+			change.toJSON(),
 			{ start: 0, transactions: [ [ [ '', 'W' ] ], 'o', 'rld', [ [ '', 'H' ], 5 ], 'e', 'l', 'l', 'o', ' ' ] },
 			'Transactions were saved'
 		);
@@ -59,7 +59,7 @@ QUnit.test( 'Create', function ( assert ) {
 		return documentStore.load( 'Foo' );
 	} ).then( function ( change ) {
 		assert.deepEqual(
-			change.serialize(),
+			change.toJSON(),
 			{ start: 0, transactions: [] },
 			'Reload new empty document after dropDatabase'
 		);

@@ -22,18 +22,7 @@ Logger.prototype.logEvent = function ( event, level ) {
  * @param {string} [level] Log level
  */
 Logger.prototype.logServerEvent = function ( event, level ) {
-	var key,
-		ob = {};
-	ob.clientId = 'server';
-	for ( key in event ) {
-		// e.g. ve.dm.Change
-		if ( event[ key ].serialize ) {
-			ob[ key ] = event[ key ].serialize( true );
-		} else {
-			ob[ key ] = event[ key ];
-		}
-	}
-	this.logEvent( ob, level );
+	this.logEvent( Object.assign( { clientId: 'server' }, event ), level );
 };
 
 module.exports = Logger;

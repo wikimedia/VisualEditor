@@ -1331,7 +1331,7 @@ ve.dm.Surface.prototype.storeChanges = function () {
 	dmDoc = this.getDocument();
 	change = dmDoc.getChangeSince( this.lastStoredChange );
 	if ( !change.isEmpty() ) {
-		if ( this.storage.appendToList( this.autosavePrefix + 've-changes', JSON.stringify( change.serialize() ) ) ) {
+		if ( this.storage.appendToList( this.autosavePrefix + 've-changes', JSON.stringify( change ) ) ) {
 			this.lastStoredChange = dmDoc.getCompleteHistoryLength();
 			this.storage.setObject( this.autosavePrefix + 've-selection', this.getSelection() );
 		} else {

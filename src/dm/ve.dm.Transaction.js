@@ -121,9 +121,9 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
  * Serialize the transaction into a JSONable object
  *
  * Values are not necessarily deep copied
- * @return {Object|Array} Serialized transaction
+ * @return {Object|Array} JSONable object
  */
-ve.dm.Transaction.prototype.serialize = function () {
+ve.dm.Transaction.prototype.toJSON = function () {
 	var operations;
 
 	function isSingleCodePoint( x ) {
@@ -164,6 +164,9 @@ ve.dm.Transaction.prototype.serialize = function () {
 		return operations;
 	}
 };
+
+// Deprecated alias
+ve.dm.Transaction.prototype.serialize = ve.dm.Transaction.prototype.toJSON;
 
 /**
  * Push a retain operation
