@@ -882,7 +882,7 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  * already, i.e. the Change object was created by #deserialize without deserializing store values).
  *
  * @param {boolean} [preserveStoreValues] If true, keep store values verbatim instead of serializing
- * @return {ve.dm.Change} Deserialized change
+ * @return {Object} JSONable object
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	var authorId, serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
