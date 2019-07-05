@@ -1678,7 +1678,9 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	// (which, for a table, will select the first cell). Else if we arrowed a collapsed
 	// cursor across a focusable node, select the node instead.
 	$focusNode = $( this.nativeSelection.focusNode );
+	// eslint-disable-next-line no-jquery/no-class-state
 	if ( $focusNode.hasClass( 've-ce-cursorHolder' ) ) {
+		// eslint-disable-next-line no-jquery/no-class-state
 		if ( $focusNode.hasClass( 've-ce-cursorHolder-after' ) ) {
 			direction = -1;
 			focusableNode = $focusNode.prev().data( 'view' );
@@ -1966,6 +1968,7 @@ ve.ce.Surface.prototype.onCopy = function ( e ) {
 	// When paste has no text content browsers do extreme normalization…
 	if ( this.$pasteTarget.text() === '' ) {
 		// …so put nbsp's in empty leaves
+		// eslint-disable-next-line no-jquery/no-sizzle
 		this.$pasteTarget.find( '*:not( :has( * ) )' ).html( '&nbsp;' );
 	}
 

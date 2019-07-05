@@ -1,0 +1,6 @@
+{
+	"rules": {
+		"prefer-template": "off",
+		"no-jquery/no-class-state": "off"
+	}
+}

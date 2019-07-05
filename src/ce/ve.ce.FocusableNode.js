@@ -578,6 +578,7 @@ ve.ce.FocusableNode.prototype.onFocusableTouchMove = function () {
 ve.ce.FocusableNode.prototype.onSurfaceMouseMove = function ( e ) {
 	var $target = $( e.target );
 	if (
+		// eslint-disable-next-line no-jquery/no-class-state
 		!$target.hasClass( 've-ce-focusableNode-highlight' ) &&
 		!OO.ui.contains( this.$focusable.toArray(), $target[ 0 ], true )
 	) {

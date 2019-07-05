@@ -5,7 +5,9 @@
 		"wikimedia/language/es6"
 	],
 	"rules": {
-		"max-len": 0,
-		"no-jquery/no-parse-html-literal": 0
+		"max-len": "off",
+		"no-jquery/no-class-state": "off",
+		"no-jquery/no-parse-html-literal": "off",
+		"prefer-template": "off"
 	}
 }
