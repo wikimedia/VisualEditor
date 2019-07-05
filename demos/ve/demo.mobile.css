@@ -22,6 +22,14 @@
 	border-right: 0;
 }
 
+.ve-demo-surfaceWrapper,
+.ve-ui-mobileContext {
+	max-width: 960px;
+	margin: 0 auto;
+}
+
 .ve-demo-surfaceWrapper {
 	font-size: 16px;
+	border: 0;
+	box-shadow: 0 0 6px rgba( 0, 0, 0, 0.25 );
 }
