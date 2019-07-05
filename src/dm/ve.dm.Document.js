@@ -69,7 +69,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		);
 	}
 	this.store = this.data.getStore();
-	this.completeHistory = new ve.dm.Change( 0, [], [], {} );
+	this.completeHistory = new ve.dm.Change();
 	// Use the store by reference inside the completeHistory
 	this.completeHistory.store = this.store;
 	if ( this.store.getLength() > 0 ) {

@@ -15,7 +15,7 @@ ve.dm.RebaseDocState = function VeDmRebaseDocState() {
 	/**
 	 * @property {ve.dm.Change} history History as one big change
 	 */
-	this.history = new ve.dm.Change( 0, [], [], {} );
+	this.history = new ve.dm.Change();
 
 	/**
 	 * @property {Map.<number, Object>} authors Information about each author
@@ -68,7 +68,7 @@ ve.dm.RebaseDocState.prototype.getActiveAuthors = function () {
 };
 
 ve.dm.RebaseDocState.prototype.clearHistory = function () {
-	this.history = new ve.dm.Change( 0, [], [], {} );
+	this.history = new ve.dm.Change();
 	this.authors.forEach( function ( authorData ) {
 		authorData.continueBase = null;
 	} );
