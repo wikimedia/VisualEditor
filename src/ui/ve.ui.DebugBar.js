@@ -449,12 +449,8 @@ ve.ui.DebugBar.prototype.testSquasher = function () {
 			squashedBefore,
 			squashedAfter
 		) );
-		dump = JSON.stringify( squashed.map( function ( tx ) {
-			return tx.serialize();
-		} ) );
-		doubleDump = JSON.stringify( doubleSquashed.map( function ( tx ) {
-			return tx.serialize();
-		} ) );
+		dump = JSON.stringify( squashed );
+		doubleDump = JSON.stringify( doubleSquashed );
 		if ( dump !== doubleDump ) {
 			throw new Error( 'Discrepancy splitting at i=' + i );
 		}

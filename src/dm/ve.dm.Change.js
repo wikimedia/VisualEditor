@@ -587,7 +587,7 @@ ve.dm.Change.prototype.clone = function () {
 		doc = this.selections[ authorId ].getDocument();
 		break;
 	}
-	return this.constructor.static.unsafeDeserialize( this.serialize(), doc );
+	return this.constructor.static.unsafeDeserialize( this.toJSON(), doc );
 };
 
 /**
@@ -884,16 +884,12 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  * @param {boolean} [preserveStoreValues] If true, keep store values verbatim instead of serializing
  * @return {Object} JSONable object
  */
-ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
-	var authorId, serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
+ve.dm.Change.prototype.toJSON = function ( preserveStoreValues ) {
+	var serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
 		txSerialized, stores, data,
 		getTransactionInfo = this.constructor.static.getTransactionInfo,
-		selections = {},
 		transactions = [];
 
-	for ( authorId in this.selections ) {
-		selections[ authorId ] = this.selections[ authorId ].toJSON();
-	}
 	serializeStoreValues = preserveStoreValues ? function noop( x ) {
 		return x;
 	} : this.constructor.static.serializeValue;
@@ -914,7 +910,7 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		) {
 			transactions.push( info.uniformInsert.text );
 		} else {
-			txSerialized = tx.serialize();
+			txSerialized = tx.toJSON();
 			if ( i > 0 && tx.authorId === this.transactions[ i - 1 ].authorId ) {
 				delete txSerialized.authorId;
 			}
@@ -933,11 +929,14 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	} ) ) {
 		data.stores = stores;
 	}
-	if ( Object.keys( selections ).length ) {
-		data.selections = selections;
+	if ( Object.keys( this.selections ).length ) {
+		data.selections = this.selections;
 	}
 	return data;
 };
+
+// Deprecated alias
+ve.dm.Change.prototype.serialize = ve.dm.Change.prototype.toJSON;
 
 /**
  * Get a Change with all this Change's Transactions compacted into one (or zero)
