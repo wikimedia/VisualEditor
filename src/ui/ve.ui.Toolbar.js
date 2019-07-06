@@ -202,21 +202,18 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.contextDirection.block = dirBlock;
 	}
 
-	// Array#map doesn't filter null elements
-	// eslint-disable-next-line no-jquery/no-map-util
-	activeDialogs = $.map(
-		[
-			this.surface.getDialogs(),
-			this.surface.getContext().getInspectors(),
-			this.surface.getToolbarDialogs()
-		],
-		function ( windowManager ) {
-			if ( windowManager.getCurrentWindow() ) {
-				return windowManager.getCurrentWindow().constructor.static.name;
-			}
-			return null;
+	activeDialogs = [
+		this.surface.getDialogs(),
+		this.surface.getContext().getInspectors(),
+		this.surface.getToolbarDialogs()
+	].map( function ( windowManager ) {
+		if ( windowManager.getCurrentWindow() ) {
+			return windowManager.getCurrentWindow().constructor.static.name;
 		}
-	);
+		return null;
+	} ).filter( function ( name ) {
+		return name !== null;
+	} );
 
 	this.emit( 'updateState', fragment, this.contextDirection, activeDialogs );
 };
