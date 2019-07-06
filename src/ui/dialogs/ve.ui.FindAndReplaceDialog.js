@@ -406,6 +406,7 @@ ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
 	var i, selection, viewportRange, start, end;
 
 	// Check the surface isn't hidden, such as during deactivation
+	// eslint-disable-next-line no-jquery/no-sizzle
 	if ( !this.surface || !this.surface.getView().$element.is( ':visible' ) ) {
 		return;
 	}

@@ -355,6 +355,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 			var path,
 				$li = $( e.target ).closest( '.ve-filibuster-frame' );
 
+			// eslint-disable-next-line no-jquery/no-class-state
 			if ( $li.hasClass( 've-filibuster-frame-expandable' ) ) {
 				$li.removeClass( 've-filibuster-frame-expandable' );
 				path = $li.data( 've-filibuster-frame' );
@@ -364,9 +365,12 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 				$li.children( 'span' ).replaceWith(
 					$( ve.filibuster.getObservationsHtml( path ) )
 				);
+				// eslint-disable-next-line no-jquery/no-class-state
 				$li.toggleClass( 've-filibuster-frame-expanded' );
 			} else if ( $li.children( 'ul' ).length ) {
+				// eslint-disable-next-line no-jquery/no-class-state
 				$li.toggleClass( 've-filibuster-frame-collapsed' );
+				// eslint-disable-next-line no-jquery/no-class-state
 				$li.toggleClass( 've-filibuster-frame-expanded' );
 			}
 		} );
