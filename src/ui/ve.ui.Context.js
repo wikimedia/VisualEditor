@@ -41,7 +41,7 @@ ve.ui.Context = function VeUiContext( surface, config ) {
 	// of toggle may require the instance to be fully constructed before running.
 	this.$group.addClass( 've-ui-context-menu' );
 	this.$element
-		.addClass( 've-ui-context oo-ui-element-hidden' )
+		.addClass( 've-ui-context ve-ui-context-hidden' )
 		.append( this.$focusTrapBefore, this.$group, this.$focusTrapAfter );
 };
 
@@ -203,7 +203,7 @@ ve.ui.Context.prototype.toggle = function ( show ) {
 	show = show === undefined ? !this.visible : !!show;
 	if ( show !== this.visible ) {
 		this.visible = show;
-		this.$element.toggleClass( 'oo-ui-element-hidden', !this.visible );
+		this.$element.toggleClass( 've-ui-context-hidden', !this.visible );
 	}
 	this.emit( 'resize' );
 	return ve.createDeferred().resolve().promise();
