@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.33.1
+ * OOUI v0.33.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-07-03T21:05:15Z
+ * Date: 2019-07-10T12:25:14Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -662,8 +662,14 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   max-width: 50em;
-  margin: 0;
   padding: 0.28571429em 0;
+}
+.oo-ui-fieldLayout-messages > .oo-ui-messageWidget {
+  margin-left: 0.85714286em;
+  margin-right: 0.85714286em;
+}
+.oo-ui-fieldLayout-messages > .oo-ui-messageWidget:first-child {
+  margin-top: 0.28571429em;
 }
 .oo-ui-fieldLayout-disabled > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header > .oo-ui-labelElement-label {
   color: #72777d;
@@ -945,15 +951,23 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 0.28571429em 0.85714286em;
   font-weight: bold;
 }
 .oo-ui-messageWidget .oo-ui-labelElement-label {
   display: block;
 }
+.oo-ui-messageWidget > .oo-ui-iconElement-icon {
+  background-position: 0 0;
+}
+.oo-ui-messageWidget .oo-ui-labelElement-label {
+  margin-left: 2em;
+}
 .oo-ui-messageWidget.oo-ui-messageWidget-block {
   border: 1px solid;
   padding: 1.42857143em 1.71428571em;
+}
+.oo-ui-messageWidget.oo-ui-messageWidget-block > .oo-ui-iconElement-icon {
+  background-position: 0 1.42857143em;
 }
 .oo-ui-messageWidget.oo-ui-messageWidget-block.oo-ui-flaggedElement-error {
   background-color: #fee7e6;
@@ -977,8 +991,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-messageWidget.oo-ui-flaggedElement-success:not( .oo-ui-messageWidget-block ) {
   color: #14866d;
 }
-.oo-ui-messageWidget .oo-ui-labelElement-label {
-  margin-left: 2em;
+.oo-ui-messageWidget + .oo-ui-messageWidget {
+  margin-top: 0.57142857em;
 }
 
 .oo-ui-iconWidget {
@@ -2297,14 +2311,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.33.1
+ * OOUI v0.33.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-07-03T21:05:15Z
+ * Date: 2019-07-10T12:25:14Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -3328,14 +3342,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.33.1
+ * OOUI v0.33.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-07-03T21:05:15Z
+ * Date: 2019-07-10T12:25:14Z
  */
 .oo-ui-tool {
   -webkit-box-sizing: border-box;
@@ -4025,14 +4039,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.33.1
+ * OOUI v0.33.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-07-03T21:05:15Z
+ * Date: 2019-07-10T12:25:14Z
  */
 
 .oo-ui-window {
@@ -4277,7 +4291,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding: 0.71428571em 0.85714286em;
 }
 .oo-ui-processDialog [class^='oo-ui-processDialog-actions'] .oo-ui-actionWidget.oo-ui-labelElement.oo-ui-iconElement > .oo-ui-buttonElement-button {
-  padding-left: 2.28571429em;
+  padding-left: 2.64285714em;
 }
 .oo-ui-processDialog-actions-safe .oo-ui-actionWidget > .oo-ui-buttonElement-button,
 .oo-ui-processDialog-actions-other .oo-ui-actionWidget > .oo-ui-buttonElement-button {
@@ -4314,7 +4328,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-processDialog-errors {
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 3em 3em 1.5em 3em;
+  padding: 3em 3em 0 3em;
   text-align: center;
 }
 .oo-ui-processDialog-errors .oo-ui-buttonWidget {
@@ -4323,15 +4337,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-processDialog-errors-title {
   font-size: 1.5em;
   color: #000;
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
 }
 .oo-ui-processDialog-error {
-  text-align: left;
-  margin: 1em;
-  padding: 1em;
+  background-color: #fee7e6;
+  margin: 1em 0 0;
   border: 1px solid #d33;
-  background-color: #fff7f7;
-  border-radius: 2px;
+  padding: 1.42857143em 1.71428571em;
+  text-align: left;
 }
 .oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-content .oo-ui-window-head,
 .oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-navigation,
@@ -4339,6 +4352,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   min-height: 3.14285714em;
 }
 .oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-location {
+  margin-left: 1em;
   text-align: left;
 }
 .oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-title {
@@ -4428,14 +4442,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.33.1
+ * OOUI v0.33.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-07-03T21:05:15Z
+ * Date: 2019-07-10T12:25:14Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
