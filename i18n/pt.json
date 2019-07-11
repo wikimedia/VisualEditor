@@ -161,6 +161,8 @@
 	"visualeditor-linkcontext-label-label": "Texto da hiperligação",
 	"visualeditor-linkcontext-remove": "Remover hiperligação",
 	"visualeditor-linkinspector-title": "Hiperligação",
+	"visualeditor-linkinspector-title-add": "Acrescentar uma hiperligação",
+	"visualeditor-linkinspector-title-edit": "Editar hiperligação",
 	"visualeditor-listbutton-bullet-tooltip": "Lista com marcadores",
 	"visualeditor-listbutton-check-tooltip": "Lista de verificação",
 	"visualeditor-listbutton-number-tooltip": "Lista numerada",
