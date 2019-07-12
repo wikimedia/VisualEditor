@@ -261,9 +261,14 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	this.focusableSurface = this.root.getSurface();
 
 	// DOM changes (duplicated from constructor in case this.$element is replaced)
-	this.$element
-		.addClass( 've-ce-focusableNode' )
-		.prop( 'contentEditable', 'false' );
+	// eslint-disable-next-line no-jquery/no-class-state
+	if ( !this.$element.hasClass( 've-ce-focusableNode' ) ) {
+		// Optimization: If this.$element has the correct class assume it has already
+		// been setup in the construct and avoid expensive DOM property manipulation
+		this.$element
+			.addClass( 've-ce-focusableNode' )
+			.prop( 'contentEditable', 'false' );
+	}
 
 	// Events
 	this.$focusable.on( {
