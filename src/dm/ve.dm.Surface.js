@@ -68,6 +68,9 @@ ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
 	this.synchronizer = null;
 	this.storage = ve.init.platform.sessionStorage;
 
+	// Let document know about the attachedRoot
+	this.documentModel.attachedRoot = this.attachedRoot;
+
 	// Events
 	this.getDocument().connect( this, {
 		transact: 'onDocumentTransact',

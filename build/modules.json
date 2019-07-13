@@ -499,6 +499,7 @@
 			"src/ce/nodes/ve.ce.TableRowNode.js",
 			"src/ce/nodes/ve.ce.TableSectionNode.js",
 			"src/ce/nodes/ve.ce.TextNode.js",
+			"src/ce/nodes/ve.ce.UnrenderedNode.js",
 			"src/ce/nodes/ve.ce.ImageNode.js",
 			"src/ce/nodes/ve.ce.BlockImageNode.js",
 			"src/ce/nodes/ve.ce.BlockImageCaptionNode.js",

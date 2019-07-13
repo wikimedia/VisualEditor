@@ -175,7 +175,18 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
  */
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	var i, length, removals, position, j, fragment,
+		inAttachedRoot, upstreamOfAttachedRoot,
+		// attachedRoot and doc can be undefined in tests
+		dmDoc = this.getModel().getDocument(),
+		attachedRoot = dmDoc && dmDoc.attachedRoot,
+		isAllAttached = !attachedRoot || attachedRoot instanceof ve.dm.DocumentNode,
 		args = [];
+
+	if ( !isAllAttached ) {
+		// Optimization: Skip traversal when whole doc is attached
+		inAttachedRoot = this.getModel().isDownstreamOf( attachedRoot );
+		upstreamOfAttachedRoot = attachedRoot.collectUpstream();
+	}
 
 	for ( i = 0, length = arguments.length; i < length; i++ ) {
 		args.push( arguments[ i ] );
@@ -183,8 +194,12 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			args[ i ] = ve.ce.nodeFactory.createFromModel( args[ i ] );
-			args[ i ].model.connect( this, { update: 'onModelUpdate' } );
+			if ( isAllAttached || inAttachedRoot || upstreamOfAttachedRoot.indexOf( args[ i ] ) !== -1 ) {
+				args[ i ] = ve.ce.nodeFactory.createFromModel( args[ i ] );
+				args[ i ].model.connect( this, { update: 'onModelUpdate' } );
+			} else {
+				args[ i ] = new ve.ce.UnrenderedNode( args[ i ] );
+			}
 		}
 	}
 	removals = this.children.splice.apply( this.children, args );
