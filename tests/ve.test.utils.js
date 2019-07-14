@@ -365,12 +365,14 @@
 	};
 
 	/**
-	 * Create a CE surface from a document
+	 * Create a CE surface from a document or surface model
 	 *
-	 * @param {ve.dm.Document} doc Document
+	 * TODO: Rename to createSurfaceViewFromModel
+	 *
+	 * @param {ve.dm.Document|ve.dm.Surface} docOrSurface Document or surface model
 	 * @return {ve.ce.Surface} CE surface
 	 */
-	ve.test.utils.createSurfaceViewFromDocument = function ( doc ) {
+	ve.test.utils.createSurfaceViewFromDocument = function ( docOrSurface ) {
 		var model, view,
 			mockSurface = {
 				$blockers: $( '<div>' ),
@@ -419,7 +421,7 @@
 				dataTransferHandlerFactory: ve.ui.dataTransferHandlerFactory
 			};
 
-		model = new ve.dm.Surface( doc );
+		model = docOrSurface instanceof ve.dm.Surface ? docOrSurface : new ve.dm.Surface( docOrSurface );
 		view = new ve.ce.Surface( model, mockSurface );
 
 		view.surface = mockSurface;

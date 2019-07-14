@@ -450,8 +450,6 @@ module.exports = function ( grunt ) {
 								// CE
 								'src/ce/annotations/ve.ce.DeleteAnnotation.js',
 								'src/ce/annotations/ve.ce.InsertAnnotation.js',
-								// TODO: Add coverage for section editing
-								'src/ce/nodes/ve.ce.UnrenderedNode.js',
 								'src/ce/nodes/ve.ce.CheckListItemNode.js',
 								'src/ce/nodes/ve.ce.GeneratedContentNode.js',
 								'src/ce/nodes/ve.ce.InternalItemNode.js',

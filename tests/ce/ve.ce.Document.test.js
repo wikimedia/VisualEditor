@@ -209,3 +209,22 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		view.destroy();
 	}
 } );
+
+QUnit.test( 'attachedRoot', function ( assert ) {
+	var dmDoc = ve.dm.converter.getModelFromDom(
+			ve.createDocumentFromHtml(
+				'<section>Foo</section><section>Bar</section><section>Baz</section>'
+			)
+		),
+		attachedRoot = dmDoc.getDocumentNode().children[ 1 ],
+		surfaceModel = new ve.dm.Surface( dmDoc, attachedRoot ),
+		surfaceView = ve.test.utils.createSurfaceViewFromDocument( surfaceModel );
+
+	assert.deepEqual(
+		surfaceView.getDocument().getDocumentNode().children.map( function ( node ) {
+			return node.type;
+		} ),
+		[ 'unrendered', 'section', 'unrendered', 'unrendered' ],
+		'Only attached root is rendered'
+	);
+} );
