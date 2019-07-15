@@ -187,7 +187,7 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
 	// with non-text nodes. It just works for the main cases that are important
 	// in the existing IME tests.
 
-	// Remove all descendent text nodes
+	// Remove all descendant text nodes
 	// This may clobber the selection, so the test had better call changeSel next.
 	paragraph = this.getParagraph();
 	$( paragraph ).find( '*' ).addBack().contents().each( function () {

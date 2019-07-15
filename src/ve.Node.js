@@ -465,7 +465,7 @@ ve.Node.prototype.findParent = function ( type ) {
 };
 
 /**
- * Traverse upstream and collect all nodes, includes the node itself.
+ * Traverse upstream and collect all nodes, including the node itself.
  *
  * @return {ve.Node[]} List of nodes which are upstream of the current node
  */
@@ -478,10 +478,10 @@ ve.Node.prototype.collectUpstream = function () {
 };
 
 /**
- * Check if the current node is a descendent of (or equal to) a sepcific node
+ * Check if the current node is a descendant of (or equal to) a specific node.
  *
  * @param {ve.Node} upstreamNode Parent node to check for
- * @return {boolean} Current node is a descendent
+ * @return {boolean} Current node is a descendant
  */
 ve.Node.prototype.isDownstreamOf = function ( upstreamNode ) {
 	return this.traverseUpstream( function ( node ) {
@@ -490,7 +490,7 @@ ve.Node.prototype.isDownstreamOf = function ( upstreamNode ) {
 };
 
 /**
- * Get the offset path from the document node to this node
+ * Get the offset path from the document node to this node.
  *
  * @return {number[]|null} The offset path, or null if not attached to a DocumentNode
  */

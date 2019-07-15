@@ -97,7 +97,7 @@ ve.ce.Annotation.prototype.getContentContainer = function () {
 };
 
 /**
- * Attach completed contents to the annotation as descendent nodes, if not already attached
+ * Attach completed contents to the annotation as descendant nodes, if not already attached
  *
  * No further contents should be appended into the content container after calling this
  */

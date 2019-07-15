@@ -83,7 +83,7 @@ ve.ce.ActiveNode.prototype.onActiveNodeSurfaceModelSelect = function ( selection
 
 	if ( coveringRange && this.model.getRange().containsRange( new ve.Range( coveringRange.from ) ) ) {
 		// Only set this as the active node if active node is empty, or not a
-		// descendent of this node.
+		// descendant of this node.
 		if (
 			!surface.getActiveNode() ||
 			!surface.getActiveNode().traverseUpstream( function ( node ) {
