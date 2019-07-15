@@ -194,7 +194,11 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 	// Convert models to views and attach them to this node
 	if ( args.length >= 3 ) {
 		for ( i = 2, length = args.length; i < length; i++ ) {
-			if ( isAllAttached || inAttachedRoot || upstreamOfAttachedRoot.indexOf( args[ i ] ) !== -1 ) {
+			if (
+				isAllAttached || inAttachedRoot || upstreamOfAttachedRoot.indexOf( args[ i ] ) !== -1 ||
+				// HACK: An internal item node was requested directly, e.g. for preview (T228070)
+				args[ i ].findParent( ve.dm.InternalItemNode )
+			) {
 				args[ i ] = ve.ce.nodeFactory.createFromModel( args[ i ] );
 				args[ i ].model.connect( this, { update: 'onModelUpdate' } );
 			} else {
