@@ -197,6 +197,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 			if (
 				isAllAttached || inAttachedRoot || upstreamOfAttachedRoot.indexOf( args[ i ] ) !== -1 ||
 				// HACK: An internal item node was requested directly, e.g. for preview (T228070)
+				// TODO: Come up with a more explict way to skip the UnrenderedNode optimisation.
 				args[ i ].findParent( ve.dm.InternalItemNode )
 			) {
 				args[ i ] = ve.ce.nodeFactory.createFromModel( args[ i ] );
