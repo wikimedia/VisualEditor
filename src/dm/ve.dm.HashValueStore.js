@@ -263,6 +263,10 @@ ve.dm.HashValueStore.prototype.values = function ( hashes ) {
 ve.dm.HashValueStore.prototype.merge = function ( other ) {
 	var i, len, hash;
 
+	if ( other === this ) {
+		return;
+	}
+
 	for ( i = 0, len = other.hashes.length; i < len; i++ ) {
 		hash = other.hashes[ i ];
 		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, hash ) ) {
