@@ -4269,15 +4269,21 @@ ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
  * Update the selection to contain the contents of a node
  *
  * @param {HTMLElement} node
+ * @param {string} [collapse] Collaspse to 'start' or 'end'
  * @return {boolean} Whether the selection changed
  */
-ve.ce.Surface.prototype.selectNodeContents = function ( node ) {
+ve.ce.Surface.prototype.selectNodeContents = function ( node, collapse ) {
 	var anchor, focus;
 	if ( !node ) {
 		return false;
 	}
 	anchor = ve.ce.nextCursorOffset( node.childNodes[ 0 ] );
 	focus = ve.ce.previousCursorOffset( node.childNodes[ node.childNodes.length - 1 ] );
+	if ( collapse === 'start' ) {
+		focus = anchor;
+	} else if ( collapse === 'end' ) {
+		anchor = focus;
+	}
 	return this.showSelectionState( new ve.SelectionState( {
 		anchorNode: anchor.node,
 		anchorOffset: anchor.offset, // Past the nail

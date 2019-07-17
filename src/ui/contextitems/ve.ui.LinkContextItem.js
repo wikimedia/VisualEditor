@@ -113,7 +113,11 @@ ve.ui.LinkContextItem.prototype.updateLabelPreview = function () {
 ve.ui.LinkContextItem.prototype.onLabelButtonClick = function () {
 	var surface = this.context.getSurface().getView(),
 		annotationView = this.getAnnotationView();
-	surface.selectNodeContents( annotationView.$element[ 0 ] );
+
+	surface.selectNodeContents(
+		annotationView.$element[ 0 ],
+		this.context.isMobile() ? 'end' : undefined
+	);
 	ve.track( 'activity.' + this.constructor.static.name, { action: 'context-label' } );
 };
 
