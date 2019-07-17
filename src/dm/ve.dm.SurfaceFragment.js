@@ -12,7 +12,7 @@
  * @constructor
  * @param {ve.dm.Surface} surface Target surface
  * @param {ve.dm.Selection} [selection] Selection within target document, current selection used by default
- * @param {boolean} [noAutoSelect] Update the surface's selection when making changes
+ * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
  * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
  */
 ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, selection, noAutoSelect, excludeInsertions ) {
