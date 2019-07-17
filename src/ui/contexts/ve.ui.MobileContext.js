@@ -53,6 +53,36 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 };
 
 /**
+ * Stripped down version of onInspectorOpening as we don't need to hide/show
+ * the context because the inspector is full screen.
+ * @inheritdoc
+ */
+ve.ui.MobileContext.prototype.onInspectorOpening = function ( win, opening ) {
+	var context = this,
+		observer = this.surface.getView().surfaceObserver;
+
+	this.inspector = win;
+
+	// Shut down the SurfaceObserver as soon as possible, so it doesn't get confused
+	// by the selection moving around in IE. Will be reenabled when inspector closes.
+	// FIXME this should be done in a nicer way, managed by the Surface classes
+	observer.pollOnce();
+	observer.stopTimerLoop();
+
+	opening
+		.then( function ( opened ) {
+			opened.then( function ( closed ) {
+				closed.always( function () {
+					context.inspector = null;
+					// Reenable observer
+					observer.startTimerLoop();
+					context.afterContextChange();
+				} );
+			} );
+		} );
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.toggleMenu = function ( show ) {
