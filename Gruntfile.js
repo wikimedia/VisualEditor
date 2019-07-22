@@ -407,8 +407,8 @@ module.exports = function ( grunt ) {
 				},
 				autoWatch: false
 			},
-			main: {
-				browsers: [ 'ChromeCustom' ], // T200347: Temporarily disabled `, 'Firefox'*/ ],`
+			chrome: {
+				browsers: [ 'ChromeCustom' ],
 				preprocessors: {
 					'rebaser/src/**/*.js': [ 'coverage' ],
 					'src/**/*.js': [ 'coverage' ]
@@ -498,6 +498,10 @@ module.exports = function ( grunt ) {
 					}
 				}
 			},
+			// Seperate job for Firefox as we don't want a second coverage report.
+			firefox: {
+				browsers: [ 'FirefoxHeadless' ]
+			},
 			bg: {
 				browsers: [ 'Chrome', 'Firefox' ],
 				singleRun: false,
@@ -540,7 +544,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'banana' ] );
-	grunt.registerTask( 'unit', [ 'karma:main' ] );
+	grunt.registerTask( 'unit', [ 'karma:chrome', 'karma:firefox' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
 	grunt.registerTask( 'ci', [ '_test', 'svgmin', 'git-status' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
