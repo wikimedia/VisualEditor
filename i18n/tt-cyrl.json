@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ajdar",
-			"Ильнар"
+			"Ильнар",
+			"Ерней"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -25,7 +26,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Сызымланган",
 	"visualeditor-changedir-tool-ltr": "Сулдан уңга күчерү",
 	"visualeditor-changedir-tool-rtl": "Уңнан сулга күчерү",
-	"visualeditor-clearbutton-tooltip": "Стильне чистарту",
+	"visualeditor-clearbutton-tooltip": "Бетерү",
 	"visualeditor-clipboard-copy": "Күчерелмәләү",
 	"visualeditor-clipboard-cut": "Кисү",
 	"visualeditor-clipboard-paste": "Кую",
