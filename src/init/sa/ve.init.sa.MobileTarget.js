@@ -17,6 +17,8 @@
 ve.init.sa.MobileTarget = function VeInitSaMobileTarget( config ) {
 	// Parent constructor
 	ve.init.sa.MobileTarget.super.call( this, config );
+
+	this.$element.addClass( 've-init-mobileTarget' );
 };
 
 /* Inheritance */
