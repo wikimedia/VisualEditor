@@ -61,6 +61,7 @@ QUnit.test( 'getFirstSectionNode', function ( assert ) {
 
 QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', function ( assert ) {
 	var expectedSelection,
+		realVeCeSurfaceGetOffsetFromCoords = ve.ce.Surface.prototype.getOffsetFromCoords,
 		view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) ),
 		model = view.getModel(),
 		documentNode = view.getDocument().getDocumentNode(),
@@ -72,48 +73,58 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 			preventDefault: function () {}
 		};
 
-	tableNode.onTableMouseDown( e );
-	tableNode.onTableMouseMove( e );
-	tableNode.onTableMouseUp( e );
+	// Fake ve.ce.Surface#getOffsetFromCoords (the method doesn't work properly in this unit
+	// test, because our mouse event dummy coordinates do not actually relate in any way to
+	// the test surface coordinates).
+	ve.ce.Surface.prototype.getOffsetFromCoords = function () {
+		return -1;
+	};
+	try {
+		tableNode.onTableMouseDown( e );
+		tableNode.onTableMouseMove( e );
+		tableNode.onTableMouseUp( e );
 
-	expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
-		model.getDocument(),
-		{
-			type: 'table',
-			tableRange: new ve.Range( 0, 171 ),
-			fromCol: 1,
-			fromRow: 3,
-			toCol: 3,
-			toRow: 5
-		}
-	);
-	assert.equalHash( model.getSelection(), expectedSelection, 'Selection after mouse up' );
+		expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+			model.getDocument(),
+			{
+				type: 'table',
+				tableRange: new ve.Range( 0, 171 ),
+				fromCol: 1,
+				fromRow: 3,
+				toCol: 3,
+				toRow: 5
+			}
+		);
+		assert.equalHash( model.getSelection(), expectedSelection, 'Selection after mouse up' );
 
-	tableNode.onTableDblClick( e );
+		tableNode.onTableDblClick( e );
 
-	expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
-		model.getDocument(),
-		new ve.Range( 94 )
-	);
-	assert.equalHash( model.getSelection(), expectedSelection, 'Selection after double click' );
+		expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+			model.getDocument(),
+			new ve.Range( 94 )
+		);
+		assert.equalHash( model.getSelection(), expectedSelection, 'Selection after double click' );
 
-	ve.extendObject( e, { target: e.target.previousSibling, shiftKey: true } );
-	tableNode.onTableMouseDown( e );
-	tableNode.onTableMouseUp( e );
+		ve.extendObject( e, { target: e.target.previousSibling, shiftKey: true } );
+		tableNode.onTableMouseDown( e );
+		tableNode.onTableMouseUp( e );
 
-	expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
-		model.getDocument(),
-		{
-			type: 'table',
-			tableRange: new ve.Range( 0, 171 ),
-			fromCol: 3,
-			fromRow: 3,
-			toCol: 0,
-			toRow: 5
-		}
-	);
+		expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+			model.getDocument(),
+			{
+				type: 'table',
+				tableRange: new ve.Range( 0, 171 ),
+				fromCol: 3,
+				fromRow: 3,
+				toCol: 0,
+				toRow: 5
+			}
+		);
 
-	assert.equalHash( model.getSelection(), expectedSelection, 'Selection after Shift-click on another cell' );
+		assert.equalHash( model.getSelection(), expectedSelection, 'Selection after Shift-click on another cell' );
+	} finally {
+		ve.ce.Surface.prototype.getOffsetFromCoords = realVeCeSurfaceGetOffsetFromCoords;
+	}
 } );
 
 QUnit.test( 'onTableMouseDown', function ( assert ) {
