@@ -78,7 +78,7 @@ ve.ui.Context.static.isMobile = false;
  * @return {boolean} Context is for mobile devices
  */
 ve.ui.Context.prototype.isMobile = function () {
-	return ve.newMobileContext ? false : this.constructor.static.isMobile;
+	return this.constructor.static.isMobile;
 };
 
 /**

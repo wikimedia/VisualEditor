@@ -16,31 +16,9 @@
 
 .ve-ui-linearContextItem-title > .oo-ui-labelWidget {
 	margin-left: 0.3em;
-}
-
-/* Only used in mobile contexts */
-.ve-ui-linearContextItem-info {
-	display: table-cell;
-	position: relative;
-	width: 99%;
-}
-
-.ve-ui-desktopContext .ve-ui-linearContextItem-info,
-.ve-ui-mobileContext-new .ve-ui-linearContextItem-info {
-	display: none;
-}
-
-.ve-ui-linearContextItem-description {
-	color: #72777d;
-	position: absolute;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-	line-height: 3.6em;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	word-wrap: break-word;
+	white-space: pre-line;
+	vertical-align: top;
 }
 
 .ve-ui-linearContextItem-actions {
@@ -56,21 +34,6 @@
 	overflow: auto;
 }
 
-.ve-ui-mobileContext .ve-ui-linearContextItem-body {
-	display: none;
-}
-
 .ve-ui-linearContextItem-body:not( :empty ) {
 	padding: 0 1em 1em 1em;
-}
-
-.ve-ui-desktopContext .ve-ui-linearContextItem-title > .oo-ui-labelWidget,
-.ve-ui-mobileContext-new .ve-ui-linearContextItem-title > .oo-ui-labelWidget {
-	word-wrap: break-word;
-	white-space: pre-line;
-	vertical-align: top;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-title > .oo-ui-labelWidget {
-	display: inline;
 }
