@@ -106,6 +106,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.getModel().connect( this, { select: 'onModelSelect' } );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
 	this.getView().connect( this, { position: 'onViewPosition' } );
+	this.getContext().connect( this, { resize: 'onContextResize' } );
 
 	// Initialization
 	this.$menus.append( this.context.$element );
@@ -693,6 +694,34 @@ ve.ui.Surface.prototype.setPadding = function ( padding ) {
 	ve.extendObject( this.padding, padding );
 	// Deprecated, use this.padding.top
 	this.toolbarHeight = this.padding.top;
+};
+
+/**
+ * Handle resize events from the context
+ */
+ve.ui.Surface.prototype.onContextResize = function () {
+	this.setPadding( { bottom: this.context.$element[ 0 ].clientHeight } );
+	this.adjustVisiblePadding();
+	this.scrollSelectionIntoView();
+};
+
+/**
+ * Adjust visible padding on the surface to allow the whole document
+ * to be scrolled to.
+ */
+ve.ui.Surface.prototype.adjustVisiblePadding = function () {
+	var bottom;
+	if ( OO.ui.isMobile() ) {
+		if ( ve.init.platform.constructor.static.isIos() && this.getView().getSelection().isNativeCursor() ) {
+			// iOS needs a whole extra page of padding when the virtual keyboard is show
+			bottom = this.$element.height() - this.padding.top;
+		} else {
+			// otherwise just add padding to account for the context
+			bottom = this.padding.bottom;
+		}
+		this.getView().$attachedRootNode.css( 'padding-bottom', bottom );
+		this.scrollSelectionIntoView();
+	}
 };
 
 /**

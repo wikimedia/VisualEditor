@@ -682,6 +682,7 @@
 			"src/ui/styles/inspectors/ve.ui.CommentInspector.css",
 			"src/ui/styles/inspectors/ve.ui.FragmentInspector.css",
 			"src/ui/styles/inspectors/ve.ui.LanguageInspector.css",
+			"src/ui/styles/ve.ui.Context.css",
 			"src/ui/styles/ve.ui.ContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.LinearContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.TableLineContextItem.css",

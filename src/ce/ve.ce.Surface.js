@@ -706,21 +706,12 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  * @fires activation
  */
 ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
-	var surface = this;
 	this.showAsActivated = showAsActivated;
 	this.hideSelection = hideSelection;
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
 		// until the surface is activated
 		this.surfaceObserver.disable();
-		// Wait for keyboard to hide before adding deactivated class (which shows
-		// mobile context)
-		setTimeout( function () {
-			if ( surface.deactivated ) {
-				// Check surface is still deactivated
-				surface.surface.$element.addClass( 've-ui-surface-deactivated' );
-			}
-		}, 250 );
 		this.deactivated = true;
 		this.previousActiveAnnotations = this.activeAnnotations;
 		this.checkDelayedSequences();
@@ -748,7 +739,10 @@ ve.ce.Surface.prototype.activate = function () {
 		this.hideSelection = false;
 		this.updateDeactivatedSelection();
 		this.surfaceObserver.enable();
-		this.surface.$element.removeClass( 've-ui-surface-deactivated' );
+		if ( OO.ui.isMobile() ) {
+			// Activating triggers a context hide on mobile
+			this.model.emit( 'contextChange' );
+		}
 
 		previousSelection = this.getModel().getSelection();
 
