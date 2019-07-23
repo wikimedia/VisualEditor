@@ -17,6 +17,8 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config ) {
+	var contextItem = this;
+
 	config = config || {};
 
 	// Parent constructor
@@ -60,6 +62,7 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 		this.closeButton.on( 'click', function () {
 			context.toggleMenu( false );
 			context.toggle( false );
+			ve.track( 'activity.' + contextItem.constructor.static.name, { action: 'context-close' } );
 		} );
 	} else {
 		// Desktop
