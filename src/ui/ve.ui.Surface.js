@@ -103,9 +103,16 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	} );
 
 	// Events
-	this.getModel().connect( this, { select: 'onModelSelect' } );
+	this.getModel().connect( this, {
+		select: 'onModelSelect',
+		blur: 'onModelBlur',
+		focus: 'onModelFocus'
+	} );
 	this.getModel().getDocument().connect( this, { transact: 'onDocumentTransact' } );
-	this.getView().connect( this, { position: 'onViewPosition' } );
+	this.getView().connect( this, {
+		position: 'onViewPosition',
+		activation: 'onViewActivation'
+	} );
 	this.getContext().connect( this, { resize: 'onContextResize' } );
 
 	// Initialization
@@ -706,6 +713,27 @@ ve.ui.Surface.prototype.onContextResize = function () {
 };
 
 /**
+ * Handle surface model blur events
+ */
+ve.ui.Surface.prototype.onModelBlur = function () {
+	this.adjustVisiblePadding();
+};
+
+/**
+ * Handle surface model focus events
+ */
+ve.ui.Surface.prototype.onModelFocus = function () {
+	this.adjustVisiblePadding();
+};
+
+/**
+ * Handle surface view activation events
+ */
+ve.ui.Surface.prototype.onViewActivation = function () {
+	this.adjustVisiblePadding();
+};
+
+/**
  * Adjust visible padding on the surface to allow the whole document
  * to be scrolled to.
  */
@@ -714,7 +742,7 @@ ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 	if ( OO.ui.isMobile() ) {
 		if ( ve.init.platform.constructor.static.isIos() && this.getView().getSelection().isNativeCursor() ) {
 			// iOS needs a whole extra page of padding when the virtual keyboard is show
-			bottom = this.$element.height() - this.padding.top;
+			bottom = $( window ).height() - this.padding.top;
 		} else {
 			// otherwise just add padding to account for the context
 			bottom = this.padding.bottom;
