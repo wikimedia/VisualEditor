@@ -84,7 +84,6 @@ ve.ui.FragmentDialog.prototype.getTeardownProcess = function ( data ) {
 		.first( function () {
 			this.fragment.select();
 		}, this );
-	ve.track( 'activity.' + this.constructor.static.name, { action: 'dialog-' + ( data && data.action || 'abort' ) } );
 	// Mixin method
 	return ve.ui.FragmentWindow.prototype.getTeardownProcess.call( this, data, process );
 };

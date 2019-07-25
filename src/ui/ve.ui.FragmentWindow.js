@@ -59,6 +59,7 @@ ve.ui.FragmentWindow.prototype.getSetupProcess = function ( data, process ) {
  * @inheritdoc OO.ui.Window
  */
 ve.ui.FragmentWindow.prototype.getTeardownProcess = function ( data, process ) {
+	ve.track( 'activity.' + this.constructor.static.name, { action: 'dialog-' + ( data && data.action || 'abort' ) } );
 	return process.next( function () {
 		this.fragment = null;
 		this.previousSelection = null;

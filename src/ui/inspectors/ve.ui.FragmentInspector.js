@@ -133,9 +133,6 @@ ve.ui.FragmentInspector.prototype.getSetupProcess = function ( data ) {
 ve.ui.FragmentInspector.prototype.getTeardownProcess = function ( data ) {
 	// Parent method
 	var process = ve.ui.FragmentInspector.super.prototype.getTeardownProcess.call( this, data );
-
-	ve.track( 'activity.' + this.constructor.static.name, { action: 'dialog-' + ( data && data.action || 'abort' ) } );
-
 	// Mixin method
 	return ve.ui.FragmentWindow.prototype.getTeardownProcess.call( this, data, process );
 };
