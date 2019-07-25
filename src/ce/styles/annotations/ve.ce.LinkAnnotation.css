@@ -12,6 +12,11 @@
 	background-color: #e6f1ff;
 }
 
+.ve-init-mobileTarget .ve-ce-surface:not( .ve-ce-surface-deactivated ) .ve-ce-linkAnnotation.ve-ce-annotation-active {
+	box-shadow: 0 0 0 1px #36c;
+	background-color: transparent;
+}
+
 .ve-ce-nail:not( .ve-ce-nail-debug ) {
 	width: 0;
 	height: 0;

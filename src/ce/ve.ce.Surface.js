@@ -715,6 +715,7 @@ ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChan
 		this.deactivated = true;
 		this.previousActiveAnnotations = this.activeAnnotations;
 		this.checkDelayedSequences();
+		this.$element.addClass( 've-ce-surface-deactivated' );
 		// Remove ranges so the user can't accidentally type into the document,
 		// and so virtual keyboards are hidden.
 		if ( !noSelectionChange ) {
@@ -739,6 +740,7 @@ ve.ce.Surface.prototype.activate = function () {
 		this.hideSelection = false;
 		this.updateDeactivatedSelection();
 		this.surfaceObserver.enable();
+		this.$element.removeClass( 've-ce-surface-deactivated' );
 		if ( OO.ui.isMobile() ) {
 			// Activating triggers a context hide on mobile
 			this.model.emit( 'contextChange' );
