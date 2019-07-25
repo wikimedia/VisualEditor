@@ -26,8 +26,6 @@ OO.inheritClass( ve.ui.LinkAnnotationInspector, ve.ui.AnnotationInspector );
 
 ve.ui.LinkAnnotationInspector.static.name = 'link';
 
-ve.ui.LinkAnnotationInspector.static.title = OO.ui.deferMsg( 'visualeditor-linkinspector-title' );
-
 ve.ui.LinkAnnotationInspector.static.modelClasses = [ ve.dm.LinkAnnotation ];
 
 /* Methods */
@@ -124,6 +122,15 @@ ve.ui.LinkAnnotationInspector.prototype.createAnnotationInput = function () {
 ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
+			var title = ve.msg(
+				this.isReadOnly() ?
+					'visualeditor-linkinspector-title' : (
+						this.isNew ?
+							'visualeditor-linkinspector-title-add' :
+							'visualeditor-linkinspector-title-edit'
+					)
+			);
+			this.title.setLabel( title ).setTitle( title );
 			this.annotationInput.setAnnotation( this.initialAnnotation );
 			this.annotationInput.setReadOnly( this.isReadOnly() );
 			this.updateActions();

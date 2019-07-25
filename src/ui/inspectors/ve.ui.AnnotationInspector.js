@@ -141,7 +141,6 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			var initialCoveringAnnotation,
-				isNew = false,
 				fragment = this.getFragment(),
 				surfaceModel = fragment.getSurface(),
 				// Partial annotations will be expanded later
@@ -180,6 +179,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 
 				// Selection expanded, but still no annotation, create one from the selection
 				if ( !fragment.getSelection().isCollapsed() && !annotation ) {
+					this.isNew = true;
 					annotation = this.getAnnotationFromFragment( fragment );
 					if ( annotation ) {
 						fragment.annotateContent( 'set', annotation );
@@ -201,8 +201,8 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			initialCoveringAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
 			// Fallback to a default annotation
 			if ( !this.initialAnnotation ) {
+				this.isNew = true;
 				this.initialAnnotation = this.getAnnotationFromFragment( fragment );
-				isNew = true;
 			} else if (
 				initialCoveringAnnotation &&
 				initialCoveringAnnotation.compareTo( this.initialAnnotation )
@@ -220,7 +220,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			this.actions.setMode( this.getMode() );
 			// isEditing is true when we are applying a new annotation because a
 			// stub is applied immediately, so use isNew instead
-			if ( isNew && this.isReadOnly() ) {
+			if ( this.isNew && this.isReadOnly() ) {
 				return ve.createDeferred().reject().promise();
 			}
 		}, this );
@@ -334,5 +334,6 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			this.initialSelection = null;
 			this.initialAnnotation = null;
 			this.initialAnnotationIsCovering = false;
+			this.isNew = false;
 		}, this );
 };

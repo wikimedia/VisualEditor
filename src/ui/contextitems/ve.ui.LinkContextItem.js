@@ -22,19 +22,49 @@ ve.ui.LinkContextItem = function VeUiLinkContextItem( context, model, config ) {
 	this.$element.addClass( 've-ui-linkContextItem' );
 
 	this.labelPreview = new OO.ui.LabelWidget();
-	this.labelButton = new OO.ui.ButtonWidget( {
-		label: OO.ui.deferMsg( 'visualeditor-linkcontext-label-change' ),
-		framed: false,
-		flags: [ 'progressive' ]
-	} ).connect( this, { click: 'onLabelButtonClick' } );
+	if ( this.context.isMobile() ) {
+		this.labelButton = new OO.ui.ButtonWidget( {
+			framed: false,
+			icon: 'edit',
+			title: OO.ui.deferMsg( 'visualeditor-linkcontext-label-change' ),
+			flags: [ 'progressive' ]
+		} );
+		this.$labelLayout = $( '<div>' ).addClass( 've-ui-linkContextItem-label' ).append(
+			$( '<div>' ).addClass( 've-ui-linkContextItem-label-body' ).append(
+				new OO.ui.LabelWidget( {
+					classes: [ 've-ui-linkContextItem-label-label' ],
+					label: OO.ui.deferMsg( 'visualeditor-linkcontext-label-label' )
+				} ).$element,
+				$( '<div>' ).addClass( 've-ui-linkContextItem-label-preview' ).append( this.labelPreview.$element )
+			)
+		);
+		this.$bodyAction.before( this.$labelLayout );
 
-	this.$labelLayout = $( '<div>' ).addClass( 've-ui-linkContextItem-label' ).append(
-		$( '<div>' ).addClass( 've-ui-linkContextItem-label-label' ).append(
-			new OO.ui.IconWidget( { icon: 'quotes' } ).$element,
-			new OO.ui.LabelWidget( { label: OO.ui.deferMsg( 'visualeditor-linkcontext-label-label' ) } ).$element
-		),
-		$( '<div>' ).addClass( 've-ui-linkContextItem-label-preview' ).append( this.labelPreview.$element )
-	);
+		this.$innerBody = $( '<div>' ).addClass( 've-ui-linkContextItem-inner-body' );
+		this.$body.append(
+			new OO.ui.LabelWidget( {
+				classes: [ 've-ui-linkContextItem-link-label' ],
+				label: OO.ui.deferMsg( 'visualeditor-linkinspector-title' )
+			} ).$element,
+			this.$innerBody
+		);
+		// Sub-classes should now append content to $innerBody
+		this.$body = this.$innerBody;
+	} else {
+		this.labelButton = new OO.ui.ButtonWidget( {
+			label: OO.ui.deferMsg( 'visualeditor-linkcontext-label-change' ),
+			framed: false,
+			flags: [ 'progressive' ]
+		} );
+		this.$labelLayout = $( '<div>' ).addClass( 've-ui-linkContextItem-label' ).append(
+			$( '<div>' ).addClass( 've-ui-linkContextItem-label-label' ).append(
+				new OO.ui.IconWidget( { icon: 'quotes' } ).$element,
+				new OO.ui.LabelWidget( { label: OO.ui.deferMsg( 'visualeditor-linkcontext-label-label' ) } ).$element
+			),
+			$( '<div>' ).addClass( 've-ui-linkContextItem-label-preview' ).append( this.labelPreview.$element )
+		);
+	}
+	this.labelButton.connect( this, { click: 'onLabelButtonClick' } );
 
 	if ( !this.isReadOnly() ) {
 		this.$labelLayout.append( $( '<div>' ).addClass( 've-ui-linkContextItem-label-action' ).append( this.labelButton.$element ) );
@@ -86,9 +116,11 @@ ve.ui.LinkContextItem.prototype.renderBody = function () {
 				href: ve.resolveUrl( this.model.getHref(), htmlDoc ),
 				target: '_blank',
 				rel: 'noopener'
-			} ),
-		this.$labelLayout
+			} )
 	);
+	if ( !this.context.isMobile() ) {
+		this.$body.append( this.$labelLayout );
+	}
 	this.updateLabelPreview();
 };
 
