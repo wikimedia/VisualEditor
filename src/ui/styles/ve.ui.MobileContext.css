@@ -14,8 +14,7 @@
 	border-top: 1px solid #c8ccd1;
 	box-shadow: 0 -1px 1px 0 rgba( 0, 0, 0, 0.1 );
 	/* Transition out faster, as keyboard may be coming up */
-	/* Transition padding-bottom for iOS menu bar fix */
-	transition: transform 100ms, padding-bottom 100ms;
+	transition: transform 100ms;
 	transform: translateY( 0% );
 }
 
@@ -23,9 +22,4 @@
 	display: block;
 	transition: transform 250ms;
 	transform: translateY( 100% );
-}
-
-/* Don't render buttons in bottom 44px of iOS as this can trigger the bottom nav */
-.ve-init-target-ios .ve-ui-mobileContext {
-	padding-bottom: 44px;
 }
