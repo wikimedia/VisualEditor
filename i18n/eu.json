@@ -39,7 +39,7 @@
 	"visualeditor-changedesc-align": "Lerroketzea $1tik $2ra aldatu egin da",
 	"visualeditor-changedesc-changed": "$1 aldatu egin da $2tik $3ra",
 	"visualeditor-changedesc-comment": "Iruzkina aldatu egin da $1tik $2ra",
-	"visualeditor-changedesc-image-size": "Tamainia aldatu egin da $1tik $2ra",
+	"visualeditor-changedesc-image-size": "Tamaina aldatu da: $1 zen, orain $2 da",
 	"visualeditor-changedesc-language": "Hizkuntza aldatu egin da $1tik $2ra",
 	"visualeditor-changedesc-link-href": "Helburu esteka $1-(e)tik $2-(e)ra aldatu da",
 	"visualeditor-changedesc-no-key": "$1 $2-ra aldatua",
