@@ -287,8 +287,6 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 						insertion = this.getInsertionData();
 						if ( insertion.length ) {
 							fragment.insertContent( insertion, true );
-							// Move cursor to the end of the inserted content, even if back button is used
-							fragment.adjustLinearSelection( -insertion.length, 0 );
 							this.previousSelection = new ve.dm.LinearSelection( new ve.Range(
 								this.initialSelection.getRange().start + insertion.length
 							) );
@@ -313,8 +311,12 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				selection = this.previousSelection;
 			}
 			if ( data.action ) {
-				surfaceModel.setSelection( selection );
-				// Update active annotaions from model as the document may be deactivated
+				// Place the selection after the inserted text. If the inserted content is actually an
+				// element and not text, keep it selected, so that the context menu for it appears.
+				if ( !( insertion && insertion.length && ve.dm.LinearData.static.isElementData( insertion[ 0 ] ) ) ) {
+					surfaceModel.setSelection( selection );
+				}
+				// Update active annotations from model as the document may be deactivated
 				surfaceView.updateActiveAnnotations( true );
 				// Update previousActiveAnnotations so the annotation stays active
 				// after re-activation
