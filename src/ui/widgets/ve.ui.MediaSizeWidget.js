@@ -266,10 +266,13 @@ ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 //  * Set the placeholder value of the scale input
 //  *
 //  * @param {number} value Placeholder value
+//  * @chainable
+//  * @return {ve.ui.MediaSizeWidget}
 //  */
 /*
 ve.ui.MediaSizeWidget.prototype.setScalePlaceholder = function ( value ) {
 	this.scaleInput.$element.prop( 'placeholder', value );
+	return this;
 };
 */
 
@@ -288,6 +291,8 @@ ve.ui.MediaSizeWidget.prototype.getScalePlaceholder = function () {
  * Select a size type in the select widget
  *
  * @param {string} sizeType The size type to select
+ * @chainable
+ * @return {ve.ui.MediaSizeWidget}
  */
 ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
 	if (
@@ -301,6 +306,7 @@ ve.ui.MediaSizeWidget.prototype.setSizeType = function ( sizeType ) {
 			this.sizeTypeSelect.findItemFromData( sizeType )
 		);
 	}
+	return this;
 };
 /**
  * Get the size type from the select widget
@@ -315,6 +321,8 @@ ve.ui.MediaSizeWidget.prototype.getSizeType = function () {
  * Set the scalable object the widget deals with
  *
  * @param {ve.dm.Scalable} scalable A scalable object representing the media source being resized.
+ * @chainable
+ * @return {ve.ui.MediaSizeWidget}
  */
 ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 	if ( this.scalable instanceof ve.dm.Scalable ) {
@@ -341,6 +349,7 @@ ve.ui.MediaSizeWidget.prototype.setScalable = function ( scalable ) {
 	}
 	this.updateDisabled();
 	this.validateDimensions();
+	return this;
 };
 
 /**
@@ -357,9 +366,12 @@ ve.ui.MediaSizeWidget.prototype.getScalable = function () {
  * Set the image aspect ratio explicitly
  *
  * @param {number} ratio Numerical value of an aspect ratio
+ * @chainable
+ * @return {ve.ui.MediaSizeWidget}
  */
 ve.ui.MediaSizeWidget.prototype.setRatio = function ( ratio ) {
 	this.scalable.setRatio( ratio );
+	return this;
 };
 
 /**
@@ -376,11 +388,14 @@ ve.ui.MediaSizeWidget.prototype.getRatio = function () {
  * enforcedMax is true.
  *
  * @param {Object} dimensions Height and width
+ * @chainable
+ * @return {ve.ui.MediaSizeWidget}
  */
 ve.ui.MediaSizeWidget.prototype.setMaxDimensions = function ( dimensions ) {
 	// Normalize dimensions before setting
 	var maxDimensions = ve.dm.Scalable.static.getDimensionsFromValue( dimensions, this.scalable.getRatio() );
 	this.scalable.setMaxDimensions( maxDimensions );
+	return this;
 };
 
 /**
@@ -409,10 +424,14 @@ ve.ui.MediaSizeWidget.prototype.setDisabled = function ( disabled ) {
 	ve.ui.MediaSizeWidget.super.prototype.setDisabled.call( this, disabled );
 
 	this.updateDisabled();
+	return this;
 };
 
 /**
  * Update the disabled state of sub widgets
+ *
+ * @chainable
+ * @return {ve.ui.MediaSizeWidget}
  */
 ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
 	var sizeType,
@@ -441,6 +460,7 @@ ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
 		// Disable the scale widget
 		// this.scaleInput.setDisabled( disabled || sizeType !== 'scale' );
 	}
+	return this;
 };
 
 /**
