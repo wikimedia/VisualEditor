@@ -79,6 +79,19 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
 ve.dm.TransactionProcessor.prototype.process = function () {
 	var i, completed;
 
+	// Warning: some of this is vestigial. Before TreeModifier, things worked as follows:
+	// 1) executeOperation ran on each operation. This built a list of modifications,
+	// .modificationQueue, consisting of linear splices and attribute/annotation changes.
+	// 2) applyModifications processed .modificationQueue. In particular it executed the
+	// linear splices (invalidating the DM tree).
+	// 3) rebuildTree rebuilt the part of the DM tree invalidated by the linear splices.
+	//
+	// Since then, we removed annotation changes completely. And TreeModifier handles
+	// replacements. So for replacements:
+	// 1) executeOperation does very little (just a balancedness check)
+	// 2) applyModifications queues linear splices for rollback on error
+	// 3) rebuildTree is only called in the rollback case
+
 	// Ensure the pre-modification document tree has been generated
 	this.document.getDocumentNode();
 
@@ -153,6 +166,7 @@ ve.dm.TransactionProcessor.prototype.queueUndoFunction = function ( func ) {
  */
 ve.dm.TransactionProcessor.prototype.applyModifications = function () {
 	var i, len, modifier, modifications = this.modificationQueue;
+
 	this.modificationQueue = [];
 	for ( i = 0, len = modifications.length; i < len; i++ ) {
 		modifier = ve.dm.TransactionProcessor.modifiers[ modifications[ i ].type ];
