@@ -893,7 +893,7 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  * @param {boolean} [preserveStoreValues] If true, keep store values verbatim instead of serializing
  * @return {Object} JSONable object
  */
-ve.dm.Change.prototype.toJSON = function ( preserveStoreValues ) {
+ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	var serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
 		txSerialized, stores, data,
 		getTransactionInfo = this.constructor.static.getTransactionInfo,
@@ -944,8 +944,15 @@ ve.dm.Change.prototype.toJSON = function ( preserveStoreValues ) {
 	return data;
 };
 
-// Deprecated alias
-ve.dm.Change.prototype.serialize = ve.dm.Change.prototype.toJSON;
+/**
+ * Called automatically by JSON.stringify, see #serialize.
+ *
+ * @return {Object} JSONable object
+ */
+ve.dm.Change.prototype.toJSON = function () {
+	// Ensure no native arguments are passed through to #serialize.
+	return this.serialize();
+};
 
 /**
  * Get a Change with all this Change's Transactions compacted into one (or zero)

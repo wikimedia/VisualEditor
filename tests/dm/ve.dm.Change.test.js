@@ -370,6 +370,11 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 	change.transactions[ 1 ].operations[ 2 ].length += 1;
 
 	assert.deepEqual( change.toJSON(), serialized, 'Serialize' );
+	assert.deepEqual(
+		JSON.parse( JSON.stringify( { change: change } ) ),
+		{ change: serialized },
+		'Serialize with JSON.stringify while nested (ensure arguments are no passed to serialize)'
+	);
 
 	assert.deepEqual(
 		ve.dm.Change.static.deserialize( serialized, doc ).toJSON(),
