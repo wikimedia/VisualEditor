@@ -253,6 +253,7 @@ ve.Range.prototype.isBackwards = function () {
 /**
  * Get a object summarizing the range for JSON serialization
  *
+ * @param {string} [key] Key in parent object
  * @return {Object} Object for JSON serialization
  */
 ve.Range.prototype.toJSON = function () {

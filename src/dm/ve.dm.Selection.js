@@ -61,6 +61,7 @@ ve.dm.Selection.static.newFromHash = null;
  *
  * @abstract
  * @method
+ * @param {string} [key] Key in parent object
  * @return {Object} Object for JSON serialization
  */
 ve.dm.Selection.prototype.toJSON = null;

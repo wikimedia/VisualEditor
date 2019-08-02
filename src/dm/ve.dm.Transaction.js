@@ -121,6 +121,8 @@ ve.dm.Transaction.static.deserialize = function ( data ) {
  * Serialize the transaction into a JSONable object
  *
  * Values are not necessarily deep copied
+ *
+ * @param {string} [key] Key in parent object
  * @return {Object|Array} JSONable object
  */
 ve.dm.Transaction.prototype.toJSON = function () {

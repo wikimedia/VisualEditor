@@ -947,6 +947,7 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 /**
  * Called automatically by JSON.stringify, see #serialize.
  *
+ * @param {string} [key] Key in parent object
  * @return {Object} JSONable object
  */
 ve.dm.Change.prototype.toJSON = function () {
