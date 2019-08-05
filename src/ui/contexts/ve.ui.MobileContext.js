@@ -24,7 +24,7 @@ ve.ui.MobileContext = function VeUiMobileContext() {
 		teardown: [ 'toggle', false ]
 	} );
 
-	this.opening = false;
+	this.openingTimeout = null;
 
 	// Initialization
 	this.$element.addClass( 've-ui-mobileContext' );
@@ -122,16 +122,19 @@ ve.ui.MobileContext.prototype.toggle = function ( show ) {
 	if ( show && !this.visible ) {
 		deferred = ve.createDeferred();
 		// Set opening flag immediately
-		this.opening = true;
-		setTimeout( function () {
+		this.openingTimeout = setTimeout( function () {
 			// Parent method
 			ve.ui.MobileContext.super.prototype.toggle.call( context, true );
 			context.emit( 'resize' );
 			deferred.resolve();
-			context.opening = false;
+			context.openingTimeout = null;
 		}, 250 );
 		return deferred;
 	} else {
+		if ( this.openingTimeout ) {
+			clearTimeout( this.openingTimeout );
+			this.openingTimeout = null;
+		}
 		setTimeout( function () {
 			context.emit( 'resize' );
 		}, 100 );
@@ -144,7 +147,7 @@ ve.ui.MobileContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.isVisible = function () {
-	return this.visible || this.opening;
+	return this.visible || !!this.openingTimeout;
 };
 
 /**
