@@ -32,7 +32,6 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 	this.$title = $( '<div>' );
 	this.$actions = $( '<div>' );
 	this.$body = $( '<div>' );
-	this.$foot = $( '<div>' );
 	// Don't use mixins as they expect the icon and label to be children of this.$element.
 	this.icon = new OO.ui.IconWidget( { icon: config.icon || this.constructor.static.icon } );
 	this.label = new OO.ui.LabelWidget( { label: config.label || this.constructor.static.label } );
@@ -55,6 +54,7 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 			icon: 'trash',
 			flags: [ 'destructive' ]
 		} );
+		this.$foot = $( '<div>' );
 		this.$bodyAction = $( '<div>' );
 		if ( this.isDeletable() ) {
 			this.$foot.append( this.deleteButton.$element );
