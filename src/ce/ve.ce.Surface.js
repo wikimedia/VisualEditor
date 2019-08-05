@@ -4062,33 +4062,41 @@ ve.ce.Surface.prototype.showModelSelection = function ( force ) {
 	}
 
 	selection = this.getSelection();
-	if ( !selection.isNativeCursor() || this.focusedBlockSlug ) {
-		// Model selection is an emulated selection (e.g. table). The view is certain to
-		// match it already, because there is no way to change the view selection when
-		// an emulated selection is showing.
-		return false;
-	}
-	modelRange = selection.getModel().getRange();
-	if ( !force && this.$attachedRootNode.get( 0 ).contains(
-		this.nativeSelection.focusNode
-	) ) {
-		// See whether the model range implied by the DOM selection is already equal to
-		// the actual model range. This is necessary because one model selection can
-		// correspond to many DOM selections, and we don't want to change a DOM
-		// selection that is already valid to an arbitrary different DOM selection.
-		impliedModelRange = new ve.Range(
-			ve.ce.getOffset(
-				this.nativeSelection.anchorNode,
-				this.nativeSelection.anchorOffset
-			),
-			ve.ce.getOffset(
-				this.nativeSelection.focusNode,
-				this.nativeSelection.focusOffset
-			)
-		);
-		if ( modelRange.equals( impliedModelRange ) ) {
-			// Current native selection fits model range; don't change
+	if ( selection.getModel().isNull() ) {
+		if ( !this.nativeSelection.rangeCount ) {
+			// Native selection is already null
 			return false;
+		}
+		modelRange = null;
+	} else {
+		if ( !selection.isNativeCursor() || this.focusedBlockSlug ) {
+			// Model selection is an emulated selection (e.g. table). The view is certain to
+			// match it already, because there is no way to change the view selection when
+			// an emulated selection is showing.
+			return false;
+		}
+		modelRange = selection.getModel().getRange();
+		if ( !force && this.$attachedRootNode.get( 0 ).contains(
+			this.nativeSelection.focusNode
+		) ) {
+			// See whether the model range implied by the DOM selection is already equal to
+			// the actual model range. This is necessary because one model selection can
+			// correspond to many DOM selections, and we don't want to change a DOM
+			// selection that is already valid to an arbitrary different DOM selection.
+			impliedModelRange = new ve.Range(
+				ve.ce.getOffset(
+					this.nativeSelection.anchorNode,
+					this.nativeSelection.anchorOffset
+				),
+				ve.ce.getOffset(
+					this.nativeSelection.focusNode,
+					this.nativeSelection.focusOffset
+				)
+			);
+			if ( modelRange.equals( impliedModelRange ) ) {
+				// Current native selection fits model range; don't change
+				return false;
+			}
 		}
 	}
 	changed = this.showSelectionState( this.getSelectionState( modelRange ) );
@@ -4354,7 +4362,7 @@ ve.ce.Surface.prototype.annotationsAtNode = function ( node, filter ) {
  * collapsedness; for a non-collapsed selection, the adjustment is in the direction that
  * grows the selection (thereby avoiding collapsing or reversing the selection).
  *
- * @param {ve.Range} range Range to get selection for
+ * @param {ve.Range|null} range Range to get selection for
  * @return {ve.SelectionState} The selection
  * @return {Node|null} return.anchorNode The anchor node
  * @return {number} return.anchorOffset The anchor offset
@@ -4366,6 +4374,10 @@ ve.ce.Surface.prototype.annotationsAtNode = function ( node, filter ) {
 ve.ce.Surface.prototype.getSelectionState = function ( range ) {
 	var anchor, focus, from, to,
 		dmDoc = this.getModel().getDocument();
+
+	if ( !range ) {
+		return ve.SelectionState.static.newNullSelection();
+	}
 
 	// Anchor/focus at the nearest correct position in the direction that
 	// grows the selection.
