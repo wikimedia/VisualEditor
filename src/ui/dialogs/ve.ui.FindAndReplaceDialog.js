@@ -617,11 +617,20 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
  * Handle click events on the previous all button
  */
 ve.ui.FindAndReplaceDialog.prototype.onReplaceAllButtonClick = function () {
-	var i, l;
+	var i, l,
+		surfaceView = this.surface.getView(),
+		wasActivated = !surfaceView.isDeactivated();
 
+	if ( wasActivated ) {
+		surfaceView.deactivate();
+	}
 	for ( i = 0, l = this.results; i < l; i++ ) {
 		this.replace( i );
 	}
+	if ( wasActivated ) {
+		surfaceView.activate();
+	}
+
 	this.updateFragments();
 	this.clearRenderedResultsCache();
 	this.renderFragments();
