@@ -5,10 +5,14 @@
  */
 
 .ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linearContextItem-body {
+	padding-bottom: 0.8em;
+}
+
+.ve-ui-linkContextItem .ve-ui-linkContextItem-link {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	padding-bottom: 0.8em;
+	display: block;
 }
 
 .ve-ui-mobileContext .ve-ui-linkContextItem .ve-ui-linearContextItem-body {
