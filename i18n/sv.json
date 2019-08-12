@@ -68,6 +68,7 @@
 	"visualeditor-clipboard-paste-special": "Klistra in som oformaterad text",
 	"visualeditor-command-dialog-cancel": "Stäng / avbryt ändring",
 	"visualeditor-command-dialog-confirm": "Bekräfta ändring",
+	"visualeditor-command-dialog-focus-context": "Flytta fokus till popupp",
 	"visualeditor-commentinspector-edit": "Redigera kommentar",
 	"visualeditor-commentinspector-title": "Kommentar",
 	"visualeditor-commentinspector-tooltip": "Kommentar",
