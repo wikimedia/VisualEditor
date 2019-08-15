@@ -111,6 +111,7 @@ ve.ui.LinkContextItem.prototype.renderBody = function () {
 	var htmlDoc = this.context.getSurface().getModel().getDocument().getHtmlDocument();
 	this.$body.empty().append(
 		$( '<a>' )
+			.addClass( 've-ui-linkContextItem-link' )
 			.text( this.getDescription() )
 			.attr( {
 				href: ve.resolveUrl( this.model.getHref(), htmlDoc ),
