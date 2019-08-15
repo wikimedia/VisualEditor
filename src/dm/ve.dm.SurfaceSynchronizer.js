@@ -69,11 +69,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	}
 
 	// Events
-	this.doc.connect( this, {
-		transact: 'onDocumentTransact'
-	} );
-
 	this.surface.connect( this, {
+		history: 'onSurfaceHistory',
 		select: 'onSurfaceSelect'
 	} );
 
@@ -218,19 +215,23 @@ ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
  * Respond to transactions happening on the document. Ignores transactions applied by
  * SurfaceSynchronizer itself.
  *
- * @param {ve.dm.Transaction} tx Transaction that was applied
  */
-ve.dm.SurfaceSynchronizer.prototype.onDocumentTransact = function ( tx ) {
+ve.dm.SurfaceSynchronizer.prototype.onSurfaceHistory = function () {
+	var change, authorId;
 	if ( this.applying || !this.initialized ) {
 		// Ignore our own synchronization or initialization transactions
 		return;
 	}
-	// HACK annotate transaction with authorship information
+	change = this.getChangeSince( this.sentLength, true );
+	authorId = this.authorId;
+	// HACK annotate transactions with authorship information
 	// This relies on being able to access the transaction object by reference;
 	// we should probably set the author deeper in dm.Surface or dm.Document instead.
-	tx.authorId = this.authorId;
+	change.transactions.forEach( function ( tx ) {
+		tx.authorId = authorId;
+	} );
 	// TODO deal with staged transactions somehow
-	this.applyNewSelections( this.authorSelections, tx );
+	this.applyNewSelections( this.authorSelections, change );
 	this.submitChangeThrottled();
 };
 
