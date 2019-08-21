@@ -120,7 +120,6 @@ ve.ce.BranchNode.prototype.initialize = function () {
  * added using $.data() will be lost upon updating the wrapper. To retain information added to the
  * wrapper, subscribe to the 'teardown' and 'setup' events, or override #initialize.
  *
- * @method
  * @fires teardown
  * @fires setup
  */
@@ -168,7 +167,6 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
  * ve.ce.Node objects are generated from the inserted ve.dm.Node objects, producing a view that's a
  * mirror of its model.
  *
- * @method
  * @param {number} index Index to remove and or insert nodes at
  * @param {number} howmany Number of nodes to remove
  * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
@@ -342,7 +340,6 @@ ve.ce.BranchNode.prototype.onSlugClick = function ( slugNode ) {
 /**
  * Get a slug at an offset.
  *
- * @method
  * @param {number} offset Offset to get slug at
  * @return {HTMLElement|null}
  */
@@ -365,7 +362,6 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
 /**
  * Set live state on child nodes.
  *
- * @method
  * @param {boolean} live New live state
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {

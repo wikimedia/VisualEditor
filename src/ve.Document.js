@@ -51,7 +51,6 @@ OO.mixinClass( ve.Document, OO.EventEmitter );
 /**
  * Get the root of the document's node tree.
  *
- * @method
  * @return {ve.BranchNode} Root of node tree
  */
 ve.Document.prototype.getDocumentNode = function () {
@@ -61,7 +60,6 @@ ve.Document.prototype.getDocumentNode = function () {
 /**
  * Get a node at an offset.
  *
- * @method
  * @param {number} offset Offset to get node at
  * @return {ve.Node|null} Node at offset
  */
@@ -76,7 +74,6 @@ ve.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
 /**
  * Gets a list of nodes and the ranges within them that a selection of the document covers.
  *
- * @method
  * @param {ve.Range} range Range within document to select nodes
  * @param {string} [mode='leaves'] Type of selection to perform:
  *
@@ -589,7 +586,6 @@ ve.Document.prototype.rangeInsideOneLeafNode = function ( range ) {
  *
  * The node and all its children are guaranteed to be attached
  *
- * @method
  * @param {ve.Node} node The node attached
  */
 ve.Document.prototype.nodeAttached = function ( node ) {
@@ -601,7 +597,6 @@ ve.Document.prototype.nodeAttached = function ( node ) {
  *
  * The node and all its children are guaranteed to be attached
  *
- * @method
  * @param {ve.Node} node The node detached
  */
 ve.Document.prototype.nodeDetached = function ( node ) {

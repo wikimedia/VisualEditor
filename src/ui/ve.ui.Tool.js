@@ -89,7 +89,6 @@ ve.ui.Tool.static.getCommand = function ( surface ) {
 /**
  * Handle the toolbar state being updated.
  *
- * @method
  * @param {ve.dm.SurfaceFragment|null} fragment Surface fragment
  * @param {Object|null} direction Context direction with 'inline' & 'block' properties
  */

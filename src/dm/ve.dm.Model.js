@@ -132,7 +132,6 @@ ve.dm.Model.static.matchFunction = null;
  *
  * @static
  * @inheritable
- * @method
  * @param {Node[]} domElements DOM elements to convert. Usually only one element
  * @param {ve.dm.Converter} converter Converter object
  * @return {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
@@ -156,7 +155,6 @@ ve.dm.Model.static.toDataElement = function () {
  *
  * @static
  * @inheritable
- * @method
  * @param {Object|Array} dataElement Linear model element or array of linear model data
  * @param {HTMLDocument} doc HTML document for creating elements
  * @param {ve.dm.Converter} converter Converter object to optionally call `getDomSubtreeFromData` on
@@ -336,7 +334,6 @@ ve.dm.Model.prototype.isEditable = function () {
 /**
  * Get a reference to the linear model element.
  *
- * @method
  * @return {Object} Linear model element passed to the constructor, by reference
  */
 ve.dm.Model.prototype.getElement = function () {
@@ -346,7 +343,6 @@ ve.dm.Model.prototype.getElement = function () {
 /**
  * Get a reference to the hash-value store used by the element.
  *
- * @method
  * @return {ve.dm.HashValueStore} Hash-value store
  */
 ve.dm.Model.prototype.getStore = function () {
@@ -356,7 +352,6 @@ ve.dm.Model.prototype.getStore = function () {
 /**
  * Get the symbolic name of this model's type.
  *
- * @method
  * @return {string} Type name
  */
 ve.dm.Model.prototype.getType = function () {
@@ -368,7 +363,6 @@ ve.dm.Model.prototype.getType = function () {
  *
  * Return value is by reference if array or object.
  *
- * @method
  * @param {string} key Name of attribute to get
  * @return {Mixed} Value of attribute, or undefined if no such attribute exists
  */
@@ -381,7 +375,6 @@ ve.dm.Model.prototype.getAttribute = function ( key ) {
  *
  * Values are by reference if array or object, similar to using the getAttribute method.
  *
- * @method
  * @param {string} [prefix] Only return attributes with this prefix, and remove the prefix from them
  * @return {Object} Attributes
  */
@@ -438,7 +431,6 @@ ve.dm.Model.prototype.getClonedElement = function () {
  *
  * This is a custom hash function for OO#getHash.
  *
- * @method
  * @return {Object} Hash object
  */
 ve.dm.Model.prototype.getHashObject = function () {

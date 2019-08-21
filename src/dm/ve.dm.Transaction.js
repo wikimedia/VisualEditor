@@ -265,7 +265,6 @@ ve.dm.Transaction.prototype.reversed = function () {
  * There may be more sophisticated checks that can be done, like looking for things being replaced
  * with identical content, but such transactions probably should not be created in the first place.
  *
- * @method
  * @return {boolean} Transaction is no-op
  */
 ve.dm.Transaction.prototype.isNoOp = function () {
@@ -281,7 +280,6 @@ ve.dm.Transaction.prototype.isNoOp = function () {
 /**
  * Get all operations.
  *
- * @method
  * @return {Object[]} List of operations
  */
 ve.dm.Transaction.prototype.getOperations = function () {
@@ -291,7 +289,6 @@ ve.dm.Transaction.prototype.getOperations = function () {
 /**
  * Check if the transaction has any operations with a certain type.
  *
- * @method
  * @param {string} type Operation type
  * @return {boolean} Has operations of a given type
  */
@@ -308,7 +305,6 @@ ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
 /**
  * Check if the transaction has any content data operations, such as insertion or deletion.
  *
- * @method
  * @return {boolean} Has content data operations
  */
 ve.dm.Transaction.prototype.hasContentDataOperations = function () {
@@ -318,7 +314,6 @@ ve.dm.Transaction.prototype.hasContentDataOperations = function () {
 /**
  * Check if the transaction has any element attribute operations.
  *
- * @method
  * @return {boolean} Has element attribute operations
  */
 ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
@@ -328,7 +323,6 @@ ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
 /**
  * Check whether the transaction has already been applied.
  *
- * @method
  * @return {boolean}
  */
 ve.dm.Transaction.prototype.hasBeenApplied = function () {
@@ -352,7 +346,6 @@ ve.dm.Transaction.prototype.markAsApplied = function () {
  * This is useful when you want to anticipate what an offset will be after a transaction is
  * processed.
  *
- * @method
  * @param {number} offset Offset in the linear model before the transaction has been processed
  * @param {boolean} [excludeInsertion] Map the offset immediately before an insertion to
  *  right before the insertion rather than right after
@@ -412,7 +405,6 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, excludeInsertio
  * This is useful when you want to anticipate what a selection will be after a transaction is
  * processed.
  *
- * @method
  * @see #translateOffset
  * @param {ve.Range} range Range in the linear model before the transaction has been processed
  * @param {boolean} [excludeInsertion] Do not grow the range to cover insertions

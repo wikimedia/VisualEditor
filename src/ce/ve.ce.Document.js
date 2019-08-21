@@ -85,7 +85,6 @@ ve.ce.Document.prototype.getDir = function () {
 /**
  * Get a slug at an offset.
  *
- * @method
  * @param {number} offset Offset to get slug at
  * @return {HTMLElement} Slug at offset
  */
@@ -352,7 +351,6 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
  *
  * Uses the computed CSS direction value of the current node
  *
- * @method
  * @param {ve.Range} range Range
  * @return {string} 'rtl', 'ltr'
  */

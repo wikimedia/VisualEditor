@@ -55,7 +55,6 @@ ve.ce.CommentNode.static.getDescription = function ( model ) {
  * Update the rendering of the 'text' attribute
  * when it changes in the model.
  *
- * @method
  * @param {string} key Attribute key
  * @param {string} from Old value
  * @param {string} to New value

@@ -39,7 +39,6 @@ ve.ui.HistoryAction.static.methods = [ 'undo', 'redo' ];
 /**
  * Step backwards in time.
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.HistoryAction.prototype.undo = function () {
@@ -50,7 +49,6 @@ ve.ui.HistoryAction.prototype.undo = function () {
 /**
  * Step forwards in time.
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.HistoryAction.prototype.redo = function () {

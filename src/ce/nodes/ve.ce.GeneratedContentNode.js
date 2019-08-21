@@ -304,8 +304,6 @@ ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config, staged ) {
  * This function is only called when the node wasn't already generating content. If a second update
  * comes in, this function will only be called if the first update has already finished (i.e.
  * doneGenerating or failGenerating has already been called).
- *
- * @method
  */
 ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
 	this.$element.addClass( 've-ce-generatedContentNode-generating' );
@@ -333,7 +331,6 @@ ve.ce.GeneratedContentNode.prototype.abortGenerating = function () {
 /**
  * Called when the node successfully finishes generating new content.
  *
- * @method
  * @param {Object|string|Array} generatedContents Generated contents
  * @param {Object} [config] Config object passed to forceUpdate()
  * @param {boolean} [staged] Update happened in staging mode
@@ -356,8 +353,6 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 
 /**
  * Called when the GeneratedContentNode has failed to generate new content.
- *
- * @method
  */
 ve.ce.GeneratedContentNode.prototype.failGenerating = function () {
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );

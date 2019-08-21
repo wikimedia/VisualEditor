@@ -165,7 +165,6 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
 /**
  * Destroy the surface, releasing all memory and removing all DOM elements.
  *
- * @method
  * @return {ve.ui.Surface}
  * @chainable
  * @fires destroy
@@ -250,7 +249,6 @@ ve.ui.Surface.prototype.getMode = function () {
 /**
  * Create a context.
  *
- * @method
  * @param {Object} config Configuration options
  * @return {ve.ui.Context} Context
  */
@@ -261,7 +259,6 @@ ve.ui.Surface.prototype.createContext = function ( config ) {
 /**
  * Create a dialog window manager.
  *
- * @method
  * @return {ve.ui.WindowManager} Dialog window manager
  */
 ve.ui.Surface.prototype.createDialogWindowManager = function () {
@@ -352,7 +349,6 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
  * Check if editing is enabled.
  *
  * @deprecated Use #isDisabled
- * @method
  * @return {boolean} Editing is enabled
  */
 ve.ui.Surface.prototype.isEnabled = function () {
@@ -362,7 +358,6 @@ ve.ui.Surface.prototype.isEnabled = function () {
 /**
  * Get the surface model.
  *
- * @method
  * @return {ve.dm.Surface} Surface model
  */
 ve.ui.Surface.prototype.getModel = function () {
@@ -372,7 +367,6 @@ ve.ui.Surface.prototype.getModel = function () {
 /**
  * Get the surface view.
  *
- * @method
  * @return {ve.ce.Surface} Surface view
  */
 ve.ui.Surface.prototype.getView = function () {
@@ -382,7 +376,6 @@ ve.ui.Surface.prototype.getView = function () {
 /**
  * Get the context menu.
  *
- * @method
  * @return {ve.ui.Context} Context user interface
  */
 ve.ui.Surface.prototype.getContext = function () {
@@ -392,7 +385,6 @@ ve.ui.Surface.prototype.getContext = function () {
 /**
  * Get dialogs window set.
  *
- * @method
  * @return {ve.ui.WindowManager} Dialogs window set
  */
 ve.ui.Surface.prototype.getDialogs = function () {
@@ -413,7 +405,6 @@ ve.ui.Surface.prototype.getToolbarDialogs = function () {
  *
  * Local overlays are attached to the same frame as the surface.
  *
- * @method
  * @return {ve.ui.Overlay} Local overlay
  */
 ve.ui.Surface.prototype.getLocalOverlay = function () {
@@ -425,7 +416,6 @@ ve.ui.Surface.prototype.getLocalOverlay = function () {
  *
  * Global overlays are attached to the top-most frame.
  *
- * @method
  * @return {ve.ui.Overlay} Global overlay
  */
 ve.ui.Surface.prototype.getGlobalOverlay = function () {
@@ -641,7 +631,6 @@ ve.ui.Surface.prototype.getCommands = function () {
 /**
  * Execute an action or command.
  *
- * @method
  * @param {ve.ui.Trigger|string} triggerOrAction Trigger or symbolic name of action
  * @param {string} [method] Action method name
  * @param {...Mixed} [args] Additional arguments for action

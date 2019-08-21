@@ -44,7 +44,6 @@ ve.dm.LeafNode.static.isDiffedAsLeaf = true;
  * Annotations are grabbed directly from the linear model, so they are updated live. If the linear
  * model element doesn't have a .annotations property, an empty array is returned.
  *
- * @method
  * @return {number[]} Annotation set indexes in the index-value store
  */
 ve.dm.LeafNode.prototype.getAnnotations = function () {

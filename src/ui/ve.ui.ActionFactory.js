@@ -25,7 +25,6 @@ OO.inheritClass( ve.ui.ActionFactory, OO.Factory );
 /**
  * Check if an action supports a method.
  *
- * @method
  * @param {string} action Name of action
  * @param {string} method Name of method
  * @return {boolean} The action supports the method

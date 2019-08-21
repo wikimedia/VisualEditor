@@ -51,7 +51,6 @@ ve.TriggerListener.prototype.getCommands = function () {
 /**
  * Get command associated with trigger string.
  *
- * @method
  * @param {string} trigger Trigger string
  * @return {ve.ui.Command|undefined} Command
  */

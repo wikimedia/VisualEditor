@@ -38,7 +38,6 @@ ve.ui.BlockquoteAction.static.methods = [ 'wrap', 'unwrap', 'toggle' ];
 /**
  * Check if the current selection is wrapped in a blockquote.
  *
- * @method
  * @return {boolean} Current selection is wrapped in a blockquote
  */
 ve.ui.BlockquoteAction.prototype.isWrapped = function () {
@@ -49,7 +48,6 @@ ve.ui.BlockquoteAction.prototype.isWrapped = function () {
 /**
  * Toggle a blockquote around content.
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.BlockquoteAction.prototype.toggle = function () {
@@ -59,7 +57,6 @@ ve.ui.BlockquoteAction.prototype.toggle = function () {
 /**
  * Add a blockquote around content (only if it has no blockquote already).
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.BlockquoteAction.prototype.wrap = function () {
@@ -106,7 +103,6 @@ ve.ui.BlockquoteAction.prototype.wrap = function () {
 /**
  * Remove blockquote around content (if present).
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.BlockquoteAction.prototype.unwrap = function () {

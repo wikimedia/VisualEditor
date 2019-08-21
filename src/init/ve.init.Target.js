@@ -468,7 +468,6 @@ ve.init.Target.prototype.onToolbarResize = function () {
 /**
  * Create a target widget.
  *
- * @method
  * @param {Object} [config] Configuration options
  * @return {ve.ui.TargetWidget}
  */
@@ -479,7 +478,6 @@ ve.init.Target.prototype.createTargetWidget = function ( config ) {
 /**
  * Create a surface.
  *
- * @method
  * @param {ve.dm.Document|ve.dm.Surface} dmDocOrSurface Document model or surface model
  * @param {Object} [config] Configuration options
  * @return {ve.ui.Surface}

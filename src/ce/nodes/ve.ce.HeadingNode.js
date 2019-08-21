@@ -53,8 +53,6 @@ ve.ce.HeadingNode.prototype.getTagName = function () {
  * Handle model update events.
  *
  * If the level changed since last update the DOM wrapper will be replaced with an appropriate one.
- *
- * @method
  */
 ve.ce.HeadingNode.prototype.onUpdate = function () {
 	this.updateTagName();

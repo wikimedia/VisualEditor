@@ -39,7 +39,6 @@ ve.ui.IndentationAction.static.methods = [ 'increase', 'decrease' ];
 /**
  * Indent content.
  *
- * @method
  * @return {boolean} Indentation increase occurred
  */
 ve.ui.IndentationAction.prototype.increase = function () {
@@ -80,7 +79,6 @@ ve.ui.IndentationAction.prototype.increase = function () {
 /**
  * Unindent content.
  *
- * @method
  * @return {boolean} Indentation decrease occurred
  */
 ve.ui.IndentationAction.prototype.decrease = function () {
@@ -126,7 +124,6 @@ ve.ui.IndentationAction.prototype.decrease = function () {
 /**
  * Indent a list item.
  *
- * @method
  * @param {ve.dm.ListItemNode} listItem List item to indent
  * @throws {Error} listItem must be a ve.dm.ListItemNode
  */
@@ -193,7 +190,6 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
- * @method
  * @param {ve.dm.ListItemNode} listItem List item to unindent
  * @throws {Error} listItem must be a ve.dm.ListItemNode
  */

@@ -48,7 +48,6 @@ ve.init.ListStorage.prototype.setObject = function ( key, value ) {
 /**
  * Append a value to a list stored in storage
  *
- * @method
  * @param {string} key Key of list to set value for
  * @param {string} value Value to set
  * @return {boolean} The value was set
@@ -66,7 +65,6 @@ ve.init.ListStorage.prototype.appendToList = function ( key, value ) {
 /**
  * Get the length of a list in storage
  *
- * @method
  * @param {string} key Key of list
  * @return {number} List length, 0 if the list doesn't exist
  */
@@ -81,7 +79,6 @@ ve.init.ListStorage.prototype.getListLength = function ( key ) {
  *  - key__length
  *  - key__0 … key__N
  *
- * @method
  * @param {string} key Key of list
  * @return {string[]} List
  */
@@ -99,7 +96,6 @@ ve.init.ListStorage.prototype.getList = function ( key ) {
 /**
  * Remove a list stored in storage
  *
- * @method
  * @param {string} key Key of list
  */
 ve.init.ListStorage.prototype.removeList = function ( key ) {

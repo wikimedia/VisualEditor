@@ -61,7 +61,6 @@ ve.dm.LinkAnnotation.static.describeChange = function ( key, change ) {
  * Subclasses can override this if they provide complex href computation.
  *
  * @static
- * @method
  * @inheritable
  * @param {Object} dataElement Linear model element
  * @return {string} Link href

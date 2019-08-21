@@ -25,7 +25,6 @@ OO.inheritClass( ve.ui.CommandRegistry, OO.Registry );
 /**
  * Register a command with the factory.
  *
- * @method
  * @param {ve.ui.Command} command Command object
  * @throws {Error} If command is not an instance of ve.ui.Command
  */

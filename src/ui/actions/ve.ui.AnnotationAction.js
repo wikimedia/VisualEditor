@@ -39,7 +39,6 @@ ve.ui.AnnotationAction.static.methods = [ 'set', 'clear', 'toggle', 'clearAll' ]
 /**
  * Set an annotation.
  *
- * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  * @return {boolean} Action was executed
@@ -52,7 +51,6 @@ ve.ui.AnnotationAction.prototype.set = function ( name, data ) {
 /**
  * Clear an annotation.
  *
- * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  * @return {boolean} Action was executed
@@ -69,7 +67,6 @@ ve.ui.AnnotationAction.prototype.clear = function ( name, data ) {
  * If the selected text is completely covered with the annotation already the annotation will be
  * cleared. Otherwise the annotation will be set.
  *
- * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  * @return {boolean} Action was executed
@@ -110,7 +107,6 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 /**
  * Clear all annotations.
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.clearAll = function () {
@@ -135,7 +131,6 @@ ve.ui.AnnotationAction.prototype.clearAll = function () {
  * Internal implementation of set(). Do not use this, use set() instead.
  *
  * @private
- * @method
  * @param {string} name Annotation name, for example: 'textStyle/bold'
  * @param {Object} [data] Additional annotation data
  * @return {boolean} Action was executed

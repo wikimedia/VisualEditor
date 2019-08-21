@@ -46,8 +46,6 @@ ve.ui.CommentInspector.static.actions = [
 
 /**
  * Handle frame ready events.
- *
- * @method
  */
 ve.ui.CommentInspector.prototype.initialize = function () {
 	// Parent method
@@ -77,7 +75,6 @@ ve.ui.CommentInspector.prototype.getActionProcess = function ( action ) {
 /**
  * Handle the inspector being setup.
  *
- * @method
  * @param {Object} [data] Inspector opening data
  * @return {OO.ui.Process}
  */

@@ -82,7 +82,6 @@ ve.ui.AnnotationInspector.prototype.getInsertionText = function () {
  * but existing annotations won't be removed either.
  *
  * @abstract
- * @method
  * @return {ve.dm.Annotation} Annotation to apply
  */
 ve.ui.AnnotationInspector.prototype.getAnnotation = null;
@@ -91,7 +90,6 @@ ve.ui.AnnotationInspector.prototype.getAnnotation = null;
  * Get an annotation object from a fragment.
  *
  * @abstract
- * @method
  * @param {ve.dm.SurfaceFragment} fragment Surface fragment
  * @return {ve.dm.Annotation|null} Annotation
  */
@@ -100,7 +98,6 @@ ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = null;
 /**
  * Get matching annotations within a fragment.
  *
- * @method
  * @param {ve.dm.SurfaceFragment} fragment Fragment to get matching annotations within
  * @param {boolean} [all] Get annotations which only cover some of the fragment
  * @return {ve.dm.AnnotationSet} Matching annotations
@@ -132,7 +129,6 @@ ve.ui.AnnotationInspector.prototype.isEditing = function () {
  * - Selection covering non-annotated text -> trim selection to remove leading/trailing whitespace
  * - Selection covering annotated text -> expand selection to cover annotation
  *
- * @method
  * @param {Object} [data] Inspector opening data
  * @param {boolean} [data.noExpand] Don't expand the selection when opening
  * @return {OO.ui.Process}

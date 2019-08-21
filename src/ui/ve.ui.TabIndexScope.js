@@ -120,7 +120,6 @@ ve.ui.TabIndexScope.prototype.onRootKeyDown = function ( e ) {
 
 /**
  * Teardown tabbable elements manager
- *
  */
 ve.ui.TabIndexScope.prototype.teardown = function () {
 	this.setRoot( [] );

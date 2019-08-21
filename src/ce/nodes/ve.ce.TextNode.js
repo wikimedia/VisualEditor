@@ -38,7 +38,6 @@ ve.ce.TextNode.static.whitespaceHtmlCharacters = ve.visibleWhitespaceCharacters;
 /**
  * Get an HTML rendering of the text.
  *
- * @method
  * @return {Array} Array of rendered HTML fragments with annotations
  */
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {

@@ -95,7 +95,6 @@ ve.ui.Context.prototype.isVisible = function () {
  *
  * Result is cached, and cleared when the model or selection changes.
  *
- * @method
  * @abstract
  * @return {Object[]} List of objects containing `type`, `name` and `model` properties,
  *   representing each compatible type (either `item` or `tool`), symbolic name of the item or tool

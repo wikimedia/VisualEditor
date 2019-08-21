@@ -132,7 +132,6 @@ ve.dm.HashValueStore.prototype.clone = function () {
 /**
  * Insert a value into the store
  *
- * @method
  * @param {Object|string|Array} value Value to store
  * @param {string} [stringified] Stringified version of value; default OO.getHash( value )
  * @return {string} Hash value with low collision probability
@@ -182,7 +181,6 @@ ve.dm.HashValueStore.prototype.replaceHash = function ( oldHash, value ) {
 /**
  * Get the hash of a value without inserting it in the store
  *
- * @method
  * @param {Object|string|Array} value Value to hash
  * @param {string} [stringified] Stringified version of value; default OO.getHash( value )
  * @return {string} Hash value with low collision probability
@@ -208,7 +206,6 @@ ve.dm.HashValueStore.prototype.hashOfValue = function ( value, stringified ) {
  *
  * Same as hash but with arrays.
  *
- * @method
  * @param {Object[]} values Values to lookup or store
  * @return {string[]} The hashes of the values in the store
  */
@@ -223,7 +220,6 @@ ve.dm.HashValueStore.prototype.hashAll = function ( values ) {
 /**
  * Get the value stored for a particular hash
  *
- * @method
  * @param {string} hash Hash to look up
  * @return {Object|undefined} Value stored for this hash if present, else undefined
  */
@@ -236,7 +232,6 @@ ve.dm.HashValueStore.prototype.value = function ( hash ) {
  *
  * Same as value but with arrays.
  *
- * @method
  * @param {string[]} hashes Hashes to lookup
  * @return {Array} Values for these hashes (undefined for any not present)
  */

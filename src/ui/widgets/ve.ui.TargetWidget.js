@@ -174,7 +174,6 @@ ve.ui.TargetWidget.prototype.isReadOnly = function () {
 /**
  * Get surface.
  *
- * @method
  * @return {ve.ui.Surface|null} Surface
  */
 ve.ui.TargetWidget.prototype.getSurface = function () {
@@ -184,7 +183,6 @@ ve.ui.TargetWidget.prototype.getSurface = function () {
 /**
  * Get toolbar.
  *
- * @method
  * @return {OO.ui.Toolbar} Toolbar
  */
 ve.ui.TargetWidget.prototype.getToolbar = function () {
@@ -194,7 +192,6 @@ ve.ui.TargetWidget.prototype.getToolbar = function () {
 /**
  * Get content data.
  *
- * @method
  * @return {ve.dm.ElementLinearData} Content data
  */
 ve.ui.TargetWidget.prototype.getContent = function () {
@@ -205,8 +202,6 @@ ve.ui.TargetWidget.prototype.getContent = function () {
  * Initialize surface and toolbar.
  *
  * Widget must be attached to DOM before initializing.
- *
- * @method
  */
 ve.ui.TargetWidget.prototype.initialize = function () {
 	if ( this.surface ) {
@@ -217,8 +212,6 @@ ve.ui.TargetWidget.prototype.initialize = function () {
 
 /**
  * Destroy surface and toolbar.
- *
- * @method
  */
 ve.ui.TargetWidget.prototype.clear = function () {
 	if ( this.surface ) {

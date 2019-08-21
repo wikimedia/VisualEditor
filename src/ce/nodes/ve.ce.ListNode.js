@@ -55,8 +55,6 @@ ve.ce.ListNode.prototype.getTagName = function () {
  * Handle model update events.
  *
  * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
- *
- * @method
  */
 ve.ce.ListNode.prototype.onUpdate = function () {
 	this.updateTagName();

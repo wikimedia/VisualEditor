@@ -214,7 +214,6 @@ ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
 /**
  * Respond to transactions happening on the document. Ignores transactions applied by
  * SurfaceSynchronizer itself.
- *
  */
 ve.dm.SurfaceSynchronizer.prototype.onSurfaceHistory = function () {
 	var change, authorId;

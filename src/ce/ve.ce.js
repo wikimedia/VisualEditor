@@ -29,7 +29,6 @@ ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs
  * non-editable elements are excluded (but replaced with the appropriate number of snowman
  * characters so the offsets match up with the linear model).
  *
- * @method
  * @param {HTMLElement} element DOM element to get text of
  * @return {string} Plain text of DOM element
  */
@@ -88,7 +87,6 @@ ve.ce.getDomText = function ( element ) {
  * serialization without any attributes or text contents. This can be used to observe structural
  * changes.
  *
- * @method
  * @param {HTMLElement} element DOM element to get hash of
  * @return {string} Hash of DOM element
  */
@@ -161,7 +159,6 @@ ve.ce.previousCursorOffset = function ( node ) {
 /**
  * Gets the linear offset from a given DOM node and offset within it.
  *
- * @method
  * @param {HTMLElement} domNode DOM node
  * @param {number} domOffset DOM offset within the DOM node
  * @return {number} Linear model offset
@@ -344,7 +341,6 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 /**
  * Gets the linear offset of a given slug
  *
- * @method
  * @param {HTMLElement} element Slug DOM element
  * @return {number} Linear model offset
  * @throws {Error}
@@ -413,7 +409,6 @@ ve.ce.isAfterAnnotationBoundary = function ( node, offset ) {
 /**
  * Check if keyboard shortcut modifier key is pressed.
  *
- * @method
  * @param {jQuery.Event} e Key press event
  * @return {boolean} Modifier key is pressed
  */

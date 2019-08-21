@@ -60,7 +60,6 @@ ve.ce.ImageNode.static.getDescription = function ( model ) {
  * Update the rendering of the 'align', src', 'width' and 'height' attributes
  * when they change in the model.
  *
- * @method
  * @param {string} key Attribute key
  * @param {string} from Old value
  * @param {string} to New value
@@ -81,7 +80,6 @@ ve.ce.ImageNode.prototype.onAttributeChange = function ( key, from, to ) {
 /**
  * Handle the image load
  *
- * @method
  * @param {jQuery.Event} e Load event
  */
 ve.ce.ImageNode.prototype.onLoad = function () {

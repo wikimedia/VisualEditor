@@ -75,7 +75,6 @@ OO.initClass( ve.ce.RangeState );
 /**
  * Saves a snapshot of the current range state
  *
- * @method
  * @param {ve.ce.RangeState|null} old Previous range state
  * @param {ve.ce.BranchNode} root Surface root
  * @param {boolean} selectionOnly The caller promises the content has not changed from old

@@ -38,7 +38,6 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
 /**
  * Open a window.
  *
- * @method
  * @param {string} name Symbolic name of window to open
  * @param {Object} [data] Window opening data
  * @param {string} [action] Action to execute after opening, or immediately if the window is already open
@@ -185,7 +184,6 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 /**
  * Close a window
  *
- * @method
  * @param {string} name Symbolic name of window to open
  * @param {Object} [data] Window closing data
  * @return {boolean} Action was executed
@@ -205,7 +203,6 @@ ve.ui.WindowAction.prototype.close = function ( name, data ) {
 /**
  * Toggle a window between open and close
  *
- * @method
  * @param {string} name Symbolic name of window to open or close
  * @param {Object} [data] Window opening or closing data
  * @return {boolean} Action was executed

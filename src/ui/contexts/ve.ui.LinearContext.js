@@ -314,7 +314,6 @@ ve.ui.LinearContext.prototype.getInspectors = function () {
 /**
  * Create a inspector window manager.
  *
- * @method
  * @abstract
  * @return {ve.ui.WindowManager} Inspector window manager
  */

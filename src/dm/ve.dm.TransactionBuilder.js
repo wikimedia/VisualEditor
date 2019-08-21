@@ -24,7 +24,6 @@ OO.initClass( ve.dm.TransactionBuilder );
 /**
  * Generate a transaction that replaces data in a range.
  *
- * @method
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {ve.Range} range Range of data to remove
  * @param {Array} data Data to insert
@@ -45,7 +44,6 @@ ve.dm.TransactionBuilder.static.newFromReplacement = function ( doc, range, data
  * Generate a transaction that inserts data at an offset.
  *
  * @static
- * @method
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {number} offset Offset to insert at
  * @param {Array} data Data to insert
@@ -77,7 +75,6 @@ ve.dm.TransactionBuilder.static.newFromInsertion = function ( doc, offset, data 
  * 2. Elements can only be merged if {@link ve.dm.Node#canBeMergedWith} returns true
  * 3. Merges take place at the highest common ancestor
  *
- * @method
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {ve.Range} range Range of data to remove
  * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
@@ -236,7 +233,6 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
  * Generate a transaction that changes one or more attributes.
  *
  * @static
- * @method
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {number} offset Offset of element
  * @param {Object.<string,Mixed>} attr List of attribute key and value pairs, use undefined value
@@ -269,7 +265,6 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
  * Generate a transaction that annotates content.
  *
  * @static
- * @method
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {ve.Range} range Range to annotate
  * @param {string} method Annotation mode
@@ -412,7 +407,6 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
  * Generate a transaction that converts elements that can contain content.
  *
  * @static
- * @method
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {ve.Range} range Range to convert
  * @param {string} type Symbolic name of element type to convert to
@@ -668,7 +662,6 @@ ve.dm.TransactionBuilder.prototype.getTransaction = function () {
  * Add a final retain operation to finish off a transaction (internal helper).
  *
  * @private
- * @method
  * @param {ve.dm.Document} doc The document in the state to which the transaction applies
  * @param {number} offset Final offset edited by the transaction up to this point.
  */
@@ -681,7 +674,6 @@ ve.dm.TransactionBuilder.prototype.pushFinalRetain = function ( doc, offset ) {
 /**
  * Add a retain operation.
  *
- * @method
  * @param {number} length Length of content data to retain
  * @throws {Error} Cannot retain backwards
  */
@@ -753,7 +745,6 @@ ve.dm.TransactionBuilder.prototype.addSafeRemoveOps = function ( doc, removeStar
  * Add a replace operation (internal helper).
  *
  * @private
- * @method
  * @param {Array} remove Data removed.
  * @param {Array} insert Data to insert.
  * @param {number} [insertedDataOffset] Inserted data offset
@@ -772,7 +763,6 @@ ve.dm.TransactionBuilder.prototype.pushReplaceInternal = function ( remove, inse
  * If metadata is collapsed instead of removed, it will be shifted backwards if necessary to
  * reach a legal position for metadata in the new document structure.
  *
- * @method
  * @param {ve.dm.Document} doc The document in the state to which the transaction applies
  * @param {number} offset Offset to start at
  * @param {number} removeLength Number of data items to remove
@@ -832,7 +822,6 @@ ve.dm.TransactionBuilder.prototype.pushReplacement = function ( doc, offset, rem
 /**
  * Add an element attribute change operation.
  *
- * @method
  * @param {string} key Name of attribute to change
  * @param {Mixed} from Value change attribute from, or undefined if not previously set
  * @param {Mixed} to Value to change attribute to, or undefined to remove

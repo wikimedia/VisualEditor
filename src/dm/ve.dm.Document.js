@@ -326,7 +326,6 @@ ve.dm.Document.prototype.getLength = function () {
 /**
  * Apply a transaction's effects on the content data.
  *
- * @method
  * @param {ve.dm.Transaction} transaction Transaction to apply
  * @param {boolean} isStaging Transaction is being applied in staging mode
  * @fires precommit
@@ -347,7 +346,6 @@ ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
 /**
  * Get a slice or copy of the document data.
  *
- * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
  * @return {Array} Slice or copy of document data
@@ -390,7 +388,6 @@ ve.dm.Document.prototype.getMetadata = function ( range ) {
 /**
  * Get the HTMLDocument associated with this document.
  *
- * @method
  * @return {HTMLDocument} Associated document
  */
 ve.dm.Document.prototype.getHtmlDocument = function () {
@@ -400,7 +397,6 @@ ve.dm.Document.prototype.getHtmlDocument = function () {
 /**
  * Get the document model form which this document was cloned.
  *
- * @method
  * @return {ve.dm.Document|null} Original document
  */
 ve.dm.Document.prototype.getOriginalDocument = function () {
@@ -410,7 +406,6 @@ ve.dm.Document.prototype.getOriginalDocument = function () {
 /**
  * Get the document's hash-value store
  *
- * @method
  * @return {ve.dm.HashValueStore} The document's hash-value store
  */
 ve.dm.Document.prototype.getStore = function () {
@@ -777,7 +772,6 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 /**
  * Get the nearest word boundary.
  *
- * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
  * @return {number} Nearest word boundary
@@ -790,7 +784,6 @@ ve.dm.Document.prototype.getSiblingWordBoundary = function ( offset, direction )
 /**
  * Get the relative word or character boundary.
  *
- * @method
  * @param {number} offset Offset to start from
  * @param {number} direction Direction to prefer matching offset in, -1 for left and 1 for right
  * @param {string} [unit] Unit [word|character]
@@ -856,7 +849,6 @@ ve.dm.Document.prototype.getRelativeOffset = function ( offset, direction, unit 
 /**
  * Get the relative range.
  *
- * @method
  * @param {ve.Range} range Input range
  * @param {number} direction Direction to look in, +1 or -1
  * @param {string} unit Unit [word|character]
@@ -904,7 +896,6 @@ ve.dm.Document.prototype.getRelativeRange = function ( range, direction, unit, e
 /**
  * Get the nearest focusable node.
  *
- * @method
  * @param {number} offset Offset to start looking at
  * @param {number} direction Direction to look in, +1 or -1
  * @param {number} limit Stop looking after reaching certain offset
@@ -952,7 +943,6 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
  * Note that an offset in the other direction can be returned if there are no valid offsets in the
  * preferred direction.
  *
- * @method
  * @param {number} offset Offset to start looking at
  * @param {number} [direction=-1] Direction to check first, +1 or -1; if 0, find the closest offset
  * @return {number} Nearest offset a cursor can be placed at, or -1 if there are no valid offsets in
@@ -1024,7 +1014,6 @@ ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
 /**
  * Check if there is a slug at an offset.
  *
- * @method
  * @param {number} offset Offset to check for a slug at
  * @return {boolean} There is a slug at the offset
  */
@@ -1036,7 +1025,6 @@ ve.dm.Document.prototype.hasSlugAtOffset = function ( offset ) {
 /**
  * Get the content data of a node.
  *
- * @method
  * @param {ve.dm.Node} node Node to get content data for
  * @return {Array|null} List of content and elements inside node or null if node is not found
  */
@@ -1203,7 +1191,6 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
  *
  * TODO: this function needs more work but it seems to work, mostly
  *
- * @method
  * @param {Array} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
  * @return {Object}
@@ -1286,7 +1273,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 * This function updates parentNode, parentType, openingStack and closingStack.
 	 *
 	 * @private
-	 * @method
 	 * @param {Object|Array|string} element Linear model element
 	 * @param {number} index Index in data that the element came from (for error reporting only)
 	 */
@@ -1364,7 +1350,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 * This function updates parentNode, parentType, closingStack, reopenElements, and closings.
 	 *
 	 * @private
-	 * @method
 	 * @param {string} childType Current element type we're considering (for error reporting only)
 	 */
 	function closeElement( childType ) {
@@ -1558,7 +1543,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 /**
  * Create a document given an HTML string or document.
  *
- * @method
  * @param {string|HTMLDocument} html HTML string or document to insert
  * @param {Object} [importRules] The import rules with which to sanitize the HTML, if importing
  * @return {ve.dm.Document} New document

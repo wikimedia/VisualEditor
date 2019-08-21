@@ -56,7 +56,6 @@ OO.mixinClass( ve.dm.BranchNode, ve.BranchNode );
 /**
  * Add a child node to the end of the list.
  *
- * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @return {number} New number of children
  * @fires splice
@@ -70,7 +69,6 @@ ve.dm.BranchNode.prototype.push = function ( childModel ) {
 /**
  * Remove a child node from the end of the list.
  *
- * @method
  * @return {ve.dm.BranchNode} Removed childModel
  * @fires splice
  * @fires update
@@ -87,7 +85,6 @@ ve.dm.BranchNode.prototype.pop = function () {
 /**
  * Add a child node to the beginning of the list.
  *
- * @method
  * @param {ve.dm.BranchNode} childModel Item to add
  * @return {number} New number of children
  * @fires splice
@@ -101,7 +98,6 @@ ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
 /**
  * Remove a child node from the beginning of the list.
  *
- * @method
  * @return {ve.dm.BranchNode} Removed childModel
  * @fires splice
  * @fires update
@@ -118,7 +114,6 @@ ve.dm.BranchNode.prototype.shift = function () {
 /**
  * Add and/or remove child nodes at an offset.
  *
- * @method
  * @param {number} index Index to remove and or insert nodes at
  * @param {number} howmany Number of nodes to remove
  * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
@@ -211,7 +206,6 @@ ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
 /**
  * Check in the branch node has a slug at a particular offset
  *
- * @method
  * @param {number} offset Offset to check for a slug at
  * @return {boolean} There is a slug at the offset
  */

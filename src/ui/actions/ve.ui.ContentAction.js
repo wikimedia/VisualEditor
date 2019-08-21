@@ -39,7 +39,6 @@ ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpeci
 /**
  * Insert content.
  *
- * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
  * @param {boolean} [collapseToEnd] Collapse selection to end after inserting
@@ -57,7 +56,6 @@ ve.ui.ContentAction.prototype.insert = function ( content, annotate, collapseToE
 /**
  * Remove content.
  *
- * @method
  * @param {string} [key] Trigger remove as if a key were pressed, either 'backspace' or 'delete'
  * @return {boolean} Action was executed
  */
@@ -86,7 +84,6 @@ ve.ui.ContentAction.prototype.remove = function ( key ) {
 /**
  * Select content.
  *
- * @method
  * @param {ve.dm.Selection} selection Selection
  * @return {boolean} Action was executed
  */
@@ -98,7 +95,6 @@ ve.ui.ContentAction.prototype.select = function ( selection ) {
 /**
  * Select all content.
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.selectAll = function () {
@@ -109,7 +105,6 @@ ve.ui.ContentAction.prototype.selectAll = function () {
 /**
  * Paste special.
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.pasteSpecial = function () {
@@ -121,7 +116,6 @@ ve.ui.ContentAction.prototype.pasteSpecial = function () {
 /**
  * Change directionality
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.changeDirectionality = function () {
@@ -135,7 +129,6 @@ ve.ui.ContentAction.prototype.changeDirectionality = function () {
 /**
  * Emit a surface submit event
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.submit = function () {
@@ -146,7 +139,6 @@ ve.ui.ContentAction.prototype.submit = function () {
 /**
  * Emit a surface submit event
  *
- * @method
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.focusContext = function () {

@@ -38,7 +38,6 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
 /**
  * Check if the current selection is wrapped in a list of a given style
  *
- * @method
  * @param {string|null} style List style, e.g. 'number' or 'bullet', or null for any style
  * @param {string} [listType='list'] List type
  * @return {boolean} Current selection is all wrapped in a list
@@ -66,7 +65,6 @@ ve.ui.ListAction.prototype.allWrapped = function ( style, listType ) {
 /**
  * Toggle a list around content.
  *
- * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
  * @param {boolean} noBreakpoints Don't create breakpoints
  * @param {string} [listType='list'] List type
@@ -83,7 +81,6 @@ ve.ui.ListAction.prototype.toggle = function ( style, noBreakpoints, listType ) 
 /**
  * Add a list around content only if it has no list already.
  *
- * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
  * @param {boolean} noBreakpoints Don't create breakpoints
  * @param {string} [listType='list'] List type
@@ -102,7 +99,6 @@ ve.ui.ListAction.prototype.wrapOnce = function ( style, noBreakpoints, listType 
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
- * @method
  * @param {string} style List style, e.g. 'number' or 'bullet'
  * @param {boolean} noBreakpoints Don't create breakpoints
  * @param {string} [listType='list'] List type
@@ -189,7 +185,6 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
  *
  * TODO: Refactor functionality into {ve.dm.SurfaceFragment}.
  *
- * @method
  * @param {boolean} noBreakpoints Don't create breakpoints
  * @param {string} [listType='list'] List type
  * @return {boolean} Action was executed

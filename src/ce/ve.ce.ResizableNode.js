@@ -240,8 +240,6 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 
 /**
  * Handle node focus.
- *
- * @method
  */
 ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 	// Also check the node is focused as this method is also triggered by rerender.
@@ -284,8 +282,6 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 
 /**
  * Handle node blur.
- *
- * @method
  */
 ve.ce.ResizableNode.prototype.onResizableBlur = function () {
 	// Node may have already been torn down, e.g. after delete
@@ -329,8 +325,6 @@ ve.ce.ResizableNode.prototype.onResizableAlign = function ( align ) {
 
 /**
  * Handle setup event.
- *
- * @method
  */
 ve.ce.ResizableNode.prototype.onResizableSetup = function () {
 	// Exit if already setup or not attached
@@ -344,8 +338,6 @@ ve.ce.ResizableNode.prototype.onResizableSetup = function () {
 
 /**
  * Handle teardown event.
- *
- * @method
  */
 ve.ce.ResizableNode.prototype.onResizableTeardown = function () {
 	// Exit if not setup or not attached
@@ -361,7 +353,6 @@ ve.ce.ResizableNode.prototype.onResizableTeardown = function () {
 /**
  * Handle resizing event.
  *
- * @method
  * @param {Object} dimensions Dimension object containing width & height
  */
 ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
@@ -381,7 +372,6 @@ ve.ce.ResizableNode.prototype.onResizableResizing = function ( dimensions ) {
 /**
  * Handle attribute change events from the model.
  *
- * @method
  * @param {string} key Attribute key
  * @param {string} from Old value
  * @param {string} to New value
@@ -396,7 +386,6 @@ ve.ce.ResizableNode.prototype.onResizableAttributeChange = function () {
 /**
  * Handle bounding box handle mousedown.
  *
- * @method
  * @param {jQuery.Event} e Click event
  * @fires resizeStart
  */
@@ -447,8 +436,6 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 
 /**
  * Set the proper size and position for resize handles
- *
- * @method
  */
 ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
 	var width, height;
@@ -484,8 +471,6 @@ ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
 
 /**
  * Set the proper position for resize handles
- *
- * @method
  */
 ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
 	var offset;
@@ -504,7 +489,6 @@ ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
 /**
  * Handle body mousemove.
  *
- * @method
  * @param {jQuery.Event} e Click event
  * @fires resizing
  */
@@ -573,7 +557,6 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 /**
  * Handle body mouseup.
  *
- * @method
  * @fires resizeEnd
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {

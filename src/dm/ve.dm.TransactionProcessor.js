@@ -340,7 +340,6 @@ ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, valu
  *
  * Called within the context of a transaction processor instance; moves the cursor by op.length
  *
- * @method
  * @param {Object} op Operation object:
  * @param {number} op.length Number of elements to retain
  */
@@ -369,7 +368,6 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
  * in reverse mode. So if `op.from` is incorrect, the transaction will commit fine, but won't roll
  * back correctly.
  *
- * @method
  * @param {Object} op Operation object
  * @param {string} op.key Attribute name
  * @param {Mixed} op.from Old attribute value, or undefined if not previously set
@@ -388,7 +386,6 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 /**
  * Verify a replace operation (the actual processing is now done in ve.dm.TreeModifier)
  *
- * @method
  * @param {Object} op Operation object
  * @param {Array} op.remove Linear model data to remove
  * @param {Array} op.insert Linear model data to insert

@@ -116,7 +116,6 @@ ve.ui.LinkAnnotationWidget.prototype.setDisabled = function () {
 /**
  * Handle value-changing events from the text input
  *
- * @method
  * @param {string} value New input value
  */
 ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
@@ -145,7 +144,6 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
  *
  * The input value will automatically be updated.
  *
- * @method
  * @param {ve.dm.LinkAnnotation|null} annotation Link annotation
  * @param {boolean} [fromText] Annotation was generated from text input
  * @return {ve.ui.LinkAnnotationWidget}
@@ -175,7 +173,6 @@ ve.ui.LinkAnnotationWidget.prototype.setAnnotation = function ( annotation, from
 /**
  * Gets the annotation value.
  *
- * @method
  * @return {ve.dm.LinkAnnotation} Link annotation
  */
 ve.ui.LinkAnnotationWidget.prototype.getAnnotation = function () {

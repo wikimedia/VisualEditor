@@ -383,8 +383,6 @@ ve.ce.Surface.static.getClipboardHash = function ( $elements, beforePasteData ) 
 
 /**
  * Destroy the surface, removing all DOM elements.
- *
- * @method
  */
 ve.ce.Surface.prototype.destroy = function () {
 	var attachedRoot = this.attachedRoot;
@@ -512,8 +510,6 @@ ve.ce.Surface.prototype.getSelectionDirectionality = function () {
  * Initialize surface.
  *
  * This should be called after the surface has been attached to the DOM.
- *
- * @method
  */
 ve.ce.Surface.prototype.initialize = function () {
 	this.attachedRoot.setLive( true );
@@ -836,7 +832,6 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
  *
  * This is triggered by a global focusin/focusout event noticing a selection on the document.
  *
- * @method
  * @fires focus
  */
 ve.ce.Surface.prototype.onDocumentFocus = function () {
@@ -858,7 +853,6 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
  *
  * This is triggered by a global focusin/focusout event noticing no selection on the document.
  *
- * @method
  * @fires blur
  */
 ve.ce.Surface.prototype.onDocumentBlur = function () {
@@ -899,7 +893,6 @@ ve.ce.Surface.prototype.isFocused = function () {
 /**
  * Handle document mouse down events.
  *
- * @method
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
@@ -1036,7 +1029,6 @@ ve.ce.Surface.prototype.afterDocumentMouseDown = function ( e, selectionBefore )
 /**
  * Handle document mouse up events.
  *
- * @method
  * @param {jQuery.Event} e Mouse up event
  */
 ve.ce.Surface.prototype.onDocumentMouseUp = function ( e ) {
@@ -1107,7 +1099,6 @@ ve.ce.Surface.prototype.setDragging = function ( dragging ) {
 /**
  * Handle document selection change events.
  *
- * @method
  * @param {jQuery.Event} e Selection change event
  */
 ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
@@ -1124,7 +1115,6 @@ ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
 /**
  * Handle document drag start events.
  *
- * @method
  * @param {jQuery.Event} e Drag start event
  * @fires relocationStart
  */
@@ -1136,7 +1126,6 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 /**
  * Handle document drag over events.
  *
- * @method
  * @param {jQuery.Event} e Drag over event
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
@@ -1264,7 +1253,6 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 /**
  * Handle document drag leave events.
  *
- * @method
  * @param {jQuery.Event} e Drag leave event
  */
 ve.ce.Surface.prototype.onDocumentDragLeave = function () {
@@ -1281,7 +1269,6 @@ ve.ce.Surface.prototype.onDocumentDragLeave = function () {
  *
  * Limits native drag and drop behaviour.
  *
- * @method
  * @param {jQuery.Event} e Drop event
  * @fires relocationEnd
  */
@@ -1383,7 +1370,6 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 /**
  * Handle document key down events.
  *
- * @method
  * @param {jQuery.Event} e Key down event
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
@@ -1464,7 +1450,6 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
  * command has been blacklisted), we should still preventDefault so ContentEditable
  * native commands don't occur, leaving the view out of sync with the model.
  *
- * @method
  * @param {ve.ui.Trigger} trigger Trigger to check
  * @return {boolean} Trigger should preventDefault
  */
@@ -1481,7 +1466,6 @@ ve.ce.Surface.prototype.isBlockedTrigger = function ( trigger ) {
 /**
  * Handle document key press events.
  *
- * @method
  * @param {jQuery.Event} e Key press event
  */
 ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
@@ -1894,7 +1878,6 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 /**
  * Handle document key up events.
  *
- * @method
  * @param {jQuery.Event} e Key up event
  * @fires keyup
  */
@@ -1905,7 +1888,6 @@ ve.ce.Surface.prototype.onDocumentKeyUp = function () {
 /**
  * Handle cut events.
  *
- * @method
  * @param {jQuery.Event} e Cut event
  */
 ve.ce.Surface.prototype.onCut = function ( e ) {
@@ -1928,7 +1910,6 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 /**
  * Handle copy events.
  *
- * @method
  * @param {jQuery.Event} e Copy event
  */
 ve.ce.Surface.prototype.onCopy = function ( e ) {
@@ -2991,7 +2972,6 @@ ve.ce.Surface.prototype.selectAll = function () {
 /**
  * Handle input events.
  *
- * @method
  * @param {jQuery.Event} e The input event
  */
 ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
@@ -3022,7 +3002,6 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
  * Handle compositionstart events.
  * Note that their meaning varies between browser/OS/IME combinations
  *
- * @method
  * @param {jQuery.Event} e The compositionstart event
  */
 ve.ce.Surface.prototype.onDocumentCompositionStart = function () {
@@ -4061,7 +4040,6 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 /**
  * Apply a DM selection to the DOM, even if the old DOM selection is different but DM-equivalent
  *
- * @method
  * @return {boolean} Whether the selection actually changed
  */
 ve.ce.Surface.prototype.forceShowModelSelection = function () {
@@ -4071,7 +4049,6 @@ ve.ce.Surface.prototype.forceShowModelSelection = function () {
 /**
  * Apply a DM selection to the DOM
  *
- * @method
  * @param {boolean} [force] Replace the DOM selection if it is different but DM-equivalent
  * @return {boolean} Whether the selection actually changed
  */
@@ -4370,7 +4347,6 @@ ve.ce.Surface.prototype.annotationsAtNode = function ( node, filter ) {
  * collapsedness; for a non-collapsed selection, the adjustment is in the direction that
  * grows the selection (thereby avoiding collapsing or reversing the selection).
  *
- * @method
  * @param {ve.Range} range Range to get selection for
  * @return {ve.SelectionState} The selection
  * @return {Node|null} return.anchorNode The anchor node
@@ -4442,7 +4418,6 @@ ve.ce.Surface.prototype.getNativeRange = function ( range ) {
 /**
  * Append passed highlights to highlight container.
  *
- * @method
  * @param {jQuery} $highlights Highlights to append
  * @param {boolean} focused Highlights are currently focused
  */
@@ -4463,7 +4438,6 @@ ve.ce.Surface.prototype.appendHighlights = function ( $highlights, focused ) {
 /**
  * Get the top-level surface.
  *
- * @method
  * @return {ve.ui.Surface} Surface
  */
 ve.ce.Surface.prototype.getSurface = function () {
@@ -4473,7 +4447,6 @@ ve.ce.Surface.prototype.getSurface = function () {
 /**
  * Get the surface model.
  *
- * @method
  * @return {ve.dm.Surface} Surface model
  */
 ve.ce.Surface.prototype.getModel = function () {
@@ -4483,7 +4456,6 @@ ve.ce.Surface.prototype.getModel = function () {
 /**
  * Get the document view.
  *
- * @method
  * @return {ve.ce.Document} Document view
  */
 ve.ce.Surface.prototype.getDocument = function () {
@@ -4493,7 +4465,6 @@ ve.ce.Surface.prototype.getDocument = function () {
 /**
  * Check whether there are any render locks
  *
- * @method
  * @return {boolean} Render is locked
  */
 ve.ce.Surface.prototype.isRenderingLocked = function () {
@@ -4502,8 +4473,6 @@ ve.ce.Surface.prototype.isRenderingLocked = function () {
 
 /**
  * Add a single render lock (to disable rendering)
- *
- * @method
  */
 ve.ce.Surface.prototype.incRenderLock = function () {
 	this.renderLocks++;
@@ -4511,8 +4480,6 @@ ve.ce.Surface.prototype.incRenderLock = function () {
 
 /**
  * Remove a single render lock
- *
- * @method
  */
 ve.ce.Surface.prototype.decRenderLock = function () {
 	this.renderLocks--;
@@ -4535,7 +4502,6 @@ ve.ce.Surface.prototype.afterRenderLock = function ( callback ) {
  *
  * This avoids event storms when the CE surface is already correct
  *
- * @method
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  * process, or null to process none
  * @param {ve.dm.Selection} selection New selection

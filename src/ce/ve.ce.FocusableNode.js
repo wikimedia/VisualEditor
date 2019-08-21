@@ -249,8 +249,6 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 
 /**
  * Handle node setup.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	// Exit if already setup or not attached
@@ -320,8 +318,6 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
  * If the node doesn't have a visible rendering, we insert an icon to represent
  * it. If the icon was already present, and this is called again when rendering
  * has developed, we remove the icon.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 	var showIcon,
@@ -406,8 +402,6 @@ ve.ce.FocusableNode.prototype.updateInvisibleIconLabel = function () {
 
 /**
  * Handle node teardown.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 	// Exit if not setup or not attached
@@ -434,7 +428,6 @@ ve.ce.FocusableNode.prototype.onFocusableTeardown = function () {
 /**
  * Handle highlight mouse down events.
  *
- * @method
  * @param {jQuery.Event} e Mouse down event
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
@@ -484,7 +477,6 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 /**
  * Handle highlight double click events.
  *
- * @method
  * @param {jQuery.Event} e Double click event
  */
 ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
@@ -498,8 +490,6 @@ ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
 
 /**
  * Execute the command associated with this node.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.executeCommand = function () {
 	var command, surface;
@@ -516,7 +506,6 @@ ve.ce.FocusableNode.prototype.executeCommand = function () {
 /**
  * Handle element drag start.
  *
- * @method
  * @param {jQuery.Event} e Drag start event
  */
 ve.ce.FocusableNode.prototype.onFocusableDragStart = function ( e ) {
@@ -531,7 +520,6 @@ ve.ce.FocusableNode.prototype.onFocusableDragStart = function ( e ) {
  *
  * If a relocation actually takes place the node is destroyed before this events fires.
  *
- * @method
  * @param {jQuery.Event} e Drag end event
  */
 ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
@@ -545,7 +533,6 @@ ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
 /**
  * Handle mouse enter events.
  *
- * @method
  * @param {jQuery.Event} e Mouse enter event
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseEnter = function () {
@@ -557,7 +544,6 @@ ve.ce.FocusableNode.prototype.onFocusableMouseEnter = function () {
 /**
  * Handle touch start events.
  *
- * @method
  * @param {jQuery.Event} e Touch start event
  */
 ve.ce.FocusableNode.prototype.onFocusableTouchStart = function () {
@@ -567,7 +553,6 @@ ve.ce.FocusableNode.prototype.onFocusableTouchStart = function () {
 /**
  * Handle touch move events.
  *
- * @method
  * @param {jQuery.Event} e Touch move event
  */
 ve.ce.FocusableNode.prototype.onFocusableTouchMove = function () {
@@ -577,7 +562,6 @@ ve.ce.FocusableNode.prototype.onFocusableTouchMove = function () {
 /**
  * Handle surface mouse move events.
  *
- * @method
  * @param {jQuery.Event} e Mouse move event
  */
 ve.ce.FocusableNode.prototype.onSurfaceMouseMove = function ( e ) {
@@ -594,7 +578,6 @@ ve.ce.FocusableNode.prototype.onSurfaceMouseMove = function ( e ) {
 /**
  * Handle surface mouse leave events.
  *
- * @method
  * @param {jQuery.Event} e Mouse leave event
  */
 ve.ce.FocusableNode.prototype.onSurfaceMouseLeave = function ( e ) {
@@ -605,8 +588,6 @@ ve.ce.FocusableNode.prototype.onSurfaceMouseLeave = function ( e ) {
 
 /**
  * Handle resize start events.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableResizeStart = function () {
 	this.clearHighlights();
@@ -614,8 +595,6 @@ ve.ce.FocusableNode.prototype.onFocusableResizeStart = function () {
 
 /**
  * Handle resize end event.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableResizeEnd = function () {
 	this.redrawHighlightsDebounced();
@@ -623,8 +602,6 @@ ve.ce.FocusableNode.prototype.onFocusableResizeEnd = function () {
 
 /**
  * Handle rerender event.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
 	if ( this.focused && this.focusableSurface ) {
@@ -637,7 +614,6 @@ ve.ce.FocusableNode.prototype.onFocusableRerender = function () {
 /**
  * Check if node is focused.
  *
- * @method
  * @return {boolean} Node is focused
  */
 ve.ce.FocusableNode.prototype.isFocused = function () {
@@ -647,7 +623,6 @@ ve.ce.FocusableNode.prototype.isFocused = function () {
 /**
  * Set the selected state of the node.
  *
- * @method
  * @param {boolean} value Node is focused
  * @fires focus
  * @fires blur
@@ -674,8 +649,6 @@ ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 
 /**
  * Creates highlights.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.createHighlights = function () {
 	if ( this.highlighted ) {
@@ -715,8 +688,6 @@ ve.ce.FocusableNode.prototype.onSurfaceActivation = function () {
 
 /**
  * Clears highlight.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.clearHighlights = function () {
 	if ( !this.highlighted ) {
@@ -731,8 +702,6 @@ ve.ce.FocusableNode.prototype.clearHighlights = function () {
 
 /**
  * Redraws highlight.
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.redrawHighlights = function () {
 	if ( this.focused ) {
@@ -769,8 +738,6 @@ ve.ce.FocusableNode.prototype.calculateHighlights = function () {
 
 /**
  * Positions highlights, and remove collapsed ones
- *
- * @method
  */
 ve.ce.FocusableNode.prototype.positionHighlights = function () {
 	var i, l;

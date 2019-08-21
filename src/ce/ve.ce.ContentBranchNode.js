@@ -123,7 +123,6 @@ ve.ce.ContentBranchNode.prototype.onClick = function ( e ) {
  *
  * This is used to automatically render contents.
  *
- * @method
  * @param {ve.dm.Transaction} transaction Transaction
  */
 ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
@@ -198,7 +197,6 @@ ve.ce.ContentBranchNode.prototype.setupInlineSlugs = function () {
  * do this with #appendRenderedContents, which resolves the cloned
  * nodes returned by this function back to their originals.
  *
- * @method
  * @return {HTMLElement} Wrapper containing rendered contents
  * @return {Object} return.unicornInfo Unicorn information
  */
@@ -408,7 +406,6 @@ ve.ce.ContentBranchNode.prototype.onModelDetach = function () {
 /**
  * Render contents.
  *
- * @method
  * @return {boolean} Whether the contents have changed
  */
 ve.ce.ContentBranchNode.prototype.renderContents = function () {

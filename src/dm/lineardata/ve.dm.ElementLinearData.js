@@ -164,7 +164,6 @@ ve.dm.ElementLinearData.static.getAnnotationHashesFromItem = function ( item ) {
  *
  * Cleans up data structure if hashes array is empty.
  *
- * @method
  * @param {string|Array|Object} item Item of linear data
  * @param {string[]} hashes Annotations' store hashes
  * @return {string|Array|Object} Deep-copied, modified item
@@ -223,7 +222,6 @@ ve.dm.ElementLinearData.static.getCharacterDataFromItem = function ( item ) {
  *      <list> <listItem> </listItem> <list>
  *     .      .          .           .      .
  *
- * @method
  * @param {number} offset Document offset
  * @return {boolean} Content can be inserted at offset
  */
@@ -309,7 +307,6 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
  *      <list> <listItem> </listItem> <list>
  *     ^      .          ^           .      ^
  *
- * @method
  * @param {number} offset Document offset
  * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
  * @return {boolean} Structure can be inserted at offset
@@ -394,7 +391,6 @@ ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrest
  * This method assumes that any value that has a type property that's a string is an element object.
  * Elements are discovered by iterating through the entire data array.
  *
- * @method
  * @return {boolean} True if all elements in data are content elements
  */
 ve.dm.ElementLinearData.prototype.isContentData = function () {
@@ -438,7 +434,6 @@ ve.dm.ElementLinearData.prototype.canTakeAnnotationAtOffset = function ( offset,
 /**
  * Get annotations' store hashes covered by an offset.
  *
- * @method
  * @param {number} offset Offset to get annotations for
  * @param {boolean} [ignoreClose] Ignore annotations on close elements
  * @return {string[]} An array of annotation store hashes the offset is covered by
@@ -472,7 +467,6 @@ ve.dm.ElementLinearData.prototype.getAnnotationHashesFromOffset = function ( off
  *
  * The returned AnnotationSet is a clone of the one in the data.
  *
- * @method
  * @param {number} offset Offset to get annotations for
  * @param {boolean} [ignoreClose] Ignore annotations on close elements
  * @return {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
@@ -487,7 +481,6 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset, 
  *
  * Cleans up data structure if annotation set is empty.
  *
- * @method
  * @param {number} offset Offset to set annotations at
  * @param {ve.dm.AnnotationSet} annotations Annotations to set
  */
@@ -500,7 +493,6 @@ ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset = function ( offset, an
  *
  * Cleans up data structure if hashes array is empty.
  *
- * @method
  * @param {number} offset Offset to set annotation hashes at
  * @param {string[]} hashes Annotations' store hashes
  */
@@ -551,7 +543,6 @@ ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
 /**
  * Gets the range of content surrounding a given offset that's covered by a given annotation.
  *
- * @method
  * @param {number} offset Offset to begin looking forward and backward from
  * @param {Object} annotation Annotation to test for coverage with
  * @return {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
@@ -581,7 +572,6 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offse
 /**
  * Get the range of an annotation found within a range.
  *
- * @method
  * @param {ve.Range} range Range to begin looking forward and backward from
  * @param {ve.dm.Annotation} annotation Annotation to test for coverage with
  * @return {ve.Range|null} Range of content covered by annotation, or a copy of the range
@@ -608,7 +598,6 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( ra
 /**
  * Get annotations common to all content in a range.
  *
- * @method
  * @param {ve.Range} range Range to get annotations for
  * @param {boolean} [all=false] Get all annotations found within the range, not just those that cover it
  * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
@@ -710,7 +699,6 @@ ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( 
 /**
  * Check if the range has any annotations
  *
- * @method
  * @param {ve.Range} range Range to check for annotations
  * @return {boolean} The range contains at least one annotation
  */
@@ -727,7 +715,6 @@ ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
 /**
  * Get a range without any whitespace content at the beginning and end.
  *
- * @method
  * @param {ve.Range} range Range to trim
  * @return {Object} Trimmed range
  */
@@ -866,7 +853,6 @@ ve.dm.ElementLinearData.prototype.getSourceText = function ( range ) {
  * descended into. Giving a starting offset inside an ignoreChildren node will give unpredictable
  * results.
  *
- * @method
  * @param {number} offset Offset to start from
  * @param {number} distance Number of valid offsets to move
  * @param {Function} callback Function to call to check if an offset is valid which will be
@@ -963,7 +949,6 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
  * This method is a wrapper around {getRelativeOffset}, using {isContentOffset} as
  * the offset validation callback.
  *
- * @method
  * @param {number} offset Offset to start from
  * @param {number} distance Number of content offsets to move
  * @return {number} Relative content offset or -1 if there are no valid offsets in data
@@ -981,7 +966,6 @@ ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, 
  * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
  * shortest distance will be used.
  *
- * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
  * @return {number} Nearest content offset or -1 if there are no valid offsets in data
@@ -1007,7 +991,6 @@ ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, d
  * This method is a wrapper around {getRelativeOffset}, using {this.isStructuralOffset} as
  * the offset validation callback.
  *
- * @method
  * @param {number} offset Offset to start from
  * @param {number} distance Number of structural offsets to move
  * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
@@ -1032,7 +1015,6 @@ ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offse
  * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
  * shortest distance will be used.
  *
- * @method
  * @param {number} offset Offset to start from
  * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
  * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
@@ -1061,7 +1043,6 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
  * else if the offset is at the start of a word, it will be expanded to that word;
  * else the offset is not adjacent to any word and is returned as a collapsed range.
  *
- * @method
  * @param {number} offset Offset to start from; must not be inside a surrogate pair
  * @return {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
  */
@@ -1118,7 +1099,6 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
  *
  * Currently this is just all annotations still in use.
  *
- * @method
  * @param {ve.Range} [range] Optional range to get store values for
  * @return {Object} Object containing all store values, keyed by store hash
  */
@@ -1152,7 +1132,6 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
  *
  * Calls remapInternalListIndexes() for each node.
  *
- * @method
  * @param {Object} mapping Mapping from internal list indexes to internal list indexes
  * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
  *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
@@ -1172,7 +1151,6 @@ ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping,
  *
  * Calls remapInternalListKeys() for each node.
  *
- * @method
  * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
  */
 ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalList ) {

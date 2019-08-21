@@ -60,8 +60,6 @@ ve.ce.SectionNode.prototype.getTagName = function () {
  * Handle model update events.
  *
  * If the style changed since last update the DOM wrapper will be replaced with an appropriate one.
- *
- * @method
  */
 ve.ce.SectionNode.prototype.onUpdate = function () {
 	this.updateTagName();

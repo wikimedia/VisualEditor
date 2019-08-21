@@ -52,7 +52,6 @@ OO.mixinClass( ve.dm.InternalList, OO.EventEmitter );
  * If an item with the specified group and key already exists it will be ignored, unless
  * the data already stored is an empty string.
  *
- * @method
  * @param {string} groupName Item group
  * @param {string} key Item key
  * @param {string} html Item contents
@@ -82,7 +81,6 @@ ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
 /**
  * Gets all the item's HTML strings
  *
- * @method
  * @return {Object} Name-indexed object containing HTMLElements
  */
 ve.dm.InternalList.prototype.getItemHtmlQueue = function () {
@@ -92,7 +90,6 @@ ve.dm.InternalList.prototype.getItemHtmlQueue = function () {
 /**
  * Gets the internal list's document model
  *
- * @method
  * @return {ve.dm.Document} Document model
  */
 ve.dm.InternalList.prototype.getDocument = function () {
@@ -102,7 +99,6 @@ ve.dm.InternalList.prototype.getDocument = function () {
 /**
  * Get the list node
  *
- * @method
  * @return {ve.dm.InternalListNode} List node
  */
 ve.dm.InternalList.prototype.getListNode = function () {
@@ -123,7 +119,6 @@ ve.dm.InternalList.prototype.getListNode = function () {
 /**
  * Get the number it internal items in the internal list.
  *
- * @method
  * @return {number}
  */
 ve.dm.InternalList.prototype.getItemNodeCount = function () {
@@ -133,7 +128,6 @@ ve.dm.InternalList.prototype.getItemNodeCount = function () {
 /**
  * Get the item node from a specific index.
  *
- * @method
  * @param {number} index Item index
  * @return {ve.dm.InternalItemNode} Item node
  */
@@ -144,7 +138,6 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 /**
  * Get all node groups.
  *
- * @method
  * @return {Object} Node groups, keyed by group name
  */
 ve.dm.InternalList.prototype.getNodeGroups = function () {
@@ -154,7 +147,6 @@ ve.dm.InternalList.prototype.getNodeGroups = function () {
 /**
  * Get the node group object for a specified group name.
  *
- * @method
  * @param {string} groupName Name of the group
  * @return {Object} Node group object, containing nodes and key order array
  */
@@ -169,7 +161,6 @@ ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
  * won't be allocated again. It will also be associated to oldListKey so that if the same oldListKey
  * is passed in again later, the previously allocated name will be returned.
  *
- * @method
  * @param {string} groupName Name of the group
  * @param {string} oldListKey Current list key to associate the generated list key with
  * @param {string} prefix Prefix to distinguish generated keys from non-generated ones
@@ -209,7 +200,6 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  *
  * Stored HTML is deleted after conversion.
  *
- * @method
  * @param {ve.dm.Converter} converter Converter object
  * @param {HTMLDocument} doc Document to create nodes in
  * @return {Array} Linear model data
@@ -301,7 +291,6 @@ ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
 /**
  * Add a node.
  *
- * @method
  * @param {string} groupName Item group
  * @param {string} key Item name
  * @param {number} index Item index
@@ -384,7 +373,6 @@ ve.dm.InternalList.prototype.onTransact = function () {
 /**
  * Remove a node.
  *
- * @method
  * @param {string} groupName Item group
  * @param {string} key Item name
  * @param {number} index Item index

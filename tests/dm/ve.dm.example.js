@@ -23,7 +23,6 @@ ve.dm.example = {};
  * The actual storage format has an instance of ve.dm.LinkAnnotation instead of the plain object,
  * and an instance of ve.dm.AnnotationSet instead of the array.
  *
- * @method
  * @param {Array} data Linear model data
  * @param {ve.dm.HashValueStore} [store] Hash-value store to use, creates one if undefined
  * @return {ve.dm.ElementLinearData} Linear data store
@@ -112,7 +111,6 @@ ve.dm.example.removeOriginalDomElements = function ( data ) {
 /**
  * Create an annotation object from shorthand notation.
  *
- * @method
  * @param {Object} annotation Plain object with type and attributes properties
  * @param {ve.dm.HashValueStore} [store] Hash value store
  * @return {ve.dm.Annotation} Instance of the right ve.dm.Annotation subclass
@@ -127,7 +125,6 @@ ve.dm.example.createAnnotation = function ( annotation, store ) {
  * This calls ve.dm.example.createAnnotation() for each element and puts the result in an
  * AnnotationSet.
  *
- * @method
  * @param {ve.dm.HashValueStore} store Hash-value store
  * @param {Array} annotations Array of annotations in shorthand format
  * @return {ve.dm.AnnotationSet}
@@ -248,7 +245,6 @@ ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
 /**
  * Looks up a value in a node tree.
  *
- * @method
  * @param {ve.Node} root Root node to lookup from
  * @param {...number} [paths] Index path
  * @return {ve.Node} Node at given path

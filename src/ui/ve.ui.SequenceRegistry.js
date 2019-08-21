@@ -23,7 +23,6 @@ OO.inheritClass( ve.ui.SequenceRegistry, OO.Registry );
 /**
  * Register a sequence with the factory.
  *
- * @method
  * @param {ve.ui.Sequence} sequence Sequence object
  * @throws {Error} If sequence is not an instance of ve.ui.Sequence
  */

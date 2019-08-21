@@ -30,7 +30,6 @@ OO.initClass( ve.dm.LinearData );
  *
  * This will return the same string for close and open elements.
  *
- * @method
  * @param {Object} item Element item
  * @return {string} Type of the element
  */
@@ -48,7 +47,6 @@ ve.dm.LinearData.static.getType = function ( item ) {
  *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
  *     ^         . ^          ^           . . ^     ^     ^            .
  *
- * @method
  * @param {Object|Array|string} item Linear data item
  * @return {boolean} Item is an element
  */
@@ -60,7 +58,6 @@ ve.dm.LinearData.static.isElementData = function ( item ) {
 /**
  * Checks if data item is an open element.
  *
- * @method
  * @param {Object} item Element item
  * @return {boolean} Item is an open element
  */
@@ -71,7 +68,6 @@ ve.dm.LinearData.static.isOpenElementData = function ( item ) {
 /**
  * Checks if data item is a close element.
  *
- * @method
  * @param {Object} item Element item
  * @return {boolean} Item is a close element
  */
@@ -84,7 +80,6 @@ ve.dm.LinearData.static.isCloseElementData = function ( item ) {
 /**
  * Gets linear data from a specified index, or all data if no index specified
  *
- * @method
  * @param {number} [offset] Offset to get data from
  * @return {Object|Array} Data from index, or all data (by reference)
  */
@@ -95,7 +90,6 @@ ve.dm.LinearData.prototype.getData = function ( offset ) {
 /**
  * Sets linear data at a specified index
  *
- * @method
  * @param {number} offset Offset to set data at
  * @param {Object|string} value Value to store
  */
@@ -106,7 +100,6 @@ ve.dm.LinearData.prototype.setData = function ( offset, value ) {
 /**
  * Push data to the end of the array
  *
- * @method
  * @param {...Object} [value] Values to store
  * @return {number} The new length of the linear data
  */
@@ -117,7 +110,6 @@ ve.dm.LinearData.prototype.push = function () {
 /**
  * Gets length of the linear data
  *
- * @method
  * @return {number} Length of the linear data
  */
 ve.dm.LinearData.prototype.getLength = function () {
@@ -127,7 +119,6 @@ ve.dm.LinearData.prototype.getLength = function () {
 /**
  * Gets the hash-value store
  *
- * @method
  * @return {ve.dm.HashValueStore} The hash-value store
  */
 ve.dm.LinearData.prototype.getStore = function () {
@@ -137,7 +128,6 @@ ve.dm.LinearData.prototype.getStore = function () {
 /**
  * Slice linear data
  *
- * @method
  * @param {number} begin Index to begin at
  * @param {number} [end] Index to end at
  * @return {Array} One-level deep copy of sliced range
@@ -149,7 +139,6 @@ ve.dm.LinearData.prototype.slice = function () {
 /**
  * Slice linear data and return new LinearData object containing result
  *
- * @method
  * @param {number} begin Index to begin at
  * @param {number} [end] Index to end at
  * @return {ve.dm.LinearData} LinearData object containing one-level deep copy of sliced range
@@ -161,7 +150,6 @@ ve.dm.LinearData.prototype.sliceObject = function () {
 /**
  * Splice linear data
  *
- * @method
  * @param {number} index Splice from
  * @param {number} howmany Items to be removed
  * @param {...Object} [element] Items to be inserted
@@ -174,7 +162,6 @@ ve.dm.LinearData.prototype.splice = function () {
 /**
  * Splice linear data and return new LinearData object containing result
  *
- * @method
  * @param {number} index Splice from
  * @param {number} howmany Items to be removed
  * @param {...Object} [element] Items to be inserted
@@ -187,7 +174,6 @@ ve.dm.LinearData.prototype.spliceObject = function () {
 /**
  * Returns ve.batchSplice of linear data
  *
- * @method
  * @see ve#batchSplice
  * @param {number} offset
  * @param {number} remove
@@ -201,7 +187,6 @@ ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
 /**
  * Returns ve.batchSplice of linear data, wrapped in a LinearData object
  *
- * @method
  * @see ve#batchSplice
  * @param {number} offset
  * @param {number} remove
@@ -218,7 +203,6 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
 /**
  * Get a slice or copy of the provided data.
  *
- * @method
  * @param {ve.Range} [range] Range of data to get, all data will be given by default
  * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
  * @return {Array} Slice or copy of data

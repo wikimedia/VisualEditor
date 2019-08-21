@@ -53,7 +53,6 @@ ve.ce.DocumentNode.static.name = 'document';
  *
  * For a document node is the same as the inner length, which is why we override it here.
  *
- * @method
  * @return {number} Length of the entire node
  */
 ve.ce.DocumentNode.prototype.getOuterLength = function () {
@@ -63,7 +62,6 @@ ve.ce.DocumentNode.prototype.getOuterLength = function () {
 /**
  * Get the surface the document is attached to.
  *
- * @method
  * @return {ve.ce.Surface} Surface the document is attached to
  */
 ve.ce.DocumentNode.prototype.getSurface = function () {

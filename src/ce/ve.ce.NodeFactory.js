@@ -54,7 +54,6 @@ ve.ce.NodeFactory.prototype.splitNodeOnEnter = function ( type ) {
 /**
  * Get primary command for node type.
  *
- * @method
  * @param {string} type Node type
  * @return {string|null} Primary command name
  * @throws {Error} Unknown node type

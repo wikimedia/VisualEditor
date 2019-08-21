@@ -46,7 +46,6 @@ ve.ui.LinkAction.static.methods = [ 'autolinkUrl' ];
 /**
  * Autolink the selected URL (which may have trailing whitespace).
  *
- * @method
  * @return {boolean}
  *   True if the selection is a valid URL and the autolink action was
  *   executed; otherwise false.
@@ -63,7 +62,6 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
 /**
  * Autolink the selection, which may have trailing whitespace.
  *
- * @method
  * @private
  * @param {Function} validateFunc
  *   A function used to validate the given linktext.
@@ -172,7 +170,6 @@ ve.ui.LinkAction.prototype.getTrailingPunctuation = function () {
 /**
  * Return an appropriate annotation for the given link text.
  *
- * @method
  * @param {string} linktext The link text to annotate.
  * @return {ve.dm.LinkAnnotation} The annotation to use.
  */

@@ -23,7 +23,6 @@ ve.debug = true;
 /**
  * Logs data to the console.
  *
- * @method
  * @param {...Mixed} [data] Data to log
  */
 ve.log = console.log;
@@ -31,7 +30,6 @@ ve.log = console.log;
 /**
  * Logs error to the console.
  *
- * @method
  * @param {...Mixed} [data] Data to log
  */
 ve.error = console.error;
@@ -39,7 +37,6 @@ ve.error = console.error;
 /**
  * Logs an object to the console.
  *
- * @method
  * @param {Object} obj Object to log
  */
 ve.dir = console.dir;

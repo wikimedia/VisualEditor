@@ -81,7 +81,6 @@ ve.dm.SurfaceFragment.prototype.getSelectedModels = function ( all ) {
 /**
  * Update selection based on un-applied transactions in the surface, or specified selection.
  *
- * @method
  * @param {ve.dm.Selection} [selection] Optional selection to set
  * @return {ve.dm.SurfaceFragment}
  * @chainable
@@ -137,7 +136,6 @@ ve.dm.SurfaceFragment.prototype.change = function ( txs, selection ) {
 /**
  * Get the surface the fragment is a part of.
  *
- * @method
  * @return {ve.dm.Surface|null} Surface of fragment
  */
 ve.dm.SurfaceFragment.prototype.getSurface = function () {
@@ -147,7 +145,6 @@ ve.dm.SurfaceFragment.prototype.getSurface = function () {
 /**
  * Get the document of the surface the fragment is a part of.
  *
- * @method
  * @return {ve.dm.Document|null} Document of surface of fragment
  */
 ve.dm.SurfaceFragment.prototype.getDocument = function () {
@@ -159,7 +156,6 @@ ve.dm.SurfaceFragment.prototype.getDocument = function () {
  *
  * This method also calls update to make sure the selection returned is current.
  *
- * @method
  * @return {ve.dm.Selection} The selection
  */
 ve.dm.SurfaceFragment.prototype.getSelection = function () {
@@ -170,7 +166,6 @@ ve.dm.SurfaceFragment.prototype.getSelection = function () {
 /**
  * Check if the fragment is null.
  *
- * @method
  * @return {boolean} Fragment is a null fragment
  */
 ve.dm.SurfaceFragment.prototype.isNull = function () {
@@ -180,7 +175,6 @@ ve.dm.SurfaceFragment.prototype.isNull = function () {
 /**
  * Check if the surface's selection will be updated automatically when changes are made.
  *
- * @method
  * @return {boolean} Will automatically update surface selection
  */
 ve.dm.SurfaceFragment.prototype.willAutoSelect = function () {
@@ -190,7 +184,6 @@ ve.dm.SurfaceFragment.prototype.willAutoSelect = function () {
 /**
  * Change whether to automatically update the surface selection when making changes.
  *
- * @method
  * @param {boolean} [autoSelect=true] Automatically update surface selection
  * @return {ve.dm.SurfaceFragment}
  * @chainable
@@ -247,7 +240,6 @@ ve.dm.SurfaceFragment.prototype.setExcludeInsertions = function ( excludeInserti
 /**
  * Get a new fragment with an adjusted position
  *
- * @method
  * @param {number} [start] Adjustment for start position
  * @param {number} [end] Adjustment for end position
  * @return {ve.dm.SurfaceFragment} Adjusted fragment
@@ -265,7 +257,6 @@ ve.dm.SurfaceFragment.prototype.adjustLinearSelection = function ( start, end ) 
 /**
  * Get a new fragment with a truncated length.
  *
- * @method
  * @param {number} limit Maximum length of new range (negative for left-side truncation)
  * @return {ve.dm.SurfaceFragment} Truncated fragment
  */
@@ -281,7 +272,6 @@ ve.dm.SurfaceFragment.prototype.truncateLinearSelection = function ( limit ) {
 /**
  * Get a new fragment with a zero-length selection at the start offset.
  *
- * @method
  * @return {ve.dm.SurfaceFragment} Collapsed fragment
  */
 ve.dm.SurfaceFragment.prototype.collapseToStart = function () {
@@ -291,7 +281,6 @@ ve.dm.SurfaceFragment.prototype.collapseToStart = function () {
 /**
  * Get a new fragment with a zero-length selection at the end offset.
  *
- * @method
  * @return {ve.dm.SurfaceFragment} Collapsed fragment
  */
 ve.dm.SurfaceFragment.prototype.collapseToEnd = function () {
@@ -301,7 +290,6 @@ ve.dm.SurfaceFragment.prototype.collapseToEnd = function () {
 /**
  * Get a new fragment with a range that no longer includes leading and trailing whitespace.
  *
- * @method
  * @return {ve.dm.SurfaceFragment} Trimmed fragment
  */
 ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
@@ -325,7 +313,6 @@ ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
 /**
  * Get a new fragment that covers an expanded range of the document.
  *
- * @method
  * @param {string} [scope='parent'] Method of expansion:
  *  - `word`: Expands to cover the nearest word by looking for word breaks (see UnicodeJS.wordbreak)
  *  - `annotation`: Expands to cover a given annotation (argument) within the current range
@@ -422,7 +409,6 @@ ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type )
 /**
  * Get data for the fragment.
  *
- * @method
  * @param {boolean} [deep] Get a deep copy of the data
  * @return {Array} Fragment data
  */
@@ -437,7 +423,6 @@ ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
 /**
  * Get plain text for the fragment.
  *
- * @method
  * @param {boolean} [maintainIndices] Maintain data offset to string index alignment by replacing elements with line breaks
  * @return {string} Fragment text
  */
@@ -455,7 +440,6 @@ ve.dm.SurfaceFragment.prototype.getText = function ( maintainIndices ) {
  * By default, this will only get annotations that completely cover the fragment. Use the {all}
  * argument to get all annotations that occur within the fragment.
  *
- * @method
  * @param {boolean} [all] Get annotations which only cover some of the fragment
  * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
@@ -498,7 +482,6 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
  * Quicker than doing !fragment.getAnnotations( true ).isEmpty() as
  * it stops at the first sight of an annotation.
  *
- * @method
  * @return {boolean} The fragment contains at least one annotation
  */
 ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
@@ -517,7 +500,6 @@ ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
  *
  * @see ve.Document#selectNodes Used to get the return value
  *
- * @method
  * @return {Array} List of nodes and related information
  */
 ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
@@ -538,7 +520,6 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
 /**
  * Get all leaf nodes excluding nodes where the selection is empty.
  *
- * @method
  * @return {Array} List of nodes and related information
  */
 ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
@@ -581,7 +562,6 @@ ve.dm.SurfaceFragment.prototype.getSelectedNode = function () {
  *
  * @see ve.Document#selectNodes for more information about the return value
  *
- * @method
  * @return {Array} List of nodes and related information
  */
 ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
@@ -599,7 +579,6 @@ ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
  *
  * @see ve.Document#selectNodes for more information about the return value.
  *
- * @method
  * @return {Array} List of nodes and related information
  */
 ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
@@ -672,7 +651,6 @@ ve.dm.SurfaceFragment.prototype.getPending = function () {
 /**
  * Apply the fragment's range to the surface as a selection.
  *
- * @method
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
@@ -684,7 +662,6 @@ ve.dm.SurfaceFragment.prototype.select = function () {
 /**
  * Change one or more attributes on covered nodes.
  *
- * @method
  * @param {Object} attr List of attributes to change, use undefined to remove an attribute
  * @param {string} [type] Node type to restrict changes to
  * @return {ve.dm.SurfaceFragment}
@@ -727,7 +704,6 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
  * TODO: Optionally take an annotation set instead of name and data arguments and set/clear multiple
  * annotations in a single transaction.
  *
- * @method
  * @param {string} method Mode of annotation, either 'set' or 'clear'
  * @param {string|ve.dm.Annotation|ve.dm.AnnotationSet} nameOrAnnotations Annotation name, for example: 'textStyle/bold',
  *  Annotation object or AnnotationSet
@@ -789,7 +765,6 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * If the content is a plain text string containing linebreaks, each line will be wrapped
  * in a paragraph.
  *
- * @method
  * @param {string|Array} content Content to insert, can be either a string or array of data
  * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
  * @return {ve.dm.SurfaceFragment}
@@ -866,7 +841,6 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
  * different from what a normal range translation would do: the insertion might occur
  * at a different offset if that is needed to make the document balanced.
  *
- * @method
  * @param {string} html HTML to insert
  * @param {Object} [importRules] The import rules for the target surface, if importing
  * @return {ve.dm.SurfaceFragment}
@@ -884,7 +858,6 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  * different from what a normal range translation would do: the insertion might occur
  * at a different offset if that is needed to make the document balanced.
  *
- * @method
  * @param {ve.dm.Document} newDoc Document to insert
  * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
  * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
@@ -939,7 +912,6 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 /**
  * Remove content in the fragment.
  *
- * @method
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
@@ -959,7 +931,6 @@ ve.dm.SurfaceFragment.prototype.removeContent = function () {
 /**
  * Delete content and correct selection
  *
- * @method
  * @param {number} [directionAfterDelete=-1] Direction to move after delete: 1 or -1 or 0
  * @return {ve.dm.SurfaceFragment}
  * @chainable
@@ -1073,7 +1044,6 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 /**
  * Convert each content branch in the fragment from one type to another.
  *
- * @method
  * @param {string} type Element type to convert to
  * @param {Object} [attr] Initial attributes for new element
  * @return {ve.dm.SurfaceFragment}
@@ -1105,7 +1075,6 @@ ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
  *     )
  *     // fragment is now a selection of: <ul><li><p>a</p></li></ul><ul><li><p>b</p></li></ul>
  *
- * @method
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
  * @param {Object} [wrapper.attributes] Attributes of wrapper
@@ -1136,7 +1105,6 @@ ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
  *     fragment.unwrapNodes( 1, 1 )
  *     // fragment is now a selection of: 「<p>a</p><p>b</p>」
  *
- * @method
  * @param {number} outerDepth Number of nodes outside the selection to unwrap
  * @param {number} innerDepth Number of nodes inside the selection to unwrap
  * @return {ve.dm.SurfaceFragment}
@@ -1184,7 +1152,6 @@ ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth 
  *     )
  *     // fragment is now a selection of: <ul><li><p>a</p></li></ul><ul><li><p>b</p></li></ul>
  *
- * @method
  * @param {number} depth Number of nodes to unwrap
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
@@ -1241,7 +1208,6 @@ ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
  *     )
  *     // fragment is now a selection of: <ul><li><p>a</p><p>b</p></li></ul>
  *
- * @method
  * @param {Object|Object[]} wrapOuter Opening element(s) to wrap around the range
  * @param {Object|Object[]} wrapEach Opening element(s) to wrap around each top-level element in the range
  * @return {ve.dm.SurfaceFragment}
@@ -1281,7 +1247,6 @@ ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) 
  *     fragment.rewrapAllNodes( 1, { type: 'heading', attributes: { level: 2 } } );
  *     // fragment is now a selection of: <h2><p>a</p><p>b</p></h2>
  *
- * @method
  * @param {number} depth Number of nodes to unwrap
  * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
  * @param {string} wrapper.type Node type of wrapper
@@ -1331,7 +1296,6 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
  *
  * The new isolated selection is then safely unwrapped.
  *
- * @method
  * @param {string} isolateForType Node type to isolate for
  * @return {ve.dm.SurfaceFragment}
  * @chainable
