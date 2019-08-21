@@ -81,13 +81,13 @@ OO.initClass( ve.ce.RangeState );
  * @param {boolean} selectionOnly The caller promises the content has not changed from old
  */
 ve.ce.RangeState.prototype.saveState = function ( old, root, selectionOnly ) {
-	var $node, selection, anchorNodeChanged,
+	var $node, selection, focusNodeChanged,
 		oldSelection = old ? old.misleadingSelection : ve.SelectionState.static.newNullSelection(),
 		nativeSelection = root.getElementDocument().getSelection();
 
 	if (
 		nativeSelection.rangeCount &&
-		OO.ui.contains( root.$element[ 0 ], nativeSelection.anchorNode, true )
+		OO.ui.contains( root.$element[ 0 ], nativeSelection.focusNode, true )
 	) {
 		// Freeze selection out of live object.
 		selection = new ve.SelectionState( nativeSelection );
@@ -106,12 +106,12 @@ ve.ce.RangeState.prototype.saveState = function ( old, root, selectionOnly ) {
 		this.veRange = ve.ce.veRangeFromSelection( selection );
 	}
 
-	anchorNodeChanged = oldSelection.anchorNode !== selection.anchorNode;
+	focusNodeChanged = oldSelection.focusNode !== selection.focusNode;
 
-	if ( !anchorNodeChanged ) {
+	if ( !focusNodeChanged ) {
 		this.node = old && old.node;
 	} else {
-		$node = $( selection.anchorNode ).closest( '.ve-ce-branchNode' );
+		$node = $( selection.focusNode ).closest( '.ve-ce-branchNode' );
 		if ( $node.length === 0 ) {
 			this.node = null;
 		} else {
@@ -131,7 +131,7 @@ ve.ce.RangeState.prototype.saveState = function ( old, root, selectionOnly ) {
 		this.text = null;
 		this.hash = null;
 		this.textState = null;
-	} else if ( selectionOnly && !anchorNodeChanged ) {
+	} else if ( selectionOnly && !focusNodeChanged ) {
 		this.text = old.text;
 		this.hash = old.hash;
 		this.textState = old.textState;
