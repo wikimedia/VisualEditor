@@ -391,7 +391,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 				} else {
 					// No view: new annotation element (or replacement one):
 					// see https://phabricator.wikimedia.org/T116269 and
-					// https://code.google.com/p/chromium/issues/detail?id=54646
+					// https://code.google.com/p/chromium/issues/detail?id=546461
 					modelClass = ve.dm.modelRegistry.lookup(
 						ve.dm.modelRegistry.matchElement( element )
 					);
