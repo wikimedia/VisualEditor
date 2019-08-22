@@ -22,7 +22,6 @@
 }
 
 .ve-ui-mobileContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label {
-	border-bottom: 1px solid #eaecf0;
 	display: flex;
 	width: 100%;
 }
@@ -41,9 +40,7 @@
 }
 
 .ve-ui-mobileContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label-body {
-	flex: 1;
 	min-width: 0;
-	padding: 0.5em 1em;
 }
 
 .ve-ui-mobileContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label-action {

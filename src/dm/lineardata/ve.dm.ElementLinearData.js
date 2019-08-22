@@ -731,15 +731,16 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 };
 
 /**
- * Check if the data is just plain (un-annotated) text
+ * Check if the data is just text
  *
  * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
- * @param {boolean} [allowNonContentNodes] Include non-content nodes in the definition of plain text, e.g. paragraphs, headings, lists
- * @param {string[]} [allowedTypes] Only allow specific non-content types
+ * @param {boolean} [ignoreNonContentNodes] Ignore all non-content nodes, e.g. paragraphs, headings, lists
+ * @param {string[]} [ignoredTypes] Only ignore specific non-content types
  * @param {boolean} [ignoreCoveringAnnotations] Ignore covering annotations
+ * @param {boolean} [ignoreAllAnnotations] Ignore all annotations
  * @return {boolean} The data is plain text
  */
-ve.dm.ElementLinearData.prototype.isPlainText = function ( range, allowNonContentNodes, allowedTypes, ignoreCoveringAnnotations ) {
+ve.dm.ElementLinearData.prototype.isPlainText = function ( range, ignoreNonContentNodes, ignoredTypes, ignoreCoveringAnnotations, ignoreAllAnnotations ) {
 	var i, type, annotations;
 
 	range = range || new ve.Range( 0, this.getLength() );
@@ -750,24 +751,30 @@ ve.dm.ElementLinearData.prototype.isPlainText = function ( range, allowNonConten
 
 	for ( i = range.start; i < range.end; i++ ) {
 		if ( typeof this.data[ i ] === 'string' ) {
+			// Un-annotated text
 			continue;
-		} else if (
-			ignoreCoveringAnnotations && Array.isArray( this.data[ i ] ) &&
-			annotations.containsAllOf( this.getAnnotationsFromOffset( i ) )
-		) {
-			continue;
-		} else if ( ( allowNonContentNodes || allowedTypes ) && this.isElementData( i ) ) {
+		} else if ( Array.isArray( this.data[ i ] ) ) {
+			// Annotated text
+			if ( ignoreAllAnnotations ) {
+				continue;
+			}
+			if (
+				ignoreCoveringAnnotations &&
+				annotations.containsAllOf( this.getAnnotationsFromOffset( i ) )
+			) {
+				continue;
+			}
+		} else if ( ignoreNonContentNodes || ignoredTypes ) {
+			// Element data
 			type = this.getType( i );
-			if ( allowedTypes && allowedTypes.indexOf( type ) !== -1 ) {
+			if ( ignoredTypes && ignoredTypes.indexOf( type ) !== -1 ) {
 				continue;
 			}
-			if ( allowNonContentNodes && !ve.dm.nodeFactory.isNodeContent( type ) ) {
+			if ( ignoreNonContentNodes && !ve.dm.nodeFactory.isNodeContent( type ) ) {
 				continue;
 			}
-			return false;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	return true;
 };

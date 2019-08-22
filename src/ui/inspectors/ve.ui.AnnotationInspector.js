@@ -52,6 +52,19 @@ ve.ui.AnnotationInspector.prototype.shouldRemoveAnnotation = function () {
 };
 
 /**
+ * Work out whether the teardown process should replace the current text of the fragment.
+ *
+ * Default behavior is to only do so if nothing was selected initially, in which case we
+ * need *something* to apply the annotation to. If this returns true, getInsertionData had
+ * better produce something.
+ *
+ * @return {boolean} Whether to insert text on teardown
+ */
+ve.ui.AnnotationInspector.prototype.shouldInsertText = function () {
+	return !this.isEditing();
+};
+
+/**
  * Get data to insert if nothing was selected when the inspector opened.
  *
  * Defaults to using #getInsertionText.
@@ -240,7 +253,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
 				selection = this.fragment.getSelection(),
 				isEditing = this.isEditing(),
-				insertText = !remove && !isEditing;
+				insertText = !remove && this.shouldInsertText();
 
 			function clear() {
 				// Clear all existing annotations
@@ -275,25 +288,30 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 						replace = true;
 					}
 				}
-				// If we are setting a new annotation, clear any annotations the inspector may have
-				// applied up to this point. Otherwise keep them.
-				if ( replace ) {
+				if ( replace || insertText ) {
 					surfaceModel.popStaging();
 					if ( insertText ) {
 						insertion = this.getInsertionData();
 						if ( insertion.length ) {
 							fragment.insertContent( insertion, true );
-							this.previousSelection = new ve.dm.LinearSelection( new ve.Range(
-								this.initialSelection.getRange().start + insertion.length
-							) );
+							if ( !isEditing ) {
+								// Move cursor to the end of the inserted content, even if back button is used
+								this.previousSelection = fragment.getSelection().collapseToEnd();
+							} else {
+								this.previousSelection = fragment.getSelection();
+							}
 						}
 					}
-					clear();
-					// Apply new annotation
-					if ( fragment.getSelection().isCollapsed() ) {
-						insertionAnnotation = true;
-					} else {
-						fragment.annotateContent( 'set', annotation );
+					// If we are setting a new annotation, clear any annotations the inspector may have
+					// applied up to this point. Otherwise keep them.
+					if ( replace ) {
+						clear();
+						// Apply new annotation
+						if ( fragment.getSelection().isCollapsed() ) {
+							insertionAnnotation = true;
+						} else {
+							fragment.annotateContent( 'set', annotation );
+						}
 					}
 				} else {
 					surfaceModel.applyStaging();
