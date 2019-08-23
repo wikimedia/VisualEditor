@@ -887,11 +887,17 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  * @return {Object} JSONable object
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
-	var serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
+	var authorId, serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
 		txSerialized, stores, data,
 		getTransactionInfo = this.constructor.static.getTransactionInfo,
+		selections = {},
 		transactions = [];
 
+	// Recursively serialize, so this method is the inverse of deserialize
+	// without having to use JSON.stringify (which is also recursive).
+	for ( authorId in this.selections ) {
+		selections[ authorId ] = this.selections[ authorId ].toJSON();
+	}
 	serializeStoreValues = preserveStoreValues ? function noop( x ) {
 		return x;
 	} : this.constructor.static.serializeValue;
@@ -931,8 +937,8 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 	} ) ) {
 		data.stores = stores;
 	}
-	if ( Object.keys( this.selections ).length ) {
-		data.selections = this.selections;
+	if ( Object.keys( selections ).length ) {
+		data.selections = selections;
 	}
 	return data;
 };
