@@ -26,6 +26,16 @@ ve.selectElement = function ( element ) {
 };
 
 /**
+ * Feature detect if the browser supports extending selections
+ *
+ * Should work everywhere except IE
+ *
+ * @private
+ * @property {boolean}
+ */
+ve.supportsSelectionExtend = !!window.getSelection().extend;
+
+/**
  * Translate rect by some fixed vector and return a new offset object
  *
  * @param {Object} rect Offset object containing all or any of top, left, bottom, right, width & height
