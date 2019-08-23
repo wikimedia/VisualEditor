@@ -360,7 +360,7 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 			authorData: data.authors[ authorId ]
 		} );
 	}
-	history = ve.dm.Change.static.deserialize( data.history, this.doc );
+	history = ve.dm.Change.static.deserialize( data.history );
 	this.acceptChange( history );
 	this.emit( 'initDoc' );
 
@@ -384,7 +384,7 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
  * @param {Object} serializedChange Serialized ve.dm.Change that the server has applied
  */
 ve.dm.SurfaceSynchronizer.prototype.onNewChange = function ( serializedChange ) {
-	var change = ve.dm.Change.static.deserialize( serializedChange, this.doc );
+	var change = ve.dm.Change.static.deserialize( serializedChange );
 	// Make sure we don't attempt to submit any of the transactions we commit while manipulating
 	// the state of the document
 	this.applying = true;

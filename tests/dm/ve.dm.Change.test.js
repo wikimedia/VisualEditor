@@ -377,13 +377,13 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 	);
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( serialized, doc ).toJSON(),
+		ve.dm.Change.static.deserialize( serialized ).toJSON(),
 		serialized,
 		'Deserialize and reserialize'
 	);
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( serialized, doc, true ).getStores().map( function ( store ) {
+		ve.dm.Change.static.deserialize( serialized, true ).getStores().map( function ( store ) {
 			return store.hashStore;
 		} ),
 		serialized.stores.map( function ( store ) {
@@ -393,7 +393,7 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 	);
 
 	assert.notDeepEqual(
-		ve.dm.Change.static.deserialize( serialized, doc ).getStores().map( function ( store ) {
+		ve.dm.Change.static.deserialize( serialized ).getStores().map( function ( store ) {
 			return store.hashStore;
 		} ),
 		serialized.stores.map( function ( store ) {
@@ -403,7 +403,7 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 	);
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( serialized, doc, true ).serialize( true ),
+		ve.dm.Change.static.deserialize( serialized, true ).serialize( true ),
 		serialized,
 		'Deserialize and reserialize, preserving store values'
 	);
@@ -423,13 +423,13 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 	assert.deepEqual( simpleChange.toJSON(), simpleSerialized, 'Serialize (simple)' );
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( simpleSerialized, doc ).toJSON(),
+		ve.dm.Change.static.deserialize( simpleSerialized ).toJSON(),
 		simpleSerialized,
 		'Deserialize and reserialize (simple)'
 	);
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( simpleSerialized, doc, true ).getStores().map( function ( store ) {
+		ve.dm.Change.static.deserialize( simpleSerialized, true ).getStores().map( function ( store ) {
 			return store.hashStore;
 		} ),
 		[ {} ],
@@ -573,7 +573,7 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 		saved = doc.completeHistory.toJSON(),
 		clear = function () {
 			doc.getChangeSince( 0 ).reversed().applyTo( surface );
-			doc.completeHistory = ve.dm.Change.static.deserialize( saved, doc );
+			doc.completeHistory = ve.dm.Change.static.deserialize( saved );
 			doc.store = doc.completeHistory.store;
 		},
 		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion;

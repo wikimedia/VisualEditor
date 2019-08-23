@@ -47,7 +47,7 @@ function toTestCase( parsedLog ) {
 				clientStates[ authorId ].submitting = false;
 			}
 		} else if ( type === 'acceptChange' ) {
-			unsent = ve.dm.Change.static.deserialize( parsedLog[ i ].unsent, null, true );
+			unsent = ve.dm.Change.static.deserialize( parsedLog[ i ].unsent, true );
 			newChanges = unsent.mostRecent( unsent.start + clientStates[ clientId ].unsent );
 			// HACK: Deliberately using .getLength() > 0 instead of .isEmpty() to ignore selection-only changes
 			if ( newChanges.getLength() > 0 ) {
@@ -60,7 +60,7 @@ function toTestCase( parsedLog ) {
 				ops.push( [ clientId, 'receive' ] );
 			}
 		} else if ( type === 'submitChange' ) {
-			changes = ve.dm.Change.static.deserialize( parsedLog[ i ].change, null, true );
+			changes = ve.dm.Change.static.deserialize( parsedLog[ i ].change, true );
 			newChanges = changes.mostRecent( changes.start + clientStates[ clientId ].unsent );
 			if ( newChanges.getLength() > 0 ) {
 				ops.push( [ clientId, 'apply', newChanges.serialize( true ) ] );
