@@ -171,7 +171,7 @@
 	"visualeditor-linkcontext-label-fallback": "Fallback for the preview of a link label if it's not displayable as text",
 	"visualeditor-linkcontext-label-label": "Label for the \"label\" field of a link\n{{Identical|Label}}",
 	"visualeditor-linkcontext-remove": "Title for the remove link button on the link context popup",
-	"visualeditor-linkinspector-title": "Title of the link inspector dialog.\n{{Identical|Link}}",
+	"visualeditor-linkinspector-title": "Title of the link inspector dialog when viewing a link in read-only mode.\n{{Identical|Link}}",
 	"visualeditor-linkinspector-title-add": "Title of the link inspector dialog when adding a link.",
 	"visualeditor-linkinspector-title-edit": "Title of the link inspector dialog when editing a link.",
 	"visualeditor-listbutton-bullet-tooltip": "Tooltip text for the bullet list button",

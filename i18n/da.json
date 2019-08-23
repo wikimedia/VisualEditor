@@ -140,6 +140,8 @@
 	"visualeditor-linkcontext-label-label": "Etiket",
 	"visualeditor-linkcontext-remove": "Fjern link",
 	"visualeditor-linkinspector-title": "Link",
+	"visualeditor-linkinspector-title-add": "Tilføj et link",
+	"visualeditor-linkinspector-title-edit": "Rediger link",
 	"visualeditor-listbutton-bullet-tooltip": "Punktliste",
 	"visualeditor-listbutton-check-tooltip": "Tjekliste",
 	"visualeditor-listbutton-number-tooltip": "Nummereret liste",
