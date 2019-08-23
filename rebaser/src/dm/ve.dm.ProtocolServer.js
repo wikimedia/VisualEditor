@@ -166,7 +166,7 @@ ve.dm.ProtocolServer.prototype.welcomeClient = function ( context ) {
  */
 ve.dm.ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
 	var change, applied;
-	change = ve.dm.Change.static.deserialize( data.change, null, true );
+	change = ve.dm.Change.static.deserialize( data.change, true );
 	applied = this.rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
 	if ( !applied.isEmpty() ) {
 		this.documentStore.onNewChange( context.docName, applied );

@@ -70,7 +70,7 @@ ve.dm.DocumentStore.prototype.load = function ( docName ) {
 			transactions: result.value.transactions,
 			stores: result.value.stores,
 			selections: {}
-		}, undefined, true );
+		}, true );
 	} );
 };
 

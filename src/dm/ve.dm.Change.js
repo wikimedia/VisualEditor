@@ -98,12 +98,11 @@ ve.dm.Change.static = {};
  * Change object will be rebased and reserialized without ever being applied to a document.
  *
  * @param {Object} data Change serialized as a JSONable object
- * @param {ve.dm.Document} [doc] Document, used for creating proper selections if deserializing in the client
  * @param {boolean} [preserveStoreValues] Keep store values verbatim instead of deserializing
  * @param {boolean} [unsafe] Use unsafe deserialization (skipping DOMPurify), used via #unsafeDeserialize
  * @return {ve.dm.Change} Deserialized change
  */
-ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues, unsafe ) {
+ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe ) {
 	var authorId, deserializeStore, i, iLen, txSerialized, insertion, tx,
 		prevInfo,
 		hasOwn = Object.prototype.hasOwnProperty,
@@ -178,11 +177,10 @@ ve.dm.Change.static.deserialize = function ( data, doc, preserveStoreValues, uns
  * Deserialize a change from a JSONable object without sanitizing DOM nodes
  *
  * @param {Object} data
- * @param {ve.dm.Document} [doc]
  * @return {ve.dm.Change} Deserialized change
  */
-ve.dm.Change.static.unsafeDeserialize = function ( data, doc ) {
-	return this.deserialize( data, doc, false, true );
+ve.dm.Change.static.unsafeDeserialize = function ( data ) {
+	return this.deserialize( data, false, true );
 };
 
 ve.dm.Change.static.serializeValue = function ( value ) {
@@ -584,12 +582,7 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
  * @return {ve.dm.Change} Clone of this change
  */
 ve.dm.Change.prototype.clone = function () {
-	var authorId, doc;
-	for ( authorId in this.selections ) {
-		doc = this.selections[ authorId ].getDocument();
-		break;
-	}
-	return this.constructor.static.unsafeDeserialize( this.toJSON(), doc );
+	return this.constructor.static.unsafeDeserialize( this.toJSON() );
 };
 
 /**
