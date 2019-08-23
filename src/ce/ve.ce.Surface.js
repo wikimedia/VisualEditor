@@ -4292,7 +4292,8 @@ ve.ce.Surface.prototype.selectAnnotation = function ( filter ) {
  */
 ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter, offset ) {
 	var nodeAndOffset,
-		annotations;
+		annotations = [],
+		documentRange = this.getModel().getDocument().getDocumentRange();
 
 	if ( offset === undefined ) {
 		offset = this.getModel().getSelection().getCoveringRange().start;
@@ -4301,10 +4302,16 @@ ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter, offset 
 	// TODO: For annotation boundaries we have to search one place left and right
 	// to find the text inside the annotation. This will give too many results for
 	// adjancent annotations, and will fail for one character annotations. (T221967)
-	nodeAndOffset = this.getDocument().getNodeAndOffset( offset - 1 );
-	annotations = nodeAndOffset ? this.annotationsAtNode( nodeAndOffset.node, filter ) : [];
-	nodeAndOffset = this.getDocument().getNodeAndOffset( offset + 1 );
-	annotations = OO.unique( annotations.concat( nodeAndOffset ? this.annotationsAtNode( nodeAndOffset.node, filter ) : [] ) );
+	if ( offset > documentRange.start ) {
+		nodeAndOffset = this.getDocument().getNodeAndOffset( offset - 1 );
+		annotations = nodeAndOffset ? this.annotationsAtNode( nodeAndOffset.node, filter ) : [];
+	}
+
+	if ( offset < documentRange.end ) {
+		nodeAndOffset = this.getDocument().getNodeAndOffset( offset + 1 );
+		annotations = OO.unique( annotations.concat( nodeAndOffset ? this.annotationsAtNode( nodeAndOffset.node, filter ) : [] ) );
+	}
+
 	return annotations;
 };
 
