@@ -186,7 +186,7 @@ ve.ce.GeneratedContentNode.prototype.filterRenderedDomElements = function ( domE
  * @fires teardown
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, staged ) {
-	var $newElements;
+	var $newElements, lengthChange, node;
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
@@ -198,9 +198,19 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 			this.$element = $newElements;
 		} else {
 			// Switch out this.$element (which can contain multiple siblings) in place
+			lengthChange = this.$element.length !== $newElements.length;
 			this.$element.first().replaceWith( $newElements );
 			this.$element.remove();
 			this.$element = $newElements;
+			if ( lengthChange ) {
+				// Changing the DOM node count can move the cursor, so re-apply
+				// the cursor position from the model (T231094).
+				setTimeout( function () {
+					if ( node.getRoot() && node.getRoot().getSurface() ) {
+						node.getRoot().getSurface().showModelSelection();
+					}
+				} );
+			}
 		}
 	} else {
 		this.generatedContentsValid = false;
