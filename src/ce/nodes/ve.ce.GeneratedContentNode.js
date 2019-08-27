@@ -186,7 +186,8 @@ ve.ce.GeneratedContentNode.prototype.filterRenderedDomElements = function ( domE
  * @fires teardown
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, staged ) {
-	var $newElements, lengthChange, node;
+	var $newElements, lengthChange,
+		node = this;
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
