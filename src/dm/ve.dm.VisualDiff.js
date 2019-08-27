@@ -629,6 +629,14 @@ ve.dm.VisualDiff.prototype.alignTrees = function ( oldTree, newTree ) {
  * @param {ve.dm.Node} oldTreeNode Node from the old document
  * @param {ve.dm.Node} newTreeNode Node from the new document
  * @return {Object|boolean} Diff object, or false if nodes are too different
+ * @return {ve.DiffTreeNode[]} return.oldTreeOrderedNodes nodes of the old tree, deepest first then in document order
+ * @return {ve.DiffTreeNode[]} return.newTreeOrderedNodes nodes of the new tree, deepest first then in document order
+ * @return {Array[]} return.treeDiff Node correspondences as indexes in *TreeOrderedNodes
+ * @return {number[]} return.treeDiff.i The i'th correspondence [ oldTreeOrderedNodes index, newTreeOrderedNodes index ]
+ * @return {Object|null} return.diffInfo Linear diffs applying to each corresponding node pair
+ * @return {Object} return.diffInfo.i Linear diff applying to i'th node in newTreeOrderedNodes
+ * @return {Array|boolean} return.diffInfo.i.linearDiff Output of #diffContent
+ * @return {Array|boolean} return.diffInfo.i.attributeChange Output of #diffAttributes
  */
 ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode ) {
 	var i, ilen,
