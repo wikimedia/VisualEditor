@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 var ve = require( '../dist/ve-rebaser.js' ),
 	fs = require( 'fs' );
 

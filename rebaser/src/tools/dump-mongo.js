@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable no-console */
-
 var mongodb = require( 'mongodb' );
 
 new mongodb.MongoClient(
