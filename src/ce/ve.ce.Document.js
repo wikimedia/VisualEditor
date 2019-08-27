@@ -129,6 +129,9 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 	// contents. In this case, a maximally deep element gives better bounding rectangle
 	// coordinates than any of its containers.
 
+	if ( !this.model.getDocumentRange().containsRange( new ve.Range( offset ) ) ) {
+		throw new Error( 'Offset is out of bounds' );
+	}
 	branchNode = this.getBranchNodeFromOffset( offset );
 	count = branchNode.getOffset() + ( ( branchNode.isWrapped() ) ? 1 : 0 );
 
