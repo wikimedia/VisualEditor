@@ -11,7 +11,6 @@
 	"--external": "HTMLDocument,Window,Node,Text,Map,Set,Range,Selection,ClientRect,File,FileList,Blob,DataTransfer,DataTransferItem,KeyboardEvent,MouseEvent,Promise,Storage",
 	"--": [
 		".jsduck/external.js",
-		"lib/oojs/oojs.jquery.js",
 		"lib/oojs-ui/oojs-ui-core.js",
 		"lib/oojs-ui/oojs-ui-widgets.js",
 		"lib/oojs-ui/oojs-ui-toolbars.js",

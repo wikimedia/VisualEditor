@@ -30,7 +30,21 @@ OO.inheritClass( ve.ui.DataTransferHandlerFactory, OO.Factory );
 /* Methods */
 
 /**
- * @inheritdoc
+ * Register a constructor with the factory.
+ *
+ *     function MyClass() {};
+ *     OO.initClass( MyClass );
+ *     MyClass.static.name = 'hello';
+ *     // Register class with the factory, available via the symbolic name "hello"
+ *     factory.register( MyClass );
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.Factory.html
+ *
+ * @param {Function} constructor Constructor to use when creating object
+ * @param {string} [name] Symbolic name to use for #create().
+ *  This parameter may be omitted in favour of letting the constructor decide
+ *  its own name, through `constructor.static.name`.
+ * @throws {Error} If a parameter is invalid
  */
 ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
 	// Parent method
@@ -40,7 +54,12 @@ ve.ui.DataTransferHandlerFactory.prototype.register = function ( constructor ) {
 };
 
 /**
- * @inheritdoc
+ * Unregister a constructor from the factory.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.Factory.html
+ *
+ * @param {string|Function} constructor Constructor function or symbolic name to unregister
+ * @throws {Error} If a parameter is invalid
  */
 ve.ui.DataTransferHandlerFactory.prototype.unregister = function ( constructor ) {
 	// Parent method

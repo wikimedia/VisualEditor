@@ -37,6 +37,36 @@
  */
 
 /**
+ * Source: <https://doc.wikimedia.org/oojs/master/OO.html>
+ * @class OO
+ */
+
+/**
+ * Source: <https://doc.wikimedia.org/oojs/master/OO.EventEmitter.html>
+ * @class OO.EventEmitter
+ */
+
+/**
+ * Source: <https://doc.wikimedia.org/oojs/master/OO.EmitterList.html>
+ * @class OO.EmitterList
+ */
+
+/**
+ * Source: <https://doc.wikimedia.org/oojs/master/OO.Factory.html>
+ * @class OO.Factory
+ */
+
+/**
+ * Source: <https://doc.wikimedia.org/oojs/master/OO.Registry.html>
+ * @class OO.Registry
+ */
+
+/**
+ * Source: <https://doc.wikimedia.org/oojs/master/OO.SortedEmitterList.html>
+ * @class OO.SortedEmitterList
+ */
+
+/**
  * @class diff_match_patch
  * @source <http://github.com/edg2s/google-diff-match-patch>
  */

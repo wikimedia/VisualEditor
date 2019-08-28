@@ -27,50 +27,148 @@ ve.isInstanceOfAny = function ( subject, classes ) {
 };
 
 /**
+ * Get a deeply nested property of an object using variadic arguments, protecting against
+ * undefined property errors.
+ *
+ * `quux = OO.getProp( obj, 'foo', 'bar', 'baz' );` is equivalent to `quux = obj.foo.bar.baz;`
+ * except that the former protects against JS errors if one of the intermediate properties
+ * is undefined. Instead of throwing an error, this function will return undefined in
+ * that case.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#getProp
+ * @param {Object} obj
+ * @param {...Mixed} [keys]
+ * @return {Object|undefined} obj[arguments[1]][arguments[2]].... or undefined
  */
 ve.getProp = OO.getProp;
 
 /**
+ * Set a deeply nested property of an object using variadic arguments, protecting against
+ * undefined property errors.
+ *
+ * `OO.setProp( obj, 'foo', 'bar', 'baz' );` is equivalent to `obj.foo.bar = baz;` except that
+ * the former protects against JS errors if one of the intermediate properties is
+ * undefined. Instead of throwing an error, undefined intermediate properties will be
+ * initialized to an empty object. If an intermediate property is not an object, or if obj itself
+ * is not an object, this function will silently abort.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#setProp
+ * @param {Object} obj
+ * @param {...Mixed} [keys]
+ * @param {Mixed} [value]
  */
 ve.setProp = OO.setProp;
 
 /**
+ * Delete a deeply nested property of an object using variadic arguments, protecting against
+ * undefined property errors, and deleting resulting empty objects.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#deleteProp
+ * @param {Object} obj
+ * @param {...Mixed} [keys]
  */
 ve.deleteProp = OO.deleteProp;
 
 /**
+ * Create a new object that is an instance of the same
+ * constructor as the input, inherits from the same object
+ * and contains the same own properties.
+ *
+ * This makes a shallow non-recursive copy of own properties.
+ * To create a recursive copy of plain objects, use #copy.
+ *
+ *     var foo = new Person( mom, dad );
+ *     foo.setAge( 21 );
+ *     var foo2 = OO.cloneObject( foo );
+ *     foo.setAge( 22 );
+ *
+ *     // Then
+ *     foo2 !== foo; // true
+ *     foo2 instanceof Person; // true
+ *     foo2.getAge(); // 21
+ *     foo.getAge(); // 22
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#cloneObject
+ * @param {Object} origin
+ * @return {Object} Clone of origin
  */
 ve.cloneObject = OO.cloneObject;
 
 /**
+ * Get an array of all property values in an object.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#getObjectValues
+ * @param {Object} obj Object to get values from
+ * @return {Array} List of object values
  */
 ve.getObjectValues = OO.getObjectValues;
 
 /**
+ * Use binary search to locate an element in a sorted array.
+ *
+ * searchFunc is given an element from the array. `searchFunc(elem)` must return a number
+ * above 0 if the element we're searching for is to the right of (has a higher index than) elem,
+ * below 0 if it is to the left of elem, or zero if it's equal to elem.
+ *
+ * To search for a specific value with a comparator function (a `function cmp(a,b)` that returns
+ * above 0 if `a > b`, below 0 if `a < b`, and 0 if `a == b`), you can use
+ * `searchFunc = cmp.bind( null, value )`.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#binarySearch
+ * @param {Array} arr Array to search in
+ * @param {Function} searchFunc Search function
+ * @param {boolean} [forInsertion] If not found, return index where val could be inserted
+ * @return {number|null} Index where val was found, or null if not found
  */
 ve.binarySearch = OO.binarySearch;
 
 /**
+ * Recursively compare properties between two objects.
+ *
+ * A false result may be caused by property inequality or by properties in one object missing from
+ * the other. An asymmetrical test may also be performed, which checks only that properties in the
+ * first object are present in the second object, but not the inverse.
+ *
+ * If either a or b is null or undefined it will be treated as an empty object.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#compare
+ * @param {Object|undefined|null} a First object to compare
+ * @param {Object|undefined|null} b Second object to compare
+ * @param {boolean} [asymmetrical] Whether to check only that a's values are equal to b's
+ *  (i.e. a is a subset of b)
+ * @return {boolean} If the objects contain the same values as each other
  */
 ve.compare = OO.compare;
 
 /**
+ * Create a plain deep copy of any kind of object.
+ *
+ * Copies are deep, and will either be an object or an array depending on `source`.
+ *
+ * See https://doc.wikimedia.org/oojs/master/OO.html
+ *
  * @method
- * @inheritdoc OO#copy
+ * @param {Object} source Object to copy
+ * @param {Function} [leafCallback] Applied to leaf values after they are cloned but before they are
+ *  added to the clone
+ * @param {Function} [nodeCallback] Applied to all values before they are cloned. If the
+ *  nodeCallback returns a value other than undefined, the returned value is used instead of
+ *  attempting to clone.
+ * @return {Object} Copy of source object
  */
 ve.copy = OO.copy;
 
