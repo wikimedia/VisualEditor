@@ -54,6 +54,13 @@ ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {
 ve.dm.HeadingNode.static.describeChange = function ( key, change ) {
 	if ( key === 'level' ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
+			// The following messages are used here:
+			// * visualeditor-formatdropdown-format-heading1
+			// * visualeditor-formatdropdown-format-heading2
+			// * visualeditor-formatdropdown-format-heading3
+			// * visualeditor-formatdropdown-format-heading4
+			// * visualeditor-formatdropdown-format-heading5
+			// * visualeditor-formatdropdown-format-heading6
 			this.wrapText( 'del', ve.msg( 'visualeditor-formatdropdown-format-heading' + change.from ) ),
 			this.wrapText( 'ins', ve.msg( 'visualeditor-formatdropdown-format-heading' + change.to ) )
 		);

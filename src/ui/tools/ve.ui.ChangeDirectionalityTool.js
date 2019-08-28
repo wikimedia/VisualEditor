@@ -56,7 +56,9 @@ ve.ui.ChangeDirectionalityTool.prototype.onUpdateState = function ( fragment ) {
 	if ( modelDir !== this.modelDir ) {
 		// Icons used here textDirLTR, textDirRTL
 		this.setIcon( 'textDir' + ( modelDir === 'ltr' ? 'RTL' : 'LTR' ) );
-		// Messages used here: visualeditor-changedir-tool-ltr, visualeditor-changedir-tool-rtl
+		// The following messages are used here:
+		// * visualeditor-changedir-tool-ltr
+		// * visualeditor-changedir-tool-rtl
 		this.setTitle( ve.msg( 'visualeditor-changedir-tool-' + ( modelDir === 'ltr' ? 'rtl' : 'ltr' ) ) );
 		this.modelDir = modelDir;
 	}

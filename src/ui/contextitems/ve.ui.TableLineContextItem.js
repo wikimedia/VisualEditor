@@ -205,7 +205,7 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 				count = selection.getColCount();
 			}
 
-			// Messages used here:
+			// The following messages are used here:
 			// * visualeditor-table-delete-col
 			// * visualeditor-table-delete-row
 			return ve.msg( 'visualeditor-table-delete-' + mode, count );
@@ -267,7 +267,7 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 		if ( selection instanceof ve.dm.TableSelection ) {
 			mode = 'contents';
 		}
-		// Messages used here:
+		// The following messages are used here:
 		// * visualeditor-table-contextitem-selectionmode-cells
 		// * visualeditor-table-contextitem-selectionmode-contents
 		return ve.msg( 'visualeditor-table-contextitem-selectionmode-' + mode );
