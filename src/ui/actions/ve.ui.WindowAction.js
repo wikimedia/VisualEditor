@@ -41,7 +41,7 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
  * @param {string} name Symbolic name of window to open
  * @param {Object} [data] Window opening data
  * @param {string} [action] Action to execute after opening, or immediately if the window is already open
- * @return {boolean} Action was executed
+ * @return {boolean|Promise} Action was executed; if a Promise, it'll resolve once the action is finished executing
  */
 ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	var currentInspector, inspectorWindowManager, fragmentPromise,
@@ -60,7 +60,9 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 			// HACK: Pass fragment to toolbar dialogs as well
 			windowType === 'toolbar',
 		// TODO: Add 'doesHandleSource' method to factory
-		sourceMode = surface.getMode() === 'source' && !windowClass.static.handlesSource;
+		sourceMode = surface.getMode() === 'source' && !windowClass.static.handlesSource,
+		openDeferred = ve.createDeferred(),
+		openPromise = openDeferred.promise();
 
 	if ( !windowManager ) {
 		return false;
@@ -137,6 +139,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 					if ( action ) {
 						win.executeAction( action );
 					}
+					openDeferred.resolve( instance );
 				} );
 
 				if ( !win.constructor.static.activeSurface ) {
@@ -178,7 +181,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		} );
 	} );
 
-	return true;
+	return openPromise;
 };
 
 /**
