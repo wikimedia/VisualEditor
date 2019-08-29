@@ -3,7 +3,8 @@
 		"authors": [
 			"Bjankuloski06",
 			"Brest",
-			"Iwan Novirion"
+			"Iwan Novirion",
+			"Vlad5250"
 		]
 	},
 	"visualeditor": "Нагледен уредник",
@@ -143,9 +144,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "Насока",
 	"visualeditor-languageinspector-widget-label-langcode": "Јазичен код",
 	"visualeditor-languageinspector-widget-label-language": "Јазик",
-	"visualeditor-linkcontext-label-change": "Смени натпис",
+	"visualeditor-linkcontext-label-change": "Смени текст",
 	"visualeditor-linkcontext-label-fallback": "Нема преглед",
-	"visualeditor-linkcontext-label-label": "Натпис",
+	"visualeditor-linkcontext-label-label": "Текст",
 	"visualeditor-linkcontext-remove": "Отстрани врска",
 	"visualeditor-linkinspector-title": "Врска",
 	"visualeditor-linkinspector-title-add": "Додај врска",
