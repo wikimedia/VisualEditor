@@ -353,16 +353,16 @@ ve.ui.DesktopContext.prototype.setPopupSizeAndPosition = function ( repositionOn
 
 	viewport = surface.getViewportDimensions();
 
+	if ( !viewport || !this.dimensions ) {
+		// viewport can be null if the surface is not attached
+		return;
+	}
+
 	if ( this.popup.hasAnchor() ) {
 		// Reserve space for the anchor and one line of text
 		// ('40' is arbitrary and has been picked by experimentation)
 		viewport.top += 40;
 		viewport.height -= 40;
-	}
-
-	if ( !viewport || !this.dimensions ) {
-		// viewport can be null if the surface is not attached
-		return;
 	}
 
 	if ( this.position ) {
