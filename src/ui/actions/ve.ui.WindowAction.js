@@ -41,7 +41,7 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
  * @param {string} name Symbolic name of window to open
  * @param {Object} [data] Window opening data
  * @param {string} [action] Action to execute after opening, or immediately if the window is already open
- * @return {boolean|Promise} Action was executed; if a Promise, it'll resolve once the action is finished executing
+ * @return {boolean|jQuery.Promise} Action was executed; if a Promise, it'll resolve once the action is finished executing
  */
 ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	var currentInspector, inspectorWindowManager, fragmentPromise,
