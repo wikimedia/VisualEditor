@@ -66,6 +66,16 @@ ve.ui.FragmentDialog.prototype.initialize = function ( data ) {
 };
 
 /**
+ * @inheritdoc OO.ui.Dialog
+ */
+ve.ui.FragmentDialog.prototype.getActionWidgetConfig = function ( config ) {
+	// Mixin method
+	config = ve.ui.FragmentWindow.prototype.getActionWidgetConfig.call( this, config );
+	// Parent method
+	return ve.ui.FragmentDialog.super.prototype.getActionWidgetConfig.call( this, config );
+};
+
+/**
  * @inheritdoc
  */
 ve.ui.FragmentDialog.prototype.getSetupProcess = function ( data ) {

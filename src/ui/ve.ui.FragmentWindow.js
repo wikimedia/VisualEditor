@@ -35,6 +35,20 @@ ve.ui.FragmentWindow.prototype.getFragment = function () {
 };
 
 /**
+ * @inheritdoc OO.ui.Dialog
+ */
+ve.ui.FragmentWindow.prototype.getActionWidgetConfig = function ( config ) {
+	if ( config.action === 'done' && OO.ui.isMobile() ) {
+		// Use label-less check icon on mobile (T228230)
+		config = ve.extendObject( {
+			icon: 'check',
+			invisibleLabel: true
+		}, config );
+	}
+	return config;
+};
+
+/**
  * @inheritdoc OO.ui.Window
  * @throws {Error} If fragment was not provided through data parameter
  */
