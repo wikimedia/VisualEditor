@@ -33,3 +33,78 @@
 	/* Dumb broken nested toolbars ruin everything again (T169617) */
 	z-index: auto;
 }
+
+/* Mobile toolbar */
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools {
+	display: flex;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools .oo-ui-barToolGroup .oo-ui-tool-link {
+	min-height: 3em;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup {
+	flex: 1;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup-empty {
+	display: none;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup:last-child {
+	border-right: 0;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-indicatorElement > .oo-ui-popupToolGroup-handle {
+	/* stylelint-disable-next-line declaration-no-important */
+	padding: 3em 0 0 0 !important;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle > .oo-ui-iconElement-icon,
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle > .oo-ui-indicatorElement-indicator {
+	left: 50%;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle > .oo-ui-iconElement-icon {
+	/* No indicator */
+	margin-left: -0.714285em;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup.oo-ui-indicatorElement > .oo-ui-popupToolGroup-handle > .oo-ui-iconElement-icon {
+	margin-left: -1.142857em;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle > .oo-ui-indicatorElement-indicator {
+	margin-left: 0.285714em;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup {
+	text-align: center;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool {
+	width: 100%;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool > .oo-ui-tool-link {
+	padding: 0.875em 0;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool > .oo-ui-tool-link > .oo-ui-iconElement-icon:not( .oo-ui-tool-checkIcon ) {
+	position: static;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-title {
+	vertical-align: middle;
+	margin-left: 0.3em;
+}
+
+@media screen and ( max-width: 767px ) {
+	.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-title {
+		/* stylelint-disable-next-line declaration-no-important */
+		display: none !important;
+	}
+}

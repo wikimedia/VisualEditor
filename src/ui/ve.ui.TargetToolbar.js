@@ -20,6 +20,9 @@ ve.ui.TargetToolbar = function VeUiTargetToolbar( target, config ) {
 
 	// Initialization
 	this.$element.addClass( 've-ui-targetToolbar' );
+	if ( OO.ui.isMobile() ) {
+		this.$element.addClass( 've-ui-targetToolbar-mobile' );
+	}
 
 	// Properties
 	this.target = target;
