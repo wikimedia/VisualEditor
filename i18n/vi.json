@@ -11,7 +11,8 @@
 			"Nguyên Lê",
 			"Phjtieudoc",
 			"Leducthn",
-			"Vinhtantran"
+			"Vinhtantran",
+			"Awdsweq123"
 		]
 	},
 	"visualeditor": "Trình soạn thảo trực quan",
@@ -149,9 +150,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "Hướng viết",
 	"visualeditor-languageinspector-widget-label-langcode": "Mã ngôn ngữ",
 	"visualeditor-languageinspector-widget-label-language": "Ngôn ngữ",
-	"visualeditor-linkcontext-label-change": "Thay đổi nhãn",
+	"visualeditor-linkcontext-label-change": "Thay đổi văn bản",
 	"visualeditor-linkcontext-label-fallback": "Không có xem trước",
-	"visualeditor-linkcontext-label-label": "Nhãn",
+	"visualeditor-linkcontext-label-label": "Văn bản",
 	"visualeditor-linkcontext-remove": "Xóa liên kết",
 	"visualeditor-linkinspector-title": "Liên kết",
 	"visualeditor-listbutton-bullet-tooltip": "Danh sách không đánh số",

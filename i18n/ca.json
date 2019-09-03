@@ -130,6 +130,8 @@
 	"visualeditor-languageinspector-widget-label-direction": "Direcció",
 	"visualeditor-languageinspector-widget-label-langcode": "Codi d'idioma",
 	"visualeditor-languageinspector-widget-label-language": "Idioma",
+	"visualeditor-linkcontext-label-change": "Canvia el text",
+	"visualeditor-linkcontext-label-label": "Text",
 	"visualeditor-linkinspector-title": "Enllaç",
 	"visualeditor-linkinspector-title-add": "Afegeix un enllaç",
 	"visualeditor-linkinspector-title-edit": "Edita l’enllaç",
