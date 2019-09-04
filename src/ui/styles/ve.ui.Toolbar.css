@@ -48,12 +48,13 @@
 	flex: 1;
 }
 
-.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup-empty {
-	display: none;
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup:not( .ve-ui-toolbar-group-back ) {
+	/* Remove borders, unless a 'back' group is defined, in which case it is not part of the editing tools */
+	border-right: 0;
 }
 
-.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup:last-child {
-	border-right: 0;
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup-empty {
+	display: none;
 }
 
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-indicatorElement > .oo-ui-popupToolGroup-handle {
@@ -69,6 +70,11 @@
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle > .oo-ui-iconElement-icon {
 	/* No indicator */
 	margin-left: -0.714285em;
+}
+
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup.oo-ui-indicatorElement {
+	/* Indicator uses up whitespace, so increase width to make spacing look even */
+	flex: 1.2;
 }
 
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup.oo-ui-indicatorElement > .oo-ui-popupToolGroup-handle > .oo-ui-iconElement-icon {
