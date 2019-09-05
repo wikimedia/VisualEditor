@@ -78,11 +78,13 @@
 }
 
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup.oo-ui-indicatorElement > .oo-ui-popupToolGroup-handle > .oo-ui-iconElement-icon {
-	margin-left: -1.142857em;
+	margin-left: -1em;
 }
 
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-popupToolGroup > .oo-ui-popupToolGroup-handle > .oo-ui-indicatorElement-indicator {
-	margin-left: 0.285714em;
+	margin-left: 0.375em;
+	width: 0.5625em;
+	min-width: 0.5625em;
 }
 
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup {
