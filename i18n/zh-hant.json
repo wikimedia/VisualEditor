@@ -83,7 +83,7 @@
 	"visualeditor-debugbar-inputdebug": "輸入除錯",
 	"visualeditor-debugbar-logrange": "所選日誌",
 	"visualeditor-debugbar-showmodel": "顯示模型",
-	"visualeditor-debugbar-showtransactions": "檢視事務",
+	"visualeditor-debugbar-showtransactions": "顯示事務",
 	"visualeditor-debugbar-testsquasher": "測試壓縮",
 	"visualeditor-debugbar-startfilibuster": "冗長辯論",
 	"visualeditor-debugbar-stopfilibuster": "停止冗長辯論",
