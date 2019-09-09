@@ -702,7 +702,7 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  * @fires activation
  */
 ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
-	this.showAsActivated = showAsActivated;
+	this.showAsActivated = showAsActivated === undefined || !!showAsActivated;
 	this.hideSelection = hideSelection;
 	if ( !this.deactivated ) {
 		// Disable the surface observer, there can be no observable changes
