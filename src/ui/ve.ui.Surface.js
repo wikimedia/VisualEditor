@@ -727,10 +727,14 @@ ve.ui.Surface.prototype.onViewActivation = function () {
  * to be scrolled to.
  */
 ve.ui.Surface.prototype.adjustVisiblePadding = function () {
-	var bottom;
+	var bottom, keyboardShown;
 	if ( OO.ui.isMobile() && !this.getInDialog() ) {
-		if ( ve.init.platform.constructor.static.isIos() && this.getView().getSelection().isNativeCursor() ) {
-			// iOS needs a whole extra page of padding when the virtual keyboard is show
+		keyboardShown = this.getView().getSelection().isNativeCursor() &&
+			!this.getView().isShownAsDeactivated();
+		if ( ve.init.platform.constructor.static.isIos() && keyboardShown ) {
+			// iOS needs a whole extra page of padding when the virtual keyboard is shown.
+			// Note: we keep this padding when surface is deactivated-but-shown-as-activated
+			// so that the view doesn't shift when e.g. opening a toolbar toolgroup popup.
 			bottom = $( window ).height() - this.padding.top;
 		} else {
 			// otherwise just add padding to account for the context
