@@ -728,7 +728,7 @@ ve.ui.Surface.prototype.onViewActivation = function () {
  */
 ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 	var bottom;
-	if ( OO.ui.isMobile() ) {
+	if ( OO.ui.isMobile() && !this.getInDialog() ) {
 		if ( ve.init.platform.constructor.static.isIos() && this.getView().getSelection().isNativeCursor() ) {
 			// iOS needs a whole extra page of padding when the virtual keyboard is show
 			bottom = $( window ).height() - this.padding.top;
