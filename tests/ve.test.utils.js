@@ -391,7 +391,7 @@
 					return this.$element[ 0 ].getClientRects()[ 0 ] || null;
 				},
 				getImportRules: function () {
-					return ve.init.Target.static.importRules;
+					return ve.init.target.constructor.static.importRules;
 				},
 				getModel: function () {
 					return model;
