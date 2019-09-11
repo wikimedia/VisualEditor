@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.34.0-pre (d5e74518ab)
+ * OOUI v0.34.1-pre (3913589098)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-09-04T18:28:59Z
+ * Date: 2019-09-10T23:46:11Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -917,6 +917,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupWidget-popup {
   position: relative;
   overflow: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .oo-ui-popupWidget-anchor {
   display: none;
@@ -1809,14 +1811,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.34.0-pre (d5e74518ab)
+ * OOUI v0.34.1-pre (3913589098)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-09-04T18:28:59Z
+ * Date: 2019-09-10T23:46:11Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2717,14 +2719,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.34.0-pre (d5e74518ab)
+ * OOUI v0.34.1-pre (3913589098)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-09-04T18:28:59Z
+ * Date: 2019-09-10T23:46:11Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3261,14 +3263,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.34.0-pre (d5e74518ab)
+ * OOUI v0.34.1-pre (3913589098)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-09-04T18:28:59Z
+ * Date: 2019-09-10T23:46:11Z
  */
 
 .oo-ui-window {
@@ -3681,14 +3683,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.34.0-pre (d5e74518ab)
+ * OOUI v0.34.1-pre (3913589098)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-09-04T18:28:59Z
+ * Date: 2019-09-10T23:46:11Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -4519,8 +4521,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/attachment.svg');
 }
 .oo-ui-icon-beaker {
-  background-image: url('themes/wikimediaui/images/icons/beaker.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/beaker.svg');
+  background-image: url('themes/wikimediaui/images/icons/labFlask.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/labFlask.svg');
 }
 .oo-ui-icon-calendar {
   background-image: url('themes/wikimediaui/images/icons/calendar.png');
@@ -4549,6 +4551,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-icon-imageLayoutThumbnail {
   background-image: url('themes/wikimediaui/images/icons/imageLayoutThumbnail.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/imageLayoutThumbnail.svg');
+}
+.oo-ui-icon-labFlask {
+  background-image: url('themes/wikimediaui/images/icons/labFlask.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/labFlask.svg');
 }
 .oo-ui-icon-language {
   background-image: url('themes/wikimediaui/images/icons/language.png');
@@ -4793,6 +4799,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-icon-userAvatarOutline {
   background-image: url('themes/wikimediaui/images/icons/userAvatarOutline.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAvatarOutline.svg');
+}
+.oo-ui-icon-userGroup {
+  background-image: url('themes/wikimediaui/images/icons/userGroup-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userGroup-ltr.svg');
 }
 .oo-ui-icon-userTalk {
   background-image: url('themes/wikimediaui/images/icons/userTalk-ltr.png');
