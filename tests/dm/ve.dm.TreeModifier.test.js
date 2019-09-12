@@ -32,10 +32,20 @@ ve.dm.TreeModifier.prototype.dump = function () {
 	appendNodeLines( 0, this.document.documentNode );
 	lines.push( 'inserter: { path: [ ' + this.inserter.path.join( ', ' ) +
 			' ], offset: ' + this.inserter.offset + ' }, ' +
-			this.inserter.linearOffset );
+			'linear ' + this.inserter.linearOffset +
+			', insertions: ' + JSON.stringify( this.insertedPositions ) );
 	lines.push( 'remover:  { path: [ ' + this.remover.path.join( ', ' ) +
 			' ], offset: ' + this.remover.offset + ' }, ' +
-			this.remover.linearOffset );
+			'linear ' + this.remover.linearOffset );
+	lines.push( 'insertedPositions: ' + JSON.stringify( this.insertedPositions ) );
+	lines.push( 'insertedNodes: ' + JSON.stringify( this.insertedNodes ) );
+	lines.push( 'adjustments: ' + JSON.stringify( this.adjustmentTree ) );
+	lines.push( 'adjusted inserter: ' + JSON.stringify( this.adjustInserterPosition( this.getRawInserterPosition() ) ) );
+	lines.push( 'adjusted remover: ' + JSON.stringify( this.adjustRemoverPosition( this.getRawRemoverPosition( {
+		path: this.remover.path,
+		offset: this.remover.offset,
+		node: this.remover.node
+	} ) ) ) );
 	ve.batchSplice( lines, lines.length, 0, this.data.data.map( function ( item, i ) {
 		return i + ':' + JSON.stringify( item ) + ',';
 	} ) );
@@ -44,12 +54,148 @@ ve.dm.TreeModifier.prototype.dump = function () {
 
 QUnit.module( 've.dm.TreeModifier' );
 
+QUnit.test( 'treeDiff', function ( assert ) {
+	var origData, tx, treeDiff, surface, doc, i, iLen, j;
+
+	// old: <div><p>foobarbaz</p><p>qux</p></div><p>quux</p>
+	// new: <ul><li><p>foo</p><p>barBAZ</p><p>qux</p></li></ul><p>qUUx</p><p><img src='x'></p>
+	// tx: {-<div>-|+<ul><li>+}<p>foo{+</p><p>+}bar{-baz-|+BAZ+}</p><p>qux</p>{-</div>-|+</li></ul>+}<p>q{-uu-|+UU+}x</p>{+<p><img src='x'></p>+}
+	origData = [
+		{ type: 'div' },
+		{ type: 'paragraph' },
+		'f',
+		'o',
+		'o',
+		'b',
+		'a',
+		'r',
+		'b',
+		'a',
+		'z',
+		{ type: '/paragraph' },
+		{ type: 'paragraph' },
+		'q',
+		'u',
+		'x',
+		{ type: '/paragraph' },
+		{ type: '/div' },
+		{ type: 'paragraph' },
+		'q',
+		'u',
+		'u',
+		'x',
+		{ type: '/paragraph' }
+	];
+	tx = new ve.dm.Transaction( [
+		{ type: 'replace', remove: [ { type: 'div' } ], insert: [ { type: 'list' }, { type: 'listItem' } ] },
+		{ type: 'retain', length: 4 },
+		{ type: 'replace', remove: [], insert: [ { type: '/paragraph' }, { type: 'paragraph' } ] },
+		{ type: 'retain', length: 3 },
+		{ type: 'replace', remove: [ 'b', 'a', 'z' ], insert: [ 'B', 'A', 'Z' ] },
+		{ type: 'retain', length: 6 },
+		{ type: 'replace', remove: [ { type: '/div' } ], insert: [ { type: '/listItem' }, { type: '/list' } ] },
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [ 'u', 'u' ], insert: [ 'U', 'U' ] },
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [], insert: [
+			{ type: 'paragraph' },
+			{ type: 'inlineImage', attributes: { src: 'x' } },
+			{ type: '/inlineImage' },
+			{ type: '/paragraph' }
+		] }
+	] );
+
+	treeDiff = [
+		// {-<div>-|+<ul><li>+}
+		[
+			{ type: 'insertNode', isContent: false, at: [ 0 ], element: { type: 'list' } },
+			// { 0: { diff: 1 } }
+			{ type: 'insertNode', isContent: false, at: [ 0, 0 ], element: { type: 'listItem' } }
+		],
+		// Retain 4
+		[
+			{ type: 'insertNode', isContent: false, at: [ 0, 0, 0 ], element: { type: 'paragraph' } },
+			{ type: 'moveText', isContent: true, from: [ 1, 0, 0 ], to: [ 0, 0, 0, 0 ], length: 3 }
+			// { 0: { diff: 1 }, 1: { 0: { 0: { diff: -3 } } } }
+		],
+		// {+</p><p>+}
+		[
+			{ type: 'insertNode', isContent: false, at: [ 0, 0, 1 ], element: { type: 'paragraph' } }
+		],
+		// Retain 3
+		[
+			{ type: 'moveText', isContent: true, from: [ 1, 0, 0 ], length: 3, to: [ 0, 0, 1, 0 ] }
+			// { 0: { diff: 1 }, 1: { 0: { 0: { diff: -6 } } } }
+		],
+		// {-baz-|+BAZ+}
+		[
+			{ type: 'removeText', isContent: true, at: [ 1, 0, 0 ], data: [ 'b', 'a', 'z' ] },
+			// { 0: { diff: 1 }, 1: { 0: { 0: { diff: -9 } } } }
+			{ type: 'insertText', isContent: true, at: [ 0, 0, 1, 3 ], data: [ 'B', 'A', 'Z' ] }
+		],
+		// Retain 6
+		[
+			{ type: 'removeNode', isContent: false, at: [ 1, 0 ], element: { type: 'paragraph' } },
+			// { 0: { diff: 1 }, 1: { 0: { diff: -1 } } }
+			{ type: 'moveNode', isContent: false, from: [ 1, 0 ], to: [ 0, 0, 2 ] }
+			// { 0: { diff: 1 }, 1: { 0: { diff: -2 } } }
+		],
+		// {-</div>-|+</li></ul>+}
+		[
+			{ type: 'removeNode', isContent: false, at: [ 1 ], element: { type: 'div' } }
+			// { 0: { diff: 1 }, 1: { diff: -1 } }
+		],
+		// Retain 2
+		[],
+		// {-uu-|+UU+}
+		[
+			{ type: 'removeText', isContent: true, at: [ 1, 1 ], data: [ 'u', 'u' ] },
+			// NOT THIS: { 0: { diff: 1 }, 1: { diff: -1 }, 2: { 1: { diff: -2 } } }
+			// { 0: { diff: 1 }, 1: { 1: { diff: -2 }, diff: -1 } }
+			{ type: 'insertText', isContent: true, at: [ 1, 1 ], data: [ 'U', 'U' ] }
+			// { 0: { diff: 1 }, 1: { diff: -1 }, 2: { 1: { diff: 0 } } }
+		],
+		// Retain 2
+		[],
+		// {+<p><img src='x'></p>+}
+		[
+			{ type: 'insertNode', isContent: false, at: [ 2 ], element: { type: 'paragraph' } },
+			{ type: 'insertNode', isContent: true, at: [ 2, 0 ], element: { type: 'inlineImage', attributes: { src: 'x' } } }
+		],
+		// Implicit final retain
+		[]
+	];
+	surface = new ve.dm.Surface(
+		ve.dm.example.createExampleDocumentFromData( origData )
+	);
+	doc = surface.documentModel;
+	ve.dm.treeModifier.setup( doc );
+	j = 0;
+	for ( i = 0, iLen = tx.operations.length; i < iLen; i++ ) {
+		ve.dm.treeModifier.processLinearOperation( tx.operations[ i ] );
+		assert.deepEqual(
+			ve.dm.treeModifier.treeOps.slice( j ),
+			treeDiff[ i ],
+			'Linear operation ' + i + ': induced tree operations'
+		);
+		j = ve.dm.treeModifier.treeOps.length;
+	}
+	ve.dm.treeModifier.processImplicitFinalRetain();
+	assert.deepEqual(
+		ve.dm.treeModifier.treeOps.slice( j ),
+		treeDiff[ treeDiff.length - 1 ],
+		'Implicit final retain: induced tree operations'
+	);
+} );
+
 QUnit.test( 'modify', function ( assert ) {
 	var origData, surface, doc, tx, expectedTreeDump, actualTreeDump;
 
 	function dumpTree( doc ) {
 		// Build a tree modifier just for the .dump method (don't modify anything)
-		return new ve.dm.TreeModifier( doc, new ve.dm.Transaction() ).dump();
+		var treeModifier = new ve.dm.TreeModifier();
+		treeModifier.setup( doc );
+		treeModifier.dump();
 	}
 
 	origData = [
