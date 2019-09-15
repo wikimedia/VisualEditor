@@ -195,7 +195,7 @@ QUnit.test( 'modify', function ( assert ) {
 		// Build a tree modifier just for the .dump method (don't modify anything)
 		var treeModifier = new ve.dm.TreeModifier();
 		treeModifier.setup( doc );
-		treeModifier.dump();
+		return treeModifier.dump();
 	}
 
 	origData = [
@@ -209,6 +209,11 @@ QUnit.test( 'modify', function ( assert ) {
 		'e',
 		'f',
 		'g',
+		{ type: '/paragraph' },
+		{ type: 'paragraph' },
+		'h',
+		'i',
+		'j',
 		{ type: '/paragraph' },
 		{ type: 'internalList' },
 		{ type: '/internalList' }
@@ -235,7 +240,18 @@ QUnit.test( 'modify', function ( assert ) {
 			insertedDataOffset: 0,
 			insertedDataLength: 0
 		},
-		{ type: 'retain', length: 5 }
+		{ type: 'retain', length: 4 },
+		{
+			type: 'replace',
+			remove: [ 'h' ],
+			insert: [
+				{ type: 'inlineImage' },
+				{ type: '/inlineImage' }
+			],
+			insertedDataOffset: 0,
+			insertedDataLength: 2
+		},
+		{ type: 'retain', length: 3 }
 	] );
 
 	doc.commit( tx );
@@ -262,6 +278,21 @@ QUnit.test( 'modify', function ( assert ) {
 		doc.data.data[ 6 ],
 		'Inserted transaction data is not referenced into the linear data'
 	);
+} );
+
+QUnit.test( 'bare content', function ( assert ) {
+	var data, doc, tx;
+
+	data = [ { type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' } ];
+	doc = ve.dm.example.createExampleDocumentFromData( data );
+	tx = new ve.dm.Transaction( [
+		{ type: 'replace', remove: [ { type: 'paragraph' } ], insert: [] },
+		{ type: 'retain', length: 3 },
+		{ type: 'replace', remove: [ { type: '/paragraph' } ], insert: [] }
+	] );
+	assert.throws( function () {
+		doc.commit( tx );
+	}, /Error: Cannot insert text into a document node/, 'bare content' );
 } );
 
 QUnit.test( 'setupBlockSlugs', function ( assert ) {

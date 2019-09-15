@@ -335,6 +335,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		case 'moveText':
 			data = spliceLinear( f.linearOffset, treeOp.length );
 			f.node.adjustLength( -treeOp.length );
+			healTextNodes( f.node.parent, f.node.parent.children.indexOf( f.node ) );
 			adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
 			spliceLinear( t.linearOffset - adjustment, 0, data );
 			t.node.adjustLength( treeOp.length );
@@ -778,6 +779,9 @@ ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
 			removerStep.item.getLength(),
 		rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
 		rawInserterPosition = this.getRawInserterPosition();
+
+	this.checkCanInsertText();
+
 	this.treeOps.push( {
 		type: 'moveText',
 		isContent: true,
