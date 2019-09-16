@@ -170,7 +170,7 @@
 	"visualeditor-languageinspector-widget-label-language": "Label for the language inspector widget, to denote the current block language.\n{{Identical|Language}}",
 	"visualeditor-linkcontext-label-change": "Label for the change text button. This sets the current selection to the entire contents of the link, so it can be easily edited.",
 	"visualeditor-linkcontext-label-fallback": "Fallback for the preview of a link label if it's not displayable as text",
-	"visualeditor-linkcontext-label-label": "Label for the \"text\" field of a link",
+	"visualeditor-linkcontext-label-label": "Label for the \"label\" field of a link\n{{Identical|Label}}",
 	"visualeditor-linkcontext-remove": "Title for the remove link button on the link context popup",
 	"visualeditor-linkinspector-title": "Title of the link inspector dialog when viewing a link in read-only mode.\n{{Identical|Link}}",
 	"visualeditor-linkinspector-title-add": "Title of the link inspector dialog when adding a link.",

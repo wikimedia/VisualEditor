@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Pahles",
-			"Ooswesthoesbes"
+			"Ooswesthoesbes",
+			"Niknetniko"
 		]
 	},
 	"visualeditor": "Visuele teksverwirker",
@@ -96,7 +97,7 @@
 	"visualeditor-formatdropdown-format-heading4": "Kop 4",
 	"visualeditor-formatdropdown-format-heading5": "Kop 5",
 	"visualeditor-formatdropdown-format-heading6": "Kop 6",
-	"visualeditor-formatdropdown-format-paragraph": "Paragraaf",
+	"visualeditor-formatdropdown-format-paragraph": "Alinea",
 	"visualeditor-formatdropdown-format-preformatted": "Opgemaak",
 	"visualeditor-formatdropdown-title": "Opmaak aanpasse",
 	"visualeditor-help-tool": "Hölp",

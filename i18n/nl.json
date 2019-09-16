@@ -30,7 +30,8 @@
 			"Patio",
 			"KlaasZ4usV",
 			"Marcelhospers",
-			"Elroy"
+			"Elroy",
+			"Niknetniko"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -129,7 +130,7 @@
 	"visualeditor-formatdropdown-format-heading4": "Kop 4",
 	"visualeditor-formatdropdown-format-heading5": "Kop 5",
 	"visualeditor-formatdropdown-format-heading6": "Kop 6",
-	"visualeditor-formatdropdown-format-paragraph": "Paragraaf",
+	"visualeditor-formatdropdown-format-paragraph": "Alinea",
 	"visualeditor-formatdropdown-format-preformatted": "Vooraf opgemaakt",
 	"visualeditor-formatdropdown-title": "Opmaak wijzigen",
 	"visualeditor-help-tool": "Hulp",
@@ -222,7 +223,7 @@
 	"visualeditor-table-move-row-before": "Verplaatsen boven",
 	"visualeditor-tablecell-contextitem": "Tabelcel",
 	"visualeditor-tablecell-tooltip": "Dubbelklik om de cel te bewerken",
-	"visualeditor-toolbar-format-tooltip": "Paragraaf maken",
+	"visualeditor-toolbar-format-tooltip": "Alinea opmaken",
 	"visualeditor-toolbar-history": "Geschiedenis",
 	"visualeditor-toolbar-insert": "Invoegen",
 	"visualeditor-toolbar-paragraph-format": "Opmaak",

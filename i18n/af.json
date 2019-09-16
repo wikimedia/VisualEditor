@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Naudefj",
-			"Fwolff"
+			"Fwolff",
+			"Niknetniko"
 		]
 	},
 	"visualeditor": "Vereenvoudigde teksverwerker",
@@ -91,7 +92,7 @@
 	"visualeditor-formatdropdown-format-heading4": "Opskrif 4",
 	"visualeditor-formatdropdown-format-heading5": "Opskrif 5",
 	"visualeditor-formatdropdown-format-heading6": "Opskrif 6",
-	"visualeditor-formatdropdown-format-paragraph": "Paragraaf",
+	"visualeditor-formatdropdown-format-paragraph": "Alinea",
 	"visualeditor-formatdropdown-format-preformatted": "Vooraf geformatteer",
 	"visualeditor-formatdropdown-title": "Verander formaat",
 	"visualeditor-help-tool": "Hulp",
@@ -176,7 +177,7 @@
 	"visualeditor-table-move-row-before": "Skuif op",
 	"visualeditor-tablecell-contextitem": "Tabelsel",
 	"visualeditor-tablecell-tooltip": "Klik dubbel om sel te wysig",
-	"visualeditor-toolbar-format-tooltip": "Formatteer paragraaf",
+	"visualeditor-toolbar-format-tooltip": "Alinea opmaken",
 	"visualeditor-toolbar-history": "Geskiedenis",
 	"visualeditor-toolbar-insert": "Voeg in",
 	"visualeditor-toolbar-paragraph-format": "Formatering",

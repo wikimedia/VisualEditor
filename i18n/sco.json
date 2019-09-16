@@ -4,7 +4,8 @@
 			"John Reid",
 			"Amire80",
 			"Foxj",
-			"AmaryllisGardener"
+			"AmaryllisGardener",
+			"Niknetniko"
 		]
 	},
 	"visualeditor": "VeesualEediter",
@@ -70,7 +71,7 @@
 	"visualeditor-formatdropdown-format-heading4": "Heidin 4",
 	"visualeditor-formatdropdown-format-heading5": "Heidin 5",
 	"visualeditor-formatdropdown-format-heading6": "Heidin 6",
-	"visualeditor-formatdropdown-format-paragraph": "Paragraph",
+	"visualeditor-formatdropdown-format-paragraph": "Alinea",
 	"visualeditor-formatdropdown-format-preformatted": "Preformattit",
 	"visualeditor-formatdropdown-title": "Chynge format",
 	"visualeditor-help-tool": "Heelp",
