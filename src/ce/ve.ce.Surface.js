@@ -2909,10 +2909,23 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 	targetFragment = targetFragment || this.getModel().getFragment();
 
 	function insert( docOrData ) {
+		var resultFragment, rootChildren;
 		// For non-paste transfers, don't overwrite the selection
-		var resultFragment = !isPaste ? targetFragment.collapseToEnd() : targetFragment;
+		resultFragment = !isPaste ? targetFragment.collapseToEnd() : targetFragment;
 		if ( docOrData instanceof ve.dm.Document ) {
-			resultFragment.insertDocument( docOrData );
+			rootChildren = docOrData.getDocumentNode().children;
+			if (
+				rootChildren[ 0 ] &&
+				rootChildren[ 0 ].type === 'paragraph' &&
+				( !rootChildren[ 1 ] || rootChildren[ 1 ].type === 'internalList' )
+			) {
+				resultFragment.insertDocument(
+					docOrData,
+					rootChildren[ 0 ].getRange()
+				);
+			} else {
+				resultFragment.insertDocument( docOrData );
+			}
 		} else {
 			resultFragment.insertContent( docOrData );
 		}
