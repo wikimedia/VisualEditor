@@ -280,8 +280,15 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		var jActual, jExpected;
 
 		function replacer( name, value ) {
-			// Don't check .changesSinceLoad flags
-			return ( name === 'changesSinceLoad' ) ? undefined : value;
+			// TODO: replace this check with data equality class method checks
+			if (
+				name === 'changesSinceLoad' ||
+				name === 'originalDomElementsHash' ||
+				name === 'originalMw'
+			) {
+				return undefined;
+			}
+			return value;
 		}
 
 		jActual = JSON.stringify( actual, replacer );
