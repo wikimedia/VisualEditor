@@ -54,9 +54,20 @@
 
 		dummySurface.createProgress( progressDeferred.promise(), ve.msg( 'visualeditor-rebase-client-connecting' ), true );
 
-		surfaceModel.synchronizer.once( 'initDoc', function () {
+		surfaceModel.synchronizer.once( 'initDoc', function ( error ) {
 			progressDeferred.resolve();
 			target.clearSurfaces();
+			if ( error ) {
+				OO.ui.alert(
+					$( '<p>' ).append(
+						ve.htmlMsg( 'visualeditor-corrupted-document-error', $( '<pre>' ).text( error.stack ) )
+					),
+					{ title: ve.msg( 'visualeditor-corrupted-document-title' ), size: 'large' }
+				).then( function () {
+					// TODO: Go back to landing page?
+				} );
+				return;
+			}
 			// Don't add the surface until the history has been applied
 			target.addSurface( surfaceModel );
 			target.getSurface().getView().focus();

@@ -100,6 +100,7 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
 
 /**
  * @event initDoc
+ * @param {Error} Error, if there was a problem initializing the document
  */
 
 /**
@@ -309,6 +310,7 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
  * @param {Object} data
  * @param {number} data.authorId The author ID allocated by the server
  * @param {string} data.token
+ * @fires wrongDoc
  */
 ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
 	if ( this.serverId && this.serverId !== data.serverId ) {
@@ -347,6 +349,7 @@ ve.dm.SurfaceSynchronizer.prototype.loadSessionKey = function () {
  * @param {Object} data
  * @param {Object} data.history Serialized change representing the server's history
  * @param {Object} data.authors Object mapping author IDs to author data objects (name/color)
+ * @fires initDoc
  */
 ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 	var history, authorId;
@@ -360,8 +363,14 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 			authorData: data.authors[ authorId ]
 		} );
 	}
-	history = ve.dm.Change.static.deserialize( data.history );
-	this.acceptChange( history );
+	try {
+		history = ve.dm.Change.static.deserialize( data.history );
+		this.acceptChange( history );
+	} catch ( e ) {
+		this.socket.disconnect();
+		this.emit( 'initDoc', e );
+		return;
+	}
 	this.emit( 'initDoc' );
 
 	// Mark ourselves as initialized and retry any prevented submissions
