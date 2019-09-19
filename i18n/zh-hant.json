@@ -23,7 +23,8 @@
 			"Wwycheuk",
 			"A2093064",
 			"Kly",
-			"Deathkon"
+			"Deathkon",
+			"Winston Sung"
 		]
 	},
 	"visualeditor": "視覺化編輯器",
@@ -162,7 +163,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "文字方向",
 	"visualeditor-languageinspector-widget-label-langcode": "語言代碼",
 	"visualeditor-languageinspector-widget-label-language": "語言",
-	"visualeditor-linkcontext-label-change": "更改文字",
+	"visualeditor-linkcontext-label-change": "變更文字",
 	"visualeditor-linkcontext-label-fallback": "無預覽",
 	"visualeditor-linkcontext-label-label": "文字",
 	"visualeditor-linkcontext-remove": "移除連結",

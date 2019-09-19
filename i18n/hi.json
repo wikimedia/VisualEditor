@@ -16,7 +16,8 @@
 			"चक्रपाणी",
 			"Rishi.Singh",
 			"Smtchahal",
-			"Prong$31"
+			"Prong$31",
+			"Nilesh shukla"
 		]
 	},
 	"visualeditor": "यथादृश्य संपादिका",
@@ -144,6 +145,8 @@
 	"visualeditor-languageinspector-widget-label-direction": "दिशा",
 	"visualeditor-languageinspector-widget-label-langcode": "भाषा कोड",
 	"visualeditor-languageinspector-widget-label-language": "भाषा",
+	"visualeditor-linkcontext-label-change": "पाठ बदलें",
+	"visualeditor-linkcontext-label-label": "पाठ",
 	"visualeditor-linkinspector-title": "लिंक",
 	"visualeditor-listbutton-bullet-tooltip": "बुलेटेड सूची",
 	"visualeditor-listbutton-number-tooltip": "क्रमांकित सूची",

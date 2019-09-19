@@ -17,7 +17,8 @@
 			"Diego Queiroz",
 			"Macofe",
 			"Athena in Wonderland",
-			"Ldacosta"
+			"Ldacosta",
+			"Mansil alfalb"
 		]
 	},
 	"visualeditor": "Editor Visual",
@@ -156,9 +157,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "Direção",
 	"visualeditor-languageinspector-widget-label-langcode": "Código da língua",
 	"visualeditor-languageinspector-widget-label-language": "Língua",
-	"visualeditor-linkcontext-label-change": "Alterar texto da hiperligação",
+	"visualeditor-linkcontext-label-change": "Alterar texto",
 	"visualeditor-linkcontext-label-fallback": "Sem antevisão",
-	"visualeditor-linkcontext-label-label": "Texto da hiperligação",
+	"visualeditor-linkcontext-label-label": "Texto",
 	"visualeditor-linkcontext-remove": "Remover hiperligação",
 	"visualeditor-linkinspector-title": "Hiperligação",
 	"visualeditor-linkinspector-title-add": "Acrescentar uma hiperligação",

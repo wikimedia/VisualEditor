@@ -31,7 +31,8 @@
 			"KlaasZ4usV",
 			"Marcelhospers",
 			"Elroy",
-			"Niknetniko"
+			"Niknetniko",
+			"Robin van der Linde"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -167,9 +168,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "Richting",
 	"visualeditor-languageinspector-widget-label-langcode": "Taalcode",
 	"visualeditor-languageinspector-widget-label-language": "Taal",
-	"visualeditor-linkcontext-label-change": "Label wijzigen",
+	"visualeditor-linkcontext-label-change": "Tekst wijzigen",
 	"visualeditor-linkcontext-label-fallback": "Geen voorvertoning",
-	"visualeditor-linkcontext-label-label": "Label",
+	"visualeditor-linkcontext-label-label": "Tekst",
 	"visualeditor-linkcontext-remove": "Koppeling verwijderen",
 	"visualeditor-linkinspector-title": "Koppeling",
 	"visualeditor-linkinspector-title-add": "Koppeling toevoegen",
