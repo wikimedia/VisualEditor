@@ -151,7 +151,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "書字方向",
 	"visualeditor-languageinspector-widget-label-langcode": "言語<br />コード",
 	"visualeditor-languageinspector-widget-label-language": "言語",
-	"visualeditor-linkcontext-label-change": "M文字列を変更",
+	"visualeditor-linkcontext-label-change": "文字列を変更",
 	"visualeditor-linkcontext-label-fallback": "プレビューなし",
 	"visualeditor-linkcontext-label-label": "文字列",
 	"visualeditor-linkcontext-remove": "リンクを除去",
