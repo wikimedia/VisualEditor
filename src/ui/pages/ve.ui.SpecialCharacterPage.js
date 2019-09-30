@@ -23,7 +23,6 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 	ve.ui.SpecialCharacterPage.super.apply( this, arguments );
 
 	this.label = config.label;
-	this.icon = config.icon;
 
 	characters = config.characters;
 	$characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' );
