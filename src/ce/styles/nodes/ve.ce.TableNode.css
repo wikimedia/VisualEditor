@@ -67,7 +67,12 @@
 }
 
 .ve-ce-tableNode-missingCell {
-	background-repeat: no-repeat;
-	background-position: center center;
 	border: 0 !important; /* stylelint-disable-line declaration-no-important */
+	padding: 0 !important; /* stylelint-disable-line declaration-no-important */
+}
+
+.ve-ce-tableNode-missingCell > .oo-ui-buttonWidget > .oo-ui-buttonElement-button {
+	/* Remove minimal dimensions, as they are larger than empty table cells */
+	padding-top: 0;
+	padding-left: 0;
 }

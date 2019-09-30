@@ -64,7 +64,7 @@ ve.ce.TableRowNode.prototype.onSplice = function () {
  * Setup a slug for a missing cell, if this row contains fewer cells than the table
  */
 ve.ce.TableRowNode.prototype.setupMissingCell = function () {
-	var row,
+	var row, slugButton,
 		matrix = this.findParent( ve.ce.TableNode ).getModel().getMatrix(),
 		maxColCount = matrix.getMaxColCount();
 
@@ -73,8 +73,12 @@ ve.ce.TableRowNode.prototype.setupMissingCell = function () {
 		if ( !this.$missingCell ) {
 			this.$missingCell = $( '<td>' )
 				.prop( 'contentEditable', 'false' )
-				.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug oo-ui-icon-add ve-ce-tableNode-missingCell' )
-				.on( 'click', this.onMissingCellClick.bind( this ) );
+				.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug ve-ce-tableNode-missingCell' );
+			slugButton = new ve.ui.NoFocusButtonWidget( {
+				icon: 'add',
+				framed: false
+			} ).on( 'click', this.onMissingCellClick.bind( this ) );
+			this.$missingCell.append( slugButton.$element );
 		}
 		this.$element.append( this.$missingCell );
 	} else if ( this.$missingCell ) {

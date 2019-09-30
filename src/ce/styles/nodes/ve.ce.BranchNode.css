@@ -64,7 +64,8 @@
 	display: block;
 }
 
-.ve-ce-branchNode-blockSlug > .oo-ui-buttonElement-frameless.oo-ui-labelElement.oo-ui-iconElement:first-child {
+.ve-ce-branchNode-blockSlug > .oo-ui-buttonElement-frameless.oo-ui-iconElement:first-child {
+	/* We add a border, so cancel weird margin adjustment meant for frameless buttons */
 	margin-left: 0;
 }
 
