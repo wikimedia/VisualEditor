@@ -12,7 +12,8 @@
 			"Se4598",
 			"Tomabrafix",
 			"TMg",
-			"Saehrimnir"
+			"Saehrimnir",
+			"Tobi 406"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -151,9 +152,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "Richtung",
 	"visualeditor-languageinspector-widget-label-langcode": "Sprachcode",
 	"visualeditor-languageinspector-widget-label-language": "Sprache",
-	"visualeditor-linkcontext-label-change": "Beschriftung ändern",
+	"visualeditor-linkcontext-label-change": "Text ändern",
 	"visualeditor-linkcontext-label-fallback": "Keine Vorschau",
-	"visualeditor-linkcontext-label-label": "Beschriftung",
+	"visualeditor-linkcontext-label-label": "Text",
 	"visualeditor-linkcontext-remove": "Link entfernen",
 	"visualeditor-linkinspector-title": "Link",
 	"visualeditor-listbutton-bullet-tooltip": "Aufzählungszeichen",
