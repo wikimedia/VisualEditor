@@ -160,6 +160,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Прилагодено",
 	"visualeditor-mediasizewidget-sizeoptions-default": "По основно",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Размер",
+	"visualeditor-corrupted-document-error": "Документот е оштетен: $1",
+	"visualeditor-corrupted-document-title": "Оштетен документ",
 	"visualeditor-missing-document-error": "Документот недостасува на опслужувачот. За да избегнете загуба на податоците, прекопирајте ја содржината.",
 	"visualeditor-missing-document-title": "Недостасува документ",
 	"visualeditor-rebase-client-author-name": "Име",

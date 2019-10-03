@@ -181,6 +181,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "مخصص",
 	"visualeditor-mediasizewidget-sizeoptions-default": "افتراضي",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "مقياس",
+	"visualeditor-corrupted-document-error": "أصبح المستند تالفا: $1",
+	"visualeditor-corrupted-document-title": "وثيقة تالفة",
 	"visualeditor-missing-document-error": "وثيقة مفقودة على الخادم، لتجنب فقدان البيانات; انسخ المحتويات والصقها.",
 	"visualeditor-missing-document-title": "وثيقة مفقودة",
 	"visualeditor-rebase-client-author-name": "الاسم",

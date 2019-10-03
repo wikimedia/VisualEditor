@@ -35,7 +35,8 @@
 			"Evs",
 			"Vlad5250",
 			"Infovarius",
-			"Nk88"
+			"Nk88",
+			"Katunchik"
 		]
 	},
 	"visualeditor": "Визуальный редактор",
@@ -192,6 +193,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Настраиваемый",
 	"visualeditor-mediasizewidget-sizeoptions-default": "По умолчанию",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Масштаб",
+	"visualeditor-corrupted-document-error": "Документ был повреждён: $1",
+	"visualeditor-corrupted-document-title": "Поврежденный документ",
 	"visualeditor-missing-document-error": "Документ отсутствует на сервере. Чтобы избежать потери данных, скопируйте и вставьте содержание.",
 	"visualeditor-missing-document-title": "Документ отсутствует",
 	"visualeditor-rebase-client-author-name": "Имя",

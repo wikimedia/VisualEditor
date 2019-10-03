@@ -156,6 +156,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Personalizze",
 	"visualeditor-mediasizewidget-sizeoptions-default": "De base",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Scale",
+	"visualeditor-corrupted-document-error": "'U documende s'ha scuasciate: $1",
+	"visualeditor-corrupted-document-title": "Documende corrotte",
 	"visualeditor-missing-document-error": "Documende perdute sus a 'u server. Pe evità de perdere date, copie e 'ngolle le condenute.",
 	"visualeditor-missing-document-title": "Documente perdute",
 	"visualeditor-rebase-client-author-name": "Nome",

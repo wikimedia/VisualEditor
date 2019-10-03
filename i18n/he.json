@@ -170,6 +170,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "מותאם אישית",
 	"visualeditor-mediasizewidget-sizeoptions-default": "בררת מחדל",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "קנה מידה",
+	"visualeditor-corrupted-document-error": "המסמך השתבש: $1",
+	"visualeditor-corrupted-document-title": "מסמך משובש",
 	"visualeditor-missing-document-error": "המסמך חסר בשרת. כדי להימנע מאובדן נתונים, יש להעתיק ולהדביק את התוכן.",
 	"visualeditor-missing-document-title": "מסמך חסר",
 	"visualeditor-rebase-client-author-name": "שם",

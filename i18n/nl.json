@@ -32,7 +32,8 @@
 			"Marcelhospers",
 			"Elroy",
 			"Niknetniko",
-			"Robin van der Linde"
+			"Robin van der Linde",
+			"Servien"
 		]
 	},
 	"visualeditor": "Visuele tekstverwerker",
@@ -184,7 +185,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Aangepast",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standaard",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Schaal",
-	"visualeditor-missing-document-error": "Document ontbreekt op de server. Kopier en plak inhoud om dataverlies te voorkomen.",
+	"visualeditor-missing-document-error": "Document ontbreekt op de server. Kopieer en plak inhoud om dataverlies te voorkomen.",
 	"visualeditor-missing-document-title": "Ontbrekend document",
 	"visualeditor-rebase-client-author-name": "Naam",
 	"visualeditor-rebase-client-connecting": "Verbinden...",

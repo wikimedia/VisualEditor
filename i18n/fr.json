@@ -197,6 +197,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Personnalisé",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Par défaut",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Échelle",
+	"visualeditor-corrupted-document-error": "Le document a été corrompu : $1",
+	"visualeditor-corrupted-document-title": "Document corrompu",
 	"visualeditor-missing-document-error": "Document non trouvé sur le serveur. Pour éviter la perte des données, copiez et collez le contenu.",
 	"visualeditor-missing-document-title": "Document absent",
 	"visualeditor-rebase-client-author-name": "Nom",
