@@ -5,12 +5,12 @@
 		"wikimedia/jquery"
 	],
 	"globals": {
-		"ve": true,
-		"VisualEditorSupportCheck": false,
-		"OO": false,
-		"unicodeJS": false,
-		"RangeFix": false,
-		"Papa": false
+		"ve": "writable",
+		"VisualEditorSupportCheck": "writable",
+		"OO": "readonly",
+		"unicodeJS": "readonly",
+		"RangeFix": "readonly",
+		"Papa": "readonly"
 	},
 	"rules": {
 		"no-jquery/no-extend": "error",

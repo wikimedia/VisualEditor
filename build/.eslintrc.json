@@ -2,8 +2,5 @@
 	"root": true,
 	"extends": [
 		"wikimedia/server"
-	],
-	"rules": {
-		"prefer-template": "off"
-	}
+	]
 }

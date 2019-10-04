@@ -8,7 +8,6 @@
 		"OO": false
 	},
 	"rules": {
-		"max-len": "off",
-		"prefer-template": "off"
+		"max-len": "off"
 	}
 }
