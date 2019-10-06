@@ -165,7 +165,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		node.adjustLength( -length );
 		newNode = new ve.dm.TextNode( length );
 		parentNode.splice( parentOffset + 1, 0, newNode );
-		return { node: newNode, offset: 0 };
+		return { node: parentNode, offset: parentOffset + 1 };
 	}
 
 	function findContentPosition( node, contentOffset ) {

@@ -295,6 +295,40 @@ QUnit.test( 'bare content', function ( assert ) {
 	}, /Error: Cannot insert text into a document node/, 'bare content' );
 } );
 
+QUnit.test( 'ensureNotText', function ( assert ) {
+	var data, expectData, doc, tx;
+
+	data = [
+		{ type: 'paragraph' },
+		'f',
+		'o',
+		{ type: 'inlineImage' },
+		{ type: '/inlineImage' },
+		'o',
+		{ type: '/paragraph' }
+	];
+	expectData = ve.copy( data );
+	expectData[ 3 ].annotations = [ ve.dm.example.boldHash ];
+	doc = ve.dm.example.createExampleDocumentFromData( data );
+	tx = new ve.dm.Transaction( [
+		{ type: 'retain', length: 3 },
+		{
+			type: 'replace',
+			remove: [
+				{ type: 'inlineImage' },
+				{ type: '/inlineImage' }
+			],
+			insert: [
+				{ type: 'inlineImage', annotations: [ ve.dm.example.boldHash ] },
+				{ type: '/inlineImage' }
+			]
+		},
+		{ type: 'retain', length: 2 }
+	] );
+	doc.commit( tx );
+	assert.deepEqual( doc.data.data, expectData, 'Bold inline element surrounded by text' );
+} );
+
 QUnit.test( 'setupBlockSlugs', function ( assert ) {
 	var doc = new ve.dm.Surface(
 		ve.dm.example.createExampleDocumentFromData( [] )
