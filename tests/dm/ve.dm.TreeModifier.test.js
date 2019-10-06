@@ -348,3 +348,42 @@ QUnit.test( 'setupBlockSlugs', function ( assert ) {
 		'Modified paragraph node contains a slug'
 	);
 } );
+
+QUnit.test( 'checkEqualData', function ( assert ) {
+	var data, expectedData;
+	data = [
+		{
+			type: 'paragraph',
+			originalDomElementsHash: 'h1111111111111111',
+			internal: { changesSinceLoad: 1 }
+		},
+		'f',
+		'o',
+		'o',
+		{
+			type: 'mwReference',
+			attributes: {
+				mw: {
+					name: 'ref',
+					attrs: {},
+					body: { id: 'mw-reference-text-cite_note-1' }
+				},
+				listIndex: 0,
+				listGroup: 'mwReference/',
+				listKey: 'auto/0',
+				refGroup: '',
+				contentsUsed: true,
+				refListItemId: 'mw-reference-text-cite_note-1'
+			}
+		},
+		{ type: '/mwReference' },
+		{ type: '/paragraph' }
+	];
+	expectedData = ve.copy( data );
+	expectedData[ 0 ].originalDomElementsHash = 'h2222222222222222';
+	expectedData[ 0 ].internal.changesSinceLoad = 2;
+	delete expectedData[ 4 ].attributes.mw;
+	delete expectedData[ 4 ].attributes.contentsUsed;
+	ve.dm.TreeModifier.static.checkEqualData( data, expectedData );
+	assert.ok( true, 'Normalized data compares equal' );
+} );
