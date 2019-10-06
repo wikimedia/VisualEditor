@@ -108,6 +108,37 @@ ve.dm.TreeModifier.static.applyTreeOperations = function ( isReversed, document,
 };
 
 /**
+ * Throw an exception if two pieces of linear data are not equal
+ *
+ * @param {Array} actual Document linear data to test
+ * @param {Array} expected Expected linear data to test against
+ */
+ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
+	var jActual, jExpected;
+
+	function replacer( name, value ) {
+		// TODO: replace this check with data equality class method checks
+		if (
+			name === 'changesSinceLoad' ||
+			name === 'originalDomElementsHash' ||
+			name === 'originalMw' ||
+			name === 'mw' ||
+			name === 'contentsUsed'
+		) {
+			return undefined;
+		}
+		return value;
+	}
+
+	jActual = JSON.stringify( actual, replacer );
+	jExpected = JSON.stringify( expected, replacer );
+
+	if ( jActual !== jExpected ) {
+		throw new Error( 'Expected ' + jExpected + ' but got ' + jActual );
+	}
+};
+
+/**
  * Apply a tree operation to document tree and linear data simultaneously
  *
  * @param {boolean} isReversed Whether the transaction is an undo
@@ -276,29 +307,6 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		}
 	}
 
-	function checkEqual( actual, expected ) {
-		var jActual, jExpected;
-
-		function replacer( name, value ) {
-			// TODO: replace this check with data equality class method checks
-			if (
-				name === 'changesSinceLoad' ||
-				name === 'originalDomElementsHash' ||
-				name === 'originalMw'
-			) {
-				return undefined;
-			}
-			return value;
-		}
-
-		jActual = JSON.stringify( actual, replacer );
-		jExpected = JSON.stringify( expected, replacer );
-
-		if ( jActual !== jExpected ) {
-			throw new Error( 'Expected ' + jExpected + ' but got ' + jActual );
-		}
-	}
-
 	wantText = treeOp.type.slice( -4 ) === 'Text';
 	f = treeOp.from && prepareSplice( treeOp.from, treeOp.isContent, wantText );
 	t = treeOp.to && prepareSplice( treeOp.to, treeOp.isContent, wantText );
@@ -310,7 +318,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		case 'removeNode':
 			// The node should have no contents, so its outer length should be 2
 			data = spliceLinear( a.linearOffset, 2 );
-			checkEqual( data, [ treeOp.element, { type: '/' + treeOp.element.type } ] );
+			this.checkEqualData( data, [ treeOp.element, { type: '/' + treeOp.element.type } ] );
 			a.node.splice( a.offset, 1 );
 			healTextNodes( a.node, a.offset );
 			break;
@@ -331,7 +339,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			break;
 		case 'removeText':
 			data = spliceLinear( a.linearOffset, treeOp.data.length );
-			checkEqual( data, treeOp.data );
+			this.checkEqualData( data, treeOp.data );
 			a.node.adjustLength( -treeOp.data.length );
 			healTextNodes( a.node.parent, a.node.parent.children.indexOf( a.node ) );
 			break;
