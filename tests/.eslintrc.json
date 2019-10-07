@@ -7,7 +7,6 @@
 	"rules": {
 		"max-len": "off",
 		"no-jquery/no-class-state": "off",
-		"no-jquery/no-parse-html-literal": "off",
-		"prefer-template": "off"
+		"no-jquery/no-parse-html-literal": "off"
 	}
 }
