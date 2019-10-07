@@ -24,7 +24,8 @@
 			"Railfail536",
 			"Sutan",
 			"Masti",
-			"Rail"
+			"Rail",
+			"FunPL"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -178,8 +179,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Niestandardowy",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Domyślnie",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skala",
-	"visualeditor-corrupted-document-error": "Dokument stał się zepsuty: $1",
-	"visualeditor-corrupted-document-title": "Zepsuty dokument",
+	"visualeditor-corrupted-document-error": "Dokument stał się uszkodzony: $1",
+	"visualeditor-corrupted-document-title": "Uszkodzony dokument",
 	"visualeditor-missing-document-error": "Brak dokumentu na serwerze. Aby uniknąć utraty danych, skopiuj i wklej zawartość.",
 	"visualeditor-missing-document-title": "Brakujący dokument",
 	"visualeditor-rebase-client-author-name": "Imię",
