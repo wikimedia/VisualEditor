@@ -26,7 +26,7 @@ can be installed with the following command:
 
     npm install papaparse
 
-If you don't want to use npm, [papaparse.min.js](https://github.com/mholt/PapaParse/blob/master/papaparse.min.js) can be downloaded to your project source.
+If you don't want to use npm, [papaparse.min.js](https://unpkg.com/papaparse@latest/papaparse.min.js) can be downloaded to your project source.
 
 
 Homepage & Demo
@@ -39,15 +39,15 @@ To learn how to use Papa Parse:
 
 - [Documentation](http://papaparse.com/docs)
 
-The website is hosted on on [Github Pages](https://pages.github.com/).  If
-you want to contribute just clone the gh-branch of this repository and
-open a pull request.
+The website is hosted on [Github Pages](https://pages.github.com/). Its content is also included in the docs folder of this repository. If you want to contribute on it just clone the master of this repository and open a pull request.
 
 
 Papa Parse for Node
 --------------------
 
 Papa Parse can parse a [Readable Stream](https://nodejs.org/api/stream.html#stream_readable_streams) instead of a [File](https://www.w3.org/TR/FileAPI/) when used in Node.js environments (in addition to plain strings). In this mode, `encoding` must, if specified, be a Node-supported character encoding. The `Papa.LocalChunkSize`, `Papa.RemoteChunkSize` , `download`, `withCredentials` and `worker` config options are unavailable.
+
+Papa Parse can also parse in a node streaming style which makes `.pipe` available.  Simply pipe the [Readable Stream](https://nodejs.org/api/stream.html#stream_readable_streams) to the stream returned from `Papa.parse(Papa.NODE_STREAM_INPUT, options)`.  The `Papa.LocalChunkSize`, `Papa.RemoteChunkSize` , `download`, `withCredentials`, `worker`, `step`, and `complete` config options are unavailable.  To register a callback with the stream to process data, use the `data` event like so: `stream.on('data', callback)` and to signal the end of stream, use the 'end' event like so: `stream.on('end', callback)`.
 
 Get Started
 -----------
@@ -58,8 +58,6 @@ Tests
 -----
 
 Papa Parse is under test. Download this repository, run `npm install`, then `npm test` to run the tests.
-
-The continuous integration server runs these tests using Node 0.12. You should ensure your tests pass locally using that version of Node.
 
 Contributing
 ------------
