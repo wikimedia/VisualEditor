@@ -2223,6 +2223,10 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		return done;
 	}
 
+	// Immedately remove any <style> tags from the pasteTarget that might
+	// be changing the rendering of the whole page (T235068)
+	this.$pasteTarget.find( 'style' ).remove();
+
 	pasteData = this.afterPasteExtractClipboardData();
 
 	// Handle pastes into a table
