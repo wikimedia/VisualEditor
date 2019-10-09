@@ -17,11 +17,13 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {ve.dm.Document} [doc] Initial document model
- * @cfg {Object[]} [tools] Toolbar configuration
+ * @cfg {Object} [modes] Available editing modes.
+ * @cfg {Object} [defaultMode] Default mode for new surfaces.
+ * @cfg {Object} [toolbarGroups] Target's toolbar groups config, defaults to the current target's.
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
- * @cfg {boolean} [multiline] Multi-line surface
+ * @cfg {boolean} [multiline=true] Multi-line surface
  * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
  * @cfg {boolean} [readOnly] Surface is read-only
  * @cfg {string} [inDialog] The name of the dialog this surface widget is in
@@ -34,11 +36,8 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	ve.ui.TargetWidget.super.call( this, config );
 
 	// Properties
-	this.commandRegistry = config.commandRegistry || ve.init.target.getSurface().commandRegistry;
-	this.sequenceRegistry = config.sequenceRegistry || ve.init.target.getSurface().sequenceRegistry;
-	this.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.init.target.getSurface().dataTransferHandlerFactory;
+	this.toolbarGroups = config.toolbarGroups || ( ve.init.target && ve.init.target.toolbarGroups );
 	// TODO: Override document/targetTriggerListener
-	this.tools = config.tools;
 	this.includeCommands = config.includeCommands;
 	this.excludeCommands = config.excludeCommands;
 	this.multiline = config.multiline !== false;
@@ -46,14 +45,10 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	this.readOnly = config.readOnly;
 	this.importRules = config.importRules;
 	this.inDialog = config.inDialog;
-	// TODO: Support source widgets
-	this.mode = 'visual';
+	this.modes = config.modes;
+	this.defaultMode = config.defaultMode;
 
-	this.surface = null;
-	this.toolbar = null;
-	// TODO: Use a TargetToolbar when trigger listeners are set here
-	this.$surfaceContainer = $( '<div>' ).addClass( 've-ui-targetWidget-surface' );
-	this.$toolbarContainer = $( '<div>' ).addClass( 've-ui-targetWidget-toolbar' );
+	this.target = this.createTarget();
 
 	if ( config.doc ) {
 		this.setDocument( config.doc );
@@ -61,7 +56,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 
 	// Initialization
 	this.$element.addClass( 've-ui-targetWidget' )
-		.append( this.$toolbarContainer, this.$surfaceContainer );
+		.append( this.target.$element );
 };
 
 /* Inheritance */
@@ -83,26 +78,33 @@ OO.inheritClass( ve.ui.TargetWidget, OO.ui.Widget );
  */
 
 /**
+ * Create the target for this widget to use
+ *
+ * @return {ve.init.Target} Target
+ */
+ve.ui.TargetWidget.prototype.createTarget = function () {
+	return new ve.init.Target( {
+		register: false,
+		toolbarGroups: this.toolbarGroups,
+		inTargetWidget: true,
+		modes: this.modes,
+		defaultMode: this.defaultMode
+	} );
+};
+
+/**
  * Set the document to edit
+ *
+ * This replaces the entire surface in the target.
  *
  * @param {ve.dm.Document} doc Document
  */
 ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
+	var surface;
 	// Destroy the previous surface
-	if ( this.surface ) {
-		this.surface.destroy();
-	}
-	// Toolbars can be re-used
-	if ( !this.toolbar ) {
-		this.toolbar = new ve.ui.Toolbar();
-		this.$toolbarContainer.append( this.toolbar.$element );
-	}
-	this.surface = ve.init.target.createSurface( doc, {
-		mode: this.mode,
+	this.clear();
+	surface = this.target.addSurface( doc, {
 		inTargetWidget: true,
-		commandRegistry: this.commandRegistry,
-		sequenceRegistry: this.sequenceRegistry,
-		dataTransferHandlerFactory: this.dataTransferHandlerFactory,
 		includeCommands: this.includeCommands,
 		excludeCommands: this.excludeCommands,
 		importRules: this.importRules,
@@ -111,6 +113,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		readOnly: this.readOnly,
 		inDialog: this.inDialog
 	} );
+	this.target.setSurface( surface );
 
 	// Events
 	this.getSurface().getModel().connect( this, { history: 'onSurfaceModelHistory' } );
@@ -118,15 +121,6 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		focus: 'onFocusChange',
 		blur: 'onFocusChange'
 	} );
-
-	// DOM changes
-	this.$surfaceContainer.append( this.surface.$element );
-	this.toolbar.$bar.append( this.surface.getToolbarDialogs().$element );
-
-	// Setup toolbar with new surface
-	if ( this.tools ) {
-		this.toolbar.setup( this.tools, this.surface );
-	}
 
 	this.emit( 'setup' );
 };
@@ -177,7 +171,7 @@ ve.ui.TargetWidget.prototype.isReadOnly = function () {
  * @return {ve.ui.Surface|null} Surface
  */
 ve.ui.TargetWidget.prototype.getSurface = function () {
-	return this.surface;
+	return this.target.getSurface();
 };
 
 /**
@@ -186,7 +180,7 @@ ve.ui.TargetWidget.prototype.getSurface = function () {
  * @return {OO.ui.Toolbar} Toolbar
  */
 ve.ui.TargetWidget.prototype.getToolbar = function () {
-	return this.toolbar;
+	return this.target.getToolbar();
 };
 
 /**
@@ -195,33 +189,26 @@ ve.ui.TargetWidget.prototype.getToolbar = function () {
  * @return {ve.dm.ElementLinearData} Content data
  */
 ve.ui.TargetWidget.prototype.getContent = function () {
-	return this.surface.getModel().getDocument().getData();
+	return this.getSurface().getModel().getDocument().getData();
 };
 
 /**
  * Initialize surface and toolbar.
  *
  * Widget must be attached to DOM before initializing.
+ *
+ * @deprecated
  */
 ve.ui.TargetWidget.prototype.initialize = function () {
-	if ( this.surface ) {
-		this.toolbar.initialize();
-		this.surface.initialize();
-	}
+	OO.ui.warnDeprecation( 've.ui.TargetWidget#initialize is deprecated and no longer needed.' );
 };
 
 /**
  * Destroy surface and toolbar.
  */
 ve.ui.TargetWidget.prototype.clear = function () {
-	if ( this.surface ) {
-		this.surface.destroy();
-		this.surface = null;
-	}
-	if ( this.toolbar ) {
-		this.toolbar.destroy();
-		this.toolbar = null;
-	}
+	this.target.clearSurfaces();
+	// Clear toolbar?
 };
 
 /**
@@ -237,7 +224,14 @@ ve.ui.TargetWidget.prototype.onFocusChange = function () {
  * Focus the surface.
  */
 ve.ui.TargetWidget.prototype.focus = function () {
-	if ( this.surface ) {
-		this.surface.getView().focus();
+	var surface = this.getSurface();
+	if ( surface ) {
+		if ( !surface.getView().attachedRoot.isLive() ) {
+			surface.once( 'ready', function () {
+				surface.getView().focus();
+			} );
+		} else {
+			surface.getView().focus();
+		}
 	}
 };

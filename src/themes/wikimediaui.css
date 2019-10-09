@@ -25,11 +25,11 @@
 	background: #f8f9fa;
 }
 
-.ve-ui-targetWidget-toolbar > .oo-ui-toolbar {
+.ve-ui-targetWidget .ve-ui-targetToolbar {
 	margin: 1px;
 }
 
-.ve-ui-targetWidget:not( .ve-ui-targetWidget-focused ) > .ve-ui-targetWidget-toolbar > .oo-ui-toolbar > .oo-ui-toolbar-bar {
+.ve-ui-targetWidget:not( .ve-ui-targetWidget-focused ) .ve-ui-targetToolbar > .oo-ui-toolbar-bar {
 	/* Expand toolbar into focus inset when not focused. */
 	margin: 0 -1px;
 	padding: 0 1px;

@@ -15,8 +15,11 @@
  * @constructor
  * @param {Object} [config] Configuration options
  * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
+ * @cfg {Object} [toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
+ * @cfg {Object} [actionGroups] Toolbar groups, defaults to this.constructor.static.actionGroups
  * @cfg {Object} [modes] Available editing modes. Defaults to static.modes
  * @cfg {Object} [defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
+ * @cfg {Object} [register=true] Register the target at ve.init.target
  */
 ve.init.Target = function VeInitTarget( config ) {
 	var isIe = ve.init.platform.constructor.static.isInternetExplorer(),
@@ -31,7 +34,9 @@ ve.init.Target = function VeInitTarget( config ) {
 	OO.EventEmitter.call( this );
 
 	// Register
-	ve.init.target = this;
+	if ( config.register !== false ) {
+		ve.init.target = this;
+	}
 
 	// Properties
 	this.surfaces = [];
@@ -39,6 +44,8 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.toolbar = null;
 	this.actionsToolbar = null;
 	this.toolbarConfig = config.toolbarConfig || {};
+	this.toolbarGroups = config.toolbarGroups || this.constructor.static.toolbarGroups;
+	this.actionGroups = config.actionGroups || this.constructor.static.actionGroups;
 	this.$scrollContainer = this.getScrollContainer();
 	this.$scrollListener = this.$scrollContainer.is( 'html, body' ) ?
 		$( OO.ui.Element.static.getWindow( this.$scrollContainer[ 0 ] ) ) :
@@ -360,7 +367,9 @@ ve.init.Target.prototype.destroy = function () {
 	var target = this;
 	return this.teardown().then( function () {
 		target.$element.remove();
-		ve.init.target = null;
+		if ( ve.init.target === target ) {
+			ve.init.target = null;
+		}
 	} );
 };
 
@@ -621,8 +630,8 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	} );
 	actions.connect( this, { active: 'onToolbarActive' } );
 
-	toolbar.setup( this.constructor.static.toolbarGroups, surface );
-	actions.setup( this.constructor.static.actionGroups, surface );
+	toolbar.setup( this.toolbarGroups, surface );
+	actions.setup( this.actionGroups, surface );
 	this.attachToolbar();
 	toolbar.$actions.append( actions.$element );
 	rAF( this.onContainerScrollHandler );
