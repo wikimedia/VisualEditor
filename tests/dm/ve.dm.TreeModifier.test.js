@@ -387,3 +387,36 @@ QUnit.test( 'checkEqualData', function ( assert ) {
 	ve.dm.TreeModifier.static.checkEqualData( data, expectedData );
 	assert.ok( true, 'Normalized data compares equal' );
 } );
+
+QUnit.test( 'crossIgnoredNodes', function ( assert ) {
+	var data, doc, tx;
+
+	data = [
+		{ type: 'paragraph' },
+		'f',
+		'o',
+		'o',
+		{ type: 'comment', attributes: { text: 'de' } },
+		{ type: '/comment' },
+		{ type: '/paragraph' }
+	];
+	doc = ve.dm.example.createExampleDocumentFromData( data );
+	tx = new ve.dm.Transaction( [
+		{ type: 'retain', length: 3 },
+		{ type: 'replace', remove: [
+			'o',
+			{ type: 'comment', attributes: { text: 'de' } },
+			{ type: '/comment' }
+		], insert: [] },
+		{ type: 'retain', length: 1 }
+	] );
+	doc.commit( tx );
+	assert.deepEqual(
+		doc.data.data,
+		[].concat(
+			data.slice( 0, 3 ),
+			data.slice( 6 )
+		),
+		'Can remove an inline node after a text node'
+	);
+} );
