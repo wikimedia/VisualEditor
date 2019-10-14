@@ -167,6 +167,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Edet",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Hesabiyaye",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Sence",
+	"visualeditor-corrupted-document-error": "Dokuman xerpıyaya :$1",
+	"visualeditor-corrupted-document-title": "Dokumano xerpıyaye",
 	"visualeditor-missing-document-error": "Cıgeyrayoği de dokuman kemiyo. Vınibiyayışi melumatan rê zerreki kopya kerê u pıra nê.",
 	"visualeditor-missing-document-title": "Dokuman pawiyeno",
 	"visualeditor-rebase-client-author-name": "Name",
