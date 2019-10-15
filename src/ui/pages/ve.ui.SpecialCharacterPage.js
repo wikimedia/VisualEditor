@@ -40,6 +40,7 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 		characterNode = document.createElement( 'div' );
 		characterNode.className = 've-ui-specialCharacterPage-character';
 		if ( characters[ character ].titleMsg ) {
+			// eslint-disable-next-line mediawiki/msg-doc
 			characterNode.setAttribute( 'title', ve.msg( characters[ character ].titleMsg ) );
 		}
 		if ( characters[ character ].source ) {

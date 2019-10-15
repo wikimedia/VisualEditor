@@ -173,6 +173,7 @@ ve.ui.LinkAnnotationInspector.prototype.shouldInsertText = function () {
 ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
+			// eslint-disable-next-line mediawiki/msg-doc
 			var title = ve.msg(
 					this.isReadOnly() ?
 						'visualeditor-linkinspector-title' : (

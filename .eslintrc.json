@@ -17,10 +17,11 @@
 		"no-jquery/no-hide": "error",
 		"no-jquery/no-show": "error",
 		"no-jquery/no-toggle": "error",
+		"mediawiki/msg-doc": "error",
 		"max-statements-per-line": [ "error", { "max": 1 } ],
 		"max-len": "off"
 	},
-	"plugins": [ "html" ],
+	"plugins": [ "html", "mediawiki" ],
 	"settings": {
 		"html/indent": "+tab",
 		"html/report-bad-indent": "error"
