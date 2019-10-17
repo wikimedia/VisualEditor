@@ -173,6 +173,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Personalizado",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Padrão",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Escala",
+	"visualeditor-corrupted-document-error": "O documento está danificado: $1",
+	"visualeditor-corrupted-document-title": "Documento danificado",
 	"visualeditor-missing-document-error": "Documento em falta no servidor. Para evitar perda de dados, copie e cole o conteúdo.",
 	"visualeditor-missing-document-title": "Documento em falta",
 	"visualeditor-rebase-client-author-name": "Nome",
