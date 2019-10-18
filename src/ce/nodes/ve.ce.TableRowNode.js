@@ -81,7 +81,16 @@ ve.ce.TableRowNode.prototype.setupMissingCell = function () {
 			this.$missingCell.append( slugButton.$element );
 		}
 		this.$element.append( this.$missingCell );
-	} else if ( this.$missingCell ) {
+	} else {
+		this.removeSlugs();
+	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ce.TableRowNode.prototype.removeSlugs = function () {
+	if ( this.$missingCell ) {
 		this.$missingCell.detach();
 	}
 };
