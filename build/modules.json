@@ -242,7 +242,7 @@
 			"src/ve.sanitize.js"
 		],
 		"dependencies": [
-			"visualEditor.core.utils",
+			"visualEditor.core.ve",
 			"dompurify"
 		]
 	},
@@ -258,6 +258,7 @@
 			"rangefix",
 			"spark-md5",
 			"visualEditor.core.utils",
+			"visualEditor.core.utils.parsing",
 			"visualEditor.core.init"
 		]
 	},
@@ -267,19 +268,37 @@
 			"visualEditor.core.build"
 		]
 	},
+	"visualEditor.core.ve": {
+		"scripts": [
+			"src/ve.js"
+		]
+	},
 	"visualEditor.core.utils": {
 		"scripts": [
-			"src/ve.js",
 			"src/ve.utils.js",
 			"src/ve.TriggerListener.js",
 			{ "file": "src/ve.debug.js", "debug": true },
 			{ "file": "src/ve.freeze.js", "debug": true },
 			"src/ve.track.js"
+		],
+		"dependencies": [
+			"visualEditor.core.ve"
+		]
+	},
+	"visualEditor.core.utils.parsing": {
+		"scripts": [
+			"src/ve.utils.parsing.js"
+		],
+		"dependencies": [
+			"visualEditor.core.ve"
 		]
 	},
 	"visualEditor.core.utils.client": {
 		"scripts": [
 			"src/ve.utils.client.js"
+		],
+		"dependencies": [
+			"visualEditor.core.ve"
 		]
 	},
 	"visualEditor.core.init": {
