@@ -295,7 +295,7 @@ QUnit.test( 'bare content', function ( assert ) {
 	}, /Error: Cannot insert text into a document node/, 'bare content' );
 } );
 
-QUnit.test( 'ensureNotText', function ( assert ) {
+QUnit.test( 'applyTreeOperation: ensureNotText', function ( assert ) {
 	var data, expectData, doc, tx;
 
 	data = [
@@ -388,7 +388,7 @@ QUnit.test( 'checkEqualData', function ( assert ) {
 	assert.ok( true, 'Normalized data compares equal' );
 } );
 
-QUnit.test( 'crossIgnoredNodes', function ( assert ) {
+QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
 	var data, doc, tx;
 
 	data = [
