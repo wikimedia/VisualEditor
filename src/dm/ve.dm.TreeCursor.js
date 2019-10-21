@@ -56,7 +56,6 @@ ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
 		this.nodes.pop();
 		this.node = this.nodes[ this.nodes.length - 1 ];
 		this.offset = this.path.pop() + 1;
-		return;
 	}
 	this.crossIgnoredNodes();
 
