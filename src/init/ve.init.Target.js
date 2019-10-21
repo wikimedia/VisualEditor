@@ -272,7 +272,7 @@ ve.init.Target.prototype.setDefaultMode = function ( defaultMode ) {
 		}
 	}
 	if ( defaultMode !== this.defaultMode ) {
-		// The follow classes are used here:
+		// The following classes are used here:
 		// * ve-init-target-visual
 		// * ve-init-target-[modename]
 		if ( this.defaultMode ) {
