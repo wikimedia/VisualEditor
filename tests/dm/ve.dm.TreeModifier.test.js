@@ -420,3 +420,44 @@ QUnit.test( 'crossIgnoredNodes', function ( assert ) {
 		'Can remove an inline node after a text node'
 	);
 } );
+
+QUnit.test( 'TreeCursor#normalizeCursor', function ( assert ) {
+	var data, doc, tx;
+
+	data = [
+		{ type: 'heading', attributes: { level: 1 } },
+		'a',
+		'b',
+		{ type: 'comment', attributes: { text: 'foo' } },
+		{ type: '/comment' },
+		'd',
+		{ type: '/heading' },
+		{ type: 'paragraph' },
+		'e',
+		'f',
+		{ type: '/paragraph' }
+	];
+	doc = ve.dm.example.createExampleDocumentFromData( data );
+	tx = new ve.dm.Transaction( [
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [
+			'b',
+			{ type: 'comment', attributes: { text: 'foo' } },
+			{ type: '/comment' },
+			'd'
+		], insert: [] },
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [ 'e' ], insert: [] },
+		{ type: 'retain', length: 1 }
+	] );
+	doc.commit( tx );
+	assert.deepEqual(
+		doc.data.data,
+		[].concat(
+			data.slice( 0, 2 ),
+			data.slice( 6, 8 ),
+			data.slice( 9 )
+		),
+		'Ignore removed nodes properly when normalizing from a text node'
+	);
+} );
