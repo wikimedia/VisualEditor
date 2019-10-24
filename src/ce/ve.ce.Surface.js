@@ -557,6 +557,11 @@ ve.ce.Surface.prototype.focus = function () {
 		surface = this,
 		selection = this.getSelection();
 
+	if ( !this.attachedRoot.isLive() ) {
+		OO.ui.warnDeprecation( 'Tried to focus an un-initialized surface view. Wait for the ve.ui.Surface `ready` event to fire.' );
+		return;
+	}
+
 	if ( selection.getModel().isNull() ) {
 		this.getModel().selectFirstContentOffset();
 		selection = this.getSelection();

@@ -86,6 +86,14 @@ OO.inheritClass( ve.init.Target, OO.ui.Element );
 
 OO.mixinClass( ve.init.Target, OO.EventEmitter );
 
+/* Events */
+
+/**
+ * @event surfaceReady
+ *
+ * Must be fired after the surface is initialized
+ */
+
 /* Static Properties */
 
 /**
@@ -521,6 +529,7 @@ ve.init.Target.prototype.addSurface = function ( dmDocOrSurface, config ) {
 	surface.getView().connect( this, {
 		focus: this.onSurfaceViewFocus.bind( this, surface )
 	} );
+	// Sub-classes should initialize the surface when possible, then fire 'surfaceReady'
 	return surface;
 };
 
