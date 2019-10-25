@@ -123,7 +123,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 				}
 
 				if ( !win.constructor.static.activeSurface ) {
-					surface.getView().deactivate();
+					surface.getView().deactivate( false );
 				}
 
 				instance.opened.then( function () {

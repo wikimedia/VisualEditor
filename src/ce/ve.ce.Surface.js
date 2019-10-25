@@ -3082,6 +3082,9 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 		if ( this.isDeactivated() && !this.isShownAsDeactivated() && !blockSlug && !focusedNode ) {
 			// If deactivated without showing (e.g. by preparePasteTargetForCopy),
 			// reactivate when changing selection (T221291)
+			// TODO: It is really messy that the surface can get reactivated based on the state of
+			// a flag that should just be used for rendering (isShownAsDeactivated). This led to
+			// T236400 so should be fixed.
 			this.activate();
 		}
 
