@@ -135,6 +135,12 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
 /* Events */
 
 /**
+ * When a surface has been initialized
+ *
+ * @event ready
+ */
+
+/**
  * When a surface is destroyed.
  *
  * @event destroy
@@ -216,6 +222,7 @@ ve.ui.Surface.prototype.initialize = function () {
 
 	this.getView().initialize();
 	this.getModel().initialize();
+	this.emit( 'ready' );
 	return this;
 };
 

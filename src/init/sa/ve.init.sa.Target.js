@@ -61,6 +61,7 @@ ve.init.sa.Target.static.actionGroups = [
 
 /**
  * @inheritdoc
+ * @fires surfaceReady
  */
 ve.init.sa.Target.prototype.addSurface = function () {
 	// Parent method
@@ -71,6 +72,7 @@ ve.init.sa.Target.prototype.addSurface = function () {
 		this.setSurface( surface );
 	}
 	surface.initialize();
+	this.emit( 'surfaceReady' );
 	return surface;
 };
 
