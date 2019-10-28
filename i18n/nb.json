@@ -165,6 +165,8 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Tilpasset",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standard",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skala",
+	"visualeditor-corrupted-document-error": "Dokumentet har blitt korrupt: $1",
+	"visualeditor-corrupted-document-title": "Korrupt dokument",
 	"visualeditor-missing-document-error": "Dokument mangler på serveren. For å unngå tap av data, kopier og lim inn innholdet.",
 	"visualeditor-missing-document-title": "Manglende dokument",
 	"visualeditor-rebase-client-author-name": "Navn",
