@@ -596,15 +596,11 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceButtonClick = function () {
 
 	this.updateFragments();
 
-	if ( !this.results ) {
-		this.focusedIndex = 0;
-		return;
-	}
 	while ( this.fragments[ this.focusedIndex ] && this.fragments[ this.focusedIndex ].getSelection().getRange().end <= end ) {
 		this.focusedIndex++;
 	}
-	// We may have iterated off the end
-	this.focusedIndex = this.focusedIndex % this.results;
+	// We may have iterated off the end, or run out of results
+	this.focusedIndex = this.results ? this.focusedIndex % this.results : 0;
 
 	this.clearRenderedResultsCache();
 	this.renderFragments();
