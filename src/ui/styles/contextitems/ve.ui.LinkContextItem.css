@@ -82,15 +82,6 @@
 	padding-left: 0.3em;
 }
 
-.ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-buttonElement {
-	margin-top: -4px;
-}
-
 .ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-buttonElement-button {
-	padding: 0;
-	border: 0;
-}
-
-.ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-labelElement-label {
-	line-height: normal;
+	margin: -6px -6px -6px 0;
 }
