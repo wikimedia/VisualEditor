@@ -60,6 +60,11 @@
 	white-space: nowrap;
 }
 
+.ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .oo-ui-labelElement-label {
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-preview {
 	flex: 1;
 	min-width: 0;
@@ -71,17 +76,13 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	display: block;
-}
-
-.ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-label .oo-ui-iconWidget {
-	margin-top: -2px;
+	width: 100%;
 }
 
 .ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-label .oo-ui-labelElement-label {
 	padding-left: 0.3em;
 }
 
-.ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-buttonElement-button {
-	margin: -6px -6px -6px 0;
+.ve-ui-desktopContext .ve-ui-linkContextItem .ve-ui-linkContextItem-label .ve-ui-linkContextItem-label-action .oo-ui-buttonWidget {
+	margin: -7px -7px -7px 0;
 }
