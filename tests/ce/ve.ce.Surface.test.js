@@ -137,9 +137,15 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 	} );
 };
 
-ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, internalSourceRangeOrSelection, noClipboardData, fromVe, useClipboardData, pasteTargetHtml, rangeOrSelection, pasteSpecial, expectedOps, expectedRangeOrSelection, expectedHtml, expectedDefaultPrevented, store, msg ) {
+ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
+
 	var i, j, txs, ops, txops, htmlDoc, expectedSelection, testEvent, isClipboardDataFormatsSupported,
 		afterPastePromise = ve.createDeferred().resolve().promise(),
+		htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table><p><b>Quux</b></p>',
+		pasteData = {
+			'text/html': item.pasteHtml,
+			'text/plain': item.pasteText
+		},
 		clipboardData = new ve.test.utils.DataTransfer( ve.copy( pasteData ) ),
 		view = typeof htmlOrView === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrView ) :
@@ -153,36 +159,36 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 	}
 
 	// Paste sequence
-	if ( internalSourceRangeOrSelection ) {
-		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), internalSourceRangeOrSelection ) );
+	if ( item.internalSourceRangeOrSelection ) {
+		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( doc, item.internalSourceRangeOrSelection ) );
 		testEvent = ve.test.utils.createTestEvent( { type: 'copy', clipboardData: clipboardData } );
-		if ( noClipboardData ) {
+		if ( item.noClipboardData ) {
 			isClipboardDataFormatsSupported = ve.isClipboardDataFormatsSupported;
 			ve.isClipboardDataFormatsSupported = function () {
 				return false;
 			};
 		}
 		view.onCopy( testEvent );
-		if ( noClipboardData ) {
+		if ( item.noClipboardData ) {
 			ve.isClipboardDataFormatsSupported = isClipboardDataFormatsSupported;
 		}
 		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	} else {
-		if ( useClipboardData ) {
+		if ( item.useClipboardData ) {
 			clipboardData.setData( 'text/xcustom', 'useClipboardData-0' );
-		} else if ( fromVe ) {
+		} else if ( item.fromVe ) {
 			clipboardData.setData( 'text/xcustom', '0.123-0' );
 		}
 		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	}
-	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection ) );
-	view.pasteSpecial = pasteSpecial;
+	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( doc, item.rangeOrSelection ) );
+	view.pasteSpecial = item.pasteSpecial;
 
 	// Replicate the sequencing of ce.Surface.onPaste, without any setTimeouts:
 	view.beforePaste( testEvent );
 	if ( !testEvent.isDefaultPrevented() ) {
-		if ( pasteTargetHtml ) {
-			view.$pasteTarget.html( pasteTargetHtml );
+		if ( item.pasteTargetHtml ) {
+			view.$pasteTarget.html( item.pasteTargetHtml );
 		} else if ( clipboardData.getData( 'text/html' ) ) {
 			document.execCommand( 'insertHTML', false, clipboardData.getData( 'text/html' ) );
 		} else if ( clipboardData.getData( 'text/plain' ) ) {
@@ -195,7 +201,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 	// TODO: Ideally these tests would run in series use 'await' to
 	// avoid selection issues with running parallel surface tests.
 	afterPastePromise.done( function () {
-		if ( expectedOps ) {
+		if ( item.expectedOps ) {
 			ops = [];
 			if ( model.getHistory().length ) {
 				txs = model.getHistory()[ 0 ].transactions;
@@ -214,22 +220,22 @@ ve.test.utils.runSurfacePasteTest = function ( assert, htmlOrView, pasteData, in
 					ops.push( txops );
 				}
 			}
-			assert.equalLinearData( ops, expectedOps, msg + ': data' );
-			if ( store ) {
-				for ( i in store ) {
-					assert.deepEqual( doc.getStore().value( i ).map( summary ), store[ i ].map( summary ), ': store value ' + i );
+			assert.equalLinearData( ops, item.expectedOps, item.msg + ': data' );
+			if ( item.store ) {
+				for ( i in item.store ) {
+					assert.deepEqual( doc.getStore().value( i ).map( summary ), item.store[ i ].map( summary ), ': store value ' + i );
 				}
 			}
 		}
-		if ( expectedRangeOrSelection ) {
-			expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), expectedRangeOrSelection );
-			assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
+		if ( item.expectedRangeOrSelection ) {
+			expectedSelection = ve.test.utils.selectionFromRangeOrSelection( doc, item.expectedRangeOrSelection );
+			assert.equalHash( model.getSelection(), expectedSelection, item.msg + ': selection' );
 		}
-		if ( expectedHtml ) {
+		if ( item.expectedHtml ) {
 			htmlDoc = ve.dm.converter.getDomFromModel( doc );
-			assert.strictEqual( htmlDoc.body.innerHTML, expectedHtml, msg + ': HTML' );
+			assert.strictEqual( htmlDoc.body.innerHTML, item.expectedHtml, item.msg + ': HTML' );
 		}
-		assert.strictEqual( testEvent.isDefaultPrevented(), !!expectedDefaultPrevented, msg + ': default action ' + ( expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
+		assert.strictEqual( testEvent.isDefaultPrevented(), !!item.expectedDefaultPrevented, item.msg + ': default action ' + ( item.expectedDefaultPrevented ? '' : 'not ' ) + 'prevented' );
 		view.destroy();
 		done();
 	} );
@@ -759,9 +765,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 } );
 
 QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
-	var i,
-		exampleDoc = '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table><p><b>Quux</b></p>',
-		docLen = 30,
+	var docLen = 30,
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
 		cases = [
@@ -2424,19 +2428,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		ve.test.utils.runSurfacePasteTest(
-			assert, cases[ i ].documentHtml || ve.test.utils.createSurfaceViewFromHtml( exampleDoc ),
-			{
-				'text/html': cases[ i ].pasteHtml,
-				'text/plain': cases[ i ].pasteText
-			},
-			cases[ i ].internalSourceRangeOrSelection, cases[ i ].noClipboardData, cases[ i ].fromVe, cases[ i ].useClipboardData,
-			cases[ i ].pasteTargetHtml, cases[ i ].rangeOrSelection, cases[ i ].pasteSpecial,
-			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection, cases[ i ].expectedHtml,
-			cases[ i ].expectedDefaultPrevented, cases[ i ].store, cases[ i ].msg
-		);
-	}
+	cases.forEach( ve.test.utils.runSurfacePasteTest.bind( this, assert ) );
 } );
 
 QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
