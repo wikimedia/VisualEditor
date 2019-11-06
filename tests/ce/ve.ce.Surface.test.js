@@ -181,6 +181,9 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		}
 		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	}
+	if ( item.middleClickRangeOrSelection ) {
+		view.middleClickSelection = ve.test.utils.selectionFromRangeOrSelection( doc, item.middleClickRangeOrSelection );
+	}
 	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( doc, item.rangeOrSelection ) );
 	view.pasteSpecial = item.pasteSpecial;
 
@@ -2425,6 +2428,25 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				],
 				expectedDefaultPrevented: false,
 				msg: 'Plain text paste doesn\'t become HTML'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteText: 'Ignored',
+				middleClickRangeOrSelection: new ve.Range( 3, 6 ),
+				expectedRangeOrSelection: new ve.Range( 4 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 1 },
+						{
+							type: 'replace',
+							insert: [ 'F', 'o', 'o' ],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				expectedDefaultPrevented: false,
+				msg: 'Middle click to paste'
 			}
 		];
 

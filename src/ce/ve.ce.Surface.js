@@ -52,6 +52,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.clipboard = null;
 	this.clipboardId = Math.random().toString();
 	this.clipboardIndex = 0;
+	this.middleClickSelection = null;
 	this.renderLocks = 0;
 	this.dragging = false;
 	this.relocatingSelection = null;
@@ -905,6 +906,15 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 		surface = this;
 
 	if ( e.which !== OO.ui.MouseButtons.LEFT ) {
+		if ( e.which === OO.ui.MouseButtons.MIDDLE ) {
+			this.middleClickSelection = this.getModel().getSelection();
+			this.$document.one( 'mouseup', function () {
+				// Stay true until other events have run, e.g. paste
+				setTimeout( function () {
+					surface.middleClickSelection = null;
+				} );
+			} );
+		}
 		return;
 	}
 
@@ -1916,14 +1926,16 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
  * Handle copy events.
  *
  * @param {jQuery.Event} e Copy event
+ * @param {ve.dm.Selection} selection Optional selection to simulate a copy on
  */
-ve.ce.Surface.prototype.onCopy = function ( e ) {
+ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	var originalSelection, clipboardKey, scrollTop, unsafeSelector, slice,
 		isClipboard = e.type === 'copy' || e.type === 'cut',
-		selection = this.getModel().getSelection(),
 		view = this,
 		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
 		clipboardData = isClipboard ? e.originalEvent.clipboardData : e.originalEvent.dataTransfer;
+
+	selection = selection || this.getModel().getSelection();
 
 	this.$pasteTarget.empty();
 
@@ -2116,7 +2128,26 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	}
 
 	this.beforePasteData = {};
-	if ( clipboardData ) {
+	if ( this.middleClickSelection ) {
+		// Paste was triggered by middle click:
+		// * Simulate a fake copy if there was a document selection during the middle click
+		// * If not, re-use the contents of the last-copied item
+		//
+		// This simulates the behaviour of the copy phase of middle click paste, which doesn't
+		// fire an event, however it will not work for data that was loaded into the clipboard
+		// externally.
+
+		if ( !this.middleClickSelection.isCollapsed() ) {
+			this.clipboardIndex++;
+			this.clipboard = {
+				slice: this.model.documentModel.shallowCloneFromSelection( this.middleClickSelection ),
+				hash: null
+			};
+		}
+		if ( this.clipboard ) {
+			this.beforePasteData.custom = this.clipboardId + '-' + this.clipboardIndex;
+		}
+	} else if ( clipboardData ) {
 		if ( this.handleDataTransfer( clipboardData, true ) ) {
 			e.preventDefault();
 			return;
