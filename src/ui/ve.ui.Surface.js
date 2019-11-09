@@ -14,6 +14,7 @@
  * @constructor
  * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.Document|ve.dm.Surface} dataOrDocOrSurface Document data, document model, or surface model to edit
  * @param {Object} [config] Configuration options
+ * @cfg {ve.dm.BranchNode} [attachedRoot] Node to surface, if ve.dm.Document passed in
  * @cfg {string} [mode] Editing mode
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
  * @cfg {jQuery} [$overlayContainer] Clipping container for local overlays, defaults to surface view
@@ -72,7 +73,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 			// HTMLDocument
 			documentModel = ve.dm.converter.getModelFromDom( dataOrDocOrSurface );
 		}
-		this.model = this.createModel( documentModel );
+		this.model = this.createModel( documentModel, config.attachedRoot );
 	}
 	this.view = this.createView( this.model );
 	this.dialogs = this.createDialogWindowManager();
@@ -281,21 +282,11 @@ ve.ui.Surface.prototype.createDialogWindowManager = function () {
  * Create a surface model
  *
  * @param {ve.dm.Document} doc Document model
+ * @param {ve.dm.BranchNode} [attachedRoot] Node to surface
  * @return {ve.dm.Surface} Surface model
  */
-ve.ui.Surface.prototype.createModel = function ( doc ) {
-	var sections, node,
-		root = doc.getDocumentNode();
-	sections = doc.getNodesByType( 'section' );
-	if ( sections.length && sections.length === 1 ) {
-		node = sections[ 0 ];
-	} else {
-		node = root;
-	}
-	if ( !node.isSurfaceable() ) {
-		throw new Error( 'Not a surfaceable node' );
-	}
-	return new ve.dm.Surface( doc, node, { sourceMode: this.getMode() === 'source' } );
+ve.ui.Surface.prototype.createModel = function ( doc, attachedRoot ) {
+	return new ve.dm.Surface( doc, attachedRoot, { sourceMode: this.getMode() === 'source' } );
 };
 
 /**
