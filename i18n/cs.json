@@ -18,7 +18,8 @@
 			"Martin Urbanec",
 			"Ilimanaq29",
 			"Patriccck",
-			"Frettie"
+			"Frettie",
+			"Janbery"
 		]
 	},
 	"visualeditor": "Vizuální editor",
@@ -66,6 +67,7 @@
 	"visualeditor-clipboard-paste-special": "Vložit jako prostý text",
 	"visualeditor-command-dialog-cancel": "Zavřít/zrušit změnu",
 	"visualeditor-command-dialog-confirm": "Potvrdit změnu",
+	"visualeditor-command-dialog-focus-context": "Přesunout na vyskakovací okno",
 	"visualeditor-commentinspector-edit": "Editovat komentář",
 	"visualeditor-commentinspector-title": "Komentář",
 	"visualeditor-commentinspector-tooltip": "Komentář",
