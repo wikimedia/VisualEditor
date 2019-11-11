@@ -8,15 +8,65 @@ QUnit.module( 've.ui.FragmentInspector' );
 
 /* Tests */
 
+ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
+	var promise = Promise.resolve();
+
+	surface.getView().showSelectionState = function () {};
+
+	cases.forEach( function ( caseItem ) {
+		promise = promise.then( function () {
+			return surface.context.inspectors.getWindow( caseItem.name ).then( function ( inspector ) {
+				var setupData,
+					surfaceModel = surface.getModel(),
+					linearData = ve.copy( surfaceModel.getDocument().getFullData() );
+
+				surfaceModel.setLinearSelection( caseItem.range );
+				setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
+				return inspector.setup( setupData ).then( function () {
+					return inspector.ready( setupData ).then( function () {
+						if ( caseItem.input ) {
+							caseItem.input.call( inspector );
+						}
+						// TODO: Skips ActionProcess
+						return inspector.teardown( caseItem.actionData || { action: 'done' } ).then( function () {
+
+							assert.equalRange( surfaceModel.getSelection().getRange(), caseItem.expectedRange, caseItem.msg + ': range' );
+							if ( caseItem.expectedData ) {
+								caseItem.expectedData( linearData );
+								assert.equalLinearData(
+									surfaceModel.getDocument().getFullData(),
+									linearData,
+									caseItem.msg + ': data'
+								);
+							}
+							if ( caseItem.expectedInsertionAnnotations ) {
+								assert.deepEqual(
+									surfaceModel.getInsertionAnnotations().getHashes(),
+									caseItem.expectedInsertionAnnotations,
+									caseItem.msg + ': insertion annotations'
+								);
+							}
+							while ( surfaceModel.canUndo() ) {
+								surfaceModel.undo();
+							}
+							// Insertion annotations are not cleared by undo
+							surfaceModel.setInsertionAnnotations( null );
+						} );
+					} );
+				} );
+			} );
+		} );
+	} );
+	return promise;
+};
+
 QUnit.test( 'Different selections and inputs', function ( assert ) {
 	var done = assert.async(),
-		promise = Promise.resolve(),
 		surface = ve.test.utils.createSurfaceFromHtml(
 			'<p>Foo <a href="bar">bar</a> baz  x</p>' +
 			'<p><!-- comment --> comment</p>' +
 			'<p>Fo<a href="bar">o bar</a></p>'
 		),
-		surfaceModel = surface.getModel(),
 		fooHash = 'hd5a13e54366d44db',
 		barHash = 'h071cb84c069d07a4',
 		quuxHash = 'hb085ebec56a162a4',
@@ -239,52 +289,7 @@ QUnit.test( 'Different selections and inputs', function ( assert ) {
 			}
 		];
 
-	surface.getView().showSelectionState = function () {};
-
-	cases.forEach( function ( caseItem ) {
-		promise = promise.then( function () {
-			return surface.context.inspectors.getWindow( caseItem.name ).then( function ( inspector ) {
-				var setupData,
-					linearData = ve.copy( surfaceModel.getDocument().getFullData() );
-
-				surfaceModel.setLinearSelection( caseItem.range );
-				setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
-				return inspector.setup( setupData ).then( function () {
-					return inspector.ready( setupData ).then( function () {
-						if ( caseItem.input ) {
-							caseItem.input.call( inspector );
-						}
-						// TODO: Skips ActionProcess
-						return inspector.teardown( caseItem.actionData || { action: 'done' } ).then( function () {
-
-							assert.equalRange( surfaceModel.getSelection().getRange(), caseItem.expectedRange, caseItem.msg + ': range' );
-							if ( caseItem.expectedData ) {
-								caseItem.expectedData( linearData );
-								assert.equalLinearData(
-									surfaceModel.getDocument().getFullData(),
-									linearData,
-									caseItem.msg + ': data'
-								);
-							}
-							if ( caseItem.expectedInsertionAnnotations ) {
-								assert.deepEqual(
-									surfaceModel.getInsertionAnnotations().getHashes(),
-									caseItem.expectedInsertionAnnotations,
-									caseItem.msg + ': insertion annotations'
-								);
-							}
-							while ( surfaceModel.canUndo() ) {
-								surfaceModel.undo();
-							}
-							// Insertion annotations are not cleared by undo
-							surfaceModel.setInsertionAnnotations( null );
-						} );
-					} );
-				} );
-			} );
-		} );
-	} );
-	promise.finally( function () {
+	ve.test.utils.runFragmentInspectorTests( surface, assert, cases ).finally( function () {
 		done();
 	} );
 } );
