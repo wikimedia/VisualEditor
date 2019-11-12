@@ -215,9 +215,11 @@ ve.ui.TargetWidget.prototype.clear = function () {
  * Handle focus and blur events
  */
 ve.ui.TargetWidget.prototype.onFocusChange = function () {
+	// This may be null if the target is in the process of being destroyed
+	var surface = this.getSurface();
 	// Replacement for the :focus pseudo selector one would be able to
 	// use on a regular input widget
-	this.$element.toggleClass( 've-ui-targetWidget-focused', this.getSurface().getView().isFocused() );
+	this.$element.toggleClass( 've-ui-targetWidget-focused', surface && surface.getView().isFocused() );
 };
 
 /**
