@@ -332,11 +332,13 @@
 	 * or dm.Surface, or a mock surface using create(View|Model)OnlySurface*.
 	 *
 	 * @param {string} html Document HTML
+	 * @param {Object} config Surface config
 	 * @return {ve.ui.Surface} UI surface
 	 */
-	ve.test.utils.createSurfaceFromHtml = function ( html ) {
+	ve.test.utils.createSurfaceFromHtml = function ( html, config ) {
 		return this.createSurfaceFromDocument(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			config
 		);
 	};
 
@@ -346,21 +348,24 @@
 	 * See warning in ve.test.utils.createSurfaceFromHtml.
 	 *
 	 * @param {ve.dm.Document} doc Document
+	 * @param {Object} [config] Surface config
 	 * @return {ve.ui.Surface} UI surface
 	 */
-	ve.test.utils.createSurfaceFromDocument = function ( doc ) {
-		return ve.init.target.addSurface( doc );
+	ve.test.utils.createSurfaceFromDocument = function ( doc, config ) {
+		return ve.init.target.addSurface( doc, config );
 	};
 
 	/**
 	 * Create a CE surface from some HTML
 	 *
 	 * @param {string} html Document HTML
+	 * @param {Object} config Surface config
 	 * @return {ve.ce.Surface} CE surface
 	 */
-	ve.test.utils.createSurfaceViewFromHtml = function ( html ) {
+	ve.test.utils.createSurfaceViewFromHtml = function ( html, config ) {
 		return this.createSurfaceViewFromDocument(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			config
 		);
 	};
 
@@ -370,59 +375,72 @@
 	 * TODO: Rename to createSurfaceViewFromModel
 	 *
 	 * @param {ve.dm.Document|ve.dm.Surface} docOrSurface Document or surface model
+	 * @param {Object} config Surface config
 	 * @return {ve.ce.Surface} CE surface
 	 */
-	ve.test.utils.createSurfaceViewFromDocument = function ( docOrSurface ) {
-		var model, view,
-			mockSurface = {
-				$blockers: $( '<div>' ),
-				$selections: $( '<div>' ),
-				$element: $( '<div>' ),
-				isMobile: function () {
-					return false;
-				},
-				isMultiline: function () {
-					return true;
-				},
-				isReadOnly: function () {
-					return false;
-				},
-				getBoundingClientRect: function () {
-					return this.$element[ 0 ].getClientRects()[ 0 ] || null;
-				},
-				getImportRules: function () {
-					return ve.init.target.constructor.static.importRules;
-				},
-				getModel: function () {
-					return model;
-				},
-				getView: function () {
-					return view;
-				},
-				getCommands: function () {
-					return ve.ui.commandRegistry.getNames();
-				},
-				getContext: function () {
-					return {
-						toggle: function () {},
-						updateDimensions: function () {}
-					};
-				},
-				isDisabled: function () {
-					return false;
-				},
-				emit: function () {},
-				connect: function () {},
-				disconnect: function () {},
-				execute: ve.ui.Surface.prototype.execute,
-				commandRegistry: ve.ui.commandRegistry,
-				sequenceRegistry: ve.ui.sequenceRegistry,
-				triggerListener: new ve.TriggerListener( ve.ui.commandRegistry.getNames(), ve.ui.commandRegistry ),
-				dataTransferHandlerFactory: ve.ui.dataTransferHandlerFactory
-			};
+	ve.test.utils.createSurfaceViewFromDocument = function ( docOrSurface, config ) {
+		var model, view, mockSurface;
 
-		model = docOrSurface instanceof ve.dm.Surface ? docOrSurface : new ve.dm.Surface( docOrSurface );
-		view = new ve.ce.Surface( model, mockSurface );
+		config = ve.init.target.getSurfaceConfig( config );
+
+		mockSurface = {
+			$blockers: $( '<div>' ),
+			$selections: $( '<div>' ),
+			$element: $( '<div>' ),
+			isMobile: function () {
+				return false;
+			},
+			isMultiline: function () {
+				return true;
+			},
+			isReadOnly: function () {
+				return false;
+			},
+			getBoundingClientRect: function () {
+				return this.$element[ 0 ].getClientRects()[ 0 ] || null;
+			},
+			getImportRules: function () {
+				return ve.init.target.constructor.static.importRules;
+			},
+			getMode: function () {
+				return config.mode || 'visual';
+			},
+			getModel: function () {
+				return model;
+			},
+			getView: function () {
+				return view;
+			},
+			getCommands: function () {
+				return ve.ui.commandRegistry.getNames();
+			},
+			getContext: function () {
+				return {
+					toggle: function () {},
+					updateDimensions: function () {}
+				};
+			},
+			isDisabled: function () {
+				return false;
+			},
+			emit: function () {},
+			connect: function () {},
+			disconnect: function () {},
+			execute: ve.ui.Surface.prototype.execute,
+			createView: ve.ui.Surface.prototype.createView,
+			createModel: ve.ui.Surface.prototype.createModel
+		};
+		// Copied from ui.Surface constructor
+		mockSurface.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;
+		mockSurface.sequenceRegistry = config.sequenceRegistry || ve.ui.sequenceRegistry;
+		mockSurface.dataTransferHandlerFactory = config.dataTransferHandlerFactory || ve.ui.dataTransferHandlerFactory;
+		mockSurface.commands = OO.simpleArrayDifference(
+			config.includeCommands || mockSurface.commandRegistry.getNames(), config.excludeCommands || []
+		);
+		mockSurface.triggerListener = new ve.TriggerListener( mockSurface.commands, mockSurface.commandRegistry );
+
+		model = docOrSurface instanceof ve.dm.Surface ? docOrSurface : mockSurface.createModel( docOrSurface );
+		view = mockSurface.createView( model );
 
 		view.surface = mockSurface;
 		mockSurface.$element.append( view.$element );
@@ -439,11 +457,13 @@
 	 * Create a view-only UI surface from some HTML
 	 *
 	 * @param {string} html Document HTML
+	 * @param {Object} config Surface config
 	 * @return {Object} Mock UI surface which only returns a real view (and its model)
 	 */
-	ve.test.utils.createViewOnlySurfaceFromHtml = function ( html ) {
+	ve.test.utils.createViewOnlySurfaceFromHtml = function ( html, config ) {
 		var surfaceView = ve.test.utils.createSurfaceViewFromDocument(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			config
 		);
 
 		return surfaceView.surface;
@@ -453,11 +473,14 @@
 	 * Create a model-only UI surface from some HTML
 	 *
 	 * @param {string} html Document HTML
+	 * @param {Object} config Surface config
 	 * @return {Object} Mock UI surface which only returns a real model
 	 */
-	ve.test.utils.createModelOnlySurfaceFromHtml = function ( html ) {
+	ve.test.utils.createModelOnlySurfaceFromHtml = function ( html, config ) {
 		var model = new ve.dm.Surface(
-			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) )
+			ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) ),
+			null,
+			config
 		);
 		return {
 			getModel: function () {
