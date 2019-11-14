@@ -223,14 +223,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	if ( this.getModel().getDocument().sourceMode ) {
 		wrapper.appendChild(
 			document.createTextNode(
-				this.getModel().getDocument().getDataFromNode( this.getModel() )
-					// Visible whitespace replacements
-					.map( function ( char ) {
-						return Object.prototype.hasOwnProperty.call( ve.visibleWhitespaceCharacters, char ) ?
-							ve.visibleWhitespaceCharacters[ char ] :
-							char;
-					} )
-					.join( '' )
+				this.getModel().getDocument().getDataFromNode( this.getModel() ).join( '' )
 			)
 		);
 		wrapper.unicornInfo = unicornInfo;

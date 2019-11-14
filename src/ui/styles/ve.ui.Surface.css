@@ -35,6 +35,7 @@
 	/* Support: Blink, Gecko, Webkit */
 	/* Specify a valid second value to fix size, see T176636 */
 	font-family: monospace, monospace;
+	tab-size: 4;
 }
 
 .ve-ui-surface-source .ve-ce-paragraphNode {
