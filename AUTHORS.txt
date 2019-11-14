@@ -3,6 +3,7 @@ Principal Authors (major contributors, alphabetically)
 Bartosz Dziewoński <matma.rex@gmail.com>
 Christian Williams <orbit@framezero.com>
 David Chan <david@troi.org>
+David Lynch <dlynch@wikimedia.org>
 Ed Sanders <esanders@wikimedia.org>
 Inez Korczyński <inez@wikia-inc.com>
 James D. Forrester <jforrester@wikimedia.org>
@@ -28,7 +29,6 @@ C. Scott Ananian <cscott@cscott.net>
 Carl Fürstenberg <azatoth@gmail.com>
 Chad Horohoe <chadh@wikimedia.org>
 Chris McMahon <cmcmahon@wikimedia.org>
-David Lynch <dlynch@wikimedia.org>
 Deskana <dgarry@wikimedia.org>
 Erick Guan <fantasticfears@gmail.com>
 Erik Bernhardson <ebernhardson@wikimedia.org>
@@ -43,6 +43,7 @@ Juliusz Gonera <jgonera@gmail.com>
 Kaartic Sivaraam <kaartic.sivaraam@gmail.com>
 Kunal Mehta <legoktm@gmail.com>
 Kyle Florence <kyle.florence@gmail.com>
+Marcella L. Florence <mflorence@wikimedia.org>
 Mark A. Hershberger <mah@everybody.org>
 Mark Holmquist <mtraceur@member.fsf.org>
 Matthew Flaschen <mflaschen@wikimedia.org>

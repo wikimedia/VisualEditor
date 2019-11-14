@@ -40,7 +40,7 @@ QUnit.test( 'special key down: table enter', function ( assert ) {
 					fromCol: 1,
 					fromRow: 0
 				},
-				keys: [ 'CTRL+ENTER' ],
+				keys: ve.getSystemPlatform() === 'mac' ? [ 'CMD+ENTER' ] : [ 'CTRL+ENTER' ],
 				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 171 ),
