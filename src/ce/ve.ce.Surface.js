@@ -2089,7 +2089,7 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 				afterPastePromise = surface.afterPaste( e );
 			}
 		} finally {
-			afterPastePromise.then( function () {
+			afterPastePromise.always( function () {
 				surface.surfaceObserver.clear();
 				surface.surfaceObserver.enable();
 

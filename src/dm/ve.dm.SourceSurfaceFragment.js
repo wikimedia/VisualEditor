@@ -152,6 +152,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 			},
 			function () {
 				ve.error( 'Failed to convert document', arguments );
+				return ve.createDeferred().reject().promise();
 			}
 		)
 	);
