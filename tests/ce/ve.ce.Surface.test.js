@@ -78,7 +78,8 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 			keyCode: keyCode,
 			which: keyCode,
 			shiftKey: keyParts.indexOf( 'SHIFT' ) !== -1,
-			ctrlKey: keyParts.indexOf( 'CTRL' ) !== -1
+			ctrlKey: keyParts.indexOf( 'CTRL' ) !== -1,
+			metaKey: keyParts.indexOf( 'CMD' ) !== -1
 		};
 		keyDownEvent = ve.test.utils.createTestEvent( { type: 'keydown' }, keyData );
 		view.eventSequencer.onEvent( 'keydown', keyDownEvent );
