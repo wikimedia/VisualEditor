@@ -41,7 +41,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "כתב תחתי",
 	"visualeditor-annotationbutton-superscript-tooltip": "כתב עילי",
 	"visualeditor-annotationbutton-underline-tooltip": "קו תחתי",
-	"visualeditor-changedesc-align": "היישור שוּנה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
+	"visualeditor-changedesc-align": "היישור שוּנה מ$1 ל$2",
 	"visualeditor-changedesc-changed": "$1 שוּנה מ{{GRAMMAR:תחילית|$2}} ל{{GRAMMAR:תחילית|$3}}",
 	"visualeditor-changedesc-comment": "ההערה שונתה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-direction": "עקיפת הכיוון שונתה מ־$1 ל־$2",
