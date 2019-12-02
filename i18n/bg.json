@@ -48,7 +48,7 @@
 	"visualeditor-changedesc-no-key": "$1 е променено на $2",
 	"visualeditor-changedesc-set": "$1 е установено на $2",
 	"visualeditor-changedesc-unknown": "$1 е променено",
-	"visualeditor-changedesc-unset": "Стойността $1 е премахната от $2",
+	"visualeditor-changedesc-unset": "Стойността $2 е премахната от $1",
 	"visualeditor-changedir": "Смяна на насоченост",
 	"visualeditor-changedir-tool-ltr": "Показване от ляво на дясно",
 	"visualeditor-changedir-tool-rtl": "Показване от дясно на ляво",
