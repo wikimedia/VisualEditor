@@ -2123,7 +2123,7 @@ ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
 	} else {
 		if ( beforePasteData.html ) {
 			// text/html was present, so we can check if a key was hidden in it
-			$clipboardHtml = $( $.parseHTML( beforePasteData.html ) ).filter( function () {
+			$clipboardHtml = $( ve.sanitizeHtml( beforePasteData.html ) ).filter( function () {
 				var val = this.getAttribute && this.getAttribute( 'data-ve-clipboard-key' );
 				if ( val ) {
 					clipboardKey = val;
@@ -2157,7 +2157,7 @@ ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
 	}
 
 	if ( !slice && !$clipboardHtml && beforePasteData.html ) {
-		$clipboardHtml = $( $.parseHTML( beforePasteData.html ) );
+		$clipboardHtml = $( ve.sanitizeHtml( beforePasteData.html ) );
 	}
 
 	return {
@@ -2303,7 +2303,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 			$clipboardHtml.find( importantElement ).addBack( importantElement ).length > this.$pasteTarget.find( importantElement ).length
 		) {
 			// CE destroyed an important element, so revert to using clipboard data
-			htmlDoc = ve.createDocumentFromHtml( beforePasteData.html );
+			htmlDoc = ve.sanitizeHtmlToDocument( beforePasteData.html );
 			$( htmlDoc )
 				// Remove the pasteProtect class. See #onCopy.
 				.find( 'span' ).removeClass( 've-pasteProtect' ).end()
@@ -2319,7 +2319,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 		// contain all sorts of horrible metadata (head tags etc.)
 		// TODO: IE will always take this path, and so may have bugs with span unwrapping
 		// in edge cases (e.g. pasting a single MWReference)
-		htmlDoc = ve.createDocumentFromHtml( this.$pasteTarget.html() );
+		htmlDoc = ve.sanitizeHtmlToDocument( this.$pasteTarget.html() );
 	}
 	// Some browsers don't provide pasted image data through the clipboardData API and
 	// instead create img tags with data URLs, so detect those here
