@@ -1363,25 +1363,14 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 1 },
 						{
 							type: 'replace',
-							insert: [
-								[ 'A', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
-								[ '2', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
-								[ '3', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
-								[ 'B', [ { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
-								[ 'C', [ { type: 'textStyle/underline', attributes: { nodeName: 'u' } } ] ],
-								[ 'D', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
-								[ 'E', [ { type: 'textStyle/superscript', attributes: { nodeName: 'sup' } } ] ],
-								[ 'F', [ { type: 'textStyle/subscript', attributes: { nodeName: 'sub' } } ] ],
-								[ 'G', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } }, { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
-								'H'
-							],
+							insert: [ 'A', '2', '3', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ],
 							remove: []
 						},
 						{ type: 'retain', length: 29 }
 					]
 				],
 				expectedRangeOrSelection: new ve.Range( 11 ),
-				msg: 'Span cleanups: style converted into markup'
+				msg: 'Span cleanups: style removed (not converted into markup)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 0 ),
