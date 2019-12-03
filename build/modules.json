@@ -316,6 +316,7 @@
 	"visualEditor.core.build": {
 		"dependencies": [
 			"visualEditor.base.build",
+			"visualEditor.sanitize",
 			"visualEditor.core.utils.client",
 			"visualEditor.core.root",
 			"visualEditor.core.model",
