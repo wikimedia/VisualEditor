@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.35.0-pre (44324afb98)
+ * OOUI v0.35.1-pre (fc856fdb0f)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-10-10T21:22:17Z
+ * Date: 2019-12-05T01:50:27Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -327,8 +327,6 @@
   top: auto;
   width: 1.5625em;
   height: 1.5625em;
-  min-width: auto;
-  min-height: auto;
   margin: 0.15625em;
   opacity: 0.8;
 }
@@ -745,7 +743,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-radioOptionWidget.oo-ui-optionWidget-selected {
   background-color: transparent;
 }
-.oo-ui-radioOptionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
+.oo-ui-radioOptionWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
   padding-right: 0.5em;
 }
 .oo-ui-radioOptionWidget .oo-ui-radioInputWidget {
@@ -771,12 +769,12 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-messageWidget .oo-ui-labelElement-label {
   display: block;
 }
-.oo-ui-messageWidget .oo-ui-iconElement-icon {
+.oo-ui-messageWidget > .oo-ui-iconElement-icon {
   display: block;
   float: right;
   margin: 0;
 }
-.oo-ui-messageWidget .oo-ui-labelElement-label {
+.oo-ui-messageWidget > .oo-ui-labelElement-label {
   margin-top: 0.15625em;
   margin-right: 2.5em;
   line-height: 1.4;
@@ -1621,7 +1619,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-checkboxMultioptionWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
   white-space: normal;
 }
-.oo-ui-checkboxMultioptionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
+.oo-ui-checkboxMultioptionWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
   padding-right: 0.5em;
 }
 .oo-ui-checkboxMultioptionWidget .oo-ui-checkboxInputWidget {
@@ -1793,14 +1791,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.35.0-pre (44324afb98)
+ * OOUI v0.35.1-pre (fc856fdb0f)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-10-10T21:22:17Z
+ * Date: 2019-12-05T01:50:27Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2717,14 +2715,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.35.0-pre (44324afb98)
+ * OOUI v0.35.1-pre (fc856fdb0f)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-10-10T21:22:17Z
+ * Date: 2019-12-05T01:50:27Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3262,14 +3260,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.35.0-pre (44324afb98)
+ * OOUI v0.35.1-pre (fc856fdb0f)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-10-10T21:22:17Z
+ * Date: 2019-12-05T01:50:27Z
  */
 
 .oo-ui-window {
@@ -3583,23 +3581,22 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-processDialog-errors {
   background-color: rgba(255, 255, 255, 0.9);
-  padding: 3em 3em 1.5em 3em;
-  text-align: center;
-}
-.oo-ui-processDialog-errors .oo-ui-buttonWidget {
-  margin: 2em 1em 2em 1em;
+  padding: 3em 3em 0 3em;
 }
 .oo-ui-processDialog-errors-title {
   font-size: 1.5em;
   color: #000;
   margin-bottom: 2em;
+  text-align: center;
 }
-.oo-ui-processDialog-error {
-  text-align: right;
-  margin: 1em;
-  padding: 1em;
-  border: 1px solid #d45353;
-  background-color: #ffdcdc;
+.oo-ui-processDialog-errors > .oo-ui-messageWidget {
+  margin: 1em 0 0;
+}
+.oo-ui-processDialog-errors-actions {
+  text-align: center;
+}
+.oo-ui-processDialog-errors-actions > .oo-ui-buttonWidget {
+  margin: 2em 1em;
 }
 .oo-ui-processDialog.oo-ui-isMobile .oo-ui-processDialog-location {
   text-align: right;
@@ -3682,14 +3679,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.35.0-pre (44324afb98)
+ * OOUI v0.35.1-pre (fc856fdb0f)
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2019 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2019-10-10T21:22:17Z
+ * Date: 2019-12-05T01:50:27Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-rtl.png');

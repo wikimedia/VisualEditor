@@ -1,4 +1,9 @@
 # OOUI Release History
+## v0.35.1 / 2019-10-10
+### Code
+* Revert "Add support for setting the relationship attribute on ButtonWidget" (Volker E.)
+
+
 ## v0.35.0 / 2019-10-08
 ### Breaking changes
 * [BREAKING CHANGE] Remove deprecated infuse-by-id feature (Ed Sanders)
