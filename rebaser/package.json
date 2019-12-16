@@ -3,12 +3,12 @@
 	"description": "Rebase server for VisualEditor",
 	"version": "0.0.1",
 	"dependencies": {
-		"ejs": "2.6",
-		"express": "4.16",
-		"mongodb": "3.1.10",
-		"oojs": "2.2",
-		"service-runner": "2.6.7",
-		"socket.io": "2.2"
+		"ejs": "3.0",
+		"express": "4.17",
+		"mongodb": "3.4.0",
+		"oojs": "3.0",
+		"service-runner": "2.7.3",
+		"socket.io": "2.3"
 	},
 	"scripts": {
 		"start": "node src/server.js"

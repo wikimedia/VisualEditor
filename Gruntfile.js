@@ -340,6 +340,7 @@ module.exports = function ( grunt ) {
 			src: [
 				'**/*.{js,json,less,css,txt}',
 				'!package-lock.json',
+				'!rebaser/package-lock.json',
 				'!build/typos.json',
 				'!lib/**',
 				'!i18n/**',
