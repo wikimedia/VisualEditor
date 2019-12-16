@@ -39,7 +39,8 @@
 			"Trizek (WMF)",
 			"Alno",
 			"Epok",
-			"Pols12"
+			"Pols12",
+			"Thibaut120094"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
@@ -197,7 +198,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "Personnalisé",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Par défaut",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Échelle",
-	"visualeditor-corrupted-document-error": "Le document a été corrompu : $1",
+	"visualeditor-corrupted-document-error": "Le document a été corrompu : $1",
 	"visualeditor-corrupted-document-title": "Document corrompu",
 	"visualeditor-missing-document-error": "Document non trouvé sur le serveur. Pour éviter la perte des données, copiez et collez le contenu.",
 	"visualeditor-missing-document-title": "Document absent",
