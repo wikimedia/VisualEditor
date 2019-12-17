@@ -1032,7 +1032,7 @@ ve.ce.Surface.prototype.afterDocumentMouseDown = function ( e, selectionBefore )
 		// the page scrolls for the next 1000ms.
 		// The page will still flicker every time the user touches
 		// to place the cursor, but this is better than completely
-		// losing your scroll offset.
+		// losing your scroll offset. (T196839)
 		scrollTop = this.$window.scrollTop();
 		view.$window.on( 'scroll', blockScroll );
 		setTimeout( function () {
