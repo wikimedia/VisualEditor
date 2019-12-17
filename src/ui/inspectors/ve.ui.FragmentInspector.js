@@ -26,6 +26,7 @@ ve.ui.FragmentInspector = function VeUiFragmentInspector( config ) {
 	ve.ui.FragmentWindow.call( this, config );
 
 	// Properties
+	this.initialFragment = null;
 	this.previousSelection = null;
 	this.padded = config.padded !== false;
 };

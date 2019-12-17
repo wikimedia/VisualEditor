@@ -59,6 +59,8 @@ ve.ui.FragmentWindow.prototype.getSetupProcess = function ( data, process ) {
 			throw new Error( 'Cannot open dialog: opening data must contain a fragment' );
 		}
 		this.fragment = data.fragment;
+		this.initialFragment = data.fragment;
+		// Prefer this.initialFragment.getSelection() to this.previousSelection
 		this.previousSelection = this.fragment.getSelection();
 	}, this ).next( function () {
 		// Don't allow windows to be opened for insertion in readonly mode
@@ -76,6 +78,7 @@ ve.ui.FragmentWindow.prototype.getTeardownProcess = function ( data, process ) {
 	ve.track( 'activity.' + this.constructor.static.name, { action: 'dialog-' + ( data && data.action || 'abort' ) } );
 	return process.next( function () {
 		this.fragment = null;
+		this.initialFragment = null;
 		this.previousSelection = null;
 	}, this );
 };

@@ -158,7 +158,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			surfaceModel.pushStaging();
 
 			// Only supports linear selections
-			if ( !( this.previousSelection instanceof ve.dm.LinearSelection ) ) {
+			if ( !( this.initialFragment && this.initialFragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
 				return ve.createDeferred().reject().promise();
 			}
 
@@ -272,8 +272,8 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			} else {
 				if ( data.action !== 'done' ) {
 					surfaceModel.popStaging();
-					if ( this.previousSelection ) {
-						surfaceModel.setSelection( this.previousSelection );
+					if ( this.initialFragment ) {
+						this.initialFragment.select();
 					}
 					return;
 				}
@@ -296,9 +296,9 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 							fragment.insertContent( insertion, true );
 							if ( !isEditing ) {
 								// Move cursor to the end of the inserted content, even if back button is used
-								this.previousSelection = fragment.getSelection().collapseToEnd();
+								this.initialFragment = fragment.collapseToEnd();
 							} else {
-								this.previousSelection = fragment.getSelection();
+								this.initialFragment = fragment;
 							}
 						}
 					}
@@ -318,11 +318,11 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				}
 			}
 
-			// HACK: ui.WindowAction unsets previousSelection in source mode,
+			// HACK: ui.WindowAction unsets initialFragment in source mode,
 			// so we can't rely on it existing.
-			if ( this.previousSelection && ( !data.action || insertText ) ) {
+			if ( this.initialFragment && ( !data.action || insertText ) ) {
 				// Restore selection to what it was before we expanded it
-				selection = this.previousSelection;
+				selection = this.initialFragment.getSelection();
 			}
 			if ( data.action ) {
 				// Place the selection after the inserted text. If the inserted content is actually an

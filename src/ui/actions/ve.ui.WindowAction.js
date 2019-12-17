@@ -128,7 +128,8 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 
 				instance.opened.then( function () {
 					if ( sourceMode ) {
-						// HACK: previousSelection is assumed to be in the visible surface
+						// HACK: initialFragment/previousSelection is assumed to be in the visible surface
+						win.initialFragment = null;
 						win.previousSelection = null;
 					}
 				} );
