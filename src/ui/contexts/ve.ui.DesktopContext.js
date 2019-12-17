@@ -42,9 +42,6 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 		relocationEnd: 'onUnsuppress',
 		position: 'onPosition'
 	} );
-	this.surface.getModel().connect( this, {
-		select: 'onModelSelect'
-	} );
 	this.inspectors.connect( this, {
 		resize: 'onInspectorResize'
 	} );
@@ -107,18 +104,6 @@ ve.ui.DesktopContext.prototype.onUnsuppress = function () {
 		// Change state: closed -> menu
 		this.toggleMenu( true );
 		this.toggle( true );
-	}
-};
-
-/**
- * Handle model select event.
- */
-ve.ui.DesktopContext.prototype.onModelSelect = function () {
-	if ( this.isVisible() ) {
-		if ( this.inspector && this.inspector.isOpened() ) {
-			this.inspector.close();
-		}
-		this.updateDimensionsDebounced();
 	}
 };
 
