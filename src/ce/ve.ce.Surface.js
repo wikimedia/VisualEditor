@@ -4800,10 +4800,16 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		}
 	}
 
-	if ( selection instanceof ve.dm.LinearSelection && this.getFocusedNode( selection.getRange() ) ) {
-		rect = ve.ce.Selection.static.newFromModel( selection, this ).getSelectionBoundingRect();
-	} else {
-		rect = ve.ce.Selection.static.newFromModel( selection.collapseToTo(), this ).getSelectionRects()[ 0 ];
+	try {
+		if ( selection instanceof ve.dm.LinearSelection && this.getFocusedNode( selection.getRange() ) ) {
+			rect = ve.ce.Selection.static.newFromModel( selection, this ).getSelectionBoundingRect();
+		} else {
+			rect = ve.ce.Selection.static.newFromModel( selection.collapseToTo(), this ).getSelectionRects()[ 0 ];
+		}
+	} catch ( e ) {
+		// FIXME: We shouldn't be getting out of bounds selections from other clients, so we should investigate the cause.
+		ve.error( 'User selection for ' + authorId + ' transformed out of bounds: ' + JSON.stringify( selection ) );
+		return;
 	}
 	overlays.$cursor.append(
 		$( '<div>' ).addClass( 've-ce-surface-highlights-user-cursor' ).css( {
