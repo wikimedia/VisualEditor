@@ -242,7 +242,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
-			var i, len, annotations, insertion,
+			var i, len, annotations, insertion, selection,
 				inspector = this,
 				insertionAnnotation = false,
 				replace = false,
@@ -251,7 +251,6 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				surfaceModel = this.fragment.getSurface(),
 				surfaceView = this.manager.getSurface().getView(),
 				fragment = surfaceModel.getFragment( this.initialSelection, false ),
-				selection = this.fragment.getSelection(),
 				isEditing = this.isEditing(),
 				insertText = !remove && this.shouldInsertText();
 
@@ -323,7 +322,10 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			if ( this.initialFragment && ( !data.action || insertText ) ) {
 				// Restore selection to what it was before we expanded it
 				selection = this.initialFragment.getSelection();
+			} else {
+				selection = fragment.getSelection();
 			}
+
 			if ( data.action ) {
 				// Place the selection after the inserted text. If the inserted content is actually an
 				// element and not text, keep it selected, so that the context menu for it appears.
