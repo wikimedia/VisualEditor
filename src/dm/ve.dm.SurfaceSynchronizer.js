@@ -43,6 +43,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.token = null;
 	this.serverId = null;
 	this.loadSessionKey();
+	this.paused = false;
 
 	// SocketIO events
 	path = ( config.server || '' );
@@ -117,6 +118,40 @@ ve.dm.SurfaceSynchronizer.prototype.destroy = function () {
 	this.doc.disconnect( this );
 	this.surface.disconnect( this );
 	this.initialized = false;
+};
+
+/**
+ * Pause sending/receiving changes
+ */
+ve.dm.SurfaceSynchronizer.prototype.pauseChanges = function () {
+	if ( this.paused ) {
+		return;
+	}
+	this.paused = true;
+	this.queuedChanges = [];
+};
+
+/**
+ * Resume sending/receiving changes
+ */
+ve.dm.SurfaceSynchronizer.prototype.resumeChanges = function () {
+	var i;
+	if ( !this.paused ) {
+		return;
+	}
+	this.applying = true;
+	try {
+		// Don't cache length, as it's not inconceivable acceptChange could
+		// cause another change to arrive in some weird setup
+		for ( i = 0; i < this.queuedChanges.length; i++ ) {
+			this.acceptChange( this.queuedChanges[ i ] );
+		}
+	} finally {
+		this.applying = false;
+	}
+	this.paused = false;
+	// Schedule submission of unsent local changes, if any
+	this.submitChangeThrottled();
 };
 
 /**
@@ -218,7 +253,7 @@ ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
  */
 ve.dm.SurfaceSynchronizer.prototype.onSurfaceHistory = function () {
 	var change, authorId;
-	if ( this.applying || !this.initialized ) {
+	if ( this.applying || !this.initialized || this.paused ) {
 		// Ignore our own synchronization or initialization transactions
 		return;
 	}
@@ -239,6 +274,9 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceHistory = function () {
  * Respond to selection changes.
  */
 ve.dm.SurfaceSynchronizer.prototype.onSurfaceSelect = function () {
+	if ( this.paused ) {
+		return;
+	}
 	this.submitChangeThrottled();
 };
 
@@ -394,6 +432,10 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
  */
 ve.dm.SurfaceSynchronizer.prototype.onNewChange = function ( serializedChange ) {
 	var change = ve.dm.Change.static.deserialize( serializedChange );
+	if ( this.paused ) {
+		this.queuedChanges.push( change );
+		return;
+	}
 	// Make sure we don't attempt to submit any of the transactions we commit while manipulating
 	// the state of the document
 	this.applying = true;
