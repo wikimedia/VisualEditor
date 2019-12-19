@@ -219,7 +219,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 		{
 			msg: 'Insert into insertion annotation in italic',
 			willFail: true,
-			oldRawHtml: '<i>wx<b><img class="ve-ce-unicorn ve-ce-pre-unicorn"><img class="ve-ce-unicorn ve-ce-post-unicorn"></b>z</i>',
+			oldRawHtml: '<i>wx<b></b>z</i>',
 			oldInnerHtml: '<i class="' + ve.dm.example.textStyleClasses + ' ve-ce-italicAnnotation">wx<b class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation"><img class="ve-ce-unicorn ve-ce-pre-unicorn"><img class="ve-ce-unicorn ve-ce-post-unicorn"></b>z</i>',
 			newInnerHtml: '<i class="' + ve.dm.example.textStyleClasses + ' ve-ce-italicAnnotation">wx<b class="' + ve.dm.example.textStyleClasses + ' ve-ce-boldAnnotation"><img class="ve-ce-unicorn ve-ce-pre-unicorn">y<img class="ve-ce-unicorn ve-ce-post-unicorn"></b>z</i>',
 			operations: [
