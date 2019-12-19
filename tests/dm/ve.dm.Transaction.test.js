@@ -13,17 +13,23 @@ QUnit.module( 've.dm.Transaction' );
 
 QUnit.test( 'translateOffset', function ( assert ) {
 	var tx, mapping, offset, expected,
-		doc = new ve.dm.Document( '-----defg---h--'.split( '' ) ),
-		txBuilder = new ve.dm.TransactionBuilder();
+		b = [ ve.dm.example.boldHash ];
 
-	txBuilder.pushReplacement( doc, 0, 0, [ 'a', 'b', 'c' ] );
-	txBuilder.pushRetain( 5 );
-	txBuilder.pushReplacement( doc, 5, 4, [] );
-	txBuilder.pushRetain( 3 );
-	txBuilder.pushReplacement( doc, 12, 1, [ 'i', 'j', 'k', 'l', 'm' ] );
-	txBuilder.pushRetain( 2 );
-	txBuilder.pushReplacement( doc, 15, 0, [ 'n', 'o', 'p' ] );
-	tx = txBuilder.getTransaction();
+	tx = new ve.dm.Transaction( [
+		{ type: 'replace', remove: [], insert: [ 'a', 'b', 'c' ] },
+		{ type: 'retain', length: 5 },
+		{ type: 'replace', remove: [ 'd', 'e', 'f', 'g' ], insert: [] },
+		{ type: 'retain', length: 3 },
+		{ type: 'replace', remove: [ 'h' ], insert: [ 'i', 'j', 'k', 'l', 'm' ] },
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [], insert: [ 'n', 'o', 'p' ] },
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [ 'o', 'k' ], insert: [ [ 'o', b ], [ 'k', b ] ] },
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [ 'n', 'o', 'n' ], insert: [ [ 'n', b ], [ 'o', b ] ] },
+		{ type: 'retain', length: 2 },
+		{ type: 'replace', remove: [ 'h', 'i' ], insert: [ [ 'l', b ], [ 'o', b ] ] }
+	] );
 
 	mapping = {
 		0: [ 0, 3 ],
@@ -42,7 +48,19 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		13: [ 12, 16 ],
 		14: 17,
 		15: [ 18, 21 ],
-		16: 22
+		16: 22,
+		17: 23,
+		18: 24,
+		19: 25,
+		20: 26,
+		21: 27,
+		22: 29,
+		23: 29,
+		24: 29,
+		25: 30,
+		26: 31,
+		27: 33,
+		28: 33
 	};
 
 	for ( offset in mapping ) {
