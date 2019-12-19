@@ -1200,7 +1200,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						remove: [
 							'h',
 							{ type: 'inlineImage', attributes: {
-								src: 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg',
+								src: ve.dm.example.imgSrc,
 								alt: 'Example',
 								width: 100,
 								height: 50
@@ -1211,7 +1211,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 						insert: [
 							[ 'h', [ ve.dm.example.boldHash ] ],
 							{ type: 'inlineImage', attributes: {
-								src: 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg',
+								src: ve.dm.example.imgSrc,
 								alt: 'Example',
 								width: 100,
 								height: 50

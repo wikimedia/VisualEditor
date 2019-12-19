@@ -326,7 +326,7 @@ ve.dm.example.blockImage = {
 	],
 	ceHtml:
 		'<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">' +
-			'<img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" alt="Example" style="width: 100px; height: 50px;">' +
+			'<img src="' + ve.dm.example.imgSrc + '" alt="Example" style="width: 100px; height: 50px;">' +
 			'<figcaption class="ve-ce-branchNode ve-ce-activeNode" contenteditable="true" spellcheck="true">' +
 				'<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
 					'foo ' +
@@ -1719,7 +1719,7 @@ ve.dm.example.domToDataCases = {
 		ceHtml: '<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">' +
 			ve.dm.example.inlineSlug +
 			'<img class="ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode" contenteditable="false" alt="Example"' +
-				' src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" style="width: 100px; height: 50px;">' +
+				' src="' + ve.dm.example.imgSrc + '" style="width: 100px; height: 50px;">' +
 			ve.dm.example.inlineSlug +
 			'</p>'
 	},
@@ -1753,7 +1753,7 @@ ve.dm.example.domToDataCases = {
 			) );
 		},
 		normalizedBody:
-			'<figure class="ve-align-right"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" width="100" height="50" alt="Example">' +
+			'<figure class="ve-align-right"><img src="' + ve.dm.example.imgSrc + '" width="100" height="50" alt="Example">' +
 				'<figcaption><b>foo</b> <b style="color:red;">red</b></figcaption>' +
 			'</figure>'
 	},
