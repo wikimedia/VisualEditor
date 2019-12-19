@@ -566,7 +566,8 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 	var a, b, c, d, tests, i, len, test, operations, expected,
 		surface = new ve.dm.Surface( ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
-			{ type: '/paragraph' }
+			{ type: '/paragraph' },
+			{ type: 'internalList' }, { type: '/internalList' }
 		] ) ),
 		emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
@@ -596,32 +597,32 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 		{
 			message: 'a on c',
 			change: a.rebasedOnto( c ),
-			expected: { before: 1, insert: 'a', after: 2 }
+			expected: { before: 1, insert: 'a', after: 4 }
 		},
 		{
 			message: 'c on a',
 			change: c.rebasedOnto( a ),
-			expected: { before: 2, insert: 'c', after: 1 }
+			expected: { before: 2, insert: 'c', after: 3 }
 		},
 		{
 			message: 'b on ( c on a )',
 			change: b.rebasedOnto( c.rebasedOnto( a ) ),
-			expected: { before: 2, insert: 'b', after: 2 }
+			expected: { before: 2, insert: 'b', after: 4 }
 		},
 		{
 			message: 'd on ( a on c )',
 			change: d.rebasedOnto( a.rebasedOnto( c ) ),
-			expected: { before: 3, insert: 'd', after: 1 }
+			expected: { before: 3, insert: 'd', after: 3 }
 		},
 		{
 			message: 'b on ( c+d on a )',
 			change: b.rebasedOnto( c.concat( d ).rebasedOnto( a ) ),
-			expected: { before: 2, insert: 'b', after: 3 }
+			expected: { before: 2, insert: 'b', after: 5 }
 		},
 		{
 			message: 'd on ( a+b on c )',
 			change: d.rebasedOnto( a.concat( b ).rebasedOnto( c ) ),
-			expected: { before: 4, insert: 'd', after: 1 }
+			expected: { before: 4, insert: 'd', after: 3 }
 		}
 	];
 
@@ -636,7 +637,7 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 	}
 
 	// Check that the order of application doesn't matter
-	expected = [ { type: 'paragraph' }, 'a', 'b', 'c', 'd', { type: '/paragraph' } ];
+	expected = [ { type: 'paragraph' }, 'a', 'b', 'c', 'd', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ];
 
 	clear();
 	surface.setSelection( new ve.dm.LinearSelection( new ve.Range( 1 ) ) );

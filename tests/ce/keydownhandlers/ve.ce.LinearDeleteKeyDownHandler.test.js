@@ -191,7 +191,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				msg: 'Selection is not lost inside block slug after backspace'
 			},
 			{
-				rangeOrSelection: new ve.Range( 0, 63 ),
+				rangeOrSelection: new ve.Range( 0, 61 ),
 				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
 					data.splice(

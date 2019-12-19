@@ -765,7 +765,7 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
  * @fires contextChange
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
-	var insertionAnnotations, selectedNode, range, selectedAnnotations,
+	var maxOffset, insertionAnnotations, selectedNode, range, selectedAnnotations,
 		rangeFocus, oldRangeFocus, focusRangeMovingBack,
 		oldSelection = this.selection,
 		branchNodes = {},
@@ -773,6 +773,21 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		contextChange = false,
 		linearData = this.getDocument().data;
 
+	if (
+		selection instanceof ve.dm.LinearSelection &&
+		( maxOffset = this.getDocument().getDocumentRange().end ) &&
+		maxOffset < selection.getRange().end
+	) {
+		// Selection is out of range
+		ve.error( 'Attempted to set an out of bounds selection: ' + JSON.stringify( selection ) + ', adjusting' );
+		// Fix up the selection so things don't break if the caller subsequently
+		// tries to use the selection
+		selection = new ve.dm.LinearSelection( new ve.Range(
+			Math.min( maxOffset, selection.getRange().start ),
+			maxOffset
+		) );
+		// TODO: Check table selections too
+	}
 	this.translatedSelection = null;
 
 	if ( this.transacting ) {

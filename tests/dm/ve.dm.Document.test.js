@@ -1372,7 +1372,8 @@ QUnit.test( 'fixupInsertion', function ( assert ) {
 			'b',
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
-			{ type: '/list' }
+			{ type: '/list' },
+			{ type: 'internalList' }, { type: '/internalList' }
 		] ),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 4, 4 ) ),

@@ -1018,7 +1018,12 @@ ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
  * @return {boolean} There is a slug at the offset
  */
 ve.dm.Document.prototype.hasSlugAtOffset = function ( offset ) {
-	var node = this.getBranchNodeFromOffset( offset );
+	var node;
+	try {
+		node = this.getBranchNodeFromOffset( offset );
+	} catch ( e ) {
+		// Offset was out of bounds
+	}
 	return node ? node.hasSlugAtOffset( offset ) : false;
 };
 
