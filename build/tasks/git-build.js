@@ -8,7 +8,7 @@ module.exports = function ( grunt ) {
 		var done = this.async();
 		require( 'child_process' ).exec( 'git rev-parse HEAD', function ( err, stout, stderr ) {
 			if ( !stout || err || stderr ) {
-				grunt.log.err( err || stderr );
+				grunt.log.error( err || stderr );
 				done( false );
 				return;
 			}
