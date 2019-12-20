@@ -150,7 +150,7 @@ ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			this.$user.text( this.getFragment().getSurface().synchronizer.getAuthorData().name );
 			this.textInput.setValue( '' );
 			this.actions.forEach( { actions: [ 'done' ] }, function ( action ) {
-				action.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-reply' ) );
+				action.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-comment' ) );
 			} );
 			this.updateActions();
 		}, this );

@@ -21,7 +21,7 @@ ve.ui.CommentAnnotationContextItem = function VeUiCommentAnnotationContextItem( 
 	// Initialization
 	this.$element.addClass( 've-ui-commentAnnotationContextItem' );
 
-	this.editButton.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-reply' ) );
+	this.editButton.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-comment' ) );
 };
 
 /* Inheritance */
