@@ -83,10 +83,15 @@ ve.ui.CommentAnnotationInspector.prototype.getInsertionText = function () {
  * @inheritdoc
  */
 ve.ui.CommentAnnotationInspector.prototype.getAnnotation = function () {
+	var comments = ( this.initialAnnotation && this.initialAnnotation.getAttribute( 'comments' ).slice() ) || [];
+	comments.push( {
+		author: this.getFragment().getSurface().synchronizer.getAuthorData().name,
+		text: this.textInput.getValue().trim()
+	} );
 	return new ve.dm.CommentAnnotation( {
 		type: 'commentAnnotation',
 		attributes: {
-			text: this.textInput.getValue()
+			comments: comments
 		}
 	} );
 };
@@ -98,7 +103,7 @@ ve.ui.CommentAnnotationInspector.prototype.getAnnotationFromFragment = function 
 	return new ve.dm.CommentAnnotation( {
 		type: 'commentAnnotation',
 		attributes: {
-			text: ''
+			comments: []
 		}
 	} );
 };
@@ -112,6 +117,8 @@ ve.ui.CommentAnnotationInspector.prototype.initialize = function () {
 
 	// Properties
 	this.textInput = new OO.ui.MultilineTextInputWidget( { autosize: true } );
+	this.$thread = $( '<div>' );
+	this.$user = $( '<strong>' );
 
 	// Events
 	this.textInput.connect( this, {
@@ -120,7 +127,13 @@ ve.ui.CommentAnnotationInspector.prototype.initialize = function () {
 	} );
 
 	// Initialization
-	this.form.$element.append( this.textInput.$element );
+	this.form.$element.append(
+		this.$thread,
+		$( '<div>' ).addClass( 've-ui-commentAnnotationContextItem-comment' ).append(
+			this.$user,
+			this.textInput.$element
+		)
+	);
 };
 
 /**
@@ -129,7 +142,16 @@ ve.ui.CommentAnnotationInspector.prototype.initialize = function () {
 ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			this.textInput.setValue( this.initialAnnotation.getAttribute( 'text' ) );
+			if ( this.initialAnnotation ) {
+				this.$thread.empty().append(
+					ve.ui.CommentAnnotationContextItem.static.renderThread( this.initialAnnotation )
+				);
+			}
+			this.$user.text( this.getFragment().getSurface().synchronizer.getAuthorData().name );
+			this.textInput.setValue( '' );
+			this.actions.forEach( { actions: [ 'done' ] }, function ( action ) {
+				action.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-reply' ) );
+			} );
 			this.updateActions();
 		}, this );
 };

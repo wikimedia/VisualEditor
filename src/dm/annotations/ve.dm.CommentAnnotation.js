@@ -55,6 +55,22 @@ ve.dm.CommentAnnotation.static.toDomElements = function ( dataElement, doc, conv
 	}
 };
 
+/* Methods */
+
+ve.dm.CommentAnnotation.prototype.getAttribute = function ( key ) {
+	// Support old documents with text attributes
+	if ( key === 'comments' && this.getAttribute( 'text' ) ) {
+		return [ {
+			author: '',
+			text: this.getAttribute( 'text' )
+		} ].concat(
+			ve.dm.CommentAnnotation.super.prototype.getAttribute.call( this, 'comments' ) || []
+		);
+	}
+	// Parent method
+	return ve.dm.CommentAnnotation.super.prototype.getAttribute.call( this, key );
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.CommentAnnotation );

@@ -40,7 +40,9 @@ ve.ce.CommentAnnotation.static.canBeActive = true;
  * @inheritdoc
  */
 ve.ce.CommentAnnotation.static.getDescription = function ( model ) {
-	return model.getAttribute( 'text' );
+	var comments = model.getAttribute( 'comments' );
+
+	return comments[ 0 ].author + ': ' + comments[ 0 ].text;
 };
 
 /* Registration */

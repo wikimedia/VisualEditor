@@ -768,7 +768,8 @@
 			"src/ui/inspectors/ve.ui.CommentAnnotationInspector.js"
 		],
 		"styles": [
-			"src/ce/styles/annotations/ve.ce.CommentAnnotation.css"
+			"src/ce/styles/annotations/ve.ce.CommentAnnotation.css",
+			"src/ui/styles/contextitems/ve.ui.CommentAnnotationContextItem.css"
 		],
 		"dependencies": [
 			"visualEditor.core.build"

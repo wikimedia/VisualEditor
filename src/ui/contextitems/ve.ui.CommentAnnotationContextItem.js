@@ -20,6 +20,8 @@ ve.ui.CommentAnnotationContextItem = function VeUiCommentAnnotationContextItem( 
 
 	// Initialization
 	this.$element.addClass( 've-ui-commentAnnotationContextItem' );
+
+	this.editButton.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-reply' ) );
 };
 
 /* Inheritance */
@@ -44,24 +46,32 @@ ve.ui.CommentAnnotationContextItem.static.clearable = true;
 
 ve.ui.CommentAnnotationContextItem.static.clearIcon = 'trash';
 
+/* Static methods */
+
+ve.ui.CommentAnnotationContextItem.static.renderThread = function ( model ) {
+	var $thread = $( [] );
+
+	model.getAttribute( 'comments' ).forEach( function ( comment ) {
+		$thread = $thread.add(
+			$( '<div>' ).addClass( 've-ui-commentAnnotationContextItem-comment' ).append(
+				$( '<strong>' ).text( comment.author ),
+				comment.text.split( '\n' ).map( function ( line ) {
+					return $( '<div>' ).text( line );
+				} )
+			)
+		);
+	} );
+
+	return $thread;
+};
+
 /* Methods */
 
 /**
  * @inheritdoc
  */
-ve.ui.CommentAnnotationContextItem.prototype.getDescription = function () {
-	return this.model.getAttribute( 'text' ).trim();
-};
-
-/**
- * @inheritdoc
- */
 ve.ui.CommentAnnotationContextItem.prototype.renderBody = function () {
-	this.$body.append(
-		this.getDescription().split( '\n' ).map( function ( line ) {
-			return $( '<div>' ).text( line );
-		} )
-	);
+	this.$body.append( this.constructor.static.renderThread( this.model ) );
 };
 
 /* Registration */
