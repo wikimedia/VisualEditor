@@ -219,6 +219,8 @@ ve.dm.Surface.prototype.isMultiUser = function () {
 /**
  * Create a surface synchronizer.
  *
+ * Must be created before the surface model is added to a view.
+ *
  * @param {string} documentId Document ID
  * @param {Object} [config] Configuration options
  */

@@ -108,6 +108,11 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
  * @event disconnect
  */
 
+/**
+ * @event pause
+ * The synchronizer is paused or resumes
+ */
+
 /* Methods */
 
 /**
@@ -129,6 +134,7 @@ ve.dm.SurfaceSynchronizer.prototype.pauseChanges = function () {
 	}
 	this.paused = true;
 	this.queuedChanges = [];
+	this.emit( 'pause' );
 };
 
 /**
@@ -152,6 +158,7 @@ ve.dm.SurfaceSynchronizer.prototype.resumeChanges = function () {
 	this.paused = false;
 	// Schedule submission of unsent local changes, if any
 	this.submitChangeThrottled();
+	this.emit( 'pause' );
 };
 
 /**

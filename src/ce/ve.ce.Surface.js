@@ -123,7 +123,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 			authorSelect: 'onSynchronizerAuthorUpdate',
 			authorChange: 'onSynchronizerAuthorUpdate',
 			authorDisconnect: 'onSynchronizerAuthorDisconnect',
-			wrongDoc: 'onSynchronizerWrongDoc'
+			wrongDoc: 'onSynchronizerWrongDoc',
+			pause: 'onSynchronizerPause'
 		} );
 	}
 
@@ -4745,6 +4746,16 @@ ve.ce.Surface.prototype.onSynchronizerWrongDoc = function () {
 		ve.msg( 'visualeditor-missing-document-error' ),
 		{ title: ve.msg( 'visualeditor-missing-document-title' ) }
 	);
+};
+
+/**
+ * Handle pause events from the synchronizer
+ *
+ * Drops the opacity of the surface to indicate that no updates are
+ * being received from other users.
+ */
+ve.ce.Surface.prototype.onSynchronizerPause = function () {
+	this.$element.toggleClass( 've-ce-surface-paused', !!this.model.synchronizer.paused );
 };
 
 /**
