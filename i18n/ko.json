@@ -25,7 +25,8 @@
 			"Garam",
 			"Nuevo Paso",
 			"Jay94ks",
-			"렌즈"
+			"렌즈",
+			"Gongsoonyee"
 		]
 	},
 	"visualeditor": "시각편집기",
@@ -73,6 +74,7 @@
 	"visualeditor-clipboard-paste-special": "일반 텍스트로 붙여넣기",
 	"visualeditor-command-dialog-cancel": "닫기 / 변경 취소",
 	"visualeditor-command-dialog-confirm": "변경 확인",
+	"visualeditor-commentannotationcontextitem-comment": "댓글",
 	"visualeditor-commentinspector-edit": "주석 편집",
 	"visualeditor-commentinspector-title": "주석",
 	"visualeditor-commentinspector-tooltip": "주석",
@@ -151,7 +153,7 @@
 	"visualeditor-key-page-down": "Page Down",
 	"visualeditor-key-page-up": "Page Up",
 	"visualeditor-key-right": "오른쪽",
-	"visualeditor-key-shift": "시프트",
+	"visualeditor-key-shift": "Shift",
 	"visualeditor-key-space": "스페이스",
 	"visualeditor-key-tab": "탭",
 	"visualeditor-key-up": "위쪽",

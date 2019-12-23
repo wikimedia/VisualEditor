@@ -89,6 +89,7 @@
 	"visualeditor-command-dialog-cancel": "Fermer / annuler la modification",
 	"visualeditor-command-dialog-confirm": "Confirmer la modification",
 	"visualeditor-command-dialog-focus-context": "Déplacer le focus vers une fenêtre contextuelle",
+	"visualeditor-commentannotationcontextitem-comment": "Commentaire",
 	"visualeditor-commentinspector-edit": "Modifier le commentaire",
 	"visualeditor-commentinspector-title": "Commentaire",
 	"visualeditor-commentinspector-tooltip": "Commenter",

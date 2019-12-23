@@ -72,6 +72,7 @@
 	"visualeditor-command-dialog-cancel": "إغلاق / إلغاء التغيير",
 	"visualeditor-command-dialog-confirm": "تأكيد التغيير",
 	"visualeditor-command-dialog-focus-context": "نقل التركيز إلى النافذة المنبثقة السياقية",
+	"visualeditor-commentannotationcontextitem-comment": "التعليق",
 	"visualeditor-commentinspector-edit": "عدل التعليق",
 	"visualeditor-commentinspector-title": "تعليق مخفي",
 	"visualeditor-commentinspector-tooltip": "تعليق مخفي",
