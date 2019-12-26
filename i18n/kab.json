@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Belkacem77"
+			"Belkacem77",
+			"K Messaoudi"
 		]
 	},
 	"visualeditor": "Amaẓrag aẓrayan",
@@ -42,6 +43,7 @@
 	"visualeditor-clipboard-paste-special": "Senṭeḍ d aḍris aččuran",
 	"visualeditor-command-dialog-cancel": "Mdel / Sefsex asnifel",
 	"visualeditor-command-dialog-confirm": "Sentem asnifel",
+	"visualeditor-commentannotationcontextitem-comment": "Awennit",
 	"visualeditor-commentinspector-edit": "Ẓreg awennit",
 	"visualeditor-commentinspector-title": "Awennit",
 	"visualeditor-commentinspector-tooltip": "Awennit",
