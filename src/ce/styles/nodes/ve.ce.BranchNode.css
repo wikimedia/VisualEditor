@@ -95,6 +95,8 @@
 .ve-ce-chimera-gecko {
 	/* Force height in empty branch */
 	border: 1px solid transparent;
+	/* Avoid interaction with absolutely positioned overlays like CodeMirror (T198278) */
+	margin-right: -2px;
 }
 
 .ve-ce-chimera-debug {
