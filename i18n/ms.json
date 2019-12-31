@@ -4,7 +4,8 @@
 			"Anakmalaysia",
 			"Aurora",
 			"Pizza1016",
-			"SNN95"
+			"SNN95",
+			"CyberTroopers"
 		]
 	},
 	"visualeditor": "Suntingan visual",
@@ -46,6 +47,7 @@
 	"visualeditor-clipboard-paste-special": "Tampal sebagai teks biasa",
 	"visualeditor-command-dialog-cancel": "Tutup / batalkan perubahan",
 	"visualeditor-command-dialog-confirm": "Sahkan perubahan",
+	"visualeditor-commentannotationcontextitem-comment": "Ulasan",
 	"visualeditor-commentinspector-edit": "Sunting komen",
 	"visualeditor-commentinspector-title": "Komen",
 	"visualeditor-commentinspector-tooltip": "Komen",

@@ -5,7 +5,8 @@
 			"Taweetham",
 			"Horus",
 			"Ans",
-			"Karit"
+			"Karit",
+			"Nitisart Jungtrakungrat"
 		]
 	},
 	"visualeditor": "วิชวลเอดิเตอร์",
@@ -53,6 +54,7 @@
 	"visualeditor-clipboard-paste-special": "วางเป็นข้อความธรรมดา",
 	"visualeditor-command-dialog-cancel": "ปิด / ยกเลิกการเปลี่ยนแปลง",
 	"visualeditor-command-dialog-confirm": "ยืนยันการเปลี่ยนแปลง",
+	"visualeditor-commentannotationcontextitem-comment": "แสดงความคิดเห็น",
 	"visualeditor-commentinspector-edit": "แก้ไขความเห็น",
 	"visualeditor-commentinspector-title": "ความเห็น",
 	"visualeditor-commentinspector-tooltip": "ความเห็น",

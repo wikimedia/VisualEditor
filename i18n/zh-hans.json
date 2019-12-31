@@ -25,7 +25,8 @@
 			"D41D8CD98F",
 			"神樂坂秀吉",
 			"予弦",
-			"A Retired User"
+			"A Retired User",
+			"沈澄心"
 		]
 	},
 	"visualeditor": "可视化编辑器",
@@ -73,6 +74,7 @@
 	"visualeditor-clipboard-paste-special": "粘贴为纯文本",
 	"visualeditor-command-dialog-cancel": "关闭/取消更改",
 	"visualeditor-command-dialog-confirm": "确认更改",
+	"visualeditor-commentannotationcontextitem-comment": "评论",
 	"visualeditor-commentinspector-edit": "编辑注释",
 	"visualeditor-commentinspector-title": "注释",
 	"visualeditor-commentinspector-tooltip": "注释",

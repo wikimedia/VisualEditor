@@ -19,7 +19,8 @@
 			"Ilimanaq29",
 			"Patriccck",
 			"Frettie",
-			"Janbery"
+			"Janbery",
+			"YjM"
 		]
 	},
 	"visualeditor": "Vizuální editor",
@@ -68,6 +69,7 @@
 	"visualeditor-command-dialog-cancel": "Zavřít/zrušit změnu",
 	"visualeditor-command-dialog-confirm": "Potvrdit změnu",
 	"visualeditor-command-dialog-focus-context": "Přesunout na vyskakovací okno",
+	"visualeditor-commentannotationcontextitem-comment": "Okomentovat",
 	"visualeditor-commentinspector-edit": "Editovat komentář",
 	"visualeditor-commentinspector-title": "Komentář",
 	"visualeditor-commentinspector-tooltip": "Komentář",
