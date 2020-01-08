@@ -12,12 +12,12 @@
   "homepage": "https://www.mediawiki.org/wiki/VisualEditor",
   "repository": {
     "type": "git",
-    "url": "https://gerrit.wikimedia.org/r/p/VisualEditor/VisualEditor.git"
+    "url": "https://gerrit.wikimedia.org/r/VisualEditor/VisualEditor"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://phabricator.wikimedia.org/diffusion/GVED/browse/master/LICENSE.txt"
+      "url": "https://gerrit.wikimedia.org/g/VisualEditor/VisualEditor/+/master/LICENSE.txt"
     }
   ],
   "devDependencies": {

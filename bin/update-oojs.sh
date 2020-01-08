@@ -53,7 +53,7 @@ COMMITMSG=$(cat <<END
 Update OOjs to v$OOJS_VERSION
 
 Release notes:
- https://gerrit.wikimedia.org/r/plugins/gitiles/oojs/core/+/v$OOJS_VERSION/History.md
+ https://gerrit.wikimedia.org/g/oojs/core/+/v$OOJS_VERSION/History.md
 END
 )
 

@@ -49,7 +49,7 @@ COMMITMSG=$(cat <<END
 Update UnicodeJS to v$UNICODEJS_VERSION
 
 Release notes:
- https://phabricator.wikimedia.org/diffusion/GUJS/browse/master/History.md;v$UNICODEJS_VERSION
+ https://gerrit.wikimedia.org/g/unicodejs/+/$UNICODEJS_VERSION/History.md
 END
 )
 
