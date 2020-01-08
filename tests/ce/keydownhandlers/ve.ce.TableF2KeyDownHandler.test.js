@@ -1,7 +1,7 @@
 /*!
  * VisualEditor ContentEditable table f2 key down handler tests.
  *
- * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 // TODO: Move this to a ve.ui.Trigger test

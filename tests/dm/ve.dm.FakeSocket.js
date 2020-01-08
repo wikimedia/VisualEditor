@@ -1,7 +1,7 @@
 /*!
  * VisualEditor DataModel Fake socket.io-like class for testing
  *
- * @copyright 2011-2019 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
 // Fake socket class, with limited API
