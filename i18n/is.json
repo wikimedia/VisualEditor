@@ -4,7 +4,8 @@
 			"Maxí",
 			"Snævar",
 			"Sveinki",
-			"Sveinn í Felli"
+			"Sveinn í Felli",
+			"Þjarkur"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -117,6 +118,7 @@
 	"visualeditor-languageinspector-widget-label-langcode": "Tungumálakóði",
 	"visualeditor-languageinspector-widget-label-language": "Tungumál",
 	"visualeditor-linkinspector-title": "Tengill",
+	"visualeditor-linkinspector-title-add": "Bæta við tengli",
 	"visualeditor-listbutton-bullet-tooltip": "Punktalisti",
 	"visualeditor-listbutton-number-tooltip": "Tölusettur listi",
 	"visualeditor-mediasizewidget-label-defaulterror": "Stærðargildi eru ógild.",
