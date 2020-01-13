@@ -198,7 +198,7 @@
 	"visualeditor-table-delete-col": "מחיקת {{PLURAL:$1|עמודה|עמודות}}",
 	"visualeditor-table-delete-row": "מחיקת {{PLURAL:$1|שורה|שורות}}",
 	"visualeditor-table-format-data": "תא תוכן",
-	"visualeditor-table-format-header": "תו כותרת",
+	"visualeditor-table-format-header": "תא כותרת",
 	"visualeditor-table-insert-col-after": "הוספה אחרי",
 	"visualeditor-table-insert-col-before": "הוספה לפני",
 	"visualeditor-table-insert-row-after": "הוספה מתחת",

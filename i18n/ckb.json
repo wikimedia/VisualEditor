@@ -8,7 +8,8 @@
 			"Pirehelokan",
 			"Sarchia",
 			"Lost Whispers",
-			"Épine"
+			"Épine",
+			"ئارام بکر"
 		]
 	},
 	"visualeditor": "دەستکاریکەری دیداری",
@@ -27,7 +28,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "ژێرنووس",
 	"visualeditor-annotationbutton-superscript-tooltip": "سەرنووس",
 	"visualeditor-annotationbutton-underline-tooltip": "ژێرھێڵ",
-	"visualeditor-clearbutton-tooltip": "سڕینەوەی ستایل",
+	"visualeditor-clearbutton-tooltip": "لابردن",
 	"visualeditor-clipboard-copy": "لەبەرگرتنەوە",
 	"visualeditor-clipboard-cut": "بڕین",
 	"visualeditor-clipboard-paste": "چەسپاندن",
