@@ -2268,6 +2268,35 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 0 ),
+				pasteTargetHtml: '<li>B</li><li>C</li>',
+				expectedRangeOrSelection: new ve.Range( 12 ),
+				expectedOps: [
+					[
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'list', attributes: { style: 'bullet' } },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'B',
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: 'listItem' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
+								'C',
+								{ type: '/paragraph' },
+								{ type: '/listItem' },
+								{ type: '/list' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen }
+					]
+				],
+				msg: 'Broken list items without a wrapper (caused by `display: inline`)'
+			},
+			{
+				rangeOrSelection: new ve.Range( 0 ),
 				pasteTargetHtml: '<p>A</p><p></p><p>B</p>',
 				expectedOps: [
 					[

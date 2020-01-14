@@ -2560,6 +2560,32 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 		}
 	} );
 
+	// HACK: Fix invalid HTML from copy-pasting `display: inline` lists (T239550).
+	$( htmlDoc.body ).find( 'li, dd, dt' ).each( function () {
+		var list,
+			listType = { li: 'ul', dd: 'dl', dt: 'dl' },
+			tag = this.tagName.toLowerCase(),
+			// Parent node always exists because we're searching inside <body>
+			parentTag = this.parentNode.tagName.toLowerCase();
+
+		if (
+			( tag === 'li' && ( parentTag !== 'ul' && parentTag !== 'ol' ) ) ||
+			( ( tag === 'dd' || tag === 'dt' ) && parentTag !== 'dl' )
+		) {
+			// This list item's parent node is not a list. This breaks expectations in DM code.
+			// Wrap this node and its list item siblings in a list node.
+			list = htmlDoc.createElement( listType[ tag ] );
+			this.parentNode.insertBefore( list, this );
+
+			while (
+				list.nextElementSibling &&
+				listType[ list.nextElementSibling.tagName.toLowerCase() ] === listType[ tag ]
+			) {
+				list.appendChild( list.nextElementSibling );
+			}
+		}
+	} );
+
 	// HTML sanitization
 	htmlBlacklist = ve.getProp( this.afterPasteImportRules( isMultiline ), 'external', 'htmlBlacklist' );
 	if ( htmlBlacklist && !clipboardKey ) {
