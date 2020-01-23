@@ -110,6 +110,7 @@
 	"visualeditor-dialog-table-caption": "Bijschrift",
 	"visualeditor-dialog-table-title": "Tabeleigenschappen",
 	"visualeditor-diff-no-changes": "Geen wijzigingen",
+	"visualeditor-diff-timed-out": "Het duurde te lang om de wijzingen te berekenen, waardoor de onderstaande beschrijving mogelijk niet optimaal is.",
 	"visualeditor-find-and-replace-diacritic": "Diakritisch ongevoelig",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Diakritisch ongevoelig zoeken is niet beschikbaar in deze browser",
 	"visualeditor-find-and-replace-done": "Afgerond",
