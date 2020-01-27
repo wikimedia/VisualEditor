@@ -14,6 +14,7 @@ QUnit.test( 'conversion', function ( assert ) {
 			{
 				msg: 'Simple text with language options',
 				text: 'foo',
+				textFromDataRange: 'foo\n',
 				data: [
 					{ type: 'paragraph' },
 					'f', 'o', 'o',
@@ -27,6 +28,7 @@ QUnit.test( 'conversion', function ( assert ) {
 			{
 				msg: 'Multiple lines and whitespace',
 				text: 'foo \n\n\tbar\n',
+				textFromDataRange: 'foo \n\n\tbar\n\n',
 				data: [
 					{ type: 'paragraph' },
 					'f', 'o', 'o', ' ',
@@ -43,6 +45,7 @@ QUnit.test( 'conversion', function ( assert ) {
 			{
 				msg: 'Different newlines are all converted to paragraphs (CR/LF/CRLF)',
 				text: 'asd\nasd\rasd\r\nasd',
+				textFromDataRange: 'asd\nasd\nasd\nasd\n',
 				data: [
 					{ type: 'paragraph' },
 					'a', 's', 'd',
@@ -92,7 +95,7 @@ QUnit.test( 'conversion', function ( assert ) {
 		);
 		assert.strictEqual(
 			ve.dm.sourceConverter.getSourceTextFromDataRange( cases[ i ].data ),
-			cases[ i ].textRoundtrip || cases[ i ].text,
+			cases[ i ].textFromDataRange || cases[ i ].textRoundtrip || cases[ i ].text,
 			cases[ i ].msg + ': getSourceTextFromDataRange'
 		);
 		// getSourceTextFromDataRange with a range argument is currently tested by ElementLinearData#getSourceText tests
