@@ -26,7 +26,8 @@
 			"神樂坂秀吉",
 			"予弦",
 			"A Retired User",
-			"沈澄心"
+			"沈澄心",
+			"VulpesVulpes825"
 		]
 	},
 	"visualeditor": "可视化编辑器",
@@ -166,9 +167,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "文字方向",
 	"visualeditor-languageinspector-widget-label-langcode": "语言代码",
 	"visualeditor-languageinspector-widget-label-language": "语言",
-	"visualeditor-linkcontext-label-change": "更改标签",
+	"visualeditor-linkcontext-label-change": "更改文字",
 	"visualeditor-linkcontext-label-fallback": "无预览",
-	"visualeditor-linkcontext-label-label": "标签",
+	"visualeditor-linkcontext-label-label": "文字",
 	"visualeditor-linkcontext-remove": "移除链接",
 	"visualeditor-linkinspector-title": "链接",
 	"visualeditor-linkinspector-title-add": "添加链接",
@@ -182,6 +183,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "自定义",
 	"visualeditor-mediasizewidget-sizeoptions-default": "默认",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "比例",
+	"visualeditor-corrupted-document-title": "已损坏的文件",
 	"visualeditor-missing-document-error": "服务器上缺少文档。为避免数据丢失，请复制粘贴内容。",
 	"visualeditor-missing-document-title": "缺少文档",
 	"visualeditor-rebase-client-author-name": "名称",
@@ -201,6 +203,8 @@
 	"visualeditor-specialcharacterinspector-title": "特殊字符",
 	"visualeditor-table-caption": "表格标题",
 	"visualeditor-table-contextitem-properties": "属性",
+	"visualeditor-table-contextitem-selectionmode-cells": "选择表格单元",
+	"visualeditor-table-contextitem-selectionmode-contents": "选择内容",
 	"visualeditor-table-delete-col": "删除{{PLURAL:$1|列}}",
 	"visualeditor-table-delete-row": "删除{{PLURAL:$1|行}}",
 	"visualeditor-table-format-data": "内容单元格",
