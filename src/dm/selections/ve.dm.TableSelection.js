@@ -326,8 +326,12 @@ ve.dm.TableSelection.prototype.isCollapsed = function () {
 /**
  * @inheritdoc
  */
-ve.dm.TableSelection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
-	var newRange = tx.translateRange( this.tableRange, excludeInsertion );
+ve.dm.TableSelection.prototype.translateByTransaction = function ( tx ) {
+	var newRange = tx.translateRange(
+		this.tableRange,
+		// Table selections should always exclude insertions
+		true
+	);
 
 	if ( newRange.isCollapsed() ) {
 		return new ve.dm.NullSelection();
