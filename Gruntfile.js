@@ -354,7 +354,7 @@ module.exports = function ( grunt ) {
 				cache: true
 			},
 			main: [
-				'**/*.js{on,}',
+				'**/*.{js,json}',
 				'!coverage/**',
 				'!dist/**',
 				'!docs/**',

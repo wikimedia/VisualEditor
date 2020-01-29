@@ -2,7 +2,8 @@
 	"root": true,
 	"extends": [
 		"wikimedia/client",
-		"wikimedia/jquery"
+		"wikimedia/jquery",
+		"wikimedia/mediawiki"
 	],
 	"globals": {
 		"ve": "writable",
@@ -21,7 +22,7 @@
 		"max-statements-per-line": [ "error", { "max": 1 } ],
 		"max-len": "off"
 	},
-	"plugins": [ "html", "mediawiki" ],
+	"plugins": [ "html" ],
 	"settings": {
 		"html/indent": "+tab",
 		"html/report-bad-indent": "error"
