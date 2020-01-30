@@ -79,7 +79,8 @@ ve.dm.SourceConverter.prototype.getSourceTextFromDataRange = function ( data, ra
 	range = range || new ve.Range( 0, data.length );
 
 	for ( i = range.start; i < range.end; i++ ) {
-		if ( data[ i ].type === '/paragraph' && data[ i + 1 ] && data[ i + 1 ].type === 'paragraph' ) {
+		// (T243606) Append a newline after each full paragraph, including the last one in the range
+		if ( data[ i ].type === '/paragraph' && ( !data[ i + 1 ] || data[ i + 1 ].type === 'paragraph' ) ) {
 			text += '\n';
 		} else if ( !data[ i ].type ) {
 			text += data[ i ];
