@@ -26,7 +26,8 @@
 			"Matma Rex",
 			"McDutchie",
 			"Verdy p",
-			"Jhertel"
+			"Jhertel",
+			"BaRaN6161 TURK"
 		]
 	},
 	"visualeditor": "The name of the VisualEditor extension.\n{{Identical|VisualEditor}}",
@@ -98,7 +99,7 @@
 	"visualeditor-dialog-action-goback": "Label text for button to go back in a dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-apply}}\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-done}}\n* {{msg-mw|Visualeditor-dialog-action-insert}}\n{{Identical|Go back}}",
 	"visualeditor-dialog-action-insert": "Label text for button to insert an item in a dialog.\n\nSee also:\n* {{msg-mw|Visualeditor-dialog-action-apply}}\n* {{msg-mw|Visualeditor-dialog-action-cancel}}\n* {{msg-mw|Visualeditor-dialog-action-done}}\n* {{msg-mw|Visualeditor-dialog-action-goback}}\n{{Identical|Insert}}",
 	"visualeditor-dialog-command-help-title": "Title for keyboard shortcuts help dialog.\n{{Identical|Keyboard shortcut}}",
-	"visualeditor-dialog-error": "Title text in a dialog error screen",
+	"visualeditor-dialog-error": "Title text in a dialog error screen.\n{{Identical|Something went wrong}}",
 	"visualeditor-dialog-error-dismiss": "Label text for button to dismiss an error message in a dialog.\n{{Identical|Go back}}",
 	"visualeditor-dialog-language-auto-direction": "Label text for button to make language direction automatic.\n{{Identical|Automatic}}",
 	"visualeditor-dialog-language-search-title": "Title for language search dialog\n{{Identical|Select language}}",
