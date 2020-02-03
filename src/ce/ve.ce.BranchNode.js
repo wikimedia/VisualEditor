@@ -388,6 +388,19 @@ ve.ce.BranchNode.prototype.destroy = function () {
 };
 
 /**
+ * @inheritdoc
+ */
+ve.ce.BranchNode.prototype.detach = function () {
+	var i, len;
+	for ( i = 0, len = this.children.length; i < len; i++ ) {
+		this.children[ i ].detach();
+	}
+
+	// Parent method
+	ve.ce.BranchNode.super.prototype.detach.call( this );
+};
+
+/**
  * Get the DOM position (node and offset) corresponding to a position in this node
  *
  * The node/offset have the same semantics as a DOM Selection focusNode/focusOffset
