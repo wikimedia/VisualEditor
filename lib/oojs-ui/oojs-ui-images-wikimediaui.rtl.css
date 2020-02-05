@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.36.3
+ * OOUI v0.36.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-01-24T00:06:31Z
+ * Date: 2020-02-05T19:37:21Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-rtl.png');
@@ -3375,6 +3375,18 @@
 .oo-ui-image-progressive.oo-ui-icon-userAvatarOutline {
   background-image: url('themes/wikimediaui/images/icons/userAvatarOutline-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAvatarOutline-progressive.svg');
+}
+.oo-ui-icon-userContributions {
+  background-image: url('themes/wikimediaui/images/icons/userContributions-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userContributions-rtl.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-userContributions {
+  background-image: url('themes/wikimediaui/images/icons/userContributions-rtl-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userContributions-rtl-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-userContributions {
+  background-image: url('themes/wikimediaui/images/icons/userContributions-rtl-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userContributions-rtl-progressive.svg');
 }
 .oo-ui-icon-userGroup {
   background-image: url('themes/wikimediaui/images/icons/userGroup-rtl.png');
