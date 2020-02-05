@@ -50,7 +50,7 @@ COMMITMSG=$(cat <<END
 Update OOUI to v$OOUI_VERSION
 
 Release notes:
- https://gerrit.wikimedia.org/g/oojs/ui/+/$OOUI_VERSION/History.md
+ https://gerrit.wikimedia.org/g/oojs/ui/+/v$OOUI_VERSION/History.md
 END
 )
 
