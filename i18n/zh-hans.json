@@ -27,7 +27,8 @@
 			"予弦",
 			"A Retired User",
 			"沈澄心",
-			"VulpesVulpes825"
+			"VulpesVulpes825",
+			"铁桶"
 		]
 	},
 	"visualeditor": "可视化编辑器",
@@ -167,9 +168,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "文字方向",
 	"visualeditor-languageinspector-widget-label-langcode": "语言代码",
 	"visualeditor-languageinspector-widget-label-language": "语言",
-	"visualeditor-linkcontext-label-change": "更改文字",
+	"visualeditor-linkcontext-label-change": "更改文本",
 	"visualeditor-linkcontext-label-fallback": "无预览",
-	"visualeditor-linkcontext-label-label": "文字",
+	"visualeditor-linkcontext-label-label": "文本",
 	"visualeditor-linkcontext-remove": "移除链接",
 	"visualeditor-linkinspector-title": "链接",
 	"visualeditor-linkinspector-title-add": "添加链接",
