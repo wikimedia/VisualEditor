@@ -48,9 +48,8 @@
 	flex: 1;
 }
 
-.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup:not( .ve-ui-toolbar-group-back ) {
-	/* Remove borders, unless a 'back' group is defined, in which case it is not part of the editing tools */
-	border-right: 0;
+.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .ve-ui-toolbar-group-back {
+	border-right: 1px solid #eaecf0;
 }
 
 .ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-toolGroup-empty {
