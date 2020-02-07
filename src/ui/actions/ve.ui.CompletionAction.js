@@ -102,7 +102,7 @@ ve.ui.CompletionAction.prototype.insertCompletion = function ( data, range ) {
 ve.ui.CompletionAction.prototype.shouldAbandon = function ( input, matches ) {
 	// abandon after adding whitespace if there are no active potential matches
 	return matches === ( this.constructor.static.alwaysIncludeInput ? 1 : 0 ) &&
-		!!( input[ input.length - 1 ] && input[ input.length - 1 ].match( /\s/ ) );
+		!!( input && input.match( /\s$/ ) );
 };
 
 // helpers
