@@ -222,7 +222,11 @@ ve.init.Target.static.importRules = {
 			// remove: { '.selectorToRemove': true }
 			unwrap: {
 				fieldset: true,
-				legend: true
+				legend: true,
+				// Unsupported sectioning tags
+				main: true,
+				nav: true,
+				aside: true
 			}
 		},
 		nodeSanitization: true
