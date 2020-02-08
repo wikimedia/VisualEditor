@@ -149,6 +149,11 @@ ve.ce.BranchNode.prototype.updateTagName = function () {
 		// Give subclasses the opportunity to touch the new element
 		this.initialize();
 		this.emit( 'setup' );
+
+		// TODO fix the use of ve.ce.DocumentNode and getSurface
+		if ( this.root instanceof ve.ce.DocumentNode ) {
+			this.root.getSurface().setContentBranchNodeChanged();
+		}
 	}
 };
 
