@@ -23,7 +23,8 @@
 			"Meno25",
 			"ASHmed",
 			"ديفيد",
-			"Sonic N800"
+			"Sonic N800",
+			"علاء"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -206,8 +207,8 @@
 	"visualeditor-table-contextitem-properties": "خصائص",
 	"visualeditor-table-contextitem-selectionmode-cells": "حدد الخلايا",
 	"visualeditor-table-contextitem-selectionmode-contents": "حدد المحتويات",
-	"visualeditor-table-delete-col": "حذف {{PLURAL:$1||العامود|العامودين|الأعمدة}}",
-	"visualeditor-table-delete-row": "حذف {{PLURAL:$1|السطر|السطرين|الأسطر}}",
+	"visualeditor-table-delete-col": "حذف {{PLURAL:$1||العامود|الأعمدة}}",
+	"visualeditor-table-delete-row": "حذف {{PLURAL:$1|السطر|الأسطر}}",
 	"visualeditor-table-format-data": "خلية مضمون",
 	"visualeditor-table-format-header": "خلية عنوان",
 	"visualeditor-table-insert-col-after": "إدراج بعد",
