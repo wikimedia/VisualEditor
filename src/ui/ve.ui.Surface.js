@@ -509,12 +509,12 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen.
 	clientRect = selection.getSelectionFocusRect();
-	if ( !clientRect ) {
+	surfaceRect = this.getBoundingClientRect();
+	if ( !clientRect || !surfaceRect ) {
 		return;
 	}
 
 	// We want viewport-relative coordinates, so we need to translate it
-	surfaceRect = this.getBoundingClientRect();
 	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
 
 	padding = ve.copy( this.padding );
