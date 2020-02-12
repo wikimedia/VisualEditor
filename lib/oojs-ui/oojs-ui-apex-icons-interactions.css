@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.36.4
+ * OOUI v0.36.5
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-05T19:37:21Z
+ * Date: 2020-02-12T17:46:42Z
  */
 .oo-ui-icon-add {
   background-image: url('themes/wikimediaui/images/icons/add.png');
@@ -84,6 +84,10 @@
   background-image: url('themes/wikimediaui/images/icons/helpNotice-ltr.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/helpNotice-ltr.svg');
 }
+.oo-ui-icon-home {
+  background-image: url('themes/wikimediaui/images/icons/home.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/home.svg');
+}
 .oo-ui-icon-key {
   background-image: url('themes/wikimediaui/images/icons/key.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/key.svg');
@@ -95,6 +99,10 @@
 .oo-ui-icon-lightbulb {
   background-image: url('themes/wikimediaui/images/icons/lightbulb.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lightbulb.svg');
+}
+.oo-ui-icon-logIn {
+  background-image: url('themes/wikimediaui/images/icons/logIn-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/logIn-ltr.svg');
 }
 .oo-ui-icon-logOut {
   background-image: url('themes/wikimediaui/images/icons/logOut-ltr.png');

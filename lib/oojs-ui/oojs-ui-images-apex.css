@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.36.4
+ * OOUI v0.36.5
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-05T19:37:21Z
+ * Date: 2020-02-12T17:46:42Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -267,6 +267,10 @@
   background-image: url('themes/wikimediaui/images/icons/helpNotice-ltr.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/helpNotice-ltr.svg');
 }
+.oo-ui-icon-home {
+  background-image: url('themes/wikimediaui/images/icons/home.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/home.svg');
+}
 .oo-ui-icon-key {
   background-image: url('themes/wikimediaui/images/icons/key.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/key.svg');
@@ -278,6 +282,10 @@
 .oo-ui-icon-lightbulb {
   background-image: url('themes/wikimediaui/images/icons/lightbulb.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/lightbulb.svg');
+}
+.oo-ui-icon-logIn {
+  background-image: url('themes/wikimediaui/images/icons/logIn-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/logIn-ltr.svg');
 }
 .oo-ui-icon-logOut {
   background-image: url('themes/wikimediaui/images/icons/logOut-ltr.png');
@@ -1133,17 +1141,33 @@
   background-image: url('themes/wikimediaui/images/icons/menu.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/menu.svg');
 }
+.oo-ui-icon-recentChanges {
+  background-image: url('themes/wikimediaui/images/icons/recentChanges-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/recentChanges-ltr.svg');
+}
 .oo-ui-icon-stripeFlow {
-  background-image: url('themes/wikimediaui/images/icons/stripeFlow-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/stripeFlow-ltr.svg');
+  background-image: url('themes/wikimediaui/images/icons/textFlow-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textFlow-ltr.svg');
 }
 .oo-ui-icon-stripeSummary {
-  background-image: url('themes/wikimediaui/images/icons/stripeSummary-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/stripeSummary-ltr.svg');
+  background-image: url('themes/wikimediaui/images/icons/textSummary-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textSummary-ltr.svg');
 }
 .oo-ui-icon-stripeToC {
-  background-image: url('themes/wikimediaui/images/icons/stripeToC-ltr.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/stripeToC-ltr.svg');
+  background-image: url('themes/wikimediaui/images/icons/toc-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-ltr.svg');
+}
+.oo-ui-icon-textFlow {
+  background-image: url('themes/wikimediaui/images/icons/textFlow-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textFlow-ltr.svg');
+}
+.oo-ui-icon-textSummary {
+  background-image: url('themes/wikimediaui/images/icons/textSummary-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textSummary-ltr.svg');
+}
+.oo-ui-icon-toc {
+  background-image: url('themes/wikimediaui/images/icons/toc-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-ltr.svg');
 }
 .oo-ui-icon-viewCompact {
   background-image: url('themes/wikimediaui/images/icons/viewCompact.png');
