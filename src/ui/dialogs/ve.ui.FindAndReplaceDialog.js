@@ -72,6 +72,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		}( this ) ),
 		tabIndex: 1
 	} );
+	this.findText.$input.attr( 'aria-label', ve.msg( 'visualeditor-find-and-replace-find-text' ) );
 	this.updateUserConfigDebounced = ve.debounce( this.updateUserConfig.bind( this ), 500 );
 
 	this.previousButton = new OO.ui.ButtonWidget( {
@@ -118,6 +119,8 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 		value: ve.userConfig( 'visualeditor-findAndReplace-replaceText' ),
 		tabIndex: 1
 	} );
+	this.replaceText.$input.attr( 'aria-label', ve.msg( 'visualeditor-find-and-replace-replace-text' ) );
+
 	this.replaceButton = new OO.ui.ButtonWidget( {
 		label: ve.msg( 'visualeditor-find-and-replace-replace-button' ),
 		tabIndex: 1
@@ -203,6 +206,12 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 				doneButton.$element
 			)
 		);
+
+	this.$element.attr( 'aria-label', OO.ui.deferMsg( 'visualeditor-find-and-replace-title' ) );
+
+	// The aria-labelledby attribute is generated when the dialog is display, it references an 'id' that doesn't exist.
+	// A better way of removing this attribute is highly welcome.
+	this.$element.removeAttr( 'aria-labelledby' );
 };
 
 /**
