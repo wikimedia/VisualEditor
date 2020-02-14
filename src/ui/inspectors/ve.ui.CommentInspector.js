@@ -55,6 +55,7 @@ ve.ui.CommentInspector.prototype.initialize = function () {
 		autosize: true
 	} );
 	this.textWidget.connect( this, { resize: 'updateSize' } );
+	this.textWidget.$input.attr( 'aria-label', OO.ui.deferMsg( 'visualeditor-commentinspector-title' ) );
 
 	this.$content.addClass( 've-ui-commentInspector-content' );
 	this.form.$element.append( this.textWidget.$element );
