@@ -356,7 +356,12 @@ ve.ce.Surface.static.cursorHolderTemplate =
 			// bug https://bugzilla.mozilla.org/show_bug.cgi?id=989012 , because
 			// you can cursor to ce=false blocks in Firefox (see bug
 			// https://bugzilla.mozilla.org/show_bug.cgi?id=1155031 )
-			$( '<img>' ).addClass( 've-ce-cursorHolder-img' )
+			$( '<img>' )
+				.addClass( 've-ce-cursorHolder-img' )
+				.attr( {
+					role: 'none',
+					alt: ''
+				} )
 		)
 		.get( 0 );
 
