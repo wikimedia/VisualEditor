@@ -258,15 +258,15 @@ ve.ce.ResizableNode.prototype.onResizableFocus = function () {
 
 	this.$resizeHandles
 		.find( '.ve-ce-resizableNode-neHandle' )
-		.css( { marginRight: -this.$resizable.width() } );
+		.css( { marginRight: -this.$resizable.outerWidth() } );
 	this.$resizeHandles
 		.find( '.ve-ce-resizableNode-swHandle' )
-		.css( { marginBottom: -this.$resizable.height() } );
+		.css( { marginBottom: -this.$resizable.outerHeight() } );
 	this.$resizeHandles
 		.find( '.ve-ce-resizableNode-seHandle' )
 		.css( {
-			marginRight: -this.$resizable.width(),
-			marginBottom: -this.$resizable.height()
+			marginRight: -this.$resizable.outerWidth(),
+			marginBottom: -this.$resizable.outerHeight()
 		} );
 
 	this.$resizeHandles.children()
@@ -399,8 +399,8 @@ ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	this.$resizeHandles
 		.addClass( 've-ce-resizableNode-handles-resizing' )
 		.css( {
-			width: this.$resizable.width(),
-			height: this.$resizable.height()
+			width: this.$resizable.outerWidth(),
+			height: this.$resizable.outerHeight()
 		} );
 
 	this.$resizeHandles.children().css( 'margin', 0 );
@@ -443,8 +443,8 @@ ve.ce.ResizableNode.prototype.setResizableHandlesSizeAndPosition = function () {
 		return;
 	}
 
-	width = this.$resizable.width();
-	height = this.$resizable.height();
+	width = this.$resizable.outerWidth();
+	height = this.$resizable.outerHeight();
 
 	// Clear cached resizable offset position as it may have changed
 	this.resizableOffset = null;
