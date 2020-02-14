@@ -61,6 +61,9 @@ ve.ui.ToolbarDialog.prototype.initialize = function () {
 	if ( this.constructor.static.padded ) {
 		this.$element.addClass( 've-ui-toolbarDialog-padded' );
 	}
+	// Invisible title for accessibility
+	this.title.setInvisibleLabel( true );
+	this.$element.prepend( this.title.$element );
 };
 
 /**

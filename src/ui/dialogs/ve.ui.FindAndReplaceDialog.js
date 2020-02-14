@@ -27,6 +27,10 @@ OO.inheritClass( ve.ui.FindAndReplaceDialog, ve.ui.ToolbarDialog );
 
 ve.ui.FindAndReplaceDialog.static.name = 'findAndReplace';
 
+// Invisible title for accessibility
+ve.ui.FindAndReplaceDialog.static.title =
+	OO.ui.deferMsg( 'visualeditor-find-and-replace-title' );
+
 ve.ui.FindAndReplaceDialog.static.handlesSource = true;
 
 /**
@@ -206,12 +210,6 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 				doneButton.$element
 			)
 		);
-
-	this.$element.attr( 'aria-label', OO.ui.deferMsg( 'visualeditor-find-and-replace-title' ) );
-
-	// The aria-labelledby attribute is generated when the dialog is display, it references an 'id' that doesn't exist.
-	// A better way of removing this attribute is highly welcome.
-	this.$element.removeAttr( 'aria-labelledby' );
 };
 
 /**
