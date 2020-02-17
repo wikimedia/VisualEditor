@@ -70,6 +70,7 @@
 	"visualeditor-command-dialog-cancel": "Закрити / скасувати зміни",
 	"visualeditor-command-dialog-confirm": "Підтвердити зміни",
 	"visualeditor-command-dialog-focus-context": "Перемістити фокус на контекстне спливне вікно",
+	"visualeditor-commentannotationcontextitem-comment": "Коментар",
 	"visualeditor-commentinspector-edit": "Редагувати коментар",
 	"visualeditor-commentinspector-title": "Коментар",
 	"visualeditor-commentinspector-tooltip": "Коментар",
