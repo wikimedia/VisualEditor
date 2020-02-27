@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"JinJian"
+			"JinJian",
+			"Harvzsf"
 		]
 	},
 	"visualeditor-aliencontextitem-title": "Item",
@@ -18,7 +19,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Subscript",
 	"visualeditor-annotationbutton-superscript-tooltip": "Superscript",
 	"visualeditor-annotationbutton-underline-tooltip": "Underline",
-	"visualeditor-clearbutton-tooltip": "Clear styling",
+	"visualeditor-clearbutton-tooltip": "Tanggala",
 	"visualeditor-clipboard-copy": "Kopyaha",
 	"visualeditor-clipboard-cut": "Ig-utod",
 	"visualeditor-clipboard-paste": "Padikta",
