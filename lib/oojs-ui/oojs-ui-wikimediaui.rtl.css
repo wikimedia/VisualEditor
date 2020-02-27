@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.36.5
+ * OOUI v0.37.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-12T17:46:42Z
+ * Date: 2020-02-27T02:13:00Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -504,6 +504,14 @@
   clear: both;
 }
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-left > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header,
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-right > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-left > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header,
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-right > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header,
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-left > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-help,
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-right > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-help,
@@ -514,6 +522,13 @@
 }
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-right > .oo-ui-fieldLayout-body > .oo-ui-fieldLayout-header {
   text-align: left;
+}
+.oo-ui-fieldLayout.oo-ui-fieldLayout-align-inline {
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
 }
 .oo-ui-fieldLayout.oo-ui-fieldLayout-align-inline > .oo-ui-fieldLayout-body {
   display: table;
@@ -753,7 +768,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   bottom: 0;
 }
 .oo-ui-panelLayout-padded {
-  padding: 16px;
+  padding: 12px 16px 16px;
 }
 .oo-ui-panelLayout-padded.oo-ui-formLayout > .oo-ui-fieldsetLayout .oo-ui-labelElement-label,
 .oo-ui-panelLayout-padded.oo-ui-formLayout > .oo-ui-fieldsetLayout .oo-ui-iconElement-icon {
@@ -872,7 +887,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   white-space: normal;
 }
 .oo-ui-radioOptionWidget:first-child {
-  margin-top: -4px;
+  padding-top: 0;
 }
 .oo-ui-radioOptionWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
   padding-right: 6px;
@@ -1358,7 +1373,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding: 4px 0;
 }
 .oo-ui-checkboxMultiselectInputWidget .oo-ui-fieldLayout:first-child {
-  margin-top: -4px;
+  padding-top: 0;
 }
 
 .oo-ui-dropdownInputWidget {
@@ -1560,7 +1575,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   padding: 4px 0;
 }
 .oo-ui-radioSelectInputWidget .oo-ui-fieldLayout:first-child {
-  margin-top: -4px;
+  padding-top: 0;
 }
 
 .oo-ui-textInputWidget {
@@ -2057,7 +2072,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   white-space: normal;
 }
 .oo-ui-checkboxMultioptionWidget:first-child {
-  margin-top: -4px;
+  padding-top: 0;
 }
 .oo-ui-checkboxMultioptionWidget.oo-ui-labelElement > .oo-ui-labelElement-label {
   padding-right: 6px;
@@ -2233,14 +2248,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.36.5
+ * OOUI v0.37.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-12T17:46:42Z
+ * Date: 2020-02-27T02:13:00Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -3259,7 +3274,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-searchWidget-query {
   height: 4em;
-  padding: 0 16px;
+  padding: 0 16px 16px 12px;
   border-bottom: 1px solid #c8ccd1;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
@@ -3268,19 +3283,19 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-searchWidget-results {
   top: 4em;
-  padding: 16px;
+  padding: 12px 16px 16px;
   line-height: 0;
 }
 
 /*!
- * OOUI v0.36.5
+ * OOUI v0.37.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-12T17:46:42Z
+ * Date: 2020-02-27T02:13:00Z
  */
 .oo-ui-tool {
   -webkit-box-sizing: border-box;
@@ -3970,14 +3985,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.36.5
+ * OOUI v0.37.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-12T17:46:42Z
+ * Date: 2020-02-27T02:13:00Z
  */
 
 .oo-ui-window {
@@ -4106,7 +4121,8 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-messageDialog-actions .oo-ui-actionWidget .oo-ui-buttonElement-button {
   border: 0;
   border-radius: 0;
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .oo-ui-messageDialog-actions .oo-ui-actionWidget.oo-ui-labelElement .oo-ui-labelElement-label {
   line-height: 2.85714286em;
@@ -4399,14 +4415,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.36.5
+ * OOUI v0.37.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-12T17:46:42Z
+ * Date: 2020-02-27T02:13:00Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-rtl.png');
@@ -5543,18 +5559,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-progressive.oo-ui-icon-trash {
   background-image: url('themes/wikimediaui/images/icons/trash-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/trash-progressive.svg');
-}
-.oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/restore.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/restore.svg');
-}
-.oo-ui-image-invert.oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/restore-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/restore-invert.svg');
-}
-.oo-ui-image-progressive.oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/restore-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/restore-progressive.svg');
 }
 .oo-ui-icon-pushPin {
   background-image: url('themes/wikimediaui/images/icons/pushPin.png');
@@ -6968,18 +6972,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: url('themes/wikimediaui/images/icons/attachment-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/attachment-progressive.svg');
 }
-.oo-ui-icon-beaker {
-  background-image: url('themes/wikimediaui/images/icons/labFlask.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/labFlask.svg');
-}
-.oo-ui-image-invert.oo-ui-icon-beaker {
-  background-image: url('themes/wikimediaui/images/icons/labFlask-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/labFlask-invert.svg');
-}
-.oo-ui-image-progressive.oo-ui-icon-beaker {
-  background-image: url('themes/wikimediaui/images/icons/labFlask-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/labFlask-progressive.svg');
-}
 .oo-ui-icon-calendar {
   background-image: url('themes/wikimediaui/images/icons/calendar.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/calendar.svg');
@@ -7886,16 +7878,16 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textSummary-rtl-progressive.svg');
 }
 .oo-ui-icon-stripeToC {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-stripeToC {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-stripeToC {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl-progressive.svg');
 }
 .oo-ui-icon-textFlow {
   background-image: url('themes/wikimediaui/images/icons/textFlow-rtl.png');
@@ -7922,16 +7914,16 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textSummary-rtl-progressive.svg');
 }
 .oo-ui-icon-toc {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-toc {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl-invert.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl-invert.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-toc {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl-progressive.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl-progressive.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl-progressive.svg');
 }
 .oo-ui-icon-viewCompact {
   background-image: url('themes/wikimediaui/images/icons/viewCompact.png');

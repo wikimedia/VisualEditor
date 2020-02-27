@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.36.5
+ * OOUI v0.37.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-12T17:46:42Z
+ * Date: 2020-02-27T02:13:00Z
  */
 .oo-ui-icon-bookmarkOutline {
   background-image: url('themes/wikimediaui/images/icons/bookmarkOutline.png');
@@ -59,10 +59,6 @@
 .oo-ui-icon-trash {
   background-image: url('themes/wikimediaui/images/icons/trash.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/trash.svg');
-}
-.oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/restore.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/restore.svg');
 }
 .oo-ui-icon-pushPin {
   background-image: url('themes/wikimediaui/images/icons/pushPin.png');

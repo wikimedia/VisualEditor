@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.36.5
+ * OOUI v0.37.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-12T17:46:42Z
+ * Date: 2020-02-27T02:13:00Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-rtl.png');
@@ -371,10 +371,6 @@
 .oo-ui-icon-trash {
   background-image: url('themes/wikimediaui/images/icons/trash.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/trash.svg');
-}
-.oo-ui-icon-unTrash {
-  background-image: url('themes/wikimediaui/images/icons/restore.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/restore.svg');
 }
 .oo-ui-icon-pushPin {
   background-image: url('themes/wikimediaui/images/icons/pushPin.png');
@@ -848,10 +844,6 @@
   background-image: url('themes/wikimediaui/images/icons/attachment.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/attachment.svg');
 }
-.oo-ui-icon-beaker {
-  background-image: url('themes/wikimediaui/images/icons/labFlask.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/labFlask.svg');
-}
 .oo-ui-icon-calendar {
   background-image: url('themes/wikimediaui/images/icons/calendar.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/calendar.svg');
@@ -1154,8 +1146,8 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textSummary-rtl.svg');
 }
 .oo-ui-icon-stripeToC {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl.svg');
 }
 .oo-ui-icon-textFlow {
   background-image: url('themes/wikimediaui/images/icons/textFlow-rtl.png');
@@ -1166,8 +1158,8 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/textSummary-rtl.svg');
 }
 .oo-ui-icon-toc {
-  background-image: url('themes/wikimediaui/images/icons/toc-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/toc-rtl.svg');
+  background-image: url('themes/wikimediaui/images/icons/listBullet-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/listBullet-rtl.svg');
 }
 .oo-ui-icon-viewCompact {
   background-image: url('themes/wikimediaui/images/icons/viewCompact.png');
