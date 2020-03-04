@@ -1627,7 +1627,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							// element between this element and the previous sibling
 							// wrapper or parent node
 							doUnwrap = true;
-							previousSiblings = domElement.parentElement.childNodes;
+							previousSiblings = domElement.parentNode.childNodes;
 							// Note: previousSiblings includes the current element
 							// so we only go up to length - 2
 							for ( j = previousSiblings.length - 2; j >= 0; j-- ) {
