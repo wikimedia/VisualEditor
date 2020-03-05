@@ -41,10 +41,14 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 		this.closeButton = new OO.ui.ButtonWidget( {
 			classes: [ 've-ui-linearContextItem-close' ],
 			framed: false,
+			label: ve.msg( 'visualeditor-contextitemwidget-label-close' ),
+			invisibleLabel: true,
 			icon: 'close'
 		} );
 		this.editButton = new OO.ui.ButtonWidget( {
 			framed: false,
+			label: ve.msg( this.isReadOnly() ? 'visualeditor-contextitemwidget-label-view' : 'visualeditor-contextitemwidget-label-secondary' ),
+			invisibleLabel: true,
 			icon: this.isReadOnly() ? 'eye' : 'edit',
 			flags: [ 'progressive' ]
 		} );
@@ -225,7 +229,7 @@ ve.ui.LinearContextItem.prototype.setup = function () {
 
 	isEmpty = this.$body.is( ':empty' );
 	if ( isEmpty && this.context.isMobile() ) {
-		this.deleteButton.setLabel( null );
+		this.deleteButton.setInvisibleLabel( true );
 		if ( this.isDeletable() ) {
 			this.$head.append( this.deleteButton.$element );
 		}

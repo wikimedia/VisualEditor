@@ -81,6 +81,7 @@
 	"visualeditor-commentinspector-title": "Label for the title in the comment inspector.\nSee [https://i.imgur.com/OFQvrZo.png screenshot].\n{{Identical|Comment}}",
 	"visualeditor-commentinspector-tooltip": "Tooltip text for comment button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Comment}}",
 	"visualeditor-content-select-all": "Label for select all command.\n{{Identical|Select all}}",
+	"visualeditor-contextitemwidget-label-close": "Label for the close button on a context item on mobile.",
 	"visualeditor-contextitemwidget-label-remove": "Label for the remove action on a context item.\n{{Identical|Delete}}",
 	"visualeditor-contextitemwidget-label-secondary": "Label for the edit action on a context item.\n{{Identical|Edit}}",
 	"visualeditor-contextitemwidget-label-view": "Label for the view action on a context item, when the surface is in read-only mode.",

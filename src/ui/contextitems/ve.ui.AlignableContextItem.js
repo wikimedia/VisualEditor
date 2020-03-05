@@ -30,7 +30,7 @@ ve.ui.AlignableContextItem = function VeUiAlignableContextItem( context, model, 
 
 	if ( OO.ui.isMobile() ) {
 		this.align.items.forEach( function ( item ) {
-			item.setLabel( null );
+			item.setInvisibleLabel( true );
 		} );
 	}
 

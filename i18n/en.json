@@ -67,6 +67,7 @@
 	"visualeditor-commentinspector-title": "Comment",
 	"visualeditor-commentinspector-tooltip": "Comment",
 	"visualeditor-content-select-all": "Select all",
+	"visualeditor-contextitemwidget-label-close": "Close",
 	"visualeditor-contextitemwidget-label-remove": "Delete",
 	"visualeditor-contextitemwidget-label-secondary": "Edit",
 	"visualeditor-contextitemwidget-label-view": "View",
