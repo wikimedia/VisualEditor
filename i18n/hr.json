@@ -6,7 +6,8 @@
 			"SpeedyGonsales",
 			"Zeljko.filipin",
 			"Bugoslav",
-			"Wumbolo"
+			"Wumbolo",
+			"Neptune, the Mystic"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -54,6 +55,7 @@
 	"visualeditor-commentinspector-title": "Komentar",
 	"visualeditor-commentinspector-tooltip": "Komentar",
 	"visualeditor-content-select-all": "Odaberi sve",
+	"visualeditor-contextitemwidget-label-close": "Zatvori",
 	"visualeditor-contextitemwidget-label-remove": "Izbriši",
 	"visualeditor-contextitemwidget-label-secondary": "Uredi",
 	"visualeditor-debugbar-close": "Zatvori",

@@ -40,7 +40,8 @@
 			"Alno",
 			"Epok",
 			"Pols12",
-			"Thibaut120094"
+			"Thibaut120094",
+			"MichelotFlorent"
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
@@ -94,6 +95,7 @@
 	"visualeditor-commentinspector-title": "Commentaire",
 	"visualeditor-commentinspector-tooltip": "Commentaire",
 	"visualeditor-content-select-all": "Tout sélectionner",
+	"visualeditor-contextitemwidget-label-close": "Fermer",
 	"visualeditor-contextitemwidget-label-remove": "Supprimer",
 	"visualeditor-contextitemwidget-label-secondary": "Modifier",
 	"visualeditor-contextitemwidget-label-view": "Voir",

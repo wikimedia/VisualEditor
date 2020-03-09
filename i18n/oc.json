@@ -3,7 +3,8 @@
 		"authors": [
 			"Cedric31",
 			"Gloria sah",
-			"Jfblanc"
+			"Jfblanc",
+			"Quentí"
 		]
 	},
 	"visualeditor": "EditorVisual",
@@ -33,6 +34,7 @@
 	"visualeditor-commentinspector-title": "Comentari",
 	"visualeditor-commentinspector-tooltip": "Comentari",
 	"visualeditor-content-select-all": "Seleccionar tot",
+	"visualeditor-contextitemwidget-label-close": "Tampar",
 	"visualeditor-contextitemwidget-label-remove": "Suprimir",
 	"visualeditor-contextitemwidget-label-secondary": "Modificar",
 	"visualeditor-debugbar-close": "Tampar",
