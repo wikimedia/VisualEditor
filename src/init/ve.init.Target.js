@@ -493,7 +493,9 @@ ve.init.Target.prototype.onToolbarResize = function () {
  * @return {ve.ui.TargetWidget}
  */
 ve.init.Target.prototype.createTargetWidget = function ( config ) {
-	return new ve.ui.TargetWidget( config );
+	return new ve.ui.TargetWidget( ve.extendObject( {
+		toolbarGroups: this.toolbarGroups
+	}, config ) );
 };
 
 /**

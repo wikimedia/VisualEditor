@@ -19,7 +19,7 @@
  * @cfg {ve.dm.Document} [doc] Initial document model
  * @cfg {Object} [modes] Available editing modes.
  * @cfg {Object} [defaultMode] Default mode for new surfaces.
- * @cfg {Object} [toolbarGroups] Target's toolbar groups config, defaults to the current target's.
+ * @cfg {Object} [toolbarGroups] Target's toolbar groups config.
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
  * @cfg {Object} [importRules] Import rules
@@ -36,7 +36,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 	ve.ui.TargetWidget.super.call( this, config );
 
 	// Properties
-	this.toolbarGroups = config.toolbarGroups || ( ve.init.target && ve.init.target.toolbarGroups );
+	this.toolbarGroups = config.toolbarGroups;
 	// TODO: Override document/targetTriggerListener
 	this.includeCommands = config.includeCommands;
 	this.excludeCommands = config.excludeCommands;
