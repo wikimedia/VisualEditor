@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Dr Lotus Black",
-			"Ninjastrikers"
+			"Ninjastrikers",
+			"သူထွန်း"
 		]
 	},
 	"visualeditor-align-desc-center": "အလယ်",
@@ -36,6 +37,7 @@
 	"visualeditor-commentinspector-title": "မှတ်ချက်",
 	"visualeditor-commentinspector-tooltip": "မှတ်ချက်",
 	"visualeditor-content-select-all": "အားလုံးကိုရွေးချယ်",
+	"visualeditor-contextitemwidget-label-close": "ပိတ်ရန်",
 	"visualeditor-contextitemwidget-label-remove": "ဖျက်",
 	"visualeditor-contextitemwidget-label-secondary": "ပြင်ဆင်",
 	"visualeditor-contextitemwidget-label-view": "ကြည့်ရန်",
