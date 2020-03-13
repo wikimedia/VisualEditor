@@ -192,6 +192,7 @@
 	"visualeditor-corrupted-document-title": "Title for the corrupted document alert",
 	"visualeditor-missing-document-error": "Error message shown when a document is missing on the rebase server",
 	"visualeditor-missing-document-title": "Title for the missing document alert",
+	"visualeditor-pagemenu-tooltip": "Tooltip text for the page menu which has the following items:\n* {{msg-mw|visualeditor-meta-tool}}\n* {{msg-mw|visualeditor-settings-tool}}\n* {{msg-mw|visualeditor-advancedsettings-tool}}\n* {{msg-mw|visualeditor-categories-tool}}\n* {{msg-mw|visualeditor-languages-tool}}\n* {{msg-mw|visualeditor-dialog-command-help-title}}",
 	"visualeditor-rebase-client-author-name": "Label for the input to set or change the user's account display name.\n{{Identical|Name}}",
 	"visualeditor-rebase-client-connecting": "Title of progress bar shown while waiting to connect to the rebase server",
 	"visualeditor-rebase-client-document-name": "Label for document name input",

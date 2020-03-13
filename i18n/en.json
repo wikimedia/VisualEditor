@@ -178,6 +178,7 @@
 	"visualeditor-corrupted-document-title": "Corrupted document",
 	"visualeditor-missing-document-error": "Document missing on server. To avoid data loss, copy and paste the contents.",
 	"visualeditor-missing-document-title": "Missing document",
+	"visualeditor-pagemenu-tooltip": "Page options",
 	"visualeditor-rebase-client-author-name": "Name",
 	"visualeditor-rebase-client-connecting": "Connecting...",
 	"visualeditor-rebase-client-document-name": "Document name (optional)",
