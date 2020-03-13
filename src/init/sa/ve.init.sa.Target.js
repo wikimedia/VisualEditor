@@ -53,6 +53,8 @@ ve.init.sa.Target.static.actionGroups = [
 		icon: 'menu',
 		indicator: null,
 		title: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
+		label: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
+		invisibleLabel: true,
 		include: [ 'findAndReplace', 'changeDirectionality', 'commandHelp' ]
 	}
 ];

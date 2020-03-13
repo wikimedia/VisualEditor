@@ -36,6 +36,8 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		name: 'style',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
+		label: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
+		invisibleLabel: true,
 		type: 'list',
 		icon: 'textStyle',
 		include: [ { group: 'textStyle' }, 'language', 'clear' ],
@@ -51,6 +53,8 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		name: 'structure',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
+		label: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
+		invisibleLabel: true,
 		type: 'list',
 		icon: 'listBullet',
 		include: [ { group: 'structure' } ],
@@ -60,9 +64,10 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		name: 'insert',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		label: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		invisibleLabel: true,
 		type: 'list',
 		icon: 'add',
-		label: '',
 		include: '*'
 	}
 ];

@@ -142,6 +142,8 @@ ve.init.Target.static.toolbarGroups = [
 		name: 'structure',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
+		label: OO.ui.deferMsg( 'visualeditor-toolbar-structure' ),
+		invisibleLabel: true,
 		type: 'list',
 		icon: 'listBullet',
 		include: [ { group: 'structure' } ],
@@ -151,9 +153,10 @@ ve.init.Target.static.toolbarGroups = [
 		name: 'insert',
 		header: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		label: OO.ui.deferMsg( 'visualeditor-toolbar-insert' ),
+		invisibleLabel: true,
 		type: 'list',
 		icon: 'add',
-		label: '',
 		include: '*'
 	},
 	{
