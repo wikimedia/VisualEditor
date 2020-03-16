@@ -227,6 +227,24 @@ ve.init.Platform.prototype.addMessages = null;
 ve.init.Platform.prototype.getMessage = null;
 
 /**
+ * Parse a string into a number
+ *
+ * @abstract
+ * @param {string} value String to be converted
+ * @return {number} Number value, NaN if not a number
+ */
+ve.init.Platform.prototype.parseNumber = null;
+
+/**
+ * For a number as a string
+ *
+ * @abstract
+ * @param {number} number Number to be formatted
+ * @return {string} Formatted number
+ */
+ve.init.Platform.prototype.formatNumber = null;
+
+/**
  * Get an HTML message from the localization system, with HTML or DOM arguments
  *
  * @abstract

@@ -594,6 +594,7 @@
 			"src/ui/contextitems/ve.ui.ToolContextItem.js",
 			"src/ui/contextitems/ve.ui.TableContextItem.js",
 			"src/ui/contextitems/ve.ui.MergeCellsContextItem.js",
+			"src/ui/contextitems/ve.ui.SumCellsContextItem.js",
 			"src/ui/ve.ui.Tool.js",
 			"src/ui/ve.ui.Toolbar.js",
 			"src/ui/ve.ui.TargetToolbar.js",

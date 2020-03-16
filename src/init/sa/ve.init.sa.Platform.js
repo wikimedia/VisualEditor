@@ -122,6 +122,23 @@ ve.init.sa.Platform.prototype.addMessages = function ( messages ) {
 ve.init.sa.Platform.prototype.getMessage = $.i18n;
 
 /**
+ * @method
+ * @inheritdoc
+ */
+ve.init.sa.Platform.prototype.parseNumber = function ( value ) {
+	// TODO: Support separated numbers such as (en)123,456.78 or (fr)123.456,78
+	return +value;
+};
+
+/**
+ * @method
+ * @inheritdoc
+ */
+ve.init.sa.Platform.prototype.formatNumber = function ( number ) {
+	return number.toLocaleString();
+};
+
+/**
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.getHtmlMessage = function ( key ) {
