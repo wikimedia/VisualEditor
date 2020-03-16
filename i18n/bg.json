@@ -170,6 +170,7 @@
 	"visualeditor-corrupted-document-title": "Повреден документ",
 	"visualeditor-missing-document-error": "Документът не е на сървъра. За да избегнете загуба на данни, копирайте и поставете съдържанието.",
 	"visualeditor-missing-document-title": "Липсващ документ",
+	"visualeditor-pagemenu-tooltip": "Настройки на страницата",
 	"visualeditor-rebase-client-author-name": "Име",
 	"visualeditor-rebase-client-connecting": "Свързване...",
 	"visualeditor-rebase-client-document-name": "Име на документа (незадължително)",

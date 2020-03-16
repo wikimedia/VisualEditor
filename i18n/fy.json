@@ -165,6 +165,7 @@
 	"visualeditor-corrupted-document-title": "Skansearre dokumint",
 	"visualeditor-missing-document-error": "It dokumint ûntbrekt op 'e server. Kopiearje en plak de ynhâld om gjin gegevens kwyt te reitsjen.",
 	"visualeditor-missing-document-title": "Untbrekkend dokumint",
+	"visualeditor-pagemenu-tooltip": "Side-opsjes",
 	"visualeditor-rebase-client-author-name": "Namme",
 	"visualeditor-rebase-client-connecting": "Ferbinen ...",
 	"visualeditor-rebase-client-document-name": "Dokumintnamme (net ferplichte)",

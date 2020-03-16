@@ -168,6 +168,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Размера",
 	"visualeditor-missing-document-error": "Документ недостаје на серверу. Да бисте избегли губитак података, копирајте и налепите садржај.",
 	"visualeditor-missing-document-title": "Недостаје документ",
+	"visualeditor-pagemenu-tooltip": "Опције странице",
 	"visualeditor-rebase-client-author-name": "Име",
 	"visualeditor-rebase-client-connecting": "Повезивање…",
 	"visualeditor-rebase-client-document-name": "Име документа (опционално)",

@@ -165,6 +165,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Méretarány",
 	"visualeditor-missing-document-error": "A dokumentum hiányzik a szerveren. Az adatvesztés elkerülése érdekében másold ki valahová tartalmát.",
 	"visualeditor-missing-document-title": "Hiányzó dokumentum",
+	"visualeditor-pagemenu-tooltip": "Lapbeállítások",
 	"visualeditor-rebase-client-author-name": "Név",
 	"visualeditor-rebase-client-connecting": "Csatlakozás...",
 	"visualeditor-rebase-client-document-name": "Dokumentum neve (nem kötelező)",

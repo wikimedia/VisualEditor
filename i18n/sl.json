@@ -153,6 +153,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Merilo",
 	"visualeditor-missing-document-error": "Dokumenta ni na strežniku. Zavoljo izognitve izgube podatkov kopiraj in prilepi vsebino.",
 	"visualeditor-missing-document-title": "Dokument ni najden",
+	"visualeditor-pagemenu-tooltip": "Možnosti strani",
 	"visualeditor-rebase-client-author-name": "Ime",
 	"visualeditor-rebase-client-connecting": "Povezovanje ...",
 	"visualeditor-rebase-client-document-name": "Ime dokumenta (izbirno)",

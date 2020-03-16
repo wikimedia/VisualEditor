@@ -7,7 +7,8 @@
 			"Albertas",
 			"Zygimantus",
 			"Nersip",
-			"Manvydasz"
+			"Manvydasz",
+			"Reedy"
 		]
 	},
 	"visualeditor": "Vizualus redaktorius",
@@ -123,6 +124,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Mastelis",
 	"visualeditor-corrupted-document-error": "Dokumentas tapo sugadintas: $1",
 	"visualeditor-corrupted-document-title": "Dokumentas sugadintas",
+	"visualeditor-pagemenu-tooltip": "Puslapio parinktys",
 	"visualeditor-rebase-client-author-name": "Vardas",
 	"visualeditor-rebase-client-document-name": "Dokumento pavadinimas (nebūtina)",
 	"visualeditor-rebase-client-document-create-edit": "Kurti/redaguoti",

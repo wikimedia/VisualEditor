@@ -24,7 +24,8 @@
 			"ASHmed",
 			"ديفيد",
 			"Sonic N800",
-			"علاء"
+			"علاء",
+			"NEHAOUA"
 		]
 	},
 	"visualeditor": "المحرر المرئي",
@@ -144,9 +145,9 @@
 	"visualeditor-key-alt": "Alt",
 	"visualeditor-key-backspace": "Backspace",
 	"visualeditor-key-ctrl": "Ctrl",
-	"visualeditor-key-delete": "Delete",
-	"visualeditor-key-down": "Down",
-	"visualeditor-key-end": "End",
+	"visualeditor-key-delete": "حذف",
+	"visualeditor-key-down": "أسفل",
+	"visualeditor-key-end": "النهاية",
 	"visualeditor-key-enter": "Enter",
 	"visualeditor-key-escape": "Escape",
 	"visualeditor-key-home": "Home",
@@ -188,6 +189,7 @@
 	"visualeditor-corrupted-document-title": "وثيقة تالفة",
 	"visualeditor-missing-document-error": "وثيقة مفقودة على الخادم، لتجنب فقدان البيانات; انسخ المحتويات والصقها.",
 	"visualeditor-missing-document-title": "وثيقة مفقودة",
+	"visualeditor-pagemenu-tooltip": "خيارات الصفحة",
 	"visualeditor-rebase-client-author-name": "الاسم",
 	"visualeditor-rebase-client-connecting": "جارٍ التوصيل...",
 	"visualeditor-rebase-client-document-name": "اسم الملف (اختياري)",

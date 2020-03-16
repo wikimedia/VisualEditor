@@ -161,6 +161,7 @@
 	"visualeditor-corrupted-document-title": "Bojāts dokuments",
 	"visualeditor-missing-document-error": "Dokuments nav atrodams uz servera. Lai nezaudētu datus, nokopē un saglabā saturu.",
 	"visualeditor-missing-document-title": "Trūkst dokumenta",
+	"visualeditor-pagemenu-tooltip": "Lapas iespējas",
 	"visualeditor-rebase-client-author-name": "Vārds",
 	"visualeditor-rebase-client-connecting": "Savienojas...",
 	"visualeditor-rebase-client-document-name": "Dokumenta nosaukums (neobligāts)",

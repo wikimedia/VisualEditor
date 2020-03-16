@@ -146,6 +146,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "Per defecte",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Escala",
 	"visualeditor-missing-document-title": "Hi manca el document",
+	"visualeditor-pagemenu-tooltip": "Opcions de la pàgina",
 	"visualeditor-rebase-client-author-name": "Nom",
 	"visualeditor-rebase-client-connecting": "S’està connectant…",
 	"visualeditor-rebase-client-document-name": "Nom del document (opcional)",

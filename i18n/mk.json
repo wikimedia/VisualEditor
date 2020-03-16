@@ -166,6 +166,7 @@
 	"visualeditor-corrupted-document-title": "Оштетен документ",
 	"visualeditor-missing-document-error": "Документот недостасува на опслужувачот. За да избегнете загуба на податоците, прекопирајте ја содржината.",
 	"visualeditor-missing-document-title": "Недостасува документ",
+	"visualeditor-pagemenu-tooltip": "Поставки за страница",
 	"visualeditor-rebase-client-author-name": "Име",
 	"visualeditor-rebase-client-connecting": "Се поврзувам...",
 	"visualeditor-rebase-client-document-name": "Назив на документот (незадол.)",

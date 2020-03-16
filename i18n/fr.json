@@ -205,6 +205,7 @@
 	"visualeditor-corrupted-document-title": "Document corrompu",
 	"visualeditor-missing-document-error": "Document non trouvé sur le serveur. Pour éviter la perte des données, copiez et collez le contenu.",
 	"visualeditor-missing-document-title": "Document absent",
+	"visualeditor-pagemenu-tooltip": "Options de page",
 	"visualeditor-rebase-client-author-name": "Nom",
 	"visualeditor-rebase-client-connecting": "Connexion…",
 	"visualeditor-rebase-client-document-name": "Nom du document (facultatif)",

@@ -173,6 +173,7 @@
 	"visualeditor-corrupted-document-title": "Beskadiget dokument",
 	"visualeditor-missing-document-error": "Dokumentet mangler på serveren. Kopier og indsæt indholdet for at undgå tab af data.",
 	"visualeditor-missing-document-title": "Manglende dokument",
+	"visualeditor-pagemenu-tooltip": "Sideindstillinger",
 	"visualeditor-rebase-client-author-name": "Navn",
 	"visualeditor-rebase-client-connecting": "Tilslutter...",
 	"visualeditor-rebase-client-document-name": "Dokumentnavn (valgfrit)",

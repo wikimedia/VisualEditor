@@ -185,6 +185,7 @@
 	"visualeditor-corrupted-document-title": "Bozuk belge",
 	"visualeditor-missing-document-error": "Sunucuda belge eksik. Veri kaybını önlemek için içeriği kopyalayıp yapıştırın.",
 	"visualeditor-missing-document-title": "Eksik belge",
+	"visualeditor-pagemenu-tooltip": "Sayfa seçenekleri",
 	"visualeditor-rebase-client-author-name": "Ad",
 	"visualeditor-rebase-client-connecting": "Bağlanıyor...",
 	"visualeditor-rebase-client-document-name": "Belge adı (isteğe bağlı)",

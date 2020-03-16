@@ -187,6 +187,7 @@
 	"visualeditor-corrupted-document-title": "已损坏的文件",
 	"visualeditor-missing-document-error": "服务器上缺少文档。为避免数据丢失，请复制粘贴内容。",
 	"visualeditor-missing-document-title": "缺少文档",
+	"visualeditor-pagemenu-tooltip": "页面选项",
 	"visualeditor-rebase-client-author-name": "名称",
 	"visualeditor-rebase-client-connecting": "正在连接...",
 	"visualeditor-rebase-client-document-name": "文档名称（可选）",

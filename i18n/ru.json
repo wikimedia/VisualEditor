@@ -197,6 +197,7 @@
 	"visualeditor-corrupted-document-title": "Поврежденный документ",
 	"visualeditor-missing-document-error": "Документ отсутствует на сервере. Чтобы избежать потери данных, скопируйте и вставьте содержание.",
 	"visualeditor-missing-document-title": "Документ отсутствует",
+	"visualeditor-pagemenu-tooltip": "Параметры страницы",
 	"visualeditor-rebase-client-author-name": "Имя",
 	"visualeditor-rebase-client-connecting": "Подключение…",
 	"visualeditor-rebase-client-document-name": "Имя документа (необязательно)",

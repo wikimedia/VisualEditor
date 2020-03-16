@@ -168,6 +168,7 @@
 	"visualeditor-corrupted-document-title": "Пашкоджаны дакумэнт",
 	"visualeditor-missing-document-error": "Дакумэнт адсутнічае на сэрвэры. Каб не згубіць зьвесткі, скапіюйце і ўстаўце зьмест.",
 	"visualeditor-missing-document-title": "Дакумэнт адсутнічае",
+	"visualeditor-pagemenu-tooltip": "Налады старонкі",
 	"visualeditor-rebase-client-author-name": "Імя",
 	"visualeditor-rebase-client-connecting": "Злучэньне…",
 	"visualeditor-rebase-client-document-name": "Назва дакумэнту (неабавязкова)",

@@ -190,6 +190,7 @@
 	"visualeditor-corrupted-document-title": "Documento dañado",
 	"visualeditor-missing-document-error": "No se encuentra el documento en el servidor. Para evitar la pérdida de datos, copia y pega los contenidos.",
 	"visualeditor-missing-document-title": "Documento faltante",
+	"visualeditor-pagemenu-tooltip": "Opciones de página",
 	"visualeditor-rebase-client-author-name": "Nombre",
 	"visualeditor-rebase-client-connecting": "Conectando…",
 	"visualeditor-rebase-client-document-name": "Nombre del documento (opcional)",

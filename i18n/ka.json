@@ -13,7 +13,8 @@
 			"Silovan",
 			"OpusDEI",
 			"Kintrbr",
-			"SHOTHA"
+			"SHOTHA",
+			"Otogi"
 		]
 	},
 	"visualeditor": "ვიზუალური რედაქტორი",
@@ -131,6 +132,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "ჩვეულებრივი",
 	"visualeditor-mediasizewidget-sizeoptions-default": "საწყისი",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "მასშტაბი",
+	"visualeditor-pagemenu-tooltip": "გვერდის პარამეტრები",
 	"visualeditor-rebase-client-author-name": "სახელი",
 	"visualeditor-shortcuts-clipboard": "ბუფერში გაცვლა",
 	"visualeditor-shortcuts-formatting": "აბზაცის ფორმატირება",

@@ -181,6 +181,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Zvětšení",
 	"visualeditor-missing-document-error": "Dokument chybí na serveru. Chcete-li předejít ztrátě dat, zkopírujte a vložte obsah.",
 	"visualeditor-missing-document-title": "Chybí dokument",
+	"visualeditor-pagemenu-tooltip": "Možnosti stránky",
 	"visualeditor-rebase-client-author-name": "Jméno",
 	"visualeditor-rebase-client-connecting": "Připojování…",
 	"visualeditor-rebase-client-document-name": "Název dokumentu (volitelný)",

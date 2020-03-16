@@ -186,6 +186,7 @@
 	"visualeditor-corrupted-document-title": "已損毀文件",
 	"visualeditor-missing-document-error": "伺服器上缺少文件。要避免資料的話，請複製並貼上內容。",
 	"visualeditor-missing-document-title": "缺少文件",
+	"visualeditor-pagemenu-tooltip": "頁面選項",
 	"visualeditor-rebase-client-author-name": "名稱",
 	"visualeditor-rebase-client-connecting": "連接中...",
 	"visualeditor-rebase-client-document-name": "文件名稱（可選）",

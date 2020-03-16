@@ -182,6 +182,7 @@
 	"visualeditor-corrupted-document-title": "Пошкоджений документ",
 	"visualeditor-missing-document-error": "Документ відсутній на сервері. Щоб уникнути втрати даних, скопіюйте і вставте вміст.",
 	"visualeditor-missing-document-title": "Відсутній документ",
+	"visualeditor-pagemenu-tooltip": "Параметри сторінки",
 	"visualeditor-rebase-client-author-name": "Ім'я",
 	"visualeditor-rebase-client-connecting": "З'єднання...",
 	"visualeditor-rebase-client-document-name": "Назва документа (необов'язково)",

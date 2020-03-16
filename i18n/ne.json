@@ -5,7 +5,8 @@
 			"सरोज कुमार ढकाल",
 			"NehalDaveND",
 			"बिप्लब आनन्द",
-			"Nirajan pant"
+			"Nirajan pant",
+			"पर्वत सुबेदी"
 		]
 	},
 	"visualeditor": "दृष्टि सम्पादक",
@@ -34,6 +35,7 @@
 	"visualeditor-commentinspector-title": "टिप्पणी",
 	"visualeditor-commentinspector-tooltip": "टिप्पणी",
 	"visualeditor-content-select-all": "सबै छान्ने",
+	"visualeditor-contextitemwidget-label-close": "बन्द गर्नुहोस्",
 	"visualeditor-contextitemwidget-label-remove": "हटाउने",
 	"visualeditor-contextitemwidget-label-secondary": "सम्पादन",
 	"visualeditor-contextitemwidget-label-view": "अवलोकन गर्ने",
@@ -99,6 +101,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-custom": "अनुकूल",
 	"visualeditor-mediasizewidget-sizeoptions-default": "पूर्वनिर्धारित",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "स्केल",
+	"visualeditor-pagemenu-tooltip": "पृष्ठको विकल्पहरू",
 	"visualeditor-rebase-client-author-name": "नाम",
 	"visualeditor-rebase-client-document-name": "कागजात नाम (ऐच्छिक)",
 	"visualeditor-shortcuts-clipboard": "क्लिपबोर्ड",

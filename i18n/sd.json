@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Mehtab ahmed",
-			"Indus Asia"
+			"Indus Asia",
+			"Aursani"
 		]
 	},
 	"visualeditor": "وزيوئل سنوارگاھ",
@@ -142,6 +143,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "ڏنل",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "پٽي",
 	"visualeditor-missing-document-title": "کٽل دستاويز",
+	"visualeditor-pagemenu-tooltip": "صفحاتي چارا",
 	"visualeditor-rebase-client-author-name": "نالو",
 	"visualeditor-rebase-client-connecting": "ڳنڍييندي…",
 	"visualeditor-rebase-client-document-name": "دستاويز-جو نالو (اختياري)",

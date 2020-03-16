@@ -173,6 +173,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Skala",
 	"visualeditor-missing-document-error": "Dokumen tidak tersedia di peladen. Untuk menghindari kehilangan data, salin dan tempel konten tersebut.",
 	"visualeditor-missing-document-title": "Dokumen tidak tersedia",
+	"visualeditor-pagemenu-tooltip": "Opsi halaman",
 	"visualeditor-rebase-client-author-name": "Nama",
 	"visualeditor-rebase-client-connecting": "Menghubungkan...",
 	"visualeditor-rebase-client-document-name": "Nama dokumen (opsional)",

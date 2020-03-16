@@ -153,6 +153,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Mjerilo",
 	"visualeditor-missing-document-error": "Nema dokumenta na poslužitelju. Da biste spriječili gubitak podatak, kopirajte i zalijepite sadržaj.",
 	"visualeditor-missing-document-title": "Nedostajući dokument",
+	"visualeditor-pagemenu-tooltip": "Mogućnosti stranice",
 	"visualeditor-rebase-client-author-name": "Ime",
 	"visualeditor-rebase-client-connecting": "Spajanje...",
 	"visualeditor-rebase-client-document-name": "Ime dokumenta (neobvezno)",

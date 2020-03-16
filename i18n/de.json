@@ -173,6 +173,7 @@
 	"visualeditor-corrupted-document-title": "Defektes Dokument",
 	"visualeditor-missing-document-error": "Das Dokument fehlt auf dem Server. Um Datenverlust zu vermeiden, kopiere die Inhalte und füge sie ein.",
 	"visualeditor-missing-document-title": "Fehlendes Dokument",
+	"visualeditor-pagemenu-tooltip": "Seitenoptionen",
 	"visualeditor-rebase-client-author-name": "Name",
 	"visualeditor-rebase-client-connecting": "Verbinden …",
 	"visualeditor-rebase-client-document-name": "Name des Dokuments (optional)",

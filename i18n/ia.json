@@ -157,6 +157,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Scala",
 	"visualeditor-missing-document-error": "Le documento non existe sur le servitor. Pro evitar le perdita del datos, copia e colla le contento.",
 	"visualeditor-missing-document-title": "Documento absente",
+	"visualeditor-pagemenu-tooltip": "Optiones de pagina",
 	"visualeditor-rebase-client-author-name": "Nomine",
 	"visualeditor-rebase-client-connecting": "Connexion…",
 	"visualeditor-rebase-client-document-name": "Nomine del documento (optional)",

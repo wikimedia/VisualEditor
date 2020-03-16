@@ -165,6 +165,7 @@
 	"visualeditor-corrupted-document-title": "Documentu corrompíu",
 	"visualeditor-missing-document-error": "Nun s'atopa'l documentu nel sirvidor. Pa evitar la perda de datos, copia y pega'l conteníu.",
 	"visualeditor-missing-document-title": "Falta'l documentu",
+	"visualeditor-pagemenu-tooltip": "Opciones de la páxina",
 	"visualeditor-rebase-client-author-name": "Nome",
 	"visualeditor-rebase-client-connecting": "Conectando…",
 	"visualeditor-rebase-client-document-name": "Nome del documentu (opcional)",

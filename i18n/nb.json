@@ -170,6 +170,7 @@
 	"visualeditor-corrupted-document-title": "Korrupt dokument",
 	"visualeditor-missing-document-error": "Dokument mangler på serveren. For å unngå tap av data, kopier og lim inn innholdet.",
 	"visualeditor-missing-document-title": "Manglende dokument",
+	"visualeditor-pagemenu-tooltip": "Sideinnstillinger",
 	"visualeditor-rebase-client-author-name": "Navn",
 	"visualeditor-rebase-client-connecting": "Tilslutter...",
 	"visualeditor-rebase-client-document-name": "Dokumentnavn (valgfritt)",

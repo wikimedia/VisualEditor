@@ -182,6 +182,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "비율",
 	"visualeditor-missing-document-error": "서버에 문서가 없습니다. 데이터 손실을 방지하려면 내용을 복사해서 붙여넣으십시오.",
 	"visualeditor-missing-document-title": "존재하지 않는 문서",
+	"visualeditor-pagemenu-tooltip": "문서 옵션",
 	"visualeditor-rebase-client-author-name": "이름",
 	"visualeditor-rebase-client-connecting": "연결 중...",
 	"visualeditor-rebase-client-document-name": "문서 제목 (선택사항)",

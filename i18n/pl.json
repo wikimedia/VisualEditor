@@ -25,7 +25,8 @@
 			"Sutan",
 			"Masti",
 			"Rail",
-			"FunPL"
+			"FunPL",
+			"Jacenty359"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -186,6 +187,7 @@
 	"visualeditor-corrupted-document-title": "Uszkodzony dokument",
 	"visualeditor-missing-document-error": "Brak dokumentu na serwerze. Aby uniknąć utraty danych, skopiuj i wklej zawartość.",
 	"visualeditor-missing-document-title": "Brakujący dokument",
+	"visualeditor-pagemenu-tooltip": "Opcje strony",
 	"visualeditor-rebase-client-author-name": "Imię",
 	"visualeditor-rebase-client-connecting": "Łączenie...",
 	"visualeditor-rebase-client-document-name": "Nazwa dokumentu (opcjonalnie)",

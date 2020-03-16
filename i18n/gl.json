@@ -166,6 +166,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Escala",
 	"visualeditor-missing-document-error": "Falta o documento no servidor. Para evitar unha perda de datos, copie e pegue os contidos.",
 	"visualeditor-missing-document-title": "Documento desaparecido",
+	"visualeditor-pagemenu-tooltip": "Opcións da páxina",
 	"visualeditor-rebase-client-author-name": "Nome",
 	"visualeditor-rebase-client-connecting": "Conectando...",
 	"visualeditor-rebase-client-document-name": "Nome de documento (opcional)",

@@ -167,6 +167,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "拡大・縮小",
 	"visualeditor-missing-document-error": "サーバー上にページが見つかりません。データの消失を防ぐために、文章をコピー & ペーストして残してください。",
 	"visualeditor-missing-document-title": "ページが見つかりません",
+	"visualeditor-pagemenu-tooltip": "ページ設定",
 	"visualeditor-rebase-client-author-name": "名前",
 	"visualeditor-rebase-client-connecting": "接続中...",
 	"visualeditor-rebase-client-document-name": "ドキュメント名（任意）",

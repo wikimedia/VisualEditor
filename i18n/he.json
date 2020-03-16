@@ -176,6 +176,7 @@
 	"visualeditor-corrupted-document-title": "מסמך משובש",
 	"visualeditor-missing-document-error": "המסמך חסר בשרת. כדי להימנע מאובדן נתונים, יש להעתיק ולהדביק את התוכן.",
 	"visualeditor-missing-document-title": "מסמך חסר",
+	"visualeditor-pagemenu-tooltip": "אפשרויות דף",
 	"visualeditor-rebase-client-author-name": "שם",
 	"visualeditor-rebase-client-connecting": "החיבור מתבצע...",
 	"visualeditor-rebase-client-document-name": "שם המסמך (אופציונלי)",

@@ -189,6 +189,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Schaal",
 	"visualeditor-missing-document-error": "Document ontbreekt op de server. Kopieer en plak inhoud om dataverlies te voorkomen.",
 	"visualeditor-missing-document-title": "Ontbrekend document",
+	"visualeditor-pagemenu-tooltip": "Pagina-instellingen",
 	"visualeditor-rebase-client-author-name": "Naam",
 	"visualeditor-rebase-client-connecting": "Verbinden...",
 	"visualeditor-rebase-client-document-name": "Documentnaam (optioneel)",
