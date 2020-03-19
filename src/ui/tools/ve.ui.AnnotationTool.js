@@ -272,6 +272,8 @@ ve.ui.MoreTextStyleTool.static.groupConfig = {
 	icon: 'textStyle',
 	indicator: 'down',
 	title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
+	label: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
+	invisibleLabel: true,
 	include: [ { group: 'textStyle' }, 'language', 'clear' ],
 	demote: [ 'strikethrough', 'code', 'underline', 'language', 'big', 'small', 'clear' ]
 };
