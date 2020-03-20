@@ -853,21 +853,6 @@ ve.filterMetaElements = function ( contents ) {
 };
 
 /**
- * Resolve a URL relative to a given base.
- *
- * @param {string} url URL to resolve
- * @param {HTMLDocument} base Document whose base URL to use
- * @return {string} Resolved URL
- */
-ve.resolveUrl = function ( url, base ) {
-	var node = base.createElement( 'a' );
-	node.setAttribute( 'href', url );
-	// If doc.baseURI isn't set, node.href will be an empty string
-	// This is crazy, returning the original URL is better
-	return node.href || url;
-};
-
-/**
  * Modify a set of DOM elements to resolve attributes in the context of another document.
  *
  * This performs node.setAttribute( 'attr', nodeInDoc[attr] ); for every node.
