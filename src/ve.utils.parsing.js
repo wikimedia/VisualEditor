@@ -462,3 +462,18 @@ ve.serializeXhtmlElement = function ( element ) {
 	xml = xml.replace( '<html xmlns="http://www.w3.org/1999/xhtml"', '<html' );
 	return ve.transformStyleAttributes( xml, true );
 };
+
+/**
+ * Resolve a URL relative to a given base.
+ *
+ * @param {string} url URL to resolve
+ * @param {HTMLDocument} base Document whose base URL to use
+ * @return {string} Resolved URL
+ */
+ve.resolveUrl = function ( url, base ) {
+	var node = base.createElement( 'a' );
+	node.setAttribute( 'href', url );
+	// If doc.baseURI isn't set, node.href will be an empty string
+	// This is crazy, returning the original URL is better
+	return node.href || url;
+};
