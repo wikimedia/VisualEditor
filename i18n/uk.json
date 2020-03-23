@@ -218,6 +218,7 @@
 	"visualeditor-table-move-col-before": "Перемістити вліво",
 	"visualeditor-table-move-row-after": "Перемістити вниз",
 	"visualeditor-table-move-row-before": "Перемістити вгору",
+	"visualeditor-table-sum": "Сума: $1, середнє: $2",
 	"visualeditor-tablecell-contextitem": "Комірки таблиці",
 	"visualeditor-tablecell-tooltip": "Клацніть двічі, аби редагувати комірку таблиці",
 	"visualeditor-toolbar-format-tooltip": "Формат абзацу",

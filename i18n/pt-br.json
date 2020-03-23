@@ -222,6 +222,7 @@
 	"visualeditor-table-move-col-before": "Mover antes",
 	"visualeditor-table-move-row-after": "Mover abaixo",
 	"visualeditor-table-move-row-before": "Mover acima",
+	"visualeditor-table-sum": "Soma: $1, Média: $2",
 	"visualeditor-tablecell-contextitem": "Célula de tabela",
 	"visualeditor-tablecell-tooltip": "Clique-duplo para editar a célula",
 	"visualeditor-toolbar-format-tooltip": "Formatação de parágrafo",

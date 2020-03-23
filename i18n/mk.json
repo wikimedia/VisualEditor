@@ -203,6 +203,7 @@
 	"visualeditor-table-move-col-before": "Премести пред",
 	"visualeditor-table-move-row-after": "Премести под",
 	"visualeditor-table-move-row-before": "Премести над",
+	"visualeditor-table-sum": "Збир: $1, Просек: $2",
 	"visualeditor-tablecell-contextitem": "Ќелија во табела",
 	"visualeditor-tablecell-tooltip": "Стиснете двапати за да ја уредите ќелијата",
 	"visualeditor-toolbar-format-tooltip": "Форматирај пасус",

@@ -201,6 +201,7 @@
 	"visualeditor-table-move-col-before": "Sposta prima",
 	"visualeditor-table-move-row-after": "Sposta sotto",
 	"visualeditor-table-move-row-before": "Sposta sopra",
+	"visualeditor-table-sum": "Somma: $1, media: $2",
 	"visualeditor-tablecell-contextitem": "Cella di tabella",
 	"visualeditor-tablecell-tooltip": "Doppio click per modificare la cella",
 	"visualeditor-toolbar-format-tooltip": "Formato del paragrafo",

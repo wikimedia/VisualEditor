@@ -221,6 +221,7 @@
 	"visualeditor-table-move-col-before": "Sütunu sola taşı",
 	"visualeditor-table-move-row-after": "Satırı alta taşı",
 	"visualeditor-table-move-row-before": "Satırı üste taşı",
+	"visualeditor-table-sum": "Toplam: $1, Ortalama: $2",
 	"visualeditor-tablecell-contextitem": "Tablo hücresi",
 	"visualeditor-tablecell-tooltip": "Hücreyi düzenlemek için çift tıklayın",
 	"visualeditor-toolbar-format-tooltip": "Paragraf biçimi",

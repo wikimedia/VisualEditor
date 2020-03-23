@@ -222,6 +222,7 @@
 	"visualeditor-table-move-col-before": "移到左方",
 	"visualeditor-table-move-row-after": "移到下方",
 	"visualeditor-table-move-row-before": "移到上方",
+	"visualeditor-table-sum": "總計：$1，平均：$2",
 	"visualeditor-tablecell-contextitem": "表格儲存格",
 	"visualeditor-tablecell-tooltip": "雙擊點選以編輯儲存格",
 	"visualeditor-toolbar-format-tooltip": "段落格式",

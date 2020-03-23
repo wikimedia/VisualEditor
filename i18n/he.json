@@ -213,6 +213,7 @@
 	"visualeditor-table-move-col-before": "העברה לפני",
 	"visualeditor-table-move-row-after": "העברה מטה",
 	"visualeditor-table-move-row-before": "העברה מעלה",
+	"visualeditor-table-sum": "סכום: $1, ממוצע: $2",
 	"visualeditor-tablecell-contextitem": "תא בטבלה",
 	"visualeditor-tablecell-tooltip": "יש ללחוץ פעמיים כדי לערוך תא",
 	"visualeditor-toolbar-format-tooltip": "עיצוב פסקה",

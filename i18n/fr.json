@@ -242,6 +242,7 @@
 	"visualeditor-table-move-col-before": "Déplacer avant",
 	"visualeditor-table-move-row-after": "Déplacer en dessous",
 	"visualeditor-table-move-row-before": "Déplacer au dessus",
+	"visualeditor-table-sum": "Somme : $1, Moyenne : $2",
 	"visualeditor-tablecell-contextitem": "Cellule du tableau",
 	"visualeditor-tablecell-tooltip": "Double-cliquez pour modifier la cellule",
 	"visualeditor-toolbar-format-tooltip": "Mise en forme du paragraphe",
