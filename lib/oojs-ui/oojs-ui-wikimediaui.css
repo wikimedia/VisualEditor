@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.37.0
+ * OOUI v0.37.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-27T02:13:00Z
+ * Date: 2020-03-26T02:05:08Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -2248,14 +2248,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.37.0
+ * OOUI v0.37.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-27T02:13:00Z
+ * Date: 2020-03-26T02:05:08Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -3274,7 +3274,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 .oo-ui-searchWidget-query {
   height: 4em;
-  padding: 0 12px 16px 16px;
+  padding: 0 16px;
   border-bottom: 1px solid #c8ccd1;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
@@ -3288,14 +3288,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.37.0
+ * OOUI v0.37.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-27T02:13:00Z
+ * Date: 2020-03-26T02:05:08Z
  */
 .oo-ui-tool {
   -webkit-box-sizing: border-box;
@@ -3985,14 +3985,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.37.0
+ * OOUI v0.37.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-27T02:13:00Z
+ * Date: 2020-03-26T02:05:08Z
  */
 
 .oo-ui-window {
@@ -4415,14 +4415,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.37.0
+ * OOUI v0.37.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-02-27T02:13:00Z
+ * Date: 2020-03-26T02:05:08Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -4808,6 +4808,18 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-progressive.oo-ui-icon-robot {
   background-image: url('themes/wikimediaui/images/icons/robot-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/robot-progressive.svg');
+}
+.oo-ui-icon-specialPages {
+  background-image: url('themes/wikimediaui/images/icons/specialPages-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/specialPages-ltr.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-specialPages {
+  background-image: url('themes/wikimediaui/images/icons/specialPages-ltr-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/specialPages-ltr-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-specialPages {
+  background-image: url('themes/wikimediaui/images/icons/specialPages-ltr-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/specialPages-ltr-progressive.svg');
 }
 .oo-ui-icon-tag {
   background-image: url('themes/wikimediaui/images/icons/tag-ltr.png');
@@ -5370,6 +5382,22 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-image-progressive.oo-ui-icon-settings {
   background-image: url('themes/wikimediaui/images/icons/settings-progressive.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/settings-progressive.svg');
+}
+.oo-ui-icon-stopHand {
+  background-image: url('themes/wikimediaui/images/icons/stopHand.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/stopHand.svg');
+}
+.oo-ui-image-destructive.oo-ui-icon-stopHand {
+  background-image: url('themes/wikimediaui/images/icons/stopHand-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/stopHand-destructive.svg');
+}
+.oo-ui-image-invert.oo-ui-icon-stopHand {
+  background-image: url('themes/wikimediaui/images/icons/stopHand-invert.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/stopHand-invert.svg');
+}
+.oo-ui-image-progressive.oo-ui-icon-stopHand {
+  background-image: url('themes/wikimediaui/images/icons/stopHand-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/stopHand-progressive.svg');
 }
 .oo-ui-icon-subtract {
   background-image: url('themes/wikimediaui/images/icons/subtract.png');
