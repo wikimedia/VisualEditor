@@ -3,7 +3,8 @@
 		"authors": [
 			"Candalua",
 			"GatoSelvadego",
-			"Gloria sah"
+			"Gloria sah",
+			"Fierodelveneto"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -50,7 +51,7 @@
 	"visualeditor-formatdropdown-format-paragraph": "Paragrafo",
 	"visualeditor-formatdropdown-format-preformatted": "Preformatà",
 	"visualeditor-formatdropdown-title": "Canbia formato",
-	"visualeditor-help-tool": "Ajuto",
+	"visualeditor-help-tool": "Juto",
 	"visualeditor-historybutton-redo-tooltip": "Rifà",
 	"visualeditor-historybutton-undo-tooltip": "Anuła",
 	"visualeditor-indentationbutton-indent-tooltip": "Aumenta indentasion",
