@@ -226,6 +226,7 @@
 	"visualeditor-table-move-col-before": "حركه قبل",
 	"visualeditor-table-move-row-after": "حركه إلى أسفل",
 	"visualeditor-table-move-row-before": "حركه إلى أعلى",
+	"visualeditor-table-sum": "المجموع: $1، المتوسط: $2",
 	"visualeditor-tablecell-contextitem": "خلية الجدول",
 	"visualeditor-tablecell-tooltip": "النقر مرتين لتعديل الخلية",
 	"visualeditor-toolbar-format-tooltip": "تنسيق الفقرة",
