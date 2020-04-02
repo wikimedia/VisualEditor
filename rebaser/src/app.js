@@ -30,11 +30,13 @@ function initApp( options ) {
 		res.render( 'index' );
 	} );
 
+	// eslint-disable-next-line prefer-regex-literals
 	app.get( new RegExp( '/doc/edit/(.*)' ), function ( req, res ) {
 		var docName = req.params[ 0 ];
 		res.render( 'editor', { docName: docName } );
 	} );
 
+	// eslint-disable-next-line prefer-regex-literals
 	app.get( new RegExp( '/doc/raw/(.*)' ), function ( req, res ) {
 		// TODO return real data
 		// In order to provide HTML here, we'd need all of ve.dm (Document, Converter, all nodes)
