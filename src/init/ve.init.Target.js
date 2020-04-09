@@ -294,12 +294,14 @@ ve.init.Target.prototype.setDefaultMode = function ( defaultMode ) {
 		}
 	}
 	if ( defaultMode !== this.defaultMode ) {
+		if ( this.defaultMode ) {
+			// Documented below
+			// eslint-disable-next-line mediawiki/class-doc
+			this.$element.removeClass( 've-init-target-' + this.defaultMode );
+		}
 		// The following classes are used here:
 		// * ve-init-target-visual
 		// * ve-init-target-[modename]
-		if ( this.defaultMode ) {
-			this.$element.removeClass( 've-init-target-' + this.defaultMode );
-		}
 		this.$element.addClass( 've-init-target-' + defaultMode );
 		this.defaultMode = defaultMode;
 	}

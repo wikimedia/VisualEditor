@@ -51,7 +51,7 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  */
 ve.ce.BranchNode.inlineSlugTemplate = ( function () {
 	var profile = $.client.profile(),
-		// The following classes can be used here:
+		// The following classes are used here:
 		// * ve-ce-chimera-gecko
 		// * ve-ce-chimera-konqueror
 		// * ve-ce-chimera-msie
@@ -139,6 +139,7 @@ ve.ce.BranchNode.prototype.updateTagName = function () {
 		this.emit( 'teardown' );
 		wrapper = document.createElement( tagName );
 		// Copy classes
+		// eslint-disable-next-line mediawiki/class-doc
 		wrapper.className = this.$element[ 0 ].className;
 		// Copy contentEditable
 		wrapper.contentEditable = this.$element[ 0 ].contentEditable;

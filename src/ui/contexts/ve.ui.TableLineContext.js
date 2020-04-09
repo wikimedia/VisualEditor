@@ -43,7 +43,7 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 
 	// Initialization
 	this.popup.$body.append( this.$group );
-	// The following classes can be used here:
+	// The following classes are used here:
 	// * ve-ui-tableLineContext-col
 	// * ve-ui-tableLineContext-row
 	this.$element
@@ -166,6 +166,7 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show, restoreEditing ) 
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
 		surfaceView.deactivate();
 		dir = surfaceView.getSelectionDirectionality();
+		// eslint-disable-next-line mediawiki/class-doc
 		this.$element
 			.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' )
 			.addClass( 've-ui-dir-block-' + dir );

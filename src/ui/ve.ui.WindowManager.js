@@ -24,7 +24,7 @@ ve.ui.WindowManager = function VeUiWindowManager( config ) {
 	// Properties
 	this.overlay = config.overlay || null;
 
-	// The following classes can be used here:
+	// The following classes are used here:
 	// * ve-ui-dir-block-ltr
 	// * ve-ui-dir-block-rtl
 	this.$element.addClass( 've-ui-dir-block-' + this.getDir() );

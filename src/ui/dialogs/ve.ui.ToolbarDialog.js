@@ -57,6 +57,9 @@ ve.ui.ToolbarDialog.prototype.initialize = function () {
 
 	this.$body.append( this.$shield );
 	this.$content.addClass( 've-ui-toolbarDialog-content' );
+	// The following classes are used here:
+	// * ve-ui-toolbarDialog-position-above
+	// * ve-ui-toolbarDialog-position-side
 	this.$element.addClass( 've-ui-toolbarDialog-position-' + this.constructor.static.position );
 	if ( this.constructor.static.padded ) {
 		this.$element.addClass( 've-ui-toolbarDialog-padded' );

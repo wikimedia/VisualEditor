@@ -24,7 +24,7 @@ ve.ui.Toolbar = function VeUiToolbar( config ) {
 	this.groups = null;
 	// Default directions
 	this.contextDirection = { inline: 'ltr', block: 'ltr' };
-	// The following classes can be used here:
+	// The following classes are used here:
 	// * ve-ui-dir-inline-ltr
 	// * ve-ui-dir-inline-rtl
 	// * ve-ui-dir-block-ltr
@@ -187,7 +187,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 	if ( dirInline !== this.contextDirection.inline ) {
 		// Remove previous class:
 		this.$element.removeClass( 've-ui-dir-inline-rtl ve-ui-dir-inline-ltr' );
-		// The following classes can be used here:
+		// The following classes are used here:
 		// * ve-ui-dir-inline-ltr
 		// * ve-ui-dir-inline-rtl
 		this.$element.addClass( 've-ui-dir-inline-' + dirInline );
@@ -195,7 +195,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 	}
 	if ( dirBlock !== this.contextDirection.block ) {
 		this.$element.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' );
-		// The following classes can be used here:
+		// The following classes are used here:
 		// * ve-ui-dir-block-ltr
 		// * ve-ui-dir-block-rtl
 		this.$element.addClass( 've-ui-dir-block-' + dirBlock );

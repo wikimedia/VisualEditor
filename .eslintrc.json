@@ -18,7 +18,6 @@
 		"no-jquery/no-hide": "error",
 		"no-jquery/no-show": "error",
 		"no-jquery/no-toggle": "error",
-		"mediawiki/class-doc": "off",
 		"mediawiki/msg-doc": "error",
 		"mediawiki/valid-package-file-require": "off",
 		"max-statements-per-line": [ "error", { "max": 1 } ],

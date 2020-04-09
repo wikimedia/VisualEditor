@@ -61,7 +61,7 @@ ve.ce.TableCellNode.prototype.initialize = function () {
 
 	// DOM changes
 	this.$element
-		// The following classes can be used here:
+		// The following classes are used here:
 		// * ve-ce-tableCellNode-data
 		// * ve-ce-tableCellNode-header
 		.addClass( 've-ce-tableCellNode ve-ce-tableCellNode-' + this.model.getAttribute( 'style' ) );
@@ -133,7 +133,7 @@ ve.ce.TableCellNode.prototype.onAttributeChange = function ( key, from, to ) {
 			}
 			break;
 		case 'style':
-			// The following classes can be used here:
+			// The following classes are used here:
 			// * ve-ce-tableCellNode-data
 			// * ve-ce-tableCellNode-header
 			this.$element

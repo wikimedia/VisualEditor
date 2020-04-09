@@ -43,7 +43,7 @@ ve.ce.NailedAnnotation.static.makeNail = function ( type ) {
 	if ( $.client.profile().layout === 'gecko' || ve.inputDebug ) {
 		nail.src = ve.inputDebug ? ve.ce.nailImgDataUri : ve.ce.minImgDataUri;
 	}
-	// The following classes can be used here:
+	// The following classes are used here:
 	// * ve-ce-nail-pre-open
 	// * ve-ce-nail-pre-close
 	// * ve-ce-nail-post-open

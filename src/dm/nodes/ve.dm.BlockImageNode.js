@@ -116,6 +116,7 @@ ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
 	figure.appendChild( img );
 
 	if ( classAttr ) {
+		// eslint-disable-next-line mediawiki/class-doc
 		figure.className = classAttr;
 	}
 

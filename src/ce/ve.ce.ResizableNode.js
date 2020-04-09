@@ -233,6 +233,11 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 		}
 	}
 
+	// The following classes are used here:
+	// * ve-ce-resizableNode-hide-nw
+	// * ve-ce-resizableNode-hide-ne
+	// * ve-ce-resizableNode-hide-sw
+	// * ve-ce-resizableNode-hide-se
 	this.$resizeHandles
 		.addClass( add.join( ' ' ) )
 		.removeClass( remove.join( ' ' ) );

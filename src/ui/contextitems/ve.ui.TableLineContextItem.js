@@ -105,12 +105,12 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 		sides.forEach( function ( side ) {
 			var sideName = sideNames[ side ];
 
-			// Classes created here:
+			className = 'Insert' + modeName + sideName + 'ContextItem';
+			// The following classes are used here:
 			// * ve.ui.InsertColumnBeforeContextItem
 			// * ve.ui.InsertColumnAfterContextItem
 			// * ve.ui.InsertRowBeforeContextItem
 			// * ve.ui.InsertRowAfterContextItem
-			className = 'Insert' + modeName + sideName + 'ContextItem';
 			ve.ui[ className ] = function VeUiInsertRowOrColumnContextItem() {
 				ve.ui.TableLineContextItem.apply( this, arguments );
 			};
@@ -128,12 +128,12 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 			ve.ui[ className ].static.commandName = 'insert' + modeName + sideName;
 			ve.ui.contextItemFactory.register( ve.ui[ className ] );
 
-			// Classes created here:
+			className = 'Move' + modeName + sideName + 'ContextItem';
+			// The following classes are used here:
 			// * ve.ui.MoveColumnBeforeContextItem
 			// * ve.ui.MoveColumnAfterContextItem
 			// * ve.ui.MoveRowBeforeContextItem
 			// * ve.ui.MoveRowAfterContextItem
-			className = 'Move' + modeName + sideName + 'ContextItem';
 			ve.ui[ className ] = function VeUiMoveRowOrColumnContextItem() {
 				ve.ui.TableLineContextItem.apply( this, arguments );
 			};
@@ -179,10 +179,10 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 			ve.ui.contextItemFactory.register( ve.ui[ className ] );
 		} );
 
-		// Classes created here:
+		className = 'Delete' + modeName + 'ContextItem';
+		// The following classes are used here:
 		// * ve.ui.DeleteColumnContextItem
 		// * ve.ui.DeleteRowContextItem
-		className = 'Delete' + modeName + 'ContextItem';
 		ve.ui[ className ] = function VeUiDeleteRowOrColumnContextItem() {
 			ve.ui.TableLineContextItem.apply( this, arguments );
 

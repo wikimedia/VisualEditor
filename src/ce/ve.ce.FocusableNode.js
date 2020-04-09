@@ -45,6 +45,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	this.touchMoved = false;
 
 	if ( Array.isArray( config.classes ) ) {
+		// eslint-disable-next-line mediawiki/class-doc
 		this.$highlights.addClass( config.classes.join( ' ' ) );
 	}
 
@@ -235,6 +236,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
 	var extraClasses = this.generatedContentsInvalid ? ' ve-ce-focusableNode-highlight-error' : '';
+	// eslint-disable-next-line mediawiki/class-doc
 	return $( '<div>' )
 		.addClass( 've-ce-focusableNode-highlight' + extraClasses )
 		.prop( {

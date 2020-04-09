@@ -217,7 +217,7 @@ ve.ui.Surface.prototype.initialize = function () {
 		this.setupDebugBar();
 	}
 
-	// The following classes can be used here:
+	// The following classes are used here:
 	// * ve-ui-surface-dir-ltr
 	// * ve-ui-surface-dir-rtl
 	this.$element.addClass( 've-ui-surface-dir-' + this.getDir() );
