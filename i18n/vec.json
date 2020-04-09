@@ -2,9 +2,9 @@
 	"@metadata": {
 		"authors": [
 			"Candalua",
+			"Fierodelveneto",
 			"GatoSelvadego",
-			"Gloria sah",
-			"Fierodelveneto"
+			"Gloria sah"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -30,7 +30,7 @@
 	"visualeditor-clipboard-paste-special": "Incoła come testo senplise",
 	"visualeditor-contextitemwidget-label-remove": "Scancela",
 	"visualeditor-dialog-action-apply": "Salva canbiamenti",
-	"visualeditor-dialog-action-cancel": "Anùla",
+	"visualeditor-dialog-action-cancel": "Descançełare",
 	"visualeditor-dialog-action-done": "Fato",
 	"visualeditor-dialog-action-goback": "Torna indrìo",
 	"visualeditor-dialog-action-insert": "Inserisi",
