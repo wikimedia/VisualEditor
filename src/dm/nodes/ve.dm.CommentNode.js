@@ -73,10 +73,9 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 		return els;
 	} else {
 		// Real comment node
-		// Encode '&', and certain '-' and '>' characters (see T95040)
-		data = dataElement.attributes.text.replace( /^[->]|--|-$|&/g, function ( m ) {
-			return m.slice( 0, m.length - 1 ) +
-				'&#' + m.charCodeAt( m.length - 1 ) + ';';
+		// Encode & - > (see T95040, T144708)
+		data = dataElement.attributes.text.replace( /[-&>]/g, function ( c ) {
+			return '&#x' + c.charCodeAt( 0 ).toString( 16 ).toUpperCase() + ';';
 		} );
 		return [ doc.createComment( data ) ];
 	}
