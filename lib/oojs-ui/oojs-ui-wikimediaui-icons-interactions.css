@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.37.1
+ * OOUI v0.38.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-03-26T02:05:08Z
+ * Date: 2020-04-15T01:28:27Z
  */
 .oo-ui-icon-add {
   background-image: url('themes/wikimediaui/images/icons/add.png');
@@ -143,6 +143,10 @@
 .oo-ui-icon-funnel {
   background-image: url('themes/wikimediaui/images/icons/funnel-ltr.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/funnel-ltr.svg');
+}
+.oo-ui-image-destructive.oo-ui-icon-funnel {
+  background-image: url('themes/wikimediaui/images/icons/funnel-ltr-destructive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/funnel-ltr-destructive.svg');
 }
 .oo-ui-image-invert.oo-ui-icon-funnel {
   background-image: url('themes/wikimediaui/images/icons/funnel-ltr-invert.png');
