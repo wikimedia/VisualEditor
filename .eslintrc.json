@@ -15,10 +15,7 @@
 	},
 	"rules": {
 		"no-jquery/no-extend": "error",
-		"no-jquery/no-hide": "error",
-		"no-jquery/no-show": "error",
-		"no-jquery/no-toggle": "error",
-		"mediawiki/msg-doc": "error",
+		"no-jquery/no-visibility": "error",
 		"mediawiki/valid-package-file-require": "off",
 		"max-statements-per-line": [ "error", { "max": 1 } ],
 		"max-len": "off"
