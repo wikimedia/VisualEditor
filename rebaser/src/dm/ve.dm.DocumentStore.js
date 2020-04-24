@@ -25,9 +25,9 @@ ve.dm.DocumentStore = function VeDmDocumentStore( storageClient, dbName, logger 
  * @return {Promise} Resolves when connected
  */
 ve.dm.DocumentStore.prototype.connect = function () {
-	var documentStore = this;
+	const documentStore = this;
 	return this.storageClient.connect().then( function ( client ) {
-		var db = client.db( documentStore.dbName );
+		const db = client.db( documentStore.dbName );
 		documentStore.logger.logServerEvent( { type: 'DocumentStore#connected', dbName: documentStore.dbName }, 'info' );
 		documentStore.db = db;
 		documentStore.collection = db.collection( 'vedocstore' );
@@ -56,13 +56,13 @@ ve.dm.DocumentStore.prototype.dropDatabase = function () {
  * @return {Promise} Confirmed document history as a ve.dm.Change
  */
 ve.dm.DocumentStore.prototype.load = function ( docName ) {
-	var documentStore = this;
+	const documentStore = this;
 	return this.collection.findOneAndUpdate(
 		{ docName: docName },
 		{ $setOnInsert: { start: 0, transactions: [], stores: [] } },
 		{ upsert: true, returnOriginal: false }
 	).then( function ( result ) {
-		var length = result.value.transactions.length || 0;
+		const length = result.value.transactions.length || 0;
 		documentStore.logger.logServerEvent( { type: 'DocumentStore#loaded', docName: docName, length: length } );
 		documentStore.startForDoc.set( docName, result.value.start + length );
 		return ve.dm.Change.static.deserialize( {
@@ -82,7 +82,7 @@ ve.dm.DocumentStore.prototype.load = function ( docName ) {
  * @return {Promise} Resolves when saved
  */
 ve.dm.DocumentStore.prototype.onNewChange = function ( docName, change ) {
-	var documentStore = this,
+	const documentStore = this,
 		serializedChange = change.serialize( true ),
 		expectedStart = this.startForDoc.get( docName ) || 0;
 

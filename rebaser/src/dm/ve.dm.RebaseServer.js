@@ -43,21 +43,20 @@ ve.dm.RebaseServer.prototype.getDocState = function ( doc ) {
  * @param {Object} [authorDataChanges] New values for author data (modified keys only)
  */
 ve.dm.RebaseServer.prototype.updateDocState = function updateDocState( doc, authorId, newHistory, authorDataChanges ) {
-	var key, authorData,
-		state = this.getDocState( doc );
+	const state = this.getDocState( doc );
 	if ( newHistory ) {
 		state.history.push( newHistory );
 	}
 	if ( !authorId ) {
 		return;
 	}
-	authorData = state.authors.get( authorId );
+	let authorData = state.authors.get( authorId );
 	if ( !authorData ) {
 		authorData = state.constructor.static.newAuthorData();
 		state.authors.set( authorId, authorData );
 	}
 	if ( authorDataChanges ) {
-		for ( key in authorData ) {
+		for ( const key in authorData ) {
 			if ( authorDataChanges[ key ] !== undefined ) {
 				authorData[ key ] = authorDataChanges[ key ];
 			}
@@ -71,7 +70,7 @@ ve.dm.RebaseServer.prototype.updateDocState = function updateDocState( doc, auth
  * @param {string} doc Name of a document
  */
 ve.dm.RebaseServer.prototype.clearDocState = function clearDocState( doc ) {
-	var state = this.stateForDoc.get( doc );
+	const state = this.stateForDoc.get( doc );
 	if ( !state ) {
 		return;
 	}
@@ -92,12 +91,13 @@ ve.dm.RebaseServer.prototype.clearDocState = function clearDocState( doc ) {
  * @return {ve.dm.Change} Accepted change (or initial segment thereof), as rebased
  */
 ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, authorId, backtrack, change ) {
-	var base, rejections, result, appliedChange,
-		state = this.getDocState( doc ),
+	const state = this.getDocState( doc ),
 		authorData = state.authors.get( authorId );
 
-	base = ( authorData && authorData.continueBase ) || change.truncate( 0 );
-	rejections = ( authorData && authorData.rejections ) || 0;
+	let appliedChange;
+
+	let base = ( authorData && authorData.continueBase ) || change.truncate( 0 );
+	let rejections = ( authorData && authorData.rejections ) || 0;
 	if ( rejections > backtrack ) {
 		// Follow-on does not fully acknowledge outstanding conflicts: reject entirely
 		rejections = rejections - backtrack + change.transactions.length;
@@ -116,7 +116,7 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, authorId, 
 		}
 		base = base.concat( state.history.mostRecent( base.start + base.getLength() ) );
 
-		result = ve.dm.Change.static.rebaseUncommittedChange( base, change );
+		const result = ve.dm.Change.static.rebaseUncommittedChange( base, change );
 		rejections = result.rejected ? result.rejected.getLength() : 0;
 		this.updateDocState( doc, authorId, result.rebased, {
 			rejections: rejections,

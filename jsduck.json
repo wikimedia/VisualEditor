@@ -9,6 +9,9 @@
 	"--processes": "0",
 	"--warnings-exit-nonzero": true,
 	"--external": "HTMLDocument,Window,Node,Text,Map,Set,Range,Selection,ClientRect,File,FileList,Blob,DataTransfer,DataTransferItem,KeyboardEvent,MouseEvent,Promise,Storage",
+	"--exclude": [
+		"rebaser/src/dm/"
+	],
 	"--": [
 		".jsduck/external.js",
 		"lib/oojs-ui/oojs-ui-core.js",
@@ -19,7 +22,6 @@
 		"lib/oojs-ui/oojs-ui-apex.js",
 		"lib/unicodejs/unicodejs.js",
 		"lib/treeDiffer/treeDiffer-dist.js",
-		"src",
-		"rebaser/src/dm"
+		"src"
 	]
 }

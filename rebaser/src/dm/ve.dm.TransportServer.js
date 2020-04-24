@@ -26,7 +26,7 @@ OO.initClass( ve.dm.TransportServer );
  * @return {Promise}
  */
 ve.dm.TransportServer.prototype.onConnection = function ( getRoom, socket ) {
-	var server = this.protocolServer,
+	const server = this.protocolServer,
 		docName = socket.handshake.query.docName,
 		authorId = +socket.handshake.query.authorId || null,
 		token = socket.handshake.query.token || null;
@@ -43,7 +43,7 @@ ve.dm.TransportServer.prototype.onConnection = function ( getRoom, socket ) {
 		// between the ensureLoaded promise resolving and f running. In practice,
 		// this should not happen if the unloading is not too aggressive.
 		return function () {
-			var args = Array.prototype.slice.call( arguments );
+			const args = Array.prototype.slice.call( arguments );
 			args.splice( 0, 0, context );
 			return server.ensureLoaded( docName ).then( function () {
 				return f.apply( server, args );
@@ -53,9 +53,9 @@ ve.dm.TransportServer.prototype.onConnection = function ( getRoom, socket ) {
 
 	socket.join( docName );
 	return server.ensureLoaded( docName ).then( function () {
-		var context = server.authenticate( docName, authorId, token );
+		const context = server.authenticate( docName, authorId, token );
 		context.broadcast = function () {
-			var room = getRoom( docName );
+			const room = getRoom( docName );
 			room.emit.apply( room, arguments );
 		};
 		context.sendAuthor = socket.emit.bind( socket );
