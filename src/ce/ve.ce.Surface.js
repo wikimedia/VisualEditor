@@ -1866,6 +1866,10 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
 	}
 
 	contentBranchNodeBefore = this.getSelectedContentBranchNode();
+	if ( this.unicorningNode !== contentBranchNodeBefore ) {
+		this.setNotUnicorningAll();
+		return true;
+	}
 
 	// Apply the DOM selection to the model
 	veRange = ve.ce.veRangeFromSelection( this.nativeSelection );
@@ -4642,7 +4646,7 @@ ve.ce.Surface.prototype.setContentBranchNodeChanged = function () {
  * If another node currently has a unicorn, it will be rerendered, which will
  * cause it to release its unicorn.
  *
- * @param {ve.ce.ContentBranchNode} node The node claiming the unicorn
+ * @param {ve.ce.ContentBranchNode|null} node The node claiming the unicorn, null to release (by rerendering) without claiming
  */
 ve.ce.Surface.prototype.setUnicorning = function ( node ) {
 	if ( this.setUnicorningRecursionGuard ) {
@@ -4660,10 +4664,9 @@ ve.ce.Surface.prototype.setUnicorning = function ( node ) {
 };
 
 /**
- * Release the current unicorn held by a given node.
+ * Release the current unicorn held by a given node, without rerendering
  *
  * If the node doesn't hold the current unicorn, nothing happens.
- * This function does not cause any node to be rerendered.
  *
  * @param {ve.ce.ContentBranchNode} node The node releasing the unicorn
  */
