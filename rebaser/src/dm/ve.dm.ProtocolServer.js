@@ -40,9 +40,10 @@ ve.dm.ProtocolServer.static.palette = [
  * @return {Promise} Resolves when loaded
  */
 ve.dm.ProtocolServer.prototype.ensureLoaded = function ( docName ) {
-	var documentStore = this,
-		loading = this.loadingForDoc.get( docName ),
+	const documentStore = this,
 		rebaseServer = this.rebaseServer;
+
+	let loading = this.loadingForDoc.get( docName );
 
 	if ( loading ) {
 		return loading;
@@ -72,8 +73,7 @@ ve.dm.ProtocolServer.prototype.ensureLoaded = function ( docName ) {
  * @return {Object} The connection context
  */
 ve.dm.ProtocolServer.prototype.authenticate = function ( docName, authorId, token ) {
-	var context,
-		state = this.rebaseServer.stateForDoc.get( docName ),
+	const state = this.rebaseServer.stateForDoc.get( docName ),
 		authorData = state && state.authors.get( authorId );
 
 	if ( !authorData || token !== authorData.token ) {
@@ -81,7 +81,7 @@ ve.dm.ProtocolServer.prototype.authenticate = function ( docName, authorId, toke
 		this.lastAuthorForDoc.set( docName, authorId );
 		token = Math.random().toString( 36 ).slice( 2 );
 	}
-	context = {
+	const context = {
 		serverId: this.documentStore.serverId,
 		docName: docName,
 		authorId: authorId
@@ -101,12 +101,11 @@ ve.dm.ProtocolServer.prototype.authenticate = function ( docName, authorId, toke
  * @param {Object} event Event data
  */
 ve.dm.ProtocolServer.prototype.onLogEvent = function ( context, event ) {
-	var key,
-		ob = {};
+	const ob = {};
 	ob.recvTimestamp = this.logger.getRelativeTimestamp();
 	ob.clientId = context.authorId;
 	ob.doc = context.docName;
-	for ( key in event ) {
+	for ( const key in event ) {
 		ob[ key ] = event[ key ];
 	}
 	this.logger.logEvent( ob );
@@ -118,8 +117,7 @@ ve.dm.ProtocolServer.prototype.onLogEvent = function ( context, event ) {
  * @param {Object} context The connection context
  */
 ve.dm.ProtocolServer.prototype.welcomeClient = function ( context ) {
-	var state, authorData,
-		docName = context.docName,
+	const docName = context.docName,
 		serverId = context.serverId,
 		authorId = context.authorId;
 
@@ -132,8 +130,8 @@ ve.dm.ProtocolServer.prototype.welcomeClient = function ( context ) {
 		active: true
 	} );
 
-	state = this.rebaseServer.getDocState( docName );
-	authorData = state.authors.get( authorId );
+	const state = this.rebaseServer.getDocState( docName );
+	const authorData = state.authors.get( authorId );
 
 	context.sendAuthor( 'registered', {
 		serverId: serverId,
@@ -165,9 +163,8 @@ ve.dm.ProtocolServer.prototype.welcomeClient = function ( context ) {
  * @param {Object} data The change data
  */
 ve.dm.ProtocolServer.prototype.onSubmitChange = function ( context, data ) {
-	var change, applied;
-	change = ve.dm.Change.static.deserialize( data.change, true );
-	applied = this.rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
+	const change = ve.dm.Change.static.deserialize( data.change, true );
+	const applied = this.rebaseServer.applyChange( context.docName, context.authorId, data.backtrack, change );
 	if ( !applied.isEmpty() ) {
 		this.documentStore.onNewChange( context.docName, applied );
 		context.broadcast( 'newChange', applied.serialize( true ) );

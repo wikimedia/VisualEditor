@@ -8,6 +8,7 @@
 		"OO": false
 	},
 	"rules": {
-		"max-len": "off"
+		"max-len": "off",
+		"no-var": "error"
 	}
 }

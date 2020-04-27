@@ -14,8 +14,7 @@ const
 	packageInfo = require( '../package.json' );
 
 function initApp( options ) {
-	var logger, mongoClient, documentStore, protocolServer,
-		app = express();
+	const app = express();
 
 	// get the options and make them available in the app
 	app.logger = options.logger; // the logging device
@@ -32,7 +31,7 @@ function initApp( options ) {
 
 	// eslint-disable-next-line prefer-regex-literals
 	app.get( new RegExp( '/doc/edit/(.*)' ), function ( req, res ) {
-		var docName = req.params[ 0 ];
+		const docName = req.params[ 0 ];
 		res.render( 'editor', { docName: docName } );
 	} );
 
@@ -46,19 +45,19 @@ function initApp( options ) {
 		res.status( 401 ).send( 'DOM in nodejs is hard' );
 	} );
 
-	logger = new Logger( app.logger );
-	mongoClient = new mongodb.MongoClient(
+	const logger = new Logger( app.logger );
+	const mongoClient = new mongodb.MongoClient(
 		new mongodb.Server( app.conf.mongodb.host, app.conf.mongodb.port ),
 		// eslint-disable-next-line camelcase
 		{ native_parser: true }
 	);
-	documentStore = new ve.dm.DocumentStore( mongoClient, 'test', logger );
-	protocolServer = new ve.dm.ProtocolServer( documentStore, logger );
+	const documentStore = new ve.dm.DocumentStore( mongoClient, 'test', logger );
+	const protocolServer = new ve.dm.ProtocolServer( documentStore, logger );
 	app.transportServer = new ve.dm.TransportServer( protocolServer );
 	app.logger.log( 'info', 'Connecting to document store' );
 
 	return documentStore.connect().then( function () {
-		var dropDatabase = ( process.argv.indexOf( '--drop' ) !== -1 );
+		const dropDatabase = ( process.argv.indexOf( '--drop' ) !== -1 );
 		if ( dropDatabase ) {
 			app.logger.log( 'info', 'Dropping database' );
 		}
@@ -72,7 +71,7 @@ function createServer( app ) {
 	// return a promise which creates an HTTP server,
 	// attaches the app to it, and starts accepting
 	// incoming client requests
-	var io, server;
+	let server;
 
 	return new Promise( function ( resolve ) {
 		server = http.createServer( app ).listen(
@@ -80,7 +79,7 @@ function createServer( app ) {
 			app.conf.interface,
 			resolve
 		);
-		io = socketIO( server );
+		const io = socketIO( server );
 		io.on(
 			'connection',
 			app.transportServer.onConnection.bind(

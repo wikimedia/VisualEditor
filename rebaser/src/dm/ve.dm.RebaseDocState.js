@@ -55,7 +55,7 @@ ve.dm.RebaseDocState.static.newAuthorData = function () {
 /* Methods */
 
 ve.dm.RebaseDocState.prototype.getActiveAuthors = function () {
-	var result = {};
+	const result = {};
 	this.authors.forEach( function ( authorData, authorId ) {
 		if ( authorData.active ) {
 			result[ authorId ] = {

@@ -1,4 +1,4 @@
-var ve = require( '../dist/ve-rebaser.js' ),
+const ve = require( '../dist/ve-rebaser.js' ),
 	fs = require( 'fs' );
 
 /**
@@ -8,10 +8,9 @@ var ve = require( '../dist/ve-rebaser.js' ),
  * @return {Object[]} Array of parsed objects
  */
 function parseLog( log ) {
-	var i,
-		result = [],
+	const result = [],
 		lines = log.split( '\n' );
-	for ( i = 0; i < lines.length; i++ ) {
+	for ( let i = 0; i < lines.length; i++ ) {
 		if ( lines[ i ] === '' ) {
 			continue;
 		}
@@ -25,14 +24,14 @@ function parseLog( log ) {
 }
 
 function toTestCase( parsedLog ) {
-	var i, type, authorId, clientId, changes, unsent, newChanges,
-		clients = [],
+	// var i, type, authorId, clientId, changes, unsent, newChanges,
+	const clients = [],
 		ops = [],
 		clientStates = {};
-	for ( i = 0; i < parsedLog.length; i++ ) {
-		type = parsedLog[ i ].type;
-		authorId = parsedLog[ i ].authorId;
-		clientId = parsedLog[ i ].clientId;
+	for ( let i = 0; i < parsedLog.length; i++ ) {
+		const type = parsedLog[ i ].type;
+		const authorId = parsedLog[ i ].authorId;
+		const clientId = parsedLog[ i ].clientId;
 		if ( type === 'newClient' ) {
 			clients.push( authorId );
 			clientStates[ authorId ] = {
@@ -45,8 +44,8 @@ function toTestCase( parsedLog ) {
 				clientStates[ authorId ].submitting = false;
 			}
 		} else if ( type === 'acceptChange' ) {
-			unsent = ve.dm.Change.static.deserialize( parsedLog[ i ].unsent, true );
-			newChanges = unsent.mostRecent( unsent.start + clientStates[ clientId ].unsent );
+			const unsent = ve.dm.Change.static.deserialize( parsedLog[ i ].unsent, true );
+			const newChanges = unsent.mostRecent( unsent.start + clientStates[ clientId ].unsent );
 			// HACK: Deliberately using .getLength() > 0 instead of .isEmpty() to ignore selection-only changes
 			if ( newChanges.getLength() > 0 ) {
 				ops.push( [ clientId, 'apply', newChanges.serialize( true ) ] );
@@ -58,8 +57,8 @@ function toTestCase( parsedLog ) {
 				ops.push( [ clientId, 'receive' ] );
 			}
 		} else if ( type === 'submitChange' ) {
-			changes = ve.dm.Change.static.deserialize( parsedLog[ i ].change, true );
-			newChanges = changes.mostRecent( changes.start + clientStates[ clientId ].unsent );
+			const changes = ve.dm.Change.static.deserialize( parsedLog[ i ].change, true );
+			const newChanges = changes.mostRecent( changes.start + clientStates[ clientId ].unsent );
 			if ( newChanges.getLength() > 0 ) {
 				ops.push( [ clientId, 'apply', newChanges.serialize( true ) ] );
 			}
@@ -79,7 +78,7 @@ function toTestCase( parsedLog ) {
 }
 
 fs.readFile( process.argv[ 2 ], { encoding: 'utf8' }, function ( err, data ) {
-	var parsed = parseLog( data ),
+	const parsed = parseLog( data ),
 		testCase = toTestCase( parsed );
 	process.stdout.write( JSON.stringify( testCase ) );
 } );
