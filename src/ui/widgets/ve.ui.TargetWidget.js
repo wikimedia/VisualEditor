@@ -13,6 +13,7 @@
  * @class
  * @abstract
  * @extends OO.ui.Widget
+ * @mixins OO.ui.mixin.PendingElement
  *
  * @constructor
  * @param {Object} [config] Configuration options
@@ -34,6 +35,9 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 
 	// Parent constructor
 	ve.ui.TargetWidget.super.call( this, config );
+
+	// Mixin constructor
+	OO.ui.mixin.PendingElement.call( this, config );
 
 	// Properties
 	this.toolbarGroups = config.toolbarGroups;
@@ -62,6 +66,7 @@ ve.ui.TargetWidget = function VeUiTargetWidget( config ) {
 /* Inheritance */
 
 OO.inheritClass( ve.ui.TargetWidget, OO.ui.Widget );
+OO.mixinClass( ve.ui.TargetWidget, OO.ui.mixin.PendingElement );
 
 /* Methods */
 
