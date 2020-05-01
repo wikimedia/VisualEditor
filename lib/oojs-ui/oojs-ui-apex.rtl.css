@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.38.0
+ * OOUI v0.38.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-04-15T01:28:27Z
+ * Date: 2020-05-01T20:02:07Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1806,14 +1806,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.0
+ * OOUI v0.38.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-04-15T01:28:27Z
+ * Date: 2020-05-01T20:02:07Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2734,14 +2734,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.0
+ * OOUI v0.38.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-04-15T01:28:27Z
+ * Date: 2020-05-01T20:02:07Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3279,14 +3279,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.0
+ * OOUI v0.38.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-04-15T01:28:27Z
+ * Date: 2020-05-01T20:02:07Z
  */
 
 .oo-ui-window {
@@ -3702,14 +3702,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.0
+ * OOUI v0.38.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-04-15T01:28:27Z
+ * Date: 2020-05-01T20:02:07Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-rtl.png');
@@ -3797,6 +3797,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-icon-articleSearch {
   background-image: url('themes/wikimediaui/images/icons/articleSearch.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articleSearch.svg');
+}
+.oo-ui-icon-articlesSearch {
+  background-image: url('themes/wikimediaui/images/icons/articlesSearch-rtl.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/articlesSearch-rtl.svg');
 }
 .oo-ui-icon-articleRedirect {
   background-image: url('themes/wikimediaui/images/icons/articleRedirect-rtl.png');
