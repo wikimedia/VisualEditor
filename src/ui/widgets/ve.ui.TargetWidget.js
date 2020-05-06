@@ -77,6 +77,12 @@ OO.mixinClass( ve.ui.TargetWidget, OO.ui.mixin.PendingElement );
  */
 
 /**
+ * The target's surface has been submitted, e.g. Ctrl+Enter
+ *
+ * @event submit
+ */
+
+/**
  * A document has been attached to the target, and a toolbar and surface created.
  *
  * @event setup
@@ -121,24 +127,15 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	this.target.setSurface( surface );
 
 	// Events
-	this.getSurface().getModel().connect( this, { history: 'onSurfaceModelHistory' } );
 	this.getSurface().getView().connect( this, {
 		focus: 'onFocusChange',
 		blur: 'onFocusChange'
 	} );
+	// Rethrow as target events so users don't have to re-bind when the surface is changed
+	this.getSurface().getModel().connect( this, { history: [ 'emit', 'change' ] } );
+	this.getSurface().connect( this, { submit: [ 'emit', 'submit' ] } );
 
 	this.emit( 'setup' );
-};
-
-/**
- * Handle history events from the surface model.
- *
- * @fires change
- */
-ve.ui.TargetWidget.prototype.onSurfaceModelHistory = function () {
-	// Rethrow this event so users don't have to re-bind to
-	// surface model 'history' when the surface is changed in #setDocument
-	this.emit( 'change' );
 };
 
 /**
