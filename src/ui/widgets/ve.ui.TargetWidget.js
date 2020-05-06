@@ -154,7 +154,9 @@ ve.ui.TargetWidget.prototype.hasBeenModified = function () {
  */
 ve.ui.TargetWidget.prototype.setReadOnly = function ( readOnly ) {
 	this.readOnly = !!readOnly;
-	this.getSurface().setReadOnly( this.readOnly );
+	if ( this.getSurface() ) {
+		this.getSurface().setReadOnly( this.readOnly );
+	}
 	this.$element.toggleClass( 've-ui-targetWidget-readOnly', this.readOnly );
 };
 
