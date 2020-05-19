@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.38.1
+ * OOUI v0.39.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-05-01T20:02:07Z
+ * Date: 2020-05-06T16:18:54Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -990,6 +990,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupWidget-head > .oo-ui-buttonWidget {
   position: absolute;
 }
+.oo-ui-popupWidget-head > .oo-ui-iconElement-icon {
+  float: left;
+}
 .oo-ui-popupWidget-head > .oo-ui-labelElement-label {
   float: left;
   cursor: default;
@@ -1102,7 +1105,11 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-size: 1.25em 1.25em;
 }
 .oo-ui-popupWidget-head > .oo-ui-labelElement-label {
-  margin: 0.75em 2.125em 0.75em 1em;
+  margin: 0.75em 2.125em 0.75em 0.25em;
+}
+.oo-ui-popupWidget-head > .oo-ui-iconElement-icon {
+  height: 100%;
+  margin-left: 0.75em;
 }
 .oo-ui-popupWidget-body {
   line-height: 1.4;
@@ -1806,14 +1813,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.1
+ * OOUI v0.39.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-05-01T20:02:07Z
+ * Date: 2020-05-06T16:18:54Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2734,14 +2741,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.1
+ * OOUI v0.39.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-05-01T20:02:07Z
+ * Date: 2020-05-06T16:18:54Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3279,14 +3286,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.1
+ * OOUI v0.39.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-05-01T20:02:07Z
+ * Date: 2020-05-06T16:18:54Z
  */
 
 .oo-ui-window {
@@ -3702,14 +3709,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.38.1
+ * OOUI v0.39.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-05-01T20:02:07Z
+ * Date: 2020-05-06T16:18:54Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
