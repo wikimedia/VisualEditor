@@ -33,6 +33,8 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 	this.$element.addClass( 've-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode' );
 	// Prevent Grammarly from polluting the DOM (T165746)
 	this.$element.attr( 'data-gramm', 'false' );
+
+	this.$element.attr( 'role', 'textbox' );
 };
 
 /* Inheritance */
