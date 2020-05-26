@@ -201,6 +201,7 @@
 	"visualeditor-table-move-col-before": "Hjirfoar delsette",
 	"visualeditor-table-move-row-after": "Hjirûnder delsette",
 	"visualeditor-table-move-row-before": "Hjirboppe delsette",
+	"visualeditor-table-sum": "Som: $1, Gemiddelde: $2",
 	"visualeditor-tablecell-contextitem": "Tabelsel",
 	"visualeditor-tablecell-tooltip": "Sel bewurkje mei dûbeldklik",
 	"visualeditor-toolbar-format-tooltip": "Alineäopmaak",
