@@ -120,11 +120,13 @@ module.exports = function ( grunt ) {
 				if ( langList ) {
 					configScript += indent + '\tve.availableLanguages = ' +
 						stringifyObject(
-							grunt.file.expand(
-								i18n.map( function ( path ) { return path + '*.json'; } )
-							).map( function ( file ) {
-								return file.split( '/' ).pop().slice( 0, -5 );
-							} )
+							Array.from( new Set(
+								grunt.file.expand(
+									i18n.map( function ( path ) { return path + '*.json'; } )
+								).map( function ( file ) {
+									return file.split( '/' ).pop().slice( 0, -5 );
+								} )
+							) ).sort()
 						).replace( /\n\t*/g, ' ' ) +
 						';\n';
 				}
