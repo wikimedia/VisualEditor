@@ -14,7 +14,7 @@ https://www.mediawiki.org/wiki/VisualEditor/Setup
 
 For information about running tests and contributing code to VisualEditor,
 see [CONTRIBUTING.md][].  Patch submissions are reviewed and managed with
-[Gerrit][].  There is also [API documentation][] available for the
+[Gerrit][].  There is also an [API documentation][] available for the
 VisualEditor.
 
 [VisualEditor]:      https://www.mediawiki.org/wiki/VisualEditor
