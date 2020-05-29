@@ -5,12 +5,14 @@
  */
 
 .ve-ui-linearContextItem-head {
+	min-height: 32px;
+	padding: 0.5em;
 	display: flex;
 	align-items: center;
 }
 
 .ve-ui-linearContextItem-title {
-	padding: 0.5em 1em;
+	padding: 0 0.5em;
 	white-space: nowrap;
 	flex: 1;
 }
@@ -23,11 +25,7 @@
 	margin-left: 0.3em;
 	word-wrap: break-word;
 	white-space: pre-line;
-	vertical-align: top;
-}
-
-.ve-ui-desktopContext .ve-ui-linearContextItem-actions {
-	padding: 0.5em;
+	vertical-align: middle;
 }
 
 .ve-ui-linearContextItem-body {
