@@ -21,12 +21,12 @@ ve.Node = function VeNode() {
 };
 
 /**
- * @event attach
+ * @event ve.Node#attach
  * @param {ve.Node} New parent
  */
 
 /**
- * @event detach
+ * @event ve.Node#detach
  * @param {ve.Node} Old parent
  */
 
@@ -36,7 +36,7 @@ ve.Node = function VeNode() {
  * The root will be consistent with that set in descendants and ancestors, but other parts of the
  * tree may be inconsistent.
  *
- * @event root
+ * @event ve.Node#root
  * @param {ve.Node} New root
  */
 
@@ -46,7 +46,7 @@ ve.Node = function VeNode() {
  * The root will be consistent with that set in descendants and ancestors, but other parts of the
  * tree may be inconsistent.
  *
- * @event unroot
+ * @event ve.Node#unroot
  * @param {ve.Node} Old root
  */
 
@@ -345,8 +345,8 @@ ve.Node.prototype.getRoot = function () {
  * This method is overridden by nodes with children.
  *
  * @param {ve.Node|null} root Node to use as root
- * @fires root
- * @fires unroot
+ * @fires ve.Node#root
+ * @fires ve.Node#unroot
  */
 ve.Node.prototype.setRoot = function ( root ) {
 	var oldRoot = this.root;
@@ -398,7 +398,7 @@ ve.Node.prototype.setDocument = function ( doc ) {
  * Attach the node to another as a child.
  *
  * @param {ve.Node} parent Node to attach to
- * @fires attach
+ * @fires ve.Node#attach
  */
 ve.Node.prototype.attach = function ( parent ) {
 	this.parent = parent;
@@ -410,7 +410,7 @@ ve.Node.prototype.attach = function ( parent ) {
 /**
  * Detach the node from its parent.
  *
- * @fires detach
+ * @fires ve.Node#detach
  */
 ve.Node.prototype.detach = function () {
 	var parent = this.parent;

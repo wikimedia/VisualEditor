@@ -191,7 +191,7 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
  * Process a diff queue, skipping over sequential nodes with no changes
  *
  * @param {Array[]} queue Diff queue
- * @return {(Array|null)[]}
+ * @return {Array.<Array|null>}
  */
 ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
 	var hasChanges = false,
@@ -278,7 +278,7 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
 };
 
 /**
- * @param {(Array|null)[]} queue Diff queue
+ * @param {Array.<Array|null>} queue Diff queue
  * @param {HTMLElement} parentNode Parent node to render to
  * @param {HTMLElement} spacerNode Spacer node template
  */

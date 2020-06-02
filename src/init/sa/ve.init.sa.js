@@ -8,8 +8,7 @@
  * Namespace for all VisualEditor stand-alone Initialization classes, static methods and static
  * properties.
  *
- * @class
- * @singleton
+ * @namespace
  */
 ve.init.sa = {
 };

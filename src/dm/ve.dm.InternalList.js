@@ -37,7 +37,7 @@ OO.mixinClass( ve.dm.InternalList, OO.EventEmitter );
 /* Events */
 
 /**
- * @event update
+ * @event ve.dm.InternalList#update
  * @param {string[]} groupsChanged List of groups changed since the last transaction
  */
 
@@ -355,7 +355,7 @@ ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
 /**
  * Handle document transaction events
  *
- * @fires update
+ * @fires ve.dm.InternalList#update
  */
 ve.dm.InternalList.prototype.onTransact = function () {
 	if ( this.groupsChanged.length > 0 ) {

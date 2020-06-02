@@ -68,12 +68,12 @@ OO.inheritClass( ve.ui.DimensionsWidget, OO.ui.Widget );
 /* Events */
 
 /**
- * @event widthChange
+ * @event ve.ui.DimensionsWidget#widthChange
  * @param {string} value The new width
  */
 
 /**
- * @event heightChange
+ * @event ve.ui.DimensionsWidget#heightChange
  * @param {string} value The new width
  */
 
@@ -83,7 +83,7 @@ OO.inheritClass( ve.ui.DimensionsWidget, OO.ui.Widget );
  * Respond to width change, propagate the input change event
  *
  * @param {string} value The new changed value
- * @fires widthChange
+ * @fires ve.ui.DimensionsWidget#widthChange
  */
 ve.ui.DimensionsWidget.prototype.onWidthChange = function ( value ) {
 	this.emit( 'widthChange', value );
@@ -93,7 +93,7 @@ ve.ui.DimensionsWidget.prototype.onWidthChange = function ( value ) {
  * Respond to height change, propagate the input change event
  *
  * @param {string} value The new changed value
- * @fires heightChange
+ * @fires ve.ui.DimensionsWidget#heightChange
  */
 ve.ui.DimensionsWidget.prototype.onHeightChange = function ( value ) {
 	this.emit( 'heightChange', value );

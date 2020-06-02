@@ -137,6 +137,7 @@ ve.EventSequencer.prototype.attach = function ( $node ) {
 	return this;
 };
 
+// eslint-disable-next-line jsdoc/require-returns-check
 /**
  * Detach from a node (if attached), to stop listen to its jQuery events
  *

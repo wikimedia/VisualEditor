@@ -49,7 +49,7 @@ ve.dm.TableMatrix = function VeDmTableMatrix( tableNode ) {
 OO.mixinClass( ve.dm.TableMatrix, OO.EventEmitter );
 
 /**
- * @event structureChange
+ * @event ve.dm.TableMatrix#structureChange
  */
 
 /**
@@ -57,7 +57,7 @@ OO.mixinClass( ve.dm.TableMatrix, OO.EventEmitter );
  *
  * This is called by ve.dm.TableNode on structural changes.
  *
- * @fires structureChange
+ * @fires ve.dm.TableMatrix#structureChange
  */
 ve.dm.TableMatrix.prototype.invalidate = function () {
 	this.matrix = null;

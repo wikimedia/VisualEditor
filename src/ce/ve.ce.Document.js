@@ -37,7 +37,7 @@ OO.inheritClass( ve.ce.Document, ve.Document );
 /**
  * Language or direction changed
  *
- * @event langChange
+ * @event ve.ce.Document#langChange
  */
 
 /* Methods */

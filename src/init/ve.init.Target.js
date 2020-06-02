@@ -82,9 +82,9 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
 /* Events */
 
 /**
- * @event surfaceReady
- *
  * Must be fired after the surface is initialized
+ *
+ * @event ve.init.Target#surfaceReady
  */
 
 /* Static Properties */
@@ -184,14 +184,14 @@ ve.init.Target.static.actionGroups = [];
 /**
  * List of commands which can be triggered anywhere from within the document
  *
- * @type {string[]} List of command names
+ * @type {string[]}
  */
 ve.init.Target.static.documentCommands = [];
 
 /**
  * List of commands which can be triggered from within the target element
  *
- * @type {string[]} List of command names
+ * @type {string[]}
  */
 ve.init.Target.static.targetCommands = [ 'commandHelp', 'findAndReplace', 'findNext', 'findPrevious' ];
 
@@ -200,14 +200,14 @@ ve.init.Target.static.targetCommands = [ 'commandHelp', 'findAndReplace', 'findN
  *
  * Null means all commands in the registry are used (excluding excludeCommands)
  *
- * @type {string[]|null} List of command names
+ * @type {string[]|null}
  */
 ve.init.Target.static.includeCommands = null;
 
 /**
  * List of commands to exclude from the target entirely
  *
- * @type {string[]} List of command names
+ * @type {string[]}
  */
 ve.init.Target.static.excludeCommands = [];
 

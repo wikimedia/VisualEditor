@@ -6,7 +6,7 @@
 
 /**
  * @method
- * @inheritdoc OO.ui.Element#scrollIntoView
+ * @see OO.ui.Element#scrollIntoView
  */
 ve.scrollIntoView = OO.ui.Element.static.scrollIntoView.bind( OO.ui.Element.static );
 

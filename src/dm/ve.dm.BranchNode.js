@@ -34,15 +34,11 @@ ve.dm.BranchNode = function VeDmBranchNode( element, children ) {
 };
 
 /**
- * @event splice
+ * @event ve.dm.BranchNode#splice
  * @see #method-splice
  * @param {number} index
  * @param {number} howmany
  * @param {ve.dm.BranchNode} [childModel]
- */
-
-/**
- * @event update
  */
 
 /* Inheritance */
@@ -58,8 +54,6 @@ OO.mixinClass( ve.dm.BranchNode, ve.BranchNode );
  *
  * @param {ve.dm.BranchNode} childModel Item to add
  * @return {number} New number of children
- * @fires splice
- * @fires update
  */
 ve.dm.BranchNode.prototype.push = function ( childModel ) {
 	this.splice( this.children.length, 0, childModel );
@@ -69,9 +63,7 @@ ve.dm.BranchNode.prototype.push = function ( childModel ) {
 /**
  * Remove a child node from the end of the list.
  *
- * @return {ve.dm.BranchNode} Removed childModel
- * @fires splice
- * @fires update
+ * @return {ve.dm.BranchNode|undefined} Removed childModel
  */
 ve.dm.BranchNode.prototype.pop = function () {
 	if ( this.children.length ) {
@@ -86,8 +78,6 @@ ve.dm.BranchNode.prototype.pop = function () {
  *
  * @param {ve.dm.BranchNode} childModel Item to add
  * @return {number} New number of children
- * @fires splice
- * @fires update
  */
 ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
 	this.splice( 0, 0, childModel );
@@ -97,9 +87,7 @@ ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
 /**
  * Remove a child node from the beginning of the list.
  *
- * @return {ve.dm.BranchNode} Removed childModel
- * @fires splice
- * @fires update
+ * @return {ve.dm.BranchNode|undefined} Removed childModel
  */
 ve.dm.BranchNode.prototype.shift = function () {
 	if ( this.children.length ) {
@@ -115,7 +103,7 @@ ve.dm.BranchNode.prototype.shift = function () {
  * @param {number} index Index to remove and or insert nodes at
  * @param {number} howmany Number of nodes to remove
  * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
- * @fires splice
+ * @fires ve.dm.BranchNode#splice
  * @return {ve.dm.BranchNode[]} Removed nodes
  */
 ve.dm.BranchNode.prototype.splice = function () {

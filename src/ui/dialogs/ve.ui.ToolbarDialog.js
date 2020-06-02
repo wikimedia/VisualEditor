@@ -42,7 +42,7 @@ ve.ui.ToolbarDialog.static.padded = true;
  * For 'inline' the caller will be manually positioning the dialog.
  *
  * @static
- * @type {string} Toolbar position
+ * @type {string}
  */
 ve.ui.ToolbarDialog.static.position = 'above';
 

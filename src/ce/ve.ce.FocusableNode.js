@@ -78,11 +78,11 @@ OO.initClass( ve.ce.FocusableNode );
 /* Events */
 
 /**
- * @event focus
+ * @event ve.ce.FocusableNode#focus
  */
 
 /**
- * @event blur
+ * @event ve.ce.FocusableNode#blur
  */
 
 /* Static properties */
@@ -617,8 +617,8 @@ ve.ce.FocusableNode.prototype.isFocused = function () {
  * Set the selected state of the node.
  *
  * @param {boolean} value Node is focused
- * @fires focus
- * @fires blur
+ * @fires ve.ce.FocusableNode#focus
+ * @fires ve.ce.FocusableNode#blur
  */
 ve.ce.FocusableNode.prototype.setFocused = function ( value ) {
 	value = !!value;

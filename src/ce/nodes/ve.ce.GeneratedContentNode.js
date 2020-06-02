@@ -32,15 +32,7 @@ OO.initClass( ve.ce.GeneratedContentNode );
 /* Events */
 
 /**
- * @event setup
- */
-
-/**
- * @event teardown
- */
-
-/**
- * @event rerender
+ * @event ve.ce.GeneratedContentNode#rerender
  */
 
 /* Static members */
@@ -184,8 +176,9 @@ ve.ce.GeneratedContentNode.prototype.filterRenderedDomElements = function ( domE
  *
  * @param {Object|string|Array} generatedContents Generated contents, in the default case an HTMLElement array
  * @param {boolean} [staged] Update happened in staging mode
- * @fires setup
- * @fires teardown
+ * @fires ve.ce.View#setup
+ * @fires ve.ce.View#teardown
+ * @fires ve.dm.GeneratedContentNode#generatedContentsError
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, staged ) {
 	var node = this;
@@ -269,7 +262,7 @@ ve.ce.GeneratedContentNode.prototype.preventTabbingInside = function () {
  *
  * Nodes may override this method if the rerender event needs to be deferred (e.g. until images have loaded)
  *
- * @fires rerender
+ * @fires ve.ce.GeneratedContentNode#rerender
  */
 ve.ce.GeneratedContentNode.prototype.afterRender = function () {
 	this.emit( 'rerender' );

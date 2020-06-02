@@ -106,8 +106,9 @@ ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attribut
 	return null;
 };
 
+// eslint-disable-next-line jsdoc/require-param
 /**
- * @inheritdoc ve.dm.Node
+ * @see ve.dm.Node
  */
 ve.dm.ClassAttributeNode.static.sanitize = function ( dataElement ) {
 	if ( dataElement.attributes ) {

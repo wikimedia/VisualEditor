@@ -28,16 +28,18 @@ OO.mixinClass( ve.dm.ImageNode, ve.dm.ResizableNode );
 
 /* Static Methods */
 
+// eslint-disable-next-line jsdoc/require-param, jsdoc/require-returns
 /**
- * @inheritdoc ve.dm.Model
+ * @see ve.dm.Model
  */
 ve.dm.ImageNode.static.isDiffComparable = function ( element, other ) {
 	// Images with different src's shouldn't be diffed
 	return element.type === other.type && element.attributes.src === other.attributes.src;
 };
 
+// eslint-disable-next-line jsdoc/require-param, jsdoc/require-returns
 /**
- * @inheritdoc ve.dm.Model
+ * @see ve.dm.Model
  */
 ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes ) {
 	var customKeys = [ 'width', 'height' ],
@@ -70,8 +72,9 @@ ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes
 	return descriptions;
 };
 
+// eslint-disable-next-line jsdoc/require-param, jsdoc/require-returns
 /**
- * @inheritdoc ve.dm.Node
+ * @see ve.dm.Node
  */
 ve.dm.ImageNode.static.describeChange = function ( key, change ) {
 	switch ( key ) {

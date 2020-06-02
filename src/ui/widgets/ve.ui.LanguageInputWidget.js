@@ -113,7 +113,7 @@ OO.inheritClass( ve.ui.LanguageInputWidget, OO.ui.Widget );
 /* Events */
 
 /**
- * @event change
+ * @event ve.ui.LanguageInputWidget#change
  * @param {string} lang Language code
  * @param {string} dir Directionality
  */
@@ -159,7 +159,7 @@ ve.ui.LanguageInputWidget.prototype.onChange = function () {
  *
  * @param {string|null} lang Language code
  * @param {string|null} dir Directionality
- * @fires change
+ * @fires ve.ui.LanguageInputWidget#change
  * @return {ve.ui.LanguageInputWidget}
  * @chainable
  */

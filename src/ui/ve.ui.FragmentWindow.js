@@ -34,8 +34,9 @@ ve.ui.FragmentWindow.prototype.getFragment = function () {
 	return this.fragment;
 };
 
+// eslint-disable-next-line jsdoc/require-param, jsdoc/require-returns
 /**
- * @inheritdoc OO.ui.Dialog
+ * @see OO.ui.Dialog
  */
 ve.ui.FragmentWindow.prototype.getActionWidgetConfig = function ( config ) {
 	if ( config.action === 'done' && OO.ui.isMobile() ) {
@@ -48,8 +49,9 @@ ve.ui.FragmentWindow.prototype.getActionWidgetConfig = function ( config ) {
 	return config;
 };
 
+// eslint-disable-next-line jsdoc/require-param, jsdoc/require-returns
 /**
- * @inheritdoc OO.ui.Window
+ * @see OO.ui.Window
  * @throws {Error} If fragment was not provided through data parameter
  */
 ve.ui.FragmentWindow.prototype.getSetupProcess = function ( data, process ) {
@@ -72,8 +74,9 @@ ve.ui.FragmentWindow.prototype.getSetupProcess = function ( data, process ) {
 	}, this );
 };
 
+// eslint-disable-next-line jsdoc/require-param, jsdoc/require-returns
 /**
- * @inheritdoc OO.ui.Window
+ * @see OO.ui.Window
  */
 ve.ui.FragmentWindow.prototype.getTeardownProcess = function ( data, process ) {
 	ve.track( 'activity.' + this.constructor.static.name, { action: 'dialog-' + ( data && data.action || 'abort' ) } );

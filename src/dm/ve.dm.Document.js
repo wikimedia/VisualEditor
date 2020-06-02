@@ -21,7 +21,7 @@
  *  ignored.
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes, used when cloning
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
- * @param {(string|undefined)[]} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
+ * @param {Array.<string|undefined>} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
  * @param {string} [lang] Language code
  * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  * @param {ve.dm.Document} [originalDocument] Original document form which this was cloned.
@@ -92,15 +92,23 @@ OO.inheritClass( ve.dm.Document, ve.Document );
 /* Events */
 
 /**
- * @event precommit
  * Emitted when a transaction is about to be committed.
+ *
+ * @event ve.dm.Document#precommit
  * @param {ve.dm.Transaction} tx Transaction that is about to be committed
  */
 
 /**
- * @event transact
  * Emitted when a transaction has been committed.
+ *
+ * @event ve.dm.Document#transact
  * @param {ve.dm.Transaction} tx Transaction that was just processed
+ */
+
+/**
+ * A value in persistent storage has changed
+ *
+ * @event ve.dm.Document#storage
  */
 
 /* Static methods */
@@ -372,8 +380,8 @@ ve.dm.Document.prototype.isReadOnly = function () {
  *
  * @param {ve.dm.Transaction} transaction Transaction to apply
  * @param {boolean} isStaging Transaction is being applied in staging mode
- * @fires precommit
- * @fires transact
+ * @fires ve.dm.Document#precommit
+ * @fires ve.dm.Document#transact
  * @throws {Error} Cannot commit a transaction that has already been committed
  */
 ve.dm.Document.prototype.commit = function ( transaction, isStaging ) {
@@ -468,7 +476,7 @@ ve.dm.Document.prototype.getInternalList = function () {
 /**
  * Get the document's inner whitespace
  *
- * @return {(string|undefined)[]} The document's inner whitespace
+ * @return {Array.<string|undefined>} The document's inner whitespace
  */
 ve.dm.Document.prototype.getInnerWhitespace = function () {
 	return this.innerWhitespace;
@@ -1766,7 +1774,7 @@ ve.dm.Document.prototype.getDir = function () {
  *
  * @param {string|Object} [keyOrStorage] Key, or storage object to restore
  * @param {Mixed} [value] Serializable value, if key is set
- * @fires storage
+ * @fires ve.dm.Document#storage
  */
 ve.dm.Document.prototype.setStorage = function ( keyOrStorage, value ) {
 	if ( typeof keyOrStorage === 'string' ) {

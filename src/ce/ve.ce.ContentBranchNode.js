@@ -43,12 +43,11 @@ OO.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
 /* Static Members */
 
 /**
- * Whether Enter splits this node type. Must be true for ContentBranchNodes.
+ * @property {boolean} Whether Enter splits this node type. Must be true for ContentBranchNodes.
  *
  * Warning: overriding this to false in a subclass will cause crashes on Enter key handling.
  *
  * @static
- * @property {boolean}
  * @inheritable
  */
 ve.ce.ContentBranchNode.static.splitOnEnter = true;

@@ -56,7 +56,7 @@ OO.mixinClass( ve.ui.Context, OO.ui.mixin.GroupElement );
 /* Events */
 
 /**
- * @event resize
+ * @event ve.ui.Context#resize
  */
 
 /* Static Properties */
@@ -224,7 +224,7 @@ ve.ui.Context.prototype.onContextItemCommand = function () {};
  *
  * @param {boolean} [show] Show the context, omit to toggle
  * @return {jQuery.Promise} Promise resolved when context is finished showing/hiding
- * @fires resize
+ * @fires ve.ui.Context#resize
  */
 ve.ui.Context.prototype.toggle = function ( show ) {
 	show = show === undefined ? !this.visible : !!show;
@@ -241,7 +241,7 @@ ve.ui.Context.prototype.toggle = function ( show ) {
  *
  * @return {ve.ui.Context}
  * @chainable
- * @fires resize
+ * @fires ve.ui.Context#resize
  */
 ve.ui.Context.prototype.updateDimensions = function () {
 	// Override in subclass if context is positioned relative to content

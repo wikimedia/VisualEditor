@@ -30,7 +30,7 @@ ve.dm.TableNode = function VeDmTableNode() {
 OO.inheritClass( ve.dm.TableNode, ve.dm.BranchNode );
 
 /**
- * @event cellAttributeChange
+ * @event ve.dm.TableNode#cellAttributeChange
  * @param {ve.dm.TableCellableNode} cell
  */
 
@@ -61,7 +61,7 @@ ve.dm.TableNode.prototype.onSplice = function () {
  * Handle cell attribute changes
  *
  * @param {ve.dm.TableCellableNode} cell
- * @fires cellAttributeChange
+ * @fires ve.dm.TableNode#cellAttributeChange
  */
 ve.dm.TableNode.prototype.onCellAttributeChange = function ( cell ) {
 	this.emit( 'cellAttributeChange', cell );
@@ -144,12 +144,12 @@ OO.mixinClass( ve.dm.TableNodeCellIterator, OO.EventEmitter );
 /* Events */
 
 /**
- * @event newSection
+ * @event ve.dm.TableNodeCellIterator#newSection
  * @param {ve.dm.TableSectionNode} node Table section node
  */
 
 /**
- * @event newRow
+ * @event ve.dm.TableNodeCellIterator#newRow
  * @param {ve.dm.TableRowNode} node Table row node
  */
 
@@ -181,7 +181,7 @@ ve.dm.TableNodeCellIterator.prototype.next = function () {
 /**
  * Move to the next table section
  *
- * @fires newSection
+ * @fires ve.dm.TableNodeCellIterator#newSection
  */
 ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
 	// If there are no sections left, finish
@@ -207,7 +207,7 @@ ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
 /**
  * Move to the next table row
  *
- * @fires newRow
+ * @fires ve.dm.TableNodeCellIterator#newRow
  */
 ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
 	// If there are no rows left, go to the next section

@@ -7,8 +7,7 @@
 /**
  * Namespace for all VisualEditor ContentEditable classes, static methods and static properties.
  *
- * @class
- * @singleton
+ * @namespace
  */
 ve.ce = {
 	// nodeFactory: Initialized in ve.ce.NodeFactory.js

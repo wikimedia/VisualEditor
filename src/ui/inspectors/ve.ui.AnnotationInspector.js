@@ -123,8 +123,9 @@ ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment
 	} );
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.ui.FragmentWindow
+ * @see ve.ui.FragmentWindow
  */
 ve.ui.AnnotationInspector.prototype.isEditing = function () {
 	// If initialSelection isn't set yet, default to assume we are editing,

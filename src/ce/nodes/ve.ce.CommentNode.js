@@ -67,8 +67,9 @@ ve.ce.CommentNode.prototype.onAttributeChange = function ( key ) {
 
 /* Method */
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.ce.FocusableNode
+ * @see ve.ce.FocusableNode
  */
 ve.ce.CommentNode.prototype.hasRendering = function () {
 	// Comment nodes never have a rendering, don't bother with expensive DOM inspection

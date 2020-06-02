@@ -176,19 +176,6 @@ module.exports = function ( grunt ) {
 			}
 		},
 		buildloader: {
-			iframe: {
-				targetFile: '.jsduck/eg-iframe.html',
-				template: '.jsduck/eg-iframe.html.template',
-				modules: modules,
-				load: [
-					'visualEditor.standalone.apex.dist',
-					'visualEditor.standalone.read'
-				],
-				pathPrefix: '../',
-				i18n: [ 'i18n/', 'lib/oojs-ui/i18n/' ],
-				indent: '\t\t',
-				dir: 'ltr'
-			},
 			desktopDemoApex: {
 				targetFile: 'demos/ve/desktop.html',
 				template: 'demos/ve/demo.html.template',

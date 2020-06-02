@@ -33,7 +33,7 @@ OO.mixinClass( ve.Document, OO.EventEmitter );
  * to be attached too (and the event is emitted for descendants first, and for siblings
  * in their order in the children list)
  *
- * @event nodeAttached
+ * @event ve.Document#nodeAttached
  * @param {ve.Node} node The node that has been attached
  */
 
@@ -42,7 +42,7 @@ OO.mixinClass( ve.Document, OO.EventEmitter );
  * to be detached too (and the event is emitted for descendants first, and for siblings
  * in their order in the children list)
  *
- * @event nodeDetached
+ * @event ve.Document#nodeDetached
  * @param {ve.Node} node The node that has been detached
  */
 
@@ -582,6 +582,7 @@ ve.Document.prototype.rangeInsideOneLeafNode = function ( range ) {
  * The node and all its children are guaranteed to be attached
  *
  * @param {ve.Node} node The node attached
+ * @fires ve.Document#nodeAttached
  */
 ve.Document.prototype.nodeAttached = function ( node ) {
 	this.emit( 'nodeAttached', node );
@@ -593,6 +594,7 @@ ve.Document.prototype.nodeAttached = function ( node ) {
  * The node and all its children are guaranteed to be attached
  *
  * @param {ve.Node} node The node detached
+ * @fires ve.Document#nodeDetached
  */
 ve.Document.prototype.nodeDetached = function ( node ) {
 	this.emit( 'nodeDetached', node );

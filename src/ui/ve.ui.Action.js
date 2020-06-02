@@ -30,7 +30,7 @@ OO.initClass( ve.ui.Action );
 /* Static Properties */
 
 /**
- * List of allowed methods for the action.
+ * @property {string[]} List of allowed methods for the action.
  *
  * To avoid use of methods not intended to be executed via surface.execute(), the allowed methods
  * must be listed here. This information is checked by ve.ui.Surface before executing an action.
@@ -42,7 +42,6 @@ OO.initClass( ve.ui.Action );
  * be carried out.
  *
  * @static
- * @property {string[]}
  * @inheritable
  */
 ve.ui.Action.static.methods = [];

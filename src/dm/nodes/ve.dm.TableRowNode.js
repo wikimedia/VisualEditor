@@ -26,11 +26,6 @@ ve.dm.TableRowNode = function VeDmTableRowNode() {
 
 OO.inheritClass( ve.dm.TableRowNode, ve.dm.BranchNode );
 
-/**
- * @event cellAttributeChange
- * @param {ve.dm.TableCellableNode} cell
- */
-
 /* Static Properties */
 
 ve.dm.TableRowNode.static.name = 'tableRow';
@@ -88,7 +83,7 @@ ve.dm.TableRowNode.prototype.onSplice = function () {
  * Handle cell attribute changes
  *
  * @param {ve.dm.TableCellableNode} cell
- * @fires cellAttributeChange
+ * @fires ve.dm.TableNode#cellAttributeChange
  */
 ve.dm.TableRowNode.prototype.onCellAttributeChange = function ( cell ) {
 	this.emit( 'cellAttributeChange', cell );

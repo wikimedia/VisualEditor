@@ -7,6 +7,7 @@ const ve = require( '../dist/ve-rebaser.js' ),
 /**
  * Parse log file contents.
  *
+ * @ignore
  * @param {string} log Newline-separated list of JSON objects
  * @return {Object[]} Array of parsed objects
  */

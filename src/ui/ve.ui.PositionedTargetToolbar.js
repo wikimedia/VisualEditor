@@ -83,11 +83,11 @@ ve.ui.PositionedTargetToolbar.prototype.detach = function () {
 };
 
 /**
- * @inheritdoc
- *
  * While toolbar floating is enabled,
  * the toolbar will stick to the top of the screen unless it would be over or under the last visible
  * branch node in the root of the document being edited, at which point it will stop just above it.
+ *
+ * @inheritdoc
  */
 ve.ui.PositionedTargetToolbar.prototype.onWindowResize = function () {
 	ve.ui.Toolbar.super.prototype.onWindowResize.call( this );

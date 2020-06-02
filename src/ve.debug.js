@@ -8,15 +8,9 @@
 
 /**
  * @property {boolean} debug
- * @member ve
+ * @memberof ve
  */
 ve.debug = true;
-
-/**
- * @class ve.debug
- * @override ve
- * @singleton
- */
 
 /* Methods */
 

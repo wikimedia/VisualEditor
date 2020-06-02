@@ -48,7 +48,7 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 		fragmentSelection = fragment.getSelection();
 
 	if ( !( fragmentSelection instanceof ve.dm.LinearSelection ) ) {
-		return;
+		return false;
 	}
 
 	var fragments = [];

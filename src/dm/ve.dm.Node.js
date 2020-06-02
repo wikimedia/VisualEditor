@@ -30,20 +30,19 @@ ve.dm.Node = function VeDmNode( element ) {
 };
 
 /**
- * @event attributeChange
+ * @event ve.dm.Node#attributeChange
  * @param {string} key
  * @param {Mixed} oldValue
  * @param {Mixed} newValue
  */
 
 /**
- * @event lengthChange
+ * @event ve.dm.Node#lengthChange
  * @param {number} diff
  */
 
 /**
- * @event update
- * @param {boolean} staged Transaction was applied in staging mode
+ * @event ve.dm.Node#update
  */
 
 /* Inheritance */
@@ -444,127 +443,145 @@ ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated, resetAttri
 	return this.constructor.static.cloneElement( this.element, store, preserveGenerated, resetAttributes );
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.getChildNodeTypes = function () {
 	return this.constructor.static.childNodeTypes;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.getParentNodeTypes = function () {
 	return this.constructor.static.parentNodeTypes;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.getSuggestedParentNodeTypes = function () {
 	return this.constructor.static.suggestedParentNodeTypes;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.canHaveChildren = function () {
 	return ve.dm.nodeFactory.canNodeHaveChildren( this.type );
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.canHaveChildrenNotContent = function () {
 	return ve.dm.nodeFactory.canNodeHaveChildrenNotContent( this.type );
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isInternal = function () {
 	return this.constructor.static.isInternal;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isMetaData = function () {
 	return this.constructor.static.isMetaData;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isWrapped = function () {
 	return this.constructor.static.isWrapped;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isUnwrappable = function () {
 	return this.isWrapped() && this.constructor.static.isUnwrappable;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.canContainContent = function () {
 	return this.constructor.static.canContainContent;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isContent = function () {
 	return this.constructor.static.isContent;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isFocusable = function () {
 	return this.constructor.static.isFocusable;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isAlignable = function () {
 	return this.constructor.static.isAlignable;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isCellable = function () {
 	return this.constructor.static.isCellable;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isCellEditable = function () {
 	return this.constructor.static.isCellEditable;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isDiffedAsList = function () {
 	return this.constructor.static.isDiffedAsList;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isDiffedAsLeaf = function () {
 	return this.constructor.static.isDiffedAsLeaf;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.isDiffedAsDocument = function () {
 	return this.getChildNodeTypes() === null;
@@ -600,22 +617,25 @@ ve.dm.Node.prototype.suppressSlugType = function () {
 	return null;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.hasSignificantWhitespace = function () {
 	return this.constructor.static.hasSignificantWhitespace;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.handlesOwnChildren = function () {
 	return this.constructor.static.handlesOwnChildren;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.shouldIgnoreChildren = function () {
 	return this.constructor.static.ignoreChildren;
@@ -687,8 +707,9 @@ ve.dm.Node.prototype.compareAttributes = function ( attributes ) {
 	return true;
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.getLength = function () {
 	return this.length;
@@ -701,8 +722,8 @@ ve.dm.Node.prototype.getLength = function () {
  * not change the document data.
  *
  * @param {number} length Length of content
- * @fires lengthChange
- * @fires update
+ * @fires ve.dm.Node#lengthChange
+ * @fires ve.dm.Node#update
  * @throws {Error} Invalid content length error if length is less than 0
  */
 ve.dm.Node.prototype.setLength = function ( length ) {
@@ -729,16 +750,15 @@ ve.dm.Node.prototype.setLength = function ( length ) {
  * not change the document data.
  *
  * @param {number} adjustment Amount to adjust length by
- * @fires lengthChange
- * @fires update
  * @throws {Error} Invalid adjustment error if resulting length is less than 0
  */
 ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
 	this.setLength( this.length + adjustment );
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.Node
+ * @see ve.Node
  */
 ve.dm.Node.prototype.getOffset = function () {
 	if ( !this.parent ) {

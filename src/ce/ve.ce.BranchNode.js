@@ -128,8 +128,8 @@ ve.ce.BranchNode.prototype.initialize = function () {
  * added using $.data() will be lost upon updating the wrapper. To retain information added to the
  * wrapper, subscribe to the 'teardown' and 'setup' events, or override #initialize.
  *
- * @fires teardown
- * @fires setup
+ * @fires ve.ce.View#teardown
+ * @fires ve.ce.View#setup
  */
 ve.ce.BranchNode.prototype.updateTagName = function () {
 	var tagName = this.getTagName();

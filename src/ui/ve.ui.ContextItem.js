@@ -50,7 +50,9 @@ OO.inheritClass( ve.ui.ContextItem, OO.ui.Widget );
 /* Events */
 
 /**
- * @event command
+ * The context executed a ve.ui.Command
+ *
+ * @event ve.ui.ContextItem#command
  */
 
 /* Static Properties */

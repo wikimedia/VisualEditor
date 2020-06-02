@@ -38,10 +38,9 @@ OO.inheritClass( ve.ui.LinkAnnotationWidget, OO.ui.Widget );
 /* Events */
 
 /**
- * @event change
- *
  * A change event is emitted when the annotation value of the input changes.
  *
+ * @event ve.ui.LinkAnnotationWidget#change
  * @param {ve.dm.LinkAnnotation|null} annotation
  */
 
@@ -147,6 +146,7 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
  * @param {boolean} [fromText] Annotation was generated from text input
  * @return {ve.ui.LinkAnnotationWidget}
  * @chainable
+ * @fires ve.ui.LinkAnnotationWidget#change
  */
 ve.ui.LinkAnnotationWidget.prototype.setAnnotation = function ( annotation, fromText ) {
 	if ( ve.compare(

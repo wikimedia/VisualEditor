@@ -48,7 +48,7 @@ OO.inheritClass( ve.init.sa.Target, ve.init.Target );
 
 /**
  * @inheritdoc
- * @fires surfaceReady
+ * @fires ve.init.Target#surfaceReady
  */
 ve.init.sa.Target.prototype.addSurface = function () {
 	// Parent method

@@ -33,9 +33,9 @@ ve.ce.LinearTabKeyDownHandler.static.supportedSelections = [ 'linear' ];
 /* Static methods */
 
 /**
- * @inheritdoc
- *
  * Handle tab key down events with a linear selection while table editing.
+ *
+ * @inheritdoc
  */
 ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
 	var activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode ),

@@ -77,16 +77,16 @@ OO.initClass( ve.ce.ResizableNode );
 /* Events */
 
 /**
- * @event resizeStart
+ * @event ve.ce.ResizableNode#resizeStart
  */
 
 /**
- * @event resizing
+ * @event ve.ce.ResizableNode#resizing
  * @param {Object} dimensions Dimension object containing width & height
  */
 
 /**
- * @event resizeEnd
+ * @event ve.ce.ResizableNode#resizeEnd
  */
 
 /* Methods */
@@ -380,7 +380,7 @@ ve.ce.ResizableNode.prototype.onResizableAttributeChange = function () {
  * Handle bounding box handle mousedown.
  *
  * @param {jQuery.Event} e Click event
- * @fires resizeStart
+ * @fires ve.ce.ResizableNode#resizeStart
  */
 ve.ce.ResizableNode.prototype.onResizeHandlesCornerMouseDown = function ( e ) {
 	// Hide context menu
@@ -481,7 +481,7 @@ ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
  * Handle body mousemove.
  *
  * @param {jQuery.Event} e Click event
- * @fires resizing
+ * @fires ve.ce.ResizableNode#resizing
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 	var diff = {},
@@ -548,7 +548,7 @@ ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
 /**
  * Handle body mouseup.
  *
- * @fires resizeEnd
+ * @fires ve.ce.ResizableNode#resizeEnd
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseUp = function () {
 	var width = this.$resizeHandles.outerWidth(),

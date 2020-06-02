@@ -242,42 +242,44 @@ OO.mixinClass( ve.ce.Surface, OO.EventEmitter );
 /* Events */
 
 /**
- * @event relocationStart
+ * @event ve.ce.Surface#relocationStart
  */
 
 /**
- * @event relocationEnd
+ * @event ve.ce.Surface#relocationEnd
  */
 
 /**
- * @event keyup
+ * @event ve.ce.Surface#keyup
  */
 
 /**
  * When the surface or its contents changes position
  * (only after initialize has already been called).
  *
- * @event position
+ * @event ve.ce.Surface#position
  */
 
 /**
- * @event focus
  * Note that it's possible for a focus event to occur immediately after a blur event, if the focus
  * moves to or from a FocusableNode. In this case the surface doesn't lose focus conceptually, but
  * a pair of blur-focus events is emitted anyway.
+ *
+ * @event ve.ce.Surface#focus
  */
 
 /**
- * @event blur
  * Note that it's possible for a focus event to occur immediately after a blur event, if the focus
  * moves to or from a FocusableNode. In this case the surface doesn't lose focus conceptually, but
  * a pair of blur-focus events is emitted anyway.
+ *
+ * @event ve.ce.Surface#blur
  */
 
 /**
  * Surface activation state has changed (i.e. on activate or deactivate)
  *
- * @event activation
+ * @event ve.ce.Surface#activation
  */
 
 /* Static properties */
@@ -516,6 +518,8 @@ ve.ce.Surface.prototype.getSelectionDirectionality = function () {
  * Initialize surface.
  *
  * This should be called after the surface has been attached to the DOM.
+ *
+ * @fires ve.ce.Surface#position
  */
 ve.ce.Surface.prototype.initialize = function () {
 	this.attachedRoot.setLive( true );
@@ -745,7 +749,7 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  * @param {boolean} [showAsActivated=true] Surface should still show as activated
  * @param {boolean} [noSelectionChange] Don't change the native selection.
  * @param {boolean} [hideSelection] Completely hide the selection
- * @fires activation
+ * @fires ve.ce.Surface#activation
  */
 ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
 	var surface = this;
@@ -783,7 +787,8 @@ ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChan
 /**
  * Reactivate the surface and restore the native selection
  *
- * @fires activation
+ * @fires ve.ce.Surface#activation
+ * @fires ve.dm.Surface#contextChange
  */
 ve.ce.Surface.prototype.activate = function () {
 	if ( this.deactivated ) {
@@ -1053,7 +1058,7 @@ ve.ce.Surface.prototype.redrawSelections = function () {
  *
  * This is triggered by a global focusin/focusout event noticing a selection on the document.
  *
- * @fires focus
+ * @fires ve.ce.Surface#focus
  */
 ve.ce.Surface.prototype.onDocumentFocus = function () {
 	if ( this.getModel().getSelection().isNull() ) {
@@ -1074,7 +1079,7 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
  *
  * This is triggered by a global focusin/focusout event noticing no selection on the document.
  *
- * @fires blur
+ * @fires ve.ce.Surface#blur
  */
 ve.ce.Surface.prototype.onDocumentBlur = function () {
 	var nullSelectionOnBlur = this.surface.nullSelectionOnBlur;
@@ -1328,7 +1333,7 @@ ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
  * Handle document drag start events.
  *
  * @param {jQuery.Event} e Drag start event
- * @fires relocationStart
+ * @fires ve.ce.Surface#relocationStart
  */
 ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
 	this.onCopy( e );
@@ -1484,7 +1489,7 @@ ve.ce.Surface.prototype.onDocumentDragLeave = function () {
  * Limits native drag and drop behaviour.
  *
  * @param {jQuery.Event} e Drop event
- * @fires relocationEnd
+ * @fires ve.ce.Surface#relocationEnd
  */
 ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
 	// Properties may be nullified by other events, so cache before setTimeout
@@ -2139,7 +2144,7 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
  * Handle document key up events.
  *
  * @param {jQuery.Event} e Key up event
- * @fires keyup
+ * @fires ve.ce.Surface#keyup
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function () {
 	this.emit( 'keyup' );
@@ -3655,6 +3660,8 @@ ve.ce.Surface.prototype.findFocusedNode = function ( range ) {
 
 /**
  * Handle documentUpdate events on the surface model.
+ *
+ * @fires ve.ce.Surface#position
  */
 ve.ce.Surface.prototype.onModelDocumentUpdate = function () {
 	var surface = this;
@@ -3888,6 +3895,7 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
  * Create a slug out of a DOM element
  *
  * @param {HTMLElement} element Slug element
+ * @fires ve.ce.Surface#position
  */
 ve.ce.Surface.prototype.createSlug = function ( element ) {
 	var surface = this,
@@ -4128,6 +4136,7 @@ ve.ce.Surface.prototype.maybeSetBreakpoint = function () {
  * Handle window resize event.
  *
  * @param {jQuery.Event} e Window resize event
+ * @fires ve.ce.Surface#position
  */
 ve.ce.Surface.prototype.onWindowResize = function () {
 	this.emit( 'position' );
@@ -4144,6 +4153,8 @@ ve.ce.Surface.prototype.onWindowResize = function () {
 
 /**
  * Start a relocation action.
+ *
+ * @fires ve.ce.Surface#relocationStart
  */
 ve.ce.Surface.prototype.startRelocation = function () {
 	// Cache the selection and selectedNode when the drag starts, to
@@ -4155,6 +4166,8 @@ ve.ce.Surface.prototype.startRelocation = function () {
 
 /**
  * Complete a relocation action.
+ *
+ * @fires ve.ce.Surface#relocationEnd
  */
 ve.ce.Surface.prototype.endRelocation = function () {
 	this.relocatingSelection = null;
@@ -4928,6 +4941,7 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
  *
  * @param {boolean|Node} [fromModelOrNode] If `true`, gather annotations from the model,
  *  instead of the cusor focus point. If a Node is passed, gather annotations from that node.
+ * @fires ve.dm.Surface#contextChange
  */
 ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
 	var activeAnnotations,

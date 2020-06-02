@@ -22,7 +22,7 @@ OO.initClass( ve.dm.GeneratedContentNode );
 /* Events */
 
 /**
- * @event generatedContentsError
+ * @event ve.dm.GeneratedContentNode#generatedContentsError
  * @param {jQuery} $element Element containing the error message
  */
 

@@ -102,6 +102,8 @@ ve.ui.MobileActionsContextItem.prototype.onCopyButtonClick = function () {
 
 /**
  * Handle delete button click events.
+ *
+ * @fires ve.ui.ContextItem#command
  */
 ve.ui.MobileActionsContextItem.prototype.onDeleteButtonClick = function () {
 	var surface = this.context.getSurface();

@@ -54,15 +54,16 @@ ve.ce.NailedAnnotation.static.makeNail = function ( type ) {
 
 /* Methods */
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.ce.Annotation
+ * @see ve.ce.Annotation
  */
 ve.ce.NailedAnnotation.prototype.getContentContainer = function () {
 	return this.contentFragment;
 };
 
 /**
- * @inheritdoc ve.ce.Annotation
+ * @see ve.ce.Annotation
  */
 ve.ce.NailedAnnotation.prototype.attachContents = function () {
 	var element = this.$element[ 0 ];
@@ -72,8 +73,9 @@ ve.ce.NailedAnnotation.prototype.attachContents = function () {
 	element.appendChild( this.constructor.static.makeNail( 'pre-close' ) );
 };
 
+// eslint-disable-next-line jsdoc/require-param
 /**
- * @inheritdoc ve.ce.Annotation
+ * @see ve.ce.Annotation
  */
 ve.ce.NailedAnnotation.prototype.appendTo = function ( node ) {
 	// Insert pre-open nail, element, and post-close nail into a parent node

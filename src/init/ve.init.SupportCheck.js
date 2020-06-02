@@ -12,7 +12,7 @@
 	 * use this to check for feature compatibility this file must be ES3-parsable.
 	 *
 	 * @method VisualEditorSupportCheck
-	 * @member global
+	 * @memberof ve
 	 * @return {boolean} True if the environment should support VisualEditor.
 	 */
 	window.VisualEditorSupportCheck = function () {

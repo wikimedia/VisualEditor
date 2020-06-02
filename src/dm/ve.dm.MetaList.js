@@ -37,12 +37,12 @@ OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
 /* Events */
 
 /**
- * @event insert
+ * @event ve.dm.MetaList#insert
  * @param {ve.dm.MetaItem} item Item that was inserted
  */
 
 /**
- * @event remove
+ * @event ve.dm.MetaList#remove
  * @param {ve.dm.MetaItem} item Item that was removed
  */
 

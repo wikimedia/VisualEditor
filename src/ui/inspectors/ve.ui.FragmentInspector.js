@@ -117,7 +117,7 @@ ve.ui.FragmentInspector.prototype.getActionProcess = function ( action ) {
 };
 
 /**
- * @inheritdoc OO.ui.Dialog
+ * @inheritdoc
  */
 ve.ui.FragmentInspector.prototype.getActionWidgetConfig = function ( config ) {
 	// Mixin method

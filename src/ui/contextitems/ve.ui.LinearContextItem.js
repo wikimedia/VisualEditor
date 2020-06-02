@@ -90,12 +90,6 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 OO.inheritClass( ve.ui.LinearContextItem, ve.ui.ContextItem );
 OO.mixinClass( ve.ui.ContextItem, OO.ui.mixin.PendingElement );
 
-/* Events */
-
-/**
- * @event command
- */
-
 /* Static Properties */
 
 ve.ui.LinearContextItem.static.editable = true;
@@ -118,6 +112,7 @@ ve.ui.LinearContextItem.static.embeddable = true;
  * @localdoc Executes the command related to #static-commandName on the context's surface
  *
  * @protected
+ * @fires ve.ui.ContextItem#command
  */
 ve.ui.LinearContextItem.prototype.onEditButtonClick = function () {
 	var command = this.getCommand();

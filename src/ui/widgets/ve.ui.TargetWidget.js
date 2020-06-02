@@ -73,25 +73,25 @@ OO.mixinClass( ve.ui.TargetWidget, OO.ui.mixin.PendingElement );
 /**
  * The target's surface has been changed.
  *
- * @event change
+ * @event ve.ui.TargetWidget#change
  */
 
 /**
  * The target's surface has been submitted, e.g. Ctrl+Enter
  *
- * @event submit
+ * @event ve.ui.TargetWidget#submit
  */
 
 /**
  * The target's surface has been cancelled, e.g. Escape
  *
- * @event cancel
+ * @event ve.ui.TargetWidget#cancel
  */
 
 /**
  * A document has been attached to the target, and a toolbar and surface created.
  *
- * @event setup
+ * @event ve.ui.TargetWidget#setup
  */
 
 /**
@@ -114,6 +114,9 @@ ve.ui.TargetWidget.prototype.createTarget = function () {
  * This replaces the entire surface in the target.
  *
  * @param {ve.dm.Document} doc
+ * @fires ve.ui.TargetWidget#change
+ * @fires ve.ui.TargetWidget#setup
+ * @fires ve.ce.Surface#position
  */
 ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	// Destroy the previous surface
@@ -155,7 +158,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 /**
  * Handle surface submit events
  *
- * @fires submit
+ * @fires ve.ui.TargetWidget#submit
  */
 ve.ui.TargetWidget.prototype.onSurfaceSubmit = function () {
 	var handled = this.emit( 'submit' );
@@ -171,7 +174,7 @@ ve.ui.TargetWidget.prototype.onSurfaceSubmit = function () {
 /**
  * Handle surface cancel events
  *
- * @fires cancel
+ * @fires ve.ui.TargetWidget#cancel
  */
 ve.ui.TargetWidget.prototype.onSurfaceCancel = function () {
 	var handled = this.emit( 'cancel' );

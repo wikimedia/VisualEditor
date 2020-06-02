@@ -78,35 +78,35 @@ OO.mixinClass( ve.dm.Scalable, OO.EventEmitter );
 /**
  * Current changed
  *
- * @event currentSizeChange
+ * @event ve.dm.Scalable#currentSizeChange
  * @param {Object} currentDimensions Current dimensions width and height
  */
 
 /**
  * Default size or state changed
  *
- * @event defaultSizeChange
+ * @event ve.dm.Scalable#defaultSizeChange
  * @param {boolean} isDefault The size is default
  */
 
 /**
  * Original size changed
  *
- * @event originalSizeChange
+ * @event ve.dm.Scalable#originalSizeChange
  * @param {Object} originalDimensions Original dimensions width and height
  */
 
 /**
  * Min size changed
  *
- * @event minSizeChange
+ * @event ve.dm.Scalable#minSizeChange
  * @param {Object} minDimensions Min dimensions width and height
  */
 
 /**
  * Max size changed
  *
- * @event maxSizeChange
+ * @event ve.dm.Scalable#maxSizeChange
  * @param {Object} maxDimensions Max dimensions width and height
  */
 
@@ -225,7 +225,7 @@ ve.dm.Scalable.prototype.setRatioFromDimensions = function ( dimensions ) {
  * Also sets the aspect ratio if not set and in fixed ratio mode.
  *
  * @param {Object} dimensions Dimensions object with width & height
- * @fires currentSizeChange
+ * @fires ve.dm.Scalable#currentSizeChange
  */
 ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
 	if (
@@ -248,7 +248,7 @@ ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
  * Also resets the aspect ratio if in fixed ratio mode.
  *
  * @param {Object} dimensions Dimensions object with width & height
- * @fires originalSizeChange
+ * @fires ve.dm.Scalable#originalSizeChange
  */
 ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
 	if (
@@ -269,7 +269,7 @@ ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
  * Set the default dimensions
  *
  * @param {Object} dimensions Dimensions object with width & height
- * @fires defaultSizeChange
+ * @fires ve.dm.Scalable#defaultSizeChange
  */
 ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
 	if (
@@ -285,7 +285,7 @@ ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
 /**
  * Reset and remove the default dimensions
  *
- * @fires defaultSizeChange
+ * @fires ve.dm.Scalable#defaultSizeChange
  */
 ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
 	if ( this.defaultDimensions !== null ) {
@@ -298,7 +298,7 @@ ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
 /**
  * Reset and remove the default dimensions
  *
- * @fires originalSizeChange
+ * @fires ve.dm.Scalable#originalSizeChange
  */
 ve.dm.Scalable.prototype.clearOriginalDimensions = function () {
 	if ( this.originalDimensions !== null ) {
@@ -312,7 +312,7 @@ ve.dm.Scalable.prototype.clearOriginalDimensions = function () {
  * Toggle the default size setting, or set it to particular value
  *
  * @param {boolean} [isDefault] Default or not, toggles if unset
- * @fires defaultSizeChange
+ * @fires ve.dm.Scalable#defaultSizeChange
  */
 ve.dm.Scalable.prototype.toggleDefault = function ( isDefault ) {
 	if ( isDefault === undefined ) {
@@ -333,7 +333,7 @@ ve.dm.Scalable.prototype.toggleDefault = function ( isDefault ) {
  * Set the minimum dimensions
  *
  * @param {Object} dimensions Dimensions object with width & height
- * @fires minSizeChange
+ * @fires ve.dm.Scalable#minSizeChange
  */
 ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
 	if (
@@ -350,7 +350,7 @@ ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
  * Set the maximum dimensions
  *
  * @param {Object} dimensions Dimensions object with width & height
- * @fires maxSizeChange
+ * @fires ve.dm.Scalable#maxSizeChange
  */
 ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
 	if (
@@ -366,7 +366,7 @@ ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
 /**
  * Clear the minimum dimensions
  *
- * @fires minSizeChange
+ * @fires ve.dm.Scalable#minSizeChange
  */
 ve.dm.Scalable.prototype.clearMinDimensions = function () {
 	if ( this.minDimensions !== null ) {
@@ -379,7 +379,7 @@ ve.dm.Scalable.prototype.clearMinDimensions = function () {
 /**
  * Clear the maximum dimensions
  *
- * @fires maxSizeChange
+ * @fires ve.dm.Scalable#maxSizeChange
  */
 ve.dm.Scalable.prototype.clearMaxDimensions = function () {
 	if ( this.maxDimensions !== null ) {

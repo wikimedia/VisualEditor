@@ -87,54 +87,56 @@ OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
 /* Events */
 
 /**
- * @event select
+ * @event ve.dm.Surface#select
  * @param {ve.dm.Selection} selection
  */
 
 /**
- * @event focus
- *
  * The selection was just set to a non-null selection
+ *
+ * @event ve.dm.Surface#focus
  */
 
 /**
- * @event blur
- *
  * The selection was just set to a null selection
+ *
+ * @event ve.dm.Surface#blur
  */
 
 /**
- * @event documentUpdate
- *
  * Emitted when a transaction has been processed on the document and the selection has been
  * translated to account for that transaction. You should only use this event if you need
  * to access the selection; in most cases, you should use {ve.dm.Document#event-transact}.
  *
+ * @event ve.dm.Surface#documentUpdate
  * @param {ve.dm.Transaction} tx Transaction that was processed on the document
  */
 
 /**
- * @event contextChange
+ * @event ve.dm.Surface#contextChange
  */
 
 /**
- * @event insertionAnnotationsChange
+ * @event ve.dm.Surface#insertionAnnotationsChange
  * @param {ve.dm.AnnotationSet} insertionAnnotations AnnotationSet being inserted
  */
 
 /**
- * @event history
  * Emitted when the history stacks change, or the ability to use them changes.
+ *
+ * @event ve.dm.Surface#history
  */
 
 /**
- * @event undoStackChange
  * Emitted when the main undo stack changes (this.undoStack or this.undoIndex).
+ *
+ * @event ve.dm.Surface#undoStackChange
  */
 
 /**
- * @event autosaveFailed
  * Auto-save failed to store a change
+ *
+ * @event ve.dm.Surface#autosaveFailed
  */
 
 /* Methods */
@@ -169,7 +171,7 @@ ve.dm.Surface.prototype.isReadOnly = function () {
 /**
  * Initialize the surface model
  *
- * @fires contextChange
+ * @fires ve.dm.Surface#contextChange
  */
 ve.dm.Surface.prototype.initialize = function () {
 	this.startHistoryTracking();
@@ -330,6 +332,7 @@ ve.dm.Surface.prototype.getStagingTransactions = function () {
  * Push another level of staging to the staging stack
  *
  * @param {boolean} [allowUndo=false] Allow undo while staging
+ * @fires ve.dm.Surface#history
  */
 ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
 	// If we're starting staging stop history tracking
@@ -354,7 +357,7 @@ ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
 /**
  * Pop a level of staging from the staging stack
  *
- * @fires history
+ * @fires ve.dm.Surface#history
  * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
  */
 ve.dm.Surface.prototype.popStaging = function () {
@@ -387,7 +390,7 @@ ve.dm.Surface.prototype.popStaging = function () {
 /**
  * Apply a level of staging from the staging stack
  *
- * @fires history
+ * @fires ve.dm.Surface#history
  */
 ve.dm.Surface.prototype.applyStaging = function () {
 	if ( !this.isStaging() ) {
@@ -459,8 +462,8 @@ ve.dm.Surface.prototype.getInsertionAnnotations = function () {
  * Set annotations that will be used upon insertion.
  *
  * @param {ve.dm.AnnotationSet|null} annotations Insertion annotations to use or null to disable them
- * @fires insertionAnnotationsChange
- * @fires contextChange
+ * @fires ve.dm.Surface#insertionAnnotationsChange
+ * @fires ve.dm.Surface#contextChange
  */
 ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
 	if ( this.readOnly ) {
@@ -478,8 +481,8 @@ ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
  * Add an annotation to be used upon insertion.
  *
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
- * @fires insertionAnnotationsChange
- * @fires contextChange
+ * @fires ve.dm.Surface#insertionAnnotationsChange
+ * @fires ve.dm.Surface#contextChange
  */
 ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
 	if ( this.readOnly ) {
@@ -501,8 +504,8 @@ ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
  * Remove an annotation from those that will be used upon insertion.
  *
  * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
- * @fires insertionAnnotationsChange
- * @fires contextChange
+ * @fires ve.dm.Surface#insertionAnnotationsChange
+ * @fires ve.dm.Surface#contextChange
  */
 ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
 	if ( this.readOnly ) {
@@ -618,7 +621,7 @@ ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excl
  *
  * Callers should eventually emit a 'history' event after using this method.
  *
- * @fires undoStackChange
+ * @fires ve.dm.Surface#undoStackChange
  */
 ve.dm.Surface.prototype.truncateUndoStack = function () {
 	if ( this.undoIndex ) {
@@ -653,7 +656,7 @@ ve.dm.Surface.prototype.startQueueingContextChanges = function () {
  * is deferred until #stopQueueingContextChanges is called.
  *
  * @private
- * @fires contextChange
+ * @fires ve.dm.Surface#contextChange
  */
 ve.dm.Surface.prototype.emitContextChange = function () {
 	if ( this.queueingContextChanges ) {
@@ -669,7 +672,7 @@ ve.dm.Surface.prototype.emitContextChange = function () {
  * event immediately.
  *
  * @private
- * @fires contextChange
+ * @fires ve.dm.Surface#contextChange
  */
 ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
 	if ( this.queueingContextChanges ) {
@@ -751,8 +754,9 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
  *
  * @param {ve.dm.Selection} selection New selection
  *
- * @fires select
- * @fires contextChange
+ * @fires ve.dm.Surface#select
+ * @fires ve.dm.Surface#focus
+ * @fires ve.dm.Surface#blur
  */
 ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	var oldSelection = this.selection;
@@ -918,7 +922,6 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
  *  process, or null to process none
  * @param {ve.dm.Selection} [selection] Selection to apply
- * @fires contextChange
  */
 ve.dm.Surface.prototype.change = function ( transactions, selection ) {
 	this.changeInternal( transactions, selection, false );
@@ -931,9 +934,8 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
  * @param {ve.dm.Selection} [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
- * @fires select
- * @fires history
- * @fires contextChange
+ * @fires ve.dm.Surface#select
+ * @fires ve.dm.Surface#history
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
 	var selectionBefore = this.selection,
@@ -1014,7 +1016,7 @@ ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, ski
  * Set a history state breakpoint.
  *
  * @return {boolean} A breakpoint was added
- * @fires undoStackChange
+ * @fires ve.dm.Surface#undoStackChange
  */
 ve.dm.Surface.prototype.breakpoint = function () {
 	if ( this.readOnly ) {
@@ -1041,7 +1043,8 @@ ve.dm.Surface.prototype.breakpoint = function () {
 /**
  * Step backwards in history.
  *
- * @fires undoStackChange
+ * @fires ve.dm.Surface#undoStackChange
+ * @fires ve.dm.Surface#history
  */
 ve.dm.Surface.prototype.undo = function () {
 	if ( !this.canUndo() ) {
@@ -1114,7 +1117,7 @@ ve.dm.Surface.prototype.undo = function () {
 /**
  * Step forwards in history.
  *
- * @fires undoStackChange
+ * @fires ve.dm.Surface#undoStackChange
  */
 ve.dm.Surface.prototype.redo = function () {
 	if ( !this.canRedo() ) {
@@ -1137,7 +1140,7 @@ ve.dm.Surface.prototype.redo = function () {
  * other state.
  *
  * @param {ve.dm.Transaction} tx Transaction that was processed
- * @fires documentUpdate
+ * @fires ve.dm.Surface#documentUpdate
  */
 ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
 	this.setSelection( this.getSelection().translateByTransactionWithAuthor( tx, this.authorId ) );
@@ -1332,6 +1335,8 @@ ve.dm.Surface.prototype.setAuthorId = function ( authorId ) {
 
 /**
  * Store latest transactions into session storage
+ *
+ * @fires ve.dm.Surface#autosaveFailed
  */
 ve.dm.Surface.prototype.storeChanges = function () {
 	if ( this.autosaveFailed ) {

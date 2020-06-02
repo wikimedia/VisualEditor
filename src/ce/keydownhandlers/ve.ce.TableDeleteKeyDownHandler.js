@@ -33,11 +33,11 @@ ve.ce.TableDeleteKeyDownHandler.static.supportedSelections = [ 'table' ];
 /* Static methods */
 
 /**
- * @inheritdoc
- *
  * Handle delete and backspace key down events with a table selection.
  *
  * Performs a strip-delete removing all the cell contents but not altering the structure.
+ *
+ * @inheritdoc
  */
 ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	var surfaceModel = surface.getModel(),

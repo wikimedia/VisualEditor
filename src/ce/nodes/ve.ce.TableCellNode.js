@@ -114,8 +114,9 @@ ve.ce.TableCellNode.prototype.onTableCellTeardown = function () {
 	}
 };
 
+// eslint-disable-next-line jsdoc/require-returns
 /**
- * @inheritdoc ve.ce.ContentEditableNode
+ * @see ve.ce.ContentEditableNode
  */
 ve.ce.TableCellNode.prototype.setContentEditable = function () {
 	// Overwite any state passed to setContentEditable with this.editing, so that

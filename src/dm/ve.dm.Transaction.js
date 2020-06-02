@@ -55,7 +55,7 @@ OO.initClass( ve.dm.Transaction );
  * If a property's treatment isn't specified, its value is simply copied without modification.
  * If an operation type's treatment isn't specified, all properties are copied without modification.
  *
- * @type {Object.<string,Object.<string,string|Object.<string, string>>>}
+ * @type {Object.<string,Object>}
  */
 ve.dm.Transaction.static.reversers = {
 	attribute: { from: 'to', to: 'from' }, // Swap .from with .to

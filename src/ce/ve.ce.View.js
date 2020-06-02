@@ -49,11 +49,11 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
 /* Events */
 
 /**
- * @event setup
+ * @event ve.ce.View#setup
  */
 
 /**
- * @event teardown
+ * @event ve.ce.View#teardown
  */
 
 /* Static members */
@@ -72,6 +72,7 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
  * @static
  * @property {boolean|Function}
  * @param {string} attribute
+ * @return {boolean} Attibute is allowed
  * @inheritable
  */
 ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
@@ -158,8 +159,8 @@ ve.ce.View.prototype.isLive = function () {
  * Set live state.
  *
  * @param {boolean} live The view has been attached to the live DOM (use false on detach)
- * @fires setup
- * @fires teardown
+ * @fires ve.ce.View#setup
+ * @fires ve.ce.View#teardown
  */
 ve.ce.View.prototype.setLive = function ( live ) {
 	this.live = live;

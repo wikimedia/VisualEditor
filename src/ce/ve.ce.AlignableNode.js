@@ -27,12 +27,13 @@ OO.inheritClass( ve.ce.AlignableNode, ve.ce.ClassAttributeNode );
 /* Events */
 
 /**
- * @event align
+ * @event ve.ce.AlignableNode#align
  * @param {string} align New alignment
  */
 
 /**
  * @inheritdoc
+ * @fires ve.ce.AlignableNode#align
  */
 ve.ce.AlignableNode.prototype.updateAttributeClasses = function () {
 	// Parent method

@@ -274,7 +274,7 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
  *   unchanged nodes, or objects where the `node` property is the index for changed nodes.
  * @param {Object.<number,number|Object>} newToOld Map of newDoc nodes to corresponding oldDoc nodes.
  *   Same format at oldToNew.
- * @return {(number|string)[]} Record of whether and how each newDoc node has moved
+ * @return {Array.<number|string>} Record of whether and how each newDoc node has moved (0, 'up', 'down')
  */
 ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) {
 	var oldPermuted = [],

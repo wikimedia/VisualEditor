@@ -159,38 +159,38 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
 /**
  * When a surface has been initialized
  *
- * @event ready
+ * @event ve.ui.Surface#ready
  */
 
 /**
  * When a surface is destroyed.
  *
- * @event destroy
+ * @event ve.ui.Surface#destroy
  */
 
 /**
  * The surface was scrolled programmatically
  * as a result of a native selection change
  *
- * @event scroll
+ * @event ve.ui.Surface#scroll
  */
 
 /**
  * The surface has been submitted by user action, e.g. Ctrl+Enter
  *
- * @event submit
+ * @event ve.ui.Surface#submit
  */
 
 /**
  * The surface has been cancelled by user action, e.g. Escape
  *
- * @event cancel
+ * @event ve.ui.Surface#cancel
  */
 
 /**
  * The surface read-only state has changed
  *
- * @event readOnly
+ * @event ve.ui.Surface#readOnly
  * @param {boolean} readOnly The surface is read-only
  */
 
@@ -201,7 +201,7 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  *
  * @return {ve.ui.Surface}
  * @chainable
- * @fires destroy
+ * @fires ve.ui.Surface#destroy
  */
 ve.ui.Surface.prototype.destroy = function () {
 	// Destroy the ce.Surface, the ui.Context and window managers
@@ -234,6 +234,7 @@ ve.ui.Surface.prototype.destroy = function () {
  *
  * @return {ve.ui.Surface}
  * @chainable
+ * @fires ve.ui.Surface#ready
  */
 ve.ui.Surface.prototype.initialize = function () {
 	$( OO.ui.getTeleportTarget() ).append( this.globalOverlay.$element );
@@ -458,6 +459,7 @@ ve.ui.Surface.prototype.setDisabled = function ( disabled ) {
  * Set the read-only state of the surface
  *
  * @param {boolean} readOnly Make surface read-only
+ * @fires ve.ui.Surface#readOnly
  */
 ve.ui.Surface.prototype.setReadOnly = function ( readOnly ) {
 	this.readOnly = !!readOnly;
@@ -523,7 +525,7 @@ ve.ui.Surface.prototype.onModelSelect = function () {
  *
  * @param {ve.dm.Selection} [selectionModel] Optional selection model, defaults to current selection
  * @param {Object} [scrollConfig] Scroll config options, passed to ve.scrollIntoView
- * @fires scroll
+ * @fires ve.ui.Surface#scroll
  */
 ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig ) {
 	selectionModel = selectionModel || this.getModel().getSelection();

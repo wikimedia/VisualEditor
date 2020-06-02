@@ -215,11 +215,10 @@ ve.dm.TableSelection.prototype.getRanges = function ( doc ) {
 
 /**
  * @inheritdoc
- *
- * Note that this returns the table range, and not the minimal range covering
- * all cells, as that would be far more expensive to compute.
  */
 ve.dm.TableSelection.prototype.getCoveringRange = function () {
+	// Note that this returns the table range, and not the minimal range covering
+	// all cells, as that would be far more expensive to compute.
 	return this.tableRange;
 };
 

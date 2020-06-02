@@ -5,10 +5,6 @@
  */
 
 /**
- * @class ve
- */
-
-/**
  * Checks if an object is an instance of one or more classes.
  *
  * @param {Object} subject Object to check
@@ -174,13 +170,13 @@ ve.copy = OO.copy;
 
 /**
  * @method
- * @inheritdoc OO.ui#debounce
+ * @see OO.ui#debounce
  */
 ve.debounce = OO.ui.debounce;
 
 /**
  * @method
- * @inheritdoc OO.ui#throttle
+ * @see OO.ui#throttle
  */
 ve.throttle = OO.ui.throttle;
 

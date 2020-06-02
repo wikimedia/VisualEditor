@@ -7,8 +7,7 @@
 /**
  * Namespace for all VisualEditor UserInterface classes, static methods and static properties.
  *
- * @class
- * @singleton
+ * @namespace
  */
 ve.ui = {
 	// 'actionFactory' instantiated in ve.ui.ActionFactory.js

@@ -44,43 +44,8 @@ To run the tests in a web browser, open `tests/index.html`.
 
 ## Building documentation
 
-VisualEditor uses [JSDuck](https://github.com/senchalabs/jsduck) to process
-documentation comments embedded in the code.  To build the documentation, you
-will need `ruby`, `gem`, and `jsduck` installed.
-
-### Installing ruby and gem
-
-You're mostly on your own here, but we can give some hints for Mac OS X.
-
-##### Installing Gem in Mac OS X
-Ruby ships with OSX but may be outdated. Use [Homebrew](http://mxcl.github.com/homebrew/):
-```sh
-$ brew install ruby
-```
-
-If you've never used `gem` before, don't forget to add the gem's bin to your
-`PATH` ([howto](http://stackoverflow.com/a/14138490/319266)).
-
-### Installing jsduck
-
-Once you have gem, installing [JSDuck](https://github.com/senchalabs/jsduck) is easy:
-```sh
-$ gem install --user-install jsduck
-```
-
-### Running jsduck
-
-Creating the documentation is easy:
-```sh
-$ cd VisualEditor
-$ npm run doc
-```
-
-The generated documentation is in the `docs/` subdirectory.  View the
-documentation in a web browser by opening `docs/index.html`.
-
-Note that `jsduck` doesn't support live previews when browsing using the
-`file:` protocol; this only works when using HTTP/HTTPS.
+VisualEditor uses [jsdoc](https://jsdoc.app/) to process documentation comments
+embedded in the code.  To build the documentation, you will need to run `npm run doc`.
 
 ## VisualEditor Code Guidelines
 
@@ -93,7 +58,7 @@ Git commit messages should follow the conventions described in
 
 ### Documentation comments
 
-In addition to the [MediaWiki conventions for JSDuck](https://www.mediawiki.org/wiki/Manual:Coding_conventions/JavaScript#Documentation):
+In addition to the [MediaWiki conventions for JavaScript documentation](https://www.mediawiki.org/wiki/Manual:Coding_conventions/JavaScript#Documentation):
 
 We have the following custom tags:
 
@@ -114,11 +79,8 @@ indicating their order between the standard tags.
 * @fires name
 * @return
 
-## Add a new javascript class
+### Adding a new JavaScript class
 
-When a new javascript class is added, the file must be referenced in a number of places
-before it can be used:
-
-* .jsduck/categories.json in General->Utilities (or somewhere more specific)
-* build/modules.json in visualEditor.core.build (or somewhere more specific)
-* Run `grunt build`
+When a new JavaScript class is added, the file must be referenced in the build manifest
+before it can be used. Add the file to build/modules.json in visualEditor.core.build (or
+somewhere more specific), and then run `grunt build`.

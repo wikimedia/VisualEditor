@@ -5,10 +5,6 @@
  */
 
 /**
- * @class ve
- */
-
-/**
  * Check whether a given DOM element has a block element type.
  *
  * @param {HTMLElement|string} element Element or element name

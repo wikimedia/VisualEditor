@@ -62,21 +62,17 @@ OO.initClass( ve.ui.Trigger );
 /* Static Properties */
 
 /**
- * Symbolic modifier key names.
- *
- * The order of this array affects the canonical order of a trigger string.
+ * @property {string[]} Symbolic modifier key names. The order of this array affects the canonical order of a trigger string.
  *
  * @static
- * @property {string[]}
  * @inheritable
  */
 ve.ui.Trigger.static.modifierKeys = [ 'meta', 'ctrl', 'alt', 'shift' ];
 
 /**
- * Symbolic primary key names.
+ * @property {string[]} Symbolic primary key names.
  *
  * @static
- * @property {string[]}
  * @inheritable
  */
 ve.ui.Trigger.static.primaryKeys = [
@@ -169,10 +165,9 @@ ve.ui.Trigger.static.primaryKeys = [
 ];
 
 /**
- * Mappings to use when rendering string for a specific platform.
+ * @property {Object} Mappings to use when rendering string for a specific platform.
  *
  * @static
- * @property {Object}
  * @inheritable
  */
 ve.ui.Trigger.static.platformMapping = {
@@ -201,10 +196,9 @@ ve.ui.Trigger.static.platformMapping = {
 };
 
 /**
- * Symbol to use when concatenating keys in a sequence.
+ * @property {Object} Symbol to use when concatenating keys in a sequence.
  *
  * @static
- * @property {Object}
  * @inheritable
  */
 ve.ui.Trigger.static.platformStringJoiners = {
@@ -213,10 +207,9 @@ ve.ui.Trigger.static.platformStringJoiners = {
 };
 
 /**
- * Special keys which have i18n messages
+ * @property {string[]} Special keys which have i18n messages
  *
  * @static
- * @property {string[]}
  * @inheritable
  */
 ve.ui.Trigger.static.translatableKeys = [
@@ -242,10 +235,9 @@ ve.ui.Trigger.static.translatableKeys = [
 ];
 
 /**
- * Aliases for modifier or primary key names.
+ * @property {Object} Aliases for modifier or primary key names.
  *
  * @static
- * @property {Object}
  * @inheritable
  */
 ve.ui.Trigger.static.keyAliases = {
@@ -272,10 +264,9 @@ ve.ui.Trigger.static.keyAliases = {
 };
 
 /**
- * Mapping of key codes and symbolic key names.
+ * @property {Object} Mapping of key codes and symbolic key names.
  *
  * @static
- * @property {Object}
  * @inheritable
  */
 ve.ui.Trigger.static.primaryKeyMap = {

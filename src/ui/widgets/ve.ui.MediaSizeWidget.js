@@ -124,17 +124,17 @@ OO.inheritClass( ve.ui.MediaSizeWidget, OO.ui.Widget );
 /* Events */
 
 /**
- * @event change
+ * @event ve.ui.MediaSizeWidget#change
  * @param {Object} dimensions Width and height dimensions
  */
 
 /**
- * @event valid
+ * @event ve.ui.MediaSizeWidget#valid
  * @param {boolean} isValid Current dimensions are valid
  */
 
 /**
- * @event changeSizeType
+ * @event ve.ui.MediaSizeWidget#changeSizeType
  * @param {string} sizeType 'default', 'custom' or 'scale'
  */
 
@@ -197,7 +197,7 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
  *
  * @param {string} type The input that was updated, 'width' or 'height'
  * @param {string} value The new value of the input
- * @fires change
+ * @fires ve.ui.MediaSizeWidget#change
  */
 ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
 	if ( +value === 0 && !this.noDefaultDimensions ) {
@@ -233,7 +233,7 @@ ve.ui.MediaSizeWidget.prototype.onScaleChange = function () {
  * Respond to size type change
  *
  * @param {OO.ui.OptionWidget} item Selected size type item
- * @fires changeSizeType
+ * @fires ve.ui.MediaSizeWidget#changeSizeType
  */
 ve.ui.MediaSizeWidget.prototype.onSizeTypeChoose = function ( item ) {
 	var selectedType = item.getData(),
@@ -463,7 +463,7 @@ ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
  * Updates the current dimensions in the inputs, either one at a time or both
  *
  * @param {Object} dimensions Dimensions with width and height
- * @fires change
+ * @fires ve.ui.MediaSizeWidget#change
  */
 ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 	// Recursion protection
@@ -509,6 +509,7 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
  * class if needed.
  *
  * @return {boolean} Current dimensions are valid
+ * @fires ve.ui.MediaSizeWidget#valid
  */
 ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 	var isValid = this.isValid();
@@ -517,7 +518,7 @@ ve.ui.MediaSizeWidget.prototype.validateDimensions = function () {
 		this.valid = isValid;
 		this.errorLabel.toggle( !isValid );
 		this.dimensions.setValidityFlag();
-		// Emit change event
+		// Emit validation change event
 		this.emit( 'valid', this.valid );
 	}
 	return isValid;

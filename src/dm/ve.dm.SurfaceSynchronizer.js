@@ -126,31 +126,32 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
 /* Events */
 
 /**
- * @event authorSelect
+ * @event ve.dm.SurfaceSynchronizer#authorSelect
  * @param {number} authorId The author whose selection has changed
  */
 
 /**
- * @event authorChange
+ * @event ve.dm.SurfaceSynchronizer#authorChange
  * @param {number} authorId The author whose data has changed
  */
 
 /**
- * @event wrongDoc
+ * @event ve.dm.SurfaceSynchronizer#wrongDoc
  */
 
 /**
- * @event initDoc
+ * @event ve.dm.SurfaceSynchronizer#initDoc
  * @param {Error} error Error, if there was a problem initializing the document
  */
 
 /**
- * @event disconnect
+ * @event ve.dm.SurfaceSynchronizer#disconnect
  */
 
 /**
- * @event pause
  * The synchronizer is paused or resumes
+ *
+ * @event ve.dm.SurfaceSynchronizer#pause
  */
 
 /* Methods */
@@ -167,6 +168,8 @@ ve.dm.SurfaceSynchronizer.prototype.destroy = function () {
 
 /**
  * Pause sending/receiving changes
+ *
+ * @fires ve.dm.SurfaceSynchronizer#pause
  */
 ve.dm.SurfaceSynchronizer.prototype.pauseChanges = function () {
 	if ( this.paused ) {
@@ -179,6 +182,8 @@ ve.dm.SurfaceSynchronizer.prototype.pauseChanges = function () {
 
 /**
  * Resume sending/receiving changes
+ *
+ * @fires ve.dm.SurfaceSynchronizer#pause
  */
 ve.dm.SurfaceSynchronizer.prototype.resumeChanges = function () {
 	if ( !this.paused ) {
@@ -330,7 +335,7 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceSelect = function () {
  *
  * @param {Object} newSelections Each author (key) maps to a new incoming ve.dm.Selection
  * @param {ve.dm.Change|ve.dm.Transaction} [changeOrTx] Object to translate over, if any
- * @fires authorSelect
+ * @fires ve.dm.SurfaceSynchronizer#authorSelect
  */
 ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelections, changeOrTx ) {
 	var change = changeOrTx instanceof ve.dm.Change ? changeOrTx : null,
@@ -394,7 +399,7 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
  * @param {Object} data
  * @param {number} data.authorId The author ID allocated by the server
  * @param {string} data.token
- * @fires wrongDoc
+ * @fires ve.dm.SurfaceSynchronizer#wrongDoc
  */
 ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
 	if ( this.serverId && this.serverId !== data.serverId ) {
@@ -433,7 +438,7 @@ ve.dm.SurfaceSynchronizer.prototype.loadSessionKey = function () {
  * @param {Object} data
  * @param {Object} data.history Serialized change representing the server's history
  * @param {Object} data.authors Object mapping author IDs to author data objects (name/color)
- * @fires initDoc
+ * @fires ve.dm.SurfaceSynchronizer#initDoc
  */
 ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 	if ( this.initialized ) {

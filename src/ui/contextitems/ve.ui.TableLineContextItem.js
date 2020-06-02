@@ -58,6 +58,7 @@ ve.ui.TableLineContextItem.static.title = null;
  * @localdoc Executes the command related to #static-commandName on the context's surface
  *
  * @protected
+ * @fires ve.ui.ContextItem#command
  */
 ve.ui.TableLineContextItem.prototype.onActionButtonClick = function () {
 	var command = this.getCommand();

@@ -40,7 +40,7 @@ ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
 /**
  * The element rendering has been updated
  *
- * @event render
+ * @event ve.ui.PreviewElement#render
  */
 
 /* Inheritance */
@@ -144,7 +144,7 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 /**
  * Cleanup and emit events after render
  *
- * @fires render
+ * @fires ve.ui.PreviewElement#render
  */
 ve.ui.PreviewElement.prototype.afterRender = function () {
 	// Cleanup

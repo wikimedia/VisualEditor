@@ -74,9 +74,6 @@ ve.ui.NodeWindow.prototype.getSelectedNode = function () {
 	return null;
 };
 
-/**
- * @inheritdoc OO.ui.Window
- */
 ve.ui.NodeWindow.prototype.getSetupProcess = function ( data, process ) {
 	data = data || {};
 	return process.next( function () {
@@ -84,9 +81,6 @@ ve.ui.NodeWindow.prototype.getSetupProcess = function ( data, process ) {
 	}, this );
 };
 
-/**
- * @inheritdoc OO.ui.Window
- */
 ve.ui.NodeWindow.prototype.getTeardownProcess = function ( data, process ) {
 	data = data || {};
 	return process.next( function () {
