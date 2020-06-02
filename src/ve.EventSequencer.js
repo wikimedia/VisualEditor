@@ -429,6 +429,7 @@ ve.EventSequencer.prototype.cancelPostponed = function ( timeoutId ) {
 
 /**
  * Single method to perform all listener calls, for ease of debugging
+ *
  * @param {string} timing on|after|afterOne|onLoop|afterLoop|afterLoopOne
  * @param {string} eventName Name of the event
  * @param {number} i The sequence of the listener

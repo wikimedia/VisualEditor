@@ -4,6 +4,8 @@
 		"shared-node-browser": true
 	},
 	"globals": {
+		"HTMLElement": "readonly",
+		"HTMLDocument": "readonly",
 		"Node": "readonly",
 		"document": "readonly",
 		"$": "off"

@@ -1560,7 +1560,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * immediately after the position we hit (in the direction of motion)
 	 * If we land inside a sequence of grouped nodes, assume we should treat them as a
 	 * unit instead of letting the cursor slip inside them.
-
+	 *
 	 * @private
 	 * @param {Node} node DOM node of cursor position
 	 * @param {number} offset Offset of cursor position
@@ -2320,6 +2320,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 
 /**
  * Extract the clipboard key and other relevant data from beforePasteData / the paste target
+ *
  * @return {Object} Data
  * @return {string|undefined} return.clipboardKey Clipboard key, if present
  * @return {jQuery|undefined} return.$clipboardHtml Clipboard html, if used to extract the clipboard key
@@ -2397,6 +2398,7 @@ ve.ce.Surface.prototype.afterPasteSanitize = function ( linearData, isMultiline,
 
 /**
  * Helper to build import rules for pasted data
+ *
  * @param {boolean} isMultiline Get rules for a multiline context
  * @return {Object} Import rules
  */
@@ -2413,6 +2415,7 @@ ve.ce.Surface.prototype.afterPasteImportRules = function ( isMultiline ) {
 
 /**
  * After paste handler for pastes from the same document
+ *
  * @param {ve.dm.DocumentSlice} slice Slice of document to paste
  * @param {ve.dm.SurfaceFragment} fragment Current fragment
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
@@ -2479,6 +2482,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, 
 
 /**
  * Insert some pasted data from an internal source
+ *
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
  * @param {Array} data Data to insert
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
@@ -2490,7 +2494,8 @@ ve.ce.Surface.prototype.afterPasteInsertInternalData = function ( targetFragment
 
 /**
  * After paste handler for pastes from the another document
- * @param {string|undefined} clipboardKey] Clipboard key for pasted data
+ *
+ * @param {string|undefined} clipboardKey Clipboard key for pasted data
  * @param {jQuery|undefined} $clipboardHtml Clipboard HTML, if used to find the key
  * @param {ve.dm.SurfaceFragment} fragment Current fragment
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
@@ -2677,6 +2682,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 
 /**
  * Insert some pasted data from an external source
+ *
  * @param {ve.dm.SurfaceFragment} targetFragment Fragment to insert into
  * @param {ve.dm.Document} pastedDocumentModel Model generated from pasted data
  * @param {ve.Range} contextRange Range of data in generated model to consider
@@ -2706,6 +2712,7 @@ ve.ce.Surface.prototype.afterPasteInsertExternalData = function ( targetFragment
 
 /**
  * Helper to work out the context range for an external paste
+ *
  * @param {ve.dm.Document} pastedDocumentModel Model for pasted data
  * @param {boolean} isMultiline Whether pasting to a multiline context
  * @param {boolean} forceClipboardData Whether the current attempted paste is the result of forcing use of clipboard data

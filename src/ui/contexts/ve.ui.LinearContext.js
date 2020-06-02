@@ -249,6 +249,7 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 
 /**
  * Get related for selected models
+ *
  * @param {ve.dm.Model[]} selectedModels Models
  * @return {Object[]} See #getRelatedSources
  */

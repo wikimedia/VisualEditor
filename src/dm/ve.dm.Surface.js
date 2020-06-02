@@ -1060,6 +1060,7 @@ ve.dm.Surface.prototype.breakpoint = function () {
 
 /**
  * Step backwards in history.
+ *
  * @fires undoStackChange
  */
 ve.dm.Surface.prototype.undo = function () {
@@ -1134,6 +1135,7 @@ ve.dm.Surface.prototype.undo = function () {
 
 /**
  * Step forwards in history.
+ *
  * @fires undoStackChange
  */
 ve.dm.Surface.prototype.redo = function () {

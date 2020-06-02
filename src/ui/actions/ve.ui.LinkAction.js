@@ -28,6 +28,7 @@ ve.ui.LinkAction.static.name = 'link';
 
 /**
  * RegExp matching an autolink + trailing space.
+ *
  * @property {RegExp}
  * @private
  */

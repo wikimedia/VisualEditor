@@ -301,6 +301,7 @@ ve.ui.DimensionsWidget.prototype.setHeight = function ( value ) {
 
 /**
  * Sets the 'invalid' flag appropriately on both text inputs.
+ *
  * @return {ve.ui.DimensionsWidget}
  * @chainable
  */

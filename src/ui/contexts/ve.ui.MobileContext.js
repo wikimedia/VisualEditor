@@ -57,6 +57,7 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
 /**
  * Stripped down version of onInspectorOpening as we don't need to hide/show
  * the context because the inspector is full screen.
+ *
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.onInspectorOpening = function ( win, opening ) {

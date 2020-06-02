@@ -71,6 +71,7 @@ ve.dm.Transaction.static.reversers = {
  * Deserialize a transaction from a JSONable object
  *
  * Values are either new or deep copied, so there is no reference into the serialized structure
+ *
  * @param {Object|Array} data Transaction serialized as a JSONable object
  * @return {ve.dm.Transaction} Deserialized transaction
  */

@@ -4,6 +4,8 @@
  * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+'use strict';
+
 /**
  * @constructor
  * @param {Object} storageClient MongoClient-like object; passed as a parameter for testing purposes

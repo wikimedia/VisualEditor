@@ -58,7 +58,6 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
 
 /* Static members */
 
-// eslint-disable-next-line valid-jsdoc
 /**
  * Allowed attributes for DOM elements, in the same format as ve.dm.Model#preserveHtmlAttributes
  *

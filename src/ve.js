@@ -6,6 +6,7 @@
 
 /**
  * Namespace for all VisualEditor classes, static methods and static properties.
+ *
  * @class ve
  * @singleton
  */

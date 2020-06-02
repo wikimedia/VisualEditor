@@ -320,6 +320,7 @@ ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelection
 
 /**
  * Get author data object
+ *
  * @param {number} [authorId] Author ID, defaults to current author
  * @return {Object} Author object, containing 'name' and 'color'
  */

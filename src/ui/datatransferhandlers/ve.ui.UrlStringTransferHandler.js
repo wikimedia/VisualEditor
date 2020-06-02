@@ -45,6 +45,7 @@ ve.ui.UrlStringTransferHandler.static.handlesPaste = true;
 
 /**
  * RegExp matching an external url.
+ *
  * @property {RegExp}
  * @private
  */

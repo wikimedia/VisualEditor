@@ -452,6 +452,7 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
  * Get info about a transaction if it is a "simple replacement", or null if not
  *
  * A simple replacement transaction is one that has just one retain op
+ *
  * @param {ve.dm.Transaction} tx The transaction
  * @return {Object|null} Info about the transaction if a simple replacement, else null
  * @return {number} return.start The start offset of the replacement

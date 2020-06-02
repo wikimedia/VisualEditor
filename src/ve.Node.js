@@ -140,6 +140,7 @@ ve.Node.prototype.isInternal = null;
 
 /**
  * Check if the node is a meta data node
+ *
  * @abstract
  * @return {boolean} Node is a meta data node
  */

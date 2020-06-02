@@ -87,6 +87,7 @@ ve.dm.RebaseClient.prototype.removeFromHistory = null;
 /**
  * Add an event to the log. Default implementation does nothing; subclasses should override this
  * if they want to collect logs.
+ *
  * @param {Object} event Event data
  */
 ve.dm.RebaseClient.prototype.logEvent = function () {};

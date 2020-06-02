@@ -27,6 +27,7 @@ OO.initClass( ve.dm.Model );
 
 /**
  * Symbolic name for this model class. Must be set to a unique string by every subclass.
+ *
  * @static
  * @property {string}
  * @inheritable
@@ -37,6 +38,7 @@ ve.dm.Model.static.name = null;
  * Array of HTML tag names that this model should be a match candidate for.
  * Empty array means none, null means any.
  * For more information about element matching, see ve.dm.ModelRegistry.
+ *
  * @static
  * @property {string[]}
  * @inheritable
@@ -48,6 +50,7 @@ ve.dm.Model.static.matchTagNames = null;
  * Any other types the element might have must be specified in allowedRdfaTypes.
  * Empty array means none, null means any.
  * For more information about element matching, see ve.dm.ModelRegistry.
+ *
  * @static
  * @property {Array}
  * @inheritable
@@ -59,6 +62,7 @@ ve.dm.Model.static.matchRdfaTypes = null;
  * themselves trigger a match).
  * Empty array means none, null means any.
  * For more information about element matching, see ve.dm.ModelRegistry.
+ *
  * @static
  * @property {Array}
  * @inheritable
@@ -76,6 +80,7 @@ ve.dm.Model.static.allowedRdfaTypes = [];
  *
  * NOTE: This function is NOT a method, within this function "this" will not refer to an instance
  * of this class (or to anything reasonable, for that matter).
+ *
  * @static
  * @property {Function}
  * @inheritable

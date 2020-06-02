@@ -1,3 +1,5 @@
+'use strict';
+
 function Logger( logger ) {
 	this.logger = logger;
 	this.startTimestamp = null;

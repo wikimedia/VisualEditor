@@ -119,6 +119,7 @@
 
 	/**
 	 * Assertion helpers for VisualEditor test suite.
+	 *
 	 * @class ve.QUnit.assert
 	 */
 

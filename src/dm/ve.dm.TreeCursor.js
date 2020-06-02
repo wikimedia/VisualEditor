@@ -237,6 +237,7 @@ ve.dm.TreeCursor.prototype.stepIn = function () {
 
 /**
  * Step out of the current node (skipping past any uncrossed children or text within)
+ *
  * @return {Object} The step
  */
 ve.dm.TreeCursor.prototype.stepOut = function () {

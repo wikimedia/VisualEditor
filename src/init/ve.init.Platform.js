@@ -40,6 +40,7 @@ OO.mixinClass( ve.init.Platform, OO.EventEmitter );
 
 /**
  * A jQuery.Deferred that tracks when the platform has been created.
+ *
  * @private
  */
 ve.init.Platform.static.deferredPlatform = ve.createDeferred();

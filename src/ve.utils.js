@@ -187,8 +187,9 @@ ve.throttle = OO.ui.throttle;
 /**
  * Create a jQuery.Deferred-compatible object
  *
+ * See http://api.jquery.com/jQuery.Deferred/
+ *
  * @method
- * @source <http://api.jquery.com/jQuery.Deferred/>
  * @return {jQuery.Deferred}
  */
 ve.createDeferred = $.Deferred;
@@ -264,8 +265,9 @@ ve.compareClassLists = function ( classList1, classList2 ) {
 /**
  * Check to see if an object is a plain object (created using "{}" or "new Object").
  *
+ * See http://api.jquery.com/jQuery.isPlainObject/
+ *
  * @method
- * @source <http://api.jquery.com/jQuery.isPlainObject/>
  * @param {Object} obj The object that will be checked to see if it's a plain object
  * @return {boolean}
  */
@@ -274,8 +276,9 @@ ve.isPlainObject = $.isPlainObject;
 /**
  * Check to see if an object is empty (contains no properties).
  *
+ * See http://api.jquery.com/jQuery.isEmptyObject/
+ *
  * @method
- * @source <http://api.jquery.com/jQuery.isEmptyObject/>
  * @param {Object} obj The object that will be checked to see if it's empty
  * @return {boolean}
  */
@@ -290,8 +293,9 @@ ve.isEmptyObject = $.isEmptyObject;
  * 'target' as 'source' and 'this' as 'target'. Which means
  * ve.extendObject( { a: 1 } ); sets ve.a = 1;
  *
+ * See http://api.jquery.com/jQuery.extend/
+ *
  * @method
- * @source <http://api.jquery.com/jQuery.extend/>
  * @param {boolean} [recursive=false]
  * @param {Mixed} [target] Object that will receive the new properties
  * @param {...Mixed} [sources] Variadic list of objects containing properties

@@ -1,3 +1,6 @@
+'use strict';
+
+// eslint-disable-next-line node/no-missing-require
 const ve = require( '../dist/ve-rebaser.js' ),
 	fs = require( 'fs' );
 

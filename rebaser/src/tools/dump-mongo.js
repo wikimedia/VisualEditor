@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 const mongodb = require( 'mongodb' );
 
 new mongodb.MongoClient(

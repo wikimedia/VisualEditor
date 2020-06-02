@@ -424,7 +424,6 @@ ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
  *
  * @param {ve.dm.AnnotationSet} set Set to add to the set
  * @param {number} [offset] Offset at which to insert; defaults to the end of the set
-
  */
 ve.dm.AnnotationSet.prototype.addSet = function ( set, offset ) {
 	var hashes = this.getHashes();
