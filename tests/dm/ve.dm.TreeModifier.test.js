@@ -52,6 +52,15 @@ ve.dm.TreeModifier.prototype.dump = function () {
 	return lines.join( '\n' );
 };
 
+ve.test.utils.nodesByTypeSummary = function ( doc ) {
+	var type,
+		nodesByType = ve.copy( doc.nodesByType );
+	for ( type in nodesByType ) {
+		nodesByType[ type ] = nodesByType[ type ].length;
+	}
+	return nodesByType;
+};
+
 QUnit.module( 've.dm.TreeModifier' );
 
 QUnit.test( 'treeDiff', function ( assert ) {
@@ -253,6 +262,16 @@ QUnit.test( 'modify', function ( assert ) {
 		},
 		{ type: 'retain', length: 3 }
 	] );
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			internalList: 1,
+			paragraph: 3,
+			text: 3
+		},
+		'Nodes by type before'
+	);
 
 	doc.commit( tx );
 	actualTreeDump = dumpTree( doc );
@@ -262,6 +281,18 @@ QUnit.test( 'modify', function ( assert ) {
 		actualTreeDump,
 		expectedTreeDump,
 		'Modified tree matches rebuilt tree, forward'
+	);
+
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			inlineImage: 1,
+			internalList: 1,
+			paragraph: 2,
+			text: 2
+		},
+		'Nodes by type after transaction'
 	);
 
 	doc.commit( tx.reversed() );
@@ -277,6 +308,17 @@ QUnit.test( 'modify', function ( assert ) {
 		tx.operations[ 3 ].remove[ 1 ],
 		doc.data.data[ 6 ],
 		'Inserted transaction data is not referenced into the linear data'
+	);
+
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			internalList: 1,
+			paragraph: 3,
+			text: 3
+		},
+		'Nodes by type after undo'
 	);
 } );
 
@@ -325,8 +367,28 @@ QUnit.test( 'applyTreeOperation: ensureNotText', function ( assert ) {
 		},
 		{ type: 'retain', length: 2 }
 	] );
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			inlineImage: 1,
+			paragraph: 1,
+			text: 2
+		},
+		'Nodes by type before'
+	);
 	doc.commit( tx );
 	assert.deepEqual( doc.data.data, expectData, 'Bold inline element surrounded by text' );
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			inlineImage: 1,
+			paragraph: 1,
+			text: 2
+		},
+		'Nodes by type after'
+	);
 } );
 
 QUnit.test( 'setupBlockSlugs', function ( assert ) {
@@ -334,6 +396,13 @@ QUnit.test( 'setupBlockSlugs', function ( assert ) {
 		ve.dm.example.createExampleDocumentFromData( [] )
 	).documentModel;
 
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1
+		},
+		'Nodes by type before'
+	);
 	doc.commit( new ve.dm.Transaction( [ {
 		type: 'replace',
 		remove: [],
@@ -346,6 +415,15 @@ QUnit.test( 'setupBlockSlugs', function ( assert ) {
 		doc.getDocumentNode().getChildren()[ 0 ].slugPositions,
 		{ 0: true },
 		'Modified paragraph node contains a slug'
+	);
+
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			paragraph: 1
+		},
+		'Nodes by type before'
 	);
 } );
 
@@ -410,6 +488,18 @@ QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
 		], insert: [] },
 		{ type: 'retain', length: 1 }
 	] );
+
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			comment: 1,
+			document: 1,
+			paragraph: 1,
+			text: 1
+		},
+		'Nodes by type before'
+	);
+
 	doc.commit( tx );
 	assert.deepEqual(
 		doc.data.data,
@@ -418,6 +508,16 @@ QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
 			data.slice( 6 )
 		),
 		'Can remove an inline node after a text node'
+	);
+
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			paragraph: 1,
+			text: 1
+		},
+		'Nodes by type after'
 	);
 } );
 
@@ -450,6 +550,19 @@ QUnit.test( 'TreeCursor#normalizeCursor', function ( assert ) {
 		{ type: 'replace', remove: [ 'e' ], insert: [] },
 		{ type: 'retain', length: 1 }
 	] );
+
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			comment: 1,
+			document: 1,
+			heading: 1,
+			paragraph: 1,
+			text: 3
+		},
+		'Nodes by type before'
+	);
+
 	doc.commit( tx );
 	assert.deepEqual(
 		doc.data.data,
@@ -459,5 +572,16 @@ QUnit.test( 'TreeCursor#normalizeCursor', function ( assert ) {
 			data.slice( 9 )
 		),
 		'Ignore removed nodes properly when normalizing from a text node'
+	);
+
+	assert.deepEqual(
+		ve.test.utils.nodesByTypeSummary( doc ),
+		{
+			document: 1,
+			heading: 1,
+			paragraph: 1,
+			text: 2
+		},
+		'Nodes by type after'
 	);
 } );
