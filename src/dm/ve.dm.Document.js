@@ -309,7 +309,7 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 		throw new Error( 'Unbalanced input passed to document' );
 	}
 	ve.batchSplice( this.documentNode, 0, 0, currentStack );
-	this.updateNodesByType( [ this.documentNode ], [] );
+	this.updateNodesByType( [ this.documentNode ], [ this.documentNode ] );
 
 	doc.buildingNodeTree = false;
 };
@@ -1079,7 +1079,6 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
  *  - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
  * @param {number} offset Linear model offset to rebuild from
  * @param {number} newLength Length of data in linear model to rebuild or insert nodes for
- * @return {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
  */
 ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offset, newLength ) {
 	// Get a slice of the document where it's been changed
@@ -1093,9 +1092,6 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
 		removedNodes = ve.batchSplice( parent, index, numNodes, addedNodes );
 
 	this.updateNodesByType( addedNodes, removedNodes );
-
-	// Return inserted nodes
-	return addedNodes;
 };
 
 /**
