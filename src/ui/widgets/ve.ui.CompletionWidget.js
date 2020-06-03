@@ -82,7 +82,10 @@ ve.ui.CompletionWidget.prototype.update = function () {
 		input = data.getText( false, range );
 
 	if ( direction === 'rtl' ) {
-		style.right = boundingRect.right;
+		// This works because this.$element is a 0x0px box, with the menu positioned relative to it.
+		// If this style was applied to the menu, we'd need to do some math here to align the right
+		// edge of the menu with the right edge of the selection.
+		style.left = boundingRect.right;
 	} else {
 		style.left = boundingRect.left;
 	}
