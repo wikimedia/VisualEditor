@@ -253,11 +253,11 @@ ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName )
  * Wrap the functions in a class with wrappers that perform logging.
  *
  * @param {Object} klass The class with the function as a property
- * @param {Function[]} [blacklist] Functions that should not be wrapped
+ * @param {Function[]} [nowrapList] Functions that should not be wrapped
  * @return {ve.Filibuster}
  * @chainable
  */
-ve.Filibuster.prototype.wrapClass = function ( klass, blacklist ) {
+ve.Filibuster.prototype.wrapClass = function ( klass, nowrapList ) {
 	var i, len, fnName, fn, fnNames, container;
 	container = klass.prototype;
 	fnNames = Object.getOwnPropertyNames( container );
@@ -270,7 +270,7 @@ ve.Filibuster.prototype.wrapClass = function ( klass, blacklist ) {
 		if ( typeof fn !== 'function' || fn.wrappedFunction ) {
 			continue;
 		}
-		if ( blacklist && blacklist.indexOf( fn ) !== -1 ) {
+		if ( nowrapList && nowrapList.indexOf( fn ) !== -1 ) {
 			continue;
 		}
 		this.wrapFunction( container, klass.name, fnName );
@@ -283,17 +283,17 @@ ve.Filibuster.prototype.wrapClass = function ( klass, blacklist ) {
  *
  * @param {Object} ns The namespace whose functions should be wrapped
  * @param {string} nsName The name of the namespace, for display in logs
- * @param {Function[]} [blacklist] Functions that should not be wrapped
+ * @param {Function[]} [nowrapList] Functions that should not be wrapped
  * @return {ve.Filibuster}
  * @chainable
  */
-ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, blacklist ) {
+ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, nowrapList ) {
 	var i, len, propNames, propName, prop, isConstructor;
 	propNames = Object.getOwnPropertyNames( ns );
 	for ( i = 0, len = propNames.length; i < len; i++ ) {
 		propName = propNames[ i ];
 		prop = ns[ propName ];
-		if ( blacklist && blacklist.indexOf( prop ) !== -1 ) {
+		if ( nowrapList && nowrapList.indexOf( prop ) !== -1 ) {
 			continue;
 		}
 		isConstructor = (
@@ -301,12 +301,12 @@ ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, blacklist ) {
 			!ve.isEmptyObject( prop.prototype )
 		);
 		if ( isConstructor ) {
-			this.wrapClass( prop, blacklist );
+			this.wrapClass( prop, nowrapList );
 		} else if ( typeof prop === 'function' ) {
 			this.wrapFunction( ns, nsName, propName );
 		} else if ( $.isPlainObject( prop ) ) {
 			// Might be a namespace; recurse
-			this.wrapNamespace( prop, nsName + '.' + propName, blacklist );
+			this.wrapNamespace( prop, nsName + '.' + propName, nowrapList );
 		}
 	}
 	return this;
