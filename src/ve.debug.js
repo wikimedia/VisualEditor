@@ -146,14 +146,14 @@ ve.initFilibuster = function () {
 	ve.filibuster = new ve.Filibuster()
 		.wrapClass( ve.EventSequencer )
 		.wrapNamespace( ve.dm, 've.dm', [
-			// Blacklist
+			// nowrapList
 			ve.dm.LinearSelection.prototype.getDescription,
 			ve.dm.TableSelection.prototype.getDescription,
 			ve.dm.NullSelection.prototype.getDescription
 		] )
 		.wrapNamespace( ve.ce, 've.ce' )
 		.wrapNamespace( ve.ui, 've.ui', [
-			// Blacklist
+			// nowrapList
 			ve.ui.Surface.prototype.startFilibuster,
 			ve.ui.Surface.prototype.stopFilibuster
 		] )
