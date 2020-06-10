@@ -43,7 +43,7 @@ ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
 
 ve.dm.TableCellNode.static.isCellEditable = true;
 
-// Blacklisting 'colspan' and 'rowspan' as they are managed explicitly
+// Exclude 'colspan' and 'rowspan' as they are managed explicitly
 ve.dm.TableCellNode.static.preserveHtmlAttributes = function ( attribute ) {
 	return attribute !== 'colspan' && attribute !== 'rowspan';
 };

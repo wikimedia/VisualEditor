@@ -1468,7 +1468,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
  * Check if a trigger event is blocked from performing its default behaviour
  *
  * If any of these triggers can't execute on the surface, (e.g. the underline
- * command has been blacklisted), we should still preventDefault so ContentEditable
+ * command has been disabled), we should still preventDefault so ContentEditable
  * native commands don't occur, leaving the view out of sync with the model.
  *
  * @param {ve.ui.Trigger} trigger Trigger to check
