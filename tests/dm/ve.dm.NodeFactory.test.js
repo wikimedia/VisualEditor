@@ -18,7 +18,7 @@ ve.dm.NodeFactoryNodeStub.static.isContent = true;
 
 ve.dm.NodeFactoryNodeStub.static.matchTagNames = [];
 
-ve.dm.NodeFactoryNodeStub.static.blacklistedAnnotationTypes = [ 'link', 'textStyle/italic' ];
+ve.dm.NodeFactoryNodeStub.static.disallowedAnnotationTypes = [ 'link', 'textStyle/italic' ];
 
 /* Tests */
 

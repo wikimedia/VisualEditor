@@ -197,14 +197,16 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
  * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.canNodeTakeAnnotation = function ( type, annotation ) {
-	var i, len, blacklist;
+	var i, len, disallowedList;
 	if ( !Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		throw new Error( 'Unknown node type: ' + type );
 	}
-	blacklist = this.registry[ type ].static.blacklistedAnnotationTypes;
+	disallowedList = this.registry[ type ].static.disallowedAnnotationTypes ||
+		// Deprecated alias
+		this.registry[ type ].static.blacklistedAnnotationTypes;
 
-	for ( i = 0, len = blacklist.length; i < len; i++ ) {
-		if ( annotation instanceof ve.dm.annotationFactory.lookup( blacklist[ i ] ) ) {
+	for ( i = 0, len = disallowedList.length; i < len; i++ ) {
+		if ( annotation instanceof ve.dm.annotationFactory.lookup( disallowedList[ i ] ) ) {
 			return false;
 		}
 	}
