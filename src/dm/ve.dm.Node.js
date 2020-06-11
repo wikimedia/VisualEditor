@@ -267,7 +267,7 @@ ve.dm.Node.static.suggestedParentNodeTypes = null;
  * @property {string[]}
  * @inheritable
  */
-ve.dm.Node.static.blacklistedAnnotationTypes = [];
+ve.dm.Node.static.disallowedAnnotationTypes = [];
 
 /**
  * Default attributes to set for newly created linear model elements. These defaults will be used

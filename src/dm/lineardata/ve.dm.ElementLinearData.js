@@ -423,7 +423,7 @@ ve.dm.ElementLinearData.prototype.canTakeAnnotationAtOffset = function ( offset,
 		}
 		type = this.getType( offset );
 		// Structural nodes are never annotatable
-		// Blacklisted annotations can't be set
+		// Disallowed annotations can't be set
 		return ve.dm.nodeFactory.isNodeContent( type ) && ve.dm.nodeFactory.canNodeTakeAnnotation( type, annotation );
 	} else {
 		// Text is always annotatable
