@@ -47,8 +47,9 @@ ve.elementTypes = {
 		'map', 'object', 'pre', 'progress', 'video'
 	],
 	void: [
-		'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img',
-		'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'
+		// https://html.spec.whatwg.org/#void-elements
+		'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+		'link', 'meta', 'param', 'source', 'track', 'wbr'
 	]
 };
 
