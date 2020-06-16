@@ -201,9 +201,7 @@ ve.dm.NodeFactory.prototype.canNodeTakeAnnotation = function ( type, annotation 
 	if ( !Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		throw new Error( 'Unknown node type: ' + type );
 	}
-	disallowedList = this.registry[ type ].static.disallowedAnnotationTypes ||
-		// Deprecated alias
-		this.registry[ type ].static.blacklistedAnnotationTypes;
+	disallowedList = this.registry[ type ].static.disallowedAnnotationTypes;
 
 	for ( i = 0, len = disallowedList.length; i < len; i++ ) {
 		if ( annotation instanceof ve.dm.annotationFactory.lookup( disallowedList[ i ] ) ) {
