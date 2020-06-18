@@ -51,7 +51,7 @@ OO.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
  * Warning: overriding this to false in a subclass will cause crashes on Enter key handling.
  *
  * @static
- * @property
+ * @property {boolean}
  * @inheritable
  */
 ve.ce.ContentBranchNode.static.splitOnEnter = true;

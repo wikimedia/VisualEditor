@@ -3,7 +3,8 @@
 	"extends": [
 		"wikimedia/client",
 		"wikimedia/jquery",
-		"wikimedia/mediawiki"
+		"wikimedia/mediawiki",
+		"wikimedia/jsduck"
 	],
 	"globals": {
 		"ve": "writable",

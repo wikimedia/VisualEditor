@@ -1,7 +1,8 @@
 {
 	"root": true,
 	"extends": [
-		"wikimedia/server"
+		"wikimedia/server",
+		"wikimedia/jsduck"
 	],
 	"globals": {
 		"ve": true,

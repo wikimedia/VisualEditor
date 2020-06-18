@@ -26,12 +26,6 @@ OO.inheritClass( ve.ui.FormatAction, ve.ui.Action );
 
 ve.ui.FormatAction.static.name = 'format';
 
-/**
- * List of allowed methods for this action.
- *
- * @static
- * @property
- */
 ve.ui.FormatAction.static.methods = [ 'convert' ];
 
 /* Methods */

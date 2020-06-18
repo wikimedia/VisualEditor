@@ -34,12 +34,6 @@ ve.ui.LinkAction.static.name = 'link';
  */
 ve.ui.LinkAction.static.autolinkRegExp = null; // Initialized below.
 
-/**
- * List of allowed methods for the action.
- *
- * @static
- * @property
- */
 ve.ui.LinkAction.static.methods = [ 'autolinkUrl' ];
 
 /* Methods */

@@ -26,12 +26,6 @@ OO.inheritClass( ve.ui.HistoryAction, ve.ui.Action );
 
 ve.ui.HistoryAction.static.name = 'history';
 
-/**
- * List of allowed methods for the action.
- *
- * @static
- * @property
- */
 ve.ui.HistoryAction.static.methods = [ 'undo', 'redo' ];
 
 /* Methods */

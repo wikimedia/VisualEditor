@@ -25,12 +25,6 @@ OO.inheritClass( ve.ui.BlockquoteAction, ve.ui.Action );
 
 ve.ui.BlockquoteAction.static.name = 'blockquote';
 
-/**
- * List of allowed methods for the action.
- *
- * @static
- * @property
- */
 ve.ui.BlockquoteAction.static.methods = [ 'wrap', 'unwrap', 'toggle' ];
 
 /* Methods */

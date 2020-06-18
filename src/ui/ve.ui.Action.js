@@ -39,7 +39,7 @@ OO.initClass( ve.ui.Action );
  * be carried out.
  *
  * @static
- * @property
+ * @property {string[]}
  * @inheritable
  */
 ve.ui.Action.static.methods = [];

@@ -26,12 +26,6 @@ OO.inheritClass( ve.ui.AnnotationAction, ve.ui.Action );
 
 ve.ui.AnnotationAction.static.name = 'annotation';
 
-/**
- * List of allowed methods for the action.
- *
- * @static
- * @property
- */
 ve.ui.AnnotationAction.static.methods = [ 'set', 'clear', 'toggle', 'clearAll' ];
 
 /* Methods */

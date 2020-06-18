@@ -32,7 +32,7 @@ OO.inheritClass( ve.ui.CompletionAction, ve.ui.Action );
  * Length to which to limit the list of returned completions
  *
  * @static
- * @property
+ * @property {number}
  */
 ve.ui.CompletionAction.static.defaultLimit = 8;
 
@@ -43,7 +43,7 @@ ve.ui.CompletionAction.static.defaultLimit = 8;
  * CompletionWidget.
  *
  * @static
- * @property
+ * @property {number}
  */
 ve.ui.CompletionAction.static.triggerLength = 1;
 
@@ -51,16 +51,10 @@ ve.ui.CompletionAction.static.triggerLength = 1;
  * Whether the current input should be included as a completion automatically
  *
  * @static
- * @property
+ * @property {boolean}
  */
 ve.ui.CompletionAction.static.alwaysIncludeInput = true;
 
-/**
- * List of allowed methods for this action.
- *
- * @static
- * @property
- */
 ve.ui.CompletionAction.static.methods = [ 'open' ];
 
 /* Methods */

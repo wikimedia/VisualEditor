@@ -71,6 +71,7 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
  *
  * @static
  * @property {boolean|Function}
+ * @param {string} attribute
  * @inheritable
  */
 ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
