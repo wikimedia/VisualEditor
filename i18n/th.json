@@ -6,6 +6,7 @@
 			"Horus",
 			"Karit",
 			"Nitisart Jungtrakungrat",
+			"Patsagorn Y.",
 			"Supasate",
 			"Taweetham"
 		]
@@ -45,7 +46,7 @@
 	"visualeditor-changedesc-set": "ตั้ง $1 เป็น $2",
 	"visualeditor-changedesc-unknown": "เปลี่ยน $1",
 	"visualeditor-changedesc-unset": "เลิกตั้ง $1 จาก $2",
-	"visualeditor-changedir": "เปล่ี่ยนทิศทาง",
+	"visualeditor-changedir": "เปลี่ยนทิศทาง",
 	"visualeditor-changedir-tool-ltr": "ดูเป็นซ้ายไปขวา",
 	"visualeditor-changedir-tool-rtl": "ดูเป็นขวาไปซ้าย",
 	"visualeditor-clearbutton-tooltip": "เอาออก",
