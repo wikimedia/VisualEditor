@@ -135,12 +135,12 @@ ve.ui.CompletionAction.prototype.getMenuItemForSuggestion = function ( suggestio
  * @return {string[]}
  */
 ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggestions, input ) {
-	var exact = false;
-	input = input.toLowerCase();
+	var exact = false,
+		inputLower = input.toLowerCase();
 	suggestions = suggestions.filter( function ( word ) {
-		word = word.toLowerCase();
-		exact = exact || word === input;
-		return word.slice( 0, input.length ) === input && word !== input;
+		var wordLower = word.toLowerCase();
+		exact = exact || wordLower === inputLower;
+		return wordLower.slice( 0, inputLower.length ) === inputLower && wordLower !== inputLower;
 	} );
 	if ( this.constructor.static.defaultLimit < suggestions.length ) {
 		suggestions.length = this.constructor.static.defaultLimit;
