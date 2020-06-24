@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.39.1
+ * OOUI v0.39.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-06-04T19:50:07Z
+ * Date: 2020-06-24T07:11:12Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -1813,14 +1813,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.39.1
+ * OOUI v0.39.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-06-04T19:50:07Z
+ * Date: 2020-06-24T07:11:12Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
   cursor: move;
@@ -2747,14 +2747,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.39.1
+ * OOUI v0.39.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-06-04T19:50:07Z
+ * Date: 2020-06-24T07:11:12Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3292,14 +3292,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.39.1
+ * OOUI v0.39.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-06-04T19:50:07Z
+ * Date: 2020-06-24T07:11:12Z
  */
 
 .oo-ui-window {
@@ -3715,14 +3715,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.39.1
+ * OOUI v0.39.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-06-04T19:50:07Z
+ * Date: 2020-06-24T07:11:12Z
  */
 .oo-ui-icon-arrowNext {
   background-image: url('themes/wikimediaui/images/icons/arrowNext-ltr.png');
@@ -3743,6 +3743,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-icon-draggable {
   background-image: url('themes/wikimediaui/images/icons/draggable.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/draggable.svg');
+}
+.oo-ui-icon-doubleChevronEnd {
+  background-image: url('themes/wikimediaui/images/icons/doubleChevronEnd-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/doubleChevronEnd-ltr.svg');
+}
+.oo-ui-icon-doubleChevronStart {
+  background-image: url('themes/wikimediaui/images/icons/doubleChevronStart-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/doubleChevronStart-ltr.svg');
 }
 .oo-ui-icon-expand {
   background-image: url('themes/wikimediaui/images/icons/expand.png');
@@ -4836,6 +4844,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/mapTrail.svg');
 }
 
+.oo-ui-icon-userAdd {
+  background-image: url('themes/wikimediaui/images/icons/userAdd-ltr.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAdd-ltr.svg');
+}
 .oo-ui-icon-userAnonymous {
   background-image: url('themes/wikimediaui/images/icons/userAnonymous.png');
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAnonymous.svg');
