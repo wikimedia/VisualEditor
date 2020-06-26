@@ -136,17 +136,18 @@ ve.ui.CompletionAction.prototype.getMenuItemForSuggestion = function ( suggestio
  */
 ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggestions, input ) {
 	var exact = false,
-		inputLower = input.toLowerCase();
+		inputTrimmed = input.trim(),
+		inputTrimmedLower = inputTrimmed.toLowerCase().trim();
 	suggestions = suggestions.filter( function ( word ) {
 		var wordLower = word.toLowerCase();
-		exact = exact || wordLower === inputLower;
-		return wordLower.slice( 0, inputLower.length ) === inputLower && wordLower !== inputLower;
+		exact = exact || wordLower === inputTrimmedLower;
+		return wordLower.slice( 0, inputTrimmedLower.length ) === inputTrimmedLower;
 	} );
 	if ( this.constructor.static.defaultLimit < suggestions.length ) {
 		suggestions.length = this.constructor.static.defaultLimit;
 	}
-	if ( !exact && this.constructor.static.alwaysIncludeInput && input.trim().length ) {
-		suggestions.push( input.trim() );
+	if ( !exact && this.constructor.static.alwaysIncludeInput && inputTrimmed.length ) {
+		suggestions.push( inputTrimmed );
 	}
 	return suggestions;
 };
