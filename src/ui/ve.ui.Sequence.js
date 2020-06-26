@@ -24,8 +24,9 @@
  *     immediately, but only after more non-matching text is added afterwards or the selection is
  *     changed. This is useful for variable-length sequences (defined with RegExps).
  * @param {boolean} [checkOnPaste=false] Whether the sequence should also be matched after paste.
+ * @param {boolean} [checkOnDelete=false] Whether the sequence should also be matched after delete.
  */
-ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelection, delayed, checkOnPaste ) {
+ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelection, delayed, checkOnPaste, checkOnDelete ) {
 	this.name = name;
 	this.commandName = commandName;
 	this.data = data;
@@ -33,6 +34,7 @@ ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelec
 	this.setSelection = setSelection;
 	this.delayed = delayed;
 	this.checkOnPaste = checkOnPaste;
+	this.checkOnDelete = checkOnDelete;
 };
 
 /* Inheritance */
