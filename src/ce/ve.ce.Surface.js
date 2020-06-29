@@ -3379,7 +3379,8 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 		activeNode, coveringRange, nodeRange, containsStart, containsEnd, blockSlug,
 		surface = this,
 		dmDoc = this.getModel().getDocument(),
-		insertedText = false;
+		insertedText = false,
+		removedText = false;
 
 	if ( newState.contentChanged ) {
 		if ( this.readOnly ) {
@@ -3400,9 +3401,12 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 				} finally {
 					this.decRenderLock();
 				}
-				insertedText = transaction.operations.filter( function ( op ) {
+				insertedText = transaction.operations.some( function ( op ) {
 					return op.type === 'replace' && op.insert.length;
-				} ).length > 0;
+				} );
+				removedText = transaction.operations.some( function ( op ) {
+					return op.type === 'replace' && op.remove.length;
+				} );
 			}
 		}
 	}
@@ -3508,6 +3512,11 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 	if ( insertedText ) {
 		surface.afterRenderLock( function () {
 			surface.checkSequences();
+			surface.maybeSetBreakpoint();
+		} );
+	} else if ( removedText ) {
+		surface.afterRenderLock( function () {
+			surface.checkSequences( false, true );
 			surface.maybeSetBreakpoint();
 		} );
 	}
@@ -3636,8 +3645,9 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
  * Check the current surface offset for sequence matches
  *
  * @param {boolean} [isPaste] Whether this in the context of a paste
+ * @param {boolean} [isDelete] Whether this is after content being deleted
  */
-ve.ce.Surface.prototype.checkSequences = function ( isPaste ) {
+ve.ce.Surface.prototype.checkSequences = function ( isPaste, isDelete ) {
 	var matchingSequences,
 		model = this.getModel(),
 		selection = this.getSelection();
@@ -3649,7 +3659,8 @@ ve.ce.Surface.prototype.checkSequences = function ( isPaste ) {
 	matchingSequences = this.getSurface().sequenceRegistry.findMatching(
 		model.getDocument().data,
 		selection.getModel().getCoveringRange().end,
-		isPaste
+		isPaste,
+		isDelete
 	);
 
 	this.executeSequences( matchingSequences );
