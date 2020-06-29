@@ -82,6 +82,7 @@
 	"visualeditor-table-delete-col": "Scancela {{PLURAL:$1|colona|colone}}",
 	"visualeditor-table-delete-row": "Scancela {{PLURAL:$1|riga|righe}}",
 	"visualeditor-table-insert-table": "Tabèla",
+	"visualeditor-tablecell-tooltip": "Dópio schìcio par canbiar ła celda",
 	"visualeditor-toolbar-history": "Storia",
 	"visualeditor-toolbar-insert": "Inserisi",
 	"visualeditor-toolbar-table": "Tabèla"
