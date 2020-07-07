@@ -213,6 +213,8 @@
 	"visualeditor-table-contextitem-properties": "Label for the properties button in the table context\n{{Identical|Property}}",
 	"visualeditor-table-contextitem-selectionmode-cells": "Label for the select cells button in the table context",
 	"visualeditor-table-contextitem-selectionmode-contents": "Label for the select cell contents button in the table context",
+	"visualeditor-table-context-col": "Accessibility label for the menu of options for a table column.",
+	"visualeditor-table-context-row": "Accessibility label for the menu of options for a table row.",
 	"visualeditor-table-delete-col": "Label for delete column tool\n\n* $1 is the number of columns",
 	"visualeditor-table-delete-row": "Label for delete row tool\n\n* $1 is the number of rows",
 	"visualeditor-table-format-data": "Label for table cell data tool",

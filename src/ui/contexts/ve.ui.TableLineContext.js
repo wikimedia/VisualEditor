@@ -18,6 +18,8 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, config ) {
+	var labels;
+
 	config = config || {};
 
 	// Parent constructor
@@ -42,6 +44,14 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 	this.onDocumentMouseDownHandler = this.onDocumentMouseDown.bind( this );
 
 	// Initialization
+	labels = {
+		col: ve.msg( 'visualeditor-table-context-col' ),
+		row: ve.msg( 'visualeditor-table-context-row' ),
+		table: ve.msg( 'visualeditor-toolbar-table' )
+	};
+	this.icon.$element
+		.attr( 'role', 'button' )
+		.attr( 'aria-label', labels[ itemGroup ] );
 	this.popup.$body.append( this.$group );
 	// The following classes are used here:
 	// * ve-ui-tableLineContext-col
