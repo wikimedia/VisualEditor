@@ -349,17 +349,17 @@ ve.ce.GeneratedContentNode.prototype.abortGenerating = function () {
 ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedContents, config, staged ) {
 	var store, hash;
 
+	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
+	this.generatingPromise = null;
+
 	// Because doneGenerating is invoked asynchronously, the model node may have become detached
 	// in the meantime. Handle this gracefully.
 	if ( this.model && this.model.doc ) {
 		store = this.model.doc.getStore();
 		hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
 		store.hash( generatedContents, hash );
+		this.render( generatedContents, staged );
 	}
-
-	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
-	this.generatingPromise = null;
-	this.render( generatedContents, staged );
 };
 
 /**
