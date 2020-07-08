@@ -118,9 +118,9 @@ ve.ui.CompletionWidget.prototype.onModelSelect = function () {
 };
 
 ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withTrigger ) {
-	var offset = this.surfaceModel.getSelection().getRange();
-	if ( !offset.isCollapsed() || !this.action ) {
-		return false;
+	var range = this.surfaceModel.getSelection().getCoveringRange();
+	if ( !range || !range.isCollapsed() || !this.action ) {
+		return null;
 	}
-	return new ve.Range( this.initialOffset + ( withTrigger ? 0 : this.action.constructor.static.triggerLength ), offset.end );
+	return new ve.Range( this.initialOffset + ( withTrigger ? 0 : this.action.constructor.static.triggerLength ), range.end );
 };
