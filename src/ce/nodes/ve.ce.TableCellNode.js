@@ -30,6 +30,9 @@ ve.ce.TableCellNode = function VeCeTableCellNode() {
 		update: 'onUpdate',
 		attributeChange: 'onAttributeChange'
 	} );
+	this.connect( this, {
+		teardown: 'onTableCellTeardown'
+	} );
 };
 
 /* Inheritance */
@@ -94,6 +97,23 @@ ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
 		this.$element.removeAttr( 'title' );
 	} else {
 		this.$element.attr( 'title', ve.msg( 'visualeditor-tablecell-tooltip' ) );
+	}
+};
+
+/**
+ * Handle teardown events
+ *
+ * Same functionality as the teardown handler in ve.ce.ActiveNode
+ */
+ve.ce.TableCellNode.prototype.onTableCellTeardown = function () {
+	// If the table cell is active on teardown, ensure the surface's
+	// activeNode is cleared.
+	var surface;
+	if ( this.getRoot() ) {
+		surface = this.getRoot().getSurface();
+		if ( surface.getActiveNode() === this ) {
+			surface.setActiveNode( null );
+		}
 	}
 };
 
