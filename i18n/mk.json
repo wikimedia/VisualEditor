@@ -187,6 +187,8 @@
 	"visualeditor-table-contextitem-properties": "Својства",
 	"visualeditor-table-contextitem-selectionmode-cells": "Избери ќелии",
 	"visualeditor-table-contextitem-selectionmode-contents": "Избери содржина",
+	"visualeditor-table-context-col": "Столб",
+	"visualeditor-table-context-row": "Ред",
 	"visualeditor-table-delete-col": "Избриши {{PLURAL:$1|столб|столбови}}",
 	"visualeditor-table-delete-row": "Избриши {{PLURAL:$1|ред|редови}}",
 	"visualeditor-table-format-data": "Содржинска ќелија",

@@ -197,6 +197,8 @@
 	"visualeditor-table-contextitem-properties": "מאפיינים",
 	"visualeditor-table-contextitem-selectionmode-cells": "לבחור תאים",
 	"visualeditor-table-contextitem-selectionmode-contents": "לבחור תוכן",
+	"visualeditor-table-context-col": "עמודה",
+	"visualeditor-table-context-row": "שורה",
 	"visualeditor-table-delete-col": "מחיקת {{PLURAL:$1|עמודה|עמודות}}",
 	"visualeditor-table-delete-row": "מחיקת {{PLURAL:$1|שורה|שורות}}",
 	"visualeditor-table-format-data": "תא תוכן",

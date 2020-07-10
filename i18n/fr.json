@@ -226,6 +226,8 @@
 	"visualeditor-table-contextitem-properties": "Propriétés",
 	"visualeditor-table-contextitem-selectionmode-cells": "Sélectionner les cellules",
 	"visualeditor-table-contextitem-selectionmode-contents": "Sélectionner le contenu",
+	"visualeditor-table-context-col": "Colonne",
+	"visualeditor-table-context-row": "Ligne",
 	"visualeditor-table-delete-col": "Supprimer {{PLURAL:$1|la colonne|les colonnes}}",
 	"visualeditor-table-delete-row": "Supprimer {{PLURAL:$1|la ligne|les lignes}}",
 	"visualeditor-table-format-data": "Cellule de contenu",

@@ -205,6 +205,8 @@
 	"visualeditor-table-contextitem-properties": "Özellikler",
 	"visualeditor-table-contextitem-selectionmode-cells": "Hücre seç",
 	"visualeditor-table-contextitem-selectionmode-contents": "İçerik seç",
+	"visualeditor-table-context-col": "Sütun",
+	"visualeditor-table-context-row": "Satır",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|Sütunu|Sütunları}} sil",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Satırı|Satırları}} sil",
 	"visualeditor-table-format-data": "İçerik hücresi",

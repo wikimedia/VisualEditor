@@ -174,6 +174,8 @@
 	"visualeditor-table-contextitem-properties": "Svojstva",
 	"visualeditor-table-contextitem-selectionmode-cells": "Odaberi ćelije",
 	"visualeditor-table-contextitem-selectionmode-contents": "Označi sadržaj",
+	"visualeditor-table-context-col": "Stupac",
+	"visualeditor-table-context-row": "Redak",
 	"visualeditor-table-delete-col": "Izbriši {{PLURAL:$1|stupac|stupce}}",
 	"visualeditor-table-delete-row": "Izbriši {{PLURAL:$1|red|redove}}",
 	"visualeditor-table-format-data": "Polje sa sadržajem",

@@ -208,6 +208,8 @@
 	"visualeditor-table-contextitem-properties": "Właściwości",
 	"visualeditor-table-contextitem-selectionmode-cells": "Zaznacz komórki",
 	"visualeditor-table-contextitem-selectionmode-contents": "Zaznacz zawartość",
+	"visualeditor-table-context-col": "Kolumna",
+	"visualeditor-table-context-row": "Wiersz",
 	"visualeditor-table-delete-col": "Usuń {{PLURAL:$1|kolumnę|kolumny}}",
 	"visualeditor-table-delete-row": "Usuń {{PLURAL:$1|wiersz|wiersze}}",
 	"visualeditor-table-format-data": "Komórka zwykła",

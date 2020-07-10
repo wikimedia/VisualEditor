@@ -206,6 +206,8 @@
 	"visualeditor-table-contextitem-properties": "屬性",
 	"visualeditor-table-contextitem-selectionmode-cells": "選擇儲存格",
 	"visualeditor-table-contextitem-selectionmode-contents": "選擇內容",
+	"visualeditor-table-context-col": "直行",
+	"visualeditor-table-context-row": "橫列",
 	"visualeditor-table-delete-col": "刪除{{PLURAL:$1|欄}}",
 	"visualeditor-table-delete-row": "刪除{{PLURAL:$1|列}}",
 	"visualeditor-table-format-data": "內容儲存格",

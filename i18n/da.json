@@ -194,6 +194,8 @@
 	"visualeditor-table-contextitem-properties": "Egenskaber",
 	"visualeditor-table-contextitem-selectionmode-cells": "Vælg celler",
 	"visualeditor-table-contextitem-selectionmode-contents": "Vælg indhold",
+	"visualeditor-table-context-col": "Kolonne",
+	"visualeditor-table-context-row": "Række",
 	"visualeditor-table-delete-col": "Slet {{PLURAL:$1|kolonne|kolonner}}",
 	"visualeditor-table-delete-row": "Slet {{PLURAL:$1|række|rækker}}",
 	"visualeditor-table-format-data": "Indholdscelle",
