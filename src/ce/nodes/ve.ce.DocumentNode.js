@@ -30,7 +30,9 @@ ve.ce.DocumentNode = function VeCeDocumentNode( model, surface, config ) {
 
 	// DOM changes
 	// TODO: Remove ve-ce-rootNode class
-	this.$element.addClass( 've-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode' );
+	this.$element
+		.addClass( 've-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode' )
+		.attr( 'tabindex', 0 );
 	// Prevent Grammarly from polluting the DOM (T165746)
 	this.$element.attr( 'data-gramm', 'false' );
 
