@@ -208,6 +208,8 @@
 	"visualeditor-specialcharacterinspector-title": "Carácter especial",
 	"visualeditor-table-caption": "Leyenda",
 	"visualeditor-table-contextitem-properties": "Propiedades",
+	"visualeditor-table-context-col": "Columna",
+	"visualeditor-table-context-row": "Fila",
 	"visualeditor-table-delete-col": "Eliminar {{PLURAL:$1|columna|columnas}}",
 	"visualeditor-table-delete-row": "Eliminar {{PLURAL:$1|fila|filas}}",
 	"visualeditor-table-format-data": "Celda de contenido",

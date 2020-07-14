@@ -202,6 +202,8 @@
 	"visualeditor-table-contextitem-properties": "Egenskaper",
 	"visualeditor-table-contextitem-selectionmode-cells": "Markera celler",
 	"visualeditor-table-contextitem-selectionmode-contents": "Markera innehåll",
+	"visualeditor-table-context-col": "Kolumn",
+	"visualeditor-table-context-row": "Rad",
 	"visualeditor-table-delete-col": "Radera {{PLURAL:$1|kolumn|kolumner}}",
 	"visualeditor-table-delete-row": "Radera {{PLURAL:$1|rad|rader}}",
 	"visualeditor-table-format-data": "Innehållscell",

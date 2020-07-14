@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"David1010",
+			"Narazeni",
 			"Silovan"
 		]
 	},
@@ -108,6 +109,8 @@
 	"visualeditor-specialcharacterinspector-title": "სპეციალური სიმბოლოები",
 	"visualeditor-table-caption": "წარწერა",
 	"visualeditor-table-contextitem-properties": "მახასიათაფალეფი",
+	"visualeditor-table-context-col": "სჷმეტი",
+	"visualeditor-table-context-row": "სტროფი",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|სვეტის|სვეტების}} წაშლა",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|რანწკიშ|რანწკეფიშ}} ლასუა",
 	"visualeditor-table-format-data": "ცხრილის შემადგენლობა",

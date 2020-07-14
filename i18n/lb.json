@@ -161,6 +161,8 @@
 	"visualeditor-table-contextitem-properties": "Eegenschaften",
 	"visualeditor-table-contextitem-selectionmode-cells": "Zellen eraussichen",
 	"visualeditor-table-contextitem-selectionmode-contents": "Inhalter eraussichen",
+	"visualeditor-table-context-col": "Kolonn",
+	"visualeditor-table-context-row": "Rei",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|Kolonn|Kolonne}} läschen",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Rei|Reie}} läschen",
 	"visualeditor-table-format-data": "Inhalt vun der Zell",
