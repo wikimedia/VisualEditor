@@ -11,6 +11,10 @@
 	align-items: center;
 }
 
+.ve-ui-mobileContext .ve-ui-linearContextItem-head {
+	padding: 0.1em 0.5em;
+}
+
 .ve-ui-linearContextItem-title {
 	padding: 0 0.5em;
 	white-space: nowrap;
@@ -31,14 +35,6 @@
 .ve-ui-linearContextItem-body {
 	max-height: 15em;
 	overflow: auto;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-head > .oo-ui-buttonWidget {
-	margin: 0 0.5em;
-}
-
-.ve-ui-mobileContext .ve-ui-linearContextItem-empty .ve-ui-linearContextItem-head > .oo-ui-buttonWidget {
-	margin: 0.5em;
 }
 
 .ve-ui-linearContextItem + .ve-ui-linearContextItem .ve-ui-linearContextItem-close {
