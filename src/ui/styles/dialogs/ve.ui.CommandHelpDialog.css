@@ -47,7 +47,8 @@
 	text-align: right;
 }
 
-.ve-ui-commandHelpDialog-list dt kbd {
+.ve-ui-commandHelpDialog-shortcut,
+.ve-ui-commandHelpDialog-sequence {
 	/* Support: Blink, Gecko, Webkit */
 	/* Specify a valid second value to fix size, see T176636 */
 	font-family: monospace, monospace;
@@ -56,20 +57,10 @@
 	font-style: normal;
 }
 
-.ve-ui-commandHelpDialog-list dt > kbd {
-	display: block;
-	clear: right;
-}
-
-/* Enlarge vertical spacing in a list of shortcuts for one action */
-.ve-ui-commandHelpDialog-list dt kbd ~ kbd {
-	margin-top: 0.5em;
-}
-
-.ve-ui-commandHelpDialog-list dt kbd > kbd {
+.ve-ui-commandHelpDialog-shortcut > kbd,
+.ve-ui-commandHelpDialog-sequence > kbd {
 	background-color: #f8f9fa;
 	color: #222;
-	font-size: 1em; /* Prevent double shrinking */
 	border: 1px solid #c8ccd1;
 	border-radius: 2px;
 	box-shadow: 0 1px 0 rgba( 0, 0, 0, 0.2 ), 0 0 0 2px #fff inset;
@@ -82,7 +73,17 @@
 	text-align: center;
 }
 
-.ve-ui-commandHelpDialog-list dt kbd[ data-label ]:before {
+.ve-ui-commandHelpDialog-list dt > kbd {
+	display: block;
+	clear: right;
+}
+
+/* Enlarge vertical spacing in a list of shortcuts for one action */
+.ve-ui-commandHelpDialog-list dt > kbd ~ kbd {
+	margin-top: 0.5em;
+}
+
+.ve-ui-commandHelpDialog-sequence[ data-label ]:before {
 	content: attr( data-label );
 	font-weight: normal;
 	font-style: italic;
