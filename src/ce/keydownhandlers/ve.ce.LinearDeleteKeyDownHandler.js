@@ -271,6 +271,8 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	// TODO: is any of this necessary?
 	surface.focus();
 	surface.surfaceObserver.clear();
+	// Check delete sequences
+	surface.checkSequences( false, true );
 	e.preventDefault();
 	return true;
 };
