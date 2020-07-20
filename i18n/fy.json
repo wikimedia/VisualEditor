@@ -185,6 +185,8 @@
 	"visualeditor-table-contextitem-properties": "Eigenskippen",
 	"visualeditor-table-contextitem-selectionmode-cells": "Sellen selektearje",
 	"visualeditor-table-contextitem-selectionmode-contents": "Ynhâld selektearje",
+	"visualeditor-table-context-col": "Kolom",
+	"visualeditor-table-context-row": "Rige",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|Kolom|Kolommen}} wiskje",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Rige|Rigen}} wiskje",
 	"visualeditor-table-format-data": "Ynhâldssel",
