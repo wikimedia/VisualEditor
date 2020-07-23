@@ -4,7 +4,7 @@ VisualEditor provides a visual editor for HTML pages. It is written in
 JavaScript and runs in a web browser.
 
 For more information about this project, check out the [VisualEditor][]
-page on mediawiki.
+page on mediawiki or [try](https://www.mediawiki.org/w/index.php?title=VisualEditor:Test&veaction=edit) it right now.
 
 
 ## Developing and installing
