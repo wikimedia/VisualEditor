@@ -192,6 +192,8 @@
 	"visualeditor-table-contextitem-properties": "Egenskaper",
 	"visualeditor-table-contextitem-selectionmode-cells": "Velg celler",
 	"visualeditor-table-contextitem-selectionmode-contents": "Velg innhold",
+	"visualeditor-table-context-col": "Kolonne",
+	"visualeditor-table-context-row": "Rad",
 	"visualeditor-table-delete-col": "Slett {{PLURAL:$1|kolonne|kolonner}}",
 	"visualeditor-table-delete-row": "Slett {{PLURAL:$1|rad|rader}}",
 	"visualeditor-table-format-data": "Innholdscelle",

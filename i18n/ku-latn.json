@@ -4,7 +4,8 @@
 			"Bikarhêner",
 			"Cûndûllah el-Kurdî",
 			"George Animal",
-			"Ghybu"
+			"Ghybu",
+			"Guherto"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -20,7 +21,7 @@
 	"visualeditor-annotationbutton-link-tooltip": "Girêdan",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Serxêzkirî",
 	"visualeditor-annotationbutton-subscript-tooltip": "Dawera binî",
-	"visualeditor-clearbutton-tooltip": "Stîlê paqij bike",
+	"visualeditor-clearbutton-tooltip": "Jê bibe",
 	"visualeditor-clipboard-copy": "Kopî bike",
 	"visualeditor-clipboard-cut": "Biqusîne",
 	"visualeditor-clipboard-paste": "Bizeliqîne",

@@ -140,6 +140,7 @@
 	"visualeditor-specialcharacterinspector-title": "Հատուկ նշան",
 	"visualeditor-table-caption": "Վերնագիր",
 	"visualeditor-table-contextitem-properties": "Կարգավորումներ",
+	"visualeditor-table-context-col": "Սյունակ",
 	"visualeditor-table-delete-col": "Ջնջել {{PLURAL:$1|սյունակ|սյունակները}}",
 	"visualeditor-table-delete-row": "Ջնջել {{PLURAL:$1|տող|տողերը}}",
 	"visualeditor-table-format-data": "Լրացված վանդակ",
