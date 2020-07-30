@@ -153,16 +153,15 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 			}
 			return node;
 		} );
+		// Render the computed values of some attributes
+		ve.resolveAttributes(
+			rendering,
+			domElements[ 0 ].ownerDocument,
+			ve.dm.Converter.static.computedAttributes
+		);
 	} else {
 		rendering = [ document.createElement( 'span' ) ];
 	}
-
-	// Render the computed values of some attributes
-	ve.resolveAttributes(
-		rendering,
-		domElements[ 0 ].ownerDocument,
-		ve.dm.Converter.static.computedAttributes
-	);
 
 	return rendering;
 };
