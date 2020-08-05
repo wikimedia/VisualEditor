@@ -225,14 +225,13 @@
 		"name": "Diffing",
 		"groups": [
 			{
-				"name": "Data Model",
-				"classes": ["ve.dm.VisualDiff"]
-			},
-			{
-				"name": "Core",
+				"name": "Diffing",
 				"classes": [
+					"ve.dm.VisualDiff",
 					"ve.DiffMatchPatch",
-					"ve.DiffTreeNode"
+					"ve.DiffTreeNode",
+					"ve.ui.DiffDialog",
+					"ve.ui.DiffElement"
 				]
 			}
 		]
