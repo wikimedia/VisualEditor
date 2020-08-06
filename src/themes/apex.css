@@ -17,6 +17,10 @@
 	box-shadow: 0 0 2px 2px #ace;
 }
 
+.ve-ui-targetWidget:not( .oo-ui-pendingElement-pending ) {
+	background: #fff;
+}
+
 .ve-ui-targetWidget-readOnly:not( .oo-ui-pendingElement-pending ) {
 	background: #f3f3f3;
 }
