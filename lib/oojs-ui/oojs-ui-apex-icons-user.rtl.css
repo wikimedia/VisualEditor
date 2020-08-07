@@ -1,34 +1,28 @@
 /*!
- * OOUI v0.39.3
+ * OOUI v0.40.1
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2020 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2020-07-10T06:32:25Z
+ * Date: 2020-08-05T21:22:12Z
  */
 .oo-ui-icon-userAdd {
-  background-image: url('themes/wikimediaui/images/icons/userAdd-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAdd-rtl.svg');
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userAdd-rtl.svg);
 }
 .oo-ui-icon-userAnonymous {
-  background-image: url('themes/wikimediaui/images/icons/userAnonymous.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAnonymous.svg');
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userAnonymous.svg);
 }
 .oo-ui-icon-userAvatar {
-  background-image: url('themes/wikimediaui/images/icons/userAvatar.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAvatar.svg');
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userAvatar.svg);
 }
 .oo-ui-icon-userAvatarOutline {
-  background-image: url('themes/wikimediaui/images/icons/userAvatarOutline.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userAvatarOutline.svg');
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userAvatarOutline.svg);
 }
 .oo-ui-icon-userGroup {
-  background-image: url('themes/wikimediaui/images/icons/userGroup-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userGroup-rtl.svg');
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userGroup-rtl.svg);
 }
 .oo-ui-icon-userTalk {
-  background-image: url('themes/wikimediaui/images/icons/userTalk-rtl.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/userTalk-rtl.svg');
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userTalk-rtl.svg);
 }
