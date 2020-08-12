@@ -579,6 +579,7 @@ ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
 		this.placeholderVisible = false;
 		this.getView().$element.css( 'min-height', '' );
 	}
+	this.getView().attachedRoot.$element.attr( 'aria-label', this.placeholder || null );
 };
 
 /**
