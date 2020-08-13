@@ -80,7 +80,7 @@
 	"visualeditor-debugbar-startfilibuster": "Filibuster",
 	"visualeditor-debugbar-stopfilibuster": "Filibuster beenden",
 	"visualeditor-debugbar-updatemodel": "Modell aktualisieren",
-	"visualeditor-dialog-action-apply": "Änderungen speichern",
+	"visualeditor-dialog-action-apply": "Änderungen übernehmen",
 	"visualeditor-dialog-action-cancel": "Abbrechen",
 	"visualeditor-dialog-action-done": "Fertig",
 	"visualeditor-dialog-action-goback": "Zurück",

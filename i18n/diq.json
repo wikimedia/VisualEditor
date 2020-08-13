@@ -193,6 +193,8 @@
 	"visualeditor-table-contextitem-properties": "Xısusiyi",
 	"visualeditor-table-contextitem-selectionmode-cells": "Hucreyan weçine",
 	"visualeditor-table-contextitem-selectionmode-contents": "Zerreki weçine",
+	"visualeditor-table-context-col": "estun",
+	"visualeditor-table-context-row": "Satır",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|Estûne|$1 Estûnan}} bıestere",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Rêze|$1 Rêzan}} bestere",
 	"visualeditor-table-format-data": "Zerreka hucra",
