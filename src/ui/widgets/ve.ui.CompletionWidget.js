@@ -45,7 +45,10 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 	} );
 
 	// Events
-	this.menu.connect( this, { choose: 'onMenuChoose' } );
+	this.menu.connect( this, {
+		choose: 'onMenuChoose',
+		toggle: 'onMenuToggle'
+	} );
 
 	this.menu.$element.append( this.header.$element );
 
@@ -74,9 +77,11 @@ ve.ui.CompletionWidget.prototype.setup = function ( action ) {
 };
 
 ve.ui.CompletionWidget.prototype.teardown = function () {
+	this.tearingDown = true;
 	this.menu.toggle( false );
 	this.surfaceModel.disconnect( this );
 	this.action = undefined;
+	this.tearingDown = false;
 };
 
 ve.ui.CompletionWidget.prototype.update = function () {
@@ -136,6 +141,13 @@ ve.ui.CompletionWidget.prototype.onMenuChoose = function ( item ) {
 	fragment.collapseToEnd().select();
 
 	this.teardown();
+};
+
+ve.ui.CompletionWidget.prototype.onMenuToggle = function ( visible ) {
+	if ( !visible && !this.tearingDown ) {
+		// Menu was hidden by the user (e.g. pressed ESC) - trigger a teardown
+		this.teardown();
+	}
 };
 
 ve.ui.CompletionWidget.prototype.onModelSelect = function () {
