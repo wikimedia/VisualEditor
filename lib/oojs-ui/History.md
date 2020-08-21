@@ -1,4 +1,19 @@
 # OOUI Release History
+## v0.40.2 / 2020-08-20
+### Styles
+* icons: Add 'volumeUp' (Volker E.)
+
+### Code
+* InputWidget: Fix infusion when something removes the 'oo-ui-inputWidget-input' class (Bartosz Dziewoński)
+* PopupWidget: Fix reverse tabbing order when exiting popup (edwintam)
+* ToggleSwitchWidget: Fix wrong role type & change to `switch` (edwintam)
+* Check `config.$input` in #gatherPreInfuseState methods (Bartosz Dziewoński)
+* Fix label mixin docs related to {string|Function} types (Thiemo Kreuz)
+* Remove redundant type checks before calling resolveMsg() (Thiemo Kreuz)
+* Rewrite insufficient label mixin documentation (Thiemo Kreuz)
+* build: Update eslint-config-wikimedia to 0.17.0 (Ed Sanders)
+
+
 ## v0.40.1 / 2020-08-05
 ### Styles
 * ActionFieldLayout: Fix input margin styles (Ed Sanders)
