@@ -192,6 +192,7 @@
 	"visualeditor-table-move-col-before": "Premjesti ispred",
 	"visualeditor-table-move-row-after": "Premjesti ispod",
 	"visualeditor-table-move-row-before": "Premjesti iznad",
+	"visualeditor-table-sum": "Zbroj: $1, prosjek: $2",
 	"visualeditor-tablecell-contextitem": "Ćelija",
 	"visualeditor-tablecell-tooltip": "Kliknite dva puta da biste uređivali polje",
 	"visualeditor-toolbar-format-tooltip": "Oblikovanje odlomka",
