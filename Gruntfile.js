@@ -532,8 +532,8 @@ module.exports = function ( grunt ) {
 				grunt.log.error( 'Unstaged changes in these files:' );
 				grunt.log.error( ret );
 				// Show a condensed diff
-				require( 'child_process' ).exec( 'git diff -U1 | tail -n +3', function ( err, stdout, stderr ) {
-					grunt.log.write( err || stderr || stdout );
+				require( 'child_process' ).exec( 'git diff -U1 | tail -n +3', function ( err2, stdout2, stderr2 ) {
+					grunt.log.write( err2 || stderr2 || stdout2 );
 					done( false );
 				} );
 			} else {

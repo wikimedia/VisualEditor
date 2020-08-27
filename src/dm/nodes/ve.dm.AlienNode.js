@@ -75,9 +75,9 @@ ve.dm.AlienNode.static.isDiffComparable = function ( element, other, elementStor
 	// for about grouping, but we should ignore them for diffing as they can be
 	// non-persistent in historical diffs.
 
-	function removeAboutAttributes( element ) {
-		Array.prototype.forEach.call( element.querySelectorAll( '[about]' ), function ( el ) {
-			el.removeAttribute( 'about' );
+	function removeAboutAttributes( el ) {
+		Array.prototype.forEach.call( el.querySelectorAll( '[about]' ), function ( e ) {
+			e.removeAttribute( 'about' );
 		} );
 	}
 

@@ -13,12 +13,9 @@ QUnit.test( 'squash', function ( assert ) {
 		italicHash = 'he4e7c54e2204d10ba';
 
 	function insertionTxList( before, itemSequence, after ) {
-		var i, iLen,
-			transactions = [];
-		for ( i = 0, iLen = itemSequence.length; i < iLen; i++ ) {
-			transactions.push( [ before + i, [ '', itemSequence[ i ] ], after ] );
-		}
-		return transactions;
+		return itemSequence.split( '' ).map( function ( item, n ) {
+			return [ before + n, [ '', item ], after ];
+		} );
 	}
 
 	function annotationTx( allData, start, stop, length, method, hash, spliceAt ) {

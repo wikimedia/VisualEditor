@@ -284,40 +284,40 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 
 	// Find all subsequent DOM positions at the same model offset
 	found = {};
-	function stop( step ) {
-		var model;
-		if ( step.node.nodeType === Node.TEXT_NODE ) {
-			return step.type === 'internal';
+	function stop( s ) {
+		var m;
+		if ( s.node.nodeType === Node.TEXT_NODE ) {
+			return s.type === 'internal';
 		}
 
 		if (
-			step.node.classList.contains( 've-ce-branchNode' ) ||
-			step.node.classList.contains( 've-ce-leafNode' )
+			s.node.classList.contains( 've-ce-branchNode' ) ||
+			s.node.classList.contains( 've-ce-leafNode' )
 		) {
-			model = $.data( step.node, 'view' ).model;
-			if ( countedNodes.indexOf( model ) !== -1 ) {
+			m = $.data( s.node, 'view' ).model;
+			if ( countedNodes.indexOf( m ) !== -1 ) {
 				return false;
 			}
-			countedNodes.push( model );
+			countedNodes.push( m );
 			return true;
 		}
 		return false;
 	}
 	steps = ve.adjacentDomPosition( position, 1, { stop: stop, noDescend: noDescend } ).steps;
-	steps.slice( 0, -1 ).forEach( function ( step ) {
+	steps.slice( 0, -1 ).forEach( function ( s ) {
 		// Step type cannot be "internal", else the offset would have incremented
 		var hasClass = function ( className ) {
-			return step.node.nodeType === Node.ELEMENT_NODE &&
-				step.node.classList.contains( className );
+			return s.node.nodeType === Node.ELEMENT_NODE &&
+				s.node.classList.contains( className );
 		};
-		found.preUnicorn = found.preUnicorn || ( hasClass( 've-ce-pre-unicorn' ) && step );
-		found.postUnicorn = found.postUnicorn || ( hasClass( 've-ce-post-unicorn' ) && step );
-		found.preOpenNail = found.preOpenNail || ( hasClass( 've-ce-nail-pre-open' ) && step );
-		found.postOpenNail = found.postOpenNail || ( hasClass( 've-ce-nail-post-open' ) && step );
-		found.preCloseNail = found.preCloseNail || ( hasClass( 've-ce-nail-pre-close' ) && step );
-		found.postCloseNail = found.postCloseNail || ( hasClass( 've-ce-nail-post-close' ) && step );
-		found.focusableNode = found.focusableNode || ( hasClass( 've-ce-focusableNode' ) && step );
-		found.text = found.text || ( step.node.nodeType === Node.TEXT_NODE && step );
+		found.preUnicorn = found.preUnicorn || ( hasClass( 've-ce-pre-unicorn' ) && s );
+		found.postUnicorn = found.postUnicorn || ( hasClass( 've-ce-post-unicorn' ) && s );
+		found.preOpenNail = found.preOpenNail || ( hasClass( 've-ce-nail-pre-open' ) && s );
+		found.postOpenNail = found.postOpenNail || ( hasClass( 've-ce-nail-post-open' ) && s );
+		found.preCloseNail = found.preCloseNail || ( hasClass( 've-ce-nail-pre-close' ) && s );
+		found.postCloseNail = found.postCloseNail || ( hasClass( 've-ce-nail-post-close' ) && s );
+		found.focusableNode = found.focusableNode || ( hasClass( 've-ce-focusableNode' ) && s );
+		found.text = found.text || ( s.node.nodeType === Node.TEXT_NODE && s );
 	} );
 
 	// If there is a unicorn, it should be a unique pre/post-Unicorn pair containing text or

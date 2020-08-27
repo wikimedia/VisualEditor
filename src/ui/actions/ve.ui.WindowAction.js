@@ -46,7 +46,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		currentWindow = windowManager.getCurrentWindow(),
 		autoClosePromises = [],
 		surface = this.surface,
-		fragment = surface.getModel().getFragment( undefined, true ),
+		surfaceFragment = surface.getModel().getFragment( undefined, true ),
 		dir = surface.getView().getSelectionDirectionality(),
 		windowClass = ve.ui.windowFactory.lookup( name ),
 		isFragmentWindow = !!windowClass.prototype.getFragment,
@@ -65,10 +65,10 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	if ( !mayRequireFragment ) {
 		fragmentPromise = ve.createDeferred().resolve().promise();
 	} else if ( sourceMode ) {
-		text = fragment.getText( true );
-		originalFragment = fragment;
+		text = surfaceFragment.getText( true );
+		originalFragment = surfaceFragment;
 
-		fragmentPromise = fragment.convertFromSource( text ).then( function ( selectionDocument ) {
+		fragmentPromise = surfaceFragment.convertFromSource( text ).then( function ( selectionDocument ) {
 			var tempSurfaceModel = new ve.dm.Surface( selectionDocument ),
 				tempFragment = tempSurfaceModel.getLinearFragment(
 					// TODO: Select all content using content offset methods
@@ -81,7 +81,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 			return tempFragment;
 		} );
 	} else {
-		fragmentPromise = ve.createDeferred().resolve( fragment ).promise();
+		fragmentPromise = ve.createDeferred().resolve( surfaceFragment ).promise();
 	}
 
 	data = ve.extendObject( { dir: dir }, data, { $returnFocusTo: null } );

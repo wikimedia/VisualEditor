@@ -41,23 +41,23 @@ ve.ui.ModeledFactory.prototype.getRelatedItems = function ( models ) {
 	 * Collect the most specific compatible classes for a model.
 	 *
 	 * @private
-	 * @param {Object} model Model to find compatibility with
+	 * @param {Object} m Model to find compatibility with
 	 * @return {Function[]} List of compatible classes
 	 */
-	function collect( model ) {
-		var i, len, name, candidate, add,
+	function collect( m ) {
+		var k, kLen, n, candidate, add,
 			candidates = [];
 
-		for ( name in registry ) {
-			candidate = registry[ name ];
-			if ( candidate.static.isCompatibleWith( model ) ) {
+		for ( n in registry ) {
+			candidate = registry[ n ];
+			if ( candidate.static.isCompatibleWith( m ) ) {
 				add = true;
-				for ( i = 0, len = candidates.length; i < len; i++ ) {
-					if ( candidate.prototype instanceof candidates[ i ] ) {
-						candidates.splice( i, 1, candidate );
+				for ( k = 0, kLen = candidates.length; k < kLen; k++ ) {
+					if ( candidate.prototype instanceof candidates[ k ] ) {
+						candidates.splice( k, 1, candidate );
 						add = false;
 						break;
-					} else if ( candidates[ i ].prototype instanceof candidate ) {
+					} else if ( candidates[ k ].prototype instanceof candidate ) {
 						add = false;
 						break;
 					}

@@ -153,15 +153,15 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 	// This is similar to ve.getProp, except with a `hasOwnProperty`
 	// test to ensure we aren't fooled by __proto__ and friends.
 	function fetch( obj /* , args… */ ) {
-		var i;
-		for ( i = 1; i < arguments.length; i++ ) {
+		var j;
+		for ( j = 1; j < arguments.length; j++ ) {
 			if (
-				typeof arguments[ i ] !== 'string' ||
-				!Object.prototype.hasOwnProperty.call( obj, arguments[ i ] )
+				typeof arguments[ j ] !== 'string' ||
+				!Object.prototype.hasOwnProperty.call( obj, arguments[ j ] )
 			) {
 				return [];
 			}
-			obj = obj[ arguments[ i ] ];
+			obj = obj[ arguments[ j ] ];
 		}
 		return obj;
 	}

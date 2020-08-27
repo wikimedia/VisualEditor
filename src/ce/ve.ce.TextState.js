@@ -182,15 +182,15 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 	 * @return {number} Number of elements of newArray not in oldArray
 	 */
 	function countMissing( newArray, oldArray, equals ) {
-		var i, iLen, j, jLen,
+		var i2, i2Len, j2, j2Len,
 			count = 0;
-		for ( i = 0, iLen = newArray.length; i < iLen; i++ ) {
-			for ( j = 0, jLen = oldArray.length; j < jLen; j++ ) {
-				if ( equals( newArray[ i ], oldArray[ j ] ) ) {
+		for ( i2 = 0, i2Len = newArray.length; i2 < i2Len; i2++ ) {
+			for ( j2 = 0, j2Len = oldArray.length; j2 < j2Len; j2++ ) {
+				if ( equals( newArray[ i2 ], oldArray[ j2 ] ) ) {
 					break;
 				}
 			}
-			if ( j === jLen ) {
+			if ( j2 === j2Len ) {
 				count++;
 			}
 		}

@@ -35,49 +35,45 @@ ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs
  */
 ve.ce.getDomText = function ( element ) {
 	// Inspired by jQuery.text / Sizzle.getText
-	var func = function ( element ) {
-		var viewNode,
-			nodeType = element.nodeType,
-			text = '';
+	var viewNode,
+		nodeType = element.nodeType,
+		text = '';
 
-		if (
-			nodeType === Node.ELEMENT_NODE ||
-			nodeType === Node.DOCUMENT_NODE ||
-			nodeType === Node.DOCUMENT_FRAGMENT_NODE
-		) {
-			if ( element.classList.contains( 've-ce-branchNode-blockSlug' ) ) {
-				// Block slugs are not represented in the model at all, but they do
-				// contain a single nbsp/FEFF character in the DOM, so make sure
-				// that character isn't counted
-				return '';
-			} else if ( element.classList.contains( 've-ce-cursorHolder' ) ) {
-				// Cursor holders do not exist in the model
-				return '';
-			} else if ( element.classList.contains( 've-ce-leafNode' ) ) {
-				// For leaf nodes, don't return the content, but return
-				// the right number of placeholder characters so the offsets match up.
-				viewNode = $( element ).data( 'view' );
-				// Only return snowmen for the first element in a sibling group: otherwise
-				// we'll double-count this node
-				if ( viewNode && element === viewNode.$element[ 0 ] ) {
-					// \u2603 is the snowman character: ☃
-					return new Array( viewNode.getOuterLength() + 1 ).join( '\u2603' );
-				}
-				// Second or subsequent sibling, don't double-count
-				return '';
-			} else {
-				// Traverse its children
-				for ( element = element.firstChild; element; element = element.nextSibling ) {
-					text += func( element );
-				}
+	if (
+		nodeType === Node.ELEMENT_NODE ||
+		nodeType === Node.DOCUMENT_NODE ||
+		nodeType === Node.DOCUMENT_FRAGMENT_NODE
+	) {
+		if ( element.classList.contains( 've-ce-branchNode-blockSlug' ) ) {
+			// Block slugs are not represented in the model at all, but they do
+			// contain a single nbsp/FEFF character in the DOM, so make sure
+			// that character isn't counted
+			return '';
+		} else if ( element.classList.contains( 've-ce-cursorHolder' ) ) {
+			// Cursor holders do not exist in the model
+			return '';
+		} else if ( element.classList.contains( 've-ce-leafNode' ) ) {
+			// For leaf nodes, don't return the content, but return
+			// the right number of placeholder characters so the offsets match up.
+			viewNode = $( element ).data( 'view' );
+			// Only return snowmen for the first element in a sibling group: otherwise
+			// we'll double-count this node
+			if ( viewNode && element === viewNode.$element[ 0 ] ) {
+				// \u2603 is the snowman character: ☃
+				return new Array( viewNode.getOuterLength() + 1 ).join( '\u2603' );
 			}
-		} else if ( nodeType === Node.TEXT_NODE ) {
-			return element.data;
+			// Second or subsequent sibling, don't double-count
+			return '';
+		} else {
+			// Traverse its children
+			for ( element = element.firstChild; element; element = element.nextSibling ) {
+				text += ve.ce.getDomText( element );
+			}
 		}
-		return text;
-	};
-	// Return the text
-	return func( element );
+	} else if ( nodeType === Node.TEXT_NODE ) {
+		return element.data;
+	}
+	return text;
 };
 
 /**

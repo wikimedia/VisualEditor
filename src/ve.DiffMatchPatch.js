@@ -71,7 +71,7 @@ ve.DiffMatchPatch.prototype.getEmptyString = function () {
 };
 
 ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options ) {
-	var cleanDiff, i, ilen, j,
+	var finalDiff, k, klen, m,
 		store = this.store,
 		DIFF_DELETE = this.constructor.static.DIFF_DELETE,
 		DIFF_INSERT = this.constructor.static.DIFF_INSERT,
@@ -184,8 +184,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		}
 
 		function isWhitespace( element ) {
-			var data = Array.isArray( element ) ? element[ 0 ] : element;
-			return typeof data === 'string' && !!data.match( /\s/ );
+			var value = Array.isArray( element ) ? element[ 0 ] : element;
+			return typeof value === 'string' && !!value.match( /\s/ );
 		}
 
 		// Where the same data is removed and inserted, replace it with a retain
@@ -350,9 +350,9 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 				if ( aData.every( equalElements.bind( this, bData ) ) ) {
 					attributeChanges = [];
 					// eslint-disable-next-line no-loop-func
-					bData.forEach( function ( element, i ) {
+					bData.forEach( function ( element, n ) {
 						if ( ve.dm.LinearData.static.isOpenElementData( element ) ) {
-							attributeChanges.push( { oldAttributes: aData[ i ].attributes, newAttributes: element.attributes, index: i } );
+							attributeChanges.push( { oldAttributes: aData[ n ].attributes, newAttributes: element.attributes, index: n } );
 						}
 					} );
 					if ( attributeChanges.length ) {
@@ -375,21 +375,21 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	newData = removeCloseElements( newData );
 
 	// Get the diff
-	cleanDiff = getCleanDiff( this.diff_main( oldData, newData, options ) );
+	finalDiff = getCleanDiff( this.diff_main( oldData, newData, options ) );
 
 	// Re-insert the close elements
-	for ( i = 0, ilen = cleanDiff.length; i < ilen; i++ ) {
-		for ( j = 0; j < cleanDiff[ i ][ 1 ].length; j++ ) {
-			if ( cleanDiff[ i ][ 1 ][ j ].type ) {
-				cleanDiff[ i ][ 1 ].splice( j + 1, 0, {
-					type: '/' + cleanDiff[ i ][ 1 ][ j ].type
+	for ( k = 0, klen = finalDiff.length; k < klen; k++ ) {
+		for ( m = 0; m < finalDiff[ k ][ 1 ].length; m++ ) {
+			if ( finalDiff[ k ][ 1 ][ m ].type ) {
+				finalDiff[ k ][ 1 ].splice( m + 1, 0, {
+					type: '/' + finalDiff[ k ][ 1 ][ m ].type
 				} );
-				j++;
+				m++;
 			}
 		}
 	}
 
-	cleanDiff.timedOut = this.lastDiffTimedOut;
+	finalDiff.timedOut = this.lastDiffTimedOut;
 
-	return cleanDiff;
+	return finalDiff;
 };

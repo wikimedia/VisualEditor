@@ -76,13 +76,13 @@ ve.dm.Transaction.static.reversers = {
  * @return {ve.dm.Transaction} Deserialized transaction
  */
 ve.dm.Transaction.static.deserialize = function ( data ) {
-	function deminifyLinearData( data ) {
-		if ( typeof data === 'string' ) {
-			return data.split( '' );
+	function deminifyLinearData( element ) {
+		if ( typeof element === 'string' ) {
+			return element.split( '' );
 		}
 		// Else deep copy. For this plain, serializable array, stringify+parse profiles
 		// faster than ve.copy
-		return JSON.parse( JSON.stringify( data ) );
+		return JSON.parse( JSON.stringify( element ) );
 	}
 
 	function deminify( op ) {

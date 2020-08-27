@@ -40,10 +40,10 @@
 	ve.trackSubscribe = function ( topic, callback ) {
 		var seen = 0;
 
-		callbacks.add( function ( queue ) {
+		callbacks.add( function ( q ) {
 			var event;
-			for ( ; seen < queue.length; seen++ ) {
-				event = queue[ seen ];
+			for ( ; seen < q.length; seen++ ) {
+				event = q[ seen ];
 				if ( event.topic.indexOf( topic ) === 0 ) {
 					callback( event.topic, event.data, event.timeStamp );
 				}

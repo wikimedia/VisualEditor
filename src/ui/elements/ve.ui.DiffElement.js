@@ -230,21 +230,21 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		internalListDiffQueue = [];
 
 	function processQueue( queue, parentNode, spacerNode ) {
-		var spacer, elements, i, ilen;
+		var spacer, elements, k, klen;
 
 		function isUnchanged( item ) {
 			return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
 		}
 
-		for ( i = 0, ilen = queue.length; i < ilen; i++ ) {
+		for ( k = 0, klen = queue.length; k < klen; k++ ) {
 			if (
-				!isUnchanged( queue[ i - 1 ] ) ||
-				!isUnchanged( queue[ i ] ) ||
-				!isUnchanged( queue[ i + 1 ] )
+				!isUnchanged( queue[ k - 1 ] ) ||
+				!isUnchanged( queue[ k ] ) ||
+				!isUnchanged( queue[ k + 1 ] )
 			) {
 				spacer = false;
 				hasChanges = true;
-				elements = this[ queue[ i ][ 0 ] ].apply( this, queue[ i ].slice( 1 ) );
+				elements = this[ queue[ k ][ 0 ] ].apply( this, queue[ k ].slice( 1 ) );
 				while ( elements.length ) {
 					parentNode.appendChild(
 						parentNode.ownerDocument.adoptNode( elements[ 0 ] )
@@ -572,6 +572,68 @@ ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) 
 };
 
 /**
+ * Append list item
+ *
+ * @private
+ * @param {Array} diffData
+ * @param {number} insertIndex
+ * @param {ve.dm.ListNode} listNode
+ * @param {Array} listNodeData
+ * @param {Array} listItemData
+ * @param {number} depthChange
+ * @return {number}
+ */
+ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, listNode, listNodeData, listItemData, depthChange ) {
+	var k, klen, linearData, listItemNode;
+	if ( depthChange === 0 ) {
+
+		// Current list item belongs to the same list as the previous list item
+		ve.batchSplice( diffData, insertIndex, 0, listItemData );
+		insertIndex += listItemData.length;
+
+	} else if ( depthChange > 0 ) {
+
+		// Begin a new nested list, with this node's ancestor nodes
+		linearData = [];
+		linearData.unshift( listNodeData[ 0 ] );
+
+		// Nested list may be nested by multiple levels
+		for ( k = 0, klen = depthChange - 1; k < klen; k++ ) {
+			listItemNode = listNode.parent;
+			linearData.unshift( this.newDoc.data.data[ listItemNode.getOuterRange().from ] );
+			listNode = listItemNode.parent;
+			linearData.unshift( this.newDoc.data.data[ listNode.getOuterRange().from ] );
+		}
+
+		// Splice in the content, and splice that into the diff data
+		ve.batchSplice( linearData, linearData.length, 0, listItemData );
+		for ( k = 0, klen = depthChange - 1; k < klen; k++ ) {
+			linearData.push( { type: '/list' } );
+			linearData.push( { type: '/listItem' } );
+		}
+		linearData.push( { type: '/list' } );
+
+		// Splice into previous list item
+		insertIndex -= 1;
+		ve.batchSplice( diffData, insertIndex, 0, linearData );
+
+		// Adjust the insertIndex to be at the end of this content
+		insertIndex += 2 * ( depthChange - 1 ) + 1 + listItemData.length;
+
+	} else if ( depthChange < 0 ) {
+
+		// Skip over close elements to get out of nested list(s)
+		insertIndex += 2 * -depthChange;
+
+		// Splice in the data and adjust the insert index
+		ve.batchSplice( diffData, insertIndex, 0, listItemData );
+		insertIndex += listItemData.length;
+	}
+
+	return insertIndex;
+};
+
+/**
  * Get the linear data for the diff of a list-like node that has been changed.
  *
  * @param {ve.dm.Node} newNode Corresponding node from the new document
@@ -586,56 +648,6 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 		diffData = this.newDoc.getData( nodeRange ),
 		oldNodes = diff.oldList,
 		newNodes = diff.newList;
-
-	function appendListItem( diffData, insertIndex, listNode, listNodeData, listItemData, depthChange ) {
-		var i, ilen, linearData, listItemNode;
-		if ( depthChange === 0 ) {
-
-			// Current list item belongs to the same list as the previous list item
-			ve.batchSplice( diffData, insertIndex, 0, listItemData );
-			insertIndex += listItemData.length;
-
-		} else if ( depthChange > 0 ) {
-
-			// Begin a new nested list, with this node's ancestor nodes
-			linearData = [];
-			linearData.unshift( listNodeData[ 0 ] );
-
-			// Nested list may be nested by multiple levels
-			for ( i = 0, ilen = depthChange - 1; i < ilen; i++ ) {
-				listItemNode = listNode.parent;
-				linearData.unshift( this.newDoc.data.data[ listItemNode.getOuterRange().from ] );
-				listNode = listItemNode.parent;
-				linearData.unshift( this.newDoc.data.data[ listNode.getOuterRange().from ] );
-			}
-
-			// Splice in the content, and splice that into the diff data
-			ve.batchSplice( linearData, linearData.length, 0, listItemData );
-			for ( i = 0, ilen = depthChange - 1; i < ilen; i++ ) {
-				linearData.push( { type: '/list' } );
-				linearData.push( { type: '/listItem' } );
-			}
-			linearData.push( { type: '/list' } );
-
-			// Splice into previous list item
-			insertIndex -= 1;
-			ve.batchSplice( diffData, insertIndex, 0, linearData );
-
-			// Adjust the insertIndex to be at the end of this content
-			insertIndex += 2 * ( depthChange - 1 ) + 1 + listItemData.length;
-
-		} else if ( depthChange < 0 ) {
-
-			// Skip over close elements to get out of nested list(s)
-			insertIndex += 2 * -depthChange;
-
-			// Splice in the data and adjust the insert index
-			ve.batchSplice( diffData, insertIndex, 0, listItemData );
-			insertIndex += listItemData.length;
-		}
-
-		return insertIndex;
-	}
 
 	// Keep only the root list node
 	ve.batchSplice( diffData, 1, diffData.length - 2, [] );
@@ -716,8 +728,8 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 		}
 
 		// Record the index to splice in the next list item data into the diffData
-		insertIndex = appendListItem.call(
-			this, diffData, insertIndex, listNode, listNodeData, listItemData, depthChange
+		insertIndex = this.appendListItem(
+			diffData, insertIndex, listNode, listNodeData, listItemData, depthChange
 		);
 		depth = newDepth;
 	}
@@ -755,37 +767,37 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 	 * this document child
 	 */
 	function highlightRemovedNode( nodeIndex ) {
-		var i, ilen, orderedNode, node, removeData, siblingNodes,
+		var x, xlen, orderedNode, node, removeData, siblingNodes,
 			newPreviousNodeIndex, oldPreviousNodeIndex, insertIndex,
 			highestRemovedAncestor;
 
-		function findRemovedAncestor( orderedNode ) {
-			if ( !orderedNode.parent || structuralRemoves.indexOf( orderedNode.parent.index ) === -1 ) {
-				return orderedNode.index;
+		function findRemovedAncestor( n ) {
+			if ( !n.parent || structuralRemoves.indexOf( n.parent.index ) === -1 ) {
+				return n.index;
 			} else {
-				return findRemovedAncestor( orderedNode.parent );
+				return findRemovedAncestor( n.parent );
 			}
 		}
 
-		function getRemoveData( orderedNode, index ) {
-			var removeData, tempData;
+		function getRemoveData( n, index ) {
+			var data, tempData;
 
-			removeData = this.oldDoc.getData( orderedNode.node.getOuterRange() );
-			this.addAttributesToElement( removeData[ 0 ], {
+			data = this.oldDoc.getData( n.node.getOuterRange() );
+			this.addAttributesToElement( data[ 0 ], {
 				'data-diff-action': 'remove'
 			} );
 
-			while ( orderedNode && orderedNode.index !== index ) {
-				orderedNode = orderedNode.parent;
-				tempData = this.oldDoc.getData( orderedNode.node.getOuterRange() );
-				removeData.unshift( tempData[ 0 ] );
-				removeData.push( tempData[ tempData.length - 1 ] );
-				this.addAttributesToElement( removeData[ 0 ], {
+			while ( n && n.index !== index ) {
+				n = n.parent;
+				tempData = this.oldDoc.getData( n.node.getOuterRange() );
+				data.unshift( tempData[ 0 ] );
+				data.push( tempData[ tempData.length - 1 ] );
+				this.addAttributesToElement( data[ 0 ], {
 					'data-diff-action': 'structural-remove'
 				} );
 			}
 
-			return removeData;
+			return data;
 		}
 
 		orderedNode = oldNodes[ nodeIndex ];
@@ -830,11 +842,11 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 				// a node in the new document, or this node would have been marked already
 				// processed)
 				siblingNodes = highestRemovedAncestor.parent.children;
-				for ( i = 0, ilen = siblingNodes.length; i < ilen; i++ ) {
-					if ( siblingNodes[ i ].index === highestRemovedAncestor.index ) {
+				for ( x = 0, xlen = siblingNodes.length; x < xlen; x++ ) {
+					if ( siblingNodes[ x ].index === highestRemovedAncestor.index ) {
 						break;
 					} else {
-						oldPreviousNodeIndex = siblingNodes[ i ].index;
+						oldPreviousNodeIndex = siblingNodes[ x ].index;
 						newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ] || newPreviousNodeIndex;
 					}
 				}
@@ -887,9 +899,9 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 	 *
 	 * @param {number} nodeIndex The index of this node in the subtree rooted at
 	 * this document child
-	 * @param {Object} diffInfo Information relating to this node's change
+	 * @param {Object} info Information relating to this node's change
 	 */
-	function highlightChangedNode( nodeIndex, diffInfo ) {
+	function highlightChangedNode( nodeIndex, info ) {
 		var node, nodeRangeStart, nodeDiffData, annotatedData, item;
 
 		// The new node was changed.
@@ -897,18 +909,18 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 		node = newNodes[ nodeIndex ].node;
 		nodeRangeStart = node.getOuterRange().from - nodeRange.from;
 
-		if ( diffInfo.linearDiff ) {
+		if ( info.linearDiff ) {
 			// If there is a content change, splice it in
-			nodeDiffData = diffInfo.linearDiff;
+			nodeDiffData = info.linearDiff;
 			annotatedData = this.annotateNode( nodeDiffData );
 			ve.batchSplice( nodeData, nodeRangeStart + 1, node.length, annotatedData );
 		}
-		if ( diffInfo.attributeChange ) {
+		if ( info.attributeChange ) {
 			// If there is no content change, just add change class
 			this.addAttributesToElement(
 				nodeData[ nodeRangeStart ], { 'data-diff-action': 'structural-change' }
 			);
-			item = this.compareNodeAttributes( nodeData, nodeRangeStart, this.newDoc, diffInfo.attributeChange );
+			item = this.compareNodeAttributes( nodeData, nodeRangeStart, this.newDoc, info.attributeChange );
 			if ( item ) {
 				this.descriptionItemsStack.push( item );
 			}

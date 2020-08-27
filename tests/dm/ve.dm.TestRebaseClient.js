@@ -53,7 +53,7 @@ OO.mixinClass( ve.dm.TestRebaseClient, ve.dm.RebaseClient );
  */
 ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, sentLength ) {
 	var committed, sent, unsent,
-		text = [];
+		parts = [];
 	if ( commitLength === undefined ) {
 		commitLength = change.transactions.length;
 	}
@@ -85,15 +85,15 @@ ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, 
 		} ).join( '' );
 	}
 	if ( committed.length ) {
-		text.push( joinText( committed ) );
+		parts.push( joinText( committed ) );
 	}
 	if ( sent.length ) {
-		text.push( joinText( sent ) + '?' );
+		parts.push( joinText( sent ) + '?' );
 	}
 	if ( unsent.length ) {
-		text.push( joinText( unsent ) + '!' );
+		parts.push( joinText( unsent ) + '!' );
 	}
-	return text.join( '/' );
+	return parts.join( '/' );
 };
 
 ve.dm.TestRebaseClient.prototype.getHistorySummary = function () {

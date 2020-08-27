@@ -146,19 +146,19 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	// Assertion: if txInsert === undefined then node.splitOnEnter() === true
 
-	function getSplitData( node ) {
+	function getSplitData( n ) {
 		var stack = [];
-		node.traverseUpstream( function ( node ) {
-			if ( !node.splitOnEnter() ) {
+		n.traverseUpstream( function ( parent ) {
+			if ( !parent.splitOnEnter() ) {
 				return false;
 			}
 			stack.splice(
 				stack.length / 2,
 				0,
-				{ type: '/' + node.type },
-				node.getModel().getClonedElement()
+				{ type: '/' + parent.type },
+				parent.getModel().getClonedElement()
 			);
-			outermostNode = node;
+			outermostNode = parent;
 			if ( e.shiftKey ) {
 				return false;
 			} else {

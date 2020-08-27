@@ -101,7 +101,7 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
 
 /**
  * @event initDoc
- * @param {Error} Error, if there was a problem initializing the document
+ * @param {Error} error Error, if there was a problem initializing the document
  */
 
 /**

@@ -57,17 +57,17 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 	 * Generate an event handler for a specific event
 	 *
 	 * @private
-	 * @param {string} eventName The event's name
+	 * @param {string} name The event's name
 	 * @return {Function} An event handler
 	 */
-	function makeEventHandler( eventName ) {
+	function makeEventHandler( name ) {
 		return function ( ev ) {
-			return eventSequencer.onEvent( eventName, ev );
+			return eventSequencer.onEvent( name, ev );
 		};
 	}
 
 	/**
-	 * @property {Object[]}
+	 * @property {Object[]} Pending calls
 	 *  - id {number} Id for setTimeout
 	 *  - func {Function} Post-event listener
 	 *  - ev {jQuery.Event} Browser event

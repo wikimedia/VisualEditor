@@ -234,9 +234,9 @@ ve.dm.Converter.static.moveInlineMetaItems = function ( data ) {
 		pendingMetaItems = [];
 
 	function closestMetaParent() {
-		var i, ancestor;
-		for ( i = ancestors.length - 1; i >= 0; i-- ) {
-			ancestor = ancestors[ i ];
+		var n, ancestor;
+		for ( n = ancestors.length - 1; n >= 0; n-- ) {
+			ancestor = ancestors[ n ];
 			if ( ancestor.isMetaParent ) {
 				return ancestor;
 			}
@@ -713,25 +713,25 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 	}
 	// FIXME rewrite this horrible meta item / whitespace queueing/wrapping business
 	function outputWrappedMetaItems( whitespaceTreatment ) {
-		var i, len,
+		var j, len,
 			toInsert = [],
 			prev = wrappingParagraph;
 
-		for ( i = 0, len = wrappedMetaItems.length; i < len; i++ ) {
-			if ( wrappedMetaItems[ i ].type && wrappedMetaItems[ i ].type.charAt( 0 ) !== '/' ) {
-				if ( wrappedMetaItems[ i ].internal && wrappedMetaItems[ i ].internal.whitespace ) {
+		for ( j = 0, len = wrappedMetaItems.length; j < len; j++ ) {
+			if ( wrappedMetaItems[ j ].type && wrappedMetaItems[ j ].type.charAt( 0 ) !== '/' ) {
+				if ( wrappedMetaItems[ j ].internal && wrappedMetaItems[ j ].internal.whitespace ) {
 					if ( whitespaceTreatment === 'restore' ) {
 						ve.batchPush( toInsert, converter.constructor.static.getDataContentFromText(
-							wrappedMetaItems[ i ].internal.whitespace[ 0 ], context.annotations
+							wrappedMetaItems[ j ].internal.whitespace[ 0 ], context.annotations
 						) );
-						delete wrappedMetaItems[ i ].internal;
+						delete wrappedMetaItems[ j ].internal;
 					} else if ( whitespaceTreatment === 'fixup' ) {
-						addWhitespace( prev, 3, wrappedMetaItems[ i ].internal.whitespace[ 0 ] );
+						addWhitespace( prev, 3, wrappedMetaItems[ j ].internal.whitespace[ 0 ] );
 					}
 				}
-				prev = wrappedMetaItems[ i ];
+				prev = wrappedMetaItems[ j ];
 			}
-			toInsert.push( wrappedMetaItems[ i ] );
+			toInsert.push( wrappedMetaItems[ j ] );
 		}
 		if ( wrappedWhitespace !== '' && whitespaceTreatment === 'restore' ) {
 			// If we have wrapped whitespace, insert the wrapped meta items before it
@@ -772,25 +772,25 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 	}
 	function getAboutGroup( node ) {
 		var about,
-			aboutGroup = [ node ];
+			group = [ node ];
 
 		if ( node.nodeType !== Node.ELEMENT_NODE || node.getAttribute( 'about' ) === null ) {
-			return aboutGroup;
+			return group;
 		}
 		about = node.getAttribute( 'about' );
 		while ( ( node = node.nextSibling ) !== null ) {
 			if ( node.nodeType === Node.ELEMENT_NODE && node.getAttribute( 'about' ) === about ) {
-				aboutGroup.push( node );
+				group.push( node );
 			} else {
 				break;
 			}
 		}
-		return aboutGroup;
+		return group;
 	}
-	function isAllInstanceOf( data, targetClass ) {
-		var i, type, itemClass;
-		for ( i = data.length - 1; i >= 0; i-- ) {
-			type = ve.dm.LinearData.static.getType( data[ i ] );
+	function isAllInstanceOf( lienarData, targetClass ) {
+		var j, type, itemClass;
+		for ( j = lienarData.length - 1; j >= 0; j-- ) {
+			type = ve.dm.LinearData.static.getType( lienarData[ j ] );
 			if ( type ) {
 				itemClass = modelRegistry.lookup( type ) || ve.dm.AlienNode;
 				if ( !( itemClass === targetClass || itemClass.prototype instanceof targetClass ) ) {
@@ -1308,7 +1308,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 	}
 
 	function closeAnnotation( annotation ) {
-		var i, len, annotationElement, annotatedChildDomElements,
+		var n, len, annotationElement, annotatedChildDomElements,
 			matches, first, last,
 			leading = '',
 			trailing = '',
@@ -1375,13 +1375,13 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			annotatedDomElements.push( doc.createTextNode( leading ) );
 		}
 		if ( annotationElement ) {
-			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
-				annotationElement.appendChild( annotatedChildDomElements[ i ] );
+			for ( n = 0, len = annotatedChildDomElements.length; n < len; n++ ) {
+				annotationElement.appendChild( annotatedChildDomElements[ n ] );
 			}
 			annotatedDomElements.push( annotationElement );
 		} else {
-			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
-				annotatedDomElements.push( annotatedChildDomElements[ i ] );
+			for ( n = 0, len = annotatedChildDomElements.length; n < len; n++ ) {
+				annotatedDomElements.push( annotatedChildDomElements[ n ] );
 			}
 		}
 		if ( trailing ) {
@@ -1389,17 +1389,17 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		}
 	}
 
-	function findEndOfNode( i ) {
-		var j, depth;
-		for ( j = i + 1, depth = 1; j < dataLen && depth > 0; j++ ) {
-			if ( data[ j ].type ) {
-				depth += data[ j ].type.charAt( 0 ) === '/' ? -1 : 1;
+	function findEndOfNode( k ) {
+		var n, depth;
+		for ( n = k + 1, depth = 1; n < dataLen && depth > 0; n++ ) {
+			if ( data[ n ].type ) {
+				depth += data[ n ].type.charAt( 0 ) === '/' ? -1 : 1;
 			}
 		}
 		if ( depth !== 0 ) {
 			throw new Error( 'Unbalanced data: ' + depth + ' element(s) left open.' );
 		}
-		return j;
+		return n;
 	}
 
 	function getDataElementOrSlice() {

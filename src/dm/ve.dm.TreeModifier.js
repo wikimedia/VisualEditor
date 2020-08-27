@@ -146,7 +146,7 @@ ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
  * @param {Object} treeOp The tree operation
  */
 ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, treeOp ) {
-	var wantText, f, t, a, data, node, adjustment, nodeToInsert,
+	var isTextOp, f, t, a, data, movedNode, adjustment, nodeToInsert,
 		removedNodes = [],
 		addedNodes = [],
 		changedBranchNodes = [];
@@ -267,7 +267,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	// need round tripping)
 	function markBranchNodeChanged( offset ) {
 		var item,
-			adjustment = isReversed ? -1 : 1,
+			adj = isReversed ? -1 : 1,
 			i = offset - 1;
 
 		while ( i >= 0 ) {
@@ -284,7 +284,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 				// Guard against marking the same node twice
 				if ( changedBranchNodes.indexOf( item ) === -1 ) {
 					changedBranchNodes.push( item );
-					item.internal.changesSinceLoad += adjustment;
+					item.internal.changesSinceLoad += adj;
 				}
 			}
 			// This is a branch node boundary, so go no further
@@ -292,10 +292,8 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		}
 	}
 
-	function spliceLinear( offset, remove, data ) {
-		var content;
-		data = data || [];
-		content = ve.batchSplice( document.data, offset, remove, data );
+	function spliceLinear( offset, remove, insert ) {
+		var content = ve.batchSplice( document.data, offset, remove, insert || [] );
 		markBranchNodeChanged( offset );
 		return content;
 	}
@@ -316,10 +314,10 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		}
 	}
 
-	wantText = treeOp.type.slice( -4 ) === 'Text';
-	f = treeOp.from && prepareSplice( treeOp.from, treeOp.isContent, wantText );
-	t = treeOp.to && prepareSplice( treeOp.to, treeOp.isContent, wantText );
-	a = treeOp.at && prepareSplice( treeOp.at, treeOp.isContent, wantText );
+	isTextOp = treeOp.type.slice( -4 ) === 'Text';
+	f = treeOp.from && prepareSplice( treeOp.from, treeOp.isContent, isTextOp );
+	t = treeOp.to && prepareSplice( treeOp.to, treeOp.isContent, isTextOp );
+	a = treeOp.at && prepareSplice( treeOp.at, treeOp.isContent, isTextOp );
 
 	// Always adjust linear data before tree, to ensure consistency when node events
 	// are emitted.
@@ -343,10 +341,10 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			data = spliceLinear( f.linearOffset, f.node.children[ f.offset ].getOuterLength() );
 			// No need to use local splice function as we know the node is going
 			// to be re-inserted immediately.
-			node = f.node.splice( f.offset, 1 )[ 0 ];
+			movedNode = f.node.splice( f.offset, 1 )[ 0 ];
 			adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
 			spliceLinear( t.linearOffset - adjustment, 0, data );
-			t.node.splice( t.offset, 0, node );
+			t.node.splice( t.offset, 0, movedNode );
 			break;
 		case 'removeText':
 			data = spliceLinear( a.linearOffset, treeOp.data.length );

@@ -119,7 +119,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 	}
 
 	function process( el ) {
-		var i, j, il, jl, contained, clientRects, overflow, $el;
+		var j, k, jl, kl, contained, clientRects, overflow, $el;
 
 		if ( el.classList.contains( 've-ce-noHighlight' ) ) {
 			return;
@@ -162,23 +162,23 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 
 		clientRects = el.getClientRects();
 
-		for ( i = 0, il = clientRects.length; i < il; i++ ) {
+		for ( j = 0, jl = clientRects.length; j < jl; j++ ) {
 			contained = false;
-			for ( j = 0, jl = rects.length; j < jl; j++ ) {
+			for ( k = 0, kl = rects.length; k < kl; k++ ) {
 				// This rect is contained by an existing rect, discard
-				if ( contains( rects[ j ], clientRects[ i ] ) ) {
+				if ( contains( rects[ k ], clientRects[ j ] ) ) {
 					contained = true;
 					break;
 				}
 				// An existing rect is contained by this rect, discard the existing rect
-				if ( contains( clientRects[ i ], rects[ j ] ) ) {
-					rects.splice( j, 1 );
-					j--;
-					jl--;
+				if ( contains( clientRects[ j ], rects[ k ] ) ) {
+					rects.splice( k, 1 );
+					k--;
+					kl--;
 				}
 			}
 			if ( !contained ) {
-				rects.push( clientRects[ i ] );
+				rects.push( clientRects[ j ] );
 			}
 		}
 	}

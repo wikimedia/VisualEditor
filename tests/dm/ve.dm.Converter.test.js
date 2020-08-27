@@ -36,45 +36,43 @@ QUnit.test( 'getDomFromModel', function ( assert ) {
 } );
 
 QUnit.test( 'getFullData', function ( assert ) {
-	var doc, tx, cases, msg, caseItem;
-
-	cases = {
-		'Metadata in ContentBranchNode gets moved outside by any change': {
+	var cases = [
+		{
+			msg: 'Metadata in ContentBranchNode gets moved outside by any change',
 			beforeHtml: '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
 			transaction: function ( doc ) {
 				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
 			},
 			afterHtml: '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>'
 		},
-		'Removable metadata (empty annotation) in ContentBranchNode is removed by any change': {
+		{
+			msg: 'Removable metadata (empty annotation) in ContentBranchNode is removed by any change',
 			beforeHtml: '<p>ab<i></i>cd</p><p>efgh</p>',
 			transaction: function ( doc ) {
 				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 4, 5 ) );
 			},
 			afterHtml: '<p>abc</p><p>efgh</p>'
 		}
-	};
+	];
 
-	for ( msg in cases ) {
-		caseItem = cases[ msg ];
-
-		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + caseItem.beforeHtml ) );
-		tx = caseItem.transaction( doc );
+	cases.forEach( function ( caseItem ) {
+		var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + caseItem.beforeHtml ) ),
+			tx = caseItem.transaction( doc );
 
 		doc.commit( tx );
 		assert.strictEqual(
 			ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
 			caseItem.afterHtml,
-			msg
+			caseItem.msg
 		);
 
 		doc.commit( tx.reversed() );
 		assert.strictEqual(
 			ve.dm.converter.getDomFromModel( doc ).body.innerHTML,
 			caseItem.beforeHtml,
-			msg + ' (undo)'
+			caseItem.msg + ' (undo)'
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'roundTripMetadata', function ( assert ) {

@@ -79,144 +79,143 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 } );
 
 QUnit.test( 'getOffset', function ( assert ) {
-	var i, view, documentView,
-		testCases = [
-			{
-				msg: 'Empty paragraph',
-				html: '<p></p>',
-				// CE HTML summary:
-				// <p><span [inlineSlug]><img /></span></p>
-				// Linmod:
-				// [<p>, </p>]
-				expected: [
-					0,
-					1, 1, 1, 1, 1,
-					2
-				]
-			},
-			{
-				msg: 'Annotations',
-				html: '<p><i><b>Foo</b></i></p>',
-				// Linmod:
-				// [<p>, F, o, o, </p>]
-				expected: [
-					0,
-					1, 1, 1, 1,
-					2,
-					3,
-					4, 4, 4, 4,
-					5
-				]
-			},
-			{
-				msg: 'Multiple siblings',
-				html: '<p><b><i>Foo</i><s><u>Bar</u><span>Baz</span></s></b></p>',
-				// Linmod:
-				// [<p>, F, o, o, B, a, r, B, a, z, </p>]
-				expected: [
-					0,
-					1, 1, 1, 1,
-					2,
-					3,
-					4, 4, 4, 4, 4, 4,
-					5,
-					6,
-					7, 7, 7, 7, 7,
-					8,
-					9,
-					10, 10, 10, 10, 10,
-					11
-				]
-			},
-			{
-				msg: 'Annotated alien',
-				html: '<p>Foo<b><span rel="ve:Alien">Bar</span></b>Baz</p>',
-				// CE HTML summary;
-				// <p>Foo<b><span [alien]>Bar</span></b>Baz</p>
-				// Linmod:
-				// [<p>, F, o, o, <alineinline>, </alineinline>, B, a, z, </p>]
-				expected: [
-					0,
-					1, 1,
-					2,
-					3,
-					4, 4, 4, 4, 4, 4, 4, 4, 4,
-					6, 6, 6,
-					7,
-					8,
-					9, 9,
-					10
-				]
-			},
-			{
-				msg: 'Block alien',
-				html: '<p>Foo</p><div rel="ve:Alien">Bar</div><p>Baz</p>',
-				// Linmod:
-				// [<p>, F, o, o, </p>, <alienBlock>, </alienBlock>, <p>, B, a, z, </p>]
-				expected: [
-					0,
-					1, 1,
-					2,
-					3,
-					4, 4,
-					5,
-					6, 6, 6, 6, 6, 6,
-					7,
-					8, 8,
-					9,
-					10,
-					11, 11,
-					12
-				]
-			},
-			{
-				msg: 'Table with block slugs',
-				html: '<table><tr><td>Foo</td></tr></table>',
-				// CE HTML summary;
-				// <div [slug]>(ignored)</div>
-				// <table><tbody><tr><td>
-				//  <p>Foo</p>
-				// </td></tr></tbody></table>
-				// <div [slug]>(ignored)</div>
-				// Linmod:
-				// [<table>, <tbody>, <tr>, <td>, <p>, F, o, o, </p>, </td>, </tr>, </tbody>, </table>]
-				expected: [
-					0, 0,
-					1,
-					2,
-					3,
-					4,
-					5, 5,
-					6,
-					7,
-					8, 8,
-					9,
-					10,
-					11,
-					12,
-					13, 13
-				]
-			},
-			{
-				msg: 'Paragraph with inline slugs',
-				html: '<p><span rel="ve:Alien">Foo</span><span rel="ve:Alien">Bar</span><br></p>',
-				// CE HTML summary:
-				// <p><span [inlineSlug]><img /></span><span [alien]>Foo</span>
-				// <span [inlineSlug]><img /></span><span [alien]>Bar</span>
-				// <span [inlineSlug]><img /></span><br></br><span [inlineSlug]><img /></span></p>
-				// Linmod:
-				// [<p>, <alineinline>, </alineinline>, <alineinline>, </alineinline>, <break>, </break>, </p>]
-				expected: [
-					0,
-					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-					5, 5, 5, 5, 5,
-					6,
-					7, 7, 7, 7, 7,
-					8
-				]
-			}
-		];
+	var cases = [
+		{
+			msg: 'Empty paragraph',
+			html: '<p></p>',
+			// CE HTML summary:
+			// <p><span [inlineSlug]><img /></span></p>
+			// Linmod:
+			// [<p>, </p>]
+			expected: [
+				0,
+				1, 1, 1, 1, 1,
+				2
+			]
+		},
+		{
+			msg: 'Annotations',
+			html: '<p><i><b>Foo</b></i></p>',
+			// Linmod:
+			// [<p>, F, o, o, </p>]
+			expected: [
+				0,
+				1, 1, 1, 1,
+				2,
+				3,
+				4, 4, 4, 4,
+				5
+			]
+		},
+		{
+			msg: 'Multiple siblings',
+			html: '<p><b><i>Foo</i><s><u>Bar</u><span>Baz</span></s></b></p>',
+			// Linmod:
+			// [<p>, F, o, o, B, a, r, B, a, z, </p>]
+			expected: [
+				0,
+				1, 1, 1, 1,
+				2,
+				3,
+				4, 4, 4, 4, 4, 4,
+				5,
+				6,
+				7, 7, 7, 7, 7,
+				8,
+				9,
+				10, 10, 10, 10, 10,
+				11
+			]
+		},
+		{
+			msg: 'Annotated alien',
+			html: '<p>Foo<b><span rel="ve:Alien">Bar</span></b>Baz</p>',
+			// CE HTML summary;
+			// <p>Foo<b><span [alien]>Bar</span></b>Baz</p>
+			// Linmod:
+			// [<p>, F, o, o, <alineinline>, </alineinline>, B, a, z, </p>]
+			expected: [
+				0,
+				1, 1,
+				2,
+				3,
+				4, 4, 4, 4, 4, 4, 4, 4, 4,
+				6, 6, 6,
+				7,
+				8,
+				9, 9,
+				10
+			]
+		},
+		{
+			msg: 'Block alien',
+			html: '<p>Foo</p><div rel="ve:Alien">Bar</div><p>Baz</p>',
+			// Linmod:
+			// [<p>, F, o, o, </p>, <alienBlock>, </alienBlock>, <p>, B, a, z, </p>]
+			expected: [
+				0,
+				1, 1,
+				2,
+				3,
+				4, 4,
+				5,
+				6, 6, 6, 6, 6, 6,
+				7,
+				8, 8,
+				9,
+				10,
+				11, 11,
+				12
+			]
+		},
+		{
+			msg: 'Table with block slugs',
+			html: '<table><tr><td>Foo</td></tr></table>',
+			// CE HTML summary;
+			// <div [slug]>(ignored)</div>
+			// <table><tbody><tr><td>
+			//  <p>Foo</p>
+			// </td></tr></tbody></table>
+			// <div [slug]>(ignored)</div>
+			// Linmod:
+			// [<table>, <tbody>, <tr>, <td>, <p>, F, o, o, </p>, </td>, </tr>, </tbody>, </table>]
+			expected: [
+				0, 0,
+				1,
+				2,
+				3,
+				4,
+				5, 5,
+				6,
+				7,
+				8, 8,
+				9,
+				10,
+				11,
+				12,
+				13, 13
+			]
+		},
+		{
+			msg: 'Paragraph with inline slugs',
+			html: '<p><span rel="ve:Alien">Foo</span><span rel="ve:Alien">Bar</span><br></p>',
+			// CE HTML summary:
+			// <p><span [inlineSlug]><img /></span><span [alien]>Foo</span>
+			// <span [inlineSlug]><img /></span><span [alien]>Bar</span>
+			// <span [inlineSlug]><img /></span><br></br><span [inlineSlug]><img /></span></p>
+			// Linmod:
+			// [<p>, <alineinline>, </alineinline>, <alineinline>, </alineinline>, <break>, </break>, </p>]
+			expected: [
+				0,
+				1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+				3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+				5, 5, 5, 5, 5,
+				6,
+				7, 7, 7, 7, 7,
+				8
+			]
+		}
+	];
 
 	function testOffsets( parent, testCase, expectedIndex ) {
 		var i;
@@ -248,13 +247,13 @@ QUnit.test( 'getOffset', function ( assert ) {
 		return expectedIndex;
 	}
 
-	for ( i = 0; i < testCases.length; i++ ) {
-		view = ve.test.utils.createSurfaceViewFromHtml( testCases[ i ].html );
-		documentView = view.getDocument();
+	cases.forEach( function ( caseItem ) {
+		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html ),
+			documentView = view.getDocument();
 
-		testOffsets( documentView.getDocumentNode().$element[ 0 ], testCases[ i ], -1 );
+		testOffsets( documentView.getDocumentNode().$element[ 0 ], caseItem, -1 );
 		view.destroy();
-	}
+	} );
 } );
 
 // TODO: ve.ce.getOffsetOfSlug

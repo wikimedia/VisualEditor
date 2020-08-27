@@ -212,10 +212,10 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 		down = 'down';
 
 	// See https://en.wikipedia.org/wiki/Longest_increasing_subsequence
-	function longestIncreasingSubsequence( sequence, oldToNew ) {
-		var i, ilen, k, low, high, middle, newLength, oldIndex, newIndex,
+	function longestIncreasingSubsequence( sequence ) {
+		var j, jlen, k, low, high, middle, newLength, newIndex,
 			currentLength = 0,
-			moves = [],
+			mvs = [],
 			// finalIndices[i] holds:
 			// - if i is 0, 0
 			// - if there's an increasing subsequence of length i, the final item in that subsequence
@@ -229,37 +229,36 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 		finalIndices[ 0 ] = 0;
 
 		// Perform algorithm (i.e. populate finalIndices and previousIndices)
-		for ( i = 0, ilen = sequence.length; i < ilen; i++ ) {
+		for ( j = 0, jlen = sequence.length; j < jlen; j++ ) {
 			low = 1;
 			high = currentLength;
 			while ( low <= high ) {
 				middle = Math.ceil( ( low + high ) / 2 );
-				if ( sequence[ finalIndices[ middle ] ] < sequence[ i ] ) {
+				if ( sequence[ finalIndices[ middle ] ] < sequence[ j ] ) {
 					low = middle + 1;
 				} else {
 					high = middle - 1;
 				}
 			}
 			newLength = low;
-			previousIndices[ i ] = finalIndices[ newLength - 1 ];
-			finalIndices[ newLength ] = i;
+			previousIndices[ j ] = finalIndices[ newLength - 1 ];
+			finalIndices[ newLength ] = j;
 			if ( newLength > currentLength ) {
 				currentLength = newLength;
 			}
 		}
 
 		// Items in the longest increasing subsequence are oldDoc indices of unmoved nodes.
-		// Mark corresponding newDoc indices of these unmoved nodes, in moves array.
+		// Mark corresponding newDoc indices of these unmoved nodes, in mvs array.
 		k = finalIndices[ currentLength ];
-		for ( i = currentLength, ilen = 0; i > ilen; i-- ) {
-			oldIndex = sequence[ k ];
-			newIndex = oldToNew[ oldIndex ];
+		for ( j = currentLength, jlen = 0; j > jlen; j-- ) {
+			newIndex = oldToNew[ sequence[ k ] ];
 			newIndex = typeof newIndex === 'number' ? newIndex : newIndex.node;
-			moves[ newIndex ] = unmoved;
+			mvs[ newIndex ] = unmoved;
 			k = previousIndices[ k ];
 		}
 
-		return moves;
+		return mvs;
 	}
 
 	// Get oldDoc indices, sorted according to their order in the new doc
@@ -273,7 +272,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 
 	// Record which newDoc nodes have NOT moved. NB nodes inserted at the end of the
 	// newDoc will be treated as not moved by default.
-	moves = longestIncreasingSubsequence( oldPermuted, oldToNew );
+	moves = longestIncreasingSubsequence( oldPermuted );
 
 	// Record whether the remaining newDoc nodes have moved up or down
 	// (or not at all, e.g. if they are an insert)
@@ -875,18 +874,18 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 		internalListDiffInfo = {};
 
 	function getInternalListItemsToDiff( indexOrder, nodes ) {
-		var i, ilen, nodeIndex,
+		var j, jlen, nodeIndex,
 			internalListItems = {
 				toDiff: [],
 				indices: []
 			};
 
-		for ( i = 0, ilen = indexOrder.length; i < ilen; i++ ) {
-			nodeIndex = indexOrder[ i ];
+		for ( j = 0, jlen = indexOrder.length; j < jlen; j++ ) {
+			nodeIndex = indexOrder[ j ];
 			if ( nodeIndex !== null ) {
 				internalListItems.toDiff.push( nodes[ nodeIndex ] );
 				internalListItems.indices.push( {
-					indexOrder: i,
+					indexOrder: j,
 					nodeIndex: nodeIndex
 				} );
 			}
@@ -896,14 +895,14 @@ ve.dm.VisualDiff.prototype.getInternalListDiffInfo = function () {
 	}
 
 	function getInternalListItems( indexOrder, nodes, action ) {
-		var i, ilen, nodeIndex, internalListItems = [];
+		var j, jlen, nodeIndex, internalListItems = [];
 
-		for ( i = 0, ilen = indexOrder.length; i < ilen; i++ ) {
-			nodeIndex = indexOrder[ i ];
+		for ( j = 0, jlen = indexOrder.length; j < jlen; j++ ) {
+			nodeIndex = indexOrder[ j ];
 			if ( nodeIndex !== null ) {
 				internalListItems.push( {
 					diff: action,
-					indexOrder: i,
+					indexOrder: j,
 					nodeIndex: nodeIndex
 				} );
 			}
@@ -1011,9 +1010,9 @@ ve.dm.VisualDiff.prototype.getListDiffInfo = function ( diff, oldItems, newItems
 	var i, ilen, item, itemIndex, listDiffInfo;
 
 	function containsDiff( diffObject ) {
-		var i;
-		for ( i in diffObject ) {
-			if ( typeof diffObject[ i ] !== 'number' ) {
+		var n;
+		for ( n in diffObject ) {
+			if ( typeof diffObject[ n ] !== 'number' ) {
 				return true;
 			}
 		}

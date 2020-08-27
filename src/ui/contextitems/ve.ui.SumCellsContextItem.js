@@ -64,7 +64,7 @@ ve.ui.SumCellsContextItem.prototype.setup = function () {
 	if ( selection instanceof ve.dm.TableSelection ) {
 		cells = selection.getMatrixCells( documentModel, true );
 		if ( cells.length > 1 ) {
-			sum = cells.reduce( function ( sum, cell ) {
+			sum = cells.reduce( function ( s, cell ) {
 				var number;
 				if ( !cell.isPlaceholder() ) {
 					// Get text from view rendering to catch numbers in alien nodes, etc.
@@ -74,10 +74,10 @@ ve.ui.SumCellsContextItem.prototype.setup = function () {
 					);
 					if ( !isNaN( number ) ) {
 						count++;
-						return sum + number;
+						return s + number;
 					}
 				}
-				return sum;
+				return s;
 			}, 0 );
 		}
 	}

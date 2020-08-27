@@ -87,8 +87,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	// Events
 	this.pageMenu.on( 'select', function ( item ) {
-		var page = item.getData();
-		container.change( 'visual', page );
+		container.change( 'visual', item.getData() );
 		container.modeSelect.selectItemByData( 'visual' );
 	} );
 	this.modeSelect.on( 'select', function ( item ) {

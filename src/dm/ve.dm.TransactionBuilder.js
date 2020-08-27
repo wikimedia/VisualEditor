@@ -520,7 +520,7 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 	 * @throws {Error} Unmatched item foo in matchName [(found bar)]
 	 */
 	function match( direction, offset, matchList, matchName ) {
-		var start, stop, step, i, item;
+		var start, stop, step, j, item;
 		if ( direction === 'forwards' ) {
 			start = 0;
 			stop = matchList.length;
@@ -532,7 +532,7 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 			stop = -1;
 			step = -1;
 		}
-		for ( i = start; i !== stop; i += step ) {
+		for ( j = start; j !== stop; j += step ) {
 			// Move to next item, skipping MetaItems
 			while ( true ) {
 				offset += step;
@@ -546,8 +546,8 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 					break;
 				}
 			}
-			if ( !item || item.type !== matchList[ i ].type ) {
-				throw new Error( 'Unmatched item ' + matchList[ i ].type + ' in ' +
+			if ( !item || item.type !== matchList[ j ].type ) {
+				throw new Error( 'Unmatched item ' + matchList[ j ].type + ' in ' +
 					matchName + ' (found ' + ( item && item.type ) + ')' );
 			}
 		}
@@ -560,11 +560,10 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 
 	// Function to generate arrays of closing elements in reverse order
 	function closingArray( openings ) {
-		var i,
-			closings = [],
-			len = openings.length;
-		for ( i = 0; i < len; i++ ) {
-			closings[ closings.length ] = { type: '/' + openings[ len - i - 1 ].type };
+		var j, jlen,
+			closings = [];
+		for ( j = 0, jlen = openings.length; j < jlen; j++ ) {
+			closings[ closings.length ] = { type: '/' + openings[ jlen - j - 1 ].type };
 		}
 		return closings;
 	}

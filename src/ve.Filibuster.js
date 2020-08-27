@@ -396,12 +396,12 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 	}
 
 	function getFragments( frames, observations, path ) {
-		var i, iLen, frame, observation, expandable, expanded,
+		var j, jLen, frame, observation, expandable, expanded,
 			html = [];
 		html.push( '<ul>' );
-		for ( i = 0, iLen = frames.length; i < iLen; i++ ) {
-			frame = frames[ i ];
-			observation = observations[ i ];
+		for ( j = 0, jLen = frames.length; j < jLen; j++ ) {
+			frame = frames[ j ];
+			observation = observations[ j ];
 			if ( observation && observation.changes && observation.changes.enter ) {
 				html.push( showChanges( observation.changes.enter, 'enter' ) );
 			}
@@ -413,14 +413,14 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 			}
 			html.push(
 				'" data-ve-filibuster-frame="' +
-				ve.escapeHtml( JSON.stringify( path.concat( i ) ) ) + '">'
+				ve.escapeHtml( JSON.stringify( path.concat( j ) ) ) + '">'
 			);
 			if ( expanded ) {
 				html.push( showCallOpen( frame ) );
 				html.push.apply( html, getFragments(
 					frame.children || [],
 					observation.children,
-					path.concat( i )
+					path.concat( j )
 				) );
 				html.push( showCallClose( frame ) );
 			} else {

@@ -5,9 +5,8 @@
  */
 
 ( function () {
-	var i, len, key,
-		/* eslint-disable no-jquery/no-global-selector */
-		$primary = $( '#primary' ),
+	/* eslint-disable no-jquery/no-global-selector */
+	var $primary = $( '#primary' ),
 		$modifiers = $( '#modifiers' ),
 		$aliases = $( '#aliases' ),
 		$trigger = $( '#trigger' ),
@@ -17,49 +16,48 @@
 		keyAliases = ve.ui.Trigger.static.keyAliases;
 
 	function setTrigger( trigger ) {
-		var i, len, key, parts;
+		var parts;
 		trigger = trigger.toString();
 		parts = trigger.split( '+' );
 		$trigger.text( trigger );
-		for ( i = 0, len = parts.length; i < len; i++ ) {
-			key = parts[ i ].replace( '\\', '\\\\' ).replace( '"', '\\"' );
+		parts.forEach( function ( part ) {
+			var key = part.replace( '\\', '\\\\' ).replace( '"', '\\"' );
 			$( '.key[rel~="' + key + '"]' ).addClass( 'active' );
-		}
+		} );
 	}
 
 	// Initialization
 
-	for ( i = 0, len = modifierKeys.length; i < len; i++ ) {
+	modifierKeys.forEach( function ( modifierKey ) {
 		$modifiers.append(
 			$( '<li>' ).append(
 				$( '<span>' )
 					.addClass( 'key' )
-					.attr( 'rel', modifierKeys[ i ] )
-					.text( modifierKeys[ i ] )
+					.attr( 'rel', modifierKey )
+					.text( modifierKey )
 			)
 		);
-	}
-	for ( i = 0, len = primaryKeys.length; i < len; i++ ) {
+	} );
+	primaryKeys.forEach( function ( primaryKey ) {
 		$primary.append(
 			$( '<li>' ).append(
 				$( '<span>' )
 					.addClass( 'key' )
-					.attr( 'rel', primaryKeys[ i ] )
-					.text( primaryKeys[ i ] )
+					.attr( 'rel', primaryKey )
+					.text( primaryKey )
 			)
 		);
-	}
-	for ( key in keyAliases ) {
+	} );
+	Object.keys( keyAliases ).forEach( function ( key ) {
 		$aliases.append(
 			$( '<li>' )
 				.append( $( '<span>' ).addClass( 'key alias' ).text( key ) )
 				.append( '⇢' )
 				.append( $( '<span>' ).addClass( 'key' ).text( keyAliases[ key ] ) )
 		);
-	}
+	} );
 
 	// Events
-
 	$( document.body ).on( {
 		keydown: function ( e ) {
 			// eslint-disable-next-line no-jquery/no-global-selector

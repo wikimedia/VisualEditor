@@ -700,16 +700,16 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		if ( !dataMatrixLine ) {
 			insertData = ve.dm.TableRowNode.static.createData( {
 				cellCount: inserts.length,
-				style: cells.map( function ( cell ) {
-					return cell.node.getStyle();
+				style: cells.map( function ( c ) {
+					return c.node.getStyle();
 				} )
 			} );
 		} else {
 			insertData.push( dataMatrixLine.row[ 0 ] );
-			insertCells.forEach( function ( cell ) {
-				if ( cell && cell.data ) {
-					insertData = insertData.concat( cell.data );
-				} else if ( !( cell && cell.isPlaceholder() && cell.owner.data && !cell.owner.conflicted ) ) {
+			insertCells.forEach( function ( c ) {
+				if ( c && c.data ) {
+					insertData = insertData.concat( c.data );
+				} else if ( !( c && c.isPlaceholder() && c.owner.data && !c.owner.conflicted ) ) {
 					// If a placeholder, and the owner was not inserted, created a blank cell
 					insertData = insertData.concat( ve.dm.TableCellNode.static.createData() );
 				}
@@ -938,15 +938,15 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 			rowData.splice( 1, rowData.length - 2 );
 			removedMatrix[ row - minIndex ] = {
 				row: rowData,
-				cells: cells.map( function ( cell ) {
-					if ( cell && !cell.isPlaceholder() ) {
-						cell.data = documentModel.getData( cell.node.getOuterRange(), true );
+				cells: cells.map( function ( ce ) {
+					if ( ce && !ce.isPlaceholder() ) {
+						ce.data = documentModel.getData( ce.node.getOuterRange(), true );
 						// When re-insterted the span can not exceed the size of the selection
-						if ( cell.data[ 0 ].attributes.rowspan > 1 + maxIndex - minIndex ) {
-							cell.data = null;
+						if ( ce.data[ 0 ].attributes.rowspan > 1 + maxIndex - minIndex ) {
+							ce.data = null;
 						}
 					}
-					return cell;
+					return ce;
 				} )
 			};
 		}
@@ -962,15 +962,15 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		}
 		for ( col = maxIndex; col >= minIndex; col-- ) {
 			removedMatrix[ col - minIndex ] = {
-				cells: matrix.getColumn( col ).map( function ( cell ) {
-					if ( cell && !cell.isPlaceholder() ) {
-						cell.data = documentModel.getData( cell.node.getOuterRange(), true );
+				cells: matrix.getColumn( col ).map( function ( c ) {
+					if ( c && !c.isPlaceholder() ) {
+						c.data = documentModel.getData( c.node.getOuterRange(), true );
 						// When re-insterted the span can not exceed the size of the selection
-						if ( cell.data[ 0 ].attributes.colspan > 1 + maxIndex - minIndex ) {
-							cell.data = null;
+						if ( c.data[ 0 ].attributes.colspan > 1 + maxIndex - minIndex ) {
+							c.data = null;
 						}
 					}
-					return cell;
+					return c;
 				} )
 			};
 		}

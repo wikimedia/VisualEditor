@@ -379,21 +379,21 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 			splice = Array.prototype.splice;
 		} else {
 			// Standard Array.prototype.splice() function implemented using .slice() and .push().
-			splice = function ( offset, remove /* , data… */ ) {
-				var data, begin, removed, end;
+			splice = function ( off, rem /* , d */ ) {
+				var d, begin, remd, end;
 
-				data = Array.prototype.slice.call( arguments, 2 );
+				d = Array.prototype.slice.call( arguments, 2 );
 
-				begin = this.slice( 0, offset );
-				removed = this.slice( offset, offset + remove );
-				end = this.slice( offset + remove );
+				begin = this.slice( 0, off );
+				remd = this.slice( off, off + rem );
+				end = this.slice( off + rem );
 
 				this.length = 0;
 				ve.batchPush( this, begin );
-				ve.batchPush( this, data );
+				ve.batchPush( this, d );
 				ve.batchPush( this, end );
 
-				return removed;
+				return remd;
 			};
 		}
 	}
@@ -443,9 +443,9 @@ ve.sparseSplice = function ( arr, offset, remove, data ) {
 		data = data.slice();
 	}
 	// Remove content without adjusting length
-	arr.slice( offset, endOffset ).forEach( function ( item, i ) {
-		removed[ i ] = item;
-		delete arr[ offset + i ];
+	arr.slice( offset, endOffset ).forEach( function ( item, j ) {
+		removed[ j ] = item;
+		delete arr[ offset + j ];
 	} );
 	// Adjust length
 	if ( diff > 0 ) {
@@ -461,8 +461,8 @@ ve.sparseSplice = function ( arr, offset, remove, data ) {
 		arr.splice( offset, -diff );
 	}
 	// Insert new content
-	data.forEach( function ( item, i ) {
-		arr[ offset + i ] = item;
+	data.forEach( function ( item, j ) {
+		arr[ offset + j ] = item;
 	} );
 	// Set removed.length in case there are holes at the end
 	removed.length = remove;

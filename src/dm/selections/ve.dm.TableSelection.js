@@ -241,8 +241,8 @@ ve.dm.TableSelection.prototype.getTableSliceRanges = function ( doc ) {
 
 	// Arrays are non-overlapping so avoid duplication
 	// by indexing by range.start
-	function pushNode( node ) {
-		var range = node.getOuterRange();
+	function pushNode( n ) {
+		var range = n.getOuterRange();
 		ranges[ range.start ] = new ve.Range( range.start, range.start + 1 );
 		ranges[ range.end - 1 ] = new ve.Range( range.end - 1, range.end );
 	}

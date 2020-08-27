@@ -200,10 +200,10 @@ QUnit.test( 'treeDiff', function ( assert ) {
 QUnit.test( 'modify', function ( assert ) {
 	var origData, surface, doc, tx, expectedTreeDump, actualTreeDump;
 
-	function dumpTree( doc ) {
+	function dumpTree( d ) {
 		// Build a tree modifier just for the .dump method (don't modify anything)
 		var treeModifier = new ve.dm.TreeModifier();
-		treeModifier.setup( doc );
+		treeModifier.setup( d );
 		return treeModifier.dump();
 	}
 

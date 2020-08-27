@@ -271,11 +271,11 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
 	// We're about to do lots of things that can go wrong, so queue an undo function now
 	// that undoes all splices that we got to
 	this.queueUndoFunction( function () {
-		var i, s;
-		for ( i = splices.length - 1; i >= 0; i-- ) {
-			s = splices[ i ];
-			if ( s.removedData !== undefined ) {
-				data.batchSplice( s.offset, s.insert.length, s.removedData );
+		var i2, s2;
+		for ( i2 = splices.length - 1; i2 >= 0; i2-- ) {
+			s2 = splices[ i ];
+			if ( s2.removedData !== undefined ) {
+				data.batchSplice( s2.offset, s2.insert.length, s2.removedData );
 			}
 		}
 	} );

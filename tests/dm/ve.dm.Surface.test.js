@@ -555,10 +555,10 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.strictEqual( surface.restoreChanges(), true, 'restoreChanges returns true on success' );
 	assert.strictEqual( surface.getHtml(), '<h1>hi bar baz</h1>', 'Document HTML restored' );
 	assert.strictEqual( surface.getDocument().getCompleteHistoryLength(), 3, 'Document history restored' );
-	setTimeout( function ( surface ) {
-		assert.equalHash( surface.getSelection(), { type: 'linear', range: { type: 'range', from: 5, to: 5 } }, 'Document selection restored (async)' );
-		surface.undo();
-		assert.equalHash( surface.getSelection(), { type: 'linear', range: { type: 'range', from: 7, to: 7 } }, 'Document selection guessed after undo' );
+	setTimeout( function ( s ) {
+		assert.equalHash( s.getSelection(), { type: 'linear', range: { type: 'range', from: 5, to: 5 } }, 'Document selection restored (async)' );
+		s.undo();
+		assert.equalHash( s.getSelection(), { type: 'linear', range: { type: 'range', from: 7, to: 7 } }, 'Document selection guessed after undo' );
 		done();
 	}.bind( this, surface ) );
 

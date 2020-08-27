@@ -290,8 +290,7 @@ ve.test.utils.DataTransfer = function DataTransfer( initialData ) {
 };
 
 QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
-	var i,
-		linkHash = 'hdee7b89d544aa584',
+	var linkHash = 'hdee7b89d544aa584',
 		cases = [
 			{
 				prevHtml: '<p></p>',
@@ -490,18 +489,18 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 		view.destroy();
 	}
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		testRunner(
-			cases[ i ].prevHtml, cases[ i ].prevRange, cases[ i ].prevFocusIsAfterAnnotationBoundary || false,
-			cases[ i ].nextHtml, cases[ i ].nextRange,
-			cases[ i ].expectedOps, cases[ i ].expectedRangeOrSelection || cases[ i ].nextRange, cases[ i ].expectsBreakpoint, cases[ i ].msg
+			caseItem.prevHtml, caseItem.prevRange, caseItem.prevFocusIsAfterAnnotationBoundary || false,
+			caseItem.nextHtml, caseItem.nextRange,
+			caseItem.expectedOps, caseItem.expectedRangeOrSelection || caseItem.nextRange, caseItem.expectsBreakpoint, caseItem.msg
 		);
-	}
+	} );
 
 } );
 
 QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
-	var i, ImageTransferHandler,
+	var ImageTransferHandler,
 		surface = ve.test.utils.createViewOnlySurfaceFromHtml( '' ),
 		view = surface.getView(),
 		model = surface.getModel(),
@@ -630,12 +629,12 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 	};
 	ve.ui.dataTransferHandlerFactory.register( ImageTransferHandler );
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		fragment.select();
-		view.handleDataTransfer( cases[ i ].dataTransfer, cases[ i ].isPaste );
-		assert.equalLinearData( model.getDocument().getFullData( fragment.getSelection().getRange() ), cases[ i ].expectedData, cases[ i ].msg );
+		view.handleDataTransfer( caseItem.dataTransfer, caseItem.isPaste );
+		assert.equalLinearData( model.getDocument().getFullData( fragment.getSelection().getRange() ), caseItem.expectedData, caseItem.msg );
 		model.undo();
-	}
+	} );
 
 	ve.ui.dataTransferHandlerFactory.unregister( ImageTransferHandler );
 } );
@@ -651,61 +650,60 @@ QUnit.test( 'getClipboardHash', function ( assert ) {
 } );
 
 QUnit.test( 'onCopy', function ( assert ) {
-	var i,
-		cases = [
-			{
-				rangeOrSelection: new ve.Range( 27, 32 ),
-				expectedData: [
-					{ type: 'list', attributes: { style: 'number' } },
-					{ type: 'listItem' },
-					{ type: 'paragraph' },
-					'g',
-					{ type: '/paragraph' },
-					{ type: '/listItem' },
-					{ type: '/list' },
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				],
-				expectedOriginalRange: new ve.Range( 1, 6 ),
-				expectedBalancedRange: new ve.Range( 1, 6 ),
-				expectedHtml: '<ol><li><p>g</p></li></ol>',
-				expectedText: 'g',
-				msg: 'Copy list item'
-			},
-			{
-				doc: ve.dm.example.RDFaDoc,
-				rangeOrSelection: new ve.Range( 0, 5 ),
-				expectedData: ve.dm.example.RDFaDoc.data.data.slice(),
-				expectedOriginalRange: new ve.Range( 0, 5 ),
-				expectedBalancedRange: new ve.Range( 0, 5 ),
-				expectedHtml:
-					'<p content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" class="i" ' +
-						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
-						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
-						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;}">' +
-						'Foo' +
-					'</p>',
-				expectedText: 'Foo',
-				msg: 'RDFa attributes encoded into data-ve-attributes'
-			},
-			{
-				rangeOrSelection: new ve.Range( 1, 4 ),
-				expectedHtml: '<span data-ve-clipboard-key="">&nbsp;</span>a<b>b</b><i>c</i>',
-				noClipboardData: true,
-				msg: 'Clipboard span'
-			}
-			/*
-			// Our CI environment uses either Chrome 57 (mediawiki/extensions/VisualEditor)
-			// or Chrome 63 (VisualEditor/VisualEditor), but they produce different results,
-			// so this test will always fail in at least one of them.
-			{
-				rangeOrSelection: new ve.Range( 0, 61 ),
-				expectedText: 'abc\n\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n', // Chrome 57
-				expectedText: 'abc\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n',   // Chrome 63
-				msg: 'Plain text of entire document'
-			}
-			*/
-		];
+	var cases = [
+		{
+			rangeOrSelection: new ve.Range( 27, 32 ),
+			expectedData: [
+				{ type: 'list', attributes: { style: 'number' } },
+				{ type: 'listItem' },
+				{ type: 'paragraph' },
+				'g',
+				{ type: '/paragraph' },
+				{ type: '/listItem' },
+				{ type: '/list' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			expectedOriginalRange: new ve.Range( 1, 6 ),
+			expectedBalancedRange: new ve.Range( 1, 6 ),
+			expectedHtml: '<ol><li><p>g</p></li></ol>',
+			expectedText: 'g',
+			msg: 'Copy list item'
+		},
+		{
+			doc: ve.dm.example.RDFaDoc,
+			rangeOrSelection: new ve.Range( 0, 5 ),
+			expectedData: ve.dm.example.RDFaDoc.data.data.slice(),
+			expectedOriginalRange: new ve.Range( 0, 5 ),
+			expectedBalancedRange: new ve.Range( 0, 5 ),
+			expectedHtml:
+				'<p content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" class="i" ' +
+					'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
+					'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
+					'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;}">' +
+					'Foo' +
+				'</p>',
+			expectedText: 'Foo',
+			msg: 'RDFa attributes encoded into data-ve-attributes'
+		},
+		{
+			rangeOrSelection: new ve.Range( 1, 4 ),
+			expectedHtml: '<span data-ve-clipboard-key="">&nbsp;</span>a<b>b</b><i>c</i>',
+			noClipboardData: true,
+			msg: 'Clipboard span'
+		}
+		/*
+		// Our CI environment uses either Chrome 57 (mediawiki/extensions/VisualEditor)
+		// or Chrome 63 (VisualEditor/VisualEditor), but they produce different results,
+		// so this test will always fail in at least one of them.
+		{
+			rangeOrSelection: new ve.Range( 0, 61 ),
+			expectedText: 'abc\n\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n', // Chrome 57
+			expectedText: 'abc\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n',   // Chrome 63
+			msg: 'Plain text of entire document'
+		}
+		*/
+	];
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
 		var slice, isClipboardDataFormatsSupported, $expected, clipboardKey,
@@ -758,13 +756,13 @@ QUnit.test( 'onCopy', function ( assert ) {
 		view.destroy();
 	}
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		testRunner(
-			cases[ i ].doc, cases[ i ].rangeOrSelection, cases[ i ].expectedData,
-			cases[ i ].expectedOriginalRange, cases[ i ].expectedBalancedRange,
-			cases[ i ].expectedHtml, cases[ i ].expectedText, cases[ i ].noClipboardData, cases[ i ].msg
+			caseItem.doc, caseItem.rangeOrSelection, caseItem.expectedData,
+			caseItem.expectedOriginalRange, caseItem.expectedBalancedRange,
+			caseItem.expectedHtml, caseItem.expectedText, caseItem.noClipboardData, caseItem.msg
 		);
-	}
+	} );
 
 } );
 
@@ -2162,11 +2160,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 } );
 
 QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
-
-	var i,
-		noChange = function () {},
-		selection = new ve.dm.LinearSelection( new ve.Range( 1, 4 ) ),
-		expectedSelection = new ve.dm.LinearSelection( new ve.Range( 7, 10 ) ),
+	var noChange = function () {},
 		cases = [
 			{
 				msg: 'Simple drag and drop',
@@ -2180,7 +2174,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 					var removed = data.splice( 1, 3 );
 					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
 				},
-				expectedSelection: expectedSelection
+				expectedSelection: new ve.dm.LinearSelection( new ve.Range( 7, 10 ) )
 			},
 			{
 				msg: 'Simple drag and drop in IE',
@@ -2192,7 +2186,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 					var removed = data.splice( 1, 3 );
 					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
 				},
-				expectedSelection: expectedSelection
+				expectedSelection: new ve.dm.LinearSelection( new ve.Range( 7, 10 ) )
 			},
 			{
 				msg: 'Invalid target offset',
@@ -2203,7 +2197,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 					'text/plain': 'abc'
 				},
 				expectedData: noChange,
-				expectedSelection: selection
+				expectedSelection: new ve.dm.LinearSelection( new ve.Range( 1, 4 ) )
 			}
 		];
 
@@ -2256,17 +2250,17 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 		view.destroy();
 	}
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		testRunner(
-			cases[ i ].rangeOrSelection, cases[ i ].targetOffset, cases[ i ].expectedTransfer, cases[ i ].expectedData,
-			cases[ i ].expectedSelection, cases[ i ].isIE, cases[ i ].msg
+			caseItem.rangeOrSelection, caseItem.targetOffset, caseItem.expectedTransfer, caseItem.expectedData,
+			caseItem.expectedSelection, caseItem.isIE, caseItem.msg
 		);
-	}
+	} );
 
 } );
 
 QUnit.test( 'getSelectionState', function ( assert ) {
-	var i, j, l, view, selection, internalListNode, node, rootElement,
+	var i, l, view, selection, internalListNode, node, rootElement,
 		cases = [
 			{
 				msg: 'Grouped aliens',
@@ -2344,23 +2338,23 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 	TestCeSectionPlaceholderNode.static.name = 'sectionPlaceholder';
 	ve.ce.nodeFactory.register( TestCeSectionPlaceholderNode );
 
-	for ( i = 0; i < cases.length; i++ ) {
-		view = ve.test.utils.createSurfaceViewFromHtml( cases[ i ].html );
+	cases.forEach( function ( caseItem ) {
+		view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
 		internalListNode = view.getModel().getDocument().getInternalList().getListNode();
 		rootElement = view.getDocument().getDocumentNode().$element[ 0 ];
-		for ( j = 0, l = internalListNode.getOuterRange().start; j < l; j++ ) {
-			node = view.getDocument().getDocumentNode().getNodeFromOffset( j );
-			if ( cases[ i ].expected[ j ] === null ) {
-				assert.strictEqual( node.isFocusable(), true, 'Focusable node at ' + j );
+		for ( i = 0, l = internalListNode.getOuterRange().start; i < l; i++ ) {
+			node = view.getDocument().getDocumentNode().getNodeFromOffset( i );
+			if ( caseItem.expected[ i ] === null ) {
+				assert.strictEqual( node.isFocusable(), true, 'Focusable node at ' + i );
 			} else {
-				selection = view.getSelectionState( new ve.Range( j ) );
-				if ( cases[ i ].expected[ j ] === false ) {
-					assert.strictEqual( selection.anchorNode, null, 'No selection at ' + j );
+				selection = view.getSelectionState( new ve.Range( i ) );
+				if ( caseItem.expected[ i ] === false ) {
+					assert.strictEqual( selection.anchorNode, null, 'No selection at ' + i );
 				} else {
 					assert.deepEqual(
 						ve.getOffsetPath( rootElement, selection.anchorNode, selection.anchorOffset ),
-						cases[ i ].expected[ j ],
-						'Path at ' + j + ' in ' + cases[ i ].msg
+						caseItem.expected[ i ],
+						'Path at ' + i + ' in ' + caseItem.msg
 					);
 				}
 				// Check that this doesn't throw exceptions
@@ -2368,7 +2362,7 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 			}
 		}
 		view.destroy();
-	}
+	} );
 
 	ve.dm.modelRegistry.unregister( TestDmSectionPlaceholderNode );
 	ve.ce.nodeFactory.unregister( TestCeSectionPlaceholderNode );

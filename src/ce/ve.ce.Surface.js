@@ -1151,7 +1151,7 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
  * @param {jQuery.Event} e Drag over event
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
-	var i, l, $target, $dropTarget, node, dropPosition, targetPosition, targetOffset, top, left,
+	var i, l, $target, $dropTarget, dropTargetNode, dropPosition, targetPosition, targetOffset, top, left,
 		nodeType, item, fakeItem,
 		dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory,
 		isContent = true,
@@ -1222,16 +1222,16 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 		$target = $( e.target ).closest( '.ve-ce-branchNode, .ve-ce-leafNode' );
 		if ( $target.length ) {
 			// Find the nearest node which will accept this node type
-			node = getNearestDropTarget( $target.data( 'view' ) );
-			if ( node ) {
-				$dropTarget = node.$element;
+			dropTargetNode = getNearestDropTarget( $target.data( 'view' ) );
+			if ( dropTargetNode ) {
+				$dropTarget = dropTargetNode.$element;
 				dropPosition = e.originalEvent.pageY - $dropTarget.offset().top > $dropTarget.outerHeight() / 2 ? 'bottom' : 'top';
 			} else {
 				targetOffset = this.getOffsetFromEventCoords( e.originalEvent );
 				if ( targetOffset !== -1 ) {
-					node = getNearestDropTarget( this.getDocument().getBranchNodeFromOffset( targetOffset ) );
-					if ( node ) {
-						$dropTarget = node.$element;
+					dropTargetNode = getNearestDropTarget( this.getDocument().getBranchNodeFromOffset( targetOffset ) );
+					if ( dropTargetNode ) {
+						$dropTarget = dropTargetNode.$element;
 						dropPosition = 'top';
 					}
 				}
@@ -1565,16 +1565,16 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * @private
 	 * @param {Node} node DOM node of cursor position
 	 * @param {number} offset Offset of cursor position
-	 * @param {number} direction Cursor motion direction (1=forward, -1=backward)
+	 * @param {number} dir Cursor motion direction (1=forward, -1=backward)
 	 * @return {ve.ce.Node|null} node, or null if not in a focusable node
 	 */
-	function getSurroundingFocusableNode( node, offset, direction ) {
+	function getSurroundingFocusableNode( node, offset, dir ) {
 		var focusNode;
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			focusNode = node;
-		} else if ( direction > 0 && offset < node.childNodes.length ) {
+		} else if ( dir > 0 && offset < node.childNodes.length ) {
 			focusNode = node.childNodes[ offset ];
-		} else if ( direction < 0 && offset > 0 ) {
+		} else if ( dir < 0 && offset > 0 ) {
 			focusNode = node.childNodes[ offset - 1 ];
 		} else {
 			focusNode = node;
@@ -2964,10 +2964,10 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 	// we want to text/html and text/plain to be at the end of the list, as
 	// they tend to show up as common fallbacks.
 	pushItemToBack = function ( array, type ) {
-		var i, l;
-		for ( i = 0, l = array.length; i < l; i++ ) {
-			if ( array[ i ].type === type ) {
-				return array.push( array.splice( i, 1 )[ 0 ] );
+		var j, jlen;
+		for ( j = 0, jlen = array.length; j < jlen; j++ ) {
+			if ( array[ j ].type === type ) {
+				return array.push( array.splice( j, 1 )[ 0 ] );
 			}
 		}
 	};

@@ -428,17 +428,17 @@ ve.ui.DebugBar.prototype.testSquasher = function () {
 		dump, doubleDump,
 		transactions = this.getSurface().getModel().getDocument().completeHistory.transactions;
 
-	function squashTransactions( transactions ) {
+	function squashTransactions( txs ) {
 		return new ve.dm.Change(
 			0,
-			transactions.map( function ( tx ) {
+			txs.map( function ( tx ) {
 				return tx.clone();
 			} ),
-			transactions.map( function () {
+			txs.map( function () {
 				return new ve.dm.HashValueStore();
 			} ),
 			{}
-		).squash().transactions;
+		).squash().txs;
 	}
 	if ( transactions.length < 3 ) {
 		// Nothing interesting here
