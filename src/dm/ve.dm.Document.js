@@ -517,7 +517,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			// Nothing selected
 			linearData = new ve.dm.ElementLinearData( this.getStore(), [
 				{ type: 'paragraph', internal: { generated: 'empty' } },
-				{ type: 'paragraph' }
+				{ type: '/paragraph' }
 			] );
 			originalRange = balancedRange = new ve.Range( 1 );
 		} else if ( startNode === endNode ) {

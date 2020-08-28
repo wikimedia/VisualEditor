@@ -657,7 +657,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			range: new ve.Range( 2 ),
 			expected: [
 				{ type: 'paragraph', internal: { generated: 'empty' } },
-				{ type: 'paragraph' }
+				{ type: '/paragraph' }
 			],
 			originalRange: new ve.Range( 1 ),
 			balancedRange: new ve.Range( 1 )
@@ -668,7 +668,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			range: new ve.Range( 1 ),
 			expected: [
 				{ type: 'paragraph', internal: { generated: 'empty' } },
-				{ type: 'paragraph' }
+				{ type: '/paragraph' }
 			],
 			originalRange: new ve.Range( 1 ),
 			balancedRange: new ve.Range( 1 )
