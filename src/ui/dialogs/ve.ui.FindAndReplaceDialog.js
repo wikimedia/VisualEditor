@@ -470,6 +470,11 @@ ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range )
 			this.$findResults.append( this.renderedResultsCache[ i ] );
 		} else {
 			rects = this.surface.getView().getSelection( this.fragments[ i ].getSelection() ).getSelectionRects();
+			// getSelectionRects can return null in edge cases, for example when the selection can't be found
+			// in the document. This method being debounced is a possible cause of that. (T259718)
+			if ( !rects ) {
+				return null;
+			}
 			$result = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
 			top = Infinity;
 			for ( j = 0, jlen = rects.length; j < jlen; j++ ) {
