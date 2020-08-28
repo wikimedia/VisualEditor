@@ -4289,7 +4289,8 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 		// Focusing already-focused elements scrolls the *top* of the element
 		// into view, meaning that in long text blocks refocusing the current
 		// element will jump the viewport around.
-	} else if ( !OO.ui.contains( $focusTarget.get( 0 ), this.getElementDocument().activeElement ) ) {
+		// Check $focusTarget is non-empty (T259531)
+	} else if ( $focusTarget.length && !OO.ui.contains( $focusTarget.get( 0 ), this.getElementDocument().activeElement ) ) {
 		// Note: contains *doesn't* include === here. This is desired, as the
 		// common case for getting here is when pressing backspace when the
 		// cursor is in the middle of a block of text (thus both are a <div>),
