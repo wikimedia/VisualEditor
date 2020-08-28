@@ -678,6 +678,19 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 				balancedRange: new ve.Range( 1 )
 			},
 			{
+				doc: 'alienData',
+				msg: 'range ending inside alienBlock node',
+				range: new ve.Range( 7, 9 ),
+				expected: [
+					{ type: 'paragraph' },
+					{ type: '/paragraph' },
+					{ type: 'alienBlock', originalDomElements: $( '<foobar />' ).toArray() },
+					{ type: '/alienBlock' }
+				],
+				originalRange: new ve.Range( 1, 3 ),
+				balancedRange: new ve.Range( 0, 4 )
+			},
+			{
 				msg: 'range with one character',
 				range: new ve.Range( 2, 3 ),
 				expected: [

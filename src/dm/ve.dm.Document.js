@@ -491,9 +491,15 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 		linearData = this.data.sliceObject();
 		originalRange = balancedRange = this.getDocumentRange();
 	} else {
-		startNode = this.getBranchNodeFromOffset( range.start );
-		endNode = this.getBranchNodeFromOffset( range.end );
 		selection = this.selectNodes( range, 'siblings' );
+		first = selection[ 0 ];
+		last = selection[ selection.length - 1 ];
+		firstNode = first.node;
+		lastNode = last.node;
+
+		// Use first/lastNode if they are non-content branch nodes, otherwise use getBranchNodeFromOffset.
+		startNode = !firstNode.hasChildren() && !firstNode.isContent() ? firstNode : this.getBranchNodeFromOffset( range.start );
+		endNode = !lastNode.hasChildren() && !lastNode.isContent() ? lastNode : this.getBranchNodeFromOffset( range.end );
 
 		// Fix up selection to remove empty items in unwrapped nodes
 		// TODO: fix this is selectNodes
@@ -519,10 +525,6 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			balancedNodes = selection;
 		} else {
 			// Selection is not balanced
-			first = selection[ 0 ];
-			last = selection[ selection.length - 1 ];
-			firstNode = first.node;
-			lastNode = last.node;
 			while ( !firstNode.isWrapped() ) {
 				firstNode = firstNode.getParent();
 			}
