@@ -9,8 +9,7 @@ QUnit.module( 've.ui.TableAction' );
 /* Tests */
 
 QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelative', function ( assert ) {
-	var i,
-		tableCellTail = [
+	var tableCellTail = [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{ type: '/paragraph' },
 			{ type: '/tableCell' }
@@ -613,13 +612,13 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		ve.test.utils.runActionTest(
-			'table', assert, cases[ i ].html, false, cases[ i ].method, cases[ i ].args, cases[ i ].rangeOrSelection, cases[ i ].msg,
+			'table', assert, caseItem.html, false, caseItem.method, caseItem.args, caseItem.rangeOrSelection, caseItem.msg,
 			{
-				expectedData: cases[ i ].expectedData,
-				expectedRangeOrSelection: cases[ i ].expectedRangeOrSelection
+				expectedData: caseItem.expectedData,
+				expectedRangeOrSelection: caseItem.expectedRangeOrSelection
 			}
 		);
-	}
+	} );
 } );

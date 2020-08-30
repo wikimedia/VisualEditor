@@ -1694,366 +1694,44 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 12, 22 ),
+					tableRange: new ve.Range( 0, 10 ),
 					fromCol: 0,
 					fromRow: 0
 				},
+				documentHtml: '<table><tbody><tr><td></td></tbody></table>',
 				// Firefox doesn't like using execCommand for this test for some reason
 				pasteTargetHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 12, 33 ),
+					tableRange: new ve.Range( 0, 21 ),
 					fromCol: 0,
 					fromRow: 0,
 					toCol: 2,
 					toRow: 0
 				},
-				expectedOps: [
-					[
-						{ type: 'retain', length: 19 },
-						{
-							insert: [
-								{
-									attributes: {
-										colspan: 1,
-										rowspan: 1,
-										style: 'data'
-									},
-									type: 'tableCell'
-								},
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' },
-								{
-									type: '/tableCell'
-								}
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 19 }
-					],
-					[
-						{ type: 'retain', length: 23 },
-						{
-							type: 'replace',
-							insert: [
-								{
-									attributes: {
-										colspan: 1,
-										rowspan: 1,
-										style: 'data'
-									},
-									type: 'tableCell'
-								},
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' },
-								{
-									type: '/tableCell'
-								}
-							],
-							remove: []
-						},
-						{ type: 'retain', length: docLen - 19 }
-					],
-					[
-						{ type: 'retain', length: 24 },
-						{
-							insert: [],
-							remove: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' }
-							],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 18 }
-					],
-					[
-						{ type: 'retain', length: 24 },
-						{
-							insert: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								'Z',
-								{ type: '/paragraph' }
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 18 }
-					],
-					[
-						{ type: 'retain', length: 20 },
-						{
-							insert: [],
-							remove: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' }
-							],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 13 }
-					],
-					[
-						{ type: 'retain', length: 20 },
-						{
-							insert: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								'Y',
-								{ type: '/paragraph' }
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 13 }
-					],
-					[
-						{ type: 'retain', length: 16 },
-						{
-							insert: [],
-							remove: [
-								{
-									internal: {
-										generated: 'empty'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' }
-							],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 8 }
-					],
-					[
-						{ type: 'retain', length: 16 },
-						{
-							insert: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								'X',
-								{ type: '/paragraph' }
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 8 }
-					]
-				],
+				expectedHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></tbody></table>',
 				msg: 'Paste row of table cells onto table cell'
 			},
 			{
 				rangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 12, 22 ),
+					tableRange: new ve.Range( 0, 10 ),
 					fromCol: 0,
 					fromRow: 0
 				},
+				documentHtml: '<table><tbody><tr><td></td></tbody></table>',
 				pasteHtml: '<table><tbody><tr><td>X</td></tr><tr><td>Y</td></tr><tr><td>Z</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 12, 37 ),
+					tableRange: new ve.Range( 0, 25 ),
 					fromCol: 0,
 					fromRow: 0,
 					toCol: 0,
 					toRow: 2
 				},
-				expectedOps: [
-					[
-						{ type: 'retain', length: 20 },
-						{
-							insert: [
-								{ type: 'tableRow' },
-								{
-									attributes: {
-										colspan: 1,
-										rowspan: 1,
-										style: 'data'
-									},
-									type: 'tableCell'
-								},
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' },
-								{ type: '/tableCell' },
-								{ type: '/tableRow' }
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 20 }
-					],
-					[
-						{ type: 'retain', length: 26 },
-						{
-							type: 'replace',
-							insert: [
-								{ type: 'tableRow' },
-								{
-									attributes: {
-										colspan: 1,
-										rowspan: 1,
-										style: 'data'
-									},
-									type: 'tableCell'
-								},
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' },
-								{ type: '/tableCell' },
-								{ type: '/tableRow' }
-							],
-							remove: []
-						},
-						{ type: 'retain', length: docLen - 20 }
-					],
-					[
-						{ type: 'retain', length: 28 },
-						{
-							insert: [],
-							remove: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' }
-							],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 18 }
-					],
-					[
-						{ type: 'retain', length: 28 },
-						{
-							insert: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								'Z',
-								{ type: '/paragraph' }
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 18 }
-					],
-					[
-						{ type: 'retain', length: 22 },
-						{
-							insert: [],
-							remove: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' }
-							],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 11 }
-					],
-					[
-						{ type: 'retain', length: 22 },
-						{
-							insert: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								'Y',
-								{ type: '/paragraph' }
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 11 }
-					],
-					[
-						{ type: 'retain', length: 16 },
-						{
-							insert: [],
-							remove: [
-								{
-									internal: {
-										generated: 'empty'
-									},
-									type: 'paragraph'
-								},
-								{ type: '/paragraph' }
-							],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 4 }
-					],
-					[
-						{ type: 'retain', length: 16 },
-						{
-							insert: [
-								{
-									internal: {
-										generated: 'wrapper'
-									},
-									type: 'paragraph'
-								},
-								'X',
-								{ type: '/paragraph' }
-							],
-							remove: [],
-							type: 'replace'
-						},
-						{ type: 'retain', length: docLen - 4 }
-					]
-				],
+				expectedHtml: '<table><tbody><tr><td>X</td></tr><tr><td>Y</td></tr><tr><td>Z</td></tr></tbody></table>',
 				msg: 'Paste column of table cells onto table cell'
 			},
 			{
@@ -2077,12 +1755,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							insert: [],
 							remove: [
-								{
-									internal: {
-										generated: 'empty'
-									},
-									type: 'paragraph'
-								},
+								{ type: 'paragraph', internal: { generated: 'empty' } },
 								{ type: '/paragraph' }
 							],
 							type: 'replace'
@@ -2111,12 +1784,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 										style: 'data'
 									}
 								},
-								{
-									type: 'paragraph',
-									internal: {
-										generated: 'wrapper'
-									}
-								},
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								'X',
 								{ type: '/paragraph' },
 								{ type: '/tableCell' },
