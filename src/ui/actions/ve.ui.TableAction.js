@@ -295,6 +295,16 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 	for ( row = importedMatrix.getRowCount() - 1; row >= 0; row-- ) {
 		for ( col = importedMatrix.getColCount( row ) - 1; col >= 0; col-- ) {
 			cell = matrix.getCell( selection.fromRow + row, selection.fromCol + col );
+			// Missing cell(s), add cell(s) onto the end of the row
+			while ( !cell ) {
+				surfaceModel.change(
+					ve.dm.TransactionBuilder.static.newFromInsertion(
+						documentModel, matrix.getRowNode( selection.fromRow + row ).getRange().end,
+						ve.dm.TableCellNode.static.createData()
+					)
+				);
+				cell = matrix.getCell( selection.fromRow + row, selection.fromCol + col );
+			}
 			if ( cell.isPlaceholder() || cell.node.getColspan() > 1 || cell.node.getRowspan() > 1 ) {
 				this.unmergeCell( matrix, cell.owner );
 			}
