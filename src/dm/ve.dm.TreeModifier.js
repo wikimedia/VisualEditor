@@ -985,18 +985,42 @@ ve.dm.TreeModifier.prototype.getRawPosition = function ( path, offset, node ) {
  * @return {number[]} Adjusted pathAndOffset, with offsets inside a ContentBranchNode linearized
  */
 ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInserter ) {
-	var i, iLen, j, jLen, positionI, childNode, inserted, removed,
+	var i, iLen, jLen, positionI, inserted, removed, nodeKeys,
+		modifier = this,
 		node = this.adjustmentTree;
 
 	position = position.slice();
 	// Adjust each offset in the path so inserted nodes are counted
 	for ( i = 0, iLen = position.length; i < iLen; i++ ) {
 		positionI = position[ i ];
-		for ( j = 0, jLen = positionI + 1; j < jLen; j++ ) {
-			childNode = node[ j ];
-			if ( !childNode ) {
-				continue;
+
+		// The loop below is equivalent to:
+		//
+		// for ( j = 0, jLen = positionI + 1; j < jLen; j++ ) {
+		//   childNode = node[ j ];
+		//   if ( !childNode ) {
+		//     continue;
+		//   }
+		//   ...
+		// }
+		//
+		// However as `node` is very sparse, it is slow to iterate over
+		// every position, so just iterate over the positions we have
+		// using Object.keys(), then check the loop conditions later.
+		// (T261634)
+
+		nodeKeys = Object.keys( node );
+		jLen = positionI + 1;
+		// eslint-disable-next-line no-loop-func
+		nodeKeys.forEach( function ( j ) {
+			var childNode;
+
+			if ( j > positionI ) {
+				return;
 			}
+
+			childNode = node[ j ];
+
 			inserted = childNode.inserted || 0;
 			removed = childNode.removed || 0;
 
@@ -1009,12 +1033,12 @@ ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInsert
 				position[ i ] += inserted;
 				// Adjust for insertions, except if we are the inserter and the insertion is incomplete
 				// (note if insertedNodes.length > 0, then also inserted > 0)
-				if ( isInserter && this.insertedNodes.length > 0 ) {
+				if ( isInserter && modifier.insertedNodes.length > 0 ) {
 					// Incomplete means we are inside a (non text) node
 					position[ i ]--;
 				}
 			}
-		}
+		} );
 		node = node[ positionI ];
 		if ( !node ) {
 			break;
