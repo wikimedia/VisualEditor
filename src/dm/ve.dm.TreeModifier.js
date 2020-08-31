@@ -946,7 +946,11 @@ ve.dm.TreeModifier.prototype.adjustRemoverPosition = function ( rawPosition ) {
  * @return {number[]} Adjusted pathAndOffset, with offsets inside a ContentBranchNode linearized, and including current position within nodes to be inserted, if any
  */
 ve.dm.TreeModifier.prototype.adjustInserterPosition = function ( rawPosition ) {
-	return this.getAdjustedPosition( rawPosition, true ).concat( this.insertedPositions );
+	// getAdjustedPosition returns a brand new array, so we can safely modify
+	// it with batchPush, which is much faster than concat (which creates a new array)
+	var positions = this.getAdjustedPosition( rawPosition, true );
+	ve.batchPush( positions, this.insertedPositions );
+	return positions;
 };
 
 /**
@@ -959,22 +963,31 @@ ve.dm.TreeModifier.prototype.adjustInserterPosition = function ( rawPosition ) {
  */
 ve.dm.TreeModifier.prototype.getRawPosition = function ( path, offset, node ) {
 	var i, numNodesBefore, linearizedOffset;
-	if ( node.parent instanceof ve.dm.ContentBranchNode ) {
+	// No need to check node.parent.hasChildren() below as node.parent
+	// is a parent so must have children.
+	if ( node.parent && node.parent.canContainContent() ) {
 		numNodesBefore = path[ path.length - 1 ];
 		linearizedOffset = offset;
 		for ( i = 0; i < numNodesBefore; i++ ) {
 			linearizedOffset += node.parent.children[ i ].getOuterLength();
 		}
-		return path.slice( 0, -1 ).concat( linearizedOffset );
-	} else if ( node instanceof ve.dm.ContentBranchNode ) {
+		path = path.slice( 0, -1 );
+	} else if ( node.canContainContent() && node.hasChildren() ) {
 		linearizedOffset = 0;
 		for ( i = 0; i < offset; i++ ) {
 			linearizedOffset += node.children[ i ].getOuterLength();
 		}
-		return path.concat( linearizedOffset );
 	} else {
-		return path.concat( offset );
+		linearizedOffset = offset;
 	}
+	if ( !path.length ) {
+		// Optimization, path is often empty
+		return [ linearizedOffset ];
+	}
+	path = path.slice();
+	// slice+push is faster than concat
+	path.push( linearizedOffset );
+	return path;
 };
 
 /**
