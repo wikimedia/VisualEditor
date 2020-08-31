@@ -985,8 +985,7 @@ ve.dm.TreeModifier.prototype.getRawPosition = function ( path, offset, node ) {
  * @return {number[]} Adjusted pathAndOffset, with offsets inside a ContentBranchNode linearized
  */
 ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInserter ) {
-	var i, iLen, jLen, positionI, inserted, removed, nodeKeys,
-		modifier = this,
+	var i, iLen, j, jLen, positionI, childNode, inserted, removed,
 		node = this.adjustmentTree;
 
 	position = position.slice();
@@ -1005,18 +1004,13 @@ ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInsert
 		// }
 		//
 		// However as `node` is very sparse, it is slow to iterate over
-		// every position, so just iterate over the positions we have
-		// using Object.keys(), then check the loop conditions later.
-		// (T261634)
+		// every position, so just iterate over the positions we have,
+		// then check the loop conditions later. (T261634)
 
-		nodeKeys = Object.keys( node );
 		jLen = positionI + 1;
-		// eslint-disable-next-line no-loop-func
-		nodeKeys.forEach( function ( j ) {
-			var childNode;
-
-			if ( j > positionI ) {
-				return;
+		for ( j in node ) {
+			if ( j >= jLen ) {
+				continue;
 			}
 
 			childNode = node[ j ];
@@ -1033,12 +1027,12 @@ ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInsert
 				position[ i ] += inserted;
 				// Adjust for insertions, except if we are the inserter and the insertion is incomplete
 				// (note if insertedNodes.length > 0, then also inserted > 0)
-				if ( isInserter && modifier.insertedNodes.length > 0 ) {
+				if ( isInserter && this.insertedNodes.length > 0 ) {
 					// Incomplete means we are inside a (non text) node
 					position[ i ]--;
 				}
 			}
-		} );
+		}
 		node = node[ positionI ];
 		if ( !node ) {
 			break;
