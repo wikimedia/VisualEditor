@@ -1,4 +1,18 @@
 # OOUI Release History
+## v0.40.3 / 2020-09-02
+### Styles
+* Update 'wikimedia-ui-base' to v0.17.0 and remove obsolete variable definitions (Volker E.)
+
+### Code
+* Fix broken resolveMsg() call in the AccessKeyedElement mixin (Thiemo Kreuz)
+* Fix the removing of windows being broken by `this` scoping issue (Michael Große)
+* SelectFileInputWidget: setValue should be chainable (Adam Wight)
+* StackLayout: Check for this.currentItem in onScroll (Ed Sanders)
+* ComboBoxInputWidget: Only show menu on user triggered events (Thiemo Kreuz)
+* TextInputWidget: Don't override pending background when setting readOnly background (Ed Sanders)
+* build: Updating grunt to 1.3.0 (libraryupgrader)
+
+
 ## v0.40.2 / 2020-08-20
 ### Styles
 * icons: Add 'volumeUp' (Volker E.)
