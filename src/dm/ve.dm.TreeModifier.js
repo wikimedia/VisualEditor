@@ -519,8 +519,18 @@ ve.dm.TreeModifier.prototype.cursorsMatch = function () {
 	rawInserterPosition = this.getRawInserterPosition();
 	adjustedRemoverPosition = this.adjustRemoverPosition( rawRemoverPosition );
 	adjustedInserterPosition = this.adjustInserterPosition( rawInserterPosition );
-	return JSON.stringify( adjustedRemoverPosition ) ===
-		JSON.stringify( adjustedInserterPosition );
+
+	// Optimization: adjustedRemoverPosition and adjustedInserterPosition are very
+	// often arrays of length 1. This simple check is much faster than a full
+	// JSON.stringify comparison.
+	if (
+		adjustedRemoverPosition.length === 1 && adjustedInserterPosition.length === 1 &&
+		adjustedRemoverPosition[ 0 ] === adjustedInserterPosition[ 0 ]
+	) {
+		return true;
+	}
+
+	return JSON.stringify( adjustedRemoverPosition ) === JSON.stringify( adjustedInserterPosition );
 };
 
 /**
