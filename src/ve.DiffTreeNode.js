@@ -38,12 +38,17 @@ OO.inheritClass( ve.DiffTreeNode, treeDiffer.TreeNode );
  * @return {boolean} The nodes are equal
  */
 ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
+	var nodeRange, otherNodeRange;
 	if ( this.node.canContainContent() && otherNode.node.canContainContent() ) {
-		return JSON.stringify( this.doc.getData( this.node.getOuterRange() ) ) ===
-			JSON.stringify( otherNode.doc.getData( otherNode.node.getOuterRange() ) );
+		nodeRange = this.node.getOuterRange();
+		otherNodeRange = otherNode.node.getOuterRange();
+		// Optimization: Most nodes we compare are different, so do a quick check
+		// on the range length first.
+		return nodeRange.getLength() === otherNodeRange.getLength() &&
+			JSON.stringify( this.doc.getData( nodeRange ) ) === JSON.stringify( otherNode.doc.getData( otherNodeRange ) );
 	} else {
-		return ( this.node.getType() === otherNode.node.getType() &&
-			ve.compare( this.node.getHashObject(), otherNode.node.getHashObject() ) );
+		return this.node.getType() === otherNode.node.getType() &&
+			ve.compare( this.node.getHashObject(), otherNode.node.getHashObject() );
 	}
 };
 
