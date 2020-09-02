@@ -1570,6 +1570,27 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: {
 					type: 'table',
+					tableRange: new ve.Range( 0, 23 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				documentHtml: '<table><tbody><tr><td>A</td></tr><tr><td>B</td><td>C</td></tr></tbody></table>',
+				pasteHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></tbody></table>',
+				fromVe: true,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 37 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 2,
+					toRow: 0
+				},
+				expectedHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr><tr><td>B</td><td>C</td><td></td></tr></tbody></table>',
+				msg: 'Paste table cells onto sparse table'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
 					tableRange: new ve.Range( 12, 22 ),
 					fromCol: 0,
 					fromRow: 0
