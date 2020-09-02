@@ -36,6 +36,10 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout 
 		'noMetadata'
 	);
 
+	// Set to read-only so that node offsets get cached
+	this.oldDoc.setReadOnly( true );
+	this.newDoc.setReadOnly( true );
+
 	this.oldDocNode = this.oldDoc.getDocumentNode();
 	this.newDocNode = this.newDoc.getDocumentNode();
 	this.oldDocChildren = this.getDocChildren( this.oldDocNode );

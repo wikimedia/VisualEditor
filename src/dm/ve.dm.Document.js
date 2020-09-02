@@ -54,6 +54,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.originalDocument = originalDocument || null;
 	this.nodesByType = {};
 	this.origInternalListLength = null;
+	this.readOnly = false;
 
 	// Sparse array
 	this.branchNodeFromOffsetCache = [];
@@ -321,6 +322,32 @@ ve.dm.Document.prototype.buildNodeTree = function () {
  */
 ve.dm.Document.prototype.getLength = function () {
 	return this.data.getLength();
+};
+
+/**
+ * Set the read-only state of the document
+ *
+ * Actual locking of the model is done by the surface, but
+ * we pass through this flag so we can do some optimizations
+ * in read-only mode, such as caching node offsets.
+ *
+ * TODO: It might just be easier for Documents to know which
+ * Surface they belong to, although we should make sure that
+ * this doesn't violate the direction of data flow.
+ *
+ * @param {boolean} readOnly Mark document as read-only
+ */
+ve.dm.Document.prototype.setReadOnly = function ( readOnly ) {
+	this.readOnly = !!readOnly;
+};
+
+/**
+ * Check if the document is read-only
+ *
+ * @return {boolean}
+ */
+ve.dm.Document.prototype.isReadOnly = function () {
+	return this.readOnly;
 };
 
 /**

@@ -151,6 +151,7 @@ ve.dm.Surface.prototype.setReadOnly = function ( readOnly ) {
 		} else {
 			this.startHistoryTracking();
 		}
+		this.getDocument().setReadOnly( readOnly );
 		this.emit( 'contextChange' );
 	}
 };

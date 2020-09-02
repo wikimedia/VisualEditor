@@ -25,6 +25,7 @@ ve.dm.Node = function VeDmNode( element ) {
 
 	// Properties
 	this.length = 0;
+	this.offset = null;
 	this.element = element;
 };
 
@@ -699,6 +700,10 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
 ve.dm.Node.prototype.getOffset = function () {
 	var i, len, siblings, offset;
 
+	if ( this.doc.isReadOnly() && this.offset !== null ) {
+		return this.offset;
+	}
+
 	if ( !this.parent ) {
 		return 0;
 	}
@@ -715,6 +720,8 @@ ve.dm.Node.prototype.getOffset = function () {
 	if ( i === len ) {
 		throw new Error( 'Node not found in parent\'s children array' );
 	}
+	// Cache offset, only used in readOnly mode (when the offset can't change)
+	this.offset = offset;
 	return offset;
 };
 
