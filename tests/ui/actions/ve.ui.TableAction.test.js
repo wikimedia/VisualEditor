@@ -196,6 +196,44 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				msg: 'insert column at end of table with sparse row'
 			},
 			{
+				html: '<table><tr><td rowspan="3">a</td><td>b</td><td>c</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 21 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 2
+				},
+				method: 'insert',
+				args: [ 'row', 'after' ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 19, 0 ].concat(
+						{ type: 'tableRow' },
+						tableData,
+						{ type: '/tableRow' }
+					) );
+				},
+				msg: 'insert row after row containing cell with excessive rowspan'
+			},
+			{
+				html: '<table><tr><td rowspan="3">a</td><td>b</td><td>c</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 21 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 2
+				},
+				method: 'insert',
+				args: [ 'col', 'after' ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 8, 0 ].concat( tableData ) );
+				},
+				msg: 'insert column after row containing cell with excessive rowspan'
+			},
+			{
 				html: ve.dm.example.mergedCellsHtml,
 				rangeOrSelection: {
 					type: 'table',
@@ -323,6 +361,41 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 					data.splice.apply( data, [ 96, 0 ].concat( tableData, tableData ) );
 				},
 				msg: 'unmerge cells'
+			},
+			{
+				html: '<table><tr><td rowspan="3">a</td><td>b</td><td>c</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 21 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 1,
+					toRow: 2
+				},
+				method: 'mergeCells',
+				expectedData: function ( data ) {
+					data[ 3 ].attributes.colspan = 1;
+					data[ 3 ].attributes.rowspan = 1;
+					data.splice( 8, 5 );
+				},
+				msg: 'unmerge cell with excessive rowspan'
+			},
+			{
+				html: '<table><tr><td rowspan="3">a</td><td>b</td><td>c</td></tr></table>',
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 21 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 2
+				},
+				method: 'mergeCells',
+				expectedData: function ( data ) {
+					data[ 3 ].attributes.colspan = 1;
+					data[ 3 ].attributes.rowspan = 1;
+				},
+				msg: 'merge cell with excessive rowspan'
 			},
 			{
 				html: ve.dm.example.mergedCellsHtml,

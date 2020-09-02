@@ -618,7 +618,7 @@ ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
  * @param {ve.dm.TableMatrixCell[]} [dataMatrixLine.cells] Table cells to insert
  */
 ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, position, selection, dataMatrixLine ) {
-	var refIndex, cells, refCells, before, cellData,
+	var refIndex, cells, refCells, before, cellData, rowNode,
 		offset, range, i, l, cell, refCell, style,
 		matrix = tableNode.matrix,
 		insertCells = [],
@@ -716,7 +716,10 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 			} );
 			insertData.push( dataMatrixLine.row[ 1 ] );
 		}
-		range = matrix.getRowNode( index ).getOuterRange();
+		while ( ( rowNode = matrix.getRowNode( index ) ) === undefined ) {
+			index--;
+		}
+		range = rowNode.getOuterRange();
 		offset = before ? range.start : range.end;
 		txBuilders.push( ve.dm.TransactionBuilder.static.newFromInsertion.bind( null, surfaceModel.getDocument(), offset, insertData ) );
 	} else {
@@ -746,7 +749,11 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 			} else {
 				// If there are only placeholders in the row, we use the row node's inner range
 				// for the insertion offset
-				range = matrix.getRowNode( cell.row ).getRange();
+				rowNode = range = matrix.getRowNode( cell.row );
+				if ( !rowNode ) {
+					continue;
+				}
+				range = rowNode.getRange();
 				offset = before ? range.start : range.end;
 				style = cells[ 0 ].node.getStyle();
 			}
@@ -926,6 +933,9 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		// Remove rows in reverse order to have valid transaction offsets
 		for ( row = maxIndex; row >= minIndex; row-- ) {
 			rowNode = matrix.getRowNode( row );
+			if ( !rowNode ) {
+				continue;
+			}
 			txBuilders.push( ve.dm.TransactionBuilder.static.newFromRemoval.bind( null, documentModel, rowNode.getOuterRange() ) );
 
 			// Store removed data for moving
@@ -991,7 +1001,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
  * @return {Function} Zero-argument function returning a ve.dm.Transaction
  */
 ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder, options ) {
-	var range, offset, data,
+	var range, offset, data, rowNode,
 		// For inserting the new cell a reference cell node
 		// which is used to get an insertion offset.
 		refCell = matrix.findClosestCell( placeholder ),
@@ -1001,8 +1011,14 @@ ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder,
 		range = refCell.node.getOuterRange();
 		offset = ( placeholder.col < refCell.col ) ? range.start : range.end;
 	} else {
+		rowNode = matrix.getRowNode( placeholder.row );
+		if ( !rowNode ) {
+			return function () {
+				return null;
+			};
+		}
 		// if there are only placeholders in the row, the row node's inner range is used
-		range = matrix.getRowNode( placeholder.row ).getRange();
+		range = rowNode.getRange();
 		offset = range.start;
 	}
 	data = ve.dm.TableCellNode.static.createData( options );
