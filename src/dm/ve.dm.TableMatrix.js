@@ -170,7 +170,7 @@ ve.dm.TableMatrix.prototype.getRow = function ( row ) {
  * Retrieves the row node of a row with given index.
  *
  * @param {number} row Row index
- * @return {ve.dm.TableRowNode} Node at give index
+ * @return {ve.dm.TableRowNode} Node at given index
  */
 ve.dm.TableMatrix.prototype.getRowNode = function ( row ) {
 	var rowNodes = this.getRowNodes();
