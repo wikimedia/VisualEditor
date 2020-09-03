@@ -35,6 +35,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Exposant",
 	"visualeditor-annotationbutton-underline-tooltip": "Ënnersträichen",
 	"visualeditor-changedesc-changed": "$1 vu(n) $2 op $3 geännert",
+	"visualeditor-changedesc-comment": "Bemierkung geännert vu(n) $1 op $2",
 	"visualeditor-changedesc-image-size": "Gréisst gouf vu(n) $1 op $2 geännert",
 	"visualeditor-changedesc-language": "Sprooch gouf vu(n) $1 op $2 geännert",
 	"visualeditor-changedesc-no-key": "$1 gouf op $2 geännert",
