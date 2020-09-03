@@ -63,6 +63,9 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout 
 		internalListDiff: this.getInternalListDiffInfo()
 	};
 
+	// Make docs writable again, so they can be modified by DiffElement
+	this.oldDoc.setReadOnly( false );
+	this.newDoc.setReadOnly( false );
 };
 
 /**
