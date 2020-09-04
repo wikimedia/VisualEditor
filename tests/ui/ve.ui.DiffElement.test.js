@@ -27,6 +27,21 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Complex text change',
+				oldDoc: '<p>foo quux at bar</p>',
+				newDoc: '<p>foo, quux at the bar</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>' +
+							'foo' +
+							'<ins data-diff-action="insert">,</ins>' +
+							' quux at' +
+							'<ins data-diff-action="insert"> the</ins>' +
+							' bar' +
+						'</p>' +
+					'</div>'
+			},
+			{
 				msg: 'Forced time out',
 				forceTimeout: true,
 				oldDoc: '<p>foo bar baz</p>',

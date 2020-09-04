@@ -70,6 +70,55 @@ ve.DiffMatchPatch.prototype.getEmptyString = function () {
 	return [];
 };
 
+ve.DiffMatchPatch.prototype.indexOf = function indexOf( text, searchValue, fromIndex ) {
+	var i, j, found;
+	// fromIndex defaults to 0 and is bounded by 0 and text.length
+	// Note that indexOf( 'foo', '', 99 ) is supposed to return 3 (text.length), which is why we allow
+	// starting the search beyond the end of the string
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf
+	for (
+		i = fromIndex === undefined ? 0 : Math.min( Math.max( fromIndex, 0 ), text.length );
+		i <= text.length - searchValue.length;
+		i++
+	) {
+		found = true;
+		for ( j = 0; j < searchValue.length; j++ ) {
+			if ( !this.isEqualChar( text[ i + j ], searchValue[ j ] ) ) {
+				found = false;
+				break;
+			}
+		}
+		if ( found ) {
+			return i;
+		}
+	}
+	return -1;
+};
+
+ve.DiffMatchPatch.prototype.lastIndexOf = function lastIndexOf( text, searchValue, fromIndex ) {
+	var i, iLen, j, found;
+	iLen = text.length - searchValue.length;
+	// fromIndex defaults to the end, and must be greater than 0
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/lastIndexOf
+	for (
+		i = fromIndex === undefined ? iLen : Math.min( Math.max( fromIndex, 0 ), iLen );
+		i >= 0;
+		i--
+	) {
+		found = true;
+		for ( j = 0; j < searchValue.length; j++ ) {
+			if ( !this.isEqualChar( text[ i + j ], searchValue[ j ] ) ) {
+				found = false;
+				break;
+			}
+		}
+		if ( found ) {
+			return i;
+		}
+	}
+	return -1;
+};
+
 ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options ) {
 	var finalDiff, k, klen, m,
 		store = this.store,
