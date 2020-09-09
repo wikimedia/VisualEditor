@@ -721,16 +721,16 @@ ve.getDomAttributes = function ( element ) {
  *
  * @param {HTMLElement} element DOM element to apply attributes to
  * @param {Object} attributes Attributes to apply
- * @param {string[]} [whitelist] List of attributes to exclusively allow (all lowercase names)
+ * @param {string[]} [allowedAttributes] List of attributes to exclusively allow (all lowercase names)
  */
-ve.setDomAttributes = function ( element, attributes, whitelist ) {
+ve.setDomAttributes = function ( element, attributes, allowedAttributes ) {
 	var key;
 	// Duck-typing for attribute setting
 	if ( !element.setAttribute || !element.removeAttribute ) {
 		return;
 	}
 	for ( key in attributes ) {
-		if ( whitelist && whitelist.indexOf( key.toLowerCase() ) === -1 ) {
+		if ( allowedAttributes && allowedAttributes.indexOf( key.toLowerCase() ) === -1 ) {
 			continue;
 		}
 		if ( attributes[ key ] === undefined || attributes[ key ] === null ) {
