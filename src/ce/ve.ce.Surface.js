@@ -4086,20 +4086,27 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  * Items with custom positioning may throw off results given by this method, so
  * it should only be treated as an approximation.
  *
- * @return {ve.Range} Range covering data visible in the viewport
+ * @return {ve.Range|null} Range covering data visible in the viewport, null if the surface is not attached
  */
 ve.ce.Surface.prototype.getViewportRange = function () {
-	var surface = this,
+	var top, bottom, documentRange,
+		surface = this,
 		documentModel = this.getModel().getDocument(),
 		data = documentModel.data,
 		dimensions = this.surface.getViewportDimensions(),
 		// We want a little padding when finding the range, because this is
 		// generally used for things like find/replace, where scrolling to see
 		// context is important.
-		padding = 50,
-		top = Math.max( 0, dimensions.top - padding ),
-		bottom = dimensions.bottom + ( padding * 2 ),
-		documentRange = this.getModel().getDocument().getDocumentRange();
+		padding = 50;
+
+	if ( !dimensions ) {
+		// Surface is not attached
+		return null;
+	}
+
+	top = Math.max( 0, dimensions.top - padding );
+	bottom = dimensions.bottom + ( padding * 2 );
+	documentRange = this.getModel().getDocument().getDocumentRange();
 
 	function highestIgnoreChildrenNode( childNode ) {
 		var ignoreChildrenNode = null;
