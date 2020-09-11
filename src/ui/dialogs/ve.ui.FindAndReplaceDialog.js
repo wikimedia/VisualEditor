@@ -412,8 +412,9 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
 	var i, selection, viewportRange, start, end;
 
-	// Check the surface isn't hidden, such as during deactivation
-	if ( !this.surface ) {
+	// The methods is called after a delay (renderFragmentsThrottled/onWindowScrollThrottled)
+	// Check the dialog hasn't been torn down, or that the surface view hasn't been destroyed
+	if ( !this.surface || !this.surface.getView().attachedRoot.isLive() ) {
 		return;
 	}
 
@@ -470,11 +471,6 @@ ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range )
 			this.$findResults.append( this.renderedResultsCache[ i ] );
 		} else {
 			rects = this.surface.getView().getSelection( this.fragments[ i ].getSelection() ).getSelectionRects();
-			// getSelectionRects can return null in edge cases, for example when the selection can't be found
-			// in the document. This method being debounced is a possible cause of that. (T259718)
-			if ( !rects ) {
-				return null;
-			}
 			$result = $( '<div>' ).addClass( 've-ui-findAndReplaceDialog-findResult' );
 			top = Infinity;
 			for ( j = 0, jlen = rects.length; j < jlen; j++ ) {
