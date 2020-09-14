@@ -700,12 +700,12 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
 ve.dm.Node.prototype.getOffset = function () {
 	var i, len, siblings, offset;
 
-	if ( this.doc.isReadOnly() && this.offset !== null ) {
-		return this.offset;
-	}
-
 	if ( !this.parent ) {
 		return 0;
+	}
+
+	if ( this.doc.isReadOnly() && this.offset !== null ) {
+		return this.offset;
 	}
 
 	// Find our index in the parent and add up lengths while we do so
