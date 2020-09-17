@@ -113,14 +113,19 @@ ve.SelectionState.prototype.getNativeRange = function ( doc ) {
 		return null;
 	}
 	range = doc.createRange();
-	if ( this.isBackwards ) {
-		range.setStart( this.focusNode, this.focusOffset );
-		range.setEnd( this.anchorNode, this.anchorOffset );
-	} else {
-		range.setStart( this.anchorNode, this.anchorOffset );
-		if ( !this.isCollapsed ) {
-			range.setEnd( this.focusNode, this.focusOffset );
+	try {
+		if ( this.isBackwards ) {
+			range.setStart( this.focusNode, this.focusOffset );
+			range.setEnd( this.anchorNode, this.anchorOffset );
+		} else {
+			range.setStart( this.anchorNode, this.anchorOffset );
+			if ( !this.isCollapsed ) {
+				range.setEnd( this.focusNode, this.focusOffset );
+			}
 		}
+	} catch ( e ) {
+		// Range#setStart/setEnd can throw exceptions with invalid offsets (T258191)
+		return null;
 	}
 	return range;
 };
