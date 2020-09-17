@@ -169,8 +169,14 @@ ve.dm.TableMatrix.prototype.getRow = function ( row ) {
 /**
  * Retrieves the row node of a row with given index.
  *
+ * It is possible for bad tables to be constructed with rowspans
+ * that exceed the last actual row node. In these cases, the number
+ * of rows in the table matrix will exceed the number of row
+ * nodes, so users should expected getRowNode to sometimes
+ * return undefined. (T191858)
+ *
  * @param {number} row Row index
- * @return {ve.dm.TableRowNode} Node at given index
+ * @return {ve.dm.TableRowNode|undefined} Node at given index, if found
  */
 ve.dm.TableMatrix.prototype.getRowNode = function ( row ) {
 	var rowNodes = this.getRowNodes();
