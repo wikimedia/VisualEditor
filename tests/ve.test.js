@@ -186,11 +186,11 @@ QUnit.test( 'setDomAttributes', function ( assert ) {
 
 	target = sample.cloneNode();
 	ve.setDomAttributes( target, { onclick: 'alert(1);', foo: 'update', add: 'whee' }, [ 'foo', 'add' ] );
-	assert.strictEqual( target.hasAttribute( 'onclick' ), false, 'whitelist affects creating attributes' );
+	assert.strictEqual( target.hasAttribute( 'onclick' ), false, 'allow list affects creating attributes' );
 	assert.deepEqual(
 		ve.getDomAttributes( target ),
 		{ foo: 'update', bar: 'two', baz: 'three', add: 'whee' },
-		'whitelist does not affect pre-existing attributes'
+		'allow list does not affect pre-existing attributes'
 	);
 
 	target = document.createElement( 'div' );
@@ -198,7 +198,7 @@ QUnit.test( 'setDomAttributes', function ( assert ) {
 	assert.deepEqual(
 		ve.getDomAttributes( target ),
 		{ bar: 'add' },
-		'whitelist is case-insensitive'
+		'allow list is case-insensitive'
 	);
 
 	target = sample.cloneNode();
@@ -206,7 +206,7 @@ QUnit.test( 'setDomAttributes', function ( assert ) {
 	assert.propEqual(
 		ve.getDomAttributes( target ),
 		{ foo: 'one', baz: 'three' },
-		'whitelist affects removal/updating of attributes'
+		'allow list affects removal/updating of attributes'
 	);
 } );
 
