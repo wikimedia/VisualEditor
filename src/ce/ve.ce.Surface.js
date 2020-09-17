@@ -4426,16 +4426,27 @@ ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter, offset 
 		offset = this.getModel().getSelection().getCoveringRange().start;
 	}
 
+	// getNodeAndOffset can throw when offset is out of bounds (T262354)
+	// and other undiagnosed situations (T136780, T262487, T259154, T262303)
+
 	// TODO: For annotation boundaries we have to search one place left and right
 	// to find the text inside the annotation. This will give too many results for
 	// adjancent annotations, and will fail for one character annotations. (T221967)
 	if ( offset > documentRange.start ) {
-		nodeAndOffset = this.getDocument().getNodeAndOffset( offset - 1 );
+		try {
+			nodeAndOffset = this.getDocument().getNodeAndOffset( offset - 1 );
+		} catch ( e ) {
+			nodeAndOffset = null;
+		}
 		annotations = nodeAndOffset ? this.annotationsAtNode( nodeAndOffset.node, filter ) : [];
 	}
 
 	if ( offset < documentRange.end ) {
-		nodeAndOffset = this.getDocument().getNodeAndOffset( offset + 1 );
+		try {
+			nodeAndOffset = this.getDocument().getNodeAndOffset( offset + 1 );
+		} catch ( e ) {
+			nodeAndOffset = null;
+		}
 		annotations = OO.unique( annotations.concat( nodeAndOffset ? this.annotationsAtNode( nodeAndOffset.node, filter ) : [] ) );
 	}
 

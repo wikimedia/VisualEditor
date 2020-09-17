@@ -133,7 +133,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		throw new Error( 'Offset is out of bounds' );
 	}
 	branchNode = this.getBranchNodeFromOffset( offset );
-	count = branchNode.getOffset() + ( ( branchNode.isWrapped() ) ? 1 : 0 );
+	count = branchNode.getOffset() + ( branchNode.isWrapped() ? 1 : 0 );
 
 	if ( !( branchNode instanceof ve.ce.ContentBranchNode ) ) {
 		// The cursor does not lie in a ContentBranchNode, so we can determine
