@@ -1631,6 +1631,31 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Remapping annotations on content nodes'
 			},
 			{
+				html: '<p><b>a<i></i>c</b></p>',
+				data: [
+					{ type: 'paragraph' },
+					[ 'a', [ 'h49981eab0f8056ff' ] ],
+					[ 'c', [ 'h49981eab0f8056ff' ] ],
+					{ type: '/paragraph' },
+					{
+						type: 'removableAlienMeta',
+						internal: {
+							loadMetaParentHash: 'hd25d21d36fa98e7a',
+							loadMetaParentOffset: 1
+						},
+						annotations: [ 'h49981eab0f8056ff' ]
+					},
+					{ type: '/removableAlienMeta' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: {
+					removeOriginalDomElements: true,
+					allowMetadata: true
+				},
+				msg: 'Remapping annotations on moved meta nodes'
+			},
+			{
 				html: '<h1>Bar</h1><h2>Baz</h2><p>Quux</p>',
 				data: [
 					{ type: 'paragraph' },

@@ -1177,25 +1177,34 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param  {string} newHash New hash to replace it with
  */
 ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newHash ) {
-	var i, ilen, spliceAt, annotations;
+	var i, ilen, j, jlen, data;
+	function remap( annotations ) {
+		var spliceAt;
+		while ( ( spliceAt = annotations.indexOf( oldHash ) ) !== -1 ) {
+			if ( annotations.indexOf( newHash ) === -1 ) {
+				annotations.splice( spliceAt, 1, newHash );
+			} else {
+				// FIXME This is the same as above???
+				annotations.splice( spliceAt, 1, newHash );
+			}
+		}
+	}
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.data[ i ] === undefined || typeof this.data[ i ] === 'string' ) {
 			// Common case, cheap, avoid the isArray check
 			continue;
 		} else {
 			if ( Array.isArray( this.data[ i ] ) ) {
-				annotations = this.data[ i ][ 1 ];
+				remap( this.data[ i ][ 1 ] );
 			} else if ( this.data[ i ].annotations !== undefined ) {
-				annotations = this.data[ i ].annotations;
-			} else {
-				continue;
+				remap( this.data[ i ].annotations );
 			}
-			while ( ( spliceAt = annotations.indexOf( oldHash ) ) !== -1 ) {
-				if ( annotations.indexOf( newHash ) === -1 ) {
-					annotations.splice( spliceAt, 1, newHash );
-				} else {
-					// FIXME This is the same as above???
-					annotations.splice( spliceAt, 1, newHash );
+			if ( ve.getProp( this.data[ i ], 'internal', 'metaItems' ) ) {
+				data = ve.getProp( this.data[ i ], 'internal', 'metaItems' );
+				for ( j = 0, jlen = data.length; j < jlen; j++ ) {
+					if ( data[ j ].annotations !== undefined ) {
+						remap( data[ j ].annotations );
+					}
 				}
 			}
 		}
