@@ -1656,6 +1656,22 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Remapping annotations on moved meta nodes'
 			},
 			{
+				html: '<p><b>a<i></i>c</b></p>',
+				data: [
+					{ type: 'paragraph' },
+					[ 'a', [ 'h49981eab0f8056ff' ] ],
+					[ 'c', [ 'h49981eab0f8056ff' ] ],
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: {
+					removeOriginalDomElements: true,
+					allowMetadata: false
+				},
+				msg: 'Removing moved meta nodes too when removing other metadata'
+			},
+			{
 				html: '<h1>Bar</h1><h2>Baz</h2><p>Quux</p>',
 				data: [
 					{ type: 'paragraph' },
