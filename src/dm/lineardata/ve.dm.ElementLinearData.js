@@ -1177,17 +1177,25 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  * @param  {string} newHash New hash to replace it with
  */
 ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newHash ) {
-	var i, ilen, spliceAt;
+	var i, ilen, spliceAt, annotations;
 	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.data[ i ] === undefined || typeof this.data[ i ] === 'string' ) {
 			// Common case, cheap, avoid the isArray check
 			continue;
-		} else if ( Array.isArray( this.data[ i ] ) ) {
-			while ( ( spliceAt = this.data[ i ][ 1 ].indexOf( oldHash ) ) !== -1 ) {
-				if ( this.data[ i ][ 1 ].indexOf( newHash ) === -1 ) {
-					this.data[ i ][ 1 ].splice( spliceAt, 1, newHash );
+		} else {
+			if ( Array.isArray( this.data[ i ] ) ) {
+				annotations = this.data[ i ][ 1 ];
+			} else if ( this.data[ i ].annotations !== undefined ) {
+				annotations = this.data[ i ].annotations;
+			} else {
+				continue;
+			}
+			while ( ( spliceAt = annotations.indexOf( oldHash ) ) !== -1 ) {
+				if ( annotations.indexOf( newHash ) === -1 ) {
+					annotations.splice( spliceAt, 1, newHash );
 				} else {
-					this.data[ i ][ 1 ].splice( spliceAt, 1, newHash );
+					// FIXME This is the same as above???
+					annotations.splice( spliceAt, 1, newHash );
 				}
 			}
 		}
