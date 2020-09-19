@@ -174,7 +174,7 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
-		'findAndReplace', 'window', 'open', { args: [ 'findAndReplace', null, 'findFirst' ] }
+		'findAndReplace', 'window', 'open', { args: [ 'findAndReplace', null, 'findSelected' ] }
 	)
 );
 ve.ui.commandRegistry.register(
