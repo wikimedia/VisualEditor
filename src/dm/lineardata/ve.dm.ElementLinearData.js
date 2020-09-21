@@ -1184,8 +1184,7 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
 			if ( annotations.indexOf( newHash ) === -1 ) {
 				annotations.splice( spliceAt, 1, newHash );
 			} else {
-				// FIXME This is the same as above???
-				annotations.splice( spliceAt, 1, newHash );
+				annotations.splice( spliceAt, 1 );
 			}
 		}
 	}
