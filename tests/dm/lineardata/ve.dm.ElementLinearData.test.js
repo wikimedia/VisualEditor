@@ -1793,6 +1793,20 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Double annotation sanitized'
 			},
 			{
+				html: '<p><b>1<b>2</b>3</b></p>',
+				data: [
+					{ type: 'paragraph' },
+					[ '1', [ 'h49981eab0f8056ff' ] ],
+					[ '2', [ 'h49981eab0f8056ff' ] ],
+					[ '3', [ 'h49981eab0f8056ff' ] ],
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: { removeOriginalDomElements: true },
+				msg: 'Double annotation appears just once'
+			},
+			{
 				html: '<p>F<br>o</p><h1>B<br>a</h1><p>B<br></p>',
 				data: [
 					{ type: 'paragraph' },
