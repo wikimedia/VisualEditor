@@ -1428,6 +1428,10 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				// Remove originalDomElements from nodes
 				delete this.getData( i ).originalDomElementsHash;
 			}
+			// Remove metadata if disallowed (moved metadata)
+			if ( !rules.allowMetadata ) {
+				ve.deleteProp( this.getData( i ), 'internal', 'metaItems' );
+			}
 		}
 	}
 };
