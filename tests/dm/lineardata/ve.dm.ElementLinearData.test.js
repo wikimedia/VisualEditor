@@ -1610,6 +1610,27 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Annotations removed in plainText mode'
 			},
 			{
+				html: '<p><b>a<span rel="ve:Alien">b</span>c</b></p>',
+				data: [
+					{ type: 'paragraph' },
+					[ 'a', [ 'h49981eab0f8056ff' ] ],
+					{
+						type: 'alienInline',
+						annotations: [ 'h49981eab0f8056ff' ]
+					},
+					{ type: '/alienInline' },
+					[ 'c', [ 'h49981eab0f8056ff' ] ],
+					{ type: '/paragraph' },
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				],
+				rules: {
+					removeOriginalDomElements: true,
+					blacklist: {}
+				},
+				msg: 'Remapping annotations on content nodes'
+			},
+			{
 				html: '<h1>Bar</h1><h2>Baz</h2><p>Quux</p>',
 				data: [
 					{ type: 'paragraph' },
