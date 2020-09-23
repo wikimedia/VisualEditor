@@ -51,6 +51,16 @@ ve.ui.CommandRegistry.prototype.getCommandForNode = function ( node ) {
 };
 
 /**
+ * Returns the delete command for for node.
+ *
+ * @param {ve.ce.FocusableNode} node Node to get command for
+ * @return {ve.ui.Command}
+ */
+ve.ui.CommandRegistry.prototype.getDeleteCommandForNode = function ( node ) {
+	return this.lookup( node.constructor.static.deleteCommandName );
+};
+
+/**
  * Get a list of registered command names.
  *
  * @return {string[]}

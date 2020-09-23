@@ -104,6 +104,15 @@ ve.ce.FocusableNode.static.iconWhenInvisible = null;
  */
 ve.ce.FocusableNode.static.primaryCommandName = null;
 
+/**
+ * Command to execute when Delete or Backspace is pressed while this node is focused.
+ *
+ * @static
+ * @property {string|null}
+ * @inheritable
+ */
+ve.ce.FocusableNode.static.deleteCommandName = null;
+
 /* Static methods */
 
 /**
