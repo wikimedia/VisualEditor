@@ -112,10 +112,9 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	// Debounce to prevent trying to draw every cursor position in history.
 	this.onPositionDebounced = ve.debounce( this.onPosition.bind( this ) );
 	this.connect( this, { position: this.onPositionDebounced } );
-	this.onModelDocumentUpdateDebounced = ve.debounce( this.onModelDocumentUpdate.bind( this ) );
 	this.model.connect( this, {
 		select: 'onModelSelect',
-		documentUpdate: 'onModelDocumentUpdateDebounced',
+		documentUpdate: 'onModelDocumentUpdate',
 		insertionAnnotationsChange: 'onInsertionAnnotationsChange'
 	} );
 
