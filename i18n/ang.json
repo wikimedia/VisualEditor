@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Gott wisst"
+			"Gott wisst",
+			"Heahwrita"
 		]
 	},
 	"visualeditor": "Rihte geīwed adihtend",
@@ -71,7 +72,7 @@
 	"visualeditor-specialcharacter-button-tooltip": "Syndrig bōcstæf",
 	"visualeditor-specialcharacterinspector-title": "Ānlic bōcstæf",
 	"visualeditor-table-caption": "Cwide",
-	"visualeditor-table-delete-row": "Forlēosan rǣwe",
+	"visualeditor-table-delete-row": "Forleos {{PLURAL:$1|ræwe|ræwa}}",
 	"visualeditor-table-insert-col-after": "Besettan æfter",
 	"visualeditor-table-insert-col-before": "Besettan beforan",
 	"visualeditor-table-insert-row-after": "Besettan beneoðan",
