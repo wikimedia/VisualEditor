@@ -462,17 +462,20 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 
 	// Wait for native selection to change before correcting
 	setTimeout( function () {
-		range = selection instanceof ve.dm.LinearSelection && selection.getRange();
-		surfaceModel.getLinearFragment(
-			e.shiftKey && range ?
-				ve.Range.static.newCoveringRange(
-					[ range, nodeRange ], range.from > nodeRange.from
-				) :
-				nodeRange
-		).select();
-		node.focusableSurface.updateActiveAnnotations();
-		// Ensure surface is active as native 'focus' event won't be fired
-		node.focusableSurface.activate();
+		// Check surface still exists after timeout
+		if ( node.focusableSurface ) {
+			range = selection instanceof ve.dm.LinearSelection && selection.getRange();
+			surfaceModel.getLinearFragment(
+				e.shiftKey && range ?
+					ve.Range.static.newCoveringRange(
+						[ range, nodeRange ], range.from > nodeRange.from
+					) :
+					nodeRange
+			).select();
+			node.focusableSurface.updateActiveAnnotations();
+			// Ensure surface is active as native 'focus' event won't be fired
+			node.focusableSurface.activate();
+		}
 	} );
 };
 
