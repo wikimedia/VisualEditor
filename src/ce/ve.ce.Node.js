@@ -76,15 +76,6 @@ ve.ce.Node.static.isMultiline = null;
  */
 ve.ce.Node.static.trapsCursor = false;
 
-/**
- * Command to execute when Enter is pressed while this node is selected, or when the node is double-clicked.
- *
- * @static
- * @property {string|null}
- * @inheritable
- */
-ve.ce.Node.static.primaryCommandName = null;
-
 /* Static Methods */
 
 /**

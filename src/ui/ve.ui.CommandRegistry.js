@@ -43,7 +43,7 @@ ve.ui.CommandRegistry.prototype.register = function ( command ) {
 /**
  * Returns the primary command for for node.
  *
- * @param {ve.ce.Node} node Node to get command for
+ * @param {ve.ce.FocusableNode} node Node to get command for
  * @return {ve.ui.Command}
  */
 ve.ui.CommandRegistry.prototype.getCommandForNode = function ( node ) {
