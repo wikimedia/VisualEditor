@@ -27,7 +27,7 @@ OO.inheritClass( ve.dm.LanguageAnnotation, ve.dm.TextStyleAnnotation );
 
 ve.dm.LanguageAnnotation.static.name = 'meta/language';
 
-ve.dm.LanguageAnnotation.static.matchTagNames = [ 'span' ];
+ve.dm.LanguageAnnotation.static.matchTagNames = [ 'span', 'bdo' ];
 
 ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
 	var lang = domElement.getAttribute( 'lang' ),
