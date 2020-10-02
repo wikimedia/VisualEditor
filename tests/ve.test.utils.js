@@ -427,6 +427,7 @@
 			connect: function () {},
 			disconnect: function () {},
 			execute: ve.ui.Surface.prototype.execute,
+			executeWithSource: ve.ui.Surface.prototype.executeWithSource,
 			createView: ve.ui.Surface.prototype.createView,
 			createModel: ve.ui.Surface.prototype.createModel
 		};

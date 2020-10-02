@@ -14,10 +14,12 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
+ * @param {string} [source] Label for the source of the action, for tracking
  */
-ve.ui.Action = function VeUiAction( surface ) {
+ve.ui.Action = function VeUiAction( surface, source ) {
 	// Properties
 	this.surface = surface;
+	this.source = source;
 };
 
 /* Inheritance */
