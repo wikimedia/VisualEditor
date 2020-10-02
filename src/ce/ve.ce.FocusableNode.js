@@ -95,6 +95,15 @@ OO.initClass( ve.ce.FocusableNode );
  */
 ve.ce.FocusableNode.static.iconWhenInvisible = null;
 
+/**
+ * Command to execute when Enter is pressed while this node is focused, or when the node is double-clicked.
+ *
+ * @static
+ * @property {string|null}
+ * @inheritable
+ */
+ve.ce.FocusableNode.static.primaryCommandName = null;
+
 /* Static methods */
 
 /**
