@@ -52,20 +52,6 @@ ve.ce.NodeFactory.prototype.splitNodeOnEnter = function ( type ) {
 };
 
 /**
- * Get primary command for node type.
- *
- * @param {string} type Node type
- * @return {string|null} Primary command name
- * @throws {Error} Unknown node type
- */
-ve.ce.NodeFactory.prototype.getNodePrimaryCommandName = function ( type ) {
-	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
-		return this.registry[ type ].static.primaryCommandName;
-	}
-	throw new Error( 'Unknown node type: ' + type );
-};
-
-/**
  * Create a view node from a model node.
  *
  * @param {ve.dm.Node} model Mode node
