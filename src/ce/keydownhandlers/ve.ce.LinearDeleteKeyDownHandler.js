@@ -43,13 +43,15 @@ ve.ce.LinearDeleteKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * In these cases, it will perform the content removal itself.
  */
 ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
-	var docLength, startNode, position, skipNode, pairNode, linkNode, range,
+	var docLength, startNode, position, skipNode, pairNode, linkNode, range, command,
 		documentModelSelectedNodes, i, node, nodeRange, nodeOuterRange, matrix, col, row,
 		direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		offset = 0,
 		rangeToRemove = surface.getModel().getSelection().getRange(),
 		documentModel = surface.getModel().getDocument(),
+		focusedNode = surface.getFocusedNode(),
+		uiSurface = surface.getSurface(),
 		data = documentModel.data;
 
 	if ( surface.isReadOnly() ) {
@@ -61,6 +63,15 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		// Shift+Del on non-Mac platforms performs 'cut', so
 		// don't handle it here.
 		return false;
+	}
+
+	if ( focusedNode ) {
+		command = uiSurface.commandRegistry.getDeleteCommandForNode( focusedNode );
+		if ( command ) {
+			command.execute( uiSurface );
+			e.preventDefault();
+			return true;
+		}
 	}
 
 	// Use native behaviour then poll if collapsed, unless we are adjacent to some hard tag
