@@ -8,7 +8,7 @@
  * ContentEditable language annotation.
  *
  * @class
- * @extends ve.ce.Annotation
+ * @extends ve.ce.TextStyleAnnotation
  * @constructor
  * @param {ve.dm.LanguageAnnotation} model Model to observe
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation
@@ -31,7 +31,7 @@ ve.ce.LanguageAnnotation = function VeCeLanguageAnnotation() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ce.LanguageAnnotation, ve.ce.Annotation );
+OO.inheritClass( ve.ce.LanguageAnnotation, ve.ce.TextStyleAnnotation );
 
 /* Static Properties */
 

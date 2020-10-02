@@ -804,22 +804,22 @@ QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
 			{
 				msg: 'LanguageAnnotation: Lang change',
 				type: 'meta/language',
-				before: { lang: 'en', dir: 'ltr' },
-				after: { lang: 'fr', dir: 'ltr' },
+				before: { nodeName: 'span', lang: 'en', dir: 'ltr' },
+				after: { nodeName: 'span', lang: 'fr', dir: 'ltr' },
 				expected: [ 'visualeditor-changedesc-language,<del>langname-en</del>,<ins>langname-fr</ins>' ]
 			},
 			{
 				msg: 'LanguageAnnotation: Dir change',
 				type: 'meta/language',
-				before: { lang: 'en', dir: 'ltr' },
-				after: { lang: 'en', dir: 'rtl' },
+				before: { nodeName: 'span', lang: 'en', dir: 'ltr' },
+				after: { nodeName: 'span', lang: 'en', dir: 'rtl' },
 				expected: [ 'visualeditor-changedesc-direction,<del>ltr</del>,<ins>rtl</ins>' ]
 			},
 			{
 				msg: 'LanguageAnnotation: Other attribute change (fallback)',
 				type: 'meta/language',
-				before: { lang: 'en', dir: 'ltr', foo: 'bar' },
-				after: { lang: 'en', dir: 'ltr', foo: 'baz' },
+				before: { nodeName: 'span', lang: 'en', dir: 'ltr', foo: 'bar' },
+				after: { nodeName: 'span', lang: 'en', dir: 'ltr', foo: 'baz' },
 				expected: [ 'visualeditor-changedesc-changed,foo,<del>bar</del>,<ins>baz</ins>' ]
 			}
 		];

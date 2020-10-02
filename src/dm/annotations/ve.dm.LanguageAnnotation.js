@@ -10,7 +10,7 @@
  * Represents `<span>` tags with 'lang' and 'dir' properties.
  *
  * @class
- * @extends ve.dm.Annotation
+ * @extends ve.dm.TextStyleAnnotation
  * @constructor
  * @param {Object} element
  */
@@ -21,7 +21,7 @@ ve.dm.LanguageAnnotation = function VeDmLanguageAnnotation() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.dm.LanguageAnnotation, ve.dm.Annotation );
+OO.inheritClass( ve.dm.LanguageAnnotation, ve.dm.TextStyleAnnotation );
 
 /* Static Properties */
 
@@ -38,17 +38,19 @@ ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
 ve.dm.LanguageAnnotation.static.applyToAppendedContent = true;
 
 ve.dm.LanguageAnnotation.static.toDataElement = function ( domElements ) {
-	return {
-		type: this.name,
-		attributes: {
-			lang: domElements[ 0 ].getAttribute( 'lang' ),
-			dir: domElements[ 0 ].getAttribute( 'dir' )
-		}
-	};
+	// Parent method
+	var dataElement = ve.dm.LanguageAnnotation.super.static.toDataElement.apply( this, arguments );
+	dataElement.attributes.lang = domElements[ 0 ].getAttribute( 'lang' );
+	dataElement.attributes.dir = domElements[ 0 ].getAttribute( 'dir' );
+
+	return dataElement;
 };
 
-ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement, doc ) {
-	var domElement = doc.createElement( 'span' );
+ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement ) {
+	// Parent method
+	var domElements = ve.dm.LanguageAnnotation.super.static.toDomElements.apply( this, arguments ),
+		domElement = domElements[ 0 ];
+
 	if ( dataElement.attributes.lang ) {
 		domElement.setAttribute( 'lang', dataElement.attributes.lang );
 	}
@@ -56,7 +58,7 @@ ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement, doc ) {
 		domElement.setAttribute( 'dir', dataElement.attributes.dir );
 	}
 
-	return [ domElement ];
+	return domElements;
 };
 
 ve.dm.LanguageAnnotation.static.describeChange = function ( key, change ) {
