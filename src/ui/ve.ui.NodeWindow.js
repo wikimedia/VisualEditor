@@ -7,24 +7,24 @@
 /**
  * Mixin for window for working with a node.
  *
+ * Conceptually this extends a FragmentWindow, but as this and FragmentWindow
+ * are both are mixins, we don't need to set up actual inheritance here,
+ * that is handled by the concrete classes NodeDialog & NodeInspector. T264690
+ *
  * @class
  * @abstract
- * @extends ve.ui.FragmentWindow
  *
  * @constructor
  * @param {Object} [config] Configuration options
  */
 ve.ui.NodeWindow = function VeUiNodeWindow() {
-	// Parent method
-	ve.ui.NodeWindow.super.apply( this, arguments );
-
 	// Properties
 	this.selectedNode = null;
 };
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.NodeWindow, ve.ui.FragmentWindow );
+OO.initClass( ve.ui.NodeWindow );
 
 /* Static Properties */
 
@@ -40,7 +40,11 @@ ve.ui.NodeWindow.static.modelClasses = [];
 /* Methods */
 
 /**
- * @inheritdoc
+ * Check if the current node is editable by this window.
+ *
+ * @localdoc Returns true if the node being edited selects at least one model,
+ *
+ * @return {boolean} Node is editable by this window
  */
 ve.ui.NodeWindow.prototype.isEditing = function () {
 	return !!this.getSelectedNode();
@@ -71,22 +75,21 @@ ve.ui.NodeWindow.prototype.getSelectedNode = function () {
 };
 
 /**
- * @inheritdoc
+ * @inheritdoc OO.ui.Window
  */
 ve.ui.NodeWindow.prototype.getSetupProcess = function ( data, process ) {
-	// Parent method
-	return ve.ui.NodeWindow.super.prototype.getSetupProcess.call( this, data, process )
-		.next( function () {
-			this.selectedNode = this.getSelectedNode( data );
-		}, this );
+	data = data || {};
+	return process.next( function () {
+		this.selectedNode = this.getSelectedNode( data );
+	}, this );
 };
 
 /**
- * @inheritdoc
+ * @inheritdoc OO.ui.Window
  */
 ve.ui.NodeWindow.prototype.getTeardownProcess = function ( data, process ) {
-	return ve.ui.NodeWindow.super.prototype.getTeardownProcess.call( this, data, process )
-		.next( function () {
-			this.selectedNode = null;
-		}, this );
+	data = data || {};
+	return process.next( function () {
+		this.selectedNode = null;
+	}, this );
 };
