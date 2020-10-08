@@ -165,6 +165,11 @@ ve.ui.SpecialCharacterDialog.prototype.onListClick = function ( e ) {
 			fragment.collapseToStart().insertContent( character.action.options.pre, true );
 			fragment.collapseToEnd().insertContent( character.action.options.post, true ).collapseToEnd().select();
 		}
+
+		ve.track(
+			'activity.' + this.constructor.static.name,
+			{ action: 'insert-' + this.bookletLayout.currentPageName }
+		);
 	}
 };
 
