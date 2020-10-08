@@ -37,22 +37,9 @@ ve.ui.Command = function VeUiCommand( name, action, method, options ) {
  * @return {boolean} Command was executed
  */
 ve.ui.Command.prototype.execute = function ( surface, args, source ) {
-	var action = this.action;
 	args = args || this.args;
 	if ( this.isExecutable( surface.getModel().getFragment() ) ) {
-		// We want to log things that are functionally a window being opened. We
-		// rely on the convention of the method being "open", regardless of what the
-		// action is. (Commonly window, but overridden in places.)
-		if ( this.method === 'open' ) {
-			if ( typeof args[ 0 ] === 'string' ) {
-				action = args[ 0 ];
-			}
-			ve.track(
-				'activity.' + action,
-				{ action: 'window-open-from-' + ( source || 'command' ) }
-			);
-		}
-		return surface.execute.apply( surface, [ this.action, this.method ].concat( args ) );
+		return surface.executeWithSource.apply( surface, [ this.action, this.method, source ].concat( args ) );
 	} else {
 		return false;
 	}

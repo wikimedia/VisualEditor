@@ -629,7 +629,9 @@ ve.ui.Surface.prototype.getCommands = function () {
 };
 
 /**
- * Execute an action or command.
+ * Execute an action or command
+ *
+ * This is a compatability wrapper for executeCommandWithSource.
  *
  * @param {ve.ui.Trigger|string} triggerOrAction Trigger or symbolic name of action
  * @param {string} [method] Action method name
@@ -637,20 +639,33 @@ ve.ui.Surface.prototype.getCommands = function () {
  * @return {boolean} Action or command was executed
  */
 ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
+	return this.executeWithSource.apply( this, [ triggerOrAction, method, false ].concat( Array.prototype.slice.call( arguments, 2 ) ) );
+};
+
+/**
+ * Execute an action or command
+ *
+ * @param {ve.ui.Trigger|string} triggerOrAction Trigger or symbolic name of action
+ * @param {string} [method] Action method name
+ * @param {string} [source] Action source, for logging
+ * @param {...Mixed} [args] Additional arguments for action
+ * @return {boolean} Action or command was executed
+ */
+ve.ui.Surface.prototype.executeWithSource = function ( triggerOrAction, method, source ) {
 	var command, obj, ret;
 
 	if ( triggerOrAction instanceof ve.ui.Trigger ) {
 		command = this.triggerListener.getCommandByTrigger( triggerOrAction.toString() );
 		if ( command ) {
 			// Have command call execute with action arguments
-			return command.execute( this );
+			return command.execute( this, false, source );
 		}
 	} else if ( typeof triggerOrAction === 'string' && typeof method === 'string' ) {
 		// Validate method
 		if ( ve.ui.actionFactory.doesActionSupportMethod( triggerOrAction, method ) ) {
 			// Create an action object and execute the method on it
-			obj = ve.ui.actionFactory.create( triggerOrAction, this );
-			ret = obj[ method ].apply( obj, Array.prototype.slice.call( arguments, 2 ) );
+			obj = ve.ui.actionFactory.create( triggerOrAction, this, source );
+			ret = obj[ method ].apply( obj, Array.prototype.slice.call( arguments, 3 ) );
 			return ret === undefined || !!ret;
 		}
 	}

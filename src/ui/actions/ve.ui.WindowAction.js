@@ -58,6 +58,11 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		openDeferred = ve.createDeferred(),
 		openPromise = openDeferred.promise();
 
+	ve.track(
+		'activity.' + name,
+		{ action: 'window-open-from-' + ( this.source || 'command' ) }
+	);
+
 	if ( !windowManager ) {
 		return false;
 	}

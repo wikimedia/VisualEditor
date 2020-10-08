@@ -1424,7 +1424,7 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	} else {
 		trigger = new ve.ui.Trigger( e );
 		if ( trigger.isComplete() ) {
-			executed = this.surface.execute( trigger );
+			executed = this.surface.executeWithSource( trigger, false, 'trigger' );
 			if ( executed || this.isBlockedTrigger( trigger ) ) {
 				e.preventDefault();
 				e.stopPropagation();
