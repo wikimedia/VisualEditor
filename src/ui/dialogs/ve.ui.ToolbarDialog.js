@@ -84,3 +84,11 @@ ve.ui.ToolbarDialog.prototype.setDisabled = function ( disabled ) {
 			.toggleClass( 've-ui-toolbarDialog-disabled', this.disabled );
 	}
 };
+
+/**
+ * @inheritdoc
+ */
+ve.ui.ToolbarDialog.prototype.getTeardownProcess = function ( data ) {
+	ve.track( 'activity.' + this.constructor.static.name, { action: 'dialog-' + ( data && data.action || 'abort' ) } );
+	return ve.ui.ToolbarDialog.super.prototype.getTeardownProcess.apply( this, arguments );
+};
