@@ -128,8 +128,9 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
 	for ( category in this.characters ) {
 		this.pages.push(
 			new ve.ui.SpecialCharacterPage( category, {
-				label: category,
-				characters: this.characters[ category ],
+				label: this.characters[ category ].label,
+				characters: this.characters[ category ].characters,
+				attributes: this.characters[ category ].attributes,
 				source: this.surface.getMode() === 'source'
 			} )
 		);

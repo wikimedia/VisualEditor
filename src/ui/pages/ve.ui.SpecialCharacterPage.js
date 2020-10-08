@@ -14,6 +14,10 @@
  * @constructor
  * @param {string} name Unique symbolic name of page
  * @param {Object} [config] Configuration options
+ * @cfg {string} [label] Label
+ * @cfg {Object} [characters] Character set
+ * @cfg {Object} [attributes] Extra attributes, currently `lang` and `dir`
+ * @cfg {boolean} [source] Source mode only set
  */
 ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 	var character, characterNode, characters, $characters, charactersNode,
@@ -34,9 +38,6 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 		if ( !source && characters[ character ].source ) {
 			continue;
 		}
-		if ( character === 'attributes' ) {
-			continue;
-		}
 		characterNode = document.createElement( 'div' );
 		characterNode.className = 've-ui-specialCharacterPage-character';
 		if ( characters[ character ].titleMsg ) {
@@ -51,14 +52,14 @@ ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
 		charactersNode.appendChild( characterNode );
 	}
 
-	if ( characters.attributes ) {
-		$characters.attr( 'lang', characters.attributes.lang );
-		$characters.attr( 'dir', characters.attributes.dir );
+	if ( config.attributes ) {
+		$characters.attr( 'lang', config.attributes.lang );
+		$characters.attr( 'dir', config.attributes.dir );
 	}
 
 	this.$element
 		.addClass( 've-ui-specialCharacterPage' )
-		.append( $( '<h3>' ).text( name ), $characters );
+		.append( $( '<h3>' ).text( this.label ), $characters );
 };
 
 /* Inheritance */
