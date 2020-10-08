@@ -368,18 +368,35 @@ ve.init.Platform.prototype.getInitializedPromise = function () {
  * @return {jQuery.Promise}
  */
 ve.init.Platform.prototype.fetchSpecialCharList = function () {
-	var charsObj = {};
+	var charsObj = {},
+		groups = [ 'accents', 'mathematical', 'symbols' ];
 
-	try {
-		charsObj = JSON.parse(
-			ve.msg( 'visualeditor-specialcharinspector-characterlist-insert' )
-		);
-	} catch ( err ) {
-		// There was no character list found, or the character list message is
-		// invalid json string. Force a fallback to the minimal character list
-		ve.log( 've.init.Platform: Could not parse the Special Character list.' );
-		ve.log( err.message );
+	function tryParseJSON( json ) {
+		try {
+			return JSON.parse( json );
+		} catch ( err ) {
+			// There was no character list found, or the character list message is
+			// invalid json string. Force a fallback to the minimal character list
+			ve.log( 've.init.Platform: Could not parse the special character list ' + json );
+			ve.log( err.message );
+		}
+		return {};
 	}
+
+	groups.forEach( function ( group ) {
+		charsObj[ group ] = {
+			// The following messages are used here:
+			// * visualeditor-specialcharacter-group-label-accents
+			// * visualeditor-specialcharacter-group-label-mathematical
+			// * visualeditor-specialcharacter-group-label-symbols
+			label: ve.msg( 'visualeditor-specialcharacter-group-label-' + group ),
+			// The following messages are used here:
+			// * visualeditor-specialcharacter-group-set-accents
+			// * visualeditor-specialcharacter-group-set-mathematical
+			// * visualeditor-specialcharacter-group-set-symbols
+			characters: tryParseJSON( ve.msg( 'visualeditor-specialcharacter-group-set-' + group ) )
+		};
+	} );
 
 	// This implementation always resolves instantly
 	return ve.createDeferred().resolve( charsObj ).promise();
