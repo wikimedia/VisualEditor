@@ -337,9 +337,15 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				// Update previousActiveAnnotations so the annotation stays active
 				// after re-activation
 				surfaceView.previousActiveAnnotations = surfaceView.activeAnnotations;
-				// Restore context-only view on mobile
 				if ( OO.ui.isMobile() ) {
+					// Restore context-only view on mobile
 					surfaceView.deactivate( false, false, true );
+				} else {
+					// We can't rely on the selection being placed inside the annotation
+					// so force it based on the model annotations. T265166
+					surfaceView.selectAnnotation( function ( annView ) {
+						return ve.isInstanceOfAny( annView.getModel(), inspector.constructor.static.modelClasses );
+					} );
 				}
 			}
 
