@@ -204,6 +204,8 @@
 	"visualeditor-shortcuts-text-style": "文本样式",
 	"visualeditor-slug-insert": "插入段落",
 	"visualeditor-specialcharacter-button-tooltip": "特殊字符",
+	"visualeditor-specialcharacter-group-label-mathematical": "数学的",
+	"visualeditor-specialcharacter-group-label-symbols": "符号",
 	"visualeditor-specialcharacterinspector-title": "特殊字符",
 	"visualeditor-table-caption": "表格标题",
 	"visualeditor-table-contextitem-properties": "属性",
