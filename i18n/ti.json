@@ -7,6 +7,8 @@
 	"visualeditor": "ርእየታዊ መታዓራረይ",
 	"visualeditor-aliencontextitem-title": "ውልቀ ነገር",
 	"visualeditor-align-desc-default": "ንቡር",
+	"visualeditor-annotationbutton-bold-tooltip": "ዓጺቕ",
+	"visualeditor-annotationbutton-italic-tooltip": "ቀናን",
 	"visualeditor-annotationbutton-language-tooltip": "ቋንቋ",
 	"visualeditor-annotationbutton-link-tooltip": "መጋጠሚ",
 	"visualeditor-changedesc-language": "ቋንቋ ካብ $1 ናብ $2 ዝተለወጠ",
