@@ -16,6 +16,8 @@
 	"visualeditor-clipboard-copy": "ቅዳሕ",
 	"visualeditor-clipboard-cut": "ቁረጽ",
 	"visualeditor-clipboard-paste": "ለጥፍ",
+	"visualeditor-commentannotationcontextitem-comment": "ርእይቶ",
+	"visualeditor-commentinspector-tooltip": "ርእይቶ",
 	"visualeditor-content-select-all": "ኩሉ ምረጽ",
 	"visualeditor-contextitemwidget-label-close": "ዕጸው",
 	"visualeditor-contextitemwidget-label-remove": "ሰርዝ",
@@ -46,7 +48,7 @@
 	"visualeditor-inspector-remove-tooltip": "ኣልግስ",
 	"visualeditor-key-alt": "Alt",
 	"visualeditor-key-ctrl": "Ctrl",
-	"visualeditor-key-delete": "ሰረዘ",
+	"visualeditor-key-delete": "ሰርዝ",
 	"visualeditor-key-down": "↓",
 	"visualeditor-key-left": "←",
 	"visualeditor-key-right": "→",
@@ -70,5 +72,7 @@
 	"visualeditor-table-insert-table": "ሰደቓ",
 	"visualeditor-toolbar-history": "ታሪኽ",
 	"visualeditor-toolbar-insert": "ኣእትው",
-	"visualeditor-toolbar-table": "ሰደቓ"
+	"visualeditor-toolbar-structure": "መዋቕር",
+	"visualeditor-toolbar-table": "ሰደቓ",
+	"visualeditor-toolbar-text-style": "ቅዲ"
 }
