@@ -378,6 +378,9 @@ module.exports = function ( grunt ) {
 			}
 		},
 		stylelint: {
+			options: {
+				reportNeedlessDisables: true
+			},
 			all: [
 				'**/*.css',
 				'!coverage/**',

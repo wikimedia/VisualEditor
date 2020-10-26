@@ -9,7 +9,9 @@
 	background-image: -webkit-repeating-linear-gradient( -45deg, #fff 0, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-image: -moz-repeating-linear-gradient( -45deg, #fff 0, #fff 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, #fff 0, #fff 5px, #95d14f 5px, #95d14f 10px );
+	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 	background-size: 14px 14px;
+	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 	cursor: not-allowed;
 }
 
