@@ -1142,6 +1142,11 @@
 			"demos/ve/demo.minimal.css"
 		]
 	},
+	"visualEditor.test.performance": {
+		"scripts": [
+			"demos/ve/performance.js"
+		]
+	},
 	"rebaser.build": {
 		"scripts": [
 			"src/dm/ve.dm.HashValueStore.js",
