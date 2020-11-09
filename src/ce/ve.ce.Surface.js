@@ -560,7 +560,7 @@ ve.ce.Surface.prototype.isReadOnly = function () {
  * function will also reapply the selection, even if the surface is already focused.
  */
 ve.ce.Surface.prototype.focus = function () {
-	var node,
+	var nodeAndOffset,
 		surface = this,
 		selection = this.getSelection();
 
@@ -578,8 +578,15 @@ ve.ce.Surface.prototype.focus = function () {
 	if ( selection.isFocusedNode() ) {
 		this.$pasteTarget[ 0 ].focus();
 	} else if ( selection.isNativeCursor() ) {
-		node = this.getDocument().getNodeAndOffset( selection.getModel().getRange().start ).node;
-		$( node ).closest( '[contenteditable=true]' )[ 0 ].focus();
+		try {
+			nodeAndOffset = this.getDocument().getNodeAndOffset( selection.getModel().getRange().start );
+		} catch ( e ) {
+			// Unexplained failures causing log spam: T262487
+			nodeAndOffset = null;
+		}
+		if ( nodeAndOffset ) {
+			$( nodeAndOffset.node ).closest( '[contenteditable=true]' )[ 0 ].focus();
+		}
 	}
 
 	// If we are calling focus after replacing a node the selection may be gone
