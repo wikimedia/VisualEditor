@@ -1227,7 +1227,7 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
  *
  * @param {Object} position Start position
  * @param {Node} position.node Start node
- * @param {Node} position.offset Start offset
+ * @param {number} position.offset Start offset
  * @param {number} direction +1 for forward, -1 for reverse
  * @param {Object} options
  * @param {Function|string} [options.noDescend] Selector or function: nodes to skip over
