@@ -78,6 +78,13 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	// (or CTRL is down, in which case we can't reliably predict whether the native behaviour
 	// would delete far enough to remove some element)
 	if ( rangeToRemove.isCollapsed() && !e.ctrlKey ) {
+		if ( surface.nativeSelection.focusNode === null ) {
+			// Unexplained failures causing log spam: T262303
+			// How can it be null when this method should only be called for linear selections?
+			e.preventDefault();
+			return true;
+		}
+
 		position = ve.adjacentDomPosition(
 			{
 				node: surface.nativeSelection.focusNode,
