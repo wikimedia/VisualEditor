@@ -3,11 +3,12 @@
 		"authors": [
 			"Joachim Mos",
 			"Servien",
+			"Slomox",
 			"Zylbath"
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliennode-tooltip": "Dit Element kann opstunns bloot in'n Borntextmodus ännert warrn.",
+	"visualeditor-aliennode-tooltip": "Dit Element kann opstunns blots in’n Borntextmodus ännert warrn.",
 	"visualeditor-annotationbutton-big-tooltip": "Groot",
 	"visualeditor-annotationbutton-bold-tooltip": "Fett",
 	"visualeditor-annotationbutton-code-tooltip": "Computerkood",
