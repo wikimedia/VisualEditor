@@ -58,7 +58,7 @@ QUnit.test( 'isElementData', function ( assert ) {
 			{ msg: 'between characters', expected: false },
 			{ msg: 'end of content branch', expected: true },
 			{ msg: 'between content branches', expected: true },
-			{ msg: 'inside emtpy content branch', expected: true },
+			{ msg: 'inside empty content branch', expected: true },
 			{ msg: 'between content branches', expected: true },
 			{ msg: 'beginning of content branch, left of inline leaf', expected: true },
 			{ msg: 'inside content branch with non-text leaf', expected: true },
