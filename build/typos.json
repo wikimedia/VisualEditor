@@ -17,6 +17,7 @@
 		[ "detatched", "detached" ],
 		[ "descendent", "descendant" ],
 		[ "sepcific", "specific" ],
-		[ "connet", "connect" ]
+		[ "connet", "connect" ],
+		[ "emtpy", "empty" ]
 	]
 }
