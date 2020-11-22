@@ -34,7 +34,7 @@
 		"grunt-cssjanus": "0.5.0",
 		"grunt-eslint": "23.0.0",
 		"grunt-karma": "4.0.0",
-		"grunt-stylelint": "0.15.0",
+		"grunt-stylelint": "0.16.0",
 		"grunt-svgmin": "6.0.1",
 		"grunt-tyops": "0.1.0",
 		"karma": "5.1.1",
@@ -45,6 +45,6 @@
 		"karma-qunit": "4.1.1",
 		"qunit": "2.11.1",
 		"stringify-object": "3.3.0",
-		"stylelint-config-wikimedia": "0.10.1"
+		"stylelint-config-wikimedia": "0.10.3"
 	}
 }
