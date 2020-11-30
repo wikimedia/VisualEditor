@@ -84,6 +84,7 @@
 	"visualeditor-dialog-table-caption": "Virsraksts",
 	"visualeditor-dialog-table-title": "Tabulas parametri",
 	"visualeditor-diff-no-changes": "Nav izmaiņu",
+	"visualeditor-diff-timed-out": "Izmaiņu aprēķināšana aizņēma pārāk ilgu laiku, tāpēc zemāk esošais apraksts var nebūt optimāls.",
 	"visualeditor-find-and-replace-done": "Gatavs",
 	"visualeditor-find-and-replace-find-text": "Atrast",
 	"visualeditor-find-and-replace-invalid-regex": "Nederīga regulārā izteiksme",
