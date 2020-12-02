@@ -138,6 +138,13 @@ figure[ data-diff-action='remove' ] > figcaption {
 	box-shadow: 0 0 0 1px #b6d4fb;
 }
 
+[ data-diff-action='insert' ] img,
+[ data-diff-action='remove' ] img,
+[ data-diff-action='change' ] img {
+	/* Make images slightly transparent so remove/insert/change colour can be seen */
+	opacity: 0.5;
+}
+
 [ data-diff-action='change-remove' ] {
 	display: none;
 }
