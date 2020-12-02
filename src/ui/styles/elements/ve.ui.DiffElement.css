@@ -9,6 +9,12 @@
 	position: relative;
 }
 
+.ve-ui-diffElement:after {
+	content: '';
+	clear: both;
+	display: block;
+}
+
 .ve-ui-diffElement-hasMoves .ve-ui-diffElement-content {
 	margin-left: 15px;
 }
