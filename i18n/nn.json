@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Jeblad",
-			"Njardarlogar"
+			"Njardarlogar",
+			"Ranveig"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -86,7 +87,7 @@
 	"visualeditor-shortcuts-other": "Andre",
 	"visualeditor-shortcuts-text-style": "Tekstformatering",
 	"visualeditor-slug-insert": "Set inn avsnitt",
-	"visualeditor-specialcharacter-button-tooltip": "Spesialeteikn",
+	"visualeditor-specialcharacter-button-tooltip": "Spesialteikn",
 	"visualeditor-specialcharacterinspector-title": "Spesialteikn",
 	"visualeditor-table-insert-table": "Tabell",
 	"visualeditor-toolbar-format-tooltip": "Formater avsnitt",

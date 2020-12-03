@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Balyozxane",
 			"Bikarhêner",
 			"Cûndûllah el-Kurdî",
 			"George Animal",
@@ -83,6 +84,7 @@
 	"visualeditor-languageinspector-widget-changelang": "Zimanekî bibîne",
 	"visualeditor-languageinspector-widget-label-langcode": "Koda ziman",
 	"visualeditor-languageinspector-widget-label-language": "Ziman",
+	"visualeditor-linkcontext-label-change": "Nivîsê biguherîne",
 	"visualeditor-linkinspector-title": "Girêdan",
 	"visualeditor-mediasizewidget-sizeoptions-default": "Standart",
 	"visualeditor-pagemenu-tooltip": "Vebijarkên rûpelê",
