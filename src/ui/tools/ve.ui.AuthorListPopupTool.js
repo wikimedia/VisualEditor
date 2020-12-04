@@ -24,7 +24,7 @@ ve.ui.AuthorListPopupTool = function VeUiAuthorListPopupTool( toolGroup, config 
 			classes: [ 've-ui-authorListWidget-listPopup' ],
 			$content: this.$authorList,
 			padded: true,
-			align: 'center'
+			align: 'backwards'
 		}
 	}, config ) );
 
