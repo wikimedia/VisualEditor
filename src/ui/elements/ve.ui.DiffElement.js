@@ -223,6 +223,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	var i, j, ilen, jlen, move, documentSpacerNode, internalListSpacerNode,
 		li, noChanges, group, internalListGroup, referencesListDiffDivs,
 		referencesListDiffDiv, internalListItem,
+		diffElement = this,
 		documentNode = this.$document[ 0 ],
 		hasMoves = false,
 		hasChanges = false,
@@ -230,10 +231,41 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		internalListDiffQueue = [];
 
 	function processQueue( queue, parentNode, spacerNode ) {
-		var spacer, elements, k, klen;
+		var elements, k, klen,
+			lastItemSpacer = false,
+			needsSpacer = false,
+			headingContext = null,
+			headingContextSpacer = false;
 
 		function isUnchanged( item ) {
 			return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
+		}
+
+		function addSpacer() {
+			parentNode.appendChild(
+				parentNode.ownerDocument.adoptNode( spacerNode.cloneNode( true ) )
+			);
+			lastItemSpacer = true;
+		}
+
+		function render( item ) {
+			elements = diffElement[ item[ 0 ] ].apply( diffElement, item.slice( 1 ) );
+			while ( elements.length ) {
+				parentNode.appendChild(
+					parentNode.ownerDocument.adoptNode( elements[ 0 ] )
+				);
+				elements.shift();
+			}
+			lastItemSpacer = false;
+		}
+
+		function isHeading( item ) {
+			switch ( item[ 0 ] ) {
+				case 'getNodeElements':
+					return item[ 1 ] instanceof ve.dm.HeadingNode;
+				case 'getChangedNodeElements':
+					return diffElement.newDocChildren[ diffElement.oldToNew[ item[ 1 ] ].node ];
+			}
 		}
 
 		for ( k = 0, klen = queue.length; k < klen; k++ ) {
@@ -242,21 +274,46 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 				!isUnchanged( queue[ k ] ) ||
 				!isUnchanged( queue[ k + 1 ] )
 			) {
-				spacer = false;
 				hasChanges = true;
-				elements = this[ queue[ k ][ 0 ] ].apply( this, queue[ k ].slice( 1 ) );
-				while ( elements.length ) {
-					parentNode.appendChild(
-						parentNode.ownerDocument.adoptNode( elements[ 0 ] )
-					);
-					elements.shift();
+				if ( headingContext ) {
+					// Don't render headingContext if current or next node is a heading
+					if ( !isHeading( queue[ k ] ) && !isHeading( queue[ k + 1 ] ) ) {
+						if ( headingContextSpacer ) {
+							addSpacer();
+						}
+						render( headingContext );
+					} else if ( isHeading( queue[ k + 1 ] ) ) {
+						// Skipping the context header becuase the next node is a heading
+						// so reinstate the spacer.
+						needsSpacer = true;
+					}
+					headingContext = null;
 				}
-			} else if ( !spacer ) {
-				spacer = true;
-				parentNode.appendChild(
-					parentNode.ownerDocument.adoptNode( spacerNode.cloneNode( true ) )
-				);
+				if ( needsSpacer && !lastItemSpacer ) {
+					addSpacer();
+					needsSpacer = false;
+				}
+				render( queue[ k ] );
+
+				if ( isHeading( queue[ k ] ) ) {
+					// Heading was rendered, no need to show it as context
+					headingContext = null;
+				}
+			} else {
+				// Heading skipped, maybe show as context later
+				if ( isHeading( queue[ k ] ) ) {
+					headingContext = isUnchanged( queue[ k ] ) ? queue[ k ] : null;
+					headingContextSpacer = needsSpacer;
+					needsSpacer = false;
+				} else {
+					needsSpacer = true;
+				}
 			}
+		}
+
+		// Trailing spacer
+		if ( needsSpacer && !lastItemSpacer ) {
+			addSpacer();
 		}
 
 		return elements;
@@ -304,7 +361,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			}
 		}
 
-		processQueue.call( this, internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
+		processQueue( internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
 		referencesListDiffDivs[ group ] = {
 			elements: referencesListDiffDiv,
 			action: internalListGroup.changes ? 'change' : 'none'
@@ -381,7 +438,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		}
 	}
 
-	processQueue.call( this, diffQueue, documentNode, documentSpacerNode );
+	processQueue( diffQueue, documentNode, documentSpacerNode );
 	this.descriptions.addItems( this.descriptionItemsStack );
 	this.descriptionItemsStack = [];
 

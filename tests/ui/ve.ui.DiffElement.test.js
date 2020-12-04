@@ -158,6 +158,128 @@ QUnit.test( 'Diffing', function ( assert ) {
 					spacer
 			},
 			{
+				msg: 'Heading context always shown',
+				oldDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
+				expected:
+					spacer +
+					'<h2 data-diff-action="none">context</h2>' +
+					spacer +
+					'<p data-diff-action="none">bar</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>baz</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>baq</ins></p>' +
+					'</div>'
+			},
+			{
+				msg: 'No spacer above heading context when it is the 0th child',
+				oldDoc: '<h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
+				expected:
+					'<h2 data-diff-action="none">context</h2>' +
+					spacer +
+					'<p data-diff-action="none">bar</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>baz</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>baq</ins></p>' +
+					'</div>'
+			},
+			{
+				msg: 'No spacer below heading context when next child is already context',
+				oldDoc: '<h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<h2>context</h2><p>foo</p><p>baq</p><p>baz</p>',
+				expected:
+					'<h2 data-diff-action="none">context</h2>' +
+					'<p data-diff-action="none">foo</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>bar</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>baq</ins></p>' +
+					'</div>' +
+					'<p data-diff-action="none">baz</p>'
+			},
+			{
+				msg: 'Second heading is context',
+				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
+				expected:
+					spacer +
+					'<h2 data-diff-action="none">context</h2>' +
+					spacer +
+					'<p data-diff-action="none">bar</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>baz</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>baq</ins></p>' +
+					'</div>'
+			},
+			{
+				msg: 'Modification in first section',
+				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<h2>first heading</h2><p>wheeb</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				expected:
+					'<h2 data-diff-action="none">first heading</h2>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>whee</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>wheeb</ins></p>' +
+					'</div>' +
+					'<h2 data-diff-action="none">context</h2>' +
+					spacer
+			},
+			{
+				msg: 'Modification at start of second section',
+				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foob</p><p>bar</p><p>baz</p>',
+				expected:
+					spacer +
+					'<h2 data-diff-action="none">context</h2>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>foo</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>foob</ins></p>' +
+					'</div>' +
+					'<p data-diff-action="none">bar</p>' +
+					spacer
+			},
+			{
+				msg: 'Modification in middle of second section',
+				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>barb</p><p>baz</p>',
+				expected:
+					spacer +
+					'<h2 data-diff-action="none">context</h2>' +
+					'<p data-diff-action="none">foo</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="remove"><del>bar</del></p>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>barb</ins></p>' +
+					'</div>' +
+					'<p data-diff-action="none">baz</p>'
+			},
+			{
+				msg: 'No extra context shown when second heading modified',
+				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
+				newDoc: '<h2>first heading</h2><p>whee</p><h2>context!</h2><p>foo</p><p>bar</p><p>baz</p>',
+				expected:
+					spacer +
+					'<p data-diff-action="none">whee</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<h2>context<ins data-diff-action="insert">!</del></h2>' +
+					'</div>' +
+					'<p data-diff-action="none">foo</p>' +
+					spacer
+			},
+			{
 				msg: 'Wrapper paragraphs are made concrete',
 				oldDoc: 'foo',
 				newDoc: 'boo',
