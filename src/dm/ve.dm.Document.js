@@ -722,7 +722,7 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
  * @return {Array} Data, with load offset info removed (some items are referenced, others copied)
  */
 ve.dm.Document.prototype.getFullData = function ( range, mode ) {
-	var i, j, jLen, item, metaItems, metaItem, offset,
+	var i, j, jLen, item, metaItems, metaItem, offset, internal,
 		insertedMetaItems = [],
 		insertions = {},
 		iLen = range ? range.end : this.data.getLength(),
@@ -759,30 +759,34 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 			i += 1;
 			continue;
 		}
-		if ( mode === 'roundTrip' && !ve.getProp( item, 'internal', 'changesSinceLoad' ) ) {
-			metaItems = ve.getProp( item, 'internal', 'metaItems' ) || [];
-			// No changes, so restore meta item offsets
-			for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
-				metaItem = metaItems[ j ];
-				offset = i + metaItem.internal.loadMetaParentOffset;
-				if ( !insertions[ offset ] ) {
-					insertions[ offset ] = [];
-				}
-				delete metaItem.internal.loadBranchNodeHash;
-				delete metaItem.internal.loadBranchNodeOffset;
-				if ( Object.keys( metaItem.internal ).length === 0 ) {
-					delete metaItem.internal;
-				}
-				insertions[ offset ].push( metaItem );
-				insertedMetaItems.push( metaItem );
-			}
-		} else if ( mode === 'roundTrip' ) {
-			metaItems = ve.getProp( item, 'internal', 'metaItems' ) || [];
-			// Had changes, so remove removable meta items that are out of place now
-			for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
-				metaItem = metaItems[ j ];
-				if ( ve.dm.nodeFactory.isRemovableMetaData( metaItem.type ) ) {
+		if (
+			mode === 'roundTrip' &&
+			( internal = item.internal ) &&
+			( metaItems = internal.metaItems )
+		) {
+			if ( !internal.changesSinceLoad ) {
+				// No changes, so restore meta item offsets
+				for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
+					metaItem = metaItems[ j ];
+					offset = i + metaItem.internal.loadMetaParentOffset;
+					if ( !insertions[ offset ] ) {
+						insertions[ offset ] = [];
+					}
+					delete metaItem.internal.loadBranchNodeHash;
+					delete metaItem.internal.loadBranchNodeOffset;
+					if ( Object.keys( metaItem.internal ).length === 0 ) {
+						delete metaItem.internal;
+					}
+					insertions[ offset ].push( metaItem );
 					insertedMetaItems.push( metaItem );
+				}
+			} else {
+				// Had changes, so remove removable meta items that are out of place now
+				for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
+					metaItem = metaItems[ j ];
+					if ( ve.dm.nodeFactory.isRemovableMetaData( metaItem.type ) ) {
+						insertedMetaItems.push( metaItem );
+					}
 				}
 			}
 		}
