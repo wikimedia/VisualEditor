@@ -33,7 +33,7 @@ ve.ui.DiffDialog.static.title = 'Changes';
 ve.ui.DiffDialog.static.actions = [
 	{
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		flags: 'safe'
+		flags: [ 'safe', 'close' ]
 	}
 ];
 

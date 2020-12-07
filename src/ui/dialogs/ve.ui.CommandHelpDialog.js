@@ -34,7 +34,7 @@ ve.ui.CommandHelpDialog.static.title =
 ve.ui.CommandHelpDialog.static.actions = [
 	{
 		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
-		flags: 'safe'
+		flags: [ 'safe', 'close' ]
 	}
 ];
 
