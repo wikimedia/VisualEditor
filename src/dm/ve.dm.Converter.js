@@ -1287,6 +1287,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
 		whitespaceList = this.constructor.static.whitespaceList,
 		whitespaceHtmlChars = ve.visibleWhitespaceCharacters,
+		isForPreview = this.isForPreview(),
 		dataLen = data.length,
 		converter = this,
 		doc = container.ownerDocument,
@@ -1417,7 +1418,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 
 	function getChar( char ) {
 		if (
-			converter.isForPreview() &&
+			isForPreview &&
 			Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, char )
 		) {
 			char = whitespaceHtmlChars[ char ];
