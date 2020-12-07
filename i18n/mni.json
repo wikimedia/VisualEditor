@@ -128,6 +128,8 @@
 	"visualeditor-shortcuts-sequence-notice": "ꯃꯈꯜ",
 	"visualeditor-specialcharacter-group-label-symbols": "ꯈꯨꯗꯝꯁꯤꯡ",
 	"visualeditor-table-delete-col": "ꯀꯛꯊꯠꯂꯨ {{PLURAL:$1|ꯀꯣꯂꯝ|ꯀꯣꯂꯝꯁꯤꯡ}}",
+	"visualeditor-table-merge-cells-merge": "ꯄꯨꯟꯁꯤꯟꯕ",
+	"visualeditor-table-merge-cells-unmerge": "ꯄꯨꯟꯁꯤꯟꯗꯕ",
 	"visualeditor-toolbar-history": "ꯄꯨꯋꯥꯔꯤ",
 	"visualeditor-toolbar-insert": "ꯍꯥꯞꯆꯤꯟꯂꯨ",
 	"visualeditor-toolbar-paragraph-format": "ꯃꯑꯣꯡ ꯁꯦꯝꯃꯤ",
