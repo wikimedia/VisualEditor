@@ -264,7 +264,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 				case 'getNodeElements':
 					return item[ 1 ] instanceof ve.dm.HeadingNode;
 				case 'getChangedNodeElements':
-					return diffElement.newDocChildren[ diffElement.oldToNew[ item[ 1 ] ].node ];
+					return diffElement.newDocChildren[ diffElement.oldToNew[ item[ 1 ] ].node ] instanceof ve.dm.HeadingNode;
 			}
 		}
 

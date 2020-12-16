@@ -174,6 +174,19 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Heading context shown with small inline change',
+				oldDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz quux whee</p>',
+				newDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz quux whee 123</p>',
+				expected:
+					spacer +
+					'<h2 data-diff-action="none">context</h2>' +
+					spacer +
+					'<p data-diff-action="none">bar</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>baz quux whee<ins data-diff-action="insert"> 123</ins></p>' +
+					'</div>'
+			},
+			{
 				msg: 'No spacer above heading context when it is the 0th child',
 				oldDoc: '<h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
