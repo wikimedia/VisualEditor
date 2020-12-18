@@ -31,6 +31,8 @@ ve.dm.SuperscriptAnnotation.static.matchTagNames = [ 'sup' ];
 
 ve.dm.SuperscriptAnnotation.static.removes = [ 'textStyle/subscript' ];
 
+ve.dm.SuperscriptAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-superscript-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.SuperscriptAnnotation );

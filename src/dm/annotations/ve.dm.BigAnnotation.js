@@ -31,6 +31,8 @@ ve.dm.BigAnnotation.static.matchTagNames = [ 'big' ];
 
 ve.dm.BigAnnotation.static.removes = [ 'textStyle/small' ];
 
+ve.dm.BigAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-big-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.BigAnnotation );

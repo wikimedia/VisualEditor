@@ -49,6 +49,8 @@
 	"visualeditor-changedesc-link-href": "Link target changed from $1 to $2",
 	"visualeditor-changedesc-no-key": "$1 changed to $2",
 	"visualeditor-changedesc-set": "$1 set to $2",
+	"visualeditor-changedesc-textstyle-added": "Text styling added: $1",
+	"visualeditor-changedesc-textstyle-removed": "Text styling removed: $1",
 	"visualeditor-changedesc-unknown": "$1 changed",
 	"visualeditor-changedesc-unset": "$1 unset from $2",
 	"visualeditor-changedir": "Change directionality",

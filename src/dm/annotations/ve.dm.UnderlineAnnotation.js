@@ -31,6 +31,8 @@ ve.dm.UnderlineAnnotation.static.matchTagNames = [ 'u' ];
 
 ve.dm.UnderlineAnnotation.static.inferFromView = true;
 
+ve.dm.UnderlineAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-underline-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.UnderlineAnnotation );

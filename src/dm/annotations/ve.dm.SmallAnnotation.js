@@ -31,6 +31,8 @@ ve.dm.SmallAnnotation.static.matchTagNames = [ 'small' ];
 
 ve.dm.SmallAnnotation.static.removes = [ 'textStyle/big' ];
 
+ve.dm.SmallAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-small-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.SmallAnnotation );

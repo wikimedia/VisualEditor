@@ -1295,6 +1295,10 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 							changes = changes.concat( ve.dm.modelRegistry.lookup( annotationChange.newAnnotation.getType() ).static.describeChanges(
 								attributeChanges, annotationChange.newAnnotation.getAttributes(), annotationChange.newAnnotation.getElement()
 							) );
+						} else if ( annotationChange.newAnnotation ) {
+							changes = changes.concat( annotationChange.newAnnotation.describeAdded() );
+						} else if ( annotationChange.oldAnnotation ) {
+							changes = changes.concat( annotationChange.oldAnnotation.describeRemoved() );
 						}
 					} );
 				}

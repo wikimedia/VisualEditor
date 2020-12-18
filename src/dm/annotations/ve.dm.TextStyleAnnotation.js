@@ -44,6 +44,8 @@ ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( nodeName || this.matchTagNames[ 0 ] ) ];
 };
 
+ve.dm.TextStyleAnnotation.static.description = null;
+
 /* Methods */
 
 /**
@@ -51,6 +53,20 @@ ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
  */
 ve.dm.TextStyleAnnotation.prototype.getComparableObject = function () {
 	return { type: this.getType() };
+};
+
+ve.dm.TextStyleAnnotation.prototype.describeAdded = function () {
+	if ( this.constructor.static.description ) {
+		return [ ve.msg( 'visualeditor-changedesc-textstyle-added', OO.ui.resolveMsg( this.constructor.static.description ) ) ];
+	}
+	return [];
+};
+
+ve.dm.TextStyleAnnotation.prototype.describeRemoved = function () {
+	if ( this.constructor.static.description ) {
+		return [ ve.msg( 'visualeditor-changedesc-textstyle-removed', OO.ui.resolveMsg( this.constructor.static.description ) ) ];
+	}
+	return [];
 };
 
 /* Registration */

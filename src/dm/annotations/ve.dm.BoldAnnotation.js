@@ -31,6 +31,8 @@ ve.dm.BoldAnnotation.static.matchTagNames = [ 'b', 'strong' ];
 
 ve.dm.BoldAnnotation.static.inferFromView = true;
 
+ve.dm.BoldAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-bold-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.BoldAnnotation );

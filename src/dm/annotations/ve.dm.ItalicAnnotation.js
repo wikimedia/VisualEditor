@@ -31,6 +31,8 @@ ve.dm.ItalicAnnotation.static.matchTagNames = [ 'i', 'em' ];
 
 ve.dm.ItalicAnnotation.static.inferFromView = true;
 
+ve.dm.ItalicAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-italic-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.ItalicAnnotation );

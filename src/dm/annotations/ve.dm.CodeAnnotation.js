@@ -29,6 +29,8 @@ ve.dm.CodeAnnotation.static.name = 'textStyle/code';
 
 ve.dm.CodeAnnotation.static.matchTagNames = [ 'code', 'tt' ];
 
+ve.dm.CodeAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-code-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.CodeAnnotation );

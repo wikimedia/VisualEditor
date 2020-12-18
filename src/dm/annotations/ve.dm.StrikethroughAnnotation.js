@@ -29,6 +29,8 @@ ve.dm.StrikethroughAnnotation.static.name = 'textStyle/strikethrough';
 
 ve.dm.StrikethroughAnnotation.static.matchTagNames = [ 's', 'del' ];
 
+ve.dm.StrikethroughAnnotation.static.description = OO.ui.deferMsg( 'visualeditor-annotationbutton-strikethrough-tooltip' );
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.StrikethroughAnnotation );

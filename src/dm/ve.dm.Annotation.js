@@ -204,3 +204,21 @@ ve.dm.Annotation.prototype.compareToForSerialization = function ( annotation ) {
 		annotation.getComparableObjectForSerialization()
 	);
 };
+
+/**
+ * Describe the addition of this annotation to some text
+ *
+ * @return {Array} Descriptions, list of strings or Node arrays
+ */
+ve.dm.Annotation.prototype.describeAdded = function () {
+	return [];
+};
+
+/**
+ * Describe the removal of this annotation from some text
+ *
+ * @return {Array} Descriptions, list of strings or Node arrays
+ */
+ve.dm.Annotation.prototype.describeRemoved = function () {
+	return [];
+};

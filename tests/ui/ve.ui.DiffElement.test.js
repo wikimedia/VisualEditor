@@ -580,8 +580,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo <b>bar</b> baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <del data-diff-action="remove">bar</del><ins data-diff-action="insert"><b>bar</b></ins> baz</p>' +
-					'</div>'
+						'<p>foo <span data-diff-action="change-remove">bar</span><span data-diff-action="change-insert" data-diff-id="0"><b>bar</b></span> baz</p>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-textstyle-added,visualeditor-annotationbutton-bold-tooltip</div>'
+				]
 			},
 			{
 				msg: 'Annotation removal',
@@ -589,8 +592,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>foo bar baz</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p>foo <del data-diff-action="remove"><b>bar</b></del><ins data-diff-action="insert">bar</ins> baz</p>' +
-					'</div>'
+						'<p>foo <span data-diff-action="change-remove"><b>bar</b></span><span data-diff-action="change-insert" data-diff-id="0">bar</span> baz</p>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-textstyle-removed,visualeditor-annotationbutton-bold-tooltip</div>'
+				]
 			},
 			{
 				msg: 'Annotation attribute change',
@@ -610,8 +616,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p><a href="http://example.org/">foo <b>bar</b> baz</a></p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p><a href="http://example.org/">foo <del data-diff-action="remove">bar</del><ins data-diff-action="insert"><b>bar</b></ins> baz</a></p>' +
-					'</div>'
+						'<p><a href="http://example.org/">foo <span data-diff-action="change-remove">bar</span><span data-diff-action="change-insert" data-diff-id="0"><b>bar</b></span> baz</a></p>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-textstyle-added,visualeditor-annotationbutton-bold-tooltip</div>'
+				]
 			},
 			{
 				msg: 'Annotation insertion with text change',
