@@ -125,6 +125,14 @@ ve.dm.LinkAnnotation.prototype.getComparableHtmlAttributes = function () {
 	return comparableAttributes;
 };
 
+ve.dm.LinkAnnotation.prototype.describeAdded = function () {
+	return [ ve.msg( 'visualeditor-changedesc-link-added', this.getAttribute( 'href' ) ) ];
+};
+
+ve.dm.LinkAnnotation.prototype.describeRemoved = function () {
+	return [ ve.msg( 'visualeditor-changedesc-link-removed', this.getAttribute( 'href' ) ) ];
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.LinkAnnotation );

@@ -611,6 +611,30 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'Link insertion',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo <a href="http://example.org/">bar</a> baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>foo <span data-diff-action="change-remove">bar</span><span data-diff-action="change-insert" data-diff-id="0"><a href="http://example.org/">bar</a></span> baz</p>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-link-added,http://example.org/</div>'
+				]
+			},
+			{
+				msg: 'Link removal',
+				oldDoc: '<p>foo <a href="http://example.org/">bar</a> baz</p>',
+				newDoc: '<p>foo bar baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>foo <span data-diff-action="change-remove"><a href="http://example.org/">bar</a></span><span data-diff-action="change-insert" data-diff-id="0">bar</span> baz</p>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-link-removed,http://example.org/</div>'
+				]
+			},
+			{
 				msg: 'Nested annotation change',
 				oldDoc: '<p><a href="http://example.org/">foo bar baz</a></p>',
 				newDoc: '<p><a href="http://example.org/">foo <b>bar</b> baz</a></p>',
