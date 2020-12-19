@@ -96,6 +96,8 @@
 	"visualeditor-dialog-language-search-title": "Select language",
 	"visualeditor-dialog-table-caption": "Caption",
 	"visualeditor-dialog-table-title": "Table properties",
+	"visualeditor-diff-moved-down": "Moved down",
+	"visualeditor-diff-moved-up": "Moved up",
 	"visualeditor-diff-no-changes": "No changes",
 	"visualeditor-diff-timed-out": "It took too long to compute your changes, so the description below may not be optimal.",
 	"visualeditor-dimensionswidget-px": "px",

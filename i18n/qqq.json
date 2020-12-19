@@ -111,6 +111,8 @@
 	"visualeditor-dialog-language-search-title": "Title for language search dialog\n{{Identical|Select language}}",
 	"visualeditor-dialog-table-caption": "Label for caption toggle in table dialog.\n{{Identical|Caption}}",
 	"visualeditor-dialog-table-title": "Title for the table dialog.",
+	"visualeditor-diff-moved-down": "Description of an item that has been moved down the page for visual diffing.",
+	"visualeditor-diff-moved-up": "Description of an item that has been moved up the page for visual diffing.",
 	"visualeditor-diff-no-changes": "Label displayed in the diff view when no net changes have been made.",
 	"visualeditor-diff-timed-out": "Label displayed in the diff view if the diff took too long to compute accurately.",
 	"visualeditor-dimensionswidget-px": "{{optional}}\nLabel for the dimensions properties denoting pixel units.",

@@ -15,10 +15,6 @@
 	display: block;
 }
 
-.ve-ui-diffElement-hasMoves .ve-ui-diffElement-content {
-	margin-left: 15px;
-}
-
 .ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-content {
 	margin-right: 16em;
 	padding-right: 1em;
@@ -173,7 +169,7 @@ del[ data-diff-action='remove' ]:hover,
 	margin-left: 4px;
 }
 
-[ data-diff-action='none' ] {
+[ data-diff-action='none' ]:not( [ data-diff-move ] ) {
 	opacity: 0.4;
 	/* opacity increases stacking order, so reduce it again */
 	z-index: -1;
@@ -181,34 +177,28 @@ del[ data-diff-action='remove' ]:hover,
 }
 
 [ data-diff-move ] {
-	overflow: visible;
+	background: #eaecf0; /* base80 */
+	outline: 5px solid #eaecf0;
+}
+
+.ve-ui-diffElement-moved-up,
+.ve-ui-diffElement-moved-down {
 	position: relative;
-	opacity: 1;
+	padding-left: 1em;
 }
 
-[ data-diff-move ]:before {
+.ve-ui-diffElement-moved-up:before,
+.ve-ui-diffElement-moved-down:before {
 	position: absolute;
-	left: -15px;
-	content: ' ';
-	top: 50%;
-	margin-top: -3px;
-	width: 0;
-	height: 0;
-	border-left: 4px solid transparent;
-	border-right: 4px solid transparent;
-	background: #fff;
+	left: 0;
 }
 
-[ data-diff-move='down' ]:before {
-	border-top: 6px solid #36c;
+.ve-ui-diffElement-moved-down:before {
+	content: '↓';
 }
 
-[ data-diff-move='up' ]:before {
-	border-bottom: 6px solid #36c;
-}
-
-li [ data-diff-move ]:before {
-	left: -30px;
+.ve-ui-diffElement-moved-up:before {
+	content: '↑';
 }
 
 [ data-diff-action='insert' ]:empty:before,

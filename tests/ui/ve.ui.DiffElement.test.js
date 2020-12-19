@@ -487,9 +487,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<p>foo</p><p>bar</p>',
 				newDoc: '<p>bar</p><p>foo</p>',
 				expected:
-					'<p data-diff-action="none" data-diff-move="up">bar</p>' +
+					'<p data-diff-action="none" data-diff-move="up" data-diff-id="0">bar</p>' +
 					'<p data-diff-action="none">foo</p>',
-				hasMoves: true
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-up</div>'
+				]
 			},
 			{
 				msg: 'Paragraphs moved, with insert',
@@ -497,9 +499,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>baz</p><p>bar</p><p>foo</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change"><p data-diff-action="insert"><ins>baz</ins></p></div>' +
-					'<p data-diff-action="none" data-diff-move="up">bar</p>' +
+					'<p data-diff-action="none" data-diff-move="up" data-diff-id="0">bar</p>' +
 					'<p data-diff-action="none">foo</p>',
-				hasMoves: true
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-up</div>'
+				]
 			},
 			{
 				msg: 'Paragraphs moved, with remove',
@@ -507,9 +511,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>bar</p><p>foo</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change"><p data-diff-action="remove"><del>baz</del></p></div>' +
-					'<p data-diff-action="none" data-diff-move="up">bar</p>' +
+					'<p data-diff-action="none" data-diff-move="up" data-diff-id="0">bar</p>' +
 					'<p data-diff-action="none">foo</p>',
-				hasMoves: true
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-up</div>'
+				]
 			},
 			{
 				msg: 'Paragraphs moved and modified',
@@ -517,12 +523,14 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<p>quux whee!</p><p>foo bar baz!</p>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<p data-diff-move="up">quux whee<ins data-diff-action="insert">!</ins></p>' +
+						'<p data-diff-move="up" data-diff-id="0">quux whee<ins data-diff-action="insert">!</ins></p>' +
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p>foo bar baz<ins data-diff-action="insert">!</ins></p>' +
 					'</div>',
-				hasMoves: true
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-up</div>'
+				]
 			},
 			{
 				msg: 'Insert table column',
@@ -736,12 +744,15 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
-							'<li><p data-diff-action="none" data-diff-move="up">baz</p></li>' +
+							'<li><p data-diff-action="none" data-diff-move="up" data-diff-id="0">baz</p></li>' +
 							'<li><p data-diff-action="none">foo</p></li>' +
 							'<li><p data-diff-action="none">bar</p></li>' +
 							'<li><p data-diff-action="none">quux</p></li>' +
 						'</ul>' +
-					'</div>'
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-up</div>'
+				]
 			},
 			{
 				msg: 'List item move down',
@@ -753,9 +764,12 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<li><p data-diff-action="none">foo</p></li>' +
 							'<li><p data-diff-action="none">baz</p></li>' +
 							'<li><p data-diff-action="none">quux</p></li>' +
-							'<li><p data-diff-action="none" data-diff-move="down">bar</p></li>' +
+							'<li><p data-diff-action="none" data-diff-move="down" data-diff-id="0">bar</p></li>' +
 						'</ul>' +
-					'</div>'
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-down</div>'
+				]
 			},
 			{
 				msg: 'List item move and change',
@@ -764,12 +778,15 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
-							'<li><p data-diff-move="up">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
+							'<li><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
 							'<li><p data-diff-action="none">foo</p></li>' +
 							'<li><p data-diff-action="none">bar</p></li>' +
 							'<li><p data-diff-action="none">quux</p></li>' +
 						'</ul>' +
-					'</div>'
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-up</div>'
+				]
 			},
 			{
 				msg: 'List item indentation',
