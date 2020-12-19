@@ -181,6 +181,7 @@ del[ data-diff-action='remove' ]:hover,
 }
 
 [ data-diff-move ] {
+	overflow: visible;
 	position: relative;
 	opacity: 1;
 }
