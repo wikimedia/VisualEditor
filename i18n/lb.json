@@ -38,6 +38,8 @@
 	"visualeditor-changedesc-comment": "Bemierkung geännert vu(n) $1 op $2",
 	"visualeditor-changedesc-image-size": "Gréisst gouf vu(n) $1 op $2 geännert",
 	"visualeditor-changedesc-language": "Sprooch gouf vu(n) $1 op $2 geännert",
+	"visualeditor-changedesc-link-added": "Link dobäigesat: $1",
+	"visualeditor-changedesc-link-removed": "Link ewechgeholl: $1",
 	"visualeditor-changedesc-no-key": "$1 gouf op $2 geännert",
 	"visualeditor-changedesc-set": "$1 op $2 gesat",
 	"visualeditor-changedesc-unknown": "$1 geännert",
