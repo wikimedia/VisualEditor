@@ -25,9 +25,7 @@ ve.ce.LinkAnnotation = function VeCeLinkAnnotation( model, parentNode, config ) 
 	this.$element.addClass( 've-ce-linkAnnotation' )
 		.prop( {
 			href: ve.resolveUrl( this.model.getHref(), this.getModelHtmlDocument() ),
-			title: this.constructor.static.getDescription( this.model ),
-			// Tabbable nodes on the surface prevent users from tabbing out of it
-			tabIndex: -1
+			title: this.constructor.static.getDescription( this.model )
 		} );
 
 	this.$element.on( 'click', this.onClick.bind( this ) );

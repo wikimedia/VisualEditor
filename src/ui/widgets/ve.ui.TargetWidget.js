@@ -128,7 +128,6 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 
 	// Events
 	this.getSurface().getView().connect( this, {
-		activation: 'onFocusChange',
 		focus: 'onFocusChange',
 		blur: 'onFocusChange'
 	} );
@@ -224,10 +223,7 @@ ve.ui.TargetWidget.prototype.onFocusChange = function () {
 	var surface = this.getSurface();
 	// Replacement for the :focus pseudo selector one would be able to
 	// use on a regular input widget
-	this.$element.toggleClass(
-		've-ui-targetWidget-focused',
-		surface && surface.getView().isFocused() && !surface.getView().isDeactivated()
-	);
+	this.$element.toggleClass( 've-ui-targetWidget-focused', surface && surface.getView().isFocused() );
 };
 
 /**
