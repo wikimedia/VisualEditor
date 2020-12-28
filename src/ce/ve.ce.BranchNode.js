@@ -333,6 +333,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 		this.slugNodes[ i ] = slugNode;
 		if ( isBlock ) {
 			slugButton = new ve.ui.NoFocusButtonWidget( {
+				tabIndex: -1,
 				label: ve.msg( 'visualeditor-slug-insert' ),
 				icon: 'add',
 				framed: false
