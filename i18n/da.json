@@ -90,6 +90,8 @@
 	"visualeditor-dialog-language-search-title": "Vælg sprog",
 	"visualeditor-dialog-table-caption": "Billedtekst",
 	"visualeditor-dialog-table-title": "Egenskaber for tabel",
+	"visualeditor-diff-moved-down": "Flyttet ned",
+	"visualeditor-diff-moved-up": "Flyttet op",
 	"visualeditor-diff-no-changes": "Ingen ændringer",
 	"visualeditor-diff-timed-out": "Det tog for lang tid at beregne dine ændringer, så beskrivelsen nedenfor er måske ikke optimal.",
 	"visualeditor-find-and-replace-diacritic": "Ignorer diakritiske tegn",
