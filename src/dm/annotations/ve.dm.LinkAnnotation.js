@@ -126,11 +126,11 @@ ve.dm.LinkAnnotation.prototype.getComparableHtmlAttributes = function () {
 };
 
 ve.dm.LinkAnnotation.prototype.describeAdded = function () {
-	return [ ve.msg( 'visualeditor-changedesc-link-added', this.getAttribute( 'href' ) ) ];
+	return [ ve.msg( 'visualeditor-changedesc-link-added', this.getDisplayTitle() ) ];
 };
 
 ve.dm.LinkAnnotation.prototype.describeRemoved = function () {
-	return [ ve.msg( 'visualeditor-changedesc-link-removed', this.getAttribute( 'href' ) ) ];
+	return [ ve.msg( 'visualeditor-changedesc-link-removed', this.getDisplayTitle() ) ];
 };
 
 /* Registration */
