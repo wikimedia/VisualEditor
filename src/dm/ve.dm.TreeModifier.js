@@ -404,7 +404,7 @@ ve.dm.TreeModifier.prototype.setup = function ( document ) {
 	this.treeOps = [];
 	this.insertedNodes = [];
 	this.insertedPositions = [];
-	this.adjustmentTree = {};
+	this.adjustmentTree = { offsetsUsed: [] };
 };
 
 /**
@@ -886,7 +886,8 @@ ve.dm.TreeModifier.prototype.findOrCreateAdjustmentNode = function ( position ) 
 	for ( i = 0, len = position.length; i < len; i++ ) {
 		offset = position[ i ];
 		if ( !adjustmentNode[ offset ] ) {
-			adjustmentNode[ offset ] = {};
+			adjustmentNode[ offset ] = { offsetsUsed: [] };
+			adjustmentNode.offsetsUsed.push( offset );
 		}
 		adjustmentNode = adjustmentNode[ offset ];
 	}
@@ -901,20 +902,17 @@ ve.dm.TreeModifier.prototype.findOrCreateAdjustmentNode = function ( position ) 
  * @param {boolean} deleteDescendants If true, delete all adjustments at paths descending from here
  */
 ve.dm.TreeModifier.prototype.modifyAdjustmentTree = function ( rawPosition, diff, deleteDescendants ) {
-	var i,
-		adjustmentNode = this.findOrCreateAdjustmentNode( rawPosition );
+	var adjustmentNode = this.findOrCreateAdjustmentNode( rawPosition );
 	if ( diff > 0 ) {
 		adjustmentNode.inserted = ( adjustmentNode.inserted || 0 ) + diff;
 	} else {
 		adjustmentNode.removed = ( adjustmentNode.removed || 0 ) - diff;
 	}
 	if ( deleteDescendants ) {
-		for ( i in adjustmentNode ) {
-			if ( i === 'inserted' || i === 'removed' ) {
-				continue;
-			}
+		adjustmentNode.offsetsUsed.forEach( function ( i ) {
 			delete adjustmentNode[ i ];
-		}
+		} );
+		adjustmentNode.offsetsUsed = [];
 	}
 };
 
@@ -1006,7 +1004,7 @@ ve.dm.TreeModifier.prototype.getRawPosition = function ( path, offset, node ) {
  * @return {number[]} Adjusted pathAndOffset, with offsets inside a ContentBranchNode linearized
  */
 ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInserter ) {
-	var i, iLen, j, jLen, positionI, childNode, inserted, removed,
+	var i, iLen, j, jLen, k, kLen, positionI, childNode, inserted, removed, offsetsUsed,
 		node = this.adjustmentTree;
 
 	position = position.slice();
@@ -1027,9 +1025,14 @@ ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInsert
 		// However as `node` is very sparse, it is slow to iterate over
 		// every position, so just iterate over the positions we have,
 		// then check the loop conditions later. (T261634)
+		// An offsetsUsed property is stored on every node instead of
+		// using a for..in loop as a for..in loop has to re-calculate
+		// the list of indexes to iterate over.
 
 		jLen = positionI + 1;
-		for ( j in node ) {
+		offsetsUsed = node.offsetsUsed;
+		for ( k = 0, kLen = offsetsUsed.length; k < kLen; k++ ) {
+			j = offsetsUsed[ k ];
 			if ( j >= jLen ) {
 				continue;
 			}
