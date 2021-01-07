@@ -5,7 +5,8 @@
 			"Aurora",
 			"CyberTroopers",
 			"Pizza1016",
-			"SNN95"
+			"SNN95",
+			"Tofeiku"
 		]
 	},
 	"visualeditor": "Suntingan visual",
@@ -133,6 +134,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "Arah",
 	"visualeditor-languageinspector-widget-label-langcode": "Kod bahasa",
 	"visualeditor-languageinspector-widget-label-language": "Bahasa",
+	"visualeditor-linkcontext-label-label": "Teks",
 	"visualeditor-linkinspector-title": "Pautan",
 	"visualeditor-listbutton-bullet-tooltip": "Senarai berbulet",
 	"visualeditor-listbutton-number-tooltip": "Senarai bernombor",
