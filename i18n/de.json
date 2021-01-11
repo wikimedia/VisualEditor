@@ -96,6 +96,8 @@
 	"visualeditor-dialog-language-search-title": "Sprache auswählen",
 	"visualeditor-dialog-table-caption": "Überschrift",
 	"visualeditor-dialog-table-title": "Tabelleneigenschaften",
+	"visualeditor-diff-moved-down": "Nach unten verschoben",
+	"visualeditor-diff-moved-up": "Nach oben verschoben",
 	"visualeditor-diff-no-changes": "Keine Änderungen",
 	"visualeditor-diff-timed-out": "Die Berechnung deiner Änderungen hat zu lang gedauert. Deshalb könnte die unten stehende Beschreibung nicht optimal sein.",
 	"visualeditor-find-and-replace-diacritic": "Diakritisch schreibungsunabhängig",
