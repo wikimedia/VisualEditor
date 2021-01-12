@@ -481,7 +481,7 @@ ve.dm.Converter.prototype.canCloseWrapper = function () {
  *  were a handlesOwnChildren node.
  */
 ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc, childDomElements ) {
-	var domElements, originalDomElements, key,
+	var domElements, originalDomElements, key, hasSignificantWhitespace,
 		dataElement = Array.isArray( dataElements ) ? dataElements[ 0 ] : dataElements,
 		nodeClass = this.modelRegistry.lookup( dataElement.type );
 
@@ -526,8 +526,12 @@ ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElement
 	}
 	// Mark branch nodes as generated from dataElement, so we don't try and descend into them in a deep renderHtmlAttributeList call
 	if ( this.nodeFactory.lookup( dataElement.type ) && this.nodeFactory.canNodeHaveChildren( dataElement.type ) ) {
+		hasSignificantWhitespace = this.nodeFactory.doesNodeHaveSignificantWhitespace( dataElement.type );
 		domElements.forEach( function ( domElement ) {
 			domElement.veFromDataElement = true;
+			if ( hasSignificantWhitespace ) {
+				domElement.veHasSignificantWhitespace = true;
+			}
 		} );
 	}
 	return domElements;
@@ -1419,6 +1423,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 	function getChar( char ) {
 		if (
 			isForPreview &&
+			!domElement.veHasSignificantWhitespace &&
 			Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, char )
 		) {
 			char = whitespaceHtmlChars[ char ];

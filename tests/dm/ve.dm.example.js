@@ -1704,7 +1704,7 @@ ve.dm.example.domToDataCases = {
 		],
 		normalizedBody: '<p>foo</p><p>bar</p><h2>baz</h2><pre> \tquux</pre>',
 		clipboardBody: '<p> foo</p><p> \t \tbar</p><h2>  baz</h2><pre> \tquux</pre>',
-		previewBody: '<p> foo</p><p> ➞ ➞bar</p><h2>  baz</h2><pre> ➞quux</pre>'
+		previewBody: '<p> foo</p><p> ➞ ➞bar</p><h2>  baz</h2><pre> \tquux</pre>'
 	},
 	image: {
 		body: ve.dm.example.image.html,

@@ -904,6 +904,24 @@ QUnit.test( 'Diffing', function ( assert ) {
 				'</div>'
 			},
 			{
+				msg: 'Newlines and tabs are substituted in a paragraph',
+				oldDoc: '<p>Quux</p>',
+				newDoc: '<p>Quux</p><p>Foo\n\tBar</p>',
+				expected: '<p data-diff-action="none">Quux</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p data-diff-action="insert"><ins>Foo↵➞Bar</ins></p>' +
+					'</div>'
+			},
+			{
+				msg: 'Newlines and tabs not substitued in nodes with signficant whitespace',
+				oldDoc: '<p>Quux</p>',
+				newDoc: '<p>Quux</p><pre>Foo\n\tBar</pre>',
+				expected: '<p data-diff-action="none">Quux</p>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<pre data-diff-action="insert"><ins>Foo\n\tBar</ins></pre>' +
+					'</div>'
+			},
+			{
 				msg: 'Metadata change inside paragraph (no diff)',
 				oldDoc: '<p>foo bar baz<meta foo="a"></p>',
 				newDoc: '<p>foo bar baz<meta foo="b"></p>',
