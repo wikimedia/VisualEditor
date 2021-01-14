@@ -732,8 +732,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 		if ( !element || !element.internal ) {
 			return element;
 		}
-		element = ve.cloneObject( element );
-		element.internal = ve.cloneObject( element.internal );
+		element = ve.copy( element );
 		delete element.internal.changesSinceLoad;
 		delete element.internal.metaItems;
 		delete element.internal.loadMetaParentHash;
@@ -777,7 +776,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 					if ( Object.keys( metaItem.internal ).length === 0 ) {
 						delete metaItem.internal;
 					}
-					insertions[ offset ].push( metaItem );
+					insertions[ offset ].push( stripMetaLoadInfo( metaItem ) );
 					insertedMetaItems.push( metaItem.originalDomElementsHash );
 				}
 			} else {
@@ -794,7 +793,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 		if ( mode === 'roundTrip' && insertions[ i ] ) {
 			for ( j = 0, jLen = insertions[ i ].length; j < jLen; j++ ) {
 				metaItem = insertions[ i ][ j ];
-				result.push( stripMetaLoadInfo( metaItem ) );
+				result.push( metaItem );
 				result.push( { type: '/' + metaItem.type } );
 			}
 		}
