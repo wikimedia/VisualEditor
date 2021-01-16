@@ -4169,8 +4169,11 @@ ve.ce.Surface.prototype.showModelSelection = function ( force ) {
 
 	selection = this.getSelection();
 	if ( selection.getModel().isNull() ) {
-		if ( !this.nativeSelection.rangeCount ) {
-			// Native selection is already null
+		if (
+			!this.nativeSelection.focusNode ||
+			!this.$element[ 0 ].contains( this.nativeSelection.focusNode )
+		) {
+			// Native selection is already null, or outside the document
 			return false;
 		}
 		modelRange = null;
