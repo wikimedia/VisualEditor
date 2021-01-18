@@ -4,12 +4,14 @@
 			"Cedric31",
 			"Gloria sah",
 			"Jfblanc",
+			"Nicolas Eynaud",
 			"Quentí"
 		]
 	},
 	"visualeditor": "EditorVisual",
 	"visualeditor-aliencontextitem-title": "Element",
 	"visualeditor-aliennode-tooltip": "O planhèm, aqueste element pòt pas èsser modificat qu’en mòde font pel moment.",
+	"visualeditor-align-desc-center": "Centrat",
 	"visualeditor-align-widget-center": "Centrat",
 	"visualeditor-align-widget-left": "Esquèrra",
 	"visualeditor-align-widget-right": "Dreita",
