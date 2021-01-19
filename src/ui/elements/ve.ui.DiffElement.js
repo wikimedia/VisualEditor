@@ -1072,7 +1072,9 @@ ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDi
 		referencesListDiffDiv.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
 	}
 
-	referencesListDiffDiv.setAttribute( 'data-diff-move', move );
+	if ( move ) {
+		referencesListDiffDiv.setAttribute( 'data-diff-move', move );
+	}
 
 	return [ referencesListDiffDiv ];
 };
