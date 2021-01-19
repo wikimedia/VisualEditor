@@ -55,7 +55,9 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 
 	this.descriptions = new ve.ui.ChangeDescriptionsSelectWidget();
 	this.descriptions.connect( this, { highlight: 'onDescriptionsHighlight' } );
-	this.descriptionItemsStack = [];
+	// Set to an empty array before a series of diff computations to collect descriptions.
+	// Set back to null after collecting values.
+	this.descriptionItemsStack = null;
 
 	this.$document.on( {
 		mousemove: this.onDocumentMouseMove.bind( this )
@@ -360,11 +362,14 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			}
 		}
 
+		this.descriptionItemsStack = [];
 		processQueue( internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
 		referencesListDiffDivs[ group ] = {
 			elements: referencesListDiffDiv,
-			action: internalListGroup.changes ? 'change' : 'none'
+			action: internalListGroup.changes ? 'change' : 'none',
+			descriptionItemsStack: this.descriptionItemsStack
 		};
+		this.descriptionItemsStack = null;
 
 		internalListDiffQueue = [];
 	}
@@ -372,6 +377,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	ilen = Math.max( this.oldDocChildren.length, this.newDocChildren.length );
 	jlen = ilen;
 
+	this.descriptionItemsStack = [];
 	for ( i = 0, j = 0; i < ilen || j < jlen; i++, j++ ) {
 
 		move = this.moves[ j ] === 0 ? null : this.moves[ j ];
@@ -418,7 +424,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			// (which contains details of changes if there are any) so
 			// just get that.
 			referencesListDiffDiv = referencesListDiffDivs[ this.newDocChildren[ j ].element.attributes.listGroup ];
-			diffQueue.push( [ 'getRefListNodeElements', referencesListDiffDiv.elements, referencesListDiffDiv.action, move ] );
+			diffQueue.push( [ 'getRefListNodeElements', referencesListDiffDiv.elements, referencesListDiffDiv.action, move, referencesListDiffDiv.descriptionItemsStack ] );
 
 		} else if ( typeof this.newToOld[ j ] === 'number' ) {
 
@@ -435,7 +441,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 
 	processQueue( diffQueue, documentNode, documentSpacerNode );
 	this.descriptions.addItems( this.descriptionItemsStack );
-	this.descriptionItemsStack = [];
+	this.descriptionItemsStack = null;
 
 	ve.resolveAttributes( documentNode, this.newDoc.getHtmlDocument(), ve.dm.Converter.static.computedAttributes );
 
@@ -1044,13 +1050,15 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
  * @param {HTMLElement} referencesListDiffDiv Div containing the references list
  * @param {string} action 'change' or 'none'
  * @param {string} move 'up' or 'down' if the node has moved
+ * @param {OO.ui.OptionWidget[]} items Change descriptions for the reference list
  * @return {HTMLElement[]} Elements to display
  */
-ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDiffDiv, action, move ) {
+ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDiffDiv, action, move, items ) {
 	if ( action !== 'none' ) {
 		referencesListDiffDiv.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
 	}
 	this.markMove( move, referencesListDiffDiv );
+	this.descriptionItemsStack.push.apply( this.descriptionItemsStack, items );
 
 	return [ referencesListDiffDiv ];
 };
