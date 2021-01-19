@@ -527,24 +527,14 @@ ve.ui.DiffElement.prototype.wrapNodeData = function ( nodeData ) {
  * @return {Array} Linear Data
  */
 ve.ui.DiffElement.prototype.getNodeData = function ( node, action, move ) {
-	var nodeData, item, doc = action === 'remove' ? this.oldDoc : this.newDoc;
+	var nodeData, doc = action === 'remove' ? this.oldDoc : this.newDoc;
 
 	// Get the linear model for the node
 	nodeData = doc.getData( node.getOuterRange() );
 
 	// Add the classes to the outer element
 	this.addAttributesToElement( nodeData[ 0 ], { 'data-diff-action': action } );
-	if ( move ) {
-		// The following messages are used here:
-		// * visualeditor-diff-moved-up
-		// * visualeditor-diff-moved-down
-		// The following classes are used here:
-		// * ve-ui-diffElement-moved-up
-		// * ve-ui-diffElement-moved-down
-		item = this.getChangeDescriptionItem( [ ve.msg( 'visualeditor-diff-moved-' + move ) ], [ 've-ui-diffElement-moved-' + move ] );
-		this.addAttributesToElement( nodeData[ 0 ], { 'data-diff-move': move, 'data-diff-id': item.getData() } );
-		this.descriptionItemsStack.push( item );
-	}
+	this.markMove( move, nodeData );
 
 	return nodeData;
 };
@@ -577,7 +567,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( oldNodeIndex, mo
  * @return {Array} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedNodeData = function ( diff, move, newNode, oldNode ) {
-	var nodeData, item;
+	var nodeData;
 
 	// Choose the appropriate method for the type of node
 	if ( newNode.isDiffedAsLeaf() ) {
@@ -588,18 +578,7 @@ ve.ui.DiffElement.prototype.getChangedNodeData = function ( diff, move, newNode,
 		nodeData = this.getChangedTreeNodeData( oldNode, newNode, diff );
 	}
 
-	if ( move ) {
-		// Add move class to the outer element
-		// The following messages are used here:
-		// * visualeditor-diff-moved-up
-		// * visualeditor-diff-moved-down
-		// The following classes are used here:
-		// * ve-ui-diffElement-moved-up
-		// * ve-ui-diffElement-moved-down
-		item = this.getChangeDescriptionItem( [ ve.msg( 'visualeditor-diff-moved-' + move ) ], [ 've-ui-diffElement-moved-' + move ] );
-		this.addAttributesToElement( nodeData[ 0 ], { 'data-diff-move': move, 'data-diff-id': item.getData() } );
-		this.descriptionItemsStack.push( item );
-	}
+	this.markMove( move, nodeData );
 
 	return nodeData;
 };
@@ -1071,10 +1050,7 @@ ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDi
 	if ( action !== 'none' ) {
 		referencesListDiffDiv.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
 	}
-
-	if ( move ) {
-		referencesListDiffDiv.setAttribute( 'data-diff-move', move );
-	}
+	this.markMove( move, referencesListDiffDiv );
 
 	return [ referencesListDiffDiv ];
 };
@@ -1133,9 +1109,7 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( inte
 
 	element = document.createElement( 'div' );
 	element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
-	if ( move ) {
-		element.setAttribute( 'data-diff-move', move );
-	}
+	this.markMove( move, element );
 	documentSlice = this.newDoc.cloneWithData( annotatedData, true, true );
 	body = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
 	while ( body.childNodes.length ) {
@@ -1232,6 +1206,34 @@ ve.ui.DiffElement.prototype.addAttributesToElement = function ( element, attribu
 
 	// Don't let any nodes get unwrapped
 	ve.deleteProp( element, 'internal', 'generated' );
+};
+
+/**
+ * Mark an HTML element or data element as moved
+ *
+ * @param {string|null} move 'up' or 'down' if the node has moved
+ * @param {HTMLElement|Array} elementOrData Linear data or HTMLElement
+ * @param {number} [offset=0] Linear mode offset
+ */
+ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset ) {
+	var item;
+	if ( !move ) {
+		return;
+	}
+	// The following messages are used here:
+	// * visualeditor-diff-moved-up
+	// * visualeditor-diff-moved-down
+	// The following classes are used here:
+	// * ve-ui-diffElement-moved-up
+	// * ve-ui-diffElement-moved-down
+	item = this.getChangeDescriptionItem( [ ve.msg( 'visualeditor-diff-moved-' + move ) ], [ 've-ui-diffElement-moved-' + move ] );
+	if ( Array.isArray( elementOrData ) ) {
+		this.addAttributesToElement( elementOrData[ offset || 0 ], { 'data-diff-move': move, 'data-diff-id': item.getData() } );
+	} else {
+		elementOrData.setAttribute( 'data-diff-move', move );
+		elementOrData.setAttribute( 'data-diff-id', item.getData() );
+	}
+	this.descriptionItemsStack.push( item );
 };
 
 /**
