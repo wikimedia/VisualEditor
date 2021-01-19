@@ -587,6 +587,7 @@ QUnit.test( 'commit', function ( assert ) {
 
 			// Commit
 			testDoc.commit( tx );
+			assert.isLinearDataFrozen( testDoc.data, msg + ': linear data is frozen' );
 			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), expectedDoc.getFullData(), 'commit (data): ' + msg );
 			assert.equalNodeTree(
 				testDoc.getDocumentNode(),

@@ -332,6 +332,30 @@
 		} );
 	};
 
+	/**
+	 * Assert that all linear data items are frozen.
+	 *
+	 * If not, array indexes of non-frozen items are reported.
+	 *
+	 * @static
+	 * @param {ve.dm.ElementLinearData} linearData The linear data object
+	 * @param {string} message
+	 */
+	QUnit.assert.isLinearDataFrozen = function ( linearData, message ) {
+		var notFrozen = [];
+		linearData.data.forEach( function ( item, i ) {
+			if ( !Object.isFrozen( item ) ) {
+				notFrozen.push( i );
+			}
+		} );
+		this.pushResult( {
+			result: notFrozen.length === 0,
+			actual: notFrozen,
+			expected: [],
+			message: message
+		} );
+	};
+
 	QUnit.diff = function ( o, n ) {
 		// o and n are partially HTML escaped by QUnit. As difflib does
 		// its own escaping we should unescape them first.

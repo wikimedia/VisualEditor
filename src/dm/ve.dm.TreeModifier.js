@@ -286,7 +286,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 					newItem = ve.copy( item );
 					changedBranchNodes.push( newItem );
 					newItem.internal.changesSinceLoad += adj;
-					document.data.splice( i + 1, 1, newItem );
+					document.data.splice( i + 1, 1, ve.deepFreeze( newItem ) );
 				}
 			}
 			// This is a branch node boundary, so go no further
@@ -295,7 +295,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function spliceLinear( offset, remove, insert ) {
-		var content = ve.batchSplice( document.data, offset, remove, insert || [] );
+		var content = ve.batchSplice( document.data, offset, remove, insert ? ve.deepFreeze( insert, true ) : [] );
 		markBranchNodeChanged( offset );
 		return content;
 	}
