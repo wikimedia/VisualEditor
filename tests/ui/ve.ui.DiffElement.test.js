@@ -457,7 +457,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</p>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-comment,<del>whee</del>,<ins>wibble</ins></div>'
+					'<div>visualeditor-changedesc-comment-diff,<span>w<del>he</del><ins>ibbl</ins>e</span></div>'
 				]
 			},
 			{
@@ -615,7 +615,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<p>foo <span data-diff-action="change-remove"><a href="http://example.org/quuz">bar</a></span><span data-diff-action="change-insert" data-diff-id="0"><a href="http://example.org/whee">bar</a></span> baz</p>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-link-href,<del>http://example.org/quuz</del>,<ins>http://example.org/whee</ins></div>'
+					'<div>visualeditor-changedesc-link-href-diff,<span>http://example.org/<del>quuz</del><ins>whee</ins></span></div>'
 				]
 			},
 			{
@@ -991,28 +991,35 @@ QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
 				expected: [ 'visualeditor-changedesc-set,foo,<ins>!!</ins>' ]
 			},
 			{
-				msg: 'LinkAnnotation: Href change',
+				msg: 'LinkAnnotation: href change',
 				type: 'link',
 				before: { href: 'https://www.example.org/foo' },
 				after: { href: 'https://www.example.org/bar' },
-				expected: [ 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo</del>,<ins>https://www.example.org/bar</ins>' ]
+				expected: [ 'visualeditor-changedesc-link-href-diff,<span>https://www.example.org/<del>foo</del><ins>bar</ins></span>' ]
 			},
 			{
-				msg: 'LinkAnnotation: Href fragment change',
+				msg: 'LinkAnnotation: href fragment change',
 				type: 'link',
 				before: { href: 'https://www.example.org/foo#bar' },
 				after: { href: 'https://www.example.org/foo#baz' },
-				expected: [ 'visualeditor-changedesc-link-href,<del>https://www.example.org/foo#bar</del>,<ins>https://www.example.org/foo#baz</ins>' ]
+				expected: [ 'visualeditor-changedesc-link-href-diff,<span>https://www.example.org/foo#ba<del>r</del><ins>z</ins></span>' ]
 			},
 			{
-				msg: 'LanguageAnnotation: Lang change',
+				msg: 'LinkAnnotation: Full href change',
+				type: 'link',
+				before: { href: 'foo' },
+				after: { href: 'bar' },
+				expected: [ 'visualeditor-changedesc-link-href,<del>foo</del>,<ins>bar</ins>' ]
+			},
+			{
+				msg: 'LanguageAnnotation: lang change',
 				type: 'meta/language',
 				before: { nodeName: 'span', lang: 'en', dir: 'ltr' },
 				after: { nodeName: 'span', lang: 'fr', dir: 'ltr' },
 				expected: [ 'visualeditor-changedesc-language,<del>langname-en</del>,<ins>langname-fr</ins>' ]
 			},
 			{
-				msg: 'LanguageAnnotation: Dir change',
+				msg: 'LanguageAnnotation: dir change',
 				type: 'meta/language',
 				before: { nodeName: 'span', lang: 'en', dir: 'ltr' },
 				after: { nodeName: 'span', lang: 'en', dir: 'rtl' },
@@ -1022,8 +1029,8 @@ QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
 				msg: 'LanguageAnnotation: Other attribute change (fallback)',
 				type: 'meta/language',
 				before: { nodeName: 'span', lang: 'en', dir: 'ltr', foo: 'bar' },
-				after: { nodeName: 'span', lang: 'en', dir: 'ltr', foo: 'baz' },
-				expected: [ 'visualeditor-changedesc-changed,foo,<del>bar</del>,<ins>baz</ins>' ]
+				after: { nodeName: 'span', lang: 'en', dir: 'ltr', foo: 'quux' },
+				expected: [ 'visualeditor-changedesc-changed,foo,<del>bar</del>,<ins>quux</ins>' ]
 			}
 		];
 

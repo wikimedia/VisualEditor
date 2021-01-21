@@ -272,6 +272,7 @@ ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
  * @return {string|Node[]|null} Description (string or Node array), or null if nothing to describe
  */
 ve.dm.Model.static.describeChange = function ( key, change ) {
+	var diff;
 	if ( ( typeof change.from === 'object' && change.from !== null ) || ( typeof change.to === 'object' && change.to !== null ) ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unknown', key );
 	} else if ( change.from === undefined ) {
@@ -279,8 +280,52 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 	} else if ( change.to === undefined ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unset', key, this.wrapText( 'del', change.from ) );
 	} else {
-		return ve.htmlMsg( 'visualeditor-changedesc-changed', key, this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
+		diff = this.getAttributeDiff( change.from.toString(), change.to.toString() );
+		if ( diff ) {
+			return ve.htmlMsg( 'visualeditor-changedesc-changed-diff', key, diff );
+		} else {
+			return ve.htmlMsg( 'visualeditor-changedesc-changed', key, this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
+		}
 	}
+};
+
+/**
+ * Compare two attribute strings and return an HTML diff
+ *
+ * @param {string} oldText Old attribute text
+ * @param {string} newText New attribute text
+ * @param {boolean} [allowRemoveInsert] Allow the diff to be a full remove insert
+ * @return {HTMLElement|null} An HTML diff in a span element, or null if the diff
+ * was a simple remove-insert, and allowRemoveInsert wasn't set.
+ */
+ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveInsert ) {
+	var diff,
+		span = document.createElement( 'span' ),
+		isRemoveInsert = true,
+		model = this,
+		/* global diff_match_patch */
+		// eslint-disable-next-line new-cap
+		differ = new diff_match_patch();
+
+	diff = differ.diff_main( oldText, newText );
+	differ.diff_cleanupEfficiency( diff );
+
+	diff.forEach( function ( part ) {
+		switch ( part[ 0 ] ) {
+			case -1:
+				span.appendChild( model.wrapText( 'del', part[ 1 ] ) );
+				break;
+			case 1:
+				span.appendChild( model.wrapText( 'ins', part[ 1 ] ) );
+				break;
+			case 0:
+				isRemoveInsert = false;
+				span.appendChild( document.createTextNode( part[ 1 ] ) );
+				break;
+		}
+	} );
+
+	return !isRemoveInsert || allowRemoveInsert ? span : null;
 };
 
 /**

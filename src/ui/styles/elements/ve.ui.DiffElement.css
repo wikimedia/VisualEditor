@@ -76,19 +76,22 @@
 	color: #72777d;
 }
 
-.ve-ui-diffElement-attributeChange del,
-.ve-ui-diffElement-attributeChange ins {
-	text-decoration: none;
-}
-
 .ve-ui-diffElement-attributeChange del {
 	background-color: #f2c2bf;
 	box-shadow: 0 0 0 1px #f2c2bf;
+	text-decoration: line-through;
+}
+
+.ve-ui-diffElement-attributeChange del:hover {
+	background-color: #f2c2bf;
+	box-shadow: 0 0 0 1px #f2c2bf;
+	text-decoration: none;
 }
 
 .ve-ui-diffElement-attributeChange ins {
 	background-color: #c4ede4;
 	box-shadow: 0 0 0 1px #c4ede4;
+	text-decoration: none;
 }
 
 .ve-ui-diffElement-attributeChange.oo-ui-labelElement .oo-ui-labelElement-label {
@@ -114,7 +117,7 @@
 ins[ data-diff-action='insert' ],
 [ data-diff-action='insert' ] > ins,
 del[ data-diff-action='remove' ],
-[ data-diff-action='remove' ] > del {
+[ data-diff-action='remove' ] > del { /* stylelint-disable-line no-descending-specificity */
 	white-space: pre-wrap;
 }
 
@@ -152,7 +155,7 @@ figure[ data-diff-action='remove' ] > figcaption {
 }
 
 del[ data-diff-action='remove' ],
-[ data-diff-action='remove' ] > del {
+[ data-diff-action='remove' ] > del { /* stylelint-disable-line no-descending-specificity */
 	text-decoration: line-through;
 }
 
