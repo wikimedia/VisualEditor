@@ -57,6 +57,7 @@
 
 .ve-ui-changeDescriptionsSelectWidget > .oo-ui-optionWidget {
 	cursor: default;
+	font-size: 0.92857143em; /* 13/14px */
 }
 
 .ve-ui-changeDescriptionsSelectWidget > .oo-ui-optionWidget-highlighted {
