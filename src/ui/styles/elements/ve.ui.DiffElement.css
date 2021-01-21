@@ -191,6 +191,7 @@ del[ data-diff-action='remove' ]:hover,
 .ve-ui-diffElement-moved-down:before {
 	position: absolute;
 	left: 0;
+	line-height: 1;
 }
 
 .ve-ui-diffElement-moved-down:before {
