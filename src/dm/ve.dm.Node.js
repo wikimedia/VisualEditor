@@ -721,7 +721,8 @@ ve.dm.Node.prototype.getOffset = function () {
 		throw new Error( 'Node not found in parent\'s children array' );
 	}
 	if ( this.doc.isReadOnly() ) {
-		// Cache offset, only used in readOnly mode (when the offset can't change)
+		// Cache offset, only used in read-only mode (when the offset can't change)
+		// This cache is additionally cleared when leaving read-only mode in ve.dm.Document#setReadOnly
 		this.offset = offset;
 	}
 	return offset;

@@ -1437,19 +1437,26 @@ QUnit.test( 'fixupInsertion', function ( assert ) {
 	ve.dm.modelRegistry.unregister( ListlessNode );
 } );
 
-QUnit.test( 'readOnly and offset caching', function ( assert ) {
+QUnit.test( 'read-only and offset caching', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
 
-	assert.strictEqual( doc.isReadOnly(), false, 'New document is not readOnly' );
+	assert.strictEqual( doc.isReadOnly(), false, 'New document is not read-only' );
 
 	// Set up offset caching test
 	assert.strictEqual( doc.getDocumentNode().children[ 1 ].getOffset(), 5, 'Second child node has offset 6' );
 	surface.getLinearFragment( new ve.Range( 1 ) ).insertContent( 'Test' );
 
 	doc.setReadOnly( true );
-	assert.strictEqual( doc.isReadOnly(), true, 'Document is readOnly' );
+	assert.strictEqual( doc.isReadOnly(), true, 'Document is read-only' );
 
 	// Offset caching test
 	assert.strictEqual( doc.getDocumentNode().children[ 1 ].getOffset(), 9, 'Second child node offset has been translated, not cached from before' );
+
+	// Document modified after cache set
+	doc.setReadOnly( false );
+	surface.getLinearFragment( new ve.Range( 1 ) ).insertContent( 'Quux' );
+
+	doc.setReadOnly( true );
+	assert.strictEqual( doc.getDocumentNode().children[ 1 ].getOffset(), 13, 'Second child node offset has been translated again, not cached from before' );
 } );

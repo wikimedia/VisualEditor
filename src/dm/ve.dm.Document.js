@@ -339,6 +339,12 @@ ve.dm.Document.prototype.getLength = function () {
  */
 ve.dm.Document.prototype.setReadOnly = function ( readOnly ) {
 	this.readOnly = !!readOnly;
+	if ( !this.readOnly ) {
+		// Clear offset cache when leaving read-only mode
+		this.getDocumentNode().traverse( function ( node ) {
+			node.offset = null;
+		} );
+	}
 };
 
 /**
