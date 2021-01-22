@@ -22,6 +22,7 @@ window.ve = {};
  * @return {number} Current time
  */
 ve.now = ( function () {
+	// eslint-disable-next-line compat/compat
 	var perf = window.performance,
 		navStart = perf && perf.timing && perf.timing.navigationStart;
 	return navStart && typeof perf.now === 'function' ?

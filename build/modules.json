@@ -164,7 +164,7 @@
 			"CLDRPluralRuleParser"
 		]
 	},
-	"CLDRPluralRuleParser" : {
+	"CLDRPluralRuleParser": {
 		"scripts": [
 			"lib/jquery.i18n/libs/CLDRPluralRuleParser/src/CLDRPluralRuleParser.js"
 		]

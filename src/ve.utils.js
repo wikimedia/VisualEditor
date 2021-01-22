@@ -312,7 +312,10 @@ ve.extendObject = $.extend;
  * @private
  * @property {boolean}
  */
-ve.supportsIntl = !!( window.Intl && typeof Intl.Collator === 'function' );
+ve.supportsIntl = !!(
+	// eslint-disable-next-line compat/compat
+	window.Intl && typeof Intl.Collator === 'function'
+);
 
 /**
  * @private

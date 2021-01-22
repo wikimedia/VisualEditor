@@ -7,6 +7,7 @@
 	"rules": {
 		"max-len": "off",
 		"no-var": "off",
+		"compat/compat": [ "error", "last 2 chrome versions, last 2 firefox versions" ],
 		"no-jquery/no-class-state": "off",
 		"no-jquery/no-parse-html-literal": "off"
 	}

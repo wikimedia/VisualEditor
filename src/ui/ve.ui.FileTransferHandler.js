@@ -22,6 +22,7 @@ ve.ui.FileTransferHandler = function VeUiFileTransferHandler() {
 	// Properties
 	this.file = this.item.getAsFile();
 
+	// eslint-disable-next-line compat/compat
 	this.reader = new FileReader();
 
 	// Events
