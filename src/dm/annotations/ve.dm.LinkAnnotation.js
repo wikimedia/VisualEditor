@@ -48,8 +48,14 @@ ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
 };
 
 ve.dm.LinkAnnotation.static.describeChange = function ( key, change ) {
+	var diff;
 	if ( key === 'href' ) {
-		return ve.htmlMsg( 'visualeditor-changedesc-link-href', this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
+		diff = this.getAttributeDiff( change.from, change.to );
+		if ( diff ) {
+			return ve.htmlMsg( 'visualeditor-changedesc-link-href-diff', diff );
+		} else {
+			return ve.htmlMsg( 'visualeditor-changedesc-link-href', this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
+		}
 	}
 	// Parent method
 	return ve.dm.LinkAnnotation.parent.static.describeChange.apply( this, arguments );

@@ -82,8 +82,14 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 };
 
 ve.dm.CommentNode.static.describeChange = function ( key, change ) {
+	var diff;
 	if ( key === 'text' ) {
-		// TODO: Run comment changes through a linear differ.
-		return ve.htmlMsg( 'visualeditor-changedesc-comment', this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
+		diff = this.getAttributeDiff( change.from, change.to );
+		if ( diff ) {
+			// TODO: Use a word-break based diff for comment text
+			return ve.htmlMsg( 'visualeditor-changedesc-comment-diff', diff );
+		} else {
+			return ve.htmlMsg( 'visualeditor-changedesc-comment', this.wrapText( 'del', change.from ), this.wrapText( 'ins', change.to ) );
+		}
 	}
 };
