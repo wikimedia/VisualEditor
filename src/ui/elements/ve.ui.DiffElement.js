@@ -223,8 +223,8 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
  */
 ve.ui.DiffElement.prototype.renderDiff = function () {
 	var i, j, ilen, jlen, move, documentSpacerNode, internalListSpacerNode,
-		li, noChanges, group, internalListGroup, referencesListDiffDivs,
-		referencesListDiffDiv, internalListItem,
+		li, noChanges, group, internalListGroup, referencesListDiffs,
+		referencesListDiff, referencesListDiffDiv, internalListItem,
 		diffElement = this,
 		documentNode = this.$document[ 0 ],
 		hasChanges = false,
@@ -331,7 +331,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 	internalListSpacerNode.appendChild( li );
 	li.appendChild( documentSpacerNode.cloneNode( true ) );
 
-	referencesListDiffDivs = {};
+	referencesListDiffs = {};
 	for ( group in this.internalListDiff ) {
 
 		referencesListDiffDiv = document.createElement( 'div' );
@@ -364,8 +364,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 
 		this.descriptionItemsStack = [];
 		processQueue( internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
-		referencesListDiffDivs[ group ] = {
-			elements: referencesListDiffDiv,
+		referencesListDiffs[ group ] = {
+			element: referencesListDiffDiv,
 			action: internalListGroup.changes ? 'change' : 'none',
 			descriptionItemsStack: this.descriptionItemsStack
 		};
@@ -423,8 +423,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			// already have the HTML for the diffed references list,
 			// (which contains details of changes if there are any) so
 			// just get that.
-			referencesListDiffDiv = referencesListDiffDivs[ this.newDocChildren[ j ].element.attributes.listGroup ];
-			diffQueue.push( [ 'getRefListNodeElements', referencesListDiffDiv.elements, referencesListDiffDiv.action, move, referencesListDiffDiv.descriptionItemsStack ] );
+			referencesListDiff = referencesListDiffs[ this.newDocChildren[ j ].element.attributes.listGroup ];
+			diffQueue.push( [ 'getRefListNodeElements', referencesListDiff.element, referencesListDiff.action, move, referencesListDiff.descriptionItemsStack ] );
 
 		} else if ( typeof this.newToOld[ j ] === 'number' ) {
 
