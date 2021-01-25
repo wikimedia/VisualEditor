@@ -182,7 +182,6 @@ ve.ce.View.prototype.isInContentEditable = function () {
 /**
  * Get a resolved URL from a model attribute.
  *
- * @abstract
  * @param {string} key Attribute name whose value is a URL
  * @return {string} URL resolved according to the document's base
  */
