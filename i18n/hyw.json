@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Azniv Stepanian",
-			"Դավիթ Սարոյան"
+			"Դավիթ Սարոյան",
+			"Շահէն"
 		]
 	},
 	"visualeditor": "Տեսողական խմբագրիչ",
@@ -27,7 +28,9 @@
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Գծուած գրութիւն",
 	"visualeditor-annotationbutton-underline-tooltip": "Ընդգծուած",
 	"visualeditor-changedesc-changed": "$1-ը փոխուած է «$2»-էն «$3»",
+	"visualeditor-changedesc-changed-diff": "$1 փոխուեցաւ՝ $2",
 	"visualeditor-changedesc-comment": "$1 մեկնաբանութիւնը փոխուած է $2-ի",
+	"visualeditor-changedesc-comment-diff": "Մէկնաբանութիւնը փոխուած է՝ $1",
 	"visualeditor-changedesc-no-key": "\n$1-ը փոխուած $2-ի",
 	"visualeditor-changedir-tool-ltr": "Տեսնել աջէն ձախ",
 	"visualeditor-changedir-tool-rtl": "Տեսնել աջէն ձախ",
@@ -94,6 +97,7 @@
 	"visualeditor-languageinspector-widget-changelang": "Գտնել լեզուն",
 	"visualeditor-languageinspector-widget-label-langcode": "Լեզուի կարգանիշ",
 	"visualeditor-languageinspector-widget-label-language": "Լեզու",
+	"visualeditor-linkcontext-label-label": "Բնաբան",
 	"visualeditor-linkcontext-remove": "Յղումը հանել",
 	"visualeditor-linkinspector-title": "Յղում",
 	"visualeditor-listbutton-bullet-tooltip": "Կէտադրուած ցանկ",

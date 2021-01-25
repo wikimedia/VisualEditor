@@ -61,6 +61,7 @@
 	"visualeditor-changedesc-language": "언어가 $1에서 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-link-added": "링크 추가됨: $1",
 	"visualeditor-changedesc-link-href": "링크 대상이 $1에서 $2(으)로 바뀌었습니다",
+	"visualeditor-changedesc-link-href-diff": "링크 대상 변경됨: $1",
 	"visualeditor-changedesc-link-removed": "링크 제거됨: $1",
 	"visualeditor-changedesc-no-key": "$1(이)가 $2(으)로 바뀌었습니다",
 	"visualeditor-changedesc-set": "$1(이)가 $2(으)로 설정되었습니다",
