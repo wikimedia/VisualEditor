@@ -367,7 +367,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		referencesListDiffs[ group ] = {
 			element: referencesListDiffDiv,
 			action: internalListGroup.changes ? 'change' : 'none',
-			descriptionItemsStack: this.descriptionItemsStack
+			descriptionItemsStack: this.descriptionItemsStack,
+			shown: false
 		};
 		this.descriptionItemsStack = null;
 
@@ -414,7 +415,7 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 
 		} else if (
 			this.newDocChildren[ j ].type === 'mwReferencesList' &&
-			this.internalListDiff[ this.newDocChildren[ j ].element.attributes.listGroup ]
+			( referencesListDiff = referencesListDiffs[ this.newDocChildren[ j ].element.attributes.listGroup ] )
 		) {
 
 			// New node is a references list node. If a reference has
@@ -423,8 +424,8 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			// already have the HTML for the diffed references list,
 			// (which contains details of changes if there are any) so
 			// just get that.
-			referencesListDiff = referencesListDiffs[ this.newDocChildren[ j ].element.attributes.listGroup ];
 			diffQueue.push( [ 'getRefListNodeElements', referencesListDiff.element, referencesListDiff.action, move, referencesListDiff.descriptionItemsStack ] );
+			referencesListDiff.shown = true;
 
 		} else if ( typeof this.newToOld[ j ] === 'number' ) {
 
@@ -436,6 +437,15 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 			// The new node is modified from the old node
 			diffQueue.push( [ 'getChangedNodeElements', this.newToOld[ j ].node, move ] );
 
+		}
+	}
+
+	// Show any ref list diffs that weren't picked up by the main diff loop above,
+	// e.g. during a section diff.
+	for ( group in referencesListDiffs ) {
+		referencesListDiff = referencesListDiffs[ group ];
+		if ( !referencesListDiff.shown ) {
+			diffQueue.push( [ 'getRefListNodeElements', referencesListDiff.element, referencesListDiff.action, move, referencesListDiff.descriptionItemsStack ] );
 		}
 	}
 
