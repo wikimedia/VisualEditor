@@ -36,7 +36,7 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 		node = element,
 		// Stack of element-lists in force; each element list is equal to its predecessor extended
 		// by one element. This means two chunks have object-equal element lists if they have the
-		// same element elements in force (i.e. if their text nodes are DOM siblings).
+		// same elements in force (i.e. if their text nodes are DOM siblings).
 		elementListStack = [ [] ],
 		stackTop = 0,
 		annotationStack = [],
