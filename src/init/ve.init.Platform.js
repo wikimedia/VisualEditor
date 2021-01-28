@@ -401,3 +401,12 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 	// This implementation always resolves instantly
 	return ve.createDeferred().resolve( charsObj ).promise();
 };
+
+/**
+ * Decode HTML entities for insertion into the document
+ *
+ * @method
+ * @param {string} html HTML string
+ * @return {string}
+ */
+ve.init.Platform.prototype.decodeEntities = ve.safeDecodeEntities;

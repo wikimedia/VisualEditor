@@ -154,16 +154,25 @@ ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
  */
 ve.ui.SpecialCharacterDialog.prototype.onListClick = function ( e ) {
 	var character = $( e.target ).data( 'character' ),
-		fragment = this.surface.getModel().getFragment();
+		fragment = this.surface.getModel().getFragment(),
+		mode = this.surface.getMode();
+
+	function encode( text ) {
+		if ( mode === 'visual' && character.entities ) {
+			return ve.init.platform.decodeEntities( text );
+		} else {
+			return text;
+		}
+	}
 
 	if ( character ) {
 		if ( typeof character === 'string' || character.string ) {
-			fragment.insertContent( character.string || character, true ).collapseToEnd().select();
+			fragment.insertContent( encode( character.string || character ), true ).collapseToEnd().select();
 		} else if ( character.action.type === 'replace' ) {
-			fragment.insertContent( character.action.options.peri, true ).collapseToEnd().select();
+			fragment.insertContent( encode( character.action.options.peri ), true ).collapseToEnd().select();
 		} else if ( character.action.type === 'encapsulate' ) {
-			fragment.collapseToStart().insertContent( character.action.options.pre, true );
-			fragment.collapseToEnd().insertContent( character.action.options.post, true ).collapseToEnd().select();
+			fragment.collapseToStart().insertContent( encode( character.action.options.pre ), true );
+			fragment.collapseToEnd().insertContent( encode( character.action.options.post ), true ).collapseToEnd().select();
 		}
 
 		ve.track(
