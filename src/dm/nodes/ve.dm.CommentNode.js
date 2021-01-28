@@ -34,12 +34,9 @@ ve.dm.CommentNode.static.isContent = true;
 ve.dm.CommentNode.static.preserveHtmlAttributes = false;
 
 ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
-	var textarea, text;
+	var text;
 	if ( domElements[ 0 ].nodeType === Node.COMMENT_NODE ) {
-		// Decode HTML entities, safely (no elements permitted inside textarea)
-		textarea = document.createElement( 'textarea' );
-		textarea.innerHTML = domElements[ 0 ].data;
-		text = textarea.textContent;
+		text = ve.safeDecodeEntities( domElements[ 0 ].data );
 	} else {
 		text = domElements[ 0 ].getAttribute( 'data-ve-comment' );
 	}
