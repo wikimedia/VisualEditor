@@ -251,3 +251,16 @@ ve.isPassiveEventsSupported = function () {
 	}
 	return ve.isPassiveEventsSupported.supported;
 };
+
+/**
+ * Safely decode HTML entities
+ *
+ * @param {string} html Text with HTML entities
+ * @return {string} Text with HTML entities decoded
+ */
+ve.safeDecodeEntities = function ( html ) {
+	// Decode HTML entities, safely (no elements permitted inside textarea)
+	var textarea = document.createElement( 'textarea' );
+	textarea.innerHTML = html;
+	return textarea.textContent;
+};
