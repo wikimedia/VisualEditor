@@ -1,23 +1,33 @@
 {
 	"@metadata": {
 		"authors": [
+			"Rachmat04",
 			"Si Gam Acèh"
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliennode-tooltip": "Meu'ah, elemen nyoë barô jeuët geuandam ngön mode \"andam nè\"",
+	"visualeditor-aliennode-tooltip": "Meu'ah, elemen nyoë barô jeuët geupeusaneut ngön mode \"peusaneut nè\"",
+	"visualeditor-align-desc-center": "teungöh",
+	"visualeditor-align-desc-default": "teutap",
+	"visualeditor-align-desc-left": "wie",
+	"visualeditor-align-desc-none": "hana",
 	"visualeditor-annotationbutton-bold-tooltip": "Teubai",
 	"visualeditor-annotationbutton-code-tooltip": "Kode komputer",
 	"visualeditor-annotationbutton-italic-tooltip": "Singèt",
 	"visualeditor-annotationbutton-language-tooltip": "Bahsa",
 	"visualeditor-annotationbutton-link-tooltip": "Peunawôt",
+	"visualeditor-annotationbutton-small-tooltip": "Ubeut",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Ceuë",
 	"visualeditor-annotationbutton-subscript-tooltip": "Haraih yup",
 	"visualeditor-annotationbutton-superscript-tooltip": "Haraih ateuëh",
 	"visualeditor-annotationbutton-underline-tooltip": "Garéh yup",
-	"visualeditor-clearbutton-tooltip": "Peugadöh format",
+	"visualeditor-clearbutton-tooltip": "Peugadöh",
+	"visualeditor-contextitemwidget-label-remove": "Sampôh",
+	"visualeditor-contextitemwidget-label-secondary": "Peusaneut",
+	"visualeditor-debugbar-close": "Tôp",
 	"visualeditor-dialog-action-apply": "Gantoë",
 	"visualeditor-dialog-action-cancel": "Pubateuë",
+	"visualeditor-dialog-action-done": "Ka lheueh",
 	"visualeditor-dialog-action-goback": "Riwang",
 	"visualeditor-formatdropdown-format-heading1": "Nan 1",
 	"visualeditor-formatdropdown-format-heading2": "Nan 2",
@@ -42,5 +52,6 @@
 	"visualeditor-languageinspector-widget-label-language": "Bahsa",
 	"visualeditor-linkinspector-title": "Peunawôt",
 	"visualeditor-listbutton-bullet-tooltip": "Dapeuta meuneuk-neuk",
-	"visualeditor-listbutton-number-tooltip": "Dapeuta meulumbôi"
+	"visualeditor-listbutton-number-tooltip": "Dapeuta meulumbôi",
+	"visualeditor-specialcharacter-button-tooltip": "Karakter kusuih"
 }

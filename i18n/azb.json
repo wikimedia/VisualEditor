@@ -1,12 +1,23 @@
 {
 	"@metadata": {
 		"authors": [
+			"Alp Er Tunqa",
 			"Arjanizary",
 			"Sadiqr"
 		]
 	},
+	"visualeditor": "گؤرونوشلو دَییشدیریجی",
 	"visualeditor-align-widget-left": "سوْل",
 	"visualeditor-align-widget-right": "ساغ",
+	"visualeditor-annotationbutton-big-tooltip": "بؤیوک",
+	"visualeditor-annotationbutton-bold-tooltip": "قالین",
+	"visualeditor-annotationbutton-code-tooltip": "کامپیوتر کوْدو",
+	"visualeditor-annotationbutton-italic-tooltip": "اَیری",
+	"visualeditor-annotationbutton-small-tooltip": "کیچیک",
+	"visualeditor-annotationbutton-strikethrough-tooltip": "خط‌لنمیش",
+	"visualeditor-annotationbutton-subscript-tooltip": "آلت‌یازی",
+	"visualeditor-annotationbutton-superscript-tooltip": "اۆست‌یازی",
+	"visualeditor-annotationbutton-underline-tooltip": "آلت‌خط",
 	"visualeditor-commentinspector-tooltip": "باخیش",
 	"visualeditor-contextitemwidget-label-remove": "سیل",
 	"visualeditor-contextitemwidget-label-secondary": "دَییشدیر",
@@ -18,12 +29,22 @@
 	"visualeditor-formatdropdown-format-heading4": "باشلیق ۴",
 	"visualeditor-formatdropdown-format-heading5": "باشلیق ۵",
 	"visualeditor-formatdropdown-format-heading6": "باشلیق ۶",
+	"visualeditor-formatdropdown-format-paragraph": "پاراقراف",
+	"visualeditor-help-tool": "کؤمک",
 	"visualeditor-inspector-close-tooltip": "باغلا",
 	"visualeditor-inspector-remove-tooltip": "سیل",
 	"visualeditor-languageinspector-title": "دیل",
 	"visualeditor-languageinspector-widget-label-direction": "یؤن",
 	"visualeditor-languageinspector-widget-label-language": "دیل",
 	"visualeditor-linkinspector-title": "باغلانتی",
+	"visualeditor-listbutton-number-tooltip": "نومره‌لی لیست",
+	"visualeditor-pagemenu-tooltip": "صفحه سئچمه‌لری",
+	"visualeditor-shortcuts-insert": "یئرلشدیر",
 	"visualeditor-shortcuts-other": "باشقا",
-	"visualeditor-table-contextitem-properties": "اؤزللیک‌لر"
+	"visualeditor-shortcuts-text-style": "متن نوعو",
+	"visualeditor-slug-insert": "پاراقراف آرتیر",
+	"visualeditor-specialcharacter-button-tooltip": "مخصوص کاراکترلر",
+	"visualeditor-table-contextitem-properties": "اؤزللیک‌لر",
+	"visualeditor-toolbar-insert": "یئرلشدیر",
+	"visualeditor-toolbar-style-tooltip": "متن نوعو"
 }

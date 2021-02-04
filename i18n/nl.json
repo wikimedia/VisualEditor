@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bdijkstra",
 			"Bluyten",
 			"Breghtje",
 			"Catrope",
@@ -205,6 +206,9 @@
 	"visualeditor-shortcuts-text-style": "Tekstopmaak",
 	"visualeditor-slug-insert": "Alinea invoegen",
 	"visualeditor-specialcharacter-button-tooltip": "Speciaal teken",
+	"visualeditor-specialcharacter-group-label-accents": "Diakrieten",
+	"visualeditor-specialcharacter-group-label-mathematical": "Wiskundig",
+	"visualeditor-specialcharacter-group-label-symbols": "Symbolen",
 	"visualeditor-specialcharacterinspector-title": "Speciaal teken",
 	"visualeditor-table-caption": "Bijschrift",
 	"visualeditor-table-contextitem-properties": "Eigenschappen",

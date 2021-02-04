@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Baloch Afghanistan"
+			"Baloch Afghanistan",
+			"Sultanselim baloch"
 		]
 	},
 	"visualeditor-annotationbutton-language-tooltip": "زبان",
@@ -14,10 +15,10 @@
 	"visualeditor-clipboard-cut": "بورریتین",
 	"visualeditor-dialog-action-cancel": "کنسیل",
 	"visualeditor-dialog-action-done": "کار بوت",
-	"visualeditor-dialog-action-goback": "پدا شوتین",
+	"visualeditor-dialog-action-goback": "پدا روگ",
 	"visualeditor-dialog-action-insert": "درج",
 	"visualeditor-dialog-error": "یک مشکلی وجود داریت ...",
-	"visualeditor-dialog-error-dismiss": "پدا شوتین",
+	"visualeditor-dialog-error-dismiss": "پدا روگ",
 	"visualeditor-dialog-language-auto-direction": "وت کار",
 	"visualeditor-dialog-language-search-title": "زبانی گیچین کورتین",
 	"visualeditor-formatdropdown-format-heading-label": "سرپسل (1-6)",
@@ -40,8 +41,6 @@
 	"visualeditor-languageinspector-widget-label-language": "زبان",
 	"visualeditor-linkinspector-title": "لینک",
 	"visualeditor-listbutton-number-tooltip": "شماره دارین لیست",
-	"visualeditor-mediasizewidget-button-originaldimensions": "کاملین اندازه یی جوڑ کورتین",
-	"visualeditor-mediasizewidget-label-custom": "پرمایشی",
 	"visualeditor-mediasizewidget-label-scale": "مکیاس",
 	"visualeditor-mediasizewidget-label-scale-percent": "% اکسی ناوونی اندازه",
 	"visualeditor-mediasizewidget-sizeoptions-custom": "پرمایشی",

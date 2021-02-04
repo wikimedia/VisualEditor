@@ -1,23 +1,26 @@
 {
 	"@metadata": {
 		"authors": [
-			"Skyllful",
+			"Amqui",
 			"Aursani",
-			"Jdforrester"
+			"Jdforrester",
+			"Skyllful"
 		]
 	},
 	"visualeditor": "VisualEditor",
+	"visualeditor-aliencontextitem-title": "Item",
 	"visualeditor-aliennode-tooltip": "Sorry, this element can only be edited in source mode for now.",
 	"visualeditor-align-widget-center": "Centre",
 	"visualeditor-align-widget-left": "Left",
 	"visualeditor-align-widget-right": "Right",
 	"visualeditor-alignablecontextitem-title": "Alignment",
-	"visualeditor-aliencontextitem-title": "Item",
+	"visualeditor-annotationbutton-big-tooltip": "Big",
 	"visualeditor-annotationbutton-bold-tooltip": "Bold",
 	"visualeditor-annotationbutton-code-tooltip": "Computer code",
 	"visualeditor-annotationbutton-italic-tooltip": "Italic",
 	"visualeditor-annotationbutton-language-tooltip": "Language",
 	"visualeditor-annotationbutton-link-tooltip": "Link",
+	"visualeditor-annotationbutton-small-tooltip": "Small",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Strikethrough",
 	"visualeditor-annotationbutton-subscript-tooltip": "Subscript",
 	"visualeditor-annotationbutton-superscript-tooltip": "Superscript",
@@ -31,8 +34,8 @@
 	"visualeditor-commentinspector-title": "Comment",
 	"visualeditor-commentinspector-tooltip": "Comment",
 	"visualeditor-content-select-all": "Select all",
-	"visualeditor-contextitemwidget-label-secondary": "Edit",
 	"visualeditor-contextitemwidget-label-remove": "Delete",
+	"visualeditor-contextitemwidget-label-secondary": "Edit",
 	"visualeditor-dialog-action-apply": "Apply changes",
 	"visualeditor-dialog-action-cancel": "Exit",
 	"visualeditor-dialog-action-done": "Done",
@@ -40,5 +43,7 @@
 	"visualeditor-dialog-action-insert": "Insert",
 	"visualeditor-dialog-command-help-title": "Keyboard shortcuts",
 	"visualeditor-dialog-error": "Something went wrong…",
-	"visualeditor-dialog-error-dismiss": "Back"
+	"visualeditor-dialog-error-dismiss": "Back",
+	"visualeditor-dialog-language-auto-direction": "Auto",
+	"visualeditor-find-and-replace-done": "Done"
 }

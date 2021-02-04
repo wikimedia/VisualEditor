@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Geopoet",
+			"ShimunUfesoj",
 			"Sky Harbor"
 		]
 	},
@@ -16,7 +17,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Eskriptong pan-ibaba",
 	"visualeditor-annotationbutton-superscript-tooltip": "Eskriptong pan-itaas",
 	"visualeditor-annotationbutton-underline-tooltip": "Linyahan",
-	"visualeditor-clearbutton-tooltip": "Linigan an pampopormat",
+	"visualeditor-clearbutton-tooltip": "Halîon",
 	"visualeditor-dialog-action-apply": "Aplikaron an mga kaliwatan",
 	"visualeditor-dialog-action-cancel": "Kanselaron",
 	"visualeditor-dialog-action-goback": "Magbuwelta",

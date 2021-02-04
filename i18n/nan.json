@@ -1,7 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Luuva"
+			"A-lú-mih",
+			"Luuva",
+			"進也"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -31,6 +33,7 @@
 	"visualeditor-content-select-all": "Thong sóaⁿ",
 	"visualeditor-contextitemwidget-label-remove": "Thâi-tiāu",
 	"visualeditor-contextitemwidget-label-secondary": "Pian-chi̍p",
+	"visualeditor-debugbar-close": "關",
 	"visualeditor-dialog-action-apply": "Èng-iōng kái-piàn",
 	"visualeditor-dialog-action-cancel": "Chhú-siau",
 	"visualeditor-dialog-action-done": "Goân-sêng",

@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Chrisportelli"
+			"Chrisportelli",
+			"ToniSant"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -22,6 +23,7 @@
 	"visualeditor-dialog-language-auto-direction": "Awtomatika",
 	"visualeditor-dialog-language-search-title": "Agħżel lingwa",
 	"visualeditor-formatdropdown-format-heading-label": "Intestatura (1-6)",
+	"visualeditor-formatdropdown-format-paragraph": "Paragrafu",
 	"visualeditor-help-tool": "Għajnuna",
 	"visualeditor-inspector-close-tooltip": "Agħlaq",
 	"visualeditor-inspector-remove-tooltip": "Neħħi",
@@ -40,7 +42,9 @@
 	"visualeditor-shortcuts-history": "Kronoloġija",
 	"visualeditor-shortcuts-other": "Oħrajn",
 	"visualeditor-shortcuts-text-style": "Ifformattjar tat-test",
+	"visualeditor-slug-insert": "Daħħal paragrafu",
 	"visualeditor-specialcharacter-button-tooltip": "Karattru speċjali",
 	"visualeditor-specialcharacterinspector-title": "Karattru speċjali",
+	"visualeditor-toolbar-format-tooltip": "Format tal-paragrafu",
 	"visualeditor-toolbar-insert": "Daħħal"
 }
