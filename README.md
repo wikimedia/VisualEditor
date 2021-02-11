@@ -22,7 +22,7 @@ see [CONTRIBUTING.md][].  Patch submissions are reviewed and managed with
 [Gerrit][].  There is also [API documentation][] available for the
 VisualEditor.
 
-[Live demo]:         https://doc.wikimedia.org/VisualEditor/master/lib/ve/demos/ve/desktop-wikimediaui.html
+[Live demo]:         https://doc.wikimedia.org/VisualEditor/master/js/lib/ve/demos/ve/desktop-wikimediaui.html
 [VisualEditor]:      https://www.mediawiki.org/wiki/VisualEditor
 [CONTRIBUTING.md]:   CONTRIBUTING.md
 [API documentation]: https://doc.wikimedia.org/VisualEditor/master/
