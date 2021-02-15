@@ -131,7 +131,7 @@ ve.ui.ContentAction.prototype.submit = function () {
 };
 
 /**
- * Emit a surface submit event
+ * Move keyboard focus to the context menu.
  *
  * @return {boolean} Action was executed
  */
