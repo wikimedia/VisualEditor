@@ -167,7 +167,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 };
 
 /**
- * Filter out elemements from the rendered content which we don't want to display in the CE.
+ * Filter out elements from the rendered content which we don't want to display in the CE.
  *
  * @param {Node[]} domElements Clones of the DOM elements from the store, already copied into the document
  * @return {Node[]} DOM elements to keep
