@@ -14,7 +14,8 @@
 			"Pras",
 			"SHOTHA",
 			"Silovan",
-			"Tokoko"
+			"Tokoko",
+			"Გიო ოქრო"
 		]
 	},
 	"visualeditor": "ვიზუალური რედაქტორი",
@@ -41,6 +42,7 @@
 	"visualeditor-changedesc-language": "ენა შეიცვალა $1-დან $2-ზე",
 	"visualeditor-changedesc-unknown": "$1 შეიცვალა",
 	"visualeditor-changedir": "ლექსიკონის შეცვლა",
+	"visualeditor-changedir-tool-rtl": "ხედი მარჯვნიდან მარცხნივ",
 	"visualeditor-clearbutton-tooltip": "ფორმატირების გასუფთავება",
 	"visualeditor-clipboard-copy": "კოპირება",
 	"visualeditor-clipboard-cut": "ამოჭრა",
