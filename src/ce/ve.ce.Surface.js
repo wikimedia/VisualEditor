@@ -3076,8 +3076,30 @@ ve.ce.Surface.prototype.selectAll = function () {
  */
 ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 	// Synthetic events don't have the originalEvent property (T176104)
-	var inputType = e.originalEvent ? e.originalEvent.inputType : null,
+	var surface = this,
+		inputType = e.originalEvent ? e.originalEvent.inputType : null,
 		inputTypeCommands = this.constructor.static.inputTypeCommands;
+
+	// Special handling of NBSP insertions. T53045
+	// NBSPs are converted to normal spaces in ve.ce.TextState as they can be
+	// inserted by ContentEditable in unexpected places, or accidentally imported
+	// by copy-paste. Usually they are not intended, but if we detect an NBSP in
+	// an insertion event that means it was probably intentional, e.g. inserted
+	// by a specific keyboard shortcut, or IME sequence.
+	if (
+		this.getSelection().isNativeCursor() &&
+		( inputType === 'insertText' || inputType === 'insertCompositionText' ) &&
+		e.originalEvent.data === '\u00a0'
+	) {
+		// Wait for the insertion to happen
+		setTimeout( function () {
+			var fragment = surface.getModel().getFragment().adjustLinearSelection( -1 );
+			// Check a plain space was inserted and replace it with an NBSP.
+			if ( fragment.getText() === ' ' ) {
+				fragment.insertContent( ve.init.platform.decodeEntities( '&nbsp;' ) ).collapseToEnd().select();
+			}
+		} );
+	}
 
 	if (
 		inputType &&
