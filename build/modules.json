@@ -310,7 +310,8 @@
 			"src/init/ve.init.Target.js"
 		],
 		"dependencies": [
-			"visualEditor.supportCheck"
+			"visualEditor.supportCheck",
+			"visualEditor.core.utils.client"
 		]
 	},
 	"visualEditor.core.build": {
