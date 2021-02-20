@@ -53,9 +53,11 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 			// There are no execCommands for CTRL+BACKSPACE/DELETE (delete word)
 			// These enter commands should always be prevented
 			ENTER: 'insertParagraph',
-			'SHIFT+ENTER': 'insertParagraph',
-			'CTRL+ENTER': 'insertParagraph'
+			'SHIFT+ENTER': 'insertParagraph'
 		};
+
+	// Platform-variant
+	execCommands[ ( ve.getSystemPlatform() === 'mac' ? 'CMD' : 'CTRL' ) + '+ENTER' ] = 'insertParagraph';
 
 	if ( caseItem.setup ) {
 		caseItem.setup();
@@ -691,18 +693,12 @@ QUnit.test( 'onCopy', function ( assert ) {
 			expectedHtml: '<span data-ve-clipboard-key="">&nbsp;</span>a<b>b</b><i>c</i>',
 			noClipboardData: true,
 			msg: 'Clipboard span'
-		}
-		/*
-		// Our CI environment uses either Chrome 57 (mediawiki/extensions/VisualEditor)
-		// or Chrome 63 (VisualEditor/VisualEditor), but they produce different results,
-		// so this test will always fail in at least one of them.
+		},
 		{
 			rangeOrSelection: new ve.Range( 0, 61 ),
-			expectedText: 'abc\n\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n', // Chrome 57
-			expectedText: 'abc\nd\n\ne\n\nf\n\ng\n\nhi\nj\n\nk\n\nl\n\nm\n\n',   // Chrome 63
+			expectedText: 'abc\n\nd\n\ne\n\nf\n\ng\n\nhi\n\nj\n\nk\n\nl\n\nm',
 			msg: 'Plain text of entire document'
 		}
-		*/
 	];
 
 	function testRunner( doc, rangeOrSelection, expectedData, expectedOriginalRange, expectedBalancedRange, expectedHtml, expectedText, noClipboardData, msg ) {
