@@ -10,12 +10,12 @@ For more information about the project, check out the [VisualEditor][]
 page on mediawiki.org.
 
 
-## Installing
+## Installation
 
-For information on setting up VisualEditor, please see
+For information on setting up and installation of VisualEditor, please see
 https://www.mediawiki.org/wiki/VisualEditor/Setup
 
-## Developing
+## Development
 
 For information about running tests and contributing code to VisualEditor,
 see [CONTRIBUTING.md][].  Patch submissions are reviewed and managed with
