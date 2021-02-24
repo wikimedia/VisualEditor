@@ -57,7 +57,7 @@ ve.elementTypes = {
  * Create an HTMLDocument from an HTML string.
  *
  * The html parameter is supposed to be a full HTML document with a doctype and an `<html>` tag.
- * If you pass a document fragment, it may or may not work, this is at the mercy of the browser.
+ * If you pass a document fragment, it will be wrapped in `<body>…</body>`.
  *
  * To create an empty document, pass the empty string.
  *
@@ -69,6 +69,12 @@ ve.elementTypes = {
  */
 ve.createDocumentFromHtml = function ( html ) {
 	var newDocument;
+
+	if ( html !== '' && html.indexOf( '<body' ) === -1 ) {
+		// When the given HTML fragment starts with a <meta> or <style> element, it is placed in the
+		// automatically generated <head> rather than <body>, and breaks our assumptions. (T273234)
+		html = '<body>' + html + '</body>';
+	}
 
 	newDocument = ve.createDocumentFromHtmlUsingDomParser( html );
 	if ( newDocument ) {

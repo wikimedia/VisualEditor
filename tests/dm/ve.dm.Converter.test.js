@@ -56,7 +56,7 @@ QUnit.test( 'getFullData', function ( assert ) {
 	];
 
 	cases.forEach( function ( caseItem ) {
-		var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + caseItem.beforeHtml ) ),
+		var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.beforeHtml ) ),
 			tx = caseItem.transaction( doc );
 
 		doc.commit( tx );
@@ -80,7 +80,7 @@ QUnit.test( 'roundTripMetadata', function ( assert ) {
 		beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
 		afterHtml = '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>';
 
-	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( '<body>' + beforeHtml ) );
+	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( beforeHtml ) );
 	tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
 	doc.commit( tx );
 	assert.strictEqual(
