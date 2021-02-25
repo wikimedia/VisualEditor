@@ -45,6 +45,7 @@
 	"visualeditor-indentationbutton-outdent-tooltip": "Peukureuëng inden",
 	"visualeditor-inspector-close-tooltip": "Tôp",
 	"visualeditor-inspector-remove-tooltip": "Sampôh",
+	"visualeditor-key-delete": "Sampôh",
 	"visualeditor-languageinspector-title": "Bahsa",
 	"visualeditor-languageinspector-widget-changelang": "Gantoë bahsa",
 	"visualeditor-languageinspector-widget-label-direction": "Ho",
@@ -53,5 +54,6 @@
 	"visualeditor-linkinspector-title": "Peunawôt",
 	"visualeditor-listbutton-bullet-tooltip": "Dapeuta meuneuk-neuk",
 	"visualeditor-listbutton-number-tooltip": "Dapeuta meulumbôi",
-	"visualeditor-specialcharacter-button-tooltip": "Karakter kusuih"
+	"visualeditor-specialcharacter-button-tooltip": "Karakter kusuih",
+	"visualeditor-table-delete-col": "Sampôh {{PLURAL:$1|kolom}}"
 }
