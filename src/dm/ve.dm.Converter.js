@@ -670,7 +670,7 @@ ve.dm.Converter.prototype.getDataFromDomClean = function ( domElement, wrapperEl
 ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapperElement, annotationSet ) {
 	var i, childNode, childNodes, childDataElements, text, matches,
 		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
-		annotation, childIsContent, aboutGroup, emptyParagraph,
+		annotation, childIsContent, aboutGroup, emptyParagraph, wrapperParagraph,
 		converter = this,
 		whitespaceList = this.constructor.static.whitespaceList,
 		modelRegistry = this.modelRegistry,
@@ -1143,9 +1143,9 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 		!this.nodeFactory.isNodeContent( context.branchType ) &&
 		this.isValidChildNodeType( 'paragraph' )
 	) {
-		emptyParagraph = { type: 'paragraph', internal: { generated: 'empty' } };
-		processNextWhitespace( emptyParagraph );
-		data.push( emptyParagraph );
+		wrapperParagraph = { type: 'paragraph', internal: { generated: 'wrapper' } };
+		processNextWhitespace( wrapperParagraph );
+		data.push( wrapperParagraph );
 		data.push( { type: '/paragraph' } );
 	}
 
