@@ -8,10 +8,6 @@
 	padding: 0.25em 0.5em;
 }
 
-.ve-ui-specialCharacterDialog .oo-ui-bookletLayout {
-	height: 150px;
-}
-
 /* When displaying inside another dialog, make the menu narrower */
 .oo-ui-dialog .ve-ui-specialCharacterDialog .oo-ui-bookletLayout .oo-ui-menuLayout-menu {
 	width: 10em;

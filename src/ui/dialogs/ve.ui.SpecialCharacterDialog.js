@@ -188,6 +188,15 @@ ve.ui.SpecialCharacterDialog.prototype.onListClick = function ( e ) {
 	}
 };
 
+ve.ui.SpecialCharacterDialog.prototype.getBodyHeight = function () {
+	return 150;
+};
+
+ve.ui.SpecialCharacterDialog.prototype.getContentHeight = function () {
+	// Skip slow complicated measurements that always return 0 for this window
+	return this.getBodyHeight();
+};
+
 /* Registration */
 
 ve.ui.windowFactory.register( ve.ui.SpecialCharacterDialog );
