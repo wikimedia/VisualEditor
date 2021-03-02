@@ -94,7 +94,13 @@ ve.ui.SpecialCharacterDialog.prototype.getTeardownProcess = function ( data ) {
 ve.ui.SpecialCharacterDialog.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.SpecialCharacterDialog.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
+			// The dialog automatically receives focus after opening, move it back to the surface.
+			// (Make sure an existing selection is preserved. Why does focus() reset the selection? 🤦)
+			var previousSelection = this.surface.getModel().getSelection();
 			this.surface.getView().focus();
+			if ( !previousSelection.isNull() ) {
+				this.surface.getModel().setSelection( previousSelection );
+			}
 		}, this );
 };
 
