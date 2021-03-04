@@ -58,7 +58,7 @@
 	"visualeditor-changedesc-image-size": "Tamanho alterado de $1 to $2",
 	"visualeditor-changedesc-language": "Idioma alterado de $1 para $2",
 	"visualeditor-changedesc-link-added": "Link adicionado: $1",
-	"visualeditor-changedesc-link-href": "Destino da ligação alterado de $1 para $2",
+	"visualeditor-changedesc-link-href": "Destino do link alterado de $1 para $2",
 	"visualeditor-changedesc-link-href-diff": "Alvo do link alterado: $1",
 	"visualeditor-changedesc-link-removed": "Link removido: $1",
 	"visualeditor-changedesc-no-key": "$1 alterado para $2",
