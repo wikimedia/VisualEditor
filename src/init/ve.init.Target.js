@@ -642,7 +642,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	actions.connect( this, { active: 'onToolbarActive' } );
 
 	if ( surface.nullSelectionOnBlur ) {
-		$( [ toolbar.$element[ 0 ], actions.$element[ 0 ] ] )
+		toolbar.$element
 			.on( 'focusin', function () {
 				// When the focus moves to the toolbar, deactivate the surface but keep the selection (even if
 				// nullSelectionOnBlur is true), to allow tools to act on that selection.
@@ -652,7 +652,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 				// We need to use setTimeout() to see where the focus will end up
 				setTimeout( function () {
 					var previousSelection;
-					if ( !OO.ui.contains( [ toolbar.$element[ 0 ], actions.$element[ 0 ] ], document.activeElement, true ) ) {
+					if ( !OO.ui.contains( toolbar.$element[ 0 ], document.activeElement, true ) ) {
 						// When the focus moves out of the toolbar:
 						if ( OO.ui.contains( surface.getView().$element[ 0 ], document.activeElement, true ) ) {
 							// When the focus moves out of the toolbar, and it moves back into the surface,
