@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.41.1
+ * OOUI v0.41.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2021 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2021-01-26T22:57:09Z
+ * Date: 2021-03-09T16:32:27Z
  */
 /* stylelint-disable selector-no-vendor-prefix */
 /* stylelint-enable selector-no-vendor-prefix */
@@ -2318,6 +2318,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-selectFileInputWidget {
   width: 100%;
   max-width: 50em;
+  min-height: 2.28571429em;
 }
 .oo-ui-selectFileInputWidget-selectButton > .oo-ui-buttonElement-button {
   position: relative;
@@ -2359,14 +2360,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.41.1
+ * OOUI v0.41.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2021 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2021-01-26T22:57:09Z
+ * Date: 2021-03-09T16:32:27Z
  */
 /* stylelint-disable selector-no-vendor-prefix */
 /* stylelint-enable selector-no-vendor-prefix */
@@ -3177,7 +3178,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-tagMultiselectWidget.oo-ui-widget-enabled.oo-ui-tagMultiselectWidget-inlined .oo-ui-tagMultiselectWidget-handle {
   cursor: text;
 }
-.oo-ui-tagMultiselectWidget.oo-ui-widget-disabled .oo-ui-tagMultiselectWidget-content > input {
+.oo-ui-tagMultiselectWidget.oo-ui-widget-disabled .oo-ui-tagMultiselectWidget-group > input {
   display: none;
 }
 .oo-ui-tagMultiselectWidget-focusTrap {
@@ -3202,7 +3203,13 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-tagMultiselectWidget-handle:last-child {
   margin-right: 0;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content > input {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group {
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 4px;
+  margin-left: -0.14285714em;
+}
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input {
   background-color: transparent;
   color: #000;
   -webkit-box-sizing: border-box;
@@ -3211,42 +3218,37 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   height: 2.14285714em;
   border: 0;
   padding: 5px 0 5px 0.57142857em;
+  margin-top: -4px;
   font-family: inherit;
   font-size: inherit;
   line-height: 1.42857143em;
   vertical-align: top;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content > input::-webkit-input-placeholder {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input::-webkit-input-placeholder {
   color: #72777d;
   opacity: 1;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content > input:-ms-input-placeholder {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input:-ms-input-placeholder {
   color: #72777d;
   opacity: 1;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content > input::-moz-placeholder {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input::-moz-placeholder {
   color: #72777d;
   opacity: 1;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content > input:-moz-placeholder {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input:-moz-placeholder {
   color: #72777d;
   opacity: 1;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content > input::placeholder {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input::placeholder {
   color: #72777d;
   opacity: 1;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content > input:focus {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input:focus {
   outline: 0;
 }
-.oo-ui-tagMultiselectWidget-handle > .oo-ui-tagMultiselectWidget-content .oo-ui-tagMultiselectWidget-group:empty + input {
+.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group > input:first-child {
   margin-left: 0;
-}
-.oo-ui-tagMultiselectWidget-handle .oo-ui-tagMultiselectWidget-group {
-  display: inline-block;
-  max-width: 100%;
-  margin-top: 4px;
-  margin-left: -0.14285714em;
 }
 .oo-ui-tagMultiselectWidget.oo-ui-iconElement .oo-ui-tagMultiselectWidget-handle {
   padding-left: 2.02857143em;
@@ -3464,14 +3466,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.41.1
+ * OOUI v0.41.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2021 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2021-01-26T22:57:09Z
+ * Date: 2021-03-09T16:32:27Z
  */
 /* stylelint-disable selector-no-vendor-prefix */
 /* stylelint-enable selector-no-vendor-prefix */
@@ -4166,14 +4168,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.41.1
+ * OOUI v0.41.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2021 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2021-01-26T22:57:09Z
+ * Date: 2021-03-09T16:32:27Z
  */
 /* stylelint-disable selector-no-vendor-prefix */
 /* stylelint-enable selector-no-vendor-prefix */
@@ -4612,14 +4614,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.41.1
+ * OOUI v0.41.2
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2021 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2021-01-26T22:57:09Z
+ * Date: 2021-03-09T16:32:27Z
  */
 /* stylelint-disable selector-no-vendor-prefix */
 /* stylelint-enable selector-no-vendor-prefix */
