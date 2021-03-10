@@ -2219,13 +2219,23 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
-			{ type: 'paragraph', internal: { generated: 'empty' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		]
+		],
+		// Inserting content doesn't result in a real <p> node
+		modify: function ( doc ) {
+			doc.commit( ve.dm.TransactionBuilder.static.newFromInsertion(
+				doc,
+				3,
+				'Foo'
+			) );
+		},
+		normalizedBody: '<ul><li>Foo</li></ul>',
+		fromDataBody: '<ul><li>Foo</li></ul>'
 	},
 	'empty document': {
 		body: '',
@@ -3546,7 +3556,7 @@ ve.dm.example.domToDataCases = {
 		data: [
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem', internal: { whitespace: [ undefined, '\n\t' ] } },
-			{ type: 'paragraph', internal: { generated: 'empty', whitespace: [ '\n\t' ] } },
+			{ type: 'paragraph', internal: { generated: 'wrapper', whitespace: [ '\n\t' ] } },
 			{ type: '/paragraph' },
 			{ type: '/listItem' },
 			{ type: '/list' },

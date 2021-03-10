@@ -1733,7 +1733,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				data: [
 					{ type: 'list', attributes: { style: 'bullet' } },
 					{ type: 'listItem' },
-					{ type: 'paragraph', internal: { generated: 'empty' } },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } },
 					{ type: '/paragraph' },
 					{ type: '/listItem' },
 					{ type: '/list' },

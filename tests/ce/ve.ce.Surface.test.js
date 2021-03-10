@@ -1499,7 +1499,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'replace',
 							insert: [],
 							remove: [
-								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								{ type: '/paragraph' }
 							]
 						},
@@ -1543,7 +1543,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'replace',
 							insert: [],
 							remove: [
-								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								{ type: '/paragraph' }
 							]
 						},
@@ -1608,7 +1608,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							type: 'replace',
 							insert: [],
 							remove: [
-								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								{ type: '/paragraph' }
 							]
 						},
@@ -1661,7 +1661,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 							],
 							remove: [
 								{ type: 'tableCell', attributes: { style: 'data' } },
-								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								{ type: '/paragraph' },
 								{ type: '/tableCell' }
 							]
@@ -1774,7 +1774,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							insert: [],
 							remove: [
-								{ type: 'paragraph', internal: { generated: 'empty' } },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								{ type: '/paragraph' }
 							],
 							type: 'replace'
