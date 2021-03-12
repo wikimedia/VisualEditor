@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"AlimanRuna",
+			"Andreyyshore",
 			"Firilacroco",
 			"Ion",
 			"KlaudiuMihaila",
@@ -74,7 +75,7 @@
 	"visualeditor-debugbar-close": "Închide",
 	"visualeditor-debugbar-logrange": "Jurnal selectat",
 	"visualeditor-debugbar-showmodel": "Arată model",
-	"visualeditor-debugbar-showtransactions": "Arată tranzacţie",
+	"visualeditor-debugbar-showtransactions": "Arată tranzacție",
 	"visualeditor-debugbar-updatemodel": "Actualizare la schimbări",
 	"visualeditor-dialog-action-apply": "Aplică modificările",
 	"visualeditor-dialog-action-cancel": "Revocare",
