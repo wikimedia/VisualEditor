@@ -2,13 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"CoderSI",
+			"Malikxan",
 			"Noor2020",
 			"Sociologist",
 			"පසිඳු කාවින්ද"
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliennode-tooltip": "Afsuski, hozirgi vaqtda ushbu element faqat manba kodini tahrirlash usuli yordamida oʻzhgartirish mumkin.",
+	"visualeditor-aliennode-tooltip": "Afsuski, hozirgi vaqtda ushbu element faqat manba kodini tahrirlash usuli yordamida oʻzgartirish mumkin.",
 	"visualeditor-annotationbutton-bold-tooltip": "Qalin",
 	"visualeditor-annotationbutton-code-tooltip": "Komputer kodi",
 	"visualeditor-annotationbutton-italic-tooltip": "Yotiq",
