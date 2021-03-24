@@ -290,7 +290,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	surface.focus();
 	surface.surfaceObserver.clear();
 	// Check delete sequences
-	surface.checkSequences( false, true );
+	surface.findAndExecuteSequences( false, true );
 	e.preventDefault();
 	return true;
 };

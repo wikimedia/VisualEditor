@@ -255,7 +255,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	surface.surfaceObserver.clear();
 	// TODO: This setTimeout appears to be unnecessary (we're not render-locked)
 	setTimeout( function () {
-		surface.checkSequences();
+		surface.findAndExecuteSequences();
 	} );
 
 	return true;

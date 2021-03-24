@@ -8,7 +8,7 @@ QUnit.module( 've.ui.Sequence' );
 
 /* Tests */
 
-QUnit.test( 'checkSequences', function ( assert ) {
+QUnit.test( 'findAndExecuteSequences', function ( assert ) {
 	var i, view, model, expectedSelection,
 		emptyDocData = [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ],
 		tests = [
@@ -55,7 +55,7 @@ QUnit.test( 'checkSequences', function ( assert ) {
 		view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocumentFromData( emptyDocData ) );
 		model = view.getModel();
 		model.getLinearFragment( new ve.Range( 1 ) ).insertContent( tests[ i ].content ).collapseToEnd();
-		view.checkSequences();
+		view.findAndExecuteSequences();
 		assert.deepEqual(
 			model.getDocument().getData( model.getDocument().getDocumentRange() ),
 			tests[ i ].expectedData,

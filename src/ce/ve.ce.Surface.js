@@ -739,7 +739,7 @@ ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChan
 		this.surfaceObserver.disable();
 		this.deactivated = true;
 		this.previousActiveAnnotations = this.activeAnnotations;
-		this.checkDelayedSequences();
+		this.findAndExecuteDelayedSequences();
 		this.$element.addClass( 've-ce-surface-deactivated' );
 		// Remove ranges so the user can't accidentally type into the document,
 		// and so virtual keyboards are hidden.
@@ -2317,7 +2317,7 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		// If original selection was linear, switch to end of pasted text
 		if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
 			targetFragment.collapseToEnd().select();
-			view.checkSequences( /* isPaste */ true );
+			view.findAndExecuteSequences( /* isPaste */ true );
 		}
 	} );
 };
@@ -3133,7 +3133,7 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 	var focusedNode, blockSlug,
 		selection = this.getModel().getSelection();
 
-	setTimeout( this.checkDelayedSequences.bind( this ) );
+	setTimeout( this.findAndExecuteDelayedSequences.bind( this ) );
 
 	this.cursorDirectionality = null;
 	this.contentBranchNodeChanged = false;
@@ -3515,12 +3515,12 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 
 	if ( insertedText ) {
 		surface.afterRenderLock( function () {
-			surface.checkSequences();
+			surface.findAndExecuteSequences();
 			surface.maybeSetBreakpoint();
 		} );
 	} else if ( removedText ) {
 		surface.afterRenderLock( function () {
-			surface.checkSequences( false, true );
+			surface.findAndExecuteSequences( false, true );
 			surface.maybeSetBreakpoint();
 		} );
 	}
@@ -3646,44 +3646,52 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
 };
 
 /**
- * Check the current surface offset for sequence matches
+ * Find sequence matches at the current surface offset
  *
  * @param {boolean} [isPaste] Whether this in the context of a paste
  * @param {boolean} [isDelete] Whether this is after content being deleted
  */
-ve.ce.Surface.prototype.checkSequences = function ( isPaste, isDelete ) {
-	var matchingSequences,
-		model = this.getModel(),
-		selection = this.getSelection();
+ve.ce.Surface.prototype.findMatchingSequences = function ( isPaste, isDelete ) {
+	var selection = this.getSelection();
 
 	if ( !selection.isNativeCursor() ) {
-		return;
+		return [];
 	}
 
-	matchingSequences = this.getSurface().sequenceRegistry.findMatching(
-		model.getDocument().data,
+	return this.getSurface().sequenceRegistry.findMatching(
+		this.getModel().getDocument().data,
 		selection.getModel().getCoveringRange().end,
 		isPaste,
 		isDelete
 	);
-
-	this.executeSequences( matchingSequences );
 };
+
+/**
+ * Find sequence matches at the current surface offset and execute them
+ *
+ * @param {boolean} [isPaste] Whether this in the context of a paste
+ * @param {boolean} [isDelete] Whether this is after content being deleted
+ */
+ve.ce.Surface.prototype.findAndExecuteSequences = function ( isPaste, isDelete ) {
+	this.executeSequences( this.findMatchingSequences( isPaste, isDelete ) );
+};
+
+// Deprecated alias
+ve.ce.Surface.prototype.checkSequences = ve.ce.Surface.prototype.findAndExecuteSequences;
 
 /**
  * Check if any of the previously delayed sequences no longer match with current offset,
  * and therefore should be executed.
  */
-ve.ce.Surface.prototype.checkDelayedSequences = function () {
+ve.ce.Surface.prototype.findAndExecuteDelayedSequences = function () {
 	var matchingSequences, matchingByName, i, matchingSeq,
 		sequences = [],
-		model = this.getModel(),
 		selection = this.getSelection();
 
 	if ( this.deactivated || !selection.isNativeCursor() ) {
 		matchingSequences = [];
 	} else {
-		matchingSequences = this.getSurface().sequenceRegistry.findMatching( model.getDocument().data, selection.getModel().getCoveringRange().end );
+		matchingSequences = this.findMatchingSequences();
 	}
 	matchingByName = {};
 	for ( i = 0; i < matchingSequences.length; i++ ) {
@@ -3706,6 +3714,9 @@ ve.ce.Surface.prototype.checkDelayedSequences = function () {
 
 	this.executeSequences( sequences );
 };
+
+// Deprecated alias
+ve.ce.Surface.prototype.checkDelayedSequences = ve.ce.Surface.prototype.findAndExecuteDelayedSequences;
 
 ve.ce.Surface.prototype.executeSequences = function ( sequences ) {
 	var i,
