@@ -122,6 +122,7 @@ ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
 			name === 'changesSinceLoad' ||
 			name === 'originalDomElementsHash' ||
 			name === 'originalMw' ||
+			name === 'originalVariantInfo' ||
 			name === 'mw' ||
 			name === 'contentsUsed'
 		) {
