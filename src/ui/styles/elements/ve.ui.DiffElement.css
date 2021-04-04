@@ -123,6 +123,8 @@ del[ data-diff-action='remove' ],
 }
 
 [ data-diff-action='insert' ],
+/* <code> tags often have a background color that needs overriding */
+[ data-diff-action='insert' ] > code,
 /* elements using display:table-caption need separate backgrounds */
 table[ data-diff-action='insert' ] > caption,
 figure[ data-diff-action='insert' ] > figcaption {
@@ -131,6 +133,8 @@ figure[ data-diff-action='insert' ] > figcaption {
 }
 
 [ data-diff-action='remove' ],
+/* <code> tags often have a background color that needs overriding */
+[ data-diff-action='remove' ] > code,
 /* elements using display:table-caption need separate backgrounds */
 table[ data-diff-action='remove' ] > caption,
 figure[ data-diff-action='remove' ] > figcaption {
