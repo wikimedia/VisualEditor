@@ -156,7 +156,12 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 		// Nail heights are 0, so use the annotation's height
 		if ( node && node.nodeType === Node.ELEMENT_NODE && node.classList.contains( 've-ce-nail' ) ) {
 			annotationNode = offset ? node.previousSibling : node.nextSibling;
-			fixHeight = annotationNode.offsetHeight;
+			// Sometimes annotationNode isn't an HTMLElement (T261992). Not sure
+			// when this happens, but we will still return a sensible rectangle
+			// without fixHeight isn't set.
+			if ( annotationNode instanceof HTMLElement ) {
+				fixHeight = annotationNode.offsetHeight;
+			}
 		}
 	} else {
 		node = containerNode;
