@@ -316,6 +316,11 @@ ve.ui.TableAction.prototype.importTable = function ( importedTableNode, importIn
 			cell = matrix.getCell( selection.fromRow + row, selection.fromCol + col );
 			cellRange = cell.node.getRange();
 			importedCell = importedMatrix.getCell( row, col );
+			if ( !importedCell ) {
+				// Cell not found in source table. Likely some sort of invalid or sparse
+				// table matrix (T262842). Just ignore the empty cell.
+				continue;
+			}
 			if ( importedCell.node.type !== cell.node.type ) {
 				// Since the imported cell isn't the same type as the
 				// existing cell, we can't quite trust our assumptions about
