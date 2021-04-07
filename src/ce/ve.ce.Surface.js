@@ -3093,10 +3093,15 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 	) {
 		// Wait for the insertion to happen
 		setTimeout( function () {
-			var fragment = surface.getModel().getFragment().adjustLinearSelection( -1 );
+			var
+				fragment = surface.getModel().getFragment().adjustLinearSelection( -1 ),
+				nbspContent = '&nbsp;';
+			if ( surface.getSurface().getMode() === 'visual' ) {
+				nbspContent = ve.init.platform.decodeEntities( nbspContent );
+			}
 			// Check a plain space was inserted and replace it with an NBSP.
 			if ( fragment.getText() === ' ' ) {
-				fragment.insertContent( ve.init.platform.decodeEntities( '&nbsp;' ) ).collapseToEnd().select();
+				fragment.insertContent( nbspContent ).collapseToEnd().select();
 			}
 		} );
 	}
