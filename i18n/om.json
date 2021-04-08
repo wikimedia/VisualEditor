@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ahrada2016",
 			"Cedric31",
 			"Maammee",
 			"Tumsaa"
@@ -16,7 +17,7 @@
 	"visualeditor-annotationbutton-bold-tooltip": "Yabbuu",
 	"visualeditor-annotationbutton-code-tooltip": "Lakkaddaa Kompitaraa",
 	"visualeditor-annotationbutton-italic-tooltip": "Mirgada",
-	"visualeditor-annotationbutton-language-tooltip": "Afaan",
+	"visualeditor-annotationbutton-language-tooltip": "Qooqa",
 	"visualeditor-annotationbutton-link-tooltip": "Geessituu",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Sarara gidduu",
 	"visualeditor-annotationbutton-subscript-tooltip": "Jalarfii",
@@ -43,7 +44,7 @@
 	"visualeditor-dialog-error-dismiss": "Duubatti deebi'i",
 	"visualeditor-dialog-language-auto-direction": "Ofumaa",
 	"visualeditor-dialog-language-search-title": "Afaan filadhu",
-	"visualeditor-dialog-table-caption": "Goodayyaa",
+	"visualeditor-dialog-table-caption": "Suurmurii",
 	"visualeditor-dialog-table-title": "Amaloota gabatee",
 	"visualeditor-find-and-replace-done": "Xumurame",
 	"visualeditor-find-and-replace-find-text": "Barbaadi",
@@ -77,7 +78,7 @@
 	"visualeditor-inspector-close-tooltip": "Cufi",
 	"visualeditor-inspector-remove-tooltip": "Balleessi",
 	"visualeditor-language-search-input-placeholder": "Maqaa ykn koodii afaanitiin barbaade",
-	"visualeditor-languageinspector-title": "Afaan",
+	"visualeditor-languageinspector-title": "Qooqa",
 	"visualeditor-languageinspector-widget-changelang": "Afaan barbaadi",
 	"visualeditor-languageinspector-widget-label-direction": "Kallattii",
 	"visualeditor-languageinspector-widget-label-langcode": "Koodii Afaanii",
@@ -102,7 +103,7 @@
 	"visualeditor-slug-insert": "Keeyyata galchi",
 	"visualeditor-specialcharacter-button-tooltip": "Qubee addaa",
 	"visualeditor-specialcharacterinspector-title": "Qubee addaa",
-	"visualeditor-table-caption": "Goodayyaa",
+	"visualeditor-table-caption": "Suurmurii",
 	"visualeditor-table-contextitem-properties": "Amaloota",
 	"visualeditor-table-delete-col": "Tarjaa {{PLURAL:$1}} balleessi",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|tarree}} balleessi",

@@ -143,7 +143,7 @@
 	"visualeditor-mediasizewidget-sizeoptions-scale": "Měritko",
 	"visualeditor-corrupted-document-error": "Dokument je wobškodźeny: $1",
 	"visualeditor-corrupted-document-title": "Wobškodźeny dokument",
-	"visualeditor-missing-document-error": "Dokument pobrachuje na serwerje. Kopěruj wobsah a zasuń jón, zo by straće datow zadźěłał(a).",
+	"visualeditor-missing-document-error": "Dokument pobrachuje na serwerje. Kopěruj wobsah a zasuń jón, zo by straće datow {{GENDER:||a|(a)}}.",
 	"visualeditor-missing-document-title": "Pobrachowacy dokument",
 	"visualeditor-pagemenu-tooltip": "Nastajenja strony",
 	"visualeditor-rebase-client-author-name": "Mjeno",
