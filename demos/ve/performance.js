@@ -4,8 +4,6 @@
  * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-/* eslint-disable compat/compat */
-
 ( function () {
 	/* eslint-disable no-jquery/no-global-selector */
 	var $instance = $( '.ve-instance' ),

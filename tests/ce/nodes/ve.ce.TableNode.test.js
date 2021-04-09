@@ -55,7 +55,7 @@ QUnit.test( 'getFirstSectionNode', function ( assert ) {
 		tableNode = documentNode.children[ 0 ],
 		result = tableNode.getFirstSectionNode();
 
-	assert.strictEqual( result instanceof ve.ce.TableSectionNode, true, 'result is a TableSectionNode' );
+	assert.ok( result instanceof ve.ce.TableSectionNode, 'result is a TableSectionNode' );
 	assert.strictEqual( result, tableNode.children[ 1 ], 'result is 2nd child of table' );
 } );
 
