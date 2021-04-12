@@ -6,7 +6,8 @@
 			"Pavanaja",
 			"VASANTH S.N.",
 			"Vikassy",
-			"Yogesh"
+			"Yogesh",
+			"ಮಲ್ನಾಡಾಚ್ ಕೊಂಕ್ಣೊ"
 		]
 	},
 	"visualeditor": "ದೃಶ್ಯ ಸಂಪಾದಕ",
@@ -27,12 +28,12 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "ಕೆಳಬರಹ",
 	"visualeditor-annotationbutton-superscript-tooltip": "ಮೇಲ್ಬರಹ",
 	"visualeditor-annotationbutton-underline-tooltip": "ಅಡಿಗೆರೆ",
-	"visualeditor-clearbutton-tooltip": "ವಿನ್ಯಾಸವನ್ನು ತೆಗೆಯಿರಿ",
+	"visualeditor-clearbutton-tooltip": "ತೆಗೆ",
 	"visualeditor-clipboard-copy": "ನಕಲು",
 	"visualeditor-clipboard-cut": "ಕತ್ತರಿಸು",
 	"visualeditor-clipboard-paste": "ಅಂಟಿಸು",
 	"visualeditor-clipboard-paste-special": "ಸರಳ ಪಠ್ಯವಾಗಿ ಅಂಟಿಸು",
-	"visualeditor-commentannotationcontextitem-comment": "ಉತ್ತರ",
+	"visualeditor-commentannotationcontextitem-comment": "ಟಿಪ್ಪಣಿ",
 	"visualeditor-commentinspector-edit": "ಟಿಪ್ಪಣಿ ಬದಲಾಯಿಸಿ",
 	"visualeditor-commentinspector-title": "ಟಿಪ್ಪಣಿ",
 	"visualeditor-commentinspector-tooltip": "ಟಿಪ್ಪಣಿ",
@@ -40,7 +41,7 @@
 	"visualeditor-contextitemwidget-label-remove": "ಅಳಿಸು",
 	"visualeditor-contextitemwidget-label-secondary": "ಸಂಪಾದಿಸಿ",
 	"visualeditor-dialog-action-apply": "ಬದಲಾವಣೆಗಳನ್ನು ಅಳವಡಿಸು",
-	"visualeditor-dialog-action-cancel": "ರದ್ದುಮಾಡು",
+	"visualeditor-dialog-action-cancel": "ರದ್ದುಮಾಡಿ",
 	"visualeditor-dialog-action-done": "ಮುಗಿಯಿತು",
 	"visualeditor-dialog-action-goback": "ಹಿಂದೆ ಹೋಗಿ",
 	"visualeditor-dialog-action-insert": "ಸೇರಿಸು",
