@@ -619,6 +619,24 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'Annotation insertion (no desc)',
+				oldDoc: '<p>foo bar baz</p>',
+				newDoc: '<p>foo <dfn>bar</dfn> baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>foo <span data-diff-action="change-remove">bar</span><span data-diff-action="change-insert"><dfn>bar</dfn></span> baz</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Annotation removal (no desc)',
+				oldDoc: '<p>foo <dfn>bar</dfn> baz</p>',
+				newDoc: '<p>foo bar baz</p>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<p>foo <span data-diff-action="change-remove"><dfn>bar</dfn></span><span data-diff-action="change-insert">bar</span> baz</p>' +
+					'</div>'
+			},
+			{
 				msg: 'Link insertion',
 				oldDoc: '<p>foo bar baz</p>',
 				newDoc: '<p>foo <a href="http://example.org/">bar</a> baz</p>',
