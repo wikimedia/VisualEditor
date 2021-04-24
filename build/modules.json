@@ -51,7 +51,7 @@
 	},
 	"oojs": {
 		"scripts": [
-			"lib/oojs/oojs.jquery.js"
+			"lib/oojs/oojs.js"
 		],
 		"dependencies": [
 			"jquery"
