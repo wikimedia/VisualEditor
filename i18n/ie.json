@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Makuba"
+			"Makuba",
+			"Renan"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -30,7 +31,7 @@
 	"visualeditor-formatdropdown-title": "Changear formation",
 	"visualeditor-help-tool": "Auxilie",
 	"visualeditor-historybutton-redo-tooltip": "Repetir",
-	"visualeditor-historybutton-undo-tooltip": "Desfar",
+	"visualeditor-historybutton-undo-tooltip": "Anullar",
 	"visualeditor-indentationbutton-indent-tooltip": "Plu larg indentation",
 	"visualeditor-indentationbutton-outdent-tooltip": "Minu larg indentation",
 	"visualeditor-inspector-close-tooltip": "Terminar",
