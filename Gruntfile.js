@@ -563,8 +563,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'banana' ] );
-	// Disable Firefox temporarily to workaround T240955.
-	grunt.registerTask( 'unit', [ 'karma:chrome' /* , 'karma:firefox' */ ] );
+	grunt.registerTask( 'unit', [ 'karma:chrome', 'karma:firefox' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
 	grunt.registerTask( 'ci', [ '_test', 'svgmin', 'git-status' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
