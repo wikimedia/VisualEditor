@@ -193,12 +193,6 @@ ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements,
 				}
 				targetDomElements[ i ].setAttribute( attrs[ j ].name, value );
 			}
-
-			if ( filter === true || filter( attrs[ j ].name ) ) {
-				value = computed && this.computedAttributes.indexOf( attrs[ j ].name ) !== -1 ?
-					originalDomElements[ i ][ attrs[ j ].name ] :
-					attrs[ j ].value;
-			}
 		}
 
 		// Descend into element children only (skipping text nodes, comment nodes and nodes we just created)
