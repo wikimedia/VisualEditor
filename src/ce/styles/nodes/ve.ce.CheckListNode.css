@@ -10,8 +10,7 @@ ul.ve-ce-checkListNode {
 }
 
 .ve-ce-checkListItemNode {
-	list-style-type: none;
-	list-style-image: none; /* MW reset */
+	list-style: none;
 	position: relative;
 }
 
