@@ -80,3 +80,10 @@
 .ve-ui-toolbarDialog .oo-ui-window-frame {
 	position: relative;
 }
+
+.ve-ui-toolbarDialog-position-below {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
