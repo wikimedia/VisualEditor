@@ -2373,21 +2373,9 @@ QUnit.test( 'findBlockSlug', function ( assert ) {
 		view = ve.test.utils.createSurfaceViewFromHtml( '<div><div><p>Foo</p></div></div><div><p>Bar</p></div>' ),
 		dmDoc = view.getModel().getDocument(),
 		len = dmDoc.getLength(),
-		internalListOffset = dmDoc.getDocumentRange().end,
 		slugOffsets = { 0: true, 1: true, 8: true, 9: true, 16: true };
 
 	for ( i = 0; i <= len; i++ ) {
-		if ( i > internalListOffset ) {
-			assert.throws(
-				// eslint-disable-next-line no-loop-func
-				function () {
-					view.findBlockSlug( new ve.Range( i ) );
-				},
-				Error,
-				'Throws at offset ' + i + ' (inside internal list)'
-			);
-			continue;
-		}
 		ret = view.findBlockSlug( new ve.Range( i ) );
 		if ( slugOffsets[ i ] ) {
 			assert.ok( ret, 'Block slug found at offset ' + i );

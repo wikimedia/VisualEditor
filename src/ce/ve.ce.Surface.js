@@ -3294,7 +3294,7 @@ ve.ce.Surface.prototype.findBlockSlug = function ( range ) {
 		return null;
 	}
 	var node = this.documentView.getBranchNodeFromOffset( range.end );
-	if ( !node.canHaveChildrenNotContent() ) {
+	if ( !node || !node.canHaveChildrenNotContent() ) {
 		// Node can not have block slugs (only inline slugs)
 		return null;
 	}
