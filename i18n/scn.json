@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Gazeb",
 			"Gloria sah",
 			"Gmelfi",
@@ -11,16 +12,19 @@
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliennode-tooltip": "N'aviti a scusari, stu elimentu ancora pò siri canciatu sulu n mudalitati surgenti accamarora.",
+	"visualeditor-align-desc-left": "manca",
 	"visualeditor-annotationbutton-bold-tooltip": "Grassettu",
 	"visualeditor-annotationbutton-code-tooltip": "Codici di computer",
 	"visualeditor-annotationbutton-italic-tooltip": "Cursivu",
 	"visualeditor-annotationbutton-language-tooltip": "Lingua",
 	"visualeditor-annotationbutton-link-tooltip": "Liami",
+	"visualeditor-annotationbutton-small-tooltip": "Nicu",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "Barratu",
 	"visualeditor-annotationbutton-subscript-tooltip": "Pèdici",
 	"visualeditor-annotationbutton-superscript-tooltip": "Àpici",
 	"visualeditor-annotationbutton-underline-tooltip": "Suttalineatu",
 	"visualeditor-clearbutton-tooltip": "Pulizzìa lu stili",
+	"visualeditor-contextitemwidget-label-secondary": "Cancia",
 	"visualeditor-dialog-action-apply": "Applica li canciamenti",
 	"visualeditor-dialog-action-cancel": "Annulla",
 	"visualeditor-dialog-action-goback": "Narreri",
