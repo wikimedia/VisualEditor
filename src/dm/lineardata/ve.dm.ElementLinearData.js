@@ -43,6 +43,9 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
  * have the same text data. Anything semantically irrelevant is filtered
  * out first.
  *
+ * When changing, ensure that ve.dm.Transaction.static.compareElementsUnannotatedSimple
+ * is also updated.
+ *
  * @param {Object|Array|string} a First element
  * @param {Object|Array|string} b Second element
  * @return {boolean} Elements are comparable
