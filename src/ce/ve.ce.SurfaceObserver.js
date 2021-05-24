@@ -132,14 +132,12 @@ ve.ce.SurfaceObserver.prototype.pollOnceSelection = function () {
  * @param {boolean} selectionOnly Check for selection changes only
  */
 ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, selectionOnly ) {
-	var oldState, newState;
-
 	if ( !this.domDocument || this.disabled ) {
 		return;
 	}
 
-	oldState = this.rangeState;
-	newState = new ve.ce.RangeState(
+	var oldState = this.rangeState;
+	var newState = new ve.ce.RangeState(
 		oldState,
 		this.surface.attachedRoot,
 		selectionOnly

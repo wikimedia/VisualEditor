@@ -68,14 +68,13 @@ ve.ce.TextStateChunk.static.compareElements = function ( element1, element2 ) {
  * @return {boolean} True if the chunks have the same annotations
  */
 ve.ce.TextStateChunk.prototype.hasEqualElements = function ( other ) {
-	var i, len;
 	if ( this.elements === other.elements ) {
 		return true;
 	}
 	if ( this.elements.length !== other.elements.length ) {
 		return false;
 	}
-	for ( i = 0, len = this.elements.length; i < len; i++ ) {
+	for ( var i = 0, len = this.elements.length; i < len; i++ ) {
 		if ( !this.constructor.static.compareElements( this.elements[ i ], other.elements[ i ] ) ) {
 			return false;
 		}

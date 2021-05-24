@@ -35,8 +35,7 @@ ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs
  */
 ve.ce.getDomText = function ( element ) {
 	// Inspired by jQuery.text / Sizzle.getText
-	var viewNode,
-		nodeType = element.nodeType,
+	var nodeType = element.nodeType,
 		text = '';
 
 	if (
@@ -55,7 +54,7 @@ ve.ce.getDomText = function ( element ) {
 		} else if ( element.classList.contains( 've-ce-leafNode' ) ) {
 			// For leaf nodes, don't return the content, but return
 			// the right number of placeholder characters so the offsets match up.
-			viewNode = $( element ).data( 'view' );
+			var viewNode = $( element ).data( 'view' );
 			// Only return snowmen for the first element in a sibling group: otherwise
 			// we'll double-count this node
 			if ( viewNode && element === viewNode.$element[ 0 ] ) {
@@ -164,9 +163,6 @@ ve.ce.previousCursorOffset = function ( node ) {
  * @throws {Error} domNode is not in document
  */
 ve.ce.getOffset = function ( domNode, domOffset ) {
-	var node, view, offset, startNode, maxOffset,
-		lengthSum = 0;
-
 	if ( domNode.nodeType === Node.ELEMENT_NODE && domNode.classList.contains( 've-ce-unicorn' ) ) {
 		if ( domOffset !== 0 ) {
 			throw new Error( 'Non-zero offset in unicorn' );
@@ -220,6 +216,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 	}
 
 	// Validate domOffset
+	var maxOffset;
 	if ( domNode.nodeType === Node.ELEMENT_NODE ) {
 		maxOffset = domNode.childNodes.length;
 	} else {
@@ -229,6 +226,8 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		throw new Error( 'domOffset is out of bounds' );
 	}
 
+	var lengthSum = 0;
+	var startNode, node, view;
 	// Figure out what node to start traversing at (startNode)
 	if ( domNode.nodeType === Node.ELEMENT_NODE ) {
 		if ( domNode.childNodes.length === 0 ) {
@@ -305,7 +304,7 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
 		node = traverse( node );
 	}
 
-	offset = view.getOffset();
+	var offset = view.getOffset();
 
 	if ( $.contains( node, startNode ) ) {
 		// node is an ancestor of startNode
@@ -343,13 +342,14 @@ ve.ce.getOffset = function ( domNode, domOffset ) {
  * @throws {Error}
  */
 ve.ce.getOffsetOfSlug = function ( element ) {
-	var model, $prev, $element = $( element );
+	var $element = $( element );
+	var model;
 	if ( $element.index() === 0 ) {
 		model = $element.parent().data( 'view' ).getModel();
 		return model.getOffset() + ( model.isWrapped() ? 1 : 0 );
 	} else {
 		// Don't pick up DOM nodes not from the view tree e.g. cursorHolders (T202103)
-		$prev = $element.prevAll( '.ve-ce-leafNode,.ve-ce-branchNode' ).first();
+		var $prev = $element.prevAll( '.ve-ce-leafNode,.ve-ce-branchNode' ).first();
 		if ( $prev.length ) {
 			model = $prev.data( 'view' ).getModel();
 			return model.getOffset() + model.getOuterLength();
@@ -381,7 +381,6 @@ ve.ce.getOffsetOfSlug = function ( element ) {
  * @return {boolean} Whether this is the end-most of multiple cursor-equivalent positions
  */
 ve.ce.isAfterAnnotationBoundary = function ( node, offset ) {
-	var previousNode;
 	if ( node.nodeType === Node.TEXT_NODE ) {
 		if ( offset > 0 ) {
 			return false;
@@ -393,7 +392,7 @@ ve.ce.isAfterAnnotationBoundary = function ( node, offset ) {
 		return ve.dm.modelRegistry.isAnnotation( node );
 	}
 
-	previousNode = node.childNodes[ offset - 1 ];
+	var previousNode = node.childNodes[ offset - 1 ];
 	if ( previousNode.nodeType === Node.ELEMENT_NODE && (
 		previousNode.classList.contains( 've-ce-nail-post-close' ) ||
 		previousNode.classList.contains( 've-ce-nail-post-open' )

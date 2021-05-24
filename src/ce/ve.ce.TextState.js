@@ -32,14 +32,11 @@ OO.initClass( ve.ce.TextState );
  * @return {ve.ce.TextStateChunk[]} chunks
  */
 ve.ce.TextState.static.getChunks = function ( element ) {
-	var view,
-		node = element,
-		// Stack of element-lists in force; each element list is equal to its predecessor extended
-		// by one element. This means two chunks have object-equal element lists if they have the
-		// same elements in force (i.e. if their text nodes are DOM siblings).
-		elementListStack = [ [] ],
+	// Stack of element-lists in force; each element list is equal to its predecessor extended
+	// by one element. This means two chunks have object-equal element lists if they have the
+	// same elements in force (i.e. if their text nodes are DOM siblings).
+	var elementListStack = [ [] ],
 		stackTop = 0,
-		annotationStack = [],
 		chunks = [];
 
 	/**
@@ -64,6 +61,9 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 		}
 	}
 
+	var view;
+	var annotationStack = [];
+	var node = element;
 	while ( true ) {
 		// Process node
 		// If appropriate, step into first child and loop
@@ -134,14 +134,13 @@ ve.ce.TextState.static.getChunks = function ( element ) {
  * @return {boolean} Whether the states are equal
  */
 ve.ce.TextState.prototype.isEqual = function ( other ) {
-	var i, len;
 	if ( other === this ) {
 		return true;
 	}
 	if ( !other || this.chunks.length !== other.chunks.length ) {
 		return false;
 	}
-	for ( i = 0, len = this.chunks.length; i < len; i++ ) {
+	for ( var i = 0, len = this.chunks.length; i < len; i++ ) {
 		if ( !( this.chunks[ i ].isEqual( other.chunks[ i ] ) ) ) {
 			return false;
 		}
@@ -162,15 +161,6 @@ ve.ce.TextState.prototype.isEqual = function ( other ) {
  * @return {ve.dm.Transaction|null} Transaction corresponding to the text state change
  */
 ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, modelOffset, unicornAnnotations ) {
-	var change, i, iLen, textStart, textEnd, changeOffset, removed, removeRange,
-		annotations, missing, oldChunk, newChunk, j, jStart, jEnd, leastMissing,
-		matchStartOffset, matchOffset, bestOffset, jLen, oldAnnotations, element,
-		modelClass, ann, oldAnn, data, view,
-		oldChunks = prev.chunks,
-		newChunks = this.chunks,
-		modelData = modelDoc.data,
-		newData = [];
-
 	/**
 	 * Calculates the size of newArray - oldArray (asymmetric difference)
 	 * This is O(n^2) but the lengths should be fairly low, and this doesn't
@@ -197,8 +187,13 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		return count;
 	}
 
+	var oldChunks = prev.chunks,
+		newChunks = this.chunks,
+		modelData = modelDoc.data,
+		newData = [];
+
 	// Find first changed chunk at start/end of oldChunks/newChunks
-	change = ve.countEdgeMatches( oldChunks, newChunks, function ( a, b ) {
+	var change = ve.countEdgeMatches( oldChunks, newChunks, function ( a, b ) {
 		return a.isEqual( b );
 	} );
 	if ( change === null ) {
@@ -206,10 +201,13 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		return null;
 	}
 
+	var i, iLen;
+	var oldChunk, newChunk;
+
 	// Count matching characters with matching annotations at start/end of the changed chunks.
 	// During typical typing, there is a single changed chunk with matching start/end chars.
-	textStart = 0;
-	textEnd = 0;
+	var textStart = 0;
+	var textEnd = 0;
 	if ( change.start + change.end < Math.min( oldChunks.length, newChunks.length ) ) {
 		// Both oldChunks and newChunks include a changed chunk. Therefore the first changed
 		// chunk of oldChunks and newChunks is respectively oldChunks[ change.start ] and
@@ -261,17 +259,19 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 	}
 
 	// Starting just inside the node, skip past matching chunks at the array starts
-	changeOffset = modelOffset + 1;
+	var changeOffset = modelOffset + 1;
 	for ( i = 0, iLen = change.start; i < iLen; i++ ) {
 		changeOffset += oldChunks[ i ].text.length;
 	}
 
 	// Calculate range of old content to remove
-	removed = 0;
+	var removed = 0;
 	for ( i = change.start, iLen = oldChunks.length - change.end; i < iLen; i++ ) {
 		removed += oldChunks[ i ].text.length;
 	}
-	removeRange = new ve.Range( changeOffset + textStart, changeOffset + removed - textEnd );
+	var removeRange = new ve.Range( changeOffset + textStart, changeOffset + removed - textEnd );
+
+	var j, jLen;
 
 	// Prepare new content, reusing existing ve.dm.Annotation objects where possible
 	for ( i = change.start, iLen = newChunks.length - change.end; i < iLen; i++ ) {
@@ -280,7 +280,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			// Unicorns don't exist in the model
 			continue;
 		}
-		data = newChunk.text.split( '' );
+		var data = newChunk.text.split( '' );
 		if ( i === change.start ) {
 			data = data.slice( textStart );
 		}
@@ -298,9 +298,11 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		// because during typical typing there is only one changed chunk, and the worst
 		// case is three new chunks (e.g. when the interior of an existing chunk is
 		// annotated).
-		annotations = null;
-		missing = null;
+		var annotations = null;
+		var missing = null;
 		// In the old chunks, find the chunks adjacent to the change
+		var jStart;
+		var matchStartOffset;
 		if ( change.start === 0 ) {
 			jStart = 0;
 			matchStartOffset = changeOffset;
@@ -309,6 +311,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			jStart = change.start - 1;
 			matchStartOffset = changeOffset - oldChunks[ jStart ].text.length;
 		}
+		var jEnd;
 		if ( change.end === 0 ) {
 			jEnd = oldChunks.length;
 		} else {
@@ -318,7 +321,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 
 		// Search for exact match first. During typical typing there is an exact
 		// match at j=1 (or j=0 if there is no previous chunk).
-		matchOffset = matchStartOffset;
+		var matchOffset = matchStartOffset;
 		for ( j = jStart; j < jEnd; j++ ) {
 			oldChunk = oldChunks[ j ];
 			if ( !oldChunk.hasEqualElements( newChunk ) ) {
@@ -346,8 +349,8 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			//
 			// This block doesn't happen during typical typing, so performance is
 			// less critical.
-			leastMissing = newChunk.elements.length;
-			bestOffset = null;
+			var leastMissing = newChunk.elements.length;
+			var bestOffset = null;
 			matchOffset = matchStartOffset;
 			for ( j = jStart; j < jEnd; j++ ) {
 				oldChunk = oldChunks[ j ];
@@ -365,6 +368,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 				}
 				matchOffset += oldChunk.text.length;
 			}
+			var oldAnnotations;
 			if ( bestOffset === null ) {
 				oldAnnotations = new ve.dm.AnnotationSet( modelData.getStore() );
 			} else {
@@ -381,18 +385,19 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			// duplicate.
 			annotations = new ve.dm.AnnotationSet( modelData.getStore() );
 			for ( j = 0, jLen = newChunk.elements.length; j < jLen; j++ ) {
-				element = newChunk.elements[ j ];
+				var element = newChunk.elements[ j ];
 				// Recover the node from jQuery data store. This can only break if the browser
 				// completely rebuilds the node, but should work in cases like typing into
 				// collapsed links because nails ensure the link is never completely empty.
-				view = $( element ).data( 'view' );
+				var view = $( element ).data( 'view' );
+				var ann;
 				if ( view ) {
 					ann = view.getModel();
 				} else {
 					// No view: new annotation element (or replacement one):
 					// see https://phabricator.wikimedia.org/T116269 and
 					// https://code.google.com/p/chromium/issues/detail?id=546461
-					modelClass = ve.dm.modelRegistry.lookup(
+					var modelClass = ve.dm.modelRegistry.lookup(
 						ve.dm.modelRegistry.matchElement( element )
 					);
 					if ( !( modelClass && modelClass.prototype instanceof ve.dm.Annotation ) ) {
@@ -402,7 +407,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 					ann = ve.dm.annotationFactory.createFromElement(
 						modelClass.static.toDataElement( [ element ], ve.dm.converter )
 					);
-					oldAnn = oldAnnotations.getComparable( ann );
+					var oldAnn = oldAnnotations.getComparable( ann );
 					if ( oldAnn ) {
 						ann = oldAnn;
 					} else if ( !ann.constructor.static.inferFromView ) {

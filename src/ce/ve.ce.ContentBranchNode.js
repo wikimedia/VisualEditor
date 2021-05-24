@@ -66,9 +66,8 @@ ve.ce.ContentBranchNode.static.splitOnEnter = true;
  */
 ve.ce.ContentBranchNode.static.appendRenderedContents = function ( container, wrapper ) {
 	function resolveOriginals( domElement ) {
-		var i, len, child;
-		for ( i = 0, len = domElement.childNodes.length; i < len; i++ ) {
-			child = domElement.childNodes[ i ];
+		for ( var i = 0, len = domElement.childNodes.length; i < len; i++ ) {
+			var child = domElement.childNodes[ i ];
 			if ( child.veOrigNode ) {
 				domElement.replaceChild( child.veOrigNode, child );
 			} else if ( child.childNodes && child.childNodes.length ) {
@@ -201,8 +200,7 @@ ve.ce.ContentBranchNode.prototype.setupInlineSlugs = function () {
  * @return {Object} return.unicornInfo Unicorn information
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
-	var i, ilen, j, jlen, item, itemAnnotations, clone, dmSurface, dmSelection, relCursor,
-		unicorn, preUnicorn, postUnicorn, annotationsChanged, childLength, offset, htmlItem, ceSurface,
+	var annotationsChanged,
 		store = this.model.doc.getStore(),
 		annotationSet = new ve.dm.AnnotationSet( store ),
 		annotatedHtml = [],
@@ -267,6 +265,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		current = nodeStack.pop();
 	}
 
+	var i, ilen;
 	// Gather annotated HTML from the child nodes
 	for ( i = 0, ilen = this.children.length; i < ilen; i++ ) {
 		annotatedHtml = annotatedHtml.concat( this.children[ i ].getAnnotatedHtml() );
@@ -274,27 +273,30 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 
 	// Set relCursor to collapsed selection offset, or -1 if none
 	// (in which case we don't need to worry about preannotation)
-	relCursor = -1;
+	var relCursor = -1;
+	var dmSurface;
 	if ( this.getRoot() ) {
-		ceSurface = this.getRoot().getSurface();
+		var ceSurface = this.getRoot().getSurface();
 		dmSurface = ceSurface.getModel();
-		dmSelection = dmSurface.getTranslatedSelection();
+		// TODO: dmSurface is used again later but might not be set
+		var dmSelection = dmSurface.getTranslatedSelection();
 		if ( dmSelection instanceof ve.dm.LinearSelection && dmSelection.isCollapsed() ) {
 			// Subtract 1 for CBN opening tag
 			relCursor = dmSelection.getRange().start - this.getOffset() - 1;
 		}
 	}
 
+	var unicorn;
 	// Set cursor status for renderContents. If hasCursor, splice unicorn marker at the
 	// collapsed selection offset. It will be rendered later if it is needed, else ignored
 	if ( relCursor < 0 || relCursor > this.getLength() ) {
 		unicornInfo.hasCursor = false;
 	} else {
 		unicornInfo.hasCursor = true;
-		offset = 0;
+		var offset = 0;
 		for ( i = 0, ilen = annotatedHtml.length; i < ilen; i++ ) {
-			htmlItem = annotatedHtml[ i ][ 0 ];
-			childLength = ( typeof htmlItem === 'string' ) ? 1 : 2;
+			var htmlItem = annotatedHtml[ i ][ 0 ];
+			var childLength = ( typeof htmlItem === 'string' ) ? 1 : 2;
 			if ( offset <= relCursor && relCursor < offset + childLength ) {
 				unicorn = [
 					{}, // Unique object, for testing object equality later
@@ -317,6 +319,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 
 	// Render HTML with annotations
 	for ( i = 0, ilen = annotatedHtml.length; i < ilen; i++ ) {
+		var item;
+		var itemAnnotations;
 		if ( Array.isArray( annotatedHtml[ i ] ) ) {
 			item = annotatedHtml[ i ][ 0 ];
 			itemAnnotations = new ve.dm.AnnotationSet( store, annotatedHtml[ i ][ 1 ] );
@@ -340,8 +344,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 					current.appendChild( doc.createTextNode( buffer ) );
 					buffer = '';
 				}
-				preUnicorn = doc.createElement( 'img' );
-				postUnicorn = doc.createElement( 'img' );
+				var preUnicorn = doc.createElement( 'img' );
+				var postUnicorn = doc.createElement( 'img' );
 				preUnicorn.className = 've-ce-unicorn ve-ce-pre-unicorn';
 				postUnicorn.className = 've-ce-unicorn ve-ce-post-unicorn';
 				$( preUnicorn ).data( 'modelOffset', ( this.getOffset() + 1 + i ) );
@@ -369,9 +373,9 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 				buffer = '';
 			}
 			// DOM equivalent of $( current ).append( item.clone() );
-			for ( j = 0, jlen = item.length; j < jlen; j++ ) {
+			for ( var j = 0, jlen = item.length; j < jlen; j++ ) {
 				// Append a clone so as to not relocate the original node
-				clone = item[ j ].cloneNode( true );
+				var clone = item[ j ].cloneNode( true );
 				// Store a reference to the original node in a property
 				clone.veOrigNode = item[ j ];
 				current.appendChild( clone );
@@ -402,8 +406,7 @@ ve.ce.ContentBranchNode.prototype.onModelDetach = function () {
  * @return {boolean} Whether the contents have changed
  */
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
-	var i, len, element, rendered, unicornInfo, oldWrapper, newWrapper,
-		node = this;
+	var node = this;
 	// TODO fix the use of ve.ce.DocumentNode and getSurface
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
@@ -416,8 +419,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 		this.root.getSurface().setContentBranchNodeChanged();
 	}
 
-	rendered = this.getRenderedContents();
-	unicornInfo = rendered.unicornInfo;
+	var rendered = this.getRenderedContents();
+	var unicornInfo = rendered.unicornInfo;
 
 	// Return if unchanged. Test by building the new version and checking DOM-equality.
 	// However we have to normalize to cope with consecutive text nodes. We can't normalize
@@ -425,7 +428,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	// this checking if this node has never rendered before.
 
 	if ( this.rendered ) {
-		oldWrapper = this.$element[ 0 ].cloneNode( true );
+		var oldWrapper = this.$element[ 0 ].cloneNode( true );
 		$( oldWrapper )
 			.find( '.ve-ce-annotation-active' )
 			.removeClass( 've-ce-annotation-active' );
@@ -435,7 +438,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 			.unwrap()
 			.filter( '.ve-ce-chimera' )
 			.remove();
-		newWrapper = this.$element[ 0 ].cloneNode( false );
+		var newWrapper = this.$element[ 0 ].cloneNode( false );
 		while ( rendered.firstChild ) {
 			newWrapper.appendChild( rendered.firstChild );
 		}
@@ -452,8 +455,8 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	this.unicorns = unicornInfo.unicorns || null;
 
 	// Detach all child nodes from this.$element
-	for ( i = 0, len = this.$element.length; i < len; i++ ) {
-		element = this.$element[ i ];
+	for ( var i = 0, len = this.$element.length; i < len; i++ ) {
+		var element = this.$element[ i ];
 		while ( element.firstChild ) {
 			element.removeChild( element.firstChild );
 		}
