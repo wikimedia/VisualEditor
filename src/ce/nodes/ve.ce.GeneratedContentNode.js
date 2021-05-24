@@ -63,10 +63,9 @@ ve.ce.GeneratedContentNode.static.awaitGeneratedContent = function ( view ) {
 	var promises = [];
 
 	function queueNode( node ) {
-		var promise;
 		if ( typeof node.generateContents === 'function' ) {
 			if ( node.isGenerating() ) {
-				promise = ve.createDeferred();
+				var promise = ve.createDeferred();
 				node.once( 'rerender', promise.resolve );
 				promises.push( promise );
 			}
@@ -134,10 +133,9 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function ( s
  * @return {HTMLElement[]} Clones of the DOM elements in the right document, with modifications
  */
 ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElements ) {
-	var rendering,
-		doc = this.getElementDocument();
+	var doc = this.getElementDocument();
 
-	rendering = this.filterRenderedDomElements(
+	var rendering = this.filterRenderedDomElements(
 		// Clone the elements into the target document
 		ve.copyDomElements( domElements, doc )
 	);
@@ -145,9 +143,8 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 	if ( rendering.length ) {
 		// Span wrap root text nodes so they can be measured
 		rendering = rendering.map( function ( node ) {
-			var span;
 			if ( node.nodeType === Node.TEXT_NODE ) {
-				span = document.createElement( 'span' );
+				var span = document.createElement( 'span' );
 				span.appendChild( node );
 				return span;
 			}
@@ -185,12 +182,11 @@ ve.ce.GeneratedContentNode.prototype.filterRenderedDomElements = function ( domE
  * @fires teardown
  */
 ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, staged ) {
-	var $newElements, lengthChange,
-		node = this;
+	var node = this;
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	$newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	var $newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
 	this.generatedContentsInvalid = !this.validateGeneratedContents( $( generatedContents ) );
 	if ( !staged || !this.generatedContentsInvalid ) {
 		if ( !this.$element[ 0 ].parentNode ) {
@@ -198,7 +194,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 			this.$element = $newElements;
 		} else {
 			// Switch out this.$element (which can contain multiple siblings) in place
-			lengthChange = this.$element.length !== $newElements.length;
+			var lengthChange = this.$element.length !== $newElements.length;
 			this.$element.first().replaceWith( $newElements );
 			this.$element.remove();
 			this.$element = $newElements;
@@ -251,8 +247,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
  */
 ve.ce.GeneratedContentNode.prototype.preventTabbingInside = function () {
 	// Like OO.ui.findFocusable(), but find *all* such nodes rather than the first one.
-	var
-		selector = 'input, select, textarea, button, object, a, area, [contenteditable], [tabindex]',
+	var selector = 'input, select, textarea, button, object, a, area, [contenteditable], [tabindex]',
 		$focusableCandidates = this.$element.find( selector ).addBack( selector );
 
 	$focusableCandidates.each( function () {
@@ -310,8 +305,6 @@ ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
  * @param {boolean} [staged] Update happened in staging mode
  */
 ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config, staged ) {
-	var promise, node = this;
-
 	if ( this.generatingPromise ) {
 		// Abort the currently pending generation process if possible
 		this.abortGenerating();
@@ -320,8 +313,9 @@ ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config, staged ) {
 		this.startGenerating();
 	}
 
+	var node = this;
 	// Create a new promise
-	promise = this.generatingPromise = this.generateContents( config );
+	var promise = this.generatingPromise = this.generateContents( config );
 	promise
 		// If this promise is no longer the currently pending one, ignore it completely
 		.done( function ( generatedContents ) {
@@ -374,16 +368,14 @@ ve.ce.GeneratedContentNode.prototype.abortGenerating = function () {
  * @param {boolean} [staged] Update happened in staging mode
  */
 ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedContents, config, staged ) {
-	var store, hash;
-
 	this.$element.removeClass( 've-ce-generatedContentNode-generating' );
 	this.generatingPromise = null;
 
 	// Because doneGenerating is invoked asynchronously, the model node may have become detached
 	// in the meantime. Handle this gracefully.
 	if ( this.model && this.model.doc ) {
-		store = this.model.doc.getStore();
-		hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
+		var store = this.model.doc.getStore();
+		var hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
 		store.hash( generatedContents, hash );
 		this.render( generatedContents, staged );
 	}

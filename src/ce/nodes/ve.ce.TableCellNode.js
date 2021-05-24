@@ -54,13 +54,11 @@ ve.ce.TableCellNode.static.trapsCursor = true;
  * @inheritdoc
  */
 ve.ce.TableCellNode.prototype.initialize = function () {
-	var rowspan, colspan;
-
 	// Parent method
 	ve.ce.TableCellNode.super.prototype.initialize.call( this );
 
-	rowspan = this.model.getRowspan();
-	colspan = this.model.getColspan();
+	var rowspan = this.model.getRowspan();
+	var colspan = this.model.getColspan();
 
 	// DOM changes
 	this.$element
@@ -108,9 +106,8 @@ ve.ce.TableCellNode.prototype.setEditing = function ( enable ) {
 ve.ce.TableCellNode.prototype.onTableCellTeardown = function () {
 	// If the table cell is active on teardown, ensure the surface's
 	// activeNode is cleared.
-	var surface;
 	if ( this.getRoot() ) {
-		surface = this.getRoot().getSurface();
+		var surface = this.getRoot().getSurface();
 		if ( surface.getActiveNode() === this ) {
 			surface.setActiveNode( null );
 		}

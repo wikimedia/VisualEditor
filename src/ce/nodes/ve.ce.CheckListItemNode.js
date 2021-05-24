@@ -46,10 +46,9 @@ ve.ce.CheckListItemNode.static.splitOnEnter = true;
  * @param {jQuery.Event} e Click event
  */
 ve.ce.CheckListItemNode.prototype.onClick = function ( e ) {
-	var fragment;
 	if ( e.target === this.$element[ 0 ] ) {
 		// TODO: This should probably live in ui.Actions.
-		fragment = this.getRoot().getSurface().getModel().getLinearFragment( this.getOuterRange(), true );
+		var fragment = this.getRoot().getSurface().getModel().getLinearFragment( this.getOuterRange(), true );
 		fragment.changeAttributes( { checked: !this.getModel().getAttribute( 'checked' ) } );
 	}
 };

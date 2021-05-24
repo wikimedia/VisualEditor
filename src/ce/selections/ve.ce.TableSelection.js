@@ -38,24 +38,23 @@ ve.ce.TableSelection.prototype.getSelectionRects = function () {
  * @inheritdoc
  */
 ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
-	var i, l, cellNode, cellOffset, top, bottom, left, right, boundingRect,
-		surface = this.getSurface(),
+	var surface = this.getSurface(),
 		tableNode = surface.getDocument().getBranchNodeFromOffset( this.model.tableRange.start + 1 ),
 		nodes = tableNode.getCellNodesFromSelection( this.getModel() ),
 		surfaceRect = surface.getSurface().getBoundingClientRect();
 
-	top = Infinity;
-	bottom = -Infinity;
-	left = Infinity;
-	right = -Infinity;
+	var top = Infinity;
+	var bottom = -Infinity;
+	var left = Infinity;
+	var right = -Infinity;
 
 	// Compute a bounding box for the given cell elements
-	for ( i = 0, l = nodes.length; i < l; i++ ) {
-		cellNode = nodes[ i ].$element[ 0 ];
+	for ( var i = 0, l = nodes.length; i < l; i++ ) {
+		var cellNode = nodes[ i ].$element[ 0 ];
 		if ( !cellNode ) {
 			return null;
 		}
-		cellOffset = cellNode.getBoundingClientRect();
+		var cellOffset = cellNode.getBoundingClientRect();
 
 		top = Math.min( top, cellOffset.top );
 		bottom = Math.max( bottom, cellOffset.bottom );
@@ -77,7 +76,7 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
 		}
 	}
 
-	boundingRect = {
+	var boundingRect = {
 		top: top,
 		bottom: bottom,
 		left: left,
@@ -98,16 +97,15 @@ ve.ce.TableSelection.prototype.getSelectionBoundingRect = function () {
  * @return {Object|null} Selection rectangle, with keys top, bottom, left, right, width, height
  */
 ve.ce.TableSelection.prototype.getTableBoundingRect = function () {
-	var boundingRect,
-		surface = this.getSurface(),
-		tableNode = surface.getDocument().getBranchNodeFromOffset( this.model.tableRange.start + 1 ),
-		surfaceRect = surface.getSurface().getBoundingClientRect();
+	var surface = this.getSurface(),
+		tableNode = surface.getDocument().getBranchNodeFromOffset( this.model.tableRange.start + 1 );
 
 	if ( !tableNode ) {
 		return null;
 	}
 
-	boundingRect = tableNode.$element[ 0 ].getBoundingClientRect();
+	var surfaceRect = surface.getSurface().getBoundingClientRect();
+	var boundingRect = tableNode.$element[ 0 ].getBoundingClientRect();
 
 	if ( !boundingRect || !surfaceRect ) {
 		return null;
