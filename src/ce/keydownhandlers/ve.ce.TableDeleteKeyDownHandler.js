@@ -40,8 +40,7 @@ ve.ce.TableDeleteKeyDownHandler.static.supportedSelections = [ 'table' ];
  * Performs a strip-delete removing all the cell contents but not altering the structure.
  */
 ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
-	var i, l,
-		surfaceModel = surface.getModel(),
+	var surfaceModel = surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		fragments = [],
 		cells = surfaceModel.getSelection().getMatrixCells( documentModel );
@@ -54,6 +53,7 @@ ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
+	var i, l;
 	for ( i = 0, l = cells.length; i < l; i++ ) {
 		if ( cells[ i ].node.isCellEditable() ) {
 			// Create auto-updating fragments from ranges

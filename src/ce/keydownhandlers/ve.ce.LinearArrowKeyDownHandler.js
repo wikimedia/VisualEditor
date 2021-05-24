@@ -39,9 +39,7 @@ ve.ce.LinearArrowKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
-	var nativeRange, collapseNode, collapseOffset, direction, directionality,
-		startFocusNode, startFocusOffset,
-		isBlockMove = e.keyCode === OO.ui.Keys.UP || e.keyCode === OO.ui.Keys.DOWN ||
+	var isBlockMove = e.keyCode === OO.ui.Keys.UP || e.keyCode === OO.ui.Keys.DOWN ||
 			e.keyCode === OO.ui.Keys.PAGEUP || e.keyCode === OO.ui.Keys.PAGEDOWN ||
 			e.keyCode === OO.ui.Keys.HOME || e.keyCode === OO.ui.Keys.END,
 		keyBlockDirection = e.keyCode === OO.ui.Keys.DOWN || e.keyCode === OO.ui.Keys.PAGEDOWN || e.keyCode === OO.ui.Keys.END ? 1 : -1,
@@ -53,6 +51,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 	// TODO: onDocumentKeyDown did this already
 	surface.surfaceObserver.pollOnce();
 
+	var direction, directionality;
 	if ( surface.focusedBlockSlug ) {
 		// Block level selection, so directionality is just css directionality
 		if ( isBlockMove ) {
@@ -135,6 +134,7 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 	}
 	// Else keep DM range and DOM selection as-is
 
+	var collapseNode, collapseOffset;
 	if ( e.shiftKey && !ve.supportsSelectionExtend && range.isBackwards() ) {
 		// If the browser doesn't support backwards selections, but the dm range
 		// is backwards, then use "collapse to anchor - observe - expand".
@@ -149,29 +149,29 @@ ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
 	// Else don't collapse the selection
 
 	if ( collapseNode ) {
-		nativeRange = surface.getElementDocument().createRange();
+		var nativeRange = surface.getElementDocument().createRange();
 		nativeRange.setStart( collapseNode, collapseOffset );
 		nativeRange.setEnd( collapseNode, collapseOffset );
 		surface.nativeSelection.removeAllRanges();
 		surface.nativeSelection.addRange( nativeRange );
 	}
 
-	startFocusNode = surface.nativeSelection.focusNode;
-	startFocusOffset = surface.nativeSelection.focusOffset;
+	var startFocusNode = surface.nativeSelection.focusNode;
+	var startFocusOffset = surface.nativeSelection.focusOffset;
 
 	// Re-expand (or fixup) the selection after the native action, if necessary
 	surface.eventSequencer.afterOne( { keydown: function () {
-		var viewNode, newRange, afterDirection;
-
 		// Support: Chrome
 		// Chrome bug lets you cursor into a multi-line contentEditable=false with up/down…
-		viewNode = $( surface.nativeSelection.focusNode ).closest( '.ve-ce-leafNode,.ve-ce-branchNode' ).data( 'view' );
+		var viewNode = $( surface.nativeSelection.focusNode ).closest( '.ve-ce-leafNode,.ve-ce-branchNode' ).data( 'view' );
 		if ( !viewNode ) {
 			// Irrelevant selection (or none)
 			return;
 		}
 
+		var newRange;
 		if ( viewNode.isFocusable() ) {
+			var afterDirection;
 			// We've landed in a focusable node; fixup the range
 			if ( isBlockMove ) {
 				// The intended direction is clear, even if the cursor did not move
