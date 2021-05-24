@@ -17,9 +17,9 @@
  * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
  * @cfg {Object} [toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
  * @cfg {Object} [actionGroups] Toolbar groups, defaults to this.constructor.static.actionGroups
- * @cfg {Object} [modes] Available editing modes. Defaults to static.modes
- * @cfg {Object} [defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
- * @cfg {Object} [register=true] Register the target at ve.init.target
+ * @cfg {string[]} [modes] Available editing modes. Defaults to static.modes
+ * @cfg {string} [defaultMode] Default mode for new surfaces. Must be in this.modes and defaults to first item.
+ * @cfg {boolean} [register=true] Register the target at ve.init.target
  */
 ve.init.Target = function VeInitTarget( config ) {
 	var isIe = ve.init.platform.constructor.static.isInternetExplorer(),

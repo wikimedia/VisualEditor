@@ -29,6 +29,7 @@
  * @cfg {string} [readOnly] Surface is read-only
  * @cfg {string} [nullSelectionOnBlur=true] Surface selection is set to null on blur
  * @cfg {string} [inDialog] The name of the dialog this surface is in
+ * @cfg {boolean} [inTargetWidget] The surface is in a target widget
  */
 ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	var documentModel;
@@ -41,6 +42,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	// Properties
 	this.$scrollContainer = config.$scrollContainer || $( this.getClosestScrollableElementContainer() );
 	this.inDialog = config.inDialog || '';
+	this.inTargetWidget = !!config.inTargetWidget;
 	this.mode = config.mode;
 
 	// The following classes are used here:
@@ -743,7 +745,7 @@ ve.ui.Surface.prototype.onViewActivation = function () {
  */
 ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 	var bottom, keyboardShown;
-	if ( OO.ui.isMobile() && !this.getInDialog() ) {
+	if ( OO.ui.isMobile() && !this.inTargetWidget ) {
 		keyboardShown = this.getView().getSelection().isNativeCursor() &&
 			!this.getView().isShownAsDeactivated();
 		if ( ve.init.platform.constructor.static.isIos() && keyboardShown ) {

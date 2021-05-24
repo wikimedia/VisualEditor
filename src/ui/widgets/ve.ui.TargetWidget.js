@@ -97,7 +97,6 @@ ve.ui.TargetWidget.prototype.createTarget = function () {
 	return new ve.init.Target( {
 		register: false,
 		toolbarGroups: this.toolbarGroups,
-		inTargetWidget: true,
 		modes: this.modes,
 		defaultMode: this.defaultMode
 	} );
