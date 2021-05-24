@@ -3221,6 +3221,11 @@ ve.ce.Surface.prototype.onModelSelect = function () {
 		this.focusedNode = null;
 	}
 
+	// Deactivate immediately if mobile and read-only to avoid showing keyboard (T281771)
+	if ( this.isReadOnly() && OO.ui.isMobile() ) {
+		this.deactivate( false, false, true );
+	}
+
 	// Ignore the selection if changeModelSelection is currently being
 	// called with the same (object-identical) selection object
 	// (i.e. if the model is calling us back)
