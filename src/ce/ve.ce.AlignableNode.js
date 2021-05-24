@@ -35,9 +35,10 @@ OO.inheritClass( ve.ce.AlignableNode, ve.ce.ClassAttributeNode );
  * @inheritdoc
  */
 ve.ce.AlignableNode.prototype.updateAttributeClasses = function () {
-	var align;
+	// Parent method
 	ve.ce.AlignableNode.super.prototype.updateAttributeClasses.apply( this, arguments );
-	align = this.model.getAttribute( 'align' );
+
+	var align = this.model.getAttribute( 'align' );
 	if ( align && align !== this.align ) {
 		this.emit( 'align', align );
 		this.align = align;

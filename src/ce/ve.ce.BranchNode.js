@@ -132,12 +132,11 @@ ve.ce.BranchNode.prototype.initialize = function () {
  * @fires setup
  */
 ve.ce.BranchNode.prototype.updateTagName = function () {
-	var wrapper,
-		tagName = this.getTagName();
+	var tagName = this.getTagName();
 
 	if ( tagName !== this.tagName ) {
 		this.emit( 'teardown' );
-		wrapper = document.createElement( tagName );
+		var wrapper = document.createElement( tagName );
 		// Copy classes
 		// eslint-disable-next-line mediawiki/class-doc
 		wrapper.className = this.$element[ 0 ].className;
@@ -186,20 +185,20 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
  * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
  */
 ve.ce.BranchNode.prototype.onSplice = function ( index ) {
-	var i, length, removals, position, j, fragment,
-		inAttachedRoot, upstreamOfAttachedRoot,
-		// attachedRoot and doc can be undefined in tests
-		dmDoc = this.getModel().getDocument(),
+	// attachedRoot and doc can be undefined in tests
+	var dmDoc = this.getModel().getDocument(),
 		attachedRoot = dmDoc && dmDoc.attachedRoot,
-		isAllAttached = !attachedRoot || attachedRoot instanceof ve.dm.DocumentNode,
-		args = [];
+		isAllAttached = !attachedRoot || attachedRoot instanceof ve.dm.DocumentNode;
 
+	var inAttachedRoot, upstreamOfAttachedRoot;
 	if ( !isAllAttached ) {
 		// Optimization: Skip traversal when whole doc is attached
 		inAttachedRoot = this.getModel().isDownstreamOf( attachedRoot );
 		upstreamOfAttachedRoot = attachedRoot.collectUpstream();
 	}
 
+	var i, length;
+	var args = [];
 	for ( i = 0, length = arguments.length; i < length; i++ ) {
 		args.push( arguments[ i ] );
 	}
@@ -219,7 +218,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 			}
 		}
 	}
-	removals = this.children.splice.apply( this.children, args );
+	var removals = this.children.splice.apply( this.children, args );
 	for ( i = 0, length = removals.length; i < length; i++ ) {
 		removals[ i ].model.disconnect( this, { update: 'onModelUpdate' } );
 		// Stop child listening to its model (e.g. for splice event)
@@ -231,16 +230,16 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		removals[ i ].destroy();
 	}
 	if ( args.length >= 3 ) {
-		fragment = document.createDocumentFragment();
+		var fragment = document.createDocumentFragment();
 		for ( i = args.length - 1; i >= 2; i-- ) {
 			args[ i ].attach( this );
-			for ( j = args[ i ].$element.length - 1; j >= 0; j-- ) {
+			for ( var j = args[ i ].$element.length - 1; j >= 0; j-- ) {
 				fragment.insertBefore( args[ i ].$element[ j ], fragment.childNodes[ 0 ] || null );
 			}
 		}
 		if ( fragment.childNodes.length ) {
 			// Only calculate this if it's needed, this function looks expensive
-			position = this.getDomPosition( index );
+			var position = this.getDomPosition( index );
 			position.node.insertBefore(
 				fragment,
 				position.node.children[ position.offset ] || null
@@ -282,9 +281,8 @@ ve.ce.BranchNode.prototype.setupInlineSlugs = function () {
  * Remove all slugs in this branch
  */
 ve.ce.BranchNode.prototype.removeSlugs = function () {
-	var i;
 	// Remove all slugs in this branch
-	for ( i in this.slugNodes ) {
+	for ( var i in this.slugNodes ) {
 		if ( this.slugNodes[ i ] !== undefined && this.slugNodes[ i ].parentNode ) {
 			this.slugNodes[ i ].parentNode.removeChild( this.slugNodes[ i ] );
 		}
@@ -300,17 +298,16 @@ ve.ce.BranchNode.prototype.removeSlugs = function () {
  * @param {boolean} isBlock Set up block slugs, otherwise setup inline slugs
  */
 ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
-	var i, slugTemplate, slugNode, child, slugButton, doc;
-
 	// Source mode optimization
 	if ( this.getModel().getDocument() && this.getModel().getDocument().sourceMode && isBlock ) {
 		return;
 	}
 
-	doc = this.getElementDocument();
+	var doc = this.getElementDocument();
 
 	this.removeSlugs();
 
+	var slugTemplate;
 	if ( isBlock ) {
 		slugTemplate = ve.ce.BranchNode.blockSlugTemplate;
 	} else if ( ve.inputDebug ) {
@@ -319,12 +316,12 @@ ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 		slugTemplate = ve.ce.BranchNode.inlineSlugTemplate;
 	}
 
-	for ( i in this.getModel().slugPositions ) {
-		slugNode = doc.importNode( slugTemplate, true );
+	for ( var i in this.getModel().slugPositions ) {
+		var slugNode = doc.importNode( slugTemplate, true );
 		// FIXME T126019: InternalListNode has an empty $element, so we assume that the slug goes
 		// at the end instead. This is a hack and the internal list needs to die in a fire.
 		if ( this.children[ i ] && this.children[ i ].$element[ 0 ] ) {
-			child = this.children[ i ].$element[ 0 ];
+			var child = this.children[ i ].$element[ 0 ];
 			// child.parentNode might not be equal to this.$element[ 0 ]: e.g. annotated inline nodes
 			child.parentNode.insertBefore( slugNode, child );
 		} else {
@@ -332,7 +329,7 @@ ve.ce.BranchNode.prototype.setupSlugs = function ( isBlock ) {
 		}
 		this.slugNodes[ i ] = slugNode;
 		if ( isBlock ) {
-			slugButton = new ve.ui.NoFocusButtonWidget( {
+			var slugButton = new ve.ui.NoFocusButtonWidget( {
 				tabIndex: -1,
 				label: ve.msg( 'visualeditor-slug-insert' ),
 				icon: 'add',
@@ -359,13 +356,12 @@ ve.ce.BranchNode.prototype.onSlugClick = function ( slugNode ) {
  * @return {HTMLElement|null}
  */
 ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
-	var i,
-		startOffset = this.model.getOffset() + ( this.isWrapped() ? 1 : 0 );
+	var startOffset = this.model.getOffset() + ( this.isWrapped() ? 1 : 0 );
 
 	if ( offset === startOffset ) {
 		return this.slugNodes[ 0 ] || null;
 	}
-	for ( i = 0; i < this.children.length; i++ ) {
+	for ( var i = 0; i < this.children.length; i++ ) {
 		startOffset += this.children[ i ].model.getOuterLength();
 		if ( offset === startOffset ) {
 			return this.slugNodes[ i + 1 ] || null;
@@ -380,11 +376,10 @@ ve.ce.BranchNode.prototype.getSlugAtOffset = function ( offset ) {
  * @param {boolean} live New live state
  */
 ve.ce.BranchNode.prototype.setLive = function ( live ) {
-	var i;
 	// Parent method
 	ve.ce.BranchNode.super.prototype.setLive.apply( this, arguments );
 
-	for ( i = 0; i < this.children.length; i++ ) {
+	for ( var i = 0; i < this.children.length; i++ ) {
 		this.children[ i ].setLive( live );
 	}
 };
@@ -393,8 +388,7 @@ ve.ce.BranchNode.prototype.setLive = function ( live ) {
  * Release all memory.
  */
 ve.ce.BranchNode.prototype.destroy = function () {
-	var i, len;
-	for ( i = 0, len = this.children.length; i < len; i++ ) {
+	for ( var i = 0, len = this.children.length; i < len; i++ ) {
 		this.children[ i ].destroy();
 	}
 
@@ -406,8 +400,7 @@ ve.ce.BranchNode.prototype.destroy = function () {
  * @inheritdoc
  */
 ve.ce.BranchNode.prototype.detach = function () {
-	var i, len;
-	for ( i = 0, len = this.children.length; i < len; i++ ) {
+	for ( var i = 0, len = this.children.length; i < len; i++ ) {
 		this.children[ i ].detach();
 	}
 
@@ -426,11 +419,11 @@ ve.ce.BranchNode.prototype.detach = function () {
  * @return {number} return.offset DOM offset
  */
 ve.ce.BranchNode.prototype.getDomPosition = function ( offset ) {
-	var i, ceNode,
-		domNode = this.$element.last()[ 0 ];
+	var domNode = this.$element.last()[ 0 ];
 
 	// Step backwards past empty nodes
-	i = offset - 1;
+	var ceNode;
+	var i = offset - 1;
 	while ( true ) {
 		ceNode = this.children[ i-- ];
 		if ( !ceNode ) {
