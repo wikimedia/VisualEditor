@@ -39,7 +39,8 @@ ve.ui.ToolbarDialog.static.size = 'full';
 ve.ui.ToolbarDialog.static.padded = true;
 
 /**
- * Toolbar position, either 'above' or 'side' (right in LTR)
+ * Toolbar position, either 'above', 'side' (right in LTR), 'below' or 'inline'
+ * For 'inline' the caller will be manually positioning the dialog.
  *
  * @static
  * @type {string} Toolbar position
@@ -60,6 +61,8 @@ ve.ui.ToolbarDialog.prototype.initialize = function () {
 	// The following classes are used here:
 	// * ve-ui-toolbarDialog-position-above
 	// * ve-ui-toolbarDialog-position-side
+	// * ve-ui-toolbarDialog-position-below
+	// * ve-ui-toolbarDialog-position-inline
 	this.$element.addClass( 've-ui-toolbarDialog-position-' + this.constructor.static.position );
 	if ( this.constructor.static.padded ) {
 		this.$element.addClass( 've-ui-toolbarDialog-padded' );
