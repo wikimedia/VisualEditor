@@ -66,6 +66,18 @@ QUnit.test( 'increase/decrease', function ( assert ) {
 			},
 			undo: true,
 			msg: 'decrease indentation in slug'
+		},
+		{
+			html: '<ul><li><table><tr><td>A</td><tr></table></li></ul>',
+			rangeOrSelection: new ve.Range( 2 ),
+			method: 'increase',
+			expectedRangeOrSelection: new ve.Range( 4 ),
+			expectedData: function ( data ) {
+				data.splice( 15, 0, { type: '/listItem' }, { type: '/list' } );
+				data.splice( 0, 0, { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } );
+			},
+			undo: true,
+			msg: 'increase indentation in slug'
 		}
 	];
 
