@@ -199,9 +199,7 @@ ve.ui.PositionedTargetToolbar.prototype.isFloatable = function () {
  * @param {Object} data
  */
 ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = function ( win, openingOrClosing ) {
-	var width,
-		margin,
-		$surface = this.getSurface().$element,
+	var $surface = this.getSurface().$element,
 		transitionDuration = OO.ui.theme.getDialogTransitionDuration(),
 		toolbar = this;
 
@@ -216,13 +214,12 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 	}
 
 	openingOrClosing.then( function () {
-		var originalMargin;
 		if ( win.constructor.static.position === 'side' ) {
 			// win.isOpened after promise means we are opening
 			if ( win.isOpened() ) {
-				margin = $surface.css( 'direction' ) === 'rtl' ? 'margin-left' : 'margin-right';
-				originalMargin = parseFloat( $surface.css( margin ) );
-				width = win.getSizeProperties().width;
+				var margin = $surface.css( 'direction' ) === 'rtl' ? 'margin-left' : 'margin-right';
+				var originalMargin = parseFloat( $surface.css( margin ) );
+				var width = win.getSizeProperties().width;
 				toolbar.getSurface().$element
 					.addClass( 've-ui-surface-toolbarDialog-side' )
 					.css( margin, width + originalMargin );
@@ -254,18 +251,17 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
  * Handle the visible part of the surface viewport change dimensions
  */
 ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
-	var win, viewportDimensions, toolbarDialogs,
-		surface = this.getSurface();
+	var surface = this.getSurface();
 
 	if ( !surface ) {
 		return;
 	}
 
-	toolbarDialogs = surface.getToolbarDialogs();
-	win = toolbarDialogs.getCurrentWindow();
+	var toolbarDialogs = surface.getToolbarDialogs();
+	var win = toolbarDialogs.getCurrentWindow();
 
 	if ( win && win.constructor.static.position === 'side' ) {
-		viewportDimensions = surface.getViewportDimensions();
+		var viewportDimensions = surface.getViewportDimensions();
 		if ( viewportDimensions ) {
 			toolbarDialogs.getCurrentWindow().$frame.css(
 				'height', Math.min( surface.getBoundingClientRect().height, viewportDimensions.height )

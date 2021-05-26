@@ -49,10 +49,6 @@ ve.ui.SequenceRegistry.prototype.register = function ( sequence ) {
  *   for each.
  */
 ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset, isPaste, isDelete ) {
-	var textStart, plaintext, name, range, sequence,
-		state = 0,
-		sequences = [];
-
 	// To avoid blowup when matching RegExp sequences, we're going to grab
 	// all the plaintext to the left (until the nearest node) *once* and pass
 	// it to each sequence matcher.  We're also going to hard-limit that
@@ -65,6 +61,8 @@ ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset, isPaste
 	// "foo</p><p>" in the content model, and typing "foo\n" inside a list
 	// creates "foo</p></li><li><p>" -- we want to give the matcher a
 	// chance to match "foo\n+" in these cases.
+	var textStart;
+	var state = 0;
 	for ( textStart = offset - 1; textStart >= 0 && ( offset - textStart ) <= 256; textStart-- ) {
 		if ( state === 0 && !data.isOpenElementData( textStart ) ) {
 			state++;
@@ -76,17 +74,18 @@ ve.ui.SequenceRegistry.prototype.findMatching = function ( data, offset, isPaste
 			break;
 		}
 	}
-	plaintext = data.getText( true, new ve.Range( textStart + 1, offset ) );
+	var sequences = [];
+	var plaintext = data.getText( true, new ve.Range( textStart + 1, offset ) );
 	// Now search through the registry.
-	for ( name in this.registry ) {
-		sequence = this.registry[ name ];
+	for ( var name in this.registry ) {
+		var sequence = this.registry[ name ];
 		if ( isPaste && !sequence.checkOnPaste ) {
 			continue;
 		}
 		if ( isDelete && !sequence.checkOnDelete ) {
 			continue;
 		}
-		range = sequence.match( data, offset, plaintext );
+		var range = sequence.match( data, offset, plaintext );
 		if ( range !== null ) {
 			sequences.push( {
 				sequence: sequence,

@@ -215,8 +215,7 @@ ve.ui.commandRegistry.register(
 	)
 );
 ( function () {
-	var level;
-	for ( level = 1; level <= 6; level++ ) {
+	for ( var level = 1; level <= 6; level++ ) {
 		ve.ui.commandRegistry.register(
 			new ve.ui.Command(
 				'heading' + level, 'format', 'convert',
