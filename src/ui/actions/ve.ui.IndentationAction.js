@@ -36,42 +36,7 @@ ve.ui.IndentationAction.static.methods = [ 'increase', 'decrease' ];
  * @return {boolean} Indentation increase occurred
  */
 ve.ui.IndentationAction.prototype.increase = function () {
-	var surfaceModel = this.surface.getModel(),
-		fragment = surfaceModel.getFragment();
-
-	if ( !( fragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
-
-	var documentModel = surfaceModel.getDocument();
-	var groups = documentModel.getCoveredSiblingGroups( fragment.getSelection().getRange() );
-
-	var i;
-	var fragments = [];
-	var increased = false;
-	// Build fragments from groups (we need their ranges since the nodes will be rebuilt on change)
-	for ( i = 0; i < groups.length; i++ ) {
-		var group = groups[ i ];
-		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
-			fragments.push( surfaceModel.getLinearFragment( group.parent.getRange(), true ) );
-			increased = true;
-		} else if ( group.parent && group.parent.getType() === 'list' ) {
-			// In a slug, the node will be the listItem.
-			fragments.push( surfaceModel.getLinearFragment( group.nodes[ 0 ].getRange(), true ) );
-			increased = true;
-		}
-	}
-
-	// Process each fragment (their ranges are automatically adjusted on change)
-	for ( i = 0; i < fragments.length; i++ ) {
-		this.indentListItem(
-			documentModel.getBranchNodeFromOffset( fragments[ i ].getSelection().getRange().start )
-		);
-	}
-
-	fragment.select();
-
-	return increased;
+	return this.changeIndentation( 1 );
 };
 
 /**
@@ -80,43 +45,52 @@ ve.ui.IndentationAction.prototype.increase = function () {
  * @return {boolean} Indentation decrease occurred
  */
 ve.ui.IndentationAction.prototype.decrease = function () {
-	var surfaceModel = this.surface.getModel(),
-		fragment = surfaceModel.getFragment();
+	return this.changeIndentation( -1 );
+};
 
-	if ( !( fragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
-		return;
+/**
+ * Change indentation of content.
+ *
+ * @param {number} indent Indentation change, 1 or -1
+ * @return {boolean} Indentation decrease occurred
+ */
+ve.ui.IndentationAction.prototype.changeIndentation = function ( indent ) {
+	var surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
+
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
+		return false;
 	}
 
 	var documentModel = surfaceModel.getDocument();
-	var groups = documentModel.getCoveredSiblingGroups( fragment.getSelection().getRange() );
+	var groups = documentModel.getCoveredSiblingGroups( selection.getRange() );
 
-	var i;
 	var fragments = [];
-	var decreased = false;
+	var changed = false;
 	// Build fragments from groups (we need their ranges since the nodes will be rebuilt on change)
-	for ( i = 0; i < groups.length; i++ ) {
-		var group = groups[ i ];
+	groups.forEach( function ( group ) {
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			fragments.push( surfaceModel.getLinearFragment( group.parent.getRange(), true ) );
-			decreased = true;
+			changed = true;
 		} else if ( group.parent && group.parent.getType() === 'list' ) {
 			// In a slug, the node will be the listItem.
 			fragments.push( surfaceModel.getLinearFragment( group.nodes[ 0 ].getRange(), true ) );
-			decreased = true;
+			changed = true;
 		}
+	} );
 
-	}
-
+	var action = this;
 	// Process each fragment (their ranges are automatically adjusted on change)
-	for ( i = 0; i < fragments.length; i++ ) {
-		this.unindentListItem(
-			documentModel.getBranchNodeFromOffset( fragments[ i ].getSelection().getRange().start )
-		);
-	}
+	fragments.forEach( function ( fragment ) {
+		var listItem = documentModel.getBranchNodeFromOffset( fragment.getSelection().getRange().start );
+		if ( indent > 0 ) {
+			action.indentListItem( listItem );
+		} else {
+			action.unindentListItem( listItem );
+		}
+	} );
 
-	fragment.select();
-
-	return decreased;
+	return changed;
 };
 
 /**
@@ -131,7 +105,7 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	}
 
 	var surfaceModel = this.surface.getModel(),
-		fragment = surfaceModel.getFragment();
+		selection = surfaceModel.getSelection();
 	/*
 	 * Indenting a list item is done as follows:
 	 *
@@ -141,7 +115,7 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	 * 3. If this results in the wrapped list being preceded by another list,
 	 *    merge those lists.
 	 */
-	if ( !( fragment.getSelection() instanceof ve.dm.LinearSelection ) ) {
+	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return;
 	}
 
@@ -177,8 +151,6 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	}
 
 	// TODO If this listItem has a child list, split&unwrap it
-
-	fragment.select();
 };
 
 /**
