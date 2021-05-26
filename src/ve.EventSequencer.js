@@ -48,7 +48,7 @@
  * @param {string[]} eventNames List of event Names to listen to
  */
 ve.EventSequencer = function VeEventSequencer( eventNames ) {
-	var i, len, eventName, eventSequencer = this;
+	var eventSequencer = this;
 	this.$node = null;
 	this.eventNames = eventNames;
 	this.eventHandlers = {};
@@ -90,8 +90,8 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 	 */
 	this.afterOneListenersForEvent = {};
 
-	for ( i = 0, len = eventNames.length; i < len; i++ ) {
-		eventName = eventNames[ i ];
+	for ( var i = 0, len = eventNames.length; i < len; i++ ) {
+		var eventName = eventNames[ i ];
 		this.onListenersForEvent[ eventName ] = [];
 		this.afterListenersForEvent[ eventName ] = [];
 		this.afterOneListenersForEvent[ eventName ] = [];
@@ -176,8 +176,7 @@ ve.EventSequencer.prototype.onLoop = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.on = function ( listeners ) {
-	var eventName;
-	for ( eventName in listeners ) {
+	for ( var eventName in listeners ) {
 		this.onListenersForEvent[ eventName ].push( listeners[ eventName ] );
 	}
 	return this;
@@ -191,8 +190,7 @@ ve.EventSequencer.prototype.on = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.after = function ( listeners ) {
-	var eventName;
-	for ( eventName in listeners ) {
+	for ( var eventName in listeners ) {
 		this.afterListenersForEvent[ eventName ].push( listeners[ eventName ] );
 	}
 	return this;
@@ -206,8 +204,7 @@ ve.EventSequencer.prototype.after = function ( listeners ) {
  * @chainable
  */
 ve.EventSequencer.prototype.afterOne = function ( listeners ) {
-	var eventName;
-	for ( eventName in listeners ) {
+	for ( var eventName in listeners ) {
 		this.afterOneListenersForEvent[ eventName ].push( listeners[ eventName ] );
 	}
 	return this;
@@ -251,7 +248,6 @@ ve.EventSequencer.prototype.afterLoopOne = function ( listeners ) {
  * @param {jQuery.Event} ev The browser event
  */
 ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
-	var i, len, onListener, onListeners, pendingCall, eventSequencer, id;
 	this.runPendingCalls( eventName );
 	if ( !this.doneOnLoop ) {
 		this.doneOnLoop = true;
@@ -259,10 +255,10 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	}
 
 	// Listener list: take snapshot (for immutability if a listener adds another listener)
-	onListeners = ( this.onListenersForEvent[ eventName ] || [] ).slice();
+	var onListeners = ( this.onListenersForEvent[ eventName ] || [] ).slice();
 
-	for ( i = 0, len = onListeners.length; i < len; i++ ) {
-		onListener = onListeners[ i ];
+	for ( var i = 0, len = onListeners.length; i < len; i++ ) {
+		var onListener = onListeners[ i ];
 		this.callListener( 'on', eventName, i, onListener, ev );
 	}
 	// Create a cancellable pending call. We need one even if there are no after*Listeners, to
@@ -270,9 +266,9 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	// - Create the pendingCall object first
 	// - then create the setTimeout invocation to modify pendingCall.id
 	// - then set pendingCall.id to the setTimeout id, so the call can cancel itself
-	pendingCall = { id: null, ev: ev, eventName: eventName };
-	eventSequencer = this;
-	id = this.postpone( function () {
+	var pendingCall = { id: null, ev: ev, eventName: eventName };
+	var eventSequencer = this;
+	var id = this.postpone( function () {
 		if ( pendingCall.id === null ) {
 			// clearTimeout seems not always to work immediately
 			return;
@@ -293,13 +289,12 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
  * @param {jQuery.Event} ev The browser event
  */
 ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
-	var i, len, afterListeners, afterOneListeners;
-
 	// Listener list: take snapshot (for immutability if a listener adds another listener)
-	afterListeners = ( this.afterListenersForEvent[ eventName ] || [] ).slice();
+	var afterListeners = ( this.afterListenersForEvent[ eventName ] || [] ).slice();
 	// One-time listener list: take snapshot (for immutability) and blank the list
-	afterOneListeners = ( this.afterOneListenersForEvent[ eventName ] || [] ).splice( 0 );
+	var afterOneListeners = ( this.afterOneListenersForEvent[ eventName ] || [] ).splice( 0 );
 
+	var i, len;
 	for ( i = 0, len = afterListeners.length; i < len; i++ ) {
 		this.callListener( 'after', eventName, i, afterListeners[ i ], ev );
 	}
@@ -315,9 +310,8 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
  * @private
  */
 ve.EventSequencer.prototype.doOnLoop = function () {
-	var i, len;
 	// Length cache 'len' is required, as the functions called may add another listener
-	for ( i = 0, len = this.onLoopListeners.length; i < len; i++ ) {
+	for ( var i = 0, len = this.onLoopListeners.length; i < len; i++ ) {
 		this.callListener( 'onLoop', null, i, this.onLoopListeners[ i ], null );
 	}
 };
@@ -329,7 +323,6 @@ ve.EventSequencer.prototype.doOnLoop = function () {
  * @param {number} myTimeoutId The calling setTimeout id
  */
 ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
-	var i, len, afterLoopListeners, afterLoopOneListeners;
 
 	if ( this.afterLoopTimeoutId !== myTimeoutId ) {
 		// Cancelled; do nothing
@@ -338,10 +331,11 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 	this.afterLoopTimeoutId = null;
 
 	// Loop listener list: take snapshot (for immutability if a listener adds another listener)
-	afterLoopListeners = this.afterLoopListeners.slice();
+	var afterLoopListeners = this.afterLoopListeners.slice();
 	// One-time loop listener list: take snapshot (for immutability) and blank the list
-	afterLoopOneListeners = this.afterLoopOneListeners.splice( 0 );
+	var afterLoopOneListeners = this.afterLoopOneListeners.splice( 0 );
 
+	var i, len;
 	for ( i = 0, len = afterLoopListeners.length; i < len; i++ ) {
 		this.callListener( 'afterLoop', null, i, this.afterLoopListeners[ i ], null );
 	}
@@ -358,11 +352,11 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
  * @private
  */
 ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
-	var timeoutId, eventSequencer = this;
 	if ( this.afterLoopTimeoutId !== null ) {
 		this.cancelPostponed( this.afterLoopTimeoutId );
 	}
-	timeoutId = this.postpone( function () {
+	var eventSequencer = this;
+	var timeoutId = this.postpone( function () {
 		eventSequencer.doAfterLoop( timeoutId );
 	} );
 	this.afterLoopTimeoutId = timeoutId;
@@ -375,14 +369,13 @@ ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
  * @param {string} eventName The name of the event currently being triggered
  */
 ve.EventSequencer.prototype.runPendingCalls = function ( eventName ) {
-	var i, pendingCall,
-		afterKeyDownCalls = [];
+	var afterKeyDownCalls = [];
 
-	for ( i = 0; i < this.pendingCalls.length; i++ ) {
+	for ( var i = 0; i < this.pendingCalls.length; i++ ) {
 		// Length cache not possible, as a pending call appends another pending call.
 		// It's important that this list remains mutable, in the case that this
 		// function indirectly recurses.
-		pendingCall = this.pendingCalls[ i ];
+		var pendingCall = this.pendingCalls[ i ];
 		if ( pendingCall.id === null ) {
 			// The call has already run
 			continue;

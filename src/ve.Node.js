@@ -461,8 +461,7 @@ ve.Node.prototype.isDownstreamOf = function ( upstreamNode ) {
  * @return {number[]|null} The offset path, or null if not attached to a DocumentNode
  */
 ve.Node.prototype.getOffsetPath = function () {
-	var parent,
-		node = this,
+	var node = this,
 		path = [];
 
 	while ( true ) {
@@ -470,7 +469,7 @@ ve.Node.prototype.getOffsetPath = function () {
 			// We reached the ve.dm.DocumentNode/ve.ce.DocumentNode that this node is attached to
 			return path;
 		}
-		parent = node.getParent();
+		var parent = node.getParent();
 		if ( !parent ) {
 			return null;
 		}

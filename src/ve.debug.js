@@ -51,8 +51,6 @@ ve.dir = console.dir;
 ve.serializeNodeDebug = function ( domNode ) {
 	var html = [];
 	function add( node ) {
-		var i, len, attr;
-
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			html.push( '<#text>', ve.escapeHtml( node.textContent ), '</#text>' );
 			return;
@@ -62,9 +60,10 @@ ve.serializeNodeDebug = function ( domNode ) {
 		}
 		// else node.nodeType === Node.ELEMENT_NODE
 
+		var i, len;
 		html.push( '<', ve.escapeHtml( node.nodeName.toLowerCase() ) );
 		for ( i = 0, len = node.attributes.length; i < len; i++ ) {
-			attr = node.attributes[ i ];
+			var attr = node.attributes[ i ];
 			html.push(
 				' ',
 				ve.escapeHtml( attr.name ),
@@ -91,7 +90,6 @@ ve.serializeNodeDebug = function ( domNode ) {
  * @return {string} Human-readable summary
  */
 ve.summarizeTransaction = function ( tx ) {
-	var annotations = 0;
 	function summarizeItems( items ) {
 		return '\'' + items.map( function ( item ) {
 			if ( item.type ) {
@@ -105,6 +103,7 @@ ve.summarizeTransaction = function ( tx ) {
 			}
 		} ).join( '' ) + '\'';
 	}
+	var annotations = 0;
 	return '(' + ( tx.authorId ? ( tx.authorId + ' ' ) : '' ) + tx.operations.map( function ( op ) {
 		if ( op.type === 'retain' ) {
 			return ( annotations ? 'annotate ' : 'retain ' ) + op.length;
@@ -137,12 +136,12 @@ ve.summarizeTransaction = function ( tx ) {
  * ve.filibuster will monitor calls in ve.{dm,ce,ui} and DM / DOM changes
  */
 ve.initFilibuster = function () {
-	var surface = ve.init.target.surface;
-
 	if ( ve.filibuster ) {
 		ve.filibuster.clearLogs();
 		return;
 	}
+
+	var surface = ve.init.target.surface;
 	ve.filibuster = new ve.Filibuster()
 		.wrapClass( ve.EventSequencer )
 		.wrapNamespace( ve.dm, 've.dm', [
