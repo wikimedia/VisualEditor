@@ -68,15 +68,13 @@ ve.elementTypes = {
  * @return {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtml = function ( html ) {
-	var newDocument;
-
 	if ( html !== '' && html.indexOf( '<body' ) === -1 ) {
 		// When the given HTML fragment starts with a <meta> or <style> element, it is placed in the
 		// automatically generated <head> rather than <body>, and breaks our assumptions. (T273234)
 		html = '<body>' + html + '</body>';
 	}
 
-	newDocument = ve.createDocumentFromHtmlUsingDomParser( html );
+	var newDocument = ve.createDocumentFromHtmlUsingDomParser( html );
 	if ( newDocument ) {
 		return newDocument;
 	}
@@ -97,14 +95,12 @@ ve.createDocumentFromHtml = function ( html ) {
  * @return {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
  */
 ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
-	var newDocument;
-
 	// Support: IE
 	// IE doesn't like empty strings
 	html = html || '<body></body>';
 
 	try {
-		newDocument = new DOMParser().parseFromString( html, 'text/html' );
+		var newDocument = new DOMParser().parseFromString( html, 'text/html' );
 		if ( newDocument ) {
 			return newDocument;
 		}
@@ -119,8 +115,6 @@ ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
  * @return {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
  */
 ve.createDocumentFromHtmlUsingIframe = function ( html ) {
-	var newDocument, iframe;
-
 	// Here's what this fallback code should look like:
 	//
 	//     var newDocument = document.implementation.createHtmlDocument( '' );
@@ -152,14 +146,14 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
 	html = html || '<body></body>';
 
 	// Create an invisible iframe
-	iframe = document.createElement( 'iframe' );
+	var iframe = document.createElement( 'iframe' );
 	iframe.setAttribute( 'frameborder', '0' );
 	iframe.setAttribute( 'width', '0' );
 	iframe.setAttribute( 'height', '0' );
 	// Attach it to the document. We have to do this to get a new document out of it
 	document.documentElement.appendChild( iframe );
 	// Write the HTML to it
-	newDocument = ( iframe.contentWindow && iframe.contentWindow.document ) || iframe.contentDocument;
+	var newDocument = ( iframe.contentWindow && iframe.contentWindow.document ) || iframe.contentDocument;
 	newDocument.open();
 	newDocument.write( html ); // Party like it's 1995!
 	newDocument.close();
@@ -184,8 +178,7 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
  * @return {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {
-	var i, htmlAttributes, wrapper, attributes,
-		newDocument = document.implementation.createHTMLDocument( '' );
+	var newDocument = document.implementation.createHTMLDocument( '' );
 
 	html = html || '<body></body>';
 
@@ -195,12 +188,12 @@ ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {
 		.replace( /<\/html>\s*$/i, '' );
 
 	// Preserve <html> attributes, if any
-	htmlAttributes = html.match( /<html([^>]*>)/i );
+	var htmlAttributes = html.match( /<html([^>]*>)/i );
 	if ( htmlAttributes && htmlAttributes[ 1 ] ) {
-		wrapper = document.createElement( 'div' );
+		var wrapper = document.createElement( 'div' );
 		wrapper.innerHTML = '<div ' + htmlAttributes[ 1 ] + '></div>';
-		attributes = wrapper.firstChild.attributes;
-		for ( i = 0; i < attributes.length; i++ ) {
+		var attributes = wrapper.firstChild.attributes;
+		for ( var i = 0; i < attributes.length; i++ ) {
 			newDocument.documentElement.setAttribute(
 				attributes[ i ].name,
 				attributes[ i ].value
@@ -291,10 +284,9 @@ ve.properOuterHtml = function ( element ) {
  * @return {HTMLElement} Either element, or a fixed-up clone of it
  */
 ve.fixupPreBug = function ( element ) {
-	var div, $element;
 	if ( ve.isPreInnerHtmlBroken === undefined ) {
 		// Test whether newlines in `<pre>` are serialized back correctly
-		div = document.createElement( 'div' );
+		var div = document.createElement( 'div' );
 		div.innerHTML = '<pre>\n\n</pre>';
 		ve.isPreInnerHtmlBroken = div.innerHTML === '<pre>\n</pre>';
 	}
@@ -308,7 +300,7 @@ ve.fixupPreBug = function ( element ) {
 	// If we don't see a leading newline, we still don't know if the original HTML was
 	// `<pre>Foo</pre>` or `<pre>\nFoo</pre>`, but that's a syntactic difference, not a
 	// semantic one, and handling that is the integration target's job.
-	$element = $( element ).clone();
+	var $element = $( element ).clone();
 	$element.find( 'pre, textarea, listing' ).each( function () {
 		var matches;
 		if ( this.firstChild && this.firstChild.nodeType === Node.TEXT_NODE ) {
@@ -358,25 +350,24 @@ ve.normalizeAttributeValue = function ( name, value, nodeName ) {
  * @return {string} HTML string modified to mask/unmask broken attributes
  */
 ve.transformStyleAttributes = function ( html, unmask ) {
-	var xmlDoc, fromAttr, toAttr, i, len,
-		maskAttrs = [
-			// Support: IE
-			'style', // IE normalizes 'color:#ffd' to 'color: rgb(255, 255, 221);'
-			'bgcolor', // IE normalizes '#FFDEAD' to '#ffdead'
-			'color', // IE normalizes 'Red' to 'red'
-			'width', // IE normalizes '240px' to '240'
-			'height', // Same as width
-			'rowspan', // IE (and FF 38 and below) normalizes rowspan="02" to rowspan="2"
-			'colspan' // Same as rowspan
-		];
+	var maskAttrs = [
+		// Support: IE
+		'style', // IE normalizes 'color:#ffd' to 'color: rgb(255, 255, 221);'
+		'bgcolor', // IE normalizes '#FFDEAD' to '#ffdead'
+		'color', // IE normalizes 'Red' to 'red'
+		'width', // IE normalizes '240px' to '240'
+		'height', // Same as width
+		'rowspan', // IE (and FF 38 and below) normalizes rowspan="02" to rowspan="2"
+		'colspan' // Same as rowspan
+	];
 
 	// Parse the HTML into an XML DOM
-	xmlDoc = new DOMParser().parseFromString( html, 'text/xml' );
+	var xmlDoc = new DOMParser().parseFromString( html, 'text/xml' );
 
 	// Go through and mask/unmask each attribute on all elements that have it
-	for ( i = 0, len = maskAttrs.length; i < len; i++ ) {
-		fromAttr = unmask ? 'data-ve-' + maskAttrs[ i ] : maskAttrs[ i ];
-		toAttr = unmask ? maskAttrs[ i ] : 'data-ve-' + maskAttrs[ i ];
+	for ( var i = 0, len = maskAttrs.length; i < len; i++ ) {
+		var fromAttr = unmask ? 'data-ve-' + maskAttrs[ i ] : maskAttrs[ i ];
+		var toAttr = unmask ? maskAttrs[ i ] : 'data-ve-' + maskAttrs[ i ];
 		// eslint-disable-next-line no-loop-func
 		$( xmlDoc ).find( '[' + fromAttr + ']' ).each( function () {
 			var toAttrValue, fromAttrNormalized,
@@ -449,7 +440,6 @@ ve.serializeXhtml = function ( doc ) {
  * @return {string} Serialized HTML string
  */
 ve.serializeXhtmlElement = function ( element ) {
-	var xml;
 	// Support: IE
 	// Feature-detect style attribute breakage in IE
 	if ( ve.isStyleAttributeBroken === undefined ) {
@@ -464,7 +454,7 @@ ve.serializeXhtmlElement = function ( element ) {
 		return ve.properOuterHtml( element );
 	}
 
-	xml = new XMLSerializer().serializeToString( ve.fixupPreBug( element ) );
+	var xml = new XMLSerializer().serializeToString( ve.fixupPreBug( element ) );
 	// FIXME T126035: This strips out xmlns as a quick hack
 	xml = xml.replace( '<html xmlns="http://www.w3.org/1999/xhtml"', '<html' );
 	return ve.transformStyleAttributes( xml, true );

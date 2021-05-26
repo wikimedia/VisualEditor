@@ -7,8 +7,7 @@
 /* global Set */
 
 ( function () {
-	var deepFreeze, freezeProxyHandler;
-	freezeProxyHandler = {
+	var freezeProxyHandler = {
 		set: function ( obj, name ) {
 			throw new Error( 'Object is frozen, can\'t set property: ' + name );
 		},
@@ -20,6 +19,7 @@
 	if ( !window.Proxy || !window.Set ) {
 		return;
 	}
+	var deepFreeze;
 	/**
 	 * Deep freeze an object, making it immutable
 	 *

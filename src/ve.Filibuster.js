@@ -58,9 +58,8 @@ OO.initClass( ve.Filibuster );
  * Clears logs, without detaching observers
  */
 ve.Filibuster.prototype.clearLogs = function () {
-	var name;
 	this.count = 0;
-	for ( name in this.states ) {
+	for ( var name in this.states ) {
 		delete this.states[ name ];
 	}
 	this.observationTree.children = {};
@@ -94,12 +93,12 @@ ve.Filibuster.prototype.setObserver = function ( name, callback ) {
  * @param {string} action The function call phase: call|return|throw
  */
 ve.Filibuster.prototype.observe = function ( action ) {
-	var name, callback, oldState, newState, j, jLen, ptr, offset,
-		changes = {};
+	var changes = {};
 
-	for ( name in this.observers ) {
-		callback = this.observers[ name ];
-		oldState = this.states[ name ];
+	for ( var name in this.observers ) {
+		var callback = this.observers[ name ];
+		var oldState = this.states[ name ];
+		var newState;
 		try {
 			newState = callback();
 		} catch ( ex ) {
@@ -126,9 +125,9 @@ ve.Filibuster.prototype.observe = function ( action ) {
 	// Save any changes into observations tree
 	if ( Object.keys( changes ).length > 0 ) {
 		// Navigate along tree branch, creating as necessary
-		ptr = this.observationTree;
-		for ( j = 0, jLen = this.callPath.length; j < jLen; j++ ) {
-			offset = this.callPath[ j ];
+		var ptr = this.observationTree;
+		for ( var j = 0, jLen = this.callPath.length; j < jLen; j++ ) {
+			var offset = this.callPath[ j ];
 			if ( !ptr.children ) {
 				ptr.children = {};
 			}
@@ -157,16 +156,15 @@ ve.Filibuster.prototype.observe = function ( action ) {
  * @param {Mixed} [returned] The return value (if action === 'return')
  */
 ve.Filibuster.prototype.log = function ( funcName, action, args, returned ) {
-	var time, parentFrame;
 	if ( !this.active ) {
 		return;
 	}
-	time = ve.now() - this.startTime;
+	var time = ve.now() - this.startTime;
 	if ( action === 'call' ) {
 		// Descend down the call tree (adding a new frame)
 		// Store arguments as a cloned plain object, to avoid anachronistic changes and
 		// for easy display.
-		parentFrame = this.frame;
+		var parentFrame = this.frame;
 		if ( !parentFrame.children ) {
 			parentFrame.children = [];
 		}
@@ -225,10 +223,10 @@ ve.Filibuster.prototype.log = function ( funcName, action, args, returned ) {
  * @chainable
  */
 ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName ) {
-	var wrapper, fn, filibuster = this,
+	var filibuster = this,
 		fullName = ( klassName || 'unknown' ) + '.' + fnName;
-	fn = container[ fnName ];
-	wrapper = function () {
+	var fn = container[ fnName ];
+	var wrapper = function () {
 		var returnVal,
 			fnReturned = false;
 		filibuster.log( fullName, 'call', Array.prototype.slice.call( arguments ), undefined );
@@ -258,15 +256,14 @@ ve.Filibuster.prototype.wrapFunction = function ( container, klassName, fnName )
  * @chainable
  */
 ve.Filibuster.prototype.wrapClass = function ( klass, nowrapList ) {
-	var i, len, fnName, fn, fnNames, container;
-	container = klass.prototype;
-	fnNames = Object.getOwnPropertyNames( container );
-	for ( i = 0, len = fnNames.length; i < len; i++ ) {
-		fnName = fnNames[ i ];
+	var container = klass.prototype;
+	var fnNames = Object.getOwnPropertyNames( container );
+	for ( var i = 0, len = fnNames.length; i < len; i++ ) {
+		var fnName = fnNames[ i ];
 		if ( fnName === 'prototype' || fnName === 'constructor' ) {
 			continue;
 		}
-		fn = container[ fnName ];
+		var fn = container[ fnName ];
 		if ( typeof fn !== 'function' || fn.wrappedFunction ) {
 			continue;
 		}
@@ -288,15 +285,14 @@ ve.Filibuster.prototype.wrapClass = function ( klass, nowrapList ) {
  * @chainable
  */
 ve.Filibuster.prototype.wrapNamespace = function ( ns, nsName, nowrapList ) {
-	var i, len, propNames, propName, prop, isConstructor;
-	propNames = Object.getOwnPropertyNames( ns );
-	for ( i = 0, len = propNames.length; i < len; i++ ) {
-		propName = propNames[ i ];
-		prop = ns[ propName ];
+	var propNames = Object.getOwnPropertyNames( ns );
+	for ( var i = 0, len = propNames.length; i < len; i++ ) {
+		var propName = propNames[ i ];
+		var prop = ns[ propName ];
 		if ( nowrapList && nowrapList.indexOf( prop ) !== -1 ) {
 			continue;
 		}
-		isConstructor = (
+		var isConstructor = (
 			typeof prop === 'function' &&
 			!ve.isEmptyObject( prop.prototype )
 		);
@@ -337,8 +333,6 @@ ve.Filibuster.prototype.stop = function () {
  * @return {string} HTML representation
  */
 ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
-	var i, iLen, callTree, observationTree;
-
 	function showArgs( args ) {
 		return '<b>(</b>' + ve.escapeHtml( args.map( function ( arg ) {
 			return JSON.stringify( arg );
@@ -435,13 +429,13 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 		return html;
 	}
 
-	callTree = this.callTree;
-	observationTree = this.observationTree;
+	var callTree = this.callTree;
+	var observationTree = this.observationTree;
 	// Walk to the specified part of the tree
 	if ( !branchPath ) {
 		branchPath = [];
 	}
-	for ( i = 0, iLen = branchPath.length; i < iLen; i++ ) {
+	for ( var i = 0, iLen = branchPath.length; i < iLen; i++ ) {
 		callTree = callTree.children[ branchPath[ i ] ];
 		if ( observationTree && observationTree.children ) {
 			observationTree = observationTree.children[ branchPath[ i ] ];
@@ -470,8 +464,7 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
  * @return {Object|string|number|null} Plain old data object
  */
 ve.Filibuster.static.clonePlain = function ( val, seen ) {
-	var plainVal,
-		filibusterStatic = this;
+	var filibusterStatic = this;
 
 	if ( seen === undefined ) {
 		seen = new Set();
@@ -519,7 +512,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 			return '…';
 		}
 		seen.add( val );
-		plainVal = {};
+		var plainVal = {};
 		Object.getOwnPropertyNames( val ).forEach( function ( k ) {
 			plainVal[ k ] = filibusterStatic.clonePlain( val[ k ], seen );
 		} );

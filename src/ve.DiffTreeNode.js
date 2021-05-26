@@ -38,10 +38,9 @@ OO.inheritClass( ve.DiffTreeNode, treeDiffer.TreeNode );
  * @return {boolean} The nodes are equal
  */
 ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
-	var nodeRange, otherNodeRange;
 	if ( this.node.canContainContent() && otherNode.node.canContainContent() ) {
-		nodeRange = this.node.getOuterRange();
-		otherNodeRange = otherNode.node.getOuterRange();
+		var nodeRange = this.node.getOuterRange();
+		var otherNodeRange = otherNode.node.getOuterRange();
 		// Optimization: Most nodes we compare are different, so do a quick check
 		// on the range length first.
 		return nodeRange.getLength() === otherNodeRange.getLength() &&

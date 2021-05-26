@@ -323,11 +323,9 @@ ve.supportsIntl = !!(
  * @property {boolean}
  */
 ve.supportsSplice = ( function () {
-	var a, n;
-
 	// Support: Safari 8
 	// This returns false in Safari 8
-	a = new Array( 100000 );
+	var a = new Array( 100000 );
 	a.splice( 30, 0, 'x' );
 	a.splice( 20, 1 );
 	if ( a.indexOf( 'x' ) !== 29 ) {
@@ -337,7 +335,7 @@ ve.supportsSplice = ( function () {
 	// Support: Opera 12.15
 	// This returns false in Opera 12.15
 	a = [];
-	n = 256;
+	var n = 256;
 	a[ n ] = 'a';
 	a.splice( n + 1, 0, 'b' );
 	if ( a[ n ] !== 'a' ) {
@@ -370,12 +368,12 @@ ve.supportsSplice = ( function () {
 ve.batchSplice = function ( arr, offset, remove, data ) {
 	// We need to splice insertion in in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
-	var splice, spliced,
-		index = 0,
+	var index = 0,
 		batchSize = 1024,
 		toRemove = remove,
 		removed = [];
 
+	var splice;
 	if ( !Array.isArray( arr ) ) {
 		splice = arr.splice;
 	} else {
@@ -411,7 +409,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 	while ( index < data.length ) {
 		// Call arr.splice( offset, remove, i0, i1, i2, …, i1023 );
 		// Only set remove on the first call, and set it to zero on subsequent calls
-		spliced = splice.apply(
+		var spliced = splice.apply(
 			arr, [ index + offset, toRemove ].concat( data.slice( index, index + batchSize ) )
 		);
 		if ( toRemove > 0 ) {
@@ -438,8 +436,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
  * @return {Array} Array of items removed, with holes preserved
  */
 ve.sparseSplice = function ( arr, offset, remove, data ) {
-	var i,
-		removed = [],
+	var removed = [],
 		endOffset = offset + remove,
 		diff = data.length - remove;
 	if ( data === arr ) {
@@ -457,7 +454,7 @@ ve.sparseSplice = function ( arr, offset, remove, data ) {
 		// comparatively small: otherwise, it would sometimes be quicker to relocate
 		// each element of arr that lies above offset).
 		ve.batchSplice( arr, endOffset, 0, new Array( diff ) );
-		for ( i = endOffset + diff - 1; i >= endOffset; i-- ) {
+		for ( var i = endOffset + diff - 1; i >= endOffset; i-- ) {
 			delete arr[ i ];
 		}
 	} else if ( diff < 0 ) {
@@ -500,13 +497,13 @@ ve.insertIntoArray = function ( arr, offset, src ) {
 ve.batchPush = function ( arr, data ) {
 	// We need to push insertion in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
-	var length,
-		index = 0,
+	var index = 0,
 		batchSize = 1024;
 	if ( batchSize >= data.length ) {
 		// Avoid slicing for small lists
 		return arr.push.apply( arr, data );
 	}
+	var length;
 	while ( index < data.length ) {
 		// Call arr.push( i0, i1, i2, …, i1023 );
 		length = arr.push.apply(
@@ -710,9 +707,8 @@ ve.escapeHtml = ( function () {
  * @return {Object}
  */
 ve.getDomAttributes = function ( element ) {
-	var i,
-		result = {};
-	for ( i = 0; i < element.attributes.length; i++ ) {
+	var result = {};
+	for ( var i = 0; i < element.attributes.length; i++ ) {
 		result[ element.attributes[ i ].name ] = element.attributes[ i ].value;
 	}
 	return result;
@@ -728,12 +724,11 @@ ve.getDomAttributes = function ( element ) {
  * @param {string[]} [allowedAttributes] List of attributes to exclusively allow (all lowercase names)
  */
 ve.setDomAttributes = function ( element, attributes, allowedAttributes ) {
-	var key;
 	// Duck-typing for attribute setting
 	if ( !element.setAttribute || !element.removeAttribute ) {
 		return;
 	}
-	for ( key in attributes ) {
+	for ( var key in attributes ) {
 		if ( allowedAttributes && allowedAttributes.indexOf( key.toLowerCase() ) === -1 ) {
 			continue;
 		}
@@ -752,11 +747,10 @@ ve.setDomAttributes = function ( element, attributes, allowedAttributes ) {
  * @return {string} HTML representation of the node
  */
 ve.getNodeHtml = function ( node ) {
-	var div;
 	if ( node.nodeType === Node.ELEMENT_NODE ) {
 		return node.outerHTML;
 	} else {
-		div = document.createElement( 'div' );
+		var div = document.createElement( 'div' );
 		div.appendChild( node.cloneNode( true ) );
 		return div.innerHTML;
 	}
@@ -777,23 +771,23 @@ ve.getNodeHtml = function ( node ) {
  * @return {Object} Summary of element.
  */
 ve.getDomElementSummary = function ( element, includeHtml, getAttributeSummary ) {
-	var i, name, value,
-		summary = {
-			type: element.nodeName.toLowerCase(),
-			text: element.textContent,
-			attributes: {},
-			children: []
-		};
+	var summary = {
+		type: element.nodeName.toLowerCase(),
+		text: element.textContent,
+		attributes: {},
+		children: []
+	};
 
 	if ( includeHtml && element.nodeType === Node.ELEMENT_NODE ) {
 		summary.html = element.outerHTML;
 	}
 
+	var i;
 	// Gather attributes
 	if ( element.attributes ) {
 		for ( i = 0; i < element.attributes.length; i++ ) {
-			name = element.attributes[ i ].name;
-			value = element.attributes[ i ].value;
+			var name = element.attributes[ i ].name;
+			var value = element.attributes[ i ].value;
 			summary.attributes[ name ] = getAttributeSummary ? getAttributeSummary( name, value ) : value;
 		}
 	}
@@ -872,14 +866,15 @@ ve.filterMetaElements = function ( contents ) {
  * @param {string[]} attrs Attributes to resolve
  */
 ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
-	var i, iLen, j, jLen, element, attr,
-		// Convert jQuery selections to plain arrays
-		elements = elementsOrJQuery.toArray ? elementsOrJQuery.toArray() : elementsOrJQuery;
+	// Convert jQuery selections to plain arrays
+	var elements = elementsOrJQuery.toArray ? elementsOrJQuery.toArray() : elementsOrJQuery;
 
 	// Duck typing for array or NodeList :(
 	if ( elements.length === undefined ) {
 		elements = [ elements ];
 	}
+
+	var attr;
 
 	/**
 	 * Resolves the value of attr to the computed property value.
@@ -903,9 +898,9 @@ ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
 		}
 	}
 
-	for ( i = 0, iLen = elements.length; i < iLen; i++ ) {
-		element = elements[ i ];
-		for ( j = 0, jLen = attrs.length; j < jLen; j++ ) {
+	for ( var i = 0, iLen = elements.length; i < iLen; i++ ) {
+		var element = elements[ i ];
+		for ( var j = 0, jLen = attrs.length; j < jLen; j++ ) {
 			attr = attrs[ j ];
 			if ( element.hasAttribute( attr ) ) {
 				resolveAttribute( element );
@@ -991,7 +986,6 @@ ve.safeDecodeURIComponent = function ( s ) {
  * @param {Node} node Node to normalize
  */
 ve.normalizeNode = function ( node ) {
-	var p, nodeIterator, textNode;
 	if ( ve.isNormalizeBroken === undefined ) {
 		// Support: IE11
 		// Feature-detect IE11's broken .normalize() implementation.
@@ -999,7 +993,7 @@ ve.normalizeNode = function ( node ) {
 		// in this example, but for mysterious reasons it also fails to merge
 		// text nodes in other cases and we don't quite know why. So if we detect
 		// that .normalize() is broken, fall back to a completely manual version.
-		p = document.createElement( 'p' );
+		var p = document.createElement( 'p' );
 		p.appendChild( document.createTextNode( 'Foo' ) );
 		p.appendChild( document.createTextNode( 'Bar' ) );
 		p.appendChild( document.createTextNode( '' ) );
@@ -1010,12 +1004,13 @@ ve.normalizeNode = function ( node ) {
 
 	if ( ve.isNormalizeBroken ) {
 		// Perform normalization manually
-		nodeIterator = node.ownerDocument.createNodeIterator(
+		var nodeIterator = node.ownerDocument.createNodeIterator(
 			node,
 			NodeFilter.SHOW_TEXT,
 			function () { return NodeFilter.FILTER_ACCEPT; },
 			false
 		);
+		var textNode;
 		while ( ( textNode = nodeIterator.nextNode() ) ) {
 			// Remove if empty
 			if ( textNode.data === '' ) {
@@ -1044,18 +1039,17 @@ ve.normalizeNode = function ( node ) {
  * @return {number} Common start sequence length (0 if sequences is empty)
  */
 ve.getCommonStartSequenceLength = function ( sequences ) {
-	var i, len, val,
-		commonLength = 0;
 	if ( sequences.length === 0 ) {
 		return 0;
 	}
+	var commonLength = 0;
 	commonLengthLoop:
 	while ( true ) {
 		if ( commonLength >= sequences[ 0 ].length ) {
 			break;
 		}
-		val = sequences[ 0 ][ commonLength ];
-		for ( i = 1, len = sequences.length; i < len; i++ ) {
+		var val = sequences[ 0 ][ commonLength ];
+		for ( var i = 1, len = sequences.length; i < len; i++ ) {
 			if (
 				sequences[ i ].length <= commonLength ||
 				sequences[ i ][ commonLength ] !== val
@@ -1075,17 +1069,17 @@ ve.getCommonStartSequenceLength = function ( sequences ) {
  * @return {Node|null} Nearest common ancestor; or null if there is none / an argument is null
  */
 ve.getCommonAncestor = function () {
-	var i, j, nodeCount, chain, node,
-		minHeight = null,
-		chains = [],
-		args = Array.prototype.slice.call( arguments );
-	nodeCount = args.length;
+	var args = Array.prototype.slice.call( arguments );
+	var nodeCount = args.length;
 	if ( nodeCount === 0 ) {
 		return null;
 	}
+	var minHeight = null;
+	var chains = [];
+	var i, node;
 	// Build every chain
 	for ( i = 0; i < nodeCount; i++ ) {
-		chain = [];
+		var chain = [];
 		node = args[ i ];
 		while ( node !== null ) {
 			chain.unshift( node );
@@ -1110,7 +1104,7 @@ ve.getCommonAncestor = function () {
 	// of an unattached branch)
 	for ( i = 1; i < minHeight; i++ ) {
 		node = chains[ 0 ][ i ];
-		for ( j = 1; j < nodeCount; j++ ) {
+		for ( var j = 1; j < nodeCount; j++ ) {
 			if ( node !== chains[ j ][ i ] ) {
 				return chains[ 0 ][ i - 1 ];
 			}
@@ -1166,8 +1160,7 @@ ve.getOffsetPath = function ( ancestor, node, nodeOffset ) {
  * @return {number} `a[k] - b[k]` where k is the lowest k such that `a[k] != b[k]`
  */
 ve.compareTuples = function ( a, b ) {
-	var i, len;
-	for ( i = 0, len = Math.min( a.length, b.length ); i < len; i++ ) {
+	for ( var i = 0, len = Math.min( a.length, b.length ); i < len; i++ ) {
 		if ( a[ i ] !== b[ i ] ) {
 			return a[ i ] - b[ i ];
 		}
@@ -1243,18 +1236,18 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
  * @see ve#isHardCursorStep
  */
 ve.adjacentDomPosition = function ( position, direction, options ) {
-	var forward, childNode, noDescend, stop, step,
-		node = position.node,
+	var node = position.node,
 		offset = position.offset,
 		steps = [];
 
-	noDescend = options.noDescend || ve.rejectsCursor;
-	stop = options.stop || ve.isHardCursorStep;
+	var noDescend = options.noDescend || ve.rejectsCursor;
+	var stop = options.stop || ve.isHardCursorStep;
 
 	direction = direction < 0 ? -1 : 1;
-	forward = ( direction === 1 );
+	var forward = ( direction === 1 );
 
 	while ( true ) {
+		var step;
 		// If we're at the node's leading edge, move to the adjacent position in the parent node
 		if ( offset === ( forward ? node.length || node.childNodes.length : 0 ) ) {
 			step = new ve.PositionStep( node, 'leave' );
@@ -1300,7 +1293,7 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 		}
 		// Else we're in the interior of an element node
 
-		childNode = node.childNodes[ forward ? offset : offset - 1 ];
+		var childNode = node.childNodes[ forward ? offset : offset - 1 ];
 
 		// Support: Firefox
 		// If the child is uncursorable, or is an element matching noDescend, do not
@@ -1388,14 +1381,14 @@ ve.rejectsCursor = function ( node ) {
  * @return {number} return.end Offset from end of last changed element (nonoverlapping with start)
  */
 ve.countEdgeMatches = function ( before, after, equals ) {
-	var len, start, end;
 	if ( !equals ) {
 		equals = function ( x, y ) {
 			return x === y;
 		};
 	}
 
-	len = Math.min( before.length, after.length );
+	var start, end;
+	var len = Math.min( before.length, after.length );
 	// Find maximal matching left slice
 	for ( start = 0; start < len; start++ ) {
 		if ( !equals( before[ start ], after[ start ] ) ) {

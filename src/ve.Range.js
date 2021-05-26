@@ -77,13 +77,12 @@ ve.Range.static.newFromHash = function ( hash ) {
  * @return {ve.Range} Range that spans all of the given ranges
  */
 ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
-	var minStart, maxEnd, i, range;
 	if ( ranges.length === 0 ) {
 		throw new Error( 'newCoveringRange() requires at least one range' );
 	}
-	minStart = ranges[ 0 ].start;
-	maxEnd = ranges[ 0 ].end;
-	for ( i = 1; i < ranges.length; i++ ) {
+	var minStart = ranges[ 0 ].start;
+	var maxEnd = ranges[ 0 ].end;
+	for ( var i = 1; i < ranges.length; i++ ) {
 		if ( ranges[ i ].start < minStart ) {
 			minStart = ranges[ i ].start;
 		}
@@ -91,6 +90,7 @@ ve.Range.static.newCoveringRange = function ( ranges, backwards ) {
 			maxEnd = ranges[ i ].end;
 		}
 	}
+	var range;
 	if ( backwards ) {
 		range = new ve.Range( maxEnd, minStart );
 	} else {

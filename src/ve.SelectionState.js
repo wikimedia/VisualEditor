@@ -108,11 +108,10 @@ ve.SelectionState.prototype.equalsSelection = function ( other ) {
  * @return {Range|null} Range
  */
 ve.SelectionState.prototype.getNativeRange = function ( doc ) {
-	var range;
 	if ( this.anchorNode === null ) {
 		return null;
 	}
-	range = doc.createRange();
+	var range = doc.createRange();
 	try {
 		if ( this.isBackwards ) {
 			range.setStart( this.focusNode, this.focusOffset );
