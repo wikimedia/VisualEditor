@@ -55,6 +55,10 @@ ve.ui.IndentationAction.prototype.increase = function () {
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			fragments.push( surfaceModel.getLinearFragment( group.parent.getRange(), true ) );
 			increased = true;
+		} else if ( group.parent && group.parent.getType() === 'list' ) {
+			// In a slug, the node will be the listItem.
+			fragments.push( surfaceModel.getLinearFragment( group.nodes[ 0 ].getRange(), true ) );
+			increased = true;
 		}
 	}
 
