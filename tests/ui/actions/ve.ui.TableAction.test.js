@@ -72,6 +72,111 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				rangeOrSelection: new ve.Range( 0 ),
 				method: 'create',
 				args: [ {
+					cols: 1,
+					rows: 1,
+					caption: true
+				} ],
+				expectedData: function ( data ) {
+					data.splice.apply( data, [ 0, 0 ].concat(
+						[
+							{ type: 'table' },
+							{ type: 'tableCaption' },
+							{ type: 'paragraph', internal: { generated: 'wrapper' } },
+							{ type: '/paragraph' },
+							{ type: '/tableCaption' },
+							{ type: 'tableSection', attributes: { style: 'body' } },
+							{ type: 'tableRow' }
+						],
+						tableData,
+						[
+							{ type: '/tableRow' },
+							{ type: '/tableSection' },
+							{ type: '/table' }
+						]
+					) );
+				},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 14 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'create single cell table with caption'
+			},
+			{
+				rangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 5, 37 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				method: 'create',
+				expectedData: function () {},
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 5, 37 ),
+					fromCol: 0,
+					fromRow: 0,
+					toCol: 0,
+					toRow: 0
+				},
+				msg: 'create table with table selection is no-op'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				method: 'insert',
+				args: [ 'col', 'after' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'insert with linear selection is no-op'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				method: 'moveRelative',
+				args: [ 'col', 'after' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'moveRelative with linear selection is no-op'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				method: 'move',
+				args: [ 'col', 0 ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'move with linear selection is no-op'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				method: 'delete',
+				args: [ 'table' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'delete with linear selection is no-op'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				method: 'delete',
+				args: [ 'header' ],
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'changeCellStyle with linear selection is no-op'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				method: 'mergeCells',
+				expectedData: function () {},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'mergeCells with linear selection is no-op'
+			},
+			{
+				rangeOrSelection: new ve.Range( 0 ),
+				method: 'create',
+				args: [ {
 					cols: 3,
 					rows: 2,
 					header: true

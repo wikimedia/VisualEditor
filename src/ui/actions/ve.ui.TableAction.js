@@ -142,10 +142,14 @@ ve.ui.TableAction.prototype.insert = function ( mode, position ) {
  */
 ve.ui.TableAction.prototype.moveRelative = function ( mode, direction ) {
 	var surfaceModel = this.surface.getModel(),
-		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection(),
-		matrix = selection.getTableNode( documentModel ).getMatrix();
+		selection = surfaceModel.getSelection();
 
+	if ( !( selection instanceof ve.dm.TableSelection ) ) {
+		return false;
+	}
+
+	var documentModel = surfaceModel.getDocument();
+	var matrix = selection.getTableNode( documentModel ).getMatrix();
 	var index;
 	if ( mode === 'row' ) {
 		if ( direction === 'before' ) {
@@ -167,7 +171,7 @@ ve.ui.TableAction.prototype.moveRelative = function ( mode, direction ) {
  * Move a column or row.
  *
  * @param {string} mode Move mode; 'col' or 'row'
- * @param {string} index Row or column index to move to
+ * @param {number} index Row or column index to move to
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.move = function ( mode, index ) {
