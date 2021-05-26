@@ -54,9 +54,9 @@ ve.ui.ContentAction.prototype.insert = function ( content, annotate, collapseToE
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.remove = function ( key ) {
-	var e, defaultPrevented = false;
+	var defaultPrevented = false;
 	if ( key ) {
-		e = {
+		var e = {
 			keyCode: key === 'delete' ? OO.ui.Keys.DELETE : OO.ui.Keys.BACKSPACE,
 			preventDefault: function () {
 				defaultPrevented = true;
@@ -136,12 +136,11 @@ ve.ui.ContentAction.prototype.submit = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.focusContext = function () {
-	var $focusable;
 	if ( this.surface.getContext().isVisible() ) {
 		// Disable $focusTrapBefore so it doesn't get matched as the first
 		// focusable item.
 		this.surface.getContext().$focusTrapBefore.prop( 'disabled', true );
-		$focusable = OO.ui.findFocusable( this.surface.getContext().$element );
+		var $focusable = OO.ui.findFocusable( this.surface.getContext().$element );
 		this.surface.getContext().$focusTrapBefore.prop( 'disabled', false );
 		if ( $focusable.length ) {
 			this.surface.getView().deactivate();

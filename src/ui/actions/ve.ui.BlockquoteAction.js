@@ -54,23 +54,21 @@ ve.ui.BlockquoteAction.prototype.toggle = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.BlockquoteAction.prototype.wrap = function () {
-	var
-		surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection(),
-		fragment = surfaceModel.getFragment( null, true ),
-		leaves, leavesRange;
+	var surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return false;
 	}
 
+	var fragment = surfaceModel.getFragment( null, true );
 	// Trim the selection range to the range of leaf nodes in the selection,
 	// to avoid covering whole nodes where only start/end tag was selected.
 	// For example:
 	//     <p>asdf</p><p>qwer</p>   -->   <p>asdf</p><p>qwer</p>
 	//        ^^^^^^^^^^^                    ^^^^
-	leaves = fragment.getSelectedLeafNodes();
-	leavesRange = new ve.Range(
+	var leaves = fragment.getSelectedLeafNodes();
+	var leavesRange = new ve.Range(
 		leaves[ 0 ].getRange().start,
 		leaves[ leaves.length - 1 ].getRange().end
 	);
@@ -100,11 +98,8 @@ ve.ui.BlockquoteAction.prototype.wrap = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.BlockquoteAction.prototype.unwrap = function () {
-	var
-		surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection(),
-		fragment = surfaceModel.getFragment( null, true ),
-		leaves, leavesRange;
+	var surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return false;
@@ -114,13 +109,14 @@ ve.ui.BlockquoteAction.prototype.unwrap = function () {
 		return false;
 	}
 
+	var fragment = surfaceModel.getFragment( null, true );
 	// Trim the selection range to the range of leaf nodes in the selection,
 	// to avoid covering whole nodes where only start/end tag was selected.
 	// For example:
 	//     <bq><p>asdf</p></bq><p>qwer</p>   -->   <bq><p>asdf</p></bq><p>qwer</p>
 	//            ^^^^^^^^^^^^^^^^                        ^^^^
-	leaves = fragment.getSelectedLeafNodes();
-	leavesRange = new ve.Range(
+	var leaves = fragment.getSelectedLeafNodes();
+	var leavesRange = new ve.Range(
 		leaves[ 0 ].getRange().start,
 		leaves[ leaves.length - 1 ].getRange().end
 	);

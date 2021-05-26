@@ -37,14 +37,13 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
  * @return {boolean} Current selection is all wrapped in a list
  */
 ve.ui.ListAction.prototype.allWrapped = function ( style, listType ) {
-	var i, len,
-		attributes = style ? { style: style } : undefined,
+	var attributes = style ? { style: style } : undefined,
 		nodes = this.surface.getModel().getFragment().getLeafNodes(),
 		all = !!nodes.length;
 
 	listType = listType || 'list';
 
-	for ( i = 0, len = nodes.length; i < len; i++ ) {
+	for ( var i = 0, len = nodes.length; i < len; i++ ) {
 		if (
 			( len === 1 || !nodes[ i ].range || nodes[ i ].range.getLength() ) &&
 			!nodes[ i ].node.hasMatchingAncestor( listType, attributes )
@@ -99,35 +98,31 @@ ve.ui.ListAction.prototype.wrapOnce = function ( style, noBreakpoints, listType 
  * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
-	var i, previousList, groupRange, group, range, element, itemElement,
-		surfaceModel = this.surface.getModel(),
-		fragment = surfaceModel.getFragment( null, true ),
-		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection(),
-		groups;
-
-	listType = listType || 'list';
+	var surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return false;
 	}
 
-	range = selection.getRange();
+	listType = listType || 'list';
 
 	if ( !noBreakpoints ) {
 		surfaceModel.breakpoint();
 	}
 
+	var documentModel = surfaceModel.getDocument();
+	var range = selection.getRange();
+
 	// TODO: Would be good to refactor at some point and avoid/abstract path split for block slug
 	// and not block slug.
-
 	if (
 		range.isCollapsed() &&
 		!documentModel.data.isContentOffset( range.to ) &&
 		documentModel.hasSlugAtOffset( range.to )
 	) {
 		// Inside block level slug
-		fragment = fragment
+		var fragment = surfaceModel.getFragment( null, true )
 			.insertContent( [
 				{ type: 'paragraph' },
 				{ type: '/paragraph' }
@@ -138,9 +133,10 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 		range = fragment.getSelection().getRange();
 	}
 
-	groups = documentModel.getCoveredSiblingGroups( range );
-	for ( i = 0; i < groups.length; i++ ) {
-		group = groups[ i ];
+	var previousList;
+	var groups = documentModel.getCoveredSiblingGroups( range );
+	for ( var i = 0; i < groups.length; i++ ) {
+		var group = groups[ i ];
 		// TODO: Allow conversion between different list types
 		if ( group.grandparent && group.grandparent.getType() === listType ) {
 			if ( group.grandparent !== previousList ) {
@@ -151,15 +147,15 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 			}
 		} else {
 			// Get a range that covers the whole group
-			groupRange = new ve.Range(
+			var groupRange = new ve.Range(
 				group.nodes[ 0 ].getOuterRange().start,
 				group.nodes[ group.nodes.length - 1 ].getOuterRange().end
 			);
-			element = { type: listType };
+			var element = { type: listType };
 			if ( style ) {
 				element.attributes = { style: style };
 			}
-			itemElement = ve.dm.modelRegistry.lookup( listType ).static.createItem();
+			var itemElement = ve.dm.modelRegistry.lookup( listType ).static.createItem();
 			surfaceModel.getLinearFragment( groupRange, true )
 				// Convert everything to paragraphs first
 				.convertNodes( 'paragraph' )
@@ -184,12 +180,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
  * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints, listType ) {
-	var node,
-		indentationAction = ve.ui.actionFactory.create( 'indentation', this.surface ),
-		surfaceModel = this.surface.getModel(),
-		documentModel = surfaceModel.getDocument();
-
-	listType = listType || 'list';
+	var surfaceModel = this.surface.getModel();
 
 	if ( !( surfaceModel.getSelection() instanceof ve.dm.LinearSelection ) ) {
 		return false;
@@ -199,6 +190,12 @@ ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints, listType ) {
 		surfaceModel.breakpoint();
 	}
 
+	var indentationAction = ve.ui.actionFactory.create( 'indentation', this.surface );
+	var documentModel = surfaceModel.getDocument();
+
+	listType = listType || 'list';
+
+	var node;
 	do {
 		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().getRange().start );
 	} while ( node.hasMatchingAncestor( listType ) && indentationAction.decrease() );
