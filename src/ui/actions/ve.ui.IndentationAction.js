@@ -100,12 +100,12 @@ ve.ui.IndentationAction.prototype.changeIndentation = function ( indent ) {
  * @throws {Error} listItem must be a ve.dm.ListItemNode
  */
 ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
+	// This check should never fail
+	/* istanbul ignore next */
 	if ( !( listItem instanceof ve.dm.ListItemNode ) ) {
 		throw new Error( 'listItem must be a ve.dm.ListItemNode' );
 	}
 
-	var surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection();
 	/*
 	 * Indenting a list item is done as follows:
 	 *
@@ -115,9 +115,6 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	 * 3. If this results in the wrapped list being preceded by another list,
 	 *    merge those lists.
 	 */
-	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
-		return;
-	}
 
 	var listType = listItem.getParent().getAttribute( 'style' );
 	var listItemRange = listItem.getOuterRange();
@@ -127,6 +124,7 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
 	// will be detached and useless after the first transaction. Instead, inspect
 	// documentModel.data to find out things about the current structure.
 
+	var surfaceModel = this.surface.getModel();
 	// (1) Wrap the listItem in a list and a listItem
 	surfaceModel.getLinearFragment( listItemRange, true )
 		.wrapNodes( [ { type: 'listItem' }, { type: 'list', attributes: { style: listType } } ] );
@@ -162,6 +160,8 @@ ve.ui.IndentationAction.prototype.indentListItem = function ( listItem ) {
  * @throws {Error} listItem must be a ve.dm.ListItemNode
  */
 ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
+	// This check should never fail
+	/* istanbul ignore next */
 	if ( !( listItem instanceof ve.dm.ListItemNode ) ) {
 		throw new Error( 'listItem must be a ve.dm.ListItemNode' );
 	}
