@@ -75,11 +75,6 @@ ve.ui.DataTransferHandlerFactory.prototype.unregister = function ( constructor )
  * @param {boolean} insert Insert the handler into the indexes, remove otherwise
  */
 ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructor, insert ) {
-	var i, j, ilen, jlen,
-		kinds = constructor.static.kinds,
-		types = constructor.static.types,
-		extensions = constructor.static.extensions;
-
 	function ensureArray( obj, prop ) {
 		if ( obj[ prop ] === undefined ) {
 			obj[ prop ] = [];
@@ -100,6 +95,11 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 			arr.splice( index, 1 );
 		}
 	}
+
+	var i, j, ilen, jlen,
+		kinds = constructor.static.kinds,
+		types = constructor.static.types,
+		extensions = constructor.static.extensions;
 
 	if ( !kinds ) {
 		for ( j = 0, jlen = types.length; j < jlen; j++ ) {
@@ -143,18 +143,12 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
  * @return {string|undefined} Handler name, or undefined if not found
  */
 ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( item, isPaste, isPasteSpecial ) {
-	var i,
-		name,
-		constructor,
-		names;
-
 	// Fetch a given nested property, returning a zero-length array if
 	// any component of the path is not present.
 	// This is similar to ve.getProp, except with a `hasOwnProperty`
 	// test to ensure we aren't fooled by __proto__ and friends.
 	function fetch( obj /* , args… */ ) {
-		var j;
-		for ( j = 1; j < arguments.length; j++ ) {
+		for ( var j = 1; j < arguments.length; j++ ) {
 			if (
 				typeof arguments[ j ] !== 'string' ||
 				!Object.prototype.hasOwnProperty.call( obj, arguments[ j ] )
@@ -166,7 +160,7 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 		return obj;
 	}
 
-	names = [].concat(
+	var names = [].concat(
 		// 1. Match by kind + type (e.g. 'file' + 'text/html')
 		fetch( this.handlerNamesByKindAndType, item.kind, item.type ),
 		// 2. Match by just type (e.g. 'image/jpeg')
@@ -175,9 +169,9 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 		fetch( this.handlerNamesByExtension, item.getExtension() )
 	);
 
-	for ( i = 0; i < names.length; i++ ) {
-		name = names[ i ];
-		constructor = this.registry[ name ];
+	for ( var i = 0; i < names.length; i++ ) {
+		var name = names[ i ];
+		var constructor = this.registry[ name ];
 
 		if ( isPasteSpecial && !constructor.static.handlesPasteSpecial ) {
 			continue;

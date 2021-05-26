@@ -84,17 +84,15 @@ ve.ui.DataTransferItem.static.newFromItem = function ( item, htmlStringData ) {
  * @return {Blob} File blob
  */
 ve.ui.DataTransferItem.prototype.getAsFile = function () {
-	var binary, array, i;
-
 	if ( this.data.item ) {
 		return this.data.item.getAsFile();
 	}
 
 	if ( !this.blob && this.data.dataUri ) {
-		binary = atob( this.data.dataUri );
+		var binary = atob( this.data.dataUri );
 		delete this.data.dataUri;
-		array = [];
-		for ( i = 0; i < binary.length; i++ ) {
+		var array = [];
+		for ( var i = 0; i < binary.length; i++ ) {
 			array.push( binary.charCodeAt( i ) );
 		}
 		this.blob = new Blob(

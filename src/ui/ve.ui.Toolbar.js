@@ -122,18 +122,16 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
  * @inheritdoc
  */
 ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
-	var commandName, tool;
-
 	if ( !ve.ui.Toolbar.super.prototype.isToolAvailable.apply( this, arguments ) ) {
 		return false;
 	}
 	// Check the tool's command is available on the surface
-	tool = this.getToolFactory().lookup( name );
+	var tool = this.getToolFactory().lookup( name );
 	if ( !tool ) {
 		return false;
 	}
 	// FIXME should use .static.getCommandName(), but we have tools that aren't ve.ui.Tool subclasses :(
-	commandName = tool.static.commandName;
+	var commandName = tool.static.commandName;
 	return !commandName || this.getCommands().indexOf( commandName ) !== -1;
 };
 
@@ -164,22 +162,21 @@ ve.ui.Toolbar.prototype.onContextChange = function () {
  * Update the state of the tools
  */
 ve.ui.Toolbar.prototype.updateToolState = function () {
-	var dirInline, dirBlock, fragmentAnnotation, activeDialogs, fragment;
-
 	if ( !this.getSurface() ) {
 		this.emit( 'updateState', null, null );
 		return;
 	}
 
-	fragment = this.getSurface().getModel().getFragment();
+	var fragment = this.getSurface().getModel().getFragment();
 
 	// Update context direction for button icons UI.
 	// By default, inline and block directions are the same.
 	// If no context direction is available, use document model direction.
-	dirInline = dirBlock = this.surface.getView().getSelectionDirectionality();
+	var dirInline = this.surface.getView().getSelectionDirectionality();
+	var dirBlock = dirInline;
 
 	// 'inline' direction is different only if we are inside a language annotation
-	fragmentAnnotation = fragment.getAnnotations();
+	var fragmentAnnotation = fragment.getAnnotations();
 	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
 		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
 	}
@@ -202,7 +199,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.contextDirection.block = dirBlock;
 	}
 
-	activeDialogs = [
+	var activeDialogs = [
 		this.surface.getDialogs(),
 		this.surface.getContext().getInspectors(),
 		this.surface.getToolbarDialogs()

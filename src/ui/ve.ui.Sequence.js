@@ -79,21 +79,21 @@ ve.ui.Sequence.prototype.match = function ( data, offset, plaintext ) {
  * @return {boolean} The command executed
  */
 ve.ui.Sequence.prototype.execute = function ( surface, range ) {
-	var command, stripRange, executed, stripFragment, originalSelectionFragment, args,
-		surfaceModel = surface.getModel();
+	var surfaceModel = surface.getModel();
 
 	if ( surface.getCommands().indexOf( this.getCommandName() ) === -1 ) {
 		return false;
 	}
 
-	command = surface.commandRegistry.lookup( this.getCommandName() );
+	var command = surface.commandRegistry.lookup( this.getCommandName() );
 
 	if ( !command ) {
 		return false;
 	}
 
+	var stripFragment;
 	if ( this.strip ) {
-		stripRange = surfaceModel.getSelection().getRange();
+		var stripRange = surfaceModel.getSelection().getRange();
 		stripFragment = surfaceModel.getLinearFragment(
 			// noAutoSelect = true, excludeInsertions = true
 			new ve.Range( stripRange.end, stripRange.end - this.strip ), true, true
@@ -104,11 +104,12 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 
 	// Use SurfaceFragment rather than Selection to automatically adjust the selection for any changes
 	// (additions, removals) caused by executing the command
-	originalSelectionFragment = surfaceModel.getFragment();
+	var originalSelectionFragment = surfaceModel.getFragment();
 	if ( this.setSelection ) {
 		surfaceModel.setLinearSelection( range );
 	}
 
+	var args;
 	// For sequences that trigger dialogs, pass an extra flag so the window knows
 	// to un-strip the sequence if it is closed without action. See ve.ui.WindowAction.
 	if ( command.getAction() === 'window' && command.getMethod() === 'open' ) {
@@ -123,7 +124,8 @@ ve.ui.Sequence.prototype.execute = function ( surface, range ) {
 		stripFragment.removeContent();
 	}
 
-	executed = command.execute( surface, args, 'sequence' );
+	// `args` can be passed undefined, and the defaults will be used
+	var executed = command.execute( surface, args, 'sequence' );
 
 	// Restore user's selection if:
 	// * This sequence was not executed after all

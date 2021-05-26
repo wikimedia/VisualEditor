@@ -142,12 +142,12 @@ ve.ui.Context.prototype.toggleMenu = function ( show ) {
  * @chainable
  */
 ve.ui.Context.prototype.setupMenuItems = function () {
-	var i, len, source,
-		sources = this.getRelatedSources(),
+	var sources = this.getRelatedSources(),
 		items = [];
 
+	var i, len;
 	for ( i = 0, len = sources.length; i < len; i++ ) {
-		source = sources[ i ];
+		var source = sources[ i ];
 		if ( source.type === 'item' ) {
 			items.push( ve.ui.contextItemFactory.create(
 				sources[ i ].name, this, sources[ i ].model
@@ -176,9 +176,7 @@ ve.ui.Context.prototype.setupMenuItems = function () {
  * @chainable
  */
 ve.ui.Context.prototype.teardownMenuItems = function () {
-	var i, len;
-
-	for ( i = 0, len = this.items.length; i < len; i++ ) {
+	for ( var i = 0, len = this.items.length; i < len; i++ ) {
 		this.items[ i ].teardown();
 	}
 	this.clearItems();
