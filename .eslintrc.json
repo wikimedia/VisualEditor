@@ -25,5 +25,15 @@
 	"settings": {
 		"html/indent": "+tab",
 		"html/report-bad-indent": "error"
-	}
+	},
+	"overrides": [
+		{
+			"files": [
+				"i18n/**/{en,qqq}.json"
+			],
+			"rules": {
+				"sort-keys": "error"
+			}
+		}
+	]
 }
