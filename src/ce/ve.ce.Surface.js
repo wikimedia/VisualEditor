@@ -4841,8 +4841,8 @@ ve.ce.Surface.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
  */
 ve.ce.Surface.prototype.onSynchronizerWrongDoc = function () {
 	OO.ui.alert(
-		ve.msg( 'visualeditor-missing-document-error' ),
-		{ title: ve.msg( 'visualeditor-missing-document-title' ) }
+		ve.msg( 'visualeditor-rebase-missing-document-error' ),
+		{ title: ve.msg( 'visualeditor-rebase-missing-document-title' ) }
 	);
 };
 
