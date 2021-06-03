@@ -46,7 +46,7 @@ ve.ce.TableNode.prototype.onSetup = function () {
 	ve.ce.TableNode.super.prototype.onSetup.call( this );
 
 	// Exit if already setup or not attached
-	if ( this.isSetup || !this.root ) {
+	if ( this.surface || !this.root ) {
 		return;
 	}
 	this.surface = this.getRoot().getSurface();
@@ -102,12 +102,20 @@ ve.ce.TableNode.prototype.onSetup = function () {
 ve.ce.TableNode.prototype.onTeardown = function () {
 	// Parent method
 	ve.ce.TableNode.super.prototype.onTeardown.call( this );
+
+	// Not yet setup
+	if ( !this.surface ) {
+		return;
+	}
+
 	// Events
 	this.$element.off( '.ve-ce-tableNode' );
 	this.$overlay.off( '.ve-ce-tableNode' );
 	this.surface.getModel().disconnect( this );
 	this.surface.disconnect( this );
 	this.$overlay.remove();
+
+	this.surface = null;
 };
 
 /**
@@ -460,6 +468,7 @@ ve.ce.TableNode.prototype.onSurfaceActivation = function () {
 ve.ce.TableNode.prototype.updateOverlay = function () {
 	if (
 		!this.active || !this.root ||
+		!this.surface ||
 		// Overlay isn't attached, e.g. in tests
 		!this.surface.surface.$blockers[ 0 ].parentNode
 	) {
