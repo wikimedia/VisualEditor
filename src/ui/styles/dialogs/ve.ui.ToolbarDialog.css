@@ -69,6 +69,7 @@
 /* Override ProcessDialog styles */
 .ve-ui-toolbarDialog .oo-ui-window-head {
 	height: 0;
+	min-height: 0;
 	outline: 0;
 }
 
