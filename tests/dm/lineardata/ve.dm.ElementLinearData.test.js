@@ -2333,12 +2333,14 @@ QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert 
 				a: { type: 'heading', attributes: { level: 3 } },
 				b: { type: 'heading', attributes: { level: 2 } },
 				comparison: false,
+				comparisonForTranslate: true,
 				msg: 'Identical elements with non-identical attributes'
 			},
 			{
 				a: { type: 'heading', attributes: { level: 3 } },
 				b: { type: 'heading' },
 				comparison: false,
+				comparisonForTranslate: true,
 				msg: 'Identical elements, one without an attribute'
 			}
 		];
@@ -2357,6 +2359,11 @@ QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert 
 			ve.dm.ElementLinearData.static.compareElementsUnannotated( cases[ i ].a, cases[ i ].b ),
 			cases[ i ].comparisonUnannotated || cases[ i ].comparison,
 			cases[ i ].msg + ' (unannotated)'
+		);
+		assert.strictEqual(
+			ve.dm.Transaction.static.compareElementsForTranslate( cases[ i ].a, cases[ i ].b ),
+			cases[ i ].comparisonForTranslate || cases[ i ].comparisonUnannotated || cases[ i ].comparison,
+			cases[ i ].msg + ' (compareElementsForTranslate)'
 		);
 	}
 } );
