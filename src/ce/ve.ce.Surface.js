@@ -225,6 +225,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlightsUserCursors.addClass( 've-ce-surface-highlights-user-cursors' );
 	this.$pasteTarget
 		.addClass( 've-ce-surface-paste' )
+		// T283853
+		.attr( 'aria-hidden', true )
 		.prop( {
 			tabIndex: -1,
 			contentEditable: 'true'
