@@ -5,7 +5,8 @@
 			"Bishnu Saikia",
 			"Dibya Dutta",
 			"Gitartha.bordoloi",
-			"IKHazarika"
+			"IKHazarika",
+			"Simbu123"
 		]
 	},
 	"visualeditor": "ভিজুৱেলএডিটৰ",
@@ -43,7 +44,7 @@
 	"visualeditor-changedir": "অভিমুখ সলাওক",
 	"visualeditor-changedir-tool-ltr": "বাওঁফালৰ সোঁফাললৈ চাওক",
 	"visualeditor-changedir-tool-rtl": "সোঁফালৰ পৰা বাওঁফাললৈ চাওক",
-	"visualeditor-clearbutton-tooltip": "শৈলী পৰিষ্কাৰ",
+	"visualeditor-clearbutton-tooltip": "আঁতৰাওক",
 	"visualeditor-clipboard-copy": "অনুলিপি",
 	"visualeditor-clipboard-cut": "আঁতৰাওক",
 	"visualeditor-clipboard-paste": "প্ৰতিলেপন",
@@ -131,9 +132,9 @@
 	"visualeditor-languageinspector-widget-label-direction": "দিশ",
 	"visualeditor-languageinspector-widget-label-langcode": "ভাষা সংকেত",
 	"visualeditor-languageinspector-widget-label-language": "ভাষা",
-	"visualeditor-linkcontext-label-change": "লেবেল সলাওক",
+	"visualeditor-linkcontext-label-change": "পাঠ্য পৰিবৰ্তন কৰক",
 	"visualeditor-linkcontext-label-fallback": "প্ৰাকদৰ্শন নাই",
-	"visualeditor-linkcontext-label-label": "লেবেল",
+	"visualeditor-linkcontext-label-label": "পাঠ্য",
 	"visualeditor-linkcontext-remove": "সংযোগ আঁতৰাওক",
 	"visualeditor-linkinspector-title": "সংযোগ",
 	"visualeditor-listbutton-bullet-tooltip": "বুলেটকৃত তালিকা",

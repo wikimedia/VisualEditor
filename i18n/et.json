@@ -153,6 +153,7 @@
 	"visualeditor-table-move-col-before": "Liiguta vasakule",
 	"visualeditor-table-move-row-after": "Liiguta alla",
 	"visualeditor-table-move-row-before": "Liiguta üles",
+	"visualeditor-table-sum": "Summa: $1, keskmine: $2",
 	"visualeditor-tablecell-contextitem": "Tabelilahter",
 	"visualeditor-tablecell-tooltip": "Lahtri redigeerimiseks tee topeltklõps",
 	"visualeditor-toolbar-format-tooltip": "Lõigu vorming",
