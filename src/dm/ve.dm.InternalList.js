@@ -199,7 +199,7 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  *
  * Stored HTML is deleted after conversion.
  *
- * @param {ve.dm.Converter} converter Converter object
+ * @param {ve.dm.Converter} converter
  * @param {HTMLDocument} doc Document to create nodes in
  * @return {Array} Linear model data
  */
@@ -403,7 +403,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
 /**
  * Sort the indexOrder array within a group object.
  *
- * @param {Object} group Group object
+ * @param {Object} group
  */
 ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
 	// Sort indexOrder

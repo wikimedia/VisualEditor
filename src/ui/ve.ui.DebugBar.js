@@ -116,7 +116,7 @@ ve.ui.DebugBar.static.dividerTemplate = '<span class="ve-ui-debugBar-commands-di
 /**
  * Get surface the debug bar is attached to
  *
- * @return {ve.ui.Surface|null} Surface
+ * @return {ve.ui.Surface|null}
  */
 ve.ui.DebugBar.prototype.getSurface = function () {
 	return this.surface;
@@ -149,7 +149,7 @@ ve.ui.DebugBar.prototype.onHistory = function () {
 /**
  * Handle click events on the log range button
  *
- * @param {jQuery.Event} e Event
+ * @param {jQuery.Event} e
  */
 ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
 	var selection = this.getSurface().getModel().getSelection(),
@@ -165,7 +165,7 @@ ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
 /**
  * Handle change events on the show model toggle
  *
- * @param {boolean} value Value
+ * @param {boolean} value
  */
 ve.ui.DebugBar.prototype.onShowModelToggleChange = function ( value ) {
 	if ( value ) {
@@ -270,7 +270,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 /**
  * Generate an ordered list describing a node
  *
- * @param {ve.Node} node Node
+ * @param {ve.Node} node
  * @return {jQuery} Ordered list
  */
 ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
@@ -301,7 +301,7 @@ ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
 /**
  * Handle change events on the update model toggle button
  *
- * @param {boolean} value Value
+ * @param {boolean} value
  */
 ve.ui.DebugBar.prototype.onUpdateModelToggleChange = function ( value ) {
 	if ( value ) {
@@ -315,7 +315,7 @@ ve.ui.DebugBar.prototype.onUpdateModelToggleChange = function ( value ) {
 /**
  * Handle click events on the input debugging toggle button
  *
- * @param {boolean} value Value
+ * @param {boolean} value
  */
 ve.ui.DebugBar.prototype.onInputDebuggingToggleChange = function ( value ) {
 	var surfaceModel = this.getSurface().getModel(),
@@ -334,7 +334,7 @@ ve.ui.DebugBar.prototype.onInputDebuggingToggleChange = function ( value ) {
 /**
  * Handle click events on the filibuster toggle button
  *
- * @param {jQuery.Event} e Event
+ * @param {jQuery.Event} e
  */
 ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 	var value = this.filibusterToggle.getValue();
@@ -377,7 +377,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 /**
  * Handle click events on the filibuster toggle button
  *
- * @param {boolean} value Value
+ * @param {boolean} value
  */
 ve.ui.DebugBar.prototype.onTransactionsToggleChange = function ( value ) {
 	if ( value ) {
@@ -389,7 +389,7 @@ ve.ui.DebugBar.prototype.onTransactionsToggleChange = function ( value ) {
 /**
  * Handle click events on the test squasher toggle button
  *
- * @param {boolean} value Value
+ * @param {boolean} value
  */
 ve.ui.DebugBar.prototype.onTestSquasherToggleChange = function ( value ) {
 	var doc = this.getSurface().getModel().getDocument();

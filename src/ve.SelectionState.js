@@ -105,7 +105,7 @@ ve.SelectionState.prototype.equalsSelection = function ( other ) {
  * N.B. Range objects do not show whether the selection is backwards
  *
  * @param {HTMLDocument} doc The owner document of the selection nodes
- * @return {Range|null} Range
+ * @return {Range|null}
  */
 ve.SelectionState.prototype.getNativeRange = function ( doc ) {
 	if ( this.anchorNode === null ) {

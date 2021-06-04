@@ -104,7 +104,7 @@ ve.ui.AnnotationInspector.prototype.getAnnotation = null;
  *
  * @abstract
  * @param {ve.dm.SurfaceFragment} fragment Surface fragment
- * @return {ve.dm.Annotation|null} Annotation
+ * @return {ve.dm.Annotation|null}
  */
 ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = null;
 

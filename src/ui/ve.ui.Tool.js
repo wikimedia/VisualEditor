@@ -73,7 +73,7 @@ ve.ui.Tool.static.getCommandName = function () {
  * Get the command for this tool in a given surface context
  *
  * @static
- * @param {ve.ui.Surface} surface Surface
+ * @param {ve.ui.Surface} surface
  * @return {ve.ui.Command|null|undefined} Undefined means command not found, null means no command set
  */
 ve.ui.Tool.static.getCommand = function ( surface ) {

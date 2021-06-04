@@ -61,7 +61,7 @@ ve.Range.static.newFromJSON = function ( json ) {
  *
  * @see ve.Range#toJSON
  *
- * @param {Object} hash Hash object
+ * @param {Object} hash
  * @return {ve.Range} New range
  */
 ve.Range.static.newFromHash = function ( hash ) {

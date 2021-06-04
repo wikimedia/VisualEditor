@@ -138,7 +138,7 @@ ve.dm.Model.static.matchFunction = null;
  * @static
  * @inheritable
  * @param {Node[]} domElements DOM elements to convert. Usually only one element
- * @param {ve.dm.Converter} converter Converter object
+ * @param {ve.dm.Converter} converter
  * @return {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
  */
 ve.dm.Model.static.toDataElement = function () {
@@ -329,7 +329,7 @@ ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveIn
  * Utility function for wrapping text in a tag, equivalent to `$( '<tag>' ).text( text )`
  *
  * @param {string} tag Wrapping element's tag
- * @param {string} text Text
+ * @param {string} text
  * @return {HTMLElement} Element wrapping text
  */
 ve.dm.Model.static.wrapText = function ( tag, text ) {

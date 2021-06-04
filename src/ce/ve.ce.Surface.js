@@ -443,7 +443,7 @@ ve.ce.Surface.prototype.destroy = function () {
 /**
  * Get linear model offest from a mouse event
  *
- * @param {Event} e Event
+ * @param {Event} e
  * @return {number} Linear model offset, or -1 if coordinates are out of bounds
  */
 ve.ce.Surface.prototype.getOffsetFromEventCoords = function ( e ) {
@@ -4616,7 +4616,7 @@ ve.ce.Surface.prototype.appendHighlights = function ( $highlights, focused ) {
 /**
  * Get the top-level surface.
  *
- * @return {ve.ui.Surface} Surface
+ * @return {ve.ui.Surface}
  */
 ve.ce.Surface.prototype.getSurface = function () {
 	return this.surface;

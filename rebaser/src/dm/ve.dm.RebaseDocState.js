@@ -35,8 +35,8 @@ OO.initClass( ve.dm.RebaseDocState );
  * Get new empty author data object
  *
  * @return {Object} New empty author data object
- * @return {string} return.name Name
- * @return {string} return.color Color
+ * @return {string} return.name
+ * @return {string} return.color
  * @return {number} return.rejections Number of unacknowledged rejections
  * @return {ve.dm.Change|null} return.continueBase Continue base
  * @return {string} return.token Secret token for usurping sessions

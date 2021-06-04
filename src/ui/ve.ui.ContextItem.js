@@ -103,7 +103,7 @@ ve.ui.ContextItem.prototype.isNode = function () {
 /**
  * Get the command for this item.
  *
- * @return {ve.ui.Command} Command
+ * @return {ve.ui.Command}
  */
 ve.ui.ContextItem.prototype.getCommand = function () {
 	return this.context.getSurface().commandRegistry.lookup( this.constructor.static.commandName );

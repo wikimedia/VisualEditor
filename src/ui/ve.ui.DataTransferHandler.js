@@ -11,7 +11,7 @@
  * @abstract
  *
  * @constructor
- * @param {ve.ui.Surface} surface Surface
+ * @param {ve.ui.Surface} surface
  * @param {ve.ui.DataTransferItem} item Data transfer item to handle
  */
 ve.ui.DataTransferHandler = function VeUiDataTransferHandler( surface, item ) {

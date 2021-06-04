@@ -8,7 +8,7 @@
  * @class
  * @extends ve.dm.Selection
  * @constructor
- * @param {ve.Range} range Range
+ * @param {ve.Range} range
  */
 ve.dm.LinearSelection = function VeDmLinearSelection( range ) {
 	// Parent constructor
@@ -122,7 +122,7 @@ ve.dm.LinearSelection.prototype.getCoveringRange = function () {
 /**
  * Get the range for this selection
  *
- * @return {ve.Range} Range
+ * @return {ve.Range}
  */
 ve.dm.LinearSelection.prototype.getRange = function () {
 	return this.range;

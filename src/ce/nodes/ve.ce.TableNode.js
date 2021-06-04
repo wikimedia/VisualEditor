@@ -396,7 +396,7 @@ ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
 /**
  * Handle select events from the surface model.
  *
- * @param {ve.dm.Selection} selection Selection
+ * @param {ve.dm.Selection} selection
  */
 ve.ce.TableNode.prototype.onSurfaceModelSelect = function ( selection ) {
 	// The table is active if there is a linear selection inside a cell being edited

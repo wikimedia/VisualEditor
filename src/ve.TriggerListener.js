@@ -50,8 +50,8 @@ ve.TriggerListener.prototype.getCommands = function () {
 /**
  * Get command associated with trigger string.
  *
- * @param {string} trigger Trigger string
- * @return {ve.ui.Command|undefined} Command
+ * @param {string} trigger
+ * @return {ve.ui.Command|undefined}
  */
 ve.TriggerListener.prototype.getCommandByTrigger = function ( trigger ) {
 	return this.commandsByTrigger[ trigger ];
@@ -61,7 +61,7 @@ ve.TriggerListener.prototype.getCommandByTrigger = function ( trigger ) {
  * Get triggers for a specified name.
  *
  * @param {string} name Trigger name
- * @return {ve.ui.Trigger[]|undefined} Triggers
+ * @return {ve.ui.Trigger[]|undefined}
  */
 ve.TriggerListener.prototype.getTriggers = function ( name ) {
 	return this.triggers[ name ];

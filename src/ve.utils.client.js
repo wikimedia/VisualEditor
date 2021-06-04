@@ -13,7 +13,7 @@ ve.scrollIntoView = OO.ui.Element.static.scrollIntoView.bind( OO.ui.Element.stat
 /**
  * Select the contents of an element
  *
- * @param {HTMLElement} element Element
+ * @param {HTMLElement} element
  */
 ve.selectElement = function ( element ) {
 	var win = OO.ui.Element.static.getWindow( element ),
@@ -123,7 +123,7 @@ ve.getSystemPlatform = function () {
 /**
  * Check whether a jQuery event represents a plain left click, without any modifiers
  *
- * @param {jQuery.Event} e The jQuery event object
+ * @param {jQuery.Event} e
  * @return {boolean} Whether it was an unmodified left click
  */
 ve.isUnmodifiedLeftClick = function ( e ) {

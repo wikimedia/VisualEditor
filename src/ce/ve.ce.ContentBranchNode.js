@@ -122,7 +122,7 @@ ve.ce.ContentBranchNode.prototype.onClick = function ( e ) {
  *
  * This is used to automatically render contents.
  *
- * @param {ve.dm.Transaction} transaction Transaction
+ * @param {ve.dm.Transaction} transaction
  */
 ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
 	if ( transaction === null || transaction === this.lastTransaction ) {

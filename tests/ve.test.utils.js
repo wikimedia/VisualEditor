@@ -330,9 +330,9 @@
 	 * This is incredibly slow (>100ms) so consider creating just a ce.Surface
 	 * or dm.Surface, or a mock surface using create(View|Model)OnlySurface*.
 	 *
-	 * @param {string} html Document HTML
+	 * @param {string} html
 	 * @param {Object} config Surface config
-	 * @return {ve.ui.Surface} UI surface
+	 * @return {ve.ui.Surface}
 	 */
 	ve.test.utils.createSurfaceFromHtml = function ( html, config ) {
 		return this.createSurfaceFromDocument(
@@ -346,9 +346,9 @@
 	 *
 	 * See warning in ve.test.utils.createSurfaceFromHtml.
 	 *
-	 * @param {ve.dm.Document} doc Document
+	 * @param {ve.dm.Document} doc
 	 * @param {Object} [config] Surface config
-	 * @return {ve.ui.Surface} UI surface
+	 * @return {ve.ui.Surface}
 	 */
 	ve.test.utils.createSurfaceFromDocument = function ( doc, config ) {
 		return ve.init.target.addSurface( doc, config );
@@ -357,9 +357,9 @@
 	/**
 	 * Create a CE surface from some HTML
 	 *
-	 * @param {string} html Document HTML
+	 * @param {string} html
 	 * @param {Object} config Surface config
-	 * @return {ve.ce.Surface} CE surface
+	 * @return {ve.ce.Surface}
 	 */
 	ve.test.utils.createSurfaceViewFromHtml = function ( html, config ) {
 		return this.createSurfaceViewFromDocument(
@@ -375,7 +375,7 @@
 	 *
 	 * @param {ve.dm.Document|ve.dm.Surface} docOrSurface Document or surface model
 	 * @param {Object} config Surface config
-	 * @return {ve.ce.Surface} CE surface
+	 * @return {ve.ce.Surface}
 	 */
 	ve.test.utils.createSurfaceViewFromDocument = function ( docOrSurface, config ) {
 		var model, view, mockSurface;
@@ -498,9 +498,9 @@
 	/**
 	 * Create a DM selection from a range or a JSON selection
 	 *
-	 * @param {ve.dm.Document} doc Document
+	 * @param {ve.dm.Document} doc
 	 * @param {ve.Range|Object|string} rangeOrSelection Range or JSON selection
-	 * @return {ve.dm.Selection} Selection
+	 * @return {ve.dm.Selection}
 	 */
 	ve.test.utils.selectionFromRangeOrSelection = function ( doc, rangeOrSelection ) {
 		return rangeOrSelection instanceof ve.Range ?

@@ -199,7 +199,7 @@ ve.dm.example.commentNodePreview = function ( text ) {
  *
  * @param {string} [name='data'] Named element of ve.dm.example
  * @param {ve.dm.HashValueStore} [store] A specific hash-value store to use, optionally.
- * @return {ve.dm.Document} Document
+ * @return {ve.dm.Document}
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocument = function ( name, store ) {
@@ -212,7 +212,7 @@ ve.dm.example.createExampleDocument = function ( name, store ) {
  * @param {string} [name='data'] Named element of ve.dm.example
  * @param {ve.dm.HashValueStore} [store] A specific hash-value store to use, optionally.
  * @param {Object} object Collection of test documents, keyed by name
- * @return {ve.dm.Document} Document
+ * @return {ve.dm.Document}
  * @throws {Error} Example data not found
  */
 ve.dm.example.createExampleDocumentFromObject = function ( name, store, object ) {

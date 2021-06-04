@@ -14,7 +14,7 @@
  * @constructor
  * @param {string} name Unique symbolic name of page
  * @param {Object} [config] Configuration options
- * @cfg {string} [label] Label
+ * @cfg {string} [label]
  * @cfg {Object} [characters] Character set
  * @cfg {Object} [attributes] Extra attributes, currently `lang` and `dir`
  * @cfg {boolean} [source] Source mode only set

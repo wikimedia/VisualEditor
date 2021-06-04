@@ -158,7 +158,7 @@ ve.dm.AnnotationSet.prototype.isEmpty = function () {
  *
  * Annotations are compared by store hash.
  *
- * @param {ve.dm.Annotation} annotation Annotation
+ * @param {ve.dm.Annotation} annotation
  * @return {boolean} There is an annotation in the set with the same hash as annotation
  */
 ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {

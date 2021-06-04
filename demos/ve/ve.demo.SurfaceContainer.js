@@ -6,7 +6,7 @@
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {ve.init.Target} target Target
+ * @param {ve.init.Target} target
  * @param {string} page Page to load
  * @param {string} lang Language
  * @param {string} dir Directionality

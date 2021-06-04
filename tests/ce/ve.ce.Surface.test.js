@@ -250,7 +250,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
  *
  * @param {string|Object} src Event type, or original event object
  * @param {Object} props jQuery event properties
- * @return {jQuery.Event} Event
+ * @return {jQuery.Event}
  */
 ve.test.utils.createTestEvent = function TestEvent( src, props ) {
 	var event;

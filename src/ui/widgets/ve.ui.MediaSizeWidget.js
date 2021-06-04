@@ -12,7 +12,7 @@
  * @extends OO.ui.Widget
  *
  * @constructor
- * @param {ve.dm.Scalable} [scalable] A scalable object
+ * @param {ve.dm.Scalable} [scalable]
  * @param {Object} [config] Configuration options
  * @cfg {boolean} [noDefaultDimensions] The item being sized doesn't have default dimensions
  * @cfg {string} [dimensionsAlign] Alignment for the dimensions widget

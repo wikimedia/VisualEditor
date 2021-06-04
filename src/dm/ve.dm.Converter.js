@@ -569,7 +569,7 @@ ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElement
 /**
  * Build an HTML DOM node for a linear model annotation.
  *
- * @param {Object} dataAnnotation Annotation object
+ * @param {Object} dataAnnotation
  * @param {HTMLDocument} doc HTML document to create element with
  * @return {HTMLElement} HTML DOM node
  */

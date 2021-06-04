@@ -66,7 +66,7 @@ ve.ui.AuthorListPopupTool.prototype.onPopupToggle = function ( visible ) {
 /**
  * Setup the popup which a specific surface
  *
- * @param {ve.ui.Surface} surface Surface
+ * @param {ve.ui.Surface} surface
  */
 ve.ui.AuthorListPopupTool.prototype.setup = function ( surface ) {
 	this.oldName = '';

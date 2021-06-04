@@ -338,7 +338,7 @@
 	 * If not, array indexes of non-frozen items are reported.
 	 *
 	 * @static
-	 * @param {ve.dm.ElementLinearData} linearData The linear data object
+	 * @param {ve.dm.ElementLinearData} linearData
 	 * @param {string} message
 	 */
 	QUnit.assert.isLinearDataFrozen = function ( linearData, message ) {

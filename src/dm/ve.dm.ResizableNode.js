@@ -28,7 +28,7 @@ OO.initClass( ve.dm.ResizableNode );
  *
  * #createScalable is called if one doesn't already exist.
  *
- * @return {ve.dm.Scalable} Scalable object
+ * @return {ve.dm.Scalable}
  */
 ve.dm.ResizableNode.prototype.getScalable = function () {
 	if ( !this.scalable ) {
@@ -41,7 +41,7 @@ ve.dm.ResizableNode.prototype.getScalable = function () {
  * Create a scalable object based on the current object's width and height.
  *
  * @abstract
- * @return {ve.dm.Scalable} Scalable object
+ * @return {ve.dm.Scalable}
  */
 ve.dm.ResizableNode.prototype.createScalable = null;
 

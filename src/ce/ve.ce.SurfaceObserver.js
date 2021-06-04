@@ -156,7 +156,7 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, sel
 /**
  * Wrapper for setTimeout, for ease of debugging
  *
- * @param {Function} callback Callback
+ * @param {Function} callback
  * @param {number} timeout Timeout ms
  * @return {number} Timeout ID
  */
@@ -169,7 +169,7 @@ ve.ce.SurfaceObserver.prototype.setTimeout = function ( callback, timeout ) {
  *
  * Used when you have just polled, but don't want to wait for a 'rangeChange' event.
  *
- * @return {ve.Range|null} Range
+ * @return {ve.Range|null}
  */
 ve.ce.SurfaceObserver.prototype.getRange = function () {
 	if ( !this.rangeState ) {

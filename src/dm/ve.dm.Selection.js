@@ -47,7 +47,7 @@ ve.dm.Selection.static.newFromJSON = function ( json ) {
  * Create a new selection from a hash object
  *
  * @abstract
- * @param {Object} hash Hash object
+ * @param {Object} hash
  * @return {ve.dm.Selection} New selection
  */
 ve.dm.Selection.static.newFromHash = null;
@@ -115,7 +115,7 @@ ve.dm.Selection.prototype.isCollapsed = null;
  * Apply translations from a transaction
  *
  * @abstract
- * @param {ve.dm.Transaction} tx Transaction
+ * @param {ve.dm.Transaction} tx
  * @param {boolean} [excludeInsertion] Do not grow to cover insertions at boundaries
  * @return {ve.dm.Selection} A new translated selection
  */
@@ -125,7 +125,7 @@ ve.dm.Selection.prototype.translateByTransaction = null;
  * Apply translations from a transaction, with bias depending on author ID comparison
  *
  * @abstract
- * @param {ve.dm.Transaction} tx Transaction
+ * @param {ve.dm.Transaction} tx
  * @param {number} authorId The selection's author ID
  * @return {ve.dm.Selection} A new translated selection
  */
@@ -149,7 +149,7 @@ ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInser
 /**
  * Apply translations from a change
  *
- * @param {ve.dm.Change} change The change
+ * @param {ve.dm.Change} change
  * @param {number} authorId The author ID of this selection
  * @return {ve.dm.Selection} A new translated selection
  */
@@ -203,7 +203,7 @@ ve.dm.Selection.prototype.getName = function () {
  * Check if two selections are equal
  *
  * @abstract
- * @param {ve.dm.Selection} other Other selection
+ * @param {ve.dm.Selection} other
  * @return {boolean} Selections are equal
  */
 ve.dm.Selection.prototype.equals = null;

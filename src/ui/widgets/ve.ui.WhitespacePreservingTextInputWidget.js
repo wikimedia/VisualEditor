@@ -39,7 +39,7 @@ OO.inheritClass( ve.ui.WhitespacePreservingTextInputWidget, OO.ui.MultilineTextI
 /**
  * Set the value of the widget and extract whitespace.
  *
- * @param {string} value Value
+ * @param {string} value
  */
 ve.ui.WhitespacePreservingTextInputWidget.prototype.setValueAndWhitespace = function ( value ) {
 	var leftValue = this.limit ? value.slice( 0, this.limit ) : value;

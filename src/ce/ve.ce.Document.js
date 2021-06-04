@@ -354,7 +354,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
  *
  * Uses the computed CSS direction value of the current node
  *
- * @param {ve.Range} range Range
+ * @param {ve.Range} range
  * @return {string} 'rtl', 'ltr'
  */
 ve.ce.Document.prototype.getDirectionalityFromRange = function ( range ) {

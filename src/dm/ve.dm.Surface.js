@@ -946,7 +946,7 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  *
  * @private
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
- * @param {ve.dm.Selection} [selection] [selection]
+ * @param {ve.dm.Selection} [selection]
  * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
  * @fires select
  * @fires history

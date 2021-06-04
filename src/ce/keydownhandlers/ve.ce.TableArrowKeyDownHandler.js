@@ -94,7 +94,7 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
 };
 
 /**
- * @param {ve.ce.Surface} surface Surface
+ * @param {ve.ce.Surface} surface
  * @param {number} rowOffset how many rows to move
  * @param {number} colOffset how many columns to move
  * @param {boolean} checkDir whether to translate offsets according to ltr settings

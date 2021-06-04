@@ -101,7 +101,7 @@ ve.dm.MetaList.prototype.indexOf = function ( item, group ) {
  * This function returns a shallow copy, so the array isn't returned by reference but the items
  * themselves are.
  *
- * @param {string} group Group
+ * @param {string} group
  * @return {ve.dm.MetaItem[]} Array of items in the group (shallow copy)
  */
 ve.dm.MetaList.prototype.getItemsInGroup = function ( group ) {

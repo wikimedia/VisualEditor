@@ -78,7 +78,7 @@ ve.ui.ContentAction.prototype.remove = function ( key ) {
 /**
  * Select content.
  *
- * @param {ve.dm.Selection} selection Selection
+ * @param {ve.dm.Selection} selection
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.select = function ( selection ) {

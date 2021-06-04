@@ -64,7 +64,7 @@ ve.elementTypes = {
  * If your input is both valid HTML and valid XML, and you need to work around style
  * normalization bugs in Internet Explorer, use #parseXhtml and #serializeXhtml.
  *
- * @param {string} html HTML string
+ * @param {string} html
  * @return {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtml = function ( html ) {
@@ -91,7 +91,7 @@ ve.createDocumentFromHtml = function ( html ) {
  * Private method for creating an HTMLDocument using the DOMParser
  *
  * @private
- * @param {string} html HTML string
+ * @param {string} html
  * @return {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
  */
 ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
@@ -111,7 +111,7 @@ ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
  * Private fallback for browsers which don't support DOMParser
  *
  * @private
- * @param {string} html HTML string
+ * @param {string} html
  * @return {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
  */
 ve.createDocumentFromHtmlUsingIframe = function ( html ) {
@@ -174,7 +174,7 @@ ve.createDocumentFromHtmlUsingIframe = function ( html ) {
  * Private fallback for browsers which don't support iframe technique
  *
  * @private
- * @param {string} html HTML string
+ * @param {string} html
  * @return {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {

@@ -118,7 +118,7 @@ ve.ce.ResizableNode.prototype.getResizableOffset = function () {
 /**
  * Set the original dimensions of the scalable object
  *
- * @param {Object} dimensions Dimensions
+ * @param {Object} dimensions
  */
 ve.ce.ResizableNode.prototype.setOriginalDimensions = function ( dimensions ) {
 	if ( !this.isResizable() ) {

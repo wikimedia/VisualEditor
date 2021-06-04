@@ -9,7 +9,7 @@
 /**
  * Parse some user HTML into a sanitized node list, making it safe to load on the page
  *
- * @param {string} html HTML
+ * @param {string} html
  * @param {boolean} [returnDocument] For internal use only (if true, return whole document)
  * @return {NodeList|HTMLDocument} Sanitized node list (or HTML document, for internal use only)
  */
@@ -39,8 +39,8 @@ ve.sanitizeHtml = function ( html, returnDocument ) {
 /**
  * Parse some user HTML into a sanitized HTML document, making it safe to load on the page
  *
- * @param {string} html HTML
- * @return {HTMLDocument} Sanitized HTML document
+ * @param {string} html
+ * @return {HTMLDocument}
  */
 ve.sanitizeHtmlToDocument = function ( html ) {
 	return ve.sanitizeHtml( html, true );

@@ -13,8 +13,8 @@
  * NOTE: Instances of this class are not recyclable: you can only call .process() on them once.
  *
  * @class
- * @param {ve.dm.Document} doc Document
- * @param {ve.dm.Transaction} transaction Transaction
+ * @param {ve.dm.Document} doc
+ * @param {ve.dm.Transaction} transaction
  * @param {boolean} isStaging Transaction is being applied in staging mode
  * @constructor
  */

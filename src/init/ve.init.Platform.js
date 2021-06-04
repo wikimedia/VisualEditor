@@ -139,8 +139,8 @@ ve.init.Platform.prototype.getMetadataIdRegExp = function () {
  * Show a read-only notification to the user.
  *
  * @abstract
- * @param {jQuery|string} message Message
- * @param {jQuery|string} [title] Title
+ * @param {jQuery|string} message
+ * @param {jQuery|string} [title]
  */
 ve.init.Platform.prototype.notify = null;
 

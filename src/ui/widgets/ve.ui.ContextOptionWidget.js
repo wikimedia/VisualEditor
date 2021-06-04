@@ -64,7 +64,7 @@ ve.ui.ContextOptionWidget.prototype.getDescription = function () {
 /**
  * Get the command for this item.
  *
- * @return {ve.ui.Command} Command
+ * @return {ve.ui.Command}
  */
 ve.ui.ContextOptionWidget.prototype.getCommand = function () {
 	return this.tool.static.getCommand( this.context.getSurface() );

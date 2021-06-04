@@ -86,7 +86,7 @@ ve.ce.KeyDownHandlerFactory.prototype.lookupHandlersForKey = function ( key, sel
  *
  * @param {number} key Key code
  * @param {string} selectionName Selection type name
- * @param {ve.ce.Surface} surface Surface
+ * @param {ve.ce.Surface} surface
  * @param {jQuery.Event} e Key down event
  * @return {boolean} Some handlers acted
  */

@@ -212,7 +212,7 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
  * If the conversion is asynchronous it should lock the surface
  * until complete.
  *
- * @param {ve.dm.Document} doc Document
+ * @param {ve.dm.Document} doc
  * @return {jQuery.Promise} Promise which resolves with source, or rejects
  */
 ve.dm.SourceSurfaceFragment.prototype.convertToSource = function ( doc ) {

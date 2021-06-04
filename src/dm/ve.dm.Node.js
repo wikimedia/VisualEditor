@@ -332,7 +332,7 @@ ve.dm.Node.static.remapInternalListKeys = function () {
  *
  * @static
  * @param {HTMLElement[]} domElements DOM elements being converted
- * @param {ve.dm.Converter} converter Converter object
+ * @param {ve.dm.Converter} converter
  * @return {boolean} The element is inline
  */
 ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
@@ -360,7 +360,7 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * property will be removed if present.
  *
  * @static
- * @param {Object} element Element object
+ * @param {Object} element
  * @param {ve.dm.HashValueStore} store Hash-value store used by element
  * @param {boolean} preserveGenerated Preserve internal.generated property of element
  * @return {Object} Cloned element object
