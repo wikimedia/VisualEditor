@@ -48,9 +48,8 @@ ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
 };
 
 ve.dm.LinkAnnotation.static.describeChange = function ( key, change ) {
-	var diff;
 	if ( key === 'href' ) {
-		diff = this.getAttributeDiff( change.from, change.to );
+		var diff = this.getAttributeDiff( change.from, change.to );
 		if ( diff ) {
 			return ve.htmlMsg( 'visualeditor-changedesc-link-href-diff', diff );
 		} else {

@@ -71,12 +71,11 @@ ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {
  * Handle splicing of child nodes
  */
 ve.dm.TableSectionNode.prototype.onSplice = function () {
-	var i,
-		nodes = Array.prototype.slice.call( arguments, 2 );
 	if ( this.getRoot() ) {
 		this.getParent().getMatrix().invalidate();
 	}
-	for ( i = 0; i < nodes.length; i++ ) {
+	var nodes = Array.prototype.slice.call( arguments, 2 );
+	for ( var i = 0; i < nodes.length; i++ ) {
 		nodes[ i ].connect( this, {
 			cellAttributeChange: 'onCellAttributeChange'
 		} );

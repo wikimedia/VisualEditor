@@ -41,12 +41,11 @@ ve.dm.CommentAnnotation.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.CommentAnnotation.static.toDomElements = function ( dataElement, doc, converter ) {
-	var domElement;
 	if ( converter.isForParser() || converter.isForPreview() ) {
 		// TODO: Return some nodes for preview?
 		return [];
 	} else {
-		domElement = doc.createElement( 'span' );
+		var domElement = doc.createElement( 'span' );
 		domElement.setAttribute( 'rel', 've:CommentAnnotation' );
 		if ( dataElement.attributes.text ) {
 			domElement.setAttribute( 'data-text', dataElement.attributes.text );
