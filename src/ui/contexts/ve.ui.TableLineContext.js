@@ -18,8 +18,6 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, config ) {
-	var labels;
-
 	config = config || {};
 
 	// Parent constructor
@@ -44,7 +42,7 @@ ve.ui.TableLineContext = function VeUiTableLineContext( tableNode, itemGroup, co
 	this.onDocumentMouseDownHandler = this.onDocumentMouseDown.bind( this );
 
 	// Initialization
-	labels = {
+	var labels = {
 		col: ve.msg( 'visualeditor-table-context-col' ),
 		row: ve.msg( 'visualeditor-table-context-row' ),
 		table: ve.msg( 'visualeditor-toolbar-table' )
@@ -93,13 +91,12 @@ ve.ui.TableLineContext.static.positions = {
  * @inheritdoc
  */
 ve.ui.TableLineContext.prototype.getRelatedSources = function () {
-	var i, l,
-		items = this.constructor.static.groups[ this.itemGroup ];
+	var items = this.constructor.static.groups[ this.itemGroup ];
 
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];
 
-		for ( i = 0, l = items.length; i < l; i++ ) {
+		for ( var i = 0, l = items.length; i < l; i++ ) {
 			this.relatedSources.push( {
 				type: 'item',
 				name: items[ i ]
@@ -150,11 +147,10 @@ ve.ui.TableLineContext.prototype.onModelSelect = function () {
  * @inheritdoc
  */
 ve.ui.TableLineContext.prototype.toggleMenu = function ( show, restoreEditing ) {
-	var dir, surfaceModel, surfaceView;
 	show = show === undefined ? !this.popup.isVisible() : !!show;
 
-	surfaceModel = this.surface.getModel();
-	surfaceView = this.surface.getView();
+	var surfaceModel = this.surface.getModel();
+	var surfaceView = this.surface.getView();
 
 	// Remember whether the table was in editing mode, because some itemGroups
 	// will force it into editing mode so their commands can work on a
@@ -175,7 +171,7 @@ ve.ui.TableLineContext.prototype.toggleMenu = function ( show, restoreEditing ) 
 		surfaceModel.connect( this, { select: 'onModelSelect' } );
 		surfaceView.$document.on( 'mousedown', this.onDocumentMouseDownHandler );
 		surfaceView.deactivate();
-		dir = surfaceView.getSelectionDirectionality();
+		var dir = surfaceView.getSelectionDirectionality();
 		// eslint-disable-next-line mediawiki/class-doc
 		this.$element
 			.removeClass( 've-ui-dir-block-rtl ve-ui-dir-block-ltr' )

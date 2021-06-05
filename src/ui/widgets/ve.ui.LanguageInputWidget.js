@@ -23,12 +23,8 @@
  * @cfg {string[]} [availableLanguages] Available language codes to show in search dialog
  */
 ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
-	var dirItems, dirInput,
-		$language = $( '<div>' ).addClass( 've-ui-languageInputWidget-languageInput' );
-
 	// Configuration initialization
 	config = config || {};
-	dirInput = ( config.dirInput === undefined ) ? 'auto' : config.dirInput;
 
 	// Parent constructor
 	ve.ui.LanguageInputWidget.super.call( this, config );
@@ -61,6 +57,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-direction' )
 	} );
 
+	var $language = $( '<div>' ).addClass( 've-ui-languageInputWidget-languageInput' );
 	$language.append(
 		this.findLanguageButton.$element
 	);
@@ -75,7 +72,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.directionSelect.connect( this, { select: 'onChange' } );
 
 	// Initialization
-	dirItems = [
+	var dirItems = [
 		new OO.ui.ButtonOptionWidget( {
 			data: 'rtl',
 			icon: 'textDirRTL'
@@ -85,6 +82,8 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 			icon: 'textDirLTR'
 		} )
 	];
+	var dirInput = ( config.dirInput === undefined ) ? 'auto' : config.dirInput;
+
 	if ( dirInput === 'auto' ) {
 		dirItems.splice(
 			1, 0, new OO.ui.ButtonOptionWidget( {
@@ -141,13 +140,11 @@ ve.ui.LanguageInputWidget.prototype.onFindLanguageButtonClick = function () {
  * Handle input widget change events.
  */
 ve.ui.LanguageInputWidget.prototype.onChange = function () {
-	var selectedItem;
-
 	if ( this.updating ) {
 		return;
 	}
 
-	selectedItem = this.directionSelect.findSelectedItem();
+	var selectedItem = this.directionSelect.findSelectedItem();
 	this.setLangAndDir(
 		this.languageCodeTextInput.getValue(),
 		selectedItem ? selectedItem.getData() : null

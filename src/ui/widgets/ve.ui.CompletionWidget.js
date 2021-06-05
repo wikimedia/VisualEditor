@@ -17,8 +17,6 @@
  * @cfg {boolean} [readOnly=false] Prevent changes to the value of the widget.
  */
 ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
-	var $doc = surface.getView().getDocument().getDocumentNode().$element;
-
 	this.surface = surface;
 	this.surfaceModel = surface.getModel();
 
@@ -32,6 +30,7 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 
 	this.$tabIndexed = this.$element;
 
+	var $doc = surface.getView().getDocument().getDocumentNode().$element;
 	this.menu = new OO.ui.MenuSelectWidget( {
 		widget: this,
 		$input: $doc,
@@ -116,8 +115,7 @@ ve.ui.CompletionWidget.prototype.update = function () {
 
 ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 	// Update the header based on the input
-	var length,
-		label = this.action.getHeaderLabel( input, suggestions );
+	var label = this.action.getHeaderLabel( input, suggestions );
 	if ( label !== undefined ) {
 		this.header.setLabel( label );
 		this.header.toggle( label !== null );
@@ -126,7 +124,7 @@ ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 	if ( this.header.getLabel() !== null || this.menu.items.length ) {
 		// HACK: upstream won't show the menu unless there are items.
 		// Fix upstream by adding a 'forceShow' option to toggle.
-		length = this.menu.items.length;
+		var length = this.menu.items.length;
 		this.menu.items.length = Math.max( length, 1 );
 		this.menu.toggle( true );
 		this.menu.items.length = length;

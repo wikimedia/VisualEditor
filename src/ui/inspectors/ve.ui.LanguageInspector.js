@@ -68,8 +68,6 @@ ve.ui.LanguageInspector.prototype.getAnnotationFromFragment = function ( fragmen
  * @inheritdoc
  */
 ve.ui.LanguageInspector.prototype.initialize = function () {
-	var languageField;
-
 	// Parent method
 	ve.ui.LanguageInspector.super.prototype.initialize.call( this );
 
@@ -78,7 +76,7 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 		dialogManager: this.manager.getSurface().getDialogs()
 	} );
 
-	languageField = new OO.ui.FieldLayout( this.languageInput, {
+	var languageField = new OO.ui.FieldLayout( this.languageInput, {
 		align: 'left',
 		classes: [ 've-ui-languageInspector-languageField' ],
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-language' )

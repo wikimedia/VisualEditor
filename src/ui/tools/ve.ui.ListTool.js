@@ -46,13 +46,11 @@ ve.ui.ListTool.static.deactivateOnSelect = false;
  * @inheritdoc
  */
 ve.ui.ListTool.prototype.onUpdateState = function ( fragment ) {
-	var style, isMatching;
-
 	// Parent method
 	ve.ui.ListTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	style = this.constructor.static.style;
-	isMatching = fragment.hasMatchingAncestor( 'list', { style: style } );
+	var style = this.constructor.static.style;
+	var isMatching = fragment.hasMatchingAncestor( 'list', { style: style } );
 	this.setActive( isMatching );
 };
 

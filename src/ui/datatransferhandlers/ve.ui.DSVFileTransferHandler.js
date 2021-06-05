@@ -37,17 +37,16 @@ ve.ui.DSVFileTransferHandler.static.extensions = [ 'csv', 'tsv' ];
  * @inheritdoc
  */
 ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
-	var i, j, line, tableNodeName, tableNodeClass, tableElement,
-		data = [],
+	var data = [],
 		input = Papa.parse( this.reader.result );
 
 	if ( input.meta.aborted || ( input.data.length <= 0 ) ) {
 		this.abort();
 	} else {
 		// Lookup the type for table elements
-		tableNodeName = ve.dm.modelRegistry.matchElement( document.createElement( 'table' ) );
-		tableNodeClass = ve.dm.modelRegistry.lookup( tableNodeName );
-		tableElement = { type: tableNodeName };
+		var tableNodeName = ve.dm.modelRegistry.matchElement( document.createElement( 'table' ) );
+		var tableNodeClass = ve.dm.modelRegistry.lookup( tableNodeName );
+		var tableElement = { type: tableNodeName };
 		// Sanitize, as this can add default attributes for the table type
 		tableNodeClass.static.sanitize( tableElement );
 
@@ -56,8 +55,8 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 			{ type: 'tableSection', attributes: { style: 'body' } }
 		);
 
-		for ( i = 0; i < input.data.length; i++ ) {
-			line = input.data[ i ];
+		for ( var i = 0; i < input.data.length; i++ ) {
+			var line = input.data[ i ];
 
 			// Skip 'empty' row if at the end of the file
 			if ( i === input.data.length - 1 && line.length === 1 && line[ 0 ] === '' ) {
@@ -65,7 +64,7 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 			}
 
 			data.push( { type: 'tableRow' } );
-			for ( j = 0; j < line.length; j++ ) {
+			for ( var j = 0; j < line.length; j++ ) {
 				data.push(
 					{ type: 'tableCell', attributes: { style: ( i === 0 ? 'header' : 'data' ) } },
 					{ type: 'paragraph', internal: { generated: 'wrapper' } }

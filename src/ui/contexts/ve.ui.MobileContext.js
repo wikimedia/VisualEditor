@@ -116,12 +116,11 @@ ve.ui.MobileContext.prototype.toggleMenu = function ( show ) {
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.toggle = function ( show ) {
-	var deferred,
-		context = this;
+	var context = this;
 
 	show = show === undefined ? !this.visible : !!show;
 	if ( show && !this.visible ) {
-		deferred = ve.createDeferred();
+		var deferred = ve.createDeferred();
 		// Set opening flag immediately
 		this.openingTimeout = setTimeout( function () {
 			// Parent method

@@ -18,8 +18,6 @@
  * @cfg {string} [dimensionsAlign] Alignment for the dimensions widget
  */
 ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
-	var dimensionsField, sizeTypeField;
-
 	// Configuration
 	config = config || {};
 
@@ -55,7 +53,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 			label: ve.msg( 'visualeditor-mediasizewidget-sizeoptions-custom' )
 		} )
 	] );
-	sizeTypeField = new OO.ui.FieldLayout( this.sizeTypeSelect );
+	var sizeTypeField = new OO.ui.FieldLayout( this.sizeTypeSelect );
 
 	// Define scale
 	/*
@@ -87,7 +85,7 @@ ve.ui.MediaSizeWidget = function VeUiMediaSizeWidget( scalable, config ) {
 	TODO: when upright is supported by Parsoid
 	this.scaleInput.$element.append( scalePercentLabel.$element );
 	*/
-	dimensionsField = new OO.ui.FieldLayout(
+	var dimensionsField = new OO.ui.FieldLayout(
 		this.dimensions, {
 			align: this.dimensionsAlign,
 			classes: [ 've-ui-mediaSizeWidget-section-custom' ]
@@ -202,13 +200,12 @@ ve.ui.MediaSizeWidget.prototype.onScalableDefaultSizeChange = function ( isDefau
  * @fires change
  */
 ve.ui.MediaSizeWidget.prototype.onDimensionsChange = function ( type, value ) {
-	var dimensions = {};
-
 	if ( +value === 0 && !this.noDefaultDimensions ) {
 		this.setSizeType( 'default' );
 	} else {
 		this.setSizeType( 'custom' );
 		if ( !isNaN( +value ) ) {
+			var dimensions = {};
 			dimensions[ type ] = +value;
 			this.setCurrentDimensions( dimensions );
 		} else {
@@ -434,8 +431,7 @@ ve.ui.MediaSizeWidget.prototype.setDisabled = function ( disabled ) {
  * @return {ve.ui.MediaSizeWidget}
  */
 ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
-	var sizeType,
-		disabled = this.isDisabled();
+	var disabled = this.isDisabled();
 
 	// The 'updateDisabled' method may called before the widgets
 	// are fully defined. So, before disabling/enabling anything,
@@ -444,7 +440,7 @@ ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
 		this.dimensions &&
 		this.scalable
 	) {
-		sizeType = this.getSizeType();
+		var sizeType = this.getSizeType();
 
 		// Disable the type select
 		this.sizeTypeSelect.setDisabled( disabled );
@@ -470,8 +466,6 @@ ve.ui.MediaSizeWidget.prototype.updateDisabled = function () {
  * @fires change
  */
 ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
-	var normalizedDimensions;
-
 	// Recursion protection
 	if ( this.preventChangeRecursion ) {
 		return;
@@ -483,7 +477,7 @@ ve.ui.MediaSizeWidget.prototype.setCurrentDimensions = function ( dimensions ) {
 	}
 
 	// Normalize the new dimensions
-	normalizedDimensions = ve.dm.Scalable.static.getDimensionsFromValue( dimensions, this.scalable.getRatio() );
+	var normalizedDimensions = ve.dm.Scalable.static.getDimensionsFromValue( dimensions, this.scalable.getRatio() );
 
 	if (
 		// Update only if the dimensions object is valid

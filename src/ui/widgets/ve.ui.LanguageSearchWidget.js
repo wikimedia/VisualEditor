@@ -14,8 +14,6 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
-	var i, l, languageCode, languageCodes;
-
 	// Configuration initialization
 	config = ve.extendObject( {
 		placeholder: ve.msg( 'visualeditor-language-search-input-placeholder' )
@@ -28,10 +26,10 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	this.languageResultWidgets = [];
 	this.filteredLanguageResultWidgets = [];
 
-	languageCodes = ve.init.platform.getLanguageCodes().sort();
+	var languageCodes = ve.init.platform.getLanguageCodes().sort();
 
-	for ( i = 0, l = languageCodes.length; i < l; i++ ) {
-		languageCode = languageCodes[ i ];
+	for ( var i = 0, l = languageCodes.length; i < l; i++ ) {
+		var languageCode = languageCodes[ i ];
 		this.languageResultWidgets.push(
 			new ve.ui.LanguageResultWidget( {
 				data: {
@@ -71,8 +69,6 @@ ve.ui.LanguageSearchWidget.prototype.onQueryChange = function () {
  * @param {string[]} availableLanguages Available language codes to show, all if undefined
  */
 ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availableLanguages ) {
-	var i, iLen, languageResult, data;
-
 	if ( !availableLanguages ) {
 		this.filteredLanguageResultWidgets = this.languageResultWidgets.slice();
 		return;
@@ -80,9 +76,9 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 
 	this.filteredLanguageResultWidgets = [];
 
-	for ( i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
-		languageResult = this.languageResultWidgets[ i ];
-		data = languageResult.getData();
+	for ( var i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
+		var languageResult = this.languageResultWidgets[ i ];
+		var data = languageResult.getData();
 		if ( availableLanguages.indexOf( data.code ) !== -1 ) {
 			this.filteredLanguageResultWidgets.push( languageResult );
 		}
@@ -93,8 +89,7 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
  * Update search results from current query
  */
 ve.ui.LanguageSearchWidget.prototype.addResults = function () {
-	var i, iLen, j, jLen, languageResult, data, matchedProperty,
-		matchProperties = [ 'name', 'autonym', 'code' ],
+	var matchProperties = [ 'name', 'autonym', 'code' ],
 		query = this.query.getValue().trim(),
 		compare = ve.supportsIntl ?
 			// eslint-disable-next-line compat/compat
@@ -105,12 +100,12 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 
 	this.results.clearItems();
 
-	for ( i = 0, iLen = this.filteredLanguageResultWidgets.length; i < iLen; i++ ) {
-		languageResult = this.filteredLanguageResultWidgets[ i ];
-		data = languageResult.getData();
-		matchedProperty = null;
+	for ( var i = 0, iLen = this.filteredLanguageResultWidgets.length; i < iLen; i++ ) {
+		var languageResult = this.filteredLanguageResultWidgets[ i ];
+		var data = languageResult.getData();
+		var matchedProperty = null;
 
-		for ( j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
+		for ( var j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
 			if ( data[ matchProperties[ j ] ] && compare( data[ matchProperties[ j ] ].slice( 0, query.length ), query ) === 0 ) {
 				matchedProperty = matchProperties[ j ];
 				break;

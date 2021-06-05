@@ -119,13 +119,12 @@ ve.ui.LinkAnnotationWidget.prototype.setDisabled = function () {
  * @param {string} value New input value
  */
 ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
-	var isExt,
-		widget = this;
+	var widget = this;
 
 	// RTL/LTR check
 	// TODO: Make this work properly
 	if ( document.body.classList.contains( 'rtl' ) ) {
-		isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( value.trim() );
+		var isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( value.trim() );
 		// If URL is external, flip to LTR. Otherwise, set back to RTL
 		this.getTextInputWidget().setDir( isExt ? 'ltr' : 'rtl' );
 	}

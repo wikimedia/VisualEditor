@@ -124,14 +124,12 @@ ve.ui.SpecialCharacterDialog.prototype.onContextChange = function () {
  * Builds the button DOM list based on the character list
  */
 ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
-	var category;
-
 	this.bookletLayout = new OO.ui.BookletLayout( {
 		outlined: true,
 		continuous: true
 	} );
 	this.pages = [];
-	for ( category in this.characters ) {
+	for ( var category in this.characters ) {
 		this.pages.push(
 			new ve.ui.SpecialCharacterPage( category, {
 				label: this.characters[ category ].label,

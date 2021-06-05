@@ -149,8 +149,7 @@ ve.ui.AnnotationInspector.prototype.isEditing = function () {
 ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var initialCoveringAnnotation,
-				fragment = this.getFragment(),
+			var fragment = this.getFragment(),
 				surfaceModel = fragment.getSurface(),
 				// Partial annotations will be expanded later
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
@@ -207,7 +206,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 
 			// The initial annotation is the first matching annotation in the fragment
 			this.initialAnnotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
-			initialCoveringAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
+			var initialCoveringAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
 			// Fallback to a default annotation
 			if ( !this.initialAnnotation ) {
 				this.isNew = true;
@@ -242,8 +241,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
-			var i, len, annotations, insertion, selection,
-				inspector = this,
+			var inspector = this,
 				insertionAnnotation = false,
 				replace = false,
 				annotation = this.getAnnotation(),
@@ -254,10 +252,13 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				isEditing = this.isEditing(),
 				insertText = !remove && this.shouldInsertText();
 
+			var annotations;
+			var insertion;
+
 			function clear() {
 				// Clear all existing annotations
 				annotations = inspector.getMatchingAnnotations( fragment, true ).get();
-				for ( i = 0, len = annotations.length; i < len; i++ ) {
+				for ( var i = 0, len = annotations.length; i < len; i++ ) {
 					fragment.annotateContent( 'clear', annotations[ i ] );
 				}
 			}
@@ -319,6 +320,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 
 			// HACK: ui.WindowAction unsets initialFragment in source mode,
 			// so we can't rely on it existing.
+			var selection;
 			if ( this.initialFragment && ( !data.action || insertText ) ) {
 				// Restore selection to what it was before we expanded it
 				selection = this.initialFragment.getSelection();

@@ -15,14 +15,12 @@
  * @cfg {string} [dir='ltr'] Interface directionality
  */
 ve.ui.AlignWidget = function VeUiAlignWidget( config ) {
-	var alignButtons;
-
 	config = config || {};
 
 	// Parent constructor
 	ve.ui.AlignWidget.super.call( this, config );
 
-	alignButtons = [
+	var alignButtons = [
 		new OO.ui.ButtonOptionWidget( {
 			data: 'left',
 			icon: 'alignLeft',

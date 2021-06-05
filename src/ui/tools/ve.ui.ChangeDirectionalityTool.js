@@ -47,11 +47,10 @@ ve.ui.ChangeDirectionalityTool.static.deactivateOnSelect = false;
  * @inheritdoc
  */
 ve.ui.ChangeDirectionalityTool.prototype.onUpdateState = function ( fragment ) {
-	var viewDir = this.toolbar.getSurface().getView().getDocument().getDir(),
-		modelDir = fragment.getDocument().getDir();
-
 	// Parent method
 	ve.ui.ChangeDirectionalityTool.super.prototype.onUpdateState.apply( this, arguments );
+
+	var modelDir = fragment.getDocument().getDir();
 
 	if ( modelDir !== this.modelDir ) {
 		// Icons used here textDirLTR, textDirRTL
@@ -63,6 +62,7 @@ ve.ui.ChangeDirectionalityTool.prototype.onUpdateState = function ( fragment ) {
 		this.modelDir = modelDir;
 	}
 
+	var viewDir = this.toolbar.getSurface().getView().getDocument().getDir();
 	this.setActive( viewDir !== modelDir );
 };
 

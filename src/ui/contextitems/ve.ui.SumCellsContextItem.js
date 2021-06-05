@@ -52,8 +52,7 @@ ve.ui.SumCellsContextItem.static.isCompatibleWith = function ( model ) {
  */
 ve.ui.SumCellsContextItem.prototype.setup = function () {
 	// If not disabled, selection must be table and spanning multiple matrix cells
-	var sum, cells, viewCell,
-		count = 0,
+	var count = 0,
 		selection = this.getFragment().getSurface().getSelection(),
 		documentModel = this.getFragment().getDocument(),
 		documentView = this.context.getSurface().getView().getDocument();
@@ -61,14 +60,15 @@ ve.ui.SumCellsContextItem.prototype.setup = function () {
 	// There's some situations involving transclusion table cells which
 	// can make us have a LinearSelection here, so make sure this will
 	// work:
+	var sum;
 	if ( selection instanceof ve.dm.TableSelection ) {
-		cells = selection.getMatrixCells( documentModel, true );
+		var cells = selection.getMatrixCells( documentModel, true );
 		if ( cells.length > 1 ) {
 			sum = cells.reduce( function ( s, cell ) {
 				var number;
 				if ( !cell.isPlaceholder() ) {
 					// Get text from view rendering to catch numbers in alien nodes, etc.
-					viewCell = documentView.getBranchNodeFromOffset( cell.node.getRange().start );
+					var viewCell = documentView.getBranchNodeFromOffset( cell.node.getRange().start );
 					number = ve.init.platform.parseNumber(
 						viewCell.$element.text()
 					);

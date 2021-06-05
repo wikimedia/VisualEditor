@@ -45,9 +45,6 @@ ve.ui.FormatTool.static.format = null;
  * @inheritdoc
  */
 ve.ui.FormatTool.prototype.onUpdateState = function ( fragment ) {
-	var isMatching,
-		format = this.constructor.static.format;
-
 	// Parent method
 	ve.ui.FormatTool.super.prototype.onUpdateState.apply( this, arguments );
 
@@ -60,7 +57,8 @@ ve.ui.FormatTool.prototype.onUpdateState = function ( fragment ) {
 
 	this.toggle( true );
 
-	isMatching = fragment.hasMatchingAncestor( format.type, format.attributes );
+	var format = this.constructor.static.format;
+	var isMatching = fragment.hasMatchingAncestor( format.type, format.attributes );
 
 	this.setActive( isMatching );
 };
