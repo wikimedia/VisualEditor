@@ -368,9 +368,6 @@ ve.init.Platform.prototype.getInitializedPromise = function () {
  * @return {jQuery.Promise}
  */
 ve.init.Platform.prototype.fetchSpecialCharList = function () {
-	var charsObj = {},
-		groups = [ 'accents', 'mathematical', 'symbols' ];
-
 	function tryParseJSON( json ) {
 		try {
 			return JSON.parse( json );
@@ -382,6 +379,9 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 		}
 		return {};
 	}
+
+	var charsObj = {},
+		groups = [ 'accents', 'mathematical', 'symbols' ];
 
 	groups.forEach( function ( group ) {
 		charsObj[ group ] = {

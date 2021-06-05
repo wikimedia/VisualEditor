@@ -22,9 +22,6 @@
  * @cfg {boolean} [register=true] Register the target at ve.init.target
  */
 ve.init.Target = function VeInitTarget( config ) {
-	var isIe = ve.init.platform.constructor.static.isInternetExplorer(),
-		isEdge = ve.init.platform.constructor.static.isEdge();
-
 	config = config || {};
 
 	// Parent constructor
@@ -63,6 +60,9 @@ ve.init.Target = function VeInitTarget( config ) {
 
 	// Initialization
 	this.$element.addClass( 've-init-target' );
+
+	var isIe = ve.init.platform.constructor.static.isInternetExplorer(),
+		isEdge = ve.init.platform.constructor.static.isEdge();
 
 	if ( isIe ) {
 		this.$element.addClass( 've-init-target-ie' );
@@ -404,12 +404,11 @@ ve.init.Target.prototype.getScrollContainer = function () {
  * Handle scroll container scroll events
  */
 ve.init.Target.prototype.onContainerScroll = function () {
-	var scrollTop, wasFloating,
-		toolbar = this.getToolbar();
+	var toolbar = this.getToolbar();
 
 	if ( toolbar.isFloatable() ) {
-		wasFloating = toolbar.isFloating();
-		scrollTop = this.$scrollContainer.scrollTop();
+		var wasFloating = toolbar.isFloating();
+		var scrollTop = this.$scrollContainer.scrollTop();
 
 		if ( scrollTop + this.toolbarScrollOffset > toolbar.getElementOffset().top ) {
 			toolbar.float();
@@ -435,10 +434,10 @@ ve.init.Target.prototype.onContainerScroll = function () {
  * @param {jQuery.Event} e Key down event
  */
 ve.init.Target.prototype.onDocumentKeyDown = function ( e ) {
-	var command, surface, trigger = new ve.ui.Trigger( e );
+	var trigger = new ve.ui.Trigger( e );
 	if ( trigger.isComplete() ) {
-		command = this.documentTriggerListener.getCommandByTrigger( trigger.toString() );
-		surface = this.getSurface();
+		var command = this.documentTriggerListener.getCommandByTrigger( trigger.toString() );
+		var surface = this.getSurface();
 		if ( surface && command && command.execute( surface, undefined, 'trigger' ) ) {
 			e.preventDefault();
 		}
@@ -472,10 +471,10 @@ ve.init.Target.prototype.onDocumentVisibilityChange = function () {
  * @param {jQuery.Event} e Key down event
  */
 ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
-	var command, surface, trigger = new ve.ui.Trigger( e );
+	var trigger = new ve.ui.Trigger( e );
 	if ( trigger.isComplete() ) {
-		command = this.targetTriggerListener.getCommandByTrigger( trigger.toString() );
-		surface = this.getSurface();
+		var command = this.targetTriggerListener.getCommandByTrigger( trigger.toString() );
+		var surface = this.getSurface();
 		if ( surface && command && command.execute( surface, undefined, 'trigger' ) ) {
 			e.preventDefault();
 		}
@@ -632,8 +631,7 @@ ve.init.Target.prototype.getActions = function () {
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	var toolbar = this.getToolbar(),
-		actions = this.getActions(),
-		rAF = window.requestAnimationFrame || setTimeout;
+		actions = this.getActions();
 
 	toolbar.connect( this, {
 		resize: 'onToolbarResize',
@@ -674,6 +672,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	actions.setup( this.actionGroups, surface );
 	this.attachToolbar();
 	toolbar.$actions.append( actions.$element );
+	var rAF = window.requestAnimationFrame || setTimeout;
 	rAF( this.onContainerScrollHandler );
 };
 
