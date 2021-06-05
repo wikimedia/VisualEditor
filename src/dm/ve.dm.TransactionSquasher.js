@@ -93,12 +93,11 @@ OO.initClass( ve.dm.TransactionSquasher );
  * @return {ve.dm.Transaction} Single transaction with the same content as the transaction array
  */
 ve.dm.TransactionSquasher.static.squash = function ( transactions ) {
-	var squasher, i, iLen;
 	if ( transactions.length === 0 ) {
 		throw new Error( 'Cannot squash empty transaction array' );
 	}
-	squasher = new ve.dm.TransactionSquasher( transactions[ 0 ] );
-	for ( i = 1, iLen = transactions.length; i < iLen; i++ ) {
+	var squasher = new ve.dm.TransactionSquasher( transactions[ 0 ] );
+	for ( var i = 1, iLen = transactions.length; i < iLen; i++ ) {
 		squasher.squashIn( transactions[ i ] );
 	}
 	return squasher.getTransaction();
@@ -125,8 +124,6 @@ ve.dm.TransactionSquasher.prototype.getTransaction = function () {
  * @param {ve.dm.Transaction} tx Follow-up transaction (that can apply immediately after this)
  */
 ve.dm.TransactionSquasher.prototype.squashIn = function ( tx ) {
-	var i, op, retainLength, consumed, items;
-
 	// Walk over the document offsets in our transaction, modifying operations in-place
 	// to incorporate the operations in tx
 	this.index = 0;
@@ -137,16 +134,17 @@ ve.dm.TransactionSquasher.prototype.squashIn = function ( tx ) {
 	this.oldChanges = [];
 	this.readAttributes();
 	// Do not cache length, as we may splice the list
-	for ( i = 0; i < tx.operations.length; i++ ) {
-		op = tx.operations[ i ];
+	for ( var i = 0; i < tx.operations.length; i++ ) {
+		var op = tx.operations[ i ];
+		var consumed;
 		if ( op.type === 'retain' ) {
-			retainLength = op.length;
+			var retainLength = op.length;
 			while ( retainLength > 0 ) {
 				consumed = this.processRetain( retainLength );
 				retainLength -= consumed;
 			}
 		} else if ( op.type === 'replace' ) {
-			items = JSON.parse( JSON.stringify( op.remove ) );
+			var items = JSON.parse( JSON.stringify( op.remove ) );
 			while ( items.length > 0 ) {
 				consumed = this.processRemove( items );
 				items.splice( 0, consumed );
@@ -172,12 +170,12 @@ ve.dm.TransactionSquasher.prototype.squashIn = function ( tx ) {
  * @return {number} The amount of content retained
  */
 ve.dm.TransactionSquasher.prototype.processRetain = function ( maxLength ) {
-	var len;
-
 	this.normalizePosition();
 	if ( !this.op ) {
 		throw new Error( 'Past end of transaction' );
 	}
+
+	var len;
 	if ( this.op.type === 'retain' ) {
 		len = Math.min( maxLength, this.op.length - this.offset );
 		this.offset += len;
@@ -219,8 +217,7 @@ ve.dm.TransactionSquasher.prototype.processRetain = function ( maxLength ) {
  * @return {number} The length of the initial slice of items that was removed
  */
 ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
-	var len, i, replaceOp, removal,
-		tryUnsplit = false;
+	var tryUnsplit = false;
 
 	function stringifyItem( item ) {
 		return JSON.stringify( item, function ( key, value ) {
@@ -236,6 +233,8 @@ ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
 	if ( !this.op ) {
 		throw new Error( 'Past end of transaction' );
 	}
+	var removal;
+	var len;
 	if ( this.op.type === 'retain' ) {
 		this.splitIfInterior();
 		// Now we must be at the start of a retain
@@ -259,7 +258,7 @@ ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
 			);
 		} else {
 			// Get the immediately preceding replace op, or insert an empty one
-			replaceOp = this.operations[ this.index - 1 ];
+			var replaceOp = this.operations[ this.index - 1 ];
 			if ( !replaceOp || replaceOp.type !== 'replace' ) {
 				replaceOp = { type: 'replace', remove: [], insert: [] };
 				this.operations.splice( this.index, 0, replaceOp );
@@ -283,7 +282,7 @@ ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
 		len = Math.min( items.length, this.op.insert.length - this.offset );
 		// len must be greater than zero, since we're not at the end of this op
 		removal = items.slice( 0, len );
-		for ( i = 0; i < len; i++ ) {
+		for ( var i = 0; i < len; i++ ) {
 			if ( !equalItems( removal[ i ], this.op.insert[ this.offset + i ] ) ) {
 				throw new Error( 'Remove does not match insert' );
 			}
@@ -326,8 +325,6 @@ ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
  * @return {number} The length of the initial slice of items that was inserted
  */
 ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
-	var replaceOp;
-
 	this.normalizePosition();
 	if ( !this.op || this.op.type === 'retain' || this.op.type === 'attribute' ) {
 		if ( this.op && this.op.type === 'retain' ) {
@@ -336,7 +333,7 @@ ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
 		}
 		// We must be at the start of this.op (or at the end if !this.op)
 		// Get the immediately preceding replace op, or insert an empty one
-		replaceOp = this.operations[ this.index - 1 ];
+		var replaceOp = this.operations[ this.index - 1 ];
 		if ( !replaceOp || replaceOp.type !== 'replace' ) {
 			replaceOp = { type: 'replace', remove: [], insert: [] };
 			this.operations.splice( this.index, 0, replaceOp );
@@ -379,18 +376,16 @@ ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
  * @param {Mixed} to The new value
  */
 ve.dm.TransactionSquasher.prototype.processAttribute = function ( key, from, to ) {
-	var item, op;
-
 	this.normalizePosition();
 	if ( this.op && this.op.type === 'replace' && this.offset < this.op.insert.length ) {
 		// If we're at some insert content, then the attribute should apply to it
-		item = this.op.insert[ this.offset ];
+		var item = this.op.insert[ this.offset ];
 		if ( !item || !item.type || item.type[ 0 ] === '/' ) {
 			throw new Error( 'Expected open element' );
 		}
 		this.changeElement( this.op.insert[ this.offset ], key, from, to );
 	} else {
-		op = this.attributeOperations[ key ];
+		var op = this.attributeOperations[ key ];
 		if ( op ) {
 			if ( op.to !== from ) {
 				throw new Error( 'Unexpected prior attribute value' );
@@ -502,8 +497,7 @@ ve.dm.TransactionSquasher.prototype.readAttributes = function () {
  * @private
  */
 ve.dm.TransactionSquasher.prototype.splitIfInterior = function () {
-	var len, remainder,
-		type = this.op && this.op.type;
+	var type = this.op && this.op.type;
 	if ( this.offset === 0 ) {
 		// No need to split
 		return;
@@ -511,8 +505,8 @@ ve.dm.TransactionSquasher.prototype.splitIfInterior = function () {
 	if ( type !== 'retain' ) {
 		throw new Error( 'Non-zero offset, but op type is ' + type );
 	}
-	len = this.op.length;
-	remainder = len - this.offset;
+	var len = this.op.length;
+	var remainder = len - this.offset;
 	if ( remainder < 0 ) {
 		throw new Error( 'Beyond the end of retain' );
 	}

@@ -336,9 +336,9 @@ ve.dm.Node.static.remapInternalListKeys = function () {
  * @return {boolean} The element is inline
  */
 ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
-	var i, length, allTagsInline = true;
+	var allTagsInline = true;
 
-	for ( i = 0, length = domElements.length; i < length; i++ ) {
+	for ( var i = 0, length = domElements.length; i < length; i++ ) {
 		if ( ve.isBlockElement( domElements[ i ] ) ) {
 			allTagsInline = false;
 			break;
@@ -366,20 +366,19 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * @return {Object} Cloned element object
  */
 ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated ) {
-	var about, originalDomElements, domElements,
-		modified = false,
+	var modified = false,
 		clone = ve.copy( element );
 
 	if ( !preserveGenerated ) {
 		ve.deleteProp( clone, 'internal', 'generated' );
 	}
-	originalDomElements = store.value( clone.originalDomElementsHash );
+	var originalDomElements = store.value( clone.originalDomElementsHash );
 	// Generate a new about attribute to prevent about grouping of cloned nodes
 	if ( originalDomElements ) {
 		// TODO: The '#mwtNNN' is required by Parsoid. Make the name used here
 		// more generic and specify the #mwt pattern in MW code.
-		about = '#mwt' + Math.floor( 1000000000 * Math.random() );
-		domElements = originalDomElements.map( function ( el ) {
+		var about = '#mwt' + Math.floor( 1000000000 * Math.random() );
+		var domElements = originalDomElements.map( function ( el ) {
 			var elClone = el.cloneNode( true );
 			// Check for hasAttribute as comments don't have them
 			if ( elClone.hasAttribute && elClone.hasAttribute( 'about' ) ) {
@@ -626,15 +625,13 @@ ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
  * @return {boolean} Node matches type and attribute values
  */
 ve.dm.Node.prototype.matches = function ( type, attributes ) {
-	var key;
-
 	if ( this.getType() !== type ) {
 		return false;
 	}
 
 	// Check attributes
 	if ( attributes ) {
-		for ( key in attributes ) {
+		for ( var key in attributes ) {
 			if ( this.getAttribute( key ) !== attributes[ key ] ) {
 				return false;
 			}
@@ -662,12 +659,11 @@ ve.dm.Node.prototype.getLength = function () {
  * @throws {Error} Invalid content length error if length is less than 0
  */
 ve.dm.Node.prototype.setLength = function ( length ) {
-	var diff;
 	if ( length < 0 ) {
 		throw new Error( 'Length cannot be negative' );
 	}
 	// Compute length adjustment from old length
-	diff = length - this.length;
+	var diff = length - this.length;
 	// Set new length
 	this.length = length;
 	// Adjust the parent's length
@@ -698,8 +694,6 @@ ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
  * @inheritdoc ve.Node
  */
 ve.dm.Node.prototype.getOffset = function () {
-	var i, len, siblings, offset;
-
 	if ( !this.parent ) {
 		return 0;
 	}
@@ -709,8 +703,9 @@ ve.dm.Node.prototype.getOffset = function () {
 	}
 
 	// Find our index in the parent and add up lengths while we do so
-	siblings = this.parent.children;
-	offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
+	var siblings = this.parent.children;
+	var offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
+	var i, len;
 	for ( i = 0, len = siblings.length; i < len; i++ ) {
 		if ( siblings[ i ] === this ) {
 			break;

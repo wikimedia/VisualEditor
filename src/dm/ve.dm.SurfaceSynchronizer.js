@@ -20,8 +20,6 @@
  * @cfg {string} [defaultName] Default username
  */
 ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentId, config ) {
-	var path, options, authorData;
-
 	config = config || {};
 
 	// Mixin constructors
@@ -46,8 +44,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.paused = false;
 
 	// SocketIO events
-	path = ( config.server || '' );
-	options = {
+	var path = ( config.server || '' );
+	var options = {
 		query: {
 			docName: this.documentId,
 			authorId: this.getAuthorId() || '',
@@ -62,7 +60,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.socket.on( 'authorChange', this.onAuthorChange.bind( this ) );
 	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
 
-	authorData = ve.init.platform.sessionStorage.getObject( 've-collab-author' );
+	var authorData = ve.init.platform.sessionStorage.getObject( 've-collab-author' );
 	if ( authorData ) {
 		this.changeAuthor( authorData );
 	} else if ( config.defaultName ) {
@@ -141,7 +139,6 @@ ve.dm.SurfaceSynchronizer.prototype.pauseChanges = function () {
  * Resume sending/receiving changes
  */
 ve.dm.SurfaceSynchronizer.prototype.resumeChanges = function () {
-	var i;
 	if ( !this.paused ) {
 		return;
 	}
@@ -149,7 +146,7 @@ ve.dm.SurfaceSynchronizer.prototype.resumeChanges = function () {
 	try {
 		// Don't cache length, as it's not inconceivable acceptChange could
 		// cause another change to arrive in some weird setup
-		for ( i = 0; i < this.queuedChanges.length; i++ ) {
+		for ( var i = 0; i < this.queuedChanges.length; i++ ) {
 			this.acceptChange( this.queuedChanges[ i ] );
 		}
 	} finally {
@@ -202,9 +199,8 @@ ve.dm.SurfaceSynchronizer.prototype.sendChange = function ( backtrack, change ) 
  * @inheritdoc
  */
 ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
-	var authorId;
 	// Author selections are superseded by change.selections, so no need to translate them
-	for ( authorId in change.selections ) {
+	for ( var authorId in change.selections ) {
 		authorId = +authorId;
 		delete this.authorSelections[ authorId ];
 	}
@@ -259,13 +255,12 @@ ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
  * SurfaceSynchronizer itself.
  */
 ve.dm.SurfaceSynchronizer.prototype.onSurfaceHistory = function () {
-	var change, authorId;
 	if ( this.applying || !this.initialized || this.paused ) {
 		// Ignore our own synchronization or initialization transactions
 		return;
 	}
-	change = this.getChangeSince( this.sentLength, true );
-	authorId = this.authorId;
+	var change = this.getChangeSince( this.sentLength, true );
+	var authorId = this.authorId;
 	// HACK annotate transactions with authorship information
 	// This relies on being able to access the transaction object by reference;
 	// we should probably set the author deeper in dm.Surface or dm.Document instead.
@@ -295,14 +290,14 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceSelect = function () {
  * @fires authorSelect
  */
 ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelections, changeOrTx ) {
-	var authorId, translatedSelection,
-		change = changeOrTx instanceof ve.dm.Change ? changeOrTx : null,
+	var change = changeOrTx instanceof ve.dm.Change ? changeOrTx : null,
 		tx = changeOrTx instanceof ve.dm.Transaction ? changeOrTx : null;
-	for ( authorId in newSelections ) {
+	for ( var authorId in newSelections ) {
 		authorId = +authorId;
 		if ( authorId === this.authorId ) {
 			continue;
 		}
+		var translatedSelection;
 		if ( change ) {
 			translatedSelection = newSelections[ authorId ].translateByChange( change, authorId );
 		} else if ( tx ) {
@@ -398,19 +393,18 @@ ve.dm.SurfaceSynchronizer.prototype.loadSessionKey = function () {
  * @fires initDoc
  */
 ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
-	var history, authorId;
 	if ( this.initialized ) {
 		// Ignore attempt to initialize a second time
 		return;
 	}
-	for ( authorId in data.authors ) {
+	for ( var authorId in data.authors ) {
 		this.onAuthorChange( {
 			authorId: +authorId,
 			authorData: data.authors[ authorId ]
 		} );
 	}
 	try {
-		history = ve.dm.Change.static.deserialize( data.history );
+		var history = ve.dm.Change.static.deserialize( data.history );
 		this.acceptChange( history );
 	} catch ( e ) {
 		this.socket.disconnect();

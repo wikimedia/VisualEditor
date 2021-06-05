@@ -102,11 +102,10 @@ ve.dm.InternalList.prototype.getDocument = function () {
  * @return {ve.dm.InternalListNode} List node
  */
 ve.dm.InternalList.prototype.getListNode = function () {
-	var i, nodes;
 	// Find listNode if not set, or unattached
 	if ( !this.listNode || !this.listNode.doc ) {
-		nodes = this.getDocument().getDocumentNode().children;
-		for ( i = nodes.length; i >= 0; i-- ) {
+		var nodes = this.getDocument().getDocumentNode().children;
+		for ( var i = nodes.length; i >= 0; i-- ) {
 			if ( nodes[ i ] instanceof ve.dm.InternalListNode ) {
 				this.listNode = nodes[ i ];
 				break;
@@ -167,13 +166,13 @@ ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
  * @return {string} Generated unique list key, or existing unique key associated with oldListKey
  */
 ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName, oldListKey, prefix ) {
-	var group = this.getNodeGroup( groupName ),
-		num = 0;
+	var group = this.getNodeGroup( groupName );
 
 	if ( group.uniqueListKeys[ oldListKey ] !== undefined ) {
 		return group.uniqueListKeys[ oldListKey ];
 	}
 
+	var num = 0;
 	while ( group.keyedNodes[ prefix + num ] || group.uniqueListKeysInUse[ prefix + num ] ) {
 		num++;
 	}
@@ -205,16 +204,15 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  * @return {Array} Linear model data
  */
 ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
-	var i, length, itemData, div,
-		itemHtmlQueue = this.getItemHtmlQueue(),
+	var itemHtmlQueue = this.getItemHtmlQueue(),
 		list = [];
 
 	list.push( { type: 'internalList' } );
-	for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
+	for ( var i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
 		if ( itemHtmlQueue[ i ] !== '' ) {
-			div = doc.createElement( 'div' );
+			var div = doc.createElement( 'div' );
 			div.innerHTML = itemHtmlQueue[ i ];
-			itemData = [].concat(
+			var itemData = [].concat(
 				[ { type: 'internalItem' } ],
 				converter.getDataFromDomSubtree( div ),
 				[ { type: '/internalItem' } ]
@@ -243,14 +241,14 @@ ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
  * and the new item's index within the list
  */
 ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data ) {
-	var tx, itemData,
-		index = this.getKeyIndex( groupName, key );
+	var index = this.getKeyIndex( groupName, key );
 
+	var tx;
 	if ( index === undefined ) {
 		index = this.getItemNodeCount();
 		this.keyIndexes[ groupName + '/' + key ] = index;
 
-		itemData = [ { type: 'internalItem' } ].concat( data, [ { type: '/internalItem' } ] );
+		var itemData = [ { type: 'internalItem' } ].concat( data, [ { type: '/internalItem' } ] );
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion(
 			this.getDocument(),
 			this.getListNode().getRange().end,
@@ -297,7 +295,7 @@ ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
  * @param {ve.dm.Node} node Item node
  */
 ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) {
-	var i, len, start, keyedNodes, group = this.nodes[ groupName ];
+	var group = this.nodes[ groupName ];
 	// The group may not exist yet
 	if ( group === undefined ) {
 		group = this.nodes[ groupName ] = {
@@ -308,7 +306,7 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 			uniqueListKeysInUse: {}
 		};
 	}
-	keyedNodes = group.keyedNodes[ key ];
+	var keyedNodes = group.keyedNodes[ key ];
 	this.keys[ index ] = key;
 	// The key may not exist yet
 	if ( keyedNodes === undefined ) {
@@ -323,8 +321,9 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 			group.firstNodes[ index ] = node;
 		}
 	} else {
+		var i, len;
 		// TODO: We could use binary search insertion sort
-		start = node.getRange().start;
+		var start = node.getRange().start;
 		for ( i = 0, len = keyedNodes.length; i < len; i++ ) {
 			if ( start < keyedNodes[ i ].getRange().start ) {
 				break;
@@ -359,10 +358,9 @@ ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
  * @fires update
  */
 ve.dm.InternalList.prototype.onTransact = function () {
-	var i;
 	if ( this.groupsChanged.length > 0 ) {
 		// length will almost always be 1, so probably better to not cache it
-		for ( i = 0; i < this.groupsChanged.length; i++ ) {
+		for ( var i = 0; i < this.groupsChanged.length; i++ ) {
 			this.sortGroupIndexes( this.nodes[ this.groupsChanged[ i ] ] );
 		}
 		this.emit( 'update', this.groupsChanged );
@@ -379,11 +377,10 @@ ve.dm.InternalList.prototype.onTransact = function () {
  * @param {ve.dm.Node} node Item node
  */
 ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node ) {
-	var i, len, j, keyedNodes,
-		group = this.nodes[ groupName ];
+	var group = this.nodes[ groupName ];
 
-	keyedNodes = group.keyedNodes[ key ];
-	for ( i = 0, len = keyedNodes.length; i < len; i++ ) {
+	var keyedNodes = group.keyedNodes[ key ];
+	for ( var i = 0, len = keyedNodes.length; i < len; i++ ) {
 		if ( keyedNodes[ i ] === node ) {
 			keyedNodes.splice( i, 1 );
 			if ( i === 0 ) {
@@ -397,7 +394,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
 	if ( keyedNodes.length === 0 ) {
 		delete group.keyedNodes[ key ];
 		delete group.firstNodes[ index ];
-		j = group.indexOrder.indexOf( index );
+		var j = group.indexOrder.indexOf( index );
 		group.indexOrder.splice( j, 1 );
 	}
 	this.markGroupAsChanged( groupName );
@@ -443,18 +440,19 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
  *  of ranges of internal nodes in list's document that should be copied into our document
  */
 ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
-	var i, k, key,
-		listLen = list.getItemNodeCount(),
+	var listLen = list.getItemNodeCount(),
 		nextIndex = this.getItemNodeCount(),
 		newItemRanges = [],
 		mapping = {};
+
+	var i;
 	for ( i = 0; i < commonLength; i++ ) {
 		mapping[ i ] = i;
 	}
 	for ( i = commonLength; i < listLen; i++ ) {
 		// Try to find i in list.keyIndexes
-		key = undefined;
-		for ( k in list.keyIndexes ) {
+		var key = null;
+		for ( var k in list.keyIndexes ) {
 			if ( list.keyIndexes[ k ] === i ) {
 				key = k;
 				break;
@@ -470,7 +468,7 @@ ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
 			mapping[ i ] = this.keyIndexes[ key ];
 		} else {
 			mapping[ i ] = nextIndex;
-			if ( key !== undefined ) {
+			if ( key !== null ) {
 				this.keyIndexes[ key ] = nextIndex;
 			}
 			nextIndex++;

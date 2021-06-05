@@ -76,8 +76,6 @@ ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
  * @private
  */
 ve.dm.TransactionProcessor.prototype.process = function () {
-	var i, completed;
-
 	// Warning: some of this is vestigial. Before TreeModifier, things worked as follows:
 	// 1) executeOperation ran on each operation. This built a list of modifications,
 	// .modificationQueue, consisting of linear splices and attribute/annotation changes.
@@ -97,13 +95,14 @@ ve.dm.TransactionProcessor.prototype.process = function () {
 	// First process each operation to gather modifications in the modification queue.
 	// If an exception occurs during this stage, we don't need to do anything to recover,
 	// because no modifications were made yet.
-	for ( i = 0; i < this.operations.length; i++ ) {
+	for ( var i = 0; i < this.operations.length; i++ ) {
 		this.executeOperation( this.operations[ i ] );
 	}
 	if ( !this.balanced ) {
 		throw new Error( 'Unbalanced set of replace operations found' );
 	}
 
+	var completed;
 	// Apply the queued modifications
 	try {
 		completed = false;
@@ -162,11 +161,11 @@ ve.dm.TransactionProcessor.prototype.queueUndoFunction = function ( func ) {
  * @private
  */
 ve.dm.TransactionProcessor.prototype.applyModifications = function () {
-	var i, len, modifier, modifications = this.modificationQueue;
+	var modifications = this.modificationQueue;
 
 	this.modificationQueue = [];
-	for ( i = 0, len = modifications.length; i < len; i++ ) {
-		modifier = ve.dm.TransactionProcessor.modifiers[ modifications[ i ].type ];
+	for ( var i = 0, len = modifications.length; i < len; i++ ) {
+		var modifier = ve.dm.TransactionProcessor.modifiers[ modifications[ i ].type ];
 		modifier.apply( this, modifications[ i ].args || [] );
 	}
 };
@@ -178,9 +177,9 @@ ve.dm.TransactionProcessor.prototype.applyModifications = function () {
  * @private
  */
 ve.dm.TransactionProcessor.prototype.rollbackModifications = function () {
-	var i, rollbacks = this.rollbackQueue;
+	var rollbacks = this.rollbackQueue;
 	this.rollbackQueue = [];
-	for ( i = rollbacks.length - 1; i >= 0; i-- ) {
+	for ( var i = rollbacks.length - 1; i >= 0; i-- ) {
 		rollbacks[ i ]();
 	}
 };
@@ -209,8 +208,9 @@ ve.dm.TransactionProcessor.prototype.queueEvent = function ( node ) {
  * @private
  */
 ve.dm.TransactionProcessor.prototype.emitQueuedEvents = function () {
-	var i, event,
-		queue = this.eventQueue;
+	var queue = this.eventQueue;
+
+	var event;
 
 	function isDuplicate( otherEvent ) {
 		return otherEvent.node === event.node &&
@@ -220,7 +220,7 @@ ve.dm.TransactionProcessor.prototype.emitQueuedEvents = function () {
 	}
 
 	this.eventQueue = [];
-	for ( i = 0; i < queue.length; i++ ) {
+	for ( var i = 0; i < queue.length; i++ ) {
 		event = queue[ i ];
 		// Check if this event is a duplicate of something we've already emitted
 		if ( !queue.slice( 0, i ).some( isDuplicate ) ) {
@@ -264,10 +264,10 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  *  {Array} splices[].insert Data to insert; for efficiency, objects are inserted without cloning
  */
 ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
-	var i, s,
-		lengthDiff = 0,
+	var lengthDiff = 0,
 		data = this.document.data;
 
+	var i;
 	// We're about to do lots of things that can go wrong, so queue an undo function now
 	// that undoes all splices that we got to
 	this.queueUndoFunction( function () {
@@ -282,7 +282,7 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
 
 	// Apply splices to the linmod and record how to undo them
 	for ( i = 0; i < splices.length; i++ ) {
-		s = splices[ i ];
+		var s = splices[ i ];
 
 		// Adjust s.offset for previous modifications that have already been synced to the tree;
 		// this value is used by the tree sync code later.
@@ -306,18 +306,17 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
  * @param {Mixed} value New attribute value
  */
 ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, value ) {
-	var oldItem, oldValue, node,
-		data = this.document.data;
+	var data = this.document.data;
 	offset += this.adjustment;
 
-	oldItem = data.getData( offset );
-	oldValue = oldItem.attributes && oldItem.attributes[ key ];
+	var oldItem = data.getData( offset );
+	var oldValue = oldItem.attributes && oldItem.attributes[ key ];
 	data.setAttributeAtOffset( offset, key, value );
 	this.queueUndoFunction( function () {
 		data.setAttributeAtOffset( offset, key, oldValue );
 	} );
 
-	node = this.document.getDocumentNode().getNodeFromOffset( offset + 1 );
+	var node = this.document.getDocumentNode().getNodeFromOffset( offset + 1 );
 	// Update node element pointer
 	node.element = data.getData( offset );
 
@@ -344,12 +343,11 @@ ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, valu
  * @param {number} op.length Number of elements to retain
  */
 ve.dm.TransactionProcessor.processors.retain = function ( op ) {
-	var i, type, retainedData;
 	if ( !this.balanced ) {
 		// Track the depth of retained data when in the middle of an unbalanced replace
-		retainedData = this.document.getData( new ve.Range( this.cursor, this.cursor + op.length ) );
-		for ( i = 0; i < retainedData.length; i++ ) {
-			type = retainedData[ i ].type;
+		var retainedData = this.document.getData( new ve.Range( this.cursor, this.cursor + op.length ) );
+		for ( var i = 0; i < retainedData.length; i++ ) {
+			var type = retainedData[ i ].type;
 			if ( type !== undefined ) {
 				this.retainDepth += type.charAt( 0 ) === '/' ? -1 : 1;
 			}
@@ -391,14 +389,13 @@ ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
  * @param {Array} op.insert Linear model data to insert
  */
 ve.dm.TransactionProcessor.processors.replace = function ( op ) {
-	var i, type;
-
 	// Track balancedness for verification purposes only
 
 	// Walk through the remove and insert data
 	// and keep track of the element depth change (level)
 	// for each of these two separately. The model is
 	// only consistent if both levels are zero.
+	var i, type;
 	for ( i = 0; i < op.remove.length; i++ ) {
 		type = op.remove[ i ].type;
 		if ( type !== undefined ) {

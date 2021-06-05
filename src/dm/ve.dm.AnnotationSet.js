@@ -182,10 +182,9 @@ ve.dm.AnnotationSet.prototype.containsHash = function ( storeHash ) {
  * @return {boolean} There is at least one annotation in set that is also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
-	var i, length,
-		setHashes = set.getHashes(),
+	var setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
-	for ( i = 0, length = setHashes.length; i < length; i++ ) {
+	for ( var i = 0, length = setHashes.length; i < length; i++ ) {
 		if ( thisHashes.indexOf( setHashes[ i ] ) !== -1 ) {
 			return true;
 		}
@@ -200,10 +199,9 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
  * @return {boolean} All annotations in set are also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
-	var i, length,
-		setHashes = set.getHashes(),
+	var setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
-	for ( i = 0, length = setHashes.length; i < length; i++ ) {
+	for ( var i = 0, length = setHashes.length; i < length; i++ ) {
 		if ( thisHashes.indexOf( setHashes[ i ] ) === -1 ) {
 			return false;
 		}
@@ -241,7 +239,7 @@ ve.dm.AnnotationSet.prototype.offsetOfHash = function ( storeHash ) {
  * @return {ve.dm.AnnotationSet|boolean} New set containing only the matching annotations
  */
 ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
-	var i, length, result, storeHash, annotation;
+	var result;
 
 	if ( !returnBool ) {
 		result = this.clone();
@@ -250,9 +248,9 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 		// a new hash set.
 		result.removeAll();
 	}
-	for ( i = 0, length = this.getLength(); i < length; i++ ) {
-		storeHash = this.getHash( i );
-		annotation = this.getStore().value( storeHash );
+	for ( var i = 0, length = this.getLength(); i < length; i++ ) {
+		var storeHash = this.getHash( i );
+		var annotation = this.getStore().value( storeHash );
 		if ( callback( annotation ) ) {
 			if ( returnBool ) {
 				return true;
@@ -286,9 +284,8 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
  * @return {ve.dm.Annotation|null} First matching annotation
  */
 ve.dm.AnnotationSet.prototype.getComparable = function ( annotation ) {
-	var i, len, ann;
-	for ( i = 0, len = this.getLength(); i < len; i++ ) {
-		ann = this.getStore().value( this.getHash( i ) );
+	for ( var i = 0, len = this.getLength(); i < len; i++ ) {
+		var ann = this.getStore().value( this.getHash( i ) );
 		if ( ann.compareTo( annotation ) ) {
 			return ann;
 		}
@@ -335,10 +332,10 @@ ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
  * @return {boolean} The annotations are the same
  */
 ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
-	var i, length = this.getHashes().length;
+	var length = this.getHashes().length;
 
 	if ( length === annotationSet.getLength() ) {
-		for ( i = 0; i < length; i++ ) {
+		for ( var i = 0; i < length; i++ ) {
 			if ( !annotationSet.containsComparable( this.get( i ) ) ) {
 				return false;
 			}
@@ -374,13 +371,12 @@ ve.dm.AnnotationSet.prototype.withoutComparableSet = function ( set ) {
  * @return {boolean} The annotation sets are equal
  */
 ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
-	var i, len,
-		ourHashes = this.getHashes(),
+	var ourHashes = this.getHashes(),
 		theirHashes = set.getHashes();
 	if ( ourHashes.length !== theirHashes.length ) {
 		return false;
 	}
-	for ( i = 0, len = ourHashes.length; i < len; i++ ) {
+	for ( var i = 0, len = ourHashes.length; i < len; i++ ) {
 		if ( ourHashes[ i ] !== theirHashes[ i ] ) {
 			return false;
 		}

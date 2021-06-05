@@ -47,8 +47,7 @@ OO.initClass( ve.dm.HashValueStore );
  * @return {ve.dm.HashValueStore} Deserialized store
  */
 ve.dm.HashValueStore.static.deserialize = function ( deserializeValue, data ) {
-	var hash,
-		store = new ve.dm.HashValueStore();
+	var store = new ve.dm.HashValueStore();
 
 	if ( !data ) {
 		return store;
@@ -56,7 +55,7 @@ ve.dm.HashValueStore.static.deserialize = function ( deserializeValue, data ) {
 
 	store.hashes = data.hashes.slice();
 	store.hashStore = {};
-	for ( hash in data.hashStore ) {
+	for ( var hash in data.hashStore ) {
 		store.hashStore[ hash ] = deserializeValue( data.hashStore[ hash ] );
 	}
 	return store;
@@ -71,10 +70,9 @@ ve.dm.HashValueStore.static.deserialize = function ( deserializeValue, data ) {
  * @return {Object|null} Serialized store, null if empty
  */
 ve.dm.HashValueStore.prototype.serialize = function ( serializeValue ) {
-	var hash,
-		serialized = {};
+	var serialized = {};
 
-	for ( hash in this.hashStore ) {
+	for ( var hash in this.hashStore ) {
 		serialized[ hash ] = serializeValue( this.hashStore[ hash ] );
 	}
 	return this.getLength() ? {
@@ -93,9 +91,8 @@ ve.dm.HashValueStore.prototype.getLength = function () {
 };
 
 ve.dm.HashValueStore.prototype.truncate = function ( start ) {
-	var i, len,
-		removedHashes = this.hashes.splice( start );
-	for ( i = 0, len = removedHashes.length; i < len; i++ ) {
+	var removedHashes = this.hashes.splice( start );
+	for ( var i = 0, len = removedHashes.length; i < len; i++ ) {
 		delete this.hashStore[ removedHashes[ i ] ];
 	}
 };
@@ -108,12 +105,11 @@ ve.dm.HashValueStore.prototype.truncate = function ( start ) {
  * @return {ve.dm.HashValueStore} Slice of the current store (with non-cloned value references)
  */
 ve.dm.HashValueStore.prototype.slice = function ( start, end ) {
-	var i, len, hash,
-		sliced = new this.constructor();
+	var sliced = new this.constructor();
 
 	sliced.hashes = this.hashes.slice( start, end );
-	for ( i = 0, len = sliced.hashes.length; i < len; i++ ) {
-		hash = sliced.hashes[ i ];
+	for ( var i = 0, len = sliced.hashes.length; i < len; i++ ) {
+		var hash = sliced.hashes[ i ];
 		sliced.hashStore[ hash ] = this.hashStore[ hash ];
 	}
 	return sliced;
@@ -210,8 +206,8 @@ ve.dm.HashValueStore.prototype.hashOfValue = function ( value, stringified ) {
  * @return {string[]} The hashes of the values in the store
  */
 ve.dm.HashValueStore.prototype.hashAll = function ( values ) {
-	var i, length, hashes = [];
-	for ( i = 0, length = values.length; i < length; i++ ) {
+	var hashes = [];
+	for ( var i = 0, length = values.length; i < length; i++ ) {
 		hashes.push( this.hash( values[ i ] ) );
 	}
 	return hashes;
@@ -236,8 +232,8 @@ ve.dm.HashValueStore.prototype.value = function ( hash ) {
  * @return {Array} Values for these hashes (undefined for any not present)
  */
 ve.dm.HashValueStore.prototype.values = function ( hashes ) {
-	var i, length, values = [];
-	for ( i = 0, length = hashes.length; i < length; i++ ) {
+	var values = [];
+	for ( var i = 0, length = hashes.length; i < length; i++ ) {
 		values.push( this.value( hashes[ i ] ) );
 	}
 	return values;
@@ -256,14 +252,12 @@ ve.dm.HashValueStore.prototype.values = function ( hashes ) {
  * @param {ve.dm.HashValueStore} other Store to merge into this one
  */
 ve.dm.HashValueStore.prototype.merge = function ( other ) {
-	var i, len, hash;
-
 	if ( other === this ) {
 		return;
 	}
 
-	for ( i = 0, len = other.hashes.length; i < len; i++ ) {
-		hash = other.hashes[ i ];
+	for ( var i = 0, len = other.hashes.length; i < len; i++ ) {
+		var hash = other.hashes[ i ];
 		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, hash ) ) {
 			this.hashStore[ hash ] = other.hashStore[ hash ];
 			this.hashes.push( hash );
@@ -278,14 +272,13 @@ ve.dm.HashValueStore.prototype.merge = function ( other ) {
  * @return {ve.dm.HashValueStore} All values in this that do not appear in other
  */
 ve.dm.HashValueStore.prototype.difference = function ( omit ) {
-	var i, len, hash,
-		store = new this.constructor();
+	var store = new this.constructor();
 
 	if ( omit instanceof ve.dm.HashValueStore ) {
 		omit = omit.hashStore;
 	}
-	for ( i = 0, len = this.hashes.length; i < len; i++ ) {
-		hash = this.hashes[ i ];
+	for ( var i = 0, len = this.hashes.length; i < len; i++ ) {
+		var hash = this.hashes[ i ];
 		if ( !Object.prototype.hasOwnProperty.call( omit, hash ) ) {
 			store.hashes.push( hash );
 			store.hashStore[ hash ] = this.hashStore[ hash ];

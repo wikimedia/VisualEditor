@@ -253,10 +253,9 @@ ve.dm.Model.static.getAllowedRdfaTypes = function () {
  * @return {Array} Descriptions, list of strings or Node arrays
  */
 ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
-	var key, change,
-		descriptions = [];
-	for ( key in attributeChanges ) {
-		change = this.describeChange( key, attributeChanges[ key ] );
+	var descriptions = [];
+	for ( var key in attributeChanges ) {
+		var change = this.describeChange( key, attributeChanges[ key ] );
 		if ( change ) {
 			descriptions.push( change );
 		}
@@ -272,7 +271,6 @@ ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
  * @return {string|Node[]|null} Description (string or Node array), or null if nothing to describe
  */
 ve.dm.Model.static.describeChange = function ( key, change ) {
-	var diff;
 	if ( ( typeof change.from === 'object' && change.from !== null ) || ( typeof change.to === 'object' && change.to !== null ) ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unknown', key );
 	} else if ( change.from === undefined ) {
@@ -280,7 +278,7 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 	} else if ( change.to === undefined ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unset', key, this.wrapText( 'del', change.from ) );
 	} else {
-		diff = this.getAttributeDiff( change.from.toString(), change.to.toString() );
+		var diff = this.getAttributeDiff( change.from.toString(), change.to.toString() );
 		if ( diff ) {
 			return ve.htmlMsg( 'visualeditor-changedesc-changed-diff', key, diff );
 		} else {
@@ -299,15 +297,14 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
  * was a simple remove-insert, and allowRemoveInsert wasn't set.
  */
 ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveInsert ) {
-	var diff,
-		span = document.createElement( 'span' ),
+	var span = document.createElement( 'span' ),
 		isRemoveInsert = true,
 		model = this,
 		/* global diff_match_patch */
 		// eslint-disable-next-line new-cap
 		differ = new diff_match_patch();
 
-	diff = differ.diff_main( oldText, newText );
+	var diff = differ.diff_main( oldText, newText );
 	differ.diff_cleanupEfficiency( diff );
 
 	diff.forEach( function ( part ) {
@@ -429,11 +426,10 @@ ve.dm.Model.prototype.getAttribute = function ( key ) {
  * @return {Object} Attributes
  */
 ve.dm.Model.prototype.getAttributes = function ( prefix ) {
-	var key, filtered,
-		attributes = this.element && this.element.attributes ? this.element.attributes : {};
+	var attributes = this.element && this.element.attributes ? this.element.attributes : {};
 	if ( prefix ) {
-		filtered = {};
-		for ( key in attributes ) {
+		var filtered = {};
+		for ( var key in attributes ) {
 			if ( key.indexOf( prefix ) === 0 ) {
 				filtered[ key.slice( prefix.length ) ] = attributes[ key ];
 			}
