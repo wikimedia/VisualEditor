@@ -648,7 +648,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 			} )
 			.on( 'focusout', function ( e ) {
 				var newFocusedElement = e.relatedTarget;
-				if ( !OO.ui.contains( toolbar.$element[ 0 ], newFocusedElement, true ) ) {
+				if ( !OO.ui.contains( [ toolbar.$element[ 0 ], toolbar.$overlay[ 0 ] ], newFocusedElement, true ) ) {
 					// When the focus moves out of the toolbar:
 					if ( OO.ui.contains( surface.getView().$element[ 0 ], newFocusedElement, true ) ) {
 						// When the focus moves out of the toolbar, and it moves back into the surface,
