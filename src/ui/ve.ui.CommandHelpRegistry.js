@@ -131,7 +131,7 @@ ve.ui.commandHelpRegistry.register( 'dialog', 'focusContext', {
 
 // Formatting
 ve.ui.commandHelpRegistry.register( 'formatting', 'paragraph', { trigger: 'paragraph', label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-paragraph' ) } );
-ve.ui.commandHelpRegistry.register( 'formatting', 'heading', { shortcuts: [ 'ctrl+1-6' ], label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading-label' ) } );
+ve.ui.commandHelpRegistry.register( 'formatting', 'heading', { shortcuts: [ 'ctrl+1-6' ], checkCommand: 'heading1', label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-heading-label' ) } );
 ve.ui.commandHelpRegistry.register( 'formatting', 'pre', { trigger: 'preformatted', label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-preformatted' ) } );
 ve.ui.commandHelpRegistry.register( 'formatting', 'blockquote', { trigger: 'blockquote', label: OO.ui.deferMsg( 'visualeditor-formatdropdown-format-blockquote' ) } );
 ve.ui.commandHelpRegistry.register( 'formatting', 'indentIn', { trigger: 'indent', label: OO.ui.deferMsg( 'visualeditor-indentationbutton-indent-tooltip' ) } );

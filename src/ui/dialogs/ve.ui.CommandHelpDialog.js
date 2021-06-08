@@ -89,7 +89,10 @@ ve.ui.CommandHelpDialog.prototype.getBodyHeight = function () {
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	var surface = ve.init.target.getSurface(),
 		sequenceRegistry = surface.sequenceRegistry,
-		commandRegistry = surface.commandRegistry;
+		commandRegistry = surface.commandRegistry,
+		availableCommands = surface.getCommands()
+			.concat( ve.init.target.constructor.static.documentCommands )
+			.concat( ve.init.target.constructor.static.targetCommands );
 
 	// Parent method
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
@@ -114,7 +117,12 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 			var triggerList;
 			var k, kLen;
 			if ( commands[ j ].trigger ) {
-				if ( !commands[ j ].ignoreCommand && !commandRegistry.lookup( commands[ j ].trigger ) ) {
+				if (
+					!commands[ j ].ignoreCommand && (
+						availableCommands.indexOf( commands[ j ].trigger ) === -1 ||
+						!commandRegistry.lookup( commands[ j ].trigger )
+					)
+				) {
 					// Trigger is specified by unavailable command
 					continue;
 				}
@@ -122,6 +130,15 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 			} else {
 				triggerList = [];
 				if ( commands[ j ].shortcuts ) {
+					if (
+						commands[ j ].checkCommand && (
+							availableCommands.indexOf( commands[ j ].checkCommand ) === -1 ||
+							!commandRegistry.lookup( commands[ j ].checkCommand )
+						)
+					) {
+						// 'checkCommand' is not available
+						continue;
+					}
 					for ( k = 0, kLen = commands[ j ].shortcuts.length; k < kLen; k++ ) {
 						var shortcut = commands[ j ].shortcuts[ k ];
 						triggerList.push(
