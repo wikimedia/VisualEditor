@@ -532,7 +532,7 @@ ve.ui.TableAction.prototype.mergeCells = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.enterTableCell = function () {
-	var tableNode = this.findClosestTable();
+	var tableNode = this.findClosestTableViewNode();
 
 	if ( !tableNode ) {
 		return false;
@@ -549,7 +549,7 @@ ve.ui.TableAction.prototype.enterTableCell = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.exitTableCell = function () {
-	var tableNode = this.findClosestTable();
+	var tableNode = this.findClosestTableViewNode();
 
 	if ( !tableNode ) {
 		return false;
@@ -1039,28 +1039,48 @@ ve.ui.TableAction.prototype.replacePlaceholder = function ( matrix, placeholder,
 /**
  * Find the closest table node to the current selection
  *
- * @return {ve.ce.TableNode|null} a TableNode, if one is found
+ * This method is model-only.
+ *
+ * @return {ve.dm.TableNode|null} The closest table node, null if not found
  */
-ve.ui.TableAction.prototype.findClosestTable = function () {
-	var selection = this.surface.getModel().getSelection();
+ve.ui.TableAction.prototype.findClosestTableNode = function () {
+	var surfaceModel = this.surface.getModel(),
+		documentModel = surfaceModel.getDocument(),
+		selection = this.surface.getModel().getSelection();
 
-	var tableNode;
 	if ( selection instanceof ve.dm.TableSelection ) {
-		tableNode = this.surface.getView().documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+		return selection.getTableNode( documentModel );
 	} else if ( selection instanceof ve.dm.LinearSelection ) {
-		var node = this.surface.getView().documentView.getBranchNodeFromOffset( selection.getRange().start );
+		var node = documentModel.getBranchNodeFromOffset( selection.getRange().start );
 		if ( node ) {
-			tableNode = node.$element.closest( 'table' ).data( 'view' );
+			return node.findParent( ve.dm.TableNode );
 		}
 	}
 
-	return tableNode;
+	return null;
+};
+
+/**
+ * Find the closest table view node to the current selection
+ *
+ * @return {ve.ce.TableNode|null} The closest table view, null if not found
+ */
+ve.ui.TableAction.prototype.findClosestTableViewNode = function () {
+	var tableNode = this.findClosestTableNode();
+
+	if ( tableNode ) {
+		return this.surface.getView().getDocument().getBranchNodeFromOffset( tableNode.getRange().start );
+	}
+
+	return null;
 };
 
 /**
  * Get a TableSelection that contains the current selection
  *
- * @return {ve.dm.TableSelection|boolean}
+ * This method is model-only.
+ *
+ * @return {ve.dm.TableSelection|null} The closest TableSelection, null if not found
  */
 ve.ui.TableAction.prototype.getTableSelectionFromSelection = function () {
 	// If the current selection is contained within a table, we'd like the relevant TableSelection.
@@ -1069,30 +1089,36 @@ ve.ui.TableAction.prototype.getTableSelectionFromSelection = function () {
 
 	if ( selection instanceof ve.dm.TableSelection ) {
 		return selection;
+	} else if ( selection instanceof ve.dm.LinearSelection ) {
+		var tableNode = this.findClosestTableNode();
+		if ( !tableNode ) {
+			return null;
+		}
+
+		var documentModel = surfaceModel.getDocument();
+		var node = documentModel.getBranchNodeFromOffset( selection.getRange().start );
+		if ( !node ) {
+			return null;
+		}
+
+		var cellNode = node.findParent( ve.dm.TableCellNode );
+		if ( !cellNode ) {
+			return null;
+		}
+
+		var cell = tableNode.getMatrix().lookupCell( cellNode );
+		if ( !cell ) {
+			return null;
+		}
+
+		selection = new ve.dm.TableSelection(
+			tableNode.getOuterRange(),
+			cell.col, cell.row
+		);
+		return selection.expand( documentModel );
 	}
 
-	var tableNode = this.findClosestTable();
-	if ( !tableNode ) {
-		return false;
-	}
-
-	var cellNode = tableNode.getActiveCellNode();
-	if ( !cellNode ) {
-		// This is actually strange -- we've got a selection inside a table, but no active table cell.
-		return false;
-	}
-
-	var cell = tableNode.getModel().matrix.lookupCell( cellNode.getModel() );
-	if ( !cell ) {
-		return false;
-	}
-
-	selection = new ve.dm.TableSelection(
-		tableNode.getModel().getOuterRange(),
-		cell.col, cell.row
-	);
-	selection = selection.expand( surfaceModel.getDocument() );
-	return selection;
+	return null;
 };
 
 /* Registration */
