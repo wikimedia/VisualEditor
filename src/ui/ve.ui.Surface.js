@@ -87,7 +87,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.debugBar = null;
 	this.placeholder = null;
 	this.placeholderVisible = false;
-	this.setPlaceholder( config.placeholder || 'placeholder' );
+	this.setPlaceholder( config.placeholder );
 	this.setReadOnly( !!config.readOnly );
 	this.nullSelectionOnBlur = config.nullSelectionOnBlur !== false;
 	this.completion = new ve.ui.CompletionWidget( this );
