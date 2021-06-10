@@ -66,9 +66,8 @@ ve.init.sa.SafeStorage.prototype.getObject = function ( key ) {
  * @inheritdoc
  */
 ve.init.sa.SafeStorage.prototype.setObject = function ( key, value ) {
-	var json;
 	try {
-		json = JSON.stringify( value );
+		var json = JSON.stringify( value );
 		return this.set( key, json );
 	} catch ( e ) {}
 	return false;

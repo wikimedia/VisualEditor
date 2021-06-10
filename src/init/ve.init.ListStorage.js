@@ -83,11 +83,10 @@ ve.init.ListStorage.prototype.getListLength = function ( key ) {
  * @return {string[]} List
  */
 ve.init.ListStorage.prototype.getList = function ( key ) {
-	var i,
-		list = [],
+	var list = [],
 		length = this.getListLength( key );
 
-	for ( i = 0; i < length; i++ ) {
+	for ( var i = 0; i < length; i++ ) {
 		list.push( this.get( key + '__' + i ) );
 	}
 	return list;
@@ -99,10 +98,9 @@ ve.init.ListStorage.prototype.getList = function ( key ) {
  * @param {string} key Key of list
  */
 ve.init.ListStorage.prototype.removeList = function ( key ) {
-	var i,
-		length = this.getListLength( key );
+	var length = this.getListLength( key );
 
-	for ( i = 0; i < length; i++ ) {
+	for ( var i = 0; i < length; i++ ) {
 		this.remove( key + '__' + i );
 	}
 	this.remove( key + '__length' );
