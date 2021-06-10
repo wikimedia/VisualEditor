@@ -87,17 +87,15 @@ ve.ui.CommandHelpDialog.prototype.getBodyHeight = function () {
  * @inheritdoc
  */
 ve.ui.CommandHelpDialog.prototype.initialize = function () {
-	var i, iLen, j, jLen, k, kLen, triggerList, commands, shortcut,
-		$list, $shortcut, groupName, commandGroup, commandGroups, commandGroupsOrder, sequence, hasCommand, hasShortcut,
-		surface = ve.init.target.getSurface(),
+	var surface = ve.init.target.getSurface(),
 		sequenceRegistry = surface.sequenceRegistry,
 		commandRegistry = surface.commandRegistry;
 
 	// Parent method
 	ve.ui.CommandHelpDialog.super.prototype.initialize.call( this );
 
-	commandGroups = this.constructor.static.commandGroups;
-	commandGroupsOrder = this.constructor.static.commandGroupsOrder;
+	var commandGroups = this.constructor.static.commandGroups;
+	var commandGroupsOrder = this.constructor.static.commandGroupsOrder;
 
 	this.contentLayout = new OO.ui.PanelLayout( {
 		scrollable: true,
@@ -106,13 +104,15 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 	} );
 	this.$container = $( '<div>' ).addClass( 've-ui-commandHelpDialog-container' );
 
-	for ( i = 0, iLen = commandGroupsOrder.length; i < iLen; i++ ) {
-		hasCommand = false;
-		groupName = commandGroupsOrder[ i ];
-		commandGroup = commandGroups[ groupName ];
-		commands = this.constructor.static.sortedCommandsFromGroup( groupName, commandGroup.promote, commandGroup.demote );
-		$list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
-		for ( j = 0, jLen = commands.length; j < jLen; j++ ) {
+	for ( var i = 0, iLen = commandGroupsOrder.length; i < iLen; i++ ) {
+		var hasCommand = false;
+		var groupName = commandGroupsOrder[ i ];
+		var commandGroup = commandGroups[ groupName ];
+		var commands = this.constructor.static.sortedCommandsFromGroup( groupName, commandGroup.promote, commandGroup.demote );
+		var $list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
+		for ( var j = 0, jLen = commands.length; j < jLen; j++ ) {
+			var triggerList;
+			var k, kLen;
 			if ( commands[ j ].trigger ) {
 				if ( !commands[ j ].ignoreCommand && !commandRegistry.lookup( commands[ j ].trigger ) ) {
 					// Trigger is specified by unavailable command
@@ -123,7 +123,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 				triggerList = [];
 				if ( commands[ j ].shortcuts ) {
 					for ( k = 0, kLen = commands[ j ].shortcuts.length; k < kLen; k++ ) {
-						shortcut = commands[ j ].shortcuts[ k ];
+						var shortcut = commands[ j ].shortcuts[ k ];
 						triggerList.push(
 							new ve.ui.Trigger( shortcut, true )
 						);
@@ -131,9 +131,9 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 				}
 			}
 
-			hasShortcut = false;
+			var hasShortcut = false;
 
-			$shortcut = $( '<dt>' );
+			var $shortcut = $( '<dt>' );
 			for ( k = 0, kLen = triggerList.length; k < kLen; k++ ) {
 				$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-shortcut' ).append(
 					triggerList[ k ].getMessage( true ).map( this.constructor.static.buildKeyNode )
@@ -142,7 +142,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 			}
 			if ( commands[ j ].sequences ) {
 				for ( k = 0, kLen = commands[ j ].sequences.length; k < kLen; k++ ) {
-					sequence = sequenceRegistry.lookup( commands[ j ].sequences[ k ] );
+					var sequence = sequenceRegistry.lookup( commands[ j ].sequences[ k ] );
 					if ( sequence ) {
 						$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-sequence' )
 							.attr( 'data-label', ve.msg( 'visualeditor-shortcuts-sequence-notice' ) )
@@ -209,14 +209,15 @@ ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {
  * @return {Object[]} List of commands in order
  */
 ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, promote, demote ) {
-	var i,
-		commands = ve.ui.commandHelpRegistry.lookupByGroup( groupName ),
+	var commands = ve.ui.commandHelpRegistry.lookupByGroup( groupName ),
 		keys = Object.keys( commands ),
 		used = {},
 		auto = [],
 		promoted = [],
 		demoted = [];
 	keys.sort();
+
+	var i;
 	if ( promote ) {
 		for ( i = 0; i < promote.length; i++ ) {
 			if ( !commands[ promote[ i ] ] ) {

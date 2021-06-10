@@ -35,12 +35,10 @@ ve.ui.CheckListTool.static.deactivateOnSelect = false;
  * @inheritdoc
  */
 ve.ui.CheckListTool.prototype.onUpdateState = function ( fragment ) {
-	var isMatching;
-
 	// Parent method
 	ve.ui.CheckListTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	isMatching = fragment.hasMatchingAncestor( 'checkList' );
+	var isMatching = fragment.hasMatchingAncestor( 'checkList' );
 	this.setActive( isMatching );
 };
 

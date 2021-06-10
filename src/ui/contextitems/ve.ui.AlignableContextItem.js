@@ -15,12 +15,10 @@
  * @param {Object} config Configuration options
  */
 ve.ui.AlignableContextItem = function VeUiAlignableContextItem( context, model, config ) {
-	var align;
-
 	// Parent constructor
 	ve.ui.AlignableContextItem.super.call( this, context, model, config );
 
-	align = model.getAttribute( 'align' );
+	var align = model.getAttribute( 'align' );
 
 	this.align = new ve.ui.AlignWidget( {
 		dir: this.context.getSurface().getDir()

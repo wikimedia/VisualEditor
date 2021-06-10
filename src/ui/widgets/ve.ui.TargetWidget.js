@@ -110,10 +110,9 @@ ve.ui.TargetWidget.prototype.createTarget = function () {
  * @param {ve.dm.Document} doc Document
  */
 ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
-	var surface;
 	// Destroy the previous surface
 	this.clear();
-	surface = this.target.addSurface( doc, {
+	var surface = this.target.addSurface( doc, {
 		inTargetWidget: true,
 		includeCommands: this.includeCommands,
 		excludeCommands: this.excludeCommands,

@@ -124,13 +124,13 @@ ve.ui.LinkContextItem.prototype.renderBody = function () {
  * @protected
  */
 ve.ui.LinkContextItem.prototype.updateLabelPreview = function () {
-	var label,
-		surfaceModel = this.context.getSurface().getModel(),
+	var surfaceModel = this.context.getSurface().getModel(),
 		annotationView = this.getAnnotationView();
 
 	// annotationView is a potentially old view node from when the context was
 	// first focused in the document. If the annotation model has been changed
 	// as well, this may be a problem.
+	var label;
 	if ( annotationView ) {
 		label = surfaceModel.getFragment().expandLinearSelection( 'annotation', annotationView.getModel() ).getText();
 	}

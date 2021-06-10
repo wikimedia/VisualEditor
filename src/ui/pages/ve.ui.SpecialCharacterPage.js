@@ -20,25 +20,24 @@
  * @cfg {boolean} [source] Source mode only set
  */
 ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
-	var character, characterNode, characters, $characters, charactersNode,
-		source = config.source;
 
 	// Parent constructor
 	ve.ui.SpecialCharacterPage.super.apply( this, arguments );
 
 	this.label = config.label;
 
-	characters = config.characters;
-	$characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' );
-	charactersNode = $characters[ 0 ];
+	var characters = config.characters;
+	var $characters = $( '<div>' ).addClass( 've-ui-specialCharacterPage-characters' );
+	var charactersNode = $characters[ 0 ];
+	var source = config.source;
 
 	// The body of this loop is executed a few thousand times when opening
 	// ve.ui.SpecialCharacterDialog, avoid jQuery wrappers.
-	for ( character in characters ) {
+	for ( var character in characters ) {
 		if ( !source && characters[ character ].source ) {
 			continue;
 		}
-		characterNode = document.createElement( 'div' );
+		var characterNode = document.createElement( 'div' );
 		characterNode.className = 've-ui-specialCharacterPage-character';
 		if ( characters[ character ].titleMsg ) {
 			// eslint-disable-next-line mediawiki/msg-doc

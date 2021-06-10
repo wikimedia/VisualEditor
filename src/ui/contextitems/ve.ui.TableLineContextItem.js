@@ -93,14 +93,14 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 
 ( function () {
 
-	var className,
-		modes = [ 'row', 'col' ],
+	var modes = [ 'row', 'col' ],
 		sides = [ 'before', 'after' ],
 		modeNames = { row: 'Row', col: 'Column' },
 		sideNames = { before: 'Before', after: 'After' };
 
 	modes.forEach( function ( mode ) {
 		var modeName = modeNames[ mode ];
+		var className;
 
 		sides.forEach( function ( side ) {
 			var sideName = sideNames[ side ];
@@ -150,13 +150,11 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 				OO.ui.deferMsg( 'visualeditor-table-move-' + mode + '-' + side );
 			ve.ui[ className ].static.commandName = 'move' + modeName + sideName;
 			ve.ui[ className ].prototype.setup = function () {
-				var selection, documentModel, matrix;
-
 				// Parent method
 				ve.ui.TableLineContextItem.prototype.setup.call( this );
 
-				selection = this.context.getSurface().getModel().getSelection();
-				documentModel = this.context.getSurface().getModel().getDocument();
+				var selection = this.context.getSurface().getModel().getSelection();
+				var documentModel = this.context.getSurface().getModel().getDocument();
 
 				if ( !( selection instanceof ve.dm.TableSelection ) ) {
 					this.actionButton.setDisabled( true );
@@ -169,7 +167,7 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 						( mode === 'col' && selection.startCol === 0 )
 					);
 				} else {
-					matrix = selection.getTableNode( documentModel ).getMatrix();
+					var matrix = selection.getTableNode( documentModel ).getMatrix();
 					this.actionButton.setDisabled(
 						( mode === 'row' && selection.endRow === matrix.getRowCount() - 1 ) ||
 						( mode === 'col' && selection.endCol === matrix.getMaxColCount() - 1 )
@@ -194,9 +192,9 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 		ve.ui[ className ].static.icon = 'trash';
 		ve.ui[ className ].static.commandName = 'delete' + modeName;
 		ve.ui[ className ].prototype.getTitle = function () {
-			var count,
-				selection = this.context.getSurface().getModel().getSelection();
+			var selection = this.context.getSurface().getModel().getSelection();
 
+			var count;
 			if ( !( selection instanceof ve.dm.TableSelection ) ) {
 				count = 0;
 			} else if ( mode === 'row' ) {

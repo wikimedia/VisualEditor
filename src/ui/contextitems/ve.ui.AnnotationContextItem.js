@@ -86,8 +86,7 @@ ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
  * @param  {Function} callback Callback, will be passed fragment and annotation
  */
 ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback ) {
-	var i, len,
-		modelClasses = this.constructor.static.modelClasses,
+	var modelClasses = this.constructor.static.modelClasses,
 		fragment = this.getFragment(),
 		annotations = fragment.getAnnotations( true ).filter( function ( annotation ) {
 			return ve.isInstanceOfAny( annotation, modelClasses );
@@ -104,7 +103,7 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
 			return ve.isInstanceOfAny( annotation, modelClasses );
 		} ).get();
 	}
-	for ( i = 0, len = annotations.length; i < len; i++ ) {
+	for ( var i = 0, len = annotations.length; i < len; i++ ) {
 		callback( fragment.expandLinearSelection( 'annotation', annotations[ i ] ), annotations[ i ] );
 	}
 };

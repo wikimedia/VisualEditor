@@ -254,11 +254,11 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
  * @return {Object[]} See #getRelatedSources
  */
 ve.ui.LinearContext.prototype.getRelatedSourcesFromModels = function ( selectedModels ) {
-	var i, len, toolClass, tools, selectedNode,
-		models = [],
+	var models = [],
 		relatedSources = [],
 		items = ve.ui.contextItemFactory.getRelatedItems( selectedModels );
 
+	var i, len;
 	for ( i = 0, len = items.length; i < len; i++ ) {
 		if ( !items[ i ].model.isInspectable() ) {
 			continue;
@@ -273,13 +273,13 @@ ve.ui.LinearContext.prototype.getRelatedSourcesFromModels = function ( selectedM
 			model: items[ i ].model
 		} );
 	}
-	tools = ve.ui.toolFactory.getRelatedItems( selectedModels );
+	var tools = ve.ui.toolFactory.getRelatedItems( selectedModels );
 	for ( i = 0, len = tools.length; i < len; i++ ) {
 		if ( !tools[ i ].model.isInspectable() ) {
 			continue;
 		}
 		if ( models.indexOf( tools[ i ].model ) === -1 ) {
-			toolClass = ve.ui.toolFactory.lookup( tools[ i ].name );
+			var toolClass = ve.ui.toolFactory.lookup( tools[ i ].name );
 			relatedSources.push( {
 				type: 'tool',
 				embeddable: !toolClass || toolClass.static.makesEmbeddableContextItem,
@@ -289,7 +289,7 @@ ve.ui.LinearContext.prototype.getRelatedSourcesFromModels = function ( selectedM
 		}
 	}
 	if ( !relatedSources.length ) {
-		selectedNode = this.surface.getModel().getSelectedNode();
+		var selectedNode = this.surface.getModel().getSelectedNode();
 		// For now we only need alien contexts to show the delete button
 		if ( selectedNode && selectedNode.isFocusable() && this.showDeleteButton() && ve.ui.contextItemFactory.lookup( 'alien' ) ) {
 			relatedSources.push( {

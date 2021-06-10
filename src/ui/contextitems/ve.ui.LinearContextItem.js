@@ -223,11 +223,9 @@ ve.ui.LinearContextItem.prototype.renderBody = function () {
  * @inheritdoc
  */
 ve.ui.LinearContextItem.prototype.setup = function () {
-	var isEmpty;
-
 	this.renderBody();
 
-	isEmpty = this.$body.is( ':empty' );
+	var isEmpty = this.$body.is( ':empty' );
 	if ( isEmpty && this.context.isMobile() ) {
 		this.deleteButton.setInvisibleLabel( true );
 		if ( this.isDeletable() ) {
