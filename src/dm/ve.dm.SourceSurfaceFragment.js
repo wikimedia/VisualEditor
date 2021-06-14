@@ -26,14 +26,13 @@ OO.inheritClass( ve.dm.SourceSurfaceFragment, ve.dm.SurfaceFragment );
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
-	var tempFragment, tempSurfaceModel,
-		args = arguments,
+	var args = arguments,
 		fragment = this,
 		text = this.getText( true );
 
 	this.pushPending( this.convertFromSource( text ).then( function ( selectionDocument ) {
-		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
-		tempFragment = tempSurfaceModel.getLinearFragment(
+		var tempSurfaceModel = new ve.dm.Surface( selectionDocument );
+		var tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
 			selectionDocument.getDocumentRange()
 		);
@@ -59,14 +58,13 @@ ve.dm.SourceSurfaceFragment.prototype.getAnnotations = function () {
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
-	var tempFragment, tempSurfaceModel,
-		args = arguments,
+	var args = arguments,
 		fragment = this,
 		text = this.getText( true );
 
 	this.pushPending( this.convertFromSource( text ).then( function ( selectionDocument ) {
-		tempSurfaceModel = new ve.dm.Surface( selectionDocument );
-		tempFragment = tempSurfaceModel.getLinearFragment(
+		var tempSurfaceModel = new ve.dm.Surface( selectionDocument );
+		var tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
 			selectionDocument.getDocumentRange()
 		);
@@ -84,10 +82,8 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annotate ) {
-	var data;
-
 	if ( typeof content !== 'string' ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), content );
+		var data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), content );
 		// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
 		if ( !data.isPlainText( null, false, [ 'paragraph' ], annotate ) ) {
 			this.insertDocument( new ve.dm.Document( content.concat( [ { type: 'internalList' }, { type: '/internalList' } ] ) ) );
@@ -105,8 +101,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annota
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRange, annotate ) {
-	var data, i, l,
-		range = this.getSelection().getCoveringRange(),
+	var range = this.getSelection().getCoveringRange(),
 		fragment = this;
 
 	if ( !range ) {
@@ -120,8 +115,8 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 
 	// Pass `annotate` as `ignoreCoveringAnnotations`. If matching the target annotation (plain text) strip covering annotations.
 	if ( doc.data.isPlainText( newDocRange, false, [ 'paragraph' ], annotate ) ) {
-		data = doc.data.getDataSlice( newDocRange );
-		for ( i = 0, l = data.length; i < l; i++ ) {
+		var data = doc.data.getDataSlice( newDocRange );
+		for ( var i = 0, l = data.length; i < l; i++ ) {
 			// Remove any text annotations, as we have determined them to be covering
 			if ( Array.isArray( data[ i ] ) ) {
 				data[ i ] = data[ i ][ 0 ];
@@ -164,8 +159,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) {
-	var i, node, nodes,
-		content,
+	var content,
 		range = this.getSelection().getCoveringRange();
 
 	if ( !range ) {
@@ -193,11 +187,11 @@ ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapE
 		wrapEach = [ wrapEach ];
 	}
 
-	nodes = this.getSelectedLeafNodes();
+	var nodes = this.getSelectedLeafNodes();
 
 	content = wrapOuter.map( getOpening );
-	for ( i = 0; i < nodes.length; i++ ) {
-		node = nodes[ i ];
+	for ( var i = 0; i < nodes.length; i++ ) {
+		var node = nodes[ i ];
 		content = content
 			.concat( wrapEach.map( getOpening ) )
 			.concat( this.getSurface().getLinearFragment( node.getRange() ).getText().split( '' ) )

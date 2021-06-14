@@ -103,9 +103,7 @@ ve.dm.Change.static = {};
  * @return {ve.dm.Change} Deserialized change
  */
 ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe ) {
-	var authorId, deserializeStore, i, iLen, txSerialized, insertion, tx,
-		prevInfo,
-		hasOwn = Object.prototype.hasOwnProperty,
+	var hasOwn = Object.prototype.hasOwnProperty,
 		getTransactionInfo = this.getTransactionInfo,
 		deserializeValue = this.deserializeValue,
 		selections = {},
@@ -129,21 +127,23 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 		}
 	}
 
-	for ( authorId in data.selections ) {
+	for ( var authorId in data.selections ) {
 		selections[ authorId ] = ve.dm.Selection.static.newFromJSON(
 			data.selections[ authorId ]
 		);
 	}
-	deserializeStore = ve.dm.HashValueStore.static.deserialize.bind(
+	var deserializeStore = ve.dm.HashValueStore.static.deserialize.bind(
 		null,
 		preserveStoreValues ? function noop( x ) {
 			return x;
 		} : function ( x ) { return deserializeValue( x, unsafe ); }
 	);
-	for ( i = 0, iLen = data.transactions.length; i < iLen; i++ ) {
-		txSerialized = data.transactions[ i ];
+	var prevInfo;
+	for ( var i = 0, iLen = data.transactions.length; i < iLen; i++ ) {
+		var txSerialized = data.transactions[ i ];
+		var tx;
 		if ( typeof txSerialized === 'string' ) {
-			insertion = txSerialized.split( '' );
+			var insertion = txSerialized.split( '' );
 			annotate(
 				insertion,
 				prevInfo.uniformInsert && prevInfo.uniformInsert.annotations
@@ -259,12 +259,10 @@ ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
  * @return {Mixed[]} [ aRebasedOntoB, bRebasedOntoA ], or [ null, null ] if conflicting
  */
 ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB ) {
-	var infoA, infoB;
-
 	transactionA = transactionA.clone();
 	transactionB = transactionB.clone();
-	infoA = transactionA.getActiveRangeAndLengthDiff();
-	infoB = transactionB.getActiveRangeAndLengthDiff();
+	var infoA = transactionA.getActiveRangeAndLengthDiff();
+	var infoB = transactionB.getActiveRangeAndLengthDiff();
 
 	if ( infoA.start === undefined || infoB.start === undefined ) {
 		// One of the transactions is a no-op: only need to adjust its retain length.
@@ -355,19 +353,17 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  * @return {ve.dm.Change|null} return.rejected Unrebasable final segment of uncommitted
  */
 ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) {
-	var i, iLen, b, j, jLen, a, rebases, rebasedTransactionsA, rebased, transposedHistory,
-		storeB, rebasedStoresA, storeA, authorId,
-		transactionsA = history.transactions.slice(),
+	if ( history.start !== uncommitted.start ) {
+		throw new Error( 'Different starts: ' + history.start + ' and ' + uncommitted.start );
+	}
+
+	var transactionsA = history.transactions.slice(),
 		transactionsB = uncommitted.transactions.slice(),
 		storesA = history.getStores(),
 		storesB = uncommitted.getStores(),
 		selectionsA = OO.cloneObject( history.selections ),
 		selectionsB = OO.cloneObject( uncommitted.selections ),
 		rejected = null;
-
-	if ( history.start !== uncommitted.start ) {
-		throw new Error( 'Different starts: ' + history.start + ' and ' + uncommitted.start );
-	}
 
 	// For each element b_i of transactionsB, rebase the whole list transactionsA over b_i.
 	// To rebase a1, a2, a3, …, aN over b_i, first we rebase a1 onto b_i. Then we rebase
@@ -389,14 +385,15 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	// - transposedHistory: history rebased onto (uncommitted sliced up to i)
 	// - rejected: uncommitted sliced from i onwards
 	bLoop:
-	for ( i = 0, iLen = transactionsB.length; i < iLen; i++ ) {
-		b = transactionsB[ i ];
-		storeB = storesB[ i ];
-		rebasedTransactionsA = [];
-		rebasedStoresA = [];
-		for ( j = 0, jLen = transactionsA.length; j < jLen; j++ ) {
-			a = transactionsA[ j ];
-			storeA = storesA[ j ];
+	for ( var i = 0, iLen = transactionsB.length; i < iLen; i++ ) {
+		var b = transactionsB[ i ];
+		var storeB = storesB[ i ];
+		var rebasedTransactionsA = [];
+		var rebasedStoresA = [];
+		for ( var j = 0, jLen = transactionsA.length; j < jLen; j++ ) {
+			var a = transactionsA[ j ];
+			var storeA = storesA[ j ];
+			var rebases;
 			if ( b.authorId < a.authorId ) {
 				rebases = ve.dm.Change.static.rebaseTransactions( b, a ).reverse();
 			} else {
@@ -421,18 +418,19 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 	}
 
 	// Length calculations below assume no removal of empty rebased transactions
-	rebased = new ve.dm.Change(
+	var rebased = new ve.dm.Change(
 		uncommitted.start + transactionsA.length,
 		transactionsB,
 		storesB,
 		{}
 	);
-	transposedHistory = new ve.dm.Change(
+	var transposedHistory = new ve.dm.Change(
 		history.start + transactionsB.length,
 		transactionsA,
 		storesA,
 		{}
 	);
+	var authorId;
 	for ( authorId in selectionsB ) {
 		authorId = +authorId;
 		rebased.selections[ authorId ] = selectionsB[ authorId ].translateByChange( transposedHistory, authorId );
@@ -465,8 +463,6 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
  * @return {string} return.uniformInsert.annotationString Comma-separated annotation hashes
  */
 ve.dm.Change.static.getTransactionInfo = function ( tx ) {
-	var op0, op1, op2, replaceOp, start, end, docLength;
-
 	// Copy of ve.dm.ElementLinearData.static.getAnnotationHashesFromItem, but we
 	// don't want to load all of ElementLinearData and its dependencies on the server-side.
 	function getAnnotations( item ) {
@@ -539,9 +535,10 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 		};
 	}
 
-	op0 = tx.operations[ 0 ];
-	op1 = tx.operations[ 1 ];
-	op2 = tx.operations[ 2 ];
+	var op0 = tx.operations[ 0 ];
+	var op1 = tx.operations[ 1 ];
+	var op2 = tx.operations[ 2 ];
+	var replaceOp, start, end, docLength;
 	if (
 		op0 &&
 		op0.type === 'replace' &&
@@ -620,11 +617,10 @@ ve.dm.Change.prototype.getStore = function ( n ) {
  * @return {ve.dm.HashValueStore[]} Each transaction's store items (shallow copied store)
  */
 ve.dm.Change.prototype.getStores = function () {
-	var i, len, end,
-		stores = [],
+	var stores = [],
 		start = 0;
-	for ( i = 0, len = this.getLength(); i < len; i++ ) {
-		end = this.storeLengthAtTransaction[ i ];
+	for ( var i = 0, len = this.getLength(); i < len; i++ ) {
+		var end = this.storeLengthAtTransaction[ i ];
 		stores.push( this.store.slice( start, end ) );
 		start = end;
 	}
@@ -635,11 +631,10 @@ ve.dm.Change.prototype.getStores = function () {
  * @return {number|null} The first author in a transaction or selection change, or null if empty
  */
 ve.dm.Change.prototype.firstAuthorId = function () {
-	var authors;
 	if ( this.transactions.length ) {
 		return this.transactions[ 0 ].authorId;
 	}
-	authors = Object.keys( this.selections );
+	var authors = Object.keys( this.selections );
 	if ( authors.length ) {
 		return +authors[ 0 ];
 	}
@@ -732,16 +727,15 @@ ve.dm.Change.prototype.pushTransaction = function ( transaction, storeLength ) {
  * @throws {Error} If other does not start immediately after this
  */
 ve.dm.Change.prototype.push = function ( other ) {
-	var i, iLen, stores, transaction, store,
-		change = this;
+	var change = this;
 	if ( other.start !== this.start + this.getLength() ) {
 		throw new Error( 'this ends at ' + ( this.start + this.getLength() ) +
 			' but other starts at ' + other.start );
 	}
-	stores = other.getStores();
-	for ( i = 0, iLen = other.transactions.length; i < iLen; i++ ) {
-		transaction = other.transactions[ i ];
-		store = stores[ i ];
+	var stores = other.getStores();
+	for ( var i = 0, iLen = other.transactions.length; i < iLen; i++ ) {
+		var transaction = other.transactions[ i ];
+		var store = stores[ i ];
 		change.store.merge( store );
 		this.pushTransaction( transaction, change.store.getLength() );
 	}
@@ -809,22 +803,21 @@ ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 		throw new Error( 'Change starts at ' + this.start + ', but doc is at ' + doc.completeHistory.getLength() );
 	}
 	this.getStores().forEach( function ( store ) {
-		surface.documentModel.store.merge( store );
+		doc.store.merge( store );
 	} );
 	// Isolate other users' changes from ours with a breakpoint
 	surface.breakpoint();
 	this.transactions.forEach( function ( tx ) {
-		var range, offset;
 		surface.change( tx );
 		// Don't mark as applied: this.start already tracks this
 		tx.applied = false;
 
 		// TODO: This would be better fixed by T202730
 		if ( applySelection ) {
-			range = tx.getModifiedRange( doc );
+			var range = tx.getModifiedRange( doc );
 			// If the transaction only touched the internal list, there is no modified range within the main document
 			if ( range ) {
-				offset = doc.getNearestCursorOffset( range.end, -1 );
+				var offset = doc.getNearestCursorOffset( range.end, -1 );
 				if ( offset !== -1 ) {
 					surface.setSelection( new ve.dm.LinearSelection( new ve.Range( offset ) ) );
 				}
@@ -889,26 +882,25 @@ ve.dm.Change.prototype.removeFromHistory = function ( doc ) {
  * @return {Object} JSONable object
  */
 ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
-	var authorId, serializeStoreValues, serializeStore, i, iLen, tx, info, prevInfo,
-		txSerialized, stores, data,
-		getTransactionInfo = this.constructor.static.getTransactionInfo,
+	var getTransactionInfo = this.constructor.static.getTransactionInfo,
 		selections = {},
 		transactions = [];
 
 	// Recursively serialize, so this method is the inverse of deserialize
 	// without having to use JSON.stringify (which is also recursive).
-	for ( authorId in this.selections ) {
+	for ( var authorId in this.selections ) {
 		selections[ authorId ] = this.selections[ authorId ].toJSON();
 	}
-	serializeStoreValues = preserveStoreValues ? function noop( x ) {
+	var serializeStoreValues = preserveStoreValues ? function noop( x ) {
 		return x;
 	} : this.constructor.static.serializeValue;
-	serializeStore = function ( store ) {
+	var serializeStore = function ( store ) {
 		return store.serialize( serializeStoreValues );
 	};
-	for ( i = 0, iLen = this.transactions.length; i < iLen; i++ ) {
-		tx = this.transactions[ i ];
-		info = getTransactionInfo( tx );
+	var prevInfo;
+	for ( var i = 0, iLen = this.transactions.length; i < iLen; i++ ) {
+		var tx = this.transactions[ i ];
+		var info = getTransactionInfo( tx );
 		if (
 			info &&
 			prevInfo &&
@@ -920,7 +912,7 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		) {
 			transactions.push( info.uniformInsert.text );
 		} else {
-			txSerialized = tx.toJSON();
+			var txSerialized = tx.toJSON();
 			if ( i > 0 && tx.authorId === this.transactions[ i - 1 ].authorId ) {
 				delete txSerialized.authorId;
 			}
@@ -928,8 +920,8 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		}
 		prevInfo = info;
 	}
-	stores = this.getStores().map( serializeStore );
-	data = {
+	var stores = this.getStores().map( serializeStore );
+	var data = {
 		start: this.start,
 		transactions: transactions
 	};

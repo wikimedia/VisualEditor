@@ -228,7 +228,7 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
  * @return {Array} Slice or copy of data
  */
 ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
-	var end, data,
+	var end,
 		start = 0,
 		length = this.getLength();
 	if ( range !== undefined ) {
@@ -237,7 +237,7 @@ ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
 	}
 	// Support: IE
 	// IE work-around: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
-	data = end === undefined ? this.slice( start ) : this.slice( start, end );
+	var data = end === undefined ? this.slice( start ) : this.slice( start, end );
 	// Return either the slice or a deep copy of the slice
 	return deep ? ve.copy( data ) : data;
 };

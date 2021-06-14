@@ -119,15 +119,14 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
  * @return {Object} An object all HTML attributes except data-parsoid & RESTBase IDs
  */
 ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
-	var comparableAttributes, metadataIdRegExp,
-		domElements = this.store && this.getOriginalDomElements( this.store );
+	var domElements = this.store && this.getOriginalDomElements( this.store );
 
 	if ( domElements && domElements[ 0 ] ) {
-		comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
+		var comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
 		delete comparableAttributes[ 'data-parsoid' ];
 
 		if ( comparableAttributes.id ) {
-			metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
+			var metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
 			if ( metadataIdRegExp && comparableAttributes.id.match( metadataIdRegExp ) ) {
 				delete comparableAttributes.id;
 			}

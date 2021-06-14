@@ -14,8 +14,7 @@
  * @param {ve.dm.Surface} surface Surface model
  */
 ve.dm.MetaList = function VeDmMetaList( surface ) {
-	var items,
-		metaList = this;
+	var metaList = this;
 
 	// Mixin constructors
 	OO.EventEmitter.call( this );
@@ -24,7 +23,7 @@ ve.dm.MetaList = function VeDmMetaList( surface ) {
 	this.document = surface.getDocument();
 
 	// Sorted array of attached ve.dm.MetaItem nodes in document order
-	this.items = items = [];
+	var items = this.items = [];
 
 	this.document.connect( this, {
 		nodeAttached: 'onNodeAttached',
@@ -64,10 +63,9 @@ OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
  * @param {ve.dm.Node} node The node that was attached
  */
 ve.dm.MetaList.prototype.onNodeAttached = function ( node ) {
-	var i,
-		offsetPath = node.getOffsetPath();
+	var offsetPath = node.getOffsetPath();
 	if ( node instanceof ve.dm.MetaItem ) {
-		i = OO.binarySearch( this.items, function searchFunc( other ) {
+		var i = OO.binarySearch( this.items, function searchFunc( other ) {
 			return ve.compareTuples( offsetPath, other.getOffsetPath() );
 		}, true );
 		this.items.splice( i, 0, node );
@@ -82,9 +80,8 @@ ve.dm.MetaList.prototype.onNodeAttached = function ( node ) {
  * @param {ve.dm.Node} node The node that was detached
  */
 ve.dm.MetaList.prototype.onNodeDetached = function ( node ) {
-	var i;
 	if ( node instanceof ve.dm.MetaItem ) {
-		i = this.items.indexOf( node );
+		var i = this.items.indexOf( node );
 		if ( i !== -1 ) {
 			node.detachFromMetaList( this );
 			this.items.splice( i, 1 );
@@ -136,18 +133,17 @@ ve.dm.MetaList.prototype.getAllItems = function () {
  * defaults to document end
  */
 ve.dm.MetaList.prototype.insertMeta = function ( meta, offset ) {
-	var closeMeta, tx;
 	if ( arguments[ 2 ] !== undefined ) {
 		throw new Error( 'Old "index" argument is no longer supported' );
 	}
 	if ( meta instanceof ve.dm.MetaItem ) {
 		meta = meta.getElement();
 	}
-	closeMeta = { type: '/' + meta.type };
+	var closeMeta = { type: '/' + meta.type };
 	if ( offset === undefined ) {
 		offset = this.document.getDocumentRange().end;
 	}
-	tx = ve.dm.TransactionBuilder.static.newFromInsertion( this.document, offset, [ meta, closeMeta ] );
+	var tx = ve.dm.TransactionBuilder.static.newFromInsertion( this.document, offset, [ meta, closeMeta ] );
 	this.surface.change( tx );
 };
 
@@ -158,8 +154,7 @@ ve.dm.MetaList.prototype.insertMeta = function ( meta, offset ) {
  * @param {ve.dm.MetaItem} item Item to remove
  */
 ve.dm.MetaList.prototype.removeMeta = function ( item ) {
-	var tx;
-	tx = ve.dm.TransactionBuilder.static.newFromRemoval(
+	var tx = ve.dm.TransactionBuilder.static.newFromRemoval(
 		this.document,
 		item.getOuterRange(),
 		true
@@ -176,12 +171,11 @@ ve.dm.MetaList.prototype.removeMeta = function ( item ) {
  * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
  */
 ve.dm.MetaList.prototype.replaceMeta = function ( oldItem, meta ) {
-	var closeMeta, tx;
 	if ( meta instanceof ve.dm.MetaItem ) {
 		meta = meta.getElement();
 	}
-	closeMeta = { type: '/' + meta.type };
-	tx = ve.dm.TransactionBuilder.static.newFromReplacement(
+	var closeMeta = { type: '/' + meta.type };
+	var tx = ve.dm.TransactionBuilder.static.newFromReplacement(
 		this.document,
 		oldItem.getOuterRange(),
 		[ meta, closeMeta ],

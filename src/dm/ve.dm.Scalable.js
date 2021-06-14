@@ -551,8 +551,7 @@ ve.dm.Scalable.prototype.isTooLarge = function () {
  * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
-	var ratio, snap, snapMin, snapMax,
-		minDimensions = this.isEnforcedMin() && this.getMinDimensions(),
+	var minDimensions = this.isEnforcedMin() && this.getMinDimensions(),
 		maxDimensions = this.isEnforcedMax() && this.getMaxDimensions();
 
 	dimensions = ve.copy( dimensions );
@@ -569,7 +568,7 @@ ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
 
 	// Bound to ratio
 	if ( this.isFixedRatio() ) {
-		ratio = dimensions.width / dimensions.height;
+		var ratio = dimensions.width / dimensions.height;
 		if ( ratio < this.getRatio() ) {
 			dimensions.height = Math.round( dimensions.width / this.getRatio() );
 		} else {
@@ -579,9 +578,9 @@ ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
 
 	// Snap to grid
 	if ( grid ) {
-		snapMin = minDimensions ? Math.ceil( minDimensions.width / grid ) : -Infinity;
-		snapMax = maxDimensions ? Math.floor( maxDimensions.width / grid ) : Infinity;
-		snap = Math.round( dimensions.width / grid );
+		var snapMin = minDimensions ? Math.ceil( minDimensions.width / grid ) : -Infinity;
+		var snapMax = maxDimensions ? Math.floor( maxDimensions.width / grid ) : Infinity;
+		var snap = Math.round( dimensions.width / grid );
 		dimensions.width = Math.max( Math.min( snap, snapMax ), snapMin ) * grid;
 		if ( this.isFixedRatio() ) {
 			// If the ratio is fixed we can't snap both to the grid, so just snap the width

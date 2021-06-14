@@ -43,7 +43,6 @@ OO.initClass( ve.dm.TreeCursor );
  * @param {number} [tooShort] Only step into text nodes longer than this
  */
 ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
-	var item;
 	if ( !this.node ) {
 		return;
 	}
@@ -59,6 +58,7 @@ ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
 	}
 	this.crossIgnoredNodes();
 
+	var item;
 	// If at the start of long enough text node, step in
 	if (
 		this.node.hasChildren() &&
@@ -77,7 +77,7 @@ ve.dm.TreeCursor.prototype.normalizeCursor = function ( tooShort ) {
  * Cross any immediately following nodes that are in liveIgnoreNodes
  */
 ve.dm.TreeCursor.prototype.crossIgnoredNodes = function () {
-	var parent, nextSibling, len, item;
+	var parent, nextSibling;
 	if (
 		this.node &&
 		this.node.type === 'text' &&
@@ -89,7 +89,8 @@ ve.dm.TreeCursor.prototype.crossIgnoredNodes = function () {
 		// At the end of a text node and the next node is ignored
 		this.stepOut();
 	}
-	len = ( this.node && this.node.hasChildren() && this.node.children.length ) || 0;
+	var len = ( this.node && this.node.hasChildren() && this.node.children.length ) || 0;
+	var item;
 	while (
 		this.offset < len &&
 		( item = this.node.children[ this.offset ] ) &&
@@ -147,7 +148,6 @@ ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
  * @return {ve.dm.Node} [return.item] The node stepped into/out of/across (absent for 'crosstext')
  */
 ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
-	var childLength, item, step, length;
 	if ( !this.node ) {
 		this.lastStep = undefined;
 		return undefined;
@@ -157,6 +157,7 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 		this.checkLinearOffset();
 	}
 	this.normalizeCursor( maxLength );
+	var length, step;
 	if ( this.node.type === 'text' ) {
 		// We cannot be the end, because we just normalized
 		length = Math.min( maxLength, this.node.length - this.offset );
@@ -174,7 +175,7 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 		return step;
 	}
 	// Else not a text node
-	childLength = this.node.hasChildren() ? this.node.children.length : 0;
+	var childLength = this.node.hasChildren() ? this.node.children.length : 0;
 	if ( this.offset > childLength ) {
 		throw new Error( 'Offset ' + this.offset + ' > childLength ' + childLength );
 	}
@@ -182,7 +183,7 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 		return this.stepOut();
 	}
 	// Else there are unpassed child nodes
-	item = this.node.children[ this.offset ];
+	var item = this.node.children[ this.offset ];
 	if ( item.getOuterLength() > maxLength ) {
 		return this.stepIn();
 	}
@@ -208,7 +209,6 @@ ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
  * @return {Object} The step
  */
 ve.dm.TreeCursor.prototype.stepIn = function () {
-	var item, length, step;
 	if (
 		this.node.type === 'text' ||
 		!this.node.hasChildren() ||
@@ -216,9 +216,9 @@ ve.dm.TreeCursor.prototype.stepIn = function () {
 	) {
 		throw new Error( 'No node to step into' );
 	}
-	item = this.node.children[ this.offset ];
-	length = item.type === 'text' ? 0 : 1;
-	step = {
+	var item = this.node.children[ this.offset ];
+	var length = item.type === 'text' ? 0 : 1;
+	var step = {
 		type: 'open',
 		length: length,
 		path: this.path.slice(),
@@ -241,10 +241,9 @@ ve.dm.TreeCursor.prototype.stepIn = function () {
  * @return {Object} The step
  */
 ve.dm.TreeCursor.prototype.stepOut = function () {
-	var item, step,
-		treeCursor = this,
+	var treeCursor = this,
 		priorOffset = this.offset;
-	item = this.nodes.pop();
+	var item = this.nodes.pop();
 	this.node = this.nodes[ this.nodes.length - 1 ];
 	this.offset = this.path.pop();
 	if ( this.node === undefined ) {
@@ -264,7 +263,7 @@ ve.dm.TreeCursor.prototype.stepOut = function () {
 		// Increase linearOffset for the close tag
 		this.linearOffset++;
 	}
-	step = {
+	var step = {
 		type: 'close',
 		length: item.type === 'text' ? 0 : 1,
 		path: this.path.slice(),

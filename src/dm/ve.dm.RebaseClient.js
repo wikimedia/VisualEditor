@@ -147,19 +147,19 @@ ve.dm.RebaseClient.prototype.submitChange = function () {
  * @param {ve.dm.Change} change The committed change from the server
  */
 ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
-	var uncommitted, unsent, result,
-		authorId = change.firstAuthorId(),
+	var authorId = change.firstAuthorId(),
 		logResult = {};
 	if ( !authorId ) {
 		return;
 	}
 
-	unsent = this.getChangeSince( this.sentLength, false );
+	var result;
+	var unsent = this.getChangeSince( this.sentLength, false );
 	if (
 		authorId !== this.getAuthorId() ||
 		change.start + change.getLength() > this.sentLength
 	) {
-		uncommitted = this.getChangeSince( this.commitLength, false );
+		var uncommitted = this.getChangeSince( this.commitLength, false );
 		result = ve.dm.Change.static.rebaseUncommittedChange( change, uncommitted );
 		if ( result.rejected ) {
 			// Undo rejected tail, and mark unsent and backtracked if necessary

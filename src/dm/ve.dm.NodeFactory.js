@@ -92,11 +92,10 @@ ve.dm.NodeFactory.prototype.getSuggestedParentNodeTypes = function ( type ) {
  * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
-	var types;
 	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		// If childNodeTypes is null any child is allowed, if it's an array of at least one element
 		// than at least one kind of node is allowed
-		types = this.registry[ type ].static.childNodeTypes;
+		var types = this.registry[ type ].static.childNodeTypes;
 		return types === null || ( Array.isArray( types ) && types.length > 0 );
 	}
 	throw new Error( 'Unknown node type: ' + type );
@@ -197,13 +196,12 @@ ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
  * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.canNodeTakeAnnotation = function ( type, annotation ) {
-	var i, len, disallowedList;
 	if ( !Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		throw new Error( 'Unknown node type: ' + type );
 	}
-	disallowedList = this.registry[ type ].static.disallowedAnnotationTypes;
+	var disallowedList = this.registry[ type ].static.disallowedAnnotationTypes;
 
-	for ( i = 0, len = disallowedList.length; i < len; i++ ) {
+	for ( var i = 0, len = disallowedList.length; i < len; i++ ) {
 		if ( annotation instanceof ve.dm.annotationFactory.lookup( disallowedList[ i ] ) ) {
 			return false;
 		}
