@@ -82,9 +82,8 @@ ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
  * @return {Array} Model data for a new table cell
  */
 ve.dm.TableCellNode.static.createData = function ( options ) {
-	var opening, content;
 	options = options || {};
-	opening = {
+	var opening = {
 		type: 'tableCell',
 		attributes: {
 			style: options.style || 'data',
@@ -92,7 +91,7 @@ ve.dm.TableCellNode.static.createData = function ( options ) {
 			colspan: options.colspan || 1
 		}
 	};
-	content = options.content || [
+	var content = options.content || [
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
 		{ type: '/paragraph' }
 	];

@@ -52,15 +52,13 @@ ve.dm.TableRowNode.static.matchTagNames = [ 'tr' ];
  * @return {Array} Model data for a new table row
  */
 ve.dm.TableRowNode.static.createData = function ( options ) {
-	var i, cellCount,
-		data = [];
-
 	options = options || {};
 
-	cellCount = options.cellCount || 1;
+	var cellCount = options.cellCount || 1;
 
+	var data = [];
 	data.push( { type: 'tableRow' } );
-	for ( i = 0; i < cellCount; i++ ) {
+	for ( var i = 0; i < cellCount; i++ ) {
 		data = data.concat( ve.dm.TableCellNode.static.createData( {
 			style: Array.isArray( options.style ) ? options.style[ i ] : options.style
 		} ) );
@@ -75,12 +73,11 @@ ve.dm.TableRowNode.static.createData = function ( options ) {
  * Handle splicing of child nodes
  */
 ve.dm.TableRowNode.prototype.onSplice = function () {
-	var i,
-		nodes = Array.prototype.slice.call( arguments, 2 );
 	if ( this.getRoot() ) {
 		this.getParent().getParent().getMatrix().invalidate();
 	}
-	for ( i = 0; i < nodes.length; i++ ) {
+	var nodes = Array.prototype.slice.call( arguments, 2 );
+	for ( var i = 0; i < nodes.length; i++ ) {
 		nodes[ i ].connect( this, {
 			attributeChange: [ 'onCellAttributeChange', nodes[ i ] ]
 		} );

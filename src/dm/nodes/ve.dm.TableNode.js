@@ -48,10 +48,9 @@ ve.dm.TableNode.static.matchTagNames = [ 'table' ];
  * Handle splicing of child nodes
  */
 ve.dm.TableNode.prototype.onSplice = function () {
-	var i,
-		nodes = Array.prototype.slice.call( arguments, 2 );
+	var nodes = Array.prototype.slice.call( arguments, 2 );
 	this.getMatrix().invalidate();
-	for ( i = 0; i < nodes.length; i++ ) {
+	for ( var i = 0; i < nodes.length; i++ ) {
 		nodes[ i ].connect( this, {
 			cellAttributeChange: 'onCellAttributeChange'
 		} );
@@ -83,8 +82,7 @@ ve.dm.TableNode.prototype.getMatrix = function () {
  * @return {ve.dm.TableCaptionNode|null} The table's caption node, or null if not found
  */
 ve.dm.TableNode.prototype.getCaptionNode = function () {
-	var i, l;
-	for ( i = 0, l = this.children.length; i < l; i++ ) {
+	for ( var i = 0, l = this.children.length; i < l; i++ ) {
 		if ( this.children[ i ] instanceof ve.dm.TableCaptionNode ) {
 			return this.children[ i ];
 		}
@@ -186,7 +184,6 @@ ve.dm.TableNodeCellIterator.prototype.next = function () {
  * @fires newSection
  */
 ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
-	var sectionNode;
 	// If there are no sections left, finish
 	if ( this.sectionIndex >= this.sectionCount ) {
 		this.finished = true;
@@ -194,7 +191,7 @@ ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
 		return;
 	}
 	// Get the next node and make sure it's a section node (and not an alien node)
-	sectionNode = this.table.children[ this.sectionIndex ];
+	var sectionNode = this.table.children[ this.sectionIndex ];
 	this.sectionIndex++;
 	this.rowIndex = 0;
 	if ( sectionNode instanceof ve.dm.TableSectionNode ) {
@@ -213,7 +210,6 @@ ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
  * @fires newRow
  */
 ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
-	var rowNode;
 	// If there are no rows left, go to the next section
 	if ( this.rowIndex >= this.rowCount ) {
 		this.nextSection();
@@ -223,7 +219,7 @@ ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
 		}
 	}
 	// Get the next node and make sure it's a row node (and not an alien node)
-	rowNode = this.sectionNode.children[ this.rowIndex ];
+	var rowNode = this.sectionNode.children[ this.rowIndex ];
 	this.rowIndex++;
 	this.cellIndex = 0;
 	if ( rowNode instanceof ve.dm.TableRowNode ) {
@@ -240,7 +236,6 @@ ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
  * Move to the next table cell
  */
 ve.dm.TableNodeCellIterator.prototype.nextCell = function () {
-	var cellNode;
 	// For the first read, sectionNode and rowNode will be empty
 	if ( !this.sectionNode ) {
 		this.nextSection();
@@ -258,7 +253,7 @@ ve.dm.TableNodeCellIterator.prototype.nextCell = function () {
 		}
 	}
 	// Get the next node and make sure it's a cell node (and not an alien node)
-	cellNode = this.rowNode.children[ this.cellIndex ];
+	var cellNode = this.rowNode.children[ this.cellIndex ];
 	this.cellNode = cellNode && cellNode.isCellable() ? cellNode : null;
 	this.cellIndex++;
 };
