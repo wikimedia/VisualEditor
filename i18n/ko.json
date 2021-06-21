@@ -79,6 +79,7 @@
 	"visualeditor-clipboard-paste-special": "일반 텍스트로 붙여넣기",
 	"visualeditor-command-dialog-cancel": "닫기 / 변경 취소",
 	"visualeditor-command-dialog-confirm": "변경 확인",
+	"visualeditor-command-dialog-focus-context": "컨텍스트 팝업으로 포커스 이동",
 	"visualeditor-commentannotationcontextitem-comment": "댓글",
 	"visualeditor-commentinspector-edit": "주석 편집",
 	"visualeditor-commentinspector-title": "주석",
