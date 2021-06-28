@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Delim",
 			"Endres",
 			"Fryed-peach",
@@ -132,7 +133,7 @@
 	"visualeditor-key-alt": "Alt",
 	"visualeditor-key-backspace": "Backspace",
 	"visualeditor-key-ctrl": "Ctrl",
-	"visualeditor-key-delete": "Delete",
+	"visualeditor-key-delete": "削除",
 	"visualeditor-key-down": "下",
 	"visualeditor-key-end": "End",
 	"visualeditor-key-enter": "Enter",
