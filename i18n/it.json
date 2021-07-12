@@ -23,6 +23,7 @@
 			"Raoli",
 			"Ricordisamoa",
 			"S4b1nuz E.656",
+			"Sakretsu",
 			"Statix64",
 			"Una giornata uggiosa '94",
 			"Wikitoni"
@@ -97,6 +98,8 @@
 	"visualeditor-dialog-language-search-title": "Seleziona lingua",
 	"visualeditor-dialog-table-caption": "Didascalia",
 	"visualeditor-dialog-table-title": "Proprietà della tabella",
+	"visualeditor-diff-moved-down": "Spostato giù",
+	"visualeditor-diff-moved-up": "Spostato su",
 	"visualeditor-diff-no-changes": "Nessuna modifica",
 	"visualeditor-find-and-replace-done": "Fatto",
 	"visualeditor-find-and-replace-find-text": "Trova",
