@@ -25,6 +25,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Àpici",
 	"visualeditor-annotationbutton-underline-tooltip": "Suttalineatu",
 	"visualeditor-clearbutton-tooltip": "Pulizzìa lu stili",
+	"visualeditor-contextitemwidget-label-remove": "Cancella",
 	"visualeditor-contextitemwidget-label-secondary": "Cancia",
 	"visualeditor-dialog-action-apply": "Applica li canciamenti",
 	"visualeditor-dialog-action-cancel": "Annulla",
@@ -39,12 +40,14 @@
 	"visualeditor-formatdropdown-format-paragraph": "Paragrafu",
 	"visualeditor-formatdropdown-format-preformatted": "Prifurmattatu",
 	"visualeditor-formatdropdown-title": "Cancia lu furmatu",
+	"visualeditor-help-tool": "Aiutu",
 	"visualeditor-historybutton-redo-tooltip": "Rifai",
 	"visualeditor-historybutton-undo-tooltip": "Annulla",
 	"visualeditor-indentationbutton-indent-tooltip": "Aumenta la ndintazzioni",
 	"visualeditor-indentationbutton-outdent-tooltip": "Arridduci la ndintazzioni",
 	"visualeditor-inspector-close-tooltip": "Chiudi",
 	"visualeditor-inspector-remove-tooltip": "Lèva",
+	"visualeditor-key-delete": "Cancella",
 	"visualeditor-languageinspector-title": "Lingua",
 	"visualeditor-languageinspector-widget-changelang": "Attrova la lingua",
 	"visualeditor-languageinspector-widget-label-direction": "Dirizzioni",
@@ -52,5 +55,6 @@
 	"visualeditor-languageinspector-widget-label-language": "Lingua",
 	"visualeditor-linkinspector-title": "Culligamentu",
 	"visualeditor-listbutton-bullet-tooltip": "Lista appuntata",
-	"visualeditor-listbutton-number-tooltip": "Lista nummurata"
+	"visualeditor-listbutton-number-tooltip": "Lista nummurata",
+	"visualeditor-shortcuts-other": "Àutru"
 }
