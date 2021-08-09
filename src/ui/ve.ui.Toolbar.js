@@ -97,6 +97,12 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 
 	this.groups = groups;
 
+	if ( groups.length ) {
+		this.$element.removeClass( 've-ui-toolbar-empty' );
+	} else {
+		this.$element.addClass( 've-ui-toolbar-empty' );
+	}
+
 	if ( surfaceChange ) {
 		// Emit surface change event after tools have been setup
 		this.emit( 'surfaceChange', oldSurface, surface );

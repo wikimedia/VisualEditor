@@ -4,6 +4,8 @@
  * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+/* stylelint-disable no-descending-specificity */
+
 .ve-ui-toolbar {
 	/* Used by mobile context position hack */
 	position: relative;
@@ -13,6 +15,11 @@
 	/* Make sure the toolbar is shown on top of surface contents even when not floating,
 	   for correct rendering of dropdowns, popups etc. */
 	z-index: 2;
+}
+
+.ve-ui-toolbar.ve-ui-toolbar-empty > .oo-ui-toolbar-bar {
+	border: 0;
+	box-shadow: none;
 }
 
 /* PositionedTargetToolbar */
