@@ -13,6 +13,7 @@
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliennode-tooltip": "N'aviti a scusari, stu elimentu ancora pò siri canciatu sulu n mudalitati surgenti accamarora.",
 	"visualeditor-align-desc-left": "manca",
+	"visualeditor-align-desc-none": "nudda",
 	"visualeditor-annotationbutton-big-tooltip": "Granni",
 	"visualeditor-annotationbutton-bold-tooltip": "Grassettu",
 	"visualeditor-annotationbutton-code-tooltip": "Codici di computer",
@@ -27,6 +28,7 @@
 	"visualeditor-clearbutton-tooltip": "Pulizzìa lu stili",
 	"visualeditor-contextitemwidget-label-remove": "Cancella",
 	"visualeditor-contextitemwidget-label-secondary": "Cancia",
+	"visualeditor-debugbar-close": "Chiudi",
 	"visualeditor-dialog-action-apply": "Applica li canciamenti",
 	"visualeditor-dialog-action-cancel": "Annulla",
 	"visualeditor-dialog-action-goback": "Narreri",
@@ -56,5 +58,6 @@
 	"visualeditor-linkinspector-title": "Culligamentu",
 	"visualeditor-listbutton-bullet-tooltip": "Lista appuntata",
 	"visualeditor-listbutton-number-tooltip": "Lista nummurata",
+	"visualeditor-rebase-client-author-name": "Nomu",
 	"visualeditor-shortcuts-other": "Àutru"
 }
