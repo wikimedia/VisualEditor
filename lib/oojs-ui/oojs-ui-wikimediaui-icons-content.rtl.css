@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.41.3
+ * OOUI v0.42.0
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2021 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2021-03-12T21:47:58Z
+ * Date: 2021-08-19T04:45:01Z
  */
 /* stylelint-disable selector-no-vendor-prefix */
 /* stylelint-enable selector-no-vendor-prefix */
@@ -201,6 +201,15 @@
 }
 .oo-ui-image-progressive.oo-ui-icon-robot {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/robot-progressive.svg);
+}
+.oo-ui-icon-share {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/share.svg);
+}
+.oo-ui-image-invert.oo-ui-icon-share {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/share-invert.svg);
+}
+.oo-ui-image-progressive.oo-ui-icon-share {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/share-progressive.svg);
 }
 .oo-ui-icon-specialPages {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/specialPages-rtl.svg);
