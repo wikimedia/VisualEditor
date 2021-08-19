@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Adriendelucca",
 			"Dishual",
 			"Fohanno",
 			"Fulup",
@@ -38,7 +39,7 @@
 	"visualeditor-changedesc-no-key": "$1 kemmet e $2",
 	"visualeditor-changedesc-set": "$1 lakaet da $2",
 	"visualeditor-changedesc-unknown": "$1 kemmet",
-	"visualeditor-clearbutton-tooltip": "Diverkañ ar stil",
+	"visualeditor-clearbutton-tooltip": "Dilemel",
 	"visualeditor-clipboard-copy": "Eilañ",
 	"visualeditor-clipboard-cut": "Troc'hañ",
 	"visualeditor-clipboard-paste": "Pegañ",
