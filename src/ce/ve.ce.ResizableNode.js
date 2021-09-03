@@ -308,20 +308,12 @@ ve.ce.ResizableNode.prototype.onResizableAlign = function ( align ) {
 		return;
 	}
 
-	switch ( align ) {
-		case 'right':
-			this.showHandles( [ 'sw' ] );
-			break;
-		case 'left':
-			this.showHandles( [ 'se' ] );
-			break;
-		case 'center':
-			this.showHandles( [ 'sw', 'se' ] );
-			break;
-		default:
-			this.showHandles();
-			break;
-	}
+	this.showHandles( {
+		right: [ 'sw' ],
+		left: [ 'se' ],
+		center: [ 'sw', 'se' ]
+		// Defaults to undefined
+	}[ align ] );
 };
 
 /**

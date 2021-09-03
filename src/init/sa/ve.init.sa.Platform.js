@@ -235,19 +235,14 @@ ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 		return this.parsedMessages[ key ];
 	}
 	// Fallback to regular messages, html escaping applied.
-	return this.getMessage( key ).replace( /['"<>&]/g, function escapeCallback( s ) {
-		switch ( s ) {
-			case '\'':
-				return '&#039;';
-			case '"':
-				return '&quot;';
-			case '<':
-				return '&lt;';
-			case '>':
-				return '&gt;';
-			case '&':
-				return '&amp;';
-		}
+	return this.getMessage( key ).replace( /['"<>&]/g, function ( char ) {
+		return {
+			'\'': '&#039;',
+			'"': '&quot;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'&': '&amp;'
+		}[ char ];
 	} );
 };
 
