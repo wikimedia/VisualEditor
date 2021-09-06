@@ -108,10 +108,14 @@
 	"visualeditor-shortcuts-other": "အခြား",
 	"visualeditor-shortcuts-sequence-notice": "စာရိုက်ပါ",
 	"visualeditor-specialcharacter-button-tooltip": "အထူးအက္ခရာ",
+	"visualeditor-specialcharacter-group-label-mathematical": "သင်္ချာဆိုင်ရာ",
+	"visualeditor-specialcharacter-group-label-symbols": "သင်္ကေတများ",
 	"visualeditor-specialcharacterinspector-title": "အထူးအက္ခရာ",
 	"visualeditor-table-caption": "ပုံစာ",
+	"visualeditor-table-insert-table": "ဇယား",
 	"visualeditor-table-merge-cells-merge": "ပေါင်းစပ်ရန်",
 	"visualeditor-table-merge-cells-unmerge": "ပြန်ခွဲထုတ်ရန်",
 	"visualeditor-toolbar-history": "ရာဇဝင်",
-	"visualeditor-toolbar-insert": "ထည့်သွင်းရန်"
+	"visualeditor-toolbar-insert": "ထည့်သွင်းရန်",
+	"visualeditor-toolbar-table": "ဇယား"
 }
