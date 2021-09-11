@@ -71,9 +71,7 @@ QUnit.test( 'getFullData', function ( assert ) {
 			transaction: function ( doc ) {
 				return ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 3, 9 ) );
 			},
-			// BUG! <i></i> is not removed
-			// EXPECTED: '<p>x</p><p>efgh</p>'
-			afterHtml: '<p>x</p><i></i><p>efgh</p>',
+			afterHtml: '<p>x</p><p>efgh</p>',
 			// BUG! <i></i> is not restored
 			// EXPECTED: Same as beforeHtml
 			beforeHtmlUndo: '<p>x</p><p>abcd</p><p>efgh</p>'

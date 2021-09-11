@@ -748,11 +748,16 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 			ve.dm.nodeFactory.isMetaData( item.type ) &&
 			(
 				mode === 'noMetadata' ||
-				mode === 'roundTrip' &&
-				insertedMetaItems.indexOf( item.originalDomElementsHash ) !== -1
+				mode === 'roundTrip' && (
+					// Already inserted
+					insertedMetaItems.indexOf( item.originalDomElementsHash ) !== -1 ||
+					// Removable meta item that was not handled yet, which means that its entire branch node
+					// must have been removed, so it's out of place and should be removed too
+					ve.dm.nodeFactory.isRemovableMetaData( item.type ) && ve.getProp( item, 'internal', 'loadMetaParentOffset' )
+				)
 			)
 		) {
-			// Already inserted; skip this item and its matching close tag
+			// Skip this item and its matching close tag
 			i += 1;
 			continue;
 		}
