@@ -15,7 +15,7 @@
  * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.Document|ve.dm.Surface} dataOrDocOrSurface Document data, document model, or surface model to edit
  * @param {Object} [config] Configuration options
  * @cfg {ve.dm.BranchNode} [attachedRoot] Node to surface, if ve.dm.Document passed in
- * @cfg {string} [mode] Editing mode
+ * @cfg {string} mode Editing mode, either "visual" or "source"
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
  * @cfg {jQuery} [$overlayContainer] Clipping container for local overlays, defaults to surface view
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
@@ -23,13 +23,13 @@
  * @cfg {ve.ui.DataTransferHandlerFactory} [dataTransferHandlerFactory] Data transfer handler factory to use
  * @cfg {string[]|null} [includeCommands] List of commands to include, null for all registered commands
  * @cfg {string[]} [excludeCommands] List of commands to exclude
- * @cfg {Object} [importRules] Import rules
+ * @cfg {Object} [importRules={}] Import rules
  * @cfg {boolean} [multiline=true] Multi-line surface
  * @cfg {string} [placeholder] Placeholder text to display when the surface is empty
- * @cfg {string} [readOnly] Surface is read-only
+ * @cfg {string} [readOnly=false] Surface is read-only
  * @cfg {string} [nullSelectionOnBlur=true] Surface selection is set to null on blur
- * @cfg {string} [inDialog] The name of the dialog this surface is in
- * @cfg {boolean} [inTargetWidget] The surface is in a target widget
+ * @cfg {string} [inDialog=''] The name of the dialog this surface is in
+ * @cfg {boolean} [inTargetWidget=false] The surface is in a target widget
  */
 ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	config = config || {};

@@ -16,7 +16,7 @@
  * @param {ve.dm.Document} doc Document model to create surface for
  * @param {ve.dm.BranchNode} [attachedRoot] Node to surface; default is document node
  * @param {Object} [config] Configuration options
- * @cfg {boolean} [sourceMode] Source editing mode
+ * @cfg {boolean} [sourceMode=false] Source editing mode
  */
 ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
 	// Support old (doc, config) argument order

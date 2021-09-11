@@ -14,7 +14,7 @@
  *
  * @constructor
  * @param {Object} [config] Configuration options
- * @cfg {Object} [toolbarConfig] Configuration options for the toolbar
+ * @cfg {Object} [toolbarConfig={}] Configuration options for the toolbar
  * @cfg {Object} [toolbarGroups] Toolbar groups, defaults to this.constructor.static.toolbarGroups
  * @cfg {Object} [actionGroups] Toolbar groups, defaults to this.constructor.static.actionGroups
  * @cfg {string[]} [modes] Available editing modes. Defaults to static.modes
