@@ -116,6 +116,7 @@ ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
 	function replacer( name, value ) {
 		// TODO: replace this check with data equality class method checks
 		if (
+			name === 'generated' ||
 			name === 'changesSinceLoad' ||
 			name === 'originalDomElementsHash' ||
 			name === 'originalMw' ||
@@ -123,6 +124,10 @@ ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
 			name === 'mw' ||
 			name === 'contentsUsed'
 		) {
+			return undefined;
+		}
+		// Drop .internal that would become empty after the replacements above
+		if ( name === 'internal' && JSON.stringify( value, replacer ) === '{}' ) {
 			return undefined;
 		}
 		return value;
