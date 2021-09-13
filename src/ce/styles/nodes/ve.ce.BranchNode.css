@@ -13,7 +13,6 @@
 	opacity: 0;
 	cursor: pointer;
 	-webkit-transition: opacity 200ms ease-out;
-	-moz-transition: opacity 200ms ease-out;
 	transition: opacity 200ms ease-out;
 	/* Create a block formatting context to avoid overlapping floated elements (T211844) */
 	overflow: hidden;
@@ -55,7 +54,6 @@
 	outline-color: transparent;
 	outline-offset: 1em;
 	-webkit-transition: all 400ms ease-out;
-	-moz-transition: all 400ms ease-out;
 	transition: all 400ms ease-out;
 }
 

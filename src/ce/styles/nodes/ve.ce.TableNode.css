@@ -33,7 +33,6 @@
 .ve-ce-tableNodeOverlay-selection-box {
 	position: absolute;
 	background: rgba( 109, 169, 247, 0.3 ); /* #6da9f7 */
-	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	opacity: 0.6;
@@ -45,15 +44,12 @@
 }
 
 .ve-ce-tableNodeOverlay-selection-box-notEditable {
-	background-image: -webkit-repeating-linear-gradient( -45deg, transparent 0 transparent 5px, #95d14f 5px, #95d14f 10px );
-	background-image: -moz-repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
 	background-image: repeating-linear-gradient( -45deg, transparent 0, transparent 5px, #95d14f 5px, #95d14f 10px );
 }
 
 .ve-ce-tableNodeOverlay-selection-box-anchor {
 	position: absolute;
 	border: solid 1px #6da9f7;
-	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }

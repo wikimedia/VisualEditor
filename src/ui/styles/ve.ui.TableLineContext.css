@@ -13,7 +13,6 @@
 	position: absolute;
 	display: block;
 	background-color: #d3e5fd;
-	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	cursor: pointer;
