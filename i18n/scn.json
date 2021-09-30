@@ -32,6 +32,7 @@
 	"visualeditor-dialog-action-apply": "Applica li canciamenti",
 	"visualeditor-dialog-action-cancel": "Annulla",
 	"visualeditor-dialog-action-goback": "Narreri",
+	"visualeditor-dialog-action-insert": "Nzirisci",
 	"visualeditor-dialog-error-dismiss": "Narreri",
 	"visualeditor-formatdropdown-format-heading1": "Tìtulu 1",
 	"visualeditor-formatdropdown-format-heading2": "Tìtulu 2",
@@ -50,14 +51,17 @@
 	"visualeditor-inspector-close-tooltip": "Chiudi",
 	"visualeditor-inspector-remove-tooltip": "Leva",
 	"visualeditor-key-delete": "Cancella",
+	"visualeditor-key-insert": "Nzirisci",
 	"visualeditor-languageinspector-title": "Lingua",
 	"visualeditor-languageinspector-widget-changelang": "Attrova la lingua",
 	"visualeditor-languageinspector-widget-label-direction": "Dirizzioni",
-	"visualeditor-languageinspector-widget-label-langcode": "Codici dâ lingua",
+	"visualeditor-languageinspector-widget-label-langcode": "Còdici dâ lingua",
 	"visualeditor-languageinspector-widget-label-language": "Lingua",
 	"visualeditor-linkinspector-title": "Culligamentu",
 	"visualeditor-listbutton-bullet-tooltip": "Lista appuntata",
 	"visualeditor-listbutton-number-tooltip": "Lista nummurata",
 	"visualeditor-rebase-client-author-name": "Nomu",
-	"visualeditor-shortcuts-other": "Àutru"
+	"visualeditor-shortcuts-insert": "Nzirisci",
+	"visualeditor-shortcuts-other": "Àutru",
+	"visualeditor-toolbar-insert": "Nzirisci"
 }
