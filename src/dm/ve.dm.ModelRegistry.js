@@ -241,8 +241,9 @@
 	 * - tag specified
 	 * - nothing specified
 	 *
-	 * If there are multiple candidates with the same specificity, they are ranked in reverse order of
-	 * registration (i.e. if A was registered before B, B will rank above A).
+	 * If there are multiple candidates with the same specificity, exact matches of strings take precedence over
+	 * matches of regular expressions. If there are still multiple candidates, they are ranked in reverse
+	 * order of registration (i.e. if A was registered before B, B will rank above A).
 	 * The highest-ranking model whose test function does not return false, wins.
 	 *
 	 * @param {Node} node Node to match (usually an HTMLElement but can also be a Comment node)
