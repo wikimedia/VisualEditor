@@ -1,9 +1,16 @@
 {
+	"root": true,
 	"extends": [
-		"../.eslintrc.json",
-		"wikimedia/qunit",
-		"wikimedia/language/es6"
+		"wikimedia/client-es6",
+		"wikimedia/jquery",
+		"wikimedia/mediawiki",
+		"wikimedia/jsduck",
+		"wikimedia/qunit"
 	],
+	"globals": {
+		"ve": "readonly",
+		"OO": "readonly"
+	},
 	"rules": {
 		"max-len": "off",
 		"no-var": "off",

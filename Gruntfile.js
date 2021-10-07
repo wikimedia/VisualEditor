@@ -4,10 +4,10 @@
  * @package VisualEditor
  */
 
-/* eslint-env node, es6 */
+'use strict';
 
 module.exports = function ( grunt ) {
-	var modules = grunt.file.readJSON( 'build/modules.json' ),
+	const modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
 		rebaserBuildFiles = moduleUtils.makeBuildList( modules, [ 'rebaser.build' ] ),
 		veRebaseFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.rebase.build' ] ),
@@ -16,12 +16,8 @@ module.exports = function ( grunt ) {
 		coreBuildFilesWikimediaUI = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.wikimediaui' ] ),
 		testFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.test' ] ).scripts,
 		demoPages = ( function () {
-			var pages = [],
-				files = grunt.file.expand( 'demos/ve/pages/*.html' );
-			pages = files.map( function ( file ) {
-				return file.match( /^.*pages\/(.+).html$/ )[ 1 ];
-			} );
-			return pages;
+			const files = grunt.file.expand( 'demos/ve/pages/*.html' );
+			return files.map( ( file ) => file.match( /^.*pages\/(.+).html$/ )[ 1 ] );
 		}() );
 
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
@@ -530,10 +526,10 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'git-status', function () {
-		var done = this.async();
+		const done = this.async();
 		// Are there unstaged changes?
 		require( 'child_process' ).exec( 'git ls-files --modified', function ( err, stdout, stderr ) {
-			var ret = err || stderr || stdout;
+			const ret = err || stderr || stdout;
 			if ( ret ) {
 				grunt.log.error( 'Unstaged changes in these files:' );
 				grunt.log.error( ret );

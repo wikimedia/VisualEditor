@@ -74,6 +74,7 @@
 				if ( $target.closest( '#primary' ).length ) {
 					$primary.find( '.active' ).removeClass( 'active' );
 				}
+				// eslint-disable-next-line no-jquery/no-class-state
 				if ( !$target.hasClass( 'active' ) ) {
 					$target.addClass( 'active activating' );
 				}
@@ -83,6 +84,7 @@
 			var parts = [],
 				$target = $( e.target );
 			if ( e.which === OO.ui.MouseButtons.LEFT ) {
+				// eslint-disable-next-line no-jquery/no-class-state
 				if ( $target.hasClass( 'active' ) && !$target.hasClass( 'activating' ) ) {
 					$target.removeClass( 'active' );
 				}

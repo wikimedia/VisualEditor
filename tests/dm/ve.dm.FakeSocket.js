@@ -48,7 +48,6 @@ ve.dm.FakeSocket.prototype.join = function ( roomName ) {
 
 ve.dm.FakeSocket.prototype.emit = function ( eventName ) {
 	var i,
-		// eslint-disable-next-line es/no-array-from
 		args = Array.from( arguments ).slice( 1 ),
 		handlers = this.handlers.get( eventName ) || [];
 	for ( i = 0; i < handlers.length; i++ ) {
@@ -65,7 +64,6 @@ ve.dm.FakeSocket.prototype.on = function ( eventName, handler ) {
 
 ve.dm.FakeSocket.prototype.receive = function ( eventName ) {
 	var i,
-		// eslint-disable-next-line es/no-array-from
 		args = Array.from( arguments ).slice( 1 ),
 		handlers = this.handlers.get( eventName ) || [];
 	for ( i = 0; i < handlers.length; i++ ) {

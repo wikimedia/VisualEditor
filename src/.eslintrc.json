@@ -1,0 +1,22 @@
+{
+	"root": true,
+	"extends": [
+		"wikimedia/client",
+		"wikimedia/jquery",
+		"wikimedia/mediawiki",
+		"wikimedia/jsduck"
+	],
+	"globals": {
+		"ve": "writable",
+		"VisualEditorSupportCheck": "writable",
+		"OO": "readonly",
+		"unicodeJS": "readonly",
+		"RangeFix": "readonly",
+		"Papa": "readonly"
+	},
+	"rules": {
+		"no-jquery/no-extend": "error",
+		"no-jquery/no-visibility": "error",
+		"max-len": "off"
+	}
+}
