@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Misibacsi"
+			"Misibacsi",
+			"Tacsipacsi"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -19,7 +20,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Alsó index",
 	"visualeditor-annotationbutton-superscript-tooltip": "Felső index",
 	"visualeditor-annotationbutton-underline-tooltip": "Aláhúzott",
-	"visualeditor-clearbutton-tooltip": "Stílus törlése",
+	"visualeditor-clearbutton-tooltip": "Eltávolítás",
 	"visualeditor-clipboard-copy": "Másolás",
 	"visualeditor-clipboard-cut": "Kivágás",
 	"visualeditor-clipboard-paste": "Beillesztés",
