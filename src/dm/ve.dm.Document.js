@@ -1135,7 +1135,9 @@ ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offs
  * Rebuild the entire node tree from linear model data.
  */
 ve.dm.Document.prototype.rebuildTree = function () {
-	var documentNode = this.getDocumentNode();
+	// Never rebuild above the attachedRoot node as that would destroy
+	// that node, and invalidate all references to it (T293254)
+	var documentNode = this.attachedRoot || this.getDocumentNode();
 	this.rebuildNodes(
 		documentNode,
 		0,
