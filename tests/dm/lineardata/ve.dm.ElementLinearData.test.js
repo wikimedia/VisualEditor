@@ -9,372 +9,366 @@ QUnit.module( 've.dm.ElementLinearData' );
 /* Tests */
 
 QUnit.test( 'getAnnotationsFromOffset', function ( assert ) {
-	var i, j,
-		data,
-		doc,
-		annotations,
-		cases = [
-			{
-				msg: [ 'bold #1', 'bold #2' ],
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/bold' } ] ]
-				],
-				expected: [
-					[ { type: 'textStyle/bold' } ],
-					[ { type: 'textStyle/bold' } ]
-				]
-			},
-			{
-				msg: [ 'bold #3', 'italic #1' ],
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/italic' } ] ]
-				],
-				expected: [
-					[ { type: 'textStyle/bold' } ],
-					[ { type: 'textStyle/italic' } ]
-				]
-			},
-			{
-				msg: [ 'bold, italic & underline' ],
-				data: [
-					[
-						'a',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' },
-							{ type: 'textStyle/underline' }
-						]
-					]
-				],
-				expected: [
+	var cases = [
+		{
+			msg: [ 'bold #1', 'bold #2' ],
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/bold' } ] ]
+			],
+			expected: [
+				[ { type: 'textStyle/bold' } ],
+				[ { type: 'textStyle/bold' } ]
+			]
+		},
+		{
+			msg: [ 'bold #3', 'italic #1' ],
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/italic' } ] ]
+			],
+			expected: [
+				[ { type: 'textStyle/bold' } ],
+				[ { type: 'textStyle/italic' } ]
+			]
+		},
+		{
+			msg: [ 'bold, italic & underline' ],
+			data: [
+				[
+					'a',
 					[
 						{ type: 'textStyle/bold' },
 						{ type: 'textStyle/italic' },
 						{ type: 'textStyle/underline' }
 					]
 				]
-			},
-			{
-				msg: [ 'unannotated element', 'annotated element', 'annotated close element', 'unannotated element' ],
-				data: [
-					{ type: 'paragraph' },
-					{ type: 'break', annotations: [ { type: 'textStyle/bold' } ] },
-					{ type: '/break' },
-					{ type: '/paragraph' }
-				],
-				expected: [
-					[],
-					[
-						{ type: 'textStyle/bold' }
-					],
-					[
-						{ type: 'textStyle/bold' }
-					],
-					[]
+			],
+			expected: [
+				[
+					{ type: 'textStyle/bold' },
+					{ type: 'textStyle/italic' },
+					{ type: 'textStyle/underline' }
 				]
-			},
-			{
-				msg: [ 'unannotated element', 'annotated element', 'annotated close element (ignored)', 'unannotated element' ],
-				ignoreClose: true,
-				data: [
-					{ type: 'paragraph' },
-					{ type: 'break', annotations: [ { type: 'textStyle/bold' } ] },
-					{ type: '/break' },
-					{ type: '/paragraph' }
+			]
+		},
+		{
+			msg: [ 'unannotated element', 'annotated element', 'annotated close element', 'unannotated element' ],
+			data: [
+				{ type: 'paragraph' },
+				{ type: 'break', annotations: [ { type: 'textStyle/bold' } ] },
+				{ type: '/break' },
+				{ type: '/paragraph' }
+			],
+			expected: [
+				[],
+				[
+					{ type: 'textStyle/bold' }
 				],
-				expected: [
-					[],
-					[
-						{ type: 'textStyle/bold' }
-					],
-					[],
-					[]
-				]
-			}
-		];
+				[
+					{ type: 'textStyle/bold' }
+				],
+				[]
+			]
+		},
+		{
+			msg: [ 'unannotated element', 'annotated element', 'annotated close element (ignored)', 'unannotated element' ],
+			ignoreClose: true,
+			data: [
+				{ type: 'paragraph' },
+				{ type: 'break', annotations: [ { type: 'textStyle/bold' } ] },
+				{ type: '/break' },
+				{ type: '/paragraph' }
+			],
+			expected: [
+				[],
+				[
+					{ type: 'textStyle/bold' }
+				],
+				[],
+				[]
+			]
+		}
+	];
 
 	// Run tests
-	for ( i = 0; i < cases.length; i++ ) {
-		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
-		doc = new ve.dm.Document( data );
+	cases.forEach( function ( caseItem, i ) {
+		var data = ve.dm.example.preprocessAnnotations( caseItem.data );
+		var doc = new ve.dm.Document( data );
 		if ( i === 0 ) {
 			assert.notStrictEqual(
-				doc.data.getAnnotationsFromOffset( 0, cases[ i ].ignoreClose ).getHashes(),
-				doc.data.getAnnotationsFromOffset( 0, cases[ i ].ignoreClose ).getHashes(),
+				doc.data.getAnnotationsFromOffset( 0, caseItem.ignoreClose ).getHashes(),
+				doc.data.getAnnotationsFromOffset( 0, caseItem.ignoreClose ).getHashes(),
 				'annotation set hashes are not equal by reference'
 			);
 		}
-		for ( j = 0; j < doc.getData().length; j++ ) {
-			annotations = doc.data.getAnnotationsFromOffset( j, cases[ i ].ignoreClose );
+		for ( var j = 0; j < doc.getData().length; j++ ) {
+			var annotations = doc.data.getAnnotationsFromOffset( j, caseItem.ignoreClose );
 			assert.deepEqual( annotations,
-				ve.dm.example.createAnnotationSet( doc.getStore(), cases[ i ].expected[ j ] ),
-				cases[ i ].msg[ j ]
+				ve.dm.example.createAnnotationSet( doc.getStore(), caseItem.expected[ j ] ),
+				caseItem.msg[ j ]
 			);
 		}
-	}
+	} );
 } );
 
 QUnit.test( 'getAnnotationsFromRange', function ( assert ) {
-	var i, data, doc,
-		cases = [
-			{
-				msg: 'single annotations',
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/bold' } ] ]
-				],
-				expected: [ { type: 'textStyle/bold' } ]
-			},
-			{
-				msg: 'single annotation with non-content data',
-				data: [
-					{ type: 'paragraph' },
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/bold' } ] ],
-					{ type: '/paragraph' }
-				],
-				expected: [ { type: 'textStyle/bold' } ]
-			},
-			{
-				msg: 'multiple annotations',
-				data: [
-					[
-						'a',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' }
-						]
-					],
-					[
-						'b',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' }
-						]
-					]
-				],
-				expected: [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' }
-				]
-			},
-			{
-				msg: 'lowest common coverage',
-				data: [
-					[
-						'a',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' }
-						]
-					],
-					[
-						'b',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' },
-							{ type: 'textStyle/underline' }
-						]
-					]
-				],
-				expected: [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' }
-				]
-			},
-			{
-				msg: 'no common coverage due to plain character at the start',
-				data: [
+	var cases = [
+		{
+			msg: 'single annotations',
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/bold' } ] ]
+			],
+			expected: [ { type: 'textStyle/bold' } ]
+		},
+		{
+			msg: 'single annotation with non-content data',
+			data: [
+				{ type: 'paragraph' },
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/bold' } ] ],
+				{ type: '/paragraph' }
+			],
+			expected: [ { type: 'textStyle/bold' } ]
+		},
+		{
+			msg: 'multiple annotations',
+			data: [
+				[
 					'a',
 					[
-						'b',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' },
-							{ type: 'textStyle/underline' }
-						]
-					],
-					[
-						'c',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' }
-						]
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' }
 					]
 				],
-				expected: []
-			},
-			{
-				msg: 'no common coverage due to plain character in the middle',
-				data: [
-					[
-						'a',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' },
-							{ type: 'textStyle/underline' }
-						]
-					],
-					[ 'b' ],
-					[
-						'c',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' }
-						]
-					]
-				],
-				expected: []
-			},
-			{
-				msg: 'no common coverage due to plain character at the end',
-				data: [
-					[
-						'a',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' }
-						]
-					],
-					[
-						'b',
-						[
-							{ type: 'textStyle/bold' },
-							{ type: 'textStyle/italic' },
-							{ type: 'textStyle/underline' }
-						]
-					],
-					[ 'c' ]
-				],
-				expected: []
-			},
-			{
-				msg: 'no common coverage due to mismatched annotations',
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/italic' } ] ]
-				],
-				expected: []
-			},
-			{
-				msg: 'no common coverage due to un-annotated content node',
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					{ type: 'inlineImage' },
-					{ type: '/inlineImage' }
-				],
-				expected: []
-			},
-			{
-				msg: 'branch node is ignored',
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					{ type: 'paragraph' },
-					{ type: '/paragraph' }
-				],
-				expected: [ { type: 'textStyle/bold' } ]
-			},
-			{
-				msg: 'annotations are collected using all with mismatched annotations',
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/italic' } ] ]
-				],
-				all: true,
-				expected: [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' }
-				]
-			},
-			{
-				msg: 'annotations are collected using all, even with a plain character at the start',
-				data: [
-					'a',
-					[ 'b', [ { type: 'textStyle/bold' } ] ],
-					[ 'c', [ { type: 'textStyle/italic' } ] ]
-				],
-				all: true,
-				expected: [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' }
-				]
-			},
-			{
-				msg: 'annotations are collected using all, even with a plain character in the middle',
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[
 					'b',
-					[ 'c', [ { type: 'textStyle/italic' } ] ]
-				],
-				all: true,
-				expected: [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' }
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' }
+					]
 				]
-			},
-			{
-				msg: 'annotations are collected using all, even with a plain character at the end',
-				data: [
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/italic' } ] ],
-					'c'
+			],
+			expected: [
+				{ type: 'textStyle/bold' },
+				{ type: 'textStyle/italic' }
+			]
+		},
+		{
+			msg: 'lowest common coverage',
+			data: [
+				[
+					'a',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' }
+					]
 				],
-				all: true,
-				expected: [
-					{ type: 'textStyle/bold' },
-					{ type: 'textStyle/italic' }
+				[
+					'b',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' },
+						{ type: 'textStyle/underline' }
+					]
 				]
-			},
-			{
-				msg: 'no common coverage from all plain characters',
-				data: [ 'a', 'b' ],
-				expected: []
-			},
-			{
-				msg: 'no common coverage using all from all plain characters',
-				data: [ 'a', 'b' ],
-				all: true,
-				expected: []
-			},
-			{
-				msg: 'contents of ignoreChildren nodes are skipped',
-				data: [
-					{ type: 'exampleIgnoreChildren' },
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/bold' } ] ],
-					{ type: '/exampleIgnoreChildren' }
+			],
+			expected: [
+				{ type: 'textStyle/bold' },
+				{ type: 'textStyle/italic' }
+			]
+		},
+		{
+			msg: 'no common coverage due to plain character at the start',
+			data: [
+				'a',
+				[
+					'b',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' },
+						{ type: 'textStyle/underline' }
+					]
 				],
-				expected: []
-			},
-			{
-				msg: 'contents of ignoreChildren nodes are skipped in all mode too',
-				data: [
-					{ type: 'exampleIgnoreChildren' },
-					[ 'a', [ { type: 'textStyle/bold' } ] ],
-					[ 'b', [ { type: 'textStyle/italic' } ] ],
-					{ type: '/exampleIgnoreChildren' }
+				[
+					'c',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' }
+					]
+				]
+			],
+			expected: []
+		},
+		{
+			msg: 'no common coverage due to plain character in the middle',
+			data: [
+				[
+					'a',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' },
+						{ type: 'textStyle/underline' }
+					]
 				],
-				all: true,
-				expected: []
-			}
-		];
+				[ 'b' ],
+				[
+					'c',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' }
+					]
+				]
+			],
+			expected: []
+		},
+		{
+			msg: 'no common coverage due to plain character at the end',
+			data: [
+				[
+					'a',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' }
+					]
+				],
+				[
+					'b',
+					[
+						{ type: 'textStyle/bold' },
+						{ type: 'textStyle/italic' },
+						{ type: 'textStyle/underline' }
+					]
+				],
+				[ 'c' ]
+			],
+			expected: []
+		},
+		{
+			msg: 'no common coverage due to mismatched annotations',
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/italic' } ] ]
+			],
+			expected: []
+		},
+		{
+			msg: 'no common coverage due to un-annotated content node',
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				{ type: 'inlineImage' },
+				{ type: '/inlineImage' }
+			],
+			expected: []
+		},
+		{
+			msg: 'branch node is ignored',
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				{ type: 'paragraph' },
+				{ type: '/paragraph' }
+			],
+			expected: [ { type: 'textStyle/bold' } ]
+		},
+		{
+			msg: 'annotations are collected using all with mismatched annotations',
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/italic' } ] ]
+			],
+			all: true,
+			expected: [
+				{ type: 'textStyle/bold' },
+				{ type: 'textStyle/italic' }
+			]
+		},
+		{
+			msg: 'annotations are collected using all, even with a plain character at the start',
+			data: [
+				'a',
+				[ 'b', [ { type: 'textStyle/bold' } ] ],
+				[ 'c', [ { type: 'textStyle/italic' } ] ]
+			],
+			all: true,
+			expected: [
+				{ type: 'textStyle/bold' },
+				{ type: 'textStyle/italic' }
+			]
+		},
+		{
+			msg: 'annotations are collected using all, even with a plain character in the middle',
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				'b',
+				[ 'c', [ { type: 'textStyle/italic' } ] ]
+			],
+			all: true,
+			expected: [
+				{ type: 'textStyle/bold' },
+				{ type: 'textStyle/italic' }
+			]
+		},
+		{
+			msg: 'annotations are collected using all, even with a plain character at the end',
+			data: [
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/italic' } ] ],
+				'c'
+			],
+			all: true,
+			expected: [
+				{ type: 'textStyle/bold' },
+				{ type: 'textStyle/italic' }
+			]
+		},
+		{
+			msg: 'no common coverage from all plain characters',
+			data: [ 'a', 'b' ],
+			expected: []
+		},
+		{
+			msg: 'no common coverage using all from all plain characters',
+			data: [ 'a', 'b' ],
+			all: true,
+			expected: []
+		},
+		{
+			msg: 'contents of ignoreChildren nodes are skipped',
+			data: [
+				{ type: 'exampleIgnoreChildren' },
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/bold' } ] ],
+				{ type: '/exampleIgnoreChildren' }
+			],
+			expected: []
+		},
+		{
+			msg: 'contents of ignoreChildren nodes are skipped in all mode too',
+			data: [
+				{ type: 'exampleIgnoreChildren' },
+				[ 'a', [ { type: 'textStyle/bold' } ] ],
+				[ 'b', [ { type: 'textStyle/italic' } ] ],
+				{ type: '/exampleIgnoreChildren' }
+			],
+			all: true,
+			expected: []
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
-		doc = new ve.dm.Document( data );
+	cases.forEach( function ( caseItem ) {
+		var data = ve.dm.example.preprocessAnnotations( caseItem.data );
+		var doc = new ve.dm.Document( data );
 		assert.deepEqual(
-			doc.data.getAnnotationsFromRange( new ve.Range( 0, cases[ i ].data.length ), cases[ i ].all ).getHashes(),
-			ve.dm.example.createAnnotationSet( doc.getStore(), cases[ i ].expected ).getHashes(),
-			cases[ i ].msg
+			doc.data.getAnnotationsFromRange( new ve.Range( 0, caseItem.data.length ), caseItem.all ).getHashes(),
+			ve.dm.example.createAnnotationSet( doc.getStore(), caseItem.expected ).getHashes(),
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getInsertionAnnotationsFromRange', function ( assert ) {
-	var linearData,
-		u = ve.dm.example.underline,
+	var u = ve.dm.example.underline,
 		// <h1>:0 a:1 b:2 c:3 d:4 e:5 f:6 </h1>:7 <p>:8 g:9 </p>:10 <div>:11 </div>:12
 		html = '<h1>ab<u>cd</u>ef</h1><p><u>g</u></p><div></div>',
 		cases = [
@@ -402,7 +396,7 @@ QUnit.test( 'getInsertionAnnotationsFromRange', function ( assert ) {
 			{ range: [ 5, 3 ], expected: [ u ], msg: 'backward past u end' }
 		];
 
-	linearData = ve.dm.converter.getModelFromDom(
+	var linearData = ve.dm.converter.getModelFromDom(
 		ve.createDocumentFromHtml( html )
 	).data;
 	cases.forEach( function ( caseItem ) {
@@ -420,107 +414,105 @@ QUnit.test( 'getInsertionAnnotationsFromRange', function ( assert ) {
 } );
 
 QUnit.test( 'getAnnotatedRangeFromOffset', function ( assert ) {
-	var i, data, doc,
-		cases = [
-			{
-				msg: 'a bold word',
-				data: [
-					// 0
-					'a',
-					// 1
-					[ 'b', [ { type: 'textStyle/bold' } ] ],
-					// 2
-					[ 'o', [ { type: 'textStyle/bold' } ] ],
-					// 3
-					[ 'l', [ { type: 'textStyle/bold' } ] ],
-					// 4
-					[ 'd', [ { type: 'textStyle/bold' } ] ],
-					// 5
-					'w',
-					// 6
-					'o',
-					// 7
-					'r',
-					// 8
-					'd'
-				],
-				annotation: { type: 'textStyle/bold' },
-				offset: 3,
-				expected: new ve.Range( 1, 5 )
-			},
-			{
-				msg: 'a linked',
-				data: [
-					// 0
-					'x',
-					// 1
-					'x',
-					// 2
-					'x',
-					// 3
-					[ 'l', [ { type: 'link' } ] ],
-					// 4
-					[ 'i', [ { type: 'link' } ] ],
-					// 5
-					[ 'n', [ { type: 'link' } ] ],
-					// 6
-					[ 'k', [ { type: 'link' } ] ],
-					// 7
-					'x',
-					// 8
-					'x',
-					// 9
-					'x'
-				],
-				annotation: { type: 'link' },
-				offset: 3,
-				expected: new ve.Range( 3, 7 )
-			},
-			{
-				msg: 'bold over an annotated leaf node',
-				data: [
-					// 0
-					'h',
-					// 1
-					[ 'b', [ { type: 'textStyle/bold' } ] ],
-					// 2
-					[ 'o', [ { type: 'textStyle/bold' } ] ],
-					// 3
-					{
-						type: 'inlineImage',
-						attributes: { src: ve.dm.example.imgSrc },
-						annotations: [ { type: 'textStyle/bold' } ]
-					},
-					// 4
-					{ type: '/inlineImage' },
-					// 5
-					[ 'l', [ { type: 'textStyle/bold' } ] ],
-					// 6
-					[ 'd', [ { type: 'textStyle/bold' } ] ],
-					// 7
-					'i'
-				],
-				annotation: { type: 'textStyle/bold' },
-				offset: 3,
-				expected: new ve.Range( 1, 7 )
-			}
-		];
+	var cases = [
+		{
+			msg: 'a bold word',
+			data: [
+				// 0
+				'a',
+				// 1
+				[ 'b', [ { type: 'textStyle/bold' } ] ],
+				// 2
+				[ 'o', [ { type: 'textStyle/bold' } ] ],
+				// 3
+				[ 'l', [ { type: 'textStyle/bold' } ] ],
+				// 4
+				[ 'd', [ { type: 'textStyle/bold' } ] ],
+				// 5
+				'w',
+				// 6
+				'o',
+				// 7
+				'r',
+				// 8
+				'd'
+			],
+			annotation: { type: 'textStyle/bold' },
+			offset: 3,
+			expected: new ve.Range( 1, 5 )
+		},
+		{
+			msg: 'a linked',
+			data: [
+				// 0
+				'x',
+				// 1
+				'x',
+				// 2
+				'x',
+				// 3
+				[ 'l', [ { type: 'link' } ] ],
+				// 4
+				[ 'i', [ { type: 'link' } ] ],
+				// 5
+				[ 'n', [ { type: 'link' } ] ],
+				// 6
+				[ 'k', [ { type: 'link' } ] ],
+				// 7
+				'x',
+				// 8
+				'x',
+				// 9
+				'x'
+			],
+			annotation: { type: 'link' },
+			offset: 3,
+			expected: new ve.Range( 3, 7 )
+		},
+		{
+			msg: 'bold over an annotated leaf node',
+			data: [
+				// 0
+				'h',
+				// 1
+				[ 'b', [ { type: 'textStyle/bold' } ] ],
+				// 2
+				[ 'o', [ { type: 'textStyle/bold' } ] ],
+				// 3
+				{
+					type: 'inlineImage',
+					attributes: { src: ve.dm.example.imgSrc },
+					annotations: [ { type: 'textStyle/bold' } ]
+				},
+				// 4
+				{ type: '/inlineImage' },
+				// 5
+				[ 'l', [ { type: 'textStyle/bold' } ] ],
+				// 6
+				[ 'd', [ { type: 'textStyle/bold' } ] ],
+				// 7
+				'i'
+			],
+			annotation: { type: 'textStyle/bold' },
+			offset: 3,
+			expected: new ve.Range( 1, 7 )
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		data = ve.dm.example.preprocessAnnotations( cases[ i ].data );
-		doc = new ve.dm.Document( data );
+	cases.forEach( function ( caseItem ) {
+		var data = ve.dm.example.preprocessAnnotations( caseItem.data );
+		var doc = new ve.dm.Document( data );
 		assert.equalRange(
-			doc.data.getAnnotatedRangeFromOffset( cases[ i ].offset,
-				ve.dm.example.createAnnotation( cases[ i ].annotation ) ),
-			cases[ i ].expected,
-			cases[ i ].msg
+			doc.data.getAnnotatedRangeFromOffset( caseItem.offset,
+				ve.dm.example.createAnnotation( caseItem.annotation ) ),
+			caseItem.expected,
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'trimOuterSpaceFromRange', function ( assert ) {
-	var i, linearData, elementData,
-		data = [
+	var data = [
 			// 0
 			{ type: 'paragraph' },
 			// 1
@@ -609,20 +601,19 @@ QUnit.test( 'trimOuterSpaceFromRange', function ( assert ) {
 			}
 		];
 
-	linearData = ve.dm.example.preprocessAnnotations( data );
-	elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() );
-	for ( i = 0; i < cases.length; i++ ) {
+	var linearData = ve.dm.example.preprocessAnnotations( data );
+	var elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() );
+	cases.forEach( function ( caseItem ) {
 		assert.equalRange(
-			elementData.trimOuterSpaceFromRange( cases[ i ].range ),
-			cases[ i ].trimmed,
-			cases[ i ].msg
+			elementData.trimOuterSpaceFromRange( caseItem.range ),
+			caseItem.trimmed,
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'isContentOffset', function ( assert ) {
-	var i, left, right,
-		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), [
+	var data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'heading' },
 			'a',
 			{ type: 'inlineImage' },
@@ -682,20 +673,19 @@ QUnit.test( 'isContentOffset', function ( assert ) {
 			{ msg: 'right of document', expected: false }
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		left = data.getData( i - 1 ) ? ( data.getData( i - 1 ).type || data.getCharacterData( i - 1 ) ) : '[start]';
-		right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
+	cases.forEach( function ( caseItem, i ) {
+		var left = data.getData( i - 1 ) ? ( data.getData( i - 1 ).type || data.getCharacterData( i - 1 ) ) : '[start]';
+		var right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
 		assert.strictEqual(
 			data.isContentOffset( i ),
-			cases[ i ].expected,
-			cases[ i ].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
+			caseItem.expected,
+			caseItem.msg + ' (' + left + '|' + right + ' @ ' + i + ')'
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'isStructuralOffset', function ( assert ) {
-	var i, left, right,
-		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), [
+	var data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'heading' },
 			'a',
 			{ type: 'inlineImage' },
@@ -755,29 +745,28 @@ QUnit.test( 'isStructuralOffset', function ( assert ) {
 			{ msg: 'right of document', expected: [ true, true ] }
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		left = data.getData( i - 1 ) ? ( data.getData( i - 1 ).type || data.getCharacterData( i - 1 ) ) : '[start]';
-		right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
+	cases.forEach( function ( caseItem, i ) {
+		var left = data.getData( i - 1 ) ? ( data.getData( i - 1 ).type || data.getCharacterData( i - 1 ) ) : '[start]';
+		var right = data.getData( i ) ? ( data.getData( i ).type || data.getCharacterData( i ) ) : '[end]';
 		assert.strictEqual(
 			data.isStructuralOffset( i ),
-			cases[ i ].expected[ 0 ],
-			cases[ i ].msg + ' (' + left + '|' + right + ' @ ' + i + ')'
+			caseItem.expected[ 0 ],
+			caseItem.msg + ' (' + left + '|' + right + ' @ ' + i + ')'
 		);
 		assert.strictEqual(
 			data.isStructuralOffset( i, true ),
-			cases[ i ].expected[ 1 ],
-			cases[ i ].msg + ', unrestricted (' + left + '|' + right + ' @ ' + i + ')'
+			caseItem.expected[ 1 ],
+			caseItem.msg + ', unrestricted (' + left + '|' + right + ' @ ' + i + ')'
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getCharacterData', function ( assert ) {
-	var i,
-		data = [ { type: 'paragraph' }, 'a', [ 'b', [ 0 ] ], { type: '/paragraph' } ],
+	var data = [ { type: 'paragraph' }, 'a', [ 'b', [ 0 ] ], { type: '/paragraph' } ],
 		expected = [ '', 'a', 'b', '' ],
 		linearData = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), data );
 
-	for ( i = 0; i < data.length; i++ ) {
+	for ( var i = 0; i < data.length; i++ ) {
 		assert.strictEqual(
 			linearData.getCharacterData( i ), expected[ i ]
 		);
@@ -809,8 +798,7 @@ QUnit.test( 'getText', function ( assert ) {
 } );
 
 QUnit.test( 'getSourceText', function ( assert ) {
-	var i,
-		data = new ve.dm.ElementLinearData(
+	var data = new ve.dm.ElementLinearData(
 			new ve.dm.HashValueStore(),
 			[
 				{ type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' },
@@ -841,126 +829,122 @@ QUnit.test( 'getSourceText', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.strictEqual(
-			data.getSourceText( cases[ i ].range ),
-			cases[ i ].expected,
-			cases[ i ].msg
+			data.getSourceText( caseItem.range ),
+			caseItem.expected,
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'isContentData', function ( assert ) {
-	var i, data,
-		cases = [
-			{
-				msg: 'simple paragraph',
-				data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
-				expected: false
-			},
-			{
-				msg: 'plain text',
-				data: [ 'a', 'b', 'c' ],
-				expected: true
-			},
-			{
-				msg: 'annotated text',
-				data: [ [ 'a', { '{"type:"bold"}': { type: 'bold' } } ] ],
-				expected: true
-			},
-			{
-				msg: 'non-text leaf',
-				data: [ 'a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c' ],
-				expected: true
-			}
-		];
+	var cases = [
+		{
+			msg: 'simple paragraph',
+			data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
+			expected: false
+		},
+		{
+			msg: 'plain text',
+			data: [ 'a', 'b', 'c' ],
+			expected: true
+		},
+		{
+			msg: 'annotated text',
+			data: [ [ 'a', { '{"type:"bold"}': { type: 'bold' } } ] ],
+			expected: true
+		},
+		{
+			msg: 'non-text leaf',
+			data: [ 'a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c' ],
+			expected: true
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), cases[ i ].data );
+	cases.forEach( function ( caseItem ) {
+		var data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
 		assert.strictEqual(
-			data.isContentData(), cases[ i ].expected, cases[ i ].msg
+			data.isContentData(), caseItem.expected, caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getRelativeOffset', function ( assert ) {
-	var i, data,
-		cases = [
-			{
-				msg: 'document without any valid offsets returns -1',
-				offset: 0,
-				distance: 1,
-				data: [],
-				callback: function () {
-					return false;
-				},
-				expected: -1
+	var cases = [
+		{
+			msg: 'document without any valid offsets returns -1',
+			offset: 0,
+			distance: 1,
+			data: [],
+			callback: function () {
+				return false;
 			},
-			{
-				msg: 'document with all valid offsets returns offset + distance',
-				offset: 0,
-				distance: 2,
-				data: [ 'a', 'b' ],
-				callback: function () {
-					return true;
-				},
-				expected: 2
+			expected: -1
+		},
+		{
+			msg: 'document with all valid offsets returns offset + distance',
+			offset: 0,
+			distance: 2,
+			data: [ 'a', 'b' ],
+			callback: function () {
+				return true;
 			},
-			{
-				msg: 'document with offset inside an ignoreChildren doesn\'t leave it and returns -1',
-				offset: 7,
-				distance: 1,
-				data: [
-					'a',
-					{ type: 'blockImage', attributes: {} },
-					{ type: 'imageCaption' },
-					{ type: 'paragraph', internal: { generated: 'wrapper' } },
-					'a', 'b', 'c',
-					{ type: '/paragraph' },
-					{ type: '/imageCaption' },
-					{ type: '/blockImage' },
-					'b'
-				],
-				callback: ve.dm.ElementLinearData.prototype.isContentOffset,
-				// The results here look incorrect. It should "turn around" and return 7.
-				// It should only return -1 if the imageCaption has no valid offsets inside (it is empty).
-				expected: -1
-			}
-		];
+			expected: 2
+		},
+		{
+			msg: 'document with offset inside an ignoreChildren doesn\'t leave it and returns -1',
+			offset: 7,
+			distance: 1,
+			data: [
+				'a',
+				{ type: 'blockImage', attributes: {} },
+				{ type: 'imageCaption' },
+				{ type: 'paragraph', internal: { generated: 'wrapper' } },
+				'a', 'b', 'c',
+				{ type: '/paragraph' },
+				{ type: '/imageCaption' },
+				{ type: '/blockImage' },
+				'b'
+			],
+			callback: ve.dm.ElementLinearData.prototype.isContentOffset,
+			// The results here look incorrect. It should "turn around" and return 7.
+			// It should only return -1 if the imageCaption has no valid offsets inside (it is empty).
+			expected: -1
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), cases[ i ].data );
-		if ( 'expected' in cases[ i ] ) {
+	cases.forEach( function ( caseItem ) {
+		var data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		if ( 'expected' in caseItem ) {
 			assert.strictEqual(
 				data.getRelativeOffset(
-					cases[ i ].offset,
-					cases[ i ].distance,
-					cases[ i ].callback
+					caseItem.offset,
+					caseItem.distance,
+					caseItem.callback
 				),
-				cases[ i ].expected,
-				cases[ i ].msg
+				caseItem.expected,
+				caseItem.msg
 			);
-		} else if ( 'exception' in cases[ i ] ) {
+		} else if ( 'exception' in caseItem ) {
 
 			assert.throws(
-				// eslint-disable-next-line no-loop-func
 				function () {
 					data.getRelativeOffset(
-						cases[ i ].offset,
-						cases[ i ].distance,
-						cases[ i ].callback
+						caseItem.offset,
+						caseItem.distance,
+						caseItem.callback
 					);
 				},
-				cases[ i ].exception,
-				cases[ i ].msg
+				caseItem.exception,
+				caseItem.msg
 			);
 		}
-	}
+	} );
 } );
 
 QUnit.test( 'getRelativeContentOffset', function ( assert ) {
-	var i, doc,
-		simpleDoc = ve.dm.example.createExampleDocument(),
+	var simpleDoc = ve.dm.example.createExampleDocument(),
 		annDoc = ve.dm.example.createExampleDocument( 'annotationData' ),
 		cases = [
 			{
@@ -1081,19 +1065,18 @@ QUnit.test( 'getRelativeContentOffset', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		doc = cases[ i ].doc || simpleDoc;
+	cases.forEach( function ( caseItem ) {
+		var doc = caseItem.doc || simpleDoc;
 		assert.strictEqual(
-			doc.data.getRelativeContentOffset( cases[ i ].offset, cases[ i ].distance ),
-			cases[ i ].expected,
-			cases[ i ].msg
+			doc.data.getRelativeContentOffset( caseItem.offset, caseItem.distance ),
+			caseItem.expected,
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getNearestContentOffset', function ( assert ) {
-	var i,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
 				msg: 'unspecified direction results in shortest distance',
@@ -1138,18 +1121,17 @@ QUnit.test( 'getNearestContentOffset', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.strictEqual(
-			doc.data.getNearestContentOffset( cases[ i ].offset, cases[ i ].direction ),
-			cases[ i ].expected,
-			cases[ i ].msg
+			doc.data.getNearestContentOffset( caseItem.offset, caseItem.direction ),
+			caseItem.expected,
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
-	var i,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
 				msg: 'invalid starting offset with zero distance gets corrected',
@@ -1247,20 +1229,19 @@ QUnit.test( 'getRelativeStructuralOffset', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.strictEqual(
 			doc.data.getRelativeStructuralOffset(
-				cases[ i ].offset, cases[ i ].distance, cases[ i ].unrestricted
+				caseItem.offset, caseItem.distance, caseItem.unrestricted
 			),
-			cases[ i ].expected,
-			cases[ i ].msg
+			caseItem.expected,
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
-	var i,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
 				msg: 'unspecified direction results in shortest distance',
@@ -1365,20 +1346,19 @@ QUnit.test( 'getNearestStructuralOffset', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.strictEqual(
 			doc.data.getNearestStructuralOffset(
-				cases[ i ].offset, cases[ i ].direction, cases[ i ].unrestricted
+				caseItem.offset, caseItem.direction, caseItem.unrestricted
 			),
-			cases[ i ].expected,
-			cases[ i ].msg
+			caseItem.expected,
+			caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getWordRange', function ( assert ) {
-	var i, data, elementLinearData, range, word,
-		store = new ve.dm.HashValueStore(),
+	var store = new ve.dm.HashValueStore(),
 		cases = [
 			{
 				phrase: 'visual editor test',
@@ -1544,28 +1524,27 @@ QUnit.test( 'getWordRange', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		// Construct the text (inside a paragraph, because getNearestContentOffset assumes
 		// text cannot be at the very start or end of the data).
-		data = cases[ i ].phrase.split( '' );
+		var data = caseItem.phrase.split( '' );
 		data.unshift( { type: 'paragraph' } );
 		data.push( { type: '/paragraph' } );
-		elementLinearData = new ve.dm.ElementLinearData( store, data );
+		var elementLinearData = new ve.dm.ElementLinearData( store, data );
 		// Adjust offsets to account for the paragraph tag
-		range = elementLinearData.getWordRange( cases[ i ].offset + 1 );
-		word = cases[ i ].phrase.substring( range.start - 1, range.end - 1 );
-		assert.strictEqual( word, cases[ i ].expected,
-			cases[ i ].msg + ': ' +
-			cases[ i ].phrase.substring( 0, cases[ i ].offset ) + '│' +
-			cases[ i ].phrase.substring( cases[ i ].offset, cases[ i ].phrase.length ) +
-			' → ' + cases[ i ].expected
+		var range = elementLinearData.getWordRange( caseItem.offset + 1 );
+		var word = caseItem.phrase.substring( range.start - 1, range.end - 1 );
+		assert.strictEqual( word, caseItem.expected,
+			caseItem.msg + ': ' +
+			caseItem.phrase.substring( 0, caseItem.offset ) + '│' +
+			caseItem.phrase.substring( caseItem.offset, caseItem.phrase.length ) +
+			' → ' + caseItem.expected
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'sanitize', function ( assert ) {
-	var i, model, data, actualStore, key,
-		bold = { type: 'textStyle/bold', attributes: { nodeName: 'b' } },
+	var bold = { type: 'textStyle/bold', attributes: { nodeName: 'b' } },
 		cases = [
 			{
 				html: '<p style="text-shadow: 0 0 1px #000;">F<b style="color:blue;">o</b>o</p>',
@@ -1967,132 +1946,129 @@ QUnit.test( 'sanitize', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( cases[ i ].html ) );
-		data = model.data;
-		data.sanitize( cases[ i ].rules || {} );
-		assert.equalLinearData( data.data, cases[ i ].data, cases[ i ].msg + ': data' );
-		if ( cases[ i ].store ) {
-			actualStore = {};
-			for ( key in cases[ i ].store ) {
+	cases.forEach( function ( caseItem ) {
+		var model = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.html ) );
+		var data = model.data;
+		data.sanitize( caseItem.rules || {} );
+		assert.equalLinearData( data.data, caseItem.data, caseItem.msg + ': data' );
+		if ( caseItem.store ) {
+			var actualStore = {};
+			for ( var key in caseItem.store ) {
 				actualStore[ key ] = data.getStore().value( key ).element;
 			}
-			assert.deepEqualWithDomElements( actualStore, cases[ i ].store, cases[ i ].msg + ': store' );
+			assert.deepEqualWithDomElements( actualStore, caseItem.store, caseItem.msg + ': store' );
 		}
-	}
+	} );
 } );
 
 QUnit.test( 'countNonInternalElements', function ( assert ) {
-	var i, data,
-		cases = [
-			{
-				data: [
-					{ type: 'paragraph' },
-					'F', [ 'o', [ 0 ] ], 'o',
-					{ type: '/paragraph' },
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				],
-				expected: 5,
-				msg: 'Counting non-internal elements - no internal data'
-			},
-			{
-				data: [
-					{ type: 'paragraph' },
-					'F', 'o',
-					{ type: '/paragraph' },
-					{ type: 'internalList' },
-					{ type: 'internalItem' },
-					{ type: 'paragraph' },
-					'a',
-					{ type: '/paragraph' },
-					{ type: '/internalItem' },
-					{ type: '/internalList' }
-				],
-				expected: 4,
-				msg: 'Counting non-internal elements'
-			}
-		];
+	var cases = [
+		{
+			data: [
+				{ type: 'paragraph' },
+				'F', [ 'o', [ 0 ] ], 'o',
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			expected: 5,
+			msg: 'Counting non-internal elements - no internal data'
+		},
+		{
+			data: [
+				{ type: 'paragraph' },
+				'F', 'o',
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: 'internalItem' },
+				{ type: 'paragraph' },
+				'a',
+				{ type: '/paragraph' },
+				{ type: '/internalItem' },
+				{ type: '/internalList' }
+			],
+			expected: 4,
+			msg: 'Counting non-internal elements'
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), cases[ i ].data );
-		assert.strictEqual( data.countNonInternalElements(), cases[ i ].expected, cases[ i ].msg );
-	}
+	cases.forEach( function ( caseItem ) {
+		var data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		assert.strictEqual( data.countNonInternalElements(), caseItem.expected, caseItem.msg );
+	} );
 } );
 
 QUnit.test( 'hasContent', function ( assert ) {
-	var i, data,
-		cases = [
-			{
-				data: [],
-				expected: false,
-				msg: 'Completely empty document has no content'
-			},
-			{
-				data: [
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				],
-				expected: false,
-				msg: 'Internal list only document has no content'
-			},
-			{
-				data: [
-					{ type: 'paragraph' },
-					{ type: '/paragraph' },
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				],
-				expected: false,
-				msg: 'Real world empty document has no content'
-			},
-			{
-				data: [
-					{ type: 'paragraph' },
-					'F', [ 'o', [ 0 ] ], 'o',
-					{ type: '/paragraph' },
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				],
-				expected: true,
-				msg: 'Document with text has content'
-			},
-			{
-				data: [
-					{ type: 'alienBlock' },
-					{ type: '/alienBlock' },
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				],
-				expected: true,
-				msg: 'Document with non-ContentBranchNode (alienBlock) node has content'
-			},
-			{
-				data: [
-					{ type: 'paragraph' },
-					{ type: '/paragraph' },
-					{ type: 'internalList' },
-					{ type: 'internalItem' },
-					{ type: 'paragraph' },
-					'a',
-					{ type: '/paragraph' },
-					{ type: '/internalItem' },
-					{ type: '/internalList' }
-				],
-				expected: false,
-				msg: 'Empty document with internal data has no content'
-			}
-		];
+	var cases = [
+		{
+			data: [],
+			expected: false,
+			msg: 'Completely empty document has no content'
+		},
+		{
+			data: [
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			expected: false,
+			msg: 'Internal list only document has no content'
+		},
+		{
+			data: [
+				{ type: 'paragraph' },
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			expected: false,
+			msg: 'Real world empty document has no content'
+		},
+		{
+			data: [
+				{ type: 'paragraph' },
+				'F', [ 'o', [ 0 ] ], 'o',
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			expected: true,
+			msg: 'Document with text has content'
+		},
+		{
+			data: [
+				{ type: 'alienBlock' },
+				{ type: '/alienBlock' },
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			],
+			expected: true,
+			msg: 'Document with non-ContentBranchNode (alienBlock) node has content'
+		},
+		{
+			data: [
+				{ type: 'paragraph' },
+				{ type: '/paragraph' },
+				{ type: 'internalList' },
+				{ type: 'internalItem' },
+				{ type: 'paragraph' },
+				'a',
+				{ type: '/paragraph' },
+				{ type: '/internalItem' },
+				{ type: '/internalList' }
+			],
+			expected: false,
+			msg: 'Empty document with internal data has no content'
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), cases[ i ].data );
-		assert.strictEqual( data.hasContent(), cases[ i ].expected, cases[ i ].msg );
-	}
+	cases.forEach( function ( caseItem ) {
+		var data = new ve.dm.ElementLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		assert.strictEqual( data.hasContent(), caseItem.expected, caseItem.msg );
+	} );
 } );
 
 QUnit.test( 'getAnnotationHashesFromOffset', function ( assert ) {
-	var i,
-		boldHash = 'h49981eab0f8056ff',
+	var boldHash = 'h49981eab0f8056ff',
 		italicHash = 'hefd27ef3bf2041dd',
 		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
 		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
@@ -2131,28 +2107,26 @@ QUnit.test( 'getAnnotationHashesFromOffset', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.deepEqual(
-			elementData.getAnnotationHashesFromOffset( cases[ i ].offset, cases[ i ].ignoreClose ),
-			cases[ i ].expected,
-			cases[ i ].msg
+			elementData.getAnnotationHashesFromOffset( caseItem.offset, caseItem.ignoreClose ),
+			caseItem.expected,
+			caseItem.msg
 		);
-	}
+	} );
 
-	for ( i = 0; i < errorCases.length; i++ ) {
+	errorCases.forEach( function ( errorCaseItem ) {
 		assert.throws(
-			// eslint-disable-next-line no-loop-func
 			function () {
-				elementData.getAnnotationHashesFromOffset( errorCases[ i ].offset, errorCases[ i ].ignoreClose );
-			}, new Error( 'offset ' + errorCases[ i ].offset + ' out of bounds' ),
-			errorCases[ i ].msg
+				elementData.getAnnotationHashesFromOffset( errorCaseItem.offset, errorCaseItem.ignoreClose );
+			}, new Error( 'offset ' + errorCaseItem.offset + ' out of bounds' ),
+			errorCaseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'getUsedStoreValues', function ( assert ) {
-	var i,
-		bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
+	var bold = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ),
 		italic = new ve.dm.ItalicAnnotation( { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ),
 		linearData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) ),
 		elementData = new ve.dm.ElementLinearData( linearData.getStore(), linearData.getData() ),
@@ -2197,19 +2171,18 @@ QUnit.test( 'getUsedStoreValues', function ( assert ) {
 		return ann.element;
 	}
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.deepEqual(
-			ve.copy( elementData.getUsedStoreValues( cases[ i ].range ), getElement ),
-			ve.copy( cases[ i ].expected, getElement ),
-			cases[ i ].msg
+			ve.copy( elementData.getUsedStoreValues( caseItem.range ), getElement ),
+			ve.copy( caseItem.expected, getElement ),
+			caseItem.msg
 		);
-	}
+	} );
 
 } );
 
 QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert ) {
-	var i,
-		store = new ve.dm.HashValueStore(),
+	var store = new ve.dm.HashValueStore(),
 		cases = [
 			{
 				a: '母',
@@ -2349,23 +2322,23 @@ QUnit.test( 'compareElements and compareElementsUnannotated', function ( assert 
 	store.hash( new ve.dm.BoldAnnotation( ve.dm.example.strong ) );
 	store.hash( new ve.dm.ItalicAnnotation( ve.dm.example.italic ) );
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.strictEqual(
-			ve.dm.ElementLinearData.static.compareElements( cases[ i ].a, cases[ i ].b, store ),
-			cases[ i ].comparison,
-			cases[ i ].msg
+			ve.dm.ElementLinearData.static.compareElements( caseItem.a, caseItem.b, store ),
+			caseItem.comparison,
+			caseItem.msg
 		);
 		assert.strictEqual(
-			ve.dm.ElementLinearData.static.compareElementsUnannotated( cases[ i ].a, cases[ i ].b ),
-			cases[ i ].comparisonUnannotated || cases[ i ].comparison,
-			cases[ i ].msg + ' (unannotated)'
+			ve.dm.ElementLinearData.static.compareElementsUnannotated( caseItem.a, caseItem.b ),
+			caseItem.comparisonUnannotated || caseItem.comparison,
+			caseItem.msg + ' (unannotated)'
 		);
 		assert.strictEqual(
-			ve.dm.Transaction.static.compareElementsForTranslate( cases[ i ].a, cases[ i ].b ),
-			cases[ i ].comparisonForTranslate || cases[ i ].comparisonUnannotated || cases[ i ].comparison,
-			cases[ i ].msg + ' (compareElementsForTranslate)'
+			ve.dm.Transaction.static.compareElementsForTranslate( caseItem.a, caseItem.b ),
+			caseItem.comparisonForTranslate || caseItem.comparisonUnannotated || caseItem.comparison,
+			caseItem.msg + ' (compareElementsForTranslate)'
 		);
-	}
+	} );
 } );
 
 // TODO: ve.dm.ElementLinearData#setAnnotationsAtOffset
