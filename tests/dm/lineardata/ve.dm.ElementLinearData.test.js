@@ -1810,7 +1810,7 @@ QUnit.test( 'sanitize', function ( assert ) {
 				msg: 'Breaks split content branch nodes'
 			},
 			{
-				html: '<p>Foo\nBar\n <b>Baz \nQu&nbsp;ux</b></p>',
+				html: '<p>Foo\nBar\n <b>Baz \nQ&nbsp;uu\nx</b></p>',
 				data: [
 					{ type: 'paragraph' },
 					'F', 'o', 'o', ' ', 'B', 'a', 'r', ' ',
@@ -1819,9 +1819,10 @@ QUnit.test( 'sanitize', function ( assert ) {
 					[ 'z', [ ve.dm.example.annHash( 'b' ) ] ],
 					[ ' ', [ ve.dm.example.annHash( 'b' ) ] ],
 					[ 'Q', [ ve.dm.example.annHash( 'b' ) ] ],
-					[ 'u', [ ve.dm.example.annHash( 'b' ) ] ],
 					[ ' ', [ ve.dm.example.annHash( 'b' ) ] ],
 					[ 'u', [ ve.dm.example.annHash( 'b' ) ] ],
+					[ 'u', [ ve.dm.example.annHash( 'b' ) ] ],
+					[ ' ', [ ve.dm.example.annHash( 'b' ) ] ],
 					[ 'x', [ ve.dm.example.annHash( 'b' ) ] ],
 					{ type: '/paragraph' },
 					{ type: 'internalList' },

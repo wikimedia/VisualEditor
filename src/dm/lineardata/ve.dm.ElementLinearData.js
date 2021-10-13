@@ -1385,9 +1385,11 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				} else {
 					// …otherwise replace it with a space
 					if ( typeof this.getData( i ) === 'string' ) {
-						this.data[ i ] = ' ';
+						this.setData( i, ' ' );
 					} else {
-						this.data[ i ][ 0 ] = ' ';
+						this.modifyData( i, function ( item ) {
+							item[ 0 ] = ' ';
+						} );
 					}
 				}
 			}
