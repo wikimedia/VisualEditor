@@ -7,6 +7,8 @@
 
 .ve-ui-diffElement {
 	position: relative;
+	/* Create new stacking context so we can use negative z-index elsewhere (T292491) */
+	z-index: 0;
 }
 
 .ve-ui-diffElement:after {
