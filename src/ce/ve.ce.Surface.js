@@ -732,6 +732,7 @@ ve.ce.Surface.prototype.isShownAsDeactivated = function () {
  * @fires activation
  */
 ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChange, hideSelection ) {
+	var surface = this;
 	this.showAsActivated = showAsActivated === undefined || !!showAsActivated;
 	this.hideSelection = hideSelection;
 	if ( !this.deactivated ) {
@@ -746,6 +747,12 @@ ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChan
 		// and so virtual keyboards are hidden.
 		if ( !noSelectionChange ) {
 			this.removeRangesAndBlur();
+			// iOS Safari will sometimes restore the selection immediately (T293661)
+			this.eventSequencer.afterLoopOne( function () {
+				if ( surface.nativeSelection.rangeCount ) {
+					surface.removeRangesAndBlur();
+				}
+			} );
 		}
 		this.updateDeactivatedSelection();
 		this.clearKeyDownState();
