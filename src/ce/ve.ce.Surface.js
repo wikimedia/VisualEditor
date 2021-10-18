@@ -947,43 +947,33 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	var offset = this.getOffsetFromEventCoords( e );
 	if ( offset !== -1 ) {
 		var contexedAnnotations = this.annotationsAtNode( e.target, isContexedNode );
-		var node;
-		if ( contexedAnnotations.length ) {
-			// Store target node for use in updateActiveAnnotations
-			node = e.target;
-		} else {
-			// Occasionally on iOS, e.target is outside the to-be focused annotation, so check
-			// using the model offset as well.
-			contexedAnnotations = this.annotationsAtModelSelection( isContexedNode, offset );
-		}
-		if ( OO.ui.isMobile() ) {
-			if (
-				// The user has clicked on contexed annotations and ...
-				contexedAnnotations.length && (
-					// ... was previously on a focusable node or ...
-					this.focusedNode ||
-					// ... previously had different annotations selected ...
-					!(
-						// Shallow strict equality check
-						this.contexedAnnotations.length === contexedAnnotations.length &&
-						this.contexedAnnotations.every( function ( ann, i ) {
-							return ann === contexedAnnotations[ i ];
-						} )
-					)
+		if (
+			OO.ui.isMobile() &&
+			// The user has clicked on contexed annotations and ...
+			contexedAnnotations.length && (
+				// ... was previously on a focusable node or ...
+				this.focusedNode ||
+				// ... previously had different annotations selected ...
+				!(
+					// Shallow strict equality check
+					this.contexedAnnotations.length === contexedAnnotations.length &&
+					this.contexedAnnotations.every( function ( ann, i ) {
+						return ann === contexedAnnotations[ i ];
+					} )
 				)
-			) {
-				setTimeout( function () {
-					surface.getModel().setLinearSelection( new ve.Range( offset ) );
-					// HACK: Re-activate flag so selection is repositioned
-					surface.activate();
-					surface.deactivate( false, false, true );
-					// Use the clicked node if it produced results, otherwise use 'fromModel' mode.
-					surface.updateActiveAnnotations( node || true );
-				} );
-				this.contexedAnnotations = contexedAnnotations;
-				e.preventDefault();
-				return;
-			}
+			)
+		) {
+			var node = e.target;
+			setTimeout( function () {
+				surface.getModel().setLinearSelection( new ve.Range( offset ) );
+				// HACK: Re-activate flag so selection is repositioned
+				surface.activate();
+				surface.deactivate( false, false, true );
+				surface.updateActiveAnnotations( node );
+			} );
+			this.contexedAnnotations = contexedAnnotations;
+			e.preventDefault();
+			return;
 		}
 		this.contexedAnnotations = contexedAnnotations;
 	}
