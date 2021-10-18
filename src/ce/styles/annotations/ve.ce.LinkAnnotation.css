@@ -18,7 +18,11 @@
 }
 
 .ve-ce-nail:not( .ve-ce-nail-debug ) {
-	width: 0;
+	/*
+	 * Give nail some width to trick layout engine into creating a cursor
+	 * position after it even at the end of a paragraph (T274068)
+	 */
+	width: 0.1px;
 	height: 0;
 }
 
