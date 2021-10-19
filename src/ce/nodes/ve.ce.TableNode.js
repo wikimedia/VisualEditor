@@ -64,7 +64,7 @@ ve.ce.TableNode.prototype.onSetup = function () {
 
 	this.$overlay = $( '<div>' )
 		.addClass( 've-ce-tableNodeOverlay oo-ui-element-hidden' )
-		.append( [
+		.append(
 			this.$selectionBox,
 			this.$selectionBoxAnchor,
 			this.nodeContext ? this.nodeContext.$element : undefined,
@@ -72,7 +72,7 @@ ve.ce.TableNode.prototype.onSetup = function () {
 			this.rowContext.$element,
 			this.$rowBracket,
 			this.$colBracket
-		] );
+		);
 	this.surface.surface.$blockers.append( this.$overlay );
 
 	// Events

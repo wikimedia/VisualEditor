@@ -466,6 +466,8 @@ ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range )
 	}
 	for ( i = range.start; i < range.end; i++ ) {
 		if ( this.renderedResultsCache[ i ] ) {
+			// These array elements are all jQuery collections
+			// eslint-disable-next-line no-jquery/no-append-html
 			this.$findResults.append( this.renderedResultsCache[ i ] );
 		} else {
 			var rects = this.surface.getView().getSelection( this.fragments[ i ].getSelection() ).getSelectionRects();

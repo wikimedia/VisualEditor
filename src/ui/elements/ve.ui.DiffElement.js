@@ -66,9 +66,8 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	this.renderDiff();
 
 	if ( this.timedOut ) {
-		this.$messages.append(
-			this.constructor.static.createWarning( ve.msg( 'visualeditor-diff-timed-out' ) )
-		);
+		var $warning = this.constructor.static.createWarning( ve.msg( 'visualeditor-diff-timed-out' ) );
+		this.$messages.append( $warning );
 	}
 
 	// DOM
@@ -1181,6 +1180,8 @@ ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes, class
 		if ( typeof changes[ i ] === 'string' ) {
 			$change.text( changes[ i ] );
 		} else {
+			// changes[ i ] is definitely not an HTML string in this branch
+			// eslint-disable-next-line no-jquery/no-append-html
 			$change.append( changes[ i ] );
 		}
 		$label = $label.add( $change );

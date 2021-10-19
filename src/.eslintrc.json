@@ -15,6 +15,7 @@
 		"Papa": "readonly"
 	},
 	"rules": {
+		"no-jquery/no-append-html": "error",
 		"no-jquery/no-extend": "error",
 		"no-jquery/no-visibility": "error",
 		"max-len": "off"

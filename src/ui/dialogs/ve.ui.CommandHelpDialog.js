@@ -148,6 +148,8 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 
 			var $shortcut = $( '<dt>' );
 			triggerList.forEach( function ( trigger ) {
+				// Append an array of jQuery collections from buildKeyNode
+				// eslint-disable-next-line no-jquery/no-append-html
 				$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-shortcut' ).append(
 					trigger.getMessage( true ).map( dialog.constructor.static.buildKeyNode )
 				).find( 'kbd + kbd' ).before( '+' ).end() );
@@ -157,6 +159,8 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 				command.sequences.forEach( function ( sequenceName ) {
 					var sequence = sequenceRegistry.lookup( sequenceName );
 					if ( sequence ) {
+						// Append an array of jQuery collections from buildKeyNode
+						// eslint-disable-next-line no-jquery/no-append-html
 						$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-sequence' )
 							.attr( 'data-label', ve.msg( 'visualeditor-shortcuts-sequence-notice' ) )
 							.append(

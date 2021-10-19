@@ -55,12 +55,16 @@ ve.init.sa.Platform.prototype.notify = function ( message, title ) {
 
 	if ( title ) {
 		$notification.append(
+			// Never appends strings directly
+			// eslint-disable-next-line no-jquery/no-append-html
 			$( '<div>' ).addClass( 've-init-notification-title' ).append(
 				typeof title === 'string' ? document.createTextNode( title ) : title
 			)
 		);
 	}
 	$notification.append(
+		// Never appends strings directly
+		// eslint-disable-next-line no-jquery/no-append-html
 		$( '<div>' ).addClass( 've-init-notification-message' ).append(
 			typeof message === 'string' ? document.createTextNode( message ) : message
 		)

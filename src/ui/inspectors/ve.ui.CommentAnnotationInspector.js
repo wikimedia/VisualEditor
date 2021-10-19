@@ -143,9 +143,8 @@ ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			if ( this.initialAnnotation ) {
-				this.$thread.empty().append(
-					ve.ui.CommentAnnotationContextItem.static.renderThread( this.initialAnnotation )
-				);
+				var $thread = ve.ui.CommentAnnotationContextItem.static.renderThread( this.initialAnnotation );
+				this.$thread.empty().append( $thread );
 			}
 			this.$user.text( this.getFragment().getSurface().synchronizer.getAuthorData().name );
 			this.textInput.setValue( '' );

@@ -764,8 +764,9 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 		.append( $( '<span>' ).addClass( 've-ce-focusableNode-highlight-selectable' ).html( '&nbsp;' ) );
 
 	for ( var i = 0, l = this.rects.length; i < l; i++ ) {
+		var $highlight = this.createHighlight();
 		this.$highlights.append(
-			this.createHighlight().css( {
+			$highlight.css( {
 				top: this.rects[ i ].top,
 				left: this.rects[ i ].left,
 				width: this.rects[ i ].width,

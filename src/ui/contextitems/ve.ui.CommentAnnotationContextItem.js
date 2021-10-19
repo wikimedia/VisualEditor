@@ -48,16 +48,21 @@ ve.ui.CommentAnnotationContextItem.static.clearIcon = 'trash';
 
 /* Static methods */
 
+/**
+ * @param {ve.dm.CommentAnnotation} model
+ * @return {jQuery}
+ */
 ve.ui.CommentAnnotationContextItem.static.renderThread = function ( model ) {
 	var $thread = $( [] );
 
 	model.getAttribute( 'comments' ).forEach( function ( comment ) {
+		var $lineDivs = comment.text.split( '\n' ).map( function ( line ) {
+			return $( '<div>' ).text( line );
+		} );
 		$thread = $thread.add(
 			$( '<div>' ).addClass( 've-ui-commentAnnotationContextItem-comment' ).append(
 				$( '<strong>' ).text( comment.author ),
-				comment.text.split( '\n' ).map( function ( line ) {
-					return $( '<div>' ).text( line );
-				} )
+				$lineDivs
 			)
 		);
 	} );
@@ -71,7 +76,8 @@ ve.ui.CommentAnnotationContextItem.static.renderThread = function ( model ) {
  * @inheritdoc
  */
 ve.ui.CommentAnnotationContextItem.prototype.renderBody = function () {
-	this.$body.append( this.constructor.static.renderThread( this.model ) );
+	var $thread = this.constructor.static.renderThread( this.model );
+	this.$body.append( $thread );
 };
 
 /* Registration */

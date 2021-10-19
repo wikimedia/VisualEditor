@@ -290,7 +290,8 @@ ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
 		}
 
 		if ( node.children[ i ].children ) {
-			$li.append( this.generateListFromNode( node.children[ i ] ) );
+			var $sublist = this.generateListFromNode( node.children[ i ] );
+			$li.append( $sublist );
 		}
 
 		$ol.append( $li );

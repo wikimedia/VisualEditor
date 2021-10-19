@@ -2850,6 +2850,8 @@ ve.ce.Surface.prototype.afterPasteSanitizeExternal = function ( $element ) {
 		}
 		// Unwrap empty spans
 		if ( !this.attributes.length ) {
+			// childNodes is a NodeList
+			// eslint-disable-next-line no-jquery/no-append-html
 			$this.replaceWith( this.childNodes );
 		}
 	} );
@@ -4033,11 +4035,15 @@ ve.ce.Surface.prototype.updateCursorHolders = function () {
 		if ( ve.inputDebug ) {
 			holderBefore.classList.add( 've-ce-cursorHolder-debug' );
 		}
+		// holderBefore is a Node
+		// eslint-disable-next-line no-jquery/no-append-html
 		$( nodeBefore ).after( holderBefore );
 	}
 	if ( nodeAfter ) {
 		holderAfter = doc.importNode( this.constructor.static.cursorHolderTemplate, true );
 		holderAfter.classList.add( 've-ce-cursorHolder-before' );
+		// holderAfter is a Node
+		// eslint-disable-next-line no-jquery/no-append-html
 		$( nodeAfter ).before( holderAfter );
 		if ( ve.inputDebug ) {
 			holderAfter.classList.add( 've-ce-cursorHolder-debug' );
