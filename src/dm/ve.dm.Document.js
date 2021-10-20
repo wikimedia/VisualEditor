@@ -1138,12 +1138,13 @@ ve.dm.Document.prototype.rebuildTree = function () {
 	// Never rebuild above the attachedRoot node as that would destroy
 	// that node, and invalidate all references to it (T293254)
 	var documentNode = this.attachedRoot || this.getDocumentNode();
+	var documentRange = documentNode.getRange();
 	this.rebuildNodes(
 		documentNode,
 		0,
 		documentNode.getChildren().length,
-		0,
-		this.data.getLength()
+		documentRange.start,
+		documentRange.getLength()
 	);
 };
 
