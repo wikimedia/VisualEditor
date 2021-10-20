@@ -19,7 +19,7 @@
  * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
  *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
  *  ignored.
- * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes, used in #rebuildNodes
+ * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes, used when cloning
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
  * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
  * @param {string} [lang] Language code
@@ -1091,67 +1091,23 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
 };
 
 /**
- * Rebuild one or more nodes following a change in document data.
- *
- * The data provided to this method may contain either one node or multiple sibling nodes, but it
- * must be balanced and valid. Data provided to this method also may not contain any content at the
- * top level. The tree is updated during this operation.
- *
- * Process:
- *
- *  1. Nodes between {index} and {index} + {numNodes} in {parent} will be removed
- *  2. Data will be retrieved from this.data using {offset} and {newLength}
- *  3. A document fragment will be generated from the retrieved data
- *  4. The document fragment's nodes will be inserted into {parent} at {index}
- *
- * Use cases:
- *
- *  1. Rebuild old nodes and offset data after a change to the linear model.
- *  2. Insert new nodes and offset data after a insertion in the linear model.
- *
- * @param {ve.dm.Node} parent Parent of the node(s) being rebuilt
- * @param {number} index Index within parent to rebuild or insert nodes
- *
- *  - If {numNodes} == 0: Index to insert nodes at
- *  - If {numNodes} >= 1: Index of first node to rebuild
- * @param {number} numNodes Total number of nodes to rebuild
- *
- *  - If {numNodes} == 0: Nothing will be rebuilt, but the node(s) built from data will be
- *    inserted before {index}. To insert nodes at the end, use number of children in 'parent'
- *  - If {numNodes} == 1: Only the node at {index} will be rebuilt
- *  - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
- * @param {number} offset Linear model offset to rebuild from
- * @param {number} newLength Length of data in linear model to rebuild or insert nodes for
- */
-ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offset, newLength ) {
-	// Get a slice of the document where it's been changed
-	var data = this.data.sliceObject( offset, offset + newLength ),
-		// Build document fragment from data
-		// Use plain ve.dm.Document, instead of whatever this.constructor is.
-		documentFragment = new ve.dm.Document( data, this.htmlDocument, this ),
-		// Get generated child nodes from the document fragment
-		addedNodes = documentFragment.getDocumentNode().getChildren(),
-		// Replace nodes in the model tree
-		removedNodes = ve.batchSplice( parent, index, numNodes, addedNodes );
-
-	this.updateNodesByType( addedNodes, removedNodes );
-};
-
-/**
  * Rebuild the entire node tree from linear model data.
  */
 ve.dm.Document.prototype.rebuildTree = function () {
 	// Never rebuild above the attachedRoot node as that would destroy
 	// that node, and invalidate all references to it (T293254)
-	var documentNode = this.attachedRoot || this.getDocumentNode();
-	var documentRange = documentNode.getRange();
-	this.rebuildNodes(
-		documentNode,
-		0,
-		documentNode.getChildren().length,
-		documentRange.start,
-		documentRange.getLength()
-	);
+	var rootNode = this.attachedRoot || this.getDocumentNode();
+	var range = rootNode.getRange();
+	var data = this.data.sliceObject( range.start, range.end );
+	// Build document fragment from data
+	// Use plain ve.dm.Document, instead of whatever this.constructor is.
+	var documentFragment = new ve.dm.Document( data, this.htmlDocument, this );
+	// Get generated child nodes from the document fragment
+	var addedNodes = documentFragment.getDocumentNode().getChildren();
+	// Replace nodes in the model tree
+	var removedNodes = ve.batchSplice( rootNode, 0, rootNode.getChildren().length, addedNodes );
+
+	this.updateNodesByType( addedNodes, removedNodes );
 };
 
 /**

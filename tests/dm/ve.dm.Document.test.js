@@ -542,33 +542,6 @@ QUnit.test( 'getOuterLength', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'rebuildNodes', function ( assert ) {
-	var doc = ve.dm.example.createExampleDocument(),
-		documentNode = doc.getDocumentNode();
-	// Rebuild table without changes
-	doc.rebuildNodes( documentNode, 1, 1, 5, 32 );
-	assert.equalNodeTree(
-		documentNode,
-		ve.dm.example.tree,
-		'rebuild without changes'
-	);
-
-	// XXX: Create a new document node tree from the old one
-	var tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
-	// Replace table with paragraph
-	doc.data.batchSplice( 5, 32, [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] );
-	tree.splice( 1, 1, new ve.dm.ParagraphNode(
-		doc.data.getData( 5 ), [ new ve.dm.TextNode( 3 ) ]
-	) );
-	// Rebuild with changes
-	doc.rebuildNodes( documentNode, 1, 1, 5, 5 );
-	assert.equalNodeTree(
-		documentNode,
-		tree,
-		'replace table with paragraph'
-	);
-} );
-
 QUnit.test( 'selectNodes', function ( assert ) {
 	var doc,
 		mainDoc = ve.dm.example.createExampleDocument(),
