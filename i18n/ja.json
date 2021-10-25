@@ -20,6 +20,7 @@
 			"Suyama",
 			"Takot",
 			"Wat",
+			"Whym",
 			"Yusuke1109",
 			"赤城。"
 		]
@@ -177,7 +178,7 @@
 	"visualeditor-rebase-client-author-name": "名前",
 	"visualeditor-rebase-client-connecting": "接続中...",
 	"visualeditor-rebase-client-document-create-edit": "作成/編集",
-	"visualeditor-rebase-client-document-name": "ドキュメント名（任意）",
+	"visualeditor-rebase-client-document-name": "ドキュメント名（省略可能）",
 	"visualeditor-rebase-missing-document-error": "サーバー上にページが見つかりません。データの消失を防ぐために、文章をコピー & ペーストして残してください。",
 	"visualeditor-rebase-missing-document-title": "ページが見つかりません",
 	"visualeditor-shortcuts-clipboard": "クリップボード",

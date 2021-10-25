@@ -74,6 +74,7 @@
 	"visualeditor-changedesc-link-removed": "Koppeling verwijderd: $1",
 	"visualeditor-changedesc-no-key": "$1 is gewijzigd naar $2",
 	"visualeditor-changedesc-set": "$1 is ingesteld op $2",
+	"visualeditor-changedesc-textstyle-removed": "Tekstopmaak weggehaald: $1",
 	"visualeditor-changedesc-unknown": "$1 is gewijzigd",
 	"visualeditor-changedesc-unset": "$1 is teruggedraaid van $2",
 	"visualeditor-changedir": "Tekstrichting wijzigen",
