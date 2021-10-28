@@ -278,7 +278,8 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 	} else if ( change.to === undefined ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unset', key, this.wrapText( 'del', change.from ) );
 	} else {
-		var diff = this.getAttributeDiff( change.from.toString(), change.to.toString() );
+		// Use String() for string casting as values could be null
+		var diff = this.getAttributeDiff( String( change.from ), String( change.to ) );
 		if ( diff ) {
 			return ve.htmlMsg( 'visualeditor-changedesc-changed-diff', key, diff );
 		} else {
