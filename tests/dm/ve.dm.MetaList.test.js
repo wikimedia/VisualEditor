@@ -33,7 +33,7 @@ ve.test.utils.validateMetaListCache = function ( assert, metaList, msg ) {
 			break;
 		}
 	}
-	assert.ok( match, msg );
+	assert.true( match, msg );
 };
 
 QUnit.test( 'constructor', function ( assert ) {

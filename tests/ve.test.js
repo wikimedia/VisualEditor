@@ -722,7 +722,7 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 				cases[ i ].msg + ' (masking)'
 			);
 		} else {
-			assert.ok( true, cases[ i ].msg + ' (no masking test)' );
+			assert.true( true, cases[ i ].msg + ' (no masking test)' );
 		}
 		assert.strictEqual(
 			ve.transformStyleAttributes( cases[ i ].masked || cases[ i ].before, true )
@@ -863,7 +863,7 @@ QUnit.test( 'normalizeNode', function ( assert ) {
 		expected = ve.test.utils.buildDom( cases[ i ].after );
 		ve.normalizeNode( actual );
 		assert.equalDomElement( actual, expected, cases[ i ].msg );
-		assert.ok( actual.isEqualNode( expected ), cases[ i ].msg + ' (isEqualNode)' );
+		assert.true( actual.isEqualNode( expected ), cases[ i ].msg + ' (isEqualNode)' );
 	}
 
 	ve.isNormalizeBroken = wasNormalizeBroken;
@@ -1120,7 +1120,7 @@ QUnit.test( 'deepFreeze', function ( assert ) {
 	}, Error, 'Can\'t splice if root is frozen' );
 
 	frozen = ve.deepFreeze( data );
-	assert.ok( true, 'Freezing for a second time does not throw' );
+	assert.true( true, 'Freezing for a second time does not throw' );
 } );
 
 QUnit.test( 'deepFreeze (on cyclic structure)', function ( assert ) {
@@ -1152,7 +1152,7 @@ QUnit.test( 'deepFreeze (recursive, aliased)', function ( assert ) {
 	};
 	try {
 		foo = realFreeze( foo );
-		assert.ok( Object.isFrozen( foo.bar ), 'Recursed into aliased version' );
+		assert.true( Object.isFrozen( foo.bar ), 'Recursed into aliased version' );
 	} finally {
 		ve.deepFreeze = realFreeze;
 	}

@@ -118,7 +118,7 @@ QUnit.test( 'canNodeHaveChildrenNotContent', function ( assert ) {
 } );
 
 QUnit.test( 'initialization', function ( assert ) {
-	assert.ok( ve.dm.nodeFactory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.nodeFactory' );
+	assert.true( ve.dm.nodeFactory instanceof ve.dm.NodeFactory, 'factory is initialized at ve.dm.nodeFactory' );
 } );
 
 // TODO: getDataElement

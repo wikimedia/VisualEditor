@@ -95,14 +95,14 @@ QUnit.test( 'newBlankDocument', function ( assert ) {
 
 	doc = ve.dm.Document.static.newBlankDocument();
 
-	assert.ok( doc instanceof ve.dm.Document, 'newBlankDocument creates a document' );
+	assert.true( doc instanceof ve.dm.Document, 'newBlankDocument creates a document' );
 	assert.strictEqual( doc.data.data[ 0 ].internal.generated, 'empty', 'Creates an "empty" paragraph with no args' );
 
 	doc = ve.dm.Document.static.newBlankDocument( 'wrapper' );
 	assert.strictEqual( doc.data.data[ 0 ].internal.generated, 'wrapper', 'Creates an "wrapper" paragraph when requested' );
 
 	doc = ve.dm.Document.static.newBlankDocument( null );
-	assert.notOk( 'internal' in doc.data.data[ 0 ], 'Creates an regular paragraph with null' );
+	assert.false( 'internal' in doc.data.data[ 0 ], 'Creates an regular paragraph with null' );
 } );
 
 QUnit.test( 'getData', function ( assert ) {

@@ -67,7 +67,7 @@ QUnit.test( 'Rebase', function ( assert ) {
 				// Client 2 receives abc and rebases over it
 				[ '2', 'receive' ],
 				[ '2', 'assert', function ( client ) {
-					assert.ok( Array.isArray( client.doc.completeHistory.storeLengthAtTransaction ), 'storeLengthAtTransaction array not clobbered by rebase' );
+					assert.true( Array.isArray( client.doc.completeHistory.storeLengthAtTransaction ), 'storeLengthAtTransaction array not clobbered by rebase' );
 				} ],
 				[ '2', 'assertHist', 'abc/AB?/CD!' ],
 				// Client 2 receives confirmation of AB

@@ -42,9 +42,9 @@ QUnit.test( 'Create', function ( assert ) {
 			start: 44,
 			transactions: [ [ [ '', 'X' ] ] ]
 		}, true ) ).then( function () {
-			assert.notOk( true, 'Throw on unmached start' );
+			assert.true( false, 'Throw on unmached start' );
 		} ).catch( function () {
-			assert.ok( true, 'Throw on unmatched start' );
+			assert.true( true, 'Throw on unmatched start' );
 		} );
 	} ).then( function () {
 		return documentStore.load( 'Foo' );
@@ -83,7 +83,7 @@ QUnit.test( 'Create', function ( assert ) {
 			'Log is correct'
 		);
 	} ).catch( function ( error ) {
-		assert.notOk( 'Test failure: ', error );
+		assert.true( false, 'Test failure: ' + error );
 	} ).then( function () {
 		done();
 	} );

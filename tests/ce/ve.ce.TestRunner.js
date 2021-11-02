@@ -283,11 +283,11 @@ ve.ce.TestRunner.prototype.testNotEqual = function ( assert, testName, sequence 
 
 ve.ce.TestRunner.prototype.ok = function ( assert, testName, sequence ) {
 	var comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
-	assert.ok( true, comment );
+	assert.true( true, comment );
 };
 
 ve.ce.TestRunner.prototype.failDied = function ( assert, testName, sequence, ex ) {
 	var comment = testName + ' seq=' + sequence + ': "' + this.lastText +
 		'" ex=' + ex + ' stack=<' + ex.stack + '>';
-	assert.ok( false, comment );
+	assert.true( false, comment );
 };

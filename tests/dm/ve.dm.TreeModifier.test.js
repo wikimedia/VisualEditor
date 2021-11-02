@@ -463,7 +463,7 @@ QUnit.test( 'checkEqualData', function ( assert ) {
 	delete expectedData[ 4 ].attributes.mw;
 	delete expectedData[ 4 ].attributes.contentsUsed;
 	ve.dm.TreeModifier.static.checkEqualData( data, expectedData );
-	assert.ok( true, 'Normalized data compares equal' );
+	assert.true( true, 'Normalized data compares equal' );
 } );
 
 QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
