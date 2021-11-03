@@ -26,8 +26,9 @@
  * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  * @param {ve.dm.Document} [originalDocument] Original document form which this was cloned.
  * @param {boolean} [sourceMode] Document is in source mode
+ * @param {Object} [persistentStorage] Persistent storage object
  */
-ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir, originalDocument, sourceMode ) {
+ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir, originalDocument, sourceMode, persistentStorage ) {
 	// Parent constructor
 	ve.dm.Document.super.call( this, new ve.dm.DocumentNode() );
 
@@ -80,6 +81,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 		this.completeHistory.storeLengthAtTransaction.push( this.store.getLength() );
 	}
 	this.htmlDocument = htmlDocument || ve.createDocumentFromHtml( '' );
+	this.persistentStorage = persistentStorage || {};
 };
 
 /* Inheritance */
@@ -702,7 +704,11 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
 		// lang+dir
 		this.getLang(), this.getDir(),
 		// originalDocument
-		this
+		this,
+		// sourceMode
+		this.sourceMode,
+		// persistentStorage
+		this.getStorage()
 	);
 	if ( copyInternalList && !detachedCopy ) {
 		// Record the length of the internal list at the time the slice was created so we can
@@ -1777,4 +1783,37 @@ ve.dm.Document.prototype.getLang = function () {
  */
 ve.dm.Document.prototype.getDir = function () {
 	return this.dir;
+};
+
+/**
+ * Set a key/value pair in persistent static storage, or restore the whole store
+ *
+ * Storage is used for static variables related to document state,
+ * such as InternalList's nextUniqueNumber.
+ *
+ * @param {string|Object} [keyOrStorage] Key, or storage object to restore
+ * @param {Mixed} [value] Serializable value, if key is set
+ * @fires storage
+ */
+ve.dm.Document.prototype.setStorage = function ( keyOrStorage, value ) {
+	if ( typeof keyOrStorage === 'string' ) {
+		this.persistentStorage[ keyOrStorage ] = value;
+		this.emit( 'storage' );
+	} else {
+		this.persistentStorage = keyOrStorage;
+	}
+};
+
+/**
+ * Get a value from the persistent static storage, or the whole store
+ *
+ * @param {string} [key] Key
+ * @return {Mixed|Object} Value at key, or whole storage object if key not provided
+ */
+ve.dm.Document.prototype.getStorage = function ( key ) {
+	if ( key ) {
+		return this.persistentStorage[ key ];
+	} else {
+		return this.persistentStorage;
+	}
 };

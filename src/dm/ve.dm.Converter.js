@@ -604,7 +604,8 @@ ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnot
  * @return {ve.dm.Document} Document model
  */
 ve.dm.Converter.prototype.getModelFromDom = function ( doc, options, store ) {
-	var internalList = new ve.dm.InternalList();
+	var tmpDoc = new ve.dm.Document();
+	var internalList = new ve.dm.InternalList( tmpDoc );
 
 	store = store || new ve.dm.HashValueStore();
 	options = options || {};
@@ -635,7 +636,7 @@ ve.dm.Converter.prototype.getModelFromDom = function ( doc, options, store ) {
 	this.internalList = null;
 	this.contextStack = null;
 
-	return new ve.dm.Document( linearData, doc, undefined, internalList, innerWhitespace, options.lang, options.dir );
+	return new ve.dm.Document( linearData, doc, undefined, internalList, innerWhitespace, options.lang, options.dir, null, null, tmpDoc.getStorage() );
 };
 
 /**

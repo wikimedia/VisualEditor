@@ -235,7 +235,7 @@ ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
 		}
 	}
 	if ( data.internalListNextUniqueNumber ) {
-		doc.internalList.nextUniqueNumber = data.internalListNextUniqueNumber;
+		doc.setStorage( 'internallist-counter', data.internalListNextUniqueNumber );
 	}
 	doc.buildNodeTree();
 	return doc;

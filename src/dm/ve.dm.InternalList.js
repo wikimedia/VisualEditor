@@ -25,12 +25,9 @@ ve.dm.InternalList = function VeDmInternalList( doc ) {
 	this.groupsChanged = [];
 	this.keyIndexes = {};
 	this.keys = [];
-	this.nextUniqueNumber = 0;
 
 	// Event handlers
-	if ( doc ) {
-		doc.connect( this, { transact: 'onTransact' } );
-	}
+	doc.connect( this, { transact: 'onTransact' } );
 };
 
 /* Inheritance */
@@ -188,7 +185,10 @@ ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName, oldListKey
  * @return {number} One higher than the return value of the previous call, or 0 on the first call
  */
 ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
-	return this.nextUniqueNumber++;
+	var doc = this.getDocument();
+	var number = ( doc.getStorage( 'internallist-counter' ) || 0 );
+	doc.setStorage( 'internallist-counter', number + 1 );
+	return number;
 };
 
 /**
@@ -422,7 +422,6 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
 	var clone = new this.constructor( doc || this.getDocument() );
 	// Most properties don't need to be copied, because addNode() will be invoked when the new
 	// document tree is built. But some do need copying:
-	clone.nextUniqueNumber = this.nextUniqueNumber;
 	clone.itemHtmlQueue = ve.copy( this.itemHtmlQueue );
 	return clone;
 };

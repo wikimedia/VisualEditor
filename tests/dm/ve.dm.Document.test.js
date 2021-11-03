@@ -150,7 +150,7 @@ QUnit.test( 'cloneFromRange', function ( assert ) {
 
 	cases.forEach( function ( caseItem ) {
 		var doc1 = ve.dm.example.createExampleDocument( caseItem.doc ),
-			doc2 = doc.cloneFromRange( caseItem.range );
+			doc2 = doc1.cloneFromRange( caseItem.range );
 		assert.deepEqual( doc2.data.data, caseItem.expectedData,
 			caseItem.msg + ': sliced data' );
 		assert.notStrictEqual( doc2.data[ 0 ], caseItem.expectedData[ 0 ],
@@ -159,6 +159,8 @@ QUnit.test( 'cloneFromRange', function ( assert ) {
 			caseItem.msg + ': store is copied' );
 		assert.notStrictEqual( doc2.store, doc1.store,
 			caseItem.msg + ': store is a clone, not the same' );
+		assert.strictEqual( doc2.getStorage(), doc1.getStorage(),
+			caseItem.msg + ': persistentStorage is copied' );
 	} );
 } );
 
