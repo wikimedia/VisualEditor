@@ -296,7 +296,7 @@ QUnit.test( 'expandLinearSelection (word)', function ( assert ) {
 		fragment = surface.getLinearFragment( cases[ i ].range );
 		newFragment = fragment.expandLinearSelection( 'word' );
 		range = newFragment.getSelection().getRange();
-		word = cases[ i ].phrase.substring( range.start, range.end );
+		word = cases[ i ].phrase.slice( range.start, range.end );
 		assert.strictEqual( word, cases[ i ].expected, cases[ i ].msg + ': text' );
 		assert.strictEqual( cases[ i ].range.isBackwards(), range.isBackwards(), cases[ i ].msg + ': range direction' );
 	}

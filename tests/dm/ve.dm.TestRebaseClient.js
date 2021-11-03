@@ -41,10 +41,10 @@ OO.mixinClass( ve.dm.TestRebaseClient, ve.dm.RebaseClient );
  * Therefore this format is ambiguous unless the test transactions are chosen very carefully.
  * The summary 'abc' could represent any of the following changes (amongst others):
  *
- * * Append 'abc'
- * * Append 'a', then append 'bc'
- * * Append 'a' then prepend 'bc'
- * * Append 'a' then prepend 'b' then append 'c'
+ * - Append 'abc'
+ * - Append 'a', then append 'bc'
+ * - Append 'a' then prepend 'bc'
+ * - Append 'a' then prepend 'b' then append 'c'
  *
  * @param {ve.dm.Change} change The document history
  * @param {number} [commitLength] The point above which the transactions are uncommitted

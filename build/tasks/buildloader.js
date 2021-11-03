@@ -81,7 +81,7 @@ module.exports = function ( grunt ) {
 			const dependencies = moduleUtils.buildDependencyList( modules, l );
 			for ( const dependency in dependencies ) {
 				const module = dependencies[ dependency ];
-				if ( loadedModules.indexOf( module ) > -1 ) {
+				if ( loadedModules.includes( module ) ) {
 					continue;
 				}
 				loadedModules.push( module );

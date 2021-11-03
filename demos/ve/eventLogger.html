@@ -128,7 +128,7 @@
 
 				function logEvent( methodName, eventName, e ) {
 					var args = [],
-						msUtc = ( new Date().getTime() - startTime ) / 1000,
+						msUtc = ( Date.now() - startTime ) / 1000,
 						newHtml = $content.html(),
 						newAnchorPosition = getPosition( sel.anchorNode, sel.anchorOffset ),
 						newFocusPosition = getPosition( sel.focusNode, sel.focusOffset );
@@ -223,7 +223,7 @@
 					$( document ).on( 'selectstart', makeEventHandler( 'selectstart' ) );
 					$( document ).on( 'selectionchange', makeEventHandler( 'selectionchange' ) );
 
-					startTime = new Date().getTime();
+					startTime = Date.now();
 
 					$form.on( 'submit', start );
 

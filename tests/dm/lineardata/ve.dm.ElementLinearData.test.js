@@ -1533,11 +1533,11 @@ QUnit.test( 'getWordRange', function ( assert ) {
 		var elementLinearData = new ve.dm.ElementLinearData( store, data );
 		// Adjust offsets to account for the paragraph tag
 		var range = elementLinearData.getWordRange( caseItem.offset + 1 );
-		var word = caseItem.phrase.substring( range.start - 1, range.end - 1 );
+		var word = caseItem.phrase.slice( range.start - 1, range.end - 1 );
 		assert.strictEqual( word, caseItem.expected,
 			caseItem.msg + ': ' +
-			caseItem.phrase.substring( 0, caseItem.offset ) + '│' +
-			caseItem.phrase.substring( caseItem.offset, caseItem.phrase.length ) +
+			caseItem.phrase.slice( 0, caseItem.offset ) + '│' +
+			caseItem.phrase.slice( caseItem.offset, caseItem.phrase.length ) +
 			' → ' + caseItem.expected
 		);
 	} );

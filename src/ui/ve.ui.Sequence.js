@@ -166,8 +166,8 @@ ve.ui.Sequence.prototype.getCommandName = function () {
  * Get a representation of the sequence useful for display
  *
  * What this means depends a bit on how the sequence was defined:
- * * It strips out undisplayable things like the paragraph-start marker.
- * * Regexps are just returned as a toString of the regexp.
+ * - It strips out undisplayable things like the paragraph-start marker.
+ * - Regexps are just returned as a toString of the regexp.
  *
  * @param {boolean} explode Whether to return the message split up into some
  *        reasonable sequence of inputs required to trigger the sequence (regexps

@@ -59,7 +59,7 @@ function initApp( options ) {
 	app.logger.log( 'info', 'Connecting to document store' );
 
 	return documentStore.connect().then( function () {
-		const dropDatabase = ( process.argv.indexOf( '--drop' ) !== -1 );
+		const dropDatabase = ( process.argv.includes( '--drop' ) );
 		if ( dropDatabase ) {
 			app.logger.log( 'info', 'Dropping database' );
 		}

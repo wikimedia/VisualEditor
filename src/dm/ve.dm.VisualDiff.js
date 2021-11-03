@@ -52,7 +52,7 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout 
 	// Minimum ratio of content (same : different) allowed between two corresponding nodes
 	this.diffThreshold = 0.5;
 
-	this.endTime = new Date().getTime() + ( timeout || 1000 );
+	this.endTime = Date.now() + ( timeout || 1000 );
 	this.timedOut = false;
 
 	this.freezeInternalListIndices( this.oldDoc );
@@ -775,7 +775,7 @@ ve.dm.VisualDiff.prototype.diffAttributes = function ( oldNode, newNode ) {
 ve.dm.VisualDiff.prototype.diffContent = function ( oldNode, newNode ) {
 	var linearDiff;
 
-	if ( new Date().getTime() < this.endTime ) {
+	if ( Date.now() < this.endTime ) {
 
 		linearDiff = this.linearDiffer.getCleanDiff(
 			this.oldDoc.getData( oldNode.getRange() ),

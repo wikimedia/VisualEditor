@@ -15,7 +15,7 @@
  * This matters when many events are added to the task queue in one go.
  * For instance, browsers often queue 'keydown' and 'keypress' in immediate
  * sequence, so a setTimeout(f, 0) defined in the keydown listener will run
- * *after* the keypress listener (i.e. in the 'wrong' order). EventSequencer
+ * **after** the keypress listener (i.e. in the 'wrong' order). EventSequencer
  * ensures that this does not happen.
  *
  * All these listeners receive the jQuery event as an argument. If an on-event

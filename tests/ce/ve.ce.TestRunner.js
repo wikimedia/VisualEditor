@@ -270,7 +270,7 @@ ve.ce.TestRunner.prototype.testEqual = function ( assert, testName, sequence ) {
 };
 
 /**
- * Call assert.notEqual to check the IME test has not updated the DM correctly
+ * Call assert.notStrictEqual to check the IME test has not updated the DM correctly
  *
  * @param {Object} assert The QUnit assertion object
  * @param {string} testName The name of the test scenario

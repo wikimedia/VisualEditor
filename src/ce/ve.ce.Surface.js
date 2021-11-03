@@ -2944,7 +2944,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 		for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
 			if (
 				dataTransfer.items[ i ].kind === 'string' &&
-				dataTransfer.items[ i ].type.substr( 0, 5 ) === 'text/'
+				dataTransfer.items[ i ].type.slice( 0, 5 ) === 'text/'
 			) {
 				items.push( ve.ui.DataTransferItem.static.newFromString(
 					dataTransfer.getData( dataTransfer.items[ i ].type ),

@@ -823,8 +823,8 @@ ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
  * Check if the rendering is visible
  *
  * "Visible", in this case, is defined as any of:
- *  * contains any non-whitespace text
- *  * is greater than 8px x 8px in dimensions
+ * - contains any non-whitespace text
+ * - is greater than 8px x 8px in dimensions
  *
  * @return {boolean} The node has a visible rendering
  */

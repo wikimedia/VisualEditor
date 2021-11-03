@@ -122,7 +122,7 @@ ve.dm.Model.static.matchFunction = null;
  *
  * For these purposes, annotations are considered content. Meta-items can occur anywhere, so if
  * a meta-element is returned no special action is taken. Note that "alienate" always means an alien
- * *node* (ve.dm.AlienNode) will be generated, never an alien meta-item (ve.dm.AlienMetaItem),
+ * **node** (ve.dm.AlienNode) will be generated, never an alien meta-item (ve.dm.AlienMetaItem),
  * regardless of whether the subclass attempting the conversion is a node or a meta-item.
  *
  * The returned linear model element must have a type property set to a registered model name

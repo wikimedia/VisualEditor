@@ -558,9 +558,9 @@
 				html.push( '<#text>' );
 				if ( node === position.node ) {
 					html.push( ve.escapeHtml(
-						node.textContent.substring( 0, position.offset ) +
+						node.textContent.slice( 0, position.offset ) +
 						'|' +
-						node.textContent.substring( position.offset )
+						node.textContent.slice( position.offset )
 					) );
 				} else {
 					html.push( ve.escapeHtml( node.textContent ) );
