@@ -138,7 +138,7 @@ ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
  * See https://phabricator.wikimedia.org/T162762 for the algorithm
  *
  * @param {number} maxLength Maximum linear model length to step over (integer >= 1)
- * @return {Object|undefined} The type of step taken, or undefined if there are no more steps
+ * @return {Object|null} The type of step taken, or null if there are no more steps
  * @return {string} return.type open|close|cross|crosstext
  * @return {number} return.length Linear length of the step (integer >= 1)
  * @return {number[]} return.path Offset path from the root to the node containing the stepped item
@@ -149,8 +149,8 @@ ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
  */
 ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 	if ( !this.node ) {
-		this.lastStep = undefined;
-		return undefined;
+		this.lastStep = null;
+		return null;
 	}
 	// On very large pages this is a performance bottleneck, so only run in tests
 	if ( ve.test ) {
@@ -238,7 +238,7 @@ ve.dm.TreeCursor.prototype.stepIn = function () {
 /**
  * Step out of the current node (skipping past any uncrossed children or text within)
  *
- * @return {Object} The step
+ * @return {Object|null} The step
  */
 ve.dm.TreeCursor.prototype.stepOut = function () {
 	var treeCursor = this,
@@ -248,8 +248,8 @@ ve.dm.TreeCursor.prototype.stepOut = function () {
 	this.offset = this.path.pop();
 	if ( this.node === undefined ) {
 		// Stepped out of the root
-		this.lastStep = undefined;
-		return undefined;
+		this.lastStep = null;
+		return null;
 	}
 	if ( item.type === 'text' ) {
 		this.linearOffset += item.getLength() - priorOffset;

@@ -232,7 +232,7 @@ ve.dm.Converter.static.moveInlineMetaItems = function ( data ) {
 				return ancestor;
 			}
 		}
-		return undefined;
+		return null;
 	}
 
 	var metaParent;
