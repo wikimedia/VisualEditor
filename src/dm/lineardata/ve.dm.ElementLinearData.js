@@ -43,7 +43,7 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
  * have the same text data. Anything semantically irrelevant is filtered
  * out first.
  *
- * When changing, ensure that ve.dm.Transaction.static.compareElementsUnannotatedSimple
+ * When changing, ensure that ve.dm.Transaction.static.compareElementsForTranslate
  * is also updated.
  *
  * @param {Object|Array|string} a First element
@@ -53,6 +53,10 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
 ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
 	var aPlain = a,
 		bPlain = b;
+
+	if ( a === b ) {
+		return true;
+	}
 
 	if ( Array.isArray( a ) ) {
 		aPlain = a[ 0 ];

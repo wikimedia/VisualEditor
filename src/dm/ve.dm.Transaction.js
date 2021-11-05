@@ -132,6 +132,10 @@ ve.dm.Transaction.static.compareElementsForTranslate = function ( a, b ) {
 	var aPlain = a,
 		bPlain = b;
 
+	if ( a === b ) {
+		return true;
+	}
+
 	if ( Array.isArray( a ) ) {
 		aPlain = a[ 0 ];
 	}
