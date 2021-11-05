@@ -1161,7 +1161,10 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
 	for ( var i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
 			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			nodeClass.static.remapInternalListKeys( this.data[ i ], internalList );
+			// eslint-disable-next-line no-loop-func
+			this.modifyData( i, function ( item ) {
+				nodeClass.static.remapInternalListKeys( item, internalList );
+			} );
 		}
 	}
 };
