@@ -139,7 +139,7 @@ QUnit.test( 'replace all', function ( assert ) {
 			}
 			done();
 		} ).fail( function ( ex ) {
-			assert.ok( false, 'Error thrown: ' + ex.stack );
+			assert.true( false, 'Error thrown: ' + ex.stack );
 			done();
 		} );
 	} );

@@ -16,7 +16,7 @@ QUnit.test( 'Basic open/close', function ( assert ) {
 
 	dialogs.once( 'opening', function ( win, opening ) {
 		opening.then( function () {
-			assert.ok( true, 'Window opened' );
+			assert.true( true, 'Window opened' );
 
 			windowAction.close( 'message' );
 			done();
@@ -24,7 +24,7 @@ QUnit.test( 'Basic open/close', function ( assert ) {
 	} );
 
 	dialogs.once( 'closing', function () {
-		assert.ok( true, 'Window closed' );
+		assert.true( true, 'Window closed' );
 		done();
 	} );
 

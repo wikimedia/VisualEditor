@@ -128,13 +128,13 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		view.destroy();
 	} );
 	return promise.catch( function ( error ) {
-		assert.notOk( true, caseItem.msg + ': throws ' + error );
+		assert.true( false, caseItem.msg + ': throws ' + error );
 	} ).finally( function () {
 		if ( caseItem.teardown ) {
 			try {
 				caseItem.teardown();
 			} catch ( error ) {
-				assert.notOk( true, caseItem.msg + ': teardown throws ' + error );
+				assert.true( false, caseItem.msg + ': teardown throws ' + error );
 			}
 		}
 	} );
@@ -2374,7 +2374,7 @@ QUnit.test( 'findBlockSlug', function ( assert ) {
 	for ( i = 0; i <= len; i++ ) {
 		ret = view.findBlockSlug( new ve.Range( i ) );
 		if ( slugOffsets[ i ] ) {
-			assert.ok( ret, 'Block slug found at offset ' + i );
+			assert.true( ret instanceof HTMLElement, 'Block slug found at offset ' + i );
 		} else {
 			assert.strictEqual( ret, null, 'No block slug found at offset ' + i );
 		}

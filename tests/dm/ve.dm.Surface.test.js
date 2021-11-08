@@ -305,7 +305,7 @@ QUnit.test( 'range translation', function ( assert ) {
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'x' ] );
 	surface.change( tx );
 	selection = surface.getSelection();
-	assert.ok( selection instanceof ve.dm.LinearSelection, 'Selection is linear' );
+	assert.true( selection instanceof ve.dm.LinearSelection, 'Selection is linear' );
 	assert.equalRange( selection.getRange(), new ve.Range( 3 ), 'Cursor is unmoved' );
 } );
 

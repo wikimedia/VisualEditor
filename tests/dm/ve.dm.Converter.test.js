@@ -24,8 +24,7 @@ QUnit.test( 'getModelFromDom with store argument', function ( assert ) {
 		{ lang: 'en', dir: 'ltr' },
 		store
 	);
-	// eslint-disable-next-line qunit/no-ok-equality
-	assert.ok( model.getStore() === store, 'Document store is reference-equal to store argument' );
+	assert.strictEqual( model.getStore(), store, 'Document store is reference-equal to store argument' );
 } );
 
 QUnit.test( 'getDomFromModel', function ( assert ) {

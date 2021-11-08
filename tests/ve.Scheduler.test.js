@@ -32,14 +32,14 @@ QUnit.test( 'Call with no real async', function ( assert ) {
 
 	scheduler.schedule(
 		function () {
-			assert.ok( true, 'initial action was called' );
+			assert.true( true, 'initial action was called' );
 			begun();
 		},
 		function () {
 			return true;
 		}
 	).done( function () {
-		assert.ok( true, 'promise was resolved' );
+		assert.true( true, 'promise was resolved' );
 		done();
 	} );
 } );
@@ -52,10 +52,10 @@ QUnit.test( 'Call with delay', function ( assert ) {
 
 	scheduler.schedule(
 		function () {
-			assert.ok( true, 'initial action was called' );
+			assert.true( true, 'initial action was called' );
 			setTimeout( function () {
 				delayed = true;
-				assert.ok( true, 'setTimeout delay occurred' );
+				assert.true( true, 'setTimeout delay occurred' );
 			} );
 			begun();
 		},
@@ -63,7 +63,7 @@ QUnit.test( 'Call with delay', function ( assert ) {
 			return delayed;
 		}
 	).done( function () {
-		assert.ok( true, 'promise was resolved' );
+		assert.true( true, 'promise was resolved' );
 		done();
 	} );
 } );
@@ -75,16 +75,16 @@ QUnit.test( 'Test that throws an exception', function ( assert ) {
 
 	scheduler.schedule(
 		function () {
-			assert.ok( true, 'initial action was called' );
+			assert.true( true, 'initial action was called' );
 			begun();
 		},
 		function () {
 			throw new Error();
 		}
 	).done( function () {
-		assert.ok( false, 'promise was wrongly resolved as successful' );
+		assert.true( false, 'promise was wrongly resolved as successful' );
 	} ).fail( function () {
-		assert.ok( true, 'promise was rejected' );
+		assert.true( true, 'promise was rejected' );
 		done();
 	} );
 } );
@@ -96,17 +96,17 @@ QUnit.test( 'Test that never succeeds', function ( assert ) {
 
 	scheduler.schedule(
 		function () {
-			assert.ok( true, 'initial action was called' );
+			assert.true( true, 'initial action was called' );
 			begun();
 		},
 		function () {
 			return false;
 		}
 	).done( function () {
-		assert.ok( false, 'promise was wrongly resolved as successful' );
+		assert.true( false, 'promise was wrongly resolved as successful' );
 		done();
 	} ).fail( function () {
-		assert.ok( true, 'promise was rejected' );
+		assert.true( true, 'promise was rejected' );
 		done();
 	} );
 } );

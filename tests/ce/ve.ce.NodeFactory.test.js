@@ -57,5 +57,5 @@ QUnit.test( 'splitNodeOnEnter/getDescription', function ( assert ) {
 } );
 
 QUnit.test( 'initialization', function ( assert ) {
-	assert.ok( ve.ce.nodeFactory instanceof ve.ce.NodeFactory, 'factory is initialized at ve.ce.nodeFactory' );
+	assert.true( ve.ce.nodeFactory instanceof ve.ce.NodeFactory, 'factory is initialized at ve.ce.nodeFactory' );
 } );

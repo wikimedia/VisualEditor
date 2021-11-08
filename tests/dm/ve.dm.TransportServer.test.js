@@ -83,7 +83,7 @@ QUnit.test( 'Create', function ( assert ) {
 			[ 'broadcast', 'authorDisconnect', 1 ]
 		], 'Correct events received in correct order' );
 	} ).catch( function ( err ) {
-		assert.ok( false, 'Exception: ' + err );
+		assert.true( false, 'Exception: ' + err );
 	} ).finally( function () {
 		done();
 	} );

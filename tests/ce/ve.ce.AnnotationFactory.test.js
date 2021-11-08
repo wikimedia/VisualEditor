@@ -63,5 +63,5 @@ QUnit.test( 'canAnnotationBeActive/getDescription', function ( assert ) {
 } );
 
 QUnit.test( 'initialization', function ( assert ) {
-	assert.ok( ve.ce.annotationFactory instanceof ve.ce.AnnotationFactory, 'factory is initialized at ve.ce.annotationFactory' );
+	assert.true( ve.ce.annotationFactory instanceof ve.ce.AnnotationFactory, 'factory is initialized at ve.ce.annotationFactory' );
 } );
