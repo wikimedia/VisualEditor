@@ -789,7 +789,7 @@ ve.dm.TreeModifier.prototype.pushInsertTextOp = function ( data ) {
 /**
  * Push into treeOps a move of a node to the current inserter position
  *
- * @param {Object} removerStep the remover step over the node; see ve.dm.TreeCursor#stepAtMost
+ * @param {Object} removerStep The remover step over the node; see ve.dm.TreeCursor#stepAtMost
  */
 ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
 	var rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
@@ -813,7 +813,7 @@ ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
 /**
  * Push into treeOps a move of some text to the current inserter position
  *
- * @param {Object} removerStep the remover step over the text; see ve.dm.TreeCursor#stepAtMost
+ * @param {Object} removerStep The remover step over the text; see ve.dm.TreeCursor#stepAtMost
  */
 ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
 	var length = removerStep.type === 'crosstext' ?
@@ -840,7 +840,7 @@ ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
 /**
  * Push into treeOps a removal of a node
  *
- * @param {Object} removerStep the remover step over the node; see ve.dm.TreeCursor#stepAtMost
+ * @param {Object} removerStep The remover step over the node; see ve.dm.TreeCursor#stepAtMost
  */
 ve.dm.TreeModifier.prototype.pushRemoveNodeOp = function ( removerStep ) {
 	var rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
@@ -857,7 +857,7 @@ ve.dm.TreeModifier.prototype.pushRemoveNodeOp = function ( removerStep ) {
 /**
  * Push into treeOps a removal of some text
  *
- * @param {Object} removerStep the remover step over the text; see ve.dm.TreeCursor#stepAtMost
+ * @param {Object} removerStep The remover step over the text; see ve.dm.TreeCursor#stepAtMost
  */
 ve.dm.TreeModifier.prototype.pushRemoveTextOp = function ( removerStep ) {
 	var rawRemoverPosition = this.getRawRemoverPosition( removerStep );
