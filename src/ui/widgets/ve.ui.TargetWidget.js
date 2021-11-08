@@ -132,9 +132,28 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	} );
 	// Rethrow as target events so users don't have to re-bind when the surface is changed
 	this.getSurface().getModel().connect( this, { history: [ 'emit', 'change' ] } );
-	this.getSurface().connect( this, { submit: [ 'emit', 'submit' ] } );
+	this.getSurface().connect( this, { submit: 'onSurfaceSubmit' } );
 
 	this.emit( 'setup' );
+};
+
+/**
+ * Check if the surface has been modified.
+ *
+ * @fires submit
+ * @return {boolean} The surface has been modified
+ */
+ve.ui.TargetWidget.prototype.onSurfaceSubmit = function () {
+	var submitHandled = this.emit( 'submit' );
+	if ( !submitHandled && this.inDialog ) {
+		// If we are in a dialog, re-throw a fake Ctrl+Enter keydown
+		// event to potentially trigger the dialog's primary action.
+		// (See OO.ui.Dialog#onDialogKeyDown)
+		this.$element.parent().trigger( $.Event( 'keydown', {
+			which: OO.ui.Keys.ENTER,
+			ctrlKey: true
+		} ) );
+	}
 };
 
 /**
