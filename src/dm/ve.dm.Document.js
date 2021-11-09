@@ -1692,7 +1692,6 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 				sensitivity = options.caseSensitiveString ? 'variant' : 'accent';
 			}
 			// Intl is only used browser clients
-			// eslint-disable-next-line no-undef
 			compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
 		} else {
 			// Support: Firefox<29, Chrome<24, Safari<10

@@ -1191,7 +1191,6 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
 			// Common case, cheap, avoid the isArray check
 			continue;
 		} else {
-			// eslint-disable-next-line no-loop-func
 			this.modifyData( i, function ( item ) {
 				if ( Array.isArray( item ) ) {
 					remap( item[ 1 ] );
