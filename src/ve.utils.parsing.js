@@ -67,6 +67,43 @@ ve.matchTag = function ( html, tag ) {
 };
 
 /**
+ * Add a tag to `<head>` using HTML string splicing
+ *
+ * @param {string} docHtml Document HTML
+ * @param {string} tagHtml Tag HTML to be added to `<head>`
+ * @return {string} Document HTML
+ */
+ve.addHeadTag = function ( docHtml, tagHtml ) {
+	/**
+	 * Splice text after a regex match
+	 *
+	 * @param {Array} match Regex match
+	 * @param {string} text Text to insert
+	 * @return {string}
+	 */
+	function insertAfter( match, text ) {
+		var offset = match.index + match[ 0 ].length;
+		return docHtml.slice( 0, offset ) +
+			text +
+			docHtml.slice( offset );
+	}
+
+	var headMatch = ve.matchTag( docHtml, 'head' );
+	if ( headMatch ) {
+		return insertAfter( headMatch, tagHtml );
+	} else {
+		var htmlMatch = ve.matchTag( docHtml, 'html' );
+		if ( htmlMatch ) {
+			// <html> but no <head>
+			return insertAfter( htmlMatch, '<head>' + tagHtml + '</head>' );
+		} else {
+			// No <html> or </head>
+			return '<head>' + tagHtml + '</head>' + docHtml;
+		}
+	}
+};
+
+/**
  * Create an HTMLDocument from an HTML string.
  *
  * The html parameter is supposed to be a full HTML document with a doctype and an `<html>` tag.
@@ -81,23 +118,31 @@ ve.matchTag = function ( html, tag ) {
  * @return {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtml = function ( html ) {
-	if ( html !== '' && !ve.matchTag( html, 'body' ) ) {
-		// When the given HTML fragment starts with a <meta> or <style> element, it is placed in the
-		// automatically generated <head> rather than <body>, and breaks our assumptions. (T273234)
-		html = '<body>' + html + '</body>';
+	if ( html !== '' ) {
+		if ( !ve.matchTag( html, 'body' ) ) {
+			// When the given HTML fragment starts with a <meta> or <style> element, it is placed in the
+			// automatically generated <head> rather than <body>, and breaks our assumptions. (T273234)
+			html = '<body>' + html + '</body>';
+		}
+		// Add iOS hack (T116525)
+		html = ve.addHeadTag( html, '<meta name="format-detection" content="telephone=no" data-ve-tmp/>' );
 	}
 
 	var newDocument = ve.createDocumentFromHtmlUsingDomParser( html );
-	if ( newDocument ) {
-		return newDocument;
+	if ( !newDocument ) {
+		newDocument = ve.createDocumentFromHtmlUsingIframe( html );
+		if ( !newDocument ) {
+			newDocument = ve.createDocumentFromHtmlUsingInnerHtml( html );
+		}
 	}
 
-	newDocument = ve.createDocumentFromHtmlUsingIframe( html );
-	if ( newDocument ) {
-		return newDocument;
+	// Remove iOS hack
+	var tmpMeta = newDocument.querySelector( 'meta[data-ve-tmp]' );
+	if ( tmpMeta ) {
+		tmpMeta.parentNode.removeChild( tmpMeta );
 	}
 
-	return ve.createDocumentFromHtmlUsingInnerHtml( html );
+	return newDocument;
 };
 
 /**

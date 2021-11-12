@@ -371,6 +371,40 @@ QUnit.test( 'escapeHtml', function ( assert ) {
 	assert.strictEqual( ve.escapeHtml( ' "script\' <foo & bar> ' ), ' &quot;script&#039; &lt;foo &amp; bar&gt; ' );
 } );
 
+QUnit.test( 'addHeadTag', function ( assert ) {
+	var cases = [
+		{
+			msg: 'no wrapper',
+			html: '<p>foo</p>',
+			expected: '<head><meta foo/></head><p>foo</p>'
+		},
+		{
+			msg: 'body only',
+			html: '<body><p>foo</p></body>',
+			expected: '<head><meta foo/></head><body><p>foo</p></body>'
+		},
+		{
+			msg: 'head & body',
+			html: '<head></head><body><p>foo</p></body>',
+			expected: '<head><meta foo/></head><body><p>foo</p></body>'
+		},
+		{
+			msg: 'html & body',
+			html: '<html><body><p>foo</p></body></html>',
+			expected: '<html><head><meta foo/></head><body><p>foo</p></body></html>'
+		},
+		{
+			msg: 'html, head & body',
+			html: '<html><head></head><body><p>foo</p></body></html>',
+			expected: '<html><head><meta foo/></head><body><p>foo</p></body></html>'
+		}
+	];
+
+	cases.forEach( function ( caseItem ) {
+		assert.strictEqual( ve.addHeadTag( caseItem.html, '<meta foo/>' ), caseItem.expected, caseItem.msg );
+	} );
+} );
+
 QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	var doc, expectedHead, expectedBody,
 		supportsDomParser = !!ve.createDocumentFromHtmlUsingDomParser( '' ),
