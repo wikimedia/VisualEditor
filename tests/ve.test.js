@@ -407,12 +407,23 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 				head: '',
 				body: '',
 				htmlAttributes: {}
+			},
+			{
+				msg: 'meta tag stays in body',
+				html: '<meta/><p>foo</p>',
+				head: '',
+				body: '<meta/><p>foo</p>',
+				htmlAttributes: {},
+				wrapperOnly: true
 			}
 		];
 
 	function assertCreateDocument( createDocument, msg ) {
 		var i, key, attributes, attributesObject;
 		for ( key in cases ) {
+			if ( msg !== 'wrapper' && cases[ key ].wrapperOnly ) {
+				continue;
+			}
 			doc = createDocument( cases[ key ].html );
 			attributes = $( 'html', doc ).get( 0 ).attributes;
 			attributesObject = {};
