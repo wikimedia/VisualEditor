@@ -54,6 +54,19 @@ ve.elementTypes = {
 };
 
 /**
+ * Match a specific HTML tag that appears once, e.g. 'html' or 'body'
+ *
+ * @param {string} html Document HTML
+ * @param {string} tag Tag name
+ * @return {Array|null} Regex match, null if not found
+ */
+ve.matchTag = function ( html, tag ) {
+	return html.match(
+		new RegExp( '<' + tag + '(>|\\s[^>]*>)' )
+	);
+};
+
+/**
  * Create an HTMLDocument from an HTML string.
  *
  * The html parameter is supposed to be a full HTML document with a doctype and an `<html>` tag.
@@ -68,7 +81,7 @@ ve.elementTypes = {
  * @return {HTMLDocument} Document constructed from the HTML string
  */
 ve.createDocumentFromHtml = function ( html ) {
-	if ( html !== '' && html.indexOf( '<body' ) === -1 ) {
+	if ( html !== '' && !ve.matchTag( html, 'body' ) ) {
 		// When the given HTML fragment starts with a <meta> or <style> element, it is placed in the
 		// automatically generated <head> rather than <body>, and breaks our assumptions. (T273234)
 		html = '<body>' + html + '</body>';

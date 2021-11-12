@@ -415,6 +415,14 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 				body: '<meta/><p>foo</p>',
 				htmlAttributes: {},
 				wrapperOnly: true
+			},
+			{
+				msg: 'body wrapping not broken by custom tag',
+				html: '<meta/><p>foo<bodything/></p>',
+				head: '',
+				body: '<meta/><p>foo<bodything/></p>',
+				htmlAttributes: {},
+				wrapperOnly: true
 			}
 		];
 
