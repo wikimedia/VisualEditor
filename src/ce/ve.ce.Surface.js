@@ -1968,7 +1968,7 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	if ( this.$pasteTarget.text() === '' ) {
 		// …so put nbsp's in empty leaves
 		// eslint-disable-next-line no-jquery/no-sizzle
-		this.$pasteTarget.find( '*:not( :has( * ) )' ).html( '&nbsp;' );
+		this.$pasteTarget.find( '*:not( :has( * ) )' ).text( '\u00a0' );
 	}
 
 	// Resolve attributes (in particular, expand 'href' and 'src' using the right base)
@@ -2004,7 +2004,7 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	// it to the HTML instead
 	if ( isClipboard && !ve.isClipboardDataFormatsSupported( e ) ) {
 		this.$pasteTarget.prepend(
-			$( '<span>' ).attr( 'data-ve-clipboard-key', clipboardKey ).html( '&nbsp;' )
+			$( '<span>' ).attr( 'data-ve-clipboard-key', clipboardKey ).text( '\u00a0' )
 		);
 		// To ensure the contents with the clipboardKey isn't modified in an external editor,
 		// store a hash of the contents for later validation.
