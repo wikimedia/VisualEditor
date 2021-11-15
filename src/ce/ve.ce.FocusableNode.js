@@ -761,7 +761,7 @@ ve.ce.FocusableNode.prototype.positionHighlights = function () {
 	this.calculateHighlights();
 	this.$highlights.empty()
 		// Append something selectable for right-click copy
-		.append( $( '<span>' ).addClass( 've-ce-focusableNode-highlight-selectable' ).html( '&nbsp;' ) );
+		.append( $( '<span>' ).addClass( 've-ce-focusableNode-highlight-selectable' ).text( '\u00a0' ) );
 
 	for ( var i = 0, l = this.rects.length; i < l; i++ ) {
 		var $highlight = this.createHighlight();

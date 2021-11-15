@@ -185,13 +185,12 @@ ve.ui.DebugBar.prototype.updateDump = function () {
 		documentView = surface.getView().getDocument();
 
 	// Linear model dump
-	this.$linmodData.html( this.generateListFromLinearData( documentModel.data ) );
-	this.$modelTree.html(
-		this.generateListFromNode( documentModel.getDocumentNode() )
-	);
-	this.$viewTree.html(
-		this.generateListFromNode( documentView.getDocumentNode() )
-	);
+	var $linmodData = this.generateListFromLinearData( documentModel.data );
+	this.$linmodData.empty().append( $linmodData );
+	var $modelTree = this.generateListFromNode( documentModel.getDocumentNode() );
+	this.$modelTree.empty().append( $modelTree );
+	var $viewTree = this.generateListFromNode( documentView.getDocumentNode() );
+	this.$viewTree.empty().append( $viewTree );
 };
 
 /**
@@ -223,7 +222,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			text = element;
 		}
 
-		$label.html( text.match( /\S/ ) ? text : '&nbsp;' );
+		$label.text( text.match( /\S/ ) ? text : '\u00a0' );
 
 		if ( $chunk && !prevType && !element.type && OO.compare( prevAnnotations, annotations ) ) {
 			// This is a run of text with identical annotations. Continue current chunk.
@@ -347,6 +346,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 		ve.filibuster.start();
 	} else {
 		ve.filibuster.stop();
+		// eslint-disable-next-line no-jquery/no-html
 		this.$filibuster.html( ve.filibuster.getObservationsHtml() );
 		this.$filibuster.on( 'click', function ( e ) {
 			var $li = $( e.target ).closest( '.ve-filibuster-frame' );
