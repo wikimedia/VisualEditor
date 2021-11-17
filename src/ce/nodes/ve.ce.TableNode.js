@@ -231,7 +231,12 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		// On mobile, fall through to the double-click behavior on a single tap --
 		// this will place the cursor within the cell, rather than remaining in
 		// table-selection mode.
-		this.onTableDblClick( e );
+		// As we just have only just set the table selection, the surface is in
+		// process of deactivating, so wait for the event loop to clear before
+		// continuing.
+		setTimeout( function () {
+			node.onTableDblClick( e );
+		} );
 	} else {
 		this.surface.$document.on( {
 			'mouseup touchend': this.onTableMouseUpHandler,
