@@ -383,7 +383,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
 	for ( var i = 0, len = keyedNodes.length; i < len; i++ ) {
 		if ( keyedNodes[ i ] === node ) {
 			keyedNodes.splice( i, 1 );
-			if ( i === 0 ) {
+			if ( i === 0 && group.firstNodes[ index ].registeredListKey === groupName ) {
 				group.firstNodes[ index ] = keyedNodes[ 0 ];
 			}
 			break;
@@ -391,7 +391,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
 	}
 	// If the all the items in this key have been removed
 	// then remove this index from indexOrder and firstNodes
-	if ( keyedNodes.length === 0 ) {
+	if ( keyedNodes.length === 0 && group.firstNodes[ index ].registeredListKey === groupName ) {
 		delete group.keyedNodes[ key ];
 		delete group.firstNodes[ index ];
 		var j = group.indexOrder.indexOf( index );
