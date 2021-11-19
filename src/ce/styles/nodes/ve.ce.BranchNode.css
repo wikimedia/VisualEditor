@@ -117,9 +117,7 @@ pre.ve-ce-branchNode {
 }
 
 /* Emulate the first paragraph in each list item being unwrapped */
-
-/* TODO use CSS class for wrapper paragraph */
+/* TODO: This shouldn't be necessary, but newly created lists can re-use existing paragraphs which aren't always 'wrapper' paragraphs */
 li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
 	margin: 0;
-	padding: 0;
 }
