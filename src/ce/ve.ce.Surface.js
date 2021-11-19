@@ -4335,7 +4335,12 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 		// common case for getting here is when pressing backspace when the
 		// cursor is in the middle of a block of text (thus both are a <div>),
 		// and we don't want to scroll away from the caret.
+		var scrollTop = document.documentElement.scrollTop;
 		$focusTarget.trigger( 'focus' );
+		// Support: Safari
+		// Safari tries to scroll the CE surface into view when focusing,
+		// causing unwanted page jumps (T258847)
+		document.documentElement.scrollTop = scrollTop;
 	} else {
 		// Scroll the node into view
 		ve.scrollIntoView(
