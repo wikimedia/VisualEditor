@@ -138,7 +138,9 @@
 	"visualeditor-table-insert-table": "ဇယာꩻ",
 	"visualeditor-table-merge-cells-merge": "ခြွောန်းဗူႏ",
 	"visualeditor-table-merge-cells-unmerge": "ဖထန်ႏခေါ်",
+	"visualeditor-table-sum": "ခြွောန်း- $1၊ ပုင်ႏမဲဉ်ႏ- $2",
 	"visualeditor-toolbar-history": "ရာႏဇာႏဝင်ႏ",
 	"visualeditor-toolbar-insert": "ထဲမ်သော့ꩻ",
+	"visualeditor-toolbar-style-tooltip": "လိတ်ဖြုံႏ သတုဲင်ပုင်ႏ",
 	"visualeditor-toolbar-table": "ဇယာꩻ"
 }
