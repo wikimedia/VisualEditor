@@ -36,6 +36,10 @@ ve.ce.TableNode = function VeCeTableNode() {
 
 OO.inheritClass( ve.ce.TableNode, ve.ce.BranchNode );
 
+/* Static properties */
+
+ve.ce.TableNode.static.autoFocus = false;
+
 /* Methods */
 
 /**

@@ -897,6 +897,8 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 
 /**
  * Place the selection at the first content offset in the document.
+ *
+ * @deprecated Use ve.ce.Surface#selectFirstSelectableContentOffset
  */
 ve.dm.Surface.prototype.selectFirstContentOffset = function () {
 	var firstOffset = this.getDocument().data.getNearestContentOffset(
@@ -914,6 +916,8 @@ ve.dm.Surface.prototype.selectFirstContentOffset = function () {
 
 /**
  * Place the selection at the last content offset in the document.
+ *
+ * @deprecated Use ve.ce.Surface#selectLastSelectableContentOffset
  */
 ve.dm.Surface.prototype.selectLastContentOffset = function () {
 	var data = this.getDocument().data,

@@ -63,6 +63,8 @@ ve.ce.BlockImageNode.static.name = 'blockImage';
 
 ve.ce.BlockImageNode.static.tagName = 'figure';
 
+ve.ce.BlockImageNode.static.autoFocus = false;
+
 /* Registration */
 
 ve.ce.nodeFactory.register( ve.ce.BlockImageNode );

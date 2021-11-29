@@ -77,8 +77,15 @@ OO.mixinClass( ve.dm.Node, OO.EventEmitter );
 ve.dm.Node.static.handlesOwnChildren = false;
 
 /**
- * Whether this node's children should be ignored. If true, this node will be treated as a leaf
- * node even if it has children. Often used in combination with handlesOwnChildren.
+ * Whether this node's children should be ignored when iterating over the model, for example
+ * content which is stored inline, but is actually conceptually out-of-band data, such as a
+ * reference node which contains the reference content (like `<ref>` tags in MediaWiki).
+ *
+ * This property should not be used for data which isn't out-of-band but is less accessible in
+ * the view, e.g. content in table cells or image captions.
+ *
+ * If true, this node will be treated as a leaf node even if it has children.
+ * Often used in combination with handlesOwnChildren.
  *
  * @static
  * @property {boolean}
