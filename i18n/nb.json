@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abuluntu",
 			"Apple farmer",
 			"Danmichaelo",
 			"Event",
@@ -39,12 +40,15 @@
 	"visualeditor-annotationbutton-underline-tooltip": "Understreket",
 	"visualeditor-changedesc-align": "Justeringsverdi endret fra $1 til $2",
 	"visualeditor-changedesc-changed": "$1 endret fra $2 til $3",
+	"visualeditor-changedesc-changed-diff": "$1 endret: $2",
 	"visualeditor-changedesc-comment": "Kommentar endret fra $1 til $2",
+	"visualeditor-changedesc-comment-diff": "Kommentar endret: $1",
 	"visualeditor-changedesc-direction": "Omgjøring av retning endret fra $1 to $2",
 	"visualeditor-changedesc-image-size": "Størrelse endret fra $1 til $2",
 	"visualeditor-changedesc-language": "Språk endret fra $1 til $2",
 	"visualeditor-changedesc-link-added": "Lenke lagt til: $1",
 	"visualeditor-changedesc-link-href": "Lenkemål endret fra $1 til $2",
+	"visualeditor-changedesc-link-href-diff": "Lenkemål endret: $1",
 	"visualeditor-changedesc-link-removed": "Lenke fjernet: $1",
 	"visualeditor-changedesc-no-key": "$1 endret til $2",
 	"visualeditor-changedesc-set": "$1 satt til $2",
