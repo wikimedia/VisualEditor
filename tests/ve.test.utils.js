@@ -444,6 +444,9 @@
 			getBoundingClientRect: function () {
 				return this.$element[ 0 ].getClientRects()[ 0 ] || null;
 			},
+			getViewportDimensions: function () {
+				return null;
+			},
 			getImportRules: function () {
 				return ve.init.target.constructor.static.importRules;
 			},

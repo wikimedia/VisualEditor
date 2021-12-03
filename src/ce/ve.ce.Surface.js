@@ -560,7 +560,7 @@ ve.ce.Surface.prototype.isReadOnly = function () {
 };
 
 /**
- * Give focus to the surface, reapplying the model selection, or selecting the first content offset
+ * Give focus to the surface, reapplying the model selection, or selecting the first visible offset
  * if the model selection is null.
  *
  * This is used when switching between surfaces, e.g. when closing a dialog window. Calling this
@@ -576,7 +576,7 @@ ve.ce.Surface.prototype.focus = function () {
 
 	var selection = this.getSelection();
 	if ( selection.getModel().isNull() ) {
-		this.selectFirstSelectableContentOffset();
+		this.selectFirstVisibleContentOffset();
 		selection = this.getSelection();
 	}
 
@@ -609,7 +609,7 @@ ve.ce.Surface.prototype.focus = function () {
 		// TODO: rename isFocused and other methods to something which reflects
 		// the fact they actually mean "has a native selection"
 		if ( !surface.isFocused() ) {
-			surface.selectFirstSelectableContentOffset();
+			surface.selectFirstVisibleContentOffset();
 		}
 	} );
 	// onDocumentFocus takes care of the rest
@@ -4120,8 +4120,9 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  *
  * @param {number} startOffset Offset to start from
  * @param {number} direction Search direction, -1 for left and 1 for right
+ * @param {number} [endOffset] End offset to stop searching at
  */
-ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( startOffset, direction ) {
+ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( startOffset, direction, endOffset ) {
 	var documentView = this.getDocument(),
 		linearData = this.getModel().getDocument().data;
 
@@ -4149,6 +4150,16 @@ ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( start
 			return true;
 		}
 	);
+
+	if (
+		endOffset !== undefined && (
+			( direction > 0 && nextOffset > endOffset ) ||
+			( direction < 0 && nextOffset < endOffset )
+		)
+	) {
+		nextOffset = -1;
+	}
+
 	if ( nextOffset !== -1 ) {
 		// Found an offset
 		this.getModel().setLinearSelection( new ve.Range( nextOffset ) );
@@ -4266,6 +4277,25 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 		binarySearch( top, documentRange, covering ? 'bottom' : 'top' ),
 		binarySearch( bottom, documentRange, covering ? 'top' : 'bottom' )
 	);
+};
+
+/**
+ * Move the selection to the first visible point in the viewport
+ *
+ * @param {boolean} [fallbackToFirst] Whether to select the first content offset if a visible offset can't be found
+ */
+ve.ce.Surface.prototype.selectFirstVisibleContentOffset = function ( fallbackToFirst ) {
+	// Add about one line height of padding so the browser doesn't try to scroll the line above the cursor into view
+	var visibleRange = this.getViewportRange( false, -20 );
+	if ( visibleRange ) {
+		this.selectRelativeSelectableContentOffset( Math.max( visibleRange.start - 1, 0 ), 1, visibleRange.end );
+	}
+
+	if ( fallbackToFirst && this.getSelection().getModel().isNull() ) {
+		// If a visible range couldn't be determined, or a selection couldn't
+		// be made for some reason, fall back to the actual first content offset.
+		this.selectFirstSelectableContentOffset();
+	}
 };
 
 /**
