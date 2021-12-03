@@ -4189,23 +4189,23 @@ ve.ce.Surface.prototype.selectLastSelectableContentOffset = function () {
  * Items with custom positioning may throw off results given by this method, so
  * it should only be treated as an approximation.
  *
+ * @param {boolean} [covering] Get a range which fully covers the viewport, otherwise
+ *  get a range which is full contained within the viewport.
+ * @param {number} [padding=0] Increase computed size of viewport by this amount at the top and bottom
  * @return {ve.Range|null} Range covering data visible in the viewport, null if the surface is not attached
  */
-ve.ce.Surface.prototype.getViewportRange = function () {
+ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 	var surface = this,
 		documentModel = this.getModel().getDocument(),
 		data = documentModel.data,
-		dimensions = this.surface.getViewportDimensions(),
-		// We want a little padding when finding the range, because this is
-		// generally used for things like find/replace, where scrolling to see
-		// context is important.
-		padding = 50;
+		dimensions = this.surface.getViewportDimensions();
 
 	if ( !dimensions ) {
 		// Surface is not attached
 		return null;
 	}
 
+	padding = padding || 0;
 	var top = Math.max( 0, dimensions.top - padding );
 	var bottom = dimensions.bottom + ( padding * 2 );
 	var documentRange = this.getModel().getDocument().getDocumentRange();
@@ -4252,8 +4252,8 @@ ve.ce.Surface.prototype.getViewportRange = function () {
 	}
 
 	return new ve.Range(
-		binarySearch( top, documentRange, 'bottom' ),
-		binarySearch( bottom, documentRange, 'top' )
+		binarySearch( top, documentRange, covering ? 'bottom' : 'top' ),
+		binarySearch( bottom, documentRange, covering ? 'top' : 'bottom' )
 	);
 };
 

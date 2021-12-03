@@ -421,7 +421,7 @@ ve.ui.FindAndReplaceDialog.prototype.renderFragments = function () {
 
 	// When there are a large number of results, calculate the viewport range for clipping
 	if ( this.results > 50 ) {
-		var viewportRange = this.surface.getView().getViewportRange();
+		var viewportRange = this.surface.getView().getViewportRange( true, 50 );
 		for ( var i = 0; i < this.results; i++ ) {
 			var selection = this.fragments[ i ].getSelection();
 			if ( viewportRange && selection.getRange().start < viewportRange.start ) {
