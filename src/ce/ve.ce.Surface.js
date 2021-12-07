@@ -576,7 +576,7 @@ ve.ce.Surface.prototype.focus = function () {
 
 	var selection = this.getSelection();
 	if ( selection.getModel().isNull() ) {
-		this.getModel().selectFirstContentOffset();
+		this.selectFirstSelectableContentOffset();
 		selection = this.getSelection();
 	}
 
@@ -609,7 +609,7 @@ ve.ce.Surface.prototype.focus = function () {
 		// TODO: rename isFocused and other methods to something which reflects
 		// the fact they actually mean "has a native selection"
 		if ( !surface.isFocused() ) {
-			surface.getModel().selectFirstContentOffset();
+			surface.selectFirstSelectableContentOffset();
 		}
 	} );
 	// onDocumentFocus takes care of the rest
@@ -874,7 +874,7 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
 	if ( this.getModel().getSelection().isNull() ) {
 		// If the document is being focused by a non-mouse/non-touch user event,
 		// find the first content offset and place the cursor there.
-		this.getModel().selectFirstContentOffset();
+		this.selectFirstSelectableContentOffset();
 	}
 	this.eventSequencer.attach( this.$element );
 	this.surfaceObserver.startTimerLoop();
@@ -4110,6 +4110,76 @@ ve.ce.Surface.prototype.handleInsertion = function () {
 		this.surfaceObserver.stopTimerLoop();
 		this.surfaceObserver.pollOnce();
 	}
+};
+
+/**
+ * Place the selection at the next content offset which is selectable.
+ *
+ * For the purposes of this method, offsets within ve.ce.ActiveNode's
+ * are not considered selectable when they are not active.
+ *
+ * @param {number} startOffset Offset to start from
+ * @param {number} direction Search direction, -1 for left and 1 for right
+ */
+ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( startOffset, direction ) {
+	var documentView = this.getDocument(),
+		linearData = this.getModel().getDocument().data;
+
+	var nextOffset = linearData.getRelativeOffset(
+		startOffset,
+		direction,
+		function ( offset ) {
+			// Check we are at a content offset, according to the model
+			if ( !linearData.isContentOffset( offset ) ) {
+				return false;
+			}
+			var branchNode = documentView.getBranchNodeFromOffset( offset );
+			if ( !branchNode ) {
+				// This shouldn't happen in a content offset
+				return false;
+			}
+			var noAutoFocusContainer = branchNode.traverseUpstream( function ( node ) {
+				// traverseUpstream stops on a false return
+				return node.autoFocus();
+			} );
+			if ( noAutoFocusContainer ) {
+				// Don't try to place the cursor in a node which has a container with autoFocus set to false
+				return false;
+			}
+			return true;
+		}
+	);
+	if ( nextOffset !== -1 ) {
+		// Found an offset
+		this.getModel().setLinearSelection( new ve.Range( nextOffset ) );
+	} else {
+		// No where sensible to put the cursor
+		this.getModel().setNullSelection();
+	}
+};
+
+/**
+ * Select the first content offset which is selectable.
+ *
+ * See #selectRelativeSelectableContentOffset for the definition of selectable.
+ */
+ve.ce.Surface.prototype.selectFirstSelectableContentOffset = function () {
+	this.selectRelativeSelectableContentOffset(
+		this.getModel().getAttachedRoot().getOffset(),
+		1
+	);
+};
+
+/**
+ * Select the last content offset which is selectable.
+ *
+ * See #selectRelativeSelectableContentOffset for the definition of selectable.
+ */
+ve.ce.Surface.prototype.selectLastSelectableContentOffset = function () {
+	this.selectRelativeSelectableContentOffset(
+		this.getModel().getDocument().getDocumentRange().end,
+		-1
+	);
 };
 
 /**

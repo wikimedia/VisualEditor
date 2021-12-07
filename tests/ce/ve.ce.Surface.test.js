@@ -2381,6 +2381,80 @@ QUnit.test( 'findBlockSlug', function ( assert ) {
 	}
 } );
 
+QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffset', function ( assert ) {
+	var cases = [
+		{
+			msg: 'Block images around paragraph',
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
+				ve.dm.example.blockImage.data,
+				{ type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' },
+				ve.dm.example.blockImage.data,
+				[
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				]
+			) ),
+			firstRange: new ve.Range( 14 ),
+			lastRange: new ve.Range( 17 )
+		},
+		{
+			msg: 'Tables around paragraph',
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
+				ve.dm.example.complexTable.slice( 0, -2 ),
+				{ type: 'paragraph' }, 'F', 'o', 'o', { type: '/paragraph' },
+				ve.dm.example.complexTable.slice( 0, -2 ),
+				[
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				]
+			) ),
+			firstRange: new ve.Range( 52 ),
+			lastRange: new ve.Range( 55 )
+		},
+		{
+			msg: 'Only block images (no suitable position)',
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
+				ve.dm.example.blockImage.data,
+				ve.dm.example.blockImage.data,
+				[
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				]
+			) ),
+			firstRange: null,
+			lastRange: null
+		},
+		{
+			msg: 'Sections (ve.ce.ActiveNode) can take focus',
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( ve.dm.example.domToDataCases[ 'article and sections' ].data ),
+			firstRange: new ve.Range( 3 ),
+			lastRange: new ve.Range( 20 )
+		}
+	];
+	cases.forEach( function ( caseItem ) {
+		var htmlOrDoc = caseItem.htmlOrDoc;
+		var view = typeof htmlOrDoc === 'string' ?
+			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
+			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ) );
+		var firstRange = caseItem.firstRange;
+		var lastRange = caseItem.lastRange;
+
+		view.selectFirstSelectableContentOffset();
+		assert.equalRange(
+			view.getModel().getSelection().getCoveringRange(),
+			firstRange,
+			caseItem.msg + ': first'
+		);
+
+		view.selectLastSelectableContentOffset();
+		assert.equalRange(
+			view.getModel().getSelection().getCoveringRange(),
+			lastRange,
+			caseItem.msg + ': last'
+		);
+	} );
+} );
+
 /* Methods with return values */
 // TODO: ve.ce.Surface#getSelection
 // TODO: ve.ce.Surface#getSurface

@@ -56,6 +56,8 @@ OO.inheritClass( ve.ce.ContentBranchNode, ve.ce.BranchNode );
  */
 ve.ce.ContentBranchNode.static.splitOnEnter = true;
 
+ve.ce.ContentBranchNode.static.autoFocus = true;
+
 /* Static Methods */
 
 /**

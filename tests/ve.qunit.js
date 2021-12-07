@@ -304,6 +304,15 @@
 		} );
 	};
 
+	/**
+	 * Assert that two ranges are equal.
+	 *
+	 * A range can be a ve.Range object or null.
+	 *
+	 * @param {ve.Range|null} actual
+	 * @param {ve.Range|null} expected
+	 * @param {string} message
+	 */
 	QUnit.assert.equalRange = function ( actual, expected, message ) {
 		actual = actual && {
 			from: actual.from,

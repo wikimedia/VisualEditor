@@ -951,7 +951,7 @@ QUnit.test( 'getNearestCursorOffset', function ( assert ) {
 	var cases = [
 		{
 			name: 'example',
-			htmlDoc: ve.dm.example.html,
+			doc: ve.dm.example.createExampleDocument(),
 			expected: {
 				// 10 offsets per row
 				'-1': [
@@ -976,31 +976,45 @@ QUnit.test( 'getNearestCursorOffset', function ( assert ) {
 		},
 		{
 			name: 'figcaption',
-			htmlDoc: ve.dm.example.figcaptionHtml,
+			doc: ve.dm.example.createExampleDocument( 'figcaption' ),
 			expected: {
 				// 10 offsets per row
 				'-1': [
-					// The results here look incorrect.
-					// Should be `6, 6` instead of `-1, -1`?
-					1, 1, 2, 2, -1, -1, 6, 7, 7, 7,
-					2, 11, 12, 12, 12
+					1, 1, 2, 2, 2, 2, 6, 7, 7, 7,
+					7, 11, 12, 12, 12
 				],
 				1: [
-					// Should be `7, 7` instead of `-1, -1`?
-					1, 1, 2, 11, 6, 6, 6, 7, -1, -1,
+					1, 1, 2, 6, 6, 6, 6, 7, 11, 11,
 					11, 11, 12, 12, 12
+				]
+			}
+		},
+		{
+			name: 'internalData',
+			doc: ve.dm.example.createExampleDocument( 'internalData' ),
+			expected: {
+				// TODO: Better define behaviour around ignoreChildren node
+				// boundaries so the offsets are less erratic here.
+				// 10 offsets per row
+				'-1': [
+					1, 1, 2, 3, 4, 4, 4, -1, 8, 9,
+					10, 11, 11, 4, -1, 15, 16, 17, 18, 18,
+					4, 4, 22, 23, 24, 25, 26
+				],
+				1: [
+					1, 1, 2, 3, 4, 4, 4, 8, 8, 9,
+					10, 11, -1, 4, 15, 15, 16, 17, 18, -1,
+					4, 22, 22, 23, 24, 25, 26
 				]
 			}
 		}
 	];
 
 	cases.forEach( function ( caseItem ) {
-		var dir, i,
-			doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.htmlDoc ) );
-		for ( dir = -1; dir <= 1; dir += 2 ) {
-			for ( i = 0; i < doc.data.getLength(); i++ ) {
+		for ( var dir = -1; dir <= 1; dir += 2 ) {
+			for ( var i = 0; i < caseItem.doc.data.getLength(); i++ ) {
 				assert.strictEqual(
-					doc.getNearestCursorOffset( i, dir ),
+					caseItem.doc.getNearestCursorOffset( i, dir ),
 					caseItem.expected[ dir ][ i ],
 					'Document "' + caseItem.name + '" - Direction: ' + dir + ' Offset: ' + i
 				);

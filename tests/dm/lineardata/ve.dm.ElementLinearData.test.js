@@ -898,18 +898,17 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 			distance: 1,
 			data: [
 				'a',
-				{ type: 'blockImage', attributes: {} },
-				{ type: 'imageCaption' },
+				{ type: 'internalList' },
+				{ type: 'internalItem' },
 				{ type: 'paragraph', internal: { generated: 'wrapper' } },
 				'a', 'b', 'c',
 				{ type: '/paragraph' },
-				{ type: '/imageCaption' },
-				{ type: '/blockImage' },
-				'b'
+				{ type: '/internalItem' },
+				{ type: '/internalList' }
 			],
 			callback: ve.dm.ElementLinearData.prototype.isContentOffset,
 			// The results here look incorrect. It should "turn around" and return 7.
-			// It should only return -1 if the imageCaption has no valid offsets inside (it is empty).
+			// It should only return -1 if the internalItem has no valid offsets inside (it is empty).
 			expected: -1
 		}
 	];
