@@ -250,6 +250,26 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				msg: 'Non-empty multi-item list at end of document unwrapped by delete'
 			},
 			{
+				htmlOrDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li></ul>',
+				rangeOrSelection: new ve.Range( 6 ),
+				keys: [ 'DELETE' ],
+				expectedData: function ( data ) {
+					data.splice( 6, 4 );
+				},
+				expectedRangeOrSelection: new ve.Range( 6 ),
+				msg: 'List items merged by delete'
+			},
+			{
+				htmlOrDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li></ul>',
+				rangeOrSelection: new ve.Range( 10 ),
+				keys: [ 'BACKSPACE' ],
+				expectedData: function ( data ) {
+					data.splice( 6, 4 );
+				},
+				expectedRangeOrSelection: new ve.Range( 6 ),
+				msg: 'List items merged by backspace'
+			},
+			{
 				htmlOrDoc: '<p>foo</p>',
 				rangeOrSelection: new ve.Range( 4 ),
 				keys: [ 'DELETE' ],
@@ -286,7 +306,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				msg: 'Delete before an alien just selects it'
 			},
 			{
-				htmlOrDoc: '<div rel="ve:Alien">foo</div><ul><li><p>foo</p></li></ul>',
+				htmlOrDoc: '<div rel="ve:Alien">foo</div><ul><li><p>bar</p></li></ul>',
 				rangeOrSelection: new ve.Range( 5 ),
 				keys: [ 'BACKSPACE' ],
 				expectedData: function ( data ) {
@@ -295,6 +315,16 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				},
 				expectedRangeOrSelection: new ve.Range( 3 ),
 				msg: 'List after an alien unwrapped by backspace'
+			},
+			{
+				htmlOrDoc: '<p>baz</p><div rel="ve:Alien">foo</div><ul><li><p>bar</p></li></ul>',
+				rangeOrSelection: new ve.Range( 10 ),
+				keys: [ 'BACKSPACE' ],
+				expectedData: function () {
+				},
+				expectedRangeOrSelection: new ve.Range( 5, 7 ),
+				// TODO: Make this more consistent with "List after an alien unwrapped by backspace"
+				msg: 'List after an alien after content selects the alien'
 			},
 			{
 				htmlOrDoc: '<p></p><div rel="ve:Alien">foo</div>',
