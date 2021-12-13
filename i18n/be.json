@@ -6,6 +6,7 @@
 			"Goshaproject",
 			"Maksim L.",
 			"Mikalai Udodau",
+			"ZlyiLev",
 			"Чаховіч Уладзіслаў"
 		]
 	},
@@ -33,6 +34,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Ніжні індэкс",
 	"visualeditor-annotationbutton-superscript-tooltip": "Верхні індэкс",
 	"visualeditor-annotationbutton-underline-tooltip": "Падкрэслены",
+	"visualeditor-changedesc-language": "Мова змененая з $1 на $2",
 	"visualeditor-changedir-tool-ltr": "Паказваць злева направа",
 	"visualeditor-changedir-tool-rtl": "Паказваць справа налева",
 	"visualeditor-clearbutton-tooltip": "Ачысціць",
