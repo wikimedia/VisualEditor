@@ -786,11 +786,12 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
  * in a paragraph.
  *
  * @param {string|Array} content Content to insert, can be either a string or array of data
- * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
+ * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated to match surrounding content,
+ *  or an AnnotationSet from the current offset (calculated from the view)
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
+ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotateOrSet ) {
 	var range = this.getSelection().getCoveringRange(),
 		doc = this.getDocument();
 
@@ -798,7 +799,14 @@ ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
 		return this;
 	}
 
-	var annotations;
+	var annotations, annotate;
+	if ( annotateOrSet instanceof ve.dm.AnnotationSet ) {
+		annotations = annotateOrSet;
+		annotate = true;
+	} else {
+		annotate = annotateOrSet;
+	}
+
 	if ( !range.isCollapsed() ) {
 		if ( annotate ) {
 			// If we're replacing content, use the annotations selected
@@ -880,11 +888,12 @@ ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
  *
  * @param {ve.dm.Document} newDoc Document to insert
  * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
- * @param {boolean} [annotate] Content should be automatically annotated to match surrounding content
+ * @param {boolean|ve.dm.AnnotationSet} [annotateOrSet] Content should be automatically annotated to match surrounding content,
+ *  or an AnnotationSet from the current offset (calculated from the view)
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange, annotate ) {
+ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange, annotateOrSet ) {
 	var range = this.getSelection().getCoveringRange(),
 		doc = this.getDocument();
 
@@ -892,7 +901,14 @@ ve.dm.SurfaceFragment.prototype.insertDocument = function ( newDoc, newDocRange,
 		return this;
 	}
 
-	var annotations;
+	var annotations, annotate;
+	if ( annotateOrSet instanceof ve.dm.AnnotationSet ) {
+		annotations = annotateOrSet;
+		annotate = true;
+	} else {
+		annotate = annotateOrSet;
+	}
+
 	if ( !range.isCollapsed() ) {
 		if ( annotate ) {
 			// If we're replacing content, use the annotations selected

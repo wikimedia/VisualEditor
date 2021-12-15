@@ -202,7 +202,17 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		view.lastNonCollapsedDocumentSelection = ve.test.utils.selectionFromRangeOrSelection( doc, item.middleClickRangeOrSelection );
 		view.onDocumentMouseDown( ve.test.utils.createTestEvent( 'mousedown', { which: OO.ui.MouseButtons.MIDDLE } ) );
 	}
-	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( doc, item.rangeOrSelection ) );
+	if ( item.setViewSelection ) {
+		var nativeRange = view.getElementDocument().createRange();
+		// setViewSelection passes in a ve.ce.DocumentNode and a native Range object,
+		// and expects the callback to modify the range.
+		item.setViewSelection( view.getDocument().getDocumentNode(), nativeRange );
+		view.nativeSelection.removeAllRanges();
+		view.nativeSelection.addRange( nativeRange );
+		view.surfaceObserver.pollOnce();
+	} else {
+		model.setSelection( ve.test.utils.selectionFromRangeOrSelection( doc, item.rangeOrSelection ) );
+	}
 	view.pasteSpecial = item.pasteSpecial;
 
 	// Replicate the sequencing of ce.Surface.onPaste, without any setTimeouts:
@@ -757,6 +767,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	var docLen = 30,
 		bold = ve.dm.example.bold,
 		italic = ve.dm.example.italic,
+		link = ve.dm.example.link( 'Foo' ),
 		cases = [
 			{
 				rangeOrSelection: new ve.Range( 1 ),
@@ -862,6 +873,152 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Internal text into annotated content (noClipboardData)'
+			},
+			{
+				setViewSelection: function ( documentNode, nativeRange ) {
+					var boldNode = documentNode.children[ 4 ].$element.find( 'b' )[ 0 ];
+					nativeRange.setStart( boldNode.childNodes[ 0 ], 4 );
+				},
+				internalSourceRangeOrSelection: new ve.Range( 3, 6 ),
+				expectedRangeOrSelection: new ve.Range( 30 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 27 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'F', [ bold ] ],
+								[ 'o', [ bold ] ],
+								[ 'o', [ bold ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 27 }
+					]
+				],
+				msg: 'Internal text into annotated content (just inside bold node)'
+			},
+			{
+				setViewSelection: function ( documentNode, nativeRange ) {
+					var paragraphNode = documentNode.children[ 4 ].$element[ 0 ];
+					nativeRange.setStart( paragraphNode, 1 );
+				},
+				internalSourceRangeOrSelection: new ve.Range( 3, 6 ),
+				expectedRangeOrSelection: new ve.Range( 30 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 27 },
+						{
+							type: 'replace',
+							insert: [
+								'F', 'o', 'o'
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 27 }
+					]
+				],
+				msg: 'Internal text next to annotated content (just outside bold node)'
+			},
+			{
+				setViewSelection: function ( documentNode, nativeRange ) {
+					var boldNode = documentNode.children[ 4 ].$element.find( 'b' )[ 0 ];
+					nativeRange.setStart( boldNode.childNodes[ 0 ], 4 );
+				},
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 30 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 27 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'F', [ bold ] ],
+								[ 'o', [ bold ] ],
+								[ 'o', [ bold ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 27 }
+					]
+				],
+				msg: 'External text into annotated content (just inside bold node)'
+			},
+			{
+				setViewSelection: function ( documentNode, nativeRange ) {
+					var paragraphNode = documentNode.children[ 4 ].$element[ 0 ];
+					nativeRange.setStart( paragraphNode, 1 );
+				},
+				pasteHtml: 'Foo',
+				expectedRangeOrSelection: new ve.Range( 30 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 27 },
+						{
+							type: 'replace',
+							insert: [
+								'F', 'o', 'o'
+							],
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 27 }
+					]
+				],
+				msg: 'External text next to annotated content (just outside bold node)'
+			},
+			{
+				// eslint-disable-next-line no-useless-concat
+				documentHtml: '<p><a href="Foo">Foo' + '</a> Bar</p>',
+				// cursor goes here -----------------^
+				setViewSelection: function ( documentNode, nativeRange ) {
+					var preCloseNail = documentNode.children[ 0 ].$element.find( '.ve-ce-nail-pre-close' )[ 0 ];
+					var textNode = preCloseNail.previousSibling;
+					nativeRange.setStart( textNode, 3 );
+				},
+				internalSourceRangeOrSelection: new ve.Range( 5, 8 ),
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [
+								[ 'B', [ link ] ],
+								[ 'a', [ link ] ],
+								[ 'r', [ link ] ]
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 7 }
+					]
+				],
+				msg: 'Internal text into annotated content (just inside link node)'
+			},
+			{
+				// eslint-disable-next-line no-useless-concat
+				documentHtml: '<p><a href="Foo">Bar</a>' + ' Bar</p>',
+				// cursor goes here ---------------------^
+				setViewSelection: function ( documentNode, nativeRange ) {
+					var paragraphNode = documentNode.children[ 0 ].$element[ 0 ];
+					// offset 3 = pre-nail + link + post-nail
+					nativeRange.setStart( paragraphNode, 3 );
+				},
+				internalSourceRangeOrSelection: new ve.Range( 5, 8 ),
+				expectedRangeOrSelection: new ve.Range( 7 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [
+								'B', 'a', 'r'
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 7 }
+					]
+				],
+				msg: 'Internal text next to annotated content (just outside link node)'
 			},
 			{
 				rangeOrSelection: new ve.Range( 25 ),

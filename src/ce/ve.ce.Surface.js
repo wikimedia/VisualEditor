@@ -88,6 +88,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.lastDropPosition = null;
 	this.$pasteTarget = $( '<div>' );
 	this.pasting = false;
+	this.beforePasteAnnotationsAtFocus = [];
 	this.copying = false;
 	this.pasteSpecial = false;
 	this.pointerEvents = null;
@@ -2257,6 +2258,19 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 };
 
 /**
+ * Get the annotation set that was a the user focus before a paste started
+ *
+ * @return {ve.dm.AnnotationSet} Annotation set
+ */
+ve.ce.Surface.prototype.getBeforePasteAnnotationSet = function () {
+	var store = this.getModel().getDocument().getStore();
+	var dmAnnotations = this.beforePasteAnnotationsAtFocus.map( function ( view ) {
+		return view.getModel();
+	} );
+	return new ve.dm.AnnotationSet( store, store.hashAll( dmAnnotations ) );
+};
+
+/**
  * Handle native paste event
  *
  * @param {jQuery.Event} e Paste event
@@ -2323,6 +2337,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		return;
 	}
 
+	this.beforePasteAnnotationsAtFocus = this.annotationsAtFocus();
 	this.beforePasteData = {};
 	this.originalClipboardMetdata = null;
 	if ( this.middleClickPasting && !this.lastNonCollapsedDocumentSelection.isNull() ) {
@@ -2687,7 +2702,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromInternal = function ( slice, 
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.Surface.prototype.afterPasteInsertInternalData = function ( targetFragment, data ) {
-	targetFragment.insertContent( data, true );
+	targetFragment.insertContent( data, this.getBeforePasteAnnotationSet() );
 	return targetFragment.getPending();
 };
 
@@ -2914,7 +2929,7 @@ ve.ce.Surface.prototype.afterPasteInsertExternalData = function ( targetFragment
 		}
 	}
 	if ( !handled ) {
-		targetFragment.insertDocument( pastedDocumentModel, contextRange, true );
+		targetFragment.insertDocument( pastedDocumentModel, contextRange, this.getBeforePasteAnnotationSet() );
 	}
 	return targetFragment.getPending();
 };
