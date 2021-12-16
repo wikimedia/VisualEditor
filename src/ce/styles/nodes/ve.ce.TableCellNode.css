@@ -34,7 +34,3 @@
 .ve-ce-tableCellNode-editing > .ve-ce-branchNode-blockSlug {
 	visibility: visible;
 }
-
-.ve-ce-tableCellNode .ve-ce-paragraphNode {
-	margin: 0;
-}
