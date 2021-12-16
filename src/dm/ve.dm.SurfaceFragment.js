@@ -1055,17 +1055,18 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
  *
  * @param {string} type Element type to convert to
  * @param {Object} [attr] Initial attributes for new element
+ * @param {Object} [internal] Internal attributes for new element
  * @return {ve.dm.SurfaceFragment}
  * @chainable
  */
-ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
+ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr, internal ) {
 	var range = this.getSelection().getCoveringRange();
 	if ( !range ) {
 		return this;
 	}
 
 	this.change( ve.dm.TransactionBuilder.static.newFromContentBranchConversion(
-		this.document, range, type, attr
+		this.document, range, type, attr, internal
 	) );
 
 	return this;

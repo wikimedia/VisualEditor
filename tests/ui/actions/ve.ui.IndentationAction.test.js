@@ -29,10 +29,6 @@ QUnit.test( 'increase/decrease', function ( assert ) {
 				data.splice( 11, 2, { type: '/list' }, { type: 'paragraph' } );
 				data.splice( 19, 2, { type: '/paragraph' }, { type: 'list', attributes: { style: 'bullet' } } );
 			},
-			expectedOriginalData: function ( data ) {
-				// generated: 'wrapper' is removed by the action and not restored by undo
-				delete data[ 12 ].internal;
-			},
 			undo: true,
 			msg: 'decrease indentation on partial selection of list item "Item 2"'
 		},
@@ -46,11 +42,6 @@ QUnit.test( 'increase/decrease', function ( assert ) {
 				data.splice( 16, 1, { type: 'list', attributes: { style: 'bullet' } } );
 				delete data[ 0 ].internal;
 				delete data[ 8 ].internal;
-			},
-			expectedOriginalData: function ( data ) {
-				// generated: 'wrapper' is removed by the action and not restored by undo
-				delete data[ 2 ].internal;
-				delete data[ 12 ].internal;
 			},
 			undo: true,
 			msg: 'decrease indentation on Items 1 & 2'

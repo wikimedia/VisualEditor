@@ -267,13 +267,10 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 				// Expand our removal to reflect what we actually need to remove
 				switch ( startNode.getType() ) {
 					case 'list':
-						// If this is an empty list, we wind up with the list node instead of the list item
-						// to make the unwrapping work, we need to remove the list and the item
-						rangeToRemove = new ve.Range( nodeRange.start, nodeRange.start + 2 );
-						break;
 					case 'listItem':
-						rangeToRemove = new ve.Range( nodeRange.start, nodeRange.start + 1 );
-						break;
+						uiSurface.execute( 'indentation', 'decrease' );
+						e.preventDefault();
+						return;
 					default:
 						if ( direction > 0 ) {
 							rangeToRemove = new ve.Range( rangeToRemove.start, nodeRange.end );
