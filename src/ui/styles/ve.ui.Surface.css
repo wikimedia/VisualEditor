@@ -45,7 +45,9 @@
 }
 
 .ve-ui-surface-source .ve-ce-paragraphNode {
-	margin: 0;
+	/* Clear paragraph margin, regardless of specificity, so it looks more like a textarea */
+	/* stylelint-disable-next-line declaration-no-important */
+	margin: 0 !important;
 	word-wrap: break-word;
 	white-space: pre-wrap;
 }
