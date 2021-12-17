@@ -9,12 +9,11 @@ QUnit.module( 've.dm.SurfaceFragment' );
 /* Tests */
 
 QUnit.test( 'constructor', function ( assert ) {
-	var fragment,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
 
 	surface.setLinearSelection( new ve.Range( 1 ) );
-	fragment = new ve.dm.SurfaceFragment( surface );
+	var fragment = new ve.dm.SurfaceFragment( surface );
 
 	// Default range and autoSelect
 	assert.strictEqual( fragment.getSurface(), surface, 'surface reference is stored' );
@@ -97,12 +96,11 @@ QUnit.test( 'getSelectedModels', function ( assert ) {
 } );
 
 QUnit.test( 'getAnnotations', function ( assert ) {
-	var tableSelection,
-		doc = ve.dm.example.createExampleDocument( 'annotatedTable' ),
+	var doc = ve.dm.example.createExampleDocument( 'annotatedTable' ),
 		tableRange = new ve.Range( 0, 52 ),
 		surface = new ve.dm.Surface( doc );
 
-	tableSelection = new ve.dm.TableSelection( tableRange, 0, 0, 1, 0 );
+	var tableSelection = new ve.dm.TableSelection( tableRange, 0, 0, 1, 0 );
 
 	assert.deepEqual( surface.getFragment( tableSelection ).getAnnotations().getHashes(), [ ve.dm.example.boldHash, ve.dm.example.strongHash ], 'Comparable annotations: [B] ∩ [Strong] = [B,Strong] ' );
 
@@ -167,8 +165,7 @@ QUnit.test( 'collapseToStart/End', function ( assert ) {
 } );
 
 QUnit.test( 'expandLinearSelection (annotation)', function ( assert ) {
-	var i, fragment,
-		doc = ve.dm.example.createExampleDocumentFromData( [
+	var doc = ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
 			'F', 'o', 'o',
 			[ 'b', [ ve.dm.example.bold ] ],
@@ -221,85 +218,83 @@ QUnit.test( 'expandLinearSelection (annotation)', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		fragment = surface.getLinearFragment( cases[ i ].range ).expandLinearSelection(
+	cases.forEach( function ( caseItem ) {
+		var fragment = surface.getLinearFragment( caseItem.range ).expandLinearSelection(
 			'annotation',
-			ve.dm.example.createAnnotation( cases[ i ].annotation )
+			ve.dm.example.createAnnotation( caseItem.annotation )
 		);
-		assert.equalHash( fragment.getSelection().getRange(), cases[ i ].expected, cases[ i ].msg );
-	}
+		assert.equalHash( fragment.getSelection().getRange(), caseItem.expected, caseItem.msg );
+	} );
 } );
 
 QUnit.test( 'expandLinearSelection (closest)', function ( assert ) {
-	var i, fragment, surface,
-		cases = [
-			{
-				msg: 've.dm.BranchNode selects surrounding paragraph',
-				range: new ve.Range( 1 ),
-				type: ve.dm.BranchNode,
-				expected: new ve.dm.LinearSelection( new ve.Range( 0, 5 ) )
-			},
-			{
-				msg: 've.dm.BranchNode selects surrounding paragraph in empty paragraph',
-				doc: 'alienWithEmptyData',
-				range: new ve.Range( 1 ),
-				type: ve.dm.BranchNode,
-				expected: new ve.dm.LinearSelection( new ve.Range( 0, 2 ) )
-			},
-			{
-				msg: 've.dm.BranchNode selects surrounding paragraph when entire paragrpah selected',
-				range: new ve.Range( 1, 4 ),
-				type: ve.dm.BranchNode,
-				expected: new ve.dm.LinearSelection( new ve.Range( 0, 5 ) )
-			},
-			{
-				msg: 'invalid type results in null fragment',
-				range: new ve.Range( 20, 21 ),
-				type: function () {},
-				expected: new ve.dm.NullSelection()
-			}
-		];
+	var cases = [
+		{
+			msg: 've.dm.BranchNode selects surrounding paragraph',
+			range: new ve.Range( 1 ),
+			type: ve.dm.BranchNode,
+			expected: new ve.dm.LinearSelection( new ve.Range( 0, 5 ) )
+		},
+		{
+			msg: 've.dm.BranchNode selects surrounding paragraph in empty paragraph',
+			doc: 'alienWithEmptyData',
+			range: new ve.Range( 1 ),
+			type: ve.dm.BranchNode,
+			expected: new ve.dm.LinearSelection( new ve.Range( 0, 2 ) )
+		},
+		{
+			msg: 've.dm.BranchNode selects surrounding paragraph when entire paragrpah selected',
+			range: new ve.Range( 1, 4 ),
+			type: ve.dm.BranchNode,
+			expected: new ve.dm.LinearSelection( new ve.Range( 0, 5 ) )
+		},
+		{
+			msg: 'invalid type results in null fragment',
+			range: new ve.Range( 20, 21 ),
+			type: function () {},
+			expected: new ve.dm.NullSelection()
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		surface = new ve.dm.Surface( ve.dm.example.createExampleDocument( cases[ i ].doc ) );
-		fragment = surface.getLinearFragment( cases[ i ].range ).expandLinearSelection( 'closest', cases[ i ].type );
-		assert.equalHash( fragment.getSelection(), cases[ i ].expected, cases[ i ].msg );
-	}
+	cases.forEach( function ( caseItem ) {
+		var surface = new ve.dm.Surface( ve.dm.example.createExampleDocument( caseItem.doc ) );
+		var fragment = surface.getLinearFragment( caseItem.range ).expandLinearSelection( 'closest', caseItem.type );
+		assert.equalHash( fragment.getSelection(), caseItem.expected, caseItem.msg );
+	} );
 } );
 
 QUnit.test( 'expandLinearSelection (word)', function ( assert ) {
-	var i, doc, surface, fragment, newFragment, range, word,
-		cases = [
-			{
-				phrase: 'the quick brown fox',
-				range: new ve.Range( 6, 13 ),
-				expected: 'quick brown',
-				msg: 'range starting and ending in latin words'
-			},
-			{
-				phrase: 'the quick brown fox',
-				range: new ve.Range( 18, 12 ),
-				expected: 'brown fox',
-				msg: 'backwards range starting and ending in latin words'
-			},
-			{
-				phrase: 'the quick brown fox',
-				range: new ve.Range( 7 ),
-				expected: 'quick',
-				msg: 'zero-length range'
-			}
-		];
+	var cases = [
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 6, 13 ),
+			expected: 'quick brown',
+			msg: 'range starting and ending in latin words'
+		},
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 18, 12 ),
+			expected: 'brown fox',
+			msg: 'backwards range starting and ending in latin words'
+		},
+		{
+			phrase: 'the quick brown fox',
+			range: new ve.Range( 7 ),
+			expected: 'quick',
+			msg: 'zero-length range'
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		doc = new ve.dm.Document( cases[ i ].phrase.split( '' ) );
-		surface = new ve.dm.Surface( doc );
-		fragment = surface.getLinearFragment( cases[ i ].range );
-		newFragment = fragment.expandLinearSelection( 'word' );
-		range = newFragment.getSelection().getRange();
-		word = cases[ i ].phrase.slice( range.start, range.end );
-		assert.strictEqual( word, cases[ i ].expected, cases[ i ].msg + ': text' );
-		assert.strictEqual( cases[ i ].range.isBackwards(), range.isBackwards(), cases[ i ].msg + ': range direction' );
-	}
+	cases.forEach( function ( caseItem ) {
+		var doc = new ve.dm.Document( caseItem.phrase.split( '' ) );
+		var surface = new ve.dm.Surface( doc );
+		var fragment = surface.getLinearFragment( caseItem.range );
+		var newFragment = fragment.expandLinearSelection( 'word' );
+		var range = newFragment.getSelection().getRange();
+		var word = caseItem.phrase.slice( range.start, range.end );
+		assert.strictEqual( word, caseItem.expected, caseItem.msg + ': text' );
+		assert.strictEqual( caseItem.range.isBackwards(), range.isBackwards(), caseItem.msg + ': range direction' );
+	} );
 } );
 
 QUnit.test( 'removeContent', function ( assert ) {
@@ -352,17 +347,16 @@ QUnit.test( 'removeContent', function ( assert ) {
 } );
 
 ve.test.utils.runSurfaceFragmentDeleteTest = function ( assert, html, range, directionAfterRemove, expectedData, expectedRange, msg ) {
-	var data, doc, surface, fragment;
-
+	var doc;
 	if ( html ) {
 		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( html ) );
 	} else {
 		doc = ve.dm.example.createExampleDocument();
 	}
-	surface = new ve.dm.Surface( doc );
-	fragment = surface.getLinearFragment( range );
+	var surface = new ve.dm.Surface( doc );
+	var fragment = surface.getLinearFragment( range );
 
-	data = ve.copy( fragment.getDocument().getFullData() );
+	var data = ve.copy( fragment.getDocument().getFullData() );
 	expectedData( data );
 
 	fragment.delete( directionAfterRemove );
@@ -372,95 +366,94 @@ ve.test.utils.runSurfaceFragmentDeleteTest = function ( assert, html, range, dir
 };
 
 QUnit.test( 'delete', function ( assert ) {
-	var i,
-		cases = [
-			{
-				range: new ve.Range( 1, 4 ),
-				directionAfterRemove: -1,
-				expectedData: function ( data ) {
-					data.splice( 1, 3 );
-				},
-				expectedRange: new ve.Range( 1 ),
-				msg: 'Selection deleted by backspace'
+	var cases = [
+		{
+			range: new ve.Range( 1, 4 ),
+			directionAfterRemove: -1,
+			expectedData: function ( data ) {
+				data.splice( 1, 3 );
 			},
-			{
-				range: new ve.Range( 1, 4 ),
-				directionAfterRemove: 1,
-				expectedData: function ( data ) {
-					data.splice( 1, 3 );
-				},
-				expectedRange: new ve.Range( 1 ),
-				msg: 'Selection deleted by delete'
+			expectedRange: new ve.Range( 1 ),
+			msg: 'Selection deleted by backspace'
+		},
+		{
+			range: new ve.Range( 1, 4 ),
+			directionAfterRemove: 1,
+			expectedData: function ( data ) {
+				data.splice( 1, 3 );
 			},
-			{
-				range: new ve.Range( 39, 41 ),
-				directionAfterRemove: 1,
-				expectedData: function ( data ) {
-					data.splice( 39, 2 );
-				},
-				expectedRange: new ve.Range( 39 ),
-				msg: 'Focusable node deleted if selected first'
+			expectedRange: new ve.Range( 1 ),
+			msg: 'Selection deleted by delete'
+		},
+		{
+			range: new ve.Range( 39, 41 ),
+			directionAfterRemove: 1,
+			expectedData: function ( data ) {
+				data.splice( 39, 2 );
 			},
-			{
-				range: new ve.Range( 39, 41 ),
-				expectedData: function ( data ) {
-					data.splice( 39, 2 );
-				},
-				expectedRange: new ve.Range( 39 ),
-				msg: 'Focusable node deleted by cut'
+			expectedRange: new ve.Range( 39 ),
+			msg: 'Focusable node deleted if selected first'
+		},
+		{
+			range: new ve.Range( 39, 41 ),
+			expectedData: function ( data ) {
+				data.splice( 39, 2 );
 			},
-			{
-				range: new ve.Range( 0, 63 ),
-				directionAfterRemove: -1,
-				expectedData: function ( data ) {
-					data.splice(
-						0,
-						61,
-						{ type: 'paragraph' },
-						{ type: '/paragraph' }
-					);
-				},
-				expectedRange: new ve.Range( 1 ),
-				msg: 'Backspace after select all spanning entire document creates empty paragraph'
+			expectedRange: new ve.Range( 39 ),
+			msg: 'Focusable node deleted by cut'
+		},
+		{
+			range: new ve.Range( 0, 63 ),
+			directionAfterRemove: -1,
+			expectedData: function ( data ) {
+				data.splice(
+					0,
+					61,
+					{ type: 'paragraph' },
+					{ type: '/paragraph' }
+				);
 			},
-			{
-				html: '<div rel="ve:Alien">Foo</div><p>Bar</p>',
-				range: new ve.Range( 0, 6 ),
-				directionAfterRemove: -1,
-				expectedData: function ( data ) {
-					data.splice(
-						0,
-						7,
-						{ type: 'paragraph' },
-						{ type: '/paragraph' }
-					);
-				},
-				expectedRange: new ve.Range( 1 ),
-				msg: 'Delete all when document starts with a focusable node'
+			expectedRange: new ve.Range( 1 ),
+			msg: 'Backspace after select all spanning entire document creates empty paragraph'
+		},
+		{
+			html: '<div rel="ve:Alien">Foo</div><p>Bar</p>',
+			range: new ve.Range( 0, 6 ),
+			directionAfterRemove: -1,
+			expectedData: function ( data ) {
+				data.splice(
+					0,
+					7,
+					{ type: 'paragraph' },
+					{ type: '/paragraph' }
+				);
 			},
-			{
-				html: '<div rel="ve:Alien">Foo</div><p>Bar</p><div rel="ve:Alien">Baz</div>',
-				range: new ve.Range( 0, 9 ),
-				directionAfterRemove: -1,
-				expectedData: function ( data ) {
-					data.splice(
-						0,
-						9,
-						{ type: 'paragraph' },
-						{ type: '/paragraph' }
-					);
-				},
-				expectedRange: new ve.Range( 1 ),
-				msg: 'Delete all when document starts and ends with a focusable node'
-			}
-		];
+			expectedRange: new ve.Range( 1 ),
+			msg: 'Delete all when document starts with a focusable node'
+		},
+		{
+			html: '<div rel="ve:Alien">Foo</div><p>Bar</p><div rel="ve:Alien">Baz</div>',
+			range: new ve.Range( 0, 9 ),
+			directionAfterRemove: -1,
+			expectedData: function ( data ) {
+				data.splice(
+					0,
+					9,
+					{ type: 'paragraph' },
+					{ type: '/paragraph' }
+				);
+			},
+			expectedRange: new ve.Range( 1 ),
+			msg: 'Delete all when document starts and ends with a focusable node'
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		ve.test.utils.runSurfaceFragmentDeleteTest(
-			assert, cases[ i ].html, cases[ i ].range, cases[ i ].directionAfterRemove,
-			cases[ i ].expectedData, cases[ i ].expectedRange, cases[ i ].msg
+			assert, caseItem.html, caseItem.range, caseItem.directionAfterRemove,
+			caseItem.expectedData, caseItem.expectedRange, caseItem.msg
 		);
-	}
+	} );
 } );
 
 QUnit.test( 'insertContent/insertDocument', function ( assert ) {
@@ -734,8 +727,7 @@ QUnit.test( 'rewrapNodes', function ( assert ) {
 		fragment = surface.getLinearFragment( new ve.Range( 43, 55 ) ),
 		expectedDoc = ve.dm.example.createExampleDocument(),
 		expectedSurface = new ve.dm.Surface( expectedDoc ),
-		expectedFragment = expectedSurface.getLinearFragment( new ve.Range( 43, 55 ) ),
-		expectedData;
+		expectedFragment = expectedSurface.getLinearFragment( new ve.Range( 43, 55 ) );
 
 	// Set up wrapped nodes in example document
 	fragment.wrapNodes(
@@ -767,7 +759,7 @@ QUnit.test( 'rewrapNodes', function ( assert ) {
 	// Rewrap paragrphs as headings
 	// The intermediate stage (plain text attached to the document) would be invalid
 	// if performed as an unwrap and a wrap
-	expectedData = ve.copy( doc.getData() );
+	var expectedData = ve.copy( doc.getData() );
 
 	fragment = surface.getLinearFragment( new ve.Range( 59, 65 ) );
 	fragment.rewrapNodes( 1, [ { type: 'heading', attributes: { level: 1 } } ] );
@@ -861,8 +853,7 @@ QUnit.test( 'wrapAllNodes', function ( assert ) {
 } );
 
 QUnit.test( 'rewrapAllNodes', function ( assert ) {
-	var expectedData,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
 		fragment = surface.getLinearFragment( new ve.Range( 5, 37 ) ),
@@ -898,7 +889,7 @@ QUnit.test( 'rewrapAllNodes', function ( assert ) {
 		]
 	);
 
-	expectedData = originalDoc.getData();
+	var expectedData = originalDoc.getData();
 	assert.deepEqual(
 		doc.getData(),
 		expectedData,

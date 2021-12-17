@@ -9,17 +9,16 @@ QUnit.module( 've.dm.Converter' );
 /* Tests */
 
 QUnit.test( 'getModelFromDom', function ( assert ) {
-	var msg, cases = ve.dm.example.domToDataCases;
+	var cases = ve.dm.example.domToDataCases;
 
-	for ( msg in cases ) {
+	for ( var msg in cases ) {
 		ve.test.utils.runGetModelFromDomTest( assert, ve.copy( cases[ msg ] ), msg );
 	}
 } );
 
 QUnit.test( 'getModelFromDom with store argument', function ( assert ) {
-	var model,
-		store = new ve.dm.HashValueStore();
-	model = ve.dm.converter.getModelFromDom(
+	var store = new ve.dm.HashValueStore();
+	var model = ve.dm.converter.getModelFromDom(
 		ve.createDocumentFromHtml( '<p>foo</p>' ),
 		{ lang: 'en', dir: 'ltr' },
 		store
@@ -28,9 +27,9 @@ QUnit.test( 'getModelFromDom with store argument', function ( assert ) {
 } );
 
 QUnit.test( 'getDomFromModel', function ( assert ) {
-	var msg, cases = ve.dm.example.domToDataCases;
+	var cases = ve.dm.example.domToDataCases;
 
-	for ( msg in cases ) {
+	for ( var msg in cases ) {
 		ve.test.utils.runGetDomFromModelTest( assert, ve.copy( cases[ msg ] ), msg );
 	}
 } );
@@ -98,12 +97,11 @@ QUnit.test( 'getFullData', function ( assert ) {
 } );
 
 QUnit.test( 'roundTripMetadata', function ( assert ) {
-	var doc, tx,
-		beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
+	var beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
 		afterHtml = '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>';
 
-	doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( beforeHtml ) );
-	tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
+	var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( beforeHtml ) );
+	var tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
 	doc.commit( tx );
 	assert.strictEqual(
 		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,

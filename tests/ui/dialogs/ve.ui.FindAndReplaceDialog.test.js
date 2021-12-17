@@ -79,17 +79,16 @@ QUnit.test( 'find fragments', function ( assert ) {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
 		} ).opening.then( function () {
-			var i, ranges;
-			for ( i = 0; i < cases.length; i++ ) {
-				dialog.matchCaseToggle.setValue( !!cases[ i ].matchCase );
-				dialog.regexToggle.setValue( !!cases[ i ].regex );
-				dialog.findText.setValue( cases[ i ].find );
-				ranges = dialog.fragments.map( function ( fragment ) {
+			cases.forEach( function ( caseItem ) {
+				dialog.matchCaseToggle.setValue( !!caseItem.matchCase );
+				dialog.regexToggle.setValue( !!caseItem.regex );
+				dialog.findText.setValue( caseItem.find );
+				var ranges = dialog.fragments.map( function ( fragment ) {
 					return fragment.getSelection().getRange();
 				} );
-				assert.deepEqual( ranges, cases[ i ].ranges, cases[ i ].msg );
+				assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
 				dialog.findText.setValue( '' );
-			}
+			} );
 			done();
 		} );
 	} );
@@ -126,17 +125,16 @@ QUnit.test( 'replace all', function ( assert ) {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
 		} ).opening.then( function () {
-			var i;
-			for ( i = 0; i < cases.length; i++ ) {
-				dialog.matchCaseToggle.setValue( !!cases[ i ].matchCase );
-				dialog.regexToggle.setValue( !!cases[ i ].regex );
-				dialog.findText.setValue( cases[ i ].find );
-				dialog.replaceText.setValue( cases[ i ].replace );
+			cases.forEach( function ( caseItem ) {
+				dialog.matchCaseToggle.setValue( !!caseItem.matchCase );
+				dialog.regexToggle.setValue( !!caseItem.regex );
+				dialog.findText.setValue( caseItem.find );
+				dialog.replaceText.setValue( caseItem.replace );
 				dialog.onReplaceAllButtonClick();
-				assert.strictEqual( surface.getModel().getDocument().data.getText(), cases[ i ].expected, cases[ i ].msg );
+				assert.strictEqual( surface.getModel().getDocument().data.getText(), caseItem.expected, caseItem.msg );
 				dialog.findText.setValue( '' );
 				dialog.replaceText.setValue( '' );
-			}
+			} );
 			done();
 		} ).fail( function ( ex ) {
 			assert.true( false, 'Error thrown: ' + ex.stack );

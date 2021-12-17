@@ -161,8 +161,7 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 } );
 
 QUnit.test( 'special key down: table arrow keys (simple movements)', function ( assert ) {
-	var i, offsets, expectedSelectionOffsets, selection, table, view, model,
-		fn = function () {},
+	var fn = function () {},
 		tables = {
 			mergedCells: {
 				view: ve.test.utils.createSurfaceViewFromDocument(
@@ -313,31 +312,31 @@ QUnit.test( 'special key down: table arrow keys (simple movements)', function ( 
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		offsets = cases[ i ].selectionOffsets;
-		table = tables[ cases[ i ].table || 'mergedCells' ];
-		view = table.view;
-		model = view.getModel();
+	cases.forEach( function ( caseItem ) {
+		var offsets = caseItem.selectionOffsets;
+		var table = tables[ caseItem.table || 'mergedCells' ];
+		var view = table.view;
+		var model = view.getModel();
 		model.setSelection( new ve.dm.TableSelection(
 			table.tableRange, offsets[ 0 ], offsets[ 1 ], offsets[ 2 ], offsets[ 3 ] )
 		);
 		ve.ce.keyDownHandlerFactory.executeHandlersForKey(
-			OO.ui.Keys[ cases[ i ].key ], model.getSelection().getName(), view,
+			OO.ui.Keys[ caseItem.key ], model.getSelection().getName(), view,
 			{
-				keyCode: OO.ui.Keys[ cases[ i ].key ],
-				shiftKey: !!cases[ i ].shiftKey,
+				keyCode: OO.ui.Keys[ caseItem.key ],
+				shiftKey: !!caseItem.shiftKey,
 				preventDefault: fn,
 				stopPropagation: fn
 			}
 		);
-		selection = model.getSelection();
-		expectedSelectionOffsets = cases[ i ].expectedSelectionOffsets.length > 2 ?
-			cases[ i ].expectedSelectionOffsets :
-			cases[ i ].expectedSelectionOffsets.concat( cases[ i ].expectedSelectionOffsets );
+		var selection = model.getSelection();
+		var expectedSelectionOffsets = caseItem.expectedSelectionOffsets.length > 2 ?
+			caseItem.expectedSelectionOffsets :
+			caseItem.expectedSelectionOffsets.concat( caseItem.expectedSelectionOffsets );
 		assert.deepEqual(
 			[ selection.fromCol, selection.fromRow, selection.toCol, selection.toRow ],
 			expectedSelectionOffsets,
-			cases[ i ].msg
+			caseItem.msg
 		);
-	}
+	} );
 } );

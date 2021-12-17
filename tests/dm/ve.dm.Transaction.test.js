@@ -12,10 +12,9 @@ QUnit.module( 've.dm.Transaction' );
 // TODO: Change the variable names to reflect the use of TransactionBuilder
 
 QUnit.test( 'translateOffset', function ( assert ) {
-	var tx, mapping, offset, expected,
-		b = [ ve.dm.example.boldHash ];
+	var b = [ ve.dm.example.boldHash ];
 
-	tx = new ve.dm.Transaction( [
+	var tx = new ve.dm.Transaction( [
 		{ type: 'replace', remove: [], insert: [ 'a', 'b', 'c' ] },
 		{ type: 'retain', length: 5 },
 		{ type: 'replace', remove: [ 'd', 'e', 'f', 'g' ], insert: [] },
@@ -31,7 +30,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		{ type: 'replace', remove: [ 'h', 'i' ], insert: [ [ 'l', b ], [ 'o', b ] ] }
 	] );
 
-	mapping = {
+	var mapping = {
 		0: [ 0, 3 ],
 		1: 4,
 		2: 5,
@@ -63,16 +62,15 @@ QUnit.test( 'translateOffset', function ( assert ) {
 		28: 33
 	};
 
-	for ( offset in mapping ) {
-		expected = Array.isArray( mapping[ offset ] ) ? mapping[ offset ] : [ mapping[ offset ], mapping[ offset ] ];
+	for ( var offset in mapping ) {
+		var expected = Array.isArray( mapping[ offset ] ) ? mapping[ offset ] : [ mapping[ offset ], mapping[ offset ] ];
 		assert.strictEqual( tx.translateOffset( Number( offset ) ), expected[ 1 ], offset );
 		assert.strictEqual( tx.translateOffset( Number( offset ), true ), expected[ 0 ], offset + ' (excludeInsertion)' );
 	}
 } );
 
 QUnit.test( 'translateRange', function ( assert ) {
-	var tx, i, cases,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		txBuilder = new ve.dm.TransactionBuilder();
 	txBuilder.pushRetain( 55 );
 	txBuilder.pushReplacement( doc, 55, 0, [ { type: 'list', attributes: { style: 'number' } } ] );
@@ -83,9 +81,9 @@ QUnit.test( 'translateRange', function ( assert ) {
 	txBuilder.pushRetain( 3 );
 	txBuilder.pushReplacement( doc, 61, 0, [ { type: '/listItem' } ] );
 	txBuilder.pushReplacement( doc, 61, 0, [ { type: '/list' } ] );
-	tx = txBuilder.getTransaction();
+	var tx = txBuilder.getTransaction();
 
-	cases = [
+	var cases = [
 		{
 			before: new ve.Range( 55, 61 ),
 			after: new ve.Range( 55, 67 ),
@@ -108,15 +106,14 @@ QUnit.test( 'translateRange', function ( assert ) {
 		}
 	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		assert.equalRange( tx.translateRange( cases[ i ].before ), cases[ i ].after, cases[ i ].msg );
-		assert.equalRange( tx.translateRange( cases[ i ].before.flip() ), cases[ i ].after.flip(), cases[ i ].msg + ' (reversed)' );
-	}
+	cases.forEach( function ( caseItem ) {
+		assert.equalRange( tx.translateRange( caseItem.before ), caseItem.after, caseItem.msg );
+		assert.equalRange( tx.translateRange( caseItem.before.flip() ), caseItem.after.flip(), caseItem.msg + ' (reversed)' );
+	} );
 } );
 
 QUnit.test( 'getModifiedRange', function ( assert ) {
-	var i, j, len, txBuilder,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
 				calls: [
@@ -216,18 +213,17 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			}
 		];
 
-	for ( i = 0, len = cases.length; i < len; i++ ) {
-		txBuilder = new ve.dm.TransactionBuilder();
-		for ( j = 0; j < cases[ i ].calls.length; j++ ) {
-			txBuilder[ cases[ i ].calls[ j ][ 0 ] ].apply( txBuilder, cases[ i ].calls[ j ].slice( 1 ) );
+	cases.forEach( function ( caseItem ) {
+		var txBuilder = new ve.dm.TransactionBuilder();
+		for ( var j = 0; j < caseItem.calls.length; j++ ) {
+			txBuilder[ caseItem.calls[ j ][ 0 ] ].apply( txBuilder, caseItem.calls[ j ].slice( 1 ) );
 		}
-		assert.equalRange( txBuilder.getTransaction().getModifiedRange( doc ), cases[ i ].range, cases[ i ].msg );
-	}
+		assert.equalRange( txBuilder.getTransaction().getModifiedRange( doc ), caseItem.range, caseItem.msg );
+	} );
 } );
 
 QUnit.test( 'Metadata transactions', function ( assert ) {
-	var doc, surface,
-		fooMeta = { type: 'alienMeta', attributes: { label: 'foo' } },
+	var fooMeta = { type: 'alienMeta', attributes: { label: 'foo' } },
 		barMeta = { type: 'alienMeta', attributes: { label: 'bar' } },
 		data = [
 			{ type: 'paragraph' },
@@ -248,8 +244,8 @@ QUnit.test( 'Metadata transactions', function ( assert ) {
 		} );
 	}
 
-	doc = new ve.dm.Document( [] );
-	surface = new ve.dm.Surface( doc );
+	var doc = new ve.dm.Document( [] );
+	var surface = new ve.dm.Surface( doc );
 	surface.metaList.connect( null, {
 		insert: function ( item ) {
 			events.push( [ 'insert', item.element ] );

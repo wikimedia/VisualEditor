@@ -53,9 +53,8 @@ ve.dm.TreeModifier.prototype.dump = function () {
 };
 
 ve.test.utils.nodesByTypeSummary = function ( doc ) {
-	var type,
-		nodesByType = ve.copy( doc.nodesByType );
-	for ( type in nodesByType ) {
+	var nodesByType = ve.copy( doc.nodesByType );
+	for ( var type in nodesByType ) {
 		nodesByType[ type ] = nodesByType[ type ].length;
 	}
 	return nodesByType;
@@ -64,12 +63,10 @@ ve.test.utils.nodesByTypeSummary = function ( doc ) {
 QUnit.module( 've.dm.TreeModifier' );
 
 QUnit.test( 'treeDiff', function ( assert ) {
-	var origData, tx, treeDiff, surface, doc, i, iLen, j;
-
 	// old: <div><p>foobarbaz</p><p>qux</p></div><p>quux</p>
 	// new: <ul><li><p>foo</p><p>barBAZ</p><p>qux</p></li></ul><p>qUUx</p><p><img src='x'></p>
 	// tx: {-<div>-|+<ul><li>+}<p>foo{+</p><p>+}bar{-baz-|+BAZ+}</p><p>qux</p>{-</div>-|+</li></ul>+}<p>q{-uu-|+UU+}x</p>{+<p><img src='x'></p>+}
-	origData = [
+	var origData = [
 		{ type: 'div' },
 		{ type: 'paragraph' },
 		'f',
@@ -95,7 +92,7 @@ QUnit.test( 'treeDiff', function ( assert ) {
 		'x',
 		{ type: '/paragraph' }
 	];
-	tx = new ve.dm.Transaction( [
+	var tx = new ve.dm.Transaction( [
 		{ type: 'replace', remove: [ { type: 'div' } ], insert: [ { type: 'list' }, { type: 'listItem' } ] },
 		{ type: 'retain', length: 4 },
 		{ type: 'replace', remove: [], insert: [ { type: '/paragraph' }, { type: 'paragraph' } ] },
@@ -114,7 +111,7 @@ QUnit.test( 'treeDiff', function ( assert ) {
 		] }
 	] );
 
-	treeDiff = [
+	var treeDiff = [
 		// {-<div>-|+<ul><li>+}
 		[
 			{ type: 'insertNode', isContent: false, at: [ 0 ], element: { type: 'list' } },
@@ -174,13 +171,13 @@ QUnit.test( 'treeDiff', function ( assert ) {
 		// Implicit final retain
 		[]
 	];
-	surface = new ve.dm.Surface(
+	var surface = new ve.dm.Surface(
 		ve.dm.example.createExampleDocumentFromData( origData )
 	);
-	doc = surface.documentModel;
+	var doc = surface.documentModel;
 	ve.dm.treeModifier.setup( doc );
-	j = 0;
-	for ( i = 0, iLen = tx.operations.length; i < iLen; i++ ) {
+	var j = 0;
+	for ( var i = 0, iLen = tx.operations.length; i < iLen; i++ ) {
 		ve.dm.treeModifier.processLinearOperation( tx.operations[ i ] );
 		assert.deepEqual(
 			ve.dm.treeModifier.treeOps.slice( j ),
@@ -198,8 +195,6 @@ QUnit.test( 'treeDiff', function ( assert ) {
 } );
 
 QUnit.test( 'modify', function ( assert ) {
-	var origData, surface, doc, tx, expectedTreeDump, actualTreeDump;
-
 	function dumpTree( d ) {
 		// Build a tree modifier just for the .dump method (don't modify anything)
 		var treeModifier = new ve.dm.TreeModifier();
@@ -207,7 +202,7 @@ QUnit.test( 'modify', function ( assert ) {
 		return treeModifier.dump();
 	}
 
-	origData = [
+	var origData = [
 		{ type: 'paragraph' },
 		'a',
 		'b',
@@ -227,12 +222,12 @@ QUnit.test( 'modify', function ( assert ) {
 		{ type: 'internalList' },
 		{ type: '/internalList' }
 	];
-	surface = new ve.dm.Surface(
+	var surface = new ve.dm.Surface(
 		ve.dm.example.createExampleDocumentFromData( origData )
 	);
-	doc = surface.documentModel;
+	var doc = surface.documentModel;
 
-	tx = new ve.dm.Transaction( [
+	var tx = new ve.dm.Transaction( [
 		{ type: 'retain', length: 2 },
 		{
 			type: 'replace',
@@ -274,9 +269,9 @@ QUnit.test( 'modify', function ( assert ) {
 	);
 
 	doc.commit( tx );
-	actualTreeDump = dumpTree( doc );
+	var actualTreeDump = dumpTree( doc );
 	doc.rebuildTree();
-	expectedTreeDump = dumpTree( doc );
+	var expectedTreeDump = dumpTree( doc );
 	assert.strictEqual(
 		actualTreeDump,
 		expectedTreeDump,
@@ -323,11 +318,9 @@ QUnit.test( 'modify', function ( assert ) {
 } );
 
 QUnit.test( 'bare content', function ( assert ) {
-	var data, doc, tx;
-
-	data = [ { type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' } ];
-	doc = ve.dm.example.createExampleDocumentFromData( data );
-	tx = new ve.dm.Transaction( [
+	var data = [ { type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' } ];
+	var doc = ve.dm.example.createExampleDocumentFromData( data );
+	var tx = new ve.dm.Transaction( [
 		{ type: 'replace', remove: [ { type: 'paragraph' } ], insert: [] },
 		{ type: 'retain', length: 3 },
 		{ type: 'replace', remove: [ { type: '/paragraph' } ], insert: [] }
@@ -338,9 +331,7 @@ QUnit.test( 'bare content', function ( assert ) {
 } );
 
 QUnit.test( 'applyTreeOperation: ensureNotText', function ( assert ) {
-	var data, expectData, doc, tx;
-
-	data = [
+	var data = [
 		{ type: 'paragraph' },
 		'f',
 		'o',
@@ -349,10 +340,10 @@ QUnit.test( 'applyTreeOperation: ensureNotText', function ( assert ) {
 		'o',
 		{ type: '/paragraph' }
 	];
-	expectData = ve.copy( data );
+	var expectData = ve.copy( data );
 	expectData[ 3 ].annotations = [ ve.dm.example.boldHash ];
-	doc = ve.dm.example.createExampleDocumentFromData( data );
-	tx = new ve.dm.Transaction( [
+	var doc = ve.dm.example.createExampleDocumentFromData( data );
+	var tx = new ve.dm.Transaction( [
 		{ type: 'retain', length: 3 },
 		{
 			type: 'replace',
@@ -428,8 +419,7 @@ QUnit.test( 'setupBlockSlugs', function ( assert ) {
 } );
 
 QUnit.test( 'checkEqualData', function ( assert ) {
-	var data, expectedData;
-	data = [
+	var data = [
 		{
 			type: 'paragraph',
 			originalDomElementsHash: 'h1111111111111111',
@@ -457,7 +447,7 @@ QUnit.test( 'checkEqualData', function ( assert ) {
 		{ type: '/mwReference' },
 		{ type: '/paragraph' }
 	];
-	expectedData = ve.copy( data );
+	var expectedData = ve.copy( data );
 	expectedData[ 0 ].originalDomElementsHash = 'h2222222222222222';
 	expectedData[ 0 ].internal.changesSinceLoad = 2;
 	delete expectedData[ 4 ].attributes.mw;
@@ -467,9 +457,7 @@ QUnit.test( 'checkEqualData', function ( assert ) {
 } );
 
 QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
-	var data, doc, tx;
-
-	data = [
+	var data = [
 		{ type: 'paragraph' },
 		'f',
 		'o',
@@ -478,8 +466,8 @@ QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
 		{ type: '/comment' },
 		{ type: '/paragraph' }
 	];
-	doc = ve.dm.example.createExampleDocumentFromData( data );
-	tx = new ve.dm.Transaction( [
+	var doc = ve.dm.example.createExampleDocumentFromData( data );
+	var tx = new ve.dm.Transaction( [
 		{ type: 'retain', length: 3 },
 		{ type: 'replace', remove: [
 			'o',
@@ -522,9 +510,7 @@ QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
 } );
 
 QUnit.test( 'TreeCursor#normalizeCursor', function ( assert ) {
-	var data, doc, tx;
-
-	data = [
+	var data = [
 		{ type: 'heading', attributes: { level: 1 } },
 		'a',
 		'b',
@@ -537,8 +523,8 @@ QUnit.test( 'TreeCursor#normalizeCursor', function ( assert ) {
 		'f',
 		{ type: '/paragraph' }
 	];
-	doc = ve.dm.example.createExampleDocumentFromData( data );
-	tx = new ve.dm.Transaction( [
+	var doc = ve.dm.example.createExampleDocumentFromData( data );
+	var tx = new ve.dm.Transaction( [
 		{ type: 'retain', length: 2 },
 		{ type: 'replace', remove: [
 			'b',

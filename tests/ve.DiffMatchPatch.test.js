@@ -87,9 +87,7 @@ QUnit.test( 'indexOf/lastIndexOf', function ( assert ) {
 		];
 
 	cases.forEach( function ( caseItem ) {
-		var expected;
-
-		expected = textString.indexOf( caseItem.searchValue, caseItem.fromIndex );
+		var expected = textString.indexOf( caseItem.searchValue, caseItem.fromIndex );
 		assert.strictEqual(
 			dmp.indexOf( textArray, caseItem.searchValue, caseItem.fromIndex ),
 			expected,

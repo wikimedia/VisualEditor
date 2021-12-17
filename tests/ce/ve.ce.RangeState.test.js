@@ -9,9 +9,7 @@ QUnit.module( 've.ce.RangeState' );
 /* Tests */
 
 QUnit.test( 'Basic tests', function ( assert ) {
-	var i, rangeState, nativeRange,
-		oldState = null,
-		view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.html ),
+	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.html ),
 		nativeSelection = view.nativeSelection,
 		doc = view.getDocument().getDocumentNode(),
 		cases = [
@@ -120,26 +118,27 @@ QUnit.test( 'Basic tests', function ( assert ) {
 		};
 	}
 
-	for ( i = 0; i < cases.length; i++ ) {
+	var oldState = null;
+	cases.forEach( function ( caseItem ) {
 		nativeSelection.removeAllRanges();
-		if ( cases[ i ].range ) {
-			nativeRange = document.createRange();
-			nativeRange.setStart( cases[ i ].range.startNode, cases[ i ].range.startOffset );
-			if ( cases[ i ].range.endNode ) {
-				nativeRange.setEnd( cases[ i ].range.endNode, cases[ i ].range.endOffset );
+		if ( caseItem.range ) {
+			var nativeRange = document.createRange();
+			nativeRange.setStart( caseItem.range.startNode, caseItem.range.startOffset );
+			if ( caseItem.range.endNode ) {
+				nativeRange.setEnd( caseItem.range.endNode, caseItem.range.endOffset );
 			}
 			nativeSelection.addRange( nativeRange );
 		}
-		if ( cases[ i ].resetOld ) {
+		if ( caseItem.resetOld ) {
 			oldState = null;
 		}
-		rangeState = new ve.ce.RangeState( oldState, doc );
+		var rangeState = new ve.ce.RangeState( oldState, doc );
 		assert.deepEqualWithNodeTree(
 			getSummary( rangeState ),
-			getSummary( cases[ i ].expected ),
-			cases[ i ].msg
+			getSummary( caseItem.expected ),
+			caseItem.msg
 		);
 		oldState = rangeState;
-	}
+	} );
 	view.destroy();
 } );

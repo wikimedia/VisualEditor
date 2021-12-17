@@ -9,15 +9,14 @@ QUnit.module( 've.ce.Document' );
 /* Tests */
 
 QUnit.test( 'Converter tests', function ( assert ) {
-	var msg, model, view, caseItem, $documentElement,
-		cases = ve.dm.example.domToDataCases;
+	var cases = ve.dm.example.domToDataCases;
 
-	for ( msg in cases ) {
+	for ( var msg in cases ) {
 		if ( cases[ msg ].ceHtml ) {
-			caseItem = ve.copy( cases[ msg ] );
-			model = ve.test.utils.getModelFromTestCase( caseItem );
-			view = new ve.ce.Document( model );
-			$documentElement = view.getDocumentNode().$element;
+			var caseItem = ve.copy( cases[ msg ] );
+			var model = ve.test.utils.getModelFromTestCase( caseItem );
+			var view = new ve.ce.Document( model );
+			var $documentElement = view.getDocumentNode().$element;
 			// Simplify slugs
 			$documentElement.find( '.ve-ce-branchNode-slug' ).contents().remove();
 			assert.equalDomElement(
@@ -36,8 +35,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 
 QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	/* eslint-disable quotes */
-	var tests, i, iLen, test, parts, view, data, dmDoc, ceDoc, rootNode, offsetCount, offset, j, jLen, node, ex,
-		docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode'>",
+	var docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode'>",
 		pNodeStart = "<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>";
 
 	// Each test below has the following:
@@ -47,7 +45,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	// characters on a modified HTML representation in which text nodes are wrapped in
 	// <#text>…</#text> tags (and most attributes are omitted)
 	// dies (optional): a list of DM offsets where getNodeAndOffset is expected to die
-	tests = [
+	var cases = [
 		{
 			title: 'Simple para',
 			html: '<p>x</p>',
@@ -139,49 +137,48 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		}
 	}
 
-	for ( i = 0, iLen = tests.length; i < iLen; i++ ) {
-		test = tests[ i ];
-		parts = test.positions.split( /[|]/ );
-		view = ve.test.utils.createSurfaceViewFromHtml( test.html );
-		dmDoc = view.getModel().getDocument();
-		if ( test.unwrap ) {
+	cases.forEach( function ( caseItem ) {
+		var parts = caseItem.positions.split( /[|]/ );
+		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
+		var dmDoc = view.getModel().getDocument();
+		if ( caseItem.unwrap ) {
 			new ve.dm.Surface( dmDoc ).change(
 				ve.dm.TransactionBuilder.static.newFromWrap(
 					dmDoc,
 					new ve.Range( 0, dmDoc.data.countNonInternalElements() ),
 					[],
 					[],
-					test.unwrap,
+					caseItem.unwrap,
 					[]
 				)
 			);
 		}
-		data = dmDoc.data.data
+		var data = dmDoc.data.data
 			.slice( 0, -2 )
 			.map( showModelItem );
-		ceDoc = view.documentView;
-		rootNode = ceDoc.getDocumentNode().$element.get( 0 );
-		assert.deepEqual( data, test.data, test.title + ' (data)' );
+		var ceDoc = view.documentView;
+		var rootNode = ceDoc.getDocumentNode().$element.get( 0 );
+		assert.deepEqual( data, caseItem.data, caseItem.title + ' (data)' );
 
-		offsetCount = data.length;
+		var offsetCount = data.length;
 		assert.strictEqual(
 			offsetCount,
-			test.positions.replace( /[^|]/g, '' ).length,
-			test.title + ' (offset count)'
+			caseItem.positions.replace( /[^|]/g, '' ).length,
+			caseItem.title + ' (offset count)'
 		);
 
-		if ( test.replacement ) {
-			node = rootNode;
-			for ( j = 0, jLen = test.replacement.path.length; j < jLen; j++ ) {
-				node = node.childNodes[ test.replacement.path[ j ] ];
+		if ( caseItem.replacement ) {
+			var node = rootNode;
+			for ( var j = 0, jLen = caseItem.replacement.path.length; j < jLen; j++ ) {
+				node = node.childNodes[ caseItem.replacement.path[ j ] ];
 			}
 			$( node ).closest(
 				'.ve-ce-branchNode,.ve-ce-leafNode'
 			).data( 'view' ).removeSlugs();
-			node.innerHTML = test.replacement.innerHtml;
+			node.innerHTML = caseItem.replacement.innerHtml;
 		}
 
-		for ( offset = 0; offset < offsetCount; offset++ ) {
+		for ( var offset = 0; offset < offsetCount; offset++ ) {
 			assert.strictEqual(
 				ve.test.utils.serializePosition(
 					rootNode,
@@ -193,21 +190,21 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 					[ '|' ],
 					parts.slice( offset + 1 )
 				).join( '' ),
-				test.title + ' (' + offset + ')'
+				caseItem.title + ' (' + offset + ')'
 			);
 		}
-		for ( j = 0; test.dies && j < test.dies.length; j++ ) {
-			offset = test.dies[ j ];
-			ex = null;
+		for ( var k = 0; caseItem.dies && k < caseItem.dies.length; k++ ) {
+			var dieOffset = caseItem.dies[ k ];
+			var ex = null;
 			try {
-				ceDoc.getNodeAndOffset( offset );
+				ceDoc.getNodeAndOffset( dieOffset );
 			} catch ( e ) {
 				ex = e;
 			}
-			assert.notStrictEqual( ex, null, test.title + ' (' + offset + ') dies' );
+			assert.notStrictEqual( ex, null, caseItem.title + ' (' + dieOffset + ') dies' );
 		}
 		view.destroy();
-	}
+	} );
 } );
 
 QUnit.test( 'attachedRoot', function ( assert ) {

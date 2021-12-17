@@ -123,8 +123,7 @@ QUnit.test( 'canBeMergedWith', function ( assert ) {
 } );
 
 QUnit.test( 'getClonedElement', function ( assert ) {
-	var i, node,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
 				original: {
@@ -196,9 +195,9 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		node = new ve.dm.NodeStub( cases[ i ].original );
+	cases.forEach( function ( caseItem ) {
+		var node = new ve.dm.NodeStub( caseItem.original );
 		node.setDocument( doc );
-		assert.deepEqual( node.getClonedElement( cases[ i ].preserveGenerated ), cases[ i ].clone, cases[ i ].msg );
-	}
+		assert.deepEqual( node.getClonedElement( caseItem.preserveGenerated ), caseItem.clone, caseItem.msg );
+	} );
 } );

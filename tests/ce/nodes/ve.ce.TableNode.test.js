@@ -9,8 +9,7 @@ QUnit.module( 've.ce.TableNode' );
 /* Tests */
 
 QUnit.test( 'getNearestCellNode', function ( assert ) {
-	var i,
-		view = ve.test.utils.createSurfaceViewFromHtml(
+	var view = ve.test.utils.createSurfaceViewFromHtml(
 			'<table>' +
 				'<tr><td>Foo' +
 					'<table><tr><td>Bar</td></tr></table>' +
@@ -38,9 +37,9 @@ QUnit.test( 'getNearestCellNode', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		assert.strictEqual( tableNode.getNearestCellNode( cases[ i ].element ), cases[ i ].node, cases[ i ].msg );
-	}
+	cases.forEach( function ( caseItem ) {
+		assert.strictEqual( tableNode.getNearestCellNode( caseItem.element ), caseItem.node, caseItem.msg );
+	} );
 	view.destroy();
 } );
 
@@ -60,8 +59,7 @@ QUnit.test( 'getFirstSectionNode', function ( assert ) {
 } );
 
 QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', function ( assert ) {
-	var expectedSelection,
-		realVeCeSurfaceGetOffsetFromCoords = ve.ce.Surface.prototype.getOffsetFromCoords,
+	var realVeCeSurfaceGetOffsetFromCoords = ve.ce.Surface.prototype.getOffsetFromCoords,
 		view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) ),
 		model = view.getModel(),
 		documentNode = view.getDocument().getDocumentNode(),
@@ -84,7 +82,7 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 		tableNode.onTableMouseMove( e );
 		tableNode.onTableMouseUp( e );
 
-		expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+		var expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
 			model.getDocument(),
 			{
 				type: 'table',
@@ -128,8 +126,7 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 } );
 
 QUnit.test( 'onTableMouseDown', function ( assert ) {
-	var i,
-		view = ve.test.utils.createSurfaceViewFromHtml(
+	var view = ve.test.utils.createSurfaceViewFromHtml(
 			'<table><tr><td>Foo</td><td>Bar</td></tr></table>'
 		),
 		documentNode = view.getDocument().getDocumentNode(),
@@ -170,15 +167,15 @@ QUnit.test( 'onTableMouseDown', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		tableNode.onTableMouseDown( ve.extendObject( mockEvent, cases[ i ].event ) );
+	cases.forEach( function ( caseItem ) {
+		tableNode.onTableMouseDown( ve.extendObject( mockEvent, caseItem.event ) );
 		assert.deepEqual(
 			tableNode.surface.getModel().getSelection().toJSON(),
-			cases[ i ].expectedSelection,
-			cases[ i ].msg
+			caseItem.expectedSelection,
+			caseItem.msg
 		);
 		// Clear document mouse up handlers
 		tableNode.onTableMouseUp();
-	}
+	} );
 	view.destroy();
 } );

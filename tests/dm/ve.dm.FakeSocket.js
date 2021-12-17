@@ -20,11 +20,10 @@ ve.dm.FakeSocket = function VeDmFakeSocket( server, query ) {
 OO.initClass( ve.dm.FakeSocket );
 
 ve.dm.FakeSocket.static.makeServer = function () {
-	var getRoom, reset,
-		sockets = [],
+	var sockets = [],
 		log = [];
 
-	getRoom = function ( roomName ) {
+	var getRoom = function ( roomName ) {
 		return { emit: function () {
 			var i, socket;
 			for ( i = 0; i < sockets.length; i++ ) {
@@ -35,7 +34,7 @@ ve.dm.FakeSocket.static.makeServer = function () {
 			}
 		} };
 	};
-	reset = function () {
+	var reset = function () {
 		sockets.length = 0;
 		log.length = 0;
 	};
@@ -47,10 +46,9 @@ ve.dm.FakeSocket.prototype.join = function ( roomName ) {
 };
 
 ve.dm.FakeSocket.prototype.emit = function ( eventName ) {
-	var i,
-		args = Array.from( arguments ).slice( 1 ),
+	var args = Array.from( arguments ).slice( 1 ),
 		handlers = this.handlers.get( eventName ) || [];
-	for ( i = 0; i < handlers.length; i++ ) {
+	for ( var i = 0; i < handlers.length; i++ ) {
 		this.pending.push( handlers[ i ].apply( null, args ) );
 	}
 };
@@ -63,10 +61,9 @@ ve.dm.FakeSocket.prototype.on = function ( eventName, handler ) {
 };
 
 ve.dm.FakeSocket.prototype.receive = function ( eventName ) {
-	var i,
-		args = Array.from( arguments ).slice( 1 ),
+	var args = Array.from( arguments ).slice( 1 ),
 		handlers = this.handlers.get( eventName ) || [];
-	for ( i = 0; i < handlers.length; i++ ) {
+	for ( var i = 0; i < handlers.length; i++ ) {
 		this.pending.push( handlers[ i ].apply( null, args ) );
 	}
 };

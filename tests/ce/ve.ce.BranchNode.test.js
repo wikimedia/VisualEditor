@@ -69,8 +69,7 @@ QUnit.test( 'updateTagName', function ( assert ) {
 } );
 
 QUnit.test( 'getDomPosition', function ( assert ) {
-	var expectedOffsets, i, len, position,
-		ceParent = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
+	var ceParent = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	// Create prior state by attaching manually, to avoid circular dependence on onSplice
 	ceParent.$element = $( '<p>' );
@@ -88,7 +87,7 @@ QUnit.test( 'getDomPosition', function ( assert ) {
 		// TextNode with some annotation
 		new ve.ce.TextNode( new ve.dm.BranchNodeStub() )
 	);
-	expectedOffsets = [ 0, 2, 2, 2, 3, 4, 7 ];
+	var expectedOffsets = [ 0, 2, 2, 2, 3, 4, 7 ];
 	ceParent.children[ 0 ].$element = $( '<img><img>' );
 	ceParent.children[ 1 ].$element = $();
 	ceParent.children[ 2 ].$element = $();
@@ -101,26 +100,26 @@ QUnit.test( 'getDomPosition', function ( assert ) {
 		.append( ceParent.children[ 4 ].$element )
 		.append( 'bar<b>baz</b>qux' );
 
-	for ( i = 0, len = ceParent.children.length + 1; i < len; i++ ) {
-		position = ceParent.getDomPosition( i );
+	for ( var i = 0, len = ceParent.children.length + 1; i < len; i++ ) {
+		var position = ceParent.getDomPosition( i );
 		assert.strictEqual( position.node, ceParent.$element.last()[ 0 ], 'i=' + i + ' node' );
 		assert.strictEqual( position.offset, expectedOffsets[ i ], 'i=' + i + ' position' );
 	}
 } );
 
 QUnit.test( 'onSplice', function ( assert ) {
-	var viewB, viewC,
-		modelA = new ve.dm.BranchNodeStub(),
+	var modelA = new ve.dm.BranchNodeStub(),
 		modelB = new ve.dm.BranchNodeStub(),
-		modelC = new ve.dm.BranchNodeStub(),
-		viewA = new ve.ce.BranchNodeStub( modelA );
+		modelC = new ve.dm.BranchNodeStub();
+
+	var viewA = new ve.ce.BranchNodeStub( modelA );
 
 	// Insertion tests
 	modelA.splice( 0, 0, modelB, modelC );
 
 	assert.strictEqual( viewA.getChildren().length, 2 );
-	viewB = viewA.getChildren()[ 0 ];
-	viewC = viewA.getChildren()[ 1 ];
+	var viewB = viewA.getChildren()[ 0 ];
+	var viewC = viewA.getChildren()[ 1 ];
 	assert.deepEqual( viewB.getModel(), modelB, 'First view child matches model tree' );
 	assert.deepEqual( viewC.getModel(), modelC, 'Second view child matches model tree' );
 

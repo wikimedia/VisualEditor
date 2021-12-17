@@ -31,9 +31,7 @@ ve.test.utils.makeStubTransferItem = function ( type, kind, extension ) {
 
 /* Tests */
 QUnit.test( 'getHandlerNameForItem', function ( assert ) {
-	var StubHandlerFileHtml1, StubHandlerFileHtml2, StubHandlerStringHtml,
-		StubHandlerHtml1, StubHandlerHtml2, StubHandlerHtml3,
-		makeStubTransferHandler = ve.test.utils.makeStubTransferHandler,
+	var makeStubTransferHandler = ve.test.utils.makeStubTransferHandler,
 		makeStubTransferItem = ve.test.utils.makeStubTransferItem,
 		factory = new ve.ui.DataTransferHandlerFactory(),
 		stubItemTypeHtml = makeStubTransferItem( 'text/html' ),
@@ -42,13 +40,13 @@ QUnit.test( 'getHandlerNameForItem', function ( assert ) {
 		stubItemExtHtml = makeStubTransferItem( null, null, 'html' ),
 		stubItemProto = makeStubTransferItem( '__proto__', '__proto__', '__proto__' );
 
-	StubHandlerFileHtml1 = makeStubTransferHandler( 'filehtml1', true, [ 'text/html' ], [ 'file' ], [ 'html' ] );
-	StubHandlerFileHtml2 = makeStubTransferHandler( 'filehtml2', false, [ 'text/html' ], [ 'file' ], [ 'html' ] );
-	StubHandlerStringHtml = makeStubTransferHandler( 'stringhtml', false, [ 'text/html' ], [ 'string' ] );
-	StubHandlerHtml1 = makeStubTransferHandler( 'html1', true, [ 'text/html' ] );
-	StubHandlerHtml2 = makeStubTransferHandler( 'html2', false, [ 'text/html' ] );
+	var StubHandlerFileHtml1 = makeStubTransferHandler( 'filehtml1', true, [ 'text/html' ], [ 'file' ], [ 'html' ] );
+	var StubHandlerFileHtml2 = makeStubTransferHandler( 'filehtml2', false, [ 'text/html' ], [ 'file' ], [ 'html' ] );
+	var StubHandlerStringHtml = makeStubTransferHandler( 'stringhtml', false, [ 'text/html' ], [ 'string' ] );
+	var StubHandlerHtml1 = makeStubTransferHandler( 'html1', true, [ 'text/html' ] );
+	var StubHandlerHtml2 = makeStubTransferHandler( 'html2', false, [ 'text/html' ] );
 	// The `html3` handler should never show up
-	StubHandlerHtml3 = makeStubTransferHandler( 'html3', true, [ 'text/html' ] );
+	var StubHandlerHtml3 = makeStubTransferHandler( 'html3', true, [ 'text/html' ] );
 	StubHandlerHtml3.static.matchFunction = function () {
 		return false;
 	};

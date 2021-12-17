@@ -16,12 +16,11 @@ ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
 	cases.forEach( function ( caseItem ) {
 		promise = promise.then( function () {
 			return surface.context.inspectors.getWindow( caseItem.name ).then( function ( inspector ) {
-				var setupData,
-					surfaceModel = surface.getModel(),
+				var surfaceModel = surface.getModel(),
 					linearData = ve.copy( surfaceModel.getDocument().getFullData() );
 
 				surfaceModel.setLinearSelection( caseItem.range );
-				setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
+				var setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
 				return inspector.setup( setupData ).then( function () {
 					return inspector.ready( setupData ).then( function () {
 						if ( caseItem.input ) {

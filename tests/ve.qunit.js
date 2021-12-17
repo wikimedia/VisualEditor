@@ -26,20 +26,18 @@
 	 * @return {Object} Summary of node tree
 	 */
 	function getNodeTreeSummary( node, shallow ) {
-		var i,
-			summary = {
-				getType: node.getType(),
-				getLength: node.getLength(),
-				getOuterLength: node.getOuterLength(),
-				element: node.element
-			},
-			numChildren;
+		var summary = {
+			getType: node.getType(),
+			getLength: node.getLength(),
+			getOuterLength: node.getOuterLength(),
+			element: node.element
+		};
 
 		if ( node.children !== undefined ) {
-			numChildren = node.children.length;
+			var numChildren = node.children.length;
 			if ( !shallow ) {
 				summary.children = [];
-				for ( i = 0; i < numChildren; i++ ) {
+				for ( var i = 0; i < numChildren; i++ ) {
 					summary.children.push( getNodeTreeSummary( node.children[ i ] ) );
 				}
 			}
@@ -58,14 +56,13 @@
 	 * @return {Object} Summary of selection
 	 */
 	function getNodeSelectionSummary( selection ) {
-		var i,
-			summary = {
-				length: selection.length
-			};
+		var summary = {
+			length: selection.length
+		};
 
 		if ( selection.length ) {
 			summary.results = [];
-			for ( i = 0; i < selection.length; i++ ) {
+			for ( var i = 0; i < selection.length; i++ ) {
 				summary.results.push( {
 					node: getNodeTreeSummary( selection[ i ].node, true ),
 					range: selection[ i ].range,
@@ -133,13 +130,12 @@
 	 * @param {string} message
 	 */
 	QUnit.assert.equalNodeTree = function ( actual, expected, shallow, message ) {
-		var actualSummary, expectedSummary;
 		if ( typeof shallow === 'string' && arguments.length === 3 ) {
 			message = shallow;
 			shallow = undefined;
 		}
-		actualSummary = getNodeTreeSummary( actual, shallow );
-		expectedSummary = getNodeTreeSummary( expected, shallow );
+		var actualSummary = getNodeTreeSummary( actual, shallow );
+		var expectedSummary = getNodeTreeSummary( expected, shallow );
 		this.pushResult( {
 			result: QUnit.equiv( actualSummary, expectedSummary ),
 			actual: actualSummary,
@@ -155,11 +151,10 @@
 	 * @param {string} message
 	 */
 	QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
-		var i,
-			actualSummary = getNodeSelectionSummary( actual ),
+		var actualSummary = getNodeSelectionSummary( actual ),
 			expectedSummary = getNodeSelectionSummary( expected );
 
-		for ( i = 0; i < actual.length; i++ ) {
+		for ( var i = 0; i < actual.length; i++ ) {
 			if ( expected[ i ] && expected[ i ].node !== actual[ i ].node ) {
 				this.pushResult( {
 					result: false,
