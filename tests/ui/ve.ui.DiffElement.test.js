@@ -826,7 +826,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</ul>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-changed,listItemDepth,<del>0</del>,<ins>1</ins></div>'
+					'<div>visualeditor-changedesc-list-indent</div>'
 				]
 			},
 			{
@@ -848,7 +848,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</ul>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-changed,listItemDepth,<del>1</del>,<ins>0</ins></div>'
+					'<div>visualeditor-changedesc-list-outdent</div>'
 				]
 			},
 			{
@@ -923,7 +923,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>',
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-no-key,<del>visualeditor-formatdropdown-format-heading2</del>,<ins>visualeditor-formatdropdown-format-heading3</ins></div>',
-					'<div>visualeditor-changedesc-changed,listItemDepth,<del>0</del>,<ins>1</ins></div>'
+					'<div>visualeditor-changedesc-list-indent</div>'
 				]
 			},
 			{

@@ -277,6 +277,13 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-set', key, this.wrapText( 'ins', change.to ) );
 	} else if ( change.to === undefined ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unset', key, this.wrapText( 'del', change.from ) );
+	} else if ( key === 'listItemDepth' ) {
+		// listItemDepth is a special key used on nodes which have isDiffedAsList set
+		if ( change.to > change.from ) {
+			return ve.msg( 'visualeditor-changedesc-list-indent' );
+		} else if ( change.to < change.from ) {
+			return ve.msg( 'visualeditor-changedesc-list-outdent' );
+		}
 	} else {
 		// Use String() for string casting as values could be null
 		var diff = this.getAttributeDiff( String( change.from ), String( change.to ) );
