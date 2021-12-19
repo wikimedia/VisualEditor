@@ -635,13 +635,16 @@ ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) 
  * @param {Array} diffData
  * @param {number} insertIndex
  * @param {ve.dm.ListNode} listNode
- * @param {Array} listNodeData
+ * @param {Array} listNodeData List node opening
  * @param {Array} listItemData
  * @param {number} depthChange
  * @return {number}
  */
 ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, listNode, listNodeData, listItemData, depthChange ) {
 	if ( depthChange === 0 ) {
+
+		// List node itself may have been modified
+		ve.batchSplice( diffData, 0, 1, listNodeData );
 
 		// Current list item belongs to the same list as the previous list item
 		ve.batchSplice( diffData, insertIndex, 0, listItemData );
@@ -693,12 +696,12 @@ ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, l
 /**
  * Get the linear data for the diff of a list-like node that has been changed.
  *
- * @param {ve.dm.Node} newNode Corresponding node from the new document
+ * @param {ve.dm.Node} newListNode Corresponding node from the new document
  * @param {Object} diff Object describing the diff
  * @return {Array} Linear data for the diff
  */
-ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) {
-	var nodeRange = newNode.getOuterRange(),
+ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, diff ) {
+	var nodeRange = newListNode.getOuterRange(),
 		diffData = this.newDoc.getData( nodeRange ),
 		oldNodes = diff.oldList,
 		newNodes = diff.newList,
@@ -710,6 +713,8 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 	// These will be adjusted for each item
 	var insertIndex = 1;
 	var depth = 0;
+	var lastListNode = null;
+	var listNodeData;
 
 	// Splice in each item with its diff annotations
 	for ( var i = 0, ilen = diff.length; i < ilen; i++ ) {
@@ -750,7 +755,13 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 
 		// Get linear data. Also get list node, since may need ancestors
 		var listNode = nodes.metadata[ item.indexOrder ].listNode;
-		var listNodeData = [ doc.getData( listNode.getOuterRange() )[ 0 ] ];
+		// Only re-fetch list node data once per list
+		if ( listNode !== lastListNode ) {
+			listNodeData = [ doc.getData( listNode.getOuterRange() )[ 0 ] ];
+			lastListNode = listNode;
+		}
+
+		// Get linear data of list item
 		var listItemData = doc.getData( nodes.metadata[ item.indexOrder ].listItem.getOuterRange() );
 		ve.batchSplice( listItemData, 1, listItemData.length - 2, contentData );
 
@@ -776,7 +787,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 
 		// Record the index to splice in the next list item data into the diffData
 		insertIndex = this.appendListItem(
-			diffData, insertIndex, listNode, listNodeData, listItemData, depthChange
+			diffData, insertIndex, newListNode, listNodeData, listItemData, depthChange
 		);
 		depth = newDepth;
 	}

@@ -852,6 +852,26 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'List item deindentation from numbered list to bullet',
+				oldDoc: '<ul><li><p>Foo</p><ol><li><p>Bar</p></li><li><p>Baz</p></li></ol></li></ul>',
+				newDoc: '<ul><li><p>Foo</p><ol><li><p>Bar</p></li></ol></li><li><p>Baz</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p data-diff-action="none">Foo</p>' +
+								'<ol>' +
+									'<li><p data-diff-action="none">Bar</p></li>' +
+								'</ol>' +
+							'</li>' +
+							'<li data-diff-id="0"><p data-diff-action="structural-change">Baz</p></li>' +
+						'</ul>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-list-outdent</div>',
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-number-tooltip</del>,<ins>visualeditor-listbutton-bullet-tooltip</ins></div>'
+				]
+			},
+			{
 				msg: 'Full list replacement',
 				oldDoc: '<ul><li><p>one</p></li><li><p>two</p></li><li><p>three</p></li></ul>',
 				newDoc: '<ul><li><p>four</p></li><li><p>five</p></li><li><p>six</p></li></ul>',
@@ -876,13 +896,30 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<ul><li>Foo</li><li>Bar</li><li>Baz</li></ul>',
 				newDoc: '<ol><li>Foo</li><li>Bar</li><li>Baz</li></ol>',
 				expected:
-					// TODO: List items should have data-diff-id's. Also, consider only showing one message per list.
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ol><li><p data-diff-action="structural-change">Foo</p></li><li><p data-diff-action="structural-change">Bar</p></li><li><p data-diff-action="structural-change">Baz</p></li></ol>' +
+						'<ol data-diff-id="0"><li><p data-diff-action="structural-change">Foo</p></li><li><p data-diff-action="structural-change">Bar</p></li><li><p data-diff-action="structural-change">Baz</p></li></ol>' +
 					'</div>',
 				expectedDescriptions: [
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>'
+				]
+			},
+			{
+				msg: 'List node type change with indentation',
+				oldDoc: '<ul><li>Foo</li><li>Bar</li><li>Baz</li></ul>',
+				newDoc: '<ol><li>Foo<ul><li>Bar</li></ul></li><li>Baz</li></ol>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ol data-diff-id="0">' +
+							'<li><p data-diff-action="structural-change">Foo</p>' +
+								'<ul><li data-diff-id="1"><p data-diff-action="structural-change">Bar</p></li></ul>' +
+							'</li>' +
+							'<li><p data-diff-action="structural-change">Baz</p></li>' +
+						'</ol>' +
+					'</div>',
+				expectedDescriptions: [
+					// TODO: This should show only one list node type change
 					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>',
-					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>',
+					'<div>visualeditor-changedesc-list-indent</div>',
 					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>'
 				]
 			},
@@ -953,7 +990,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
-				msg: 'Similar item added to list and indented, introducing whitespace (T187632)',
+				msg: 'Similar item added to list and indented (T187632)',
 				oldDoc:
 					'<ul>' +
 						'<li>foo</li>' +
@@ -962,14 +999,14 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc:
 					'<ul>' +
 						'<li>foo</li>' +
-						'<li>bar baz quux whee one\n' +
+						'<li>bar baz quux whee one' +
 							'<ul><li>bar baz quux whee won</li></ul>' +
 						'</li>' +
 					'</ul>',
 				expected: '<div class="ve-ui-diffElement-doc-child-change">' +
 					'<ul>' +
 						'<li><p data-diff-action="none">foo</p></li>' +
-						'<li><p data-diff-action="none">bar baz quux whee one</p>\n' +
+						'<li><p data-diff-action="none">bar baz quux whee one</p>' +
 							'<ul><li><p data-diff-action="insert">bar baz quux whee won</p></li></ul>' +
 						'</li>' +
 					'</ul>' +
