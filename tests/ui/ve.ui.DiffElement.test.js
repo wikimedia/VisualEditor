@@ -815,8 +815,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<li>' +
 								'<p data-diff-action="none">foo</p>' +
 								'<ul>' +
-									'<li>' +
-										'<p data-diff-action="structural-change" data-diff-id="0">bar</p>' +
+									'<li data-diff-id="0">' +
+										'<p data-diff-action="structural-change">bar</p>' +
 									'</li>' +
 								'</ul>' +
 							'</li>' +
@@ -839,8 +839,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<li>' +
 								'<p data-diff-action="none">foo</p>' +
 							'</li>' +
-							'<li>' +
-								'<p data-diff-action="structural-change" data-diff-id="0">bar</p>' +
+							'<li data-diff-id="0">' +
+								'<p data-diff-action="structural-change">bar</p>' +
 							'</li>' +
 							'<li>' +
 								'<p data-diff-action="none">baz</p>' +
@@ -870,6 +870,61 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<li><p>six</p></li>' +
 						'</ul>' +
 					'</div>'
+			},
+			{
+				msg: 'List node type change',
+				oldDoc: '<ul><li>Foo</li><li>Bar</li><li>Baz</li></ul>',
+				newDoc: '<ol><li>Foo</li><li>Bar</li><li>Baz</li></ol>',
+				expected:
+					// TODO: List items should have data-diff-id's. Also, consider only showing one message per list.
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ol><li><p data-diff-action="structural-change">Foo</p></li><li><p data-diff-action="structural-change">Bar</p></li><li><p data-diff-action="structural-change">Baz</p></li></ol>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>',
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>',
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>'
+				]
+			},
+			{
+				msg: 'List item node type change',
+				oldDoc: '<dl><dt>Foo</dt><dd>Bar</dd></dl>',
+				newDoc: '<dl><dd>Foo</dd><dd>Bar</dd></dl>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<dl>' +
+							'<dd data-diff-id="0"><p data-diff-action="structural-change">Foo</p></dd>' +
+							'<dd><p data-diff-action="none">Bar</p></dd>' +
+						'</dl>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-changed,style,<del>term</del>,<ins>definition</ins></div>'
+				]
+			},
+			{
+				msg: 'List item indentation with child type change',
+				oldDoc: '<ul><li><p>foo</p></li><li><h2>bar</h2></li><li><p>baz</p></li></ul>',
+				newDoc: '<ul><li><p>foo</p><ul><li><h3>bar</h3></li></ul></li><li><p>baz</p></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li>' +
+								'<p data-diff-action="none">foo</p>' +
+								'<ul>' +
+									'<li data-diff-id="1">' +
+										'<h3 data-diff-action="structural-change" data-diff-id="0">bar</h3>' +
+									'</li>' +
+								'</ul>' +
+							'</li>' +
+							'<li>' +
+								'<p data-diff-action="none">baz</p>' +
+							'</li>' +
+						'</ul>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-formatdropdown-format-heading2</del>,<ins>visualeditor-formatdropdown-format-heading3</ins></div>',
+					'<div>visualeditor-changedesc-changed,listItemDepth,<del>0</del>,<ins>1</ins></div>'
+				]
 			},
 			{
 				msg: 'Inline widget with same type but not diff comparable is marked as a remove/insert',
@@ -961,6 +1016,29 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<p>foo bar baz<meta foo="a"></p>',
 				newDoc: '<p>foo bar baz</p>',
 				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+			},
+			{
+				msg: 'Header attribute change in list',
+				oldDoc: '<ul><li><h2>Foo</h2></li></ul>',
+				newDoc: '<ul><li><h3>Foo</h3></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul><li><h3 data-diff-action="structural-change" data-diff-id="0">Foo</h3></li></ul>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-formatdropdown-format-heading2</del>,<ins>visualeditor-formatdropdown-format-heading3</ins></div>'
+				]
+			},
+			{
+				msg: 'Table change in list',
+				oldDoc: '<ul><li><table><tr><td>Foo</td><td>Bar</td><td>Baz1</td></tr></table></li></ul>',
+				newDoc: '<ul><li><table><tr><td>Foo</td><td>Bar</td><td>Baz2</td></tr></table></li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul><li>' +
+							'<table><tbody><tr><td>Foo</td><td>Bar</td><td><del data-diff-action="remove">Baz1</del><ins data-diff-action="insert">Baz2</ins></td></tr></tbody></table>' +
+						'</li></ul>' +
+					'</div>'
 			}
 		];
 

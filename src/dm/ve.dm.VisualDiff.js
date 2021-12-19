@@ -499,8 +499,9 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 
 	// Do metadata diff of all aligned nodes
 	for ( i in listDiff.oldToNew ) {
-		var jTemp = listDiff.oldToNew[ i ];
-		var j = typeof jTemp === 'number' ? jTemp : jTemp.node;
+		var newItem = listDiff.oldToNew[ i ];
+		var isNewItemIndex = typeof newItem === 'number';
+		var j = isNewItemIndex ? newItem : newItem.node;
 
 		var oldMetadata = oldFlatList.metadata[ i ];
 		var newMetadata = newFlatList.metadata[ j ];
@@ -516,7 +517,8 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 		if ( listNodeAttributeChange || listItemAttributeChange || depthChange ) {
 
 			// Some attributes have changed for this item
-			var attributeChange = {};
+			// This item may already have attribute changes (e.g. heading attribute change inlist)
+			var attributeChange = ( !isNewItemIndex && newItem.diff.attributeChange ) || {};
 			if ( listNodeAttributeChange ) {
 				attributeChange.listNodeAttributeChange = listNodeAttributeChange;
 			}
@@ -527,7 +529,7 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 				attributeChange.depthChange = depthChange;
 			}
 
-			if ( typeof listDiff.oldToNew[ i ] === 'number' ) {
+			if ( isNewItemIndex ) {
 				listDiff.oldToNew[ i ] = {
 					node: j,
 					diff: {

@@ -701,7 +701,8 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 	var nodeRange = newNode.getOuterRange(),
 		diffData = this.newDoc.getData( nodeRange ),
 		oldNodes = diff.oldList,
-		newNodes = diff.newList;
+		newNodes = diff.newList,
+		diffElement = this;
 
 	// Keep only the root list node
 	ve.batchSplice( diffData, 1, diffData.length - 2, [] );
@@ -736,10 +737,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 
 			// Item is changed. Get the linear data for the diff
 			contentData = this.getChangedNodeData(
-				{
-					linearDiff: item.diff.linearDiff,
-					attributeChange: item.diff.attributeChange.depthChange
-				},
+				item.diff,
 				diff.moves[ i ] || null,
 				newNodes.nodes[ item.indexOrder ]
 			);
@@ -758,29 +756,22 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newNode, diff ) 
 
 		// Check for attribute changes
 		if ( item.diff.attributeChange ) {
-			var change;
-			if ( item.diff.attributeChange.listNodeAttributeChange ) {
-				change = this.compareNodeAttributes(
-					listNodeData,
-					0,
-					this.newDoc,
-					item.diff.attributeChange.listNodeAttributeChange
-				);
-				if ( change ) {
-					this.descriptionItemsStack.push( change );
+			// eslint-disable-next-line no-loop-func
+			[ 'depthChange', 'listNodeAttributeChange', 'listItemAttributeChange' ].forEach( function ( listChangeType ) {
+				if ( item.diff.attributeChange[ listChangeType ] ) {
+					var change = diffElement.compareNodeAttributes(
+						listChangeType === 'listNodeAttributeChange' ?
+							listNodeData :
+							listItemData,
+						0,
+						diffElement.newDoc,
+						item.diff.attributeChange[ listChangeType ]
+					);
+					if ( change ) {
+						diffElement.descriptionItemsStack.push( change );
+					}
 				}
-			}
-			if ( item.diff.attributeChange.listItemAttributeChange ) {
-				change = this.compareNodeAttributes(
-					listItemData,
-					0,
-					this.newDoc,
-					item.diff.attributeChange.listItemAttributeChange
-				);
-				if ( change ) {
-					this.descriptionItemsStack.push( change );
-				}
-			}
+			} );
 		}
 
 		// Record the index to splice in the next list item data into the diffData
