@@ -9,28 +9,27 @@ QUnit.module( 've.ui.Trigger' );
 /* Tests */
 
 QUnit.test( 'constructor', function ( assert ) {
-	var i, len, tests;
 	function event( options ) {
 		return $.Event( 'keydown', options );
 	}
 
-	tests = [
+	var cases = [
 		{
 			trigger: 'ctrl+b',
 			event: event( { ctrlKey: true, which: 66 } )
 		}
 	];
 
-	for ( i = 0, len = tests.length; i < len; i++ ) {
+	cases.forEach( function ( caseItem ) {
 		assert.strictEqual(
-			new ve.ui.Trigger( tests[ i ].trigger ).toString(),
-			tests[ i ].trigger,
+			new ve.ui.Trigger( caseItem.trigger ).toString(),
+			caseItem.trigger,
 			'trigger is parsed correctly'
 		);
 		assert.strictEqual(
-			new ve.ui.Trigger( tests[ i ].event ).toString(),
-			tests[ i ].trigger,
+			new ve.ui.Trigger( caseItem.event ).toString(),
+			caseItem.trigger,
 			'event is parsed correctly'
 		);
-	}
+	} );
 } );

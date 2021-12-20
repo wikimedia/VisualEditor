@@ -29,7 +29,7 @@ ve.dm.example = {};
  * @throws {Error} Example data passed to preprocessAnnotations by reference
  */
 ve.dm.example.preprocessAnnotations = function ( data, store ) {
-	var i, key;
+	var i;
 
 	// Sanity check to make sure ve.dm.example data has not been passed in
 	// by reference. Always use ve#copy.
@@ -49,7 +49,7 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
 
 	store = store || new ve.dm.HashValueStore();
 	for ( i = 0; i < data.length; i++ ) {
-		key = data[ i ].annotations ? 'annotations' : 1;
+		var key = data[ i ].annotations ? 'annotations' : 1;
 		// Check for shorthand annotation objects in array
 		if ( Array.isArray( data[ i ][ key ] ) && data[ i ][ key ][ 0 ].type ) {
 			data[ i ][ key ].forEach( preprocessOriginalDomElements );
@@ -72,14 +72,12 @@ ve.dm.example.preprocessAnnotations = function ( data, store ) {
  * @return {Array} The given `data` parameter.
  */
 ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElements ) {
-	var i, j, key;
-
-	for ( i = 0; i < data.length; i++ ) {
-		key = data[ i ].annotations ? 'annotations' : 1;
+	for ( var i = 0; i < data.length; i++ ) {
+		var key = data[ i ].annotations ? 'annotations' : 1;
 		if ( Array.isArray( data[ i ][ key ] ) ) {
 			data[ i ] = ve.extendObject( Array.isArray( data[ i ] ) ? [] : {}, data[ i ] );
 			data[ i ][ key ] = new ve.dm.AnnotationSet( store, data[ i ][ key ] ).get();
-			for ( j = 0; j < data[ i ][ key ].length; j++ ) {
+			for ( var j = 0; j < data[ i ][ key ].length; j++ ) {
 				data[ i ][ key ][ j ] = data[ i ][ key ][ j ].element;
 				if ( !preserveDomElements && data[ i ][ key ][ j ].originalDomElementsHash !== undefined ) {
 					// Make a shallow clone and remove originalDomElements from it
@@ -99,8 +97,7 @@ ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElemen
  * @return {Array} data parameter
  */
 ve.dm.example.removeOriginalDomElements = function ( data ) {
-	var i, len;
-	for ( i = 0, len = data.length; i < len; i++ ) {
+	for ( var i = 0, len = data.length; i < len; i++ ) {
 		if ( data[ i ].originalDomElementsHash !== undefined ) {
 			if ( Object.isFrozen( data[ i ] ) ) {
 				// Unfreeze, this data is just for testing
@@ -134,8 +131,7 @@ ve.dm.example.createAnnotation = function ( annotation, store ) {
  * @return {ve.dm.AnnotationSet}
  */
 ve.dm.example.createAnnotationSet = function ( store, annotations ) {
-	var i;
-	for ( i = 0; i < annotations.length; i++ ) {
+	for ( var i = 0; i < annotations.length; i++ ) {
 		annotations[ i ] = ve.dm.example.createAnnotation( annotations[ i ], store );
 	}
 	return new ve.dm.AnnotationSet( store, store.hashAll( annotations ) );
@@ -224,14 +220,13 @@ ve.dm.example.createExampleDocumentFromObject = function ( name, store, object )
 };
 
 ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
-	var doc, i;
 	store = store || new ve.dm.HashValueStore();
-	doc = new ve.dm.Document(
+	var doc = new ve.dm.Document(
 		ve.dm.example.preprocessAnnotations( ve.copy( data ), store )
 	);
 	// HACK internalList isn't populated when creating a document from data
 	if ( data.internalItems ) {
-		for ( i = 0; i < data.internalItems.length; i++ ) {
+		for ( var i = 0; i < data.internalItems.length; i++ ) {
 			doc.internalList.queueItemHtml(
 				data.internalItems[ i ].group,
 				data.internalItems[ i ].key,
@@ -254,18 +249,16 @@ ve.dm.example.createExampleDocumentFromData = function ( data, store ) {
  * @return {ve.Node} Node at given path
  */
 ve.dm.example.lookupNode = function ( root ) {
-	var i,
-		node = root;
-	for ( i = 1; i < arguments.length; i++ ) {
+	var node = root;
+	for ( var i = 1; i < arguments.length; i++ ) {
 		node = node.children[ arguments[ i ] ];
 	}
 	return node;
 };
 
 ve.dm.example.createDomElement = function ( type, attributes ) {
-	var key,
-		element = document.createElement( type );
-	for ( key in attributes ) {
+	var element = document.createElement( type );
+	for ( var key in attributes ) {
 		element.setAttribute( key, attributes[ key ] );
 	}
 	return element;

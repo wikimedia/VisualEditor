@@ -9,9 +9,7 @@ QUnit.module( 've.dm.TransactionProcessor' );
 /* Tests */
 
 QUnit.test( 'commit', function ( assert ) {
-	var i, j, originalData, originalDoc, node,
-		msg, testDoc, txBuilder, tx, expectedData, expectedDoc,
-		store = ve.dm.example.createExampleDocument().getStore(),
+	var store = ve.dm.example.createExampleDocument().getStore(),
 		cases = {
 			'no operations': {
 				calls: [],
@@ -531,58 +529,60 @@ QUnit.test( 'commit', function ( assert ) {
 		};
 
 	// Run tests
-	for ( msg in cases ) {
+	for ( var msg in cases ) {
+		var caseItem = cases[ msg ];
 		// Generate original document
-		originalData = cases[ msg ].data || ve.dm.example.data;
-		originalDoc = new ve.dm.Document(
+		var originalData = caseItem.data || ve.dm.example.data;
+		var originalDoc = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
 		originalDoc.buildNodeTree();
-		testDoc = new ve.dm.Document(
+		var testDoc = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
 		testDoc.buildNodeTree();
 
-		txBuilder = new ve.dm.TransactionBuilder();
-		tx = null;
-		for ( i = 0; i < cases[ msg ].calls.length; i++ ) {
+		var txBuilder = new ve.dm.TransactionBuilder();
+		var tx = null;
+		for ( var i = 0; i < caseItem.calls.length; i++ ) {
 			// Some calls need the document as its first argument
-			if ( /^(pushReplacement$|new)/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
-				cases[ msg ].calls[ i ].splice( 1, 0, testDoc );
+			if ( /^(pushReplacement$|new)/.test( caseItem.calls[ i ][ 0 ] ) ) {
+				caseItem.calls[ i ].splice( 1, 0, testDoc );
 			}
 			// Special case static methods of TransactionBuilder
-			if ( /^new/.test( cases[ msg ].calls[ i ][ 0 ] ) ) {
-				tx = ve.dm.TransactionBuilder.static[ cases[ msg ].calls[ i ][ 0 ] ].apply( null, cases[ msg ].calls[ i ].slice( 1 ) );
+			if ( /^new/.test( caseItem.calls[ i ][ 0 ] ) ) {
+				tx = ve.dm.TransactionBuilder.static[ caseItem.calls[ i ][ 0 ] ].apply( null, caseItem.calls[ i ].slice( 1 ) );
 				break;
 			}
-			txBuilder[ cases[ msg ].calls[ i ][ 0 ] ].apply( txBuilder, cases[ msg ].calls[ i ].slice( 1 ) );
+			txBuilder[ caseItem.calls[ i ][ 0 ] ].apply( txBuilder, caseItem.calls[ i ].slice( 1 ) );
 		}
 		if ( tx === null ) {
 			tx = txBuilder.getTransaction();
 		}
 
-		if ( 'expected' in cases[ msg ] ) {
+		if ( 'expected' in caseItem ) {
 			// Generate expected document
-			expectedData = ve.copy( originalData );
-			cases[ msg ].expected( expectedData );
-			expectedDoc = new ve.dm.Document(
+			var expectedData = ve.copy( originalData );
+			caseItem.expected( expectedData );
+			var expectedDoc = new ve.dm.Document(
 				ve.dm.example.preprocessAnnotations( expectedData, store )
 			);
 			expectedDoc.buildNodeTree();
 
-			if ( 'events' in cases[ msg ] ) {
+			if ( 'events' in caseItem ) {
 				// Set up event handlers
-				for ( i = 0; i < cases[ msg ].events.length; i++ ) {
-					node = testDoc.getDocumentNode();
-					for ( j = 1; j < cases[ msg ].events[ i ].length; j++ ) {
-						node = node.getChildren()[ cases[ msg ].events[ i ][ j ] ];
+				// eslint-disable-next-line no-loop-func
+				caseItem.events.forEach( function ( event ) {
+					var node = testDoc.getDocumentNode();
+					for ( var j = 1; j < event.length; j++ ) {
+						node = node.getChildren()[ event[ j ] ];
 					}
-					node.on( cases[ msg ].events[ i ][ 0 ], ( function ( obj ) {
+					node.on( event[ 0 ], ( function ( obj ) {
 						return function () {
 							obj.fired = ( obj.fired || 0 ) + 1;
 						};
-					}( cases[ msg ].events[ i ] ) ) );
-				}
+					}( event ) ) );
+				} );
 			}
 
 			// Commit
@@ -594,15 +594,16 @@ QUnit.test( 'commit', function ( assert ) {
 				expectedDoc.getDocumentNode(),
 				'commit (tree): ' + msg
 			);
-			if ( 'events' in cases[ msg ] ) {
-				for ( i = 0; i < cases[ msg ].events.length; i++ ) {
+			if ( 'events' in caseItem ) {
+				// eslint-disable-next-line no-loop-func
+				caseItem.events.forEach( function ( event ) {
 					assert.strictEqual(
-						cases[ msg ].events[ i ].fired,
+						event.fired,
 						1,
-						'event ' + cases[ msg ].events[ i ][ 0 ] + ' on ' +
-							cases[ msg ].events[ i ].slice( 1 ).join( ',' ) + ': ' + msg
+						'event ' + event[ 0 ] + ' on ' +
+							event.slice( 1 ).join( ',' ) + ': ' + msg
 					);
-				}
+				} );
 			}
 			// Rollback
 			testDoc.commit( tx.reversed() );
@@ -612,13 +613,13 @@ QUnit.test( 'commit', function ( assert ) {
 				originalDoc.getDocumentNode(),
 				'rollback (tree): ' + msg
 			);
-		} else if ( 'exception' in cases[ msg ] ) {
+		} else if ( 'exception' in caseItem ) {
 			assert.throws(
 				// eslint-disable-next-line no-loop-func
 				function () {
 					testDoc.commit( tx );
 				},
-				cases[ msg ].exception,
+				caseItem.exception,
 				'exception thrown: ' + msg
 			);
 			assert.equalLinearDataWithDom( testDoc.getStore(), testDoc.getFullData(), originalDoc.getFullData(), 'data unmodified: ' + msg );
@@ -633,16 +634,15 @@ QUnit.test( 'commit', function ( assert ) {
 
 // TODO: Fix the code so undoing unbold roundtrips properly, then fix this test to reflect that
 QUnit.test( 'undo clear annotation', function ( assert ) {
-	var doc, tx,
-		origData = [
-			{ type: 'paragraph' },
-			[ 'x', [ ve.dm.example.boldHash, ve.dm.example.italicHash ] ],
-			{ type: '/paragraph' }
-		];
-	doc = ve.dm.example.createExampleDocumentFromData( origData );
+	var origData = [
+		{ type: 'paragraph' },
+		[ 'x', [ ve.dm.example.boldHash, ve.dm.example.italicHash ] ],
+		{ type: '/paragraph' }
+	];
+	var doc = ve.dm.example.createExampleDocumentFromData( origData );
 	doc.store.hash( ve.dm.example.italic );
 	doc.store.hash( ve.dm.example.bold );
-	tx = ve.dm.TransactionBuilder.static.newFromAnnotation(
+	var tx = ve.dm.TransactionBuilder.static.newFromAnnotation(
 		doc,
 		new ve.Range( 1, 2 ),
 		'clear',

@@ -9,8 +9,7 @@ QUnit.module( 've.dm.TableSelection' );
 /* Tests */
 
 QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, getTableNode)', function ( assert ) {
-	var i, selection,
-		doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
+	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableNode = doc.getBranchNodeFromOffset( 1 ),
 		tableRange = tableNode.getOuterRange(),
 		cases = [
@@ -88,27 +87,26 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 			}
 		];
 
-	for ( i in cases ) {
-		selection = cases[ i ].selection;
+	cases.forEach( function ( caseItem ) {
+		var selection = caseItem.selection;
 		assert.strictEqual( selection.getTableNode( doc ), tableNode, 'getTableNode' );
 		assert.strictEqual( selection.getName(), 'table', 'getName' );
-		assert.deepEqual( selection.getRanges( doc ), cases[ i ].ranges, cases[ i ].msg + ': getRanges' );
-		assert.deepEqual( selection.getOuterRanges( doc ), cases[ i ].outerRanges, cases[ i ].msg + ': getOuterRanges' );
-		assert.strictEqual( selection.fromCol, cases[ i ].fromCol, cases[ i ].msg + ': fromCol set' );
-		assert.strictEqual( selection.fromRow, cases[ i ].fromRow, cases[ i ].msg + ': fromRow set' );
-		assert.strictEqual( selection.toCol, cases[ i ].toCol, cases[ i ].msg + ': toCol set' );
-		assert.strictEqual( selection.toRow, cases[ i ].toRow, cases[ i ].msg + ': toRow set' );
-		assert.strictEqual( selection.startCol, cases[ i ].startCol, cases[ i ].msg + ': startCol set' );
-		assert.strictEqual( selection.startRow, cases[ i ].startRow, cases[ i ].msg + ': startRow set' );
-		assert.strictEqual( selection.endCol, cases[ i ].endCol, cases[ i ].msg + ': endCol set' );
-		assert.strictEqual( selection.endRow, cases[ i ].endRow, cases[ i ].msg + ': endRow set' );
-	}
+		assert.deepEqual( selection.getRanges( doc ), caseItem.ranges, caseItem.msg + ': getRanges' );
+		assert.deepEqual( selection.getOuterRanges( doc ), caseItem.outerRanges, caseItem.msg + ': getOuterRanges' );
+		assert.strictEqual( selection.fromCol, caseItem.fromCol, caseItem.msg + ': fromCol set' );
+		assert.strictEqual( selection.fromRow, caseItem.fromRow, caseItem.msg + ': fromRow set' );
+		assert.strictEqual( selection.toCol, caseItem.toCol, caseItem.msg + ': toCol set' );
+		assert.strictEqual( selection.toRow, caseItem.toRow, caseItem.msg + ': toRow set' );
+		assert.strictEqual( selection.startCol, caseItem.startCol, caseItem.msg + ': startCol set' );
+		assert.strictEqual( selection.startRow, caseItem.startRow, caseItem.msg + ': startRow set' );
+		assert.strictEqual( selection.endCol, caseItem.endCol, caseItem.msg + ': endCol set' );
+		assert.strictEqual( selection.endRow, caseItem.endRow, caseItem.msg + ': endRow set' );
+	} );
 
 } );
 
 QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', function ( assert ) {
-	var matrixCell,
-		doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
+	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
 		selection = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 ),
 		startSelection = new ve.dm.TableSelection( tableRange, 0, 1 ),
@@ -136,7 +134,7 @@ QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingle
 	assert.strictEqual( largeSelection.isFullCol( doc ), true, 'isFullCol' );
 	assert.strictEqual( largeSelection.isFullRow( doc ), false, 'isFullRow' );
 
-	matrixCell = startSelection.getMatrixCells( doc )[ 0 ];
+	var matrixCell = startSelection.getMatrixCells( doc )[ 0 ];
 	assert.strictEqual( largeSelection.containsCell( matrixCell ), true, '[1,3;3,5] contains [0,1]' );
 	assert.strictEqual( endSelection.containsCell( matrixCell ), false, '[2,2] doesn\'t contain [0,1]' );
 	assert.strictEqual( otherTableSelection.containsCell( matrixCell ), false, 'Selection in other table doesn\'t contain cell' );

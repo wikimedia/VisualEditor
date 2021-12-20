@@ -9,10 +9,7 @@ QUnit.module( 've.ce.TextNode' );
 /* Tests */
 
 QUnit.test( 'getAnnotatedHtml', function ( assert ) {
-	var i, len, cases, doc,
-		store = new ve.dm.HashValueStore();
-
-	cases = [
+	var cases = [
 		{
 			data: [
 				{ type: 'paragraph' },
@@ -98,12 +95,13 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 		}
 	];
 
-	for ( i = 0, len = cases.length; i < len; i++ ) {
-		doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( cases[ i ].data, store ) );
-		ve.dm.example.preprocessAnnotations( cases[ i ].html, store );
+	var store = new ve.dm.HashValueStore();
+	cases.forEach( function ( caseItem ) {
+		var doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
+		ve.dm.example.preprocessAnnotations( caseItem.html, store );
 		assert.deepEqual(
 			( new ve.ce.TextNode( doc.getDocumentNode().getChildren()[ 0 ].getChildren()[ 0 ] ) ).getAnnotatedHtml(),
-			cases[ i ].html
+			caseItem.html
 		);
-	}
+	} );
 } );

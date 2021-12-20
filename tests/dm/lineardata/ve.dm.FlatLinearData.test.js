@@ -9,8 +9,7 @@ QUnit.module( 've.dm.FlatLinearData' );
 /* Tests */
 
 QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) {
-	var i,
-		data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
+	var data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'paragraph' },
 			'a', [ 'b', [ 0 ] ],
 			{ type: '/paragraph' }
@@ -19,7 +18,7 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) 
 		isOpen = [ 0 ],
 		isClose = [ 3 ];
 
-	for ( i = 0; i < data.getLength(); i++ ) {
+	for ( var i = 0; i < data.getLength(); i++ ) {
 		assert.strictEqual( data.getType( i ), types[ i ], 'Type at offset ' + i );
 		assert.strictEqual( data.isOpenElementData( i ), isOpen.indexOf( i ) !== -1, 'isOpen ' + i );
 		assert.strictEqual( data.isCloseElementData( i ), isClose.indexOf( i ) !== -1, 'isClose ' + i );
@@ -27,8 +26,7 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', function ( assert ) 
 } );
 
 QUnit.test( 'isElementData', function ( assert ) {
-	var i,
-		data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
+	var data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'heading' },
 			'a',
 			{ type: 'inlineImage' },
@@ -72,40 +70,39 @@ QUnit.test( 'isElementData', function ( assert ) {
 			{ msg: 'right of document', expected: false }
 		];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		assert.strictEqual( data.isElementData( i ), cases[ i ].expected, cases[ i ].msg );
-	}
+	cases.forEach( function ( caseItem, i ) {
+		assert.strictEqual( data.isElementData( i ), caseItem.expected, caseItem.msg );
+	} );
 } );
 
 QUnit.test( 'containsElementData', function ( assert ) {
-	var i, data,
-		cases = [
-			{
-				msg: 'simple paragraph',
-				data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
-				expected: true
-			},
-			{
-				msg: 'plain text',
-				data: [ 'a', 'b', 'c' ],
-				expected: false
-			},
-			{
-				msg: 'annotated text',
-				data: [ [ 'a', { '{"type:"bold"}': { type: 'bold' } } ] ],
-				expected: false
-			},
-			{
-				msg: 'non-text leaf',
-				data: [ 'a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c' ],
-				expected: true
-			}
-		];
+	var cases = [
+		{
+			msg: 'simple paragraph',
+			data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
+			expected: true
+		},
+		{
+			msg: 'plain text',
+			data: [ 'a', 'b', 'c' ],
+			expected: false
+		},
+		{
+			msg: 'annotated text',
+			data: [ [ 'a', { '{"type:"bold"}': { type: 'bold' } } ] ],
+			expected: false
+		},
+		{
+			msg: 'non-text leaf',
+			data: [ 'a', { type: 'inlineImage' }, { type: '/inlineImage' }, 'c' ],
+			expected: true
+		}
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), cases[ i ].data );
+	cases.forEach( function ( caseItem ) {
+		var data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), caseItem.data );
 		assert.strictEqual(
-			data.containsElementData(), cases[ i ].expected, cases[ i ].msg
+			data.containsElementData(), caseItem.expected, caseItem.msg
 		);
-	}
+	} );
 } );

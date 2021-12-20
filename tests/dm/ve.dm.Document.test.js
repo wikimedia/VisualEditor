@@ -9,8 +9,7 @@ QUnit.module( 've.dm.Document' );
 /* Tests */
 
 QUnit.test( 'constructor', function ( assert ) {
-	var data, htmlDoc,
-		doc = ve.dm.example.createExampleDocument();
+	var doc = ve.dm.example.createExampleDocument();
 
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
@@ -73,11 +72,11 @@ QUnit.test( 'constructor', function ( assert ) {
 	assert.strictEqual( doc.getMetadata().join( ',' ), ',,,', 'Empty metadata array' );
 	assert.strictEqual( doc.getHtmlDocument().body.innerHTML, '', 'Empty HTML document is created' );
 
-	htmlDoc = ve.createDocumentFromHtml( 'abcd' );
+	var htmlDoc = ve.createDocumentFromHtml( 'abcd' );
 	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ], htmlDoc );
 	assert.strictEqual( doc.getHtmlDocument(), htmlDoc, 'Provided HTML document is used' );
 
-	data = new ve.dm.ElementLinearData(
+	var data = new ve.dm.ElementLinearData(
 		new ve.dm.HashValueStore(),
 		[ { type: 'paragraph' }, { type: '/paragraph' } ]
 	);
@@ -91,9 +90,7 @@ QUnit.test( 'constructor', function ( assert ) {
 } );
 
 QUnit.test( 'newBlankDocument', function ( assert ) {
-	var doc;
-
-	doc = ve.dm.Document.static.newBlankDocument();
+	var doc = ve.dm.Document.static.newBlankDocument();
 
 	assert.true( doc instanceof ve.dm.Document, 'newBlankDocument creates a document' );
 	assert.strictEqual( doc.data.data[ 0 ].internal.generated, 'empty', 'Creates an "empty" paragraph with no args' );
@@ -502,14 +499,13 @@ QUnit.test( 'getBranchNodeFromOffset', function ( assert ) {
 } );
 
 QUnit.test( 'hasSlugAtOffset', function ( assert ) {
-	var i, l,
-		expected = {
+	var expected = {
 			0: true,
 			10: true
 		},
 		doc = ve.dm.example.createExampleDocument( 'alienData' );
 
-	for ( i = 0, l = doc.data.getLength(); i <= l; i++ ) {
+	for ( var i = 0, l = doc.data.getLength(); i <= l; i++ ) {
 		assert.strictEqual( doc.hasSlugAtOffset( i ), !!expected[ i ], 'hasSlugAtOffset ' + i + ' = ' + !!expected[ i ] );
 	}
 
@@ -545,8 +541,7 @@ QUnit.test( 'getOuterLength', function ( assert ) {
 } );
 
 QUnit.test( 'rebuildNodes', function ( assert ) {
-	var tree,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		documentNode = doc.getDocumentNode();
 	// Rebuild table without changes
 	doc.rebuildNodes( documentNode, 1, 1, 5, 32 );
@@ -557,7 +552,7 @@ QUnit.test( 'rebuildNodes', function ( assert ) {
 	);
 
 	// XXX: Create a new document node tree from the old one
-	tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
+	var tree = new ve.dm.DocumentNode( ve.dm.example.tree.getChildren() );
 	// Replace table with paragraph
 	doc.data.batchSplice( 5, 32, [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] );
 	tree.splice( 1, 1, new ve.dm.ParagraphNode(
@@ -903,8 +898,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 	];
 
 	cases.forEach( function ( caseItem ) {
-		var slice,
-			doc = ve.dm.example.createExampleDocument( caseItem.doc ),
+		var doc = ve.dm.example.createExampleDocument( caseItem.doc ),
 			expectedData = ve.dm.example.preprocessAnnotations( caseItem.expected.slice(), doc.getStore() ).getData(),
 			range = new ve.Range( 0, caseItem.expected.length );
 
@@ -912,7 +906,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		] );
-		slice = doc.shallowCloneFromRange( caseItem.range );
+		var slice = doc.shallowCloneFromRange( caseItem.range );
 		assert.equalLinearDataWithDom(
 			doc.getStore(),
 			slice.getData(),
@@ -1046,8 +1040,7 @@ QUnit.test( 'Selection equality', function ( assert ) {
 } );
 
 QUnit.test( 'findText (plain text)', function ( assert ) {
-	var ranges,
-		supportsIntl = ve.supportsIntl,
+	var supportsIntl = ve.supportsIntl,
 		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
 			// 0
 			'<p>Foo bar fooq.</p>' +
@@ -1296,7 +1289,7 @@ QUnit.test( 'findText (plain text)', function ( assert ) {
 
 	cases.forEach( function ( caseItem ) {
 		doc.lang = caseItem.lang || 'en';
-		ranges = doc.findText( caseItem.query, caseItem.options );
+		var ranges = doc.findText( caseItem.query, caseItem.options );
 		assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
 		if ( !caseItem.options.diacriticInsensitiveString ) {
 			ve.supportsIntl = false;

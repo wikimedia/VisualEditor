@@ -58,12 +58,11 @@ ve.ce.TestOffset.static = {};
  * @return {Object} Offset information
  */
 ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
-	var i, len, found, slice, offset, childNode, childNodes, consumed = 0;
 	if ( node.nodeType === node.TEXT_NODE ) {
 		// Test length >= n because one more boundaries than code units
 		if ( node.textContent.length >= n ) {
-			offset = reversed ? node.textContent.length - n : n;
-			slice = node.textContent.slice( 0, offset ) + '|' +
+			var offset = reversed ? node.textContent.length - n : n;
+			var slice = node.textContent.slice( 0, offset ) + '|' +
 				node.textContent.slice( offset );
 			return { node: node, offset: offset, slice: slice };
 		} else {
@@ -77,7 +76,7 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	// TODO consecutive text nodes will cause an extra phantom boundary.
 	// In realistic usage, this can't always be avoided, because normalize() will
 	// close an IME.
-	childNodes = Array.prototype.slice.call( node.childNodes );
+	var childNodes = Array.prototype.slice.call( node.childNodes );
 
 	if ( childNodes.length === 0 ) {
 		if ( n === 0 ) {
@@ -89,9 +88,10 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	if ( reversed ) {
 		childNodes.reverse();
 	}
-	for ( i = 0, len = childNodes.length; i < len; i++ ) {
-		childNode = node.childNodes[ i ];
-		found = ve.ce.TestOffset.static.findTextOffset( childNode, n - consumed, reversed );
+	var consumed = 0;
+	for ( var i = 0, len = childNodes.length; i < len; i++ ) {
+		var childNode = node.childNodes[ i ];
+		var found = ve.ce.TestOffset.static.findTextOffset( childNode, n - consumed, reversed );
 		if ( found.node ) {
 			return found;
 		}
@@ -182,28 +182,27 @@ ve.ce.TestRunner.prototype.sendEvent = function ( eventName, ev ) {
  * @param {string} text The new text
  */
 ve.ce.TestRunner.prototype.changeText = function ( text ) {
-	var paragraph, range, textNode;
 	// TODO: This method doesn't handle arbitrary text changes in a paragraph
 	// with non-text nodes. It just works for the main cases that are important
 	// in the existing IME tests.
 
 	// Remove all descendant text nodes
 	// This may clobber the selection, so the test had better call changeSel next.
-	paragraph = this.getParagraph();
+	var paragraph = this.getParagraph();
 	$( paragraph ).find( '*' ).addBack().contents().each( function () {
 		if ( this.nodeType === Node.TEXT_NODE ) {
 			this.parentNode.removeChild( this );
 		}
 	} );
 
-	range = document.createRange();
+	var range = document.createRange();
 	if ( text === '' ) {
 		range.setStart( paragraph, 0 );
 	} else {
 		// Insert the text at the start of the paragraph, and put the cursor after
 		// the insertion, to ensure consistency across test environments.
 		// See T176453
-		textNode = document.createTextNode( text );
+		var textNode = document.createTextNode( text );
 		paragraph.insertBefore( textNode, paragraph.firstChild );
 		range.setStart( textNode, text.length );
 	}
@@ -224,7 +223,6 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
  * @return {number} return.endOffset The endoffset within the node
  */
 ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
-	var foundStart, foundEnd, nativeRange;
 	if ( typeof start === 'number' ) {
 		start = new ve.ce.TestOffset( 'forward', start );
 	}
@@ -232,8 +230,8 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 		end = new ve.ce.TestOffset( 'forward', end );
 	}
 
-	foundStart = start.resolve( this.getParagraph() );
-	foundEnd = start.resolve( this.getParagraph() );
+	var foundStart = start.resolve( this.getParagraph() );
+	var foundEnd = start.resolve( this.getParagraph() );
 	if ( !foundStart.node ) {
 		throw new Error( 'Bad start offset: ' + start.offset );
 	}
@@ -241,7 +239,7 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 		throw new Error( 'Bad end offset: ', end.offset );
 	}
 
-	nativeRange = this.doc.createRange();
+	var nativeRange = this.doc.createRange();
 	nativeRange.setStart( foundStart.node, foundStart.offset );
 	nativeRange.setEnd( foundEnd.node, foundEnd.offset );
 	this.nativeSelection.removeAllRanges();

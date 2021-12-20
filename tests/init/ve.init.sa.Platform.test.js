@@ -10,11 +10,10 @@ QUnit.module( 've.init.sa.Platform', {
 		// by creating an sa.Platform
 		this.originalPlatform = ve.init.platform;
 		this.purgeKeys = function () {
-			var key,
-				i = localStorage.length;
+			var i = localStorage.length;
 			// Loop backwards since removal affects the key index
 			while ( i-- ) {
-				key = localStorage.key( i );
+				var key = localStorage.key( i );
 				if ( key.indexOf( 've-test-' ) === 0 ) {
 					localStorage.removeItem( key );
 				}

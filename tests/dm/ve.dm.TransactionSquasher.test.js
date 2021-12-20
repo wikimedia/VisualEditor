@@ -7,9 +7,7 @@
 QUnit.module( 've.dm.TransactionSquasher' );
 
 QUnit.test( 'squash', function ( assert ) {
-	var tests, i, iLen, test, transactions, squashed, j, jLen,
-		squashedBefore, squashedAfter,
-		boldHash = 'hfbe3cfe099b83e1e',
+	var boldHash = 'hfbe3cfe099b83e1e',
 		italicHash = 'he4e7c54e2204d10ba';
 
 	function insertionTxList( before, itemSequence, after ) {
@@ -19,9 +17,9 @@ QUnit.test( 'squash', function ( assert ) {
 	}
 
 	function annotationTx( allData, start, stop, length, method, hash, spliceAt ) {
-		var newData,
-			oldData = Array.prototype.slice.call( allData, start, stop );
+		var oldData = Array.prototype.slice.call( allData, start, stop );
 
+		var newData;
 		if ( method === 'set' ) {
 			newData = oldData.map( function ( item ) {
 				var ch, hashList;
@@ -64,7 +62,7 @@ QUnit.test( 'squash', function ( assert ) {
 		} );
 	}
 
-	tests = [
+	var cases = [
 		{
 			message: 'Empty transaction list',
 			transactions: [],
@@ -274,38 +272,37 @@ QUnit.test( 'squash', function ( assert ) {
 		}
 	];
 
-	for ( i = 0, iLen = tests.length; i < iLen; i++ ) {
-		test = tests[ i ];
-		transactions = test.transactions.map( function ( txData ) {
+	cases.forEach( function ( caseItem ) {
+		var transactions = caseItem.transactions.map( function ( txData ) {
 			return ve.dm.Transaction.static.deserialize( txData );
 		} );
 		ve.deepFreeze( transactions );
-		if ( test.error ) {
-			// eslint-disable-next-line no-loop-func
+		if ( caseItem.error ) {
 			assert.throws( function () {
 				ve.dm.TransactionSquasher.static.squash( transactions );
-			}, Error, test.message );
-			continue;
+			}, Error, caseItem.message );
+			// eslint-disable-next-line qunit/no-early-return
+			return;
 		}
-		squashed = ve.dm.Transaction.static.deserialize( test.squashed );
+		var squashed = ve.dm.Transaction.static.deserialize( caseItem.squashed );
 
 		assert.deepEqual(
 			ve.dm.TransactionSquasher.static.squash( transactions ).operations,
 			squashed.operations,
-			test.message + ': squash all'
+			caseItem.message + ': squash all'
 		);
 
-		for ( j = 1, jLen = transactions.length - 1; j < jLen; j++ ) {
-			squashedBefore = ve.dm.TransactionSquasher.static.squash( transactions.slice( 0, j ) );
-			squashedAfter = ve.dm.TransactionSquasher.static.squash( transactions.slice( j ) );
+		for ( var j = 1, jLen = transactions.length - 1; j < jLen; j++ ) {
+			var squashedBefore = ve.dm.TransactionSquasher.static.squash( transactions.slice( 0, j ) );
+			var squashedAfter = ve.dm.TransactionSquasher.static.squash( transactions.slice( j ) );
 			assert.deepEqual(
 				ve.dm.TransactionSquasher.static.squash( [
 					squashedBefore,
 					squashedAfter
 				] ).operations,
 				squashed.operations,
-				test.message + ': squash squashed halves split at ' + j
+				caseItem.message + ': squash squashed halves split at ' + j
 			);
 		}
-	}
+	} );
 } );

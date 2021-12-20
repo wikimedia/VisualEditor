@@ -7,8 +7,7 @@
 QUnit.module( 've.dm.Change' );
 
 QUnit.test( 'rebaseTransactions', function ( assert ) {
-	var rebased,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		replace12 = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 1, 2 ), [ 'f', 'o', 'o' ] ),
 		replace23 = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 2, 3 ), [ 'b', 'a', 'r' ] ),
@@ -82,7 +81,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 		'Inverse rebase'
 	);
 
-	rebased = ve.dm.Change.static.rebaseTransactions( insert1X, insert1Y );
+	var rebased = ve.dm.Change.static.rebaseTransactions( insert1X, insert1Y );
 	assert.deepEqual( rebased[ 0 ].operations, [
 		{
 			type: 'retain',
@@ -117,8 +116,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 } );
 
 QUnit.test( 'Change operations', function ( assert ) {
-	var change, replace2, remove2,
-		origData = [ { type: 'paragraph' }, 't', 'h', 'r', 'e', 'e', { type: '/paragraph' } ],
+	var origData = [ { type: 'paragraph' }, 't', 'h', 'r', 'e', 'e', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
 				ve.dm.example.createExampleDocumentFromData( origData )
@@ -164,15 +162,15 @@ QUnit.test( 'Change operations', function ( assert ) {
 		'Apply insert2'
 	);
 
-	replace2 = new ve.dm.Change( 4, [
+	var replace2 = new ve.dm.Change( 4, [
 		TxReplace( doc, new ve.Range( 1, 4 ), [ 'T', 'W', 'O' ] )
 	], [ emptyStore ], {} );
 
-	remove2 = new ve.dm.Change( 4, [
+	var remove2 = new ve.dm.Change( 4, [
 		TxRemove( doc, new ve.Range( 1, 4 ) )
 	], [ emptyStore ], {} );
 
-	change = insert2.reversed();
+	var change = insert2.reversed();
 	assert.strictEqual( change.start, 4, 'start for insert2.reversed()' );
 	change.applyTo( surface );
 	assert.deepEqual( doc.data.data, origData, 'Apply insert2.reversed()' );
@@ -267,8 +265,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 } );
 
 QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
-	var setBold, remove, result,
-		origData = [ { type: 'paragraph' }, 'A', { type: '/paragraph' } ],
+	var origData = [ { type: 'paragraph' }, 'A', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
 				ve.dm.example.createExampleDocumentFromData( origData )
@@ -283,10 +280,10 @@ QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
 		bStore = new ve.dm.HashValueStore( [ b ] );
 
 	// Canonical history: text gets removed
-	remove = new ve.dm.Change( 1, [ TxRemove( doc, new ve.Range( 1, 2 ) ) ], [ emptyStore ], {} );
+	var remove = new ve.dm.Change( 1, [ TxRemove( doc, new ve.Range( 1, 2 ) ) ], [ emptyStore ], {} );
 	// Doomed conflicting history: text gets bolded
-	setBold = new ve.dm.Change( 1, [ TxAnnotate( doc, new ve.Range( 1, 2 ), 'set', b ) ], [ bStore ], {} );
-	result = ve.dm.Change.static.rebaseUncommittedChange( remove, setBold );
+	var setBold = new ve.dm.Change( 1, [ TxAnnotate( doc, new ve.Range( 1, 2 ), 'set', b ) ], [ bStore ], {} );
+	var result = ve.dm.Change.static.rebaseUncommittedChange( remove, setBold );
 	assert.deepEqual(
 		result.rebased.toJSON(),
 		new ve.dm.Change( 2, [], [], {} ).toJSON(),
@@ -439,8 +436,7 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 } );
 
 QUnit.test( 'Minified serialization', function ( assert ) {
-	var serialized, deserialized;
-	serialized = {
+	var serialized = {
 		start: 0,
 		transactions: [
 			// Type some individual code units
@@ -554,7 +550,7 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 		]
 	};
 
-	deserialized = ve.dm.Change.static.deserialize( serialized );
+	var deserialized = ve.dm.Change.static.deserialize( serialized );
 	assert.deepEqual(
 		deserialized.toJSON(),
 		serialized,
@@ -563,8 +559,7 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 } );
 
 QUnit.test( 'Same-offset typing', function ( assert ) {
-	var a, b, c, d, tests, i, len, test, operations, expected,
-		surface = new ve.dm.Surface( ve.dm.example.createExampleDocumentFromData( [
+	var surface = new ve.dm.Surface( ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
 			{ type: 'internalList' }, { type: '/internalList' }
@@ -580,20 +575,20 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 		TxInsert = ve.dm.TransactionBuilder.static.newFromInsertion;
 
 	// 'ab' and 'cd' typed at the same offset
-	a = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ emptyStore ], {} );
+	var a = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'a' ] ) ], [ emptyStore ], {} );
 	a.transactions[ 0 ].authorId = 1;
 	a.applyTo( surface );
-	b = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'b' ] ) ], [ emptyStore ], {} );
+	var b = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'b' ] ) ], [ emptyStore ], {} );
 	b.transactions[ 0 ].authorId = 1;
 	clear();
-	c = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'c' ] ) ], [ emptyStore ], {} );
+	var c = new ve.dm.Change( 0, [ TxInsert( doc, 1, [ 'c' ] ) ], [ emptyStore ], {} );
 	c.transactions[ 0 ].authorId = 2;
 	c.applyTo( surface );
-	d = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'd' ] ) ], [ emptyStore ], {} );
+	var d = new ve.dm.Change( 1, [ TxInsert( doc, 2, [ 'd' ] ) ], [ emptyStore ], {} );
 	d.transactions[ 0 ].authorId = 2;
 	c.reversed().applyTo( surface );
 
-	tests = [
+	var cases = [
 		{
 			message: 'a on c',
 			change: a.rebasedOnto( c ),
@@ -626,18 +621,17 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 		}
 	];
 
-	for ( i = 0, len = tests.length; i < len; i++ ) {
-		test = tests[ i ];
-		operations = test.change.transactions[ 0 ].operations;
+	cases.forEach( function ( caseItem ) {
+		var operations = caseItem.change.transactions[ 0 ].operations;
 		assert.deepEqual( {
 			before: operations[ 0 ].length,
 			insert: operations[ 1 ].insert[ 0 ],
 			after: operations[ 2 ].length
-		}, test.expected, test.message );
-	}
+		}, caseItem.expected, caseItem.message );
+	} );
 
 	// Check that the order of application doesn't matter
-	expected = [ { type: 'paragraph' }, 'a', 'b', 'c', 'd', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ];
+	var expected = [ { type: 'paragraph' }, 'a', 'b', 'c', 'd', { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ];
 
 	clear();
 	surface.setSelection( new ve.dm.LinearSelection( new ve.Range( 1 ) ) );

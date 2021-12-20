@@ -52,17 +52,16 @@ OO.mixinClass( ve.dm.TestRebaseClient, ve.dm.RebaseClient );
  * @return {string} Compact summary of the history
  */
 ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, sentLength ) {
-	var committed, sent, unsent,
-		parts = [];
+	var parts = [];
 	if ( commitLength === undefined ) {
 		commitLength = change.transactions.length;
 	}
 	if ( sentLength === undefined ) {
 		sentLength = change.transactions.length;
 	}
-	committed = change.transactions.slice( 0, commitLength );
-	sent = change.transactions.slice( commitLength, sentLength );
-	unsent = change.transactions.slice( sentLength );
+	var committed = change.transactions.slice( 0, commitLength );
+	var sent = change.transactions.slice( commitLength, sentLength );
+	var unsent = change.transactions.slice( sentLength );
 
 	function joinText( transactions ) {
 		return transactions.map( function ( transaction ) {
@@ -135,9 +134,8 @@ ve.dm.TestRebaseClient.prototype.removeFromHistory = function ( change ) {
 };
 
 ve.dm.TestRebaseClient.prototype.deliverOne = function () {
-	var item, rebased;
-	item = this.outgoing[ this.outgoingPointer++ ];
-	rebased = this.server.applyChange(
+	var item = this.outgoing[ this.outgoingPointer++ ];
+	var rebased = this.server.applyChange(
 		ve.dm.TestRebaseServer.static.fakeDocName,
 		this.getAuthorId(),
 		item.backtrack,

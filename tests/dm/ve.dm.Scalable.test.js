@@ -206,30 +206,28 @@ QUnit.test( 'isDefault/toggleDefault', function ( assert ) {
 } );
 
 QUnit.test( 'isDimensionsObjectValid', function ( assert ) {
-	var i,
-		cases = [
-			{ dimensions: null, expected: false, msg: 'Null' },
-			{ dimensions: { width: 200 }, expected: true, msg: 'Only width' },
-			{ dimensions: { height: 200 }, expected: true, msg: 'Only height' },
-			{ dimensions: {}, expected: false, msg: 'Empty object' },
-			{ dimensions: { width: undefined, height: undefined }, expected: false, msg: 'Explicity undefined' }
-		];
+	var cases = [
+		{ dimensions: null, expected: false, msg: 'Null' },
+		{ dimensions: { width: 200 }, expected: true, msg: 'Only width' },
+		{ dimensions: { height: 200 }, expected: true, msg: 'Only height' },
+		{ dimensions: {}, expected: false, msg: 'Empty object' },
+		{ dimensions: { width: undefined, height: undefined }, expected: false, msg: 'Explicity undefined' }
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		assert.strictEqual( ve.dm.Scalable.static.isDimensionsObjectValid( cases[ i ].dimensions ), cases[ i ].expected, cases[ i ].msg );
-	}
+	cases.forEach( function ( caseItem ) {
+		assert.strictEqual( ve.dm.Scalable.static.isDimensionsObjectValid( caseItem.dimensions ), caseItem.expected, caseItem.msg );
+	} );
 } );
 
 QUnit.test( 'getDimensionsFromValue', function ( assert ) {
-	var i,
-		cases = [
-			{ dimensions: { width: 200 }, ratio: 1, expected: { width: 200, height: 200 }, msg: 'Only width' },
-			{ dimensions: { height: 200 }, ratio: 2, expected: { width: 400, height: 200 }, msg: 'Only height' },
-			{ dimensions: { width: '', height: 400 }, ratio: 0.5, expected: { width: 200, height: 400 }, msg: 'Empty width' },
-			{ dimensions: { width: 200, height: '' }, ratio: 0.5, expected: { width: 200, height: 400 }, msg: 'Empty height' }
-		];
+	var cases = [
+		{ dimensions: { width: 200 }, ratio: 1, expected: { width: 200, height: 200 }, msg: 'Only width' },
+		{ dimensions: { height: 200 }, ratio: 2, expected: { width: 400, height: 200 }, msg: 'Only height' },
+		{ dimensions: { width: '', height: 400 }, ratio: 0.5, expected: { width: 200, height: 400 }, msg: 'Empty width' },
+		{ dimensions: { width: 200, height: '' }, ratio: 0.5, expected: { width: 200, height: 400 }, msg: 'Empty height' }
+	];
 
-	for ( i = 0; i < cases.length; i++ ) {
-		assert.deepEqual( ve.dm.Scalable.static.getDimensionsFromValue( cases[ i ].dimensions, cases[ i ].ratio ), cases[ i ].expected, cases[ i ].msg );
-	}
+	cases.forEach( function ( caseItem ) {
+		assert.deepEqual( ve.dm.Scalable.static.getDimensionsFromValue( caseItem.dimensions, caseItem.ratio ), caseItem.expected, caseItem.msg );
+	} );
 } );

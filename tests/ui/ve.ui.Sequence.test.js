@@ -9,9 +9,8 @@ QUnit.module( 've.ui.Sequence' );
 /* Tests */
 
 QUnit.test( 'findAndExecuteSequences', function ( assert ) {
-	var i, view, model, expectedSelection,
-		emptyDocData = [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ],
-		tests = [
+	var emptyDocData = [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ],
+		cases = [
 			{
 				content: '* ',
 				expectedData: [
@@ -51,21 +50,21 @@ QUnit.test( 'findAndExecuteSequences', function ( assert ) {
 			}
 		];
 
-	for ( i = 0; i < tests.length; i++ ) {
-		view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocumentFromData( emptyDocData ) );
-		model = view.getModel();
-		model.getLinearFragment( new ve.Range( 1 ) ).insertContent( tests[ i ].content ).collapseToEnd();
+	cases.forEach( function ( caseItem ) {
+		var view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocumentFromData( emptyDocData ) );
+		var model = view.getModel();
+		model.getLinearFragment( new ve.Range( 1 ) ).insertContent( caseItem.content ).collapseToEnd();
 		view.findAndExecuteSequences();
 		assert.deepEqual(
 			model.getDocument().getData( model.getDocument().getDocumentRange() ),
-			tests[ i ].expectedData,
-			tests[ i ].msg + ': data'
+			caseItem.expectedData,
+			caseItem.msg + ': data'
 		);
-		expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), tests[ i ].expectedRangeOrSelection );
+		var expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.expectedRangeOrSelection );
 		assert.equalHash(
 			model.getSelection(),
 			expectedSelection,
-			tests[ i ].msg + ': selection'
+			caseItem.msg + ': selection'
 		);
-	}
+	} );
 } );
