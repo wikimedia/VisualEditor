@@ -4208,7 +4208,9 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 	padding = padding || 0;
 	var top = Math.max( 0, dimensions.top - padding );
 	var bottom = dimensions.bottom + ( padding * 2 );
-	var documentRange = this.getModel().getDocument().getDocumentRange();
+	var documentRange = this.attachedRoot === this.getDocument().getDocumentNode() ?
+		this.getModel().getDocument().getDocumentRange() :
+		this.attachedRoot.getRange();
 
 	function highestIgnoreChildrenNode( childNode ) {
 		var ignoreChildrenNode = null;
