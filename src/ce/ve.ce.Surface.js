@@ -4223,25 +4223,34 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 	}
 
 	function binarySearch( offset, range, side ) {
-		var mid, rect, midNode, ignoreChildrenNode, nodeRange,
-			start = range.start,
+		var start = range.start,
 			end = range.end,
 			lastLength = Infinity;
 
 		while ( range.getLength() < lastLength ) {
 			lastLength = range.getLength();
-			mid = Math.round( ( range.start + range.end ) / 2 );
-			midNode = documentModel.documentNode.getNodeFromOffset( mid );
-			ignoreChildrenNode = highestIgnoreChildrenNode( midNode );
+			var mid = Math.round( ( range.start + range.end ) / 2 );
+			var midNode = documentModel.documentNode.getNodeFromOffset( mid );
+			var ignoreChildrenNode = highestIgnoreChildrenNode( midNode );
 
 			if ( ignoreChildrenNode ) {
-				nodeRange = ignoreChildrenNode.getOuterRange();
+				var nodeRange = ignoreChildrenNode.getOuterRange();
 				mid = side === 'top' ? nodeRange.end : nodeRange.start;
 			} else {
 				mid = data.getNearestContentOffset( mid );
 			}
 
-			rect = surface.getSelection( new ve.dm.LinearSelection( new ve.Range( mid ) ) ).getSelectionBoundingRect();
+			// Try to create a selection of one character for more reliable
+			// behaviour when text wraps.
+			var contentRange;
+			if ( data.isContentOffset( mid + 1 ) ) {
+				contentRange = new ve.Range( mid, mid + 1 );
+			} else if ( data.isContentOffset( mid - 1 ) ) {
+				contentRange = new ve.Range( mid - 1, mid );
+			} else {
+				contentRange = new ve.Range( mid );
+			}
+			var rect = surface.getSelection( new ve.dm.LinearSelection( contentRange ) ).getSelectionBoundingRect();
 			if ( rect[ side ] > offset ) {
 				end = mid;
 				range = new ve.Range( range.start, end );
