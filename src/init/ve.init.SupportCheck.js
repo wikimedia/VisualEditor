@@ -29,6 +29,15 @@
 			/* createElementNS */
 			!!document.createElementNS &&
 
+			/* DOMParser */
+			( function () {
+				var doc;
+				try {
+					doc = ve.createDocumentFromHtml( '' );
+				} catch ( e ) {}
+				return doc instanceof HTMLDocument;
+			}() ) &&
+
 			/* classList */
 			!!(
 				( 'classList' in document.createElement( '_' ) ) ||

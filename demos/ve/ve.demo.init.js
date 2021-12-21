@@ -4,7 +4,7 @@
  * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( function () {
+new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( function () {
 
 	/* eslint-disable no-jquery/no-global-selector */
 	var $toolbar = $( '.ve-demo-targetToolbar' ),
@@ -201,4 +201,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().done( functio
 		createSurfacesFromHash( location.hash );
 		hashChanging = false;
 	} );
+}, function () {
+	// eslint-disable-next-line no-jquery/no-global-selector
+	$( '.ve-demo-editor' ).text( 'VisualEditor not supported in this browser.' );
 } );

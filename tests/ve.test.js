@@ -397,86 +397,68 @@ QUnit.test( 'addHeadTag', function ( assert ) {
 } );
 
 QUnit.test( 'createDocumentFromHtml', function ( assert ) {
-	var supportsDomParser = !!ve.createDocumentFromHtmlUsingDomParser( '' ),
-		supportsIframe = !!ve.createDocumentFromHtmlUsingIframe( '' ),
-		cases = [
-			{
-				msg: 'simple document with doctype, head and body',
-				html: '<!doctype html><html lang="en"><head><title>Foo</title></head><body><p>Bar</p></body></html>',
-				head: '<title>Foo</title>',
-				body: '<p>Bar</p>',
-				htmlAttributes: {
-					lang: 'en'
-				}
-			},
-			{
-				msg: 'simple document without doctype',
-				html: '<html lang="en"><head><title>Foo</title></head><body><p>Bar</p></body></html>',
-				head: '<title>Foo</title>',
-				body: '<p>Bar</p>',
-				htmlAttributes: {
-					lang: 'en'
-				}
-			},
-			{
-				msg: 'document with missing closing tags and missing <html> tag',
-				html: '<!doctype html><head><title>Foo</title><base href="yay"><body><p>Bar<b>Baz',
-				head: '<title>Foo</title><base href="yay" />',
-				body: '<p>Bar<b>Baz</b></p>',
-				htmlAttributes: {}
-			},
-			{
-				msg: 'empty string results in empty document',
-				html: '',
-				head: '',
-				body: '',
-				htmlAttributes: {}
-			},
-			{
-				msg: 'meta tag stays in body',
-				html: '<meta/><p>foo</p>',
-				head: '',
-				body: '<meta/><p>foo</p>',
-				htmlAttributes: {},
-				wrapperOnly: true
-			},
-			{
-				msg: 'body wrapping not broken by custom tag',
-				html: '<meta/><p>foo<bodything/></p>',
-				head: '',
-				body: '<meta/><p>foo<bodything/></p>',
-				htmlAttributes: {},
-				wrapperOnly: true
+	var cases = [
+		{
+			msg: 'simple document with doctype, head and body',
+			html: '<!doctype html><html lang="en"><head><title>Foo</title></head><body><p>Bar</p></body></html>',
+			head: '<title>Foo</title>',
+			body: '<p>Bar</p>',
+			htmlAttributes: {
+				lang: 'en'
 			}
-		];
-
-	function assertCreateDocument( createDocument, msg ) {
-		for ( var key in cases ) {
-			if ( msg !== 'wrapper' && cases[ key ].wrapperOnly ) {
-				continue;
+		},
+		{
+			msg: 'simple document without doctype',
+			html: '<html lang="en"><head><title>Foo</title></head><body><p>Bar</p></body></html>',
+			head: '<title>Foo</title>',
+			body: '<p>Bar</p>',
+			htmlAttributes: {
+				lang: 'en'
 			}
-			var doc = createDocument( cases[ key ].html );
-			var attributes = $( 'html', doc ).get( 0 ).attributes;
-			var attributesObject = {};
-			for ( var i = 0; i < attributes.length; i++ ) {
-				attributesObject[ attributes[ i ].name ] = attributes[ i ].value;
-			}
-			var expectedHead = $( '<head>' ).html( cases[ key ].head ).get( 0 );
-			var expectedBody = $( '<body>' ).html( cases[ key ].body ).get( 0 );
-			assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, msg + ': ' + cases[ key ].msg + ' (head)' );
-			assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, msg + ': ' + cases[ key ].msg + ' (body)' );
-			assert.deepEqual( attributesObject, cases[ key ].htmlAttributes, msg + ': ' + cases[ key ].msg + ' (html attributes)' );
+		},
+		{
+			msg: 'document with missing closing tags and missing <html> tag',
+			html: '<!doctype html><head><title>Foo</title><base href="yay"><body><p>Bar<b>Baz',
+			head: '<title>Foo</title><base href="yay" />',
+			body: '<p>Bar<b>Baz</b></p>',
+			htmlAttributes: {}
+		},
+		{
+			msg: 'empty string results in empty document',
+			html: '',
+			head: '',
+			body: '',
+			htmlAttributes: {}
+		},
+		{
+			msg: 'meta tag stays in body',
+			html: '<meta/><p>foo</p>',
+			head: '',
+			body: '<meta/><p>foo</p>',
+			htmlAttributes: {}
+		},
+		{
+			msg: 'body wrapping not broken by custom tag',
+			html: '<meta/><p>foo<bodything/></p>',
+			head: '',
+			body: '<meta/><p>foo<bodything/></p>',
+			htmlAttributes: {}
 		}
-	}
+	];
 
-	if ( supportsDomParser ) {
-		assertCreateDocument( ve.createDocumentFromHtmlUsingDomParser, 'DOMParser' );
-	}
-	if ( supportsIframe ) {
-		assertCreateDocument( ve.createDocumentFromHtmlUsingIframe, 'IFrame' );
-	}
-	assertCreateDocument( ve.createDocumentFromHtmlUsingInnerHtml, 'innerHTML' );
-	assertCreateDocument( ve.createDocumentFromHtml, 'wrapper' );
+	cases.forEach( function ( caseItem ) {
+		var doc = ve.createDocumentFromHtml( caseItem.html );
+		var attributes = $( 'html', doc ).get( 0 ).attributes;
+		var attributesObject = {};
+		for ( var i = 0; i < attributes.length; i++ ) {
+			attributesObject[ attributes[ i ].name ] = attributes[ i ].value;
+		}
+		var expectedHead = $( '<head>' ).html( caseItem.head ).get( 0 );
+		var expectedBody = $( '<body>' ).html( caseItem.body ).get( 0 );
+		assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, caseItem.msg + ' (head)' );
+		assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, caseItem.msg + ' (body)' );
+		assert.deepEqual( attributesObject, caseItem.htmlAttributes, caseItem.msg + ' (html attributes)' );
+	} );
 } );
 
 QUnit.test( 'resolveUrl', function ( assert ) {

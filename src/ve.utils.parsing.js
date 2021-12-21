@@ -128,135 +128,14 @@ ve.createDocumentFromHtml = function ( html ) {
 		html = ve.addHeadTag( html, '<meta name="format-detection" content="telephone=no" data-ve-tmp/>' );
 	}
 
-	var newDocument = ve.createDocumentFromHtmlUsingDomParser( html );
-	if ( !newDocument ) {
-		newDocument = ve.createDocumentFromHtmlUsingIframe( html );
-		if ( !newDocument ) {
-			newDocument = ve.createDocumentFromHtmlUsingInnerHtml( html );
-		}
-	}
+	// Support: IE
+	// IE doesn't like empty strings
+	var newDocument = new DOMParser().parseFromString( html || '<body></body>', 'text/html' );
 
 	// Remove iOS hack
 	var tmpMeta = newDocument.querySelector( 'meta[data-ve-tmp]' );
 	if ( tmpMeta ) {
 		tmpMeta.parentNode.removeChild( tmpMeta );
-	}
-
-	return newDocument;
-};
-
-/**
- * Private method for creating an HTMLDocument using the DOMParser
- *
- * @private
- * @param {string} html
- * @return {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
- */
-ve.createDocumentFromHtmlUsingDomParser = function ( html ) {
-	// Support: IE
-	// IE doesn't like empty strings
-	html = html || '<body></body>';
-
-	try {
-		var newDocument = new DOMParser().parseFromString( html, 'text/html' );
-		if ( newDocument ) {
-			return newDocument;
-		}
-	} catch ( e ) { }
-};
-
-/**
- * Private fallback for browsers which don't support DOMParser
- *
- * @private
- * @param {string} html
- * @return {HTMLDocument|undefined} Document constructed from the HTML string or undefined if it failed
- */
-ve.createDocumentFromHtmlUsingIframe = function ( html ) {
-	// Here's what this fallback code should look like:
-	//
-	//     var newDocument = document.implementation.createHtmlDocument( '' );
-	//     newDocument.open();
-	//     newDocument.write( html );
-	//     newDocument.close();
-	//     return newDocument;
-	//
-	// Sadly, it's impossible:
-	// * On Firefox 20, calling open()/write() doesn't actually do anything, including writing.
-	//   This is reported as Firefox bug 867102.
-	// * On Opera 12, calling open()/write() behaves as if called on window.document, replacing the
-	//   entire contents of the page with new HTML. This is reported as Opera bug DSK-384486.
-	//
-	// Funnily, in all of those browsers it's apparently perfectly legal and possible to access the
-	// newly created document's DOM itself, including modifying documentElement's innerHTML, which
-	// would achieve our goal. But that requires some nasty magic to strip off the <html></html> tag
-	// itself, so we're not doing that. (We can't use .outerHTML, either, as the spec disallows
-	// assigning to it for the root element.)
-	//
-	// There is one more way - create an <iframe>, append it to current document, and access its
-	// contentDocument. The only browser having issues with that is Opera (sometimes the accessible
-	// value is not actually a Document, but something which behaves just like an empty regular
-	// object…), so we're detecting that and using the innerHTML hack described above.
-
-	// Support: Firefox 20
-	// Support: Opera 12
-
-	html = html || '<body></body>';
-
-	// Create an invisible iframe
-	var iframe = document.createElement( 'iframe' );
-	iframe.setAttribute( 'frameborder', '0' );
-	iframe.setAttribute( 'width', '0' );
-	iframe.setAttribute( 'height', '0' );
-	// Attach it to the document. We have to do this to get a new document out of it
-	document.documentElement.appendChild( iframe );
-	// Write the HTML to it
-	var newDocument = ( iframe.contentWindow && iframe.contentWindow.document ) || iframe.contentDocument;
-	newDocument.open();
-	newDocument.write( html ); // Party like it's 1995!
-	newDocument.close();
-	// Detach the iframe
-	iframe.parentNode.removeChild( iframe );
-
-	if ( !newDocument.documentElement || newDocument.documentElement.cloneNode( false ) === undefined ) {
-		// Surprise! The document is not a document! Only happens on Opera.
-		// (Or its nodes are not actually nodes, while the document
-		// *is* a document. This only happens when debugging with Dragonfly.)
-		return;
-	}
-
-	return newDocument;
-};
-
-/**
- * Private fallback for browsers which don't support iframe technique
- *
- * @private
- * @param {string} html
- * @return {HTMLDocument} Document constructed from the HTML string
- */
-ve.createDocumentFromHtmlUsingInnerHtml = function ( html ) {
-	var newDocument = document.implementation.createHTMLDocument( '' );
-
-	html = html || '<body></body>';
-
-	// Carefully unwrap the HTML out of the root node (and doctype, if any).
-	newDocument.documentElement.innerHTML = html
-		.replace( /^\s*(?:<!doctype[^>]*>)?\s*<html[^>]*>/i, '' )
-		.replace( /<\/html>\s*$/i, '' );
-
-	// Preserve <html> attributes, if any
-	var htmlAttributes = html.match( /<html([^>]*>)/i );
-	if ( htmlAttributes && htmlAttributes[ 1 ] ) {
-		var wrapper = document.createElement( 'div' );
-		wrapper.innerHTML = '<div ' + htmlAttributes[ 1 ] + '></div>';
-		var attributes = wrapper.firstChild.attributes;
-		for ( var i = 0; i < attributes.length; i++ ) {
-			newDocument.documentElement.setAttribute(
-				attributes[ i ].name,
-				attributes[ i ].value
-			);
-		}
 	}
 
 	return newDocument;
