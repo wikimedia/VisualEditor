@@ -106,6 +106,8 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 	if ( surfaceChange ) {
 		// Emit surface change event after tools have been setup
 		this.emit( 'surfaceChange', oldSurface, surface );
+		// Emit another resize event to let the surface know about the toolbar size
+		this.emit( 'resize' );
 	}
 
 	// Events
