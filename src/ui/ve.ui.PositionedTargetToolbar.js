@@ -71,8 +71,6 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
  * @inheritdoc
  */
 ve.ui.PositionedTargetToolbar.prototype.detach = function () {
-	this.unfloat();
-
 	// Events
 	if ( this.getSurface() ) {
 		this.getSurface().getToolbarDialogs().disconnect( this );
