@@ -110,17 +110,14 @@
 }
 
 [ data-diff-action='insert' ],
-[ data-diff-action='insert' ] > ins,
 [ data-diff-action='remove' ],
 [ data-diff-action='change-insert' ],
 [ data-diff-action='change-remove' ] {
 	text-decoration: inherit;
 }
 
-ins[ data-diff-action='insert' ],
-[ data-diff-action='insert' ] > ins,
-del[ data-diff-action='remove' ],
-[ data-diff-action='remove' ] > del { /* stylelint-disable-line no-descending-specificity */
+[ data-diff-action='insert' ],
+[ data-diff-action='remove' ] {
 	white-space: pre-wrap;
 }
 
@@ -161,13 +158,11 @@ figure[ data-diff-action='remove' ] > figcaption {
 	display: none;
 }
 
-del[ data-diff-action='remove' ],
-[ data-diff-action='remove' ] > del { /* stylelint-disable-line no-descending-specificity */
+[ data-diff-action='remove' ] {
 	text-decoration: line-through;
 }
 
-del[ data-diff-action='remove' ]:hover,
-[ data-diff-action='remove' ]:hover > del {
+[ data-diff-action='remove' ]:hover {
 	text-decoration: none;
 }
 

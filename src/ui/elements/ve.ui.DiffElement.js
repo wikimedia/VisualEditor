@@ -463,58 +463,40 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
  * @return {HTMLElement[]} Elements (not owned by window.document)
  */
 ve.ui.DiffElement.prototype.getNodeElements = function ( node, action, move ) {
-	var nodeDoc = action === 'remove' ? this.oldDoc : this.newDoc;
-
 	var nodeData = this.getNodeData( node, action, move );
-	var documentSlice = nodeDoc.cloneWithData( nodeData );
 
-	var doc = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE );
-	var body = doc.body;
-
-	if ( action !== 'none' ) {
-		var element = doc.createElement( 'div' );
-		element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
-
-		if ( node.canContainContent() ) {
-			var actionElement = action === 'remove' ? doc.createElement( 'del' ) : doc.createElement( 'ins' );
-			while ( body.childNodes[ 0 ].childNodes.length ) {
-				actionElement.appendChild( body.childNodes[ 0 ].childNodes[ 0 ] );
-			}
-			body.childNodes[ 0 ].appendChild( actionElement );
-		}
-
-		while ( body.childNodes.length ) {
-			element.appendChild( body.childNodes[ 0 ] );
-		}
-		return [ element ];
-	}
-
-	// Convert NodeList to real array
-	return Array.prototype.slice.call( body.childNodes );
+	return this.wrapNodeData( nodeData, action );
 };
 
 /**
  * Get the DOM from linear data and wrap it for the diff.
  *
  * @param {Array} nodeData Linear data for the diff
+ * @param {string} [action='changed'] 'changed', 'remove', 'insert' or, if moved, 'none'
  * @return {HTMLElement[]} Elements (not owned by window.document)
  */
-ve.ui.DiffElement.prototype.wrapNodeData = function ( nodeData ) {
-	var element = document.createElement( 'div' );
+ve.ui.DiffElement.prototype.wrapNodeData = function ( nodeData, action ) {
+	var nodeDoc = action === 'remove' ? this.oldDoc : this.newDoc;
 
-	var documentSlice = this.newDoc.cloneWithData( nodeData );
-	documentSlice.getStore().merge( this.newDoc.getStore() );
+	var documentSlice = nodeDoc.cloneWithData( nodeData );
+	documentSlice.getStore().merge( nodeDoc.getStore() );
 	var nodeElements = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
 
-	element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
+	if ( action !== 'none' ) {
+		// Wrap in a <div>
+		var element = document.createElement( 'div' );
+		element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
+		while ( nodeElements.childNodes.length ) {
+			element.appendChild(
+				element.ownerDocument.adoptNode( nodeElements.childNodes[ 0 ] )
+			);
+		}
 
-	while ( nodeElements.childNodes.length ) {
-		element.appendChild(
-			element.ownerDocument.adoptNode( nodeElements.childNodes[ 0 ] )
-		);
+		return [ element ];
+	} else {
+		// Convert NodeList to real array
+		return Array.prototype.slice.call( nodeElements.childNodes );
 	}
-
-	return [ element ];
 };
 
 /**
@@ -554,7 +536,7 @@ ve.ui.DiffElement.prototype.getChangedNodeElements = function ( parentDiff, oldN
 
 	var nodeData = this.getChangedNodeData( diff, move, newNode, oldNode );
 
-	return this.wrapNodeData( nodeData, move );
+	return this.wrapNodeData( nodeData );
 };
 
 /**
