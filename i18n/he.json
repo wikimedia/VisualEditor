@@ -53,6 +53,8 @@
 	"visualeditor-changedesc-link-href": "יעד הקישור שוּנה מ{{GRAMMAR:תחילית|$1}} ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-link-href-diff": "שונה יעד קישור: $1",
 	"visualeditor-changedesc-link-removed": "הוסר קישור: $1",
+	"visualeditor-changedesc-list-indent": "ההזחה של פריט רשימה הוגדלה",
+	"visualeditor-changedesc-list-outdent": "ההזחה של פריט רשימה הוקטנה",
 	"visualeditor-changedesc-no-key": "$1 שוּנה ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-set": "$1 הוגדר ל{{GRAMMAR:תחילית|$2}}",
 	"visualeditor-changedesc-textstyle-added": "נוסף עיצוב טקסט: $1",

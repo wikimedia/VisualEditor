@@ -81,6 +81,8 @@
 	"visualeditor-changedesc-link-href": "Cible du lien modifiée de $1 à $2",
 	"visualeditor-changedesc-link-href-diff": "Cible du lien changé : $1",
 	"visualeditor-changedesc-link-removed": "Lien supprimé : $1",
+	"visualeditor-changedesc-list-indent": "Indentation de l’élément de liste augmentée",
+	"visualeditor-changedesc-list-outdent": "Indentation de l’élément de liste diminuée",
 	"visualeditor-changedesc-no-key": "$1 modifié en $2",
 	"visualeditor-changedesc-set": "$1 mis à $2",
 	"visualeditor-changedesc-textstyle-added": "Style de texte ajouté : $1",

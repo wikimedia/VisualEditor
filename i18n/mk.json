@@ -43,6 +43,8 @@
 	"visualeditor-changedesc-link-href": "Целната врска сменета од $1 во $2",
 	"visualeditor-changedesc-link-href-diff": "Сменета целна врска: $1",
 	"visualeditor-changedesc-link-removed": "Отстранета врска: $1",
+	"visualeditor-changedesc-list-indent": "Зголемена вовлеченоста на ставка во список",
+	"visualeditor-changedesc-list-outdent": "Намалена вовлеченоста на ставка во список",
 	"visualeditor-changedesc-no-key": "$1 изменето на $2",
 	"visualeditor-changedesc-set": "Зададено $2 на $1",
 	"visualeditor-changedesc-textstyle-added": "Додаден стил на текст: $1",
