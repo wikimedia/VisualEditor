@@ -371,13 +371,12 @@ ve.ui.DiffElement.prototype.renderDiff = function () {
 		internalListDiffQueue = [];
 	}
 
-	ilen = Math.max( this.oldDocChildren.length, this.newDocChildren.length );
-	var jlen = ilen;
+	var len = Math.max( this.oldDocChildren.length, this.newDocChildren.length );
 
 	this.descriptionItemsStack = [];
 	var j;
 	var referencesListDiff;
-	for ( i = 0, j = 0; i < ilen || j < jlen; i++, j++ ) {
+	for ( i = 0, j = 0; i < len || j < len; i++, j++ ) {
 
 		move = this.moves[ j ] === 0 ? null : this.moves[ j ];
 
@@ -985,9 +984,9 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 
 	// Iterate backwards over trees so that changes are made from right to left
 	// of the data, to avoid having to update ranges
-	var ilen = Math.max( oldNodes.length, newNodes.length );
-	var jlen = ilen;
-	for ( var i = 0, j = 0; i < ilen && j < jlen; i++, j++ ) {
+	var len = Math.max( oldNodes.length, newNodes.length );
+
+	for ( var i = 0, j = 0; i < len && j < len; i++, j++ ) {
 
 		var newIndex = newNodes.length - 1 - i;
 		var oldIndex = oldNodes.length - 1 - j;
