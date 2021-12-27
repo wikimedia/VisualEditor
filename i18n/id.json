@@ -57,6 +57,8 @@
 	"visualeditor-changedesc-link-href": "Target pranala berubah dari $1 menjadi $2",
 	"visualeditor-changedesc-link-href-diff": "Pranala sasaran diubah: $1",
 	"visualeditor-changedesc-link-removed": "Pranala dihapus: $1",
+	"visualeditor-changedesc-list-indent": "Meningkatkan indentasi butir daftar",
+	"visualeditor-changedesc-list-outdent": "Mengurangi indentasi butir daftar",
 	"visualeditor-changedesc-no-key": "$1 berubah menjadi $2",
 	"visualeditor-changedesc-set": "$1 diatur ke $2",
 	"visualeditor-changedesc-textstyle-added": "Gaya teks ditambahkan: $1",
