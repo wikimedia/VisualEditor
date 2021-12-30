@@ -42,6 +42,8 @@
 	"visualeditor-changedesc-link-href": "Destinazzion del conligament modificada de $1 a $2",
 	"visualeditor-changedesc-link-href-diff": "Bersali del conligament cambiad: $1",
 	"visualeditor-changedesc-link-removed": "Conligament tolt via: $1",
+	"visualeditor-changedesc-list-indent": "Spazzi inanz del principi de la riga slongad",
+	"visualeditor-changedesc-list-outdent": "Spazzi inanz del principi de la riga scurtad",
 	"visualeditor-changedesc-no-key": "$1 modificad a $2",
 	"visualeditor-changedesc-set": "$1 impostad a $2",
 	"visualeditor-changedesc-textstyle-added": "Stil del test sgiontad: $1",
