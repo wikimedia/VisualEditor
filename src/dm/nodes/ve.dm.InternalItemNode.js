@@ -53,6 +53,15 @@ ve.dm.InternalItemNode.static.getHashObject = function ( dataElement ) {
 	return { type: dataElement.type };
 };
 
+/**
+ * @inheritdoc
+ */
+ve.dm.InternalItemNode.prototype.isDiffedAsDocument = function () {
+	// TODO: Internal items are a special case in DiffElement, but
+	// probably should be diffed as documents eventually.
+	return false;
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.InternalItemNode );

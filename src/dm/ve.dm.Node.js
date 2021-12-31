@@ -545,6 +545,13 @@ ve.dm.Node.prototype.isDiffedAsLeaf = function () {
 };
 
 /**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isDiffedAsDocument = function () {
+	return this.getChildNodeTypes() === null;
+};
+
+/**
  * Check if the node can have a slug before it.
  *
  * @return {boolean} Whether the node can have a slug before it

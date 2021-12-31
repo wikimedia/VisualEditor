@@ -522,6 +522,8 @@ ve.ui.DiffElement.prototype.getChangedNodeData = function ( diff, oldNode, newNo
 		nodeData = this.getChangedLeafNodeData( newNode, diff, move );
 	} else if ( newNode.isDiffedAsList() ) {
 		nodeData = this.getChangedListNodeData( newNode, diff );
+	} else if ( newNode.isDiffedAsDocument() ) {
+		nodeData = this.getChangedDocListData( newNode, diff );
 	} else {
 		nodeData = this.getChangedTreeNodeData( oldNode, newNode, diff );
 	}
@@ -627,6 +629,48 @@ ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, l
 	}
 
 	return insertIndex;
+};
+
+/**
+ * Get the linear data for a document-like node that has been changed
+ *
+ * @param {ve.dm.Node} newListNode Node from new document
+ * @param {Object} diff Object describing the duff
+ * @return {Array} Linear data for the diff
+ */
+ve.ui.DiffElement.prototype.getChangedDocListData = function ( newListNode, diff ) {
+	var diffData = [],
+		diffElement = this;
+
+	this.iterateDiff( diff, {
+		insert: function ( newNode ) {
+			ve.batchPush( diffData, diffElement.getNodeData( newNode, 'insert' ) );
+		},
+		remove: function ( oldNode ) {
+			ve.batchPush( diffData, diffElement.getNodeData( oldNode, 'remove' ) );
+		},
+		move: function ( newNode, move ) {
+			ve.batchPush( diffData, diffElement.getNodeData( newNode, 'none', move ) );
+		},
+		changed: function ( nodeDiff, oldNode, newNode, move ) {
+			ve.batchPush( diffData, diffElement.getChangedNodeData( nodeDiff, oldNode, newNode, move ) );
+		}
+	} );
+
+	var newListNodeData = this.newDoc.getData( newListNode.getOuterRange() );
+
+	// Wrap in newListNode
+	diffData.unshift( newListNodeData[ 0 ] );
+	diffData.push( newListNodeData[ newListNodeData.length - 1 ] );
+
+	if ( diff.attributeChange ) {
+		var item = this.compareNodeAttributes( diffData, 0, diff.attributeChange );
+		if ( item ) {
+			this.descriptionItemsStack.push( item );
+		}
+	}
+
+	return diffData;
 };
 
 /**
