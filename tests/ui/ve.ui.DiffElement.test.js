@@ -730,42 +730,42 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item removal',
-				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
-				newDoc: '<ul><li>foo</li><li>baz</li></ul>',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li></ol>',
+				newDoc: '<ol><li>foo</li><li>baz</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul>' +
-							'<li><p data-diff-action="none">foo</p></li>' +
-							'<li><p data-diff-action="remove">bar</p></li>' +
-							'<li><p data-diff-action="none">baz</p></li>' +
-						'</ul>' +
+						'<ol>' +
+							'<li value="1"><p data-diff-action="none">foo</p></li>' +
+							'<li value="2"><p data-diff-action="remove">bar</p></li>' +
+							'<li value="2"><p data-diff-action="none">baz</p></li>' +
+						'</ol>' +
 					'</div>'
 			},
 			{
 				msg: 'List item removal from both ends',
-				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
-				newDoc: '<ul><li>bar</li></ul>',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li></ol>',
+				newDoc: '<ol><li>bar</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul>' +
-							'<li><p data-diff-action="remove">foo</p></li>' +
-							'<li><p data-diff-action="none">bar</p></li>' +
-							'<li><p data-diff-action="remove">baz</p></li>' +
-						'</ul>' +
+						'<ol>' +
+							'<li value="1"><p data-diff-action="remove">foo</p></li>' +
+							'<li value="1"><p data-diff-action="none">bar</p></li>' +
+							'<li value="3"><p data-diff-action="remove">baz</p></li>' +
+						'</ol>' +
 					'</div>'
 			},
 			{
 				msg: 'List item move up',
-				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li><li>quux</li></ul>',
-				newDoc: '<ul><li>baz</li><li>foo</li><li>bar</li><li>quux</li></ul>',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li><li>quux</li></ol>',
+				newDoc: '<ol><li>baz</li><li>foo</li><li>bar</li><li>quux</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul>' +
-							'<li><p data-diff-action="none" data-diff-move="up" data-diff-id="0">baz</p></li>' +
-							'<li><p data-diff-action="none">foo</p></li>' +
-							'<li><p data-diff-action="none">bar</p></li>' +
-							'<li><p data-diff-action="none">quux</p></li>' +
-						'</ul>' +
+						'<ol>' +
+							'<li value="1"><p data-diff-action="none" data-diff-move="up" data-diff-id="0">baz</p></li>' +
+							'<li value="2"><p data-diff-action="none">foo</p></li>' +
+							'<li value="3"><p data-diff-action="none">bar</p></li>' +
+							'<li value="4"><p data-diff-action="none">quux</p></li>' +
+						'</ol>' +
 					'</div>',
 				expectedDescriptions: [
 					'<div>visualeditor-diff-moved-up</div>'
@@ -773,16 +773,16 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item move down',
-				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li><li>quux</li></ul>',
-				newDoc: '<ul><li>foo</li><li>baz</li><li>quux</li><li>bar</li></ul>',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li><li>quux</li></ol>',
+				newDoc: '<ol><li>foo</li><li>baz<li>quux</li><li>bar</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul>' +
-							'<li><p data-diff-action="none">foo</p></li>' +
-							'<li><p data-diff-action="none">baz</p></li>' +
-							'<li><p data-diff-action="none">quux</p></li>' +
-							'<li><p data-diff-action="none" data-diff-move="down" data-diff-id="0">bar</p></li>' +
-						'</ul>' +
+						'<ol>' +
+							'<li value="1"><p data-diff-action="none">foo</p></li>' +
+							'<li value="2"><p data-diff-action="none">baz</p></li>' +
+							'<li value="3"><p data-diff-action="none">quux</p></li>' +
+							'<li value="4"><p data-diff-action="none" data-diff-move="down" data-diff-id="0">bar</p></li>' +
+						'</ol>' +
 					'</div>',
 				expectedDescriptions: [
 					'<div>visualeditor-diff-moved-down</div>'
@@ -790,16 +790,16 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item move and change',
-				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz baz</li><li>quux</li></ul>',
-				newDoc: '<ul><li>baz bat</li><li>foo</li><li>bar</li><li>quux</li></ul>',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz baz</li><li>quux</li></ol>',
+				newDoc: '<ol><li>baz bat</li><li>foo</li><li>bar</li><li>quux</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul>' +
-							'<li><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
-							'<li><p data-diff-action="none">foo</p></li>' +
-							'<li><p data-diff-action="none">bar</p></li>' +
-							'<li><p data-diff-action="none">quux</p></li>' +
-						'</ul>' +
+						'<ol>' +
+							'<li value="1"><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
+							'<li value="2"><p data-diff-action="none">foo</p></li>' +
+							'<li value="3"><p data-diff-action="none">bar</p></li>' +
+							'<li value="4"><p data-diff-action="none">quux</p></li>' +
+						'</ol>' +
 					'</div>',
 				expectedDescriptions: [
 					'<div>visualeditor-diff-moved-up</div>'
@@ -807,23 +807,23 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item indentation',
-				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
-				newDoc: '<ul><li>foo<ul><li>bar</li></ul></li><li>baz</li></ul>',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li></ol>',
+				newDoc: '<ol><li>foo<ol><li>bar</li></ol></li><li>baz</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul>' +
-							'<li>' +
+						'<ol>' +
+							'<li value="1">' +
 								'<p data-diff-action="none">foo</p>' +
-								'<ul>' +
-									'<li data-diff-id="0">' +
+								'<ol>' +
+									'<li value="1" data-diff-id="0">' +
 										'<p data-diff-action="structural-change">bar</p>' +
 									'</li>' +
-								'</ul>' +
+								'</ol>' +
 							'</li>' +
-							'<li>' +
+							'<li value="2">' +
 								'<p data-diff-action="none">baz</p>' +
 							'</li>' +
-						'</ul>' +
+						'</ol>' +
 					'</div>',
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-list-indent</div>'
@@ -831,21 +831,21 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item deindentation',
-				oldDoc: '<ul><li>foo<ul><li>bar</li></ul></li><li>baz</li></ul>',
-				newDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
+				oldDoc: '<ol><li>foo<ol><li>bar</li></ol></li><li>baz</li></ol>',
+				newDoc: '<ol><li>foo</li><li>bar</li><li>baz</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ul>' +
-							'<li>' +
+						'<ol>' +
+							'<li value="1">' +
 								'<p data-diff-action="none">foo</p>' +
 							'</li>' +
-							'<li data-diff-id="0">' +
+							'<li value="2" data-diff-id="0">' +
 								'<p data-diff-action="structural-change">bar</p>' +
 							'</li>' +
-							'<li>' +
+							'<li value="3">' +
 								'<p data-diff-action="none">baz</p>' +
 							'</li>' +
-						'</ul>' +
+						'</ol>' +
 					'</div>',
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-list-outdent</div>'
@@ -860,7 +860,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<ul>' +
 							'<li><p data-diff-action="none">Foo</p>' +
 								'<ol>' +
-									'<li><p data-diff-action="none">Bar</p></li>' +
+									'<li value="1"><p data-diff-action="none">Bar</p></li>' +
 								'</ol>' +
 							'</li>' +
 							'<li data-diff-id="0"><p data-diff-action="structural-change">Baz</p></li>' +
@@ -897,7 +897,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ol><li>Foo</li><li>Bar</li><li>Baz</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
-						'<ol data-diff-id="0"><li><p data-diff-action="structural-change">Foo</p></li><li><p data-diff-action="structural-change">Bar</p></li><li><p data-diff-action="structural-change">Baz</p></li></ol>' +
+						'<ol data-diff-id="0">' +
+							'<li value="1"><p data-diff-action="structural-change">Foo</p></li>' +
+							'<li value="2"><p data-diff-action="structural-change">Bar</p></li>' +
+							'<li value="3"><p data-diff-action="structural-change">Baz</p></li>' +
+						'</ol>' +
 					'</div>',
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>'
@@ -910,10 +914,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ol data-diff-id="0">' +
-							'<li><p data-diff-action="structural-change">Foo</p>' +
+							'<li value="1"><p data-diff-action="structural-change">Foo</p>' +
 								'<ul><li data-diff-id="1"><p data-diff-action="structural-change">Bar</p></li></ul>' +
 							'</li>' +
-							'<li><p data-diff-action="structural-change">Baz</p></li>' +
+							'<li value="2"><p data-diff-action="structural-change">Baz</p></li>' +
 						'</ol>' +
 					'</div>',
 				expectedDescriptions: [
