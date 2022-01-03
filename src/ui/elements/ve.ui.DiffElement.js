@@ -618,7 +618,7 @@ ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) 
 		this.addAttributesToElement(
 			nodeData, 0, { 'data-diff-action': 'structural-change' }
 		);
-		var item = this.compareNodeAttributes( nodeData, 0, this.newDoc, attributeChange );
+		var item = this.compareNodeAttributes( nodeData, 0, attributeChange );
 		if ( item ) {
 			this.descriptionItemsStack.push( item );
 		}
@@ -774,7 +774,6 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 							listNodeData :
 							listItemData,
 						0,
-						diffElement.newDoc,
 						item.diff.attributeChange[ listChangeType ]
 					);
 					if ( change ) {
@@ -975,7 +974,7 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 			this.addAttributesToElement(
 				nodeData, nodeRangeStart, { 'data-diff-action': 'structural-change' }
 			);
-			item = this.compareNodeAttributes( nodeData, nodeRangeStart, this.newDoc, info.attributeChange );
+			item = this.compareNodeAttributes( nodeData, nodeRangeStart, info.attributeChange );
 			if ( item ) {
 				this.descriptionItemsStack.push( item );
 			}
@@ -1142,11 +1141,10 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( inte
  *
  * @param {Array} data Linear data containing new node
  * @param {number} offset Offset in data
- * @param {ve.dm.Document} doc Document model
  * @param {Object} attributeChange Attribute change object containing oldAttributes and newAttributes
  * @return {OO.ui.OptionWidget|null} Change description item, or null if nothing to describe
  */
-ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, doc, attributeChange ) {
+ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, attributeChange ) {
 	var attributeChanges = this.constructor.static.compareAttributes( attributeChange.oldAttributes, attributeChange.newAttributes );
 
 	var changes = ve.dm.modelRegistry.lookup( data[ offset ].type ).static.describeChanges( attributeChanges, attributeChange.newAttributes, data[ offset ] );
