@@ -717,8 +717,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item insertion',
-				oldDoc: '<ul><li><p>foo</p></li><li><p>baz</p></li></ul>',
-				newDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li>baz</li></ul>',
+				newDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -730,8 +730,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item removal',
-				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
-				newDoc: '<ul><li><p>foo</p></li><li><p>baz</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
+				newDoc: '<ul><li>foo</li><li>baz</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -743,8 +743,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item removal from both ends',
-				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
-				newDoc: '<ul><li><p>bar</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
+				newDoc: '<ul><li>bar</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -756,8 +756,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item move up',
-				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li><li><p>quux</p></li></ul>',
-				newDoc: '<ul><li><p>baz</p></li><li><p>foo</p></li><li><p>bar</p></li><li><p>quux</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li><li>quux</li></ul>',
+				newDoc: '<ul><li>baz</li><li>foo</li><li>bar</li><li>quux</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -773,8 +773,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item move down',
-				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li><li><p>quux</p></li></ul>',
-				newDoc: '<ul></li><li><p>foo</p></li><li><p>baz</p><li><p>quux</p></li><li><p>bar</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li><li>quux</li></ul>',
+				newDoc: '<ul></li><li>foo</li><li>baz<li>quux</li><li>bar</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -790,8 +790,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item move and change',
-				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz baz</p></li><li><p>quux</p></li></ul>',
-				newDoc: '<ul><li><p>baz bat</p></li><li><p>foo</p></li><li><p>bar</p></li><li><p>quux</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz baz</li><li>quux</li></ul>',
+				newDoc: '<ul><li>baz bat</li><li>foo</li><li>bar</li><li>quux</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -807,8 +807,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item indentation',
-				oldDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
-				newDoc: '<ul><li><p>foo</p><ul><li><p>bar</p></li></ul></li><li><p>baz</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
+				newDoc: '<ul><li>foo<ul><li>bar</li></ul></li><li>baz</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -831,8 +831,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item deindentation',
-				oldDoc: '<ul><li><p>foo</p><ul><li><p>bar</p></li></ul></li><li><p>baz</p></li></ul>',
-				newDoc: '<ul><li><p>foo</p></li><li><p>bar</p></li><li><p>baz</p></li></ul>',
+				oldDoc: '<ul><li>foo<ul><li>bar</li></ul></li><li>baz</li></ul>',
+				newDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -853,8 +853,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item deindentation from numbered list to bullet',
-				oldDoc: '<ul><li><p>Foo</p><ol><li><p>Bar</p></li><li><p>Baz</p></li></ol></li></ul>',
-				newDoc: '<ul><li><p>Foo</p><ol><li><p>Bar</p></li></ol></li><li><p>Baz</p></li></ul>',
+				oldDoc: '<ul><li>Foo<ol><li>Bar</li><li>Baz</li></ol></li></ul>',
+				newDoc: '<ul><li>Foo<ol><li>Bar</li></ol></li><li>Baz</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -873,21 +873,21 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Full list replacement',
-				oldDoc: '<ul><li><p>one</p></li><li><p>two</p></li><li><p>three</p></li></ul>',
-				newDoc: '<ul><li><p>four</p></li><li><p>five</p></li><li><p>six</p></li></ul>',
+				oldDoc: '<ul><li>one</li><li>two</li><li>three</li></ul>',
+				newDoc: '<ul><li>four</li><li>five</li><li>six</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul data-diff-action="remove">' +
-							'<li><p>one</p></li>' +
-							'<li><p>two</p></li>' +
-							'<li><p>three</p></li>' +
+							'<li>one</li>' +
+							'<li>two</li>' +
+							'<li>three</li>' +
 						'</ul>' +
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul data-diff-action="insert">' +
-							'<li><p>four</p></li>' +
-							'<li><p>five</p></li>' +
-							'<li><p>six</p></li>' +
+							'<li>four</li>' +
+							'<li>five</li>' +
+							'<li>six</li>' +
 						'</ul>' +
 					'</div>'
 			},
@@ -940,8 +940,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item indentation with child type change',
-				oldDoc: '<ul><li><p>foo</p></li><li><h2>bar</h2></li><li><p>baz</p></li></ul>',
-				newDoc: '<ul><li><p>foo</p><ul><li><h3>bar</h3></li></ul></li><li><p>baz</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><li><h2>bar</h2></li><li>baz</li></ul>',
+				newDoc: '<ul><li>foo<ul><li><h3>bar</h3></li></ul></li><li>baz</li></ul>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ul>' +
@@ -1038,8 +1038,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Metadata change between list items (no diff)',
-				oldDoc: '<ul><li><p>foo</p></li><meta foo="a"><li><p>baz</p></li></ul>',
-				newDoc: '<ul><li><p>foo</p></li><meta foo="b"><li><p>baz</p></li></ul>',
+				oldDoc: '<ul><li>foo</li><meta foo="a"><li>baz</li></ul>',
+				newDoc: '<ul><li>foo</li><meta foo="b"><li>baz</li></ul>',
 				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
 			},
 			{
