@@ -120,6 +120,58 @@
 		return ve.createDeferred().resolve().promise();
 	};
 
+	var voidGroup = '(' + ve.elementTypes.void.join( '|' ) + ')';
+	var voidRegexp = new RegExp( '(<' + voidGroup + '[^>]*?(/?))>', 'g' );
+	var originalCreateDocumentFromHtml = ve.createDocumentFromHtml;
+	/**
+	 * Override ve.createDocumentFromHtml to validate HTML structure using an XML parser
+	 *
+	 * Some automatic fixes are applied to HTML to make it parseable,
+	 * but some errors will still be thrown, for example:
+	 * - Unescaped < or > in attributes
+	 *
+	 * If your test HTML is triggering a false positive warning, you can
+	 * disable this check with the ignoreXmlWarnings param.
+	 *
+	 * @param {string} html
+	 * @param {boolean} ignoreXmlWarnings Skip validation
+	 * @return {HTMLDocument}
+	 */
+	ve.createDocumentFromHtml = function ( html, ignoreXmlWarnings ) {
+		if ( html && !ignoreXmlWarnings ) {
+			var xml = '<xml>' +
+				html
+					// Close open void tags
+					.replace( voidRegexp, function () {
+						return arguments[ 3 ] ?
+							// self-closing - do nothing
+							arguments[ 0 ] :
+							// add close tag
+							arguments[ 0 ] + '</' + arguments[ 2 ] + '>';
+					} )
+					// Remove entities, named ones not recognised
+					.replace( /&[^;]+;/g, '' )
+					// Remove doctype
+					.replace( /<!doctype html>/i, '' ) +
+			'</xml>';
+			var xmlDoc;
+			// Firefox additionally throws an error
+			try {
+				xmlDoc = ( new DOMParser() ).parseFromString( xml, 'application/xml' );
+			} catch ( e ) {
+			}
+			if ( xmlDoc ) {
+				var parserError = xmlDoc.querySelector( 'parsererror' );
+				if ( parserError ) {
+					// eslint-disable-next-line no-console
+					console.warn( parserError.innerText, '\n', html, '\n', xml );
+				}
+			}
+		}
+
+		return originalCreateDocumentFromHtml( html );
+	};
+
 	function getSerializableData( model ) {
 		return model.getFullData( undefined, 'roundTrip' );
 	}
@@ -209,7 +261,7 @@
 
 		if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
 			var html = '<head>' + ( caseItem.head || defaultHead ) + '</head><body>' + caseItem.body + '</body>';
-			var htmlDoc = ve.createDocumentFromHtml( html );
+			var htmlDoc = ve.createDocumentFromHtml( html, caseItem.ignoreXmlWarnings );
 			var model = ve.dm.converter.getModelFromDom( htmlDoc, { fromClipboard: !!caseItem.fromClipboard } );
 			var actualDataReal = model.getFullData();
 			var actualDataMeta = getSerializableData( model );
@@ -242,7 +294,7 @@
 			}
 			// Check round-trip
 			var expectedRtDoc = caseItem.normalizedBody ?
-				ve.createDocumentFromHtml( caseItem.normalizedBody ) :
+				ve.createDocumentFromHtml( caseItem.normalizedBody, caseItem.ignoreXmlWarnings ) :
 				htmlDoc;
 			assert.equalDomElement( actualRtDoc.body, expectedRtDoc.body, msg + ': round-trip' );
 		}
@@ -274,12 +326,12 @@
 		var previewHtml = '<body>' + ( caseItem.previewBody || fromDataBody ) + '</body>';
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromModel( model ),
-			ve.createDocumentFromHtml( html ),
+			ve.createDocumentFromHtml( html, caseItem.ignoreXmlWarnings ),
 			msg
 		);
 		assert.equalDomElement(
 			ve.dm.converter.getDomFromModel( model, ve.dm.Converter.static.CLIPBOARD_MODE ),
-			ve.createDocumentFromHtml( clipboardHtml ),
+			ve.createDocumentFromHtml( clipboardHtml, caseItem.ignoreXmlWarnings ),
 			msg + ' (clipboard mode)'
 		);
 		// Make this conditional on previewBody being present until downstream test-suites have been fixed.
@@ -288,7 +340,7 @@
 		if ( caseItem.previewBody ) {
 			assert.equalDomElement(
 				ve.dm.converter.getDomFromModel( model, ve.dm.Converter.static.PREVIEW_MODE ),
-				ve.createDocumentFromHtml( previewHtml ),
+				ve.createDocumentFromHtml( previewHtml, caseItem.ignoreXmlWarnings ),
 				msg + ' (preview mode)'
 			);
 		}

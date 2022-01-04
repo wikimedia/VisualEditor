@@ -141,7 +141,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 
 	var afterPastePromise = ve.createDeferred().resolve().promise(),
-		htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tbody></table><p><b>Quux</b></p>',
+		htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tr></tbody></table><p><b>Quux</b></p>',
 		pasteData = {
 			'text/html': item.pasteHtml,
 			'text/plain': item.pasteText
@@ -1707,7 +1707,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				documentHtml: '<table><tbody><tr><td></td></tbody></table>',
+				documentHtml: '<table><tbody><tr><td></td></tr></tbody></table>',
 				// Firefox doesn't like using execCommand for this test for some reason
 				pasteTargetHtml: '<table><tbody><tr><td>X</td><td>Y</td><td>Z</td></tr></tbody></table>',
 				fromVe: true,
@@ -1729,7 +1729,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					fromCol: 0,
 					fromRow: 0
 				},
-				documentHtml: '<table><tbody><tr><td></td></tbody></table>',
+				documentHtml: '<table><tbody><tr><td></td></tr></tbody></table>',
 				pasteHtml: '<table><tbody><tr><td>X</td></tr><tr><td>Y</td></tr><tr><td>Z</td></tr></tbody></table>',
 				fromVe: true,
 				expectedRangeOrSelection: {

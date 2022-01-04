@@ -447,7 +447,7 @@ QUnit.test( 'createDocumentFromHtml', function ( assert ) {
 	];
 
 	cases.forEach( function ( caseItem ) {
-		var doc = ve.createDocumentFromHtml( caseItem.html );
+		var doc = ve.createDocumentFromHtml( caseItem.html, true );
 		var attributes = $( 'html', doc ).get( 0 ).attributes;
 		var attributesObject = {};
 		for ( var i = 0; i < attributes.length; i++ ) {
@@ -889,7 +889,7 @@ QUnit.test( 'normalizeNode', function ( assert ) {
 } );
 
 QUnit.test( 'getCommonAncestor', function ( assert ) {
-	var doc = ve.createDocumentFromHtml( '<html><div><p>AA<i><b>BB<img src="#"></b></i>CC</p>DD</div>EE' );
+	var doc = ve.createDocumentFromHtml( '<html><div><p>AA<i><b>BB<img src="#"></b></i>CC</p>DD</div>EE</html>' );
 	var cases = [
 		{ nodes: 'b b', ancestor: 'b' },
 		{ nodes: 'b i', ancestor: 'i' },
