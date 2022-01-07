@@ -7,6 +7,8 @@ In particular:
 * Safari: Similar to the Chrome <= 54 bug, but only triggered near the edge of a block node, or programmatically near an inline node.
 * Firefox: Similar to the Chrome <= 54 bug, but only triggered near the edge of a inline node
 * IE <= 10: Rectangles are incorrectly scaled when using the browser's zoom feature.
+* Chrome: Selection across a space which spans two lines results in a bounding rectangle which doesn't cover all the individual rectangles.
+* Firefox: Selections across a space which spans two lines, and text on the next line results in a bounding rectangle which doesn't cover all the individual rectangles.
 
 There are no known issues in Chrome >= 56, Edge and IE >= 11. In these browsers the library will fall through to native behaviour.
 
@@ -29,7 +31,7 @@ var RangeFix = require( 'rangefix' );
 **AMD**
 
 ```javascript
-define( [ 'rangefix' ], function( Rangefix ) {
+define( [ 'rangefix' ], function ( Rangefix ) {
 	// ...
 } );
 ```
@@ -45,15 +47,15 @@ define( [ 'rangefix' ], function( Rangefix ) {
 Replace instances of `Range.prototype.getClientRects`/`getBoundingClientRect` with `RangeFix.getClientRects`/`getBoundingClientRect`:
 
 ```javascript
-range = document.getSelection().getRangeAt( 0 );
+var range = document.getSelection().getRangeAt( 0 );
 
 // Before
-rects = range.getClientRects();
-boundingRect = range.getBoundingClientRect();
+var rects = range.getClientRects();
+var boundingRect = range.getBoundingClientRect();
 
 // After
-rects = RangeFix.getClientRects( range );
-boundingRect = RangeFix.getBoundingClientRect( range );
+var rects = RangeFix.getClientRects( range );
+var boundingRect = RangeFix.getBoundingClientRect( range );
 ```
 
 Demo
