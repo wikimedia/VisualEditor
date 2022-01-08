@@ -1062,7 +1062,7 @@ ve.dm.example.mergedCells = [
 ];
 
 ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th rowspan="">Bar</th></tr></thead>' +
-	'<tfoot><tr><td colspan=2>Baz</td></tr></tfoot><tbody><tr><td rowspan="02">Quux</td><td colspan="2 garbage">Whee</td></tr></tbody></table>';
+	'<tfoot><tr><td colspan="2">Baz</td></tr></tfoot><tbody><tr><td rowspan="02">Quux</td><td colspan="2 garbage">Whee</td></tr></tbody></table>';
 
 ve.dm.example.complexTable = [
 	{ type: 'table' },
@@ -3967,6 +3967,7 @@ ve.dm.example.domToDataCases = {
 	},
 	'comment escaping is normalized': {
 		body: '<p><!--&gt;Foo-bar--&gt;b&amp;r---></p>',
+		ignoreXmlWarnings: true,
 		data: [
 			{ type: 'paragraph' },
 			{ type: 'comment', attributes: { text: '>Foo-bar-->b&r-' } },
