@@ -30,6 +30,7 @@ ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, co
 	// Properties
 	this.floating = false;
 	this.floatable = !!config.floatable;
+	this.height = 0;
 	this.$window = $( this.getElementWindow() );
 	this.elementOffset = null;
 	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
