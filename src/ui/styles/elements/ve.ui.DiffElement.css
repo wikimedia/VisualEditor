@@ -7,8 +7,6 @@
 
 .ve-ui-diffElement {
 	position: relative;
-	/* Create new stacking context so we can use negative z-index elsewhere (T292491) */
-	z-index: 0;
 }
 
 .ve-ui-diffElement:after {
@@ -45,7 +43,7 @@
 .ve-ui-diffElement-overlays {
 	position: absolute;
 	opacity: 0.5;
-	z-index: 1;
+	z-index: 2;
 	pointer-events: none;
 }
 
@@ -176,10 +174,19 @@ figure[ data-diff-action='remove' ] > figcaption {
 
 [ data-diff-action='none' ]:not( [ data-diff-move ] ) {
 	opacity: 0.4;
-	/* opacity increases stacking order, so reduce it again */
-	z-index: -1;
-	position: relative;
 }
+
+/* stylelint-disable no-descending-specificity */
+[ data-diff-action='insert' ],
+[ data-diff-action='remove' ],
+[ data-diff-action='change-insert' ],
+[ data-diff-action='change-remove' ],
+[ data-diff-move ] {
+	/* Create new stacking context to match one created by opacity on data-diff-action=none (T190916) */
+	position: relative;
+	z-index: 1;
+}
+/* stylelint-enable no-descending-specificity */
 
 [ data-diff-move ] {
 	background: #eaecf0; /* base80 */
