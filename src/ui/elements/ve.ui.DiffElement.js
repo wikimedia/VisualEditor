@@ -217,8 +217,6 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 			headingContext = null,
 			headingContextSpacer = false;
 
-		var elements;
-
 		function isUnchanged( item ) {
 			return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
 		}
@@ -231,7 +229,7 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 		}
 
 		function render( item ) {
-			elements = diffElement[ item[ 0 ] ].apply( diffElement, item.slice( 1 ) );
+			var elements = diffElement[ item[ 0 ] ].apply( diffElement, item.slice( 1 ) );
 			while ( elements.length ) {
 				parentNode.appendChild(
 					parentNode.ownerDocument.adoptNode( elements[ 0 ] )
@@ -297,8 +295,6 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 		if ( needsSpacer && !lastItemSpacer ) {
 			addSpacer();
 		}
-
-		return elements;
 	}
 
 	var documentSpacerNode = document.createElement( 'div' );
@@ -1316,23 +1312,20 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 		DIFF_CHANGE_INSERT = ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT,
 		items = [],
 		start = 0, // The starting index for a range for building an annotation
-		end, annotatedLinearDiff,
-		domElement, domElements, originalDomElementsHash,
-		diffDoc, diffDocData,
 		diffElement = this;
 
 	// Make a new document from the diff
-	diffDocData = linearDiff[ 0 ][ 1 ];
+	var diffDocData = linearDiff[ 0 ][ 1 ];
 	var i, ilen;
 	for ( i = 1, ilen = linearDiff.length; i < ilen; i++ ) {
 		diffDocData = diffDocData.concat( linearDiff[ i ][ 1 ] );
 	}
-	diffDoc = this.newDoc.cloneWithData( diffDocData );
+	var diffDoc = this.newDoc.cloneWithData( diffDocData );
 
 	// Add spans with the appropriate attributes for removes and inserts
 	// TODO: do insert and remove outside of loop
 	for ( i = 0; i < ilen; i++ ) {
-		end = start + linearDiff[ i ][ 1 ].length;
+		var end = start + linearDiff[ i ][ 1 ].length;
 		if ( start !== end ) {
 			var range = new ve.Range( start, end );
 			var type = linearDiff[ i ][ 0 ];
@@ -1360,9 +1353,9 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 						annType = 'textStyle/span';
 						break;
 				}
-				domElement = document.createElement( domElementType );
+				var domElement = document.createElement( domElementType );
 				domElement.setAttribute( 'data-diff-action', typeAsString );
-				domElements = [ domElement ];
+				var domElements = [ domElement ];
 
 				var changes = [];
 				if ( linearDiff[ i ].annotationChanges ) {
@@ -1403,7 +1396,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 					items.push( item );
 				}
 
-				originalDomElementsHash = diffDoc.getStore().hash(
+				var originalDomElementsHash = diffDoc.getStore().hash(
 					domElements,
 					domElements.map( ve.getNodeHtml ).join( '' )
 				);
@@ -1455,7 +1448,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff ) {
 
 	// Merge the stores and get the data
 	this.newDoc.getStore().merge( diffDoc.getStore() );
-	annotatedLinearDiff = diffDoc.getData( { start: 0, end: diffDoc.getLength() } );
+	var annotatedLinearDiff = diffDoc.getData( { start: 0, end: diffDoc.getLength() } );
 
 	return annotatedLinearDiff;
 };
