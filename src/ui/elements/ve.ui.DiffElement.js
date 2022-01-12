@@ -202,36 +202,26 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
  * Process a diff queue, skipping over sequential nodes with no changes
  *
  * @param {Array} queue Diff queue
- * @param {HTMLElement} parentNode Parent node to render to
- * @param {HTMLElement} spacerNode Spacer node template
  */
-ve.ui.DiffElement.prototype.processQueue = function processQueue( queue, parentNode, spacerNode ) {
-	var diffElement = this,
-		hasChanges = false,
+ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
+	var hasChanges = false,
 		lastItemSpacer = false,
 		needsSpacer = false,
 		headingContext = null,
-		headingContextSpacer = false;
+		headingContextSpacer = false,
+		processedQueue = [];
 
 	function isUnchanged( item ) {
 		return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
 	}
 
 	function addSpacer() {
-		parentNode.appendChild(
-			parentNode.ownerDocument.adoptNode( spacerNode.cloneNode( true ) )
-		);
+		processedQueue.push( null );
 		lastItemSpacer = true;
 	}
 
-	function render( item ) {
-		var elements = diffElement[ item[ 0 ] ].apply( diffElement, item.slice( 1 ) );
-		while ( elements.length ) {
-			parentNode.appendChild(
-				parentNode.ownerDocument.adoptNode( elements[ 0 ] )
-			);
-			elements.shift();
-		}
+	function addItem( item ) {
+		processedQueue.push( item );
 		lastItemSpacer = false;
 	}
 
@@ -257,7 +247,7 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue, parentN
 					if ( headingContextSpacer ) {
 						addSpacer();
 					}
-					render( headingContext );
+					addItem( headingContext );
 				} else if ( isHeading( queue[ k + 1 ] ) ) {
 					// Skipping the context header becuase the next node is a heading
 					// so reinstate the spacer.
@@ -269,7 +259,7 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue, parentN
 				addSpacer();
 				needsSpacer = false;
 			}
-			render( queue[ k ] );
+			addItem( queue[ k ] );
 
 			if ( isHeading( queue[ k ] ) ) {
 				// Heading was rendered, no need to show it as context
@@ -291,6 +281,32 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue, parentN
 	if ( hasChanges && needsSpacer && !lastItemSpacer ) {
 		addSpacer();
 	}
+
+	return processedQueue;
+};
+
+/**
+ * @param {Array} queue Diff queue
+ * @param {HTMLElement} parentNode Parent node to render to
+ * @param {HTMLElement} spacerNode Spacer node template
+ */
+ve.ui.DiffElement.prototype.renderQueue = function ( queue, parentNode, spacerNode ) {
+	var diffElement = this;
+	return queue.forEach( function ( item ) {
+		if ( item ) {
+			var elements = diffElement[ item[ 0 ] ].apply( diffElement, item.slice( 1 ) );
+			while ( elements.length ) {
+				parentNode.appendChild(
+					parentNode.ownerDocument.adoptNode( elements[ 0 ] )
+				);
+				elements.shift();
+			}
+		} else {
+			parentNode.appendChild(
+				parentNode.ownerDocument.adoptNode( spacerNode.cloneNode( true ) )
+			);
+		}
+	} );
 };
 
 /**
@@ -350,7 +366,10 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 		}
 
 		this.descriptionItemsStack = [];
-		this.processQueue( internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
+		this.renderQueue(
+			this.processQueue( internalListDiffQueue ),
+			referencesListDiffDiv, internalListSpacerNode
+		);
 		referencesListDiffs[ group ] = {
 			element: referencesListDiffDiv,
 			action: internalListGroup.changes ? 'change' : 'none',
@@ -406,7 +425,10 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 		}
 	}
 
-	this.processQueue( diffQueue, documentNode, documentSpacerNode );
+	this.renderQueue(
+		this.processQueue( diffQueue ),
+		documentNode, documentSpacerNode
+	);
 	this.descriptions.addItems( this.descriptionItemsStack );
 	this.descriptionItemsStack = null;
 
