@@ -178,13 +178,13 @@ ve.dm.example.textStyleClasses = 've-ce-annotation ve-ce-textStyleAnnotation';
 
 ve.dm.example.commentNodePreview = function ( text ) {
 	return '<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode ve-ce-focusableNode-invisible" contenteditable="false" title="' + text + '">' +
-		'<span class="ve-ce-focusableNode-invisibleIcon oo-ui-widget oo-ui-widget-enabled oo-ui-buttonElement oo-ui-buttonElement-frameless oo-ui-iconElement oo-ui-buttonWidget oo-ui-labelElement" aria-disabled="false">' +
-			'<a class="oo-ui-buttonElement-button" role="button" rel="nofollow">' +
-				'<span class="oo-ui-iconElement-icon oo-ui-icon-notice"></span>' +
-				'<span class="oo-ui-labelElement-label">' + text + '</span>' +
-				'<span class="oo-ui-indicatorElement-indicator oo-ui-indicatorElement-noIndicator"></span>' +
-			'</a>' +
-		'</span>' +
+		( new OO.ui.ButtonWidget( {
+			// Copied from ve.ce.FocusableNode#createInvisibleIcon
+			classes: [ 've-ce-focusableNode-invisibleIcon' ],
+			framed: false,
+			tabIndex: null,
+			icon: 'notice'
+		} ).setLabel( text ) ).$element[ 0 ].outerHTML +
 	'</span>';
 };
 
@@ -3963,7 +3963,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment="-Foo-bar-->b&amp;r-">&nbsp;</span></p>',
-		previewBody: '<p>' + ve.dm.example.commentNodePreview( '-Foo-bar--&gt;b&amp;r-' ) + '</p>'
+		previewBody: '<p>' + ve.dm.example.commentNodePreview( '-Foo-bar-->b&r-' ) + '</p>'
 	},
 	'comment escaping is normalized': {
 		body: '<p><!--&gt;Foo-bar--&gt;b&amp;r---></p>',
@@ -3978,7 +3978,7 @@ ve.dm.example.domToDataCases = {
 		],
 		normalizedBody: '<p><!--&#x3E;Foo&#x2D;bar&#x2D;&#x2D;&#x3E;b&#x26;r&#x2D;--></p>',
 		clipboardBody: '<p><span rel="ve:Comment" data-ve-comment=">Foo-bar-->b&amp;r-">&nbsp;</span></p>',
-		previewBody: '<p>' + ve.dm.example.commentNodePreview( '&gt;Foo-bar--&gt;b&amp;r-' ) + '</p>'
+		previewBody: '<p>' + ve.dm.example.commentNodePreview( '>Foo-bar-->b&r-' ) + '</p>'
 	},
 	'comment as a child of node that can not handle comments (list)': {
 		body: '<ul><li>foo</li><!--bar--></ul>',
