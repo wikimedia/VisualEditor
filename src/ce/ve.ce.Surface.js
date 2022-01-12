@@ -4200,6 +4200,11 @@ ve.ce.Surface.prototype.selectLastSelectableContentOffset = function () {
  * Items with custom positioning may throw off results given by this method, so
  * it should only be treated as an approximation.
  *
+ * If the document doesn't contain any content offsets (e.g. it only contains
+ * a transclusion), the returned range will cover the entire document. If the
+ * single element is particularly large this might be very distinct from the
+ * visible content.
+ *
  * @param {boolean} [covering] Get a range which fully covers the viewport, otherwise
  *  get a range which is full contained within the viewport.
  * @param {number} [padding=0] Increase computed size of viewport by this amount at the top and bottom
@@ -4249,6 +4254,11 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 				mid = side === 'top' ? nodeRange.end : nodeRange.start;
 			} else {
 				mid = data.getNearestContentOffset( mid );
+				if ( mid === -1 ) {
+					// There is no content offset available in this document.
+					// Return early, with a range that'll be covering the entire document.
+					return side === 'top' ? end : start;
+				}
 			}
 
 			// Try to create a selection of one character for more reliable
