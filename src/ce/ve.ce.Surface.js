@@ -4238,7 +4238,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 		return ignoreChildrenNode;
 	}
 
-	function binarySearch( offset, range, side ) {
+	function binarySearch( offset, range, side, isStart ) {
 		var start = range.start,
 			end = range.end,
 			lastLength = Infinity;
@@ -4257,21 +4257,48 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 				if ( mid === -1 ) {
 					// There is no content offset available in this document.
 					// Return early, with a range that'll be covering the entire document.
-					return ( side === 'top' ) === covering ? end : start;
+					return isStart ? start : end;
 				}
+				// Never search outisde the original range
+				mid = Math.max( Math.min( mid, range.end ), range.start );
 			}
 
-			// Try to create a selection of one character for more reliable
-			// behaviour when text wraps.
-			var contentRange;
-			if ( data.isContentOffset( mid + 1 ) ) {
-				contentRange = new ve.Range( mid, mid + 1 );
-			} else if ( data.isContentOffset( mid - 1 ) ) {
-				contentRange = new ve.Range( mid - 1, mid );
-			} else {
-				contentRange = new ve.Range( mid );
+			var rect = null;
+			while ( !rect ) {
+				// Try to create a selection of one character for more reliable
+				// behaviour when text wraps.
+				var contentRange;
+				if ( data.isContentOffset( mid + 1 ) ) {
+					contentRange = new ve.Range( mid, mid + 1 );
+				} else if ( data.isContentOffset( mid - 1 ) ) {
+					contentRange = new ve.Range( mid - 1, mid );
+				} else {
+					contentRange = new ve.Range( mid );
+				}
+				rect = surface.getSelection( new ve.dm.LinearSelection( contentRange ) ).getSelectionBoundingRect();
+
+				// Node at contentRange is not rendered, find rendered parent
+				if ( !rect ) {
+					if ( !midNode ) {
+						throw new Error( 'Offset has no rendered node container' );
+					}
+					var midNodeRange = midNode.getOuterRange();
+					// Find the nearest content offset outside the invisible node
+					mid = side === 'top' ?
+						data.getRelativeContentOffset( midNodeRange.end, 1 ) :
+						data.getRelativeContentOffset( midNodeRange.start, -1 );
+
+					// Never search outisde the original range
+					mid = Math.max( Math.min( mid, range.end ), range.start );
+
+					// Check we didn't end up inside the invisible node again
+					if ( midNodeRange.containsRange( new ve.Range( mid ) ) ) {
+						return isStart ? start : end;
+					}
+					// Ensure we check parent in next iteration
+					midNode = midNode.parent;
+				}
 			}
-			var rect = surface.getSelection( new ve.dm.LinearSelection( contentRange ) ).getSelectionBoundingRect();
 			if ( rect[ side ] >= offset ) {
 				end = mid;
 				range = new ve.Range( range.start, end );
@@ -4284,8 +4311,8 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 	}
 
 	return new ve.Range(
-		binarySearch( top, documentRange, covering ? 'bottom' : 'top' ),
-		binarySearch( bottom, documentRange, covering ? 'top' : 'bottom' )
+		binarySearch( top, documentRange, covering ? 'bottom' : 'top', true ),
+		binarySearch( bottom, documentRange, covering ? 'top' : 'bottom', false )
 	);
 };
 
