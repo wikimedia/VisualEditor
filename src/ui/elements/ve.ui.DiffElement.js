@@ -227,8 +227,10 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
 
 	function isHeading( item ) {
 		switch ( item[ 0 ] ) {
+			case 'getNodeData':
 			case 'getNodeElements':
 				return item[ 1 ] instanceof ve.dm.HeadingNode;
+			case 'getChangedNodeData':
 			case 'getChangedNodeElements':
 				return item[ 3 ] instanceof ve.dm.HeadingNode;
 		}
@@ -665,20 +667,32 @@ ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, l
  */
 ve.ui.DiffElement.prototype.getChangedDocListData = function ( newListNode, diff ) {
 	var diffData = [],
+		diffQueue = [],
 		diffElement = this;
+
+	var spacerData = [ { type: 'div' }, '⋮', { type: '/div' } ];
+	this.addAttributesToElement( spacerData, 0, { class: 've-ui-diffElement-spacer' } );
 
 	this.iterateDiff( diff, {
 		insert: function ( newNode ) {
-			ve.batchPush( diffData, diffElement.getNodeData( newNode, 'insert' ) );
+			diffQueue.push( [ 'getNodeData', newNode, 'insert', null ] );
 		},
 		remove: function ( oldNode ) {
-			ve.batchPush( diffData, diffElement.getNodeData( oldNode, 'remove' ) );
+			diffQueue.push( [ 'getNodeData', oldNode, 'remove', null ] );
 		},
 		move: function ( newNode, move ) {
-			ve.batchPush( diffData, diffElement.getNodeData( newNode, 'none', move ) );
+			diffQueue.push( [ 'getNodeData', newNode, 'none', move ] );
 		},
 		changed: function ( nodeDiff, oldNode, newNode, move ) {
-			ve.batchPush( diffData, diffElement.getChangedNodeData( nodeDiff, oldNode, newNode, move ) );
+			diffQueue.push( [ 'getChangedNodeData', nodeDiff, oldNode, newNode, move ] );
+		}
+	} );
+
+	this.processQueue( diffQueue ).forEach( function ( diffItem ) {
+		if ( diffItem ) {
+			ve.batchPush( diffData, diffElement[ diffItem[ 0 ] ].apply( diffElement, diffItem.slice( 1 ) ) );
+		} else {
+			ve.batchPush( diffData, spacerData.slice() );
 		}
 	} );
 

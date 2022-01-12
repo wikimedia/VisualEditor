@@ -157,6 +157,20 @@ QUnit.test( 'Diffing', function ( assert ) {
 					spacer
 			},
 			{
+				msg: 'Only change-adjacent paragraphs are shown (div wrapped doc)',
+				oldDoc: '<div><p>foo</p><p>bar</p><p>baz</p></div>',
+				newDoc: '<div><p>boo</p><p>bar</p><p>baz</p></div>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<div>' +
+							'<p data-diff-action="remove">foo</p>' +
+							'<p data-diff-action="insert">boo</p>' +
+							'<p data-diff-action="none">bar</p>' +
+							spacer +
+						'</div>' +
+					'</div>'
+			},
+			{
 				msg: 'Heading context always shown',
 				oldDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
@@ -170,6 +184,22 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>' +
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<p data-diff-action="insert">baq</p>' +
+					'</div>'
+			},
+			{
+				msg: 'Heading context always shown (div wrapped doc)',
+				oldDoc: '<div><p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p></div>',
+				newDoc: '<div><p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baq</p></div>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<div>' +
+							spacer +
+							'<h2 data-diff-action="none">context</h2>' +
+							spacer +
+							'<p data-diff-action="none">bar</p>' +
+							'<p data-diff-action="remove">baz</p>' +
+							'<p data-diff-action="insert">baq</p>' +
+						'</div>' +
 					'</div>'
 			},
 			{
