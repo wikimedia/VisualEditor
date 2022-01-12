@@ -199,103 +199,110 @@ ve.ui.DiffElement.prototype.positionDescriptions = function () {
 };
 
 /**
+ * Process a diff queue, skipping over sequential nodes with no changes
+ *
+ * @param {Array} queue Diff queue
+ * @param {HTMLElement} parentNode Parent node to render to
+ * @param {HTMLElement} spacerNode Spacer node template
+ */
+ve.ui.DiffElement.prototype.processQueue = function processQueue( queue, parentNode, spacerNode ) {
+	var diffElement = this,
+		hasChanges = false,
+		lastItemSpacer = false,
+		needsSpacer = false,
+		headingContext = null,
+		headingContextSpacer = false;
+
+	function isUnchanged( item ) {
+		return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
+	}
+
+	function addSpacer() {
+		parentNode.appendChild(
+			parentNode.ownerDocument.adoptNode( spacerNode.cloneNode( true ) )
+		);
+		lastItemSpacer = true;
+	}
+
+	function render( item ) {
+		var elements = diffElement[ item[ 0 ] ].apply( diffElement, item.slice( 1 ) );
+		while ( elements.length ) {
+			parentNode.appendChild(
+				parentNode.ownerDocument.adoptNode( elements[ 0 ] )
+			);
+			elements.shift();
+		}
+		lastItemSpacer = false;
+	}
+
+	function isHeading( item ) {
+		switch ( item[ 0 ] ) {
+			case 'getNodeElements':
+				return item[ 1 ] instanceof ve.dm.HeadingNode;
+			case 'getChangedNodeElements':
+				return item[ 3 ] instanceof ve.dm.HeadingNode;
+		}
+	}
+
+	for ( var k = 0, klen = queue.length; k < klen; k++ ) {
+		if (
+			!isUnchanged( queue[ k - 1 ] ) ||
+			!isUnchanged( queue[ k ] ) ||
+			!isUnchanged( queue[ k + 1 ] )
+		) {
+			hasChanges = true;
+			if ( headingContext ) {
+				// Don't render headingContext if current or next node is a heading
+				if ( !isHeading( queue[ k ] ) && !isHeading( queue[ k + 1 ] ) ) {
+					if ( headingContextSpacer ) {
+						addSpacer();
+					}
+					render( headingContext );
+				} else if ( isHeading( queue[ k + 1 ] ) ) {
+					// Skipping the context header becuase the next node is a heading
+					// so reinstate the spacer.
+					needsSpacer = true;
+				}
+				headingContext = null;
+			}
+			if ( needsSpacer && !lastItemSpacer ) {
+				addSpacer();
+				needsSpacer = false;
+			}
+			render( queue[ k ] );
+
+			if ( isHeading( queue[ k ] ) ) {
+				// Heading was rendered, no need to show it as context
+				headingContext = null;
+			}
+		} else {
+			// Heading skipped, maybe show as context later
+			if ( isHeading( queue[ k ] ) ) {
+				headingContext = isUnchanged( queue[ k ] ) ? queue[ k ] : null;
+				headingContextSpacer = needsSpacer;
+				needsSpacer = false;
+			} else {
+				needsSpacer = true;
+			}
+		}
+	}
+
+	// Trailing spacer
+	if ( hasChanges && needsSpacer && !lastItemSpacer ) {
+		addSpacer();
+	}
+};
+
+/**
  * Render the diff
  *
  * @param {Object} diff Object describing the diff
  * @param {Object} internalListDiff Object describing the diff of the internal list
  */
 ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
-	var diffElement = this,
-		documentNode = this.$document[ 0 ],
-		hasChanges = false,
+	var documentNode = this.$document[ 0 ],
 		diffQueue = [],
 		internalListDiffQueue = [];
-
-	function processQueue( queue, parentNode, spacerNode ) {
-		var lastItemSpacer = false,
-			needsSpacer = false,
-			headingContext = null,
-			headingContextSpacer = false;
-
-		function isUnchanged( item ) {
-			return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
-		}
-
-		function addSpacer() {
-			parentNode.appendChild(
-				parentNode.ownerDocument.adoptNode( spacerNode.cloneNode( true ) )
-			);
-			lastItemSpacer = true;
-		}
-
-		function render( item ) {
-			var elements = diffElement[ item[ 0 ] ].apply( diffElement, item.slice( 1 ) );
-			while ( elements.length ) {
-				parentNode.appendChild(
-					parentNode.ownerDocument.adoptNode( elements[ 0 ] )
-				);
-				elements.shift();
-			}
-			lastItemSpacer = false;
-		}
-
-		function isHeading( item ) {
-			switch ( item[ 0 ] ) {
-				case 'getNodeElements':
-					return item[ 1 ] instanceof ve.dm.HeadingNode;
-				case 'getChangedNodeElements':
-					return item[ 3 ] instanceof ve.dm.HeadingNode;
-			}
-		}
-
-		for ( var k = 0, klen = queue.length; k < klen; k++ ) {
-			if (
-				!isUnchanged( queue[ k - 1 ] ) ||
-				!isUnchanged( queue[ k ] ) ||
-				!isUnchanged( queue[ k + 1 ] )
-			) {
-				hasChanges = true;
-				if ( headingContext ) {
-					// Don't render headingContext if current or next node is a heading
-					if ( !isHeading( queue[ k ] ) && !isHeading( queue[ k + 1 ] ) ) {
-						if ( headingContextSpacer ) {
-							addSpacer();
-						}
-						render( headingContext );
-					} else if ( isHeading( queue[ k + 1 ] ) ) {
-						// Skipping the context header becuase the next node is a heading
-						// so reinstate the spacer.
-						needsSpacer = true;
-					}
-					headingContext = null;
-				}
-				if ( needsSpacer && !lastItemSpacer ) {
-					addSpacer();
-					needsSpacer = false;
-				}
-				render( queue[ k ] );
-
-				if ( isHeading( queue[ k ] ) ) {
-					// Heading was rendered, no need to show it as context
-					headingContext = null;
-				}
-			} else {
-				// Heading skipped, maybe show as context later
-				if ( isHeading( queue[ k ] ) ) {
-					headingContext = isUnchanged( queue[ k ] ) ? queue[ k ] : null;
-					headingContextSpacer = needsSpacer;
-					needsSpacer = false;
-				} else {
-					needsSpacer = true;
-				}
-			}
-		}
-
-		// Trailing spacer
-		if ( needsSpacer && !lastItemSpacer ) {
-			addSpacer();
-		}
-	}
 
 	var documentSpacerNode = document.createElement( 'div' );
 	documentSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer' );
@@ -343,7 +350,7 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 		}
 
 		this.descriptionItemsStack = [];
-		processQueue( internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
+		this.processQueue( internalListDiffQueue, referencesListDiffDiv, internalListSpacerNode );
 		referencesListDiffs[ group ] = {
 			element: referencesListDiffDiv,
 			action: internalListGroup.changes ? 'change' : 'none',
@@ -399,13 +406,13 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 		}
 	}
 
-	processQueue( diffQueue, documentNode, documentSpacerNode );
+	this.processQueue( diffQueue, documentNode, documentSpacerNode );
 	this.descriptions.addItems( this.descriptionItemsStack );
 	this.descriptionItemsStack = null;
 
 	ve.resolveAttributes( documentNode, this.newDoc.getHtmlDocument(), ve.dm.Converter.static.computedAttributes );
 
-	if ( !hasChanges ) {
+	if ( !documentNode.children.length ) {
 		var noChanges = document.createElement( 'div' );
 		noChanges.setAttribute( 'class', 've-ui-diffElement-no-changes' );
 		noChanges.appendChild( document.createTextNode( ve.msg( 'visualeditor-diff-no-changes' ) ) );
