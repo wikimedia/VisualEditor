@@ -4285,8 +4285,10 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
  * @param {boolean} [fallbackToFirst] Whether to select the first content offset if a visible offset can't be found
  */
 ve.ce.Surface.prototype.selectFirstVisibleContentOffset = function ( fallbackToFirst ) {
-	// Add about one line height of padding so the browser doesn't try to scroll the line above the cursor into view
-	var visibleRange = this.getViewportRange( false, -20 );
+	// When scrolled. add about one line height of padding so the browser doesn't try to scroll the line above the cursor into view
+	var dimensions = this.surface.getViewportDimensions();
+	var offset = dimensions && dimensions.top ? -20 : 0;
+	var visibleRange = this.getViewportRange( false, offset );
 	if ( visibleRange ) {
 		this.selectRelativeSelectableContentOffset( Math.max( visibleRange.start - 1, 0 ), 1, visibleRange.end );
 	}
