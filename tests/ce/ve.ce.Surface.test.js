@@ -2447,6 +2447,95 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 	} );
 } );
 
+QUnit.test( 'getViewportRange', function ( assert ) {
+	var doc = ve.dm.example.createExampleDocumentFromData( [].concat(
+		{ type: 'paragraph' },
+		// 1
+		'F', 'o', 'o',
+		// 4
+		{ type: '/paragraph' },
+		{ type: 'alienBlock', originalDomElements: $( '<div style="width: 100px; height: 1000px;">' ).toArray() },
+		// Vertiical offset: Approx. 34 - 1034
+		{ type: '/alienBlock' },
+		{ type: 'paragraph' },
+		// 8
+		'B', 'a', 'r',
+		// 11
+		{ type: '/paragraph' },
+		{ type: 'alienBlock', originalDomElements: $( '<div style="width: 100px; height: 1000px;">' ).toArray() },
+		// Vertiical offset: Approx. 1084 - 2084
+		{ type: '/alienBlock' },
+		{ type: 'paragraph' },
+		// 15
+		'B', 'a', 'z',
+		// 18
+		{ type: '/paragraph' },
+		[
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	) );
+	var cases = [
+		{
+			msg: 'Document with only an alien returns whole range',
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
+				{ type: 'alienBlock' },
+				{ type: '/alienBlock' },
+				[
+					{ type: 'internalList' },
+					{ type: '/internalList' }
+				]
+			) ),
+			expectedContains: new ve.Range( 0, 2 ),
+			expectedCovering: new ve.Range( 0, 2 )
+		},
+		{
+			msg: 'Viewport from top of page to first alien',
+			htmlOrDoc: doc,
+			viewportDimensions: { top: 0, bottom: 500 },
+			expectedContains: new ve.Range( 1, 4 ),
+			expectedCovering: new ve.Range( 0, 8 )
+		},
+		{
+			msg: 'Viewport from to first alien to second alien',
+			htmlOrDoc: doc,
+			viewportDimensions: { top: 500, bottom: 1600 },
+			expectedContains: new ve.Range( 8, 10 ),
+			expectedCovering: new ve.Range( 4, 15 )
+		},
+		{
+			msg: 'Viewport from to second alien to end of document',
+			htmlOrDoc: doc,
+			viewportDimensions: { top: 1600, bottom: 3000 },
+			expectedContains: new ve.Range( 15, 18 ),
+			expectedCovering: new ve.Range( 10, 19 )
+		}
+	];
+
+	cases.forEach( function ( caseItem ) {
+		var htmlOrDoc = caseItem.htmlOrDoc;
+		var view = typeof htmlOrDoc === 'string' ?
+			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
+			( htmlOrDoc instanceof ve.ce.Surface ? htmlOrDoc : ve.test.utils.createSurfaceViewFromDocument( htmlOrDoc || ve.dm.example.createExampleDocument() ) );
+
+		view.surface.getViewportDimensions = function () {
+			return ve.extendObject( { top: 0, bottom: 1000, left: 0, right: 1000 }, caseItem.viewportDimensions );
+		};
+
+		assert.equalRange(
+			view.getViewportRange( false ),
+			caseItem.expectedContains,
+			caseItem.msg + ': contains'
+		);
+
+		assert.equalRange(
+			view.getViewportRange( true ),
+			caseItem.expectedCovering,
+			caseItem.msg + ': covering'
+		);
+	} );
+} );
+
 /* Methods with return values */
 // TODO: ve.ce.Surface#getSelection
 // TODO: ve.ce.Surface#getSurface

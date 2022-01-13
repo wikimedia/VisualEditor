@@ -4257,7 +4257,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 				if ( mid === -1 ) {
 					// There is no content offset available in this document.
 					// Return early, with a range that'll be covering the entire document.
-					return side === 'top' ? end : start;
+					return ( side === 'top' ) === covering ? end : start;
 				}
 			}
 
@@ -4272,7 +4272,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 				contentRange = new ve.Range( mid );
 			}
 			var rect = surface.getSelection( new ve.dm.LinearSelection( contentRange ) ).getSelectionBoundingRect();
-			if ( rect[ side ] > offset ) {
+			if ( rect[ side ] >= offset ) {
 				end = mid;
 				range = new ve.Range( range.start, end );
 			} else {
