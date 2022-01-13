@@ -874,7 +874,7 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
 	if ( this.getModel().getSelection().isNull() ) {
 		// If the document is being focused by a non-mouse/non-touch user event,
 		// find the first content offset and place the cursor there.
-		this.selectFirstSelectableContentOffset();
+		this.selectFirstVisibleContentOffset();
 	}
 	this.eventSequencer.attach( this.$element );
 	this.surfaceObserver.startTimerLoop();
