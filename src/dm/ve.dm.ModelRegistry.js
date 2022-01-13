@@ -271,7 +271,7 @@
 				for ( var k = 0; k < matchTypes.length; k++ ) {
 					if (
 						matchTypes[ k ] instanceof RegExp &&
-						type.match( matchTypes[ k ] ) &&
+						matchTypes[ k ].test( type ) &&
 						(
 							( tag === '' && reg.registry[ models[ j ] ].static.matchTagNames === null ) ||
 							( reg.registry[ models[ j ] ].static.matchTagNames || [] ).indexOf( tag ) !== -1
@@ -297,7 +297,7 @@
 			allowedTypes = allowedTypes.concat( matchTypes );
 
 			function checkType( rule, type ) {
-				return rule instanceof RegExp ? !!type.match( rule ) : rule === type;
+				return rule instanceof RegExp ? rule.test( type ) : rule === type;
 			}
 
 			for ( var j = 0; j < types.length; j++ ) {

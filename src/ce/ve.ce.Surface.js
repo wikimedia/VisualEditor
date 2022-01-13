@@ -2835,7 +2835,7 @@ ve.ce.Surface.prototype.afterPasteSanitizeExternal = function ( $element ) {
 	if ( metadataIdRegExp ) {
 		$element.find( '[id]' ).each( function () {
 			var $this = $( this );
-			if ( $this.attr( 'id' ).match( metadataIdRegExp ) ) {
+			if ( metadataIdRegExp.test( $this.attr( 'id' ) ) ) {
 				$this.removeAttr( 'id' );
 			}
 		} );

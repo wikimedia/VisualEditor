@@ -724,10 +724,10 @@ ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
 ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 	var start = range.start,
 		end = range.end;
-	while ( this.getCharacterData( end - 1 ).match( /\s/ ) ) {
+	while ( /^\s+$/.test( this.getCharacterData( end - 1 ) ) ) {
 		end--;
 	}
-	while ( start < end && this.getCharacterData( start ).match( /\s/ ) ) {
+	while ( start < end && /^\s+$/.test( this.getCharacterData( start ) ) ) {
 		start++;
 	}
 	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
@@ -1381,7 +1381,9 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				// Get last open type from the stack
 				!ve.dm.nodeFactory.doesNodeHaveSignificantWhitespace( elementStack[ elementStack.length - 1 ].type )
 			) {
-				if ( this.getCharacterData( i + 1 ).match( /\s/ ) || this.getCharacterData( i - 1 ).match( /\s/ ) ) {
+				if ( /^\s+$/.test( this.getCharacterData( i + 1 ) ) ||
+					/^\s+$/.test( this.getCharacterData( i - 1 ) )
+				) {
 					// If whitespace-adjacent, remove the newline to avoid double spaces
 					this.splice( i, 1 );
 					len--;
