@@ -450,7 +450,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		return;
 	}
 
-	if ( !this.isInContentEditable() ) {
+	if ( this.isInContentEditableDisabled() ) {
 		return;
 	}
 
@@ -497,7 +497,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
  * @param {jQuery.Event} e Double click event
  */
 ve.ce.FocusableNode.prototype.onFocusableDblClick = function () {
-	if ( !this.isInContentEditable() ) {
+	if ( this.isInContentEditableDisabled() ) {
 		return;
 	}
 	if ( this.getModel().isEditable() ) {
@@ -552,7 +552,7 @@ ve.ce.FocusableNode.prototype.onFocusableDragEnd = function () {
  * @param {jQuery.Event} e Mouse enter event
  */
 ve.ce.FocusableNode.prototype.onFocusableMouseEnter = function () {
-	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing && this.isInContentEditable() ) {
+	if ( !this.root.getSurface().dragging && !this.root.getSurface().resizing && !this.isInContentEditableDisabled() ) {
 		this.createHighlights();
 	}
 };
@@ -845,4 +845,20 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
 		}
 	} );
 	return visible;
+};
+
+/**
+ * Check if the node is inside a ve.ce.ContentEditableNode with editing disabled
+ *
+ * Ignore nodes which just disable CE in the DOM manually (e.g. TableNode)
+ * as focusables should still be highlightable in these.
+ *
+ * @return {boolean} Editing disabled
+ */
+ve.ce.FocusableNode.prototype.isInContentEditableDisabled = function () {
+	return !!this.traverseUpstream( function ( node ) {
+		return !(
+			node.isContentEditable && !node.isContentEditable()
+		);
+	} );
 };
