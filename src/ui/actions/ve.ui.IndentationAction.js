@@ -219,15 +219,12 @@ ve.ui.IndentationAction.prototype.unindentListItem = function ( listItem ) {
 		surfaceModel.getLinearFragment( new ve.Range( listItemRange.start + 1, listItemRange.end - 1 ), true )
 			.unwrapNodes( 2 );
 
-		// Ensure paragraphs are not generated paragraphs now
-		// that they are not in a list
+		// Ensure paragraphs are not generated paragraphs now that they are not in a list
 		var children = fragment.getSiblingNodes();
 		for ( var i = 0, length = children.length; i < length; i++ ) {
 			var child = children[ i ].node;
-			if ( child.type === 'paragraph' ) {
-				documentModel.data.modifyData( child.getOuterRange().start, function ( item ) {
-					ve.deleteProp( item, 'internal', 'generated' );
-				} );
+			if ( child.type === 'paragraph' && ve.getProp( child.element, 'internal', 'generated' ) ) {
+				surfaceModel.getLinearFragment( child.getOuterRange(), true ).convertNodes( 'paragraph', child.getAttributes(), {} );
 			}
 		}
 	} else {

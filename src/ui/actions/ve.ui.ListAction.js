@@ -158,7 +158,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 			var itemElement = ve.dm.modelRegistry.lookup( listType ).static.createItem();
 			surfaceModel.getLinearFragment( groupRange, true )
 				// Convert everything to paragraphs first
-				.convertNodes( 'paragraph' )
+				.convertNodes( 'paragraph', null, { generated: 'wrapper' } )
 				// Wrap everything in a list and each content branch in a listItem
 				.wrapAllNodes( element, itemElement );
 		}

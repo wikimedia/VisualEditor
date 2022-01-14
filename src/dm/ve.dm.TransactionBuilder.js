@@ -417,30 +417,47 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {ve.Range} range Range to convert
  * @param {string} type Symbolic name of element type to convert to
- * @param {Object} attr Attributes to initialize element with
+ * @param {Object} [attr] Attributes to initialize element with
+ * @param {Object} [internal] Internal attributes to initialize element with
  * @return {ve.dm.Transaction} Transaction that converts content branches
  */
-ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc, range, type, attr ) {
+ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc, range, type, attr, internal ) {
 	var txBuilder = new ve.dm.TransactionBuilder(),
 		selection = doc.selectNodes( range, 'leaves' ),
 		opening = { type: type },
 		closing = { type: '/' + type },
 		previousBranch,
 		previousBranchOuterRange;
+
 	// Add attributes to opening if needed
-	if ( ve.isPlainObject( attr ) ) {
-		opening.attributes = attr;
+	if ( attr ) {
+		if ( !ve.isEmptyObject( attr ) ) {
+			opening.attributes = attr;
+		}
 	} else {
+		// Set to empty object for comparison
 		attr = {};
 	}
+	if ( internal ) {
+		if ( !ve.isEmptyObject( internal ) ) {
+			opening.internal = internal;
+		}
+	} else {
+		// Set to empty object for comparison
+		internal = {};
+	}
+
 	// Replace the wrappings of each content branch in the range
 	for ( var i = 0; i < selection.length; i++ ) {
 		var selected = selection[ i ];
 		var branch = selected.node.isContent() ? selected.node.getParent() : selected.node;
 		if ( branch.canContainContent() ) {
-			// Skip branches that are already of the target type and have all attributes in attr
-			// set already.
-			if ( branch.getType() === type && ve.compare( attr, branch.getAttributes(), true ) ) {
+			// Skip branches that are already of the target type and have matching attributes
+			if (
+				branch.getType() === type &&
+				ve.compare( attr, branch.getAttributes() ) &&
+				ve.compare( internal, branch.element.internal || {} )
+			) {
 				continue;
 			}
 			var branchOuterRange = branch.getOuterRange();
@@ -453,13 +470,16 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 			txBuilder.pushRetain(
 				branchOuterRange.start - ( previousBranch ? previousBranchOuterRange.end : 0 )
 			);
-			if ( branch.getType() === type ) {
-				// Same type, different attributes, so we only need an attribute change
+			if (
+				branch.getType() === type &&
+				ve.compare( internal, branch.element.internal || {} )
+			) {
+				// Same type and internal, different attributes, so we only need an attribute change
 				txBuilder.pushAttributeChanges( attr, branch.getAttributes() );
 				// Retain the branch, including its opening and closing
 				txBuilder.pushRetain( branch.getOuterLength() );
 			} else {
-				// Types differ, so we need to replace the opening and closing
+				// Types or internal differ, so we need to replace the opening and closing
 				// Replace the opening
 				txBuilder.pushReplacement( doc, branchOuterRange.start, 1, [ ve.copy( opening ) ] );
 				// Retain the contents

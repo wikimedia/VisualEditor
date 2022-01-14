@@ -234,7 +234,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 					data.splice( 5, 2 );
 					data.splice( 10, 2 );
 				},
-				expectedRangeOrSelection: new ve.Range( 6 ),
+				expectedRangeOrSelection: new ve.Range( 9 ),
 				msg: 'Non-empty list at end of document unwrapped by delete'
 			},
 			{
@@ -246,7 +246,7 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 					data.splice( 13, 2 ); // Remove the empty listItem
 					data.splice.apply( data, [ 14, 0 ].concat( paragraph ) );
 				},
-				expectedRangeOrSelection: new ve.Range( 15 ),
+				expectedRangeOrSelection: new ve.Range( 18 ),
 				msg: 'Non-empty multi-item list at end of document unwrapped by delete'
 			},
 			{

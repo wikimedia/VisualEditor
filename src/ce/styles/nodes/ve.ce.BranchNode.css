@@ -115,9 +115,3 @@ pre.ve-ce-branchNode {
 	/* Prevent silly wrapping on Safari and Chrome (https://bugs.webkit.org/show_bug.cgi?id=35935) */
 	word-wrap: normal;
 }
-
-/* Emulate the first paragraph in each list item being unwrapped */
-/* TODO: This shouldn't be necessary, but newly created lists can re-use existing paragraphs which aren't always 'wrapper' paragraphs */
-li.ve-ce-branchNode p.ve-ce-branchNode:first-child {
-	margin: 0;
-}

@@ -16,9 +16,20 @@ QUnit.test( '(un)wrap', function ( assert ) {
 			style: 'bullet',
 			expectedRangeOrSelection: new ve.Range( 58, 64 ),
 			expectedData: function ( data ) {
-				data.splice( 55, 0, { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } );
-				data.splice( 60, 0, { type: '/listItem' }, { type: 'listItem' } );
-				data.splice( 65, 0, { type: '/listItem' }, { type: '/list' } );
+				data.splice( 55, 1,
+					{ type: 'list', attributes: { style: 'bullet' } },
+					{ type: 'listItem' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } }
+				);
+				data.splice( 60, 1,
+					{ type: '/listItem' },
+					{ type: 'listItem' },
+					{ type: 'paragraph', internal: { generated: 'wrapper' } }
+				);
+				data.splice( 65, 0,
+					{ type: '/listItem' },
+					{ type: '/list' }
+				);
 			},
 			undo: true,
 			msg: 'wrapping two paragraphs in a list'
@@ -39,11 +50,6 @@ QUnit.test( '(un)wrap', function ( assert ) {
 					{ type: 'list', attributes: { style: 'number' } },
 					{ type: 'listItem' }
 				);
-			},
-			expectedOriginalData: function ( data ) {
-				// generated: 'wrapper' is removed by the action and not restored by undo
-				delete data[ 190 ].internal;
-				delete data[ 202 ].internal;
 			},
 			undo: true,
 			msg: 'unwrapping two double listed paragraphs'
