@@ -229,7 +229,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 
 		function isWhitespace( element ) {
 			var value = Array.isArray( element ) ? element[ 0 ] : element;
-			return typeof value === 'string' && !!value.match( /\s/ );
+			return typeof value === 'string' && /^\s+$/.test( value );
 		}
 
 		// Where the same data is removed and inserted, replace it with a retain

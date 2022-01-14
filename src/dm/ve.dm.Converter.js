@@ -30,7 +30,6 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 
 	// Whitespace regexes
 	var whitespaceList = this.constructor.static.whitespaceList;
-	this.whitespaceRegex = new RegExp( '[' + whitespaceList + ']' );
 	this.leadingWhitespaceRegex = new RegExp( '^[' + whitespaceList + ']' );
 	this.leadingWhitespacesRegex = new RegExp( '^[' + whitespaceList + ']+' );
 	this.trailingWhitespaceRegex = new RegExp( '[' + whitespaceList + ']$' );
@@ -1004,7 +1003,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 				}
 				if ( !context.originallyExpectingContent ) {
 					// Strip and store outer whitespace
-					if ( text.match( this.onlyWhitespaceRegex ) ) {
+					if ( this.onlyWhitespaceRegex.test( text ) ) {
 						// This text node is whitespace only
 						if ( context.inWrapper ) {
 							// We're already wrapping, so output this whitespace
@@ -1332,7 +1331,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				first &&
 				first.nodeType === Node.TEXT_NODE &&
 				( matches = first.data.match( converter.leadingWhitespacesRegex ) ) &&
-				!origElementText.match( converter.leadingWhitespaceRegex )
+				!converter.leadingWhitespaceRegex.test( origElementText )
 			) {
 				leading += matches[ 0 ];
 				first.deleteData( 0, matches[ 0 ].length );
@@ -1349,7 +1348,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				last &&
 				last.nodeType === Node.TEXT_NODE &&
 				( matches = last.data.match( converter.trailingWhitespacesRegex ) ) &&
-				!origElementText.match( converter.trailingWhitespaceRegex )
+				!converter.trailingWhitespaceRegex.test( origElementText )
 			) {
 				trailing = matches[ 0 ] + trailing;
 				last.deleteData( last.data.length - matches[ 0 ].length, matches[ 0 ].length );
@@ -1440,7 +1439,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			while ( typeof data[ i ] === 'string' ) {
 				// HACK: Skip over leading whitespace (T53462/T142132) in non-whitespace-preserving tags
 				// This should possibly be handled by Parsoid or in the UI.
-				if ( !( isStart && data[ i ].match( this.whitespaceRegex ) && this.isForParser() ) ) {
+				if ( !( isStart && this.onlyWhitespaceRegex.test( data[ i ] ) && this.isForParser() ) ) {
 					text += getChar( data[ i ] );
 					isStart = false;
 				}

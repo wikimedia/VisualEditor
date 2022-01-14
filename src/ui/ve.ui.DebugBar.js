@@ -222,7 +222,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			text = element;
 		}
 
-		$label.text( text.match( /\S/ ) ? text : '\u00a0' );
+		$label.text( /\S/.test( text ) ? text : '\u00a0' );
 
 		if ( $chunk && !prevType && !element.type && OO.compare( prevAnnotations, annotations ) ) {
 			// This is a run of text with identical annotations. Continue current chunk.

@@ -127,7 +127,7 @@ ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
 
 		if ( comparableAttributes.id ) {
 			var metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
-			if ( metadataIdRegExp && comparableAttributes.id.match( metadataIdRegExp ) ) {
+			if ( metadataIdRegExp && metadataIdRegExp.test( comparableAttributes.id ) ) {
 				delete comparableAttributes.id;
 			}
 		}
