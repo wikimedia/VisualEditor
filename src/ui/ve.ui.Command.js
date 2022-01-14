@@ -32,7 +32,7 @@ ve.ui.Command = function VeUiCommand( name, action, method, options ) {
  * Execute command on a surface.
  *
  * @param {ve.ui.Surface} surface Surface to execute command on
- * @param {Object} [args] Custom arguments to override defaults
+ * @param {Array} [args] Custom arguments to override defaults
  * @param {string} [source] Label for the source of the command, for tracking
  * @return {boolean} Command was executed
  */
