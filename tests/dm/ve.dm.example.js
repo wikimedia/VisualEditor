@@ -3857,6 +3857,34 @@ ve.dm.example.domToDataCases = {
 		],
 		fromDataBody: 'Foo\n<span><p>Bar</p></span>Baz'
 	},
+	'list item wrapped in annotation is alienated': {
+		body: '<ul><li>Foo</li><s><li>Bar</li></s><li>Baz</li></ul>',
+		data: [
+			{ type: 'list', attributes: { style: 'bullet' } },
+			{ type: 'listItem' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'F',
+			'o',
+			'o',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			{
+				type: 'alienBlock',
+				originalDomElements: $( '<s><li>Bar</li></s>' ).toArray()
+			},
+			{ type: '/alienBlock' },
+			{ type: 'listItem' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'B',
+			'a',
+			'z',
+			{ type: '/paragraph' },
+			{ type: '/listItem' },
+			{ type: '/list' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
 	'whitespace before meta node in wrapping mode': {
 		body: '<table><tbody><tr><td>Foo\n<meta content="bar" /></td></tr></tbody></table>',
 		data: [

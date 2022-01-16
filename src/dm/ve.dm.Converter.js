@@ -860,6 +860,20 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					continue;
 				}
 
+				// If we're about to start wrapping for an annotation,
+				// check paragraphs are actually allowed here.
+				if (
+					!context.inWrapper && !context.expectingContent &&
+					modelClass.prototype instanceof ve.dm.Annotation &&
+					!this.isValidChildNodeType( 'paragraph' )
+				) {
+					// Alienate (force block mode as we are replacing a wrapper)
+					modelClass = ve.dm.AlienBlockNode;
+					childNodes = modelClass.static.enableAboutGrouping ?
+						aboutGroup : [ childNode ];
+					childDataElements = this.createDataElements( modelClass, childNodes );
+				}
+
 				// Now take the appropriate action based on that
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
 					var annotation = this.annotationFactory.createFromElement( childDataElements[ 0 ], this.store );
