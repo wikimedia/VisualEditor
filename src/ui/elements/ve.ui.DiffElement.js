@@ -857,16 +857,23 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 			lastListNode = listNode;
 		}
 
+		var listItemNode = nodes.metadata[ item.indexOrder ].listItem;
 		// Get linear data of list item
-		var listItemData = doc.getData( nodes.metadata[ item.indexOrder ].listItem.getOuterRange() );
+		var listItemData = doc.getData( listItemNode.getOuterRange() );
 		// TODO: Make this a node property, instead of a magic attribute
 		if ( listNode.getAttribute( 'style' ) === 'number' ) {
 			// Manually number list items for <ol>'s which contain removals
 			// TODO: Consider if the <ol> contains a `start` attribute (not currently handled by DM)
-			var indexInOwnList = listNode.children.indexOf( nodes.metadata[ item.indexOrder ].listItem );
+			var indexInOwnList = listNode.children.indexOf( listItemNode );
 			this.addAttributesToElement( listItemData, 0, { value: indexInOwnList + 1 } );
 		}
-		ve.batchSplice( listItemData, 1, listItemData.length - 2, contentData );
+
+		// e.g. AlienBlockNode, content node is same as 'listItem', so don't duplicate content
+		if ( nodes.nodes[ item.indexOrder ] === listItemNode ) {
+			listItemData = contentData;
+		} else {
+			ve.batchSplice( listItemData, 1, listItemData.length - 2, contentData );
+		}
 
 		// Check for attribute changes
 		if ( item.diff.attributeChange ) {

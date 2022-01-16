@@ -599,7 +599,8 @@ ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) 
 
 	for ( var i = 0, ilen = listItems.length; i < ilen; i++ ) {
 		var listItem = listItems[ i ];
-		var listContents = listItem.children;
+		// If listItem has no children, make the item itself the contents (e.g. an AlienBlockNode in a list)
+		var listContents = listItem.children || [ listItem ];
 		for ( var j = 0, jlen = listContents.length; j < jlen; j++ ) {
 			var listContent = listContents[ j ];
 			if ( listContent.isDiffedAsList() ) {

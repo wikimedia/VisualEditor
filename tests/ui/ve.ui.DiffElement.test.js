@@ -920,6 +920,20 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'List with block alien',
+				oldDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
+				newDoc: '<ul><li>foo</li><s><li>bar</li></s><li>baz</li></ul>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul>' +
+							'<li><p data-diff-action="none">foo</p></li>' +
+							'<li><p data-diff-action="remove">bar</p></li>' +
+							'<s data-diff-action="insert"><li>bar</li></s>' +
+							'<li><p data-diff-action="none">baz</p></li>' +
+						'</ul>' +
+					'</div>'
+			},
+			{
 				msg: 'Annotation insertion',
 				oldDoc: '<p>foo bar baz</p>',
 				newDoc: '<p>foo <b>bar</b> baz</p>',
