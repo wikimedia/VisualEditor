@@ -1112,7 +1112,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 			{
 				msg: 'List item move down',
 				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li><li>quux</li></ol>',
-				newDoc: '<ol><li>foo</li><li>baz<li>quux</li><li>bar</li></ol>',
+				newDoc: '<ol><li>foo</li><li>baz</li><li>quux</li><li>bar</li></ol>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<ol>' +
