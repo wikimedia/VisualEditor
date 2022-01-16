@@ -1194,17 +1194,20 @@ ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDi
  * @return {HTMLElement[]} Elements (not owned by window.document)
  */
 ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalListItem, action, move, internalListDiff ) {
-	var internalListNode = action === 'remove' ? internalListDiff.oldNode : internalListDiff.newNode,
-		node = internalListNode.children[ internalListItem.nodeIndex ].children[ 0 ],
+	var diffElement = this,
+		internalListNode = action === 'remove' ? internalListDiff.oldNode : internalListDiff.newNode,
+		contents = internalListNode.children[ internalListItem.nodeIndex ].children,
 		listNode = document.createElement( 'ol' ),
 		listItemNode = document.createElement( 'li' );
 
-	if ( node && node.length ) {
-		var elements = this.getNodeElements( node, action, move );
+	if ( contents.length ) {
+		contents.forEach( function ( node ) {
+			var elements = diffElement.getNodeElements( node, action, move );
 
-		listItemNode.appendChild(
-			listItemNode.ownerDocument.adoptNode( elements[ 0 ] )
-		);
+			listItemNode.appendChild(
+				listItemNode.ownerDocument.adoptNode( elements[ 0 ] )
+			);
+		} );
 	} else {
 		// TODO: This is MW-Cite-specific behaviour that VE core
 		// should know nothing about. Move to MWDiffElement?
@@ -1214,6 +1217,7 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
 				.text( ve.msg( 'cite-ve-referenceslist-missingref-in-list' ) )
 		).attr( 'data-diff-action', action );
 	}
+
 	listNode.setAttribute( 'start', internalListItem.indexOrder + 1 );
 	listNode.appendChild( listItemNode );
 
