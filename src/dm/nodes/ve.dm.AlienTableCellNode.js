@@ -28,6 +28,8 @@ OO.mixinClass( ve.dm.AlienTableCellNode, ve.dm.TableCellableNode );
 
 ve.dm.AlienTableCellNode.static.name = 'alienTableCell';
 
+ve.dm.AlienTableCellNode.static.matchFunction = null;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.AlienTableCellNode );

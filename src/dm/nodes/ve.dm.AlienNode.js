@@ -39,9 +39,16 @@ ve.dm.AlienNode.static.enableAboutGrouping = true;
 
 ve.dm.AlienNode.static.matchRdfaTypes = [ 've:Alien' ];
 
+ve.dm.AlienNode.static.matchFunction = function () {
+	return true;
+};
+
 ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
 	var element;
-	if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[ 0 ].nodeName.toLowerCase() ) !== -1 ) {
+
+	if ( this.name !== 'alien' ) {
+		element = { type: this.name };
+	} else if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[ 0 ].nodeName.toLowerCase() ) !== -1 ) {
 		var attributes = {};
 		ve.dm.TableCellableNode.static.setAttributes( attributes, domElements );
 		element = {
@@ -103,3 +110,7 @@ ve.dm.AlienNode.static.getHashObject = function ( dataElement ) {
 		alienDomElementsHash: dataElement.originalDomElementsHash
 	};
 };
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.AlienNode );

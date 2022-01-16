@@ -24,6 +24,10 @@ ve.dm.AlienInlineNode.static.name = 'alienInline';
 
 ve.dm.AlienInlineNode.static.isContent = true;
 
+ve.dm.AlienInlineNode.static.matchRdfaTypes = [];
+
+ve.dm.AlienInlineNode.static.matchFunction = null;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.AlienInlineNode );

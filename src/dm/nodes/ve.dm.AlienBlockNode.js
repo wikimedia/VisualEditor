@@ -22,6 +22,10 @@ OO.inheritClass( ve.dm.AlienBlockNode, ve.dm.AlienNode );
 
 ve.dm.AlienBlockNode.static.name = 'alienBlock';
 
+ve.dm.AlienBlockNode.static.matchRdfaTypes = [];
+
+ve.dm.AlienBlockNode.static.matchFunction = null;
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.AlienBlockNode );
