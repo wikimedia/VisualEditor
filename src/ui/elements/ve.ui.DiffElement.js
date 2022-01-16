@@ -661,11 +661,11 @@ ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, l
 /**
  * Get the linear data for a document-like node that has been changed
  *
- * @param {ve.dm.Node} newListNode Node from new document
+ * @param {ve.dm.Node} newDoclistNode Node from new document
  * @param {Object} diff Object describing the duff
  * @return {Array} Linear data for the diff
  */
-ve.ui.DiffElement.prototype.getChangedDocListData = function ( newListNode, diff ) {
+ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, diff ) {
 	var diffData = [],
 		diffQueue = [],
 		diffElement = this;
@@ -688,7 +688,22 @@ ve.ui.DiffElement.prototype.getChangedDocListData = function ( newListNode, diff
 		}
 	} );
 
-	this.processQueue( diffQueue ).forEach( function ( diffItem ) {
+	var hasAttributeChanges = false;
+	var newDoclistNodeData = this.newDoc.getData( newDoclistNode.getOuterRange() );
+	if ( diff.attributeChange ) {
+		var item = this.compareNodeAttributes( newDoclistNodeData, 0, diff.attributeChange );
+		if ( item ) {
+			this.descriptionItemsStack.push( item );
+			hasAttributeChanges = true;
+		}
+	}
+
+	// When the doc cotainer has attribute changes, show the whole node.
+	// Otherwise use processQueue to filter out unchanged context
+	if ( !hasAttributeChanges ) {
+		diffQueue = this.processQueue( diffQueue );
+	}
+	diffQueue.forEach( function ( diffItem ) {
 		if ( diffItem ) {
 			ve.batchPush( diffData, diffElement[ diffItem[ 0 ] ].apply( diffElement, diffItem.slice( 1 ) ) );
 		} else {
@@ -696,18 +711,9 @@ ve.ui.DiffElement.prototype.getChangedDocListData = function ( newListNode, diff
 		}
 	} );
 
-	var newListNodeData = this.newDoc.getData( newListNode.getOuterRange() );
-
-	// Wrap in newListNode
-	diffData.unshift( newListNodeData[ 0 ] );
-	diffData.push( newListNodeData[ newListNodeData.length - 1 ] );
-
-	if ( diff.attributeChange ) {
-		var item = this.compareNodeAttributes( diffData, 0, diff.attributeChange );
-		if ( item ) {
-			this.descriptionItemsStack.push( item );
-		}
-	}
+	// Wrap in newDocListNode
+	diffData.unshift( newDoclistNodeData[ 0 ] );
+	diffData.push( newDoclistNodeData[ newDoclistNodeData.length - 1 ] );
 
 	return diffData;
 };
