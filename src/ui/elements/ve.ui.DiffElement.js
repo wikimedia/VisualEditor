@@ -993,14 +993,16 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 						break;
 					} else {
 						var oldPreviousNodeIndex = siblingNodes[ x ].index;
-						newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ] || newPreviousNodeIndex;
+						if ( correspondingNodes.oldToNew[ oldPreviousNodeIndex ] !== undefined ) {
+							newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ];
+						}
 					}
 				}
 
 				// If previous node was found among siblings, insert the removed subtree just
 				// after its corresponding node in the new document. Otherwise insert the
 				// removed subtree just inside its parent node's corresponding node.
-				if ( newPreviousNodeIndex ) {
+				if ( newPreviousNodeIndex !== undefined ) {
 					insertIndex = newNodes[ newPreviousNodeIndex ].node.getOuterRange().to - nodeRange.from;
 				} else {
 					newPreviousNodeIndex = correspondingNodes.oldToNew[ highestRemovedAncestor.parent.index ];
