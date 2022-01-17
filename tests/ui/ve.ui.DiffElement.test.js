@@ -629,7 +629,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</tbody></table>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-set,originalColspan,<ins>2</ins></div>' +
 					'<div>visualeditor-changedesc-set,colspan,<ins>2</ins></div>'
 				]
 			},
@@ -651,7 +650,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</tbody></table>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-unset,originalColspan,<del>2</del></div>' +
 					'<div>visualeditor-changedesc-unset,colspan,<del>2</del></div>'
 				]
 			},
@@ -673,7 +671,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</tbody></table>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-set,originalColspan,<ins>2</ins></div>' +
 					'<div>visualeditor-changedesc-set,colspan,<ins>2</ins></div>'
 				]
 			},
@@ -695,7 +692,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'</tbody></table>' +
 					'</div>',
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-set,originalRowspan,<ins>2</ins></div>' +
 					'<div>visualeditor-changedesc-set,rowspan,<ins>2</ins></div>'
 				]
 			},
