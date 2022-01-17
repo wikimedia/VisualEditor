@@ -588,6 +588,49 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Change table columns',
+				oldDoc:
+					'<table>' +
+						'<tr><td>A</td><td>Foo</td><td>Baz</td></tr>' +
+						'<tr><td>B</td><td>Bar</td><td>Qux</td></tr>' +
+					'</table>',
+				newDoc:
+					'<table>' +
+						'<tr><td>A</td><td>Foo 1</td><td>Baz 1</td></tr>' +
+						'<tr><td>B</td><td>Bar 1</td><td>Qux 1</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td>Foo<ins data-diff-action="insert"> 1</ins></td><td>Baz<ins data-diff-action="insert"> 1</ins></td></tr>' +
+							'<tr><td>B</td><td>Bar<ins data-diff-action="insert"> 1</ins></td><td>Qux<ins data-diff-action="insert"> 1</ins></td></tr>' +
+						'</tbody></table>' +
+					'</div>'
+			},
+			{
+				msg: 'Change table rows',
+				oldDoc:
+					'<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>Foo</td><td>Bar</td></tr>' +
+						'<tr><td>Baz</td><td>Qux</td></tr>' +
+					'</table>',
+				newDoc:
+					'<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>Foo 1</td><td>Bar 1</td></tr>' +
+						'<tr><td>Baz 1</td><td>Qux 1</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td>B</td></tr>' +
+							'<tr><td>Foo<ins data-diff-action="insert"> 1</ins></td><td>Bar<ins data-diff-action="insert"> 1</ins></td></tr>' +
+							'<tr><td>Baz<ins data-diff-action="insert"> 1</ins></td><td>Qux<ins data-diff-action="insert"> 1</ins></td></tr>' +
+						'</tbody></table>' +
+					'</div>'
+			},
+			{
 				msg: 'Table row removed and cells edited',
 				oldDoc: '<table>' +
 						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
@@ -595,19 +638,51 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<tr><td>G</td><td>H</td><td>I</td></tr>' +
 					'</table>',
 				newDoc: '<table>' +
-						'<tr><td>A</td><td>B</td><td>X</td></tr>' +
-						'<tr><td>G</td><td>H</td><td>Y</td></tr>' +
+						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+						'<tr><td>Q</td><td>H</td><td>Y</td></tr>' +
 					'</table>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<table><tbody>' +
-							'<tr><td>A</td><td>B</td><td><del data-diff-action="remove">C</del><ins data-diff-action="insert">X</ins></td></tr>' +
+							'<tr><td>A</td><td>B</td><td>C</td></tr>' +
 							'<tr data-diff-action="structural-remove">' +
 								'<td data-diff-action="structural-remove"><p data-diff-action="remove">D</p></td>' +
 								'<td data-diff-action="structural-remove"><p data-diff-action="remove">E</p></td>' +
 								'<td data-diff-action="structural-remove"><p data-diff-action="remove">F</p></td>' +
 							'</tr>' +
-							'<tr><td>G</td><td>H</td><td><del data-diff-action="remove">I</del><ins data-diff-action="insert">Y</ins></td></tr>' +
+							'<tr>' +
+								'<td><del data-diff-action="remove">G</del><ins data-diff-action="insert">Q</ins></td>' +
+								'<td>H</td>' +
+								'<td><del data-diff-action="remove">I</del><ins data-diff-action="insert">Y</ins></td>' +
+							'</tr>' +
+						'</tbody></table>' +
+					'</div>'
+			},
+			{
+				msg: 'Table row moved',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+						'<tr><td>E</td><td>F</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>E</td><td>F</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td>B</td></tr>' +
+							'<tr data-diff-action="structural-insert">' +
+								'<td data-diff-action="structural-insert"><p data-diff-action="insert">E</p></td>' +
+								'<td data-diff-action="structural-insert"><p data-diff-action="insert">F</p></td>' +
+							'</tr>' +
+							'<tr><td>C</td><td>D</td></tr>' +
+							'<tr data-diff-action="structural-remove">' +
+								'<td data-diff-action="structural-remove"><p data-diff-action="remove">E</p></td>' +
+								'<td data-diff-action="structural-remove"><p data-diff-action="remove">F</p></td>' +
+							'</tr>' +
 						'</tbody></table>' +
 					'</div>'
 			},
@@ -715,6 +790,69 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Sparse table insertion',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+						'<tr><td>D</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+						'<tr><td>D</td><td>E</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+							'<tr><td>D</td><td data-diff-action="structural-insert"><p data-diff-action="insert">E</p></td></tr>' +
+						'</tbody></table>' +
+					'</div>'
+			},
+			{
+				msg: 'Sparse table removal',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+						'<tr><td>D</td><td>E</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+						'<tr><td>D</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+							'<tr><td>A</td><td>B</td><td>C</td></tr>' +
+							'<tr><td>D</td><td data-diff-action="structural-remove"><p data-diff-action="remove">E</p></td></tr>' +
+						'</tbody></table>' +
+					'</div>'
+			},
+			{
+				msg: 'Table caption change',
+				oldDoc: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
+				newDoc: '<table><caption>Foo 1</caption><tr><td>Bar</td></tr></table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><caption>Foo<ins data-diff-action="insert"> 1</ins></caption><tbody><tr><td>Bar</td></tr></tbody></table>' +
+					'</div>'
+			},
+			{
+				msg: 'Table caption insert',
+				oldDoc: '<table><tr><td>Bar</td></tr></table>',
+				newDoc: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><caption data-diff-action="structural-insert"><p data-diff-action="insert">Foo</p></caption><tbody><tr><td>Bar</td></tr></tbody></table>' +
+					'</div>'
+			},
+			{
+				msg: 'Table caption remove',
+				oldDoc: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
+				newDoc: '<table><tr><td>Bar</td></tr></table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><caption data-diff-action="structural-remove"><p data-diff-action="remove">Foo</p></caption><tbody><tr><td>Bar</td></tr></tbody></table>' +
+					'</div>'
+			},
+			{
 				msg: 'List item indentation in div',
 				oldDoc:
 					'<div>' +
@@ -745,6 +883,34 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-list-indent</div>'
 				]
+			},
+			{
+				msg: 'List item indentation in table',
+				oldDoc:
+					'<table>' +
+						'<tr><td>Hello</td><td>World</td></tr>' +
+						'<tr><td><ul><li>foo</li><li>bar</li><li>baz</li></ul></td><td>Here</td></tr>' +
+					'</table>',
+				newDoc:
+					'<table>' +
+						'<tr><td>Hello</td><td>World</td></tr>' +
+						'<tr><td><ul><li>foo<ul><li>bar</li></ul></li><li>baz</li></ul></td><td>Here</td></tr>' +
+					'</table>',
+				expected:
+					// TODO: This should be a list diff
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody><tr><td>Hello</td><td>World</td><tr><td>' +
+						'<ul>' +
+							'<li data-diff-action="structural-insert">' +
+								'foo' +
+								'<ul data-diff-action="structural-insert">' +
+									'<li>bar</li>' +
+								'</ul>' +
+							'</li>' +
+							'<li>baz</li>' +
+						'</ul>' +
+						'</td><td>Here</td></tr></tbody></table>' +
+					'</div>'
 			},
 			{
 				msg: 'Annotation insertion',
