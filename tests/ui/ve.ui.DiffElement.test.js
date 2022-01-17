@@ -459,9 +459,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<table><tbody>' +
 						'<tr><td>A</td>' +
-						'<td data-diff-action="structural-insert"><p data-diff-action="insert">B</p></td></tr>' +
+						'<td data-diff-action="insert">B</td></tr>' +
 						'<tr><td>C</td>' +
-						'<td data-diff-action="structural-insert"><p data-diff-action="insert">D</p></td></tr>' +
+						'<td data-diff-action="insert">D</td></tr>' +
 					'</tbody></table>'
 			},
 			{
@@ -470,8 +470,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<table><tr><td>A</td></tr><tr><td>C</td></tr></table>',
 				expected:
 					'<table><tbody>' +
-						'<tr><td>A</td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
-						'<tr><td>C</td><td data-diff-action="structural-remove"><p data-diff-action="remove">D</p></td></tr>' +
+						'<tr><td>A</td><td data-diff-action="remove">B</td></tr>' +
+						'<tr><td>C</td><td data-diff-action="remove">D</td></tr>' +
 					'</tbody></table>'
 			},
 			{
@@ -528,14 +528,14 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<table><tbody>' +
 						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
 						'<tr data-diff-action="structural-remove">' +
-							'<td data-diff-action="structural-remove"><p data-diff-action="remove">D</p></td>' +
-							'<td data-diff-action="structural-remove"><p data-diff-action="remove">E</p></td>' +
-							'<td data-diff-action="structural-remove"><p data-diff-action="remove">F</p></td>' +
+							'<td data-diff-action="remove">D</td>' +
+							'<td data-diff-action="remove">E</td>' +
+							'<td data-diff-action="remove">F</td>' +
 						'</tr>' +
 						'<tr>' +
-							'<td><del data-diff-action="remove">G</del><ins data-diff-action="insert">Q</ins></td>' +
+							'<td><p data-diff-action="remove">G</p><p data-diff-action="insert">Q</p></td>' +
 							'<td>H</td>' +
-							'<td><del data-diff-action="remove">I</del><ins data-diff-action="insert">Y</ins></td>' +
+							'<td><p data-diff-action="remove">I</p><p data-diff-action="insert">Y</p></td>' +
 						'</tr>' +
 					'</tbody></table>'
 			},
@@ -554,14 +554,13 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<table><tbody>' +
 						'<tr><td>A</td><td>B</td></tr>' +
-						'<tr data-diff-action="structural-insert">' +
-							'<td data-diff-action="structural-insert"><p data-diff-action="insert">E</p></td>' +
-							'<td data-diff-action="structural-insert"><p data-diff-action="insert">F</p></td>' +
+						'<tr>' +
+							'<td><p data-diff-action="remove">C</p><p data-diff-action="insert">E</p></td>' +
+							'<td><p data-diff-action="remove">D</p><p data-diff-action="insert">F</p></td>' +
 						'</tr>' +
-						'<tr><td>C</td><td>D</td></tr>' +
-						'<tr data-diff-action="structural-remove">' +
-							'<td data-diff-action="structural-remove"><p data-diff-action="remove">E</p></td>' +
-							'<td data-diff-action="structural-remove"><p data-diff-action="remove">F</p></td>' +
+						'<tr>' +
+							'<td><p data-diff-action="remove">E</p><p data-diff-action="insert">C</p></td>' +
+							'<td><p data-diff-action="remove">F</p><p data-diff-action="insert">D</p></td>' +
 						'</tr>' +
 					'</tbody></table>'
 			},
@@ -577,7 +576,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</table>',
 				expected:
 					'<table><tbody>' +
-						'<tr><td colspan="2" rowspan="1" data-diff-action="structural-change" data-diff-id="0">A</td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
+						'<tr><td colspan="2" rowspan="1" data-diff-id="0"><p data-diff-action="none">A</p></td><td data-diff-action="remove">B</td></tr>' +
 						'<tr><td>C</td><td>D</td></tr>' +
 					'</tbody></table>',
 				expectedDescriptions: [
@@ -596,7 +595,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</table>',
 				expected:
 					'<table><tbody>' +
-						'<tr><td data-diff-action="structural-change" data-diff-id="0">A</td><td data-diff-action="structural-insert"><p data-diff-action="insert">B</p></td></tr>' +
+						'<tr><td data-diff-id="0"><p data-diff-action="none">A</p></td><td data-diff-action="insert">B</td></tr>' +
 						'<tr><td>C</td><td>D</td></tr>' +
 					'</tbody></table>',
 				expectedDescriptions: [
@@ -615,7 +614,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</table>',
 				expected:
 					'<table><tbody>' +
-						'<tr><td colspan="2" data-diff-action="structural-change" data-diff-id="0"><del data-diff-action="remove">A</del><ins data-diff-action="insert">Q</ins></td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
+						'<tr><td colspan="2" data-diff-id="0"><p data-diff-action="remove">A</p><p data-diff-action="insert">Q</p></td><td data-diff-action="remove">B</td></tr>' +
 						'<tr><td>C</td><td>D</td></tr>' +
 					'</tbody></table>',
 				expectedDescriptions: [
@@ -634,8 +633,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</table>',
 				expected:
 					'<table><tbody>' +
-						'<tr><td rowspan="2" data-diff-action="structural-change" data-diff-id="0">A</td><td>B</td></tr>' +
-						'<tr><td data-diff-action="structural-remove"><p data-diff-action="remove">C</p></td><td>D</td></tr>' +
+						'<tr><td rowspan="2" data-diff-id="0"><p data-diff-action="none">A</p></td><td>B</td></tr>' +
+						'<tr><td data-diff-action="remove">C</td><td>D</td></tr>' +
 					'</tbody></table>',
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-set,rowspan,<ins>2</ins></div>'
@@ -652,18 +651,21 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<tr><td>D 1</td></tr>' +
 					'</table>',
 				expected:
-					// TODO: Detect this change
-					'<table data-diff-action="remove"><tbody><tr><td>A</td><td>B</td></tr><tr><td>C</td><td>D</td></tr></tbody></table>' +
-					'<table data-diff-action="insert"><tbody><tr><td rowspan="2">A</td><td>B 1</td></tr><tr><td>D 1</td></tr></tbody></table>'
+					'<table><tbody>' +
+						'<tr><td rowspan="2" data-diff-id="0"><p data-diff-action="none">A</p></td><td>B<ins data-diff-action="insert"> 1</ins></td></tr>' +
+						'<tr><td><p data-diff-action="remove">C</p><p data-diff-action="insert">D 1</p></td><td data-diff-action="remove">D</td></tr>' +
+					'</tbody></table>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-set,rowspan,<ins>2</ins></div>'
+				]
 			},
 			{
 				msg: 'Table with no changes (colspan/rowspan set to 1) is not rendered',
 				oldDoc: '<p>a</p><table><tr><td>A</td></tr></table><p>b</p>',
 				newDoc: '<p>a</p><table><tr><td colspan="1" rowspan="1">A</td></tr></table><p>b</p>',
 				expected:
-					'<p data-diff-action="none">a</p>' +
-					'<table><tbody><tr><td colspan="1" rowspan="1" data-diff-action="structural-change">A</td></tr></tbody></table>' +
-					'<p data-diff-action="none">b</p>'
+					// TODO: This should be noChanges
+					'<p data-diff-action="none">a</p><table><tbody><tr><td colspan="1" rowspan="1"></td></tr></tbody></table><p data-diff-action="none">b</p>'
 			},
 			{
 				msg: 'Sparse table insertion',
@@ -678,7 +680,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<table><tbody>' +
 						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
-						'<tr><td>D</td><td data-diff-action="structural-insert"><p data-diff-action="insert">E</p></td></tr>' +
+						'<tr><td>D</td><td data-diff-action="insert">E</td></tr>' +
 					'</tbody></table>'
 			},
 			{
@@ -694,7 +696,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<table><tbody>' +
 						'<tr><td>A</td><td>B</td><td>C</td></tr>' +
-						'<tr><td>D</td><td data-diff-action="structural-remove"><p data-diff-action="remove">E</p></td></tr>' +
+						'<tr><td>D</td><td data-diff-action="remove">E</td></tr>' +
 					'</tbody></table>'
 			},
 			{
@@ -709,14 +711,14 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<table><tr><td>Bar</td></tr></table>',
 				newDoc: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
 				expected:
-					'<table><caption data-diff-action="structural-insert"><p data-diff-action="insert">Foo</p></caption><tbody><tr><td>Bar</td></tr></tbody></table>'
+					'<table><caption data-diff-action="insert">Foo</caption><tbody><tr><td>Bar</td></tr></tbody></table>'
 			},
 			{
 				msg: 'Table caption remove',
 				oldDoc: '<table><caption>Foo</caption><tr><td>Bar</td></tr></table>',
 				newDoc: '<table><tr><td>Bar</td></tr></table>',
 				expected:
-					'<table><caption data-diff-action="structural-remove"><p data-diff-action="remove">Foo</p></caption><tbody><tr><td>Bar</td></tr></tbody></table>'
+					'<table><caption data-diff-action="remove">Foo</caption><tbody><tr><td>Bar</td></tr></tbody></table>'
 			},
 			{
 				msg: 'List item indentation in div',
@@ -761,18 +763,24 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<tr><td><ul><li>foo<ul><li>bar</li></ul></li><li>baz</li></ul></td><td>Here</td></tr>' +
 					'</table>',
 				expected:
-					// TODO: This should be a list diff
 					'<table><tbody><tr><td>Hello</td><td>World</td><tr><td>' +
-						'<ul>' +
-							'<li data-diff-action="structural-insert">' +
-								'foo' +
-								'<ul data-diff-action="structural-insert">' +
-									'<li>bar</li>' +
-								'</ul>' +
-							'</li>' +
-							'<li>baz</li>' +
-						'</ul>' +
-					'</td><td>Here</td></tr></tbody></table>'
+					'<ul>' +
+						'<li>' +
+							'<p data-diff-action="none">foo</p>' +
+							'<ul>' +
+								'<li data-diff-id="0">' +
+									'<p data-diff-action="structural-change">bar</p>' +
+								'</li>' +
+							'</ul>' +
+						'</li>' +
+						'<li>' +
+							'<p data-diff-action="none">baz</p>' +
+						'</li>' +
+					'</ul>' +
+					'</td><td>Here</td></tr></tbody></table>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-list-indent</div>'
+				]
 			},
 			{
 				msg: 'List with block alien',
@@ -1222,11 +1230,17 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Table change in list',
-				oldDoc: '<ul><li><table><tr><td>Foo</td><td>Bar</td><td>Baz1</td></tr></table></li></ul>',
-				newDoc: '<ul><li><table><tr><td>Foo</td><td>Bar</td><td>Baz2</td></tr></table></li></ul>',
+				oldDoc:
+					'<ul><li>' +
+						'<table><tr><td>Foo</td><td>Bar</td><td>Baz1</td></tr></table>' +
+					'</li></ul>',
+				newDoc:
+					'<ul><li>' +
+						'<table><tr><td>Foo</td><td>Bar</td><td>Baz2</td></tr></table>' +
+					'</li></ul>',
 				expected:
 					'<ul><li>' +
-						'<table><tbody><tr><td>Foo</td><td>Bar</td><td><del data-diff-action="remove">Baz1</del><ins data-diff-action="insert">Baz2</ins></td></tr></tbody></table>' +
+						'<table><tbody><tr><td>Foo</td><td>Bar</td><td><p data-diff-action="remove">Baz1</p><p data-diff-action="insert">Baz2</p></td></tr></tbody></table>' +
 					'</li></ul>'
 			},
 			{
@@ -1236,7 +1250,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<p data-diff-action="none">Hi' + '<ref></ref>'.repeat( 6 ) + '</p>' +
 					'<ol>' +
-						'<li value="1">Foo<ins data-diff-action="insert"> 1</ins></li>' +
+						'<li value="1"><p>Foo<ins data-diff-action="insert"> 1</ins></p></li>' +
 						'<li value="2"><p data-diff-action="remove">Bar</p></li>' +
 						'<li value="2"><p data-diff-action="none">Baz1</p></li>' +
 						'<li class="ve-ui-diffElement-internalListSpacer">' + spacer + '</li>' +

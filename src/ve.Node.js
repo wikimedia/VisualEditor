@@ -221,6 +221,19 @@ ve.Node.prototype.isDiffedAsLeaf = null;
 ve.Node.prototype.isDiffedAsDocument = null;
 
 /**
+ * Check if the node behaves like a tree branch for diffing
+ *
+ * This is the fallback behaviour if the node is not diffed as
+ * a list,leaf or document.
+ *
+ * @abstract
+ * @return {boolean} Node behaves like a tree branch
+ */
+ve.Node.prototype.isDiffedAsTree = function () {
+	return !this.isDiffedAsList() && !this.isDiffedAsLeaf() && !this.isDiffedAsDocument();
+};
+
+/**
  * Check if the node has significant whitespace.
  *
  * Can only be true if canContainContent is also true.

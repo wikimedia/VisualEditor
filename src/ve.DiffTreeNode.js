@@ -38,7 +38,7 @@ OO.inheritClass( ve.DiffTreeNode, treeDiffer.TreeNode );
  * @return {boolean} The nodes are equal
  */
 ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
-	if ( this.node.canContainContent() && otherNode.node.canContainContent() ) {
+	if ( !this.node.isDiffedAsTree() && !otherNode.node.isDiffedAsTree() ) {
 		var nodeRange = this.node.getOuterRange();
 		var otherNodeRange = otherNode.node.getOuterRange();
 		// Optimization: Most nodes we compare are different, so do a quick check
@@ -46,8 +46,14 @@ ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
 		return nodeRange.getLength() === otherNodeRange.getLength() &&
 			JSON.stringify( this.doc.getData( nodeRange ) ) === JSON.stringify( otherNode.doc.getData( otherNodeRange ) );
 	} else {
-		return this.node.getType() === otherNode.node.getType() &&
-			ve.compare( this.node.getHashObject(), otherNode.node.getHashObject() );
+		if ( this.node.getType() !== otherNode.node.getType() ) {
+			return false;
+		}
+		var hashObject = this.node.getHashObject();
+		var otherHashObject = otherNode.node.getHashObject();
+		delete hashObject.originalDomElementsHash;
+		delete otherHashObject.originalDomElementsHash;
+		return ve.compare( hashObject, otherHashObject );
 	}
 };
 
@@ -57,8 +63,5 @@ ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
  * @return {Array} Array of nodes the same type as the original node
  */
 ve.DiffTreeNode.prototype.getOriginalNodeChildren = function () {
-	if ( this.node.children && !this.node.canContainContent() ) {
-		return this.node.children;
-	}
-	return [];
+	return ( this.node.isDiffedAsTree() && this.node.children ) || [];
 };

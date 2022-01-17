@@ -394,7 +394,11 @@ ve.dm.VisualDiff.prototype.findModifiedNodes = function ( oldIndices, newIndices
 			if ( oldIndices[ i ] !== null && newIndices[ j ] !== null ) {
 				var diffResults = this.diffNodes( oldNodes[ oldIndices[ i ] ], newNodes[ newIndices[ j ] ] );
 
-				if ( diffResults ) {
+				if ( diffResults && (
+					'linearDiff' in diffResults || diffResults.attributeChange || diffResults.treeDiff ||
+					// List diff
+					this.hasChanges( diffResults )
+				) ) {
 					diff.oldToNew[ oldIndices[ i ] ] = {
 						node: newIndices[ j ],
 						diff: diffResults
@@ -431,15 +435,16 @@ ve.dm.VisualDiff.prototype.findModifiedNodes = function ( oldIndices, newIndices
  *
  * @param {ve.dm.Node} oldNode Node from the old document
  * @param {ve.dm.Node} newNode Node from the new document
+ * @param {boolean} [noTreeDiff] Don't perform a tree diff of the nodes (used internally to avoid recursion)
  * @return {Array|boolean} The diff, or false if the nodes are too different
  */
-ve.dm.VisualDiff.prototype.diffNodes = function ( oldNode, newNode ) {
+ve.dm.VisualDiff.prototype.diffNodes = function ( oldNode, newNode, noTreeDiff ) {
 	// If not diff comparable, return no diff
 	if ( !( oldNode.isDiffComparable( newNode ) ) ) {
 		return false;
 	}
 
-	var diff;
+	var diff = false;
 	// Diff according to whether node behaves like a leaf, list, or tree (default)
 	if ( oldNode.isDiffedAsLeaf() ) {
 		diff = this.diffLeafNodes( oldNode, newNode );
@@ -447,7 +452,7 @@ ve.dm.VisualDiff.prototype.diffNodes = function ( oldNode, newNode ) {
 		diff = this.diffListNodes( oldNode, newNode );
 	} else if ( oldNode.isDiffedAsDocument() ) {
 		diff = this.diffDocs( oldNode, newNode );
-	} else {
+	} else if ( !noTreeDiff ) {
 		diff = this.diffTreeNodes( oldNode, newNode );
 	}
 
@@ -693,54 +698,30 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 			oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
 			newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
 
-			if ( !oldNode.canContainContent() && !newNode.canContainContent() ) {
-				// There is no content change
-				if ( oldNode.isDiffComparable( newNode ) ) {
+			if ( !oldNode.isDiffedAsTree() && !newNode.isDiffedAsTree() ) {
+				diffInfo[ i ] = this.diffNodes( oldNode, newNode, true );
+			} else if ( oldNode.isDiffComparable( newNode ) ) {
+				var attributeChange = this.diffAttributes( oldNode, newNode );
+				if ( attributeChange ) {
 					diffInfo[ i ] = {
 						linearDiff: null,
 						attributeChange: this.diffAttributes( oldNode, newNode )
 					};
 				}
-
-			} else if ( !newNode.canContainContent() ) {
-				// Content was removed
-				this.updateChangeRecord( oldNode.length, true, changeRecord );
-
-			} else if ( !oldNode.canContainContent() ) {
-				// Content was inserted
-				this.updateChangeRecord( newNode.length, false, changeRecord );
-
-			// If we got this far, they are both CBNs
-			} else {
-				var linearDiff;
-				if ( oldNode.isDiffComparable( newNode ) ) {
-					linearDiff = this.diffContent( oldNode, newNode );
-					diffInfo[ i ] = {
-						linearDiff: linearDiff,
-						attributeChange: this.diffAttributes( oldNode, newNode )
-					};
-				}
-
-				if ( linearDiff ) {
-					this.updateChangeRecordLinearDiff( linearDiff, changeRecord );
-				} else {
-					this.updateChangeRecord( oldNode.getLength(), true, changeRecord );
-					this.updateChangeRecord( newNode.getLength(), false, changeRecord );
-				}
 			}
 
 		} else if ( treeDiff[ i ][ 0 ] !== null ) {
 			// Node was removed
-			oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ];
-			if ( oldNode.node.canContainContent() ) {
-				this.updateChangeRecord( oldNode.node.length, true, changeRecord );
+			oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
+			if ( !oldNode.isDiffedAsTree() ) {
+				this.updateChangeRecord( oldNode.length, true, changeRecord );
 			}
 
 		} else {
 			// Node was inserted
-			newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ];
-			if ( newNode.node.canContainContent() ) {
-				this.updateChangeRecord( newNode.node.length, false, changeRecord );
+			newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
+			if ( !newNode.isDiffedAsTree() ) {
+				this.updateChangeRecord( newNode.length, false, changeRecord );
 			}
 		}
 	}
@@ -992,7 +973,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 };
 
 /**
- * Check if a diff object has any changes
+ * Check if a list diff object has any changes
  *
  * @param {Object} diff Diff object
  * @param {boolean} isInternalListDiff Is an internal list diff
