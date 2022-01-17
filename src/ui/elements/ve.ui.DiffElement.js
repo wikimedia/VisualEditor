@@ -916,9 +916,6 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 	 * this document child
 	 */
 	function highlightRemovedNode( nodeIndex ) {
-		var x, xlen, orderedNode, node, removeData, siblingNodes,
-			newPreviousNodeIndex, oldPreviousNodeIndex, insertIndex,
-			highestRemovedAncestor;
 
 		function findRemovedAncestor( n ) {
 			if ( !n.parent || structuralRemoves.indexOf( n.parent.index ) === -1 ) {
@@ -929,16 +926,14 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 		}
 
 		function getRemoveData( n, index ) {
-			var data, tempData;
-
-			data = this.oldDoc.getData( n.node.getOuterRange() );
+			var data = this.oldDoc.getData( n.node.getOuterRange() );
 			this.addAttributesToElement( data, 0, {
 				'data-diff-action': 'remove'
 			} );
 
 			while ( n && n.index !== index ) {
 				n = n.parent;
-				tempData = this.oldDoc.getData( n.node.getOuterRange() );
+				var tempData = this.oldDoc.getData( n.node.getOuterRange() );
 				data.unshift( tempData[ 0 ] );
 				data.push( tempData[ tempData.length - 1 ] );
 				this.addAttributesToElement( data, 0, {
@@ -949,8 +944,8 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 			return data;
 		}
 
-		orderedNode = oldNodes[ nodeIndex ];
-		node = orderedNode.node;
+		var orderedNode = oldNodes[ nodeIndex ];
+		var node = orderedNode.node;
 
 		if ( !node.canContainContent() && node.hasChildren() ) {
 
@@ -962,8 +957,9 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 
 			// Display the removed node, and all its ancestors, up to the first ancestor that
 			// hasn't been removed.
-			highestRemovedAncestor = oldNodes[ findRemovedAncestor( orderedNode ) ];
-			removeData = getRemoveData.call( this, orderedNode, highestRemovedAncestor.index );
+			var highestRemovedAncestor = oldNodes[ findRemovedAncestor( orderedNode ) ];
+			var removeData = getRemoveData.call( this, orderedNode, highestRemovedAncestor.index );
+			var insertIndex;
 
 			// Work out where to insert the removed subtree
 			if ( highestRemovedAncestor.index in highestRemovedAncestors ) {
@@ -990,12 +986,13 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 				// - or if there isn't one, then this node's parent (which must correspond to
 				// a node in the new document, or this node would have been marked already
 				// processed)
-				siblingNodes = highestRemovedAncestor.parent.children;
-				for ( x = 0, xlen = siblingNodes.length; x < xlen; x++ ) {
+				var siblingNodes = highestRemovedAncestor.parent.children;
+				var newPreviousNodeIndex;
+				for ( var x = 0, xlen = siblingNodes.length; x < xlen; x++ ) {
 					if ( siblingNodes[ x ].index === highestRemovedAncestor.index ) {
 						break;
 					} else {
-						oldPreviousNodeIndex = siblingNodes[ x ].index;
+						var oldPreviousNodeIndex = siblingNodes[ x ].index;
 						newPreviousNodeIndex = correspondingNodes.oldToNew[ oldPreviousNodeIndex ] || newPreviousNodeIndex;
 					}
 				}
@@ -1028,11 +1025,9 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 	 * this document child
 	 */
 	function highlightInsertedNode( nodeIndex ) {
-		var node, nodeRangeStart;
-
 		// Find index of first data element for this node
-		node = newNodes[ nodeIndex ].node;
-		nodeRangeStart = node.getOuterRange().from - nodeRange.from;
+		var node = newNodes[ nodeIndex ].node;
+		var nodeRangeStart = node.getOuterRange().from - nodeRange.from;
 
 		// Add insert class
 		this.addAttributesToElement(
@@ -1051,17 +1046,15 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 	 * @param {Object} info Information relating to this node's change
 	 */
 	function highlightChangedNode( nodeIndex, info ) {
-		var node, nodeRangeStart, nodeDiffData, annotatedData, item;
-
 		// The new node was changed.
 		// Get data for this node
-		node = newNodes[ nodeIndex ].node;
-		nodeRangeStart = node.getOuterRange().from - nodeRange.from;
+		var node = newNodes[ nodeIndex ].node;
+		var nodeRangeStart = node.getOuterRange().from - nodeRange.from;
 
 		if ( info.linearDiff ) {
 			// If there is a content change, splice it in
-			nodeDiffData = info.linearDiff;
-			annotatedData = this.annotateNode( nodeDiffData );
+			var nodeDiffData = info.linearDiff;
+			var annotatedData = this.annotateNode( nodeDiffData );
 			ve.batchSplice( nodeData, nodeRangeStart + 1, node.length, annotatedData );
 		}
 		if ( info.attributeChange ) {
@@ -1069,7 +1062,7 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
 			this.addAttributesToElement(
 				nodeData, nodeRangeStart, { 'data-diff-action': 'structural-change' }
 			);
-			item = this.compareNodeAttributes( nodeData, nodeRangeStart, info.attributeChange );
+			var item = this.compareNodeAttributes( nodeData, nodeRangeStart, info.attributeChange );
 			if ( item ) {
 				this.descriptionItemsStack.push( item );
 			}
