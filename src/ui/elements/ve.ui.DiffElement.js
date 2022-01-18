@@ -338,19 +338,16 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 	documentSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer' );
 	documentSpacerNode.appendChild( document.createTextNode( '⋮' ) );
 
-	// Wrap iternal list spacer in <ol> to match indentation
-	var internalListSpacerNode = document.createElement( 'ol' );
+	var internalListSpacerNode = document.createElement( 'li' );
 	internalListSpacerNode.setAttribute( 'class', 've-ui-diffElement-internalListSpacer' );
-	var li = document.createElement( 'li' );
-	internalListSpacerNode.appendChild( li );
-	li.appendChild( documentSpacerNode.cloneNode( true ) );
+	internalListSpacerNode.appendChild( documentSpacerNode.cloneNode( true ) );
 
 	var group;
 	var i, ilen;
 	var referencesListDiffs = {};
 	for ( group in internalListDiff.groups ) {
 
-		var referencesListDiffDiv = document.createElement( 'div' );
+		var referencesListContainer = document.createElement( 'ol' );
 
 		var internalListGroup = internalListDiff.groups[ group ];
 
@@ -382,10 +379,10 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 		this.descriptionItemsStack = [];
 		this.renderQueue(
 			this.processQueue( internalListDiffQueue ),
-			referencesListDiffDiv, internalListSpacerNode
+			referencesListContainer, internalListSpacerNode
 		);
 		referencesListDiffs[ group ] = {
-			element: referencesListDiffDiv,
+			element: referencesListContainer,
 			action: internalListGroup.changes ? 'change' : 'none',
 			descriptionItemsStack: this.descriptionItemsStack,
 			shown: false
@@ -1167,17 +1164,17 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
  * unchanged (but not inserted or removed - in these cases we just use
  * getNodeElements).
  *
- * @param {HTMLElement} referencesListDiffDiv Div containing the references list
+ * @param {HTMLElement} referencesListContainer Div containing the references list
  * @param {string} action 'change' or 'none'
  * @param {string|null} move 'up' or 'down' if the node has moved
  * @param {OO.ui.OptionWidget[]} items Change descriptions for the reference list
  * @return {HTMLElement[]} Elements to display
  */
-ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDiffDiv, action, move, items ) {
-	this.markMove( move, referencesListDiffDiv );
+ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListContainer, action, move, items ) {
+	this.markMove( move, referencesListContainer );
 	this.descriptionItemsStack.push.apply( this.descriptionItemsStack, items );
 
-	return [ referencesListDiffDiv ];
+	return [ referencesListContainer ];
 };
 
 /**
@@ -1194,7 +1191,6 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
 	var diffElement = this,
 		internalListNode = action === 'remove' ? internalListDiff.oldNode : internalListDiff.newNode,
 		contents = internalListNode.children[ internalListItem.nodeIndex ].children,
-		listNode = document.createElement( 'ol' ),
 		listItemNode = document.createElement( 'li' );
 
 	if ( contents.length ) {
@@ -1214,11 +1210,9 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
 				.text( ve.msg( 'cite-ve-referenceslist-missingref-in-list' ) )
 		).attr( 'data-diff-action', action );
 	}
+	listItemNode.setAttribute( 'value', internalListItem.indexOrder + 1 );
 
-	listNode.setAttribute( 'start', internalListItem.indexOrder + 1 );
-	listNode.appendChild( listItemNode );
-
-	return [ listNode ];
+	return [ listItemNode ];
 };
 
 /**
@@ -1230,12 +1224,11 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
  * @return {HTMLElement[]} HTML elements to display the linear diff
  */
 ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( internalListItem, move ) {
-	var listNode = document.createElement( 'ol' ),
-		listItemNode = document.createElement( 'li' ),
+	var listItemNode = document.createElement( 'li' ),
 		linearDiff = internalListItem.diff.diffInfo[ 0 ].linearDiff,
 		annotatedData = this.annotateNode( linearDiff );
 
-	this.markMove( move, listNode );
+	this.markMove( move, listItemNode );
 	var documentSlice = this.newDoc.cloneWithData( annotatedData, true, true );
 	var body = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
 	while ( body.childNodes.length ) {
@@ -1244,10 +1237,9 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( inte
 		);
 	}
 
-	listNode.setAttribute( 'start', internalListItem.indexOrder + 1 );
-	listNode.appendChild( listItemNode );
+	listItemNode.setAttribute( 'value', internalListItem.indexOrder + 1 );
 
-	return [ listNode ];
+	return [ listItemNode ];
 };
 
 /**
