@@ -1223,6 +1223,31 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<ul><li>' +
 						'<table><tbody><tr><td>Foo</td><td>Bar</td><td><del data-diff-action="remove">Baz1</del><ins data-diff-action="insert">Baz2</ins></td></tr></tbody></table>' +
 					'</li></ul>'
+			},
+			{
+				msg: 'Internal list',
+				oldDoc: 'Hi<ref>Foo</ref><ref>Bar</ref><ref>Baz1</ref><ref>Baz2</ref><ref>Baz3</ref><ref>Baz4</ref>',
+				newDoc: 'Hi<ref>Foo 1</ref><ref>Baz1</ref><ref>Baz2</ref><ref>Baz3</ref><ref>Baz4</ref><ref>Quux</ref>',
+				expected:
+					'<p data-diff-action="none">Hi' + '<ref></ref>'.repeat( 6 ) + '</p>' +
+					'<div>' +
+						'<ol start="1">' +
+							'<li>Foo<ins data-diff-action="insert"> 1</ins></li>' +
+						'</ol>' +
+						'<ol start="2">' +
+							'<li><p data-diff-action="remove">Bar</p></li>' +
+						'</ol>' +
+						'<ol start="2">' +
+							'<li><p data-diff-action="none">Baz1</p></li>' +
+						'</ol>' +
+						'<ol class="ve-ui-diffElement-internalListSpacer"><li>' + spacer + '</li></ol>' +
+						'<ol start="5">' +
+							'<li><p data-diff-action="none">Baz4</p></li>' +
+						'</ol>' +
+						'<ol start="6">' +
+							'<li><p data-diff-action="insert">Quux</p></li>' +
+						'</ol>' +
+					'</div>'
 			}
 		];
 
