@@ -687,19 +687,19 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
-				msg: 'Horizontal merge',
+				msg: 'Horizontal merge (also rowspan set to 1 and not described)',
 				oldDoc: '<table>' +
 						'<tr><td>A</td><td>B</td></tr>' +
 						'<tr><td>C</td><td>D</td></tr>' +
 					'</table>',
 				newDoc: '<table>' +
-						'<tr><td colspan="2">A</td></tr>' +
+						'<tr><td colspan="2" rowspan="1">A</td></tr>' +
 						'<tr><td>C</td><td>D</td></tr>' +
 					'</table>',
 				expected:
 					'<div class="ve-ui-diffElement-doc-child-change">' +
 						'<table><tbody>' +
-						'<tr><td colspan="2" data-diff-action="structural-change" data-diff-id="0">A</td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
+						'<tr><td colspan="2" rowspan="1" data-diff-action="structural-change" data-diff-id="0">A</td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
 						'<tr><td>C</td><td>D</td></tr>' +
 						'</tbody></table>' +
 					'</div>',
@@ -708,9 +708,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
-				msg: 'Horizontal unmerge',
+				msg: 'Horizontal unmerge (also rowspan unset from 1 and not described)',
 				oldDoc: '<table>' +
-						'<tr><td colspan="2">A</td></tr>' +
+						'<tr><td colspan="2" rowspan="1">A</td></tr>' +
 						'<tr><td>C</td><td>D</td></tr>' +
 					'</table>',
 				newDoc: '<table>' +
