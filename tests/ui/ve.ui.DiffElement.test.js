@@ -612,6 +612,113 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</div>'
 			},
 			{
+				msg: 'Horizontal merge',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td colspan="2">A</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+						'<tr><td colspan="2" data-diff-action="structural-change" data-diff-id="0">A</td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+						'</tbody></table>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-set,originalColspan,<ins>2</ins></div>' +
+					'<div>visualeditor-changedesc-set,colspan,<ins>2</ins></div>'
+				]
+			},
+			{
+				msg: 'Horizontal unmerge',
+				oldDoc: '<table>' +
+						'<tr><td colspan="2">A</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+						'<tr><td data-diff-action="structural-change" data-diff-id="0">A</td><td data-diff-action="structural-insert"><p data-diff-action="insert">B</p></td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+						'</tbody></table>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-unset,originalColspan,<del>2</del></div>' +
+					'<div>visualeditor-changedesc-unset,colspan,<del>2</del></div>'
+				]
+			},
+			{
+				msg: 'Horizontal merge and change',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td colspan="2">Q</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+						'<tr><td colspan="2" data-diff-action="structural-change" data-diff-id="0"><del data-diff-action="remove">A</del><ins data-diff-action="insert">Q</ins></td><td data-diff-action="structural-remove"><p data-diff-action="remove">B</p></td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+						'</tbody></table>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-set,originalColspan,<ins>2</ins></div>' +
+					'<div>visualeditor-changedesc-set,colspan,<ins>2</ins></div>'
+				]
+			},
+			{
+				msg: 'Vertical merge',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td rowspan="2">A</td><td>B</td></tr>' +
+						'<tr><td>D</td></tr>' +
+					'</table>',
+				expected:
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table><tbody>' +
+						'<tr><td rowspan="2" data-diff-action="structural-change" data-diff-id="0">A</td><td>B</td></tr>' +
+						'<tr><td data-diff-action="structural-remove"><p data-diff-action="remove">C</p></td><td>D</td></tr>' +
+						'</tbody></table>' +
+					'</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-set,originalRowspan,<ins>2</ins></div>' +
+					'<div>visualeditor-changedesc-set,rowspan,<ins>2</ins></div>'
+				]
+			},
+			{
+				msg: 'Vertical merge and modify',
+				oldDoc: '<table>' +
+						'<tr><td>A</td><td>B</td></tr>' +
+						'<tr><td>C</td><td>D</td></tr>' +
+					'</table>',
+				newDoc: '<table>' +
+						'<tr><td rowspan="2">A</td><td>B 1</td></tr>' +
+						'<tr><td>D 1</td></tr>' +
+					'</table>',
+				expected:
+					// TODO: Detect this change
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table data-diff-action="remove"><tbody><tr><td>A</td><td>B</td></tr><tr><td>C</td><td>D</td></tr></tbody></table>' +
+					'</div>' +
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<table data-diff-action="insert"><tbody><tr><td rowspan="2">A</td><td>B 1</td></tr><tr><td>D 1</td></tr></tbody></table>' +
+					'</div>'
+			},
+			{
 				msg: 'List item indentation in div',
 				oldDoc:
 					'<div>' +
