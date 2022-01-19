@@ -60,29 +60,6 @@ ve.dm.MetaItem.static.removable = false;
 /* Methods */
 
 /**
- * Remove this item from the document. Only works if the item is attached to a MetaList.
- *
- * @throws {Error} Cannot remove detached item
- */
-ve.dm.MetaItem.prototype.remove = function () {
-	if ( !this.list ) {
-		throw new Error( 'Cannot remove detached item' );
-	}
-	this.list.removeMeta( this );
-};
-
-/**
- * Replace item with another in-place.
- *
- * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
- *
- * @param {Object|ve.dm.MetaItem} item Item to replace this item with
- */
-ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
-	this.list.replaceMeta( this, item );
-};
-
-/**
  * Get the group this meta item belongs to.
  *
  * @see #static-group
@@ -90,33 +67,4 @@ ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
  */
 ve.dm.MetaItem.prototype.getGroup = function () {
 	return this.constructor.static.group;
-};
-
-/**
- * Attach this item to a MetaList.
- *
- * @param {ve.dm.MetaList} list Parent list to attach to
- */
-ve.dm.MetaItem.prototype.attachToMetaList = function ( list ) {
-	this.list = list;
-};
-
-/**
- * Detach this item from its parent list.
- *
- * @param {ve.dm.MetaList} list List to detach from
- */
-ve.dm.MetaItem.prototype.detachFromMetaList = function ( list ) {
-	if ( this.list === list ) {
-		this.list = null;
-	}
-};
-
-/**
- * Check whether this item is attached to a MetaList.
- *
- * @return {boolean} Whether item is attached
- */
-ve.dm.MetaItem.prototype.isAttached = function () {
-	return this.list !== null;
 };

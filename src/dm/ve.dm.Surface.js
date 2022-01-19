@@ -40,7 +40,6 @@ ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
 	this.documentModel = doc;
 	this.attachedRoot = attachedRoot;
 	this.sourceMode = !!config.sourceMode;
-	this.metaList = new ve.dm.MetaList( this );
 	this.selection = new ve.dm.NullSelection();
 	// The selection before the most recent stack of changes was applied
 	this.selectionBefore = this.selection;
@@ -566,15 +565,6 @@ ve.dm.Surface.prototype.getDocument = function () {
  */
 ve.dm.Surface.prototype.getAttachedRoot = function () {
 	return this.attachedRoot;
-};
-
-/**
- * Get the meta list.
- *
- * @return {ve.dm.MetaList} Meta list of the surface
- */
-ve.dm.Surface.prototype.getMetaList = function () {
-	return this.metaList;
 };
 
 /**
