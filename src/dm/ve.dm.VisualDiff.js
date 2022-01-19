@@ -69,6 +69,22 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout 
 	this.newDoc.setReadOnly( false );
 };
 
+/* Inheritance */
+
+OO.initClass( ve.dm.VisualDiff );
+
+/**
+ * Get the original linear data from a node
+ *
+ * @param {ve.dm.Node} node Node
+ * @param {boolean} innerRange Get the node's inner range
+ * @return {Array} Linear data
+ */
+ve.dm.VisualDiff.static.getDataFromNode = function ( node, innerRange ) {
+	var doc = node.getRoot().getDocument();
+	return doc.getData( innerRange ? node.getRange() : node.getOuterRange() );
+};
+
 /**
  * Attach the internal list indexOrder to each node referenced by the internal
  * list, ahead of document merge.
@@ -342,8 +358,8 @@ ve.dm.VisualDiff.prototype.compareNodes = function ( oldNode, newNode ) {
 		return false;
 	}
 
-	var oldData = this.oldDoc.getData( oldNode.getOuterRange() );
-	var newData = this.newDoc.getData( newNode.getOuterRange() );
+	var oldData = this.constructor.static.getDataFromNode( oldNode );
+	var newData = this.constructor.static.getDataFromNode( newNode );
 
 	if ( JSON.stringify( oldData ) === JSON.stringify( newData ) ) {
 		return true;
@@ -351,8 +367,8 @@ ve.dm.VisualDiff.prototype.compareNodes = function ( oldNode, newNode ) {
 
 	// If strings are not equal, the data may still be the same as far as
 	// we are concerned so should compare them properly.
-	var oldStore = this.oldDoc.getStore();
-	var newStore = this.newDoc.getStore();
+	var oldStore = oldNode.getRoot().getDocument().getStore();
+	var newStore = newNode.getRoot().getDocument().getStore();
 
 	for ( var i = 0, ilen = oldData.length; i < ilen; i++ ) {
 		if ( oldData[ i ] !== newData[ i ] &&
@@ -804,8 +820,8 @@ ve.dm.VisualDiff.prototype.diffContent = function ( oldNode, newNode ) {
 	if ( Date.now() < this.endTime ) {
 
 		linearDiff = this.linearDiffer.getCleanDiff(
-			this.oldDoc.getData( oldNode.getRange() ),
-			this.newDoc.getData( newNode.getRange() ),
+			this.constructor.static.getDataFromNode( oldNode, true ),
+			this.constructor.static.getDataFromNode( newNode, true ),
 			{ keepOldText: false }
 		);
 		this.timedOut = !!linearDiff.timedOut;
