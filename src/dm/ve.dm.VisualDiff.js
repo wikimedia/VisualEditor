@@ -64,9 +64,11 @@ ve.dm.VisualDiff = function VeDmVisualDiff( oldDocOrNode, newDocOrNode, timeout 
 
 	var oldInternalList = this.oldDoc.getInternalList();
 	var newInternalList = this.newDoc.getInternalList();
+
 	this.diff = {
 		docDiff: this.diffDocs( oldDocNode, newDocNode, true ),
-		internalListDiff: this.getInternalListDiff( oldInternalList, newInternalList )
+		internalListDiff: this.getInternalListDiff( oldInternalList, newInternalList ),
+		metaListDiff: this.getMetaListDiff( oldDoc.getMetaList(), newDoc.getMetaList() )
 	};
 
 	// Make docs writable again, so they can be modified by DiffElement
@@ -835,6 +837,34 @@ ve.dm.VisualDiff.prototype.updateChangeRecordLinearDiff = function ( linearDiff,
  */
 ve.dm.VisualDiff.prototype.underDiffThreshold = function ( changeRecord ) {
 	return changeRecord.keepLength < this.diffThreshold * changeRecord.diffLength;
+};
+
+ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList ) {
+	var visualDiff = this;
+	var oldItemsByGroup = {};
+	oldMetaList.items.forEach( function ( metaItem ) {
+		var group = metaItem.getGroup();
+		oldItemsByGroup[ group ] = oldItemsByGroup[ group ] || [];
+		oldItemsByGroup[ group ].push( metaItem );
+	} );
+	var newItemsByGroup = {};
+	newMetaList.items.forEach( function ( metaItem ) {
+		var group = metaItem.getGroup();
+		newItemsByGroup[ group ] = newItemsByGroup[ group ] || [];
+		newItemsByGroup[ group ].push( metaItem );
+	} );
+	var groups = OO.simpleArrayUnion(
+		Object.keys( oldItemsByGroup ),
+		Object.keys( newItemsByGroup )
+	);
+	var groupDiffs = {};
+	groups.forEach( function ( group ) {
+		groupDiffs[ group ] = visualDiff.diffList(
+			oldItemsByGroup[ group ] || [],
+			newItemsByGroup[ group ] || []
+		);
+	} );
+	return groupDiffs;
 };
 
 /*

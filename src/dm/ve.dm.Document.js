@@ -330,6 +330,8 @@ ve.dm.Document.prototype.getLength = function () {
  * @return {ve.dm.MetaList} Meta list of the surface
  */
 ve.dm.Document.prototype.getMetaList = function () {
+	// Ensure the DM tree has been built
+	this.getDocumentNode();
 	return this.metaList;
 };
 
