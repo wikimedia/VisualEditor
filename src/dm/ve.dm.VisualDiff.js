@@ -138,8 +138,6 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
  *
  * @param {ve.dm.Node[]} oldNodes Nodes from the old document
  * @param {ve.dm.Node[]} newNodes Nodes from the new document
- * @param {ve.dm.Node} [oldRoot] Root node from the old document
- * @param {ve.dm.Node} [newRoot] Root node from the new document
  * @return {Object} Object containing diff information
  */
 ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
