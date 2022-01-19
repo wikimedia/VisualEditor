@@ -486,21 +486,8 @@ ve.ui.DiffElement.prototype.wrapNodeData = function ( nodeData, action ) {
 	documentSlice.getStore().merge( nodeDoc.getStore() );
 	var nodeElements = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
 
-	if ( action !== 'none' ) {
-		// Wrap in a <div>
-		var element = document.createElement( 'div' );
-		element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
-		while ( nodeElements.childNodes.length ) {
-			element.appendChild(
-				element.ownerDocument.adoptNode( nodeElements.childNodes[ 0 ] )
-			);
-		}
-
-		return [ element ];
-	} else {
-		// Convert NodeList to real array
-		return Array.prototype.slice.call( nodeElements.childNodes );
-	}
+	// Convert NodeList to real array
+	return Array.prototype.slice.call( nodeElements.childNodes );
 };
 
 /**
@@ -1182,9 +1169,6 @@ ve.ui.DiffElement.prototype.getChangedTreeNodeData = function ( oldNode, newNode
  * @return {HTMLElement[]} Elements to display
  */
 ve.ui.DiffElement.prototype.getRefListNodeElements = function ( referencesListDiffDiv, action, move, items ) {
-	if ( action !== 'none' ) {
-		referencesListDiffDiv.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
-	}
 	this.markMove( move, referencesListDiffDiv );
 	this.descriptionItemsStack.push.apply( this.descriptionItemsStack, items );
 
@@ -1246,20 +1230,14 @@ ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( inte
 		linearDiff = internalListItem.diff.diffInfo[ 0 ].linearDiff,
 		annotatedData = this.annotateNode( linearDiff );
 
-	var element = document.createElement( 'div' );
-	element.setAttribute( 'class', 've-ui-diffElement-doc-child-change' );
-	this.markMove( move, element );
+	this.markMove( move, listNode );
 	var documentSlice = this.newDoc.cloneWithData( annotatedData, true, true );
 	var body = ve.dm.converter.getDomFromModel( documentSlice, ve.dm.Converter.static.PREVIEW_MODE ).body;
 	while ( body.childNodes.length ) {
-		element.appendChild(
-			element.ownerDocument.adoptNode( body.childNodes[ 0 ] )
+		listItemNode.appendChild(
+			listItemNode.ownerDocument.adoptNode( body.childNodes[ 0 ] )
 		);
 	}
-
-	listItemNode.appendChild(
-		listItemNode.ownerDocument.adoptNode( element )
-	);
 
 	listNode.setAttribute( 'start', internalListItem.indexOrder + 1 );
 	listNode.appendChild( listItemNode );
