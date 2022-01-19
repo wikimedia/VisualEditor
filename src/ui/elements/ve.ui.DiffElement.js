@@ -889,7 +889,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 
 		// Record the index to splice in the next list item data into the diffData
 		insertIndex = this.appendListItem(
-			diffData, insertIndex, newListNode, listNodeData, listItemData, depthChange
+			diffData, insertIndex, listNode, listNodeData, listItemData, depthChange
 		);
 
 		depth = newDepth;

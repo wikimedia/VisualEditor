@@ -1306,6 +1306,16 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'Change in deep sparse list',
+				oldDoc: '<ul><li><ul><li><ul><li>Foo</li></ul></li></ul></li></ul>',
+				newDoc: '<ul><li><ul><li><ul><li>Foo bar</li></ul></li></ul></li></ul>',
+				expected:
+					// TODO: The rendered list has the wrong depth and a re-parented <ul>
+					'<div class="ve-ui-diffElement-doc-child-change">' +
+						'<ul><li><ul><li>Foo<ins data-diff-action="insert"> bar</ins></li></ul></li></ul><ul></ul>' +
+					'</div>'
+			},
+			{
 				msg: 'Inline widget with same type but not diff comparable is marked as a remove/insert',
 				oldDoc: '<p>Foo bar baz<span rel="test:inlineWidget" data-name="FooWidget"></span></p>',
 				newDoc: '<p>Foo bar baz<span rel="test:inlineWidget" data-name="BarWidget"></span></p>',
