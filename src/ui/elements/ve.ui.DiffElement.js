@@ -386,32 +386,40 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 	this.descriptionItemsStack = [];
 	var referencesListDiff;
 
+	function handleRefList( node, move ) {
+		if (
+			node.type === 'mwReferencesList' &&
+			( referencesListDiff = referencesListDiffs[ node.element.attributes.listGroup ] )
+		) {
+			// New node is a references list node. If a reference has
+			// changed, the references list nodes appear unchanged,
+			// because of how the internal list works. However, we
+			// already have the HTML for the diffed references list,
+			// (which contains details of changes if there are any) so
+			// just get that.
+			diffQueue.push( [ 'getRefListNodeElements', referencesListDiff.element, referencesListDiff.action, move, referencesListDiff.descriptionItemsStack ] );
+			referencesListDiff.shown = true;
+			return true;
+		}
+		return false;
+	}
+
 	this.iterateDiff( diff, {
 		insert: function ( newNode ) {
-			diffQueue.push( [ 'getNodeElements', newNode, 'insert', null ] );
+			if ( !handleRefList( newNode, null ) ) {
+				diffQueue.push( [ 'getNodeElements', newNode, 'insert', null ] );
+			}
 		},
 		remove: function ( oldNode ) {
-			diffQueue.push( [ 'getNodeElements', oldNode, 'remove', null ] );
+			if ( !handleRefList( oldNode, null ) ) {
+				diffQueue.push( [ 'getNodeElements', oldNode, 'remove', null ] );
+			}
 		},
 		move: function ( newNode, move ) {
 			diffQueue.push( [ 'getNodeElements', newNode, 'none', move ] );
 		},
 		preChanged: function ( oldNode, newNode, move ) {
-			if (
-				newNode.type === 'mwReferencesList' &&
-				( referencesListDiff = referencesListDiffs[ newNode.element.attributes.listGroup ] )
-			) {
-				// New node is a references list node. If a reference has
-				// changed, the references list nodes appear unchanged,
-				// because of how the internal list works. However, we
-				// already have the HTML for the diffed references list,
-				// (which contains details of changes if there are any) so
-				// just get that.
-				diffQueue.push( [ 'getRefListNodeElements', referencesListDiff.element, referencesListDiff.action, move, referencesListDiff.descriptionItemsStack ] );
-				referencesListDiff.shown = true;
-				return true;
-			}
-			return false;
+			return handleRefList( newNode, move );
 		},
 		changed: function ( nodeDiff, oldNode, newNode, move ) {
 			diffQueue.push( [ 'getChangedNodeElements', nodeDiff, oldNode, newNode, move ] );
