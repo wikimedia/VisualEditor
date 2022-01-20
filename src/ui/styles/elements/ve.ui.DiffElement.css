@@ -15,6 +15,14 @@
 	display: block;
 }
 
+.ve-ui-diffElement-content {
+	overflow-x: auto;
+	position: relative;
+	/* Render 5px padding so highlight outlines are visible */
+	margin-left: -5px;
+	padding-left: 5px;
+}
+
 .ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-content {
 	margin-right: 16em;
 	padding-right: 1em;
