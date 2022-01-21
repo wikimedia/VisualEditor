@@ -1435,7 +1435,10 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			if ( rules.nodeSanitization ) {
 				var nodeClass = ve.dm.modelRegistry.lookup( this.getType( i ) );
 				// Perform per-class sanitizations:
-				nodeClass.static.sanitize( this.getData( i ), rules );
+				// eslint-disable-next-line no-loop-func
+				this.modifyData( i, function ( item ) {
+					nodeClass.static.sanitize( item, rules );
+				} );
 			}
 			if ( rules.removeOriginalDomElements ) {
 				this.modifyData( i, function ( item ) {
