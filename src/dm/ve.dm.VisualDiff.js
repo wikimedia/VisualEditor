@@ -535,6 +535,8 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 	}
 
 	var listDiff = this.diffList( oldFlatList.nodes, newFlatList.nodes );
+	listDiff.oldList = oldFlatList;
+	listDiff.newList = newFlatList;
 
 	// Do metadata diff of all aligned nodes
 	for ( i in listDiff.oldToNew ) {
@@ -580,15 +582,13 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 			}
 			listDiff.newToOld[ j ] = { node: i };
 		}
-
 	}
 
-	var listDiffInfo = this.getListDiffInfo( listDiff, oldFlatList.indices, newFlatList.indices );
+	if ( !this.hasChanges( listDiff ) ) {
+		return false;
+	}
 
-	listDiffInfo.oldList = oldFlatList;
-	listDiffInfo.newList = newFlatList;
-
-	return listDiffInfo;
+	return listDiff;
 };
 
 /**
@@ -991,12 +991,12 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 					oldDocInternalListItems.toDiff,
 					newDocInternalListItems.toDiff
 				);
+				diff.oldList = oldDocInternalListNode;
+				diff.newList = newDocInternalListNode;
 
-				var diffInfo = this.getListDiffInfo(
-					diff, oldDocInternalListItems.indices, newDocInternalListItems.indices, true
-				);
-				if ( diffInfo ) {
-					groupDiffs[ group.group ] = diffInfo;
+				if ( this.hasChanges( diff, true ) ) {
+					groupDiffs[ group.group ] = diff;
+					groupDiffs[ group.group ].changes = true;
 				}
 
 				break;
@@ -1034,15 +1034,13 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 };
 
 /**
- * Parse list diff into format that diff element can interpret
+ * Check if a diff object has any changes
  *
- * @param {Object} diff The list diff
- * @param {Array} oldItems Old list items
- * @param {Array} newItems New list items
- * @param {boolean} [isInternalListDiff] Diff is of the internal list
- * @return {Array|boolean} The list diff information, or false if there are no changes
+ * @param {Object} diff Diff object
+ * @param {boolean} isInternalListDiff Is an internal list diff
+ * @return {boolean} The diff object has changes
  */
-ve.dm.VisualDiff.prototype.getListDiffInfo = function ( diff, oldItems, newItems, isInternalListDiff ) {
+ve.dm.VisualDiff.prototype.hasChanges = function ( diff, isInternalListDiff ) {
 	function containsDiff( diffObject ) {
 		for ( var n in diffObject ) {
 			if ( typeof diffObject[ n ] !== 'number' ) {
@@ -1058,71 +1056,6 @@ ve.dm.VisualDiff.prototype.getListDiffInfo = function ( diff, oldItems, newItems
 	}
 
 	// Check there actually are any changes
-	if (
-		( diff.remove.length > 0 || diff.insert.length > 0 ) ||
-		( containsDiff( diff.oldToNew ) || containsDiff( diff.moves ) )
-	) {
-		var i, ilen;
-		var item;
-		// There are changes.
-		// Mark each new item as unchanged, changed or inserted
-		for ( i = 0, ilen = newItems.length; i < ilen; i++ ) {
-			item = newItems[ i ];
-			var itemIndex = item.indexOrder;
-			if ( typeof diff.newToOld[ itemIndex ] === 'number' ) {
-
-				// Item hasn't changed
-				item.diff = 0;
-
-			} else if ( diff.newToOld[ itemIndex ] === undefined ) {
-
-				// Item was inserted
-				item.diff = 1;
-
-			} else {
-
-				// Item has changed
-				// (The diff object is stored in oldToNew)
-				item.diff = diff.oldToNew[
-					diff.newToOld[ itemIndex ].node
-				].diff;
-
-			}
-		}
-
-		// Add all removed items and mark as removed
-		for ( i = 0, ilen = oldItems.length; i < ilen; i++ ) {
-			item = oldItems[ i ];
-			if ( diff.remove.indexOf( i ) !== -1 ) {
-
-				// Item is either not in the new list, or has been marked
-				// as a remove-insert, so mark as removed
-				item.diff = -1;
-				newItems.push( item );
-
-			}
-		}
-
-		// Sort items by index order
-		var listDiffInfo = newItems.sort( function ( a, b ) {
-			if ( a.indexOrder === b.indexOrder ) {
-
-				// When index order is the same, put removed item first
-				return a.diff === -1 ? -1 : 1;
-
-			}
-			return a.indexOrder > b.indexOrder ? 1 : -1;
-		} );
-
-		listDiffInfo.changes = true;
-		listDiffInfo.moves = diff.moves;
-
-		return listDiffInfo;
-
-	} else {
-
-		return false;
-
-	}
-
+	return ( diff.remove.length > 0 || diff.insert.length > 0 ) ||
+		( containsDiff( diff.oldToNew ) || containsDiff( diff.moves ) );
 };

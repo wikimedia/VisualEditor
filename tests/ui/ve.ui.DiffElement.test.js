@@ -906,13 +906,15 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'List item removal',
-				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li></ol>',
-				newDoc: '<ol><li>foo</li><li>baz</li></ol>',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li><li>quux</li><li>whee</li></ol>',
+				newDoc: '<ol><li>foo</li><li>quux</li></ol>',
 				expected:
 					'<ol>' +
 						'<li value="1"><p data-diff-action="none">foo</p></li>' +
 						'<li value="2"><p data-diff-action="remove">bar</p></li>' +
-						'<li value="2"><p data-diff-action="none">baz</p></li>' +
+						'<li value="3"><p data-diff-action="remove">baz</p></li>' +
+						'<li value="2"><p data-diff-action="none">quux</p></li>' +
+						'<li value="5"><p data-diff-action="remove">whee</p></li>' +
 					'</ol>'
 			},
 			{
