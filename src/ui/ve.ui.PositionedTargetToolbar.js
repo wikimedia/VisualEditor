@@ -31,7 +31,6 @@ ve.ui.PositionedTargetToolbar = function VeUiPositionedTargetToolbar( target, co
 	this.floating = false;
 	this.floatable = !!config.floatable;
 	this.height = 0;
-	this.$window = $( this.getElementWindow() );
 	this.elementOffset = null;
 	this.onWindowScrollThrottled = ve.throttle( this.onWindowScroll.bind( this ), 250 );
 
@@ -64,7 +63,7 @@ ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
 		closing: 'onToolbarDialogsOpeningOrClosing'
 	} );
 	if ( this.isFloatable() ) {
-		ve.addPassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
+		ve.addPassiveEventListener( this.target.$scrollListener[ 0 ], 'scroll', this.onWindowScrollThrottled );
 	}
 };
 
@@ -77,7 +76,7 @@ ve.ui.PositionedTargetToolbar.prototype.detach = function () {
 		this.getSurface().getToolbarDialogs().disconnect( this );
 		this.getSurface().getToolbarDialogs().clearWindows();
 	}
-	ve.removePassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollThrottled );
+	ve.removePassiveEventListener( this.target.$scrollListener[ 0 ], 'scroll', this.onWindowScrollThrottled );
 
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.detach.apply( this, arguments );

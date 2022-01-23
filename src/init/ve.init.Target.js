@@ -522,6 +522,7 @@ ve.init.Target.prototype.createSurface = function ( dmDocOrSurface, config ) {
 ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
 	return ve.extendObject( {
 		$scrollContainer: this.$scrollContainer,
+		$scrollListener: this.$scrollListener,
 		commandRegistry: ve.ui.commandRegistry,
 		sequenceRegistry: ve.ui.sequenceRegistry,
 		dataTransferHandlerFactory: ve.ui.dataTransferHandlerFactory,

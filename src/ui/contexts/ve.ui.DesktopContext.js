@@ -48,7 +48,7 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.$window.on( {
 		resize: this.onWindowResizeHandler
 	} );
-	ve.addPassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollDebounced );
+	ve.addPassiveEventListener( this.surface.$scrollListener[ 0 ], 'scroll', this.onWindowScrollDebounced );
 
 	// Initialization
 	this.$element
@@ -430,7 +430,7 @@ ve.ui.DesktopContext.prototype.destroy = function () {
 	this.$window.off( {
 		resize: this.onWindowResizeHandler
 	} );
-	ve.removePassiveEventListener( this.$window[ 0 ], 'scroll', this.onWindowScrollDebounced );
+	ve.removePassiveEventListener( this.surface.$scrollListener[ 0 ], 'scroll', this.onWindowScrollDebounced );
 	// Popups bind scroll events if they're in positioning mode, so make sure that's disabled
 	this.popup.togglePositioning( false );
 
