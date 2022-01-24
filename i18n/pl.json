@@ -65,6 +65,8 @@
 	"visualeditor-changedesc-link-href": "Zmieniono element docelowy linku z $1 na $2",
 	"visualeditor-changedesc-link-href-diff": "Zmieniono stronę docelową linku: $1",
 	"visualeditor-changedesc-link-removed": "Usunięto link: $1",
+	"visualeditor-changedesc-list-indent": "Zwiększenie wcięcia elementu listy",
+	"visualeditor-changedesc-list-outdent": "Zmniejszenie wcięcia elementu listy",
 	"visualeditor-changedesc-no-key": "$1 zmieniono na $2",
 	"visualeditor-changedesc-set": "$1 ustawiono na $2",
 	"visualeditor-changedesc-textstyle-added": "Dodano style tekstu: $1",
