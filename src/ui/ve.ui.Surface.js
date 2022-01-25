@@ -17,6 +17,7 @@
  * @cfg {ve.dm.BranchNode} [attachedRoot] Node to surface, if ve.dm.Document passed in
  * @cfg {string} mode Editing mode, either "visual" or "source"
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
+ * @cfg {jQuery} [$scrollListener] The scroll listener of the surface
  * @cfg {jQuery} [$overlayContainer] Clipping container for local overlays, defaults to surface view
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
  * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
@@ -39,6 +40,7 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 
 	// Properties
 	this.$scrollContainer = config.$scrollContainer || $( this.getClosestScrollableElementContainer() );
+	this.$scrollListener = config.$scrollListener || $( this.getElementWindow() );
 	this.inDialog = config.inDialog || '';
 	this.inTargetWidget = !!config.inTargetWidget;
 	this.mode = config.mode;
