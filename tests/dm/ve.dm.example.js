@@ -3982,6 +3982,7 @@ ve.dm.example.domToDataCases = {
 	},
 	'comment escaping': {
 		body: '<p><!--&#x2D;Foo&#x2D;bar&#x2D;&#x2D;&#x3E;b&#x26;r&#x2D;--></p>',
+		ignoreXmlWarnings: true,
 		data: [
 			{ type: 'paragraph' },
 			{ type: 'comment', attributes: { text: '-Foo-bar-->b&r-' } },
