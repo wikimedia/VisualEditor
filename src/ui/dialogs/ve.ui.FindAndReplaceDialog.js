@@ -534,7 +534,7 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 	if ( scrollIntoView ) {
 		surfaceView = this.surface.getView();
 		var offset = top + surfaceView.$element.offset().top;
-		var windowScrollTop = surfaceView.$window.scrollTop() + this.surface.padding.top;
+		var windowScrollTop = this.surface.$scrollContainer.scrollTop() + this.surface.padding.top;
 		var windowScrollHeight = surfaceView.$window.height() - this.surface.padding.top;
 
 		if ( offset < windowScrollTop || offset > windowScrollTop + windowScrollHeight ) {

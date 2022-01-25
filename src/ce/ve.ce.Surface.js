@@ -448,8 +448,8 @@ ve.ce.Surface.prototype.destroy = function () {
  */
 ve.ce.Surface.prototype.getOffsetFromEventCoords = function ( e ) {
 	return this.getOffsetFromCoords(
-		e.pageX - this.$document.scrollLeft(),
-		e.pageY - this.$document.scrollTop()
+		e.pageX - this.surface.$scrollContainer.scrollLeft(),
+		e.pageY - this.surface.$scrollContainer.scrollTop()
 	);
 };
 
@@ -2044,14 +2044,14 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 			var originalSelection = new ve.SelectionState( this.nativeSelection );
 
 			// Save scroll position before changing focus to "offscreen" paste target
-			var scrollTop = this.$window.scrollTop();
+			var scrollTop = this.surface.$scrollContainer.scrollTop();
 
 			// Prevent surface observation due to native range changing
 			this.surfaceObserver.disable();
 			ve.selectElement( this.$pasteTarget[ 0 ] );
 
 			// Restore scroll position after changing focus
-			this.$window.scrollTop( scrollTop );
+			this.surface.$scrollContainer.scrollTop( scrollTop );
 
 			// setTimeout: postpone until after the default copy action
 			setTimeout( function () {
@@ -2061,7 +2061,7 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 					view.$attachedRootNode[ 0 ].focus();
 					view.showSelectionState( originalSelection );
 					// Restore scroll position
-					view.$window.scrollTop( scrollTop );
+					view.surface.$scrollContainer.scrollTop( scrollTop );
 				}
 				view.surfaceObserver.clear();
 				view.surfaceObserver.enable();
@@ -2171,7 +2171,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	}
 
 	// Save scroll position before changing focus to "offscreen" paste target
-	this.beforePasteData.scrollTop = this.$window.scrollTop();
+	this.beforePasteData.scrollTop = this.surface.$scrollContainer.scrollTop();
 
 	this.$pasteTarget.empty();
 
@@ -2239,7 +2239,7 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	}
 
 	// Restore scroll position after focusing the paste target
-	this.$window.scrollTop( this.beforePasteData.scrollTop );
+	this.surface.$scrollContainer.scrollTop( this.beforePasteData.scrollTop );
 
 };
 
@@ -2301,11 +2301,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		if ( view.getSelection().isNativeCursor() ) {
 			// Restore focus and scroll position
 			view.$attachedRootNode[ 0 ].focus();
-			view.$window.scrollTop( beforePasteData.scrollTop );
+			view.surface.$scrollContainer.scrollTop( beforePasteData.scrollTop );
 			// setTimeout: Firefox sometimes doesn't change scrollTop immediately when pasting
 			// line breaks at the end of a line so do it again later.
 			setTimeout( function () {
-				view.$window.scrollTop( beforePasteData.scrollTop );
+				view.surface.$scrollContainer.scrollTop( beforePasteData.scrollTop );
 			} );
 		}
 
@@ -4485,12 +4485,12 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 		// common case for getting here is when pressing backspace when the
 		// cursor is in the middle of a block of text (thus both are a <div>),
 		// and we don't want to scroll away from the caret.
-		var scrollTop = document.documentElement.scrollTop;
+		var scrollTop = this.surface.$scrollContainer.scrollTop();
 		$focusTarget.trigger( 'focus' );
 		// Support: Safari
 		// Safari tries to scroll the CE surface into view when focusing,
 		// causing unwanted page jumps (T258847)
-		document.documentElement.scrollTop = scrollTop;
+		this.surface.$scrollContainer.scrollTop( scrollTop );
 	} else {
 		// Scroll the node into view
 		ve.scrollIntoView(

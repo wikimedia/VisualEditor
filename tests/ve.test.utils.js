@@ -432,6 +432,8 @@
 			$blockers: $( '<div>' ),
 			$selections: $( '<div>' ),
 			$element: $( '<div>' ),
+			$scrollContainer: $( document.documentElement ),
+			$scrollListener: $( window ),
 			isMobile: function () {
 				return false;
 			},
