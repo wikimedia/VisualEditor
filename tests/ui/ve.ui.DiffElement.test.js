@@ -1227,7 +1227,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</li></ul>'
 			},
 			{
-				msg: 'Internal list',
+				msg: 'Internal list change',
 				oldDoc: 'Hi<ref>Foo</ref><ref>Bar</ref><ref>Baz1</ref><ref>Baz2</ref><ref>Baz3</ref><ref>Baz4</ref>',
 				newDoc: 'Hi<ref>Foo 1</ref><ref>Baz1</ref><ref>Baz2</ref><ref>Baz3</ref><ref>Baz4</ref><ref>Quux</ref>',
 				expected:
@@ -1239,6 +1239,28 @@ QUnit.test( 'Diffing', function ( assert ) {
 						'<li class="ve-ui-diffElement-internalListSpacer">' + spacer + '</li>' +
 						'<li value="5"><p data-diff-action="none">Baz4</p></li>' +
 						'<li value="6"><p data-diff-action="insert">Quux</p></li>' +
+					'</ol>'
+			},
+			{
+				msg: 'Internal list inserted',
+				oldDoc: 'Hi',
+				newDoc: 'Hi<ref>Foo</ref><ref>Bar</ref>',
+				expected:
+					'Hi<ins data-diff-action="insert">' + '<ref></ref>'.repeat( 2 ) + '</ins>' +
+					'<ol>' +
+						'<li value="1"><p data-diff-action="insert">Foo</p></li>' +
+						'<li value="2"><p data-diff-action="insert">Bar</p></li>' +
+					'</ol>'
+			},
+			{
+				msg: 'Internal list deleted',
+				oldDoc: 'Hi<ref>Foo</ref><ref>Bar</ref>',
+				newDoc: 'Hi',
+				expected:
+					'Hi<del data-diff-action="remove">' + '<ref></ref>'.repeat( 2 ) + '</del>' +
+					'<ol>' +
+						'<li value="1"><p data-diff-action="remove">Foo</p></li>' +
+						'<li value="2"><p data-diff-action="remove">Bar</p></li>' +
 					'</ol>'
 			}
 		];

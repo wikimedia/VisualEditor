@@ -28,11 +28,6 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	this.oldDoc = visualDiff.oldDoc;
 	this.newDoc = visualDiff.newDoc;
 
-	// Merge the old internal list into the new document, so that it knows
-	// about removed references
-	var tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( this.newDoc, 0, this.oldDoc, new ve.Range( 0 ) );
-	this.newDoc.commit( tx );
-
 	this.$overlays = $( '<div>' ).addClass( 've-ui-diffElement-overlays' );
 	this.$content = $( '<div>' ).addClass( 've-ui-diffElement-content' );
 	this.$messages = $( '<div>' ).addClass( 've-ui-diffElement-messages' );
@@ -350,22 +345,15 @@ ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff ) {
 
 		diffElement.iterateDiff( internalListGroup, {
 			insert: function ( newNode, newIndex ) {
-				// The internal list gets rebuilt by the transaction to merge the lists, so re-fetch
-				// the internal item by index.
-				newNode = internalListGroup.newList.children[ newIndex ];
 				internalListDiffQueue.push( [ 'getInternalListNodeElements', newNode, 'insert', null, newIndex ] );
 			},
 			remove: function ( oldNode, oldIndex ) {
-				oldNode = internalListGroup.oldList.children[ oldIndex ];
 				internalListDiffQueue.push( [ 'getInternalListNodeElements', oldNode, 'remove', null, oldIndex ] );
 			},
 			move: function ( newNode, move, newIndex ) {
-				newNode = internalListGroup.newList.children[ newIndex ];
 				internalListDiffQueue.push( [ 'getInternalListNodeElements', newNode, 'none', move, newIndex ] );
 			},
 			changed: function ( nodeDiff, oldNode, newNode, move, oldIndex, newIndex ) {
-				oldNode = internalListGroup.oldList.children[ oldIndex ];
-				newNode = internalListGroup.newList.children[ newIndex ];
 				internalListDiffQueue.push( [ 'getInternalListChangedNodeElements', nodeDiff, oldNode, newNode, move, newIndex ] );
 			}
 		} );
@@ -719,7 +707,7 @@ ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, d
 /**
  * Iterate over a diff object and run more meaningful callbacks
  *
- * @param {Object} diff Diff object
+ * @param {Object|Array} diff Diff object, or array (InternalListDiff)
  * @param {Object} callbacks Callbacks
  * @param {Function} callbacks.insert Node inserted, arguments:
  *  {ve.dm.Node} newNode
@@ -740,6 +728,26 @@ ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, d
  *  {string|null} move
  */
 ve.ui.DiffElement.prototype.iterateDiff = function ( diff, callbacks ) {
+	// Internal list diffs set 'diff' to a number to shortcut computing the list diff
+	// for fully inserted/removed lists.
+	// TODO: Remove this special case and use a regular list diff
+	if ( Array.isArray( diff ) ) {
+		diff.forEach( function ( item ) {
+			var node;
+			switch ( item.diff ) {
+				case 1:
+					node = diff.newList.children[ item.nodeIndex ];
+					callbacks.insert( node, item.indexOrder );
+					break;
+				case -1:
+					node = diff.oldList.children[ item.nodeIndex ];
+					callbacks.remove( node, item.indexOrder );
+					break;
+			}
+		} );
+		return;
+	}
+
 	var len = Math.max( diff.oldNodes.length, diff.newNodes.length );
 
 	for ( var i = 0, j = 0; i < len || j < len; i++, j++ ) {
