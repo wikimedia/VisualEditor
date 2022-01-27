@@ -356,14 +356,11 @@
 		var visualDiff = new ve.dm.VisualDiff( oldDoc, newDoc, caseItem.forceTimeout ? -1 : undefined );
 		var diffElement = new ve.ui.DiffElement( visualDiff );
 		assert.equalDomElement( diffElement.$document[ 0 ], $( '<div>' ).addClass( 've-ui-diffElement-document' ).html( caseItem.expected )[ 0 ], caseItem.msg );
-		assert.strictEqual( diffElement.$element.hasClass( 've-ui-diffElement-hasDescriptions' ), !!caseItem.expectedDescriptions, caseItem.msg + ': hasDescriptions' );
-		if ( caseItem.expectedDescriptions !== undefined ) {
-			assert.deepEqualWithDomElements(
-				diffElement.descriptions.items.map( function ( item ) { return item.$label.contents().toArray(); } ),
-				caseItem.expectedDescriptions.map( function ( expected ) { return $.parseHTML( expected ); } ),
-				caseItem.msg + ': sidebar'
-			);
-		}
+		assert.deepEqualWithDomElements(
+			diffElement.descriptions.items.map( function ( item ) { return item.$label.contents().toArray(); } ),
+			( caseItem.expectedDescriptions || [] ).map( function ( expected ) { return $.parseHTML( expected ); } ),
+			caseItem.msg + ': sidebar'
+		);
 		assert.strictEqual(
 			diffElement.$messages.children().length, caseItem.forceTimeout ? 1 : 0,
 			'Timeout message ' + ( caseItem.forceTimeout ? 'shown' : 'not shown' )
