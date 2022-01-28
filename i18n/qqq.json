@@ -81,6 +81,8 @@
 	"visualeditor-changedir-tool-rtl": "Label for tool to change rendered directionality to RTL",
 	"visualeditor-clearbutton-tooltip": "Tooltip text for the remove button. Clears whatever formatting is associated with the context popup.\n{{Identical|Remove}}",
 	"visualeditor-clipboard-copy": "Label for copy command.\n{{Identical|Copy}}",
+	"visualeditor-clipboard-copy-fail": "Message shown when copying to clipboard failed.",
+	"visualeditor-clipboard-copy-success": "Message shown when copying to clipboard worked.",
 	"visualeditor-clipboard-cut": "Label for cut command.\n{{Identical|Cut}}",
 	"visualeditor-clipboard-paste": "Label for paste command.\n{{Identical|Paste}}",
 	"visualeditor-clipboard-paste-special": "Label for paste as plain text command",

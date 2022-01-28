@@ -65,6 +65,8 @@
 	"visualeditor-changedir-tool-rtl": "View as right-to-left",
 	"visualeditor-clearbutton-tooltip": "Remove",
 	"visualeditor-clipboard-copy": "Copy",
+	"visualeditor-clipboard-copy-fail": "Failed to copy to clipboard.",
+	"visualeditor-clipboard-copy-success": "Copied to clipboard.",
 	"visualeditor-clipboard-cut": "Cut",
 	"visualeditor-clipboard-paste": "Paste",
 	"visualeditor-clipboard-paste-special": "Paste as plain text",

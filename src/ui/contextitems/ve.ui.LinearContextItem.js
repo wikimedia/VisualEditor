@@ -52,6 +52,11 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 			icon: this.isReadOnly() ? 'eye' : 'edit',
 			flags: [ 'progressive' ]
 		} );
+		this.copyButton = new OO.ui.ButtonWidget( {
+			framed: false,
+			label: ve.msg( 'visualeditor-clipboard-copy' ),
+			icon: 'articles'
+		} );
 		this.deleteButton = new OO.ui.ButtonWidget( {
 			framed: false,
 			label: ve.msg( 'visualeditor-contextitemwidget-label-remove' ),
@@ -60,6 +65,9 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 		} );
 		this.$foot = $( '<div>' );
 		this.$bodyAction = $( '<div>' );
+		if ( this.isCopyable() ) {
+			this.$foot.append( this.copyButton.$element );
+		}
 		if ( this.isDeletable() ) {
 			this.$foot.append( this.deleteButton.$element );
 		}
@@ -77,6 +85,10 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 			label: ve.msg( this.isReadOnly() ? 'visualeditor-contextitemwidget-label-view' : 'visualeditor-contextitemwidget-label-secondary' ),
 			flags: [ 'progressive' ]
 		} );
+		this.copyButton = new OO.ui.ButtonWidget( {
+			label: ve.msg( 'visualeditor-clipboard-copy' ),
+			icon: 'articles'
+		} );
 		this.deleteButton = new OO.ui.ButtonWidget( {
 			label: ve.msg( 'visualeditor-contextitemwidget-label-remove' ),
 			flags: [ 'destructive' ]
@@ -91,6 +103,7 @@ ve.ui.LinearContextItem = function VeUiLinearContextItem( context, model, config
 
 	// Events
 	this.editButton.connect( this, { click: 'onEditButtonClick' } );
+	this.copyButton.connect( this, { click: 'onCopyButtonClick' } );
 	this.deleteButton.connect( this, { click: 'onDeleteButtonClick' } );
 
 	// Initialization
@@ -166,6 +179,36 @@ ve.ui.LinearContextItem.prototype.onEditButtonClick = function () {
 };
 
 /**
+ * Handle copy button click events.
+ */
+ve.ui.LinearContextItem.prototype.onCopyButtonClick = function () {
+	var surfaceView = this.context.getSurface().getView();
+
+	surfaceView.activate();
+	// Force a native selection on mobile
+	surfaceView.preparePasteTargetForCopy( true );
+
+	var copied;
+	try {
+		copied = document.execCommand( 'copy' );
+	} catch ( e ) {
+		copied = false;
+	}
+
+	ve.init.platform.notify( ve.msg( copied ? 'visualeditor-clipboard-copy-success' : 'visualeditor-clipboard-copy-fail' ) );
+
+	// Restore normal selection for device type
+	surfaceView.preparePasteTargetForCopy();
+	if ( OO.ui.isMobile() ) {
+		// Support: Mobile Safari
+		// Force remove the selection to hide the keyboard
+		document.activeElement.blur();
+	}
+
+	ve.track( 'activity.' + this.constructor.static.name, { action: 'context-copy' } );
+};
+
+/**
  * Handle delete button click events.
  */
 ve.ui.LinearContextItem.prototype.onDeleteButtonClick = function () {
@@ -181,6 +224,15 @@ ve.ui.LinearContextItem.prototype.onDeleteButtonClick = function () {
  */
 ve.ui.LinearContextItem.prototype.isEditable = function () {
 	return this.constructor.static.editable && ( !this.model || this.model.isEditable() );
+};
+
+/**
+ * Check if item is copyable.
+ *
+ * @return {boolean} Item is copyable
+ */
+ve.ui.LinearContextItem.prototype.isCopyable = function () {
+	return this.isNode() && this.context.showCopyButton();
 };
 
 /**
@@ -227,7 +279,11 @@ ve.ui.LinearContextItem.prototype.setup = function () {
 
 	var isEmpty = this.$body.is( ':empty' );
 	if ( isEmpty && this.context.isMobile() ) {
+		this.copyButton.setInvisibleLabel( true );
 		this.deleteButton.setInvisibleLabel( true );
+		if ( this.isCopyable() ) {
+			this.$head.append( this.copyButton.$element );
+		}
 		if ( this.isDeletable() ) {
 			this.$head.append( this.deleteButton.$element );
 		}

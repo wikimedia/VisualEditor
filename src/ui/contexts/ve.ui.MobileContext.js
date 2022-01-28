@@ -42,6 +42,8 @@ ve.ui.MobileContext.static.isMobile = true;
 
 ve.ui.MobileContext.static.showDeleteButton = true;
 
+ve.ui.MobileContext.static.showCopyButton = true;
+
 /* Methods */
 
 /**
