@@ -404,9 +404,10 @@ ve.init.Target.prototype.getScrollContainer = function () {
  * Handle scroll container scroll events
  */
 ve.init.Target.prototype.onContainerScroll = function () {
-	var toolbar = this.getToolbar();
+	// Don't use getter as it creates the toolbar
+	var toolbar = this.toolbar;
 
-	if ( toolbar.isFloatable() ) {
+	if ( toolbar && toolbar.isFloatable() ) {
 		var wasFloating = toolbar.isFloating();
 		var scrollTop = this.$scrollContainer.scrollTop();
 
