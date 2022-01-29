@@ -122,8 +122,9 @@
 	text-decoration: inherit;
 }
 
-[ data-diff-action='insert' ],
-[ data-diff-action='remove' ] {
+/* Prevent collapsing added/removed spaces (T170114), but only inline (T300444) */
+ins[ data-diff-action='insert' ],
+del[ data-diff-action='remove' ] {
 	white-space: pre-wrap;
 }
 
