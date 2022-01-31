@@ -61,6 +61,8 @@
 	"visualeditor-changedesc-link-href": "Посилання змінено з $1 на $2",
 	"visualeditor-changedesc-link-href-diff": "Змінено ціль посилання: $1",
 	"visualeditor-changedesc-link-removed": "Вилучено посилання: $1",
+	"visualeditor-changedesc-list-indent": "Відступ елементу списку збільшено",
+	"visualeditor-changedesc-list-outdent": "Відступ елементу списку зменшено",
 	"visualeditor-changedesc-no-key": "$1 змінено на $2",
 	"visualeditor-changedesc-set": "$1 встановлено значення $2",
 	"visualeditor-changedesc-textstyle-added": "Додано стиль тексту: $1",
