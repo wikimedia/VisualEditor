@@ -1424,31 +1424,26 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Paste target HTML used if nothing important dropped'
 			},
 			{
-				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml: '<span rel="ve:Alien">Alien</span><span rel="ve:Alien">Alien2</span>',
-				pasteTargetHtml: '<p><span>Alien</span><span rel="ve:Alien">Alien2</span></p>',
-				fromVe: true,
+				rangeOrSelection: new ve.Range( 0 ),
+				pasteHtml: ve.dm.example.blockImage.html.replace( '<figure', '<figure typeof="ve:Image"' ),
+				pasteTargetHtml: $( ve.dm.example.blockImage.html ).unwrap().html(),
 				expectedOps: [
 					[
 						{
-							type: 'retain',
-							length: 1
-						},
-						{
 							type: 'replace',
-							insert: [
-								{ type: 'alienInline' },
-								{ type: '/alienInline' },
-								{ type: 'alienInline' },
-								{ type: '/alienInline' }
-							],
+							insert: ( function () {
+								var data = ve.copy( ve.dm.example.blockImage.data );
+								// Removed by ClassAttributeNode's sanitization
+								delete data[ 0 ].attributes.unrecognizedClasses;
+								return data;
+							}() ),
 							remove: []
 						},
-						{ type: 'retain', length: docLen - 1 }
+						{ type: 'retain', length: docLen }
 					]
 				],
-				expectedRangeOrSelection: new ve.Range( 5 ),
-				msg: 'Paste API HTML used if important attributes dropped'
+				expectedRangeOrSelection: new ve.Range( 13 ),
+				msg: 'Paste API HTML used if element with important attributes dropped'
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
