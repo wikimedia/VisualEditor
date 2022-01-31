@@ -36,7 +36,7 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 		this.primary = primaryKeyMap[ e.which ] || false;
 	} else if ( typeof e === 'string' ) {
 		// Normalization: remove whitespace and force lowercase
-		var parts = e.replace( /\s*/g, '' ).toLowerCase().split( '+' );
+		var parts = e.replace( /\s+/g, '' ).toLowerCase().split( '+' );
 		for ( var i = 0, len = parts.length; i < len; i++ ) {
 			var key = parts[ i ];
 			// Resolve key aliases
