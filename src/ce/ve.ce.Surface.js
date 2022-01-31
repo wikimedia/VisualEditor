@@ -2503,7 +2503,7 @@ ve.ce.Surface.prototype.afterPasteInsertInternalData = function ( targetFragment
  * @return {jQuery.Promise} Promise which resolves when the content has been inserted
  */
 ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboardKey, $clipboardHtml, fragment, targetFragment, isMultiline, forceClipboardData ) {
-	var importantElement = '[id],[typeof],[rel]',
+	var importantElement = '[id],[typeof],[rel],figure',
 		items = [],
 		surfaceModel = this.getModel(),
 		documentModel = surfaceModel.getDocument(),
