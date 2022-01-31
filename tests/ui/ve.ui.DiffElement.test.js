@@ -1242,6 +1242,29 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'</ol>'
 			},
 			{
+				msg: 'Two reference lists',
+				oldDoc:
+					'<p>One<ref>Foo</ref><ref>Bar</ref><ref>Baz</ref></p>' +
+					'<p>Two<ref group="g1">Foo</ref><ref group="g1">Bar</ref></p>',
+				newDoc:
+					'<p>One<ref>Foo</ref><ref>Baz</ref></p>' +
+					'<p>Two<ref group="g1">Foo</ref><ref group="g1">Bar</ref><ref group="g1">Baz</ref></p>',
+				expected:
+					'<p>One<ref></ref><ref></ref><del data-diff-action="remove"><ref></ref></del></p>' +
+					// Refs are all comparable so diff thinks the first one is inserted (T273905)
+					'<p>Two<ins data-diff-action="insert"><ref group="g1"></ref></ins><ref group="g1"></ref><ref group="g1"></ref></p>' +
+					'<ol>' +
+						'<li value="1"><p data-diff-action="none">Foo</p></li>' +
+						'<li value="2"><p data-diff-action="remove">Bar</p></li>' +
+						'<li value="2"><p data-diff-action="none">Baz</p></li>' +
+					'</ol>' +
+					'<ol>' +
+						'<li class="ve-ui-diffElement-internalListSpacer"><div class="ve-ui-diffElement-spacer">⋮</div></li>' +
+						'<li value="2"><p data-diff-action="none">Bar</p></li>' +
+						'<li value="3"><p data-diff-action="insert">Baz</p></li>' +
+					'</ol>'
+			},
+			{
 				msg: 'Internal list inserted',
 				oldDoc: 'Hi',
 				newDoc: 'Hi<ref>Foo</ref><ref>Bar</ref>',
