@@ -63,6 +63,15 @@ ve.ce.RangeState = function VeCeRangeState( old, root, selectionOnly ) {
 	 */
 	this.focusIsAfterAnnotationBoundary = null;
 
+	/**
+	 * Saved selection for future comparisons. (But it is not properly frozen, because the
+	 * nodes are live and mutable, and therefore the offsets may come to point to places that
+	 * are misleadingly different from when the selection was saved).
+	 *
+	 * @property {ve.SelectionState} misleadingSelection Saved selection (but with live nodes)
+	 */
+	this.misleadingSelection = null;
+
 	this.saveState( old, root, selectionOnly );
 };
 
