@@ -18,7 +18,6 @@ ve.ce.ParagraphNode = function VeCeParagraphNode() {
 	ve.ce.ParagraphNode.super.apply( this, arguments );
 
 	// DOM changes
-	this.$element.addClass( 've-ce-paragraphNode' );
 	if (
 		this.model.getElement().internal &&
 		this.model.getElement().internal.generated === 'wrapper'
@@ -36,6 +35,16 @@ OO.inheritClass( ve.ce.ParagraphNode, ve.ce.ContentBranchNode );
 ve.ce.ParagraphNode.static.name = 'paragraph';
 
 ve.ce.ParagraphNode.static.tagName = 'p';
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.ce.ParagraphNode.prototype.initialize = function () {
+	ve.ce.ParagraphNode.super.prototype.initialize.call( this );
+	this.$element.addClass( 've-ce-paragraphNode' );
+};
 
 /* Registration */
 

@@ -32,6 +32,14 @@ ve.ce.HeadingNode.static.name = 'heading';
 /* Methods */
 
 /**
+ * @inheritdoc
+ */
+ve.ce.HeadingNode.prototype.initialize = function () {
+	ve.ce.HeadingNode.super.prototype.initialize.call( this );
+	this.$element.addClass( 've-ce-headingNode' );
+};
+
+/**
  * Get the HTML tag name.
  *
  * Tag name is selected based on the model's level attribute.
