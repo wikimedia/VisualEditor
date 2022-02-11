@@ -84,7 +84,5 @@ QUnit.test( 'Create', function ( assert ) {
 		);
 	} ).catch( function ( error ) {
 		assert.true( false, 'Test failure: ' + error );
-	} ).then( function () {
-		done();
-	} );
+	} ).then( () => done() );
 } );

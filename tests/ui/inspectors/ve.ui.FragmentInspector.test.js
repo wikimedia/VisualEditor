@@ -288,7 +288,5 @@ QUnit.test( 'Different selections and inputs', function ( assert ) {
 			}
 		];
 
-	ve.test.utils.runFragmentInspectorTests( surface, assert, cases ).finally( function () {
-		done();
-	} );
+	ve.test.utils.runFragmentInspectorTests( surface, assert, cases ).finally( () => done() );
 } );

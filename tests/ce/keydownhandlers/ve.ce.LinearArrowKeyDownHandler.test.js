@@ -376,7 +376,5 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 		} );
 	} );
 
-	promise.finally( function () {
-		done();
-	} );
+	promise.finally( () => done() );
 } );

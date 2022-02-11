@@ -155,9 +155,7 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 		} );
 	} );
 
-	promise.finally( function () {
-		done();
-	} );
+	promise.finally( () => done() );
 } );
 
 QUnit.test( 'special key down: table arrow keys (simple movements)', function ( assert ) {

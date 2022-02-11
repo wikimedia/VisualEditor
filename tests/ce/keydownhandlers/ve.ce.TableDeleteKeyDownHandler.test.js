@@ -69,7 +69,5 @@ QUnit.test( 'special key down: table backspace/delete', function ( assert ) {
 		} );
 	} );
 
-	promise.finally( function () {
-		done();
-	} );
+	promise.finally( () => done() );
 } );

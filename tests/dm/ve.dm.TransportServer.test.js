@@ -83,7 +83,5 @@ QUnit.test( 'Create', function ( assert ) {
 		], 'Correct events received in correct order' );
 	} ).catch( function ( err ) {
 		assert.true( false, 'Exception: ' + err );
-	} ).finally( function () {
-		done();
-	} );
+	} ).finally( () => done() );
 } );

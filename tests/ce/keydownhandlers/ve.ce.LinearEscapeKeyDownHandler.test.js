@@ -53,7 +53,5 @@ QUnit.test( 'special key down: linear escape', function ( assert ) {
 		} );
 	} );
 
-	promise.finally( function () {
-		done();
-	} );
+	promise.finally( () => done() );
 } );

@@ -299,7 +299,5 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 		} );
 	} );
 
-	promise.finally( function () {
-		done();
-	} );
+	promise.finally( () => done() );
 } );
