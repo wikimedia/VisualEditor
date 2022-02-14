@@ -576,7 +576,7 @@ ve.ce.Surface.prototype.focus = function () {
 
 	var selection = this.getSelection();
 	if ( selection.getModel().isNull() ) {
-		this.selectFirstVisibleContentOffset();
+		this.selectFirstVisibleStartContentOffset();
 		selection = this.getSelection();
 	}
 
@@ -609,7 +609,7 @@ ve.ce.Surface.prototype.focus = function () {
 		// TODO: rename isFocused and other methods to something which reflects
 		// the fact they actually mean "has a native selection"
 		if ( !surface.isFocused() ) {
-			surface.selectFirstVisibleContentOffset();
+			surface.selectFirstVisibleStartContentOffset();
 		}
 	} );
 	// onDocumentFocus takes care of the rest
@@ -874,7 +874,7 @@ ve.ce.Surface.prototype.onDocumentFocus = function () {
 	if ( this.getModel().getSelection().isNull() ) {
 		// If the document is being focused by a non-mouse/non-touch user event,
 		// find the first content offset and place the cursor there.
-		this.selectFirstVisibleContentOffset();
+		this.selectFirstVisibleStartContentOffset();
 	}
 	this.eventSequencer.attach( this.$element );
 	this.surfaceObserver.startTimerLoop();
@@ -4121,8 +4121,9 @@ ve.ce.Surface.prototype.handleInsertion = function () {
  * @param {number} startOffset Offset to start from
  * @param {number} direction Search direction, -1 for left and 1 for right
  * @param {number} [endOffset] End offset to stop searching at
+ * @return {number} Content offset, or -1 of not found
  */
-ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( startOffset, direction, endOffset ) {
+ve.ce.Surface.prototype.getRelativeSelectableContentOffset = function ( startOffset, direction, endOffset ) {
 	var documentView = this.getDocument(),
 		linearData = this.getModel().getDocument().data;
 
@@ -4160,11 +4161,23 @@ ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( start
 		nextOffset = -1;
 	}
 
-	if ( nextOffset !== -1 ) {
+	return nextOffset;
+};
+
+/**
+ * Select the offset returned by #getRelativeSelectableContentOffset
+ *
+ * @param {number} startOffset
+ * @param {number} direction
+ * @param {number} [endOffset]
+ */
+ve.ce.Surface.prototype.selectRelativeSelectableContentOffset = function ( startOffset, direction, endOffset ) {
+	var offset = this.getRelativeSelectableContentOffset( startOffset, direction, endOffset );
+	if ( offset !== -1 ) {
 		// Found an offset
-		this.getModel().setLinearSelection( new ve.Range( nextOffset ) );
+		this.getModel().setLinearSelection( new ve.Range( offset ) );
 	} else {
-		// No where sensible to put the cursor
+		// Nowhere sensible to put the cursor
 		this.getModel().setNullSelection();
 	}
 };
@@ -4317,17 +4330,39 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 };
 
 /**
- * Move the selection to the first visible point in the viewport
+ * Move the selection to the first visible "start content offset" in the viewport
+ *
+ * Where "start content offset" is the first offset within a content branch node.
+ *
+ * The following are used as fallbacks when such offsets can't be found:
+ * - The first visible content offset (at any position in the CBN)
+ * - The first selectable content offset in the doc (if fallbackToFirst is set)
  *
  * @param {boolean} [fallbackToFirst] Whether to select the first content offset if a visible offset can't be found
  */
-ve.ce.Surface.prototype.selectFirstVisibleContentOffset = function ( fallbackToFirst ) {
+ve.ce.Surface.prototype.selectFirstVisibleStartContentOffset = function ( fallbackToFirst ) {
 	// When scrolled. add about one line height of padding so the browser doesn't try to scroll the line above the cursor into view
 	var dimensions = this.surface.getViewportDimensions();
 	var offset = dimensions && dimensions.top ? -20 : 0;
 	var visibleRange = this.getViewportRange( false, offset );
 	if ( visibleRange ) {
-		this.selectRelativeSelectableContentOffset( Math.max( visibleRange.start - 1, 0 ), 1, visibleRange.end );
+		var model = this.getModel();
+		var startNodeOffset = -1;
+		var contentOffset = this.getRelativeSelectableContentOffset( Math.max( visibleRange.start - 1, 0 ), 1, visibleRange.end );
+		if ( contentOffset !== -1 ) {
+			var branchNodeRange = model.getDocument().getBranchNodeFromOffset( contentOffset ).getRange();
+			if ( contentOffset === branchNodeRange.start ) {
+				// We luckily landed and the start of a branch node
+				startNodeOffset = contentOffset;
+			} else {
+				// We are in the middle of a branch node, move to the end, then find the next
+				// content offset, which should be the start of the next CBN
+				var nextContentOffset = this.getRelativeSelectableContentOffset( branchNodeRange.end, 1, visibleRange.end );
+				// If there isn't a content offset after the end of the current node, fallback to the mid-node contentOffset
+				startNodeOffset = nextContentOffset !== -1 ? nextContentOffset : contentOffset;
+			}
+		}
+		model.setLinearSelection( new ve.Range( startNodeOffset ) );
 	}
 
 	if ( fallbackToFirst && this.getSelection().getModel().isNull() ) {
