@@ -672,8 +672,8 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 
 	toolbar.setup( this.toolbarGroups, surface );
 	actions.setup( this.actionGroups, surface );
-	this.attachToolbar();
 	toolbar.$actions.append( actions.$element );
+	this.attachToolbar();
 	var rAF = window.requestAnimationFrame || setTimeout;
 	rAF( this.onContainerScrollHandler );
 };
