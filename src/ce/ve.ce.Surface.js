@@ -2542,9 +2542,9 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 	// instead create img tags with data URLs, so detect those here
 	var $body = $( htmlDoc.body );
 	var $images = $body.children( 'img[src^=data\\:]' );
-	// Check the body contained just children.
+	// Check the body contained just images.
 	// TODO: In the future this may want to trigger image uploads *and* paste the HTML.
-	if ( $images.length === $body.children().length ) {
+	if ( $images.length && $images.length === $body.children().length ) {
 		for ( var i = 0; i < $images.length; i++ ) {
 			items.push( ve.ui.DataTransferItem.static.newFromDataUri(
 				$images.eq( i ).attr( 'src' ),
