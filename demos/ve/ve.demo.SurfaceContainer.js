@@ -12,10 +12,7 @@
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
-	var pageDropdown, pageLabel, removeButton, saveButton, diffButton,
-		$exitReadButton,
-		container = this,
-		$divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' );
+	var container = this;
 
 	// Parent constructor
 	ve.demo.SurfaceContainer.super.call( this );
@@ -25,16 +22,16 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	ve.demo.surfaceContainers.push( this );
 
-	pageDropdown = new OO.ui.DropdownWidget( {
+	var pageDropdown = new OO.ui.DropdownWidget( {
 		menu: {
 			items: this.getPageMenuItems()
 		}
 	} );
-	pageLabel = new OO.ui.LabelWidget( {
+	var pageLabel = new OO.ui.LabelWidget( {
 		label: 'Page',
 		input: pageDropdown
 	} );
-	removeButton = new OO.ui.ButtonWidget( {
+	var removeButton = new OO.ui.ButtonWidget( {
 		icon: 'trash',
 		label: 'Remove surface'
 	} );
@@ -42,10 +39,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		label: 'Auto-save',
 		value: !!ve.init.platform.sessionStorage.getObject( 've-docstate' )
 	} );
-	saveButton = new OO.ui.ButtonWidget( {
+	var saveButton = new OO.ui.ButtonWidget( {
 		label: 'Save HTML'
 	} );
-	diffButton = new OO.ui.ButtonWidget( {
+	var diffButton = new OO.ui.ButtonWidget( {
 		label: 'Show changes'
 	} );
 	this.readOnlyToggle = new OO.ui.ToggleButtonWidget( {
@@ -55,7 +52,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		label: 'Null selection on blur',
 		value: true
 	} );
-	$exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', function () {
+	var $exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', function () {
 		container.modeSelect.selectItemByData( 'visual' );
 		return false;
 	} );
@@ -109,6 +106,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		container.surface.nullSelectionOnBlur = val;
 	} );
 
+	var $divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' );
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
 		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar-edit' ).append(
 			$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
@@ -180,14 +178,14 @@ ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
  * @return {jQuery.Promise} Promise which resolves when change is complete
  */
 ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
-	var html, closePromise,
-		container = this,
-		currentDir = 'ltr';
-
 	if ( mode === this.mode && !page ) {
 		return ve.createDeferred().resolve().promise();
 	}
 
+	var container = this,
+		currentDir = 'ltr';
+
+	var closePromise, html;
 	switch ( this.mode ) {
 		case 'visual':
 		case 'source':
@@ -295,8 +293,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
  * @param {string} mode Edit mode
  */
 ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
-	var surfaceModel, state,
-		restored = false,
+	var restored = false,
 		container = this;
 
 	if ( this.surface ) {
@@ -304,7 +301,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	}
 
 	if ( this.autosaveToggle.getValue() ) {
-		state = ve.init.platform.sessionStorage.getObject( 've-docstate' );
+		var state = ve.init.platform.sessionStorage.getObject( 've-docstate' );
 
 		if ( state && state.page === this.page ) {
 			pageHtml = ve.init.platform.sessionStorage.get( 've-dochtml' );
@@ -326,7 +323,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	this.surface.setReadOnly( this.readOnlyToggle.getValue() );
 	this.surface.nullSelectionOnBlur = this.nullSelectionOnBlurToggle.getValue();
 
-	surfaceModel = this.surface.getModel();
+	var surfaceModel = this.surface.getModel();
 	this.oldDoc = surfaceModel.getDocument().cloneFromRange();
 	if ( this.autosaveToggle.getValue() ) {
 		if ( restored ) {

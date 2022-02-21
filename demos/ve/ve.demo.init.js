@@ -145,12 +145,12 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 	$editor.append( target.$element );
 
 	function updateHash() {
-		var i, pages = [];
 		if ( hashChanging ) {
 			return false;
 		}
 		if ( history.replaceState ) {
-			for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
+			var pages = [];
+			for ( var i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
 				pages.push( ve.demo.surfaceContainers[ i ].pageMenu.findSelectedItem().getData() );
 			}
 			history.replaceState( null, document.title, '#!' + pages.join( ',' ) );
@@ -158,13 +158,11 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 	}
 
 	function addSurfaceContainer( page ) {
-		var surfaceContainer;
-
 		if ( !page && ve.demo.surfaceContainers.length ) {
 			page = ve.demo.surfaceContainers[ ve.demo.surfaceContainers.length - 1 ].pageMenu.findSelectedItem().getData();
 		}
 
-		surfaceContainer = new ve.demo.SurfaceContainer( target, page, currentLang, currentDir );
+		var surfaceContainer = new ve.demo.SurfaceContainer( target, page, currentLang, currentDir );
 		surfaceContainer.on( 'changePage', updateHash );
 		updateHash();
 		target.$element.append( surfaceContainer.$element );
@@ -175,12 +173,12 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 	} );
 
 	function createSurfacesFromHash( hash ) {
-		var i, pages = [];
+		var pages = [];
 		if ( hash.slice( 0, 2 ) === '#!' ) {
 			pages = hash.slice( 2 ).split( ',' ).map( decodeURIComponent );
 		}
 		if ( pages.length ) {
-			for ( i = 0; i < pages.length; i++ ) {
+			for ( var i = 0; i < pages.length; i++ ) {
 				addSurfaceContainer( pages[ i ] );
 			}
 		} else {

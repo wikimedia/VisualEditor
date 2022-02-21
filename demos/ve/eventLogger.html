@@ -83,11 +83,10 @@
 					log = [];
 
 				function getPosition( node, offset ) {
-					var position;
 					if ( node === null ) {
 						return null;
 					}
-					position = [ offset ];
+					var position = [ offset ];
 					while ( node.parentNode !== null && node !== content ) {
 						position.splice(
 							0,
@@ -112,9 +111,9 @@
 				}
 
 				function showLog() {
-					var i, len, jsons = [];
+					var jsons = [];
 					jsons.push( JSON.stringify( comments ) );
-					for ( i = 0, len = log.length; i < len; i++ ) {
+					for ( var i = 0, len = log.length; i < len; i++ ) {
 						jsons.push( JSON.stringify( log[ i ] ) );
 					}
 					$log.val( '[\n\t' + jsons.join( ',\n\t' ) + '\n]' );
@@ -198,8 +197,7 @@
 				}
 
 				( function () {
-					var i, len,
-						handlers = {},
+					var handlers = {},
 						eventNames = [
 							'compositionstart',
 							'compositionend',
@@ -209,7 +207,7 @@
 							'input'
 						];
 
-					for ( i = 0, len = eventNames.length; i < len; i++ ) {
+					for ( var i = 0, len = eventNames.length; i < len; i++ ) {
 						handlers[ eventNames[ i ] ] =
 							makeEventHandler( eventNames[ i ] );
 					}

@@ -506,19 +506,18 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 	 * @return {string} return.annotationString Comma-separated annotation hashes
 	 */
 	function getUniformText( items ) {
-		var annotations, annotationString, i, iLen, codeUnit,
-			codeUnits = [];
+		var codeUnits = [];
 		if ( items.length === 0 ) {
 			return null;
 		}
-		codeUnit = getSingleCodeUnit( items[ 0 ] );
+		var codeUnit = getSingleCodeUnit( items[ 0 ] );
 		if ( codeUnit === null ) {
 			return null;
 		}
 		codeUnits.push( codeUnit );
-		annotations = getAnnotations( items[ 0 ] );
-		annotationString = annotations.join( ',' );
-		for ( i = 1, iLen = items.length; i < iLen; i++ ) {
+		var annotations = getAnnotations( items[ 0 ] );
+		var annotationString = annotations.join( ',' );
+		for ( var i = 1, iLen = items.length; i < iLen; i++ ) {
 			codeUnit = getSingleCodeUnit( items[ i ] );
 			if ( codeUnit === null ) {
 				return null;

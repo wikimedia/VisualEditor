@@ -27,7 +27,6 @@ function parseLog( log ) {
 }
 
 function toTestCase( parsedLog ) {
-	// var i, type, authorId, clientId, changes, unsent, newChanges,
 	const clients = [],
 		ops = [],
 		clientStates = {};

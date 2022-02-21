@@ -77,15 +77,14 @@ QUnit.test( 'convertToData', function ( assert ) {
 } );
 
 QUnit.test( 'clone', function ( assert ) {
-	var internalListClone, internalListClone2,
-		doc = ve.dm.example.createExampleDocument(),
+	var doc = ve.dm.example.createExampleDocument(),
 		doc2 = ve.dm.example.createExampleDocument(),
 		internalList = doc.getInternalList();
 
 	internalList.getNextUniqueNumber(); // =0
-	internalListClone = internalList.clone();
+	var internalListClone = internalList.clone();
 	internalList.getNextUniqueNumber(); // =1
-	internalListClone2 = internalList.clone( doc2 );
+	var internalListClone2 = internalList.clone( doc2 );
 	internalList.getNextUniqueNumber(); // =2
 
 	assert.strictEqual( internalListClone.getDocument(), internalList.getDocument(), 'Documents match' );

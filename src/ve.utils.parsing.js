@@ -307,17 +307,16 @@ ve.transformStyleAttributes = function ( html, unmask ) {
 		var toAttr = unmask ? maskAttrs[ i ] : 'data-ve-' + maskAttrs[ i ];
 		// eslint-disable-next-line no-loop-func
 		$( xmlDoc ).find( '[' + fromAttr + ']' ).each( function () {
-			var toAttrValue, fromAttrNormalized,
-				fromAttrValue = this.getAttribute( fromAttr );
+			var fromAttrValue = this.getAttribute( fromAttr );
 
 			if ( unmask ) {
 				this.removeAttribute( fromAttr );
 
 				// If the data-ve- version doesn't normalize to the same value,
 				// the attribute must have changed, so don't overwrite it
-				fromAttrNormalized = ve.normalizeAttributeValue( toAttr, fromAttrValue, this.nodeName );
+				var fromAttrNormalized = ve.normalizeAttributeValue( toAttr, fromAttrValue, this.nodeName );
 				// toAttr can't not be set, but IE returns null if the value was ''
-				toAttrValue = this.getAttribute( toAttr ) || '';
+				var toAttrValue = this.getAttribute( toAttr ) || '';
 				if ( toAttrValue !== fromAttrNormalized ) {
 					return;
 				}

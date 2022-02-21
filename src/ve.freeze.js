@@ -31,15 +31,13 @@
 	 * @return {Object} Immutable deep copy of the original object
 	 */
 	ve.deepFreeze = deepFreeze = function ( object, onlyProperties, seen ) {
-		var name, value;
-
 		if ( !seen ) {
 			seen = new Set();
 			seen.add( object );
 		}
-		for ( name in object ) {
+		for ( var name in object ) {
 			if ( Object.prototype.hasOwnProperty.call( object, name ) ) {
-				value = object[ name ];
+				var value = object[ name ];
 				if (
 					// Truth check so we don't try to freeze null
 					value &&

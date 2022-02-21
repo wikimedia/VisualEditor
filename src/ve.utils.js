@@ -382,13 +382,11 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 		} else {
 			// Standard Array.prototype.splice() function implemented using .slice() and .push().
 			splice = function ( off, rem /* , d */ ) {
-				var d, begin, remd, end;
+				var d = Array.prototype.slice.call( arguments, 2 );
 
-				d = Array.prototype.slice.call( arguments, 2 );
-
-				begin = this.slice( 0, off );
-				remd = this.slice( off, off + rem );
-				end = this.slice( off + rem );
+				var begin = this.slice( 0, off );
+				var remd = this.slice( off, off + rem );
+				var end = this.slice( off + rem );
 
 				this.length = 0;
 				ve.batchPush( this, begin );

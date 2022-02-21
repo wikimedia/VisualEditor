@@ -390,17 +390,16 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 	}
 
 	function getFragments( frames, observations, path ) {
-		var j, jLen, frame, observation, expandable, expanded,
-			html = [];
+		var html = [];
 		html.push( '<ul>' );
-		for ( j = 0, jLen = frames.length; j < jLen; j++ ) {
-			frame = frames[ j ];
-			observation = observations[ j ];
+		for ( var j = 0, jLen = frames.length; j < jLen; j++ ) {
+			var frame = frames[ j ];
+			var observation = observations[ j ];
 			if ( observation && observation.changes && observation.changes.enter ) {
 				html.push( showChanges( observation.changes.enter, 'enter' ) );
 			}
-			expanded = observation && observation.children;
-			expandable = !expanded && frame.children && frame.children.length > 0;
+			var expanded = observation && observation.children;
+			var expandable = !expanded && frame.children && frame.children.length > 0;
 			html.push( '<li class="ve-filibuster-frame' );
 			if ( expandable ) {
 				html.push( ' ve-filibuster-frame-expandable' );

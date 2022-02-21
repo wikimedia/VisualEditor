@@ -234,9 +234,8 @@ ve.dm.Converter.static.moveInlineMetaItems = function ( data ) {
 		pendingMetaItems = [];
 
 	function closestMetaParent() {
-		var n, ancestor;
-		for ( n = ancestors.length - 1; n >= 0; n-- ) {
-			ancestor = ancestors[ n ];
+		for ( var n = ancestors.length - 1; n >= 0; n-- ) {
+			var ancestor = ancestors[ n ];
 			if ( ancestor.isMetaParent ) {
 				return ancestor;
 			}
@@ -1319,9 +1318,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 	}
 
 	function closeAnnotation( annotation ) {
-		var n, len, annotationElement, annotatedChildDomElements,
-			matches, first, last,
-			leading = '',
+		var leading = '',
 			trailing = '',
 			originalDomElements = annotation.getOriginalDomElements( converter.store ),
 			origElementText = originalDomElements[ 0 ] &&
@@ -1334,13 +1331,14 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			text = '';
 		}
 
-		annotatedChildDomElements = annotatedDomElementStack.pop();
+		var annotatedChildDomElements = annotatedDomElementStack.pop();
 		annotatedDomElements = annotatedDomElementStack[ annotatedDomElementStack.length - 1 ];
 
 		// HACK: Move any leading and trailing whitespace out of the annotation, but only if the
 		// annotation didn't originally have leading/trailing whitespace
 		if ( annotation.constructor.static.trimWhitespace ) {
-			first = annotatedChildDomElements[ 0 ];
+			var matches;
+			var first = annotatedChildDomElements[ 0 ];
 			while (
 				first &&
 				first.nodeType === Node.TEXT_NODE &&
@@ -1357,7 +1355,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				// Process next text node to see if it also has whitespace
 				first = annotatedChildDomElements[ 0 ];
 			}
-			last = annotatedChildDomElements[ annotatedChildDomElements.length - 1 ];
+			var last = annotatedChildDomElements[ annotatedChildDomElements.length - 1 ];
 			while (
 				last &&
 				last.nodeType === Node.TEXT_NODE &&
@@ -1376,6 +1374,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			}
 		}
 
+		var annotationElement;
 		if ( annotatedChildDomElements.length ) {
 			annotationElement = converter.getDomElementsFromDataElement(
 				annotation.getElement(), doc, annotatedChildDomElements
@@ -1385,6 +1384,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		if ( leading ) {
 			annotatedDomElements.push( doc.createTextNode( leading ) );
 		}
+		var n, len;
 		if ( annotationElement ) {
 			for ( n = 0, len = annotatedChildDomElements.length; n < len; n++ ) {
 				annotationElement.appendChild( annotatedChildDomElements[ n ] );

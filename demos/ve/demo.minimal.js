@@ -16,9 +16,8 @@
 			$instance.text( 'Sorry, this browser is not supported.' );
 		} )
 		.done( function () {
-			var toHtmlButton, fromHtmlButton, convertButtons, htmlInput,
-				// Create the target
-				target = new ve.init.sa.Target();
+			// Create the target
+			var target = new ve.init.sa.Target();
 
 			// Append the target to the document
 			$instance.append( target.$element );
@@ -37,23 +36,23 @@
 
 			setSurface( '<p><b>Hello,</b> <i>World!</i></p>' );
 
+			var htmlInput = new OO.ui.MultilineTextInputWidget( {
+				autosize: true,
+				classes: [ 've-demo-html' ]
+			} );
+
 			// Button and textarea for showing HTML output
-			toHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert to HTML', icon: 'expand' } ).on( 'click', function () {
+			var toHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert to HTML', icon: 'expand' } ).on( 'click', function () {
 				// Get the current HTML from the surface and display
 				htmlInput.setValue( target.getSurface().getHtml() );
 			} );
-			fromHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert from HTML', icon: 'collapse' } ).on( 'click', function () {
+			var fromHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert from HTML', icon: 'collapse' } ).on( 'click', function () {
 				setSurface( htmlInput.getValue() );
 			} );
-			convertButtons = new OO.ui.ButtonGroupWidget( {
+			var convertButtons = new OO.ui.ButtonGroupWidget( {
 				items: [
 					toHtmlButton, fromHtmlButton
 				]
-			} );
-
-			htmlInput = new OO.ui.MultilineTextInputWidget( {
-				autosize: true,
-				classes: [ 've-demo-html' ]
 			} );
 
 			$output.append(
