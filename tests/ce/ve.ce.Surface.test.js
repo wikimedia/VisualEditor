@@ -9,7 +9,27 @@ QUnit.module( 've.ce.Surface', {
 	// eslint-disable-next-line qunit/resolve-async
 	beforeEach: function ( assert ) {
 		var done = assert.async();
+
+		var ImageTransferHandler = function () {
+			// Parent constructor
+			ImageTransferHandler.super.apply( this, arguments );
+		};
+		OO.inheritClass( ImageTransferHandler, ve.ui.DataTransferHandler );
+		ImageTransferHandler.static.name = 'imageTest';
+		ImageTransferHandler.static.kinds = [ 'file' ];
+		ImageTransferHandler.static.types = [ 'image/jpeg', 'image/gif' ];
+		ImageTransferHandler.prototype.process = function () {
+			var file = this.item.getAsFile();
+			var text = file.name || ( file.type + ':' + file.size );
+			this.insertableDataDeferred.resolve( text.split( '' ) );
+		};
+		ve.ui.dataTransferHandlerFactory.register( ImageTransferHandler );
+		this.ImageTransferHandler = ImageTransferHandler;
+
 		return ve.init.platform.getInitializedPromise().then( done );
+	},
+	afterEach: function () {
+		ve.ui.dataTransferHandlerFactory.unregister( this.ImageTransferHandler );
 	}
 } );
 
@@ -612,27 +632,12 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 			}
 		];
 
-	var ImageTransferHandler = function () {
-		// Parent constructor
-		ImageTransferHandler.super.apply( this, arguments );
-	};
-	OO.inheritClass( ImageTransferHandler, ve.ui.DataTransferHandler );
-	ImageTransferHandler.static.name = 'imageTest';
-	ImageTransferHandler.static.kinds = [ 'file' ];
-	ImageTransferHandler.static.types = [ 'image/jpeg' ];
-	ImageTransferHandler.prototype.process = function () {
-		this.insertableDataDeferred.resolve( this.item.getAsFile().name.split( '' ) );
-	};
-	ve.ui.dataTransferHandlerFactory.register( ImageTransferHandler );
-
 	cases.forEach( function ( caseItem ) {
 		fragment.select();
 		view.handleDataTransfer( caseItem.dataTransfer, caseItem.isPaste );
 		assert.equalLinearData( model.getDocument().getFullData( fragment.getSelection().getRange() ), caseItem.expectedData, caseItem.msg );
 		model.undo();
 	} );
-
-	ve.ui.dataTransferHandlerFactory.unregister( ImageTransferHandler );
 } );
 
 QUnit.test( 'getClipboardHash', function ( assert ) {
@@ -2076,6 +2081,25 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				msg: 'Non-paragraph content branch node converted to paragraph at end of paragraph'
+			},
+			{
+				rangeOrSelection: new ve.Range( 1 ),
+				pasteTargetHtml: '<img src="' + ve.ce.minImgDataUri + '" width="10" height="20" />',
+				expectedOps: [
+					[
+						{
+							type: 'retain',
+							length: 1
+						},
+						{
+							type: 'replace',
+							insert: 'image/gif:26'.split( '' ),
+							remove: []
+						},
+						{ type: 'retain', length: docLen - 1 }
+					]
+				],
+				msg: 'Image with data URI handled by dummy image paste handler'
 			},
 			{
 				rangeOrSelection: { type: 'null' },
