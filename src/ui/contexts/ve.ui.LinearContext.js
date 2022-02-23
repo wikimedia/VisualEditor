@@ -51,6 +51,15 @@ OO.inheritClass( ve.ui.LinearContext, ve.ui.Context );
  */
 ve.ui.LinearContext.static.showDeleteButton = false;
 
+/**
+ * Context items should show a copy button
+ *
+ * @static
+ * @inheritable
+ * @property {Object}
+ */
+ve.ui.LinearContext.static.showCopyButton = false;
+
 /* Methods */
 
 /**
@@ -60,6 +69,15 @@ ve.ui.LinearContext.static.showDeleteButton = false;
  */
 ve.ui.LinearContext.prototype.showDeleteButton = function () {
 	return this.constructor.static.showDeleteButton;
+};
+
+/**
+ * Check if context items should show a copy button
+ *
+ * @return {boolean} Context items should show a copy button
+ */
+ve.ui.LinearContext.prototype.showCopyButton = function () {
+	return this.constructor.static.showCopyButton;
 };
 
 /**
