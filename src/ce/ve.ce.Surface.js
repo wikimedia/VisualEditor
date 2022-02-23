@@ -4375,7 +4375,13 @@ ve.ce.Surface.prototype.selectFirstVisibleStartContentOffset = function ( fallba
 				startNodeOffset = nextContentOffset !== -1 ? nextContentOffset : contentOffset;
 			}
 		}
-		model.setLinearSelection( new ve.Range( startNodeOffset ) );
+		if ( startNodeOffset !== -1 ) {
+			// Found an offset
+			model.setLinearSelection( new ve.Range( startNodeOffset ) );
+		} else {
+			// Nowhere sensible to put the cursor
+			model.setNullSelection();
+		}
 	}
 
 	if ( fallbackToFirst && this.getSelection().getModel().isNull() ) {
