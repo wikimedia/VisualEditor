@@ -94,6 +94,8 @@
 	"visualeditor-changedir-tool-rtl": "Afficher de droite à gauche",
 	"visualeditor-clearbutton-tooltip": "Supprimer",
 	"visualeditor-clipboard-copy": "Copier",
+	"visualeditor-clipboard-copy-fail": "Échec de copie dans le presse-papiers.",
+	"visualeditor-clipboard-copy-success": "Copié dans le presse-papiers.",
 	"visualeditor-clipboard-cut": "Couper",
 	"visualeditor-clipboard-paste": "Coller",
 	"visualeditor-clipboard-paste-special": "Coller comme texte brut",

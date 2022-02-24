@@ -56,6 +56,8 @@
 	"visualeditor-changedir-tool-rtl": "Испиши од десно на лево",
 	"visualeditor-clearbutton-tooltip": "Отстрани",
 	"visualeditor-clipboard-copy": "Копирај",
+	"visualeditor-clipboard-copy-fail": "Не успав да ископирам во меѓускладот.",
+	"visualeditor-clipboard-copy-success": "Ископирано во меѓускладот.",
 	"visualeditor-clipboard-cut": "Исечи",
 	"visualeditor-clipboard-paste": "Вметни",
 	"visualeditor-clipboard-paste-special": "Вметни како прост текст",

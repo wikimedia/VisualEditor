@@ -66,6 +66,8 @@
 	"visualeditor-changedir-tool-rtl": "הצגה מימין לשמאל",
 	"visualeditor-clearbutton-tooltip": "הסרה",
 	"visualeditor-clipboard-copy": "העתקה",
+	"visualeditor-clipboard-copy-fail": "ההעתקה ללוח לא עבדה.",
+	"visualeditor-clipboard-copy-success": "הועתק ללוח.",
 	"visualeditor-clipboard-cut": "גזירה",
 	"visualeditor-clipboard-paste": "הדבקה",
 	"visualeditor-clipboard-paste-special": "הדבקה כטקסט רגיל",

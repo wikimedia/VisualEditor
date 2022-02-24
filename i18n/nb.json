@@ -50,6 +50,8 @@
 	"visualeditor-changedesc-link-href": "Lenkemål endret fra $1 til $2",
 	"visualeditor-changedesc-link-href-diff": "Lenkemål endret: $1",
 	"visualeditor-changedesc-link-removed": "Lenke fjernet: $1",
+	"visualeditor-changedesc-list-indent": "Innrykk for listeelement økt",
+	"visualeditor-changedesc-list-outdent": "Innrykk for listeelement minket",
 	"visualeditor-changedesc-no-key": "$1 endret til $2",
 	"visualeditor-changedesc-set": "$1 satt til $2",
 	"visualeditor-changedesc-textstyle-added": "Tekstformatering lagt til: $1",

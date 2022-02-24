@@ -76,6 +76,8 @@
 	"visualeditor-changedir-tool-rtl": "Näytä oikealta vasemmalle",
 	"visualeditor-clearbutton-tooltip": "Poista",
 	"visualeditor-clipboard-copy": "Kopioi",
+	"visualeditor-clipboard-copy-fail": "Leikepöydälle kopioiminen epäonnistui.",
+	"visualeditor-clipboard-copy-success": "Kopioitu leikepöydälle.",
 	"visualeditor-clipboard-cut": "Leikkaa",
 	"visualeditor-clipboard-paste": "Liitä",
 	"visualeditor-clipboard-paste-special": "Liitä pelkkänä tekstinä",

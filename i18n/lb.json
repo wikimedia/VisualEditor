@@ -48,6 +48,8 @@
 	"visualeditor-changedir-tool-rtl": "Als riets-no-lénks weisen",
 	"visualeditor-clearbutton-tooltip": "Ewechhuelen",
 	"visualeditor-clipboard-copy": "Kopéieren",
+	"visualeditor-clipboard-copy-fail": "Konnt net an den Tëschespäicher kopéiert ginn.",
+	"visualeditor-clipboard-copy-success": "An den Tëschespäicher kopéiert.",
 	"visualeditor-clipboard-cut": "Erausschneiden",
 	"visualeditor-clipboard-paste": "Drasetzen",
 	"visualeditor-clipboard-paste-special": "Als Kloertext drasetzen",
