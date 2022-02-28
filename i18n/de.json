@@ -65,6 +65,8 @@
 	"visualeditor-changedir-tool-rtl": "Als rechts-nach-links ansehen",
 	"visualeditor-clearbutton-tooltip": "Entfernen",
 	"visualeditor-clipboard-copy": "Kopieren",
+	"visualeditor-clipboard-copy-fail": "Der Text konnte nicht in die Zwischenablage kopiert werden.",
+	"visualeditor-clipboard-copy-success": "In die Zwischenablage kopiert.",
 	"visualeditor-clipboard-cut": "Ausschneiden",
 	"visualeditor-clipboard-paste": "Einfügen",
 	"visualeditor-clipboard-paste-special": "Als Klartext einfügen",

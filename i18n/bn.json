@@ -56,6 +56,8 @@
 	"visualeditor-changedir-tool-rtl": "ডান-থেকে-বাম হিসেবে দেখুন",
 	"visualeditor-clearbutton-tooltip": "সরান",
 	"visualeditor-clipboard-copy": "অনুলিপি",
+	"visualeditor-clipboard-copy-fail": "ক্লিপবোর্ডে অনুলিপি করা ব্যর্থ হয়েছে।",
+	"visualeditor-clipboard-copy-success": "ক্লিপবোর্ডে অনুলিপি করা হয়েছে।",
 	"visualeditor-clipboard-cut": "ছেদন",
 	"visualeditor-clipboard-paste": "প্রতিলেপন",
 	"visualeditor-clipboard-paste-special": "সরল লেখা হিসাবে প্রতিলেপন করুন",

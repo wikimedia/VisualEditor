@@ -74,6 +74,8 @@
 	"visualeditor-changedir-tool-rtl": "오른쪽에서 왼쪽으로 읽기",
 	"visualeditor-clearbutton-tooltip": "제거",
 	"visualeditor-clipboard-copy": "복사",
+	"visualeditor-clipboard-copy-fail": "클립보드에 복사하는데 실패했습니다.",
+	"visualeditor-clipboard-copy-success": "클립보드에 복사했습니다.",
 	"visualeditor-clipboard-cut": "잘라내기",
 	"visualeditor-clipboard-paste": "붙여넣기",
 	"visualeditor-clipboard-paste-special": "일반 텍스트로 붙여넣기",

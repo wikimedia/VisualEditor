@@ -78,6 +78,8 @@
 	"visualeditor-changedir-tool-rtl": "Widok od prawej do lewej",
 	"visualeditor-clearbutton-tooltip": "Usuń",
 	"visualeditor-clipboard-copy": "Kopiuj",
+	"visualeditor-clipboard-copy-fail": "Kopiowanie do schowka nie powiodło się.",
+	"visualeditor-clipboard-copy-success": "Skopiowano do schowka.",
 	"visualeditor-clipboard-cut": "Wytnij",
 	"visualeditor-clipboard-paste": "Wklej",
 	"visualeditor-clipboard-paste-special": "Wklej jako zwykły tekst",
