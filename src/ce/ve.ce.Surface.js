@@ -2537,7 +2537,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 			.find( 'span' ).removeClass( 've-pasteProtect' ).end()
 			// Remove the clipboard key
 			.find( 'span[data-ve-clipboard-key]' ).remove().end()
-			// Remove ve-attributes
+			// Remove ve-attributes, we trust that clipboard data preserved these attributes
 			.find( '[data-ve-attributes]' ).removeAttr( 'data-ve-attributes' );
 		beforePasteData.context = null;
 	}

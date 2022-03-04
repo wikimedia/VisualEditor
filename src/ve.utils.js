@@ -785,6 +785,12 @@ ve.getDomElementSummary = function ( element, includeHtml, getAttributeSummary )
 	if ( element.attributes ) {
 		for ( i = 0; i < element.attributes.length; i++ ) {
 			var name = element.attributes[ i ].name;
+			if ( name === 'about' ) {
+				// The about attribute is non-deterministic as we generate a new random
+				// one whenever a node is cloned (see ve.dm.Node.static.cloneElement).
+				// Exclude it from node comparisons.
+				continue;
+			}
 			var value = element.attributes[ i ].value;
 			summary.attributes[ name ] = getAttributeSummary ? getAttributeSummary( name, value ) : value;
 		}
