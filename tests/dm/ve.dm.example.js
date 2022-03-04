@@ -1754,6 +1754,25 @@ ve.dm.example.domToDataCases = {
 				'<figcaption><b>foo</b> <b style="color:red;">red</b></figcaption>' +
 			'</figure>'
 	},
+	'block image with no caption': {
+		body: '<figure><img></figure>',
+		data: [
+			{
+				type: 'blockImage',
+				attributes: {
+					width: null,
+					height: null,
+					src: null,
+					alt: null
+				}
+			},
+			{ type: 'imageCaption' },
+			{ type: '/imageCaption' },
+			{ type: '/blockImage' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		]
+	},
 	'paragraph with alienInline inside': {
 		body: '<p>a<foobar class="foo">b</foobar>c</p>',
 		data: [

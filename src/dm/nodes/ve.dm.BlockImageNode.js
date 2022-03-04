@@ -86,7 +86,7 @@ ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) 
 		return [
 			dataElement,
 			{ type: 'imageCaption' },
-			{ type: 'imageCaption' },
+			{ type: '/imageCaption' },
 			{ type: '/' + this.name }
 		];
 	} else {
