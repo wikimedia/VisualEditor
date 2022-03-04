@@ -1396,13 +1396,15 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			// Make sure that opening this element here does not violate the parent/children/content
 			// rules. If it does, insert stuff to fix it
 
-			// If this node is content, check that the containing node can contain content. If not,
-			// wrap in a paragraph
+			// If this node is content, check that the containing node can contain content.
+			// If not, add a wrapper paragraph
 			if ( ve.dm.nodeFactory.isNodeContent( childType ) &&
 				!ve.dm.nodeFactory.canNodeContainContent( parentType )
 			) {
 				childType = 'paragraph';
-				openings.unshift( ve.dm.nodeFactory.getDataElement( childType ) );
+				var wrapper = ve.dm.nodeFactory.getDataElement( childType );
+				ve.setProp( wrapper, 'internal', 'generated', 'wrapper' );
+				openings.unshift( wrapper );
 			}
 
 			// Check that this node is allowed to have the containing node as its parent. If not,

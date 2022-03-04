@@ -1399,7 +1399,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								{ type: 'paragraph' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								'B', 'a', 'r',
 								{ type: '/paragraph' }
 							],
@@ -1517,7 +1517,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								{ type: 'paragraph' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								'A',
 								{ type: '/paragraph' }
 							],
@@ -2044,7 +2044,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								{ type: 'paragraph' },
+								{ type: 'paragraph', internal: { generated: 'wrapper' } },
 								'A',
 								{ type: '/paragraph' }
 							],
