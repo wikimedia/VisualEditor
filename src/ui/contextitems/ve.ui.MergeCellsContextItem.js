@@ -18,6 +18,9 @@ ve.ui.MergeCellsContextItem = function VeUiMergeCellsContextItem( context, model
 	// Parent constructor
 	ve.ui.MergeCellsContextItem.super.call( this, context, model, config );
 
+	this.dimensions = new OO.ui.LabelWidget( {
+		classes: [ 've-ui-mergeCellsContextItem-dimensions' ]
+	} );
 	if ( this.context.isMobile() ) {
 		// Use desktop-style label-only button, as otherwise the "edit" button
 		// gets collapsed to just the edit icon.
@@ -28,6 +31,7 @@ ve.ui.MergeCellsContextItem = function VeUiMergeCellsContextItem( context, model
 
 	// Initialization
 	this.$element.addClass( 've-ui-mergeCellsContextItem' );
+	this.$title.append( this.dimensions.$element );
 };
 
 /* Inheritance */
@@ -76,8 +80,14 @@ ve.ui.MergeCellsContextItem.prototype.setup = function () {
 		// Ideally we would check this in isCompatibleWith, but only the model node is available there
 		this.$element.detach();
 	} else {
+		this.dimensions.setLabel(
+			ve.msg( 'visualeditor-table-selection-dimensions',
+				selection.getColCount(),
+				selection.getRowCount()
+			)
+		);
 		this.editButton.setLabel(
-			isMergeable && selection.isSingleCell( documentModel ) ?
+			selection.isSingleCell( documentModel ) ?
 				ve.msg( 'visualeditor-table-merge-cells-unmerge' ) :
 				ve.msg( 'visualeditor-table-merge-cells-merge' )
 		);

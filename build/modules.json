@@ -723,6 +723,7 @@
 			"src/ui/styles/contextitems/ve.ui.CommentContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.LanguageContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.LinkContextItem.css",
+			"src/ui/styles/contextitems/ve.ui.MergeCellsContextItem.css",
 			"src/ui/styles/contextitems/ve.ui.ToolContextItem.css",
 			"src/ui/styles/ve.ui.Overlay.css",
 			"src/ui/styles/ve.ui.Surface.css",

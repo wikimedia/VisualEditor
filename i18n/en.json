@@ -230,6 +230,7 @@
 	"visualeditor-table-move-row-after": "Move below",
 	"visualeditor-table-move-row-before": "Move above",
 	"visualeditor-table-sum": "Sum: $1, Average: $2",
+	"visualeditor-table-selection-dimensions": "$1×$2",
 	"visualeditor-tablecell-tooltip": "Double click to edit cell",
 	"visualeditor-toolbar-format-tooltip": "Format paragraph",
 	"visualeditor-toolbar-history": "History",
