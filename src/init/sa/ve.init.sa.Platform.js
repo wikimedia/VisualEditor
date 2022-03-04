@@ -132,7 +132,7 @@ ve.init.sa.Platform.prototype.getMessage = $.i18n;
  */
 ve.init.sa.Platform.prototype.parseNumber = function ( value ) {
 	// TODO: Support separated numbers such as (en)123,456.78 or (fr)123.456,78
-	return +value;
+	return parseFloat( value );
 };
 
 /**
