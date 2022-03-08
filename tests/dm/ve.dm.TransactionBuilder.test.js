@@ -153,7 +153,11 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ],
+						insert: [
+							{ type: 'paragraph', internal: { generated: 'wrapper' } },
+							'F', 'O', 'O',
+							{ type: '/paragraph' }
+						],
 						insertedDataOffset: 1,
 						insertedDataLength: 3
 					},
@@ -192,7 +196,11 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ 'F', { type: '/paragraph' }, { type: 'paragraph' }, 'O', { type: '/paragraph' }, { type: 'paragraph' }, 'O' ]
+						insert: [
+							'F', { type: '/paragraph' },
+							{ type: 'paragraph' }, 'O', { type: '/paragraph' },
+							{ type: 'paragraph', internal: { generated: 'wrapper' } }, 'O'
+						]
 					},
 					{ type: 'retain', length: 47 }
 				],
@@ -205,7 +213,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' } ],
+						insert: [ { type: 'paragraph', internal: { generated: 'wrapper' } }, 'F', 'O', 'O', { type: '/paragraph' } ],
 						insertedDataOffset: 1,
 						insertedDataLength: 3
 					},
@@ -233,7 +241,10 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 					{
 						type: 'replace',
 						remove: [],
-						insert: [ { type: 'paragraph' }, 'F', 'O', 'O', { type: '/paragraph' }, { type: 'heading', attributes: { level: 1 } }, 'B', 'A', 'R', { type: '/heading' } ],
+						insert: [
+							{ type: 'paragraph', internal: { generated: 'wrapper' } }, 'F', 'O', 'O', { type: '/paragraph' },
+							{ type: 'heading', attributes: { level: 1 } }, 'B', 'A', 'R', { type: '/heading' }
+						],
 						insertedDataOffset: 1,
 						insertedDataLength: 8
 					},
