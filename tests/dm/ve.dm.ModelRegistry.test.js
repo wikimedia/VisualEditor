@@ -78,6 +78,16 @@ ve.dm.example.StubSingleTagAndFuncAnnotation.static.name = 'stubsingletagandfunc
 ve.dm.example.StubSingleTagAndFuncAnnotation.static.matchTagNames = [ 'a' ];
 ve.dm.example.StubSingleTagAndFuncAnnotation.static.matchFunction = ve.dm.example.checkForPickMe;
 
+/* Tag and function (allows extra types) */
+ve.dm.example.StubSingleTagAndFuncExtraAnnotation = function VeDmStubSingleTagAndFuncExtraAnnotation() {
+	ve.dm.example.StubSingleTagAndFuncExtraAnnotation.super.apply( this, arguments );
+};
+OO.inheritClass( ve.dm.example.StubSingleTagAndFuncExtraAnnotation, ve.dm.Annotation );
+ve.dm.example.StubSingleTagAndFuncExtraAnnotation.static.name = 'stubsingletagandfuncextra';
+ve.dm.example.StubSingleTagAndFuncExtraAnnotation.static.matchTagNames = [ 'a' ];
+ve.dm.example.StubSingleTagAndFuncExtraAnnotation.static.matchFunction = ve.dm.example.checkForPickMe;
+ve.dm.example.StubSingleTagAndFuncExtraAnnotation.static.allowedRdfaTypes = [ 'ext:bar' ];
+
 /* Type and function */
 ve.dm.example.StubSingleTypeAndFuncAnnotation = function VeDmStubSingleTypeAndFuncAnnotation() {
 	ve.dm.example.StubSingleTypeAndFuncAnnotation.super.apply( this, arguments );
@@ -144,6 +154,7 @@ QUnit.test( 'register/unregister/matchElement', function ( assert ) {
 	registry.register( ve.dm.example.StubSingleTypeAnnotation );
 	registry.register( ve.dm.example.StubSingleTagAndTypeAnnotation );
 	registry.register( ve.dm.example.StubFuncAnnotation );
+	registry.register( ve.dm.example.StubSingleTagAndFuncExtraAnnotation );
 	registry.register( ve.dm.example.StubSingleTagAndFuncAnnotation );
 	registry.register( ve.dm.example.StubSingleTypeAndFuncAnnotation );
 	registry.register( ve.dm.example.StubSingleTagAndTypeAndFuncAnnotation );
@@ -169,8 +180,10 @@ QUnit.test( 'register/unregister/matchElement', function ( assert ) {
 	assert.strictEqual( registry.matchElement( element ), 'stubsingletagandtype', 'tag and type match' );
 	element.setAttribute( 'pickme', 'true' );
 	assert.strictEqual( registry.matchElement( element ), 'stubsingletagandtypeandfunc', 'tag, type and func match' );
-	element.setAttribute( 'rel', 'ext:bar' );
+	element.removeAttribute( 'rel' );
 	assert.strictEqual( registry.matchElement( element ), 'stubsingletagandfunc', 'tag and func match' );
+	element.setAttribute( 'rel', 'ext:bar' );
+	assert.strictEqual( registry.matchElement( element ), 'stubsingletagandfuncextra', 'tag and func match (with allowed extra type)' );
 	element = document.createElement( 'b' );
 	element.setAttribute( 'pickme', 'true' );
 	assert.strictEqual( registry.matchElement( element ), 'stubfunc', 'func-only match' );
@@ -201,7 +214,7 @@ QUnit.test( 'register/unregister/matchElement', function ( assert ) {
 
 	assert.deepEqual(
 		registry.modelsByTag[ 1 ].a,
-		[ 'stubsingletagandtypeandfunc', 'stubsingletagandfunc' ],
+		[ 'stubsingletagandtypeandfunc', 'stubsingletagandfunc', 'stubsingletagandfuncextra' ],
 		'tag and func creates entries in modelsByTag[ 1 ]'
 	);
 	assert.deepEqual(
@@ -210,6 +223,7 @@ QUnit.test( 'register/unregister/matchElement', function ( assert ) {
 		'tag and func creates entries in modelsByTypeAndTag[ 1 ]'
 	);
 	registry.unregister( ve.dm.example.StubSingleTagAndFuncAnnotation );
+	registry.unregister( ve.dm.example.StubSingleTagAndFuncExtraAnnotation );
 	registry.unregister( ve.dm.example.StubSingleTagAndTypeAndFuncAnnotation );
 	assert.deepEqual(
 		registry.modelsByTag[ 1 ][ ve.dm.example.StubSingleTagAndFuncAnnotation.static.matchTagNames[ 0 ] ],
@@ -250,6 +264,6 @@ QUnit.test( 'isAnnotation', function ( assert ) {
 	node = document.createElement( 'span' );
 	node.setAttribute( 'rel', 've:Alien' );
 	assert.strictEqual( ve.dm.modelRegistry.isAnnotation( node ), false, 'alien span' );
-	node.setAttribute( 'rel', 've:Dummy' );
-	assert.strictEqual( ve.dm.modelRegistry.isAnnotation( node ), true, 'non-alien rel span' );
+	node.removeAttribute( 'rel' );
+	assert.strictEqual( ve.dm.modelRegistry.isAnnotation( node ), true, 'non-alien span' );
 } );

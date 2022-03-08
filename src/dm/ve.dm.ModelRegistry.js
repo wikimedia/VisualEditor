@@ -284,17 +284,18 @@
 			return matchedModels;
 		}
 
-		function allTypesAllowed( name ) {
-			var model = reg.lookup( name ),
-				allowedTypes = model.static.getAllowedRdfaTypes(),
-				matchTypes = model.static.getMatchRdfaTypes();
+		function allTypesAllowed( model ) {
+			var allowedTypes = model.static.getAllowedRdfaTypes();
+			var matchTypes = model.static.getMatchRdfaTypes();
 
 			// All types allowed
-			if ( allowedTypes === null || matchTypes === null ) {
+			if ( allowedTypes === null ) {
 				return true;
 			}
 
-			allowedTypes = allowedTypes.concat( matchTypes );
+			if ( matchTypes !== null ) {
+				allowedTypes = allowedTypes.concat( matchTypes );
+			}
 
 			function checkType( rule, type ) {
 				return rule instanceof RegExp ? rule.test( type ) : rule === type;
@@ -329,10 +330,10 @@
 			}
 			// Filter out matches which contain types which aren't allowed
 			queue = queue.filter( function ( name ) {
-				return allTypesAllowed( name );
+				return allTypesAllowed( reg.lookup( name ) );
 			} );
 			queue2 = queue2.filter( function ( name ) {
-				return allTypesAllowed( name );
+				return allTypesAllowed( reg.lookup( name ) );
 			} );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
@@ -370,10 +371,10 @@
 			}
 			// Filter out matches which contain types which aren't allowed
 			queue = queue.filter( function ( name ) {
-				return allTypesAllowed( name );
+				return allTypesAllowed( reg.lookup( name ) );
 			} );
 			queue2 = queue2.filter( function ( name ) {
-				return allTypesAllowed( name );
+				return allTypesAllowed( reg.lookup( name ) );
 			} );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
@@ -433,14 +434,13 @@
 		// No need to sort because individual arrays in modelsByTag are already sorted
 		// correctly
 		var i;
-		var modelName, m;
+		var m;
 		for ( i = 0; i < matches.length; i++ ) {
-			modelName = matches[ i ];
-			m = this.registry[ modelName ];
+			m = this.registry[ matches[ i ] ];
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// func+tag+type step above, or its type rule doesn't match
-			if ( m.static.getMatchRdfaTypes() === null && m.static.matchFunction( node ) ) {
+			if ( m.static.getMatchRdfaTypes() === null && m.static.matchFunction( node ) && allTypesAllowed( m ) ) {
 				return matches[ i ];
 			}
 		}
@@ -453,7 +453,8 @@
 		// correctly
 		matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
 		for ( i = 0; i < matches.length; i++ ) {
-			if ( this.registry[ matches[ i ] ].static.matchFunction( node ) ) {
+			m = this.registry[ matches[ i ] ];
+			if ( m.static.matchFunction( node ) && allTypesAllowed( m ) ) {
 				return matches[ i ];
 			}
 		}
@@ -477,12 +478,11 @@
 		// No need to track winningName because the individual arrays in modelsByTag are
 		// already sorted correctly
 		for ( i = 0; i < matches.length; i++ ) {
-			modelName = matches[ i ];
-			m = this.registry[ modelName ];
+			m = this.registry[ matches[ i ] ];
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// tag+type step above, or its type rule doesn't match
-			if ( m.static.getMatchRdfaTypes() === null ) {
+			if ( m.static.getMatchRdfaTypes() === null && allTypesAllowed( m ) ) {
 				return matches[ i ];
 			}
 		}
@@ -491,8 +491,11 @@
 		// These are the only rules that can still qualify at this point, the others we've either
 		// already processed or have a type or tag rule that disqualifies them
 		matches = ve.getProp( this.modelsByTypeAndTag, 0, '', '' ) || [];
-		if ( matches.length > 0 ) {
-			return matches[ 0 ];
+		for ( i = 0; i < matches.length; i++ ) {
+			m = this.registry[ matches[ i ] ];
+			if ( allTypesAllowed( m ) ) {
+				return matches[ i ];
+			}
 		}
 
 		// We didn't find anything, give up
