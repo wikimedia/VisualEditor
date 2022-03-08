@@ -363,7 +363,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
-						originalDomElements: $( '<!-- foo -->' ).toArray()
+						originalDomElements: $.parseHTML( '<!-- foo -->' )
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -382,7 +382,7 @@ QUnit.test( 'commit', function ( assert ) {
 				data: [
 					{
 						type: 'alienMeta',
-						originalDomElements: $( '<!-- foo -->' ).toArray()
+						originalDomElements: $.parseHTML( '<!-- foo -->' )
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -411,7 +411,7 @@ QUnit.test( 'commit', function ( assert ) {
 				data: [
 					{
 						type: 'alienMeta',
-						originalDomElements: $( '<!-- foo -->' ).toArray()
+						originalDomElements: $.parseHTML( '<!-- foo -->' )
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -428,7 +428,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
-						originalDomElements: $( '<!-- bar -->' ).toArray()
+						originalDomElements: $.parseHTML( '<!-- bar -->' )
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -449,7 +449,7 @@ QUnit.test( 'commit', function ( assert ) {
 				data: [
 					{
 						type: 'alienMeta',
-						originalDomElements: $( '<!-- foo -->' ).toArray()
+						originalDomElements: $.parseHTML( '<!-- foo -->' )
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },
@@ -466,7 +466,7 @@ QUnit.test( 'commit', function ( assert ) {
 					{ type: '/paragraph' },
 					{
 						type: 'alienMeta',
-						originalDomElements: $( '<!-- bar -->' ).toArray()
+						originalDomElements: $.parseHTML( '<!-- bar -->' )
 					},
 					{ type: '/alienMeta' },
 					{ type: 'paragraph' },

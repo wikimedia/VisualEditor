@@ -650,7 +650,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			expected: [
 				{ type: 'paragraph' },
 				{ type: '/paragraph' },
-				{ type: 'alienBlock', originalDomElements: $( '<foobar />' ).toArray() },
+				{ type: 'alienBlock', originalDomElements: $.parseHTML( '<foobar />' ) },
 				{ type: '/alienBlock' }
 			],
 			originalRange: new ve.Range( 1, 3 ),
@@ -835,7 +835,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			range: new ve.Range( 6, 8 ),
 			expected: [
 				{ type: 'paragraph', internal: { generated: 'wrapper' } },
-				{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
+				{ type: 'alienInline', originalDomElements: $.parseHTML( '<foobar />' ) },
 				{ type: '/alienInline' },
 				{ type: '/paragraph' }
 			],
@@ -863,7 +863,7 @@ QUnit.test( 'shallowCloneFromRange', function ( assert ) {
 			expected: [
 				{ type: 'paragraph', internal: { generated: 'wrapper' } },
 				'o', 'o',
-				{ type: 'alienInline', originalDomElements: $( '<foobar />' ).toArray() },
+				{ type: 'alienInline', originalDomElements: $.parseHTML( '<foobar />' ) },
 				{ type: '/alienInline' },
 				{ type: '/paragraph' }
 			],

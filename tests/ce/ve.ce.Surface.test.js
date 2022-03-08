@@ -1259,7 +1259,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 										src: null,
 										unrecognizedClasses: [ 'notIgnored' ]
 									},
-									originalDomElements: $( '<figure class="notIgnored" typeof="h" rev="g" resource="f" rel="e" property="d" datatype="c" content="b" about="a"><img></figure>' ).toArray()
+									originalDomElements: $.parseHTML( '<figure class="notIgnored" typeof="h" rev="g" resource="f" rel="e" property="d" datatype="c" content="b" about="a"><img></figure>' )
 								},
 								{ type: 'imageCaption' },
 								{ type: '/imageCaption' },
@@ -1472,7 +1472,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								{ type: 'alienInline', originalDomElements: $( '<s rel="ve:Alien">Alien</s>' ).toArray() },
+								{ type: 'alienInline', originalDomElements: $.parseHTML( '<s rel="ve:Alien">Alien</s>' ) },
 								{ type: '/alienInline' }
 							],
 							remove: []
@@ -2489,7 +2489,7 @@ QUnit.test( 'getViewportRange', function ( assert ) {
 		'F', 'o', 'o',
 		// 4
 		{ type: '/paragraph' },
-		{ type: 'alienBlock', originalDomElements: $( '<div style="width: 100px; height: 1000px;">' ).toArray() },
+		{ type: 'alienBlock', originalDomElements: $.parseHTML( '<div style="width: 100px; height: 1000px;">' ) },
 		// Vertiical offset: Approx. 34 - 1034
 		{ type: '/alienBlock' },
 		{ type: 'paragraph' },
@@ -2497,7 +2497,7 @@ QUnit.test( 'getViewportRange', function ( assert ) {
 		'B', 'a', 'r',
 		// 11
 		{ type: '/paragraph' },
-		{ type: 'alienBlock', originalDomElements: $( '<div style="width: 100px; height: 1000px;">' ).toArray() },
+		{ type: 'alienBlock', originalDomElements: $.parseHTML( '<div style="width: 100px; height: 1000px;">' ) },
 		// Vertiical offset: Approx. 1084 - 2084
 		{ type: '/alienBlock' },
 		{ type: 'paragraph' },
@@ -2505,7 +2505,7 @@ QUnit.test( 'getViewportRange', function ( assert ) {
 		'B', 'a', 'z',
 		// 18
 		{ type: '/paragraph' },
-		{ type: 'paragraph', originalDomElements: $( '<p style="display: none;">' ).toArray() },
+		{ type: 'paragraph', originalDomElements: $.parseHTML( '<p style="display: none;">' ) },
 		// 20
 		'Q', 'u', 'x',
 		// 23
