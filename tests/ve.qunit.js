@@ -213,13 +213,17 @@
 		} );
 	};
 
+	function removeInternalState( val ) {
+		ve.deleteProp( val, 'internal', 'changesSinceLoad' );
+		ve.deleteProp( val, 'internal', 'metaItems' );
+	}
+
 	QUnit.assert.equalLinearData = function ( actual, expected, message ) {
 		function removeOriginalDomElements( val ) {
 			if ( val && val.type ) {
 				ve.deleteProp( val, 'originalDomElementsHash' );
 				ve.deleteProp( val, 'originalDomElements' );
-				ve.deleteProp( val, 'internal', 'changesSinceLoad' );
-				ve.deleteProp( val, 'internal', 'metaItems' );
+				removeInternalState( val );
 			}
 		}
 
@@ -241,6 +245,7 @@
 			if ( val && val.originalDomElementsHash !== undefined ) {
 				val.originalDomElements = store.value( val.originalDomElementsHash );
 				delete val.originalDomElementsHash;
+				removeInternalState( val );
 			}
 		}
 

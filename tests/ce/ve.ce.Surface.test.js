@@ -174,10 +174,6 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		doc = model.getDocument(),
 		done = assert.async();
 
-	function summary( el ) {
-		return ve.getDomElementSummary( el, true );
-	}
-
 	var testEvent;
 	// Paste sequence
 	if ( item.internalSourceRangeOrSelection ) {
@@ -235,21 +231,18 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 					txops.forEach( function ( txop ) {
 						if ( txop.remove ) {
 							ve.dm.example.postprocessAnnotations( txop.remove, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txop.remove );
 						}
 						if ( txop.insert ) {
 							ve.dm.example.postprocessAnnotations( txop.insert, doc.getStore() );
-							ve.dm.example.removeOriginalDomElements( txop.insert );
 						}
 					} );
 					return txops;
 				} );
 			}
-			assert.equalLinearData( ops, item.expectedOps, item.msg + ': data' );
-			if ( item.store ) {
-				for ( var hash in item.store ) {
-					assert.deepEqual( doc.getStore().value( hash ).map( summary ), item.store[ hash ].map( summary ), ': store value ' + hash );
-				}
+			if ( item.testOriginalDomElements ) {
+				assert.equalLinearDataWithDom( doc.getStore(), ops, item.expectedOps, item.msg + ': data' );
+			} else {
+				assert.equalLinearData( ops, item.expectedOps, item.msg + ': data' );
 			}
 		}
 		if ( item.expectedRangeOrSelection ) {
@@ -963,6 +956,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: docLen - 4 }
 					]
 				],
+				testOriginalDomElements: true,
 				msg: 'Span and font tags stripped'
 			},
 			{
@@ -984,6 +978,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: docLen - 4 }
 					]
 				],
+				testOriginalDomElements: true,
 				msg: 'Formatted text into paragraph'
 			},
 			{
@@ -1002,6 +997,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: docLen - 4 }
 					]
 				],
+				testOriginalDomElements: true,
 				msg: 'Formatted text into paragraph with pasteSpecial'
 			},
 			{
@@ -1240,24 +1236,41 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 0 ),
 				pasteHtml:
-					'<p about="ignored" class="i" ' +
+					'<figure typeof="ignored" class="notIgnored" ' +
 						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
 						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
 						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
-						'Foo' +
-					'</p>',
-				useClipboardData: true,
-				expectedRangeOrSelection: new ve.Range( 5 ),
+						'<img>' +
+					'</figure>',
+				fromVe: true,
+				expectedRangeOrSelection: new ve.Range( 4 ),
 				expectedOps: [
 					[
 						{
 							type: 'replace',
-							insert: ve.dm.example.removeOriginalDomElements( ve.dm.example.RDFaDoc.data.data.slice( 0, 5 ) ),
+							insert: [
+								{
+									type: 'blockImage',
+									attributes: {
+										alt: null,
+										width: null,
+										height: null,
+										originalClasses: 'notIgnored',
+										src: null,
+										unrecognizedClasses: [ 'notIgnored' ]
+									},
+									originalDomElements: $( '<figure class="notIgnored" typeof="h" rev="g" resource="f" rel="e" property="d" datatype="c" content="b" about="a"><img></figure>' ).toArray()
+								},
+								{ type: 'imageCaption' },
+								{ type: '/imageCaption' },
+								{ type: '/blockImage' }
+							],
 							remove: []
 						},
 						{ type: 'retain', length: docLen }
 					]
 				],
+				testOriginalDomElements: true,
 				msg: 'RDFa attributes restored/overwritten from data-ve-attributes'
 			},
 			{
@@ -1268,6 +1281,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				fromVe: true,
 				expectedHtml: '<p><span>foo</span><span about="quux">bar</span></p>',
 				expectedRangeOrSelection: new ve.Range( 7 ),
+				testOriginalDomElements: true,
 				msg: 'Span cleanups: data-ve-attributes always stripped'
 			},
 			{
@@ -1300,6 +1314,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						'o' +
 						'<span class="meaningful">o</span>' +
 					'</p>',
+				testOriginalDomElements: true,
 				msg: 'Span cleanups: only meaningful attributes kept'
 			},
 			{
@@ -1371,6 +1386,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				expectedRangeOrSelection: new ve.Range( 11 ),
+				testOriginalDomElements: true,
 				msg: 'Span cleanups: style removed (not converted into markup)'
 			},
 			{
@@ -1456,7 +1472,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{
 							type: 'replace',
 							insert: [
-								{ type: 'alienInline' },
+								{ type: 'alienInline', originalDomElements: $( '<s rel="ve:Alien">Alien</s>' ).toArray() },
 								{ type: '/alienInline' }
 							],
 							remove: []
@@ -1465,6 +1481,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 					]
 				],
 				expectedRangeOrSelection: new ve.Range( 3 ),
+				testOriginalDomElements: true,
 				msg: 'Paste API HTML still cleaned up if used when important attributes dropped'
 			},
 			{
@@ -1661,7 +1678,6 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				],
 				msg: 'Paste alien cell onto table cell'
 			},
-
 			{
 				rangeOrSelection: {
 					type: 'table',
