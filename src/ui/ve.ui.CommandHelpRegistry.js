@@ -90,7 +90,7 @@ ve.ui.commandHelpRegistry.register( 'textStyle', 'link', { trigger: 'link', labe
 ve.ui.commandHelpRegistry.register( 'textStyle', 'superscript', { trigger: 'superscript', label: OO.ui.deferMsg( 'visualeditor-annotationbutton-superscript-tooltip' ) } );
 ve.ui.commandHelpRegistry.register( 'textStyle', 'subscript', { trigger: 'subscript', label: OO.ui.deferMsg( 'visualeditor-annotationbutton-subscript-tooltip' ) } );
 ve.ui.commandHelpRegistry.register( 'textStyle', 'underline', { trigger: 'underline', label: OO.ui.deferMsg( 'visualeditor-annotationbutton-underline-tooltip' ) } );
-ve.ui.commandHelpRegistry.register( 'textStyle', 'code', { trigger: 'code', label: OO.ui.deferMsg( 'visualeditor-annotationbutton-code-tooltip' ) } );
+ve.ui.commandHelpRegistry.register( 'textStyle', 'code', { trigger: 'code', sequences: [ 'backtick' ], label: OO.ui.deferMsg( 'visualeditor-annotationbutton-code-tooltip' ) } );
 ve.ui.commandHelpRegistry.register( 'textStyle', 'strikethrough', { trigger: 'strikethrough', label: OO.ui.deferMsg( 'visualeditor-annotationbutton-strikethrough-tooltip' ) } );
 ve.ui.commandHelpRegistry.register( 'textStyle', 'clear', { trigger: 'clear', label: OO.ui.deferMsg( 'visualeditor-clearbutton-tooltip' ) } );
 
