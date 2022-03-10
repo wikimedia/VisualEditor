@@ -54,6 +54,8 @@
 	"visualeditor-changedesc-unset": "$1 సెట్టింగును $2 నుండి మార్చాం",
 	"visualeditor-clearbutton-tooltip": "తీసివెయ్యి",
 	"visualeditor-clipboard-copy": "కాపీచేయి",
+	"visualeditor-clipboard-copy-fail": "క్లిప్‌బోర్డుకు కాపీ చెయ్యడం విఫలమైంది.",
+	"visualeditor-clipboard-copy-success": "క్లిప్‌బోర్డుకు కాపీ చేసాం.",
 	"visualeditor-clipboard-cut": "కత్తిరించు",
 	"visualeditor-clipboard-paste": "అతికించు",
 	"visualeditor-clipboard-paste-special": "సాదా పాఠ్యంగా అతికించు",

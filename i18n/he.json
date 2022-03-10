@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
+			"Dee",
 			"ExampleTomer",
 			"Guycn2",
 			"Matanya",
@@ -207,6 +208,7 @@
 	"visualeditor-specialcharacter-group-label-accents": "סימנים דיאקריטיים",
 	"visualeditor-specialcharacter-group-label-mathematical": "סימנים מתמטיים",
 	"visualeditor-specialcharacter-group-label-symbols": "סמלים",
+	"visualeditor-specialcharacter-group-set-accents": "{\"Æ\":\"Æ\", \"æ\":\"æ\", \"À\":\"À\", \"à\":\"à\", \"Â\":\"Â\", \"â\":\"â\", \"Ä\":\"Ä\", \"ä\":\"ä\", \"Å\":\"Å\", \"å\":\"å\", \"Ç\":\"Ç\", \"ç\":\"ç\", \"È\":\"È\", \"è\":\"è\", \"É\":\"É\", \"é\":\"é\", \"Ê\":\"Ê\", \"ê\":\"ê\", \"Ë\":\"Ë\", \"ë\":\"ë\", \"Î\":\"Î\", \"î\":\"î\", \"Ï\":\"Ï\", \"ï\":\"ï\", \"Ô\":\"Ô\", \"ô\":\"ô\", \"Ö\":\"Ö\", \"ö\":\"ö\", \"Ø\":\"Ø\", \"ø\":\"ø\", \"Ù\":\"Ù\", \"ù\":\"ù\", \"Û\":\"Û\", \"û\":\"û\", \"Ü\":\"Ü\", \"ü\":\"ü\", \"Ÿ\":\"Ÿ\", \"ÿ\":\"ÿ\", \"Œ\":\"Œ\", \"œ\":\"œ\"}",
 	"visualeditor-specialcharacterinspector-title": "תו מיוחד",
 	"visualeditor-table-caption": "כיתוב",
 	"visualeditor-table-context-col": "עמודה",

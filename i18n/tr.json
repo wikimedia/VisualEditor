@@ -79,6 +79,8 @@
 	"visualeditor-changedir-tool-rtl": "Sağdan sola olarak görüntüle",
 	"visualeditor-clearbutton-tooltip": "Kaldır",
 	"visualeditor-clipboard-copy": "Kopyala",
+	"visualeditor-clipboard-copy-fail": "Panoya kopyalanamadı.",
+	"visualeditor-clipboard-copy-success": "Panoya kopyalandı.",
 	"visualeditor-clipboard-cut": "Kes",
 	"visualeditor-clipboard-paste": "Yapıştır",
 	"visualeditor-clipboard-paste-special": "Düz metin olarak yapıştır",
