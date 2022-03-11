@@ -13,19 +13,21 @@
 
 /* Maintain separation between wrapper paragraphs and start/end of document */
 
+/* stylelint-disable no-descending-specificity */
 /*
-   Keep top marign when:
-     - child of attachedRoot AND first child in list
+   Keep top margin when:
+     - [child of attachedRoot OR child of placeholder] AND first child in the doc
    this means we clear the top margin when
-     - NOT child of attachedRoot OR NOT first
+     - [NOT child of attachedRoot AND NOT child of placeholder] OR NOT first child in the doc
 */
-:not( .ve-ce-attachedRootNode ) > .ve-ce-paragraphNode.ve-ce-generated-wrapper,
+:not( .ve-ce-attachedRootNode ):not( .ve-ui-surface-placeholder ) > .ve-ce-paragraphNode.ve-ce-generated-wrapper,
 .ve-ce-paragraphNode.ve-ce-generated-wrapper:not( :first-child ) {
 	margin-top: 0;
 }
 
 /* Same for bottom margin */
-:not( .ve-ce-attachedRootNode ) > .ve-ce-paragraphNode.ve-ce-generated-wrapper,
+:not( .ve-ce-attachedRootNode ):not( .ve-ui-surface-placeholder ) > .ve-ce-paragraphNode.ve-ce-generated-wrapper,
 .ve-ce-paragraphNode.ve-ce-generated-wrapper:not( :last-child ) {
 	margin-bottom: 0;
 }
+/* stylelint-enable no-descending-specificity */
