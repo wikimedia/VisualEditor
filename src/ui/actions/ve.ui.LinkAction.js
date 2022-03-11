@@ -190,6 +190,12 @@ ve.init.Platform.static.initializedPromise.then( function () {
 		);
 
 	ve.ui.sequenceRegistry.register(
-		new ve.ui.Sequence( 'autolinkUrl', 'autolinkUrl', ve.ui.LinkAction.static.autolinkRegExp, 0, true, true )
+		new ve.ui.Sequence(
+			'autolinkUrl', 'autolinkUrl', ve.ui.LinkAction.static.autolinkRegExp, 0,
+			{
+				setSelection: true,
+				delayed: true
+			}
+		)
 	);
 } );
