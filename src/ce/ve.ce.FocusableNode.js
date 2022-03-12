@@ -23,7 +23,7 @@
  * @constructor
  * @param {jQuery} [$focusable=this.$element] Primary element user is focusing on
  * @param {Object} [config] Configuration options
- * @param {jQuery} [$bounding=$focusable] Element to consider for bounding box calculations (e.g.
+ * @cfg {jQuery} [$bounding=$focusable] Element to consider for bounding box calculations (e.g.
  *   attaching inspectors)
  * @cfg {string[]} [classes] CSS classes to be added to the highlight container
  */
