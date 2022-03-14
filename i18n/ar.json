@@ -79,6 +79,7 @@
 	"visualeditor-changedir-tool-rtl": "عرض كيمين إلى يسار",
 	"visualeditor-clearbutton-tooltip": "أزل",
 	"visualeditor-clipboard-copy": "نسخ",
+	"visualeditor-clipboard-copy-fail": "فشل النسخ إلى الحافظة.",
 	"visualeditor-clipboard-copy-success": "نسخ إلى الحافظة.",
 	"visualeditor-clipboard-cut": "قص",
 	"visualeditor-clipboard-paste": "لصق",
