@@ -16,25 +16,35 @@
  *         When using a RegularExpression always match the end of the sequence with a '$' so that
  *         only sequences next to the user's cursor match.
  * @param {number} [strip=0] Number of data elements to strip after execution
- *        (from the right)
- * @param {boolean} [setSelection=false] Whether to set the selection to the
- *        range matching the sequence before executing the command.
- * @param {boolean} [delayed=false] Whether to wait for the user to stop typing matching content
- *     before executing the command. When the sequence matches typed text, it will not be executed
- *     immediately, but only after more non-matching text is added afterwards or the selection is
- *     changed. This is useful for variable-length sequences (defined with RegExps).
- * @param {boolean} [checkOnPaste=false] Whether the sequence should also be matched after paste.
- * @param {boolean} [checkOnDelete=false] Whether the sequence should also be matched after delete.
+ *         (from the right)
+ * @param {Object} [config] [description]
+ * @cfg {boolean} [setSelection=false] Whether to set the selection to the
+ *       range matching the sequence before executing the command.
+ * @cfg {boolean} [delayed=false] Whether to wait for the user to stop typing matching content
+ *       before executing the command. When the sequence matches typed text, it will not be executed
+ *       immediately, but only after more non-matching text is added afterwards or the selection is
+ *       changed. This is useful for variable-length sequences (defined with RegExps).
+ * @cfg {boolean} [checkOnPaste=false] Whether the sequence should also be matched after paste.
+ * @cfg {boolean} [checkOnDelete=false] Whether the sequence should also be matched after delete.
  */
-ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, setSelection, delayed, checkOnPaste, checkOnDelete ) {
+ve.ui.Sequence = function VeUiSequence( name, commandName, data, strip, config ) {
 	this.name = name;
 	this.commandName = commandName;
 	this.data = data;
-	this.strip = strip;
-	this.setSelection = setSelection;
-	this.delayed = delayed;
-	this.checkOnPaste = checkOnPaste;
-	this.checkOnDelete = checkOnDelete;
+	this.strip = strip || 0;
+	if ( typeof config === 'object' ) {
+		// TODO: Add `config = config || {};` when variadic fallback is dropped.
+		this.setSelection = !!config.setSelection;
+		this.delayed = !!config.delayed;
+		this.checkOnPaste = !!config.checkOnPaste;
+		this.checkOnDelete = !!config.checkOnDelete;
+	} else {
+		// Backwards compatibility with variadic arguments
+		this.setSelection = !!arguments[ 4 ];
+		this.delayed = !!arguments[ 5 ];
+		this.checkOnPaste = !!arguments[ 6 ];
+		this.checkOnDelete = !!arguments[ 7 ];
+	}
 };
 
 /* Inheritance */
