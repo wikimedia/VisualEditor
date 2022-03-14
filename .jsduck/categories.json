@@ -330,6 +330,7 @@
 					"Date",
 					"Function",
 					"Map",
+					"MutationRecord",
 					"Number",
 					"Object",
 					"RegExp",
