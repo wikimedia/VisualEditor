@@ -75,6 +75,7 @@
 	"visualeditor-changedir-tool-rtl": "由右至左檢視",
 	"visualeditor-clearbutton-tooltip": "移除",
 	"visualeditor-clipboard-copy": "複製",
+	"visualeditor-clipboard-copy-success": "已複製至剪貼簿。",
 	"visualeditor-clipboard-cut": "剪下",
 	"visualeditor-clipboard-paste": "貼上",
 	"visualeditor-clipboard-paste-special": "以純文字格式貼上",

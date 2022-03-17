@@ -63,6 +63,8 @@
 	"visualeditor-changedir-tool-rtl": "Vis som høyre-til-venstre",
 	"visualeditor-clearbutton-tooltip": "Fjern",
 	"visualeditor-clipboard-copy": "Kopier",
+	"visualeditor-clipboard-copy-fail": "Kunne ikke kopiere til utklippstavlen.",
+	"visualeditor-clipboard-copy-success": "Kopiert til utklippstavlen.",
 	"visualeditor-clipboard-cut": "Klipp ut",
 	"visualeditor-clipboard-paste": "Lim inn",
 	"visualeditor-clipboard-paste-special": "Lim inn som uformatert tekst",

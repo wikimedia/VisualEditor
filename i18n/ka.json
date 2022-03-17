@@ -41,6 +41,7 @@
 	"visualeditor-changedesc-changed": "$1 შეიცვალა $2-დან $3-ზე",
 	"visualeditor-changedesc-comment": "კომენტარი შეიცვალა $1-დან $2-ზე",
 	"visualeditor-changedesc-language": "ენა შეიცვალა $1-დან $2-ზე",
+	"visualeditor-changedesc-link-removed": "წაიშალა ბმული: $1",
 	"visualeditor-changedesc-unknown": "$1 შეიცვალა",
 	"visualeditor-changedir": "ლექსიკონის შეცვლა",
 	"visualeditor-changedir-tool-rtl": "ხედი მარჯვნიდან მარცხნივ",

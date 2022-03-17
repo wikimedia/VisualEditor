@@ -3,6 +3,7 @@
 		"authors": [
 			"Anh88",
 			"Awdsweq123",
+			"Bluetpp",
 			"Cheers!",
 			"Dinhxuanduyet",
 			"Jdforrester",
@@ -63,6 +64,8 @@
 	"visualeditor-changedir-tool-rtl": "Xem phải sang trái",
 	"visualeditor-clearbutton-tooltip": "Xóa",
 	"visualeditor-clipboard-copy": "Chép",
+	"visualeditor-clipboard-copy-fail": "Thất bại khi sao chép vào bộ nhớ tạm.",
+	"visualeditor-clipboard-copy-success": "Đã chép vào bộ nhớ tạm.",
 	"visualeditor-clipboard-cut": "Cắt",
 	"visualeditor-clipboard-paste": "Dán",
 	"visualeditor-clipboard-paste-special": "Dán như văn bản thuần",
