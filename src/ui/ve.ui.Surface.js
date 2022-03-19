@@ -19,6 +19,7 @@
  * @cfg {jQuery} [$scrollContainer] The scroll container of the surface
  * @cfg {jQuery} [$scrollListener] The scroll listener of the surface
  * @cfg {jQuery} [$overlayContainer] Clipping container for local overlays, defaults to surface view
+ * @cfg {number} [overlayPadding] Padding beween local overlays and clipping container
  * @cfg {ve.ui.CommandRegistry} [commandRegistry] Command registry to use
  * @cfg {ve.ui.SequenceRegistry} [sequenceRegistry] Sequence registry to use
  * @cfg {ve.ui.DataTransferHandlerFactory} [dataTransferHandlerFactory] Data transfer handler factory to use
@@ -82,7 +83,10 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.dialogs = this.createDialogWindowManager();
 	this.importRules = config.importRules || {};
 	this.multiline = config.multiline !== false;
-	this.context = this.createContext( { $popupContainer: config.$overlayContainer } );
+	this.context = this.createContext( {
+		$popupContainer: config.$overlayContainer,
+		popupPadding: config.overlayPadding
+	} );
 	this.progresses = [];
 	this.showProgressDebounced = ve.debounce( this.showProgress.bind( this ) );
 	this.scrollSelectionIntoViewDebounced = ve.debounce( this.scrollSelectionIntoView.bind( this ), 500 );

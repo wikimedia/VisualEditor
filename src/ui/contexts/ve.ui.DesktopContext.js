@@ -13,6 +13,8 @@
  * @constructor
  * @param {ve.ui.Surface} surface
  * @param {Object} [config] Configuration options
+ * @cfg {jQuery} [$popupContainer] Clipping container for context popup
+ * @cfg {number} [popupPadding=10] Padding between popup and $popupContainer, can be negative
  */
 ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	config = config || {};
@@ -24,7 +26,8 @@ ve.ui.DesktopContext = function VeUiDesktopContext( surface, config ) {
 	this.popup = new OO.ui.PopupWidget( {
 		hideWhenOutOfView: false,
 		autoFlip: false,
-		$container: config.$popupContainer || this.surface.$element
+		$container: config.$popupContainer || this.surface.$element,
+		containerPadding: config.popupPadding
 	} );
 	this.position = null;
 	this.embeddable = null;
