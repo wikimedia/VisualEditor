@@ -33,7 +33,6 @@
 		]
 	},
 	"visualeditor": "The name of the VisualEditor extension.\n{{Identical|VisualEditor}}",
-	"visualeditor-aliencontextitem-title": "Title for the context item for unidentifiable nodes\n{{Identical|Item}}",
 	"visualeditor-aliennode-tooltip": "Tooltip for items that VisualEditor cannot edit",
 	"visualeditor-align-desc-center": "Used in visual diffs to describe automatically that an image was aligned to the center.\n\nSee also {{msg-mw|visualeditor-changedesc-align}} in which this string is used.\n\n{{Identical|Center}}",
 	"visualeditor-align-desc-default": "Used in visual diffs to describe automatically that an image was aligned to the default position.\n\nSee also {{msg-mw|visualeditor-changedesc-align}}\n\n{{Identical|Default}}",

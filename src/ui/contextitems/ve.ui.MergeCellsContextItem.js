@@ -44,8 +44,6 @@ ve.ui.MergeCellsContextItem.static.label = OO.ui.deferMsg( 'visualeditor-table-m
 
 ve.ui.MergeCellsContextItem.static.commandName = 'mergeCells';
 
-ve.ui.MergeCellsContextItem.static.deletable = false;
-
 ve.ui.MergeCellsContextItem.static.embeddable = false;
 
 /* Methods */

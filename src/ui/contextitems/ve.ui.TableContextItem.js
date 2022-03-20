@@ -21,6 +21,17 @@ ve.ui.TableContextItem = function VeUiTableContextItem( context, model, config )
 	// Initialization
 	this.$element.addClass( 've-ui-tableContextItem' );
 
+	this.deleteButton = new OO.ui.ButtonWidget( {
+		label: ve.msg( 'visualeditor-contextitemwidget-label-remove' ),
+		flags: [ 'destructive' ]
+	} );
+	if ( !this.isReadOnly() ) {
+		this.actionButtons.addItems( [ this.deleteButton, this.editButton ] );
+	}
+
+	// Events
+	this.deleteButton.connect( this, { click: 'onDeleteButtonClick' } );
+
 	this.editButton.setLabel( ve.msg( 'visualeditor-table-contextitem-properties' ) );
 };
 
@@ -50,14 +61,7 @@ ve.ui.TableContextItem.static.isCompatibleWith = function ( model ) {
 };
 
 /**
- * @inheritdoc
- */
-ve.ui.TableContextItem.prototype.isDeletable = function () {
-	return !this.isReadOnly();
-};
-
-/**
- * @inheritdoc
+ * Handle delete button click events.
  */
 ve.ui.TableContextItem.prototype.onDeleteButtonClick = function () {
 	var surfaceModel = this.getFragment().getSurface();
