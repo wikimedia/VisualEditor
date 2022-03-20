@@ -53,6 +53,9 @@ ve.ui.MergeCellsContextItem.static.isCompatibleWith = function ( model ) {
  * @inheritdoc
  */
 ve.ui.MergeCellsContextItem.prototype.setup = function () {
+	// Parent method
+	ve.ui.MergeCellsContextItem.super.prototype.setup.apply( this, arguments );
+
 	// If not disabled, selection must be table and spanning multiple matrix cells
 	var selection = this.getFragment().getSurface().getSelection(),
 		documentModel = this.getFragment().getDocument(),
