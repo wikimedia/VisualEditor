@@ -120,6 +120,8 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		multiline: this.multiline,
 		placeholder: this.placeholder,
 		readOnly: this.readOnly,
+		// Reduce from default 10 so inspector callouts are positioned correctly
+		overlayPadding: 5,
 		inDialog: this.inDialog
 	} );
 	this.target.setSurface( surface );
