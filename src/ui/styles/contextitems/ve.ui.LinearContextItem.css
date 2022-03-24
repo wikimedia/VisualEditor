@@ -41,9 +41,10 @@
 	display: none;
 }
 
-.ve-ui-linearContextItem + .ve-ui-linearContextItem .ve-ui-linearContextItem-close {
-	/* Only show a close button in the first context item */
-	display: none;
+.ve-ui-mobileContext-close {
+	position: absolute;
+	right: 0;
+	top: 1px;
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-body-action-wrapper {
@@ -63,6 +64,11 @@
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-empty .ve-ui-linearContextItem-body-action-wrapper {
 	display: none;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-empty:first-child {
+	/* Make room for close button, the first item is empty */
+	margin-right: 2.5em;
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-body {

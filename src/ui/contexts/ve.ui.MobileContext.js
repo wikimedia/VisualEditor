@@ -18,16 +18,27 @@ ve.ui.MobileContext = function VeUiMobileContext() {
 	// Parent constructor
 	ve.ui.MobileContext.super.apply( this, arguments );
 
+	this.openingTimeout = null;
+
+	this.closeButton = new OO.ui.ButtonWidget( {
+		classes: [ 've-ui-mobileContext-close' ],
+		framed: false,
+		label: ve.msg( 'visualeditor-contextitemwidget-label-close' ),
+		invisibleLabel: true,
+		icon: 'close'
+	} );
+
 	// Events
+	this.closeButton.connect( this, { click: 'onCloseButtonClick' } );
 	this.inspectors.connect( this, {
 		setup: [ 'toggle', true ],
 		teardown: [ 'toggle', false ]
 	} );
 
-	this.openingTimeout = null;
-
 	// Initialization
-	this.$element.addClass( 've-ui-mobileContext' );
+	this.$element
+		.prepend( this.closeButton.$element )
+		.addClass( 've-ui-mobileContext' );
 	this.$group.addClass( 've-ui-mobileContext-menu' );
 	this.surface.getGlobalOverlay().$element.append( this.inspectors.$element );
 };
@@ -41,6 +52,18 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.LinearContext );
 ve.ui.MobileContext.static.isMobile = true;
 
 /* Methods */
+
+/**
+ * Handle click events from the close button
+ */
+ve.ui.MobileContext.prototype.onCloseButtonClick = function () {
+	this.toggleMenu( false );
+	this.toggle( false );
+	// Clear last-known contexedAnnotations so that clicking the annotation
+	// again just brings up this context item. (T232172)
+	this.getSurface().getView().contexedAnnotations = [];
+	ve.track( 'activity.mobileContext', { action: 'context-close' } );
+};
 
 /**
  * @inheritdoc
