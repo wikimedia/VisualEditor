@@ -111,6 +111,3 @@ ve.ui.sequenceRegistry.register(
 ve.ui.sequenceRegistry.register(
 	new ve.ui.Sequence( 'horizontalRule', 'insertHorizontalRule', [ { type: 'paragraph' }, '-', '-', '-', '-' ], 4 )
 );
-ve.ui.sequenceRegistry.register(
-	new ve.ui.Sequence( 'backtick', 'code', '`', 1 )
-);
