@@ -4335,7 +4335,7 @@ ve.dm.example.isolationData = [
 ];
 
 ve.dm.example.RDFaDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
-	'<p content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" ' +
+	'<p content="b" datatype="c" resource="f" rev="g" ' +
 	// Non-RDFa attribute
 	'class="i">' +
 	'Foo</p>'

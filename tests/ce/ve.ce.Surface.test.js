@@ -671,9 +671,9 @@ QUnit.test( 'onCopy', function ( assert ) {
 			expectedOriginalRange: new ve.Range( 0, 5 ),
 			expectedBalancedRange: new ve.Range( 0, 5 ),
 			expectedHtml:
-				'<p content="b" datatype="c" property="d" rel="e" resource="f" rev="g" typeof="h" class="i" ' +
-					'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
-					'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
+				'<p content="b" datatype="c" resource="f" rev="g" class="i" ' +
+					'data-ve-attributes="{&quot;rev&quot;:&quot;g&quot;,' +
+					'&quot;resource&quot;:&quot;f&quot;,' +
 					'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;}">' +
 					'Foo' +
 				'</p>',
@@ -1236,9 +1236,9 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 0 ),
 				pasteHtml:
-					'<figure typeof="ignored" class="notIgnored" ' +
-						'data-ve-attributes="{&quot;typeof&quot;:&quot;h&quot;,&quot;rev&quot;:&quot;g&quot;,' +
-						'&quot;resource&quot;:&quot;f&quot;,&quot;rel&quot;:&quot;e&quot;,&quot;property&quot;:&quot;d&quot;,' +
+					'<figure class="notIgnored" rev="ignored" ' +
+						'data-ve-attributes="{&quot;rev&quot;:&quot;g&quot;,' +
+						'&quot;resource&quot;:&quot;f&quot;,' +
 						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
 						'<img>' +
 					'</figure>',
@@ -1259,7 +1259,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 										src: null,
 										unrecognizedClasses: [ 'notIgnored' ]
 									},
-									originalDomElements: $.parseHTML( '<figure class="notIgnored" typeof="h" rev="g" resource="f" rel="e" property="d" datatype="c" content="b" about="a"><img></figure>' )
+									originalDomElements: $.parseHTML( '<figure class="notIgnored" rev="g" resource="f" datatype="c" content="b" about="a"><img></figure>' )
 								},
 								{ type: 'imageCaption' },
 								{ type: '/imageCaption' },
