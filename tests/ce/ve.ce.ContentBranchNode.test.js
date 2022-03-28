@@ -369,12 +369,6 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 		var $wrapper = $( new ve.ce.ParagraphNode( doc.getDocumentNode().getChildren()[ 0 ] ).getRenderedContents() );
 		// HACK strip out all the class="ve-ce-textStyleAnnotation ve-ce-textStyleBoldAnnotation" crap
 		$wrapper.find( '.ve-ce-textStyleAnnotation' ).removeAttr( 'class' );
-		assert.equalDomElement(
-			$wrapper[ 0 ],
-			$( '<p>' )
-				.addClass( 've-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode' )
-				.html( caseItem.html )[ 0 ],
-			caseItem.msg
-		);
+		assert.equalDomElement( $wrapper[ 0 ], $( '<div>' ).html( caseItem.html )[ 0 ], caseItem.msg );
 	} );
 } );
