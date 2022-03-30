@@ -37,6 +37,12 @@ ve.ui.PreviewElement = function VeUiPreviewElement( model, config ) {
 	this.$element.addClass( 've-ui-previewElement' );
 };
 
+/**
+ * The element rendering has been updated
+ *
+ * @event render
+ */
+
 /* Inheritance */
 
 OO.inheritClass( ve.ui.PreviewElement, OO.ui.Element );
