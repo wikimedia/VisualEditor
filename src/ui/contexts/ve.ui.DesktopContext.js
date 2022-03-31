@@ -407,16 +407,17 @@ ve.ui.DesktopContext.prototype.setPopupSizeAndPosition = function ( repositionOn
 		// Needs to be repeated before every call, as it resets itself when the popup is shown or hidden.
 		this.popup.toggleClipping( false );
 
-		// We want to stop the popup from possibly being bigger than the viewport,
+		// We want to stop the popup from possibly being bigger than the viewport (T114614),
 		// as that can result in situations where it's impossible to reach parts
 		// of the popup. Limiting it to the window height would ignore toolbars
-		// and the find-replace dialog and suchlike. Therefore we set its max
-		// height to the surface's estimation of the actual viewport available to
-		// it. It's okay if the inspector goes off the edge of the viewport, so
-		// long as it's possible to scroll and get it all in view.
-		this.popup.setSize( this.dimensions.width, Math.min( this.dimensions.height, viewport.height ) );
+		// and the find-replace dialog and suchlike. We can't use getViewportDimensions
+		// as that doesn't account for the surface height "growing" when we scroll (T304847).
+		var maxSurfaceHeight = this.surface.$scrollContainer.height() - this.surface.padding.top;
+		// Allow room for callout and cursor above the context
+		maxSurfaceHeight -= 30;
+		this.popup.setSize( this.dimensions.width, Math.min( this.dimensions.height, maxSurfaceHeight ) );
 
-		this.popup.scrollElementIntoView();
+		this.popup.scrollElementIntoView( { animate: false } );
 	}
 };
 
