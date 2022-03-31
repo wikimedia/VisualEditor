@@ -55,6 +55,8 @@
 	"visualeditor-changedir-tool-rtl": "Visualizza de drizza a sinistra",
 	"visualeditor-clearbutton-tooltip": "Toeu via",
 	"visualeditor-clipboard-copy": "Copia",
+	"visualeditor-clipboard-copy-fail": "Copia di apunt fallada.",
+	"visualeditor-clipboard-copy-success": "Copiad in di apunt.",
 	"visualeditor-clipboard-cut": "Taja",
 	"visualeditor-clipboard-paste": "Incola",
 	"visualeditor-clipboard-paste-special": "Incola come test senza formatazzion",
