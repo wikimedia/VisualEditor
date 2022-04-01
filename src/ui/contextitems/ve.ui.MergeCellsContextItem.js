@@ -18,6 +18,14 @@ ve.ui.MergeCellsContextItem = function VeUiMergeCellsContextItem( context, model
 	// Parent constructor
 	ve.ui.MergeCellsContextItem.super.call( this, context, model, config );
 
+	if ( this.context.isMobile() ) {
+		// Use desktop-style label-only button, as otherwise the "edit" button
+		// gets collapsed to just the edit icon.
+		this.editButton
+			.setIcon( null )
+			.setInvisibleLabel( false );
+	}
+
 	// Initialization
 	this.$element.addClass( 've-ui-mergeCellsContextItem' );
 };
