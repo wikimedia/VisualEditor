@@ -75,6 +75,8 @@
 	"visualeditor-changedir-tool-rtl": "Переглянути з напрямком справа наліво",
 	"visualeditor-clearbutton-tooltip": "Вилучити",
 	"visualeditor-clipboard-copy": "Копіювати",
+	"visualeditor-clipboard-copy-fail": "Помилка копіювання до буферу обміну.",
+	"visualeditor-clipboard-copy-success": "Скопійовано до буферу обміну.",
 	"visualeditor-clipboard-cut": "Вирізати",
 	"visualeditor-clipboard-paste": "Вставити",
 	"visualeditor-clipboard-paste-special": "Вставити як звичайний текст",
