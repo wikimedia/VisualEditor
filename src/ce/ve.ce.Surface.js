@@ -536,6 +536,7 @@ ve.ce.Surface.prototype.initialize = function () {
 			this.$document[ 0 ].execCommand( 'enableInlineTableEditing', false, false );
 		} catch ( e ) { /* Silently ignore */ }
 	}
+	this.emit( 'position' );
 };
 
 /**

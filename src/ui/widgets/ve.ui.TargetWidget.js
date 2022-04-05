@@ -127,14 +127,18 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	this.target.setSurface( surface );
 
 	// Events
-	this.getSurface().getView().connect( this, {
+	surface.getView().connect( this, {
 		activation: 'onFocusChange',
 		focus: 'onFocusChange',
 		blur: 'onFocusChange'
 	} );
 	// Rethrow as target events so users don't have to re-bind when the surface is changed
-	this.getSurface().getModel().connect( this, { history: [ 'emit', 'change' ] } );
-	this.getSurface().connect( this, { submit: 'onSurfaceSubmit' } );
+	surface.getModel().connect( this, { history: [ 'emit', 'change' ] } );
+	surface.connect( this, { submit: 'onSurfaceSubmit' } );
+	// Emit 'position' on first focus, as target widgets are often setup before being made visible. (T303795)
+	surface.getView().once( 'focus', function () {
+		surface.getView().emit( 'position' );
+	} );
 
 	this.emit( 'setup' );
 };
