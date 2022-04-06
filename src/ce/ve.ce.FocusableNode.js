@@ -368,26 +368,12 @@ ve.ce.FocusableNode.prototype.updateInvisibleIconSync = function ( showIcon ) {
 		return;
 	}
 	if ( showIcon ) {
-		// Don't try to append to void tags, or unrendered tags
-		var voidAndHiddenTypes = ve.elementTypes.void.concat( 'style', 'script' );
-		var $firstElement = this.$element.not( voidAndHiddenTypes.join( ',' ) ).first();
 		this.createInvisibleIcon();
-		if (
-			// Not needed if node is not attached (e.g. if used in the converter)
-			document.body.contains( $firstElement[ 0 ] ) &&
-			// eslint-disable-next-line no-jquery/no-sizzle
-			!$firstElement.is( ':visible' )
-		) {
-			// The first element to which we want to attach our icon is invisible.
-			// In this case make sure it *is* visible, so the button is visible,
-			// but remove the contents, so we don't start showing them (T305110).
-			$firstElement.empty().css( 'display', 'inline-block' );
-		}
-		$firstElement
+		this.$element.first()
 			.addClass( 've-ce-focusableNode-invisible' )
 			.prepend( this.icon.$element );
 	} else if ( this.icon ) {
-		this.$element.removeClass( 've-ce-focusableNode-invisible' );
+		this.$element.first().removeClass( 've-ce-focusableNode-invisible' );
 		this.icon.$element.detach();
 	}
 };
@@ -837,11 +823,16 @@ ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
 /**
  * Check if the rendering is visible
  *
- * "Visible", in this case, is defined as > 8px x 8px in dimensions
+ * "Visible", in this case, is defined as any of:
+ * - contains any non-whitespace text
+ * - is greater than 8px x 8px in dimensions
  *
  * @return {boolean} The node has a visible rendering
  */
 ve.ce.FocusableNode.prototype.hasRendering = function () {
+	if ( this.$element.text().trim() !== '' ) {
+		return true;
+	}
 	var visible = false;
 	this.$element.each( function () {
 		if (
