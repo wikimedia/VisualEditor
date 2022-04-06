@@ -588,7 +588,7 @@
 			"src/ui/contextitems/ve.ui.LinearContextItem.js",
 			"src/ui/contextitems/ve.ui.AnnotationContextItem.js",
 			"src/ui/contextitems/ve.ui.TableLineContextItem.js",
-			"src/ui/contextitems/ve.ui.AlienContextItem.js",
+			"src/ui/contextitems/ve.ui.MobileActionsContextItem.js",
 			"src/ui/contextitems/ve.ui.AlignableContextItem.js",
 			"src/ui/contextitems/ve.ui.CommentContextItem.js",
 			"src/ui/contextitems/ve.ui.LanguageContextItem.js",

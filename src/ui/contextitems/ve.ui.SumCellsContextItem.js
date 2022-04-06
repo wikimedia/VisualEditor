@@ -34,8 +34,6 @@ ve.ui.SumCellsContextItem.static.icon = 'mathematics';
 
 ve.ui.SumCellsContextItem.static.editable = false;
 
-ve.ui.SumCellsContextItem.static.deletable = false;
-
 ve.ui.SumCellsContextItem.static.embeddable = false;
 
 /* Methods */

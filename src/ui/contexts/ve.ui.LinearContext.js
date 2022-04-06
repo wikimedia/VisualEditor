@@ -43,44 +43,6 @@ OO.inheritClass( ve.ui.LinearContext, ve.ui.Context );
 /* Static Properties */
 
 /**
- * Context items should show a delete button
- *
- * @static
- * @inheritable
- * @property {Object}
- */
-ve.ui.LinearContext.static.showDeleteButton = false;
-
-/**
- * Context items should show a copy button
- *
- * @static
- * @inheritable
- * @property {Object}
- */
-ve.ui.LinearContext.static.showCopyButton = false;
-
-/* Methods */
-
-/**
- * Check if context items should show a delete button
- *
- * @return {boolean} Context items should show a delete button
- */
-ve.ui.LinearContext.prototype.showDeleteButton = function () {
-	return this.constructor.static.showDeleteButton;
-};
-
-/**
- * Check if context items should show a copy button
- *
- * @return {boolean} Context items should show a copy button
- */
-ve.ui.LinearContext.prototype.showCopyButton = function () {
-	return this.constructor.static.showCopyButton;
-};
-
-/**
  * Handle context change event.
  *
  * While an inspector is opening or closing, all changes are ignored so as to prevent inspectors
@@ -303,18 +265,6 @@ ve.ui.LinearContext.prototype.getRelatedSourcesFromModels = function ( selectedM
 				embeddable: !toolClass || toolClass.static.makesEmbeddableContextItem,
 				name: tools[ i ].name,
 				model: tools[ i ].model
-			} );
-		}
-	}
-	if ( !relatedSources.length ) {
-		var selectedNode = this.surface.getModel().getSelectedNode();
-		// For now we only need alien contexts to show the delete button
-		if ( selectedNode && selectedNode.isFocusable() && this.showDeleteButton() && ve.ui.contextItemFactory.lookup( 'alien' ) ) {
-			relatedSources.push( {
-				type: 'item',
-				embeddable: ve.ui.contextItemFactory.isEmbeddable( 'alien' ),
-				name: 'alien',
-				model: selectedNode
 			} );
 		}
 	}

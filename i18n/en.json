@@ -17,7 +17,6 @@
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliencontextitem-title": "Item",
 	"visualeditor-aliennode-tooltip": "Sorry, this element can only be edited in source mode for now.",
 	"visualeditor-align-desc-center": "center",
 	"visualeditor-align-desc-default": "default",

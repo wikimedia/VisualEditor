@@ -40,10 +40,6 @@ OO.inheritClass( ve.ui.MobileContext, ve.ui.LinearContext );
 
 ve.ui.MobileContext.static.isMobile = true;
 
-ve.ui.MobileContext.static.showDeleteButton = true;
-
-ve.ui.MobileContext.static.showCopyButton = true;
-
 /* Methods */
 
 /**
@@ -156,6 +152,7 @@ ve.ui.MobileContext.prototype.isVisible = function () {
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.isInspectable = function () {
+	// Parent method
 	return ve.ui.MobileContext.super.prototype.isInspectable.call( this ) &&
 		// Suppress context when surface is active (virtual keyboard)
 		this.surface.getView().isDeactivated();

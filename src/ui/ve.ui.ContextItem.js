@@ -67,6 +67,17 @@ ve.ui.ContextItem.static.exclusive = true;
 ve.ui.ContextItem.static.commandName = null;
 
 /**
+ * Sort order of the context item within the context
+ *
+ * Items are sorted top to bottom in ascending order. Negative values are allowed.
+ *
+ * @static
+ * @property {number}
+ * @inheritable
+ */
+ve.ui.ContextItem.static.sortOrder = 0;
+
+/**
  * Annotation or node models this item is related to.
  *
  * Used by #isCompatibleWith.

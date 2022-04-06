@@ -38,9 +38,3 @@
 	margin: 0 -1px;
 	padding: 0 1px;
 }
-
-/* Context item */
-
-.ve-ui-linearContextItem-body {
-	min-height: 0.2em;
-}
