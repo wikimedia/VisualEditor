@@ -36,9 +36,7 @@ ve.ui.MobileContext = function VeUiMobileContext() {
 	} );
 
 	// Initialization
-	this.$element
-		.prepend( this.closeButton.$element )
-		.addClass( 've-ui-mobileContext' );
+	this.$element.addClass( 've-ui-mobileContext' );
 	this.$group.addClass( 've-ui-mobileContext-menu' );
 	this.surface.getGlobalOverlay().$element.append( this.inspectors.$element );
 };
@@ -63,6 +61,17 @@ ve.ui.MobileContext.prototype.onCloseButtonClick = function () {
 	// again just brings up this context item. (T232172)
 	this.getSurface().getView().contexedAnnotations = [];
 	ve.track( 'activity.mobileContext', { action: 'context-close' } );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MobileContext.prototype.setupMenuItems = function () {
+	// Parent method
+	ve.ui.MobileContext.super.prototype.setupMenuItems.apply( this, arguments );
+
+	// Ensure close button is at start after $group has been modified.
+	this.$group.prepend( this.closeButton.$element );
 };
 
 /**

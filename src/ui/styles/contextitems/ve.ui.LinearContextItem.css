@@ -41,12 +41,6 @@
 	display: none;
 }
 
-.ve-ui-mobileContext-close {
-	position: absolute;
-	right: 0;
-	top: 1px;
-}
-
 .ve-ui-mobileContext .ve-ui-linearContextItem-body-action-wrapper {
 	/* Wrapper to vertically center body-action in a min-heighted container */
 	/* We use a wrapper so that body-action itself can main top-alignment of its items */
@@ -66,8 +60,8 @@
 	display: none;
 }
 
-.ve-ui-mobileContext .ve-ui-linearContextItem-empty:first-child {
-	/* Make room for close button, the first item is empty */
+.ve-ui-mobileContext-close + .ve-ui-linearContextItem-empty {
+	/* Make room for close button, if the first item is empty */
 	margin-right: 2.5em;
 }
 

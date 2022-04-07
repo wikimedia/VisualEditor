@@ -23,3 +23,13 @@
 	transition: transform 250ms;
 	transform: translateY( 100% );
 }
+
+.ve-ui-mobileContext-menu {
+	position: relative;
+}
+
+.ve-ui-mobileContext-close {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
