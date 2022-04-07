@@ -11,10 +11,6 @@
 	align-items: center;
 }
 
-.ve-ui-mobileContext .ve-ui-linearContextItem-head {
-	padding: 0.1em 0.5em;
-}
-
 .ve-ui-linearContextItem-title {
 	padding: 0 0.5em;
 	white-space: nowrap;
@@ -63,6 +59,10 @@
 .ve-ui-mobileContext-close + .ve-ui-linearContextItem-empty {
 	/* Make room for close button, if the first item is empty */
 	margin-right: 2.5em;
+}
+
+.ve-ui-mobileContext .ve-ui-linearContextItem-head {
+	padding: 0.25em 0.5em;
 }
 
 .ve-ui-mobileContext .ve-ui-linearContextItem-body {
