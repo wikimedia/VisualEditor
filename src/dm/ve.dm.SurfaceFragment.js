@@ -463,7 +463,10 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 	} else {
 		var ranges = selection.getRanges( this.getDocument() );
 		for ( var i = 0, l = ranges.length; i < l; i++ ) {
-			var rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( ranges[ i ], all );
+			var rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( ranges[ i ], all, true );
+			if ( !rangeAnnotations ) {
+				continue;
+			}
 			if ( !i ) {
 				// First range, annotations must be empty
 				annotations = rangeAnnotations;
