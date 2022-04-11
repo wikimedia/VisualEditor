@@ -27,7 +27,6 @@
 		]
 	},
 	"visualeditor": "ビジュアルエディター",
-	"visualeditor-aliencontextitem-title": "項目",
 	"visualeditor-aliennode-tooltip": "申し訳ありませんが、現時点ではソースモードのみで編集できます。",
 	"visualeditor-align-desc-center": "中央",
 	"visualeditor-align-desc-default": "既定",

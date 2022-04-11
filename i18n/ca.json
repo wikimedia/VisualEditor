@@ -25,7 +25,6 @@
 		]
 	},
 	"visualeditor": "Editor visual",
-	"visualeditor-aliencontextitem-title": "Element",
 	"visualeditor-aliennode-tooltip": "Disculpeu, actualment aquest element només es pot modificar amb l'editor de codi font.",
 	"visualeditor-align-desc-center": "centre",
 	"visualeditor-align-desc-default": "per defecte",

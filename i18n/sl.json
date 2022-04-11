@@ -13,7 +13,6 @@
 		]
 	},
 	"visualeditor": "Vizualni urejevalnik",
-	"visualeditor-aliencontextitem-title": "Predmet",
 	"visualeditor-aliennode-tooltip": "Oprostite, ta element lahko trenutno urejate samo v urejevalniku izvorne kode.",
 	"visualeditor-align-desc-center": "sredinsko",
 	"visualeditor-align-desc-default": "privzeto",

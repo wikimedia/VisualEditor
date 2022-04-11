@@ -6,7 +6,6 @@
 		]
 	},
 	"visualeditor": "Editor visual",
-	"visualeditor-aliencontextitem-title": "Elemento",
 	"visualeditor-aliennode-tooltip": "Iste elemento pote solmente esser modificate con le editor de codice fonte.",
 	"visualeditor-align-desc-center": "centro",
 	"visualeditor-align-desc-default": "predefinite",

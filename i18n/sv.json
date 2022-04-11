@@ -24,7 +24,6 @@
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliencontextitem-title": "Objekt",
 	"visualeditor-aliennode-tooltip": "Tyvärr, detta objekt kan endast redigeras med wikitext just nu.",
 	"visualeditor-align-desc-center": "centrerad",
 	"visualeditor-align-desc-default": "standard",

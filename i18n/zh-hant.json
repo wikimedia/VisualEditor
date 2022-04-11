@@ -29,7 +29,6 @@
 		]
 	},
 	"visualeditor": "視覺化編輯器",
-	"visualeditor-aliencontextitem-title": "項目",
 	"visualeditor-aliennode-tooltip": "抱歉，此元素目前只能透過原始碼模式編輯。",
 	"visualeditor-align-desc-center": "置中",
 	"visualeditor-align-desc-default": "預設",

@@ -46,7 +46,6 @@
 		]
 	},
 	"visualeditor": "ÉditeurVisuel",
-	"visualeditor-aliencontextitem-title": "Élément",
 	"visualeditor-aliennode-tooltip": "Désolé, cet élément ne peut pour l’instant être modifié qu’avec l’éditeur en mode source.",
 	"visualeditor-align-desc-center": "centré",
 	"visualeditor-align-desc-default": "par défaut",

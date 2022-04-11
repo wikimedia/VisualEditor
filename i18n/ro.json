@@ -14,7 +14,6 @@
 		]
 	},
 	"visualeditor": "EditorVizual",
-	"visualeditor-aliencontextitem-title": "Element",
 	"visualeditor-aliennode-tooltip": "Ne pare rău, dar, pentru moment, acest element poate fi modificat doar editând codul sursă al paginii.",
 	"visualeditor-align-desc-center": "centru",
 	"visualeditor-align-desc-default": "implicit",

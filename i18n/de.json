@@ -17,7 +17,6 @@
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliencontextitem-title": "Objekt",
 	"visualeditor-aliennode-tooltip": "Dieses Element kann derzeit nur im Quelltextmodus bearbeitet werden.",
 	"visualeditor-align-desc-center": "zentriert",
 	"visualeditor-align-desc-default": "Standard",

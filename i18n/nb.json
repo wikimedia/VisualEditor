@@ -15,7 +15,6 @@
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliencontextitem-title": "Element",
 	"visualeditor-aliennode-tooltip": "Beklager, dette elementet kan foreløpig kun redigeres i kildemodus.",
 	"visualeditor-align-desc-center": "midtstilt",
 	"visualeditor-align-desc-default": "default",

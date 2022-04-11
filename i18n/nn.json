@@ -7,7 +7,6 @@
 		]
 	},
 	"visualeditor": "VisualEditor",
-	"visualeditor-aliencontextitem-title": "Element",
 	"visualeditor-aliennode-tooltip": "Diverre kan dette elementet berre endrast gjennom gjenom kjeldekoden, enn so lenge.",
 	"visualeditor-align-desc-center": "midtstilt",
 	"visualeditor-align-widget-left": "Venstre",

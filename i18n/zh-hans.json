@@ -37,7 +37,6 @@
 		]
 	},
 	"visualeditor": "可视化编辑器",
-	"visualeditor-aliencontextitem-title": "项目",
 	"visualeditor-aliennode-tooltip": "对不起，该元素目前只能在源代码模式编辑。",
 	"visualeditor-align-desc-center": "中",
 	"visualeditor-align-desc-default": "默认",

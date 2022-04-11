@@ -35,7 +35,6 @@
 		]
 	},
 	"visualeditor": "Editor visual",
-	"visualeditor-aliencontextitem-title": "Elemento",
 	"visualeditor-aliennode-tooltip": "Este elemento puede editarse solo en el modo de código por ahora.",
 	"visualeditor-align-desc-center": "centro",
 	"visualeditor-align-desc-default": "predeterminada",

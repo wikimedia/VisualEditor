@@ -28,7 +28,6 @@
 		]
 	},
 	"visualeditor": "ویرایشگر دیداری",
-	"visualeditor-aliencontextitem-title": "مورد",
 	"visualeditor-aliennode-tooltip": "پوزش، هم‌اکنون این عنصر تنها در حالت متنی ویرایش‌پذیر است.",
 	"visualeditor-align-desc-center": "مرکز",
 	"visualeditor-align-desc-default": "پیش‌فرض",
@@ -97,7 +96,7 @@
 	"visualeditor-debugbar-startfilibuster": "اشکال‌یابی",
 	"visualeditor-debugbar-stopfilibuster": "توقف اشکال‌یابی",
 	"visualeditor-debugbar-testsquasher": "آزمایش اسکواشر",
-	"visualeditor-debugbar-updatemodel": "روزآمدسازی تغییرات",
+	"visualeditor-debugbar-updatemodel": "به‌روزرسانی تغییرات",
 	"visualeditor-dialog-action-apply": "اعمال تغییرات",
 	"visualeditor-dialog-action-cancel": "لغو",
 	"visualeditor-dialog-action-done": "انجام شد",
