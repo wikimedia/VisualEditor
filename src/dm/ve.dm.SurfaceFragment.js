@@ -455,20 +455,19 @@ ve.dm.SurfaceFragment.prototype.containsOnlyText = function () {
  * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
  */
 ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
-	var selection = this.getSelection(),
-		annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	var selection = this.getSelection();
 
 	if ( selection.isCollapsed() ) {
 		return this.surface.getInsertionAnnotations();
 	} else {
+		var annotations = null;
 		var ranges = selection.getRanges( this.getDocument() );
 		for ( var i = 0, l = ranges.length; i < l; i++ ) {
 			var rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( ranges[ i ], all, true );
 			if ( !rangeAnnotations ) {
 				continue;
 			}
-			if ( !i ) {
-				// First range, annotations must be empty
+			if ( !annotations ) {
 				annotations = rangeAnnotations;
 			} else if ( all ) {
 				annotations.addSet( rangeAnnotations );
@@ -485,7 +484,7 @@ ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
 				}
 			}
 		}
-		return annotations;
+		return annotations || new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	}
 };
 
