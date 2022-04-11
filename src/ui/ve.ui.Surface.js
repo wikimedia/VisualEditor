@@ -514,7 +514,8 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 	var animate = true,
 		view = this.getView(),
 		selection = view.getSelection(),
-		surface = this;
+		surface = this,
+		isNative = selection.isNativeCursor();
 
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen.
@@ -529,7 +530,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 
 	var padding = ve.copy( this.padding );
 
-	if ( selection.isNativeCursor() ) {
+	if ( isNative ) {
 		animate = false;
 		if (
 			OO.ui.isMobile() &&
@@ -556,6 +557,13 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 
 		clientRect.top -= 5;
 		clientRect.bottom += 5;
+	} else {
+		// Don't attempt to scroll non-native selections into view if they
+		// are taller than the viewport (T305862).
+		var viewportDimensions = this.getViewportDimensions();
+		if ( clientRect.height > viewportDimensions.height ) {
+			return;
+		}
 	}
 
 	ve.scrollIntoView( clientRect, {
@@ -563,7 +571,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 		scrollContainer: this.$scrollContainer[ 0 ],
 		padding: padding
 	} ).then( function () {
-		if ( selection.isNativeCursor() ) {
+		if ( isNative ) {
 			// TODO: This event has only even been emitted for native selection
 			// scroll changes. Perhaps rename it.
 			surface.emit( 'scroll' );
