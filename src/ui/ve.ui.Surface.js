@@ -592,6 +592,11 @@ ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
 	if ( this.placeholder ) {
 		this.$placeholder.prependTo( this.$element );
 		this.updatePlaceholder();
+		var documentView = this.getView().getDocument();
+		this.$placeholder.prop( {
+			dir: documentView.getDir(),
+			lang: documentView.getLang()
+		} );
 	} else {
 		this.$placeholder.detach();
 		this.placeholderVisible = false;
