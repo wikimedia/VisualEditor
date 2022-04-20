@@ -447,7 +447,7 @@
 				return null;
 			},
 			getImportRules: function () {
-				return ve.init.target.constructor.static.importRules;
+				return this.importRules;
 			},
 			getMode: function () {
 				return config.mode || 'visual';
@@ -486,6 +486,7 @@
 			config.includeCommands || mockSurface.commandRegistry.getNames(), config.excludeCommands || []
 		);
 		mockSurface.triggerListener = new ve.TriggerListener( mockSurface.commands, mockSurface.commandRegistry );
+		mockSurface.importRules = config.importRules || {};
 
 		model = docOrSurface instanceof ve.dm.Surface ? docOrSurface : mockSurface.createModel( docOrSurface );
 		view = mockSurface.createView( model );
