@@ -53,6 +53,30 @@ QUnit.test( '(un)wrap', function ( assert ) {
 			},
 			undo: true,
 			msg: 'unwrapping two double listed paragraphs'
+		},
+		{
+			html: '<ul><li>One<ul><li>Two</li></ul></li></ul>',
+			rangeOrSelection: new ve.Range( 11 ),
+			method: 'toggle',
+			style: 'number',
+			expectedRangeOrSelection: new ve.Range( 11 ),
+			expectedData: function ( data ) {
+				data[ 7 ].attributes.style = 'number';
+			},
+			undo: true,
+			msg: 'Convert a nested bullet list to a numbered list'
+		},
+		{
+			html: '<ul><li>One<ol><li>Two</li></ol></li></ul>',
+			rangeOrSelection: new ve.Range( 11 ),
+			method: 'toggle',
+			style: 'bullet',
+			expectedRangeOrSelection: new ve.Range( 11 ),
+			expectedData: function ( data ) {
+				data[ 7 ].attributes.style = 'bullet';
+			},
+			undo: true,
+			msg: 'Convert a numbered list (within a bullet list) back to a bullet list'
 		}
 	];
 

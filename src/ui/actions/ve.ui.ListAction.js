@@ -39,7 +39,7 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
 ve.ui.ListAction.prototype.allWrapped = function ( style, listType ) {
 	listType = listType || 'list';
 	var attributes = style ? { style: style } : undefined;
-	return this.surface.getModel().getFragment().hasMatchingAncestor( listType, attributes );
+	return this.surface.getModel().getFragment().hasMatchingAncestor( listType, attributes, true );
 };
 
 /**
