@@ -37,22 +37,9 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
  * @return {boolean} Current selection is all wrapped in a list
  */
 ve.ui.ListAction.prototype.allWrapped = function ( style, listType ) {
-	var attributes = style ? { style: style } : undefined,
-		nodes = this.surface.getModel().getFragment().getLeafNodes(),
-		all = !!nodes.length;
-
 	listType = listType || 'list';
-
-	for ( var i = 0, len = nodes.length; i < len; i++ ) {
-		if (
-			( len === 1 || !nodes[ i ].range || nodes[ i ].range.getLength() ) &&
-			!nodes[ i ].node.hasMatchingAncestor( listType, attributes )
-		) {
-			all = false;
-			break;
-		}
-	}
-	return all;
+	var attributes = style ? { style: style } : undefined;
+	return this.surface.getModel().getFragment().hasMatchingAncestor( listType, attributes );
 };
 
 /**
