@@ -619,16 +619,9 @@ ve.dm.Node.prototype.isSurfaceable = function () {
  * @return {boolean} Node has an ancestor with matching type and attribute values
  */
 ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
-	var node = this;
-	// Traverse up to matching node
-	while ( node && !node.matches( type, attributes ) ) {
-		node = node.getParent();
-		// Return false if we reach the root without finding anything
-		if ( node === null ) {
-			return false;
-		}
-	}
-	return true;
+	return !!this.traverseUpstream( function ( node ) {
+		return !node.matches( type, attributes );
+	} );
 };
 
 /**
