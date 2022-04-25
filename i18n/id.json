@@ -69,6 +69,8 @@
 	"visualeditor-changedir-tool-rtl": "Tampilkan kanan-ke-kiri",
 	"visualeditor-clearbutton-tooltip": "Hapus",
 	"visualeditor-clipboard-copy": "Salin",
+	"visualeditor-clipboard-copy-fail": "Gagal menyalin ke papan klip.",
+	"visualeditor-clipboard-copy-success": "Disalin ke papan klip.",
 	"visualeditor-clipboard-cut": "Potong",
 	"visualeditor-clipboard-paste": "Tempel",
 	"visualeditor-clipboard-paste-special": "Tempel sebagai teks biasa",
