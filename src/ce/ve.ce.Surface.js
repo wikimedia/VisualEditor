@@ -4440,16 +4440,23 @@ ve.ce.Surface.prototype.showModelSelection = function ( force ) {
 			// the actual model range. This is necessary because one model selection can
 			// correspond to many DOM selections, and we don't want to change a DOM
 			// selection that is already valid to an arbitrary different DOM selection.
-			var impliedModelRange = new ve.Range(
-				ve.ce.getOffset(
-					this.nativeSelection.anchorNode,
-					this.nativeSelection.anchorOffset
-				),
-				ve.ce.getOffset(
-					this.nativeSelection.focusNode,
-					this.nativeSelection.focusOffset
-				)
-			);
+			var impliedModelRange;
+			try {
+				impliedModelRange = new ve.Range(
+					ve.ce.getOffset(
+						this.nativeSelection.anchorNode,
+						this.nativeSelection.anchorOffset
+					),
+					ve.ce.getOffset(
+						this.nativeSelection.focusNode,
+						this.nativeSelection.focusOffset
+					)
+				);
+			} catch ( e ) {
+				// The nativeSelection appears to end up outside the documentNode
+				// sometimes, e.g. when deleting in Safari (T306218)
+				impliedModelRange = null;
+			}
 			if ( modelRange.equals( impliedModelRange ) ) {
 				// Current native selection fits model range; don't change
 				return false;
