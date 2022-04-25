@@ -796,6 +796,18 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 		this.selection = selection;
 	}
 
+	function intersectRanges( rangeA, rangeB ) {
+		var rangeStart = Math.max( rangeA.start, rangeB.start );
+		var rangeEnd = Math.min( rangeA.end, rangeB.end );
+
+		return new ve.Range(
+			rangeStart,
+			// If rangeStart > rangeEnd there is no overlap, just return
+			// a collapsed range at rangeStart (this shouldn't happen here)
+			Math.max( rangeStart, rangeEnd )
+		);
+	}
+
 	var range;
 	var selectedNode;
 	var branchNodes = {};
@@ -805,10 +817,13 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 
 		// Update branch nodes
 		branchNodes.start = this.getDocument().getBranchNodeFromOffset( range.start );
+		branchNodes.startRange = intersectRanges( branchNodes.start.getRange(), range );
 		if ( !range.isCollapsed() ) {
 			branchNodes.end = this.getDocument().getBranchNodeFromOffset( range.end );
+			branchNodes.endRange = intersectRanges( branchNodes.end.getRange(), range );
 		} else {
 			branchNodes.end = branchNodes.start;
+			branchNodes.endRange = branchNodes.startRange;
 		}
 		selectedNode = this.getSelectedNodeFromSelection( selection );
 
@@ -876,6 +891,16 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 	) {
 		this.branchNodes = branchNodes;
 		this.selectedNode = selectedNode;
+		contextChange = true;
+	} else if (
+		branchNodes.startRange && this.branchNodes.startRange && (
+			branchNodes.startRange.isCollapsed() !== this.branchNodes.startRange.isCollapsed() ||
+			branchNodes.endRange.isCollapsed() !== this.branchNodes.endRange.isCollapsed()
+		)
+	) {
+		// If the collapsed-ness of the selection within an edge node changes, the result of
+		// ve.dm.Surface#getSelectedLeafNodes could change, so emit a contextChange
+		this.branchNodes = branchNodes;
 		contextChange = true;
 	}
 

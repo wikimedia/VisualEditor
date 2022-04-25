@@ -60,6 +60,18 @@ QUnit.test( 'contextChange events', function ( assert ) {
 		[ 'z', [ ve.dm.example.italic ] ],
 		'F', 'o', 'o',
 		{ type: '/paragraph' },
+		{ type: 'list', attributes: { style: 'bullet' } },
+		{ type: 'listItem' },
+		{ type: 'paragraph' },
+		'O', 'n', 'e',
+		{ type: '/paragraph' },
+		{ type: '/listItem' },
+		{ type: 'listItem' },
+		{ type: 'paragraph' },
+		'T', 'w', 'o',
+		{ type: '/paragraph' },
+		{ type: '/listItem' },
+		{ type: '/list' },
 		{ type: 'internalList' }, { type: '/internalList' }
 	] ) );
 
@@ -129,6 +141,12 @@ QUnit.test( 'contextChange events', function ( assert ) {
 			initialSelection: new ve.Range( 2 ),
 			selection: new ve.Range( 5 ),
 			expected: 2 // Move + insertion annotations change
+		},
+		{
+			title: 'setSelection, selection collapsed in end node (but overally non-collapsed) becomes non-collapsed in end node',
+			initialSelection: new ve.Range( 18, 24 ),
+			selection: new ve.Range( 18, 26 ),
+			expected: 1 // Move + insertion annotations change
 		}
 	];
 
