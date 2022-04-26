@@ -787,7 +787,7 @@ ve.ui.Surface.prototype.adjustVisiblePadding = function () {
  * @param {jQuery.Promise} progressCompletePromise Promise which resolves when the progress action is complete
  * @param {jQuery|string|Function} label Progress bar label
  * @param {boolean} nonCancellable Progress item can't be cancelled
- * @return {jQuery.Promise} Promise which resolves with a progress bar widget and a promise which fails if cancelled
+ * @return {jQuery.Promise} Promise which resolves with a progress bar widget and fails if cancelled
  */
 ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, label, nonCancellable ) {
 	var progressBarDeferred = ve.createDeferred();
