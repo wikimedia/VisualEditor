@@ -501,7 +501,7 @@ module.exports = function ( grunt ) {
 					}
 				}
 			},
-			// Seperate job for Firefox as we don't want a second coverage report.
+			// Separate job for Firefox as we don't want a second coverage report.
 			firefox: {
 				browsers: [ 'FirefoxHeadless' ]
 			},
