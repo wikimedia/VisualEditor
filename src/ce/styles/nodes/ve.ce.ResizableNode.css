@@ -6,7 +6,6 @@
 
 .ve-ce-resizableNode-handles {
 	position: absolute;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -69,7 +68,6 @@
 	position: absolute;
 	text-align: center;
 	opacity: 0;
-	-webkit-transition: opacity 200ms;
 	transition: opacity 200ms;
 }
 

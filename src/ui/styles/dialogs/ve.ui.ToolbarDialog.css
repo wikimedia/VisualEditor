@@ -11,7 +11,6 @@
 .ve-ui-toolbarDialog-position-above {
 	overflow-y: hidden;
 	max-height: 0;
-	-webkit-transition: max-height 250ms;
 	transition: max-height 250ms;
 }
 
@@ -36,12 +35,10 @@
 	overflow-x: hidden;
 	width: 0;
 	margin-top: 1px;
-	-webkit-transition: width 250ms;
 	transition: width 250ms;
 }
 
 .ve-ui-surface-toolbarDialog-side {
-	-webkit-transition: margin 250ms, min-height 250ms;
 	transition: margin 250ms, min-height 250ms;
 	min-height: 40em;
 }

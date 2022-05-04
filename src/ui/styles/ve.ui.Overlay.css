@@ -25,10 +25,8 @@
 /* Most vendor prefixes are not needed on mobile devices */
 
 .ve-ui-overlay-global-mobile > .oo-ui-windowManager-modal > .oo-ui-dialog {
-	-webkit-transform: translate3d( 0, -100%, 0 );
 	transform: translate3d( 0, -100%, 0 );
 	/* `opacity` is defined in OOUI styles */
-	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
 	transition: transform 0.3s, opacity 0.3s;
 }
 
