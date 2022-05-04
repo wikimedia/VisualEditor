@@ -837,17 +837,24 @@ ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
 /**
  * Check if the rendering is visible
  *
- * "Visible", in this case, is defined as > 8px x 8px in dimensions
+ * "Visible", in this case, is defined as at least 10px × 4px
+ * or 4px × 10px in dimensions (T307527)
  *
  * @return {boolean} The node has a visible rendering
  */
 ve.ce.FocusableNode.prototype.hasRendering = function () {
 	var visible = false;
+
+	function checkSize( width, height ) {
+		return ( width >= 10 && height >= 4 ) ||
+			( height >= 10 && height >= 4 );
+	}
+
 	this.$element.each( function () {
 		if (
-			( this.offsetWidth >= 8 && this.offsetHeight >= 8 ) ||
+			checkSize( this.offsetWidth, this.offsetHeight ) ||
 			// Check width/height attribute as well. (T125767)
-			( this.width >= 8 && this.height >= 8 )
+			checkSize( this.width, this.height )
 		) {
 			visible = true;
 			return false;
