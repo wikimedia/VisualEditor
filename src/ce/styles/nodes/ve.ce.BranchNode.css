@@ -12,7 +12,6 @@
 .ve-ce-branchNode-blockSlug {
 	opacity: 0;
 	cursor: pointer;
-	-webkit-transition: opacity 200ms ease-out;
 	transition: opacity 200ms ease-out;
 	/* Create a block formatting context to avoid overlapping floated elements (T211844) */
 	overflow: hidden;
@@ -53,7 +52,6 @@
 	background-color: transparent;
 	outline-color: transparent;
 	outline-offset: 1em;
-	-webkit-transition: all 400ms ease-out;
 	transition: all 400ms ease-out;
 }
 

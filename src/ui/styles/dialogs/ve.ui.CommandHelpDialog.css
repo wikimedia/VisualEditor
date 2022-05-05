@@ -39,7 +39,6 @@
 .ve-ui-commandHelpDialog-list dt {
 	display: inline-block;
 	vertical-align: top;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	width: 55%;
 	padding-right: 1em;

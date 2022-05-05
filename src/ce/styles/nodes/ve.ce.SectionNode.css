@@ -15,7 +15,6 @@
 
 .ve-ce-sectionNode {
 	opacity: 1;
-	-webkit-transition: opacity 250ms ease;
 	transition: opacity 250ms ease;
 }
 
