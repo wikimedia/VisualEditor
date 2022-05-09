@@ -1305,7 +1305,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 		};
 	};
 	InlineWidgetNode.static.isDiffComparable = function ( element, other ) {
-		return element.attributes.name === other.attributes.name;
+		return element.type === other.type && element.attributes.name === other.attributes.name;
 	};
 	ve.dm.modelRegistry.register( InlineWidgetNode );
 

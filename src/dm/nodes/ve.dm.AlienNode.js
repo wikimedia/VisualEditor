@@ -72,8 +72,12 @@ ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc, converter ) 
  * @inheritdoc
  */
 ve.dm.AlienNode.static.isDiffComparable = function ( element, other, elementStore, otherStore ) {
-	if ( element.type === other.type && element.originalDomElementsHash === other.originalDomElementsHash ) {
-		return true;
+	if ( element.type === other.type ) {
+		if ( element.originalDomElementsHash === other.originalDomElementsHash ) {
+			return true;
+		}
+	} else {
+		return false;
 	}
 
 	// HACK: We can't strip 'about' attributes before converting, as we need them
