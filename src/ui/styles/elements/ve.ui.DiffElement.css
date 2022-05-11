@@ -134,8 +134,9 @@ del[ data-diff-action='remove' ] {
 /* elements using display:table-caption need separate backgrounds */
 table[ data-diff-action='insert' ] > caption,
 figure[ data-diff-action='insert' ] > figcaption {
-	background-color: #7fd7c4 !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 1px #7fd7c4;
+	/* #7fd7c4 at 50% opacity */
+	background-color: rgba( 0, 175, 137, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
+	box-shadow: 0 0 0 1px rgba( 0, 175, 137, 0.5 );
 }
 
 [ data-diff-action='remove' ],
@@ -144,14 +145,16 @@ figure[ data-diff-action='insert' ] > figcaption {
 /* elements using display:table-caption need separate backgrounds */
 table[ data-diff-action='remove' ] > caption,
 figure[ data-diff-action='remove' ] > figcaption {
-	background-color: #e88e89 !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 1px #e88e89;
+	/* #e88e89 at 50% opacity */
+	background-color: rgba( 209, 29, 19, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
+	box-shadow: 0 0 0 1px rgba( 209, 29, 19, 0.5 );
 }
 
 [ data-diff-action='change' ],
 [ data-diff-action='change-insert' ] {
-	background-color: #b6d4fb !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 1px #b6d4fb;
+	/* #b6d4fb at 50% opacity */
+	background-color: rgba( 109, 169, 247, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
+	box-shadow: 0 0 0 1px rgba( 109, 169, 247, 0.5 );
 }
 
 [ data-diff-action='insert' ] img,
@@ -198,8 +201,9 @@ figure[ data-diff-action='remove' ] > figcaption {
 /* stylelint-enable no-descending-specificity */
 
 [ data-diff-move ] {
-	background: #eaecf0; /* base80 */
-	outline: 5px solid #eaecf0;
+	/* #eaecf0 (base80) at 50% opacity */
+	background: rgba( 213, 217, 225, 0.5 );
+	outline: 5px solid rgba( 213, 217, 225, 0.5 );
 }
 
 .ve-ui-diffElement-moved-up,
