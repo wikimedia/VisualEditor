@@ -85,7 +85,7 @@
 	"visualeditor-changedir-tool-ltr": "Отобразить слева направо",
 	"visualeditor-changedir-tool-rtl": "Отобразить справа налево",
 	"visualeditor-clearbutton-tooltip": "Очистить",
-	"visualeditor-clipboard-copy": "Копировать",
+	"visualeditor-clipboard-copy": "Скопировать",
 	"visualeditor-clipboard-copy-fail": "Не удалось скопировать в буфер обмена.",
 	"visualeditor-clipboard-copy-success": "Скопировано в буфер обмена.",
 	"visualeditor-clipboard-cut": "Вырезать",
