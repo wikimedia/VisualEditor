@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Malafaya",
+			"Pacha Tchernof",
 			"פוילישער",
 			"十弌"
 		]
@@ -139,7 +140,7 @@
 	"visualeditor-rebase-client-document-name": "דאקומענט נאָמען (אפציאנאל)",
 	"visualeditor-shortcuts-clipboard": "קאפירן טאוול",
 	"visualeditor-shortcuts-formatting": "פאראגראף פארמאטירונג",
-	"visualeditor-shortcuts-history": "היסטאריע",
+	"visualeditor-shortcuts-history": "היסטאָריע",
 	"visualeditor-shortcuts-insert": "צולייגן",
 	"visualeditor-shortcuts-other": "אנדער",
 	"visualeditor-shortcuts-sequence-notice": "טיפ",
@@ -164,7 +165,7 @@
 	"visualeditor-tablecell-contextitem": "טאבעלע צעל",
 	"visualeditor-tablecell-tooltip": "דאפלקליקט צו רעדאקטירן צעל",
 	"visualeditor-toolbar-format-tooltip": "פארמאטירן פאראגראף",
-	"visualeditor-toolbar-history": "היסטאריע",
+	"visualeditor-toolbar-history": "היסטאָריע",
 	"visualeditor-toolbar-insert": "צולייגן",
 	"visualeditor-toolbar-paragraph-format": "פֿאָרמאַטירונג",
 	"visualeditor-toolbar-structure": "סטרוקטור",
