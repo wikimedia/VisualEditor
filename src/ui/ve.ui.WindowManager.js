@@ -53,9 +53,3 @@ ve.ui.WindowManager.prototype.getDir = function () {
 ve.ui.WindowManager.prototype.getOverlay = function () {
 	return this.overlay;
 };
-
-ve.ui.WindowManager.prototype.destroy = function () {
-	// Fix issue with teardown. Method can be removed once resolved upstream (T308295).
-	this.clearWindows();
-	this.$element.remove();
-};
