@@ -581,6 +581,12 @@ ve.init.Target.prototype.onSurfaceViewFocus = function ( surface ) {
  * @param {ve.ui.Surface} surface
  */
 ve.init.Target.prototype.setSurface = function ( surface ) {
+	if ( OO.ui.isMobile() ) {
+		// Allow popup tool groups's menus to display on top of the mobile context, which is attached
+		// to the global overlay (T307849)
+		this.toolbarConfig.$overlay = surface.getGlobalOverlay().$element;
+	}
+
 	if ( this.surfaces.indexOf( surface ) === -1 ) {
 		throw new Error( 'Active surface must have been added first' );
 	}
