@@ -710,12 +710,12 @@ ve.ce.Surface.prototype.isDeactivated = function () {
 };
 
 /**
- * Check if the surface is visible deactivated.
+ * Check if the surface is visibly deactivated.
  *
  * Only true if the surface was decativated by the user
  * in a way that is expected to change the rendering.
  *
- * @return {boolean} Surface is deactivated
+ * @return {boolean} Surface is visibly deactivated
  */
 ve.ce.Surface.prototype.isShownAsDeactivated = function () {
 	return this.deactivated && !this.showAsActivated;
