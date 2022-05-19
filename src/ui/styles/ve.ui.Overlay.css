@@ -34,11 +34,3 @@
 	-webkit-transform: none;
 	transform: none;
 }
-
-.ve-ui-overlay-local-mobile {
-	/*
-	 * Toolbar is z-index 1, and the position:fixed context should
-	 * appear above it if the toolbar is not also position:fixed (T308201).
-	 */
-	z-index: 2;
-}
