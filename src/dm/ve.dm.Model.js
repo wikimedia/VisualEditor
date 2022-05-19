@@ -273,9 +273,9 @@ ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
 ve.dm.Model.static.describeChange = function ( key, change ) {
 	if ( ( typeof change.from === 'object' && change.from !== null ) || ( typeof change.to === 'object' && change.to !== null ) ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unknown', key );
-	} else if ( change.from === undefined ) {
+	} else if ( change.from === undefined || change.from === null ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-set', key, this.wrapText( 'ins', change.to ) );
-	} else if ( change.to === undefined ) {
+	} else if ( change.to === undefined || change.to === null ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-unset', key, this.wrapText( 'del', change.from ) );
 	} else if ( key === 'listItemDepth' ) {
 		// listItemDepth is a special key used on nodes which have isDiffedAsList set
