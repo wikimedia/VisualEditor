@@ -62,7 +62,9 @@ ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes
 	for ( var key in attributeChanges ) {
 		if ( customKeys.indexOf( key ) === -1 ) {
 			var change = this.describeChange( key, attributeChanges[ key ] );
-			descriptions.push( change );
+			if ( change ) {
+				descriptions.push( change );
+			}
 		}
 	}
 	return descriptions;
@@ -72,16 +74,22 @@ ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes
  * @inheritdoc ve.dm.Node
  */
 ve.dm.ImageNode.static.describeChange = function ( key, change ) {
-	if ( key === 'align' ) {
-		// The following messages are used here:
-		// * visualeditor-align-desc-left
-		// * visualeditor-align-desc-right
-		// * visualeditor-align-desc-center
-		return ve.htmlMsg( 'visualeditor-changedesc-align',
-			this.wrapText( 'del', ve.msg( 'visualeditor-align-desc-' + change.from ) ),
-			this.wrapText( 'ins', ve.msg( 'visualeditor-align-desc-' + change.to ) )
-		);
+	switch ( key ) {
+		case 'align':
+			// The following messages are used here:
+			// * visualeditor-align-desc-left
+			// * visualeditor-align-desc-right
+			// * visualeditor-align-desc-center
+			return ve.htmlMsg( 'visualeditor-changedesc-align',
+				this.wrapText( 'del', ve.msg( 'visualeditor-align-desc-' + change.from ) ),
+				this.wrapText( 'ins', ve.msg( 'visualeditor-align-desc-' + change.to ) )
+			);
+		// ClassAttributeNode attributes
+		case 'originalClasses':
+		case 'unrecognizedClasses':
+			return;
 	}
+
 	// Parent method
 	return ve.dm.Node.static.describeChange.apply( this, arguments );
 };
