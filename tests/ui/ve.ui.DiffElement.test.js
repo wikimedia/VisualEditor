@@ -271,6 +271,16 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<p data-diff-action="insert">boo</p>'
 			},
 			{
+				msg: 'Alt text added to image',
+				oldDoc: '<figure><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
+				newDoc: '<figure><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>',
+				expected:
+					'<figure data-diff-action="structural-change" data-diff-id="0"><img src="http://example.org/foo.jpg" alt="bar"><figcaption>bar</figcaption></figure>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-set,alt,<ins>bar</ins></div>'
+				]
+			},
+			{
 				msg: 'Attributes changed on ClassAttributeNode',
 				oldDoc: '<figure class="ve-align-right"><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
 				newDoc: '<figure class="ve-align-left"><img src="http://example.org/foo.jpg"><figcaption>bar</figcaption></figure>',
