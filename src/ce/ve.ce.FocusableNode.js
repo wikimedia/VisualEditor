@@ -847,7 +847,7 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
 
 	function checkSize( width, height ) {
 		return ( width >= 10 && height >= 4 ) ||
-			( height >= 10 && height >= 4 );
+			( height >= 10 && width >= 4 );
 	}
 
 	this.$element.each( function () {
