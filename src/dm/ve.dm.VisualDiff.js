@@ -714,7 +714,7 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 			} else {
 				var linearDiff;
 				if ( oldNode.isDiffComparable( newNode ) ) {
-					linearDiff = this.diffContent( oldNode, newNode, changeRecord );
+					linearDiff = this.diffContent( oldNode, newNode );
 					diffInfo[ i ] = {
 						linearDiff: linearDiff,
 						attributeChange: this.diffAttributes( oldNode, newNode )
@@ -787,7 +787,6 @@ ve.dm.VisualDiff.prototype.diffAttributes = function ( oldNode, newNode ) {
  *
  * @param {ve.dm.ContentBranchNode} oldNode Node from the old document
  * @param {ve.dm.ContentBranchNode} newNode Node from the new document
- * @param {Object} changeRecord Record of the length of changed content
  * @return {Array|boolean} The linear diff, or false if timed out
  */
 ve.dm.VisualDiff.prototype.diffContent = function ( oldNode, newNode ) {
@@ -801,10 +800,8 @@ ve.dm.VisualDiff.prototype.diffContent = function ( oldNode, newNode ) {
 		);
 		this.timedOut = !!linearDiff.timedOut;
 	} else {
-
-		linearDiff = false;
 		this.timedOut = true;
-
+		return false;
 	}
 
 	return linearDiff;

@@ -11,7 +11,7 @@
  * @constructor
  *
  * @param {Object} [config] Configuration options
- * @cfg {Array} [root] Initial root element to scope tabIndex within
+ * @cfg {jQuery} [root] Initial root element to scope tabIndex within
  * @cfg {boolean} [skipAriaDisabled] Whether to skip elements that are just aria-disabled from the order
  */
 ve.ui.TabIndexScope = function VeUiTabIndexScope( config ) {
@@ -40,7 +40,7 @@ OO.initClass( ve.ui.TabIndexScope );
 /**
  * Set the current root element for tabbing
  *
- * @param {HTMLElement[]} $root root element to scope tabIndex within
+ * @param {jQuery} $root root element to scope tabIndex within
  */
 ve.ui.TabIndexScope.prototype.setTabRoot = function ( $root ) {
 	if ( this.$root ) {
