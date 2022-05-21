@@ -263,7 +263,6 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 			action = diff[ i ][ 0 ];
 			data = diff[ i ][ 1 ];
 			if ( action === DIFF_EQUAL ) {
-
 				var start = [];
 				var end = [];
 				var firstWordbreak = findWordbreaks( data, false );
@@ -308,9 +307,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 						diff.splice( i + 1, 0, [ DIFF_DELETE, end ], [ DIFF_INSERT, end ] );
 						i += 2;
 					}
-
 				}
-
 			}
 			previousData = data;
 		}

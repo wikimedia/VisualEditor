@@ -25,7 +25,6 @@ QUnit.test( 'Create', function ( assert ) {
 		},
 		onLogEvent: function ( context, event ) {
 			log.push( [ 'logEvent', event ] );
-
 		},
 		onChangeAuthor: function ( context, newData ) {
 			log.push( [ 'changeAuthor', newData ] );

@@ -1091,7 +1091,6 @@ ve.dm.Surface.prototype.breakpoint = function () {
  * @fires undoStackChange
  */
 ve.dm.Surface.prototype.undo = function () {
-
 	if ( !this.canUndo() ) {
 		return;
 	}

@@ -331,7 +331,6 @@ ve.ui.commandRegistry.register(
 );
 
 ( function () {
-
 	var modes = [ 'row', 'col' ],
 		sides = [ 'before', 'after' ],
 		modeNames = { row: 'Row', col: 'Column' },
@@ -366,7 +365,6 @@ ve.ui.commandRegistry.register(
 					{ args: [ mode, side ], supportedSelections: [ 'table' ] }
 				)
 			);
-
 		} );
 
 		// Commands registered here:
@@ -378,9 +376,7 @@ ve.ui.commandRegistry.register(
 				{ args: [ mode ], supportedSelections: [ 'table' ] }
 			)
 		);
-
 	} );
-
 }() );
 
 ve.ui.commandRegistry.register(

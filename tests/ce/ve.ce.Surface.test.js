@@ -159,7 +159,6 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 };
 
 ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
-
 	var afterPastePromise = ve.createDeferred().resolve().promise(),
 		htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tr></tbody></table><p><b>Quux</b></p>',
 		pasteData = {
