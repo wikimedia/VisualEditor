@@ -8,8 +8,8 @@
  * Annotation set.
  *
  * @constructor
- * @param {ve.dm.HashValueStore} store Hash-value store
- * @param {number[]} [storeHashes] Array of store hashes
+ * @param {ve.dm.HashValueStore} store
+ * @param {string[]} [storeHashes]
  */
 ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeHashes ) {
 	// Parent constructor
@@ -120,7 +120,7 @@ ve.dm.AnnotationSet.prototype.get = function ( offset ) {
  * Get store hash from offset within annotation set.
  *
  * @param {number} offset Offset within annotation set
- * @return {number} Store hash at specified offset
+ * @return {string} Store hash at specified offset
  */
 ve.dm.AnnotationSet.prototype.getHash = function ( offset ) {
 	return this.storeHashes[ offset ];
@@ -168,7 +168,7 @@ ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
 /**
  * Check whether a given store hash occurs in the set.
  *
- * @param {number} storeHash Store hash of annotation
+ * @param {string} storeHash Store hash of annotation
  * @return {boolean} There is an annotation in the set with this store hash
  */
 ve.dm.AnnotationSet.prototype.containsHash = function ( storeHash ) {
@@ -222,7 +222,7 @@ ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
 /**
  * Get the offset of a given annotation in the set by store hash.
  *
- * @param {number} storeHash Store hash of annotation to search for
+ * @param {string} storeHash Store hash of annotation to search for
  * @return {number} Offset of annotation in the set, or -1 if annotation is not in the set.
  */
 ve.dm.AnnotationSet.prototype.offsetOfHash = function ( storeHash ) {
@@ -445,7 +445,7 @@ ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
 /**
  * Add an annotation at the end of the set by store hash.
  *
- * @param {number} storeHash Store hash of annotation to add
+ * @param {string} storeHash Store hash of annotation to add
  */
 ve.dm.AnnotationSet.prototype.pushHash = function ( storeHash ) {
 	this.storeHashes.push( storeHash );
@@ -472,7 +472,7 @@ ve.dm.AnnotationSet.prototype.removeAt = function ( offset ) {
  *
  * If the annotation isn't in the set, nothing happens.
  *
- * @param {number} storeHash Store hash of annotation to remove
+ * @param {string} storeHash Store hash of annotation to remove
  */
 ve.dm.AnnotationSet.prototype.removeHash = function ( storeHash ) {
 	var offset = this.offsetOfHash( storeHash );
