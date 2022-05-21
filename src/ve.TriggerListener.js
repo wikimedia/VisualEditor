@@ -14,7 +14,6 @@
  * @param {ve.ui.CommandRegistry} commandRegistry Command registry to get commands from
  */
 ve.TriggerListener = function VeTriggerListener( commands, commandRegistry ) {
-
 	// Properties
 	this.commands = commands;
 	this.commandsByTrigger = {};

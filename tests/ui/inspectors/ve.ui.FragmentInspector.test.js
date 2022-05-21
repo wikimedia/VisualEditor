@@ -28,7 +28,6 @@ ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
 						}
 						// TODO: Skips ActionProcess
 						return inspector.teardown( caseItem.actionData || { action: 'done' } ).then( function () {
-
 							assert.equalRange( surfaceModel.getSelection().getRange(), caseItem.expectedRange, caseItem.msg + ': range' );
 							if ( caseItem.expectedData ) {
 								caseItem.expectedData( linearData );

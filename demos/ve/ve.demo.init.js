@@ -5,7 +5,6 @@
  */
 
 new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( function () {
-
 	/* eslint-disable no-jquery/no-global-selector */
 	var $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),

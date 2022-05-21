@@ -20,7 +20,6 @@
  * @cfg {boolean} [source] Source mode only set
  */
 ve.ui.SpecialCharacterPage = function VeUiSpecialCharacterPage( name, config ) {
-
 	// Parent constructor
 	ve.ui.SpecialCharacterPage.super.apply( this, arguments );
 

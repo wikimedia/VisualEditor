@@ -31,7 +31,6 @@
 					config = { lang: $.i18n().locale, dir: $( document.body ).css( 'direction' ) };
 
 				for ( var i = 0; i <= n; i++ ) {
-
 					var t0 = performance.now();
 					var dom = ve.createDocumentFromHtml( html );
 					htmlDomTimes += performance.now() - t0;
@@ -61,7 +60,6 @@
 							$( '<p>' ).text( 'Insert and annotate: ' + txTimes + 'ms' )
 						);
 					}
-
 				}
 				$output.append(
 					$( '<h3>' ).text( 'Average (' + n + ' runs)' ),

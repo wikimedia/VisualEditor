@@ -92,7 +92,6 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 /* Specific tools */
 
 ( function () {
-
 	var modes = [ 'row', 'col' ],
 		sides = [ 'before', 'after' ],
 		modeNames = { row: 'Row', col: 'Column' },
@@ -209,7 +208,6 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 			return ve.msg( 'visualeditor-table-delete-' + mode, count );
 		};
 		ve.ui.contextItemFactory.register( ve.ui[ className ] );
-
 	} );
 
 	ve.ui.TablePropertiesContextItem = function VeUiTablePropertiesContextItem() {

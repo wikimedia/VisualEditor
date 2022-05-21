@@ -87,7 +87,6 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 
 	var links;
 	switch ( this.item.type ) {
-
 		case 'text/uri-list':
 			// text/uri-list has embedded comments; remove them before
 			// autolinking.  In theory the embedded comments can be

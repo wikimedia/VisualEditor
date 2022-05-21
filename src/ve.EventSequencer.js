@@ -323,7 +323,6 @@ ve.EventSequencer.prototype.doOnLoop = function () {
  * @param {number} myTimeoutId The calling setTimeout id
  */
 ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
-
 	if ( this.afterLoopTimeoutId !== myTimeoutId ) {
 		// Cancelled; do nothing
 		return;

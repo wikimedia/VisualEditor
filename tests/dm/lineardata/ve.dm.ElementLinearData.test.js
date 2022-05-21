@@ -926,7 +926,6 @@ QUnit.test( 'getRelativeOffset', function ( assert ) {
 				caseItem.msg
 			);
 		} else if ( 'exception' in caseItem ) {
-
 			assert.throws(
 				function () {
 					data.getRelativeOffset(

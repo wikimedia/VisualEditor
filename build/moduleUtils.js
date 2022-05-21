@@ -56,7 +56,6 @@ const self = module.exports = {
 				}
 				targets[ variant ].push( filepath[ variant ] );
 			}
-
 		} );
 		return targets;
 	},

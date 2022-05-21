@@ -182,7 +182,6 @@ ve.ui.actionFactory.register( ve.ui.LinkAction );
 
 // Delayed initialization (wait until ve.init.platform exists)
 ve.init.Platform.static.initializedPromise.then( function () {
-
 	ve.ui.LinkAction.static.autolinkRegExp =
 		new RegExp(
 			'\\b' + ve.init.platform.getUnanchoredExternalLinkUrlProtocolsRegExp().source + '\\S+$',
