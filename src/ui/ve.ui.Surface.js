@@ -128,7 +128,13 @@ ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
 	this.getContext().connect( this, { resize: 'onContextResize' } );
 
 	// Initialization
-	this.$menus.append( this.context.$element, this.completion.$element );
+	if ( OO.ui.isMobile() ) {
+		// Mobile context is almost fullscreen and must appear on top of other elements (T308716)
+		this.globalOverlay.$element.append( this.context.$element );
+	} else {
+		this.$menus.append( this.context.$element );
+	}
+	this.$menus.append( this.completion.$element );
 	this.$element
 		// The following classes are used here:
 		// * ve-ui-surface-visual
