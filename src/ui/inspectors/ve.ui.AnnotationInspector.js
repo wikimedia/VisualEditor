@@ -69,7 +69,7 @@ ve.ui.AnnotationInspector.prototype.shouldInsertText = function () {
  *
  * Defaults to using #getInsertionText.
  *
- * @return {Array} Linear model content to insert
+ * @return {string[]} Linear model content to insert
  */
 ve.ui.AnnotationInspector.prototype.getInsertionData = function () {
 	return this.getInsertionText().split( '' );

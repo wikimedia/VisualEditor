@@ -1273,7 +1273,7 @@ ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, att
  * Get a change description item from a set of changes
  *
  * @param {Array} changes List of changes, each change being either text or a Node array
- * @param {Array} classes Additional classes
+ * @param {string[]} classes Additional classes
  * @return {OO.ui.OptionWidget} Change description item
  */
 ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes, classes ) {

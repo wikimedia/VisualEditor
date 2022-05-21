@@ -129,7 +129,7 @@ ve.dm.AnnotationSet.prototype.getHash = function ( offset ) {
 /**
  * Get all store hashes.
  *
- * @return {Array} Store hashes
+ * @return {string[]} Store hashes
  */
 ve.dm.AnnotationSet.prototype.getHashes = function () {
 	return this.storeHashes;

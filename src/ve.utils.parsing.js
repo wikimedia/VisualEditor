@@ -58,7 +58,7 @@ ve.elementTypes = {
  *
  * @param {string} html Document HTML
  * @param {string} tag Tag name
- * @return {Array|null} Regex match, null if not found
+ * @return {string[]|null} Regex match, null if not found
  */
 ve.matchTag = function ( html, tag ) {
 	return html.match(
@@ -77,7 +77,7 @@ ve.addHeadTag = function ( docHtml, tagHtml ) {
 	/**
 	 * Splice text after a regex match
 	 *
-	 * @param {Array} match Regex match
+	 * @param {string[]} match Regex match
 	 * @param {string} text Text to insert
 	 * @return {string}
 	 */

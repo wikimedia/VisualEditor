@@ -1186,7 +1186,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
  * Get inner whitespace from linear data
  *
  * @param {ve.dm.ElementLinearData} data Linear model data
- * @return {Array} innerWhitespace Inner whitespace
+ * @return {(string|undefined)[]}
  */
 ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
 	var innerWhitespace = new Array( 2 ),
@@ -1291,7 +1291,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, 
  *
  * @param {Array} data Linear model data
  * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
- * @param {Array} [innerWhitespace] Inner whitespace if the container is the body
+ * @param {(string|undefined)[]} [innerWhitespace] Inner whitespace if the container is the body
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {

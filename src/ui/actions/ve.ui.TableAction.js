@@ -851,7 +851,7 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
  * @param {string} mode 'row' or 'col'
  * @param {number} minIndex Smallest row or column index to be deleted
  * @param {number} maxIndex Largest row or column index to be deleted (inclusive)
- * @return {Array} Plain sub-matrix of items removed. In column mode this matrix is transposed.
+ * @return {Object[]} Plain sub-matrix of items removed. In column mode this matrix is transposed.
  */
 ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIndex, maxIndex ) {
 	var removedMatrix = [],

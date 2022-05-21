@@ -21,7 +21,7 @@
  *  ignored.
  * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes, used when cloning
  * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
- * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
+ * @param {(string|undefined)[]} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
  * @param {string} [lang] Language code
  * @param {string} [dir='ltr'] Directionality (ltr/rtl)
  * @param {ve.dm.Document} [originalDocument] Original document form which this was cloned.
@@ -456,7 +456,7 @@ ve.dm.Document.prototype.getInternalList = function () {
 /**
  * Get the document's inner whitespace
  *
- * @return {Array} The document's inner whitespace
+ * @return {(string|undefined)[]} The document's inner whitespace
  */
 ve.dm.Document.prototype.getInnerWhitespace = function () {
 	return this.innerWhitespace;
