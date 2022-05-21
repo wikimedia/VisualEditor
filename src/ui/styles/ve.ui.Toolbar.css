@@ -118,6 +118,13 @@
 	line-height: 1em;
 }
 
+/* Hide keyboard shortcut hints on mobile. Screen space is limited, and it's unlikely that the user
+   has a keyboard with modifier keys. */
+.ve-ui-targetToolbar-mobile .oo-ui-popupToolGroup-tools .oo-ui-tool-link .oo-ui-tool-accel,
+.ve-ui-overlay-global-mobile .oo-ui-popupToolGroup-tools .oo-ui-tool-link .oo-ui-tool-accel {
+	display: none;
+}
+
 @media screen and ( max-width: 767px ) {
 	.ve-ui-targetToolbar-mobile .oo-ui-toolbar-tools > .oo-ui-barToolGroup > .oo-ui-toolGroup-tools > .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-title {
 		/* stylelint-disable-next-line declaration-no-important */
