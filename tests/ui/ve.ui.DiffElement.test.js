@@ -658,9 +658,12 @@ QUnit.test( 'Diffing', function ( assert ) {
 			},
 			{
 				msg: 'Table with no changes (colspan/rowspan set to 1) is not rendered',
-				oldDoc: '<table><tr><td>A</td></tr></table>',
-				newDoc: '<table><tr><td colspan="1" rowspan="1">A</td></tr></table>',
-				expected: noChanges
+				oldDoc: '<p>a</p><table><tr><td>A</td></tr></table><p>b</b>',
+				newDoc: '<p>a</p><table><tr><td colspan="1" rowspan="1">A</td></tr></table><p>b</b>',
+				expected:
+					'<p data-diff-action="none">a</p>' +
+					'<table><tbody><tr><td colspan="1" rowspan="1" data-diff-action="structural-change">A</td></tr></tbody></table>' +
+					'<p data-diff-action="none">b</p>'
 			},
 			{
 				msg: 'Sparse table insertion',
