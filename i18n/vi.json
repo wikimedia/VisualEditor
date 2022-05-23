@@ -52,6 +52,8 @@
 	"visualeditor-changedesc-link-href": "Đổi đích liên kết từ $1 thành $2",
 	"visualeditor-changedesc-link-href-diff": "Mục tiêu liên kết đã thay đổi: $1",
 	"visualeditor-changedesc-link-removed": "Liên kết bị xóa: $1",
+	"visualeditor-changedesc-list-indent": "Tăng lề mục danh sách",
+	"visualeditor-changedesc-list-outdent": "Giảm lề mục danh sách",
 	"visualeditor-changedesc-no-key": "Đổi $1 thành $2",
 	"visualeditor-changedesc-set": "Đặt $1 là $2",
 	"visualeditor-changedesc-textstyle-added": "Kiểu chữ đã thêm: $1",
