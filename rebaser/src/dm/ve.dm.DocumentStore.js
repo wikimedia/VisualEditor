@@ -36,7 +36,7 @@ ve.dm.DocumentStore.prototype.connect = function () {
 		return documentStore.collection.findOneAndUpdate(
 			{ config: 'options' },
 			{ $setOnInsert: { serverId: Math.random().toString( 36 ).slice( 2 ) } },
-			{ upsert: true, returnOriginal: false }
+			{ upsert: true, returnDocument: 'after' }
 		);
 	} ).then( function ( result ) {
 		documentStore.serverId = result.value.serverId;
@@ -62,7 +62,7 @@ ve.dm.DocumentStore.prototype.load = function ( docName ) {
 	return this.collection.findOneAndUpdate(
 		{ docName: docName },
 		{ $setOnInsert: { start: 0, transactions: [], stores: [] } },
-		{ upsert: true, returnOriginal: false }
+		{ upsert: true, returnDocument: 'after' }
 	).then( function ( result ) {
 		const length = result.value.transactions.length || 0;
 		documentStore.logger.logServerEvent( { type: 'DocumentStore#loaded', docName: docName, length: length } );
