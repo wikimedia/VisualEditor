@@ -49,9 +49,7 @@ function initApp( options ) {
 
 	const logger = new Logger( app.logger );
 	const mongoClient = new mongodb.MongoClient(
-		new mongodb.Server( app.conf.mongodb.host, app.conf.mongodb.port ),
-		// eslint-disable-next-line camelcase
-		{ native_parser: true }
+		'mongodb://' + app.conf.mongodb.host + ':' + app.conf.mongodb.port
 	);
 	const documentStore = new ve.dm.DocumentStore( mongoClient, 'test', logger );
 	const protocolServer = new ve.dm.ProtocolServer( documentStore, logger );

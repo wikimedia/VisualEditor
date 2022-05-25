@@ -5,7 +5,7 @@
 	"dependencies": {
 		"ejs": "3.1",
 		"express": "4.18",
-		"mongodb": "3.7.3",
+		"mongodb": "4.6.0",
 		"oojs": "6.0",
 		"service-runner": "3.1.0",
 		"socket.io": "4.5.1"
