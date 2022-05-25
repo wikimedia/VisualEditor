@@ -33,7 +33,7 @@
 			( function () {
 				var doc;
 				try {
-					doc = ve.createDocumentFromHtml( '' );
+					doc = new DOMParser().parseFromString( '<body></body>', 'text/html' );
 				} catch ( e ) {}
 				return doc instanceof HTMLDocument;
 			}() ) &&
