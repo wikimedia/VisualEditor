@@ -30,7 +30,6 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-eslint' );
 	grunt.loadNpmTasks( 'grunt-karma' );
 	grunt.loadNpmTasks( 'grunt-stylelint' );
-	grunt.loadNpmTasks( 'grunt-svgmin' );
 	grunt.loadNpmTasks( 'grunt-tyops' );
 	grunt.loadTasks( 'build/tasks' );
 
@@ -142,42 +141,6 @@ module.exports = function ( grunt ) {
 				src: [ 'lib/**', '!lib/jquery.i18n/**', '!lib/jquery.uls/**' ],
 				dest: 'dist/',
 				expand: true
-			}
-		},
-		// SVG Optimization
-		svgmin: {
-			options: {
-				js2svg: {
-					indent: '\t',
-					pretty: true
-				},
-				multipass: true,
-				plugins: [ {
-					cleanupIDs: false
-				}, {
-					removeDesc: false
-				}, {
-					removeRasterImages: true
-				}, {
-					removeTitle: false
-				}, {
-					removeViewBox: false
-				}, {
-					removeXMLProcInst: false
-				}, {
-					sortAttrs: true
-				} ]
-			},
-			all: {
-				files: [ {
-					expand: true,
-					cwd: 'src/ui',
-					src: [
-						'**/*.svg'
-					],
-					dest: 'src/ui/',
-					ext: '.svg'
-				} ]
 			}
 		},
 		buildloader: {
@@ -549,7 +512,7 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:chrome', 'karma:firefox' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );
-	grunt.registerTask( 'ci', [ '_test', 'svgmin', 'git-status' ] );
+	grunt.registerTask( 'ci', [ '_test', 'git-status' ] );
 	grunt.registerTask( 'watch', [ 'karma:bg:start', 'runwatch' ] );
 
 	if ( process.env.JENKINS_HOME ) {
