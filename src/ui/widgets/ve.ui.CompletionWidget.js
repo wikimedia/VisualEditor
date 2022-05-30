@@ -31,10 +31,18 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 	this.$tabIndexed = this.$element;
 
 	var $doc = surface.getView().getDocument().getDocumentNode().$element;
+	this.popup = new OO.ui.PopupWidget( {
+		anchor: false,
+		align: 'forwards',
+		hideWhenOutOfView: false,
+		autoFlip: false,
+		width: null,
+		$container: config.$popupContainer || this.surface.$element,
+		containerPadding: config.popupPadding
+	} );
 	this.menu = new OO.ui.MenuSelectWidget( {
 		widget: this,
-		$input: $doc,
-		width: 'auto'
+		$input: $doc
 	} );
 	// This may be better semantically as a MenuSectionOptionWidget,
 	// but that causes all subsequent options to be indented.
@@ -50,11 +58,12 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 	} );
 
 	this.menu.$element.append( this.header.$element );
+	this.popup.$body.append( this.menu.$element );
 
 	// Setup
 	this.$element.addClass( 've-ui-completionWidget' )
 		.append(
-			this.menu.$element
+			this.popup.$element
 		);
 };
 
@@ -77,7 +86,7 @@ ve.ui.CompletionWidget.prototype.setup = function ( action ) {
 
 ve.ui.CompletionWidget.prototype.teardown = function () {
 	this.tearingDown = true;
-	this.menu.toggle( false );
+	this.popup.toggle( false );
 	this.surfaceModel.disconnect( this );
 	this.action = undefined;
 	this.tearingDown = false;
@@ -128,8 +137,12 @@ ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 		this.menu.items.length = Math.max( length, 1 );
 		this.menu.toggle( true );
 		this.menu.items.length = length;
+
+		this.popup.toggle( true );
+		// Menu may have changed size, so recalculate position
+		this.popup.updateDimensions();
 	} else {
-		this.menu.toggle( false );
+		this.popup.toggle( false );
 	}
 };
 

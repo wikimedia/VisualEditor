@@ -8,3 +8,9 @@
 	position: absolute;
 	margin-top: 0.5em;
 }
+
+.ve-ui-completionWidget .oo-ui-menuSelectWidget {
+	position: static;
+	border: 0;
+	box-shadow: none;
+}
