@@ -123,7 +123,6 @@ ve.ce.FocusableNode.static.deleteCommandName = null;
  * @return {Object} Object containing rects and boundingRect
  */
 ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRect ) {
-	var webkitColumns = 'webkitColumnCount' in document.createElement( 'div' ).style;
 	var $set;
 	var rects = [];
 
@@ -140,31 +139,6 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 		}
 
 		var $el = $( el );
-
-		if ( webkitColumns ) {
-			var columnCount = $el.css( '-webkit-column-count' );
-			var columnWidth = $el.css( '-webkit-column-width' );
-			if ( ( columnCount && columnCount !== 'auto' ) || ( columnWidth && columnWidth !== 'auto' ) ) {
-				// Support: Chrome
-				// Chrome incorrectly measures children of nodes with columns [1], let's
-				// just ignore them rather than render a possibly bizarre highlight. They
-				// will usually not be positioned, because Chrome also doesn't position
-				// them correctly [2] and so people avoid doing it.
-				//
-				// Of course there are other ways to render a node outside the bounding
-				// box of its parent, like negative margin. We do not handle these cases,
-				// and the highlight may not correctly cover the entire node if that
-				// happens. This can't be worked around without implementing CSS
-				// layouting logic ourselves, which is not worth it.
-				//
-				// [1] https://code.google.com/p/chromium/issues/detail?id=391271
-				// [2] https://code.google.com/p/chromium/issues/detail?id=291616
-
-				// jQuery keeps nodes in its collections in document order, so the
-				// children have not been processed yet and can be safely removed.
-				$set = $set.not( $el.find( '*' ) );
-			}
-		}
 
 		// Don't descend if overflow is anything but visible as this prevents child
 		// elements appearing beyond the bounding box of the parent, *unless* display
