@@ -15,16 +15,16 @@ window.ve = {};
 /**
  * Get the current time, measured in milliseconds since January 1, 1970 (UTC).
  *
- * On browsers that implement the Navigation Timing API, this function will produce floating-point
- * values with microsecond precision that are guaranteed to be monotonic. On all other browsers,
- * it will fall back to using `Date.now`.
- *
- * @return {number} Current time
+ * @return {number} Current time, monotonic in modern browsers (via Performance Timeline API)
  */
-ve.now = ( function () {
-	// TODO: Drop support for browsers which don't have performance timing
-	var perf = window.performance,
-		navStart = perf && perf.timing && perf.timing.navigationStart;
-	return navStart && typeof perf.now === 'function' ?
+ve.now = function () {
+	// Based on `mw.now` in MediaWiki core.
+	// Optimisation: Cache and re-use the chosen implementation.
+	// Optimisation: Avoid startup overhead by re-defining on first call instead of IIFE.
+	var perf = window.performance;
+	var navStart = perf && perf.timing && perf.timing.navigationStart;
+	ve.now = navStart && perf.now ?
 		function () { return navStart + perf.now(); } : Date.now;
-}() );
+
+	return ve.now();
+};
