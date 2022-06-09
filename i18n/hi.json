@@ -22,7 +22,7 @@
 			"संजीव कुमार"
 		]
 	},
-	"visualeditor": "VisualEditor",
+	"visualeditor": "यथादृश्य संपादिका",
 	"visualeditor-aliennode-tooltip": "क्षमा करें, इस भाग को अभी सिर्फ स्रोत सम्पादन में सम्पादित किया जा सकता है।",
 	"visualeditor-align-desc-center": "मध्य",
 	"visualeditor-align-desc-default": "डिफ़ॉल्ट",
@@ -217,8 +217,8 @@
 	"visualeditor-table-contextitem-properties": "गुणधर्म",
 	"visualeditor-table-contextitem-selectionmode-cells": "कोशिका चुनें",
 	"visualeditor-table-contextitem-selectionmode-contents": "सामग्री चुनें",
-	"visualeditor-table-delete-col": "{{PLURAL:$1|कॉलम|कॉलम्स}} को हटाएँ",
-	"visualeditor-table-delete-row": "{{PLURAL:$1|रो|रोज़}} को हटाएँ",
+	"visualeditor-table-delete-col": "{{PLURAL:$1|स्तम्भ|स्तम्भों}} को हटायें",
+	"visualeditor-table-delete-row": "{{PLURAL:$1|पंक्ति|पंक्तियाँ}} हटायें",
 	"visualeditor-table-format-data": "सामग्री की कोशिका",
 	"visualeditor-table-format-header": "हैडर कोशिका",
 	"visualeditor-table-insert-col-after": "बाद में जोड़ें",
