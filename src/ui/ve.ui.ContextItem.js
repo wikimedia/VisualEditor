@@ -88,6 +88,17 @@ ve.ui.ContextItem.static.sortOrder = 0;
  */
 ve.ui.ContextItem.static.modelClasses = [];
 
+/**
+ * Context items (by name) which this context item suppresses.
+ *
+ * See ve.ui.ModeledFactory.
+ *
+ * @static
+ * @property {string[]}
+ * @inheritable
+ */
+ve.ui.ContextItem.static.suppresses = [];
+
 /* Methods */
 
 /**
