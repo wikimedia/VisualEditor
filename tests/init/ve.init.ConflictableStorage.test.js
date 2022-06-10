@@ -6,7 +6,20 @@
 
 /* eslint-disable camelcase */
 
-QUnit.module( 've.init.ConflictableStorage' );
+QUnit.module( 've.init.ConflictableStorage', {
+	beforeEach: function () {
+		// Fake time in seconds
+		var mockNow = 1000000;
+		this.now = Date.now;
+		this.mockNow = mockNow;
+		Date.now = function () {
+			return mockNow * 1000;
+		};
+	},
+	afterEach: function () {
+		Date.now = this.now;
+	}
+} );
 
 QUnit.test( 'Basic methods', function ( assert ) {
 	var store = {},
@@ -85,4 +98,54 @@ QUnit.test( 'Conflict handling', function ( assert ) {
 	);
 	// Cleanup
 	storageB.remove( 'bar' );
+
+	storageB.set( 'bar', 'expires', 1000 );
+	assert.deepEqual(
+		getData( store ),
+		{
+			_EXPIRY_bar: String( this.mockNow + 1000 ),
+			bar: 'expires',
+			unmanagedKey: 'data'
+		},
+		'expiry key set'
+	);
+
+	storageA.get( '_' );
+	assert.deepEqual(
+		getData( store ),
+		{
+			unmanagedKey: 'data'
+		},
+		'expiry key cleared when A is restored'
+	);
+
+	storageB.get( '_' );
+	assert.deepEqual(
+		getData( store ),
+		{
+			_EXPIRY_bar: String( this.mockNow + 1000 ),
+			bar: 'expires',
+			unmanagedKey: 'data'
+		},
+		'expiry key restored when B is restored'
+	);
+
+	// Cleanup
+	storageB.remove( 'bar' );
+
+	storageB.set( 'existing', 'expires', 2000 );
+	storageB.addConflictableKeys( { existing: true } );
+
+	storageA.get( '_' );
+	storageB.get( '_' );
+
+	assert.deepEqual(
+		getData( store ),
+		{
+			_EXPIRY_existing: String( this.mockNow + 2000 ),
+			existing: 'expires',
+			unmanagedKey: 'data'
+		},
+		'expiry key restored with conflictableKey registered on existing data'
+	);
 } );
