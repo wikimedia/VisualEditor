@@ -66,6 +66,7 @@ ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
 	this.autosaveFailed = false;
 	this.autosavePrefix = '';
 	this.synchronizer = null;
+	this.storing = false;
 	this.storage = ve.init.platform.sessionStorage;
 
 	// Let document know about the attachedRoot
@@ -1419,9 +1420,22 @@ ve.dm.Surface.prototype.setAutosaveDocId = function ( docId ) {
 };
 
 /**
+ * Set the storage interface for autosave
+ *
+ * @param {ve.init.SafeStorage} storage Storage interface
+ */
+ve.dm.Surface.prototype.setStorage = function ( storage ) {
+	if ( this.storing ) {
+		throw new Error( 'Can\'t change storage interface after auto-save has stared' );
+	}
+	this.storage = storage;
+};
+
+/**
  * Start storing changes after every undoStackChange
  */
 ve.dm.Surface.prototype.startStoringChanges = function () {
+	this.storing = true;
 	this.on( 'undoStackChange', this.storeChangesListener );
 	this.getDocument().on( 'storage', this.storeDocStorageListener );
 };
@@ -1430,6 +1444,7 @@ ve.dm.Surface.prototype.startStoringChanges = function () {
  * Stop storing changes
  */
 ve.dm.Surface.prototype.stopStoringChanges = function () {
+	this.storing = false;
 	this.off( 'undoStackChange', this.storeChangesListener );
 	this.getDocument().off( 'storage', this.storeDocStorageListener );
 };
