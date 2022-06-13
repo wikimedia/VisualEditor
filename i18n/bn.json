@@ -17,7 +17,7 @@
 		]
 	},
 	"visualeditor": "দৃশ্যমান সম্পাদনা",
-	"visualeditor-aliennode-tooltip": "দুঃখিত, এই উপাদানটি এখন কেবলমাত্র উৎস মোডে সম্পাদনা করা যাবে।",
+	"visualeditor-aliennode-tooltip": "দুঃখিত, এই উপাদানটি কেবলমাত্র উৎস মোডে সম্পাদনা করা যাবে।",
 	"visualeditor-align-desc-center": "কেন্দ্রে",
 	"visualeditor-align-desc-default": "পূর্বনির্ধারিত",
 	"visualeditor-align-desc-left": "বামে",
@@ -176,6 +176,7 @@
 	"visualeditor-rebase-client-connecting": "সংযোগ করা হচ্ছে...",
 	"visualeditor-rebase-client-document-create-edit": "তৈরি/সম্পাদনা করুন",
 	"visualeditor-rebase-client-document-name": "নথির নাম (ঐচ্ছিক)",
+	"visualeditor-rebase-missing-document-error": "সার্ভারে নথি অনুপস্থিত। উপাত্তে ক্ষতি এড়াতে, সামগ্রীগুলি অনুলিপি ও প্রতিলেপন করুন।",
 	"visualeditor-rebase-missing-document-title": "নথি নেই",
 	"visualeditor-shortcuts-clipboard": "ক্লিপবোর্ড",
 	"visualeditor-shortcuts-dialog": "জানালা নিয়ন্ত্রণ",
