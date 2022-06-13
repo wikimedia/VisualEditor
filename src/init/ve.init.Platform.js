@@ -186,7 +186,7 @@ ve.init.Platform.prototype.createSafeStorage = null;
  * @return {ve.init.ListStorage}
  */
 ve.init.Platform.prototype.createListStorage = function ( safeStorage ) {
-	return new ve.init.ListStorage( safeStorage );
+	return ve.init.createListStorage( safeStorage );
 };
 
 ve.init.Platform.prototype.createLocalStorage = function () {

@@ -55,39 +55,40 @@
 	DummyPlatform.prototype.setUserConfig = function () {};
 	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function () {
 		var platform = this,
-			storage = {},
-			safeStore = {
-				get: function ( key ) {
-					if ( platform.storageDisabled ) {
-						return false;
-					}
-					return Object.prototype.hasOwnProperty.call( storage, key ) ?
-						storage[ key ] :
-						null;
-				},
-				set: function ( key, value ) {
-					if ( platform.storageDisabled || value === '__FAIL__' ) {
-						return false;
-					}
-					storage[ key ] = value.toString();
-					return true;
-				},
-				remove: function ( key ) {
-					if ( platform.storageDisabled ) {
-						return false;
-					}
-					delete storage[ key ];
-					return true;
-				},
-				getObject: function ( key ) {
-					return JSON.parse( safeStore.get( key ) );
-				},
-				setObject: function ( key, value ) {
-					safeStore.set( key, JSON.stringify( value ) );
-				}
-			};
+			storage = {};
 
-		return new ve.init.ListStorage( safeStore );
+		var TestStorage = function () {};
+		OO.initClass( TestStorage );
+		TestStorage.prototype.get = function ( key ) {
+			if ( platform.storageDisabled ) {
+				return false;
+			}
+			return Object.prototype.hasOwnProperty.call( storage, key ) ?
+				storage[ key ] :
+				null;
+		};
+		TestStorage.prototype.set = function ( key, value ) {
+			if ( platform.storageDisabled || value === '__FAIL__' ) {
+				return false;
+			}
+			storage[ key ] = value.toString();
+			return true;
+		};
+		TestStorage.prototype.remove = function ( key ) {
+			if ( platform.storageDisabled ) {
+				return false;
+			}
+			delete storage[ key ];
+			return true;
+		};
+		TestStorage.prototype.getObject = function ( key ) {
+			return JSON.parse( this.get( key ) );
+		};
+		TestStorage.prototype.setObject = function ( key, value ) {
+			this.set( key, JSON.stringify( value ) );
+		};
+
+		return ve.init.createListStorage( new TestStorage() );
 	};
 
 	ve.test.utils.DummyPlatform = DummyPlatform;
