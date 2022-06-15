@@ -274,8 +274,12 @@ ve.ui.commandRegistry.register(
 );
 ve.ui.commandRegistry.register(
 	new ve.ui.Command(
-		'submit', 'content', 'submit',
-		{ supportedSelections: [ 'linear', 'table' ] }
+		'submit', 'content', 'submit'
+	)
+);
+ve.ui.commandRegistry.register(
+	new ve.ui.Command(
+		'cancel', 'content', 'cancel'
 	)
 );
 ve.ui.commandRegistry.register(

@@ -83,6 +83,12 @@ OO.mixinClass( ve.ui.TargetWidget, OO.ui.mixin.PendingElement );
  */
 
 /**
+ * The target's surface has been cancelled, e.g. Escape
+ *
+ * @event cancel
+ */
+
+/**
  * A document has been attached to the target, and a toolbar and surface created.
  *
  * @event setup
@@ -134,7 +140,10 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	} );
 	// Rethrow as target events so users don't have to re-bind when the surface is changed
 	surface.getModel().connect( this, { history: [ 'emit', 'change' ] } );
-	surface.connect( this, { submit: 'onSurfaceSubmit' } );
+	surface.connect( this, {
+		submit: 'onSurfaceSubmit',
+		cancel: 'onSurfaceCancel'
+	} );
 	// Emit 'position' on first focus, as target widgets are often setup before being made visible. (T303795)
 	surface.getView().once( 'focus', function () {
 		surface.getView().emit( 'position' );
@@ -144,20 +153,32 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 };
 
 /**
- * Check if the surface has been modified.
+ * Handle surface submit events
  *
  * @fires submit
- * @return {boolean} The surface has been modified
  */
 ve.ui.TargetWidget.prototype.onSurfaceSubmit = function () {
-	var submitHandled = this.emit( 'submit' );
-	if ( !submitHandled && this.inDialog ) {
-		// If we are in a dialog, re-throw a fake Ctrl+Enter keydown
-		// event to potentially trigger the dialog's primary action.
-		// (See OO.ui.Dialog#onDialogKeyDown)
+	var handled = this.emit( 'submit' );
+	if ( !handled && this.inDialog ) {
+		// If we are in a dialog, re-throw a fake keydown event for OO.ui.Dialog#onDialogKeyDown
 		this.$element.parent().trigger( $.Event( 'keydown', {
 			which: OO.ui.Keys.ENTER,
 			ctrlKey: true
+		} ) );
+	}
+};
+
+/**
+ * Handle surface cancel events
+ *
+ * @fires cancel
+ */
+ve.ui.TargetWidget.prototype.onSurfaceCancel = function () {
+	var handled = this.emit( 'cancel' );
+	if ( !handled && this.inDialog ) {
+		// If we are in a dialog, re-throw a fake keydown event for OO.ui.Dialog#onDialogKeyDown
+		this.$element.parent().trigger( $.Event( 'keydown', {
+			which: OO.ui.Keys.ESCAPE
 		} ) );
 	}
 };

@@ -42,8 +42,7 @@ QUnit.test( 'special key down: linear escape', function ( assert ) {
 				keys: [ 'ESCAPE' ],
 				expectedData: noChange,
 				expectedRangeOrSelection: new ve.Range( 1 ),
-				expectedDefaultPrevented: [ false ],
-				msg: 'Escape elsewhere does nothing'
+				msg: 'Escape elsewhere make no selection change'
 			}
 		];
 

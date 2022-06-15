@@ -180,6 +180,12 @@ OO.inheritClass( ve.ui.Surface, OO.ui.Widget );
  */
 
 /**
+ * The surface has been cancelled by user action, e.g. Escape
+ *
+ * @event cancel
+ */
+
+/**
  * The surface read-only state has changed
  *
  * @event readOnly
