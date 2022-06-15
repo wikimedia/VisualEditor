@@ -476,7 +476,13 @@
 			execute: ve.ui.Surface.prototype.execute,
 			executeWithSource: ve.ui.Surface.prototype.executeWithSource,
 			createView: ve.ui.Surface.prototype.createView,
-			createModel: ve.ui.Surface.prototype.createModel
+			createModel: ve.ui.Surface.prototype.createModel,
+			context: {
+				// Used by ContentAction
+				isVisible: function () {
+					return false;
+				}
+			}
 		};
 		// Copied from ui.Surface constructor
 		mockSurface.commandRegistry = config.commandRegistry || ve.ui.commandRegistry;

@@ -136,7 +136,12 @@ ve.ui.ContentAction.prototype.submit = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.cancel = function () {
-	this.surface.emit( 'cancel' );
+	if ( this.surface.context.isVisible() ) {
+		// T97350
+		this.surface.context.hide();
+	} else {
+		this.surface.emit( 'cancel' );
+	}
 	return true;
 };
 

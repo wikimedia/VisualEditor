@@ -112,6 +112,26 @@ ve.ui.Context.prototype.getSurface = function () {
 };
 
 /**
+ * Hide the context while it has valid items in the menu
+ *
+ * This could be triggered by clicking the close button on
+ * mobile or by pressing escape.
+ */
+ve.ui.Context.prototype.hide = function () {
+	var surfaceModel = this.surface.getModel();
+	this.toggleMenu( false );
+	this.toggle( false );
+	// Desktop: Ensure the next cursor movement re-evaluates the context,
+	// e.g. if moving within a link, the context is re-shown.
+	surfaceModel.once( 'select', function () {
+		surfaceModel.emitContextChange();
+	} );
+	// Mobile: Clear last-known contexedAnnotations so that clicking the annotation
+	// again just brings up this context item. (T232172)
+	this.getSurface().getView().contexedAnnotations = [];
+};
+
+/**
  * Toggle the menu.
  *
  * @param {boolean} [show] Show the menu, omit to toggle

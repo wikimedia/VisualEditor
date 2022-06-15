@@ -55,11 +55,7 @@ ve.ui.MobileContext.static.isMobile = true;
  * Handle click events from the close button
  */
 ve.ui.MobileContext.prototype.onCloseButtonClick = function () {
-	this.toggleMenu( false );
-	this.toggle( false );
-	// Clear last-known contexedAnnotations so that clicking the annotation
-	// again just brings up this context item. (T232172)
-	this.getSurface().getView().contexedAnnotations = [];
+	this.hide();
 	ve.track( 'activity.mobileContext', { action: 'context-close' } );
 };
 
