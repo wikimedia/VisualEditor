@@ -90,6 +90,9 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	// Handle insertion
 	if ( node === null ) {
 		throw new Error( 'node === null' );
+	} else if ( e.shiftKey && nodeModel.hasSignificantWhitespace() ) {
+		// Insert newline
+		txInsert = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, range.from, '\n' );
 	} else if (
 		nodeModel.getType() !== 'paragraph' &&
 		(
@@ -109,9 +112,6 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 			);
 			advanceCursor = false;
 		}
-	} else if ( e.shiftKey && nodeModel.hasSignificantWhitespace() ) {
-		// Insert newline
-		txInsert = ve.dm.TransactionBuilder.static.newFromInsertion( documentModel, range.from, '\n' );
 	} else if ( !node.splitOnEnter() ) {
 		// Cannot split, so insert some appropriate node
 

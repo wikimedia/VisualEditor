@@ -97,7 +97,68 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 					);
 				},
 				expectedRangeOrSelection: new ve.Range( 40 ),
-				msg: 'Shift+enter in a hasSignificantWhitespace node adds a linebreak character'
+				msg: 'Shift+enter in pre adds a linebreak character'
+			},
+			{
+				rangeOrSelection: new ve.Range( 38 ),
+				keys: [ 'SHIFT+ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						38, 0, '\n'
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 39 ),
+				msg: 'Shift+enter at start of pre adds a linebreak character'
+			},
+			{
+				rangeOrSelection: new ve.Range( 42 ),
+				keys: [ 'SHIFT+ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						42, 0, '\n'
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 43 ),
+				msg: 'Shift+enter at end of pre adds a linebreak character'
+			},
+			{
+				rangeOrSelection: new ve.Range( 39 ),
+				keys: [ 'ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						39, 0,
+						{ type: '/preformatted' },
+						{ type: 'preformatted' }
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 41 ),
+				msg: 'enter in pre splits it'
+			},
+			{
+				rangeOrSelection: new ve.Range( 38 ),
+				keys: [ 'ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						37, 0,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 40 ),
+				msg: 'enter at start of pre adds a paragraph'
+			},
+			{
+				rangeOrSelection: new ve.Range( 42 ),
+				keys: [ 'ENTER' ],
+				expectedData: function ( data ) {
+					data.splice(
+						43, 0,
+						{ type: 'paragraph' },
+						{ type: '/paragraph' }
+					);
+				},
+				expectedRangeOrSelection: new ve.Range( 44 ),
+				msg: 'enter at end of pre adds a paragraph'
 			},
 			{
 				rangeOrSelection: new ve.Range( 3 ),
