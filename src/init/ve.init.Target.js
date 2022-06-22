@@ -585,6 +585,12 @@ ve.init.Target.prototype.setSurface = function ( surface ) {
 		// Allow popup tool groups's menus to display on top of the mobile context, which is attached
 		// to the global overlay (T307849)
 		this.toolbarConfig.$overlay = surface.getGlobalOverlay().$element;
+		// There is already a toolbar (e.g. when switching), swap out the overlay:
+		// TODO: Add a setOverlay method to Toolbar, or create a new toolbar
+		if ( this.toolbar ) {
+			this.toolbar.$overlay = this.toolbarConfig.$overlay;
+			this.toolbar.$overlay.append( this.toolbar.$popups );
+		}
 	}
 
 	if ( this.surfaces.indexOf( surface ) === -1 ) {
