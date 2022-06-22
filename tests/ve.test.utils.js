@@ -53,43 +53,92 @@
 		return undefined;
 	};
 	DummyPlatform.prototype.setUserConfig = function () {};
-	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function ( store ) {
+	DummyPlatform.prototype.createSafeStorage = function ( store ) {
 		var platform = this;
 
-		store = store || {};
-
-		var TestStorage = function () {};
-		OO.initClass( TestStorage );
-		TestStorage.prototype.get = function ( key ) {
+		var MockSafeStorage = function ( s ) {
+			this.store = s;
+		};
+		OO.initClass( MockSafeStorage );
+		MockSafeStorage.prototype.get = function ( key ) {
 			if ( platform.storageDisabled ) {
 				return false;
 			}
+			return this.store.getItem( key );
+		};
+		MockSafeStorage.prototype.set = function ( key, value ) {
+			if ( platform.storageDisabled || value === '__FAIL__' ) {
+				return false;
+			}
+			this.store.setItem( key, value );
+			return true;
+		};
+		MockSafeStorage.prototype.remove = function ( key ) {
+			if ( platform.storageDisabled ) {
+				return false;
+			}
+			this.store.removeItem( key );
+			return true;
+		};
+		MockSafeStorage.prototype.getObject = function ( key ) {
+			var json = this.get( key );
+
+			if ( json === false ) {
+				return false;
+			}
+
+			try {
+				return JSON.parse( json );
+			} catch ( e ) {}
+
+			return null;
+		};
+		MockSafeStorage.prototype.setObject = function ( key, value ) {
+			try {
+				var json = JSON.stringify( value );
+				return this.set( key, json );
+			} catch ( e ) {}
+			return false;
+		};
+
+		return new MockSafeStorage( store );
+	};
+	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function ( store ) {
+		store = store || {};
+
+		var MockSystemStorage = function () {};
+		OO.initClass( MockSystemStorage );
+		MockSystemStorage.prototype.getItem = function ( key ) {
 			return Object.prototype.hasOwnProperty.call( store, key ) ?
 				store[ key ] :
 				null;
 		};
-		TestStorage.prototype.set = function ( key, value ) {
-			if ( platform.storageDisabled || value === '__FAIL__' ) {
-				return false;
-			}
-			store[ key ] = value.toString();
-			return true;
+		MockSystemStorage.prototype.setItem = function ( key, value ) {
+			store[ key ] = String( value );
 		};
-		TestStorage.prototype.remove = function ( key ) {
-			if ( platform.storageDisabled ) {
-				return false;
-			}
+		MockSystemStorage.prototype.removeItem = function ( key ) {
 			delete store[ key ];
-			return true;
 		};
-		TestStorage.prototype.getObject = function ( key ) {
-			return JSON.parse( this.get( key ) );
+		MockSystemStorage.prototype.clear = function () {
+			for ( var key in store ) {
+				delete store[ key ];
+			}
 		};
-		TestStorage.prototype.setObject = function ( key, value ) {
-			this.set( key, JSON.stringify( value ) );
+		MockSystemStorage.prototype.key = function ( index ) {
+			var keys = Object.keys( store );
+			return index < keys.length ? keys[ index ] : null;
 		};
+		if ( !Object.prototype.hasOwnProperty.call( store, 'length' ) ) {
+			Object.defineProperty( store, 'length', {
+				get: function () {
+					return Object.keys( store ).length;
+				}
+			} );
+		}
 
-		return ve.init.createListStorage( new TestStorage() );
+		var storage = this.createSafeStorage( new MockSystemStorage( store ) );
+
+		return ve.init.createListStorage( storage );
 	};
 
 	ve.test.utils.DummyPlatform = DummyPlatform;
