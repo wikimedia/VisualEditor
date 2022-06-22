@@ -138,7 +138,7 @@
 
 		var storage = this.createSafeStorage( new MockSystemStorage( store ) );
 
-		return ve.init.createListStorage( storage );
+		return ve.init.createConflictableStorage( storage );
 	};
 
 	ve.test.utils.DummyPlatform = DummyPlatform;

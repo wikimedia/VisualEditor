@@ -67,7 +67,7 @@ ve.dm.Surface = function VeDmSurface( doc, attachedRoot, config ) {
 	this.autosavePrefix = '';
 	this.synchronizer = null;
 	this.storing = false;
-	this.storage = ve.init.platform.sessionStorage;
+	this.setStorage( ve.init.platform.sessionStorage );
 
 	// Let document know about the attachedRoot
 	this.documentModel.attachedRoot = this.attachedRoot;
@@ -1383,7 +1383,9 @@ ve.dm.Surface.prototype.storeChanges = function () {
 	var dmDoc = this.getDocument();
 	var change = dmDoc.getChangeSince( this.lastStoredChange );
 	if ( !change.isEmpty() ) {
-		if ( this.storage.appendToList( this.autosavePrefix + 've-changes', JSON.stringify( change ) ) ) {
+		var changes = this.storage.getObject( this.autosavePrefix + 've-changes' ) || [];
+		changes.push( change );
+		if ( this.storage.setObject( this.autosavePrefix + 've-changes', changes ) ) {
 			this.lastStoredChange = dmDoc.getCompleteHistoryLength();
 			this.storage.setObject( this.autosavePrefix + 've-selection', this.getSelection() );
 		} else {
@@ -1422,13 +1424,29 @@ ve.dm.Surface.prototype.setAutosaveDocId = function ( docId ) {
 /**
  * Set the storage interface for autosave
  *
- * @param {ve.init.SafeStorage} storage Storage interface
+ * @param {ve.init.ConflictableStorage} storage Storage interface
  */
 ve.dm.Surface.prototype.setStorage = function ( storage ) {
 	if ( this.storing ) {
 		throw new Error( 'Can\'t change storage interface after auto-save has stared' );
 	}
 	this.storage = storage;
+
+	var isLocalStorage = false;
+	try {
+		// Accessing window.localStorage can throw an exception when it is disabled
+		// eslint-disable-next-line no-undef
+		isLocalStorage = this.storage.store === window.localStorage;
+	} catch ( e ) {}
+
+	if ( isLocalStorage ) {
+		var conflictableKeys = {};
+		conflictableKeys[ this.autosavePrefix + 've-docstate' ] = true;
+		conflictableKeys[ this.autosavePrefix + 've-dochtml' ] = true;
+		conflictableKeys[ this.autosavePrefix + 've-selection' ] = true;
+		conflictableKeys[ this.autosavePrefix + 've-changes' ] = true;
+		this.storage.addConflictableKeys( conflictableKeys );
+	}
 };
 
 /**
@@ -1458,12 +1476,11 @@ ve.dm.Surface.prototype.stopStoringChanges = function () {
 ve.dm.Surface.prototype.restoreChanges = function () {
 	var surface = this,
 		restored = false,
-		changes = this.storage.getList( this.autosavePrefix + 've-changes' );
+		changes = this.storage.getObject( this.autosavePrefix + 've-changes' ) || [];
 
 	try {
-		changes.forEach( function ( changeString ) {
-			var data = JSON.parse( changeString ),
-				change = ve.dm.Change.static.unsafeDeserialize( data );
+		changes.forEach( function ( data ) {
+			var change = ve.dm.Change.static.unsafeDeserialize( data );
 			change.applyTo( surface, true );
 			surface.breakpoint();
 		} );
@@ -1550,5 +1567,5 @@ ve.dm.Surface.prototype.removeDocStateAndChanges = function () {
 	this.storage.remove( this.autosavePrefix + 've-docstate' );
 	this.storage.remove( this.autosavePrefix + 've-dochtml' );
 	this.storage.remove( this.autosavePrefix + 've-selection' );
-	this.storage.removeList( this.autosavePrefix + 've-changes' );
+	this.storage.remove( this.autosavePrefix + 've-changes' );
 };

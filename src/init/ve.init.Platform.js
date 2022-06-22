@@ -183,10 +183,10 @@ ve.init.Platform.prototype.createSafeStorage = null;
  * Create a list storage object from a safe storage object
  *
  * @param {ve.init.SafeStorage} safeStorage
- * @return {ve.init.ListStorage}
+ * @return {ve.init.ConflictableStorage}
  */
-ve.init.Platform.prototype.createListStorage = function ( safeStorage ) {
-	return ve.init.createListStorage( safeStorage );
+ve.init.Platform.prototype.createConflictableStorage = function ( safeStorage ) {
+	return ve.init.createConflictableStorage( safeStorage );
 };
 
 ve.init.Platform.prototype.createLocalStorage = function () {
@@ -196,7 +196,7 @@ ve.init.Platform.prototype.createLocalStorage = function () {
 		localStorage = window.localStorage;
 	} catch ( e ) {}
 
-	return this.createListStorage( this.createSafeStorage( localStorage ) );
+	return this.createConflictableStorage( this.createSafeStorage( localStorage ) );
 };
 
 ve.init.Platform.prototype.createSessionStorage = function () {
@@ -206,7 +206,7 @@ ve.init.Platform.prototype.createSessionStorage = function () {
 		sessionStorage = window.sessionStorage;
 	} catch ( e ) {}
 
-	return this.createListStorage( this.createSafeStorage( sessionStorage ) );
+	return this.createConflictableStorage( this.createSafeStorage( sessionStorage ) );
 };
 
 /**
