@@ -893,6 +893,7 @@
 			"tests/ce/nodes/ve.ce.TableNode.test.js",
 			"tests/init/ve.init.Target.test.js",
 			"tests/init/ve.init.sa.Platform.test.js",
+			"tests/init/ve.init.ListStorage.test.js",
 			"tests/ui/ve.ui.DataTransferHandlerFactory.test.js",
 			"tests/ui/ve.ui.Trigger.test.js",
 			"tests/ui/ve.ui.Sequence.test.js",

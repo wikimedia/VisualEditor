@@ -53,9 +53,10 @@
 		return undefined;
 	};
 	DummyPlatform.prototype.setUserConfig = function () {};
-	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function () {
-		var platform = this,
-			storage = {};
+	DummyPlatform.prototype.createLocalStorage = DummyPlatform.prototype.createSessionStorage = function ( store ) {
+		var platform = this;
+
+		store = store || {};
 
 		var TestStorage = function () {};
 		OO.initClass( TestStorage );
@@ -63,22 +64,22 @@
 			if ( platform.storageDisabled ) {
 				return false;
 			}
-			return Object.prototype.hasOwnProperty.call( storage, key ) ?
-				storage[ key ] :
+			return Object.prototype.hasOwnProperty.call( store, key ) ?
+				store[ key ] :
 				null;
 		};
 		TestStorage.prototype.set = function ( key, value ) {
 			if ( platform.storageDisabled || value === '__FAIL__' ) {
 				return false;
 			}
-			storage[ key ] = value.toString();
+			store[ key ] = value.toString();
 			return true;
 		};
 		TestStorage.prototype.remove = function ( key ) {
 			if ( platform.storageDisabled ) {
 				return false;
 			}
-			delete storage[ key ];
+			delete store[ key ];
 			return true;
 		};
 		TestStorage.prototype.getObject = function ( key ) {
