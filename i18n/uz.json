@@ -30,6 +30,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Satrosti",
 	"visualeditor-annotationbutton-superscript-tooltip": "Satrusti",
 	"visualeditor-annotationbutton-underline-tooltip": "Tagchiziqli",
+	"visualeditor-changedesc-link-added": "Qoʻshilgan havola: $1",
 	"visualeditor-changedir-tool-ltr": "Chapdan oʻngga sifatida koʻrish",
 	"visualeditor-clearbutton-tooltip": "Formatlashni tozalash",
 	"visualeditor-clipboard-copy": "Nusxalash",
