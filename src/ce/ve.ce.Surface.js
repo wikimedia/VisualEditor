@@ -112,7 +112,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.cursorDirectionality = null;
 	this.unicorningNode = null;
 	this.setUnicorningRecursionGuard = false;
-	this.cursorHolders = null;
+	this.cursorHolderBefore = null;
+	this.cursorHolderAfter = null;
 
 	// Events
 	// Debounce to prevent trying to draw every cursor position in history.
@@ -4398,51 +4399,90 @@ ve.ce.Surface.prototype.findAdjacentUneditableBranchNode = function ( direction 
  * Insert cursor holders, if they might be required as a cursor target
  */
 ve.ce.Surface.prototype.updateCursorHolders = function () {
-	var holderBefore = null,
-		holderAfter = null,
-		doc = this.getElementDocument(),
-		nodeBefore = this.findAdjacentUneditableBranchNode( -1 ),
-		nodeAfter = this.findAdjacentUneditableBranchNode( 1 );
+	this.updateCursorHolderBefore();
+	this.updateCursorHolderAfter();
+};
 
-	this.removeCursorHolders();
+/**
+ * Insert cursor holder between selection focus and subsequent ce=false node, if required as a cursor target
+ */
+ve.ce.Surface.prototype.updateCursorHolderBefore = function () {
+	var doc = this.getElementDocument(),
+		nodeBelow = this.findAdjacentUneditableBranchNode( 1 );
+	if (
+		!( nodeBelow === null && this.cursorHolderBefore === null ) &&
+		!( nodeBelow && this.cursorHolderBefore && nodeBelow.nextSibling === this.cursorHolderBefore )
+	) {
+		// cursorHolderBefore is not correct for nodeBelow; update it
+		this.removeCursorHolderBefore();
+		if ( nodeBelow ) {
+			this.cursorHolderBefore = doc.importNode( this.constructor.static.cursorHolderTemplate, true );
+			this.cursorHolderBefore.classList.add( 've-ce-cursorHolder-before' );
+			if ( ve.inputDebug ) {
+				this.cursorHolderBefore.classList.add( 've-ce-cursorHolder-debug' );
+			}
+			// this.cursorHolderBefore is a Node
+			// eslint-disable-next-line no-jquery/no-append-html
+			$( nodeBelow ).before( this.cursorHolderBefore );
+		}
+	}
+};
 
-	if ( nodeBefore ) {
-		holderBefore = doc.importNode( this.constructor.static.cursorHolderTemplate, true );
-		holderBefore.classList.add( 've-ce-cursorHolder-after' );
-		if ( ve.inputDebug ) {
-			holderBefore.classList.add( 've-ce-cursorHolder-debug' );
+/**
+ * Insert cursor holder between selection focus and preceding ce=false node, if required as a cursor target
+ */
+ve.ce.Surface.prototype.updateCursorHolderAfter = function () {
+	var doc = this.getElementDocument(),
+		nodeAbove = this.findAdjacentUneditableBranchNode( -1 );
+	if (
+		!( nodeAbove === null && this.cursorHolderAfter === null ) &&
+		!( nodeAbove && this.cursorHolderAfter && nodeAbove.nextSibling === this.cursorHolderAfter )
+	) {
+		// cursorHolderAfter is not correct for nodeAbove; update it
+		this.removeCursorHolderAfter();
+		if ( nodeAbove ) {
+			this.cursorHolderAfter = doc.importNode( this.constructor.static.cursorHolderTemplate, true );
+			this.cursorHolderAfter.classList.add( 've-ce-cursorHolder-after' );
+			if ( ve.inputDebug ) {
+				this.cursorHolderAfter.classList.add( 've-ce-cursorHolder-debug' );
+			}
+			// this.cursorHolderAfter is a Node
+			// eslint-disable-next-line no-jquery/no-append-html
+			$( nodeAbove ).after( this.cursorHolderAfter );
 		}
-		// holderBefore is a Node
-		// eslint-disable-next-line no-jquery/no-append-html
-		$( nodeBefore ).after( holderBefore );
 	}
-	if ( nodeAfter ) {
-		holderAfter = doc.importNode( this.constructor.static.cursorHolderTemplate, true );
-		holderAfter.classList.add( 've-ce-cursorHolder-before' );
-		// holderAfter is a Node
-		// eslint-disable-next-line no-jquery/no-append-html
-		$( nodeAfter ).before( holderAfter );
-		if ( ve.inputDebug ) {
-			holderAfter.classList.add( 've-ce-cursorHolder-debug' );
-		}
-	}
-	this.cursorHolders = { before: holderBefore, after: holderAfter };
 };
 
 /**
  * Remove cursor holders, if they exist
  */
 ve.ce.Surface.prototype.removeCursorHolders = function () {
-	if ( !this.cursorHolders ) {
-		return;
+	this.removeCursorHolderBefore();
+	this.removeCursorHolderAfter();
+};
+
+/**
+ * Remove cursorHolderBefore, if it exists
+ */
+ve.ce.Surface.prototype.removeCursorHolderBefore = function () {
+	if ( this.cursorHolderBefore ) {
+		if ( this.cursorHolderBefore.parentNode ) {
+			this.cursorHolderBefore.parentNode.removeChild( this.cursorHolderBefore );
+		}
+		this.cursorHolderBefore = null;
 	}
-	if ( this.cursorHolders.before && this.cursorHolders.before.parentNode ) {
-		this.cursorHolders.before.parentNode.removeChild( this.cursorHolders.before );
+};
+
+/**
+ * Remove cursorHolderAfter, if it exists
+ */
+ve.ce.Surface.prototype.removeCursorHolderAfter = function () {
+	if ( this.cursorHolderAfter ) {
+		if ( this.cursorHolderAfter.parentNode ) {
+			this.cursorHolderAfter.parentNode.removeChild( this.cursorHolderAfter );
+		}
+		this.cursorHolderAfter = null;
 	}
-	if ( this.cursorHolders.after && this.cursorHolders.after.parentNode ) {
-		this.cursorHolders.after.parentNode.removeChild( this.cursorHolders.after );
-	}
-	this.cursorHolders = null;
 };
 
 /**

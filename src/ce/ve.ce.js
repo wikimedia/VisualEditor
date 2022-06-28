@@ -348,7 +348,7 @@ ve.ce.getOffsetOfSlug = function ( element ) {
 		model = $element.parent().data( 'view' ).getModel();
 		return model.getOffset() + ( model.isWrapped() ? 1 : 0 );
 	} else {
-		// Don't pick up DOM nodes not from the view tree e.g. cursorHolders (T202103)
+		// Don't pick up DOM nodes not from the view tree e.g. cursor holders (T202103)
 		var $prev = $element.prevAll( '.ve-ce-leafNode,.ve-ce-branchNode' ).first();
 		if ( $prev.length ) {
 			model = $prev.data( 'view' ).getModel();
