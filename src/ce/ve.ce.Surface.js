@@ -2274,6 +2274,11 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		return done;
 	}
 
+	if ( this.middleClickPasting ) {
+		// Middle click pasting should always collapse the selection before pasting
+		targetFragment = targetFragment.collapseToEnd();
+	}
+
 	// Immedately remove any <style> tags from the pasteTarget that might
 	// be changing the rendering of the whole page (T235068)
 	this.$pasteTarget.find( 'style' ).remove();
