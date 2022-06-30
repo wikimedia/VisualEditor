@@ -57,6 +57,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	// the surface and a selection is made elsewhere.
 	this.lastNonCollapsedDocumentSelection = new ve.dm.NullSelection();
 	this.middleClickPasting = false;
+	this.middleClickTargetOffset = false;
 	this.renderLocks = 0;
 	this.dragging = false;
 	this.relocatingSelection = null;
@@ -941,6 +942,13 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 
 	if ( e.which !== OO.ui.MouseButtons.LEFT ) {
 		if ( e.which === OO.ui.MouseButtons.MIDDLE ) {
+			// When middle click is also focusig the document, the selection may not end up
+			// where you clicked, so record the offset from the click coordinates. (T311733)
+			var targetOffset = -1;
+			if ( this.getModel().getSelection().isNull() ) {
+				targetOffset = this.getOffsetFromEventCoords( e );
+			}
+			this.middleClickTargetOffset = targetOffset !== -1 ? targetOffset : null;
 			this.middleClickPasting = true;
 			this.$document.one( 'mouseup', function () {
 				// Stay true until other events have run, e.g. paste
@@ -2280,7 +2288,9 @@ ve.ce.Surface.prototype.afterPaste = function () {
 		return done;
 	}
 
-	if ( this.middleClickPasting ) {
+	if ( this.middleClickTargetOffset ) {
+		targetFragment = targetFragment.clone( new ve.dm.LinearSelection( new ve.Range( this.middleClickTargetOffset ) ) );
+	} else if ( this.middleClickPasting ) {
 		// Middle click pasting should always collapse the selection before pasting
 		targetFragment = targetFragment.collapseToEnd();
 	}
