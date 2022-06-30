@@ -52,7 +52,11 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.clipboard = null;
 	this.clipboardId = Math.random().toString();
 	this.clipboardIndex = 0;
-	this.middleClickSelection = null;
+	// The last non-collapsed selection in this VE surface. This will be a NullSelection
+	// if there has never had a non-collapsed selection, or if the cursor is moved out of
+	// the surface and a selection is made elsewhere.
+	this.lastNonCollapsedDocumentSelection = new ve.dm.NullSelection();
+	this.middleClickPasting = false;
 	this.renderLocks = 0;
 	this.dragging = false;
 	this.relocatingSelection = null;
@@ -937,11 +941,11 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 
 	if ( e.which !== OO.ui.MouseButtons.LEFT ) {
 		if ( e.which === OO.ui.MouseButtons.MIDDLE ) {
-			this.middleClickSelection = this.getModel().getSelection();
+			this.middleClickPasting = true;
 			this.$document.one( 'mouseup', function () {
 				// Stay true until other events have run, e.g. paste
 				setTimeout( function () {
-					surface.middleClickSelection = null;
+					this.middleClickPasting = false;
 				} );
 			} );
 		}
@@ -1114,6 +1118,17 @@ ve.ce.Surface.prototype.setDragging = function ( dragging ) {
  * @param {jQuery.Event} e Selection change event
  */
 ve.ce.Surface.prototype.onDocumentSelectionChange = function () {
+	var selection = this.getModel().getSelection();
+	if (
+		// There is a non-empty selection in the VE surface. Use this if middle-click-to-paste is triggered later.
+		!selection.isCollapsed() ||
+		// There is no surface selection, and a native selection has been made elsewhere.
+		// Null the lastNonCollapsedDocumentSelection so native middle-click-to-paste happens instead.
+		( selection.isNull() && this.nativeSelection.rangeCount && !this.nativeSelection.getRangeAt( 0 ).collapsed )
+	) {
+		this.lastNonCollapsedDocumentSelection = selection;
+	}
+
 	// selectionChange events are only emitted from window.document, so ignore
 	// any events which are fired when the document is blurred or deactivated.
 	if ( !this.focused || this.deactivated ) {
@@ -2137,25 +2152,16 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	}
 
 	this.beforePasteData = {};
-	if ( this.middleClickSelection ) {
-		// Paste was triggered by middle click:
-		// * Simulate a fake copy if there was a document selection during the middle click
-		// * If not, re-use the contents of the last-copied item
-		//
-		// This simulates the behaviour of the copy phase of middle click paste, which doesn't
-		// fire an event, however it will not work for data that was loaded into the clipboard
-		// externally.
-
-		if ( !this.middleClickSelection.isCollapsed() ) {
-			this.clipboardIndex++;
-			this.clipboard = {
-				slice: this.model.documentModel.shallowCloneFromSelection( this.middleClickSelection ),
-				hash: null
-			};
-		}
-		if ( this.clipboard ) {
-			this.beforePasteData.custom = this.clipboardId + '-' + this.clipboardIndex;
-		}
+	if ( this.middleClickPasting && !this.lastNonCollapsedDocumentSelection.isNull() ) {
+		// Paste was triggered by middle click, and the last non-collapsed document selection was in
+		// this VE surface. Simulate a fake copy to load DM data into the clipboard. If we let the
+		// native middle-click paste happen, it would load CE data into the clipboard.
+		this.clipboardIndex++;
+		this.clipboard = {
+			slice: this.model.documentModel.shallowCloneFromSelection( this.lastNonCollapsedDocumentSelection ),
+			hash: null
+		};
+		this.beforePasteData.custom = this.clipboardId + '-' + this.clipboardIndex;
 	} else if ( clipboardData ) {
 		if ( this.handleDataTransfer( clipboardData, true ) ) {
 			e.preventDefault();

@@ -199,7 +199,8 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		testEvent = ve.test.utils.createTestEvent( { type: 'paste', clipboardData: clipboardData } );
 	}
 	if ( item.middleClickRangeOrSelection ) {
-		view.middleClickSelection = ve.test.utils.selectionFromRangeOrSelection( doc, item.middleClickRangeOrSelection );
+		view.lastNonCollapsedDocumentSelection = ve.test.utils.selectionFromRangeOrSelection( doc, item.middleClickRangeOrSelection );
+		view.onDocumentMouseDown( ve.test.utils.createTestEvent( 'mousedown', { which: OO.ui.MouseButtons.MIDDLE } ) );
 	}
 	model.setSelection( ve.test.utils.selectionFromRangeOrSelection( doc, item.rangeOrSelection ) );
 	view.pasteSpecial = item.pasteSpecial;
