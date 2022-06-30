@@ -2212,6 +2212,12 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 		if ( !leftText && !rightText ) {
 			context.push( '☁' );
 			textEnd = 1;
+			// If we are middle click pasting we can't change the native selection, so
+			// just make the text a placeholder to the left. (T311723)
+			if ( this.middleClickPasting ) {
+				leftText = '☁';
+				textStart = 1;
+			}
 		}
 		context.push( { type: '/' + context[ 0 ].type } );
 
