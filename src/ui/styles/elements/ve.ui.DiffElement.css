@@ -129,22 +129,18 @@ del[ data-diff-action='remove' ] {
 }
 
 [ data-diff-action='insert' ],
-/* <code> tags often have a background color that needs overriding */
-[ data-diff-action='insert' ] > code,
-/* elements using display:table-caption need separate backgrounds */
-table[ data-diff-action='insert' ] > caption,
-figure[ data-diff-action='insert' ] > figcaption {
+/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
+[ data-diff-action='insert' ] > caption,
+[ data-diff-action='insert' ] > figcaption {
 	/* #7fd7c4 at 50% opacity */
 	background-color: rgba( 0, 175, 137, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
 	box-shadow: 0 0 0 1px rgba( 0, 175, 137, 0.5 );
 }
 
 [ data-diff-action='remove' ],
-/* <code> tags often have a background color that needs overriding */
-[ data-diff-action='remove' ] > code,
-/* elements using display:table-caption need separate backgrounds */
-table[ data-diff-action='remove' ] > caption,
-figure[ data-diff-action='remove' ] > figcaption {
+/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
+[ data-diff-action='remove' ] > caption,
+[ data-diff-action='remove' ] > figcaption {
 	/* #e88e89 at 50% opacity */
 	background-color: rgba( 209, 29, 19, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
 	box-shadow: 0 0 0 1px rgba( 209, 29, 19, 0.5 );
@@ -157,11 +153,13 @@ figure[ data-diff-action='remove' ] > figcaption {
 	box-shadow: 0 0 0 1px rgba( 109, 169, 247, 0.5 );
 }
 
-[ data-diff-action='insert' ] img,
-[ data-diff-action='remove' ] img,
-[ data-diff-action='change' ] img {
-	/* Make images slightly transparent so remove/insert/change colour can be seen */
-	opacity: 0.5;
+[ data-diff-move ],
+/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
+[ data-diff-move ] > caption,
+[ data-diff-move ] > figcaption {
+	/* #eaecf0 (base80) at 50% opacity */
+	background: rgba( 213, 217, 225, 0.5 );
+	outline: 5px solid rgba( 213, 217, 225, 0.5 );
 }
 
 [ data-diff-action='change-remove' ] {
@@ -200,10 +198,18 @@ figure[ data-diff-action='remove' ] > figcaption {
 }
 /* stylelint-enable no-descending-specificity */
 
-[ data-diff-move ] {
-	/* #eaecf0 (base80) at 50% opacity */
-	background: rgba( 213, 217, 225, 0.5 );
-	outline: 5px solid rgba( 213, 217, 225, 0.5 );
+/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+@supports ( mix-blend-mode: darken ) {
+	/* Blend contents into the background (I7a7e27b1218) */
+	[ data-diff-action='insert' ] > *,
+	[ data-diff-action='remove' ] > *,
+	[ data-diff-action='change' ] > *,
+	[ data-diff-action='change-insert' ] > *,
+	[ data-diff-action='change-remove' ] > *,
+	[ data-diff-move ] > * {
+		/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+		mix-blend-mode: darken;
+	}
 }
 
 .ve-ui-diffElement-moved-up,
