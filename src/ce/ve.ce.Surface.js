@@ -47,7 +47,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.eventSequencer = new ve.EventSequencer( [
 		'keydown', 'keypress', 'keyup',
 		'compositionstart', 'compositionend',
-		'input', 'mousedown'
+		'beforeinput', 'input', 'mousedown'
 	] );
 	this.clipboard = null;
 	this.clipboardId = Math.random().toString();
@@ -206,6 +206,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		keydown: this.onDocumentKeyDown.bind( this ),
 		keyup: this.onDocumentKeyUp.bind( this ),
 		keypress: this.onDocumentKeyPress.bind( this ),
+		beforeinput: this.onDocumentBeforeInput.bind( this ),
 		input: this.onDocumentInput.bind( this ),
 		compositionstart: this.onDocumentCompositionStart.bind( this )
 	} ).after( {
@@ -3115,6 +3116,95 @@ ve.ce.Surface.prototype.selectAll = function () {
 				0, 0, matrix.getMaxColCount() - 1, matrix.getRowCount() - 1
 			)
 		);
+	}
+};
+
+/**
+ * Handle beforeinput events.
+ *
+ * @param {jQuery.Event} e The input event
+ */
+ve.ce.Surface.prototype.onDocumentBeforeInput = function ( e ) {
+	if ( this.getSelection().isNativeCursor() ) {
+		var surface = this,
+			inputType = e.originalEvent ? e.originalEvent.inputType : null;
+
+		// Support: Chrome (Android, Gboard)
+		// Handle IMEs that emit text fragments with a trailing newline on Enter keypress (T312558)
+		if (
+			( inputType === 'insertText' || inputType === 'insertCompositionText' ) &&
+			e.originalEvent.data.slice( -1 ) === '\n'
+		) {
+			// The event will have inserted a newline into the CE view,
+			// so fix up the DM accordingly depending on the context.
+			this.eventSequencer.afterOne( {
+				beforeinput: surface.fixupChromiumNativeEnter.bind( surface )
+			} );
+		}
+	}
+};
+
+/**
+ * Remove unwanted DOM elements from the CE view, inserted by Chromium's native Enter handling.
+ * We preventDefault an Enter keydown event, but the native handling can still happen with some
+ * IME combinations, e.g. Gboard on Android Chromium in many languages including English when
+ * there is candidate text (T312558).
+ */
+ve.ce.Surface.prototype.fixupChromiumNativeEnter = function () {
+	var range,
+		surface = this,
+		fixedUp = false;
+
+	function setCursorToEnd( element ) {
+		if ( !element ) {
+			return;
+		}
+		range = surface.getElementDocument().createRange();
+		range.setStart( element, element.childNodes.length );
+		range.setEnd( element, element.childNodes.length );
+		surface.nativeSelection.removeAllRanges();
+		surface.nativeSelection.addRange( range );
+	}
+
+	// Test for Chromium native Enter inside a <li class="foo"><p class="bar">...</p></li>
+	// creating unwanted trailing <li class="foo"><p class="bar"><br></p></li>,
+	// assuming it (initially) leaves the selection in the original list item.
+	var listItemNode = $( this.nativeSelection.focusNode ).closest( 'li.ve-ce-branchNode' )[ 0 ];
+	if ( listItemNode ) {
+		var nextNode = listItemNode.nextElementSibling;
+		if ( nextNode && !$.data( nextNode, 'view' ) ) {
+			// We infer the native Enter action added a spurious DOM node that does
+			// not exist in the view. Remove it and flag that we need to perform a
+			// VE Enter action.
+			nextNode.parentNode.removeChild( nextNode );
+			fixedUp = true;
+		}
+	}
+	// Test for Chromium native Enter inside a <p class="foo"></p>, while there is
+	// candidate text, creating a spurious trailing <div><br></div>, and (immediately)
+	// putting the cursor inside it.
+	//
+	// Note if the paragraph is a grandchild of the list item, it's not clear under what
+	// circumstances Chromium creates a div vs a list item, so perform this check even if
+	// a fixup already happened in the lines of code above.
+	var div = $( this.nativeSelection.focusNode ).closest( 'div' )[ 0 ];
+	if ( div && this.$documentNode[ 0 ].contains( div ) && !$.data( div, 'view' ) ) {
+		// The div is inside a branch node, but has no view. We infer the native Enter
+		// action added a spurious DOM node that does not exist in the view. Remove it and
+		// flag that we need to perform a VE enter action.
+		setCursorToEnd( div.previousElementSibling );
+		div.parentNode.removeChild( div );
+		fixedUp = true;
+	}
+	// If we found nodes to fixup, that means the VE Enter handler never ran (since it would
+	// have prevented the Enter event), so execute it now to perform the context-appropriate
+	// operation.
+	if ( fixedUp ) {
+		// First, poll current node for content changes, because any autocorrect change
+		// will not have reached the model. The logic above ensures the cursor will be
+		// inside the ContentBranchNode where the user was typing in either case.
+		this.surfaceObserver.pollOnce();
+		ve.ce.keyDownHandlerFactory.lookup( 'linearEnter' ).static.execute( this, new Event( 'dummy' ) );
 	}
 };
 
