@@ -24,7 +24,7 @@ ve.ui.MobileActionsContextItem = function VeUiMobileActionsContextItem( context,
 	this.copyButton = new OO.ui.ButtonWidget( {
 		framed: false,
 		label: ve.msg( 'visualeditor-clipboard-copy' ),
-		icon: 'articles'
+		icon: 'copy'
 	} );
 	this.deleteButton = new OO.ui.ButtonWidget( {
 		framed: false,
