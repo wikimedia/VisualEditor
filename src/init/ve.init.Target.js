@@ -644,14 +644,18 @@ ve.init.Target.prototype.getActions = function () {
  * @param {ve.ui.Surface} surface
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
-	var toolbar = this.getToolbar(),
-		actions = this.getActions();
+	var toolbar = this.getToolbar();
 
 	toolbar.connect( this, {
 		resize: 'onToolbarResize',
 		active: 'onToolbarActive'
 	} );
-	actions.connect( this, { active: 'onToolbarActive' } );
+
+	var actions;
+	if ( this.actionGroups.length ) {
+		actions = this.getActions();
+		actions.connect( this, { active: 'onToolbarActive' } );
+	}
 
 	if ( surface.nullSelectionOnBlur ) {
 		toolbar.$element
@@ -683,8 +687,10 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	}
 
 	toolbar.setup( this.toolbarGroups, surface );
-	actions.setup( this.actionGroups, surface );
-	toolbar.$actions.append( actions.$element );
+	if ( actions ) {
+		actions.setup( this.actionGroups, surface );
+		toolbar.$actions.append( actions.$element );
+	}
 	this.attachToolbar();
 	var rAF = window.requestAnimationFrame || setTimeout;
 	rAF( this.onContainerScrollHandler );
@@ -761,5 +767,7 @@ ve.init.Target.prototype.attachToolbar = function () {
 	var toolbar = this.getToolbar();
 	toolbar.$element.insertBefore( toolbar.getSurface().$element );
 	toolbar.initialize();
-	this.getActions().initialize();
+	if ( this.actionsToolbar ) {
+		this.actionsToolbar.initialize();
+	}
 };
