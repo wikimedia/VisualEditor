@@ -71,10 +71,3 @@ ve.init.sa.MobileTarget.static.toolbarGroups = [
 		include: '*'
 	}
 ];
-
-// Move action groups into main toolbar
-ve.init.sa.MobileTarget.static.toolbarGroups = ve.init.sa.MobileTarget.static.toolbarGroups.concat(
-	ve.init.sa.MobileTarget.static.actionGroups
-);
-
-ve.init.sa.MobileTarget.static.actionGroups = [];

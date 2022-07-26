@@ -162,6 +162,17 @@ ve.init.Target.static.toolbarGroups = [
 	{
 		name: 'specialCharacter',
 		include: [ 'specialCharacter' ]
+	},
+	{
+		name: 'pageMenu',
+		type: 'list',
+		align: 'after',
+		icon: 'menu',
+		indicator: null,
+		title: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
+		label: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
+		invisibleLabel: true,
+		include: [ 'findAndReplace', 'changeDirectionality', 'commandHelp' ]
 	}
 ];
 
