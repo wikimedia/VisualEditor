@@ -152,7 +152,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 			for ( var i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
 				pages.push( ve.demo.surfaceContainers[ i ].pageMenu.findSelectedItem().getData() );
 			}
-			history.replaceState( null, document.title, '#!' + pages.join( ',' ) );
+			history.replaceState( null, '', '#!' + pages.join( ',' ) );
 		}
 	}
 
