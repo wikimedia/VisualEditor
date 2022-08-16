@@ -27,9 +27,11 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	this.widthInput = new OO.ui.TextInputWidget( {
 		validate: config.validate || $.isNumeric
 	} );
+	this.widthInput.$input.attr( 'aria-label', ve.msg( 'visualeditor-dimensionswidget-width' ) );
 	this.heightInput = new OO.ui.TextInputWidget( {
 		validate: config.validate || $.isNumeric
 	} );
+	this.heightInput.$input.attr( 'aria-label', ve.msg( 'visualeditor-dimensionswidget-height' ) );
 
 	this.defaults = config.defaults || { width: '', height: '' };
 	this.setReadOnly( !!config.readOnly );
