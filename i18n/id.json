@@ -17,6 +17,7 @@
 			"Rachmat.Wahidi",
 			"Rachmat04",
 			"Rv77ax",
+			"Veracious",
 			"William Surya Permana",
 			"WillsonEP09"
 		]
@@ -111,8 +112,10 @@
 	"visualeditor-diff-moved-up": "Dipindahkan ke atas",
 	"visualeditor-diff-no-changes": "Tidak ada perubahan",
 	"visualeditor-diff-timed-out": "Perlu waktu yang cukup lama untuk menghitung perubahan Anda, jadi deskripsi di bawah ini mungkin tidak optimal.",
+	"visualeditor-dimensionswidget-height": "tinggi",
 	"visualeditor-dimensionswidget-px": "piks",
 	"visualeditor-dimensionswidget-times": "×",
+	"visualeditor-dimensionswidget-width": "lebar",
 	"visualeditor-find-and-replace-diacritic": "Tidak sensitif tanda diakritik",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Pencarian tidak sensitif tanda diakritik tidak tersedia di peramban ini",
 	"visualeditor-find-and-replace-done": "Selesai",

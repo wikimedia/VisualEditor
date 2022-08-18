@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abijeet Patro",
 			"Ankita-ks",
 			"Ansumang",
 			"Devayon",
@@ -112,6 +113,8 @@
 	"visualeditor-diff-moved-up": "ऊपर लाया गया",
 	"visualeditor-diff-no-changes": "कोई बदलाव नहीं",
 	"visualeditor-diff-timed-out": "आपके बदलावों का पता लगाने में कुछ ज़्यादा ही समय लग गया, तो नीचे का विवरण सटीक न भी हो सकता है।",
+	"visualeditor-dimensionswidget-height": "ऊँचाई",
+	"visualeditor-dimensionswidget-width": "चौड़ाई",
 	"visualeditor-find-and-replace-diacritic": "विशेषक असंवेदनशील",
 	"visualeditor-find-and-replace-diacritic-unavailable": "इस ब्राउज़र में विशेषक असंवेदनशील खोज उपलब्ध नहीं है",
 	"visualeditor-find-and-replace-done": "पूर्ण हुआ",

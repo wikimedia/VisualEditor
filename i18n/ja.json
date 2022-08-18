@@ -100,6 +100,8 @@
 	"visualeditor-dialog-table-title": "表のプロパティ",
 	"visualeditor-diff-no-changes": "相違点なし",
 	"visualeditor-diff-timed-out": "変更内容の計算に時間がかかりすぎたため、以下の解説は最適ではない可能性があります。",
+	"visualeditor-dimensionswidget-height": "高さ",
+	"visualeditor-dimensionswidget-width": "幅",
 	"visualeditor-find-and-replace-diacritic": "ダイアクリティカルマークの有無を区別する",
 	"visualeditor-find-and-replace-done": "完了",
 	"visualeditor-find-and-replace-find-text": "検索",
