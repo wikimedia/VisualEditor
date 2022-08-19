@@ -34,7 +34,6 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.dir = null;
 	this.setReadOnly( !!config.readOnly );
 
-	this.overlay = new ve.ui.Overlay( { classes: [ 've-ui-overlay-global' ] } );
 	this.dialogs = config.dialogManager || new ve.ui.WindowManager( { factory: ve.ui.windowFactory } );
 	this.availableLanguages = config.availableLanguages;
 
@@ -96,8 +95,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 		);
 	}
 	this.directionSelect.addItems( dirItems );
-	this.overlay.$element.append( this.dialogs.$element );
-	$( document.body ).append( this.overlay.$element );
+	$( document.body ).append( this.dialogs.$element );
 
 	this.$element
 		.addClass( 've-ui-languageInputWidget' )
