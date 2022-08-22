@@ -120,6 +120,8 @@
 	"visualeditor-diff-moved-up": "Yukarıya taşındı",
 	"visualeditor-diff-no-changes": "Değişiklik yok",
 	"visualeditor-diff-timed-out": "Değişikliklerinizi hesaplamak çok uzun sürdü, bu nedenle aşağıdaki açıklama uygun olmayabilir.",
+	"visualeditor-dimensionswidget-height": "yükseklik",
+	"visualeditor-dimensionswidget-width": "genişlik",
 	"visualeditor-find-and-replace-diacritic": "Aksan duyarsız",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Aksan duyarlı olmayan arama bu tarayıcıda mevcut değil",
 	"visualeditor-find-and-replace-done": "Yapıldı",

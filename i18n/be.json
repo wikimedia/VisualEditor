@@ -8,6 +8,7 @@
 			"Maksim L.",
 			"Mikalai Udodau",
 			"No Sleep till Krupki",
+			"Tīgelika",
 			"ZlyiLev",
 			"Чаховіч Уладзіслаў"
 		]
@@ -102,6 +103,8 @@
 	"visualeditor-diff-moved-up": "Перанесены вышэй",
 	"visualeditor-diff-no-changes": "Няма зменаў",
 	"visualeditor-diff-timed-out": "Зашмат часу пайшло на вылічэнне вашых зменаў, таму апісанне ніжэй можа быць не лепшым.",
+	"visualeditor-dimensionswidget-height": "вышыня",
+	"visualeditor-dimensionswidget-width": "шырыня",
 	"visualeditor-find-and-replace-diacritic": "Не ўлічваць дыякрытычныя сімвалы",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Пошук без уліку дыякрытычных сімвалаў недаступны ў гэтым браўзеры",
 	"visualeditor-find-and-replace-done": "Гатова",

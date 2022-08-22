@@ -101,6 +101,8 @@
 	"visualeditor-diff-moved-down": "Spostato giù",
 	"visualeditor-diff-moved-up": "Spostato su",
 	"visualeditor-diff-no-changes": "Nessuna modifica",
+	"visualeditor-dimensionswidget-height": "altezza",
+	"visualeditor-dimensionswidget-width": "larghezza",
 	"visualeditor-find-and-replace-done": "Fatto",
 	"visualeditor-find-and-replace-find-text": "Trova",
 	"visualeditor-find-and-replace-invalid-regex": "Espressione regolare non valida",
