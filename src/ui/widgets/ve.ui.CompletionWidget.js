@@ -57,7 +57,6 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 		toggle: 'onMenuToggle'
 	} );
 
-	this.menu.$element.append( this.header.$element );
 	this.popup.$body.append( this.menu.$element );
 
 	// Setup
@@ -114,10 +113,9 @@ ve.ui.CompletionWidget.prototype.update = function () {
 
 	this.updateMenu( input );
 	this.action.getSuggestions( input ).then( function ( suggestions ) {
-		this.menu.clearItems().addItems( suggestions.map( this.action.getMenuItemForSuggestion.bind( this.action ) ) );
-		if ( this.menu.getItems().length ) {
-			this.menu.highlightItem( this.menu.getItems()[ 0 ] );
-		}
+		this.menu.clearItems();
+		this.menu.addItems( suggestions.map( this.action.getMenuItemForSuggestion.bind( this.action ) ) );
+		this.menu.highlightItem( this.menu.findFirstSelectableItem() );
 		this.updateMenu( input, suggestions );
 	}.bind( this ) );
 };
@@ -127,17 +125,15 @@ ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 	var label = this.action.getHeaderLabel( input, suggestions );
 	if ( label !== undefined ) {
 		this.header.setLabel( label );
-		this.header.toggle( label !== null );
 	}
-	// If there is a label or menu items, show the menu
-	if ( this.header.getLabel() !== null || this.menu.items.length ) {
-		// HACK: upstream won't show the menu unless there are items.
-		// Fix upstream by adding a 'forceShow' option to toggle.
-		var length = this.menu.items.length;
-		this.menu.items.length = Math.max( length, 1 );
+	if ( this.header.getLabel() !== null ) {
+		this.menu.addItems( [ this.header ], 0 );
+	} else {
+		this.menu.removeItems( [ this.header ] );
+	}
+	// If there is a header or menu items, show the menu
+	if ( this.menu.items.length ) {
 		this.menu.toggle( true );
-		this.menu.items.length = length;
-
 		this.popup.toggle( true );
 		// Menu may have changed size, so recalculate position
 		this.popup.updateDimensions();
