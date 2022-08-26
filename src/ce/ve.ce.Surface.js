@@ -2131,6 +2131,13 @@ ve.ce.Surface.prototype.onPaste = function ( e ) {
 				surface.pasteSpecial = false;
 				surface.beforePasteData = null;
 
+				// Restore original clipboard metadata if requred (was overridden by middle-click
+				// paste logic in beforePaste)
+				if ( surface.originalClipboardMetdata ) {
+					surface.clipboardIndex = surface.originalClipboardMetdata.clipboardIndex;
+					surface.clipboard = surface.originalClipboardMetdata.clipboard;
+				}
+
 				ve.track( 'activity.clipboard', { action: 'paste' } );
 			} );
 		}
@@ -2160,11 +2167,19 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
 	}
 
 	this.beforePasteData = {};
+	this.originalClipboardMetdata = null;
 	if ( this.middleClickPasting && !this.lastNonCollapsedDocumentSelection.isNull() ) {
 		// Paste was triggered by middle click, and the last non-collapsed document selection was in
 		// this VE surface. Simulate a fake copy to load DM data into the clipboard. If we let the
 		// native middle-click paste happen, it would load CE data into the clipboard.
-		this.clipboardIndex++;
+		// Store original clipboard metadata so it can be restored after paste,
+		// and we can continue to use internal paste.
+		this.originalClipboardMetdata = {
+			clipboardIndex: this.clipboardIndex,
+			clipboard: this.clipboard
+		};
+		// Use a fake clipboard index for middle click, will be restored in afterPaste
+		this.clipboardIndex = -1;
 		this.clipboard = {
 			slice: this.model.documentModel.shallowCloneFromSelection( this.lastNonCollapsedDocumentSelection ),
 			hash: null
