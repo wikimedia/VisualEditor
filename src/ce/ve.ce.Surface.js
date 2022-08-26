@@ -953,7 +953,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 			this.$document.one( 'mouseup', function () {
 				// Stay true until other events have run, e.g. paste
 				setTimeout( function () {
-					this.middleClickPasting = false;
+					surface.middleClickPasting = false;
 				} );
 			} );
 		}
