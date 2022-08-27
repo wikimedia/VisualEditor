@@ -5,15 +5,5 @@
 	],
 	"rules": {
 		"max-len": "off"
-	},
-	"overrides": [
-		{
-			"files": [
-				"i18n/**/{en,qqq}.json"
-			],
-			"rules": {
-				"sort-keys": "error"
-			}
-		}
-	]
+	}
 }
