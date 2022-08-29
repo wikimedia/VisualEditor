@@ -23,7 +23,8 @@
 			"Tel'et",
 			"Tifinaghes",
 			"Vlad5250",
-			"Ата"
+			"Ата",
+			"Пан Хаунд"
 		]
 	},
 	"visualeditor": "Візуальний редактор",
@@ -116,6 +117,7 @@
 	"visualeditor-diff-moved-up": "Переміщено вгору",
 	"visualeditor-diff-no-changes": "Без змін",
 	"visualeditor-diff-timed-out": "Для обчислення змін було витрачено надто багато часу, тому опис нижче може бути не оптимальним.",
+	"visualeditor-dimensionswidget-height": "висота",
 	"visualeditor-dimensionswidget-px": "пікс.",
 	"visualeditor-dimensionswidget-times": "×",
 	"visualeditor-find-and-replace-diacritic": "Нечутливість до діакритичних символів",

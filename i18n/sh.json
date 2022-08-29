@@ -3,7 +3,8 @@
 		"authors": [
 			"Conquistador",
 			"OC Ripper",
-			"Sf"
+			"Sf",
+			"Vlad5250"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -21,11 +22,15 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Indeks",
 	"visualeditor-annotationbutton-superscript-tooltip": "Eksponent",
 	"visualeditor-annotationbutton-underline-tooltip": "Podvučeno",
-	"visualeditor-clearbutton-tooltip": "Ukloni stil",
+	"visualeditor-clearbutton-tooltip": "Ukloni",
 	"visualeditor-clipboard-copy": "Kopiraj",
+	"visualeditor-clipboard-copy-fail": "Nije uspjelo iskopirati u međuspremnik.",
+	"visualeditor-clipboard-copy-success": "Iskopirano u međuspremnik.",
 	"visualeditor-clipboard-cut": "Izreži",
 	"visualeditor-clipboard-paste": "Zalijepi",
 	"visualeditor-clipboard-paste-special": "Zalijepi kao običan tekst",
+	"visualeditor-command-dialog-cancel": "Zatvori / otkaži izmjenu",
+	"visualeditor-command-dialog-confirm": "Potvrdi izmjenu",
 	"visualeditor-commentinspector-edit": "Uredi komentar",
 	"visualeditor-commentinspector-title": "Komentar",
 	"visualeditor-commentinspector-tooltip": "Komentar",
