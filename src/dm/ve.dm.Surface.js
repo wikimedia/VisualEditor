@@ -1385,9 +1385,10 @@ ve.dm.Surface.prototype.storeChanges = function () {
 	if ( !change.isEmpty() ) {
 		var changes = this.storage.getObject( this.autosavePrefix + 've-changes' ) || [];
 		changes.push( change );
-		if ( this.storage.setObject( this.autosavePrefix + 've-changes', changes ) ) {
+		if ( this.storage.setObject( this.autosavePrefix + 've-changes', changes, this.storageExpiry ) ) {
 			this.lastStoredChange = dmDoc.getCompleteHistoryLength();
-			this.storage.setObject( this.autosavePrefix + 've-selection', this.getSelection() );
+			this.storage.setObject( this.autosavePrefix + 've-selection', this.getSelection(), this.storageExpiry );
+			this.updateExpiry( [ 've-changes', 've-selection' ] );
 		} else {
 			// Auto-save failed probably because of memory limits
 			// so flag it so we don't keep trying in vain.
@@ -1406,7 +1407,8 @@ ve.dm.Surface.prototype.storeDocStorage = function () {
 	}
 
 	var dmDoc = this.getDocument();
-	this.storage.setObject( this.autosavePrefix + 've-docstorage', dmDoc.getStorage() );
+	this.storage.setObject( this.autosavePrefix + 've-docstorage', dmDoc.getStorage(), this.storageExpiry );
+	this.updateExpiry( [ 've-docstorage' ] );
 };
 
 /**
@@ -1425,12 +1427,14 @@ ve.dm.Surface.prototype.setAutosaveDocId = function ( docId ) {
  * Set the storage interface for autosave
  *
  * @param {ve.init.ConflictableStorage} storage Storage interface
+ * @param {number} [storageExpiry] Storage expiry time in seconds
  */
-ve.dm.Surface.prototype.setStorage = function ( storage ) {
+ve.dm.Surface.prototype.setStorage = function ( storage, storageExpiry ) {
 	if ( this.storing ) {
 		throw new Error( 'Can\'t change storage interface after auto-save has stared' );
 	}
 	this.storage = storage;
+	this.storageExpiry = storageExpiry;
 
 	var isLocalStorage = false;
 	try {
@@ -1456,6 +1460,7 @@ ve.dm.Surface.prototype.startStoringChanges = function () {
 	this.storing = true;
 	this.on( 'undoStackChange', this.storeChangesListener );
 	this.getDocument().on( 'storage', this.storeDocStorageListener );
+	this.updateExpiry();
 };
 
 /**
@@ -1534,12 +1539,13 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
 	}
 	var useLatestHtml = html === undefined;
 	// Store HTML separately to avoid wasteful JSON encoding
-	if ( !this.storage.set( this.autosavePrefix + 've-dochtml', useLatestHtml ? this.getHtml() : html ) ) {
+	if ( !this.storage.set( this.autosavePrefix + 've-dochtml', useLatestHtml ? this.getHtml() : html, this.storageExpiry ) ) {
 		// If we failed to store the html, wipe the docstate
 		this.storage.remove( this.autosavePrefix + 've-docstate' );
 		this.stopStoringChanges();
 		return false;
 	}
+	this.updateExpiry( [ 've-dochtml' ] );
 
 	if ( useLatestHtml ) {
 		// If storing the latest HTML, reset the lastStoreChange pointer,
@@ -1557,7 +1563,29 @@ ve.dm.Surface.prototype.storeDocState = function ( state, html ) {
  * @return {boolean} Document metadata was successfully stored
  */
 ve.dm.Surface.prototype.updateDocState = function ( state ) {
-	return this.storage.set( this.autosavePrefix + 've-docstate', JSON.stringify( state ) );
+	if ( this.storage.set( this.autosavePrefix + 've-docstate', JSON.stringify( state ), this.storageExpiry ) ) {
+		this.updateExpiry( [ 've-docstate' ] );
+		return true;
+	}
+	return false;
+};
+
+/**
+ * Update the expiry value of keys in use
+ *
+ * @param {string[]} [skipKeys] Keys to skip (because they have just been updated)
+ */
+ve.dm.Surface.prototype.updateExpiry = function ( skipKeys ) {
+	if ( !this.storageExpiry ) {
+		return;
+	}
+	var surface = this;
+	skipKeys = skipKeys || [];
+	[ 've-docstate', 've-dochtml', 've-selection', 've-changes' ].forEach( function ( key ) {
+		if ( skipKeys.indexOf( key ) === -1 ) {
+			surface.storage.setExpires( surface.autosavePrefix + key, surface.storageExpiry );
+		}
+	} );
 };
 
 /**
