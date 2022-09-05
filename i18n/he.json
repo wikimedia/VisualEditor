@@ -60,7 +60,7 @@
 	"visualeditor-changedesc-textstyle-added": "נוסף עיצוב טקסט: $1",
 	"visualeditor-changedesc-textstyle-removed": "הוסר עיצוב טקסט: $1",
 	"visualeditor-changedesc-unknown": "$1 שוּנה",
-	"visualeditor-changedesc-unset": "בוטלה הגדרת $1 שערכה היה $2",
+	"visualeditor-changedesc-unset": "נמחק הפרמטר $1 שערכו היה $2",
 	"visualeditor-changedir": "שינוי כיוון",
 	"visualeditor-changedir-tool-ltr": "הצגה משמאל לימין",
 	"visualeditor-changedir-tool-rtl": "הצגה מימין לשמאל",

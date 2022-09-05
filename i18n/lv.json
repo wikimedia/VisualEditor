@@ -100,6 +100,8 @@
 	"visualeditor-diff-moved-up": "Pārvietots augšup",
 	"visualeditor-diff-no-changes": "Nav izmaiņu",
 	"visualeditor-diff-timed-out": "Izmaiņu aprēķināšana aizņēma pārāk ilgu laiku, tāpēc zemāk esošais apraksts var nebūt optimāls.",
+	"visualeditor-dimensionswidget-height": "augstums",
+	"visualeditor-dimensionswidget-width": "platums",
 	"visualeditor-find-and-replace-diacritic": "Neņemt vērā diakritiskās zīmes",
 	"visualeditor-find-and-replace-diacritic-unavailable": "Meklēšana, neņemot vērā diakritiskās zīmes, šajā pārlūkā nav pieejama",
 	"visualeditor-find-and-replace-done": "Gatavs",

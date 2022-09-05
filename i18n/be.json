@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Artificial123",
 			"Artsiom91",
 			"Chadyka",
@@ -27,7 +28,7 @@
 	"visualeditor-alignablecontextitem-title": "Выраўноўванне",
 	"visualeditor-annotationbutton-big-tooltip": "Буйней",
 	"visualeditor-annotationbutton-bold-tooltip": "Цёмны",
-	"visualeditor-annotationbutton-code-tooltip": "Камп'ютарны код",
+	"visualeditor-annotationbutton-code-tooltip": "Праграмны код",
 	"visualeditor-annotationbutton-italic-tooltip": "Курсіў",
 	"visualeditor-annotationbutton-language-tooltip": "Мова",
 	"visualeditor-annotationbutton-link-tooltip": "Спасылка",
@@ -70,9 +71,9 @@
 	"visualeditor-command-dialog-confirm": "Пацвердзіць змены",
 	"visualeditor-command-dialog-focus-context": "Перамясціць фокус на кантэкстную ўсплыўку",
 	"visualeditor-commentannotationcontextitem-comment": "Каментарый",
-	"visualeditor-commentinspector-edit": "Рэдагаваць каментар",
+	"visualeditor-commentinspector-edit": "Правіць каментарый",
 	"visualeditor-commentinspector-title": "Каментаваць",
-	"visualeditor-commentinspector-tooltip": "Каментаваць",
+	"visualeditor-commentinspector-tooltip": "Каментарый",
 	"visualeditor-content-select-all": "Выбраць усе",
 	"visualeditor-contextitemwidget-label-close": "Зачыніць",
 	"visualeditor-contextitemwidget-label-remove": "Выдаліць",
@@ -205,7 +206,7 @@
 	"visualeditor-table-insert-col-before": "Уставіць перад",
 	"visualeditor-table-insert-row-after": "Уставіць ніжэй",
 	"visualeditor-table-insert-row-before": "Уставіць вышэй",
-	"visualeditor-table-insert-table": "Табліца",
+	"visualeditor-table-insert-table": "Табліцу",
 	"visualeditor-table-merge-cells": "Аб’яднаць ячэйкі",
 	"visualeditor-table-merge-cells-merge": "Аб’яднаць",
 	"visualeditor-table-merge-cells-unmerge": "Раз’яднаць",
