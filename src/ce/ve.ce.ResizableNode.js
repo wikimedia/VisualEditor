@@ -235,8 +235,8 @@ ve.ce.ResizableNode.prototype.showHandles = function ( handles ) {
 	// * ve-ce-resizableNode-hide-sw
 	// * ve-ce-resizableNode-hide-se
 	this.$resizeHandles
-		.addClass( add.join( ' ' ) )
-		.removeClass( remove.join( ' ' ) );
+		.addClass( add )
+		.removeClass( remove );
 };
 
 /**

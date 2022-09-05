@@ -46,7 +46,7 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 
 	if ( Array.isArray( config.classes ) ) {
 		// eslint-disable-next-line mediawiki/class-doc
-		this.$highlights.addClass( config.classes.join( ' ' ) );
+		this.$highlights.addClass( config.classes );
 	}
 
 	// Use a debounced handler as some actions can trigger redrawHighlights
