@@ -77,6 +77,8 @@
 	"visualeditor-dialog-language-search-title": "Izbira jezika",
 	"visualeditor-dialog-table-caption": "Napis",
 	"visualeditor-dialog-table-title": "Lastnosti tabele",
+	"visualeditor-diff-moved-down": "Premaknjeno navzdol",
+	"visualeditor-diff-moved-up": "Premaknjeno navzgor",
 	"visualeditor-diff-no-changes": "Ni sprememb",
 	"visualeditor-dimensionswidget-px": " točk",
 	"visualeditor-find-and-replace-diacritic": "Brez upoštevanja diakritičnih znakov",
