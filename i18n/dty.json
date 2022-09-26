@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"जनक राज भट्ट"
+			"जनक राज भट्ट",
+			"बडा काजी"
 		]
 	},
 	"visualeditor": "दृष्टि सम्पादक",
@@ -12,7 +13,7 @@
 	"visualeditor-annotationbutton-code-tooltip": "कम्पयुटर कोड",
 	"visualeditor-annotationbutton-italic-tooltip": "छड्क्या",
 	"visualeditor-annotationbutton-language-tooltip": "भाषा",
-	"visualeditor-annotationbutton-link-tooltip": "लिङ्क",
+	"visualeditor-annotationbutton-link-tooltip": "कडी",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "बीचको धर्को",
 	"visualeditor-annotationbutton-subscript-tooltip": "निम्नाङ्कित गद्दे",
 	"visualeditor-annotationbutton-superscript-tooltip": "उच्चाङ्कित गद्दे",
@@ -62,7 +63,7 @@
 	"visualeditor-languageinspector-widget-label-direction": "दिशा",
 	"visualeditor-languageinspector-widget-label-langcode": "भाषा कोड",
 	"visualeditor-languageinspector-widget-label-language": "भाषा",
-	"visualeditor-linkinspector-title": "लिङ्क",
+	"visualeditor-linkinspector-title": "कडी",
 	"visualeditor-listbutton-bullet-tooltip": "थोप्ला सुची",
 	"visualeditor-listbutton-number-tooltip": "संख्या सुची",
 	"visualeditor-mediasizewidget-label-scale": "स्केल",

@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Haribanshi",
+			"बडा काजी",
 			"बिप्लब आनन्द"
 		]
 	},
@@ -21,7 +22,7 @@
 	"visualeditor-annotationbutton-code-tooltip": "कम्प्यूटर कोड",
 	"visualeditor-annotationbutton-italic-tooltip": "इटालिक",
 	"visualeditor-annotationbutton-language-tooltip": "भाषा",
-	"visualeditor-annotationbutton-link-tooltip": "लिङ्क",
+	"visualeditor-annotationbutton-link-tooltip": "कडी",
 	"visualeditor-annotationbutton-small-tooltip": "छोट",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "कटल",
 	"visualeditor-annotationbutton-subscript-tooltip": "नीचका",
@@ -122,7 +123,7 @@
 	"visualeditor-linkcontext-label-fallback": "पूर्वप्रदर्शन",
 	"visualeditor-linkcontext-label-label": "सूचक पत्र",
 	"visualeditor-linkcontext-remove": "लिङ्क हटाबी",
-	"visualeditor-linkinspector-title": "लिङ्क",
+	"visualeditor-linkinspector-title": "कडी",
 	"visualeditor-listbutton-bullet-tooltip": "बुलेटेड सूची",
 	"visualeditor-listbutton-check-tooltip": "चेक सुचि",
 	"visualeditor-listbutton-number-tooltip": "क्रमांकित सूची",

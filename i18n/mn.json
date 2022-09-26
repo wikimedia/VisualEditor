@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Chinneeb",
 			"Munkhzaya.E",
 			"Wisdom"
 		]
@@ -29,7 +30,7 @@
 	"visualeditor-commentinspector-tooltip": "Сэтгэгдэл",
 	"visualeditor-content-select-all": "Бүгдийг сонгох",
 	"visualeditor-contextitemwidget-label-remove": "Устгах",
-	"visualeditor-contextitemwidget-label-secondary": "Засварлах",
+	"visualeditor-contextitemwidget-label-secondary": "Засах",
 	"visualeditor-dialog-action-apply": "Өөрчлөлтийг хадгалах",
 	"visualeditor-dialog-action-cancel": "Цуцлах",
 	"visualeditor-dialog-action-done": "Дууссан",
