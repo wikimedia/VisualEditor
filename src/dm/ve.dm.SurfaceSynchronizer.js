@@ -53,12 +53,23 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 		},
 		transports: [ 'websocket' ]
 	};
-	this.socket = io( path, options );
-	this.socket.on( 'registered', this.onRegistered.bind( this ) );
-	this.socket.on( 'initDoc', this.onInitDoc.bind( this ) );
-	this.socket.on( 'newChange', this.onNewChange.bind( this ) );
-	this.socket.on( 'authorChange', this.onAuthorChange.bind( this ) );
-	this.socket.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
+	this.conn = {
+		socket: io( path, options ),
+		on: function ( type, handler ) {
+			this.socket.on( type, handler );
+		},
+		send: function ( type, data ) {
+			this.socket.emit( type, data );
+		},
+		disconnect: function () {
+			this.socket.disconnect();
+		}
+	};
+	this.conn.on( 'registered', this.onRegistered.bind( this ) );
+	this.conn.on( 'initDoc', this.onInitDoc.bind( this ) );
+	this.conn.on( 'newChange', this.onNewChange.bind( this ) );
+	this.conn.on( 'authorChange', this.onAuthorChange.bind( this ) );
+	this.conn.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
 
 	var authorData = ve.init.platform.sessionStorage.getObject( 've-collab-author' );
 	if ( authorData ) {
@@ -117,7 +128,7 @@ OO.mixinClass( ve.dm.SurfaceSynchronizer, ve.dm.RebaseClient );
  * Destroy the synchronizer
  */
 ve.dm.SurfaceSynchronizer.prototype.destroy = function () {
-	this.socket.disconnect();
+	this.conn.disconnect();
 	this.doc.disconnect( this );
 	this.surface.disconnect( this );
 	this.initialized = false;
@@ -189,7 +200,7 @@ ve.dm.SurfaceSynchronizer.prototype.submitChange = function () {
  * @inheritdoc
  */
 ve.dm.SurfaceSynchronizer.prototype.sendChange = function ( backtrack, change ) {
-	this.socket.emit( 'submitChange', {
+	this.conn.send( 'submitChange', {
 		backtrack: this.backtrack,
 		change: change
 	} );
@@ -247,7 +258,7 @@ ve.dm.SurfaceSynchronizer.prototype.logEvent = function ( event ) {
 		// document history during initialization
 		return;
 	}
-	this.socket.emit( 'logEvent', ve.extendObject( { sendTimestamp: Date.now() }, event ) );
+	this.conn.send( 'logEvent', ve.extendObject( { sendTimestamp: Date.now() }, event ) );
 };
 
 /**
@@ -336,7 +347,7 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorChange = function ( data ) {
 };
 
 ve.dm.SurfaceSynchronizer.prototype.changeAuthor = function ( data ) {
-	this.socket.emit( 'changeAuthor', ve.extendObject( {}, this.getAuthorData( this.getAuthorId() ), data ) );
+	this.conn.send( 'changeAuthor', ve.extendObject( {}, this.getAuthorData( this.getAuthorId() ), data ) );
 };
 
 ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
@@ -355,7 +366,7 @@ ve.dm.SurfaceSynchronizer.prototype.onAuthorDisconnect = function ( authorId ) {
  */
 ve.dm.SurfaceSynchronizer.prototype.onRegistered = function ( data ) {
 	if ( this.serverId && this.serverId !== data.serverId ) {
-		this.socket.disconnect();
+		this.conn.disconnect();
 		this.emit( 'wrongDoc' );
 		return;
 	}
@@ -407,7 +418,7 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 		var history = ve.dm.Change.static.deserialize( data.history );
 		this.acceptChange( history );
 	} catch ( e ) {
-		this.socket.disconnect();
+		this.conn.disconnect();
 		this.emit( 'initDoc', e );
 		return;
 	}
