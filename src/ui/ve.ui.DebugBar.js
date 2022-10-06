@@ -243,7 +243,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			$chunk.append( $label );
 			if ( annotations ) {
 				$annotations = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text(
-					// eslint-disable-next-line no-restricted-syntax
+					// eslint-disable-next-line es-x/no-array-prototype-values
 					'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( function ( ann ) {
 						return JSON.stringify( ann.getComparableObject() );
 					} ).join( ', ' ) + ']'

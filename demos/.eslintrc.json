@@ -11,6 +11,7 @@
 		"OO": "readonly"
 	},
 	"rules": {
+		"es-x/no-array-prototype-keys": "off",
 		"max-len": "off"
 	},
 	"plugins": [ "html" ],

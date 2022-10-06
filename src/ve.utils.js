@@ -1001,7 +1001,7 @@ ve.normalizeNode = function ( node ) {
 		p.appendChild( document.createTextNode( 'Foo' ) );
 		p.appendChild( document.createTextNode( 'Bar' ) );
 		p.appendChild( document.createTextNode( '' ) );
-		// eslint-disable-next-line no-restricted-properties
+		// eslint-disable-next-line es-x/no-string-prototype-normalize
 		p.normalize();
 		ve.isNormalizeBroken = p.childNodes.length !== 1;
 	}
@@ -1029,7 +1029,7 @@ ve.normalizeNode = function ( node ) {
 		}
 	} else {
 		// Use native implementation
-		// eslint-disable-next-line no-restricted-properties
+		// eslint-disable-next-line es-x/no-string-prototype-normalize
 		node.normalize();
 	}
 };
