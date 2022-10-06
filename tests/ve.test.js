@@ -737,7 +737,7 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 			assert.strictEqual(
 				ve.transformStyleAttributes( caseItem.before, false )
 					// Firefox adds linebreaks after <!DOCTYPE>s
-					.replace( '<!DOCTYPE html>\n', '<!DOCTYPE html>' ),
+					.replace( /<!DOCTYPE html>\r?\n/, '<!DOCTYPE html>' ),
 				caseItem.masked || caseItem.before,
 				caseItem.msg + ' (masking)'
 			);
@@ -747,7 +747,7 @@ QUnit.test( 'transformStyleAttributes', function ( assert ) {
 		assert.strictEqual(
 			ve.transformStyleAttributes( caseItem.masked || caseItem.before, true )
 				// Firefox adds a linebreak after <!DOCTYPE>s
-				.replace( '<!DOCTYPE html>\n', '<!DOCTYPE html>' ),
+				.replace( /<!DOCTYPE html>\r?\n/, '<!DOCTYPE html>' ),
 			caseItem.after || caseItem.before,
 			caseItem.msg + ' (unmasking)'
 		);
