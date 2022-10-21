@@ -3133,7 +3133,7 @@ ve.ce.Surface.prototype.onDocumentBeforeInput = function ( e ) {
 		// Handle IMEs that emit text fragments with a trailing newline on Enter keypress (T312558)
 		if (
 			( inputType === 'insertText' || inputType === 'insertCompositionText' ) &&
-			e.originalEvent.data.slice( -1 ) === '\n'
+			e.originalEvent.data && e.originalEvent.data.slice( -1 ) === '\n'
 		) {
 			// The event will have inserted a newline into the CE view,
 			// so fix up the DM accordingly depending on the context.
