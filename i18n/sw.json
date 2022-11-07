@@ -2,12 +2,16 @@
 	"@metadata": {
 		"authors": [
 			"Lloffiwr",
+			"MaryMunyoki",
 			"Muddyb",
 			"Muddyb Blast Producer"
 		]
 	},
 	"visualeditor": "VisualEditor",
 	"visualeditor-aliennode-tooltip": "Kumradhi, elementi hii inaweza kuhaririwa kwa kutumia mfumo wa msimbo tu kwa sasa.",
+	"visualeditor-align-desc-center": "katikati",
+	"visualeditor-align-desc-default": "chaguo-msingi",
+	"visualeditor-align-desc-left": "kushoto",
 	"visualeditor-annotationbutton-bold-tooltip": "Koze",
 	"visualeditor-annotationbutton-code-tooltip": "Msimbo wa kompyuta",
 	"visualeditor-annotationbutton-italic-tooltip": "Mlazo",
@@ -17,6 +21,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Herufi za chini",
 	"visualeditor-annotationbutton-superscript-tooltip": "Herufi za juu",
 	"visualeditor-annotationbutton-underline-tooltip": "Pigia mstari",
+	"visualeditor-changedesc-comment": "Maoni yamebadilishwa kutoka $1 hadi $2",
 	"visualeditor-clearbutton-tooltip": "Futa muundo",
 	"visualeditor-clipboard-copy": "Nakili",
 	"visualeditor-clipboard-cut": "Kata",
