@@ -23,23 +23,17 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	ve.ui.LanguageSearchWidget.super.call( this, config );
 
 	// Properties
-	this.languageResultWidgets = [];
 	this.filteredLanguageResultWidgets = [];
+	this.languageResultWidgets = ve.init.platform.getLanguageCodes()
+		.sort()
+		.map( function ( languageCode ) {
+			return new ve.ui.LanguageResultWidget( { data: {
+				code: languageCode,
+				name: ve.init.platform.getLanguageName( languageCode ),
+				autonym: ve.init.platform.getLanguageAutonym( languageCode )
+			} } );
+		} );
 
-	var languageCodes = ve.init.platform.getLanguageCodes().sort();
-
-	for ( var i = 0, l = languageCodes.length; i < l; i++ ) {
-		var languageCode = languageCodes[ i ];
-		this.languageResultWidgets.push(
-			new ve.ui.LanguageResultWidget( {
-				data: {
-					code: languageCode,
-					name: ve.init.platform.getLanguageName( languageCode ),
-					autonym: ve.init.platform.getLanguageAutonym( languageCode )
-				}
-			} )
-		);
-	}
 	this.setAvailableLanguages();
 
 	// Initialization
