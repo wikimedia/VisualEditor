@@ -27,8 +27,7 @@ QUnit.test( 've.sanitizeHtml', function ( assert ) {
 		{
 			msg: 'style attribute allowed',
 			html: '<span style="font-weight: 700;">Foo</span>',
-			expected: '<span style="font-weight: 700;">Foo</span>',
-			fails: true
+			expected: '<span style="font-weight: 700;">Foo</span>'
 		},
 		{
 			msg: 'RDFa attributes allowed',
@@ -51,11 +50,7 @@ QUnit.test( 've.sanitizeHtml', function ( assert ) {
 
 		var expected = document.createElement( 'div' );
 		expected.innerHTML = caseItem.expected;
-		if ( caseItem.fails ) {
-			assert.notEqualDomElement( actual, expected, caseItem.msg );
-		} else {
-			assert.equalDomElement( actual, expected, caseItem.msg );
-		}
+		assert.equalDomElement( actual, expected, caseItem.msg );
 	} );
 
 } );
