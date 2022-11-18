@@ -102,16 +102,16 @@ ve.ui.LinkContextItem.prototype.getDescription = function () {
  */
 ve.ui.LinkContextItem.prototype.renderBody = function () {
 	var htmlDoc = this.context.getSurface().getModel().getDocument().getHtmlDocument();
-	this.$body.empty().append(
-		$( '<a>' )
-			.addClass( 've-ui-linkContextItem-link' )
-			.text( this.getDescription() )
-			.attr( {
-				href: ve.resolveUrl( this.model.getHref(), htmlDoc ),
-				target: '_blank',
-				rel: 'noopener'
-			} )
-	);
+	var $link = $( '<a>' )
+		.addClass( 've-ui-linkContextItem-link' )
+		.text( this.getDescription() )
+		.attr( {
+			target: '_blank',
+			rel: 'noopener'
+		} );
+	// T322704
+	ve.setAttributeSafe( $link[ 0 ], 'href', ve.resolveUrl( this.model.getHref(), htmlDoc ), '#' );
+	this.$body.empty().append( $link );
 	if ( !this.context.isMobile() ) {
 		this.$body.append( this.$labelLayout );
 	}

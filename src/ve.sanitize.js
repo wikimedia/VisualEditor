@@ -45,3 +45,19 @@ ve.sanitizeHtml = function ( html, returnDocument ) {
 ve.sanitizeHtmlToDocument = function ( html ) {
 	return ve.sanitizeHtml( html, true );
 };
+
+/**
+ * Set an element attribute to a specific value if it is safe
+ *
+ * @param {HTMLElement} element Element
+ * @param {string} attr Attribute
+ * @param {string} val Value
+ * @param {string} [fallbackVal] Optional fallback value if val is unsafe (will also be safety-checked)
+ */
+ve.setAttributeSafe = function ( element, attr, val, fallbackVal ) {
+	if ( DOMPurify.isValidAttribute( element.tagName, attr, val ) ) {
+		element.setAttribute( attr, val );
+	} else if ( fallbackVal !== undefined && DOMPurify.isValidAttribute( element.tagName, attr, fallbackVal ) ) {
+		element.setAttribute( attr, fallbackVal );
+	}
+};
