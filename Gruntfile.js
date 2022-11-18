@@ -398,6 +398,7 @@ module.exports = function ( grunt ) {
 							statements: 20,
 							lines: 20,
 							excludes: [
+								'src/ve.sanitize.js',
 								'rebaser/src/dm/ve.dm.DocumentStore.js',
 								'rebaser/src/dm/ve.dm.ProtocolServer.js',
 								'rebaser/src/dm/ve.dm.RebaseDocState.js',
