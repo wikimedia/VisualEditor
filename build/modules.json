@@ -828,6 +828,7 @@
 			"tests/ve.Node.test.js",
 			"tests/ve.BranchNode.test.js",
 			"tests/ve.LeafNode.test.js",
+			"tests/ve.sanitize.test.js",
 			"tests/dm/ve.dm.example.js",
 			"tests/dm/ve.dm.example.StubReferenceNode.js",
 			"tests/dm/ve.dm.Annotation.test.js",
