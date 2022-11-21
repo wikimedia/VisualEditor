@@ -1379,7 +1379,18 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 1 },
 						{
 							type: 'replace',
-							insert: [ 'A', '2', '3', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ],
+							insert: [
+								[ 'A', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
+								[ '2', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
+								[ '3', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
+								[ 'B', [ { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
+								[ 'C', [ { type: 'textStyle/underline', attributes: { nodeName: 'u' } } ] ],
+								[ 'D', [ { type: 'textStyle/strikethrough', attributes: { nodeName: 's' } } ] ],
+								[ 'E', [ { type: 'textStyle/superscript', attributes: { nodeName: 'sup' } } ] ],
+								[ 'F', [ { type: 'textStyle/subscript', attributes: { nodeName: 'sub' } } ] ],
+								[ 'G', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } }, { type: 'textStyle/italic', attributes: { nodeName: 'i' } } ] ],
+								'H'
+							],
 							remove: []
 						},
 						{ type: 'retain', length: 29 }
@@ -1387,7 +1398,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				],
 				expectedRangeOrSelection: new ve.Range( 11 ),
 				testOriginalDomElements: true,
-				msg: 'Span cleanups: style removed (not converted into markup)'
+				msg: 'Span cleanups: style converted into markup'
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
