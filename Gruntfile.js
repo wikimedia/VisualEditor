@@ -6,6 +6,11 @@
 
 'use strict';
 
+/**
+ * Grunt configuration
+ *
+ * @param {Object} grunt The grunt object
+ */
 module.exports = function ( grunt ) {
 	const modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
@@ -36,6 +41,12 @@ module.exports = function ( grunt ) {
 	// We want to use `grunt watch` to start this and karma watch together.
 	grunt.renameTask( 'watch', 'runwatch' );
 
+	/**
+	 * Build an object of required coverage percentages
+	 *
+	 * @param {number} pc Percentage coverage required (for all aspects)
+	 * @return {Object} required coverage percentages
+	 */
 	function coverAll( pc ) {
 		return {
 			functions: pc,

@@ -110,6 +110,7 @@ const self = module.exports = {
 	 * @param {Array} load List of targets to return and their dependencies
 	 * @param {Array|null} list Extant flat list of file paths to extend
 	 * @return {Array} Flat list of file paths
+	 * @throws {Error} Dependency not found
 	 */
 	buildDependencyList: function ( modules, load, list ) {
 		list = list || [];

@@ -27,10 +27,23 @@ module.exports = function ( grunt ) {
 			stringifyObject = require( 'stringify-object' );
 		let text = grunt.file.read( this.data.template );
 
+		/**
+		 * Build a script tag
+		 *
+		 * @param {string} src The script URL
+		 * @return {string} Script tag, indented as appropriate
+		 */
 		function scriptTag( src ) {
 			return indent + '<script src="' + pathPrefix + src.file + '"></script>';
 		}
 
+		/**
+		 * Build a stylesheet link tag
+		 *
+		 * @param {string} [group] Group for the stylesheet
+		 * @param {string} src The stylesheet URL
+		 * @return {string} Stylesheet link tag, indented as appropriate
+		 */
 		function styleTag( group, src ) {
 			const rtlFilepath = src.file.replace( /\.css$/, '.rtl.css' );
 
@@ -49,10 +62,25 @@ module.exports = function ( grunt ) {
 				( group ? ' class="stylesheet-' + group + '"' : '' ) + '>';
 		}
 
+		/**
+		 * Expand string file path into a file description object { file: src }
+		 *
+		 * Do nothing if already expanded.
+		 *
+		 * @param {string|Object} src File path, or file description object
+		 * @return {Object} File description object
+		 */
 		function expand( src ) {
 			return typeof src === 'string' ? { file: src } : src;
 		}
 
+		/**
+		 * Filter out debug files, depending on env.test / env.debug
+		 *
+		 * @param {string} [type] The type of the file
+		 * @param {Object} src File description object
+		 * @return {boolean} Whether to include the file
+		 */
 		function filter( type, src ) {
 			if ( src.debug && !env.debug ) {
 				return false;
@@ -64,6 +92,14 @@ module.exports = function ( grunt ) {
 			return true;
 		}
 
+		/**
+		 * Substitute placeholder text
+		 *
+		 * @param {string} input The input text, maybe containing placeholders
+		 * @param {string} id The id to replace
+		 * @param {string|Function} replacement Replacement string, or function returning one
+		 * @param {Function} callback Will be called with the substituted output
+		 */
 		function placeholder( input, id, replacement, callback ) {
 			const rComment = new RegExp( '<!-- ' + id + ' -->', 'm' );
 			if ( typeof replacement === 'function' ) {
@@ -77,6 +113,11 @@ module.exports = function ( grunt ) {
 			}
 		}
 
+		/**
+		 * Push modules into loadedModules
+		 *
+		 * @param {Array} l Modules specified in the buildLoader config (see Gruntfile.js)
+		 */
 		function addModules( l ) {
 			const dependencies = moduleUtils.buildDependencyList( modules, l );
 			for ( const dependency in dependencies ) {
