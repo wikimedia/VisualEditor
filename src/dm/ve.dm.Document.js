@@ -592,7 +592,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			);
 		}
 
-		// eslint-disable-next-line no-inner-declarations
+		// eslint-disable-next-line no-inner-declarations, es-x/no-block-scoped-functions
 		function nodeNeedsContext( node ) {
 			return node.getParentNodeTypes() !== null || node.isContent();
 		}

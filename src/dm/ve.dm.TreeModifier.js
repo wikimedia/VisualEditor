@@ -321,6 +321,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	var isTextOp = treeOp.type.slice( -4 ) === 'Text';
 	var f = treeOp.from && prepareSplice( treeOp.from, treeOp.isContent, isTextOp );
 	var t = treeOp.to && prepareSplice( treeOp.to, treeOp.isContent, isTextOp );
+	// eslint-disable-next-line es-x/no-array-string-prototype-at
 	var a = treeOp.at && prepareSplice( treeOp.at, treeOp.isContent, isTextOp );
 
 	// Always adjust linear data before tree, to ensure consistency when node events

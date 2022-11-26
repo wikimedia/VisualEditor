@@ -466,6 +466,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 	var filibusterStatic = this;
 
 	if ( seen === undefined ) {
+		// eslint-disable-next-line es-x/no-set
 		seen = new Set();
 	}
 	if ( Array.isArray( val ) ) {
@@ -496,7 +497,6 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 		return { 've.dm.Selection': val.getDescription() };
 	} else if ( val.constructor === ve.dm.AnnotationSet ) {
 		return {
-			// eslint-disable-next-line es-x/no-array-prototype-values
 			've.dm.AnnotationSet': val.getStore()
 				.values( val.getHashes() )
 				.map( function ( annotation ) {

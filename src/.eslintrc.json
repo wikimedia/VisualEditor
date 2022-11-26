@@ -19,16 +19,11 @@
 		"no-jquery/no-extend": "error",
 		"no-jquery/no-html": [ "error", { "allowGetOrSet": "get" } ],
 		"no-jquery/no-visibility": "error",
-		"es-x/no-array-prototype-keys": "warn",
-		"es-x/no-array-prototype-values": "warn",
-		"es-x/no-array-string-prototype-at": "warn",
-		"es-x/no-block-scoped-functions": "warn",
-		"es-x/no-set": "warn",
-		"es-x/no-proxy": "warn",
-		"es-x/no-typed-arrays": "warn",
+		"es-x/no-array-prototype-keys": "off",
+		"es-x/no-array-prototype-values": "off",
 		"es-x/no-promise-prototype-finally": "warn",
 		"es-x/no-hashbang": "warn",
-		"es-x/no-symbol-prototype-description": "warn",
+		"es-x/no-symbol-prototype-description": "off",
 		"max-len": "off"
 	}
 }

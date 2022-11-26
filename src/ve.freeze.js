@@ -16,6 +16,7 @@
 		}
 	};
 
+	// eslint-disable-next-line es-x/no-proxy, es-x/no-set
 	if ( !window.Proxy || !window.Set ) {
 		return;
 	}
@@ -32,6 +33,7 @@
 	 */
 	ve.deepFreeze = deepFreeze = function ( object, onlyProperties, seen ) {
 		if ( !seen ) {
+			// eslint-disable-next-line es-x/no-set
 			seen = new Set();
 			seen.add( object );
 		}
@@ -53,6 +55,7 @@
 		}
 
 		if ( !onlyProperties ) {
+			// eslint-disable-next-line es-x/no-proxy
 			object = new window.Proxy( object, freezeProxyHandler );
 			// Object#freeze isn't really necessary after proxying,
 			// but use it so we can detect frozen objects with Object.isFrozen.

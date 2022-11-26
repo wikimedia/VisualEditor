@@ -111,7 +111,6 @@ ve.dm.AnnotationSet.prototype.get = function ( offset ) {
 	if ( offset !== undefined ) {
 		return this.getStore().value( this.getHash( offset ) );
 	} else {
-		// eslint-disable-next-line es-x/no-array-prototype-values
 		return this.getStore().values( this.getHashes() );
 	}
 };
