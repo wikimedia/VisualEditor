@@ -38,7 +38,7 @@
 	"visualeditor-changedesc-comment": "Şirove ji $1 ber bi $2 ve hat guhartin",
 	"visualeditor-changedesc-comment-diff": "Şirove guherî: $1",
 	"visualeditor-changedesc-link-added": "Girêdan hat zêdekirin: $1",
-	"visualeditor-changedesc-link-href": "Hedefa girêdanê ji 1$ ber bi 2$ ve hat guhartin",
+	"visualeditor-changedesc-link-href": "Hedefa girêdanê ji $1 ber bi $2 ve hat guhartin",
 	"visualeditor-changedesc-link-href-diff": "Hedefa girêdanê hat guhartin: $1",
 	"visualeditor-changedesc-link-removed": "Girêdan hat rakirin: $1",
 	"visualeditor-changedesc-list-indent": "Valahiya hêmanên lîsteyê hat zêdekirin",
