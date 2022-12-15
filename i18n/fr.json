@@ -87,7 +87,7 @@
 	"visualeditor-changedesc-set": "$1 mis à $2",
 	"visualeditor-changedesc-textstyle-added": "Style de texte ajouté : $1",
 	"visualeditor-changedesc-textstyle-removed": "Style de texte supprimé : $1",
-	"visualeditor-changedesc-unknown": "$1 modifié",
+	"visualeditor-changedesc-unknown": "Attribut $1 modifié",
 	"visualeditor-changedesc-unset": "$1 n’est plus défini comme $2",
 	"visualeditor-changedir": "Modifier la direction de lecture",
 	"visualeditor-changedir-tool-ltr": "Afficher de gauche à droite",
