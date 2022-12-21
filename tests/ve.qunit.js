@@ -225,6 +225,11 @@
 				ve.deleteProp( val, 'originalDomElements' );
 				removeInternalState( val );
 			}
+			if ( val && val.origTitle ) {
+				// HACK: This property is no longer used, ignore it for
+				// compatibility with existing tests in other extensions
+				delete val.origTitle;
+			}
 		}
 
 		actual = ve.copy( actual );
