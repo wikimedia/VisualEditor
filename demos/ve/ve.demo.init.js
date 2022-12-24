@@ -147,13 +147,11 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 		if ( hashChanging ) {
 			return false;
 		}
-		if ( history.replaceState ) {
-			var pages = [];
-			for ( var i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
-				pages.push( ve.demo.surfaceContainers[ i ].pageMenu.findSelectedItem().getData() );
-			}
-			history.replaceState( null, '', '#!' + pages.join( ',' ) );
+		var pages = [];
+		for ( var i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
+			pages.push( ve.demo.surfaceContainers[ i ].pageMenu.findSelectedItem().getData() );
 		}
+		history.replaceState( null, '', '#!' + pages.join( ',' ) );
 	}
 
 	function addSurfaceContainer( page ) {
