@@ -215,7 +215,7 @@
 	"visualeditor-table-contextitem-selectionmode-cells": "Izberi celice",
 	"visualeditor-table-contextitem-selectionmode-contents": "Izberi vsebino",
 	"visualeditor-table-delete-col": "Izbriši {{PLURAL:$1|stolpec|2=stolpca|3=stolpce|4=stolpce|stolpcev}}",
-	"visualeditor-table-delete-row": "Izbriši {{PLURAL:$1|vrstico|2=vrstici|3=vrstice|4=vrstice|vrstic}}",
+	"visualeditor-table-delete-row": "Izbriši {{PLURAL:$1|vrstico|vrstici|vrstice}}",
 	"visualeditor-table-format-data": "Vsebina celice",
 	"visualeditor-table-format-header": "Glava celice",
 	"visualeditor-table-insert-col-after": "Vstavi po",
