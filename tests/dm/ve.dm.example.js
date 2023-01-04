@@ -278,8 +278,6 @@ ve.dm.example.base = ( function () {
 	return doc;
 }() );
 
-ve.dm.example.fullImgSrc = ve.resolveUrl( ve.dm.example.imgSrc, ve.dm.example.base );
-
 ve.dm.example.image = {
 	html: '<img src="' + ve.dm.example.imgSrc + '" alt="Example" width="100" height="50">',
 	data: {
