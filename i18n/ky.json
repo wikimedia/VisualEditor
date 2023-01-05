@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Bosogo",
 			"Chorobek",
 			"George Animal",
 			"Nrowe",
@@ -11,6 +12,7 @@
 	"visualeditor": "Визуалдык редактор",
 	"visualeditor-annotationbutton-bold-tooltip": "Калың",
 	"visualeditor-annotationbutton-italic-tooltip": "Жантык",
+	"visualeditor-annotationbutton-language-tooltip": "Тил",
 	"visualeditor-annotationbutton-link-tooltip": "Шилтеме",
 	"visualeditor-dialog-action-cancel": "Жокко чыгаруу",
 	"visualeditor-dialog-action-goback": "Артка кайтуу",
@@ -24,6 +26,8 @@
 	"visualeditor-historybutton-undo-tooltip": "Жокко чыгаруу",
 	"visualeditor-inspector-close-tooltip": "Жабуу",
 	"visualeditor-inspector-remove-tooltip": "Өчүрүү",
+	"visualeditor-languageinspector-title": "Тил",
+	"visualeditor-languageinspector-widget-label-language": "Тил",
 	"visualeditor-listbutton-bullet-tooltip": "Белгиленген тизме",
 	"visualeditor-listbutton-number-tooltip": "Санакталган тизме"
 }
