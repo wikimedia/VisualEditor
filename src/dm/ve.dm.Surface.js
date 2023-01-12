@@ -1240,30 +1240,34 @@ ve.dm.Surface.prototype.onDocumentPreCommit = function ( tx ) {
 /**
  * Get a minimal set of ranges which have been modified by changes to the surface.
  *
- * @param {boolean} [includeCollapsed] Include collapsed ranges (removed content)
- * @param {boolean} [includeInternalList] Include changes within the internal list
+ * @param {Object} [options] Options
+ * @param {boolean} [options.includeCollapsed] Include collapsed ranges (removed content)
+ * @param {boolean} [options.includeInternalList] Include changes within the internal list
  * @return {ve.Range[]} Modified ranges
  */
-ve.dm.Surface.prototype.getModifiedRanges = function ( includeCollapsed, includeInternalList ) {
+ve.dm.Surface.prototype.getModifiedRanges = function ( options ) {
 	var doc = this.getDocument();
 	var ranges = [];
 
+	options = options || {};
+
 	this.getHistory().forEach( function ( stackItem ) {
 		stackItem.transactions.forEach( function ( tx ) {
-			var newRange = tx.getModifiedRange( doc, includeInternalList );
+			var newRange = tx.getModifiedRange( doc, options );
 			// newRange will by null for no-ops
 			if ( newRange ) {
 				// Translate previous ranges by the current transaction
 				ranges.forEach( function ( range, i, arr ) {
 					arr[ i ] = tx.translateRange( range, true );
 				} );
-				if ( includeCollapsed || !newRange.isCollapsed() ) {
+				if ( options.includeCollapsed || !newRange.isCollapsed() ) {
 					ranges.push( newRange );
 				}
 			}
 		} );
 	} );
 
+	// Merge adjacent ranges
 	var compactRanges = [];
 	var lastRange = null;
 	ranges
@@ -1271,7 +1275,7 @@ ve.dm.Surface.prototype.getModifiedRanges = function ( includeCollapsed, include
 			return a.start - b.start;
 		} )
 		.forEach( function ( range ) {
-			if ( includeCollapsed || !range.isCollapsed() ) {
+			if ( options.includeCollapsed || !range.isCollapsed() ) {
 				if ( lastRange && lastRange.touchesRange( range ) ) {
 					compactRanges.pop();
 					range = lastRange.expand( range );
