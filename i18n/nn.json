@@ -93,7 +93,11 @@
 	"visualeditor-specialcharacter-button-tooltip": "Spesialteikn",
 	"visualeditor-specialcharacterinspector-title": "Spesialteikn",
 	"visualeditor-table-contextitem-properties": "Eigenskapar",
+	"visualeditor-table-insert-col-after": "Set inn kolonne til høgre",
+	"visualeditor-table-insert-col-before": "Set inn kolonne til venstre",
 	"visualeditor-table-insert-table": "Tabell",
+	"visualeditor-table-move-col-after": "Flytt kolonne til høgre",
+	"visualeditor-table-move-col-before": "Flytt kolonne til venstre",
 	"visualeditor-toolbar-format-tooltip": "Formater avsnitt",
 	"visualeditor-toolbar-insert": "Set inn",
 	"visualeditor-toolbar-table": "Tabell"
