@@ -59,6 +59,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.lastNonCollapsedDocumentSelection = new ve.dm.NullSelection();
 	this.middleClickPasting = false;
 	this.middleClickTargetOffset = false;
+	// Support: Chrome (Android, Gboard)
+	this.deleteContentBackwardSelectionState = null;
 	this.renderLocks = 0;
 	this.dragging = false;
 	this.relocatingSelection = null;
@@ -2134,6 +2136,15 @@ ve.ce.Surface.prototype.cleanupUnicorns = function ( fixupCursor ) {
  * @fires keyup
  */
 ve.ce.Surface.prototype.onDocumentKeyUp = function () {
+	// Support: Chrome (Android, Gboard)
+	if ( this.deleteContentBackwardSelectionState ) {
+		var range = this.deleteContentBackwardSelectionState.getNativeRange(
+			this.getElementDocument()
+		);
+		this.nativeSelection.removeAllRanges();
+		this.nativeSelection.addRange( range );
+		this.deleteContentBackwardSelectionState = null;
+	}
 	this.emit( 'keyup' );
 };
 
@@ -3299,6 +3310,25 @@ ve.ce.Surface.prototype.onDocumentBeforeInput = function ( e ) {
 			inputType = e.originalEvent ? e.originalEvent.inputType : null;
 
 		// Support: Chrome (Android, Gboard)
+		// Handle backspace with selection inside ContentEditable=false (T312558)
+		if ( inputType === 'deleteContentBackward' ) {
+			if ( !ve.isContentEditable( this.nativeSelection.focusNode ) ) {
+				$( this.nativeSelection.focusNode ).closest( '[contentEditable=false]' ).remove();
+				e.preventDefault();
+				return;
+			}
+		}
+
+		// Support: Chrome (Android, Gboard)
+		// Handle backspace up to ContentEditable=false span with trailing &nbsp;
+		if ( inputType === 'insertCompositionText' && e.originalEvent.data === '' ) {
+			this.maybeGboardBackspaceBug = true;
+			setTimeout( function () {
+				surface.maybeGboardBackspaceBug = false;
+			} );
+		}
+
+		// Support: Chrome (Android, Gboard)
 		// Handle IMEs that emit text fragments with a trailing newline on Enter keypress (T312558)
 		if (
 			( inputType === 'insertText' || inputType === 'insertCompositionText' ) &&
@@ -3386,6 +3416,38 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 	// Synthetic events don't have the originalEvent property (T176104)
 	var surface = this,
 		inputType = e.originalEvent ? e.originalEvent.inputType : null;
+
+	// Support: Chrome (Android, Gboard)
+	// T325129: fixup backspace into a contentEditable=false span. In English Gboard, if you
+	// delete the character after a CE=false span, the cursor is in the right place at this
+	// instant, but will be moved into the CE=false span just before a keyup event that
+	// happens during this tick. We fixup the selection in onDocumentKeyUp, which means the
+	// keyboard never closes (whereas it would close if we waited any longer, e.g. until a
+	// selectionchange handler or until the end of the tick).
+	if ( inputType === 'deleteContentBackward' || inputType === 'insertCompositionText' ) {
+		if (
+			this.maybeGboardBackspaceBug &&
+			!ve.isContentEditable( this.nativeSelection.focusNode )
+		) {
+			// We've landed in a CE=false position. This shouldn't happen, and looks
+			// like a Gboard bug, so move to the following valid CE=true cursor position
+			var fixed = ve.adjacentDomPosition( {
+				node: this.nativeSelection.focusNode,
+				offset: this.nativeSelection.focusOffset
+			}, 1, {} );
+			var range = this.getElementDocument().createRange();
+			range.setStart( fixed.node, fixed.offset );
+			this.nativeSelection.removeAllRanges();
+			this.nativeSelection.addRange( range );
+		}
+
+		// Whether or not we just moved the cursor, store the cursor state, so if the
+		// backspace action lands us in a CE=false position, we can fixup later
+		this.deleteContentBackwardSelectionState = new ve.SelectionState( this.nativeSelection );
+		setTimeout( function () {
+			surface.deleteContentBackwardSelectionState = null;
+		} );
+	}
 
 	// Special handling of NBSP insertions. T53045
 	// NBSPs are converted to normal spaces in ve.ce.TextState as they can be
