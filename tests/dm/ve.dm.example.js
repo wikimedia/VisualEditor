@@ -91,25 +91,6 @@ ve.dm.example.postprocessAnnotations = function ( data, store, preserveDomElemen
 };
 
 /**
- * Remove originalDomElements from linear model data.
- *
- * @param {Array} data Linear model data. Will be modified.
- * @return {Array} data parameter
- */
-ve.dm.example.removeOriginalDomElements = function ( data ) {
-	for ( var i = 0, len = data.length; i < len; i++ ) {
-		if ( data[ i ].originalDomElementsHash !== undefined ) {
-			if ( Object.isFrozen( data[ i ] ) ) {
-				// Unfreeze, this data is just for testing
-				data[ i ] = ve.copy( data[ i ] );
-			}
-			delete data[ i ].originalDomElementsHash;
-		}
-	}
-	return data;
-};
-
-/**
  * Create an annotation object from shorthand notation.
  *
  * @param {Object} annotation Plain object with type and attributes properties
@@ -255,16 +236,6 @@ ve.dm.example.lookupNode = function ( root ) {
 	}
 	return node;
 };
-
-ve.dm.example.createDomElement = function ( type, attributes ) {
-	var element = document.createElement( type );
-	for ( var key in attributes ) {
-		element.setAttribute( key, attributes[ key ] );
-	}
-	return element;
-};
-
-ve.dm.example.testDir = window.VE_TESTDIR || '.';
 
 ve.dm.example.imgSrc = 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg';
 
@@ -1311,17 +1282,6 @@ ve.dm.example.figcaption = [
 ve.dm.example.emptyBranch = [
 	{ type: 'table' },
 	{ type: '/table' },
-	{ type: 'internalList' },
-	{ type: '/internalList' }
-];
-
-ve.dm.example.annotatedComplexities = [
-	{ type: 'paragraph' },
-	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'b' } } ] ],
-	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ] ],
-	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'b', style: 'color: red;' } } ] ],
-	[ 'a', [ { type: 'textStyle/bold', attributes: { nodeName: 'b', style: 'color: blue;' } } ] ],
-	{ type: '/paragraph' },
 	{ type: 'internalList' },
 	{ type: '/internalList' }
 ];
