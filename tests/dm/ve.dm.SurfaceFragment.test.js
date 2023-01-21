@@ -915,5 +915,5 @@ QUnit.test( 'isolateAndUnwrap', function ( assert ) {
 		data.splice( 11, 0, { type: 'listItem' } );
 		data.splice( 12, 1 );
 		data.splice( 20, 1, { type: '/listItem' } );
-	}, 'isolating paragraph in list item "Item 2" for heading' );
+	}, ve.dm.example.baseUri, 'isolating paragraph in list item "Item 2" for heading' );
 } );

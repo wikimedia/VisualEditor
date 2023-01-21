@@ -8,11 +8,11 @@ QUnit.module( 've.ui.UrlStringTransferHandler' );
 
 /* Tests */
 
-ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, mimeType, expectedDataFunc, msg ) {
+ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, mimeType, expectedDataFunc, base, msg ) {
 	var handler,
 		done = assert.async(),
 		item = ve.ui.DataTransferItem.static.newFromString( string, mimeType, htmlString ),
-		doc = ve.dm.example.createExampleDocument(),
+		doc = ve.dm.example.createExampleDocument( null, null, base ),
 		mockSurface = {
 			getModel: function () {
 				return {
@@ -134,6 +134,6 @@ QUnit.test( 'paste', function ( assert ) {
 	];
 
 	cases.forEach( function ( caseItem ) {
-		ve.test.utils.runUrlStringHandlerTest( assert, caseItem.pasteString, caseItem.pasteHtml, caseItem.pasteType, caseItem.expectedData, caseItem.msg );
+		ve.test.utils.runUrlStringHandlerTest( assert, caseItem.pasteString, caseItem.pasteHtml, caseItem.pasteType, caseItem.expectedData, ve.dm.example.baseUri, caseItem.msg );
 	} );
 } );

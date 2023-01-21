@@ -12,7 +12,9 @@ QUnit.test( 'getModelFromDom', function ( assert ) {
 	var cases = ve.dm.example.domToDataCases;
 
 	for ( var msg in cases ) {
-		ve.test.utils.runGetModelFromDomTest( assert, ve.copy( cases[ msg ] ), msg );
+		var caseItem = ve.copy( cases[ msg ] );
+		caseItem.base = caseItem.base || ve.dm.example.baseUri;
+		ve.test.utils.runGetModelFromDomTest( assert, caseItem, msg );
 	}
 } );
 
@@ -30,7 +32,9 @@ QUnit.test( 'getDomFromModel', function ( assert ) {
 	var cases = ve.dm.example.domToDataCases;
 
 	for ( var msg in cases ) {
-		ve.test.utils.runGetDomFromModelTest( assert, ve.copy( cases[ msg ] ), msg );
+		var caseItem = ve.copy( cases[ msg ] );
+		caseItem.base = caseItem.base || ve.dm.example.baseUri;
+		ve.test.utils.runGetDomFromModelTest( assert, caseItem, msg );
 	}
 } );
 
