@@ -305,7 +305,7 @@
 		"scripts": [
 			"src/init/ve.init.js",
 			"src/init/ve.init.SafeStorage.js",
-			"src/init/ve.init.ListStorage.js",
+			"src/init/ve.init.ConflictableStorage.js",
 			"src/init/ve.init.Platform.js",
 			"src/init/ve.init.Target.js"
 		],
@@ -894,7 +894,7 @@
 			"tests/ce/nodes/ve.ce.TableNode.test.js",
 			"tests/init/ve.init.Target.test.js",
 			"tests/init/ve.init.sa.Platform.test.js",
-			"tests/init/ve.init.ListStorage.test.js",
+			"tests/init/ve.init.ConflictableStorage.test.js",
 			"tests/ui/ve.ui.DataTransferHandlerFactory.test.js",
 			"tests/ui/ve.ui.Trigger.test.js",
 			"tests/ui/ve.ui.Sequence.test.js",
