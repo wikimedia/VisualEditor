@@ -55,6 +55,7 @@
 	DummyPlatform.prototype.setUserConfig = function () {};
 	DummyPlatform.prototype.createSafeStorage = function ( store ) {
 		var platform = this;
+		var EXPIRY_PREFIX = '_EXPIRY_';
 
 		var MockSafeStorage = function ( s ) {
 			this.store = s;
@@ -66,11 +67,12 @@
 			}
 			return this.store.getItem( key );
 		};
-		MockSafeStorage.prototype.set = function ( key, value ) {
+		MockSafeStorage.prototype.set = function ( key, value, expiry ) {
 			if ( platform.storageDisabled || value === '__FAIL__' ) {
 				return false;
 			}
 			this.store.setItem( key, value );
+			this.setExpires( key, expiry );
 			return true;
 		};
 		MockSafeStorage.prototype.remove = function ( key ) {
@@ -78,6 +80,7 @@
 				return false;
 			}
 			this.store.removeItem( key );
+			this.setExpires( key );
 			return true;
 		};
 		MockSafeStorage.prototype.getObject = function ( key ) {
@@ -99,6 +102,19 @@
 				return this.set( key, json );
 			} catch ( e ) {}
 			return false;
+		};
+		MockSafeStorage.prototype.setExpires = function ( key, expiry ) {
+			if ( platform.storageDisabled ) {
+				return false;
+			}
+			if ( expiry ) {
+				this.store.setItem(
+					EXPIRY_PREFIX + key,
+					Math.floor( Date.now() / 1000 ) + expiry
+				);
+			} else {
+				this.store.removeItem( EXPIRY_PREFIX + key );
+			}
 		};
 
 		return new MockSafeStorage( store );

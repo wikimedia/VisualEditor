@@ -1,5 +1,6 @@
 ve.init.createConflictableStorage = function ( storage ) {
 	var conflictKey = '__conflictId';
+	var EXPIRY_PREFIX = '_EXPIRY_';
 
 	/**
 	 * Conflict-safe storage extending a ve.init.SafeStorage instance
@@ -91,6 +92,29 @@ ve.init.createConflictableStorage = function ( storage ) {
 	};
 
 	/**
+	 * @inheritdoc
+	 */
+	ConflictableStorage.prototype.setExpires = function ( key ) {
+		// Parent method
+		ConflictableStorage.super.prototype.setExpires.apply( this, arguments );
+
+		if ( this.storageMayConflict ) {
+			if ( Object.prototype.hasOwnProperty.call( this.conflictableKeys, key ) ) {
+				var expiryAbsolute = null;
+				try {
+					expiryAbsolute = this.store.getItem( EXPIRY_PREFIX + key );
+				} catch ( e ) {}
+
+				if ( expiryAbsolute ) {
+					this.conflictBackup[ EXPIRY_PREFIX + key ] = expiryAbsolute;
+				} else {
+					delete this.conflictBackup[ EXPIRY_PREFIX + key ];
+				}
+			}
+		}
+	};
+
+	/**
 	 * Check if another process has written to the shared storage, leaving
 	 * our data in a conflicted state.
 	 *
@@ -119,8 +143,15 @@ ve.init.createConflictableStorage = function ( storage ) {
 
 		for ( var key in this.conflictableKeys ) {
 			if ( Object.prototype.hasOwnProperty.call( this.conflictBackup, key ) && this.conflictBackup[ key ] !== null ) {
+				var expiryKey = EXPIRY_PREFIX + key;
+				var expiryAbsolute = this.conflictBackup[ expiryKey ];
+				var expiry = null;
+				if ( expiryAbsolute ) {
+					expiry = expiryAbsolute - Math.floor( Date.now() / 1000 );
+				}
+
 				// Call parent methods directly when restoring
-				ConflictableStorage.super.prototype.set.call( this, key, this.conflictBackup[ key ] );
+				ConflictableStorage.super.prototype.set.call( this, key, this.conflictBackup[ key ], expiry );
 			} else {
 				ConflictableStorage.super.prototype.remove.call( this, key, this.conflictBackup[ key ] );
 			}
@@ -146,6 +177,15 @@ ve.init.createConflictableStorage = function ( storage ) {
 		for ( var key in keys ) {
 			if ( Object.prototype.hasOwnProperty.call( keys, key ) ) {
 				this.conflictBackup[ key ] = this.get( key );
+
+				var expiryAbsolute = null;
+				try {
+					expiryAbsolute = this.store.getItem( EXPIRY_PREFIX + key );
+				} catch ( e ) {}
+
+				if ( expiryAbsolute ) {
+					this.conflictBackup[ EXPIRY_PREFIX + key ] = expiryAbsolute;
+				}
 			}
 		}
 
