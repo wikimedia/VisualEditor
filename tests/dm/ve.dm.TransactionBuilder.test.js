@@ -1484,12 +1484,12 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 	var doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
-		listDoc = ve.dm.example.createExampleDocumentFromObject( 'listDoc', null, {
-			listDoc: listMetaDoc.getData().filter( function ( item ) {
+		listDoc = ve.dm.example.createExampleDocumentFromData(
+			listMetaDoc.getData().filter( function ( item ) {
 				return item.type !== 'alienMeta' &&
 					item.type !== '/alienMeta';
 			} )
-		} ),
+		),
 		cases = {
 			'changes a heading to a paragraph': {
 				args: [ doc, new ve.Range( 1, 4 ), [ { type: 'heading', attributes: { level: 1 } } ], [ { type: 'paragraph' } ], [], [] ],
