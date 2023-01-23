@@ -243,8 +243,35 @@
 		return model.getFullData( undefined, 'roundTrip' );
 	}
 
-	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, label ) {
-		var doc = ve.dm.example.createExampleDocument( 'isolationData' ),
+	/**
+	 * Make a HTML `<base>` tag
+	 *
+	 * @param {string} base Base URL
+	 * @return {string}
+	 */
+	ve.test.utils.makeBaseTag = function ( base ) {
+		if ( /[<>&'"]/.test( base ) ) {
+			throw new Error( 'Weird base' );
+		}
+		return '<base href="' + base + '">';
+	};
+
+	/**
+	 * Add a `<base>` tag to `<head>` using HTML string splicing
+	 *
+	 * @param {string} docHtml Document HTML
+	 * @param {string} base Base URL
+	 * @return {string} Document HTML
+	 */
+	ve.test.utils.addBaseTag = function ( docHtml, base ) {
+		if ( !ve.matchTag( docHtml, 'body' ) ) {
+			docHtml = '<body>' + docHtml + '</body>';
+		}
+		return ve.addHeadTag( docHtml, ve.test.utils.makeBaseTag( base ) );
+	};
+
+	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, base, label ) {
+		var doc = ve.dm.example.createExampleDocument( 'isolationData', null, base ),
 			surface = new ve.dm.Surface( doc ),
 			fragment = surface.getLinearFragment( range );
 
@@ -323,12 +350,9 @@
 	};
 
 	ve.test.utils.runGetModelFromDomTest = function ( assert, caseItem, msg ) {
-		// Make sure we've always got a <base> tag
-		var defaultHead = '<base href="' + ve.dm.example.baseUri + '">';
-
 		if ( caseItem.head !== undefined || caseItem.body !== undefined ) {
-			var html = '<head>' + ( caseItem.head || defaultHead ) + '</head><body>' + caseItem.body + '</body>';
-			var htmlDoc = ve.createDocumentFromHtml( html, caseItem.ignoreXmlWarnings );
+			var html = '<head>' + ( caseItem.head || '' ) + '</head><body>' + caseItem.body + '</body>';
+			var htmlDoc = ve.createDocumentFromHtml( ve.test.utils.addBaseTag( html, caseItem.base ), caseItem.ignoreXmlWarnings );
 			var model = ve.dm.converter.getModelFromDom( htmlDoc, { fromClipboard: !!caseItem.fromClipboard } );
 			var actualDataReal = model.getFullData();
 			var actualDataMeta = getSerializableData( model );
@@ -361,7 +385,7 @@
 			}
 			// Check round-trip
 			var expectedRtDoc = caseItem.normalizedBody ?
-				ve.createDocumentFromHtml( caseItem.normalizedBody, caseItem.ignoreXmlWarnings ) :
+				ve.createDocumentFromHtml( ve.test.utils.addBaseTag( caseItem.normalizedBody, caseItem.base ), caseItem.ignoreXmlWarnings ) :
 				htmlDoc;
 			assert.equalDomElement( actualRtDoc.body, expectedRtDoc.body, msg + ': round-trip' );
 		}
@@ -377,6 +401,7 @@
 			}
 		}
 		var model = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
+		ve.fixBase( model.getHtmlDocument(), model.getHtmlDocument(), caseItem.base );
 		model.innerWhitespace = caseItem.innerWhitespace ? ve.copy( caseItem.innerWhitespace ) : new Array( 2 );
 		if ( caseItem.modify ) {
 			caseItem.modify( model );

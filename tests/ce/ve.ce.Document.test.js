@@ -14,6 +14,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 	for ( var msg in cases ) {
 		if ( cases[ msg ].ceHtml ) {
 			var caseItem = ve.copy( cases[ msg ] );
+			caseItem.base = caseItem.base || ve.dm.example.baseUri;
 			var model = ve.test.utils.getModelFromTestCase( caseItem );
 			var view = new ve.ce.Document( model );
 			var $documentElement = view.getDocumentNode().$element;
