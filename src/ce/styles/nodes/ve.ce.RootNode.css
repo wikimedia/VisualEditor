@@ -25,10 +25,10 @@
 	background: rgba( 109, 169, 247, 0.5 ); /* #6da9f7 */
 }
 
-/*
- * Reset styles applied to ce=true by Chrome (T207426)
- */
 .ve-ce-attachedRootNode [ contentEditable='false' ] {
+	/* Prevent selections beginning/ending inside non-editable nodes in Firefox (T327086) */
+	user-select: all;
+	/* Reset styles applied to ce=true by Chrome (T207426) */
 	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 	overflow-wrap: initial;
 	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
