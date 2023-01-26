@@ -108,24 +108,24 @@ jQuery Client
  – jquery-client maintainers and other contributors
 
 jsdifflib
- – http://snowtide.com/jsdifflib
+ – http://snowtide.com/jsdifflib
  – BSD license
  – Snowtide Informatics Systems, Inc.
 
 OOjs
  – https://www.mediawiki.org/wiki/OOjs
  – MIT license
- – OOjs Team and other contributors
+ – OOjs Team and other contributors
 
 OOjs UI
  – https://www.mediawiki.org/wiki/OOjs_UI
  – MIT license
- – OOjs UI Team and other contributors
+ – OOjs UI Team and other contributors
 
 PapaParse
  – http://papaparse.com
  – MIT license
- – Matthew Holt and other contributors; fork by Ed Sanders
+ – Matthew Holt and other contributors
 
 RangeFix
  – https://github.com/edg2s/rangefix
@@ -145,7 +145,7 @@ Tree Differ
 UnicodeJS
  – https://www.mediawiki.org/wiki/OOjs_UI
  – MIT license
- – UnicodeJS Team and other contributors
+ – UnicodeJS Team and other contributors
 
 Universal Language Selector jQuery library
  – https://github.com/wikimedia/jquery.uls
