@@ -89,10 +89,9 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		fragmentPromise = ve.createDeferred().resolve( surfaceFragment ).promise();
 	}
 
-	data = ve.extendObject( { dir: dir }, data, { $returnFocusTo: null } );
+	data = ve.extendObject( { dir: dir }, data, { surface: surface, $returnFocusTo: null } );
 
 	if ( windowType === 'toolbar' || windowType === 'inspector' ) {
-		data = ve.extendObject( data, { surface: surface } );
 		// Auto-close the current window if it is different to the one we are
 		// trying to open.
 		// TODO: Make auto-close a window manager setting
