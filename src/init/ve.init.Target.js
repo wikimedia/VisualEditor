@@ -525,7 +525,7 @@ ve.init.Target.prototype.createTargetWidget = function ( config ) {
  * @return {ve.ui.Surface}
  */
 ve.init.Target.prototype.createSurface = function ( dmDocOrSurface, config ) {
-	return new ve.ui.Surface( dmDocOrSurface, this.getSurfaceConfig( config ) );
+	return new ve.ui.Surface( this, dmDocOrSurface, this.getSurfaceConfig( config ) );
 };
 
 /**

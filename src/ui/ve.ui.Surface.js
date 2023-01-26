@@ -12,6 +12,7 @@
  * @extends OO.ui.Widget
  *
  * @constructor
+ * @param {ve.init.Target} target Target the surface belongs to
  * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.Document|ve.dm.Surface} dataOrDocOrSurface Document data, document model, or surface model to edit
  * @param {Object} [config] Configuration options
  * @cfg {ve.dm.BranchNode} [attachedRoot] Node to surface, if ve.dm.Document passed in
@@ -33,13 +34,14 @@
  * @cfg {string} [inDialog=''] The name of the dialog this surface is in
  * @cfg {boolean} [inTargetWidget=false] The surface is in a target widget
  */
-ve.ui.Surface = function VeUiSurface( dataOrDocOrSurface, config ) {
+ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	config = config || {};
 
 	// Parent constructor
 	ve.ui.Surface.super.call( this, config );
 
 	// Properties
+	this.target = target;
 	this.$scrollContainer = config.$scrollContainer || $( this.getClosestScrollableElementContainer() );
 	this.$scrollListener = config.$scrollListener || $( this.getElementWindow() );
 	this.inDialog = config.inDialog || '';
@@ -250,6 +252,15 @@ ve.ui.Surface.prototype.initialize = function () {
 	this.getModel().initialize();
 	this.emit( 'ready' );
 	return this;
+};
+
+/**
+ * Get the target the surface belongs to
+ *
+ * @return {ve.init.Target}
+ */
+ve.ui.Surface.prototype.getTarget = function () {
+	return this.target;
 };
 
 /**

@@ -109,11 +109,12 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 		.next( function () {
 			var dialog = this,
 				surface = data.surface,
+				target = surface.getTarget(),
 				sequenceRegistry = surface.sequenceRegistry,
 				commandRegistry = surface.commandRegistry,
 				availableCommands = surface.getCommands()
-					.concat( ve.init.target.constructor.static.documentCommands )
-					.concat( ve.init.target.constructor.static.targetCommands ),
+					.concat( target.constructor.static.documentCommands )
+					.concat( target.constructor.static.targetCommands ),
 				commandGroups = this.constructor.static.commandGroups,
 				commandGroupsOrder = this.constructor.static.commandGroupsOrder;
 
