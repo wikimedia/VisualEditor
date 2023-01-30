@@ -219,7 +219,7 @@
 	"visualeditor-pagemenu-tooltip": "Options de page",
 	"visualeditor-rebase-client-author-name": "Nom",
 	"visualeditor-rebase-client-connecting": "Connexion…",
-	"visualeditor-rebase-client-document-create-edit": "Créer/modifier",
+	"visualeditor-rebase-client-document-create-edit": "Créer ou modifier",
 	"visualeditor-rebase-client-document-name": "Nom du document (facultatif)",
 	"visualeditor-rebase-corrupted-document-error": "Le document a été corrompu : $1",
 	"visualeditor-rebase-corrupted-document-title": "Document corrompu",
