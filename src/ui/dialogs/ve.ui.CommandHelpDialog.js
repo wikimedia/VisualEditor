@@ -108,7 +108,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommandHelpDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
 			var dialog = this,
-				surface = ve.init.target.getSurface(),
+				surface = data.surface,
 				sequenceRegistry = surface.sequenceRegistry,
 				commandRegistry = surface.commandRegistry,
 				availableCommands = surface.getCommands()
