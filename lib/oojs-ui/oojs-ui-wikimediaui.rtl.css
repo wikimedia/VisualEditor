@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.44.4
+ * OOUI v0.44.5
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-01-04T17:25:12Z
+ * Date: 2023-02-06T22:04:54Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -140,7 +140,7 @@
   color: #202122;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled > .oo-ui-buttonElement-button:hover {
-  background-color: rgba(0, 24, 73, 7/255);
+  background-color: rgba(0, 24, 73, 0.02745098);
   color: #000;
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled > .oo-ui-buttonElement-button:focus {
@@ -149,7 +149,7 @@
 }
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > input.oo-ui-buttonElement-button,
 .oo-ui-buttonElement-frameless.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active {
-  background-color: rgba(0, 36, 73, 21/255);
+  background-color: rgba(0, 24, 73, 0.08235294);
   color: #000;
   border-color: #72777d;
   box-shadow: none;
@@ -269,7 +269,7 @@
 }
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled > .oo-ui-buttonElement-button:active,
 .oo-ui-buttonElement-framed.oo-ui-widget-enabled.oo-ui-buttonElement-pressed > .oo-ui-buttonElement-button {
-  background-color: #c8ccd1;
+  background-color: #eaecf0;
   color: #000;
   border-color: #72777d;
   box-shadow: none;
@@ -2133,14 +2133,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.44.4
+ * OOUI v0.44.5
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-01-04T17:25:12Z
+ * Date: 2023-02-06T22:04:54Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -2389,7 +2389,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   margin-left: 0;
 }
 .oo-ui-toggleButtonWidget.oo-ui-widget-enabled.oo-ui-buttonElement-frameless.oo-ui-toggleWidget-on .oo-ui-buttonElement-button {
-  background-color: rgba(0, 36, 73, 21/255);
+  background-color: rgba(0, 24, 73, 0.08235294);
   color: #000;
 }
 .oo-ui-toggleButtonWidget.oo-ui-widget-enabled.oo-ui-buttonElement-frameless.oo-ui-toggleWidget-on .oo-ui-buttonElement-button > .oo-ui-iconElement-icon:not( .oo-ui-image-invert ) {
@@ -3075,7 +3075,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   background-color: #fff;
 }
 .oo-ui-tagItemWidget.oo-ui-widget-enabled .oo-ui-buttonElement-button:active {
-  background-color: #c8ccd1;
+  background-color: #eaecf0;
 }
 .oo-ui-tagItemWidget.oo-ui-widget-enabled .oo-ui-buttonElement-button .oo-ui-icon-close {
   right: 3px;
@@ -3133,14 +3133,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.44.4
+ * OOUI v0.44.5
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-01-04T17:25:12Z
+ * Date: 2023-02-06T22:04:54Z
  */
 .oo-ui-tool {
   box-sizing: border-box;
@@ -3811,14 +3811,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.44.4
+ * OOUI v0.44.5
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-01-04T17:25:12Z
+ * Date: 2023-02-06T22:04:54Z
  */
 
 .oo-ui-window {
@@ -4109,7 +4109,7 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   border-left-color: #c8ccd1;
 }
 .oo-ui-processDialog-actions-safe .oo-ui-widget-enabled.oo-ui-iconElement:not( .oo-ui-labelElement ) > .oo-ui-buttonElement-button:active {
-  background-color: #c8ccd1;
+  background-color: #eaecf0;
   border-left-color: #c8ccd1;
 }
 .oo-ui-processDialog-actions-safe .oo-ui-widget-enabled.oo-ui-iconElement:not( .oo-ui-labelElement ) > .oo-ui-buttonElement-button:focus {
@@ -4235,14 +4235,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.44.4
+ * OOUI v0.44.5
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-01-04T17:25:12Z
+ * Date: 2023-02-06T22:04:54Z
  */
 .oo-ui-icon-arrowNext {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowNext-rtl.svg);
