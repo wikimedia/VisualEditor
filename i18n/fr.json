@@ -225,7 +225,7 @@
 	"visualeditor-rebase-corrupted-document-title": "Document corrompu",
 	"visualeditor-rebase-missing-document-error": "Document non trouvé sur le serveur. Pour éviter la perte des données, copiez et collez le contenu.",
 	"visualeditor-rebase-missing-document-title": "Document manquant",
-	"visualeditor-shortcuts-clipboard": "Presse-papier",
+	"visualeditor-shortcuts-clipboard": "Presse-papiers",
 	"visualeditor-shortcuts-dialog": "Contrôles de fenêtre",
 	"visualeditor-shortcuts-formatting": "Mise en forme du paragraphe",
 	"visualeditor-shortcuts-history": "Historique",
