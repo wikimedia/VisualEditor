@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajiniyaz Nurniyazov",
 			"Nurlan"
 		]
 	},
@@ -16,7 +17,7 @@
 	"visualeditor-align-widget-left": "Shep",
 	"visualeditor-align-widget-right": "Oń",
 	"visualeditor-annotationbutton-big-tooltip": "Úlken",
-	"visualeditor-annotationbutton-bold-tooltip": "Juwan jazıw",
+	"visualeditor-annotationbutton-bold-tooltip": "Qalıń jazıw",
 	"visualeditor-annotationbutton-code-tooltip": "Kompyuter kodı",
 	"visualeditor-annotationbutton-italic-tooltip": "Qıya jazıw",
 	"visualeditor-annotationbutton-language-tooltip": "Til",
@@ -72,5 +73,6 @@
 	"visualeditor-toolbar-format-tooltip": "Taza qatar formatı",
 	"visualeditor-toolbar-history": "Tariyx",
 	"visualeditor-toolbar-insert": "Kirgiziw",
+	"visualeditor-toolbar-paragraph-format": "Formatlaw",
 	"visualeditor-toolbar-table": "Dizim"
 }
