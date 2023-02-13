@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"APPER",
+			"Brettchenweber",
 			"G.Hagedorn",
 			"Inkowik",
 			"Jcornelius",
@@ -95,7 +96,7 @@
 	"visualeditor-dialog-action-goback": "Zurück",
 	"visualeditor-dialog-action-insert": "Einfügen",
 	"visualeditor-dialog-command-help-title": "Tastaturkürzel",
-	"visualeditor-dialog-error": "Etwas ist schief gelaufen …",
+	"visualeditor-dialog-error": "Etwas ist schiefgelaufen …",
 	"visualeditor-dialog-error-dismiss": "Zurück",
 	"visualeditor-dialog-language-auto-direction": "Automatisch",
 	"visualeditor-dialog-language-search-title": "Sprache auswählen",
