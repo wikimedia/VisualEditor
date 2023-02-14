@@ -38,6 +38,16 @@ QUnit.test( 've.sanitizeHtml', function ( assert ) {
 			msg: 'figure-inline element allowed',
 			html: '<figure-inline></figure-inline>',
 			expected: '<figure-inline></figure-inline>'
+		},
+		{
+			msg: 'HTML tag in attribute allowed',
+			html: '<span content="&lt;b&gt;Foo&lt;/b&gt;">Foo</span>',
+			expected: '<span content="&lt;b&gt;Foo&lt;/b&gt;">Foo</span>'
+		},
+		{
+			msg: 'Self-closing HTML tag in attribute allowed',
+			html: '<span content="&lt;img/&gt;">Foo</span>',
+			expected: '<span content="&lt;img/&gt;">Foo</span>'
 		}
 	];
 
