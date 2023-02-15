@@ -160,6 +160,20 @@ ve.dm.Transaction.static.compareElementsForTranslate = function ( a, b ) {
 	return true;
 };
 
+/**
+ * Check if an operation only changes annotations
+ *
+ * @param {Object} op Operation object
+ * @return {boolean} Operation is annotation-only
+ */
+ve.dm.Transaction.static.isAnnotationOnlyOperation = function ( op ) {
+	return op.type === 'replace' &&
+		op.insert.length === op.remove.length &&
+		op.insert.every( function ( insert, j ) {
+			return ve.dm.Transaction.static.compareElementsForTranslate( insert, op.remove[ j ] );
+		} );
+};
+
 /* Methods */
 
 /**
@@ -398,17 +412,9 @@ ve.dm.Transaction.prototype.translateOffset = function ( offset, excludeInsertio
 
 	for ( var i = 0; i < this.operations.length; i++ ) {
 		var op = this.operations[ i ];
-		if ( op.type === 'retain' || (
-			// If a 'replace' only changes annotations, treat it like a 'retain'
-			// This imitates the behaviour of the old 'annotate' operation type.
-			op.type === 'replace' &&
-			op.insert.length === op.remove.length &&
-			// eslint-disable-next-line no-loop-func
-			op.insert.every( function ( insert, j ) {
-				return ve.dm.Transaction.static.compareElementsForTranslate( insert, op.remove[ j ] );
-			} )
-
-		) ) {
+		// If a 'replace' only changes annotations, treat it like a 'retain'
+		// This imitates the behaviour of the old 'annotate' operation type.
+		if ( op.type === 'retain' || ve.dm.Transaction.static.isAnnotationOnlyOperation( op ) ) {
 			var retainLength = op.type === 'retain' ? op.length : op.remove.length;
 			if ( offset >= cursor && offset < cursor + retainLength ) {
 				return offset + adjustment;
