@@ -1243,6 +1243,8 @@ ve.dm.Surface.prototype.onDocumentPreCommit = function ( tx ) {
  * @param {Object} [options] Options
  * @param {boolean} [options.includeCollapsed] Include collapsed ranges (removed content)
  * @param {boolean} [options.includeInternalList] Include changes within the internal list
+ * @param {boolean} [options.excludeAnnotations] Exclude annotation-only changes
+ * @param {boolean} [options.excludeAttributes] Exclude attribute changes
  * @return {ve.Range[]} Modified ranges
  */
 ve.dm.Surface.prototype.getModifiedRanges = function ( options ) {

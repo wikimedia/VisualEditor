@@ -505,6 +505,8 @@ ve.dm.Transaction.prototype.translateRangeWithAuthor = function ( range, authorI
  * @param {ve.dm.Document} doc The document in the state to which the transaction applies
  * @param {Object} [options] Options
  * @param {boolean} [options.includeInternalList] Include changes within the internal list
+ * @param {boolean} [options.excludeAnnotations] Exclude annotation-only changes
+ * @param {boolean} [options.excludeAttributes] Exclude attribute changes
  * @return {ve.Range|null} Range covering modifications, or null for a no-op transaction
  */
 ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options ) {
@@ -540,6 +542,9 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options ) {
 				break;
 
 			case 'attribute':
+				if ( options.excludeAttributes ) {
+					break;
+				}
 				if ( start === undefined ) {
 					start = offset;
 				}
@@ -548,6 +553,15 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options ) {
 				break;
 
 			default:
+				if ( options.excludeAnnotations && this.constructor.static.isAnnotationOnlyOperation( op ) ) {
+					// Treat as 'retain'
+					if ( oldOffset + op.length > docEndOffset ) {
+						break opLoop;
+					}
+					offset += op.length;
+					oldOffset += op.length;
+					break;
+				}
 				if ( start === undefined ) {
 					// This is the first non-retain operation, set start to right before it
 					start = offset + ( op.insertedDataOffset || 0 );
