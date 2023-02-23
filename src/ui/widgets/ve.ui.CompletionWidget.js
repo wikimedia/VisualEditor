@@ -113,6 +113,10 @@ ve.ui.CompletionWidget.prototype.update = function () {
 
 	this.updateMenu( input );
 	this.action.getSuggestions( input ).then( function ( suggestions ) {
+		if ( !this.action ) {
+			// Check widget hasn't been torn down
+			return;
+		}
 		this.menu.clearItems();
 		this.menu.addItems( suggestions.map( this.action.getMenuItemForSuggestion.bind( this.action ) ) );
 		this.menu.highlightItem( this.menu.findFirstSelectableItem() );
