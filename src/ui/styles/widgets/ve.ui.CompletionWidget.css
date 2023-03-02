@@ -13,7 +13,10 @@
 	position: static;
 	border: 0;
 	box-shadow: none;
-	/* The container PopupWidget is already clipped (T330401) */
+}
+
+.ve-ui-completionWidget .oo-ui-popupWidget-body {
+	/* The contained MenuSelectWidget is already clipped (T330401) */
 	/* TODO: This could be done in JS if OO.ui.ClippableElement provided a way to disable clipping */
 	overflow: hidden !important; /* stylelint-disable-line declaration-no-important */
 }
