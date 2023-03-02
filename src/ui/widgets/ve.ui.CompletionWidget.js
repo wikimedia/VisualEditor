@@ -70,13 +70,14 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 
 OO.inheritClass( ve.ui.CompletionWidget, OO.ui.Widget );
 
-ve.ui.CompletionWidget.prototype.setup = function ( action ) {
+ve.ui.CompletionWidget.prototype.setup = function ( action, triggerLength ) {
 	var offset = this.surfaceModel.getSelection().getRange();
 	if ( !offset.isCollapsed() ) {
 		return;
 	}
 	this.action = action;
-	this.initialOffset = offset.end - this.action.constructor.static.triggerLength;
+	this.triggerLength = triggerLength === undefined ? this.action.constructor.static.triggerLength : 0;
+	this.initialOffset = offset.end - this.triggerLength;
 
 	this.update();
 
@@ -188,5 +189,5 @@ ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withTrigger ) {
 	if ( !range || !range.isCollapsed() || !this.action ) {
 		return null;
 	}
-	return new ve.Range( this.initialOffset + ( withTrigger ? 0 : this.action.constructor.static.triggerLength ), range.end );
+	return new ve.Range( this.initialOffset + ( withTrigger ? 0 : this.triggerLength ), range.end );
 };

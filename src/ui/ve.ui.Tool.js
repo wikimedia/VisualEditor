@@ -60,6 +60,15 @@ ve.ui.Tool.static.deactivateOnSelect = true;
 ve.ui.Tool.static.makesEmbeddableContextItem = true;
 
 /**
+ * Icon to use when this tool is shown in a non-toolbar context
+ *
+ * @static
+ * @property {string|null}
+ * @inheritable
+ */
+ve.ui.Tool.static.fallbackIcon = null;
+
+/**
  * Get the symbolic command name for this tool.
  *
  * @static

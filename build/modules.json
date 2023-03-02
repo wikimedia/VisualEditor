@@ -626,6 +626,7 @@
 			"src/ui/actions/ve.ui.CompletionAction.js",
 			"src/ui/actions/ve.ui.ContentAction.js",
 			"src/ui/actions/ve.ui.FormatAction.js",
+			"src/ui/actions/ve.ui.HelpCompletionAction.js",
 			"src/ui/actions/ve.ui.HistoryAction.js",
 			"src/ui/actions/ve.ui.IndentationAction.js",
 			"src/ui/actions/ve.ui.LinkAction.js",
