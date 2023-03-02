@@ -118,7 +118,9 @@ ve.ui.CompletionWidget.prototype.update = function () {
 			return;
 		}
 		this.menu.clearItems();
-		this.menu.addItems( suggestions.map( this.action.getMenuItemForSuggestion.bind( this.action ) ) );
+		var menuItems = suggestions.map( this.action.getMenuItemForSuggestion.bind( this.action ) );
+		menuItems = this.action.updateMenuItems( menuItems );
+		this.menu.addItems( menuItems );
 		this.menu.highlightItem( this.menu.findFirstSelectableItem() );
 		this.updateMenu( input, suggestions );
 	}.bind( this ) );
@@ -147,9 +149,7 @@ ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 };
 
 ve.ui.CompletionWidget.prototype.onMenuChoose = function ( item ) {
-	var fragment = this.action.insertCompletion( item.getData(), this.getCompletionRange( true ) );
-
-	fragment.collapseToEnd().select();
+	this.action.chooseItem( item, this.getCompletionRange( true ) );
 
 	this.teardown();
 };
