@@ -7,6 +7,7 @@
 			"Soued031",
 			"Tynchtyk Chorotegin",
 			"UV",
+			"Volvox",
 			"Викиней"
 		]
 	},
@@ -14,7 +15,7 @@
 	"visualeditor-aliennode-tooltip": "Pardon, dëst Element kann nëmmen am Quelltextmodus geännert ginn",
 	"visualeditor-align-desc-center": "Mëtt",
 	"visualeditor-align-desc-default": "Standard",
-	"visualeditor-align-desc-left": "lenks",
+	"visualeditor-align-desc-left": "lénks",
 	"visualeditor-align-desc-none": "keen",
 	"visualeditor-align-desc-right": "riets",
 	"visualeditor-align-widget-center": "Mëtt",
@@ -78,6 +79,8 @@
 	"visualeditor-dialog-language-search-title": "Sprooch eraussichen",
 	"visualeditor-dialog-table-title": "Eegenschafte vun der Tabell",
 	"visualeditor-diff-no-changes": "Keng Ännerungen",
+	"visualeditor-dimensionswidget-height": "Héicht",
+	"visualeditor-dimensionswidget-width": "Breet",
 	"visualeditor-find-and-replace-done": "Fäerdeg",
 	"visualeditor-find-and-replace-find-text": "Sichen",
 	"visualeditor-find-and-replace-match-case": "Op grouss a kleng Schreiwen oppassen",
