@@ -252,6 +252,7 @@ del[ data-diff-action='remove' ] {
 	clear: both;
 }
 
+[ data-diff-list-spacer ],
 .ve-ui-diffElement-internalListSpacer {
 	list-style-type: none !important; /* stylelint-disable-line declaration-no-important */
 }
