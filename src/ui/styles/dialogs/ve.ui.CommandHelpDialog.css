@@ -81,7 +81,7 @@
 	margin-top: 0.5em;
 }
 
-.ve-ui-commandHelpDialog-sequence[ data-label ]:before {
+.ve-ui-commandHelpDialog-sequence[ data-label ]::before {
 	content: attr( data-label );
 	font-weight: normal;
 	font-style: italic;
