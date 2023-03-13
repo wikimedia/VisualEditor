@@ -235,7 +235,7 @@ ve.ui.TargetWidget.prototype.getToolbar = function () {
 /**
  * Get content data.
  *
- * @return {ve.dm.ElementLinearData} Content data
+ * @return {Array} Content data
  */
 ve.ui.TargetWidget.prototype.getContent = function () {
 	return this.getSurface().getModel().getDocument().getData();
