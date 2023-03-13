@@ -8,7 +8,7 @@
 	position: relative;
 }
 
-.ve-ui-surface:after {
+.ve-ui-surface::after {
 	content: '.';
 	display: block;
 	clear: both;
