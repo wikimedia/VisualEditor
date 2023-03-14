@@ -47,6 +47,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.documentNode.setDocument( doc );
 	this.internalList = internalList ? internalList.clone( this ) : new ve.dm.InternalList( this );
 	this.innerWhitespace = innerWhitespace ? ve.copy( innerWhitespace ) : new Array( 2 );
+	this.metaList = new ve.dm.MetaList( this );
 
 	// Properties
 	this.parentDocument = parentDocument || null;
@@ -321,6 +322,15 @@ ve.dm.Document.prototype.buildNodeTree = function () {
  */
 ve.dm.Document.prototype.getLength = function () {
 	return this.data.getLength();
+};
+
+/**
+ * Get the meta list.
+ *
+ * @return {ve.dm.MetaList} Meta list of the surface
+ */
+ve.dm.Document.prototype.getMetaList = function () {
+	return this.metaList;
 };
 
 /**

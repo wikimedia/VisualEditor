@@ -5,37 +5,28 @@
  */
 
 /**
- * DataModel meta item.
+ * DataModel meta list.
  *
  * @class
  * @mixins OO.EventEmitter
  *
  * @constructor
- * @param {ve.dm.Surface} surface Surface model
+ * @param {ve.dm.Document} doc Document model
  */
-ve.dm.MetaList = function VeDmMetaList( surface ) {
-	var metaList = this;
-
+ve.dm.MetaList = function VeDmMetaList( doc ) {
 	// Mixin constructors
 	OO.EventEmitter.call( this );
 
-	this.surface = surface;
-	this.document = surface.getDocument();
+	this.doc = doc;
 
 	// Sorted array of attached ve.dm.MetaItem nodes in document order
-	var items = this.items = [];
+	this.items = [];
 
-	this.document.connect( this, {
+	// The meta list is constructed before the model tree is built, so
+	// we don't need to initialise this item list, just listen to changes
+	this.doc.connect( this, {
 		nodeAttached: 'onNodeAttached',
 		nodeDetached: 'onNodeDetached'
-	} );
-
-	// Add any ve.dm.MetaItem nodes already present in the document
-	this.document.documentNode.traverse( function ( node ) {
-		if ( node instanceof ve.dm.MetaItem ) {
-			items.push( node );
-			node.attachToMetaList( metaList );
-		}
 	} );
 };
 
@@ -69,7 +60,6 @@ ve.dm.MetaList.prototype.onNodeAttached = function ( node ) {
 			return ve.compareTuples( offsetPath, other.getOffsetPath() );
 		}, true );
 		this.items.splice( i, 0, node );
-		node.attachToMetaList( this );
 		this.emit( 'insert', node );
 	}
 };
@@ -83,7 +73,6 @@ ve.dm.MetaList.prototype.onNodeDetached = function ( node ) {
 	if ( node instanceof ve.dm.MetaItem ) {
 		var i = this.items.indexOf( node );
 		if ( i !== -1 ) {
-			node.detachFromMetaList( this );
 			this.items.splice( i, 1 );
 			this.emit( 'remove', node );
 		}
@@ -118,68 +107,6 @@ ve.dm.MetaList.prototype.getItemsInGroup = function ( group ) {
  *
  * @return {ve.dm.MetaItem[]} Array of items in the list
  */
-ve.dm.MetaList.prototype.getAllItems = function () {
-	return this.items.slice( 0 );
-};
-
-/**
- * Insert new metadata into the document. This builds and processes a transaction that inserts
- * metadata into the document.
- *
- * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
- *
- * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
- * @param {number} offset Document offset to insert at; must be a valid offset for metadata;
- * defaults to document end
- */
-ve.dm.MetaList.prototype.insertMeta = function ( meta, offset ) {
-	if ( arguments[ 2 ] !== undefined ) {
-		throw new Error( 'Old "index" argument is no longer supported' );
-	}
-	if ( meta instanceof ve.dm.MetaItem ) {
-		meta = meta.getElement();
-	}
-	var closeMeta = { type: '/' + meta.type };
-	if ( offset === undefined ) {
-		offset = this.document.getDocumentRange().end;
-	}
-	var tx = ve.dm.TransactionBuilder.static.newFromInsertion( this.document, offset, [ meta, closeMeta ] );
-	this.surface.change( tx );
-};
-
-/**
- * Remove a meta item from the document. This builds and processes a transaction that removes the
- * associated metadata from the document.
- *
- * @param {ve.dm.MetaItem} item Item to remove
- */
-ve.dm.MetaList.prototype.removeMeta = function ( item ) {
-	var tx = ve.dm.TransactionBuilder.static.newFromRemoval(
-		this.document,
-		item.getOuterRange(),
-		true
-	);
-	this.surface.change( tx );
-};
-
-/**
- * Replace a MetaItem with another in-place.
- *
- * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
- *
- * @param {ve.dm.MetaItem} oldItem Old item to replace
- * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
- */
-ve.dm.MetaList.prototype.replaceMeta = function ( oldItem, meta ) {
-	if ( meta instanceof ve.dm.MetaItem ) {
-		meta = meta.getElement();
-	}
-	var closeMeta = { type: '/' + meta.type };
-	var tx = ve.dm.TransactionBuilder.static.newFromReplacement(
-		this.document,
-		oldItem.getOuterRange(),
-		[ meta, closeMeta ],
-		true
-	);
-	this.surface.change( tx );
+ve.dm.MetaList.prototype.getItems = function () {
+	return this.items.slice();
 };

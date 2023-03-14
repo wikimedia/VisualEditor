@@ -1423,3 +1423,66 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 
 	return this;
 };
+
+/**
+ * Insert new metadata into the document. This builds and processes a transaction that inserts
+ * metadata into the document.
+ *
+ * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
+ *
+ * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
+ * @param {number} offset Document offset to insert at; must be a valid offset for metadata;
+ * defaults to document end
+ */
+ve.dm.SurfaceFragment.prototype.insertMeta = function ( meta, offset ) {
+	if ( arguments[ 2 ] !== undefined ) {
+		throw new Error( 'Old "index" argument is no longer supported' );
+	}
+	if ( meta instanceof ve.dm.MetaItem ) {
+		meta = meta.getElement();
+	}
+	var closeMeta = { type: '/' + meta.type };
+	var doc = this.getDocument();
+	if ( offset === undefined ) {
+		offset = doc.getDocumentRange().end;
+	}
+	var tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, offset, [ meta, closeMeta ] );
+	this.surface.change( tx );
+};
+
+/**
+ * Remove a meta item from the document. This builds and processes a transaction that removes the
+ * associated metadata from the document.
+ *
+ * @param {ve.dm.MetaItem} item Item to remove
+ */
+ve.dm.SurfaceFragment.prototype.removeMeta = function ( item ) {
+	var tx = ve.dm.TransactionBuilder.static.newFromRemoval(
+		this.getDocument(),
+		item.getOuterRange(),
+		true
+	);
+	this.surface.change( tx );
+};
+
+/**
+ * Replace a MetaItem with another in-place.
+ *
+ * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
+ *
+ * @param {ve.dm.MetaItem} oldItem Old item to replace
+ * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
+ */
+ve.dm.SurfaceFragment.prototype.replaceMeta = function ( oldItem, meta ) {
+	if ( meta instanceof ve.dm.MetaItem ) {
+		meta = meta.getElement();
+	}
+	var closeMeta = { type: '/' + meta.type };
+	var tx = ve.dm.TransactionBuilder.static.newFromReplacement(
+		this.getDocument(),
+		oldItem.getOuterRange(),
+		[ meta, closeMeta ],
+		true
+	);
+	this.surface.change( tx );
+};
