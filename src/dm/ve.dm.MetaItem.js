@@ -39,6 +39,8 @@ ve.dm.MetaItem.static.isMetaData = true;
 
 ve.dm.MetaItem.static.canSerializeAsContent = true;
 
+ve.dm.MetaItem.static.isDiffedAsLeaf = true;
+
 /**
  * Symbolic name for the group this meta item type will be grouped in in ve.dm.MetaList.
  *

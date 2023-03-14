@@ -1215,28 +1215,46 @@ QUnit.test( 'Diffing', function ( assert ) {
 					'<pre data-diff-action="insert">Foo\n\tBar</pre>'
 			},
 			{
-				msg: 'Metadata change inside paragraph (no diff)',
-				oldDoc: '<p>foo bar baz<meta foo="a"></p>',
-				newDoc: '<p>foo bar baz<meta foo="b"></p>',
-				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+				msg: 'Metadata change',
+				oldDoc: '<p>foo bar baz</p><meta rel="test:meta" value="a">',
+				newDoc: '<p>foo bar bay</p><meta rel="test:meta" value="b">',
+				expected:
+					'<p>foo bar <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bay</ins></p>' +
+					'<div data-diff-action="structural-change" data-diff-id="0">b</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-changed,value,<del>a</del>,<ins>b</ins></div>'
+				]
 			},
 			{
-				msg: 'Metadata change between list items (no diff)',
-				oldDoc: '<ul><li>foo</li><meta foo="a"><li>baz</li></ul>',
-				newDoc: '<ul><li>foo</li><meta foo="b"><li>baz</li></ul>',
-				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+				msg: 'Metadata change between list items',
+				oldDoc: '<ul><li>foo</li><meta rel="test:meta" value="a"><li>bar</li></ul>',
+				newDoc: '<ul><li>foo</li><meta rel="test:meta" value="b"><li>baz</li></ul>',
+				expected:
+					'<ul>' +
+						'<li><p data-diff-action="none">foo</p></li>' +
+						'<li><p data-diff-action="remove">bar</p></li>' +
+						'<li><p data-diff-action="insert">baz</p></li>' +
+					'</ul>' +
+					'<div data-diff-action="structural-change" data-diff-id="0">b</div>',
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-changed,value,<del>a</del>,<ins>b</ins></div>'
+				]
 			},
 			{
-				msg: 'Insert metadata inside paragraph (no diff)',
+				msg: 'Insert metadata inside paragraph',
 				oldDoc: '<p>foo bar baz</p>',
-				newDoc: '<p>foo bar baz<meta foo="a"></p>',
-				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+				newDoc: '<p>foo bar bay<meta rel="test:meta" value="a"></p>',
+				expected:
+					'<p>foo bar <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bay</ins></p>' +
+					'<div data-diff-action="insert">a</div>'
 			},
 			{
-				msg: 'Remove metadata inside paragraph (no diff)',
-				oldDoc: '<p>foo bar baz<meta foo="a"></p>',
-				newDoc: '<p>foo bar baz</p>',
-				expected: '<div class="ve-ui-diffElement-no-changes">' + ve.msg( 'visualeditor-diff-no-changes' ) + '</div>'
+				msg: 'Remove metadata inside paragraph',
+				oldDoc: '<p>foo bar baz<meta rel="test:meta" value="a"></p>',
+				newDoc: '<p>foo bar bay</p>',
+				expected:
+					'<p>foo bar <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bay</ins></p>' +
+					'<div data-diff-action="remove">a</div>'
 			},
 			{
 				msg: 'Header attribute change in list',
@@ -1344,13 +1362,53 @@ QUnit.test( 'Diffing', function ( assert ) {
 	InlineWidgetNode.static.isDiffComparable = function ( element, other ) {
 		return element.type === other.type && element.attributes.name === other.attributes.name;
 	};
+
+	function MetaItem() {
+		// Parent constructor
+		MetaItem.super.apply( this, arguments );
+	}
+	OO.inheritClass( MetaItem, ve.dm.MetaItem );
+	MetaItem.static.name = 'testMetaItem';
+	MetaItem.static.matchTagNames = [ 'meta', 'link' ];
+	MetaItem.static.matchRdfaTypes = [ 'test:meta' ];
+	MetaItem.static.group = 'test';
+	MetaItem.static.preserveHtmlAttributes = false;
+	MetaItem.static.toDataElement = function ( domElements ) {
+		return {
+			type: this.name,
+			attributes: {
+				value: domElements[ 0 ].getAttribute( 'value' )
+			}
+		};
+	};
+	MetaItem.static.toDomElements = function ( dataElement, doc, converter ) {
+		if ( converter.isForPreview() ) {
+			var domElement = doc.createElement( 'div' );
+			domElement.appendChild( doc.createTextNode( dataElement.attributes.value ) );
+			return [ domElement ];
+		} else {
+			return ve.copyDomElements( converter.getStore().value( dataElement.originalDomElementsHash ) || [], doc );
+		}
+	};
+
+	/* Registration */
+
+	ve.dm.modelRegistry.register( MetaItem );
 	ve.dm.modelRegistry.register( InlineWidgetNode );
+	ve.ui.metaListDiffRegistry.register( 'test', function ( diffElement, diffQueue, documentNode, documentSpacerNode ) {
+		diffElement.renderQueue(
+			diffElement.processQueue( diffQueue ),
+			documentNode, documentSpacerNode
+		);
+	} );
 
 	cases.forEach( function ( caseItem ) {
 		ve.test.utils.runDiffElementTest( assert, caseItem );
 	} );
 
+	ve.dm.modelRegistry.unregister( MetaItem );
 	ve.dm.modelRegistry.unregister( InlineWidgetNode );
+	ve.ui.metaListDiffRegistry.unregister( 'test' );
 } );
 
 QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
