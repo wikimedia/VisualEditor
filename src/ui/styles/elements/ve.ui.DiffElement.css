@@ -104,7 +104,8 @@
 }
 
 .ve-ui-diffElement-attributeChange.oo-ui-labelElement .oo-ui-labelElement-label {
-	white-space: normal;
+	/* Respect line breaks and prevent collapsing added/removed spaces */
+	white-space: pre-wrap;
 	word-break: break-word;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
