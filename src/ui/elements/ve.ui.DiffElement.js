@@ -967,6 +967,11 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 				var indexInOwnList = listNode.children.indexOf( listItemNode );
 				diffElement.addAttributesToElement( listItemData, 0, { value: indexInOwnList + 1 } );
 			}
+			if ( item.action === 'none' && !item.move ) {
+				diffElement.addAttributesToElement( listItemData, 0, {
+					'data-diff-list-none': ''
+				} );
+			}
 		}
 
 		// e.g. AlienBlockNode, content node is same as 'listItem', so don't duplicate content

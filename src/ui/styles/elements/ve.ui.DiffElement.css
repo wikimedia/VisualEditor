@@ -188,6 +188,16 @@ ins[ data-diff-action='insert' ] + span[ data-diff-action='change-remove' ] {
 	opacity: 0.4;
 }
 
+/* List items only apply this style to the marker. The contents
+   is styled separately to avoid styling nested lists. */
+li[ data-diff-action='none' ]:not( [ data-diff-move ] ) {
+	opacity: 1;
+}
+
+li[ data-diff-action='none' ]:not( [ data-diff-move ] )::marker {
+	color: #72777d;
+}
+
 /* stylelint-disable no-descending-specificity */
 [ data-diff-action='insert' ],
 [ data-diff-action='remove' ],
@@ -257,4 +267,9 @@ ins[ data-diff-action='insert' ] + span[ data-diff-action='change-remove' ] {
 [ data-diff-list-spacer ],
 .ve-ui-diffElement-internalListSpacer {
 	list-style-type: none !important; /* stylelint-disable-line declaration-no-important */
+}
+
+[ data-diff-list-none ]::marker {
+	/* Approximately opacity 0.4, but we can't style the list marker with opacity */
+	color: #aaa;
 }
