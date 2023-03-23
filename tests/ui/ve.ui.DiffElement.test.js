@@ -734,7 +734,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<div>' +
 						'<ul>' +
-							'<li>' +
+							'<li data-diff-list-none>' +
 								'<p data-diff-action="none">foo</p>' +
 								'<ul>' +
 									'<li data-diff-id="0">' +
@@ -742,7 +742,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 									'</li>' +
 								'</ul>' +
 							'</li>' +
-							'<li>' +
+							'<li data-diff-list-none>' +
 								'<p data-diff-action="none">baz</p>' +
 							'</li>' +
 						'</ul>' +
@@ -766,7 +766,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<table><tbody><tr><td>Hello</td><td>World</td><tr><td>' +
 					'<ul>' +
-						'<li>' +
+						'<li data-diff-list-none>' +
 							'<p data-diff-action="none">foo</p>' +
 							'<ul>' +
 								'<li data-diff-id="0">' +
@@ -774,7 +774,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 								'</li>' +
 							'</ul>' +
 						'</li>' +
-						'<li>' +
+						'<li data-diff-list-none>' +
 							'<p data-diff-action="none">baz</p>' +
 						'</li>' +
 					'</ul>' +
@@ -789,10 +789,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ul><li>foo</li><s><li>bar</li></s><li>baz</li></ul>',
 				expected:
 					'<ul>' +
-						'<li><p data-diff-action="none">foo</p></li>' +
+						'<li data-diff-list-none><p data-diff-action="none">foo</p></li>' +
 						'<li><p data-diff-action="remove">bar</p></li>' +
 						'<s data-diff-action="insert"><li>bar</li></s>' +
-						'<li><p data-diff-action="none">baz</p></li>' +
+						'<li data-diff-list-none><p data-diff-action="none">baz</p></li>' +
 					'</ul>'
 			},
 			{
@@ -911,9 +911,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ul><li>foo</li><li>bar</li><li>baz</li></ul>',
 				expected:
 					'<ul>' +
-						'<li><p data-diff-action="none">foo</p></li>' +
+						'<li data-diff-list-none><p data-diff-action="none">foo</p></li>' +
 						'<li><p data-diff-action="insert">bar</p></li>' +
-						'<li><p data-diff-action="none">baz</p></li>' +
+						'<li data-diff-list-none><p data-diff-action="none">baz</p></li>' +
 					'</ul>'
 			},
 			{
@@ -922,10 +922,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ol><li>foo</li><li>quux</li></ol>',
 				expected:
 					'<ol>' +
-						'<li value="1"><p data-diff-action="none">foo</p></li>' +
+						'<li value="1" data-diff-list-none><p data-diff-action="none">foo</p></li>' +
 						'<li value="2"><p data-diff-action="remove">bar</p></li>' +
 						'<li value="3"><p data-diff-action="remove">baz</p></li>' +
-						'<li value="2"><p data-diff-action="none">quux</p></li>' +
+						'<li value="2" data-diff-list-none><p data-diff-action="none">quux</p></li>' +
 						'<li value="5"><p data-diff-action="remove">whee</p></li>' +
 					'</ol>'
 			},
@@ -936,7 +936,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<ol>' +
 						'<li value="1"><p data-diff-action="remove">foo</p></li>' +
-						'<li value="1"><p data-diff-action="none">bar</p></li>' +
+						'<li value="1" data-diff-list-none><p data-diff-action="none">bar</p></li>' +
 						'<li value="3"><p data-diff-action="remove">baz</p></li>' +
 					'</ol>'
 			},
@@ -947,7 +947,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<ol>' +
 						'<li value="1"><p data-diff-action="none" data-diff-move="up" data-diff-id="0">baz</p></li>' +
-						'<li value="2"><p data-diff-action="none">foo</p></li>' +
+						'<li value="2" data-diff-list-none><p data-diff-action="none">foo</p></li>' +
 						listSpacer +
 					'</ol>',
 				expectedDescriptions: [
@@ -961,7 +961,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<ol>' +
 						listSpacer +
-						'<li value="3"><p data-diff-action="none">quux</p></li>' +
+						'<li value="3" data-diff-list-none><p data-diff-action="none">quux</p></li>' +
 						'<li value="4"><p data-diff-action="none" data-diff-move="down" data-diff-id="0">bar</p></li>' +
 					'</ol>',
 				expectedDescriptions: [
@@ -975,7 +975,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<ol>' +
 						'<li value="1"><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
-						'<li value="2"><p data-diff-action="none">foo</p></li>' +
+						'<li value="2" data-diff-list-none><p data-diff-action="none">foo</p></li>' +
 						listSpacer +
 					'</ol>',
 				expectedDescriptions: [
@@ -988,7 +988,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ol><li>foo<ol><li>bar</li></ol></li><li>baz</li></ol>',
 				expected:
 					'<ol>' +
-						'<li value="1">' +
+						'<li value="1" data-diff-list-none>' +
 							'<p data-diff-action="none">foo</p>' +
 							'<ol>' +
 								'<li value="1" data-diff-id="0">' +
@@ -996,7 +996,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 								'</li>' +
 							'</ol>' +
 						'</li>' +
-						'<li value="2">' +
+						'<li value="2" data-diff-list-none>' +
 							'<p data-diff-action="none">baz</p>' +
 						'</li>' +
 					'</ol>',
@@ -1010,13 +1010,13 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ol><li>foo</li><li>bar</li><li>baz</li></ol>',
 				expected:
 					'<ol>' +
-						'<li value="1">' +
+						'<li value="1" data-diff-list-none>' +
 							'<p data-diff-action="none">foo</p>' +
 						'</li>' +
 						'<li value="2" data-diff-id="0">' +
 							'<p data-diff-action="structural-change">bar</p>' +
 						'</li>' +
-						'<li value="3">' +
+						'<li value="3" data-diff-list-none>' +
 							'<p data-diff-action="none">baz</p>' +
 						'</li>' +
 					'</ol>',
@@ -1033,7 +1033,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						// Remove end tag from listSpacer
 						listSpacer.slice( 0, -5 ) +
 							'<ol>' +
-								'<li value="1"><p data-diff-action="none">Bar</p></li>' +
+								'<li value="1" data-diff-list-none><p data-diff-action="none">Bar</p></li>' +
 							'</ol>' +
 						'</li>' +
 						'<li data-diff-id="0"><p data-diff-action="structural-change">Baz</p></li>' +
@@ -1098,7 +1098,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<dl>' +
 						'<dd data-diff-id="0"><p data-diff-action="structural-change">Foo</p></dd>' +
-						'<dd><p data-diff-action="none">Bar</p></dd>' +
+						'<dd data-diff-list-none><p data-diff-action="none">Bar</p></dd>' +
 					'</dl>',
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-changed,style,<del>term</del>,<ins>definition</ins></div>'
@@ -1110,7 +1110,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ul><li>foo<ul><li><h3>bar</h3></li></ul></li><li>baz</li></ul>',
 				expected:
 					'<ul>' +
-						'<li>' +
+						'<li data-diff-list-none>' +
 							'<p data-diff-action="none">foo</p>' +
 							'<ul>' +
 								'<li data-diff-id="1">' +
@@ -1118,7 +1118,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 								'</li>' +
 							'</ul>' +
 						'</li>' +
-						'<li>' +
+						'<li data-diff-list-none>' +
 							'<p data-diff-action="none">baz</p>' +
 						'</li>' +
 					'</ul>',
@@ -1137,10 +1137,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 							'<ul>' +
 								listSpacer.slice( 0, -5 ) +
 									'<ul>' +
-										'<li><p data-diff-action="none">three</p>' +
+										'<li data-diff-list-none><p data-diff-action="none">three</p>' +
 											'<ul><li>four<ins data-diff-action="insert"> ish</ins></li></ul>' +
 										'</li>' +
-										'<li><p data-diff-action="none">five</p></li>' +
+										'<li data-diff-list-none><p data-diff-action="none">five</p></li>' +
 									'</ul>' +
 								'</li>' +
 								listSpacer +
@@ -1195,7 +1195,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected:
 					'<ul>' +
 						listSpacer +
-						'<li><p data-diff-action="none">bar baz quux whee one</p>' +
+						'<li data-diff-list-none><p data-diff-action="none">bar baz quux whee one</p>' +
 							'<ul><li><p data-diff-action="insert">bar baz quux whee won</p></li></ul>' +
 						'</li>' +
 					'</ul>'
@@ -1231,7 +1231,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ul><li>foo</li><meta rel="test:meta" value="b"><li>baz</li></ul>',
 				expected:
 					'<ul>' +
-						'<li><p data-diff-action="none">foo</p></li>' +
+						'<li data-diff-list-none><p data-diff-action="none">foo</p></li>' +
 						'<li><p data-diff-action="remove">bar</p></li>' +
 						'<li><p data-diff-action="insert">baz</p></li>' +
 					'</ul>' +
