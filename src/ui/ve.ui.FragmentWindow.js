@@ -60,6 +60,7 @@ ve.ui.FragmentWindow.prototype.getSetupProcess = function ( data, process ) {
 		}
 		this.fragment = data.fragment;
 		this.initialFragment = data.fragment;
+		this.selectFragmentOnClose = data.selectFragmentOnClose !== false;
 		// Prefer this.initialFragment.getSelection() to this.previousSelection
 		this.previousSelection = this.fragment.getSelection();
 	}, this ).next( function () {
