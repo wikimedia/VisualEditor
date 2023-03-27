@@ -224,10 +224,9 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
  * @return {jQuery} A highlight element
  */
 ve.ce.FocusableNode.prototype.createHighlight = function () {
-	var extraClasses = this.generatedContentsInvalid ? ' ve-ce-focusableNode-highlight-error' : '';
 	// eslint-disable-next-line mediawiki/class-doc
 	return $( '<div>' )
-		.addClass( 've-ce-focusableNode-highlight' + extraClasses )
+		.addClass( [ 've-ce-focusableNode-highlight' ].concat( this.getExtraHighlightClasses() ) )
 		.prop( {
 			title: this.constructor.static.getDescription( this.model ),
 			draggable: true
@@ -236,6 +235,15 @@ ve.ce.FocusableNode.prototype.createHighlight = function () {
 			dragstart: this.onFocusableDragStart.bind( this ),
 			dragend: this.onFocusableDragEnd.bind( this )
 		} );
+};
+
+/**
+ * Array of CSS classes to add to highlights
+ *
+ * @return {string[]}
+ */
+ve.ce.FocusableNode.prototype.getExtraHighlightClasses = function () {
+	return this.generatedContentsInvalid ? [ 've-ce-focusableNode-highlight-error' ] : [];
 };
 
 /**
