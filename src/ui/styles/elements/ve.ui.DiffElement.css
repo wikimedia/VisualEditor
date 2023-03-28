@@ -267,6 +267,7 @@ li[ data-diff-action='none' ]:not( [ data-diff-move ] )::marker {
 [ data-diff-list-spacer ],
 .ve-ui-diffElement-internalListSpacer {
 	list-style-type: none !important; /* stylelint-disable-line declaration-no-important */
+	list-style-image: none;
 }
 
 [ data-diff-list-none ]::marker {
