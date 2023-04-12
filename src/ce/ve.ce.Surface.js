@@ -640,15 +640,7 @@ ve.ce.Surface.prototype.removeRangesAndBlur = function () {
  *
  * @param {jQuery.Event} e focusin/out event
  */
-ve.ce.Surface.prototype.onDocumentFocusInOut = function ( e ) {
-	// Support: IE11
-	// Filter out focusin/out events on iframes
-	// IE11 emits these when the focus moves into/out of an iframed document,
-	// but these events are misleading because the focus in this document didn't
-	// actually move.
-	if ( e.target.nodeName.toLowerCase() === 'iframe' ) {
-		return;
-	}
+ve.ce.Surface.prototype.onDocumentFocusInOut = function () {
 	this.debounceFocusChange();
 };
 
