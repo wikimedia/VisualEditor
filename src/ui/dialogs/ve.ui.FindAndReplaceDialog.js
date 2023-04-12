@@ -109,9 +109,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	} );
 	this.diacriticToggle = new OO.ui.ToggleButtonWidget( {
 		icon: 'searchDiacritics',
-		title: ve.supportsIntl ?
-			ve.msg( 'visualeditor-find-and-replace-diacritic' ) :
-			ve.msg( 'visualeditor-find-and-replace-diacritic-unavailable' ),
+		title: ve.msg( 'visualeditor-find-and-replace-diacritic' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-diacritic' ),
 		tabIndex: 2
 	} );
@@ -312,7 +310,7 @@ ve.ui.FindAndReplaceDialog.prototype.onFindChange = function () {
 	this.clearRenderedResultsCache();
 	this.renderFragments();
 	this.highlightFocused( true );
-	this.diacriticToggle.setDisabled( !ve.supportsIntl || this.regexToggle.getValue() );
+	this.diacriticToggle.setDisabled( this.regexToggle.getValue() );
 	this.updateUserConfigDebounced();
 };
 

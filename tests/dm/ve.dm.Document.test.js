@@ -1015,8 +1015,7 @@ QUnit.test( 'Selection equality', function ( assert ) {
 } );
 
 QUnit.test( 'findText (plain text)', function ( assert ) {
-	var supportsIntl = ve.supportsIntl,
-		doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
+	var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
 			// 0
 			'<p>Foo bar fooq.</p>' +
 			// 15
@@ -1266,12 +1265,6 @@ QUnit.test( 'findText (plain text)', function ( assert ) {
 		doc.lang = caseItem.lang || 'en';
 		var ranges = doc.findText( caseItem.query, caseItem.options );
 		assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
-		if ( !caseItem.options.diacriticInsensitiveString ) {
-			ve.supportsIntl = false;
-			ranges = doc.findText( caseItem.query, caseItem.options );
-			assert.deepEqual( ranges, caseItem.ranges, caseItem.msg + ': without Intl API' );
-			ve.supportsIntl = supportsIntl;
-		}
 	} );
 } );
 

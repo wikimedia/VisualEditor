@@ -1659,26 +1659,14 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 		} );
 	} else {
 		var qLen = query.length;
-		var compare;
-		if ( ve.supportsIntl ) {
-			var sensitivity;
-			if ( options.diacriticInsensitiveString ) {
-				sensitivity = options.caseSensitiveString ? 'case' : 'base';
-			} else {
-				sensitivity = options.caseSensitiveString ? 'variant' : 'accent';
-			}
-			// Intl is only used browser clients
-			compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
+		var sensitivity;
+		if ( options.diacriticInsensitiveString ) {
+			sensitivity = options.caseSensitiveString ? 'case' : 'base';
 		} else {
-			// Support: Firefox<29, Chrome<24, Safari<10
-			compare = options.caseSensitiveString ?
-				function ( a, b ) {
-					return a === b ? 0 : 1;
-				} :
-				function ( a, b ) {
-					return a.toLowerCase() === b.toLowerCase() ? 0 : 1;
-				};
+			sensitivity = options.caseSensitiveString ? 'variant' : 'accent';
 		}
+		// Intl is only used browser clients
+		var compare = new Intl.Collator( this.lang, { sensitivity: sensitivity } ).compare;
 		// Iterate up to (and including) offset textLength - queryLength. Beyond that point
 		// there is not enough room for the query to exist
 		for ( var offset = 0, l = documentRange.getLength() - qLen; offset <= l; offset++ ) {

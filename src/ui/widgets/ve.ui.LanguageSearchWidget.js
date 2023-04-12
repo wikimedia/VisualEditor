@@ -85,10 +85,8 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 	var matchProperties = [ 'name', 'autonym', 'code' ],
 		query = this.query.getValue().trim(),
-		compare = ve.supportsIntl ?
-			// eslint-disable-next-line compat/compat
-			new Intl.Collator( this.lang, { sensitivity: 'base' } ).compare :
-			function ( a, b ) { return a.toLowerCase() === b.toLowerCase() ? 0 : 1; },
+		// eslint-disable-next-line compat/compat
+		compare = new Intl.Collator( this.lang, { sensitivity: 'base' } ).compare,
 		hasQuery = !!query.length,
 		items = [];
 
