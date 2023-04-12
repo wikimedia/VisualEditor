@@ -111,8 +111,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.setUnicorningRecursionGuard = false;
 	this.cursorHolders = null;
 
-	this.hasSelectionChangeEvents = 'onselectionchange' in this.getElementDocument();
-
 	// Events
 	// Debounce to prevent trying to draw every cursor position in history.
 	this.onPositionDebounced = ve.debounce( this.onPosition.bind( this ) );
@@ -174,24 +172,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 			surface.$attachedRootNode[ 0 ].focus();
 		} );
 
-	// Support: IE<=11
-	// IE<=11 will fire two selection change events when moving the selection from
-	// the paste target to the document. We are only interested in the last one (T133104).
-	this.onDocumentSelectionChangeDebounced = ve.debounce( this.onDocumentSelectionChange.bind( this ) );
-	if ( this.hasSelectionChangeEvents ) {
-		this.$document.on( 'selectionchange', this.onDocumentSelectionChangeDebounced );
-	} else {
-		// Fake selection change events with mousemove if dragging
-		this.$attachedRootNode.on( 'mousemove', function () {
-			if ( surface.dragging ) {
-				surface.onDocumentSelectionChangeDebounced();
-			}
-		} );
-		// mousedown needs to run after native mousedown action has changed the selection
-		this.eventSequencer.after( {
-			mousedown: this.onDocumentSelectionChangeDebounced
-		} );
-	}
+	this.onDocumentSelectionChangeHandler = this.onDocumentSelectionChange.bind( this );
+	this.$document.on( 'selectionchange', this.onDocumentSelectionChangeHandler );
 
 	this.$element.on( {
 		dragstart: this.onDocumentDragStart.bind( this ),
@@ -428,9 +410,7 @@ ve.ce.Surface.prototype.destroy = function () {
 	// Disconnect DOM events on the document
 	this.$document.off( 'focusin focusout', this.onDocumentFocusInOutHandler );
 	this.$document.off( 'mousedown', this.debounceFocusChange );
-	if ( this.hasSelectionChangeEvents ) {
-		this.$document.off( 'selectionchange', this.onDocumentSelectionChangeDebounced );
-	}
+	this.$document.off( 'selectionchange', this.onDocumentSelectionChangeHandler );
 
 	if ( this.model.synchronizer ) {
 		// TODO: Move destroy to ve.dm.Surface#destroy
