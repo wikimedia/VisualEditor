@@ -889,16 +889,8 @@ ve.resolveAttributes = function ( elementsOrJQuery, doc, attrs ) {
 	function resolveAttribute( el ) {
 		var nodeInDoc = doc.createElement( el.nodeName );
 		nodeInDoc.setAttribute( attr, el.getAttribute( attr ) );
-		try {
-			if ( nodeInDoc[ attr ] ) {
-				el.setAttribute( attr, nodeInDoc[ attr ] );
-			}
-		} catch ( e ) {
-			// Support: IE
-			// IE can throw exceptions if the URL is malformed,
-			// so just leave them as is, as there's no way to
-			// resolve them and hopefully they are absolute
-			// URLs. T148858.
+		if ( nodeInDoc[ attr ] ) {
+			el.setAttribute( attr, nodeInDoc[ attr ] );
 		}
 	}
 
