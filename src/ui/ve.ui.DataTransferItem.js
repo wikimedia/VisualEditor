@@ -1,5 +1,3 @@
-/* global Uint8Array */
-
 /**
  * Data transfer item wrapper
  *
@@ -96,7 +94,6 @@ ve.ui.DataTransferItem.prototype.getAsFile = function () {
 			array.push( binary.charCodeAt( i ) );
 		}
 		this.blob = new Blob(
-			// eslint-disable-next-line es-x/no-typed-arrays
 			[ new Uint8Array( array ) ],
 			{ type: this.type }
 		);

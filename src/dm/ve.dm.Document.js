@@ -604,7 +604,7 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			);
 		}
 
-		// eslint-disable-next-line no-inner-declarations, es-x/no-block-scoped-functions
+		// eslint-disable-next-line no-inner-declarations
 		function nodeNeedsContext( node ) {
 			return node.getParentNodeTypes() !== null || node.isContent();
 		}
