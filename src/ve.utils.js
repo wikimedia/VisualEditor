@@ -987,49 +987,11 @@ ve.safeDecodeURIComponent = function ( s ) {
  * Wrapper for node.normalize(). The native implementation is broken in IE,
  * so we use our own implementation in that case.
  *
+ * @deprecated Use Node#normalize
  * @param {Node} node Node to normalize
  */
 ve.normalizeNode = function ( node ) {
-	if ( ve.isNormalizeBroken === undefined ) {
-		// Support: IE11
-		// Feature-detect IE11's broken .normalize() implementation.
-		// We know that it fails to remove the empty text node at the end
-		// in this example, but for mysterious reasons it also fails to merge
-		// text nodes in other cases and we don't quite know why. So if we detect
-		// that .normalize() is broken, fall back to a completely manual version.
-		var p = document.createElement( 'p' );
-		p.appendChild( document.createTextNode( 'Foo' ) );
-		p.appendChild( document.createTextNode( 'Bar' ) );
-		p.appendChild( document.createTextNode( '' ) );
-		p.normalize();
-		ve.isNormalizeBroken = p.childNodes.length !== 1;
-	}
-
-	if ( ve.isNormalizeBroken ) {
-		// Perform normalization manually
-		var nodeIterator = node.ownerDocument.createNodeIterator(
-			node,
-			NodeFilter.SHOW_TEXT,
-			function () { return NodeFilter.FILTER_ACCEPT; },
-			false
-		);
-		var textNode;
-		while ( ( textNode = nodeIterator.nextNode() ) ) {
-			// Remove if empty
-			if ( textNode.data === '' ) {
-				textNode.parentNode.removeChild( textNode );
-				continue;
-			}
-			// Merge in any adjacent text nodes
-			while ( textNode.nextSibling && textNode.nextSibling.nodeType === Node.TEXT_NODE ) {
-				textNode.appendData( textNode.nextSibling.data );
-				textNode.parentNode.removeChild( textNode.nextSibling );
-			}
-		}
-	} else {
-		// Use native implementation
-		node.normalize();
-	}
+	node.normalize();
 };
 
 /**
