@@ -316,32 +316,11 @@ ve.extendObject = $.extend;
 ve.supportsIntl = true;
 
 /**
+ * @deprecated Always set to true
  * @private
  * @property {boolean}
  */
-ve.supportsSplice = ( function () {
-	// Support: Safari 8
-	// This returns false in Safari 8
-	var a = new Array( 100000 );
-	a.splice( 30, 0, 'x' );
-	a.splice( 20, 1 );
-	if ( a.indexOf( 'x' ) !== 29 ) {
-		return false;
-	}
-
-	// Support: Opera 12.15
-	// This returns false in Opera 12.15
-	a = [];
-	var n = 256;
-	a[ n ] = 'a';
-	a.splice( n + 1, 0, 'b' );
-	if ( a[ n ] !== 'a' ) {
-		return false;
-	}
-
-	// Splice is supported
-	return true;
-}() );
+ve.supportsSplice = true;
 
 /**
  * Splice one array into another.
@@ -374,25 +353,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 	if ( !Array.isArray( arr ) ) {
 		splice = arr.splice;
 	} else {
-		if ( ve.supportsSplice ) {
-			splice = Array.prototype.splice;
-		} else {
-			// Standard Array.prototype.splice() function implemented using .slice() and .push().
-			splice = function ( off, rem /* , d */ ) {
-				var d = Array.prototype.slice.call( arguments, 2 );
-
-				var begin = this.slice( 0, off );
-				var remd = this.slice( off, off + rem );
-				var end = this.slice( off + rem );
-
-				this.length = 0;
-				ve.batchPush( this, begin );
-				ve.batchPush( this, d );
-				ve.batchPush( this, end );
-
-				return remd;
-			};
-		}
+		splice = Array.prototype.splice;
 	}
 
 	if ( data.length === 0 ) {
