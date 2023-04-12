@@ -82,14 +82,3 @@
 .ve-ce-focusableNode-highlights-deactivated .ve-ce-focusableNode-highlight {
 	background: #000;
 }
-
-/* Support: IE, Edge */
-/* Set opacity directly on the highlights, rather than their containers,
-   otherwise the opacity isn't applied at all */
-.ve-init-target-ie-or-edge .ve-ce-surface-highlights-focused .ve-ce-focusableNode-highlight {
-	opacity: 0.5;
-}
-
-.ve-init-target-ie-or-edge .ve-ce-surface-highlights-blurred .ve-ce-focusableNode-highlight {
-	opacity: 0.15;
-}

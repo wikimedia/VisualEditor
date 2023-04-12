@@ -23,9 +23,3 @@
 .ve-ce-surface-highlights-blurred .ve-ce-alienNode-highlights {
 	opacity: 0.5;
 }
-
-/* Support: IE, Edge */
-/* Match the hack in ve.ce.FocusableNode.css */
-.ve-init-target-ie-or-edge .ve-ce-surface-highlights-blurred .ve-ce-alienNode-highlights .ve-ce-focusableNode-highlight {
-	opacity: 0.5;
-}

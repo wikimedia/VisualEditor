@@ -1011,10 +1011,8 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 	// TODO: rewrite to use EventSequencer
 	setTimeout( this.afterDocumentMouseDown.bind( this, e, this.getSelection() ) );
 
-	// Support: IE
 	// Handle triple click
-	// FIXME T126043: do not do triple click handling in IE, because their click counting is broken
-	if ( e.originalEvent.detail >= 3 && !ve.init.platform.constructor.static.isInternetExplorer() ) {
+	if ( e.originalEvent.detail >= 3 ) {
 		// Browser default behaviour for triple click won't behave as we want
 		e.preventDefault();
 
@@ -2038,9 +2036,7 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 
 	// If we have access to the clipboard write straight to it so we don't
 	// have to fiddle around with the selection and fix scroll offsets.
-	// Support: Edge
-	// Despite having the clipboard API, Edge only supports Text and URL types.
-	if ( clipboardData && !ve.init.platform.constructor.static.isEdge() ) {
+	if ( clipboardData ) {
 		if ( isClipboard ) {
 			// Disable the default event so we can override the data
 			e.preventDefault();

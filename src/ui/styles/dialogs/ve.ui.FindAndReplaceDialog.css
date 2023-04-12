@@ -61,14 +61,3 @@
 .ve-ui-findAndReplaceDialog-findResult-focused > div {
 	background: #1f850b;
 }
-
-/* Support: IE, Edge */
-/* Set opacity directly on the highlights, rather than their containers,
-   otherwise the opacity isn't applied at all */
-.ve-init-target-ie-or-edge .ve-ui-findAndReplaceDialog-findResult > div {
-	opacity: 0.2;
-}
-
-.ve-init-target-ie-or-edge .ve-ui-findAndReplaceDialog-findResult-focused > div {
-	opacity: 0.4;
-}

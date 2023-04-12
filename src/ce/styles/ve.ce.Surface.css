@@ -43,17 +43,6 @@
 	/* Color is matched to font in ve.ce.Surface.js */
 }
 
-/* Support: IE, Edge */
-/* Set opacity directly on the highlights, rather than their containers,
-   otherwise the opacity isn't applied at all */
-.ve-init-target-ie-or-edge .ve-ce-surface-deactivatedSelection > div {
-	opacity: 0.5;
-}
-
-.ve-init-target-ie-or-edge .ve-ce-surface-deactivatedSelection-showAsDeactivated > div {
-	opacity: 0.15;
-}
-
 .ve-ce-surface-dropMarker {
 	height: 1px;
 	background: #72777d;
@@ -121,13 +110,6 @@
 
 .ve-ce-surface-paste * {
 	height: 1px !important; /* stylelint-disable-line declaration-no-important */
-}
-
-/* Support: IE */
-/* Prevent IE from wrapping link text in <u> and <font color> tags */
-.ve-init-target-ie-or-edge .ve-ce-surface-paste a {
-	color: #36c;
-	text-decoration: underline !important; /* stylelint-disable-line declaration-no-important */
 }
 
 .ve-ce-cursorHolder {
