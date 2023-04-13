@@ -39,7 +39,6 @@ ve.init.Target = function VeInitTarget( config ) {
 	this.surfaces = [];
 	this.surface = null;
 	this.toolbar = null;
-	this.actionsToolbar = null;
 	this.toolbarConfig = config.toolbarConfig || {};
 	this.toolbarGroups = config.toolbarGroups || this.constructor.static.toolbarGroups;
 	this.actionGroups = config.actionGroups || this.constructor.static.actionGroups;
@@ -627,14 +626,12 @@ ve.init.Target.prototype.getToolbar = function () {
 /**
  * Get the actions toolbar
  *
- * @return {ve.ui.TargetToolbar} Actions toolbar
+ * @deprecated
+ * @return {ve.ui.TargetToolbar} Actions toolbar (same as the normal toolbar)
  */
 ve.init.Target.prototype.getActions = function () {
 	if ( !this.actionsToolbar ) {
-		this.actionsToolbar = new ve.ui.TargetToolbar( this, {
-			position: this.toolbarConfig.position,
-			$overlay: this.toolbarConfig.$overlay
-		} );
+		this.actionsToolbar = this.getToolbar();
 	}
 	return this.actionsToolbar;
 };
@@ -646,17 +643,15 @@ ve.init.Target.prototype.getActions = function () {
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	var toolbar = this.getToolbar();
+	if ( this.actionGroups.length ) {
+		// Backwards-compatibility
+		this.getActions();
+	}
 
 	toolbar.connect( this, {
 		resize: 'onToolbarResize',
 		active: 'onToolbarActive'
 	} );
-
-	var actions;
-	if ( this.actionGroups.length ) {
-		actions = this.getActions();
-		actions.connect( this, { active: 'onToolbarActive' } );
-	}
 
 	if ( surface.nullSelectionOnBlur ) {
 		toolbar.$element
@@ -687,11 +682,12 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 			} );
 	}
 
-	toolbar.setup( this.toolbarGroups, surface );
-	if ( actions ) {
-		actions.setup( this.actionGroups, surface );
-		toolbar.$actions.append( actions.$element );
-	}
+	this.actionGroups.forEach( function ( group ) {
+		group.align = 'after';
+	} );
+	var groups = [].concat( this.toolbarGroups, this.actionGroups );
+
+	toolbar.setup( groups, surface );
 	this.attachToolbar();
 	var rAF = window.requestAnimationFrame || setTimeout;
 	rAF( this.onContainerScrollHandler );
@@ -754,10 +750,6 @@ ve.init.Target.prototype.teardownToolbar = function () {
 		this.toolbar.destroy();
 		this.toolbar = null;
 	}
-	if ( this.actionsToolbar ) {
-		this.actionsToolbar.destroy();
-		this.actionsToolbar = null;
-	}
 	return ve.createDeferred().resolve().promise();
 };
 
@@ -768,7 +760,4 @@ ve.init.Target.prototype.attachToolbar = function () {
 	var toolbar = this.getToolbar();
 	toolbar.$element.insertBefore( toolbar.getSurface().$element );
 	toolbar.initialize();
-	if ( this.actionsToolbar ) {
-		this.actionsToolbar.initialize();
-	}
 };
