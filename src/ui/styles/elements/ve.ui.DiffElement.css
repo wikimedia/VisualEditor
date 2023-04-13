@@ -210,18 +210,15 @@ li[ data-diff-action='none' ]:not( [ data-diff-move ] )::marker {
 }
 /* stylelint-enable no-descending-specificity */
 
-/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-@supports ( mix-blend-mode: darken ) {
-	/* Blend contents into the background (I7a7e27b1218) */
-	[ data-diff-action='insert' ] > *,
-	[ data-diff-action='remove' ] > *,
-	[ data-diff-action='change' ] > *,
-	[ data-diff-action='change-insert' ] > *,
-	[ data-diff-action='change-remove' ] > *,
-	[ data-diff-move ] > * {
-		/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-		mix-blend-mode: darken;
-	}
+/* Blend contents into the background (I7a7e27b1218) */
+[ data-diff-action='insert' ] > *,
+[ data-diff-action='remove' ] > *,
+[ data-diff-action='change' ] > *,
+[ data-diff-action='change-insert' ] > *,
+[ data-diff-action='change-remove' ] > *,
+[ data-diff-move ] > * {
+	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+	mix-blend-mode: darken;
 }
 
 .ve-ui-diffElement-moved-up,
