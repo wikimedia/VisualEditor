@@ -109,7 +109,6 @@
 	"visualeditor-dimensionswidget-height": "Höhe",
 	"visualeditor-dimensionswidget-width": "Breite",
 	"visualeditor-find-and-replace-diacritic": "Diakritisch schreibungsunabhängig",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Die diakritische schreibungsunabhängige Suche ist in diesem Browser nicht verfügbar",
 	"visualeditor-find-and-replace-done": "Fertig",
 	"visualeditor-find-and-replace-find-text": "Suchen",
 	"visualeditor-find-and-replace-invalid-regex": "Ungültiger regulärer Ausdruck",

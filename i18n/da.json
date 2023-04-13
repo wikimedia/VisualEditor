@@ -93,7 +93,6 @@
 	"visualeditor-diff-no-changes": "Ingen ændringer",
 	"visualeditor-diff-timed-out": "Det tog for lang tid at beregne dine ændringer, så beskrivelsen nedenfor er måske ikke optimal.",
 	"visualeditor-find-and-replace-diacritic": "Ignorer diakritiske tegn",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Søgninger med ignorering af diakritiske tegn er ikke tilgængelig i denne browser",
 	"visualeditor-find-and-replace-done": "Udført",
 	"visualeditor-find-and-replace-find-text": "Søg",
 	"visualeditor-find-and-replace-invalid-regex": "Ugyldigt regulært udtryk",

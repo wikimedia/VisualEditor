@@ -85,7 +85,6 @@
 	"visualeditor-diff-no-changes": "Žiadne zmeny",
 	"visualeditor-diff-timed-out": "Výpočet Vašich zmien trval príliš dlho, takže popis zobrazený nižšie nemusí byť optimálny.",
 	"visualeditor-find-and-replace-diacritic": "Nezávisle na diakritike",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Vyhľadávanie bez rozlišovania diakritiky nie je v tomto prehliadači dostupné",
 	"visualeditor-find-and-replace-done": "Hotovo",
 	"visualeditor-find-and-replace-find-text": "Hľadať",
 	"visualeditor-find-and-replace-invalid-regex": "Chybný regulárny výraz",

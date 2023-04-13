@@ -132,7 +132,6 @@
 	"visualeditor-dimensionswidget-height": "高度",
 	"visualeditor-dimensionswidget-width": "宽度",
 	"visualeditor-find-and-replace-diacritic": "附加符号不敏感",
-	"visualeditor-find-and-replace-diacritic-unavailable": "附加符号不敏感搜索在该浏览器不可用",
 	"visualeditor-find-and-replace-done": "完成",
 	"visualeditor-find-and-replace-find-text": "查找",
 	"visualeditor-find-and-replace-invalid-regex": "无效的正则表达式",

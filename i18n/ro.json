@@ -92,7 +92,6 @@
 	"visualeditor-diff-no-changes": "Nici o modificare",
 	"visualeditor-diff-timed-out": "Calcularea schimbărilor dvs. a durat prea mult, așa că s-ar putea ca descrierea de mai jos să nu fie optimă.",
 	"visualeditor-find-and-replace-diacritic": "Insensibilă la diacritice",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Căutarea insensibilă la diacritice nu este disponibilă în acest browser",
 	"visualeditor-find-and-replace-done": "Realizat",
 	"visualeditor-find-and-replace-find-text": "Găsește",
 	"visualeditor-find-and-replace-invalid-regex": "Expresie regulată greșită",

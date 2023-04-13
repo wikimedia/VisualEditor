@@ -84,7 +84,6 @@
 	"visualeditor-diff-no-changes": "ไม่เปลี่ยนแปลง",
 	"visualeditor-diff-timed-out": "ใช้เวลาประมวลการเปลี่ยนแปลงของคุณนานเกินไป ฉะนั้นคำอธิบายด้านล่างอาจไม่เหมาะที่สุด",
 	"visualeditor-find-and-replace-diacritic": "ไม่ไวต่อเครื่องหมายเสริมสัทอักษร",
-	"visualeditor-find-and-replace-diacritic-unavailable": "การค้นหาไม่ไวต่อเครื่องหมายเสริมสัทอักษรไม่มีในเบราว์เซอร์นี้",
 	"visualeditor-find-and-replace-done": "สำเร็จ",
 	"visualeditor-find-and-replace-find-text": "ค้นหา",
 	"visualeditor-find-and-replace-invalid-regex": "นิพจน์ปรกติไม่สมเหตุสมผล",

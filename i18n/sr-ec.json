@@ -92,7 +92,6 @@
 	"visualeditor-diff-timed-out": "Израчунавање ваших измена је трајало предуго, па опис испод можда није оптималан.",
 	"visualeditor-dimensionswidget-px": "п",
 	"visualeditor-find-and-replace-diacritic": "Неосетљиво на дијакритике",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Претрага неосетљива на дијакритике није доступна у овом прегледачу",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Пронађите",
 	"visualeditor-find-and-replace-invalid-regex": "Неважећи регуларни излаз",

@@ -95,7 +95,6 @@
 	"visualeditor-diff-no-changes": "Dəyişiklik yoxdur",
 	"visualeditor-diff-timed-out": "Dəyişikliklərinizi hesablamaq çox uzun çəkdi, buna görə də aşağıda göstərilən təsvir optimal olmaya bilər.",
 	"visualeditor-find-and-replace-diacritic": "Diakritik həssaslıq",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Bu brauzerdə diakritik həssas axtarış yoxdur",
 	"visualeditor-find-and-replace-done": "Oldu",
 	"visualeditor-find-and-replace-find-text": "Tap",
 	"visualeditor-find-and-replace-invalid-regex": "Səhv regular expression",

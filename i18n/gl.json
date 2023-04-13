@@ -86,7 +86,6 @@
 	"visualeditor-diff-no-changes": "Sen cambios",
 	"visualeditor-diff-timed-out": "O cómputo dos seus cambios levou moito tempo, polo que a descrición de abaixo pode ser imprecisa.",
 	"visualeditor-find-and-replace-diacritic": "Insensible ós diacríticos",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Procura insensible ós diacríticos non dispoñible neste navegador",
 	"visualeditor-find-and-replace-done": "Feito",
 	"visualeditor-find-and-replace-find-text": "Procurar",
 	"visualeditor-find-and-replace-invalid-regex": "Expresión regular non válida",

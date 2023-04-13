@@ -91,7 +91,6 @@
 	"visualeditor-diff-no-changes": "Няма промени",
 	"visualeditor-diff-timed-out": "Пресмятането на промените отне твърде много време, така че описанието по-долу може и да не е оптимално.",
 	"visualeditor-find-and-replace-diacritic": "Без отчитане на диакритичните знаци",
-	"visualeditor-find-and-replace-diacritic-unavailable": "Търсене без отчитане на диакритичните знаци не е налично в този браузър",
 	"visualeditor-find-and-replace-done": "Готово",
 	"visualeditor-find-and-replace-find-text": "Търсене",
 	"visualeditor-find-and-replace-invalid-regex": "Неправилен регулярен израз",
