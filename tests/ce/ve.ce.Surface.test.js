@@ -1173,6 +1173,31 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 				msg: 'Corrupted paste target ignored'
 			},
 			{
+				documentHtml: '<h1>AB</h1><p>C</p>',
+				internalSourceRangeOrSelection: new ve.Range( 2, 6 ),
+				rangeOrSelection: new ve.Range( 3 ),
+				expectedRangeOrSelection: new ve.Range( 10 ),
+				expectedOps: [
+					[
+						{ type: 'retain', length: 4 },
+						{
+							type: 'replace',
+							insert: [
+								{ type: 'heading', attributes: { level: 1 } },
+								'B',
+								{ type: '/heading' },
+								{ type: 'paragraph' },
+								'C',
+								{ type: '/paragraph' }
+							],
+							remove: []
+						},
+						{ type: 'retain', length: 5 }
+					]
+				],
+				msg: 'Unbalanced HTML at end of heading'
+			},
+			{
 				rangeOrSelection: new ve.Range( 6 ),
 				pasteHtml: '<ul><li>Foo</li></ul>',
 				expectedRangeOrSelection: new ve.Range( 16 ),
