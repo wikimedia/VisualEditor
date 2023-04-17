@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Pichnat Thong",
 			"Sovichet",
 			"គីមស៊្រុន"
 		]
@@ -56,7 +57,7 @@
 	"visualeditor-contextitemwidget-label-secondary": "កែប្រែ",
 	"visualeditor-contextitemwidget-label-view": "មើល",
 	"visualeditor-debugbar-close": "បិទ",
-	"visualeditor-dialog-action-apply": "អនុវត្ត​បន្លាស់​ប្ដូរ",
+	"visualeditor-dialog-action-apply": "អនុវត្តបម្លាស់ប្ដូរ",
 	"visualeditor-dialog-action-cancel": "បោះបង់",
 	"visualeditor-dialog-action-done": "រួចរាល់",
 	"visualeditor-dialog-action-goback": "បកក្រោយ",
