@@ -14,31 +14,40 @@
 	*/
 }
 
-/* @noflip */
-.ve-ce-surface-deactivatedSelection {
+.ve-ce-surface-selections {
 	position: absolute;
-	top: 0;
-	left: 0;
-	opacity: 0.5;
 	pointer-events: none;
+	/* @noflip */
+	left: 0;
+	top: 0;
 }
 
-.ve-ce-surface-deactivatedSelection-showAsDeactivated {
+.ve-ce-surface-selection > div {
+	position: absolute;
+}
+
+/* Deactivated selections */
+
+.ve-ce-surface-selections-deactivated {
+	opacity: 0.5;
+}
+
+.ve-ce-surface-selections-deactivated-showAsDeactivated {
 	opacity: 0.15;
 }
 
-.ve-ce-surface-deactivatedSelection > div {
-	position: absolute;
+.ve-ce-surface-selections-deactivated .ve-ce-surface-selection > div {
 	background: #6da9f7;
+	/* Increase vertical height to look more like a system selection */
 	margin-top: -0.15em;
 	padding: 0.15em 0;
 }
 
-.ve-ce-surface-deactivatedSelection-showAsDeactivated > div {
+.ve-ce-surface-selections-deactivated-showAsDeactivated .ve-ce-surface-selection > div {
 	background: #000;
 }
 
-.ve-ce-surface-deactivatedSelection-collapsed {
+.ve-ce-surface-selections-deactivated-collapsed {
 	opacity: 1;
 	/* Color is matched to font in ve.ce.Surface.js */
 }

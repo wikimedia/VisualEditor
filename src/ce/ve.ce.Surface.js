@@ -72,6 +72,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.userSelectionOverlays = {};
 	this.$otherUserSelections = $( '<div>' );
 	this.$otherUserCursors = $( '<div>' );
+	this.drawnSelections = {};
+	this.drawnSelectionCache = {};
 	this.activeNode = null;
 	this.contentBranchNodeChanged = false;
 	this.selectionLink = null;
@@ -805,14 +807,12 @@ ve.ce.Surface.prototype.activate = function () {
  * While the surface is deactivated, all calls to showModelSelection will get redirected here.
  */
 ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
-	var surface = this,
-		selection = this.getSelection();
-
-	this.$deactivatedSelection.empty();
+	var selection = this.getSelection();
 
 	// Check we have a deactivated surface and a native selection
 	if ( this.deactivated && selection.isNativeCursor() && !this.hideSelection ) {
 		var textColor;
+		// For collapsed selections, work out the text color to use for the cursor
 		var isCollapsed = selection.getModel().isCollapsed();
 		if ( isCollapsed ) {
 			var currentNode = this.getDocument().getBranchNodeFromOffset(
@@ -823,8 +823,69 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 				textColor = currentNode.$element.css( 'color' );
 			}
 		}
-		var rects = selection.getSelectionRects();
-		if ( rects ) {
+		var classes = [];
+		if ( this.isShownAsDeactivated() ) {
+			classes.push( 've-ce-surface-selections-deactivated-showAsDeactivated' );
+		}
+		if ( isCollapsed ) {
+			classes.push( 've-ce-surface-selections-deactivated-collapse' );
+		}
+		this.drawSelections( 'deactivated', [ selection ], {
+			color: textColor,
+			wrapperClass: classes.join( ' ' )
+		} );
+	} else {
+		this.drawSelections( 'deactivated', [] );
+	}
+};
+
+/**
+ * Draw selections.
+ *
+ * @param {string} name Unique name for the selection being drawn
+ * @param {ve.ce.Selection[]} selections Selections to draw
+ * @param {Object} options Options
+ * @param {string} options.color CSS color for the selection. Should usually
+ *  be set in a stylesheet using the generated class name.
+ * @param {string} options.wrapperClass Additional CSS class string to add to the $selections wrapper.
+ *  mapped to the same index.
+ */
+ve.ce.Surface.prototype.drawSelections = function ( name, selections, options ) {
+	var surface = this;
+
+	options = options || {};
+
+	var drawnSelection = ( this.drawnSelections[ name ] = this.drawnSelections[ name ] || {} );
+
+	drawnSelection.$selections = drawnSelection.$selections ||
+		// The following classes are used here:
+		// * ve-ce-surface-selections-deactived
+		// * ve-ce-surface-selections-<name>
+		$( '<div>' ).addClass( 've-ce-surface-selections ve-ce-surface-selections-' + name ).appendTo( this.surface.$selections );
+
+	var oldSelections = drawnSelection.selections || [];
+	var oldOptions = drawnSelection.options || {};
+
+	drawnSelection.selections = selections;
+	drawnSelection.options = options;
+
+	if ( options.wrapperClass ) {
+		drawnSelection.$selections.attr(
+			'class',
+			've-ce-surface-selections ve-ce-surface-selections-' + name + ' ' +
+			options.wrapperClass
+		);
+	}
+
+	var selectionsJustShown = {};
+	selections.forEach( function ( selection ) {
+		var $selection = surface.getDrawnSelection( name, selection.getModel(), options );
+		if ( !$selection ) {
+			var rects = selection.getSelectionRects();
+			if ( !rects ) {
+				return;
+			}
+			$selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
 			rects.forEach( function ( rect ) {
 				var $rect = $( '<div>' ).css( {
 					top: rect.top,
@@ -833,16 +894,93 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 					width: Math.max( rect.width, 1 ),
 					height: rect.height
 				} );
-				if ( textColor ) {
-					$rect.css( 'background-color', textColor );
+				$selection.append( $rect );
+				if ( options.color ) {
+					$rect.css( 'background-color', options.color );
 				}
-				surface.$deactivatedSelection.append( $rect );
 			} );
-			this.$deactivatedSelection
-				.toggleClass( 've-ce-surface-deactivatedSelection-showAsDeactivated', this.isShownAsDeactivated() )
-				.toggleClass( 've-ce-surface-deactivatedSelection-collapsed', isCollapsed );
 		}
-	}
+		if ( !$selection.parent().length ) {
+			drawnSelection.$selections.append( $selection );
+		}
+		var cacheKey = surface.storeDrawnSelection( $selection, name, selection.getModel(), options );
+		selectionsJustShown[ cacheKey ] = true;
+	} );
+
+	// Remove any selections that were not in the latest list of selections
+	oldSelections.forEach( function ( oldSelection ) {
+		var cacheKey = surface.getDrawnSelectionCacheKey( name, oldSelection.getModel(), oldOptions );
+		if ( !selectionsJustShown[ cacheKey ] ) {
+			var $oldSelection = surface.getDrawnSelection( name, oldSelection.getModel(), oldOptions );
+			if ( $oldSelection ) {
+				$oldSelection.detach();
+			}
+		}
+	} );
+};
+
+/**
+ * Get a cache key for a drawn selection
+ *
+ * @param {string} name Name of selection group
+ * @param {ve.dm.Selection} selection Selection model
+ * @param {Object} [options] Selection options
+ * @return {string} Cache key
+ */
+ve.ce.Surface.prototype.getDrawnSelectionCacheKey = function ( name, selection, options ) {
+	options = options || {};
+	return name + '-' + JSON.stringify( selection ) + '-' + ( options.color || '' );
+};
+
+/**
+ * Get an already drawn selection from the cache
+ *
+ * @param {string} name Name of selection group
+ * @param {ve.dm.Selection} selection Selection model
+ * @param {Object} [options] Selection options
+ * @return {jQuery} Drawn selection
+ */
+ve.ce.Surface.prototype.getDrawnSelection = function ( name, selection, options ) {
+	var cacheKey = this.getDrawnSelectionCacheKey( name, selection, options );
+	return this.drawnSelectionCache[ cacheKey ] || null;
+};
+
+/**
+ * Store an already drawn selection in the cache
+ *
+ * @param {jQuery} $selection Drawn selection
+ * @param {string} name Name of selection group
+ * @param {ve.dm.Selection} selection Selection model
+ * @param {Object} [options] Selection options
+ * @return {string} Cache key
+ */
+ve.ce.Surface.prototype.storeDrawnSelection = function ( $selection, name, selection, options ) {
+	var cacheKey = this.getDrawnSelectionCacheKey( name, selection, options );
+	this.drawnSelectionCache[ cacheKey ] = $selection;
+	return cacheKey;
+};
+
+/**
+ * Redraw selections
+ *
+ * This is triggered by a surface 'position' event, which fires when the surface
+ * changes size, or when the document is modified. The drawnSelectionCache is
+ * cleared as these two things will cause any previously calculated rectangles
+ * to be incorrect.
+ */
+ve.ce.Surface.prototype.redrawSelections = function () {
+	var surface = this;
+
+	Object.keys( this.drawnSelections ).forEach( function ( name ) {
+		var drawnSelection = surface.drawnSelections[ name ];
+		drawnSelection.$selections.empty();
+	} );
+
+	this.drawnSelectionCache = {};
+	Object.keys( this.drawnSelections ).forEach( function ( name ) {
+		var drawnSelection = surface.drawnSelections[ name ];
+		surface.drawSelections( name, drawnSelection.selections, drawnSelection.options );
+	} );
 };
 
 /**
@@ -5271,7 +5409,7 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 ve.ce.Surface.prototype.onPosition = function () {
 	var surface = this;
 
-	this.updateDeactivatedSelection();
+	this.redrawSelections();
 
 	if ( this.model.synchronizer ) {
 		// Defer to allow surface synchronizer to adjust for transactions
