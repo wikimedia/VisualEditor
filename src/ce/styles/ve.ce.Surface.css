@@ -50,28 +50,28 @@
 	position: absolute;
 }
 
-.ve-ce-surface-highlights-user-selections {
+.ve-ce-surface-otherUserSelections {
 	opacity: 0.5;
 	pointer-events: none;
 }
 
-.ve-ce-surface-highlights-user-cursors {
+.ve-ce-surface-otherUserCursors {
 	pointer-events: none;
 }
 
-.ve-ce-surface-highlights-user-selection {
+.ve-ce-surface-otherUserSelection {
 	position: absolute;
 	background: #faa;
 	box-shadow: inset 0 0 0 1px #a66;
 }
 
-.ve-ce-surface-highlights-user-cursor {
+.ve-ce-surface-otherUserCursor {
 	position: absolute;
 	background: #a66;
 	width: 2px;
 }
 
-.ve-ce-surface-highlights-user-cursor-label {
+.ve-ce-surface-otherUserCursor-label {
 	position: absolute;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -88,8 +88,8 @@
 	text-overflow: ellipsis;
 }
 
-.ve-ce-surface-highlights-user-cursor-inactive,
-.ve-ce-surface-highlights-user-selection-inactive {
+.ve-ce-surface-otherUserCursor-inactive,
+.ve-ce-surface-otherUserSelection-inactive {
 	opacity: 0.5;
 }
 

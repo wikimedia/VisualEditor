@@ -69,18 +69,17 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.showAsActivated = false;
 	this.hideSelection = false;
 	this.$deactivatedSelection = $( '<div>' );
+	this.userSelectionOverlays = {};
+	this.$otherUserSelections = $( '<div>' );
+	this.$otherUserCursors = $( '<div>' );
 	this.activeNode = null;
 	this.contentBranchNodeChanged = false;
 	this.selectionLink = null;
 	this.delayedSequences = [];
 	this.$highlightsFocused = $( '<div>' );
 	this.$highlightsBlurred = $( '<div>' );
-	this.$highlightsUserSelections = $( '<div>' );
-	this.$highlightsUserCursors = $( '<div>' );
-	this.userSelectionOverlays = {};
 	this.$highlights = $( '<div>' ).append(
-		this.$highlightsFocused, this.$highlightsBlurred,
-		this.$highlightsUserSelections, this.$highlightsUserCursors
+		this.$highlightsFocused, this.$highlightsBlurred
 	);
 	this.$findResults = $( '<div>' );
 	this.$dropMarker = $( '<div>' ).addClass( 've-ce-surface-dropMarker oo-ui-element-hidden' );
@@ -209,8 +208,8 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlightsFocused.addClass( 've-ce-surface-highlights-focused' );
 	this.$highlightsBlurred.addClass( 've-ce-surface-highlights-blurred' );
 	this.$deactivatedSelection.addClass( 've-ce-surface-deactivatedSelection' );
-	this.$highlightsUserSelections.addClass( 've-ce-surface-highlights-user-selections' );
-	this.$highlightsUserCursors.addClass( 've-ce-surface-highlights-user-cursors' );
+	this.$otherUserSelections.addClass( 've-ce-surface-otherUserSelections' );
+	this.$otherUserCursors.addClass( 've-ce-surface-otherUserCursors' );
 	this.$pasteTarget
 		.addClass( 've-ce-surface-paste' )
 		// T283853
@@ -224,7 +223,11 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlights.append( this.$dropMarker );
 	this.$element.append( this.$attachedRootNode, this.$pasteTarget );
 	this.surface.$blockers.append( this.$highlights );
-	this.surface.$selections.append( this.$deactivatedSelection );
+	this.surface.$selections.append(
+		this.$deactivatedSelection,
+		this.$otherUserSelections,
+		this.$otherUserCursors
+	);
 };
 
 /* Inheritance */
@@ -5201,8 +5204,8 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 			$selection: $( '<div>' ),
 			deactivateDebounced: ve.debounce( function () {
 				// TODO: Transition away the user label when inactive, maybe dim selection
-				overlays.$cursor.addClass( 've-ce-surface-highlights-user-cursor-inactive' );
-				overlays.$selection.addClass( 've-ce-surface-highlights-user-selection-inactive' );
+				overlays.$cursor.addClass( 've-ce-surface-otherUserCursor-inactive' );
+				overlays.$selection.addClass( 've-ce-surface-otherUserSelection-inactive' );
 			}, 5000 )
 		};
 	}
@@ -5214,14 +5217,14 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		return;
 	}
 
-	overlays.$cursor.empty().removeClass( 've-ce-surface-highlights-user-cursor-inactive' );
-	overlays.$selection.empty().removeClass( 've-ce-surface-highlights-user-selection-inactive' );
+	overlays.$cursor.empty().removeClass( 've-ce-surface-otherUserCursor-inactive' );
+	overlays.$selection.empty().removeClass( 've-ce-surface-otherUserSelection-inactive' );
 
 	if ( !selection.isCollapsed() ) {
 		var rects = ve.ce.Selection.static.newFromModel( selection, this ).getSelectionRects();
 		for ( var i = 0, l = rects.length; i < l; i++ ) {
 			var rect = rects[ i ];
-			overlays.$selection.append( $( '<div>' ).addClass( 've-ce-surface-highlights-user-selection' ).css( {
+			overlays.$selection.append( $( '<div>' ).addClass( 've-ce-surface-otherUserSelection' ).css( {
 				left: rect.left,
 				top: rect.top,
 				width: rect.width,
@@ -5244,21 +5247,21 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 		return;
 	}
 	overlays.$cursor.append(
-		$( '<div>' ).addClass( 've-ce-surface-highlights-user-cursor' ).css( {
+		$( '<div>' ).addClass( 've-ce-surface-otherUserCursor' ).css( {
 			left: cursorRect.left,
 			top: cursorRect.top,
 			height: cursorRect.height,
 			background: color
 		} ).append(
 			$( '<span>' )
-				.addClass( 've-ce-surface-highlights-user-cursor-label' )
+				.addClass( 've-ce-surface-otherUserCursor-label' )
 				.text( authorData.name )
 				.css( { background: color } )
 		)
 	);
 
-	this.$highlightsUserCursors.append( overlays.$cursor );
-	this.$highlightsUserSelections.append( overlays.$selection );
+	this.$otherUserCursors.append( overlays.$cursor );
+	this.$otherUserSelections.append( overlays.$selection );
 	overlays.deactivateDebounced();
 };
 
