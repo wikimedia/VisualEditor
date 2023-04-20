@@ -34,19 +34,11 @@
 	max-width: none;
 }
 
-/* @noflip */
-.ve-ui-findAndReplaceDialog-findResults {
-	position: absolute;
-	top: 0;
-	left: 0;
-	pointer-events: none;
-}
-
-.ve-ui-findAndReplaceDialog-findResult {
+.ve-ce-surface-selections-findResults .ve-ce-surface-selection {
 	opacity: 0.2;
 }
 
-.ve-ui-findAndReplaceDialog-findResult > div {
+.ve-ce-surface-selections-findResults .ve-ce-surface-selection > div {
 	background: #28bb0b;
 	position: absolute;
 	margin-top: -0.15em;
@@ -54,10 +46,10 @@
 	border-radius: 2px;
 }
 
-.ve-ui-findAndReplaceDialog-findResult-focused {
+.ve-ce-surface-selections-findResults .ve-ce-surface-selections-findResult-focused {
 	opacity: 0.4;
 }
 
-.ve-ui-findAndReplaceDialog-findResult-focused > div {
+.ve-ce-surface-selections-findResults .ve-ce-surface-selections-findResult-focused > div {
 	background: #1f850b;
 }
