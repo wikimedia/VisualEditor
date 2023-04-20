@@ -229,6 +229,8 @@ ve.removePassiveEventListener = function ( elem, event, handler ) {
 /**
  * Test whether passive event listeners are supported
  *
+ * Support: Safari 9
+ *
  * @return {boolean} Whether passive event listeners are supported
  */
 ve.isPassiveEventsSupported = function () {

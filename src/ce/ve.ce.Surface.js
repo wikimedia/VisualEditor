@@ -69,9 +69,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.showAsActivated = false;
 	this.hideSelection = false;
 	this.$deactivatedSelection = $( '<div>' );
-	this.userSelectionOverlays = {};
-	this.$otherUserSelections = $( '<div>' );
-	this.$otherUserCursors = $( '<div>' );
+	this.userSelectionDeactivate = {};
 	this.drawnSelections = {};
 	this.drawnSelectionCache = {};
 	this.activeNode = null;
@@ -210,8 +208,6 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlightsFocused.addClass( 've-ce-surface-highlights-focused' );
 	this.$highlightsBlurred.addClass( 've-ce-surface-highlights-blurred' );
 	this.$deactivatedSelection.addClass( 've-ce-surface-deactivatedSelection' );
-	this.$otherUserSelections.addClass( 've-ce-surface-otherUserSelections' );
-	this.$otherUserCursors.addClass( 've-ce-surface-otherUserCursors' );
 	this.$pasteTarget
 		.addClass( 've-ce-surface-paste' )
 		// T283853
@@ -225,11 +221,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	this.$highlights.append( this.$dropMarker );
 	this.$element.append( this.$attachedRootNode, this.$pasteTarget );
 	this.surface.$blockers.append( this.$highlights );
-	this.surface.$selections.append(
-		this.$deactivatedSelection,
-		this.$otherUserSelections,
-		this.$otherUserCursors
-	);
+	this.surface.$selections.append( this.$deactivatedSelection );
 };
 
 /* Inheritance */
@@ -849,6 +841,7 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
  *  be set in a stylesheet using the generated class name.
  * @param {string} options.wrapperClass Additional CSS class string to add to the $selections wrapper.
  *  mapped to the same index.
+ * @param {string} options.label Label shown above each selection
  */
 ve.ce.Surface.prototype.drawSelections = function ( name, selections, options ) {
 	var surface = this;
@@ -899,6 +892,20 @@ ve.ce.Surface.prototype.drawSelections = function ( name, selections, options ) 
 					$rect.css( 'background-color', options.color );
 				}
 			} );
+
+			if ( options.label ) {
+				var boundingRect = selection.getSelectionBoundingRect();
+				$selection.append(
+					$( '<div>' )
+						.addClass( 've-ce-surface-selection-label' )
+						.text( options.label )
+						.css( {
+							top: boundingRect.top,
+							left: boundingRect.left,
+							'background-color': options.color || ''
+						} )
+				);
+			}
 		}
 		if ( !$selection.parent().length ) {
 			drawnSelection.$selections.append( $selection );
@@ -929,7 +936,7 @@ ve.ce.Surface.prototype.drawSelections = function ( name, selections, options ) 
  */
 ve.ce.Surface.prototype.getDrawnSelectionCacheKey = function ( name, selection, options ) {
 	options = options || {};
-	return name + '-' + JSON.stringify( selection ) + '-' + ( options.color || '' );
+	return name + '-' + JSON.stringify( selection ) + '-' + ( options.color || '' ) + '-' + ( options.label || '' );
 };
 
 /**
@@ -5290,13 +5297,8 @@ ve.ce.Surface.prototype.onSynchronizerAuthorUpdate = function ( authorId ) {
  * @param {number} authorId The author ID
  */
 ve.ce.Surface.prototype.onSynchronizerAuthorDisconnect = function ( authorId ) {
-	var overlays = this.userSelectionOverlays[ authorId ];
-
-	if ( overlays ) {
-		overlays.$cursor.detach();
-		overlays.$selection.detach();
-		delete this.userSelectionOverlays[ authorId ];
-	}
+	this.drawSelections( 'otherUserSelection-' + authorId, [] );
+	this.drawSelections( 'otherUserCursor-' + authorId, [] );
 };
 
 /**
@@ -5325,7 +5327,8 @@ ve.ce.Surface.prototype.onSynchronizerPause = function () {
  * @param {number} authorId The author ID
  */
 ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
-	var synchronizer = this.model.synchronizer,
+	var surface = this,
+		synchronizer = this.model.synchronizer,
 		authorData = synchronizer.getAuthorData( authorId ),
 		selection = synchronizer.authorSelections[ authorId ];
 
@@ -5334,73 +5337,49 @@ ve.ce.Surface.prototype.paintAuthor = function ( authorId ) {
 	}
 
 	var color = '#' + authorData.color;
-	var overlays;
 
-	if ( !this.userSelectionOverlays[ authorId ] ) {
-		this.userSelectionOverlays[ authorId ] = {
-			$cursor: $( '<div>' ),
-			$selection: $( '<div>' ),
-			deactivateDebounced: ve.debounce( function () {
-				// TODO: Transition away the user label when inactive, maybe dim selection
-				overlays.$cursor.addClass( 've-ce-surface-otherUserCursor-inactive' );
-				overlays.$selection.addClass( 've-ce-surface-otherUserSelection-inactive' );
-			}, 5000 )
-		};
+	if ( !this.userSelectionDeactivate[ authorId ] ) {
+		this.userSelectionDeactivate[ authorId ] = ve.debounce( function () {
+			// TODO: Transition away the user label when inactive, maybe dim selection
+			if ( surface.drawnSelections[ 'otherUserSelection-' + authorId ] ) {
+				surface.drawnSelections[ 'otherUserSelection-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserSelection-inactive' );
+			}
+			if ( surface.drawnSelections[ 'otherUserCursor-' + authorId ] ) {
+				surface.drawnSelections[ 'otherUserCursor-' + authorId ].$selections.addClass( 've-ce-surface-selections-otherUserCursor-inactive' );
+			}
+		}, 5000 );
 	}
-	overlays = this.userSelectionOverlays[ authorId ];
+	this.userSelectionDeactivate[ authorId ]();
 
 	if ( !selection || selection.isNull() ) {
-		overlays.$cursor.detach();
-		overlays.$selection.detach();
+		this.drawSelections( 'otherUserSelection-' + authorId, [] );
+		this.drawSelections( 'otherUserCursor-' + authorId, [] );
 		return;
 	}
 
-	overlays.$cursor.empty().removeClass( 've-ce-surface-otherUserCursor-inactive' );
-	overlays.$selection.empty().removeClass( 've-ce-surface-otherUserSelection-inactive' );
-
-	if ( !selection.isCollapsed() ) {
-		var rects = ve.ce.Selection.static.newFromModel( selection, this ).getSelectionRects();
-		for ( var i = 0, l = rects.length; i < l; i++ ) {
-			var rect = rects[ i ];
-			overlays.$selection.append( $( '<div>' ).addClass( 've-ce-surface-otherUserSelection' ).css( {
-				left: rect.left,
-				top: rect.top,
-				width: rect.width,
-				height: rect.height,
-				background: color
-			} ) );
+	this.drawSelections(
+		'otherUserSelection-' + authorId,
+		[ ve.ce.Selection.static.newFromModel( selection, this ) ],
+		{
+			wrapperClass: 've-ce-surface-selections-otherUserSelection',
+			color: color
 		}
-	}
-
-	var cursorRect;
-	try {
-		if ( selection instanceof ve.dm.LinearSelection && this.getFocusedNode( selection.getRange() ) ) {
-			cursorRect = ve.ce.Selection.static.newFromModel( selection, this ).getSelectionBoundingRect();
-		} else {
-			cursorRect = ve.ce.Selection.static.newFromModel( selection.collapseToTo(), this ).getSelectionRects()[ 0 ];
-		}
-	} catch ( e ) {
-		// FIXME: We shouldn't be getting out of bounds selections from other clients, so we should investigate the cause.
-		ve.error( 'User selection for ' + authorId + ' transformed out of bounds: ' + JSON.stringify( selection ) );
-		return;
-	}
-	overlays.$cursor.append(
-		$( '<div>' ).addClass( 've-ce-surface-otherUserCursor' ).css( {
-			left: cursorRect.left,
-			top: cursorRect.top,
-			height: cursorRect.height,
-			background: color
-		} ).append(
-			$( '<span>' )
-				.addClass( 've-ce-surface-otherUserCursor-label' )
-				.text( authorData.name )
-				.css( { background: color } )
-		)
 	);
 
-	this.$otherUserCursors.append( overlays.$cursor );
-	this.$otherUserSelections.append( overlays.$selection );
-	overlays.deactivateDebounced();
+	var cursorSelection = selection instanceof ve.dm.LinearSelection && this.getFocusedNode( selection.getRange() ) ?
+		selection : selection.collapseToTo();
+
+	this.drawSelections(
+		'otherUserCursor-' + authorId,
+		[ ve.ce.Selection.static.newFromModel( cursorSelection, this ) ],
+		{
+			wrapperClass: 've-ce-surface-selections-otherUserCursor',
+			color: color,
+			// Label is attached to cursor for 100% opacity, but it should probably be attached
+			// to the selection, so the cursor can be selectively rendered just for LinearSelection's.
+			label: authorData.name
+		}
+	);
 };
 
 /**
