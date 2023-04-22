@@ -700,7 +700,11 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 		}
 	} else if ( type === 'close' ) {
 		if ( this.insertedPositions.length ) {
-			this.insertedNodes.pop();
+			var insertedNode = this.insertedNodes.pop();
+			if ( insertedNode.type !== item.type.slice( 1 ) ) {
+				throw new Error( 'Expected closing for ' + insertedNode.type +
+					' but got closing for ' + item.type.slice( 1 ) );
+			}
 			this.insertedPositions.pop();
 			if ( this.insertedPositions.length ) {
 				this.insertedPositions[ this.insertedPositions.length - 1 ] +=
