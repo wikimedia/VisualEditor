@@ -227,6 +227,20 @@ QUnit.test( 'squash', function ( assert ) {
 			] ] ]
 		},
 		{
+			message: 'add attribute whose value is a reference type, then change it',
+			transactions: [
+				[ [ '', [
+					{ type: 'foo', attributes: { bar: { baz: 42 } } },
+					{ type: '/foo' }
+				] ] ],
+				[ { type: 'attribute', key: 'bar', from: { baz: 42 }, to: { baz: 99 } }, 1 ]
+			],
+			squashed: [ [ '', [
+				{ type: 'foo', attributes: { bar: { baz: 99 } } },
+				{ type: '/foo' }
+			] ] ]
+		},
+		{
 			message: 'Overlapping replacements',
 			transactions: [
 				[ [ 'AB', 'ab' ], 1 ],
