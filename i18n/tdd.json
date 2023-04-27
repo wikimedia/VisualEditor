@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Aey Tai Nuea",
 			"咽頭べさ"
 		]
 	},
@@ -32,7 +33,7 @@
 	"visualeditor-content-select-all": "ᥘᥫᥐᥲᥛᥨᥖᥰ",
 	"visualeditor-contextitemwidget-label-close": "ᥞᥙᥰ",
 	"visualeditor-contextitemwidget-label-remove": "ᥛᥩᥖᥱᥙᥦᥖᥲ",
-	"visualeditor-contextitemwidget-label-secondary": "ᥛᥨᥢᥳᥛᥦᥰ",
+	"visualeditor-contextitemwidget-label-secondary": "ᥛᥨᥢᥳ ᥛᥥᥰ",
 	"visualeditor-contextitemwidget-label-view": "ᥘᥧᥴᥖᥨᥭᥰ",
 	"visualeditor-debugbar-close": "ᥞᥙᥰ",
 	"visualeditor-debugbar-updatemodel": "ᥟᥣᥙᥳᥖᥥᥐᥳᥢᥫᥴ ᥘᥩᥒᥲᥘᥦᥒᥲᥘᥣᥭᥲ",
