@@ -630,6 +630,8 @@ ve.init.Target.prototype.getToolbar = function () {
  * @return {ve.ui.TargetToolbar} Actions toolbar (same as the normal toolbar)
  */
 ve.init.Target.prototype.getActions = function () {
+	OO.ui.warnDeprecation( 'Target#getActions: Use #getToolbar instead ' +
+		'(actions toolbar has been merged into the normal toolbar)' );
 	if ( !this.actionsToolbar ) {
 		this.actionsToolbar = this.getToolbar();
 	}
@@ -645,7 +647,9 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	var toolbar = this.getToolbar();
 	if ( this.actionGroups.length ) {
 		// Backwards-compatibility
-		this.getActions();
+		if ( !this.actionsToolbar ) {
+			this.actionsToolbar = this.getToolbar();
+		}
 	}
 
 	toolbar.connect( this, {
