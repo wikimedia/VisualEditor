@@ -183,6 +183,7 @@ ve.ui.actionFactory.register( ve.ui.LinkAction );
 // Delayed initialization (wait until ve.init.platform exists)
 ve.init.Platform.static.initializedPromise.then( function () {
 	ve.ui.LinkAction.static.autolinkRegExp =
+		// eslint-disable-next-line security/detect-non-literal-regexp
 		new RegExp(
 			'\\b' + ve.init.platform.getUnanchoredExternalLinkUrlProtocolsRegExp().source + '\\S+$',
 			'i'

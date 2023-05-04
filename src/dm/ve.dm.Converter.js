@@ -30,12 +30,14 @@ ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotation
 
 	// Whitespace regexes
 	var whitespaceList = this.constructor.static.whitespaceList;
+	/* eslint-disable security/detect-non-literal-regexp */
 	this.leadingWhitespaceRegex = new RegExp( '^[' + whitespaceList + ']' );
 	this.leadingWhitespacesRegex = new RegExp( '^[' + whitespaceList + ']+' );
 	this.trailingWhitespaceRegex = new RegExp( '[' + whitespaceList + ']$' );
 	this.trailingWhitespacesRegex = new RegExp( '[' + whitespaceList + ']+$' );
 	this.onlyWhitespaceRegex = new RegExp( '^[' + whitespaceList + ']+$' );
 	this.trimWhitespaceRegex = new RegExp( '^([' + whitespaceList + ']*)([\\s\\S]*?)([' + whitespaceList + ']*)$' );
+	/* eslint-enable security/detect-non-literal-regexp */
 };
 
 /* Inheritance */

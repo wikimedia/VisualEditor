@@ -62,6 +62,7 @@ ve.elementTypes = {
  */
 ve.matchTag = function ( html, tag ) {
 	return html.match(
+		// eslint-disable-next-line security/detect-non-literal-regexp
 		new RegExp( '<' + tag + '(>|\\s[^>]*>)' )
 	);
 };
