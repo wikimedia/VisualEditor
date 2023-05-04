@@ -4,6 +4,7 @@
 		"wikimedia/server"
 	],
 	"rules": {
-		"max-len": "off"
+		"max-len": "off",
+		"security/detect-bidi-characters": "off"
 	}
 }

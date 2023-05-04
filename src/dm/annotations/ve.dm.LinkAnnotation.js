@@ -104,11 +104,11 @@ ve.dm.LinkAnnotation.prototype.getDisplayTitle = function () {
  */
 ve.dm.LinkAnnotation.prototype.getFragment = function () {
 	var href = this.getHref(),
-		hash = href.indexOf( '#' );
-	if ( hash === -1 ) {
+		hashIndex = href.indexOf( '#' );
+	if ( hashIndex === -1 ) {
 		return null;
 	}
-	return href.slice( hash + 1 );
+	return href.slice( hashIndex + 1 );
 };
 
 /**

@@ -360,6 +360,7 @@ ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
 
 	if ( isRegex && find ) {
 		try {
+			// eslint-disable-next-line security/detect-non-literal-regexp
 			this.query = new RegExp( find, matchCase ? 'g' : 'gi' );
 		} catch ( e ) {
 			this.invalidRegex = true;

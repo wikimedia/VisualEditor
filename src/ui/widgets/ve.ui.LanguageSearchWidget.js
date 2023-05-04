@@ -85,7 +85,6 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 	var matchProperties = [ 'name', 'autonym', 'code' ],
 		query = this.query.getValue().trim(),
-		// eslint-disable-next-line compat/compat
 		compare = new Intl.Collator( this.lang, { sensitivity: 'base' } ).compare,
 		hasQuery = !!query.length,
 		items = [];
