@@ -50,30 +50,29 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * @property {HTMLElement}
  */
 ve.ce.BranchNode.inlineSlugTemplate = ( function () {
-	var profile = $.client.profile(),
+	var layout = $.client.profile().layout;
+	var $img = $( '<img>' )
+		.attr( {
+			role: 'none',
+			alt: ''
+		} )
+		.addClass( 've-ce-chimera' );
+	if ( layout === 'webkit' || layout === 'gecko' ) {
 		// The following classes are used here:
 		// * ve-ce-chimera-gecko
-		// * ve-ce-chimera-konqueror
-		// * ve-ce-chimera-msie
-		// * ve-ce-chimera-trident
-		// * ve-ce-chimera-edge
-		// * ve-ce-chimera-opera
 		// * ve-ce-chimera-webkit
-		$img = $( '<img>' )
-			.attr( {
-				role: 'none',
-				alt: ''
-			} )
-			.addClass( 've-ce-chimera ve-ce-chimera-' + profile.layout ),
-		$span = $( '<span>' )
-			.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
-			.append( $img );
+		$img.addClass( 've-ce-chimera-' + layout );
+	}
+
+	var $span = $( '<span>' )
+		.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
+		.append( $img );
 
 	// Support: Firefox
 	// Firefox <=37 misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
 	// Firefox misbehaves if we don't set an src and there is no sizing at node creation time: https://bugzilla.mozilla.org/show_bug.cgi?id=1267906
 	// Setting an src in Chrome is slow, so only set it in affected versions of Firefox
-	if ( profile.layout === 'gecko' ) {
+	if ( layout === 'gecko' ) {
 		$img.prop( 'src', ve.ce.minImgDataUri );
 	}
 	return $span.get( 0 );
