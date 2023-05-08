@@ -69,7 +69,7 @@
 	"visualeditor-annotationbutton-subscript-tooltip": "Indice",
 	"visualeditor-annotationbutton-superscript-tooltip": "Exposant",
 	"visualeditor-annotationbutton-underline-tooltip": "Souligné",
-	"visualeditor-changedesc-align": "Alignement modifié de $1 à $2",
+	"visualeditor-changedesc-align": "Cadrage modifié de $1 à $2",
 	"visualeditor-changedesc-changed": "$1 modifié de $2 à $3",
 	"visualeditor-changedesc-changed-diff": "$1 a changé : $2",
 	"visualeditor-changedesc-comment": "Commentaire changé de $1 en $2",
