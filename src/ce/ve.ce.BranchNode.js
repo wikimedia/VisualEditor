@@ -50,7 +50,8 @@ OO.mixinClass( ve.ce.BranchNode, ve.BranchNode );
  * @property {HTMLElement}
  */
 ve.ce.BranchNode.inlineSlugTemplate = ( function () {
-	var layout = $.client.profile().layout;
+	var profile = $.client.profile();
+	var layout = profile.layout;
 	var $img = $( '<img>' )
 		.attr( {
 			role: 'none',
@@ -68,11 +69,11 @@ ve.ce.BranchNode.inlineSlugTemplate = ( function () {
 		.addClass( 've-ce-branchNode-slug ve-ce-branchNode-inlineSlug' )
 		.append( $img );
 
-	// Support: Firefox
+	// Support: Firefox <69
 	// Firefox <=37 misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
-	// Firefox misbehaves if we don't set an src and there is no sizing at node creation time: https://bugzilla.mozilla.org/show_bug.cgi?id=1267906
+	// Firefox <69 misbehaves if we don't set an src and there is no sizing at node creation time: https://bugzilla.mozilla.org/show_bug.cgi?id=1267906
 	// Setting an src in Chrome is slow, so only set it in affected versions of Firefox
-	if ( layout === 'gecko' ) {
+	if ( layout === 'gecko' && profile.versionNumber < 69 ) {
 		$img.prop( 'src', ve.ce.minImgDataUri );
 	}
 	return $span.get( 0 );
