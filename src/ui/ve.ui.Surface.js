@@ -531,18 +531,22 @@ ve.ui.Surface.prototype.onModelSelect = function () {
  * This is done for all selections, even native ones, to account
  * for the extra padding of the floating toolbar.
  *
+ * @param {ve.dm.Selection} [selectionModel] Optional selection model, defaults to current selection
+ * @param {Object} [scrollConfig] Scroll config options, passed to ve.scrollIntoView
  * @fires scroll
  */
-ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
+ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig ) {
+	selectionModel = selectionModel || this.getModel().getSelection();
+
 	var animate = true,
 		view = this.getView(),
-		selection = view.getSelection(),
+		selectionView = view.getSelection( selectionModel ),
 		surface = this,
-		isNative = selection.isNativeCursor();
+		isNative = selectionView.isNativeCursor();
 
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen.
-	var clientRect = selection.getSelectionFocusRect();
+	var clientRect = selectionView.getSelectionFocusRect();
 	var surfaceRect = this.getBoundingClientRect();
 	if ( !clientRect || !surfaceRect ) {
 		return;
@@ -557,7 +561,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 		animate = false;
 		if (
 			OO.ui.isMobile() &&
-			!this.getModel().getSelection().isCollapsed()
+			!selectionModel.isCollapsed()
 		) {
 			var profile = $.client.profile();
 			// Assume that if the selection has been expanded, then a context menu is visible
@@ -589,11 +593,11 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function () {
 		}
 	}
 
-	ve.scrollIntoView( clientRect, {
+	ve.scrollIntoView( clientRect, ve.extendObject( {
 		animate: animate,
 		scrollContainer: this.$scrollContainer[ 0 ],
 		padding: padding
-	} ).then( function () {
+	}, scrollConfig ) ).then( function () {
 		if ( isNative ) {
 			// TODO: This event has only even been emitted for native selection
 			// scroll changes. Perhaps rename it.
