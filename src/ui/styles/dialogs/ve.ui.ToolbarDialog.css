@@ -4,6 +4,10 @@
  * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
+.ve-ui-toolbarDialog {
+	background: #fff;
+}
+
 .ve-ui-toolbarDialog-padded .oo-ui-window-body {
 	padding: 0.375em; /* 0.3em / 0.8 */
 }
@@ -30,7 +34,6 @@
 .ve-ui-toolbarDialog-position-side {
 	position: absolute;
 	right: 0;
-	background: #fff;
 	border-left: 1px solid #c8ccd1;
 	overflow-x: hidden;
 	width: 0;
@@ -48,7 +51,8 @@
 	pointer-events: none;
 }
 
-/* Override ProcessDialog styles */
+/* Override styles when nested in a ProcessDialog */
+/* TODO: Use child selectors in ProcessDialog */
 .ve-ui-toolbarDialog .oo-ui-window-head {
 	height: 0;
 	min-height: 0;
