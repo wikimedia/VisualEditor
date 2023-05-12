@@ -480,33 +480,19 @@ ve.ui.FindAndReplaceDialog.prototype.highlightFocused = function ( scrollIntoVie
 	var selection = this.fragments[ this.focusedIndex ].getSelection();
 	this.startOffset = selection.getCoveringRange().start;
 
-	var top;
 	var $selection = surfaceView.getDrawnSelection( 'findResults', selection );
 	if ( $selection ) {
 		$selection.addClass( 've-ce-surface-selections-findResult-focused' );
-		top = Infinity;
-		$selection.find( 'div' ).each( function () {
-			top = Math.min( top, parseFloat( this.style.top ) );
-		} );
-	} else if ( scrollIntoView ) {
-		// If we're about to scroll into view and the result isn't rendered, compute the offset manually.
-		var rect = surfaceView.getSelection( this.fragments[ this.focusedIndex ].getSelection() ).getSelectionBoundingRect();
-		top = rect.top;
+	}
+
+	if ( scrollIntoView ) {
+		surfaceView.getSurface().scrollSelectionIntoView(
+			this.fragments[ this.focusedIndex ].getSelection(),
+			{ animate: true }
+		);
 	}
 
 	this.focusedSelection = selection;
-
-	if ( scrollIntoView ) {
-		surfaceView = this.surface.getView();
-		var offset = top + surfaceView.$element.offset().top;
-		var windowScrollTop = this.surface.$scrollContainer.scrollTop() + this.surface.padding.top;
-		var windowScrollHeight = surfaceView.$window.height() - this.surface.padding.top;
-
-		if ( offset < windowScrollTop || offset > windowScrollTop + windowScrollHeight ) {
-			// eslint-disable-next-line no-jquery/no-global-selector
-			$( 'body, html' ).animate( { scrollTop: offset - ( windowScrollHeight / 2 ) }, 'fast' );
-		}
-	}
 };
 
 /**
