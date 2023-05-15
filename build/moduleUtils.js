@@ -34,7 +34,7 @@ const self = module.exports = {
 	 *    ]
 	 *
 	 * @param {Array} resources List of expandable resources
-	 * @return {Array} Flat list of file paths
+	 * @return {Object.<string,string[]>}
 	 */
 	expandResources: function ( resources ) {
 		// Figure out what the different css targets will be,
@@ -64,7 +64,7 @@ const self = module.exports = {
 	 * Create a build list
 	 *
 	 * @param {Array} modules List of modules and their dependencies
-	 * @param {Array} targets List of target modules to load including any dependencies
+	 * @param {string[]} targets List of target modules to load including any dependencies
 	 * @return {Object} An object containing arrays of the scripts and styles
 	 */
 	makeBuildList: function ( modules, targets ) {
@@ -72,7 +72,7 @@ const self = module.exports = {
 		 * Given a list of modules and targets, returns an object splitting the scripts
 		 * and styles.
 		 *
-		 * @param {Array} buildlist List of targets to work through
+		 * @param {string[]} buildlist List of targets to work through
 		 * @param {Object|null} filelist Object to extend
 		 * @return {Object} Object of two arrays listing the file paths
 		 */
@@ -107,9 +107,9 @@ const self = module.exports = {
 	 * lit of dependencies stemming from one or more given top-level modules.
 	 *
 	 * @param {Array} modules List of modules and their dependencies
-	 * @param {Array} load List of targets to return and their dependencies
-	 * @param {Array|null} list Extant flat list of file paths to extend
-	 * @return {Array} Flat list of file paths
+	 * @param {string[]} load List of targets to return and their dependencies
+	 * @param {string[]|null} list Extant flat list of file paths to extend
+	 * @return {string[]} Flat list of file paths
 	 * @throws {Error} Dependency not found
 	 */
 	buildDependencyList: function ( modules, load, list ) {

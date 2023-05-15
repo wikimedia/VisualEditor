@@ -116,7 +116,7 @@ module.exports = function ( grunt ) {
 		/**
 		 * Push modules into loadedModules
 		 *
-		 * @param {Array} l Modules specified in the buildLoader config (see Gruntfile.js)
+		 * @param {string[]} l Modules specified in the buildLoader config (see Gruntfile.js)
 		 */
 		function addModules( l ) {
 			const dependencies = moduleUtils.buildDependencyList( modules, l );
