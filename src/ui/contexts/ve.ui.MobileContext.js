@@ -185,3 +185,10 @@ ve.ui.MobileContext.prototype.isInspectable = function () {
 		// Suppress context when surface is active (virtual keyboard)
 		this.surface.getView().isDeactivated();
 };
+
+/**
+ * @inheritdoc
+ */
+ve.ui.MobileContext.prototype.getSurfacePadding = function () {
+	return { bottom: this.$element[ 0 ].clientHeight };
+};
