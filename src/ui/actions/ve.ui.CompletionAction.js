@@ -127,8 +127,10 @@ ve.ui.CompletionAction.prototype.insertCompletion = function ( data, range ) {
  * @return {boolean} Whether to abandon
  */
 ve.ui.CompletionAction.prototype.shouldAbandon = function ( input, matches ) {
-	// Abandon after adding whitespace if there are no active potential matches
-	return matches === 0 && !!( input && /\s$/.test( input ) );
+	// Abandon after adding whitespace if there are no active potential matches,
+	// or if whitespace has been the sole input
+	return /^\s+$/.test( input ) ||
+		( matches === 0 && /\s$/.test( input ) );
 };
 
 // helpers
