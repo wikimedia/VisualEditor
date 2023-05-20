@@ -72,6 +72,40 @@
 
 	ve.ui.HelpCompletionAction.static.defaultLimit = 99;
 
+	ve.ui.HelpCompletionAction.static.commandGroups = {
+		textStyle: {
+			title: OO.ui.deferMsg( 'visualeditor-shortcuts-text-style' )
+		},
+		meta: {
+			alias: 'insert'
+		},
+		object: {
+			alias: 'insert'
+		},
+		// TODO: Move to MW or Cite/Citoid
+		cite: {
+			alias: 'insert'
+		},
+		format: {
+			title: OO.ui.deferMsg( 'visualeditor-shortcuts-formatting' ),
+			weight: -2
+		},
+		dialog: {
+			title: OO.ui.deferMsg( 'visualeditor-shortcuts-dialog' )
+		},
+		other: {
+			title: OO.ui.deferMsg( 'visualeditor-shortcuts-other' ),
+			weight: -1
+		},
+		structure: {
+			title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' )
+		},
+		insert: {
+			title: OO.ui.deferMsg( 'visualeditor-shortcuts-insert' ),
+			weight: 1
+		}
+	};
+
 	/* Methods */
 
 	var sequence;
@@ -146,26 +180,37 @@
 	};
 
 	ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
-		var lastGroup = null;
-		for ( var i = 0; i < menuItems.length; i++ ) {
-			var tool = menuItems[ i ].getData();
-			var group = tool.elementGroup;
-			if ( this.tools.moreTextStyle && tool.constructor.static.group === 'textStyle' ) {
-				// push these tools into the "style text" group, if it exists
-				group = this.tools.moreTextStyle.innerToolGroup;
+		var menuItemsByGroup = {};
+		var commandGroups = this.constructor.static.commandGroups;
+		menuItems.forEach( function ( menuItem ) {
+			var tool = menuItem.getData();
+			var group = tool.constructor.static.group;
+			if ( commandGroups[ group ] ) {
+				if ( commandGroups[ group ].alias ) {
+					group = commandGroups[ group ].alias;
+				}
+			} else {
+				group = 'other';
 			}
-			if ( group instanceof OO.ui.PopupToolGroup && group !== lastGroup ) {
-				menuItems.splice(
-					i, 0,
-					new OO.ui.MenuSectionOptionWidget( {
-						label: group.getTitle()
-					} )
-				);
-				lastGroup = group;
-				i++;
-			}
-		}
-		return menuItems;
+			menuItemsByGroup[ group ] = menuItemsByGroup[ group ] || [];
+			menuItemsByGroup[ group ].push( menuItem );
+		} );
+		var newMenuItems = [];
+		var groups = Object.keys( menuItemsByGroup );
+		groups.sort( function ( a, b ) {
+			var weightA = commandGroups[ a ].weight || 0;
+			var weightB = commandGroups[ b ].weight || 0;
+			return weightB - weightA;
+		} );
+		groups.forEach( function ( group ) {
+			newMenuItems.push(
+				new OO.ui.MenuSectionOptionWidget( {
+					label: commandGroups[ group ].title
+				} )
+			);
+			ve.batchPush( newMenuItems, menuItemsByGroup[ group ] );
+		} );
+		return newMenuItems;
 	};
 
 	ve.ui.HelpCompletionAction.prototype.chooseItem = function ( item, range ) {
