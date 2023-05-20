@@ -21,10 +21,12 @@
 		// Parent constructor
 		ve.ui.HelpCompletionAction.super.call( this, surface );
 
-		this.tools = ve.init.target.getToolbar().tools;
+		this.toolbar = surface.target.getToolbar();
+		this.tools = this.toolbar.tools;
 		this.toolNames = Object.keys( this.tools ).filter( function ( toolName ) {
 			var tool = action.tools[ toolName ];
 			return tool &&
+				// Ignore tool groups
 				!( tool instanceof OO.ui.ToolGroupTool ) &&
 				!( tool instanceof OO.ui.PopupTool ) &&
 				// TODO: One would need to completely ignore the history
@@ -34,10 +36,7 @@
 				// Action can only be launched from a linear selection so
 				// table selection tools are of no use.
 				!( tool instanceof ve.ui.TableCellHeaderFormatTool ) &&
-				!( tool instanceof ve.ui.TableCellDataFormatTool ) &&
-				// Ignore tool groups
-				!( tool instanceof OO.ui.ToolGroupTool ) &&
-				!( tool instanceof OO.ui.PopupTool );
+				!( tool instanceof ve.ui.TableCellDataFormatTool );
 		} );
 		// Push the "format" group to the bottom because it's rarely-needed
 		this.toolNames.sort( function ( a, b ) {
@@ -150,22 +149,23 @@
 		var lastGroup = null;
 		for ( var i = 0; i < menuItems.length; i++ ) {
 			var tool = menuItems[ i ].getData();
-			if ( tool.elementGroup instanceof OO.ui.PopupToolGroup && tool.elementGroup !== lastGroup ) {
+			var group = tool.elementGroup;
+			if ( this.tools.moreTextStyle && tool.constructor.static.group === 'textStyle' ) {
+				// push these tools into the "style text" group, if it exists
+				group = this.tools.moreTextStyle.innerToolGroup;
+			}
+			if ( group instanceof OO.ui.PopupToolGroup && group !== lastGroup ) {
 				menuItems.splice(
 					i, 0,
 					new OO.ui.MenuSectionOptionWidget( {
-						label: tool.elementGroup.getTitle()
+						label: group.getTitle()
 					} )
 				);
-				lastGroup = tool.elementGroup;
+				lastGroup = group;
 				i++;
 			}
 		}
 		return menuItems;
-	};
-
-	ve.ui.HelpCompletionAction.prototype.getHeaderLabel = function () {
-		return ve.msg( 'visualeditor-dialog-command-help-title' );
 	};
 
 	ve.ui.HelpCompletionAction.prototype.chooseItem = function ( item, range ) {
