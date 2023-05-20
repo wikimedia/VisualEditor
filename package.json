@@ -36,7 +36,7 @@
 		"grunt-eslint": "24.1.0",
 		"grunt-karma": "4.0.2",
 		"grunt-stylelint": "0.18.0",
-		"grunt-tyops": "0.1.0",
+		"grunt-tyops": "0.1.1",
 		"karma": "6.4.1",
 		"karma-chrome-launcher": "3.1.0",
 		"karma-coverage": "2.0.3",
