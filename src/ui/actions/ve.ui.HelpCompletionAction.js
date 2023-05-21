@@ -256,4 +256,11 @@
 	);
 
 	ve.ui.sequenceRegistry.register( sequence );
+
+	ve.ui.commandHelpRegistry.register( 'other', 'openHelpCompletions', {
+		trigger: 'openHelpCompletionsTrigger',
+		sequences: [ 'autocompleteHelpCommands' ],
+		label: OO.ui.deferMsg( 'visualeditor-toolbar-search-help-label' )
+	} );
+
 }() );
