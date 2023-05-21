@@ -72,19 +72,27 @@
 
 	ve.ui.HelpCompletionAction.static.defaultLimit = 99;
 
-	ve.ui.HelpCompletionAction.static.commandGroups = {
+	/**
+	 * Definitions of the groups that tools can fall into
+	 *
+	 * Tools in a group whose name doesn't appear here will be placed
+	 * in "other" gruop.
+	 * The `title` field is used to place a label above the tools
+	 * in the widget.
+	 * `mergeWith` references a different group to add these
+	 * tools to.
+	 * `weight` can be used to move groups up or down the list.
+	 * Higher values will appear at the top. The default is 0.
+	 */
+	ve.ui.HelpCompletionAction.static.toolGroups = {
 		textStyle: {
 			title: OO.ui.deferMsg( 'visualeditor-shortcuts-text-style' )
 		},
 		meta: {
-			alias: 'insert'
+			mergeWith: 'insert'
 		},
 		object: {
-			alias: 'insert'
-		},
-		// TODO: Move to MW or Cite/Citoid
-		cite: {
-			alias: 'insert'
+			mergeWith: 'insert'
 		},
 		format: {
 			title: OO.ui.deferMsg( 'visualeditor-shortcuts-formatting' ),
@@ -181,13 +189,13 @@
 
 	ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
 		var menuItemsByGroup = {};
-		var commandGroups = this.constructor.static.commandGroups;
+		var toolGroups = this.constructor.static.toolGroups;
 		menuItems.forEach( function ( menuItem ) {
 			var tool = menuItem.getData();
 			var group = tool.constructor.static.group;
-			if ( commandGroups[ group ] ) {
-				if ( commandGroups[ group ].alias ) {
-					group = commandGroups[ group ].alias;
+			if ( toolGroups[ group ] ) {
+				if ( toolGroups[ group ].mergeWith ) {
+					group = toolGroups[ group ].mergeWith;
 				}
 			} else {
 				group = 'other';
@@ -198,14 +206,14 @@
 		var newMenuItems = [];
 		var groups = Object.keys( menuItemsByGroup );
 		groups.sort( function ( a, b ) {
-			var weightA = commandGroups[ a ].weight || 0;
-			var weightB = commandGroups[ b ].weight || 0;
+			var weightA = toolGroups[ a ].weight || 0;
+			var weightB = toolGroups[ b ].weight || 0;
 			return weightB - weightA;
 		} );
 		groups.forEach( function ( group ) {
 			newMenuItems.push(
 				new OO.ui.MenuSectionOptionWidget( {
-					label: commandGroups[ group ].title
+					label: toolGroups[ group ].title
 				} )
 			);
 			ve.batchPush( newMenuItems, menuItemsByGroup[ group ] );
