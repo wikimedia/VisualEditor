@@ -195,7 +195,11 @@ ve.ui.HelpCompletionAction.prototype.chooseItem = function ( item, range ) {
 	fragment.collapseToEnd();
 
 	var tool = item.getData();
-	tool.onSelect();
+	// Wait for completion widget to close, as the selected tool may
+	// trigger another completion widget.
+	setTimeout( function () {
+		tool.onSelect();
+	} );
 
 	return true;
 };
