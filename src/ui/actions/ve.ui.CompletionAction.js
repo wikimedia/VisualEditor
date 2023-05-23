@@ -16,6 +16,7 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
+ * @param {string} [source]
  */
 ve.ui.CompletionAction = function VeUiCompletionAction() {
 	// Parent constructor

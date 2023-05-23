@@ -13,12 +13,13 @@
  * @extends ve.ui.CompletionAction
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
+ * @param {string} [source]
  */
 ve.ui.HelpCompletionAction = function ( surface ) {
 	var action = this;
 
 	// Parent constructor
-	ve.ui.HelpCompletionAction.super.call( this, surface );
+	ve.ui.HelpCompletionAction.super.apply( this, arguments );
 
 	this.toolbar = surface.target.getToolbar();
 	this.tools = this.toolbar.tools;

@@ -14,7 +14,8 @@
  *
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
- * @param {string} [source] Label for the source of the action, for tracking
+ * @param {string} [source] Label for the source of the action.
+ *  One of 'trigger', 'sequence', 'tool', or 'context'
  */
 ve.ui.Action = function VeUiAction( surface, source ) {
 	// Properties

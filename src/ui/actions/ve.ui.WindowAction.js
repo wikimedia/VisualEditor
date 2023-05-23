@@ -11,6 +11,7 @@
  * @extends ve.ui.Action
  * @constructor
  * @param {ve.ui.Surface} surface Surface to act on
+ * @param {string} [source]
  */
 ve.ui.WindowAction = function VeUiWindowAction() {
 	// Parent constructor
