@@ -223,7 +223,7 @@ ve.ui.commandRegistry.register( new ve.ui.Command(
 ) );
 ve.ui.commandRegistry.register( new ve.ui.Command(
 	'openHelpCompletionsTrigger', ve.ui.HelpCompletionAction.static.name, 'open',
-	{ supportedSelections: [ 'linear' ], args: [ 0 ] }
+	{ supportedSelections: [ 'linear' ] }
 ) );
 
 ve.ui.sequenceRegistry.register( new ve.ui.Sequence( 'autocompleteHelpCommands', 'openHelpCompletions', '\\', 0 ) );
