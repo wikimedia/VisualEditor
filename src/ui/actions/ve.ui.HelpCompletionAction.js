@@ -115,13 +115,9 @@ ve.ui.HelpCompletionAction.static.toolGroups = {
 
 ve.ui.HelpCompletionAction.prototype.getToolIndex = function ( toolName ) {
 	var tool = this.tools[ toolName ];
-	var title = '';
-	if ( tool.elementGroup instanceof OO.ui.PopupToolGroup ) {
-		title += tool.elementGroup.getTitle() + ' ';
-	}
-	title += tool.getTitle();
-
-	return title;
+	var toolGroups = this.constructor.static.toolGroups;
+	var group = this.getGroupForTool( tool );
+	return OO.ui.resolveMsg( toolGroups[ group ].title ) + ' ' + tool.getTitle();
 };
 
 ve.ui.HelpCompletionAction.prototype.getSuggestions = function ( input ) {
@@ -152,19 +148,32 @@ ve.ui.HelpCompletionAction.prototype.getMenuItemForSuggestion = function ( toolN
 	} );
 };
 
+/**
+ * Get the group associated with a tool, resolving any mergeWith redirects
+ *
+ * @param {ve.ui.Tool} tool Tool
+ * @return {string} Group name
+ */
+ve.ui.HelpCompletionAction.prototype.getGroupForTool = function ( tool ) {
+	var toolGroups = this.constructor.static.toolGroups;
+	var group = tool.constructor.static.group;
+	if ( toolGroups[ group ] ) {
+		if ( toolGroups[ group ].mergeWith ) {
+			group = toolGroups[ group ].mergeWith;
+		}
+	} else {
+		group = 'other';
+	}
+	return group;
+};
+
 ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
+	var action = this;
 	var menuItemsByGroup = {};
 	var toolGroups = this.constructor.static.toolGroups;
 	menuItems.forEach( function ( menuItem ) {
 		var tool = menuItem.getData();
-		var group = tool.constructor.static.group;
-		if ( toolGroups[ group ] ) {
-			if ( toolGroups[ group ].mergeWith ) {
-				group = toolGroups[ group ].mergeWith;
-			}
-		} else {
-			group = 'other';
-		}
+		var group = action.getGroupForTool( tool );
 		menuItemsByGroup[ group ] = menuItemsByGroup[ group ] || [];
 		menuItemsByGroup[ group ].push( menuItem );
 	} );
