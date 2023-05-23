@@ -70,20 +70,29 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 
 OO.inheritClass( ve.ui.CompletionWidget, OO.ui.Widget );
 
+/**
+ * Setup the completion widget
+ *
+ * @param {ve.ui.Action} action Action which opened the widget
+ * @param {number} [triggerLength] Override the default length of the trigger if provided
+ */
 ve.ui.CompletionWidget.prototype.setup = function ( action, triggerLength ) {
-	var offset = this.surfaceModel.getSelection().getRange();
-	if ( !offset.isCollapsed() ) {
+	var range = this.surfaceModel.getSelection().getRange();
+	if ( !range.isCollapsed() ) {
 		return;
 	}
 	this.action = action;
 	this.triggerLength = triggerLength === undefined ? this.action.constructor.static.triggerLength : 0;
-	this.initialOffset = offset.end - this.triggerLength;
+	this.initialOffset = range.end - this.triggerLength;
 
 	this.update();
 
 	this.surfaceModel.connect( this, { select: 'onModelSelect' } );
 };
 
+/**
+ * Teardown the completion widget
+ */
 ve.ui.CompletionWidget.prototype.teardown = function () {
 	this.tearingDown = true;
 	this.popup.toggle( false );
@@ -92,6 +101,9 @@ ve.ui.CompletionWidget.prototype.teardown = function () {
 	this.tearingDown = false;
 };
 
+/**
+ * Update the completion widget after the input has changed
+ */
 ve.ui.CompletionWidget.prototype.update = function () {
 	var direction = this.surface.getDir(),
 		range = this.getCompletionRange(),
@@ -127,6 +139,12 @@ ve.ui.CompletionWidget.prototype.update = function () {
 	}.bind( this ) );
 };
 
+/**
+ * Update the widget's menu with the latest suggestions
+ *
+ * @param {string} input Input text
+ * @param {Array} suggestions Suggestions
+ */
 ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 	// Update the header based on the input
 	var label = this.action.getHeaderLabel( input, suggestions );
@@ -149,12 +167,22 @@ ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 	}
 };
 
+/**
+ * Handle choose events from the menu
+ *
+ * @param {OO.ui.MenuOptionWidget} item Chosen option
+ */
 ve.ui.CompletionWidget.prototype.onMenuChoose = function ( item ) {
 	this.action.chooseItem( item, this.getCompletionRange( true ) );
 
 	this.teardown();
 };
 
+/**
+ * Handle toggle events from the menu
+ *
+ * @param {boolean} visible Menu is visible
+ */
 ve.ui.CompletionWidget.prototype.onMenuToggle = function ( visible ) {
 	if ( !visible && !this.tearingDown ) {
 		// Menu was hidden by the user (e.g. pressed ESC) - trigger a teardown
@@ -162,6 +190,11 @@ ve.ui.CompletionWidget.prototype.onMenuToggle = function ( visible ) {
 	}
 };
 
+/**
+ * Handle select events from the document model
+ *
+ * @param {ve.dm.Selection} selection Selection
+ */
 ve.ui.CompletionWidget.prototype.onModelSelect = function () {
 	var range = this.getCompletionRange();
 	var widget = this;
@@ -184,6 +217,12 @@ ve.ui.CompletionWidget.prototype.onModelSelect = function () {
 	}
 };
 
+/**
+ * Get the range where the user has entered text in the document since opening the widget
+ *
+ * @param {boolean} [withTrigger] Inlcude the trigger text in the range
+ * @return {ve.Range|null} Range, null if not valid
+ */
 ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withTrigger ) {
 	var range = this.surfaceModel.getSelection().getCoveringRange();
 	if ( !range || !range.isCollapsed() || !this.action ) {
