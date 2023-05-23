@@ -38,7 +38,7 @@ OO.inheritClass( ve.ui.CompletionAction, ve.ui.Action );
 ve.ui.CompletionAction.static.defaultLimit = 8;
 
 /**
- * Length of the trigger sequence for the action
+ * Length of the sequence which triggers the action
  *
  * This many characters will be stripped from the start of the current input by
  * CompletionWidget.
@@ -46,7 +46,7 @@ ve.ui.CompletionAction.static.defaultLimit = 8;
  * @static
  * @property {number}
  */
-ve.ui.CompletionAction.static.triggerLength = 1;
+ve.ui.CompletionAction.static.sequenceLength = 1;
 
 /**
  * Whether the current input should be included as a completion automatically
@@ -63,11 +63,11 @@ ve.ui.CompletionAction.static.methods = [ 'open' ];
 /**
  * Show the completions
  *
- * @param {number} [triggerLength] Override the default length of the trigger if provided
+ * @param {number} [sequenceLength] Override the default length of the sequence if provided
  * @return {boolean} Action was executed
  */
-ve.ui.CompletionAction.prototype.open = function ( triggerLength ) {
-	this.surface.completion.setup( this, triggerLength );
+ve.ui.CompletionAction.prototype.open = function ( sequenceLength ) {
+	this.surface.completion.setup( this, sequenceLength );
 
 	return true;
 };

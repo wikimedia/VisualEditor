@@ -74,16 +74,16 @@ OO.inheritClass( ve.ui.CompletionWidget, OO.ui.Widget );
  * Setup the completion widget
  *
  * @param {ve.ui.Action} action Action which opened the widget
- * @param {number} [triggerLength] Override the default length of the trigger if provided
+ * @param {number} [sequenceLength] Override the default length of the sequence if provided
  */
-ve.ui.CompletionWidget.prototype.setup = function ( action, triggerLength ) {
+ve.ui.CompletionWidget.prototype.setup = function ( action, sequenceLength ) {
 	var range = this.surfaceModel.getSelection().getRange();
 	if ( !range.isCollapsed() ) {
 		return;
 	}
 	this.action = action;
-	this.triggerLength = triggerLength === undefined ? this.action.constructor.static.triggerLength : 0;
-	this.initialOffset = range.end - this.triggerLength;
+	this.sequenceLength = sequenceLength === undefined ? this.action.constructor.static.sequenceLength : 0;
+	this.initialOffset = range.end - this.sequenceLength;
 
 	this.update();
 
@@ -220,13 +220,13 @@ ve.ui.CompletionWidget.prototype.onModelSelect = function () {
 /**
  * Get the range where the user has entered text in the document since opening the widget
  *
- * @param {boolean} [withTrigger] Inlcude the trigger text in the range
+ * @param {boolean} [withSequence] Include the triggering sequence text in the range
  * @return {ve.Range|null} Range, null if not valid
  */
-ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withTrigger ) {
+ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withSequence ) {
 	var range = this.surfaceModel.getSelection().getCoveringRange();
 	if ( !range || !range.isCollapsed() || !this.action ) {
 		return null;
 	}
-	return new ve.Range( this.initialOffset + ( withTrigger ? 0 : this.triggerLength ), range.end );
+	return new ve.Range( this.initialOffset + ( withSequence ? 0 : this.sequenceLength ), range.end );
 };
