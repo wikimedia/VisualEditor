@@ -93,6 +93,7 @@
 	"visualeditor-commentannotationcontextitem-comment": "Label for the comment button in the comment annotation inspector",
 	"visualeditor-commentinspector-title": "Label for the title in the comment inspector.\nSee [https://i.imgur.com/OFQvrZo.png screenshot].\n{{Identical|Comment}}",
 	"visualeditor-commentinspector-tooltip": "Tooltip text for comment button.\n{{Related|Visualeditor-annotationbutton}}\n{{Identical|Comment}}",
+	"visualeditor-completionwidget-noresults": "Label shown when the completion widget has no results",
 	"visualeditor-content-select-all": "Label for select all command.\n{{Identical|Select all}}",
 	"visualeditor-contextitemwidget-label-close": "Label for the close button on a context item on mobile.\n{{identical|Close}}",
 	"visualeditor-contextitemwidget-label-remove": "Label for the remove action on a context item.\n\nAppears next to {{msg-mw|visualeditor-contextitemwidget-label-secondary}}\n{{Identical|Delete}}",

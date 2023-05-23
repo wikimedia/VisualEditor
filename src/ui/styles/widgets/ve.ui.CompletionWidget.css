@@ -20,3 +20,8 @@
 	/* TODO: This could be done in JS if OO.ui.ClippableElement provided a way to disable clipping */
 	overflow: hidden !important; /* stylelint-disable-line declaration-no-important */
 }
+
+.ve-ui-completionWidget .oo-ui-textInputWidget {
+	min-width: 15em;
+	margin-bottom: -1px;
+}

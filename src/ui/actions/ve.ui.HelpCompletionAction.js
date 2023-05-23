@@ -30,15 +30,7 @@ ve.ui.HelpCompletionAction = function ( surface ) {
 			!( tool instanceof ve.ui.HelpCompletionTool ) &&
 			// Ignore tool groups
 			!( tool instanceof OO.ui.ToolGroupTool ) &&
-			!( tool instanceof OO.ui.PopupTool ) &&
-			// TODO: One would need to completely ignore the history
-			// stack since before the action was triggered to use
-			// undo/redo from here. Might not be worth the effort.
-			!( tool instanceof ve.ui.HistoryTool ) &&
-			// Action can only be launched from a linear selection so
-			// table selection tools are of no use.
-			!( tool instanceof ve.ui.TableCellHeaderFormatTool ) &&
-			!( tool instanceof ve.ui.TableCellDataFormatTool );
+			!( tool instanceof OO.ui.PopupTool );
 	} );
 	// Push the "format" group to the bottom because it's rarely-needed
 	this.toolNames.sort( function ( a, b ) {
@@ -104,6 +96,10 @@ ve.ui.HelpCompletionAction.static.toolGroups = {
 		title: OO.ui.deferMsg( 'visualeditor-shortcuts-other' ),
 		weight: -1
 	},
+	history: {
+		title: OO.ui.deferMsg( 'visualeditor-shortcuts-history' ),
+		weight: -3
+	},
 	structure: {
 		title: OO.ui.deferMsg( 'visualeditor-toolbar-structure' )
 	},
@@ -114,6 +110,23 @@ ve.ui.HelpCompletionAction.static.toolGroups = {
 };
 
 /* Methods */
+
+ve.ui.HelpCompletionAction.prototype.open = function ( isolateInput ) {
+	if ( !isolateInput ) {
+		var action = this;
+		// Remove undo/redo when inputting in the surface, don't just
+		// show them as disabled (they are still available in the toolbar)
+		// TODO: One would need to completely ignore the history
+		// stack since before the action was triggered to use
+		// undo/redo from here. Might not be worth the effort.
+		this.toolNames = this.toolNames.filter( function ( toolName ) {
+			var tool = action.tools[ toolName ];
+			return !( tool instanceof ve.ui.HistoryTool );
+		} );
+	}
+
+	return ve.ui.HelpCompletionAction.super.prototype.open.apply( this, arguments );
+};
 
 ve.ui.HelpCompletionAction.prototype.getToolIndex = function ( toolName ) {
 	var tool = this.tools[ toolName ];
@@ -225,7 +238,7 @@ ve.ui.commandRegistry.register( new ve.ui.Command(
 ) );
 ve.ui.commandRegistry.register( new ve.ui.Command(
 	'openHelpCompletionsTrigger', ve.ui.HelpCompletionAction.static.name, 'open',
-	{ supportedSelections: [ 'linear' ] }
+	{ supportedSelections: [ 'linear', 'table' ], args: [ true ] }
 ) );
 
 ve.ui.sequenceRegistry.register( new ve.ui.Sequence( 'autocompleteHelpCommands', 'openHelpCompletions', '\\', 0 ) );

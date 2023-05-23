@@ -63,10 +63,11 @@ ve.ui.CompletionAction.static.methods = [ 'open' ];
 /**
  * Show the completions
  *
+ * @param {boolean} [isolateInput] Isolate input from the surface
  * @return {boolean} Action was executed
  */
-ve.ui.CompletionAction.prototype.open = function () {
-	this.surface.completion.setup( this );
+ve.ui.CompletionAction.prototype.open = function ( isolateInput ) {
+	this.surface.completion.setup( this, isolateInput );
 
 	return true;
 };

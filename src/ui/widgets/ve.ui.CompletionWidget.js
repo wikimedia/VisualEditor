@@ -40,14 +40,20 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 		$container: config.$popupContainer || this.surface.$element,
 		containerPadding: config.popupPadding
 	} );
+	this.input = new OO.ui.TextInputWidget();
 	this.menu = new OO.ui.MenuSelectWidget( {
 		widget: this,
-		$input: $doc
+		$input: $doc.add( this.input.$input )
 	} );
 	// This may be better semantically as a MenuSectionOptionWidget,
 	// but that causes all subsequent options to be indented.
 	this.header = new OO.ui.MenuOptionWidget( {
 		classes: [ 've-ui-completionWidget-header' ],
+		disabled: true
+	} );
+	this.noResults = new OO.ui.MenuOptionWidget( {
+		label: ve.msg( 'visualeditor-completionwidget-noresults' ),
+		classes: [ 've-ui-completionWidget-noresults' ],
 		disabled: true
 	} );
 
@@ -56,8 +62,12 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 		choose: 'onMenuChoose',
 		toggle: 'onMenuToggle'
 	} );
+	this.input.connect( this, { change: 'update' } );
 
-	this.popup.$body.append( this.menu.$element );
+	this.popup.$element.prepend( this.input.$element );
+	this.popup.$body.append(
+		this.menu.$element
+	);
 
 	// Setup
 	this.$element.addClass( 've-ui-completionWidget' )
@@ -74,15 +84,26 @@ OO.inheritClass( ve.ui.CompletionWidget, OO.ui.Widget );
  * Setup the completion widget
  *
  * @param {ve.ui.Action} action Action which opened the widget
+ * @param {boolean} [isolateInput] Isolate input from the surface
  */
-ve.ui.CompletionWidget.prototype.setup = function ( action ) {
-	var range = this.surfaceModel.getSelection().getRange();
-	if ( !range.isCollapsed() ) {
-		return;
-	}
+ve.ui.CompletionWidget.prototype.setup = function ( action, isolateInput ) {
+	var range = this.surfaceModel.getSelection().getCoveringRange();
 	this.action = action;
+	this.isolateInput = !!isolateInput;
 	this.sequenceLength = this.action.getSequenceLength();
 	this.initialOffset = range.end - this.sequenceLength;
+
+	this.input.toggle( this.isolateInput );
+	if ( this.isolateInput ) {
+		this.wasActive = !this.surface.getView().isDeactivated();
+		this.surface.getView().deactivate();
+		this.input.setValue( '' );
+		setTimeout( function () {
+			this.input.focus();
+		}.bind( this ), 1 );
+	} else {
+		this.wasActive = false;
+	}
 
 	this.update();
 
@@ -96,6 +117,9 @@ ve.ui.CompletionWidget.prototype.teardown = function () {
 	this.tearingDown = true;
 	this.popup.toggle( false );
 	this.surfaceModel.disconnect( this );
+	if ( this.wasActive ) {
+		this.surface.getView().activate();
+	}
 	this.action = undefined;
 	this.tearingDown = false;
 };
@@ -109,9 +133,15 @@ ve.ui.CompletionWidget.prototype.update = function () {
 		boundingRect = this.surface.getView().getSelection( new ve.dm.LinearSelection( range ) ).getSelectionBoundingRect(),
 		style = {
 			top: boundingRect.bottom
-		},
-		data = this.surfaceModel.getDocument().data,
+		};
+
+	var input;
+	if ( this.isolateInput ) {
+		input = this.input.getValue();
+	} else {
+		var data = this.surfaceModel.getDocument().data;
 		input = data.getText( false, range );
+	}
 
 	if ( direction === 'rtl' ) {
 		// This works because this.$element is a 0x0px box, with the menu positioned relative to it.
@@ -155,14 +185,23 @@ ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 	} else {
 		this.menu.removeItems( [ this.header ] );
 	}
-	// If there is a header or menu items, show the menu
-	if ( this.menu.items.length ) {
+	if ( !this.isolateInput ) {
+		// If there is a header or menu items, show the menu
+		if ( this.menu.items.length ) {
+			this.menu.toggle( true );
+			this.popup.toggle( true );
+			// Menu may have changed size, so recalculate position
+			this.popup.updateDimensions();
+		} else {
+			this.popup.toggle( false );
+		}
+	} else {
+		if ( !this.menu.items.length ) {
+			this.menu.addItems( [ this.noResults ], 0 );
+		}
 		this.menu.toggle( true );
 		this.popup.toggle( true );
-		// Menu may have changed size, so recalculate position
 		this.popup.updateDimensions();
-	} else {
-		this.popup.toggle( false );
 	}
 };
 
@@ -224,7 +263,7 @@ ve.ui.CompletionWidget.prototype.onModelSelect = function () {
  */
 ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withSequence ) {
 	var range = this.surfaceModel.getSelection().getCoveringRange();
-	if ( !range || !range.isCollapsed() || !this.action ) {
+	if ( !range || !this.action ) {
 		return null;
 	}
 	return new ve.Range( this.initialOffset + ( withSequence ? 0 : this.sequenceLength ), range.end );
