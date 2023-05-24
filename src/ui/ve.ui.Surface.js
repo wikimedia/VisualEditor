@@ -581,9 +581,6 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 				padding.bottom += 30;
 			}
 		}
-
-		clientRect.top -= 5;
-		clientRect.bottom += 5;
 	} else {
 		// Don't attempt to scroll non-native selections into view if they
 		// are taller than the viewport (T305862).
@@ -592,6 +589,12 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 			return;
 		}
 	}
+
+	// Add some minimum padding so the selection doesn't touch the edge of the viewport
+	padding.top += 5;
+	padding.bottom += 5;
+	padding.left += 5;
+	padding.right += 5;
 
 	ve.scrollIntoView( clientRect, ve.extendObject( {
 		animate: animate,
