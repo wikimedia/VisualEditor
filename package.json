@@ -23,7 +23,7 @@
 		}
 	],
 	"devDependencies": {
-		"eslint-config-wikimedia": "0.25.0",
+		"eslint-config-wikimedia": "0.25.1",
 		"eslint-plugin-html": "7.1.0",
 		"grunt": "1.6.1",
 		"grunt-banana-checker": "0.10.0",
@@ -33,7 +33,7 @@
 		"grunt-contrib-watch": "1.1.0",
 		"grunt-css-url-embed": "1.11.1",
 		"grunt-cssjanus": "0.5.0",
-		"grunt-eslint": "24.0.1",
+		"grunt-eslint": "24.1.0",
 		"grunt-karma": "4.0.2",
 		"grunt-stylelint": "0.18.0",
 		"grunt-tyops": "0.1.0",
