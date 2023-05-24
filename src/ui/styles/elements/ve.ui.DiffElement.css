@@ -217,7 +217,6 @@ li[ data-diff-action='none' ]:not( [ data-diff-move ] )::marker {
 [ data-diff-action='change-insert' ] > *,
 [ data-diff-action='change-remove' ] > *,
 [ data-diff-move ] > * {
-	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 	mix-blend-mode: darken;
 }
 
