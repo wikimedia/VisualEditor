@@ -256,3 +256,15 @@ ve.ui.Context.prototype.destroy = function () {
 	this.$element.remove();
 	return this;
 };
+
+/**
+ * Get an object describing the amount of padding the context adds to the surface.
+ *
+ * For example the mobile context, which is fixed to the bottom of the viewport,
+ * will add bottom padding, whereas the floating desktop context will add none.
+ *
+ * @return {null|Object} Padding object, or null
+ */
+ve.ui.Context.prototype.getSurfacePadding = function () {
+	return null;
+};

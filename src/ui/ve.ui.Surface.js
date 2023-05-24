@@ -124,7 +124,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 		position: 'onViewPosition',
 		activation: 'onViewActivation'
 	} );
-	this.getContext().connect( this, { resize: 'onContextResize' } );
+	this.getContext().connect( this, { resize: ve.debounce( this.onContextResize.bind( this ) ) } );
 
 	// Initialization
 	if ( OO.ui.isMobile() ) {
@@ -762,9 +762,12 @@ ve.ui.Surface.prototype.setPadding = function ( padding ) {
  * Handle resize events from the context
  */
 ve.ui.Surface.prototype.onContextResize = function () {
-	this.setPadding( { bottom: this.context.$element[ 0 ].clientHeight } );
-	this.adjustVisiblePadding();
-	this.scrollSelectionIntoView();
+	var padding = this.context.getSurfacePadding();
+	if ( padding ) {
+		this.setPadding( padding );
+		this.adjustVisiblePadding();
+		this.scrollSelectionIntoView();
+	}
 };
 
 /**
