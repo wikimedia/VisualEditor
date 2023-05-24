@@ -667,6 +667,12 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
  * Handle position events from the view
  */
 ve.ui.Surface.prototype.onViewPosition = function () {
+	var padding = this.toolbarDialogs.getSurfacePadding();
+	if ( padding ) {
+		this.setPadding( padding );
+		this.adjustVisiblePadding();
+		this.scrollSelectionIntoView();
+	}
 	if ( this.placeholderVisible ) {
 		this.getView().$element.css( 'min-height', this.$placeholder.outerHeight() );
 	}
