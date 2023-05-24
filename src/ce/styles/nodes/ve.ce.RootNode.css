@@ -29,8 +29,6 @@
  * Reset styles applied to ce=true by Chrome (T207426)
  */
 .ve-ce-attachedRootNode [ contentEditable='false' ] {
-	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 	overflow-wrap: initial;
-	/* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 	-webkit-line-break: initial;
 }
