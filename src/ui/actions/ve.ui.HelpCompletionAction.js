@@ -67,9 +67,6 @@
 
 	ve.ui.HelpCompletionAction.static.alwaysIncludeInput = false;
 
-	ve.ui.HelpCompletionAction.static.methods = OO.copy( ve.ui.HelpCompletionAction.static.methods );
-	ve.ui.HelpCompletionAction.static.methods.push( 'insertAndOpen' );
-
 	ve.ui.HelpCompletionAction.static.defaultLimit = 99;
 
 	/**
@@ -115,38 +112,6 @@
 	};
 
 	/* Methods */
-
-	var sequence;
-
-	ve.ui.HelpCompletionAction.prototype.insertAndOpen = function () {
-		var inserted = false,
-			surfaceModel = this.surface.getModel(),
-			fragment = surfaceModel.getFragment();
-
-		// This is opening a window in a slightly weird way, so the normal logging
-		// doesn't catch it. This assumes that the only way to get here is from
-		// the tool. If we add other paths, we'd need to change the logging.
-		ve.track(
-			'activity.' + this.constructor.static.name,
-			{ action: 'window-open-from-tool' }
-		);
-
-		// Run the sequence matching logic again to check
-		// if we already have the sequence inserted at the
-		// current offset.
-		if ( fragment.getSelection().isCollapsed() ) {
-			inserted = this.surface.getView().findMatchingSequences().some( function ( item ) {
-				return item.sequence === sequence;
-			} );
-		}
-
-		if ( !inserted ) {
-			fragment.insertContent( '\\' );
-		}
-		fragment.collapseToEnd().select();
-
-		return this.open();
-	};
 
 	ve.ui.HelpCompletionAction.prototype.getToolIndex = function ( toolName ) {
 		var tool = this.tools[ toolName ];
@@ -239,22 +204,16 @@
 
 	ve.ui.actionFactory.register( ve.ui.HelpCompletionAction );
 
-	var openCommand = new ve.ui.Command(
+	ve.ui.commandRegistry.register( new ve.ui.Command(
 		'openHelpCompletions', ve.ui.HelpCompletionAction.static.name, 'open',
 		{ supportedSelections: [ 'linear' ] }
-	);
-	var openCommandTrigger = new ve.ui.Command(
+	) );
+	ve.ui.commandRegistry.register( new ve.ui.Command(
 		'openHelpCompletionsTrigger', ve.ui.HelpCompletionAction.static.name, 'open',
 		{ supportedSelections: [ 'linear' ], args: [ 0 ] }
-	);
-	var insertAndOpenCommand = new ve.ui.Command(
-		'insertAndOpenHelpCompletions', ve.ui.HelpCompletionAction.static.name, 'insertAndOpen',
-		{ supportedSelections: [ 'linear' ] }
-	);
-	sequence = new ve.ui.Sequence( 'autocompleteHelpCommands', 'openHelpCompletions', '\\', 0 );
-	ve.ui.commandRegistry.register( openCommand );
-	ve.ui.commandRegistry.register( openCommandTrigger );
-	ve.ui.commandRegistry.register( insertAndOpenCommand );
+	) );
+
+	ve.ui.sequenceRegistry.register( new ve.ui.Sequence( 'autocompleteHelpCommands', 'openHelpCompletions', '\\', 0 ) );
 
 	ve.ui.triggerRegistry.register(
 		'openHelpCompletionsTrigger', {
@@ -262,8 +221,6 @@
 			pc: new ve.ui.Trigger( 'ctrl+shift+p' )
 		}
 	);
-
-	ve.ui.sequenceRegistry.register( sequence );
 
 	ve.ui.commandHelpRegistry.register( 'other', 'openHelpCompletions', {
 		trigger: 'openHelpCompletionsTrigger',
