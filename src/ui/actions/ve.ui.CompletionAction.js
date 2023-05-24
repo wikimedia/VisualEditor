@@ -77,7 +77,8 @@ ve.ui.CompletionAction.prototype.open = function ( triggerLength ) {
  * @abstract
  * @param {string} input
  * @param {number} [limit=20] Maximum number of results
- * @return {jQuery.Promise} Promise that resolves with list of suggestions
+ * @return {jQuery.Promise} Promise that resolves with list of suggestions.
+ *  Suggestions are converted to menu itmes by getMenuItemForSuggestion.
  */
 ve.ui.CompletionAction.prototype.getSuggestions = null;
 
@@ -89,7 +90,7 @@ ve.ui.CompletionAction.prototype.getSuggestions = null;
  * same input and its resolved suggestions
  *
  * @param {string} input User input
- * @param {string[]} [suggestions] Returned suggestions
+ * @param {Array} [suggestions] Returned suggestions
  * @return {jQuery|string|OO.ui.HtmlSnippet|Function|null|undefined} Label. Use undefined
  *  to avoid updating the label, and null to clear it.
  */
