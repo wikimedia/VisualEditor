@@ -3,6 +3,7 @@
 		"authors": [
 			"Cainamarques",
 			"Dianakc",
+			"Diegobiavati",
 			"Eduardo Addad de Oliveira",
 			"Eduardoaddad",
 			"Felipe L. Ewald",
@@ -240,6 +241,7 @@
 	"visualeditor-toolbar-history": "Histórico",
 	"visualeditor-toolbar-insert": "Inserir",
 	"visualeditor-toolbar-paragraph-format": "Formatação",
+	"visualeditor-toolbar-search-help-label": "Barra de pesquisa",
 	"visualeditor-toolbar-structure": "Estrutura",
 	"visualeditor-toolbar-style-tooltip": "Estilo de texto",
 	"visualeditor-toolbar-table": "Tabela",

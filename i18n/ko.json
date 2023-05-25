@@ -221,6 +221,7 @@
 	"visualeditor-toolbar-history": "역사",
 	"visualeditor-toolbar-insert": "넣기",
 	"visualeditor-toolbar-paragraph-format": "서식 지정",
+	"visualeditor-toolbar-search-help-label": "도구 모음 검색",
 	"visualeditor-toolbar-structure": "구조",
 	"visualeditor-toolbar-style-tooltip": "텍스트 스타일",
 	"visualeditor-toolbar-table": "표",
