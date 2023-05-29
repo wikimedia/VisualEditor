@@ -308,7 +308,7 @@ ve.ce.Surface.static.unsafeAttributes = [
  *
  * Values of null will perform no action and preventDefault.
  *
- * @type {Object}
+ * @type {Object.<string,string|null>}
  */
 ve.ce.Surface.static.inputTypeCommands = {
 	historyUndo: 'undo',
@@ -836,7 +836,7 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
  *
  * @param {string} name Unique name for the selection being drawn
  * @param {ve.ce.Selection[]} selections Selections to draw
- * @param {Object} options Options
+ * @param {Object} [options]
  * @param {string} options.color CSS color for the selection. Should usually
  *  be set in a stylesheet using the generated class name.
  * @param {string} options.wrapperClass Additional CSS class string to add to the $selections wrapper.
@@ -2560,7 +2560,7 @@ ve.ce.Surface.prototype.afterPasteSanitize = function ( linearData, isMultiline,
  * Helper to build import rules for pasted data
  *
  * @param {boolean} isMultiline Get rules for a multiline context
- * @return {Object} Import rules
+ * @return {Object.<string,Object>} Import rules
  */
 ve.ce.Surface.prototype.afterPasteImportRules = function ( isMultiline ) {
 	var importRules = !this.pasteSpecial ? this.getSurface().getImportRules() : { all: { plainText: true, keepEmptyContentBranches: true } };

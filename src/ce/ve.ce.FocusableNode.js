@@ -804,7 +804,7 @@ ve.ce.FocusableNode.prototype.getBoundingRect = function () {
 /**
  * Get start and end rectangles of an inline focusable node relative to the surface
  *
- * @return {Object|null} Start and end rectangles
+ * @return {Object.<string,Object>|null} Start and end rectangles
  */
 ve.ce.FocusableNode.prototype.getStartAndEndRects = function () {
 	if ( !this.highlighted ) {

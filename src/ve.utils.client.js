@@ -72,7 +72,7 @@ ve.translateRect = function ( rect, x, y ) {
  * The start rectangle is the top-most, and the end rectangle is the bottom-most.
  *
  * @param {Object[]|null} rects Full list of rectangles
- * @return {Object|null} Object containing two rectangles: start and end, or null if there are no rectangles
+ * @return {Object.<string,Object>|null} Object containing two rectangles: start and end, or null if there are no rectangles
  */
 ve.getStartAndEndRects = function ( rects ) {
 	if ( !rects || !rects.length ) {

@@ -69,7 +69,7 @@ ve.ce.Selection.prototype.getSelectionRects = null;
  * Get the start and end rectangles of the selection relative to the surface.
  *
  * @abstract
- * @return {Object|null} Start and end selection rectangles
+ * @return {Object.<string,Object>|null} Start and end selection rectangles
  */
 ve.ce.Selection.prototype.getSelectionStartAndEndRects = function () {
 	return ve.getStartAndEndRects( this.getSelectionRects() );
@@ -78,9 +78,9 @@ ve.ce.Selection.prototype.getSelectionStartAndEndRects = function () {
 /**
  * Get the rectangle for the selection's focus end
  *
- * The default gives the bounding rectanagle after using collapseToTo.
+ * The default gives the bounding rectangle after using collapseToTo.
  *
- * @return {Object[]|null} Selection rectangle
+ * @return {Object|null} Selection rectangle
  */
 ve.ce.Selection.prototype.getSelectionFocusRect = function () {
 	var toSelection = new this.constructor( this.getModel().collapseToTo(), this.surface );

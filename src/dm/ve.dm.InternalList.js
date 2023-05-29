@@ -134,7 +134,7 @@ ve.dm.InternalList.prototype.getItemNode = function ( index ) {
 /**
  * Get all node groups.
  *
- * @return {Object} Node groups, keyed by group name
+ * @return {Object.<string,Object>} Node groups, keyed by group name
  */
 ve.dm.InternalList.prototype.getNodeGroups = function () {
 	return this.nodes;
@@ -144,7 +144,7 @@ ve.dm.InternalList.prototype.getNodeGroups = function () {
  * Get the node group object for a specified group name.
  *
  * @param {string} groupName Name of the group
- * @return {Object} Node group object, containing nodes and key order array
+ * @return {Object|undefined} Node group object, containing nodes and key order array
  */
 ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
 	return this.nodes[ groupName ];
