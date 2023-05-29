@@ -53,3 +53,19 @@ ve.ui.WindowManager.prototype.getDir = function () {
 ve.ui.WindowManager.prototype.getOverlay = function () {
 	return this.overlay;
 };
+
+ve.ui.WindowManager.prototype.toggleIsolation = function () {
+	// Parent method
+	ve.ui.WindowManager.super.prototype.toggleIsolation.apply( this, arguments );
+
+	// Patch apply https://gerrit.wikimedia.org/r/c/oojs/ui/+/923654
+	if ( this.isolated ) {
+		var $el = this.$element;
+		while ( !$el.is( 'body' ) && $el.length ) {
+			$el
+				.removeAttr( 'aria-hidden' )
+				.removeAttr( 'inert' );
+			$el = $el.parent();
+		}
+	}
+};
