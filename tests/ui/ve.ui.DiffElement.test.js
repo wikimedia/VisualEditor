@@ -969,13 +969,28 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
-				msg: 'List item move and change',
+				msg: 'List item move and change (first item)',
 				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz baz</li><li>quux</li></ol>',
 				newDoc: '<ol><li>baz bat</li><li>foo</li><li>bar</li><li>quux</li></ol>',
 				expected:
 					'<ol>' +
 						'<li value="1"><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
 						'<li value="2" data-diff-list-none><p data-diff-action="none">foo</p></li>' +
+						listSpacer +
+					'</ol>',
+				expectedDescriptions: [
+					'<div>visualeditor-diff-moved-up</div>'
+				]
+			},
+			{
+				msg: 'List item move and change (middle item)',
+				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz baz</li><li>quux</li></ol>',
+				newDoc: '<ol><li>foo</li><li>baz bat</li><li>bar</li><li>quux</li></ol>',
+				expected:
+					'<ol>' +
+						'<li value="1" data-diff-list-none><p data-diff-action="none">foo</p></li>' +
+						'<li value="2"><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>' +
+						'<li value="3" data-diff-list-none><p data-diff-action="none">bar</p></li>' +
 						listSpacer +
 					'</ol>',
 				expectedDescriptions: [
