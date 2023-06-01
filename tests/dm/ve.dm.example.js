@@ -1042,8 +1042,14 @@ ve.dm.example.mergedCells = [
 	{ type: '/internalList' }
 ];
 
-ve.dm.example.complexTableHtml = '<table><caption>Foo</caption><thead><tr><th rowspan="">Bar</th></tr></thead>' +
-	'<tfoot><tr><td colspan="2">Baz</td></tr></tfoot><tbody><tr><td rowspan="02">Quux</td><td colspan="2 garbage">Whee</td></tr></tbody></table>';
+ve.dm.example.complexTableHtml = ve.dm.example.singleLine`
+	<table>
+		<caption>Foo</caption>
+		<thead><tr><th rowspan="">Bar</th></tr></thead>
+		<tfoot><tr><td colspan="2">Baz</td></tr></tfoot>
+		<tbody><tr><td rowspan="02">Quux</td><td colspan="2 garbage">Whee</td></tr></tbody>
+	</table>
+`;
 
 ve.dm.example.complexTable = [
 	{ type: 'table' },
