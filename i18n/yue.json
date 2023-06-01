@@ -9,7 +9,8 @@
 			"Moon0319",
 			"Shinjiman",
 			"William915",
-			"Yueman"
+			"Yueman",
+			"捍粵者"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -64,8 +65,8 @@
 	"visualeditor-find-and-replace-find-text": "搵嘢",
 	"visualeditor-find-and-replace-invalid-regex": "無效正則表達式",
 	"visualeditor-find-and-replace-match-case": "分大小寫",
-	"visualeditor-find-and-replace-next-button": "搵下一個",
-	"visualeditor-find-and-replace-previous-button": "搵上一個",
+	"visualeditor-find-and-replace-next-button": "搵下筆",
+	"visualeditor-find-and-replace-previous-button": "搵上筆",
 	"visualeditor-find-and-replace-regular-expression": "正則表達式",
 	"visualeditor-find-and-replace-replace-all-button": "換嗮",
 	"visualeditor-find-and-replace-replace-button": "換",
