@@ -24,10 +24,15 @@ QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) 
 		},
 		{
 			msg: 'About grouped aliens produce one pair of snowmen',
-			html: '<p>Foo ' +
-				'<span about="g1" rel="ve:Alien">Alien</span>' +
-				'<span about="g1" rel="ve:Alien">Aliens</span>' +
-				'<span about="g1" rel="ve:Alien">Alien³</span> bar</p>',
+			html: ve.dm.example.singleLine`
+				<p>
+					Foo
+					 <span about="g1" rel="ve:Alien">Alien</span>
+					<span about="g1" rel="ve:Alien">Aliens</span>
+					<span about="g1" rel="ve:Alien">Alien³</span>
+					 bar
+				</p>
+			`,
 			hash: '<DIV><P>#<SPAN>#</SPAN><SPAN>#</SPAN><SPAN>#</SPAN>#</P></DIV>',
 			text: 'Foo ☃☃ bar'
 		},
@@ -445,7 +450,7 @@ QUnit.test( 'isAfterAnnotationBoundary', function ( assert ) {
 		assert.strictEqual(
 			ve.ce.isAfterAnnotationBoundary( node, caseItem.offset ),
 			caseItem.expected,
-			'node=' + caseItem.path.join( ',' ) + ' offset=' + caseItem.offset
+			`node=${caseItem.path.join( ',' )} offset=${caseItem.offset}`
 		);
 	} );
 } );

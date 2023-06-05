@@ -23,12 +23,14 @@ QUnit.test( 'updateSizeLabel', function ( assert ) {
 	resizableNode.$sizeLabel.css( { top: '', left: '' } );
 	assert.equalDomElement(
 		resizableNode.$sizeLabel[ 0 ],
-		$( '<div class="ve-ce-resizableNode-sizeLabel ve-ce-resizableNode-sizeLabel-resizing" style="width: 100px; height: 30px; line-height: 30px;">' +
-			'<span class="ve-ce-resizableNode-sizeText">' +
-				'<span class="ve-ce-resizableNode-sizeText-size">100 × 50</span>' +
-				'<span class="ve-ce-resizableNode-sizeText-scale">100%</span>' +
-			'</span>' +
-		'</div>' )[ 0 ],
+		$( ve.dm.example.singleLine`
+			<div class="ve-ce-resizableNode-sizeLabel ve-ce-resizableNode-sizeLabel-resizing" style="width: 100px; height: 30px; line-height: 30px;">
+				<span class="ve-ce-resizableNode-sizeText">
+					<span class="ve-ce-resizableNode-sizeText-size">100 × 50</span>
+					<span class="ve-ce-resizableNode-sizeText-scale">100%</span>
+				</span>
+			</div>
+		` )[ 0 ],
 		'Size label'
 	);
 

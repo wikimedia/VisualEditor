@@ -9,13 +9,17 @@ QUnit.module( 've.ce.TableNode' );
 /* Tests */
 
 QUnit.test( 'getNearestCellNode', function ( assert ) {
-	var view = ve.test.utils.createSurfaceViewFromHtml(
-			'<table>' +
-				'<tr><td>Foo' +
-					'<table><tr><td>Bar</td></tr></table>' +
-				'</td><td>Baz</td></tr>' +
-			'</table>'
-		),
+	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.singleLine`
+			<table>
+				<tr>
+					<td>
+						Foo
+						<table><tr><td>Bar</td></tr></table>
+					</td>
+					<td>Baz</td>
+				</tr>
+			</table>'
+		` ),
 		documentNode = view.getDocument().getDocumentNode(),
 		tableNode = documentNode.children[ 0 ],
 		$tableNode = tableNode.$element,
@@ -44,12 +48,12 @@ QUnit.test( 'getNearestCellNode', function ( assert ) {
 } );
 
 QUnit.test( 'getFirstSectionNode', function ( assert ) {
-	var view = ve.test.utils.createSurfaceViewFromHtml(
-			'<table>' +
-				'<caption>Caption</caption>' +
-				'<tr><td>Foo</td></tr>' +
-			'</table>'
-		),
+	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.singleLine`
+			<table>
+				<caption>Caption</caption>
+				<tr><td>Foo</td></tr>
+			</table>
+		` ),
 		documentNode = view.getDocument().getDocumentNode(),
 		tableNode = documentNode.children[ 0 ],
 		result = tableNode.getFirstSectionNode();

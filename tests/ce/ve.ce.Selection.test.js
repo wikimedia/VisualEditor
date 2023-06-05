@@ -7,14 +7,15 @@
 QUnit.module( 've.ce.Selection' );
 
 QUnit.test( 'Rects', function ( assert ) {
-	var html =
-			'<div rel="ve:Alien" style="width: 300px; height: 200px;">foo</div>' +
-			'<div rel="ve:Alien" style="position: relative;">' +
-				'<div style="position: absolute; width: 400px; height: 100px;">foo</div>' +
-				'<div style="position: absolute; width: 150px; height: 500px;">bar</div>' +
-			'</div>' +
-			'<p></p>' +
-			'<table><tr><td style="width: 200px; height: 50px; border: 0; padding: 0; line-height: 0;"></td></tr></table>',
+	var html = ve.dm.example.singleLine`
+			<div rel="ve:Alien" style="width: 300px; height: 200px;">foo</div>
+			<div rel="ve:Alien" style="position: relative;">
+				<div style="position: absolute; width: 400px; height: 100px;">foo</div>
+				<div style="position: absolute; width: 150px; height: 500px;">bar</div>
+			</div>
+			<p></p>
+			<table><tr><td style="width: 200px; height: 50px; border: 0; padding: 0; line-height: 0;"></td></tr></table>
+		`,
 		view = ve.test.utils.createSurfaceViewFromHtml( html ),
 		slugHeight = view.getDocument().getDocumentNode().children[ 2 ].$element[ 0 ].childNodes[ 0 ].offsetHeight,
 		model = view.getModel(),
@@ -102,10 +103,11 @@ QUnit.test( 'Rects', function ( assert ) {
 } );
 
 QUnit.test( 'getDirectionality', function ( assert ) {
-	var html =
-			'<p>Foo</p>' +
-			'<p style="direction: rtl;">Bar</p>' +
-			'<table style="direction: rtl;"><tr><td>Baz</td></tr></table>',
+	var html = ve.dm.example.singleLine`
+			<p>Foo</p>
+			<p style="direction: rtl;">Bar</p>
+			<table style="direction: rtl;"><tr><td>Baz</td></tr></table>
+		`,
 		view = ve.test.utils.createSurfaceViewFromHtml( html ),
 		model = view.getModel(),
 		cases = [

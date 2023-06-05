@@ -670,13 +670,12 @@ QUnit.test( 'onCopy', function ( assert ) {
 			expectedData: ve.dm.example.RDFaDoc.data.data.slice(),
 			expectedOriginalRange: new ve.Range( 0, 5 ),
 			expectedBalancedRange: new ve.Range( 0, 5 ),
-			expectedHtml:
-				'<p content="b" datatype="c" resource="f" rev="g" class="i" ' +
-					'data-ve-attributes="{&quot;rev&quot;:&quot;g&quot;,' +
-					'&quot;resource&quot;:&quot;f&quot;,' +
-					'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;}">' +
-					'Foo' +
-				'</p>',
+			expectedHtml: ve.dm.example.singleLine`
+				<p content="b" datatype="c" resource="f" rev="g" class="i"
+				 data-ve-attributes='{"rev":"g","resource":"f","datatype":"c","content":"b"}'>
+					Foo
+				</p>
+			`,
 			expectedText: 'Foo',
 			msg: 'RDFa attributes encoded into data-ve-attributes'
 		},
@@ -1260,13 +1259,12 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 0 ),
-				pasteHtml:
-					'<figure class="notIgnored" rev="ignored" ' +
-						'data-ve-attributes="{&quot;rev&quot;:&quot;g&quot;,' +
-						'&quot;resource&quot;:&quot;f&quot;,' +
-						'&quot;datatype&quot;:&quot;c&quot;,&quot;content&quot;:&quot;b&quot;,&quot;about&quot;:&quot;a&quot;}">' +
-						'<img>' +
-					'</figure>',
+				pasteHtml: ve.dm.example.singleLine`
+					<figure class="notIgnored" rev="ignored"
+					 data-ve-attributes='{"rev":"g","resource":"f","datatype":"c","content":"b","about":"a"}'>
+						<img>
+					</figure>
+				`,
 				fromVe: true,
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				expectedOps: [
@@ -1301,8 +1299,10 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 1 ),
 				documentHtml: '<p></p>',
-				pasteHtml: '<span data-ve-attributes="{{invalid">foo</span>' +
-					'<span data-ve-attributes="{&quot;about&quot;:&quot;quux&quot;}">bar</span>',
+				pasteHtml: ve.dm.example.singleLine`
+					<span data-ve-attributes='{{invalid'>foo</span>
+					<span data-ve-attributes='{"about":"quux"}'>bar</span>
+				`,
 				fromVe: true,
 				expectedHtml: '<p><span>foo</span><span about="quux">bar</span></p>',
 				expectedRangeOrSelection: new ve.Range( 7 ),
@@ -1312,10 +1312,11 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			{
 				rangeOrSelection: new ve.Range( 1 ),
 				documentHtml: '<p></p>',
-				pasteHtml:
-					'<span class="ve-pasteProtect" id="meaningful">F</span>' +
-					'<span class="ve-pasteProtect" style="color: red;">o</span>' +
-					'<span class="ve-pasteProtect meaningful">o</span>',
+				pasteHtml: ve.dm.example.singleLine`
+					<span class="ve-pasteProtect" id="meaningful">F</span>
+					<span class="ve-pasteProtect" style="color: red;">o</span>
+					<span class="ve-pasteProtect meaningful">o</span>
+				`,
 				fromVe: true,
 				expectedRangeOrSelection: new ve.Range( 4 ),
 				expectedOps: [
@@ -1333,12 +1334,13 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 						{ type: 'retain', length: 3 }
 					]
 				],
-				expectedHtml:
-					'<p>' +
-						'<span id="meaningful">F</span>' +
-						'o' +
-						'<span class="meaningful">o</span>' +
-					'</p>',
+				expectedHtml: ve.dm.example.singleLine`
+					<p>
+					<span id="meaningful">F</span>
+					o
+					<span class="meaningful">o</span>
+					</p>
+				`,
 				testOriginalDomElements: true,
 				msg: 'Span cleanups: only meaningful attributes kept'
 			},
@@ -1387,17 +1389,18 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 			},
 			{
 				rangeOrSelection: new ve.Range( 1 ),
-				pasteHtml:
-					'<span style="font-weight:700;">A</span>' +
-					'<span style="font-weight:900;">2</span>' +
-					'<span style="font-weight:bold;">3</span>' +
-					'<span style="font-style:italic;">B</span>' +
-					'<span style="text-decoration:underline">C</span>' +
-					'<span style="text-decoration:line-through;">D</span>' +
-					'<span style="vertical-align:super;">E</span>' +
-					'<span style="vertical-align:sub;">F</span>' +
-					'<span style="font-weight:700; font-style:italic;">G</span>' +
-					'<span style="color:red;">H</span>',
+				pasteHtml: ve.dm.example.singleLine`
+					<span style="font-weight:700;">A</span>
+					<span style="font-weight:900;">2</span>
+					<span style="font-weight:bold;">3</span>
+					<span style="font-style:italic;">B</span>
+					<span style="text-decoration:underline">C</span>
+					<span style="text-decoration:line-through;">D</span>
+					<span style="vertical-align:super;">E</span>
+					<span style="vertical-align:sub;">F</span>
+					<span style="font-weight:700; font-style:italic;">G</span>
+					<span style="color:red;">H</span>
+				`,
 				fromVe: true,
 				expectedOps: [
 					[
@@ -2372,16 +2375,18 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 	var cases = [
 		{
 			msg: 'Grouped aliens',
-			html: '<p>' +
-				'Foo' +
-				'<span rel="ve:Alien" about="g1">Bar</span>' +
-				'<span rel="ve:Alien" about="g1">Baz</span>' +
-				'<span rel="ve:Alien" about="g1">Quux</span>' +
-				'Whee' +
-			'</p>' +
-			'<p>' +
-				'2<b>n</b>d' +
-			'</p>',
+			html: ve.dm.example.singleLine`
+				<p>
+					Foo
+					<span rel="ve:Alien" about="g1">Bar</span>
+					<span rel="ve:Alien" about="g1">Baz</span>
+					<span rel="ve:Alien" about="g1">Quux</span>
+					Whee
+				</p>
+				<p>
+					2<b>n</b>d
+				</p>
+			`,
 			// The offset path of the result of getNodeAndOffset for
 			// each offset
 			expected: [
@@ -2462,7 +2467,7 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 					assert.deepEqual(
 						ve.getOffsetPath( rootElement, selection.anchorNode, selection.anchorOffset ),
 						caseItem.expected[ i ],
-						'Path at ' + i + ' in ' + caseItem.msg
+						`Path at ${i} in ${caseItem.msg}`
 					);
 				}
 				// Check that this doesn't throw exceptions
