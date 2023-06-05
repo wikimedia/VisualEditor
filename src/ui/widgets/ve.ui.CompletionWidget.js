@@ -74,15 +74,14 @@ OO.inheritClass( ve.ui.CompletionWidget, OO.ui.Widget );
  * Setup the completion widget
  *
  * @param {ve.ui.Action} action Action which opened the widget
- * @param {number} [sequenceLength] Override the default length of the sequence if provided
  */
-ve.ui.CompletionWidget.prototype.setup = function ( action, sequenceLength ) {
+ve.ui.CompletionWidget.prototype.setup = function ( action ) {
 	var range = this.surfaceModel.getSelection().getRange();
 	if ( !range.isCollapsed() ) {
 		return;
 	}
 	this.action = action;
-	this.sequenceLength = sequenceLength === undefined ? this.action.constructor.static.sequenceLength : 0;
+	this.sequenceLength = this.action.getSequenceLength();
 	this.initialOffset = range.end - this.sequenceLength;
 
 	this.update();

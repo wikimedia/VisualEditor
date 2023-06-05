@@ -41,7 +41,7 @@ ve.ui.CompletionAction.static.defaultLimit = 8;
  * Length of the sequence which triggers the action
  *
  * This many characters will be stripped from the start of the current input by
- * CompletionWidget.
+ * CompletionWidget when triggered by a sequence, see #getSequenceLength.
  *
  * @static
  * @property {number}
@@ -63,11 +63,10 @@ ve.ui.CompletionAction.static.methods = [ 'open' ];
 /**
  * Show the completions
  *
- * @param {number} [sequenceLength] Override the default length of the sequence if provided
  * @return {boolean} Action was executed
  */
-ve.ui.CompletionAction.prototype.open = function ( sequenceLength ) {
-	this.surface.completion.setup( this, sequenceLength );
+ve.ui.CompletionAction.prototype.open = function () {
+	this.surface.completion.setup( this );
 
 	return true;
 };
@@ -134,6 +133,15 @@ ve.ui.CompletionAction.prototype.shouldAbandon = function ( input, matches ) {
 	// or if whitespace has been the sole input
 	return /^\s+$/.test( input ) ||
 		( matches === 0 && /\s$/.test( input ) );
+};
+
+/**
+ * Get the length of the sequence which triggered this action
+ *
+ * @return {number} Length of the sequence
+ */
+ve.ui.CompletionAction.prototype.getSequenceLength = function () {
+	return this.source === 'sequence' ? this.constructor.static.sequenceLength : 0;
 };
 
 // helpers
