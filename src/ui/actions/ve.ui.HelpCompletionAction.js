@@ -26,6 +26,8 @@ ve.ui.HelpCompletionAction = function ( surface ) {
 	this.toolNames = Object.keys( this.tools ).filter( function ( toolName ) {
 		var tool = action.tools[ toolName ];
 		return tool &&
+			// No point in going in circles
+			!( tool instanceof ve.ui.HelpCompletionTool ) &&
 			// Ignore tool groups
 			!( tool instanceof OO.ui.ToolGroupTool ) &&
 			!( tool instanceof OO.ui.PopupTool ) &&

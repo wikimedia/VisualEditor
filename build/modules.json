@@ -677,6 +677,7 @@
 			"src/ui/tools/ve.ui.CommentInspectorTool.js",
 			"src/ui/tools/ve.ui.ToolbarDialogTool.js",
 			"src/ui/tools/ve.ui.FormatTool.js",
+			"src/ui/tools/ve.ui.HelpCompletionTool.js",
 			"src/ui/tools/ve.ui.HistoryTool.js",
 			"src/ui/tools/ve.ui.IndentationTool.js",
 			"src/ui/tools/ve.ui.LanguageInspectorTool.js",

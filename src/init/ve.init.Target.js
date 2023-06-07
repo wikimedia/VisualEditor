@@ -165,7 +165,7 @@ ve.init.Target.static.toolbarGroups = [
 		title: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
 		label: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
 		invisibleLabel: true,
-		include: [ 'findAndReplace', 'changeDirectionality', 'commandHelp' ]
+		include: [ 'findAndReplace', 'changeDirectionality', 'commandHelp', 'openHelpCompletionsTrigger' ]
 	}
 ];
 
