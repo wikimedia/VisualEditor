@@ -19,11 +19,10 @@
 		name: 'commentAnnotation',
 		include: [ 'commentAnnotation' ]
 	} );
-
-	RebaserTarget.static.actionGroups = ve.copy( RebaserTarget.static.actionGroups );
-	RebaserTarget.static.actionGroups.push(
+	RebaserTarget.static.toolbarGroups.push(
 		{
 			name: 'authorList',
+			align: 'after',
 			include: [ 'authorList' ]
 		}
 	);

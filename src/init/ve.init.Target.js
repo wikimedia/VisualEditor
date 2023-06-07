@@ -100,6 +100,13 @@ OO.mixinClass( ve.init.Target, OO.EventEmitter );
  */
 ve.init.Target.static.modes = [ 'visual' ];
 
+/**
+ * Toolbar definition, passed to ve.ui.Toolbar#setup
+ *
+ * @static
+ * @property {Array}
+ * @inheritable
+ */
 ve.init.Target.static.toolbarGroups = [
 	{
 		name: 'history',
@@ -162,6 +169,14 @@ ve.init.Target.static.toolbarGroups = [
 	}
 ];
 
+/**
+ * Toolbar definition for the actions side of the toolbar
+ *
+ * @deprecated Use align:'after' in the regular toolbarGroups instead.
+ * @static
+ * @property {Array}
+ * @inheritable
+ */
 ve.init.Target.static.actionGroups = [];
 
 /**
