@@ -931,3 +931,67 @@ QUnit.test( 'deepFreeze (recursive, aliased)', function ( assert ) {
 		ve.deepFreeze = realFreeze;
 	}
 } );
+
+QUnit.test( 've.minimizeRects', function ( assert ) {
+	var cases = [
+		{
+			rects: [
+				// left, top, width, height
+				[ 0, 0, 100, 100 ],
+				// Identical square removed
+				[ 0, 0, 100, 100 ],
+
+				[ 200, 0, 100, 100 ],
+				// Contained in previous rect
+				[ 210, 10, 90, 90 ],
+
+				// Contained in next rect
+				[ 410, 0, 90, 90 ],
+				[ 400, 0, 100, 100 ],
+
+				// Horizontally adjacent
+				[ 0, 200, 100, 100 ],
+				[ 100, 200, 100, 100 ],
+				[ 200, 200, 100, 100 ],
+
+				// Vertically adjacent
+				[ 0, 400, 100, 100 ],
+				[ 0, 500, 100, 100 ],
+				[ 0, 600, 100, 100 ]
+			],
+			expected: [
+				// Identical square removed
+				[ 0, 0, 100, 100 ],
+				// Contained in previous rect
+				[ 200, 0, 100, 100 ],
+				// Contained in next rect
+				[ 400, 0, 100, 100 ],
+				// Horizontally adjacent
+				[ 0, 200, 300, 100 ],
+				// Vertically adjacent
+				[ 0, 400, 100, 300 ]
+			]
+		}
+	];
+
+	function expand( rect ) {
+		return {
+			left: rect[ 0 ],
+			top: rect[ 1 ],
+			width: rect[ 2 ],
+			height: rect[ 3 ],
+			right: rect[ 0 ] + rect[ 2 ],
+			bottom: rect[ 1 ] + rect[ 3 ]
+		};
+	}
+
+	cases.forEach( function ( caseItem ) {
+		caseItem.rects = caseItem.rects.map( expand );
+		caseItem.expected = caseItem.expected.map( expand );
+
+		var rectsBefore = ve.copy( caseItem.rects );
+		var actual = ve.minimizeRects( caseItem.rects );
+		assert.deepEqual( caseItem.rects, rectsBefore, 'Input not modified' );
+		assert.deepEqual( actual, caseItem.expected, 'List minifed' );
+	} );
+} );

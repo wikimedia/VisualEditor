@@ -106,6 +106,80 @@ ve.getStartAndEndRects = function ( rects ) {
 };
 
 /**
+ * Minimize a set of rectangles by discarding ones which are contained by others
+ *
+ * @param {Object[]} rects Full list of rectangles
+ * @return {Object[]} Minimized list of rectangles
+ */
+ve.minimizeRects = function ( rects ) {
+	// Check if rect1 contains rect2
+	function contains( rect1, rect2 ) {
+		return rect2.left >= rect1.left &&
+			rect2.top >= rect1.top &&
+			rect2.right <= rect1.right &&
+			rect2.bottom <= rect1.bottom;
+	}
+
+	function merge( rect1, rect2 ) {
+		var rect = {
+			top: Math.min( rect1.top, rect2.top ),
+			left: Math.min( rect1.left, rect2.left ),
+			bottom: Math.max( rect1.bottom, rect2.bottom ),
+			right: Math.max( rect1.right, rect2.right )
+		};
+		rect.width = rect.right - rect.left;
+		rect.height = rect.bottom - rect.top;
+		return rect;
+	}
+
+	var minimalRects = [];
+	rects.forEach( function ( rect ) {
+		var keep = true;
+		for ( var i = 0, il = minimalRects.length; i < il; i++ ) {
+			// This rect is contained by an existing rect, discard
+			if ( contains( minimalRects[ i ], rect ) ) {
+				keep = false;
+				break;
+			}
+			// An existing rect is contained by this rect, discard the existing rect
+			if ( contains( rect, minimalRects[ i ] ) ) {
+				minimalRects.splice( i, 1 );
+				i--;
+				il--;
+				break;
+			}
+			// Rect is horizontally adjacent to an existing rect, merge
+			if (
+				rect.top === minimalRects[ i ].top && rect.bottom === minimalRects[ i ].bottom && (
+					rect.left === minimalRects[ i ].right || rect.right === minimalRects[ i ].left
+				)
+			) {
+				keep = false;
+				minimalRects[ i ] = merge( minimalRects[ i ], rect );
+				break;
+			}
+			// Rect is verticall adjacent to an existing rect, merge
+			if (
+				rect.left === minimalRects[ i ].left && rect.right === minimalRects[ i ].right && (
+					rect.top === minimalRects[ i ].bottom || rect.bottom === minimalRects[ i ].top
+				)
+			) {
+				keep = false;
+				minimalRects[ i ] = merge( minimalRects[ i ], rect );
+				break;
+			}
+			// TODO: Consider case where a rect bridges two existing minimalRects, and so requires two
+			// merges in one step. As rects are usually returned in order, this is unlikely to happen.
+		}
+		if ( keep ) {
+			minimalRects.push( rect );
+		}
+	} );
+
+	return minimalRects;
+};
+
+/**
  * Get the client platform string from the browser.
  *
  * FIXME T126036: This is a wrapper for calling getSystemPlatform() on the current

@@ -878,6 +878,7 @@ ve.ce.Surface.prototype.drawSelections = function ( name, selections, options ) 
 			if ( !rects ) {
 				return;
 			}
+			rects = ve.minimizeRects( rects );
 			$selection = $( '<div>' ).addClass( 've-ce-surface-selection' );
 			rects.forEach( function ( rect ) {
 				var $rect = $( '<div>' ).css( {
