@@ -151,18 +151,20 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				htmlOrDoc: blockAliensEmptyParagraph,
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: noChange,
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+				},
 				expectedRangeOrSelection: new ve.Range( 0, 2 ),
-				// TODO: Delete the empty paragraph instead
-				msg: 'Block focusable node selected but not deleted by backspace from empty paragraph'
+				msg: 'Block focusable node selected and empty paragraph deleted'
 			},
 			{
 				htmlOrDoc: blockAliensEmptyParagraph,
 				rangeOrSelection: new ve.Range( 3 ),
 				keys: [ 'DELETE' ],
-				expectedData: noChange,
-				expectedRangeOrSelection: new ve.Range( 4, 6 ),
-				// TODO: Delete the empty paragraph instead
+				expectedData: function ( data ) {
+					data.splice( 2, 2 );
+				},
+				expectedRangeOrSelection: new ve.Range( 2, 4 ),
 				msg: 'Block focusable node selected but not deleted by delete from empty paragraph'
 			},
 			{
@@ -193,24 +195,27 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				htmlOrDoc: tablesEmptyParagraph,
 				rangeOrSelection: new ve.Range( 12 ),
 				keys: [ 'BACKSPACE' ],
-				expectedData: noChange,
+				expectedData: function ( data ) {
+					data.splice( 11, 2 );
+				},
 				expectedRangeOrSelection: {
 					type: 'table',
 					tableRange: new ve.Range( 0, 11 ),
 					fromCol: 0,
 					fromRow: 0
 				},
-				// TODO: Delete the empty paragraph instead
 				msg: 'Table selected but not deleted by backspace from empty paragraph'
 			},
 			{
 				htmlOrDoc: tablesEmptyParagraph,
 				rangeOrSelection: new ve.Range( 12 ),
 				keys: [ 'DELETE' ],
-				expectedData: noChange,
+				expectedData: function ( data ) {
+					data.splice( 11, 2 );
+				},
 				expectedRangeOrSelection: {
 					type: 'table',
-					tableRange: new ve.Range( 13, 24 ),
+					tableRange: new ve.Range( 11, 22 ),
 					fromCol: 0,
 					fromRow: 0
 				},

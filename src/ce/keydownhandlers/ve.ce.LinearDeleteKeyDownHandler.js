@@ -197,6 +197,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 
 	// Else range is uncollapsed or is adjacent to a non-nail element.
 	if ( rangeToRemove.isCollapsed() ) {
+		var originalRange = new ve.Range( rangeToRemove.from, rangeToRemove.to );
 		// Expand rangeToRemove
 		rangeToRemove = documentModel.getRelativeRange( rangeToRemove, direction, unit, true );
 		if ( surface.getActiveNode() && !surface.getActiveNode().getRange().containsRange( rangeToRemove ) ) {
@@ -228,7 +229,14 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 				adjacentBlockSelection = new ve.dm.LinearSelection( node.getOuterRange() );
 			}
 			if ( adjacentBlockSelection ) {
-				surface.getModel().setSelection( adjacentBlockSelection );
+				// Create a fragment from the selection as we might delete first
+				var adjacentFragment = surface.getModel().getFragment( adjacentBlockSelection, true );
+				var currentNode = documentModel.getDocumentNode().getNodeFromOffset( originalRange.start );
+				if ( currentNode.canContainContent() && !currentNode.getLength() ) {
+					// If starting in an empty CBN, delete the CBN instead (T338622)
+					surface.getModel().getLinearFragment( currentNode.getOuterRange(), true ).delete( direction );
+				}
+				adjacentFragment.select();
 				e.preventDefault();
 				return true;
 			}
