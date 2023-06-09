@@ -204,45 +204,36 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			return true;
 		}
 
-		// Prevent backspacing/deleting over table cells, select the cell instead
 		var documentModelSelectedNodes = documentModel.selectNodes( rangeToRemove, 'siblings' );
 		for ( var i = 0; i < documentModelSelectedNodes.length; i++ ) {
 			var node = documentModelSelectedNodes[ i ].node;
 			var nodeOuterRange = documentModelSelectedNodes[ i ].nodeOuterRange;
+			var adjacentBlockSelection = null;
 			if ( node instanceof ve.dm.TableNode ) {
+				// Prevent backspacing/deleting over table cells
 				if ( rangeToRemove.containsOffset( nodeOuterRange.start ) ) {
-					surface.getModel().setSelection( new ve.dm.TableSelection(
+					adjacentBlockSelection = new ve.dm.TableSelection(
 						nodeOuterRange, 0, 0
-					) );
+					);
 				} else {
 					var matrix = node.getMatrix();
 					var row = matrix.getRowCount() - 1;
 					var col = matrix.getColCount( row ) - 1;
-					surface.getModel().setSelection( new ve.dm.TableSelection(
+					adjacentBlockSelection = new ve.dm.TableSelection(
 						nodeOuterRange, col, row
-					) );
+					);
 				}
+			} else if ( node.isFocusable() ) {
+				// Prevent backspacing/deleting over focusable nodes
+				adjacentBlockSelection = new ve.dm.LinearSelection( node.getOuterRange() );
+			}
+			if ( adjacentBlockSelection ) {
+				surface.getModel().setSelection( adjacentBlockSelection );
 				e.preventDefault();
 				return true;
 			}
 		}
 
-		offset = rangeToRemove.start;
-		var docLength = documentModel.getDocumentRange().getLength();
-		var startNode;
-		if ( offset < docLength - 1 ) {
-			while ( offset < docLength - 1 && data.isCloseElementData( offset ) ) {
-				offset++;
-			}
-			// If the user tries to delete a focusable node from a collapsed selection,
-			// just select the node and cancel the deletion.
-			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset + 1 );
-			if ( startNode.isFocusable() ) {
-				surface.getModel().setLinearSelection( startNode.getOuterRange() );
-				e.preventDefault();
-				return true;
-			}
-		}
 		if ( rangeToRemove.isCollapsed() ) {
 			// For some reason (most likely: we're at the beginning or end of the document) we can't
 			// expand the range. So, should we delete something or not?
@@ -250,7 +241,14 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			// * if we're literally at the start or end, and are in a content node, don't do anything
 			// * if we're in a plain paragraph, don't do anything
 			// * if we're in a list item and it's empty get rid of the item
-			startNode = documentModel.getDocumentNode().getNodeFromOffset( offset - 1 );
+			offset = rangeToRemove.start;
+			var docLength = documentModel.getDocumentRange().getLength();
+			if ( offset < docLength - 1 ) {
+				while ( offset < docLength - 1 && data.isCloseElementData( offset ) ) {
+					offset++;
+				}
+			}
+			var startNode = documentModel.getDocumentNode().getNodeFromOffset( offset - 1 );
 			var nodeRange = startNode.getOuterRange();
 			if (
 				// The node is not unwrappable (e.g. table cells, text nodes)
