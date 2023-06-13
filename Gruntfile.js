@@ -217,7 +217,7 @@ module.exports = function ( grunt ) {
 				demoPages: demoPages
 			},
 			desktopDemoWikimediaUIDist: {
-				targetFile: 'demos/ve/desktop-wikimediaui-dist.html',
+				targetFile: 'demos/ve/desktop-dist-wikimediaui.html',
 				template: 'demos/ve/demo.html.template',
 				modules: modules,
 				load: [
