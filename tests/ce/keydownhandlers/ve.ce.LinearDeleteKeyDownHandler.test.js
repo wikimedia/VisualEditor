@@ -18,6 +18,11 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 		promise = Promise.resolve(),
 		noChange = function () {},
 		emptyList = '<ul><li><p></p></li></ul>',
+		blockAlien = '<div rel="ve:Alien"></div>',
+		blockAliens = blockAlien + '<p>a</p>' + blockAlien,
+		blockAliensEmptyParagraph = blockAlien + '<p></p>' + blockAlien,
+		table = '<table><tr><td>a</td></tr></table>',
+		tablesEmptyParagraph = table + '<p></p>' + table,
 		link = '<p>foo <a href="#">bar</a> baz</p>',
 		cases = [
 			{
@@ -98,14 +103,14 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 				keys: [ 'BACKSPACE' ],
 				expectedData: noChange,
 				expectedRangeOrSelection: new ve.Range( 39, 41 ),
-				msg: 'Focusable node selected but not deleted by backspace'
+				msg: 'Inline focusable node selected but not deleted by backspace'
 			},
 			{
 				rangeOrSelection: new ve.Range( 39 ),
 				keys: [ 'DELETE' ],
 				expectedData: noChange,
 				expectedRangeOrSelection: new ve.Range( 39, 41 ),
-				msg: 'Focusable node selected but not deleted by delete'
+				msg: 'Inline focusable node selected but not deleted by delete'
 			},
 			{
 				rangeOrSelection: new ve.Range( 39, 41 ),
@@ -114,7 +119,51 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 					data.splice( 39, 2 );
 				},
 				expectedRangeOrSelection: new ve.Range( 39 ),
-				msg: 'Focusable node deleted if selected first'
+				msg: 'Inline focusable node deleted if selected first'
+			},
+			{
+				htmlOrDoc: blockAliens,
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'BACKSPACE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 0, 2 ),
+				msg: 'Block focusable node selected but not deleted by backspace'
+			},
+			{
+				htmlOrDoc: blockAliens,
+				rangeOrSelection: new ve.Range( 4 ),
+				keys: [ 'DELETE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 5, 7 ),
+				msg: 'Block focusable node selected but not deleted by delete'
+			},
+			{
+				htmlOrDoc: blockAliens,
+				rangeOrSelection: new ve.Range( 0, 2 ),
+				keys: [ 'DELETE' ],
+				expectedData: function ( data ) {
+					data.splice( 0, 2 );
+				},
+				expectedRangeOrSelection: new ve.Range( 1 ),
+				msg: 'Block focusable node deleted if selected first'
+			},
+			{
+				htmlOrDoc: blockAliensEmptyParagraph,
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'BACKSPACE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 0, 2 ),
+				// TODO: Delete the empty paragraph instead
+				msg: 'Block focusable node selected but not deleted by backspace from empty paragraph'
+			},
+			{
+				htmlOrDoc: blockAliensEmptyParagraph,
+				rangeOrSelection: new ve.Range( 3 ),
+				keys: [ 'DELETE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: new ve.Range( 4, 6 ),
+				// TODO: Delete the empty paragraph instead
+				msg: 'Block focusable node selected but not deleted by delete from empty paragraph'
 			},
 			{
 				rangeOrSelection: new ve.Range( 38 ),
@@ -139,6 +188,34 @@ QUnit.test( 'special key down: linear backspace/delete', function ( assert ) {
 					fromRow: 0
 				},
 				msg: 'Table cell selected but not deleted by delete'
+			},
+			{
+				htmlOrDoc: tablesEmptyParagraph,
+				rangeOrSelection: new ve.Range( 12 ),
+				keys: [ 'BACKSPACE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 0, 11 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				// TODO: Delete the empty paragraph instead
+				msg: 'Table selected but not deleted by backspace from empty paragraph'
+			},
+			{
+				htmlOrDoc: tablesEmptyParagraph,
+				rangeOrSelection: new ve.Range( 12 ),
+				keys: [ 'DELETE' ],
+				expectedData: noChange,
+				expectedRangeOrSelection: {
+					type: 'table',
+					tableRange: new ve.Range( 13, 24 ),
+					fromCol: 0,
+					fromRow: 0
+				},
+				// TODO: Delete the empty paragraph instead
+				msg: 'Table selected but not deleted by delete from empty paragraph'
 			},
 			{
 				htmlOrDoc: '<p>a</p>' + emptyList + '<p>b</p>',
