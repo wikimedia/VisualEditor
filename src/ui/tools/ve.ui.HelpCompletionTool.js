@@ -26,7 +26,7 @@ OO.inheritClass( ve.ui.HelpCompletionTool, ve.ui.Tool );
 
 ve.ui.HelpCompletionTool.static.name = 'openHelpCompletionsTrigger';
 
-ve.ui.HelpCompletionTool.static.group = 'insert';
+ve.ui.HelpCompletionTool.static.group = 'help';
 
 ve.ui.HelpCompletionTool.static.icon = 'search';
 
@@ -34,8 +34,6 @@ ve.ui.HelpCompletionTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-toolbar-search-help-label' );
 
 ve.ui.HelpCompletionTool.static.autoAddToCatchall = false;
-
-ve.ui.HelpCompletionTool.static.autoAddToGroup = false;
 
 ve.ui.HelpCompletionTool.static.commandName = 'openHelpCompletionsTrigger';
 

@@ -110,7 +110,7 @@ ve.init.Target.static.modes = [ 'visual' ];
 ve.init.Target.static.toolbarGroups = [
 	{
 		name: 'history',
-		include: [ 'undo', 'redo' ]
+		include: [ { group: 'history' } ]
 	},
 	{
 		name: 'format',
@@ -165,7 +165,7 @@ ve.init.Target.static.toolbarGroups = [
 		title: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
 		label: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
 		invisibleLabel: true,
-		include: [ 'findAndReplace', 'changeDirectionality', 'commandHelp', 'openHelpCompletionsTrigger' ]
+		include: [ { group: 'utility' }, { group: 'help' } ]
 	}
 ];
 

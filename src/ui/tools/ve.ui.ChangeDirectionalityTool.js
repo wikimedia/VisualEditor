@@ -30,6 +30,8 @@ OO.inheritClass( ve.ui.ChangeDirectionalityTool, ve.ui.Tool );
 
 ve.ui.ChangeDirectionalityTool.static.name = 'changeDirectionality';
 
+ve.ui.ChangeDirectionalityTool.static.group = 'utility';
+
 ve.ui.ChangeDirectionalityTool.static.icon = 'textDirRTL';
 
 ve.ui.ChangeDirectionalityTool.static.title =
