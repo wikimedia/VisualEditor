@@ -5,7 +5,8 @@
 			"Obsuser",
 			"Srdjan m",
 			"Upwinxp",
-			"Zoranzoki21"
+			"Zoranzoki21",
+			"Сербијана"
 		]
 	},
 	"visualeditor": "Vizuelni uređivač",
@@ -157,7 +158,7 @@
 	"visualeditor-shortcuts-dialog": "Kontrole prozora",
 	"visualeditor-shortcuts-formatting": "Formatiranje pasusa",
 	"visualeditor-shortcuts-history": "Istorija",
-	"visualeditor-shortcuts-insert": "Umetanje",
+	"visualeditor-shortcuts-insert": "Umetni",
 	"visualeditor-shortcuts-other": "Drugo",
 	"visualeditor-shortcuts-sequence-notice": "Otkucajte",
 	"visualeditor-shortcuts-text-style": "Stil teksta",
@@ -190,7 +191,7 @@
 	"visualeditor-tablecell-tooltip": "Kliknite dva puta da biste uređivali ćeliju",
 	"visualeditor-toolbar-format-tooltip": "Format pasusa",
 	"visualeditor-toolbar-history": "Istorija",
-	"visualeditor-toolbar-insert": "Umetanje",
+	"visualeditor-toolbar-insert": "Umetni",
 	"visualeditor-toolbar-paragraph-format": "Formatiranje",
 	"visualeditor-toolbar-structure": "Struktura",
 	"visualeditor-toolbar-style-tooltip": "Stil teksta",
