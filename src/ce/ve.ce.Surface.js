@@ -530,8 +530,6 @@ ve.ce.Surface.prototype.initialize = function () {
 ve.ce.Surface.prototype.setReadOnly = function ( readOnly ) {
 	this.readOnly = !!readOnly;
 	this.$element.toggleClass( 've-ce-surface-readOnly', this.readOnly );
-	// TODO: Remove this deprecated class name
-	this.$element.toggleClass( 've-ce-surface-enabled', !this.readOnly );
 };
 
 /**
