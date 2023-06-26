@@ -34,6 +34,7 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 	);
 	this.selection = null;
 	this.readOnly = false;
+	this.reviewMode = false;
 	this.surfaceObserver = new ve.ce.SurfaceObserver( this );
 	this.$window = $( this.getElementWindow() );
 	this.$document = $( this.getElementDocument() );
@@ -539,6 +540,37 @@ ve.ce.Surface.prototype.setReadOnly = function ( readOnly ) {
  */
 ve.ce.Surface.prototype.isReadOnly = function () {
 	return this.readOnly;
+};
+
+/**
+ * Set the review mode state of the surface
+ *
+ * In review mode the surface can't be interacted with by the user
+ * (unlike the read-only mode where the user can select text and
+ * inspect nodes).
+ *
+ * Review mode does not restrict changes to the model by other means,
+ * so programmatic changes can still be made from other tools.
+ *
+ * @param {boolean} reviewMode Set surface to review mode
+ * @param {ve.ce.Node[]} highlightNodes Nodes to highlight while in review mode
+ */
+ve.ce.Surface.prototype.setReviewMode = function ( reviewMode, highlightNodes ) {
+	this.reviewMode = !!reviewMode;
+	this.$element.toggleClass( 've-ce-surface-reviewMode', this.reviewMode );
+	this.$element.toggleClass( 've-ce-surface-reviewMode-highlightNodes', this.reviewMode && !!highlightNodes );
+	if ( reviewMode && highlightNodes ) {
+		highlightNodes.forEach( function ( node ) {
+			node.$element
+				.addClass( 've-ce-surface-reviewMode-highlightNode' )
+				.parentsUntil( '.ve-ce-attachedRootNode' )
+				.addClass( 've-ce-surface-reviewMode-highlightNode' );
+
+		} );
+	} else {
+		this.$element.find( '.ve-ce-surface-reviewMode-highlightNode' )
+			.removeClass( 've-ce-surface-reviewMode-highlightNode' );
+	}
 };
 
 /**

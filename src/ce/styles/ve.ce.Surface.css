@@ -42,6 +42,16 @@
 	text-overflow: ellipsis;
 }
 
+/* Review mode */
+
+.ve-ce-surface-reviewMode {
+	pointer-events: none;
+}
+
+.ve-ce-surface-reviewMode-highlightNodes .ve-ce-attachedRootNode > :not( .ve-ce-surface-reviewMode-highlightNode ) {
+	opacity: 0.5;
+}
+
 /* Deactivated selections */
 
 .ve-ce-surface-selections-deactivated {
