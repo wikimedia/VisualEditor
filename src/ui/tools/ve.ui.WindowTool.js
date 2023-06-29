@@ -76,11 +76,10 @@ ve.ui.CommandHelpDialogTool = function VeUiCommandHelpDialogTool() {
 };
 OO.inheritClass( ve.ui.CommandHelpDialogTool, ve.ui.WindowTool );
 ve.ui.CommandHelpDialogTool.static.name = 'commandHelp';
-ve.ui.CommandHelpDialogTool.static.group = 'dialog';
+ve.ui.CommandHelpDialogTool.static.group = 'help';
 ve.ui.CommandHelpDialogTool.static.icon = 'keyboard';
 ve.ui.CommandHelpDialogTool.static.title =
 	OO.ui.deferMsg( 'visualeditor-dialog-command-help-title' );
 ve.ui.CommandHelpDialogTool.static.autoAddToCatchall = false;
-ve.ui.CommandHelpDialogTool.static.autoAddToGroup = false;
 ve.ui.CommandHelpDialogTool.static.commandName = 'commandHelp';
 ve.ui.toolFactory.register( ve.ui.CommandHelpDialogTool );
