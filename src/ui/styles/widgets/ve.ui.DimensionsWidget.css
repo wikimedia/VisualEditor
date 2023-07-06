@@ -10,15 +10,14 @@
 }
 
 .ve-ui-dimensionsWidget .oo-ui-textInputWidget {
-	width: 3.5em;
+	max-width: 4em;
 }
 
 .ve-ui-dimensionsWidget .oo-ui-labelWidget {
-	padding-right: 0.5em;
 	line-height: 2.35em;
 	vertical-align: middle;
 }
 
-.ve-ui-dimensionsWidget .oo-ui-labelWidget:last-child {
-	padding-right: 0;
+.ve-ui-dimensionsWidget .oo-ui-labelWidget:not( :last-child ) {
+	margin-right: 0.5em;
 }
