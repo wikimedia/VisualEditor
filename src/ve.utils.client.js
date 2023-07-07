@@ -109,15 +109,21 @@ ve.getStartAndEndRects = function ( rects ) {
  * Minimize a set of rectangles by discarding ones which are contained by others
  *
  * @param {Object[]} rects Full list of rectangles
+ * @param {number} [allowedErrorOffset=3] Allowed error offset, the pixel error amount
+ *  used in coordinate comparisons.
  * @return {Object[]} Minimized list of rectangles
  */
-ve.minimizeRects = function ( rects ) {
+ve.minimizeRects = function ( rects, allowedErrorOffset ) {
+	if ( allowedErrorOffset === undefined ) {
+		allowedErrorOffset = 3;
+	}
+
 	// Check if rect1 contains rect2
 	function contains( rect1, rect2 ) {
-		return rect2.left >= rect1.left &&
-			rect2.top >= rect1.top &&
-			rect2.right <= rect1.right &&
-			rect2.bottom <= rect1.bottom;
+		return rect2.left >= rect1.left - allowedErrorOffset &&
+			rect2.top >= rect1.top - allowedErrorOffset &&
+			rect2.right <= rect1.right + allowedErrorOffset &&
+			rect2.bottom <= rect1.bottom + allowedErrorOffset;
 	}
 
 	function merge( rect1, rect2 ) {
@@ -130,6 +136,10 @@ ve.minimizeRects = function ( rects ) {
 		rect.width = rect.right - rect.left;
 		rect.height = rect.bottom - rect.top;
 		return rect;
+	}
+
+	function isApprox( a, b ) {
+		return Math.abs( a - b ) < allowedErrorOffset;
 	}
 
 	var minimalRects = [];
@@ -150,18 +160,18 @@ ve.minimizeRects = function ( rects ) {
 			}
 			// Rect is horizontally adjacent to an existing rect, merge
 			if (
-				rect.top === minimalRects[ i ].top && rect.bottom === minimalRects[ i ].bottom && (
-					rect.left === minimalRects[ i ].right || rect.right === minimalRects[ i ].left
+				isApprox( rect.top, minimalRects[ i ].top ) && isApprox( rect.bottom, minimalRects[ i ].bottom ) && (
+					isApprox( rect.left, minimalRects[ i ].right ) || isApprox( rect.right, minimalRects[ i ].left )
 				)
 			) {
 				keep = false;
 				minimalRects[ i ] = merge( minimalRects[ i ], rect );
 				break;
 			}
-			// Rect is verticall adjacent to an existing rect, merge
+			// Rect is vertically adjacent to an existing rect, merge
 			if (
-				rect.left === minimalRects[ i ].left && rect.right === minimalRects[ i ].right && (
-					rect.top === minimalRects[ i ].bottom || rect.bottom === minimalRects[ i ].top
+				isApprox( rect.left, minimalRects[ i ].left ) && isApprox( rect.right, minimalRects[ i ].right ) && (
+					isApprox( rect.top, minimalRects[ i ].bottom ) || isApprox( rect.bottom, minimalRects[ i ].top )
 				)
 			) {
 				keep = false;
