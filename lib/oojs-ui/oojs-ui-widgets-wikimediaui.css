@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.47.0
+ * OOUI v0.47.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-05-18T02:15:45Z
+ * Date: 2023-07-10T16:09:15Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -81,7 +81,10 @@
   top: 3em;
 }
 .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout[hidden] {
+  width: 0;
+  height: 0;
   padding: 0;
+  overflow: hidden;
 }
 .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout {
   padding: 20px;

@@ -1,12 +1,12 @@
 /*!
- * OOUI v0.47.0
+ * OOUI v0.47.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-05-18T02:15:45Z
+ * Date: 2023-07-10T16:09:15Z
  */
 .oo-ui-element-hidden {
   display: none !important;
@@ -883,7 +883,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-popupWidget {
   position: absolute;
   z-index: 1;
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
 }
 .oo-ui-popupWidget-popup {
   position: relative;
@@ -960,7 +959,6 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 @supports ( filter: drop-shadow( 0 0 0 ) ) {
   .oo-ui-popupWidget {
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
     filter: drop-shadow(0 0.15em 0.5em rgba(0, 0, 0, 0.2));
   }
   .oo-ui-popupWidget-popup {
@@ -1725,14 +1723,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.47.0
+ * OOUI v0.47.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-05-18T02:15:45Z
+ * Date: 2023-07-10T16:09:15Z
  */
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ),
 .oo-ui-draggableElement-handle:not( .oo-ui-draggableElement-undraggable ).oo-ui-widget {
@@ -1807,7 +1805,10 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
   top: 3em;
 }
 .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout[hidden] {
+  width: 0;
+  height: 0;
   padding: 0;
+  overflow: hidden;
 }
 .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout {
   padding: 1.5em;
@@ -2631,14 +2632,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.47.0
+ * OOUI v0.47.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-05-18T02:15:45Z
+ * Date: 2023-07-10T16:09:15Z
  */
 .oo-ui-tool > .oo-ui-tool-link > .oo-ui-tool-checkIcon {
   display: none;
@@ -3151,14 +3152,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.47.0
+ * OOUI v0.47.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-05-18T02:15:45Z
+ * Date: 2023-07-10T16:09:15Z
  */
 
 .oo-ui-window {
@@ -3566,14 +3567,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 }
 
 /*!
- * OOUI v0.47.0
+ * OOUI v0.47.4
  * https://www.mediawiki.org/wiki/OOUI
  *
  * Copyright 2011–2023 OOUI Team and other contributors.
  * Released under the MIT license
  * http://oojs.mit-license.org
  *
- * Date: 2023-05-18T02:15:45Z
+ * Date: 2023-07-10T16:09:15Z
  */
 .oo-ui-icon-arrowNext {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/arrowNext-rtl.svg);
@@ -3681,6 +3682,9 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 /* @noflip */
 .oo-ui-icon-infoFilled:lang(ar) {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/lightbulb.svg);
+}
+.oo-ui-icon-qrCode {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/qrCode.svg);
 }
 .oo-ui-icon-robot {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/robot.svg);
@@ -4507,8 +4511,14 @@ body:not( :-moz-handler-blocked ) .oo-ui-fieldsetLayout {
 .oo-ui-icon-userGroup {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userGroup-rtl.svg);
 }
+.oo-ui-icon-userRights {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userRights-rtl.svg);
+}
 .oo-ui-icon-userTalk {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/userTalk-rtl.svg);
+}
+.oo-ui-icon-userTemporary {
+  background-image: /* @embed */ url(themes/wikimediaui/images/icons/userTemporary-rtl.svg);
 }
 .oo-ui-icon-watchlist {
   background-image: /* @embed */ url(themes/wikimediaui/images/icons/watchlist-rtl.svg);
