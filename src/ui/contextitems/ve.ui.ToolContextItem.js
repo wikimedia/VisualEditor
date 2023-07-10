@@ -10,10 +10,10 @@
  * @class
  * @extends ve.ui.LinearContextItem
  *
- * @param {ve.ui.Context} context Context item is in
+ * @param {ve.ui.LinearContext} context Context the item is in
  * @param {ve.dm.Model} model Model the item is related to
  * @param {Function} tool Tool class the item is based on
- * @param {Object} config Configuration options
+ * @param {Object} [config] Configuration options
  */
 ve.ui.ToolContextItem = function VeUiToolContextItem( context, model, tool, config ) {
 	// Parent constructor
