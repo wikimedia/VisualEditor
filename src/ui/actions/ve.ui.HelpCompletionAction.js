@@ -233,7 +233,11 @@ ve.ui.sequenceRegistry.register( new ve.ui.Sequence( 'autocompleteHelpCommands',
 ve.ui.triggerRegistry.register(
 	'openHelpCompletionsTrigger', {
 		mac: new ve.ui.Trigger( 'cmd+shift+p' ),
-		pc: new ve.ui.Trigger( 'ctrl+shift+p' )
+		pc: [
+			new ve.ui.Trigger( 'ctrl+shift+p' ),
+			// Firefox already uses ctrl+shift+p
+			new ve.ui.Trigger( 'ctrl+alt+shift+p' )
+		]
 	}
 );
 
