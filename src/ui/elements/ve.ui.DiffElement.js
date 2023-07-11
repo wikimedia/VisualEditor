@@ -47,8 +47,12 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 	this.renderDiff( diff.docDiff, diff.internalListDiff, diff.metaListDiff );
 
 	if ( visualDiff.timedOut ) {
-		var $warning = this.constructor.static.createWarning( ve.msg( 'visualeditor-diff-timed-out' ) );
-		this.$messages.append( $warning );
+		var warning = new OO.ui.MessageWidget( {
+			type: 'warning',
+			classes: [ 've-ui-diffElement-warning' ],
+			label: ve.msg( 'visualeditor-diff-timed-out' )
+		} );
+		this.$messages.append( warning.$element );
 	}
 
 	// DOM
@@ -66,21 +70,6 @@ ve.ui.DiffElement = function VeUiDiffElement( visualDiff, config ) {
 OO.inheritClass( ve.ui.DiffElement, OO.ui.Element );
 
 /* Static methods */
-
-/**
- * Create a formatted warning message
- *
- * @param {string} msg Warning message text
- * @return {jQuery} Warning message DOM
- */
-ve.ui.DiffElement.static.createWarning = function ( msg ) {
-	var $warning = $( '<div>' ).addClass( 've-ui-diffElement-warning' ),
-		alertIcon = new OO.ui.IconWidget( {
-			icon: 'alert',
-			flags: [ 'warning' ]
-		} );
-	return $warning.append( alertIcon.$element, $( '<span>' ).text( msg ) );
-};
 
 /**
  * Compare attribute sets between two elements
