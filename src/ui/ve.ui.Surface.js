@@ -294,7 +294,7 @@ ve.ui.Surface.prototype.getMode = function () {
  * Create a context.
  *
  * @param {Object} config Configuration options
- * @return {ve.ui.Context}
+ * @return {ve.ui.LinearContext}
  */
 ve.ui.Surface.prototype.createContext = function ( config ) {
 	return OO.ui.isMobile() ? new ve.ui.MobileContext( this, config ) : new ve.ui.DesktopContext( this, config );
@@ -409,7 +409,7 @@ ve.ui.Surface.prototype.getView = function () {
 /**
  * Get the context menu.
  *
- * @return {ve.ui.Context} Context user interface
+ * @return {ve.ui.LinearContext} Context user interface
  */
 ve.ui.Surface.prototype.getContext = function () {
 	return this.context;
