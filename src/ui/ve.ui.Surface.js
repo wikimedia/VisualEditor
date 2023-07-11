@@ -803,8 +803,7 @@ ve.ui.Surface.prototype.onViewActivation = function () {
  */
 ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 	if ( OO.ui.isMobile() && !this.inTargetWidget ) {
-		var keyboardShown = this.getView().getSelection().isNativeCursor() &&
-			!this.getView().isShownAsDeactivated();
+		var keyboardShown = this.getView().hasNativeCursorSelection();
 		var bottom;
 		if ( ve.init.platform.constructor.static.isIos() && keyboardShown ) {
 			// iOS needs a whole extra page of padding when the virtual keyboard is shown.
