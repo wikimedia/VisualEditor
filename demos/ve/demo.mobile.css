@@ -29,7 +29,11 @@
 }
 
 .ve-demo-surfaceWrapper {
-	font-size: 16px;
 	border: 0;
 	box-shadow: 0 0 6px rgba( 0, 0, 0, 0.25 );
+}
+
+.ve-demo-surfaceWrapper,
+.ve-ui-overlay-global-mobile {
+	font-size: 16px;
 }
