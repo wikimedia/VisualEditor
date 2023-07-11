@@ -830,6 +830,18 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 };
 
 /**
+ * Check if the surface has a native cursor selection
+ *
+ * On mobile platforms, this means it is likely the virtual
+ * keyboard is visible.
+ *
+ * @return {boolean} Surface has a native cursor selection
+ */
+ve.ce.Surface.prototype.hasNativeCursorSelection = function () {
+	return !this.isDeactivated() && this.getSelection().isNativeCursor();
+};
+
+/**
  * Draw selections.
  *
  * @param {string} name Unique name for the selection being drawn
