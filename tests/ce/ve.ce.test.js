@@ -342,6 +342,9 @@ QUnit.test( 'fakeImes', function ( assert ) {
 
 	// TODO: make this function actually affect the events triggered
 	var fakePreventDefault = function () {};
+	var fakeIsPreventDefault = function () {
+		return false;
+	};
 
 	ve.ce.imetests.forEach( function ( caseItem ) {
 		var testName = caseItem[ 0 ];
@@ -363,6 +366,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 				if ( action === 'sendEvent' ) {
 					// TODO: make preventDefault work
 					args[ 1 ].preventDefault = fakePreventDefault;
+					args[ 1 ].isDefaultPrevented = fakeIsPreventDefault;
 				}
 				try {
 					testRunner[ action ].apply( testRunner, args );

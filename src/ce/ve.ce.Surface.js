@@ -1578,11 +1578,45 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	}
 
 	if (
+		!e.isDefaultPrevented() &&
+		e.keyCode === OO.ui.Keys.TAB &&
+		// Not modified (excluding shift)
+		!( e.metaKey || e.ctrlKey || e.altKey )
+	) {
+		// Manually move focus to the next/previous focusable element (T341687)
+		var surfaceNode = this.$element[ 0 ];
+		var treeWalker = document.createTreeWalker(
+			document.body,
+			NodeFilter.SHOW_ELEMENT,
+			function ( n ) {
+				if ( surfaceNode.contains( n ) ) {
+					return NodeFilter.FILTER_REJECT;
+				}
+				if ( OO.ui.isFocusableElement( $( n ) ) ) {
+					return NodeFilter.FILTER_ACCEPT;
+				}
+				return NodeFilter.FILTER_SKIP;
+			}
+		);
+		treeWalker.currentNode = surfaceNode;
+		if ( e.shiftKey ) {
+			treeWalker.previousNode();
+		} else {
+			treeWalker.nextNode();
+		}
+		if ( treeWalker.currentNode ) {
+			treeWalker.currentNode.focus();
+			e.preventDefault();
+			e.stopPropagation();
+			return;
+		}
+	}
+
+	if (
 		this.readOnly && !(
 			// Allowed keystrokes in readonly mode:
 			// Arrows, simple navigation
 			ve.ce.LinearArrowKeyDownHandler.static.keys.indexOf( e.keyCode ) !== -1 ||
-			e.keyCode === OO.ui.Keys.TAB ||
 			// Potential commands:
 			// Function keys...
 			( e.keyCode >= 112 && e.keyCode <= 123 ) ||
