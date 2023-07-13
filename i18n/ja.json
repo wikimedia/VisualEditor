@@ -85,6 +85,7 @@
 	"visualeditor-commentannotationcontextitem-comment": "コメント",
 	"visualeditor-commentinspector-title": "コメント",
 	"visualeditor-commentinspector-tooltip": "コメント",
+	"visualeditor-completionwidget-noresults": "結果なし",
 	"visualeditor-content-select-all": "すべて選択",
 	"visualeditor-contextitemwidget-label-close": "完了",
 	"visualeditor-contextitemwidget-label-remove": "削除",

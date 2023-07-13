@@ -90,6 +90,7 @@
 	"visualeditor-commentannotationcontextitem-comment": "Yorum",
 	"visualeditor-commentinspector-title": "Yorum",
 	"visualeditor-commentinspector-tooltip": "Yorum",
+	"visualeditor-completionwidget-noresults": "Sonuç yok",
 	"visualeditor-content-select-all": "Hepsini seç",
 	"visualeditor-contextitemwidget-label-close": "Kapat",
 	"visualeditor-contextitemwidget-label-remove": "Sil",
