@@ -666,9 +666,13 @@ ve.ce.Surface.prototype.onFocusChange = function () {
 	} else {
 		if ( hasFocus && !this.isFocused() ) {
 			this.onDocumentFocus();
-		}
-		if ( !hasFocus && this.isFocused() ) {
+		} else if ( !hasFocus && this.isFocused() ) {
 			this.onDocumentBlur();
+		} else if ( hasFocus && OO.ui.contains( this.$highlights[ 0 ], document.activeElement, true ) ) {
+			// Focus ended up in the higlight, e.g. by click on an already visible highlight.
+			// Move the cursor back to pasteTarget as we do when focusableNode initially selected.
+			// Without this, arrow key navigation from the focusable node would stop working.
+			this.preparePasteTargetForCopy();
 		}
 	}
 };
