@@ -3777,7 +3777,7 @@ ve.dm.example.domToDataCases = {
 			<p>Whee</p>
 			<foobar about="#vet2">Yay</foobar>
 			<div rel="ve:Alien" about="#vet2">Blah</div>
-			<foobar about="#vet3">Meh</foobar
+			<foobar about="#vet3">Meh</foobar>
 		`,
 		data: [
 			{
