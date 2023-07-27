@@ -26,7 +26,7 @@ OO.inheritClass( ve.ui.ClearAnnotationTool, ve.ui.Tool );
 
 ve.ui.ClearAnnotationTool.static.name = 'clear';
 
-ve.ui.ClearAnnotationTool.static.group = 'utility';
+ve.ui.ClearAnnotationTool.static.group = 'textStyle';
 
 ve.ui.ClearAnnotationTool.static.icon = 'cancel';
 
