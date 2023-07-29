@@ -34,7 +34,10 @@ ve.ce.FocusableNode = function VeCeFocusableNode( $focusable, config ) {
 	this.focused = false;
 	this.highlighted = false;
 	this.isFocusableSetup = false;
-	this.$highlights = $( '<div>' ).addClass( 've-ce-focusableNode-highlights' );
+	this.$highlights = $( '<div>' ).addClass( 've-ce-focusableNode-highlights' )
+		// Allow the highlight to take focus, so that focus is not removed from
+		// the surface when clicking on it (T341681)
+		.attr( 'tabIndex', 0 );
 	this.$focusable = $focusable || this.$element;
 	this.$bounding = config.$bounding || this.$focusable;
 	this.focusableSurface = null;
