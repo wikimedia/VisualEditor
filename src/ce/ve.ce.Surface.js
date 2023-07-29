@@ -3100,8 +3100,7 @@ ve.ce.Surface.prototype.afterPasteSanitizeExternal = function ( $element ) {
  */
 ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, targetFragment ) {
 	var items = [],
-		htmlStringData = dataTransfer.getData( 'text/html' ),
-		htmlPreParse, imgCount = 0, hasContent = false;
+		htmlStringData = dataTransfer.getData( 'text/html' );
 
 	// Rules for clipboard content selection:
 	//  1. If the clipboard has only HTML, proceed parsing such HTML.
@@ -3127,8 +3126,10 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 			}
 		}
 	} else if ( dataTransfer.files ) {
-		htmlPreParse = $.parseHTML( htmlStringData );
+		var htmlPreParse = $.parseHTML( htmlStringData );
 
+		var imgCount = 0;
+		var hasContent = false;
 		for ( i = 0; i < htmlPreParse.length; i++ ) {
 			// Count images in root nodes
 			if ( htmlPreParse[ i ].nodeName === 'IMG' ) {
@@ -3201,9 +3202,6 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
  * @return {boolean} One more items was handled
  */
 ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, targetFragment ) {
-	var dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory,
-		handled = false;
-
 	targetFragment = targetFragment || this.getModel().getFragment();
 
 	function insert( docOrData ) {
@@ -3232,6 +3230,8 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 		resultFragment.collapseToEnd().select();
 	}
 
+	var dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory;
+	var handled = false;
 	for ( var i = 0, l = items.length; i < l; i++ ) {
 		var item = items[ i ];
 		var name = dataTransferHandlerFactory.getHandlerNameForItem( item, isPaste, this.pasteSpecial );
@@ -3377,8 +3377,7 @@ ve.ce.Surface.prototype.fixupChromiumNativeEnter = function () {
 ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 	// Synthetic events don't have the originalEvent property (T176104)
 	var surface = this,
-		inputType = e.originalEvent ? e.originalEvent.inputType : null,
-		inputTypeCommands = this.constructor.static.inputTypeCommands;
+		inputType = e.originalEvent ? e.originalEvent.inputType : null;
 
 	// Special handling of NBSP insertions. T53045
 	// NBSPs are converted to normal spaces in ve.ce.TextState as they can be
@@ -3406,6 +3405,7 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 		} );
 	}
 
+	var inputTypeCommands = this.constructor.static.inputTypeCommands;
 	if (
 		inputType &&
 		Object.prototype.hasOwnProperty.call( inputTypeCommands, inputType )
