@@ -89,6 +89,7 @@
 	"visualeditor-commentannotationcontextitem-comment": "Komentarz",
 	"visualeditor-commentinspector-title": "Komentarz",
 	"visualeditor-commentinspector-tooltip": "Komentarz",
+	"visualeditor-completionwidget-noresults": "Brak wyników",
 	"visualeditor-content-select-all": "Wybierz wszystko",
 	"visualeditor-contextitemwidget-label-close": "Zamknij",
 	"visualeditor-contextitemwidget-label-remove": "Usuń",
