@@ -27,6 +27,7 @@ ve.ui.LinearContext = function VeUiLinearContext() {
 	this.afterContextChangeTimeout = null;
 	this.afterContextChangeHandler = this.afterContextChange.bind( this );
 	this.updateDimensionsDebounced = ve.debounce( this.updateDimensions.bind( this ) );
+	this.persistentSources = [];
 
 	// Events
 	this.surface.getModel().connect( this, {
@@ -205,7 +206,36 @@ ve.ui.LinearContext.prototype.isInspectable = function () {
 };
 
 /**
+ * Add a persistent source that will stay visible until manually removed.
+ *
+ * @param {Object} source Object containing `name`, `model` and `config` properties.
+ *   See #getRelatedSources.
+ */
+ve.ui.LinearContext.prototype.addPersistentSource = function ( source ) {
+	this.persistentSources.push(
+		ve.extendObject( { type: 'persistent' }, source )
+	);
+
+	this.onContextChange();
+};
+
+/**
+ * Remove a persistent source by name
+ *
+ * @param {string} name Source name
+ */
+ve.ui.LinearContext.prototype.removePersistentSource = function ( name ) {
+	this.persistentSources = this.persistentSources.filter( function ( source ) {
+		return source.name !== name;
+	} );
+
+	this.onContextChange();
+};
+
+/**
  * @inheritdoc
+ *
+ * Also adds the `embeddable` property to each object.
  */
 ve.ui.LinearContext.prototype.getRelatedSources = function () {
 	var surfaceModel = this.surface.getModel(),
@@ -222,6 +252,7 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 		if ( selectedModels.length ) {
 			this.relatedSources = this.getRelatedSourcesFromModels( selectedModels );
 		}
+		this.relatedSources = this.relatedSources.concat( this.persistentSources );
 	}
 
 	return this.relatedSources;
