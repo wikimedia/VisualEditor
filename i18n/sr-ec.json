@@ -59,6 +59,8 @@
 	"visualeditor-changedir-tool-rtl": "Прикажи здесна налево",
 	"visualeditor-clearbutton-tooltip": "Уклони",
 	"visualeditor-clipboard-copy": "Копирање",
+	"visualeditor-clipboard-copy-fail": "Није копирано.",
+	"visualeditor-clipboard-copy-success": "Копирано.",
 	"visualeditor-clipboard-cut": "Исецање",
 	"visualeditor-clipboard-paste": "Лепљење",
 	"visualeditor-clipboard-paste-special": "Лепљење као обичан текст",
