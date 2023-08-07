@@ -100,6 +100,7 @@
 	"visualeditor-commentannotationcontextitem-comment": "评论",
 	"visualeditor-commentinspector-title": "注释",
 	"visualeditor-commentinspector-tooltip": "注释",
+	"visualeditor-completionwidget-noresults": "没有结果",
 	"visualeditor-content-select-all": "全选",
 	"visualeditor-contextitemwidget-label-close": "关闭",
 	"visualeditor-contextitemwidget-label-remove": "删除",
