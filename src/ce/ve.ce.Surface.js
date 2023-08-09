@@ -2157,14 +2157,14 @@ ve.ce.Surface.prototype.onCut = function ( e ) {
 };
 
 /**
- * Handle copy events.
+ * Handle copy (including cut) and dragstart events.
  *
  * @param {jQuery.Event} e Copy event
  * @param {ve.dm.Selection} selection Optional selection to simulate a copy on
  */
 ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
+	// Copy or cut, but not dragstart
 	var isClipboard = e.type === 'copy' || e.type === 'cut',
-		view = this,
 		htmlDoc = this.getModel().getDocument().getHtmlDocument(),
 		clipboardData = isClipboard ? e.originalEvent.clipboardData : e.originalEvent.dataTransfer;
 
@@ -2223,8 +2223,8 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	this.clipboardIndex++;
 	var clipboardKey = this.clipboardId + '-' + this.clipboardIndex;
 	this.clipboard = { slice: slice, hash: null };
-	// Support: IE, Firefox<48
-	// Writing the key to text/xcustom won't work in IE & Firefox<48, so write
+	// Support: Firefox<48
+	// Writing the key to text/xcustom won't work in Firefox<48, so write
 	// it to the HTML instead
 	if ( isClipboard && !ve.isClipboardDataFormatsSupported( e ) ) {
 		this.$pasteTarget.prepend(
@@ -2235,64 +2235,21 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 		this.clipboard.hash = this.constructor.static.getClipboardHash( this.$pasteTarget.contents() );
 	}
 
-	// If we have access to the clipboard write straight to it so we don't
-	// have to fiddle around with the selection and fix scroll offsets.
-	if ( clipboardData ) {
-		if ( isClipboard ) {
-			// Disable the default event so we can override the data
-			e.preventDefault();
-		}
-
-		// Only write a custom mime type if we think the browser supports it, otherwise
-		// we will have already written a key to the HTML above.
-		if ( isClipboard && ve.isClipboardDataFormatsSupported( e, true ) ) {
-			clipboardData.setData( 'text/xcustom', clipboardKey );
-		}
-		try {
-			// Support IE
-			// This fails when dragging in IE.
-			clipboardData.setData( 'text/html', this.$pasteTarget.html() );
-			// innerText "approximates the text the user would get if they highlighted the
-			// contents of the element with the cursor and then copied to the clipboard." - MDN
-			// Use $.text as a fallback for Firefox <= 44
-			clipboardData.setData( 'text/plain', this.$pasteTarget[ 0 ].innerText || this.$pasteTarget.text() || ' ' );
-		} catch ( err ) {}
-	} else {
-		// Support: IE
-		// If direct clipboard editing is not allowed, we must use the pasteTarget to
-		// select the data we want to go in the clipboard
-		if ( this.getSelection().isNativeCursor() ) {
-			// We have a selection in the document; preserve it so it can restored
-			var originalSelection = new ve.SelectionState( this.nativeSelection );
-
-			// Save scroll position before changing focus to "offscreen" paste target
-			var scrollTop = this.surface.$scrollContainer.scrollTop();
-
-			// Prevent surface observation due to native range changing
-			this.surfaceObserver.disable();
-			ve.selectElement( this.$pasteTarget[ 0 ] );
-
-			// Restore scroll position after changing focus
-			this.surface.$scrollContainer.scrollTop( scrollTop );
-
-			// setTimeout: postpone until after the default copy action
-			setTimeout( function () {
-				// If the range was in $highlights (right-click copy), don't restore it
-				if ( !OO.ui.contains( view.$highlights[ 0 ], originalSelection.focusNode, true ) ) {
-					// Change focus back
-					view.$attachedRootNode[ 0 ].focus();
-					view.showSelectionState( originalSelection );
-					// Restore scroll position
-					view.surface.$scrollContainer.scrollTop( scrollTop );
-				}
-				view.surfaceObserver.clear();
-				view.surfaceObserver.enable();
-			} );
-		} else {
-			// If the selection is non-native, the pasteTarget *should* already be selected…
-			ve.selectElement( this.$pasteTarget[ 0 ] );
-		}
+	if ( isClipboard ) {
+		// Disable the default event so we can override the data
+		e.preventDefault();
 	}
+
+	// Only write a custom mime type if we think the browser supports it, otherwise
+	// we will have already written a key to the HTML above.
+	if ( isClipboard && ve.isClipboardDataFormatsSupported( e, true ) ) {
+		clipboardData.setData( 'text/xcustom', clipboardKey );
+	}
+	clipboardData.setData( 'text/html', this.$pasteTarget.html() );
+	// innerText "approximates the text the user would get if they highlighted the
+	// contents of the element with the cursor and then copied to the clipboard." - MDN
+	// Use $.text as a fallback for Firefox <= 44
+	clipboardData.setData( 'text/plain', this.$pasteTarget[ 0 ].innerText || this.$pasteTarget.text() || ' ' );
 
 	ve.track( 'activity.clipboard', { action: e.type } );
 };
@@ -2785,8 +2742,6 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 	if ( !htmlDoc ) {
 		// If we're using $pasteTarget, let CE do its sanitizing as it may
 		// contain disruptive metadata (head tags etc.)
-		// TODO: IE will always take this path, and so may have bugs with span unwrapping
-		// in edge cases (e.g. pasting a single MWReference)
 		htmlDoc = ve.sanitizeHtmlToDocument( this.$pasteTarget.html() );
 	}
 

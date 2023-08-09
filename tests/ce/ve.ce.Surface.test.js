@@ -2289,18 +2289,6 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 				expectedSelection: new ve.dm.LinearSelection( new ve.Range( 7, 10 ) )
 			},
 			{
-				msg: 'Simple drag and drop in IE',
-				rangeOrSelection: new ve.Range( 1, 4 ),
-				targetOffset: 10,
-				isIE: true,
-				expectedTransfer: {},
-				expectedData: function ( data ) {
-					var removed = data.splice( 1, 3 );
-					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
-				},
-				expectedSelection: new ve.dm.LinearSelection( new ve.Range( 7, 10 ) )
-			},
-			{
 				msg: 'Invalid target offset',
 				rangeOrSelection: new ve.Range( 1, 4 ),
 				targetOffset: -1,
@@ -2313,7 +2301,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 			}
 		];
 
-	function testRunner( rangeOrSelection, targetOffset, expectedTransfer, expectedData, expectedSelection, isIE, msg ) {
+	function testRunner( rangeOrSelection, targetOffset, expectedTransfer, expectedData, expectedSelection, msg ) {
 		var view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() ),
 			model = view.getModel(),
 			data = ve.copy( model.getDocument().getFullData() ),
@@ -2322,15 +2310,9 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 				originalEvent: {
 					dataTransfer: {
 						setData: function ( key, value ) {
-							if ( isIE && key !== 'text' ) {
-								throw new Error( 'IE FAIL' );
-							}
 							dataTransfer[ key ] = value;
 						},
 						getData: function ( key ) {
-							if ( isIE && key !== 'text' ) {
-								throw new Error( 'IE FAIL' );
-							}
 							return dataTransfer[ key ];
 						}
 					}
@@ -2365,7 +2347,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 	cases.forEach( function ( caseItem ) {
 		testRunner(
 			caseItem.rangeOrSelection, caseItem.targetOffset, caseItem.expectedTransfer, caseItem.expectedData,
-			caseItem.expectedSelection, caseItem.isIE, caseItem.msg
+			caseItem.expectedSelection, caseItem.msg
 		);
 	} );
 
