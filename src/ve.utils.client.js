@@ -291,49 +291,25 @@ ve.fixSelectionNodes = function ( selection ) {
 /**
  * Register a passive event listener
  *
+ * @deprecated Pass { passive: true } directly to addEventListener
  * @param {HTMLElement} elem Element to register event on
  * @param {string} event Name of event to register
  * @param {Function} handler Event handler (which cannot call event.preventDefault)
  */
 ve.addPassiveEventListener = function ( elem, event, handler ) {
-	elem.addEventListener( event, handler, ve.isPassiveEventsSupported() ? { passive: true } : false );
+	elem.addEventListener( event, handler, { passive: true } );
 };
 
 /**
  * Remove a passive event listener
  *
+ * @deprecated Pass { passive: true } directly to removeEventListener
  * @param {HTMLElement} elem Element to remove event from
  * @param {string} event Name of event to remove
  * @param {Function} handler Event handler to remove
  */
 ve.removePassiveEventListener = function ( elem, event, handler ) {
-	elem.removeEventListener( event, handler, ve.isPassiveEventsSupported() ? { passive: true } : false );
-};
-
-/**
- * Test whether passive event listeners are supported
- *
- * Support: Safari 9
- *
- * @return {boolean} Whether passive event listeners are supported
- */
-ve.isPassiveEventsSupported = function () {
-	if ( ve.isPassiveEventsSupported.supported === undefined ) {
-		try {
-			var opts = Object.defineProperty( {}, 'passive', {
-				// eslint-disable-next-line getter-return
-				get: function () {
-					ve.isPassiveEventsSupported.supported = true;
-				}
-			} );
-			window.addEventListener( 'testPassive', null, opts );
-			window.removeEventListener( 'testPassive', null, opts );
-		} catch ( e ) {}
-		if ( ve.isPassiveEventsSupported.supported !== true ) {
-			ve.isPassiveEventsSupported.supported = false;
-		}
-	}
-	return ve.isPassiveEventsSupported.supported;
+	elem.removeEventListener( event, handler, { passive: true } );
 };
 
 /**
