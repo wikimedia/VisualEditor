@@ -8,6 +8,7 @@
 			"Lizalizaufa",
 			"Sagan",
 			"Азат Хәлилов",
+			"З. ӘЙЛЕ",
 			"Рустам Нурыев",
 			"Янмурза Баки"
 		]
@@ -30,7 +31,7 @@
 	"visualeditor-annotationbutton-superscript-tooltip": "Өҫкө индекс",
 	"visualeditor-annotationbutton-underline-tooltip": "Һыҙыу",
 	"visualeditor-changedesc-direction": "Яңынан ҡарау йүнәлеше $1-ҙән $2-гә тиклем үҙгәрҙе",
-	"visualeditor-clearbutton-tooltip": "Форматлауҙы таҙартырға",
+	"visualeditor-clearbutton-tooltip": "Таҙартырға",
 	"visualeditor-clipboard-copy": "Күсермәһен алырға",
 	"visualeditor-clipboard-cut": "Киҫеү",
 	"visualeditor-clipboard-paste": "Ҡуйыу",
@@ -41,7 +42,7 @@
 	"visualeditor-contextitemwidget-label-remove": "Юйырға",
 	"visualeditor-contextitemwidget-label-secondary": "Үҙгәртергә",
 	"visualeditor-debugbar-close": "Ябырға",
-	"visualeditor-debugbar-logrange": "Журналдар",
+	"visualeditor-debugbar-logrange": "Һайланған журнал",
 	"visualeditor-dialog-action-apply": "Үҙгәртеүҙәрҙе ҡулланырға",
 	"visualeditor-dialog-action-cancel": "Кире алырға",
 	"visualeditor-dialog-action-done": "Әҙер",
