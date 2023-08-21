@@ -50,6 +50,8 @@ ul.ve-ce-checkListNode {
 
 .ve-ce-checkListItemNode-checked::before {
 	background-image: url( ../../../ui/styles/images/checked.svg );
+	/* TODO: Fix paths in standalone builds */
+	/* stylelint-disable-next-line declaration-block-no-duplicate-properties */
 	background-image: url( data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBpZD0ic3ZnOCI+CiAgICA8cmVjdCB5PSIuNSIgeD0iLjUiIGhlaWdodD0iMTUiIHdpZHRoPSIxNSIgaWQ9InJlY3Q4MjEiIHN0eWxlPSJmaWxsOm5vbmU7c3Ryb2tlOiMwMDA7c3Ryb2tlLXdpZHRoOjE7Ii8+CiAgICA8cGF0aCBkPSJNMy45IDcuNzhsMyAzIDYtNiIgc3R5bGU9InN0cm9rZTojMDAwO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1saW5lY2FwOmJ1dHQ7c3Ryb2tlLWxpbmVqb2luOm1pdGVyO2ZpbGw6bm9uZTsiLz4KPC9zdmc+Cg== );
 }
 

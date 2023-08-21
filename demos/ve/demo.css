@@ -56,6 +56,7 @@ body {
 }
 
 .ve-demo-toolbar .oo-ui-dropdownWidget .oo-ui-labelElement-label {
+	/* stylelint-disable-next-line declaration-property-value-disallowed-list */
 	text-transform: capitalize;
 }
 
