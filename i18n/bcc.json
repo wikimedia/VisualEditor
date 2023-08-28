@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Baloch Afghanistan",
+			"Moshtank",
 			"Sultanselim baloch"
 		]
 	},
@@ -31,7 +32,7 @@
 	"visualeditor-formatdropdown-format-paragraph": "پاراگراپ",
 	"visualeditor-help-tool": "کومک",
 	"visualeditor-historybutton-undo-tooltip": "بیر گردینتین",
-	"visualeditor-inspector-close-tooltip": "بستین",
+	"visualeditor-inspector-close-tooltip": "بندگ",
 	"visualeditor-inspector-remove-tooltip": "پاک کورتین",
 	"visualeditor-language-search-input-placeholder": "گردگ بی اساسی زبانی نام یا کود",
 	"visualeditor-languageinspector-title": "زبان",
