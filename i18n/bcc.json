@@ -14,7 +14,7 @@
 	"visualeditor-annotationbutton-underline-tooltip": "چیهر خت",
 	"visualeditor-clipboard-copy": "کاپی",
 	"visualeditor-clipboard-cut": "بورریتین",
-	"visualeditor-dialog-action-cancel": "کنسیل",
+	"visualeditor-dialog-action-cancel": "بججگ",
 	"visualeditor-dialog-action-done": "کار بوت",
 	"visualeditor-dialog-action-goback": "پدا روگ",
 	"visualeditor-dialog-action-insert": "درج",
@@ -31,7 +31,7 @@
 	"visualeditor-formatdropdown-format-heading6": "سرئنوان ۶",
 	"visualeditor-formatdropdown-format-paragraph": "پاراگراپ",
 	"visualeditor-help-tool": "کومک",
-	"visualeditor-historybutton-undo-tooltip": "بیر گردینتین",
+	"visualeditor-historybutton-undo-tooltip": "پچ تَررݔنگ",
 	"visualeditor-inspector-close-tooltip": "بندگ",
 	"visualeditor-inspector-remove-tooltip": "پاک کورتین",
 	"visualeditor-language-search-input-placeholder": "گردگ بی اساسی زبانی نام یا کود",
@@ -48,6 +48,6 @@
 	"visualeditor-mediasizewidget-sizeoptions-default": "پیش پرز",
 	"visualeditor-mediasizewidget-sizeoptions-scale": "مکیاس",
 	"visualeditor-shortcuts-clipboard": "کلیپ بورد",
-	"visualeditor-shortcuts-history": "دپتر",
+	"visualeditor-shortcuts-history": "گوَستانک",
 	"visualeditor-shortcuts-other": "دیگه"
 }
