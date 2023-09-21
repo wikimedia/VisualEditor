@@ -1323,14 +1323,3 @@ ve.countEdgeMatches = function ( before, after, equals ) {
 	}
 	return { start: start, end: end };
 };
-
-/**
- * Repeat a string n times
- *
- * @param {string} str The string to repeat
- * @param {number} n The number of times to repeat
- * @return {string} The string, repeated n times
- */
-ve.repeatString = function ( str, n ) {
-	return new Array( n + 1 ).join( str );
-};
