@@ -952,14 +952,15 @@ ve.dm.Document.prototype.getRelativeRange = function ( range, direction, unit, e
 };
 
 /**
- * Get the nearest focusable node.
+ * Get the nearest node matching a test.
  *
+ * @param {Function} test Function to test whether a node matches, called with the nodeType
  * @param {number} offset Offset to start looking at
  * @param {number} direction Direction to look in, +1 or -1
  * @param {number} limit Stop looking after reaching certain offset
- * @return {ve.dm.Node|null} Nearest focusable node, or null if not found
+ * @return {ve.dm.Node|null} Nearest matching node, or null if not found
  */
-ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction, limit ) {
+ve.dm.Document.prototype.getNearestNodeMatching = function ( test, offset, direction, limit ) {
 	// It is never an offset of the node, but just an offset for which getNodeFromOffset should
 	// return that node. Usually it would be node offset + 1 or offset of node closing tag.
 	var coveredOffset;
@@ -973,14 +974,14 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 			}
 			if (
 				this.isOpenElementData( index ) &&
-				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
+				test( this.getType( index ) )
 			) {
 				coveredOffset = index + 1;
 				return true;
 			}
 			if (
 				this.isCloseElementData( index ) &&
-				ve.dm.nodeFactory.isNodeFocusable( this.getType( index ) )
+				test( this.getType( index ) )
 			) {
 				coveredOffset = index;
 				return true;
@@ -993,6 +994,20 @@ ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction,
 	} else {
 		return null;
 	}
+};
+
+/**
+ * Get the nearest focusable node.
+ *
+ * @param {number} offset Offset to start looking at
+ * @param {number} direction Direction to look in, +1 or -1
+ * @param {number} limit Stop looking after reaching certain offset
+ * @return {ve.dm.Node|null} Nearest focusable node, or null if not found
+ */
+ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction, limit ) {
+	return this.getNearestNodeMatching( function ( nodeType ) {
+		return ve.dm.nodeFactory.isNodeFocusable( nodeType );
+	}, offset, direction, limit );
 };
 
 /**
