@@ -126,7 +126,11 @@
 /* Prevent collapsing added/removed spaces (T170114), but only inline (T300444) */
 ins[ data-diff-action='insert' ],
 del[ data-diff-action='remove' ] {
+	/* Support: Chrome<76, Firefox<69 */
+	/* Fallback for browsers which don't support break-spaces */
 	white-space: pre-wrap;
+	/* T348006 - ensure all removed/inserted spaces are shown, even at the end of a line */
+	white-space: break-spaces;
 }
 
 [ data-diff-action='insert' ],
