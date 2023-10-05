@@ -47,5 +47,9 @@
 	/* stylelint-disable-next-line declaration-no-important */
 	margin: 0 !important;
 	word-wrap: break-word;
+	/* Support: Chrome<76, Firefox<69 */
+	/* Fallback for browsers which don't support break-spaces */
 	white-space: pre-wrap;
+	/* T348006 */
+	white-space: break-spaces;
 }
