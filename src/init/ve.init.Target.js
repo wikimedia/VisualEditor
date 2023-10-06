@@ -223,6 +223,8 @@ ve.init.Target.static.importRules = {
 	external: {
 		blacklist: {
 			// Annotations
+			// TODO: This also removes harmless things like <span style="font-weight: bold;">
+			// which would otherwise get converted to a bold annotation
 			'textStyle/span': true,
 			'textStyle/font': true,
 			// Nodes
@@ -241,7 +243,11 @@ ve.init.Target.static.importRules = {
 				// Unsupported sectioning tags
 				main: true,
 				nav: true,
-				aside: true
+				aside: true,
+				// HTML headings are already bold by default. Some skins may use non-bold
+				// heaidngs, but more likely we will end up with useless bold annotations.
+				'h1 b, h2 b, h3 b, h4 b, h5 b, h6 b': true,
+				'h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong': true
 			}
 		},
 		nodeSanitization: true
