@@ -1650,14 +1650,19 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							// so we only go up to length - 2
 							for ( j = previousSiblings.length - 2; j >= 0; j-- ) {
 								var sibling = previousSiblings[ j ];
-								if ( sibling.nodeType === Node.TEXT_NODE && !sibling.veIsWhitespace ) {
-									// we've found an unwrapped paragraph so don't unwrap
-									doUnwrap = false;
+								if ( ve.isBlockElement( sibling ) ) {
+									// Stop searching early when we get to a block element.
 									break;
 								}
-								if ( ve.isBlockElement( sibling ) ) {
-									// there is a block element before the next unwrapped node
-									// so it's safe to unwrap
+								// If we find content, don't unwrap.
+								if (
+									// Text node content (non-whitespace)
+									( sibling.nodeType === Node.TEXT_NODE && !sibling.veIsWhitespace ) ||
+									// Inline content tag
+									( sibling.nodeType === Node.ELEMENT_NODE && sibling.tagName !== 'META' && sibling.tagName !== 'LINK' )
+								) {
+									// we've found unwrapped content so don't unwrap
+									doUnwrap = false;
 									break;
 								}
 							}

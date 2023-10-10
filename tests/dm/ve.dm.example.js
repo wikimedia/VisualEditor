@@ -2434,6 +2434,29 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		]
 	},
+	'annotation next to wrapper paragraph': {
+		data: [
+			{ type: 'table' },
+			{ type: 'tableSection', attributes: { style: 'body' } },
+			{ type: 'tableRow' },
+			{ type: 'tableCell', attributes: { style: 'data' } },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			[ 'F', [ ve.dm.example.link( 'Foo' ) ] ],
+			[ 'o', [ ve.dm.example.link( 'Foo' ) ] ],
+			[ 'o', [ ve.dm.example.link( 'Foo' ) ] ],
+			{ type: '/paragraph' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
+			'B', 'a', 'r',
+			{ type: '/paragraph' },
+			{ type: '/tableCell' },
+			{ type: '/tableRow' },
+			{ type: '/tableSection' },
+			{ type: '/table' },
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
+		fromDataBody: '<table><tr><td><a href="Foo">Foo</a><p>Bar</p></td></tr></table>'
+	},
 	'nested empty annotation': {
 		body: '<p>Foo<i><b><u></u></b></i>Bar</p>',
 		data: [
