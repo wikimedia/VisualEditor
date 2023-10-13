@@ -588,8 +588,7 @@ ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) 
 
 	if ( linearDiff ) {
 		// If there is a content change, splice it in
-		var nodeDiffData = linearDiff;
-		var annotatedData = this.annotateNode( nodeDiffData );
+		var annotatedData = this.annotateNode( linearDiff );
 		ve.batchSplice( nodeData, 1, newNode.length, annotatedData );
 	}
 	if ( attributeChange ) {
