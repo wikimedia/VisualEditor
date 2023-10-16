@@ -4,8 +4,8 @@
  * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
 
-.ve-ui-fragmentInspector-container.oo-ui-panelLayout-padded,
-.ve-ui-fragmentInspector-container .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout-padded {
+.ve-ui-fragmentInspector-container.oo-ui-panelLayout-padded:not( [ hidden ] ),
+.ve-ui-fragmentInspector-container .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout-padded:not( [ hidden ] ) {
 	padding: 0.75em;
 }
 
