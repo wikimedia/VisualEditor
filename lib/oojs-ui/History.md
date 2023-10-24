@@ -1,5 +1,49 @@
 # OOUI Release History
 
+## v0.48.2 / 2023-10-24
+
+### Features
+* MultilineTextInputWidget: config to forbid newlines (David Lynch)
+
+### Styles
+* Icons: Implement verticalEllipsis (Ed Sanders)
+* CopyTextLayout: Use 'copy' icon (Jack who built the house)
+* IndexLayout: Add !important to hidden panel rules (Ed Sanders)
+
+### Code
+* Add OO.ui.getTeleportTarget() to allow it to be overridden (Bartosz Dziewoński)
+* ClippableElement: Reserve space for the vertical scrollbar (Bartosz Dziewoński)
+* InputWidget: Call setValue immediately after edit events (Ed Sanders)
+* Tag: Add warning comment to Tag::resetElementId() (TheresNoTime)
+
+## v0.48.1 / 2023-09-12
+
+### Features
+* Make the search input of a SelectFileInputWidget un-focusable (Ed Sanders)
+
+### Code
+* Add Tag::resetElementId() (Tim Starling)
+* PopupButtonWidget: Replace .getElementId() reimplementation (Thiemo Kreuz)
+
+## v0.48.0 / 2023-08-30
+### Breaking changes
+* [BREAKING CHANGE] Raise jQuery requirement from v3.6.1 to v3.7.1 (James D. Forrester)
+
+### Features
+* ButtonInputWidget: Add support for 'formNoValidate' config option (Bartosz Dziewoński)
+* ToggleSwitchWidget: Add no-JS support (hmonroy)
+
+### Code
+* Fix aria-describedby on MultiSelectWidgets (WMDE-Fisch)
+* Include ToggleSwitch and ToggleSwitch widgets in core (hmonroy)
+
+## v0.47.5 / 2023-07-19
+### Code
+* ToggleSwitch: Display checked state correctly in RTL (Roan Kattouw)
+
+### Documentation
+* README: Document vendor and mediawiki stages of the release process (Roan Kattouw)
+
 ## v0.47.4 / 2023-07-10
 ### Code
 * Fix TypeError in OptionWidget (Thiemo Kreuz)
