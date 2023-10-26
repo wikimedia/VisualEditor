@@ -5,7 +5,8 @@
 			"Bishnu Saikia",
 			"Fitoschido",
 			"McDutchie",
-			"Xuacu"
+			"Xuacu",
+			"YoaR"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -50,7 +51,7 @@
 	"visualeditor-clipboard-cut": "Cortar",
 	"visualeditor-clipboard-paste": "Pegar",
 	"visualeditor-clipboard-paste-special": "Pegar como testu ensin formatu",
-	"visualeditor-command-dialog-cancel": "Zarrar/encaboxar cambeos",
+	"visualeditor-command-dialog-cancel": "Zarrar/zarrar cambeos",
 	"visualeditor-command-dialog-confirm": "Confirmar cambeos",
 	"visualeditor-command-dialog-focus-context": "Mover el focu a la ventana de contestu",
 	"visualeditor-commentannotationcontextitem-comment": "Comentariu",
@@ -71,7 +72,7 @@
 	"visualeditor-debugbar-testsquasher": "Probar el compresor de transaiciones",
 	"visualeditor-debugbar-updatemodel": "Anovar colos cambeos",
 	"visualeditor-dialog-action-apply": "Aplicar los cambeos",
-	"visualeditor-dialog-action-cancel": "Encaboxar",
+	"visualeditor-dialog-action-cancel": "Zarrar",
 	"visualeditor-dialog-action-done": "Fecho",
 	"visualeditor-dialog-action-goback": "Volver",
 	"visualeditor-dialog-action-insert": "Inxertar",
