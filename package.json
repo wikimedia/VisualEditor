@@ -43,7 +43,7 @@
 		"karma-firefox-launcher": "2.1.2",
 		"karma-mocha-reporter": "2.2.5",
 		"karma-qunit": "4.1.2",
-		"qunit": "2.19.4",
+		"qunit": "2.20.0",
 		"stringify-object": "3.3.0",
 		"stylelint-config-wikimedia": "0.16.1",
 		"svgo": "3.0.2"
