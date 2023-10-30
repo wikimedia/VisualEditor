@@ -93,6 +93,40 @@ ve.dm.VisualDiff.static.getDataFromNode = function ( node, innerRange ) {
 };
 
 /**
+ * Compare the linear data for two nodes
+ *
+ * @param {ve.dm.Node} oldNode Node from the old document
+ * @param {ve.dm.Node} newNode Node from the new document
+ * @return {boolean} The linear data is the same
+ */
+ve.dm.VisualDiff.static.compareNodes = function ( oldNode, newNode ) {
+	if ( oldNode.length !== newNode.length || !oldNode.isDiffComparable( newNode ) ) {
+		return false;
+	}
+
+	var oldData = this.getDataFromNode( oldNode );
+	var newData = this.getDataFromNode( newNode );
+
+	if ( JSON.stringify( oldData ) === JSON.stringify( newData ) ) {
+		return true;
+	}
+
+	// If strings are not equal, the data may still be the same as far as
+	// we are concerned so should compare them properly.
+	var oldStore = oldNode.getRoot().getDocument().getStore();
+	var newStore = newNode.getRoot().getDocument().getStore();
+
+	for ( var i = 0, ilen = oldData.length; i < ilen; i++ ) {
+		if ( oldData[ i ] !== newData[ i ] &&
+			!ve.dm.ElementLinearData.static.compareElements( oldData[ i ], newData[ i ], oldStore, newStore ) ) {
+			return false;
+		}
+	}
+
+	return true;
+};
+
+/**
  * Attach the internal list indexOrder to each node referenced by the internal
  * list, ahead of document merge.
  *
@@ -181,7 +215,7 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 	for ( var i = 0, ilen = oldNodes.length; i < ilen; i++ ) {
 		for ( j = 0, jlen = newNodes.length; j < jlen; j++ ) {
 			if ( !Object.prototype.hasOwnProperty.call( diff.newToOld, j ) &&
-				this.compareNodes( oldNodes[ i ], newNodes[ j ] )
+				this.constructor.static.compareNodes( oldNodes[ i ], newNodes[ j ] )
 			) {
 				diff.oldToNew[ i ] = j;
 				diff.newToOld[ j ] = i;
@@ -342,40 +376,6 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 	}
 
 	return moves;
-};
-
-/**
- * Compare the linear data for two nodes
- *
- * @param {ve.dm.Node} oldNode Node from the old document
- * @param {ve.dm.Node} newNode Node from the new document
- * @return {boolean} The linear data is the same
- */
-ve.dm.VisualDiff.prototype.compareNodes = function ( oldNode, newNode ) {
-	if ( oldNode.length !== newNode.length || !oldNode.isDiffComparable( newNode ) ) {
-		return false;
-	}
-
-	var oldData = this.constructor.static.getDataFromNode( oldNode );
-	var newData = this.constructor.static.getDataFromNode( newNode );
-
-	if ( JSON.stringify( oldData ) === JSON.stringify( newData ) ) {
-		return true;
-	}
-
-	// If strings are not equal, the data may still be the same as far as
-	// we are concerned so should compare them properly.
-	var oldStore = oldNode.getRoot().getDocument().getStore();
-	var newStore = newNode.getRoot().getDocument().getStore();
-
-	for ( var i = 0, ilen = oldData.length; i < ilen; i++ ) {
-		if ( oldData[ i ] !== newData[ i ] &&
-			!ve.dm.ElementLinearData.static.compareElements( oldData[ i ], newData[ i ], oldStore, newStore ) ) {
-			return false;
-		}
-	}
-
-	return true;
 };
 
 /**
