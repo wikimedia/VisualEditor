@@ -3,6 +3,7 @@
 		"authors": [
 			"AmaryllisGardener",
 			"Amire80",
+			"CiphriusKane",
 			"Foxj",
 			"John Reid",
 			"Niknetniko"
@@ -75,7 +76,7 @@
 	"visualeditor-formatdropdown-title": "Chynge format",
 	"visualeditor-help-tool": "Heelp",
 	"visualeditor-historybutton-redo-tooltip": "Redae",
-	"visualeditor-historybutton-undo-tooltip": "Ondae",
+	"visualeditor-historybutton-undo-tooltip": "Undae",
 	"visualeditor-indentationbutton-indent-tooltip": "Mak indentation muckler",
 	"visualeditor-indentationbutton-outdent-tooltip": "Mak indentation smawer",
 	"visualeditor-inspector-close-tooltip": "Claise",
@@ -98,7 +99,7 @@
 	"visualeditor-pagemenu-tooltip": "Page opties",
 	"visualeditor-shortcuts-clipboard": "Clipbuird",
 	"visualeditor-shortcuts-formatting": "Paragraph formattin",
-	"visualeditor-shortcuts-history": "Histerie",
+	"visualeditor-shortcuts-history": "History",
 	"visualeditor-shortcuts-other": "Ither",
 	"visualeditor-shortcuts-text-style": "Tex stylin",
 	"visualeditor-slug-insert": "Insert paragraph",
