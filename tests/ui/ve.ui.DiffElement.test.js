@@ -1548,11 +1548,10 @@ QUnit.test( 'Diffing', function ( assert ) {
 						<td><span rel="test:inlineWidget" data-name="BarWidget" data-ignored="B"></span></td>
 						<td>Quux</td>
 					</tr></table>`,
-				// TODO: Inline widgets should be compared as equal by the tree differ and rendered as context
 				expected: ve.dm.example.singleLine`
 					<table><tr>
-						<td></td>
-						<td></td>
+						<td><span rel="test:inlineWidget" data-name="FooWidget" data-ignored="B"></span></td>
+						<td><span rel="test:inlineWidget" data-name="BarWidget" data-ignored="B"></span></td>
 						<td><p data-diff-action="remove">Baz</p><p data-diff-action="insert">Quux</p></td>
 					</tr></table>`
 			},
