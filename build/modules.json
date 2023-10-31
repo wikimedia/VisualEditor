@@ -4,6 +4,11 @@
 			"lib/socket.io-client/socket.io.min.js"
 		]
 	},
+	"peerjs": {
+		"scripts": [
+			"lib/peerjs/peerjs.min.js"
+		]
+	},
 	"jquery": {
 		"scripts": [
 			"lib/jquery/jquery.js"
@@ -959,7 +964,8 @@
 			"jsdifflib",
 			"qunit",
 			"visualEditor.desktop.standalone.apex",
-			"visualEditor.rebase"
+			"visualEditor.rebase",
+			"visualEditor.collab"
 		]
 	},
 	"visualEditor.theme.apex": {
@@ -1091,6 +1097,29 @@
 			"visualEditor.standalone.wikimediaui.dist"
 		]
 	},
+	"visualEditor.collab": {
+		"scripts": [
+			"rebaser/src/dm/ve.dm.RebaseDocState.js",
+			"rebaser/src/dm/ve.dm.RebaseServer.js",
+			"rebaser/src/dm/ve.dm.DocumentStore.js",
+			"rebaser/src/dm/ve.dm.ProtocolServer.js",
+			"src/dm/ve.dm.RebaseClient.js",
+			"src/dm/ve.dm.SurfaceSynchronizer.js",
+			"src/ui/widgets/ve.ui.AuthorItemWidget.js",
+			"src/ui/tools/ve.ui.AuthorListPopupTool.js",
+			"src/ve.FakePeer.js",
+			"collab/ve.collab.js",
+			"collab/ve.dm.CollabTransportServer.js"
+		],
+		"styles": [
+			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.css"
+		],
+		"styleGroup": "read",
+		"dependencies": [
+			"color-picker",
+			"peerjs"
+		]
+	},
 	"visualEditor.standalone.demo": {
 		"scripts": [
 			"demos/ve/ve.demo.js",
@@ -1099,7 +1128,10 @@
 		"styles": [
 			"demos/ve/demo.css"
 		],
-		"styleGroup": "read"
+		"styleGroup": "read",
+		"dependencies": [
+			"visualEditor.collab"
+		]
 	},
 	"visualEditor.desktop.standalone.demo": {
 		"scripts": [

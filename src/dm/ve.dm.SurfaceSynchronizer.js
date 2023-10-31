@@ -3,6 +3,7 @@
  *
  * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
  */
+
 /* global io */
 
 /**
@@ -44,27 +45,57 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.paused = false;
 
 	// SocketIO events
-	var path = ( config.server || '' );
-	var options = {
-		query: {
-			docName: this.documentId,
-			authorId: this.getAuthorId() || '',
-			token: this.token || ''
-		},
-		transports: [ 'websocket' ]
-	};
-	this.conn = {
-		socket: io( path, options ),
-		on: function ( type, handler ) {
-			this.socket.on( type, handler );
-		},
-		send: function ( type, data ) {
-			this.socket.emit( type, data );
-		},
-		disconnect: function () {
-			this.socket.disconnect();
-		}
-	};
+	var conn;
+	if ( config.peerConnection ) {
+		conn = {
+			peerConnection: config.peerConnection,
+			handlers: new Map(),
+			on: function ( type, handler ) {
+				if ( !this.handlers.has( type ) ) {
+					this.handlers.set( type, [] );
+				}
+				this.handlers.get( type ).push( handler );
+			},
+			send: function ( type, data ) {
+				this.peerConnection.send( { type: type, data: ve.collab.serialize( data ) } );
+			},
+			disconnect: function () {
+				this.peerConnection.close();
+			}
+		};
+		conn.peerConnection.on( 'data', function ( data ) {
+			var type = data.type;
+			if ( typeof type !== 'string' ) {
+				throw new Error( 'Expected .type in <' + data + '>' );
+			}
+			( conn.handlers.get( type ) || [] ).forEach( function ( handler ) {
+				handler( data.data );
+			} );
+		} );
+	} else {
+		var path = ( config.server || '' );
+		var options = {
+			query: {
+				docName: this.documentId,
+				authorId: this.getAuthorId() || '',
+				token: this.token || ''
+			},
+			transports: [ 'websocket' ]
+		};
+		conn = {
+			socket: io( path, options ),
+			on: function ( type, handler ) {
+				this.socket.on( type, handler );
+			},
+			send: function ( type, data ) {
+				this.socket.emit( type, data );
+			},
+			disconnect: function () {
+				this.socket.disconnect();
+			}
+		};
+	}
+	this.conn = conn;
 	this.conn.on( 'registered', this.onRegistered.bind( this ) );
 	this.conn.on( 'initDoc', this.onInitDoc.bind( this ) );
 	this.conn.on( 'newChange', this.onNewChange.bind( this ) );
