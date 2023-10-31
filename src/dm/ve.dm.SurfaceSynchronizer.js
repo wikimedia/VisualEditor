@@ -202,7 +202,8 @@ ve.dm.SurfaceSynchronizer.prototype.submitChange = function () {
 ve.dm.SurfaceSynchronizer.prototype.sendChange = function ( backtrack, change ) {
 	this.conn.send( 'submitChange', {
 		backtrack: this.backtrack,
-		change: change
+		// Serialize (don't rely on the transport to perform implicit serialization)
+		change: change.serialize()
 	} );
 };
 
