@@ -236,8 +236,7 @@ ve.ui.Surface.prototype.destroy = function () {
  * @chainable
  */
 ve.ui.Surface.prototype.initialize = function () {
-	// Attach globalOverlay to the global <body>, not the local frame's <body>
-	$( document.body ).append( this.globalOverlay.$element );
+	$( OO.ui.getTeleportTarget() ).append( this.globalOverlay.$element );
 
 	if ( ve.debug ) {
 		this.setupDebugBar();
