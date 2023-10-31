@@ -41,15 +41,7 @@ ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
 	if ( !this.node.isDiffedAsTree() && !otherNode.node.isDiffedAsTree() ) {
 		return ve.dm.VisualDiff.static.compareNodes( this.node, otherNode.node );
 	} else {
-		// TODO: Use ve.dm.ElementLinearData.static.compareElements?
-		if ( this.node.getType() !== otherNode.node.getType() ) {
-			return false;
-		}
-		var hashObject = this.node.getHashObject();
-		var otherHashObject = otherNode.node.getHashObject();
-		delete hashObject.originalDomElementsHash;
-		delete otherHashObject.originalDomElementsHash;
-		return ve.compare( hashObject, otherHashObject );
+		return ve.dm.ElementLinearData.static.compareElementsUnannotated( this.node.element, otherNode.node.element );
 	}
 };
 
