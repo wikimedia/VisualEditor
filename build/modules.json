@@ -1110,7 +1110,9 @@
 			"src/ui/tools/ve.ui.AuthorListPopupTool.js",
 			"src/ve.FakePeer.js",
 			"collab/ve.collab.js",
-			"collab/ve.dm.CollabTransportServer.js"
+			"collab/ve.dm.CollabTransportServer.js",
+			"collab/ve.ui.CollabProcessDialog.js",
+			"collab/ve.ui.CollabTool.js"
 		],
 		"styles": [
 			"src/ui/styles/widgets/ve.ui.AuthorItemWidget.css"

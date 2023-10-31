@@ -135,3 +135,79 @@ ve.collab.connectModelSynchronizer = function () {
 		pause: 'onSynchronizerPause'
 	} );
 };
+
+ve.collab.validateSessionUrl = function ( sessionUrl ) {
+	var u = new URL( sessionUrl );
+	var m = u.hash.match( /^#collabSession=(.*)/ );
+	if ( !m ) {
+		return '';
+	}
+	if (
+		u.protocol !== location.protocol ||
+		u.host !== location.host ||
+		u.pathname !== location.pathname
+	) {
+		return null;
+	}
+	return m[ 1 ];
+};
+
+ve.collab.setup = function () {
+	if ( location.hash.match( /^#collabSession=/ ) ) {
+		var serverId = ve.collab.validateSessionUrl( location.toString() );
+		if ( serverId ) {
+			// Valid session URL
+			ve.collab.start( serverId );
+			return;
+		}
+		if ( serverId === null ) {
+			// Invalid session URL
+			OO.ui.alert( 'Session URL does not match this page' );
+		}
+	}
+	ve.init.target.constructor.static.toolbarGroups = ve.copy(
+		ve.init.target.constructor.static.toolbarGroups
+	);
+	ve.init.target.constructor.static.toolbarGroups.push(
+		{ name: 'collab', include: [ 'collab' ] }
+	);
+	ve.init.target.getToolbar().setup(
+		ve.init.target.constructor.static.toolbarGroups,
+		ve.init.target.surface
+	);
+};
+
+/**
+ * Top-level function to host or join a collab session
+ *
+ * @param {string} [serverId] Id of session to join; undefined means host a new session
+ */
+ve.collab.start = function ( serverId ) {
+	if ( serverId ) {
+		// Join an existing session
+		ve.init.target.surface.dialogs.openWindow( 'joinCollabDialog' ).closing.then( function ( val ) {
+			if ( val !== 'accept' ) {
+				return;
+			}
+			ve.collab.initPeerClient( serverId );
+		} );
+		return;
+	}
+	// Else host a new session
+	ve.init.target.surface.dialogs.openWindow( 'hostCollabDialog' ).closing.then( function ( val ) {
+		if ( val !== 'accept' ) {
+			return;
+		}
+		ve.collab.initPeerServer();
+		var url = location.protocol + '//' + location.host + location.pathname;
+		ve.collab.peerServer.peer.on( 'open', function ( newId ) {
+			var copyTextLayout = new OO.ui.CopyTextLayout( {
+				copyText: url + '#collabSession=' + newId
+			} );
+			OO.ui.alert( copyTextLayout.$element, {
+				title: OO.ui.msg( 'visualeditor-collab-copy-title' ),
+				size: 'medium'
+			} );
+		} );
+	} );
+};
