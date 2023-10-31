@@ -1535,6 +1535,28 @@ QUnit.test( 'Diffing', function ( assert ) {
 				`
 			},
 			{
+				msg: 'Comparable widgets in table cells',
+				oldDoc: ve.dm.example.singleLine`
+					<table><tr>
+						<td><span rel="test:inlineWidget" data-name="FooWidget" data-ignored="A"></span></td>
+						<td><span rel="test:inlineWidget" data-name="BarWidget" data-ignored="A"></span></td>
+						<td>Baz</td>
+					</tr></table>`,
+				newDoc: ve.dm.example.singleLine`
+					<table><tr>
+						<td><span rel="test:inlineWidget" data-name="FooWidget" data-ignored="B"></span></td>
+						<td><span rel="test:inlineWidget" data-name="BarWidget" data-ignored="B"></span></td>
+						<td>Quux</td>
+					</tr></table>`,
+				// TODO: Inline widgets should be compared as equal by the tree differ and rendered as context
+				expected: ve.dm.example.singleLine`
+					<table><tr>
+						<td></td>
+						<td></td>
+						<td><p data-diff-action="remove">Baz</p><p data-diff-action="insert">Quux</p></td>
+					</tr></table>`
+			},
+			{
 				msg: 'Adjacent inline node removed with common prefix modified',
 				oldDoc: '<p>foo bar <!--whee--><!--wibble--></p>',
 				newDoc: '<p>foo quux bar <!--whee--></p>',
