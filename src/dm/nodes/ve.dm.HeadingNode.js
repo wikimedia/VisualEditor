@@ -66,7 +66,7 @@ ve.dm.HeadingNode.static.describeChange = function ( key, change ) {
 		);
 	}
 	// Parent method
-	return ve.dm.HeadingNode.parent.static.describeChange.apply( this, arguments );
+	return ve.dm.HeadingNode.super.static.describeChange.apply( this, arguments );
 };
 
 /* Registration */

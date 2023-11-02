@@ -78,7 +78,7 @@ ve.dm.LanguageAnnotation.static.describeChange = function ( key, change ) {
 	}
 
 	// Parent method
-	return ve.dm.LanguageAnnotation.parent.static.describeChange.apply( this, arguments );
+	return ve.dm.LanguageAnnotation.super.static.describeChange.apply( this, arguments );
 };
 
 /* Methods */

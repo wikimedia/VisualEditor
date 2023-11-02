@@ -67,7 +67,7 @@ ve.dm.ListNode.static.describeChange = function ( key, change ) {
 		);
 	}
 	// Parent method
-	return ve.dm.ListNode.parent.static.describeChange.apply( this, arguments );
+	return ve.dm.ListNode.super.static.describeChange.apply( this, arguments );
 };
 
 /* Methods */

@@ -44,7 +44,7 @@ ve.ui.DiffDialog.static.actions = [
  */
 ve.ui.DiffDialog.prototype.initialize = function () {
 	// Parent method
-	ve.ui.DiffDialog.parent.prototype.initialize.apply( this, arguments );
+	ve.ui.DiffDialog.super.prototype.initialize.apply( this, arguments );
 
 	this.diffElement = null;
 
@@ -86,7 +86,7 @@ ve.ui.DiffDialog.prototype.getReadyProcess = function ( data ) {
  */
 ve.ui.DiffDialog.prototype.setDimensions = function () {
 	// Parent method
-	ve.ui.DiffDialog.parent.prototype.setDimensions.apply( this, arguments );
+	ve.ui.DiffDialog.super.prototype.setDimensions.apply( this, arguments );
 
 	if ( !this.positioning ) {
 		this.positionDiffElement();

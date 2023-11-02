@@ -57,7 +57,7 @@ ve.dm.LinkAnnotation.static.describeChange = function ( key, change ) {
 		}
 	}
 	// Parent method
-	return ve.dm.LinkAnnotation.parent.static.describeChange.apply( this, arguments );
+	return ve.dm.LinkAnnotation.super.static.describeChange.apply( this, arguments );
 };
 
 /**
