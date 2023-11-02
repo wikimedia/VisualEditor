@@ -123,8 +123,6 @@ ve.init.Target.static.toolbarGroups = [
 	},
 	{
 		name: 'style',
-		header: OO.ui.deferMsg( 'visualeditor-toolbar-text-style' ),
-		title: OO.ui.deferMsg( 'visualeditor-toolbar-style-tooltip' ),
 		include: [ 'bold', 'italic', 'moreTextStyle' ]
 	},
 	{
@@ -162,6 +160,7 @@ ve.init.Target.static.toolbarGroups = [
 		align: 'after',
 		icon: 'menu',
 		indicator: null,
+		header: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
 		title: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
 		label: OO.ui.deferMsg( 'visualeditor-pagemenu-tooltip' ),
 		invisibleLabel: true,

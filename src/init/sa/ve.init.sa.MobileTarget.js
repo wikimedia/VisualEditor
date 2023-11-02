@@ -29,6 +29,8 @@ OO.inheritClass( ve.init.sa.MobileTarget, ve.init.sa.Target );
 
 ve.init.sa.MobileTarget.static.toolbarGroups = [
 	{
+		// Message visualeditor-toolbar-history exists in case we want
+		// to make this a list group in future, to expose 'redo'.
 		name: 'history',
 		include: [ 'undo' ]
 	},
