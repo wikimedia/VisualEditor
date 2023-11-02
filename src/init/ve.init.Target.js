@@ -166,6 +166,9 @@ ve.init.Target.static.toolbarGroups = [
 		invisibleLabel: true,
 		include: [ { group: 'utility' }, { group: 'help' } ]
 	}
+	// ve-mw puts help in a separate group and so uses the
+	// visualeditor-help-tool message.
+	// TODO: Consider downstreaming this message.
 ];
 
 /**
