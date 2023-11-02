@@ -56,14 +56,37 @@ ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
 	return [ doc.createElement( tag ) ];
 };
 
+ve.dm.ListNode.static.describeChanges = function ( attributeChanges, attributes, element ) {
+	attributeChanges = ve.copy( attributeChanges );
+	if ( 'listType' in attributeChanges ) {
+		var mapped = false;
+		[ 'from', 'to' ].forEach( function ( fromOrTo ) {
+			if ( attributeChanges.listType[ fromOrTo ] === 'definitionList' ) {
+				attributeChanges.style[ fromOrTo ] = 'indent';
+				mapped = true;
+			}
+		} );
+		if ( mapped ) {
+			delete attributeChanges.listType;
+		}
+	}
+	// Parent method
+	return ve.dm.ListNode.super.static.describeChanges.call( this, attributeChanges, attributes, element );
+};
+
 ve.dm.ListNode.static.describeChange = function ( key, change ) {
 	if ( key === 'style' ) {
+		var messageKeys = {
+			bullet: 'visualeditor-listbutton-bullet-tooltip',
+			number: 'visualeditor-listbutton-number-tooltip',
+			indent: 'visualeditor-changedesc-list-style-indent'
+		};
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
-			// The following messages are used here:
-			// * visualeditor-listbutton-bullet-tooltip
-			// * visualeditor-listbutton-number-tooltip
-			this.wrapText( 'del', ve.msg( 'visualeditor-listbutton-' + change.from + '-tooltip' ) ),
-			this.wrapText( 'ins', ve.msg( 'visualeditor-listbutton-' + change.to + '-tooltip' ) )
+			// Message keys documented above
+			// eslint-disable-next-line mediawiki/msg-doc
+			this.wrapText( 'del', ve.msg( messageKeys[ change.from ] ) ),
+			// eslint-disable-next-line mediawiki/msg-doc
+			this.wrapText( 'ins', ve.msg( messageKeys[ change.to ] ) )
 		);
 	}
 	// Parent method

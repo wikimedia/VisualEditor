@@ -52,6 +52,7 @@
 	"visualeditor-changedesc-link-removed": "Link removed: $1",
 	"visualeditor-changedesc-list-indent": "List item indentation increased",
 	"visualeditor-changedesc-list-outdent": "List item indentation decreased",
+	"visualeditor-changedesc-list-style-indent": "Indent",
 	"visualeditor-changedesc-no-key": "$1 changed to $2",
 	"visualeditor-changedesc-set": "$1 set to $2",
 	"visualeditor-changedesc-textstyle-added": "Text styling added: $1",

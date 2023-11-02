@@ -1404,6 +1404,42 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'List item indentation and change from indent to bullet',
+				oldDoc: '<dl><dd>foo</dd><dd>bar</dd></dl>',
+				newDoc: '<dl><dd>foo</dd><dd><ul><li>bar</li></ul></dd></dl>',
+				expected: ve.dm.example.singleLine`
+					<dl>
+						<dd data-diff-list-none="">
+							<p data-diff-action="none">foo</p>
+							<ul data-diff-id="1"><li data-diff-id="0"><p data-diff-action="structural-change">bar</p></li></ul>
+						</dd>
+					</dl>
+				`,
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-list-indent</div>',
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-changedesc-list-style-indent</del>,<ins>visualeditor-listbutton-bullet-tooltip</ins></div>'
+				]
+			},
+			{
+				msg: 'List item deindentation and change from bullet to indent',
+				oldDoc: '<dl><dd>foo</dd><dd><ul><li>bar</li></ul></dd></dl>',
+				newDoc: '<dl><dd>foo</dd><dd>bar</dd></dl>',
+				expected: ve.dm.example.singleLine`
+					<dl data-diff-id="1">
+						<dd data-diff-list-none="">
+							<p data-diff-action="none">foo</p>
+						</dd>
+						<dd data-diff-id="0">
+							<p data-diff-action="structural-change">bar</p>
+						</dd>
+					</dl>
+				`,
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-list-outdent</div>',
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-changedesc-list-style-indent</ins></div>'
+				]
+			},
+			{
 				msg: 'Full list replacement',
 				oldDoc: '<ul><li>one</li><li>two</li><li>three</li></ul>',
 				newDoc: '<ul><li>four</li><li>five</li><li>six</li></ul>',

@@ -546,7 +546,7 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
 		var oldMetadata = oldFlatList.metadata[ i ];
 		var newMetadata = newFlatList.metadata[ j ];
 
-		var listNodeAttributeChange = this.diffAttributes( oldMetadata.listNode, newMetadata.listNode );
+		var listNodeAttributeChange = this.diffAttributes( oldMetadata.listNode, newMetadata.listNode, 'listType' );
 		var listItemAttributeChange = this.diffAttributes( oldMetadata.listItem, newMetadata.listItem );
 		var depthChange = oldMetadata.depth === newMetadata.depth ? false :
 			{
@@ -758,17 +758,24 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
  *
  * @param {ve.dm.Node} oldNode Node from the old document
  * @param {ve.dm.Node} newNode Node from the new document
+ * @param {string} [diffTypeAsAttribute] Diff the type of the node as an attribute with this name
  * @return {Object|boolean} The attributes diff, or false if unchanged
  */
-ve.dm.VisualDiff.prototype.diffAttributes = function ( oldNode, newNode ) {
+ve.dm.VisualDiff.prototype.diffAttributes = function ( oldNode, newNode, diffTypeAsAttribute ) {
+	var oldAttributes = oldNode.getAttributes();
+	var newAttributes = newNode.getAttributes();
+	if ( diffTypeAsAttribute ) {
+		oldAttributes[ diffTypeAsAttribute ] = oldNode.getType();
+		newAttributes[ diffTypeAsAttribute ] = newNode.getType();
+	}
 	var attributesUnchanged = ve.compare( oldNode.getAttributes(), newNode.getAttributes() );
 
 	if ( attributesUnchanged ) {
 		return false;
 	}
 	return {
-		oldAttributes: oldNode.getAttributes(),
-		newAttributes: newNode.getAttributes()
+		oldAttributes: oldAttributes,
+		newAttributes: newAttributes
 	};
 };
 
