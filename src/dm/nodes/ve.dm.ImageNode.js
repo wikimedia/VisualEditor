@@ -80,6 +80,9 @@ ve.dm.ImageNode.static.describeChange = function ( key, change ) {
 			// * visualeditor-align-desc-left
 			// * visualeditor-align-desc-right
 			// * visualeditor-align-desc-center
+			// Also used in ve-mw (consider downstreaming these messages)
+			// * visualeditor-align-desc-default
+			// * visualeditor-align-desc-none
 			return ve.htmlMsg( 'visualeditor-changedesc-align',
 				this.wrapText( 'del', ve.msg( 'visualeditor-align-desc-' + change.from ) ),
 				this.wrapText( 'ins', ve.msg( 'visualeditor-align-desc-' + change.to ) )
