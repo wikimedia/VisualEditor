@@ -13,6 +13,7 @@
 			"Saehrimnir",
 			"Se4598",
 			"TMg",
+			"ThisCarthing",
 			"Tobi 406",
 			"Tomabrafix"
 		]
@@ -76,6 +77,7 @@
 	"visualeditor-commentannotationcontextitem-comment": "Kommentieren",
 	"visualeditor-commentinspector-title": "Kommentar",
 	"visualeditor-commentinspector-tooltip": "Kommentar",
+	"visualeditor-completionwidget-noresults": "Keine Ergebnisse",
 	"visualeditor-content-select-all": "Alle auswählen",
 	"visualeditor-contextitemwidget-label-close": "Schließen",
 	"visualeditor-contextitemwidget-label-remove": "Entfernen",

@@ -67,7 +67,7 @@
 	"visualeditor-changedesc-comment": "Samenvatting gewijzigd van $1 naar $2",
 	"visualeditor-changedesc-comment-diff": "Reactie gewijzigd: $1",
 	"visualeditor-changedesc-image-size": "Grootte is gewijzigd van $1 naar $2",
-	"visualeditor-changedesc-language": "Taal is gewijzigd van $1 naar $2",
+	"visualeditor-changedesc-language": "Taal gewijzigd vanuit het $1 in het $2",
 	"visualeditor-changedesc-link-added": "Koppeling toegevoegd: $1",
 	"visualeditor-changedesc-link-href": "Doel van koppeling is gewijzigd van $1 naar $2",
 	"visualeditor-changedesc-link-href-diff": "Koppelingsdoel gewijzigd: $1",
