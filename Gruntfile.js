@@ -346,8 +346,7 @@ module.exports = function ( grunt ) {
 				'!dist/**',
 				'!docs/**',
 				'!lib/**',
-				'!node_modules/**',
-				'!rebaser/node_modules/**'
+				'!**/node_modules/**'
 			]
 		},
 		stylelint: {
