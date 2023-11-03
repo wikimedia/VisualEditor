@@ -226,7 +226,6 @@
 	"visualeditor-specialcharacter-group-set-accents": "This is a JSON string defining accent special characters that can be inserted using the special character insertion tool. It is not used in the MediaWiki version of VisualEditor.\n{{doc-important|Please make sure it is a valid JSON string.}}\n{{Optional}}",
 	"visualeditor-specialcharacter-group-set-mathematical": "This is a JSON string defining mathematical special characters that can be inserted using the special character insertion tool. It is not used in the MediaWiki version of VisualEditor.\n{{doc-important|Please make sure it is a valid JSON string.}}\n{{Optional}}",
 	"visualeditor-specialcharacter-group-set-symbols": "This is a JSON string defining symbol special characters that can be inserted using the special character insertion tool. It is not used in the MediaWiki version of VisualEditor.\n{{doc-important|Please make sure it is a valid JSON string.}}\n{{Optional}}",
-	"visualeditor-table-caption": "Label for table caption tool\n{{Identical|Caption}}",
 	"visualeditor-table-context-col": "Accessibility label for the menu of options for a table column.",
 	"visualeditor-table-context-row": "Accessibility label for the menu of options for a table row.",
 	"visualeditor-table-contextitem-properties": "Label for the properties button in the table context\n{{Identical|Property}}",
