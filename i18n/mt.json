@@ -19,14 +19,11 @@
 	"visualeditor-clipboard-copy": "Ikkopja",
 	"visualeditor-dialog-action-apply": "Applika t-tibdiliet",
 	"visualeditor-dialog-action-goback": "Mur lura",
-	"visualeditor-dialog-error": "Xi ħaġa marret ħażin...",
-	"visualeditor-dialog-error-dismiss": "Mur lura",
 	"visualeditor-dialog-language-auto-direction": "Awtomatika",
 	"visualeditor-dialog-language-search-title": "Agħżel lingwa",
 	"visualeditor-formatdropdown-format-heading-label": "Intestatura (1-6)",
 	"visualeditor-formatdropdown-format-paragraph": "Paragrafu",
 	"visualeditor-help-tool": "Għajnuna",
-	"visualeditor-inspector-close-tooltip": "Agħlaq",
 	"visualeditor-inspector-remove-tooltip": "Neħħi",
 	"visualeditor-language-search-input-placeholder": "Sib lingwa skont l-isem jew il-kodiċi",
 	"visualeditor-languageinspector-title": "Lingwa",
@@ -45,7 +42,6 @@
 	"visualeditor-shortcuts-text-style": "Ifformattjar tat-test",
 	"visualeditor-slug-insert": "Daħħal paragrafu",
 	"visualeditor-specialcharacter-button-tooltip": "Karattru speċjali",
-	"visualeditor-specialcharacterinspector-title": "Karattru speċjali",
 	"visualeditor-toolbar-format-tooltip": "Format tal-paragrafu",
 	"visualeditor-toolbar-insert": "Daħħal"
 }

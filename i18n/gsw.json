@@ -27,13 +27,11 @@
 	"visualeditor-formatdropdown-format-heading6": "Iberschrift 6",
 	"visualeditor-formatdropdown-format-paragraph": "Absatz",
 	"visualeditor-formatdropdown-format-preformatted": "Vorformatiert",
-	"visualeditor-formatdropdown-title": "Format ändere",
 	"visualeditor-help-tool": "Hilf",
 	"visualeditor-historybutton-redo-tooltip": "Widerhole",
 	"visualeditor-historybutton-undo-tooltip": "Rugggängig mache",
 	"visualeditor-indentationbutton-indent-tooltip": "Yyzug vergreßere",
 	"visualeditor-indentationbutton-outdent-tooltip": "Yyzug verchleinere",
-	"visualeditor-inspector-close-tooltip": "Zuemache",
 	"visualeditor-inspector-remove-tooltip": "Uuseneh",
 	"visualeditor-languageinspector-title": "Sproch",
 	"visualeditor-languageinspector-widget-changelang": "Sproch ändere",
@@ -44,6 +42,5 @@
 	"visualeditor-listbutton-bullet-tooltip": "Lischt mit Ufzellig",
 	"visualeditor-listbutton-number-tooltip": "Nummerierti Lischt",
 	"visualeditor-specialcharacter-button-tooltip": "Sunderzeiche",
-	"visualeditor-specialcharacterinspector-title": "Sunderzeiche",
 	"visualeditor-toolbar-insert": "Yyfiege"
 }

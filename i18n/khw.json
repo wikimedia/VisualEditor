@@ -21,7 +21,6 @@
 	"visualeditor-formatdropdown-format-paragraph": "پیرا",
 	"visualeditor-help-tool": "مدد",
 	"visualeditor-historybutton-undo-tooltip": "آچی(Undo)",
-	"visualeditor-inspector-close-tooltip": "باند",
 	"visualeditor-inspector-remove-tooltip": "ڈیلیٹ کورے",
 	"visualeditor-languageinspector-title": "زبان",
 	"visualeditor-languageinspector-widget-label-language": "زبان",
@@ -29,7 +28,6 @@
 	"visualeditor-shortcuts-history": "تاریخچہ",
 	"visualeditor-shortcuts-other": "دیگر/خور",
 	"visualeditor-specialcharacter-button-tooltip": "خاص حروف",
-	"visualeditor-specialcharacterinspector-title": "خاص حروف",
 	"visualeditor-toolbar-history": "تاریخچہ",
 	"visualeditor-toolbar-insert": "درج کورے"
 }

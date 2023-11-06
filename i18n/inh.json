@@ -39,8 +39,6 @@
 	"visualeditor-dialog-action-goback": "Юха",
 	"visualeditor-dialog-action-insert": "ДIачудаккха",
 	"visualeditor-dialog-command-help-title": "Лакаш тарадалар",
-	"visualeditor-dialog-error": "Харцахьа хилар цхьа хIама",
-	"visualeditor-dialog-error-dismiss": "Юха",
 	"visualeditor-dialog-language-auto-direction": "Авто",
 	"visualeditor-dialog-language-search-title": "Хьахаржа мотт",
 	"visualeditor-dialog-table-caption": "Кулг яздар",
@@ -68,18 +66,15 @@
 	"visualeditor-formatdropdown-format-heading6": "Кепакорта 6",
 	"visualeditor-formatdropdown-format-paragraph": "ЦIе мугI",
 	"visualeditor-formatdropdown-format-preformatted": "Преформатированни",
-	"visualeditor-formatdropdown-title": "Хувца формат",
 	"visualeditor-help-tool": "Новкъoстал",
 	"visualeditor-historybutton-redo-tooltip": "Юхадоаладе",
 	"visualeditor-historybutton-undo-tooltip": "Юхадаккха",
 	"visualeditor-indentationbutton-indent-tooltip": "Доккхаде юхавалар",
 	"visualeditor-indentationbutton-outdent-tooltip": "КIезигаде юхавалар",
-	"visualeditor-inspector-close-tooltip": "ДIакъовла",
 	"visualeditor-inspector-remove-tooltip": "ДIаяккха",
 	"visualeditor-language-search-input-placeholder": "Лаха метта цӀерах е цун кодах",
 	"visualeditor-languageinspector-title": "Мотт",
 	"visualeditor-languageinspector-widget-changelang": "Лаха мотт",
 	"visualeditor-linkinspector-title": "Тӏатовжам",
-	"visualeditor-specialcharacter-button-tooltip": "ЛаьрххIа дола хьарак",
-	"visualeditor-specialcharacterinspector-title": "ЛаьрххIа дола хьарак"
+	"visualeditor-specialcharacter-button-tooltip": "ЛаьрххIа дола хьарак"
 }

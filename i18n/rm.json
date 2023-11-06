@@ -33,13 +33,11 @@
 	"visualeditor-formatdropdown-format-heading6": "Titel 6",
 	"visualeditor-formatdropdown-format-paragraph": "Paragraf",
 	"visualeditor-formatdropdown-format-preformatted": "Preformatà",
-	"visualeditor-formatdropdown-title": "Modifitgar il format",
 	"visualeditor-help-tool": "Agid",
 	"visualeditor-historybutton-redo-tooltip": "Restabilir",
 	"visualeditor-historybutton-undo-tooltip": "Revocar",
 	"visualeditor-indentationbutton-indent-tooltip": "Augmentar l'incisiun",
 	"visualeditor-indentationbutton-outdent-tooltip": "Diminuir l'incisiun",
-	"visualeditor-inspector-close-tooltip": "Serrar",
 	"visualeditor-inspector-remove-tooltip": "Allontanar",
 	"visualeditor-languageinspector-title": "Lingua",
 	"visualeditor-languageinspector-widget-changelang": "Tschertgar lingua",
@@ -56,6 +54,5 @@
 	"visualeditor-shortcuts-other": "Auters",
 	"visualeditor-shortcuts-text-style": "Formataziun dal text",
 	"visualeditor-specialcharacter-button-tooltip": "Caracter spezial",
-	"visualeditor-specialcharacterinspector-title": "Caracter spezial",
 	"visualeditor-toolbar-insert": "Inserir"
 }
