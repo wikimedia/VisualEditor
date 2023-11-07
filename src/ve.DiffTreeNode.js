@@ -39,13 +39,9 @@ OO.inheritClass( ve.DiffTreeNode, treeDiffer.TreeNode );
  */
 ve.DiffTreeNode.prototype.isEqual = function ( otherNode ) {
 	if ( !this.node.isDiffedAsTree() && !otherNode.node.isDiffedAsTree() ) {
-		var nodeRange = this.node.getOuterRange();
-		var otherNodeRange = otherNode.node.getOuterRange();
-		// Optimization: Most nodes we compare are different, so do a quick check
-		// on the range length first.
-		return nodeRange.getLength() === otherNodeRange.getLength() &&
-			JSON.stringify( this.doc.getData( nodeRange ) ) === JSON.stringify( otherNode.doc.getData( otherNodeRange ) );
+		return ve.dm.VisualDiff.static.compareNodes( this.node, otherNode.node );
 	} else {
+		// TODO: Use ve.dm.ElementLinearData.static.compareElements?
 		if ( this.node.getType() !== otherNode.node.getType() ) {
 			return false;
 		}
