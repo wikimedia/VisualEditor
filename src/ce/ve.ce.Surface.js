@@ -854,7 +854,7 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 			classes.push( 've-ce-surface-selections-deactivated-showAsDeactivated' );
 		}
 		if ( isCollapsed ) {
-			classes.push( 've-ce-surface-selections-deactivated-collapse' );
+			classes.push( 've-ce-surface-selections-deactivated-collapsed' );
 		}
 		this.drawSelections( 'deactivated', [ selection ], {
 			color: textColor,
