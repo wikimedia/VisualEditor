@@ -259,6 +259,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			}
 			surfaceModel.setSelection( selection );
 
+			// Generates ve-ce-surface-selections-findResults CSS class
 			surfaceView.drawSelections( 'findResults', [] );
 			this.fragments = [];
 			this.surface = null;
@@ -448,6 +449,7 @@ ve.ui.FindAndReplaceDialog.prototype.renderRangeOfFragments = function ( range )
 			this.surface.getView().getSelection( this.fragments[ i ].getSelection() )
 		);
 	}
+	// Generates ve-ce-surface-selections-findResults CSS class
 	this.surface.getView().drawSelections( 'findResults', selections );
 	this.isClipped = range.getLength() < this.results;
 	this.highlightFocused();

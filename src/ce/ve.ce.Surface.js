@@ -856,11 +856,13 @@ ve.ce.Surface.prototype.updateDeactivatedSelection = function () {
 		if ( isCollapsed ) {
 			classes.push( 've-ce-surface-selections-deactivated-collapsed' );
 		}
+		// Generates ve-ce-surface-selections-deactivated CSS class
 		this.drawSelections( 'deactivated', [ selection ], {
 			color: textColor,
 			wrapperClass: classes.join( ' ' )
 		} );
 	} else {
+		// Generates ve-ce-surface-selections-deactivated CSS class
 		this.drawSelections( 'deactivated', [] );
 	}
 };
