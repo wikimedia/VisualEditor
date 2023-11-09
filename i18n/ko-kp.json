@@ -78,7 +78,6 @@
 	"visualeditor-shortcuts-text-style": "본문 서식",
 	"visualeditor-slug-insert": "단락 끼워넣기",
 	"visualeditor-specialcharacter-button-tooltip": "특수문자",
-	"visualeditor-table-caption": "설명",
 	"visualeditor-table-contextitem-properties": "속성",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|렬}} 삭제",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|행}} 삭제",

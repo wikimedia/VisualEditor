@@ -97,7 +97,6 @@
 	"visualeditor-shortcuts-text-style": "எழுத்தழகு",
 	"visualeditor-slug-insert": "பத்தியை இடு",
 	"visualeditor-specialcharacter-button-tooltip": "சிறப்புக் குறியீடு",
-	"visualeditor-table-caption": "தலைப்பு",
 	"visualeditor-table-delete-col": "நீக்கு {{PLURAL:$1|column|columns}}‎",
 	"visualeditor-table-delete-row": "நீக்கு {{PLURAL:$1|row|rows}}",
 	"visualeditor-table-format-data": "உள்ளடக்க சிற்றறை",

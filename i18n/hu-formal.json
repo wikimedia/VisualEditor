@@ -79,7 +79,6 @@
 	"visualeditor-shortcuts-text-style": "Szöveg stílus",
 	"visualeditor-slug-insert": "Bekezdés beszúrása",
 	"visualeditor-specialcharacter-button-tooltip": "Speciális karakter",
-	"visualeditor-table-caption": "Felirat",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|Oszlop|Oszlopok}} törlése",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|Sor|Sorok}} törlése",
 	"visualeditor-table-format-header": "Fejléc cella",

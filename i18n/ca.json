@@ -159,7 +159,6 @@
 	"visualeditor-shortcuts-text-style": "Estil del text",
 	"visualeditor-slug-insert": "Insereix un paràgraf",
 	"visualeditor-specialcharacter-button-tooltip": "Caràcter especial",
-	"visualeditor-table-caption": "Llegenda",
 	"visualeditor-table-contextitem-properties": "Propietats",
 	"visualeditor-table-delete-col": "Suprimeix {{PLURAL:$1|columna|columnes}}",
 	"visualeditor-table-delete-row": "Suprimeix {{PLURAL:$1|fila|files}}",

@@ -108,7 +108,6 @@
 	"visualeditor-shortcuts-text-style": "Estil del tèxte",
 	"visualeditor-slug-insert": "Inserir un paragraf",
 	"visualeditor-specialcharacter-button-tooltip": "Caractèr especial",
-	"visualeditor-table-caption": "Legenda",
 	"visualeditor-table-contextitem-properties": "Proprietats",
 	"visualeditor-table-delete-col": "Suprimir {{PLURAL:$1|la colomna|las colomnas}}",
 	"visualeditor-table-delete-row": "Suprimir {{PLURAL:$1|la linha|las linhas}}",

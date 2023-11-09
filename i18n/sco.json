@@ -100,7 +100,6 @@
 	"visualeditor-shortcuts-text-style": "Tex stylin",
 	"visualeditor-slug-insert": "Insert paragraph",
 	"visualeditor-specialcharacter-button-tooltip": "Byordinair chairacter",
-	"visualeditor-table-caption": "Caption",
 	"visualeditor-table-delete-col": "Get rid o {{PLURAL:$1|column|columns}}",
 	"visualeditor-table-delete-row": "Get rid o {{PLURAL:$1|raw|raws}}",
 	"visualeditor-table-format-data": "Content cell",

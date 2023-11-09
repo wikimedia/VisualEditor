@@ -106,7 +106,6 @@
 	"visualeditor-shortcuts-text-style": "字體樣式",
 	"visualeditor-slug-insert": "加新段",
 	"visualeditor-specialcharacter-button-tooltip": "特別字元",
-	"visualeditor-table-caption": "題",
 	"visualeditor-table-contextitem-properties": "屬性",
 	"visualeditor-table-delete-col": "刪{{PLURAL:$1|列}}",
 	"visualeditor-table-delete-row": "刪{{PLURAL:$1|行}}",

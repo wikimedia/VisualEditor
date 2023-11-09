@@ -158,7 +158,6 @@
 	"visualeditor-shortcuts-text-style": "Testuaren formatua",
 	"visualeditor-slug-insert": "Txertatu paragrafoa",
 	"visualeditor-specialcharacter-button-tooltip": "Karaktere berezia",
-	"visualeditor-table-caption": "Irudi testua",
 	"visualeditor-table-contextitem-properties": "Propietateak",
 	"visualeditor-table-delete-col": "Ezabatu {{PLURAL:$1|zutabea|zutabeak}}",
 	"visualeditor-table-delete-row": "Ezabatu {{PLURAL:$1|errenkada|errenkadak}}",

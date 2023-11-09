@@ -96,7 +96,6 @@
 	"visualeditor-shortcuts-text-style": "文本樣式",
 	"visualeditor-slug-insert": "插入段落",
 	"visualeditor-specialcharacter-button-tooltip": "特殊字符",
-	"visualeditor-table-caption": "標題",
 	"visualeditor-table-contextitem-properties": "屬性",
 	"visualeditor-table-delete-col": "刪除{{PLURAL:$1|列}}",
 	"visualeditor-table-delete-row": "刪除{{PLURAL:$1|行}}",

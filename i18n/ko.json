@@ -190,7 +190,6 @@
 	"visualeditor-shortcuts-text-style": "텍스트 서식",
 	"visualeditor-slug-insert": "절 넣기",
 	"visualeditor-specialcharacter-button-tooltip": "특수 문자",
-	"visualeditor-table-caption": "캡션",
 	"visualeditor-table-contextitem-properties": "속성",
 	"visualeditor-table-delete-col": "{{PLURAL:$1|열}} 삭제",
 	"visualeditor-table-delete-row": "{{PLURAL:$1|행}} 삭제",
