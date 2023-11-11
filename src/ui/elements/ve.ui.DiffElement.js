@@ -998,10 +998,16 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 			} );
 		}
 
-		// Record the index to splice in the next list item data into the diffData
-		insertIndex = diffElement.appendListItem(
-			diffData, insertIndex, listNode, listNodeData, listItemData, depthChange
-		);
+		if ( item.metadata.isContinued ) {
+			ve.batchSplice( diffData, insertIndex - 1, 0, contentData );
+			insertIndex += contentData.length;
+
+		} else {
+			// Record the index to splice in the next list item data into the diffData
+			insertIndex = diffElement.appendListItem(
+				diffData, insertIndex, listNode, listNodeData, listItemData, depthChange
+			);
+		}
 
 		depth = newDepth;
 	} );

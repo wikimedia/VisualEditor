@@ -597,10 +597,17 @@ ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
  * Appends information for each list item to a flat list object. Will be called
  * once for each list node within a nested list.
  *
+ * Only nested lists at the end of list items are flattened.
+ *
  * If a list item contains a non-list node that contains a list, that list will
- * not get flattened out. If a list item contains more than one identical list
+ * not get flattened out. A list node followed by a non-list node will not be
+ * flattened out either. If a list item contains more than one identical list
  * node, they will be flattened out to the same depth, and the information that
  * they were separate lists will be lost.
+ *
+ * If a list item contains more than one un-flattened node, each one of them
+ * will be treated as a separate list item when flattened, but the original
+ * items will be put back together later. (T345891)
  *
  * @param {ve.dm.Node} listNode A list node, possibly nested inside another list
  * @param {Object} flatList Flat structure describing the entire list
@@ -611,17 +618,36 @@ ve.dm.VisualDiff.prototype.flattenList = function ( listNode, flatList, depth ) 
 
 	for ( var i = 0, ilen = listItems.length; i < ilen; i++ ) {
 		var listItem = listItems[ i ];
+
 		// If listItem has no children, make the item itself the contents (e.g. an AlienBlockNode in a list)
-		var listContents = listItem.children || [ listItem ];
+		if ( !listItem.children ) {
+			flatList.metadata.push( {
+				listNode: listNode,
+				listItem: listItem,
+				depth: depth
+			} );
+			flatList.nodes.push( listItem );
+			continue;
+		}
+
+		var listContents = listItem.children;
+
+		// Find the first sub-list
+		var firstListIndex = listContents.length;
+		while ( firstListIndex >= 1 && listContents[ firstListIndex - 1 ].isDiffedAsList() ) {
+			firstListIndex--;
+		}
+
 		for ( var j = 0, jlen = listContents.length; j < jlen; j++ ) {
 			var listContent = listContents[ j ];
-			if ( listContent.isDiffedAsList() ) {
+			if ( j >= firstListIndex ) {
 				this.flattenList( listContent, flatList, depth + 1 );
 			} else {
 				flatList.metadata.push( {
 					listNode: listNode,
 					listItem: listItem,
-					depth: depth
+					depth: depth,
+					isContinued: j > 0
 				} );
 				flatList.nodes.push( listContent );
 			}

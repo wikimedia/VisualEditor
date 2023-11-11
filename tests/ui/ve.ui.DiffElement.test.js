@@ -1695,6 +1695,21 @@ QUnit.test( 'Diffing', function ( assert ) {
 				`
 			},
 			{
+				msg: 'Change in multi-paragraph list item (T345891)',
+				oldDoc: '<ul><li><p>a</p><p>b</p><p>c</p></li></ul>',
+				newDoc: '<ul><li><p>a</p><p>x</p><p>c</p></li></ul>',
+				expected: ve.dm.example.singleLine`
+					<ul>
+						<li data-diff-list-none="">
+							<p data-diff-action="none">a</p>
+							<p data-diff-action="remove">b</p>
+							<p data-diff-action="insert">x</p>
+							<p data-diff-action="none">c</p>
+						</li>
+					</ul>
+				`
+			},
+			{
 				msg: 'Header attribute change in list',
 				oldDoc: '<ul><li><h2>Foo</h2></li></ul>',
 				newDoc: '<ul><li><h3>Foo</h3></li></ul>',
