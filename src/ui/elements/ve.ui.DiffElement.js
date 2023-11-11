@@ -619,9 +619,6 @@ ve.ui.DiffElement.prototype.getChangedLeafNodeData = function ( newNode, diff ) 
  */
 ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, listNode, listNodeData, listItemData, depthChange ) {
 	if ( depthChange === 0 ) {
-		// List node itself may have been modified
-		ve.batchSplice( diffData, 0, 1, listNodeData );
-
 		// Current list item belongs to the same list as the previous list item
 		ve.batchSplice( diffData, insertIndex, 0, listItemData );
 		insertIndex += listItemData.length;
@@ -828,15 +825,12 @@ ve.ui.DiffElement.prototype.iterateDiff = function ( diff, callbacks ) {
  * @return {Array} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, diff ) {
-	var diffData = this.constructor.static.getDataFromNode( newListNode ),
+	var diffData = [],
 		diffElement = this;
-
-	// Keep only the root list node
-	ve.batchSplice( diffData, 1, diffData.length - 2, [] );
 
 	// These will be adjusted for each item
 	var insertIndex = 1;
-	var depth = 0;
+	var depth = -1;
 	var lastListNode = null;
 	var listNodeData;
 
@@ -985,6 +979,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 			[ 'listNodeAttributeChange', 'depthChange', 'listItemAttributeChange' ].forEach( function ( listChangeType ) {
 				if ( item.diff.attributeChange[ listChangeType ] ) {
 					var change = diffElement.compareNodeAttributes(
+						// TODO: listNodeData may not be used if we're not starting a new list
 						listChangeType === 'listNodeAttributeChange' ?
 							listNodeData :
 							listItemData,
