@@ -982,7 +982,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 
 		// Check for attribute changes
 		if ( item.diff && item.diff.attributeChange ) {
-			[ 'depthChange', 'listNodeAttributeChange', 'listItemAttributeChange' ].forEach( function ( listChangeType ) {
+			[ 'listNodeAttributeChange', 'depthChange', 'listItemAttributeChange' ].forEach( function ( listChangeType ) {
 				if ( item.diff.attributeChange[ listChangeType ] ) {
 					var change = diffElement.compareNodeAttributes(
 						listChangeType === 'listNodeAttributeChange' ?
