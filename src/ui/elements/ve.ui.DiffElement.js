@@ -976,21 +976,30 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 
 		// Check for attribute changes
 		if ( item.diff && item.diff.attributeChange ) {
+			var attributeChange = {
+				oldAttributes: {},
+				newAttributes: {}
+			};
+
 			[ 'listNodeAttributeChange', 'depthChange', 'listItemAttributeChange' ].forEach( function ( listChangeType ) {
 				if ( item.diff.attributeChange[ listChangeType ] ) {
-					var change = diffElement.compareNodeAttributes(
+					if ( listChangeType === 'listNodeAttributeChange' ) {
 						// TODO: listNodeData may not be used if we're not starting a new list
-						listChangeType === 'listNodeAttributeChange' ?
-							listNodeData :
-							listItemData,
-						0,
-						item.diff.attributeChange[ listChangeType ]
-					);
-					if ( change ) {
-						diffElement.descriptionItemsStack.push( change );
+						var change = diffElement.compareNodeAttributes( listNodeData, 0, item.diff.attributeChange[ listChangeType ] );
+						if ( change ) {
+							diffElement.descriptionItemsStack.push( change );
+						}
+					} else {
+						ve.extendObject( attributeChange.oldAttributes, item.diff.attributeChange[ listChangeType ].oldAttributes );
+						ve.extendObject( attributeChange.newAttributes, item.diff.attributeChange[ listChangeType ].newAttributes );
 					}
 				}
 			} );
+
+			var listItemChange = diffElement.compareNodeAttributes( listItemData, 0, attributeChange );
+			if ( listItemChange ) {
+				diffElement.descriptionItemsStack.push( listItemChange );
+			}
 		}
 
 		if ( item.metadata.isContinued ) {

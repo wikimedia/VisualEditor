@@ -1437,7 +1437,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				`,
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-no-key,<del>visualeditor-changedesc-list-style-indent</del>,<ins>visualeditor-listbutton-bullet-tooltip</ins></div>',
-					'<div>visualeditor-changedesc-list-indent</div>'
+					'<div>visualeditor-changedesc-list-indent</div>' +
+						'<div>visualeditor-changedesc-unset,style,<del>definition</del></div>'
 				]
 			},
 			{
@@ -1457,7 +1458,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				`,
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-changedesc-list-style-indent</ins></div>',
-					'<div>visualeditor-changedesc-list-outdent</div>'
+					'<div>visualeditor-changedesc-list-outdent</div>' +
+						'<div>visualeditor-changedesc-set,style,<ins>definition</ins></div>'
 				]
 			},
 			{
@@ -1523,6 +1525,24 @@ QUnit.test( 'Diffing', function ( assert ) {
 				`,
 				expectedDescriptions: [
 					'<div>visualeditor-changedesc-changed,style,<del>term</del>,<ins>definition</ins></div>'
+				]
+			},
+			{
+				msg: 'List item node type change with indentation',
+				oldDoc: '<dl><dt>Bar</dt></dl>',
+				newDoc: '<dl><dd><dl><dd>Bar</dd></dl></dd></dl>',
+				expected: ve.dm.example.singleLine`
+					<dl>
+						<dd>
+							<dl>
+								<dd data-diff-id="0"><p data-diff-action="structural-change">Bar</p></dd>
+							</dl>
+						</dd>
+					</dl>
+				`,
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-list-indent</div>' +
+						'<div>visualeditor-changedesc-changed,style,<del>term</del>,<ins>definition</ins></div>'
 				]
 			},
 			{
