@@ -1523,14 +1523,12 @@ QUnit.test( 'Diffing', function ( assert ) {
 						<li value="1"><p data-diff-action="structural-change">Foo</p>
 							<ul><li data-diff-id="1"><p data-diff-action="structural-change">Bar</p></li></ul>
 						</li>
-						<li value="2" data-diff-id="2"><p data-diff-action="structural-change">Baz</p></li>
+						<li value="2"><p data-diff-action="structural-change">Baz</p></li>
 					</ol>
 				`,
 				expectedDescriptions: [
-					// TODO: This should show only one list node type change
 					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>',
-					'<div>visualeditor-changedesc-list-indent</div>',
-					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-listbutton-number-tooltip</ins></div>'
+					'<div>visualeditor-changedesc-list-indent</div>'
 				]
 			},
 			{
