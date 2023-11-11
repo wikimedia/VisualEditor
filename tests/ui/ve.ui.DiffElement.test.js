@@ -1407,7 +1407,6 @@ QUnit.test( 'Diffing', function ( assert ) {
 				msg: 'List item deindentation from numbered list to bullet',
 				oldDoc: '<ul><li>Foo<ol><li>Bar</li><li>Baz</li></ol></li></ul>',
 				newDoc: '<ul><li>Foo<ol><li>Bar</li></ol></li><li>Baz</li></ul>',
-				// TODO Where is data-diff-id="0"? (it's clobbered by the listSpacerOpen)
 				expected: ve.dm.example.singleLine`
 					<ul>
 						${listSpacerOpen}
@@ -1415,12 +1414,12 @@ QUnit.test( 'Diffing', function ( assert ) {
 								<li value="1" data-diff-list-none><p data-diff-action="none">Bar</p></li>
 							</ol>
 						</li>
-						<li data-diff-id="1"><p data-diff-action="structural-change">Baz</p></li>
+						<li data-diff-id="0"><p data-diff-action="structural-change">Baz</p></li>
 					</ul>
 				`,
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-number-tooltip</del>,<ins>visualeditor-listbutton-bullet-tooltip</ins></div>',
-					'<div>visualeditor-changedesc-list-outdent</div>'
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-number-tooltip</del>,<ins>visualeditor-listbutton-bullet-tooltip</ins></div>' +
+						'<div>visualeditor-changedesc-list-outdent</div>'
 				]
 			},
 			{
@@ -1445,21 +1444,19 @@ QUnit.test( 'Diffing', function ( assert ) {
 				msg: 'List item deindentation and change from bullet to indent',
 				oldDoc: '<dl><dd>foo</dd><dd><ul><li>bar</li></ul></dd></dl>',
 				newDoc: '<dl><dd>foo</dd><dd>bar</dd></dl>',
-				// TODO Where is data-diff-id="0"? (it's on the removed <ul> node)
 				expected: ve.dm.example.singleLine`
 					<dl>
 						<dd data-diff-list-none="">
 							<p data-diff-action="none">foo</p>
 						</dd>
-						<dd data-diff-id="1">
+						<dd data-diff-id="0">
 							<p data-diff-action="structural-change">bar</p>
 						</dd>
 					</dl>
 				`,
 				expectedDescriptions: [
-					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-changedesc-list-style-indent</ins></div>',
-					'<div>visualeditor-changedesc-list-outdent</div>' +
-						'<div>visualeditor-changedesc-set,style,<ins>definition</ins></div>'
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-changedesc-list-style-indent</ins></div>' +
+						'<div>visualeditor-changedesc-list-outdent</div>'
 				]
 			},
 			{
@@ -1495,6 +1492,29 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'List node type change from bullet to indent (only works in nested lists)',
+				oldDoc: '<ol><li><ul><li>Foo</li><li>Bar</li><li>Baz</li></ul></li></ol>',
+				newDoc: '<ol><li><dl><dd>Foo</dd><dd>Bar</dd><dd>Baz</dd></dl></li></ol>',
+				expected: ve.dm.example.singleLine`
+					<ol>
+						<li>
+							<dl data-diff-id="0">
+								<dd data-diff-id="1"><p data-diff-action="structural-change">Foo</p></dd>
+								<dd data-diff-id="2"><p data-diff-action="structural-change">Bar</p></dd>
+								<dd data-diff-id="3"><p data-diff-action="structural-change">Baz</p></dd>
+							</dl>
+						</li>
+					</ol>
+				`,
+				expectedDescriptions: [
+					'<div>visualeditor-changedesc-no-key,<del>visualeditor-listbutton-bullet-tooltip</del>,<ins>visualeditor-changedesc-list-style-indent</ins></div>',
+					// TODO These should not appear when changing from bullet or numbered list
+					'<div>visualeditor-changedesc-set,style,<ins>definition</ins></div>',
+					'<div>visualeditor-changedesc-set,style,<ins>definition</ins></div>',
+					'<div>visualeditor-changedesc-set,style,<ins>definition</ins></div>'
+				]
+			},
+			{
 				msg: 'List node type change with indentation',
 				oldDoc: '<ul><li>Foo</li><li>Bar</li><li>Baz</li></ul>',
 				newDoc: '<ol><li>Foo<ul><li>Bar</li></ul></li><li>Baz</li></ol>',
@@ -1503,7 +1523,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						<li value="1"><p data-diff-action="structural-change">Foo</p>
 							<ul><li data-diff-id="1"><p data-diff-action="structural-change">Bar</p></li></ul>
 						</li>
-						<li value="2"><p data-diff-action="structural-change">Baz</p></li>
+						<li value="2" data-diff-id="2"><p data-diff-action="structural-change">Baz</p></li>
 					</ol>
 				`,
 				expectedDescriptions: [

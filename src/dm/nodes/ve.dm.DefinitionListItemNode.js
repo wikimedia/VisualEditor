@@ -45,6 +45,15 @@ ve.dm.DefinitionListItemNode.static.toDomElements = function ( dataElement, doc 
 	return [ doc.createElement( tag ) ];
 };
 
+// Nodes which are diffed as a list must have the same description logic as each other
+ve.dm.DefinitionListItemNode.static.describeChanges = function () {
+	return ve.dm.ListNode.static.describeChanges.apply( this, arguments );
+};
+
+ve.dm.DefinitionListItemNode.static.describeChange = function () {
+	return ve.dm.ListNode.static.describeChange.apply( this, arguments );
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.DefinitionListItemNode );
