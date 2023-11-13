@@ -1341,6 +1341,25 @@ QUnit.test( 'Diffing', function ( assert ) {
 				]
 			},
 			{
+				msg: 'List item insertion in a nested list with different type (T324354)',
+				oldDoc: '<ul><li>foo<dl><dd>a</dd></dl></li></ul>',
+				newDoc: '<ul><li>bar<dl><dd>a</dd><dd>b</dd></dl></li></ul>',
+				expected: ve.dm.example.singleLine`
+					<ul>
+						<li>
+							<p data-diff-action="remove">foo</p>
+						</li>
+						<li>
+							<p data-diff-action="insert">bar</p>
+							<dl>
+								<dd data-diff-list-none><p data-diff-action="none">a</p></dd>
+								<dd><p data-diff-action="insert">b</p></dd>
+							</dl>
+						</li>
+					</ul>
+				`
+			},
+			{
 				msg: 'List item indentation',
 				oldDoc: '<ol><li>foo</li><li>bar</li><li>baz</li></ol>',
 				newDoc: '<ol><li>foo<ol><li>bar</li></ol></li><li>baz</li></ol>',
@@ -1425,8 +1444,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				msg: 'List item deindentation and change from bullet to indent',
 				oldDoc: '<dl><dd>foo</dd><dd><ul><li>bar</li></ul></dd></dl>',
 				newDoc: '<dl><dd>foo</dd><dd>bar</dd></dl>',
+				// TODO Where is data-diff-id="0"? (it's on the removed <ul> node)
 				expected: ve.dm.example.singleLine`
-					<dl data-diff-id="0">
+					<dl>
 						<dd data-diff-list-none="">
 							<p data-diff-action="none">foo</p>
 						</dd>
@@ -1556,8 +1576,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<ul><li><ul><li><ul><li>Foo</li></ul></li></ul></li></ul>',
 				newDoc: '<ul><li><ul><li><ul><li>Foo bar</li></ul></li></ul></li></ul>',
 				expected:
-					// TODO: The rendered list has the wrong depth and a re-parented <ul>
-					'<ul><li><ul><li>Foo<ins data-diff-action="insert"> bar</ins></li></ul></li></ul><ul></ul>'
+					'<ul><li><ul><li><ul><li>Foo<ins data-diff-action="insert"> bar</ins></li></ul></li></ul></li></ul>'
 			},
 			{
 				msg: 'Inline widget with same type but not diff comparable is marked as a remove/insert',
