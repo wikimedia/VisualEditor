@@ -75,12 +75,12 @@ ve.dm.ListNode.static.describeChanges = function ( attributeChanges, attributes,
 };
 
 ve.dm.ListNode.static.describeChange = function ( key, change ) {
-	if ( key === 'style' ) {
-		var messageKeys = {
-			bullet: 'visualeditor-listbutton-bullet-tooltip',
-			number: 'visualeditor-listbutton-number-tooltip',
-			indent: 'visualeditor-changedesc-list-style-indent'
-		};
+	var messageKeys = {
+		bullet: 'visualeditor-listbutton-bullet-tooltip',
+		number: 'visualeditor-listbutton-number-tooltip',
+		indent: 'visualeditor-changedesc-list-style-indent'
+	};
+	if ( key === 'style' && change.from in messageKeys && change.to in messageKeys ) {
 		return ve.htmlMsg( 'visualeditor-changedesc-no-key',
 			// Message keys documented above
 			// eslint-disable-next-line mediawiki/msg-doc

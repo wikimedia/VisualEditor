@@ -31,6 +31,15 @@ ve.dm.ListItemNode.static.parentNodeTypes = [ 'list' ];
 
 ve.dm.ListItemNode.static.matchTagNames = [ 'li' ];
 
+// Nodes which are diffed as a list must have the same description logic as each other
+ve.dm.ListItemNode.static.describeChanges = function () {
+	return ve.dm.ListNode.static.describeChanges.apply( this, arguments );
+};
+
+ve.dm.ListItemNode.static.describeChange = function () {
+	return ve.dm.ListNode.static.describeChange.apply( this, arguments );
+};
+
 /* Registration */
 
 ve.dm.modelRegistry.register( ve.dm.ListItemNode );

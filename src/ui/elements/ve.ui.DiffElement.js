@@ -832,6 +832,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 	var insertIndex = 1;
 	var depth = -1;
 	var lastListNode = null;
+	var listNodeAttributeChangeDone = false;
 	var listNodeData;
 
 	var listDiffItems = [];
@@ -945,6 +946,7 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 		if ( listNode !== lastListNode ) {
 			listNodeData = [ diffElement.constructor.static.getDataFromNode( listNode )[ 0 ] ];
 			lastListNode = listNode;
+			listNodeAttributeChangeDone = false;
 		}
 
 		var listItemNode = item.metadata.listItem;
@@ -983,13 +985,13 @@ ve.ui.DiffElement.prototype.getChangedListNodeData = function ( newListNode, dif
 
 			[ 'listNodeAttributeChange', 'depthChange', 'listItemAttributeChange' ].forEach( function ( listChangeType ) {
 				if ( item.diff.attributeChange[ listChangeType ] ) {
-					if ( listChangeType === 'listNodeAttributeChange' ) {
-						// TODO: listNodeData may not be used if we're not starting a new list
+					if ( listChangeType === 'listNodeAttributeChange' && depthChange > 0 ) {
 						var change = diffElement.compareNodeAttributes( listNodeData, 0, item.diff.attributeChange[ listChangeType ] );
 						if ( change ) {
 							diffElement.descriptionItemsStack.push( change );
+							listNodeAttributeChangeDone = true;
 						}
-					} else {
+					} else if ( listChangeType !== 'listNodeAttributeChange' || !listNodeAttributeChangeDone ) {
 						ve.extendObject( attributeChange.oldAttributes, item.diff.attributeChange[ listChangeType ].oldAttributes );
 						ve.extendObject( attributeChange.newAttributes, item.diff.attributeChange[ listChangeType ].newAttributes );
 					}
