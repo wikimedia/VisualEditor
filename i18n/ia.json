@@ -41,6 +41,7 @@
 	"visualeditor-changedesc-link-removed": "Ligamine removite: $1",
 	"visualeditor-changedesc-list-indent": "Indentation del elemento de lista augmentate",
 	"visualeditor-changedesc-list-outdent": "Indentation del elemento de lista reducite",
+	"visualeditor-changedesc-list-style-indent": "Indentation",
 	"visualeditor-changedesc-no-key": "$1 cambiate a $2",
 	"visualeditor-changedesc-set": "$1 mittite a $2",
 	"visualeditor-changedesc-textstyle-added": "Stilo de texto addite: $1",
