@@ -1,5 +1,5 @@
 Principal Authors (major contributors, alphabetically)
-
+Kevin Davenport <japottatweet97@gmail.com>
 Bartosz Dziewoński <matma.rex@gmail.com>
 C. Scott Ananian <cscott@cscott.net>
 Christian Williams <orbit@framezero.com>
