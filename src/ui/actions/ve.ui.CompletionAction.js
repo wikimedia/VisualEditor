@@ -183,7 +183,7 @@ ve.ui.CompletionAction.prototype.updateMenuItems = function ( menuItems ) {
  * @protected
  * @param  {Mixed[]} suggestions List of valid completions, strings by default
  * @param  {string} input Input to filter the suggestions to
- * @return {string[]}
+ * @return {Mixed[]}
  */
 ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggestions, input ) {
 	var action = this;
