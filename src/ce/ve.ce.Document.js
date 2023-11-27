@@ -197,7 +197,9 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 			1,
 			{
 				noDescend: noDescend,
-				stop: function () { return true; }
+				stop: function () {
+					return true;
+				}
 			}
 		);
 		var step = position.steps[ 0 ];

@@ -2606,7 +2606,7 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 					assert.deepEqual(
 						ve.getOffsetPath( rootElement, selection.anchorNode, selection.anchorOffset ),
 						caseItem.expected[ i ],
-						`Path at ${i} in ${caseItem.msg}`
+						`Path at ${ i } in ${ caseItem.msg }`
 					);
 				}
 				// Check that this doesn't throw exceptions

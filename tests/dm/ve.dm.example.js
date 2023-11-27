@@ -272,7 +272,7 @@ ve.dm.example.image = {
 
 ve.dm.example.blockImage = {
 	html: ve.dm.example.singleLine`
-		<figure class="ve-align-right"><img src="${ve.dm.example.imgSrc}" alt="Example" width="100" height="50">
+		<figure class="ve-align-right"><img src="${ ve.dm.example.imgSrc }" alt="Example" width="100" height="50">
 			<figcaption>foo <b style="color:red;">red</b></figcaption>
 		</figure>
 	`,
@@ -301,11 +301,11 @@ ve.dm.example.blockImage = {
 	],
 	ceHtml: ve.dm.example.singleLine`
 		<figure class="ve-ce-branchNode ve-ce-focusableNode ve-ce-imageNode ve-ce-blockImageNode" contenteditable="false">
-			<img src="${ve.dm.example.imgSrc}" alt="Example" style="width: 100px; height: 50px;">
+			<img src="${ ve.dm.example.imgSrc }" alt="Example" style="width: 100px; height: 50px;">
 			<figcaption class="ve-ce-branchNode ve-ce-activeNode" contenteditable="true" spellcheck="true">
 				<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">
 					foo
-					 <b style="color:red;" class="${ve.dm.example.textStyleClasses} ve-ce-boldAnnotation">red</b>
+					 <b style="color:red;" class="${ ve.dm.example.textStyleClasses } ve-ce-boldAnnotation">red</b>
 				</p>
 			</figcaption>
 		</figure>
@@ -321,7 +321,7 @@ ve.dm.example.blockImage = {
 ve.dm.example.html = ve.dm.example.singleLine`
 	<h1>a<b>b</b><i>c</i></h1>
 	<table>
-		${/* Implicit <tbody> */''}
+		${ /* Implicit <tbody> */'' }
 		<tr>
 			<td>
 				<p>d</p>
@@ -343,7 +343,7 @@ ve.dm.example.html = ve.dm.example.singleLine`
 			</td>
 		</tr>
 	</table>
-	<pre>h${ve.dm.example.image.html}i</pre>
+	<pre>h${ ve.dm.example.image.html }i</pre>
 	<dl>
 		<dt>
 			<p>j</p>
@@ -1259,7 +1259,7 @@ ve.dm.example.annotatedTable = [
 ve.dm.example.figcaptionHtml = ve.dm.example.singleLine`
 	<p>a</p>
 	<figure>
-		${ve.dm.example.image.html}
+		${ ve.dm.example.image.html }
 		<figcaption><p>b</p></figcaption>
 	</figure>
 	<p>c</p>
@@ -1414,9 +1414,9 @@ ve.dm.example.domToDataCases = {
 		],
 		ceHtml: ve.dm.example.singleLine`
 			<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">
-				<b class="${ve.dm.example.textStyleClasses} ve-ce-boldAnnotation">a</b>
-				<i class="${ve.dm.example.textStyleClasses} ve-ce-italicAnnotation">b</i>
-				<u class="${ve.dm.example.textStyleClasses} ve-ce-underlineAnnotation">c</u>
+				<b class="${ ve.dm.example.textStyleClasses } ve-ce-boldAnnotation">a</b>
+				<i class="${ ve.dm.example.textStyleClasses } ve-ce-italicAnnotation">b</i>
+				<u class="${ ve.dm.example.textStyleClasses } ve-ce-underlineAnnotation">c</u>
 			</p>
 		`
 	},
@@ -1575,8 +1575,8 @@ ve.dm.example.domToDataCases = {
 		],
 		ceHtml: ve.dm.example.singleLine`
 			<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">
-				<time class="${ve.dm.example.textStyleClasses} ve-ce-datetimeAnnotation">a</time>
-				<time class="${ve.dm.example.textStyleClasses} ve-ce-datetimeAnnotation">b</time>
+				<time class="${ ve.dm.example.textStyleClasses } ve-ce-datetimeAnnotation">a</time>
+				<time class="${ ve.dm.example.textStyleClasses } ve-ce-datetimeAnnotation">b</time>
 			</p>
 		`
 	},
@@ -1637,15 +1637,15 @@ ve.dm.example.domToDataCases = {
 		],
 		ceHtml: ve.dm.example.singleLine`
 			<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">
-				<abbr class="${ve.dm.example.textStyleClasses} ve-ce-abbreviationAnnotation">a</abbr>
-				<var class="${ve.dm.example.textStyleClasses} ve-ce-variableAnnotation">b</var>
-				<kbd class="${ve.dm.example.textStyleClasses} ve-ce-userInputAnnotation">c</kbd>
-				<q class="${ve.dm.example.textStyleClasses} ve-ce-quotationAnnotation">d</q>
-				<samp class="${ve.dm.example.textStyleClasses} ve-ce-codeSampleAnnotation">e</samp>
-				<dfn class="${ve.dm.example.textStyleClasses} ve-ce-definitionAnnotation">f</dfn>
-				<mark class="${ve.dm.example.textStyleClasses} ve-ce-highlightAnnotation">g</mark>
-				<font class="${ve.dm.example.textStyleClasses} ve-ce-fontAnnotation">h</font>
-				<bdi class="${ve.dm.example.textStyleClasses} ve-ce-bidiAnnotation">i</bdi>
+				<abbr class="${ ve.dm.example.textStyleClasses } ve-ce-abbreviationAnnotation">a</abbr>
+				<var class="${ ve.dm.example.textStyleClasses } ve-ce-variableAnnotation">b</var>
+				<kbd class="${ ve.dm.example.textStyleClasses } ve-ce-userInputAnnotation">c</kbd>
+				<q class="${ ve.dm.example.textStyleClasses } ve-ce-quotationAnnotation">d</q>
+				<samp class="${ ve.dm.example.textStyleClasses } ve-ce-codeSampleAnnotation">e</samp>
+				<dfn class="${ ve.dm.example.textStyleClasses } ve-ce-definitionAnnotation">f</dfn>
+				<mark class="${ ve.dm.example.textStyleClasses } ve-ce-highlightAnnotation">g</mark>
+				<font class="${ ve.dm.example.textStyleClasses } ve-ce-fontAnnotation">h</font>
+				<bdi class="${ ve.dm.example.textStyleClasses } ve-ce-bidiAnnotation">i</bdi>
 			</p>
 		`
 	},
@@ -1673,7 +1673,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		ceHtml: ve.dm.example.singleLine`
-			${ve.dm.example.blockSlug}
+			${ ve.dm.example.blockSlug }
 			<ul class="ve-ce-branchNode ve-ce-checkListNode">
 				<li class="ve-ce-branchNode ve-ce-checkListItemNode ve-ce-checkListItemNode-checked">
 					<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">foo</p>
@@ -1718,10 +1718,10 @@ ve.dm.example.domToDataCases = {
 		],
 		ceHtml: ve.dm.example.singleLine`
 			<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">
-				${ve.dm.example.inlineSlug}
+				${ ve.dm.example.inlineSlug }
 				<img class="ve-ce-leafNode ve-ce-focusableNode ve-ce-imageNode ve-ce-inlineImageNode" contenteditable="false" alt="Example"
-			 	 src="${ve.dm.example.imgSrc}" style="width: 100px; height: 50px;">
-				${ve.dm.example.inlineSlug}
+				 src="${ ve.dm.example.imgSrc }" style="width: 100px; height: 50px;">
+				${ ve.dm.example.inlineSlug }
 			</p>
 		`
 	},
@@ -1755,7 +1755,7 @@ ve.dm.example.domToDataCases = {
 			) );
 		},
 		normalizedBody: ve.dm.example.singleLine`
-			<figure class="ve-align-right"><img src="${ve.dm.example.imgSrc}" width="100" height="50" alt="Example">
+			<figure class="ve-align-right"><img src="${ ve.dm.example.imgSrc }" width="100" height="50" alt="Example">
 				<figcaption>
 					<b>foo</b> <b style="color:red;">red</b>
 				</figcaption>
@@ -1896,21 +1896,21 @@ ve.dm.example.domToDataCases = {
 		previewBody: ve.dm.example.singleLine`
 			<p>
 				<b>
-					${ve.dm.example.commentNodePreview( 'foo' )}
+					${ ve.dm.example.commentNodePreview( 'foo' ) }
 					bar
-					${ve.dm.example.commentNodePreview( 'baz' )}
+					${ ve.dm.example.commentNodePreview( 'baz' ) }
 				</b>
 			</p>
 		`,
 		ceHtml: ve.dm.example.singleLine`
 			<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">
-				<b class="${ve.dm.example.textStyleClasses} ve-ce-boldAnnotation">
-					${ve.dm.example.inlineSlug}
+				<b class="${ ve.dm.example.textStyleClasses } ve-ce-boldAnnotation">
+					${ ve.dm.example.inlineSlug }
 					<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode" contenteditable="false"></span>
 					bar
 					<span class="ve-ce-leafNode ve-ce-focusableNode ve-ce-commentNode" contenteditable="false"></span>
 				</b>
-				${ve.dm.example.inlineSlug}
+				${ ve.dm.example.inlineSlug }
 			</p>
 		`
 	},
@@ -4250,19 +4250,19 @@ ve.dm.example.domToDataCases = {
 			{ type: '/internalList' }
 		],
 		ceHtml: ve.dm.example.singleLine`
-			${ve.dm.example.blockSlug}
+			${ ve.dm.example.blockSlug }
 			<center class="ve-ce-branchNode">
 				<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Foo</p>
 			</center>
-			${ve.dm.example.blockSlug}
+			${ ve.dm.example.blockSlug }
 			<div class="ve-ce-focusableNode ve-ce-horizontalRuleNode" contenteditable="false">
 				<hr class="ve-ce-leafNode">
 			</div>
-			${ve.dm.example.blockSlug}
+			${ ve.dm.example.blockSlug }
 			<blockquote class="ve-ce-branchNode">
 				<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">Bar</p>
 			</blockquote>
-			${ve.dm.example.blockSlug}
+			${ ve.dm.example.blockSlug }
 		`
 	}
 };
@@ -4466,7 +4466,7 @@ ve.dm.example.isolationData = [
 
 ve.dm.example.RDFaDoc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( ve.dm.example.singleLine`
 	<p content="b" datatype="c" resource="f" rev="g"
-		${/* Non-RDFa attribute */''}
+		${ /* Non-RDFa attribute */'' }
 		 class="i">
 		Foo
 	</p>

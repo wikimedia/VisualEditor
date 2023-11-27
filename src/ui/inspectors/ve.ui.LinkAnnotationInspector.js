@@ -47,7 +47,9 @@ ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
 		annotation = this.annotationInput.getAnnotation();
 
 	this.annotationInput.getTextInputWidget().getValidity()
-		.then( function () { isValid = true; } )
+		.then( function () {
+			isValid = true;
+		} )
 		.always( function () {
 			isValid = isValid && !!annotation;
 			inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, function ( action ) {

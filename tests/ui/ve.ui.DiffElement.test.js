@@ -142,7 +142,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					<p data-diff-action="remove">foo</p>
 					<p data-diff-action="insert">boo</p>
 					<p data-diff-action="none">bar</p>
-					${spacer}
+					${ spacer }
 				`
 			},
 			{
@@ -154,7 +154,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						<p data-diff-action="remove">foo</p>
 						<p data-diff-action="insert">boo</p>
 						<p data-diff-action="none">bar</p>
-						${spacer}
+						${ spacer }
 					</div>
 				`
 			},
@@ -163,9 +163,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
 				expected: ve.dm.example.singleLine`
-					${spacer}
+					${ spacer }
 					<h2 data-diff-action="none">context</h2>
-					${spacer}
+					${ spacer }
 					<p data-diff-action="none">bar</p>
 					<p data-diff-action="remove">baz</p>
 					<p data-diff-action="insert">baq</p>
@@ -177,9 +177,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<div><p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baq</p></div>',
 				expected: ve.dm.example.singleLine`
 					<div>
-						${spacer}
+						${ spacer }
 						<h2 data-diff-action="none">context</h2>
-						${spacer}
+						${ spacer }
 						<p data-diff-action="none">bar</p>
 						<p data-diff-action="remove">baz</p>
 						<p data-diff-action="insert">baq</p>
@@ -191,9 +191,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz quux whee</p>',
 				newDoc: '<p>lead</p><h2>context</h2><p>foo</p><p>bar</p><p>baz quux whee 123</p>',
 				expected: ve.dm.example.singleLine`
-					${spacer}
+					${ spacer }
 					<h2 data-diff-action="none">context</h2>
-					${spacer}
+					${ spacer }
 					<p data-diff-action="none">bar</p>
 					<p>baz quux whee<ins data-diff-action="insert"> 123</ins></p>
 				`
@@ -204,7 +204,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
 				expected: ve.dm.example.singleLine`
 					<h2 data-diff-action="none">context</h2>
-					${spacer}
+					${ spacer }
 					<p data-diff-action="none">bar</p>
 					<p data-diff-action="remove">baz</p>
 					<p data-diff-action="insert">baq</p>
@@ -227,9 +227,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baq</p>',
 				expected: ve.dm.example.singleLine`
-					${spacer}
+					${ spacer }
 					<h2 data-diff-action="none">context</h2>
-					${spacer}
+					${ spacer }
 					<p data-diff-action="none">bar</p>
 					<p data-diff-action="remove">baz</p>
 					<p data-diff-action="insert">baq</p>
@@ -244,7 +244,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					<p data-diff-action="remove">whee</p>
 					<p data-diff-action="insert">wheeb</p>
 					<h2 data-diff-action="none">context</h2>
-					${spacer}
+					${ spacer }
 				`
 			},
 			{
@@ -252,12 +252,12 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foob</p><p>bar</p><p>baz</p>',
 				expected: ve.dm.example.singleLine`
-					${spacer}
+					${ spacer }
 					<h2 data-diff-action="none">context</h2>
 					<p data-diff-action="remove">foo</p>
 					<p data-diff-action="insert">foob</p>
 					<p data-diff-action="none">bar</p>
-					${spacer}
+					${ spacer }
 				`
 			},
 			{
@@ -265,7 +265,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>barb</p><p>baz</p>',
 				expected: ve.dm.example.singleLine`
-					${spacer}
+					${ spacer }
 					<h2 data-diff-action="none">context</h2>
 					<p data-diff-action="none">foo</p>
 					<p data-diff-action="remove">bar</p>
@@ -278,11 +278,11 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: '<h2>first heading</h2><p>whee</p><h2>context</h2><p>foo</p><p>bar</p><p>baz</p>',
 				newDoc: '<h2>first heading</h2><p>whee</p><h2>context!</h2><p>foo</p><p>bar</p><p>baz</p>',
 				expected: ve.dm.example.singleLine`
-					${spacer}
+					${ spacer }
 					<p data-diff-action="none">whee</p>
 					<h2>context<ins data-diff-action="insert">!</del></h2>
 					<p data-diff-action="none">foo</p>
-					${spacer}
+					${ spacer }
 				`
 			},
 			{
@@ -436,7 +436,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected: ve.dm.example.singleLine`
 					<p>
 						foo bar
-						 <ins data-diff-action="insert">${comment( 'whee' )} </ins>
+						 <ins data-diff-action="insert">${ comment( 'whee' ) } </ins>
 						baz quux
 					</p>
 				`
@@ -448,7 +448,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected: ve.dm.example.singleLine`
 					<p>
 						foo bar
-						 <del data-diff-action="remove">${comment( 'whee' )} </del>
+						 <del data-diff-action="remove">${ comment( 'whee' ) } </del>
 						baz quux
 					</p>
 				`
@@ -460,8 +460,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected: ve.dm.example.singleLine`
 					<p>
 						foo bar
-						 <span data-diff-action="change-remove">${comment( 'whee' )}</span>
-						<span data-diff-action="change-insert" data-diff-id="0">${comment( 'wibble' )}</span>
+						 <span data-diff-action="change-remove">${ comment( 'whee' ) }</span>
+						<span data-diff-action="change-insert" data-diff-id="0">${ comment( 'wibble' ) }</span>
 						 baz quux
 					</p>
 				`,
@@ -1224,7 +1224,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected: ve.dm.example.singleLine`
 					<p>
 						foo bar
-						<ins data-diff-action="insert">${comment( 'comment' )}</ins>
+						<ins data-diff-action="insert">${ comment( 'comment' ) }</ins>
 						 baz
 					</p>
 				`
@@ -1236,7 +1236,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				expected: ve.dm.example.singleLine`
 					<p>
 						foo bar
-						<del data-diff-action="remove">${comment( 'comment' )}</del>
+						<del data-diff-action="remove">${ comment( 'comment' ) }</del>
 						 baz
 					</p>
 				`
@@ -1287,7 +1287,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					<ol>
 						<li value="1"><p data-diff-action="none" data-diff-move="up" data-diff-id="0">baz</p></li>
 						<li value="2" data-diff-list-none><p data-diff-action="none">foo</p></li>
-						${listSpacer}
+						${ listSpacer }
 					</ol>
 				`,
 				expectedDescriptions: [
@@ -1300,7 +1300,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ol><li>foo</li><li>baz</li><li>quux</li><li>bar</li></ol>',
 				expected: ve.dm.example.singleLine`
 					<ol>
-						${listSpacer}
+						${ listSpacer }
 						<li value="3" data-diff-list-none><p data-diff-action="none">quux</p></li>
 						<li value="4"><p data-diff-action="none" data-diff-move="down" data-diff-id="0">bar</p></li>
 					</ol>
@@ -1317,7 +1317,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 					<ol>
 						<li value="1"><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>
 						<li value="2" data-diff-list-none><p data-diff-action="none">foo</p></li>
-						${listSpacer}
+						${ listSpacer }
 					</ol>
 				`,
 				expectedDescriptions: [
@@ -1333,7 +1333,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 						<li value="1" data-diff-list-none><p data-diff-action="none">foo</p></li>
 						<li value="2"><p data-diff-move="up" data-diff-id="0">baz <del data-diff-action="remove">baz</del><ins data-diff-action="insert">bat</ins></p></li>
 						<li value="3" data-diff-list-none><p data-diff-action="none">bar</p></li>
-						${listSpacer}
+						${ listSpacer }
 					</ol>
 				`,
 				expectedDescriptions: [
@@ -1409,7 +1409,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ul><li>Foo<ol><li>Bar</li></ol></li><li>Baz</li></ul>',
 				expected: ve.dm.example.singleLine`
 					<ul>
-						${listSpacerOpen}
+						${ listSpacerOpen }
 							<ol>
 								<li value="1" data-diff-list-none><p data-diff-action="none">Bar</p></li>
 							</ol>
@@ -1593,9 +1593,9 @@ QUnit.test( 'Diffing', function ( assert ) {
 				newDoc: '<ul><li>one<ul><li>two<ul><li>three<ul><li>four ish</li></ul></li><li>five</li></ul></li><li>six</li></ul></li><li>seven</li></ul>',
 				expected: ve.dm.example.singleLine`
 					<ul>
-						${listSpacerOpen}
+						${ listSpacerOpen }
 							<ul>
-								${listSpacerOpen}
+								${ listSpacerOpen }
 									<ul>
 										<li data-diff-list-none><p data-diff-action="none">three</p>
 											<ul><li>four<ins data-diff-action="insert"> ish</ins></li></ul>
@@ -1603,7 +1603,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 										<li data-diff-list-none><p data-diff-action="none">five</p></li>
 									</ul>
 								</li>
-								${listSpacer}
+								${ listSpacer }
 							</ul>
 						</li>
 					</ul>
@@ -1657,8 +1657,8 @@ QUnit.test( 'Diffing', function ( assert ) {
 					<p>
 						foo
 						 <ins data-diff-action="insert">quux </ins>
-						bar ${comment( 'whee' )}
-						<del data-diff-action="remove">${comment( 'wibble' )}</del>
+						bar ${ comment( 'whee' ) }
+						<del data-diff-action="remove">${ comment( 'wibble' ) }</del>
 					</p>
 				`
 			},
@@ -1680,7 +1680,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				`,
 				expected: ve.dm.example.singleLine`
 					<ul>
-						${listSpacer}
+						${ listSpacer }
 						<li data-diff-list-none>
 							<p data-diff-action="none">bar baz quux whee one</p>
 							<ul>
@@ -1814,12 +1814,12 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: 'Hi<ref>Foo</ref><ref>Bar</ref><ref>Baz1</ref><ref>Baz2</ref><ref>Baz3</ref><ref>Baz4</ref>',
 				newDoc: 'Hi<ref>Foo 1</ref><ref>Baz1</ref><ref>Baz2</ref><ref>Baz3</ref><ref>Baz4</ref><ref>Quux</ref>',
 				expected: ve.dm.example.singleLine`
-					<p data-diff-action="none">Hi${'<ref></ref>'.repeat( 6 )}</p>
+					<p data-diff-action="none">Hi${ '<ref></ref>'.repeat( 6 ) }</p>
 					<ol>
 						<li value="1"><p>Foo<ins data-diff-action="insert"> 1</ins></p></li>
 						<li value="2"><p data-diff-action="remove">Bar</p></li>
 						<li value="2"><p data-diff-action="none">Baz1</p></li>
-						<li class="ve-ui-diffElement-internalListSpacer">${spacer}</li>
+						<li class="ve-ui-diffElement-internalListSpacer">${ spacer }</li>
 						<li value="5"><p data-diff-action="none">Baz4</p></li>
 						<li value="6"><p data-diff-action="insert">Quux</p></li>
 					</ol>
@@ -1856,7 +1856,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: 'Hi',
 				newDoc: 'Hi<ref>Foo</ref><ref>Bar</ref>',
 				expected: ve.dm.example.singleLine`
-					Hi<ins data-diff-action="insert">${'<ref></ref>'.repeat( 2 )}</ins>
+					Hi<ins data-diff-action="insert">${ '<ref></ref>'.repeat( 2 ) }</ins>
 					<ol>
 						<li value="1"><p data-diff-action="insert">Foo</p></li>
 						<li value="2"><p data-diff-action="insert">Bar</p></li>
@@ -1868,7 +1868,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 				oldDoc: 'Hi<ref>Foo</ref><ref>Bar</ref>',
 				newDoc: 'Hi',
 				expected: ve.dm.example.singleLine`
-					Hi<del data-diff-action="remove">${'<ref></ref>'.repeat( 2 )}</del>
+					Hi<del data-diff-action="remove">${ '<ref></ref>'.repeat( 2 ) }</del>
 					<ol>
 						<li value="1"><p data-diff-action="remove">Foo</p></li>
 						<li value="2"><p data-diff-action="remove">Bar</p></li>

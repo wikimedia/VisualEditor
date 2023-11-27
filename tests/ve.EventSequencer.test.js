@@ -51,17 +51,31 @@ QUnit.test( 'EventSequencer', function ( assert ) {
 	var calls = [];
 
 	var sequencer = new ve.TestEventSequencer( [ 'event1', 'event2', 'event3' ] ).on( {
-		event1: function () { calls.push( 'on1' ); },
-		event3: function () { calls.push( 'on3' ); }
+		event1: function () {
+			calls.push( 'on1' );
+		},
+		event3: function () {
+			calls.push( 'on3' );
+		}
 	} ).after( {
-		event2: function () { calls.push( 'after2' ); },
-		event3: function () { calls.push( 'after3' ); }
+		event2: function () {
+			calls.push( 'after2' );
+		},
+		event3: function () {
+			calls.push( 'after3' );
+		}
 	} ).onLoop(
-		function () { calls.push( 'onLoop' ); }
+		function () {
+			calls.push( 'onLoop' );
+		}
 	).afterLoop(
-		function () { calls.push( 'afterLoop' ); }
+		function () {
+			calls.push( 'afterLoop' );
+		}
 	).afterOne( {
-		event1: function () { calls.push( 'after1One' ); }
+		event1: function () {
+			calls.push( 'after1One' );
+		}
 	} );
 
 	sequencer.onEvent( 'event1' );
@@ -94,11 +108,19 @@ QUnit.test( 'EventSequencer', function ( assert ) {
 	calls.length = 0;
 
 	sequencer = new ve.TestEventSequencer( [ 'keydown', 'keypress' ] ).on( {
-		keydown: function () { calls.push( 'onkeydown' ); },
-		keypress: function () { calls.push( 'onkeypress' ); }
+		keydown: function () {
+			calls.push( 'onkeydown' );
+		},
+		keypress: function () {
+			calls.push( 'onkeypress' );
+		}
 	} ).after( {
-		keydown: function () { calls.push( 'afterkeydown' ); },
-		keypress: function () { calls.push( 'afterkeypress' ); }
+		keydown: function () {
+			calls.push( 'afterkeydown' );
+		},
+		keypress: function () {
+			calls.push( 'afterkeypress' );
+		}
 	} );
 	sequencer.onEvent( 'keydown' );
 	sequencer.onEvent( 'keypress' );

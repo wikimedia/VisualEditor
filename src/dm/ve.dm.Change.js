@@ -109,7 +109,9 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 		selections = {},
 		transactions = [],
 		// If stores is undefined, create an array of nulls
-		stores = data.stores || data.transactions.map( function () { return null; } );
+		stores = data.stores || data.transactions.map( function () {
+			return null;
+		} );
 
 	/**
 	 * Apply annotations in-place to array of code units
@@ -136,7 +138,9 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 		null,
 		preserveStoreValues ? function noop( x ) {
 			return x;
-		} : function ( x ) { return deserializeValue( x, unsafe ); }
+		} : function ( x ) {
+			return deserializeValue( x, unsafe );
+		}
 	);
 	var prevInfo;
 	for ( var i = 0, iLen = data.transactions.length; i < iLen; i++ ) {

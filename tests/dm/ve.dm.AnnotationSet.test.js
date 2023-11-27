@@ -31,7 +31,9 @@ QUnit.test( 'Basic usage', function ( assert ) {
 	assert.strictEqual( annotationSet.offsetOf( italic ), 1, 'offsetOf italic is 1' );
 	assert.strictEqual( annotationSet.offsetOf( underline ), -1, 'offsetOf underline is -1' );
 	assert.deepEqual(
-		annotationSet.filter( function ( annotation ) { return annotation.name === 'textStyle/bold'; } ).get(),
+		annotationSet.filter( function ( annotation ) {
+			return annotation.name === 'textStyle/bold';
+		} ).get(),
 		[ bold ], 'filter for name=textStyle/bold returns just bold annotation'
 	);
 	assert.strictEqual( annotationSet.hasAnnotationWithName( 'textStyle/bold' ), true, 'hasAnnotationWithName textStyle/bold is true' );

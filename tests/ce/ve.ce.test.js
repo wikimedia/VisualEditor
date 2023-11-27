@@ -454,7 +454,7 @@ QUnit.test( 'isAfterAnnotationBoundary', function ( assert ) {
 		assert.strictEqual(
 			ve.ce.isAfterAnnotationBoundary( node, caseItem.offset ),
 			caseItem.expected,
-			`node=${caseItem.path.join( ',' )} offset=${caseItem.offset}`
+			`node=${ caseItem.path.join( ',' ) } offset=${ caseItem.offset }`
 		);
 	} );
 } );

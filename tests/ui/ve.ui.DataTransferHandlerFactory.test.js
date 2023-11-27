@@ -25,7 +25,9 @@ ve.test.utils.makeStubTransferItem = function ( type, kind, extension ) {
 	return {
 		type: type,
 		kind: kind,
-		getExtension: function () { return extension; }
+		getExtension: function () {
+			return extension;
+		}
 	};
 };
 

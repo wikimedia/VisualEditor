@@ -101,6 +101,7 @@ module.exports = function ( grunt ) {
 		 * @param {Function} callback Will be called with the substituted output
 		 */
 		function placeholder( input, id, replacement, callback ) {
+			// eslint-disable-next-line security/detect-non-literal-regexp
 			const rComment = new RegExp( '<!-- ' + id + ' -->', 'm' );
 			if ( typeof replacement === 'function' ) {
 				replacement( function ( response ) {
@@ -154,7 +155,9 @@ module.exports = function ( grunt ) {
 				configScript +=
 					indent + '\tve.messagePaths = ' +
 					stringifyObject(
-						i18n.map( function ( path ) { return pathPrefix + path; } )
+						i18n.map( function ( path ) {
+							return pathPrefix + path;
+						} )
 					).replace( /\n/g, '\n\t' + indent ) + ';\n';
 
 				if ( langList ) {
@@ -162,7 +165,9 @@ module.exports = function ( grunt ) {
 						stringifyObject(
 							Array.from( new Set(
 								grunt.file.expand(
-									i18n.map( function ( path ) { return path + '*.json'; } )
+									i18n.map( function ( path ) {
+										return path + '*.json';
+									} )
 								).map( function ( file ) {
 									return file.split( '/' ).pop().slice( 0, -5 );
 								} )

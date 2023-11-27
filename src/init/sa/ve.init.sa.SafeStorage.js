@@ -13,8 +13,10 @@
 		}, 1 );
 	};
 
+	// eslint-disable-next-line compat/compat
 	var requestIdleCallback = window.requestIdleCallback ?
 		// Bind because it throws TypeError if context is not window
+		// eslint-disable-next-line compat/compat
 		window.requestIdleCallback.bind( window ) :
 		requestIdleCallbackInternal;
 

@@ -304,7 +304,9 @@ QUnit.test( 'change rollback', function ( assert ) {
 
 	var tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ { type: '/heading' } ] );
 	assert.throws(
-		function () { surface.change( tx ); },
+		function () {
+			surface.change( tx );
+		},
 		new Error( 'Expected closing for paragraph but got closing for heading' ),
 		'Transaction throws an exception'
 	);
@@ -452,20 +454,28 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 		assert.strictEqual( surface.getOffsetFromSourceOffset( i ), expectedOffsets[ i ], 'Correct offset at ' + i );
 	}
 	assert.throws(
-		function () { surface.getOffsetFromSourceOffset( -1 ); },
+		function () {
+			surface.getOffsetFromSourceOffset( -1 );
+		},
 		Error, 'Offset -1 is out of bounds' );
 	assert.throws(
-		function () { surface.getOffsetFromSourceOffset( expectedOffsets.length ); },
+		function () {
+			surface.getOffsetFromSourceOffset( expectedOffsets.length );
+		},
 		Error, 'Offset ' + expectedOffsets.length + ' is out of bounds'
 	);
 	for ( i = 0; i < expectedSourceOffsets.length; i++ ) {
 		assert.strictEqual( surface.getSourceOffsetFromOffset( i ), expectedSourceOffsets[ i ], 'Correct source offset at ' + i );
 	}
 	assert.throws(
-		function () { surface.getSourceOffsetFromOffset( -1 ); },
+		function () {
+			surface.getSourceOffsetFromOffset( -1 );
+		},
 		Error, 'Offset -1 is out of bounds' );
 	assert.throws(
-		function () { surface.getSourceOffsetFromOffset( expectedSourceOffsets.length ); },
+		function () {
+			surface.getSourceOffsetFromOffset( expectedSourceOffsets.length );
+		},
 		Error, 'Offset ' + expectedSourceOffsets.length + ' is out of bounds'
 	);
 

@@ -24,7 +24,9 @@ ve.now = function () {
 	var perf = window.performance;
 	var navStart = perf && perf.timing && perf.timing.navigationStart;
 	ve.now = navStart && perf.now ?
-		function () { return navStart + perf.now(); } : Date.now;
+		function () {
+			return navStart + perf.now();
+		} : Date.now;
 
 	return ve.now();
 };
