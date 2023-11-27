@@ -333,12 +333,11 @@ module.exports = function ( grunt ) {
 			},
 			src: [
 				'**/*.{js,json,less,css,txt}',
-				'!package-lock.json',
-				'!rebaser/package-lock.json',
+				'!**/package-lock.json',
 				'!build/typos.json',
 				'!lib/**',
 				'!i18n/**',
-				'!{coverage,dist,docs,node_modules,rebaser/node_modules}/**',
+				'!**/{coverage,dist,docs,node_modules}/**',
 				'!demos/ve/ve-collab-sideLoad.js',
 				'!.git/**'
 			]
