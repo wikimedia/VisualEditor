@@ -1,7 +1,7 @@
 /*!
  * VisualEditor DataModel StubReferenceNode class.
  *
- * @copyright 2011-2018 VisualEditor Team's Cite sub-team and others; see AUTHORS.txt
+ * @copyright See AUTHORS.txt
  * @license MIT
  */
 

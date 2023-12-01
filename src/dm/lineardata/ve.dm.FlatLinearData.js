@@ -3,7 +3,7 @@
  *
  * Class containing Flat linear data and a hash-value store.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 /**

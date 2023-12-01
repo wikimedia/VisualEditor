@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME backspace test for Chromium on Ubuntu.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 ve.ce.imetests.push( [ 'backspace-chromium-ubuntu-none', [

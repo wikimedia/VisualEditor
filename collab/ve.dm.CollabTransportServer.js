@@ -1,7 +1,7 @@
 /*!
  * VisualEditor collab transport server class.
  *
- * @copyright 2011-2022 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 'use strict';

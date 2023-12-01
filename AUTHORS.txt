@@ -1,3 +1,5 @@
+@copyright 2011-2023 VisualEditor Team and others; see http://ve.mit-license.org
+
 Principal Authors (major contributors, alphabetically)
 
 Bartosz Dziewoński <matma.rex@gmail.com>

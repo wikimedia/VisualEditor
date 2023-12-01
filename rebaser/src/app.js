@@ -1,7 +1,7 @@
 /*!
  * VisualEditor rebase server script.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 'use strict';
