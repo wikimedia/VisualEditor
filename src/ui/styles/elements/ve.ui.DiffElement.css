@@ -29,9 +29,11 @@
 	border-right: 1px solid #c8ccd1;
 }
 
-@media ( max-width: 400px ) {
+@media ( max-width: 640px ) {
 	.ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-content {
-		margin-right: 6em;
+		padding-right: 0;
+		margin-right: 5.5em;
+		border-right: 0;
 	}
 }
 
@@ -42,7 +44,7 @@
 	width: 15em;
 }
 
-@media ( max-width: 400px ) {
+@media ( max-width: 640px ) {
 	.ve-ui-diffElement-hasDescriptions .ve-ui-diffElement-sidebar {
 		width: 5em;
 	}
