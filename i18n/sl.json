@@ -48,6 +48,7 @@
 	"visualeditor-changedesc-link-removed": "Povezava odstranjena: $1",
 	"visualeditor-changedesc-list-indent": "Povečan zamik predmeta seznama",
 	"visualeditor-changedesc-list-outdent": "Zmanjšan zamik predmeta seznama",
+	"visualeditor-changedesc-list-style-indent": "Zamik",
 	"visualeditor-changedesc-no-key": "$1 se je spremenil v $2",
 	"visualeditor-changedesc-set": "$1 je nastavljen na $2",
 	"visualeditor-changedesc-textstyle-added": "Dodano oblikovanje besedila: $1",

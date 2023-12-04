@@ -63,6 +63,7 @@
 	"visualeditor-changedesc-link-removed": "Вилучено посилання: $1",
 	"visualeditor-changedesc-list-indent": "Відступ елементу списку збільшено",
 	"visualeditor-changedesc-list-outdent": "Відступ елементу списку зменшено",
+	"visualeditor-changedesc-list-style-indent": "Відступ",
 	"visualeditor-changedesc-no-key": "$1 змінено на $2",
 	"visualeditor-changedesc-set": "$1 встановлено значення $2",
 	"visualeditor-changedesc-textstyle-added": "Додано стиль тексту: $1",
