@@ -4,7 +4,7 @@
  * For convenient debugging. Create two FakePeers in one browser window. Then a single
  * debugger can see all the communication within its call stack.
  *
- * @copyright 2011-2023 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 ve.FakePeer = function veFakePeer() {

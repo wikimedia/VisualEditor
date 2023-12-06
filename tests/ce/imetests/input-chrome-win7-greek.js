@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Chromium on Windows in Greek.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 ve.ce.imetests.push( [ 'input-chrome-win7-greek', [

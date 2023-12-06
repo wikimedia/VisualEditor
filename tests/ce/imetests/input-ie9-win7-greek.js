@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Internet Explorer on Windows in Greek.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 ve.ce.imetests.push( [ 'input-ie9-win7-greek', [

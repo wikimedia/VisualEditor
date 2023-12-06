@@ -1,7 +1,7 @@
 /*!
  * VisualEditor DataModel transport server tests.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 QUnit.module( 've.dm.TransportServer' );

@@ -1,7 +1,7 @@
 /*!
  * VisualEditor IME test for Firefox on Mac OS X in Hiragana Japanese using OS native IME.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 ve.ce.imetests.push( [ 'input-firefox-mac-native-japanese-hiragana', [

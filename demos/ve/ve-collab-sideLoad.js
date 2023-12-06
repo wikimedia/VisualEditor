@@ -610,7 +610,7 @@
 /*!
  * VisualEditor DataModel rebase document state class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 'use strict';
@@ -688,7 +688,7 @@ ve.dm.RebaseDocState.prototype.clearHistory = function () {
 /*!
  * VisualEditor DataModel rebase server class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 'use strict';
@@ -828,7 +828,7 @@ ve.dm.RebaseServer.prototype.applyChange = function applyChange( doc, authorId, 
 /*!
  * VisualEditor document store class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 'use strict';
@@ -947,7 +947,7 @@ ve.dm.DocumentStore.prototype.onClose = function () {
 /*!
  * VisualEditor DataModel protocol server class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 'use strict';
@@ -1174,7 +1174,7 @@ ve.dm.ProtocolServer.prototype.onDisconnect = function ( context ) {
 /*!
  * VisualEditor DataModel rebase client class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 /**
@@ -1379,7 +1379,7 @@ ve.dm.RebaseClient.prototype.acceptChange = function ( change ) {
 /*!
  * VisualEditor DataModel SurfaceSynchronizer class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 /* global io */
@@ -1879,7 +1879,7 @@ ve.dm.SurfaceSynchronizer.prototype.onDisconnect = function () {
 /*!
  * VisualEditor UserInterface AuthorItemWidget class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
@@ -2018,7 +2018,7 @@ ve.ui.AuthorItemWidget.prototype.update = function () {
 /*!
  * VisualEditor UserInterface AuthorListPopupTool class.
  *
- * @copyright 2011-2020 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
@@ -2224,7 +2224,7 @@ ve.ui.toolFactory.register( ve.ui.AuthorListPopupTool );
  * For convenient debugging. Create two FakePeers in one browser window. Then a single
  * debugger can see all the communication within its call stack.
  *
- * @copyright 2011-2023 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 ve.FakePeer = function veFakePeer() {
@@ -2317,7 +2317,7 @@ ve.FakePeerConnection.prototype.send = function ( data ) {
 /*!
  * VisualEditor collab extensions.
  *
- * @copyright 2011-2023 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 /* global Peer */
@@ -2455,7 +2455,7 @@ ve.collab.connectModelSynchronizer = function () {
 /*!
  * VisualEditor collab transport server class.
  *
- * @copyright 2011-2022 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 'use strict';

@@ -1,7 +1,7 @@
 /*!
  * VisualEditor UserInterface BlockquoteAction class.
  *
- * @copyright 2011-2018 VisualEditor Team and others; see http://ve.mit-license.org
+ * @copyright See AUTHORS.txt
  */
 
 /**
