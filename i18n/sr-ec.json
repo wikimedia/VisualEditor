@@ -49,6 +49,7 @@
 	"visualeditor-changedesc-link-href": "Одредиште везе промењено из $1 у $2",
 	"visualeditor-changedesc-link-href-diff": "Одредиште везе промењено: $1",
 	"visualeditor-changedesc-link-removed": "Уклоњена веза: $1",
+	"visualeditor-changedesc-list-style-indent": "Увлачење",
 	"visualeditor-changedesc-no-key": "$1 промењено у $2",
 	"visualeditor-changedesc-set": "$1 одређено вредношћу $2",
 	"visualeditor-changedesc-textstyle-added": "Додато обликовање текста: $1",
