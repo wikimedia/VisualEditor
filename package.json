@@ -46,6 +46,6 @@
 		"qunit": "2.20.0",
 		"stringify-object": "3.3.0",
 		"stylelint-config-wikimedia": "0.16.1",
-		"svgo": "3.0.2"
+		"svgo": "3.0.5"
 	}
 }
