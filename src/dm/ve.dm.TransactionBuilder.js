@@ -448,8 +448,14 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
 	}
 
 	// Replace the wrappings of each content branch in the range
-	for ( var i = 0; i < selection.length; i++ ) {
+	for ( var i = 0, len = selection.length; i < len; i++ ) {
 		var selected = selection[ i ];
+		// TODO: This duplicates the logic of ve.dm.SurfaceFragment#getSelectedLeafNodes
+		// This could perhaps be a new mode in ve.Document#selectNodes?
+		if ( !( len === 1 || !selected.range || !selected.range.isCollapsed() ) ) {
+			continue;
+		}
+
 		var branch = selected.node.isContent() ? selected.node.getParent() : selected.node;
 		if ( branch.canContainContent() ) {
 			// Skip branches that are already of the target type and have matching attributes

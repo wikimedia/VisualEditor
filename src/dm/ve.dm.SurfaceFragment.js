@@ -532,13 +532,13 @@ ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
 /**
  * Get all leaf nodes excluding nodes where the selection is empty.
  *
- * @return {Array} List of nodes and related information
+ * @return {ve.dm.Node[]} List of nodes and related information
  */
 ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
 	var selectedLeafNodes = [],
 		leafNodes = this.getLeafNodes();
 	for ( var i = 0, len = leafNodes.length; i < len; i++ ) {
-		if ( len === 1 || !leafNodes[ i ].range || leafNodes[ i ].range.getLength() ) {
+		if ( len === 1 || !leafNodes[ i ].range || !leafNodes[ i ].range.isCollapsed() ) {
 			selectedLeafNodes.push( leafNodes[ i ].node );
 		}
 	}

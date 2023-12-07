@@ -55,10 +55,8 @@ ve.ui.FormatAction.prototype.convert = function ( type, attributes ) {
 
 	// We can't have headings or pre's in a list, so if we're trying to convert
 	// things that are in lists to a heading or a pre, split the list
-	fragment.getLeafNodes().forEach( function ( selected ) {
-		var contentBranch = selected.node.isContent() ?
-			selected.node.getParent() :
-			selected.node;
+	fragment.getSelectedLeafNodes().forEach( function ( node ) {
+		var contentBranch = node.isContent() ? node.getParent() : node;
 
 		fragments.push( surfaceModel.getLinearFragment( contentBranch.getOuterRange(), true ) );
 	} );
