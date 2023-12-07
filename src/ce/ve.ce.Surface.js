@@ -658,8 +658,6 @@ ve.ce.Surface.prototype.blur = function () {
  */
 ve.ce.Surface.prototype.removeRangesAndBlur = function () {
 	this.nativeSelection.removeAllRanges();
-	// Support: IE<=11
-	// While switching between editor modes, there's sometimes no activeElement.
 	if ( this.getElementDocument().activeElement === this.$attachedRootNode[ 0 ] ) {
 		// Blurring the activeElement ensures the keyboard is hidden on iOS
 		this.getElementDocument().activeElement.blur();
@@ -1589,8 +1587,8 @@ ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
 	}
 
 	if ( e.which === 229 ) {
-		// Support: IE, Chrome
-		// Ignore fake IME events (emitted in IE and Chrome)
+		// Support: Chrome
+		// Ignore fake IME events (emitted in Chrome)
 		return;
 	}
 
@@ -4940,12 +4938,8 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
 	var $focusTarget = $( newSel.focusNode ).closest( '[contenteditable=true]' );
 	if ( $focusTarget.get( 0 ) === this.getElementDocument().activeElement ) {
 		// Already focused, do nothing.
-		// Support: IE<=11
-		// Focusing already-focused elements scrolls the *top* of the element
-		// into view, meaning that in long text blocks refocusing the current
-		// element will jump the viewport around.
-		// Check $focusTarget is non-empty (T259531)
 	} else if ( $focusTarget.length && !OO.ui.contains( $focusTarget.get( 0 ), this.getElementDocument().activeElement ) ) {
+		// Check $focusTarget is non-empty (T259531)
 		// Note: contains *doesn't* include === here. This is desired, as the
 		// common case for getting here is when pressing backspace when the
 		// cursor is in the middle of a block of text (thus both are a <div>),
