@@ -353,18 +353,18 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 			{
 				htmlOrDoc: inlineFocusableDoc,
 				rangeOrSelection: new ve.Range( 5, 7 ),
-				keys: [ 'SHIFT+RIGHT' ],
+				keys: [ 'SHIFT+LEFT' ],
 				forceSelection: new ve.Range( 4 ),
-				expectedRangeOrSelection: new ve.Range( 5, 4 ),
+				expectedRangeOrSelection: new ve.Range( 7, 4 ),
 				expectedDefaultPrevented: [ false ],
 				msg: 'Shift+left off an inline focusable'
 			},
 			{
 				htmlOrDoc: inlineFocusableDoc,
 				rangeOrSelection: new ve.Range( 7, 5 ),
-				keys: [ 'SHIFT+RIGHT' ],
+				keys: [ 'SHIFT+LEFT' ],
 				forceSelection: new ve.Range( 4 ),
-				expectedRangeOrSelection: new ve.Range( 5, 4 ),
+				expectedRangeOrSelection: new ve.Range( 7, 4 ),
 				expectedDefaultPrevented: [ false ],
 				msg: 'Shift+left off an inline focusable (backwards selection)'
 			}
