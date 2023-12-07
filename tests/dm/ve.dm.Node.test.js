@@ -114,12 +114,16 @@ QUnit.test( 'canBeMergedWith', function ( assert ) {
 		node2 = new ve.dm.BranchNodeStub( {}, [ node1 ] ),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node2 ] ),
 		node4 = new ve.dm.LeafNodeStub(),
-		node5 = new ve.dm.BranchNodeStub( {}, [ node4 ] );
+		node5 = new ve.dm.BranchNodeStub( {}, [ node4 ] ),
+		heading1 = new ve.dm.HeadingNode( { type: 'heading', attributes: { level: 1 } } ),
+		heading2 = new ve.dm.HeadingNode( { type: 'heading', attributes: { level: 2 } } );
 
 	assert.strictEqual( node3.canBeMergedWith( node5 ), true, 'same level, same type' );
 	assert.strictEqual( node2.canBeMergedWith( node5 ), false, 'different level, same type' );
 	assert.strictEqual( node2.canBeMergedWith( node1 ), false, 'different level, different type' );
 	assert.strictEqual( node2.canBeMergedWith( node4 ), false, 'same level, different type' );
+	assert.strictEqual( heading1.canBeMergedWith( heading2 ), false, 'headings of different levels can\'t be merged' );
+	assert.strictEqual( heading1.canBeMergedWith( heading1 ), true, 'headings of samve level can be merged' );
 } );
 
 QUnit.test( 'getClonedElement', function ( assert ) {

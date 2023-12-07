@@ -755,7 +755,7 @@ ve.dm.Node.prototype.getOffset = function () {
  * Check if the node can be merged with another.
  *
  * For two nodes to be mergeable, the two nodes must either be the same node or:
- *  - Have the same type
+ *  - Are comparable according to #compareForMerging (by default, have the same type)
  *  - Have the same depth
  *  - Have similar ancestry (each node upstream must have the same type)
  *
@@ -780,8 +780,8 @@ ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 		if (
 			// Check if we have reached a root (means there's no common ancestor or unequal depth)
 			( n1 === null || n2 === null ) ||
-			// Ensure that types match
-			n1.getType() !== n2.getType()
+			// Ensure that nodes are comparable for merging
+			!n1.compareForMerging( n2 )
 		) {
 			return false;
 		}
@@ -790,4 +790,16 @@ ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
 		n2 = n2.getParent();
 	}
 	return true;
+};
+
+/**
+ * Compare with another node for merging (see #canBeMergedWidth)
+ *
+ * The default implementation just compares node types.
+ *
+ * @param {ve.dm.Node} otherNode Other node to compare with
+ * @return {boolean} Nodes are comparable
+ */
+ve.dm.Node.prototype.compareForMerging = function ( otherNode ) {
+	return this.getType() === otherNode.getType();
 };

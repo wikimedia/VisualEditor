@@ -23,6 +23,13 @@ ve.dm.HeadingNode = function VeDmHeadingNode() {
 
 OO.inheritClass( ve.dm.HeadingNode, ve.dm.ContentBranchNode );
 
+/* Methods */
+
+ve.dm.HeadingNode.prototype.compareForMerging = function ( otherNode ) {
+	return ve.dm.HeadingNode.super.prototype.compareForMerging.apply( this, arguments ) &&
+		this.getAttribute( 'level' ) === otherNode.getAttribute( 'level' );
+};
+
 /* Static Properties */
 
 ve.dm.HeadingNode.static.name = 'heading';
