@@ -271,46 +271,6 @@ ve.normalizeAttributeValue = function ( name, value, nodeName ) {
 };
 
 /**
- * Parse an HTML string into an HTML DOM, while masking attributes affected by
- * normalization bugs if a broken browser is detected.
- * Since this process uses an XML parser, the input must be valid XML as well as HTML.
- *
- * @deprecated Use ve.createDocumentFromHtml
- * @param {string} html HTML string. Must also be valid XML. Must only have
- *   one root node (e.g. be a complete document).
- * @return {HTMLDocument} HTML DOM
- */
-ve.parseXhtml = function ( html ) {
-	return ve.createDocumentFromHtml( html );
-};
-
-/**
- * Serialize an HTML DOM created with #parseXhtml back to an HTML string, unmasking any
- * attributes that were masked.
- *
- * @deprecated Use ve.properOuterHtml( Document.documentElement )
- * @param {HTMLDocument} doc HTML DOM
- * @return {string} Serialized HTML string
- */
-ve.serializeXhtml = function ( doc ) {
-	return ve.serializeXhtmlElement( doc.documentElement );
-};
-
-/**
- * Serialize an HTML element created with #parseXhtml back to an HTML string, unmasking any
- * attributes that were masked.
- *
- * @deprecated Use ve.properOuterHtml
- * @param {HTMLElement} element HTML element
- * @return {string} Serialized HTML string
- */
-ve.serializeXhtmlElement = function ( element ) {
-	// Support: Firefox
-	// Use outerHTML because in Firefox XMLSerializer URL-encodes hrefs but outerHTML doesn't
-	return ve.properOuterHtml( element );
-};
-
-/**
  * Resolve a URL relative to a given base.
  *
  * @param {string} url URL to resolve
