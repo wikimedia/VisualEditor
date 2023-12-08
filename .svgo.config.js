@@ -11,7 +11,6 @@ module.exports = {
 			name: 'preset-default',
 			params: {
 				overrides: {
-					cleanupIDs: false,
 					removeDesc: false,
 					removeTitle: false,
 					removeViewBox: false,
