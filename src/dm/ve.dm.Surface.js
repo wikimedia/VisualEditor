@@ -913,44 +913,6 @@ ve.dm.Surface.prototype.setSelection = function ( selection ) {
 };
 
 /**
- * Place the selection at the first content offset in the document.
- *
- * @deprecated Use ve.ce.Surface#selectFirstSelectableContentOffset
- */
-ve.dm.Surface.prototype.selectFirstContentOffset = function () {
-	var firstOffset = this.getDocument().data.getNearestContentOffset(
-		this.getAttachedRoot().getOffset(),
-		1
-	);
-	if ( firstOffset !== -1 ) {
-		// Found a content offset
-		this.setLinearSelection( new ve.Range( firstOffset ) );
-	} else {
-		// Document is full of structural nodes, just give up
-		this.setNullSelection();
-	}
-};
-
-/**
- * Place the selection at the last content offset in the document.
- *
- * @deprecated Use ve.ce.Surface#selectLastSelectableContentOffset
- */
-ve.dm.Surface.prototype.selectLastContentOffset = function () {
-	var data = this.getDocument().data,
-		documentRange = this.getDocument().getDocumentRange(),
-		lastOffset = data.getNearestContentOffset( documentRange.end, -1 );
-
-	if ( lastOffset !== -1 ) {
-		// Found a content offset
-		this.setLinearSelection( new ve.Range( lastOffset ) );
-	} else {
-		// Document is full of structural nodes, just give up
-		this.setNullSelection();
-	}
-};
-
-/**
  * Apply a transactions and selection changes to the document.
  *
  * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
