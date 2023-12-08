@@ -35,7 +35,7 @@ QUnit.test( 'createModelFromDom/parseDocument (source mode)', function ( assert 
 	];
 
 	for ( const testCase of testCases ) {
-		const sourceDoc = ve.init.sa.Target.static.createModelFromDom( testCase.sourceText, 'source' );
+		const sourceDoc = ve.init.Target.static.createModelFromDom( testCase.sourceText, 'source' );
 
 		assert.true(
 			sourceDoc instanceof ve.dm.Document,
@@ -47,7 +47,7 @@ QUnit.test( 'createModelFromDom/parseDocument (source mode)', function ( assert 
 			'Source "' + testCase.name + '" document has the correct content'
 		);
 
-		const parsedSourceDoc = ve.init.sa.Target.static.parseDocument( testCase.sourceText, 'source' );
+		const parsedSourceDoc = ve.init.Target.static.parseDocument( testCase.sourceText, 'source' );
 		assert.strictEqual(
 			parsedSourceDoc,
 			testCase.expectedParsedDocument,
