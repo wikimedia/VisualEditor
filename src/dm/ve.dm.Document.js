@@ -700,7 +700,7 @@ ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, deta
 	var newDoc;
 
 	if ( Array.isArray( data ) ) {
-		data = new ve.dm.ElementLinearData( this.getStore().clone(), data );
+		data = new ve.dm.ElementLinearData( this.getStore().slice(), data );
 	}
 
 	newDoc = new this.constructor(

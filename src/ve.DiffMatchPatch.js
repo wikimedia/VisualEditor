@@ -19,7 +19,7 @@ ve.DiffMatchPatch = function VeDiffMatchPatch( oldStore, newStore ) {
 	// Parent constructor
 	ve.DiffMatchPatch.super.call( this );
 
-	this.store = oldStore.clone();
+	this.store = oldStore.slice();
 	this.store.merge( newStore );
 };
 
