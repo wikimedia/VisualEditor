@@ -356,7 +356,7 @@ ve.init.Target.prototype.bindHandlers = function () {
 		visibilitychange: this.onDocumentVisibilityChangeHandler
 	} );
 	this.$element.on( 'keydown', this.onTargetKeyDownHandler );
-	ve.addPassiveEventListener( this.$scrollListener[ 0 ], 'scroll', this.onContainerScrollHandler );
+	this.$scrollListener[ 0 ].addEventListener( 'scroll', this.onContainerScrollHandler, { passive: true } );
 };
 
 /**
@@ -369,7 +369,7 @@ ve.init.Target.prototype.unbindHandlers = function () {
 		visibilitychange: this.onDocumentVisibilityChangeHandler
 	} );
 	this.$element.off( 'keydown', this.onTargetKeyDownHandler );
-	ve.removePassiveEventListener( this.$scrollListener[ 0 ], 'scroll', this.onContainerScrollHandler );
+	this.$scrollListener[ 0 ].removeEventListener( 'scroll', this.onContainerScrollHandler );
 };
 
 /**
