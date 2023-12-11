@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ernác",
-			"Iltever"
+			"Iltever",
+			"Къарачайлы"
 		]
 	},
 	"visualeditor": "VisualEditor",
@@ -64,7 +65,7 @@
 	"visualeditor-formatdropdown-format-preformatted": "Преформатланнган",
 	"visualeditor-help-tool": "Ангылатыу",
 	"visualeditor-historybutton-redo-tooltip": "Къайтар",
-	"visualeditor-historybutton-undo-tooltip": "Ызына ал",
+	"visualeditor-historybutton-undo-tooltip": "Кери ал",
 	"visualeditor-indentationbutton-indent-tooltip": "Къалгъан джерни кенгерт",
 	"visualeditor-indentationbutton-outdent-tooltip": "Къалгъан джерни къысхарт",
 	"visualeditor-inspector-remove-tooltip": "Кетериу",
