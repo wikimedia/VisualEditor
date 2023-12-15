@@ -969,7 +969,7 @@ ve.dm.Change.prototype.squash = function () {
 	return new ve.dm.Change(
 		this.start,
 		[ ve.dm.TransactionSquasher.static.squash( this.transactions ) ],
-		[ this.store.clone() ],
+		[ this.store.slice() ],
 		// Shallow clone (the individual selections are immutable so need no cloning)
 		ve.cloneObject( this.selections )
 	);
