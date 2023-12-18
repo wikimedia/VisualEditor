@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Arystanbek",
+			"Casserium",
 			"Jdforrester"
 		]
 	},
@@ -71,7 +72,7 @@
 	"visualeditor-help-tool": "Анықтама",
 	"visualeditor-historybutton-redo-tooltip": "Қайтару",
 	"visualeditor-historybutton-undo-tooltip": "Болдырмау",
-	"visualeditor-indentationbutton-indent-tooltip": "Шегіністі артыру",
+	"visualeditor-indentationbutton-indent-tooltip": "Шегіністі арттыру",
 	"visualeditor-indentationbutton-outdent-tooltip": "Шегіністі кеміту",
 	"visualeditor-inspector-remove-tooltip": "Аластау",
 	"visualeditor-language-search-input-placeholder": "Код немесе тіл атауы бойынша іздеу",
@@ -109,6 +110,8 @@
 	"visualeditor-table-insert-row-before": "Жоғарыға кірістіру",
 	"visualeditor-table-insert-table": "Кесте",
 	"visualeditor-table-merge-cells": "Ұяшықтарды біріктіру",
+	"visualeditor-table-move-col-after": "Ары жылжыту",
+	"visualeditor-table-move-col-before": "Бері жылжыту",
 	"visualeditor-tablecell-tooltip": "Қос шертіп ұяшықты өңдеу",
 	"visualeditor-toolbar-format-tooltip": "Параграф пішіні",
 	"visualeditor-toolbar-history": "Тарихы",

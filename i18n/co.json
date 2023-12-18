@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Antho201723",
 			"Paulu"
 		]
 	},
 	"visualeditor": "VisualEditor",
+	"visualeditor-annotationbutton-bold-tooltip": "Grassettu",
 	"visualeditor-annotationbutton-code-tooltip": "Codice di ordinatore",
 	"visualeditor-annotationbutton-language-tooltip": "Linguaghju",
 	"visualeditor-annotationbutton-link-tooltip": "Ligame",
