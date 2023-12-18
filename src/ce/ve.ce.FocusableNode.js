@@ -119,12 +119,6 @@ ve.ce.FocusableNode.static.deleteCommandName = null;
 /* Static methods */
 
 /**
- * For inline nodes, append a word break, to block IMEs from treating the ending content as
- * candidate text. For block nodes, this is ignored. See T330284
- */
-ve.ce.FocusableNode.static.addBreak = true;
-
-/**
  * Get rects for an element
  *
  * @param {jQuery} $element Element to get highlights
@@ -237,22 +231,6 @@ ve.ce.FocusableNode.prototype.onFocusableSetup = function () {
 	// Exit if already setup or not attached
 	if ( this.isFocusableSetup || !this.root ) {
 		return;
-	}
-
-	if (
-		this.constructor.static.addBreak &&
-		this.getModel().isContent() &&
-		this.$element.length &&
-		this.$element.text().slice( -1 ) !== '\u200B'
-	) {
-		// Support: Chrome (Android, Gboard)
-		// T330284: End inline FocusableNodes with zero-width space, to prevent IMEs
-		// reinterpreting transcluded text as editable candidate text when Backspacing
-		var zeroWidthSpace = this.getElementDocument().createTextNode( '\u200B' );
-		var lastElement = this.$element.get( -1 );
-		lastElement.append( zeroWidthSpace );
-		// eslint-disable-next-line es-x/no-string-prototype-normalize
-		lastElement.normalize();
 	}
 
 	this.focusableSurface = this.root.getSurface();
