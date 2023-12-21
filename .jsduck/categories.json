@@ -191,6 +191,10 @@
 				"classes": ["ve.ui.*Factory"]
 			},
 			{
+				"name": "Layouts",
+				"classes": ["ve.ui.*Layout"]
+			},
+			{
 				"name": "Pages",
 				"classes": ["ve.ui.*Page"]
 			},

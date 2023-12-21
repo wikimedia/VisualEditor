@@ -17,9 +17,7 @@ ve.ui.SpecialCharacterDialog = function VeUiSpecialCharacterDialog() {
 	// Parent constructor
 	ve.ui.SpecialCharacterDialog.super.apply( this, arguments );
 
-	this.characters = null;
-	this.$buttonDomList = null;
-	this.categories = null;
+	this.characterListLoaded = false;
 
 	this.$element.addClass( 've-ui-specialCharacterDialog' );
 };
@@ -52,6 +50,14 @@ ve.ui.SpecialCharacterDialog.static.handlesSource = true;
 ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.SpecialCharacterDialog.super.prototype.initialize.call( this );
+
+	this.characterListLayout = new ve.ui.SymbolListBookletLayout();
+	this.characterListLayout.connect( this, {
+		choose: 'onCharacterListChoose'
+	} );
+	// Character list is lazy-loaded the first time getSetupProcess runs
+
+	this.$body.append( this.characterListLayout.$element );
 };
 
 /**
@@ -61,16 +67,20 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.SpecialCharacterDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var inspector = this;
+			var dialog = this;
 
 			this.surface = data.surface;
 			this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
 
-			if ( !this.characters ) {
-				return ve.init.platform.fetchSpecialCharList()
-					.then( function ( specialChars ) {
-						inspector.characters = specialChars;
-						inspector.buildButtonList();
+			this.characterListLayout.$element.toggleClass( 've-ui-specialCharacterDialog-characterList-source', this.surface.getMode() === 'source' );
+
+			if ( !this.characterListLoaded ) {
+				this.characterListLoaded = true;
+
+				ve.init.platform.fetchSpecialCharList()
+					.then( function ( symbolData ) {
+						dialog.characterListLayout.setSymbolData( symbolData );
+						dialog.updateSize();
 					} );
 			}
 		}, this );
@@ -128,44 +138,12 @@ ve.ui.SpecialCharacterDialog.prototype.onContextChange = function () {
 };
 
 /**
- * Builds the button DOM list based on the character list
- */
-ve.ui.SpecialCharacterDialog.prototype.buildButtonList = function () {
-	this.bookletLayout = new OO.ui.BookletLayout( {
-		outlined: true,
-		continuous: true
-	} );
-	this.pages = [];
-	for ( var category in this.characters ) {
-		this.pages.push(
-			new ve.ui.SpecialCharacterPage( category, {
-				label: this.characters[ category ].label,
-				characters: this.characters[ category ].characters,
-				attributes: this.characters[ category ].attributes,
-				source: this.surface.getMode() === 'source'
-			} )
-		);
-	}
-	this.bookletLayout.addPages( this.pages );
-	this.bookletLayout.$element.on(
-		'click',
-		'.ve-ui-specialCharacterPage-character',
-		this.onListClick.bind( this )
-	);
-
-	this.$body.append( this.bookletLayout.$element );
-
-	this.updateSize();
-};
-
-/**
- * Handle the click event on the list
+ * Handle a character being chosen from the list
  *
- * @param {jQuery.Event} e Mouse click event
+ * @param {Object} character Character data
  */
-ve.ui.SpecialCharacterDialog.prototype.onListClick = function ( e ) {
-	var character = $( e.target ).data( 'character' ),
-		fragment = this.surface.getModel().getFragment(),
+ve.ui.SpecialCharacterDialog.prototype.onCharacterListChoose = function ( character ) {
+	var fragment = this.surface.getModel().getFragment(),
 		mode = this.surface.getMode();
 
 	function encode( text ) {
@@ -188,7 +166,7 @@ ve.ui.SpecialCharacterDialog.prototype.onListClick = function ( e ) {
 
 		ve.track(
 			'activity.' + this.constructor.static.name,
-			{ action: 'insert-' + this.bookletLayout.currentPageName }
+			{ action: 'insert-' + this.characterListLayout.currentPageName }
 		);
 	}
 };

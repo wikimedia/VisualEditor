@@ -5,13 +5,9 @@
  */
 
 .ve-ui-specialCharacterDialog {
-	.oo-ui-outlineOptionWidget {
-		padding: 0.25em 0.5em;
-	}
-
-	.oo-ui-dialog & .oo-ui-bookletLayout {
+	/* When displaying inside another dialog, make the menu narrower */
+	.oo-ui-dialog & {
 		.oo-ui-menuLayout-menu {
-			/* When displaying inside another dialog, make the menu narrower */
 			width: 10em;
 		}
 
@@ -19,48 +15,19 @@
 			left: 10em;
 		}
 	}
-}
 
-.ve-ui-specialCharacterPage {
-	.oo-ui-bookletLayout-stackLayout > & {
-		padding: 0.5em;
-	}
-
-	h3 {
-		color: #54595d;
-		margin: 0 0 0.5em 0;
-		font-weight: normal;
+	&-source.ve-ui-symbolListPage-symbol {
+		/* Specify a valid second value to fix size in Chrome/FF */
+		font-family: monospace, 'Courier';
 		font-size: 1em;
-	}
+		line-height: 2.7em;
+		height: 2.7em;
+		padding: 0 0.2em;
+		/* Hidden unless in source mode */
+		display: none;
 
-	&-characters {
-		white-space: normal;
-	}
-
-	&-character {
-		cursor: pointer;
-		font-size: 1.5em;
-		line-height: 1.8em;
-		min-width: 1.8em;
-		height: 1.8em;
-		text-align: center;
-		display: inline-block;
-		vertical-align: top;
-		margin: 0 3px 3px 0;
-		border: 1px solid #eaecf0;
-		transition: border-color 200ms;
-
-		&:hover {
-			border-color: #c8ccd1;
-		}
-
-		&-source {
-			/* Specify a valid second value to fix size in Chrome/FF */
-			font-family: monospace, 'Courier';
-			font-size: 1em;
-			line-height: 2.7em;
-			height: 2.7em;
-			padding: 0 0.2em;
+		.ve-ui-specialCharacterDialog-characterList-source & {
+			display: inline-block;
 		}
 	}
 }
