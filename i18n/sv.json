@@ -59,6 +59,7 @@
 	"visualeditor-changedesc-link-removed": "Länk togs bort: $1",
 	"visualeditor-changedesc-list-indent": "Indrag för listobjekt ökades",
 	"visualeditor-changedesc-list-outdent": "Indrag för listobjekt minskades",
+	"visualeditor-changedesc-list-style-indent": "Indrag",
 	"visualeditor-changedesc-no-key": "$1 ändrades till $2",
 	"visualeditor-changedesc-set": "$1 ändrades till $2",
 	"visualeditor-changedesc-textstyle-added": "Textformatering lades till: $1",
