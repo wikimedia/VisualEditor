@@ -46,6 +46,7 @@
 	"visualeditor-changedesc-link-removed": "Saite noņemta: $1",
 	"visualeditor-changedesc-list-indent": "Saraksta elementa atkāpe palielināta",
 	"visualeditor-changedesc-list-outdent": "Saraksta elementa atkāpe samazināta",
+	"visualeditor-changedesc-list-style-indent": "Atkāpe",
 	"visualeditor-changedesc-no-key": "$1 mainīts uz $2",
 	"visualeditor-changedesc-set": "$1 uzstādīts uz $2",
 	"visualeditor-changedesc-textstyle-added": "Teksta noformējums mainīts: $1",
