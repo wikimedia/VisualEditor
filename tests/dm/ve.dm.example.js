@@ -1682,6 +1682,12 @@ ve.dm.example.domToDataCases = {
 					<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">bar</p>
 				</li>
 			</ul>
+		`,
+		normalizedBody: ve.dm.example.singleLine`
+			<ul rel="ve:checkList">
+				<li rel="ve:checkList" checked="checked"><span data-ve-ignore="true">☑</span><p>foo</p></li>
+				<li rel="ve:checkList"><span data-ve-ignore="true">☐</span><p>bar</p></li>
+			</ul>
 		`
 	},
 	'strip leading whitespace in non-whitespace preserving nodes': {
