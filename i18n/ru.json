@@ -3,6 +3,7 @@
 		"authors": [
 			"A.sav",
 			"Amire80",
+			"Butko",
 			"Contra ventum",
 			"Ctac",
 			"DR",
@@ -82,7 +83,7 @@
 	"visualeditor-changedesc-no-key": "$1 поменялся на $2",
 	"visualeditor-changedesc-set": "$1 присвоено значение $2",
 	"visualeditor-changedesc-unknown": "$1 изменён",
-	"visualeditor-changedesc-unset": "$1 вернуто значение до присвоения $2",
+	"visualeditor-changedesc-unset": "$1 возвращено значение до присвоения $2",
 	"visualeditor-changedir": "Изменить направленность",
 	"visualeditor-changedir-tool-ltr": "Отобразить слева направо",
 	"visualeditor-changedir-tool-rtl": "Отобразить справа налево",
