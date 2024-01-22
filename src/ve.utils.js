@@ -305,24 +305,6 @@ ve.isEmptyObject = $.isEmptyObject;
 ve.extendObject = $.extend;
 
 /**
- * Feature detect if the browser supports the Internationalization API
- *
- * Should work in Chrome>=24, FF>=29 & IE>=11
- *
- * @deprecated Always set to true
- * @private
- * @property {boolean}
- */
-ve.supportsIntl = true;
-
-/**
- * @deprecated Always set to true
- * @private
- * @property {boolean}
- */
-ve.supportsSplice = true;
-
-/**
  * Splice one array into another.
  *
  * This is the equivalent of arr.splice( offset, remove, d1, d2, d3, … ) except that arguments are
@@ -931,17 +913,6 @@ ve.safeDecodeURIComponent = function ( s ) {
 		s = decodeURIComponent( s );
 	} catch ( e ) {}
 	return s;
-};
-
-/**
- * Wrapper for node.normalize(). The native implementation is broken in IE,
- * so we use our own implementation in that case.
- *
- * @deprecated Use Node#normalize
- * @param {Node} node Node to normalize
- */
-ve.normalizeNode = function ( node ) {
-	node.normalize();
 };
 
 /**

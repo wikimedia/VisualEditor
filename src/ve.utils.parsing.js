@@ -271,23 +271,6 @@ ve.normalizeAttributeValue = function ( name, value, nodeName ) {
 };
 
 /**
- * Helper function for #parseXhtml and #serializeXhtml.
- *
- * Map attributes that are broken in IE to attributes prefixed with data-ve-
- * or vice versa. rowspan/colspan are also broken in Firefox 38 and below, but
- * we don't consider that serious enough to run this function for Firefox.
- *
- * @deprecated
- * @param {string} html HTML string. Must also be valid XML. Must only have
- *   one root node (e.g. be a complete document).
- * @param {boolean} unmask Map the masked attributes back to their originals
- * @return {string} HTML string modified to mask/unmask broken attributes
- */
-ve.transformStyleAttributes = function ( html ) {
-	return html;
-};
-
-/**
  * Parse an HTML string into an HTML DOM, while masking attributes affected by
  * normalization bugs if a broken browser is detected.
  * Since this process uses an XML parser, the input must be valid XML as well as HTML.

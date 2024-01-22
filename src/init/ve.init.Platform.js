@@ -73,18 +73,6 @@ ve.init.Platform.static.getSystemPlatform = function () {
 };
 
 /**
- * Check whether we are running in Internet Explorer.
- *
- * @deprecated Always returns false
- * @static
- * @inheritable
- * @return {boolean} We are in IE
- */
-ve.init.Platform.static.isInternetExplorer = function () {
-	return false;
-};
-
-/**
  * Check whether we are running in Edge.
  *
  * @static

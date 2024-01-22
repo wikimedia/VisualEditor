@@ -378,16 +378,6 @@ ve.ui.Surface.prototype.getViewportDimensions = function () {
 };
 
 /**
- * Check if editing is enabled.
- *
- * @deprecated Use #isDisabled
- * @return {boolean} Editing is enabled
- */
-ve.ui.Surface.prototype.isEnabled = function () {
-	return !this.isDisabled();
-};
-
-/**
  * Get the surface model.
  *
  * @return {ve.dm.Surface} Surface model
