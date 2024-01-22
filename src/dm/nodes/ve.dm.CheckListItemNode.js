@@ -44,11 +44,20 @@ ve.dm.CheckListItemNode.static.toDomElements = function ( dataElement, doc ) {
 	if ( dataElement.attributes.checked ) {
 		listItem.setAttribute( 'checked', 'checked' );
 	}
+	var checkbox = document.createElement( 'span' );
+	checkbox.setAttribute( 'data-ve-ignore', 'true' );
+	checkbox.appendChild( document.createTextNode( dataElement.attributes.checked ? '☑' : '☐' ) );
+	listItem.appendChild( checkbox );
+
 	return [ listItem ];
 };
 
 ve.dm.CheckListItemNode.static.cloneElement = function () {
+	// Parent method
 	var clone = ve.dm.CheckListItemNode.super.static.cloneElement.apply( this, arguments );
+	// TODO: This clears the checkbox when cloning an element, so that when you extend a
+	// list by pressing enter, the new item is clear. However this always means then copied
+	// lists are always fully unchecked, which isn't intended.
 	clone.attributes.checked = false;
 	return clone;
 };

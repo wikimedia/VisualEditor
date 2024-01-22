@@ -56,6 +56,5 @@ ul.ve-ce-checkListNode {
 }
 
 .ve-ce-checkListItemNode-checked {
-	text-decoration: line-through;
 	color: #666;
 }
