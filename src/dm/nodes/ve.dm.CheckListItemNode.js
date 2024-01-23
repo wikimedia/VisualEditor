@@ -33,21 +33,51 @@ ve.dm.CheckListItemNode.static.matchTagNames = [ 'li' ];
 
 ve.dm.CheckListItemNode.static.matchRdfaTypes = [ 've:checkList' ];
 
-ve.dm.CheckListItemNode.static.toDataElement = function ( domElements ) {
-	var checked = domElements[ 0 ].hasAttribute( 'checked' );
-	return { type: this.name, attributes: { checked: checked } };
+ve.dm.CheckListItemNode.static.handlesOwnChildren = true;
+
+ve.dm.CheckListItemNode.static.toDataElement = function ( domElements, converter ) {
+	var checked = domElements[ 0 ].hasAttribute( 'data-checked' ) ||
+		// Old HTML format used the invalid attribute "checked"
+		domElements[ 0 ].hasAttribute( 'checked' );
+	var element = { type: this.name, attributes: { checked: checked } };
+	return converter.getDataFromDomClean( domElements[ 0 ], element );
 };
 
-ve.dm.CheckListItemNode.static.toDomElements = function ( dataElement, doc ) {
+ve.dm.CheckListItemNode.static.toDomElements = function ( data, doc, converter ) {
+	var dataElement = data[ 0 ];
 	var listItem = doc.createElement( 'li' );
 	listItem.setAttribute( 'rel', 've:checkList' );
 	if ( dataElement.attributes.checked ) {
-		listItem.setAttribute( 'checked', 'checked' );
+		listItem.setAttribute( 'data-checked', 'checked' );
 	}
-	var checkbox = document.createElement( 'span' );
-	checkbox.setAttribute( 'data-ve-ignore', 'true' );
-	checkbox.appendChild( document.createTextNode( dataElement.attributes.checked ? '☑' : '☐' ) );
-	listItem.appendChild( checkbox );
+
+	var contents = data.slice( 1, -1 );
+	if ( contents.length ) {
+		var wrapper = doc.createElement( 'div' );
+		converter.getDomSubtreeFromData( contents, wrapper );
+		while ( wrapper.firstChild ) {
+			listItem.appendChild( wrapper.firstChild );
+		}
+	}
+
+	// Formatting for external paste / preview
+	// * Hide the bullet list
+	// * Add a unicode checkbox to the text
+	var checkboxText = document.createTextNode( dataElement.attributes.checked ? '☑' : '☐' );
+	var checkbox;
+	if ( converter.isForParser() ) {
+		checkbox = checkboxText;
+	} else {
+		listItem.style.listStyle = 'none';
+		checkbox = document.createElement( 'span' );
+		checkbox.setAttribute( 'data-ve-ignore', 'true' );
+		checkbox.appendChild( checkboxText );
+	}
+
+	// The first child should be the wrapper paragraph
+	var textContainer = listItem.firstChild.nodeType === Node.TEXT_NODE ? listItem : listItem.firstChild;
+	textContainer.insertBefore( document.createTextNode( ' ' ), textContainer.firstChild );
+	textContainer.insertBefore( checkbox, textContainer.firstChild );
 
 	return [ listItem ];
 };
