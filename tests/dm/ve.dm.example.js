@@ -1552,11 +1552,11 @@ ve.dm.example.domToDataCases = {
 		],
 		ceHtml: ve.dm.example.singleLine`
 			${ ve.dm.example.ceParagraph }
-				<span class="ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="en" title="visualeditor-languageannotation-description,langname-en">ten</span>
-				<span class="ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="fr" dir="ltr" title="visualeditor-languageannotation-description,langname-fr">dix</span>
-				<bdo class="ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="cy" dir="ltr" title="visualeditor-languageannotation-description,langname-cy">deg</bdo>
-				<span class="ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="rtl" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">12</span>
-				<span class="ve-ce-annotation ve-ce-textStyleAnnotation ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="RtL" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">34</span>
+				<span class="${ ve.dm.example.textStyleClasses } ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="en" title="visualeditor-languageannotation-description,langname-en">ten</span>
+				<span class="${ ve.dm.example.textStyleClasses } ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="fr" dir="ltr" title="visualeditor-languageannotation-description,langname-fr">dix</span>
+				<bdo class="${ ve.dm.example.textStyleClasses } ve-ce-languageAnnotation ve-ce-bidi-isolate" lang="cy" dir="ltr" title="visualeditor-languageannotation-description,langname-cy">deg</bdo>
+				<span class="${ ve.dm.example.textStyleClasses } ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="rtl" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">12</span>
+				<span class="${ ve.dm.example.textStyleClasses } ve-ce-languageAnnotation ve-ce-bidi-isolate" dir="RtL" title="visualeditor-languageannotation-description-with-dir,langname-,RTL">34</span>
 			</p>
 		`
 	},
