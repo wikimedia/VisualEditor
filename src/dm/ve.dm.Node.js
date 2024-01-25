@@ -370,9 +370,10 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * @param {Object} element
  * @param {ve.dm.HashValueStore} store Hash-value store used by element
  * @param {boolean} preserveGenerated Preserve internal.generated property of element
+ * @param {boolean} resetAttributes Reset attributes for an empty clone, as defined in #static-resetForClone
  * @return {Object} Cloned element object
  */
-ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated ) {
+ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated, resetAttributes ) {
 	var modified = false,
 		clone = ve.copy( element );
 
@@ -398,8 +399,25 @@ ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated ) 
 			clone.originalDomElementsHash = store.hash( domElements, domElements.map( ve.getNodeHtml ).join( '' ) );
 		}
 	}
+	if ( resetAttributes ) {
+		this.resetAttributesForClone( clone, store );
+	}
 	return clone;
 };
+
+/**
+ * Reset attributes for a cloned element.
+ *
+ * This will be used when an element needs to have certain attributes cleared
+ * when creating a clone, e.g. when splitting a content branch node by pressing
+ * enter, some attributes are preserved (list style) but some are cleared
+ * (check list item state).
+ *
+ * @static
+ * @param {Object} clonedElement Cloned element, modified in place
+ * @param {ve.dm.HashValueStore} store Hash-value store used by element
+ */
+ve.dm.Node.static.resetAttributesForClone = function () {};
 
 /* Methods */
 
@@ -415,14 +433,15 @@ ve.dm.Node.prototype.getStore = function () {
  * Implementations should override the static method, not this one
  *
  * @param {boolean} preserveGenerated Preserve internal.generated property of element
+ * @param {boolean} resetAttributes Reset attributes for an empty clone, as defined in #static-resetForClone
  * @return {Object} Cloned element object
  */
-ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated ) {
+ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated, resetAttributes ) {
 	var store = this.getStore();
 	if ( !store ) {
 		throw new Error( 'Node must be attached to the document to be cloned.' );
 	}
-	return this.constructor.static.cloneElement( this.element, store, preserveGenerated );
+	return this.constructor.static.cloneElement( this.element, store, preserveGenerated, resetAttributes );
 };
 
 /**
