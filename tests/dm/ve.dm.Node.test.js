@@ -19,6 +19,10 @@ ve.dm.NodeStub.static.name = 'stub';
 
 ve.dm.NodeStub.static.matchTagNames = [];
 
+ve.dm.NodeStub.static.resetAttributesForClone = function ( clonedElement ) {
+	clonedElement.attributes.counter = 0;
+};
+
 ve.dm.nodeFactory.register( ve.dm.NodeStub );
 
 // FakeCommentNode is never instantiated, so create
@@ -196,12 +200,48 @@ QUnit.test( 'getClonedElement', function ( assert ) {
 					type: 'foo'
 				},
 				msg: 'internal property is removed if it only contained .generated'
+			},
+			{
+				original: {
+					type: 'foo',
+					attributes: {
+						mode: 'bar',
+						counter: 5
+					}
+				},
+				clone: {
+					type: 'foo',
+					attributes: {
+						mode: 'bar',
+						counter: 5
+					}
+				},
+				msg: 'attributes preserved in normal clone'
+			},
+			{
+				original: {
+					type: 'foo',
+					attributes: {
+						mode: 'bar',
+						counter: 5
+					}
+				},
+				clone: {
+					type: 'foo',
+					attributes: {
+						mode: 'bar',
+						counter: 0
+					}
+				},
+				resetAttributes: true,
+				msg: 'some attributes reset by resetAttributes'
 			}
 		];
 
 	cases.forEach( function ( caseItem ) {
 		var node = new ve.dm.NodeStub( caseItem.original );
 		node.setDocument( doc );
-		assert.deepEqual( node.getClonedElement( caseItem.preserveGenerated ), caseItem.clone, caseItem.msg );
+		var clonedElement = node.getClonedElement( caseItem.preserveGenerated, caseItem.resetAttributes );
+		assert.deepEqual( clonedElement, caseItem.clone, caseItem.msg );
 	} );
 } );
