@@ -151,9 +151,9 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 						if ( OO.ui.isMobile() && surface.getModel().getSelection().isCollapsed() ) {
 							surface.getView().activate();
 						} else {
-							// Otherwise use the closing promise to wait until the dialog has performed its actions,
-							// such as creating new annotations, before re-activating.
-							instance.closing.then( function () {
+							// Otherwise use the `closed` promise to wait until the dialog has performed its actions,
+							// such as creating new annotations or moving focus, before re-activating.
+							instance.closed.then( function () {
 								// Don't activate if mobile and expanded
 								if ( !( OO.ui.isMobile() && !surface.getModel().getSelection().isCollapsed() ) ) {
 									surface.getView().activate();
