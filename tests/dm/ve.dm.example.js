@@ -1652,8 +1652,8 @@ ve.dm.example.domToDataCases = {
 	'check list': {
 		body: ve.dm.example.singleLine`
 			<ul rel="ve:checkList">
-				<li rel="ve:checkList" checked="checked"><p>foo</p></li>
-				<li rel="ve:checkList"><p>bar</p></li>
+				<li rel="ve:checkList" data-checked="checked"><p>foo</p></li>
+				<li rel="ve:checkList">bar</li>
 			</ul>
 		`,
 		data: [
@@ -1664,7 +1664,7 @@ ve.dm.example.domToDataCases = {
 			{ type: '/paragraph' },
 			{ type: '/checkListItem' },
 			{ type: 'checkListItem', attributes: { checked: false } },
-			{ type: 'paragraph' },
+			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			'b', 'a', 'r',
 			{ type: '/paragraph' },
 			{ type: '/checkListItem' },
@@ -1679,14 +1679,20 @@ ve.dm.example.domToDataCases = {
 					<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">foo</p>
 				</li>
 				<li class="ve-ce-branchNode ve-ce-checkListItemNode">
-					<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode">bar</p>
+					<p class="ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode ve-ce-generated-wrapper">bar</p>
 				</li>
 			</ul>
 		`,
 		normalizedBody: ve.dm.example.singleLine`
 			<ul rel="ve:checkList">
-				<li rel="ve:checkList" checked="checked"><span data-ve-ignore="true">☑</span><p>foo</p></li>
-				<li rel="ve:checkList"><span data-ve-ignore="true">☐</span><p>bar</p></li>
+				<li rel="ve:checkList" data-checked="checked"><p>☑ foo</p></li>
+				<li rel="ve:checkList">☐ bar</li>
+			</ul>
+		`,
+		clipboardBody: ve.dm.example.singleLine`
+			<ul rel="ve:checkList">
+				<li rel="ve:checkList" data-checked="checked" style="list-style: none;"><p><span data-ve-ignore="true">☑</span> foo</p></li>
+				<li rel="ve:checkList" style="list-style: none;"><span data-ve-ignore="true">☐</span> bar</li>
 			</ul>
 		`
 	},
