@@ -910,13 +910,12 @@ ve.ce.Surface.prototype.drawSelections = function ( name, selections, options ) 
 	drawnSelection.selections = selections;
 	drawnSelection.options = options;
 
-	if ( options.wrapperClass ) {
-		drawnSelection.$selections.attr(
-			'class',
-			've-ce-surface-selections ve-ce-surface-selections-' + name + ' ' +
-			options.wrapperClass
-		);
-	}
+	// Always set the 'class' attribute to ensure previously-set classes are cleared.
+	drawnSelection.$selections.attr(
+		'class',
+		've-ce-surface-selections ve-ce-surface-selections-' + name + ' ' +
+		( options.wrapperClass || '' )
+	);
 
 	var selectionsJustShown = {};
 	selections.forEach( function ( selection ) {
