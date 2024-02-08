@@ -4,7 +4,7 @@
 	"--categories": ".jsduck/categories.json",
 	"--eg-iframe": ".jsduck/eg-iframe.html",
 	"--tags": ".jsduck/CustomTags.rb",
-	"--warnings": [ "-nodoc(class,public)", "-global" ],
+	"--warnings": [ "-nodoc(class,public)", "-global", "-inheritdoc" ],
 	"--builtin-classes": true,
 	"--processes": "0",
 	"--warnings-exit-nonzero": true,
@@ -14,12 +14,7 @@
 	],
 	"--": [
 		".jsduck/external.js",
-		"lib/oojs-ui/oojs-ui-core.js",
-		"lib/oojs-ui/oojs-ui-widgets.js",
-		"lib/oojs-ui/oojs-ui-toolbars.js",
-		"lib/oojs-ui/oojs-ui-windows.js",
-		"lib/oojs-ui/oojs-ui-wikimediaui.js",
-		"lib/oojs-ui/oojs-ui-apex.js",
+		".jsduck/external-ooui.js",
 		"lib/unicodejs/unicodejs.js",
 		"lib/treeDiffer/treeDiffer-dist.js",
 		"src"
