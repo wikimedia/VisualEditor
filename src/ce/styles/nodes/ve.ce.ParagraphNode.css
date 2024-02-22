@@ -23,11 +23,13 @@
 :not( .ve-ce-attachedRootNode ):not( .ve-ui-surface-placeholder ) > .ve-ce-paragraphNode.ve-ce-generated-wrapper,
 .ve-ce-paragraphNode.ve-ce-generated-wrapper:not( :first-child ) {
 	margin-top: 0;
+	padding-top: 0;
 }
 
 /* Same for bottom margin */
 :not( .ve-ce-attachedRootNode ):not( .ve-ui-surface-placeholder ) > .ve-ce-paragraphNode.ve-ce-generated-wrapper,
 .ve-ce-paragraphNode.ve-ce-generated-wrapper:not( :last-child ) {
 	margin-bottom: 0;
+	padding-bottom: 0;
 }
 /* stylelint-enable no-descending-specificity */
