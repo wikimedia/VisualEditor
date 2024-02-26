@@ -45,6 +45,7 @@
 	"visualeditor-changedesc-link-removed": "Keçid silindi: $1",
 	"visualeditor-changedesc-list-indent": "Siyahı elementi abzası artırıldı",
 	"visualeditor-changedesc-list-outdent": "Siyahı elementi abzası azaldı",
+	"visualeditor-changedesc-list-style-indent": "Abzas",
 	"visualeditor-changedesc-no-key": "$1, $2 olaraq dəyişdirili",
 	"visualeditor-changedesc-set": "$1, $2 təyin olundu",
 	"visualeditor-changedesc-textstyle-added": "Mətn üslubu əlavə edildi: $1",

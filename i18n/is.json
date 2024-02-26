@@ -3,6 +3,7 @@
 		"authors": [
 			"Maxí",
 			"Snævar",
+			"Stefán Örvar Sigmundsson",
 			"Sveinki",
 			"Sveinn í Felli",
 			"Þjarkur"
@@ -136,7 +137,7 @@
 	"visualeditor-table-insert-table": "Tafla",
 	"visualeditor-table-merge-cells": "Sameina sellur",
 	"visualeditor-table-merge-cells-merge": "Sameina",
-	"visualeditor-table-merge-cells-unmerge": "Taka aftur sameiningu",
+	"visualeditor-table-merge-cells-unmerge": "Sundra",
 	"visualeditor-table-move-col-after": "Færa eftir",
 	"visualeditor-table-move-col-before": "Færa fyrir",
 	"visualeditor-table-move-row-after": "Færa niður",
