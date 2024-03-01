@@ -2481,16 +2481,6 @@ ve.collab.setup = function () {
 			OO.ui.alert( 'Session URL does not match this page' );
 		}
 	}
-	ve.init.target.constructor.static.toolbarGroups = ve.copy(
-		ve.init.target.constructor.static.toolbarGroups
-	);
-	ve.init.target.constructor.static.toolbarGroups.push(
-		{ name: 'collab', include: [ 'collab' ] }
-	);
-	ve.init.target.getToolbar().setup(
-		ve.init.target.constructor.static.toolbarGroups,
-		ve.init.target.surface
-	);
 };
 
 /**
@@ -2717,11 +2707,11 @@ OO.inheritClass( ve.ui.CollabTool, OO.ui.Tool );
 
 ve.ui.CollabTool.static.name = 'collab';
 
-ve.ui.CollabTool.static.group = 'collab';
+ve.ui.CollabTool.static.group = 'help';
 
-ve.ui.CollabTool.static.icon = 'userGroup';
+ve.ui.CollabTool.static.icon = 'userAdd';
 
-ve.ui.CollabTool.static.title = 've.collab';
+ve.ui.CollabTool.static.title = OO.ui.deferMsg( 'visualeditor-collab-hostbutton-label' );
 
 ve.ui.CollabTool.static.autoAddToCatchall = false;
 

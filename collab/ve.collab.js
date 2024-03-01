@@ -165,16 +165,6 @@ ve.collab.setup = function () {
 			OO.ui.alert( 'Session URL does not match this page' );
 		}
 	}
-	ve.init.target.constructor.static.toolbarGroups = ve.copy(
-		ve.init.target.constructor.static.toolbarGroups
-	);
-	ve.init.target.constructor.static.toolbarGroups.push(
-		{ name: 'collab', include: [ 'collab' ] }
-	);
-	ve.init.target.getToolbar().setup(
-		ve.init.target.constructor.static.toolbarGroups,
-		ve.init.target.surface
-	);
 };
 
 /**
