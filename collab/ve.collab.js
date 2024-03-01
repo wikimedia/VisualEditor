@@ -89,10 +89,10 @@ ve.collab.initPeerClient = function ( serverId, isMain ) {
 		$( '.ve-ui-toolbar-saveButton' ).css( 'text-decoration', 'line-through' );
 	}
 	ve.init.target.constructor.static.toolbarGroups = ve.copy( ve.init.target.constructor.static.toolbarGroups );
-	ve.init.target.constructor.static.toolbarGroups.push( {
+	ve.init.target.constructor.static.toolbarGroups.unshift( {
 		name: 'authorList',
 		include: [ 'authorList' ],
-		position: 'after'
+		align: 'after'
 	} );
 
 	peerClient.on( 'open', function ( /* id */ ) {
