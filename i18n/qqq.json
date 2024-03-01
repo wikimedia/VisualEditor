@@ -99,6 +99,7 @@
 	"visualeditor-collab-url-mismatch": "Error message when the collaboration URL does not match the page URL",
 	"visualeditor-collab-url-placeholder": "Placeholder for the TextInput where the user enters a collaboration URL",
 	"visualeditor-collab-url-prompt": "Prompt for the TextInput where the user enters a collaboration URL",
+	"visualeditor-collab-user-placeholder": "Placeholder name for a user when they joing a collaboration session.\n\nValues:\n* $1 – User ID, a small auto-incrementing number starting at 1.",
 	"visualeditor-command-dialog-cancel": "Label for the command to close a window and discard its changes",
 	"visualeditor-command-dialog-confirm": "Label for the command to close a window and make its changes",
 	"visualeditor-command-dialog-focus-context": "Label for the command to move focus to the contextual popup",

@@ -81,6 +81,7 @@
 	"visualeditor-collab-url-mismatch": "Session URL does not match this page",
 	"visualeditor-collab-url-placeholder": "[Session URL]",
 	"visualeditor-collab-url-prompt": "Enter session URL to join",
+	"visualeditor-collab-user-placeholder": "User $1",
 	"visualeditor-command-dialog-cancel": "Close / cancel change",
 	"visualeditor-command-dialog-confirm": "Confirm change",
 	"visualeditor-command-dialog-focus-context": "Move focus to contextual popup",
