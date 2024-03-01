@@ -184,6 +184,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 	}
 
 	createSurfacesFromHash( location.hash );
+	ve.init.target.once( 'surfaceReady', ve.collab.join );
 
 	$( window ).on( 'hashchange', function () {
 		if ( hashChanging ) {
