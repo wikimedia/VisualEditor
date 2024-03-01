@@ -15,7 +15,6 @@ module.exports = function ( grunt ) {
 	const modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
 		rebaserBuildFiles = moduleUtils.makeBuildList( modules, [ 'rebaser.build' ] ),
-		collabFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.collab' ] ),
 		veRebaseFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.rebase.build' ] ),
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
 		coreBuildFilesApex = moduleUtils.makeBuildList( modules, [ 'visualEditor.build.apex' ] ),
@@ -63,14 +62,6 @@ module.exports = function ( grunt ) {
 			dist: [ 'dist/*', 'coverage/*' ]
 		},
 		concat: {
-			'collab.sideLoad': {
-				options: {
-					banner: grunt.file.read( 'build/collab-sideLoad-banner.txt' ),
-					footer: grunt.file.read( 'build/collab-sideLoad-footer.txt' )
-				},
-				dest: 'demos/ve/ve-collab-sideLoad.js',
-				src: collabFiles.scripts
-			},
 			'rebaser.build': {
 				options: {
 					banner: grunt.file.read( 'build/rebaser-banner.txt' ),
@@ -338,7 +329,6 @@ module.exports = function ( grunt ) {
 				'!lib/**',
 				'!i18n/**',
 				'!**/{coverage,dist,docs,node_modules}/**',
-				'!demos/ve/ve-collab-sideLoad.js',
 				'!.git/**'
 			]
 		},
@@ -351,7 +341,6 @@ module.exports = function ( grunt ) {
 				'**/*.{js,json}',
 				'*.html',
 				'{bin,build,demos,src,tests,rebaser}/**/*.html',
-				'!demos/ve/ve-collab-sideLoad.js',
 				'!coverage/**',
 				'!dist/**',
 				'!docs/**',
