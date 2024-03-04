@@ -18,35 +18,60 @@ ve.ui.CollabProcessDialog.static.imageUri = 'data:image/svg+xml;charset=utf-8;ba
 ve.ui.CollabProcessDialog.prototype.initialize = function () {
 	ve.ui.CollabProcessDialog.super.prototype.initialize.apply( this, arguments );
 
-	this.content = new OO.ui.PanelLayout( {
+	this.stack = new OO.ui.StackLayout( {
+		expanded: false
+	} );
+
+	this.initPanel = new OO.ui.PanelLayout( {
 		padded: true,
 		expanded: false
 	} );
-	this.button = new OO.ui.ButtonWidget( {
-		label: this.label,
-		icon: this.icon,
-		title: this.title,
+	this.initButton = new OO.ui.ButtonWidget( {
 		flags: [ 'primary', 'progressive' ]
 	} );
-	this.button.$element[ 0 ].style.display = 'block';
-	this.button.$element[ 0 ].firstElementChild.style.minWidth = '100%';
+	this.initButton.$element[ 0 ].style.display = 'block';
+	this.initButton.$element[ 0 ].firstElementChild.style.minWidth = '100%';
 
-	this.content.$element.append(
+	this.$summary = $( '<p>' );
+
+	this.initPanel.$element.append(
 		$( '<img>' ).prop( 'src', ve.ui.CollabProcessDialog.static.imageUri )
 			.css( { display: 'block', margin: '2em auto' } ),
-		$( '<p>' ).text( this.summary )
-			.css( { 'font-weight': 'bold' } ),
-		$( '<p>' ).text( OO.ui.msg( 'visualeditor-collab-dialog-sharing' ) ),
-		$( '<p>' ).text( OO.ui.msg( 'visualeditor-collab-dialog-sessionend' ) ),
-		$( '<p>' ).text( OO.ui.msg( 'visualeditor-collab-dialog-privacy' ) ),
-		$( '<div>' ).append( this.button.$element )
+		this.$summary.css( { 'font-weight': 'bold' } ),
+		$( '<p>' ).text( ve.msg( 'visualeditor-collab-dialog-sharing' ) ),
+		$( '<p>' ).text( ve.msg( 'visualeditor-collab-dialog-sessionend' ) ),
+		$( '<p>' ).text( ve.msg( 'visualeditor-collab-dialog-privacy' ) ),
+		$( '<div>' ).append( this.initButton.$element )
 	);
-	this.$body.append( this.content.$element );
-	this.button.on( 'click', this.close.bind( this, 'accept' ) );
+
+	this.stack.addItems( [
+		this.initPanel
+	] );
+
+	this.$body.append( this.stack.$element );
+	this.initButton.connect( this, { click: 'onButtonClick' } );
 };
 
 ve.ui.CollabProcessDialog.prototype.getBodyHeight = function () {
-	return this.content.$element.outerHeight( true );
+	return this.stack.$element.outerHeight( true );
+};
+
+ve.ui.CollabProcessDialog.prototype.onButtonClick = function () {
+	this.close( 'accept' );
+};
+
+ve.ui.CollabProcessDialog.prototype.getReadyProcess = function ( data ) {
+	return ve.ui.CollabProcessDialog.super.prototype.getReadyProcess.call( this, data )
+		.next( function () {
+			switch ( this.stack.getCurrentItem() ) {
+				case this.initPanel:
+					this.initButton.focus();
+					break;
+				case this.copyPanel:
+					this.copyTextLayout.button.focus();
+					break;
+			}
+		}, this );
 };
 
 /**
@@ -56,15 +81,58 @@ ve.ui.CollabProcessDialog.prototype.getBodyHeight = function () {
  */
 ve.ui.HostCollabProcessDialog = function VeUiHostCollabProcessDialog( config ) {
 	ve.ui.HostCollabProcessDialog.super.call( this, config );
-	this.label = OO.ui.msg( 'visualeditor-collab-hostbutton-label' );
-	this.icon = 'userAdd';
-	this.title = 'Host';
-	this.summary = OO.ui.msg( 'visualeditor-collab-dialog-summary-host' );
 };
 
 OO.inheritClass( ve.ui.HostCollabProcessDialog, ve.ui.CollabProcessDialog );
 
 ve.ui.HostCollabProcessDialog.static.name = 'hostCollabDialog';
+
+ve.ui.HostCollabProcessDialog.prototype.initialize = function () {
+	ve.ui.HostCollabProcessDialog.super.prototype.initialize.apply( this, arguments );
+
+	this.initButton.setLabel( ve.msg( 'visualeditor-collab-hostbutton-label' ) );
+	this.initButton.setIcon( 'userAdd' );
+	this.$summary.text( ve.msg( 'visualeditor-collab-dialog-summary-host' ) );
+
+	this.copyPanel = new OO.ui.PanelLayout( {
+		padded: true,
+		expanded: false
+	} );
+	this.afterCopyButton = new OO.ui.ButtonWidget( {
+		flags: [ 'primary', 'progressive' ],
+		label: ve.msg( 'visualeditor-dialog-action-done' )
+	} );
+	this.copyTextLayout = new OO.ui.CopyTextLayout();
+	this.copyPanel.$element.append(
+		new OO.ui.FieldsetLayout( {
+			label: ve.msg( 'visualeditor-collab-copy-title' ),
+			items: [
+				this.copyTextLayout,
+				new OO.ui.FieldLayout( this.afterCopyButton )
+			]
+		} ).$element
+	);
+	this.stack.addItems( [ this.copyPanel ] );
+
+	this.afterCopyButton.on( 'click', this.close.bind( this ) );
+};
+
+ve.ui.HostCollabProcessDialog.prototype.onButtonClick = function () {
+	this.initButton.setDisabled( true );
+	this.pushPending();
+
+	var dialog = this;
+	ve.collab.initPeerServer();
+	var collabUrl = new URL( location.href );
+	ve.collab.peerServer.peer.on( 'open', function ( newId ) {
+		collabUrl.searchParams.set( 'collabSession', newId );
+		dialog.copyTextLayout.textInput.setValue( collabUrl );
+		dialog.stack.setItem( dialog.copyPanel );
+		dialog.updateSize();
+		dialog.copyTextLayout.button.focus();
+		dialog.popPending();
+	} );
+};
 
 ve.ui.windowFactory.register( ve.ui.HostCollabProcessDialog );
 
@@ -75,14 +143,18 @@ ve.ui.windowFactory.register( ve.ui.HostCollabProcessDialog );
  */
 ve.ui.JoinCollabProcessDialog = function VeUiJoinCollabProcessDialog( config ) {
 	ve.ui.JoinCollabProcessDialog.super.call( this, config );
-	this.label = OO.ui.msg( 'visualeditor-collab-joinbutton-label' );
-	this.icon = 'userGroup';
-	this.title = 'Join';
-	this.summary = OO.ui.msg( 'visualeditor-collab-dialog-summary-join' );
 };
 
 OO.inheritClass( ve.ui.JoinCollabProcessDialog, ve.ui.CollabProcessDialog );
 
 ve.ui.JoinCollabProcessDialog.static.name = 'joinCollabDialog';
+
+ve.ui.JoinCollabProcessDialog.prototype.initialize = function () {
+	ve.ui.JoinCollabProcessDialog.super.prototype.initialize.apply( this, arguments );
+
+	this.initButton.setLabel( ve.msg( 'visualeditor-collab-joinbutton-label' ) );
+	this.initButton.setIcon( 'userGroup' );
+	this.$summary.text( ve.msg( 'visualeditor-collab-dialog-summary-join' ) );
+};
 
 ve.ui.windowFactory.register( ve.ui.JoinCollabProcessDialog );

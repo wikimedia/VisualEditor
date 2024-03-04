@@ -163,21 +163,5 @@ ve.collab.start = function ( serverId ) {
 		return;
 	}
 	// Else host a new session
-	ve.init.target.surface.dialogs.openWindow( 'hostCollabDialog' ).closing.then( function ( val ) {
-		if ( val !== 'accept' ) {
-			return;
-		}
-		ve.collab.initPeerServer();
-		var collabUrl = new URL( location.href );
-		ve.collab.peerServer.peer.on( 'open', function ( newId ) {
-			collabUrl.searchParams.set( 'collabSession', newId );
-			var copyTextLayout = new OO.ui.CopyTextLayout( {
-				copyText: collabUrl
-			} );
-			OO.ui.alert( copyTextLayout.$element, {
-				title: OO.ui.msg( 'visualeditor-collab-copy-title' ),
-				size: 'medium'
-			} );
-		} );
-	} );
+	ve.init.target.surface.dialogs.openWindow( 'hostCollabDialog' );
 };
