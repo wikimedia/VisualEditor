@@ -7,6 +7,7 @@
 			"Bashkorttan",
 			"Haqmar",
 			"Lizalizaufa",
+			"MR973",
 			"Sagan",
 			"Азат Хәлилов",
 			"Айсар",
@@ -15,7 +16,7 @@
 			"Янмурза Баки"
 		]
 	},
-	"visualeditor": "Күҙләгес мөхәррир",
+	"visualeditor": "Визуаль мөхәррир",
 	"visualeditor-aliennode-tooltip": "Үкенескә күрә, хәҙер был элемент кодты мөхәррирләү режимында ғына үҙгәртелә ала.",
 	"visualeditor-align-desc-center": "уртала",
 	"visualeditor-align-desc-default": "ҡәҙимгесә",

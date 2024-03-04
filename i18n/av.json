@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Augustus A C",
 			"Gazimagomedov"
 		]
 	},
 	"visualeditor-commentinspector-title": "Комментарий",
-	"visualeditor-commentinspector-tooltip": "Комментарий"
+	"visualeditor-commentinspector-tooltip": "Комментарий",
+	"visualeditor-help-tool": "Квеки"
 }
