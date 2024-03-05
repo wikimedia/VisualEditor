@@ -217,6 +217,15 @@ ve.init.Platform.prototype.addMessages = null;
 ve.init.Platform.prototype.getMessage = null;
 
 /**
+ * Get the current user's name, if the platform supports it
+ *
+ * @return {string|null} User name, or null if not applicable
+ */
+ve.init.Platform.prototype.getUserName = function () {
+	return null;
+};
+
+/**
  * Parse a string into a number
  *
  * @abstract

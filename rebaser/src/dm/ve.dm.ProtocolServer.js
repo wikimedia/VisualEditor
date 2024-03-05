@@ -128,7 +128,7 @@ ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength )
 		startLength = 0;
 	}
 	this.rebaseServer.updateDocState( docName, authorId, null, {
-		name: ve.msg( 'visualeditor-collab-user-placeholder', authorId ),
+		name: ve.init.platform.getUserName() || ve.msg( 'visualeditor-collab-user-placeholder', authorId ),
 		color: this.constructor.static.palette[
 			authorId % this.constructor.static.palette.length
 		],
