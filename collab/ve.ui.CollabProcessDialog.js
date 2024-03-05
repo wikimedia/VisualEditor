@@ -15,6 +15,12 @@ ve.ui.CollabProcessDialog.static.title = OO.ui.deferMsg( 'visualeditor-collab-di
 
 ve.ui.CollabProcessDialog.static.imageUri = 'data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTAiIGhlaWdodD0iMTUwIiBzdHlsZT0ic3Ryb2tlOiNjY2NjY2M7c3Ryb2tlLXdpZHRoOjY7c3Ryb2tlLWxpbmVjYXA6cm91bmQiPg0KIDxyZWN0IHN0eWxlPSJmaWxsOndoaXRlO3N0cm9rZTp3aGl0ZSIgd2lkdGg9IjI1MCIgaGVpZ2h0PSIxNTAiIC8+DQogPHBhdGggZD0iTSAzMCwzMEggNzciIC8+DQogPHBhdGggZD0iTSA5MCwzMEggMTM0IiAvPg0KIDxwYXRoIGQ9Ik0gMTQ3LDMwSCAyMjAiIC8+DQogPHBhdGggZD0iTSAzMCw1MEggMTY4IiBzdHlsZT0ic3Ryb2tlOiNmZmNiMzMiIC8+DQogPHBhdGggZD0iTSAxODAsNTBIIDIyMCIgLz4NCiA8cGF0aCBkPSJNIDMwLDcwSCAxMTUiIHN0eWxlPSJzdHJva2U6I2U4NTdjOCIgLz4NCiA8cGF0aCBkPSJNIDEyOCw3MEggMjIwIiAvPg0KIDxwYXRoIGQ9Ik0gMzAsOTBIIDQ3IiAvPg0KIDxwYXRoIGQ9Ik0gNjAsOTBIIDEzOCIgLz4NCiA8cGF0aCBkPSJNIDE1MSw5MEggMjIwIiBzdHlsZT0ic3Ryb2tlOiMwMGFmODkiIC8+DQogPHBhdGggZD0iTSAzMCwxMTBIIDIyMCIgLz4NCiA8cGF0aCBkPSJNIDMwLDEzMEggOTgiIC8+DQogPHBhdGggZD0iTSAxMTEsMTMwSCAyMjAiIC8+DQo8L3N2Zz4=';
 
+ve.ui.CollabProcessDialog.static.actions = [
+	{
+		label: OO.ui.deferMsg( 'visualeditor-dialog-action-done' ),
+		flags: [ 'safe', 'close' ]
+	}
+];
 ve.ui.CollabProcessDialog.prototype.initialize = function () {
 	ve.ui.CollabProcessDialog.super.prototype.initialize.apply( this, arguments );
 
