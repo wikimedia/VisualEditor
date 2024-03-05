@@ -271,6 +271,11 @@ ve.ui.Toolbar.prototype.detach = function () {
 		this.getSurface().getModel().disconnect( this );
 		this.surface = null;
 	}
+	// Reset narrow state/cache as when we setup again it
+	// may be with a different tool list.
+	// TODO: Create upstream detach/teardown
+	this.setNarrow( false );
+	this.narrowThreshold = null;
 };
 
 /**

@@ -113,10 +113,12 @@ ve.collab.initPeerClient = function ( serverId, isMain ) {
 					);
 					return;
 				}
-				ve.init.target.getToolbar().setup(
+				var toolbar = ve.init.target.getToolbar();
+				toolbar.setup(
 					ve.init.target.constructor.static.toolbarGroups,
 					ve.init.target.surface
 				);
+				toolbar.onWindowResize();
 				if ( !isMain ) {
 					// eslint-disable-next-line no-jquery/no-global-selector
 					$( '.ve-ui-toolbar-saveButton' ).css( 'text-decoration', 'line-through' );
