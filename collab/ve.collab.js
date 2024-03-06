@@ -136,34 +136,11 @@ ve.collab.connectModelSynchronizer = function () {
 	} );
 };
 
-ve.collab.validateSessionUrl = function ( sessionUrl ) {
-	var u = new URL( sessionUrl );
-	var m = u.hash.match( /^#collabSession=(.*)/ );
-	if ( !m ) {
-		return '';
-	}
-	if (
-		u.protocol !== location.protocol ||
-		u.host !== location.host ||
-		u.pathname !== location.pathname
-	) {
-		return null;
-	}
-	return m[ 1 ];
-};
-
-ve.collab.setup = function () {
-	if ( location.hash.match( /^#collabSession=/ ) ) {
-		var serverId = ve.collab.validateSessionUrl( location.toString() );
-		if ( serverId ) {
-			// Valid session URL
-			ve.collab.start( serverId );
-			return;
-		}
-		if ( serverId === null ) {
-			// Invalid session URL
-			OO.ui.alert( 'Session URL does not match this page' );
-		}
+ve.collab.join = function () {
+	var serverId = new URLSearchParams( location.search ).get( 'collabSession' );
+	if ( serverId ) {
+		// Valid session URL
+		ve.collab.start( serverId );
 	}
 };
 
@@ -189,10 +166,11 @@ ve.collab.start = function ( serverId ) {
 			return;
 		}
 		ve.collab.initPeerServer();
-		var url = location.protocol + '//' + location.host + location.pathname;
+		var collabUrl = new URL( location.href );
 		ve.collab.peerServer.peer.on( 'open', function ( newId ) {
+			collabUrl.searchParams.set( 'collabSession', newId );
 			var copyTextLayout = new OO.ui.CopyTextLayout( {
-				copyText: url + '#collabSession=' + newId
+				copyText: collabUrl
 			} );
 			OO.ui.alert( copyTextLayout.$element, {
 				title: OO.ui.msg( 'visualeditor-collab-copy-title' ),
