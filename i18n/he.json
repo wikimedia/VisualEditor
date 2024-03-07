@@ -84,6 +84,7 @@
 	"visualeditor-collab-url-mismatch": "כתובת האתר של האירוע אינה תואמת לדף הזה",
 	"visualeditor-collab-url-placeholder": "[כתובת URL של האירוע]",
 	"visualeditor-collab-url-prompt": "נא להזין את כתובת ה־URL של האירוע כדי להצטרף",
+	"visualeditor-collab-user-placeholder": "משתמש $1",
 	"visualeditor-command-dialog-cancel": "סגירה / ביטול שינוי",
 	"visualeditor-command-dialog-confirm": "אישור שינוי",
 	"visualeditor-command-dialog-focus-context": "העברת המיקוד לחלון קופץ בהקשר",

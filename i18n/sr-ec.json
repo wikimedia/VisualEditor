@@ -78,6 +78,7 @@
 	"visualeditor-collab-url-mismatch": "URL сесије се не поклапа са овом страницом",
 	"visualeditor-collab-url-placeholder": "[URL сесије]",
 	"visualeditor-collab-url-prompt": "Унесите URL сесије да се придружите",
+	"visualeditor-collab-user-placeholder": "Корисник $1",
 	"visualeditor-command-dialog-cancel": "Затвори / откажи промену",
 	"visualeditor-command-dialog-confirm": "Потврди промену",
 	"visualeditor-commentannotationcontextitem-comment": "Коментар",

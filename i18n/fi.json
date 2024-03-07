@@ -80,6 +80,7 @@
 	"visualeditor-clipboard-cut": "Leikkaa",
 	"visualeditor-clipboard-paste": "Liitä",
 	"visualeditor-clipboard-paste-special": "Liitä pelkkänä tekstinä",
+	"visualeditor-collab-user-placeholder": "Käyttäjä $1",
 	"visualeditor-command-dialog-cancel": "Sulje / peruuta muutos",
 	"visualeditor-command-dialog-confirm": "Vahvista muutos",
 	"visualeditor-command-dialog-focus-context": "Siirrä kohdistus asiayhteyteen avautuvaan ponnahdusikkunaan",

@@ -66,6 +66,7 @@
 	"visualeditor-collab-copy-title": "Kopīgot šo sesijas URL",
 	"visualeditor-collab-joinbutton-label": "Pievienojieties esošai sesijai",
 	"visualeditor-collab-url-mismatch": "Sesijas URL neatbilst šai lapai",
+	"visualeditor-collab-url-placeholder": "[Sesijas URL]",
 	"visualeditor-collab-url-prompt": "Ievadi sesijas URL, lai pievienotos",
 	"visualeditor-command-dialog-cancel": "Aizvērt / atcelt izmaiņas",
 	"visualeditor-command-dialog-confirm": "Apstiprināt izmaiņas",

@@ -96,6 +96,7 @@
 	"visualeditor-collab-url-mismatch": "Oturum URL'si bu sayfayla eşleşmiyor",
 	"visualeditor-collab-url-placeholder": "[Oturum URL'si]",
 	"visualeditor-collab-url-prompt": "Katılmak için oturum URL'sini girin",
+	"visualeditor-collab-user-placeholder": "$1. kullanıcı",
 	"visualeditor-command-dialog-cancel": "Değişikliği kapat / iptal et",
 	"visualeditor-command-dialog-confirm": "Değişikliği onayla",
 	"visualeditor-command-dialog-focus-context": "Odağı bağlamsal açılır pencereye taşı",

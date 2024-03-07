@@ -52,6 +52,7 @@
 	"visualeditor-clipboard-cut": "Erausschneiden",
 	"visualeditor-clipboard-paste": "Drasetzen",
 	"visualeditor-clipboard-paste-special": "Als Kloertext drasetzen",
+	"visualeditor-collab-user-placeholder": "Benotzer $1",
 	"visualeditor-command-dialog-cancel": "Zoumaachen / Ännerung ofbriechen",
 	"visualeditor-command-dialog-confirm": "Ännerung confirméieren",
 	"visualeditor-commentannotationcontextitem-comment": "Bemierkung",
