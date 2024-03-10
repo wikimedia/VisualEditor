@@ -25,10 +25,17 @@ module.exports = function ( grunt ) {
 			return files.map( ( file ) => file.match( /^.*pages\/(.+).html$/ )[ 1 ] );
 		}() );
 
+	const distLessFiles = {
+		'dist/visualEditor-apex.css': 'dist/visualEditor-apex.less',
+		'dist/visualEditor-wikimediaui.css': 'dist/visualEditor-wikimediaui.less',
+		'dist/visualEditor-rebase.css': 'dist/visualEditor-rebase.less'
+	};
+
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
+	grunt.loadNpmTasks( 'grunt-contrib-less' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-css-url-embed' );
 	grunt.loadNpmTasks( 'grunt-cssjanus' );
@@ -59,7 +66,8 @@ module.exports = function ( grunt ) {
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( 'package.json' ),
 		clean: {
-			dist: [ 'dist/*', 'coverage/*' ]
+			dist: [ 'dist/*', 'coverage/*' ],
+			less: Object.values( distLessFiles )
 		},
 		concat: {
 			'rebaser.build': {
@@ -82,7 +90,7 @@ module.exports = function ( grunt ) {
 				options: {
 					banner: grunt.file.read( 'build/banner.txt' )
 				},
-				dest: 'dist/visualEditor-rebase.css',
+				dest: 'dist/visualEditor-rebase.less',
 				src: veRebaseFiles.styles
 			},
 			js: {
@@ -97,14 +105,14 @@ module.exports = function ( grunt ) {
 				options: {
 					banner: grunt.file.read( 'build/banner.txt' )
 				},
-				dest: 'dist/visualEditor-apex.css',
+				dest: 'dist/visualEditor-apex.less',
 				src: coreBuildFilesApex.styles
 			},
 			'css-wikimediaui': {
 				options: {
 					banner: grunt.file.read( 'build/banner.txt' )
 				},
-				dest: 'dist/visualEditor-wikimediaui.css',
+				dest: 'dist/visualEditor-wikimediaui.less',
 				src: coreBuildFilesWikimediaUI.styles
 			},
 			// HACK: Ideally these libraries would provide their own distribution files (T95667)
@@ -115,6 +123,18 @@ module.exports = function ( grunt ) {
 			'jquery.uls.data': {
 				dest: 'dist/lib/jquery.uls.data.js',
 				src: modules[ 'jquery.uls.data' ].scripts
+			}
+		},
+		less: {
+			options: {
+				// Throw errors if we try to calculate mixed units, like `px` and `em` values.
+				strictUnits: true,
+				// Force LESS v3.0.0+ to let us use mixins before we later upgrade to @plugin
+				// architecture.
+				javascriptEnabled: true
+			},
+			dist: {
+				files: distLessFiles
 			}
 		},
 		cssjanus: {
@@ -521,7 +541,7 @@ module.exports = function ( grunt ) {
 		} );
 	} );
 
-	grunt.registerTask( 'build', [ 'clean', 'concat', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
+	grunt.registerTask( 'build', [ 'clean:dist', 'concat', 'less', 'clean:less', 'cssjanus', 'cssUrlEmbed', 'copy', 'buildloader' ] );
 	grunt.registerTask( 'lint', [ 'tyops', 'eslint', 'stylelint', 'banana' ] );
 	grunt.registerTask( 'unit', [ 'karma:chrome', 'karma:firefox' ] );
 	grunt.registerTask( '_test', [ 'lint', 'git-build', 'build', 'unit' ] );

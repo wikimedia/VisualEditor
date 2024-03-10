@@ -1,4 +1,9 @@
 {
+	"less": {
+		"scripts": [
+			"lib/less/less.js"
+		]
+	},
 	"socket.io": {
 		"scripts": [
 			"lib/socket.io-client/socket.io.min.js"
@@ -217,6 +222,7 @@
 	},
 	"baselibs": {
 		"dependencies": [
+			"less",
 			"jquery",
 			"oojs",
 			"oojs-ui",
@@ -228,6 +234,7 @@
 	},
 	"baselibs.dist": {
 		"dependencies": [
+			"less",
 			"jquery",
 			"oojs",
 			"oojs-ui",
