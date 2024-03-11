@@ -68,6 +68,7 @@
 	"visualeditor-collab-dialog-privacy": "কিছু ব্যক্তিগত তথ্য, যেমন আপনার আইপি ঠিকানা, সহযোগীদের কাছে দৃশ্যমান হতে পারে।",
 	"visualeditor-collab-dialog-summary-host": "একটি সহযোগিতামূলক সম্পাদনা অধিবেশনের আয়োজন করুন।",
 	"visualeditor-collab-url-mismatch": "সেশন ইউআরএল এই পাতার সাথে মেলে না",
+	"visualeditor-collab-user-placeholder": "ব্যবহারকারী $1",
 	"visualeditor-command-dialog-cancel": "পরিবর্তন বন্ধ / বাতিল করুন",
 	"visualeditor-command-dialog-confirm": "পরিবর্তন নিশ্চিত করুন",
 	"visualeditor-commentannotationcontextitem-comment": "মন্তব্য",

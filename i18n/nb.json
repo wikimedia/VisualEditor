@@ -80,6 +80,7 @@
 	"visualeditor-collab-url-mismatch": "Økt-URL-en samsvarer ikke med denne siden",
 	"visualeditor-collab-url-placeholder": "[Økt-URL]",
 	"visualeditor-collab-url-prompt": "Legg inn økt-URL-en for å bli med",
+	"visualeditor-collab-user-placeholder": "Bruker nr. $1",
 	"visualeditor-command-dialog-cancel": "Lukk / avbryt endring",
 	"visualeditor-command-dialog-confirm": "Bekreft endring",
 	"visualeditor-command-dialog-focus-context": "Endre fokus til kontekstuell popup",
