@@ -4,17 +4,21 @@
  * @copyright See AUTHORS.txt
  */
 
-.ve-ui-fragmentInspector-container.oo-ui-panelLayout-padded:not( [ hidden ] ),
-.ve-ui-fragmentInspector-container .oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout-padded:not( [ hidden ] ) {
-	padding: 0.75em;
-}
+.ve-ui-fragmentInspector {
+	&-container {
+		&.oo-ui-panelLayout-padded:not( [ hidden ] ),
+		.oo-ui-indexLayout-stackLayout > .oo-ui-panelLayout-padded:not( [ hidden ] ) {
+			padding: 0.75em;
+		}
 
-.ve-ui-fragmentInspector-content .oo-ui-processDialog-actions-other .oo-ui-buttonElement-framed {
-	margin-left: 0;
-	margin-bottom: 0;
-}
+		.oo-ui-window-content-setup:not( .oo-ui-window-content-ready ) & {
+			/* Don't show scroll bars before ready for accurate measurement */
+			overflow: hidden;
+		}
+	}
 
-/* Don't show scroll bars before ready for accurate measurement */
-.oo-ui-window-content-setup:not( .oo-ui-window-content-ready ) .ve-ui-fragmentInspector-container {
-	overflow: hidden;
+	&-content .oo-ui-processDialog-actions-other .oo-ui-buttonElement-framed {
+		margin-left: 0;
+		margin-bottom: 0;
+	}
 }

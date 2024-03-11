@@ -16,20 +16,20 @@
 	/* Transition out faster, as keyboard may be coming up */
 	transition: transform 100ms;
 	transform: translateY( 0% );
-}
 
-.ve-ui-mobileContext.ve-ui-context-hidden {
-	display: block;
-	transition: transform 250ms;
-	transform: translateY( 100% );
-}
+	&.ve-ui-context-hidden {
+		display: block;
+		transition: transform 250ms;
+		transform: translateY( 100% );
+	}
 
-.ve-ui-mobileContext-menu {
-	position: relative;
-}
+	&-menu {
+		position: relative;
+	}
 
-.ve-ui-mobileContext-close {
-	position: absolute;
-	right: 0;
-	top: 2px;
+	&-close {
+		position: absolute;
+		right: 0;
+		top: 2px;
+	}
 }

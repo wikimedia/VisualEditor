@@ -12,127 +12,131 @@
 	Remember, don't set font-size here.
 	Should be inherited from the VE target container.
 	*/
-}
 
-.ve-ce-surface-selections {
-	position: absolute;
-	pointer-events: none;
-	/* @noflip */
-	left: 0;
-	top: 0;
-}
+	&-selections {
+		position: absolute;
+		pointer-events: none;
+		/* @noflip */
+		left: 0;
+		top: 0;
 
-.ve-ce-surface-selection > div {
-	position: absolute;
-}
+		.ve-ce-surface-selection {
+			> div {
+				position: absolute;
+			}
 
-.ve-ce-surface-selections .ve-ce-surface-selection > .ve-ce-surface-selection-label {
-	position: absolute;
-	font-size: 0.8em;
-	font-weight: bold;
-	color: #fff;
-	text-shadow: 0 0 1px #000;
-	padding: 0.2em;
-	margin-top: -1.4em;
-	height: 1em;
-	line-height: 1;
-	white-space: nowrap;
-	max-width: 10em;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
+			> .ve-ce-surface-selection-label {
+				position: absolute;
+				font-size: 0.8em;
+				font-weight: bold;
+				color: #fff;
+				text-shadow: 0 0 1px #000;
+				padding: 0.2em;
+				margin-top: -1.4em;
+				height: 1em;
+				line-height: 1;
+				white-space: nowrap;
+				max-width: 10em;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
 
-/* Review mode */
+		/* Deactivated selections */
 
-.ve-ce-surface-reviewMode {
-	pointer-events: none;
-}
+		&-deactivated {
+			opacity: 0.5;
 
-.ve-ce-surface-reviewMode-highlightNodes .ve-ce-attachedRootNode > :not( .ve-ce-surface-reviewMode-highlightNode ) {
-	opacity: 0.5;
-}
+			.ve-ce-surface-selection > div {
+				background: #6da9f7;
+				/* Increase vertical height to look more like a system selection */
+				margin-top: -0.15em;
+				padding: 0.15em 0;
+			}
 
-/* Deactivated selections */
+			&-showAsDeactivated {
+				opacity: 0.15;
 
-.ve-ce-surface-selections-deactivated {
-	opacity: 0.5;
-}
+				.ve-ce-surface-selection > div {
+					background: #000;
+				}
+			}
 
-.ve-ce-surface-selections-deactivated-showAsDeactivated {
-	opacity: 0.15;
-}
+			&-collapsed {
+				opacity: 1;
+				/* Color is matched to font in ve.ce.Surface.js */
+			}
+		}
 
-.ve-ce-surface-selections-deactivated .ve-ce-surface-selection > div {
-	background: #6da9f7;
-	/* Increase vertical height to look more like a system selection */
-	margin-top: -0.15em;
-	padding: 0.15em 0;
-}
+		&-otherUserSelection {
+			opacity: 0.5;
 
-.ve-ce-surface-selections-deactivated-showAsDeactivated .ve-ce-surface-selection > div {
-	background: #000;
-}
+			&-inactive {
+				opacity: 0.25;
+			}
+		}
 
-.ve-ce-surface-selections-deactivated-collapsed {
-	opacity: 1;
-	/* Color is matched to font in ve.ce.Surface.js */
-}
+		&-otherUserCursor {
+			.ve-ce-surface-selection > div:not( .ve-ce-surface-selection-label ) {
+				width: 2px !important; /* stylelint-disable-line declaration-no-important */
+			}
 
-.ve-ce-surface-dropMarker {
-	height: 1px;
-	background: #72777d;
-	pointer-events: none;
-	position: absolute;
-}
+			&-inactive {
+				opacity: 0.5;
+			}
+		}
+	}
 
-.ve-ce-surface-selections-otherUserSelection {
-	opacity: 0.5;
-}
+	&-dropMarker {
+		height: 1px;
+		background: #72777d;
+		pointer-events: none;
+		position: absolute;
+	}
 
-.ve-ce-surface-selections-otherUserCursor .ve-ce-surface-selection > div:not( .ve-ce-surface-selection-label ) {
-	width: 2px !important; /* stylelint-disable-line declaration-no-important */
-}
+	/* Review mode */
 
-.ve-ce-surface-selections-otherUserSelection-inactive {
-	opacity: 0.25;
-}
+	&-reviewMode {
+		pointer-events: none;
 
-.ve-ce-surface-selections-otherUserCursor-inactive {
-	opacity: 0.5;
-}
+		&-highlightNodes .ve-ce-attachedRootNode > :not( .ve-ce-surface-reviewMode-highlightNode ) {
+			opacity: 0.5;
+		}
+	}
 
-.ve-ce-surface-paused {
-	opacity: 0.5;
-}
+	&-paused {
+		opacity: 0.5;
+	}
 
-.ve-ce-surface-paste {
-	position: fixed;
-	/* FIXME T126024: Stop the viewport scrolling when the paste target is typed into */
-	top: 3em;
-	left: 0;
-	/* Try to avoid wrapping by not setting a width because of https://code.google.com/p/chromium/issues/detail?id=318925 */
-	height: 1px;
-	opacity: 0;
-	overflow: hidden;
-}
+	&-paste {
+		position: fixed;
+		/* FIXME T126024: Stop the viewport scrolling when the paste target is typed into */
+		top: 3em;
+		left: 0;
+		/* Try to avoid wrapping by not setting a width because of https://code.google.com/p/chromium/issues/detail?id=318925 */
+		height: 1px;
+		opacity: 0;
+		overflow: hidden;
 
-.ve-ce-surface-paste * {
-	height: 1px !important; /* stylelint-disable-line declaration-no-important */
+		* {
+			height: 1px !important; /* stylelint-disable-line declaration-no-important */
+		}
+	}
 }
 
 .ve-ce-cursorHolder {
 	position: absolute;
 	width: 0;
 	height: 0;
-}
 
-.ve-ce-cursorHolder-img {
-	width: 0;
-	height: 0;
-}
+	&-img {
+		width: 0;
+		height: 0;
+	}
 
-.ve-ce-cursorHolder-debug {
-	width: 2px;
-	height: 1em;
-	border: 1px solid #b32424;
+	&-debug {
+		width: 2px;
+		height: 1em;
+		border: 1px solid #b32424;
+	}
 }

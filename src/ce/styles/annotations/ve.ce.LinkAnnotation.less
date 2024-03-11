@@ -4,17 +4,19 @@
  * @copyright See AUTHORS.txt
  */
 
-.ve-ce-linkAnnotation.ve-ce-annotation-active {
-	box-shadow: 0 0 0 1px #c6e0ff;
-	border-radius: 2px;
-	padding: 2px;
-	margin: -2px;
-	background-color: #e6f1ff;
-}
+.ve-ce-linkAnnotation {
+	&.ve-ce-annotation-active {
+		box-shadow: 0 0 0 1px #c6e0ff;
+		border-radius: 2px;
+		padding: 2px;
+		margin: -2px;
+		background-color: #e6f1ff;
 
-.ve-init-mobileTarget .ve-ce-surface:not( .ve-ce-surface-deactivated ) .ve-ce-linkAnnotation.ve-ce-annotation-active {
-	box-shadow: 0 0 0 1px #36c;
-	background-color: transparent;
+		.ve-init-mobileTarget .ve-ce-surface:not( .ve-ce-surface-deactivated ) & {
+			box-shadow: 0 0 0 1px #36c;
+			background-color: transparent;
+		}
+	}
 }
 
 .ve-ce-nail:not( .ve-ce-nail-debug ) {

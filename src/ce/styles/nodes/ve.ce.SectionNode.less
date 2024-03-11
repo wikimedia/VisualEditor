@@ -4,20 +4,20 @@
  * @copyright See AUTHORS.txt
  */
 
-/* Prevent margin collapse across sections */
-.ve-ce-sectionNode::before,
-.ve-ce-sectionNode::after {
-	content: '\00a0';
-	display: block;
-	overflow: hidden;
-	height: 0;
-}
-
 .ve-ce-sectionNode {
 	opacity: 1;
 	transition: opacity 250ms ease;
-}
 
-.ve-ce-sectionNode:not( .ve-ce-activeNode-active ) {
-	opacity: 0.5;
+	&::before,
+	&::after {
+		/* Prevent margin collapse across sections */
+		content: '\00a0';
+		display: block;
+		overflow: hidden;
+		height: 0;
+	}
+
+	&:not( .ve-ce-activeNode-active ) {
+		opacity: 0.5;
+	}
 }
