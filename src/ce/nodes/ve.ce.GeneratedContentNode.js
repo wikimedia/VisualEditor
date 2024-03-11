@@ -160,6 +160,12 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 		rendering = [ document.createElement( 'span' ) ];
 	}
 
+	if ( rendering.every( ve.isVoidElement ) ) {
+		// Should contain at least one non-void element, e.g. for attaching
+		// a visibility button in ve.ce.FocusableNode#updateInvisibleIconSync
+		rendering.push( document.createElement( 'span' ) );
+	}
+
 	return rendering;
 };
 
