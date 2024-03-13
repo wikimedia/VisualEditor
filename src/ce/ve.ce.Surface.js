@@ -759,7 +759,11 @@ ve.ce.Surface.prototype.deactivate = function ( showAsActivated, noSelectionChan
 			this.removeRangesAndBlur();
 			// iOS Safari will sometimes restore the selection immediately (T293661)
 			setTimeout( function () {
-				if ( OO.ui.contains( surface.$attachedRootNode[ 0 ], surface.nativeSelection.anchorNode, true ) ) {
+				if (
+					// Surface may have been immediately re-activated deliberately
+					surface.deactivated &&
+					OO.ui.contains( surface.$attachedRootNode[ 0 ], surface.nativeSelection.anchorNode, true )
+				) {
 					surface.removeRangesAndBlur();
 				}
 			} );
