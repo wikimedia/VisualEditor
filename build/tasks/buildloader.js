@@ -47,18 +47,20 @@ module.exports = function ( grunt ) {
 		function styleTag( group, src ) {
 			const rtlFilepath = src.file.replace( /\.css$/, '.rtl.css' );
 
-			if ( grunt.file.exists( rtlFilepath ) ) {
+			const rel = src.file.endsWith( '.less' ) ? 'stylesheet/less' : 'stylesheet';
+
+			if ( rtlFilepath !== src.file && grunt.file.exists( rtlFilepath ) ) {
 				if ( !dir ) {
-					return indent + '<link rel="stylesheet" href="' + pathPrefix + src.file + '" class="stylesheet-ltr' +
+					return indent + '<link rel="' + rel + '" href="' + pathPrefix + src.file + '" class="stylesheet-ltr' +
 						( group ? ' stylesheet-' + group : '' ) + '">\n' +
-						indent + '<link rel="stylesheet" href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl' +
+						indent + '<link rel="' + rel + '" href="' + pathPrefix + rtlFilepath + '" class="stylesheet-rtl' +
 						( group ? ' stylesheet-' + group : '' ) + '">';
 				} else if ( dir === 'rtl' ) {
-					return indent + '<link rel="stylesheet" href="' + pathPrefix + rtlFilepath + '"' +
+					return indent + '<link rel="' + rel + '" href="' + pathPrefix + rtlFilepath + '"' +
 						( group ? ' class="stylesheet-' + group + '"' : '' ) + '>';
 				}
 			}
-			return indent + '<link rel="stylesheet" href="' + pathPrefix + src.file + '"' +
+			return indent + '<link rel="' + rel + '" href="' + pathPrefix + src.file + '"' +
 				( group ? ' class="stylesheet-' + group + '"' : '' ) + '>';
 		}
 
