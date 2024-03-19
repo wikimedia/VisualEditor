@@ -11,12 +11,11 @@
  */
 .ve-ce-contentBranchNode {
 	white-space: pre-wrap;
-}
 
-/* Hack for empty headings and paragraphs; can't use min-height because of IE */
-
-.ve-ce-contentBranchNode:empty::before {
-	content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
+	&:empty::before {
+		/* Hack for empty headings and paragraphs; can't use min-height because of IE */
+		content: url( data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 );
+	}
 }
 
 /*
