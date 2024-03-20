@@ -80,6 +80,8 @@ ve.dm.CollabTransportServer.prototype.onConnection = function ( conn ) {
 		}
 	} );
 	conn.on( 'open', function () {
-		server.welcomeClient( context, startHeight );
+		server.welcomeClient( context, startHeight, function ( authorId ) {
+			return ve.init.platform.getUserName() || ve.msg( 'visualeditor-collab-user-placeholder', authorId );
+		} );
 	} );
 };
