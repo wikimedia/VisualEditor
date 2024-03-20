@@ -5,6 +5,11 @@
  * @license The MIT License (MIT); see LICENSE.txt
  */
 
+/* stylelint-disable-next-line selector-class-pattern */
+.solidToOpacity( @property, @color, @opacity, @before: '', @after: '' ) {
+	@{property}: ~'@{before}' fade( ( ( @color - ( 1 - @opacity ) * ( #fff ) ) / @opacity ), @opacity * 100 ) ~'@{after}';
+}
+
 .ve-ui-diffElement {
 	position: relative;
 
@@ -105,7 +110,7 @@
 		font-size: 0.92857143em; /* 13/14px */
 
 		&-highlighted {
-			background: #b6d4fb; /* #6da9f7 at 50% opacity */
+			background: fade( #6da9f7, 50% );
 		}
 	}
 }
@@ -132,9 +137,8 @@ del[ data-diff-action='remove' ] {
 	/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
 	& > caption,
 	& > figcaption {
-		/* #7fd7c4 at 50% opacity */
-		background-color: rgba( 0, 175, 137, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
-		box-shadow: 0 0 0 1px rgba( 0, 175, 137, 0.5 );
+		.solidToOpacity( background-color, #7fd7c4, 0.5, '', '!important' );
+		.solidToOpacity( box-shadow, #7fd7c4, 0.5, '0 0 0 1px' );
 	}
 }
 
@@ -143,17 +147,15 @@ del[ data-diff-action='remove' ] {
 	/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
 	& > caption,
 	& > figcaption {
-		/* #e88e89 at 50% opacity */
-		background-color: rgba( 209, 29, 19, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
-		box-shadow: 0 0 0 1px rgba( 209, 29, 19, 0.5 );
+		.solidToOpacity( background-color, #e88e89, 0.5, '', '!important' );
+		.solidToOpacity( box-shadow, #e88e89, 0.5, '0 0 0 1px' );
 	}
 }
 
 [ data-diff-action='change' ],
 [ data-diff-action='change-insert' ] {
-	/* #b6d4fb at 50% opacity */
-	background-color: rgba( 109, 169, 247, 0.5 ) !important; /* stylelint-disable-line declaration-no-important */
-	box-shadow: 0 0 0 1px rgba( 109, 169, 247, 0.5 );
+	.solidToOpacity( background-color, #b6d4fb, 0.5, '', '!important' );
+	.solidToOpacity( box-shadow, #b6d4fb, 0.5, '0 0 0 1px' );
 }
 
 [ data-diff-move ] {
@@ -161,9 +163,8 @@ del[ data-diff-action='remove' ] {
 	/* elements using display:table-caption need separate backgrounds as they render outside the parent's bounding box */
 	& > caption,
 	& > figcaption {
-		/* #eaecf0 (base80) at 50% opacity */
-		background: rgba( 213, 217, 225, 0.5 );
-		outline: 5px solid rgba( 213, 217, 225, 0.5 );
+		.solidToOpacity( background, #eaecf0, 0.5 );
+		.solidToOpacity( outline, #eaecf0, 0.5, '5px solid' );
 	}
 }
 
@@ -267,6 +268,6 @@ ins[ data-diff-action='insert' ] + span[ data-diff-action='change-remove' ] {
 }
 
 [ data-diff-list-none ]::marker {
-	/* Approximately opacity 0.4, but we can't style the list marker with opacity */
-	color: #aaa;
+	/* Approximate 40% opacity, but we can't style the list marker with opacity */
+	color: #fff * 0.6;
 }
