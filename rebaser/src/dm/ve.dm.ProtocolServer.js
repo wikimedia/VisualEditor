@@ -118,8 +118,9 @@ ve.dm.ProtocolServer.prototype.onLogEvent = function ( context, event ) {
  *
  * @param {Object} context The connection context
  * @param {number} [startLength=0] The length of the common history
+ * @param {Function} [usernameGenerator] Function which returns a username, with an authorID argument
  */
-ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength ) {
+ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength, usernameGenerator ) {
 	const docName = context.docName,
 		serverId = context.serverId,
 		authorId = context.authorId;
@@ -128,7 +129,7 @@ ve.dm.ProtocolServer.prototype.welcomeClient = function ( context, startLength )
 		startLength = 0;
 	}
 	this.rebaseServer.updateDocState( docName, authorId, null, {
-		name: ve.init.platform.getUserName() || ve.msg( 'visualeditor-collab-user-placeholder', authorId ),
+		name: usernameGenerator ? usernameGenerator( authorId ) : 'User ' + authorId,
 		color: this.constructor.static.palette[
 			authorId % this.constructor.static.palette.length
 		],
