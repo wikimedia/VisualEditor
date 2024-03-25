@@ -68,6 +68,7 @@
 	"visualeditor-collab-url-mismatch": "Sesijas URL neatbilst šai lapai",
 	"visualeditor-collab-url-placeholder": "[Sesijas URL]",
 	"visualeditor-collab-url-prompt": "Ievadi sesijas URL, lai pievienotos",
+	"visualeditor-collab-user-placeholder": "Dalībnieks $1",
 	"visualeditor-command-dialog-cancel": "Aizvērt / atcelt izmaiņas",
 	"visualeditor-command-dialog-confirm": "Apstiprināt izmaiņas",
 	"visualeditor-command-dialog-focus-context": "Pārvietot fokusu uz kontekstuālo izvēlni",

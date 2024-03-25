@@ -74,6 +74,7 @@
 	"visualeditor-collab-url-mismatch": "Sessiya URL-i bu səhifəyə uyğun gəlmir",
 	"visualeditor-collab-url-placeholder": "[Sessiya URL]",
 	"visualeditor-collab-url-prompt": "Qoşulmaq üçün sessiya URL-ni daxil edin",
+	"visualeditor-collab-user-placeholder": "İstifadəçi $1",
 	"visualeditor-command-dialog-cancel": "Bağla / dəyişikliyi ləğv et",
 	"visualeditor-command-dialog-confirm": "Dəyişikliyi təsdiqlə",
 	"visualeditor-command-dialog-focus-context": "Fokusu kontekstual popapa köçür",
