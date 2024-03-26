@@ -3898,12 +3898,11 @@ ve.ce.Surface.prototype.createSlug = function ( element ) {
 	// Animate the slug open
 	var $slug = this.getDocument().getDocumentNode().getNodeFromOffset( offset + 1 ).$element;
 	$slug.addClass( 've-ce-branchNode-newSlug' );
-	// setTimeout: postpone until after animation is complete
-	setTimeout( function () {
+	requestAnimationFrame( function () {
 		$slug.addClass( 've-ce-branchNode-newSlug-open' );
-		setTimeout( function () {
+		$slug.one( 'transitionend', function () {
 			surface.emit( 'position' );
-		}, 200 );
+		} );
 	} );
 
 	this.onModelSelect();
