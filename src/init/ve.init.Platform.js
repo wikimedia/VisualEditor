@@ -297,6 +297,16 @@ ve.init.Platform.prototype.getMediaSources = null;
 ve.init.Platform.prototype.getLanguageCodes = null;
 
 /**
+ * Check if a language code is known to this platform.
+ *
+ * @param {string} code Language code
+ * @return {boolean} Language code is known
+ */
+ve.init.Platform.prototype.hasLanguageCode = function ( code ) {
+	return this.getLanguageCodes().indexOf( code ) !== -1;
+};
+
+/**
  * Get a language's name from its code, in the current user language if possible.
  *
  * @abstract
