@@ -343,11 +343,13 @@ module.exports = function ( grunt ) {
 				typos: 'build/typos.json'
 			},
 			src: [
-				'**/*.{js,json,less,css,txt}',
+				'**/*.{js,json,less,css,txt,md,sh}',
 				'!**/package-lock.json',
 				'!build/typos.json',
 				'!lib/**',
-				'!i18n/**',
+				'!**/i18n/**/*.json',
+				'**/i18n/**/en.json',
+				'**/i18n/**/qqq.json',
 				'!**/{coverage,dist,docs,node_modules}/**',
 				'!.git/**'
 			]
