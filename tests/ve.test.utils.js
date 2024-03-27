@@ -37,6 +37,9 @@
 		$wrapper[ 0 ].normalize();
 		return $wrapper.contents().toArray();
 	};
+	DummyPlatform.prototype.getLanguageCodes = function () {
+		return [ 'ar', 'en', 'es', 'fr', 'ru', 'zh' ];
+	};
 	DummyPlatform.prototype.getLanguageName = function ( lang ) {
 		return 'langname-' + lang;
 	};

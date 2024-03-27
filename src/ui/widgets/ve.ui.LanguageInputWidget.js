@@ -173,8 +173,9 @@ ve.ui.LanguageInputWidget.prototype.setLangAndDir = function ( lang, dir ) {
 		lang = lang || '';
 		this.languageCodeTextInput.setValue( lang );
 		this.selectedLanguageLabel.setLabel(
-			ve.init.platform.getLanguageName( lang.toLowerCase() ) ||
-			ve.msg( 'visualeditor-languageinspector-widget-changelang' )
+			ve.init.platform.hasLanguageCode( lang.toLowerCase() ) ?
+				ve.init.platform.getLanguageName( lang.toLowerCase() ) :
+				ve.msg( 'visualeditor-languageinspector-widget-changelang' )
 		);
 		this.directionSelect.selectItemByData( dir );
 	} else {
