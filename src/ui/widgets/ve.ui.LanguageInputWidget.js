@@ -157,8 +157,8 @@ ve.ui.LanguageInputWidget.prototype.onChange = function () {
  *
  * The inputs value will automatically be updated.
  *
- * @param {string} lang Language code
- * @param {string} dir Directionality
+ * @param {string|null} lang Language code
+ * @param {string|null} dir Directionality
  * @fires change
  * @return {ve.ui.LanguageInputWidget}
  * @chainable
@@ -199,7 +199,7 @@ ve.ui.LanguageInputWidget.prototype.setLangAndDir = function ( lang, dir ) {
 /**
  * Get the language
  *
- * @return {string} Language code
+ * @return {string|null} Language code
  */
 ve.ui.LanguageInputWidget.prototype.getLang = function () {
 	return this.lang;
@@ -208,7 +208,7 @@ ve.ui.LanguageInputWidget.prototype.getLang = function () {
 /**
  * Get the directionality
  *
- * @return {string} Directionality (ltr/rtl)
+ * @return {string|null} Directionality (ltr/rtl)
  */
 ve.ui.LanguageInputWidget.prototype.getDir = function () {
 	return this.dir;
