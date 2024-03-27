@@ -14,6 +14,7 @@
 module.exports = function ( grunt ) {
 	const modules = grunt.file.readJSON( 'build/modules.json' ),
 		moduleUtils = require( './build/moduleUtils' ),
+		fg = require( 'fast-glob' ),
 		rebaserBuildFiles = moduleUtils.makeBuildList( modules, [ 'rebaser.build' ] ),
 		veRebaseFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.rebase.build' ] ),
 		coreBuildFiles = moduleUtils.makeBuildList( modules, [ 'visualEditor.build' ] ),
@@ -342,46 +343,43 @@ module.exports = function ( grunt ) {
 			options: {
 				typos: 'build/typos.json'
 			},
-			src: [
+			src: fg.globSync( [
 				'**/*.{js,json,less,css,txt,md,sh}',
 				'!**/package-lock.json',
 				'!build/typos.json',
 				'!lib/**',
 				'!**/i18n/**/*.json',
-				'**/i18n/**/en.json',
-				'**/i18n/**/qqq.json',
 				'!**/{coverage,dist,docs,node_modules}/**',
 				'!.git/**'
-			]
+			] )
+				// Overwrite ignores
+				.concat( fg.globSync( [
+					'**/i18n/**/en.json',
+					'**/i18n/**/qqq.json',
+					'!**/{coverage,dist,docs,node_modules}/**'
+				] ) )
 		},
 		eslint: {
 			options: {
 				cache: true,
 				fix: grunt.option( 'fix' )
 			},
-			all: [
+			all: fg.globSync( [
 				'**/*.{js,json}',
-				'*.html',
-				'{bin,build,demos,src,tests,rebaser}/**/*.html',
-				'!coverage/**',
-				'!dist/**',
-				'!docs/**',
+				'demos/**/*.html',
 				'!lib/**',
-				'!**/node_modules/**'
-			]
+				'!**/{coverage,dist,docs,node_modules}/**'
+			] )
 		},
 		stylelint: {
 			options: {
 				reportNeedlessDisables: true
 			},
-			all: [
+			all: fg.globSync( [
 				'**/*.css',
-				'!coverage/**',
-				'!dist/**',
-				'!docs/**',
 				'!lib/**',
-				'!node_modules/**'
-			]
+				'!**/{coverage,dist,docs,node_modules}/**'
+			] )
 		},
 		banana: {
 			all: 'i18n/'
