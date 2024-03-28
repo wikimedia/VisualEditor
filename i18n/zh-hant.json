@@ -184,7 +184,7 @@
 	"visualeditor-rebase-client-author-name": "名稱",
 	"visualeditor-rebase-client-connecting": "連接中...",
 	"visualeditor-rebase-client-document-create-edit": "建立/編輯",
-	"visualeditor-rebase-client-document-name": "文件名稱（可選）",
+	"visualeditor-rebase-client-document-name": "文件名稱（非必填）",
 	"visualeditor-rebase-corrupted-document-error": "文件已損毀：$1",
 	"visualeditor-rebase-corrupted-document-title": "已損毀文件",
 	"visualeditor-rebase-missing-document-error": "伺服器上缺少文件。要避免資料的話，請複製並貼上內容。",

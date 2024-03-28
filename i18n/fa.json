@@ -200,7 +200,7 @@
 	"visualeditor-rebase-client-connecting": "در حال اتصال...",
 	"visualeditor-rebase-client-document-create-edit": "ایجاد/ویرایش",
 	"visualeditor-rebase-client-document-name": "نام مدرک (اختیاری)",
-	"visualeditor-rebase-corrupted-document-error": "سند فاسد شده‌است: $1",
+	"visualeditor-rebase-corrupted-document-error": "سند فاسد شده است: $1",
 	"visualeditor-rebase-corrupted-document-title": "سند فاسد",
 	"visualeditor-rebase-missing-document-error": "مطالب روی سرور حذف می‌شوند. برای جلوگیری از مفقود شدن، محتوی را کپی و پیست کنید.",
 	"visualeditor-rebase-missing-document-title": "مستندات مفقودی",
