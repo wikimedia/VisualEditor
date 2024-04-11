@@ -25,6 +25,11 @@ $ npm install -g grunt-cli
 $ npm install
 ```
 
+Set `FIREFOX_BIN` – you may wish to add this to your `.bashrc` or equivalent:
+```sh
+export FIREFOX_BIN=`which firefox`
+```
+
 To run the tests, use:
 ```sh
 $ grunt test
