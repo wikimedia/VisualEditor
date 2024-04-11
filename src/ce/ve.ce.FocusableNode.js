@@ -310,12 +310,11 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 		this.icon.$element.detach();
 	}
 	var showIcon = !this.hasRendering();
-	var rAF = window.requestAnimationFrame || setTimeout;
 	var node = this;
 
 	// Defer updating the DOM. If we don't do this, the hasRendering() call for the next
 	// FocusableNode will force a reflow, which is slow.
-	rAF( function () {
+	requestAnimationFrame( function () {
 		node.updateInvisibleIconSync( showIcon );
 	} );
 };
@@ -328,7 +327,7 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
  */
 ve.ce.FocusableNode.prototype.updateInvisibleIconSync = function ( showIcon ) {
 	if ( !this.getModel() ) {
-		// Check the node hasn't been destroyed, as this method is called after an rAF
+		// Check the node hasn't been destroyed, as this method is called after a requestAnimationFrame
 		return;
 	}
 	if ( showIcon ) {

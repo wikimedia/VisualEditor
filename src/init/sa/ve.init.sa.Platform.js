@@ -85,21 +85,20 @@ ve.init.sa.Platform.prototype.notify = function ( message, title ) {
 	}
 	function collapse() {
 		$notificationWrapper.addClass( 've-init-notification-collapse' );
-		setTimeout( remove, 250 );
+		$notificationWrapper.one( 'transitionend', remove );
 	}
 	function close() {
 		clearTimeout( closeId );
 		$notificationWrapper.removeClass( 've-init-notification-open' );
 		$notificationWrapper.css( 'height', $notificationWrapper[ 0 ].clientHeight );
-		setTimeout( collapse, 250 );
+		$notificationWrapper.one( 'transitionend', collapse );
 	}
 	function open() {
 		$notificationWrapper.addClass( 've-init-notification-open' );
 		closeId = setTimeout( close, 5000 );
 	}
 
-	var rAF = window.requestAnimationFrame || setTimeout;
-	rAF( open );
+	requestAnimationFrame( open );
 
 	$notification.on( 'click', close );
 
