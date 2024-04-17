@@ -317,9 +317,15 @@ ve.ce.Surface.static.unsafeAttributes = [
  *
  * See https://w3c.github.io/input-events/
  *
- * Values of null will perform no action and preventDefault.
+ * commands like { collapsed: 'foo', uncollapsed: 'bar' }
+ * act conditionally depending whether the selection is
+ * collapsed
  *
- * @type {Object.<string,string|null>}
+ * A value of `null` will perform no action and
+ * preventDefault. A value of `undefined` will do nothing
+ * and let the event continue.
+ *
+ * @type {Object.<string,string|null|Object>}
  */
 ve.ce.Surface.static.inputTypeCommands = {
 	historyUndo: 'undo',
@@ -341,7 +347,15 @@ ve.ce.Surface.static.inputTypeCommands = {
 	formatSetInlineTextDirection: null,
 	formatBackColor: null,
 	formatFontColor: null,
-	formatFontName: null
+	formatFontName: null,
+	// Support: Firefox
+	// Delete content via context menu in Firefox. (T220629)
+	// If there is a non-collapsed selection, a delete content event can only ever just remove
+	// the selected content. The only time we know this event is fired is in Firefox, where
+	// no other change events are fired.
+	// If any other browsers fire this event with a selection this is harmless, as removing
+	// the content without moving the cursor is always the correct thing to do.
+	deleteContentBackward: { uncollapsed: 'backspace' }
 };
 
 /**
@@ -3420,17 +3434,31 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 		} );
 	}
 
+	let command;
 	const inputTypeCommands = this.constructor.static.inputTypeCommands;
-	if (
-		inputType &&
-		Object.prototype.hasOwnProperty.call( inputTypeCommands, inputType )
-	) {
-		// Value can be null, in which case we still want to preventDefault.
-		if ( inputTypeCommands[ inputType ] ) {
-			this.getSurface().executeCommand( this.constructor.static.inputTypeCommands[ inputType ] );
+	if ( inputType && Object.prototype.hasOwnProperty.call( inputTypeCommands, inputType ) ) {
+		command = inputTypeCommands[ inputType ];
+	}
+	if ( command !== undefined ) {
+		// Conditionally descend into commands like { collapsed: 'foo', uncollapsed: 'bar' }
+		if ( command !== null && typeof command === 'object' ) {
+			if ( this.getSelection().getModel().isCollapsed() ) {
+				command = command.collapsed;
+			} else {
+				command = command.uncollapsed;
+			}
 		}
-		e.preventDefault();
-		return;
+
+		// command might be undefined again now
+		if ( command !== undefined ) {
+			if ( command === null ) {
+				e.preventDefault();
+			} else {
+				this.getSurface().executeCommand( command );
+				e.preventDefault();
+			}
+			return;
+		}
 	}
 	this.incRenderLock();
 	try {
