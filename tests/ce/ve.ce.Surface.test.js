@@ -2805,6 +2805,91 @@ QUnit.test( 'getViewportRange', function ( assert ) {
 	} );
 } );
 
+/* eslint-disable qunit/resolve-async */
+QUnit.test( 'afterMutations', function ( assert ) {
+	var cases, done;
+	function getDescendant( node, path ) {
+		var i, len;
+		for ( i = 0, len = path.length; i < len; i++ ) {
+			node = node.children[ path[ i ] ];
+		}
+		return node;
+	}
+	function simplify( data ) {
+		return data.map( function ( item ) {
+			return typeof item === 'object' ? { type: item.type } : item;
+		} );
+	}
+	function runCase( i ) {
+		var caseItem, view, dmDoc;
+		caseItem = cases[ i ];
+		view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
+		dmDoc = view.getModel().getDocument();
+		caseItem.domRemovalPaths.forEach( function ( path ) {
+			var node = getDescendant( view.documentView.documentNode, path );
+			node.$element[ 0 ].remove();
+		} );
+		// The mutation observer runs on the microtask queue, so definitely before setTimeout
+		setTimeout( function () {
+			var data = dmDoc.getData(
+				new ve.Range( caseItem.testRange[ 0 ], caseItem.testRange[ 1 ] )
+			);
+			assert.deepEqual( simplify( data ), caseItem.expectedData, caseItem.msg );
+			done();
+			if ( i + 1 < cases.length ) {
+				runCase( i + 1 );
+			}
+		} );
+	}
+	cases = [
+		{
+			html: '<p>Foo</p><p>Bar</p><p>Baz</p>',
+			domRemovalPaths: [ [ 0 ] ],
+			testRange: [ 0, 5 ],
+			expectedData: [ { type: 'paragraph' }, 'B', 'a', 'r', { type: '/paragraph' } ],
+			msg: 'DOM paragraph removal'
+		},
+		{
+			html: '<p>Foo</p><ul><li><p>one</p></li><li><p>two</p></li><li><p>three</p></li></ul><p>Bar</p>',
+			domRemovalPaths: [ [ 1, 0 ], [ 1, 2 ] ],
+			testRange: [ 5, 14 ],
+			expectedData: [
+				{ type: 'list' },
+				{ type: 'listItem' },
+				{ type: 'paragraph' },
+				't',
+				'w',
+				'o',
+				{ type: '/paragraph' },
+				{ type: '/listItem' },
+				{ type: '/list' }
+			],
+			msg: 'DOM li removals'
+		},
+		{
+			html: '<p>Foo</p><div><p>abcde</p></div><p>Bar</p>',
+			domRemovalPaths: [ [ 1 ] ],
+			testRange: [ 0, 10 ],
+			expectedData: [
+				{ type: 'paragraph' },
+				'F',
+				'o',
+				'o',
+				{ type: '/paragraph' },
+				{ type: 'paragraph' },
+				'B',
+				'a',
+				'r',
+				{ type: '/paragraph' }
+			],
+			msg: 'DOM div removal'
+		}
+	];
+	done = assert.async( cases.length );
+	runCase( 0 );
+} );
+/* eslint-enable qunit/resolve-async */
+
 /* Methods with return values */
 // TODO: ve.ce.Surface#getSelection
 // TODO: ve.ce.Surface#getSurface
