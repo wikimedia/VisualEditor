@@ -153,9 +153,8 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
  * @param {Object} data
  */
 ve.ui.Toolbar.prototype.onInspectorOrDialogOpeningOrClosing = function ( win, openingOrClosing ) {
-	var toolbar = this;
 	openingOrClosing.then( () => {
-		toolbar.updateToolStateDebounced();
+		this.updateToolStateDebounced();
 	} );
 };
 

@@ -133,8 +133,7 @@ ve.ui.LinearContext.prototype.afterContextChange = function () {
  * @param {Object} data Window opening data
  */
 ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
-	var context = this,
-		observer = this.surface.getView().surfaceObserver;
+	var observer = this.surface.getView().surfaceObserver;
 
 	this.isOpening = true;
 	this.inspector = win;
@@ -147,40 +146,40 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 
 	opening
 		.progress( ( data ) => {
-			context.isOpening = false;
+			this.isOpening = false;
 			if ( data.state === 'setup' ) {
-				if ( !context.isVisible() ) {
+				if ( !this.isVisible() ) {
 					// Change state: closed -> inspector
-					context.toggle( true );
+					this.toggle( true );
 				}
-				if ( !context.isEmpty() ) {
+				if ( !this.isEmpty() ) {
 					// Change state: menu -> inspector
-					context.toggleMenu( false );
+					this.toggleMenu( false );
 				}
 			}
-			context.updateDimensionsDebounced();
+			this.updateDimensionsDebounced();
 		} )
 		.then( ( opened ) => {
 			opened.then( ( closed ) => {
 				closed.always( () => {
 					// Don't try to close the inspector if a second
 					// opening has already been triggered
-					if ( context.isOpening ) {
+					if ( this.isOpening ) {
 						return;
 					}
 
-					context.inspector = null;
+					this.inspector = null;
 
 					// Reenable observer
 					observer.startTimerLoop();
 
-					if ( context.isInspectable() ) {
+					if ( this.isInspectable() ) {
 						// Change state: inspector -> menu
-						context.toggleMenu( true );
-						context.updateDimensionsDebounced();
+						this.toggleMenu( true );
+						this.updateDimensionsDebounced();
 					} else {
 						// Change state: inspector -> closed
-						context.toggle( false );
+						this.toggle( false );
 					}
 				} );
 			} );

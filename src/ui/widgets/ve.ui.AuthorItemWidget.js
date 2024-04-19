@@ -21,8 +21,6 @@
  * @param {Object} [config] Configuration options
  */
 ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, config ) {
-	var item = this;
-
 	config = config || {};
 
 	// Parent constructor
@@ -50,19 +48,19 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 
 		this.colorPicker = new CP( this.$color[ 0 ] );
 		this.colorPicker.on( 'change', ( color ) => {
-			item.color = color;
-			item.$color.css( 'background-color', '#' + color );
+			this.color = color;
+			this.$color.css( 'background-color', '#' + color );
 		} );
 		this.colorPicker.on( 'exit', () => {
-			if ( item.color !== null ) {
-				item.emit( 'changeColor', item.color );
+			if ( this.color !== null ) {
+				this.emit( 'changeColor', this.color );
 			}
 		} );
 
 		this.colorPicker.picker.classList.add( 've-ui-authorItemWidget-colorPicker' );
 		this.colorPicker.fit = function () {
-			this.picker.style.left = item.$element[ 0 ].offsetLeft + 'px';
-			this.picker.style.top = item.$element[ 0 ].offsetTop + 'px';
+			this.picker.style.left = this.$element[ 0 ].offsetLeft + 'px';
+			this.picker.style.top = this.$element[ 0 ].offsetTop + 'px';
 			$overlay[ 0 ].appendChild( this.picker );
 		};
 

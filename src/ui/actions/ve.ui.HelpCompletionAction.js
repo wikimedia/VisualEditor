@@ -16,15 +16,13 @@
  * @param {string} [source]
  */
 ve.ui.HelpCompletionAction = function ( surface ) {
-	var action = this;
-
 	// Parent constructor
 	ve.ui.HelpCompletionAction.super.apply( this, arguments );
 
 	this.toolbar = surface.target.getToolbar();
 	this.tools = this.toolbar.tools;
 	this.toolNames = Object.keys( this.tools ).filter( ( toolName ) => {
-		var tool = action.tools[ toolName ];
+		var tool = this.tools[ toolName ];
 		return tool &&
 			// No point in going in circles
 			!( tool instanceof ve.ui.HelpCompletionTool ) &&
@@ -34,8 +32,8 @@ ve.ui.HelpCompletionAction = function ( surface ) {
 	} );
 	// Push the "format" group to the bottom because it's rarely-needed
 	this.toolNames.sort( ( a, b ) => {
-		var aGroup = action.tools[ a ].constructor.static.group;
-		var bGroup = action.tools[ b ].constructor.static.group;
+		var aGroup = this.tools[ a ].constructor.static.group;
+		var bGroup = this.tools[ b ].constructor.static.group;
 		if ( aGroup === bGroup ) {
 			// preserve order
 			return 0;
@@ -113,14 +111,13 @@ ve.ui.HelpCompletionAction.static.toolGroups = {
 
 ve.ui.HelpCompletionAction.prototype.open = function ( isolateInput ) {
 	if ( !isolateInput ) {
-		var action = this;
 		// Remove undo/redo when inputting in the surface, don't just
 		// show them as disabled (they are still available in the toolbar)
 		// TODO: One would need to completely ignore the history
 		// stack since before the action was triggered to use
 		// undo/redo from here. Might not be worth the effort.
 		this.toolNames = this.toolNames.filter( ( toolName ) => {
-			var tool = action.tools[ toolName ];
+			var tool = this.tools[ toolName ];
 			return !( tool instanceof ve.ui.HistoryTool );
 		} );
 	}
@@ -197,12 +194,11 @@ ve.ui.HelpCompletionAction.prototype.getGroupForTool = function ( tool ) {
 };
 
 ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
-	var action = this;
 	var menuItemsByGroup = {};
 	var toolGroups = this.constructor.static.toolGroups;
 	menuItems.forEach( ( menuItem ) => {
 		var tool = menuItem.getData();
-		var group = action.getGroupForTool( tool );
+		var group = this.getGroupForTool( tool );
 		menuItemsByGroup[ group ] = menuItemsByGroup[ group ] || [];
 		menuItemsByGroup[ group ].push( menuItem );
 	} );

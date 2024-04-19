@@ -426,7 +426,6 @@ ve.ce.ContentBranchNode.prototype.onModelDetach = function () {
  * @return {boolean} Whether the contents have changed
  */
 ve.ce.ContentBranchNode.prototype.renderContents = function () {
-	var node = this;
 	// TODO fix the use of ve.ce.DocumentNode and getSurface
 	if (
 		this.root instanceof ve.ce.DocumentNode &&
@@ -503,7 +502,7 @@ ve.ce.ContentBranchNode.prototype.renderContents = function () {
 	if ( ve.inputDebug ) {
 		this.$element.css( 'backgroundColor', '#eee' );
 		setTimeout( () => {
-			node.$element.css( 'backgroundColor', '' );
+			this.$element.css( 'backgroundColor', '' );
 		}, 300 );
 	}
 

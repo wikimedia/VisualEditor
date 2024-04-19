@@ -183,14 +183,13 @@ ve.ui.CompletionAction.prototype.updateMenuItems = function ( menuItems ) {
  * @return {Mixed[]}
  */
 ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggestions, input ) {
-	var action = this;
 	input = input.trim();
 
 	var normalizedInput = input.toLowerCase().trim();
 
 	var exact = false;
 	suggestions = suggestions.filter( ( suggestion ) => {
-		var result = action.compareSuggestionToInput( suggestion, normalizedInput );
+		var result = this.compareSuggestionToInput( suggestion, normalizedInput );
 		exact = exact || result.isExact;
 		return result.isMatch;
 	} );

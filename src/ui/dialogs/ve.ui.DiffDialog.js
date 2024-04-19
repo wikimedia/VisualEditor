@@ -99,15 +99,14 @@ ve.ui.DiffDialog.prototype.setDimensions = function () {
  * Should be called whenever the diff element's container has changed width.
  */
 ve.ui.DiffDialog.prototype.positionDiffElement = function () {
-	var dialog = this;
 	setTimeout( () => {
-		dialog.withoutSizeTransitions( () => {
-			dialog.positioning = true;
-			if ( dialog.diffElement && dialog.isVisible() ) {
-				dialog.diffElement.positionDescriptions();
-				dialog.updateSize();
+		this.withoutSizeTransitions( () => {
+			this.positioning = true;
+			if ( this.diffElement && this.isVisible() ) {
+				this.diffElement.positionDescriptions();
+				this.updateSize();
 			}
-			dialog.positioning = false;
+			this.positioning = false;
 		} );
 	}, OO.ui.theme.getDialogTransitionDuration() );
 };

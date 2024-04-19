@@ -117,8 +117,6 @@ ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
  * Update the preview
  */
 ve.ui.PreviewElement.prototype.updatePreview = function () {
-	var element = this;
-
 	// Initial CE node
 	this.view = ve.ce.nodeFactory.createFromModel( this.model );
 	this.beforeAppend( this.view.$element[ 0 ] );
@@ -130,13 +128,13 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 			// When all children are rerendered, replace with DM DOM for a better preview.
 			// Conversion should be pretty fast, but avoid this (by setting useView to true)
 			// if you generating a lot of previews, e.g. in a list
-			if ( !element.useView ) {
+			if ( !this.useView ) {
 				// Verify that the PreviewElement hasn't been destroyed.
-				if ( element.view ) {
-					element.replaceWithModelDom();
+				if ( this.view ) {
+					this.replaceWithModelDom();
 				}
 			} else {
-				element.afterRender();
+				this.afterRender();
 			}
 		} );
 };

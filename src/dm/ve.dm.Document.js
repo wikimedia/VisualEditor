@@ -1263,9 +1263,6 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		insertedDataOffset = 0,
 		insertedDataLength = data.length,
 
-		// Pointer to this document for private methods
-		doc = this,
-
 		// *** State persisting across iterations of the outer loop ***
 		// The node (from the document) we're currently in. When in a node that was opened
 		// in data, this is set to its first ancestor that is already in the document
@@ -1420,7 +1417,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	parentNode = this.getBranchNodeFromOffset( offset );
 	parentType = parentNode.getType();
 	inTextNode = false;
-	isFirstChild = doc.data.isOpenElementData( offset - 1 );
+	isFirstChild = this.data.isOpenElementData( offset - 1 );
 
 	for ( i = 0; i < data.length; i++ ) {
 		if ( inTextNode && data[ i ].type !== undefined ) {
@@ -1495,7 +1492,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 						// This element would be the first child of its parent, so
 						// abandon this fix up and try again one offset to the left
 						insertion = this.fixupInsertion( data, offset - 1 );
-						if ( doc.data.isCloseElementData( offset ) && !ve.dm.nodeFactory.isNodeInternal( parentType ) ) {
+						if ( this.data.isCloseElementData( offset ) && !ve.dm.nodeFactory.isNodeInternal( parentType ) ) {
 							// This element would also be the last child, so that means parent is empty.
 							// Remove it entirely. (Never remove the internal list though, ugh...)
 							insertion.remove += 2;
@@ -1547,7 +1544,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		}
 	}
 
-	if ( closingStack.length > 0 && doc.data.isCloseElementData( offset ) ) {
+	if ( closingStack.length > 0 && this.data.isCloseElementData( offset ) ) {
 		// This element would be the last child of its parent, so
 		// abandon this fix up and try again one offset to the right
 		return this.fixupInsertion( data, offset + 1 );

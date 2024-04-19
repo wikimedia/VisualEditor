@@ -36,9 +36,8 @@
 		this.store = store;
 
 		// Purge expired items once per page session
-		var storage = this;
 		setTimeout( () => {
-			storage.clearExpired();
+			this.clearExpired();
 		}, 2000 );
 	};
 

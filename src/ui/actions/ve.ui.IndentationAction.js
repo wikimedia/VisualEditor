@@ -80,14 +80,13 @@ ve.ui.IndentationAction.prototype.changeIndentation = function ( indent ) {
 		}
 	} );
 
-	var action = this;
 	// Process each fragment (their ranges are automatically adjusted on change)
 	fragments.forEach( ( fragment ) => {
 		var listItem = documentModel.getBranchNodeFromOffset( fragment.getSelection().getRange().start );
 		if ( indent > 0 ) {
-			action.indentListItem( listItem );
+			this.indentListItem( listItem );
 		} else {
-			action.unindentListItem( listItem );
+			this.unindentListItem( listItem );
 		}
 	} );
 

@@ -58,28 +58,28 @@ ve.ui.TabIndexScope.prototype.setTabRoot = function ( $root ) {
  * @return {HTMLElement[]} list of elements in the order they should be tabbed through
  */
 ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
-	var self = this,
-		elements = this.$root.find( '*' ).filter( function () {
-			if ( this.tabIndex === -1 ) {
+	var elements = this.$root.find( '*' )
+		.filter( ( index, element ) => {
+			if ( element.tabIndex === -1 ) {
 				// tabIndex -1 is focusable, but shouldn't appear to keyboard-navigation
 				return false;
 			}
-			if ( self.skipAriaDisabled && this.getAttribute( 'aria-disabled' ) === 'true' ) {
+			if ( this.skipAriaDisabled && element.getAttribute( 'aria-disabled' ) === 'true' ) {
 				return false;
 			}
-			if ( self.skipAriaHidden && $( this ).closest( '[aria-hidden="true"]', self.$root[ 0 ] ).length ) {
+			if ( this.skipAriaHidden && $( element ).closest( '[aria-hidden="true"]', this.$root[ 0 ] ).length ) {
 				return false;
 			}
-			if ( this.isContentEditable && this.contentEditable !== 'true' ) {
+			if ( element.isContentEditable && element.contentEditable !== 'true' ) {
 				// Skip nodes within contentEditable nodes (but not the root contentEditable nodes),
 				// which would be focusable if they weren't editable, e.g. links.
 				// This matches browser behavior.
 				return false;
 			}
-			return OO.ui.isFocusableElement( $( this ) );
-		} ).map( function ( index ) {
-			return { element: this, index: index };
-		} ).get();
+			return OO.ui.isFocusableElement( $( element ) );
+		} )
+		.map( ( index, element ) => ( { element: element, index: index } ) )
+		.get();
 	elements.sort( ( a, b ) => {
 		if ( a.element.tabIndex < b.element.tabIndex ) {
 			return -1;
@@ -89,9 +89,7 @@ ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
 		}
 		return a.index - b.index;
 	} );
-	return elements.map( ( data ) => {
-		return data.element;
-	} );
+	return elements.map( ( data ) => data.element );
 };
 
 /**

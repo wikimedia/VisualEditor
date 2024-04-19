@@ -198,8 +198,7 @@ ve.ui.PositionedTargetToolbar.prototype.isFloatable = function () {
  */
 ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = function ( win, openingOrClosing ) {
 	var $surface = this.getSurface().$element,
-		transitionDuration = OO.ui.theme.getDialogTransitionDuration(),
-		toolbar = this;
+		transitionDuration = OO.ui.theme.getDialogTransitionDuration();
 
 	// win.isOpened before promise means we are closing
 	if ( win.constructor.static.position === 'side' && win.isOpened() ) {
@@ -218,33 +217,33 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 				var margin = $surface.css( 'direction' ) === 'rtl' ? 'margin-left' : 'margin-right';
 				var originalMargin = parseFloat( $surface.css( margin ) );
 				var width = win.getSizeProperties().width;
-				toolbar.getSurface().$element
+				this.getSurface().$element
 					.addClass( 've-ui-surface-toolbarDialog-side' )
 					.css( margin, width + originalMargin );
 				win.$element.css( 'width', width );
 			} else {
 				// Second closing transition
-				toolbar.getSurface().$element.removeClass( 've-ui-surface-toolbarDialog-side' );
+				this.getSurface().$element.removeClass( 've-ui-surface-toolbarDialog-side' );
 			}
 
-			toolbar.onViewportResize();
+			this.onViewportResize();
 			setTimeout( () => {
-				toolbar.onViewportResize();
-				toolbar.getSurface().getView().emit( 'position' );
+				this.onViewportResize();
+				this.getSurface().getView().emit( 'position' );
 			}, transitionDuration );
-			toolbar.getSurface().getView().emit( 'position' );
+			this.getSurface().getView().emit( 'position' );
 		} else if ( win.constructor.static.position === 'below' ) {
 			setTimeout( () => {
-				toolbar.onViewportResize();
-				toolbar.getSurface().getView().emit( 'position' );
+				this.onViewportResize();
+				this.getSurface().getView().emit( 'position' );
 			}, transitionDuration );
 		}
 		// Wait for window transition
 		setTimeout( () => {
-			if ( toolbar.floating ) {
+			if ( this.floating ) {
 				// Re-calculate height
-				toolbar.unfloat();
-				toolbar.float();
+				this.unfloat();
+				this.float();
 			}
 		}, transitionDuration );
 	} );

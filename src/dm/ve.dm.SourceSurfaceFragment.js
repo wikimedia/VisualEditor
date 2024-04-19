@@ -27,7 +27,6 @@ OO.inheritClass( ve.dm.SourceSurfaceFragment, ve.dm.SurfaceFragment );
  */
 ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 	var args = arguments,
-		fragment = this,
 		text = this.getText( true );
 
 	this.pushPending( this.convertFromSource( text ).then( ( selectionDocument ) => {
@@ -38,9 +37,9 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 		);
 		tempFragment.annotateContent.apply( tempFragment, args );
 
-		fragment.clearPending();
-		fragment.insertDocument( tempFragment.getDocument() );
-		return fragment.getPending();
+		this.clearPending();
+		this.insertDocument( tempFragment.getDocument() );
+		return this.getPending();
 	} ) );
 
 	return this;
@@ -59,7 +58,6 @@ ve.dm.SourceSurfaceFragment.prototype.getAnnotations = function () {
  */
 ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 	var args = arguments,
-		fragment = this,
 		text = this.getText( true );
 
 	this.pushPending( this.convertFromSource( text ).then( ( selectionDocument ) => {
@@ -70,9 +68,9 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 		);
 		tempFragment.convertNodes.apply( tempFragment, args );
 
-		fragment.clearPending();
-		fragment.insertDocument( tempFragment.getDocument() );
-		return fragment.getPending();
+		this.clearPending();
+		this.insertDocument( tempFragment.getDocument() );
+		return this.getPending();
 	} ) );
 
 	return this;
@@ -101,8 +99,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertContent = function ( content, annota
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRange, annotate ) {
-	var range = this.getSelection().getCoveringRange(),
-		fragment = this;
+	var range = this.getSelection().getCoveringRange();
 
 	if ( !range ) {
 		return this;
@@ -143,7 +140,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 	this.pushPending(
 		this.convertToSource( doc ).then(
 			( source ) => {
-				fragment.insertContent( source.trim() );
+				this.insertContent( source.trim() );
 			},
 			function () {
 				ve.error( 'Failed to convert document', arguments );

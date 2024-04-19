@@ -53,15 +53,14 @@ ve.ui.CommentAnnotationInspector.prototype.onTextInputResize = function () {
  * Update the actions based on the annotation state
  */
 ve.ui.CommentAnnotationInspector.prototype.updateActions = function () {
-	var isValid = false,
-		inspector = this;
+	var isValid = false;
 
 	this.textInput.getValidity()
 		.then( () => {
 			isValid = true;
 		} )
 		.always( () => {
-			inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, ( action ) => {
+			this.actions.forEach( { actions: [ 'done', 'insert' ] }, ( action ) => {
 				action.setDisabled( !isValid );
 			} );
 		} );

@@ -135,13 +135,11 @@ ve.ui.DataTransferHandler.prototype.abort = function () {
  * @param {jQuery|string|Function} label Progress bar label
  */
 ve.ui.DataTransferHandler.prototype.createProgress = function ( progressCompletePromise, label ) {
-	var handler = this;
-
 	this.surface.createProgress( progressCompletePromise, label ).done( ( progressBar, cancelPromise ) => {
 		// Set any progress that was achieved before this resolved
-		progressBar.setProgress( handler.progress );
-		handler.progressBar = progressBar;
-		cancelPromise.fail( handler.abort.bind( handler ) );
+		progressBar.setProgress( this.progress );
+		this.progressBar = progressBar;
+		cancelPromise.fail( this.abort.bind( this ) );
 	} );
 };
 

@@ -143,15 +143,14 @@ ve.ce.ResizableNode.prototype.hideSizeLabel = function () {
 		return;
 	}
 
-	var node = this;
 	// Defer the removal of this class otherwise other DOM changes may cause
 	// the opacity transition to not play out smoothly
 	setTimeout( () => {
-		node.$sizeLabel.removeClass( 've-ce-resizableNode-sizeLabel-resizing' );
+		this.$sizeLabel.removeClass( 've-ce-resizableNode-sizeLabel-resizing' );
 	} );
 	// Actually hide the size label after it's done animating
 	setTimeout( () => {
-		node.$sizeLabel.addClass( 'oo-ui-element-hidden' );
+		this.$sizeLabel.addClass( 'oo-ui-element-hidden' );
 	}, 200 );
 };
 

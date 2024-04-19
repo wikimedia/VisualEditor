@@ -310,12 +310,11 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 		this.icon.$element.detach();
 	}
 	var showIcon = !this.hasRendering();
-	var node = this;
 
 	// Defer updating the DOM. If we don't do this, the hasRendering() call for the next
 	// FocusableNode will force a reflow, which is slow.
 	requestAnimationFrame( () => {
-		node.updateInvisibleIconSync( showIcon );
+		this.updateInvisibleIconSync( showIcon );
 	} );
 };
 
@@ -431,8 +430,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		return;
 	}
 
-	var node = this,
-		surfaceModel = this.focusableSurface.getModel(),
+	var surfaceModel = this.focusableSurface.getModel(),
 		selection = surfaceModel.getSelection(),
 		nodeRange = this.model.getOuterRange();
 
@@ -444,15 +442,15 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		ve.selectElement( this.$highlights[ 0 ] );
 		setTimeout( () => {
 			// Undo ce=true as soon as the context menu is shown
-			node.$highlights.prop( 'contentEditable', 'false' );
-			node.focusableSurface.preparePasteTargetForCopy();
+			this.$highlights.prop( 'contentEditable', 'false' );
+			this.focusableSurface.preparePasteTargetForCopy();
 		} );
 	}
 
 	// Wait for native selection to change before correcting
 	setTimeout( () => {
 		// Check surface still exists after timeout
-		if ( node.focusableSurface ) {
+		if ( this.focusableSurface ) {
 			var range = selection instanceof ve.dm.LinearSelection && selection.getRange();
 			surfaceModel.getLinearFragment(
 				e.shiftKey && range ?
@@ -461,9 +459,9 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 					) :
 					nodeRange
 			).select();
-			node.focusableSurface.updateActiveAnnotations();
+			this.focusableSurface.updateActiveAnnotations();
 			// Ensure surface is active as native 'focus' event won't be fired
-			node.focusableSurface.activate();
+			this.focusableSurface.activate();
 		}
 	} );
 };

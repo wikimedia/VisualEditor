@@ -118,8 +118,6 @@ ve.ui.LinkAnnotationWidget.prototype.setDisabled = function () {
  * @param {string} value New input value
  */
 ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
-	var widget = this;
-
 	// RTL/LTR check
 	// TODO: Make this work properly
 	if ( document.body.classList.contains( 'rtl' ) ) {
@@ -130,10 +128,10 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 
 	this.getTextInputWidget().getValidity()
 		.done( () => {
-			widget.setAnnotation( widget.constructor.static.getAnnotationFromText( value ), true );
+			this.setAnnotation( this.constructor.static.getAnnotationFromText( value ), true );
 		} )
 		.fail( () => {
-			widget.setAnnotation( null, true );
+			this.setAnnotation( null, true );
 		} );
 };
 

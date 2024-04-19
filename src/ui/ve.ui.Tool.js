@@ -121,8 +121,7 @@ ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
 ve.ui.Tool.prototype.onSelect = function () {
 	var contextClosePromise,
 		command = this.getCommand(),
-		surface = this.toolbar.getSurface(),
-		tool = this;
+		surface = this.toolbar.getSurface();
 
 	if ( command instanceof ve.ui.Command ) {
 		if ( surface.context.inspector ) {
@@ -143,7 +142,7 @@ ve.ui.Tool.prototype.onSelect = function () {
 		contextClosePromise.done( () => {
 			if ( !command.execute( surface, undefined, 'tool' ) ) {
 				// If the command fails, ensure the tool is not active
-				tool.setActive( false );
+				this.setActive( false );
 			}
 		} );
 	}

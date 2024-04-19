@@ -930,7 +930,6 @@ ve.dm.VisualDiff.prototype.underDiffThreshold = function ( changeRecord ) {
  * @return {ve.dm.VisualDiff.MetaListDiff}
  */
 ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList ) {
-	var visualDiff = this;
 	var oldItemsByGroup = {};
 	oldMetaList.items.forEach( ( metaItem ) => {
 		var group = metaItem.getGroup();
@@ -949,7 +948,7 @@ ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList
 	);
 	var groupDiffs = {};
 	groups.forEach( ( group ) => {
-		groupDiffs[ group ] = visualDiff.diffList(
+		groupDiffs[ group ] = this.diffList(
 			oldItemsByGroup[ group ] || [],
 			newItemsByGroup[ group ] || []
 		);

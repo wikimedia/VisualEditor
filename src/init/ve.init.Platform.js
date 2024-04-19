@@ -436,7 +436,6 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 	var charsObj = {},
 		groups = [ 'accents', 'mathematical', 'symbols' ];
 
-	var platform = this;
 	groups.forEach( ( group ) => {
 		// The following messages are used here:
 		// * visualeditor-specialcharacter-group-set-accents
@@ -450,7 +449,7 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 				// * visualeditor-specialcharacter-group-label-mathematical
 				// * visualeditor-specialcharacter-group-label-symbols
 				label: ve.msg( 'visualeditor-specialcharacter-group-label-' + group ),
-				symbols: platform.processSpecialCharSymbols( symbols )
+				symbols: this.processSpecialCharSymbols( symbols )
 			};
 		}
 	} );

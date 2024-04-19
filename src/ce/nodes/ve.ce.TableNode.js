@@ -152,8 +152,6 @@ ve.ce.TableNode.prototype.onTableDblClick = function ( e ) {
  * @param {jQuery.Event} e Mouse down or touch start event
  */
 ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
-	var node = this;
-
 	var cellNode = this.getCellNodeFromEvent( e );
 	if ( !cellNode ) {
 		return;
@@ -224,7 +222,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 			// Undo ce=true as soon as the context menu is shown
 			cellNode.$element.prop( 'contentEditable', 'false' );
 			// Trigger onModelSelect to restore the selection
-			node.surface.onModelSelect();
+			this.surface.onModelSelect();
 		} );
 		return;
 	}
@@ -239,7 +237,7 @@ ve.ce.TableNode.prototype.onTableMouseDown = function ( e ) {
 		// process of deactivating, so wait for the event loop to clear before
 		// continuing.
 		setTimeout( () => {
-			node.onTableDblClick( e );
+			this.onTableDblClick( e );
 		} );
 	} else {
 		this.surface.$document.on( {

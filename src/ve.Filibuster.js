@@ -462,8 +462,6 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
  * @return {Object|string|number|null} Plain old data object
  */
 ve.Filibuster.static.clonePlain = function ( val, seen ) {
-	var filibusterStatic = this;
-
 	if ( seen === undefined ) {
 		seen = new Set();
 	}
@@ -473,7 +471,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 		}
 		seen.add( val );
 		return val.map( ( x ) => {
-			return filibusterStatic.clonePlain( x, seen );
+			return this.clonePlain( x, seen );
 		} );
 	} else if ( typeof val === 'function' ) {
 		return '(function ' + val.name + ')';
@@ -489,7 +487,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 		return { 've.Range': [ val.from, val.to ] };
 	} else if ( val.constructor === ve.dm.Transaction ) {
 		return { 've.dm.Transaction': val.operations.map( ( op ) => {
-			return filibusterStatic.clonePlain( op );
+			return this.clonePlain( op );
 		} ) };
 	} else if ( val instanceof ve.dm.Selection ) {
 		return { 've.dm.Selection': val.getDescription() };
@@ -511,7 +509,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 		seen.add( val );
 		var plainVal = {};
 		Object.getOwnPropertyNames( val ).forEach( ( k ) => {
-			plainVal[ k ] = filibusterStatic.clonePlain( val[ k ], seen );
+			plainVal[ k ] = this.clonePlain( val[ k ], seen );
 		} );
 		return plainVal;
 	}

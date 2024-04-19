@@ -82,17 +82,14 @@ ve.ce.ActiveNode.prototype.onActiveNodeTeardown = function () {
  */
 ve.ce.ActiveNode.prototype.onActiveNodeSurfaceModelSelect = function ( selection ) {
 	var coveringRange = selection.getCoveringRange(),
-		surface = this.activeNodeSurface,
-		activeNode = this;
+		surface = this.activeNodeSurface;
 
 	if ( coveringRange && this.model.getRange().containsRange( new ve.Range( coveringRange.from ) ) ) {
 		// Only set this as the active node if active node is empty, or not a
 		// descendant of this node.
 		if (
 			!surface.getActiveNode() ||
-			!surface.getActiveNode().traverseUpstream( ( node ) => {
-				return node !== activeNode;
-			} )
+			!surface.getActiveNode().traverseUpstream( ( node ) => node !== this )
 		) {
 			surface.setActiveNode( this );
 		}

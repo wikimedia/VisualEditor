@@ -246,8 +246,7 @@ ve.dm.TreeCursor.prototype.stepIn = function () {
  * @return {Object|null} The step
  */
 ve.dm.TreeCursor.prototype.stepOut = function () {
-	var treeCursor = this,
-		priorOffset = this.offset;
+	var priorOffset = this.offset;
 	var item = this.nodes.pop();
 	this.node = this.nodes[ this.nodes.length - 1 ];
 	this.offset = this.path.pop();
@@ -262,7 +261,7 @@ ve.dm.TreeCursor.prototype.stepOut = function () {
 		if ( item.hasChildren() ) {
 			// Increase linearOffset by the length of each child
 			item.children.slice( priorOffset ).forEach( ( child ) => {
-				treeCursor.linearOffset += child.getOuterLength();
+				this.linearOffset += child.getOuterLength();
 			} );
 		}
 		// Increase linearOffset for the close tag

@@ -73,15 +73,14 @@
  * @param {Object} [selections] For each author ID (key), latest ve.dm.Selection
  */
 ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
-	var change = this;
 	this.start = start || 0;
 	this.transactions = transactions || [];
 	this.store = new ve.dm.HashValueStore();
 	this.storeLengthAtTransaction = [];
 	if ( stores ) {
 		stores.forEach( ( store ) => {
-			change.store.merge( store );
-			change.storeLengthAtTransaction.push( change.store.getLength() );
+			this.store.merge( store );
+			this.storeLengthAtTransaction.push( this.store.getLength() );
 		} );
 	}
 	this.selections = selections || {};
@@ -742,7 +741,6 @@ ve.dm.Change.prototype.pushTransaction = function ( transaction, storeLength ) {
  * @throws {Error} If other does not start immediately after this
  */
 ve.dm.Change.prototype.push = function ( other ) {
-	var change = this;
 	if ( other.start !== this.start + this.getLength() ) {
 		throw new Error( 'this ends at ' + ( this.start + this.getLength() ) +
 			' but other starts at ' + other.start );
@@ -751,8 +749,8 @@ ve.dm.Change.prototype.push = function ( other ) {
 	for ( var i = 0, iLen = other.transactions.length; i < iLen; i++ ) {
 		var transaction = other.transactions[ i ];
 		var store = stores[ i ];
-		change.store.merge( store );
-		this.pushTransaction( transaction, change.store.getLength() );
+		this.store.merge( store );
+		this.pushTransaction( transaction, this.store.getLength() );
 	}
 	this.selections = OO.cloneObject( other.selections );
 };

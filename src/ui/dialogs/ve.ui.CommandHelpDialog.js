@@ -107,8 +107,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommandHelpDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var dialog = this,
-				surface = data.surface,
+			var surface = data.surface,
 				target = surface.getTarget(),
 				sequenceRegistry = surface.sequenceRegistry,
 				commandRegistry = surface.commandRegistry,
@@ -123,7 +122,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 			commandGroupsOrder.forEach( ( groupName ) => {
 				var hasCommand = false;
 				var commandGroup = commandGroups[ groupName ];
-				var commands = dialog.constructor.static.sortedCommandsFromGroup( groupName, commandGroup.promote, commandGroup.demote );
+				var commands = this.constructor.static.sortedCommandsFromGroup( groupName, commandGroup.promote, commandGroup.demote );
 				var $list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 				commands.forEach( ( command ) => {
 					var triggerList;
@@ -163,7 +162,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 						// Append an array of jQuery collections from buildKeyNode
 						// eslint-disable-next-line no-jquery/no-append-html
 						$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-shortcut' ).append(
-							trigger.getMessage( true ).map( dialog.constructor.static.buildKeyNode )
+							trigger.getMessage( true ).map( this.constructor.static.buildKeyNode )
 						).find( 'kbd + kbd' ).before( '+' ).end() );
 						hasShortcut = true;
 					} );
@@ -176,7 +175,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 								$shortcut.append( $( '<kbd>' ).addClass( 've-ui-commandHelpDialog-sequence' )
 									.attr( 'data-label', ve.msg( 'visualeditor-shortcuts-sequence-notice' ) )
 									.append(
-										sequence.getMessage( true ).map( dialog.constructor.static.buildKeyNode )
+										sequence.getMessage( true ).map( this.constructor.static.buildKeyNode )
 									)
 								);
 								hasShortcut = true;
@@ -192,7 +191,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 					}
 				} );
 				if ( hasCommand ) {
-					dialog.$container.append(
+					this.$container.append(
 						$( '<div>' )
 							.addClass( 've-ui-commandHelpDialog-section' )
 							.append(

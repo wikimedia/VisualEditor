@@ -1344,15 +1344,13 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		startSplitRequired = false,
 		endSplitRequired = false,
 		startSplitNodes = [],
-		endSplitNodes = [],
-		fragment = this;
+		endSplitNodes = [];
 
 	function createSplits( splitNodes, insertBefore ) {
-		var i, length,
-			adjustment = 0,
+		var adjustment = 0,
 			data = [];
 
-		for ( i = 0, length = splitNodes.length; i < length; i++ ) {
+		for ( var i = 0, length = splitNodes.length; i < length; i++ ) {
 			data.unshift( { type: '/' + splitNodes[ i ].type } );
 			data.push( splitNodes[ i ].getClonedElement() );
 
@@ -1428,8 +1426,8 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 	}
 
 	insertions.forEach( ( insertion ) => {
-		fragment.change(
-			ve.dm.TransactionBuilder.static.newFromInsertion( fragment.getDocument(), insertion.offset, insertion.data )
+		this.change(
+			ve.dm.TransactionBuilder.static.newFromInsertion( this.getDocument(), insertion.offset, insertion.data )
 		);
 	} );
 

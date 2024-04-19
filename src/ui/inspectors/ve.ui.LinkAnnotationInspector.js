@@ -43,7 +43,6 @@ ve.ui.LinkAnnotationInspector.prototype.onAnnotationInputChange = function () {
  */
 ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
 	var isValid = false,
-		inspector = this,
 		annotation = this.annotationInput.getAnnotation();
 
 	this.annotationInput.getTextInputWidget().getValidity()
@@ -52,7 +51,7 @@ ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
 		} )
 		.always( () => {
 			isValid = isValid && !!annotation;
-			inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, ( action ) => {
+			this.actions.forEach( { actions: [ 'done', 'insert' ] }, ( action ) => {
 				action.setDisabled( !isValid );
 			} );
 		} );

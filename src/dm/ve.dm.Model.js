@@ -308,7 +308,6 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveInsert ) {
 	var span = document.createElement( 'span' ),
 		isRemoveInsert = true,
-		model = this,
 		/* global diff_match_patch */
 		// eslint-disable-next-line new-cap
 		differ = new diff_match_patch();
@@ -319,10 +318,10 @@ ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveIn
 	diff.forEach( ( part ) => {
 		switch ( part[ 0 ] ) {
 			case -1:
-				span.appendChild( model.wrapText( 'del', part[ 1 ] ) );
+				span.appendChild( this.wrapText( 'del', part[ 1 ] ) );
 				break;
 			case 1:
-				span.appendChild( model.wrapText( 'ins', part[ 1 ] ) );
+				span.appendChild( this.wrapText( 'ins', part[ 1 ] ) );
 				break;
 			case 0:
 				isRemoveInsert = false;

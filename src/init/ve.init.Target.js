@@ -393,10 +393,9 @@ ve.init.Target.prototype.teardown = function () {
  * @return {jQuery.Promise} Promise which resolves when the target has been destroyed
  */
 ve.init.Target.prototype.destroy = function () {
-	var target = this;
 	return this.teardown().then( () => {
-		target.$element.remove();
-		if ( ve.init.target === target ) {
+		this.$element.remove();
+		if ( ve.init.target === this ) {
 			ve.init.target = null;
 		}
 	} );

@@ -67,8 +67,6 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.SpecialCharacterDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var dialog = this;
-
 			this.surface = data.surface;
 			this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
 
@@ -79,8 +77,8 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 
 				ve.init.platform.fetchSpecialCharList()
 					.then( ( symbolData ) => {
-						dialog.characterListLayout.setSymbolData( symbolData );
-						dialog.updateSize();
+						this.characterListLayout.setSymbolData( symbolData );
+						this.updateSize();
 					} );
 			}
 		}, this );

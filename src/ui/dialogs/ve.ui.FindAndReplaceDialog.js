@@ -594,8 +594,7 @@ ve.ui.FindAndReplaceDialog.prototype.onReplaceAllButtonClick = function () {
  * @param {number} index Index to replace
  */
 ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
-	var dialog = this,
-		replace = this.replaceText.getValue();
+	var replace = this.replaceText.getValue();
 
 	// Prevent replace from triggering throttled redraws
 	this.replacing = true;
@@ -611,7 +610,7 @@ ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
 
 	// 'position' event is deferred, so block that too
 	setTimeout( () => {
-		dialog.replacing = false;
+		this.replacing = false;
 	} );
 };
 

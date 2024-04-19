@@ -533,7 +533,6 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	var animate = true,
 		view = this.getView(),
 		selectionView = view.getSelection( selectionModel ),
-		surface = this,
 		isNative = selectionView.isNativeCursor();
 
 	// We only care about the focus end of the selection, the anchor never
@@ -596,7 +595,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 		if ( isNative ) {
 			// TODO: This event has only even been emitted for native selection
 			// scroll changes. Perhaps rename it.
-			surface.emit( 'scroll' );
+			this.emit( 'scroll' );
 		}
 	} );
 };
