@@ -47,12 +47,12 @@ ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
 		annotation = this.annotationInput.getAnnotation();
 
 	this.annotationInput.getTextInputWidget().getValidity()
-		.then( function () {
+		.then( () => {
 			isValid = true;
 		} )
-		.always( function () {
+		.always( () => {
 			isValid = isValid && !!annotation;
-			inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, function ( action ) {
+			inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, ( action ) => {
 				action.setDisabled( !isValid );
 			} );
 		} );

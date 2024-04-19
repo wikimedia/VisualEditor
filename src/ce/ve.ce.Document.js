@@ -304,7 +304,7 @@ ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {
 		return false;
 	}
 	var steps = ve.adjacentDomPosition( position, 1, { stop: stop, noDescend: noDescend } ).steps;
-	steps.slice( 0, -1 ).forEach( function ( s ) {
+	steps.slice( 0, -1 ).forEach( ( s ) => {
 		// Step type cannot be "internal", else the offset would have incremented
 		var hasClass = function ( className ) {
 			return s.node.nodeType === Node.ELEMENT_NODE &&

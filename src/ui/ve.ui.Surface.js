@@ -592,7 +592,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 		animate: animate,
 		scrollContainer: this.$scrollContainer[ 0 ],
 		padding: padding
-	}, scrollConfig ) ).then( function () {
+	}, scrollConfig ) ).then( () => {
 		if ( isNative ) {
 			// TODO: This event has only even been emitted for native selection
 			// scroll changes. Perhaps rename it.

@@ -60,7 +60,7 @@ ve.dm.ListNode.static.describeChanges = function ( attributeChanges, attributes,
 	attributeChanges = ve.copy( attributeChanges );
 	if ( 'listType' in attributeChanges ) {
 		var mapped = false;
-		[ 'from', 'to' ].forEach( function ( fromOrTo ) {
+		[ 'from', 'to' ].forEach( ( fromOrTo ) => {
 			if ( attributeChanges.listType[ fromOrTo ] === 'definitionList' ) {
 				attributeChanges.style[ fromOrTo ] = 'indent';
 				mapped = true;

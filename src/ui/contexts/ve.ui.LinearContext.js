@@ -146,7 +146,7 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 	observer.stopTimerLoop();
 
 	opening
-		.progress( function ( data ) {
+		.progress( ( data ) => {
 			context.isOpening = false;
 			if ( data.state === 'setup' ) {
 				if ( !context.isVisible() ) {
@@ -160,9 +160,9 @@ ve.ui.LinearContext.prototype.onInspectorOpening = function ( win, opening ) {
 			}
 			context.updateDimensionsDebounced();
 		} )
-		.then( function ( opened ) {
-			opened.then( function ( closed ) {
-				closed.always( function () {
+		.then( ( opened ) => {
+			opened.then( ( closed ) => {
+				closed.always( () => {
 					// Don't try to close the inspector if a second
 					// opening has already been triggered
 					if ( context.isOpening ) {
@@ -225,7 +225,7 @@ ve.ui.LinearContext.prototype.addPersistentSource = function ( source ) {
  * @param {string} name Source name
  */
 ve.ui.LinearContext.prototype.removePersistentSource = function ( name ) {
-	this.persistentSources = this.persistentSources.filter( function ( source ) {
+	this.persistentSources = this.persistentSources.filter( ( source ) => {
 		return source.name !== name;
 	} );
 

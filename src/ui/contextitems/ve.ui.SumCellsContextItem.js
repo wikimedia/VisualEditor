@@ -65,7 +65,7 @@ ve.ui.SumCellsContextItem.prototype.setup = function () {
 	if ( selection instanceof ve.dm.TableSelection ) {
 		var cells = selection.getMatrixCells( documentModel, true );
 		if ( cells.length > 1 ) {
-			sum = cells.reduce( function ( s, cell ) {
+			sum = cells.reduce( ( s, cell ) => {
 				var number;
 				if ( !cell.isPlaceholder() ) {
 					// Get text from view rendering to catch numbers in alien nodes, etc.

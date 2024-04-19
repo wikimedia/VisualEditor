@@ -80,7 +80,7 @@ ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
 		} ).map( function ( index ) {
 			return { element: this, index: index };
 		} ).get();
-	elements.sort( function ( a, b ) {
+	elements.sort( ( a, b ) => {
 		if ( a.element.tabIndex < b.element.tabIndex ) {
 			return -1;
 		}
@@ -89,7 +89,7 @@ ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
 		}
 		return a.index - b.index;
 	} );
-	return elements.map( function ( data ) {
+	return elements.map( ( data ) => {
 		return data.element;
 	} );
 };

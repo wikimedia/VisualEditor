@@ -36,13 +36,13 @@ ve.FakePeer.prototype.on = function ( ev, f ) {
 
 ve.FakePeer.prototype.callHandlers = function ( type ) {
 	var args = Array.prototype.slice.call( arguments, 1 );
-	( this.handlers.get( type ) || [] ).forEach( function ( handler ) {
+	( this.handlers.get( type ) || [] ).forEach( ( handler ) => {
 		handler.apply( null, args );
 	} );
 };
 
 ve.FakePeer.prototype.connect = function ( id ) {
-	var peer = this.constructor.static.peers.find( function ( peerI ) {
+	var peer = this.constructor.static.peers.find( ( peerI ) => {
 		return peerI.id === id;
 	} );
 	if ( !peer ) {
@@ -80,7 +80,7 @@ ve.FakePeerConnection.prototype.on = function ( ev, f ) {
 
 ve.FakePeerConnection.prototype.callHandlers = function ( type ) {
 	var args = Array.prototype.slice.call( arguments, 1 );
-	( this.handlers.get( type ) || [] ).forEach( function ( handler ) {
+	( this.handlers.get( type ) || [] ).forEach( ( handler ) => {
 		handler.apply( null, args );
 	} );
 };

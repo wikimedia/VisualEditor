@@ -76,7 +76,7 @@ ve.dm.TableMatrix.prototype.update = function () {
 		col = -1;
 
 	// Handle row transitions
-	iterator.on( 'newRow', function ( rowNode ) {
+	iterator.on( 'newRow', ( rowNode ) => {
 		row++;
 		col = -1;
 		// Initialize a matrix row

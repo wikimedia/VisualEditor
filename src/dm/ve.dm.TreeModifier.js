@@ -917,7 +917,7 @@ ve.dm.TreeModifier.prototype.modifyAdjustmentTree = function ( rawPosition, diff
 		adjustmentNode.removed = ( adjustmentNode.removed || 0 ) - diff;
 	}
 	if ( deleteDescendants ) {
-		adjustmentNode.offsetsUsed.forEach( function ( i ) {
+		adjustmentNode.offsetsUsed.forEach( ( i ) => {
 			delete adjustmentNode[ i ];
 		} );
 		adjustmentNode.offsetsUsed = [];

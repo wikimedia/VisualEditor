@@ -57,11 +57,11 @@ ve.ui.CommentAnnotationInspector.prototype.updateActions = function () {
 		inspector = this;
 
 	this.textInput.getValidity()
-		.then( function () {
+		.then( () => {
 			isValid = true;
 		} )
-		.always( function () {
-			inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, function ( action ) {
+		.always( () => {
+			inspector.actions.forEach( { actions: [ 'done', 'insert' ] }, ( action ) => {
 				action.setDisabled( !isValid );
 			} );
 		} );
@@ -150,7 +150,7 @@ ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			}
 			this.$user.text( this.getFragment().getSurface().synchronizer.getAuthorData().name );
 			this.textInput.setValue( '' );
-			this.actions.forEach( { actions: [ 'done' ] }, function ( action ) {
+			this.actions.forEach( { actions: [ 'done' ] }, ( action ) => {
 				action.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-comment' ) );
 			} );
 			this.updateActions();

@@ -85,7 +85,7 @@ ve.serializeNodeDebug = function ( domNode ) {
  */
 ve.summarizeTransaction = function ( tx ) {
 	function summarizeItems( items ) {
-		return '\'' + items.map( function ( item ) {
+		return '\'' + items.map( ( item ) => {
 			if ( item.type ) {
 				return '<' + item.type + '>';
 			} else if ( Array.isArray( item ) ) {
@@ -98,7 +98,7 @@ ve.summarizeTransaction = function ( tx ) {
 		} ).join( '' ) + '\'';
 	}
 	var annotations = 0;
-	return '(' + ( tx.authorId ? ( tx.authorId + ' ' ) : '' ) + tx.operations.map( function ( op ) {
+	return '(' + ( tx.authorId ? ( tx.authorId + ' ' ) : '' ) + tx.operations.map( ( op ) => {
 		if ( op.type === 'retain' ) {
 			return ( annotations ? 'annotate ' : 'retain ' ) + op.length;
 		} else if ( op.type === 'replace' ) {
@@ -150,13 +150,13 @@ ve.initFilibuster = function () {
 			ve.ui.Surface.prototype.startFilibuster,
 			ve.ui.Surface.prototype.stopFilibuster
 		] )
-		.setObserver( 'dm doc', function () {
+		.setObserver( 'dm doc', () => {
 			// Cannot use wrapped methods here
 			return JSON.stringify( ve.Filibuster.static.clonePlain(
 				surface.model.documentModel.data.data
 			) );
 		} )
-		.setObserver( 'dm selection', function () {
+		.setObserver( 'dm selection', () => {
 			// Cannot use wrapped methods here
 			var selection = surface.model.selection;
 			if ( !selection ) {
@@ -164,11 +164,11 @@ ve.initFilibuster = function () {
 			}
 			return selection.getDescription();
 		} )
-		.setObserver( 'DOM doc', function () {
+		.setObserver( 'DOM doc', () => {
 			// Cannot use wrapped methods here
 			return ve.serializeNodeDebug( surface.view.$element[ 0 ] );
 		} )
-		.setObserver( 'DOM selection', function () {
+		.setObserver( 'DOM selection', () => {
 			// Cannot use wrapped methods here
 			var nativeSelection = surface.view.nativeSelection;
 			if ( nativeSelection.focusNode === null ) {

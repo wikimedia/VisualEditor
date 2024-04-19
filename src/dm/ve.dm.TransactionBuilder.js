@@ -804,7 +804,7 @@ ve.dm.TransactionBuilder.prototype.pushReplaceInternal = function ( remove, inse
  */
 ve.dm.TransactionBuilder.prototype.pushReplacement = function ( doc, offset, removeLength, insert, removeMetadata, insertedDataOffset, insertedDataLength ) {
 	var remove = doc.getData( new ve.Range( offset, offset + removeLength ) );
-	var collapse = removeMetadata ? [] : remove.filter( function ( item ) {
+	var collapse = removeMetadata ? [] : remove.filter( ( item ) => {
 		var type = ve.dm.LinearData.static.isElementData( item ) &&
 			ve.dm.LinearData.static.getType( item );
 		return type &&

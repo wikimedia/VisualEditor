@@ -75,7 +75,7 @@ ve.ui.AnnotationContextItem.prototype.isClearable = function () {
  */
 ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
 	ve.track( 'activity.' + this.constructor.static.name, { action: 'context-clear' } );
-	this.applyToAnnotations( function ( fragment, annotation ) {
+	this.applyToAnnotations( ( fragment, annotation ) => {
 		fragment.annotateContent( 'clear', annotation );
 	} );
 };
@@ -88,7 +88,7 @@ ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
 ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback ) {
 	var modelClasses = this.constructor.static.modelClasses,
 		fragment = this.getFragment(),
-		annotations = fragment.getAnnotations( true ).filter( function ( annotation ) {
+		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => {
 			return ve.isInstanceOfAny( annotation, modelClasses );
 		} ).get();
 	if (
@@ -99,7 +99,7 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
 		// Expand to nearest word and try again
 		fragment = fragment.expandLinearSelection( 'word' );
 
-		annotations = fragment.getAnnotations( true ).filter( function ( annotation ) {
+		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => {
 			return ve.isInstanceOfAny( annotation, modelClasses );
 		} ).get();
 	}

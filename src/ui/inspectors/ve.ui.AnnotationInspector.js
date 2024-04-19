@@ -118,7 +118,7 @@ ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = null;
 ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
 	var modelClasses = this.constructor.static.modelClasses;
 
-	return fragment.getAnnotations( all ).filter( function ( annotation ) {
+	return fragment.getAnnotations( all ).filter( ( annotation ) => {
 		return ve.isInstanceOfAny( annotation, modelClasses );
 	} );
 };
@@ -346,7 +346,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				} else {
 					// We can't rely on the selection being placed inside the annotation
 					// so force it based on the model annotations. T265166
-					surfaceView.selectAnnotation( function ( annView ) {
+					surfaceView.selectAnnotation( ( annView ) => {
 						return ve.isInstanceOfAny( annView.getModel(), inspector.constructor.static.modelClasses );
 					} );
 				}

@@ -23,7 +23,7 @@ ve.ui.HelpCompletionAction = function ( surface ) {
 
 	this.toolbar = surface.target.getToolbar();
 	this.tools = this.toolbar.tools;
-	this.toolNames = Object.keys( this.tools ).filter( function ( toolName ) {
+	this.toolNames = Object.keys( this.tools ).filter( ( toolName ) => {
 		var tool = action.tools[ toolName ];
 		return tool &&
 			// No point in going in circles
@@ -33,7 +33,7 @@ ve.ui.HelpCompletionAction = function ( surface ) {
 			!( tool instanceof OO.ui.PopupTool );
 	} );
 	// Push the "format" group to the bottom because it's rarely-needed
-	this.toolNames.sort( function ( a, b ) {
+	this.toolNames.sort( ( a, b ) => {
 		var aGroup = action.tools[ a ].constructor.static.group;
 		var bGroup = action.tools[ b ].constructor.static.group;
 		if ( aGroup === bGroup ) {
@@ -119,7 +119,7 @@ ve.ui.HelpCompletionAction.prototype.open = function ( isolateInput ) {
 		// TODO: One would need to completely ignore the history
 		// stack since before the action was triggered to use
 		// undo/redo from here. Might not be worth the effort.
-		this.toolNames = this.toolNames.filter( function ( toolName ) {
+		this.toolNames = this.toolNames.filter( ( toolName ) => {
 			var tool = action.tools[ toolName ];
 			return !( tool instanceof ve.ui.HistoryTool );
 		} );
@@ -200,7 +200,7 @@ ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
 	var action = this;
 	var menuItemsByGroup = {};
 	var toolGroups = this.constructor.static.toolGroups;
-	menuItems.forEach( function ( menuItem ) {
+	menuItems.forEach( ( menuItem ) => {
 		var tool = menuItem.getData();
 		var group = action.getGroupForTool( tool );
 		menuItemsByGroup[ group ] = menuItemsByGroup[ group ] || [];
@@ -208,12 +208,12 @@ ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
 	} );
 	var newMenuItems = [];
 	var groups = Object.keys( menuItemsByGroup );
-	groups.sort( function ( a, b ) {
+	groups.sort( ( a, b ) => {
 		var weightA = toolGroups[ a ].weight || 0;
 		var weightB = toolGroups[ b ].weight || 0;
 		return weightB - weightA;
 	} );
-	groups.forEach( function ( group ) {
+	groups.forEach( ( group ) => {
 		newMenuItems.push(
 			new OO.ui.MenuSectionOptionWidget( {
 				label: toolGroups[ group ].title
@@ -235,7 +235,7 @@ ve.ui.HelpCompletionAction.prototype.chooseItem = function ( item, range ) {
 	var tool = item.getData();
 	// Wait for completion widget to close, as the selected tool may
 	// trigger another completion widget.
-	setTimeout( function () {
+	setTimeout( () => {
 		tool.onSelect();
 	} );
 

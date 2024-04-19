@@ -46,7 +46,7 @@ ve.ui.LinkAction.static.methods = [ 'autolinkUrl' ];
  *   executed; otherwise false.
  */
 ve.ui.LinkAction.prototype.autolinkUrl = function () {
-	return this.autolink( function ( linktext ) {
+	return this.autolink( ( linktext ) => {
 		// Make sure we still have a real URL after trail removal, and not
 		// a bare protocol (or no protocol at all, if we stripped the last
 		// colon from the protocol)
@@ -181,7 +181,7 @@ ve.ui.LinkAction.prototype.getLinkAnnotation = function ( linktext ) {
 ve.ui.actionFactory.register( ve.ui.LinkAction );
 
 // Delayed initialization (wait until ve.init.platform exists)
-ve.init.Platform.static.initializedPromise.then( function () {
+ve.init.Platform.static.initializedPromise.then( () => {
 	ve.ui.LinkAction.static.autolinkRegExp =
 		// eslint-disable-next-line security/detect-non-literal-regexp
 		new RegExp(

@@ -1,7 +1,7 @@
 ( function () {
 	// Copied from mediawiki.requestIdleCallback
 	var requestIdleCallbackInternal = function ( callback ) {
-		setTimeout( function () {
+		setTimeout( () => {
 			var start = ve.now();
 			callback( {
 				didTimeout: false,
@@ -37,7 +37,7 @@
 
 		// Purge expired items once per page session
 		var storage = this;
-		setTimeout( function () {
+		setTimeout( () => {
 			storage.clearExpired();
 		}, 2000 );
 	};
@@ -137,8 +137,8 @@
 	 */
 	ve.init.sa.SafeStorage.prototype.clearExpired = function () {
 		var storage = this;
-		return this.getExpiryKeys().then( function ( keys ) {
-			return $.Deferred( function ( d ) {
+		return this.getExpiryKeys().then( ( keys ) => {
+			return $.Deferred( ( d ) => {
 				requestIdleCallback( function iterate( deadline ) {
 					while ( keys[ 0 ] !== undefined && deadline.timeRemaining() > MIN_WORK_TIME ) {
 						var key = keys.shift();
@@ -162,8 +162,8 @@
 	 */
 	ve.init.sa.SafeStorage.prototype.getExpiryKeys = function () {
 		var store = this.store;
-		return $.Deferred( function ( d ) {
-			requestIdleCallback( function ( deadline ) {
+		return $.Deferred( ( d ) => {
+			requestIdleCallback( ( deadline ) => {
 				var prefixLength = EXPIRY_PREFIX.length;
 				var keys = [];
 				var length = 0;

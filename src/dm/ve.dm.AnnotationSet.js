@@ -51,7 +51,7 @@ ve.dm.AnnotationSet.prototype.clone = function () {
  * @return {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
-	return this.filter( function ( annotation ) {
+	return this.filter( ( annotation ) => {
 		return annotation.name === name;
 	} );
 };
@@ -64,7 +64,7 @@ ve.dm.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
  * @return {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.getComparableAnnotations = function ( annotation ) {
-	return this.filter( function ( a ) {
+	return this.filter( ( a ) => {
 		return ve.compare(
 			annotation.getComparableObject(),
 			a.getComparableObject()
@@ -80,7 +80,7 @@ ve.dm.AnnotationSet.prototype.getComparableAnnotations = function ( annotation )
  * @return {ve.dm.AnnotationSet} Copy of annotation set
  */
 ve.dm.AnnotationSet.prototype.getComparableAnnotationsFromSet = function ( annotations ) {
-	return this.filter( function ( a ) {
+	return this.filter( ( a ) => {
 		return annotations.containsComparable( a );
 	} );
 };
@@ -92,7 +92,7 @@ ve.dm.AnnotationSet.prototype.getComparableAnnotationsFromSet = function ( annot
  * @return {boolean} Annotation of given type exists in the set
  */
 ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
-	return this.containsMatching( function ( annotation ) {
+	return this.containsMatching( ( annotation ) => {
 		return annotation.name === name;
 	} );
 };
@@ -271,7 +271,7 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
  * @return {boolean} At least one comparable annotation found
  */
 ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
-	return this.filter( function ( a ) {
+	return this.filter( ( a ) => {
 		return annotation.compareTo( a );
 	}, true );
 };
@@ -303,7 +303,7 @@ ve.dm.AnnotationSet.prototype.getComparable = function ( annotation ) {
  * @return {boolean} At least one comparable annotation found
  */
 ve.dm.AnnotationSet.prototype.containsComparableForSerialization = function ( annotation ) {
-	return this.filter( function ( a ) {
+	return this.filter( ( a ) => {
 		return annotation.compareToForSerialization( a );
 	}, true );
 };
@@ -354,7 +354,7 @@ ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
  * @return {ve.dm.AnnotationSet} A new set without the comparable annotations
  */
 ve.dm.AnnotationSet.prototype.withoutComparableSet = function ( set ) {
-	return this.filter( function ( annotation ) {
+	return this.filter( ( annotation ) => {
 		return !set.containsComparable( annotation );
 	} );
 };

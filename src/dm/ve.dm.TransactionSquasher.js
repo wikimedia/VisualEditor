@@ -95,7 +95,7 @@ OO.initClass( ve.dm.TransactionSquasher );
  */
 ve.dm.TransactionSquasher.static.equalItems = function ( item1, item2 ) {
 	function stringifyItem( item ) {
-		return JSON.stringify( item, function ( key, value ) {
+		return JSON.stringify( item, ( key, value ) => {
 			return key === 'changesSinceLoad' ? undefined : value;
 		} );
 	}

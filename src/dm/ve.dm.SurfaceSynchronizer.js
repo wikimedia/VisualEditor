@@ -63,12 +63,12 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 				this.peerConnection.close();
 			}
 		};
-		conn.peerConnection.on( 'data', function ( data ) {
+		conn.peerConnection.on( 'data', ( data ) => {
 			var type = data.type;
 			if ( typeof type !== 'string' ) {
 				throw new Error( 'Expected .type in <' + data + '>' );
 			}
-			( conn.handlers.get( type ) || [] ).forEach( function ( handler ) {
+			( conn.handlers.get( type ) || [] ).forEach( ( handler ) => {
 				handler( data.data );
 			} );
 		} );
@@ -312,7 +312,7 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceHistory = function () {
 	// HACK annotate transactions with authorship information
 	// This relies on being able to access the transaction object by reference;
 	// we should probably set the author deeper in dm.Surface or dm.Document instead.
-	change.transactions.forEach( function ( tx ) {
+	change.transactions.forEach( ( tx ) => {
 		tx.authorId = authorId;
 	} );
 	// TODO deal with staged transactions somehow

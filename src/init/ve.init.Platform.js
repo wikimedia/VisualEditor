@@ -27,7 +27,7 @@ ve.init.Platform = function VeInitPlatform() {
 	OO.ui.msg = this.getMessage.bind( this );
 
 	// Notify those waiting for a platform that they can finish initialization
-	setTimeout( function () {
+	setTimeout( () => {
 		ve.init.Platform.static.deferredPlatform.resolve( ve.init.platform );
 	} );
 };
@@ -55,7 +55,7 @@ ve.init.Platform.static.deferredPlatform = ve.createDeferred();
  *
  * @property {jQuery.Promise}
  */
-ve.init.Platform.static.initializedPromise = ve.init.Platform.static.deferredPlatform.promise().then( function ( platform ) {
+ve.init.Platform.static.initializedPromise = ve.init.Platform.static.deferredPlatform.promise().then( ( platform ) => {
 	return platform.getInitializedPromise();
 } );
 
@@ -385,7 +385,7 @@ ve.init.Platform.prototype.processSpecialCharSymbols = function ( symbols ) {
 		symbolList = ve.copy( symbols );
 	} else {
 		symbolList = [];
-		Object.keys( symbols ).forEach( function ( key ) {
+		Object.keys( symbols ).forEach( ( key ) => {
 			var val = symbols[ key ];
 			if ( typeof val === 'object' ) {
 				var symbolData = ve.copy( val );
@@ -404,7 +404,7 @@ ve.init.Platform.prototype.processSpecialCharSymbols = function ( symbols ) {
 			}
 		} );
 	}
-	symbolList.forEach( function ( symbol ) {
+	symbolList.forEach( ( symbol ) => {
 		if ( symbol.source ) {
 			symbol.classes = symbol.classes || [];
 			symbol.classes.push( 've-ui-specialCharacterDialog-source' );
@@ -437,7 +437,7 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 		groups = [ 'accents', 'mathematical', 'symbols' ];
 
 	var platform = this;
-	groups.forEach( function ( group ) {
+	groups.forEach( ( group ) => {
 		// The following messages are used here:
 		// * visualeditor-specialcharacter-group-set-accents
 		// * visualeditor-specialcharacter-group-set-mathematical

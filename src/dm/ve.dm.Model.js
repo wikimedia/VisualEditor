@@ -316,7 +316,7 @@ ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveIn
 	var diff = differ.diff_main( oldText, newText );
 	differ.diff_cleanupEfficiency( diff );
 
-	diff.forEach( function ( part ) {
+	diff.forEach( ( part ) => {
 		switch ( part[ 0 ] ) {
 			case -1:
 				span.appendChild( model.wrapText( 'del', part[ 1 ] ) );

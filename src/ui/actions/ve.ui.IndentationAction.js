@@ -69,7 +69,7 @@ ve.ui.IndentationAction.prototype.changeIndentation = function ( indent ) {
 	var fragments = [];
 	var changed = false;
 	// Build fragments from groups (we need their ranges since the nodes will be rebuilt on change)
-	groups.forEach( function ( group ) {
+	groups.forEach( ( group ) => {
 		if ( group.grandparent && group.grandparent.getType() === 'list' ) {
 			fragments.push( surfaceModel.getLinearFragment( group.parent.getRange(), true ) );
 			changed = true;
@@ -82,7 +82,7 @@ ve.ui.IndentationAction.prototype.changeIndentation = function ( indent ) {
 
 	var action = this;
 	// Process each fragment (their ranges are automatically adjusted on change)
-	fragments.forEach( function ( fragment ) {
+	fragments.forEach( ( fragment ) => {
 		var listItem = documentModel.getBranchNodeFromOffset( fragment.getSelection().getRange().start );
 		if ( indent > 0 ) {
 			action.indentListItem( listItem );

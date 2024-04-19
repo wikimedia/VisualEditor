@@ -51,7 +51,7 @@ ve.ui.UrlStringTransferHandler.static.handlesPaste = true;
  */
 ve.ui.UrlStringTransferHandler.static.urlRegExp = null; // Initialized below
 
-ve.init.Platform.static.initializedPromise.then( function () {
+ve.init.Platform.static.initializedPromise.then( () => {
 	ve.ui.UrlStringTransferHandler.static.urlRegExp =
 		// eslint-disable-next-line security/detect-non-literal-regexp
 		new RegExp(
@@ -96,7 +96,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 			// links with the comment information if you can find a
 			// spec for how it should be done.
 			links = data.replace( /^#.*(\r\n?|\n|$)/mg, '' ).trim()
-				.split( /[\r\n]+/g ).map( function ( line ) {
+				.split( /[\r\n]+/g ).map( ( line ) => {
 					return { href: line };
 				} );
 			// Support: Chrome
@@ -107,7 +107,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 				var html = this.item.data.htmlStringData;
 				var doc = ve.createDocumentFromHtml( html );
 				links = $.makeArray( doc.querySelectorAll( 'a[href]' ) )
-					.map( function ( a ) {
+					.map( ( a ) => {
 						return { href: a.href, title: a.textContent };
 					} );
 			}
@@ -115,7 +115,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 
 		case 'text/x-moz-url':
 			// text/x-moz-url includes titles with the links (alternating lines)
-			links = data.match( /^(.*)(\r\n?|\n)(.*)$/mg ).map( function ( item ) {
+			links = data.match( /^(.*)(\r\n?|\n)(.*)$/mg ).map( ( item ) => {
 				item = item.split( /[\r\n]+/ );
 				return { href: item[ 0 ], title: item[ 1 ] };
 			} );
@@ -129,7 +129,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 
 	// Create linked text.
 	var result = [];
-	links.forEach( function ( link ) {
+	links.forEach( ( link ) => {
 		var annotation = linkAction.getLinkAnnotation( link.href ),
 			annotationSet = new ve.dm.AnnotationSet( store, store.hashAll( [
 				annotation

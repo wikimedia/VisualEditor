@@ -90,7 +90,7 @@ ve.ce.ActiveNode.prototype.onActiveNodeSurfaceModelSelect = function ( selection
 		// descendant of this node.
 		if (
 			!surface.getActiveNode() ||
-			!surface.getActiveNode().traverseUpstream( function ( node ) {
+			!surface.getActiveNode().traverseUpstream( ( node ) => {
 				return node !== activeNode;
 			} )
 		) {

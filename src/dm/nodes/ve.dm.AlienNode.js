@@ -85,7 +85,7 @@ ve.dm.AlienNode.static.isDiffComparable = function ( element, other, elementStor
 	// non-persistent in historical diffs.
 
 	function removeAboutAttributes( el ) {
-		Array.prototype.forEach.call( el.querySelectorAll( '[about]' ), function ( e ) {
+		Array.prototype.forEach.call( el.querySelectorAll( '[about]' ), ( e ) => {
 			e.removeAttribute( 'about' );
 		} );
 	}

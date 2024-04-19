@@ -728,7 +728,7 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
 	var linearData = this.getDocument().data;
 
 	function getLinks( offset ) {
-		return linearData.getAnnotationsFromOffset( offset ).filter( function ( ann ) {
+		return linearData.getAnnotationsFromOffset( offset ).filter( ( ann ) => {
 			return ann.name === 'link';
 		} );
 	}
@@ -1102,7 +1102,7 @@ ve.dm.Surface.prototype.undo = function () {
 			var done = new ve.dm.Change(
 				item.start,
 				item.transactions,
-				item.transactions.map( function () {
+				item.transactions.map( () => {
 					// Undo cannot add store items, so we don't need to worry here
 					return new ve.dm.HashValueStore();
 				} ),
@@ -1222,13 +1222,13 @@ ve.dm.Surface.prototype.getModifiedRanges = function ( options ) {
 
 	options = options || {};
 
-	this.getHistory().forEach( function ( stackItem ) {
-		stackItem.transactions.forEach( function ( tx ) {
+	this.getHistory().forEach( ( stackItem ) => {
+		stackItem.transactions.forEach( ( tx ) => {
 			var newRange = tx.getModifiedRange( doc, options );
 			// newRange will by null for no-ops
 			if ( newRange ) {
 				// Translate previous ranges by the current transaction
-				ranges.forEach( function ( range, i, arr ) {
+				ranges.forEach( ( range, i, arr ) => {
 					arr[ i ] = tx.translateRange( range, true );
 				} );
 				if ( options.includeCollapsed || !newRange.isCollapsed() ) {
@@ -1242,10 +1242,10 @@ ve.dm.Surface.prototype.getModifiedRanges = function ( options ) {
 	var compactRanges = [];
 	var lastRange = null;
 	ranges
-		.sort( function ( a, b ) {
+		.sort( ( a, b ) => {
 			return a.start - b.start;
 		} )
-		.forEach( function ( range ) {
+		.forEach( ( range ) => {
 			if ( options.includeCollapsed || !range.isCollapsed() ) {
 				if ( lastRange && lastRange.touchesRange( range ) ) {
 					compactRanges.pop();
@@ -1461,7 +1461,7 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 		changes = this.storage.getObject( this.autosavePrefix + 've-changes' ) || [];
 
 	try {
-		changes.forEach( function ( data ) {
+		changes.forEach( ( data ) => {
 			var change = ve.dm.Change.static.unsafeDeserialize( data );
 			change.applyTo( surface, true );
 			surface.breakpoint();
@@ -1482,7 +1482,7 @@ ve.dm.Surface.prototype.restoreChanges = function () {
 		}
 		if ( selection ) {
 			// Wait for surface to observe selection change
-			setTimeout( function () {
+			setTimeout( () => {
 				surface.setSelection( selection );
 			} );
 		}
@@ -1558,7 +1558,7 @@ ve.dm.Surface.prototype.updateExpiry = function ( skipKeys ) {
 	}
 	var surface = this;
 	skipKeys = skipKeys || [];
-	[ 've-docstate', 've-dochtml', 've-selection', 've-changes' ].forEach( function ( key ) {
+	[ 've-docstate', 've-dochtml', 've-selection', 've-changes' ].forEach( ( key ) => {
 		if ( skipKeys.indexOf( key ) === -1 ) {
 			surface.storage.setExpires( surface.autosavePrefix + key, surface.storageExpiry );
 		}

@@ -85,7 +85,7 @@ ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
 	// do this if they have changed
 	if ( groups !== this.groups ) {
 		// Parent method
-		groups = groups.map( function ( group ) {
+		groups = groups.map( ( group ) => {
 			if ( group.name ) {
 				group.classes = group.classes || [];
 				group.classes.push( 've-ui-toolbar-group-' + group.name );
@@ -154,7 +154,7 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
  */
 ve.ui.Toolbar.prototype.onInspectorOrDialogOpeningOrClosing = function ( win, openingOrClosing ) {
 	var toolbar = this;
-	openingOrClosing.then( function () {
+	openingOrClosing.then( () => {
 		toolbar.updateToolStateDebounced();
 	} );
 };
@@ -215,12 +215,12 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.surface.getDialogs(),
 		this.surface.getContext().getInspectors(),
 		this.surface.getToolbarDialogs()
-	].map( function ( windowManager ) {
+	].map( ( windowManager ) => {
 		if ( windowManager.getCurrentWindow() ) {
 			return windowManager.getCurrentWindow().constructor.static.name;
 		}
 		return null;
-	} ).filter( function ( name ) {
+	} ).filter( ( name ) => {
 		return name !== null;
 	} );
 

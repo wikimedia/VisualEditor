@@ -78,7 +78,7 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 				this.characterListLoaded = true;
 
 				ve.init.platform.fetchSpecialCharList()
-					.then( function ( symbolData ) {
+					.then( ( symbolData ) => {
 						dialog.characterListLayout.setSymbolData( symbolData );
 						dialog.updateSize();
 					} );
@@ -112,7 +112,7 @@ ve.ui.SpecialCharacterDialog.prototype.getReadyProcess = function ( data ) {
 			// removed after a setTimeout to fix a bug in iOS (T293661, in ve.ce.Surface#deactivate).
 			// Ensure that we restore the selection **after** this happens, otherwise the surface will
 			// get re-blurred. (T318720)
-			setTimeout( function () {
+			setTimeout( () => {
 				surface.getView().focus();
 				if ( !previousSelection.isNull() ) {
 					surface.getModel().setSelection( previousSelection );

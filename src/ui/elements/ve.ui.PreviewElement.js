@@ -77,7 +77,7 @@ ve.ui.PreviewElement.prototype.setModel = function ( model ) {
 ve.ui.PreviewElement.prototype.beforeAppend = function ( element ) {
 	// Remove slugs and nails. This used to be done in CSS but triggered
 	// a catastrophic browser bug in Chrome (T341901)
-	Array.prototype.forEach.call( element.querySelectorAll( '.ve-ce-nail, .ve-ce-branchNode-slug' ), function ( el ) {
+	Array.prototype.forEach.call( element.querySelectorAll( '.ve-ce-nail, .ve-ce-branchNode-slug' ), ( el ) => {
 		el.parentNode.removeChild( el );
 	} );
 	ve.targetLinksToNewWindow( element );
@@ -126,7 +126,7 @@ ve.ui.PreviewElement.prototype.updatePreview = function () {
 	this.view.setLive( true );
 
 	ve.ce.GeneratedContentNode.static.awaitGeneratedContent( this.view )
-		.then( function () {
+		.then( () => {
 			// When all children are rerendered, replace with DM DOM for a better preview.
 			// Conversion should be pretty fast, but avoid this (by setting useView to true)
 			// if you generating a lot of previews, e.g. in a list

@@ -214,7 +214,7 @@ ve.dm.TransactionProcessor.prototype.emitQueuedEvents = function () {
 
 	function isDuplicate( otherEvent ) {
 		return otherEvent.node === event.node &&
-			otherEvent.args.every( function ( arg, index ) {
+			otherEvent.args.every( ( arg, index ) => {
 				return arg === event.args[ index ];
 			} );
 	}
@@ -270,7 +270,7 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
 	var i;
 	// We're about to do lots of things that can go wrong, so queue an undo function now
 	// that undoes all splices that we got to
-	this.queueUndoFunction( function () {
+	this.queueUndoFunction( () => {
 		var i2, s2;
 		for ( i2 = splices.length - 1; i2 >= 0; i2-- ) {
 			s2 = splices[ i ];
@@ -312,7 +312,7 @@ ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, valu
 	var oldItem = data.getData( offset );
 	var oldValue = oldItem.attributes && oldItem.attributes[ key ];
 	data.setAttributeAtOffset( offset, key, value );
-	this.queueUndoFunction( function () {
+	this.queueUndoFunction( () => {
 		data.setAttributeAtOffset( offset, key, oldValue );
 	} );
 

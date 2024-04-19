@@ -27,7 +27,7 @@ ve.ui.AlignableContextItem = function VeUiAlignableContextItem( context, model, 
 	this.align.connect( this, { choose: 'onAlignChoose' } );
 
 	if ( OO.ui.isMobile() ) {
-		this.align.items.forEach( function ( item ) {
+		this.align.items.forEach( ( item ) => {
 			item.setInvisibleLabel( true );
 		} );
 	}

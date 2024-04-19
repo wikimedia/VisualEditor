@@ -193,7 +193,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		newData = [];
 
 	// Find first changed chunk at start/end of oldChunks/newChunks
-	var change = ve.countEdgeMatches( oldChunks, newChunks, function ( a, b ) {
+	var change = ve.countEdgeMatches( oldChunks, newChunks, ( a, b ) => {
 		return a.isEqual( b );
 	} );
 	if ( change === null ) {

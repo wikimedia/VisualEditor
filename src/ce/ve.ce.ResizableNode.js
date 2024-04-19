@@ -146,11 +146,11 @@ ve.ce.ResizableNode.prototype.hideSizeLabel = function () {
 	var node = this;
 	// Defer the removal of this class otherwise other DOM changes may cause
 	// the opacity transition to not play out smoothly
-	setTimeout( function () {
+	setTimeout( () => {
 		node.$sizeLabel.removeClass( 've-ce-resizableNode-sizeLabel-resizing' );
 	} );
 	// Actually hide the size label after it's done animating
-	setTimeout( function () {
+	setTimeout( () => {
 		node.$sizeLabel.addClass( 'oo-ui-element-hidden' );
 	}, 200 );
 };

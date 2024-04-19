@@ -261,13 +261,13 @@ ve.dm.TableSelection.prototype.getTableSliceRanges = function ( doc ) {
 
 	return ranges
 		// Condense sparse array
-		.filter( function ( r ) {
+		.filter( ( r ) => {
 			return r;
 		} )
 		// Add cell ranges
 		.concat( this.getOuterRanges( doc ) )
 		// Sort
-		.sort( function ( a, b ) {
+		.sort( ( a, b ) => {
 			return a.start - b.start;
 		} );
 };
@@ -314,7 +314,7 @@ ve.dm.TableSelection.prototype.getMatrixCells = function ( doc, includePlacehold
  * @return {boolean} Cells are all editable
  */
 ve.dm.TableSelection.prototype.isEditable = function ( doc ) {
-	return this.getMatrixCells( doc ).every( function ( cell ) {
+	return this.getMatrixCells( doc ).every( ( cell ) => {
 		return cell.node.isCellEditable();
 	} );
 };

@@ -40,7 +40,7 @@
 	ve.trackSubscribe = function ( topic, callback ) {
 		var seen = 0;
 
-		callbacks.add( function ( q ) {
+		callbacks.add( ( q ) => {
 			var event;
 			for ( ; seen < q.length; seen++ ) {
 				event = q[ seen ];

@@ -100,8 +100,8 @@ ve.ui.DiffDialog.prototype.setDimensions = function () {
  */
 ve.ui.DiffDialog.prototype.positionDiffElement = function () {
 	var dialog = this;
-	setTimeout( function () {
-		dialog.withoutSizeTransitions( function () {
+	setTimeout( () => {
+		dialog.withoutSizeTransitions( () => {
 			dialog.positioning = true;
 			if ( dialog.diffElement && dialog.isVisible() ) {
 				dialog.diffElement.positionDescriptions();

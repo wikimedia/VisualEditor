@@ -26,7 +26,7 @@
 ve.dm.Transaction = function VeDmTransaction( operations, authorId ) {
 	this.operations = operations || [];
 	// TODO: remove this backwards-incompatibility check
-	this.operations.forEach( function ( op ) {
+	this.operations.forEach( ( op ) => {
 		if ( op.type && /meta/i.test( op.type ) ) {
 			throw new Error( 'Metadata ops are no longer supported' );
 		}
@@ -169,7 +169,7 @@ ve.dm.Transaction.static.compareElementsForTranslate = function ( a, b ) {
 ve.dm.Transaction.static.isAnnotationOnlyOperation = function ( op ) {
 	return op.type === 'replace' &&
 		op.insert.length === op.remove.length &&
-		op.insert.every( function ( insert, j ) {
+		op.insert.every( ( insert, j ) => {
 			return ve.dm.Transaction.static.compareElementsForTranslate( insert, op.remove[ j ] );
 		} );
 };

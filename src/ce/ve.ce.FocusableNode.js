@@ -159,7 +159,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 	// Elements with a width/height of 0 return a clientRect with a width/height of 1
 	// As elements with an actual width/height of 1 aren't that useful anyway, just
 	// throw away anything that is <=1
-	var filteredRects = rects.filter( function ( rect ) {
+	var filteredRects = rects.filter( ( rect ) => {
 		return rect.width > 1 && rect.height > 1;
 	} );
 	// But if this filtering doesn't leave any rects at all, then we do want to use the 1px rects
@@ -314,7 +314,7 @@ ve.ce.FocusableNode.prototype.updateInvisibleIcon = function () {
 
 	// Defer updating the DOM. If we don't do this, the hasRendering() call for the next
 	// FocusableNode will force a reflow, which is slow.
-	requestAnimationFrame( function () {
+	requestAnimationFrame( () => {
 		node.updateInvisibleIconSync( showIcon );
 	} );
 };
@@ -442,7 +442,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 		this.$highlights.prop( 'contentEditable', 'true' );
 		// Select the clicked element so we get a copy option in the context menu
 		ve.selectElement( this.$highlights[ 0 ] );
-		setTimeout( function () {
+		setTimeout( () => {
 			// Undo ce=true as soon as the context menu is shown
 			node.$highlights.prop( 'contentEditable', 'false' );
 			node.focusableSurface.preparePasteTargetForCopy();
@@ -450,7 +450,7 @@ ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
 	}
 
 	// Wait for native selection to change before correcting
-	setTimeout( function () {
+	setTimeout( () => {
 		// Check surface still exists after timeout
 		if ( node.focusableSurface ) {
 			var range = selection instanceof ve.dm.LinearSelection && selection.getRange();
@@ -835,7 +835,7 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
  * @return {boolean} Editing disabled
  */
 ve.ce.FocusableNode.prototype.isInContentEditableDisabled = function () {
-	return !!this.traverseUpstream( function ( node ) {
+	return !!this.traverseUpstream( ( node ) => {
 		return !(
 			node.isContentEditable && !node.isContentEditable()
 		);

@@ -148,7 +148,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 		cancel: 'onSurfaceCancel'
 	} );
 	// Emit 'position' on first focus, as target widgets are often setup before being made visible. (T303795)
-	surface.getView().once( 'focus', function () {
+	surface.getView().once( 'focus', () => {
 		surface.getView().emit( 'position' );
 	} );
 
@@ -284,7 +284,7 @@ ve.ui.TargetWidget.prototype.focus = function () {
 	var surface = this.getSurface();
 	if ( surface ) {
 		if ( !surface.getView().attachedRoot.isLive() ) {
-			surface.once( 'ready', function () {
+			surface.once( 'ready', () => {
 				surface.getView().focus();
 			} );
 		} else {

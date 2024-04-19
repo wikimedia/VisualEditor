@@ -144,7 +144,7 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 			var refNodes = nodes[ groupName ].keyedNodes[ nodes[ groupName ].firstNodes[ nodeIndex ].registeredListKey ];
 			for ( var j = 0, jlen = refNodes.length; j < jlen; j++ ) {
 				// eslint-disable-next-line no-loop-func
-				doc.data.modifyData( refNodes[ j ].getOffset(), function ( item ) {
+				doc.data.modifyData( refNodes[ j ].getOffset(), ( item ) => {
 					ve.setProp( item, 'internal', 'overrideIndex', i + 1 );
 				} );
 			}
@@ -173,10 +173,10 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
 	var newChildren = newRoot.children;
 
 	if ( skipInternalLists ) {
-		oldChildren = oldChildren.filter( function ( node ) {
+		oldChildren = oldChildren.filter( ( node ) => {
 			return !( node instanceof ve.dm.InternalListNode );
 		} );
-		newChildren = newChildren.filter( function ( node ) {
+		newChildren = newChildren.filter( ( node ) => {
 			return !( node instanceof ve.dm.InternalListNode );
 		} );
 	}
@@ -352,7 +352,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 	}
 
 	// Get oldDoc indices, sorted according to their order in the new doc
-	var sortedKeys = Object.keys( newToOld ).sort( function ( a, b ) {
+	var sortedKeys = Object.keys( newToOld ).sort( ( a, b ) => {
 		return Number( a ) - Number( b );
 	} );
 	var i, ilen;
@@ -932,13 +932,13 @@ ve.dm.VisualDiff.prototype.underDiffThreshold = function ( changeRecord ) {
 ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList ) {
 	var visualDiff = this;
 	var oldItemsByGroup = {};
-	oldMetaList.items.forEach( function ( metaItem ) {
+	oldMetaList.items.forEach( ( metaItem ) => {
 		var group = metaItem.getGroup();
 		oldItemsByGroup[ group ] = oldItemsByGroup[ group ] || [];
 		oldItemsByGroup[ group ].push( metaItem );
 	} );
 	var newItemsByGroup = {};
-	newMetaList.items.forEach( function ( metaItem ) {
+	newMetaList.items.forEach( ( metaItem ) => {
 		var group = metaItem.getGroup();
 		newItemsByGroup[ group ] = newItemsByGroup[ group ] || [];
 		newItemsByGroup[ group ].push( metaItem );
@@ -948,7 +948,7 @@ ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList
 		Object.keys( newItemsByGroup )
 	);
 	var groupDiffs = {};
-	groups.forEach( function ( group ) {
+	groups.forEach( ( group ) => {
 		groupDiffs[ group ] = visualDiff.diffList(
 			oldItemsByGroup[ group ] || [],
 			newItemsByGroup[ group ] || []

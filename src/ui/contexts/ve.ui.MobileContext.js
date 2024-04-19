@@ -99,9 +99,9 @@ ve.ui.MobileContext.prototype.onInspectorOpening = function ( win, opening ) {
 	observer.stopTimerLoop();
 
 	opening
-		.then( function ( opened ) {
-			opened.then( function ( closed ) {
-				closed.always( function () {
+		.then( ( opened ) => {
+			opened.then( ( closed ) => {
+				closed.always( () => {
 					context.inspector = null;
 					// Reenable observer
 					observer.startTimerLoop();
@@ -128,7 +128,7 @@ ve.ui.MobileContext.prototype.toggleMenu = function ( show ) {
 			// Parent method
 			ve.ui.MobileContext.super.prototype.toggleMenu.call( this, true );
 		} else {
-			this.hideMenuTimeout = setTimeout( function () {
+			this.hideMenuTimeout = setTimeout( () => {
 				// Parent method
 				ve.ui.MobileContext.super.prototype.toggleMenu.call( context, false );
 			}, 100 );
@@ -148,7 +148,7 @@ ve.ui.MobileContext.prototype.toggle = function ( show ) {
 	if ( show && !this.visible ) {
 		var deferred = ve.createDeferred();
 		// Set opening flag immediately
-		this.openingTimeout = setTimeout( function () {
+		this.openingTimeout = setTimeout( () => {
 			// Parent method
 			ve.ui.MobileContext.super.prototype.toggle.call( context, true );
 			context.emit( 'resize' );
@@ -161,7 +161,7 @@ ve.ui.MobileContext.prototype.toggle = function ( show ) {
 			clearTimeout( this.openingTimeout );
 			this.openingTimeout = null;
 		}
-		setTimeout( function () {
+		setTimeout( () => {
 			context.emit( 'resize' );
 		}, 100 );
 		// Parent method

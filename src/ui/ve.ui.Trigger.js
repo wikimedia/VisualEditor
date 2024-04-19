@@ -435,13 +435,13 @@ ve.ui.Trigger.prototype.getMessage = function ( explode ) {
 
 	// Platform mappings
 	if ( hasOwn.call( platformMapping, platform ) ) {
-		keys = keys.map( function ( key ) {
+		keys = keys.map( ( key ) => {
 			return hasOwn.call( platformMapping[ platform ], key ) ? platformMapping[ platform ][ key ] : key;
 		} );
 	}
 
 	// i18n
-	keys = keys.map( function ( key ) {
+	keys = keys.map( ( key ) => {
 		// The following messages are used here:
 		// * visualeditor-key-alt
 		// * visualeditor-key-backspace

@@ -86,7 +86,7 @@ ve.ui.AnnotationAction.prototype.toggle = function ( name, data ) {
 		var existingAnnotations = insertionAnnotations.getAnnotationsByName( annotation.name );
 		var removes = annotation.constructor.static.removes;
 		if ( existingAnnotations.isEmpty() ) {
-			var removesAnnotations = insertionAnnotations.filter( function ( ann ) {
+			var removesAnnotations = insertionAnnotations.filter( ( ann ) => {
 				return removes.indexOf( ann.name ) !== -1;
 			} );
 			surfaceModel.removeInsertionAnnotations( removesAnnotations );

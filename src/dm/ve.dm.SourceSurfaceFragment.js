@@ -30,7 +30,7 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 		fragment = this,
 		text = this.getText( true );
 
-	this.pushPending( this.convertFromSource( text ).then( function ( selectionDocument ) {
+	this.pushPending( this.convertFromSource( text ).then( ( selectionDocument ) => {
 		var tempSurfaceModel = new ve.dm.Surface( selectionDocument );
 		var tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
@@ -62,7 +62,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 		fragment = this,
 		text = this.getText( true );
 
-	this.pushPending( this.convertFromSource( text ).then( function ( selectionDocument ) {
+	this.pushPending( this.convertFromSource( text ).then( ( selectionDocument ) => {
 		var tempSurfaceModel = new ve.dm.Surface( selectionDocument );
 		var tempFragment = tempSurfaceModel.getLinearFragment(
 			// TODO: Find content offsets
@@ -142,7 +142,7 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
 
 	this.pushPending(
 		this.convertToSource( doc ).then(
-			function ( source ) {
+			( source ) => {
 				fragment.insertContent( source.trim() );
 			},
 			function () {

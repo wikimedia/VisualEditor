@@ -340,10 +340,10 @@ ve.ui.commandRegistry.register(
 		modeNames = { row: 'Row', col: 'Column' },
 		sideNames = { before: 'Before', after: 'After' };
 
-	modes.forEach( function ( mode ) {
+	modes.forEach( ( mode ) => {
 		var modeName = modeNames[ mode ];
 
-		sides.forEach( function ( side ) {
+		sides.forEach( ( side ) => {
 			var sideName = sideNames[ side ];
 
 			ve.ui.commandRegistry.register(

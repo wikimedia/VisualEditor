@@ -385,7 +385,7 @@ ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated, r
 		// TODO: The '#mwtNNN' is required by Parsoid. Make the name used here
 		// more generic and specify the #mwt pattern in MW code.
 		var about = '#mwt' + Math.floor( 1000000000 * Math.random() );
-		var domElements = originalDomElements.map( function ( el ) {
+		var domElements = originalDomElements.map( ( el ) => {
 			var elClone = el.cloneNode( true );
 			// Check for hasAttribute as comments don't have them
 			if ( elClone.hasAttribute && elClone.hasAttribute( 'about' ) ) {
@@ -658,7 +658,7 @@ ve.dm.Node.prototype.isSurfaceable = function () {
  * @return {ve.dm.Node|null} Ancestor with matching type and attribute values
  */
 ve.dm.Node.prototype.findMatchingAncestor = function ( type, attributes ) {
-	return this.traverseUpstream( function ( node ) {
+	return this.traverseUpstream( ( node ) => {
 		return !node.matches( type, attributes );
 	} );
 };

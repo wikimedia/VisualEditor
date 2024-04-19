@@ -49,11 +49,11 @@ ve.ui.AuthorItemWidget = function VeUiAuthorItemWidget( synchronizer, $overlay, 
 		this.input.on( 'change', this.emit.bind( this, 'change' ) );
 
 		this.colorPicker = new CP( this.$color[ 0 ] );
-		this.colorPicker.on( 'change', function ( color ) {
+		this.colorPicker.on( 'change', ( color ) => {
 			item.color = color;
 			item.$color.css( 'background-color', '#' + color );
 		} );
-		this.colorPicker.on( 'exit', function () {
+		this.colorPicker.on( 'exit', () => {
 			if ( item.color !== null ) {
 				item.emit( 'changeColor', item.color );
 			}

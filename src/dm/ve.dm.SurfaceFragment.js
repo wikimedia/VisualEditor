@@ -1031,7 +1031,7 @@ ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
 			// ancestor that the removal causes to be empty).
 			var endNodeData = this.document.getData( endNode.getRange() );
 			var nodeToDelete = endNode;
-			nodeToDelete.traverseUpstream( function ( node ) {
+			nodeToDelete.traverseUpstream( ( node ) => {
 				var parent = node.getParent();
 				if ( parent.children.length === 1 ) {
 					nodeToDelete = parent;
@@ -1427,7 +1427,7 @@ ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
 		createSplits( endSplitNodes, false );
 	}
 
-	insertions.forEach( function ( insertion ) {
+	insertions.forEach( ( insertion ) => {
 		fragment.change(
 			ve.dm.TransactionBuilder.static.newFromInsertion( fragment.getDocument(), insertion.offset, insertion.data )
 		);

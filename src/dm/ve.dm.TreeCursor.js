@@ -119,7 +119,7 @@ ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
 		}
 		if ( this.node.hasChildren() ) {
 			// Add the outer length of each crossed child
-			this.node.children.slice( 0, this.offset ).forEach( function ( child ) {
+			this.node.children.slice( 0, this.offset ).forEach( ( child ) => {
 				expected += child.getOuterLength();
 			} );
 		}
@@ -261,7 +261,7 @@ ve.dm.TreeCursor.prototype.stepOut = function () {
 	} else {
 		if ( item.hasChildren() ) {
 			// Increase linearOffset by the length of each child
-			item.children.slice( priorOffset ).forEach( function ( child ) {
+			item.children.slice( priorOffset ).forEach( ( child ) => {
 				treeCursor.linearOffset += child.getOuterLength();
 			} );
 		}

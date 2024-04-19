@@ -98,11 +98,11 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 		modeNames = { row: 'Row', col: 'Column' },
 		sideNames = { before: 'Before', after: 'After' };
 
-	modes.forEach( function ( mode ) {
+	modes.forEach( ( mode ) => {
 		var modeName = modeNames[ mode ];
 		var className;
 
-		sides.forEach( function ( side ) {
+		sides.forEach( ( side ) => {
 			var sideName = sideNames[ side ];
 
 			className = 'Insert' + modeName + sideName + 'ContextItem';

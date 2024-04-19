@@ -84,7 +84,7 @@ ve.ui.TriggerRegistry.prototype.getNameByTrigger = function ( triggerString ) {
  * @return {string[]} List of trigger messages
  */
 ve.ui.TriggerRegistry.prototype.getMessages = function ( name ) {
-	return ( this.lookup( name ) || [] ).map( function ( trigger ) {
+	return ( this.lookup( name ) || [] ).map( ( trigger ) => {
 		return trigger.getMessage();
 	} );
 };

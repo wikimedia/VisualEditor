@@ -79,7 +79,7 @@ ve.dm.Change = function VeDmChange( start, transactions, stores, selections ) {
 	this.store = new ve.dm.HashValueStore();
 	this.storeLengthAtTransaction = [];
 	if ( stores ) {
-		stores.forEach( function ( store ) {
+		stores.forEach( ( store ) => {
 			change.store.merge( store );
 			change.storeLengthAtTransaction.push( change.store.getLength() );
 		} );
@@ -109,7 +109,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 		selections = {},
 		transactions = [],
 		// If stores is undefined, create an array of nulls
-		stores = data.stores || data.transactions.map( function () {
+		stores = data.stores || data.transactions.map( () => {
 			return null;
 		} );
 
@@ -136,9 +136,9 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 	}
 	var deserializeStore = ve.dm.HashValueStore.static.deserialize.bind(
 		null,
-		preserveStoreValues ? function noop( x ) {
+		preserveStoreValues ? ( x ) => {
 			return x;
-		} : function ( x ) {
+		} : ( x ) => {
 			return deserializeValue( x, unsafe );
 		}
 	);
@@ -663,7 +663,7 @@ ve.dm.Change.prototype.firstAuthorId = function () {
  */
 ve.dm.Change.prototype.summarize = function () {
 	return '{ start: ' + this.start + ', txs: [ ' +
-		this.transactions.map( function ( tx ) {
+		this.transactions.map( ( tx ) => {
 			return tx.summarize();
 		} ).join( ', ' ) + ' ] }';
 };
@@ -678,11 +678,11 @@ ve.dm.Change.prototype.summarize = function () {
 ve.dm.Change.prototype.reversed = function () {
 	return new ve.dm.Change(
 		this.start + this.transactions.length,
-		this.transactions.map( function ( tx ) {
+		this.transactions.map( ( tx ) => {
 			return ve.dm.Transaction.prototype.reversed.call( tx );
 		} ).reverse(),
 		// Empty store for each transaction (reverting cannot possibly add new annotations)
-		this.transactions.map( function () {
+		this.transactions.map( () => {
 			return new ve.dm.HashValueStore();
 		} ),
 		{}
@@ -817,12 +817,12 @@ ve.dm.Change.prototype.applyTo = function ( surface, applySelection ) {
 	if ( this.start !== doc.completeHistory.getLength() ) {
 		throw new Error( 'Change starts at ' + this.start + ', but doc is at ' + doc.completeHistory.getLength() );
 	}
-	this.getStores().forEach( function ( store ) {
+	this.getStores().forEach( ( store ) => {
 		doc.store.merge( store );
 	} );
 	// Isolate other users' changes from ours with a breakpoint
 	surface.breakpoint();
-	this.transactions.forEach( function ( tx ) {
+	this.transactions.forEach( ( tx ) => {
 		surface.change( tx );
 		// Don't mark as applied: this.start already tracks this
 		tx.applied = false;
@@ -853,7 +853,7 @@ ve.dm.Change.prototype.unapplyTo = function ( surface ) {
 	if ( this.start !== historyLength ) {
 		throw new Error( 'Invalid start: change starts at ' + this.start + ', but doc would be at ' + historyLength );
 	}
-	this.transactions.slice().reverse().forEach( function ( tx ) {
+	this.transactions.slice().reverse().forEach( ( tx ) => {
 		surface.change( tx.reversed() );
 	} );
 	doc.completeHistory.transactions.length = historyLength;
@@ -941,7 +941,7 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		transactions: transactions
 	};
 	// Only set stores if at least one is non-null
-	if ( stores.some( function ( store ) {
+	if ( stores.some( ( store ) => {
 		return store !== null;
 	} ) ) {
 		data.stores = stores;

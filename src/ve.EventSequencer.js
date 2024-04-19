@@ -269,7 +269,7 @@ ve.EventSequencer.prototype.onEvent = function ( eventName, ev ) {
 	// - then set pendingCall.id to the setTimeout id, so the call can cancel itself
 	var pendingCall = { id: null, ev: ev, eventName: eventName };
 	var eventSequencer = this;
-	var id = this.postpone( function () {
+	var id = this.postpone( () => {
 		if ( pendingCall.id === null ) {
 			// clearTimeout seems not always to work immediately
 			return;
@@ -356,7 +356,7 @@ ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
 		this.cancelPostponed( this.afterLoopTimeoutId );
 	}
 	var eventSequencer = this;
-	var timeoutId = this.postpone( function () {
+	var timeoutId = this.postpone( () => {
 		eventSequencer.doAfterLoop( timeoutId );
 	} );
 	this.afterLoopTimeoutId = timeoutId;

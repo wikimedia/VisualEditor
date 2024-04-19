@@ -243,7 +243,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			$chunk.append( $label );
 			if ( annotations ) {
 				$annotations = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text(
-					'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( function ( ann ) {
+					'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( ( ann ) => {
 						return JSON.stringify( ann.getComparableObject() );
 					} ).join( ', ' ) + ']'
 				);
@@ -324,7 +324,7 @@ ve.ui.DebugBar.prototype.onInputDebuggingToggleChange = function ( value ) {
 
 	// Clear the cursor before rebuilding, it will be restored later
 	surfaceModel.setNullSelection();
-	setTimeout( function () {
+	setTimeout( () => {
 		surfaceModel.getDocument().rebuildTree();
 		surfaceModel.setSelection( selection );
 	} );
@@ -347,7 +347,7 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 		ve.filibuster.stop();
 		// eslint-disable-next-line no-jquery/no-html
 		this.$filibuster.html( ve.filibuster.getObservationsHtml() );
-		this.$filibuster.on( 'click', function ( e ) {
+		this.$filibuster.on( 'click', ( e ) => {
 			var $li = $( e.target ).closest( '.ve-filibuster-frame' );
 
 			// eslint-disable-next-line no-jquery/no-class-state
@@ -408,9 +408,9 @@ ve.ui.DebugBar.prototype.updateTransactions = function () {
 	var surface = this.getSurface(),
 		$transactionsList = $( '<ol>' );
 
-	surface.getModel().getHistory().forEach( function ( item ) {
+	surface.getModel().getHistory().forEach( ( item ) => {
 		var $state = $( '<ol>' ).appendTo( $( '<li>' ).appendTo( $transactionsList ) );
-		item.transactions.forEach( function ( tx ) {
+		item.transactions.forEach( ( tx ) => {
 			$state.append( $( '<li>' ).text( ve.summarizeTransaction( tx ) ) );
 		} );
 	} );
@@ -422,10 +422,10 @@ ve.ui.DebugBar.prototype.testSquasher = function () {
 	function squashTransactions( txs ) {
 		return new ve.dm.Change(
 			0,
-			txs.map( function ( tx ) {
+			txs.map( ( tx ) => {
 				return tx.clone();
 			} ),
-			txs.map( function () {
+			txs.map( () => {
 				return new ve.dm.HashValueStore();
 			} ),
 			{}

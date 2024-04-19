@@ -29,7 +29,7 @@ ve.ui.SymbolListPage = function VeUiSymbolListPage( name, config ) {
 
 	// It is assumed this loop may contain hundreds or thousands of symbols,
 	// so avoid jQuery and use plain DOM.
-	config.symbols.forEach( function ( symbol ) {
+	config.symbols.forEach( ( symbol ) => {
 		var symbolNode = document.createElement( 'div' );
 		symbolNode.classList.add( 've-ui-symbolListPage-symbol' );
 		if ( symbol.classes ) {

@@ -129,10 +129,10 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 	}
 
 	this.getTextInputWidget().getValidity()
-		.done( function () {
+		.done( () => {
 			widget.setAnnotation( widget.constructor.static.getAnnotationFromText( value ), true );
 		} )
-		.fail( function () {
+		.fail( () => {
 			widget.setAnnotation( null, true );
 		} );
 };

@@ -65,7 +65,7 @@ ve.ui.NodeWindow.prototype.getSelectedNode = function () {
 
 	if (
 		selectedNode &&
-		modelClasses.some( function ( modelClass ) {
+		modelClasses.some( ( modelClass ) => {
 			return selectedNode instanceof modelClass;
 		} )
 	) {

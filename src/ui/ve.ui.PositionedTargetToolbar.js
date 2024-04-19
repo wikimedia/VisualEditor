@@ -211,7 +211,7 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 		win.$element.css( 'width', '' );
 	}
 
-	openingOrClosing.then( function () {
+	openingOrClosing.then( () => {
 		if ( win.constructor.static.position === 'side' ) {
 			// win.isOpened after promise means we are opening
 			if ( win.isOpened() ) {
@@ -228,19 +228,19 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 			}
 
 			toolbar.onViewportResize();
-			setTimeout( function () {
+			setTimeout( () => {
 				toolbar.onViewportResize();
 				toolbar.getSurface().getView().emit( 'position' );
 			}, transitionDuration );
 			toolbar.getSurface().getView().emit( 'position' );
 		} else if ( win.constructor.static.position === 'below' ) {
-			setTimeout( function () {
+			setTimeout( () => {
 				toolbar.onViewportResize();
 				toolbar.getSurface().getView().emit( 'position' );
 			}, transitionDuration );
 		}
 		// Wait for window transition
-		setTimeout( function () {
+		setTimeout( () => {
 			if ( toolbar.floating ) {
 				// Re-calculate height
 				toolbar.unfloat();

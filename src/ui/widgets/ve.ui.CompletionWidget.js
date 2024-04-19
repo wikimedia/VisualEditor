@@ -98,9 +98,9 @@ ve.ui.CompletionWidget.prototype.setup = function ( action, isolateInput ) {
 		this.wasActive = !this.surface.getView().isDeactivated();
 		this.surface.getView().deactivate();
 		this.input.setValue( '' );
-		setTimeout( function () {
+		setTimeout( () => {
 			this.input.focus();
-		}.bind( this ), 1 );
+		}, 1 );
 	} else {
 		this.wasActive = false;
 	}
@@ -154,7 +154,7 @@ ve.ui.CompletionWidget.prototype.update = function () {
 	this.$element.css( style );
 
 	this.updateMenu( input );
-	this.action.getSuggestions( input ).then( function ( suggestions ) {
+	this.action.getSuggestions( input ).then( ( suggestions ) => {
 		if ( !this.action ) {
 			// Check widget hasn't been torn down
 			return;
@@ -165,7 +165,7 @@ ve.ui.CompletionWidget.prototype.update = function () {
 		this.menu.addItems( menuItems );
 		this.menu.highlightItem( this.menu.findFirstSelectableItem() );
 		this.updateMenu( input, suggestions );
-	}.bind( this ) );
+	} );
 };
 
 /**

@@ -329,18 +329,18 @@
 				queue2 = queue2.concat( matchTypeRegExps( types[ j ], tag, true ) );
 			}
 			// Filter out matches which contain types which aren't allowed
-			queue = queue.filter( function ( name ) {
+			queue = queue.filter( ( name ) => {
 				return allTypesAllowed( reg.lookup( name ) );
 			} );
-			queue2 = queue2.filter( function ( name ) {
+			queue2 = queue2.filter( ( name ) => {
 				return allTypesAllowed( reg.lookup( name ) );
 			} );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
-				queue = queue.filter( function ( name ) {
+				queue = queue.filter( ( name ) => {
 					return reg.registry[ name ].static.enableAboutGrouping;
 				} );
-				queue2 = queue2.filter( function ( name ) {
+				queue2 = queue2.filter( ( name ) => {
 					return reg.registry[ name ].static.enableAboutGrouping;
 				} );
 			}
@@ -370,18 +370,18 @@
 				queue2 = queue2.concat( matchTypeRegExps( types[ j ], tag, false ) );
 			}
 			// Filter out matches which contain types which aren't allowed
-			queue = queue.filter( function ( name ) {
+			queue = queue.filter( ( name ) => {
 				return allTypesAllowed( reg.lookup( name ) );
 			} );
-			queue2 = queue2.filter( function ( name ) {
+			queue2 = queue2.filter( ( name ) => {
 				return allTypesAllowed( reg.lookup( name ) );
 			} );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
-				queue = queue.filter( function ( name ) {
+				queue = queue.filter( ( name ) => {
 					return reg.registry[ name ].static.enableAboutGrouping;
 				} );
-				queue2 = queue2.filter( function ( name ) {
+				queue2 = queue2.filter( ( name ) => {
 					return reg.registry[ name ].static.enableAboutGrouping;
 				} );
 			}

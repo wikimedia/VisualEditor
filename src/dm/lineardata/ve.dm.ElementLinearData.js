@@ -516,7 +516,7 @@ ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key,
 	if ( !this.isElementData( offset ) ) {
 		return;
 	}
-	this.modifyData( offset, function ( item ) {
+	this.modifyData( offset, ( item ) => {
 		if ( value === undefined ) {
 			// Clear
 			if ( item.attributes ) {
@@ -698,7 +698,7 @@ ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( 
 
 	// Return those startAnnotations that either continue in afterAnnotations or
 	// should get added to appended content
-	return startAnnotations.filter( function ( annotation ) {
+	return startAnnotations.filter( ( annotation ) => {
 		return annotation.constructor.static.applyToAppendedContent ||
 			afterAnnotations.containsComparable( annotation );
 	} );
@@ -1147,7 +1147,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping,
 		if ( this.isOpenElementData( i ) ) {
 			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			// eslint-disable-next-line no-loop-func
-			this.modifyData( i, function ( item ) {
+			this.modifyData( i, ( item ) => {
 				nodeClass.static.remapInternalListIndexes( item, mapping, internalList );
 			} );
 		}
@@ -1166,7 +1166,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
 		if ( this.isOpenElementData( i ) ) {
 			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			// eslint-disable-next-line no-loop-func
-			this.modifyData( i, function ( item ) {
+			this.modifyData( i, ( item ) => {
 				nodeClass.static.remapInternalListKeys( item, internalList );
 			} );
 		}
@@ -1195,7 +1195,7 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
 			// Common case, cheap, avoid the isArray check
 			continue;
 		} else {
-			this.modifyData( i, function ( item ) {
+			this.modifyData( i, ( item ) => {
 				if ( Array.isArray( item ) ) {
 					remap( item[ 1 ] );
 				} else if ( item.annotations !== undefined ) {
@@ -1266,7 +1266,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 		}
 
 		// Create annotation set to remove from blacklist
-		setToRemove = allAnnotations.filter( function ( annotation ) {
+		setToRemove = allAnnotations.filter( ( annotation ) => {
 			return (
 				rules.blacklist && rules.blacklist[ annotation.name ]
 			) || (
@@ -1292,7 +1292,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			if ( rules.conversions && rules.conversions[ type ] ) {
 				type = rules.conversions[ type ];
 				// eslint-disable-next-line no-loop-func
-				this.modifyData( i, function ( item ) {
+				this.modifyData( i, ( item ) => {
 					item.type = ( !isOpen ? '/' : '' ) + type;
 				} );
 			}
@@ -1315,7 +1315,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				len--;
 				// Make sure you haven't just unwrapped a wrapper paragraph
 				if ( isOpen ) {
-					this.modifyData( i, function ( item ) {
+					this.modifyData( i, ( item ) => {
 						ve.deleteProp( item, 'internal', 'generated' );
 					} );
 				}
@@ -1354,7 +1354,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			}
 
 			if ( !rules.preserveHtmlWhitespace ) {
-				this.modifyData( i, function ( item ) {
+				this.modifyData( i, ( item ) => {
 					ve.deleteProp( item, 'internal', 'whitespace' );
 				} );
 			}
@@ -1399,7 +1399,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 					if ( typeof this.getData( i ) === 'string' ) {
 						this.setData( i, ' ' );
 					} else {
-						this.modifyData( i, function ( item ) {
+						this.modifyData( i, ( item ) => {
 							item[ 0 ] = ' ';
 						} );
 					}
@@ -1418,7 +1418,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 					if ( typeof this.getData( i ) === 'string' ) {
 						this.setData( i, ' ' );
 					} else {
-						this.modifyData( i, function ( item ) {
+						this.modifyData( i, ( item ) => {
 							item[ 0 ] = ' ';
 						} );
 					}
@@ -1440,19 +1440,19 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				var nodeClass = ve.dm.modelRegistry.lookup( this.getType( i ) );
 				// Perform per-class sanitizations:
 				// eslint-disable-next-line no-loop-func
-				this.modifyData( i, function ( item ) {
+				this.modifyData( i, ( item ) => {
 					nodeClass.static.sanitize( item, rules );
 				} );
 			}
 			if ( rules.removeOriginalDomElements ) {
-				this.modifyData( i, function ( item ) {
+				this.modifyData( i, ( item ) => {
 					// Remove originalDomElements from nodes
 					delete item.originalDomElementsHash;
 				} );
 			}
 			// Remove metadata if disallowed (moved metadata)
 			if ( !rules.allowMetadata ) {
-				this.modifyData( i, function ( item ) {
+				this.modifyData( i, ( item ) => {
 					ve.deleteProp( item, 'internal', 'metaItems' );
 				} );
 			}

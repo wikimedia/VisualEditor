@@ -410,7 +410,7 @@ ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node
  */
 ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
 	// Sort indexOrder
-	group.indexOrder.sort( function ( index1, index2 ) {
+	group.indexOrder.sort( ( index1, index2 ) => {
 		// Sometimes there is no node at the time of sorting (T350902) so move these to the end to be ignored
 		if ( !group.firstNodes[ index1 ] ) {
 			return !group.firstNodes[ index2 ] ? 0 : 1;

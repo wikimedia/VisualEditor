@@ -610,7 +610,7 @@ ve.ui.FindAndReplaceDialog.prototype.replace = function ( index ) {
 	}
 
 	// 'position' event is deferred, so block that too
-	setTimeout( function () {
+	setTimeout( () => {
 		dialog.replacing = false;
 	} );
 };

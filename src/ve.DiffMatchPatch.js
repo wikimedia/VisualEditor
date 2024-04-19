@@ -369,7 +369,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 					var bAnnotations = new ve.dm.ElementLinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
 
 					var annotationChanges = [];
-					bAnnotations.get().forEach( function ( b ) { // eslint-disable-line no-loop-func
+					bAnnotations.get().forEach( ( b ) => { // eslint-disable-line no-loop-func
 						var sameName = aAnnotations.getAnnotationsByName( b.name );
 						if ( !aAnnotations.containsComparable( b ) ) {
 							if ( sameName.getLength() ) {
@@ -380,7 +380,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 							}
 						}
 					} );
-					aAnnotations.get().forEach( function ( a ) { // eslint-disable-line no-loop-func
+					aAnnotations.get().forEach( ( a ) => { // eslint-disable-line no-loop-func
 						if ( !(
 							// Check the old annotation hasn't already been described as a insertion...
 							bAnnotations.containsComparable( a ) ||
@@ -400,7 +400,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 				if ( aData.every( equalElements.bind( this, bData ) ) ) {
 					var attributeChanges = [];
 					// eslint-disable-next-line no-loop-func
-					bData.forEach( function ( element, n ) {
+					bData.forEach( ( element, n ) => {
 						if ( ve.dm.LinearData.static.isOpenElementData( element ) ) {
 							attributeChanges.push( { oldAttributes: aData[ n ].attributes, newAttributes: element.attributes, index: n } );
 						}

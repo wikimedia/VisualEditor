@@ -134,7 +134,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 
 	if ( rendering.length ) {
 		// Span wrap root text nodes so they can be measured
-		rendering = rendering.map( function ( node ) {
+		rendering = rendering.map( ( node ) => {
 			if ( node.nodeType === Node.TEXT_NODE ) {
 				var span = document.createElement( 'span' );
 				span.appendChild( node );
@@ -200,7 +200,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 			if ( lengthChange ) {
 				// Changing the DOM node count can move the cursor, so re-apply
 				// the cursor position from the model (T231094).
-				setTimeout( function () {
+				setTimeout( () => {
 					if ( node.getRoot() && node.getRoot().getSurface() ) {
 						node.getRoot().getSurface().showModelSelection();
 					}
@@ -317,12 +317,12 @@ ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config, staged ) {
 	var promise = this.generatingPromise = this.generateContents( config );
 	promise
 		// If this promise is no longer the currently pending one, ignore it completely
-		.done( function ( generatedContents ) {
+		.done( ( generatedContents ) => {
 			if ( node.generatingPromise === promise ) {
 				node.doneGenerating( generatedContents, config, staged );
 			}
 		} )
-		.fail( function () {
+		.fail( () => {
 			if ( node.generatingPromise === promise ) {
 				node.failGenerating();
 			}

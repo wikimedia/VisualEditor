@@ -150,7 +150,7 @@ ve.init.sa.Platform.prototype.getHtmlMessage = function ( key ) {
 		lastOffset = 0,
 		args = arguments,
 		message = this.getMessage( key );
-	message.replace( /\$[0-9]+/g, function ( placeholder, offset ) {
+	message.replace( /\$[0-9]+/g, ( placeholder, offset ) => {
 		$message = $message.add( ve.sanitizeHtml( message.slice( lastOffset, offset ) ) );
 		var placeholderIndex = +( placeholder.slice( 1 ) );
 		var arg = args[ placeholderIndex ];
@@ -238,7 +238,7 @@ ve.init.sa.Platform.prototype.getParsedMessage = function ( key ) {
 		return this.parsedMessages[ key ];
 	}
 	// Fallback to regular messages, html escaping applied.
-	return this.getMessage( key ).replace( /['"<>&]/g, function ( char ) {
+	return this.getMessage( key ).replace( /['"<>&]/g, ( char ) => {
 		return {
 			'\'': '&#039;',
 			'"': '&quot;',

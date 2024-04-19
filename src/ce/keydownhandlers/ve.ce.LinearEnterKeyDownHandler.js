@@ -148,7 +148,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	function getSplitData( n ) {
 		var stack = [];
-		n.traverseUpstream( function ( parent ) {
+		n.traverseUpstream( ( parent ) => {
 			if ( !parent.splitOnEnter() ) {
 				return false;
 			}
@@ -254,7 +254,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	// Reset and resume polling
 	surface.surfaceObserver.clear();
 	// TODO: This setTimeout appears to be unnecessary (we're not render-locked)
-	setTimeout( function () {
+	setTimeout( () => {
 		surface.findAndExecuteSequences();
 	} );
 
