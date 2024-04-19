@@ -234,13 +234,13 @@ ve.fixupPreBug = function ( element ) {
 	// `<pre>Foo</pre>` or `<pre>\nFoo</pre>`, but that's a syntactic difference, not a
 	// semantic one, and handling that is the integration target's job.
 	var $element = $( element ).clone();
-	$element.find( 'pre, textarea, listing' ).each( function () {
+	$element.find( 'pre, textarea, listing' ).each( ( i, el ) => {
 		var matches;
-		if ( this.firstChild && this.firstChild.nodeType === Node.TEXT_NODE ) {
-			matches = this.firstChild.data.match( /^(\r\n|\r|\n)/ );
+		if ( el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE ) {
+			matches = el.firstChild.data.match( /^(\r\n|\r|\n)/ );
 			if ( matches && matches[ 1 ] ) {
 				// Prepend a newline exactly like the one we saw
-				this.firstChild.insertData( 0, matches[ 1 ] );
+				el.firstChild.insertData( 0, matches[ 1 ] );
 			}
 		}
 	} );

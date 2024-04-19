@@ -811,11 +811,11 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
 			( height >= 10 && width >= 4 );
 	}
 
-	this.$element.each( function () {
+	this.$element.each( ( i, element ) => {
 		if (
-			checkSize( this.offsetWidth, this.offsetHeight ) ||
+			checkSize( element.offsetWidth, element.offsetHeight ) ||
 			// Check width/height attribute as well. (T125767)
-			checkSize( this.width, this.height )
+			checkSize( element.width, element.height )
 		) {
 			visible = true;
 			return false;

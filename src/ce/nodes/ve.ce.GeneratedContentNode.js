@@ -248,10 +248,10 @@ ve.ce.GeneratedContentNode.prototype.preventTabbingInside = function () {
 	var selector = 'input, select, textarea, button, object, a, area, [contenteditable], [tabindex]',
 		$focusableCandidates = this.$element.find( selector ).addBack( selector );
 
-	$focusableCandidates.each( function () {
-		var $this = $( this );
-		if ( OO.ui.isFocusableElement( $this ) ) {
-			$this.attr( 'tabindex', -1 );
+	$focusableCandidates.each( ( i, element ) => {
+		var $element = $( element );
+		if ( OO.ui.isFocusableElement( $element ) ) {
+			$element.attr( 'tabindex', -1 );
 		}
 	} );
 };

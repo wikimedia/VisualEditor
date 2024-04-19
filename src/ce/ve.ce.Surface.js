@@ -2208,19 +2208,19 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	// Support: Firefox
 	// Some attributes (e.g RDFa attributes in Firefox) aren't preserved by copy
 	var unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[' ) + ']';
-	this.$pasteTarget.find( unsafeSelector ).each( function () {
+	this.$pasteTarget.find( unsafeSelector ).each( ( n, element ) => {
 		var i, val,
 			attrs = {},
 			ua = ve.ce.Surface.static.unsafeAttributes;
 
 		i = ua.length;
 		while ( i-- ) {
-			val = this.getAttribute( ua[ i ] );
+			val = element.getAttribute( ua[ i ] );
 			if ( val !== null ) {
 				attrs[ ua[ i ] ] = val;
 			}
 		}
-		this.setAttribute( 'data-ve-attributes', JSON.stringify( attrs ) );
+		element.setAttribute( 'data-ve-attributes', JSON.stringify( attrs ) );
 	} );
 
 	this.clipboardIndex++;
@@ -2554,8 +2554,8 @@ ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
 	} else {
 		if ( beforePasteData.html ) {
 			// text/html was present, so we can check if a key was hidden in it
-			$clipboardHtml = $( ve.sanitizeHtml( beforePasteData.html ) ).filter( function () {
-				var val = this.getAttribute && this.getAttribute( 'data-ve-clipboard-key' );
+			$clipboardHtml = $( ve.sanitizeHtml( beforePasteData.html ) ).filter( ( i, element ) => {
+				var val = element.getAttribute && element.getAttribute( 'data-ve-clipboard-key' );
 				if ( val ) {
 					clipboardKey = val;
 					// Remove the clipboard key span once read
@@ -2790,23 +2790,23 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 	// <ul><li>A</li><ul><li>B</li></ul></ul>
 	// to
 	// <ul><li>A<ul><li>B</li></ul></li></ul>
-	$( htmlDoc.body ).find( 'ul > ul, ul > ol, ol > ul, ol > ol' ).each( function () {
-		if ( this.previousElementSibling ) {
-			this.previousElementSibling.appendChild( this );
+	$( htmlDoc.body ).find( 'ul > ul, ul > ol, ol > ul, ol > ol' ).each( ( n, element ) => {
+		if ( element.previousElementSibling ) {
+			element.previousElementSibling.appendChild( element );
 		} else {
 			// List starts double indented. This is invalid and a semantic nightmare.
 			// Just wrap with an extra list item
-			$( this ).wrap( '<li>' );
+			$( element ).wrap( '<li>' );
 		}
 	} );
 
 	// HACK: Fix invalid HTML from copy-pasting `display: inline` lists (T239550).
-	$( htmlDoc.body ).find( 'li, dd, dt' ).each( function () {
+	$( htmlDoc.body ).find( 'li, dd, dt' ).each( ( n, element ) => {
 		var list,
 			listType = { li: 'ul', dd: 'dl', dt: 'dl' },
-			tag = this.tagName.toLowerCase(),
+			tag = element.tagName.toLowerCase(),
 			// Parent node always exists because we're searching inside <body>
-			parentTag = this.parentNode.tagName.toLowerCase();
+			parentTag = element.parentNode.tagName.toLowerCase();
 
 		if (
 			( tag === 'li' && ( parentTag !== 'ul' && parentTag !== 'ol' ) ) ||
@@ -2815,7 +2815,7 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 			// This list item's parent node is not a list. This breaks expectations in DM code.
 			// Wrap this node and its list item siblings in a list node.
 			list = htmlDoc.createElement( listType[ tag ] );
-			this.parentNode.insertBefore( list, this );
+			element.parentNode.insertBefore( list, element );
 
 			while (
 				list.nextElementSibling &&
@@ -3060,35 +3060,35 @@ ve.ce.Surface.prototype.afterPasteSanitizeExternal = function ( $element ) {
 	$element.find( '[style]' ).removeAttr( 'style' );
 
 	if ( metadataIdRegExp ) {
-		$element.find( '[id]' ).each( function () {
-			var $this = $( this );
-			if ( metadataIdRegExp.test( $this.attr( 'id' ) ) ) {
-				$this.removeAttr( 'id' );
+		$element.find( '[id]' ).each( ( i, el ) => {
+			var $el = $( el );
+			if ( metadataIdRegExp.test( $el.attr( 'id' ) ) ) {
+				$el.removeAttr( 'id' );
 			}
 		} );
 	}
 
 	// Remove the pasteProtect class (see #onCopy) and unwrap empty spans.
-	$element.find( 'span' ).each( function () {
-		var $this = $( this );
-		$this.removeClass( 've-pasteProtect' );
-		if ( $this.attr( 'class' ) === '' ) {
-			$this.removeAttr( 'class' );
+	$element.find( 'span' ).each( ( i, el ) => {
+		var $el = $( el );
+		$el.removeClass( 've-pasteProtect' );
+		if ( $el.attr( 'class' ) === '' ) {
+			$el.removeAttr( 'class' );
 		}
 		// Unwrap empty spans
-		if ( !this.attributes.length ) {
+		if ( !el.attributes.length ) {
 			// childNodes is a NodeList
 			// eslint-disable-next-line no-jquery/no-append-html
-			$this.replaceWith( this.childNodes );
+			$el.replaceWith( el.childNodes );
 		}
 	} );
 
 	// Restore attributes. See #onCopy.
-	$element.find( '[data-ve-attributes]' ).each( function () {
-		var attrsJSON = this.getAttribute( 'data-ve-attributes' );
+	$element.find( '[data-ve-attributes]' ).each( ( i, el ) => {
+		var attrsJSON = el.getAttribute( 'data-ve-attributes' );
 
 		// Always remove the attribute, even if the JSON has been corrupted
-		this.removeAttribute( 'data-ve-attributes' );
+		el.removeAttribute( 'data-ve-attributes' );
 
 		var attrs;
 		try {
@@ -3097,7 +3097,7 @@ ve.ce.Surface.prototype.afterPasteSanitizeExternal = function ( $element ) {
 			// Invalid JSON
 			return;
 		}
-		$( this ).attr( attrs );
+		$( el ).attr( attrs );
 	} );
 };
 
@@ -5081,8 +5081,8 @@ ve.ce.Surface.prototype.annotationsAtFocus = function ( filter ) {
  */
 ve.ce.Surface.prototype.annotationsAtNode = function ( node, filter ) {
 	var annotations = [];
-	$( node ).parents( '.ve-ce-annotation' ).addBack( '.ve-ce-annotation' ).each( function () {
-		var view = $( this ).data( 'view' );
+	$( node ).parents( '.ve-ce-annotation' ).addBack( '.ve-ce-annotation' ).each( ( i, element ) => {
+		var view = $( element ).data( 'view' );
 		if ( view && ( !filter || filter( view ) ) ) {
 			annotations.push( view );
 		}
