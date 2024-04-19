@@ -210,7 +210,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.FindAndReplaceDialog.super.prototype.getSetupProcess.call( this, data )
-		.first( function () {
+		.first( () => {
 			this.surface = data.surface;
 
 			// Events
@@ -220,7 +220,7 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
 
 			this.updateFragments();
 			this.renderFragments();
-		}, this );
+		} );
 };
 
 /**
@@ -228,9 +228,9 @@ ve.ui.FindAndReplaceDialog.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.FindAndReplaceDialog.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.FindAndReplaceDialog.super.prototype.getReadyProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.focus();
-		}, this );
+		} );
 };
 
 /**
@@ -238,7 +238,7 @@ ve.ui.FindAndReplaceDialog.prototype.getReadyProcess = function ( data ) {
  */
 ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.FindAndReplaceDialog.super.prototype.getTeardownProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			var surfaceView = this.surface.getView(),
 				surfaceModel = this.surface.getModel();
 
@@ -262,7 +262,7 @@ ve.ui.FindAndReplaceDialog.prototype.getTeardownProcess = function ( data ) {
 			this.fragments = [];
 			this.surface = null;
 			this.focusedIndex = 0;
-		}, this );
+		} );
 };
 
 /**

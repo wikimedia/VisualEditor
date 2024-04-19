@@ -93,11 +93,11 @@ ve.ui.FragmentDialog.prototype.getSetupProcess = function ( data ) {
 ve.ui.FragmentDialog.prototype.getTeardownProcess = function ( data ) {
 	// Parent method
 	var process = ve.ui.FragmentDialog.super.prototype.getTeardownProcess.call( this, data )
-		.first( function () {
+		.first( () => {
 			if ( this.selectFragmentOnClose ) {
 				this.fragment.select();
 			}
-		}, this );
+		} );
 	// Mixin method
 	return ve.ui.FragmentWindow.prototype.getTeardownProcess.call( this, data, process );
 };

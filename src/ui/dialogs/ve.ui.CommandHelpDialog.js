@@ -106,7 +106,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
  */
 ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommandHelpDialog.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			var surface = data.surface,
 				target = surface.getTarget(),
 				sequenceRegistry = surface.sequenceRegistry,
@@ -201,7 +201,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 					);
 				}
 			} );
-		}, this );
+		} );
 };
 
 /* Static methods */

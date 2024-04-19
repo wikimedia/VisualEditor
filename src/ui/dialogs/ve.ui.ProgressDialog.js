@@ -63,7 +63,7 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 
 	// Parent method
 	return ve.ui.ProgressDialog.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			var cancellable = false,
 				progresses = data.progresses;
 
@@ -104,21 +104,21 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 				this.cancelDeferreds.push( cancelDeferred );
 			}
 			this.actions.setMode( cancellable ? 'cancellable' : 'default' );
-		}, this );
+		} );
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.ProgressDialog.prototype.getActionProcess = function ( action ) {
-	return new OO.ui.Process( function () {
+	return new OO.ui.Process( () => {
 		if ( action === 'cancel' ) {
 			for ( var i = 0, l = this.cancelDeferreds.length; i < l; i++ ) {
 				this.cancelDeferreds[ i ].reject();
 			}
 		}
 		this.close( { action: action } );
-	}, this );
+	} );
 };
 
 /**

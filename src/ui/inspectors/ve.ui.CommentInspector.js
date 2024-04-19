@@ -66,9 +66,9 @@ ve.ui.CommentInspector.prototype.initialize = function () {
  */
 ve.ui.CommentInspector.prototype.getActionProcess = function ( action ) {
 	if ( action === 'remove' || action === 'insert' ) {
-		return new OO.ui.Process( function () {
+		return new OO.ui.Process( () => {
 			this.close( { action: action } );
-		}, this );
+		} );
 	}
 	return ve.ui.CommentInspector.super.prototype.getActionProcess.call( this, action );
 };
@@ -81,7 +81,7 @@ ve.ui.CommentInspector.prototype.getActionProcess = function ( action ) {
  */
 ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.getFragment().getSurface().pushStaging();
 
 			this.commentNode = this.getSelectedNode();
@@ -99,7 +99,7 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
 				this.commentNode = this.getSelectedNode();
 			}
 			this.textWidget.setReadOnly( this.isReadOnly() );
-		}, this );
+		} );
 };
 
 /**
@@ -107,9 +107,9 @@ ve.ui.CommentInspector.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.CommentInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.CommentInspector.super.prototype.getReadyProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.textWidget.focus();
-		}, this );
+		} );
 };
 
 /**
@@ -118,7 +118,7 @@ ve.ui.CommentInspector.prototype.getReadyProcess = function ( data ) {
 ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.CommentInspector.super.prototype.getTeardownProcess.call( this, data )
-		.first( function () {
+		.first( () => {
 			var surfaceModel = this.getFragment().getSurface();
 
 			// data.action can be 'done', 'remove' or undefined (cancel)
@@ -135,7 +135,7 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 
 			// Reset inspector
 			this.textWidget.setValueAndWhitespace( '' );
-		}, this );
+		} );
 };
 
 /* Registration */

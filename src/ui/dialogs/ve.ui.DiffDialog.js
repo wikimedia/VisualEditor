@@ -61,14 +61,14 @@ ve.ui.DiffDialog.prototype.initialize = function () {
  */
 ve.ui.DiffDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.DiffDialog.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.diffElement = new ve.ui.DiffElement( new ve.dm.VisualDiff( data.oldDoc, data.newDoc ) );
 			ve.targetLinksToNewWindow( this.diffElement.$document[ 0 ] );
 
 			this.content.$element.append(
 				this.diffElement.$element
 			);
-		}, this );
+		} );
 };
 
 /**
@@ -76,9 +76,9 @@ ve.ui.DiffDialog.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.DiffDialog.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.DiffDialog.super.prototype.getReadyProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.positionDiffElement();
-		}, this );
+		} );
 };
 
 /**
@@ -116,9 +116,9 @@ ve.ui.DiffDialog.prototype.positionDiffElement = function () {
  */
 ve.ui.DiffDialog.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.DiffDialog.super.prototype.getTeardownProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.diffElement.$element.remove();
-		}, this );
+		} );
 };
 
 /* Registration */

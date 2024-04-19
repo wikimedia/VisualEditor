@@ -87,7 +87,7 @@ ve.ui.TableDialog.prototype.getValues = function () {
  */
 ve.ui.TableDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.TableDialog.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			var isReadOnly = this.isReadOnly();
 			this.initialValues = {
 				caption: !!this.getFragment().getSelection().getTableNode(
@@ -97,7 +97,7 @@ ve.ui.TableDialog.prototype.getSetupProcess = function ( data ) {
 			this.captionToggle.setValue( this.initialValues.caption ).setDisabled( isReadOnly );
 			this.closingFragment = null;
 			this.updateActions();
-		}, this );
+		} );
 };
 
 /**
@@ -105,7 +105,7 @@ ve.ui.TableDialog.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.TableDialog.prototype.getActionProcess = function ( action ) {
 	return ve.ui.TableDialog.super.prototype.getActionProcess.call( this, action )
-		.next( function () {
+		.next( () => {
 			if ( action === 'done' ) {
 				var surfaceModel = this.getFragment().getSurface();
 				var selection = surfaceModel.getSelection();
@@ -133,7 +133,7 @@ ve.ui.TableDialog.prototype.getActionProcess = function ( action ) {
 				}
 				this.close( { action: 'done' } );
 			}
-		}, this );
+		} );
 };
 
 /**
@@ -141,9 +141,9 @@ ve.ui.TableDialog.prototype.getActionProcess = function ( action ) {
  */
 ve.ui.TableDialog.prototype.getTeardownProcess = function ( action ) {
 	return ve.ui.TableDialog.super.prototype.getTeardownProcess.call( this, action )
-		.first( function () {
+		.first( () => {
 			this.fragment = this.closingFragment || this.fragment;
-		}, this );
+		} );
 };
 
 /* Registration */

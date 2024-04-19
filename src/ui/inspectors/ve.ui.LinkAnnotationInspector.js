@@ -173,7 +173,7 @@ ve.ui.LinkAnnotationInspector.prototype.shouldInsertText = function () {
  */
 ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			var title = ve.msg(
 					this.isReadOnly() ?
 						'visualeditor-linkinspector-title' : (
@@ -191,7 +191,7 @@ ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 			this.annotationInput.setReadOnly( this.isReadOnly() );
 
 			this.updateActions();
-		}, this );
+		} );
 };
 
 /**
@@ -199,14 +199,14 @@ ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.LinkAnnotationInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getReadyProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			if ( !OO.ui.isMobile() ) {
 				this.annotationInput.getTextInputWidget().focus().select();
 			}
 
 			// Clear validation state, so that we don't get "invalid" state immediately on focus
 			this.annotationInput.getTextInputWidget().setValidityFlag( true );
-		}, this );
+		} );
 };
 
 /**
@@ -214,9 +214,9 @@ ve.ui.LinkAnnotationInspector.prototype.getReadyProcess = function ( data ) {
  */
 ve.ui.LinkAnnotationInspector.prototype.getHoldProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getHoldProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.annotationInput.getTextInputWidget().blur();
-		}, this );
+		} );
 };
 
 /**
@@ -224,11 +224,11 @@ ve.ui.LinkAnnotationInspector.prototype.getHoldProcess = function ( data ) {
  */
 ve.ui.LinkAnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.annotationInput.setAnnotation( null );
 			this.labelInput.$input.attr( 'placeholder', '' );
 			this.labelInput.setValue( '' );
-		}, this );
+		} );
 };
 
 /* Registration */

@@ -149,7 +149,7 @@ ve.ui.AnnotationInspector.prototype.isEditing = function () {
  */
 ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			var fragment = this.getFragment(),
 				surfaceModel = fragment.getSurface(),
 				// Partial annotations will be expanded later
@@ -241,7 +241,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
-		.first( function () {
+		.first( () => {
 			var inspector = this,
 				insertionAnnotation = false,
 				replace = false,
@@ -355,12 +355,12 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			if ( insertionAnnotation ) {
 				surfaceModel.addInsertionAnnotations( annotation );
 			}
-		}, this )
-		.next( function () {
+		} )
+		.next( () => {
 			// Reset state
 			this.initialSelection = null;
 			this.initialAnnotation = null;
 			this.initialAnnotationIsCovering = false;
 			this.isNew = false;
-		}, this );
+		} );
 };

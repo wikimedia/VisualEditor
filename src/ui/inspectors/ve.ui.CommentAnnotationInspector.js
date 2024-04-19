@@ -142,7 +142,7 @@ ve.ui.CommentAnnotationInspector.prototype.initialize = function () {
  */
 ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			if ( this.initialAnnotation ) {
 				var $thread = ve.ui.CommentAnnotationContextItem.static.renderThread( this.initialAnnotation );
 				this.$thread.empty().append( $thread );
@@ -153,7 +153,7 @@ ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 				action.setLabel( ve.msg( 'visualeditor-commentannotationcontextitem-comment' ) );
 			} );
 			this.updateActions();
-		}, this );
+		} );
 };
 
 /**
@@ -161,12 +161,12 @@ ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.CommentAnnotationInspector.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getReadyProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.textInput.focus().select();
 
 			// Clear validation state, so that we don't get "invalid" state immediately on focus
 			this.textInput.setValidityFlag( true );
-		}, this );
+		} );
 };
 
 /**
@@ -174,9 +174,9 @@ ve.ui.CommentAnnotationInspector.prototype.getReadyProcess = function ( data ) {
  */
 ve.ui.CommentAnnotationInspector.prototype.getHoldProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getHoldProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.textInput.blur();
-		}, this );
+		} );
 };
 
 /**
@@ -184,9 +184,9 @@ ve.ui.CommentAnnotationInspector.prototype.getHoldProcess = function ( data ) {
  */
 ve.ui.CommentAnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.textInput.setValue( '' );
-		}, this );
+		} );
 };
 
 /* Registration */

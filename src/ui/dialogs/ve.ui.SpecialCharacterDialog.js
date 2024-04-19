@@ -66,7 +66,7 @@ ve.ui.SpecialCharacterDialog.prototype.initialize = function () {
 ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.SpecialCharacterDialog.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.surface = data.surface;
 			this.surface.getModel().connect( this, { contextChange: 'onContextChange' } );
 
@@ -81,7 +81,7 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 						this.updateSize();
 					} );
 			}
-		}, this );
+		} );
 };
 
 /**
@@ -90,10 +90,10 @@ ve.ui.SpecialCharacterDialog.prototype.getSetupProcess = function ( data ) {
 ve.ui.SpecialCharacterDialog.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.SpecialCharacterDialog.super.prototype.getTeardownProcess.call( this, data )
-		.first( function () {
+		.first( () => {
 			this.surface.getModel().disconnect( this );
 			this.surface = null;
-		}, this );
+		} );
 };
 
 /**
@@ -101,7 +101,7 @@ ve.ui.SpecialCharacterDialog.prototype.getTeardownProcess = function ( data ) {
  */
 ve.ui.SpecialCharacterDialog.prototype.getReadyProcess = function ( data ) {
 	return ve.ui.SpecialCharacterDialog.super.prototype.getReadyProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			var surface = this.surface;
 			// The dialog automatically receives focus after opening, move it back to the surface.
 			// (Make sure an existing selection is preserved. Why does focus() reset the selection? 🤦)
@@ -116,16 +116,16 @@ ve.ui.SpecialCharacterDialog.prototype.getReadyProcess = function ( data ) {
 					surface.getModel().setSelection( previousSelection );
 				}
 			} );
-		}, this );
+		} );
 };
 
 /**
  * @inheritdoc
  */
 ve.ui.SpecialCharacterDialog.prototype.getActionProcess = function ( action ) {
-	return new OO.ui.Process( function () {
+	return new OO.ui.Process( () => {
 		this.close( { action: action } );
-	}, this );
+	} );
 };
 
 /**

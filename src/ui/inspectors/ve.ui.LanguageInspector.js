@@ -91,12 +91,12 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
  */
 ve.ui.LanguageInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LanguageInspector.super.prototype.getSetupProcess.call( this, data )
-		.next( function () {
+		.next( () => {
 			this.languageInput.setLangAndDir(
 				this.initialAnnotation.getAttribute( 'lang' ),
 				this.initialAnnotation.getAttribute( 'dir' )
 			).setReadOnly( this.isReadOnly() );
-		}, this );
+		} );
 };
 
 /* Registration */
