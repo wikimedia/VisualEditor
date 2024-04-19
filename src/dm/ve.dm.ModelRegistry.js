@@ -3,7 +3,7 @@
  *
  * @copyright See AUTHORS.txt
  */
-( function ( ve ) {
+( function () {
 
 	/**
 	 * Registry for models.
@@ -517,4 +517,4 @@
 
 	ve.dm.modelRegistry = new ve.dm.ModelRegistry();
 
-}( ve ) );
+}() );
