@@ -10,7 +10,7 @@
  * A platform must be constructed first. See ve.init.sa.Platform for an example.
  *
  *     @example
- *     ve.init.platform.initialize().done( function () {
+ *     ve.init.platform.initialize().done( () => {
  *         var target = new ve.init.sa.DesktopTarget();
  *         target.addSurface(
  *             ve.dm.converter.getModelFromDom(

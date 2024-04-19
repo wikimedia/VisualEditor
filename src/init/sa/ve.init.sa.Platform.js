@@ -9,7 +9,7 @@
  *
  *     @example
  *     var platform = new ve.init.sa.Platform( ve.messagePaths );
- *     platform.initialize().done( function () {
+ *     platform.initialize().done( () => {
  *         $( document.body ).append( $( '<p>' ).text(
  *             platform.getMessage( 'visualeditor' )
  *         ) );

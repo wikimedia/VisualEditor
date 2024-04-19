@@ -63,11 +63,7 @@ ve.ui.FindAndReplaceDialog.prototype.initialize = function () {
 	this.findText = new OO.ui.TextInputWidget( {
 		placeholder: ve.msg( 'visualeditor-find-and-replace-find-text' ),
 		value: ve.userConfig( 'visualeditor-findAndReplace-findText' ),
-		validate: ( function ( dialog ) {
-			return function () {
-				return !dialog.invalidRegex;
-			};
-		}( this ) ),
+		validate: () => !this.invalidRegex,
 		tabIndex: 1
 	} );
 	this.findText.$input.attr( 'aria-label', ve.msg( 'visualeditor-find-and-replace-find-text' ) );

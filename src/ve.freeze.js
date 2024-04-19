@@ -6,10 +6,10 @@
 
 ( function () {
 	var freezeProxyHandler = {
-		set: function ( obj, name ) {
+		set: ( obj, name ) => {
 			throw new Error( 'Object is frozen, can\'t set property: ' + name );
 		},
-		deleteProperty: function ( obj, name ) {
+		deleteProperty: ( obj, name ) => {
 			throw new Error( 'Object is frozen, can\'t delete property: ' + name );
 		}
 	};
