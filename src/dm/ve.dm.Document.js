@@ -1143,6 +1143,9 @@ ve.dm.Document.prototype.rebuildTree = function () {
 	var removedNodes = ve.batchSplice( rootNode, 0, rootNode.getChildren().length, addedNodes );
 
 	this.updateNodesByType( addedNodes, removedNodes );
+
+	// Clear branch node cache
+	this.branchNodeFromOffsetCache = [];
 };
 
 /**
