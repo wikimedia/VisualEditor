@@ -111,7 +111,7 @@ ve.dm.modelRegistry.register( ve.dm.TableNode );
  * e.g., providing consecutive row indexes.
  *
  * @class
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.TableNode} tableNode Table node to iterate through

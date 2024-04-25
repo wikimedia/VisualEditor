@@ -11,7 +11,7 @@
  * @class
  * @abstract
  * @extends ve.dm.LeafNode
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  * @param {Object} element Reference to element in meta-linmod

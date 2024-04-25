@@ -10,7 +10,7 @@
  * @class
  * @abstract
  * @extends ve.ce.LeafNode
- * @mixins ve.ce.FocusableNode
+ * @mixes ve.ce.FocusableNode
  *
  * @constructor
  * @param {ve.dm.AlienNode} model

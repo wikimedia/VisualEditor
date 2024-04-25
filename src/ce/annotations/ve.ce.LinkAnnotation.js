@@ -9,7 +9,7 @@
  *
  * @class
  * @extends ve.ce.Annotation
- * @mixins ve.ce.NailedAnnotation
+ * @mixes ve.ce.NailedAnnotation
  * @constructor
  * @param {ve.dm.LinkAnnotation} model Model to observe
  * @param {ve.ce.ContentBranchNode} [parentNode] Node rendering this annotation

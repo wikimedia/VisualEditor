@@ -10,7 +10,7 @@
  * Methods do not check that ranges actually lie inside the surfaced node
  *
  * @class
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Document} doc Document model to create surface for

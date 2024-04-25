@@ -11,7 +11,7 @@
  *
  * @abstract
  * @extends ve.ce.Node
- * @mixins ve.LeafNode
+ * @mixes ve.LeafNode
  *
  * @constructor
  * @param {ve.dm.LeafNode} model

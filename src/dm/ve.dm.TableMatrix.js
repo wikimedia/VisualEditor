@@ -29,7 +29,7 @@
  * and P[1] a PlaceHolder instance owned by that cell.
  *
  * @class
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  * @constructor
  * @param {ve.dm.TableNode} tableNode Reference to a table instance
  */

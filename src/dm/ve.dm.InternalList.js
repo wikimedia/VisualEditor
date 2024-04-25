@@ -8,7 +8,7 @@
  * DataModel meta item.
  *
  * @class
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Document} doc Document model

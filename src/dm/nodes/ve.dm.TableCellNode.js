@@ -9,7 +9,7 @@
  *
  * @class
  * @extends ve.dm.BranchNode
- * @mixins ve.dm.TableCellableNode
+ * @mixes ve.dm.TableCellableNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model

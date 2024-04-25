@@ -10,7 +10,7 @@
  *
  * @class
  * @extends OO.ui.Element
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  * @param {ve.dm.Node} [model] Model from which to create a preview

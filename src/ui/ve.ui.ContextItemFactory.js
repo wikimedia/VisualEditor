@@ -9,7 +9,7 @@
  *
  * @class
  * @extends OO.Factory
- * @mixins ve.ui.ModeledFactory
+ * @mixes ve.ui.ModeledFactory
  *
  * @constructor
  */

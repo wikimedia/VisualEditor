@@ -9,7 +9,7 @@
  *
  * @class
  * @extends ve.ui.FragmentDialog
- * @mixins ve.ui.NodeWindow
+ * @mixes ve.ui.NodeWindow
  *
  * @constructor
  * @param {Object} [config] Configuration options

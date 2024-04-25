@@ -9,8 +9,8 @@
  *
  * @abstract
  * @extends ve.dm.Model
- * @mixins OO.EventEmitter
- * @mixins ve.Node
+ * @mixes OO.EventEmitter
+ * @mixes ve.Node
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model

@@ -10,8 +10,8 @@
  * DataModel surface synchronizer.
  *
  * @class
- * @mixins OO.EventEmitter
- * @mixins ve.dm.RebaseClient
+ * @mixes OO.EventEmitter
+ * @mixes ve.dm.RebaseClient
  *
  * @constructor
  * @param {ve.dm.Surface} surface Surface model to synchronize

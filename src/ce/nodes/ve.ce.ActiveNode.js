@@ -9,7 +9,7 @@
  * uneditable sections.
  *
  * @class
- * @mixins ve.ce.ContentEditableNode
+ * @mixes ve.ce.ContentEditableNode
  * @abstract
  *
  * @constructor

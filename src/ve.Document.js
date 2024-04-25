@@ -8,7 +8,7 @@
  * Generic document.
  *
  * @class
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  * @param {ve.BranchNode} documentNode Document node

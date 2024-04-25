@@ -12,8 +12,8 @@
  *
  * @class
  * @extends OO.ui.Widget
- * @mixins OO.ui.mixin.IconElement
- * @mixins OO.ui.mixin.LabelElement
+ * @mixes OO.ui.mixin.IconElement
+ * @mixes OO.ui.mixin.LabelElement
  *
  * @constructor
  * @param {ve.dm.SurfaceSynchronizer} synchronizer Surface synchronizer

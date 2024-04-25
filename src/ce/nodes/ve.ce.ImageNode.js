@@ -9,8 +9,8 @@
  *
  * @class
  * @abstract
- * @mixins ve.ce.FocusableNode
- * @mixins ve.ce.ResizableNode
+ * @mixes ve.ce.FocusableNode
+ * @mixes ve.ce.ResizableNode
  *
  * @constructor
  * @param {jQuery} $figure Image or figure element

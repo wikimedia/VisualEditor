@@ -10,8 +10,8 @@
  * @class
  * @abstract
  * @extends OO.ui.Element
- * @mixins OO.EventEmitter
- * @mixins OO.ui.mixin.GroupElement
+ * @mixes OO.EventEmitter
+ * @mixes OO.ui.mixin.GroupElement
  *
  * @constructor
  * @param {ve.ui.Surface} surface

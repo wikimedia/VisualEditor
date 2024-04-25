@@ -8,7 +8,7 @@
  * Generic Initialization platform.
  *
  * @abstract
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  */

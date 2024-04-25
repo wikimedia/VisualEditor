@@ -12,7 +12,7 @@
  * @class
  * @abstract
  * @extends ve.ce.Node
- * @mixins ve.BranchNode
+ * @mixes ve.BranchNode
  * @constructor
  * @param {ve.dm.BranchNode} model Model to observe
  * @param {Object} [config] Configuration options

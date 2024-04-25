@@ -9,8 +9,8 @@
  *
  * @class
  * @extends ve.ce.LeafNode
- * @mixins ve.ce.ImageNode
- * @mixins ve.ce.ResizableNode
+ * @mixes ve.ce.ImageNode
+ * @mixes ve.ce.ResizableNode
  *
  * @constructor
  * @param {ve.dm.InlineImageNode} model Model to observe

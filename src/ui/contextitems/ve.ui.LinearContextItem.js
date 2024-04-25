@@ -9,7 +9,7 @@
  *
  * @class
  * @extends ve.ui.ContextItem
- * @mixins OO.ui.mixin.PendingElement
+ * @mixes OO.ui.mixin.PendingElement
  *
  * @constructor
  * @param {ve.ui.LinearContext} context Context the item is in

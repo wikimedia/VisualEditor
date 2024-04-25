@@ -9,7 +9,7 @@
  *
  * @abstract
  * @extends ve.ce.View
- * @mixins ve.Node
+ * @mixes ve.Node
  *
  * @constructor
  * @param {ve.dm.Node} model Model to observe

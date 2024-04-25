@@ -9,8 +9,8 @@
  *
  * @class
  * @extends ve.dm.BranchNode
- * @mixins ve.dm.ImageNode
- * @mixins ve.dm.AlignableNode
+ * @mixes ve.dm.ImageNode
+ * @mixes ve.dm.AlignableNode
  *
  * @constructor
  * @param {Object} [element] Reference to element in linear model

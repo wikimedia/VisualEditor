@@ -9,8 +9,8 @@
  *
  * @class
  * @abstract
- * @mixins ve.dm.FocusableNode
- * @mixins ve.dm.ResizableNode
+ * @mixes ve.dm.FocusableNode
+ * @mixes ve.dm.ResizableNode
  *
  * @constructor
  */

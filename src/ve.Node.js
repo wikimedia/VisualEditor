@@ -8,7 +8,7 @@
  * Generic node.
  *
  * @abstract
- * @mixins OO.EventEmitter
+ * @mixes OO.EventEmitter
  *
  * @constructor
  */
