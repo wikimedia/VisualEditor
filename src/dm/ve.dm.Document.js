@@ -55,6 +55,7 @@ ve.dm.Document = function VeDmDocument( data, htmlDocument, parentDocument, inte
 	this.nodesByType = {};
 	this.origInternalListLength = null;
 	this.readOnly = false;
+	this.attachedRoot = this.documentNode;
 
 	// Sparse array
 	this.branchNodeFromOffsetCache = [];
@@ -202,12 +203,39 @@ ve.dm.Document.prototype.getDocumentNode = function () {
 };
 
 /**
+ * Set the attached root node
+ *
+ * @param {ve.dm.BranchNode} attachedRoot Attached root
+ */
+ve.dm.Document.prototype.setAttachedRoot = function ( attachedRoot ) {
+	this.attachedRoot = attachedRoot;
+};
+
+/**
+ * Get the attached root node
+ *
+ * @return {ve.dm.BranchNode} Attached root
+ */
+ve.dm.Document.prototype.getAttachedRoot = function () {
+	return this.attachedRoot;
+};
+
+/**
  * Get a range that spans the entire document (excluding the internal list)
  *
  * @return {ve.Range} Document range
  */
 ve.dm.Document.prototype.getDocumentRange = function () {
 	return new ve.Range( 0, this.getInternalList().getListNode().getOuterRange().start );
+};
+
+/**
+ * Get a range that spans the attached root (excluding the internal list)
+ *
+ * @return {ve.Range} Attached root's range
+ */
+ve.dm.Document.prototype.getAttachedRootRange = function () {
+	return this.attachedRoot === this.documentNode ? this.getDocumentRange() : this.attachedRoot.getRange();
 };
 
 /**
@@ -1121,9 +1149,21 @@ ve.dm.Document.prototype.getDataFromNode = function ( node ) {
  * Rebuild the entire node tree from linear model data.
  */
 ve.dm.Document.prototype.rebuildTree = function () {
-	// Never rebuild above the attachedRoot node as that would destroy
-	// that node, and invalidate all references to it (T293254)
-	const rootNode = this.attachedRoot || this.getDocumentNode();
+	// attachedRootRange is an inner range for a non-document node,
+	// so that we never rebuild above the attachedRoot node as that
+	// would destroy that node, and invalidate all references to it (T293254).
+	// When it is the full document it spans all nodes in the document,
+	// excluding the interna list.
+	const attachedRoot = this.getAttachedRoot();
+	this.rebuildTreeNode( attachedRoot );
+};
+
+/**
+ * Rebuild the node tree from linear model data from a specicifc range.
+ *
+ * @param {ve.dm.BranchNode} rootNode Node to rebuild
+ */
+ve.dm.Document.prototype.rebuildTreeNode = function ( rootNode ) {
 	const range = rootNode.getRange();
 	const data = this.data.sliceObject( range.start, range.end );
 	// Build document fragment from data
