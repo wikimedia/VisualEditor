@@ -100,9 +100,7 @@ ve.ce.Document.prototype.getSlugAtOffset = function ( offset ) {
  *
  * @private
  * @param {number} offset Linear model offset
- * @return {Object} position
- * @return {Node} return.node position node
- * @return {number} return.offset position offset within the node
+ * @return {ve.ce.NodeAndOffset} Position
  * @throws {Error} Offset could not be translated to a DOM element and offset
  */
 ve.ce.Document.prototype.getNodeAndOffset = function ( offset ) {

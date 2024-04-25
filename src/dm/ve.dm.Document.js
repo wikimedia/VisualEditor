@@ -1224,18 +1224,23 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
 };
 
 /**
+ * @typedef FixedInsertion
+ * @memberof ve.dm.Document
+ * @property {Array} data Possibly modified copy of `data`
+ * @property {number} offset Possibly modified offset
+ * @property {number} remove Number of elements to remove after the modified `offset`
+ * @property {number} [insertedDataOffset] Offset of intended insertion within fixed up data
+ * @property {number} [insertedDataLength] Length of intended insertion within fixed up data
+ */
+
+/**
  * Fix up data so it can safely be inserted into the document data at an offset.
  *
  * TODO: this function needs more work but it seems to work, mostly
  *
  * @param {Array} data Snippet of linear model data to insert
  * @param {number} offset Offset in the linear model where the caller wants to insert data
- * @return {Object}
- * @return {Array} return.data Possibly modified copy of `data`
- * @return {number} return.offset Possibly modified offset
- * @return {number} return.remove Number of elements to remove after the modified `offset`
- * @return {number} [return.insertedDataOffset] Offset of intended insertion within fixed up data
- * @return {number} [return.insertedDataLength] Length of intended insertion within fixed up data
+ * @return {ve.dm.Document.FixedInsertion}
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	var

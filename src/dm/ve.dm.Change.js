@@ -289,6 +289,14 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
 };
 
 /**
+ * @typedef {Object} RebasedChange
+ * @memberof ve.dm.Change
+ * @property {ve.dm.Change} rebased Rebase onto history of uncommitted (or an initial segment of it)
+ * @property {ve.dm.Change} transposedHistory Rebase of history onto initial segment of uncommitted
+ * @property {ve.dm.Change|null} rejected Unrebasable final segment of uncommitted
+ */
+
+/**
  * Rebase a change on top of a parallel committed one
  *
  * Since a change is a stack of transactions, we define change rebasing in terms of transaction
@@ -351,10 +359,7 @@ ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB )
  *
  * @param {ve.dm.Change} history Committed history
  * @param {ve.dm.Change} uncommitted New transactions, with same start as history
- * @return {Object} Rebased
- * @return {ve.dm.Change} return.rebased Rebase onto history of uncommitted (or an initial segment of it)
- * @return {ve.dm.Change} return.transposedHistory Rebase of history onto initial segment of uncommitted
- * @return {ve.dm.Change|null} return.rejected Unrebasable final segment of uncommitted
+ * @return {ve.dm.Change.RebasedChange}
  */
 ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) {
 	if ( history.start !== uncommitted.start ) {
@@ -451,20 +456,30 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 };
 
 /**
+ * @typedef UniformTextInfo
+ * @memberof ve.dm.Change
+ * @property {string} text The code units, in a single string
+ * @property {string} annotations Annotation hashes for all text
+ * @property {string} annotationString Comma-separated annotation hashes
+ */
+
+/**
+ * @typedef TransactionInfo
+ * @memberof ve.dm.Change
+ * @property {number} start The start offset of the replacement
+ * @property {number} end The end offset of the replacement (after replacement)
+ * @property {number} docLength The total length of the document (after replacement)
+ * @property {number} authorId The author ID
+ * @property {ve.dm.Change.UniformTextInfo|null} uniformInsert The insertion as uniform text, or null if not
+ */
+
+/**
  * Get info about a transaction if it is a "simple replacement", or null if not
  *
  * A simple replacement transaction is one that has just one retain op
  *
  * @param {ve.dm.Transaction} tx The transaction
- * @return {Object|null} Info about the transaction if a simple replacement, else null
- * @return {number} return.start The start offset of the replacement
- * @return {number} return.end The end offset of the replacement (after replacement)
- * @return {number} return.docLength The total length of the document (after replacement)
- * @return {number} return.authorId The author ID
- * @return {Object|null} return.uniformInsert The insertion as uniform text, or null if not
- * @return {string} return.uniformInsert.text The plain text of the uniform text
- * @return {string} return.uniformInsert.annotations Annotation hashes for all text
- * @return {string} return.uniformInsert.annotationString Comma-separated annotation hashes
+ * @return {ve.dm.Change.TransactionInfo|null} Info about the transaction if a simple replacement, else null
  */
 ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 	// Copy of ve.dm.ElementLinearData.static.getAnnotationHashesFromItem, but we
@@ -504,10 +519,7 @@ ve.dm.Change.static.getTransactionInfo = function ( tx ) {
 	 * every item is a single code unit of text
 	 *
 	 * @param {Array} items The items
-	 * @return {Object|null} Info about the uniform text, or null if not uniform text
-	 * @return {string} return.text The code units, in a single string
-	 * @return {string} return.annotations Annotation hashes for all text
-	 * @return {string} return.annotationString Comma-separated annotation hashes
+	 * @return {ve.dm.Change.UniformTextInfo|null} Info about the uniform text, or null if not uniform text
 	 */
 	function getUniformText( items ) {
 		var codeUnits = [];

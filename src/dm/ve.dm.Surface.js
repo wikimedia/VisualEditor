@@ -273,9 +273,18 @@ ve.dm.Surface.prototype.resetHistoryTrackingInterval = function () {
 };
 
 /**
+ * @typedef {Object} UndoStackItem
+ * @memberof ve.dm.Surface
+ * @property {number} start
+ * @property {ve.dm.Transaction[]} transactions
+ * @property {ve.dm.Selection} selection
+ * @property {ve.dm.Selection} selectionBefore
+ */
+
+/**
  * Get a list of all applied history states.
  *
- * @return {Object[]} List of applied transaction stacks
+ * @return {ve.dm.Surface.UndoStackItem[]} List of applied transaction stacks
  */
 ve.dm.Surface.prototype.getHistory = function () {
 	var appliedUndoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
@@ -295,12 +304,17 @@ ve.dm.Surface.prototype.isStaging = function () {
 };
 
 /**
+ * @typedef {Object} StagingState
+ * @memberof ve.dm.Surface
+ * @property {ve.dm.Transaction[]} transactions Staging transactions
+ * @property {ve.dm.Selection} selectionBefore Selection before transactions were applied
+ * @property {boolean} allowUndo Allow undo while staging
+ */
+
+/**
  * Get the staging state at the current staging stack depth
  *
- * @return {Object|undefined} staging Staging state object, or undefined if not staging
- * @return {ve.dm.Transaction[]} staging.transactions Staging transactions
- * @return {ve.dm.Selection} staging.selectionBefore Selection before transactions were applied
- * @return {boolean} staging.allowUndo Allow undo while staging
+ * @return {ve.dm.Surface.StagingState|undefined} staging Staging state object, or undefined if not staging
  */
 ve.dm.Surface.prototype.getStaging = function () {
 	return this.stagingStack[ this.stagingStack.length - 1 ];

@@ -199,11 +199,16 @@ ve.ui.DimensionsWidget.prototype.setDimensions = function ( dimensions ) {
 };
 
 /**
+ * @typedef {Object} Dimensions
+ * @memberof ve.ui.DimensionsWidget
+ * @property {number} width The value of the width input
+ * @property {number} height The value of the height input
+ */
+
+/**
  * Return the current dimension values in the widget
  *
- * @return {Object} dimensions The width and height values of the inputs
- * @return {number} dimensions.width The value of the width input
- * @return {number} dimensions.height The value of the height input
+ * @return {ve.ui.DimensionsWidget.Dimensions} dimensions The width and height values of the inputs
  */
 ve.ui.DimensionsWidget.prototype.getDimensions = function () {
 	return {

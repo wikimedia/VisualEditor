@@ -130,6 +130,18 @@ ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
 };
 
 /**
+ * @typedef {Object} Step
+ * @memberof ve.dm.TreeCursor
+ * @property {string} type open|close|cross|crosstext
+ * @property {number} length Linear length of the step (integer >= 1)
+ * @property {number[]} path Offset path from the root to the node containing the stepped item
+ * @property {ve.dm.Node|null} node The node containing the stepped item
+ * @property {number} offset The offset of the stepped item within its parent
+ * @property {number} [offsetLength] Number of characters 'crosstext' passed
+ * @property {ve.dm.Node} [item] The node stepped into/out of/across (absent for 'crosstext')
+ */
+
+/**
  * Take a single step in the walk, consuming no more than a given linear model length
  *
  * A "single step" means either stepping across text content, or stepping over a node, or
@@ -138,14 +150,7 @@ ve.dm.TreeCursor.prototype.checkLinearOffset = function () {
  * See https://phabricator.wikimedia.org/T162762 for the algorithm
  *
  * @param {number} maxLength Maximum linear model length to step over (integer >= 1)
- * @return {Object|null} The type of step taken, or null if there are no more steps
- * @return {string} return.type open|close|cross|crosstext
- * @return {number} return.length Linear length of the step (integer >= 1)
- * @return {number[]} return.path Offset path from the root to the node containing the stepped item
- * @return {ve.dm.Node|null} return.node The node containing the stepped item
- * @return {number} return.offset The offset of the stepped item within its parent
- * @return {number} [return.offsetLength] Number of characters 'crosstext' passed
- * @return {ve.dm.Node} [return.item] The node stepped into/out of/across (absent for 'crosstext')
+ * @return {ve.dm.TreeCursor.Step|null} The type of step taken, or null if there are no more steps
  */
 ve.dm.TreeCursor.prototype.stepAtMost = function ( maxLength ) {
 	if ( !this.node ) {

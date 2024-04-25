@@ -794,7 +794,7 @@ ve.dm.TreeModifier.prototype.pushInsertTextOp = function ( data ) {
 /**
  * Push into treeOps a move of a node to the current inserter position
  *
- * @param {Object} removerStep The remover step over the node; see ve.dm.TreeCursor#stepAtMost
+ * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the node
  */
 ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
 	var rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
@@ -818,7 +818,7 @@ ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
 /**
  * Push into treeOps a move of some text to the current inserter position
  *
- * @param {Object} removerStep The remover step over the text; see ve.dm.TreeCursor#stepAtMost
+ * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the text
  */
 ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
 	var length = removerStep.type === 'crosstext' ?
@@ -845,7 +845,7 @@ ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
 /**
  * Push into treeOps a removal of a node
  *
- * @param {Object} removerStep The remover step over the node; see ve.dm.TreeCursor#stepAtMost
+ * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the node
  */
 ve.dm.TreeModifier.prototype.pushRemoveNodeOp = function ( removerStep ) {
 	var rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
@@ -862,7 +862,7 @@ ve.dm.TreeModifier.prototype.pushRemoveNodeOp = function ( removerStep ) {
 /**
  * Push into treeOps a removal of some text
  *
- * @param {Object} removerStep The remover step over the text; see ve.dm.TreeCursor#stepAtMost
+ * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the text
  */
 ve.dm.TreeModifier.prototype.pushRemoveTextOp = function ( removerStep ) {
 	var rawRemoverPosition = this.getRawRemoverPosition( removerStep );
@@ -927,7 +927,7 @@ ve.dm.TreeModifier.prototype.modifyAdjustmentTree = function ( rawPosition, diff
 /**
  * Get the raw position of a node stepped over by the remover
  *
- * @param {Object} step Remover step; see ve.dm.TreeCursor#stepAtMost
+ * @param {ve.dm.TreeCursor.Step} step Remover step
  * @return {number[]} The pathAndOffset, with offsets inside a ContentBranchNode linearized
  */
 ve.dm.TreeModifier.prototype.getRawRemoverPosition = function ( step ) {

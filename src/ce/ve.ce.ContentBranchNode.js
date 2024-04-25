@@ -197,14 +197,27 @@ ve.ce.ContentBranchNode.prototype.setupInlineSlugs = function () {
 };
 
 /**
+ * @typedef {Object} UnicornInfo
+ * @memberof ve.ce.ContentBranchNode
+ * @property {boolean} hasCursor
+ * @property {ve.dm.AnnotationSet|null} annotations
+ * @property {HTMLElement[]|null} unicorns
+ */
+
+/**
+ * @typedef {HTMLElement} HTMLElementWithUnicorn
+ * @memberof ve.ce.ContentBranchNode
+ * @property {ve.ce.ContentBranchNode.UnicornInfo} unicornInfo Unicorn information
+ */
+
+/**
  * Get an HTML rendering of the contents.
  *
  * If you are actually going to append the result to a DOM, you need to
  * do this with #appendRenderedContents, which resolves the cloned
  * nodes returned by this function back to their originals.
  *
- * @return {HTMLElement} Wrapper containing rendered contents
- * @return {Object} return.unicornInfo Unicorn information
+ * @return {ve.ce.ContentBranchNode.HTMLElementWithUnicorn} Wrapper containing rendered contents
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	var annotationsChanged,

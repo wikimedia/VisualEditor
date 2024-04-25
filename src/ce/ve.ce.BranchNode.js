@@ -414,9 +414,7 @@ ve.ce.BranchNode.prototype.detach = function () {
  * The node/offset have the same semantics as a DOM Selection focusNode/focusOffset
  *
  * @param {number} offset The offset inside this node of the required position
- * @return {Object|null} The DOM position
- * @return {Node} return.node DOM node; guaranteed to be this node's final DOM node
- * @return {number} return.offset DOM offset
+ * @return {ve.ce.NodeAndOffset} The DOM position; guaranteed to be this node's final DOM node
  */
 ve.ce.BranchNode.prototype.getDomPosition = function ( offset ) {
 	var domNode = this.$element.last()[ 0 ];

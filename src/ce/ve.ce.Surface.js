@@ -2287,7 +2287,7 @@ ve.ce.Surface.prototype.getBeforePasteAnnotationSet = function () {
  * Handle native paste event
  *
  * @param {jQuery.Event} e Paste event
- * @return {boolean} False if the event is cancelled
+ * @return {boolean|undefined} False if the event is cancelled
  */
 ve.ce.Surface.prototype.onPaste = function ( e ) {
 	var surface = this;
@@ -2546,12 +2546,17 @@ ve.ce.Surface.prototype.afterPaste = function () {
 };
 
 /**
+ * @typedef {Object} ClipboardData
+ * @memberof ve.ce
+ * @property {string|undefined} clipboardKey Clipboard key, if present
+ * @property {jQuery|undefined} $clipboardHtml Clipboard html, if used to extract the clipboard key
+ * @property {ve.dm.DocumentSlice|undefined} slice Relevant slice of this document, if the key points to it
+ */
+
+/**
  * Extract the clipboard key and other relevant data from beforePasteData / the paste target
  *
- * @return {Object} Data
- * @return {string|undefined} return.clipboardKey Clipboard key, if present
- * @return {jQuery|undefined} return.$clipboardHtml Clipboard html, if used to extract the clipboard key
- * @return {ve.dm.DocumentSlice|undefined} return.slice Relevant slice of this document, if the key points to it
+ * @return {ve.ce.ClipboardData} Data
  */
 ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
 	var clipboardKey, clipboardHash, $clipboardHtml,
@@ -4012,6 +4017,7 @@ ve.ce.Surface.prototype.fixupCursorPosition = function ( direction, extend ) {
  *
  * @param {boolean} [isPaste] Whether this in the context of a paste
  * @param {boolean} [isDelete] Whether this is after content being deleted
+ * @return {ve.ui.SequenceRegistry.Match[]}
  */
 ve.ce.Surface.prototype.findMatchingSequences = function ( isPaste, isDelete ) {
 	var selection = this.getSelection();
@@ -4081,6 +4087,11 @@ ve.ce.Surface.prototype.findAndExecuteDelayedSequences = function () {
 // Deprecated alias
 ve.ce.Surface.prototype.checkDelayedSequences = ve.ce.Surface.prototype.findAndExecuteDelayedSequences;
 
+/**
+ * Execute matched sequences
+ *
+ * @param {ve.ui.SequenceRegistry.Match[]} sequences
+ */
 ve.ce.Surface.prototype.executeSequences = function ( sequences ) {
 	var executed = false;
 
@@ -5111,12 +5122,6 @@ ve.ce.Surface.prototype.annotationsAtNode = function ( node, filter ) {
  *
  * @param {ve.Range|null} range Range to get selection for
  * @return {ve.SelectionState} The selection
- * @return {Node|null} return.anchorNode The anchor node
- * @return {number} return.anchorOffset The anchor offset
- * @return {Node|null} return.focusNode The focus node
- * @return {number} return.focusOffset The focus offset
- * @return {boolean} return.isCollapsed True if the focus and anchor are in the same place
- * @return {boolean} return.isBackwards True if the focus is before the anchor
  */
 ve.ce.Surface.prototype.getSelectionState = function ( range ) {
 	var dmDoc = this.getModel().getDocument();

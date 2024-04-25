@@ -588,14 +588,19 @@ ve.dm.Transaction.prototype.getModifiedRange = function ( doc, options ) {
 };
 
 /**
+ * @typedef {Object} RangeAndLengthDiff
+ * @memberof ve.dm.Transaction
+ * @property {number} [start] Start offset of the active range
+ * @property {number} [end] End offset of the active range
+ * @property {number} [startOpIndex] Start operation index of the active range
+ * @property {number} [endOpIndex] End operation index of the active range
+ * @property {number} diff Length change the transaction causes
+ */
+
+/**
  * Calculate active range and length change
  *
- * @return {Object} Active range and length change
- * @return {number|undefined} return.start Start offset of the active range
- * @return {number|undefined} return.end End offset of the active range
- * @return {number|undefined} return.startOpIndex Start operation index of the active range
- * @return {number|undefined} return.endOpIndex End operation index of the active range
- * @return {number} return.diff Length change the transaction causes
+ * @return {ve.dm.Transaction.RangeAndLengthDiff} Active range and length change
  */
 ve.dm.Transaction.prototype.getActiveRangeAndLengthDiff = function () {
 	var offset = 0,

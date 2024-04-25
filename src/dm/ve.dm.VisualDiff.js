@@ -153,12 +153,20 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 };
 
 /**
+ * @typedef {ve.dm.VisualDiff.ListDiff} DocDiff
+ * @memberof ve.dm.VisualDiff
+ * @property {ve.dm.Node} oldRoot
+ * @property {ve.dm.Node} newRoot
+ * @property {ve.dm.VisualDiff.AttributeDiff} attributeChange
+ */
+
+/**
  * Diff two nodes as documents, comaparing their children as lists.
  *
  * @param {ve.dm.Node} oldRoot Old root
  * @param {ve.dm.Node} newRoot New root
  * @param {boolean} skipInternalLists Skip internal list nodes
- * @return {Object} Object containing diff information
+ * @return {ve.dm.VisualDiff.DocDiff} Object containing diff information
  */
 ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalLists ) {
 	var oldChildren = oldRoot.children;
@@ -191,11 +199,22 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
 };
 
 /**
+ * @typedef {Object} ListDiff
+ * @memberof ve.dm.VisualDiff
+ * @property {ve.dm.Node[]} oldNodes
+ * @property {ve.dm.Node[]} newNodes
+ * @property {Object} oldToNew
+ * @property {Object} newToOld
+ * @property {number[]} remove
+ * @property {number[]} insert
+ */
+
+/**
  * Get the diff between two lists of nodes.
  *
  * @param {ve.dm.Node[]} oldNodes Nodes from the old document
  * @param {ve.dm.Node[]} newNodes Nodes from the new document
- * @return {Object} Object containing diff information
+ * @return {ve.dm.VisualDiff.ListDiff} Object containing diff information
  */
 ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 	var oldNodesToDiff = [],
@@ -435,7 +454,6 @@ ve.dm.VisualDiff.prototype.findModifiedNodes = function ( oldIndices, newIndices
 			diff.insert.push( newIndices[ j ] );
 		}
 	}
-
 };
 
 /**
@@ -445,7 +463,7 @@ ve.dm.VisualDiff.prototype.findModifiedNodes = function ( oldIndices, newIndices
  * @param {ve.dm.Node} oldNode Node from the old document
  * @param {ve.dm.Node} newNode Node from the new document
  * @param {boolean} [noTreeDiff] Don't perform a tree diff of the nodes (used internally to avoid recursion)
- * @return {Array|boolean} The diff, or false if the nodes are too different
+ * @return {ve.dm.VisualDiff.LeafDiff|ve.dm.VisualDiff.ListDiff|ve.dm.VisualDiff.DocDiff|ve.dm.VisualDiff.TreeDiff|boolean} The diff, or false if the nodes are too different
  */
 ve.dm.VisualDiff.prototype.diffNodes = function ( oldNode, newNode, noTreeDiff ) {
 	// If not diff comparable, return no diff
@@ -469,11 +487,18 @@ ve.dm.VisualDiff.prototype.diffNodes = function ( oldNode, newNode, noTreeDiff )
 };
 
 /**
+ * @typedef {Object} LeafDiff
+ * @memberof ve.dm.VisualDiff
+ * @property {ve.dm.VisualDiff.AttributeDiff|boolean} attributeChange
+ * @property {Array|boolean} linearDiff
+ */
+
+/**
  * Diff two leaf nodes
  *
  * @param {ve.dm.Node} oldNode Node from the old document
  * @param {ve.dm.Node} newNode Node from the new document
- * @return {Object|boolean} Leaf diff, or false if the nodes are too different
+ * @return {ve.dm.VisualDiff.LeafDiff|boolean} Leaf diff, or false if the nodes are too different
  * or if the diff timed out
  */
 ve.dm.VisualDiff.prototype.diffLeafNodes = function ( oldNode, newNode ) {
@@ -507,7 +532,7 @@ ve.dm.VisualDiff.prototype.diffLeafNodes = function ( oldNode, newNode ) {
  *
  * @param {ve.dm.Node} oldNode Node from the old document
  * @param {ve.dm.Node} newNode Node from the new document
- * @return {Object|boolean} Leaf diff, or false if the nodes are too different
+ * @return {ve.dm.VisualDiff.ListDiff|boolean} Leaf diff, or false if the nodes are too different
  * or if the diff timed out
  */
 ve.dm.VisualDiff.prototype.diffListNodes = function ( oldNode, newNode ) {
@@ -675,6 +700,19 @@ ve.dm.VisualDiff.prototype.alignTrees = function ( oldTree, newTree ) {
 };
 
 /**
+ * @typedef {Object} TreeDiff
+ * @memberof ve.dm.VisualDiff
+ * @property {ve.DiffTreeNode[]} oldTreeOrderedNodes - Nodes of the old tree, deepest first then in document order
+ * @property {ve.DiffTreeNode[]} newTreeOrderedNodes - Nodes of the new tree, deepest first then in document order
+ * @property {Array[]} treeDiff - Node correspondences as indexes in *TreeOrderedNodes
+ * @property {number[]} treeDiff.i - The i'th correspondence [ oldTreeOrderedNodes index, newTreeOrderedNodes index ]
+ * @property {Object|null} diffInfo - Linear diffs applying to each corresponding node pair
+ * @property {Object} diffInfo.i - Linear diff applying to i'th node in newTreeOrderedNodes
+ * @property {Array|boolean} diffInfo.i.linearDiff - Output of #diffContent
+ * @property {ve.dm.VisualDiff.AttributeDiff|boolean} diffInfo.i.attributeChange Attribute diff
+ */
+
+/**
  * Do a tree diff. There are three steps: (1) Do a tree diff to find the minimal
  * transactions between the old tree and the new tree. Allowed transactions
  * are: remove a node, insert a node, or change an old node to a new node. (The
@@ -693,15 +731,7 @@ ve.dm.VisualDiff.prototype.alignTrees = function ( oldTree, newTree ) {
  *
  * @param {ve.dm.Node} oldTreeNode Node from the old document
  * @param {ve.dm.Node} newTreeNode Node from the new document
- * @return {Object|boolean} Diff object, or false or false if the nodes are too different or if the diff timed out
- * @return {ve.DiffTreeNode[]} return.oldTreeOrderedNodes nodes of the old tree, deepest first then in document order
- * @return {ve.DiffTreeNode[]} return.newTreeOrderedNodes nodes of the new tree, deepest first then in document order
- * @return {Array[]} return.treeDiff Node correspondences as indexes in *TreeOrderedNodes
- * @return {number[]} return.treeDiff.i The i'th correspondence [ oldTreeOrderedNodes index, newTreeOrderedNodes index ]
- * @return {Object|null} return.diffInfo Linear diffs applying to each corresponding node pair
- * @return {Object} return.diffInfo.i Linear diff applying to i'th node in newTreeOrderedNodes
- * @return {Array|boolean} return.diffInfo.i.linearDiff Output of #diffContent
- * @return {Array|boolean} return.diffInfo.i.attributeChange Output of #diffAttributes
+ * @return {ve.dm.VisualDiff.TreeDiff|boolean} Diff object, or false if the nodes are too different or if the diff timed out.
  */
 ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode ) {
 	var changeRecord = {
@@ -780,12 +810,19 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 };
 
 /**
+ * @typedef {Object} AttributeDiff
+ * @memberof ve.dm.VisualDiff
+ * @property {Object} oldAttributes
+ * @property {Object} newAttributes
+ */
+
+/**
  * Find the difference between attributes of two nodes
  *
  * @param {ve.dm.Node} oldNode Node from the old document
  * @param {ve.dm.Node} newNode Node from the new document
  * @param {string} [diffTypeAsAttribute] Diff the type of the node as an attribute with this name
- * @return {Object|boolean} The attributes diff, or false if unchanged
+ * @return {ve.dm.VisualDiff.AttributeDiff|boolean} The attributes diff, or false if unchanged
  */
 ve.dm.VisualDiff.prototype.diffAttributes = function ( oldNode, newNode, diffTypeAsAttribute ) {
 	var oldAttributes = oldNode.getAttributes();
@@ -879,6 +916,19 @@ ve.dm.VisualDiff.prototype.underDiffThreshold = function ( changeRecord ) {
 	return changeRecord.keepLength < this.diffThreshold * changeRecord.diffLength;
 };
 
+/**
+ * @typedef {Object} MetaListDiff
+ * @memberof ve.dm.VisualDiff
+ * @property {Object.<string,ve.dm.VisualDiff.ListDiff>} groups List diffs, indexed by group
+ */
+
+/**
+ * Calculate a meta list diff
+ *
+ * @param {ve.dm.MetaList} oldMetaList
+ * @param {ve.dm.MetaList} newMetaList
+ * @return {ve.dm.VisualDiff.MetaListDiff}
+ */
 ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList ) {
 	var visualDiff = this;
 	var oldItemsByGroup = {};
@@ -907,13 +957,23 @@ ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList
 	return groupDiffs;
 };
 
+/**
+ * @typedef {Object} InternalListDiff
+ * @memberof ve.dm.VisualDiff
+ * @property {Object.<string,ve.dm.VisualDiff.ListDiff>} groups List diffs, indexed by group
+ * @property {ve.dm.InternalListNode} oldDocInternalListNode
+ * @property {ve.dm.InternalListNode} newDocInternalListNode
+ */
+
 /*
  * Get the diff between the old document's internal list and the new document's
  * internal list. The diff is grouped by list group, and each node in each list
  * group is marked as removed, inserted, the same, or changed (in which case the
  * linear diff is given).
  *
- * @return {Object} Internal list diff object
+ * @param {ve.dm.InternalList} oldInternalList
+ * @param {ve.dm.InternalList} newInternalList
+ * @return {ve.dm.VisualDiff.InternalListDiff} Internal list diff object
  */
 ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, newInternalList ) {
 	var oldDocNodeGroups = oldInternalList.getNodeGroups(),

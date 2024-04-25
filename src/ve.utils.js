@@ -1083,6 +1083,14 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
 };
 
 /**
+ * @typedef {Object} DomPosition
+ * @memberof ve
+ * @property {Node|null} node The node, or null if we stepped past the root node
+ * @property {number|null} offset The offset, or null if we stepped past the root node
+ * @property {ve.PositionStep[]} steps Steps taken
+ */
+
+/**
  * Get the closest matching DOM position in document order (forward or reverse)
  *
  * A DOM position is represented as an object with "node" and "offset" properties.
@@ -1110,10 +1118,7 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
  * @param {Object} options
  * @param {Function|string} [options.noDescend] Selector or function: nodes to skip over
  * @param {Function} [options.stop] Boolean-valued ve.PositionStep test function
- * @return {Object} The adjacent DOM position encountered
- * @return {Node|null} return.node The node, or null if we stepped past the root node
- * @return {number|null} return.offset The offset, or null if we stepped past the root node
- * @return {Object[]} return.steps Steps taken {node: x, type: leave|cross|enter|internal, offset: n}
+ * @return {ve.DomPosition} The adjacent DOM position encountered
  * @see ve#isHardCursorStep
  */
 ve.adjacentDomPosition = function ( position, direction, options ) {
@@ -1252,14 +1257,19 @@ ve.rejectsCursor = function ( node ) {
 };
 
 /**
+ * @typedef {Object} ChangeOffsets
+ * @memberof ve
+ * @return {number} start Offset from start of first changed element
+ * @return {number} end Offset from end of last changed element (nonoverlapping with start)
+ */
+
+/**
  * Count the common elements at the start and end of two sequences
  *
  * @param {Array|string} before The original sequence
  * @param {Array|string} after The modified sequence
  * @param {Function} [equals] Two-argument comparison returning boolean (defaults to ===)
- * @return {Object|null} Change offsets (valid in both sequences), or null if unchanged
- * @return {number} return.start Offset from start of first changed element
- * @return {number} return.end Offset from end of last changed element (nonoverlapping with start)
+ * @return {ve.ChangeOffsets|null} Change offsets (valid in both sequences), or null if unchanged
  */
 ve.countEdgeMatches = function ( before, after, equals ) {
 	if ( !equals ) {
