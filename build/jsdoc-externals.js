@@ -9,12 +9,24 @@ const prefixMap = wmfConf.prefixMap || {};
 const prefixMapIgnore = wmfConf.prefixMapIgnore || [];
 const linkMap = wmfConf.linkMap || {};
 
+// eslint-disable-next-line n/no-missing-require
+const parseType = require( 'jsdoc/tag/type' ).parse;
+
+function extractNames( parsedType, names = [] ) {
+	if ( parsedType.type === 'NameExpression' ) {
+		names.push( parsedType.name );
+	} else if ( parsedType.type === 'TypeApplication' ) {
+		parsedType.applications.forEach( ( p ) => extractNames( p, names ) );
+	}
+	return names;
+}
+
 /**
  * Automatically register links to known external types when they are encountered
  */
 exports.handlers = {
 	newDoclet: function ( e ) {
-		const types = [];
+		let types = [];
 
 		if ( e.doclet.kind === 'class' ) {
 			if ( e.doclet.augments ) {
@@ -64,6 +76,20 @@ exports.handlers = {
 				} );
 			}
 		}
+
+		types = types.reduce( ( acc, val ) => {
+			if ( /^[a-z0-9.]+$/i.test( val ) ) {
+				// Optimisation: If the type is (namespaced) alphanumeric, then
+				// the value itself is the type, e.g. 'foo.bar.Baz1'
+				acc.push( val );
+			} else {
+				// A more complex type, parse and extract types recursively,
+				// e.g. 'Object.<string,Foo[]>'
+				const parsedType = parseType( '{' + val + '}', false, true ).parsedType;
+				acc.push.apply( acc, extractNames( parsedType ) );
+			}
+			return acc;
+		}, [] );
 
 		types.forEach( ( type ) => {
 			Object.keys( prefixMap ).some( ( prefix ) => {
