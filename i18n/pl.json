@@ -95,6 +95,7 @@
 	"visualeditor-collab-url-mismatch": "Adres URL sesji nie pasuje do tej strony",
 	"visualeditor-collab-url-placeholder": "[Adres URL sesji]",
 	"visualeditor-collab-url-prompt": "Wprowadź adres URL sesji, aby dołączyć",
+	"visualeditor-collab-user-placeholder": "Użytkownik $1",
 	"visualeditor-command-dialog-cancel": "Zamknij / odrzuć zmianę",
 	"visualeditor-command-dialog-confirm": "Potwierdź zmianę",
 	"visualeditor-command-dialog-focus-context": "Przenieś kursor do menu kontekstowego",

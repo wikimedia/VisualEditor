@@ -27,6 +27,7 @@
 			"Sakretsu",
 			"Statix64",
 			"Una giornata uggiosa '94",
+			"Valepert",
 			"Vivbod",
 			"Wikitoni"
 		]
@@ -65,6 +66,7 @@
 	"visualeditor-changedesc-no-key": "$1 modificato a $2",
 	"visualeditor-changedesc-set": "$1 impostato a $2",
 	"visualeditor-changedesc-unknown": "$1 modificato",
+	"visualeditor-changedesc-unset": "$1 rimosso da $2",
 	"visualeditor-changedir-tool-ltr": "Vedi da sinistra a destra",
 	"visualeditor-changedir-tool-rtl": "Vedi da destra a sinistra",
 	"visualeditor-clearbutton-tooltip": "Rimuovi",
