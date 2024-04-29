@@ -2,7 +2,8 @@
 
 // eslint-disable-next-line n/no-missing-require
 const helper = require( 'jsdoc/util/templateHelper' );
-const conf = require( '../.jsdoc.json' );
+// eslint-disable-next-line n/no-missing-require
+const conf = require( 'jsdoc/env' ).conf;
 const wmfConf = ( conf.templates && conf.templates.wmf ) || {};
 const prefixMap = wmfConf.prefixMap || {};
 const linkMap = wmfConf.linkMap || {};
