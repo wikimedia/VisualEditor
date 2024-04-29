@@ -6,6 +6,7 @@ const helper = require( 'jsdoc/util/templateHelper' );
 const conf = require( 'jsdoc/env' ).conf;
 const wmfConf = ( conf.templates && conf.templates.wmf ) || {};
 const prefixMap = wmfConf.prefixMap || {};
+const prefixMapIgnore = wmfConf.prefixMapIgnore || [];
 const linkMap = wmfConf.linkMap || {};
 
 /**
@@ -69,7 +70,8 @@ exports.handlers = {
 				if (
 					// Ignore anything explicitly defined in the linkMap
 					!linkMap[ type ] &&
-					type.startsWith( prefix )
+					type.startsWith( prefix ) &&
+					prefixMapIgnore.every( ( ignore ) => !type.startsWith( ignore ) )
 				) {
 					helper.registerLink( type, prefixMap[ prefix ].replace( /\{type\}/g, type ) );
 					// Break, so we don't match a shorter prefix
