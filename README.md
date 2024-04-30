@@ -13,7 +13,7 @@ page on mediawiki.org.
 ## Installing
 
 For information on setting up VisualEditor, please see
-https://www.mediawiki.org/wiki/VisualEditor/Setup
+<https://www.mediawiki.org/wiki/VisualEditor/Setup>
 
 ## Developing
 
