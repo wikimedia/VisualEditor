@@ -108,9 +108,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 		selections = {},
 		transactions = [],
 		// If stores is undefined, create an array of nulls
-		stores = data.stores || data.transactions.map( () => {
-			return null;
-		} );
+		stores = data.stores || data.transactions.map( () => null );
 
 	/**
 	 * Apply annotations in-place to array of code units
@@ -135,11 +133,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 	}
 	var deserializeStore = ve.dm.HashValueStore.static.deserialize.bind(
 		null,
-		preserveStoreValues ? ( x ) => {
-			return x;
-		} : ( x ) => {
-			return deserializeValue( x, unsafe );
-		}
+		preserveStoreValues ? ( x ) => x : ( x ) => deserializeValue( x, unsafe )
 	);
 	var prevInfo;
 	for ( var i = 0, iLen = data.transactions.length; i < iLen; i++ ) {
@@ -662,9 +656,7 @@ ve.dm.Change.prototype.firstAuthorId = function () {
  */
 ve.dm.Change.prototype.summarize = function () {
 	return '{ start: ' + this.start + ', txs: [ ' +
-		this.transactions.map( ( tx ) => {
-			return tx.summarize();
-		} ).join( ', ' ) + ' ] }';
+		this.transactions.map( ( tx ) => tx.summarize() ).join( ', ' ) + ' ] }';
 };
 
 /**
@@ -677,13 +669,9 @@ ve.dm.Change.prototype.summarize = function () {
 ve.dm.Change.prototype.reversed = function () {
 	return new ve.dm.Change(
 		this.start + this.transactions.length,
-		this.transactions.map( ( tx ) => {
-			return ve.dm.Transaction.prototype.reversed.call( tx );
-		} ).reverse(),
+		this.transactions.map( ( tx ) => ve.dm.Transaction.prototype.reversed.call( tx ) ).reverse(),
 		// Empty store for each transaction (reverting cannot possibly add new annotations)
-		this.transactions.map( () => {
-			return new ve.dm.HashValueStore();
-		} ),
+		this.transactions.map( () => new ve.dm.HashValueStore() ),
 		{}
 	);
 };
@@ -939,9 +927,7 @@ ve.dm.Change.prototype.serialize = function ( preserveStoreValues ) {
 		transactions: transactions
 	};
 	// Only set stores if at least one is non-null
-	if ( stores.some( ( store ) => {
-		return store !== null;
-	} ) ) {
+	if ( stores.some( ( store ) => store !== null ) ) {
 		data.stores = stores;
 	}
 	if ( Object.keys( selections ).length ) {

@@ -728,9 +728,7 @@ ve.dm.Surface.prototype.fixupRangeForLinks = function ( range ) {
 	var linearData = this.getDocument().data;
 
 	function getLinks( offset ) {
-		return linearData.getAnnotationsFromOffset( offset ).filter( ( ann ) => {
-			return ann.name === 'link';
-		} );
+		return linearData.getAnnotationsFromOffset( offset ).filter( ( ann ) => ann.name === 'link' );
 	}
 
 	// Search for links at start/end that don't cover the whole range.
@@ -1102,10 +1100,8 @@ ve.dm.Surface.prototype.undo = function () {
 			var done = new ve.dm.Change(
 				item.start,
 				item.transactions,
-				item.transactions.map( () => {
-					// Undo cannot add store items, so we don't need to worry here
-					return new ve.dm.HashValueStore();
-				} ),
+				// Undo cannot add store items, so we don't need to worry here
+				item.transactions.map( () => new ve.dm.HashValueStore() ),
 				{}
 			);
 			var result = ve.dm.Change.static.rebaseUncommittedChange( history, done.reversed() );
@@ -1242,9 +1238,7 @@ ve.dm.Surface.prototype.getModifiedRanges = function ( options ) {
 	var compactRanges = [];
 	var lastRange = null;
 	ranges
-		.sort( ( a, b ) => {
-			return a.start - b.start;
-		} )
+		.sort( ( a, b ) => a.start - b.start )
 		.forEach( ( range ) => {
 			if ( options.includeCollapsed || !range.isCollapsed() ) {
 				if ( lastRange && lastRange.touchesRange( range ) ) {

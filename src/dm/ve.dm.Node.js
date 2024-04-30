@@ -658,9 +658,7 @@ ve.dm.Node.prototype.isSurfaceable = function () {
  * @return {ve.dm.Node|null} Ancestor with matching type and attribute values
  */
 ve.dm.Node.prototype.findMatchingAncestor = function ( type, attributes ) {
-	return this.traverseUpstream( ( node ) => {
-		return !node.matches( type, attributes );
-	} );
+	return this.traverseUpstream( ( node ) => !node.matches( type, attributes ) );
 };
 
 /**

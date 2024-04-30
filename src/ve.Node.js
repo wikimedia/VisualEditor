@@ -446,9 +446,7 @@ ve.Node.prototype.traverseUpstream = function ( callback ) {
  * @return {ve.Node|null} Ancestor of this node matching the specified type
  */
 ve.Node.prototype.findParent = function ( type ) {
-	return this.traverseUpstream( ( node ) => {
-		return !( node instanceof type );
-	} );
+	return this.traverseUpstream( ( node ) => !( node instanceof type ) );
 };
 
 /**
@@ -471,9 +469,7 @@ ve.Node.prototype.collectUpstream = function () {
  * @return {boolean} Current node is a descendant
  */
 ve.Node.prototype.isDownstreamOf = function ( upstreamNode ) {
-	return this.traverseUpstream( ( node ) => {
-		return node !== upstreamNode;
-	} ) !== null;
+	return this.traverseUpstream( ( node ) => node !== upstreamNode ) !== null;
 };
 
 /**

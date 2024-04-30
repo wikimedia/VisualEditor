@@ -159,9 +159,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 	// Elements with a width/height of 0 return a clientRect with a width/height of 1
 	// As elements with an actual width/height of 1 aren't that useful anyway, just
 	// throw away anything that is <=1
-	var filteredRects = rects.filter( ( rect ) => {
-		return rect.width > 1 && rect.height > 1;
-	} );
+	var filteredRects = rects.filter( ( rect ) => rect.width > 1 && rect.height > 1 );
 	// But if this filtering doesn't leave any rects at all, then we do want to use the 1px rects
 	if ( filteredRects.length > 0 ) {
 		rects = filteredRects;
@@ -833,9 +831,7 @@ ve.ce.FocusableNode.prototype.hasRendering = function () {
  * @return {boolean} Editing disabled
  */
 ve.ce.FocusableNode.prototype.isInContentEditableDisabled = function () {
-	return !!this.traverseUpstream( ( node ) => {
-		return !(
-			node.isContentEditable && !node.isContentEditable()
-		);
-	} );
+	return !!this.traverseUpstream( ( node ) => !(
+		node.isContentEditable && !node.isContentEditable()
+	) );
 };

@@ -80,9 +80,7 @@ ve.ui.BlockquoteAction.prototype.wrap = function () {
 
 	// If the nodes can't be wrapped (e.g. they are list items), wrap the parent
 	while (
-		fragment.getCoveredNodes().some( ( nodeInfo ) => {
-			return !nodeInfo.node.isAllowedParentNodeType( 'blockquote' ) || nodeInfo.node.isContent();
-		} )
+		fragment.getCoveredNodes().some( ( nodeInfo ) => !nodeInfo.node.isAllowedParentNodeType( 'blockquote' ) || nodeInfo.node.isContent() )
 	) {
 		fragment = fragment.expandLinearSelection( 'parent' );
 	}

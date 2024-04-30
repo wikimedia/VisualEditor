@@ -224,9 +224,7 @@ ve.ui.LinearContext.prototype.addPersistentSource = function ( source ) {
  * @param {string} name Source name
  */
 ve.ui.LinearContext.prototype.removePersistentSource = function ( name ) {
-	this.persistentSources = this.persistentSources.filter( ( source ) => {
-		return source.name !== name;
-	} );
+	this.persistentSources = this.persistentSources.filter( ( source ) => source.name !== name );
 
 	this.onContextChange();
 };

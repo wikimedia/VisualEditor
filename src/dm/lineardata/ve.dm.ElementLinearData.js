@@ -698,10 +698,8 @@ ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( 
 
 	// Return those startAnnotations that either continue in afterAnnotations or
 	// should get added to appended content
-	return startAnnotations.filter( ( annotation ) => {
-		return annotation.constructor.static.applyToAppendedContent ||
-			afterAnnotations.containsComparable( annotation );
-	} );
+	return startAnnotations.filter( ( annotation ) => annotation.constructor.static.applyToAppendedContent ||
+			afterAnnotations.containsComparable( annotation ) );
 };
 
 /**
@@ -1266,14 +1264,12 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 		}
 
 		// Create annotation set to remove from blacklist
-		setToRemove = allAnnotations.filter( ( annotation ) => {
-			return (
-				rules.blacklist && rules.blacklist[ annotation.name ]
-			) || (
-				// If original DOM element references are being removed, remove spans
-				annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
-			);
-		} );
+		setToRemove = allAnnotations.filter( ( annotation ) => (
+			rules.blacklist && rules.blacklist[ annotation.name ]
+		) || (
+		// If original DOM element references are being removed, remove spans
+			annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
+		) );
 	}
 
 	var contentElement;

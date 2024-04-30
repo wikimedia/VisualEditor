@@ -173,12 +173,8 @@ ve.dm.VisualDiff.prototype.diffDocs = function ( oldRoot, newRoot, skipInternalL
 	var newChildren = newRoot.children;
 
 	if ( skipInternalLists ) {
-		oldChildren = oldChildren.filter( ( node ) => {
-			return !( node instanceof ve.dm.InternalListNode );
-		} );
-		newChildren = newChildren.filter( ( node ) => {
-			return !( node instanceof ve.dm.InternalListNode );
-		} );
+		oldChildren = oldChildren.filter( ( node ) => !( node instanceof ve.dm.InternalListNode ) );
+		newChildren = newChildren.filter( ( node ) => !( node instanceof ve.dm.InternalListNode ) );
 	}
 
 	var diff = this.diffList( oldChildren, newChildren );
@@ -352,9 +348,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 	}
 
 	// Get oldDoc indices, sorted according to their order in the new doc
-	var sortedKeys = Object.keys( newToOld ).sort( ( a, b ) => {
-		return Number( a ) - Number( b );
-	} );
+	var sortedKeys = Object.keys( newToOld ).sort( ( a, b ) => Number( a ) - Number( b ) );
 	var i, ilen;
 	for ( i = 0, ilen = sortedKeys.length; i < ilen; i++ ) {
 		var oldIndex = newToOld[ sortedKeys[ i ] ];

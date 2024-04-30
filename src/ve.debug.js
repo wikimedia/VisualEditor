@@ -150,12 +150,10 @@ ve.initFilibuster = function () {
 			ve.ui.Surface.prototype.startFilibuster,
 			ve.ui.Surface.prototype.stopFilibuster
 		] )
-		.setObserver( 'dm doc', () => {
-			// Cannot use wrapped methods here
-			return JSON.stringify( ve.Filibuster.static.clonePlain(
-				surface.model.documentModel.data.data
-			) );
-		} )
+		// Cannot use wrapped methods here
+		.setObserver( 'dm doc', () => JSON.stringify( ve.Filibuster.static.clonePlain(
+			surface.model.documentModel.data.data
+		) ) )
 		.setObserver( 'dm selection', () => {
 			// Cannot use wrapped methods here
 			var selection = surface.model.selection;
@@ -164,10 +162,8 @@ ve.initFilibuster = function () {
 			}
 			return selection.getDescription();
 		} )
-		.setObserver( 'DOM doc', () => {
-			// Cannot use wrapped methods here
-			return ve.serializeNodeDebug( surface.view.$element[ 0 ] );
-		} )
+		// Cannot use wrapped methods here
+		.setObserver( 'DOM doc', () => ve.serializeNodeDebug( surface.view.$element[ 0 ] ) )
 		.setObserver( 'DOM selection', () => {
 			// Cannot use wrapped methods here
 			var nativeSelection = surface.view.nativeSelection;

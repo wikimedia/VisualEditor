@@ -95,9 +95,7 @@ OO.initClass( ve.dm.TransactionSquasher );
  */
 ve.dm.TransactionSquasher.static.equalItems = function ( item1, item2 ) {
 	function stringifyItem( item ) {
-		return JSON.stringify( item, ( key, value ) => {
-			return key === 'changesSinceLoad' ? undefined : value;
-		} );
+		return JSON.stringify( item, ( key, value ) => key === 'changesSinceLoad' ? undefined : value );
 	}
 	// Compare serializations, so that reference types need not be reference-equal
 	return stringifyItem( item1 ) === stringifyItem( item2 );

@@ -716,9 +716,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 		if ( !dataMatrixLine ) {
 			insertData = ve.dm.TableRowNode.static.createData( {
 				cellCount: inserts.length,
-				style: cells.map( ( c ) => {
-					return c.node.getStyle();
-				} )
+				style: cells.map( ( c ) => c.node.getStyle() )
 			} );
 		} else {
 			insertData.push( dataMatrixLine.row[ 0 ] );
@@ -936,9 +934,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 	// Make sure that the actions are in descending offset order
 	// so that the transactions do not affect subsequent range offsets.
 	// Sort recorded actions to make sure the transactions will not interfere with respect to offsets
-	actions.sort( ( a, b ) => {
-		return ve.dm.TableMatrixCell.static.sortDescending( a.cell, b.cell );
-	} );
+	actions.sort( ( a, b ) => ve.dm.TableMatrixCell.static.sortDescending( a.cell, b.cell ) );
 
 	if ( mode === 'row' ) {
 		// First replace orphaned placeholders which are below the last deleted row,

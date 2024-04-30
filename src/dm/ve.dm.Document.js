@@ -151,9 +151,7 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
 			continue;
 		}
 		// eslint-disable-next-line no-loop-func
-		var allowedAnnotations = annotationSet.filter( ( ann ) => {
-			return data.canTakeAnnotationAtOffset( i, ann, true );
-		} );
+		var allowedAnnotations = annotationSet.filter( ( ann ) => data.canTakeAnnotationAtOffset( i, ann, true ) );
 		var existingAnnotations = data.getAnnotationsFromOffset( i, true );
 		var newAnnotationSet;
 		if ( !existingAnnotations.isEmpty() ) {
@@ -1013,9 +1011,7 @@ ve.dm.Document.prototype.getNearestNodeMatching = function ( test, offset, direc
  * @return {ve.dm.Node|null} Nearest focusable node, or null if not found
  */
 ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction, limit ) {
-	return this.getNearestNodeMatching( ( nodeType ) => {
-		return ve.dm.nodeFactory.isNodeFocusable( nodeType );
-	}, offset, direction, limit );
+	return this.getNearestNodeMatching( ( nodeType ) => ve.dm.nodeFactory.isNodeFocusable( nodeType ), offset, direction, limit );
 };
 
 /**
@@ -1219,9 +1215,7 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
 	}
 
 	if ( sort ) {
-		nodes.sort( ( a, b ) => {
-			return a.getOffset() - b.getOffset();
-		} );
+		nodes.sort( ( a, b ) => a.getOffset() - b.getOffset() );
 	}
 	return nodes;
 };
@@ -1712,10 +1706,8 @@ ve.dm.Document.prototype.findText = function ( query, options ) {
 
 	if ( options.wholeWord ) {
 		var dataString = new ve.dm.DataString( this.getData() );
-		ranges = ranges.filter( ( range ) => {
-			return unicodeJS.wordbreak.isBreak( dataString, range.start ) &&
-				unicodeJS.wordbreak.isBreak( dataString, range.end );
-		} );
+		ranges = ranges.filter( ( range ) => unicodeJS.wordbreak.isBreak( dataString, range.start ) &&
+				unicodeJS.wordbreak.isBreak( dataString, range.end ) );
 	}
 
 	return ranges;

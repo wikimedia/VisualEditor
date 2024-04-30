@@ -219,9 +219,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 			return windowManager.getCurrentWindow().constructor.static.name;
 		}
 		return null;
-	} ).filter( ( name ) => {
-		return name !== null;
-	} );
+	} ).filter( ( name ) => name !== null );
 
 	this.emit( 'updateState', fragment, this.contextDirection, activeDialogs );
 };

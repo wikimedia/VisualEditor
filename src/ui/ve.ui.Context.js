@@ -185,9 +185,7 @@ ve.ui.Context.prototype.setupMenuItems = function () {
 		}
 	}
 
-	items.sort( ( a, b ) => {
-		return a.constructor.static.sortOrder - b.constructor.static.sortOrder;
-	} );
+	items.sort( ( a, b ) => a.constructor.static.sortOrder - b.constructor.static.sortOrder );
 
 	this.addItems( items );
 	for ( i = 0, len = items.length; i < len; i++ ) {

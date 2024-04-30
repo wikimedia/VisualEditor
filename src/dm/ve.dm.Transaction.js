@@ -169,9 +169,7 @@ ve.dm.Transaction.static.compareElementsForTranslate = function ( a, b ) {
 ve.dm.Transaction.static.isAnnotationOnlyOperation = function ( op ) {
 	return op.type === 'replace' &&
 		op.insert.length === op.remove.length &&
-		op.insert.every( ( insert, j ) => {
-			return ve.dm.Transaction.static.compareElementsForTranslate( insert, op.remove[ j ] );
-		} );
+		op.insert.every( ( insert, j ) => ve.dm.Transaction.static.compareElementsForTranslate( insert, op.remove[ j ] ) );
 };
 
 /* Methods */

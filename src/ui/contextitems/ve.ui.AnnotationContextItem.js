@@ -88,9 +88,7 @@ ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
 ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback ) {
 	var modelClasses = this.constructor.static.modelClasses,
 		fragment = this.getFragment(),
-		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => {
-			return ve.isInstanceOfAny( annotation, modelClasses );
-		} ).get();
+		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => ve.isInstanceOfAny( annotation, modelClasses ) ).get();
 	if (
 		!annotations.length &&
 		fragment.getSelection().isCollapsed() &&
@@ -99,9 +97,7 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
 		// Expand to nearest word and try again
 		fragment = fragment.expandLinearSelection( 'word' );
 
-		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => {
-			return ve.isInstanceOfAny( annotation, modelClasses );
-		} ).get();
+		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => ve.isInstanceOfAny( annotation, modelClasses ) ).get();
 	}
 	for ( var i = 0, len = annotations.length; i < len; i++ ) {
 		callback( fragment.expandLinearSelection( 'annotation', annotations[ i ] ), annotations[ i ] );

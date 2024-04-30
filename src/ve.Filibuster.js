@@ -333,9 +333,7 @@ ve.Filibuster.prototype.stop = function () {
  */
 ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 	function showArgs( args ) {
-		return '<b>(</b>' + ve.escapeHtml( args.map( ( arg ) => {
-			return JSON.stringify( arg );
-		} ).join( ', ' ) ) + '<b>)</b>';
+		return '<b>(</b>' + ve.escapeHtml( args.map( ( arg ) => JSON.stringify( arg ) ).join( ', ' ) ) + '<b>)</b>';
 	}
 
 	function showVal( val ) {
@@ -346,14 +344,12 @@ ve.Filibuster.prototype.getObservationsHtml = function ( branchPath ) {
 		return (
 			( phase === 'enter' ? '<hr>' : '' ) +
 			'<div class="ve-filibuster-changes">' +
-			Object.keys( changes ).map( ( name ) => {
-				return (
-					'<b>' + ve.escapeHtml( name + ' old' ) + '</b><br>' +
+			Object.keys( changes ).map( ( name ) => (
+				'<b>' + ve.escapeHtml( name + ' old' ) + '</b><br>' +
 					ve.escapeHtml( changes[ name ].oldState ) + '<br>' +
 					'<b>' + ve.escapeHtml( name + ' new' ) + '</b><br>' +
 					ve.escapeHtml( changes[ name ].newState )
-				);
-			} ).join( '<br>' ) +
+			) ).join( '<br>' ) +
 			'</div>' +
 			( phase === 'exit' ? '<hr>' : '' )
 		);
@@ -470,9 +466,7 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 			return '…';
 		}
 		seen.add( val );
-		return val.map( ( x ) => {
-			return this.clonePlain( x, seen );
-		} );
+		return val.map( ( x ) => this.clonePlain( x, seen ) );
 	} else if ( typeof val === 'function' ) {
 		return '(function ' + val.name + ')';
 	} else if ( typeof val === 'undefined' ) {
@@ -486,18 +480,14 @@ ve.Filibuster.static.clonePlain = function ( val, seen ) {
 	} else if ( val.constructor === ve.Range ) {
 		return { 've.Range': [ val.from, val.to ] };
 	} else if ( val.constructor === ve.dm.Transaction ) {
-		return { 've.dm.Transaction': val.operations.map( ( op ) => {
-			return this.clonePlain( op );
-		} ) };
+		return { 've.dm.Transaction': val.operations.map( ( op ) => this.clonePlain( op ) ) };
 	} else if ( val instanceof ve.dm.Selection ) {
 		return { 've.dm.Selection': val.getDescription() };
 	} else if ( val.constructor === ve.dm.AnnotationSet ) {
 		return {
 			've.dm.AnnotationSet': val.getStore()
 				.values( val.getHashes() )
-				.map( ( annotation ) => {
-					return annotation.name;
-				} )
+				.map( ( annotation ) => annotation.name )
 		};
 	} else if ( val.constructor !== Object ) {
 		// Not a plain old object

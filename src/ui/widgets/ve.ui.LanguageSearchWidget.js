@@ -26,13 +26,11 @@ ve.ui.LanguageSearchWidget = function VeUiLanguageSearchWidget( config ) {
 	this.filteredLanguageResultWidgets = [];
 	this.languageResultWidgets = ve.init.platform.getLanguageCodes()
 		.sort()
-		.map( ( languageCode ) => {
-			return new ve.ui.LanguageResultWidget( { data: {
-				code: languageCode,
-				name: ve.init.platform.getLanguageName( languageCode ),
-				autonym: ve.init.platform.getLanguageAutonym( languageCode )
-			} } );
-		} );
+		.map( ( languageCode ) => new ve.ui.LanguageResultWidget( { data: {
+			code: languageCode,
+			name: ve.init.platform.getLanguageName( languageCode ),
+			autonym: ve.init.platform.getLanguageAutonym( languageCode )
+		} } ) );
 
 	this.setAvailableLanguages();
 

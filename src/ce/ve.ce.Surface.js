@@ -824,12 +824,8 @@ ve.ce.Surface.prototype.activate = function () {
 			this.getModel().setSelection( previousSelection );
 			// Restore active annotations
 			if ( this.previousActiveAnnotations.length ) {
-				var annotationClasses = this.previousActiveAnnotations.map( ( ann ) => {
-					return ann.constructor;
-				} );
-				this.selectAnnotation( ( view ) => {
-					return ve.isInstanceOfAny( view, annotationClasses );
-				} );
+				var annotationClasses = this.previousActiveAnnotations.map( ( ann ) => ann.constructor );
+				this.selectAnnotation( ( view ) => ve.isInstanceOfAny( view, annotationClasses ) );
 			}
 		}
 
@@ -1149,9 +1145,7 @@ ve.ce.Surface.prototype.onDocumentMouseDown = function ( e ) {
 				!(
 					// Shallow strict equality check
 					this.contexedAnnotations.length === contexedAnnotations.length &&
-					this.contexedAnnotations.every( ( ann, i ) => {
-						return ann === contexedAnnotations[ i ];
-					} )
+					this.contexedAnnotations.every( ( ann, i ) => ann === contexedAnnotations[ i ] )
 				)
 			)
 		) {
@@ -2264,9 +2258,7 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
  */
 ve.ce.Surface.prototype.getBeforePasteAnnotationSet = function () {
 	var store = this.getModel().getDocument().getStore();
-	var dmAnnotations = this.beforePasteAnnotationsAtFocus.map( ( view ) => {
-		return view.getModel();
-	} );
+	var dmAnnotations = this.beforePasteAnnotationsAtFocus.map( ( view ) => view.getModel() );
 	return new ve.dm.AnnotationSet( store, store.hashAll( dmAnnotations ) );
 };
 
@@ -2888,10 +2880,9 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 	} else {
 		contextRange = pastedDocumentModel.getDocumentRange();
 	}
-	var pastedNodes = pastedDocumentModel.selectNodes( contextRange, 'siblings' ).filter( ( node ) => {
+	var pastedNodes = pastedDocumentModel.selectNodes( contextRange, 'siblings' )
 		// Ignore nodes where nothing is selected
-		return !( node.range && node.range.isCollapsed() );
-	} );
+		.filter( ( node ) => !( node.range && node.range.isCollapsed() ) );
 
 	// Unwrap single content branch nodes to match internal copy/paste behaviour
 	// (which wouldn't put the open and close tags in the clipboard to begin with).
@@ -3741,12 +3732,8 @@ ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) 
 				} finally {
 					this.decRenderLock();
 				}
-				insertedText = transaction.operations.some( ( op ) => {
-					return op.type === 'replace' && op.insert.length;
-				} );
-				removedText = transaction.operations.some( ( op ) => {
-					return op.type === 'replace' && op.remove.length;
-				} );
+				insertedText = transaction.operations.some( ( op ) => op.type === 'replace' && op.insert.length );
+				removedText = transaction.operations.some( ( op ) => op.type === 'replace' && op.remove.length );
 			}
 		}
 	}
@@ -4516,10 +4503,8 @@ ve.ce.Surface.prototype.getRelativeSelectableContentOffset = function ( startOff
 				// This shouldn't happen in a content offset
 				return false;
 			}
-			var noAutoFocusContainer = branchNode.traverseUpstream( ( node ) => {
-				// traverseUpstream stops on a false return
-				return node.autoFocus();
-			} );
+			// traverseUpstream stops on a false return
+			var noAutoFocusContainer = branchNode.traverseUpstream( ( node ) => node.autoFocus() );
 			if ( noAutoFocusContainer ) {
 				// Don't try to place the cursor in a node which has a container with autoFocus set to false
 				return false;
@@ -5359,9 +5344,7 @@ ve.ce.Surface.prototype.getSelectedModels = function () {
 		) );
 	}
 
-	var activeModels = this.activeAnnotations.map( ( view ) => {
-		return view.getModel();
-	} );
+	var activeModels = this.activeAnnotations.map( ( view ) => view.getModel() );
 
 	if ( this.model.sourceMode ) {
 		return models;
@@ -5525,9 +5508,7 @@ ve.ce.Surface.prototype.afterMutations = function ( mutationRecords ) {
 			}
 		} );
 	} );
-	removals.sort( ( x, y ) => {
-		return x.range.start - y.range.start;
-	} );
+	removals.sort( ( x, y ) => x.range.start - y.range.start );
 	for ( var i = 0, iLen = removals.length; i < iLen; i++ ) {
 		// Remove any overlapped range (which in a tree must be a nested range)
 		if ( i > 0 && removals[ i ].range.start < removals[ i - 1 ].range.end ) {

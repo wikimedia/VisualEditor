@@ -243,9 +243,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 			$chunk.append( $label );
 			if ( annotations ) {
 				$annotations = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' ).text(
-					'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( ( ann ) => {
-						return JSON.stringify( ann.getComparableObject() );
-					} ).join( ', ' ) + ']'
+					'[' + this.getSurface().getModel().getDocument().getStore().values( annotations ).map( ( ann ) => JSON.stringify( ann.getComparableObject() ) ).join( ', ' ) + ']'
 				);
 			}
 		}
@@ -422,12 +420,8 @@ ve.ui.DebugBar.prototype.testSquasher = function () {
 	function squashTransactions( txs ) {
 		return new ve.dm.Change(
 			0,
-			txs.map( ( tx ) => {
-				return tx.clone();
-			} ),
-			txs.map( () => {
-				return new ve.dm.HashValueStore();
-			} ),
+			txs.map( ( tx ) => tx.clone() ),
+			txs.map( () => new ve.dm.HashValueStore() ),
 			{}
 		).squash().txs;
 	}

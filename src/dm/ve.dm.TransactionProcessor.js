@@ -214,9 +214,7 @@ ve.dm.TransactionProcessor.prototype.emitQueuedEvents = function () {
 
 	function isDuplicate( otherEvent ) {
 		return otherEvent.node === event.node &&
-			otherEvent.args.every( ( arg, index ) => {
-				return arg === event.args[ index ];
-			} );
+			otherEvent.args.every( ( arg, index ) => arg === event.args[ index ] );
 	}
 
 	this.eventQueue = [];

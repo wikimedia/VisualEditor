@@ -56,9 +56,7 @@ ve.ui.CommentAnnotationContextItem.static.renderThread = function ( model ) {
 	var $thread = $( [] );
 
 	model.getAttribute( 'comments' ).forEach( ( comment ) => {
-		var $lineDivs = comment.text.split( '\n' ).map( ( line ) => {
-			return $( '<div>' ).text( line );
-		} );
+		var $lineDivs = comment.text.split( '\n' ).map( ( line ) => $( '<div>' ).text( line ) );
 		$thread = $thread.add(
 			$( '<div>' ).addClass( 've-ui-commentAnnotationContextItem-comment' ).append(
 				$( '<strong>' ).text( comment.author ),

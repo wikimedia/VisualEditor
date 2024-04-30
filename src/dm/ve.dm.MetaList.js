@@ -56,9 +56,7 @@ OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
 ve.dm.MetaList.prototype.onNodeAttached = function ( node ) {
 	var offsetPath = node.getOffsetPath();
 	if ( node instanceof ve.dm.MetaItem ) {
-		var i = OO.binarySearch( this.items, ( other ) => {
-			return ve.compareTuples( offsetPath, other.getOffsetPath() );
-		}, true );
+		var i = OO.binarySearch( this.items, ( other ) => ve.compareTuples( offsetPath, other.getOffsetPath() ), true );
 		this.items.splice( i, 0, node );
 		this.emit( 'insert', node );
 	}
@@ -94,9 +92,7 @@ ve.dm.MetaList.prototype.indexOf = function ( item, group ) {
  * @return {ve.dm.MetaItem[]} Array of items in the group (shallow copy)
  */
 ve.dm.MetaList.prototype.getItemsInGroup = function ( group ) {
-	return this.items.filter( ( item ) => {
-		return item.getGroup() === group;
-	} );
+	return this.items.filter( ( item ) => item.getGroup() === group );
 };
 
 /**

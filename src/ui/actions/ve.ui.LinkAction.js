@@ -46,12 +46,10 @@ ve.ui.LinkAction.static.methods = [ 'autolinkUrl' ];
  *   executed; otherwise false.
  */
 ve.ui.LinkAction.prototype.autolinkUrl = function () {
-	return this.autolink( ( linktext ) => {
-		// Make sure we still have a real URL after trail removal, and not
-		// a bare protocol (or no protocol at all, if we stripped the last
-		// colon from the protocol)
-		return ve.ui.LinkAction.static.autolinkRegExp.test( linktext );
-	} );
+	// Make sure we still have a real URL after trail removal, and not
+	// a bare protocol (or no protocol at all, if we stripped the last
+	// colon from the protocol)
+	return this.autolink( ( linktext ) => ve.ui.LinkAction.static.autolinkRegExp.test( linktext ) );
 };
 
 /**

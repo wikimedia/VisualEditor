@@ -136,24 +136,22 @@
 	 */
 	ve.init.sa.SafeStorage.prototype.clearExpired = function () {
 		var storage = this;
-		return this.getExpiryKeys().then( ( keys ) => {
-			return $.Deferred( ( d ) => {
-				requestIdleCallback( function iterate( deadline ) {
-					while ( keys[ 0 ] !== undefined && deadline.timeRemaining() > MIN_WORK_TIME ) {
-						var key = keys.shift();
-						if ( storage.isExpired( key ) ) {
-							storage.remove( key );
-						}
+		return this.getExpiryKeys().then( ( keys ) => $.Deferred( ( d ) => {
+			requestIdleCallback( function iterate( deadline ) {
+				while ( keys[ 0 ] !== undefined && deadline.timeRemaining() > MIN_WORK_TIME ) {
+					var key = keys.shift();
+					if ( storage.isExpired( key ) ) {
+						storage.remove( key );
 					}
-					if ( keys[ 0 ] !== undefined ) {
-						// Ran out of time with keys still to remove, continue later
-						requestIdleCallback( iterate );
-					} else {
-						return d.resolve();
-					}
-				} );
+				}
+				if ( keys[ 0 ] !== undefined ) {
+					// Ran out of time with keys still to remove, continue later
+					requestIdleCallback( iterate );
+				} else {
+					return d.resolve();
+				}
 			} );
-		} );
+		} ) );
 	};
 
 	/**

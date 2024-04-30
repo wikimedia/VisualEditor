@@ -55,9 +55,7 @@ ve.init.Platform.static.deferredPlatform = ve.createDeferred();
  *
  * @property {jQuery.Promise}
  */
-ve.init.Platform.static.initializedPromise = ve.init.Platform.static.deferredPlatform.promise().then( ( platform ) => {
-	return platform.getInitializedPromise();
-} );
+ve.init.Platform.static.initializedPromise = ve.init.Platform.static.deferredPlatform.promise().then( ( platform ) => platform.getInitializedPromise() );
 
 /* Static Methods */
 

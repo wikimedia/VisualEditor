@@ -208,9 +208,7 @@ ve.promiseAll = function ( promises ) {
  * @return {HTMLElement[]} Copy of domElements with copies of each element
  */
 ve.copyDomElements = function ( domElements, doc ) {
-	return domElements.map( ( domElement ) => {
-		return doc ? doc.importNode( domElement, true ) : domElement.cloneNode( true );
-	} );
+	return domElements.map( ( domElement ) => doc ? doc.importNode( domElement, true ) : domElement.cloneNode( true ) );
 };
 
 /**
@@ -786,9 +784,7 @@ ve.filterMetaElements = function ( contents ) {
 	// As of jQuery 3 we can't use $.not( 'tagName' ) as that doesn't
 	// match text nodes. Also we can't $.remove these elements as they
 	// aren't attached to anything.
-	contents = contents.filter( ( node ) => {
-		return node.tagName !== 'LINK' && node.tagName !== 'STYLE';
-	} );
+	contents = contents.filter( ( node ) => node.tagName !== 'LINK' && node.tagName !== 'STYLE' );
 	// Also remove link and style tags nested inside other tags
 	$( contents ).find( 'link, style' ).remove();
 	return contents;

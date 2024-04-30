@@ -149,9 +149,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 								// 'checkCommand' is not available
 								return;
 							}
-							triggerList = command.shortcuts.map( ( shortcut ) => {
-								return new ve.ui.Trigger( shortcut, true );
-							} );
+							triggerList = command.shortcuts.map( ( shortcut ) => new ve.ui.Trigger( shortcut, true ) );
 						}
 					}
 

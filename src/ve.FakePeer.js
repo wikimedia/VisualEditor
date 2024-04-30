@@ -42,9 +42,7 @@ ve.FakePeer.prototype.callHandlers = function ( type ) {
 };
 
 ve.FakePeer.prototype.connect = function ( id ) {
-	var peer = this.constructor.static.peers.find( ( peerI ) => {
-		return peerI.id === id;
-	} );
+	var peer = this.constructor.static.peers.find( ( peerI ) => peerI.id === id );
 	if ( !peer ) {
 		throw new Error( 'Unknown id: ' + id );
 	}

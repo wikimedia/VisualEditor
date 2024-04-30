@@ -435,35 +435,30 @@ ve.ui.Trigger.prototype.getMessage = function ( explode ) {
 
 	// Platform mappings
 	if ( hasOwn.call( platformMapping, platform ) ) {
-		keys = keys.map( ( key ) => {
-			return hasOwn.call( platformMapping[ platform ], key ) ? platformMapping[ platform ][ key ] : key;
-		} );
+		keys = keys.map( ( key ) => hasOwn.call( platformMapping[ platform ], key ) ? platformMapping[ platform ][ key ] : key );
 	}
 
-	// i18n
-	keys = keys.map( ( key ) => {
-		// The following messages are used here:
-		// * visualeditor-key-alt
-		// * visualeditor-key-backspace
-		// * visualeditor-key-ctrl
-		// * visualeditor-key-delete
-		// * visualeditor-key-down
-		// * visualeditor-key-end
-		// * visualeditor-key-enter
-		// * visualeditor-key-escape
-		// * visualeditor-key-home
-		// * visualeditor-key-insert
-		// * visualeditor-key-left
-		// * visualeditor-key-meta
-		// * visualeditor-key-page-down
-		// * visualeditor-key-page-up
-		// * visualeditor-key-right
-		// * visualeditor-key-shift
-		// * visualeditor-key-space
-		// * visualeditor-key-tab
-		// * visualeditor-key-up
-		return translatableKeys.indexOf( key ) !== -1 ? ve.msg( 'visualeditor-key-' + key ) : key.toUpperCase();
-	} );
+	// The following messages are used here:
+	// * visualeditor-key-alt
+	// * visualeditor-key-backspace
+	// * visualeditor-key-ctrl
+	// * visualeditor-key-delete
+	// * visualeditor-key-down
+	// * visualeditor-key-end
+	// * visualeditor-key-enter
+	// * visualeditor-key-escape
+	// * visualeditor-key-home
+	// * visualeditor-key-insert
+	// * visualeditor-key-left
+	// * visualeditor-key-meta
+	// * visualeditor-key-page-down
+	// * visualeditor-key-page-up
+	// * visualeditor-key-right
+	// * visualeditor-key-shift
+	// * visualeditor-key-space
+	// * visualeditor-key-tab
+	// * visualeditor-key-up
+	keys = keys.map( ( key ) => translatableKeys.indexOf( key ) !== -1 ? ve.msg( 'visualeditor-key-' + key ) : key.toUpperCase() );
 
 	// Concatenation
 	if ( explode ) {

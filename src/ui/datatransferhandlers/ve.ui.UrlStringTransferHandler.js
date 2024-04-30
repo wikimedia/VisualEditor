@@ -96,9 +96,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 			// links with the comment information if you can find a
 			// spec for how it should be done.
 			links = data.replace( /^#.*(\r\n?|\n|$)/mg, '' ).trim()
-				.split( /[\r\n]+/g ).map( ( line ) => {
-					return { href: line };
-				} );
+				.split( /[\r\n]+/g ).map( ( line ) => ( { href: line } ) );
 			// Support: Chrome
 			// When Chrome uses this mime type the link titles can
 			// be extracted from the 'text/html' version of the item.
@@ -107,9 +105,7 @@ ve.ui.UrlStringTransferHandler.prototype.process = function () {
 				var html = this.item.data.htmlStringData;
 				var doc = ve.createDocumentFromHtml( html );
 				links = $.makeArray( doc.querySelectorAll( 'a[href]' ) )
-					.map( ( a ) => {
-						return { href: a.href, title: a.textContent };
-					} );
+					.map( ( a ) => ( { href: a.href, title: a.textContent } ) );
 			}
 			break;
 

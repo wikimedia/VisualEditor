@@ -70,9 +70,7 @@ ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter 
 	} else {
 		// Real comment node
 		// Encode & - > (see T95040, T144708)
-		var data = dataElement.attributes.text.replace( /[-&>]/g, ( c ) => {
-			return '&#x' + c.charCodeAt( 0 ).toString( 16 ).toUpperCase() + ';';
-		} );
+		var data = dataElement.attributes.text.replace( /[-&>]/g, ( c ) => '&#x' + c.charCodeAt( 0 ).toString( 16 ).toUpperCase() + ';' );
 		return [ doc.createComment( data ) ];
 	}
 };
