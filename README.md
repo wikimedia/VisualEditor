@@ -25,5 +25,5 @@ VisualEditor.
 [VisualEditor]:      https://www.mediawiki.org/wiki/VisualEditor
 [CONTRIBUTING.md]:   CONTRIBUTING.md
 [API documentation]: https://doc.wikimedia.org/visualeditor-standalone/master/
-[Coverage]:          https://doc.wikimedia.org/cover/visualeditor-standalone/
+[Code coverage]:     https://doc.wikimedia.org/cover/visualeditor-standalone/
 [Gerrit]:            https://www.mediawiki.org/wiki/Developer_account
