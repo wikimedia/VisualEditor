@@ -29,14 +29,19 @@ ve.ce.TestOffset = function VeCeTestOffset( direction, offset ) {
 };
 
 /**
+ * @typedef {Object} OffsetInfo
+ * @memberof ve.ce.TestOffset
+ * @property {number} [consumed] The number of code units consumed (if n out of range)
+ * @property {Node} [node] The node containing the offset (if n in range)
+ * @property {number} [offset] The offset in code units / child elements (if n in range)
+ * @property {string} [slice] String representation of the offset position (if n in range)
+ */
+
+/**
  * Calculate the offset from each end of a particular HTML string
  *
  * @param {Node} node The DOM node with respect to which the offset is resolved
- * @return {Object} Offset information
- * @return {number} [return.consumed] The number of code units consumed (if n out of range)
- * @return {Node} [return.node] The node containing the offset (if n in range)
- * @return {number} [return.offset] The offset in code units / child elements (if n in range)
- * @return {string} [return.slice] String representation of the offset position (if n in range)
+ * @return {ve.ce.TestOffset.OffsetInfo} Offset information
  */
 ve.ce.TestOffset.prototype.resolve = function ( node ) {
 	var reversed = ( this.direction !== 'forward' );
@@ -55,7 +60,7 @@ ve.ce.TestOffset.static = {};
  * @param {Node} node
  * @param {number} n Offset
  * @param {boolean} reversed
- * @return {Object} Offset information
+ * @return {ve.ce.TestOffset.OffsetInfo} Offset information
  */
 ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	if ( node.nodeType === node.TEXT_NODE ) {

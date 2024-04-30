@@ -32,15 +32,20 @@ OO.initClass( ve.dm.RebaseDocState );
 /* Static Methods */
 
 /**
+ * @typedef {Object} AuthorData
+ * @memberof ve.dm.RebaseDocState
+ * @property {string} name
+ * @property {string} color
+ * @property {number} rejections Number of unacknowledged rejections
+ * @property {ve.dm.Change|null} continueBase Continue base
+ * @property {string} token Secret token for usurping sessions
+ * @property {boolean} active Whether the author is active
+ */
+
+/**
  * Get new empty author data object
  *
- * @return {Object} New empty author data object
- * @return {string} return.name
- * @return {string} return.color
- * @return {number} return.rejections Number of unacknowledged rejections
- * @return {ve.dm.Change|null} return.continueBase Continue base
- * @return {string} return.token Secret token for usurping sessions
- * @return {boolean} return.active Whether the author is active
+ * @return {ve.dm.RebaseDocState.AuthorData} New empty author data object
  */
 ve.dm.RebaseDocState.static.newAuthorData = function () {
 	return {
