@@ -245,14 +245,14 @@ ve.dm.example.createExampleDocumentFromData = function ( data, store, base ) {
  * Looks up a value in a node tree.
  *
  * @param {ve.Node} root Root node to lookup from
- * @param {...number} [paths] Index path
+ * @param {...number} [indexes] Index path
  * @return {ve.Node} Node at given path
  */
-ve.dm.example.lookupNode = function ( root ) {
+ve.dm.example.lookupNode = function ( root, ...indexes ) {
 	var node = root;
-	for ( var i = 1; i < arguments.length; i++ ) {
-		node = node.children[ arguments[ i ] ];
-	}
+	indexes.forEach( ( index ) => {
+		node = node.children[ index ];
+	} );
 	return node;
 };
 

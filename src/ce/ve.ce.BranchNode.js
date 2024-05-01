@@ -181,10 +181,10 @@ ve.ce.BranchNode.prototype.onModelUpdate = function ( transaction ) {
  * mirror of its model.
  *
  * @param {number} index Index to remove and or insert nodes at
- * @param {number} howmany Number of nodes to remove
- * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
+ * @param {number} deleteCount Number of nodes to remove
+ * @param {...ve.dm.BranchNode} [modelNodes] Variadic list of nodes to insert
  */
-ve.ce.BranchNode.prototype.onSplice = function ( index ) {
+ve.ce.BranchNode.prototype.onSplice = function ( index, deleteCount, ...modelNodes ) {
 	// attachedRoot and doc can be undefined in tests
 	var dmDoc = this.getModel().getDocument(),
 		attachedRoot = dmDoc && dmDoc.attachedRoot,
@@ -197,44 +197,40 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 		upstreamOfAttachedRoot = attachedRoot.collectUpstream();
 	}
 
-	var i, length;
-	var args = [];
-	for ( i = 0, length = arguments.length; i < length; i++ ) {
-		args.push( arguments[ i ] );
-	}
 	// Convert models to views and attach them to this node
-	if ( args.length >= 3 ) {
-		for ( i = 2, length = args.length; i < length; i++ ) {
-			if (
-				isAllAttached || inAttachedRoot || upstreamOfAttachedRoot.indexOf( args[ i ] ) !== -1 ||
-				// HACK: An internal item node was requested directly, e.g. for preview (T228070)
-				// TODO: Come up with a more explict way to skip the UnrenderedNode optimisation.
-				args[ i ].findParent( ve.dm.InternalItemNode )
-			) {
-				args[ i ] = ve.ce.nodeFactory.createFromModel( args[ i ] );
-				args[ i ].model.connect( this, { update: 'onModelUpdate' } );
-			} else {
-				args[ i ] = new ve.ce.UnrenderedNode( args[ i ] );
-			}
+	const viewNodes = modelNodes.map( ( model ) => {
+		let view;
+		if (
+			isAllAttached || inAttachedRoot || upstreamOfAttachedRoot.indexOf( model ) !== -1 ||
+			// HACK: An internal item node was requested directly, e.g. for preview (T228070)
+			// TODO: Come up with a more explict way to skip the UnrenderedNode optimisation.
+			model.findParent( ve.dm.InternalItemNode )
+		) {
+			view = ve.ce.nodeFactory.createFromModel( model );
+			view.model.connect( this, { update: 'onModelUpdate' } );
+		} else {
+			view = new ve.ce.UnrenderedNode( model );
 		}
-	}
-	var removals = this.children.splice.apply( this.children, args );
-	for ( i = 0, length = removals.length; i < length; i++ ) {
-		removals[ i ].model.disconnect( this, { update: 'onModelUpdate' } );
+		return view;
+	} );
+	var removals = this.children.splice( index, deleteCount, ...viewNodes );
+	removals.forEach( ( view ) => {
+		view.model.disconnect( this, { update: 'onModelUpdate' } );
 		// Stop child listening to its model (e.g. for splice event)
-		removals[ i ].model.disconnect( removals[ i ] );
-		removals[ i ].setLive( false );
-		removals[ i ].detach();
-		removals[ i ].$element.detach();
+		view.model.disconnect( view );
+		view.setLive( false );
+		view.detach();
+		view.$element.detach();
 		// And fare thee weel a while
-		removals[ i ].destroy();
-	}
-	if ( args.length >= 3 ) {
+		view.destroy();
+	} );
+	var i;
+	if ( viewNodes.length ) {
 		var fragment = document.createDocumentFragment();
-		for ( i = args.length - 1; i >= 2; i-- ) {
-			args[ i ].attach( this );
-			for ( var j = args[ i ].$element.length - 1; j >= 0; j-- ) {
-				fragment.insertBefore( args[ i ].$element[ j ], fragment.childNodes[ 0 ] || null );
+		for ( i = viewNodes.length - 1; i >= 0; i-- ) {
+			viewNodes[ i ].attach( this );
+			for ( var j = viewNodes[ i ].$element.length - 1; j >= 0; j-- ) {
+				fragment.insertBefore( viewNodes[ i ].$element[ j ], fragment.childNodes[ 0 ] || null );
 			}
 		}
 		if ( fragment.childNodes.length ) {
@@ -245,9 +241,9 @@ ve.ce.BranchNode.prototype.onSplice = function ( index ) {
 				position.node.children[ position.offset ] || null
 			);
 		}
-		for ( i = args.length - 1; i >= 2; i-- ) {
-			if ( this.live !== args[ i ].isLive() ) {
-				args[ i ].setLive( this.live );
+		for ( i = viewNodes.length - 1; i >= 0; i-- ) {
+			if ( this.live !== viewNodes[ i ].isLive() ) {
+				viewNodes[ i ].setLive( this.live );
 			}
 		}
 	}

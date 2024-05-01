@@ -54,9 +54,8 @@
 	 * @param {...string} keys
 	 * @param {Mixed} value
 	 */
-	function addType( obj ) {
-		var keys = Array.prototype.slice.call( arguments, 1, -1 ),
-			value = arguments[ arguments.length - 1 ],
+	function addType( obj, ...keys ) {
+		var value = keys.pop(),
 			o = obj;
 
 		var i, len;
@@ -80,9 +79,8 @@
 	 * @param {...string} keys
 	 * @param {Mixed} value to remove
 	 */
-	function removeType( obj ) {
-		var keys = Array.prototype.slice.call( arguments, 1, -1 ),
-			value = arguments[ arguments.length - 1 ],
+	function removeType( obj, ...keys ) {
+		var value = keys.pop(),
 			arr = ve.getProp.apply( obj, [ obj ].concat( keys ) );
 
 		if ( arr ) {
