@@ -17,14 +17,14 @@ ve.debug = true;
 /**
  * Logs data to the console.
  *
- * @param {...Mixed} [data] Data to log
+ * @param {...any} [data] Data to log
  */
 ve.log = console.log;
 
 /**
  * Logs error to the console.
  *
- * @param {...Mixed} [data] Data to log
+ * @param {...any} [data] Data to log
  */
 ve.error = console.error;
 

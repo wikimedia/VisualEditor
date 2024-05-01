@@ -36,8 +36,6 @@
 				"OO.": "https://doc.wikimedia.org/oojs/master/{type}.html"
 			},
 			"linkMap": {
-				"Mixed": "#",
-
 				"Array": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
 				"Error": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
 				"Object": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",

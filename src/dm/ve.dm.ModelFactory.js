@@ -27,7 +27,7 @@ OO.inheritClass( ve.dm.ModelFactory, OO.Factory );
  * Create a new item from a model element
  *
  * @param {Object} element Model element
- * @param {...Mixed} [args] Arguments to pass to the constructor
+ * @param {...any} [args] Arguments to pass to the constructor
  * @return {ve.dm.Model} Model constructed from element
  * @throws {Error} Element must have a .type property
  */

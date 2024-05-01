@@ -32,8 +32,8 @@ ve.dm.Node = function VeDmNode( element ) {
 /**
  * @event ve.dm.Node#attributeChange
  * @param {string} key
- * @param {Mixed} oldValue
- * @param {Mixed} newValue
+ * @param {any} oldValue
+ * @param {any} newValue
  */
 
 /**

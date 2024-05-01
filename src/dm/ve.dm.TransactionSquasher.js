@@ -89,8 +89,8 @@ OO.initClass( ve.dm.TransactionSquasher );
 /**
  * Test whether two linmod items have equal values
  *
- * @param {Mixed} item1 A data item
- * @param {Mixed} item2 Another data item
+ * @param {any} item1 A data item
+ * @param {any} item2 Another data item
  * @return {boolean} Whether the items have equal values
  */
 ve.dm.TransactionSquasher.static.equalItems = function ( item1, item2 ) {
@@ -380,8 +380,8 @@ ve.dm.TransactionSquasher.prototype.processInsert = function ( items ) {
  *
  * @private
  * @param {string} key The attribute key
- * @param {Mixed} from The old value
- * @param {Mixed} to The new value
+ * @param {any} from The old value
+ * @param {any} to The new value
  */
 ve.dm.TransactionSquasher.prototype.processAttribute = function ( key, from, to ) {
 	this.normalizePosition();
@@ -421,8 +421,8 @@ ve.dm.TransactionSquasher.prototype.processAttribute = function ( key, from, to 
  * @private
  * @param {Object} openElement The open element
  * @param {string} key The attribute name
- * @param {Mixed} from Old value, or undefined if the attribute is being created
- * @param {Mixed} to New value, or undefined if the attribute is being removed
+ * @param {any} from Old value, or undefined if the attribute is being created
+ * @param {any} to New value, or undefined if the attribute is being removed
  */
 ve.dm.TransactionSquasher.prototype.changeElement = function ( openElement, key, from, to ) {
 	if ( !openElement.attributes ) {

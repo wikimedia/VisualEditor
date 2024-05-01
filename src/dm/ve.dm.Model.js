@@ -419,7 +419,7 @@ ve.dm.Model.prototype.getType = function () {
  * Return value is by reference if array or object.
  *
  * @param {string} key Name of attribute to get
- * @return {Mixed} Value of attribute, or undefined if no such attribute exists
+ * @return {any} Value of attribute, or undefined if no such attribute exists
  */
 ve.dm.Model.prototype.getAttribute = function ( key ) {
 	return this.element && this.element.attributes ? this.element.attributes[ key ] : undefined;

@@ -510,7 +510,7 @@ ve.dm.ElementLinearData.prototype.setAnnotationHashesAtOffset = function ( offse
  *
  * @param {number} offset Offset to set/unset attribute at
  * @param {string} key Attribute name
- * @param {Mixed} value Value to set, or undefined to unset
+ * @param {any} value Value to set, or undefined to unset
  */
 ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key, value ) {
 	if ( !this.isElementData( offset ) ) {
@@ -866,7 +866,7 @@ ve.dm.ElementLinearData.prototype.getSourceText = function ( range ) {
  * @param {number} distance Number of valid offsets to move
  * @param {Function} callback Function to call to check if an offset is valid which will be
  * given initial argument of offset
- * @param {...Mixed} [args] Additional arguments to pass to the callback
+ * @param {...any} [args] Additional arguments to pass to the callback
  * @return {number} Relative valid offset or -1 if there are no valid offsets in data
  */
 ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {

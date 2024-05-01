@@ -253,7 +253,7 @@ ve.dm.Change.static.deserializeValue = function ( serialized, unsafe ) {
  *
  * @param {ve.dm.Transaction} transactionA Transaction A
  * @param {ve.dm.Transaction} transactionB Transaction B, with the same document start state
- * @return {Mixed[]} [ aRebasedOntoB, bRebasedOntoA ], or [ null, null ] if conflicting
+ * @return {any[]} [ aRebasedOntoB, bRebasedOntoA ], or [ null, null ] if conflicting
  */
 ve.dm.Change.static.rebaseTransactions = function ( transactionA, transactionB ) {
 	transactionA = transactionA.clone();

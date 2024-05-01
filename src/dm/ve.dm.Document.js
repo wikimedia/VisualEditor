@@ -1770,7 +1770,7 @@ ve.dm.Document.prototype.getDir = function () {
  * such as InternalList's nextUniqueNumber.
  *
  * @param {string|Object} [keyOrStorage] Key, or storage object to restore
- * @param {Mixed} [value] Serializable value, if key is set
+ * @param {any} [value] Serializable value, if key is set
  * @fires ve.dm.Document#storage
  */
 ve.dm.Document.prototype.setStorage = function ( keyOrStorage, value ) {
@@ -1786,7 +1786,7 @@ ve.dm.Document.prototype.setStorage = function ( keyOrStorage, value ) {
  * Get a value from the persistent static storage, or the whole store
  *
  * @param {string} [key] Key
- * @return {Mixed|Object} Value at key, or whole storage object if key not provided
+ * @return {any|Object} Value at key, or whole storage object if key not provided
  */
 ve.dm.Document.prototype.getStorage = function ( key ) {
 	if ( key ) {

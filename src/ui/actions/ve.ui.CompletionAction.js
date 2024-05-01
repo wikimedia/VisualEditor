@@ -148,7 +148,7 @@ ve.ui.CompletionAction.prototype.getSequenceLength = function () {
  * Make a menu item for a given suggestion
  *
  * @protected
- * @param  {Mixed} suggestion Suggestion data, string by default
+ * @param  {any} suggestion Suggestion data, string by default
  * @return {OO.ui.MenuOptionWidget}
  */
 ve.ui.CompletionAction.prototype.getMenuItemForSuggestion = function ( suggestion ) {
@@ -178,9 +178,9 @@ ve.ui.CompletionAction.prototype.updateMenuItems = function ( menuItems ) {
  * input to the list if alwaysIncludeInput and there wasn't an exact match.
  *
  * @protected
- * @param  {Mixed[]} suggestions List of valid completions, strings by default
+ * @param  {any[]} suggestions List of valid completions, strings by default
  * @param  {string} input Input to filter the suggestions to
- * @return {Mixed[]}
+ * @return {any[]}
  */
 ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggestions, input ) {
 	input = input.trim();
@@ -206,7 +206,7 @@ ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggesti
 /**
  * Compare a suggestion to the normalized user input (lower case)
  *
- * @param {Mixed} suggestion Suggestion data, string by default
+ * @param {any} suggestion Suggestion data, string by default
  * @param {string} normalizedInput Noramlized user input
  * @return {Object} Match object, containing two booleans, `isMatch` and `isExact`
  */
@@ -222,7 +222,7 @@ ve.ui.CompletionAction.prototype.compareSuggestionToInput = function ( suggestio
  * Create a suggestion from an input
  *
  * @param {string} input User input
- * @return {Mixed} Suggestion data, string by default
+ * @return {any} Suggestion data, string by default
  */
 ve.ui.CompletionAction.prototype.createSuggestion = function ( input ) {
 	return input;

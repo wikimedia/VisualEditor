@@ -192,7 +192,7 @@ ve.dm.TransactionProcessor.prototype.rollbackModifications = function () {
  * @private
  * @param {ve.dm.Node} node
  * @param {string} event Event name
- * @param {...Mixed} [args] Additional arguments to be passed to the event when fired
+ * @param {...any} [args] Additional arguments to be passed to the event when fired
  */
 ve.dm.TransactionProcessor.prototype.queueEvent = function ( node ) {
 	var args = Array.prototype.slice.call( arguments, 1 );
@@ -301,7 +301,7 @@ ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
  *
  * @param {number} offset Offset in data array (unadjusted)
  * @param {string} key Attribute name
- * @param {Mixed} value New attribute value
+ * @param {any} value New attribute value
  */
 ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, value ) {
 	var data = this.document.data;
@@ -366,8 +366,8 @@ ve.dm.TransactionProcessor.processors.retain = function ( op ) {
  *
  * @param {Object} op Operation object
  * @param {string} op.key Attribute name
- * @param {Mixed} op.from Old attribute value, or undefined if not previously set
- * @param {Mixed} op.to New attribute value, or undefined to unset
+ * @param {any} op.from Old attribute value, or undefined if not previously set
+ * @param {any} op.to New attribute value, or undefined to unset
  */
 ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
 	if ( !this.document.data.isElementData( this.cursor ) ) {

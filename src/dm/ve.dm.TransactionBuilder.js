@@ -239,7 +239,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
  * @static
  * @param {ve.dm.Document} doc Document in pre-transaction state
  * @param {number} offset Offset of element
- * @param {Object.<string,Mixed>} attr List of attribute key and value pairs, use undefined value
+ * @param {Object.<string,any>} attr List of attribute key and value pairs, use undefined value
  *  to remove an attribute
  * @return {ve.dm.Transaction} Transaction that changes an element
  * @throws {Error} Cannot set attributes to non-element data
@@ -852,8 +852,8 @@ ve.dm.TransactionBuilder.prototype.pushReplacement = function ( doc, offset, rem
  * Add an element attribute change operation.
  *
  * @param {string} key Name of attribute to change
- * @param {Mixed} from Value change attribute from, or undefined if not previously set
- * @param {Mixed} to Value to change attribute to, or undefined to remove
+ * @param {any} from Value change attribute from, or undefined if not previously set
+ * @param {any} to Value to change attribute to, or undefined to remove
  */
 ve.dm.TransactionBuilder.prototype.pushReplaceElementAttribute = function ( key, from, to ) {
 	this.transaction.pushAttributeOp( key, from, to );

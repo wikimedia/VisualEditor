@@ -136,7 +136,7 @@ ve.init.Platform.prototype.notify = null;
  *
  * @abstract
  * @param {string|string[]} key Config key, or list of keys
- * @return {Mixed|Object} Config value, or keyed object of config values if list of keys provided
+ * @return {any|Object} Config value, or keyed object of config values if list of keys provided
  */
 ve.init.Platform.prototype.getConfig = null;
 
@@ -145,7 +145,7 @@ ve.init.Platform.prototype.getConfig = null;
  *
  * @abstract
  * @param {string|string[]} key Config key, or list of keys
- * @return {Mixed|Object} Config value, or keyed object of config values if list of keys provided
+ * @return {any|Object} Config value, or keyed object of config values if list of keys provided
  */
 ve.init.Platform.prototype.getUserConfig = null;
 
@@ -154,7 +154,7 @@ ve.init.Platform.prototype.getUserConfig = null;
  *
  * @abstract
  * @param {string|Object} keyOrValueMap Key to set value for, or object mapping keys to values
- * @param {Mixed} [value] Value to set (optional, only in use when key is a string)
+ * @param {any} [value] Value to set (optional, only in use when key is a string)
  */
 ve.init.Platform.prototype.setUserConfig = null;
 
@@ -209,7 +209,7 @@ ve.init.Platform.prototype.addMessages = null;
  *
  * @abstract
  * @param {string} key Message key
- * @param {...Mixed} [args] List of arguments which will be injected at $1, $2, etc. in the message
+ * @param {...any} [args] List of arguments which will be injected at $1, $2, etc. in the message
  * @return {string} Localized message, or key or '<' + key + '>' if message not found
  */
 ve.init.Platform.prototype.getMessage = null;
@@ -246,7 +246,7 @@ ve.init.Platform.prototype.formatNumber = null;
  *
  * @abstract
  * @param {string} key Message key
- * @param {...Mixed} [args] List of arguments which will be injected at $1, $2, etc. in the message
+ * @param {...any} [args] List of arguments which will be injected at $1, $2, etc. in the message
  * @return {Node[]} Localized message, or key or '<' + key + '>' if message not found
  */
 ve.init.Platform.prototype.getHtmlMessage = null;

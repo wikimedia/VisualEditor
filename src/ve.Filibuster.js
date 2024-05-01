@@ -152,7 +152,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
  * @param {string} funcName The name of the function
  * @param {string} action The function call phase: call|return|throw
  * @param {Array} [args] The call arguments (if action === 'call')
- * @param {Mixed} [returned] The return value (if action === 'return')
+ * @param {any} [returned] The return value (if action === 'return')
  */
 ve.Filibuster.prototype.log = function ( funcName, action, args, returned ) {
 	if ( !this.active ) {

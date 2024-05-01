@@ -35,7 +35,7 @@ ve.isInstanceOfAny = function ( subject, classes ) {
  *
  * @method
  * @param {Object} obj
- * @param {...Mixed} [keys]
+ * @param {...any} [keys]
  * @return {Object|undefined} obj[arguments[1]][arguments[2]].... or undefined
  */
 ve.getProp = OO.getProp;
@@ -54,8 +54,8 @@ ve.getProp = OO.getProp;
  *
  * @method
  * @param {Object} obj
- * @param {...Mixed} [keys]
- * @param {Mixed} [value]
+ * @param {...any} [keys]
+ * @param {any} [value]
  */
 ve.setProp = OO.setProp;
 
@@ -67,7 +67,7 @@ ve.setProp = OO.setProp;
  *
  * @method
  * @param {Object} obj
- * @param {...Mixed} [keys]
+ * @param {...any} [keys]
  */
 ve.deleteProp = OO.deleteProp;
 
@@ -291,10 +291,10 @@ ve.isEmptyObject = $.isEmptyObject;
  *
  * @method
  * @param {boolean} [recursive=false]
- * @param {Mixed} [target] Object that will receive the new properties
- * @param {...Mixed} [sources] Variadic list of objects containing properties
+ * @param {any} [target] Object that will receive the new properties
+ * @param {...any} [sources] Variadic list of objects containing properties
  * to be merged into the target.
- * @return {Mixed} Modified version of first or second argument
+ * @return {any} Modified version of first or second argument
  */
 ve.extendObject = $.extend;
 
@@ -451,7 +451,7 @@ ve.batchPush = function ( arr, data ) {
  *
  * This implementation does nothing, to add a real implementation ve.debug needs to be loaded.
  *
- * @param {...Mixed} [args] Data to log
+ * @param {...any} [args] Data to log
  */
 ve.log = ve.log || function () {
 	// Don't do anything, this is just a stub
@@ -462,7 +462,7 @@ ve.log = ve.log || function () {
  *
  * This implementation does nothing, to add a real implementation ve.debug needs to be loaded.
  *
- * @param {...Mixed} [args] Data to log
+ * @param {...any} [args] Data to log
  */
 ve.error = ve.error || function () {
 	// Don't do anything, this is just a stub
@@ -497,7 +497,7 @@ ve.deepFreeze = ve.deepFreeze || function ( obj ) {
  * Get a localized message.
  *
  * @param {string} key Message key
- * @param {...Mixed} [params] Message parameters
+ * @param {...any} [params] Message parameters
  * @return {string} Localized message
  */
 ve.msg = function () {
@@ -510,7 +510,7 @@ ve.msg = function () {
  * Get an HTML localized message with HTML or DOM arguments.
  *
  * @param {string} key Message key
- * @param {...Mixed} [params] Message parameters
+ * @param {...any} [params] Message parameters
  * @return {Node[]} Localized message
  */
 ve.htmlMsg = function () {
@@ -523,7 +523,7 @@ ve.htmlMsg = function () {
  * Get platform config value(s)
  *
  * @param {string|string[]} key Config key, or list of keys
- * @return {Mixed|Object} Config value, or keyed object of config values if list of keys provided
+ * @return {any|Object} Config value, or keyed object of config values if list of keys provided
  */
 ve.config = function () {
 	return ve.init.platform.getConfig.apply( ve.init.platform, arguments );
@@ -533,8 +533,8 @@ ve.config = function () {
  * Get or set a user config value.
  *
  * @param {string|string[]|Object} key Config key, list of keys or object mapping keys to values
- * @param {Mixed} [value] Value to set, if setting and key is a string
- * @return {Mixed|Object|boolean} Config value, keyed object of config values if list of keys provided,
+ * @param {any} [value] Value to set, if setting and key is a string
+ * @return {any|Object|boolean} Config value, keyed object of config values if list of keys provided,
  *  or success boolean if setting.
  */
 ve.userConfig = function ( key ) {
