@@ -688,8 +688,8 @@ ve.ui.Surface.prototype.getCommands = function () {
  * @param {...any} [args] Additional arguments for action
  * @return {boolean} Action or command was executed
  */
-ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
-	return this.executeWithSource.apply( this, [ triggerOrAction, method, false ].concat( Array.prototype.slice.call( arguments, 2 ) ) );
+ve.ui.Surface.prototype.execute = function ( triggerOrAction, method, ...args ) {
+	return this.executeWithSource( triggerOrAction, method, false, ...args );
 };
 
 /**
@@ -701,7 +701,7 @@ ve.ui.Surface.prototype.execute = function ( triggerOrAction, method ) {
  * @param {...any} [args] Additional arguments for action
  * @return {boolean} Action or command was executed
  */
-ve.ui.Surface.prototype.executeWithSource = function ( triggerOrAction, method, source ) {
+ve.ui.Surface.prototype.executeWithSource = function ( triggerOrAction, method, source, ...args ) {
 	if ( triggerOrAction instanceof ve.ui.Trigger ) {
 		var command = this.triggerListener.getCommandByTrigger( triggerOrAction.toString() );
 		if ( command ) {
@@ -713,7 +713,7 @@ ve.ui.Surface.prototype.executeWithSource = function ( triggerOrAction, method, 
 		if ( ve.ui.actionFactory.doesActionSupportMethod( triggerOrAction, method ) ) {
 			// Create an action object and execute the method on it
 			var obj = ve.ui.actionFactory.create( triggerOrAction, this, source );
-			var ret = obj[ method ].apply( obj, Array.prototype.slice.call( arguments, 3 ) );
+			var ret = obj[ method ]( ...args );
 			return ret === undefined || !!ret;
 		}
 	}

@@ -869,9 +869,7 @@ ve.dm.ElementLinearData.prototype.getSourceText = function ( range ) {
  * @param {...any} [args] Additional arguments to pass to the callback
  * @return {number} Relative valid offset or -1 if there are no valid offsets in data
  */
-ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
-	var args = Array.prototype.slice.call( arguments, 3 );
-
+ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback, ...args ) {
 	// If offset is already a structural offset and distance is zero than no further work is needed,
 	// otherwise distance should be 1 so that we can get out of the invalid starting offset
 	if ( distance === 0 ) {

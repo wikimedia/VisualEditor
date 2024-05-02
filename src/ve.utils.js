@@ -942,12 +942,11 @@ ve.getCommonStartSequenceLength = function ( sequences ) {
 /**
  * Find the nearest common ancestor of DOM nodes
  *
- * @param {...Node|null} DOM nodes
+ * @param {...Node|null} nodes DOM nodes
  * @return {Node|null} Nearest common ancestor; or null if there is none / an argument is null
  */
-ve.getCommonAncestor = function () {
-	var args = Array.prototype.slice.call( arguments );
-	var nodeCount = args.length;
+ve.getCommonAncestor = function ( ...nodes ) {
+	var nodeCount = nodes.length;
 	if ( nodeCount === 0 ) {
 		return null;
 	}
@@ -957,13 +956,13 @@ ve.getCommonAncestor = function () {
 	// Build every chain
 	for ( i = 0; i < nodeCount; i++ ) {
 		var chain = [];
-		node = args[ i ];
+		node = nodes[ i ];
 		while ( node !== null ) {
 			chain.unshift( node );
 			node = node.parentNode;
 		}
 		if ( chain.length === 0 ) {
-			// args[ i ] was null (so no common ancestor)
+			// nodes[ i ] was null (so no common ancestor)
 			return null;
 		}
 		if ( i > 0 && chain[ 0 ] !== chains[ chains.length - 1 ][ 0 ] ) {

@@ -26,8 +26,7 @@ OO.inheritClass( ve.dm.SourceSurfaceFragment, ve.dm.SurfaceFragment );
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
-	var args = arguments,
-		text = this.getText( true );
+	var text = this.getText( true );
 
 	this.pushPending( this.convertFromSource( text ).then( ( selectionDocument ) => {
 		var tempSurfaceModel = new ve.dm.Surface( selectionDocument );
@@ -35,7 +34,7 @@ ve.dm.SourceSurfaceFragment.prototype.annotateContent = function () {
 			// TODO: Find content offsets
 			selectionDocument.getDocumentRange()
 		);
-		tempFragment.annotateContent.apply( tempFragment, args );
+		tempFragment.annotateContent.apply( tempFragment, arguments );
 
 		this.clearPending();
 		this.insertDocument( tempFragment.getDocument() );
@@ -57,8 +56,7 @@ ve.dm.SourceSurfaceFragment.prototype.getAnnotations = function () {
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
-	var args = arguments,
-		text = this.getText( true );
+	var text = this.getText( true );
 
 	this.pushPending( this.convertFromSource( text ).then( ( selectionDocument ) => {
 		var tempSurfaceModel = new ve.dm.Surface( selectionDocument );
@@ -66,7 +64,7 @@ ve.dm.SourceSurfaceFragment.prototype.convertNodes = function () {
 			// TODO: Find content offsets
 			selectionDocument.getDocumentRange()
 		);
-		tempFragment.convertNodes.apply( tempFragment, args );
+		tempFragment.convertNodes.apply( tempFragment, arguments );
 
 		this.clearPending();
 		this.insertDocument( tempFragment.getDocument() );

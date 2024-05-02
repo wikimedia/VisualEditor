@@ -37,8 +37,8 @@ ve.dm.BranchNode = function VeDmBranchNode( element, children ) {
  * @event ve.dm.BranchNode#splice
  * @see #method-splice
  * @param {number} index
- * @param {number} howmany
- * @param {ve.dm.BranchNode} [childModel]
+ * @param {number} deleteCount
+ * @param {...ve.dm.BranchNode} [nodes]
  */
 
 /* Inheritance */
@@ -101,33 +101,28 @@ ve.dm.BranchNode.prototype.shift = function () {
  * Add and/or remove child nodes at an offset.
  *
  * @param {number} index Index to remove and or insert nodes at
- * @param {number} howmany Number of nodes to remove
+ * @param {number} deleteCount Number of nodes to remove
  * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
  * @fires ve.dm.BranchNode#splice
  * @return {ve.dm.BranchNode[]} Removed nodes
  */
-ve.dm.BranchNode.prototype.splice = function () {
-	var args = Array.prototype.slice.call( arguments ),
-		diff = 0;
+ve.dm.BranchNode.prototype.splice = function ( index, deleteCount, ...nodes ) {
+	var diff = 0;
 
-	var i, length;
-	var removals = this.children.splice.apply( this.children, args );
-	for ( i = 0, length = removals.length; i < length; i++ ) {
-		removals[ i ].detach();
-		diff -= removals[ i ].getOuterLength();
-	}
+	var removals = this.children.splice( index, deleteCount, ...nodes );
+	removals.forEach( ( node ) => {
+		node.detach();
+		diff -= node.getOuterLength();
+	} );
 
-	if ( args.length >= 3 ) {
-		length = args.length;
-		for ( i = 2; i < length; i++ ) {
-			args[ i ].attach( this );
-			diff += args[ i ].getOuterLength();
-		}
-	}
+	nodes.forEach( ( node ) => {
+		node.attach( this );
+		diff += node.getOuterLength();
+	} );
 
 	this.adjustLength( diff, true );
 	this.setupBlockSlugs();
-	this.emit.apply( this, [ 'splice' ].concat( args ) );
+	this.emit( 'splice', index, deleteCount, ...nodes );
 
 	return removals;
 };
