@@ -208,17 +208,11 @@ ve.dm.TransactionProcessor.prototype.queueEvent = function ( node, name, ...args
  * @private
  */
 ve.dm.TransactionProcessor.prototype.emitQueuedEvents = function () {
-	function isDuplicate( event, otherEvent ) {
-		return otherEvent.node === event.node &&
-			otherEvent.name === event.name &&
-			otherEvent.args.every( ( arg, index ) => arg === event.args[ index ] );
-	}
-
 	const queue = this.eventQueue;
 	this.eventQueue = [];
 	queue.forEach( ( event, i ) => {
 		// Check if this event is a duplicate of something we've already emitted
-		if ( !queue.slice( 0, i ).some( ( e ) => isDuplicate( event, e ) ) ) {
+		if ( !queue.slice( 0, i ).some( ( e ) => ve.compare( event, e ) ) ) {
 			event.node.emit( event.name, ...event.args );
 		}
 	} );
