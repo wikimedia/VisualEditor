@@ -1151,36 +1151,34 @@ ve.dm.Document.prototype.rebuildTree = function () {
  * @param {ve.dm.Node[]} removedNodes Removed nodes
  */
 ve.dm.Document.prototype.updateNodesByType = function ( addedNodes, removedNodes ) {
-	var doc = this;
-
-	function remove( node ) {
+	var remove = ( node ) => {
 		var type = node.getType(),
-			nodes = doc.nodesByType[ type ] || [],
+			nodes = this.nodesByType[ type ] || [],
 			index = nodes.indexOf( node );
 
 		if ( index !== -1 ) {
 			nodes.splice( index, 1 );
 			if ( !nodes.length ) {
-				delete doc.nodesByType[ type ];
+				delete this.nodesByType[ type ];
 			}
 		}
-	}
+	};
 
-	function add( node ) {
+	var add = ( node ) => {
 		var type = node.getType(),
-			nodes = doc.nodesByType[ type ] = doc.nodesByType[ type ] || [];
+			nodes = this.nodesByType[ type ] = this.nodesByType[ type ] || [];
 
 		nodes.push( node );
-	}
+	};
 
-	function traverse( nodes, action ) {
+	var traverse = ( nodes, action ) => {
 		nodes.forEach( ( node ) => {
 			if ( node.hasChildren() ) {
 				node.traverse( action );
 			}
 			action( node );
 		} );
-	}
+	};
 
 	traverse( removedNodes, remove );
 	traverse( addedNodes, add );

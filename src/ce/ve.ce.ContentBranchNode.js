@@ -234,8 +234,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			annotations: null,
 			unicorns: null
 		},
-		buffer = '',
-		node = this;
+		buffer = '';
 
 	// Source mode optimization
 	if ( this.getModel().getDocument().sourceMode ) {
@@ -248,7 +247,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		return wrapper;
 	}
 
-	function openAnnotation( annotation ) {
+	var openAnnotation = ( annotation ) => {
 		var ann;
 		annotationsChanged = true;
 		if ( buffer !== '' ) {
@@ -261,14 +260,14 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		}
 		// Create a new DOM node and descend into it
 		annotation.store = store;
-		ann = ve.ce.annotationFactory.create( annotation.getType(), annotation, node );
+		ann = ve.ce.annotationFactory.create( annotation.getType(), annotation, this );
 		ann.appendTo( current );
 		annotationStack.push( ann );
 		nodeStack.push( current );
 		current = ann.getContentContainer();
-	}
+	};
 
-	function closeAnnotation() {
+	var closeAnnotation = () => {
 		var ann;
 		annotationsChanged = true;
 		if ( buffer !== '' ) {
@@ -283,7 +282,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		ann = annotationStack.pop();
 		ann.attachContents();
 		current = nodeStack.pop();
-	}
+	};
 
 	var i, ilen;
 	// Gather annotated HTML from the child nodes

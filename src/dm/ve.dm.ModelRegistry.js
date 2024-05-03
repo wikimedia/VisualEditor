@@ -251,28 +251,25 @@
 	 */
 	ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
 		var types,
-			nodeName = node.nodeName.toLowerCase(),
-			reg = this;
+			nodeName = node.nodeName.toLowerCase();
 
-		function byRegistrationOrderDesc( a, b ) {
-			return reg.registrationOrder[ b ] - reg.registrationOrder[ a ];
-		}
+		var byRegistrationOrderDesc = ( a, b ) => this.registrationOrder[ b ] - this.registrationOrder[ a ];
 
-		function matchTypeRegExps( type, tag, withFunc ) {
+		var matchTypeRegExps = ( type, tag, withFunc ) => {
 			var matchedModels = [],
-				models = reg.modelsWithTypeRegExps[ +withFunc ];
+				models = this.modelsWithTypeRegExps[ +withFunc ];
 			for ( var j = 0; j < models.length; j++ ) {
 				if ( excludeTypes && excludeTypes.indexOf( models[ j ] ) !== -1 ) {
 					continue;
 				}
-				var matchTypes = reg.registry[ models[ j ] ].static.getMatchRdfaTypes();
+				var matchTypes = this.registry[ models[ j ] ].static.getMatchRdfaTypes();
 				for ( var k = 0; k < matchTypes.length; k++ ) {
 					if (
 						matchTypes[ k ] instanceof RegExp &&
 						matchTypes[ k ].test( type ) &&
 						(
-							( tag === '' && reg.registry[ models[ j ] ].static.matchTagNames === null ) ||
-							( reg.registry[ models[ j ] ].static.matchTagNames || [] ).indexOf( tag ) !== -1
+							( tag === '' && this.registry[ models[ j ] ].static.matchTagNames === null ) ||
+							( this.registry[ models[ j ] ].static.matchTagNames || [] ).indexOf( tag ) !== -1
 						)
 					) {
 						matchedModels.push( models[ j ] );
@@ -280,9 +277,9 @@
 				}
 			}
 			return matchedModels;
-		}
+		};
 
-		function allTypesAllowed( model ) {
+		var allTypesAllowed = ( model ) => {
 			var allowedTypes = model.static.getAllowedRdfaTypes();
 			var matchTypes = model.static.getMatchRdfaTypes();
 
@@ -312,60 +309,60 @@
 				}
 			}
 			return true;
-		}
+		};
 
-		function matchWithFunc( tag ) {
+		var matchWithFunc = ( tag ) => {
 			var queue = [],
 				queue2 = [];
 			var j;
 			for ( j = 0; j < types.length; j++ ) {
 				// Queue string matches and regexp matches separately
-				queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[ j ], tag ) || [] );
+				queue = queue.concat( ve.getProp( this.modelsByTypeAndTag, 1, types[ j ], tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
 				queue2 = queue2.concat( matchTypeRegExps( types[ j ], tag, true ) );
 			}
 			// Filter out matches which contain types which aren't allowed
-			queue = queue.filter( ( name ) => allTypesAllowed( reg.lookup( name ) ) );
-			queue2 = queue2.filter( ( name ) => allTypesAllowed( reg.lookup( name ) ) );
+			queue = queue.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
+			queue2 = queue2.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
-				queue = queue.filter( ( name ) => reg.registry[ name ].static.enableAboutGrouping );
-				queue2 = queue2.filter( ( name ) => reg.registry[ name ].static.enableAboutGrouping );
+				queue = queue.filter( ( name ) => this.registry[ name ].static.enableAboutGrouping );
+				queue2 = queue2.filter( ( name ) => this.registry[ name ].static.enableAboutGrouping );
 			}
 			// Try string matches first, then regexp matches
 			queue.sort( byRegistrationOrderDesc );
 			queue2.sort( byRegistrationOrderDesc );
 			queue = queue.concat( queue2 );
 			for ( j = 0; j < queue.length; j++ ) {
-				if ( reg.registry[ queue[ j ] ].static.matchFunction( node ) ) {
+				if ( this.registry[ queue[ j ] ].static.matchFunction( node ) ) {
 					return queue[ j ];
 				}
 			}
 			return null;
-		}
+		};
 
-		function matchWithoutFunc( tag ) {
+		var matchWithoutFunc = ( tag ) => {
 			var queue = [],
 				queue2 = [],
 				winningName = null;
 			var j;
 			for ( j = 0; j < types.length; j++ ) {
 				// Queue string and regexp matches separately
-				queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[ j ], tag ) || [] );
+				queue = queue.concat( ve.getProp( this.modelsByTypeAndTag, 0, types[ j ], tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
 				queue2 = queue2.concat( matchTypeRegExps( types[ j ], tag, false ) );
 			}
 			// Filter out matches which contain types which aren't allowed
-			queue = queue.filter( ( name ) => allTypesAllowed( reg.lookup( name ) ) );
-			queue2 = queue2.filter( ( name ) => allTypesAllowed( reg.lookup( name ) ) );
+			queue = queue.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
+			queue2 = queue2.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
 			if ( forceAboutGrouping ) {
 				// Filter out matches that don't support about grouping
-				queue = queue.filter( ( name ) => reg.registry[ name ].static.enableAboutGrouping );
-				queue2 = queue2.filter( ( name ) => reg.registry[ name ].static.enableAboutGrouping );
+				queue = queue.filter( ( name ) => this.registry[ name ].static.enableAboutGrouping );
+				queue2 = queue2.filter( ( name ) => this.registry[ name ].static.enableAboutGrouping );
 			}
 			// Only try regexp matches if there are no string matches
 			queue = queue.length > 0 ? queue : queue2;
@@ -373,13 +370,13 @@
 			for ( j = 0; j < queue.length; j++ ) {
 				if (
 					winningName === null ||
-					reg.registrationOrder[ winningName ] < reg.registrationOrder[ queue[ j ] ]
+					this.registrationOrder[ winningName ] < this.registrationOrder[ queue[ j ] ]
 				) {
 					winningName = queue[ j ];
 				}
 			}
 			return winningName;
-		}
+		};
 
 		types = [];
 		if ( node.getAttribute ) {

@@ -48,7 +48,6 @@
  * @param {string[]} eventNames List of event Names to listen to
  */
 ve.EventSequencer = function VeEventSequencer( eventNames ) {
-	var eventSequencer = this;
 	this.$node = null;
 	this.eventNames = eventNames;
 	this.eventHandlers = {};
@@ -60,11 +59,7 @@ ve.EventSequencer = function VeEventSequencer( eventNames ) {
 	 * @param {string} name The event's name
 	 * @return {Function} An event handler
 	 */
-	function makeEventHandler( name ) {
-		return function ( ev ) {
-			return eventSequencer.onEvent( name, ev );
-		};
-	}
+	var makeEventHandler = ( name ) => ( ev ) => this.onEvent( name, ev );
 
 	/**
 	 * @property {Object[]} Pending calls
