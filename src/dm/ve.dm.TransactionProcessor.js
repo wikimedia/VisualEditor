@@ -191,13 +191,13 @@ ve.dm.TransactionProcessor.prototype.rollbackModifications = function () {
  *
  * @private
  * @param {ve.dm.Node} node
- * @param {string} event Event name
+ * @param {string} name Event name
  * @param {...any} [args] Additional arguments to be passed to the event when fired
  */
-ve.dm.TransactionProcessor.prototype.queueEvent = function ( node ) {
-	var args = Array.prototype.slice.call( arguments, 1 );
+ve.dm.TransactionProcessor.prototype.queueEvent = function ( node, name, ...args ) {
 	this.eventQueue.push( {
-		node: node,
+		node,
+		name,
 		args: args.concat( this.transaction )
 	} );
 };
@@ -208,23 +208,20 @@ ve.dm.TransactionProcessor.prototype.queueEvent = function ( node ) {
  * @private
  */
 ve.dm.TransactionProcessor.prototype.emitQueuedEvents = function () {
-	var queue = this.eventQueue;
-
-	var event;
-
-	function isDuplicate( otherEvent ) {
+	function isDuplicate( event, otherEvent ) {
 		return otherEvent.node === event.node &&
+			otherEvent.name === event.name &&
 			otherEvent.args.every( ( arg, index ) => arg === event.args[ index ] );
 	}
 
+	var queue = this.eventQueue;
 	this.eventQueue = [];
-	for ( var i = 0; i < queue.length; i++ ) {
-		event = queue[ i ];
+	queue.forEach( ( event, i ) => {
 		// Check if this event is a duplicate of something we've already emitted
-		if ( !queue.slice( 0, i ).some( isDuplicate ) ) {
-			event.node.emit.apply( event.node, event.args );
+		if ( !queue.slice( 0, i ).some( ( e ) => isDuplicate( event, e ) ) ) {
+			event.node.emit( event.name, ...event.args );
 		}
-	}
+	} );
 };
 
 /**

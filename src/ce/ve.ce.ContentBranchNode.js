@@ -142,7 +142,7 @@ ve.ce.ContentBranchNode.prototype.onChildUpdate = function ( transaction ) {
 /**
  * @inheritdoc
  */
-ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
+ve.ce.ContentBranchNode.prototype.onSplice = function ( index, deleteCount, ...nodes ) {
 	// Parent method
 	ve.ce.ContentBranchNode.super.prototype.onSplice.apply( this, arguments );
 
@@ -155,7 +155,7 @@ ve.ce.ContentBranchNode.prototype.onSplice = function ( index, howmany ) {
 		this.root instanceof ve.ce.DocumentNode &&
 		this.root.getSurface().isRenderingLocked
 	) {
-		this.slugNodes.splice.apply( this.slugNodes, [ index, howmany ].concat( new Array( arguments.length - 2 ) ) );
+		this.slugNodes.splice( index, deleteCount, ...new Array( nodes.length ) );
 	}
 
 	// Rerender to make sure annotations are applied correctly
