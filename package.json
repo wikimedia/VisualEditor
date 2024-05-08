@@ -41,7 +41,7 @@
 		"grunt-tyops": "0.1.1",
 		"jsdoc": "4.0.2",
 		"jsdoc-class-hierarchy": "1.1.2",
-		"jsdoc-wmf-theme": "1.0.0",
+		"jsdoc-wmf-theme": "1.0.1",
 		"karma": "6.4.2",
 		"karma-chrome-launcher": "3.2.0",
 		"karma-coverage": "2.2.0",
