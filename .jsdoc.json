@@ -16,9 +16,9 @@
 		"plugins/markdown",
 		"node_modules/jsdoc-wmf-theme/plugins/allow-dots-in-modules",
 		"node_modules/jsdoc-wmf-theme/plugins/betterlinks",
+		"node_modules/jsdoc-wmf-theme/plugins/externals",
 		"node_modules/jsdoc-wmf-theme/plugins/summarize",
-		"node_modules/jsdoc-class-hierarchy",
-		"build/jsdoc-externals.js"
+		"node_modules/jsdoc-class-hierarchy"
 	],
 	"source": {
 		"include": [ "src", "rebaser/src" ]
