@@ -1,22 +1,32 @@
+/**
+ * @classdesc
+ * Conflict-safe storage extending a ve.init.SafeStorage instance
+ *
+ * Implements conflict handling for localStorage:
+ * Any time the storage is used and it is detected that another process has
+ * modified the underlying data, all the managed keys are restored from an
+ * in-memory cache. There is no merging of data, all managed keys are either
+ * completely overwritten, or deleted if they were not originally set.
+ *
+ * This would be namespaced ve.init.ConflictableStorage, but as a generated class
+ * it is never exported.
+ *
+ * @class ve.init.ConflictableStorage
+ * @extends ve.init.SafeStorage
+ * @hideconstructor
+ */
+
+/**
+ * Create a conflictable storage object, extending a safe storage object.
+ *
+ * @param {ve.init.SafeStorage} storage Storage class to extend
+ * @return {ve.init.ConflictableStorage} [description]
+ */
 ve.init.createConflictableStorage = function ( storage ) {
 	var conflictKey = '__conflictId';
 	var EXPIRY_PREFIX = '_EXPIRY_';
 
 	/**
-	 * Conflict-safe storage extending a ve.init.SafeStorage instance
-	 *
-	 * Implements conflict handling for localStorage:
-	 * Any time the storage is used and it is detected that another process has
-	 * modified the underlying data, all the managed keys are restored from an
-	 * in-memory cache. There is no merging of data, all managed keys are either
-	 * completely overwritten, or deleted if they were not originally set.
-	 *
-	 * This would be namespaced ve.init.ConflictableStorage, but as a generated class
-	 * it is never exported.
-	 *
-	 * @class ve.init.ConflictableStorage
-	 * @extends ve.init.SafeStorage
-	 *
 	 * @constructor
 	 * @param {Storage|undefined} store The Storage instance to wrap around
 	 */
