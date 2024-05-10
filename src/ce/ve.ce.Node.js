@@ -194,12 +194,12 @@ ve.ce.Node.prototype.isContent = function () {
 
 // eslint-disable-next-line jsdoc/require-returns
 /**
- * @see ve.Node
- *
  * If this is set to true it should implement:
  *
  *     setFocused( boolean val )
  *     boolean isFocused()
+ *
+ * @see ve.Node
  */
 ve.ce.Node.prototype.isFocusable = function () {
 	return this.model.isFocusable();

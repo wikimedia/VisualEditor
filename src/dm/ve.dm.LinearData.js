@@ -184,7 +184,7 @@ ve.dm.LinearData.prototype.splice = function ( index, deleteCount, ...elements )
  *
  * @param {number} index Splice from
  * @param {number} deleteCount Items to be removed
- * @param {...Object} [...element] Items to be inserted
+ * @param {...Object} [elements] Items to be inserted
  * @return {ve.dm.LinearData} LinearData object containing elements removed
  */
 ve.dm.LinearData.prototype.spliceObject = function ( index, deleteCount, ...elements ) {
@@ -194,7 +194,7 @@ ve.dm.LinearData.prototype.spliceObject = function ( index, deleteCount, ...elem
 /**
  * Returns ve.batchSplice of linear data
  *
- * @see ve#batchSplice
+ * @see ve.batchSplice
  * @param {number} offset
  * @param {number} remove
  * @param {Array} data
@@ -207,7 +207,7 @@ ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
 /**
  * Returns ve.batchSplice of linear data, wrapped in a LinearData object
  *
- * @see ve#batchSplice
+ * @see ve.batchSplice
  * @param {number} offset
  * @param {number} remove
  * @param {Array} data

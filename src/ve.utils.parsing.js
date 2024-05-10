@@ -197,7 +197,7 @@ ve.properInnerHtml = function ( element ) {
 /**
  * Get the actual outer HTML of a DOM node.
  *
- * @see ve#properInnerHtml
+ * @see ve.properInnerHtml
  * @param {HTMLElement} element HTML element to get outer HTML of
  * @return {string} Outer HTML
  */

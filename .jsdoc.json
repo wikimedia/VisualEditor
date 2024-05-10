@@ -40,6 +40,10 @@
 				"Error": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
 				"Object": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
 				"Promise": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+				"Set": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+
+				"OO.ui.debounce": "https://doc.wikimedia.org/oojs-ui/master/js/OO.ui.html#.debounce",
+				"OO.ui.throttle": "https://doc.wikimedia.org/oojs-ui/master/js/OO.ui.html#.throttle",
 
 				"Blob": "https://developer.mozilla.org/en-US/docs/Web/API/Blob",
 				"DataTransfer": "https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer",
@@ -52,6 +56,15 @@
 				"NodeList": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
 				"Range": "https://developer.mozilla.org/en-US/docs/Web/API/Range",
 				"Selection": "https://developer.mozilla.org/en-US/docs/Web/API/Selection",
+				"Storage": "https://developer.mozilla.org/en-US/docs/Web/API/Storage",
+				"Text": "https://developer.mozilla.org/en-US/docs/Web/API/Text",
+
+				"unicodeJS.TextString": "https://doc.wikimedia.org/unicodejs/master/js/unicodeJS.TextString.html",
+
+				"treeDiffer.Tree": "https://github.com/Tchanders/treeDiffer.js/blob/master/src/treeDiffer.Tree.js",
+				"treeDiffer.TreeNode": "https://github.com/Tchanders/treeDiffer.js/blob/master/src/treeDiffer.TreeNode.js",
+
+				"diff_match_patch": "https://github.com/edg2s/google-diff-match-patch/blob/master/javascript/diff_match_patch_uncompressed.js",
 
 				"jQuery": "http://api.jquery.com/",
 				"jQuery.Deferred": "http://api.jquery.com/jQuery.Deferred/",

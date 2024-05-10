@@ -170,13 +170,13 @@ ve.copy = OO.copy;
 
 /**
  * @method
- * @see OO.ui#debounce
+ * @see OO.ui.debounce
  */
 ve.debounce = OO.ui.debounce;
 
 /**
  * @method
- * @see OO.ui#throttle
+ * @see OO.ui.throttle
  */
 ve.throttle = OO.ui.throttle;
 
@@ -407,7 +407,7 @@ ve.sparseSplice = function ( arr, offset, remove, data ) {
  *
  * Shortcut for `ve.batchSplice( arr, offset, 0, src )`.
  *
- * @see #batchSplice
+ * @see ve.batchSplice
  * @param {Array|ve.dm.BranchNode} arr Target object (must have `splice` method)
  * @param {number} offset Offset in arr where items will be inserted
  * @param {Array} src Items to insert at offset
@@ -879,7 +879,7 @@ ve.appendToRel = function ( element, value ) {
  *
  * @param {string} s String to test
  * @return {boolean} decodeURIComponent( s ) did not throw an exception
- * @see #safeDecodeURIComponent
+ * @see ve.safeDecodeURIComponent
  */
 ve.isUriComponentValid = function ( s ) {
 	try {
@@ -898,7 +898,7 @@ ve.isUriComponentValid = function ( s ) {
  *
  * @param {string} s String to decode
  * @return {string} Decoded string, or same string if decoding failed
- * @see #isUriComponentValid
+ * @see ve.isUriComponentValid
  */
 ve.safeDecodeURIComponent = function ( s ) {
 	try {
@@ -1114,7 +1114,7 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
  * @param {Function|string} [options.noDescend] Selector or function: nodes to skip over
  * @param {Function} [options.stop] Boolean-valued ve.PositionStep test function
  * @return {ve.DomPosition} The adjacent DOM position encountered
- * @see ve#isHardCursorStep
+ * @see ve.isHardCursorStep
  */
 ve.adjacentDomPosition = function ( position, direction, options ) {
 	var node = position.node,
@@ -1221,7 +1221,7 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
  *
  * @param {ve.PositionStep} step The cursor movement step to test
  * @return {boolean} Whether the cursor movement step uses up a cursor press
- * @see ve#adjacentDomPosition
+ * @see ve.adjacentDomPosition
  */
 ve.isHardCursorStep = function ( step ) {
 	if ( step.node.nodeType === Node.TEXT_NODE ) {

@@ -9,7 +9,7 @@
  *
  * WARNING: The data parameter is passed by reference. Do not modify a data array after passing
  * it to this constructor, and do not construct multiple Documents with the same data array. If you
- * need to do these things, make a deep copy (ve#copy) of the data array and operate on the
+ * need to do these things, make a deep copy (ve.copy) of the data array and operate on the
  * copy.
  *
  * @class

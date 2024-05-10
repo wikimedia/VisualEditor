@@ -510,7 +510,7 @@ ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
 /**
  * Get all leaf nodes covered by the fragment.
  *
- * @see ve.Document#selectNodes Used to get the return value
+ * @see {@link ve.Document#selectNodes} for more information about the return value.
  *
  * @return {Array} List of nodes and related information
  */
@@ -571,7 +571,7 @@ ve.dm.SurfaceFragment.prototype.getSelectedNode = function () {
  * similar to that of {ve.dm.SurfaceFragment.prototype.getLeafNodes} except that if a node is
  * entirely covered, its children aren't returned separately.
  *
- * @see ve.Document#selectNodes for more information about the return value
+ * @see {@link ve.Document#selectNodes} for more information about the return value.
  *
  * @return {Array} List of nodes and related information
  */
@@ -588,7 +588,7 @@ ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
  *
  * Includes adjacent siblings covered by the range, descending if the range is in a single node.
  *
- * @see ve.Document#selectNodes for more information about the return value.
+ * @see {@link ve.Document#selectNodes} for more information about the return value.
  *
  * @return {Array} List of nodes and related information
  */
