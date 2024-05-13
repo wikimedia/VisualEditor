@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Aey Tai Nuea",
+			"AeyTaiNuea",
 			"咽頭べさ"
 		]
 	},
@@ -15,7 +16,7 @@
 	"visualeditor-annotationbutton-bold-tooltip": "ᥢᥣᥴ",
 	"visualeditor-annotationbutton-code-tooltip": "ᥛᥣᥭᥴᥑᥨᥖᥳ ᥑᥩᥛᥱᥙᥤᥝᥱᥖᥣᥱ",
 	"visualeditor-annotationbutton-italic-tooltip": "ᥐᥫᥒᥰ",
-	"visualeditor-annotationbutton-language-tooltip": "ᥚᥣᥱᥔᥣᥱᥐᥣᥛᥰ",
+	"visualeditor-annotationbutton-language-tooltip": "ᥚᥣᥱ ᥔᥣᥱ ᥑᥣᥛᥰ",
 	"visualeditor-annotationbutton-link-tooltip": "ᥐᥩᥒᥳ",
 	"visualeditor-annotationbutton-small-tooltip": "ᥘᥥᥐᥳ",
 	"visualeditor-annotationbutton-strikethrough-tooltip": "ᥗᥖᥰᥖᥨᥝᥴᥘᥤᥐᥲ",
@@ -44,7 +45,7 @@
 	"visualeditor-dialog-action-insert": "ᥓᥤᥛᥴᥔᥬᥱ",
 	"visualeditor-dialog-command-help-title": "ᥘᥩᥐᥰᥘᥖᥰ ᥑᥤᥰᥙᥨᥖᥳ",
 	"visualeditor-dialog-language-auto-direction": "ᥞᥒᥰᥛᥢᥰ",
-	"visualeditor-dialog-language-search-title": "ᥘᥫᥐᥲ ᥚᥣᥱᥔᥣᥱᥐᥣᥛᥰ",
+	"visualeditor-dialog-language-search-title": "ᥘᥫᥐ ᥚᥣᥱ ᥔᥣᥱ ᥑᥣᥛᥰ",
 	"visualeditor-dialog-table-caption": "ᥞᥨᥝᥴᥑᥩᥲ",
 	"visualeditor-dialog-table-title": "ᥢᥛᥳᥓᥬᥳ ᥘᥩᥐᥰᥔᥥᥢᥲ",
 	"visualeditor-find-and-replace-done": "ᥕᥝᥳ",
@@ -60,8 +61,8 @@
 	"visualeditor-inspector-remove-tooltip": "ᥗᥩᥢᥴᥙᥦᥖᥲ",
 	"visualeditor-key-left": "ᥔᥣᥭᥳ",
 	"visualeditor-key-right": "ᥑᥣᥴ",
-	"visualeditor-languageinspector-title": "ᥚᥣᥱᥔᥣᥱᥐᥣᥛᥰ",
-	"visualeditor-languageinspector-widget-label-language": "ᥚᥣᥱᥔᥣᥱᥐᥣᥛᥰ",
+	"visualeditor-languageinspector-title": "ᥚᥣᥱ ᥔᥣᥱ ᥑᥣᥛᥰ",
+	"visualeditor-languageinspector-widget-label-language": "ᥚᥣᥱ ᥔᥣᥱ ᥑᥣᥛᥰ",
 	"visualeditor-linkinspector-title": "ᥐᥩᥒᥳ",
 	"visualeditor-shortcuts-history": "ᥙᥪᥢᥰ",
 	"visualeditor-shortcuts-insert": "ᥓᥤᥛᥴᥔᥬᥱ",
