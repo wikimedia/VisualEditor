@@ -240,8 +240,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( () => {
-			var inspector = this,
-				insertionAnnotation = false,
+			var insertionAnnotation = false,
 				replace = false,
 				annotation = this.getAnnotation(),
 				remove = data.action === 'done' && this.shouldRemoveAnnotation(),
@@ -254,13 +253,13 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 			var annotations;
 			var insertion;
 
-			function clear() {
+			var clear = () => {
 				// Clear all existing annotations
-				annotations = inspector.getMatchingAnnotations( fragment, true ).get();
+				annotations = this.getMatchingAnnotations( fragment, true ).get();
 				for ( var i = 0, len = annotations.length; i < len; i++ ) {
 					fragment.annotateContent( 'clear', annotations[ i ] );
 				}
-			}
+			};
 
 			if ( remove ) {
 				surfaceModel.popStaging();
@@ -344,7 +343,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				} else {
 					// We can't rely on the selection being placed inside the annotation
 					// so force it based on the model annotations. T265166
-					surfaceView.selectAnnotation( ( annView ) => ve.isInstanceOfAny( annView.getModel(), inspector.constructor.static.modelClasses ) );
+					surfaceView.selectAnnotation( ( annView ) => ve.isInstanceOfAny( annView.getModel(), this.constructor.static.modelClasses ) );
 				}
 			}
 

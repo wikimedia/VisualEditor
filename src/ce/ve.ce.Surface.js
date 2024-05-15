@@ -1758,7 +1758,6 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	var keyDownSelectionState,
-		surface = this,
 		documentModel = this.getModel().getDocument(),
 		isArrow = (
 			e.keyCode === OO.ui.Keys.UP ||
@@ -1786,7 +1785,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 * @param {number} dir Cursor motion direction (1=forward, -1=backward)
 	 * @return {ve.ce.Node|null} node, or null if not in a focusable node
 	 */
-	function getSurroundingFocusableNode( node, offset, dir ) {
+	var getSurroundingFocusableNode = ( node, offset, dir ) => {
 		var focusNode;
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			focusNode = node;
@@ -1804,7 +1803,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 			return null;
 		}
 		return $( focusNode ).closest( '.ve-ce-focusableNode, .ve-ce-tableNode' ).data( 'view' ) || null;
-	}
+	};
 
 	/**
 	 * Compute the direction of cursor movement, if any
@@ -1817,18 +1816,16 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	 *
 	 * @return {number|null} negative for startwards, positive for endwards, null for none
 	 */
-	function getDirection() {
-		return (
-			isArrow &&
+	var getDirection = () => (
+		isArrow &&
 			keyDownSelectionState &&
 			ve.compareDocumentOrder(
-				surface.nativeSelection.focusNode,
-				surface.nativeSelection.focusOffset,
+				this.nativeSelection.focusNode,
+				this.nativeSelection.focusOffset,
 				keyDownSelectionState.focusNode,
 				keyDownSelectionState.focusOffset
 			)
-		) || null;
-	}
+	) || null;
 
 	if ( e !== this.keyDownState.event ) {
 		return;
@@ -1851,7 +1848,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 				this.decRenderLock();
 			}
 
-			var dmSelection = surface.model.getSelection();
+			var dmSelection = this.model.getSelection();
 			if ( dmSelection instanceof ve.dm.LinearSelection ) {
 				var dmFocus = dmSelection.getRange().end;
 				var ceNode = this.documentView.getBranchNodeFromOffset( dmFocus );
@@ -1879,7 +1876,7 @@ ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
 	}
 
 	// Only fixup cursoring on linear selections.
-	if ( isArrow && !( surface.model.getSelection() instanceof ve.dm.LinearSelection ) ) {
+	if ( isArrow && !( this.model.getSelection() instanceof ve.dm.LinearSelection ) ) {
 		return;
 	}
 
@@ -3313,21 +3310,18 @@ ve.ce.Surface.prototype.onDocumentBeforeInput = function ( e ) {
  * there is candidate text (T312558).
  */
 ve.ce.Surface.prototype.fixupChromiumNativeEnter = function () {
-	var range,
-		surface = this,
-		fixedUp = false;
-
-	function setCursorToEnd( element ) {
+	var setCursorToEnd = ( element ) => {
 		if ( !element ) {
 			return;
 		}
-		range = surface.getElementDocument().createRange();
+		var range = this.getElementDocument().createRange();
 		range.setStart( element, element.childNodes.length );
 		range.setEnd( element, element.childNodes.length );
-		surface.nativeSelection.removeAllRanges();
-		surface.nativeSelection.addRange( range );
-	}
+		this.nativeSelection.removeAllRanges();
+		this.nativeSelection.addRange( range );
+	};
 
+	var fixedUp = false;
 	// Test for Chromium native Enter inside a <li class="foo"><p class="bar">...</p></li>
 	// creating unwanted trailing <li class="foo"><p class="bar"><br></p></li>,
 	// assuming it (initially) leaves the selection in the original list item.
@@ -4585,8 +4579,7 @@ ve.ce.Surface.prototype.selectLastSelectableContentOffset = function () {
  * @return {ve.Range|null} Range covering data visible in the viewport, null if the surface is not attached
  */
 ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
-	var surface = this,
-		documentModel = this.getModel().getDocument(),
+	var documentModel = this.getModel().getDocument(),
 		data = documentModel.data,
 		dimensions = this.surface.getViewportDimensions();
 
@@ -4602,7 +4595,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 		this.getModel().getDocument().getDocumentRange() :
 		this.attachedRoot.getRange();
 
-	function highestIgnoreChildrenNode( childNode ) {
+	var highestIgnoreChildrenNode = ( childNode ) => {
 		var ignoreChildrenNode = null;
 		childNode.traverseUpstream( ( node ) => {
 			if ( node.shouldIgnoreChildren() ) {
@@ -4610,9 +4603,16 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 			}
 		} );
 		return ignoreChildrenNode;
-	}
+	};
 
-	function binarySearch( offset, range, side, isStart ) {
+	/**
+	 * @param {number} offset Vertical offset to find
+	 * @param {ve.Range} range Document range
+	 * @param {string} side Side of the viewport align with, 'bottom' or 'top'
+	 * @param {boolean} isStart Find the start of the range, otherwise the end
+	 * @return {number} DM offset
+	 */
+	var binarySearch = ( offset, range, side, isStart ) => {
 		var start = range.start,
 			end = range.end,
 			lastLength = Infinity;
@@ -4649,7 +4649,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 				} else {
 					contentRange = new ve.Range( mid );
 				}
-				rect = surface.getSelection( new ve.dm.LinearSelection( contentRange ) ).getSelectionBoundingRect();
+				rect = this.getSelection( new ve.dm.LinearSelection( contentRange ) ).getSelectionBoundingRect();
 
 				// Node at contentRange is not rendered, find rendered parent
 				if ( !rect ) {
@@ -4682,7 +4682,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 			}
 		}
 		return side === 'bottom' ? start : end;
-	}
+	};
 
 	return new ve.Range(
 		binarySearch( top, documentRange, covering ? 'bottom' : 'top', true ),
