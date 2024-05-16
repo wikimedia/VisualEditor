@@ -217,15 +217,19 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
 };
 
 /**
+ * @typedef {Object} PlainRange
+ * @property {Node} startNode The node at the start of the selection
+ * @property {number} startOffset The start offset within the node
+ * @property {Node} endNode The node at the endof the selection
+ * @property {number} endOffset The endoffset within the node
+ */
+
+/**
  * Select text by offset in concatenated text nodes
  *
  * @param {ve.ce.TestOffset|number} start The start offset
  * @param {ve.ce.TestOffset|number} end The end offset
- * @return {Object} Selected range
- * @return {Node} return.startNode The node at the start of the selection
- * @return {number} return.startOffset The start offset within the node
- * @return {Node} return.endNode The node at the endof the selection
- * @return {number} return.endOffset The endoffset within the node
+ * @return {PlainRange} Selected range
  */
 ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 	if ( typeof start === 'number' ) {
