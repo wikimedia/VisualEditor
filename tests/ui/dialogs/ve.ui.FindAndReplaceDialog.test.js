@@ -8,7 +8,7 @@ QUnit.module( 've.ui.FindAndReplaceDialog' );
 
 /* Tests */
 
-QUnit.test( 'find fragments', function ( assert ) {
+QUnit.test( 'find fragments', ( assert ) => {
 	var done = assert.async(),
 		surface = ve.test.utils.createSurfaceFromHtml( '<p>Foo bar fooq.</p><p>baz foob</p>' ),
 		cases = [
@@ -74,18 +74,16 @@ QUnit.test( 'find fragments', function ( assert ) {
 			}
 		];
 
-	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).then( function ( dialog ) {
+	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).then( ( dialog ) => {
 		dialog.open( {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
-		} ).opening.then( function () {
-			cases.forEach( function ( caseItem ) {
+		} ).opening.then( () => {
+			cases.forEach( ( caseItem ) => {
 				dialog.matchCaseToggle.setValue( !!caseItem.matchCase );
 				dialog.regexToggle.setValue( !!caseItem.regex );
 				dialog.findText.setValue( caseItem.find );
-				var ranges = dialog.fragments.map( function ( fragment ) {
-					return fragment.getSelection().getRange();
-				} );
+				var ranges = dialog.fragments.map( ( fragment ) => fragment.getSelection().getRange() );
 				assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
 				dialog.findText.setValue( '' );
 			} );
@@ -95,7 +93,7 @@ QUnit.test( 'find fragments', function ( assert ) {
 
 } );
 
-QUnit.test( 'replace all', function ( assert ) {
+QUnit.test( 'replace all', ( assert ) => {
 	var done = assert.async(),
 		surface = ve.test.utils.createSurfaceFromHtml( '<p>Foo bar fooq.</p><p>baz foob</p>' ),
 		cases = [
@@ -120,12 +118,12 @@ QUnit.test( 'replace all', function ( assert ) {
 			}
 		];
 
-	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).done( function ( dialog ) {
+	surface.getToolbarDialogs().getWindow( 'findAndReplace' ).done( ( dialog ) => {
 		dialog.open( {
 			surface: surface,
 			fragment: surface.getModel().getFragment()
-		} ).opening.then( function () {
-			cases.forEach( function ( caseItem ) {
+		} ).opening.then( () => {
+			cases.forEach( ( caseItem ) => {
 				dialog.matchCaseToggle.setValue( !!caseItem.matchCase );
 				dialog.regexToggle.setValue( !!caseItem.regex );
 				dialog.findText.setValue( caseItem.find );
@@ -136,7 +134,7 @@ QUnit.test( 'replace all', function ( assert ) {
 				dialog.replaceText.setValue( '' );
 			} );
 			done();
-		} ).fail( function ( ex ) {
+		} ).fail( ( ex ) => {
 			assert.true( false, 'Error thrown: ' + ex.stack );
 			done();
 		} );

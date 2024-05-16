@@ -32,7 +32,7 @@ ve.test.utils.makeStubTransferItem = function ( type, kind, extension ) {
 };
 
 /* Tests */
-QUnit.test( 'getHandlerNameForItem', function ( assert ) {
+QUnit.test( 'getHandlerNameForItem', ( assert ) => {
 	var makeStubTransferHandler = ve.test.utils.makeStubTransferHandler,
 		makeStubTransferItem = ve.test.utils.makeStubTransferItem,
 		factory = new ve.ui.DataTransferHandlerFactory(),

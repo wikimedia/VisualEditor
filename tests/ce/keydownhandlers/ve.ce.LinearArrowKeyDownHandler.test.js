@@ -13,7 +13,7 @@ QUnit.module( 've.ce.LinearArrowKeyDownHandler', {
 	}
 } );
 
-QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
+QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
 	var done = assert.async(),
 		promise = Promise.resolve(),
 		supportsSelectionExtend = ve.supportsSelectionExtend,
@@ -409,10 +409,8 @@ QUnit.test( 'special key down: linear arrow keys', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
-		promise = promise.then( function () {
-			return ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem );
-		} );
+	cases.forEach( ( caseItem ) => {
+		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );
 
 	promise.finally( () => done() );

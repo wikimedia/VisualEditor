@@ -15,7 +15,7 @@ QUnit.module( 've.ce.TableEnterKeyDownHandler', {
 	}
 } );
 
-QUnit.test( 'special key down: table enter', function ( assert ) {
+QUnit.test( 'special key down: table enter', ( assert ) => {
 	var done = assert.async(),
 		promise = Promise.resolve(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
@@ -51,10 +51,8 @@ QUnit.test( 'special key down: table enter', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
-		promise = promise.then( function () {
-			return ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem );
-		} );
+	cases.forEach( ( caseItem ) => {
+		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );
 
 	promise.finally( () => done() );

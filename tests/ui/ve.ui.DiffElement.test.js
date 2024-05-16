@@ -8,7 +8,7 @@ QUnit.module( 've.ui.DiffElement' );
 
 /* Tests */
 
-QUnit.test( 'Diffing', function ( assert ) {
+QUnit.test( 'Diffing', ( assert ) => {
 	var spacer = '<div class="ve-ui-diffElement-spacer">⋮</div>',
 		listSpacer = '<li data-diff-list-spacer><p data-diff-action="none">…</p></li>',
 		listSpacerOpen = listSpacer.slice( 0, -5 ),
@@ -1929,14 +1929,14 @@ QUnit.test( 'Diffing', function ( assert ) {
 
 	ve.dm.modelRegistry.register( MetaItem );
 	ve.dm.modelRegistry.register( InlineWidgetNode );
-	ve.ui.metaListDiffRegistry.register( 'test', function ( diffElement, diffQueue, documentNode, documentSpacerNode ) {
+	ve.ui.metaListDiffRegistry.register( 'test', ( diffElement, diffQueue, documentNode, documentSpacerNode ) => {
 		diffElement.renderQueue(
 			diffElement.processQueue( diffQueue ),
 			documentNode, documentSpacerNode
 		);
 	} );
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runDiffElementTest( assert, caseItem );
 	} );
 
@@ -1945,7 +1945,7 @@ QUnit.test( 'Diffing', function ( assert ) {
 	ve.ui.metaListDiffRegistry.unregister( 'test' );
 } );
 
-QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
+QUnit.test( 'compareAttributes/describeChanges', ( assert ) => {
 	var cases = [
 		{
 			msg: 'LinkAnnotation: Random attribute test (fallback)',
@@ -2003,12 +2003,12 @@ QUnit.test( 'compareAttributes/describeChanges', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var attributeChanges = ve.ui.DiffElement.static.compareAttributes( caseItem.before, caseItem.after );
 		var changes = ve.dm.modelRegistry.lookup( caseItem.type ).static.describeChanges(
 			attributeChanges, caseItem.after, { type: caseItem.type, attributes: caseItem.after }
 		);
-		changes.forEach( function ( change, j ) {
+		changes.forEach( ( change, j ) => {
 			assert.deepEqualWithDomElements(
 				change,
 				$.parseHTML( caseItem.expected[ j ] ),

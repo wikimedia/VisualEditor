@@ -8,7 +8,7 @@ QUnit.module( 've.DiffMatchPatch' );
 
 /* Tests */
 
-QUnit.test( 'indexOf/lastIndexOf', function ( assert ) {
+QUnit.test( 'indexOf/lastIndexOf', ( assert ) => {
 	var dmp = new ve.DiffMatchPatch( new ve.dm.HashValueStore(), new ve.dm.HashValueStore() ),
 		textString = 'hello world',
 		textArray = textString.split( '' ),
@@ -86,7 +86,7 @@ QUnit.test( 'indexOf/lastIndexOf', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var expected = textString.indexOf( caseItem.searchValue, caseItem.fromIndex );
 		assert.strictEqual(
 			dmp.indexOf( textArray, caseItem.searchValue, caseItem.fromIndex ),

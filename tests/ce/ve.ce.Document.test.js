@@ -8,7 +8,7 @@ QUnit.module( 've.ce.Document' );
 
 /* Tests */
 
-QUnit.test( 'Converter tests', function ( assert ) {
+QUnit.test( 'Converter tests', ( assert ) => {
 	var cases = ve.dm.example.domToDataCases;
 
 	for ( var msg in cases ) {
@@ -34,7 +34,7 @@ QUnit.test( 'Converter tests', function ( assert ) {
 // TODO: getSlugAtOffset
 // TODO: getDirectionalityFromRange
 
-QUnit.test( 'getNodeAndOffset', function ( assert ) {
+QUnit.test( 'getNodeAndOffset', ( assert ) => {
 	/* eslint-disable quotes */
 	var docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode'>",
 		pNodeStart = "<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>";
@@ -138,7 +138,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 		}
 	}
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var parts = caseItem.positions.split( /[|]/ );
 		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
 		var dmDoc = view.getModel().getDocument();
@@ -208,7 +208,7 @@ QUnit.test( 'getNodeAndOffset', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'attachedRoot', function ( assert ) {
+QUnit.test( 'attachedRoot', ( assert ) => {
 	var dmDoc = ve.dm.converter.getModelFromDom(
 			ve.createDocumentFromHtml(
 				'<section>Foo</section><section>Bar</section><section>Baz</section>'
@@ -219,9 +219,7 @@ QUnit.test( 'attachedRoot', function ( assert ) {
 		surfaceView = ve.test.utils.createSurfaceViewFromDocument( surfaceModel );
 
 	assert.deepEqual(
-		surfaceView.getDocument().getDocumentNode().children.map( function ( node ) {
-			return node.type;
-		} ),
+		surfaceView.getDocument().getDocumentNode().children.map( ( node ) => node.type ),
 		[ 'unrendered', 'section', 'unrendered', 'unrendered' ],
 		'Only attached root is rendered'
 	);

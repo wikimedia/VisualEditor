@@ -6,7 +6,7 @@
 
 QUnit.module( 've.ce.Selection' );
 
-QUnit.test( 'Rects', function ( assert ) {
+QUnit.test( 'Rects', ( assert ) => {
 	var html = ve.dm.example.singleLine`
 			<div rel="ve:Alien" style="width: 300px; height: 200px;">foo</div>
 			<div rel="ve:Alien" style="position: relative;">
@@ -66,7 +66,7 @@ QUnit.test( 'Rects', function ( assert ) {
 		}
 	}
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		model.setSelection(
 			ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.rangeOrSelection )
 		);
@@ -102,7 +102,7 @@ QUnit.test( 'Rects', function ( assert ) {
 	view.destroy();
 } );
 
-QUnit.test( 'getDirectionality', function ( assert ) {
+QUnit.test( 'getDirectionality', ( assert ) => {
 	var html = ve.dm.example.singleLine`
 			<p>Foo</p>
 			<p style="direction: rtl;">Bar</p>
@@ -144,7 +144,7 @@ QUnit.test( 'getDirectionality', function ( assert ) {
 
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		model.setSelection(
 			ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.rangeOrSelection )
 		);
@@ -159,7 +159,7 @@ QUnit.test( 'getDirectionality', function ( assert ) {
 	view.destroy();
 } );
 
-QUnit.test( 'equals', function ( assert ) {
+QUnit.test( 'equals', ( assert ) => {
 	var surface1 = {
 			getFocusedNode: function () {
 				return null;

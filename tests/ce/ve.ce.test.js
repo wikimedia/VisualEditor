@@ -8,7 +8,7 @@ QUnit.module( 've.ce' );
 
 /* Tests */
 
-QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) {
+QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Nested annotations',
@@ -44,7 +44,7 @@ QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) 
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
 		var documentView = view.getDocument();
 		assert.strictEqual( ve.ce.getDomHash( documentView.getDocumentNode().$element[ 0 ] ), caseItem.hash, 'getDomHash: ' + caseItem.msg );
@@ -53,7 +53,7 @@ QUnit.test( 'getDomHash/getDomText (with ve.dm.Converter)', function ( assert ) 
 	} );
 } );
 
-QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert ) {
+QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Block slugs are ignored',
@@ -72,7 +72,7 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 	var view = ve.test.utils.createSurfaceViewFromHtml( '' );
 	var element = view.getDocument().getDocumentNode().$element[ 0 ];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		element.innerHTML = caseItem.html;
 		assert.strictEqual( ve.ce.getDomHash( element.firstChild ), caseItem.hash, 'getDomHash: ' + caseItem.msg );
 		assert.strictEqual( ve.ce.getDomText( element.firstChild ), caseItem.text, 'getDomText: ' + caseItem.msg );
@@ -81,7 +81,7 @@ QUnit.test( 'getDomHash/getDomText (without ve.dm.Converter)', function ( assert
 	view.destroy();
 } );
 
-QUnit.test( 'getOffset', function ( assert ) {
+QUnit.test( 'getOffset', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Empty paragraph',
@@ -250,7 +250,7 @@ QUnit.test( 'getOffset', function ( assert ) {
 		return expectedIndex;
 	}
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html ),
 			documentView = view.getDocument();
 
@@ -261,13 +261,13 @@ QUnit.test( 'getOffset', function ( assert ) {
 
 // TODO: ve.ce.getOffsetOfSlug
 
-QUnit.test( 'isShortcutKey', function ( assert ) {
+QUnit.test( 'isShortcutKey', ( assert ) => {
 	assert.strictEqual( ve.ce.isShortcutKey( { ctrlKey: true } ), true, 'ctrlKey' );
 	assert.strictEqual( ve.ce.isShortcutKey( { metaKey: true } ), true, 'metaKey' );
 	assert.strictEqual( ve.ce.isShortcutKey( {} ), false, 'Not set' );
 } );
 
-QUnit.test( 'nextCursorOffset', function ( assert ) {
+QUnit.test( 'nextCursorOffset', ( assert ) => {
 	function dumpnode( node ) {
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			return '#' + node.data;
@@ -287,7 +287,7 @@ QUnit.test( 'nextCursorOffset', function ( assert ) {
 	];
 
 	var elt = ve.createDocumentFromHtml( '' ).createElement( 'div' );
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		elt.innerHTML = caseItem.html;
 		var img = elt.getElementsByTagName( 'img' )[ 0 ];
 		var nextOffset = ve.ce.nextCursorOffset( img );
@@ -299,7 +299,7 @@ QUnit.test( 'nextCursorOffset', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'resolveTestOffset', function ( assert ) {
+QUnit.test( 'resolveTestOffset', ( assert ) => {
 	var cases = [
 		[ 'o', 'k' ],
 		// TODO: doesn't handle tags correctly yet!
@@ -310,7 +310,7 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 
 	var dom = ve.createDocumentFromHtml( '' );
 	var elt = dom.createElement( 'div' );
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		elt.innerHTML = caseItem.join( '' );
 		for ( var j = 0, jlen = caseItem.length; j < jlen + 1; j++ ) {
 			var testOffset = new ve.ce.TestOffset( 'forward', j );
@@ -331,7 +331,7 @@ QUnit.test( 'resolveTestOffset', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'fakeImes', function ( assert ) {
+QUnit.test( 'fakeImes', ( assert ) => {
 	var testsFailAt;
 	if ( Function.prototype.bind === undefined ) {
 		// Assume we are in PhantomJS (which breaks different tests than a real browser)
@@ -346,7 +346,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 		return false;
 	};
 
-	ve.ce.imetests.forEach( function ( caseItem ) {
+	ve.ce.imetests.forEach( ( caseItem ) => {
 		var testName = caseItem[ 0 ];
 		var failAt = testsFailAt[ testName ] || null;
 		var testActions = caseItem[ 1 ];
@@ -404,7 +404,7 @@ QUnit.test( 'fakeImes', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'isAfterAnnotationBoundary', function ( assert ) {
+QUnit.test( 'isAfterAnnotationBoundary', ( assert ) => {
 	var div = ve.createDocumentFromHtml( '' ).createElement( 'div' );
 
 	div.innerHTML = 'Q<b>R<i>S</i>T</b><s>U</s>V<u>W</u>';
@@ -446,7 +446,7 @@ QUnit.test( 'isAfterAnnotationBoundary', function ( assert ) {
 		{ path: [], offset: 5, expected: true }
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var node = div;
 		for ( var j = 0, jLen = caseItem.path.length; j < jLen; j++ ) {
 			node = node.childNodes[ caseItem.path[ j ] ];

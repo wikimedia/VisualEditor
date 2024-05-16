@@ -6,7 +6,7 @@
 
 QUnit.module( 've.init.Target' );
 
-QUnit.test( 'createModelFromDom/parseDocument (source mode)', function ( assert ) {
+QUnit.test( 'createModelFromDom/parseDocument (source mode)', ( assert ) => {
 	const testCases = [
 		{
 			name: 'empty',

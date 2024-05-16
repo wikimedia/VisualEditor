@@ -6,7 +6,7 @@
 
 QUnit.module( 've.dm.Annotation' );
 
-QUnit.test( 'getHashObject', function ( assert ) {
+QUnit.test( 'getHashObject', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Bold',
@@ -34,7 +34,7 @@ QUnit.test( 'getHashObject', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		assert.deepEqual( caseItem.annotation.getHashObject(), caseItem.expected, caseItem.msg );
 	} );
 } );

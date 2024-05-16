@@ -98,7 +98,7 @@
 	 * @return {string}
 	 */
 	function unescapeText( s ) {
-		return s.replace( /&(#039|quot|lt|gt|amp);/g, function ( match, seq ) {
+		return s.replace( /&(#039|quot|lt|gt|amp);/g, ( match, seq ) => {
 			switch ( seq ) {
 				case '#039':
 					return '\'';
@@ -357,7 +357,7 @@
 	 */
 	QUnit.assert.isLinearDataFrozen = function ( linearData, message ) {
 		var notFrozen = [];
-		linearData.data.forEach( function ( item, i ) {
+		linearData.data.forEach( ( item, i ) => {
 			if ( !Object.isFrozen( item ) ) {
 				notFrozen.push( i );
 			}

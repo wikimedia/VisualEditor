@@ -8,7 +8,7 @@ QUnit.module( 've.ui.ContentAction' );
 
 /* Tests */
 
-QUnit.test( 'insert/remove/select/selectAll', function ( assert ) {
+QUnit.test( 'insert/remove/select/selectAll', ( assert ) => {
 	var cases = [
 		{
 			rangeOrSelection: new ve.Range( 3, 4 ),
@@ -99,7 +99,7 @@ QUnit.test( 'insert/remove/select/selectAll', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'content', assert, caseItem.html, caseItem.createView, caseItem.method, caseItem.args, caseItem.rangeOrSelection, caseItem.msg,
 			{

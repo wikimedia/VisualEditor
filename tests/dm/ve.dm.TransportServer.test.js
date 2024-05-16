@@ -6,7 +6,7 @@
 
 QUnit.module( 've.dm.TransportServer' );
 
-QUnit.test( 'Create', function ( assert ) {
+QUnit.test( 'Create', ( assert ) => {
 	var done = assert.async(),
 		log = [],
 		io = ve.dm.FakeSocket.static.makeServer();
@@ -44,29 +44,29 @@ QUnit.test( 'Create', function ( assert ) {
 
 	var transportServer = new ve.dm.TransportServer( protocolServer, protocolServer );
 	var socket = new ve.dm.FakeSocket( io, { docName: 'Foo', authorId: 1, token: 'xxx' } );
-	socket.on( 'registered', function ( data ) {
+	socket.on( 'registered', ( data ) => {
 		log.push( [ 'registered', data ] );
 	} );
-	socket.on( 'authorChange', function ( data ) {
+	socket.on( 'authorChange', ( data ) => {
 		log.push( [ 'broadcast', 'authorChange', data ] );
 	} );
-	socket.on( 'initDoc', function ( data ) {
+	socket.on( 'initDoc', ( data ) => {
 		log.push( [ 'initDoc', data ] );
 	} );
-	socket.on( 'newChange', function ( data ) {
+	socket.on( 'newChange', ( data ) => {
 		log.push( [ 'broadcast', 'newChange', data ] );
 	} );
-	socket.on( 'authorDisconnect', function ( authorId ) {
+	socket.on( 'authorDisconnect', ( authorId ) => {
 		log.push( [ 'broadcast', 'authorDisconnect', authorId ] );
 	} );
 
-	transportServer.onConnection( io.sockets.in.bind( io.sockets ), socket ).then( function () {
+	transportServer.onConnection( io.sockets.in.bind( io.sockets ), socket ).then( () => {
 		socket.receive( 'submitChange', 'foo' );
 		socket.receive( 'logEvent', 'bar' );
 		socket.receive( 'changeAuthor', 1 );
 		socket.receive( 'disconnect' );
 		return socket.wait();
-	} ).then( function () {
+	} ).then( () => {
 		assert.deepEqual( log, [
 			[ 'authenticate', { docName: 'Foo', authorId: 1, token: 'xxx' } ],
 			[ 'registered', 1 ],
@@ -80,7 +80,7 @@ QUnit.test( 'Create', function ( assert ) {
 			[ 'disconnect' ],
 			[ 'broadcast', 'authorDisconnect', 1 ]
 		], 'Correct events received in correct order' );
-	} ).catch( function ( err ) {
+	} ).catch( ( err ) => {
 		assert.true( false, 'Exception: ' + err );
 	} ).finally( () => done() );
 } );

@@ -8,7 +8,7 @@ QUnit.module( 've.dm.AnnotationSet' );
 
 /* Tests */
 
-QUnit.test( 'Basic usage', function ( assert ) {
+QUnit.test( 'Basic usage', ( assert ) => {
 	var store = new ve.dm.HashValueStore(),
 		bold = new ve.dm.BoldAnnotation(),
 		italic = new ve.dm.ItalicAnnotation(),
@@ -31,9 +31,7 @@ QUnit.test( 'Basic usage', function ( assert ) {
 	assert.strictEqual( annotationSet.offsetOf( italic ), 1, 'offsetOf italic is 1' );
 	assert.strictEqual( annotationSet.offsetOf( underline ), -1, 'offsetOf underline is -1' );
 	assert.deepEqual(
-		annotationSet.filter( function ( annotation ) {
-			return annotation.name === 'textStyle/bold';
-		} ).get(),
+		annotationSet.filter( ( annotation ) => annotation.name === 'textStyle/bold' ).get(),
 		[ bold ], 'filter for name=textStyle/bold returns just bold annotation'
 	);
 	assert.strictEqual( annotationSet.hasAnnotationWithName( 'textStyle/bold' ), true, 'hasAnnotationWithName textStyle/bold is true' );
@@ -76,7 +74,7 @@ QUnit.test( 'Basic usage', function ( assert ) {
 	assert.strictEqual( annotationSet3.contains( italic ), true, 'set intersected with set2 contains italic' );
 } );
 
-QUnit.test( 'Comparable', function ( assert ) {
+QUnit.test( 'Comparable', ( assert ) => {
 	var store = new ve.dm.HashValueStore(),
 		bold = new ve.dm.BoldAnnotation(),
 		italic = new ve.dm.ItalicAnnotation(),

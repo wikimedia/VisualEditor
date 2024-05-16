@@ -8,7 +8,7 @@ QUnit.module( 've.ce.TextNode' );
 
 /* Tests */
 
-QUnit.test( 'getAnnotatedHtml', function ( assert ) {
+QUnit.test( 'getAnnotatedHtml', ( assert ) => {
 	var cases = [
 		{
 			data: [
@@ -96,7 +96,7 @@ QUnit.test( 'getAnnotatedHtml', function ( assert ) {
 	];
 
 	var store = new ve.dm.HashValueStore();
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
 		ve.dm.example.preprocessAnnotations( caseItem.html, store );
 		assert.deepEqual(

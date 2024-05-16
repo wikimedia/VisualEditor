@@ -8,7 +8,7 @@ QUnit.module( 've.ui.DSVFileTransferHandler' );
 
 /* Tests */
 
-QUnit.test( 'getInsertableData', function ( assert ) {
+QUnit.test( 'getInsertableData', ( assert ) => {
 	var handler,
 		done = assert.async(),
 		fn = function () {},
@@ -35,7 +35,7 @@ QUnit.test( 'getInsertableData', function ( assert ) {
 	handler.reader = mockReader;
 	handler.onFileLoad();
 
-	handler.getInsertableData().done( function ( data ) {
+	handler.getInsertableData().done( ( data ) => {
 		assert.deepEqual( data, [
 			{ type: 'table' },
 			{ type: 'tableSection', attributes: { style: 'body' } },

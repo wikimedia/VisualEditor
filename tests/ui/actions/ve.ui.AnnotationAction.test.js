@@ -8,7 +8,7 @@ QUnit.module( 've.ui.AnnotationAction' );
 
 /* Tests */
 
-QUnit.test( 'toggle', function ( assert ) {
+QUnit.test( 'toggle', ( assert ) => {
 	var newBold = { type: 'textStyle/bold' },
 		html = '<p>Foo<b>bar</b><strong>baz</strong><i>quux</i> white\u3000space</p>',
 		cases = [
@@ -136,7 +136,7 @@ QUnit.test( 'toggle', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'annotation', assert, caseItem.html, false, caseItem.method, caseItem.args, caseItem.rangeOrSelection, caseItem.msg,
 			{

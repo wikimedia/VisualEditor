@@ -8,7 +8,7 @@ QUnit.module( 've.dm.LinearData' );
 
 /* Tests */
 
-QUnit.test( 'basic usage', function ( assert ) {
+QUnit.test( 'basic usage', ( assert ) => {
 	var store = new ve.dm.HashValueStore(),
 		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
 
@@ -23,7 +23,7 @@ QUnit.test( 'basic usage', function ( assert ) {
 	assert.strictEqual( data.getStore(), store, 'getStore: equal to original store by reference' );
 } );
 
-QUnit.test( 'slice(Object)/splice(Object)/batchSplice', function ( assert ) {
+QUnit.test( 'slice(Object)/splice(Object)/batchSplice', ( assert ) => {
 	var store = new ve.dm.HashValueStore(),
 		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) ),
 		expectedData = ve.copy( ve.dm.example.data );

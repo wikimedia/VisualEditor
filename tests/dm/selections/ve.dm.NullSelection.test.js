@@ -8,14 +8,14 @@ QUnit.module( 've.dm.NullSelection' );
 
 /* Tests */
 
-QUnit.test( 'Construction and getters (getDocument, getRanges)', function ( assert ) {
+QUnit.test( 'Construction and getters (getDocument, getRanges)', ( assert ) => {
 	var selection = new ve.dm.NullSelection();
 
 	assert.deepEqual( selection.getRanges(), [], 'getRanges' );
 	assert.strictEqual( selection.getName(), 'null', 'getName' );
 } );
 
-QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', function ( assert ) {
+QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', ( assert ) => {
 	var selection = new ve.dm.NullSelection();
 
 	assert.deepEqual( selection.collapseToStart(), selection, 'collapseToStart' );
@@ -27,7 +27,7 @@ QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', function ( 
 	assert.strictEqual( selection.isNull(), true, 'null' );
 } );
 
-QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', function ( assert ) {
+QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', ( assert ) => {
 	var selection = new ve.dm.NullSelection();
 
 	assert.deepEqual( selection.toJSON(), { type: 'null' }, 'toJSON' );

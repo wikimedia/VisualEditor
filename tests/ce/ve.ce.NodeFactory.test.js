@@ -22,11 +22,11 @@ ve.ce.NodeFactoryNodeStub.static.getDescription = function () {
 
 /* Tests */
 
-QUnit.test( 'splitNodeOnEnter/getDescription', function ( assert ) {
+QUnit.test( 'splitNodeOnEnter/getDescription', ( assert ) => {
 	var factory = new ve.ce.NodeFactory();
 
 	assert.throws(
-		function () {
+		() => {
 			factory.splitNodeOnEnter( 'node-factory-node-stub' );
 		},
 		Error,
@@ -34,7 +34,7 @@ QUnit.test( 'splitNodeOnEnter/getDescription', function ( assert ) {
 	);
 
 	assert.throws(
-		function () {
+		() => {
 			factory.getDescription( new ve.dm.NodeFactoryNodeStub() );
 		},
 		Error,
@@ -56,6 +56,6 @@ QUnit.test( 'splitNodeOnEnter/getDescription', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'initialization', function ( assert ) {
+QUnit.test( 'initialization', ( assert ) => {
 	assert.true( ve.ce.nodeFactory instanceof ve.ce.NodeFactory, 'factory is initialized at ve.ce.nodeFactory' );
 } );

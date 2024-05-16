@@ -6,7 +6,7 @@
 
 QUnit.module( 've.dm.RebaseServer' );
 
-QUnit.test( 'Rebase', function ( assert ) {
+QUnit.test( 'Rebase', ( assert ) => {
 	var cases = [
 		{
 			name: 'Concurrent insertions',
@@ -424,10 +424,10 @@ QUnit.test( 'Rebase', function ( assert ) {
 		return builder.getTransaction();
 	}
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var server = new ve.dm.TestRebaseServer(),
 			clients = {};
-		caseItem.clients.forEach( function ( authorId ) {
+		caseItem.clients.forEach( ( authorId ) => {
 			var client = new ve.dm.TestRebaseClient( server, caseItem.initialData );
 			client.setAuthorId( authorId );
 			clients[ authorId ] = client;
@@ -435,7 +435,7 @@ QUnit.test( 'Rebase', function ( assert ) {
 			server.updateDocState( ve.dm.TestRebaseServer.static.fakeDocName, authorId );
 		} );
 
-		caseItem.ops.forEach( function ( op, i ) {
+		caseItem.ops.forEach( ( op, i ) => {
 			if ( op[ 0 ] === 'debugger' ) {
 				// eslint-disable-next-line no-debugger
 				debugger;

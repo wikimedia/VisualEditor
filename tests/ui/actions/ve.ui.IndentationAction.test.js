@@ -8,7 +8,7 @@ QUnit.module( 've.ui.IndentationAction' );
 
 /* Tests */
 
-QUnit.test( 'increase/decrease', function ( assert ) {
+QUnit.test( 'increase/decrease', ( assert ) => {
 	var cases = [
 		{
 			rangeOrSelection: new ve.Range( 13, 14 ),
@@ -120,7 +120,7 @@ QUnit.test( 'increase/decrease', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'indentation', assert, caseItem.html || ve.dm.example.isolationHtml, false, caseItem.method, [], caseItem.rangeOrSelection, caseItem.msg,
 			{

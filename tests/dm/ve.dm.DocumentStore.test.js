@@ -6,16 +6,12 @@
 
 QUnit.module( 've.dm.DocumentStore' );
 
-QUnit.test( 'Create', function ( assert ) {
+QUnit.test( 'Create', ( assert ) => {
 	var done = assert.async(),
 		fakeMongo = new ve.dm.FakeMongo(),
 		documentStore = new ve.dm.DocumentStore( fakeMongo, 'test', fakeMongo );
 
-	documentStore.connect().then( function () {
-		return documentStore.dropDatabase();
-	} ).then( function () {
-		return documentStore.load( 'Foo' );
-	} ).then( function ( change ) {
+	documentStore.connect().then( () => documentStore.dropDatabase() ).then( () => documentStore.load( 'Foo' ) ).then( ( change ) => {
 		assert.deepEqual(
 			change.toJSON(),
 			{ start: 0, transactions: [] },
@@ -25,14 +21,10 @@ QUnit.test( 'Create', function ( assert ) {
 			start: 0,
 			transactions: [ [ [ '', 'W' ] ], 'o', 'rld' ]
 		}, true ) );
-	} ).then( function () {
-		return documentStore.onNewChange( 'Foo', ve.dm.Change.static.deserialize( {
-			start: 3,
-			transactions: [ [ [ '', 'H' ], 5 ], 'e', 'l', 'l', 'o', ' ' ]
-		}, true ) );
-	} ).then( function () {
-		return documentStore.load( 'Bar' );
-	} ).then( function ( change ) {
+	} ).then( () => documentStore.onNewChange( 'Foo', ve.dm.Change.static.deserialize( {
+		start: 3,
+		transactions: [ [ [ '', 'H' ], 5 ], 'e', 'l', 'l', 'o', ' ' ]
+	}, true ) ) ).then( () => documentStore.load( 'Bar' ) ).then( ( change ) => {
 		assert.deepEqual(
 			change.toJSON(),
 			{ start: 0, transactions: [] },
@@ -41,31 +33,25 @@ QUnit.test( 'Create', function ( assert ) {
 		return documentStore.onNewChange( 'Bar', ve.dm.Change.static.deserialize( {
 			start: 44,
 			transactions: [ [ [ '', 'X' ] ] ]
-		}, true ) ).then( function () {
+		}, true ) ).then( () => {
 			assert.true( false, 'Throw on unmached start' );
-		} ).catch( function () {
+		} ).catch( () => {
 			assert.true( true, 'Throw on unmatched start' );
 		} );
-	} ).then( function () {
-		return documentStore.load( 'Foo' );
-	} ).then( function ( change ) {
+	} ).then( () => documentStore.load( 'Foo' ) ).then( ( change ) => {
 		assert.deepEqual(
 			change.toJSON(),
 			{ start: 0, transactions: [ [ [ '', 'W' ] ], 'o', 'rld', [ [ '', 'H' ], 5 ], 'e', 'l', 'l', 'o', ' ' ] },
 			'Transactions were saved'
 		);
 		return documentStore.dropDatabase();
-	} ).then( function () {
-		return documentStore.load( 'Foo' );
-	} ).then( function ( change ) {
+	} ).then( () => documentStore.load( 'Foo' ) ).then( ( change ) => {
 		assert.deepEqual(
 			change.toJSON(),
 			{ start: 0, transactions: [] },
 			'Reload new empty document after dropDatabase'
 		);
-	} ).then( function () {
-		return documentStore.onClose();
-	} ).then( function () {
+	} ).then( () => documentStore.onClose() ).then( () => {
 		assert.deepEqual(
 			fakeMongo.log,
 			[
@@ -82,7 +68,7 @@ QUnit.test( 'Create', function ( assert ) {
 			],
 			'Log is correct'
 		);
-	} ).catch( function ( error ) {
+	} ).catch( ( error ) => {
 		assert.true( false, 'Test failure: ' + error );
 	} ).then( () => done() );
 } );

@@ -24,7 +24,7 @@ ve.dm.TreeModifier.prototype.dump = function () {
 		lines.push( sp + nodeTag( idx, node ) + node.constructor.name + '(' +
 			node.getOuterLength() + ')' );
 		if ( node.hasChildren() ) {
-			node.children.forEach( function ( child, i ) {
+			node.children.forEach( ( child, i ) => {
 				appendNodeLines( indent + 1, child, i );
 			} );
 		}
@@ -46,9 +46,7 @@ ve.dm.TreeModifier.prototype.dump = function () {
 		offset: this.remover.offset,
 		node: this.remover.node
 	} ) ) ) );
-	ve.batchSplice( lines, lines.length, 0, this.data.data.map( function ( item, i ) {
-		return i + ':' + JSON.stringify( item ) + ',';
-	} ) );
+	ve.batchSplice( lines, lines.length, 0, this.data.data.map( ( item, i ) => i + ':' + JSON.stringify( item ) + ',' ) );
 	return lines.join( '\n' );
 };
 
@@ -62,7 +60,7 @@ ve.test.utils.nodesByTypeSummary = function ( doc ) {
 
 QUnit.module( 've.dm.TreeModifier' );
 
-QUnit.test( 'treeDiff', function ( assert ) {
+QUnit.test( 'treeDiff', ( assert ) => {
 	// old: <div><p>foobarbaz</p><p>qux</p></div><p>quux</p>
 	// new: <ul><li><p>foo</p><p>barBAZ</p><p>qux</p></li></ul><p>qUUx</p><p><img src='x'></p>
 	// tx: {-<div>-|+<ul><li>+}<p>foo{+</p><p>+}bar{-baz-|+BAZ+}</p><p>qux</p>{-</div>-|+</li></ul>+}<p>q{-uu-|+UU+}x</p>{+<p><img src='x'></p>+}
@@ -194,7 +192,7 @@ QUnit.test( 'treeDiff', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'modify', function ( assert ) {
+QUnit.test( 'modify', ( assert ) => {
 	function dumpTree( d ) {
 		// Build a tree modifier just for the .dump method (don't modify anything)
 		var treeModifier = new ve.dm.TreeModifier();
@@ -317,7 +315,7 @@ QUnit.test( 'modify', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'bare content', function ( assert ) {
+QUnit.test( 'bare content', ( assert ) => {
 	var data = [ { type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' } ];
 	var doc = ve.dm.example.createExampleDocumentFromData( data );
 	var tx = new ve.dm.Transaction( [
@@ -325,12 +323,12 @@ QUnit.test( 'bare content', function ( assert ) {
 		{ type: 'retain', length: 3 },
 		{ type: 'replace', remove: [ { type: '/paragraph' } ], insert: [] }
 	] );
-	assert.throws( function () {
+	assert.throws( () => {
 		doc.commit( tx );
 	}, /Error: Cannot insert text into a document node/, 'bare content' );
 } );
 
-QUnit.test( 'unbalanced insertion', function ( assert ) {
+QUnit.test( 'unbalanced insertion', ( assert ) => {
 	var data = [ { type: 'div' }, { type: '/div' } ];
 	var doc = ve.dm.example.createExampleDocumentFromData( data );
 	var tx = new ve.dm.Transaction( [
@@ -338,12 +336,12 @@ QUnit.test( 'unbalanced insertion', function ( assert ) {
 		{ type: 'replace', remove: [], insert: [ { type: 'paragraph' }, { type: '/heading' } ] },
 		{ type: 'retain', length: 1 }
 	] );
-	assert.throws( function () {
+	assert.throws( () => {
 		doc.commit( tx );
 	}, /Expected closing for paragraph but got closing for heading/, 'unbalanced insertion' );
 } );
 
-QUnit.test( 'applyTreeOperation: ensureNotText', function ( assert ) {
+QUnit.test( 'applyTreeOperation: ensureNotText', ( assert ) => {
 	var data = [
 		{ type: 'paragraph' },
 		'f',
@@ -395,7 +393,7 @@ QUnit.test( 'applyTreeOperation: ensureNotText', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'setupBlockSlugs', function ( assert ) {
+QUnit.test( 'setupBlockSlugs', ( assert ) => {
 	var doc = new ve.dm.Surface(
 		ve.dm.example.createExampleDocumentFromData( [] )
 	).documentModel;
@@ -431,7 +429,7 @@ QUnit.test( 'setupBlockSlugs', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'checkEqualData', function ( assert ) {
+QUnit.test( 'checkEqualData', ( assert ) => {
 	var data = [
 		{
 			type: 'paragraph',
@@ -469,7 +467,7 @@ QUnit.test( 'checkEqualData', function ( assert ) {
 	assert.true( true, 'Normalized data compares equal' );
 } );
 
-QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
+QUnit.test( 'TreeCursor#crossIgnoredNodes', ( assert ) => {
 	var data = [
 		{ type: 'paragraph' },
 		'f',
@@ -522,7 +520,7 @@ QUnit.test( 'TreeCursor#crossIgnoredNodes', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'TreeCursor#normalizeCursor', function ( assert ) {
+QUnit.test( 'TreeCursor#normalizeCursor', ( assert ) => {
 	var data = [
 		{ type: 'heading', attributes: { level: 1 } },
 		'a',

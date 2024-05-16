@@ -8,7 +8,7 @@ QUnit.module( 've.ui.BlockquoteAction' );
 
 /* Tests */
 
-QUnit.test( 'wrap/unwrap/toggle', function ( assert ) {
+QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 	var cases = [
 		{
 			html: '<p>aa</p><p>bb</p><p>cc</p>',
@@ -193,7 +193,7 @@ QUnit.test( 'wrap/unwrap/toggle', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'blockquote', assert, caseItem.html, false, caseItem.method, [], caseItem.rangeOrSelection, caseItem.msg,
 			{

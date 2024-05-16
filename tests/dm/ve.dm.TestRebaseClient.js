@@ -64,24 +64,16 @@ ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, 
 	var unsent = change.transactions.slice( sentLength );
 
 	function joinText( transactions ) {
-		return transactions.map( function ( transaction ) {
-			return transaction.operations.filter( function ( op ) {
-				return op.type === 'replace';
-			} ).map( function ( op ) {
-				var text = [];
-				if ( op.remove.length ) {
-					text.push( '-(' + op.remove.map( function ( item ) {
-						return item[ 0 ];
-					} ).join( '' ) + ')' );
-				}
-				if ( op.insert.length ) {
-					text.push( op.insert.map( function ( item ) {
-						return item[ 0 ];
-					} ).join( '' ) );
-				}
-				return text.join( '' );
-			} ).join( '' );
-		} ).join( '' );
+		return transactions.map( ( transaction ) => transaction.operations.filter( ( op ) => op.type === 'replace' ).map( ( op ) => {
+			var text = [];
+			if ( op.remove.length ) {
+				text.push( '-(' + op.remove.map( ( item ) => item[ 0 ] ).join( '' ) + ')' );
+			}
+			if ( op.insert.length ) {
+				text.push( op.insert.map( ( item ) => item[ 0 ] ).join( '' ) );
+			}
+			return text.join( '' );
+		} ).join( '' ) ).join( '' );
 	}
 	if ( committed.length ) {
 		parts.push( joinText( committed ) );
@@ -113,7 +105,7 @@ ve.dm.TestRebaseClient.prototype.applyChange = function ( change ) {
 
 ve.dm.TestRebaseClient.prototype.applyTransactions = function ( txs ) {
 	var authorId = this.getAuthorId();
-	txs.forEach( function ( transaction ) {
+	txs.forEach( ( transaction ) => {
 		if ( transaction.authorId === null ) {
 			transaction.authorId = authorId;
 		}

@@ -8,7 +8,7 @@ QUnit.module( 've.ui.TableAction' );
 
 /* Tests */
 
-QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelative', function ( assert ) {
+QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelative', ( assert ) => {
 	var tableCellTail = [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{ type: '/paragraph' },
@@ -790,7 +790,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'table', assert, caseItem.html, false, caseItem.method, caseItem.args, caseItem.rangeOrSelection, caseItem.msg,
 			{

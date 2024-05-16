@@ -21,32 +21,32 @@ ve.ce.nodeFactory.register( ve.ce.NodeStub );
 
 /* Tests */
 
-QUnit.test( 'getModel', function ( assert ) {
+QUnit.test( 'getModel', ( assert ) => {
 	var model = new ve.dm.NodeStub(),
 		view = new ve.ce.NodeStub( model );
 	assert.strictEqual( view.getModel(), model, 'returns reference to model given to constructor' );
 } );
 
-QUnit.test( 'getParent', function ( assert ) {
+QUnit.test( 'getParent', ( assert ) => {
 	var a = new ve.ce.NodeStub( new ve.dm.NodeStub() );
 	assert.strictEqual( a.getParent(), null, 'returns null if not attached' );
 } );
 
-QUnit.test( 'attach', function ( assert ) {
+QUnit.test( 'attach', ( assert ) => {
 	var a = new ve.ce.NodeStub( new ve.dm.NodeStub() ),
 		b = new ve.ce.NodeStub( new ve.dm.NodeStub() );
-	a.on( 'attach', function ( parent ) {
+	a.on( 'attach', ( parent ) => {
 		assert.strictEqual( parent, b, 'attach event is called with parent as first argument' );
 	} );
 	a.attach( b );
 	assert.strictEqual( a.getParent(), b, 'parent is set to given object after attach' );
 } );
 
-QUnit.test( 'detach', function ( assert ) {
+QUnit.test( 'detach', ( assert ) => {
 	var a = new ve.ce.NodeStub( new ve.dm.NodeStub() ),
 		b = new ve.ce.NodeStub( new ve.dm.NodeStub() );
 	a.attach( b );
-	a.on( 'detach', function ( parent ) {
+	a.on( 'detach', ( parent ) => {
 		assert.strictEqual( parent, b, 'detach event is called with parent as first argument' );
 	} );
 	a.detach();

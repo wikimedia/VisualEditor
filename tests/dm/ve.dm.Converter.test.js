@@ -8,7 +8,7 @@ QUnit.module( 've.dm.Converter' );
 
 /* Tests */
 
-QUnit.test( 'getModelFromDom', function ( assert ) {
+QUnit.test( 'getModelFromDom', ( assert ) => {
 	var cases = ve.dm.example.domToDataCases;
 
 	for ( var msg in cases ) {
@@ -18,7 +18,7 @@ QUnit.test( 'getModelFromDom', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getModelFromDom with store argument', function ( assert ) {
+QUnit.test( 'getModelFromDom with store argument', ( assert ) => {
 	var store = new ve.dm.HashValueStore();
 	var model = ve.dm.converter.getModelFromDom(
 		ve.createDocumentFromHtml( '<p>foo</p>' ),
@@ -28,7 +28,7 @@ QUnit.test( 'getModelFromDom with store argument', function ( assert ) {
 	assert.strictEqual( model.getStore(), store, 'Document store is reference-equal to store argument' );
 } );
 
-QUnit.test( 'getDomFromModel', function ( assert ) {
+QUnit.test( 'getDomFromModel', ( assert ) => {
 	var cases = ve.dm.example.domToDataCases;
 
 	for ( var msg in cases ) {
@@ -38,7 +38,7 @@ QUnit.test( 'getDomFromModel', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'getFullData', function ( assert ) {
+QUnit.test( 'getFullData', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Metadata in ContentBranchNode gets moved outside by any change',
@@ -80,7 +80,7 @@ QUnit.test( 'getFullData', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.beforeHtml ) ),
 			tx = caseItem.transaction( doc );
 
@@ -100,7 +100,7 @@ QUnit.test( 'getFullData', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'roundTripMetadata', function ( assert ) {
+QUnit.test( 'roundTripMetadata', ( assert ) => {
 	var beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
 		afterHtml = '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>';
 

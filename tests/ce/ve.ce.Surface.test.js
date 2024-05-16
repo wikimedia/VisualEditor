@@ -83,7 +83,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 
 	// Below this point, any code that might throw an exception should run deferred,
 	// so the asynchronous cleanup at the lexical end of this function will always run
-	then( function () {
+	then( () => {
 		ve.test.utils.hijackEventSequencerTimeouts( view.eventSequencer );
 		model.setSelection(
 			ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), rangeOrSelection )
@@ -131,7 +131,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		then( doKey.bind( this, keyString ) );
 	} );
 
-	then( function () {
+	then( () => {
 		if ( expectedData ) {
 			expectedData( data );
 			assert.equalLinearData( model.getDocument().getFullData(), data, msg + ': data' );
@@ -145,9 +145,9 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 		assert.equalHash( model.getSelection(), expectedSelection, msg + ': selection' );
 		view.destroy();
 	} );
-	return promise.catch( function ( error ) {
+	return promise.catch( ( error ) => {
 		assert.true( false, caseItem.msg + ': throws ' + error );
-	} ).finally( function () {
+	} ).finally( () => {
 		if ( caseItem.teardown ) {
 			try {
 				caseItem.teardown();
@@ -231,14 +231,14 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 	// Use #done to run immediately after paste promise
 	// TODO: Ideally these tests would run in series use 'await' to
 	// avoid selection issues with running parallel surface tests.
-	afterPastePromise.done( function () {
+	afterPastePromise.done( () => {
 		if ( item.expectedOps ) {
 			var ops = [];
 			if ( model.getHistory().length ) {
 				var txs = model.getHistory()[ 0 ].transactions;
-				ops = txs.map( function ( tx ) {
+				ops = txs.map( ( tx ) => {
 					var txops = ve.copy( tx.getOperations() );
-					txops.forEach( function ( txop ) {
+					txops.forEach( ( txop ) => {
 						if ( txop.remove ) {
 							ve.dm.example.postprocessAnnotations( txop.remove, doc.getStore() );
 						}
@@ -311,7 +311,7 @@ ve.test.utils.DataTransfer = function DataTransfer( initialData ) {
 	}
 };
 
-QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
+QUnit.test( 'handleObservedChanges (content changes)', ( assert ) => {
 	var linkHash = 'hdee7b89d544aa584',
 		cases = [
 			{
@@ -495,13 +495,11 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 		// Set model linear selection, so that insertion annotations are primed correctly
 		model.setLinearSelection( prevRange );
 		view.handleObservedChanges( prev, next );
-		delayed.forEach( function ( callback ) {
+		delayed.forEach( ( callback ) => {
 			callback();
 		} );
 		var txs = ( model.getHistory()[ 0 ] || {} ).transactions || [];
-		var ops = txs.map( function ( tx ) {
-			return tx.getOperations();
-		} );
+		var ops = txs.map( ( tx ) => tx.getOperations() );
 		assert.deepEqual( ops, expectedOps, msg + ': keys' );
 		assert.equalRange( model.getSelection().getRange(), expectedRangeOrSelection, msg + ': range' );
 		assert.strictEqual( initialBreakpoints !== model.undoStack.length, !!expectsBreakpoint, msg + ': breakpoint' );
@@ -509,7 +507,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 		view.destroy();
 	}
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		testRunner(
 			caseItem.prevHtml, caseItem.prevRange, caseItem.prevFocusIsAfterAnnotationBoundary || false,
 			caseItem.nextHtml, caseItem.nextRange,
@@ -519,7 +517,7 @@ QUnit.test( 'handleObservedChanges (content changes)', function ( assert ) {
 
 } );
 
-QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
+QUnit.test( 'handleDataTransfer/handleDataTransferItems', ( assert ) => {
 	var surface = ve.test.utils.createViewOnlySurfaceFromHtml( '' ),
 		view = surface.getView(),
 		model = surface.getModel(),
@@ -635,7 +633,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		fragment.select();
 		view.handleDataTransfer( caseItem.dataTransfer, caseItem.isPaste );
 		assert.equalLinearData( model.getDocument().getFullData( fragment.getSelection().getRange() ), caseItem.expectedData, caseItem.msg );
@@ -643,7 +641,7 @@ QUnit.test( 'handleDataTransfer/handleDataTransferItems', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'getClipboardHash', function ( assert ) {
+QUnit.test( 'getClipboardHash', ( assert ) => {
 	assert.strictEqual(
 		ve.ce.Surface.static.getClipboardHash(
 			$( '  <p class="foo"> B<b>a</b>r </p>\n\t<span class="baz"></span> Quux <h1><span></span>Whee</h1>' )
@@ -653,7 +651,7 @@ QUnit.test( 'getClipboardHash', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'onCopy', function ( assert ) {
+QUnit.test( 'onCopy', ( assert ) => {
 	var cases = [
 		{
 			rangeOrSelection: new ve.Range( 27, 32 ),
@@ -753,7 +751,7 @@ QUnit.test( 'onCopy', function ( assert ) {
 		view.destroy();
 	}
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		testRunner(
 			caseItem.doc, caseItem.rangeOrSelection, caseItem.expectedData,
 			caseItem.expectedOriginalRange, caseItem.expectedBalancedRange,
@@ -2428,7 +2426,7 @@ QUnit.test( 'beforePaste/afterPaste', function ( assert ) {
 	cases.forEach( ve.test.utils.runSurfacePasteTest.bind( this, assert ) );
 } );
 
-QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
+QUnit.test( 'onDocumentDragStart/onDocumentDrop', ( assert ) => {
 	var noChange = function () {},
 		cases = [
 			{
@@ -2501,7 +2499,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 		view.destroy();
 	}
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		testRunner(
 			caseItem.rangeOrSelection, caseItem.targetOffset, caseItem.expectedTransfer, caseItem.expectedData,
 			caseItem.expectedSelection, caseItem.msg
@@ -2510,7 +2508,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', function ( assert ) {
 
 } );
 
-QUnit.test( 'getSelectionState', function ( assert ) {
+QUnit.test( 'getSelectionState', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Grouped aliens',
@@ -2590,7 +2588,7 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 	TestCeSectionPlaceholderNode.static.name = 'sectionPlaceholder';
 	ve.ce.nodeFactory.register( TestCeSectionPlaceholderNode );
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
 		var internalListNode = view.getModel().getDocument().getInternalList().getListNode();
 		var rootElement = view.getDocument().getDocumentNode().$element[ 0 ];
@@ -2620,7 +2618,7 @@ QUnit.test( 'getSelectionState', function ( assert ) {
 	ve.ce.nodeFactory.unregister( TestCeSectionPlaceholderNode );
 } );
 
-QUnit.test( 'findBlockSlug', function ( assert ) {
+QUnit.test( 'findBlockSlug', ( assert ) => {
 	var view = ve.test.utils.createSurfaceViewFromHtml( '<div><div><p>Foo</p></div></div><div><p>Bar</p></div>' ),
 		dmDoc = view.getModel().getDocument(),
 		len = dmDoc.getLength(),
@@ -2636,7 +2634,7 @@ QUnit.test( 'findBlockSlug', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffset', function ( assert ) {
+QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffset', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Block images around paragraph',
@@ -2689,7 +2687,7 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 			lastRange: new ve.Range( 20 )
 		}
 	];
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var htmlOrDoc = caseItem.htmlOrDoc;
 		var view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
@@ -2713,7 +2711,7 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 	} );
 } );
 
-QUnit.test( 'getViewportRange', function ( assert ) {
+QUnit.test( 'getViewportRange', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocumentFromData( [].concat(
 		{ type: 'paragraph' },
 		// 1
@@ -2781,7 +2779,7 @@ QUnit.test( 'getViewportRange', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var htmlOrDoc = caseItem.htmlOrDoc;
 		var view = typeof htmlOrDoc === 'string' ?
 			ve.test.utils.createSurfaceViewFromHtml( htmlOrDoc ) :
@@ -2806,7 +2804,7 @@ QUnit.test( 'getViewportRange', function ( assert ) {
 } );
 
 /* eslint-disable qunit/resolve-async */
-QUnit.skip( 'afterMutations', function ( assert ) {
+QUnit.skip( 'afterMutations', ( assert ) => {
 	var cases, done;
 	function getDescendant( node, path ) {
 		var i, len;
@@ -2816,21 +2814,19 @@ QUnit.skip( 'afterMutations', function ( assert ) {
 		return node;
 	}
 	function simplify( data ) {
-		return data.map( function ( item ) {
-			return typeof item === 'object' ? { type: item.type } : item;
-		} );
+		return data.map( ( item ) => typeof item === 'object' ? { type: item.type } : item );
 	}
 	function runCase( i ) {
 		var caseItem, view, dmDoc;
 		caseItem = cases[ i ];
 		view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
 		dmDoc = view.getModel().getDocument();
-		caseItem.domRemovalPaths.forEach( function ( path ) {
+		caseItem.domRemovalPaths.forEach( ( path ) => {
 			var node = getDescendant( view.documentView.documentNode, path );
 			node.$element[ 0 ].remove();
 		} );
 		// The mutation observer runs on the microtask queue, so definitely before setTimeout
-		setTimeout( function () {
+		setTimeout( () => {
 			var data = dmDoc.getData(
 				new ve.Range( caseItem.testRange[ 0 ], caseItem.testRange[ 1 ] )
 			);

@@ -8,7 +8,7 @@ QUnit.module( 've.ui.ListAction' );
 
 /* Tests */
 
-QUnit.test( '(un)wrap', function ( assert ) {
+QUnit.test( '(un)wrap', ( assert ) => {
 	var cases = [
 		{
 			rangeOrSelection: new ve.Range( 56, 60 ),
@@ -80,7 +80,7 @@ QUnit.test( '(un)wrap', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'list', assert, caseItem.html, false, caseItem.method, [ caseItem.style ], caseItem.rangeOrSelection, caseItem.msg,
 			{

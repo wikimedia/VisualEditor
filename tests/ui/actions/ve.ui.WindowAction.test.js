@@ -8,14 +8,14 @@ QUnit.module( 've.ui.WindowAction' );
 
 /* Tests */
 
-QUnit.test( 'Basic open/close', function ( assert ) {
+QUnit.test( 'Basic open/close', ( assert ) => {
 	var surface = ve.test.utils.createSurfaceFromHtml( '' ),
 		windowAction = ve.ui.actionFactory.create( 'window', surface ),
 		dialogs = surface.getDialogs(),
 		done = assert.async( 2 );
 
-	dialogs.once( 'opening', function ( win, opening ) {
-		opening.then( function () {
+	dialogs.once( 'opening', ( win, opening ) => {
+		opening.then( () => {
 			assert.true( true, 'Window opened' );
 
 			windowAction.close( 'message' );
@@ -23,7 +23,7 @@ QUnit.test( 'Basic open/close', function ( assert ) {
 		} );
 	} );
 
-	dialogs.once( 'closing', function () {
+	dialogs.once( 'closing', () => {
 		assert.true( true, 'Window closed' );
 		done();
 	} );

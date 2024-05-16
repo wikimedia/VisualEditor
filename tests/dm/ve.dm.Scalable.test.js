@@ -6,7 +6,7 @@
 
 QUnit.module( 've.dm.Scalable' );
 
-QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', function ( assert ) {
+QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( assert ) => {
 	var eventEmitted = false,
 		currentDimensions = {
 			width: 300,
@@ -56,7 +56,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', functio
 	scalable.clearDefaultDimensions();
 	assert.strictEqual( scalable.getDefaultDimensions(), null, 'clearDefaultDimensions' );
 
-	scalable.on( 'defaultSizeChange', function () {
+	scalable.on( 'defaultSizeChange', () => {
 		eventEmitted = true;
 	} );
 	eventEmitted = false;
@@ -67,7 +67,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', functio
 	scalable.clearOriginalDimensions();
 	assert.strictEqual( scalable.getOriginalDimensions(), null, 'clearOriginalDimensions' );
 
-	scalable.on( 'originalSizeChange', function () {
+	scalable.on( 'originalSizeChange', () => {
 		eventEmitted = true;
 	} );
 	eventEmitted = false;
@@ -78,7 +78,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', functio
 	scalable.clearMinDimensions();
 	assert.strictEqual( scalable.getMinDimensions(), null, 'clearMinDimensions' );
 
-	scalable.on( 'minSizeChange', function () {
+	scalable.on( 'minSizeChange', () => {
 		eventEmitted = true;
 	} );
 	eventEmitted = false;
@@ -89,7 +89,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', functio
 	scalable.clearMaxDimensions();
 	assert.strictEqual( scalable.getMaxDimensions(), null, 'clearMaxDimensions' );
 
-	scalable.on( 'maxSizeChange', function () {
+	scalable.on( 'maxSizeChange', () => {
 		eventEmitted = true;
 	} );
 	eventEmitted = false;
@@ -134,7 +134,7 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', functio
 
 } );
 
-QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isTooSmall/isTooLarge', function ( assert ) {
+QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isTooSmall/isTooLarge', ( assert ) => {
 	var currentDimensions = {
 			width: 300,
 			height: 200
@@ -190,7 +190,7 @@ QUnit.test( 'getBoundedDimensions/getCurrentScale/isCurrentDimensionsValid/isToo
 
 } );
 
-QUnit.test( 'isDefault/toggleDefault', function ( assert ) {
+QUnit.test( 'isDefault/toggleDefault', ( assert ) => {
 	var scalable = new ve.dm.Scalable( {
 			isDefault: true
 		} ),
@@ -205,7 +205,7 @@ QUnit.test( 'isDefault/toggleDefault', function ( assert ) {
 	assert.strictEqual( scalable.isDefault(), true, 'toggleDefault changes false to true' );
 } );
 
-QUnit.test( 'isDimensionsObjectValid', function ( assert ) {
+QUnit.test( 'isDimensionsObjectValid', ( assert ) => {
 	var cases = [
 		{ dimensions: null, expected: false, msg: 'Null' },
 		{ dimensions: { width: 200 }, expected: true, msg: 'Only width' },
@@ -214,12 +214,12 @@ QUnit.test( 'isDimensionsObjectValid', function ( assert ) {
 		{ dimensions: { width: undefined, height: undefined }, expected: false, msg: 'Explicity undefined' }
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		assert.strictEqual( ve.dm.Scalable.static.isDimensionsObjectValid( caseItem.dimensions ), caseItem.expected, caseItem.msg );
 	} );
 } );
 
-QUnit.test( 'getDimensionsFromValue', function ( assert ) {
+QUnit.test( 'getDimensionsFromValue', ( assert ) => {
 	var cases = [
 		{ dimensions: { width: 200 }, ratio: 1, expected: { width: 200, height: 200 }, msg: 'Only width' },
 		{ dimensions: { height: 200 }, ratio: 2, expected: { width: 400, height: 200 }, msg: 'Only height' },
@@ -227,7 +227,7 @@ QUnit.test( 'getDimensionsFromValue', function ( assert ) {
 		{ dimensions: { width: 200, height: '' }, ratio: 0.5, expected: { width: 200, height: 400 }, msg: 'Empty height' }
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		assert.deepEqual( ve.dm.Scalable.static.getDimensionsFromValue( caseItem.dimensions, caseItem.ratio ), caseItem.expected, caseItem.msg );
 	} );
 } );

@@ -8,7 +8,7 @@ QUnit.module( 've.ce.TextState' );
 
 /* Tests */
 
-QUnit.test( 'getChangeTransaction', function ( assert ) {
+QUnit.test( 'getChangeTransaction', ( assert ) => {
 	var underlineHash = ve.dm.example.underlineHash,
 		boldHash = ve.dm.example.boldHash,
 		annHash = ve.dm.example.annHash;
@@ -355,7 +355,7 @@ QUnit.test( 'getChangeTransaction', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.oldRawHtml );
 		var documentView = view.getDocument();
 		var documentNode = documentView.getDocumentNode();

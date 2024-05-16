@@ -8,7 +8,7 @@ QUnit.module( 've.ui.FormatAction' );
 
 /* Tests */
 
-QUnit.test( 'convert', function ( assert ) {
+QUnit.test( 'convert', ( assert ) => {
 	var cases = [
 		{
 			rangeOrSelection: new ve.Range( 14, 16 ),
@@ -137,7 +137,7 @@ QUnit.test( 'convert', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'format', assert, caseItem.html || ve.dm.example.isolationHtml, false, 'convert',
 			[ caseItem.type, caseItem.attributes ], caseItem.rangeOrSelection, caseItem.msg,

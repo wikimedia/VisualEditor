@@ -27,7 +27,7 @@
 	};
 	DummyPlatform.prototype.getHtmlMessage = function () {
 		var $wrapper = $( '<div>' );
-		Array.prototype.forEach.call( arguments, function ( arg, i, args ) {
+		Array.prototype.forEach.call( arguments, ( arg, i, args ) => {
 			$wrapper.append( arg );
 			if ( i < args.length - 1 ) {
 				$wrapper.append( ',' );
@@ -453,12 +453,8 @@
 		var diffElement = new ve.ui.DiffElement( visualDiff );
 		assert.equalDomElement( diffElement.$document[ 0 ], $( '<div>' ).addClass( 've-ui-diffElement-document' ).html( caseItem.expected )[ 0 ], caseItem.msg );
 		assert.deepEqualWithDomElements(
-			diffElement.descriptions.items.map( function ( item ) {
-				return item.$label.contents().toArray();
-			} ),
-			( caseItem.expectedDescriptions || [] ).map( function ( expected ) {
-				return $.parseHTML( expected );
-			} ),
+			diffElement.descriptions.items.map( ( item ) => item.$label.contents().toArray() ),
+			( caseItem.expectedDescriptions || [] ).map( ( expected ) => $.parseHTML( expected ) ),
 			caseItem.msg + ': sidebar'
 		);
 		assert.strictEqual(

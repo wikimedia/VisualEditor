@@ -8,7 +8,7 @@ QUnit.module( 've.dm.TransactionProcessor' );
 
 /* Tests */
 
-QUnit.test( 'commit', function ( assert ) {
+QUnit.test( 'commit', ( assert ) => {
 	var store = ve.dm.example.createExampleDocument().getStore(),
 		cases = {
 			'no operations': {
@@ -572,7 +572,7 @@ QUnit.test( 'commit', function ( assert ) {
 			if ( 'events' in caseItem ) {
 				// Set up event handlers
 				// eslint-disable-next-line no-loop-func
-				caseItem.events.forEach( function ( event ) {
+				caseItem.events.forEach( ( event ) => {
 					var node = testDoc.getDocumentNode();
 					for ( var j = 1; j < event.length; j++ ) {
 						node = node.getChildren()[ event[ j ] ];
@@ -596,7 +596,7 @@ QUnit.test( 'commit', function ( assert ) {
 			);
 			if ( 'events' in caseItem ) {
 				// eslint-disable-next-line no-loop-func
-				caseItem.events.forEach( function ( event ) {
+				caseItem.events.forEach( ( event ) => {
 					assert.strictEqual(
 						event.fired,
 						1,
@@ -616,7 +616,7 @@ QUnit.test( 'commit', function ( assert ) {
 		} else if ( 'exception' in caseItem ) {
 			assert.throws(
 				// eslint-disable-next-line no-loop-func
-				function () {
+				() => {
 					testDoc.commit( tx );
 				},
 				caseItem.exception,
@@ -633,7 +633,7 @@ QUnit.test( 'commit', function ( assert ) {
 } );
 
 // TODO: Fix the code so undoing unbold roundtrips properly, then fix this test to reflect that
-QUnit.test( 'undo clear annotation', function ( assert ) {
+QUnit.test( 'undo clear annotation', ( assert ) => {
 	var origData = [
 		{ type: 'paragraph' },
 		[ 'x', [ ve.dm.example.boldHash, ve.dm.example.italicHash ] ],

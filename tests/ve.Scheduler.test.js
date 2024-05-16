@@ -25,87 +25,81 @@ ve.TestScheduler.prototype.now = function () {
 
 /* Tests */
 
-QUnit.test( 'Call with no real async', function ( assert ) {
+QUnit.test( 'Call with no real async', ( assert ) => {
 	var scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async();
 
 	scheduler.schedule(
-		function () {
+		() => {
 			assert.true( true, 'initial action was called' );
 			begun();
 		},
-		function () {
-			return true;
-		}
-	).done( function () {
+		() => true
+	).done( () => {
 		assert.true( true, 'promise was resolved' );
 		done();
 	} );
 } );
 
-QUnit.test( 'Call with delay', function ( assert ) {
+QUnit.test( 'Call with delay', ( assert ) => {
 	var scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async(),
 		delayed = false;
 
 	scheduler.schedule(
-		function () {
+		() => {
 			assert.true( true, 'initial action was called' );
-			setTimeout( function () {
+			setTimeout( () => {
 				delayed = true;
 				assert.true( true, 'setTimeout delay occurred' );
 			} );
 			begun();
 		},
-		function () {
-			return delayed;
-		}
-	).done( function () {
+		() => delayed
+	).done( () => {
 		assert.true( true, 'promise was resolved' );
 		done();
 	} );
 } );
 
-QUnit.test( 'Test that throws an exception', function ( assert ) {
+QUnit.test( 'Test that throws an exception', ( assert ) => {
 	var scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async();
 
 	scheduler.schedule(
-		function () {
+		() => {
 			assert.true( true, 'initial action was called' );
 			begun();
 		},
-		function () {
+		() => {
 			throw new Error();
 		}
-	).done( function () {
+	).done( () => {
 		assert.true( false, 'promise was wrongly resolved as successful' );
-	} ).fail( function () {
+	} ).fail( () => {
 		assert.true( true, 'promise was rejected' );
 		done();
 	} );
 } );
 
-QUnit.test( 'Test that never succeeds', function ( assert ) {
+QUnit.test( 'Test that never succeeds', ( assert ) => {
 	var scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async();
 
 	scheduler.schedule(
-		function () {
+		() => {
 			assert.true( true, 'initial action was called' );
 			begun();
 		},
-		function () {
-			return false;
-		}
-	).done( function () {
+		() => false
+	).done( () => {
 		assert.true( false, 'promise was wrongly resolved as successful' );
 		done();
-	} ).fail( function () {
+	} ).fail( () => {
 		assert.true( true, 'promise was rejected' );
 		done();
 	} );

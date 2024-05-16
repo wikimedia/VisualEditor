@@ -8,7 +8,7 @@ QUnit.module( 've.ce.ResizableNode' );
 
 /* Tests */
 
-QUnit.test( 'updateSizeLabel', function ( assert ) {
+QUnit.test( 'updateSizeLabel', ( assert ) => {
 	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.blockImage.html ),
 		documentNode = view.getDocument().getDocumentNode(),
 		resizableNode = documentNode.children[ 0 ];
@@ -37,7 +37,7 @@ QUnit.test( 'updateSizeLabel', function ( assert ) {
 	view.destroy();
 } );
 
-QUnit.test( 'resize events', function ( assert ) {
+QUnit.test( 'resize events', ( assert ) => {
 	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.image.html ),
 		documentNode = view.getDocument().getDocumentNode(),
 		resizableNode = documentNode.children[ 0 ].children[ 0 ],
@@ -106,7 +106,7 @@ QUnit.test( 'resize events', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'notResizable', function ( assert ) {
+QUnit.test( 'notResizable', ( assert ) => {
 	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.image.html ),
 		documentNode = view.getDocument().getDocumentNode(),
 		resizableNode = documentNode.children[ 0 ].children[ 0 ],

@@ -6,7 +6,7 @@
 
 QUnit.module( 've.dm.Change' );
 
-QUnit.test( 'rebaseTransactions', function ( assert ) {
+QUnit.test( 'rebaseTransactions', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		replace12 = ve.dm.TransactionBuilder.static.newFromReplacement( doc, new ve.Range( 1, 2 ), [ 'f', 'o', 'o' ] ),
@@ -115,7 +115,7 @@ QUnit.test( 'rebaseTransactions', function ( assert ) {
 	], 'Rebase-endmost insert onto parallel insert at the same offset' );
 } );
 
-QUnit.test( 'Change operations', function ( assert ) {
+QUnit.test( 'Change operations', ( assert ) => {
 	var origData = [ { type: 'paragraph' }, 't', 'h', 'r', 'e', 'e', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
@@ -264,7 +264,7 @@ QUnit.test( 'Change operations', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
+QUnit.test( 'Rebase with conflicting annotations', ( assert ) => {
 	var origData = [ { type: 'paragraph' }, 'A', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
@@ -301,7 +301,7 @@ QUnit.test( 'Rebase with conflicting annotations', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
+QUnit.test( 'toJSON/deserialize/unsafeDeserialize', ( assert ) => {
 	var origData = [ { type: 'paragraph' }, 'b', 'a', 'r', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
@@ -380,22 +380,14 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 	);
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( serialized, true ).getStores().map( function ( store ) {
-			return store.hashStore;
-		} ),
-		serialized.stores.map( function ( store ) {
-			return store ? store.hashStore : {};
-		} ),
+		ve.dm.Change.static.deserialize( serialized, true ).getStores().map( ( store ) => store.hashStore ),
+		serialized.stores.map( ( store ) => store ? store.hashStore : {} ),
 		'Deserialize, preserving store values'
 	);
 
 	assert.notDeepEqual(
-		ve.dm.Change.static.deserialize( serialized ).getStores().map( function ( store ) {
-			return store.hashStore;
-		} ),
-		serialized.stores.map( function ( store ) {
-			return store ? store.hashStore : {};
-		} ),
+		ve.dm.Change.static.deserialize( serialized ).getStores().map( ( store ) => store.hashStore ),
+		serialized.stores.map( ( store ) => store ? store.hashStore : {} ),
 		'Deserialize, not preserving store values'
 	);
 
@@ -426,16 +418,14 @@ QUnit.test( 'toJSON/deserialize/unsafeDeserialize', function ( assert ) {
 	);
 
 	assert.deepEqual(
-		ve.dm.Change.static.deserialize( simpleSerialized, true ).getStores().map( function ( store ) {
-			return store.hashStore;
-		} ),
+		ve.dm.Change.static.deserialize( simpleSerialized, true ).getStores().map( ( store ) => store.hashStore ),
 		[ {} ],
 		'Deserialize, preserving store values (simple)'
 	);
 
 } );
 
-QUnit.test( 'Minified serialization', function ( assert ) {
+QUnit.test( 'Minified serialization', ( assert ) => {
 	var serialized = {
 		start: 0,
 		transactions: [
@@ -558,7 +548,7 @@ QUnit.test( 'Minified serialization', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'Same-offset typing', function ( assert ) {
+QUnit.test( 'Same-offset typing', ( assert ) => {
 	var surface = new ve.dm.Surface( ve.dm.example.createExampleDocumentFromData( [
 			{ type: 'paragraph' },
 			{ type: '/paragraph' },
@@ -621,7 +611,7 @@ QUnit.test( 'Same-offset typing', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var operations = caseItem.change.transactions[ 0 ].operations;
 		assert.deepEqual( {
 			before: operations[ 0 ].length,

@@ -6,7 +6,7 @@
 
 QUnit.module( 've.sanitize' );
 
-QUnit.test( 've.sanitizeHtml', function ( assert ) {
+QUnit.test( 've.sanitizeHtml', ( assert ) => {
 
 	var cases = [
 		{
@@ -51,10 +51,10 @@ QUnit.test( 've.sanitizeHtml', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var actual = document.createElement( 'div' );
 		var nodes = ve.sanitizeHtml( caseItem.html );
-		Array.prototype.forEach.call( nodes, function ( node ) {
+		Array.prototype.forEach.call( nodes, ( node ) => {
 			actual.appendChild( node );
 		} );
 
@@ -65,11 +65,11 @@ QUnit.test( 've.sanitizeHtml', function ( assert ) {
 
 } );
 
-QUnit.test( 've.sanitizeHtmlToDocument', function ( assert ) {
+QUnit.test( 've.sanitizeHtmlToDocument', ( assert ) => {
 
 	var nodes = ve.sanitizeHtml( '<a href="allowed">Foo</a>' );
 	var body = document.createElement( 'body' );
-	Array.prototype.forEach.call( nodes, function ( node ) {
+	Array.prototype.forEach.call( nodes, ( node ) => {
 		body.appendChild( node );
 	} );
 	var sanitizedDocument = ve.sanitizeHtmlToDocument( '<a href="allowed">Foo</a>' );
@@ -78,7 +78,7 @@ QUnit.test( 've.sanitizeHtmlToDocument', function ( assert ) {
 
 } );
 
-QUnit.test( 've.setAttributeSafe', function ( assert ) {
+QUnit.test( 've.setAttributeSafe', ( assert ) => {
 
 	var cases = [
 		{
@@ -121,7 +121,7 @@ QUnit.test( 've.setAttributeSafe', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var actual = document.createElement( 'div' );
 		actual.innerHTML = caseItem.element;
 		ve.setAttributeSafe(

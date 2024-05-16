@@ -8,7 +8,7 @@ QUnit.module( 've.dm.SourceSurfaceFragment' );
 
 /* Tests */
 
-QUnit.test( 'insertContent/insertDocument', function ( assert ) {
+QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Heading converted to HTML',
@@ -95,7 +95,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var doc = ve.dm.example.createExampleDocumentFromData( caseItem.data || [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] ),
 			surface = new ve.dm.Surface( doc, { sourceMode: true } ),
 			fragment = surface.getLinearFragment( caseItem.range || new ve.Range( 1 ) ),
@@ -106,7 +106,7 @@ QUnit.test( 'insertContent/insertDocument', function ( assert ) {
 		} else {
 			fragment.insertContent( caseItem.insert );
 		}
-		fragment.getPending().then( function () {
+		fragment.getPending().then( () => {
 			assert.deepEqual(
 				doc.getData( doc.getDocumentRange() ),
 				caseItem.expected,

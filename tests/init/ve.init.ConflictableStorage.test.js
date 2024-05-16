@@ -21,7 +21,7 @@ QUnit.module( 've.init.ConflictableStorage', {
 	}
 } );
 
-QUnit.test( 'Basic methods', function ( assert ) {
+QUnit.test( 'Basic methods', ( assert ) => {
 	var store = {},
 		storage = ve.init.platform.createSessionStorage( store );
 

@@ -27,7 +27,7 @@ QUnit.module( 've.init.sa.Platform', {
 	}
 } );
 
-QUnit.test( 'getUserConfig', function ( assert ) {
+QUnit.test( 'getUserConfig', ( assert ) => {
 	var platform = new ve.init.sa.Platform();
 
 	assert.strictEqual( platform.getUserConfig( 'test-1' ), null, 'unknown key' );
@@ -47,7 +47,7 @@ QUnit.test( 'getUserConfig', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'setUserConfig', function ( assert ) {
+QUnit.test( 'setUserConfig', ( assert ) => {
 	var platform = new ve.init.sa.Platform();
 
 	assert.strictEqual( platform.setUserConfig( 'test-1', 'one' ), true, 'set key' );
@@ -65,10 +65,10 @@ QUnit.test( 'setUserConfig', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'messages', function ( assert ) {
+QUnit.test( 'messages', ( assert ) => {
 	var platform = new ve.init.sa.Platform();
 
-	return platform.getInitializedPromise().then( function () {
+	return platform.getInitializedPromise().then( () => {
 		assert.true(
 			/^<?platformtest-foo>?$/.test( platform.getMessage( 'platformtest-foo' ) ),
 			'return plain key as fallback, possibly wrapped in brackets'
@@ -98,10 +98,10 @@ QUnit.test( 'messages', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'parsedMessage', function ( assert ) {
+QUnit.test( 'parsedMessage', ( assert ) => {
 	var platform = new ve.init.sa.Platform();
 
-	return platform.getInitializedPromise().then( function () {
+	return platform.getInitializedPromise().then( () => {
 		assert.true(
 			/^(&lt;)?platformtest-quux(&gt;)?$/.test( platform.getParsedMessage( 'platformtest-quux' ) ),
 			'any brackets in fallbacks are HTML-escaped'

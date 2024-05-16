@@ -47,7 +47,7 @@ ve.TestEventSequencer.prototype.runPostponed = function () {
 
 /* Tests */
 
-QUnit.test( 'EventSequencer', function ( assert ) {
+QUnit.test( 'EventSequencer', ( assert ) => {
 	var calls = [];
 
 	var sequencer = new ve.TestEventSequencer( [ 'event1', 'event2', 'event3' ] ).on( {
@@ -65,11 +65,11 @@ QUnit.test( 'EventSequencer', function ( assert ) {
 			calls.push( 'after3' );
 		}
 	} ).onLoop(
-		function () {
+		() => {
 			calls.push( 'onLoop' );
 		}
 	).afterLoop(
-		function () {
+		() => {
 			calls.push( 'afterLoop' );
 		}
 	).afterOne( {
@@ -90,7 +90,7 @@ QUnit.test( 'EventSequencer', function ( assert ) {
 	);
 
 	calls.length = 0;
-	sequencer.afterLoopOne( function () {
+	sequencer.afterLoopOne( () => {
 		calls.push( 'afterLoopOne' );
 	} );
 

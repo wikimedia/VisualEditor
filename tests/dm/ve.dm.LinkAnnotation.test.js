@@ -6,7 +6,7 @@
 
 QUnit.module( 've.dm.LinkAnnotation' );
 
-QUnit.test( 'getFragment', function ( assert ) {
+QUnit.test( 'getFragment', ( assert ) => {
 	var cases = [
 		{
 			msg: 'No fragment returns null',
@@ -58,7 +58,7 @@ QUnit.test( 'getFragment', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		assert.strictEqual( caseItem.annotation.getFragment(), caseItem.expected, caseItem.msg );
 	} );
 } );

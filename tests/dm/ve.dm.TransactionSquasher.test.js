@@ -6,14 +6,12 @@
 
 QUnit.module( 've.dm.TransactionSquasher' );
 
-QUnit.test( 'squash', function ( assert ) {
+QUnit.test( 'squash', ( assert ) => {
 	var boldHash = 'hfbe3cfe099b83e1e',
 		italicHash = 'he4e7c54e2204d10ba';
 
 	function insertionTxList( before, itemSequence, after ) {
-		return itemSequence.split( '' ).map( function ( item, n ) {
-			return [ before + n, [ '', item ], after ];
-		} );
+		return itemSequence.split( '' ).map( ( item, n ) => [ before + n, [ '', item ], after ] );
 	}
 
 	function annotationTx( allData, start, stop, length, method, hash, spliceAt ) {
@@ -21,7 +19,7 @@ QUnit.test( 'squash', function ( assert ) {
 
 		var newData;
 		if ( method === 'set' ) {
-			newData = oldData.map( function ( item ) {
+			newData = oldData.map( ( item ) => {
 				var ch, hashList;
 				if ( Array.isArray( item ) ) {
 					ch = item[ 0 ];
@@ -38,7 +36,7 @@ QUnit.test( 'squash', function ( assert ) {
 				return [ ch, hashList ];
 			} );
 		} else {
-			newData = oldData.map( function ( item ) {
+			newData = oldData.map( ( item ) => {
 				var ch = item[ 0 ],
 					hashList = item[ 1 ];
 				hashList = [].concat(
@@ -57,9 +55,7 @@ QUnit.test( 'squash', function ( assert ) {
 
 	function sequence( data ) {
 		var hashList = Array.prototype.slice.call( arguments, 1 );
-		return Array.prototype.map.call( data, function ( item ) {
-			return hashList.length === 0 ? item : [ item, hashList ];
-		} );
+		return Array.prototype.map.call( data, ( item ) => hashList.length === 0 ? item : [ item, hashList ] );
 	}
 
 	var cases = [
@@ -286,13 +282,11 @@ QUnit.test( 'squash', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
-		var transactions = caseItem.transactions.map( function ( txData ) {
-			return ve.dm.Transaction.static.deserialize( txData );
-		} );
+	cases.forEach( ( caseItem ) => {
+		var transactions = caseItem.transactions.map( ( txData ) => ve.dm.Transaction.static.deserialize( txData ) );
 		ve.deepFreeze( transactions );
 		if ( caseItem.error ) {
-			assert.throws( function () {
+			assert.throws( () => {
 				ve.dm.TransactionSquasher.static.squash( transactions );
 			}, Error, caseItem.message );
 			// eslint-disable-next-line qunit/no-early-return

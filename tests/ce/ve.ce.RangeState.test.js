@@ -8,7 +8,7 @@ QUnit.module( 've.ce.RangeState' );
 
 /* Tests */
 
-QUnit.test( 'Basic tests', function ( assert ) {
+QUnit.test( 'Basic tests', ( assert ) => {
 	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.html ),
 		nativeSelection = view.nativeSelection,
 		doc = view.getDocument().getDocumentNode(),
@@ -119,7 +119,7 @@ QUnit.test( 'Basic tests', function ( assert ) {
 	}
 
 	var oldState = null;
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		nativeSelection.removeAllRanges();
 		if ( caseItem.range ) {
 			var nativeRange = document.createRange();

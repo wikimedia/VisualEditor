@@ -11,7 +11,7 @@ QUnit.module( 've.dm.Transaction' );
 /* Tests */
 // TODO: Change the variable names to reflect the use of TransactionBuilder
 
-QUnit.test( 'translateOffset', function ( assert ) {
+QUnit.test( 'translateOffset', ( assert ) => {
 	var b = [ ve.dm.example.boldHash ];
 
 	var tx = new ve.dm.Transaction( [
@@ -69,7 +69,7 @@ QUnit.test( 'translateOffset', function ( assert ) {
 	}
 } );
 
-QUnit.test( 'translateRange', function ( assert ) {
+QUnit.test( 'translateRange', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		txBuilder = new ve.dm.TransactionBuilder();
 	txBuilder.pushRetain( 55 );
@@ -106,13 +106,13 @@ QUnit.test( 'translateRange', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		assert.equalRange( tx.translateRange( caseItem.before ), caseItem.after, caseItem.msg );
 		assert.equalRange( tx.translateRange( caseItem.before.flip() ), caseItem.after.flip(), caseItem.msg + ' (reversed)' );
 	} );
 } );
 
-QUnit.test( 'getModifiedRange', function ( assert ) {
+QUnit.test( 'getModifiedRange', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
@@ -213,7 +213,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var txBuilder = new ve.dm.TransactionBuilder();
 		for ( var j = 0; j < caseItem.calls.length; j++ ) {
 			txBuilder[ caseItem.calls[ j ][ 0 ] ].apply( txBuilder, caseItem.calls[ j ].slice( 1 ) );
@@ -222,7 +222,7 @@ QUnit.test( 'getModifiedRange', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'Metadata transactions', function ( assert ) {
+QUnit.test( 'Metadata transactions', ( assert ) => {
 	var fooMeta = { type: 'alienMeta', attributes: { label: 'foo' } },
 		barMeta = { type: 'alienMeta', attributes: { label: 'bar' } },
 		data = [
@@ -239,9 +239,7 @@ QUnit.test( 'Metadata transactions', function ( assert ) {
 		events = [];
 
 	function getElements( list ) {
-		return list.items.map( function ( item ) {
-			return item.element;
-		} );
+		return list.items.map( ( item ) => item.element );
 	}
 
 	var doc = new ve.dm.Document( [] );

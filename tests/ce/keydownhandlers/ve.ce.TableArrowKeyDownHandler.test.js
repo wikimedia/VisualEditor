@@ -13,7 +13,7 @@ QUnit.module( 've.ce.TableArrowKeyDownHandler', {
 	}
 } );
 
-QUnit.test( 'special key down: table arrow keys (complex movements)', function ( assert ) {
+QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert ) => {
 	var done = assert.async(),
 		promise = Promise.resolve(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
@@ -149,16 +149,14 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', function (
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
-		promise = promise.then( function () {
-			return ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem );
-		} );
+	cases.forEach( ( caseItem ) => {
+		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );
 
 	promise.finally( () => done() );
 } );
 
-QUnit.test( 'special key down: table arrow keys (simple movements)', function ( assert ) {
+QUnit.test( 'special key down: table arrow keys (simple movements)', ( assert ) => {
 	var fn = function () {},
 		tables = {
 			mergedCells: {
@@ -310,7 +308,7 @@ QUnit.test( 'special key down: table arrow keys (simple movements)', function ( 
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var offsets = caseItem.selectionOffsets;
 		var table = tables[ caseItem.table || 'mergedCells' ];
 		var view = table.view;

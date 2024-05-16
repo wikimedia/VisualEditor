@@ -8,7 +8,7 @@ QUnit.module( 've.ui.Sequence' );
 
 /* Tests */
 
-QUnit.test( 'findAndExecuteSequences', function ( assert ) {
+QUnit.test( 'findAndExecuteSequences', ( assert ) => {
 	var emptyDocData = [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ],
 		cases = [
 			{
@@ -50,7 +50,7 @@ QUnit.test( 'findAndExecuteSequences', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocumentFromData( emptyDocData ) );
 		var model = view.getModel();
 		model.getLinearFragment( new ve.Range( 1 ) ).insertContent( caseItem.content ).collapseToEnd();

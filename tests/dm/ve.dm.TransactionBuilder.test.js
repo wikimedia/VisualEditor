@@ -34,7 +34,7 @@ ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, c
 			}
 		} else if ( cases[ msg ].exception ) {
 			// eslint-disable-next-line no-loop-func
-			assert.throws( function () {
+			assert.throws( () => {
 				constructor.apply( ve.dm.Transaction, args );
 			}, cases[ msg ].exception, msg + ': throw exception' );
 		}
@@ -43,7 +43,7 @@ ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, c
 
 /* Tests */
 
-QUnit.test( 'newFromInsertion', function ( assert ) {
+QUnit.test( 'newFromInsertion', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		isolationDoc = ve.dm.example.createExampleDocument( 'isolationData' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
@@ -387,7 +387,7 @@ QUnit.test( 'newFromInsertion', function ( assert ) {
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromInsertion, cases, true );
 } );
 
-QUnit.test( 'newFromRemoval', function ( assert ) {
+QUnit.test( 'newFromRemoval', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument( 'data' ),
 		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
 		alienWithEmptyDoc = ve.dm.example.createExampleDocument( 'alienWithEmptyData' ),
@@ -706,7 +706,7 @@ QUnit.test( 'newFromRemoval', function ( assert ) {
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromRemoval, cases );
 } );
 
-QUnit.test( 'newFromReplacement', function ( assert ) {
+QUnit.test( 'newFromReplacement', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 
@@ -718,10 +718,8 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 					{
 						type: 'replace',
 						insert: metaDoc.getData( new ve.Range( 6, 21 ) )
-							.filter( function ( item ) {
-								return item.type === 'alienMeta' ||
-									item.type === '/alienMeta';
-							} ),
+							.filter( ( item ) => item.type === 'alienMeta' ||
+									item.type === '/alienMeta' ),
 						remove: []
 					},
 					{ type: 'retain', length: 2 },
@@ -760,7 +758,7 @@ QUnit.test( 'newFromReplacement', function ( assert ) {
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromReplacement, cases, false );
 } );
 
-QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
+QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		whee = [ { type: 'paragraph' }, 'W', 'h', 'e', 'e', { type: '/paragraph' } ],
@@ -987,7 +985,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		doc = ve.dm.example.createExampleDocument( caseItem.doc );
 		var doc2, removalOps, store2;
 		if ( caseItem.newDocData ) {
@@ -1017,7 +1015,7 @@ QUnit.test( 'newFromDocumentInsertion', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'newFromAttributeChanges', function ( assert ) {
+QUnit.test( 'newFromAttributeChanges', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		cases = {
 			'first element': {
@@ -1089,7 +1087,7 @@ QUnit.test( 'newFromAttributeChanges', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'newFromAnnotation', function ( assert ) {
+QUnit.test( 'newFromAnnotation', ( assert ) => {
 	var boldAnnotation = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		strong = { type: 'textStyle/bold', attributes: { nodeName: 'strong' } },
 		strongAnnotation = ve.dm.example.createAnnotation( strong ),
@@ -1295,7 +1293,7 @@ QUnit.test( 'newFromAnnotation', function ( assert ) {
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAnnotation, cases );
 } );
 
-QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
+QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		doc2 = ve.dm.example.createExampleDocument( 'inlineAtEdges' ),
 		cases = {
@@ -1480,15 +1478,13 @@ QUnit.test( 'newFromContentBranchConversion', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'newFromWrap', function ( assert ) {
+QUnit.test( 'newFromWrap', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
 		listDoc = ve.dm.example.createExampleDocumentFromData(
-			listMetaDoc.getData().filter( function ( item ) {
-				return item.type !== 'alienMeta' &&
-					item.type !== '/alienMeta';
-			} )
+			listMetaDoc.getData().filter( ( item ) => item.type !== 'alienMeta' &&
+					item.type !== '/alienMeta' )
 		),
 		cases = {
 			'changes a heading to a paragraph': {
@@ -1698,7 +1694,7 @@ QUnit.test( 'newFromWrap', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'pushRetain', function ( assert ) {
+QUnit.test( 'pushRetain', ( assert ) => {
 	var cases = {
 		retain: {
 			calls: [ [ 'pushRetain', 5 ] ],
@@ -1714,7 +1710,7 @@ QUnit.test( 'pushRetain', function ( assert ) {
 	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
-QUnit.test( 'pushReplacement', function ( assert ) {
+QUnit.test( 'pushReplacement', ( assert ) => {
 	var doc = new ve.dm.Document( [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] ),
 		doc2 = new ve.dm.Document( [ { type: 'paragraph' }, 'a', 'b', 'c', 'g', 'h', 'i', { type: '/paragraph' } ] ),
 		cases = {
@@ -1826,7 +1822,7 @@ QUnit.test( 'pushReplacement', function ( assert ) {
 	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
-QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
+QUnit.test( 'pushReplaceElementAttribute', ( assert ) => {
 	var cases = {
 		'replace element attribute': {
 			calls: [
@@ -1868,12 +1864,12 @@ QUnit.test( 'pushReplaceElementAttribute', function ( assert ) {
 	ve.test.utils.runTransactionBuilderTests( assert, cases );
 } );
 
-QUnit.test( 'isNoOp', function ( assert ) {
+QUnit.test( 'isNoOp', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' );
 
-	[ doc, metaDoc, listMetaDoc ].forEach( function ( d, i ) {
+	[ doc, metaDoc, listMetaDoc ].forEach( ( d, i ) => {
 		var isListMetaDoc = ( i === 2 );
 
 		var tx = ve.dm.TransactionBuilder.static.newFromReplacement(
@@ -1911,7 +1907,7 @@ QUnit.test( 'isNoOp', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'operations/build from operations', function ( assert ) {
+QUnit.test( 'operations/build from operations', ( assert ) => {
 	var tBSstatic = ve.dm.TransactionBuilder.static,
 		doc = ve.dm.example.createExampleDocument(),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
@@ -1981,7 +1977,7 @@ QUnit.test( 'operations/build from operations', function ( assert ) {
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var tx = tBSstatic[ caseItem.method ].apply( tBSstatic, caseItem.args );
 		var ops = ve.copy( tx.operations );
 		assert.deepEqual( ops, caseItem.expected, caseItem.msg + ': operations' );
@@ -1992,14 +1988,14 @@ QUnit.test( 'operations/build from operations', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'newFromRemoval preserving metadata', function ( assert ) {
+QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 	function removeBoringProperties( operations ) {
-		return operations.map( function ( op ) {
+		return operations.map( ( op ) => {
 			if ( !op.insert ) {
 				return op;
 			}
 			op = ve.copy( op );
-			[].concat( op.insert, op.remove ).forEach( function ( item ) {
+			[].concat( op.insert, op.remove ).forEach( ( item ) => {
 				delete item.originalDomElementsHash;
 				delete item.internal;
 			} );
@@ -2112,7 +2108,7 @@ QUnit.test( 'newFromRemoval preserving metadata', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.html ) );
 		var tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, caseItem.range );
 		assert.deepEqual(

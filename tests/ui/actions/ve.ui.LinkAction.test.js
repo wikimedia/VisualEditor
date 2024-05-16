@@ -8,7 +8,7 @@ QUnit.module( 've.ui.LinkAction' );
 
 /* Tests */
 
-QUnit.test( 'autolink', function ( assert ) {
+QUnit.test( 'autolink', ( assert ) => {
 	var cases = [
 		{
 			html: '<p>http://example.com xyz</p>',
@@ -112,7 +112,7 @@ QUnit.test( 'autolink', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
 			'link', assert, caseItem.html, false, caseItem.method, [], caseItem.rangeOrSelection, caseItem.msg,
 			{

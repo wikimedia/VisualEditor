@@ -20,17 +20,17 @@ OO.inheritClass( ve.dm.SurfaceStub, ve.dm.Surface );
 
 // Tests
 
-QUnit.test( 'getDocument', function ( assert ) {
+QUnit.test( 'getDocument', ( assert ) => {
 	var surface = new ve.dm.SurfaceStub();
 	assert.strictEqual( surface.getDocument(), surface.documentModel );
 } );
 
-QUnit.test( 'getSelection', function ( assert ) {
+QUnit.test( 'getSelection', ( assert ) => {
 	var surface = new ve.dm.SurfaceStub();
 	assert.strictEqual( surface.getSelection(), surface.selection );
 } );
 
-QUnit.test( 'setSelection out of range', function ( assert ) {
+QUnit.test( 'setSelection out of range', ( assert ) => {
 	var surface = new ve.dm.SurfaceStub( [
 		{ type: 'paragraph' },
 		'F', 'o', 'o',
@@ -46,7 +46,7 @@ QUnit.test( 'setSelection out of range', function ( assert ) {
 	assert.deepEqual( [ range.start, range.end ], [ 5, 5 ] );
 } );
 
-QUnit.test( 'contextChange events', function ( assert ) {
+QUnit.test( 'contextChange events', ( assert ) => {
 	var surface = new ve.dm.SurfaceStub( ve.dm.example.preprocessAnnotations( [
 		{ type: 'paragraph' },
 		'F', 'o', 'o',
@@ -76,7 +76,7 @@ QUnit.test( 'contextChange events', function ( assert ) {
 	] ) );
 
 	var contextChanges = 0;
-	surface.on( 'contextChange', function () {
+	surface.on( 'contextChange', () => {
 		contextChanges++;
 	} );
 
@@ -150,7 +150,7 @@ QUnit.test( 'contextChange events', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		surface.setLinearSelection( caseItem.initialSelection || new ve.Range( 1 ) );
 		contextChanges = 0;
 		surface.setLinearSelection( caseItem.selection );
@@ -158,7 +158,7 @@ QUnit.test( 'contextChange events', function ( assert ) {
 	} );
 } );
 
-QUnit.test( 'documentUpdate/select events', function ( assert ) {
+QUnit.test( 'documentUpdate/select events', ( assert ) => {
 	var surface = new ve.dm.SurfaceStub(),
 		doc = surface.getDocument(),
 		// docmentUpdate doesn't fire for no-op transactions, so make sure there's something there
@@ -168,10 +168,10 @@ QUnit.test( 'documentUpdate/select events', function ( assert ) {
 			select: 0
 		};
 
-	surface.on( 'documentUpdate', function () {
+	surface.on( 'documentUpdate', () => {
 		events.documentUpdate++;
 	} );
-	surface.on( 'select', function () {
+	surface.on( 'select', () => {
 		events.select++;
 	} );
 	surface.change( tx.clone() );
@@ -182,7 +182,7 @@ QUnit.test( 'documentUpdate/select events', function ( assert ) {
 	assert.deepEqual( events, { documentUpdate: 2, select: 2 }, 'change with transaction and selection' );
 } );
 
-QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
+QUnit.test( 'breakpoint/undo/redo', ( assert ) => {
 	var range = new ve.Range( 1, 3 ),
 		surface = new ve.dm.SurfaceStub( null, range ),
 		fragment = surface.getFragment(),
@@ -224,7 +224,7 @@ QUnit.test( 'breakpoint/undo/redo', function ( assert ) {
 
 } );
 
-QUnit.test( 'multi-user undo', function ( assert ) {
+QUnit.test( 'multi-user undo', ( assert ) => {
 	var surfaces = [];
 
 	// Create two surfaces owned by authors 1 & 2, consisting of interleaved
@@ -297,14 +297,14 @@ QUnit.test( 'multi-user undo', function ( assert ) {
 
 } );
 
-QUnit.test( 'change rollback', function ( assert ) {
+QUnit.test( 'change rollback', ( assert ) => {
 	var range = new ve.Range( 1, 3 ),
 		surface = new ve.dm.SurfaceStub( null, range ),
 		doc = surface.getDocument();
 
 	var tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 1, [ { type: '/heading' } ] );
 	assert.throws(
-		function () {
+		() => {
 			surface.change( tx );
 		},
 		new Error( 'Expected closing for paragraph but got closing for heading' ),
@@ -314,7 +314,7 @@ QUnit.test( 'change rollback', function ( assert ) {
 	assert.strictEqual( surface.canUndo(), false, 'No history to undo after failed change' );
 } );
 
-QUnit.test( 'range translation', function ( assert ) {
+QUnit.test( 'range translation', ( assert ) => {
 	var surface = new ve.dm.SurfaceStub( null, new ve.Range( 3 ) ),
 		doc = surface.getDocument(),
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion( doc, 3, [ 'x' ] );
@@ -324,7 +324,7 @@ QUnit.test( 'range translation', function ( assert ) {
 	assert.equalRange( selection.getRange(), new ve.Range( 3 ), 'Cursor is unmoved' );
 } );
 
-QUnit.test( 'staging', function ( assert ) {
+QUnit.test( 'staging', ( assert ) => {
 	var surface = new ve.dm.SurfaceStub( null, new ve.Range( 1, 3 ) ),
 		fragment = surface.getFragment(),
 		doc = surface.getDocument();
@@ -430,7 +430,7 @@ QUnit.test( 'staging', function ( assert ) {
 
 } );
 
-QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFromSourceOffsets', function ( assert ) {
+QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFromSourceOffsets', ( assert ) => {
 	var i,
 		surface = new ve.dm.SurfaceStub( [
 			{ type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' },
@@ -454,12 +454,12 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 		assert.strictEqual( surface.getOffsetFromSourceOffset( i ), expectedOffsets[ i ], 'Correct offset at ' + i );
 	}
 	assert.throws(
-		function () {
+		() => {
 			surface.getOffsetFromSourceOffset( -1 );
 		},
 		Error, 'Offset -1 is out of bounds' );
 	assert.throws(
-		function () {
+		() => {
 			surface.getOffsetFromSourceOffset( expectedOffsets.length );
 		},
 		Error, 'Offset ' + expectedOffsets.length + ' is out of bounds'
@@ -468,12 +468,12 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 		assert.strictEqual( surface.getSourceOffsetFromOffset( i ), expectedSourceOffsets[ i ], 'Correct source offset at ' + i );
 	}
 	assert.throws(
-		function () {
+		() => {
 			surface.getSourceOffsetFromOffset( -1 );
 		},
 		Error, 'Offset -1 is out of bounds' );
 	assert.throws(
-		function () {
+		() => {
 			surface.getSourceOffsetFromOffset( expectedSourceOffsets.length );
 		},
 		Error, 'Offset ' + expectedSourceOffsets.length + ' is out of bounds'
@@ -563,7 +563,7 @@ QUnit.test( 'autosave', function ( assert ) {
 	);
 
 	assert.throws(
-		function () {
+		() => {
 			surface.documentModel.completeHistory = new ve.dm.Change();
 			surface.restoreChanges();
 		},
@@ -577,12 +577,12 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.strictEqual( surface.restoreChanges(), true, 'restoreChanges returns true on success' );
 	assert.strictEqual( surface.getHtml(), '<h1>hi bar baz</h1>', 'Document HTML restored' );
 	assert.strictEqual( surface.getDocument().getCompleteHistoryLength(), 3, 'Document history restored' );
-	setTimeout( function ( s ) {
+	setTimeout( ( ( s ) => {
 		assert.equalHash( s.getSelection(), { type: 'linear', range: { type: 'range', from: 5, to: 5 } }, 'Document selection restored (async)' );
 		s.undo();
 		assert.equalHash( s.getSelection(), { type: 'linear', range: { type: 'range', from: 7, to: 7 } }, 'Document selection guessed after undo' );
 		done();
-	}.bind( this, surface ) );
+	} ).bind( this, surface ) );
 
 	ve.init.platform.storageDisabled = true;
 	assert.strictEqual( surface.restoreChanges(), false, 'restoreChanges returns false if session storage disabled' );
@@ -610,7 +610,7 @@ QUnit.test( 'autosave', function ( assert ) {
 	assert.strictEqual( storage.getObject( 've-changes' ), false, 'No changes recorded' );
 	ve.init.platform.storageDisabled = false;
 
-	surface.on( 'autosaveFailed', function () {
+	surface.on( 'autosaveFailed', () => {
 		autosaveFailed++;
 	} );
 	surface.startStoringChanges();

@@ -8,7 +8,7 @@ QUnit.module( 've.ce.ContentBranchNode' );
 
 /* Tests */
 
-QUnit.test( 'getRenderedContents', function ( assert ) {
+QUnit.test( 'getRenderedContents', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Plain text without annotations',
@@ -364,7 +364,7 @@ QUnit.test( 'getRenderedContents', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data ) );
 		var $wrapper = $( new ve.ce.ParagraphNode( doc.getDocumentNode().getChildren()[ 0 ] ).getRenderedContents() );
 		// HACK strip out all the class="ve-ce-textStyleAnnotation ve-ce-textStyleBoldAnnotation" crap

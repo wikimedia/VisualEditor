@@ -8,7 +8,7 @@ QUnit.module( 've.ui.Trigger' );
 
 /* Tests */
 
-QUnit.test( 'constructor', function ( assert ) {
+QUnit.test( 'constructor', ( assert ) => {
 	function event( options ) {
 		return $.Event( 'keydown', options );
 	}
@@ -20,7 +20,7 @@ QUnit.test( 'constructor', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		assert.strictEqual(
 			new ve.ui.Trigger( caseItem.trigger ).toString(),
 			caseItem.trigger,

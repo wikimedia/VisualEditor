@@ -30,14 +30,14 @@ ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, m
 	// Invoke the handler
 	handler = ve.ui.dataTransferHandlerFactory.create( 'urlString', mockSurface, item );
 
-	handler.getInsertableData().done( function ( actualData ) {
+	handler.getInsertableData().done( ( actualData ) => {
 		ve.dm.example.postprocessAnnotations( actualData, doc.getStore() );
 		assert.equalLinearData( actualData, expectedDataFunc( makeLinkAnnotation ), msg + ': data match' );
 		done();
 	} );
 };
 
-QUnit.test( 'paste', function ( assert ) {
+QUnit.test( 'paste', ( assert ) => {
 	var cases = [
 		{
 			msg: 'Simple external link',
@@ -133,7 +133,7 @@ QUnit.test( 'paste', function ( assert ) {
 		}
 	];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runUrlStringHandlerTest( assert, caseItem.pasteString, caseItem.pasteHtml, caseItem.pasteType, caseItem.expectedData, ve.dm.example.baseUri, caseItem.msg );
 	} );
 } );

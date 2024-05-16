@@ -28,11 +28,11 @@ ve.dm.AnnotationFactoryAnnotationStub.static.name = 'annotation-factory-annotati
 
 /* Tests */
 
-QUnit.test( 'canAnnotationBeActive/getDescription', function ( assert ) {
+QUnit.test( 'canAnnotationBeActive/getDescription', ( assert ) => {
 	var factory = new ve.ce.AnnotationFactory();
 
 	assert.throws(
-		function () {
+		() => {
 			factory.canAnnotationBeActive( 'annotation-factory-annotation-stub' );
 		},
 		Error,
@@ -40,7 +40,7 @@ QUnit.test( 'canAnnotationBeActive/getDescription', function ( assert ) {
 	);
 
 	assert.throws(
-		function () {
+		() => {
 			factory.getDescription( new ve.dm.AnnotationFactoryAnnotationStub() );
 		},
 		Error,
@@ -62,6 +62,6 @@ QUnit.test( 'canAnnotationBeActive/getDescription', function ( assert ) {
 	);
 } );
 
-QUnit.test( 'initialization', function ( assert ) {
+QUnit.test( 'initialization', ( assert ) => {
 	assert.true( ve.ce.annotationFactory instanceof ve.ce.AnnotationFactory, 'factory is initialized at ve.ce.annotationFactory' );
 } );

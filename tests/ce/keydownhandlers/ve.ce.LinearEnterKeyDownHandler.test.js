@@ -13,7 +13,7 @@ QUnit.module( 've.ce.LinearEnterKeyDownHandler', {
 	}
 } );
 
-QUnit.test( 'special key down: linear enter', function ( assert ) {
+QUnit.test( 'special key down: linear enter', ( assert ) => {
 	var done = assert.async(),
 		noChange = function () {},
 		promise = Promise.resolve(),
@@ -354,10 +354,8 @@ QUnit.test( 'special key down: linear enter', function ( assert ) {
 
 		];
 
-	cases.forEach( function ( caseItem ) {
-		promise = promise.then( function () {
-			return ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem );
-		} );
+	cases.forEach( ( caseItem ) => {
+		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );
 
 	promise.finally( () => done() );

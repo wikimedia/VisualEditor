@@ -8,7 +8,7 @@ QUnit.module( 've.dm.TableSelection' );
 
 /* Tests */
 
-QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, getTableNode)', function ( assert ) {
+QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, getTableNode)', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableNode = doc.getBranchNodeFromOffset( 1 ),
 		tableRange = tableNode.getOuterRange(),
@@ -87,7 +87,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 			}
 		];
 
-	cases.forEach( function ( caseItem ) {
+	cases.forEach( ( caseItem ) => {
 		var selection = caseItem.selection;
 		assert.strictEqual( selection.getTableNode( doc ), tableNode, 'getTableNode' );
 		assert.strictEqual( selection.getName(), 'table', 'getName' );
@@ -105,7 +105,7 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 
 } );
 
-QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', function ( assert ) {
+QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
 		selection = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 ),
@@ -140,7 +140,7 @@ QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingle
 	assert.strictEqual( otherTableSelection.containsCell( matrixCell ), false, 'Selection in other table doesn\'t contain cell' );
 } );
 
-QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', function ( assert ) {
+QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', ( assert ) => {
 	var doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
 		selection = new ve.dm.TableSelection( tableRange, 1, 2, 3, 4 ),
