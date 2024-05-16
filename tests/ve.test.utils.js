@@ -275,81 +275,110 @@
 		return ve.addHeadTag( docHtml, ve.test.utils.makeBaseTag( base ) );
 	};
 
-	ve.test.utils.runIsolateTest = function ( assert, type, range, expected, base, label ) {
-		var doc = ve.dm.example.createExampleDocument( 'isolationData', null, base ),
+	/**
+	 * @param {QUnit.Assert} assert
+	 * @param {Object} caseItem
+	 * @param {string} caseItem.type
+	 * @param {ve.Range} caseItem.range
+	 * @param {Function} caseItem.expected
+	 * @param {string} caseItem.base
+	 * @param {string} caseItem.msg
+	 */
+	ve.test.utils.runIsolateTest = function ( assert, caseItem ) {
+		if ( arguments.length > 2 ) {
+			caseItem = {
+				type: arguments[ 1 ],
+				range: arguments[ 2 ],
+				expected: arguments[ 3 ],
+				base: arguments[ 4 ],
+				msg: arguments[ 5 ]
+			};
+		}
+		var doc = ve.dm.example.createExampleDocument( 'isolationData', null, caseItem.base ),
 			surface = new ve.dm.Surface( doc ),
-			fragment = surface.getLinearFragment( range );
+			fragment = surface.getLinearFragment( caseItem.range );
 
 		var data = ve.copy( getSerializableData( doc ) );
-		fragment.isolateAndUnwrap( type );
-		expected( data );
+		fragment.isolateAndUnwrap( caseItem.type );
+		caseItem.expected( data );
 
-		assert.deepEqual( getSerializableData( doc ), data, label );
+		assert.deepEqual( getSerializableData( doc ), data, caseItem.msg );
 	};
 
-	ve.test.utils.runFormatConverterTest = function ( assert, range, type, attributes, expectedRange, expectedData, msg ) {
-		var surface = ve.test.utils.createModelOnlySurfaceFromHtml( ve.dm.example.isolationHtml ),
-			formatAction = new ve.ui.FormatAction( surface ),
-			data = ve.copy( getSerializableData( surface.getModel().getDocument() ) ),
-			originalData = ve.copy( data );
-
-		expectedData( data );
-
-		surface.getModel().setLinearSelection( range );
-		formatAction.convert( type, attributes );
-
-		assert.equalLinearData( getSerializableData( surface.getModel().getDocument() ), data, msg + ': data models match' );
-		assert.equalRange( surface.getModel().getSelection().getRange(), expectedRange, msg + ': ranges match' );
-
-		surface.getModel().undo();
-
-		assert.equalLinearData( getSerializableData( surface.getModel().getDocument() ), originalData, msg + ' (undo): data models match' );
-		assert.equalRange( surface.getModel().getSelection().getRange(), range, msg + ' (undo): ranges match' );
-	};
-
-	ve.test.utils.runActionTest = function ( actionName, assert, html, createView, method, args, rangeOrSelection, msg, options ) {
-		var surface = createView ?
-				ve.test.utils.createViewOnlySurfaceFromHtml( html || ve.dm.example.html ) :
-				ve.test.utils.createModelOnlySurfaceFromHtml( html || ve.dm.example.html ),
-			action = ve.ui.actionFactory.create( actionName, surface ),
+	/**
+	 * @param {QUnit.Assert} assert
+	 * @param {Object} caseItem
+	 * @param {string} caseItem.msg
+	 * @param {string} caseItem.actionName
+	 * @param {string} caseItem.method
+	 * @param {string} caseItem.html
+	 * @param {Array} [caseItem.args] Arguments to pass to the action
+	 * @param {ve.Range|Object|string} caseItem.rangeOrSelection
+	 * @param {boolean} [caseItem.createView] Create a view surface, instead of just a model surface (slower)
+	 * @param {ve.Range|Object|string} [caseItem.expectedRangeOrSelection]
+	 * @param {ve.Range|Object|string} [caseItem.expectedOriginalRangeOrSelection]
+	 * @param {boolean} [caseItem.undo] Test that the action undoes cleanly
+	 * @param {Function} [caseItem.expectedData] Function to mutate linear data into expected data
+	 * @param {Function} [caseItem.expectedOriginalData] Function to mutate linear data into expected data after undo
+	 */
+	ve.test.utils.runActionTest = function ( assert, caseItem ) {
+		if ( arguments.length > 2 ) {
+			var args = Array.prototype.slice.call( arguments );
+			var options = args[ 8 ] || {};
+			assert = args[ 1 ];
+			caseItem = {
+				actionName: args[ 0 ],
+				html: args[ 2 ],
+				createView: args[ 3 ],
+				method: args[ 4 ],
+				args: args[ 5 ],
+				rangeOrSelection: args[ 6 ],
+				msg: args[ 7 ],
+				...options
+			};
+		}
+		var surface = caseItem.createView ?
+				ve.test.utils.createViewOnlySurfaceFromHtml( caseItem.html || ve.dm.example.html ) :
+				ve.test.utils.createModelOnlySurfaceFromHtml( caseItem.html || ve.dm.example.html ),
+			action = ve.ui.actionFactory.create( caseItem.actionName, surface ),
 			data = ve.copy( getSerializableData( surface.getModel().getDocument() ) ),
 			documentModel = surface.getModel().getDocument(),
-			selection = ve.test.utils.selectionFromRangeOrSelection( documentModel, rangeOrSelection ),
-			expectedSelection = options.expectedRangeOrSelection && ve.test.utils.selectionFromRangeOrSelection( documentModel, options.expectedRangeOrSelection );
+			selection = ve.test.utils.selectionFromRangeOrSelection( documentModel, caseItem.rangeOrSelection ),
+			expectedSelection = caseItem.expectedRangeOrSelection && ve.test.utils.selectionFromRangeOrSelection( documentModel, caseItem.expectedRangeOrSelection );
 
 		var originalData;
-		if ( options.undo ) {
+		if ( caseItem.undo ) {
 			originalData = ve.copy( data );
 		}
 
 		ve.dm.example.postprocessAnnotations( data, surface.getModel().getDocument().getStore() );
 
-		if ( options.expectedData ) {
-			options.expectedData( data, action );
+		if ( caseItem.expectedData ) {
+			caseItem.expectedData( data, action );
 		}
 
 		surface.getModel().setSelection( selection );
-		action[ method ].apply( action, args || [] );
+		action[ caseItem.method ].apply( action, caseItem.args || [] );
 
 		var actualData = getSerializableData( surface.getModel().getDocument() );
 		ve.dm.example.postprocessAnnotations( actualData, surface.getModel().getDocument().getStore() );
-		assert.equalLinearData( actualData, data, msg + ': data models match' );
+		assert.equalLinearData( actualData, data, caseItem.msg + ': data models match' );
 		if ( expectedSelection ) {
-			assert.equalHash( surface.getModel().getSelection(), expectedSelection, msg + ': selections match' );
+			assert.equalHash( surface.getModel().getSelection(), expectedSelection, caseItem.msg + ': selections match' );
 		}
 
-		if ( options.undo ) {
-			if ( options.expectedOriginalData ) {
-				options.expectedOriginalData( originalData, action );
+		if ( caseItem.undo ) {
+			if ( caseItem.expectedOriginalData ) {
+				caseItem.expectedOriginalData( originalData, action );
 			}
 
 			surface.getModel().undo();
 
-			assert.equalLinearData( getSerializableData( surface.getModel().getDocument() ), originalData, msg + ' (undo): data models match' );
+			assert.equalLinearData( getSerializableData( surface.getModel().getDocument() ), originalData, caseItem.msg + ' (undo): data models match' );
 			if ( expectedSelection ) {
-				var expectedOriginalRangeOrSelection = options.expectedOriginalRangeOrSelection &&
-					ve.test.utils.selectionFromRangeOrSelection( documentModel, options.expectedOriginalRangeOrSelection );
-				assert.equalHash( surface.getModel().getSelection(), expectedOriginalRangeOrSelection || selection, msg + ' (undo): selections match' );
+				var expectedOriginalRangeOrSelection = caseItem.expectedOriginalRangeOrSelection &&
+					ve.test.utils.selectionFromRangeOrSelection( documentModel, caseItem.expectedOriginalRangeOrSelection );
+				assert.equalHash( surface.getModel().getSelection(), expectedOriginalRangeOrSelection || selection, caseItem.msg + ' (undo): selections match' );
 			}
 		}
 	};

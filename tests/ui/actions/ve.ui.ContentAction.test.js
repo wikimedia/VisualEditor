@@ -101,11 +101,10 @@ QUnit.test( 'insert/remove/select/selectAll', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
-			'content', assert, caseItem.html, caseItem.createView, caseItem.method, caseItem.args, caseItem.rangeOrSelection, caseItem.msg,
+			assert,
 			{
-				expectedData: caseItem.expectedData,
-				expectedRangeOrSelection: caseItem.expectedRangeOrSelection,
-				undo: caseItem.undo
+				actionName: 'content',
+				...caseItem
 			}
 		);
 	} );

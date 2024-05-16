@@ -911,9 +911,18 @@ QUnit.test( 'rewrapAllNodes', ( assert ) => {
 } );
 
 QUnit.test( 'isolateAndUnwrap', ( assert ) => {
-	ve.test.utils.runIsolateTest( assert, 'heading', new ve.Range( 12, 20 ), ( data ) => {
-		data.splice( 11, 0, { type: 'listItem' } );
-		data.splice( 12, 1 );
-		data.splice( 20, 1, { type: '/listItem' } );
-	}, ve.dm.example.baseUri, 'isolating paragraph in list item "Item 2" for heading' );
+	var cases = [
+		{
+			type: 'heading',
+			range: new ve.Range( 12, 20 ),
+			expected: ( data ) => {
+				data.splice( 11, 0, { type: 'listItem' } );
+				data.splice( 12, 1 );
+				data.splice( 20, 1, { type: '/listItem' } );
+			},
+			base: ve.dm.example.baseUri,
+			msg: 'isolating paragraph in list item "Item 2" for heading'
+		}
+	];
+	cases.forEach( ( caseItem ) => ve.test.utils.runIsolateTest( assert, caseItem ) );
 } );

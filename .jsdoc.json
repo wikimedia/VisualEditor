@@ -59,6 +59,8 @@
 				"Storage": "https://developer.mozilla.org/en-US/docs/Web/API/Storage",
 				"Text": "https://developer.mozilla.org/en-US/docs/Web/API/Text",
 
+				"Qunit.Assert": "https://qunitjs.com/api/assert/",
+
 				"unicodeJS.TextString": "https://doc.wikimedia.org/unicodejs/master/js/unicodeJS.TextString.html",
 
 				"treeDiffer.Tree": "https://github.com/Tchanders/treeDiffer.js/blob/master/src/treeDiffer.Tree.js",

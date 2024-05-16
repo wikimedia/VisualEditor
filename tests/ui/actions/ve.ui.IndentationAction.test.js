@@ -122,12 +122,11 @@ QUnit.test( 'increase/decrease', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
-			'indentation', assert, caseItem.html || ve.dm.example.isolationHtml, false, caseItem.method, [], caseItem.rangeOrSelection, caseItem.msg,
+			assert,
 			{
-				expectedData: caseItem.expectedData,
-				expectedOriginalData: caseItem.expectedOriginalData,
-				expectedRangeOrSelection: caseItem.expectedRangeOrSelection,
-				undo: caseItem.undo
+				actionName: 'indentation',
+				html: ve.dm.example.isolationHtml,
+				...caseItem
 			}
 		);
 	} );

@@ -195,11 +195,10 @@ QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
-			'blockquote', assert, caseItem.html, false, caseItem.method, [], caseItem.rangeOrSelection, caseItem.msg,
+			assert,
 			{
-				expectedData: caseItem.expectedData,
-				expectedOriginalData: caseItem.expectedOriginalData,
-				expectedRangeOrSelection: caseItem.expectedRangeOrSelection
+				actionName: 'blockquote',
+				...caseItem
 			}
 		);
 	} );

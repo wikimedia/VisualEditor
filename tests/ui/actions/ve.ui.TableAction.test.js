@@ -792,10 +792,10 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 
 	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
-			'table', assert, caseItem.html, false, caseItem.method, caseItem.args, caseItem.rangeOrSelection, caseItem.msg,
+			assert,
 			{
-				expectedData: caseItem.expectedData,
-				expectedRangeOrSelection: caseItem.expectedRangeOrSelection
+				actionName: 'table',
+				...caseItem
 			}
 		);
 	} );

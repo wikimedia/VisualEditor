@@ -114,12 +114,10 @@ QUnit.test( 'autolink', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
-			'link', assert, caseItem.html, false, caseItem.method, [], caseItem.rangeOrSelection, caseItem.msg,
+			assert,
 			{
-				expectedData: caseItem.expectedData,
-				expectedRangeOrSelection: caseItem.expectedRangeOrSelection,
-				expectedOriginalRangeOrSelection: caseItem.expectedOriginalRangeOrSelection,
-				undo: caseItem.undo
+				actionName: 'link',
+				...caseItem
 			}
 		);
 	} );

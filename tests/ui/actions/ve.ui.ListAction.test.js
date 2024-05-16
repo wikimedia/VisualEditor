@@ -82,12 +82,11 @@ QUnit.test( '(un)wrap', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
-			'list', assert, caseItem.html, false, caseItem.method, [ caseItem.style ], caseItem.rangeOrSelection, caseItem.msg,
+			assert,
 			{
-				expectedData: caseItem.expectedData,
-				expectedOriginalData: caseItem.expectedOriginalData,
-				expectedRangeOrSelection: caseItem.expectedRangeOrSelection,
-				undo: caseItem.undo
+				actionName: 'list',
+				args: [ caseItem.style ],
+				...caseItem
 			}
 		);
 	} );

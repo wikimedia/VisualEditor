@@ -138,10 +138,10 @@ QUnit.test( 'toggle', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		ve.test.utils.runActionTest(
-			'annotation', assert, caseItem.html, false, caseItem.method, caseItem.args, caseItem.rangeOrSelection, caseItem.msg,
+			assert,
 			{
-				expectedData: caseItem.expectedData,
-				expectedRangeOrSelection: caseItem.expectedRangeOrSelection
+				actionName: 'annotation',
+				...caseItem
 			}
 		);
 	} );
