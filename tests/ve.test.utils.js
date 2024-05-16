@@ -25,9 +25,9 @@
 	DummyPlatform.prototype.getMessage = function () {
 		return Array.prototype.join.call( arguments, ',' );
 	};
-	DummyPlatform.prototype.getHtmlMessage = function () {
+	DummyPlatform.prototype.getHtmlMessage = function ( ...args ) {
 		var $wrapper = $( '<div>' );
-		Array.prototype.forEach.call( arguments, ( arg, i, args ) => {
+		args.forEach( ( arg, i ) => {
 			$wrapper.append( arg );
 			if ( i < args.length - 1 ) {
 				$wrapper.append( ',' );
@@ -213,13 +213,14 @@
 			var xml = '<xml>' +
 				html
 					// Close open void tags
-					.replace( voidRegexp, function () {
-						return arguments[ 3 ] ?
+					.replace(
+						voidRegexp,
+						( ...args ) => args[ 3 ] ?
 							// self-closing - do nothing
-							arguments[ 0 ] :
+							args[ 0 ] :
 							// add close tag
-							arguments[ 0 ] + '</' + arguments[ 2 ] + '>';
-					} )
+							args[ 0 ] + '</' + args[ 2 ] + '>'
+					)
 					// Remove entities, named ones not recognised
 					.replace( /&[^;]+;/g, '' )
 					// Remove doctype

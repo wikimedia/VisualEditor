@@ -53,9 +53,8 @@ QUnit.test( 'squash', ( assert ) => {
 		return [ start, [ oldData, newData ], length - stop ];
 	}
 
-	function sequence( data ) {
-		var hashList = Array.prototype.slice.call( arguments, 1 );
-		return Array.prototype.map.call( data, ( item ) => hashList.length === 0 ? item : [ item, hashList ] );
+	function sequence( data, ...hashList ) {
+		return data.split( '' ).map( ( item ) => hashList.length === 0 ? item : [ item, hashList ] );
 	}
 
 	var cases = [

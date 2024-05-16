@@ -24,14 +24,12 @@ ve.dm.FakeSocket.static.makeServer = function () {
 		log = [];
 
 	var getRoom = function ( roomName ) {
-		return { emit: function () {
-			var i, socket;
-			for ( i = 0; i < sockets.length; i++ ) {
-				socket = sockets[ i ];
+		return { emit: ( ...args ) => {
+			sockets.forEach( ( socket ) => {
 				if ( socket.rooms.has( roomName ) ) {
-					socket.emit.apply( socket, arguments );
+					socket.emit( ...args );
 				}
-			}
+			} );
 		} };
 	};
 	var reset = function () {
@@ -45,12 +43,11 @@ ve.dm.FakeSocket.prototype.join = function ( roomName ) {
 	this.rooms.add( roomName );
 };
 
-ve.dm.FakeSocket.prototype.emit = function ( eventName ) {
-	var args = Array.from( arguments ).slice( 1 ),
-		handlers = this.handlers.get( eventName ) || [];
-	for ( var i = 0; i < handlers.length; i++ ) {
-		this.pending.push( handlers[ i ].apply( null, args ) );
-	}
+ve.dm.FakeSocket.prototype.emit = function ( eventName, ...args ) {
+	var handlers = this.handlers.get( eventName ) || [];
+	handlers.forEach( ( handler ) => {
+		this.pending.push( handler( ...args ) );
+	} );
 };
 
 ve.dm.FakeSocket.prototype.on = function ( eventName, handler ) {
@@ -60,12 +57,11 @@ ve.dm.FakeSocket.prototype.on = function ( eventName, handler ) {
 	this.handlers.get( eventName ).push( handler );
 };
 
-ve.dm.FakeSocket.prototype.receive = function ( eventName ) {
-	var args = Array.from( arguments ).slice( 1 ),
-		handlers = this.handlers.get( eventName ) || [];
-	for ( var i = 0; i < handlers.length; i++ ) {
-		this.pending.push( handlers[ i ].apply( null, args ) );
-	}
+ve.dm.FakeSocket.prototype.receive = function ( eventName, ...args ) {
+	var handlers = this.handlers.get( eventName ) || [];
+	handlers.forEach( ( handler ) => {
+		this.pending.push( handler( ...args ) );
+	} );
 };
 
 ve.dm.FakeSocket.prototype.wait = function () {
