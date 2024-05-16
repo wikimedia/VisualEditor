@@ -20,8 +20,8 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', ( assert ) => {
 
 	for ( var i = 0; i < data.getLength(); i++ ) {
 		assert.strictEqual( data.getType( i ), types[ i ], 'Type at offset ' + i );
-		assert.strictEqual( data.isOpenElementData( i ), isOpen.indexOf( i ) !== -1, 'isOpen ' + i );
-		assert.strictEqual( data.isCloseElementData( i ), isClose.indexOf( i ) !== -1, 'isClose ' + i );
+		assert.strictEqual( data.isOpenElementData( i ), isOpen.includes( i ), 'isOpen ' + i );
+		assert.strictEqual( data.isCloseElementData( i ), isClose.includes( i ), 'isClose ' + i );
 	}
 } );
 

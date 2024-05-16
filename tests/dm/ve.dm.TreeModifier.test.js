@@ -10,8 +10,8 @@ ve.dm.TreeModifier.prototype.dump = function () {
 		ins = this.insertions;
 	function nodeTag( idx, node ) {
 		return ( idx === undefined ? '' : idx + ' ' ) + (
-			del.indexOf( node ) !== -1 ? 'DEL ' :
-				ins.indexOf( node ) !== -1 ? 'INS ' :
+			del.includes( node ) ? 'DEL ' :
+				ins.includes( node ) ? 'INS ' :
 					''
 		);
 	}
