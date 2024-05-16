@@ -195,11 +195,12 @@ ve.ce.Surface = function VeCeSurface( model, ui, config ) {
 		keydown: this.afterDocumentKeyDown.bind( this )
 	} );
 
-	this.mutationObserver = new MutationObserver( this.afterMutations.bind( this ) );
-	this.mutationObserver.observe(
-		this.$attachedRootNode[ 0 ],
-		{ childList: true, subtree: true }
-	);
+	// Disable mutation observer (T365052)
+	// this.mutationObserver = new MutationObserver( this.afterMutations.bind( this ) );
+	// this.mutationObserver.observe(
+	//   this.$attachedRootNode[ 0 ],
+	//   { childList: true, subtree: true }
+	// );
 
 	// Initialization
 	// Support: Chrome
