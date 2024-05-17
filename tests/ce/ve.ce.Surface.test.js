@@ -2791,7 +2791,8 @@ QUnit.test( 'getViewportRange', ( assert ) => {
 	} );
 } );
 
-QUnit.skip( 'afterMutations', ( assert ) => {
+/* eslint-disable qunit/resolve-async */
+QUnit.test( 'afterMutations', ( assert ) => {
 	let cases = null, done = null;
 	function getDescendant( node, path ) {
 		for ( let i = 0, len = path.length; i < len; i++ ) {
@@ -2863,6 +2864,7 @@ QUnit.skip( 'afterMutations', ( assert ) => {
 	done = assert.async( cases.length );
 	runCase( 0 );
 } );
+/* eslint-enable qunit/resolve-async */
 
 /* Methods with return values */
 // TODO: ve.ce.Surface#getSelection
