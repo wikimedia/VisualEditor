@@ -5519,7 +5519,7 @@ ve.ce.Surface.prototype.onPosition = function () {
  * @param {MutationRecord[]} mutationRecords Records of the mutations observed
  */
 ve.ce.Surface.prototype.afterMutations = function ( mutationRecords ) {
-	const removals = [];
+	const removedNodes = [];
 	mutationRecords.forEach( ( mutationRecord ) => {
 		if ( !mutationRecord.removedNodes ) {
 			return;
@@ -5527,10 +5527,21 @@ ve.ce.Surface.prototype.afterMutations = function ( mutationRecords ) {
 		mutationRecord.removedNodes.forEach( ( removedNode ) => {
 			const view = $.data( removedNode, 'view' );
 			if ( view && view.isContent && !view.isContent() ) {
-				removals.push( { node: view, range: view.getOuterRange() } );
+				removedNodes.push( view );
+			}
+		} );
+		mutationRecord.addedNodes.forEach( ( addedNode ) => {
+			const view = $.data( addedNode, 'view' );
+			if ( view && view.isContent && !view.isContent() ) {
+				const idx = removedNodes.indexOf( view );
+				if ( idx !== -1 ) {
+					// This is a move, not a removal. See T365052#9811638
+					removedNodes.splice( idx, 1 );
+				}
 			}
 		} );
 	} );
+	const removals = removedNodes.map( ( node ) => ( { node: node, range: node.getOuterRange() } ) );
 	removals.sort( ( x, y ) => x.range.start - y.range.start );
 	for ( let i = 0, iLen = removals.length; i < iLen; i++ ) {
 		// Remove any overlapped range (which in a tree must be a nested range)

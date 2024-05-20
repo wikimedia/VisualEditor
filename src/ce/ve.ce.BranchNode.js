@@ -142,14 +142,19 @@ ve.ce.BranchNode.prototype.updateTagName = function () {
 		wrapper.className = this.$element[ 0 ].className;
 		// Copy contentEditable
 		wrapper.contentEditable = this.$element[ 0 ].contentEditable;
-		// Move contents
+
+		// Insert new node, then move contents, then remove old node
+		// This lets ve.ce.Surface#afterMutations see that this is a move
+		if ( this.$element[ 0 ].parentNode ) {
+			this.$element[ 0 ].parentNode.insertBefore( wrapper, this.$element[ 0 ] );
+		}
 		while ( this.$element[ 0 ].firstChild ) {
 			wrapper.appendChild( this.$element[ 0 ].firstChild );
 		}
-		// Swap elements
 		if ( this.$element[ 0 ].parentNode ) {
-			this.$element[ 0 ].parentNode.replaceChild( wrapper, this.$element[ 0 ] );
+			this.$element[ 0 ].parentNode.removeChild( this.$element[ 0 ] );
 		}
+
 		// Use new element from now on
 		this.$element = $( wrapper );
 		// Remember which tag name we are using now
