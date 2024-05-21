@@ -53,7 +53,24 @@ QUnit.test( '(un)wrap', ( assert ) => {
 			},
 			undo: true,
 			msg: 'unwrapping two double listed paragraphs'
-		},
+		}
+	];
+
+	cases.forEach( ( caseItem ) => {
+		ve.test.utils.runActionTest(
+			assert,
+			{
+				actionName: 'list',
+				args: [ caseItem.style ],
+				createView: true,
+				...caseItem
+			}
+		);
+	} );
+} );
+
+QUnit.test( 'toggle', ( assert ) => {
+	var cases = [
 		{
 			html: '<ul><li>One<ul><li>Two</li></ul></li></ul>',
 			rangeOrSelection: new ve.Range( 11 ),
@@ -86,6 +103,7 @@ QUnit.test( '(un)wrap', ( assert ) => {
 			{
 				actionName: 'list',
 				args: [ caseItem.style ],
+				createView: true,
 				...caseItem
 			}
 		);

@@ -795,6 +795,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 			assert,
 			{
 				actionName: 'table',
+				createView: true,
 				...caseItem
 			}
 		);
