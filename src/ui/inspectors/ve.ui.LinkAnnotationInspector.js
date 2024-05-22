@@ -42,9 +42,9 @@ ve.ui.LinkAnnotationInspector.prototype.onAnnotationInputChange = function () {
  * Update the actions based on the annotation state
  */
 ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
-	let isValid = false,
-		annotation = this.annotationInput.getAnnotation();
+	const annotation = this.annotationInput.getAnnotation();
 
+	let isValid = false;
 	this.annotationInput.getTextInputWidget().getValidity()
 		.then( () => {
 			isValid = true;

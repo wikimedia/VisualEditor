@@ -82,14 +82,13 @@ ve.ui.DiffElement.static.compareAttributes = function ( oldAttributes, newAttrib
 		}
 	}
 
-	let key,
-		attributeChanges = {};
-	for ( key in oldAttributes ) {
+	const attributeChanges = {};
+	for ( const key in oldAttributes ) {
 		if ( !compareKeys( oldAttributes[ key ], newAttributes[ key ] ) ) {
 			attributeChanges[ key ] = { from: oldAttributes[ key ], to: newAttributes[ key ] };
 		}
 	}
-	for ( key in newAttributes ) {
+	for ( const key in newAttributes ) {
 		if ( !Object.prototype.hasOwnProperty.call( oldAttributes, key ) && newAttributes[ key ] !== undefined ) {
 			attributeChanges[ key ] = { from: oldAttributes[ key ], to: newAttributes[ key ] };
 		}
@@ -197,8 +196,8 @@ ve.ui.DiffElement.prototype.processQueue = function processQueue( queue ) {
 		lastItemSpacer = false,
 		needsSpacer = false,
 		headingContext = null,
-		headingContextSpacer = false,
-		processedQueue = [];
+		headingContextSpacer = false;
+	const processedQueue = [];
 
 	function isUnchanged( item ) {
 		return !item || ( item[ 2 ] === 'none' && !item[ 3 ] );
@@ -308,9 +307,10 @@ ve.ui.DiffElement.prototype.renderQueue = function ( queue, parentNode, spacerNo
  * @param {HTMLDocument} newHtmlDocument HTML document of context, for resolving attributes
  */
 ve.ui.DiffElement.prototype.renderDiff = function ( diff, internalListDiff, metaListDiff, newHtmlDocument ) {
-	let documentNode = this.$document[ 0 ],
-		diffQueue = [],
-		internalListDiffQueue = [];
+	const documentNode = this.$document[ 0 ],
+		diffQueue = [];
+
+	let internalListDiffQueue = [];
 
 	const documentSpacerNode = document.createElement( 'div' );
 	documentSpacerNode.setAttribute( 'class', 've-ui-diffElement-spacer' );
@@ -654,8 +654,8 @@ ve.ui.DiffElement.prototype.appendListItem = function ( diffData, insertIndex, l
  * @return {Array} Linear data for the diff
  */
 ve.ui.DiffElement.prototype.getChangedDocListData = function ( newDoclistNode, diff, neverProcess ) {
-	let diffData = [],
-		diffQueue = [];
+	const diffData = [];
+	let diffQueue = [];
 
 	const spacerData = [ { type: 'div' }, '⋮', { type: '/div' } ];
 	this.addAttributesToElement( spacerData, 0, { class: 've-ui-diffElement-spacer' } );
@@ -1303,8 +1303,8 @@ ve.ui.DiffElement.prototype.getInternalListNodeElements = function ( internalLis
  * @return {HTMLElement[]} HTML elements to display the linear diff
  */
 ve.ui.DiffElement.prototype.getInternalListChangedNodeElements = function ( diff, oldNode, newNode, move, newIndex ) {
-	let listItemNode = document.createElement( 'li' ),
-		data = this.getChangedDocListData( newNode, diff, true );
+	const listItemNode = document.createElement( 'li' );
+	let data = this.getChangedDocListData( newNode, diff, true );
 
 	// Remove internal list wrapper
 	data = data.slice( 1, data.length - 2 );
@@ -1359,8 +1359,8 @@ ve.ui.DiffElement.prototype.compareNodeAttributes = function ( data, offset, att
  * @return {OO.ui.OptionWidget} Change description item
  */
 ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes, classes ) {
-	let elementId = this.elementId,
-		$label = $( [] );
+	const elementId = this.elementId;
+	let $label = $( [] );
 
 	for ( let i = 0, l = changes.length; i < l; i++ ) {
 		const $change = $( '<div>' );
@@ -1442,13 +1442,13 @@ ve.ui.DiffElement.prototype.markMove = function ( move, elementOrData, offset ) 
  * @return {Array} Data with annotations added
  */
 ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
-	let DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
+	const DIFF_DELETE = ve.DiffMatchPatch.static.DIFF_DELETE,
 		DIFF_INSERT = ve.DiffMatchPatch.static.DIFF_INSERT,
 		DIFF_CHANGE_DELETE = ve.DiffMatchPatch.static.DIFF_CHANGE_DELETE,
 		DIFF_CHANGE_INSERT = ve.DiffMatchPatch.static.DIFF_CHANGE_INSERT,
 		items = [],
-		start = 0, // The starting index for a range for building an annotation
 		newDoc = newNode.getRoot().getDocument();
+	let start = 0; // The starting index for a range for building an annotation
 
 	// Make a new document from the diff
 	let diffDocData = linearDiff[ 0 ][ 1 ];

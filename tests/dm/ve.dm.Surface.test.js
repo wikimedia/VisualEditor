@@ -431,8 +431,7 @@ QUnit.test( 'staging', ( assert ) => {
 } );
 
 QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFromSourceOffsets', ( assert ) => {
-	let i,
-		surface = new ve.dm.SurfaceStub( [
+	const surface = new ve.dm.SurfaceStub( [
 			{ type: 'paragraph' }, 'f', 'o', 'o', { type: '/paragraph' },
 			{ type: 'paragraph' }, 'b', 'a', { type: '/paragraph' },
 			{ type: 'paragraph' }, 'q', 'u', 'u', 'x', { type: '/paragraph' },
@@ -450,7 +449,7 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 			12
 		];
 
-	for ( i = 0; i < expectedOffsets.length; i++ ) {
+	for ( let i = 0; i < expectedOffsets.length; i++ ) {
 		assert.strictEqual( surface.getOffsetFromSourceOffset( i ), expectedOffsets[ i ], 'Correct offset at ' + i );
 	}
 	assert.throws(
@@ -464,7 +463,7 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 		},
 		Error, 'Offset ' + expectedOffsets.length + ' is out of bounds'
 	);
-	for ( i = 0; i < expectedSourceOffsets.length; i++ ) {
+	for ( let i = 0; i < expectedSourceOffsets.length; i++ ) {
 		assert.strictEqual( surface.getSourceOffsetFromOffset( i ), expectedSourceOffsets[ i ], 'Correct source offset at ' + i );
 	}
 	assert.throws(
@@ -486,15 +485,16 @@ QUnit.test( 'getOffsetFromSourceOffset / getSourceOffsetFromOffset / getRangeFro
 } );
 
 QUnit.test( 'autosave', function ( assert ) {
-	let storage = ve.init.platform.sessionStorage,
-		autosaveFailed = 0,
+	const storage = ve.init.platform.sessionStorage,
 		done = assert.async(),
-		surface = new ve.dm.SurfaceStub(),
-		fragment = surface.getLinearFragment( new ve.Range( 3 ) ),
 		state = {
 			name: 'name',
 			id: 1
 		};
+
+	let surface = new ve.dm.SurfaceStub(),
+		fragment = surface.getLinearFragment( new ve.Range( 3 ) ),
+		autosaveFailed = 0;
 
 	assert.strictEqual( surface.restoreChanges(), false, 'restoreChanges returns false when nothing to restore' );
 	assert.strictEqual( surface.storeDocState( state, '<p>foo</p>' ), true, 'storeDocState returns true' );

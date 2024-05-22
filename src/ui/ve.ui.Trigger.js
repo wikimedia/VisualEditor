@@ -427,12 +427,12 @@ ve.ui.Trigger.prototype.toString = function () {
  * @return {string[]|string} Seprate key messages, or a joined string
  */
 ve.ui.Trigger.prototype.getMessage = function ( explode ) {
-	let keys = this.toString().split( '+' ),
-		hasOwn = Object.prototype.hasOwnProperty,
+	const hasOwn = Object.prototype.hasOwnProperty,
 		translatableKeys = this.constructor.static.translatableKeys,
 		platformMapping = this.constructor.static.platformMapping,
 		platform = ve.getSystemPlatform();
 
+	let keys = this.toString().split( '+' );
 	// Platform mappings
 	if ( hasOwn.call( platformMapping, platform ) ) {
 		keys = keys.map( ( key ) => hasOwn.call( platformMapping[ platform ], key ) ? platformMapping[ platform ][ key ] : key );

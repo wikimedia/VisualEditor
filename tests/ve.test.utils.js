@@ -564,7 +564,7 @@
 	ve.test.utils.createSurfaceViewFromDocument = function ( docOrSurface, config ) {
 		config = ve.init.target.getSurfaceConfig( config );
 
-		let model, view;
+		let model = null, view = null;
 
 		const mockSurface = {
 			$blockers: $( '<div>' ),

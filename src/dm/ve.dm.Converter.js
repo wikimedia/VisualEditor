@@ -668,16 +668,16 @@ ve.dm.Converter.prototype.getDataFromDomClean = function ( domElement, wrapperEl
  * @return {Array} Linear model data
  */
 ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapperElement, annotationSet ) {
-	let wrappingParagraph,
-		modelRegistry = this.modelRegistry,
+	const modelRegistry = this.modelRegistry,
 		data = [],
-		nextWhitespace = '',
-		wrappedWhitespace = '',
-		wrappedWhitespaceIndex,
-		wrappedMetaItems = [],
 		context = {},
 		prevContext = this.contextStack.length ?
 			this.contextStack[ this.contextStack.length - 1 ] : null;
+	let wrappingParagraph,
+		nextWhitespace = '',
+		wrappedWhitespace = '',
+		wrappedWhitespaceIndex,
+		wrappedMetaItems = [];
 
 	/**
 	 * Add whitespace to an element at a specific offset.
@@ -713,8 +713,8 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 	};
 	// FIXME rewrite this horrible meta item / whitespace queueing/wrapping business
 	const outputWrappedMetaItems = ( whitespaceTreatment ) => {
-		let toInsert = [],
-			prev = wrappingParagraph;
+		const toInsert = [];
+		let prev = wrappingParagraph;
 
 		for ( let j = 0, len = wrappedMetaItems.length; j < len; j++ ) {
 			if ( wrappedMetaItems[ j ].type && wrappedMetaItems[ j ].type.charAt( 0 ) !== '/' ) {
@@ -1191,8 +1191,8 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
  * @return {Array.<string|undefined>} Sparse array of whitespace strings: [ innerLeft, innerRight ]
  */
 ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
-	let innerWhitespace = new Array( 2 ),
-		stack = 0,
+	const innerWhitespace = new Array( 2 );
+	let stack = 0,
 		last = data.getLength() - 1;
 
 	let whitespace;
@@ -1297,11 +1297,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, 
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {
-	let text, annotatedDomElements, annotatedDomElementStack,
-		whitespaceHtmlChars = ve.visibleWhitespaceCharacters,
+	const whitespaceHtmlChars = ve.visibleWhitespaceCharacters,
 		isForPreview = this.isForPreview(),
 		dataLen = data.length,
-		doc = container.ownerDocument,
+		doc = container.ownerDocument;
+	let text, annotatedDomElements, annotatedDomElementStack,
 		domElement = container;
 
 	// TODO this whole function should be rewritten with a domElementStack and ascend() and
@@ -1319,12 +1319,12 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 	};
 
 	const closeAnnotation = ( annotation ) => {
-		let leading = '',
-			trailing = '',
-			originalDomElements = annotation.getOriginalDomElements( this.store ),
+		const originalDomElements = annotation.getOriginalDomElements( this.store ),
 			origElementText = originalDomElements[ 0 ] &&
 				originalDomElements[ 0 ].textContent ||
 				'';
+		let leading = '',
+			trailing = '';
 
 		// Add text if needed
 		if ( text.length > 0 ) {

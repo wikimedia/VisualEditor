@@ -43,14 +43,14 @@ ve.ce.LinearDeleteKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * In these cases, it will perform the content removal itself.
  */
 ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
-	let direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
+	const direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
-		offset = 0,
-		rangeToRemove = surface.getModel().getSelection().getRange(),
 		documentModel = surface.getModel().getDocument(),
 		focusedNode = surface.getFocusedNode(),
 		uiSurface = surface.getSurface(),
 		data = documentModel.data;
+	let offset = 0,
+		rangeToRemove = surface.getModel().getSelection().getRange();
 
 	if ( surface.isReadOnly() ) {
 		e.preventDefault();

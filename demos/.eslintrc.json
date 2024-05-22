@@ -11,8 +11,7 @@
 		"OO": "readonly"
 	},
 	"rules": {
-		"max-len": "off",
-		"prefer-const": "off"
+		"max-len": "off"
 	},
 	"plugins": [ "html" ],
 	"settings": {

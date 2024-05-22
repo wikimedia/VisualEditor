@@ -343,15 +343,15 @@ ve.ui.FindAndReplaceDialog.prototype.onFindReplaceTextEnter = function ( e ) {
  * Update search result fragments
  */
 ve.ui.FindAndReplaceDialog.prototype.updateFragments = function () {
-	let surfaceModel = this.surface.getModel(),
+	const surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		isReadOnly = surfaceModel.isReadOnly(),
-		ranges = [],
 		matchCase = this.matchCaseToggle.getValue(),
 		isRegex = this.regexToggle.getValue(),
 		wholeWord = this.wordToggle.getValue(),
 		diacriticInsensitive = this.diacriticToggle.getValue(),
 		find = this.findText.getValue();
+	let ranges = [];
 
 	this.invalidRegex = false;
 

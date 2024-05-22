@@ -19,7 +19,6 @@
 		"no-jquery/no-extend": "error",
 		"no-jquery/no-html": [ "error", { "allowGetOrSet": "get" } ],
 		"no-jquery/no-visibility": "error",
-		"max-len": "off",
-		"prefer-const": "off"
+		"max-len": "off"
 	}
 }

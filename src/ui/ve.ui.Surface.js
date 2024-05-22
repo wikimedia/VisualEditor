@@ -530,8 +530,7 @@ ve.ui.Surface.prototype.onModelSelect = function () {
 ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig ) {
 	selectionModel = selectionModel || this.getModel().getSelection();
 
-	let animate = true,
-		view = this.getView(),
+	const view = this.getView(),
 		selectionView = view.getSelection( selectionModel ),
 		isNative = selectionView.isNativeCursor();
 
@@ -548,6 +547,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 
 	const padding = ve.copy( this.padding );
 
+	let animate = true;
 	if ( isNative ) {
 		animate = false;
 		if (

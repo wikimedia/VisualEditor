@@ -14,8 +14,7 @@ QUnit.module( 've.ce.TableDeleteKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: table backspace/delete', ( assert ) => {
-	let done = assert.async(),
-		promise = Promise.resolve(),
+	const done = assert.async(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [
 			{
@@ -63,6 +62,7 @@ QUnit.test( 'special key down: table backspace/delete', ( assert ) => {
 			}
 		];
 
+	let promise = Promise.resolve();
 	cases.forEach( ( caseItem ) => {
 		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );

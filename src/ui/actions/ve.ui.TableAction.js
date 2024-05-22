@@ -104,8 +104,9 @@ ve.ui.TableAction.prototype.create = function ( options ) {
  * @return {boolean} Action was executed
  */
 ve.ui.TableAction.prototype.insert = function ( mode, position ) {
-	let surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection();
+	const surfaceModel = this.surface.getModel();
+
+	let selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.TableSelection ) ) {
 		return false;
@@ -632,14 +633,14 @@ ve.ui.TableAction.prototype.unmergeCell = function ( matrix, ownerCell ) {
  * @param {ve.dm.TableMatrixCell[]} [dataMatrixLine.cells] Table cells to insert
  */
 ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, position, selection, dataMatrixLine ) {
-	let matrix = tableNode.matrix,
+	const matrix = tableNode.matrix,
 		insertCells = [],
-		insertData = [],
 		txBuilders = [],
 		updated = {},
 		inserts = [],
 		surfaceModel = this.surface.getModel();
 
+	let insertData = [];
 	const before = position === 'before';
 
 	// Note: when we insert a new row (or column) we might need to increment a span property
@@ -853,13 +854,13 @@ ve.ui.TableAction.prototype.decrementSpan = function ( cell, mode, minIndex, max
  * @return {Object[]} Plain sub-matrix of items removed. In column mode this matrix is transposed.
  */
 ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIndex, maxIndex ) {
-	let removedMatrix = [],
-		cells = [],
+	const removedMatrix = [],
 		txBuilders = [],
 		adapted = {},
 		actions = [],
 		surfaceModel = this.surface.getModel(),
 		documentModel = surfaceModel.getDocument();
+	let cells = [];
 
 	// Deleting cells can have two additional consequences:
 	// 1. The cell is a Placeholder. The owner's span must be decreased.
@@ -1085,8 +1086,8 @@ ve.ui.TableAction.prototype.findClosestTableViewNode = function () {
  */
 ve.ui.TableAction.prototype.getTableSelectionFromSelection = function () {
 	// If the current selection is contained within a table, we'd like the relevant TableSelection.
-	let surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection();
+	const surfaceModel = this.surface.getModel();
+	let selection = surfaceModel.getSelection();
 
 	if ( selection instanceof ve.dm.TableSelection ) {
 		return selection;

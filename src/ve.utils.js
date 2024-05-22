@@ -219,8 +219,8 @@ ve.copyDomElements = function ( domElements, doc ) {
  * @return {boolean} All elements are pairwise equal
  */
 ve.isEqualDomElements = function ( domElements1, domElements2 ) {
-	let i = 0,
-		len = domElements1.length;
+	let i = 0;
+	const len = domElements1.length;
 	if ( len !== domElements2.length ) {
 		return false;
 	}
@@ -321,9 +321,9 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 	// We need to splice insertion in in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
 	let index = 0,
-		batchSize = 1024,
 		toRemove = remove,
 		removed = [];
+	const batchSize = 1024;
 
 	let splice;
 	if ( !Array.isArray( arr ) ) {
@@ -429,8 +429,8 @@ ve.insertIntoArray = function ( arr, offset, src ) {
 ve.batchPush = function ( arr, data ) {
 	// We need to push insertion in batches, because of parameter list length limits which vary
 	// cross-browser - 1024 seems to be a safe batch size on all browsers
-	let index = 0,
-		batchSize = 1024;
+	let index = 0;
+	const batchSize = 1024;
 	if ( batchSize >= data.length ) {
 		// Avoid slicing for small lists
 		return arr.push.apply( arr, data );
@@ -1116,8 +1116,8 @@ ve.compareDocumentOrder = function ( node1, offset1, node2, offset2 ) {
  */
 ve.adjacentDomPosition = function ( position, direction, options ) {
 	let node = position.node,
-		offset = position.offset,
-		steps = [];
+		offset = position.offset;
+	const steps = [];
 
 	const noDescend = options.noDescend || ve.rejectsCursor;
 	const stop = options.stop || ve.isHardCursorStep;

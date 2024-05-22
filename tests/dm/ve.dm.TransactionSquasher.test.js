@@ -37,8 +37,8 @@ QUnit.test( 'squash', ( assert ) => {
 			} );
 		} else {
 			newData = oldData.map( ( item ) => {
-				let ch = item[ 0 ],
-					hashList = item[ 1 ];
+				const ch = item[ 0 ];
+				let hashList = item[ 1 ];
 				hashList = [].concat(
 					hashList.slice( 0, spliceAt ),
 					hashList.slice( spliceAt + 1 )

@@ -81,9 +81,9 @@ ve.dm.TransactionBuilder.static.newFromInsertion = function ( doc, offset, data 
  * @throws {Error} Invalid range
  */
 ve.dm.TransactionBuilder.static.newFromRemoval = function ( doc, range, removeMetadata ) {
-	let txBuilder = new ve.dm.TransactionBuilder(),
-		endOffset = txBuilder.pushRemoval( doc, 0, range, removeMetadata );
+	const txBuilder = new ve.dm.TransactionBuilder();
 
+	let endOffset = txBuilder.pushRemoval( doc, 0, range, removeMetadata );
 	// Ensure no transaction leaves the document in a completely empty state
 	if ( range.start === 0 && range.end >= doc.getDocumentRange().end ) {
 		endOffset = txBuilder.pushInsertion( doc, endOffset, endOffset, [
@@ -278,11 +278,12 @@ ve.dm.TransactionBuilder.static.newFromAttributeChanges = function ( doc, offset
  * @return {ve.dm.Transaction} Transaction that annotates content
  */
 ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, method, annotation ) {
-	let clear = method === 'clear',
-		run = null,
+	const clear = method === 'clear',
 		runs = [],
 		data = doc.data,
-		hash = doc.getStore().hash( annotation ),
+		hash = doc.getStore().hash( annotation );
+
+	let run = null,
 		insideContentNode = false,
 		ignoreChildrenDepth = 0;
 
@@ -422,11 +423,11 @@ ve.dm.TransactionBuilder.static.newFromAnnotation = function ( doc, range, metho
  * @return {ve.dm.Transaction} Transaction that converts content branches
  */
 ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc, range, type, attr, internal ) {
-	let txBuilder = new ve.dm.TransactionBuilder(),
+	const txBuilder = new ve.dm.TransactionBuilder(),
 		selection = doc.selectNodes( range, 'leaves' ),
 		opening = { type: type },
-		closing = { type: '/' + type },
-		previousBranch,
+		closing = { type: '/' + type };
+	let previousBranch,
 		previousBranchOuterRange;
 
 	// Add attributes to opening if needed
@@ -537,8 +538,8 @@ ve.dm.TransactionBuilder.static.newFromContentBranchConversion = function ( doc,
  * @return {ve.dm.Transaction}
  */
 ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
-	let txBuilder = new ve.dm.TransactionBuilder(),
-		depth = 0;
+	const txBuilder = new ve.dm.TransactionBuilder();
+	let depth = 0;
 
 	/**
 	 * Match items before/after an offset, skipping over MetaItems
@@ -1005,8 +1006,8 @@ ve.dm.TransactionBuilder.prototype.pushRemoval = function ( doc, currentOffset, 
  * @param {Array} metaItems linear data containing just meta items
  */
 ve.dm.TransactionBuilder.prototype.pushMeta = function ( doc, offset, metaItems ) {
+	const ops = this.transaction.operations;
 	let position = null,
-		ops = this.transaction.operations,
 		relDepth = 0;
 
 	if ( ops.length === 0 ) {

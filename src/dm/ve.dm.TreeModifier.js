@@ -161,7 +161,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function ensureText( position ) {
-		let node = position.node,
+		const node = position.node,
 			offset = position.offset;
 		if ( node.type === 'text' ) {
 			return position;
@@ -186,14 +186,13 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function ensureNotText( position ) {
-		let parentNode, parentOffset, length, newNode,
-			node = position.node,
+		const node = position.node,
 			offset = position.offset;
 		if ( node.type !== 'text' ) {
 			return position;
 		}
-		parentNode = node.parent;
-		parentOffset = node.parent.children.indexOf( node );
+		const parentNode = node.parent;
+		const parentOffset = node.parent.children.indexOf( node );
 		if ( offset === 0 ) {
 			// Position before the text node
 			return { node: parentNode, offset: parentOffset };
@@ -202,9 +201,9 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			return { node: parentNode, offset: parentOffset + 1 };
 		}
 		// Else we must split the text node
-		length = node.length - offset;
+		const length = node.length - offset;
 		node.adjustLength( -length );
-		newNode = new ve.dm.TextNode( length );
+		const newNode = new ve.dm.TextNode( length );
 		splice( parentNode, parentOffset + 1, 0, newNode );
 		return { node: parentNode, offset: parentOffset + 1 };
 	}
@@ -235,15 +234,15 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function prepareSplice( pathAndOffset, isContent, wantText ) {
-		let i, iLen, position,
-			path = pathAndOffset.slice( 0, -1 ),
-			offset = pathAndOffset[ pathAndOffset.length - 1 ],
-			node = document.documentNode;
+		const path = pathAndOffset.slice( 0, -1 ),
+			offset = pathAndOffset[ pathAndOffset.length - 1 ];
+		let node = document.documentNode;
 
 		// Find node
-		for ( i = 0, iLen = path.length; i < iLen; i++ ) {
+		for ( let i = 0, iLen = path.length; i < iLen; i++ ) {
 			node = node.children[ path[ i ] ];
 		}
+		let position;
 		if ( isContent ) {
 			// Determine position from (linearized) content offset
 			if ( wantText ) {
@@ -267,12 +266,11 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	// (This is used when converting to/from HTML, to decide whether loaded metadata offsets
 	// need round tripping)
 	function markBranchNodeChanged( offset ) {
-		let item, newItem,
-			adj = isReversed ? -1 : 1,
-			i = offset - 1;
+		const adj = isReversed ? -1 : 1;
+		let i = offset - 1;
 
 		while ( i >= 0 ) {
-			item = document.data.getData( i-- );
+			const item = document.data.getData( i-- );
 			if ( !(
 				ve.dm.LinearData.static.isOpenElementData( item ) &&
 				ve.dm.nodeFactory.lookup(
@@ -284,7 +282,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			if ( item.internal && item.internal.changesSinceLoad !== undefined ) {
 				// Guard against marking the same node twice
 				if ( changedBranchNodes.indexOf( item ) === -1 ) {
-					newItem = ve.copy( item );
+					const newItem = ve.copy( item );
 					changedBranchNodes.push( newItem );
 					newItem.internal.changesSinceLoad += adj;
 					document.data.splice( i + 1, 1, ve.deepFreeze( newItem ) );
@@ -303,8 +301,8 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 
 	// Removes empty text node, or joins consecutive text nodes, at offset
 	function healTextNodes( node, offset ) {
-		let pre = node.children[ offset - 1 ],
-			post = node.children[ offset ];
+		const pre = node.children[ offset - 1 ];
+		let post = node.children[ offset ];
 
 		if ( post && post.type === 'text' && post.length === 0 ) {
 			// Remove empty text node

@@ -39,12 +39,12 @@ ve.ce.LinearArrowKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearArrowKeyDownHandler.static.execute = function ( surface, e ) {
-	let isBlockMove = e.keyCode === OO.ui.Keys.UP || e.keyCode === OO.ui.Keys.DOWN ||
+	const isBlockMove = e.keyCode === OO.ui.Keys.UP || e.keyCode === OO.ui.Keys.DOWN ||
 			e.keyCode === OO.ui.Keys.PAGEUP || e.keyCode === OO.ui.Keys.PAGEDOWN ||
 			e.keyCode === OO.ui.Keys.HOME || e.keyCode === OO.ui.Keys.END,
 		keyBlockDirection = e.keyCode === OO.ui.Keys.DOWN || e.keyCode === OO.ui.Keys.PAGEDOWN || e.keyCode === OO.ui.Keys.END ? 1 : -1,
-		range = surface.model.getSelection().getRange(),
 		activeNode = surface.getActiveNode();
+	let range = surface.model.getSelection().getRange();
 
 	// TODO: onDocumentKeyDown did this already
 	surface.surfaceObserver.stopTimerLoop();

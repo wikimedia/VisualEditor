@@ -306,11 +306,11 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
  * was a simple remove-insert, and allowRemoveInsert wasn't set.
  */
 ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveInsert ) {
-	let span = document.createElement( 'span' ),
-		isRemoveInsert = true,
+	const span = document.createElement( 'span' ),
 		/* global diff_match_patch */
 		// eslint-disable-next-line new-cap
 		differ = new diff_match_patch();
+	let isRemoveInsert = true;
 
 	const diff = differ.diff_main( oldText, newText );
 	differ.diff_cleanupEfficiency( diff );

@@ -49,7 +49,7 @@ QUnit.test( 'constructor/getItems/getItemsInGroup/indexOf', ( assert ) => {
 } );
 
 QUnit.test( 'onNodeAttached/onNodeDetached', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+	const doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		heading = { type: 'heading', attributes: { level: 2 } },
 		cases = [
 			{
@@ -88,9 +88,9 @@ QUnit.test( 'onNodeAttached/onNodeDetached', ( assert ) => {
 			txBuilder[ caseItem.calls[ j ][ 0 ] ].apply( txBuilder, caseItem.calls[ j ].slice( 1 ) );
 		}
 		const tx = txBuilder.getTransaction();
-		doc = ve.dm.example.createExampleDocument( 'withMeta' );
-		const list = doc.getMetaList();
-		const surface = new ve.dm.Surface( doc );
+		const caseDoc = ve.dm.example.createExampleDocument( 'withMeta' );
+		const list = caseDoc.getMetaList();
+		const surface = new ve.dm.Surface( caseDoc );
 		// Test both the transaction-via-surface and transaction-via-document flows
 		surface.change( tx );
 		ve.test.utils.validateMetaListCache( assert, list, caseItem.msg );

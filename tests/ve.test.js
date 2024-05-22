@@ -219,10 +219,9 @@ QUnit.test( 'sparseSplice', ( assert ) => {
 		return strings;
 	}
 	function runTest( arr, offset, remove, data, expectedReturn, expectedArray, msg ) {
-		let observedReturn,
-			testArr = arr.slice();
+		const testArr = arr.slice();
 
-		observedReturn = ve.sparseSplice( testArr, offset, remove, data );
+		const observedReturn = ve.sparseSplice( testArr, offset, remove, data );
 		assert.deepEqual(
 			mapToString( observedReturn ),
 			mapToString( expectedReturn ),
@@ -923,8 +922,8 @@ QUnit.test( 'deepFreeze (on cyclic structure)', ( assert ) => {
 } );
 
 QUnit.test( 'deepFreeze (recursive, aliased)', ( assert ) => {
-	let foo = { bar: {} },
-		realFreeze = ve.deepFreeze;
+	let foo = { bar: {} };
+	const realFreeze = ve.deepFreeze;
 
 	ve.deepFreeze = function ( x ) {
 		return x;

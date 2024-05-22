@@ -14,8 +14,7 @@ QUnit.module( 've.ce.TableArrowKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert ) => {
-	let done = assert.async(),
-		promise = Promise.resolve(),
+	const done = assert.async(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		cases = [
@@ -149,6 +148,7 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert )
 			}
 		];
 
+	let promise = Promise.resolve();
 	cases.forEach( ( caseItem ) => {
 		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );

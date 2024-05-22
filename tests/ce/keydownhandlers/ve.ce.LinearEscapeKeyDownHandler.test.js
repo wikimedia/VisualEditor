@@ -14,8 +14,7 @@ QUnit.module( 've.ce.LinearEscapeKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: linear escape', ( assert ) => {
-	let done = assert.async(),
-		promise = Promise.resolve(),
+	const done = assert.async(),
 		noChange = function () {},
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [
@@ -46,6 +45,7 @@ QUnit.test( 'special key down: linear escape', ( assert ) => {
 			}
 		];
 
+	let promise = Promise.resolve();
 	cases.forEach( ( caseItem ) => {
 		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );

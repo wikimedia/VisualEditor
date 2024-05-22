@@ -35,9 +35,7 @@ ve.ce.LinearSelection.static.name = 'linear';
  * @inheritdoc
  */
 ve.ce.LinearSelection.prototype.getSelectionRects = function () {
-	let surface = this.getSurface(),
-		rects = [],
-		relativeRects = [];
+	const surface = this.getSurface();
 
 	const range = this.getModel().getRange();
 	const focusedNode = surface.getFocusedNode( range );
@@ -51,6 +49,7 @@ ve.ce.LinearSelection.prototype.getSelectionRects = function () {
 		return null;
 	}
 
+	let rects = [];
 	// Support: Firefox, IE
 	// Calling getClientRects sometimes fails:
 	// * in Firefox on page load when the address bar is still focused
@@ -73,6 +72,8 @@ ve.ce.LinearSelection.prototype.getSelectionRects = function () {
 		return null;
 	}
 
+	// TODO: Use .map
+	const relativeRects = [];
 	for ( let i = 0, l = rects.length; i < l; i++ ) {
 		relativeRects.push( ve.translateRect( rects[ i ], -surfaceRect.left, -surfaceRect.top ) );
 	}

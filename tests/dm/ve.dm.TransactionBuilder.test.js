@@ -758,7 +758,7 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 } );
 
 QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument( 'internalData' ),
+	const doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		whee = [ { type: 'paragraph' }, 'W', 'h', 'e', 'e', { type: '/paragraph' } ],
 		wheeItem = [ { type: 'internalItem' } ].concat( whee ).concat( [ { type: '/internalItem' } ] ),
@@ -985,29 +985,29 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		doc = ve.dm.example.createExampleDocument( caseItem.doc );
+		const caseDoc = ve.dm.example.createExampleDocument( caseItem.doc );
 		let doc2, removalOps, store2;
 		if ( caseItem.newDocData ) {
 			store2 = new ve.dm.HashValueStore();
 			doc2 = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.newDocData, store2 ) );
 			removalOps = [];
 		} else if ( caseItem.range ) {
-			doc2 = doc.cloneFromRange( caseItem.range );
+			doc2 = caseDoc.cloneFromRange( caseItem.range );
 			caseItem.modify( doc2 );
-			const removalTx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, caseItem.range );
-			doc.commit( removalTx );
+			const removalTx = ve.dm.TransactionBuilder.static.newFromRemoval( caseDoc, caseItem.range );
+			caseDoc.commit( removalTx );
 			removalOps = removalTx.getOperations();
 		}
 
 		assert.deepEqualWithDomElements( removalOps, caseItem.removalOps, caseItem.msg + ': removal' );
 
-		const tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( doc, caseItem.offset, doc2 );
+		const tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( caseDoc, caseItem.offset, doc2 );
 		assert.deepEqualWithDomElements( tx.getOperations(), caseItem.expectedOps, caseItem.msg + ': transaction' );
 
 		const actualStoreItems = {};
 		const expectedStoreItems = caseItem.expectedStoreItems || {};
 		for ( const hash in expectedStoreItems ) {
-			actualStoreItems[ hash ] = doc.store.value( hash );
+			actualStoreItems[ hash ] = caseDoc.store.value( hash );
 			expectedStoreItems[ hash ].store = store2;
 		}
 		assert.deepEqual( actualStoreItems, expectedStoreItems, caseItem.msg + ': store items' );

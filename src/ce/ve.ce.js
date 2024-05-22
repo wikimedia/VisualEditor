@@ -34,8 +34,8 @@ ve.ce.minImgDataUri = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs
  */
 ve.ce.getDomText = function ( element ) {
 	// Inspired by jQuery.text / Sizzle.getText
-	let nodeType = element.nodeType,
-		text = '';
+	const nodeType = element.nodeType;
+	let text = '';
 
 	if (
 		nodeType === Node.ELEMENT_NODE ||
@@ -86,9 +86,9 @@ ve.ce.getDomText = function ( element ) {
  * @return {string} Hash of DOM element
  */
 ve.ce.getDomHash = function ( element ) {
-	let nodeType = element.nodeType,
-		nodeName = element.nodeName,
-		hash = '';
+	const nodeType = element.nodeType,
+		nodeName = element.nodeName;
+	let hash = '';
 
 	if ( nodeType === Node.TEXT_NODE || nodeType === Node.CDATA_SECTION_NODE ) {
 		return '#';

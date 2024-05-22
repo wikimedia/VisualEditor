@@ -204,9 +204,9 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
  * @return {Array} Linear model data
  */
 ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
-	let itemHtmlQueue = this.getItemHtmlQueue(),
-		list = [];
+	const itemHtmlQueue = this.getItemHtmlQueue();
 
+	let list = [];
 	list.push( { type: 'internalList' } );
 	for ( let i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
 		if ( itemHtmlQueue[ i ] !== '' ) {
@@ -450,10 +450,10 @@ ve.dm.InternalList.prototype.clone = function ( doc ) {
  *  of ranges of internal nodes in list's document that should be copied into our document
  */
 ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
-	let listLen = list.getItemNodeCount(),
-		nextIndex = this.getItemNodeCount(),
+	const listLen = list.getItemNodeCount(),
 		newItemRanges = [],
 		mapping = {};
+	let nextIndex = this.getItemNodeCount();
 
 	for ( let i = 0; i < commonLength; i++ ) {
 		mapping[ i ] = i;

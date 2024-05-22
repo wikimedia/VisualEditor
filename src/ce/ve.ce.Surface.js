@@ -1329,9 +1329,9 @@ ve.ce.Surface.prototype.onDocumentDragStart = function ( e ) {
  * @param {jQuery.Event} e Drag over event
  */
 ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
-	let dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory,
-		isContent = true,
+	const dataTransferHandlerFactory = this.getSurface().dataTransferHandlerFactory,
 		dataTransfer = e.originalEvent.dataTransfer;
+	let isContent = true;
 
 	if ( this.readOnly ) {
 		return;
@@ -1573,8 +1573,8 @@ ve.ce.Surface.prototype.onDocumentDrop = function ( e ) {
  * @param {jQuery.Event} e Key down event
  */
 ve.ce.Surface.prototype.onDocumentKeyDown = function ( e ) {
-	let selection = this.getModel().getSelection(),
-		updateFromModel = false;
+	const selection = this.getModel().getSelection();
+	let updateFromModel = false;
 
 	if ( selection.isNull() ) {
 		return;
@@ -1757,14 +1757,14 @@ ve.ce.Surface.prototype.onDocumentKeyPress = function ( e ) {
  * @param {jQuery.Event} e keydown event
  */
 ve.ce.Surface.prototype.afterDocumentKeyDown = function ( e ) {
-	let keyDownSelectionState,
-		documentModel = this.getModel().getDocument(),
+	const documentModel = this.getModel().getDocument(),
 		isArrow = (
 			e.keyCode === OO.ui.Keys.UP ||
 			e.keyCode === OO.ui.Keys.DOWN ||
 			e.keyCode === OO.ui.Keys.LEFT ||
 			e.keyCode === OO.ui.Keys.RIGHT
 		);
+	let keyDownSelectionState = null;
 
 	/**
 	 * Determine whether a position is editable, and if so which focusable node it is in
@@ -2200,11 +2200,10 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	// Some attributes (e.g RDFa attributes in Firefox) aren't preserved by copy
 	const unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[' ) + ']';
 	this.$pasteTarget.find( unsafeSelector ).each( ( n, element ) => {
-		let i,
-			attrs = {},
+		const attrs = {},
 			ua = ve.ce.Surface.static.unsafeAttributes;
 
-		i = ua.length;
+		let i = ua.length;
 		while ( i-- ) {
 			const val = element.getAttribute( ua[ i ] );
 			if ( val !== null ) {
@@ -2446,12 +2445,12 @@ ve.ce.Surface.prototype.beforePaste = function ( e ) {
  * @return {jQuery.Promise} Promise which resolves when the content has been pasted
  */
 ve.ce.Surface.prototype.afterPaste = function () {
-	let surfaceModel = this.getModel(),
+	const surfaceModel = this.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		fragment = surfaceModel.getFragment(),
-		targetFragment = surfaceModel.getFragment( null, true ),
 		beforePasteData = this.beforePasteData || {},
 		done = ve.createDeferred().resolve().promise();
+	let targetFragment = surfaceModel.getFragment( null, true );
 
 	// If the selection doesn't collapse after paste then nothing was inserted
 	if ( !this.nativeSelection.isCollapsed ) {
@@ -2533,9 +2532,9 @@ ve.ce.Surface.prototype.afterPaste = function () {
  * @return {ve.ce.ClipboardData} Data
  */
 ve.ce.Surface.prototype.afterPasteExtractClipboardData = function () {
-	let clipboardKey, clipboardHash, $clipboardHtml,
-		beforePasteData = this.beforePasteData || {};
+	const beforePasteData = this.beforePasteData || {};
 
+	let clipboardKey, clipboardHash, $clipboardHtml;
 	// Find the clipboard key
 	if ( beforePasteData.custom ) {
 		// text/xcustom was present, and requires no further processing
@@ -2791,12 +2790,12 @@ ve.ce.Surface.prototype.afterPasteAddToFragmentFromExternal = function ( clipboa
 
 	// HACK: Fix invalid HTML from copy-pasting `display: inline` lists (T239550).
 	$( htmlDoc.body ).find( 'li, dd, dt' ).each( ( n, element ) => {
-		let list,
-			listType = { li: 'ul', dd: 'dl', dt: 'dl' },
+		const listType = { li: 'ul', dd: 'dl', dt: 'dl' },
 			tag = element.tagName.toLowerCase(),
 			// Parent node always exists because we're searching inside <body>
 			parentTag = element.parentNode.tagName.toLowerCase();
 
+		let list;
 		if (
 			( tag === 'li' && ( parentTag !== 'ul' && parentTag !== 'ol' ) ) ||
 			( ( tag === 'dd' || tag === 'dt' ) && parentTag !== 'dl' )
@@ -3202,11 +3201,10 @@ ve.ce.Surface.prototype.handleDataTransferItems = function ( items, isPaste, tar
 	targetFragment = targetFragment || this.getModel().getFragment();
 
 	function insert( docOrData ) {
-		let resultFragment, rootChildren;
 		// For non-paste transfers, don't overwrite the selection
-		resultFragment = !isPaste ? targetFragment.collapseToEnd() : targetFragment;
+		const resultFragment = !isPaste ? targetFragment.collapseToEnd() : targetFragment;
 		if ( docOrData instanceof ve.dm.Document ) {
-			rootChildren = docOrData.getDocumentNode().children;
+			const rootChildren = docOrData.getDocumentNode().children;
 			if (
 				rootChildren[ 0 ] &&
 				rootChildren[ 0 ].type === 'paragraph' &&
@@ -3384,8 +3382,8 @@ ve.ce.Surface.prototype.onDocumentInput = function ( e ) {
 	) {
 		// Wait for the insertion to happen
 		setTimeout( () => {
-			let fragment = this.getModel().getFragment().adjustLinearSelection( -1 ),
-				nbspContent = '&nbsp;';
+			const fragment = this.getModel().getFragment().adjustLinearSelection( -1 );
+			let nbspContent = '&nbsp;';
 			if ( this.getSurface().getMode() === 'visual' ) {
 				nbspContent = ve.init.platform.decodeEntities( nbspContent );
 			}
@@ -3701,10 +3699,10 @@ ve.ce.Surface.prototype.renderSelectedContentBranchNode = function () {
  * @param {ve.ce.RangeState} newState The changed range state
  */
 ve.ce.Surface.prototype.handleObservedChanges = function ( oldState, newState ) {
-	let dmDoc = this.getModel().getDocument(),
-		insertedText = false,
-		removedText = false;
+	const dmDoc = this.getModel().getDocument();
 
+	let insertedText = false,
+		removedText = false;
 	if ( newState.contentChanged ) {
 		if ( this.readOnly ) {
 			newState.node.renderContents();
@@ -4246,9 +4244,10 @@ ve.ce.Surface.prototype.getFocusedNodeDirectionality = function () {
  * @return {boolean} Whether the selection was restored
  */
 ve.ce.Surface.prototype.restoreActiveNodeSelection = function () {
-	let currentRange,
-		activeNode = this.getActiveNode(),
+	const activeNode = this.getActiveNode(),
 		activeRange = activeNode && activeNode.getRange();
+
+	let currentRange;
 	if (
 		activeRange &&
 		( currentRange = ve.ce.veRangeFromSelection( this.nativeSelection ) ) &&
@@ -4427,10 +4426,10 @@ ve.ce.Surface.prototype.removeCursorHolderAfter = function () {
  * Handle insertion of content.
  */
 ve.ce.Surface.prototype.handleInsertion = function () {
-	let surfaceModel = this.getModel(),
-		fragment = surfaceModel.getFragment(),
-		selection = this.getSelection();
+	const surfaceModel = this.getModel(),
+		fragment = surfaceModel.getFragment();
 
+	let selection = this.getSelection();
 	if ( selection instanceof ve.ce.TableSelection ) {
 		// Collapse table selection to anchor cell
 		surfaceModel.setSelection( selection.getModel().collapseToFrom() );
@@ -4829,8 +4828,9 @@ ve.ce.Surface.prototype.showModelSelection = function ( force ) {
  * @return {boolean} Whether the selection actually changed
  */
 ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
+	const sel = this.nativeSelection;
+
 	let extendedBackwards = false,
-		sel = this.nativeSelection,
 		newSel = selection;
 
 	if ( newSel.equalsSelection( sel ) ) {
@@ -4917,12 +4917,11 @@ ve.ce.Surface.prototype.showSelectionState = function ( selection ) {
  * @fires ve.dm.Surface#contextChange
  */
 ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
-	let activeAnnotations,
-		changed = false,
-		canBeActive = function ( view ) {
-			return view.canBeActive();
-		};
+	const canBeActive = function ( view ) {
+		return view.canBeActive();
+	};
 
+	let activeAnnotations;
 	if ( fromModelOrNode === true ) {
 		activeAnnotations = this.annotationsAtModelSelection( canBeActive );
 	} else if ( fromModelOrNode instanceof Node ) {
@@ -4931,6 +4930,7 @@ ve.ce.Surface.prototype.updateActiveAnnotations = function ( fromModelOrNode ) {
 		activeAnnotations = this.annotationsAtFocus( canBeActive );
 	}
 
+	let changed = false;
 	// Iterate over previously active annotations
 	this.activeAnnotations.forEach( ( annotation ) => {
 		// If not in the new list, turn off
@@ -5007,8 +5007,7 @@ ve.ce.Surface.prototype.selectAnnotation = function ( filter ) {
  * @return {ve.ce.Annotation[]} Annotation views
  */
 ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter, offset ) {
-	let annotations = [],
-		documentRange = this.getModel().getDocument().getDocumentRange();
+	const documentRange = this.getModel().getDocument().getDocumentRange();
 
 	if ( offset === undefined ) {
 		offset = this.getModel().getSelection().getCoveringRange().start;
@@ -5021,6 +5020,7 @@ ve.ce.Surface.prototype.annotationsAtModelSelection = function ( filter, offset 
 	// to find the text inside the annotation. This will give too many results for
 	// adjancent annotations, and will fail for one character annotations. (T221967)
 	let nodeAndOffset;
+	let annotations = [];
 	if ( offset > documentRange.start ) {
 		try {
 			nodeAndOffset = this.getDocument().getNodeAndOffset( offset - 1 );

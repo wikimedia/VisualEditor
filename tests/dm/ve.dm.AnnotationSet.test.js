@@ -9,13 +9,13 @@ QUnit.module( 've.dm.AnnotationSet' );
 /* Tests */
 
 QUnit.test( 'Basic usage', ( assert ) => {
-	let store = new ve.dm.HashValueStore(),
+	const store = new ve.dm.HashValueStore(),
 		bold = new ve.dm.BoldAnnotation(),
 		italic = new ve.dm.ItalicAnnotation(),
 		underline = new ve.dm.UnderlineAnnotation(),
 		annotationSet = new ve.dm.AnnotationSet( store, store.hashAll( [ bold, italic ] ) ),
-		annotationSet2 = new ve.dm.AnnotationSet( store, store.hashAll( [ italic, underline ] ) ),
 		emptySet = new ve.dm.AnnotationSet( store );
+	let annotationSet2 = new ve.dm.AnnotationSet( store, store.hashAll( [ italic, underline ] ) );
 
 	assert.strictEqual( annotationSet.getLength(), 2, 'getLength is 2' );
 	assert.strictEqual( annotationSet.isEmpty(), false, 'isEmpty is false' );

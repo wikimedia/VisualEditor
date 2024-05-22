@@ -483,13 +483,13 @@ ve.ce.ResizableNode.prototype.setResizableHandlesPosition = function () {
  * @fires ve.ce.ResizableNode#resizing
  */
 ve.ce.ResizableNode.prototype.onDocumentMouseMove = function ( e ) {
-	let diff = {},
-		dimensions = {
-			width: 0,
-			height: 0,
-			top: this.resizeInfo.top,
-			left: this.resizeInfo.left
-		};
+	const diff = {};
+	let dimensions = {
+		width: 0,
+		height: 0,
+		top: this.resizeInfo.top,
+		left: this.resizeInfo.left
+	};
 
 	if ( this.resizing ) {
 		// X and Y diff

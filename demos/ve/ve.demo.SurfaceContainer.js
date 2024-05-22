@@ -182,8 +182,8 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 		return ve.createDeferred().resolve().promise();
 	}
 
-	let container = this,
-		currentDir = 'ltr';
+	const container = this;
+	let currentDir = 'ltr';
 
 	let closePromise, html;
 	switch ( this.mode ) {
@@ -293,8 +293,8 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
  * @param {string} mode Edit mode
  */
 ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
-	let restored = false,
-		container = this;
+	const container = this;
+	let restored = false;
 
 	if ( this.surface ) {
 		this.surface.destroy();

@@ -220,22 +220,22 @@ ve.ce.ContentBranchNode.prototype.setupInlineSlugs = function () {
  * @return {ve.ce.ContentBranchNode.HTMLElementWithUnicorn} Wrapper containing rendered contents
  */
 ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
-	let annotationsChanged,
-		store = this.model.doc.getStore(),
+	const store = this.model.doc.getStore(),
 		annotationSet = new ve.dm.AnnotationSet( store ),
-		annotatedHtml = [],
 		doc = this.getElementDocument(),
 		wrapper = doc.createElement( 'div' ),
-		current = wrapper,
 		annotationStack = [],
 		nodeStack = [],
 		unicornInfo = {
 			hasCursor: false,
 			annotations: null,
 			unicorns: null
-		},
-		buffer = '';
+		};
 
+	let annotationsChanged,
+		annotatedHtml = [],
+		current = wrapper,
+		buffer = '';
 	// Source mode optimization
 	if ( this.getModel().getDocument().sourceMode ) {
 		wrapper.appendChild(
@@ -248,7 +248,6 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	}
 
 	const openAnnotation = ( annotation ) => {
-		let ann;
 		annotationsChanged = true;
 		if ( buffer !== '' ) {
 			if ( current.nodeType === Node.TEXT_NODE ) {
@@ -260,7 +259,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		}
 		// Create a new DOM node and descend into it
 		annotation.store = store;
-		ann = ve.ce.annotationFactory.create( annotation.getType(), annotation, this );
+		const ann = ve.ce.annotationFactory.create( annotation.getType(), annotation, this );
 		ann.appendTo( current );
 		annotationStack.push( ann );
 		nodeStack.push( current );
@@ -268,7 +267,6 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	};
 
 	const closeAnnotation = () => {
-		let ann;
 		annotationsChanged = true;
 		if ( buffer !== '' ) {
 			if ( current.nodeType === Node.TEXT_NODE ) {
@@ -279,7 +277,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 			buffer = '';
 		}
 		// Traverse up
-		ann = annotationStack.pop();
+		const ann = annotationStack.pop();
 		ann.attachContents();
 		current = nodeStack.pop();
 	};

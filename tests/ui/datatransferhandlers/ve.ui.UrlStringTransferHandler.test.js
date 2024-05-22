@@ -9,8 +9,7 @@ QUnit.module( 've.ui.UrlStringTransferHandler' );
 /* Tests */
 
 ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, mimeType, expectedDataFunc, base, msg ) {
-	let handler,
-		done = assert.async(),
+	const done = assert.async(),
 		item = ve.ui.DataTransferItem.static.newFromString( string, mimeType, htmlString ),
 		doc = ve.dm.example.createExampleDocument( null, null, base ),
 		mockSurface = {
@@ -28,7 +27,7 @@ ve.test.utils.runUrlStringHandlerTest = function ( assert, string, htmlString, m
 		};
 
 	// Invoke the handler
-	handler = ve.ui.dataTransferHandlerFactory.create( 'urlString', mockSurface, item );
+	const handler = ve.ui.dataTransferHandlerFactory.create( 'urlString', mockSurface, item );
 
 	handler.getInsertableData().done( ( actualData ) => {
 		ve.dm.example.postprocessAnnotations( actualData, doc.getStore() );

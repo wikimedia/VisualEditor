@@ -45,8 +45,8 @@ ve.test.utils.triggerKeys = ( function () {
 }() );
 
 ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
-	let promise = Promise.resolve(),
-		then = function ( f ) {
+	let promise = Promise.resolve();
+	const then = function ( f ) {
 			promise = promise.then( f );
 		},
 		htmlOrDoc = caseItem.htmlOrDoc,
@@ -159,8 +159,7 @@ ve.test.utils.runSurfaceHandleSpecialKeyTest = function ( assert, caseItem ) {
 };
 
 ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
-	let afterPastePromise = ve.createDeferred().resolve().promise(),
-		htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tr></tbody></table><p><b>Quux</b></p>',
+	const htmlOrView = item.documentHtml || '<p id="foo"></p><p>Foo</p><h2> Baz </h2><table><tbody><tr><td></td></tr></tbody></table><p><b>Quux</b></p>',
 		pasteData = {
 			'text/html': item.pasteHtml,
 			'text/plain': item.pasteText
@@ -173,6 +172,7 @@ ve.test.utils.runSurfacePasteTest = function ( assert, item ) {
 		doc = model.getDocument(),
 		done = assert.async();
 
+	let afterPastePromise = ve.createDeferred().resolve().promise();
 	let testEvent;
 	// Paste sequence
 	if ( item.internalSourceRangeOrSelection ) {
@@ -2804,10 +2804,9 @@ QUnit.test( 'getViewportRange', ( assert ) => {
 } );
 
 QUnit.skip( 'afterMutations', ( assert ) => {
-	let cases, done;
+	let cases = null, done = null;
 	function getDescendant( node, path ) {
-		let i, len;
-		for ( i = 0, len = path.length; i < len; i++ ) {
+		for ( let i = 0, len = path.length; i < len; i++ ) {
 			node = node.children[ path[ i ] ];
 		}
 		return node;
@@ -2816,10 +2815,9 @@ QUnit.skip( 'afterMutations', ( assert ) => {
 		return data.map( ( item ) => typeof item === 'object' ? { type: item.type } : item );
 	}
 	function runCase( i ) {
-		let caseItem, view, dmDoc;
-		caseItem = cases[ i ];
-		view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
-		dmDoc = view.getModel().getDocument();
+		const caseItem = cases[ i ];
+		const view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
+		const dmDoc = view.getModel().getDocument();
 		caseItem.domRemovalPaths.forEach( ( path ) => {
 			const node = getDescendant( view.documentView.documentNode, path );
 			node.$element[ 0 ].remove();

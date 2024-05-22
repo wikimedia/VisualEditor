@@ -652,9 +652,9 @@ ve.dm.Transaction.prototype.adjustRetain = function ( place, diff ) {
 		return;
 	}
 
-	let start = place === 'start',
-		ops = this.operations,
-		i = start ? 0 : ops.length - 1;
+	const start = place === 'start',
+		ops = this.operations;
+	let i = start ? 0 : ops.length - 1;
 
 	if ( !start && ops[ i ] && ops[ i ].type === 'retainMetadata' ) {
 		i = ops.length - 2;

@@ -259,8 +259,9 @@ ve.ui.TableLineContextItem.prototype.setup = function () {
 		return this.context.getSurface().commandRegistry.lookup( commandName );
 	};
 	ve.ui.ToggleTableSelectionContextItem.prototype.getTitle = function () {
-		let mode = 'cells',
-			selection = this.context.getSurface().getModel().getSelection();
+		const selection = this.context.getSurface().getModel().getSelection();
+
+		let mode = 'cells';
 		if ( selection instanceof ve.dm.TableSelection ) {
 			mode = 'contents';
 		}

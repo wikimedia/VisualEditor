@@ -373,8 +373,8 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * @return {Object} Cloned element object
  */
 ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated, resetAttributes ) {
-	let modified = false,
-		clone = ve.copy( element );
+	const clone = ve.copy( element );
+	let modified = false;
 
 	if ( !preserveGenerated ) {
 		ve.deleteProp( clone, 'internal', 'generated' );

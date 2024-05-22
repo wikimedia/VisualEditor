@@ -14,9 +14,8 @@ QUnit.module( 've.ce.LinearEnterKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: linear enter', ( assert ) => {
-	let done = assert.async(),
+	const done = assert.async(),
 		noChange = function () {},
-		promise = Promise.resolve(),
 		emptyList = '<ul><li><p></p></li></ul>',
 		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
 		cases = [
@@ -354,6 +353,7 @@ QUnit.test( 'special key down: linear enter', ( assert ) => {
 
 		];
 
+	let promise = Promise.resolve();
 	cases.forEach( ( caseItem ) => {
 		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );

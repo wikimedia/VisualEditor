@@ -259,16 +259,15 @@ ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
  *  {Array} splices[].insert Data to insert; for efficiency, objects are inserted without cloning
  */
 ve.dm.TransactionProcessor.modifiers.splice = function ( splices ) {
-	let lengthDiff = 0,
-		data = this.document.data;
+	const data = this.document.data;
 
+	let lengthDiff = 0;
 	let i;
 	// We're about to do lots of things that can go wrong, so queue an undo function now
 	// that undoes all splices that we got to
 	this.queueUndoFunction( () => {
-		let i2, s2;
-		for ( i2 = splices.length - 1; i2 >= 0; i2-- ) {
-			s2 = splices[ i ];
+		for ( let i2 = splices.length - 1; i2 >= 0; i2-- ) {
+			const s2 = splices[ i ];
 			if ( s2.removedData !== undefined ) {
 				data.batchSplice( s2.offset, s2.insert.length, s2.removedData );
 			}

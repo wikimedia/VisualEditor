@@ -91,9 +91,9 @@ ve.ce.KeyDownHandlerFactory.prototype.lookupHandlersForKey = function ( key, sel
  * @return {boolean} Some handlers acted
  */
 ve.ce.KeyDownHandlerFactory.prototype.executeHandlersForKey = function ( key, selectionName, surface, e ) {
-	let acted = false,
-		handlers = this.lookupHandlersForKey( key, selectionName );
+	const handlers = this.lookupHandlersForKey( key, selectionName );
 
+	let acted = false;
 	// Length is likely to be 1 or 0 so don't cache
 	for ( let i = 0; i < handlers.length; i++ ) {
 		if ( handlers[ i ].static.execute( surface, e ) ) {

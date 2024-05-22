@@ -69,10 +69,10 @@ ve.dm.TableMatrix.prototype.invalidate = function () {
  * Recreates the matrix structure.
  */
 ve.dm.TableMatrix.prototype.update = function () {
-	let matrix = [],
+	const matrix = [],
 		rowNodes = [],
-		iterator = this.tableNode.getIterator(),
-		row = -1,
+		iterator = this.tableNode.getIterator();
+	let row = -1,
 		col = -1;
 
 	// Handle row transitions

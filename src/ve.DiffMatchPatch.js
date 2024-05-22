@@ -200,9 +200,9 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 	function getCleanDiff( diff ) {
 		let previousData = null,
 			previousAction = null,
-			cleanDiff = [],
 			remove = [],
 			insert = [];
+		const cleanDiff = [];
 
 		function equalUnannotated( other, element, index ) {
 			return ve.dm.ElementLinearData.static.compareElementsUnannotated( element, other[ index ] );

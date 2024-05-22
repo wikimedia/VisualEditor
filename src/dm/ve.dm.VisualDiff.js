@@ -299,8 +299,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 
 	// See https://en.wikipedia.org/wiki/Longest_increasing_subsequence
 	function longestIncreasingSubsequence( sequence ) {
-		let currentLength = 0,
-			mvs = [],
+		const mvs = [],
 			// finalIndices[i] holds:
 			// - if i is 0, 0
 			// - if there's an increasing subsequence of length i, the final item in that subsequence
@@ -311,6 +310,7 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 			// - otherwise, 0
 			previousIndices = [];
 
+		let currentLength = 0;
 		finalIndices[ 0 ] = 0;
 
 		// Perform algorithm (i.e. populate finalIndices and previousIndices)
@@ -962,25 +962,23 @@ ve.dm.VisualDiff.prototype.getMetaListDiff = function ( oldMetaList, newMetaList
  * @return {ve.dm.VisualDiff.InternalListDiff} Internal list diff object
  */
 ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, newInternalList ) {
-	let oldDocNodeGroups = oldInternalList.getNodeGroups(),
+	const oldDocNodeGroups = oldInternalList.getNodeGroups(),
 		newDocNodeGroups = newInternalList.getNodeGroups(),
 		oldDocInternalListNode = oldInternalList.getListNode(),
 		newDocInternalListNode = newInternalList.getListNode(),
-		oldDocInternalListItems,
-		newDocInternalListItems,
 		groups = [],
-		groupDiffs = {
-		};
+		groupDiffs = {};
+	let oldDocInternalListItems,
+		newDocInternalListItems;
 
 	function getInternalListItemsToDiff( indexOrder, nodes, action ) {
-		let j, jlen, nodeIndex,
-			internalListItems = {
-				toDiff: [],
-				indices: []
-			};
+		const internalListItems = {
+			toDiff: [],
+			indices: []
+		};
 
-		for ( j = 0, jlen = indexOrder.length; j < jlen; j++ ) {
-			nodeIndex = indexOrder[ j ];
+		for ( let j = 0, jlen = indexOrder.length; j < jlen; j++ ) {
+			const nodeIndex = indexOrder[ j ];
 			if ( nodeIndex !== null ) {
 				internalListItems.toDiff.push( nodes[ nodeIndex ] );
 				internalListItems.indices.push( {

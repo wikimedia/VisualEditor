@@ -64,9 +64,9 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 	// Parent method
 	return ve.ui.ProgressDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
-			let cancellable = false,
-				progresses = data.progresses;
+			const progresses = data.progresses;
 
+			let cancellable = false;
 			this.inProgress = progresses.length;
 			this.text.$element.empty();
 			this.cancelDeferreds = [];

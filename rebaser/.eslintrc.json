@@ -7,8 +7,5 @@
 	"globals": {
 		"ve": "readonly",
 		"OO": "readonly"
-	},
-	"rules": {
-		"prefer-const": "off"
 	}
 }

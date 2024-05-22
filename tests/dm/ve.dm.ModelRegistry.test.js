@@ -142,8 +142,9 @@ ve.dm.example.StubRegExpNode.static.matchRdfaTypes = [
 /* Tests */
 
 QUnit.test( 'register/unregister/matchElement', ( assert ) => {
-	let registry = new ve.dm.ModelRegistry(),
-		element = document.createElement( 'a' );
+	const registry = new ve.dm.ModelRegistry();
+
+	let element = document.createElement( 'a' );
 
 	assert.strictEqual( registry.matchElement( element ), null, 'matchElement() returns null if registry empty' );
 
@@ -239,12 +240,11 @@ QUnit.test( 'register/unregister/matchElement', ( assert ) => {
 } );
 
 QUnit.test( 'isAnnotation', ( assert ) => {
-	let i, len, node,
-		allAnnotationTags = [ 'a', 'abbr', 'b', 'big', 'code', 'dfn', 'font', 'i', 'kbd', 'mark', 'q', 's', 'samp', 'small', 'span', 'sub', 'sup', 'time', 'u', 'var' ],
+	const allAnnotationTags = [ 'a', 'abbr', 'b', 'big', 'code', 'dfn', 'font', 'i', 'kbd', 'mark', 'q', 's', 'samp', 'small', 'span', 'sub', 'sup', 'time', 'u', 'var' ],
 		nonAnnotationTags = [ 'h1', 'p', 'ul', 'li', 'table', 'tr', 'td' ];
 
-	for ( i = 0, len = allAnnotationTags.length; i < len; i++ ) {
-		node = document.createElement( allAnnotationTags[ i ] );
+	for ( let i = 0, len = allAnnotationTags.length; i < len; i++ ) {
+		const node = document.createElement( allAnnotationTags[ i ] );
 		assert.strictEqual(
 			ve.dm.modelRegistry.isAnnotation( node ),
 			true,
@@ -252,8 +252,8 @@ QUnit.test( 'isAnnotation', ( assert ) => {
 		);
 	}
 
-	for ( i = 0, len = nonAnnotationTags.length; i < len; i++ ) {
-		node = document.createElement( nonAnnotationTags[ i ] );
+	for ( let i = 0, len = nonAnnotationTags.length; i < len; i++ ) {
+		const node = document.createElement( nonAnnotationTags[ i ] );
 		assert.strictEqual(
 			ve.dm.modelRegistry.isAnnotation( node ),
 			false,
@@ -261,7 +261,7 @@ QUnit.test( 'isAnnotation', ( assert ) => {
 		);
 	}
 
-	node = document.createElement( 'span' );
+	const node = document.createElement( 'span' );
 	node.setAttribute( 'rel', 've:Alien' );
 	assert.strictEqual( ve.dm.modelRegistry.isAnnotation( node ), false, 'alien span' );
 	node.removeAttribute( 'rel' );

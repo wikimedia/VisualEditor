@@ -233,9 +233,9 @@ ve.ui.LinearContext.prototype.removePersistentSource = function ( name ) {
  * @inheritdoc Also adds the `embeddable` property to each object.
  */
 ve.ui.LinearContext.prototype.getRelatedSources = function () {
-	let surfaceModel = this.surface.getModel(),
-		selection = surfaceModel.getSelection(),
-		selectedModels = [];
+	const surfaceModel = this.surface.getModel(),
+		selection = surfaceModel.getSelection();
+	let selectedModels = [];
 
 	if ( !this.relatedSources ) {
 		this.relatedSources = [];

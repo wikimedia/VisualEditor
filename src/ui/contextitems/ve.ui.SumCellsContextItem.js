@@ -53,11 +53,11 @@ ve.ui.SumCellsContextItem.prototype.setup = function () {
 	ve.ui.SumCellsContextItem.super.prototype.setup.apply( this, arguments );
 
 	// If not disabled, selection must be table and spanning multiple matrix cells
-	let count = 0,
-		selection = this.getFragment().getSurface().getSelection(),
+	const selection = this.getFragment().getSurface().getSelection(),
 		documentModel = this.getFragment().getDocument(),
 		documentView = this.context.getSurface().getView().getDocument();
 
+	let count = 0;
 	// There's some situations involving transclusion table cells which
 	// can make us have a LinearSelection here, so make sure this will
 	// work:

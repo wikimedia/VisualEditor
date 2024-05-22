@@ -119,10 +119,10 @@ ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
  * @inheritdoc
  */
 ve.ui.Tool.prototype.onSelect = function () {
-	let contextClosePromise,
-		command = this.getCommand(),
+	const command = this.getCommand(),
 		surface = this.toolbar.getSurface();
 
+	let contextClosePromise;
 	if ( command instanceof ve.ui.Command ) {
 		if ( surface.context.inspector ) {
 			contextClosePromise = surface.context.inspector.close().closed;

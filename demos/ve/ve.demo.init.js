@@ -6,16 +6,13 @@
 
 new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( function () {
 	/* eslint-disable no-jquery/no-global-selector */
-	let $toolbar = $( '.ve-demo-targetToolbar' ),
+	const $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),
 		/* eslint-enable no-jquery/no-global-selector */
 		// eslint-disable-next-line new-cap
 		target = new ve.demo.target(),
-		hashChanging = false,
 		$divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' ),
 
-		currentLang = ve.init.platform.getUserLanguages()[ 0 ],
-		currentDir = target.$element.css( 'direction' ) || 'ltr',
 		device = ve.demo.target === ve.init.sa.DesktopTarget ? 'desktop' : 'mobile',
 		theme = OO.ui.WikimediaUITheme && OO.ui.theme instanceof OO.ui.WikimediaUITheme ? 'wikimediaui' : 'apex',
 
@@ -39,6 +36,9 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 			new OO.ui.ButtonOptionWidget( { data: 'apex', label: 'Apex' } ),
 			new OO.ui.ButtonOptionWidget( { data: 'wikimediaui', label: 'WikimediaUI' } )
 		] ).toggle( !OO.ui.isMobile() ); // Only one theme on mobile ATM
+	let hashChanging = false,
+		currentLang = ve.init.platform.getUserLanguages()[ 0 ],
+		currentDir = target.$element.css( 'direction' ) || 'ltr';
 
 	// HACK: Prepend a qqx/message keys option to the list
 	languageInput.dialogs.on( 'opening', function ( window, opening ) {

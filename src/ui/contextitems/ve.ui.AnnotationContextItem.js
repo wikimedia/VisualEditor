@@ -86,8 +86,9 @@ ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
  * @param  {Function} callback Callback, will be passed fragment and annotation
  */
 ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback ) {
-	let modelClasses = this.constructor.static.modelClasses,
-		fragment = this.getFragment(),
+	const modelClasses = this.constructor.static.modelClasses;
+
+	let fragment = this.getFragment(),
 		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => ve.isInstanceOfAny( annotation, modelClasses ) ).get();
 	if (
 		!annotations.length &&
@@ -113,14 +114,14 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
  * @return {ve.ce.Annotation|undefined} The annotation view, if it's found, or undefined if not
  */
 ve.ui.AnnotationContextItem.prototype.getAnnotationView = function () {
-	let annotations = [],
-		model = this.model,
+	const model = this.model,
 		surfaceView = this.context.getSurface().getView();
 
 	function isThisModel( annotationView ) {
 		return model === annotationView.model;
 	}
 
+	let annotations = [];
 	// Use surfaceView.contexedAnnotations when available, i.e. when
 	// the user clicked/tapped on the annotation.
 	if ( surfaceView.contexedAnnotations ) {

@@ -228,9 +228,9 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
  * @return {Array} Slice or copy of data
  */
 ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
+	const length = this.getLength();
 	let end,
-		start = 0,
-		length = this.getLength();
+		start = 0;
 	if ( range !== undefined ) {
 		start = Math.max( 0, Math.min( length, range.start ) );
 		end = Math.max( 0, Math.min( length, range.end ) );

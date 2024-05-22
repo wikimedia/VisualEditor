@@ -55,8 +55,8 @@
 	 * @param {any} value
 	 */
 	function addType( obj, ...keys ) {
-		let value = keys.pop(),
-			o = obj;
+		const value = keys.pop();
+		let o = obj;
 
 		let i, len;
 		for ( i = 0, len = keys.length - 1; i < len; i++ ) {
@@ -248,8 +248,8 @@
 	 * @return {string|null} Model type, or null if none found
 	 */
 	ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
-		let types,
-			nodeName = node.nodeName.toLowerCase();
+		const nodeName = node.nodeName.toLowerCase();
+		let types;
 
 		const byRegistrationOrderDesc = ( a, b ) => this.registrationOrder[ b ] - this.registrationOrder[ a ];
 

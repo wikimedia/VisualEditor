@@ -116,14 +116,14 @@ QUnit.test( 'rebaseTransactions', ( assert ) => {
 } );
 
 QUnit.test( 'Change operations', ( assert ) => {
-	let origData = [ { type: 'paragraph' }, 't', 'h', 'r', 'e', 'e', { type: '/paragraph' } ],
+	const origData = [ { type: 'paragraph' }, 't', 'h', 'r', 'e', 'e', { type: '/paragraph' } ],
 		newSurface = function () {
 			return new ve.dm.Surface(
 				ve.dm.example.createExampleDocumentFromData( origData )
 			);
-		},
-		emptyStore = new ve.dm.HashValueStore(),
-		surface = newSurface(),
+		};
+	let surface = newSurface();
+	const emptyStore = new ve.dm.HashValueStore(),
 		doc = surface.documentModel,
 		b = ve.dm.example.bold,
 		i = ve.dm.example.italic,

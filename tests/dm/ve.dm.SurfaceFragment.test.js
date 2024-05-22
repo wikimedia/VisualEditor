@@ -26,11 +26,12 @@ QUnit.test( 'constructor', ( assert ) => {
 } );
 
 QUnit.test( 'update', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
-		surface = new ve.dm.Surface( doc ),
-		fragment1 = surface.getLinearFragment( new ve.Range( 55, 61 ) ),
-		fragment2 = surface.getLinearFragment( new ve.Range( 55, 61 ) ),
-		fragment3 = surface.getLinearFragment( new ve.Range( 55, 61 ) );
+	const doc = ve.dm.example.createExampleDocument(),
+		surface = new ve.dm.Surface( doc );
+	let fragment1 = surface.getLinearFragment( new ve.Range( 55, 61 ) ),
+		fragment2 = surface.getLinearFragment( new ve.Range( 55, 61 ) );
+	const fragment3 = surface.getLinearFragment( new ve.Range( 55, 61 ) );
+
 	fragment1.wrapNodes(
 		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
 	);
@@ -123,10 +124,11 @@ QUnit.test( 'hasAnnotations', ( assert ) => {
 } );
 
 QUnit.test( 'adjustLinearSelection', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
-		adjustedFragment = fragment.adjustLinearSelection( -19, 35 );
+		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) );
+
+	let adjustedFragment = fragment.adjustLinearSelection( -19, 35 );
 
 	assert.notStrictEqual( fragment, adjustedFragment, 'adjustLinearSelection produces a new fragment' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
@@ -149,10 +151,11 @@ QUnit.test( 'truncateLinearSelection', ( assert ) => {
 } );
 
 QUnit.test( 'collapseToStart/End', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) ),
-		collapsedFragment = fragment.collapseToStart();
+		fragment = surface.getLinearFragment( new ve.Range( 20, 21 ) );
+
+	let collapsedFragment = fragment.collapseToStart();
 
 	assert.notStrictEqual( fragment, collapsedFragment, 'collapseToStart produces a new fragment' );
 	assert.equalRange( fragment.getSelection().getRange(), new ve.Range( 20, 21 ), 'old fragment is not changed' );
@@ -298,14 +301,15 @@ QUnit.test( 'expandLinearSelection (word)', ( assert ) => {
 } );
 
 QUnit.test( 'removeContent', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
 		expectedDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 1, 56 ) ),
 		expectedData = ve.copy( expectedDoc.data.slice( 0, 1 ) )
 			.concat( ve.copy( expectedDoc.data.slice( 4, 5 ) ) )
 			.concat( ve.copy( expectedDoc.data.slice( 55 ) ) );
+
+	let fragment = surface.getLinearFragment( new ve.Range( 1, 56 ) );
 	fragment.removeContent();
 	assert.deepEqual(
 		doc.getData(),
@@ -647,11 +651,11 @@ QUnit.test( 'changeAttributes', ( assert ) => {
 } );
 
 QUnit.test( 'wrapNodes/unwrapNodes', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
-		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 55, 61 ) );
+		surface = new ve.dm.Surface( doc );
 
+	let fragment = surface.getLinearFragment( new ve.Range( 55, 61 ) );
 	// Make 2 paragraphs into 2 lists of 1 item each
 	fragment.wrapNodes(
 		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
@@ -722,13 +726,13 @@ QUnit.test( 'wrapNodes/unwrapNodes', ( assert ) => {
 } );
 
 QUnit.test( 'rewrapNodes', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 43, 55 ) ),
 		expectedDoc = ve.dm.example.createExampleDocument(),
 		expectedSurface = new ve.dm.Surface( expectedDoc ),
 		expectedFragment = expectedSurface.getLinearFragment( new ve.Range( 43, 55 ) );
 
+	let fragment = surface.getLinearFragment( new ve.Range( 43, 55 ) );
 	// Set up wrapped nodes in example document
 	fragment.wrapNodes(
 		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
@@ -774,12 +778,12 @@ QUnit.test( 'rewrapNodes', ( assert ) => {
 } );
 
 QUnit.test( 'wrapAllNodes', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 55, 61 ) ),
 		expectedData = ve.copy( doc.getData() );
 
+	let fragment = surface.getLinearFragment( new ve.Range( 55, 61 ) );
 	// Make 2 paragraphs into 1 lists of 1 item with 2 paragraphs
 	fragment.wrapAllNodes(
 		[ { type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' } ]
@@ -853,14 +857,14 @@ QUnit.test( 'wrapAllNodes', ( assert ) => {
 } );
 
 QUnit.test( 'rewrapAllNodes', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		originalDoc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 5, 37 ) ),
 		expectedDoc = ve.dm.example.createExampleDocument(),
 		expectedSurface = new ve.dm.Surface( expectedDoc ),
 		expectedFragment = expectedSurface.getLinearFragment( new ve.Range( 5, 37 ) );
 
+	let fragment = surface.getLinearFragment( new ve.Range( 5, 37 ) );
 	// Compare a rewrap operation with its equivalent unwrap + wrap
 	// This type of test can only exist if the intermediate state is valid
 	fragment.rewrapAllNodes(

@@ -24,8 +24,9 @@ QUnit.test( 'basic usage', ( assert ) => {
 } );
 
 QUnit.test( 'slice(Object)/splice(Object)/batchSplice', ( assert ) => {
-	let store = new ve.dm.HashValueStore(),
-		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) ),
+	const store = new ve.dm.HashValueStore();
+
+	let data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) ),
 		expectedData = ve.copy( ve.dm.example.data );
 
 	assert.deepEqual( data.slice( 7, 22 ), expectedData.slice( 7, 22 ),

@@ -7,8 +7,7 @@
 QUnit.module( 've.dm.Scalable' );
 
 QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( assert ) => {
-	let eventEmitted = false,
-		currentDimensions = {
+	const currentDimensions = {
 			width: 300,
 			height: 200
 		},
@@ -34,7 +33,9 @@ QUnit.test( 'construction/clone/getters/setters/toggleDefault/clearers', ( asser
 			defaultDimensions: defaultDimensions,
 			minDimensions: minDimensions,
 			maxDimensions: maxDimensions
-		} ),
+		} );
+
+	let eventEmitted = false,
 		clone = scalable.clone();
 
 	assert.deepEqual( scalable, clone, 'Clone is deepEqual' );

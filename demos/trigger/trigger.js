@@ -16,9 +16,8 @@
 		keyAliases = ve.ui.Trigger.static.keyAliases;
 
 	function setTrigger( trigger ) {
-		let parts;
 		trigger = trigger.toString();
-		parts = trigger.split( '+' );
+		const parts = trigger.split( '+' );
 		$trigger.text( trigger );
 		parts.forEach( function ( part ) {
 			const key = part.replace( '\\', '\\\\' ).replace( '"', '\\"' );

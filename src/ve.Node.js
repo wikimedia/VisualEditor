@@ -478,8 +478,8 @@ ve.Node.prototype.isDownstreamOf = function ( upstreamNode ) {
  * @return {number[]|null} The offset path, or null if not attached to a DocumentNode
  */
 ve.Node.prototype.getOffsetPath = function () {
-	let node = this,
-		path = [];
+	let node = this;
+	const path = [];
 
 	while ( true ) {
 		if ( node.type === 'document' ) {

@@ -353,10 +353,10 @@ ve.ce.TableNode.prototype.onTableMouseUp = function () {
  * @param {boolean} noSelect Don't change the selection
  */
 ve.ce.TableNode.prototype.setEditing = function ( isEditing, noSelect ) {
-	let surfaceModel = this.surface.getModel(),
-		documentModel = surfaceModel.getDocument(),
-		selection = surfaceModel.getSelection();
+	const surfaceModel = this.surface.getModel(),
+		documentModel = surfaceModel.getDocument();
 
+	let selection = surfaceModel.getSelection();
 	if ( isEditing ) {
 		if ( !selection.isSingleCell( documentModel ) ) {
 			selection = selection.collapseToFrom();

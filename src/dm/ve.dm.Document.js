@@ -126,9 +126,9 @@ OO.inheritClass( ve.dm.Document, ve.Document );
  * @param {boolean} [prepend] Whether to prepend annotationSet to the existing annotations
  */
 ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, replaceComparable, store, prepend ) {
-	let ignoreChildrenDepth = 0,
-		offset = prepend ? 0 : undefined;
+	const offset = prepend ? 0 : undefined;
 
+	let ignoreChildrenDepth = 0;
 	if ( annotationSet.isEmpty() ) {
 		// Nothing to do
 		return;
@@ -523,12 +523,12 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
  * @return {ve.dm.DocumentSlice} New document
  */
 ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
-	let linearData, originalRange, balancedRange,
-		balanceOpenings = [],
+	const balanceOpenings = [],
 		balanceClosings = [],
 		contextOpenings = [],
 		contextClosings = [];
 
+	let linearData, originalRange, balancedRange;
 	if ( !range ) {
 		// Default to the whole document
 		linearData = this.data.sliceObject();
@@ -682,8 +682,8 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
  * @return {ve.dm.Document} New document
  */
 ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy, mode ) {
-	let listRange = this.getInternalList().getListNode().getOuterRange(),
-		data = ve.copy( this.getFullData( range, mode || 'roundTrip' ) );
+	const listRange = this.getInternalList().getListNode().getOuterRange();
+	let data = ve.copy( this.getFullData( range, mode || 'roundTrip' ) );
 	if ( range && ( range.start > listRange.start || range.end < listRange.end ) ) {
 		// The range does not include the entire internal list, so add it
 		data = data.concat( this.getFullData( listRange ) );
@@ -701,13 +701,11 @@ ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy, mode )
  * @return {ve.dm.Document} New document
  */
 ve.dm.Document.prototype.cloneWithData = function ( data, copyInternalList, detachedCopy ) {
-	let newDoc;
-
 	if ( Array.isArray( data ) ) {
 		data = new ve.dm.ElementLinearData( this.getStore().slice(), data );
 	}
 
-	newDoc = new this.constructor(
+	const newDoc = new this.constructor(
 		data,
 		// htmlDocument
 		this.getHtmlDocument(),
@@ -1234,7 +1232,7 @@ ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
  * @return {ve.dm.Document.FixedInsertion}
  */
 ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
-	let
+	const
 		// Array where we build the return value
 		newData = [],
 
@@ -1248,10 +1246,10 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		// Array of node objects. Closings in data that close nodes that were
 		// not opened in data (i.e. were already in the document) are pushed onto this stack
 		// and popped off when balanced out by an opening in data
-		closingStack = [],
+		closingStack = [];
 
-		// Track the position of the original data in the fixed up data for range adjustments
-		insertedDataOffset = 0,
+	// Track the position of the original data in the fixed up data for range adjustments
+	let insertedDataOffset = 0,
 		insertedDataLength = data.length,
 
 		// *** State persisting across iterations of the outer loop ***
@@ -1264,7 +1262,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		inTextNode,
 		// Whether this is the first child of its parent
 		// The test for last child isn't a loop so we don't need to cache it
-		isFirstChild;
+		isFirstChild = null;
 
 	/**
 	 * Append a linear model element to newData and update the state.

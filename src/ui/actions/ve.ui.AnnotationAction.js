@@ -127,8 +127,8 @@ ve.ui.AnnotationAction.prototype.clearAll = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.AnnotationAction.prototype.setInternal = function ( name, data ) {
-	let fragment = this.surface.getModel().getFragment(),
-		annotationClass = ve.dm.annotationFactory.lookup( name );
+	const annotationClass = ve.dm.annotationFactory.lookup( name );
+	let fragment = this.surface.getModel().getFragment();
 
 	if ( fragment.getSelection() instanceof ve.dm.LinearSelection ) {
 		const trimmedFragment = fragment.trimLinearSelection();

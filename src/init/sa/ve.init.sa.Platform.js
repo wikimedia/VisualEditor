@@ -146,10 +146,10 @@ ve.init.sa.Platform.prototype.formatNumber = function ( number ) {
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.getHtmlMessage = function ( key ) {
-	let $message = $( [] ),
-		lastOffset = 0,
-		args = arguments,
+	const args = arguments,
 		message = this.getMessage( key );
+	let $message = $( [] ),
+		lastOffset = 0;
 	message.replace( /\$[0-9]+/g, ( placeholder, offset ) => {
 		$message = $message.add( ve.sanitizeHtml( message.slice( lastOffset, offset ) ) );
 		const placeholderIndex = +( placeholder.slice( 1 ) );
@@ -283,11 +283,11 @@ ve.init.sa.Platform.prototype.getUserLanguages = function () {
  * @inheritdoc
  */
 ve.init.sa.Platform.prototype.initialize = function () {
-	let messagePaths = this.getMessagePaths(),
+	const messagePaths = this.getMessagePaths(),
 		locale = $.i18n().locale,
-		languages = [ locale, 'en' ], // Always use 'en' as the final fallback
 		languagesCovered = {},
-		promises = [],
+		promises = [];
+	let languages = [ locale, 'en' ], // Always use 'en' as the final fallback
 		fallbacks = $.i18n.fallbacks[ locale ];
 
 	if ( !VisualEditorSupportCheck() ) {

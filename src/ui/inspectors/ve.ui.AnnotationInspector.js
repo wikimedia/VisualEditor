@@ -149,10 +149,10 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
 			let fragment = this.getFragment(),
-				surfaceModel = fragment.getSurface(),
 				// Partial annotations will be expanded later
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
 
+			const surfaceModel = fragment.getSurface();
 			surfaceModel.pushStaging();
 
 			// Only supports linear selections
@@ -240,9 +240,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( () => {
-			let insertionAnnotation = false,
-				replace = false,
-				annotation = this.getAnnotation(),
+			const annotation = this.getAnnotation(),
 				remove = data.action === 'done' && this.shouldRemoveAnnotation(),
 				surfaceModel = this.fragment.getSurface(),
 				surfaceView = this.manager.getSurface().getView(),
@@ -250,6 +248,8 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				isEditing = this.isEditing(),
 				insertText = !remove && this.shouldInsertText();
 
+			let insertionAnnotation = false;
+			let replace = false;
 			let annotations;
 			let insertion;
 

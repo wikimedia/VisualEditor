@@ -108,14 +108,14 @@ ve.dm.TableSelection.static.getTableMatrixCells = function ( matrix, selectionOf
  * @return {ve.dm.TableSelection} Expanded table selection
  */
 ve.dm.TableSelection.prototype.expand = function ( doc ) {
-	let matrix = this.getTableNode( doc ).getMatrix(),
-		lastCellCount = 0,
+	const matrix = this.getTableNode( doc ).getMatrix(),
+		colBackwards = this.fromCol > this.toCol,
+		rowBackwards = this.fromRow > this.toRow;
+	let lastCellCount = 0,
 		startCol = Infinity,
 		startRow = Infinity,
 		endCol = -Infinity,
 		endRow = -Infinity,
-		colBackwards = this.fromCol > this.toCol,
-		rowBackwards = this.fromRow > this.toRow,
 		cells = this.getMatrixCells( doc );
 
 	while ( cells.length > lastCellCount ) {
@@ -434,10 +434,10 @@ ve.dm.TableSelection.prototype.newFromAdjustment = function ( doc, fromColOffset
 	let wrapDir;
 
 	function adjust( mode, cell, offset ) {
+		const dir = offset > 0 ? 1 : -1;
 		let nextCell,
 			col = cell.col,
-			row = cell.row,
-			dir = offset > 0 ? 1 : -1;
+			row = cell.row;
 
 		while ( offset !== 0 ) {
 			if ( mode === 'col' ) {

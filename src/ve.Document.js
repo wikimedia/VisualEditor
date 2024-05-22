@@ -105,8 +105,7 @@ ve.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
  * @throws {Error} Failed to select any nodes
  */
 ve.Document.prototype.selectNodes = function ( range, mode ) {
-	let doc = this.getDocumentNode(),
-		retval = [],
+	const doc = this.getDocumentNode(),
 		start = range.start,
 		end = range.end,
 		stack = [ {
@@ -117,7 +116,8 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			index: 0,
 			// First offset inside node
 			startOffset: 0
-		} ],
+		} ];
+	let retval = [],
 		currentFrame = stack[ 0 ],
 		startFound = false;
 
@@ -521,9 +521,9 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
  *  - grandparent: parent's parent
  */
 ve.Document.prototype.getCoveredSiblingGroups = function ( range ) {
-	let leaves = this.selectNodes( range, 'leaves' ),
-		groups = [],
-		lastEndOffset = 0;
+	const leaves = this.selectNodes( range, 'leaves' ),
+		groups = [];
+	let lastEndOffset = 0;
 	for ( let i = 0; i < leaves.length; i++ ) {
 		if ( leaves[ i ].nodeOuterRange.end <= lastEndOffset ) {
 			// This range is contained within a range we've already processed

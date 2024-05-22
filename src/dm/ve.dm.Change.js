@@ -358,13 +358,13 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		throw new Error( 'Different starts: ' + history.start + ' and ' + uncommitted.start );
 	}
 
-	let transactionsA = history.transactions.slice(),
-		transactionsB = uncommitted.transactions.slice(),
-		storesA = history.getStores(),
-		storesB = uncommitted.getStores(),
-		selectionsA = OO.cloneObject( history.selections ),
-		selectionsB = OO.cloneObject( uncommitted.selections ),
-		rejected = null;
+	let transactionsA = history.transactions.slice();
+	const transactionsB = uncommitted.transactions.slice();
+	let storesA = history.getStores();
+	const storesB = uncommitted.getStores();
+	const selectionsA = OO.cloneObject( history.selections );
+	let selectionsB = OO.cloneObject( uncommitted.selections );
+	let rejected = null;
 
 	// For each element b_i of transactionsB, rebase the whole list transactionsA over b_i.
 	// To rebase a1, a2, a3, …, aN over b_i, first we rebase a1 onto b_i. Then we rebase
@@ -624,8 +624,8 @@ ve.dm.Change.prototype.getStore = function ( n ) {
  * @return {ve.dm.HashValueStore[]} Each transaction's store items (shallow copied store)
  */
 ve.dm.Change.prototype.getStores = function () {
-	let stores = [],
-		start = 0;
+	const stores = [];
+	let start = 0;
 	for ( let i = 0, len = this.getLength(); i < len; i++ ) {
 		const end = this.storeLengthAtTransaction[ i ];
 		stores.push( this.store.slice( start, end ) );

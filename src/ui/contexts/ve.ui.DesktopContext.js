@@ -186,8 +186,7 @@ ve.ui.DesktopContext.prototype.toggle = function ( show ) {
  * @inheritdoc
  */
 ve.ui.DesktopContext.prototype.updateDimensions = function () {
-	let $container = this.inspector ? this.inspector.$frame : this.$group,
-		embeddable = false;
+	const $container = this.inspector ? this.inspector.$frame : this.$group;
 
 	// Parent method
 	ve.ui.DesktopContext.super.prototype.updateDimensions.call( this );
@@ -222,6 +221,7 @@ ve.ui.DesktopContext.prototype.updateDimensions = function () {
 
 	let position;
 	let middle;
+	let embeddable = false;
 	if ( !boundingRect ) {
 		// If !boundingRect, the surface apparently isn't selected.
 		// This shouldn't happen because the context is only supposed to be

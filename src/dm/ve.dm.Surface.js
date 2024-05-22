@@ -950,8 +950,8 @@ ve.dm.Surface.prototype.change = function ( transactions, selection ) {
  * @fires ve.dm.Surface#history
  */
 ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
-	let selectionBefore = this.selection,
-		contextChange = false;
+	const selectionBefore = this.selection;
+	let contextChange = false;
 
 	this.startQueueingContextChanges();
 
@@ -1265,9 +1265,9 @@ ve.dm.Surface.prototype.getOffsetFromSourceOffset = function ( offset ) {
 		throw new Error( 'Offset out of bounds' );
 	}
 
+	const lines = this.getDocument().getDocumentNode().getChildren();
 	let lineOffset = 0,
-		line = 0,
-		lines = this.getDocument().getDocumentNode().getChildren();
+		line = 0;
 
 	while ( lineOffset < offset + 1 ) {
 		if ( !lines[ line ] || lines[ line ].isInternal() ) {
@@ -1291,9 +1291,9 @@ ve.dm.Surface.prototype.getSourceOffsetFromOffset = function ( offset ) {
 		throw new Error( 'Offset out of bounds' );
 	}
 
+	const lines = this.getDocument().getDocumentNode().getChildren();
 	let lineOffset = 0,
-		line = 0,
-		lines = this.getDocument().getDocumentNode().getChildren();
+		line = 0;
 
 	while ( lineOffset < offset ) {
 		if ( !lines[ line ] || lines[ line ].isInternal() ) {
@@ -1450,8 +1450,8 @@ ve.dm.Surface.prototype.stopStoringChanges = function () {
  * @throws {Error} Failed to restore auto-saved session
  */
 ve.dm.Surface.prototype.restoreChanges = function () {
-	let restored = false,
-		changes = this.storage.getObject( this.autosavePrefix + 've-changes' ) || [];
+	const changes = this.storage.getObject( this.autosavePrefix + 've-changes' ) || [];
+	let restored = false;
 
 	try {
 		changes.forEach( ( data ) => {

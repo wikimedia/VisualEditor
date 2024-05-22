@@ -154,8 +154,8 @@ ve.dm.SourceSurfaceFragment.prototype.insertDocument = function ( doc, newDocRan
  * @inheritdoc
  */
 ve.dm.SourceSurfaceFragment.prototype.wrapAllNodes = function ( wrapOuter, wrapEach ) {
-	let content,
-		range = this.getSelection().getCoveringRange();
+	const range = this.getSelection().getCoveringRange();
+	let content;
 
 	if ( !range ) {
 		return this;

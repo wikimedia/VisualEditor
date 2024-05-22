@@ -96,13 +96,12 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 		}
 	}
 
-	let i, j, ilen, jlen,
-		kinds = constructor.static.kinds,
+	const kinds = constructor.static.kinds,
 		types = constructor.static.types,
 		extensions = constructor.static.extensions;
 
 	if ( !kinds ) {
-		for ( j = 0, jlen = types.length; j < jlen; j++ ) {
+		for ( let j = 0, jlen = types.length; j < jlen; j++ ) {
 			if ( insert ) {
 				ensureArray( this.handlerNamesByType, types[ j ] ).unshift( constructor.static.name );
 			} else {
@@ -110,8 +109,8 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 			}
 		}
 	} else {
-		for ( i = 0, ilen = kinds.length; i < ilen; i++ ) {
-			for ( j = 0, jlen = types.length; j < jlen; j++ ) {
+		for ( let i = 0, ilen = kinds.length; i < ilen; i++ ) {
+			for ( let j = 0, jlen = types.length; j < jlen; j++ ) {
 				if ( insert ) {
 					ensureArray(
 						ensureMap( this.handlerNamesByKindAndType, kinds[ i ] ),
@@ -124,7 +123,7 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 		}
 	}
 	if ( constructor.prototype instanceof ve.ui.FileTransferHandler ) {
-		for ( i = 0, ilen = extensions.length; i < ilen; i++ ) {
+		for ( let i = 0, ilen = extensions.length; i < ilen; i++ ) {
 			if ( insert ) {
 				ensureArray( this.handlerNamesByExtension, extensions[ i ] ).unshift( constructor.static.name );
 			} else {

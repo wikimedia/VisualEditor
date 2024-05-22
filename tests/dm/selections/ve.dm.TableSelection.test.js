@@ -106,14 +106,15 @@ QUnit.test( 'Construction and getters (getDocument, getRanges, getOuterRanges, g
 } );
 
 QUnit.test( 'Basic methods (expand, collapse*, getRange(s), isCollased, isSingleCell, equals, isNull, isFullRow/Col, getRow/ColCount)', ( assert ) => {
-	let doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
+	const doc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		tableRange = doc.getBranchNodeFromOffset( 1 ).getOuterRange(),
-		selection = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 ),
 		startSelection = new ve.dm.TableSelection( tableRange, 0, 1 ),
 		endSelection = new ve.dm.TableSelection( tableRange, 2, 2 ),
-		mergedSingleCell = new ve.dm.TableSelection( tableRange, 1, 3, 3, 5 ),
 		largeSelection = new ve.dm.TableSelection( tableRange, 0, 0, 3, 6 ),
 		otherTableSelection = new ve.dm.TableSelection( new ve.Range( 100, 200 ), 0, 0, 3, 6 );
+
+	let selection = new ve.dm.TableSelection( tableRange, 1, 2, 0, 1 ),
+		mergedSingleCell = new ve.dm.TableSelection( tableRange, 1, 3, 3, 5 );
 
 	selection = selection.expand( doc );
 	mergedSingleCell = mergedSingleCell.expand( doc );

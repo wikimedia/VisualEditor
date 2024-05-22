@@ -26,8 +26,8 @@
 				url: 'pages/very long.html',
 				dataType: 'text'
 			} ).done( function ( html ) {
-				let htmlDomTimes = 0, domDmTimes = 0, dmDomTimes = 0, txTimes = 0,
-					n = 50,
+				let htmlDomTimes = 0, domDmTimes = 0, dmDomTimes = 0, txTimes = 0;
+				const n = 50,
 					config = { lang: $.i18n().locale, dir: $( document.body ).css( 'direction' ) };
 
 				for ( let i = 0; i <= n; i++ ) {

@@ -36,10 +36,10 @@ ve.ce.LinearEnterKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
+	const documentModel = surface.model.getDocument(),
+		emptyParagraph = [ { type: 'paragraph' }, { type: '/paragraph' } ];
 	let range = surface.model.getSelection().getRange(),
 		cursor = range.from,
-		documentModel = surface.model.getDocument(),
-		emptyParagraph = [ { type: 'paragraph' }, { type: '/paragraph' } ],
 		advanceCursor = true,
 		outermostNode = null,
 		nodeModel = null,

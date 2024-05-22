@@ -35,9 +35,9 @@ ve.ce.TextState.static.getChunks = function ( element ) {
 	// Stack of element-lists in force; each element list is equal to its predecessor extended
 	// by one element. This means two chunks have object-equal element lists if they have the
 	// same elements in force (i.e. if their text nodes are DOM siblings).
-	let elementListStack = [ [] ],
-		stackTop = 0,
+	const elementListStack = [ [] ],
 		chunks = [];
+	let stackTop = 0;
 
 	/**
 	 * Add to chunks, merging content with the same elements/type into the same chunk

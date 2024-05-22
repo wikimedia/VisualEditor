@@ -732,11 +732,10 @@ ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotations, data ) {
-	let i, ilen,
-		annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() ),
-		ranges = this.getSelection().getRanges( this.getDocument() ),
+	const ranges = this.getSelection().getRanges( this.getDocument() ),
 		txs = [];
 
+	let annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
 	if ( nameOrAnnotations instanceof ve.dm.AnnotationSet ) {
 		annotations = nameOrAnnotations;
 	} else if ( nameOrAnnotations instanceof ve.dm.Annotation ) {
@@ -746,14 +745,14 @@ ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnot
 		if ( method === 'set' ) {
 			annotations.push( annotation );
 		} else if ( method === 'clear' ) {
-			for ( i = 0, ilen = ranges.length; i < ilen; i++ ) {
+			for ( let i = 0, ilen = ranges.length; i < ilen; i++ ) {
 				annotations.addSet(
 					this.document.data.getAnnotationsFromRange( ranges[ i ], true ).getAnnotationsByName( annotation.name )
 				);
 			}
 		}
 	}
-	for ( i = 0, ilen = ranges.length; i < ilen; i++ ) {
+	for ( let i = 0, ilen = ranges.length; i < ilen; i++ ) {
 		const range = ranges[ i ];
 		if ( !range.isCollapsed() ) {
 			// Apply to selection
@@ -1337,19 +1336,19 @@ ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
  * @chainable
  */
 ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
-	let startOffset, endOffset,
-		insertions = [],
-		outerDepth = 0,
+	const insertions = [],
 		factory = ve.dm.nodeFactory,
-		startSplitRequired = false,
-		endSplitRequired = false,
 		startSplitNodes = [],
 		endSplitNodes = [];
+	let startOffset, endOffset,
+		outerDepth = 0,
+		startSplitRequired = false,
+		endSplitRequired = false;
 
 	function createSplits( splitNodes, insertBefore ) {
-		let adjustment = 0,
-			data = [];
+		const data = [];
 
+		let adjustment = 0;
 		for ( let i = 0, length = splitNodes.length; i < length; i++ ) {
 			data.unshift( { type: '/' + splitNodes[ i ].type } );
 			data.push( splitNodes[ i ].getClonedElement() );

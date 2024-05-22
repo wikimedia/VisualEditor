@@ -43,11 +43,11 @@ QUnit.test( 'Call with no real async', ( assert ) => {
 } );
 
 QUnit.test( 'Call with delay', ( assert ) => {
-	let scheduler = new ve.TestScheduler(),
+	const scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
-		done = assert.async(),
-		delayed = false;
+		done = assert.async();
 
+	let delayed = false;
 	scheduler.schedule(
 		() => {
 			assert.true( true, 'initial action was called' );

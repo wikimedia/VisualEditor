@@ -14,8 +14,7 @@ QUnit.module( 've.ce.LinearArrowKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
-	let done = assert.async(),
-		promise = Promise.resolve(),
+	const done = assert.async(),
 		supportsSelectionExtend = ve.supportsSelectionExtend,
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		slugDoc = ve.dm.example.createExampleDocumentFromData(
@@ -409,6 +408,7 @@ QUnit.test( 'special key down: linear arrow keys', ( assert ) => {
 			}
 		];
 
+	let promise = Promise.resolve();
 	cases.forEach( ( caseItem ) => {
 		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );

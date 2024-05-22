@@ -9,13 +9,13 @@ QUnit.module( 've.dm.HashValueStore' );
 /* Tests */
 
 QUnit.test( 'hash(es)', ( assert ) => {
-	let object1 = { a: 1, b: 2 },
+	const object1 = { a: 1, b: 2 },
 		object1Hash = 'h608de49a4600dbb5',
 		object2 = { c: 3, d: 4 },
 		object2Hash = 'hdf3d2cbd332be4da',
-		customHash = 'hb05df789ce115b75',
-		store = new ve.dm.HashValueStore();
+		customHash = 'hb05df789ce115b75';
 
+	let store = new ve.dm.HashValueStore();
 	let hash = store.hash( object1 );
 	assert.strictEqual( hash, object1Hash, 'First object stores in hash' );
 	hash = store.hash( object1 );

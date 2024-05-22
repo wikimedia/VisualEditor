@@ -14,8 +14,7 @@ QUnit.module( 've.ce.LinearDeleteKeyDownHandler', {
 } );
 
 QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
-	let done = assert.async(),
-		promise = Promise.resolve(),
+	const done = assert.async(),
 		noChange = function () {},
 		emptyList = '<ul><li><p></p></li></ul>',
 		blockAlien = '<div rel="ve:Alien"></div>',
@@ -513,6 +512,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 			}
 		];
 
+	let promise = Promise.resolve();
 	cases.forEach( ( caseItem ) => {
 		promise = promise.then( () => ve.test.utils.runSurfaceHandleSpecialKeyTest( assert, caseItem ) );
 	} );

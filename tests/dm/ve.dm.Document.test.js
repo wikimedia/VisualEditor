@@ -543,11 +543,10 @@ QUnit.test( 'getOuterLength', ( assert ) => {
 } );
 
 QUnit.test( 'selectNodes', ( assert ) => {
-	let doc,
-		mainDoc = ve.dm.example.createExampleDocument(),
+	const mainDoc = ve.dm.example.createExampleDocument(),
 		cases = ve.dm.example.selectNodesCases;
 
-	function resolveNode( item ) {
+	function resolveNode( item, doc ) {
 		const newItem = ve.extendObject( {}, item );
 		newItem.node = ve.dm.example.lookupNode.apply(
 			ve.dm.example, [ doc.getDocumentNode() ].concat( item.node )
@@ -556,9 +555,8 @@ QUnit.test( 'selectNodes', ( assert ) => {
 	}
 
 	cases.forEach( ( caseItem ) => {
-		let expectedSelection;
-		doc = caseItem.doc ? ve.dm.example.createExampleDocument( caseItem.doc ) : mainDoc;
-		expectedSelection = caseItem.expected.map( resolveNode );
+		const doc = caseItem.doc ? ve.dm.example.createExampleDocument( caseItem.doc ) : mainDoc;
+		const expectedSelection = caseItem.expected.map( ( item ) => resolveNode( item, doc ) );
 		assert.equalNodeSelection(
 			doc.selectNodes( caseItem.range, caseItem.mode ), expectedSelection, caseItem.msg
 		);
@@ -873,14 +871,13 @@ QUnit.test( 'shallowCloneFromRange', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		let doc = ve.dm.example.createExampleDocument( caseItem.doc ),
-			expectedData = ve.dm.example.preprocessAnnotations( caseItem.expected.slice(), doc.getStore() ).getData(),
+		const doc = ve.dm.example.createExampleDocument( caseItem.doc ),
+			expectedData = ve.dm.example.preprocessAnnotations( caseItem.expected.slice(), doc.getStore() ).getData().concat( [
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			] ),
 			range = new ve.Range( 0, caseItem.expected.length );
 
-		expectedData = expectedData.concat( [
-			{ type: 'internalList' },
-			{ type: '/internalList' }
-		] );
 		const slice = doc.shallowCloneFromRange( caseItem.range );
 		assert.equalLinearDataWithDom(
 			doc.getStore(),
@@ -1347,7 +1344,7 @@ QUnit.test( 'findText (non-text content)', ( assert ) => {
 } );
 
 QUnit.test( 'fixupInsertion', ( assert ) => {
-	let doc = new ve.dm.Document( [
+	const doc = new ve.dm.Document( [
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph' },
@@ -1359,9 +1356,9 @@ QUnit.test( 'fixupInsertion', ( assert ) => {
 			{ type: 'internalList' }, { type: '/internalList' }
 		] ),
 		surface = new ve.dm.Surface( doc ),
-		fragment = surface.getLinearFragment( new ve.Range( 4, 4 ) ),
 		nodeData = [ { type: 'listlessNode' }, 'x', { type: '/listlessNode' } ];
 
+	let fragment = surface.getLinearFragment( new ve.Range( 4, 4 ) );
 	// TODO: test other parts of fixupInsertion; childNodes and parentNodes.
 	// Currently they're mostly tested implicitly in the paste tests
 	// elsewhere.

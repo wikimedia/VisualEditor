@@ -67,20 +67,20 @@
 		<script src="../../src/ve.EventSequencer.js"></script>
 		<script>
 			( function () {
-				let startTime,
-					/* eslint-disable no-jquery/no-global-selector */
-					sel = document.getSelection(),
+				/* eslint-disable no-jquery/no-global-selector */
+				const sel = document.getSelection(),
 					$form = $( '.ve-demo-form' ),
 					$content = $( '.ve-demo-content' ).addClass( 'oo-ui-element-hidden' ),
 					content = $content[ 0 ],
 					$log = $( '.ve-demo-log' ).val( '' ),
 					$imeIdentifier = $( '.ve-demo-identifier' ),
 					/* eslint-enable no-jquery/no-global-selector */
+					log = [];
+				let comments,
+					startTime,
 					oldHtml = '',
 					oldAnchorPosition = null,
-					oldFocusPosition = null,
-					comments,
-					log = [];
+					oldFocusPosition = null;
 
 				function getPosition( node, offset ) {
 					if ( node === null ) {
