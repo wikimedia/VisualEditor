@@ -25,7 +25,7 @@ ve.ui.DebugBar = function VeUiDebugBar( surface, config ) {
 	this.$viewTree = $( '<td>' ).addClass( 've-ui-debugBar-view-tree' );
 	this.$modelTree = $( '<td>' ).addClass( 've-ui-debugBar-model-tree' );
 
-	var closeButton = new OO.ui.ButtonWidget( {
+	const closeButton = new OO.ui.ButtonWidget( {
 		icon: 'close',
 		label: ve.msg( 'visualeditor-debugbar-close' )
 	} );
@@ -129,7 +129,7 @@ ve.ui.DebugBar.prototype.getSurface = function () {
  */
 ve.ui.DebugBar.prototype.onSurfaceSelect = function () {
 	// Do not trust the emitted selection: nested emits can invalidate it. See T145938.
-	var selection = this.surface.model.getSelection();
+	const selection = this.surface.model.getSelection();
 	this.selectionLabel.setLabel( selection.getDescription() );
 	this.logRangeButton.setDisabled( !(
 		( selection instanceof ve.dm.LinearSelection && !selection.isCollapsed() ) ||
@@ -152,11 +152,11 @@ ve.ui.DebugBar.prototype.onHistory = function () {
  * @param {jQuery.Event} e
  */
 ve.ui.DebugBar.prototype.onLogRangeButtonClick = function () {
-	var selection = this.getSurface().getModel().getSelection(),
+	const selection = this.getSurface().getModel().getSelection(),
 		documentModel = this.getSurface().getModel().getDocument();
 	if ( selection instanceof ve.dm.LinearSelection || selection instanceof ve.dm.TableSelection ) {
-		var ranges = selection.getRanges( documentModel );
-		for ( var i = 0; i < ranges.length; i++ ) {
+		const ranges = selection.getRanges( documentModel );
+		for ( let i = 0; i < ranges.length; i++ ) {
 			ve.dir( this.getSurface().view.documentView.model.data.slice( ranges[ i ].start, ranges[ i ].end ) );
 		}
 	}
@@ -180,16 +180,16 @@ ve.ui.DebugBar.prototype.onShowModelToggleChange = function ( value ) {
  * Update the model dump
  */
 ve.ui.DebugBar.prototype.updateDump = function () {
-	var surface = this.getSurface(),
+	const surface = this.getSurface(),
 		documentModel = surface.getModel().getDocument(),
 		documentView = surface.getView().getDocument();
 
 	// Linear model dump
-	var $linmodData = this.generateListFromLinearData( documentModel.data );
+	const $linmodData = this.generateListFromLinearData( documentModel.data );
 	this.$linmodData.empty().append( $linmodData );
-	var $modelTree = this.generateListFromNode( documentModel.getDocumentNode() );
+	const $modelTree = this.generateListFromNode( documentModel.getDocumentNode() );
 	this.$modelTree.empty().append( $modelTree );
-	var $viewTree = this.generateListFromNode( documentView.getDocumentNode() );
+	const $viewTree = this.generateListFromNode( documentView.getDocumentNode() );
 	this.$viewTree.empty().append( $viewTree );
 };
 
@@ -200,14 +200,14 @@ ve.ui.DebugBar.prototype.updateDump = function () {
  * @return {jQuery} Ordered list
  */
 ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
-	var $ol = $( '<ol>' ).attr( 'start', '0' ),
+	const $ol = $( '<ol>' ).attr( 'start', '0' ),
 		data = linearData.data;
 
-	var $chunk, prevType, prevAnnotations, $annotations;
-	for ( var i = 0; i < data.length; i++ ) {
-		var $label = $( '<span>' );
-		var element = data[ i ];
-		var annotations = null;
+	let $chunk, prevType, prevAnnotations, $annotations;
+	for ( let i = 0; i < data.length; i++ ) {
+		const $label = $( '<span>' );
+		const element = data[ i ];
+		let annotations = null;
 		var text;
 		if ( element.type ) {
 			$label.addClass( 've-ui-debugBar-dump-element' );
@@ -270,12 +270,12 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
  * @return {jQuery} Ordered list
  */
 ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
-	var $ol = $( '<ol>' ).attr( 'start', '0' );
+	const $ol = $( '<ol>' ).attr( 'start', '0' );
 
-	for ( var i = 0; i < node.children.length; i++ ) {
-		var $li = $( '<li>' );
-		var $label = $( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
-		var $note = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' );
+	for ( let i = 0; i < node.children.length; i++ ) {
+		const $li = $( '<li>' );
+		const $label = $( '<span>' ).addClass( 've-ui-debugBar-dump-element' );
+		const $note = $( '<span>' ).addClass( 've-ui-debugBar-dump-note' );
 		if ( node.children[ i ].length !== undefined ) {
 			$li.append(
 				$label.text( node.children[ i ].type ),
@@ -286,7 +286,7 @@ ve.ui.DebugBar.prototype.generateListFromNode = function ( node ) {
 		}
 
 		if ( node.children[ i ].children ) {
-			var $sublist = this.generateListFromNode( node.children[ i ] );
+			const $sublist = this.generateListFromNode( node.children[ i ] );
 			$li.append( $sublist );
 		}
 
@@ -315,7 +315,7 @@ ve.ui.DebugBar.prototype.onUpdateModelToggleChange = function ( value ) {
  * @param {boolean} value
  */
 ve.ui.DebugBar.prototype.onInputDebuggingToggleChange = function ( value ) {
-	var surfaceModel = this.getSurface().getModel(),
+	const surfaceModel = this.getSurface().getModel(),
 		selection = surfaceModel.getSelection();
 
 	ve.inputDebug = value;
@@ -334,7 +334,7 @@ ve.ui.DebugBar.prototype.onInputDebuggingToggleChange = function ( value ) {
  * @param {jQuery.Event} e
  */
 ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
-	var value = this.filibusterToggle.getValue();
+	const value = this.filibusterToggle.getValue();
 	if ( value ) {
 		this.filibusterToggle.setLabel( ve.msg( 'visualeditor-debugbar-stopfilibuster' ) );
 		this.$filibuster.off( 'click' );
@@ -346,12 +346,12 @@ ve.ui.DebugBar.prototype.onFilibusterToggleClick = function () {
 		// eslint-disable-next-line no-jquery/no-html
 		this.$filibuster.html( ve.filibuster.getObservationsHtml() );
 		this.$filibuster.on( 'click', ( e ) => {
-			var $li = $( e.target ).closest( '.ve-filibuster-frame' );
+			const $li = $( e.target ).closest( '.ve-filibuster-frame' );
 
 			// eslint-disable-next-line no-jquery/no-class-state
 			if ( $li.hasClass( 've-filibuster-frame-expandable' ) ) {
 				$li.removeClass( 've-filibuster-frame-expandable' );
-				var path = $li.data( 've-filibuster-frame' );
+				const path = $li.data( 've-filibuster-frame' );
 				if ( !path ) {
 					return;
 				}
@@ -390,7 +390,7 @@ ve.ui.DebugBar.prototype.onTransactionsToggleChange = function ( value ) {
  * @param {boolean} value
  */
 ve.ui.DebugBar.prototype.onTestSquasherToggleChange = function ( value ) {
-	var doc = this.getSurface().getModel().getDocument();
+	const doc = this.getSurface().getModel().getDocument();
 	if ( value ) {
 		doc.connect( this, { transact: 'testSquasher' } );
 		this.testSquasher();
@@ -403,11 +403,11 @@ ve.ui.DebugBar.prototype.onTestSquasherToggleChange = function ( value ) {
  * Update the transaction dump
  */
 ve.ui.DebugBar.prototype.updateTransactions = function () {
-	var surface = this.getSurface(),
+	const surface = this.getSurface(),
 		$transactionsList = $( '<ol>' );
 
 	surface.getModel().getHistory().forEach( ( item ) => {
-		var $state = $( '<ol>' ).appendTo( $( '<li>' ).appendTo( $transactionsList ) );
+		const $state = $( '<ol>' ).appendTo( $( '<li>' ).appendTo( $transactionsList ) );
 		item.transactions.forEach( ( tx ) => {
 			$state.append( $( '<li>' ).text( ve.summarizeTransaction( tx ) ) );
 		} );
@@ -426,22 +426,22 @@ ve.ui.DebugBar.prototype.testSquasher = function () {
 		).squash().txs;
 	}
 
-	var transactions = this.getSurface().getModel().getDocument().completeHistory.transactions;
+	const transactions = this.getSurface().getModel().getDocument().completeHistory.transactions;
 	if ( transactions.length < 3 ) {
 		// Nothing interesting here
 		return;
 	}
 
-	var squashed = squashTransactions( transactions );
-	for ( var i = 1, iLen = transactions.length - 1; i < iLen; i++ ) {
-		var squashedBefore = squashTransactions( transactions.slice( 0, i ) );
-		var squashedAfter = squashTransactions( transactions.slice( i ) );
-		var doubleSquashed = squashTransactions( [].concat(
+	const squashed = squashTransactions( transactions );
+	for ( let i = 1, iLen = transactions.length - 1; i < iLen; i++ ) {
+		const squashedBefore = squashTransactions( transactions.slice( 0, i ) );
+		const squashedAfter = squashTransactions( transactions.slice( i ) );
+		const doubleSquashed = squashTransactions( [].concat(
 			squashedBefore,
 			squashedAfter
 		) );
-		var dump = JSON.stringify( squashed );
-		var doubleDump = JSON.stringify( doubleSquashed );
+		const dump = JSON.stringify( squashed );
+		const doubleDump = JSON.stringify( doubleSquashed );
 		if ( dump !== doubleDump ) {
 			throw new Error( 'Discrepancy splitting at i=' + i );
 		}

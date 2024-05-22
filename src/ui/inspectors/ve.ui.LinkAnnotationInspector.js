@@ -42,7 +42,7 @@ ve.ui.LinkAnnotationInspector.prototype.onAnnotationInputChange = function () {
  * Update the actions based on the annotation state
  */
 ve.ui.LinkAnnotationInspector.prototype.updateActions = function () {
-	var isValid = false,
+	let isValid = false,
 		annotation = this.annotationInput.getAnnotation();
 
 	this.annotationInput.getTextInputWidget().getValidity()
@@ -82,7 +82,7 @@ ve.ui.LinkAnnotationInspector.prototype.getAnnotation = function () {
  * @inheritdoc
  */
 ve.ui.LinkAnnotationInspector.prototype.getAnnotationFromFragment = function ( fragment ) {
-	var text = fragment.getText();
+	const text = fragment.getText();
 
 	return text ? new ve.dm.LinkAnnotation( {
 		type: 'link',
@@ -174,7 +174,7 @@ ve.ui.LinkAnnotationInspector.prototype.shouldInsertText = function () {
 ve.ui.LinkAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.LinkAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
-			var title = ve.msg(
+			const title = ve.msg(
 					this.isReadOnly() ?
 						'visualeditor-linkinspector-title' : (
 							this.isNew ?

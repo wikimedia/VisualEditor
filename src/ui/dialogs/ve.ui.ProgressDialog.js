@@ -64,18 +64,18 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 	// Parent method
 	return ve.ui.ProgressDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
-			var cancellable = false,
+			let cancellable = false,
 				progresses = data.progresses;
 
 			this.inProgress = progresses.length;
 			this.text.$element.empty();
 			this.cancelDeferreds = [];
 
-			for ( var i = 0, l = progresses.length; i < l; i++ ) {
-				var cancelDeferred = ve.createDeferred();
-				var $row = $( '<div>' ).addClass( 've-ui-progressDialog-row' );
-				var progressBar = new OO.ui.ProgressBarWidget();
-				var fieldLayout = new OO.ui.FieldLayout(
+			for ( let i = 0, l = progresses.length; i < l; i++ ) {
+				const cancelDeferred = ve.createDeferred();
+				const $row = $( '<div>' ).addClass( 've-ui-progressDialog-row' );
+				const progressBar = new OO.ui.ProgressBarWidget();
+				const fieldLayout = new OO.ui.FieldLayout(
 					progressBar,
 					{
 						label: progresses[ i ].label,
@@ -86,7 +86,7 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 				$row.append( fieldLayout.$element );
 
 				if ( progresses[ i ].cancellable ) {
-					var cancelButton = new OO.ui.ButtonWidget( {
+					const cancelButton = new OO.ui.ButtonWidget( {
 						framed: false,
 						icon: 'cancel',
 						title: OO.ui.deferMsg( 'visualeditor-dialog-action-cancel' )
@@ -113,7 +113,7 @@ ve.ui.ProgressDialog.prototype.getSetupProcess = function ( data ) {
 ve.ui.ProgressDialog.prototype.getActionProcess = function ( action ) {
 	return new OO.ui.Process( () => {
 		if ( action === 'cancel' ) {
-			for ( var i = 0, l = this.cancelDeferreds.length; i < l; i++ ) {
+			for ( let i = 0, l = this.cancelDeferreds.length; i < l; i++ ) {
 				this.cancelDeferreds[ i ].reject();
 			}
 		}

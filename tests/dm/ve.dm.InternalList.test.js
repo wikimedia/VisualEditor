@@ -9,13 +9,13 @@ QUnit.module( 've.dm.InternalList' );
 /* Tests */
 
 QUnit.test( 'getDocument', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		internalList = doc.getInternalList();
 	assert.deepEqual( internalList.getDocument(), doc, 'Returns original document' );
 } );
 
 QUnit.test( 'queueItemHtml/getItemHtmlQueue', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		internalList = doc.getInternalList();
 	assert.deepEqual(
 		internalList.queueItemHtml( 'reference', 'foo', 'Bar' ),
@@ -45,7 +45,7 @@ QUnit.test( 'queueItemHtml/getItemHtmlQueue', ( assert ) => {
 } );
 
 QUnit.test( 'convertToData', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		htmlDoc = doc.getHtmlDocument(),
 		internalList = doc.getInternalList(),
 		expectedData = [
@@ -77,14 +77,14 @@ QUnit.test( 'convertToData', ( assert ) => {
 } );
 
 QUnit.test( 'clone', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		doc2 = ve.dm.example.createExampleDocument(),
 		internalList = doc.getInternalList();
 
 	internalList.getNextUniqueNumber(); // =0
-	var internalListClone = internalList.clone();
+	const internalListClone = internalList.clone();
 	internalList.getNextUniqueNumber(); // =1
-	var internalListClone2 = internalList.clone( doc2 );
+	const internalListClone2 = internalList.clone( doc2 );
 	internalList.getNextUniqueNumber(); // =2
 
 	assert.strictEqual( internalListClone.getDocument(), internalList.getDocument(), 'Documents match' );

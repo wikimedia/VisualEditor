@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.RebaseServer' );
 
 QUnit.test( 'Rebase', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			name: 'Concurrent insertions',
 			initialData: [
@@ -244,7 +244,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 					}
 				} ],
 				[ '1', 'assert', function ( client ) {
-					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store' );
 				} ],
 
@@ -264,7 +264,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'a/XYZ!' ],
 				[ '1', 'assert', function ( client ) {
-					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after the first rebase' );
 				} ],
 
@@ -273,7 +273,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'ab/XYZ!' ],
 				[ '1', 'assert', function ( client ) {
-					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after the second rebase' );
 				} ],
 
@@ -358,7 +358,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 					}
 				} ],
 				[ '1', 'assert', function ( client ) {
-					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store' );
 				} ],
 
@@ -368,7 +368,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'ab/Q?/XYZ!' ],
 				[ '1', 'assert', function ( client ) {
-					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					// FIXME this fails. If uncommitted = client.getChangeSince( client.commitLength, false );
 					// then we expect uncommitted.getStore( 1 ) to contain 'h123', but instead uncommitted.getStore( 0 ) does.
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after receiving a foreign change' );
@@ -380,7 +380,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ '1', 'receive' ],
 				[ '1', 'assertHist', 'abQ/XYZ!' ],
 				[ '1', 'assert', function ( client ) {
-					var unsubmitted = client.getChangeSince( client.sentLength, false );
+					const unsubmitted = client.getChangeSince( client.sentLength, false );
 					assert.deepEqual( unsubmitted.getStore( 0 ).hashes, [ 'h123' ], 'h123 is still in the store after receiving our own change' );
 				} ],
 
@@ -395,7 +395,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ '2', 'receive' ],
 				[ '2', 'receive' ],
 				[ '2', 'assert', function ( client ) {
-					var lastChange = client.getChangeSince( 3, false );
+					const lastChange = client.getChangeSince( 3, false );
 					assert.deepEqual( lastChange.getStore( 0 ).hashes, [ 'h123' ], 'h123 is in the store on the other side' );
 				} ]
 			]
@@ -403,7 +403,7 @@ QUnit.test( 'Rebase', ( assert ) => {
 	];
 
 	function makeTransaction( doc, data ) {
-		var builder = new ve.dm.TransactionBuilder();
+		const builder = new ve.dm.TransactionBuilder();
 		if ( data[ 0 ] === 'insert' ) {
 			data = [
 				[ 'pushRetain', data[ 1 ] ],
@@ -417,18 +417,18 @@ QUnit.test( 'Rebase', ( assert ) => {
 				[ 'pushRetain', data[ 3 ] ]
 			];
 		}
-		for ( var i = 0; i < data.length; i++ ) {
-			var method = data[ i ].shift();
+		for ( let i = 0; i < data.length; i++ ) {
+			const method = data[ i ].shift();
 			builder[ method ].apply( builder, data[ i ] );
 		}
 		return builder.getTransaction();
 	}
 
 	cases.forEach( ( caseItem ) => {
-		var server = new ve.dm.TestRebaseServer(),
+		const server = new ve.dm.TestRebaseServer(),
 			clients = {};
 		caseItem.clients.forEach( ( authorId ) => {
-			var client = new ve.dm.TestRebaseClient( server, caseItem.initialData );
+			const client = new ve.dm.TestRebaseClient( server, caseItem.initialData );
 			client.setAuthorId( authorId );
 			clients[ authorId ] = client;
 			// Initialize
@@ -443,17 +443,17 @@ QUnit.test( 'Rebase', ( assert ) => {
 				return;
 			}
 
-			var client = clients[ op[ 0 ] ];
-			var action = op[ 1 ];
+			const client = clients[ op[ 0 ] ];
+			const action = op[ 1 ];
 			if ( action === 'apply' ) {
 				if ( Array.isArray( op[ 2 ] ) ) {
-					var txs = op[ 2 ].map( makeTransaction.bind( null, client.doc ) );
+					const txs = op[ 2 ].map( makeTransaction.bind( null, client.doc ) );
 					client.applyTransactions( txs );
 				} else {
 					client.applyChange( ve.dm.Change.static.deserialize( op[ 2 ] ) );
 				}
 			} else if ( action === 'assertHist' ) {
-				var summary;
+				let summary;
 				if ( op[ 0 ] === 'server' ) {
 					summary = server.getHistorySummary();
 				} else {

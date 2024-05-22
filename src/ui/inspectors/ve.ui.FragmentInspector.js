@@ -131,7 +131,7 @@ ve.ui.FragmentInspector.prototype.getActionWidgetConfig = function ( config ) {
  */
 ve.ui.FragmentInspector.prototype.getSetupProcess = function ( data ) {
 	// Parent method
-	var process = ve.ui.FragmentInspector.super.prototype.getSetupProcess.call( this, data );
+	const process = ve.ui.FragmentInspector.super.prototype.getSetupProcess.call( this, data );
 	// Mixin method
 	return ve.ui.FragmentWindow.prototype.getSetupProcess.call( this, data, process );
 };
@@ -141,7 +141,7 @@ ve.ui.FragmentInspector.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.FragmentInspector.prototype.getTeardownProcess = function ( data ) {
 	// Parent method
-	var process = ve.ui.FragmentInspector.super.prototype.getTeardownProcess.call( this, data );
+	const process = ve.ui.FragmentInspector.super.prototype.getTeardownProcess.call( this, data );
 	// Mixin method
 	return ve.ui.FragmentWindow.prototype.getTeardownProcess.call( this, data, process );
 };

@@ -9,15 +9,15 @@ QUnit.module( 've.ce.Document' );
 /* Tests */
 
 QUnit.test( 'Converter tests', ( assert ) => {
-	var cases = ve.dm.example.domToDataCases;
+	const cases = ve.dm.example.domToDataCases;
 
-	for ( var msg in cases ) {
+	for ( const msg in cases ) {
 		if ( cases[ msg ].ceHtml ) {
-			var caseItem = ve.copy( cases[ msg ] );
+			const caseItem = ve.copy( cases[ msg ] );
 			caseItem.base = caseItem.base || ve.dm.example.baseUri;
-			var model = ve.test.utils.getModelFromTestCase( caseItem );
-			var view = new ve.ce.Document( model );
-			var $documentElement = view.getDocumentNode().$element;
+			const model = ve.test.utils.getModelFromTestCase( caseItem );
+			const view = new ve.ce.Document( model );
+			const $documentElement = view.getDocumentNode().$element;
 			// Simplify slugs
 			$documentElement.find( '.ve-ce-branchNode-slug' ).contents().remove();
 			assert.equalDomElement(
@@ -36,7 +36,7 @@ QUnit.test( 'Converter tests', ( assert ) => {
 
 QUnit.test( 'getNodeAndOffset', ( assert ) => {
 	/* eslint-disable quotes */
-	var docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode'>",
+	const docNodeStart = "<div class='ve-ce-branchNode ve-ce-documentNode ve-ce-attachedRootNode ve-ce-rootNode'>",
 		pNodeStart = "<p class='ve-ce-branchNode ve-ce-contentBranchNode ve-ce-paragraphNode'>";
 
 	// Each test below has the following:
@@ -46,7 +46,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 	// characters on a modified HTML representation in which text nodes are wrapped in
 	// <#text>…</#text> tags (and most attributes are omitted)
 	// dies (optional): a list of DM offsets where getNodeAndOffset is expected to die
-	var cases = [
+	const cases = [
 		{
 			title: 'Simple para',
 			html: '<p>x</p>',
@@ -139,9 +139,9 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 	}
 
 	cases.forEach( ( caseItem ) => {
-		var parts = caseItem.positions.split( /[|]/ );
-		var view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
-		var dmDoc = view.getModel().getDocument();
+		const parts = caseItem.positions.split( /[|]/ );
+		const view = ve.test.utils.createSurfaceViewFromHtml( caseItem.html );
+		const dmDoc = view.getModel().getDocument();
 		if ( caseItem.unwrap ) {
 			new ve.dm.Surface( dmDoc ).change(
 				ve.dm.TransactionBuilder.static.newFromWrap(
@@ -154,14 +154,14 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 				)
 			);
 		}
-		var data = dmDoc.data.data
+		const data = dmDoc.data.data
 			.slice( 0, -2 )
 			.map( showModelItem );
-		var ceDoc = view.documentView;
-		var rootNode = ceDoc.getDocumentNode().$element.get( 0 );
+		const ceDoc = view.documentView;
+		const rootNode = ceDoc.getDocumentNode().$element.get( 0 );
 		assert.deepEqual( data, caseItem.data, caseItem.title + ' (data)' );
 
-		var offsetCount = data.length;
+		const offsetCount = data.length;
 		assert.strictEqual(
 			offsetCount,
 			caseItem.positions.replace( /[^|]/g, '' ).length,
@@ -169,8 +169,8 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 		);
 
 		if ( caseItem.replacement ) {
-			var node = rootNode;
-			for ( var j = 0, jLen = caseItem.replacement.path.length; j < jLen; j++ ) {
+			let node = rootNode;
+			for ( let j = 0, jLen = caseItem.replacement.path.length; j < jLen; j++ ) {
 				node = node.childNodes[ caseItem.replacement.path[ j ] ];
 			}
 			$( node ).closest(
@@ -179,7 +179,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 			node.innerHTML = caseItem.replacement.innerHtml;
 		}
 
-		for ( var offset = 0; offset < offsetCount; offset++ ) {
+		for ( let offset = 0; offset < offsetCount; offset++ ) {
 			assert.strictEqual(
 				ve.test.utils.serializePosition(
 					rootNode,
@@ -194,9 +194,9 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 				caseItem.title + ' (' + offset + ')'
 			);
 		}
-		for ( var k = 0; caseItem.dies && k < caseItem.dies.length; k++ ) {
-			var dieOffset = caseItem.dies[ k ];
-			var ex = null;
+		for ( let k = 0; caseItem.dies && k < caseItem.dies.length; k++ ) {
+			const dieOffset = caseItem.dies[ k ];
+			let ex = null;
 			try {
 				ceDoc.getNodeAndOffset( dieOffset );
 			} catch ( e ) {
@@ -209,7 +209,7 @@ QUnit.test( 'getNodeAndOffset', ( assert ) => {
 } );
 
 QUnit.test( 'attachedRoot', ( assert ) => {
-	var dmDoc = ve.dm.converter.getModelFromDom(
+	const dmDoc = ve.dm.converter.getModelFromDom(
 			ve.createDocumentFromHtml(
 				'<section>Foo</section><section>Bar</section><section>Baz</section>'
 			)

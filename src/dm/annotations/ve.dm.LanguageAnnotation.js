@@ -30,7 +30,7 @@ ve.dm.LanguageAnnotation.static.name = 'meta/language';
 ve.dm.LanguageAnnotation.static.matchTagNames = [ 'span', 'bdo' ];
 
 ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
-	var lang = domElement.getAttribute( 'lang' ),
+	const lang = domElement.getAttribute( 'lang' ),
 		dir = ( domElement.getAttribute( 'dir' ) || '' ).toLowerCase();
 	return lang || dir === 'ltr' || dir === 'rtl';
 };
@@ -39,7 +39,7 @@ ve.dm.LanguageAnnotation.static.applyToAppendedContent = true;
 
 ve.dm.LanguageAnnotation.static.toDataElement = function ( domElements ) {
 	// Parent method
-	var dataElement = ve.dm.LanguageAnnotation.super.static.toDataElement.apply( this, arguments );
+	const dataElement = ve.dm.LanguageAnnotation.super.static.toDataElement.apply( this, arguments );
 	dataElement.attributes.lang = domElements[ 0 ].getAttribute( 'lang' );
 	dataElement.attributes.dir = domElements[ 0 ].getAttribute( 'dir' );
 
@@ -48,7 +48,7 @@ ve.dm.LanguageAnnotation.static.toDataElement = function ( domElements ) {
 
 ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement ) {
 	// Parent method
-	var domElements = ve.dm.LanguageAnnotation.super.static.toDomElements.apply( this, arguments ),
+	const domElements = ve.dm.LanguageAnnotation.super.static.toDomElements.apply( this, arguments ),
 		domElement = domElements[ 0 ];
 
 	if ( dataElement.attributes.lang ) {

@@ -8,13 +8,13 @@ QUnit.module( 've.ce.LinearEnterKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
 	beforeEach: function ( assert ) {
-		var done = assert.async();
+		const done = assert.async();
 		return ve.init.platform.getInitializedPromise().then( done );
 	}
 } );
 
 QUnit.test( 'special key down: linear enter', ( assert ) => {
-	var done = assert.async(),
+	let done = assert.async(),
 		noChange = function () {},
 		promise = Promise.resolve(),
 		emptyList = '<ul><li><p></p></li></ul>',
@@ -52,7 +52,7 @@ QUnit.test( 'special key down: linear enter', ( assert ) => {
 				rangeOrSelection: new ve.Range( 57 ),
 				keys: [ 'ENTER' ],
 				htmlOrDoc: ( function () {
-					var view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() );
+					const view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument() );
 					view.surface.isMultiline = function () {
 						return false;
 					};

@@ -116,7 +116,7 @@ ve.ui.AnnotationInspector.prototype.getAnnotationFromFragment = null;
  * @return {ve.dm.AnnotationSet} Matching annotations
  */
 ve.ui.AnnotationInspector.prototype.getMatchingAnnotations = function ( fragment, all ) {
-	var modelClasses = this.constructor.static.modelClasses;
+	const modelClasses = this.constructor.static.modelClasses;
 
 	return fragment.getAnnotations( all ).filter( ( annotation ) => ve.isInstanceOfAny( annotation, modelClasses ) );
 };
@@ -148,7 +148,7 @@ ve.ui.AnnotationInspector.prototype.isEditing = function () {
 ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.AnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
-			var fragment = this.getFragment(),
+			let fragment = this.getFragment(),
 				surfaceModel = fragment.getSurface(),
 				// Partial annotations will be expanded later
 				annotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
@@ -205,7 +205,7 @@ ve.ui.AnnotationInspector.prototype.getSetupProcess = function ( data ) {
 
 			// The initial annotation is the first matching annotation in the fragment
 			this.initialAnnotation = this.getMatchingAnnotations( fragment, true ).get( 0 );
-			var initialCoveringAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
+			const initialCoveringAnnotation = this.getMatchingAnnotations( fragment ).get( 0 );
 			// Fallback to a default annotation
 			if ( !this.initialAnnotation ) {
 				this.isNew = true;
@@ -240,7 +240,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.AnnotationInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( () => {
-			var insertionAnnotation = false,
+			let insertionAnnotation = false,
 				replace = false,
 				annotation = this.getAnnotation(),
 				remove = data.action === 'done' && this.shouldRemoveAnnotation(),
@@ -250,13 +250,13 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 				isEditing = this.isEditing(),
 				insertText = !remove && this.shouldInsertText();
 
-			var annotations;
-			var insertion;
+			let annotations;
+			let insertion;
 
-			var clear = () => {
+			const clear = () => {
 				// Clear all existing annotations
 				annotations = this.getMatchingAnnotations( fragment, true ).get();
-				for ( var i = 0, len = annotations.length; i < len; i++ ) {
+				for ( let i = 0, len = annotations.length; i < len; i++ ) {
 					fragment.annotateContent( 'clear', annotations[ i ] );
 				}
 			};
@@ -318,7 +318,7 @@ ve.ui.AnnotationInspector.prototype.getTeardownProcess = function ( data ) {
 
 			// HACK: ui.WindowAction unsets initialFragment in source mode,
 			// so we can't rely on it existing.
-			var selection;
+			let selection;
 			if ( this.initialFragment && ( !data.action || insertText ) ) {
 				// Restore selection to what it was before we expanded it
 				selection = this.initialFragment.getSelection();

@@ -9,18 +9,18 @@ QUnit.module( 've.dm.Converter' );
 /* Tests */
 
 QUnit.test( 'getModelFromDom', ( assert ) => {
-	var cases = ve.dm.example.domToDataCases;
+	const cases = ve.dm.example.domToDataCases;
 
-	for ( var msg in cases ) {
-		var caseItem = ve.copy( cases[ msg ] );
+	for ( const msg in cases ) {
+		const caseItem = ve.copy( cases[ msg ] );
 		caseItem.base = caseItem.base || ve.dm.example.baseUri;
 		ve.test.utils.runGetModelFromDomTest( assert, caseItem, msg );
 	}
 } );
 
 QUnit.test( 'getModelFromDom with store argument', ( assert ) => {
-	var store = new ve.dm.HashValueStore();
-	var model = ve.dm.converter.getModelFromDom(
+	const store = new ve.dm.HashValueStore();
+	const model = ve.dm.converter.getModelFromDom(
 		ve.createDocumentFromHtml( '<p>foo</p>' ),
 		{ lang: 'en', dir: 'ltr' },
 		store
@@ -29,17 +29,17 @@ QUnit.test( 'getModelFromDom with store argument', ( assert ) => {
 } );
 
 QUnit.test( 'getDomFromModel', ( assert ) => {
-	var cases = ve.dm.example.domToDataCases;
+	const cases = ve.dm.example.domToDataCases;
 
-	for ( var msg in cases ) {
-		var caseItem = ve.copy( cases[ msg ] );
+	for ( const msg in cases ) {
+		const caseItem = ve.copy( cases[ msg ] );
 		caseItem.base = caseItem.base || ve.dm.example.baseUri;
 		ve.test.utils.runGetDomFromModelTest( assert, caseItem, msg );
 	}
 } );
 
 QUnit.test( 'getFullData', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'Metadata in ContentBranchNode gets moved outside by any change',
 			beforeHtml: '<p>x</p><!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
@@ -81,7 +81,7 @@ QUnit.test( 'getFullData', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.beforeHtml ) ),
+		const doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.beforeHtml ) ),
 			tx = caseItem.transaction( doc );
 
 		doc.commit( tx );
@@ -101,11 +101,11 @@ QUnit.test( 'getFullData', ( assert ) => {
 } );
 
 QUnit.test( 'roundTripMetadata', ( assert ) => {
-	var beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
+	const beforeHtml = '<!-- w --><meta foo="x"><p>ab<meta foo="y">cd</p><p>ef<meta foo="z">gh</p>',
 		afterHtml = '<!-- w --><meta foo="x"><p>abc</p><meta foo="y"><p>ef<meta foo="z">gh</p>';
 
-	var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( beforeHtml ) );
-	var tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
+	const doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( beforeHtml ) );
+	const tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, new ve.Range( 10, 11 ) );
 	doc.commit( tx );
 	assert.strictEqual(
 		ve.dm.converter.getDomFromModel( doc ).body.innerHTML,

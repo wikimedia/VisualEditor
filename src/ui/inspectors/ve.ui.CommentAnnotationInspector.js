@@ -53,7 +53,7 @@ ve.ui.CommentAnnotationInspector.prototype.onTextInputResize = function () {
  * Update the actions based on the annotation state
  */
 ve.ui.CommentAnnotationInspector.prototype.updateActions = function () {
-	var isValid = false;
+	let isValid = false;
 
 	this.textInput.getValidity()
 		.then( () => {
@@ -84,7 +84,7 @@ ve.ui.CommentAnnotationInspector.prototype.getInsertionText = function () {
  * @inheritdoc
  */
 ve.ui.CommentAnnotationInspector.prototype.getAnnotation = function () {
-	var comments = ( this.initialAnnotation && this.initialAnnotation.getAttribute( 'comments' ).slice() ) || [];
+	const comments = ( this.initialAnnotation && this.initialAnnotation.getAttribute( 'comments' ).slice() ) || [];
 	comments.push( {
 		author: this.getFragment().getSurface().synchronizer.getAuthorData().name,
 		text: this.textInput.getValue().trim()
@@ -144,7 +144,7 @@ ve.ui.CommentAnnotationInspector.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommentAnnotationInspector.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
 			if ( this.initialAnnotation ) {
-				var $thread = ve.ui.CommentAnnotationContextItem.static.renderThread( this.initialAnnotation );
+				const $thread = ve.ui.CommentAnnotationContextItem.static.renderThread( this.initialAnnotation );
 				this.$thread.empty().append( $thread );
 			}
 			this.$user.text( this.getFragment().getSurface().synchronizer.getAuthorData().name );

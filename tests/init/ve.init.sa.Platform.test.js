@@ -10,10 +10,10 @@ QUnit.module( 've.init.sa.Platform', {
 		// by creating an sa.Platform
 		this.originalPlatform = ve.init.platform;
 		this.purgeKeys = function () {
-			var i = localStorage.length;
+			let i = localStorage.length;
 			// Loop backwards since removal affects the key index
 			while ( i-- ) {
-				var key = localStorage.key( i );
+				const key = localStorage.key( i );
 				if ( key.indexOf( 've-test-' ) === 0 ) {
 					localStorage.removeItem( key );
 				}
@@ -28,7 +28,7 @@ QUnit.module( 've.init.sa.Platform', {
 } );
 
 QUnit.test( 'getUserConfig', ( assert ) => {
-	var platform = new ve.init.sa.Platform();
+	const platform = new ve.init.sa.Platform();
 
 	assert.strictEqual( platform.getUserConfig( 'test-1' ), null, 'unknown key' );
 	assert.propEqual(
@@ -48,7 +48,7 @@ QUnit.test( 'getUserConfig', ( assert ) => {
 } );
 
 QUnit.test( 'setUserConfig', ( assert ) => {
-	var platform = new ve.init.sa.Platform();
+	const platform = new ve.init.sa.Platform();
 
 	assert.strictEqual( platform.setUserConfig( 'test-1', 'one' ), true, 'set key' );
 	assert.strictEqual( platform.getUserConfig( 'test-1' ), 'one', 'value persists' );
@@ -66,7 +66,7 @@ QUnit.test( 'setUserConfig', ( assert ) => {
 } );
 
 QUnit.test( 'messages', ( assert ) => {
-	var platform = new ve.init.sa.Platform();
+	const platform = new ve.init.sa.Platform();
 
 	return platform.getInitializedPromise().then( () => {
 		assert.true(
@@ -99,7 +99,7 @@ QUnit.test( 'messages', ( assert ) => {
 } );
 
 QUnit.test( 'parsedMessage', ( assert ) => {
-	var platform = new ve.init.sa.Platform();
+	const platform = new ve.init.sa.Platform();
 
 	return platform.getInitializedPromise().then( () => {
 		assert.true(

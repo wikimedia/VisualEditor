@@ -23,7 +23,7 @@ ve.ce.NodeFactoryNodeStub.static.getDescription = function () {
 /* Tests */
 
 QUnit.test( 'splitNodeOnEnter/getDescription', ( assert ) => {
-	var factory = new ve.ce.NodeFactory();
+	const factory = new ve.ce.NodeFactory();
 
 	assert.throws(
 		() => {

@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.DocumentStore' );
 
 QUnit.test( 'Create', ( assert ) => {
-	var done = assert.async(),
+	const done = assert.async(),
 		fakeMongo = new ve.dm.FakeMongo(),
 		documentStore = new ve.dm.DocumentStore( fakeMongo, 'test', fakeMongo );
 

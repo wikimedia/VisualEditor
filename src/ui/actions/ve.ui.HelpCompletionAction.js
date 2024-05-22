@@ -22,7 +22,7 @@ ve.ui.HelpCompletionAction = function ( surface ) {
 	this.toolbar = surface.target.getToolbar();
 	this.tools = this.toolbar.tools;
 	this.toolNames = Object.keys( this.tools ).filter( ( toolName ) => {
-		var tool = this.tools[ toolName ];
+		const tool = this.tools[ toolName ];
 		return tool &&
 			// No point in going in circles
 			!( tool instanceof ve.ui.HelpCompletionTool ) &&
@@ -32,8 +32,8 @@ ve.ui.HelpCompletionAction = function ( surface ) {
 	} );
 	// Push the "format" group to the bottom because it's rarely-needed
 	this.toolNames.sort( ( a, b ) => {
-		var aGroup = this.tools[ a ].constructor.static.group;
-		var bGroup = this.tools[ b ].constructor.static.group;
+		const aGroup = this.tools[ a ].constructor.static.group;
+		const bGroup = this.tools[ b ].constructor.static.group;
 		if ( aGroup === bGroup ) {
 			// preserve order
 			return 0;
@@ -117,7 +117,7 @@ ve.ui.HelpCompletionAction.prototype.open = function ( isolateInput ) {
 		// stack since before the action was triggered to use
 		// undo/redo from here. Might not be worth the effort.
 		this.toolNames = this.toolNames.filter( ( toolName ) => {
-			var tool = this.tools[ toolName ];
+			const tool = this.tools[ toolName ];
 			return !( tool instanceof ve.ui.HistoryTool );
 		} );
 	}
@@ -126,9 +126,9 @@ ve.ui.HelpCompletionAction.prototype.open = function ( isolateInput ) {
 };
 
 ve.ui.HelpCompletionAction.prototype.getToolIndex = function ( toolName ) {
-	var tool = this.tools[ toolName ];
-	var toolGroups = this.constructor.static.toolGroups;
-	var group = this.getGroupForTool( tool );
+	const tool = this.tools[ toolName ];
+	const toolGroups = this.constructor.static.toolGroups;
+	const group = this.getGroupForTool( tool );
 	return OO.ui.resolveMsg( toolGroups[ group ].title ) + ' ' + tool.getTitle();
 };
 
@@ -140,12 +140,12 @@ ve.ui.HelpCompletionAction.prototype.getSuggestions = function ( input ) {
 };
 
 ve.ui.HelpCompletionAction.prototype.compareSuggestionToInput = function ( suggestion, normalizedInput ) {
-	var normalizedSuggestion = this.getToolIndex( suggestion ).toLowerCase();
+	const normalizedSuggestion = this.getToolIndex( suggestion ).toLowerCase();
 
 	// Allow character skipping in input, so for example "head2" matches "heading 2" and
 	// "blist" matches "bullet list"
-	var matchedIndex = 0;
-	for ( var i = 0, l = normalizedInput.length; i < l; i++ ) {
+	let matchedIndex = 0;
+	for ( let i = 0, l = normalizedInput.length; i < l; i++ ) {
 		matchedIndex = normalizedSuggestion.indexOf( normalizedInput[ i ], matchedIndex );
 		if ( matchedIndex === -1 ) {
 			return {
@@ -164,7 +164,7 @@ ve.ui.HelpCompletionAction.prototype.compareSuggestionToInput = function ( sugge
 };
 
 ve.ui.HelpCompletionAction.prototype.getMenuItemForSuggestion = function ( toolName ) {
-	var tool = this.tools[ toolName ];
+	const tool = this.tools[ toolName ];
 	return new OO.ui.MenuOptionWidget( {
 		data: tool,
 		label: tool.getTitle(),
@@ -181,8 +181,8 @@ ve.ui.HelpCompletionAction.prototype.getMenuItemForSuggestion = function ( toolN
  * @return {string} Group name
  */
 ve.ui.HelpCompletionAction.prototype.getGroupForTool = function ( tool ) {
-	var toolGroups = this.constructor.static.toolGroups;
-	var group = tool.constructor.static.group;
+	const toolGroups = this.constructor.static.toolGroups;
+	let group = tool.constructor.static.group;
 	if ( toolGroups[ group ] ) {
 		if ( toolGroups[ group ].mergeWith ) {
 			group = toolGroups[ group ].mergeWith;
@@ -194,19 +194,19 @@ ve.ui.HelpCompletionAction.prototype.getGroupForTool = function ( tool ) {
 };
 
 ve.ui.HelpCompletionAction.prototype.updateMenuItems = function ( menuItems ) {
-	var menuItemsByGroup = {};
-	var toolGroups = this.constructor.static.toolGroups;
+	const menuItemsByGroup = {};
+	const toolGroups = this.constructor.static.toolGroups;
 	menuItems.forEach( ( menuItem ) => {
-		var tool = menuItem.getData();
-		var group = this.getGroupForTool( tool );
+		const tool = menuItem.getData();
+		const group = this.getGroupForTool( tool );
 		menuItemsByGroup[ group ] = menuItemsByGroup[ group ] || [];
 		menuItemsByGroup[ group ].push( menuItem );
 	} );
-	var newMenuItems = [];
-	var groups = Object.keys( menuItemsByGroup );
+	const newMenuItems = [];
+	const groups = Object.keys( menuItemsByGroup );
 	groups.sort( ( a, b ) => {
-		var weightA = toolGroups[ a ].weight || 0;
-		var weightB = toolGroups[ b ].weight || 0;
+		const weightA = toolGroups[ a ].weight || 0;
+		const weightB = toolGroups[ b ].weight || 0;
 		return weightB - weightA;
 	} );
 	groups.forEach( ( group ) => {
@@ -224,11 +224,11 @@ ve.ui.HelpCompletionAction.prototype.chooseItem = function ( item, range ) {
 	// We're completely ignoring the idea that we should be "inserting" anything...
 	// Instead, we run the command that was chosen.
 
-	var fragment = this.surface.getModel().getLinearFragment( range, true );
+	const fragment = this.surface.getModel().getLinearFragment( range, true );
 	fragment.removeContent();
 	fragment.collapseToEnd();
 
-	var tool = item.getData();
+	const tool = item.getData();
 	// Wait for completion widget to close, as the selected tool may
 	// trigger another completion widget.
 	setTimeout( () => {

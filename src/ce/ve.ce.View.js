@@ -76,7 +76,7 @@ OO.mixinClass( ve.ce.View, OO.EventEmitter );
  * @inheritable
  */
 ve.ce.View.static.renderHtmlAttributes = function ( attribute ) {
-	var attributes = [
+	const attributes = [
 		'abbr', 'about', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellpadding', 'cellspacing',
 		'char', 'charoff', 'cite', 'class', 'clear', 'color', 'colspan', 'datatype', 'datetime',
 		'dir', 'face', 'frame', 'headers', 'height', 'href', 'id', 'itemid', 'itemprop', 'itemref',
@@ -178,7 +178,7 @@ ve.ce.View.prototype.setLive = function ( live ) {
  * @return {string} URL resolved according to the document's base
  */
 ve.ce.View.prototype.getResolvedAttribute = function ( key ) {
-	var plainValue = this.model.getAttribute( key ),
+	const plainValue = this.model.getAttribute( key ),
 		doc = this.getModelHtmlDocument();
 	return doc && typeof plainValue === 'string' ? ve.resolveUrl( plainValue, doc ) : plainValue;
 };

@@ -31,11 +31,11 @@ ve.TestEventSequencer.prototype.runPostponed = function () {
 	function sortStringIds( a, b ) {
 		return parseInt( a ) - parseInt( b );
 	}
-	var ids;
+	let ids;
 	while ( ( ids = Object.keys( this.postponedCallbacks ) ).length > 0 ) {
 		ids.sort( sortStringIds );
-		for ( var i = 0, len = ids.length; i < len; i++ ) {
-			var callback = this.postponedCallbacks[ ids[ i ] ];
+		for ( let i = 0, len = ids.length; i < len; i++ ) {
+			const callback = this.postponedCallbacks[ ids[ i ] ];
 			delete this.postponedCallbacks[ ids[ i ] ];
 			// Check for existence, because a previous iteration may have cancelled
 			if ( callback ) {
@@ -48,9 +48,9 @@ ve.TestEventSequencer.prototype.runPostponed = function () {
 /* Tests */
 
 QUnit.test( 'EventSequencer', ( assert ) => {
-	var calls = [];
+	const calls = [];
 
-	var sequencer = new ve.TestEventSequencer( [ 'event1', 'event2', 'event3' ] ).on( {
+	let sequencer = new ve.TestEventSequencer( [ 'event1', 'event2', 'event3' ] ).on( {
 		event1: function () {
 			calls.push( 'on1' );
 		},

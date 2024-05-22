@@ -6,7 +6,7 @@
 
 ( function () {
 	/* eslint-disable no-jquery/no-global-selector */
-	var $primary = $( '#primary' ),
+	const $primary = $( '#primary' ),
 		$modifiers = $( '#modifiers' ),
 		$aliases = $( '#aliases' ),
 		$trigger = $( '#trigger' ),
@@ -16,12 +16,12 @@
 		keyAliases = ve.ui.Trigger.static.keyAliases;
 
 	function setTrigger( trigger ) {
-		var parts;
+		let parts;
 		trigger = trigger.toString();
 		parts = trigger.split( '+' );
 		$trigger.text( trigger );
 		parts.forEach( function ( part ) {
-			var key = part.replace( '\\', '\\\\' ).replace( '"', '\\"' );
+			const key = part.replace( '\\', '\\\\' ).replace( '"', '\\"' );
 			$( '.key[rel~="' + key + '"]' ).addClass( 'active' );
 		} );
 	}
@@ -69,7 +69,7 @@
 	// eslint-disable-next-line no-jquery/no-global-selector
 	$( '#primary .key, #modifiers .key' ).on( {
 		mousedown: function ( e ) {
-			var $target = $( e.target );
+			const $target = $( e.target );
 			if ( e.which === OO.ui.MouseButtons.LEFT ) {
 				if ( $target.closest( '#primary' ).length ) {
 					$primary.find( '.active' ).removeClass( 'active' );
@@ -81,7 +81,7 @@
 			}
 		},
 		mouseup: function ( e ) {
-			var parts = [],
+			const parts = [],
 				$target = $( e.target );
 			if ( e.which === OO.ui.MouseButtons.LEFT ) {
 				// eslint-disable-next-line no-jquery/no-class-state

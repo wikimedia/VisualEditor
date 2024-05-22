@@ -22,16 +22,16 @@ ve.ce.nodeFactory.register( ve.ce.LeafNodeStub );
 /* Tests */
 
 QUnit.test( 'splitOnEnter', ( assert ) => {
-	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
+	const node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
 	assert.strictEqual( node.splitOnEnter(), false );
 } );
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
-	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
+	const node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
 	assert.strictEqual( node.canHaveChildren(), false );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
-	var node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
+	const node = new ve.ce.LeafNodeStub( new ve.dm.LeafNodeStub() );
 	assert.strictEqual( node.canHaveChildrenNotContent(), false );
 } );

@@ -35,7 +35,7 @@ OO.inheritClass( ve.ui.CommandHelpRegistry, OO.Registry );
  * @param {string[]} [details.sequences] Symbolic names of sequences, if this is a sequence, not a trigger
  */
 ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelpName, details ) {
-	var existingCommand = this.registry[ commandHelpName ];
+	const existingCommand = this.registry[ commandHelpName ];
 	if ( existingCommand ) {
 		if ( details.sequences ) {
 			details = ve.copy( details );
@@ -44,12 +44,12 @@ ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelp
 		details = ve.extendObject( existingCommand, details );
 	}
 
-	var platform = ve.getSystemPlatform(),
+	const platform = ve.getSystemPlatform(),
 		platformKey = platform === 'mac' ? 'mac' : 'pc';
 
 	if ( details.shortcuts ) {
-		for ( var i = 0; i < details.shortcuts.length; i++ ) {
-			var shortcut = details.shortcuts[ i ];
+		for ( let i = 0; i < details.shortcuts.length; i++ ) {
+			const shortcut = details.shortcuts[ i ];
 			if ( ve.isPlainObject( shortcut ) ) {
 				details.shortcuts[ i ] = shortcut[ platformKey ];
 			}
@@ -68,8 +68,8 @@ ve.ui.CommandHelpRegistry.prototype.register = function ( groupName, commandHelp
  * @return {Object} Commands associated with the group
  */
 ve.ui.CommandHelpRegistry.prototype.lookupByGroup = function ( groupName ) {
-	var matches = {};
-	for ( var commandHelpName in this.registry ) {
+	const matches = {};
+	for ( const commandHelpName in this.registry ) {
 		if ( groupName === this.registry[ commandHelpName ].group ) {
 			matches[ commandHelpName ] = this.registry[ commandHelpName ];
 		}

@@ -36,7 +36,7 @@ ve.ui.BlockquoteAction.static.methods = [ 'wrap', 'unwrap', 'toggle' ];
  * @return {boolean} Current selection is wrapped in a blockquote
  */
 ve.ui.BlockquoteAction.prototype.isWrapped = function () {
-	var fragment = this.surface.getModel().getFragment();
+	const fragment = this.surface.getModel().getFragment();
 	return fragment.hasMatchingAncestor( 'blockquote' );
 };
 
@@ -55,21 +55,21 @@ ve.ui.BlockquoteAction.prototype.toggle = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.BlockquoteAction.prototype.wrap = function () {
-	var surfaceModel = this.surface.getModel(),
+	const surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
 		return false;
 	}
 
-	var fragment = surfaceModel.getFragment( null, true );
+	let fragment = surfaceModel.getFragment( null, true );
 	// Trim the selection range to the range of leaf nodes in the selection,
 	// to avoid covering whole nodes where only start/end tag was selected.
 	// For example:
 	//     <p>asdf</p><p>qwer</p>   -->   <p>asdf</p><p>qwer</p>
 	//        ^^^^^^^^^^^                    ^^^^
-	var leaves = fragment.getSelectedLeafNodes();
-	var leavesRange = new ve.Range(
+	const leaves = fragment.getSelectedLeafNodes();
+	const leavesRange = new ve.Range(
 		leaves[ 0 ].getRange().start,
 		leaves[ leaves.length - 1 ].getRange().end
 	);
@@ -97,7 +97,7 @@ ve.ui.BlockquoteAction.prototype.wrap = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.BlockquoteAction.prototype.unwrap = function () {
-	var surfaceModel = this.surface.getModel(),
+	const surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
@@ -108,14 +108,14 @@ ve.ui.BlockquoteAction.prototype.unwrap = function () {
 		return false;
 	}
 
-	var fragment = surfaceModel.getFragment( null, true );
+	let fragment = surfaceModel.getFragment( null, true );
 	// Trim the selection range to the range of leaf nodes in the selection,
 	// to avoid covering whole nodes where only start/end tag was selected.
 	// For example:
 	//     <bq><p>asdf</p></bq><p>qwer</p>   -->   <bq><p>asdf</p></bq><p>qwer</p>
 	//            ^^^^^^^^^^^^^^^^                        ^^^^
-	var leaves = fragment.getSelectedLeafNodes();
-	var leavesRange = new ve.Range(
+	const leaves = fragment.getSelectedLeafNodes();
+	const leavesRange = new ve.Range(
 		leaves[ 0 ].getRange().start,
 		leaves[ leaves.length - 1 ].getRange().end
 	);

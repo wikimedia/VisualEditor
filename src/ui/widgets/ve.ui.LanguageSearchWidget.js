@@ -68,9 +68,9 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
 
 	this.filteredLanguageResultWidgets = [];
 
-	for ( var i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
-		var languageResult = this.languageResultWidgets[ i ];
-		var data = languageResult.getData();
+	for ( let i = 0, iLen = this.languageResultWidgets.length; i < iLen; i++ ) {
+		const languageResult = this.languageResultWidgets[ i ];
+		const data = languageResult.getData();
 		if ( availableLanguages.indexOf( data.code ) !== -1 ) {
 			this.filteredLanguageResultWidgets.push( languageResult );
 		}
@@ -81,7 +81,7 @@ ve.ui.LanguageSearchWidget.prototype.setAvailableLanguages = function ( availabl
  * Update search results from current query
  */
 ve.ui.LanguageSearchWidget.prototype.addResults = function () {
-	var matchProperties = [ 'name', 'autonym', 'code' ],
+	const matchProperties = [ 'name', 'autonym', 'code' ],
 		query = this.query.getValue().trim(),
 		compare = new Intl.Collator( this.lang, { sensitivity: 'base' } ).compare,
 		hasQuery = !!query.length,
@@ -89,12 +89,12 @@ ve.ui.LanguageSearchWidget.prototype.addResults = function () {
 
 	this.results.clearItems();
 
-	for ( var i = 0, iLen = this.filteredLanguageResultWidgets.length; i < iLen; i++ ) {
-		var languageResult = this.filteredLanguageResultWidgets[ i ];
-		var data = languageResult.getData();
-		var matchedProperty = null;
+	for ( let i = 0, iLen = this.filteredLanguageResultWidgets.length; i < iLen; i++ ) {
+		const languageResult = this.filteredLanguageResultWidgets[ i ];
+		const data = languageResult.getData();
+		let matchedProperty = null;
 
-		for ( var j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
+		for ( let j = 0, jLen = matchProperties.length; j < jLen; j++ ) {
 			if ( data[ matchProperties[ j ] ] && compare( data[ matchProperties[ j ] ].slice( 0, query.length ), query ) === 0 ) {
 				matchedProperty = matchProperties[ j ];
 				break;

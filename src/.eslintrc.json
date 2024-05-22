@@ -21,6 +21,7 @@
 		"no-jquery/no-visibility": "error",
 		"max-len": "off",
 		"no-var": "off",
+		"prefer-const": "off",
 		"prefer-arrow-callback": "error",
 		"implicit-arrow-linebreak": "error",
 		"arrow-body-style": "error"

@@ -86,7 +86,7 @@ ve.ui.Tool.static.getCommandName = function () {
  * @return {ve.ui.Command|null|undefined} Undefined means command not found, null means no command set
  */
 ve.ui.Tool.static.getCommand = function ( surface ) {
-	var commandName = this.getCommandName();
+	const commandName = this.getCommandName();
 	if ( commandName === null ) {
 		return null;
 	}
@@ -102,7 +102,7 @@ ve.ui.Tool.static.getCommand = function ( surface ) {
  * @param {Object|null} direction Context direction with 'inline' & 'block' properties
  */
 ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
-	var command = this.getCommand();
+	const command = this.getCommand();
 	if ( command !== null ) {
 		this.setDisabled(
 			!command || !fragment || !command.isExecutable( fragment ) ||
@@ -119,7 +119,7 @@ ve.ui.Tool.prototype.onUpdateState = function ( fragment ) {
  * @inheritdoc
  */
 ve.ui.Tool.prototype.onSelect = function () {
-	var contextClosePromise,
+	let contextClosePromise,
 		command = this.getCommand(),
 		surface = this.toolbar.getSurface();
 

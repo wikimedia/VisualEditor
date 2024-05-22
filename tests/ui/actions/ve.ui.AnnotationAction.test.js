@@ -9,7 +9,7 @@ QUnit.module( 've.ui.AnnotationAction' );
 /* Tests */
 
 QUnit.test( 'toggle', ( assert ) => {
-	var newBold = { type: 'textStyle/bold' },
+	const newBold = { type: 'textStyle/bold' },
 		html = '<p>Foo<b>bar</b><strong>baz</strong><i>quux</i> white\u3000space</p>',
 		cases = [
 			{

@@ -32,14 +32,14 @@ OO.mixinClass( ve.BranchNodeStub, ve.BranchNode );
 /* Tests */
 
 QUnit.test( 'getChildren', ( assert ) => {
-	var node1 = new ve.BranchNodeStub( 'node1' ),
+	const node1 = new ve.BranchNodeStub( 'node1' ),
 		node2 = new ve.BranchNodeStub( 'node2', [ node1 ] );
 	assert.deepEqual( node1.getChildren(), [] );
 	assert.deepEqual( node2.getChildren(), [ node1 ] );
 } );
 
 QUnit.test( 'indexOf', ( assert ) => {
-	var node1 = new ve.BranchNodeStub( 'node1' ),
+	const node1 = new ve.BranchNodeStub( 'node1' ),
 		node2 = new ve.BranchNodeStub( 'node2' ),
 		node3 = new ve.BranchNodeStub( 'node3' ),
 		node4 = new ve.BranchNodeStub( 'node4', [ node1, node2, node3 ] );
@@ -50,7 +50,7 @@ QUnit.test( 'indexOf', ( assert ) => {
 } );
 
 QUnit.test( 'setDocument', ( assert ) => {
-	var log = [],
+	const log = [],
 		doc = new ve.Document( new ve.BranchNodeStub( 'root' ) ),
 		list = new ve.BranchNodeStub( 'list', [
 			new ve.BranchNodeStub( 'listItem1', [

@@ -7,7 +7,7 @@
 // Extend QUnit.module to provide a fixture element. This used to be in tests/index.html, but
 // dynamic test runners like Karma build their own web page.
 ( function ( QUnit ) {
-	var origModule = QUnit.module;
+	const origModule = QUnit.module;
 
 	QUnit.dump.maxDepth = 10;
 
@@ -26,7 +26,7 @@
 				}
 			},
 			afterEach: function () {
-				var res;
+				let res;
 				if ( localEnv.afterEach ) {
 					res = localEnv.afterEach.apply( this, arguments );
 				}

@@ -31,7 +31,7 @@ OO.inheritClass( ve.dm.NodeFactory, ve.dm.ModelFactory );
  * @throws {Error} Unknown node type
  */
 ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
-	var element = { type: type };
+	const element = { type: type };
 	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		attributes = ve.extendObject( {}, this.registry[ type ].static.defaultAttributes, attributes );
 		if ( !ve.isEmptyObject( attributes ) ) {
@@ -95,7 +95,7 @@ ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
 	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		// If childNodeTypes is null any child is allowed, if it's an array of at least one element
 		// than at least one kind of node is allowed
-		var types = this.registry[ type ].static.childNodeTypes;
+		const types = this.registry[ type ].static.childNodeTypes;
 		return types === null || ( Array.isArray( types ) && types.length > 0 );
 	}
 	throw new Error( 'Unknown node type: ' + type );
@@ -199,9 +199,9 @@ ve.dm.NodeFactory.prototype.canNodeTakeAnnotation = function ( type, annotation 
 	if ( !Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
 		throw new Error( 'Unknown node type: ' + type );
 	}
-	var disallowedList = this.registry[ type ].static.disallowedAnnotationTypes;
+	const disallowedList = this.registry[ type ].static.disallowedAnnotationTypes;
 
-	for ( var i = 0, len = disallowedList.length; i < len; i++ ) {
+	for ( let i = 0, len = disallowedList.length; i < len; i++ ) {
 		if ( annotation instanceof ve.dm.annotationFactory.lookup( disallowedList[ i ] ) ) {
 			return false;
 		}

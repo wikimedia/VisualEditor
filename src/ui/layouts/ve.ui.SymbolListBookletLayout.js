@@ -37,8 +37,8 @@ OO.inheritClass( ve.ui.SymbolListBookletLayout, OO.ui.BookletLayout );
  * @param {Object} symbolData
  */
 ve.ui.SymbolListBookletLayout.prototype.setSymbolData = function ( symbolData ) {
-	var pages = [];
-	for ( var category in symbolData ) {
+	const pages = [];
+	for ( const category in symbolData ) {
 		pages.push(
 			new ve.ui.SymbolListPage( category, symbolData[ category ] )
 		);
@@ -57,7 +57,7 @@ ve.ui.SymbolListBookletLayout.prototype.setSymbolData = function ( symbolData ) 
  * @param {jQuery.Event} e Mouse click event
  */
 ve.ui.SymbolListBookletLayout.prototype.onListClick = function ( e ) {
-	var symbol = $( e.target ).data( 'symbol' );
+	const symbol = $( e.target ).data( 'symbol' );
 
 	if ( symbol ) {
 		this.emit( 'choose', symbol );

@@ -36,12 +36,12 @@ ve.dm.DefinitionListItemNode.static.defaultAttributes = {
 ve.dm.DefinitionListItemNode.static.matchTagNames = [ 'dt', 'dd' ];
 
 ve.dm.DefinitionListItemNode.static.toDataElement = function ( domElements ) {
-	var style = domElements[ 0 ].nodeName.toLowerCase() === 'dt' ? 'term' : 'definition';
+	const style = domElements[ 0 ].nodeName.toLowerCase() === 'dt' ? 'term' : 'definition';
 	return { type: this.name, attributes: { style: style } };
 };
 
 ve.dm.DefinitionListItemNode.static.toDomElements = function ( dataElement, doc ) {
-	var tag = dataElement.attributes && dataElement.attributes.style === 'term' ? 'dt' : 'dd';
+	const tag = dataElement.attributes && dataElement.attributes.style === 'term' ? 'dt' : 'dd';
 	return [ doc.createElement( tag ) ];
 };
 

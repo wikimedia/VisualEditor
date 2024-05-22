@@ -36,24 +36,24 @@ ve.dm.CheckListItemNode.static.matchRdfaTypes = [ 've:checkList' ];
 ve.dm.CheckListItemNode.static.handlesOwnChildren = true;
 
 ve.dm.CheckListItemNode.static.toDataElement = function ( domElements, converter ) {
-	var checked = domElements[ 0 ].hasAttribute( 'data-checked' ) ||
+	const checked = domElements[ 0 ].hasAttribute( 'data-checked' ) ||
 		// Old HTML format used the invalid attribute "checked"
 		domElements[ 0 ].hasAttribute( 'checked' );
-	var element = { type: this.name, attributes: { checked: checked } };
+	const element = { type: this.name, attributes: { checked: checked } };
 	return converter.getDataFromDomClean( domElements[ 0 ], element );
 };
 
 ve.dm.CheckListItemNode.static.toDomElements = function ( data, doc, converter ) {
-	var dataElement = data[ 0 ];
-	var listItem = doc.createElement( 'li' );
+	const dataElement = data[ 0 ];
+	const listItem = doc.createElement( 'li' );
 	listItem.setAttribute( 'rel', 've:checkList' );
 	if ( dataElement.attributes.checked ) {
 		listItem.setAttribute( 'data-checked', 'checked' );
 	}
 
-	var contents = data.slice( 1, -1 );
+	const contents = data.slice( 1, -1 );
 	if ( contents.length ) {
-		var wrapper = doc.createElement( 'div' );
+		const wrapper = doc.createElement( 'div' );
 		converter.getDomSubtreeFromData( contents, wrapper );
 		while ( wrapper.firstChild ) {
 			listItem.appendChild( wrapper.firstChild );
@@ -63,8 +63,8 @@ ve.dm.CheckListItemNode.static.toDomElements = function ( data, doc, converter )
 	// Formatting for external paste / preview
 	// * Hide the bullet list
 	// * Add a unicode checkbox to the text
-	var checkboxText = document.createTextNode( dataElement.attributes.checked ? '☑' : '☐' );
-	var checkbox;
+	const checkboxText = document.createTextNode( dataElement.attributes.checked ? '☑' : '☐' );
+	let checkbox;
 	if ( converter.isForParser() ) {
 		checkbox = checkboxText;
 	} else {
@@ -75,7 +75,7 @@ ve.dm.CheckListItemNode.static.toDomElements = function ( data, doc, converter )
 	}
 
 	// The first child should be the wrapper paragraph
-	var textContainer = listItem.firstChild.nodeType === Node.TEXT_NODE ? listItem : listItem.firstChild;
+	const textContainer = listItem.firstChild.nodeType === Node.TEXT_NODE ? listItem : listItem.firstChild;
 	textContainer.insertBefore( document.createTextNode( ' ' ), textContainer.firstChild );
 	textContainer.insertBefore( checkbox, textContainer.firstChild );
 

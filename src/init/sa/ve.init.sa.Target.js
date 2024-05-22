@@ -52,7 +52,7 @@ OO.inheritClass( ve.init.sa.Target, ve.init.Target );
  */
 ve.init.sa.Target.prototype.addSurface = function () {
 	// Parent method
-	var surface = ve.init.sa.Target.super.prototype.addSurface.apply( this, arguments );
+	const surface = ve.init.sa.Target.super.prototype.addSurface.apply( this, arguments );
 
 	this.$element.append( $( '<div>' ).addClass( 've-init-sa-target-surfaceWrapper' ).append( surface.$element ) );
 	if ( !this.getSurface() ) {

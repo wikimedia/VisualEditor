@@ -69,7 +69,7 @@ OO.inheritClass( ve.ui.Toolbar, OO.ui.Toolbar );
  * @fires ve.ui.Toolbar#resize
  */
 ve.ui.Toolbar.prototype.setup = function ( groups, surface ) {
-	var oldSurface,
+	let oldSurface,
 		surfaceChange = false;
 
 	this.detach();
@@ -136,12 +136,12 @@ ve.ui.Toolbar.prototype.isToolAvailable = function ( name ) {
 		return false;
 	}
 	// Check the tool's command is available on the surface
-	var tool = this.getToolFactory().lookup( name );
+	const tool = this.getToolFactory().lookup( name );
 	if ( !tool ) {
 		return false;
 	}
 	// FIXME should use .static.getCommandName(), but we have tools that aren't ve.ui.Tool subclasses :(
-	var commandName = tool.static.commandName;
+	const commandName = tool.static.commandName;
 	return !commandName || this.getCommands().indexOf( commandName ) !== -1;
 };
 
@@ -178,16 +178,16 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		return;
 	}
 
-	var fragment = this.getSurface().getModel().getFragment();
+	const fragment = this.getSurface().getModel().getFragment();
 
 	// Update context direction for button icons UI.
 	// By default, inline and block directions are the same.
 	// If no context direction is available, use document model direction.
-	var dirInline = this.surface.getView().getSelectionDirectionality();
-	var dirBlock = dirInline;
+	let dirInline = this.surface.getView().getSelectionDirectionality();
+	const dirBlock = dirInline;
 
 	// 'inline' direction is different only if we are inside a language annotation
-	var fragmentAnnotation = fragment.getAnnotations();
+	const fragmentAnnotation = fragment.getAnnotations();
 	if ( fragmentAnnotation.hasAnnotationWithName( 'meta/language' ) ) {
 		dirInline = fragmentAnnotation.getAnnotationsByName( 'meta/language' ).get( 0 ).getAttribute( 'dir' );
 	}
@@ -210,7 +210,7 @@ ve.ui.Toolbar.prototype.updateToolState = function () {
 		this.contextDirection.block = dirBlock;
 	}
 
-	var activeDialogs = [
+	const activeDialogs = [
 		this.surface.getDialogs(),
 		this.surface.getContext().getInspectors(),
 		this.surface.getToolbarDialogs()
@@ -247,7 +247,7 @@ ve.ui.Toolbar.prototype.getCommands = function () {
  * @inheritdoc
  */
 ve.ui.Toolbar.prototype.getToolAccelerator = function ( name ) {
-	var messages = ve.ui.triggerRegistry.getMessages( name );
+	const messages = ve.ui.triggerRegistry.getMessages( name );
 
 	return messages ? messages.join( ', ' ) : undefined;
 };

@@ -36,7 +36,7 @@ OO.inheritClass( ve.ui.HistoryCommand, ve.ui.Command );
  * @inheritdoc
  */
 ve.ui.HistoryCommand.prototype.isExecutable = function ( fragment ) {
-	var surface = fragment.getSurface();
+	const surface = fragment.getSurface();
 
 	// Parent method
 	return ve.ui.HistoryCommand.super.prototype.isExecutable.apply( this, arguments ) &&

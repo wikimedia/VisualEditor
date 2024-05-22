@@ -60,7 +60,7 @@ ve.ui.NodeWindow.prototype.isEditing = function () {
  * @return {ve.dm.Node|null} Selected node
  */
 ve.ui.NodeWindow.prototype.getSelectedNode = function () {
-	var modelClasses = this.constructor.static.modelClasses,
+	const modelClasses = this.constructor.static.modelClasses,
 		selectedNode = this.getFragment().getSelectedNode();
 
 	if (

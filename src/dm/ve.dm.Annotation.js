@@ -105,7 +105,7 @@ ve.dm.Annotation.static.toDomElements = null;
  * @return {Object} An object containing a subset of the annotation's properties
  */
 ve.dm.Annotation.prototype.getComparableObject = function () {
-	var hashObject = this.getHashObject();
+	const hashObject = this.getHashObject();
 	delete hashObject.originalDomElementsHash;
 	return hashObject;
 };
@@ -119,14 +119,14 @@ ve.dm.Annotation.prototype.getComparableObject = function () {
  * @return {Object} An object all HTML attributes except data-parsoid & RESTBase IDs
  */
 ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
-	var domElements = this.store && this.getOriginalDomElements( this.store );
+	const domElements = this.store && this.getOriginalDomElements( this.store );
 
 	if ( domElements && domElements[ 0 ] ) {
-		var comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
+		const comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
 		delete comparableAttributes[ 'data-parsoid' ];
 
 		if ( comparableAttributes.id ) {
-			var metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
+			const metadataIdRegExp = ve.init.platform.getMetadataIdRegExp();
 			if ( metadataIdRegExp && metadataIdRegExp.test( comparableAttributes.id ) ) {
 				delete comparableAttributes.id;
 			}
@@ -147,7 +147,7 @@ ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
  * @return {Object} An object containing a subset of the annotation's properties and HTML attributes
  */
 ve.dm.Annotation.prototype.getComparableObjectForSerialization = function () {
-	var object = this.getComparableObject(),
+	const object = this.getComparableObject(),
 		htmlAttributes = this.getComparableHtmlAttributes();
 
 	if ( !ve.isEmptyObject( htmlAttributes ) ) {

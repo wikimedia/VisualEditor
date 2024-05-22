@@ -110,7 +110,7 @@ ve.dm.LinearData.prototype.setData = function ( offset, value ) {
  */
 ve.dm.LinearData.prototype.modifyData = function ( offset, modify ) {
 	// Unfreeze object by creating a new copy
-	var newItem = ve.copy( this.getData( offset ) );
+	const newItem = ve.copy( this.getData( offset ) );
 	// Modify via callback
 	modify( newItem );
 	// Insert into linear model, re-freezing it
@@ -228,14 +228,14 @@ ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data )
  * @return {Array} Slice or copy of data
  */
 ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
-	var end,
+	let end,
 		start = 0,
 		length = this.getLength();
 	if ( range !== undefined ) {
 		start = Math.max( 0, Math.min( length, range.start ) );
 		end = Math.max( 0, Math.min( length, range.end ) );
 	}
-	var data = this.slice( start, end );
+	const data = this.slice( start, end );
 	// Return either the slice or a deep copy of the slice
 	return deep ? ve.copy( data ) : data;
 };

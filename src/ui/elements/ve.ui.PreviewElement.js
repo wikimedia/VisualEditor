@@ -89,7 +89,7 @@ ve.ui.PreviewElement.prototype.beforeAppend = function ( element ) {
  * Doesn't use jQuery to avoid document switching performance bug
  */
 ve.ui.PreviewElement.prototype.replaceWithModelDom = function () {
-	var htmlDocument = ve.dm.converter.getDomFromNode( this.model, ve.dm.Converter.static.PREVIEW_MODE ),
+	const htmlDocument = ve.dm.converter.getDomFromNode( this.model, ve.dm.Converter.static.PREVIEW_MODE ),
 		body = htmlDocument.body,
 		element = this.$element[ 0 ];
 

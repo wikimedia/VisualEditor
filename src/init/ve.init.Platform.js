@@ -177,7 +177,7 @@ ve.init.Platform.prototype.createConflictableStorage = function ( safeStorage ) 
 };
 
 ve.init.Platform.prototype.createLocalStorage = function () {
-	var localStorage;
+	let localStorage;
 
 	try {
 		localStorage = window.localStorage;
@@ -187,7 +187,7 @@ ve.init.Platform.prototype.createLocalStorage = function () {
 };
 
 ve.init.Platform.prototype.createSessionStorage = function () {
-	var sessionStorage;
+	let sessionStorage;
 
 	try {
 		sessionStorage = window.sessionStorage;
@@ -378,15 +378,15 @@ ve.init.Platform.prototype.getInitializedPromise = function () {
  * @return {Object[]}
  */
 ve.init.Platform.prototype.processSpecialCharSymbols = function ( symbols ) {
-	var symbolList;
+	let symbolList;
 	if ( Array.isArray( symbols ) ) {
 		symbolList = ve.copy( symbols );
 	} else {
 		symbolList = [];
 		Object.keys( symbols ).forEach( ( key ) => {
-			var val = symbols[ key ];
+			const val = symbols[ key ];
 			if ( typeof val === 'object' ) {
-				var symbolData = ve.copy( val );
+				const symbolData = ve.copy( val );
 				if ( !Object.prototype.hasOwnProperty.call( symbolData, 'label' ) ) {
 					symbolData.label = key;
 				}
@@ -431,7 +431,7 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 		return null;
 	}
 
-	var charsObj = {},
+	const charsObj = {},
 		groups = [ 'accents', 'mathematical', 'symbols' ];
 
 	groups.forEach( ( group ) => {
@@ -439,7 +439,7 @@ ve.init.Platform.prototype.fetchSpecialCharList = function () {
 		// * visualeditor-specialcharacter-group-set-accents
 		// * visualeditor-specialcharacter-group-set-mathematical
 		// * visualeditor-specialcharacter-group-set-symbols
-		var symbols = tryParseJSON( ve.msg( 'visualeditor-specialcharacter-group-set-' + group ) );
+		const symbols = tryParseJSON( ve.msg( 'visualeditor-specialcharacter-group-set-' + group ) );
 		if ( symbols ) {
 			charsObj[ group ] = {
 				// The following messages are used here:

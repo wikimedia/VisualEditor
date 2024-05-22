@@ -15,13 +15,13 @@
  */
 ve.sanitizeHtml = function ( html, returnDocument ) {
 	// TODO: Move MW-specific rules to ve-mw
-	var addTags = [ 'figure-inline' ],
+	const addTags = [ 'figure-inline' ],
 		addAttrs = [
 			'srcset',
 			// RDFa
 			'about', 'rel', 'resource', 'property', 'content', 'datatype', 'typeof'
 		];
-	var options = {
+	const options = {
 		ADD_TAGS: addTags,
 		ADD_ATTR: addAttrs,
 		ADD_URI_SAFE_ATTR: addAttrs,

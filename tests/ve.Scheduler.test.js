@@ -26,7 +26,7 @@ ve.TestScheduler.prototype.now = function () {
 /* Tests */
 
 QUnit.test( 'Call with no real async', ( assert ) => {
-	var scheduler = new ve.TestScheduler(),
+	const scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async();
 
@@ -43,7 +43,7 @@ QUnit.test( 'Call with no real async', ( assert ) => {
 } );
 
 QUnit.test( 'Call with delay', ( assert ) => {
-	var scheduler = new ve.TestScheduler(),
+	let scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async(),
 		delayed = false;
@@ -65,7 +65,7 @@ QUnit.test( 'Call with delay', ( assert ) => {
 } );
 
 QUnit.test( 'Test that throws an exception', ( assert ) => {
-	var scheduler = new ve.TestScheduler(),
+	const scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async();
 
@@ -86,7 +86,7 @@ QUnit.test( 'Test that throws an exception', ( assert ) => {
 } );
 
 QUnit.test( 'Test that never succeeds', ( assert ) => {
-	var scheduler = new ve.TestScheduler(),
+	const scheduler = new ve.TestScheduler(),
 		begun = assert.async(),
 		done = assert.async();
 

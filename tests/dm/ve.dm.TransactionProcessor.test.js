@@ -9,7 +9,7 @@ QUnit.module( 've.dm.TransactionProcessor' );
 /* Tests */
 
 QUnit.test( 'commit', ( assert ) => {
-	var store = ve.dm.example.createExampleDocument().getStore(),
+	const store = ve.dm.example.createExampleDocument().getStore(),
 		cases = {
 			'no operations': {
 				calls: [],
@@ -530,10 +530,10 @@ QUnit.test( 'commit', ( assert ) => {
 
 	// Run tests
 	for ( var msg in cases ) {
-		var caseItem = cases[ msg ];
+		const caseItem = cases[ msg ];
 		// Generate original document
-		var originalData = caseItem.data || ve.dm.example.data;
-		var originalDoc = new ve.dm.Document(
+		const originalData = caseItem.data || ve.dm.example.data;
+		const originalDoc = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
 		originalDoc.buildNodeTree();
@@ -542,9 +542,9 @@ QUnit.test( 'commit', ( assert ) => {
 		);
 		testDoc.buildNodeTree();
 
-		var txBuilder = new ve.dm.TransactionBuilder();
+		const txBuilder = new ve.dm.TransactionBuilder();
 		var tx = null;
-		for ( var i = 0; i < caseItem.calls.length; i++ ) {
+		for ( let i = 0; i < caseItem.calls.length; i++ ) {
 			// Some calls need the document as its first argument
 			if ( /^(pushReplacement$|new)/.test( caseItem.calls[ i ][ 0 ] ) ) {
 				caseItem.calls[ i ].splice( 1, 0, testDoc );
@@ -562,9 +562,9 @@ QUnit.test( 'commit', ( assert ) => {
 
 		if ( 'expected' in caseItem ) {
 			// Generate expected document
-			var expectedData = ve.copy( originalData );
+			const expectedData = ve.copy( originalData );
 			caseItem.expected( expectedData );
-			var expectedDoc = new ve.dm.Document(
+			const expectedDoc = new ve.dm.Document(
 				ve.dm.example.preprocessAnnotations( expectedData, store )
 			);
 			expectedDoc.buildNodeTree();
@@ -573,8 +573,8 @@ QUnit.test( 'commit', ( assert ) => {
 				// Set up event handlers
 				// eslint-disable-next-line no-loop-func
 				caseItem.events.forEach( ( event ) => {
-					var node = testDoc.getDocumentNode();
-					for ( var j = 1; j < event.length; j++ ) {
+					let node = testDoc.getDocumentNode();
+					for ( let j = 1; j < event.length; j++ ) {
 						node = node.getChildren()[ event[ j ] ];
 					}
 					node.on( event[ 0 ], ( function ( obj ) {
@@ -634,15 +634,15 @@ QUnit.test( 'commit', ( assert ) => {
 
 // TODO: Fix the code so undoing unbold roundtrips properly, then fix this test to reflect that
 QUnit.test( 'undo clear annotation', ( assert ) => {
-	var origData = [
+	const origData = [
 		{ type: 'paragraph' },
 		[ 'x', [ ve.dm.example.boldHash, ve.dm.example.italicHash ] ],
 		{ type: '/paragraph' }
 	];
-	var doc = ve.dm.example.createExampleDocumentFromData( origData );
+	const doc = ve.dm.example.createExampleDocumentFromData( origData );
 	doc.store.hash( ve.dm.example.italic );
 	doc.store.hash( ve.dm.example.bold );
-	var tx = ve.dm.TransactionBuilder.static.newFromAnnotation(
+	const tx = ve.dm.TransactionBuilder.static.newFromAnnotation(
 		doc,
 		new ve.Range( 1, 2 ),
 		'clear',

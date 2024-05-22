@@ -9,7 +9,7 @@ QUnit.module( 've.ui.ContentAction' );
 /* Tests */
 
 QUnit.test( 'insert/remove/select/selectAll', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			rangeOrSelection: new ve.Range( 3, 4 ),
 			method: 'insert',

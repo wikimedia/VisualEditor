@@ -45,7 +45,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.paused = false;
 
 	// SocketIO events
-	var conn;
+	let conn;
 	if ( config.peerConnection ) {
 		conn = {
 			peerConnection: config.peerConnection,
@@ -64,7 +64,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 			}
 		};
 		conn.peerConnection.on( 'data', ( data ) => {
-			var type = data.type;
+			const type = data.type;
 			if ( typeof type !== 'string' ) {
 				throw new Error( 'Expected .type in <' + data + '>' );
 			}
@@ -73,8 +73,8 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 			} );
 		} );
 	} else {
-		var path = ( config.server || '' );
-		var options = {
+		const path = ( config.server || '' );
+		const options = {
 			query: {
 				docName: this.documentId,
 				authorId: this.getAuthorId() || '',
@@ -102,7 +102,7 @@ ve.dm.SurfaceSynchronizer = function VeDmSurfaceSynchronizer( surface, documentI
 	this.conn.on( 'authorChange', this.onAuthorChange.bind( this ) );
 	this.conn.on( 'authorDisconnect', this.onAuthorDisconnect.bind( this ) );
 
-	var authorData = ve.init.platform.sessionStorage.getObject( 've-collab-author' );
+	const authorData = ve.init.platform.sessionStorage.getObject( 've-collab-author' );
 	if ( authorData ) {
 		this.changeAuthor( authorData );
 	} else if ( config.defaultName ) {
@@ -193,7 +193,7 @@ ve.dm.SurfaceSynchronizer.prototype.resumeChanges = function () {
 	try {
 		// Don't cache length, as it's not inconceivable acceptChange could
 		// cause another change to arrive in some weird setup
-		for ( var i = 0; i < this.queuedChanges.length; i++ ) {
+		for ( let i = 0; i < this.queuedChanges.length; i++ ) {
 			this.acceptChange( this.queuedChanges[ i ] );
 		}
 	} finally {
@@ -209,7 +209,7 @@ ve.dm.SurfaceSynchronizer.prototype.resumeChanges = function () {
  * @inheritdoc
  */
 ve.dm.SurfaceSynchronizer.prototype.getChangeSince = function ( start, toSubmit ) {
-	var change = this.doc.getChangeSince( start ),
+	const change = this.doc.getChangeSince( start ),
 		selection = this.surface.getSelection();
 	if ( !selection.equals( this.lastSubmittedSelection ) ) {
 		change.selections[ this.getAuthorId() ] = selection;
@@ -248,7 +248,7 @@ ve.dm.SurfaceSynchronizer.prototype.sendChange = function ( backtrack, change ) 
  */
 ve.dm.SurfaceSynchronizer.prototype.applyChange = function ( change ) {
 	// Author selections are superseded by change.selections, so no need to translate them
-	for ( var authorId in change.selections ) {
+	for ( let authorId in change.selections ) {
 		authorId = +authorId;
 		delete this.authorSelections[ authorId ];
 	}
@@ -307,8 +307,8 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceHistory = function () {
 		// Ignore our own synchronization or initialization transactions
 		return;
 	}
-	var change = this.getChangeSince( this.sentLength, true );
-	var authorId = this.authorId;
+	const change = this.getChangeSince( this.sentLength, true );
+	const authorId = this.authorId;
 	// HACK annotate transactions with authorship information
 	// This relies on being able to access the transaction object by reference;
 	// we should probably set the author deeper in dm.Surface or dm.Document instead.
@@ -338,9 +338,9 @@ ve.dm.SurfaceSynchronizer.prototype.onSurfaceSelect = function () {
  * @fires ve.dm.SurfaceSynchronizer#authorSelect
  */
 ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelections, changeOrTx ) {
-	var change = changeOrTx instanceof ve.dm.Change ? changeOrTx : null,
+	const change = changeOrTx instanceof ve.dm.Change ? changeOrTx : null,
 		tx = changeOrTx instanceof ve.dm.Transaction ? changeOrTx : null;
-	for ( var authorId in newSelections ) {
+	for ( let authorId in newSelections ) {
 		authorId = +authorId;
 		if ( authorId === this.authorId ) {
 			continue;
@@ -424,7 +424,7 @@ ve.dm.SurfaceSynchronizer.prototype.saveSessionKey = function () {
 };
 
 ve.dm.SurfaceSynchronizer.prototype.loadSessionKey = function () {
-	var data = ve.init.platform.sessionStorage.getObject( 'visualeditor-session-key' );
+	const data = ve.init.platform.sessionStorage.getObject( 'visualeditor-session-key' );
 	if ( data && data.docName === this.documentId ) {
 		this.serverId = data.serverId;
 		this.setAuthorId( data.authorId );
@@ -445,14 +445,14 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
 		// Ignore attempt to initialize a second time
 		return;
 	}
-	for ( var authorId in data.authors ) {
+	for ( const authorId in data.authors ) {
 		this.onAuthorChange( {
 			authorId: +authorId,
 			authorData: data.authors[ authorId ]
 		} );
 	}
 	try {
-		var history = ve.dm.Change.static.deserialize( data.history );
+		const history = ve.dm.Change.static.deserialize( data.history );
 		this.acceptChange( history );
 	} catch ( e ) {
 		this.conn.disconnect();
@@ -481,7 +481,7 @@ ve.dm.SurfaceSynchronizer.prototype.onInitDoc = function ( data ) {
  * @param {Object} serializedChange Serialized ve.dm.Change that the server has applied
  */
 ve.dm.SurfaceSynchronizer.prototype.onNewChange = function ( serializedChange ) {
-	var change = ve.dm.Change.static.deserialize( serializedChange );
+	const change = ve.dm.Change.static.deserialize( serializedChange );
 	if ( this.paused ) {
 		this.queuedChanges.push( change );
 		return;

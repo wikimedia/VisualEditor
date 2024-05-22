@@ -173,9 +173,9 @@ ve.dm.AnnotationSet.prototype.containsHash = function ( storeHash ) {
  * @return {boolean} There is at least one annotation in set that is also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
-	var setHashes = set.getHashes(),
+	const setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
-	for ( var i = 0, length = setHashes.length; i < length; i++ ) {
+	for ( let i = 0, length = setHashes.length; i < length; i++ ) {
 		if ( thisHashes.indexOf( setHashes[ i ] ) !== -1 ) {
 			return true;
 		}
@@ -190,9 +190,9 @@ ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
  * @return {boolean} All annotations in set are also in the set
  */
 ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
-	var setHashes = set.getHashes(),
+	const setHashes = set.getHashes(),
 		thisHashes = this.getHashes();
-	for ( var i = 0, length = setHashes.length; i < length; i++ ) {
+	for ( let i = 0, length = setHashes.length; i < length; i++ ) {
 		if ( thisHashes.indexOf( setHashes[ i ] ) === -1 ) {
 			return false;
 		}
@@ -230,7 +230,7 @@ ve.dm.AnnotationSet.prototype.offsetOfHash = function ( storeHash ) {
  * @return {ve.dm.AnnotationSet|boolean} New set containing only the matching annotations
  */
 ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
-	var result;
+	let result;
 
 	if ( !returnBool ) {
 		result = this.clone();
@@ -239,9 +239,9 @@ ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
 		// a new hash set.
 		result.removeAll();
 	}
-	for ( var i = 0, length = this.getLength(); i < length; i++ ) {
-		var storeHash = this.getHash( i );
-		var annotation = this.getStore().value( storeHash );
+	for ( let i = 0, length = this.getLength(); i < length; i++ ) {
+		const storeHash = this.getHash( i );
+		const annotation = this.getStore().value( storeHash );
 		if ( callback( annotation ) ) {
 			if ( returnBool ) {
 				return true;
@@ -273,8 +273,8 @@ ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
  * @return {ve.dm.Annotation|null} First matching annotation
  */
 ve.dm.AnnotationSet.prototype.getComparable = function ( annotation ) {
-	for ( var i = 0, len = this.getLength(); i < len; i++ ) {
-		var ann = this.getStore().value( this.getHash( i ) );
+	for ( let i = 0, len = this.getLength(); i < len; i++ ) {
+		const ann = this.getStore().value( this.getHash( i ) );
 		if ( ann.compareTo( annotation ) ) {
 			return ann;
 		}
@@ -319,10 +319,10 @@ ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
  * @return {boolean} The annotations are the same
  */
 ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
-	var length = this.getHashes().length;
+	const length = this.getHashes().length;
 
 	if ( length === annotationSet.getLength() ) {
-		for ( var i = 0; i < length; i++ ) {
+		for ( let i = 0; i < length; i++ ) {
 			if ( !annotationSet.containsComparable( this.get( i ) ) ) {
 				return false;
 			}
@@ -356,12 +356,12 @@ ve.dm.AnnotationSet.prototype.withoutComparableSet = function ( set ) {
  * @return {boolean} The annotation sets are equal
  */
 ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
-	var ourHashes = this.getHashes(),
+	const ourHashes = this.getHashes(),
 		theirHashes = set.getHashes();
 	if ( ourHashes.length !== theirHashes.length ) {
 		return false;
 	}
-	for ( var i = 0, len = ourHashes.length; i < len; i++ ) {
+	for ( let i = 0, len = ourHashes.length; i < len; i++ ) {
 		if ( ourHashes[ i ] !== theirHashes[ i ] ) {
 			return false;
 		}
@@ -382,7 +382,7 @@ ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
  * @param {number} offset Offset to add the annotation at
  */
 ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
-	var storeHash = this.getStore().hash( annotation );
+	const storeHash = this.getStore().hash( annotation );
 	// Negative offset
 	if ( offset < 0 ) {
 		offset = this.getLength() + offset;
@@ -407,7 +407,7 @@ ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
  * @param {number} [offset] Offset at which to insert; defaults to the end of the set
  */
 ve.dm.AnnotationSet.prototype.addSet = function ( set, offset ) {
-	var hashes = this.getHashes();
+	const hashes = this.getHashes();
 	if ( offset === undefined ) {
 		offset = hashes.length;
 	}
@@ -460,7 +460,7 @@ ve.dm.AnnotationSet.prototype.removeAt = function ( offset ) {
  * @param {string} storeHash Store hash of annotation to remove
  */
 ve.dm.AnnotationSet.prototype.removeHash = function ( storeHash ) {
-	var offset = this.offsetOfHash( storeHash );
+	const offset = this.offsetOfHash( storeHash );
 	if ( offset !== -1 ) {
 		this.storeHashes.splice( offset, 1 );
 	}
@@ -474,7 +474,7 @@ ve.dm.AnnotationSet.prototype.removeHash = function ( storeHash ) {
  * @param {ve.dm.Annotation} annotation Annotation to remove
  */
 ve.dm.AnnotationSet.prototype.remove = function ( annotation ) {
-	var offset = this.offsetOf( annotation );
+	const offset = this.offsetOf( annotation );
 	if ( offset !== -1 ) {
 		this.storeHashes.splice( offset, 1 );
 	}
@@ -515,7 +515,7 @@ ve.dm.AnnotationSet.prototype.removeNotInSet = function ( set ) {
  * @return {ve.dm.AnnotationSet} Copy of the set with the order reversed.
  */
 ve.dm.AnnotationSet.prototype.reversed = function () {
-	var newSet = this.clone();
+	const newSet = this.clone();
 	newSet.storeHashes.reverse();
 	return newSet;
 };
@@ -529,7 +529,7 @@ ve.dm.AnnotationSet.prototype.reversed = function () {
  * @return {ve.dm.AnnotationSet} Set containing all annotations in the set as well as all annotations in set
  */
 ve.dm.AnnotationSet.prototype.mergeWith = function ( set ) {
-	var newSet = this.clone();
+	const newSet = this.clone();
 	newSet.addSet( set );
 	return newSet;
 };
@@ -541,7 +541,7 @@ ve.dm.AnnotationSet.prototype.mergeWith = function ( set ) {
  * @return {ve.dm.AnnotationSet} New set containing all annotations that are in the set but not in set
  */
 ve.dm.AnnotationSet.prototype.diffWith = function ( set ) {
-	var newSet = this.clone();
+	const newSet = this.clone();
 	newSet.removeSet( set );
 	return newSet;
 };
@@ -556,7 +556,7 @@ ve.dm.AnnotationSet.prototype.diffWith = function ( set ) {
  * @return {ve.dm.AnnotationSet} New set containing all annotations that are both in the set and in set
  */
 ve.dm.AnnotationSet.prototype.intersectWith = function ( set ) {
-	var newSet = this.clone();
+	const newSet = this.clone();
 	newSet.removeNotInSet( set );
 	return newSet;
 };

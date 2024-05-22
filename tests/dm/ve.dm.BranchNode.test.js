@@ -32,17 +32,17 @@ ve.dm.nodeFactory.register( ve.dm.BranchNodeStub );
 /* Tests */
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
-	var node = new ve.dm.BranchNodeStub();
+	const node = new ve.dm.BranchNodeStub();
 	assert.strictEqual( node.canHaveChildren(), true );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
-	var node = new ve.dm.BranchNodeStub();
+	const node = new ve.dm.BranchNodeStub();
 	assert.strictEqual( node.canHaveChildrenNotContent(), true );
 } );
 
 QUnit.test( 'setRoot', ( assert ) => {
-	var node1 = new ve.dm.BranchNodeStub(),
+	const node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( {}, [ node1 ] ),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node2 ] ),
 		node4 = new ve.dm.BranchNodeStub();
@@ -53,7 +53,7 @@ QUnit.test( 'setRoot', ( assert ) => {
 } );
 
 QUnit.test( 'setDocument', ( assert ) => {
-	var node1 = new ve.dm.BranchNodeStub(),
+	const node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( {}, [ node1 ] ),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node2 ] ),
 		node4 = new ve.dm.BranchNodeStub();
@@ -64,7 +64,7 @@ QUnit.test( 'setDocument', ( assert ) => {
 } );
 
 QUnit.test( 'push', ( assert ) => {
-	var node1 = new ve.dm.BranchNodeStub(),
+	const node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node1 ] );
 	node3.on( 'splice', () => {
@@ -76,7 +76,7 @@ QUnit.test( 'push', ( assert ) => {
 } );
 
 QUnit.test( 'pop', ( assert ) => {
-	var node1 = new ve.dm.BranchNodeStub(),
+	const node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node1, node2 ] );
 	node3.on( 'splice', () => {
@@ -88,7 +88,7 @@ QUnit.test( 'pop', ( assert ) => {
 } );
 
 QUnit.test( 'unshift', ( assert ) => {
-	var node1 = new ve.dm.BranchNodeStub(),
+	const node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node1 ] );
 	node3.on( 'splice', () => {
@@ -100,7 +100,7 @@ QUnit.test( 'unshift', ( assert ) => {
 } );
 
 QUnit.test( 'shift', ( assert ) => {
-	var node1 = new ve.dm.BranchNodeStub(),
+	const node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node1, node2 ] );
 	node3.on( 'splice', () => {
@@ -112,7 +112,7 @@ QUnit.test( 'shift', ( assert ) => {
 } );
 
 QUnit.test( 'splice', ( assert ) => {
-	var node1 = new ve.dm.BranchNodeStub(),
+	const node1 = new ve.dm.BranchNodeStub(),
 		node2 = new ve.dm.BranchNodeStub(),
 		node3 = new ve.dm.BranchNodeStub(),
 		node4 = new ve.dm.BranchNodeStub( {}, [ node1, node2 ] );

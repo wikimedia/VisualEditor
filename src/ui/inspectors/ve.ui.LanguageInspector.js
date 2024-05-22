@@ -37,7 +37,7 @@ ve.ui.LanguageInspector.static.modelClasses = [ ve.dm.LanguageAnnotation ];
  * @inheritdoc
  */
 ve.ui.LanguageInspector.prototype.getAnnotation = function () {
-	var lang = this.languageInput.getLang(),
+	const lang = this.languageInput.getLang(),
 		dir = this.languageInput.getDir();
 	return ( lang || dir ?
 		new ve.dm.LanguageAnnotation( {
@@ -76,7 +76,7 @@ ve.ui.LanguageInspector.prototype.initialize = function () {
 		dialogManager: this.manager.getSurface().getDialogs()
 	} );
 
-	var languageField = new OO.ui.FieldLayout( this.languageInput, {
+	const languageField = new OO.ui.FieldLayout( this.languageInput, {
 		align: 'left',
 		classes: [ 've-ui-languageInspector-languageField' ],
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-language' )

@@ -9,17 +9,17 @@ QUnit.module( 've.ui.FragmentInspector' );
 /* Tests */
 
 ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
-	var promise = Promise.resolve();
+	let promise = Promise.resolve();
 
 	surface.getView().showSelectionState = function () {};
 
 	cases.forEach( ( caseItem ) => {
 		promise = promise.then( () => surface.context.inspectors.getWindow( caseItem.name ).then( ( inspector ) => {
-			var surfaceModel = surface.getModel(),
+			const surfaceModel = surface.getModel(),
 				linearData = ve.copy( surfaceModel.getDocument().getFullData() );
 
 			surfaceModel.setLinearSelection( caseItem.range );
-			var setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
+			const setupData = ve.extendObject( { surface: surface, fragment: surfaceModel.getFragment() }, caseItem.setupData );
 			return inspector.setup( setupData ).then( () => inspector.ready( setupData ).then( () => {
 				if ( caseItem.input ) {
 					caseItem.input.call( inspector );
@@ -55,7 +55,7 @@ ve.test.utils.runFragmentInspectorTests = function ( surface, assert, cases ) {
 };
 
 QUnit.test( 'Different selections and inputs', ( assert ) => {
-	var done = assert.async(),
+	const done = assert.async(),
 		surface = ve.test.utils.createSurfaceFromHtml( ve.dm.example.singleLine`
 			<p>Foo <a href="bar">bar</a> baz  x</p>
 			<p><!-- comment --> comment</p>

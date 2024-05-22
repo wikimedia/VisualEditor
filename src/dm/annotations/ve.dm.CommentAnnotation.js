@@ -45,7 +45,7 @@ ve.dm.CommentAnnotation.static.toDomElements = function ( dataElement, doc, conv
 		// TODO: Return some nodes for preview?
 		return [];
 	} else {
-		var domElement = doc.createElement( 'span' );
+		const domElement = doc.createElement( 'span' );
 		domElement.setAttribute( 'rel', 've:CommentAnnotation' );
 		if ( dataElement.attributes.text ) {
 			domElement.setAttribute( 'data-text', dataElement.attributes.text );

@@ -107,7 +107,7 @@ ve.ui.CommandHelpDialog.prototype.initialize = function () {
 ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 	return ve.ui.CommandHelpDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( () => {
-			var surface = data.surface,
+			const surface = data.surface,
 				target = surface.getTarget(),
 				sequenceRegistry = surface.sequenceRegistry,
 				commandRegistry = surface.commandRegistry,
@@ -120,12 +120,12 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 			this.$container.empty();
 
 			commandGroupsOrder.forEach( ( groupName ) => {
-				var hasCommand = false;
-				var commandGroup = commandGroups[ groupName ];
-				var commands = this.constructor.static.sortedCommandsFromGroup( groupName, commandGroup.promote, commandGroup.demote );
-				var $list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
+				let hasCommand = false;
+				const commandGroup = commandGroups[ groupName ];
+				const commands = this.constructor.static.sortedCommandsFromGroup( groupName, commandGroup.promote, commandGroup.demote );
+				const $list = $( '<dl>' ).addClass( 've-ui-commandHelpDialog-list' );
 				commands.forEach( ( command ) => {
-					var triggerList;
+					let triggerList;
 					if ( command.trigger ) {
 						if (
 							!command.ignoreCommand && (
@@ -153,9 +153,9 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 						}
 					}
 
-					var hasShortcut = false;
+					let hasShortcut = false;
 
-					var $shortcut = $( '<dt>' );
+					const $shortcut = $( '<dt>' );
 					triggerList.forEach( ( trigger ) => {
 						// Append an array of jQuery collections from buildKeyNode
 						// eslint-disable-next-line no-jquery/no-append-html
@@ -166,7 +166,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
 					} );
 					if ( command.sequences ) {
 						command.sequences.forEach( ( sequenceName ) => {
-							var sequence = sequenceRegistry.lookup( sequenceName );
+							const sequence = sequenceRegistry.lookup( sequenceName );
 							if ( sequence ) {
 								// Append an array of jQuery collections from buildKeyNode
 								// eslint-disable-next-line no-jquery/no-append-html
@@ -212,7 +212,7 @@ ve.ui.CommandHelpDialog.prototype.getSetupProcess = function ( data ) {
  * @return {jQuery} A kbd wrapping the key text
  */
 ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {
-	var $key = $( '<kbd>' );
+	const $key = $( '<kbd>' );
 	if ( key === ' ' ) {
 		// Might need to expand this if other keys show up, but currently things like
 		// the tab-character only come from Triggers and are pre-localized there into
@@ -233,7 +233,7 @@ ve.ui.CommandHelpDialog.static.buildKeyNode = function ( key ) {
  * @return {Object[]} List of commands in order
  */
 ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, promote, demote ) {
-	var commands = ve.ui.commandHelpRegistry.lookupByGroup( groupName ),
+	const commands = ve.ui.commandHelpRegistry.lookupByGroup( groupName ),
 		keys = Object.keys( commands ),
 		used = {},
 		auto = [],

@@ -26,12 +26,12 @@ ve.ui.LinkInspectorTool.static.modelClasses = [ ve.dm.LinkAnnotation ];
 ve.ui.LinkInspectorTool.static.commandName = 'link';
 
 ve.ui.LinkInspectorTool.prototype.getSelectedModels = function ( fragment ) {
-	var selection = fragment && fragment.getSelection();
+	const selection = fragment && fragment.getSelection();
 
 	// Ask the CE surface about selected models, so it can give the right
 	// answer about links based on the CE selection.
 	if ( selection instanceof ve.dm.LinearSelection ) {
-		var surfaceView = this.toolbar.getSurface().getView();
+		const surfaceView = this.toolbar.getSurface().getView();
 		if ( selection.equals( surfaceView.getModel().getSelection() ) ) {
 			return surfaceView.getSelectedModels();
 		}

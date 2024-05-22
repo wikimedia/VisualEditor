@@ -33,7 +33,7 @@ ve.test.utils.makeStubTransferItem = function ( type, kind, extension ) {
 
 /* Tests */
 QUnit.test( 'getHandlerNameForItem', ( assert ) => {
-	var makeStubTransferHandler = ve.test.utils.makeStubTransferHandler,
+	const makeStubTransferHandler = ve.test.utils.makeStubTransferHandler,
 		makeStubTransferItem = ve.test.utils.makeStubTransferItem,
 		factory = new ve.ui.DataTransferHandlerFactory(),
 		stubItemTypeHtml = makeStubTransferItem( 'text/html' ),
@@ -42,13 +42,13 @@ QUnit.test( 'getHandlerNameForItem', ( assert ) => {
 		stubItemExtHtml = makeStubTransferItem( null, null, 'html' ),
 		stubItemProto = makeStubTransferItem( '__proto__', '__proto__', '__proto__' );
 
-	var StubHandlerFileHtml1 = makeStubTransferHandler( 'filehtml1', true, [ 'text/html' ], [ 'file' ], [ 'html' ] );
-	var StubHandlerFileHtml2 = makeStubTransferHandler( 'filehtml2', false, [ 'text/html' ], [ 'file' ], [ 'html' ] );
-	var StubHandlerStringHtml = makeStubTransferHandler( 'stringhtml', false, [ 'text/html' ], [ 'string' ] );
-	var StubHandlerHtml1 = makeStubTransferHandler( 'html1', true, [ 'text/html' ] );
-	var StubHandlerHtml2 = makeStubTransferHandler( 'html2', false, [ 'text/html' ] );
+	const StubHandlerFileHtml1 = makeStubTransferHandler( 'filehtml1', true, [ 'text/html' ], [ 'file' ], [ 'html' ] );
+	const StubHandlerFileHtml2 = makeStubTransferHandler( 'filehtml2', false, [ 'text/html' ], [ 'file' ], [ 'html' ] );
+	const StubHandlerStringHtml = makeStubTransferHandler( 'stringhtml', false, [ 'text/html' ], [ 'string' ] );
+	const StubHandlerHtml1 = makeStubTransferHandler( 'html1', true, [ 'text/html' ] );
+	const StubHandlerHtml2 = makeStubTransferHandler( 'html2', false, [ 'text/html' ] );
 	// The `html3` handler should never show up
-	var StubHandlerHtml3 = makeStubTransferHandler( 'html3', true, [ 'text/html' ] );
+	const StubHandlerHtml3 = makeStubTransferHandler( 'html3', true, [ 'text/html' ] );
 	StubHandlerHtml3.static.matchFunction = function () {
 		return false;
 	};

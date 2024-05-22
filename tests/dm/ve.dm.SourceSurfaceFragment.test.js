@@ -9,7 +9,7 @@ QUnit.module( 've.dm.SourceSurfaceFragment' );
 /* Tests */
 
 QUnit.test( 'insertContent/insertDocument', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'Heading converted to HTML',
 			insert: [
@@ -96,7 +96,7 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.dm.example.createExampleDocumentFromData( caseItem.data || [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] ),
+		const doc = ve.dm.example.createExampleDocumentFromData( caseItem.data || [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ] ),
 			surface = new ve.dm.Surface( doc, { sourceMode: true } ),
 			fragment = surface.getLinearFragment( caseItem.range || new ve.Range( 1 ) ),
 			done = assert.async();

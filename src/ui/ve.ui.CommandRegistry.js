@@ -215,7 +215,7 @@ ve.ui.commandRegistry.register(
 	)
 );
 ( function () {
-	for ( var level = 1; level <= 6; level++ ) {
+	for ( let level = 1; level <= 6; level++ ) {
 		ve.ui.commandRegistry.register(
 			new ve.ui.Command(
 				'heading' + level, 'format', 'convert',
@@ -335,16 +335,16 @@ ve.ui.commandRegistry.register(
 );
 
 ( function () {
-	var modes = [ 'row', 'col' ],
+	const modes = [ 'row', 'col' ],
 		sides = [ 'before', 'after' ],
 		modeNames = { row: 'Row', col: 'Column' },
 		sideNames = { before: 'Before', after: 'After' };
 
 	modes.forEach( ( mode ) => {
-		var modeName = modeNames[ mode ];
+		const modeName = modeNames[ mode ];
 
 		sides.forEach( ( side ) => {
-			var sideName = sideNames[ side ];
+			const sideName = sideNames[ side ];
 
 			ve.ui.commandRegistry.register(
 				// Commands registered here:

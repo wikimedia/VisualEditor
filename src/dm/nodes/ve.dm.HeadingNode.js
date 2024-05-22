@@ -41,7 +41,7 @@ ve.dm.HeadingNode.static.defaultAttributes = {
 ve.dm.HeadingNode.static.matchTagNames = [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
 
 ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
-	var levels = {
+	const levels = {
 			h1: 1,
 			h2: 2,
 			h3: 3,
@@ -54,7 +54,7 @@ ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {
-	var level = dataElement.attributes && dataElement.attributes.level || 1;
+	const level = dataElement.attributes && dataElement.attributes.level || 1;
 	return [ doc.createElement( 'h' + level ) ];
 };
 

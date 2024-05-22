@@ -34,7 +34,7 @@ ve.dm.CommentNode.static.isContent = true;
 ve.dm.CommentNode.static.preserveHtmlAttributes = false;
 
 ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
-	var text;
+	let text;
 	if ( domElements[ 0 ].nodeType === Node.COMMENT_NODE ) {
 		text = ve.safeDecodeEntities( domElements[ 0 ].data );
 	} else {
@@ -52,32 +52,32 @@ ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
 ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter ) {
 	if ( converter.isForClipboard() ) {
 		// Fake comment node
-		var span = doc.createElement( 'span' );
+		const span = doc.createElement( 'span' );
 		span.setAttribute( 'rel', 've:Comment' );
 		span.setAttribute( 'data-ve-comment', dataElement.attributes.text );
 		span.appendChild( doc.createTextNode( '\u00a0' ) );
 		return [ span ];
 	} else if ( converter.isForPreview() ) {
 		// isForPreview(), use CE rendering
-		var modelNode = ve.dm.nodeFactory.createFromElement( dataElement );
+		const modelNode = ve.dm.nodeFactory.createFromElement( dataElement );
 		modelNode.setDocument( converter.internalList.getDocument() );
-		var viewNode = ve.ce.nodeFactory.createFromModel( modelNode );
+		const viewNode = ve.ce.nodeFactory.createFromModel( modelNode );
 		viewNode.updateInvisibleIconSync( true );
 		viewNode.$element.attr( 'title', dataElement.attributes.text );
-		var els = viewNode.$element.toArray();
+		const els = viewNode.$element.toArray();
 		viewNode.destroy();
 		return els;
 	} else {
 		// Real comment node
 		// Encode & - > (see T95040, T144708)
-		var data = dataElement.attributes.text.replace( /[-&>]/g, ( c ) => '&#x' + c.charCodeAt( 0 ).toString( 16 ).toUpperCase() + ';' );
+		const data = dataElement.attributes.text.replace( /[-&>]/g, ( c ) => '&#x' + c.charCodeAt( 0 ).toString( 16 ).toUpperCase() + ';' );
 		return [ doc.createComment( data ) ];
 	}
 };
 
 ve.dm.CommentNode.static.describeChange = function ( key, change ) {
 	if ( key === 'text' ) {
-		var diff = this.getAttributeDiff( change.from, change.to );
+		const diff = this.getAttributeDiff( change.from, change.to );
 		if ( diff ) {
 			// TODO: Use a word-break based diff for comment text
 			return ve.htmlMsg( 'visualeditor-changedesc-comment-diff', diff );

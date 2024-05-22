@@ -304,7 +304,7 @@ ve.ce.Node.prototype.removeEmptyLastChildOnEnter = function () {
  * @return {boolean} Node supports multiline input
  */
 ve.ce.Node.prototype.isMultiline = function () {
-	var booleanNode = this.traverseUpstream( ( node ) => node.constructor.static.isMultiline === null );
+	const booleanNode = this.traverseUpstream( ( node ) => node.constructor.static.isMultiline === null );
 	if ( booleanNode ) {
 		return booleanNode.constructor.static.isMultiline;
 	} else {

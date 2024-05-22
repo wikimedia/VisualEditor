@@ -32,7 +32,7 @@ ve.dm.FakeMongo.prototype.dropDatabase = function () {
 };
 
 ve.dm.FakeMongo.prototype.findOneAndUpdate = function ( search, update ) {
-	var docName = search.docName;
+	const docName = search.docName;
 	if ( !this.dataForDoc[ docName ] ) {
 		this.dataForDoc[ docName ] = JSON.parse( JSON.stringify( update.$setOnInsert ) );
 	}
@@ -40,7 +40,7 @@ ve.dm.FakeMongo.prototype.findOneAndUpdate = function ( search, update ) {
 };
 
 ve.dm.FakeMongo.prototype.updateOne = function ( search, update ) {
-	var docName = search.docName,
+	const docName = search.docName,
 		transactions = this.dataForDoc[ docName ].transactions,
 		stores = this.dataForDoc[ docName ].stores;
 	transactions.push.apply( transactions, update.$push.transactions.$each );

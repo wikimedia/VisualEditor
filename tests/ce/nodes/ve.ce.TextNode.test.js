@@ -9,7 +9,7 @@ QUnit.module( 've.ce.TextNode' );
 /* Tests */
 
 QUnit.test( 'getAnnotatedHtml', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			data: [
 				{ type: 'paragraph' },
@@ -95,9 +95,9 @@ QUnit.test( 'getAnnotatedHtml', ( assert ) => {
 		}
 	];
 
-	var store = new ve.dm.HashValueStore();
+	const store = new ve.dm.HashValueStore();
 	cases.forEach( ( caseItem ) => {
-		var doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
+		const doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data, store ) );
 		ve.dm.example.preprocessAnnotations( caseItem.html, store );
 		assert.deepEqual(
 			( new ve.ce.TextNode( doc.getDocumentNode().getChildren()[ 0 ].getChildren()[ 0 ] ) ).getAnnotatedHtml(),

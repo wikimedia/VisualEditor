@@ -67,7 +67,7 @@
 		<script src="../../src/ve.EventSequencer.js"></script>
 		<script>
 			( function () {
-				var startTime,
+				let startTime,
 					/* eslint-disable no-jquery/no-global-selector */
 					sel = document.getSelection(),
 					$form = $( '.ve-demo-form' ),
@@ -86,7 +86,7 @@
 					if ( node === null ) {
 						return null;
 					}
-					var position = [ offset ];
+					const position = [ offset ];
 					while ( node.parentNode !== null && node !== content ) {
 						position.splice(
 							0,
@@ -111,9 +111,9 @@
 				}
 
 				function showLog() {
-					var jsons = [];
+					const jsons = [];
 					jsons.push( JSON.stringify( comments ) );
-					for ( var i = 0, len = log.length; i < len; i++ ) {
+					for ( let i = 0, len = log.length; i < len; i++ ) {
 						jsons.push( JSON.stringify( log[ i ] ) );
 					}
 					$log.val( '[\n\t' + jsons.join( ',\n\t' ) + '\n]' );
@@ -126,7 +126,7 @@
 				}
 
 				function logEvent( methodName, eventName, e ) {
-					var args = [],
+					const args = [],
 						msUtc = ( Date.now() - startTime ) / 1000,
 						newHtml = $content.html(),
 						newAnchorPosition = getPosition( sel.anchorNode, sel.anchorOffset ),
@@ -197,7 +197,7 @@
 				}
 
 				( function () {
-					var handlers = {},
+					const handlers = {},
 						eventNames = [
 							'compositionstart',
 							'compositionend',
@@ -208,7 +208,7 @@
 							'input'
 						];
 
-					for ( var i = 0, len = eventNames.length; i < len; i++ ) {
+					for ( let i = 0, len = eventNames.length; i < len; i++ ) {
 						handlers[ eventNames[ i ] ] =
 							makeEventHandler( eventNames[ i ] );
 					}

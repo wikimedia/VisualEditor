@@ -9,7 +9,7 @@ QUnit.module( 've.dm.AnnotationSet' );
 /* Tests */
 
 QUnit.test( 'Basic usage', ( assert ) => {
-	var store = new ve.dm.HashValueStore(),
+	let store = new ve.dm.HashValueStore(),
 		bold = new ve.dm.BoldAnnotation(),
 		italic = new ve.dm.ItalicAnnotation(),
 		underline = new ve.dm.UnderlineAnnotation(),
@@ -62,7 +62,7 @@ QUnit.test( 'Basic usage', ( assert ) => {
 	annotationSet2.removeNotInSet( annotationSet );
 	assert.strictEqual( annotationSet.contains( italic ) && !annotationSet.contains( underline ), true, 'contains italic not underline after removeNotInSet' );
 	annotationSet2.add( underline, 1 );
-	var annotationSet3 = annotationSet2.reversed();
+	let annotationSet3 = annotationSet2.reversed();
 	assert.strictEqual( annotationSet3.offsetOf( underline ), 0, 'underline has offsetOf 0 after reverse' );
 	annotationSet3 = annotationSet.mergeWith( annotationSet2 );
 	assert.strictEqual( annotationSet3.getLength(), 3, 'set merged with set2 has length 3' );
@@ -75,7 +75,7 @@ QUnit.test( 'Basic usage', ( assert ) => {
 } );
 
 QUnit.test( 'Comparable', ( assert ) => {
-	var store = new ve.dm.HashValueStore(),
+	const store = new ve.dm.HashValueStore(),
 		bold = new ve.dm.BoldAnnotation(),
 		italic = new ve.dm.ItalicAnnotation(),
 		strong = new ve.dm.BoldAnnotation( { type: 'textStyle/bold', attributes: { nodeName: 'strong' } } ),
@@ -88,7 +88,7 @@ QUnit.test( 'Comparable', ( assert ) => {
 	assert.strictEqual( annotationSet.containsComparable( bold ), true, '[b,i] contains comparable b' );
 	assert.strictEqual( annotationSet.containsComparable( underline ), false, '[b,i] doesn\'t contain comparable u' );
 
-	var annotationSet3 = new ve.dm.AnnotationSet( store, store.hashAll( [ bold ] ) );
+	let annotationSet3 = new ve.dm.AnnotationSet( store, store.hashAll( [ bold ] ) );
 	assert.deepEqual( annotationSet.getComparableAnnotations( strong ), annotationSet3, '[b,i] get comparable strong returns [b]' );
 	assert.deepEqual( annotationSet.getComparableAnnotations( underline ), emptySet, '[b,i] get comparable underline returns []' );
 

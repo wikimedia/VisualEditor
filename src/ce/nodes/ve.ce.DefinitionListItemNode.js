@@ -42,7 +42,7 @@ ve.ce.DefinitionListItemNode.static.splitOnEnter = true;
  * @throws {Error} If style is invalid
  */
 ve.ce.DefinitionListItemNode.prototype.getTagName = function () {
-	var style = this.model.getAttribute( 'style' ),
+	const style = this.model.getAttribute( 'style' ),
 		types = { definition: 'dd', term: 'dt' };
 
 	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {

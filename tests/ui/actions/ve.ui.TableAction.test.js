@@ -9,7 +9,7 @@ QUnit.module( 've.ui.TableAction' );
 /* Tests */
 
 QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelative', ( assert ) => {
-	var tableCellTail = [
+	const tableCellTail = [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },
 			{ type: '/paragraph' },
 			{ type: '/tableCell' }
@@ -673,7 +673,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				method: 'moveRelative',
 				args: [ 'row', 'before' ],
 				expectedData: function ( data ) {
-					var row = data.splice( 25, 25 );
+					const row = data.splice( 25, 25 );
 					data.splice.apply( data, [ 2, 0 ].concat( row ) );
 				},
 				expectedRangeOrSelection: {
@@ -699,7 +699,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				method: 'moveRelative',
 				args: [ 'row', 'after' ],
 				expectedData: function ( data ) {
-					var row = data.splice( 25, 25 );
+					const row = data.splice( 25, 25 );
 					data.splice.apply( data, [ 2, 0 ].concat( row ) );
 				},
 				expectedRangeOrSelection: {
@@ -725,7 +725,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				method: 'moveRelative',
 				args: [ 'col', 'before' ],
 				expectedData: function ( data ) {
-					var cell2 = data.splice( 34, 8 ),
+					const cell2 = data.splice( 34, 8 ),
 						cell1 = data.splice( 10, 7 );
 
 					data.splice.apply( data, [ 26 - cell1.length, 0 ].concat( cell2 ) );
@@ -754,7 +754,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				method: 'moveRelative',
 				args: [ 'col', 'after' ],
 				expectedData: function ( data ) {
-					var cell2 = data.splice( 26, 8 ),
+					const cell2 = data.splice( 26, 8 ),
 						cell1 = data.splice( 3, 7 );
 
 					data.splice.apply( data, [ 42 - cell1.length - cell2.length, 0 ].concat( cell2 ) );
@@ -783,7 +783,7 @@ QUnit.test( 'create / insert / mergeCells / delete / changeCellStyle / moveRelat
 				method: 'moveRelative',
 				args: [ 'row', 'before' ],
 				expectedData: function ( data ) {
-					var row = data.splice( 4, 7 );
+					const row = data.splice( 4, 7 );
 					data.splice.apply( data, [ 2, 0 ].concat( row ) );
 				},
 				msg: 'move row adjacent to sparse row'

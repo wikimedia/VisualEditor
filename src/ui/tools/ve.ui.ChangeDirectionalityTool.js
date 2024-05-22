@@ -52,7 +52,7 @@ ve.ui.ChangeDirectionalityTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.ChangeDirectionalityTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	var modelDir = fragment.getDocument().getDir();
+	const modelDir = fragment.getDocument().getDir();
 
 	if ( modelDir !== this.modelDir ) {
 		// Icons used here textDirLTR, textDirRTL
@@ -64,7 +64,7 @@ ve.ui.ChangeDirectionalityTool.prototype.onUpdateState = function ( fragment ) {
 		this.modelDir = modelDir;
 	}
 
-	var viewDir = this.toolbar.getSurface().getView().getDocument().getDir();
+	const viewDir = this.toolbar.getSurface().getView().getDocument().getDir();
 	this.setActive( viewDir !== modelDir );
 };
 

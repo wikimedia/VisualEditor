@@ -54,7 +54,7 @@ OO.inheritClass( ve.ui.LinkAnnotationWidget, OO.ui.Widget );
  * @return {ve.dm.LinkAnnotation|null} Link annotation
  */
 ve.ui.LinkAnnotationWidget.static.getAnnotationFromText = function ( value ) {
-	var href = value.trim();
+	const href = value.trim();
 
 	// Keep annotation in sync with value
 	if ( href === '' ) {
@@ -121,7 +121,7 @@ ve.ui.LinkAnnotationWidget.prototype.onTextChange = function ( value ) {
 	// RTL/LTR check
 	// TODO: Make this work properly
 	if ( document.body.classList.contains( 'rtl' ) ) {
-		var isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( value.trim() );
+		const isExt = ve.init.platform.getExternalLinkUrlProtocolsRegExp().test( value.trim() );
 		// If URL is external, flip to LTR. Otherwise, set back to RTL
 		this.getTextInputWidget().setDir( isExt ? 'ltr' : 'rtl' );
 	}

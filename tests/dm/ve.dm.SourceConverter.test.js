@@ -9,7 +9,7 @@ QUnit.module( 've.dm.SourceConverter' );
 /* Tests */
 
 QUnit.test( 'conversion', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'Simple text with language options',
 			text: 'foo',
@@ -64,7 +64,7 @@ QUnit.test( 'conversion', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.dm.sourceConverter.getModelFromSourceText( caseItem.text, caseItem.options );
+		const doc = ve.dm.sourceConverter.getModelFromSourceText( caseItem.text, caseItem.options );
 		assert.deepEqual(
 			doc.data.data,
 			[].concat( caseItem.data, [ { type: 'internalList' }, { type: '/internalList' } ] ),

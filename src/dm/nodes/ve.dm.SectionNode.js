@@ -40,7 +40,7 @@ ve.dm.SectionNode.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.SectionNode.static.toDomElements = function ( dataElement, doc ) {
-	var style = dataElement.attributes && dataElement.attributes.style || 'section';
+	const style = dataElement.attributes && dataElement.attributes.style || 'section';
 	return [ doc.createElement( style ) ];
 };
 

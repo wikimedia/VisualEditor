@@ -9,11 +9,11 @@ QUnit.module( 've.ui.PreviewElement' );
 /* Tests */
 
 QUnit.test( 'Basic tests', ( assert ) => {
-	var done = assert.async(),
+	const done = assert.async(),
 		doc = ve.dm.example.createExampleDocument(),
 		modelNode = doc.getDocumentNode().getChildren()[ 0 ];
 
-	var simplePreview = new ve.ui.PreviewElement();
+	const simplePreview = new ve.ui.PreviewElement();
 	assert.deepEqual( simplePreview.isGenerating(), false, 'not isGenerating if constructed without model' );
 	simplePreview.setModel( modelNode );
 	assert.strictEqual( simplePreview.model, modelNode, 'setModel' );
@@ -29,7 +29,7 @@ QUnit.test( 'Basic tests', ( assert ) => {
 		done();
 	} );
 
-	var useViewPreview = new ve.ui.PreviewElement( modelNode, { useView: true } );
+	const useViewPreview = new ve.ui.PreviewElement( modelNode, { useView: true } );
 	assert.strictEqual( useViewPreview.isGenerating(), true, 'isGenerating after construction with model' );
 	useViewPreview.once( 'render', () => {
 		assert.deepEqual( simplePreview.isGenerating(), false, 'not isGenerating after useView render' );

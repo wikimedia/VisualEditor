@@ -39,7 +39,7 @@ ve.ce.AlignableNode.prototype.updateAttributeClasses = function () {
 	// Parent method
 	ve.ce.AlignableNode.super.prototype.updateAttributeClasses.apply( this, arguments );
 
-	var align = this.model.getAttribute( 'align' );
+	const align = this.model.getAttribute( 'align' );
 	if ( align && align !== this.align ) {
 		this.emit( 'align', align );
 		this.align = align;

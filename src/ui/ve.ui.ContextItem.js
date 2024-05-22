@@ -140,7 +140,7 @@ ve.ui.ContextItem.prototype.getCommand = function () {
  */
 ve.ui.ContextItem.prototype.getFragment = function () {
 	if ( !this.fragment ) {
-		var surfaceModel = this.context.getSurface().getModel();
+		const surfaceModel = this.context.getSurface().getModel();
 		this.fragment = this.isNode() ?
 			surfaceModel.getLinearFragment( this.model.getOuterRange() ) :
 			surfaceModel.getFragment();

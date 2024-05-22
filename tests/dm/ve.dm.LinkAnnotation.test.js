@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.LinkAnnotation' );
 
 QUnit.test( 'getFragment', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'No fragment returns null',
 			annotation: new ve.dm.LinkAnnotation( {

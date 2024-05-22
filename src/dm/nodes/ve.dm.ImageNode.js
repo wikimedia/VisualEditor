@@ -42,7 +42,7 @@ ve.dm.ImageNode.static.isDiffComparable = function ( element, other ) {
  * @see ve.dm.Model
  */
 ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes ) {
-	var customKeys = [ 'width', 'height' ],
+	const customKeys = [ 'width', 'height' ],
 		descriptions = [];
 
 	function describeSize( width, height ) {
@@ -50,20 +50,20 @@ ve.dm.ImageNode.static.describeChanges = function ( attributeChanges, attributes
 	}
 
 	if ( 'width' in attributeChanges || 'height' in attributeChanges ) {
-		var sizeFrom = describeSize(
+		const sizeFrom = describeSize(
 			'width' in attributeChanges ? attributeChanges.width.from : attributes.width,
 			'height' in attributeChanges ? attributeChanges.height.from : attributes.height
 		);
-		var sizeTo = describeSize(
+		const sizeTo = describeSize(
 			'width' in attributeChanges ? attributeChanges.width.to : attributes.width,
 			'height' in attributeChanges ? attributeChanges.height.to : attributes.height
 		);
 
 		descriptions.push( ve.htmlMsg( 'visualeditor-changedesc-image-size', this.wrapText( 'del', sizeFrom ), this.wrapText( 'ins', sizeTo ) ) );
 	}
-	for ( var key in attributeChanges ) {
+	for ( const key in attributeChanges ) {
 		if ( customKeys.indexOf( key ) === -1 ) {
-			var change = this.describeChange( key, attributeChanges[ key ] );
+			const change = this.describeChange( key, attributeChanges[ key ] );
 			if ( change ) {
 				descriptions.push( change );
 			}

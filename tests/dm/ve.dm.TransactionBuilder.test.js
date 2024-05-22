@@ -9,9 +9,9 @@ QUnit.module( 've.dm.TransactionBuilder' );
 /* Helper methods */
 
 ve.test.utils.runTransactionBuilderTests = function ( assert, cases ) {
-	for ( var msg in cases ) {
-		var txBuilder = new ve.dm.TransactionBuilder();
-		for ( var i = 0; i < cases[ msg ].calls.length; i++ ) {
+	for ( const msg in cases ) {
+		const txBuilder = new ve.dm.TransactionBuilder();
+		for ( let i = 0; i < cases[ msg ].calls.length; i++ ) {
 			txBuilder[ cases[ msg ].calls[ i ][ 0 ] ].apply( txBuilder, cases[ msg ].calls[ i ].slice( 1 ) );
 		}
 		assert.deepEqualWithDomElements( txBuilder.getTransaction().getOperations(), cases[ msg ].ops, msg + ': operations match' );
@@ -19,11 +19,11 @@ ve.test.utils.runTransactionBuilderTests = function ( assert, cases ) {
 };
 
 ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, cases, testRange ) {
-	for ( var msg in cases ) {
-		var doc = cases[ msg ].args[ 0 ];
+	for ( const msg in cases ) {
+		const doc = cases[ msg ].args[ 0 ];
 		var args = cases[ msg ].args;
 		if ( cases[ msg ].ops ) {
-			var tx = constructor.apply( null, args );
+			const tx = constructor.apply( null, args );
 			assert.equalLinearDataWithDom( doc.getStore(), tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
 			if ( testRange ) {
 				assert.equalRange(
@@ -44,7 +44,7 @@ ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, c
 /* Tests */
 
 QUnit.test( 'newFromInsertion', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		isolationDoc = ve.dm.example.createExampleDocument( 'isolationData' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
 		doc2 = new ve.dm.Document(
@@ -374,8 +374,8 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 			// TODO analyze other possible cases (substrings of linmod data)
 		};
 
-	for ( var key in cases ) {
-		for ( var i = 0; i < cases[ key ].ops.length; i++ ) {
+	for ( const key in cases ) {
+		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
 			if ( cases[ key ].ops[ i ].remove ) {
 				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
 			}
@@ -388,7 +388,7 @@ QUnit.test( 'newFromInsertion', ( assert ) => {
 } );
 
 QUnit.test( 'newFromRemoval', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument( 'data' ),
+	const doc = ve.dm.example.createExampleDocument( 'data' ),
 		alienDoc = ve.dm.example.createExampleDocument( 'alienData' ),
 		alienWithEmptyDoc = ve.dm.example.createExampleDocument( 'alienWithEmptyData' ),
 		internalDoc = ve.dm.example.createExampleDocument( 'internalData' ),
@@ -692,9 +692,9 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 			}
 		};
 
-	for ( var key in cases ) {
-		for ( var i = 0; i < cases[ key ].ops.length; i++ ) {
-			var store = cases[ key ].args[ 0 ].getStore();
+	for ( const key in cases ) {
+		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
+			const store = cases[ key ].args[ 0 ].getStore();
 			if ( cases[ key ].ops[ i ].remove ) {
 				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, store );
 			}
@@ -707,7 +707,7 @@ QUnit.test( 'newFromRemoval', ( assert ) => {
 } );
 
 QUnit.test( 'newFromReplacement', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 
 		cases = {
@@ -745,8 +745,8 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 			}
 		};
 
-	for ( var key in cases ) {
-		for ( var i = 0; i < cases[ key ].ops.length; i++ ) {
+	for ( const key in cases ) {
+		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
 			if ( cases[ key ].ops[ i ].remove ) {
 				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
 			}
@@ -759,7 +759,7 @@ QUnit.test( 'newFromReplacement', ( assert ) => {
 } );
 
 QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument( 'internalData' ),
+	let doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		bold = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		whee = [ { type: 'paragraph' }, 'W', 'h', 'e', 'e', { type: '/paragraph' } ],
 		wheeItem = [ { type: 'internalItem' } ].concat( whee ).concat( [ { type: '/internalItem' } ] ),
@@ -840,7 +840,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				offset: 21,
 				range: new ve.Range( 21, 27 ),
 				modify: function ( newDoc ) {
-					var insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
+					const insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
 					newDoc.commit( insertion.transaction );
 				},
 				removalOps: [
@@ -907,7 +907,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 				offset: 7,
 				range: new ve.Range( 7, 12 ),
 				modify: function ( newDoc ) {
-					var insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
+					const insertion = newDoc.internalList.getItemInsertion( 'test', 'whee', whee );
 					newDoc.commit( insertion.transaction );
 				},
 				removalOps: [
@@ -987,7 +987,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		doc = ve.dm.example.createExampleDocument( caseItem.doc );
-		var doc2, removalOps, store2;
+		let doc2, removalOps, store2;
 		if ( caseItem.newDocData ) {
 			store2 = new ve.dm.HashValueStore();
 			doc2 = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.newDocData, store2 ) );
@@ -995,19 +995,19 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 		} else if ( caseItem.range ) {
 			doc2 = doc.cloneFromRange( caseItem.range );
 			caseItem.modify( doc2 );
-			var removalTx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, caseItem.range );
+			const removalTx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, caseItem.range );
 			doc.commit( removalTx );
 			removalOps = removalTx.getOperations();
 		}
 
 		assert.deepEqualWithDomElements( removalOps, caseItem.removalOps, caseItem.msg + ': removal' );
 
-		var tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( doc, caseItem.offset, doc2 );
+		const tx = ve.dm.TransactionBuilder.static.newFromDocumentInsertion( doc, caseItem.offset, doc2 );
 		assert.deepEqualWithDomElements( tx.getOperations(), caseItem.expectedOps, caseItem.msg + ': transaction' );
 
-		var actualStoreItems = {};
-		var expectedStoreItems = caseItem.expectedStoreItems || {};
-		for ( var hash in expectedStoreItems ) {
+		const actualStoreItems = {};
+		const expectedStoreItems = caseItem.expectedStoreItems || {};
+		for ( const hash in expectedStoreItems ) {
 			actualStoreItems[ hash ] = doc.store.value( hash );
 			expectedStoreItems[ hash ].store = store2;
 		}
@@ -1016,7 +1016,7 @@ QUnit.test( 'newFromDocumentInsertion', ( assert ) => {
 } );
 
 QUnit.test( 'newFromAttributeChanges', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		cases = {
 			'first element': {
 				args: [ doc, 0, { level: 2 } ],
@@ -1074,8 +1074,8 @@ QUnit.test( 'newFromAttributeChanges', ( assert ) => {
 
 	ve.test.utils.runTransactionConstructorTests( assert, ve.dm.TransactionBuilder.static.newFromAttributeChanges, cases );
 
-	var val = { foo: { bar: 'baz' } };
-	var tx = ve.dm.TransactionBuilder.static.newFromAttributeChanges( doc, 0, val );
+	const val = { foo: { bar: 'baz' } };
+	const tx = ve.dm.TransactionBuilder.static.newFromAttributeChanges( doc, 0, val );
 	val.foo.bar = 'qux';
 	assert.deepEqual(
 		tx.getOperations(),
@@ -1088,7 +1088,7 @@ QUnit.test( 'newFromAttributeChanges', ( assert ) => {
 } );
 
 QUnit.test( 'newFromAnnotation', ( assert ) => {
-	var boldAnnotation = ve.dm.example.createAnnotation( ve.dm.example.bold ),
+	const boldAnnotation = ve.dm.example.createAnnotation( ve.dm.example.bold ),
 		strong = { type: 'textStyle/bold', attributes: { nodeName: 'strong' } },
 		strongAnnotation = ve.dm.example.createAnnotation( strong ),
 		doc = ve.dm.example.createExampleDocument(),
@@ -1294,7 +1294,7 @@ QUnit.test( 'newFromAnnotation', ( assert ) => {
 } );
 
 QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		doc2 = ve.dm.example.createExampleDocument( 'inlineAtEdges' ),
 		cases = {
 			'range inside a heading, convert to paragraph': {
@@ -1460,9 +1460,9 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 			}
 		};
 
-	for ( var key in cases ) {
-		for ( var i = 0; i < cases[ key ].ops.length; i++ ) {
-			var store = cases[ key ].args[ 0 ].getStore();
+	for ( const key in cases ) {
+		for ( let i = 0; i < cases[ key ].ops.length; i++ ) {
+			const store = cases[ key ].args[ 0 ].getStore();
 			if ( cases[ key ].ops[ i ].remove ) {
 				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, store );
 			}
@@ -1479,7 +1479,7 @@ QUnit.test( 'newFromContentBranchConversion', ( assert ) => {
 } );
 
 QUnit.test( 'newFromWrap', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' ),
 		listDoc = ve.dm.example.createExampleDocumentFromData(
@@ -1677,8 +1677,8 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 			}
 		};
 
-	for ( var key in cases ) {
-		for ( var i = 0; cases[ key ].ops && i < cases[ key ].ops.length; i++ ) {
+	for ( const key in cases ) {
+		for ( let i = 0; cases[ key ].ops && i < cases[ key ].ops.length; i++ ) {
 			if ( cases[ key ].ops[ i ].remove ) {
 				ve.dm.example.preprocessAnnotations( cases[ key ].ops[ i ].remove, doc.getStore() );
 			}
@@ -1695,7 +1695,7 @@ QUnit.test( 'newFromWrap', ( assert ) => {
 } );
 
 QUnit.test( 'pushRetain', ( assert ) => {
-	var cases = {
+	const cases = {
 		retain: {
 			calls: [ [ 'pushRetain', 5 ] ],
 			ops: [ { type: 'retain', length: 5 } ],
@@ -1711,7 +1711,7 @@ QUnit.test( 'pushRetain', ( assert ) => {
 } );
 
 QUnit.test( 'pushReplacement', ( assert ) => {
-	var doc = new ve.dm.Document( [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] ),
+	const doc = new ve.dm.Document( [ { type: 'paragraph' }, 'a', 'b', 'c', { type: '/paragraph' } ] ),
 		doc2 = new ve.dm.Document( [ { type: 'paragraph' }, 'a', 'b', 'c', 'g', 'h', 'i', { type: '/paragraph' } ] ),
 		cases = {
 			insert: {
@@ -1823,7 +1823,7 @@ QUnit.test( 'pushReplacement', ( assert ) => {
 } );
 
 QUnit.test( 'pushReplaceElementAttribute', ( assert ) => {
-	var cases = {
+	const cases = {
 		'replace element attribute': {
 			calls: [
 				[ 'pushReplaceElementAttribute', 'style', 'bullet', 'number' ]
@@ -1865,14 +1865,14 @@ QUnit.test( 'pushReplaceElementAttribute', ( assert ) => {
 } );
 
 QUnit.test( 'isNoOp', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		metaDoc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		listMetaDoc = ve.dm.example.createExampleDocument( 'listWithMeta' );
 
 	[ doc, metaDoc, listMetaDoc ].forEach( ( d, i ) => {
-		var isListMetaDoc = ( i === 2 );
+		const isListMetaDoc = ( i === 2 );
 
-		var tx = ve.dm.TransactionBuilder.static.newFromReplacement(
+		let tx = ve.dm.TransactionBuilder.static.newFromReplacement(
 			d, new ve.Range( 1 ), [], false
 		);
 		assert.strictEqual( tx.isNoOp(), true );
@@ -1908,7 +1908,7 @@ QUnit.test( 'isNoOp', ( assert ) => {
 } );
 
 QUnit.test( 'operations/build from operations', ( assert ) => {
-	var tBSstatic = ve.dm.TransactionBuilder.static,
+	const tBSstatic = ve.dm.TransactionBuilder.static,
 		doc = ve.dm.example.createExampleDocument(),
 		underline = ve.dm.example.createAnnotation( ve.dm.example.underline ),
 		cases = [
@@ -1978,8 +1978,8 @@ QUnit.test( 'operations/build from operations', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		var tx = tBSstatic[ caseItem.method ].apply( tBSstatic, caseItem.args );
-		var ops = ve.copy( tx.operations );
+		let tx = tBSstatic[ caseItem.method ].apply( tBSstatic, caseItem.args );
+		const ops = ve.copy( tx.operations );
 		assert.deepEqual( ops, caseItem.expected, caseItem.msg + ': operations' );
 		if ( caseItem.roundTripArgs ) {
 			tx = tBSstatic[ caseItem.method ].apply( tBSstatic, caseItem.roundTripArgs );
@@ -2002,7 +2002,7 @@ QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 			return op;
 		} );
 	}
-	var cases = [
+	const cases = [
 		{
 			msg: 'Removal ending at meta',
 			html: '<p>foo</p><meta><p>bar</p>',
@@ -2109,8 +2109,8 @@ QUnit.test( 'newFromRemoval preserving metadata', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.html ) );
-		var tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, caseItem.range );
+		const doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml( caseItem.html ) );
+		const tx = ve.dm.TransactionBuilder.static.newFromRemoval( doc, caseItem.range );
 		assert.deepEqual(
 			caseItem.ops,
 			removeBoringProperties( tx.operations ),

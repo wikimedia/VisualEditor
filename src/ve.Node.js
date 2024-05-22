@@ -75,7 +75,7 @@ ve.Node.prototype.getParentNodeTypes = null;
  * @return {boolean} The type is allowed
  */
 ve.Node.prototype.isAllowedChildNodeType = function ( type ) {
-	var childTypes = this.getChildNodeTypes();
+	const childTypes = this.getChildNodeTypes();
 	return childTypes === null || childTypes.indexOf( type ) !== -1;
 };
 
@@ -86,7 +86,7 @@ ve.Node.prototype.isAllowedChildNodeType = function ( type ) {
  * @return {boolean} The type is allowed
  */
 ve.Node.prototype.isAllowedParentNodeType = function ( type ) {
-	var parentTypes = this.getParentNodeTypes();
+	const parentTypes = this.getParentNodeTypes();
 	return parentTypes === null || parentTypes.indexOf( type ) !== -1;
 };
 
@@ -285,7 +285,7 @@ ve.Node.prototype.getOffset = null;
  * @return {ve.Range} Inner node range
  */
 ve.Node.prototype.getRange = function ( backwards ) {
-	var offset = this.getOffset() + ( this.isWrapped() ? 1 : 0 ),
+	const offset = this.getOffset() + ( this.isWrapped() ? 1 : 0 ),
 		range = new ve.Range( offset, offset + this.getLength() );
 	return backwards ? range.flip() : range;
 };
@@ -297,7 +297,7 @@ ve.Node.prototype.getRange = function ( backwards ) {
  * @return {ve.Range} Node outer range
  */
 ve.Node.prototype.getOuterRange = function ( backwards ) {
-	var range = new ve.Range( this.getOffset(), this.getOffset() + this.getOuterLength() );
+	const range = new ve.Range( this.getOffset(), this.getOffset() + this.getOuterLength() );
 	return backwards ? range.flip() : range;
 };
 
@@ -349,7 +349,7 @@ ve.Node.prototype.getRoot = function () {
  * @fires ve.Node#unroot
  */
 ve.Node.prototype.setRoot = function ( root ) {
-	var oldRoot = this.root;
+	const oldRoot = this.root;
 	if ( root === oldRoot ) {
 		return;
 	}
@@ -380,7 +380,7 @@ ve.Node.prototype.getDocument = function () {
  * @param {ve.Document|null} doc Document this node is a part of
  */
 ve.Node.prototype.setDocument = function ( doc ) {
-	var oldDoc = this.doc;
+	const oldDoc = this.doc;
 	if ( doc === oldDoc ) {
 		return;
 	}
@@ -413,7 +413,7 @@ ve.Node.prototype.attach = function ( parent ) {
  * @fires ve.Node#detach
  */
 ve.Node.prototype.detach = function () {
-	var parent = this.parent;
+	const parent = this.parent;
 	this.parent = null;
 	this.setRoot( null );
 	this.setDocument( null );
@@ -429,7 +429,7 @@ ve.Node.prototype.detach = function () {
  * @return {ve.Node|null} Node which caused the traversal to stop, or null if it didn't
  */
 ve.Node.prototype.traverseUpstream = function ( callback ) {
-	var node = this;
+	let node = this;
 	while ( node ) {
 		if ( callback( node ) === false ) {
 			return node;
@@ -455,7 +455,7 @@ ve.Node.prototype.findParent = function ( type ) {
  * @return {ve.Node[]} List of nodes which are upstream of the current node
  */
 ve.Node.prototype.collectUpstream = function () {
-	var nodes = [];
+	const nodes = [];
 	this.traverseUpstream( ( node ) => {
 		nodes.push( node );
 	} );
@@ -478,7 +478,7 @@ ve.Node.prototype.isDownstreamOf = function ( upstreamNode ) {
  * @return {number[]|null} The offset path, or null if not attached to a DocumentNode
  */
 ve.Node.prototype.getOffsetPath = function () {
-	var node = this,
+	let node = this,
 		path = [];
 
 	while ( true ) {
@@ -486,7 +486,7 @@ ve.Node.prototype.getOffsetPath = function () {
 			// We reached the ve.dm.DocumentNode/ve.ce.DocumentNode that this node is attached to
 			return path;
 		}
-		var parent = node.getParent();
+		const parent = node.getParent();
 		if ( !parent ) {
 			return null;
 		}

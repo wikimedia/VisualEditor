@@ -55,10 +55,10 @@
 	 * @param {any} value
 	 */
 	function addType( obj, ...keys ) {
-		var value = keys.pop(),
+		let value = keys.pop(),
 			o = obj;
 
-		var i, len;
+		let i, len;
 		for ( i = 0, len = keys.length - 1; i < len; i++ ) {
 			if ( o[ keys[ i ] ] === undefined ) {
 				o[ keys[ i ] ] = {};
@@ -80,11 +80,11 @@
 	 * @param {any} value to remove
 	 */
 	function removeType( obj, ...keys ) {
-		var value = keys.pop(),
+		const value = keys.pop(),
 			arr = ve.getProp.apply( obj, [ obj ].concat( keys ) );
 
 		if ( arr ) {
-			var index = arr.indexOf( value );
+			const index = arr.indexOf( value );
 			if ( index !== -1 ) {
 				arr.splice( index, 1 );
 			}
@@ -103,7 +103,7 @@
 	 * @throws No factory associated with this ve.dm.Model subclass
 	 */
 	ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
-		var name = constructor.static && constructor.static.name;
+		const name = constructor.static && constructor.static.name;
 
 		if ( typeof name !== 'string' || name === '' ) {
 			throw new Error( 'Model names must be strings and must not be empty' );
@@ -129,14 +129,14 @@
 		// Parent method
 		ve.dm.ModelRegistry.super.prototype.register.call( this, name, constructor );
 
-		var tags = constructor.static.matchTagNames === null ?
+		const tags = constructor.static.matchTagNames === null ?
 			[ '' ] :
 			constructor.static.matchTagNames;
-		var types = constructor.static.getMatchRdfaTypes() === null ?
+		const types = constructor.static.getMatchRdfaTypes() === null ?
 			[ '' ] :
 			constructor.static.getMatchRdfaTypes();
 
-		var i;
+		let i;
 		for ( i = 0; i < tags.length; i++ ) {
 			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
 			addType( this.modelsByTag, +!!constructor.static.matchFunction,
@@ -149,7 +149,7 @@
 				// iterations of the for loop
 				addType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
 			} else {
-				for ( var j = 0; j < tags.length; j++ ) {
+				for ( let j = 0; j < tags.length; j++ ) {
 					addType( this.modelsByTypeAndTag,
 						+!!constructor.static.matchFunction, types[ i ], tags[ j ], name
 					);
@@ -169,7 +169,7 @@
 	 * @throws No factory associated with this ve.dm.Model subclass
 	 */
 	ve.dm.ModelRegistry.prototype.unregister = function ( constructor ) {
-		var name = constructor.static && constructor.static.name;
+		const name = constructor.static && constructor.static.name;
 
 		if ( typeof name !== 'string' || name === '' ) {
 			throw new Error( 'Model names must be strings and must not be empty' );
@@ -190,14 +190,14 @@
 		// Parent method
 		ve.dm.ModelRegistry.super.prototype.unregister.call( this, name );
 
-		var tags = constructor.static.matchTagNames === null ?
+		const tags = constructor.static.matchTagNames === null ?
 			[ '' ] :
 			constructor.static.matchTagNames;
-		var types = constructor.static.getMatchRdfaTypes() === null ?
+		const types = constructor.static.getMatchRdfaTypes() === null ?
 			[ '' ] :
 			constructor.static.getMatchRdfaTypes();
 
-		var i;
+		let i;
 		for ( i = 0; i < tags.length; i++ ) {
 			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
 			removeType( this.modelsByTag, +!!constructor.static.matchFunction,
@@ -210,7 +210,7 @@
 				// iterations of the for loop
 				removeType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
 			} else {
-				for ( var j = 0; j < tags.length; j++ ) {
+				for ( let j = 0; j < tags.length; j++ ) {
 					removeType( this.modelsByTypeAndTag,
 						+!!constructor.static.matchFunction, types[ i ], tags[ j ], name
 					);
@@ -250,20 +250,20 @@
 	 * @return {string|null} Model type, or null if none found
 	 */
 	ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
-		var types,
+		let types,
 			nodeName = node.nodeName.toLowerCase();
 
-		var byRegistrationOrderDesc = ( a, b ) => this.registrationOrder[ b ] - this.registrationOrder[ a ];
+		const byRegistrationOrderDesc = ( a, b ) => this.registrationOrder[ b ] - this.registrationOrder[ a ];
 
-		var matchTypeRegExps = ( type, tag, withFunc ) => {
-			var matchedModels = [],
+		const matchTypeRegExps = ( type, tag, withFunc ) => {
+			const matchedModels = [],
 				models = this.modelsWithTypeRegExps[ +withFunc ];
-			for ( var j = 0; j < models.length; j++ ) {
+			for ( let j = 0; j < models.length; j++ ) {
 				if ( excludeTypes && excludeTypes.indexOf( models[ j ] ) !== -1 ) {
 					continue;
 				}
-				var matchTypes = this.registry[ models[ j ] ].static.getMatchRdfaTypes();
-				for ( var k = 0; k < matchTypes.length; k++ ) {
+				const matchTypes = this.registry[ models[ j ] ].static.getMatchRdfaTypes();
+				for ( let k = 0; k < matchTypes.length; k++ ) {
 					if (
 						matchTypes[ k ] instanceof RegExp &&
 						matchTypes[ k ].test( type ) &&
@@ -279,9 +279,9 @@
 			return matchedModels;
 		};
 
-		var allTypesAllowed = ( model ) => {
-			var allowedTypes = model.static.getAllowedRdfaTypes();
-			var matchTypes = model.static.getMatchRdfaTypes();
+		const allTypesAllowed = ( model ) => {
+			let allowedTypes = model.static.getAllowedRdfaTypes();
+			const matchTypes = model.static.getMatchRdfaTypes();
 
 			// All types allowed
 			if ( allowedTypes === null ) {
@@ -296,9 +296,9 @@
 				return rule instanceof RegExp ? rule.test( type ) : rule === type;
 			}
 
-			for ( var j = 0; j < types.length; j++ ) {
-				var typeAllowed = false;
-				for ( var k = 0; k < allowedTypes.length; k++ ) {
+			for ( let j = 0; j < types.length; j++ ) {
+				let typeAllowed = false;
+				for ( let k = 0; k < allowedTypes.length; k++ ) {
 					if ( checkType( allowedTypes[ k ], types[ j ] ) ) {
 						typeAllowed = true;
 						break;
@@ -311,10 +311,10 @@
 			return true;
 		};
 
-		var matchWithFunc = ( tag ) => {
-			var queue = [],
+		const matchWithFunc = ( tag ) => {
+			let queue = [],
 				queue2 = [];
-			var j;
+			let j;
 			for ( j = 0; j < types.length; j++ ) {
 				// Queue string matches and regexp matches separately
 				queue = queue.concat( ve.getProp( this.modelsByTypeAndTag, 1, types[ j ], tag ) || [] );
@@ -343,11 +343,11 @@
 			return null;
 		};
 
-		var matchWithoutFunc = ( tag ) => {
-			var queue = [],
+		const matchWithoutFunc = ( tag ) => {
+			let queue = [],
 				queue2 = [],
 				winningName = null;
-			var j;
+			let j;
 			for ( j = 0; j < types.length; j++ ) {
 				// Queue string and regexp matches separately
 				queue = queue.concat( ve.getProp( this.modelsByTypeAndTag, 0, types[ j ], tag ) || [] );
@@ -391,7 +391,7 @@
 			}
 		}
 
-		var winner;
+		let winner;
 		if ( types.length ) {
 			// func+tag+type match
 			winner = matchWithFunc( nodeName );
@@ -409,11 +409,11 @@
 		}
 
 		// func+tag match
-		var matches = ve.getProp( this.modelsByTag, 1, nodeName ) || [];
+		let matches = ve.getProp( this.modelsByTag, 1, nodeName ) || [];
 		// No need to sort because individual arrays in modelsByTag are already sorted
 		// correctly
-		var i;
-		var m;
+		let i;
+		let m;
 		for ( i = 0; i < matches.length; i++ ) {
 			m = this.registry[ matches[ i ] ];
 			// Only process this one if it doesn't specify types
@@ -488,7 +488,7 @@
 	 * @return {boolean} Whether the element will be modelled as an annotation
 	 */
 	ve.dm.ModelRegistry.prototype.isAnnotation = function ( node ) {
-		var modelClass = this.lookup( this.matchElement( node ) );
+		const modelClass = this.lookup( this.matchElement( node ) );
 		return ( modelClass && modelClass.prototype ) instanceof ve.dm.Annotation;
 	};
 

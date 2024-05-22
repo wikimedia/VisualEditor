@@ -49,11 +49,11 @@ ve.dm.TableRowNode.static.matchTagNames = [ 'tr' ];
 ve.dm.TableRowNode.static.createData = function ( options ) {
 	options = options || {};
 
-	var cellCount = options.cellCount || 1;
+	const cellCount = options.cellCount || 1;
 
-	var data = [];
+	let data = [];
 	data.push( { type: 'tableRow' } );
-	for ( var i = 0; i < cellCount; i++ ) {
+	for ( let i = 0; i < cellCount; i++ ) {
 		data = data.concat( ve.dm.TableCellNode.static.createData( {
 			style: Array.isArray( options.style ) ? options.style[ i ] : options.style
 		} ) );
@@ -71,8 +71,8 @@ ve.dm.TableRowNode.prototype.onSplice = function () {
 	if ( this.getRoot() ) {
 		this.getParent().getParent().getMatrix().invalidate();
 	}
-	var nodes = Array.prototype.slice.call( arguments, 2 );
-	for ( var i = 0; i < nodes.length; i++ ) {
+	const nodes = Array.prototype.slice.call( arguments, 2 );
+	for ( let i = 0; i < nodes.length; i++ ) {
 		nodes[ i ].connect( this, {
 			attributeChange: [ 'onCellAttributeChange', nodes[ i ] ]
 		} );

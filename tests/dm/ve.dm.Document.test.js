@@ -9,7 +9,7 @@ QUnit.module( 've.dm.Document' );
 /* Tests */
 
 QUnit.test( 'constructor', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument();
+	let doc = ve.dm.example.createExampleDocument();
 
 	assert.equalNodeTree( doc.getDocumentNode(), ve.dm.example.tree, 'node tree matches example data' );
 	assert.throws(
@@ -72,11 +72,11 @@ QUnit.test( 'constructor', ( assert ) => {
 	assert.strictEqual( doc.getMetadata().join( ',' ), ',,,', 'Empty metadata array' );
 	assert.strictEqual( doc.getHtmlDocument().body.innerHTML, '', 'Empty HTML document is created' );
 
-	var htmlDoc = ve.createDocumentFromHtml( 'abcd' );
+	const htmlDoc = ve.createDocumentFromHtml( 'abcd' );
 	doc = new ve.dm.Document( [ 'a', 'b', 'c', 'd' ], htmlDoc );
 	assert.strictEqual( doc.getHtmlDocument(), htmlDoc, 'Provided HTML document is used' );
 
-	var data = new ve.dm.ElementLinearData(
+	const data = new ve.dm.ElementLinearData(
 		new ve.dm.HashValueStore(),
 		[ { type: 'paragraph' }, { type: '/paragraph' } ]
 	);
@@ -90,7 +90,7 @@ QUnit.test( 'constructor', ( assert ) => {
 } );
 
 QUnit.test( 'newBlankDocument', ( assert ) => {
-	var doc = ve.dm.Document.static.newBlankDocument();
+	let doc = ve.dm.Document.static.newBlankDocument();
 
 	assert.true( doc instanceof ve.dm.Document, 'newBlankDocument creates a document' );
 	assert.strictEqual( doc.data.data[ 0 ].internal.generated, 'empty', 'Creates an "empty" paragraph with no args' );
@@ -103,18 +103,18 @@ QUnit.test( 'newBlankDocument', ( assert ) => {
 } );
 
 QUnit.test( 'getData', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		expectedData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) );
 	assert.equalLinearDataWithDom( doc.getStore(), doc.getData(), expectedData.getData() );
 } );
 
 QUnit.test( 'getFullData', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument( 'withMeta' );
+	const doc = ve.dm.example.createExampleDocument( 'withMeta' );
 	assert.equalLinearDataWithDom( doc.getStore(), doc.getFullData(), ve.dm.example.withMeta );
 } );
 
 QUnit.test( 'cloneFromRange', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument( 'internalData' ),
+	const doc = ve.dm.example.createExampleDocument( 'internalData' ),
 		cases = [
 			{
 				msg: 'range undefined',
@@ -149,7 +149,7 @@ QUnit.test( 'cloneFromRange', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		var doc1 = ve.dm.example.createExampleDocument( caseItem.doc ),
+		const doc1 = ve.dm.example.createExampleDocument( caseItem.doc ),
 			doc2 = doc1.cloneFromRange( caseItem.range );
 		assert.deepEqual( doc2.data.data, caseItem.expectedData,
 			caseItem.msg + ': sliced data' );
@@ -165,7 +165,7 @@ QUnit.test( 'cloneFromRange', ( assert ) => {
 } );
 
 QUnit.test( 'getRelativeOffset', ( assert ) => {
-	var documentModel = ve.dm.example.createExampleDocument( 'alienData' ),
+	const documentModel = ve.dm.example.createExampleDocument( 'alienData' ),
 		tests = [
 			{
 				direction: 1,
@@ -236,7 +236,7 @@ QUnit.test( 'getRelativeOffset', ( assert ) => {
 } );
 
 QUnit.test( 'getRelativeRange', ( assert ) => {
-	var tests = [
+	const tests = [
 		{
 			data: [
 				{ type: 'paragraph' }, // 0
@@ -405,7 +405,7 @@ QUnit.test( 'getRelativeRange', ( assert ) => {
 		}
 	];
 	tests.forEach( ( testItem, i ) => {
-		var documentModel = new ve.dm.Document( testItem.data );
+		const documentModel = new ve.dm.Document( testItem.data );
 		testItem.cases.forEach( ( caseItem ) => {
 			assert.equalRange(
 				documentModel.getRelativeRange(
@@ -424,7 +424,7 @@ QUnit.test( 'getRelativeRange', ( assert ) => {
 } );
 
 QUnit.test( 'getBranchNodeFromOffset', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		root = doc.getDocumentNode().getRoot(),
 		expected = [
 			[], // 0 - document
@@ -492,7 +492,7 @@ QUnit.test( 'getBranchNodeFromOffset', ( assert ) => {
 		];
 
 	expected.forEach( ( expectedItem, i ) => {
-		var node = root;
+		let node = root;
 		expectedItem.forEach( ( offset ) => {
 			node = node.children[ offset ];
 		} );
@@ -501,20 +501,20 @@ QUnit.test( 'getBranchNodeFromOffset', ( assert ) => {
 } );
 
 QUnit.test( 'hasSlugAtOffset', ( assert ) => {
-	var expected = {
+	const expected = {
 			0: true,
 			10: true
 		},
 		doc = ve.dm.example.createExampleDocument( 'alienData' );
 
-	for ( var i = 0, l = doc.data.getLength(); i <= l; i++ ) {
+	for ( let i = 0, l = doc.data.getLength(); i <= l; i++ ) {
 		assert.strictEqual( doc.hasSlugAtOffset( i ), !!expected[ i ], 'hasSlugAtOffset ' + i + ' = ' + !!expected[ i ] );
 	}
 
 } );
 
 QUnit.test( 'getDataFromNode', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		expectedData = ve.dm.example.preprocessAnnotations( ve.copy( ve.dm.example.data ) );
 	assert.deepEqual(
 		doc.getDataFromNode( doc.getDocumentNode().getChildren()[ 0 ] ),
@@ -534,7 +534,7 @@ QUnit.test( 'getDataFromNode', ( assert ) => {
 } );
 
 QUnit.test( 'getOuterLength', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument();
+	const doc = ve.dm.example.createExampleDocument();
 	assert.strictEqual(
 		doc.getDocumentNode().getOuterLength(),
 		ve.dm.example.data.length,
@@ -543,12 +543,12 @@ QUnit.test( 'getOuterLength', ( assert ) => {
 } );
 
 QUnit.test( 'selectNodes', ( assert ) => {
-	var doc,
+	let doc,
 		mainDoc = ve.dm.example.createExampleDocument(),
 		cases = ve.dm.example.selectNodesCases;
 
 	function resolveNode( item ) {
-		var newItem = ve.extendObject( {}, item );
+		const newItem = ve.extendObject( {}, item );
 		newItem.node = ve.dm.example.lookupNode.apply(
 			ve.dm.example, [ doc.getDocumentNode() ].concat( item.node )
 		);
@@ -556,7 +556,7 @@ QUnit.test( 'selectNodes', ( assert ) => {
 	}
 
 	cases.forEach( ( caseItem ) => {
-		var expectedSelection;
+		let expectedSelection;
 		doc = caseItem.doc ? ve.dm.example.createExampleDocument( caseItem.doc ) : mainDoc;
 		expectedSelection = caseItem.expected.map( resolveNode );
 		assert.equalNodeSelection(
@@ -566,7 +566,7 @@ QUnit.test( 'selectNodes', ( assert ) => {
 } );
 
 QUnit.test( 'rangeInsideOneLeafNode', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
 				range: new ve.Range( 1, 4 ),
@@ -616,7 +616,7 @@ QUnit.test( 'rangeInsideOneLeafNode', ( assert ) => {
 	} );
 } );
 QUnit.test( 'shallowCloneFromRange', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'no range',
 			range: undefined,
@@ -873,7 +873,7 @@ QUnit.test( 'shallowCloneFromRange', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.dm.example.createExampleDocument( caseItem.doc ),
+		let doc = ve.dm.example.createExampleDocument( caseItem.doc ),
 			expectedData = ve.dm.example.preprocessAnnotations( caseItem.expected.slice(), doc.getStore() ).getData(),
 			range = new ve.Range( 0, caseItem.expected.length );
 
@@ -881,7 +881,7 @@ QUnit.test( 'shallowCloneFromRange', ( assert ) => {
 			{ type: 'internalList' },
 			{ type: '/internalList' }
 		] );
-		var slice = doc.shallowCloneFromRange( caseItem.range );
+		const slice = doc.shallowCloneFromRange( caseItem.range );
 		assert.equalLinearDataWithDom(
 			doc.getStore(),
 			slice.getData(),
@@ -902,7 +902,7 @@ QUnit.test( 'shallowCloneFromRange', ( assert ) => {
 } );
 
 QUnit.test( 'protection against double application of transactions', ( assert ) => {
-	var testDocument = ve.dm.example.createExampleDocument(),
+	const testDocument = ve.dm.example.createExampleDocument(),
 		txBuilder = new ve.dm.TransactionBuilder();
 	txBuilder.pushRetain( 1 );
 	txBuilder.pushReplacement( testDocument, 1, 0, [ 'H', 'e', 'l', 'l', 'o' ] );
@@ -917,7 +917,7 @@ QUnit.test( 'protection against double application of transactions', ( assert ) 
 } );
 
 QUnit.test( 'getNearestCursorOffset', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			name: 'example',
 			doc: ve.dm.example.createExampleDocument(),
@@ -980,8 +980,8 @@ QUnit.test( 'getNearestCursorOffset', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		for ( var dir = -1; dir <= 1; dir += 2 ) {
-			for ( var i = 0; i < caseItem.doc.data.getLength(); i++ ) {
+		for ( let dir = -1; dir <= 1; dir += 2 ) {
+			for ( let i = 0; i < caseItem.doc.data.getLength(); i++ ) {
 				assert.strictEqual(
 					caseItem.doc.getNearestCursorOffset( i, dir ),
 					caseItem.expected[ dir ][ i ],
@@ -993,7 +993,7 @@ QUnit.test( 'getNearestCursorOffset', ( assert ) => {
 } );
 
 QUnit.test( 'Selection equality', ( assert ) => {
-	var selections = [
+	const selections = [
 		new ve.dm.LinearSelection( new ve.Range( 1, 1 ) ),
 		new ve.dm.LinearSelection( new ve.Range( 1, 3 ) ),
 		new ve.dm.LinearSelection( new ve.Range( 3, 1 ) ),
@@ -1015,7 +1015,7 @@ QUnit.test( 'Selection equality', ( assert ) => {
 } );
 
 QUnit.test( 'findText (plain text)', ( assert ) => {
-	var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
+	const doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
 			// 0
 			'<p>Foo bar fooq.</p>' +
 			// 15
@@ -1263,13 +1263,13 @@ QUnit.test( 'findText (plain text)', ( assert ) => {
 
 	cases.forEach( ( caseItem ) => {
 		doc.lang = caseItem.lang || 'en';
-		var ranges = doc.findText( caseItem.query, caseItem.options );
+		const ranges = doc.findText( caseItem.query, caseItem.options );
 		assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
 	} );
 } );
 
 QUnit.test( 'findText (non-text content)', ( assert ) => {
-	var doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
+	const doc = ve.dm.converter.getModelFromDom( ve.createDocumentFromHtml(
 			//   1 3     5     7 9
 			//  / /     /     / /
 			'<p>ab<img/><img/>cd</p>'
@@ -1341,13 +1341,13 @@ QUnit.test( 'findText (non-text content)', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		var ranges = doc.findText( caseItem.query, caseItem.options );
+		const ranges = doc.findText( caseItem.query, caseItem.options );
 		assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
 	} );
 } );
 
 QUnit.test( 'fixupInsertion', ( assert ) => {
-	var doc = new ve.dm.Document( [
+	let doc = new ve.dm.Document( [
 			{ type: 'list', attributes: { style: 'bullet' } },
 			{ type: 'listItem' },
 			{ type: 'paragraph' },
@@ -1413,7 +1413,7 @@ QUnit.test( 'fixupInsertion', ( assert ) => {
 } );
 
 QUnit.test( 'read-only and offset caching', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		surface = new ve.dm.Surface( doc );
 
 	assert.strictEqual( doc.isReadOnly(), false, 'New document is not read-only' );

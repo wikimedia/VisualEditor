@@ -52,12 +52,12 @@ ve.ce.GeneratedContentNode.static.renderHtmlAttributes = false;
  * @return {jQuery.Promise} Promise, resolved when content is generated
  */
 ve.ce.GeneratedContentNode.static.awaitGeneratedContent = function ( view ) {
-	var promises = [];
+	const promises = [];
 
 	function queueNode( node ) {
 		if ( typeof node.generateContents === 'function' ) {
 			if ( node.isGenerating() ) {
-				var promise = ve.createDeferred();
+				const promise = ve.createDeferred();
 				node.once( 'rerender', promise.resolve );
 				promises.push( promise );
 			}
@@ -125,9 +125,9 @@ ve.ce.GeneratedContentNode.prototype.onGeneratedContentNodeUpdate = function ( s
  * @return {HTMLElement[]} Clones of the DOM elements in the right document, with modifications
  */
 ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElements ) {
-	var doc = this.getElementDocument();
+	const doc = this.getElementDocument();
 
-	var rendering = this.filterRenderedDomElements(
+	let rendering = this.filterRenderedDomElements(
 		// Clone the elements into the target document
 		ve.copyDomElements( domElements, doc )
 	);
@@ -136,7 +136,7 @@ ve.ce.GeneratedContentNode.prototype.getRenderedDomElements = function ( domElem
 		// Span wrap root text nodes so they can be measured
 		rendering = rendering.map( ( node ) => {
 			if ( node.nodeType === Node.TEXT_NODE ) {
-				var span = document.createElement( 'span' );
+				const span = document.createElement( 'span' );
 				span.appendChild( node );
 				return span;
 			}
@@ -184,7 +184,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 	if ( this.live ) {
 		this.emit( 'teardown' );
 	}
-	var $newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
+	const $newElements = $( this.getRenderedDomElements( ve.copyDomElements( generatedContents ) ) );
 	this.generatedContentsInvalid = !this.validateGeneratedContents( $( generatedContents ) );
 	if ( !staged || !this.generatedContentsInvalid ) {
 		if ( !this.$element[ 0 ].parentNode ) {
@@ -192,7 +192,7 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
 			this.$element = $newElements;
 		} else {
 			// Switch out this.$element (which can contain multiple siblings) in place
-			var lengthChange = this.$element.length !== $newElements.length;
+			const lengthChange = this.$element.length !== $newElements.length;
 			this.$element.first().replaceWith( $newElements );
 			this.$element.remove();
 			this.$element = $newElements;
@@ -245,11 +245,11 @@ ve.ce.GeneratedContentNode.prototype.render = function ( generatedContents, stag
  */
 ve.ce.GeneratedContentNode.prototype.preventTabbingInside = function () {
 	// Like OO.ui.findFocusable(), but find *all* such nodes rather than the first one.
-	var selector = 'input, select, textarea, button, object, a, area, [contenteditable], [tabindex]',
+	const selector = 'input, select, textarea, button, object, a, area, [contenteditable], [tabindex]',
 		$focusableCandidates = this.$element.find( selector ).addBack( selector );
 
 	$focusableCandidates.each( ( i, element ) => {
-		var $element = $( element );
+		const $element = $( element );
 		if ( OO.ui.isFocusableElement( $element ) ) {
 			$element.attr( 'tabindex', -1 );
 		}
@@ -287,7 +287,7 @@ ve.ce.GeneratedContentNode.prototype.validateGeneratedContents = function () {
  * @param {boolean} [staged] Update happened in staging mode
  */
 ve.ce.GeneratedContentNode.prototype.update = function ( config, staged ) {
-	var store = this.model.doc.getStore(),
+	const store = this.model.doc.getStore(),
 		contents = store.value( store.hashOfValue( null, OO.getHash( [ this.model.getHashObjectForRendering(), config ] ) ) );
 	if ( contents ) {
 		this.render( contents, staged );
@@ -312,7 +312,7 @@ ve.ce.GeneratedContentNode.prototype.forceUpdate = function ( config, staged ) {
 	}
 
 	// Create a new promise
-	var promise = this.generatingPromise = this.generateContents( config );
+	const promise = this.generatingPromise = this.generateContents( config );
 	promise
 		// If this promise is no longer the currently pending one, ignore it completely
 		.done( ( generatedContents ) => {
@@ -345,7 +345,7 @@ ve.ce.GeneratedContentNode.prototype.startGenerating = function () {
  * that if the promise does get resolved or rejected later, this is ignored.
  */
 ve.ce.GeneratedContentNode.prototype.abortGenerating = function () {
-	var promise = this.generatingPromise;
+	const promise = this.generatingPromise;
 	if ( promise ) {
 		// Unset this.generatingPromise first so that if the promise is resolved or rejected
 		// from within .abort(), this is ignored as it should be
@@ -371,8 +371,8 @@ ve.ce.GeneratedContentNode.prototype.doneGenerating = function ( generatedConten
 	// Because doneGenerating is invoked asynchronously, the model node may have become detached
 	// in the meantime. Handle this gracefully.
 	if ( this.model && this.model.doc ) {
-		var store = this.model.doc.getStore();
-		var hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
+		const store = this.model.doc.getStore();
+		const hash = OO.getHash( [ this.model.getHashObjectForRendering(), config ] );
 		store.hash( generatedContents, hash );
 		this.render( generatedContents, staged );
 	}

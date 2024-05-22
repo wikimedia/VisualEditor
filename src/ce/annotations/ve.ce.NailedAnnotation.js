@@ -35,7 +35,7 @@ ve.ce.NailedAnnotation.static.canBeActive = true;
  * @return {HTMLElement} The new nail
  */
 ve.ce.NailedAnnotation.static.makeNail = function ( type ) {
-	var nail = document.createElement( 'img' );
+	const nail = document.createElement( 'img' );
 	// Support: Firefox
 	// Firefox <=37 misbehaves if we don't set an src: https://bugzilla.mozilla.org/show_bug.cgi?id=989012
 	// Firefox misbehaves if we don't set an src and there is no sizing at node creation time: https://bugzilla.mozilla.org/show_bug.cgi?id=1267906
@@ -66,7 +66,7 @@ ve.ce.NailedAnnotation.prototype.getContentContainer = function () {
  * @see ve.ce.Annotation
  */
 ve.ce.NailedAnnotation.prototype.attachContents = function () {
-	var element = this.$element[ 0 ];
+	const element = this.$element[ 0 ];
 	// Insert post-open nail, annotation contents, and pre-close nail into the element
 	element.appendChild( this.constructor.static.makeNail( 'post-open' ) );
 	element.appendChild( this.contentFragment );

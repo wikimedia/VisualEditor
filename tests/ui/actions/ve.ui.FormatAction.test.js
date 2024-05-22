@@ -9,7 +9,7 @@ QUnit.module( 've.ui.FormatAction' );
 /* Tests */
 
 QUnit.test( 'convert', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			rangeOrSelection: new ve.Range( 14, 16 ),
 			type: 'heading',

@@ -90,13 +90,13 @@ ve.ui.DataTransferHandlerFactory.prototype.updateIndexes = function ( constructo
 	}
 
 	function remove( arr, item ) {
-		var index;
+		let index;
 		if ( ( index = arr.indexOf( item ) ) !== -1 ) {
 			arr.splice( index, 1 );
 		}
 	}
 
-	var i, j, ilen, jlen,
+	let i, j, ilen, jlen,
 		kinds = constructor.static.kinds,
 		types = constructor.static.types,
 		extensions = constructor.static.extensions;
@@ -162,7 +162,7 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 		return obj;
 	}
 
-	var names = [].concat(
+	const names = [].concat(
 		// 1. Match by kind + type (e.g. 'file' + 'text/html')
 		fetch( this.handlerNamesByKindAndType, item.kind, item.type ),
 		// 2. Match by just type (e.g. 'image/jpeg')
@@ -171,9 +171,9 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 		fetch( this.handlerNamesByExtension, item.getExtension() )
 	);
 
-	for ( var i = 0; i < names.length; i++ ) {
-		var name = names[ i ];
-		var constructor = this.registry[ name ];
+	for ( let i = 0; i < names.length; i++ ) {
+		const name = names[ i ];
+		const constructor = this.registry[ name ];
 
 		if ( isPasteSpecial && !constructor.static.handlesPasteSpecial ) {
 			continue;

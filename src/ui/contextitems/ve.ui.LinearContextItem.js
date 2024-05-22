@@ -115,7 +115,7 @@ ve.ui.LinearContextItem.static.embeddable = true;
  * @fires ve.ui.ContextItem#command
  */
 ve.ui.LinearContextItem.prototype.onEditButtonClick = function () {
-	var command = this.getCommand();
+	const command = this.getCommand();
 
 	if ( command ) {
 		command.execute( this.context.getSurface(), undefined, 'context' );
@@ -165,7 +165,7 @@ ve.ui.LinearContextItem.prototype.renderBody = function () {
 ve.ui.LinearContextItem.prototype.setup = function () {
 	this.renderBody();
 
-	var isEmpty = this.$body.is( ':empty' );
+	const isEmpty = this.$body.is( ':empty' );
 	if ( isEmpty && this.context.isMobile() ) {
 		if ( this.isEditable() ) {
 			this.$head.append( this.editButton.$element );
@@ -173,7 +173,7 @@ ve.ui.LinearContextItem.prototype.setup = function () {
 	}
 	this.$element.toggleClass( 've-ui-linearContextItem-empty', isEmpty );
 
-	var fragment = this.getFragment();
+	const fragment = this.getFragment();
 	if ( !( fragment && fragment.isNull() ) ) {
 		// A null fragment here means that this is most-likely a persistent
 		// context item that's persisting through text deselection; in that

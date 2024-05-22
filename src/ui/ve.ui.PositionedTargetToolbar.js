@@ -48,7 +48,7 @@ OO.inheritClass( ve.ui.PositionedTargetToolbar, ve.ui.TargetToolbar );
  * @inheritdoc
  */
 ve.ui.PositionedTargetToolbar.prototype.setup = function ( groups, surface ) {
-	var toolbarDialogs = surface.getToolbarDialogs();
+	const toolbarDialogs = surface.getToolbarDialogs();
 
 	// Parent method
 	ve.ui.PositionedTargetToolbar.super.prototype.setup.apply( this, arguments );
@@ -197,7 +197,7 @@ ve.ui.PositionedTargetToolbar.prototype.isFloatable = function () {
  * @param {Object} data
  */
 ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = function ( win, openingOrClosing ) {
-	var $surface = this.getSurface().$element,
+	const $surface = this.getSurface().$element,
 		transitionDuration = OO.ui.theme.getDialogTransitionDuration();
 
 	// win.isOpened before promise means we are closing
@@ -214,9 +214,9 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
 		if ( win.constructor.static.position === 'side' ) {
 			// win.isOpened after promise means we are opening
 			if ( win.isOpened() ) {
-				var margin = $surface.css( 'direction' ) === 'rtl' ? 'margin-left' : 'margin-right';
-				var originalMargin = parseFloat( $surface.css( margin ) );
-				var width = win.getSizeProperties().width;
+				const margin = $surface.css( 'direction' ) === 'rtl' ? 'margin-left' : 'margin-right';
+				const originalMargin = parseFloat( $surface.css( margin ) );
+				const width = win.getSizeProperties().width;
 				this.getSurface().$element
 					.addClass( 've-ui-surface-toolbarDialog-side' )
 					.css( margin, width + originalMargin );
@@ -253,17 +253,17 @@ ve.ui.PositionedTargetToolbar.prototype.onToolbarDialogsOpeningOrClosing = funct
  * Handle the visible part of the surface viewport change dimensions
  */
 ve.ui.PositionedTargetToolbar.prototype.onViewportResize = function () {
-	var surface = this.getSurface();
+	const surface = this.getSurface();
 
 	if ( !surface ) {
 		return;
 	}
 
-	var toolbarDialogs = surface.getToolbarDialogs();
-	var win = toolbarDialogs.getCurrentWindow();
+	const toolbarDialogs = surface.getToolbarDialogs();
+	const win = toolbarDialogs.getCurrentWindow();
 
 	if ( win && win.constructor.static.position === 'side' ) {
-		var viewportDimensions = surface.getViewportDimensions();
+		const viewportDimensions = surface.getViewportDimensions();
 		if ( viewportDimensions ) {
 			toolbarDialogs.getCurrentWindow().$frame.css(
 				'height', Math.min( surface.getBoundingClientRect().height, viewportDimensions.height )

@@ -405,7 +405,7 @@ ve.init.Target.prototype.destroy = function () {
  * Set up trigger listeners
  */
 ve.init.Target.prototype.setupTriggerListeners = function () {
-	var surfaceOrSurfaceConfig = this.getSurface() || this.getSurfaceConfig();
+	const surfaceOrSurfaceConfig = this.getSurface() || this.getSurfaceConfig();
 	this.documentTriggerListener = new ve.TriggerListener( this.constructor.static.documentCommands, surfaceOrSurfaceConfig.commandRegistry );
 	this.targetTriggerListener = new ve.TriggerListener( this.constructor.static.targetCommands, surfaceOrSurfaceConfig.commandRegistry );
 };
@@ -424,11 +424,11 @@ ve.init.Target.prototype.getScrollContainer = function () {
  */
 ve.init.Target.prototype.onContainerScroll = function () {
 	// Don't use getter as it creates the toolbar
-	var toolbar = this.toolbar;
+	const toolbar = this.toolbar;
 
 	if ( toolbar && toolbar.isFloatable() ) {
-		var wasFloating = toolbar.isFloating();
-		var scrollTop = this.$scrollContainer.scrollTop();
+		const wasFloating = toolbar.isFloating();
+		const scrollTop = this.$scrollContainer.scrollTop();
 
 		if ( scrollTop + this.toolbarScrollOffset > toolbar.getElementOffset().top ) {
 			toolbar.float();
@@ -454,10 +454,10 @@ ve.init.Target.prototype.onContainerScroll = function () {
  * @param {jQuery.Event} e Key down event
  */
 ve.init.Target.prototype.onDocumentKeyDown = function ( e ) {
-	var trigger = new ve.ui.Trigger( e );
+	const trigger = new ve.ui.Trigger( e );
 	if ( trigger.isComplete() ) {
-		var command = this.documentTriggerListener.getCommandByTrigger( trigger.toString() );
-		var surface = this.getSurface();
+		const command = this.documentTriggerListener.getCommandByTrigger( trigger.toString() );
+		const surface = this.getSurface();
 		if ( surface && command && command.execute( surface, undefined, 'trigger' ) ) {
 			e.preventDefault();
 		}
@@ -491,10 +491,10 @@ ve.init.Target.prototype.onDocumentVisibilityChange = function () {
  * @param {jQuery.Event} e Key down event
  */
 ve.init.Target.prototype.onTargetKeyDown = function ( e ) {
-	var trigger = new ve.ui.Trigger( e );
+	const trigger = new ve.ui.Trigger( e );
 	if ( trigger.isComplete() ) {
-		var command = this.targetTriggerListener.getCommandByTrigger( trigger.toString() );
-		var surface = this.getSurface();
+		const command = this.targetTriggerListener.getCommandByTrigger( trigger.toString() );
+		const surface = this.getSurface();
 		if ( surface && command && command.execute( surface, undefined, 'trigger' ) ) {
 			e.preventDefault();
 		}
@@ -567,7 +567,7 @@ ve.init.Target.prototype.getSurfaceConfig = function ( config ) {
  * @return {ve.ui.Surface}
  */
 ve.init.Target.prototype.addSurface = function ( dmDocOrSurface, config ) {
-	var surface = this.createSurface( dmDocOrSurface, ve.extendObject( { mode: this.getDefaultMode() }, config ) );
+	const surface = this.createSurface( dmDocOrSurface, ve.extendObject( { mode: this.getDefaultMode() }, config ) );
 	this.surfaces.push( surface );
 	surface.getView().connect( this, {
 		focus: this.onSurfaceViewFocus.bind( this, surface )
@@ -666,7 +666,7 @@ ve.init.Target.prototype.getActions = function () {
  * @param {ve.ui.Surface} surface
  */
 ve.init.Target.prototype.setupToolbar = function ( surface ) {
-	var toolbar = this.getToolbar();
+	const toolbar = this.getToolbar();
 	if ( this.actionGroups.length ) {
 		// Backwards-compatibility
 		if ( !this.actionsToolbar ) {
@@ -687,13 +687,13 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 				surface.getView().deactivate( /* showAsActivated= */ true );
 			} )
 			.on( 'focusout', ( e ) => {
-				var newFocusedElement = e.relatedTarget;
+				const newFocusedElement = e.relatedTarget;
 				if ( !OO.ui.contains( [ toolbar.$element[ 0 ], toolbar.$overlay[ 0 ] ], newFocusedElement, true ) ) {
 					// When the focus moves out of the toolbar:
 					if ( OO.ui.contains( surface.getView().$element[ 0 ], newFocusedElement, true ) ) {
 						// When the focus moves out of the toolbar, and it moves back into the surface,
 						// make sure the previous selection is restored.
-						var previousSelection = surface.getModel().getSelection();
+						const previousSelection = surface.getModel().getSelection();
 						surface.getView().activate();
 						if ( !previousSelection.isNull() ) {
 							surface.getModel().setSelection( previousSelection );
@@ -711,7 +711,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	this.actionGroups.forEach( ( group ) => {
 		group.align = 'after';
 	} );
-	var groups = [].concat( this.toolbarGroups, this.actionGroups );
+	const groups = [].concat( this.toolbarGroups, this.actionGroups );
 
 	toolbar.setup( groups, surface );
 	this.attachToolbar();
@@ -724,7 +724,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
  * @protected
  */
 ve.init.Target.prototype.deactivateSurfaceForToolbar = function () {
-	var view = this.getSurface().getView();
+	const view = this.getSurface().getView();
 	// Surface may already be deactivated (e.g. link inspector is open)
 	this.wasSurfaceActive = !view.deactivated;
 	if ( this.wasSurfaceActive ) {
@@ -738,7 +738,7 @@ ve.init.Target.prototype.deactivateSurfaceForToolbar = function () {
  * @protected
  */
 ve.init.Target.prototype.activateSurfaceForToolbar = function () {
-	var view = this.getSurface().getView();
+	const view = this.getSurface().getView();
 	// For non-collapsed mobile selections, don't reactivate
 	if ( this.wasSurfaceActive && !( OO.ui.isMobile() && !view.getModel().getSelection().isCollapsed() ) ) {
 		view.activate();
@@ -785,7 +785,7 @@ ve.init.Target.prototype.teardownToolbar = function () {
  * Attach the toolbar to the DOM
  */
 ve.init.Target.prototype.attachToolbar = function () {
-	var toolbar = this.getToolbar();
+	const toolbar = this.getToolbar();
 	toolbar.$element.insertBefore( toolbar.getSurface().$element );
 	toolbar.initialize();
 };

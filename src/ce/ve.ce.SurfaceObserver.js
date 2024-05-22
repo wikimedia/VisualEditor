@@ -136,8 +136,8 @@ ve.ce.SurfaceObserver.prototype.pollOnceInternal = function ( signalChanges, sel
 		return;
 	}
 
-	var oldState = this.rangeState;
-	var newState = new ve.ce.RangeState(
+	const oldState = this.rangeState;
+	const newState = new ve.ce.RangeState(
 		oldState,
 		this.surface.attachedRoot,
 		selectionOnly

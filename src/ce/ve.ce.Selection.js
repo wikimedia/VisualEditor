@@ -83,7 +83,7 @@ ve.ce.Selection.prototype.getSelectionStartAndEndRects = function () {
  * @return {Object|null} Selection rectangle
  */
 ve.ce.Selection.prototype.getSelectionFocusRect = function () {
-	var toSelection = new this.constructor( this.getModel().collapseToTo(), this.surface );
+	const toSelection = new this.constructor( this.getModel().collapseToTo(), this.surface );
 	return toSelection.getSelectionBoundingRect();
 };
 

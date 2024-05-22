@@ -42,7 +42,7 @@ ve.ce.ListNode.static.removeEmptyLastChildOnEnter = true;
  * @throws {Error} If style is invalid
  */
 ve.ce.ListNode.prototype.getTagName = function () {
-	var style = this.model.getAttribute( 'style' ),
+	const style = this.model.getAttribute( 'style' ),
 		types = { bullet: 'ul', number: 'ol' };
 
 	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {

@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.TransactionSquasher' );
 
 QUnit.test( 'squash', ( assert ) => {
-	var boldHash = 'hfbe3cfe099b83e1e',
+	const boldHash = 'hfbe3cfe099b83e1e',
 		italicHash = 'he4e7c54e2204d10ba';
 
 	function insertionTxList( before, itemSequence, after ) {
@@ -15,12 +15,12 @@ QUnit.test( 'squash', ( assert ) => {
 	}
 
 	function annotationTx( allData, start, stop, length, method, hash, spliceAt ) {
-		var oldData = Array.prototype.slice.call( allData, start, stop );
+		const oldData = Array.prototype.slice.call( allData, start, stop );
 
-		var newData;
+		let newData;
 		if ( method === 'set' ) {
 			newData = oldData.map( ( item ) => {
-				var ch, hashList;
+				let ch, hashList;
 				if ( Array.isArray( item ) ) {
 					ch = item[ 0 ];
 					hashList = item[ 1 ];
@@ -37,7 +37,7 @@ QUnit.test( 'squash', ( assert ) => {
 			} );
 		} else {
 			newData = oldData.map( ( item ) => {
-				var ch = item[ 0 ],
+				let ch = item[ 0 ],
 					hashList = item[ 1 ];
 				hashList = [].concat(
 					hashList.slice( 0, spliceAt ),
@@ -57,7 +57,7 @@ QUnit.test( 'squash', ( assert ) => {
 		return data.split( '' ).map( ( item ) => hashList.length === 0 ? item : [ item, hashList ] );
 	}
 
-	var cases = [
+	const cases = [
 		{
 			message: 'Empty transaction list',
 			transactions: [],
@@ -282,7 +282,7 @@ QUnit.test( 'squash', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var transactions = caseItem.transactions.map( ( txData ) => ve.dm.Transaction.static.deserialize( txData ) );
+		const transactions = caseItem.transactions.map( ( txData ) => ve.dm.Transaction.static.deserialize( txData ) );
 		ve.deepFreeze( transactions );
 		if ( caseItem.error ) {
 			assert.throws( () => {
@@ -291,7 +291,7 @@ QUnit.test( 'squash', ( assert ) => {
 			// eslint-disable-next-line qunit/no-early-return
 			return;
 		}
-		var squashed = ve.dm.Transaction.static.deserialize( caseItem.squashed );
+		const squashed = ve.dm.Transaction.static.deserialize( caseItem.squashed );
 
 		assert.deepEqual(
 			ve.dm.TransactionSquasher.static.squash( transactions ).operations,
@@ -299,9 +299,9 @@ QUnit.test( 'squash', ( assert ) => {
 			caseItem.message + ': squash all'
 		);
 
-		for ( var j = 1, jLen = transactions.length - 1; j < jLen; j++ ) {
-			var squashedBefore = ve.dm.TransactionSquasher.static.squash( transactions.slice( 0, j ) );
-			var squashedAfter = ve.dm.TransactionSquasher.static.squash( transactions.slice( j ) );
+		for ( let j = 1, jLen = transactions.length - 1; j < jLen; j++ ) {
+			const squashedBefore = ve.dm.TransactionSquasher.static.squash( transactions.slice( 0, j ) );
+			const squashedAfter = ve.dm.TransactionSquasher.static.squash( transactions.slice( j ) );
 			assert.deepEqual(
 				ve.dm.TransactionSquasher.static.squash( [
 					squashedBefore,

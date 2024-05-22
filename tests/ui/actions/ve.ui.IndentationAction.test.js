@@ -9,7 +9,7 @@ QUnit.module( 've.ui.IndentationAction' );
 /* Tests */
 
 QUnit.test( 'increase/decrease', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			rangeOrSelection: new ve.Range( 13, 14 ),
 			method: 'increase',

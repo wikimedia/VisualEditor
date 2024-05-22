@@ -9,7 +9,7 @@ QUnit.module( 've.ce.ContentBranchNode' );
 /* Tests */
 
 QUnit.test( 'getRenderedContents', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'Plain text without annotations',
 			data: [
@@ -365,8 +365,8 @@ QUnit.test( 'getRenderedContents', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data ) );
-		var $wrapper = $( new ve.ce.ParagraphNode( doc.getDocumentNode().getChildren()[ 0 ] ).getRenderedContents() );
+		const doc = new ve.dm.Document( ve.dm.example.preprocessAnnotations( caseItem.data ) );
+		const $wrapper = $( new ve.ce.ParagraphNode( doc.getDocumentNode().getChildren()[ 0 ] ).getRenderedContents() );
 		// HACK strip out all the class="ve-ce-textStyleAnnotation ve-ce-textStyleBoldAnnotation" crap
 		$wrapper.find( '.ve-ce-textStyleAnnotation' ).removeAttr( 'class' );
 		assert.equalDomElement( $wrapper[ 0 ], $( '<div>' ).html( caseItem.html )[ 0 ], caseItem.msg );

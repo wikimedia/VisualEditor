@@ -77,7 +77,7 @@ ve.ui.LinkAction.prototype.autolinkUrl = function () {
  * @return {boolean} Selection was valid and link action was executed.
  */
 ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
-	var surfaceModel = this.surface.getModel(),
+	const surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
@@ -88,11 +88,11 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
 		return /^link/.test( annotation.name );
 	}
 
-	var range = selection.getRange();
-	var rangeEnd = range.end;
+	let range = selection.getRange();
+	const rangeEnd = range.end;
 
-	var documentModel = surfaceModel.getDocument();
-	var linktext = documentModel.data.getText( true, range );
+	const documentModel = surfaceModel.getDocument();
+	let linktext = documentModel.data.getText( true, range );
 
 	// Eliminate trailing whitespace.
 	linktext = linktext.replace( /\s+$/, '' );
@@ -120,7 +120,7 @@ ve.ui.LinkAction.prototype.autolink = function ( validateFunc, txFunc ) {
 
 	// Check that none of the range has an existing link annotation.
 	// Otherwise we could autolink an internal link, which would be ungood.
-	for ( var i = range.start; i < range.end; i++ ) {
+	for ( let i = range.start; i < range.end; i++ ) {
 		if ( documentModel.data.getAnnotationsFromOffset( i ).containsMatching( isLinkAnnotation ) ) {
 			// Don't autolink this.
 			return false;

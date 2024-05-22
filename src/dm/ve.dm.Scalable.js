@@ -179,7 +179,7 @@ ve.dm.Scalable.static.isDimensionsObjectValid = function ( dimensions ) {
  * @return {ve.dm.Scalable} Cloned scalable object
  */
 ve.dm.Scalable.prototype.clone = function () {
-	var currentDimensions = this.getCurrentDimensions(),
+	const currentDimensions = this.getCurrentDimensions(),
 		originalDimensions = this.getOriginalDimensions(),
 		defaultDimensions = this.getDefaultDimensions(),
 		minDimensions = this.getMinDimensions(),
@@ -551,7 +551,7 @@ ve.dm.Scalable.prototype.isTooLarge = function () {
  * @return {Object} Dimensions object with width & height
  */
 ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
-	var minDimensions = this.isEnforcedMin() && this.getMinDimensions(),
+	const minDimensions = this.isEnforcedMin() && this.getMinDimensions(),
 		maxDimensions = this.isEnforcedMax() && this.getMaxDimensions();
 
 	dimensions = ve.copy( dimensions );
@@ -568,7 +568,7 @@ ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
 
 	// Bound to ratio
 	if ( this.isFixedRatio() ) {
-		var ratio = dimensions.width / dimensions.height;
+		const ratio = dimensions.width / dimensions.height;
 		if ( ratio < this.getRatio() ) {
 			dimensions.height = Math.round( dimensions.width / this.getRatio() );
 		} else {
@@ -578,9 +578,9 @@ ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
 
 	// Snap to grid
 	if ( grid ) {
-		var snapMin = minDimensions ? Math.ceil( minDimensions.width / grid ) : -Infinity;
-		var snapMax = maxDimensions ? Math.floor( maxDimensions.width / grid ) : Infinity;
-		var snap = Math.round( dimensions.width / grid );
+		let snapMin = minDimensions ? Math.ceil( minDimensions.width / grid ) : -Infinity;
+		let snapMax = maxDimensions ? Math.floor( maxDimensions.width / grid ) : Infinity;
+		let snap = Math.round( dimensions.width / grid );
 		dimensions.width = Math.max( Math.min( snap, snapMax ), snapMin ) * grid;
 		if ( this.isFixedRatio() ) {
 			// If the ratio is fixed we can't snap both to the grid, so just snap the width
@@ -602,7 +602,7 @@ ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
  * @return {boolean} Current dimensions are valid
  */
 ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
-	var dimensions = this.getCurrentDimensions(),
+	const dimensions = this.getCurrentDimensions(),
 		minDimensions = this.isEnforcedMin() && !ve.isEmptyObject( this.getMinDimensions() ) && this.getMinDimensions(),
 		maxDimensions = this.isEnforcedMax() && !ve.isEmptyObject( this.getMaxDimensions() ) && this.getMaxDimensions();
 

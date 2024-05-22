@@ -87,7 +87,7 @@ ve.ui.MobileContext.prototype.createInspectorWindowManager = function () {
  * @inheritdoc
  */
 ve.ui.MobileContext.prototype.onInspectorOpening = function ( win, opening ) {
-	var observer = this.surface.getView().surfaceObserver;
+	const observer = this.surface.getView().surfaceObserver;
 
 	this.inspector = win;
 
@@ -142,7 +142,7 @@ ve.ui.MobileContext.prototype.toggleMenu = function ( show ) {
 ve.ui.MobileContext.prototype.toggle = function ( show ) {
 	show = show === undefined ? !this.visible : !!show;
 	if ( show && !this.visible ) {
-		var deferred = ve.createDeferred();
+		const deferred = ve.createDeferred();
 		// Set opening flag immediately
 		this.openingTimeout = setTimeout( () => {
 			// Parent method

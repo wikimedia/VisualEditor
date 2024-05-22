@@ -9,7 +9,7 @@ QUnit.module( 've.dm.LinearData' );
 /* Tests */
 
 QUnit.test( 'basic usage', ( assert ) => {
-	var store = new ve.dm.HashValueStore(),
+	const store = new ve.dm.HashValueStore(),
 		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) );
 
 	assert.strictEqual( data.getData(), data.data, 'getData: with no arguments returns data by reference' );
@@ -24,7 +24,7 @@ QUnit.test( 'basic usage', ( assert ) => {
 } );
 
 QUnit.test( 'slice(Object)/splice(Object)/batchSplice', ( assert ) => {
-	var store = new ve.dm.HashValueStore(),
+	let store = new ve.dm.HashValueStore(),
 		data = new ve.dm.LinearData( store, ve.copy( ve.dm.example.data ) ),
 		expectedData = ve.copy( ve.dm.example.data );
 
@@ -34,8 +34,8 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', ( assert ) => {
 	assert.deepEqual( data.getData(), expectedData,
 		'slice: arrays match after slice'
 	);
-	var dataSlice = data.sliceObject( 10, 12 );
-	var expectedDataSlice = new ve.dm.LinearData( store,
+	const dataSlice = data.sliceObject( 10, 12 );
+	const expectedDataSlice = new ve.dm.LinearData( store,
 		expectedData.slice( 10, 12 )
 	);
 	assert.deepEqual( dataSlice.getData(), expectedDataSlice.getData(),
@@ -55,8 +55,8 @@ QUnit.test( 'slice(Object)/splice(Object)/batchSplice', ( assert ) => {
 	assert.deepEqual( data.getData(), expectedData,
 		'splice: arrays match after splice'
 	);
-	var dataSplice = data.spliceObject( 7, 3, 'x' );
-	var expectedDataSplice = new ve.dm.LinearData( store,
+	let dataSplice = data.spliceObject( 7, 3, 'x' );
+	let expectedDataSplice = new ve.dm.LinearData( store,
 		expectedData.splice( 7, 3, 'x' )
 	);
 	assert.deepEqual( dataSplice.getData(), expectedDataSplice.getData(),

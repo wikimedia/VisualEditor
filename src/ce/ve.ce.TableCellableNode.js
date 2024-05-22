@@ -45,7 +45,7 @@ ve.ce.TableCellableNode.prototype.setEditing = function () {
  * @throws {Error} Invalid style
  */
 ve.ce.TableCellableNode.prototype.getTagName = function () {
-	var style = this.model.getAttribute( 'style' ),
+	const style = this.model.getAttribute( 'style' ),
 		types = { data: 'td', header: 'th' };
 
 	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {

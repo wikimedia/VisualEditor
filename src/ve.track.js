@@ -5,7 +5,7 @@
  */
 
 ( function () {
-	var callbacks = $.Callbacks( 'memory' ),
+	const callbacks = $.Callbacks( 'memory' ),
 		queue = [];
 
 	/**
@@ -38,10 +38,10 @@
 	 * @param {Function} callback Handler to call for each matching tracked event
 	 */
 	ve.trackSubscribe = function ( topic, callback ) {
-		var seen = 0;
+		let seen = 0;
 
 		callbacks.add( ( q ) => {
-			var event;
+			let event;
 			for ( ; seen < q.length; seen++ ) {
 				event = q[ seen ];
 				if ( event.topic.indexOf( topic ) === 0 ) {

@@ -40,7 +40,7 @@ ve.ce.TableSectionNode.static.name = 'tableSection';
  * @throws {Error} If style is invalid
  */
 ve.ce.TableSectionNode.prototype.getTagName = function () {
-	var style = this.model.getAttribute( 'style' ),
+	const style = this.model.getAttribute( 'style' ),
 		types = { header: 'thead', body: 'tbody', footer: 'tfoot' };
 
 	if ( !Object.prototype.hasOwnProperty.call( types, style ) ) {

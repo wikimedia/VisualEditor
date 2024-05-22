@@ -214,7 +214,7 @@ ve.dm.Model.static.preserveHtmlAttributes = true;
  * @return {Object} Hash object
  */
 ve.dm.Model.static.getHashObject = function ( dataElement ) {
-	var hash = {
+	const hash = {
 		type: dataElement.type,
 		attributes: dataElement.attributes
 	};
@@ -253,9 +253,9 @@ ve.dm.Model.static.getAllowedRdfaTypes = function () {
  * @return {Array} Descriptions, list of strings or Node arrays
  */
 ve.dm.Model.static.describeChanges = function ( attributeChanges ) {
-	var descriptions = [];
-	for ( var key in attributeChanges ) {
-		var change = this.describeChange( key, attributeChanges[ key ] );
+	const descriptions = [];
+	for ( const key in attributeChanges ) {
+		const change = this.describeChange( key, attributeChanges[ key ] );
 		if ( change ) {
 			descriptions.push( change );
 		}
@@ -286,7 +286,7 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
 		}
 	} else {
 		// Use String() for string casting as values could be null
-		var diff = this.getAttributeDiff( String( change.from ), String( change.to ) );
+		const diff = this.getAttributeDiff( String( change.from ), String( change.to ) );
 		if ( diff ) {
 			return ve.htmlMsg( 'visualeditor-changedesc-changed-diff', key, diff );
 		} else {
@@ -306,13 +306,13 @@ ve.dm.Model.static.describeChange = function ( key, change ) {
  * was a simple remove-insert, and allowRemoveInsert wasn't set.
  */
 ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveInsert ) {
-	var span = document.createElement( 'span' ),
+	let span = document.createElement( 'span' ),
 		isRemoveInsert = true,
 		/* global diff_match_patch */
 		// eslint-disable-next-line new-cap
 		differ = new diff_match_patch();
 
-	var diff = differ.diff_main( oldText, newText );
+	const diff = differ.diff_main( oldText, newText );
 	differ.diff_cleanupEfficiency( diff );
 
 	diff.forEach( ( part ) => {
@@ -341,7 +341,7 @@ ve.dm.Model.static.getAttributeDiff = function ( oldText, newText, allowRemoveIn
  * @return {HTMLElement} Element wrapping text
  */
 ve.dm.Model.static.wrapText = function ( tag, text ) {
-	var wrapper = document.createElement( tag );
+	const wrapper = document.createElement( tag );
 	wrapper.appendChild( document.createTextNode( text ) );
 	return wrapper;
 };
@@ -434,10 +434,10 @@ ve.dm.Model.prototype.getAttribute = function ( key ) {
  * @return {Object} Attributes
  */
 ve.dm.Model.prototype.getAttributes = function ( prefix ) {
-	var attributes = this.element && this.element.attributes ? this.element.attributes : {};
+	const attributes = this.element && this.element.attributes ? this.element.attributes : {};
 	if ( prefix ) {
-		var filtered = {};
-		for ( var key in attributes ) {
+		const filtered = {};
+		for ( const key in attributes ) {
 			if ( key.indexOf( prefix ) === 0 ) {
 				filtered[ key.slice( prefix.length ) ] = attributes[ key ];
 			}

@@ -54,9 +54,9 @@ OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
  * @param {ve.dm.Node} node The node that was attached
  */
 ve.dm.MetaList.prototype.onNodeAttached = function ( node ) {
-	var offsetPath = node.getOffsetPath();
+	const offsetPath = node.getOffsetPath();
 	if ( node instanceof ve.dm.MetaItem ) {
-		var i = OO.binarySearch( this.items, ( other ) => ve.compareTuples( offsetPath, other.getOffsetPath() ), true );
+		const i = OO.binarySearch( this.items, ( other ) => ve.compareTuples( offsetPath, other.getOffsetPath() ), true );
 		this.items.splice( i, 0, node );
 		this.emit( 'insert', node );
 	}
@@ -69,7 +69,7 @@ ve.dm.MetaList.prototype.onNodeAttached = function ( node ) {
  */
 ve.dm.MetaList.prototype.onNodeDetached = function ( node ) {
 	if ( node instanceof ve.dm.MetaItem ) {
-		var i = this.items.indexOf( node );
+		const i = this.items.indexOf( node );
 		if ( i !== -1 ) {
 			this.items.splice( i, 1 );
 			this.emit( 'remove', node );
@@ -78,7 +78,7 @@ ve.dm.MetaList.prototype.onNodeDetached = function ( node ) {
 };
 
 ve.dm.MetaList.prototype.indexOf = function ( item, group ) {
-	var items = group ? this.getItemsInGroup( group ) : this.items;
+	const items = group ? this.getItemsInGroup( group ) : this.items;
 	return items.indexOf( item );
 };
 

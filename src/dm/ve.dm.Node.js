@@ -342,9 +342,9 @@ ve.dm.Node.static.remapInternalListKeys = function () {
  * @return {boolean} The element is inline
  */
 ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
-	var allTagsInline = true;
+	let allTagsInline = true;
 
-	for ( var i = 0, length = domElements.length; i < length; i++ ) {
+	for ( let i = 0, length = domElements.length; i < length; i++ ) {
 		if ( ve.isBlockElement( domElements[ i ] ) ) {
 			allTagsInline = false;
 			break;
@@ -373,20 +373,20 @@ ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
  * @return {Object} Cloned element object
  */
 ve.dm.Node.static.cloneElement = function ( element, store, preserveGenerated, resetAttributes ) {
-	var modified = false,
+	let modified = false,
 		clone = ve.copy( element );
 
 	if ( !preserveGenerated ) {
 		ve.deleteProp( clone, 'internal', 'generated' );
 	}
-	var originalDomElements = store.value( clone.originalDomElementsHash );
+	const originalDomElements = store.value( clone.originalDomElementsHash );
 	// Generate a new about attribute to prevent about grouping of cloned nodes
 	if ( originalDomElements ) {
 		// TODO: The '#mwtNNN' is required by Parsoid. Make the name used here
 		// more generic and specify the #mwt pattern in MW code.
-		var about = '#mwt' + Math.floor( 1000000000 * Math.random() );
-		var domElements = originalDomElements.map( ( el ) => {
-			var elClone = el.cloneNode( true );
+		const about = '#mwt' + Math.floor( 1000000000 * Math.random() );
+		const domElements = originalDomElements.map( ( el ) => {
+			const elClone = el.cloneNode( true );
 			// Check for hasAttribute as comments don't have them
 			if ( elClone.hasAttribute && elClone.hasAttribute( 'about' ) ) {
 				elClone.setAttribute( 'about', about );
@@ -436,7 +436,7 @@ ve.dm.Node.prototype.getStore = function () {
  * @return {Object} Cloned element object
  */
 ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated, resetAttributes ) {
-	var store = this.getStore();
+	const store = this.getStore();
 	if ( !store ) {
 		throw new Error( 'Node must be attached to the document to be cloned.' );
 	}
@@ -697,7 +697,7 @@ ve.dm.Node.prototype.matches = function ( type, attributes ) {
  * @return {boolean} Attributes sepcified match those in the node
  */
 ve.dm.Node.prototype.compareAttributes = function ( attributes ) {
-	for ( var key in attributes ) {
+	for ( const key in attributes ) {
 		if ( this.getAttribute( key ) !== attributes[ key ] ) {
 			return false;
 		}
@@ -729,7 +729,7 @@ ve.dm.Node.prototype.setLength = function ( length ) {
 		throw new Error( 'Length cannot be negative' );
 	}
 	// Compute length adjustment from old length
-	var diff = length - this.length;
+	const diff = length - this.length;
 	// Set new length
 	this.length = length;
 	// Adjust the parent's length
@@ -768,9 +768,9 @@ ve.dm.Node.prototype.getOffset = function () {
 	}
 
 	// Find our index in the parent and add up lengths while we do so
-	var siblings = this.parent.children;
-	var offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
-	var i, len;
+	const siblings = this.parent.children;
+	let offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
+	let i, len;
 	for ( i = 0, len = siblings.length; i < len; i++ ) {
 		if ( siblings[ i ] === this ) {
 			break;
@@ -800,7 +800,7 @@ ve.dm.Node.prototype.getOffset = function () {
  * @return {boolean} Nodes can be merged
  */
 ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
-	var n1 = this,
+	let n1 = this,
 		n2 = node;
 
 	// Content node can be merged with node that can contain content, for instance: TextNode

@@ -43,7 +43,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * In these cases, it will perform the content removal itself.
  */
 ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
-	var direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
+	let direction = e.keyCode === OO.ui.Keys.DELETE ? 1 : -1,
 		unit = ( e.altKey === true || e.ctrlKey === true ) ? 'word' : 'character',
 		offset = 0,
 		rangeToRemove = surface.getModel().getSelection().getRange(),
@@ -64,7 +64,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 	}
 
 	if ( focusedNode ) {
-		var command = uiSurface.commandRegistry.getDeleteCommandForNode( focusedNode );
+		const command = uiSurface.commandRegistry.getDeleteCommandForNode( focusedNode );
 		if ( command ) {
 			command.execute( uiSurface );
 			e.preventDefault();
@@ -83,7 +83,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			return true;
 		}
 
-		var position = ve.adjacentDomPosition(
+		let position = ve.adjacentDomPosition(
 			{
 				node: surface.nativeSelection.focusNode,
 				offset: surface.nativeSelection.focusOffset
@@ -91,7 +91,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			direction,
 			{ stop: ve.isHardCursorStep }
 		);
-		var skipNode = position.steps[ position.steps.length - 1 ].node;
+		const skipNode = position.steps[ position.steps.length - 1 ].node;
 		if ( skipNode.nodeType === Node.TEXT_NODE ) {
 			surface.eventSequencer.afterOne( {
 				keydown: surface.surfaceObserver.pollOnce.bind( surface.surfaceObserver )
@@ -99,7 +99,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			return true;
 		}
 
-		var range;
+		let range;
 		// If the native action would delete an outside nail, move *two* cursor positions
 		// in the deletion direction, to get inside the link just past the inside nail,
 		// then preventDefault
@@ -122,7 +122,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			return true;
 		}
 
-		var pairNode;
+		let pairNode;
 		// If inside an empty link, delete it and preventDefault
 		if (
 			skipNode.classList &&
@@ -143,7 +143,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 					've-ce-nail-pre-close'
 			)
 		) {
-			var linkNode = skipNode.parentNode;
+			const linkNode = skipNode.parentNode;
 			range = document.createRange();
 			// Set start to link's offset, minus 1 to allow for outer nail deletion
 			// (browsers actually tend to adjust range offsets automatically
@@ -197,7 +197,7 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 
 	// Else range is uncollapsed or is adjacent to a non-nail element.
 	if ( rangeToRemove.isCollapsed() ) {
-		var originalRange = new ve.Range( rangeToRemove.from, rangeToRemove.to );
+		const originalRange = new ve.Range( rangeToRemove.from, rangeToRemove.to );
 		// Expand rangeToRemove
 		rangeToRemove = documentModel.getRelativeRange( rangeToRemove, direction, unit, true );
 		if ( surface.getActiveNode() && !surface.getActiveNode().getRange().containsRange( rangeToRemove ) ) {
@@ -205,11 +205,11 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			return true;
 		}
 
-		var documentModelSelectedNodes = documentModel.selectNodes( rangeToRemove, 'siblings' );
-		for ( var i = 0; i < documentModelSelectedNodes.length; i++ ) {
-			var node = documentModelSelectedNodes[ i ].node;
-			var nodeOuterRange = documentModelSelectedNodes[ i ].nodeOuterRange;
-			var adjacentBlockSelection = null;
+		const documentModelSelectedNodes = documentModel.selectNodes( rangeToRemove, 'siblings' );
+		for ( let i = 0; i < documentModelSelectedNodes.length; i++ ) {
+			const node = documentModelSelectedNodes[ i ].node;
+			const nodeOuterRange = documentModelSelectedNodes[ i ].nodeOuterRange;
+			let adjacentBlockSelection = null;
 			if ( node instanceof ve.dm.TableNode ) {
 				// Prevent backspacing/deleting over table cells
 				if ( rangeToRemove.containsOffset( nodeOuterRange.start ) ) {
@@ -217,9 +217,9 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 						nodeOuterRange, 0, 0
 					);
 				} else {
-					var matrix = node.getMatrix();
-					var row = matrix.getRowCount() - 1;
-					var col = matrix.getColCount( row ) - 1;
+					const matrix = node.getMatrix();
+					const row = matrix.getRowCount() - 1;
+					const col = matrix.getColCount( row ) - 1;
 					adjacentBlockSelection = new ve.dm.TableSelection(
 						nodeOuterRange, col, row
 					);
@@ -230,8 +230,8 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			}
 			if ( adjacentBlockSelection ) {
 				// Create a fragment from the selection as we might delete first
-				var adjacentFragment = surface.getModel().getFragment( adjacentBlockSelection, true );
-				var currentNode = documentModel.getDocumentNode().getNodeFromOffset( originalRange.start );
+				const adjacentFragment = surface.getModel().getFragment( adjacentBlockSelection, true );
+				const currentNode = documentModel.getDocumentNode().getNodeFromOffset( originalRange.start );
 				if ( currentNode.canContainContent() && !currentNode.getLength() ) {
 					// If starting in an empty CBN, delete the CBN instead (T338622)
 					surface.getModel().getLinearFragment( currentNode.getOuterRange(), true ).delete( direction );
@@ -250,14 +250,14 @@ ve.ce.LinearDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 			// * if we're in a plain paragraph, don't do anything
 			// * if we're in a list item and it's empty get rid of the item
 			offset = rangeToRemove.start;
-			var docLength = documentModel.getDocumentRange().getLength();
+			const docLength = documentModel.getDocumentRange().getLength();
 			if ( offset < docLength - 1 ) {
 				while ( offset < docLength - 1 && data.isCloseElementData( offset ) ) {
 					offset++;
 				}
 			}
-			var startNode = documentModel.getDocumentNode().getNodeFromOffset( offset - 1 );
-			var nodeRange = startNode.getOuterRange();
+			const startNode = documentModel.getDocumentNode().getNodeFromOffset( offset - 1 );
+			const nodeRange = startNode.getOuterRange();
 			if (
 				// The node is not unwrappable (e.g. table cells, text nodes)
 				!startNode.isUnwrappable() ||

@@ -48,7 +48,7 @@ ve.ce.HeadingNode.prototype.initialize = function () {
  * @throws {Error} If level is invalid
  */
 ve.ce.HeadingNode.prototype.getTagName = function () {
-	var level = this.model.getAttribute( 'level' ),
+	const level = this.model.getAttribute( 'level' ),
 		types = { 1: 'h1', 2: 'h2', 3: 'h3', 4: 'h4', 5: 'h5', 6: 'h6' };
 
 	if ( !Object.prototype.hasOwnProperty.call( types, level ) ) {

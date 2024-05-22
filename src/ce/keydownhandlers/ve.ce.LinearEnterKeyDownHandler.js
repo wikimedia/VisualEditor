@@ -36,7 +36,7 @@ ve.ce.LinearEnterKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
-	var range = surface.model.getSelection().getRange(),
+	let range = surface.model.getSelection().getRange(),
 		cursor = range.from,
 		documentModel = surface.model.getDocument(),
 		emptyParagraph = [ { type: 'paragraph' }, { type: '/paragraph' } ],
@@ -52,7 +52,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		return false;
 	}
 
-	var focusedNode = surface.getFocusedNode();
+	const focusedNode = surface.getFocusedNode();
 	if ( focusedNode ) {
 		if ( focusedNode.getModel().isEditable() ) {
 			focusedNode.executeCommand();
@@ -64,7 +64,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
-	var node = surface.getDocument().getBranchNodeFromOffset( range.from );
+	let node = surface.getDocument().getBranchNodeFromOffset( range.from );
 
 	if ( !node.isMultiline() ) {
 		return true;
@@ -72,7 +72,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 
 	// Handle removal first
 	if ( !range.isCollapsed() ) {
-		var txRemove = ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, range );
+		const txRemove = ve.dm.TransactionBuilder.static.newFromRemoval( documentModel, range );
 		range = txRemove.translateRange( range );
 		// We do want this to propagate to the surface
 		surface.model.change( txRemove, new ve.dm.LinearSelection( range ) );
@@ -86,7 +86,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		nodeModelRange = nodeModel.getRange();
 	}
 
-	var txInsert;
+	let txInsert;
 	// Handle insertion
 	if ( node === null ) {
 		throw new Error( 'node === null' );
@@ -115,8 +115,8 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	} else if ( !node.splitOnEnter() ) {
 		// Cannot split, so insert some appropriate node
 
-		var insertEmptyParagraph = false;
-		var prevContentOffset;
+		let insertEmptyParagraph = false;
+		let prevContentOffset;
 		if ( documentModel.hasSlugAtOffset( range.from ) ) {
 			insertEmptyParagraph = true;
 		} else {
@@ -147,7 +147,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 	// Assertion: if txInsert === undefined then node.splitOnEnter() === true
 
 	function getSplitData( n ) {
-		var stack = [];
+		const stack = [];
 		n.traverseUpstream( ( parent ) => {
 			if ( !parent.splitOnEnter() ) {
 				return false;
@@ -172,10 +172,10 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 		// This node has splitOnEnter = true. Traverse upstream until the first node
 		// that has splitOnEnter = false, splitting each node as it is reached. Set
 		// outermostNode to the last splittable node.
-		var splitData = getSplitData( node );
+		let splitData = getSplitData( node );
 
-		var outerParent = outermostNode.getParent();
-		var outerChildrenCount = outerParent.getChildren().length;
+		const outerParent = outermostNode.getParent();
+		const outerChildrenCount = outerParent.getChildren().length;
 
 		if (
 			// Parent removes empty last children
@@ -189,7 +189,7 @@ ve.ce.LinearEnterKeyDownHandler.static.execute = function ( surface, e ) {
 			)
 		) {
 			// Enter was pressed in an empty last child
-			var container = outerParent.getParent();
+			const container = outerParent.getParent();
 			advanceCursor = false;
 			if ( outerChildrenCount === 1 ) {
 				// The item we're about to remove is the only child

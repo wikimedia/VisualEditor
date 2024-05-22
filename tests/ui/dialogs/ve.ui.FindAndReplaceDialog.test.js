@@ -9,7 +9,7 @@ QUnit.module( 've.ui.FindAndReplaceDialog' );
 /* Tests */
 
 QUnit.test( 'find fragments', ( assert ) => {
-	var done = assert.async(),
+	const done = assert.async(),
 		surface = ve.test.utils.createSurfaceFromHtml( '<p>Foo bar fooq.</p><p>baz foob</p>' ),
 		cases = [
 			{
@@ -83,7 +83,7 @@ QUnit.test( 'find fragments', ( assert ) => {
 				dialog.matchCaseToggle.setValue( !!caseItem.matchCase );
 				dialog.regexToggle.setValue( !!caseItem.regex );
 				dialog.findText.setValue( caseItem.find );
-				var ranges = dialog.fragments.map( ( fragment ) => fragment.getSelection().getRange() );
+				const ranges = dialog.fragments.map( ( fragment ) => fragment.getSelection().getRange() );
 				assert.deepEqual( ranges, caseItem.ranges, caseItem.msg );
 				dialog.findText.setValue( '' );
 			} );
@@ -94,7 +94,7 @@ QUnit.test( 'find fragments', ( assert ) => {
 } );
 
 QUnit.test( 'replace all', ( assert ) => {
-	var done = assert.async(),
+	const done = assert.async(),
 		surface = ve.test.utils.createSurfaceFromHtml( '<p>Foo bar fooq.</p><p>baz foob</p>' ),
 		cases = [
 			{

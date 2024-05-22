@@ -41,7 +41,7 @@
 
 			/* DOMParser */
 			( function () {
-				var doc;
+				let doc;
 				try {
 					doc = new DOMParser().parseFromString( '<body></body>', 'text/html' );
 				} catch ( e ) {}

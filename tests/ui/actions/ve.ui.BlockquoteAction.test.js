@@ -9,7 +9,7 @@ QUnit.module( 've.ui.BlockquoteAction' );
 /* Tests */
 
 QUnit.test( 'wrap/unwrap/toggle', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			html: '<p>aa</p><p>bb</p><p>cc</p>',
 			rangeOrSelection: new ve.Range( 6 ),

@@ -40,7 +40,7 @@ ve.ce.TableDeleteKeyDownHandler.static.supportedSelections = [ 'table' ];
  * @inheritdoc
  */
 ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
-	var surfaceModel = surface.getModel(),
+	const surfaceModel = surface.getModel(),
 		documentModel = surfaceModel.getDocument(),
 		fragments = [],
 		cells = surfaceModel.getSelection().getMatrixCells( documentModel );
@@ -53,7 +53,7 @@ ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
-	var i, l;
+	let i, l;
 	for ( i = 0, l = cells.length; i < l; i++ ) {
 		if ( cells[ i ].node.isCellEditable() ) {
 			// Create auto-updating fragments from ranges

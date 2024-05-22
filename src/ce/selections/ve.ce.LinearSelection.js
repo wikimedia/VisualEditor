@@ -35,18 +35,18 @@ ve.ce.LinearSelection.static.name = 'linear';
  * @inheritdoc
  */
 ve.ce.LinearSelection.prototype.getSelectionRects = function () {
-	var surface = this.getSurface(),
+	let surface = this.getSurface(),
 		rects = [],
 		relativeRects = [];
 
-	var range = this.getModel().getRange();
-	var focusedNode = surface.getFocusedNode( range );
+	const range = this.getModel().getRange();
+	const focusedNode = surface.getFocusedNode( range );
 
 	if ( focusedNode ) {
 		return focusedNode.getRects();
 	}
 
-	var nativeRange = surface.getNativeRange( range );
+	const nativeRange = surface.getNativeRange( range );
 	if ( !nativeRange ) {
 		return null;
 	}
@@ -62,18 +62,18 @@ ve.ce.LinearSelection.prototype.getSelectionRects = function () {
 			throw new Error( 'getClientRects returned empty list' );
 		}
 	} catch ( e ) {
-		var rect = this.getNodeClientRectFromRange( nativeRange );
+		const rect = this.getNodeClientRectFromRange( nativeRange );
 		if ( rect ) {
 			rects = [ rect ];
 		}
 	}
 
-	var surfaceRect = surface.getSurface().getBoundingClientRect();
+	const surfaceRect = surface.getSurface().getBoundingClientRect();
 	if ( !rects || !surfaceRect ) {
 		return null;
 	}
 
-	for ( var i = 0, l = rects.length; i < l; i++ ) {
+	for ( let i = 0, l = rects.length; i < l; i++ ) {
 		relativeRects.push( ve.translateRect( rects[ i ], -surfaceRect.left, -surfaceRect.top ) );
 	}
 	return relativeRects;
@@ -83,10 +83,10 @@ ve.ce.LinearSelection.prototype.getSelectionRects = function () {
  * @inheritdoc
  */
 ve.ce.LinearSelection.prototype.getSelectionStartAndEndRects = function () {
-	var surface = this.getSurface();
+	const surface = this.getSurface();
 
-	var range = this.getModel().getRange();
-	var focusedNode = surface.getFocusedNode( range );
+	const range = this.getModel().getRange();
+	const focusedNode = surface.getFocusedNode( range );
 
 	if ( focusedNode ) {
 		return focusedNode.getStartAndEndRects();
@@ -99,21 +99,21 @@ ve.ce.LinearSelection.prototype.getSelectionStartAndEndRects = function () {
  * @inheritdoc
  */
 ve.ce.LinearSelection.prototype.getSelectionBoundingRect = function () {
-	var surface = this.getSurface();
+	const surface = this.getSurface();
 
-	var range = this.getModel().getRange();
-	var focusedNode = surface.getFocusedNode( range );
+	const range = this.getModel().getRange();
+	const focusedNode = surface.getFocusedNode( range );
 
 	if ( focusedNode ) {
 		return focusedNode.getBoundingRect();
 	}
 
-	var nativeRange = surface.getNativeRange( range );
+	const nativeRange = surface.getNativeRange( range );
 	if ( !nativeRange ) {
 		return null;
 	}
 
-	var boundingRect;
+	let boundingRect;
 	try {
 		boundingRect = RangeFix.getBoundingClientRect( nativeRange );
 	} catch ( e ) {
@@ -123,7 +123,7 @@ ve.ce.LinearSelection.prototype.getSelectionBoundingRect = function () {
 		boundingRect = this.getNodeClientRectFromRange( nativeRange );
 	}
 
-	var surfaceRect = surface.getSurface().getBoundingClientRect();
+	const surfaceRect = surface.getSurface().getBoundingClientRect();
 	if ( !boundingRect || !surfaceRect ) {
 		return null;
 	}
@@ -143,18 +143,18 @@ ve.ce.LinearSelection.prototype.getSelectionBoundingRect = function () {
  * @return {Object|null} ClientRect-like object
  */
 ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) {
-	var containerNode = range.endContainer,
+	const containerNode = range.endContainer,
 		offset = range.endOffset;
 
-	var node;
-	var fixHeight;
+	let node;
+	let fixHeight;
 	if ( containerNode.nodeType === Node.TEXT_NODE && ( offset === 0 || offset === containerNode.length ) ) {
 		node = offset ? containerNode.previousSibling : containerNode.nextSibling;
 	} else if ( containerNode.nodeType === Node.ELEMENT_NODE ) {
 		node = offset === containerNode.childNodes.length ? containerNode.lastChild : containerNode.childNodes[ offset ];
 		// Nail heights are 0, so use the annotation's height
 		if ( node && node.nodeType === Node.ELEMENT_NODE && node.classList.contains( 've-ce-nail' ) ) {
-			var annotationNode = offset ? node.previousSibling : node.nextSibling;
+			const annotationNode = offset ? node.previousSibling : node.nextSibling;
 			// Sometimes annotationNode isn't an HTMLElement (T261992). Not sure
 			// when this happens, but we will still return a sensible rectangle
 			// without fixHeight isn't set.
@@ -179,18 +179,18 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 
 	// We would use getBoundingClientRect(), but in iOS7 that's relative to the
 	// document rather than to the viewport
-	var rect = node.getClientRects()[ 0 ];
+	const rect = node.getClientRects()[ 0 ];
 	if ( !rect ) {
 		// FF can return null when focusNode is invisible
 		return null;
 	}
 
-	var side = $( node ).css( 'direction' ) === 'rtl' ? 'right' : 'left';
-	var adjacentNode = range.endContainer.childNodes[ range.endOffset ];
-	var x;
+	const side = $( node ).css( 'direction' ) === 'rtl' ? 'right' : 'left';
+	const adjacentNode = range.endContainer.childNodes[ range.endOffset ];
+	let x;
 	if ( range.collapsed && adjacentNode && adjacentNode.classList && adjacentNode.classList.contains( 've-ce-unicorn' ) ) {
 		// We're next to a unicorn; use its left/right position
-		var unicornRect = adjacentNode.getClientRects()[ 0 ];
+		const unicornRect = adjacentNode.getClientRects()[ 0 ];
 		if ( !unicornRect ) {
 			return null;
 		}
@@ -201,7 +201,7 @@ ve.ce.LinearSelection.prototype.getNodeClientRectFromRange = function ( range ) 
 
 	if ( fixHeight ) {
 		// Use a pre-computed height from above, maintaining the vertical center
-		var middle = ( rect.top + rect.bottom ) / 2;
+		const middle = ( rect.top + rect.bottom ) / 2;
 		return {
 			top: middle - ( fixHeight / 2 ),
 			bottom: middle + ( fixHeight / 2 ),

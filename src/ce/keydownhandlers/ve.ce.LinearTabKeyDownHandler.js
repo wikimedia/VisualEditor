@@ -38,7 +38,7 @@ ve.ce.LinearTabKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearTabKeyDownHandler.static.execute = function ( surface, e ) {
-	var activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode ),
+	const activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode ),
 		activeTableCaptionNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableCaptionNode ),
 		documentModel = surface.getModel().getDocument();
 	// Check we have an active table node

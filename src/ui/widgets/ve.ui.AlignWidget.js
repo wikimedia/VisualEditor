@@ -20,7 +20,7 @@ ve.ui.AlignWidget = function VeUiAlignWidget( config ) {
 	// Parent constructor
 	ve.ui.AlignWidget.super.call( this, config );
 
-	var alignButtons = [
+	let alignButtons = [
 		new OO.ui.ButtonOptionWidget( {
 			data: 'left',
 			icon: 'alignLeft',

@@ -20,7 +20,7 @@ ve.ce.BranchNodeStub.static.name = 'branch-stub';
 ve.ce.BranchNodeStub.static.splitOnEnter = true;
 
 ve.ce.BranchNodeStub.prototype.getTagName = function () {
-	var style = this.model.getAttribute( 'style' ),
+	const style = this.model.getAttribute( 'style' ),
 		types = { a: 'a', b: 'b' };
 
 	return types[ style ];
@@ -31,25 +31,25 @@ ve.ce.nodeFactory.register( ve.ce.BranchNodeStub );
 /* Tests */
 
 QUnit.test( 'splitOnEnter', ( assert ) => {
-	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
+	const node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	assert.strictEqual( node.splitOnEnter(), true );
 } );
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
-	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
+	const node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	assert.strictEqual( node.canHaveChildren(), true );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
-	var node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
+	const node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	assert.strictEqual( node.canHaveChildrenNotContent(), true );
 } );
 
 QUnit.test( 'updateTagName', ( assert ) => {
-	var attributes = { style: 'a' },
+	const attributes = { style: 'a' },
 		node = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub( {
 			type: 'branch-stub',
 			attributes: attributes
@@ -69,7 +69,7 @@ QUnit.test( 'updateTagName', ( assert ) => {
 } );
 
 QUnit.test( 'getDomPosition', ( assert ) => {
-	var ceParent = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
+	const ceParent = new ve.ce.BranchNodeStub( new ve.dm.BranchNodeStub() );
 
 	// Create prior state by attaching manually, to avoid circular dependence on onSplice
 	ceParent.$element = $( '<p>' );
@@ -87,7 +87,7 @@ QUnit.test( 'getDomPosition', ( assert ) => {
 		// TextNode with some annotation
 		new ve.ce.TextNode( new ve.dm.BranchNodeStub() )
 	);
-	var expectedOffsets = [ 0, 2, 2, 2, 3, 4, 7 ];
+	const expectedOffsets = [ 0, 2, 2, 2, 3, 4, 7 ];
 	ceParent.children[ 0 ].$element = $( '<img><img>' );
 	ceParent.children[ 1 ].$element = $();
 	ceParent.children[ 2 ].$element = $();
@@ -100,26 +100,26 @@ QUnit.test( 'getDomPosition', ( assert ) => {
 		.append( ceParent.children[ 4 ].$element )
 		.append( 'bar<b>baz</b>qux' );
 
-	for ( var i = 0, len = ceParent.children.length + 1; i < len; i++ ) {
-		var position = ceParent.getDomPosition( i );
+	for ( let i = 0, len = ceParent.children.length + 1; i < len; i++ ) {
+		const position = ceParent.getDomPosition( i );
 		assert.strictEqual( position.node, ceParent.$element.last()[ 0 ], 'i=' + i + ' node' );
 		assert.strictEqual( position.offset, expectedOffsets[ i ], 'i=' + i + ' position' );
 	}
 } );
 
 QUnit.test( 'onSplice', ( assert ) => {
-	var modelA = new ve.dm.BranchNodeStub(),
+	const modelA = new ve.dm.BranchNodeStub(),
 		modelB = new ve.dm.BranchNodeStub(),
 		modelC = new ve.dm.BranchNodeStub();
 
-	var viewA = new ve.ce.BranchNodeStub( modelA );
+	const viewA = new ve.ce.BranchNodeStub( modelA );
 
 	// Insertion tests
 	modelA.splice( 0, 0, modelB, modelC );
 
 	assert.strictEqual( viewA.getChildren().length, 2 );
-	var viewB = viewA.getChildren()[ 0 ];
-	var viewC = viewA.getChildren()[ 1 ];
+	const viewB = viewA.getChildren()[ 0 ];
+	const viewC = viewA.getChildren()[ 1 ];
 	assert.deepEqual( viewB.getModel(), modelB, 'First view child matches model tree' );
 	assert.deepEqual( viewC.getModel(), modelC, 'Second view child matches model tree' );
 

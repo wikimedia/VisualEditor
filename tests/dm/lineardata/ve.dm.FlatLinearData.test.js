@@ -9,7 +9,7 @@ QUnit.module( 've.dm.FlatLinearData' );
 /* Tests */
 
 QUnit.test( 'getType/isOpenElementData/isCloseElementData', ( assert ) => {
-	var data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
+	const data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'paragraph' },
 			'a', [ 'b', [ 0 ] ],
 			{ type: '/paragraph' }
@@ -18,7 +18,7 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', ( assert ) => {
 		isOpen = [ 0 ],
 		isClose = [ 3 ];
 
-	for ( var i = 0; i < data.getLength(); i++ ) {
+	for ( let i = 0; i < data.getLength(); i++ ) {
 		assert.strictEqual( data.getType( i ), types[ i ], 'Type at offset ' + i );
 		assert.strictEqual( data.isOpenElementData( i ), isOpen.includes( i ), 'isOpen ' + i );
 		assert.strictEqual( data.isCloseElementData( i ), isClose.includes( i ), 'isClose ' + i );
@@ -26,7 +26,7 @@ QUnit.test( 'getType/isOpenElementData/isCloseElementData', ( assert ) => {
 } );
 
 QUnit.test( 'isElementData', ( assert ) => {
-	var data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
+	const data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), [
 			{ type: 'heading' },
 			'a',
 			{ type: 'inlineImage' },
@@ -76,7 +76,7 @@ QUnit.test( 'isElementData', ( assert ) => {
 } );
 
 QUnit.test( 'containsElementData', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'simple paragraph',
 			data: [ { type: 'paragraph' }, 'a', { type: '/paragraph' } ],
@@ -100,7 +100,7 @@ QUnit.test( 'containsElementData', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), caseItem.data );
+		const data = new ve.dm.FlatLinearData( new ve.dm.HashValueStore(), caseItem.data );
 		assert.strictEqual(
 			data.containsElementData(), caseItem.expected, caseItem.msg
 		);

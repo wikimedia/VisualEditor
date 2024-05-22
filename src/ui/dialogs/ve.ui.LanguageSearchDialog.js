@@ -67,7 +67,7 @@ ve.ui.LanguageSearchDialog.prototype.initialize = function () {
  * @param {ve.ui.LanguageResultWidget} item Chosen item
  */
 ve.ui.LanguageSearchDialog.prototype.onSearchResultsChoose = function ( item ) {
-	var data = item.getData();
+	const data = item.getData();
 	this.close( {
 		action: 'done',
 		lang: data.code,

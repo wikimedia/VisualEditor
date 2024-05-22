@@ -29,7 +29,7 @@ ve.dm.AnnotationFactoryAnnotationStub.static.name = 'annotation-factory-annotati
 /* Tests */
 
 QUnit.test( 'canAnnotationBeActive/getDescription', ( assert ) => {
-	var factory = new ve.ce.AnnotationFactory();
+	const factory = new ve.ce.AnnotationFactory();
 
 	assert.throws(
 		() => {

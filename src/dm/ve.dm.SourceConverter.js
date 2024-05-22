@@ -19,7 +19,7 @@ ve.dm.SourceConverter = function VeDmSourceConverter() {
  * @return {ve.dm.Document} Document model
  */
 ve.dm.SourceConverter.prototype.getModelFromSourceText = function ( sourceText, options ) {
-	var data = this.getDataFromSourceText( sourceText );
+	const data = this.getDataFromSourceText( sourceText );
 
 	options = options || {};
 
@@ -37,10 +37,10 @@ ve.dm.SourceConverter.prototype.getModelFromSourceText = function ( sourceText, 
  * @return {Array} Linear data
  */
 ve.dm.SourceConverter.prototype.getDataFromSourceText = function ( sourceText, inline ) {
-	var lines = sourceText.split( /\r\n|\r|\n/ ),
+	const lines = sourceText.split( /\r\n|\r|\n/ ),
 		content = [];
 
-	for ( var i = 0, l = lines.length; i < l; i++ ) {
+	for ( let i = 0, l = lines.length; i < l; i++ ) {
 		// Skip opening <p> in inline mode
 		if ( !( inline && i === 0 ) ) {
 			content.push( { type: 'paragraph' } );
@@ -72,11 +72,11 @@ ve.dm.SourceConverter.prototype.getSourceTextFromModel = function ( model ) {
  * @return {string} Source text
  */
 ve.dm.SourceConverter.prototype.getSourceTextFromDataRange = function ( data, range ) {
-	var text = '';
+	let text = '';
 
 	range = range || new ve.Range( 0, data.length );
 
-	for ( var i = range.start; i < range.end; i++ ) {
+	for ( let i = range.start; i < range.end; i++ ) {
 		// Check for the most common case first for best performance
 		if ( !data[ i ].type ) {
 			text += data[ i ];

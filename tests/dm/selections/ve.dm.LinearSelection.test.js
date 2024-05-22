@@ -9,7 +9,7 @@ QUnit.module( 've.dm.LinearSelection' );
 /* Tests */
 
 QUnit.test( 'Construction and getters (getRange(s))', ( assert ) => {
-	var range = new ve.Range( 200, 100 ),
+	const range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( range );
 
 	assert.equalRange( selection.getRange(), range, 'getRange' );
@@ -18,7 +18,7 @@ QUnit.test( 'Construction and getters (getRange(s))', ( assert ) => {
 } );
 
 QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', ( assert ) => {
-	var range = new ve.Range( 200, 100 ),
+	const range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( range ),
 		startSelection = new ve.dm.LinearSelection( new ve.Range( 100 ) ),
 		endSelection = new ve.dm.LinearSelection( new ve.Range( 200 ) );
@@ -34,7 +34,7 @@ QUnit.test( 'Basic methods (collapse*, isCollased, equals, isNull)', ( assert ) 
 } );
 
 QUnit.test( 'Factory methods & serialization (newFromJSON, toJSON, getDescription)', ( assert ) => {
-	var range = new ve.Range( 200, 100 ),
+	const range = new ve.Range( 200, 100 ),
 		selection = new ve.dm.LinearSelection( range );
 
 	assert.deepEqual( selection.toJSON(), { type: 'linear', range: range }, 'toJSON' );

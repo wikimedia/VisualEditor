@@ -33,17 +33,17 @@ new ve.dm.FakeCommentNode();
 /* Tests */
 
 QUnit.test( 'canHaveChildren', ( assert ) => {
-	var node = new ve.dm.NodeStub();
+	const node = new ve.dm.NodeStub();
 	assert.strictEqual( node.canHaveChildren(), false );
 } );
 
 QUnit.test( 'canHaveChildrenNotContent', ( assert ) => {
-	var node = new ve.dm.NodeStub();
+	const node = new ve.dm.NodeStub();
 	assert.strictEqual( node.canHaveChildrenNotContent(), false );
 } );
 
 QUnit.test( 'getLength', ( assert ) => {
-	var node1 = new ve.dm.NodeStub(),
+	const node1 = new ve.dm.NodeStub(),
 		node2 = new ve.dm.NodeStub();
 
 	node2.setLength( 1234 );
@@ -53,7 +53,7 @@ QUnit.test( 'getLength', ( assert ) => {
 } );
 
 QUnit.test( 'getOuterLength', ( assert ) => {
-	var node1 = new ve.dm.NodeStub(),
+	const node1 = new ve.dm.NodeStub(),
 		node2 = new ve.dm.NodeStub();
 
 	node2.setLength( 1234 );
@@ -63,7 +63,7 @@ QUnit.test( 'getOuterLength', ( assert ) => {
 } );
 
 QUnit.test( 'setLength', ( assert ) => {
-	var node = new ve.dm.NodeStub();
+	const node = new ve.dm.NodeStub();
 	node.setLength( 1234 );
 	assert.strictEqual( node.getLength(), 1234 );
 	assert.throws(
@@ -77,27 +77,27 @@ QUnit.test( 'setLength', ( assert ) => {
 } );
 
 QUnit.test( 'adjustLength', ( assert ) => {
-	var node = new ve.dm.NodeStub();
+	const node = new ve.dm.NodeStub();
 	node.setLength( 1234 );
 	node.adjustLength( 5678 );
 	assert.strictEqual( node.getLength(), 6912 );
 } );
 
 QUnit.test( 'getAttribute', ( assert ) => {
-	var node = new ve.dm.NodeStub( { type: 'stub', attributes: { a: 1, b: 2 } } );
+	const node = new ve.dm.NodeStub( { type: 'stub', attributes: { a: 1, b: 2 } } );
 	assert.strictEqual( node.getAttribute( 'a' ), 1 );
 	assert.strictEqual( node.getAttribute( 'b' ), 2 );
 } );
 
 QUnit.test( 'setRoot', ( assert ) => {
-	var node1 = new ve.dm.NodeStub(),
+	const node1 = new ve.dm.NodeStub(),
 		node2 = new ve.dm.NodeStub();
 	node1.setRoot( node2 );
 	assert.strictEqual( node1.getRoot(), node2 );
 } );
 
 QUnit.test( 'attach', ( assert ) => {
-	var node1 = new ve.dm.NodeStub(),
+	const node1 = new ve.dm.NodeStub(),
 		node2 = new ve.dm.NodeStub();
 	node1.attach( node2 );
 	assert.strictEqual( node1.getParent(), node2 );
@@ -105,7 +105,7 @@ QUnit.test( 'attach', ( assert ) => {
 } );
 
 QUnit.test( 'detach', ( assert ) => {
-	var node1 = new ve.dm.NodeStub(),
+	const node1 = new ve.dm.NodeStub(),
 		node2 = new ve.dm.NodeStub();
 	node1.attach( node2 );
 	node1.detach();
@@ -114,7 +114,7 @@ QUnit.test( 'detach', ( assert ) => {
 } );
 
 QUnit.test( 'canBeMergedWith', ( assert ) => {
-	var node1 = new ve.dm.LeafNodeStub(),
+	const node1 = new ve.dm.LeafNodeStub(),
 		node2 = new ve.dm.BranchNodeStub( {}, [ node1 ] ),
 		node3 = new ve.dm.BranchNodeStub( {}, [ node2 ] ),
 		node4 = new ve.dm.LeafNodeStub(),
@@ -131,7 +131,7 @@ QUnit.test( 'canBeMergedWith', ( assert ) => {
 } );
 
 QUnit.test( 'getClonedElement', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument(),
+	const doc = ve.dm.example.createExampleDocument(),
 		cases = [
 			{
 				original: {
@@ -239,9 +239,9 @@ QUnit.test( 'getClonedElement', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		var node = new ve.dm.NodeStub( caseItem.original );
+		const node = new ve.dm.NodeStub( caseItem.original );
 		node.setDocument( doc );
-		var clonedElement = node.getClonedElement( caseItem.preserveGenerated, caseItem.resetAttributes );
+		const clonedElement = node.getClonedElement( caseItem.preserveGenerated, caseItem.resetAttributes );
 		assert.deepEqual( clonedElement, caseItem.clone, caseItem.msg );
 	} );
 } );

@@ -37,10 +37,10 @@ ve.ui.DimensionsWidget = function VeUiDimensionsWidget( config ) {
 	this.setReadOnly( !!config.readOnly );
 	this.renderDefaults();
 
-	var labelTimes = new OO.ui.LabelWidget( {
+	const labelTimes = new OO.ui.LabelWidget( {
 		label: ve.msg( 'visualeditor-dimensionswidget-times' )
 	} );
-	var labelPx = new OO.ui.LabelWidget( {
+	const labelPx = new OO.ui.LabelWidget( {
 		label: ve.msg( 'visualeditor-dimensionswidget-px' )
 	} );
 

@@ -101,8 +101,8 @@ ve.ui.LinkContextItem.prototype.getDescription = function () {
  * @inheritdoc
  */
 ve.ui.LinkContextItem.prototype.renderBody = function () {
-	var htmlDoc = this.context.getSurface().getModel().getDocument().getHtmlDocument();
-	var $link = $( '<a>' )
+	const htmlDoc = this.context.getSurface().getModel().getDocument().getHtmlDocument();
+	const $link = $( '<a>' )
 		.addClass( 've-ui-linkContextItem-link' )
 		.text( this.getDescription() )
 		.attr( {
@@ -124,13 +124,13 @@ ve.ui.LinkContextItem.prototype.renderBody = function () {
  * @protected
  */
 ve.ui.LinkContextItem.prototype.updateLabelPreview = function () {
-	var surfaceModel = this.context.getSurface().getModel(),
+	const surfaceModel = this.context.getSurface().getModel(),
 		annotationView = this.getAnnotationView();
 
 	// annotationView is a potentially old view node from when the context was
 	// first focused in the document. If the annotation model has been changed
 	// as well, this may be a problem.
-	var label;
+	let label;
 	if ( annotationView ) {
 		label = surfaceModel.getFragment().expandLinearSelection( 'annotation', annotationView.getModel() ).getText();
 	}
@@ -146,7 +146,7 @@ ve.ui.LinkContextItem.prototype.updateLabelPreview = function () {
  * @protected
  */
 ve.ui.LinkContextItem.prototype.onLabelButtonClick = function () {
-	var surface = this.context.getSurface().getView(),
+	const surface = this.context.getSurface().getView(),
 		annotationView = this.getAnnotationView();
 
 	surface.selectNodeContents(

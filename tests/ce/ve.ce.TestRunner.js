@@ -44,7 +44,7 @@ ve.ce.TestOffset = function VeCeTestOffset( direction, offset ) {
  * @return {ve.ce.TestOffset.OffsetInfo} Offset information
  */
 ve.ce.TestOffset.prototype.resolve = function ( node ) {
-	var reversed = ( this.direction !== 'forward' );
+	const reversed = ( this.direction !== 'forward' );
 	return ve.ce.TestOffset.static.findTextOffset( node, this.offset, reversed );
 };
 
@@ -66,8 +66,8 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	if ( node.nodeType === node.TEXT_NODE ) {
 		// Test length >= n because one more boundaries than code units
 		if ( node.textContent.length >= n ) {
-			var offset = reversed ? node.textContent.length - n : n;
-			var slice = node.textContent.slice( 0, offset ) + '|' +
+			const offset = reversed ? node.textContent.length - n : n;
+			const slice = node.textContent.slice( 0, offset ) + '|' +
 				node.textContent.slice( offset );
 			return { node: node, offset: offset, slice: slice };
 		} else {
@@ -81,7 +81,7 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	// TODO consecutive text nodes will cause an extra phantom boundary.
 	// In realistic usage, this can't always be avoided, because normalize() will
 	// close an IME.
-	var childNodes = Array.prototype.slice.call( node.childNodes );
+	const childNodes = Array.prototype.slice.call( node.childNodes );
 
 	if ( childNodes.length === 0 ) {
 		if ( n === 0 ) {
@@ -93,10 +93,10 @@ ve.ce.TestOffset.static.findTextOffset = function ( node, n, reversed ) {
 	if ( reversed ) {
 		childNodes.reverse();
 	}
-	var consumed = 0;
-	for ( var i = 0, len = childNodes.length; i < len; i++ ) {
-		var childNode = node.childNodes[ i ];
-		var found = ve.ce.TestOffset.static.findTextOffset( childNode, n - consumed, reversed );
+	let consumed = 0;
+	for ( let i = 0, len = childNodes.length; i < len; i++ ) {
+		const childNode = node.childNodes[ i ];
+		const found = ve.ce.TestOffset.static.findTextOffset( childNode, n - consumed, reversed );
 		if ( found.node ) {
 			return found;
 		}
@@ -148,7 +148,7 @@ ve.ce.TestRunner = function VeCeTestRunner( surface ) {
  * @return {Node} The paragraph node
  */
 ve.ce.TestRunner.prototype.getParagraph = function () {
-	var p = this.view.$element.find( '.ve-ce-attachedRootNode > p' )[ 0 ];
+	const p = this.view.$element.find( '.ve-ce-attachedRootNode > p' )[ 0 ];
 	if ( p === undefined ) {
 		if ( this.view.$element.find( '.ve-ce-attachedRootNode' )[ 0 ] === undefined ) {
 			throw new Error( 'no CE div' );
@@ -193,21 +193,21 @@ ve.ce.TestRunner.prototype.changeText = function ( text ) {
 
 	// Remove all descendant text nodes
 	// This may clobber the selection, so the test had better call changeSel next.
-	var paragraph = this.getParagraph();
+	const paragraph = this.getParagraph();
 	$( paragraph ).find( '*' ).addBack().contents().each( function () {
 		if ( this.nodeType === Node.TEXT_NODE ) {
 			this.parentNode.removeChild( this );
 		}
 	} );
 
-	var range = document.createRange();
+	const range = document.createRange();
 	if ( text === '' ) {
 		range.setStart( paragraph, 0 );
 	} else {
 		// Insert the text at the start of the paragraph, and put the cursor after
 		// the insertion, to ensure consistency across test environments.
 		// See T176453
-		var textNode = document.createTextNode( text );
+		const textNode = document.createTextNode( text );
 		paragraph.insertBefore( textNode, paragraph.firstChild );
 		range.setStart( textNode, text.length );
 	}
@@ -239,8 +239,8 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 		end = new ve.ce.TestOffset( 'forward', end );
 	}
 
-	var foundStart = start.resolve( this.getParagraph() );
-	var foundEnd = start.resolve( this.getParagraph() );
+	const foundStart = start.resolve( this.getParagraph() );
+	const foundEnd = start.resolve( this.getParagraph() );
 	if ( !foundStart.node ) {
 		throw new Error( 'Bad start offset: ' + start.offset );
 	}
@@ -248,7 +248,7 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
 		throw new Error( 'Bad end offset: ', end.offset );
 	}
 
-	var nativeRange = this.doc.createRange();
+	const nativeRange = this.doc.createRange();
 	nativeRange.setStart( foundStart.node, foundStart.offset );
 	nativeRange.setEnd( foundEnd.node, foundEnd.offset );
 	this.nativeSelection.removeAllRanges();
@@ -272,7 +272,7 @@ ve.ce.TestRunner.prototype.changeSel = function ( start, end ) {
  * @param {number} sequence The sequence number in the test scenario
  */
 ve.ce.TestRunner.prototype.testEqual = function ( assert, testName, sequence ) {
-	var comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
+	const comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
 	assert.strictEqual( this.model.getDocument().data.getText( false ), this.lastText, comment );
 };
 
@@ -284,17 +284,17 @@ ve.ce.TestRunner.prototype.testEqual = function ( assert, testName, sequence ) {
  * @param {number} sequence The sequence number in the test scenario
  */
 ve.ce.TestRunner.prototype.testNotEqual = function ( assert, testName, sequence ) {
-	var comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
+	const comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
 	assert.notStrictEqual( this.model.getDocument().data.getText( false ), this.lastText, comment );
 };
 
 ve.ce.TestRunner.prototype.ok = function ( assert, testName, sequence ) {
-	var comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
+	const comment = testName + ' seq=' + sequence + ': "' + this.lastText + '"';
 	assert.true( true, comment );
 };
 
 ve.ce.TestRunner.prototype.failDied = function ( assert, testName, sequence, ex ) {
-	var comment = testName + ' seq=' + sequence + ': "' + this.lastText +
+	const comment = testName + ' seq=' + sequence + ': "' + this.lastText +
 		'" ex=' + ex + ' stack=<' + ex.stack + '>';
 	assert.true( false, comment );
 };

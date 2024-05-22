@@ -82,7 +82,7 @@ ve.ui.FragmentDialog.prototype.getActionWidgetConfig = function ( config ) {
  */
 ve.ui.FragmentDialog.prototype.getSetupProcess = function ( data ) {
 	// Parent method
-	var process = ve.ui.FragmentDialog.super.prototype.getSetupProcess.call( this, data );
+	const process = ve.ui.FragmentDialog.super.prototype.getSetupProcess.call( this, data );
 	// Mixin method
 	return ve.ui.FragmentWindow.prototype.getSetupProcess.call( this, data, process );
 };
@@ -92,7 +92,7 @@ ve.ui.FragmentDialog.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.FragmentDialog.prototype.getTeardownProcess = function ( data ) {
 	// Parent method
-	var process = ve.ui.FragmentDialog.super.prototype.getTeardownProcess.call( this, data )
+	const process = ve.ui.FragmentDialog.super.prototype.getTeardownProcess.call( this, data )
 		.first( () => {
 			if ( this.selectFragmentOnClose ) {
 				this.fragment.select();

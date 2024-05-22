@@ -38,7 +38,7 @@ OO.initClass( ve.dm.GeneratedContentNode );
  * @return {string} Hash of stored data
  */
 ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElement, generatedContents, store ) {
-	var hash = OO.getHash( [ this.getHashObjectForRendering( dataElement ), undefined ] );
+	const hash = OO.getHash( [ this.getHashObjectForRendering( dataElement ), undefined ] );
 	return store.hash( generatedContents, hash );
 };
 

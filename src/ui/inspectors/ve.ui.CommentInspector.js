@@ -119,7 +119,7 @@ ve.ui.CommentInspector.prototype.getTeardownProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.CommentInspector.super.prototype.getTeardownProcess.call( this, data )
 		.first( () => {
-			var surfaceModel = this.getFragment().getSurface();
+			const surfaceModel = this.getFragment().getSurface();
 
 			// data.action can be 'done', 'remove' or undefined (cancel)
 			if ( data.action === 'done' && this.textWidget.getValue() !== '' ) {

@@ -10,7 +10,6 @@
 	},
 	"rules": {
 		"max-len": "off",
-		"no-var": "error",
 		"es-x/no-hashbang": "off"
 	}
 }

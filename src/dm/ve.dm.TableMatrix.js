@@ -69,7 +69,7 @@ ve.dm.TableMatrix.prototype.invalidate = function () {
  * Recreates the matrix structure.
  */
 ve.dm.TableMatrix.prototype.update = function () {
-	var matrix = [],
+	let matrix = [],
 		rowNodes = [],
 		iterator = this.tableNode.getIterator(),
 		row = -1,
@@ -87,7 +87,7 @@ ve.dm.TableMatrix.prototype.update = function () {
 
 	// Iterates through all cells and stores the cells as well as
 	// so called placeholders into the matrix.
-	var cellNode;
+	let cellNode;
 	while ( ( cellNode = iterator.next() ) !== undefined ) {
 		col++;
 		// Skip placeholders
@@ -98,24 +98,24 @@ ve.dm.TableMatrix.prototype.update = function () {
 			matrix[ row ][ col ] = null;
 			continue;
 		}
-		var cell = new ve.dm.TableMatrixCell( cellNode, row, col );
+		const cell = new ve.dm.TableMatrixCell( cellNode, row, col );
 		// Store the cell in the matrix
 		matrix[ row ][ col ] = cell;
 		// Add place holders for spanned cells
-		var rowSpan = cellNode.getRowspan();
-		var colSpan = cellNode.getColspan();
+		const rowSpan = cellNode.getRowspan();
+		const colSpan = cellNode.getColspan();
 
 		if ( rowSpan === 1 && colSpan === 1 ) {
 			continue;
 		}
 
-		for ( var i = 0; i < rowSpan; i++ ) {
-			for ( var j = 0; j < colSpan; j++ ) {
+		for ( let i = 0; i < rowSpan; i++ ) {
+			for ( let j = 0; j < colSpan; j++ ) {
 				if ( i === 0 && j === 0 ) {
 					continue;
 				}
-				var r = row + i;
-				var c = col + j;
+				const r = row + i;
+				const c = col + j;
 				// Initialize the cell matrix row if not yet present
 				matrix[ r ] = matrix[ r ] || [];
 				matrix[ r ][ c ] = new ve.dm.TableMatrixCell( cellNode, r, c, cell );
@@ -134,7 +134,7 @@ ve.dm.TableMatrix.prototype.update = function () {
  * @return {ve.dm.TableMatrixCell|undefined} Cell, or undefined if out of bounds
  */
 ve.dm.TableMatrix.prototype.getCell = function ( row, col ) {
-	var matrix = this.getMatrix();
+	const matrix = this.getMatrix();
 	return matrix[ row ] ? matrix[ row ][ col ] : undefined;
 };
 
@@ -145,9 +145,9 @@ ve.dm.TableMatrix.prototype.getCell = function ( row, col ) {
  * @return {ve.dm.TableMatrixCell[]} The cells of a column
  */
 ve.dm.TableMatrix.prototype.getColumn = function ( col ) {
-	var matrix = this.getMatrix();
-	var cells = [];
-	for ( var row = 0; row < matrix.length; row++ ) {
+	const matrix = this.getMatrix();
+	const cells = [];
+	for ( let row = 0; row < matrix.length; row++ ) {
 		cells.push( matrix[ row ][ col ] );
 	}
 	return cells;
@@ -160,7 +160,7 @@ ve.dm.TableMatrix.prototype.getColumn = function ( col ) {
  * @return {ve.dm.TableMatrixCell[]} The cells of a row
  */
 ve.dm.TableMatrix.prototype.getRow = function ( row ) {
-	var matrix = this.getMatrix();
+	const matrix = this.getMatrix();
 	return matrix[ row ];
 };
 
@@ -177,7 +177,7 @@ ve.dm.TableMatrix.prototype.getRow = function ( row ) {
  * @return {ve.dm.TableRowNode|undefined} Node at given index, if found
  */
 ve.dm.TableMatrix.prototype.getRowNode = function ( row ) {
-	var rowNodes = this.getRowNodes();
+	const rowNodes = this.getRowNodes();
 	return rowNodes[ row ];
 };
 
@@ -229,7 +229,7 @@ ve.dm.TableMatrix.prototype.getRowCount = function () {
  * @return {number} Number of columns
  */
 ve.dm.TableMatrix.prototype.getColCount = function ( row ) {
-	var matrix = this.getMatrix();
+	const matrix = this.getMatrix();
 	return matrix.length ? matrix[ row ].length : 0;
 };
 
@@ -241,9 +241,9 @@ ve.dm.TableMatrix.prototype.getColCount = function ( row ) {
  * @return {number} Number of columns
  */
 ve.dm.TableMatrix.prototype.getMaxColCount = function () {
-	var colCount = 0;
+	let colCount = 0;
 
-	for ( var row = this.getRowCount() - 1; row >= 0; row-- ) {
+	for ( let row = this.getRowCount() - 1; row >= 0; row-- ) {
 		colCount = Math.max( colCount, this.getColCount( row ) );
 	}
 	return colCount;
@@ -256,15 +256,15 @@ ve.dm.TableMatrix.prototype.getMaxColCount = function () {
  * @return {ve.dm.TableMatrixCell|null} The cell or null if not found
  */
 ve.dm.TableMatrix.prototype.lookupCell = function ( cellNode ) {
-	var matrix = this.getMatrix(),
+	const matrix = this.getMatrix(),
 		rowNodes = this.getRowNodes();
 
-	var row = rowNodes.indexOf( cellNode.getParent() );
+	const row = rowNodes.indexOf( cellNode.getParent() );
 	if ( row < 0 ) {
 		return null;
 	}
-	var rowCells = matrix[ row ];
-	for ( var col = 0, cols = rowCells.length; col < cols; col++ ) {
+	const rowCells = matrix[ row ];
+	for ( let col = 0, cols = rowCells.length; col < cols; col++ ) {
 		if ( rowCells[ col ] && rowCells[ col ].node === cellNode ) {
 			return rowCells[ col ];
 		}
@@ -279,16 +279,16 @@ ve.dm.TableMatrix.prototype.lookupCell = function ( cellNode ) {
  * @return {ve.dm.TableMatrixCell|null} Closest cell
  */
 ve.dm.TableMatrix.prototype.findClosestCell = function ( cell ) {
-	var matrix = this.getMatrix();
+	const matrix = this.getMatrix();
 
-	var rowCells = matrix[ cell.row ];
-	var col;
+	const rowCells = matrix[ cell.row ];
+	let col;
 	for ( col = cell.col; col >= 0; col-- ) {
 		if ( !rowCells[ col ].isPlaceholder() ) {
 			return rowCells[ col ];
 		}
 	}
-	var cols;
+	let cols;
 	for ( col = cell.col + 1, cols = rowCells.length; col < cols; col++ ) {
 		if ( !rowCells[ col ].isPlaceholder() ) {
 			return rowCells[ col ];

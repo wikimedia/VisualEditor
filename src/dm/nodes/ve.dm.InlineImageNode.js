@@ -37,7 +37,7 @@ ve.dm.InlineImageNode.static.isContent = true;
 ve.dm.InlineImageNode.static.matchTagNames = [ 'img' ];
 
 ve.dm.InlineImageNode.static.toDataElement = function ( domElements ) {
-	var domElement = domElements[ 0 ],
+	const domElement = domElements[ 0 ],
 		alt = domElement.getAttribute( 'alt' ),
 		width = domElement.getAttribute( 'width' ),
 		height = domElement.getAttribute( 'height' );
@@ -54,7 +54,7 @@ ve.dm.InlineImageNode.static.toDataElement = function ( domElements ) {
 };
 
 ve.dm.InlineImageNode.static.toDomElements = function ( dataElement, doc ) {
-	var domElement = doc.createElement( 'img' );
+	const domElement = doc.createElement( 'img' );
 	ve.setDomAttributes( domElement, dataElement.attributes, [ 'alt', 'src', 'width', 'height' ] );
 	return [ domElement ];
 };

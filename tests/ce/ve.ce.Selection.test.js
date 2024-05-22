@@ -7,7 +7,7 @@
 QUnit.module( 've.ce.Selection' );
 
 QUnit.test( 'Rects', ( assert ) => {
-	var html = ve.dm.example.singleLine`
+	const html = ve.dm.example.singleLine`
 			<div rel="ve:Alien" style="width: 300px; height: 200px;">foo</div>
 			<div rel="ve:Alien" style="position: relative;">
 				<div style="position: absolute; width: 400px; height: 100px;">foo</div>
@@ -103,7 +103,7 @@ QUnit.test( 'Rects', ( assert ) => {
 } );
 
 QUnit.test( 'getDirectionality', ( assert ) => {
-	var html = ve.dm.example.singleLine`
+	const html = ve.dm.example.singleLine`
 			<p>Foo</p>
 			<p style="direction: rtl;">Bar</p>
 			<table style="direction: rtl;"><tr><td>Baz</td></tr></table>
@@ -160,7 +160,7 @@ QUnit.test( 'getDirectionality', ( assert ) => {
 } );
 
 QUnit.test( 'equals', ( assert ) => {
-	var surface1 = {
+	const surface1 = {
 			getFocusedNode: function () {
 				return null;
 			}

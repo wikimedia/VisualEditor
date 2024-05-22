@@ -18,7 +18,7 @@ OO.inheritClass( ve.DocumentStub, ve.Document );
 /* Tests */
 
 QUnit.test( 'getDocumentNode', ( assert ) => {
-	var node = new ve.NodeStub(),
+	const node = new ve.NodeStub(),
 		doc = new ve.DocumentStub( node );
 	assert.strictEqual( doc.getDocumentNode(), node );
 	assert.strictEqual( node.getDocument(), doc );

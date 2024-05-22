@@ -8,13 +8,13 @@ QUnit.module( 've.ce.LinearDeleteKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
 	beforeEach: function ( assert ) {
-		var done = assert.async();
+		const done = assert.async();
 		return ve.init.platform.getInitializedPromise().then( done );
 	}
 } );
 
 QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
-	var done = assert.async(),
+	let done = assert.async(),
 		promise = Promise.resolve(),
 		noChange = function () {},
 		emptyList = '<ul><li><p></p></li></ul>',
@@ -324,7 +324,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				rangeOrSelection: new ve.Range( 18 ),
 				keys: [ 'DELETE' ],
 				expectedData: function ( data ) {
-					var paragraph = data.splice( 14, 5 );
+					const paragraph = data.splice( 14, 5 );
 					data.splice( 13, 2 ); // Remove the empty listItem
 					data.splice.apply( data, [ 14, 0 ].concat( paragraph ) );
 				},

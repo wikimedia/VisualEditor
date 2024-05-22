@@ -101,7 +101,7 @@ OO.initClass( ve.dm.TreeModifier );
  * @param {Object[]} treeOps The tree operations
  */
 ve.dm.TreeModifier.static.applyTreeOperations = function ( isReversed, document, treeOps ) {
-	for ( var i = 0, iLen = treeOps.length; i < iLen; i++ ) {
+	for ( let i = 0, iLen = treeOps.length; i < iLen; i++ ) {
 		this.applyTreeOperation( isReversed, document, treeOps[ i ] );
 	}
 };
@@ -133,8 +133,8 @@ ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
 		return value;
 	}
 
-	var jActual = JSON.stringify( actual, replacer );
-	var jExpected = JSON.stringify( expected, replacer );
+	const jActual = JSON.stringify( actual, replacer );
+	const jExpected = JSON.stringify( expected, replacer );
 
 	if ( jActual !== jExpected ) {
 		throw new Error( 'Expected ' + jExpected + ' but got ' + jActual );
@@ -149,19 +149,19 @@ ve.dm.TreeModifier.static.checkEqualData = function ( actual, expected ) {
  * @param {Object} treeOp The tree operation
  */
 ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, treeOp ) {
-	var removedNodes = [],
+	const removedNodes = [],
 		addedNodes = [],
 		changedBranchNodes = [];
 
 	function splice( parentNode ) {
-		var removed = parentNode.splice.apply( parentNode, Array.prototype.slice.call( arguments, 1 ) );
+		const removed = parentNode.splice.apply( parentNode, Array.prototype.slice.call( arguments, 1 ) );
 		ve.batchPush( removedNodes, removed );
 		ve.batchPush( addedNodes, Array.prototype.slice.call( arguments, 3 ) );
 		return removed;
 	}
 
 	function ensureText( position ) {
-		var pre, post, newNode,
+		let pre, post, newNode,
 			node = position.node,
 			offset = position.offset;
 		if ( node.type === 'text' ) {
@@ -187,7 +187,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function ensureNotText( position ) {
-		var parentNode, parentOffset, length, newNode,
+		let parentNode, parentOffset, length, newNode,
 			node = position.node,
 			offset = position.offset;
 		if ( node.type !== 'text' ) {
@@ -211,7 +211,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function findContentPosition( node, contentOffset ) {
-		var i, offset, childLength, child;
+		let i, offset, childLength, child;
 
 		if ( contentOffset === 0 ) {
 			return { node: node, offset: 0 };
@@ -236,7 +236,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function prepareSplice( pathAndOffset, isContent, wantText ) {
-		var i, iLen, position,
+		let i, iLen, position,
 			path = pathAndOffset.slice( 0, -1 ),
 			offset = pathAndOffset[ pathAndOffset.length - 1 ],
 			node = document.documentNode;
@@ -268,7 +268,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	// (This is used when converting to/from HTML, to decide whether loaded metadata offsets
 	// need round tripping)
 	function markBranchNodeChanged( offset ) {
-		var item, newItem,
+		let item, newItem,
 			adj = isReversed ? -1 : 1,
 			i = offset - 1;
 
@@ -297,14 +297,14 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function spliceLinear( offset, remove, insert ) {
-		var content = ve.batchSplice( document.data, offset, remove, insert ? ve.deepFreeze( insert, true ) : [] );
+		const content = ve.batchSplice( document.data, offset, remove, insert ? ve.deepFreeze( insert, true ) : [] );
 		markBranchNodeChanged( offset );
 		return content;
 	}
 
 	// Removes empty text node, or joins consecutive text nodes, at offset
 	function healTextNodes( node, offset ) {
-		var pre = node.children[ offset - 1 ],
+		let pre = node.children[ offset - 1 ],
 			post = node.children[ offset ];
 
 		if ( post && post.type === 'text' && post.length === 0 ) {
@@ -318,16 +318,16 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		}
 	}
 
-	var isTextOp = treeOp.type.slice( -4 ) === 'Text';
-	var f = treeOp.from && prepareSplice( treeOp.from, treeOp.isContent, isTextOp );
-	var t = treeOp.to && prepareSplice( treeOp.to, treeOp.isContent, isTextOp );
+	const isTextOp = treeOp.type.slice( -4 ) === 'Text';
+	const f = treeOp.from && prepareSplice( treeOp.from, treeOp.isContent, isTextOp );
+	const t = treeOp.to && prepareSplice( treeOp.to, treeOp.isContent, isTextOp );
 	// eslint-disable-next-line es-x/no-array-string-prototype-at
-	var a = treeOp.at && prepareSplice( treeOp.at, treeOp.isContent, isTextOp );
+	const a = treeOp.at && prepareSplice( treeOp.at, treeOp.isContent, isTextOp );
 
 	// Always adjust linear data before tree, to ensure consistency when node events
 	// are emitted.
-	var data;
-	var adjustment;
+	let data;
+	let adjustment;
 	switch ( treeOp.type ) {
 		case 'removeNode':
 			// The node should have no contents, so its outer length should be 2
@@ -420,8 +420,8 @@ ve.dm.TreeModifier.prototype.setup = function ( document ) {
  * @param {ve.dm.Transaction} transaction The transaction
  */
 ve.dm.TreeModifier.prototype.calculateTreeOperations = function ( transaction ) {
-	var linearOps = transaction.operations;
-	for ( var i = 0, iLen = linearOps.length; i < iLen; i++ ) {
+	const linearOps = transaction.operations;
+	for ( let i = 0, iLen = linearOps.length; i < iLen; i++ ) {
 		this.processLinearOperation( linearOps[ i ] );
 	}
 	this.processImplicitFinalRetain();
@@ -436,12 +436,12 @@ ve.dm.TreeModifier.prototype.calculateTreeOperations = function ( transaction ) 
  */
 ve.dm.TreeModifier.prototype.processLinearOperation = function ( linearOp ) {
 	if ( linearOp.type === 'retain' ) {
-		var retainLength = linearOp.length;
+		let retainLength = linearOp.length;
 		while ( retainLength > 0 ) {
 			retainLength -= this.processRetain( retainLength );
 		}
 	} else if ( linearOp.type === 'replace' ) {
-		var i, iLen, item, data;
+		let i, iLen, item, data;
 		for ( i = 0, iLen = linearOp.remove.length; i < iLen; i++ ) {
 			item = linearOp.remove[ i ];
 			if ( item.type ) {
@@ -483,7 +483,7 @@ ve.dm.TreeModifier.prototype.processImplicitFinalRetain = function () {
 	// Pretend there is an implicit retain to the end of the document
 	// TODO: fix our tests so this is unnecessary, then check for exhaustion instead
 	while ( true ) {
-		var node = this.remover.node;
+		const node = this.remover.node;
 		if ( !node || (
 			node === this.remover.root &&
 			this.remover.offset === node.children.length
@@ -498,7 +498,7 @@ ve.dm.TreeModifier.prototype.processImplicitFinalRetain = function () {
 		} else if ( !node.hasChildren() ) {
 			retainLength = 1;
 		} else {
-			var item = node.children[ this.remover.offset ];
+			const item = node.children[ this.remover.offset ];
 			retainLength = item ? item.getOuterLength() : 1;
 		}
 		this.processRetain( retainLength );
@@ -514,14 +514,14 @@ ve.dm.TreeModifier.prototype.cursorsMatch = function () {
 	if ( this.insertedPositions.length > 0 ) {
 		return false;
 	}
-	var rawRemoverPosition = this.getRawRemoverPosition( {
+	const rawRemoverPosition = this.getRawRemoverPosition( {
 		path: this.remover.path,
 		offset: this.remover.offset,
 		node: this.remover.node
 	} );
-	var rawInserterPosition = this.getRawInserterPosition();
-	var adjustedRemoverPosition = this.adjustRemoverPosition( rawRemoverPosition );
-	var adjustedInserterPosition = this.adjustInserterPosition( rawInserterPosition );
+	const rawInserterPosition = this.getRawInserterPosition();
+	const adjustedRemoverPosition = this.adjustRemoverPosition( rawRemoverPosition );
+	const adjustedInserterPosition = this.adjustInserterPosition( rawInserterPosition );
 
 	// Optimization: adjustedRemoverPosition and adjustedInserterPosition are very
 	// often arrays of length 1. This simple check is much faster than a full
@@ -553,13 +553,13 @@ ve.dm.TreeModifier.prototype.cursorsMatch = function () {
  * @return {number} The amount of content retained
  */
 ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
-	var remover = this.remover,
+	const remover = this.remover,
 		inserter = this.inserter;
 
 	if ( this.insertedPositions.length === 0 ) {
 		this.inserter.crossIgnoredNodes();
 	}
-	var removerStep, inserterStep;
+	let removerStep, inserterStep;
 	if ( this.cursorsMatch() ) {
 		// Pointers are in the same location, so advance them together.
 		// This is the only way both pointers can ever enter the same node;
@@ -644,7 +644,7 @@ ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
  * @param {Object|Array} itemOrData An open tag, a close tag, or an array of text items
  */
 ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData ) {
-	var cursorsMatch = this.cursorsMatch(),
+	const cursorsMatch = this.cursorsMatch(),
 		length = itemOrData.length || 1,
 		step = this.remover.stepAtMost( length );
 
@@ -669,9 +669,9 @@ ve.dm.TreeModifier.prototype.processRemove = function ( itemOrData ) {
  * @param {Object|Array} itemOrData An open tag, a close tag, or an array of text items
  */
 ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
-	var inserter = this.inserter;
+	const inserter = this.inserter;
 
-	var item, type, data;
+	let item, type, data;
 	if ( itemOrData.type ) {
 		item = itemOrData;
 		type = item.type.charAt( 0 ) === '/' ? 'close' : 'open';
@@ -687,7 +687,7 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 			// content in either processRemove or processRetain).
 			inserter.stepOut();
 		}
-		var element = ve.copy( item );
+		const element = ve.copy( item );
 		this.pushInsertNodeOp( element );
 		this.insertedNodes.push( element );
 		// This 0 position is invalid if element is content (because the offset should be
@@ -700,7 +700,7 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 		}
 	} else if ( type === 'close' ) {
 		if ( this.insertedPositions.length ) {
-			var insertedNode = this.insertedNodes.pop();
+			const insertedNode = this.insertedNodes.pop();
 			if ( insertedNode.type !== item.type.slice( 1 ) ) {
 				throw new Error( 'Expected closing for ' + insertedNode.type +
 					' but got closing for ' + item.type.slice( 1 ) );
@@ -717,7 +717,7 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
 			if ( inserter.node.type === 'text' ) {
 				inserter.stepOut();
 			}
-			var step = inserter.stepOut();
+			const step = inserter.stepOut();
 			if ( step.item.type !== item.type.slice( 1 ) ) {
 				throw new Error( 'Expected closing for ' + step.item.type +
 					' but got closing for ' + item.type.slice( 1 ) );
@@ -730,7 +730,7 @@ ve.dm.TreeModifier.prototype.processInsert = function ( itemOrData ) {
  * Push into treeOps the removal of the last remover step, which must be 'cross' or 'close'
  */
 ve.dm.TreeModifier.prototype.pushRemoveLast = function () {
-	var step = this.remover.lastStep;
+	const step = this.remover.lastStep;
 	if ( step.item.type === 'text' ) {
 		this.pushRemoveTextOp( step );
 	} else {
@@ -742,7 +742,7 @@ ve.dm.TreeModifier.prototype.pushRemoveLast = function () {
  * Push into treeOps the removal of the last remover step, if that item marked as deleted
  */
 ve.dm.TreeModifier.prototype.pushRemoveLastIfInDeletions = function () {
-	var i = this.deletions.indexOf( this.remover.lastStep.item );
+	const i = this.deletions.indexOf( this.remover.lastStep.item );
 	if ( i !== -1 ) {
 		this.pushRemoveLast();
 	}
@@ -754,7 +754,7 @@ ve.dm.TreeModifier.prototype.pushRemoveLastIfInDeletions = function () {
  * @param {ve.dm.Node} element The element to insert (inserted into treeOps without copying)
  */
 ve.dm.TreeModifier.prototype.pushInsertNodeOp = function ( element ) {
-	var isContent = this.isInsertionContent(),
+	const isContent = this.isInsertionContent(),
 		rawInserterPosition = this.getRawInserterPosition();
 
 	this.checkCanInsertNodeType( element.type );
@@ -776,7 +776,7 @@ ve.dm.TreeModifier.prototype.pushInsertNodeOp = function ( element ) {
  * @param {Array} data The text data to insert
  */
 ve.dm.TreeModifier.prototype.pushInsertTextOp = function ( data ) {
-	var rawInserterPosition = this.getRawInserterPosition();
+	const rawInserterPosition = this.getRawInserterPosition();
 
 	this.checkCanInsertText();
 
@@ -797,7 +797,7 @@ ve.dm.TreeModifier.prototype.pushInsertTextOp = function ( data ) {
  * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the node
  */
 ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
-	var rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
+	const rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
 		rawInserterPosition = this.getRawInserterPosition(),
 		isContent = this.doesTypeTakeContent( removerStep.node.type );
 
@@ -821,7 +821,7 @@ ve.dm.TreeModifier.prototype.pushMoveNodeOp = function ( removerStep ) {
  * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the text
  */
 ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
-	var length = removerStep.type === 'crosstext' ?
+	const length = removerStep.type === 'crosstext' ?
 			removerStep.length :
 			removerStep.item.getLength(),
 		rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
@@ -848,7 +848,7 @@ ve.dm.TreeModifier.prototype.pushMoveTextOp = function ( removerStep ) {
  * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the node
  */
 ve.dm.TreeModifier.prototype.pushRemoveNodeOp = function ( removerStep ) {
-	var rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
+	const rawRemoverPosition = this.getRawRemoverPosition( removerStep ),
 		isContent = this.doesTypeTakeContent( removerStep.node.type );
 	this.treeOps.push( {
 		type: 'removeNode',
@@ -865,8 +865,8 @@ ve.dm.TreeModifier.prototype.pushRemoveNodeOp = function ( removerStep ) {
  * @param {ve.dm.TreeCursor.Step} removerStep The remover step over the text
  */
 ve.dm.TreeModifier.prototype.pushRemoveTextOp = function ( removerStep ) {
-	var rawRemoverPosition = this.getRawRemoverPosition( removerStep );
-	var start, end;
+	const rawRemoverPosition = this.getRawRemoverPosition( removerStep );
+	let start, end;
 	if ( removerStep.type === 'crosstext' ) {
 		start = removerStep.node.getRange().start + removerStep.offset;
 		end = start + removerStep.length;
@@ -890,9 +890,9 @@ ve.dm.TreeModifier.prototype.pushRemoveTextOp = function ( removerStep ) {
  * @return {Object} The adjustment tree node
  */
 ve.dm.TreeModifier.prototype.findOrCreateAdjustmentNode = function ( position ) {
-	var adjustmentNode = this.adjustmentTree;
-	for ( var i = 0, len = position.length; i < len; i++ ) {
-		var offset = position[ i ];
+	let adjustmentNode = this.adjustmentTree;
+	for ( let i = 0, len = position.length; i < len; i++ ) {
+		const offset = position[ i ];
 		if ( !adjustmentNode[ offset ] ) {
 			adjustmentNode[ offset ] = { offsetsUsed: [] };
 			adjustmentNode.offsetsUsed.push( offset );
@@ -910,7 +910,7 @@ ve.dm.TreeModifier.prototype.findOrCreateAdjustmentNode = function ( position ) 
  * @param {boolean} deleteDescendants If true, delete all adjustments at paths descending from here
  */
 ve.dm.TreeModifier.prototype.modifyAdjustmentTree = function ( rawPosition, diff, deleteDescendants ) {
-	var adjustmentNode = this.findOrCreateAdjustmentNode( rawPosition );
+	const adjustmentNode = this.findOrCreateAdjustmentNode( rawPosition );
 	if ( diff > 0 ) {
 		adjustmentNode.inserted = ( adjustmentNode.inserted || 0 ) + diff;
 	} else {
@@ -962,7 +962,7 @@ ve.dm.TreeModifier.prototype.adjustRemoverPosition = function ( rawPosition ) {
 ve.dm.TreeModifier.prototype.adjustInserterPosition = function ( rawPosition ) {
 	// getAdjustedPosition returns a brand new array, so we can safely modify
 	// it with batchPush, which is much faster than concat (which creates a new array)
-	var positions = this.getAdjustedPosition( rawPosition, true );
+	const positions = this.getAdjustedPosition( rawPosition, true );
 	ve.batchPush( positions, this.insertedPositions );
 	return positions;
 };
@@ -976,11 +976,11 @@ ve.dm.TreeModifier.prototype.adjustInserterPosition = function ( rawPosition ) {
  * @return {number[]} The pathAndOffset, with offsets inside a ContentBranchNode linearized
  */
 ve.dm.TreeModifier.prototype.getRawPosition = function ( path, offset, node ) {
-	var i, linearizedOffset;
+	let i, linearizedOffset;
 	// No need to check node.parent.hasChildren() below as node.parent
 	// is a parent so must have children.
 	if ( node.parent && node.parent.canContainContent() ) {
-		var numNodesBefore = path[ path.length - 1 ];
+		const numNodesBefore = path[ path.length - 1 ];
 		linearizedOffset = offset;
 		for ( i = 0; i < numNodesBefore; i++ ) {
 			linearizedOffset += node.parent.children[ i ].getOuterLength();
@@ -1012,12 +1012,12 @@ ve.dm.TreeModifier.prototype.getRawPosition = function ( path, offset, node ) {
  * @return {number[]} Adjusted pathAndOffset, with offsets inside a ContentBranchNode linearized
  */
 ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInserter ) {
-	var node = this.adjustmentTree;
+	let node = this.adjustmentTree;
 
 	position = position.slice();
 	// Adjust each offset in the path so inserted nodes are counted
-	for ( var i = 0, iLen = position.length; i < iLen; i++ ) {
-		var positionI = position[ i ];
+	for ( let i = 0, iLen = position.length; i < iLen; i++ ) {
+		const positionI = position[ i ];
 
 		// The loop below is equivalent to:
 		//
@@ -1036,18 +1036,18 @@ ve.dm.TreeModifier.prototype.getAdjustedPosition = function ( position, isInsert
 		// using a for..in loop as a for..in loop has to re-calculate
 		// the list of indexes to iterate over.
 
-		var jLen = positionI + 1;
-		var offsetsUsed = node.offsetsUsed;
-		for ( var k = 0, kLen = offsetsUsed.length; k < kLen; k++ ) {
-			var j = offsetsUsed[ k ];
+		const jLen = positionI + 1;
+		const offsetsUsed = node.offsetsUsed;
+		for ( let k = 0, kLen = offsetsUsed.length; k < kLen; k++ ) {
+			const j = offsetsUsed[ k ];
 			if ( j >= jLen ) {
 				continue;
 			}
 
-			var childNode = node[ j ];
+			const childNode = node[ j ];
 
-			var inserted = childNode.inserted || 0;
-			var removed = childNode.removed || 0;
+			const inserted = childNode.inserted || 0;
+			const removed = childNode.removed || 0;
 
 			if ( i < iLen - 1 || j < jLen - 1 ) {
 				// This offset is strictly before position
@@ -1108,7 +1108,7 @@ ve.dm.TreeModifier.prototype.getTypeAtInserter = function () {
  * @throws {Error} Cannot insert text into a foo node
  */
 ve.dm.TreeModifier.prototype.checkCanInsertText = function () {
-	var parentType = this.getTypeAtInserter();
+	const parentType = this.getTypeAtInserter();
 
 	if ( parentType === 'text' ) {
 		return;
@@ -1125,7 +1125,7 @@ ve.dm.TreeModifier.prototype.checkCanInsertText = function () {
  * @throws {Error} Cannot add child
  */
 ve.dm.TreeModifier.prototype.checkCanInsertNodeType = function ( nodeType ) {
-	var parentType = this.getTypeAtInserter(),
+	const parentType = this.getTypeAtInserter(),
 		nodeClass = ve.dm.nodeFactory.lookup( nodeType ),
 		parentClass = ve.dm.nodeFactory.lookup( parentType ),
 		childNodeTypes = parentClass.static.childNodeTypes;

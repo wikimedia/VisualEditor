@@ -59,7 +59,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 		label: ve.msg( 'visualeditor-languageinspector-widget-label-direction' )
 	} );
 
-	var $language = $( '<div>' ).addClass( 've-ui-languageInputWidget-languageInput' );
+	const $language = $( '<div>' ).addClass( 've-ui-languageInputWidget-languageInput' );
 	$language.append(
 		this.findLanguageButton.$element
 	);
@@ -74,7 +74,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 	this.directionSelect.connect( this, { select: 'onChange' } );
 
 	// Initialization
-	var dirItems = [
+	const dirItems = [
 		new OO.ui.ButtonOptionWidget( {
 			data: 'rtl',
 			icon: 'textDirRTL'
@@ -84,7 +84,7 @@ ve.ui.LanguageInputWidget = function VeUiLanguageInputWidget( config ) {
 			icon: 'textDirLTR'
 		} )
 	];
-	var dirInput = ( config.dirInput === undefined ) ? 'auto' : config.dirInput;
+	const dirInput = ( config.dirInput === undefined ) ? 'auto' : config.dirInput;
 
 	if ( dirInput === 'auto' ) {
 		dirItems.splice(
@@ -143,7 +143,7 @@ ve.ui.LanguageInputWidget.prototype.onChange = function () {
 		return;
 	}
 
-	var selectedItem = this.directionSelect.findSelectedItem();
+	const selectedItem = this.directionSelect.findSelectedItem();
 	this.setLangAndDir(
 		this.languageCodeTextInput.getValue(),
 		selectedItem ? selectedItem.getData() : null
@@ -221,7 +221,7 @@ ve.ui.LanguageInputWidget.prototype.getDir = function () {
  * @return {OO.ui.NumberInputWidget} The widget, for chaining
  */
 ve.ui.LanguageInputWidget.prototype.updateControlsDisabled = function () {
-	var disabled = this.isDisabled() || this.isReadOnly();
+	const disabled = this.isDisabled() || this.isReadOnly();
 	if ( this.findLanguageButton ) {
 		this.findLanguageButton.setDisabled( disabled );
 	}

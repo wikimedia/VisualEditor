@@ -47,7 +47,7 @@ OO.inheritClass( ve.ui.ContextOptionWidget, OO.ui.DecoratedOptionWidget );
  * @return {string} Description of model
  */
 ve.ui.ContextOptionWidget.prototype.getDescription = function () {
-	var description;
+	let description;
 
 	if ( this.model instanceof ve.dm.Annotation ) {
 		description = ve.ce.annotationFactory.getDescription( this.model );

@@ -9,7 +9,7 @@ QUnit.module( 've.ui.ListAction' );
 /* Tests */
 
 QUnit.test( '(un)wrap', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			rangeOrSelection: new ve.Range( 56, 60 ),
 			method: 'wrap',
@@ -70,7 +70,7 @@ QUnit.test( '(un)wrap', ( assert ) => {
 } );
 
 QUnit.test( 'toggle', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			html: '<ul><li>One<ul><li>Two</li></ul></li></ul>',
 			rangeOrSelection: new ve.Range( 11 ),

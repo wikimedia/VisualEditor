@@ -10,13 +10,13 @@ QUnit.module( 've.ce.TableEnterKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
 	beforeEach: function ( assert ) {
-		var done = assert.async();
+		const done = assert.async();
 		return ve.init.platform.getInitializedPromise().then( done );
 	}
 } );
 
 QUnit.test( 'special key down: table enter', ( assert ) => {
-	var done = assert.async(),
+	let done = assert.async(),
 		promise = Promise.resolve(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		cases = [

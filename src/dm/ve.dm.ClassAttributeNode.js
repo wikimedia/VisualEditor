@@ -45,15 +45,15 @@ ve.dm.ClassAttributeNode.static.preserveHtmlAttributes = function ( attribute ) 
  * @param {string|null} classAttr Class attribute from an element
  */
 ve.dm.ClassAttributeNode.static.setClassAttributes = function ( attributes, classAttr ) {
-	var classNames = classAttr ? classAttr.trim().split( /\s+/ ) : [];
+	const classNames = classAttr ? classAttr.trim().split( /\s+/ ) : [];
 
 	if ( !classNames.length ) {
 		return;
 	}
 
-	var unrecognizedClasses = [];
-	for ( var i = 0, l = classNames.length; i < l; i++ ) {
-		var className = classNames[ i ];
+	const unrecognizedClasses = [];
+	for ( let i = 0, l = classNames.length; i < l; i++ ) {
+		const className = classNames[ i ];
 		if ( Object.prototype.hasOwnProperty.call( this.classAttributes, className ) ) {
 			attributes = ve.extendObject( attributes, this.classAttributes[ className ] );
 		} else {
@@ -74,11 +74,11 @@ ve.dm.ClassAttributeNode.static.setClassAttributes = function ( attributes, clas
 ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attributes ) {
 	attributes = attributes || {};
 
-	var classNames = [];
-	for ( var className in this.classAttributes ) {
-		var classAttributeSet = this.classAttributes[ className ];
-		var hasClass = true;
-		for ( var key in classAttributeSet ) {
+	let classNames = [];
+	for ( const className in this.classAttributes ) {
+		const classAttributeSet = this.classAttributes[ className ];
+		let hasClass = true;
+		for ( const key in classAttributeSet ) {
 			if ( attributes[ key ] !== classAttributeSet[ key ] ) {
 				hasClass = false;
 				break;

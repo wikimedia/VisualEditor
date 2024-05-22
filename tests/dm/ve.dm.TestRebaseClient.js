@@ -52,20 +52,20 @@ OO.mixinClass( ve.dm.TestRebaseClient, ve.dm.RebaseClient );
  * @return {string} Compact summary of the history
  */
 ve.dm.TestRebaseClient.static.historySummary = function ( change, commitLength, sentLength ) {
-	var parts = [];
+	const parts = [];
 	if ( commitLength === undefined ) {
 		commitLength = change.transactions.length;
 	}
 	if ( sentLength === undefined ) {
 		sentLength = change.transactions.length;
 	}
-	var committed = change.transactions.slice( 0, commitLength );
-	var sent = change.transactions.slice( commitLength, sentLength );
-	var unsent = change.transactions.slice( sentLength );
+	const committed = change.transactions.slice( 0, commitLength );
+	const sent = change.transactions.slice( commitLength, sentLength );
+	const unsent = change.transactions.slice( sentLength );
 
 	function joinText( transactions ) {
 		return transactions.map( ( transaction ) => transaction.operations.filter( ( op ) => op.type === 'replace' ).map( ( op ) => {
-			var text = [];
+			const text = [];
 			if ( op.remove.length ) {
 				text.push( '-(' + op.remove.map( ( item ) => item[ 0 ] ).join( '' ) + ')' );
 			}
@@ -104,7 +104,7 @@ ve.dm.TestRebaseClient.prototype.applyChange = function ( change ) {
 };
 
 ve.dm.TestRebaseClient.prototype.applyTransactions = function ( txs ) {
-	var authorId = this.getAuthorId();
+	const authorId = this.getAuthorId();
 	txs.forEach( ( transaction ) => {
 		if ( transaction.authorId === null ) {
 			transaction.authorId = authorId;
@@ -126,8 +126,8 @@ ve.dm.TestRebaseClient.prototype.removeFromHistory = function ( change ) {
 };
 
 ve.dm.TestRebaseClient.prototype.deliverOne = function () {
-	var item = this.outgoing[ this.outgoingPointer++ ];
-	var rebased = this.server.applyChange(
+	const item = this.outgoing[ this.outgoingPointer++ ];
+	const rebased = this.server.applyChange(
 		ve.dm.TestRebaseServer.static.fakeDocName,
 		this.getAuthorId(),
 		item.backtrack,

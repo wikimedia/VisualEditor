@@ -8,13 +8,13 @@ QUnit.module( 've.ce.TableArrowKeyDownHandler', {
 	// See https://github.com/platinumazure/eslint-plugin-qunit/issues/68
 	// eslint-disable-next-line qunit/resolve-async
 	beforeEach: function ( assert ) {
-		var done = assert.async();
+		const done = assert.async();
 		return ve.init.platform.getInitializedPromise().then( done );
 	}
 } );
 
 QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert ) => {
-	var done = assert.async(),
+	let done = assert.async(),
 		promise = Promise.resolve(),
 		mergedCellsDoc = ve.dm.example.createExampleDocument( 'mergedCells' ),
 		complexTableDoc = ve.dm.example.createExampleDocument( 'complexTable' ),
@@ -52,7 +52,7 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert )
 			{
 				htmlOrDoc: ( function () {
 					// Create a full surface and return the view, as the UI surface is required for the insert action
-					var surface = ve.test.utils.createSurfaceFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) );
+					const surface = ve.test.utils.createSurfaceFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) );
 					// Detach $blockers so selections aren't rendered, resulting in false code coverage
 					surface.$blockers.detach();
 					return surface.view;
@@ -65,7 +65,7 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert )
 				},
 				keys: [ 'TAB' ],
 				expectedData: function ( data ) {
-					var tableCell = [
+					const tableCell = [
 						{ type: 'tableCell', attributes: { style: 'data', colspan: 1, rowspan: 1 } },
 						{ type: 'paragraph', internal: { generated: 'wrapper' } },
 						{ type: '/paragraph' },
@@ -157,7 +157,7 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert )
 } );
 
 QUnit.test( 'special key down: table arrow keys (simple movements)', ( assert ) => {
-	var fn = function () {},
+	const fn = function () {},
 		tables = {
 			mergedCells: {
 				view: ve.test.utils.createSurfaceViewFromDocument(
@@ -309,10 +309,10 @@ QUnit.test( 'special key down: table arrow keys (simple movements)', ( assert ) 
 		];
 
 	cases.forEach( ( caseItem ) => {
-		var offsets = caseItem.selectionOffsets;
-		var table = tables[ caseItem.table || 'mergedCells' ];
-		var view = table.view;
-		var model = view.getModel();
+		const offsets = caseItem.selectionOffsets;
+		const table = tables[ caseItem.table || 'mergedCells' ];
+		const view = table.view;
+		const model = view.getModel();
 		model.setSelection( new ve.dm.TableSelection(
 			table.tableRange, offsets[ 0 ], offsets[ 1 ], offsets[ 2 ], offsets[ 3 ] )
 		);
@@ -325,8 +325,8 @@ QUnit.test( 'special key down: table arrow keys (simple movements)', ( assert ) 
 				stopPropagation: fn
 			}
 		);
-		var selection = model.getSelection();
-		var expectedSelectionOffsets = caseItem.expectedSelectionOffsets.length > 2 ?
+		const selection = model.getSelection();
+		const expectedSelectionOffsets = caseItem.expectedSelectionOffsets.length > 2 ?
 			caseItem.expectedSelectionOffsets :
 			caseItem.expectedSelectionOffsets.concat( caseItem.expectedSelectionOffsets );
 		assert.deepEqual(

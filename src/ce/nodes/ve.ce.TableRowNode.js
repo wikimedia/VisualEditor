@@ -63,16 +63,16 @@ ve.ce.TableRowNode.prototype.onSplice = function () {
  * Setup a slug for a missing cell, if this row contains fewer cells than the table
  */
 ve.ce.TableRowNode.prototype.setupMissingCell = function () {
-	var matrix = this.findParent( ve.ce.TableNode ).getModel().getMatrix(),
+	const matrix = this.findParent( ve.ce.TableNode ).getModel().getMatrix(),
 		maxColCount = matrix.getMaxColCount();
 
-	var row = matrix.getRowNodes().indexOf( this.model );
+	const row = matrix.getRowNodes().indexOf( this.model );
 	if ( maxColCount > matrix.getColCount( row ) ) {
 		if ( !this.$missingCell ) {
 			this.$missingCell = $( '<td>' )
 				.prop( 'contentEditable', 'false' )
 				.addClass( 've-ce-branchNode-slug ve-ce-branchNode-blockSlug ve-ce-tableNode-missingCell' );
-			var slugButton = new ve.ui.NoFocusButtonWidget( {
+			const slugButton = new ve.ui.NoFocusButtonWidget( {
 				icon: 'add',
 				framed: false
 			} ).on( 'click', this.onMissingCellClick.bind( this ) );
@@ -99,7 +99,7 @@ ve.ce.TableRowNode.prototype.removeSlugs = function () {
  * @param {jQuery.Event} e Click event
  */
 ve.ce.TableRowNode.prototype.onMissingCellClick = function () {
-	var surfaceModel = this.getRoot().getSurface().getModel(),
+	const surfaceModel = this.getRoot().getSurface().getModel(),
 		documentModel = surfaceModel.getDocument(),
 		tableModel = this.findParent( ve.ce.TableNode ).getModel(),
 		matrix = tableModel.getMatrix();
@@ -113,8 +113,8 @@ ve.ce.TableRowNode.prototype.onMissingCellClick = function () {
 	);
 
 	// Select the newly-inserted cell
-	var row = matrix.getRowNodes().indexOf( this.model );
-	var col = matrix.getColCount( row ) - 1;
+	const row = matrix.getRowNodes().indexOf( this.model );
+	const col = matrix.getColCount( row ) - 1;
 	surfaceModel.setSelection(
 		new ve.dm.TableSelection( tableModel.getOuterRange(), col, row )
 	);

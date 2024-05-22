@@ -7,15 +7,15 @@
 QUnit.module( 've.dm.TransportServer' );
 
 QUnit.test( 'Create', ( assert ) => {
-	var done = assert.async(),
+	const done = assert.async(),
 		log = [],
 		io = ve.dm.FakeSocket.static.makeServer();
 
-	var protocolServer = {
+	const protocolServer = {
 		context: null,
 		ensureLoaded: Promise.resolve.bind( Promise ),
 		authenticate: function ( docName, authorId, token ) {
-			var context = { docName: docName, authorId: authorId, token: token };
+			const context = { docName: docName, authorId: authorId, token: token };
 			log.push( [ 'authenticate', ve.copy( context ) ] );
 			return context;
 		},
@@ -42,8 +42,8 @@ QUnit.test( 'Create', ( assert ) => {
 		}
 	};
 
-	var transportServer = new ve.dm.TransportServer( protocolServer, protocolServer );
-	var socket = new ve.dm.FakeSocket( io, { docName: 'Foo', authorId: 1, token: 'xxx' } );
+	const transportServer = new ve.dm.TransportServer( protocolServer, protocolServer );
+	const socket = new ve.dm.FakeSocket( io, { docName: 'Foo', authorId: 1, token: 'xxx' } );
 	socket.on( 'registered', ( data ) => {
 		log.push( [ 'registered', data ] );
 	} );

@@ -26,7 +26,7 @@ ve.FakePeer.static.peers = [];
 /* Methods */
 
 ve.FakePeer.prototype.on = function ( ev, f ) {
-	var handlers = this.handlers.get( ev );
+	let handlers = this.handlers.get( ev );
 	if ( !handlers ) {
 		handlers = [];
 		this.handlers.set( ev, handlers );
@@ -41,12 +41,12 @@ ve.FakePeer.prototype.callHandlers = function ( type, ...args ) {
 };
 
 ve.FakePeer.prototype.connect = function ( id ) {
-	var peer = this.constructor.static.peers.find( ( peerI ) => peerI.id === id );
+	const peer = this.constructor.static.peers.find( ( peerI ) => peerI.id === id );
 	if ( !peer ) {
 		throw new Error( 'Unknown id: ' + id );
 	}
-	var thisConn = new ve.FakePeerConnection( peer.id + '-' + this.id, peer );
-	var peerConn = new ve.FakePeerConnection( this.id + '-' + peer.id, this );
+	const thisConn = new ve.FakePeerConnection( peer.id + '-' + this.id, peer );
+	const peerConn = new ve.FakePeerConnection( this.id + '-' + peer.id, this );
 	thisConn.other = peerConn;
 	peerConn.other = thisConn;
 	this.connections.push( thisConn );
@@ -67,7 +67,7 @@ ve.FakePeerConnection = function VeFakePeerConnection( id, peer ) {
 OO.initClass( ve.FakePeerConnection );
 
 ve.FakePeerConnection.prototype.on = function ( ev, f ) {
-	var handlers = this.handlers.get( ev );
+	let handlers = this.handlers.get( ev );
 	if ( !handlers ) {
 		handlers = [];
 		this.handlers.set( ev, handlers );

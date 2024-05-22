@@ -43,7 +43,7 @@ ve.dir = console.dir;
  * @return {string} Serialization of the node and its contents
  */
 ve.serializeNodeDebug = function ( domNode ) {
-	var html = [];
+	const html = [];
 	function add( node ) {
 		if ( node.nodeType === Node.TEXT_NODE ) {
 			html.push( '<#text>', ve.escapeHtml( node.textContent ), '</#text>' );
@@ -54,10 +54,10 @@ ve.serializeNodeDebug = function ( domNode ) {
 		}
 		// else node.nodeType === Node.ELEMENT_NODE
 
-		var i, len;
+		let i, len;
 		html.push( '<', ve.escapeHtml( node.nodeName.toLowerCase() ) );
 		for ( i = 0, len = node.attributes.length; i < len; i++ ) {
-			var attr = node.attributes[ i ];
+			const attr = node.attributes[ i ];
 			html.push(
 				' ',
 				ve.escapeHtml( attr.name ),
@@ -97,7 +97,7 @@ ve.summarizeTransaction = function ( tx ) {
 			}
 		} ).join( '' ) + '\'';
 	}
-	var annotations = 0;
+	let annotations = 0;
 	return '(' + ( tx.authorId ? ( tx.authorId + ' ' ) : '' ) + tx.operations.map( ( op ) => {
 		if ( op.type === 'retain' ) {
 			return ( annotations ? 'annotate ' : 'retain ' ) + op.length;
@@ -135,7 +135,7 @@ ve.initFilibuster = function () {
 		return;
 	}
 
-	var surface = ve.init.target.surface;
+	const surface = ve.init.target.surface;
 	ve.filibuster = new ve.Filibuster()
 		.wrapClass( ve.EventSequencer )
 		.wrapNamespace( ve.dm, 've.dm', [
@@ -156,7 +156,7 @@ ve.initFilibuster = function () {
 		) ) )
 		.setObserver( 'dm selection', () => {
 			// Cannot use wrapped methods here
-			var selection = surface.model.selection;
+			const selection = surface.model.selection;
 			if ( !selection ) {
 				return 'null';
 			}
@@ -166,7 +166,7 @@ ve.initFilibuster = function () {
 		.setObserver( 'DOM doc', () => ve.serializeNodeDebug( surface.view.$element[ 0 ] ) )
 		.setObserver( 'DOM selection', () => {
 			// Cannot use wrapped methods here
-			var nativeSelection = surface.view.nativeSelection;
+			const nativeSelection = surface.view.nativeSelection;
 			if ( nativeSelection.focusNode === null ) {
 				return 'null';
 			}

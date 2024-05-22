@@ -40,7 +40,7 @@ ve.ui.ContentAction.static.methods = [ 'insert', 'remove', 'select', 'pasteSpeci
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.insert = function ( content, annotate, collapseToEnd ) {
-	var fragment = this.surface.getModel().getFragment();
+	const fragment = this.surface.getModel().getFragment();
 	fragment.insertContent( content, annotate );
 	if ( collapseToEnd ) {
 		fragment.collapseToEnd().select();
@@ -55,9 +55,9 @@ ve.ui.ContentAction.prototype.insert = function ( content, annotate, collapseToE
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.remove = function ( key ) {
-	var defaultPrevented = false;
+	let defaultPrevented = false;
 	if ( key ) {
-		var e = {
+		const e = {
 			keyCode: key === 'delete' ? OO.ui.Keys.DELETE : OO.ui.Keys.BACKSPACE,
 			preventDefault: function () {
 				defaultPrevented = true;
@@ -114,7 +114,7 @@ ve.ui.ContentAction.prototype.pasteSpecial = function () {
  * @return {boolean} Action was executed
  */
 ve.ui.ContentAction.prototype.changeDirectionality = function () {
-	var documentView = this.surface.getView().getDocument();
+	const documentView = this.surface.getView().getDocument();
 	documentView.setDir( documentView.getDir() === 'ltr' ? 'rtl' : 'ltr' );
 	this.surface.getModel().emit( 'contextChange' );
 	this.surface.getView().emit( 'position' );
@@ -156,7 +156,7 @@ ve.ui.ContentAction.prototype.focusContext = function () {
 		// Disable $focusTrapBefore so it doesn't get matched as the first
 		// focusable item.
 		this.surface.getContext().$focusTrapBefore.prop( 'disabled', true );
-		var $focusable = OO.ui.findFocusable( this.surface.getContext().$element );
+		const $focusable = OO.ui.findFocusable( this.surface.getContext().$element );
 		this.surface.getContext().$focusTrapBefore.prop( 'disabled', false );
 		if ( $focusable.length ) {
 			this.surface.getView().deactivate();

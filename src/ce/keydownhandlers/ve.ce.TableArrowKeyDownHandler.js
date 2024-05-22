@@ -40,7 +40,7 @@ ve.ce.TableArrowKeyDownHandler.static.supportedSelections = [ 'table' ];
  * @inheritdoc
  */
 ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
-	var wrap = false,
+	let wrap = false,
 		checkDir = false,
 		colOffset = 0,
 		rowOffset = 0,
@@ -102,9 +102,9 @@ ve.ce.TableArrowKeyDownHandler.static.execute = function ( surface, e ) {
  * @param {boolean} wrap Wrap to the next/previous row at edges, insert new row at end
  */
 ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, rowOffset, colOffset, checkDir, expand, wrap ) {
-	var selection = surface.getModel().getSelection();
+	let selection = surface.getModel().getSelection();
 	if ( colOffset && checkDir ) {
-		var tableNode = surface.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
+		const tableNode = surface.documentView.getBranchNodeFromOffset( selection.tableRange.start + 1 );
 		if ( tableNode.$element.css( 'direction' ) !== 'ltr' ) {
 			colOffset *= -1;
 		}
@@ -113,7 +113,7 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 		selection = selection.collapseToFrom();
 	}
 
-	var newSelection;
+	let newSelection;
 
 	function adjust() {
 		newSelection = selection.newFromAdjustment(
@@ -139,8 +139,8 @@ ve.ce.TableArrowKeyDownHandler.static.moveTableSelection = function ( surface, r
 	// If moving up/down didn't move, we must be at the start/end of the table,
 	// so move outside
 	if ( ( rowOffset !== 0 || ( rowOffset === 0 && colOffset === -1 && wrap ) ) && selection.equals( newSelection ) ) {
-		var documentModel = surface.getModel().getDocument();
-		var captionNode;
+		const documentModel = surface.getModel().getDocument();
+		let captionNode;
 		if ( ( rowOffset === -1 || ( colOffset === -1 && wrap ) ) && ( captionNode = selection.getTableNode( documentModel ).getCaptionNode() ) ) {
 			// If we're moving up/backwards, and there's a caption node, put the selection in it
 			newSelection = new ve.dm.LinearSelection( documentModel.getRelativeRange( new ve.Range( captionNode.getRange().start ), 1 ) );

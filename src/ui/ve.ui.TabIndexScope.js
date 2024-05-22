@@ -58,7 +58,7 @@ ve.ui.TabIndexScope.prototype.setTabRoot = function ( $root ) {
  * @return {HTMLElement[]} list of elements in the order they should be tabbed through
  */
 ve.ui.TabIndexScope.prototype.getElementsInRoot = function () {
-	var elements = this.$root.find( '*' )
+	const elements = this.$root.find( '*' )
 		.filter( ( index, element ) => {
 			if ( element.tabIndex === -1 ) {
 				// tabIndex -1 is focusable, but shouldn't appear to keyboard-navigation
@@ -103,8 +103,8 @@ ve.ui.TabIndexScope.prototype.onRootKeyDown = function ( e ) {
 		return;
 	}
 
-	var elements = this.getElementsInRoot();
-	var index = elements.indexOf( e.target );
+	const elements = this.getElementsInRoot();
+	let index = elements.indexOf( e.target );
 
 	if ( index === -1 ) {
 		return;

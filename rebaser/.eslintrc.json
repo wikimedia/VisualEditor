@@ -9,6 +9,7 @@
 		"OO": "readonly"
 	},
 	"rules": {
-		"no-var": "off"
+		"no-var": "off",
+		"prefer-const": "off"
 	}
 }

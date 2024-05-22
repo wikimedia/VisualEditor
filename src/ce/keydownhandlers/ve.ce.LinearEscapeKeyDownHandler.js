@@ -38,7 +38,7 @@ ve.ce.LinearEscapeKeyDownHandler.static.supportedSelections = [ 'linear' ];
  * @inheritdoc
  */
 ve.ce.LinearEscapeKeyDownHandler.static.execute = function ( surface, e ) {
-	var activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode );
+	const activeTableNode = surface.getActiveNode() && surface.getActiveNode().findParent( ve.ce.TableNode );
 	if ( activeTableNode ) {
 		e.preventDefault();
 		e.stopPropagation();

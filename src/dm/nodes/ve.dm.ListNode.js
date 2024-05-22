@@ -47,19 +47,19 @@ ve.dm.ListNode.static.createItem = function () {
 };
 
 ve.dm.ListNode.static.toDataElement = function ( domElements ) {
-	var style = domElements[ 0 ].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
+	const style = domElements[ 0 ].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
 	return { type: this.name, attributes: { style: style } };
 };
 
 ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
-	var tag = dataElement.attributes && dataElement.attributes.style === 'number' ? 'ol' : 'ul';
+	const tag = dataElement.attributes && dataElement.attributes.style === 'number' ? 'ol' : 'ul';
 	return [ doc.createElement( tag ) ];
 };
 
 ve.dm.ListNode.static.describeChanges = function ( attributeChanges, attributes, element ) {
 	attributeChanges = ve.copy( attributeChanges );
 	if ( 'listType' in attributeChanges ) {
-		var mapped = false;
+		let mapped = false;
 		[ 'from', 'to' ].forEach( ( fromOrTo ) => {
 			if ( attributeChanges.listType[ fromOrTo ] === 'definitionList' ) {
 				attributeChanges.style[ fromOrTo ] = 'indent';
@@ -75,7 +75,7 @@ ve.dm.ListNode.static.describeChanges = function ( attributeChanges, attributes,
 };
 
 ve.dm.ListNode.static.describeChange = function ( key, change ) {
-	var messageKeys = {
+	const messageKeys = {
 		bullet: 'visualeditor-listbutton-bullet-tooltip',
 		number: 'visualeditor-listbutton-number-tooltip',
 		indent: 'visualeditor-changedesc-list-style-indent'

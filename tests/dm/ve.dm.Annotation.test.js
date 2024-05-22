@@ -7,7 +7,7 @@
 QUnit.module( 've.dm.Annotation' );
 
 QUnit.test( 'getHashObject', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'Bold',
 			annotation: new ve.dm.BoldAnnotation( {

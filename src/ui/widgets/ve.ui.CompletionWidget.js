@@ -30,7 +30,7 @@ ve.ui.CompletionWidget = function VeUiCompletionWidget( surface, config ) {
 
 	this.$tabIndexed = this.$element;
 
-	var $doc = surface.getView().getDocument().getDocumentNode().$element;
+	const $doc = surface.getView().getDocument().getDocumentNode().$element;
 	this.popup = new OO.ui.PopupWidget( {
 		anchor: false,
 		align: 'forwards',
@@ -87,7 +87,7 @@ OO.inheritClass( ve.ui.CompletionWidget, OO.ui.Widget );
  * @param {boolean} [isolateInput] Isolate input from the surface
  */
 ve.ui.CompletionWidget.prototype.setup = function ( action, isolateInput ) {
-	var range = this.surfaceModel.getSelection().getCoveringRange();
+	const range = this.surfaceModel.getSelection().getCoveringRange();
 	this.action = action;
 	this.isolateInput = !!isolateInput;
 	this.sequenceLength = this.action.getSequenceLength();
@@ -128,18 +128,18 @@ ve.ui.CompletionWidget.prototype.teardown = function () {
  * Update the completion widget after the input has changed
  */
 ve.ui.CompletionWidget.prototype.update = function () {
-	var direction = this.surface.getDir(),
+	const direction = this.surface.getDir(),
 		range = this.getCompletionRange(),
 		boundingRect = this.surface.getView().getSelection( new ve.dm.LinearSelection( range ) ).getSelectionBoundingRect(),
 		style = {
 			top: boundingRect.bottom
 		};
 
-	var input;
+	let input;
 	if ( this.isolateInput ) {
 		input = this.input.getValue();
 	} else {
-		var data = this.surfaceModel.getDocument().data;
+		const data = this.surfaceModel.getDocument().data;
 		input = data.getText( false, range );
 	}
 
@@ -160,7 +160,7 @@ ve.ui.CompletionWidget.prototype.update = function () {
 			return;
 		}
 		this.menu.clearItems();
-		var menuItems = suggestions.map( this.action.getMenuItemForSuggestion.bind( this.action ) );
+		let menuItems = suggestions.map( this.action.getMenuItemForSuggestion.bind( this.action ) );
 		menuItems = this.action.updateMenuItems( menuItems );
 		this.menu.addItems( menuItems );
 		this.menu.highlightItem( this.menu.findFirstSelectableItem() );
@@ -176,7 +176,7 @@ ve.ui.CompletionWidget.prototype.update = function () {
  */
 ve.ui.CompletionWidget.prototype.updateMenu = function ( input, suggestions ) {
 	// Update the header based on the input
-	var label = this.action.getHeaderLabel( input, suggestions );
+	const label = this.action.getHeaderLabel( input, suggestions );
 	if ( label !== undefined ) {
 		this.header.setLabel( label );
 	}
@@ -234,10 +234,10 @@ ve.ui.CompletionWidget.prototype.onMenuToggle = function ( visible ) {
  * @param {ve.dm.Selection} selection Selection
  */
 ve.ui.CompletionWidget.prototype.onModelSelect = function () {
-	var range = this.getCompletionRange();
+	const range = this.getCompletionRange();
 
-	var countMatches = () => {
-		var matches = this.menu.getItems().length;
+	const countMatches = () => {
+		let matches = this.menu.getItems().length;
 		if ( this.header.getLabel() !== null ) {
 			matches--;
 		}
@@ -261,7 +261,7 @@ ve.ui.CompletionWidget.prototype.onModelSelect = function () {
  * @return {ve.Range|null} Range, null if not valid
  */
 ve.ui.CompletionWidget.prototype.getCompletionRange = function ( withSequence ) {
-	var range = this.surfaceModel.getSelection().getCoveringRange();
+	const range = this.surfaceModel.getSelection().getCoveringRange();
 	if ( !range || !this.action ) {
 		return null;
 	}

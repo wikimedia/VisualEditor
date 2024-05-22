@@ -45,7 +45,7 @@ ve.dm.CheckListNode.static.createItem = function () {
 };
 
 ve.dm.CheckListNode.static.toDomElements = function ( dataElement, doc ) {
-	var list = doc.createElement( 'ul' );
+	const list = doc.createElement( 'ul' );
 	list.setAttribute( 'rel', 've:checkList' );
 	return [ list ];
 };

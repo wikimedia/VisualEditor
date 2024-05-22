@@ -9,7 +9,7 @@ QUnit.module( 've.ce.TableNode' );
 /* Tests */
 
 QUnit.test( 'getNearestCellNode', ( assert ) => {
-	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.singleLine`
+	const view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.singleLine`
 			<table>
 				<tr>
 					<td>
@@ -48,7 +48,7 @@ QUnit.test( 'getNearestCellNode', ( assert ) => {
 } );
 
 QUnit.test( 'getFirstSectionNode', ( assert ) => {
-	var view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.singleLine`
+	const view = ve.test.utils.createSurfaceViewFromHtml( ve.dm.example.singleLine`
 			<table>
 				<caption>Caption</caption>
 				<tr><td>Foo</td></tr>
@@ -63,7 +63,7 @@ QUnit.test( 'getFirstSectionNode', ( assert ) => {
 } );
 
 QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', ( assert ) => {
-	var realVeCeSurfaceGetOffsetFromCoords = ve.ce.Surface.prototype.getOffsetFromCoords,
+	const realVeCeSurfaceGetOffsetFromCoords = ve.ce.Surface.prototype.getOffsetFromCoords,
 		view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocument( 'mergedCells' ) ),
 		model = view.getModel(),
 		documentNode = view.getDocument().getDocumentNode(),
@@ -86,7 +86,7 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 		tableNode.onTableMouseMove( e );
 		tableNode.onTableMouseUp( e );
 
-		var expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
+		let expectedSelection = ve.test.utils.selectionFromRangeOrSelection(
 			model.getDocument(),
 			{
 				type: 'table',
@@ -130,7 +130,7 @@ QUnit.test( 'onTableMouseDown/onTableMouseMove/onTableMouseUp/onTableDblClick', 
 } );
 
 QUnit.test( 'onTableMouseDown', ( assert ) => {
-	var view = ve.test.utils.createSurfaceViewFromHtml(
+	const view = ve.test.utils.createSurfaceViewFromHtml(
 			'<table><tr><td>Foo</td><td>Bar</td></tr></table>'
 		),
 		documentNode = view.getDocument().getDocumentNode(),

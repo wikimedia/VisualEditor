@@ -27,7 +27,7 @@ OO.inheritClass( ve.dm.DataString, unicodeJS.TextString );
  * @return {string|null} Character at position, or null if not text
  */
 ve.dm.DataString.prototype.read = function ( position ) {
-	var dataAt = this.data[ position ];
+	const dataAt = this.data[ position ];
 	// Check data is present at position and is not an element
 	if ( dataAt !== undefined && dataAt.type === undefined ) {
 		return typeof dataAt === 'string' ? dataAt : dataAt[ 0 ];

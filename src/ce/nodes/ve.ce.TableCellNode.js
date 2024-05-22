@@ -57,8 +57,8 @@ ve.ce.TableCellNode.prototype.initialize = function () {
 	// Parent method
 	ve.ce.TableCellNode.super.prototype.initialize.call( this );
 
-	var rowspan = this.model.getRowspan();
-	var colspan = this.model.getColspan();
+	const rowspan = this.model.getRowspan();
+	const colspan = this.model.getColspan();
 
 	// DOM changes
 	this.$element
@@ -107,7 +107,7 @@ ve.ce.TableCellNode.prototype.onTableCellTeardown = function () {
 	// If the table cell is active on teardown, ensure the surface's
 	// activeNode is cleared.
 	if ( this.getRoot() ) {
-		var surface = this.getRoot().getSurface();
+		const surface = this.getRoot().getSurface();
 		if ( surface.getActiveNode() === this ) {
 			surface.setActiveNode( null );
 		}

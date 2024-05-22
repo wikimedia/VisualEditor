@@ -38,7 +38,7 @@ ve.ui.CheckListTool.prototype.onUpdateState = function ( fragment ) {
 	// Parent method
 	ve.ui.CheckListTool.super.prototype.onUpdateState.apply( this, arguments );
 
-	var isMatching = fragment.hasMatchingAncestor( 'checkList' );
+	const isMatching = fragment.hasMatchingAncestor( 'checkList' );
 	this.setActive( isMatching );
 };
 

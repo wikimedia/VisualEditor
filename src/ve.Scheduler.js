@@ -52,7 +52,7 @@ ve.Scheduler.prototype.schedule = function ( immediateAction, completionTest, de
 	var deferred = ve.createDeferred(),
 		startTime = this.now(),
 		testThenAct = function () {
-			var complete;
+			let complete;
 			try {
 				complete = completionTest();
 			} catch ( e ) {

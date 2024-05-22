@@ -1,8 +1,8 @@
 ( function () {
 	// Copied from mediawiki.requestIdleCallback
-	var requestIdleCallbackInternal = function ( callback ) {
+	const requestIdleCallbackInternal = function ( callback ) {
 		setTimeout( () => {
-			var start = ve.now();
+			const start = ve.now();
 			callback( {
 				didTimeout: false,
 				timeRemaining: function () {
@@ -14,13 +14,13 @@
 	};
 
 	// eslint-disable-next-line compat/compat
-	var requestIdleCallback = window.requestIdleCallback ?
+	const requestIdleCallback = window.requestIdleCallback ?
 		// Bind because it throws TypeError if context is not window
 		// eslint-disable-next-line compat/compat
 		window.requestIdleCallback.bind( window ) :
 		requestIdleCallbackInternal;
 
-	var EXPIRY_PREFIX = '_EXPIRY_';
+	const EXPIRY_PREFIX = '_EXPIRY_';
 	/**
 	 * Implementation of ve.init.SafeStorage
 	 *
@@ -85,7 +85,7 @@
 	 * @inheritdoc
 	 */
 	ve.init.sa.SafeStorage.prototype.getObject = function ( key ) {
-		var json = this.get( key );
+		const json = this.get( key );
 
 		if ( json === false ) {
 			return false;
@@ -102,7 +102,7 @@
 	 * @inheritdoc
 	 */
 	ve.init.sa.SafeStorage.prototype.setObject = function ( key, value, expiry ) {
-		var json;
+		let json;
 		try {
 			json = JSON.stringify( value );
 			return this.set( key, json, expiry );
@@ -129,16 +129,16 @@
 	};
 
 	// Minimum amount of time (in milliseconds) for an iteration involving localStorage access.
-	var MIN_WORK_TIME = 3;
+	const MIN_WORK_TIME = 3;
 
 	/**
 	 * @inheritdoc
 	 */
 	ve.init.sa.SafeStorage.prototype.clearExpired = function () {
 		return this.getExpiryKeys().then( ( keys ) => $.Deferred( ( d ) => {
-			var iterate = ( deadline ) => {
+			const iterate = ( deadline ) => {
 				while ( keys[ 0 ] !== undefined && deadline.timeRemaining() > MIN_WORK_TIME ) {
-					var key = keys.shift();
+					const key = keys.shift();
 					if ( this.isExpired( key ) ) {
 						this.remove( key );
 					}
@@ -158,12 +158,12 @@
 	 * @inheritdoc
 	 */
 	ve.init.sa.SafeStorage.prototype.getExpiryKeys = function () {
-		var store = this.store;
+		const store = this.store;
 		return $.Deferred( ( d ) => {
 			requestIdleCallback( ( deadline ) => {
-				var prefixLength = EXPIRY_PREFIX.length;
-				var keys = [];
-				var length = 0;
+				const prefixLength = EXPIRY_PREFIX.length;
+				const keys = [];
+				let length = 0;
 				try {
 					length = store.length;
 				} catch ( e ) {}
@@ -176,8 +176,8 @@
 				// We don't expect to have more keys than we can handle in 50ms long-task window.
 				// But, we might still run out of time when other tasks run before this,
 				// or when the device receives UI events (especially on low-end devices).
-				for ( var i = 0; ( i < length && deadline.timeRemaining() > MIN_WORK_TIME ); i++ ) {
-					var key = null;
+				for ( let i = 0; ( i < length && deadline.timeRemaining() > MIN_WORK_TIME ); i++ ) {
+					let key = null;
 					try {
 						key = store.key( i );
 					} catch ( e ) {}
@@ -194,7 +194,7 @@
 	 * @inheritdoc
 	 */
 	ve.init.sa.SafeStorage.prototype.isExpired = function ( key ) {
-		var expiry;
+		let expiry;
 		try {
 			expiry = this.store.getItem( EXPIRY_PREFIX + key );
 		} catch ( e ) {

@@ -68,7 +68,7 @@ ve.ui.Surface = function VeUiSurface( target, dataOrDocOrSurface, config ) {
 	if ( dataOrDocOrSurface instanceof ve.dm.Surface ) {
 		this.model = dataOrDocOrSurface;
 	} else {
-		var documentModel;
+		let documentModel;
 		if ( dataOrDocOrSurface instanceof ve.dm.Document ) {
 			// ve.dm.Document
 			documentModel = dataOrDocOrSurface;
@@ -362,14 +362,14 @@ ve.ui.Surface.prototype.getBoundingClientRect = function () {
  * @return {Object|null} Object with top, left, bottom, and height properties. Null if the surface is not attached.
  */
 ve.ui.Surface.prototype.getViewportDimensions = function () {
-	var rect = this.getBoundingClientRect();
+	const rect = this.getBoundingClientRect();
 
 	if ( !rect ) {
 		return null;
 	}
 
-	var top = Math.max( this.padding.top - rect.top, 0 );
-	var bottom = $( this.getElementWindow() ).height() - rect.top;
+	const top = Math.max( this.padding.top - rect.top, 0 );
+	const bottom = $( this.getElementWindow() ).height() - rect.top;
 
 	return {
 		top: top,
@@ -530,15 +530,15 @@ ve.ui.Surface.prototype.onModelSelect = function () {
 ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scrollConfig ) {
 	selectionModel = selectionModel || this.getModel().getSelection();
 
-	var animate = true,
+	let animate = true,
 		view = this.getView(),
 		selectionView = view.getSelection( selectionModel ),
 		isNative = selectionView.isNativeCursor();
 
 	// We only care about the focus end of the selection, the anchor never
 	// moves and should be allowed off screen.
-	var clientRect = selectionView.getSelectionFocusRect();
-	var surfaceRect = this.getBoundingClientRect();
+	let clientRect = selectionView.getSelectionFocusRect();
+	const surfaceRect = this.getBoundingClientRect();
 	if ( !clientRect || !surfaceRect ) {
 		return;
 	}
@@ -546,7 +546,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	// We want viewport-relative coordinates, so we need to translate it
 	clientRect = ve.translateRect( clientRect, surfaceRect.left, surfaceRect.top );
 
-	var padding = ve.copy( this.padding );
+	const padding = ve.copy( this.padding );
 
 	if ( isNative ) {
 		animate = false;
@@ -554,7 +554,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 			OO.ui.isMobile() &&
 			!selectionModel.isCollapsed()
 		) {
-			var profile = $.client.profile();
+			const profile = $.client.profile();
 			// Assume that if the selection has been expanded, then a context menu is visible
 			// above the selection. We don't want this to obscure the toolbar so add on an
 			// estimate of its height.
@@ -575,7 +575,7 @@ ve.ui.Surface.prototype.scrollSelectionIntoView = function ( selectionModel, scr
 	} else {
 		// Don't attempt to scroll non-native selections into view if they
 		// are taller than the viewport (T305862).
-		var viewportDimensions = this.getViewportDimensions();
+		const viewportDimensions = this.getViewportDimensions();
 		if ( clientRect.height > viewportDimensions.height ) {
 			return;
 		}
@@ -613,7 +613,7 @@ ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
 	if ( this.placeholder ) {
 		this.$placeholder.prependTo( this.$element );
 		this.updatePlaceholder();
-		var documentView = this.getView().getDocument();
+		const documentView = this.getView().getDocument();
 		this.$placeholder.prop( {
 			dir: documentView.getDir(),
 			lang: documentView.getLang()
@@ -630,15 +630,15 @@ ve.ui.Surface.prototype.setPlaceholder = function ( placeholder ) {
  * Update placeholder rendering
  */
 ve.ui.Surface.prototype.updatePlaceholder = function () {
-	var hasContent = this.getModel().getDocument().data.hasContent();
+	const hasContent = this.getModel().getDocument().data.hasContent();
 
 	this.$placeholder.toggleClass( 'oo-ui-element-hidden', hasContent );
 	this.placeholderVisible = !hasContent;
 	if ( !hasContent ) {
 		// Use a clone of the first node in the document so the placeholder
 		// styling matches the text the users sees when they start typing
-		var firstNode = this.getView().attachedRoot.children[ 0 ];
-		var $wrapper;
+		const firstNode = this.getView().attachedRoot.children[ 0 ];
+		let $wrapper;
 		if ( firstNode ) {
 			$wrapper = firstNode.$element.clone();
 			if ( ve.debug ) {
@@ -658,7 +658,7 @@ ve.ui.Surface.prototype.updatePlaceholder = function () {
  * Handle position events from the view
  */
 ve.ui.Surface.prototype.onViewPosition = function () {
-	var padding = this.toolbarDialogs.getSurfacePadding();
+	const padding = this.toolbarDialogs.getSurfacePadding();
 	if ( padding ) {
 		this.setPadding( padding );
 		this.adjustVisiblePadding();
@@ -703,7 +703,7 @@ ve.ui.Surface.prototype.execute = function ( triggerOrAction, method, ...args ) 
  */
 ve.ui.Surface.prototype.executeWithSource = function ( triggerOrAction, method, source, ...args ) {
 	if ( triggerOrAction instanceof ve.ui.Trigger ) {
-		var command = this.triggerListener.getCommandByTrigger( triggerOrAction.toString() );
+		const command = this.triggerListener.getCommandByTrigger( triggerOrAction.toString() );
 		if ( command ) {
 			// Have command call execute with action arguments
 			return command.execute( this, false, source );
@@ -712,8 +712,8 @@ ve.ui.Surface.prototype.executeWithSource = function ( triggerOrAction, method, 
 		// Validate method
 		if ( ve.ui.actionFactory.doesActionSupportMethod( triggerOrAction, method ) ) {
 			// Create an action object and execute the method on it
-			var obj = ve.ui.actionFactory.create( triggerOrAction, this, source );
-			var ret = obj[ method ]( ...args );
+			const obj = ve.ui.actionFactory.create( triggerOrAction, this, source );
+			const ret = obj[ method ]( ...args );
 			return ret === undefined || !!ret;
 		}
 	}
@@ -727,7 +727,7 @@ ve.ui.Surface.prototype.executeWithSource = function ( triggerOrAction, method, 
  * @return {boolean} The command was executed
  */
 ve.ui.Surface.prototype.executeCommand = function ( commandName ) {
-	var command = this.commandRegistry.lookup( commandName );
+	const command = this.commandRegistry.lookup( commandName );
 	if ( command ) {
 		return command.execute( this );
 	}
@@ -759,7 +759,7 @@ ve.ui.Surface.prototype.setPadding = function ( padding ) {
  * Handle resize events from the context
  */
 ve.ui.Surface.prototype.onContextResize = function () {
-	var padding = this.context.getSurfacePadding();
+	const padding = this.context.getSurfacePadding();
 	if ( padding ) {
 		this.setPadding( padding );
 		this.adjustVisiblePadding();
@@ -794,8 +794,8 @@ ve.ui.Surface.prototype.onViewActivation = function () {
  */
 ve.ui.Surface.prototype.adjustVisiblePadding = function () {
 	if ( OO.ui.isMobile() && !this.inTargetWidget ) {
-		var keyboardShown = this.getView().hasNativeCursorSelection();
-		var bottom;
+		const keyboardShown = this.getView().hasNativeCursorSelection();
+		let bottom;
 		if ( ve.init.platform.constructor.static.isIos() && keyboardShown ) {
 			// iOS needs a whole extra page of padding when the virtual keyboard is shown.
 			// Note: we keep this padding when surface is deactivated-but-shown-as-activated
@@ -819,7 +819,7 @@ ve.ui.Surface.prototype.adjustVisiblePadding = function () {
  * @return {jQuery.Promise} Promise which resolves with a progress bar widget and fails if cancelled
  */
 ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, label, nonCancellable ) {
-	var progressBarDeferred = ve.createDeferred();
+	const progressBarDeferred = ve.createDeferred();
 
 	this.progresses.push( {
 		label: label,
@@ -834,7 +834,7 @@ ve.ui.Surface.prototype.createProgress = function ( progressCompletePromise, lab
 };
 
 ve.ui.Surface.prototype.showProgress = function () {
-	var progresses = this.progresses;
+	const progresses = this.progresses;
 
 	this.dialogs.openWindow( 'progress', { progresses: progresses, $returnFocusTo: null } );
 	this.progresses = [];

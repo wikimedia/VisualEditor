@@ -67,7 +67,7 @@ ve.ui.MergeCellsContextItem.prototype.setup = function () {
 	ve.ui.MergeCellsContextItem.super.prototype.setup.apply( this, arguments );
 
 	// If not disabled, selection must be table and spanning multiple matrix cells
-	var selection = this.getFragment().getSurface().getSelection(),
+	const selection = this.getFragment().getSurface().getSelection(),
 		documentModel = this.getFragment().getDocument(),
 		// There's some situations involving transclusion table cells which
 		// can make us have a LinearSelection here, so make sure this will

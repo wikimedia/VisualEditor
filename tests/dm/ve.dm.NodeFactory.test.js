@@ -23,7 +23,7 @@ ve.dm.NodeFactoryNodeStub.static.disallowedAnnotationTypes = [ 'link', 'textStyl
 /* Tests */
 
 QUnit.test( 'getChildNodeTypes', ( assert ) => {
-	var factory = new ve.dm.NodeFactory();
+	const factory = new ve.dm.NodeFactory();
 	assert.throws(
 		() => {
 			factory.getChildNodeTypes( 'node-factory-node-stub', 23, { bar: 'baz' } );
@@ -40,7 +40,7 @@ QUnit.test( 'getChildNodeTypes', ( assert ) => {
 } );
 
 QUnit.test( 'getParentNodeTypes', ( assert ) => {
-	var factory = new ve.dm.NodeFactory();
+	const factory = new ve.dm.NodeFactory();
 	assert.throws(
 		() => {
 			factory.getParentNodeTypes( 'node-factory-node-stub', 23, { bar: 'baz' } );
@@ -57,7 +57,7 @@ QUnit.test( 'getParentNodeTypes', ( assert ) => {
 } );
 
 QUnit.test( 'canNodeHaveChildren', ( assert ) => {
-	var factory = new ve.dm.NodeFactory();
+	const factory = new ve.dm.NodeFactory();
 	assert.throws(
 		() => {
 			factory.canNodeHaveChildren( 'node-factory-node-stub', 23, { bar: 'baz' } );
@@ -74,7 +74,7 @@ QUnit.test( 'canNodeHaveChildren', ( assert ) => {
 } );
 
 QUnit.test( 'canNodeTakeAnnotation', ( assert ) => {
-	var factory = new ve.dm.NodeFactory();
+	const factory = new ve.dm.NodeFactory();
 	assert.throws(
 		() => {
 			factory.canNodeTakeAnnotation( 'node-factory-node-stub', 23, { bar: 'baz' } );
@@ -101,7 +101,7 @@ QUnit.test( 'canNodeTakeAnnotation', ( assert ) => {
 } );
 
 QUnit.test( 'canNodeHaveChildrenNotContent', ( assert ) => {
-	var factory = new ve.dm.NodeFactory();
+	const factory = new ve.dm.NodeFactory();
 	assert.throws(
 		() => {
 			factory.canNodeHaveChildrenNotContent( 'node-factory-node-stub', 23, { bar: 'baz' } );

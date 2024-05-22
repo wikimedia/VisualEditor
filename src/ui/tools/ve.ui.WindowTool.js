@@ -41,7 +41,7 @@ ve.ui.WindowTool.static.associatedWindows = null;
  * @inheritdoc
  */
 ve.ui.WindowTool.prototype.onUpdateState = function ( fragment, contextDirection, activeDialogs ) {
-	var myWindowNames = [];
+	let myWindowNames = [];
 
 	// Parent method
 	ve.ui.WindowTool.super.prototype.onUpdateState.apply( this, arguments );
@@ -49,7 +49,7 @@ ve.ui.WindowTool.prototype.onUpdateState = function ( fragment, contextDirection
 	if ( this.constructor.static.associatedWindows !== null ) {
 		myWindowNames = this.constructor.static.associatedWindows;
 	} else {
-		var command = this.getCommand();
+		const command = this.getCommand();
 		if ( command && command.getAction() === 'window' ) {
 			myWindowNames = [ command.getArgs()[ 0 ] ];
 		}

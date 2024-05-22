@@ -9,7 +9,7 @@ QUnit.module( 've.ui.WindowAction' );
 /* Tests */
 
 QUnit.test( 'Basic open/close', ( assert ) => {
-	var surface = ve.test.utils.createSurfaceFromHtml( '' ),
+	const surface = ve.test.utils.createSurfaceFromHtml( '' ),
 		windowAction = ve.ui.actionFactory.create( 'window', surface ),
 		dialogs = surface.getDialogs(),
 		done = assert.async( 2 );

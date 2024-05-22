@@ -48,9 +48,9 @@ ve.dm.TableNode.static.matchTagNames = [ 'table' ];
  * Handle splicing of child nodes
  */
 ve.dm.TableNode.prototype.onSplice = function () {
-	var nodes = Array.prototype.slice.call( arguments, 2 );
+	const nodes = Array.prototype.slice.call( arguments, 2 );
 	this.getMatrix().invalidate();
-	for ( var i = 0; i < nodes.length; i++ ) {
+	for ( let i = 0; i < nodes.length; i++ ) {
 		nodes[ i ].connect( this, {
 			cellAttributeChange: 'onCellAttributeChange'
 		} );
@@ -82,7 +82,7 @@ ve.dm.TableNode.prototype.getMatrix = function () {
  * @return {ve.dm.TableCaptionNode|null} The table's caption node, or null if not found
  */
 ve.dm.TableNode.prototype.getCaptionNode = function () {
-	for ( var i = 0, l = this.children.length; i < l; i++ ) {
+	for ( let i = 0, l = this.children.length; i < l; i++ ) {
 		if ( this.children[ i ] instanceof ve.dm.TableCaptionNode ) {
 			return this.children[ i ];
 		}
@@ -191,7 +191,7 @@ ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
 		return;
 	}
 	// Get the next node and make sure it's a section node (and not an alien node)
-	var sectionNode = this.table.children[ this.sectionIndex ];
+	const sectionNode = this.table.children[ this.sectionIndex ];
 	this.sectionIndex++;
 	this.rowIndex = 0;
 	if ( sectionNode instanceof ve.dm.TableSectionNode ) {
@@ -219,7 +219,7 @@ ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
 		}
 	}
 	// Get the next node and make sure it's a row node (and not an alien node)
-	var rowNode = this.sectionNode.children[ this.rowIndex ];
+	const rowNode = this.sectionNode.children[ this.rowIndex ];
 	this.rowIndex++;
 	this.cellIndex = 0;
 	if ( rowNode instanceof ve.dm.TableRowNode ) {
@@ -253,7 +253,7 @@ ve.dm.TableNodeCellIterator.prototype.nextCell = function () {
 		}
 	}
 	// Get the next node and make sure it's a cell node (and not an alien node)
-	var cellNode = this.rowNode.children[ this.cellIndex ];
+	const cellNode = this.rowNode.children[ this.cellIndex ];
 	this.cellNode = cellNode && cellNode.isCellable() ? cellNode : null;
 	this.cellIndex++;
 };

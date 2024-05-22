@@ -14,7 +14,7 @@
  * @param {boolean} [allowInvalidPrimary] Allow invalid primary keys
  */
 ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
-	var keyAliases = ve.ui.Trigger.static.keyAliases,
+	const keyAliases = ve.ui.Trigger.static.keyAliases,
 		primaryKeys = ve.ui.Trigger.static.primaryKeys,
 		primaryKeyMap = ve.ui.Trigger.static.primaryKeyMap;
 
@@ -36,9 +36,9 @@ ve.ui.Trigger = function VeUiTrigger( e, allowInvalidPrimary ) {
 		this.primary = primaryKeyMap[ e.which ] || false;
 	} else if ( typeof e === 'string' ) {
 		// Normalization: remove whitespace and force lowercase
-		var parts = e.replace( /\s+/g, '' ).toLowerCase().split( '+' );
-		for ( var i = 0, len = parts.length; i < len; i++ ) {
-			var key = parts[ i ];
+		const parts = e.replace( /\s+/g, '' ).toLowerCase().split( '+' );
+		for ( let i = 0, len = parts.length; i < len; i++ ) {
+			let key = parts[ i ];
 			// Resolve key aliases
 			if ( Object.prototype.hasOwnProperty.call( keyAliases, key ) ) {
 				key = keyAliases[ key ];
@@ -398,10 +398,10 @@ ve.ui.Trigger.prototype.isComplete = function () {
  * @return {string} Canonical trigger string
  */
 ve.ui.Trigger.prototype.toString = function () {
-	var modifierKeys = ve.ui.Trigger.static.modifierKeys,
+	const modifierKeys = ve.ui.Trigger.static.modifierKeys,
 		keys = [];
 	// Add modifier keywords in the correct order
-	for ( var i = 0, len = modifierKeys.length; i < len; i++ ) {
+	for ( let i = 0, len = modifierKeys.length; i < len; i++ ) {
 		if ( this.modifiers[ modifierKeys[ i ] ] ) {
 			keys.push( modifierKeys[ i ] );
 		}
@@ -427,7 +427,7 @@ ve.ui.Trigger.prototype.toString = function () {
  * @return {string[]|string} Seprate key messages, or a joined string
  */
 ve.ui.Trigger.prototype.getMessage = function ( explode ) {
-	var keys = this.toString().split( '+' ),
+	let keys = this.toString().split( '+' ),
 		hasOwn = Object.prototype.hasOwnProperty,
 		translatableKeys = this.constructor.static.translatableKeys,
 		platformMapping = this.constructor.static.platformMapping,
@@ -464,8 +464,8 @@ ve.ui.Trigger.prototype.getMessage = function ( explode ) {
 	if ( explode ) {
 		return keys;
 	} else {
-		var joiners = this.constructor.static.platformStringJoiners;
-		var joiner = hasOwn.call( joiners, platform ) ? joiners[ platform ] : joiners.default;
+		const joiners = this.constructor.static.platformStringJoiners;
+		const joiner = hasOwn.call( joiners, platform ) ? joiners[ platform ] : joiners.default;
 		return keys.join( joiner );
 	}
 };

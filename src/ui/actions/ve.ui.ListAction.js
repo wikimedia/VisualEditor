@@ -39,7 +39,7 @@ ve.ui.ListAction.static.methods = [ 'wrap', 'unwrap', 'toggle', 'wrapOnce' ];
  */
 ve.ui.ListAction.prototype.allWrapped = function ( style, listType ) {
 	listType = listType || 'list';
-	var attributes = style ? { style: style } : undefined;
+	const attributes = style ? { style: style } : undefined;
 	return this.surface.getModel().getFragment().hasMatchingAncestor( listType, attributes, true );
 };
 
@@ -86,7 +86,7 @@ ve.ui.ListAction.prototype.wrapOnce = function ( style, noBreakpoints, listType 
  * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
-	var surfaceModel = this.surface.getModel(),
+	const surfaceModel = this.surface.getModel(),
 		selection = surfaceModel.getSelection();
 
 	if ( !( selection instanceof ve.dm.LinearSelection ) ) {
@@ -99,8 +99,8 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 		surfaceModel.breakpoint();
 	}
 
-	var documentModel = surfaceModel.getDocument();
-	var range = selection.getRange();
+	const documentModel = surfaceModel.getDocument();
+	let range = selection.getRange();
 
 	// TODO: Would be good to refactor at some point and avoid/abstract path split for block slug
 	// and not block slug.
@@ -110,7 +110,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 		documentModel.hasSlugAtOffset( range.to )
 	) {
 		// Inside block level slug
-		var fragment = surfaceModel.getFragment( null, true )
+		const fragment = surfaceModel.getFragment( null, true )
 			.insertContent( [
 				{ type: 'paragraph' },
 				{ type: '/paragraph' }
@@ -121,10 +121,10 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 		range = fragment.getSelection().getRange();
 	}
 
-	var previousList;
-	var groups = documentModel.getCoveredSiblingGroups( range );
-	for ( var i = 0; i < groups.length; i++ ) {
-		var group = groups[ i ];
+	let previousList;
+	const groups = documentModel.getCoveredSiblingGroups( range );
+	for ( let i = 0; i < groups.length; i++ ) {
+		const group = groups[ i ];
 		// TODO: Allow conversion between different list types
 		if ( group.grandparent && group.grandparent.getType() === listType ) {
 			if ( group.grandparent !== previousList ) {
@@ -135,15 +135,15 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
 			}
 		} else {
 			// Get a range that covers the whole group
-			var groupRange = new ve.Range(
+			const groupRange = new ve.Range(
 				group.nodes[ 0 ].getOuterRange().start,
 				group.nodes[ group.nodes.length - 1 ].getOuterRange().end
 			);
-			var element = { type: listType };
+			const element = { type: listType };
 			if ( style ) {
 				element.attributes = { style: style };
 			}
-			var itemElement = ve.dm.modelRegistry.lookup( listType ).static.createItem();
+			const itemElement = ve.dm.modelRegistry.lookup( listType ).static.createItem();
 			surfaceModel.getLinearFragment( groupRange, true )
 				// Convert everything to paragraphs first
 				.convertNodes( 'paragraph', null, { generated: 'wrapper' } )
@@ -168,7 +168,7 @@ ve.ui.ListAction.prototype.wrap = function ( style, noBreakpoints, listType ) {
  * @return {boolean} Action was executed
  */
 ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints, listType ) {
-	var surfaceModel = this.surface.getModel();
+	const surfaceModel = this.surface.getModel();
 
 	if ( !( surfaceModel.getSelection() instanceof ve.dm.LinearSelection ) ) {
 		return false;
@@ -178,12 +178,12 @@ ve.ui.ListAction.prototype.unwrap = function ( noBreakpoints, listType ) {
 		surfaceModel.breakpoint();
 	}
 
-	var indentationAction = ve.ui.actionFactory.create( 'indentation', this.surface );
-	var documentModel = surfaceModel.getDocument();
+	const indentationAction = ve.ui.actionFactory.create( 'indentation', this.surface );
+	const documentModel = surfaceModel.getDocument();
 
 	listType = listType || 'list';
 
-	var node;
+	let node;
 	do {
 		node = documentModel.getBranchNodeFromOffset( surfaceModel.getSelection().getRange().start );
 	} while ( node.hasMatchingAncestor( listType ) && indentationAction.decrease() );

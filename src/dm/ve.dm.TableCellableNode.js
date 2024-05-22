@@ -30,7 +30,7 @@ ve.dm.TableCellableNode.static.isCellable = true;
 /* Static Methods */
 
 ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElements ) {
-	var style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data',
+	const style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data',
 		colspan = domElements[ 0 ].getAttribute( 'colspan' ),
 		rowspan = domElements[ 0 ].getAttribute( 'rowspan' );
 
@@ -52,7 +52,7 @@ ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElement
 };
 
 ve.dm.TableCellableNode.static.applyAttributes = function ( attributes, domElement ) {
-	var spans = {
+	const spans = {
 		colspan: attributes.colspan,
 		rowspan: attributes.rowspan
 	};

@@ -40,7 +40,7 @@ ve.ui.WindowAction.static.methods = [ 'open', 'close', 'toggle' ];
  */
 ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 	data = data || {};
-	var windowType = this.getWindowType( name ),
+	const windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType ),
 		currentWindow = windowManager.getCurrentWindow(),
 		autoClosePromises = [],
@@ -66,16 +66,16 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 		return false;
 	}
 
-	var fragmentPromise;
-	var originalFragment;
+	let fragmentPromise;
+	let originalFragment;
 	if ( !mayRequireFragment ) {
 		fragmentPromise = ve.createDeferred().resolve().promise();
 	} else if ( sourceMode ) {
-		var text = surfaceFragment.getText( true );
+		const text = surfaceFragment.getText( true );
 		originalFragment = surfaceFragment;
 
 		fragmentPromise = surfaceFragment.convertFromSource( text ).then( ( selectionDocument ) => {
-			var tempSurfaceModel = new ve.dm.Surface( selectionDocument ),
+			const tempSurfaceModel = new ve.dm.Surface( selectionDocument ),
 				tempFragment = tempSurfaceModel.getLinearFragment(
 					// TODO: Select all content using content offset methods
 					new ve.Range(
@@ -103,8 +103,8 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 
 	// If we're opening a dialog, close all inspectors first
 	if ( windowType === 'dialog' ) {
-		var inspectorWindowManager = this.getWindowManager( 'inspector' );
-		var currentInspector = inspectorWindowManager.getCurrentWindow();
+		const inspectorWindowManager = this.getWindowManager( 'inspector' );
+		const currentInspector = inspectorWindowManager.getCurrentWindow();
 		if ( currentInspector ) {
 			autoClosePromises.push( inspectorWindowManager.closeWindow( currentInspector ).closed );
 		}
@@ -115,7 +115,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
 
 		ve.promiseAll( autoClosePromises ).always( () => {
 			windowManager.getWindow( name ).then( ( win ) => {
-				var instance = windowManager.openWindow( win, data );
+				const instance = windowManager.openWindow( win, data );
 
 				if ( sourceMode ) {
 					win.sourceMode = sourceMode;
@@ -192,7 +192,7 @@ ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
  * @return {boolean} Action was executed
  */
 ve.ui.WindowAction.prototype.close = function ( name, data ) {
-	var windowType = this.getWindowType( name ),
+	const windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType );
 
 	if ( !windowManager ) {
@@ -211,14 +211,14 @@ ve.ui.WindowAction.prototype.close = function ( name, data ) {
  * @return {boolean} Action was executed
  */
 ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
-	var windowType = this.getWindowType( name ),
+	const windowType = this.getWindowType( name ),
 		windowManager = windowType && this.getWindowManager( windowType );
 
 	if ( !windowManager ) {
 		return false;
 	}
 
-	var win = windowManager.getCurrentWindow();
+	const win = windowManager.getCurrentWindow();
 	if ( !win || win.constructor.static.name !== name ) {
 		this.open( name, data );
 	} else {
@@ -234,7 +234,7 @@ ve.ui.WindowAction.prototype.toggle = function ( name, data ) {
  * @return {string|null} Window type: 'inspector', 'toolbar' or 'dialog'
  */
 ve.ui.WindowAction.prototype.getWindowType = function ( name ) {
-	var windowClass = ve.ui.windowFactory.lookup( name );
+	const windowClass = ve.ui.windowFactory.lookup( name );
 	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
 		return 'inspector';
 	} else if ( windowClass.prototype instanceof ve.ui.ToolbarDialog ) {

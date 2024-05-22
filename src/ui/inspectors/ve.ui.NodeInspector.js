@@ -46,7 +46,7 @@ ve.ui.NodeInspector.prototype.initialize = function ( data ) {
  */
 ve.ui.NodeInspector.prototype.getSetupProcess = function ( data ) {
 	// Parent method
-	var process = ve.ui.NodeInspector.super.prototype.getSetupProcess.call( this, data );
+	const process = ve.ui.NodeInspector.super.prototype.getSetupProcess.call( this, data );
 	// Mixin method
 	return ve.ui.NodeWindow.prototype.getSetupProcess.call( this, data, process );
 };
@@ -56,7 +56,7 @@ ve.ui.NodeInspector.prototype.getSetupProcess = function ( data ) {
  */
 ve.ui.NodeInspector.prototype.getTeardownProcess = function ( data ) {
 	// Parent method
-	var process = ve.ui.NodeInspector.super.prototype.getTeardownProcess.call( this, data );
+	const process = ve.ui.NodeInspector.super.prototype.getTeardownProcess.call( this, data );
 	// Mixin method
 	return ve.ui.NodeWindow.prototype.getTeardownProcess.call( this, data, process );
 };

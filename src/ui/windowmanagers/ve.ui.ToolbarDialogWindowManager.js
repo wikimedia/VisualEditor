@@ -57,7 +57,7 @@ ve.ui.ToolbarDialogWindowManager.prototype.getTeardownDelay = function () {
  * @return {null|Object} Padding object, or null
  */
 ve.ui.ToolbarDialogWindowManager.prototype.getSurfacePadding = function () {
-	var currentWindow = this.getCurrentWindow();
+	const currentWindow = this.getCurrentWindow();
 	if ( currentWindow && currentWindow.constructor.static.position === 'below' ) {
 		return { bottom: currentWindow.$frame[ 0 ].clientHeight };
 	} else {

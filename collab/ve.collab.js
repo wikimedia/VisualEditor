@@ -24,8 +24,8 @@ ve.collab.serialize = function ( value ) {
 	} else if ( value === null || typeof value !== 'object' ) {
 		return value;
 	} else if ( value.constructor === Object ) {
-		var serialized = {};
-		for ( var property in value ) {
+		const serialized = {};
+		for ( const property in value ) {
 			serialized[ property ] = ve.collab.serialize( value[ property ] );
 		}
 		return serialized;
@@ -47,7 +47,7 @@ ve.collab.newPeer = function () {
 };
 
 ve.collab.initPeerServer = function () {
-	var surface = ve.init.target.surface,
+	const surface = ve.init.target.surface,
 		completeHistory = surface.model.documentModel.completeHistory;
 
 	ve.collab.peerServer = new ve.dm.CollabTransportServer( completeHistory.getLength() );
@@ -74,7 +74,7 @@ ve.collab.initPeerServer = function () {
 };
 
 ve.collab.initPeerClient = function ( serverId, isMain ) {
-	var surface = ve.init.target.surface,
+	const surface = ve.init.target.surface,
 		completeHistory = surface.model.documentModel.completeHistory,
 		peerClient = ve.collab.newPeer();
 	if ( completeHistory.getLength() > 0 ) {
@@ -94,7 +94,7 @@ ve.collab.initPeerClient = function ( serverId, isMain ) {
 	} );
 
 	peerClient.on( 'open', function ( /* id */ ) {
-		var conn = peerClient.connect( serverId );
+		const conn = peerClient.connect( serverId );
 		// On old js-BinaryPack (before https://github.com/peers/js-binarypack/pull/10 ),
 		// you need JSON serialization, else it crashes on Unicode code points over U+FFFF
 		// var conn = peerClient.connect( serverId, { serialization: 'json' } );
@@ -113,7 +113,7 @@ ve.collab.initPeerClient = function ( serverId, isMain ) {
 					);
 					return;
 				}
-				var toolbar = ve.init.target.getToolbar();
+				const toolbar = ve.init.target.getToolbar();
 				toolbar.setup(
 					ve.init.target.constructor.static.toolbarGroups,
 					ve.init.target.surface
@@ -130,7 +130,7 @@ ve.collab.initPeerClient = function ( serverId, isMain ) {
 };
 
 ve.collab.connectModelSynchronizer = function () {
-	var ceSurface = ve.init.target.surface.view;
+	const ceSurface = ve.init.target.surface.view;
 	ceSurface.model.synchronizer.connect( ceSurface, {
 		authorSelect: 'onSynchronizerAuthorUpdate',
 		authorChange: 'onSynchronizerAuthorUpdate',
@@ -141,7 +141,7 @@ ve.collab.connectModelSynchronizer = function () {
 };
 
 ve.collab.join = function () {
-	var serverId = new URLSearchParams( location.search ).get( 'collabSession' );
+	const serverId = new URLSearchParams( location.search ).get( 'collabSession' );
 	if ( serverId ) {
 		// Valid session URL
 		ve.collab.start( serverId );

@@ -27,7 +27,7 @@ QUnit.module( 've' );
 // ve.extendObject: Tested upstream (jQuery)
 
 QUnit.test( 'compareClassLists', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			args: [ '', '' ],
 			expected: true
@@ -160,9 +160,9 @@ QUnit.test( 'getDomAttributes', ( assert ) => {
 } );
 
 QUnit.test( 'setDomAttributes', ( assert ) => {
-	var sample = $.parseHTML( '<div foo="one" bar="two" baz="three"></div>' )[ 0 ];
+	const sample = $.parseHTML( '<div foo="one" bar="two" baz="three"></div>' )[ 0 ];
 
-	var target = {};
+	let target = {};
 	ve.setDomAttributes( target, { add: 'foo' } );
 	assert.deepEqual( target, {}, 'ignore incompatible target object' );
 
@@ -212,14 +212,14 @@ QUnit.test( 'sparseSplice', ( assert ) => {
 	// Convert a sparse array of primitives to an array of strings, with '' for holes.
 	// This is needed because QUnit.equiv treats holes as equivalent to undefined.
 	function mapToString( flatArray ) {
-		var strings = [];
-		for ( var j = 0, jLen = flatArray.length; j < jLen; j++ ) {
+		const strings = [];
+		for ( let j = 0, jLen = flatArray.length; j < jLen; j++ ) {
 			strings.push( Object.prototype.hasOwnProperty.call( flatArray, j ) ? String( flatArray[ j ] ) : '' );
 		}
 		return strings;
 	}
 	function runTest( arr, offset, remove, data, expectedReturn, expectedArray, msg ) {
-		var observedReturn,
+		let observedReturn,
 			testArr = arr.slice();
 
 		observedReturn = ve.sparseSplice( testArr, offset, remove, data );
@@ -235,8 +235,8 @@ QUnit.test( 'sparseSplice', ( assert ) => {
 		);
 	}
 	/* eslint-disable no-sparse-arrays */
-	var scratch = [ 4, , 5, , 6 ];
-	var cases = [
+	const scratch = [ 4, , 5, , 6 ];
+	const cases = [
 		// arr, offset, remove, data, expectedReturn, expectedArray, msg
 		[ [], 0, 0, [ , 3 ], [], [ , 3 ], 'insert empty, leading hole' ],
 		[ [], 0, 0, [ 1, , 3 ], [], [ 1, , 3 ], 'insert empty, middle hole' ],
@@ -273,11 +273,11 @@ QUnit.test( 'sparseSplice', ( assert ) => {
 } );
 
 QUnit.test( 'batchSplice', ( assert ) => {
-	var actual = [ 'a', 'b', 'c', 'd', 'e' ],
+	const actual = [ 'a', 'b', 'c', 'd', 'e' ],
 		expected = actual.slice( 0 );
 
-	var actualRet = ve.batchSplice( actual, 1, 1, [] );
-	var expectedRet = expected.splice( 1, 1 );
+	let actualRet = ve.batchSplice( actual, 1, 1, [] );
+	let expectedRet = expected.splice( 1, 1 );
 	assert.deepEqual( expectedRet, actualRet, 'Removing 1 element (return value)' );
 	assert.deepEqual( expected, actual, 'Removing 1 element (array)' );
 
@@ -291,8 +291,8 @@ QUnit.test( 'batchSplice', ( assert ) => {
 	assert.deepEqual( expectedRet, actualRet, 'Inserting 3 elements (return value)' );
 	assert.deepEqual( expected, actual, 'Inserting 3 elements (array)' );
 
-	var bigArr = [];
-	for ( var i = 0; i < 2100; i++ ) {
+	const bigArr = [];
+	for ( let i = 0; i < 2100; i++ ) {
 		bigArr[ i ] = i;
 	}
 	actualRet = ve.batchSplice( actual, 2, 3, bigArr );
@@ -304,8 +304,8 @@ QUnit.test( 'batchSplice', ( assert ) => {
 
 QUnit.test( 'batchPush', ( assert ) => {
 
-	var actual = [];
-	var actualRet = ve.batchPush( actual, [ 1, 2, 3 ] );
+	let actual = [];
+	let actualRet = ve.batchPush( actual, [ 1, 2, 3 ] );
 	assert.strictEqual( actualRet, 3, 'Adding to an empty array: return' );
 	assert.deepEqual( actual, [ 1, 2, 3 ], 'Adding to an empty array: value' );
 
@@ -316,8 +316,8 @@ QUnit.test( 'batchPush', ( assert ) => {
 
 	// batchPush takes a separate codepath for really long arrays, make sure it's behaving similarly:
 
-	var bigArr = [];
-	for ( var i = 0; i < 2100; i++ ) {
+	const bigArr = [];
+	for ( let i = 0; i < 2100; i++ ) {
 		bigArr[ i ] = i;
 	}
 
@@ -329,7 +329,7 @@ QUnit.test( 'batchPush', ( assert ) => {
 } );
 
 QUnit.test( 'insertIntoArray', ( assert ) => {
-	var target = [ 'a', 'b', 'c' ];
+	let target = [ 'a', 'b', 'c' ];
 	ve.insertIntoArray( target, 0, [ 'x', 'y' ] );
 	assert.deepEqual( target, [ 'x', 'y', 'a', 'b', 'c' ], 'insert at start' );
 
@@ -347,7 +347,7 @@ QUnit.test( 'escapeHtml', ( assert ) => {
 } );
 
 QUnit.test( 'addHeadTag', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'no wrapper',
 			html: '<p>foo</p>',
@@ -381,7 +381,7 @@ QUnit.test( 'addHeadTag', ( assert ) => {
 } );
 
 QUnit.test( 'createDocumentFromHtml', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			msg: 'simple document with doctype, head and body',
 			html: '<!doctype html><html lang="en"><head><title>Foo</title></head><body><p>Bar</p></body></html>',
@@ -431,14 +431,14 @@ QUnit.test( 'createDocumentFromHtml', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.createDocumentFromHtml( caseItem.html, true );
-		var attributes = $( 'html', doc ).get( 0 ).attributes;
-		var attributesObject = {};
-		for ( var i = 0; i < attributes.length; i++ ) {
+		const doc = ve.createDocumentFromHtml( caseItem.html, true );
+		const attributes = $( 'html', doc ).get( 0 ).attributes;
+		const attributesObject = {};
+		for ( let i = 0; i < attributes.length; i++ ) {
 			attributesObject[ attributes[ i ].name ] = attributes[ i ].value;
 		}
-		var expectedHead = $( '<head>' ).html( caseItem.head ).get( 0 );
-		var expectedBody = $( '<body>' ).html( caseItem.body ).get( 0 );
+		const expectedHead = $( '<head>' ).html( caseItem.head ).get( 0 );
+		const expectedBody = $( '<body>' ).html( caseItem.body ).get( 0 );
 		assert.equalDomElement( $( 'head', doc ).get( 0 ), expectedHead, caseItem.msg + ' (head)' );
 		assert.equalDomElement( $( 'body', doc ).get( 0 ), expectedBody, caseItem.msg + ' (body)' );
 		assert.deepEqual( attributesObject, caseItem.htmlAttributes, caseItem.msg + ' (html attributes)' );
@@ -446,7 +446,7 @@ QUnit.test( 'createDocumentFromHtml', ( assert ) => {
 } );
 
 QUnit.test( 'resolveUrl', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			base: 'http://example.com',
 			href: 'foo',
@@ -498,14 +498,14 @@ QUnit.test( 'resolveUrl', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.createDocumentFromHtml( '' );
+		const doc = ve.createDocumentFromHtml( '' );
 		doc.head.appendChild( $( '<base>', doc ).attr( 'href', caseItem.base )[ 0 ] );
 		assert.strictEqual( ve.resolveUrl( caseItem.href, doc ), caseItem.resolved, caseItem.msg );
 	} );
 } );
 
 QUnit.test( 'resolveAttributes', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			base: 'http://example.com',
 			html: '<div><a href="foo">foo</a></div><a href="bar">bar</a><img src="baz">',
@@ -521,9 +521,9 @@ QUnit.test( 'resolveAttributes', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var doc = ve.createDocumentFromHtml( '' );
+		const doc = ve.createDocumentFromHtml( '' );
 		doc.head.appendChild( $( '<base>', doc ).attr( 'href', caseItem.base )[ 0 ] );
-		var div = document.createElement( 'div' );
+		const div = document.createElement( 'div' );
 		div.innerHTML = caseItem.html;
 		ve.resolveAttributes( div.childNodes, doc, ve.dm.Converter.static.computedAttributes );
 		assert.strictEqual(
@@ -535,7 +535,7 @@ QUnit.test( 'resolveAttributes', ( assert ) => {
 } );
 
 QUnit.test( 'fixBase', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			targetBase: '//example.org/foo',
 			sourceBase: 'https://example.com',
@@ -558,9 +558,9 @@ QUnit.test( 'fixBase', ( assert ) => {
 	];
 
 	cases.forEach( ( caseItem ) => {
-		var targetDoc = ve.createDocumentFromHtml( '' );
-		var sourceDoc = ve.createDocumentFromHtml( '' );
-		var expectedBase = caseItem.fixedBase;
+		const targetDoc = ve.createDocumentFromHtml( '' );
+		const sourceDoc = ve.createDocumentFromHtml( '' );
+		let expectedBase = caseItem.fixedBase;
 		if ( caseItem.targetBase ) {
 			targetDoc.head.appendChild( $( '<base>', targetDoc ).attr( 'href', caseItem.targetBase )[ 0 ] );
 			if ( targetDoc.baseURI ) {
@@ -607,7 +607,7 @@ QUnit.test( 'isBlockElement/isVoidElement', ( assert ) => {
 // TODO: ve.getClusterOffset
 
 QUnit.test( 'graphemeSafeSubstring', ( assert ) => {
-	var text = '12\ud860\udee245\ud860\udee2789\ud860\udee2bc',
+	const text = '12\ud860\udee245\ud860\udee2789\ud860\udee2bc',
 		cases = [
 			{
 				msg: 'start and end inside multibyte',
@@ -650,8 +650,8 @@ QUnit.test( 'graphemeSafeSubstring', ( assert ) => {
 } );
 
 QUnit.test( 'getCommonAncestor', ( assert ) => {
-	var doc = ve.createDocumentFromHtml( '<html><div><p>AA<i><b>BB<img src="#"></b></i>CC</p>DD</div>EE</html>' );
-	var cases = [
+	const doc = ve.createDocumentFromHtml( '<html><div><p>AA<i><b>BB<img src="#"></b></i>CC</p>DD</div>EE</html>' );
+	const cases = [
 		{ nodes: 'b b', ancestor: 'b' },
 		{ nodes: 'b i', ancestor: 'i' },
 		{ nodes: 'textB img', ancestor: 'b' },
@@ -672,7 +672,7 @@ QUnit.test( 'getCommonAncestor', ( assert ) => {
 		{ nodes: 'b unattached', ancestor: 'null' },
 		{ nodes: 'unattached b', ancestor: 'null' }
 	];
-	var nodes = {};
+	const nodes = {};
 	nodes.html = doc.documentElement;
 	nodes.head = doc.head;
 	nodes.body = doc.body;
@@ -693,8 +693,8 @@ QUnit.test( 'getCommonAncestor', ( assert ) => {
 	}
 
 	cases.forEach( ( caseItem ) => {
-		var testNodes = caseItem.nodes.split( /\s+/ ).map( getNode );
-		var ancestorNode = nodes[ caseItem.ancestor ];
+		const testNodes = caseItem.nodes.split( /\s+/ ).map( getNode );
+		const ancestorNode = nodes[ caseItem.ancestor ];
 		assert.strictEqual(
 			ve.getCommonAncestor.apply( null, testNodes ),
 			ancestorNode,
@@ -707,7 +707,7 @@ QUnit.test( 'getCommonAncestor', ( assert ) => {
 } );
 
 QUnit.test( 'getCommonStartSequenceLength', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			sequences: [ [ 0, 1, 2 ], [ 0, 1, 2 ], [ '0', 1, 2 ] ],
 			commonLength: 0,
@@ -758,7 +758,7 @@ QUnit.test( 'adjacentDomPosition', ( assert ) => {
 	// function returns null. The 'path' properties are a list of descent offsets to find a
 	// particular position node from the top-level div. E.g. a path of [ 5, 7 ] refers to the
 	// node div.childNodes[ 5 ].childNodes[ 7 ] .
-	var cases = [
+	const cases = [
 		{
 			title: 'Simple p node',
 			html: '<p>x</p>',
@@ -831,15 +831,15 @@ QUnit.test( 'adjacentDomPosition', ( assert ) => {
 		}
 	];
 
-	var div = document.createElement( 'div' );
+	const div = document.createElement( 'div' );
 	div.contentEditable = 'true';
 
 	for ( var direction in { forward: undefined, backward: undefined } ) {
 		// eslint-disable-next-line no-loop-func
 		cases.forEach( ( caseItem ) => {
 			div.innerHTML = caseItem.html;
-			var offsetPaths = [];
-			var position = {
+			const offsetPaths = [];
+			let position = {
 				node: div,
 				offset: direction === 'backward' ? div.childNodes.length : 0
 			};
@@ -867,14 +867,14 @@ QUnit.test( 'adjacentDomPosition', ( assert ) => {
 } );
 
 QUnit.test( 'deepFreeze', ( assert ) => {
-	var data = [
+	const data = [
 		{ type: 'heading', attributes: { level: 1 } },
 		'F', 'o', 'o',
 		{ type: '/heading' }
 	];
 
-	var originalData = ve.copy( data );
-	var frozen = ve.deepFreeze( data, true );
+	const originalData = ve.copy( data );
+	let frozen = ve.deepFreeze( data, true );
 
 	assert.deepEqual( frozen, originalData, 'Frozen data is equal to original data' );
 	assert.strictEqual( frozen, data, 'Result is same object as input' );
@@ -903,12 +903,12 @@ QUnit.test( 'deepFreeze', ( assert ) => {
 } );
 
 QUnit.test( 'deepFreeze (on cyclic structure)', ( assert ) => {
-	var realFreeze = ve.deepFreeze;
+	const realFreeze = ve.deepFreeze;
 
-	var cyclic = { foo: 'bar' };
+	const cyclic = { foo: 'bar' };
 	cyclic.self = cyclic;
 
-	var count;
+	let count;
 
 	ve.deepFreeze = function () {
 		count++;
@@ -924,7 +924,7 @@ QUnit.test( 'deepFreeze (on cyclic structure)', ( assert ) => {
 } );
 
 QUnit.test( 'deepFreeze (recursive, aliased)', ( assert ) => {
-	var foo = { bar: {} },
+	let foo = { bar: {} },
 		realFreeze = ve.deepFreeze;
 
 	ve.deepFreeze = function ( x ) {
@@ -939,7 +939,7 @@ QUnit.test( 'deepFreeze (recursive, aliased)', ( assert ) => {
 } );
 
 QUnit.test( 've.minimizeRects', ( assert ) => {
-	var cases = [
+	const cases = [
 		{
 			rects: [
 				// left, top, width, height
@@ -995,8 +995,8 @@ QUnit.test( 've.minimizeRects', ( assert ) => {
 		caseItem.rects = caseItem.rects.map( expand );
 		caseItem.expected = caseItem.expected.map( expand );
 
-		var rectsBefore = ve.copy( caseItem.rects );
-		var actual = ve.minimizeRects( caseItem.rects );
+		const rectsBefore = ve.copy( caseItem.rects );
+		const actual = ve.minimizeRects( caseItem.rects );
 		assert.deepEqual( caseItem.rects, rectsBefore, 'Input not modified' );
 		assert.deepEqual( actual, caseItem.expected, 'List minifed' );
 	} );

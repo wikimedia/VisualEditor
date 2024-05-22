@@ -103,7 +103,7 @@ ve.ui.CompletionAction.prototype.getHeaderLabel = function () {
  * @param {ve.Range} range Current surface range
  */
 ve.ui.CompletionAction.prototype.chooseItem = function ( item, range ) {
-	var fragment = this.insertCompletion( item.getData(), range );
+	const fragment = this.insertCompletion( item.getData(), range );
 	fragment.collapseToEnd().select();
 };
 
@@ -185,11 +185,11 @@ ve.ui.CompletionAction.prototype.updateMenuItems = function ( menuItems ) {
 ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggestions, input ) {
 	input = input.trim();
 
-	var normalizedInput = input.toLowerCase().trim();
+	const normalizedInput = input.toLowerCase().trim();
 
-	var exact = false;
+	let exact = false;
 	suggestions = suggestions.filter( ( suggestion ) => {
-		var result = this.compareSuggestionToInput( suggestion, normalizedInput );
+		const result = this.compareSuggestionToInput( suggestion, normalizedInput );
 		exact = exact || result.isExact;
 		return result.isMatch;
 	} );
@@ -211,7 +211,7 @@ ve.ui.CompletionAction.prototype.filterSuggestionsForInput = function ( suggesti
  * @return {Object} Match object, containing two booleans, `isMatch` and `isExact`
  */
 ve.ui.CompletionAction.prototype.compareSuggestionToInput = function ( suggestion, normalizedInput ) {
-	var normalizedSuggestion = suggestion.toLowerCase();
+	const normalizedSuggestion = suggestion.toLowerCase();
 	return {
 		isMatch: normalizedSuggestion.slice( 0, normalizedInput.length ) === normalizedInput,
 		isExact: normalizedSuggestion === normalizedInput

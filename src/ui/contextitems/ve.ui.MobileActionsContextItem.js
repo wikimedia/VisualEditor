@@ -74,13 +74,13 @@ ve.ui.MobileActionsContextItem.static.isCompatibleWith = function ( model ) {
  * Handle copy button click events.
  */
 ve.ui.MobileActionsContextItem.prototype.onCopyButtonClick = function () {
-	var surfaceView = this.context.getSurface().getView();
+	const surfaceView = this.context.getSurface().getView();
 
 	surfaceView.activate();
 	// Force a native selection on mobile
 	surfaceView.preparePasteTargetForCopy( true );
 
-	var copied;
+	let copied;
 	try {
 		copied = document.execCommand( 'copy' );
 	} catch ( e ) {
@@ -106,8 +106,8 @@ ve.ui.MobileActionsContextItem.prototype.onCopyButtonClick = function () {
  * @fires ve.ui.ContextItem#command
  */
 ve.ui.MobileActionsContextItem.prototype.onDeleteButtonClick = function () {
-	var surface = this.context.getSurface();
-	var command = surface.commandRegistry.lookup( 'backspace' );
+	const surface = this.context.getSurface();
+	const command = surface.commandRegistry.lookup( 'backspace' );
 
 	// Use the 'backspace' command as this triggers the KeyDownHandler for the
 	// current selection, e.g. ve.ce.TableDeleteKeyDownHandler will be used to

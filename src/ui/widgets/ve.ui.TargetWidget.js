@@ -121,7 +121,7 @@ ve.ui.TargetWidget.prototype.createTarget = function () {
 ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
 	// Destroy the previous surface
 	this.clear();
-	var surface = this.target.addSurface( doc, {
+	const surface = this.target.addSurface( doc, {
 		inTargetWidget: true,
 		includeCommands: this.includeCommands,
 		excludeCommands: this.excludeCommands,
@@ -161,7 +161,7 @@ ve.ui.TargetWidget.prototype.setDocument = function ( doc ) {
  * @fires ve.ui.TargetWidget#submit
  */
 ve.ui.TargetWidget.prototype.onSurfaceSubmit = function () {
-	var handled = this.emit( 'submit' );
+	const handled = this.emit( 'submit' );
 	if ( !handled && this.inDialog ) {
 		// If we are in a dialog, re-throw a fake keydown event for OO.ui.Dialog#onDialogKeyDown
 		this.$element.parent().trigger( $.Event( 'keydown', {
@@ -177,7 +177,7 @@ ve.ui.TargetWidget.prototype.onSurfaceSubmit = function () {
  * @fires ve.ui.TargetWidget#cancel
  */
 ve.ui.TargetWidget.prototype.onSurfaceCancel = function () {
-	var handled = this.emit( 'cancel' );
+	const handled = this.emit( 'cancel' );
 	if ( !handled && this.inDialog ) {
 		// If we are in a dialog, re-throw a fake keydown event for OO.ui.Dialog#onDialogKeyDown
 		this.$element.parent().trigger( $.Event( 'keydown', {
@@ -268,7 +268,7 @@ ve.ui.TargetWidget.prototype.clear = function () {
  */
 ve.ui.TargetWidget.prototype.onFocusChange = function () {
 	// This may be null if the target is in the process of being destroyed
-	var surface = this.getSurface();
+	const surface = this.getSurface();
 	// Replacement for the :focus pseudo selector one would be able to
 	// use on a regular input widget
 	this.$element.toggleClass(
@@ -281,7 +281,7 @@ ve.ui.TargetWidget.prototype.onFocusChange = function () {
  * Focus the surface.
  */
 ve.ui.TargetWidget.prototype.focus = function () {
-	var surface = this.getSurface();
+	const surface = this.getSurface();
 	if ( surface ) {
 		if ( !surface.getView().attachedRoot.isLive() ) {
 			surface.once( 'ready', () => {

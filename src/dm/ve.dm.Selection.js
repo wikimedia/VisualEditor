@@ -33,8 +33,8 @@ ve.dm.Selection.static.newFromJSON = function ( json ) {
 	if ( ve.dm.Document && arguments[ 0 ] instanceof ve.dm.Document ) {
 		throw new Error( 'Got obsolete ve.dm.Document argument' );
 	}
-	var hash = typeof json === 'string' ? JSON.parse( json ) : json;
-	var constructor = ve.dm.selectionFactory.lookup( hash.type );
+	const hash = typeof json === 'string' ? JSON.parse( json ) : json;
+	const constructor = ve.dm.selectionFactory.lookup( hash.type );
 
 	if ( !constructor ) {
 		throw new Error( 'Unknown selection type ' + hash.name );
@@ -139,8 +139,8 @@ ve.dm.Selection.prototype.translateByTransactionWithAuthor = null;
  * @return {ve.dm.Selection} A new translated selection
  */
 ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInsertion ) {
-	var selection = this;
-	for ( var i = 0, l = txs.length; i < l; i++ ) {
+	let selection = this;
+	for ( let i = 0, l = txs.length; i < l; i++ ) {
 		selection = selection.translateByTransaction( txs[ i ], excludeInsertion );
 	}
 	return selection;
@@ -154,8 +154,8 @@ ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInser
  * @return {ve.dm.Selection} A new translated selection
  */
 ve.dm.Selection.prototype.translateByChange = function ( change, authorId ) {
-	var selection = this;
-	for ( var i = 0, len = change.transactions.length; i < len; i++ ) {
+	let selection = this;
+	for ( let i = 0, len = change.transactions.length; i < len; i++ ) {
 		selection = selection.translateByTransactionWithAuthor(
 			change.transactions[ i ],
 			authorId

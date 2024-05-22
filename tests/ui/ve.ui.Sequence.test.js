@@ -9,7 +9,7 @@ QUnit.module( 've.ui.Sequence' );
 /* Tests */
 
 QUnit.test( 'findAndExecuteSequences', ( assert ) => {
-	var emptyDocData = [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ],
+	const emptyDocData = [ { type: 'paragraph' }, { type: '/paragraph' }, { type: 'internalList' }, { type: '/internalList' } ],
 		cases = [
 			{
 				content: '* ',
@@ -51,8 +51,8 @@ QUnit.test( 'findAndExecuteSequences', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		var view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocumentFromData( emptyDocData ) );
-		var model = view.getModel();
+		const view = ve.test.utils.createSurfaceViewFromDocument( ve.dm.example.createExampleDocumentFromData( emptyDocData ) );
+		const model = view.getModel();
 		model.getLinearFragment( new ve.Range( 1 ) ).insertContent( caseItem.content ).collapseToEnd();
 		view.findAndExecuteSequences();
 		assert.deepEqual(
@@ -60,7 +60,7 @@ QUnit.test( 'findAndExecuteSequences', ( assert ) => {
 			caseItem.expectedData,
 			caseItem.msg + ': data'
 		);
-		var expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.expectedRangeOrSelection );
+		const expectedSelection = ve.test.utils.selectionFromRangeOrSelection( model.getDocument(), caseItem.expectedRangeOrSelection );
 		assert.equalHash(
 			model.getSelection(),
 			expectedSelection,

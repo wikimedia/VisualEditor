@@ -63,7 +63,7 @@ ve.ce.ActiveNode.prototype.onActiveNodeTeardown = function () {
 		return;
 	}
 
-	var surface = this.activeNodeSurface;
+	const surface = this.activeNodeSurface;
 
 	// Events
 	surface.getModel().disconnect( this );
@@ -81,7 +81,7 @@ ve.ce.ActiveNode.prototype.onActiveNodeTeardown = function () {
  * @param {ve.dm.Selection} selection
  */
 ve.ce.ActiveNode.prototype.onActiveNodeSurfaceModelSelect = function ( selection ) {
-	var coveringRange = selection.getCoveringRange(),
+	const coveringRange = selection.getCoveringRange(),
 		surface = this.activeNodeSurface;
 
 	if ( coveringRange && this.model.getRange().containsRange( new ve.Range( coveringRange.from ) ) ) {

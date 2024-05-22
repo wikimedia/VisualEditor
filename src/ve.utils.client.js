@@ -16,7 +16,7 @@ ve.scrollIntoView = OO.ui.Element.static.scrollIntoView.bind( OO.ui.Element.stat
  * @param {HTMLElement} element
  */
 ve.selectElement = function ( element ) {
-	var win = OO.ui.Element.static.getWindow( element ),
+	const win = OO.ui.Element.static.getWindow( element ),
 		nativeRange = win.document.createRange(),
 		nativeSelection = win.getSelection();
 	nativeRange.setStart( element, 0 );
@@ -44,7 +44,7 @@ ve.supportsSelectionExtend = !!window.getSelection().extend;
  * @return {Object} Translated rect
  */
 ve.translateRect = function ( rect, x, y ) {
-	var translatedRect = {};
+	const translatedRect = {};
 	if ( rect.top !== undefined ) {
 		translatedRect.top = rect.top + y;
 	}
@@ -78,8 +78,8 @@ ve.getStartAndEndRects = function ( rects ) {
 	if ( !rects || !rects.length ) {
 		return null;
 	}
-	var startRect, endRect;
-	for ( var i = 0, l = rects.length; i < l; i++ ) {
+	let startRect, endRect;
+	for ( let i = 0, l = rects.length; i < l; i++ ) {
 		if ( !startRect || rects[ i ].top < startRect.top ) {
 			// Use ve.extendObject as ve.copy copies non-plain objects by reference
 			startRect = ve.extendObject( {}, rects[ i ] );
@@ -127,7 +127,7 @@ ve.minimizeRects = function ( rects, allowedErrorOffset ) {
 	}
 
 	function merge( rect1, rect2 ) {
-		var rect = {
+		const rect = {
 			top: Math.min( rect1.top, rect2.top ),
 			left: Math.min( rect1.left, rect2.left ),
 			bottom: Math.max( rect1.bottom, rect2.bottom ),
@@ -142,10 +142,10 @@ ve.minimizeRects = function ( rects, allowedErrorOffset ) {
 		return Math.abs( a - b ) < allowedErrorOffset;
 	}
 
-	var minimalRects = [];
+	const minimalRects = [];
 	rects.forEach( ( rect ) => {
-		var keep = true;
-		for ( var i = 0, il = minimalRects.length; i < il; i++ ) {
+		let keep = true;
+		for ( let i = 0, il = minimalRects.length; i < il; i++ ) {
 			// This rect is contained by an existing rect, discard
 			if ( contains( minimalRects[ i ], rect ) ) {
 				keep = false;
@@ -225,11 +225,11 @@ ve.isUnmodifiedLeftClick = function ( e ) {
  * @return {boolean} Whether multiple clipboardData item formats are supported
  */
 ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
-	var cacheKey = customTypes ? 'cachedCustom' : 'cached';
+	const cacheKey = customTypes ? 'cachedCustom' : 'cached';
 
 	if ( ve.isClipboardDataFormatsSupported[ cacheKey ] === undefined ) {
-		var profile = $.client.profile();
-		var clipboardData = e.originalEvent.clipboardData || e.originalEvent.dataTransfer;
+		const profile = $.client.profile();
+		const clipboardData = e.originalEvent.clipboardData || e.originalEvent.dataTransfer;
 		ve.isClipboardDataFormatsSupported[ cacheKey ] = !!(
 			clipboardData &&
 			( !customTypes || profile.name !== 'edge' ) && (
@@ -255,7 +255,7 @@ ve.isClipboardDataFormatsSupported = function ( e, customTypes ) {
  * @param {Selection} selection Native selection
  */
 ve.fixSelectionNodes = function ( selection ) {
-	var profile = $.client.profile();
+	const profile = $.client.profile();
 
 	if ( profile.layout !== 'gecko' ) {
 		return;
@@ -264,7 +264,7 @@ ve.fixSelectionNodes = function ( selection ) {
 	function fixNodeProperty( prop ) {
 		Object.defineProperty( selection, prop, {
 			get: function () {
-				var node = Object.getOwnPropertyDescriptor( Selection.prototype, prop ).get.call( this );
+				const node = Object.getOwnPropertyDescriptor( Selection.prototype, prop ).get.call( this );
 				try {
 					// Try to read a property out of node if it not null
 					// Throws an exception in FF
@@ -296,7 +296,7 @@ ve.fixSelectionNodes = function ( selection ) {
  */
 ve.safeDecodeEntities = function ( html ) {
 	// Decode HTML entities, safely (no elements permitted inside textarea)
-	var textarea = document.createElement( 'textarea' );
+	const textarea = document.createElement( 'textarea' );
 	textarea.innerHTML = html;
 	return textarea.textContent;
 };

@@ -12,7 +12,7 @@
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
-	var container = this;
+	const container = this;
 
 	// Parent constructor
 	ve.demo.SurfaceContainer.super.call( this );
@@ -22,16 +22,16 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	ve.demo.surfaceContainers.push( this );
 
-	var pageDropdown = new OO.ui.DropdownWidget( {
+	const pageDropdown = new OO.ui.DropdownWidget( {
 		menu: {
 			items: this.getPageMenuItems()
 		}
 	} );
-	var pageLabel = new OO.ui.LabelWidget( {
+	const pageLabel = new OO.ui.LabelWidget( {
 		label: 'Page',
 		input: pageDropdown
 	} );
-	var removeButton = new OO.ui.ButtonWidget( {
+	const removeButton = new OO.ui.ButtonWidget( {
 		icon: 'trash',
 		label: 'Remove surface'
 	} );
@@ -39,10 +39,10 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		label: 'Auto-save',
 		value: !!ve.init.platform.sessionStorage.getObject( 've-docstate' )
 	} );
-	var saveButton = new OO.ui.ButtonWidget( {
+	const saveButton = new OO.ui.ButtonWidget( {
 		label: 'Save HTML'
 	} );
-	var diffButton = new OO.ui.ButtonWidget( {
+	const diffButton = new OO.ui.ButtonWidget( {
 		label: 'Show changes'
 	} );
 	this.readOnlyToggle = new OO.ui.ToggleButtonWidget( {
@@ -52,7 +52,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		label: 'Null selection on blur',
 		value: true
 	} );
-	var $exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', function () {
+	const $exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', function () {
 		container.modeSelect.selectItemByData( 'visual' );
 		return false;
 	} );
@@ -93,7 +93,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 	removeButton.on( 'click', this.destroy.bind( this ) );
 	saveButton.on( 'click', this.save.bind( this ) );
 	diffButton.on( 'click', function () {
-		var windowAction = ve.ui.actionFactory.create( 'window', container.surface );
+		const windowAction = ve.ui.actionFactory.create( 'window', container.surface );
 		windowAction.open( 'diff', {
 			oldDoc: container.oldDoc,
 			newDoc: container.surface.model.documentModel
@@ -106,7 +106,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		container.surface.nullSelectionOnBlur = val;
 	} );
 
-	var $divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' );
+	const $divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' );
 	this.$element.addClass( 've-demo-surfaceContainer' ).append(
 		$( '<div>' ).addClass( 've-demo-toolbar ve-demo-surfaceToolbar-edit' ).append(
 			$( '<div>' ).addClass( 've-demo-toolbar-commands' ).append(
@@ -154,7 +154,7 @@ OO.mixinClass( ve.demo.SurfaceContainer, OO.EventEmitter );
  * @return {OO.ui.MenuOptionWidget[]} Menu items
  */
 ve.demo.SurfaceContainer.prototype.getPageMenuItems = function () {
-	var items = ve.demoPages.map( function ( name ) {
+	const items = ve.demoPages.map( function ( name ) {
 		return new OO.ui.MenuOptionWidget( {
 			data: name,
 			label: name
@@ -182,10 +182,10 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 		return ve.createDeferred().resolve().promise();
 	}
 
-	var container = this,
+	let container = this,
 		currentDir = 'ltr';
 
-	var closePromise, html;
+	let closePromise, html;
 	switch ( this.mode ) {
 		case 'visual':
 		case 'source':
@@ -211,7 +211,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 	}
 
 	return closePromise.done( function () {
-		var isRead = mode === 'read',
+		const isRead = mode === 'read',
 			otherDir = currentDir === 'ltr' ? 'rtl' : 'ltr',
 			$editStylesheets = $( 'link[rel~=stylesheet]:not(.stylesheet-read):not(.stylesheet-' + otherDir + ')' );
 
@@ -254,7 +254,7 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
  * @param {string} mode Edit mode
  */
 ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
-	var container = this;
+	const container = this;
 
 	this.page = page;
 
@@ -263,7 +263,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
 	ve.init.platform.getInitializedPromise().done( function () {
 		// eslint-disable-next-line no-jquery/no-slide
 		( container.surface ? container.surface.$element.slideUp().promise() : ve.createDeferred().resolve().promise() ).done( function () {
-			var localMatch = page.match( /^localStorage\/(.+)$/ );
+			const localMatch = page.match( /^localStorage\/(.+)$/ );
 			if ( localMatch ) {
 				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
 				return;
@@ -272,7 +272,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
 				url: 'pages/' + page + '.html',
 				dataType: 'text'
 			} ).always( function ( result, status ) {
-				var pageHtml;
+				let pageHtml;
 
 				if ( status === 'error' ) {
 					pageHtml = '<p><i>Failed loading page ' + $( '<span>' ).text( page ).html() + '</i></p>';
@@ -293,7 +293,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
  * @param {string} mode Edit mode
  */
 ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
-	var restored = false,
+	let restored = false,
 		container = this;
 
 	if ( this.surface ) {
@@ -301,7 +301,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	}
 
 	if ( this.autosaveToggle.getValue() ) {
-		var state = ve.init.platform.sessionStorage.getObject( 've-docstate' );
+		const state = ve.init.platform.sessionStorage.getObject( 've-docstate' );
 
 		if ( state && state.page === this.page ) {
 			pageHtml = ve.init.platform.sessionStorage.get( 've-dochtml' );
@@ -323,7 +323,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	this.surface.setReadOnly( this.readOnlyToggle.getValue() );
 	this.surface.nullSelectionOnBlur = this.nullSelectionOnBlurToggle.getValue();
 
-	var surfaceModel = this.surface.getModel();
+	const surfaceModel = this.surface.getModel();
 	this.oldDoc = surfaceModel.getDocument().cloneFromRange();
 	if ( this.autosaveToggle.getValue() ) {
 		if ( restored ) {
@@ -363,7 +363,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer.prototype.reload = function ( lang, dir ) {
-	var container = this;
+	const container = this;
 
 	this.lang = lang;
 	this.dir = dir;
@@ -377,7 +377,7 @@ ve.demo.SurfaceContainer.prototype.reload = function ( lang, dir ) {
  * Destroy the container
  */
 ve.demo.SurfaceContainer.prototype.destroy = function () {
-	var container = this;
+	const container = this;
 	// eslint-disable-next-line no-jquery/no-slide
 	this.$element.slideUp().promise().done( function () {
 		if ( container.surface ) {
@@ -393,7 +393,7 @@ ve.demo.SurfaceContainer.prototype.destroy = function () {
  * Save the current contents of the surface for later reloading
  */
 ve.demo.SurfaceContainer.prototype.save = function () {
-	var html;
+	let html;
 	switch ( this.mode ) {
 		case 'visual':
 		case 'source':

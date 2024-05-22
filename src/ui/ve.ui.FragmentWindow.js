@@ -93,7 +93,7 @@ ve.ui.FragmentWindow.prototype.getTeardownProcess = function ( data, process ) {
  * @return {boolean} Fragment's surface is readOnly
  */
 ve.ui.FragmentWindow.prototype.isReadOnly = function () {
-	var fragment = this.getFragment(),
+	const fragment = this.getFragment(),
 		surface = fragment && fragment.getSurface();
 
 	return surface && surface.isReadOnly();

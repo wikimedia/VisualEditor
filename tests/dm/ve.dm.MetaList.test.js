@@ -16,16 +16,16 @@ QUnit.module( 've.dm.MetaList' );
  * @param {string} msg The message
  */
 ve.test.utils.validateMetaListCache = function ( assert, metaList, msg ) {
-	var oldList = metaList.getItems();
-	var newList = [];
+	const oldList = metaList.getItems();
+	const newList = [];
 	// Populate a current list of items
 	metaList.doc.documentNode.traverse( ( node ) => {
 		if ( node instanceof ve.dm.MetaItem ) {
 			newList.push( node );
 		}
 	} );
-	var match = true;
-	for ( var i = 0, len = newList.length; i < len; i++ ) {
+	let match = true;
+	for ( let i = 0, len = newList.length; i < len; i++ ) {
 		if ( newList[ i ] !== oldList[ i ] ) {
 			match = false;
 			break;
@@ -35,7 +35,7 @@ ve.test.utils.validateMetaListCache = function ( assert, metaList, msg ) {
 };
 
 QUnit.test( 'constructor/getItems/getItemsInGroup/indexOf', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+	const doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		list = doc.getMetaList();
 
 	ve.test.utils.validateMetaListCache( assert, list, 'Constructor' );
@@ -49,7 +49,7 @@ QUnit.test( 'constructor/getItems/getItemsInGroup/indexOf', ( assert ) => {
 } );
 
 QUnit.test( 'onNodeAttached/onNodeDetached', ( assert ) => {
-	var doc = ve.dm.example.createExampleDocument( 'withMeta' ),
+	let doc = ve.dm.example.createExampleDocument( 'withMeta' ),
 		heading = { type: 'heading', attributes: { level: 2 } },
 		cases = [
 			{
@@ -83,14 +83,14 @@ QUnit.test( 'onNodeAttached/onNodeDetached', ( assert ) => {
 		];
 
 	cases.forEach( ( caseItem ) => {
-		var txBuilder = new ve.dm.TransactionBuilder();
-		for ( var j = 0; j < caseItem.calls.length; j++ ) {
+		const txBuilder = new ve.dm.TransactionBuilder();
+		for ( let j = 0; j < caseItem.calls.length; j++ ) {
 			txBuilder[ caseItem.calls[ j ][ 0 ] ].apply( txBuilder, caseItem.calls[ j ].slice( 1 ) );
 		}
-		var tx = txBuilder.getTransaction();
+		const tx = txBuilder.getTransaction();
 		doc = ve.dm.example.createExampleDocument( 'withMeta' );
-		var list = doc.getMetaList();
-		var surface = new ve.dm.Surface( doc );
+		const list = doc.getMetaList();
+		const surface = new ve.dm.Surface( doc );
 		// Test both the transaction-via-surface and transaction-via-document flows
 		surface.change( tx );
 		ve.test.utils.validateMetaListCache( assert, list, caseItem.msg );

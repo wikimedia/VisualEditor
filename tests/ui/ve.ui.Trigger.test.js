@@ -13,7 +13,7 @@ QUnit.test( 'constructor', ( assert ) => {
 		return $.Event( 'keydown', options );
 	}
 
-	var cases = [
+	const cases = [
 		{
 			trigger: 'ctrl+b',
 			event: event( { ctrlKey: true, which: 66 } )

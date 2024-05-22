@@ -53,7 +53,7 @@ ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
  * @return {boolean} Elements are comparable
  */
 ve.dm.ElementLinearData.static.compareElementsUnannotated = function ( a, b ) {
-	var aPlain = a,
+	let aPlain = a,
 		bPlain = b;
 
 	if ( a === b ) {
@@ -115,7 +115,7 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 		return true;
 	}
 
-	var typeofA = typeof a;
+	const typeofA = typeof a;
 
 	if ( typeofA !== typeof b ) {
 		// Different types
@@ -128,7 +128,7 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 	if ( !this.compareElementsUnannotated( a, b ) ) {
 		return false;
 	}
-	var aAnnotations, bAnnotations;
+	let aAnnotations, bAnnotations;
 	// Elements are equal without annotations, now compare annotations:
 	if ( Array.isArray( a ) ) {
 		aAnnotations = a[ 1 ];
@@ -143,8 +143,8 @@ ve.dm.ElementLinearData.static.compareElements = function ( a, b, aStore, bStore
 		bAnnotations = b.annotations;
 	}
 
-	var aSet = new ve.dm.AnnotationSet( aStore, aAnnotations || [] );
-	var bSet = new ve.dm.AnnotationSet( bStore || aStore, bAnnotations || [] );
+	const aSet = new ve.dm.AnnotationSet( aStore, aAnnotations || [] );
+	const bSet = new ve.dm.AnnotationSet( bStore || aStore, bAnnotations || [] );
 
 	return aSet.compareTo( bSet );
 };
@@ -177,7 +177,7 @@ ve.dm.ElementLinearData.static.getAnnotationHashesFromItem = function ( item ) {
  * @return {string|Array|Object} Deep-copied, modified item
  */
 ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem = function ( item, hashes ) {
-	var isElement = ve.dm.LinearData.static.isElementData( item );
+	const isElement = ve.dm.LinearData.static.isElementData( item );
 	item = ve.copy( item );
 	hashes = hashes.slice();
 	if ( hashes.length > 0 ) {
@@ -186,7 +186,7 @@ ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem = function ( item,
 			item.annotations = hashes;
 		} else {
 			// New character annotation
-			var character = ve.dm.ElementLinearData.static.getCharacterDataFromItem( item );
+			const character = ve.dm.ElementLinearData.static.getCharacterDataFromItem( item );
 			item = [ character, hashes ];
 		}
 	} else {
@@ -208,7 +208,7 @@ ve.dm.ElementLinearData.static.replaceAnnotationHashesForItem = function ( item,
  * @return {string} Character data, or '' if no character data
  */
 ve.dm.ElementLinearData.static.getCharacterDataFromItem = function ( item ) {
-	var data = Array.isArray( item ) ? item[ 0 ] : item;
+	const data = Array.isArray( item ) ? item[ 0 ] : item;
 	return typeof data === 'string' ? data : '';
 };
 
@@ -237,9 +237,9 @@ ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
 	if ( offset === 0 || offset === this.getLength() ) {
 		return false;
 	}
-	var left = this.getData( offset - 1 );
-	var right = this.getData( offset );
-	var factory = ve.dm.nodeFactory;
+	const left = this.getData( offset - 1 );
+	const right = this.getData( offset );
+	const factory = ve.dm.nodeFactory;
 	return (
 		// Data exists at offsets
 		( left !== undefined && right !== undefined ) &&
@@ -323,9 +323,9 @@ ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrest
 		return true;
 	}
 	// Offsets must be within range and both sides must be elements
-	var left = this.getData( offset - 1 );
-	var right = this.getData( offset );
-	var factory = ve.dm.nodeFactory;
+	const left = this.getData( offset - 1 );
+	const right = this.getData( offset );
+	const factory = ve.dm.nodeFactory;
 	return (
 		(
 			left !== undefined &&
@@ -399,9 +399,9 @@ ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrest
  * @return {boolean} True if all elements in data are content elements
  */
 ve.dm.ElementLinearData.prototype.isContentData = function () {
-	var i = this.getLength();
+	let i = this.getLength();
 	while ( i-- ) {
-		var item = this.getData( i );
+		const item = this.getData( i );
 		if ( item.type !== undefined &&
 			item.type.charAt( 0 ) !== '/' &&
 			!ve.dm.nodeFactory.isNodeContent( item.type )
@@ -425,7 +425,7 @@ ve.dm.ElementLinearData.prototype.canTakeAnnotationAtOffset = function ( offset,
 		if ( ignoreClose && this.isCloseElementData( offset ) ) {
 			return false;
 		}
-		var type = this.getType( offset );
+		const type = this.getType( offset );
 		// Structural nodes are never annotatable
 		// Disallowed annotations can't be set
 		return ve.dm.nodeFactory.isNodeContent( type ) && ve.dm.nodeFactory.canNodeTakeAnnotation( type, annotation );
@@ -461,7 +461,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationHashesFromOffset = function ( off
 		}
 	}
 
-	var item = this.getData( offset );
+	const item = this.getData( offset );
 	return this.constructor.static.getAnnotationHashesFromItem( item ) || [];
 };
 
@@ -500,7 +500,7 @@ ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset = function ( offset, an
  * @param {string[]} hashes Annotations' store hashes
  */
 ve.dm.ElementLinearData.prototype.setAnnotationHashesAtOffset = function ( offset, hashes ) {
-	var item = this.getData( offset );
+	let item = this.getData( offset );
 	item = this.constructor.static.replaceAnnotationHashesForItem( item, hashes );
 	this.setData( offset, item );
 };
@@ -540,7 +540,7 @@ ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key,
  * @return {string} Character data
  */
 ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
-	var item = this.getData( offset );
+	const item = this.getData( offset );
 	return ve.dm.ElementLinearData.static.getCharacterDataFromItem( item );
 };
 
@@ -552,7 +552,7 @@ ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
  * @return {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
  */
 ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
-	var start = offset,
+	let start = offset,
 		end = offset;
 	if ( this.getAnnotationsFromOffset( offset ).contains( annotation ) === false ) {
 		return null;
@@ -581,7 +581,7 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offse
  * @return {ve.Range|null} Range of content covered by annotation, or a copy of the range
  */
 ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
-	var start = range.start,
+	let start = range.start,
 		end = range.end;
 	while ( start > 0 ) {
 		start--;
@@ -609,10 +609,10 @@ ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( ra
  * @return {ve.dm.AnnotationSet|null} All annotation objects range is covered by.
  */
 ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, all, nullIfContentEmpty ) {
-	var ignoreChildrenDepth = 0;
-	var left, right;
+	let ignoreChildrenDepth = 0;
+	let left, right;
 	// Iterator over the range, looking for annotations, starting at the 2nd character
-	for ( var i = range.start; i < range.end; i++ ) {
+	for ( let i = range.start; i < range.end; i++ ) {
 		if ( this.isElementData( i ) ) {
 			if ( ve.dm.nodeFactory.shouldIgnoreChildren( this.getType( i ) ) ) {
 				ignoreChildrenDepth += this.isOpenElementData( i ) ? 1 : -1;
@@ -668,7 +668,7 @@ ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, al
  * @return {ve.dm.AnnotationSet} The insertion annotations that should apply
  */
 ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( range, startAfterAnnotations ) {
-	var start;
+	let start;
 	// Get position for start annotations
 	if ( range.isCollapsed() && !startAfterAnnotations ) {
 		// Use the position just before the cursor
@@ -679,7 +679,7 @@ ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( 
 		start = range.start;
 	}
 
-	var startAnnotations;
+	let startAnnotations;
 	// Get startAnnotations: the annotations that apply at the selection start
 	if ( this.isContentOffset( start ) ) {
 		startAnnotations = this.getAnnotationsFromOffset( start );
@@ -687,7 +687,7 @@ ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( 
 		startAnnotations = new ve.dm.AnnotationSet( this.getStore() );
 	}
 
-	var afterAnnotations;
+	let afterAnnotations;
 	// Get afterAnnotations: the annotations that apply straight after the selection
 	if ( this.isContentOffset( range.end ) ) {
 		afterAnnotations = this.getAnnotationsFromOffset( range.end );
@@ -709,7 +709,7 @@ ve.dm.ElementLinearData.prototype.getInsertionAnnotationsFromRange = function ( 
  * @return {boolean} The range contains at least one annotation
  */
 ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
-	for ( var i = range.start; i < range.end; i++ ) {
+	for ( let i = range.start; i < range.end; i++ ) {
 		if ( this.getAnnotationHashesFromOffset( i, true ).length ) {
 			return true;
 		}
@@ -724,7 +724,7 @@ ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
  * @return {Object} Trimmed range
  */
 ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
-	var start = range.start,
+	let start = range.start,
 		end = range.end;
 	while ( /^\s+$/.test( this.getCharacterData( end - 1 ) ) ) {
 		end--;
@@ -748,12 +748,12 @@ ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
 ve.dm.ElementLinearData.prototype.isPlainText = function ( range, ignoreNonContentNodes, ignoredTypes, ignoreCoveringAnnotations, ignoreAllAnnotations ) {
 	range = range || new ve.Range( 0, this.getLength() );
 
-	var annotations;
+	let annotations;
 	if ( ignoreCoveringAnnotations ) {
 		annotations = this.getAnnotationsFromRange( range );
 	}
 
-	for ( var i = range.start; i < range.end; i++ ) {
+	for ( let i = range.start; i < range.end; i++ ) {
 		if ( typeof this.data[ i ] === 'string' ) {
 			// Un-annotated text
 			continue;
@@ -770,7 +770,7 @@ ve.dm.ElementLinearData.prototype.isPlainText = function ( range, ignoreNonConte
 			}
 		} else if ( ignoreNonContentNodes || ignoredTypes ) {
 			// Element data
-			var type = this.getType( i );
+			const type = this.getType( i );
 			if ( ignoredTypes && ignoredTypes.indexOf( type ) !== -1 ) {
 				continue;
 			}
@@ -793,8 +793,8 @@ ve.dm.ElementLinearData.prototype.isPlainText = function ( range, ignoreNonConte
  *   replaced with U+FFFC).
  */
 ve.dm.ElementLinearData.prototype.forEachRunOfContent = function ( range, callback ) {
-	var text = '';
-	for ( var i = range.start; i < range.end; i++ ) {
+	let text = '';
+	for ( let i = range.start; i < range.end; i++ ) {
 		if ( !this.isElementData( i ) ) {
 			text += this.getCharacterData( i );
 		} else if ( ve.dm.nodeFactory.isNodeContent( this.getType( i ) ) ) {
@@ -821,8 +821,8 @@ ve.dm.ElementLinearData.prototype.forEachRunOfContent = function ( range, callba
 ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) {
 	range = range || new ve.Range( 0, this.getLength() );
 
-	var text = '';
-	for ( var i = range.start; i < range.end; i++ ) {
+	let text = '';
+	for ( let i = range.start; i < range.end; i++ ) {
 		if ( !this.isElementData( i ) ) {
 			text += this.getCharacterData( i );
 		} else if ( maintainIndices ) {
@@ -880,7 +880,7 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 		}
 	}
 	// Initial values
-	var direction = (
+	let direction = (
 		offset <= 0 ? 1 : (
 			offset >= this.getLength() ? -1 : (
 				distance > 0 ? 1 : -1
@@ -888,23 +888,23 @@ ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distanc
 		)
 	);
 	distance = Math.abs( distance );
-	var start = offset;
-	var i = start + direction;
+	const start = offset;
+	let i = start + direction;
 	offset = -1;
-	var steps = 0;
-	var ignoreChildrenDepth = 0;
-	var turnedAround = false;
+	let steps = 0;
+	let ignoreChildrenDepth = 0;
+	let turnedAround = false;
 	// Iteration
 	while ( i >= 0 && i <= this.getLength() ) {
 		// Detect when the search for a valid offset enters a node whose children should be
 		// ignored, and don't return an offset inside such a node. This clearly won't work
 		// if you start inside such a node, but you shouldn't be doing that to being with
-		var dataOffset = i + ( direction > 0 ? -1 : 0 );
+		const dataOffset = i + ( direction > 0 ? -1 : 0 );
 		if (
 			this.isElementData( dataOffset ) &&
 			ve.dm.nodeFactory.shouldIgnoreChildren( this.getType( dataOffset ) )
 		) {
-			var isOpen = this.isOpenElementData( dataOffset );
+			const isOpen = this.isOpenElementData( dataOffset );
 			// We have entered a node if we step right over an open, or left over a close.
 			// Otherwise we have left a node
 			if ( ( direction > 0 && isOpen ) || ( direction < 0 && !isOpen ) ) {
@@ -981,8 +981,8 @@ ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, d
 		return offset;
 	}
 	if ( direction === undefined ) {
-		var left = this.getRelativeContentOffset( offset, -1 );
-		var right = this.getRelativeContentOffset( offset, 1 );
+		const left = this.getRelativeContentOffset( offset, -1 );
+		const right = this.getRelativeContentOffset( offset, 1 );
 		return offset - left < right - offset ? left : right;
 	} else {
 		return this.getRelativeContentOffset( offset, direction > 0 ? 1 : -1 );
@@ -1029,8 +1029,8 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
 		return offset;
 	}
 	if ( !direction ) {
-		var left = this.getRelativeStructuralOffset( offset, -1, unrestricted );
-		var right = this.getRelativeStructuralOffset( offset, 1, unrestricted );
+		const left = this.getRelativeStructuralOffset( offset, -1, unrestricted );
+		const right = this.getRelativeStructuralOffset( offset, 1, unrestricted );
 		return offset - left < right - offset ? left : right;
 	} else {
 		return this.getRelativeStructuralOffset( offset, direction > 0 ? 1 : -1, unrestricted );
@@ -1050,11 +1050,11 @@ ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset
  * @return {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
  */
 ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
-	var dataString = new ve.dm.DataString( this.getData() );
+	const dataString = new ve.dm.DataString( this.getData() );
 
 	offset = this.getNearestContentOffset( offset );
 
-	var range;
+	let range;
 	if ( unicodeJS.wordbreak.isBreak( dataString, offset ) ) {
 		// The cursor offset is not inside a word. See if there is an adjacent word
 		// codepoint (checking two chars to allow surrogate pairs). If so, expand in that
@@ -1106,18 +1106,18 @@ ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
  * @return {Object} Object containing all store values, keyed by store hash
  */
 ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
-	var store = this.getStore(),
+	const store = this.getStore(),
 		valueStore = {};
 
 	range = range || new ve.Range( 0, this.data.length );
 
-	for ( var i = range.start; i < range.end; i++ ) {
+	for ( let i = range.start; i < range.end; i++ ) {
 		// Annotations
 		// Use ignoreClose to save time; no need to count every element annotation twice
-		var hashes = this.getAnnotationHashesFromOffset( i, true );
-		var j = hashes.length;
+		const hashes = this.getAnnotationHashesFromOffset( i, true );
+		let j = hashes.length;
 		while ( j-- ) {
-			var hash = hashes[ j ];
+			const hash = hashes[ j ];
 			if ( !Object.prototype.hasOwnProperty.call( valueStore, hash ) ) {
 				valueStore[ hash ] = store.value( hash );
 			}
@@ -1139,7 +1139,7 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
  *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
  */
 ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping, internalList ) {
-	for ( var i = 0, ilen = this.data.length; i < ilen; i++ ) {
+	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
 			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			// eslint-disable-next-line no-loop-func
@@ -1158,7 +1158,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping,
  * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
  */
 ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalList ) {
-	for ( var i = 0, ilen = this.data.length; i < ilen; i++ ) {
+	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
 			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			// eslint-disable-next-line no-loop-func
@@ -1177,7 +1177,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalLis
  */
 ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newHash ) {
 	function remap( annotations ) {
-		var spliceAt;
+		let spliceAt;
 		while ( ( spliceAt = annotations.indexOf( oldHash ) ) !== -1 ) {
 			if ( annotations.indexOf( newHash ) === -1 ) {
 				annotations.splice( spliceAt, 1, newHash );
@@ -1186,7 +1186,7 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
 			}
 		}
 	}
-	for ( var i = 0, ilen = this.data.length; i < ilen; i++ ) {
+	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.data[ i ] === undefined || typeof this.data[ i ] === 'string' ) {
 			// Common case, cheap, avoid the isArray check
 			continue;
@@ -1198,8 +1198,8 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
 					remap( item.annotations );
 				}
 				if ( ve.getProp( item, 'internal', 'metaItems' ) ) {
-					var data = ve.getProp( item, 'internal', 'metaItems' );
-					for ( var j = 0, jlen = data.length; j < jlen; j++ ) {
+					const data = ve.getProp( item, 'internal', 'metaItems' );
+					for ( let j = 0, jlen = data.length; j < jlen; j++ ) {
 						if ( data[ j ].annotations !== undefined ) {
 							remap( data[ j ].annotations );
 						}
@@ -1226,27 +1226,27 @@ ve.dm.ElementLinearData.prototype.remapAnnotationHash = function ( oldHash, newH
  * @param {boolean} [rules.allowMetaData] Don't strip metadata
  */
 ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
-	var elementStack = [],
+	const elementStack = [],
 		store = this.getStore(),
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
-	var i, len;
-	var emptySet, setToRemove;
+	let i, len;
+	let emptySet, setToRemove;
 	if ( rules.plainText ) {
 		emptySet = new ve.dm.AnnotationSet( store );
 	} else {
 		if ( rules.removeOriginalDomElements ) {
 			// Remove originalDomElements from annotations
 			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
-				var ann = allAnnotations.get( i );
+				const ann = allAnnotations.get( i );
 				if ( ann.element.originalDomElementsHash !== undefined ) {
 					// This changes the hash of the value, so we have to
 					// update that. If we don't do this, other assumptions
 					// that values fetched from the store are actually in the
 					// store will fail.
-					var oldHash = store.hashOfValue( ann );
+					const oldHash = store.hashOfValue( ann );
 					delete allAnnotations.get( i ).element.originalDomElementsHash;
-					var newHash = store.replaceHash( oldHash, ann );
+					const newHash = store.replaceHash( oldHash, ann );
 					this.remapAnnotationHash( oldHash, newHash );
 					if ( allAnnotations.storeHashes.indexOf( newHash ) !== -1 ) {
 						// New annotation-value was already in the set, which
@@ -1270,11 +1270,11 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 		) );
 	}
 
-	var contentElement;
+	let contentElement;
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isElementData( i ) ) {
 			var type = this.getType( i );
-			var canContainContent = ve.dm.nodeFactory.canNodeContainContent( type );
+			const canContainContent = ve.dm.nodeFactory.canNodeContainContent( type );
 			var isOpen = this.isOpenElementData( i );
 
 			if ( isOpen ) {
@@ -1355,7 +1355,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 
 			if ( canContainContent && !isOpen && rules.singleLine ) {
 				i++;
-				var start = i;
+				const start = i;
 				while ( i < len && !( this.isOpenElementData( i ) && this.getType( i ) === 'internalList' ) ) {
 					i++;
 				}
@@ -1419,7 +1419,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 				}
 			}
 		}
-		var annotations = this.getAnnotationsFromOffset( i, true );
+		const annotations = this.getAnnotationsFromOffset( i, true );
 		if ( !annotations.isEmpty() ) {
 			if ( rules.plainText ) {
 				this.setAnnotationsAtOffset( i, emptySet );
@@ -1462,10 +1462,10 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
  * @param {boolean} preserveGenerated Preserve internal.generated properties of elements
  */
 ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated ) {
-	var store = this.getStore();
-	for ( var i = 0, len = this.getLength(); i < len; i++ ) {
+	const store = this.getStore();
+	for ( let i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
-			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
+			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			if ( nodeClass ) {
 				this.setData( i, nodeClass.static.cloneElement( this.getData( i ), store, preserveGenerated ) );
 			}
@@ -1480,10 +1480,10 @@ ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated )
  * @return {number} Number of elements that aren't in an internalList
  */
 ve.dm.ElementLinearData.prototype.countNonInternalElements = function ( limit ) {
-	var internalDepth = 0,
+	let internalDepth = 0,
 		count = 0;
-	for ( var i = 0, l = this.getLength(); i < l; i++ ) {
-		var type = this.getType( i );
+	for ( let i = 0, l = this.getLength(); i < l; i++ ) {
+		const type = this.getType( i );
 		if ( type && ve.dm.nodeFactory.isNodeInternal( type ) ) {
 			if ( this.isOpenElementData( i ) ) {
 				internalDepth++;
@@ -1525,8 +1525,8 @@ ve.dm.ElementLinearData.prototype.hasContent = function () {
  * @return {number} Common start sequence length (0 if the range is empty)
  */
 ve.dm.ElementLinearData.prototype.getCommonAnnotationArrayLength = function ( range ) {
-	var annotationHashesForOffset = [];
-	for ( var i = range.start; i < range.end; i++ ) {
+	const annotationHashesForOffset = [];
+	for ( let i = range.start; i < range.end; i++ ) {
 		annotationHashesForOffset.push( this.getAnnotationHashesFromOffset( i ) );
 	}
 	return ve.getCommonStartSequenceLength( annotationHashesForOffset );

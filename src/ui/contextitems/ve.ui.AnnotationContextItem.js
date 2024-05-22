@@ -86,7 +86,7 @@ ve.ui.AnnotationContextItem.prototype.onClearButtonClick = function () {
  * @param  {Function} callback Callback, will be passed fragment and annotation
  */
 ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback ) {
-	var modelClasses = this.constructor.static.modelClasses,
+	let modelClasses = this.constructor.static.modelClasses,
 		fragment = this.getFragment(),
 		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => ve.isInstanceOfAny( annotation, modelClasses ) ).get();
 	if (
@@ -99,7 +99,7 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
 
 		annotations = fragment.getAnnotations( true ).filter( ( annotation ) => ve.isInstanceOfAny( annotation, modelClasses ) ).get();
 	}
-	for ( var i = 0, len = annotations.length; i < len; i++ ) {
+	for ( let i = 0, len = annotations.length; i < len; i++ ) {
 		callback( fragment.expandLinearSelection( 'annotation', annotations[ i ] ), annotations[ i ] );
 	}
 };
@@ -113,7 +113,7 @@ ve.ui.AnnotationContextItem.prototype.applyToAnnotations = function ( callback )
  * @return {ve.ce.Annotation|undefined} The annotation view, if it's found, or undefined if not
  */
 ve.ui.AnnotationContextItem.prototype.getAnnotationView = function () {
-	var annotations = [],
+	let annotations = [],
 		model = this.model,
 		surfaceView = this.context.getSurface().getView();
 

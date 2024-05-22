@@ -9,14 +9,14 @@ QUnit.module( 've.dm.HashValueStore' );
 /* Tests */
 
 QUnit.test( 'hash(es)', ( assert ) => {
-	var object1 = { a: 1, b: 2 },
+	let object1 = { a: 1, b: 2 },
 		object1Hash = 'h608de49a4600dbb5',
 		object2 = { c: 3, d: 4 },
 		object2Hash = 'hdf3d2cbd332be4da',
 		customHash = 'hb05df789ce115b75',
 		store = new ve.dm.HashValueStore();
 
-	var hash = store.hash( object1 );
+	let hash = store.hash( object1 );
 	assert.strictEqual( hash, object1Hash, 'First object stores in hash' );
 	hash = store.hash( object1 );
 	assert.strictEqual( hash, object1Hash, 'First object re-stores in hash' );
@@ -32,7 +32,7 @@ QUnit.test( 'hash(es)', ( assert ) => {
 
 	store = new ve.dm.HashValueStore();
 
-	var values = store.hashAll( [ object1, object2 ] );
+	const values = store.hashAll( [ object1, object2 ] );
 	assert.deepEqual( values, [ object1Hash, object2Hash ], 'Store two objects in 0,1' );
 
 	store = new ve.dm.HashValueStore();
@@ -46,7 +46,7 @@ QUnit.test( 'hash(es)', ( assert ) => {
 } );
 
 QUnit.test( 'value(s)', ( assert ) => {
-	var object1 = { a: 1, b: 2 },
+	const object1 = { a: 1, b: 2 },
 		object1Hash = 'h608de49a4600dbb5',
 		object2 = { c: 3, d: 4 },
 		object2Hash = 'hdf3d2cbd332be4da',
@@ -63,11 +63,11 @@ QUnit.test( 'value(s)', ( assert ) => {
 } );
 
 QUnit.test( 'slice', ( assert ) => {
-	var values = [ 'foo', 'bar', 'baz', 'qux', 'quux' ],
+	const values = [ 'foo', 'bar', 'baz', 'qux', 'quux' ],
 		store = new ve.dm.HashValueStore();
 
 	store.hashAll( values );
-	var sliced = store.slice( 2, 4 );
+	let sliced = store.slice( 2, 4 );
 	assert.deepEqual( sliced.values( sliced.hashes ), values.slice( 2, 4 ), 'Slice' );
 	sliced = store.slice( 3 );
 	assert.deepEqual( sliced.values( sliced.hashes ), values.slice( 3 ), 'Slice to end' );

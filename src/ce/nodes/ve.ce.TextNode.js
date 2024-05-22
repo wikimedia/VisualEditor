@@ -41,7 +41,7 @@ ve.ce.TextNode.static.whitespaceHtmlCharacters = ve.visibleWhitespaceCharacters;
  * @return {Array} Array of rendered HTML fragments with annotations
  */
 ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
-	var data = this.model.getDocument().getDataFromNode( this.model ),
+	const data = this.model.getDocument().getDataFromNode( this.model ),
 		whitespaceHtmlChars = ve.visibleWhitespaceCharacters,
 		significantWhitespace = this.getModel().getParent().hasSignificantWhitespace();
 
@@ -64,8 +64,8 @@ ve.ce.TextNode.prototype.getAnnotatedHtml = function () {
 	}
 
 	if ( !significantWhitespace ) {
-		for ( var i = 0; i < data.length; i++ ) {
-			var char = getChar( i );
+		for ( let i = 0; i < data.length; i++ ) {
+			const char = getChar( i );
 			// Show meaningful whitespace characters
 			if ( Object.prototype.hasOwnProperty.call( whitespaceHtmlChars, char ) ) {
 				setChar( whitespaceHtmlChars[ char ], i );

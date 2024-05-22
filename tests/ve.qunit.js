@@ -26,7 +26,7 @@
 	 * @return {Object} Summary of node tree
 	 */
 	function getNodeTreeSummary( node, shallow ) {
-		var summary = {
+		const summary = {
 			getType: node.getType(),
 			getLength: node.getLength(),
 			getOuterLength: node.getOuterLength(),
@@ -34,10 +34,10 @@
 		};
 
 		if ( node.children !== undefined ) {
-			var numChildren = node.children.length;
+			const numChildren = node.children.length;
 			if ( !shallow ) {
 				summary.children = [];
-				for ( var i = 0; i < numChildren; i++ ) {
+				for ( let i = 0; i < numChildren; i++ ) {
 					summary.children.push( getNodeTreeSummary( node.children[ i ] ) );
 				}
 			}
@@ -56,13 +56,13 @@
 	 * @return {Object} Summary of selection
 	 */
 	function getNodeSelectionSummary( selection ) {
-		var summary = {
+		const summary = {
 			length: selection.length
 		};
 
 		if ( selection.length ) {
 			summary.results = [];
-			for ( var i = 0; i < selection.length; i++ ) {
+			for ( let i = 0; i < selection.length; i++ ) {
 				summary.results.push( {
 					node: getNodeTreeSummary( selection[ i ].node, true ),
 					range: selection[ i ].range,
@@ -134,8 +134,8 @@
 			message = shallow;
 			shallow = undefined;
 		}
-		var actualSummary = getNodeTreeSummary( actual, shallow );
-		var expectedSummary = getNodeTreeSummary( expected, shallow );
+		const actualSummary = getNodeTreeSummary( actual, shallow );
+		const expectedSummary = getNodeTreeSummary( expected, shallow );
 		this.pushResult( {
 			result: QUnit.equiv( actualSummary, expectedSummary ),
 			actual: actualSummary,
@@ -151,10 +151,10 @@
 	 * @param {string} message
 	 */
 	QUnit.assert.equalNodeSelection = function ( actual, expected, message ) {
-		var actualSummary = getNodeSelectionSummary( actual ),
+		const actualSummary = getNodeSelectionSummary( actual ),
 			expectedSummary = getNodeSelectionSummary( expected );
 
-		for ( var i = 0; i < actual.length; i++ ) {
+		for ( let i = 0; i < actual.length; i++ ) {
 			if ( expected[ i ] && expected[ i ].node !== actual[ i ].node ) {
 				this.pushResult( {
 					result: false,
@@ -180,7 +180,7 @@
 	 * @param {string} message
 	 */
 	QUnit.assert.equalDomElement = function ( actual, expected, message ) {
-		var actualSummary = ve.getDomElementSummary( actual ),
+		const actualSummary = ve.getDomElementSummary( actual ),
 			expectedSummary = ve.getDomElementSummary( expected ),
 			actualSummaryHtml = ve.getDomElementSummary( actual, true ),
 			expectedSummaryHtml = ve.getDomElementSummary( expected, true );
@@ -200,7 +200,7 @@
 	 * @param {string} message
 	 */
 	QUnit.assert.notEqualDomElement = function ( actual, expected, message ) {
-		var actualSummary = ve.getDomElementSummary( actual ),
+		const actualSummary = ve.getDomElementSummary( actual ),
 			expectedSummary = ve.getDomElementSummary( expected ),
 			actualSummaryHtml = ve.getDomElementSummary( actual, true ),
 			expectedSummaryHtml = ve.getDomElementSummary( expected, true );
@@ -356,7 +356,7 @@
 	 * @param {string} message
 	 */
 	QUnit.assert.isLinearDataFrozen = function ( linearData, message ) {
-		var notFrozen = [];
+		const notFrozen = [];
 		linearData.data.forEach( ( item, i ) => {
 			if ( !Object.isFrozen( item ) ) {
 				notFrozen.push( i );
@@ -373,7 +373,7 @@
 	QUnit.diff = function ( o, n ) {
 		// o and n are partially HTML escaped by QUnit. As difflib does
 		// its own escaping we should unescape them first.
-		var oLines = difflib.stringAsLines( unescapeText( o ) ),
+		const oLines = difflib.stringAsLines( unescapeText( o ) ),
 			nLines = difflib.stringAsLines( unescapeText( n ) ),
 			sm = new difflib.SequenceMatcher( oLines, nLines ),
 			opcodes = sm.get_opcodes(),

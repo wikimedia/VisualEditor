@@ -55,7 +55,7 @@ ve.dm.FlatLinearData.prototype.isElementData = function ( offset ) {
  * @return {boolean} At least one elements exists in data
  */
 ve.dm.FlatLinearData.prototype.containsElementData = function () {
-	var i = this.getLength();
+	let i = this.getLength();
 	while ( i-- ) {
 		if ( this.isElementData( i ) ) {
 			return true;
