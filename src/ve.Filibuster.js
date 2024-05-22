@@ -97,7 +97,7 @@ ve.Filibuster.prototype.observe = function ( action ) {
 	for ( const name in this.observers ) {
 		const callback = this.observers[ name ];
 		const oldState = this.states[ name ];
-		var newState;
+		let newState;
 		try {
 			newState = callback();
 		} catch ( ex ) {

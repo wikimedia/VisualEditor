@@ -143,17 +143,16 @@ ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet, rep
 	}
 
 	// Apply annotations to data
-	for ( var i = 0, length = data.getLength(); i < length; i++ ) {
+	for ( let i = 0, length = data.getLength(); i < length; i++ ) {
 		if ( data.isElementData( i ) && ve.dm.nodeFactory.shouldIgnoreChildren( data.getType( i ) ) ) {
 			ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
 		}
 		if ( ignoreChildrenDepth ) {
 			continue;
 		}
-		// eslint-disable-next-line no-loop-func
 		const allowedAnnotations = annotationSet.filter( ( ann ) => data.canTakeAnnotationAtOffset( i, ann, true ) );
 		const existingAnnotations = data.getAnnotationsFromOffset( i, true );
-		var newAnnotationSet;
+		let newAnnotationSet;
 		if ( !existingAnnotations.isEmpty() ) {
 			newAnnotationSet = existingAnnotations;
 			if ( replaceComparable ) {
@@ -229,12 +228,11 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 	const doc = this.documentNode.getDocument();
 
 	for ( let i = 0, len = this.data.getLength(); i < len; i++ ) {
-		var node;
 		if ( !this.data.isElementData( i ) ) {
 			// Text node opening
 			if ( !inTextNode ) {
 				// Create a lengthless text node
-				node = new ve.dm.TextNode();
+				const node = new ve.dm.TextNode();
 				// Put the node on the current inner stack
 				currentStack.push( node );
 				currentNode = node;
@@ -257,7 +255,7 @@ ve.dm.Document.prototype.buildNodeTree = function () {
 			if ( this.data.isOpenElementData( i ) ) {
 				// Branch or leaf node opening
 				// Create a childless node
-				node = ve.dm.nodeFactory.createFromElement( this.data.getData( i ) );
+				const node = ve.dm.nodeFactory.createFromElement( this.data.getData( i ) );
 				// Put the childless node on the current inner stack
 				currentStack.push( node );
 				if ( ve.dm.nodeFactory.canNodeHaveChildren( node.getType() ) ) {
@@ -765,7 +763,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 		return element;
 	}
 
-	for ( var i = range ? range.start : 0; i < iLen; i++ ) {
+	for ( let i = range ? range.start : 0; i < iLen; i++ ) {
 		const item = this.data.getData( i );
 		if (
 			ve.dm.LinearData.static.isOpenElementData( item ) &&
@@ -785,20 +783,18 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 			i += 1;
 			continue;
 		}
-		var metaItem, metaItems, internal;
-		var j, jLen;
+		let metaItem, metaItems, internal;
 		if (
 			mode === 'roundTrip' &&
 			( internal = item.internal ) &&
 			( metaItems = internal.metaItems )
 		) {
 			if ( !internal.changesSinceLoad ) {
-				// eslint-disable-next-line no-loop-func, no-shadow
-				this.data.modifyData( i, ( item ) => {
+				this.data.modifyData( i, ( dataItem ) => {
 					// Re-fetch unfrozen metaItems.
-					metaItems = item.internal.metaItems;
+					metaItems = dataItem.internal.metaItems;
 					// No changes, so restore meta item offsets
-					for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
+					for ( let j = 0, jLen = metaItems.length; j < jLen; j++ ) {
 						metaItem = metaItems[ j ];
 						const offset = i + metaItem.internal.loadMetaParentOffset;
 						if ( !insertions[ offset ] ) {
@@ -816,7 +812,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 				} );
 			} else {
 				// Had changes, so remove removable meta items that are out of place now
-				for ( j = 0, jLen = metaItems.length; j < jLen; j++ ) {
+				for ( let j = 0, jLen = metaItems.length; j < jLen; j++ ) {
 					metaItem = metaItems[ j ];
 					if ( ve.dm.nodeFactory.isRemovableMetaData( metaItem.type ) ) {
 						insertedMetaItems.push( metaItem.originalDomElementsHash );
@@ -826,7 +822,7 @@ ve.dm.Document.prototype.getFullData = function ( range, mode ) {
 		}
 		result.push( stripMetaLoadInfo( item ) );
 		if ( mode === 'roundTrip' && insertions[ i ] ) {
-			for ( j = 0, jLen = insertions[ i ].length; j < jLen; j++ ) {
+			for ( let j = 0, jLen = insertions[ i ].length; j < jLen; j++ ) {
 				metaItem = insertions[ i ][ j ];
 				result.push( metaItem );
 				result.push( { type: '/' + metaItem.type } );

@@ -349,7 +349,7 @@ ve.EventSequencer.prototype.resetAfterLoopTimeout = function () {
 	if ( this.afterLoopTimeoutId !== null ) {
 		this.cancelPostponed( this.afterLoopTimeoutId );
 	}
-	var timeoutId = this.postpone( () => {
+	const timeoutId = this.postpone( () => {
 		this.doAfterLoop( timeoutId );
 	} );
 	this.afterLoopTimeoutId = timeoutId;

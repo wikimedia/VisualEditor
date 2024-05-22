@@ -338,8 +338,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 
 	// Render HTML with annotations
 	for ( i = 0, ilen = annotatedHtml.length; i < ilen; i++ ) {
-		var item;
-		var itemAnnotations;
+		let item;
+		let itemAnnotations;
 		if ( Array.isArray( annotatedHtml[ i ] ) ) {
 			item = annotatedHtml[ i ][ 0 ];
 			itemAnnotations = new ve.dm.AnnotationSet( store, annotatedHtml[ i ][ 1 ] );

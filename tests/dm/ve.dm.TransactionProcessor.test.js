@@ -529,7 +529,7 @@ QUnit.test( 'commit', ( assert ) => {
 		};
 
 	// Run tests
-	for ( var msg in cases ) {
+	for ( const msg in cases ) {
 		const caseItem = cases[ msg ];
 		// Generate original document
 		const originalData = caseItem.data || ve.dm.example.data;
@@ -537,13 +537,13 @@ QUnit.test( 'commit', ( assert ) => {
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
 		originalDoc.buildNodeTree();
-		var testDoc = new ve.dm.Document(
+		const testDoc = new ve.dm.Document(
 			ve.dm.example.preprocessAnnotations( ve.copy( originalData ), store )
 		);
 		testDoc.buildNodeTree();
 
 		const txBuilder = new ve.dm.TransactionBuilder();
-		var tx = null;
+		let tx = null;
 		for ( let i = 0; i < caseItem.calls.length; i++ ) {
 			// Some calls need the document as its first argument
 			if ( /^(pushReplacement$|new)/.test( caseItem.calls[ i ][ 0 ] ) ) {
@@ -571,7 +571,6 @@ QUnit.test( 'commit', ( assert ) => {
 
 			if ( 'events' in caseItem ) {
 				// Set up event handlers
-				// eslint-disable-next-line no-loop-func
 				caseItem.events.forEach( ( event ) => {
 					let node = testDoc.getDocumentNode();
 					for ( let j = 1; j < event.length; j++ ) {
@@ -595,7 +594,6 @@ QUnit.test( 'commit', ( assert ) => {
 				'commit (tree): ' + msg
 			);
 			if ( 'events' in caseItem ) {
-				// eslint-disable-next-line no-loop-func
 				caseItem.events.forEach( ( event ) => {
 					assert.strictEqual(
 						event.fired,
@@ -615,7 +613,6 @@ QUnit.test( 'commit', ( assert ) => {
 			);
 		} else if ( 'exception' in caseItem ) {
 			assert.throws(
-				// eslint-disable-next-line no-loop-func
 				() => {
 					testDoc.commit( tx );
 				},

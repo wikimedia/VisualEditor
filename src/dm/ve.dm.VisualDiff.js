@@ -139,11 +139,10 @@ ve.dm.VisualDiff.prototype.freezeInternalListIndices = function ( doc ) {
 	for ( const groupName in internalListGroups ) {
 		const group = internalListGroups[ groupName ];
 		const groupIndexOrder = group.indexOrder;
-		for ( var i = 0, ilen = groupIndexOrder.length; i < ilen; i++ ) {
+		for ( let i = 0, ilen = groupIndexOrder.length; i < ilen; i++ ) {
 			const nodeIndex = groupIndexOrder[ i ];
 			const refNodes = nodes[ groupName ].keyedNodes[ nodes[ groupName ].firstNodes[ nodeIndex ].registeredListKey ];
 			for ( let j = 0, jlen = refNodes.length; j < jlen; j++ ) {
-				// eslint-disable-next-line no-loop-func
 				doc.data.modifyData( refNodes[ j ].getOffset(), ( item ) => {
 					ve.setProp( item, 'internal', 'overrideIndex', i + 1 );
 				} );
@@ -751,11 +750,10 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 	changeRecord.keepLength = oldTreeNode.length - 2 * ( oldTree.orderedNodes.length - 1 );
 
 	for ( let i = 0, ilen = treeDiff.length; i < ilen; i++ ) {
-		var oldNode, newNode;
 		if ( treeDiff[ i ][ 0 ] !== null && treeDiff[ i ][ 1 ] !== null ) {
 			// There is a change
-			oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
-			newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
+			const oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
+			const newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
 
 			if ( !oldNode.isDiffedAsTree() && !newNode.isDiffedAsTree() ) {
 				diffInfo[ i ] = this.diffNodes( oldNode, newNode, true );
@@ -771,14 +769,14 @@ ve.dm.VisualDiff.prototype.diffTreeNodes = function ( oldTreeNode, newTreeNode )
 
 		} else if ( treeDiff[ i ][ 0 ] !== null ) {
 			// Node was removed
-			oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
+			const oldNode = oldTree.orderedNodes[ treeDiff[ i ][ 0 ] ].node;
 			if ( !oldNode.isDiffedAsTree() ) {
 				this.updateChangeRecord( oldNode.length, true, changeRecord );
 			}
 
 		} else {
 			// Node was inserted
-			newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
+			const newNode = newTree.orderedNodes[ treeDiff[ i ][ 1 ] ].node;
 			if ( !newNode.isDiffedAsTree() ) {
 				this.updateChangeRecord( newNode.length, false, changeRecord );
 			}
@@ -1032,7 +1030,6 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 	for ( let i = 0, ilen = groups.length; i < ilen; i++ ) {
 		group = groups[ i ];
 
-		var listItems;
 		let diff = null;
 		switch ( group.action ) {
 			case 'diff':
@@ -1057,9 +1054,9 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 				}
 				break;
 
-			case 'insert':
+			case 'insert': {
 				// Get new doc internal list items for this group and mark as inserted
-				listItems = getInternalListItemsToDiff(
+				const listItems = getInternalListItemsToDiff(
 					newDocNodeGroups[ group.group ].indexOrder,
 					newDocInternalListNode.children,
 					1
@@ -1067,10 +1064,11 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 				diff = listItems.indices;
 				diff.newNodes = listItems.toDiff;
 				break;
+			}
 
-			case 'remove':
+			case 'remove': {
 				// Get old doc internal list items for this group and mark as removed
-				listItems = getInternalListItemsToDiff(
+				const listItems = getInternalListItemsToDiff(
 					oldDocNodeGroups[ group.group ].indexOrder,
 					oldDocInternalListNode.children,
 					-1
@@ -1078,6 +1076,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 				diff = listItems.indices;
 				diff.oldNodes = listItems.toDiff;
 				break;
+			}
 		}
 
 		if ( diff ) {

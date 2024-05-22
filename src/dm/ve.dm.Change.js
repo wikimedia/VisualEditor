@@ -138,7 +138,7 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 	let prevInfo;
 	for ( let i = 0, iLen = data.transactions.length; i < iLen; i++ ) {
 		const txSerialized = data.transactions[ i ];
-		var tx;
+		let tx;
 		if ( typeof txSerialized === 'string' ) {
 			const insertion = txSerialized.split( '' );
 			annotate(
@@ -395,7 +395,7 @@ ve.dm.Change.static.rebaseUncommittedChange = function ( history, uncommitted ) 
 		for ( let j = 0, jLen = transactionsA.length; j < jLen; j++ ) {
 			const a = transactionsA[ j ];
 			const storeA = storesA[ j ];
-			var rebases;
+			let rebases;
 			if ( b.authorId < a.authorId ) {
 				rebases = ve.dm.Change.static.rebaseTransactions( b, a ).reverse();
 			} else {

@@ -1128,10 +1128,9 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 	const forward = ( direction === 1 );
 
 	while ( true ) {
-		var step;
 		// If we're at the node's leading edge, move to the adjacent position in the parent node
 		if ( offset === ( forward ? node.length || node.childNodes.length : 0 ) ) {
-			step = new ve.PositionStep( node, 'leave' );
+			const step = new ve.PositionStep( node, 'leave' );
 			steps.push( step );
 			if ( node.parentNode === null ) {
 				return {
@@ -1156,7 +1155,7 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 
 		// If we're in a text node, move to the position in this node at the next offset
 		if ( node.nodeType === Node.TEXT_NODE ) {
-			step = new ve.PositionStep(
+			const step = new ve.PositionStep(
 				node,
 				'internal',
 				offset - ( forward ? 0 : 1 )
@@ -1183,7 +1182,7 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 			childNode.nodeType === Node.ELEMENT_NODE &&
 			( ve.isVoidElement( childNode ) || $( childNode ).is( noDescend ) )
 		) {
-			step = new ve.PositionStep( childNode, 'cross' );
+			const step = new ve.PositionStep( childNode, 'cross' );
 			steps.push( step );
 			offset += forward ? 1 : -1;
 			if ( stop( step ) ) {
@@ -1200,9 +1199,9 @@ ve.adjacentDomPosition = function ( position, direction, options ) {
 		// Go to the closest offset inside the child node
 		node = childNode;
 		offset = forward ? 0 : node.length || node.childNodes.length;
-		step = new ve.PositionStep( node, 'enter' );
-		steps.push( step );
-		if ( stop( step ) ) {
+		const posStep = new ve.PositionStep( node, 'enter' );
+		steps.push( posStep );
+		if ( stop( posStep ) ) {
 			return {
 				node: node,
 				offset: offset,

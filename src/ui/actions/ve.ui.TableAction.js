@@ -750,7 +750,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 			}
 			// If the cell is a placeholder this will find a close cell node in the same row
 			refCell = matrix.findClosestCell( cell );
-			var style;
+			let style;
 			if ( refCell ) {
 				range = refCell.node.getOuterRange();
 				// If the found cell is before the base cell the new cell must be placed after it, in any case,
@@ -772,7 +772,7 @@ ve.ui.TableAction.prototype.insertRowOrCol = function ( tableNode, mode, index, 
 				offset = before ? range.start : range.end;
 				style = cells[ 0 ].node.getStyle();
 			}
-			var cellData;
+			let cellData;
 			if ( !dataMatrixLine ) {
 				cellData = ve.dm.TableCellNode.static.createData( { style: style } );
 			} else {
@@ -902,7 +902,7 @@ ve.ui.TableAction.prototype.deleteRowsOrColumns = function ( matrix, mode, minIn
 		// leaves orphaned placeholders
 		const span = cell.node.getSpans()[ mode ];
 		if ( cell[ mode ] + span - 1 > maxIndex ) {
-			var startRow, startCol;
+			let startRow, startCol;
 			// add inserts for orphaned place holders
 			if ( mode === 'col' ) {
 				startRow = cell.row;

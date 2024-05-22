@@ -173,7 +173,7 @@ ve.Document.prototype.selectNodes = function ( range, mode ) {
 			currentFrame.startOffset + currentFrame.node.getLength()
 		);
 
-		var parentFrame;
+		let parentFrame;
 		if ( isWrapped && end === left - 1 && currentFrame.index === 0 ) {
 			// The selection ends here with an empty range at the beginning of the node
 			// TODO duplicated code

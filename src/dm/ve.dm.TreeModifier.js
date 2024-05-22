@@ -336,23 +336,25 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			splice( a.node, a.offset, 1 );
 			healTextNodes( a.node, a.offset );
 			break;
-		case 'insertNode':
+		case 'insertNode': {
 			spliceLinear( a.linearOffset, 0, [ treeOp.element, { type: '/' + treeOp.element.type } ] );
-			var nodeToInsert = ve.dm.nodeFactory.createFromElement( treeOp.element );
+			const nodeToInsert = ve.dm.nodeFactory.createFromElement( treeOp.element );
 			if ( nodeToInsert instanceof ve.dm.BranchNode ) {
 				nodeToInsert.setupBlockSlugs();
 			}
 			splice( a.node, a.offset, 0, nodeToInsert );
 			break;
-		case 'moveNode':
+		}
+		case 'moveNode': {
 			data = spliceLinear( f.linearOffset, f.node.children[ f.offset ].getOuterLength() );
 			// No need to use local splice function as we know the node is going
 			// to be re-inserted immediately.
-			var movedNode = f.node.splice( f.offset, 1 )[ 0 ];
+			const movedNode = f.node.splice( f.offset, 1 )[ 0 ];
 			adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
 			spliceLinear( t.linearOffset - adjustment, 0, data );
 			t.node.splice( t.offset, 0, movedNode );
 			break;
+		}
 		case 'removeText':
 			data = spliceLinear( a.linearOffset, treeOp.data.length );
 			this.checkEqualData( data, treeOp.data );
@@ -490,7 +492,7 @@ ve.dm.TreeModifier.prototype.processImplicitFinalRetain = function () {
 		) ) {
 			return;
 		}
-		var retainLength;
+		let retainLength;
 		if ( node.type === 'text' ) {
 			// Retain all remaining text; if there is no remaining text then
 			// retain a single offset.
@@ -604,16 +606,17 @@ ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
 				}
 			}
 			break;
-		case 'open':
+		case 'open': {
 			this.deletions.push( removerStep.item );
 			// Clone last open and step in
-			var element = removerStep.item.getClonedElement( true );
+			const element = removerStep.item.getClonedElement( true );
 			this.pushInsertNodeOp( element );
 			this.insertedNodes.push( element );
 			// This 0 position is invalid if element is content (because the offset should be
 			// linearized), but it will get popped immediately
 			this.insertedPositions.push( 0 );
 			break;
+		}
 		case 'close':
 			if ( this.insertedPositions.length ) {
 				this.insertedNodes.pop();

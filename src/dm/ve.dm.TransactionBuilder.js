@@ -564,7 +564,7 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 			step = -1;
 		}
 		for ( let j = start; j !== stop; j += step ) {
-			var item;
+			let item;
 			// Move to next item, skipping MetaItems
 			while ( true ) {
 				offset += step;
@@ -958,7 +958,7 @@ ve.dm.TransactionBuilder.prototype.pushRemoval = function ( doc, currentOffset, 
 	// The selection wasn't mergeable, so remove nodes that are completely covered, and strip
 	// nodes that aren't
 	for ( let i = 0; i < selection.length; i++ ) {
-		var nodeStart, nodeEnd;
+		let nodeStart, nodeEnd;
 		if ( !selection[ i ].range ) {
 			// Entire node is covered, remove it
 			nodeStart = selection[ i ].nodeOuterRange.start;
@@ -1032,7 +1032,7 @@ ve.dm.TransactionBuilder.prototype.pushMeta = function ( doc, offset, metaItems 
 	findPositionLoop:
 	for ( let i = ops.length - 1; i >= 0; i-- ) {
 		op = ops[ i ];
-		var items;
+		let items;
 		if ( op.type === 'replace' ) {
 			items = op.insert;
 			offset -= op.remove.length;

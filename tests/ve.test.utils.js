@@ -360,7 +360,7 @@
 		surface.getModel().setSelection( selection );
 		action[ caseItem.method ].apply( action, caseItem.args || [] );
 
-		var afterApply = () => {
+		const afterApply = () => {
 			const actualData = getSerializableData( surface.getModel().getDocument() );
 			ve.dm.example.postprocessAnnotations( actualData, surface.getModel().getDocument().getStore() );
 			assert.equalLinearData( actualData, data, caseItem.msg + ': data models match' );
@@ -387,7 +387,7 @@
 		if ( caseItem.createView ) {
 			// When rendering a view, wait for MutationObserver events to fire
 			// before checking document state.
-			var done = assert.async();
+			const done = assert.async();
 			setTimeout( () => {
 				afterApply();
 				done();

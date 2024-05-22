@@ -194,7 +194,7 @@ ve.dm.Converter.static.renderHtmlAttributeList = function ( originalDomElements,
 				!targetDomElements[ i ].hasAttribute( attrs[ j ].name ) &&
 				( filter === true || filter( attrs[ j ].name ) )
 			) {
-				var value;
+				let value;
 				if ( computed && this.computedAttributes.indexOf( attrs[ j ].name ) !== -1 ) {
 					value = originalDomElements[ i ][ attrs[ j ].name ];
 				} else {
@@ -827,17 +827,17 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 		const childNode = domElement.childNodes[ i ];
 		switch ( childNode.nodeType ) {
 			case Node.ELEMENT_NODE:
-			case Node.COMMENT_NODE:
+			case Node.COMMENT_NODE: {
 				if (
 					childNode.getAttribute &&
 					childNode.getAttribute( 'data-ve-ignore' )
 				) {
 					continue;
 				}
-				var aboutGroup = getAboutGroup( childNode );
-				var modelName = this.modelRegistry.matchElement( childNode, aboutGroup.length > 1 );
-				var modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
-				var childNodes;
+				const aboutGroup = getAboutGroup( childNode );
+				const modelName = this.modelRegistry.matchElement( childNode, aboutGroup.length > 1 );
+				let modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
+				let childNodes;
 				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
 					childNodes = [ childNode ];
 				} else {
@@ -845,7 +845,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					childNodes = modelClass.static.enableAboutGrouping ?
 						aboutGroup : [ childNode ];
 				}
-				var childDataElements = this.createDataElements( modelClass, childNodes );
+				let childDataElements = this.createDataElements( modelClass, childNodes );
 
 				if ( !childDataElements ) {
 					// Alienate
@@ -1008,9 +1008,9 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					i += childNodes.length - 1;
 				}
 				break;
-			case Node.TEXT_NODE:
-				var text = childNode.data;
-				var matches;
+			}
+			case Node.TEXT_NODE: {
+				let text = childNode.data;
 				if ( text === '' ) {
 					// Empty text node?!?
 					break;
@@ -1053,7 +1053,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 						// Separate the real text from the whitespace
 						// HACK: '.' doesn't match newlines in JS, so use
 						// [\s\S] to match any character
-						matches = text.match( this.trimWhitespaceRegex );
+						const matches = text.match( this.trimWhitespaceRegex );
 						if ( !context.inWrapper ) {
 							// Wrap the text in a paragraph and output it
 							startWrapping();
@@ -1113,7 +1113,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
 				) {
 					// Strip leading whitespace from the first child
-					matches = text.match( this.leadingWhitespacesRegex );
+					const matches = text.match( this.leadingWhitespacesRegex );
 					if ( matches && matches[ 0 ] !== '' ) {
 						addWhitespace( wrapperElement, 1, matches[ 0 ] );
 						text = text.slice( matches[ 0 ].length );
@@ -1126,7 +1126,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
 				) {
 					// Strip trailing whitespace from the last child
-					matches = text.match( this.trailingWhitespacesRegex );
+					const matches = text.match( this.trailingWhitespacesRegex );
 					if ( matches && matches[ 0 ] !== '' ) {
 						addWhitespace( wrapperElement, 2, matches[ 0 ] );
 						text = text.slice( 0, text.length - matches[ 0 ].length );
@@ -1138,6 +1138,7 @@ ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapper
 					this.constructor.static.getDataContentFromText( text, context.annotations )
 				);
 				break;
+			}
 		}
 	}
 	// End auto-wrapping of bare content
@@ -1534,13 +1535,12 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			}
 		} else if ( data[ i ].type !== undefined ) {
 			const dataElement = data[ i ];
-			var isContentNode, ours, theirs, textNode;
 			// Element
 			if ( dataElement.type.charAt( 0 ) === '/' ) {
 				// Close element
 				parentDomElement = domElement.parentNode;
 				const type = data[ i ].type.slice( 1 );
-				isContentNode = this.nodeFactory.isNodeContent( type );
+				const isContentNode = this.nodeFactory.isNodeContent( type );
 				// Process whitespace
 				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
 				const oldLastOuterPost = parentDomElement.lastOuterPost;
@@ -1562,7 +1562,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							domElement.firstChild.insertData( 0, pre );
 						} else {
 							// Prepend a TextNode
-							textNode = doc.createTextNode( pre );
+							const textNode = doc.createTextNode( pre );
 							textNode.veIsWhitespace = true;
 							domElement.insertBefore(
 								textNode,
@@ -1575,7 +1575,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							.childDomElements[ domElement.veInternal.childDomElements.length - 1 ]
 							.lastChild :
 						domElement.lastChild;
-					ours = domElement.veInternal.whitespace[ 2 ];
+					const ours = domElement.veInternal.whitespace[ 2 ];
+					let theirs;
 					if ( domElement.lastOuterPost === undefined ) {
 						// This node didn't have any structural children
 						// (i.e. it's a content-containing node), so there's
@@ -1590,7 +1591,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							domElement.lastChild.appendData( ours );
 						} else {
 							// Append a TextNode
-							textNode = doc.createTextNode( ours );
+							const textNode = doc.createTextNode( ours );
 							textNode.veIsWhitespace = true;
 							domElement.appendChild(
 								textNode
@@ -1638,12 +1639,12 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 								doUnwrap = true;
 							}
 							break;
-						case 'wrapper':
+						case 'wrapper': {
 							// 'wrapper' elements - ensure there is a block level
 							// element between this element and the previous sibling
 							// wrapper or parent node
 							doUnwrap = true;
-							var previousSiblings = domElement.parentNode.childNodes;
+							const previousSiblings = domElement.parentNode.childNodes;
 							// Note: previousSiblings includes the current element
 							// so we only go up to length - 2
 							for ( j = previousSiblings.length - 2; j >= 0; j-- ) {
@@ -1665,6 +1666,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 								}
 							}
 							break;
+						}
 					}
 				}
 				if ( doUnwrap ) {
@@ -1698,7 +1700,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 					// Reached the internal list, finish
 					break;
 				}
-				isContentNode = this.nodeFactory.isNodeContent( data[ i ].type );
+				const isContentNode = this.nodeFactory.isNodeContent( data[ i ].type );
 
 				dataElementOrSlice = getDataElementOrSlice();
 				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
@@ -1732,8 +1734,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 					// whitespace.
 					if ( domElement.veInternal && domElement.veInternal.whitespace ) {
 						// Process this node's outerPre
-						ours = domElement.veInternal.whitespace[ 0 ];
-						theirs = undefined;
+						const ours = domElement.veInternal.whitespace[ 0 ];
+						let theirs;
 						if ( domElement.previousSibling ) {
 							// Get previous sibling's outerPost
 							theirs = parentDomElement.lastOuterPost;
@@ -1754,7 +1756,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 						}
 						if ( ours && ours === theirs ) {
 							// Matches the duplicate, insert a TextNode
-							textNode = doc.createTextNode( ours );
+							const textNode = doc.createTextNode( ours );
 							textNode.veIsWhitespace = true;
 							parentDomElement.insertBefore(
 								textNode,

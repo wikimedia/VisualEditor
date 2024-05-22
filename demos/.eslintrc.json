@@ -12,7 +12,6 @@
 	},
 	"rules": {
 		"max-len": "off",
-		"no-var": "off",
 		"prefer-const": "off"
 	},
 	"plugins": [ "html" ],

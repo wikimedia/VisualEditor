@@ -1466,7 +1466,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 			const range = new ve.Range( start, end );
 			const type = linearDiff[ i ][ 0 ];
 			if ( type !== 0 ) {
-				var typeAsString, domElementType, annType;
+				let typeAsString, domElementType, annType;
 				switch ( type ) {
 					case DIFF_DELETE:
 						typeAsString = 'remove';
@@ -1493,9 +1493,8 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 				domElement.setAttribute( 'data-diff-action', typeAsString );
 				const domElements = [ domElement ];
 
-				var changes = [];
+				let changes = [];
 				if ( linearDiff[ i ].annotationChanges ) {
-					// eslint-disable-next-line no-loop-func
 					linearDiff[ i ].annotationChanges.forEach( ( annotationChange ) => {
 						let attributeChanges;
 						if ( annotationChange.oldAnnotation && annotationChange.newAnnotation ) {
@@ -1514,8 +1513,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 					} );
 				}
 				if ( linearDiff[ i ].attributeChanges ) {
-					var element = linearDiff[ i ][ 1 ][ 0 ];
-					// eslint-disable-next-line no-loop-func
+					const element = linearDiff[ i ][ 1 ][ 0 ];
 					linearDiff[ i ].attributeChanges.forEach( ( attributeChange ) => {
 						const attributeChanges = this.constructor.static.compareAttributes(
 							attributeChange.oldAttributes,
@@ -1545,10 +1543,9 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 
 				// Insert annotation above annotations that span the entire range
 				// and at least one character more
-				var j;
 				const annHashLists = [];
 				for (
-					j = Math.max( 0, range.start - 1 );
+					let j = Math.max( 0, range.start - 1 );
 					j < Math.min( range.end + 1, diffDoc.data.getLength() );
 					j++
 				) {
@@ -1569,7 +1566,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 						)
 					)
 				);
-				for ( j = range.start; j < range.end; j++ ) {
+				for ( let j = range.start; j < range.end; j++ ) {
 					annHashLists[ j ].splice( height, 0, annHash );
 					diffDoc.data.setAnnotationHashesAtOffset(
 						j,

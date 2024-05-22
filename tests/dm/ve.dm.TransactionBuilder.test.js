@@ -21,7 +21,7 @@ ve.test.utils.runTransactionBuilderTests = function ( assert, cases ) {
 ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, cases, testRange ) {
 	for ( const msg in cases ) {
 		const doc = cases[ msg ].args[ 0 ];
-		var args = cases[ msg ].args;
+		const args = cases[ msg ].args;
 		if ( cases[ msg ].ops ) {
 			const tx = constructor.apply( null, args );
 			assert.equalLinearDataWithDom( doc.getStore(), tx.getOperations(), cases[ msg ].ops, msg + ': operations match' );
@@ -33,7 +33,6 @@ ve.test.utils.runTransactionConstructorTests = function ( assert, constructor, c
 				);
 			}
 		} else if ( cases[ msg ].exception ) {
-			// eslint-disable-next-line no-loop-func
 			assert.throws( () => {
 				constructor.apply( ve.dm.Transaction, args );
 			}, cases[ msg ].exception, msg + ': throw exception' );

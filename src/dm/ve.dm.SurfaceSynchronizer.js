@@ -345,7 +345,7 @@ ve.dm.SurfaceSynchronizer.prototype.applyNewSelections = function ( newSelection
 		if ( authorId === this.authorId ) {
 			continue;
 		}
-		var translatedSelection;
+		let translatedSelection;
 		if ( change ) {
 			translatedSelection = newSelections[ authorId ].translateByChange( change, authorId );
 		} else if ( tx ) {

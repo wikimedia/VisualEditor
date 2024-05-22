@@ -352,7 +352,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		for ( i = 0, ilen = cleanDiff.length - 1; i < ilen; i++ ) {
 			const aItem = cleanDiff[ i ];
 			const bItem = cleanDiff[ i + 1 ];
-			var aData = aItem[ 1 ];
+			const aData = aItem[ 1 ];
 			const bData = bItem[ 1 ];
 			const aAction = aItem[ 0 ];
 			const bAction = bItem[ 0 ];
@@ -365,11 +365,11 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 				( ( aAction === DIFF_DELETE && bAction === DIFF_INSERT ) || ( aAction === DIFF_INSERT && bAction === DIFF_DELETE ) )
 			) {
 				if ( aData.every( equalUnannotated.bind( this, bData ) ) ) {
-					var aAnnotations = new ve.dm.ElementLinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
-					var bAnnotations = new ve.dm.ElementLinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
+					const aAnnotations = new ve.dm.ElementLinearData( store, aData ).getAnnotationsFromRange( new ve.Range( 0, aData.length ), true );
+					const bAnnotations = new ve.dm.ElementLinearData( store, bData ).getAnnotationsFromRange( new ve.Range( 0, bData.length ), true );
 
-					var annotationChanges = [];
-					bAnnotations.get().forEach( ( b ) => { // eslint-disable-line no-loop-func
+					const annotationChanges = [];
+					bAnnotations.get().forEach( ( b ) => {
 						const sameName = aAnnotations.getAnnotationsByName( b.name );
 						if ( !aAnnotations.containsComparable( b ) ) {
 							if ( sameName.getLength() ) {
@@ -380,7 +380,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 							}
 						}
 					} );
-					aAnnotations.get().forEach( ( a ) => { // eslint-disable-line no-loop-func
+					aAnnotations.get().forEach( ( a ) => {
 						if ( !(
 							// Check the old annotation hasn't already been described as a insertion...
 							bAnnotations.containsComparable( a ) ||
@@ -398,8 +398,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 					}
 				}
 				if ( aData.every( equalElements.bind( this, bData ) ) ) {
-					var attributeChanges = [];
-					// eslint-disable-next-line no-loop-func
+					const attributeChanges = [];
 					bData.forEach( ( element, n ) => {
 						if ( ve.dm.LinearData.static.isOpenElementData( element ) ) {
 							attributeChanges.push( { oldAttributes: aData[ n ].attributes, newAttributes: element.attributes, index: n } );

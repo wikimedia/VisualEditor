@@ -151,22 +151,21 @@ ve.dm.TransactionSquasher.prototype.squashIn = function ( tx ) {
 	// Do not cache length, as we may splice the list
 	for ( let i = 0; i < tx.operations.length; i++ ) {
 		const op = tx.operations[ i ];
-		var consumed;
 		if ( op.type === 'retain' ) {
 			let retainLength = op.length;
 			while ( retainLength > 0 ) {
-				consumed = this.processRetain( retainLength );
+				const consumed = this.processRetain( retainLength );
 				retainLength -= consumed;
 			}
 		} else if ( op.type === 'replace' ) {
 			let items = JSON.parse( JSON.stringify( op.remove ) );
 			while ( items.length > 0 ) {
-				consumed = this.processRemove( items );
+				const consumed = this.processRemove( items );
 				items.splice( 0, consumed );
 			}
 			items = JSON.parse( JSON.stringify( op.insert ) );
 			while ( items.length > 0 ) {
-				consumed = this.processInsert( items );
+				const consumed = this.processInsert( items );
 				items.splice( 0, consumed );
 			}
 		} else if ( op.type === 'attribute' ) {

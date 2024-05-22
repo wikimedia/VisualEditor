@@ -208,7 +208,7 @@ ve.ui.DebugBar.prototype.generateListFromLinearData = function ( linearData ) {
 		const $label = $( '<span>' );
 		const element = data[ i ];
 		let annotations = null;
-		var text;
+		let text;
 		if ( element.type ) {
 			$label.addClass( 've-ui-debugBar-dump-element' );
 			text = element.type;

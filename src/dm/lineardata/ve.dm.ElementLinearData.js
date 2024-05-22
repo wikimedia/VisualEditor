@@ -1141,8 +1141,7 @@ ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
 ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping, internalList ) {
 	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
-			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			// eslint-disable-next-line no-loop-func
+			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			this.modifyData( i, ( item ) => {
 				nodeClass.static.remapInternalListIndexes( item, mapping, internalList );
 			} );
@@ -1160,8 +1159,7 @@ ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping,
 ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalList ) {
 	for ( let i = 0, ilen = this.data.length; i < ilen; i++ ) {
 		if ( this.isOpenElementData( i ) ) {
-			var nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
-			// eslint-disable-next-line no-loop-func
+			const nodeClass = ve.dm.nodeFactory.lookup( this.getType( i ) );
 			this.modifyData( i, ( item ) => {
 				nodeClass.static.remapInternalListKeys( item, internalList );
 			} );
@@ -1273,9 +1271,9 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 	let contentElement;
 	for ( i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isElementData( i ) ) {
-			var type = this.getType( i );
+			let type = this.getType( i );
 			const canContainContent = ve.dm.nodeFactory.canNodeContainContent( type );
-			var isOpen = this.isOpenElementData( i );
+			const isOpen = this.isOpenElementData( i );
 
 			if ( isOpen ) {
 				elementStack.push( this.getData( i ) );
@@ -1285,7 +1283,6 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 			// Apply type conversions
 			if ( rules.conversions && rules.conversions[ type ] ) {
 				type = rules.conversions[ type ];
-				// eslint-disable-next-line no-loop-func
 				this.modifyData( i, ( item ) => {
 					item.type = ( !isOpen ? '/' : '' ) + type;
 				} );
@@ -1431,9 +1428,8 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 		}
 		if ( this.isOpenElementData( i ) ) {
 			if ( rules.nodeSanitization ) {
-				var nodeClass = ve.dm.modelRegistry.lookup( this.getType( i ) );
+				const nodeClass = ve.dm.modelRegistry.lookup( this.getType( i ) );
 				// Perform per-class sanitizations:
-				// eslint-disable-next-line no-loop-func
 				this.modifyData( i, ( item ) => {
 					nodeClass.static.sanitize( item, rules );
 				} );

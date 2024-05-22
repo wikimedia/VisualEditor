@@ -299,8 +299,8 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		let annotations = null;
 		let missing = null;
 		// In the old chunks, find the chunks adjacent to the change
-		var jStart;
-		var matchStartOffset;
+		let jStart;
+		let matchStartOffset;
 		if ( change.start === 0 ) {
 			jStart = 0;
 			matchStartOffset = changeOffset;
@@ -309,7 +309,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			jStart = change.start - 1;
 			matchStartOffset = changeOffset - oldChunks[ jStart ].text.length;
 		}
-		var jEnd;
+		let jEnd;
 		if ( change.end === 0 ) {
 			jEnd = oldChunks.length;
 		} else {
@@ -366,7 +366,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 				}
 				matchOffset += oldChunk.text.length;
 			}
-			var oldAnnotations;
+			let oldAnnotations;
 			if ( bestOffset === null ) {
 				oldAnnotations = new ve.dm.AnnotationSet( modelData.getStore() );
 			} else {
@@ -388,7 +388,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 				// completely rebuilds the node, but should work in cases like typing into
 				// collapsed links because nails ensure the link is never completely empty.
 				const view = $( element ).data( 'view' );
-				var ann;
+				let ann;
 				if ( view ) {
 					ann = view.getModel();
 				} else {

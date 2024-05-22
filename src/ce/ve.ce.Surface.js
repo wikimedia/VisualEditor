@@ -4642,7 +4642,7 @@ ve.ce.Surface.prototype.getViewportRange = function ( covering, padding ) {
 			while ( !rect ) {
 				// Try to create a selection of one character for more reliable
 				// behaviour when text wraps.
-				var contentRange;
+				let contentRange;
 				if ( data.isContentOffset( mid + 1 ) ) {
 					contentRange = new ve.Range( mid, mid + 1 );
 				} else if ( data.isContentOffset( mid - 1 ) ) {

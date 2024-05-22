@@ -834,8 +834,7 @@ QUnit.test( 'adjacentDomPosition', ( assert ) => {
 	const div = document.createElement( 'div' );
 	div.contentEditable = 'true';
 
-	for ( var direction in { forward: undefined, backward: undefined } ) {
-		// eslint-disable-next-line no-loop-func
+	for ( const direction in { forward: undefined, backward: undefined } ) {
 		cases.forEach( ( caseItem ) => {
 			div.innerHTML = caseItem.html;
 			const offsetPaths = [];
