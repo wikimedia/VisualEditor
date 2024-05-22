@@ -1297,7 +1297,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, 
  * @throws Unbalanced data: looking for closing /type
  */
 ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {
-	let i, text, annotatedDomElements, annotatedDomElementStack,
+	let text, annotatedDomElements, annotatedDomElementStack,
 		whitespaceHtmlChars = ve.visibleWhitespaceCharacters,
 		isForPreview = this.isForPreview(),
 		dataLen = data.length,
@@ -1414,7 +1414,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		return n;
 	};
 
-	const getDataElementOrSlice = () => {
+	const getDataElementOrSlice = ( i ) => {
 		let dataSlice;
 		if (
 			ve.dm.nodeFactory.lookup( data[ i ].type ) &&
@@ -1438,10 +1438,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 		return char;
 	};
 
-	let dataElementOrSlice, childDomElements, parentDomElement, j;
 	const annotationStack = new ve.dm.AnnotationSet( this.store );
 
-	for ( i = 0; i < dataLen; i++ ) {
+	for ( let i = 0; i < dataLen; i++ ) {
 		if ( typeof data[ i ] === 'string' ) {
 			// Text
 			text = '';
@@ -1504,9 +1503,9 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 						text = '';
 					}
 					// Insert the elements
-					dataElementOrSlice = getDataElementOrSlice();
-					childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
-					for ( j = 0; j < childDomElements.length; j++ ) {
+					const dataElementOrSlice = getDataElementOrSlice( i );
+					const childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
+					for ( let j = 0; j < childDomElements.length; j++ ) {
 						annotatedDomElements.push( childDomElements[ j ] );
 					}
 					if ( Array.isArray( dataElementOrSlice ) ) {
@@ -1530,7 +1529,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				openAnnotation, closeAnnotation
 			);
 			// Put the annotated nodes in the DOM
-			for ( j = 0; j < annotatedDomElements.length; j++ ) {
+			for ( let j = 0; j < annotatedDomElements.length; j++ ) {
 				domElement.appendChild( annotatedDomElements[ j ] );
 			}
 		} else if ( data[ i ].type !== undefined ) {
@@ -1538,7 +1537,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 			// Element
 			if ( dataElement.type.charAt( 0 ) === '/' ) {
 				// Close element
-				parentDomElement = domElement.parentNode;
+				const parentDomElement = domElement.parentNode;
 				const type = data[ i ].type.slice( 1 );
 				const isContentNode = this.nodeFactory.isNodeContent( type );
 				// Process whitespace
@@ -1647,7 +1646,7 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 							const previousSiblings = domElement.parentNode.childNodes;
 							// Note: previousSiblings includes the current element
 							// so we only go up to length - 2
-							for ( j = previousSiblings.length - 2; j >= 0; j-- ) {
+							for ( let j = previousSiblings.length - 2; j >= 0; j-- ) {
 								const sibling = previousSiblings[ j ];
 								if ( ve.isBlockElement( sibling ) ) {
 									// Stop searching early when we get to a block element.
@@ -1702,8 +1701,8 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 				}
 				const isContentNode = this.nodeFactory.isNodeContent( data[ i ].type );
 
-				dataElementOrSlice = getDataElementOrSlice();
-				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
+				const dataElementOrSlice = getDataElementOrSlice( i );
+				const childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
 				if ( childDomElements && !childDomElements.length ) {
 					// Support toDomElements returning an empty array
 					i = findEndOfNode( i ) - 1;
@@ -1716,11 +1715,11 @@ ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, in
 						dataElement.internal ? ve.copy( dataElement.internal ) : {}
 					);
 					// Add elements
-					for ( j = 0; j < childDomElements.length; j++ ) {
+					for ( let j = 0; j < childDomElements.length; j++ ) {
 						domElement.appendChild( childDomElements[ j ] );
 					}
 					// Descend into the first child node
-					parentDomElement = domElement;
+					const parentDomElement = domElement;
 					domElement = childDomElements[ 0 ];
 
 					// Process outer whitespace

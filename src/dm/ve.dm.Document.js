@@ -1264,38 +1264,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		inTextNode,
 		// Whether this is the first child of its parent
 		// The test for last child isn't a loop so we don't need to cache it
-		isFirstChild,
-
-		// *** Temporary variables that do not persist across iterations ***
-		// The type of the node we're currently inserting. When the to-be-inserted node
-		// is wrapped, this is set to the type of the outer wrapper.
-		childType,
-		// Stores the return value of getParentNodeTypes( childType )
-		allowedParents,
-		// Stores the return value of getChildNodeTypes( parentType )
-		allowedChildren,
-		// Whether parentType matches allowedParents
-		parentsOK,
-		// Whether childType matches allowedChildren
-		childrenOK,
-		// Stores the return value of getSuggestedParentNodeTypes
-		suggestedParents,
-		// Whether parentType matches suggestedParents
-		suggestedParentsOK,
-		// Array of opening elements to insert (for wrapping the to-be-inserted element)
-		openings,
-		// Array of closing elements to insert (for splitting nodes)
-		closings,
-		// Array of opening elements matching the elements in closings (in the same order)
-		reopenElements,
-
-		// *** Other variables ***
-		// Used to store values popped from various stacks
-		popped,
-		// Result of recursive call
-		insertion,
-		// Loop variables
-		i, j;
+		isFirstChild;
 
 	/**
 	 * Append a linear model element to newData and update the state.
@@ -1379,9 +1348,12 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	 * This function updates parentNode, parentType, closingStack, reopenElements, and closings.
 	 *
 	 * @private
+	 * @param {Array} closings Closing elements array to be appended to
+	 * @param {Array} reopenElements Opening elements array to be appended to
 	 * @param {string} type Current element type we're considering (for error reporting only)
+	 * @param {number} index Current index (for error reporting only)
 	 */
-	function closeElement( type ) {
+	function closeElement( closings, reopenElements, type, index ) {
 		// Close the parent and try one level up
 		closings.push( { type: '/' + parentType } );
 		if ( openingStack.length > 0 ) {
@@ -1393,7 +1365,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 		} else {
 			if ( !parentNode.getParent() ) {
 				throw new Error( 'Cannot insert ' + type + ' even after closing ' +
-					'all containing nodes (at index ' + i + ')' );
+					'all containing nodes (at index ' + index + ')' );
 			}
 			// openingStack is empty, so we're closing a node that was already in the
 			// document. This means we have to reopen it later, so track this on
@@ -1410,16 +1382,21 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 	inTextNode = false;
 	isFirstChild = this.data.isOpenElementData( offset - 1 );
 
-	for ( i = 0; i < data.length; i++ ) {
+	for ( let i = 0; i < data.length; i++ ) {
 		if ( inTextNode && data[ i ].type !== undefined ) {
 			parentType = openingStack.length > 0 ?
 				openingStack[ openingStack.length - 1 ].type : parentNode.getType();
 		}
 		if ( data[ i ].type === undefined || data[ i ].type.charAt( 0 ) !== '/' ) {
-			childType = data[ i ].type || 'text';
-			openings = [];
-			closings = [];
-			reopenElements = [];
+			// The type of the node we're currently inserting. When the to-be-inserted node
+			// is wrapped, this is set to the type of the outer wrapper.
+			let childType = data[ i ].type || 'text';
+			// Array of opening elements to insert (for wrapping the to-be-inserted element)
+			const openings = [];
+			// Array of closing elements to insert (for splitting nodes)
+			const closings = [];
+			// Array of opening elements matching the elements in closings (in the same order)
+			const reopenElements = [];
 			// Opening or content
 			// Make sure that opening this element here does not violate the parent/children/content
 			// rules. If it does, insert stuff to fix it
@@ -1437,8 +1414,9 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 
 			// Check that this node is allowed to have the containing node as its parent. If not,
 			// wrap it until it's fixed
+			let parentsOK;
 			do {
-				allowedParents = ve.dm.nodeFactory.getParentNodeTypes( childType );
+				const allowedParents = ve.dm.nodeFactory.getParentNodeTypes( childType );
 				parentsOK = allowedParents === null ||
 					allowedParents.indexOf( parentType ) !== -1;
 				if ( !parentsOK ) {
@@ -1456,19 +1434,21 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 			// Check that the node is allowed to have the containing node as
 			// its parent. If not, close surrounding nodes until the node is
 			// contained in an acceptable parent.
-			suggestedParents = ve.dm.nodeFactory.getSuggestedParentNodeTypes( childType );
+			const suggestedParents = ve.dm.nodeFactory.getSuggestedParentNodeTypes( childType );
+			let suggestedParentsOK;
 			do {
 				suggestedParentsOK = suggestedParents === null ||
 					suggestedParents.indexOf( parentType ) !== -1;
 				if ( !suggestedParentsOK ) {
-					closeElement( childType );
+					closeElement( closings, reopenElements, childType, i );
 				}
 			} while ( !suggestedParentsOK );
 
 			// Check that the containing node can have this node as its child. If not, close nodes
 			// until it's fixed
+			let childrenOK;
 			do {
-				allowedChildren = ve.dm.nodeFactory.getChildNodeTypes( parentType );
+				const allowedChildren = ve.dm.nodeFactory.getChildNodeTypes( parentType );
 				childrenOK = allowedChildren === null ||
 					allowedChildren.indexOf( childType ) !== -1;
 				// Also check if we're trying to insert structure into a node that has to contain
@@ -1482,7 +1462,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					if ( isFirstChild ) {
 						// This element would be the first child of its parent, so
 						// abandon this fix up and try again one offset to the left
-						insertion = this.fixupInsertion( data, offset - 1 );
+						const insertion = this.fixupInsertion( data, offset - 1 );
 						if ( this.data.isCloseElementData( offset ) && !ve.dm.nodeFactory.isNodeInternal( parentType ) ) {
 							// This element would also be the last child, so that means parent is empty.
 							// Remove it entirely. (Never remove the internal list though, ugh...)
@@ -1492,11 +1472,11 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 					}
 
 					// Close the parent and try one level up
-					closeElement( childType );
+					closeElement( closings, reopenElements, childType, i );
 				}
 			} while ( !childrenOK );
 
-			for ( j = 0; j < closings.length; j++ ) {
+			for ( let j = 0; j < closings.length; j++ ) {
 				// writeElement() would update openingStack/closingStack, but we've already done
 				// that for closings
 				if ( i === 0 ) {
@@ -1506,7 +1486,7 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 				}
 				newData.push( closings[ j ] );
 			}
-			for ( j = 0; j < openings.length; j++ ) {
+			for ( let j = 0; j < openings.length; j++ ) {
 				if ( i === 0 ) {
 					insertedDataOffset++;
 				} else {
@@ -1548,17 +1528,17 @@ ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
 
 	// Close unclosed openings
 	while ( openingStack.length > 0 ) {
-		popped = openingStack[ openingStack.length - 1 ];
+		const popped = openingStack[ openingStack.length - 1 ];
 		// writeElement() will perform the actual pop() that removes
 		// popped from openingStack
-		writeElement( { type: '/' + popped.type }, i );
+		writeElement( { type: '/' + popped.type }, data.length );
 	}
 	// Re-open closed nodes
 	while ( closingStack.length > 0 ) {
-		popped = closingStack[ closingStack.length - 1 ];
+		const popped = closingStack[ closingStack.length - 1 ];
 		// writeElement() will perform the actual pop() that removes
 		// popped from closingStack
-		writeElement( popped.getClonedElement(), i );
+		writeElement( popped.getClonedElement(), data.length );
 	}
 
 	return {
@@ -1611,9 +1591,9 @@ ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
  * @return {ve.Range[]} List of ranges where the string was found
  */
 ve.dm.Document.prototype.findText = function ( query, options ) {
-	let data = this.data,
-		documentRange = this.getDocumentRange(),
-		ranges = [];
+	const data = this.data,
+		documentRange = this.getDocumentRange();
+	let ranges = [];
 
 	options = options || {};
 

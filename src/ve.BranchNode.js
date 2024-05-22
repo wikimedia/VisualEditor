@@ -85,13 +85,12 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 		// Nothing to do, don't recurse into all descendants
 		return;
 	}
-	let i, len;
 	if ( oldRoot ) {
 		// Null the root, then recurse into children, then emit unroot.
 		// That way, at emit time, all this node's ancestors and descendants have
 		// null root.
 		this.root = null;
-		for ( i = 0, len = this.children.length; i < len; i++ ) {
+		for ( let i = 0, len = this.children.length; i < len; i++ ) {
 			this.children[ i ].setRoot( null );
 		}
 		this.emit( 'unroot', oldRoot );
@@ -101,7 +100,7 @@ ve.BranchNode.prototype.setRoot = function ( root ) {
 		// We've set the new root, so recurse into children, then emit root.
 		// That way, at emit time, all this node's ancestors and descendants have
 		// the new root.
-		for ( i = 0, len = this.children.length; i < len; i++ ) {
+		for ( let i = 0, len = this.children.length; i < len; i++ ) {
 			this.children[ i ].setRoot( root );
 		}
 		this.emit( 'root', root );

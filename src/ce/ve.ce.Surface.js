@@ -1346,12 +1346,11 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 			this.allowedFile = false;
 			// If we can get file metadata, check if there is a DataTransferHandler registered
 			// to handle it.
-			let i, l, item, fakeItem;
 			if ( dataTransfer.items ) {
-				for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
-					item = dataTransfer.items[ i ];
+				for ( let i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+					const item = dataTransfer.items[ i ];
 					if ( item.kind !== 'string' ) {
-						fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
+						const fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
 						if ( dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
 							this.allowedFile = true;
 							break;
@@ -1359,9 +1358,9 @@ ve.ce.Surface.prototype.onDocumentDragOver = function ( e ) {
 					}
 				}
 			} else if ( dataTransfer.files ) {
-				for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
-					item = dataTransfer.items[ i ];
-					fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
+				for ( let i = 0, l = dataTransfer.files.length; i < l; i++ ) {
+					const item = dataTransfer.items[ i ];
+					const fakeItem = new ve.ui.DataTransferItem( item.kind, item.type );
 					if ( dataTransferHandlerFactory.getHandlerNameForItem( fakeItem ) ) {
 						this.allowedFile = true;
 						break;
@@ -2201,13 +2200,13 @@ ve.ce.Surface.prototype.onCopy = function ( e, selection ) {
 	// Some attributes (e.g RDFa attributes in Firefox) aren't preserved by copy
 	const unsafeSelector = '[' + ve.ce.Surface.static.unsafeAttributes.join( '],[' ) + ']';
 	this.$pasteTarget.find( unsafeSelector ).each( ( n, element ) => {
-		let i, val,
+		let i,
 			attrs = {},
 			ua = ve.ce.Surface.static.unsafeAttributes;
 
 		i = ua.length;
 		while ( i-- ) {
-			val = element.getAttribute( ua[ i ] );
+			const val = element.getAttribute( ua[ i ] );
 			if ( val !== null ) {
 				attrs[ ua[ i ] ] = val;
 			}
@@ -3112,16 +3111,15 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 	// Notes:
 	//  - If a file is pasted/dropped, it may have HTML fallback, such as an IMG node with alt text, for example.
 	//  - HTML generated from some clients has an image fallback(!) that is a screenshot of the HTML snippet (e.g. LibreOffice Calc)
-	let i, l;
 	if ( !htmlStringData ) {
 		if ( dataTransfer.items ) {
-			for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+			for ( let i = 0, l = dataTransfer.items.length; i < l; i++ ) {
 				if ( dataTransfer.items[ i ].kind !== 'string' ) {
 					items.push( ve.ui.DataTransferItem.static.newFromItem( dataTransfer.items[ i ], htmlStringData ) );
 				}
 			}
 		} else if ( dataTransfer.files ) {
-			for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
+			for ( let i = 0, l = dataTransfer.files.length; i < l; i++ ) {
 				items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[ i ], htmlStringData ) );
 			}
 		}
@@ -3130,7 +3128,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 
 		let imgCount = 0;
 		let hasContent = false;
-		for ( i = 0; i < htmlPreParse.length; i++ ) {
+		for ( let i = 0; i < htmlPreParse.length; i++ ) {
 			// Count images in root nodes
 			if ( htmlPreParse[ i ].nodeName === 'IMG' ) {
 				imgCount++;
@@ -3151,7 +3149,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 		}
 
 		if ( !hasContent && imgCount === dataTransfer.files.length ) {
-			for ( i = 0, l = dataTransfer.files.length; i < l; i++ ) {
+			for ( let i = 0, l = dataTransfer.files.length; i < l; i++ ) {
 				// TODO: should we use image node outerHTML instead of htmlStringData?
 				items.push( ve.ui.DataTransferItem.static.newFromBlob( dataTransfer.files[ i ], htmlStringData ) );
 			}
@@ -3160,7 +3158,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 
 	if ( dataTransfer.items ) {
 		// Extract "string" types.
-		for ( i = 0, l = dataTransfer.items.length; i < l; i++ ) {
+		for ( let i = 0, l = dataTransfer.items.length; i < l; i++ ) {
 			if (
 				dataTransfer.items[ i ].kind === 'string' &&
 				dataTransfer.items[ i ].type.slice( 0, 5 ) === 'text/'
@@ -3180,8 +3178,7 @@ ve.ce.Surface.prototype.handleDataTransfer = function ( dataTransfer, isPaste, t
 	// we want to text/html and text/plain to be at the end of the list, as
 	// they tend to show up as common fallbacks.
 	const pushItemToBack = function ( array, type ) {
-		let j, jlen;
-		for ( j = 0, jlen = array.length; j < jlen; j++ ) {
+		for ( let j = 0, jlen = array.length; j < jlen; j++ ) {
 			if ( array[ j ].type === type ) {
 				return array.push( array.splice( j, 1 )[ 0 ] );
 			}

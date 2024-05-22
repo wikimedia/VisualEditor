@@ -148,9 +148,8 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 	}
 
 	$set = $element.find( '*' ).addBack();
-	let i, l;
 	// Calling process() may change $set.length
-	for ( i = 0; i < $set.length; i++ ) {
+	for ( let i = 0; i < $set.length; i++ ) {
 		process( $set[ i ] );
 	}
 
@@ -167,7 +166,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 
 	let boundingRect = null;
 
-	for ( i = 0, l = rects.length; i < l; i++ ) {
+	for ( let i = 0, l = rects.length; i < l; i++ ) {
 		// Translate to relative
 		if ( relativeRect ) {
 			rects[ i ] = ve.translateRect( rects[ i ], -relativeRect.left, -relativeRect.top );

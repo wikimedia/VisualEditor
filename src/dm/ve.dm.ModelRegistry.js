@@ -136,14 +136,13 @@
 			[ '' ] :
 			constructor.static.getMatchRdfaTypes();
 
-		let i;
-		for ( i = 0; i < tags.length; i++ ) {
+		for ( let i = 0; i < tags.length; i++ ) {
 			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
 			addType( this.modelsByTag, +!!constructor.static.matchFunction,
 				tags[ i ], name
 			);
 		}
-		for ( i = 0; i < types.length; i++ ) {
+		for ( let i = 0; i < types.length; i++ ) {
 			if ( types[ i ] instanceof RegExp ) {
 				// TODO: Guard against running this again during subsequent
 				// iterations of the for loop
@@ -197,14 +196,13 @@
 			[ '' ] :
 			constructor.static.getMatchRdfaTypes();
 
-		let i;
-		for ( i = 0; i < tags.length; i++ ) {
+		for ( let i = 0; i < tags.length; i++ ) {
 			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
 			removeType( this.modelsByTag, +!!constructor.static.matchFunction,
 				tags[ i ], name
 			);
 		}
-		for ( i = 0; i < types.length; i++ ) {
+		for ( let i = 0; i < types.length; i++ ) {
 			if ( types[ i ] instanceof RegExp ) {
 				// TODO: Guard against running this again during subsequent
 				// iterations of the for loop
@@ -412,10 +410,8 @@
 		let matches = ve.getProp( this.modelsByTag, 1, nodeName ) || [];
 		// No need to sort because individual arrays in modelsByTag are already sorted
 		// correctly
-		let i;
-		let m;
-		for ( i = 0; i < matches.length; i++ ) {
-			m = this.registry[ matches[ i ] ];
+		for ( let i = 0; i < matches.length; i++ ) {
+			const m = this.registry[ matches[ i ] ];
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// func+tag+type step above, or its type rule doesn't match
@@ -431,8 +427,8 @@
 		// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
 		// correctly
 		matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
-		for ( i = 0; i < matches.length; i++ ) {
-			m = this.registry[ matches[ i ] ];
+		for ( let i = 0; i < matches.length; i++ ) {
+			const m = this.registry[ matches[ i ] ];
 			if ( m.static.matchFunction( node ) && allTypesAllowed( m ) ) {
 				return matches[ i ];
 			}
@@ -456,8 +452,8 @@
 		matches = ve.getProp( this.modelsByTag, 0, nodeName ) || [];
 		// No need to track winningName because the individual arrays in modelsByTag are
 		// already sorted correctly
-		for ( i = 0; i < matches.length; i++ ) {
-			m = this.registry[ matches[ i ] ];
+		for ( let i = 0; i < matches.length; i++ ) {
+			const m = this.registry[ matches[ i ] ];
 			// Only process this one if it doesn't specify types
 			// If it does specify types, then we've either already processed it in the
 			// tag+type step above, or its type rule doesn't match
@@ -470,8 +466,8 @@
 		// These are the only rules that can still qualify at this point, the others we've either
 		// already processed or have a type or tag rule that disqualifies them
 		matches = ve.getProp( this.modelsByTypeAndTag, 0, '', '' ) || [];
-		for ( i = 0; i < matches.length; i++ ) {
-			m = this.registry[ matches[ i ] ];
+		for ( let i = 0; i < matches.length; i++ ) {
+			const m = this.registry[ matches[ i ] ];
 			if ( allTypesAllowed( m ) ) {
 				return matches[ i ];
 			}

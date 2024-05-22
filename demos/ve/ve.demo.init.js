@@ -121,8 +121,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 		// HACK: Re-initialize page to load message files
 		ve.init.target.teardownToolbar();
 		ve.init.platform.initialize().done( function () {
-			let i;
-			for ( i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
+			for ( let i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
 				ve.demo.surfaceContainers[ i ].reload( currentLang, currentDir );
 			}
 		} );

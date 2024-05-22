@@ -189,9 +189,8 @@ ve.dm.TransactionSquasher.prototype.processRetain = function ( maxLength ) {
 		throw new Error( 'Past end of transaction' );
 	}
 
-	let len;
 	if ( this.op.type === 'retain' ) {
-		len = Math.min( maxLength, this.op.length - this.offset );
+		const len = Math.min( maxLength, this.op.length - this.offset );
 		this.offset += len;
 		this.globalOffset += len;
 		this.attributeOperations = {};
@@ -199,7 +198,7 @@ ve.dm.TransactionSquasher.prototype.processRetain = function ( maxLength ) {
 	}
 	if ( this.op.type === 'replace' ) {
 		// Apply annotation changes to inserted content
-		len = Math.min( maxLength, this.op.insert.length - this.offset );
+		const len = Math.min( maxLength, this.op.insert.length - this.offset );
 
 		// There is never any need to adjust spliceAt, because the splices are always
 		// applied in the same order in which they were generated
@@ -237,12 +236,10 @@ ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
 	if ( !this.op ) {
 		throw new Error( 'Past end of transaction' );
 	}
-	let removal;
-	let len;
 	if ( this.op.type === 'retain' ) {
 		this.splitIfInterior();
 		// Now we must be at the start of a retain
-		len = Math.min( items.length, this.op.length );
+		const len = Math.min( items.length, this.op.length );
 		this.op.length -= len;
 		if ( this.op.length === 0 ) {
 			tryUnsplit = true;
@@ -251,7 +248,7 @@ ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
 			// this.op may become undefined; ok
 			this.op = this.operations[ this.index ];
 		}
-		removal = items.slice( 0, len );
+		const removal = items.slice( 0, len );
 		if ( this.offset === 0 && this.op && this.op.type === 'replace' ) {
 			// If we're at the start of a replace op, prepend to it
 			ve.batchSplice(
@@ -283,9 +280,9 @@ ve.dm.TransactionSquasher.prototype.processRemove = function ( items ) {
 	}
 	if ( this.op.type === 'replace' ) {
 		// Check removal against insertion, then cancel them out
-		len = Math.min( items.length, this.op.insert.length - this.offset );
+		const len = Math.min( items.length, this.op.insert.length - this.offset );
 		// len must be greater than zero, since we're not at the end of this op
-		removal = items.slice( 0, len );
+		const removal = items.slice( 0, len );
 		for ( let i = 0; i < len; i++ ) {
 			if ( !this.constructor.static.equalItems(
 				removal[ i ],

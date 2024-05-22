@@ -714,10 +714,9 @@ ve.getDomElementSummary = function ( element, includeHtml, getAttributeSummary )
 		summary.html = element.outerHTML;
 	}
 
-	let i;
 	// Gather attributes
 	if ( element.attributes ) {
-		for ( i = 0; i < element.attributes.length; i++ ) {
+		for ( let i = 0; i < element.attributes.length; i++ ) {
 			const name = element.attributes[ i ].name;
 			if ( name === 'about' ) {
 				// The about attribute is non-deterministic as we generate a new random
@@ -731,7 +730,7 @@ ve.getDomElementSummary = function ( element, includeHtml, getAttributeSummary )
 	}
 	// Summarize children
 	if ( element.childNodes ) {
-		for ( i = 0; i < element.childNodes.length; i++ ) {
+		for ( let i = 0; i < element.childNodes.length; i++ ) {
 			summary.children.push( ve.getDomElementSummary( element.childNodes[ i ], includeHtml ) );
 		}
 	}
@@ -952,11 +951,10 @@ ve.getCommonAncestor = function ( ...nodes ) {
 	}
 	let minHeight = null;
 	const chains = [];
-	let i, node;
 	// Build every chain
-	for ( i = 0; i < nodeCount; i++ ) {
+	for ( let i = 0; i < nodeCount; i++ ) {
 		const chain = [];
-		node = nodes[ i ];
+		let node = nodes[ i ];
 		while ( node !== null ) {
 			chain.unshift( node );
 			node = node.parentNode;
@@ -978,8 +976,8 @@ ve.getCommonAncestor = function ( ...nodes ) {
 	// Step through chains in parallel, until they differ.
 	// All chains are guaranteed to start with the common document element (or the common root
 	// of an unattached branch)
-	for ( i = 1; i < minHeight; i++ ) {
-		node = chains[ 0 ][ i ];
+	for ( let i = 1; i < minHeight; i++ ) {
+		const node = chains[ 0 ][ i ];
 		for ( let j = 1; j < nodeCount; j++ ) {
 			if ( node !== chains[ j ][ i ] ) {
 				return chains[ 0 ][ i - 1 ];

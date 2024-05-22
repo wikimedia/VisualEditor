@@ -1228,14 +1228,13 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 		store = this.getStore(),
 		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
 
-	let i, len;
 	let emptySet, setToRemove;
 	if ( rules.plainText ) {
 		emptySet = new ve.dm.AnnotationSet( store );
 	} else {
 		if ( rules.removeOriginalDomElements ) {
 			// Remove originalDomElements from annotations
-			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
+			for ( let i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
 				const ann = allAnnotations.get( i );
 				if ( ann.element.originalDomElementsHash !== undefined ) {
 					// This changes the hash of the value, so we have to
@@ -1269,7 +1268,7 @@ ve.dm.ElementLinearData.prototype.sanitize = function ( rules ) {
 	}
 
 	let contentElement;
-	for ( i = 0, len = this.getLength(); i < len; i++ ) {
+	for ( let i = 0, len = this.getLength(); i < len; i++ ) {
 		if ( this.isElementData( i ) ) {
 			let type = this.getType( i );
 			const canContainContent = ve.dm.nodeFactory.canNodeContainContent( type );

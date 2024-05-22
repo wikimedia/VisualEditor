@@ -117,11 +117,10 @@ ve.dm.Change.static.deserialize = function ( data, preserveStoreValues, unsafe )
 	 * @param {string[]|null} annotations Annotations to apply uniformly, or null
 	 */
 	function annotate( items, annotations ) {
-		let j, jLen;
 		if ( !annotations || !annotations.length ) {
 			return;
 		}
-		for ( j = 0, jLen = items.length; j < jLen; j++ ) {
+		for ( let j = 0, jLen = items.length; j < jLen; j++ ) {
 			items[ j ] = [ items[ j ], annotations.slice() ];
 		}
 	}

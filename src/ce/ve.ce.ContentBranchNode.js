@@ -284,9 +284,8 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		current = nodeStack.pop();
 	};
 
-	let i, ilen;
 	// Gather annotated HTML from the child nodes
-	for ( i = 0, ilen = this.children.length; i < ilen; i++ ) {
+	for ( let i = 0, ilen = this.children.length; i < ilen; i++ ) {
 		annotatedHtml = annotatedHtml.concat( this.children[ i ].getAnnotatedHtml() );
 	}
 
@@ -313,6 +312,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	} else {
 		unicornInfo.hasCursor = true;
 		let offset = 0;
+		let i, ilen;
 		for ( i = 0, ilen = annotatedHtml.length; i < ilen; i++ ) {
 			const htmlItem = annotatedHtml[ i ][ 0 ];
 			const childLength = ( typeof htmlItem === 'string' ) ? 1 : 2;
@@ -337,7 +337,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 	}
 
 	// Render HTML with annotations
-	for ( i = 0, ilen = annotatedHtml.length; i < ilen; i++ ) {
+	for ( let i = 0, ilen = annotatedHtml.length; i < ilen; i++ ) {
 		let item;
 		let itemAnnotations;
 		if ( Array.isArray( annotatedHtml[ i ] ) ) {

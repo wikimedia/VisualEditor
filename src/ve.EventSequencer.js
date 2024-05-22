@@ -289,12 +289,11 @@ ve.EventSequencer.prototype.afterEvent = function ( eventName, ev ) {
 	// One-time listener list: take snapshot (for immutability) and blank the list
 	const afterOneListeners = ( this.afterOneListenersForEvent[ eventName ] || [] ).splice( 0 );
 
-	let i, len;
-	for ( i = 0, len = afterListeners.length; i < len; i++ ) {
+	for ( let i = 0, len = afterListeners.length; i < len; i++ ) {
 		this.callListener( 'after', eventName, i, afterListeners[ i ], ev );
 	}
 
-	for ( i = 0, len = afterOneListeners.length; i < len; i++ ) {
+	for ( let i = 0, len = afterOneListeners.length; i < len; i++ ) {
 		this.callListener( 'afterOne', eventName, i, afterOneListeners[ i ], ev );
 	}
 };
@@ -329,12 +328,11 @@ ve.EventSequencer.prototype.doAfterLoop = function ( myTimeoutId ) {
 	// One-time loop listener list: take snapshot (for immutability) and blank the list
 	const afterLoopOneListeners = this.afterLoopOneListeners.splice( 0 );
 
-	let i, len;
-	for ( i = 0, len = afterLoopListeners.length; i < len; i++ ) {
+	for ( let i = 0, len = afterLoopListeners.length; i < len; i++ ) {
 		this.callListener( 'afterLoop', null, i, this.afterLoopListeners[ i ], null );
 	}
 
-	for ( i = 0, len = afterLoopOneListeners.length; i < len; i++ ) {
+	for ( let i = 0, len = afterLoopOneListeners.length; i < len; i++ ) {
 		this.callListener( 'afterLoopOne', null, i, afterLoopOneListeners[ i ], null );
 	}
 	this.doneOnLoop = false;

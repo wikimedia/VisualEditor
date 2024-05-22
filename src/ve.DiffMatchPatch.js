@@ -226,11 +226,10 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 			return typeof value === 'string' && /^\s+$/.test( value );
 		}
 
-		let i, ilen, action, data;
 		// Where the same data is removed and inserted, replace it with a retain
-		for ( i = 0; i < diff.length; i++ ) {
-			action = diff[ i ][ 0 ];
-			data = diff[ i ][ 1 ];
+		for ( let i = 0; i < diff.length; i++ ) {
+			const action = diff[ i ][ 0 ];
+			const data = diff[ i ][ 1 ];
 			// Should improve on JSON.stringify
 			if ( ( action > 0 || previousAction > 0 ) && action + previousAction === 0 && JSON.stringify( data ) === JSON.stringify( previousData ) ) {
 				diff.splice( i - 1, 2, [ DIFF_EQUAL, data ] );
@@ -243,8 +242,8 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		previousAction = null;
 
 		// Join any consecutive actions that are the same
-		for ( i = 0; i < diff.length; i++ ) {
-			action = diff[ i ][ 0 ];
+		for ( let i = 0; i < diff.length; i++ ) {
+			const action = diff[ i ][ 0 ];
 			if ( action === previousAction ) {
 				diff[ i - 1 ][ 1 ] = diff[ i - 1 ][ 1 ].concat( diff[ i ][ 1 ] );
 				diff.splice( i, 1 );
@@ -259,9 +258,9 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 
 		// Convert any retains that do not end and start with spaces into remove-
 		// inserts
-		for ( i = 0; i < diff.length; i++ ) {
-			action = diff[ i ][ 0 ];
-			data = diff[ i ][ 1 ];
+		for ( let i = 0; i < diff.length; i++ ) {
+			const action = diff[ i ][ 0 ];
+			const data = diff[ i ][ 1 ];
 			if ( action === DIFF_EQUAL ) {
 				let start = [];
 				let end = [];
@@ -314,9 +313,9 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 
 		// In a sequence of -remove-insert-remove-insert- make the removes into a
 		// single action and the inserts into a single action
-		for ( i = 0, ilen = diff.length; i < ilen; i++ ) {
-			action = diff[ i ][ 0 ];
-			data = diff[ i ][ 1 ];
+		for ( let i = 0, ilen = diff.length; i < ilen; i++ ) {
+			const action = diff[ i ][ 0 ];
+			const data = diff[ i ][ 1 ];
 			if ( action === DIFF_DELETE ) {
 				remove = remove.concat( data );
 			} else if ( action === DIFF_INSERT ) {
@@ -349,7 +348,7 @@ ve.DiffMatchPatch.prototype.getCleanDiff = function ( oldData, newData, options 
 		// Now go over any consecutive remove-inserts (also insert-removes?) and
 		// if they have the same character data, or are modified content nodes,
 		// make them changes instead
-		for ( i = 0, ilen = cleanDiff.length - 1; i < ilen; i++ ) {
+		for ( let i = 0, ilen = cleanDiff.length - 1; i < ilen; i++ ) {
 			const aItem = cleanDiff[ i ];
 			const bItem = cleanDiff[ i + 1 ];
 			const aData = aItem[ 1 ];

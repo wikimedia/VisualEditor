@@ -53,15 +53,14 @@ ve.ce.TableDeleteKeyDownHandler.static.execute = function ( surface, e ) {
 		return true;
 	}
 
-	let i, l;
-	for ( i = 0, l = cells.length; i < l; i++ ) {
+	for ( let i = 0, l = cells.length; i < l; i++ ) {
 		if ( cells[ i ].node.isCellEditable() ) {
 			// Create auto-updating fragments from ranges
 			fragments.push( surfaceModel.getLinearFragment( cells[ i ].node.getRange(), true ) );
 		}
 	}
 
-	for ( i = 0, l = fragments.length; i < l; i++ ) {
+	for ( let i = 0, l = fragments.length; i < l; i++ ) {
 		// Replace contents with empty wrapper paragraphs
 		fragments[ i ].insertContent( [
 			{ type: 'paragraph', internal: { generated: 'wrapper' } },

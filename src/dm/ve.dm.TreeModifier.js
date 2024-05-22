@@ -161,14 +161,13 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 	}
 
 	function ensureText( position ) {
-		let pre, post, newNode,
-			node = position.node,
+		let node = position.node,
 			offset = position.offset;
 		if ( node.type === 'text' ) {
 			return position;
 		}
-		pre = node.children[ offset - 1 ];
-		post = node.children[ offset ];
+		const pre = node.children[ offset - 1 ];
+		const post = node.children[ offset ];
 		if ( post && post.type === 'text' ) {
 			// Prefer post to pre, because we might want to remove text. (We shouldn't
 			// really have two adjacent text nodes, though)
@@ -181,7 +180,7 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 		if ( !node.hasChildren() ) {
 			throw new Error( 'Cannot add a child to ' + node.type + ' node' );
 		}
-		newNode = new ve.dm.TextNode( 0 );
+		const newNode = new ve.dm.TextNode( 0 );
 		splice( node, offset, 0, newNode );
 		return { node: newNode, offset: 0 };
 	}
@@ -326,16 +325,15 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 
 	// Always adjust linear data before tree, to ensure consistency when node events
 	// are emitted.
-	let data;
-	let adjustment;
 	switch ( treeOp.type ) {
-		case 'removeNode':
+		case 'removeNode': {
 			// The node should have no contents, so its outer length should be 2
-			data = spliceLinear( a.linearOffset, 2 );
+			const data = spliceLinear( a.linearOffset, 2 );
 			this.checkEqualData( data, [ treeOp.element, { type: '/' + treeOp.element.type } ] );
 			splice( a.node, a.offset, 1 );
 			healTextNodes( a.node, a.offset );
 			break;
+		}
 		case 'insertNode': {
 			spliceLinear( a.linearOffset, 0, [ treeOp.element, { type: '/' + treeOp.element.type } ] );
 			const nodeToInsert = ve.dm.nodeFactory.createFromElement( treeOp.element );
@@ -346,33 +344,36 @@ ve.dm.TreeModifier.static.applyTreeOperation = function ( isReversed, document, 
 			break;
 		}
 		case 'moveNode': {
-			data = spliceLinear( f.linearOffset, f.node.children[ f.offset ].getOuterLength() );
+			const data = spliceLinear( f.linearOffset, f.node.children[ f.offset ].getOuterLength() );
 			// No need to use local splice function as we know the node is going
 			// to be re-inserted immediately.
 			const movedNode = f.node.splice( f.offset, 1 )[ 0 ];
-			adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
+			const adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
 			spliceLinear( t.linearOffset - adjustment, 0, data );
 			t.node.splice( t.offset, 0, movedNode );
 			break;
 		}
-		case 'removeText':
-			data = spliceLinear( a.linearOffset, treeOp.data.length );
+		case 'removeText': {
+			const data = spliceLinear( a.linearOffset, treeOp.data.length );
 			this.checkEqualData( data, treeOp.data );
 			a.node.adjustLength( -treeOp.data.length );
 			healTextNodes( a.node.parent, a.node.parent.children.indexOf( a.node ) );
 			break;
-		case 'insertText':
+		}
+		case 'insertText': {
 			spliceLinear( a.linearOffset, 0, treeOp.data );
 			a.node.adjustLength( treeOp.data.length );
 			break;
-		case 'moveText':
-			data = spliceLinear( f.linearOffset, treeOp.length );
+		}
+		case 'moveText': {
+			const data = spliceLinear( f.linearOffset, treeOp.length );
 			f.node.adjustLength( -treeOp.length );
 			healTextNodes( f.node.parent, f.node.parent.children.indexOf( f.node ) );
-			adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
+			const adjustment = t.linearOffset > f.linearOffset ? data.length : 0;
 			spliceLinear( t.linearOffset - adjustment, 0, data );
 			t.node.adjustLength( treeOp.length );
 			break;
+		}
 		default:
 			throw new Error( 'Unknown tree op type: ' + treeOp.type );
 	}
@@ -632,7 +633,7 @@ ve.dm.TreeModifier.prototype.processRetain = function ( maxLength ) {
 				inserterStep = inserter.stepOut();
 				if ( inserterStep.item.type !== removerStep.item.type ) {
 					throw new Error( 'Expected ' + removerStep.item.type + ', not ' +
-		inserterStep.item.type );
+						inserterStep.item.type );
 				}
 			}
 			this.pushRemoveLastIfInDeletions();

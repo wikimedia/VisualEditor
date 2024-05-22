@@ -172,15 +172,15 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 	 * @return {number} Number of elements of newArray not in oldArray
 	 */
 	function countMissing( newArray, oldArray, equals ) {
-		let i2, i2Len, j2, j2Len,
-			count = 0;
-		for ( i2 = 0, i2Len = newArray.length; i2 < i2Len; i2++ ) {
-			for ( j2 = 0, j2Len = oldArray.length; j2 < j2Len; j2++ ) {
-				if ( equals( newArray[ i2 ], oldArray[ j2 ] ) ) {
+		let count = 0;
+		for ( let i = 0, iLen = newArray.length; i < iLen; i++ ) {
+			let j, jLen;
+			for ( j = 0, jLen = oldArray.length; j < jLen; j++ ) {
+				if ( equals( newArray[ i ], oldArray[ j ] ) ) {
 					break;
 				}
 			}
-			if ( j2 === j2Len ) {
+			if ( j === jLen ) {
 				count++;
 			}
 		}
@@ -199,9 +199,6 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		return null;
 	}
 
-	let i, iLen;
-	let oldChunk, newChunk;
-
 	// Count matching characters with matching annotations at start/end of the changed chunks.
 	// During typical typing, there is a single changed chunk with matching start/end chars.
 	let textStart = 0;
@@ -212,9 +209,10 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		// newChunks[ change.start ] . If they have matching annotations, then matching
 		// characters at their start are also part of the unchanged start region.
 		if ( oldChunks[ change.start ].hasEqualElements( newChunks[ change.start ] ) ) {
-			oldChunk = oldChunks[ change.start ];
-			newChunk = newChunks[ change.start ];
-			iLen = Math.min( oldChunk.text.length, newChunk.text.length );
+			const oldChunk = oldChunks[ change.start ];
+			const newChunk = newChunks[ change.start ];
+			const iLen = Math.min( oldChunk.text.length, newChunk.text.length );
+			let i;
 			for ( i = 0; i < iLen; i++ ) {
 				if ( oldChunk.text[ i ] !== newChunk.text[ i ] ) {
 					break;
@@ -231,20 +229,21 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		if ( oldChunks[ oldChunks.length - 1 - change.end ].hasEqualElements(
 			newChunks[ newChunks.length - 1 - change.end ]
 		) ) {
-			oldChunk = oldChunks[ oldChunks.length - 1 - change.end ];
-			newChunk = newChunks[ newChunks.length - 1 - change.end ];
+			const oldChunk = oldChunks[ oldChunks.length - 1 - change.end ];
+			const newChunk = newChunks[ newChunks.length - 1 - change.end ];
 			// However, if only one chunk has changed in oldChunks/newChunks, then
 			// oldChunk/newChunk is also the *first* changed chunk, in which case
 			// textStart has already eaten into that chunk; so take care not to
 			// overlap it. (For example, for 'ana'->'anna', textStart will be 2 so
 			// we want to limit textEnd to 1, else the 'n' of 'ana' will be counted
 			// twice).
-			iLen = Math.min(
+			const iLen = Math.min(
 				oldChunk.text.length -
 				( change.start + change.end === oldChunks.length - 1 ? textStart : 0 ),
 				newChunk.text.length -
 				( change.start + change.end === newChunks.length - 1 ? textStart : 0 )
 			);
+			let i;
 			for ( i = 0; i < iLen; i++ ) {
 				if ( newChunk.text[ newChunk.text.length - 1 - i ] !==
 					oldChunk.text[ oldChunk.text.length - 1 - i ]
@@ -258,22 +257,20 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 
 	// Starting just inside the node, skip past matching chunks at the array starts
 	let changeOffset = modelOffset + 1;
-	for ( i = 0, iLen = change.start; i < iLen; i++ ) {
+	for ( let i = 0, iLen = change.start; i < iLen; i++ ) {
 		changeOffset += oldChunks[ i ].text.length;
 	}
 
 	// Calculate range of old content to remove
 	let removed = 0;
-	for ( i = change.start, iLen = oldChunks.length - change.end; i < iLen; i++ ) {
+	for ( let i = change.start, iLen = oldChunks.length - change.end; i < iLen; i++ ) {
 		removed += oldChunks[ i ].text.length;
 	}
 	const removeRange = new ve.Range( changeOffset + textStart, changeOffset + removed - textEnd );
 
-	let j, jLen;
-
 	// Prepare new content, reusing existing ve.dm.Annotation objects where possible
-	for ( i = change.start, iLen = newChunks.length - change.end; i < iLen; i++ ) {
-		newChunk = newChunks[ i ];
+	for ( let i = change.start, iLen = newChunks.length - change.end; i < iLen; i++ ) {
+		const newChunk = newChunks[ i ];
 		if ( newChunk.type === 'unicorn' ) {
 			// Unicorns don't exist in the model
 			continue;
@@ -320,8 +317,8 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 		// Search for exact match first. During typical typing there is an exact
 		// match at j=1 (or j=0 if there is no previous chunk).
 		let matchOffset = matchStartOffset;
-		for ( j = jStart; j < jEnd; j++ ) {
-			oldChunk = oldChunks[ j ];
+		for ( let j = jStart; j < jEnd; j++ ) {
+			const oldChunk = oldChunks[ j ];
 			if ( !oldChunk.hasEqualElements( newChunk ) ) {
 				matchOffset += oldChunk.text.length;
 				continue;
@@ -350,8 +347,8 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			let leastMissing = newChunk.elements.length;
 			let bestOffset = null;
 			matchOffset = matchStartOffset;
-			for ( j = jStart; j < jEnd; j++ ) {
-				oldChunk = oldChunks[ j ];
+			for ( let j = jStart; j < jEnd; j++ ) {
+				const oldChunk = oldChunks[ j ];
 				missing = countMissing(
 					newChunk.elements,
 					oldChunk.elements,
@@ -382,7 +379,7 @@ ve.ce.TextState.prototype.getChangeTransaction = function ( prev, modelDoc, mode
 			// directionality spans; in other situations it would be cleaner to
 			// duplicate.
 			annotations = new ve.dm.AnnotationSet( modelData.getStore() );
-			for ( j = 0, jLen = newChunk.elements.length; j < jLen; j++ ) {
+			for ( let j = 0, jLen = newChunk.elements.length; j < jLen; j++ ) {
 				const element = newChunk.elements[ j ];
 				// Recover the node from jQuery data store. This can only break if the browser
 				// completely rebuilds the node, but should work in cases like typing into

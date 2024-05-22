@@ -54,9 +54,8 @@ ve.serializeNodeDebug = function ( domNode ) {
 		}
 		// else node.nodeType === Node.ELEMENT_NODE
 
-		let i, len;
 		html.push( '<', ve.escapeHtml( node.nodeName.toLowerCase() ) );
-		for ( i = 0, len = node.attributes.length; i < len; i++ ) {
+		for ( let i = 0, len = node.attributes.length; i < len; i++ ) {
 			const attr = node.attributes[ i ];
 			html.push(
 				' ',
@@ -68,7 +67,7 @@ ve.serializeNodeDebug = function ( domNode ) {
 			);
 		}
 		html.push( '>' );
-		for ( i = 0, len = node.childNodes.length; i < len; i++ ) {
+		for ( let i = 0, len = node.childNodes.length; i < len; i++ ) {
 			add( node.childNodes[ i ] );
 		}
 		html.push( '</', ve.escapeHtml( node.nodeName.toLowerCase() ), '>' );

@@ -321,9 +321,9 @@ ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) 
 			group.firstNodes[ index ] = node;
 		}
 	} else {
-		let i, len;
 		// TODO: We could use binary search insertion sort
 		const start = node.getRange().start;
+		let i, len;
 		for ( i = 0, len = keyedNodes.length; i < len; i++ ) {
 			if ( start < keyedNodes[ i ].getRange().start ) {
 				break;
@@ -455,11 +455,10 @@ ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
 		newItemRanges = [],
 		mapping = {};
 
-	let i;
-	for ( i = 0; i < commonLength; i++ ) {
+	for ( let i = 0; i < commonLength; i++ ) {
 		mapping[ i ] = i;
 	}
-	for ( i = commonLength; i < listLen; i++ ) {
+	for ( let i = commonLength; i < listLen; i++ ) {
 		// Try to find i in list.keyIndexes
 		let key = null;
 		for ( const k in list.keyIndexes ) {

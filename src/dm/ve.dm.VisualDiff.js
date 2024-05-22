@@ -225,9 +225,8 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 
 	// STEP 1: Find identical nodes
 
-	let j, jlen;
 	for ( let i = 0, ilen = oldNodes.length; i < ilen; i++ ) {
-		for ( j = 0, jlen = newNodes.length; j < jlen; j++ ) {
+		for ( let j = 0, jlen = newNodes.length; j < jlen; j++ ) {
 			if ( !Object.prototype.hasOwnProperty.call( diff.newToOld, j ) &&
 				this.constructor.static.compareNodes( oldNodes[ i ], newNodes[ j ] )
 			) {
@@ -242,7 +241,7 @@ ve.dm.VisualDiff.prototype.diffList = function ( oldNodes, newNodes ) {
 		}
 	}
 
-	for ( j = 0; j < jlen; j++ ) {
+	for ( let j = 0, jlen = newNodes.length; j < jlen; j++ ) {
 		if ( !Object.prototype.hasOwnProperty.call( diff.newToOld, j ) ) {
 			newNodesToDiff.push( j );
 		}
@@ -296,6 +295,8 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 		up = 'up',
 		down = 'down';
 
+	const getIndex = ( obj ) => typeof obj === 'number' ? obj : obj.node;
+
 	// See https://en.wikipedia.org/wiki/Longest_increasing_subsequence
 	function longestIncreasingSubsequence( sequence ) {
 		let currentLength = 0,
@@ -312,9 +313,8 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 
 		finalIndices[ 0 ] = 0;
 
-		let j, jlen;
 		// Perform algorithm (i.e. populate finalIndices and previousIndices)
-		for ( j = 0, jlen = sequence.length; j < jlen; j++ ) {
+		for ( let j = 0, jlen = sequence.length; j < jlen; j++ ) {
 			let low = 1;
 			let high = currentLength;
 			while ( low <= high ) {
@@ -336,9 +336,8 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 		// Items in the longest increasing subsequence are oldDoc indices of unmoved nodes.
 		// Mark corresponding newDoc indices of these unmoved nodes, in mvs array.
 		let k = finalIndices[ currentLength ];
-		for ( j = currentLength, jlen = 0; j > jlen; j-- ) {
-			let newIndex = oldToNew[ sequence[ k ] ];
-			newIndex = typeof newIndex === 'number' ? newIndex : newIndex.node;
+		for ( let j = currentLength, jlen = 0; j > jlen; j-- ) {
+			const newIndex = getIndex( oldToNew[ sequence[ k ] ] );
 			mvs[ newIndex ] = unmoved;
 			k = previousIndices[ k ];
 		}
@@ -348,10 +347,9 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 
 	// Get oldDoc indices, sorted according to their order in the new doc
 	const sortedKeys = Object.keys( newToOld ).sort( ( a, b ) => Number( a ) - Number( b ) );
-	let i, ilen;
-	for ( i = 0, ilen = sortedKeys.length; i < ilen; i++ ) {
-		const oldIndex = newToOld[ sortedKeys[ i ] ];
-		oldPermuted.push( typeof oldIndex === 'number' ? oldIndex : oldIndex.node );
+	for ( let i = 0, ilen = sortedKeys.length; i < ilen; i++ ) {
+		const oldIndex = getIndex( newToOld[ sortedKeys[ i ] ] );
+		oldPermuted.push( oldIndex );
 	}
 
 	// Record which newDoc nodes have NOT moved. NB nodes inserted at the end of the
@@ -360,9 +358,8 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 
 	// Record whether the remaining newDoc nodes have moved up or down
 	// (or not at all, e.g. if they are an insert)
-	ilen = Number( sortedKeys[ sortedKeys.length - 1 ] ) + 1;
-	let latestUnmoved, latestUnmovedIndex, nodeIndex;
-	for ( i = 0; i < ilen; i++ ) {
+	let latestUnmoved;
+	for ( let i = 0; i < Number( sortedKeys[ sortedKeys.length - 1 ] ) + 1; i++ ) {
 		if ( !( i in newToOld ) ) {
 			// This node must be an insert, so wasn't moved
 			moves[ i ] = unmoved;
@@ -378,10 +375,8 @@ ve.dm.VisualDiff.prototype.calculateDiffMoves = function ( oldToNew, newToOld ) 
 				// If this node's oldDoc index is higher than the latest unmoved
 				// node's oldDoc index, then it must have moved up; otherwise it
 				// must have moved down
-				nodeIndex = newToOld[ i ];
-				nodeIndex = typeof nodeIndex === 'number' ? nodeIndex : nodeIndex.node;
-				latestUnmovedIndex = newToOld[ latestUnmoved ];
-				latestUnmovedIndex = typeof latestUnmovedIndex === 'number' ? latestUnmovedIndex : latestUnmovedIndex.node;
+				const nodeIndex = getIndex( newToOld[ i ] );
+				const latestUnmovedIndex = getIndex( newToOld[ latestUnmoved ] );
 				moves[ i ] = nodeIndex > latestUnmovedIndex ? up : down;
 			}
 		}
@@ -999,10 +994,9 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 		return internalListItems;
 	}
 
-	let group;
 	// Find all groups common to old and new docs
 	// Also find inserted groups
-	for ( group in newDocNodeGroups ) {
+	for ( const group in newDocNodeGroups ) {
 		if ( group in oldDocNodeGroups ) {
 			groups.push( {
 				group: group,
@@ -1017,7 +1011,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 	}
 
 	// Find removed groups
-	for ( group in oldDocNodeGroups ) {
+	for ( const group in oldDocNodeGroups ) {
 		if ( !( group in newDocNodeGroups ) ) {
 			groups.push( {
 				group: group,
@@ -1028,7 +1022,7 @@ ve.dm.VisualDiff.prototype.getInternalListDiff = function ( oldInternalList, new
 
 	// Diff the internal list items for each group
 	for ( let i = 0, ilen = groups.length; i < ilen; i++ ) {
-		group = groups[ i ];
+		const group = groups[ i ];
 
 		let diff = null;
 		switch ( group.action ) {

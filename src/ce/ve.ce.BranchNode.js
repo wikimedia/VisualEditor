@@ -224,10 +224,9 @@ ve.ce.BranchNode.prototype.onSplice = function ( index, deleteCount, ...modelNod
 		// And fare thee weel a while
 		view.destroy();
 	} );
-	let i;
 	if ( viewNodes.length ) {
 		const fragment = document.createDocumentFragment();
-		for ( i = viewNodes.length - 1; i >= 0; i-- ) {
+		for ( let i = viewNodes.length - 1; i >= 0; i-- ) {
 			viewNodes[ i ].attach( this );
 			for ( let j = viewNodes[ i ].$element.length - 1; j >= 0; j-- ) {
 				fragment.insertBefore( viewNodes[ i ].$element[ j ], fragment.childNodes[ 0 ] || null );
@@ -241,7 +240,7 @@ ve.ce.BranchNode.prototype.onSplice = function ( index, deleteCount, ...modelNod
 				position.node.children[ position.offset ] || null
 			);
 		}
-		for ( i = viewNodes.length - 1; i >= 0; i-- ) {
+		for ( let i = viewNodes.length - 1; i >= 0; i-- ) {
 			if ( this.live !== viewNodes[ i ].isLive() ) {
 				viewNodes[ i ].setLive( this.live );
 			}

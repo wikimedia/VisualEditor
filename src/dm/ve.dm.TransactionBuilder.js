@@ -592,9 +592,8 @@ ve.dm.TransactionBuilder.static.newFromWrap = function ( doc, range, unwrapOuter
 
 	// Function to generate arrays of closing elements in reverse order
 	function closingArray( openings ) {
-		let j, jlen,
-			closings = [];
-		for ( j = 0, jlen = openings.length; j < jlen; j++ ) {
+		const closings = [];
+		for ( let j = 0, jlen = openings.length; j < jlen; j++ ) {
 			closings[ closings.length ] = { type: '/' + openings[ jlen - j - 1 ].type };
 		}
 		return closings;
