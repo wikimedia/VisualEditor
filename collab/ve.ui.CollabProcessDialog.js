@@ -127,16 +127,15 @@ ve.ui.HostCollabProcessDialog.prototype.onButtonClick = function () {
 	this.initButton.setDisabled( true );
 	this.pushPending();
 
-	const dialog = this;
 	ve.collab.initPeerServer();
 	const collabUrl = new URL( location.href );
 	ve.collab.peerServer.peer.on( 'open', ( newId ) => {
 		collabUrl.searchParams.set( 'collabSession', newId );
-		dialog.copyTextLayout.textInput.setValue( collabUrl );
-		dialog.stack.setItem( dialog.copyPanel );
-		dialog.updateSize();
-		dialog.copyTextLayout.button.focus();
-		dialog.popPending();
+		this.copyTextLayout.textInput.setValue( collabUrl );
+		this.stack.setItem( this.copyPanel );
+		this.updateSize();
+		this.copyTextLayout.button.focus();
+		this.popPending();
 	} );
 };
 

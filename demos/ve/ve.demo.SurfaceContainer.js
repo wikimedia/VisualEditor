@@ -12,8 +12,6 @@
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, dir ) {
-	const container = this;
-
 	// Parent constructor
 	ve.demo.SurfaceContainer.super.call( this );
 
@@ -53,7 +51,7 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 		value: true
 	} );
 	const $exitReadButton = $( '<a>' ).attr( 'href', '#' ).text( 'Back to editor' ).on( 'click', () => {
-		container.modeSelect.selectItemByData( 'visual' );
+		this.modeSelect.selectItemByData( 'visual' );
 		return false;
 	} );
 
@@ -84,26 +82,26 @@ ve.demo.SurfaceContainer = function VeDemoSurfaceContainer( target, page, lang, 
 
 	// Events
 	this.pageMenu.on( 'select', ( item ) => {
-		container.change( 'visual', item.getData() );
-		container.modeSelect.selectItemByData( 'visual' );
+		this.change( 'visual', item.getData() );
+		this.modeSelect.selectItemByData( 'visual' );
 	} );
 	this.modeSelect.on( 'select', ( item ) => {
-		container.change( item.getData() );
+		this.change( item.getData() );
 	} );
 	removeButton.on( 'click', this.destroy.bind( this ) );
 	saveButton.on( 'click', this.save.bind( this ) );
 	diffButton.on( 'click', () => {
-		const windowAction = ve.ui.actionFactory.create( 'window', container.surface );
+		const windowAction = ve.ui.actionFactory.create( 'window', this.surface );
 		windowAction.open( 'diff', {
-			oldDoc: container.oldDoc,
-			newDoc: container.surface.model.documentModel
+			oldDoc: this.oldDoc,
+			newDoc: this.surface.model.documentModel
 		} );
 	} );
 	this.readOnlyToggle.on( 'change', ( val ) => {
-		container.surface.setReadOnly( val );
+		this.surface.setReadOnly( val );
 	} );
 	this.nullSelectionOnBlurToggle.on( 'change', ( val ) => {
-		container.surface.nullSelectionOnBlur = val;
+		this.surface.nullSelectionOnBlur = val;
 	} );
 
 	const $divider = $( '<span>' ).addClass( 've-demo-toolbar-divider' ).text( '\u00a0' );
@@ -180,7 +178,6 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 		return ve.createDeferred().resolve().promise();
 	}
 
-	const container = this;
 	let currentDir = 'ltr';
 
 	let closePromise, html;
@@ -213,35 +210,35 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
 			otherDir = currentDir === 'ltr' ? 'rtl' : 'ltr',
 			$editStylesheets = $( 'link[rel~=stylesheet]:not(.stylesheet-read):not(.stylesheet-' + otherDir + ')' );
 
-		if ( container.surface ) {
-			container.surface.destroy();
-			container.surface = null;
+		if ( this.surface ) {
+			this.surface.destroy();
+			this.surface = null;
 		}
 
 		// eslint-disable-next-line no-jquery/no-global-selector
 		$( '.ve-demo-targetToolbar' ).toggleClass( 'oo-ui-element-hidden', isRead );
-		container.$element.find( '.ve-demo-surfaceToolbar-edit' ).toggleClass( 'oo-ui-element-hidden', isRead );
-		container.$element.find( '.ve-demo-surfaceToolbar-read' ).toggleClass( 'oo-ui-element-hidden', !isRead );
+		this.$element.find( '.ve-demo-surfaceToolbar-edit' ).toggleClass( 'oo-ui-element-hidden', isRead );
+		this.$element.find( '.ve-demo-surfaceToolbar-read' ).toggleClass( 'oo-ui-element-hidden', !isRead );
 		$editStylesheets.prop( 'disabled', isRead );
 
 		switch ( mode ) {
 			case 'visual':
 			case 'source':
-				container.surfaceWrapper.toggle( true );
+				this.surfaceWrapper.toggle( true );
 				if ( page ) {
-					container.loadPage( page, mode );
+					this.loadPage( page, mode );
 				} else if ( html !== undefined ) {
-					container.loadHtml( html, mode );
+					this.loadHtml( html, mode );
 				}
 				break;
 
 			case 'read':
-				container.surfaceWrapper.toggle( false );
+				this.surfaceWrapper.toggle( false );
 				// eslint-disable-next-line no-jquery/no-slide
-				container.readView.$element.html( html ).css( 'direction', currentDir ).slideDown();
+				this.readView.$element.html( html ).css( 'direction', currentDir ).slideDown();
 				break;
 		}
-		container.mode = mode;
+		this.mode = mode;
 	} );
 };
 
@@ -252,18 +249,16 @@ ve.demo.SurfaceContainer.prototype.change = function ( mode, page ) {
  * @param {string} mode Edit mode
  */
 ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
-	const container = this;
-
 	this.page = page;
 
-	container.emit( 'changePage' );
+	this.emit( 'changePage' );
 
 	ve.init.platform.getInitializedPromise().done( () => {
 		// eslint-disable-next-line no-jquery/no-slide
-		( container.surface ? container.surface.$element.slideUp().promise() : ve.createDeferred().resolve().promise() ).done( () => {
+		( this.surface ? this.surface.$element.slideUp().promise() : ve.createDeferred().resolve().promise() ).done( () => {
 			const localMatch = page.match( /^localStorage\/(.+)$/ );
 			if ( localMatch ) {
-				container.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
+				this.loadHtml( localStorage.getItem( localMatch[ 1 ] ), mode );
 				return;
 			}
 			$.ajax( {
@@ -278,7 +273,7 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
 					pageHtml = result;
 				}
 
-				container.loadHtml( pageHtml, mode );
+				this.loadHtml( pageHtml, mode );
 			} );
 		} );
 	} );
@@ -291,7 +286,6 @@ ve.demo.SurfaceContainer.prototype.loadPage = function ( page, mode ) {
  * @param {string} mode Edit mode
  */
 ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
-	const container = this;
 	let restored = false;
 
 	if ( this.surface ) {
@@ -335,7 +329,7 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	}
 	this.autosaveToggle.on( 'change', ( val ) => {
 		if ( val ) {
-			surfaceModel.storeDocState( { page: container.page } );
+			surfaceModel.storeDocState( { page: this.page } );
 			surfaceModel.startStoringChanges();
 		} else {
 			surfaceModel.stopStoringChanges();
@@ -347,9 +341,9 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
 	// eslint-disable-next-line no-jquery/no-slide
 	this.surface.$element.css( 'display', 'none' ).slideDown().promise().done( () => {
 		// Check surface still exists
-		if ( container.surface ) {
-			container.surface.getView().emit( 'position' );
-			container.surface.getView().focus();
+		if ( this.surface ) {
+			this.surface.getView().emit( 'position' );
+			this.surface.getView().focus();
 		}
 	} );
 };
@@ -361,13 +355,11 @@ ve.demo.SurfaceContainer.prototype.loadHtml = function ( pageHtml, mode ) {
  * @param {string} dir Directionality
  */
 ve.demo.SurfaceContainer.prototype.reload = function ( lang, dir ) {
-	const container = this;
-
 	this.lang = lang;
 	this.dir = dir;
 
 	this.change( 'visual' ).done( () => {
-		container.loadHtml( container.surface.getHtml(), 'visual' );
+		this.loadHtml( this.surface.getHtml(), 'visual' );
 	} );
 };
 
@@ -375,15 +367,14 @@ ve.demo.SurfaceContainer.prototype.reload = function ( lang, dir ) {
  * Destroy the container
  */
 ve.demo.SurfaceContainer.prototype.destroy = function () {
-	const container = this;
 	// eslint-disable-next-line no-jquery/no-slide
 	this.$element.slideUp().promise().done( () => {
-		if ( container.surface ) {
-			container.surface.destroy();
+		if ( this.surface ) {
+			this.surface.destroy();
 		}
-		container.$element.remove();
+		this.$element.remove();
 	} );
-	ve.demo.surfaceContainers.splice( ve.demo.surfaceContainers.indexOf( container ), 1 );
+	ve.demo.surfaceContainers.splice( ve.demo.surfaceContainers.indexOf( this ), 1 );
 	this.emit( 'changePage' );
 };
 
