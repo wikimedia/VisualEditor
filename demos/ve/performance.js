@@ -12,10 +12,10 @@
 	/* eslint-enable no-jquery/no-global-selector */
 	// Set up the platform and wait for i18n messages to load
 	new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise()
-		.fail( function () {
+		.fail( () => {
 			$instance.text( 'Sorry, this browser is not supported.' );
 		} )
-		.done( function () {
+		.done( () => {
 			// Create the target
 			const target = new ve.init.sa.Target();
 
@@ -25,7 +25,7 @@
 			$.ajax( {
 				url: 'pages/very long.html',
 				dataType: 'text'
-			} ).done( function ( html ) {
+			} ).done( ( html ) => {
 				let htmlDomTimes = 0, domDmTimes = 0, dmDomTimes = 0, txTimes = 0;
 				const n = 50,
 					config = { lang: $.i18n().locale, dir: $( document.body ).css( 'direction' ) };

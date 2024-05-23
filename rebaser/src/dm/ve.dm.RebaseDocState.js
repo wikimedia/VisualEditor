@@ -63,7 +63,7 @@ ve.dm.RebaseDocState.static.newAuthorData = function () {
 
 ve.dm.RebaseDocState.prototype.getActiveAuthors = function () {
 	const result = {};
-	this.authors.forEach( function ( authorData, authorId ) {
+	this.authors.forEach( ( authorData, authorId ) => {
 		if ( authorData.active ) {
 			result[ authorId ] = {
 				name: authorData.name,
@@ -76,7 +76,7 @@ ve.dm.RebaseDocState.prototype.getActiveAuthors = function () {
 
 ve.dm.RebaseDocState.prototype.clearHistory = function () {
 	this.history = new ve.dm.Change();
-	this.authors.forEach( function ( authorData ) {
+	this.authors.forEach( ( authorData ) => {
 		authorData.continueBase = null;
 	} );
 };

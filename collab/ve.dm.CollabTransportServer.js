@@ -57,7 +57,7 @@ ve.dm.CollabTransportServer.prototype.onConnection = function ( conn ) {
 
 	context.broadcast = function ( type, data ) {
 		const serialized = ve.collab.serialize( data );
-		connections.forEach( function ( connection ) {
+		connections.forEach( ( connection ) => {
 			connection.send( { type: type, data: serialized } );
 		} );
 	};
@@ -65,7 +65,7 @@ ve.dm.CollabTransportServer.prototype.onConnection = function ( conn ) {
 		const serialized = ve.collab.serialize( data );
 		conn.send( { type: type, data: serialized } );
 	};
-	conn.on( 'data', function ( data ) {
+	conn.on( 'data', ( data ) => {
 		const type = data.type;
 		if ( type === 'submitChange' ) {
 			server.onSubmitChange( context, data.data );
@@ -79,9 +79,11 @@ ve.dm.CollabTransportServer.prototype.onConnection = function ( conn ) {
 			throw new Error( 'Unknown type "' + type + '"' );
 		}
 	} );
-	conn.on( 'open', function () {
-		server.welcomeClient( context, startHeight, function ( authorId ) {
-			return ve.init.platform.getUserName() || ve.msg( 'visualeditor-collab-user-placeholder', authorId );
-		} );
+	conn.on( 'open', () => {
+		server.welcomeClient(
+			context,
+			startHeight,
+			( authorId ) => ve.init.platform.getUserName() || ve.msg( 'visualeditor-collab-user-placeholder', authorId )
+		);
 	} );
 };

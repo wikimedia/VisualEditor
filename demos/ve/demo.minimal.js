@@ -12,10 +12,10 @@
 	/* eslint-enable no-jquery/no-global-selector */
 	// Set up the platform and wait for i18n messages to load
 	new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise()
-		.fail( function () {
+		.fail( () => {
 			$instance.text( 'Sorry, this browser is not supported.' );
 		} )
-		.done( function () {
+		.done( () => {
 			// Create the target
 			const target = new ve.init.sa.Target();
 
@@ -42,11 +42,11 @@
 			} );
 
 			// Button and textarea for showing HTML output
-			const toHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert to HTML', icon: 'expand' } ).on( 'click', function () {
+			const toHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert to HTML', icon: 'expand' } ).on( 'click', () => {
 				// Get the current HTML from the surface and display
 				htmlInput.setValue( target.getSurface().getHtml() );
 			} );
-			const fromHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert from HTML', icon: 'collapse' } ).on( 'click', function () {
+			const fromHtmlButton = new OO.ui.ButtonWidget( { label: 'Convert from HTML', icon: 'collapse' } ).on( 'click', () => {
 				setSurface( htmlInput.getValue() );
 			} );
 			const convertButtons = new OO.ui.ButtonGroupWidget( {

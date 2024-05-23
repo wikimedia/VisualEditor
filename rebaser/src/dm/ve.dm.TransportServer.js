@@ -47,14 +47,12 @@ ve.dm.TransportServer.prototype.onConnection = function ( getRoom, socket ) {
 		return function () {
 			const args = Array.prototype.slice.call( arguments );
 			args.splice( 0, 0, context );
-			return server.ensureLoaded( docName ).then( function () {
-				return f.apply( server, args );
-			} );
+			return server.ensureLoaded( docName ).then( () => f.apply( server, args ) );
 		};
 	}
 
 	socket.join( docName );
-	return server.ensureLoaded( docName ).then( function () {
+	return server.ensureLoaded( docName ).then( () => {
 		const context = server.authenticate( docName, authorId, token );
 		context.broadcast = function () {
 			const room = getRoom( docName );

@@ -28,7 +28,7 @@ ve.dm.DocumentStore = function VeDmDocumentStore( storageClient, dbName, logger 
  */
 ve.dm.DocumentStore.prototype.connect = function () {
 	const documentStore = this;
-	return this.storageClient.connect().then( function ( client ) {
+	return this.storageClient.connect().then( ( client ) => {
 		const db = client.db( documentStore.dbName );
 		documentStore.logger.logServerEvent( { type: 'DocumentStore#connected', dbName: documentStore.dbName }, 'info' );
 		documentStore.db = db;
@@ -38,7 +38,7 @@ ve.dm.DocumentStore.prototype.connect = function () {
 			{ $setOnInsert: { serverId: Math.random().toString( 36 ).slice( 2 ) } },
 			{ upsert: true, returnDocument: 'after' }
 		);
-	} ).then( function ( result ) {
+	} ).then( ( result ) => {
 		documentStore.serverId = result.value.serverId;
 	} );
 };
@@ -63,7 +63,7 @@ ve.dm.DocumentStore.prototype.load = function ( docName ) {
 		{ docName: docName },
 		{ $setOnInsert: { start: 0, transactions: [], stores: [] } },
 		{ upsert: true, returnDocument: 'after' }
-	).then( function ( result ) {
+	).then( ( result ) => {
 		const length = result.value.transactions.length || 0;
 		documentStore.logger.logServerEvent( { type: 'DocumentStore#loaded', docName: docName, length: length } );
 		documentStore.startForDoc.set( docName, result.value.start + length );
@@ -84,8 +84,7 @@ ve.dm.DocumentStore.prototype.load = function ( docName ) {
  * @return {Promise} Resolves when saved
  */
 ve.dm.DocumentStore.prototype.onNewChange = function ( docName, change ) {
-	const documentStore = this,
-		serializedChange = change.serialize( true ),
+	const serializedChange = change.serialize( true ),
 		expectedStart = this.startForDoc.get( docName ) || 0;
 
 	if ( expectedStart !== serializedChange.start ) {
@@ -97,13 +96,11 @@ ve.dm.DocumentStore.prototype.onNewChange = function ( docName, change ) {
 		{
 			$push: {
 				transactions: { $each: serializedChange.transactions },
-				stores: { $each: serializedChange.stores || serializedChange.transactions.map( function () {
-					return null;
-				} ) }
+				stores: { $each: serializedChange.stores || serializedChange.transactions.map( () => null ) }
 			}
 		}
-	).then( function () {
-		documentStore.logger.logServerEvent( {
+	).then( () => {
+		this.logger.logServerEvent( {
 			type: 'DocumentStore#onNewChange',
 			docName: docName,
 			start: serializedChange.start,

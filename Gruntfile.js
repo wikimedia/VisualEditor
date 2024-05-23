@@ -512,13 +512,13 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'git-status', function () {
 		const done = this.async();
 		// Are there unstaged changes?
-		require( 'child_process' ).exec( 'git ls-files --modified', function ( err, stdout, stderr ) {
+		require( 'child_process' ).exec( 'git ls-files --modified', ( err, stdout, stderr ) => {
 			const ret = err || stderr || stdout;
 			if ( ret ) {
 				grunt.log.error( 'Unstaged changes in these files:' );
 				grunt.log.error( ret );
 				// Show a condensed diff
-				require( 'child_process' ).exec( 'git diff -U1 | tail -n +3', function ( err2, stdout2, stderr2 ) {
+				require( 'child_process' ).exec( 'git diff -U1 | tail -n +3', ( err2, stdout2, stderr2 ) => {
 					grunt.log.write( err2 || stderr2 || stdout2 );
 					done( false );
 				} );

@@ -106,7 +106,7 @@ module.exports = function ( grunt ) {
 			// eslint-disable-next-line security/detect-non-literal-regexp
 			const rComment = new RegExp( '<!-- ' + id + ' -->', 'm' );
 			if ( typeof replacement === 'function' ) {
-				replacement( function ( response ) {
+				replacement( ( response ) => {
 					const output = input.replace( rComment, response );
 					callback( output );
 				} );
@@ -157,9 +157,7 @@ module.exports = function ( grunt ) {
 				configScript +=
 					indent + '\tve.messagePaths = ' +
 					stringifyObject(
-						i18n.map( function ( path ) {
-							return pathPrefix + path;
-						} )
+						i18n.map( ( path ) => pathPrefix + path )
 					).replace( /\n/g, '\n\t' + indent ) + ';\n';
 
 				if ( langList ) {
@@ -167,12 +165,8 @@ module.exports = function ( grunt ) {
 						stringifyObject(
 							Array.from( new Set(
 								grunt.file.expand(
-									i18n.map( function ( path ) {
-										return path + '*.json';
-									} )
-								).map( function ( file ) {
-									return file.split( '/' ).pop().slice( 0, -5 );
-								} )
+									i18n.map( ( path ) => path + '*.json' )
+								).map( ( file ) => file.split( '/' ).pop().slice( 0, -5 ) )
 							) ).sort()
 						).replace( /\n\t*/g, ' ' ) +
 						';\n';
@@ -195,13 +189,13 @@ module.exports = function ( grunt ) {
 
 		grunt.util.async.forEachSeries(
 			Object.keys( placeholders ),
-			function ( id, next ) {
-				placeholder( text, id.toUpperCase(), placeholders[ id ], function ( newText ) {
+			( id, next ) => {
+				placeholder( text, id.toUpperCase(), placeholders[ id ], ( newText ) => {
 					text = newText;
 					next();
 				} );
 			},
-			function () {
+			() => {
 				grunt.file.write( targetFile, text );
 				grunt.log.ok( 'File "' + targetFile + '" written.' );
 

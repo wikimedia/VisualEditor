@@ -42,8 +42,7 @@ ve.dm.ProtocolServer.static.palette = [
  * @return {Promise} Resolves when loaded
  */
 ve.dm.ProtocolServer.prototype.ensureLoaded = function ( docName ) {
-	const documentStore = this,
-		rebaseServer = this.rebaseServer;
+	const rebaseServer = this.rebaseServer;
 
 	let loading = this.loadingForDoc.get( docName );
 
@@ -51,8 +50,8 @@ ve.dm.ProtocolServer.prototype.ensureLoaded = function ( docName ) {
 		return loading;
 	}
 	this.logger.logServerEvent( { type: 'ProtocolServer#load', docName: docName } );
-	loading = this.documentStore.load( docName ).then( function ( change ) {
-		documentStore.logger.logServerEvent( {
+	loading = this.documentStore.load( docName ).then( ( change ) => {
+		this.logger.logServerEvent( {
 			type: 'ProtocolServer#loaded',
 			docName: docName,
 			length: change.getLength()

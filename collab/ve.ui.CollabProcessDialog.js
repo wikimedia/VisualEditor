@@ -130,7 +130,7 @@ ve.ui.HostCollabProcessDialog.prototype.onButtonClick = function () {
 	const dialog = this;
 	ve.collab.initPeerServer();
 	const collabUrl = new URL( location.href );
-	ve.collab.peerServer.peer.on( 'open', function ( newId ) {
+	ve.collab.peerServer.peer.on( 'open', ( newId ) => {
 		collabUrl.searchParams.set( 'collabSession', newId );
 		dialog.copyTextLayout.textInput.setValue( collabUrl );
 		dialog.stack.setItem( dialog.copyPanel );

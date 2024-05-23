@@ -1,5 +1,5 @@
-$( function () {
-	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( function () {
+$( () => {
+	new ve.init.sa.Platform( ve.messagePaths ).initialize().done( () => {
 		const documentNameInput = new OO.ui.TextInputWidget( {
 				placeholder: OO.ui.msg( 'visualeditor-rebase-client-document-name' )
 			} ),

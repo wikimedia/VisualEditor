@@ -4,7 +4,7 @@
  * @copyright See AUTHORS.txt
  */
 
-new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( function () {
+new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( () => {
 	/* eslint-disable no-jquery/no-global-selector */
 	const $toolbar = $( '.ve-demo-targetToolbar' ),
 		$editor = $( '.ve-demo-editor' ),
@@ -41,8 +41,8 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 		currentDir = target.$element.css( 'direction' ) || 'ltr';
 
 	// HACK: Prepend a qqx/message keys option to the list
-	languageInput.dialogs.on( 'opening', function ( window, opening ) {
-		opening.then( function () {
+	languageInput.dialogs.on( 'opening', ( window, opening ) => {
+		opening.then( () => {
 			const searchWidget = languageInput.dialogs.currentWindow.searchWidget;
 			searchWidget.filteredLanguageResultWidgets.unshift(
 				new ve.ui.LanguageResultWidget( {
@@ -75,7 +75,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 
 	deviceSelect.selectItemByData( device );
 
-	deviceSelect.on( 'select', function ( item ) {
+	deviceSelect.on( 'select', ( item ) => {
 		location.href = location.href
 			.replace( device, item.getData() )
 			.replace( /mobile-(apex|wikimediaui)+/, 'mobile' );
@@ -83,7 +83,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 
 	themeSelect.selectItemByData( theme );
 
-	themeSelect.on( 'select', function ( item ) {
+	themeSelect.on( 'select', ( item ) => {
 		if ( item.getData() === 'wikimediaui' ) {
 			location.href = location.href.replace( '.html', '-wikimediaui.html' );
 		} else {
@@ -95,7 +95,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 	// Dir doesn't change on init but styles need to be set
 	updateStylesFromDir();
 
-	languageInput.on( 'change', function ( lang, dir ) {
+	languageInput.on( 'change', ( lang, dir ) => {
 		if ( dir === currentDir && lang !== 'qqx' && ve.availableLanguages.indexOf( lang ) === -1 ) {
 			return;
 		}
@@ -120,7 +120,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 
 		// HACK: Re-initialize page to load message files
 		ve.init.target.teardownToolbar();
-		ve.init.platform.initialize().done( function () {
+		ve.init.platform.initialize().done( () => {
 			for ( let i = 0; i < ve.demo.surfaceContainers.length; i++ ) {
 				ve.demo.surfaceContainers[ i ].reload( currentLang, currentDir );
 			}
@@ -164,7 +164,7 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 		target.$element.append( surfaceContainer.$element );
 	}
 
-	addSurfaceContainerButton.on( 'click', function () {
+	addSurfaceContainerButton.on( 'click', () => {
 		addSurfaceContainer();
 	} );
 
@@ -185,18 +185,18 @@ new ve.init.sa.Platform( ve.messagePaths ).getInitializedPromise().then( functio
 	createSurfacesFromHash( location.hash );
 	ve.init.target.once( 'surfaceReady', ve.collab.join );
 
-	$( window ).on( 'hashchange', function () {
+	$( window ).on( 'hashchange', () => {
 		if ( hashChanging ) {
 			return;
 		}
 		hashChanging = true;
-		ve.demo.surfaceContainers.slice().forEach( function ( container ) {
+		ve.demo.surfaceContainers.slice().forEach( ( container ) => {
 			container.destroy();
 		} );
 		createSurfacesFromHash( location.hash );
 		hashChanging = false;
 	} );
-}, function () {
+}, () => {
 	// eslint-disable-next-line no-jquery/no-global-selector
 	$( '.ve-demo-editor' ).text( 'VisualEditor not supported in this browser.' );
 } );

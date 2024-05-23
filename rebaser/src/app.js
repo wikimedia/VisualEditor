@@ -27,18 +27,18 @@ function initApp( options ) {
 	app.use( express.static( __dirname + '/../..' ) );
 	app.set( 'view engine', 'ejs' );
 
-	app.get( '/', function ( req, res ) {
+	app.get( '/', ( req, res ) => {
 		res.render( 'index' );
 	} );
 
 	// eslint-disable-next-line prefer-regex-literals
-	app.get( new RegExp( '/doc/edit/(.*)' ), function ( req, res ) {
+	app.get( new RegExp( '/doc/edit/(.*)' ), ( req, res ) => {
 		const docName = req.params[ 0 ];
 		res.render( 'editor', { docName: docName } );
 	} );
 
 	// eslint-disable-next-line prefer-regex-literals
-	app.get( new RegExp( '/doc/raw/(.*)' ), function ( req, res ) {
+	app.get( new RegExp( '/doc/raw/(.*)' ), ( req, res ) => {
 		// TODO return real data
 		// In order to provide HTML here, we'd need all of ve.dm (Document, Converter, all nodes)
 		// and none of that code is likely to work in nodejs without some work because of how heavily
@@ -56,14 +56,12 @@ function initApp( options ) {
 	app.transportServer = new ve.dm.TransportServer( protocolServer );
 	app.logger.log( 'info', 'Connecting to document store' );
 
-	return documentStore.connect().then( function () {
+	return documentStore.connect().then( () => {
 		const dropDatabase = ( process.argv.includes( '--drop' ) );
 		if ( dropDatabase ) {
 			app.logger.log( 'info', 'Dropping database' );
 		}
-		return ( dropDatabase ? documentStore.dropDatabase() : Promise.resolve() ).then( function () {
-			return app;
-		} );
+		return ( dropDatabase ? documentStore.dropDatabase() : Promise.resolve() ).then( () => app );
 	} );
 }
 
@@ -73,7 +71,7 @@ function createServer( app ) {
 	// incoming client requests
 	let server;
 
-	return new Promise( function ( resolve ) {
+	return new Promise( ( resolve ) => {
 		server = http.createServer( app ).listen(
 			app.conf.port,
 			app.conf.interface,
@@ -87,7 +85,7 @@ function createServer( app ) {
 				io.sockets.in.bind( io.sockets )
 			)
 		);
-	} ).then( function () {
+	} ).then( () => {
 		app.logger.log( 'info',
 			'Worker ' + process.pid + ' listening on ' + ( app.conf.interface || '*' ) + ':' + app.conf.port );
 		return server;

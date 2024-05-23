@@ -18,9 +18,7 @@ ve.collab = {};
  */
 ve.collab.serialize = function ( value ) {
 	if ( Array.isArray( value ) ) {
-		return value.map( function ( item ) {
-			return ve.collab.serialize( item );
-		} );
+		return value.map( ( item ) => ve.collab.serialize( item ) );
 	} else if ( value === null || typeof value !== 'object' ) {
 		return value;
 	} else if ( value.constructor === Object ) {
@@ -63,12 +61,12 @@ ve.collab.initPeerServer = function () {
 		{}
 	);
 	ve.collab.peerServer.peer = ve.collab.newPeer();
-	ve.collab.peerServer.peer.on( 'open', function ( id ) {
+	ve.collab.peerServer.peer.on( 'open', ( id ) => {
 		/* eslint-disable-next-line no-console */
 		console.log( 'Open. Now in another browser window, do:\nve.collab.initPeerClient( \'' + id + '\' );' );
 		ve.collab.initPeerClient( id, true );
 	} );
-	ve.collab.peerServer.peer.on( 'connection', function ( conn ) {
+	ve.collab.peerServer.peer.on( 'connection', ( conn ) => {
 		ve.collab.peerServer.onConnection( conn );
 	} );
 };
@@ -93,16 +91,16 @@ ve.collab.initPeerClient = function ( serverId, isMain ) {
 		align: 'after'
 	} );
 
-	peerClient.on( 'open', function ( /* id */ ) {
+	peerClient.on( 'open', ( /* id */ ) => {
 		const conn = peerClient.connect( serverId );
 		// On old js-BinaryPack (before https://github.com/peers/js-binarypack/pull/10 ),
 		// you need JSON serialization, else it crashes on Unicode code points over U+FFFF
 		// var conn = peerClient.connect( serverId, { serialization: 'json' } );
-		conn.on( 'open', function () {
+		conn.on( 'open', () => {
 			surface.model.createSynchronizer( 'foo', { peerConnection: conn } );
 			surface.model.synchronizer.commitLength = completeHistory.getLength();
 			surface.model.synchronizer.sentLength = completeHistory.getLength();
-			surface.model.synchronizer.once( 'initDoc', function ( error ) {
+			surface.model.synchronizer.once( 'initDoc', ( error ) => {
 				if ( error ) {
 					OO.ui.alert(
 						// eslint-disable-next-line no-jquery/no-append-html
@@ -156,7 +154,7 @@ ve.collab.join = function () {
 ve.collab.start = function ( serverId ) {
 	if ( serverId ) {
 		// Join an existing session
-		ve.init.target.surface.dialogs.openWindow( 'joinCollabDialog' ).closing.then( function ( val ) {
+		ve.init.target.surface.dialogs.openWindow( 'joinCollabDialog' ).closing.then( ( val ) => {
 			if ( val !== 'accept' ) {
 				return;
 			}

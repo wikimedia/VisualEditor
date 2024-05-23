@@ -43,7 +43,7 @@ const self = module.exports = {
 		// (which will prepend intro.css without it being stripped
 		// like recess would).
 		const targets = { default: [] };
-		resources.forEach( function ( filepath ) {
+		resources.forEach( ( filepath ) => {
 			if ( typeof filepath !== 'object' ) {
 				filepath = { default: filepath };
 			}

@@ -19,7 +19,7 @@
 		trigger = trigger.toString();
 		const parts = trigger.split( '+' );
 		$trigger.text( trigger );
-		parts.forEach( function ( part ) {
+		parts.forEach( ( part ) => {
 			const key = part.replace( '\\', '\\\\' ).replace( '"', '\\"' );
 			$( '.key[rel~="' + key + '"]' ).addClass( 'active' );
 		} );
@@ -27,7 +27,7 @@
 
 	// Initialization
 
-	modifierKeys.forEach( function ( modifierKey ) {
+	modifierKeys.forEach( ( modifierKey ) => {
 		$modifiers.append(
 			$( '<li>' ).append(
 				$( '<span>' )
@@ -37,7 +37,7 @@
 			)
 		);
 	} );
-	primaryKeys.forEach( function ( primaryKey ) {
+	primaryKeys.forEach( ( primaryKey ) => {
 		$primary.append(
 			$( '<li>' ).append(
 				$( '<span>' )
@@ -47,7 +47,7 @@
 			)
 		);
 	} );
-	Object.keys( keyAliases ).forEach( function ( key ) {
+	Object.keys( keyAliases ).forEach( ( key ) => {
 		$aliases.append(
 			$( '<li>' )
 				.append( $( '<span>' ).addClass( 'key alias' ).text( key ) )

@@ -58,10 +58,10 @@
 				}
 
 				function addSetTimeoutListeners( node, eventName ) {
-					node.addEventListener( eventName, function ( e ) {
+					node.addEventListener( eventName, ( e ) => {
 						console.log( eventName + showEventCode( e ) + ': ' +
 							JSON.stringify( node.innerHTML ) );
-						setTimeout( function () {
+						setTimeout( () => {
 							console.log( 'setTimeout from ' + eventName +
 								showEventCode( e ) + ': ' +
 								JSON.stringify( node.innerHTML ) );
@@ -69,7 +69,7 @@
 					} );
 				}
 
-				eventNames.forEach( function ( eventName ) {
+				eventNames.forEach( ( eventName ) => {
 					onEvents[ eventName ] = makeListener( 'on ' + eventName );
 					afterEvents[ eventName ] = makeListener(
 						'after ' + eventName );

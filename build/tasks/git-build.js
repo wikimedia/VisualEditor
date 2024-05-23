@@ -8,7 +8,7 @@ module.exports = function ( grunt ) {
 
 	grunt.registerTask( 'git-build', function () {
 		const done = this.async();
-		require( 'child_process' ).exec( 'git rev-parse HEAD', function ( err, stout, stderr ) {
+		require( 'child_process' ).exec( 'git rev-parse HEAD', ( err, stout, stderr ) => {
 			if ( !stout || err || stderr ) {
 				grunt.log.error( err || stderr );
 				done( false );

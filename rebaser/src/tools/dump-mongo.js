@@ -8,12 +8,12 @@ new mongodb.MongoClient(
 	new mongodb.Server( 'localhost', 27017 ),
 	// eslint-disable-next-line camelcase
 	{ native_parser: true }
-).connect().then( function ( client ) {
+).connect().then( ( client ) => {
 	const db = client.db( 'test' );
-	return db.collection( 'vedocstore' ).find().toArray().then( function ( result ) {
+	return db.collection( 'vedocstore' ).find().toArray().then( ( result ) => {
 		console.log( JSON.stringify( result ) );
 		client.close();
 	} );
-} ).catch( function ( err ) {
+} ).catch( ( err ) => {
 	console.error( err );
 } );
