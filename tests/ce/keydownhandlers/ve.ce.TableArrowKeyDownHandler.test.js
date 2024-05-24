@@ -70,7 +70,12 @@ QUnit.test( 'special key down: table arrow keys (complex movements)', ( assert )
 						{ type: '/paragraph' },
 						{ type: '/tableCell' }
 					];
-					data.splice.apply( data, [ 169, 0 ].concat( { type: 'tableRow' }, tableCell, tableCell, tableCell, tableCell, tableCell, tableCell, { type: '/tableRow' } ) );
+					data.splice(
+						169, 0,
+						{ type: 'tableRow' },
+						...tableCell, ...tableCell, ...tableCell, ...tableCell, ...tableCell, ...tableCell,
+						{ type: '/tableRow' }
+					);
 				},
 				expectedRangeOrSelection: {
 					type: 'table',

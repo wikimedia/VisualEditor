@@ -51,10 +51,10 @@ ve.dm.TableRowNode.static.createData = function ( options ) {
 
 	const cellCount = options.cellCount || 1;
 
-	let data = [];
+	const data = [];
 	data.push( { type: 'tableRow' } );
 	for ( let i = 0; i < cellCount; i++ ) {
-		data = data.concat( ve.dm.TableCellNode.static.createData( {
+		ve.batchPush( data, ve.dm.TableCellNode.static.createData( {
 			style: Array.isArray( options.style ) ? options.style[ i ] : options.style
 		} ) );
 	}

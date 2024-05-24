@@ -95,7 +95,7 @@ ve.dm.TableCellNode.static.createData = function ( options ) {
 		{ type: 'paragraph', internal: { generated: 'wrapper' } },
 		{ type: '/paragraph' }
 	];
-	return [ opening ].concat( content ).concat( [ { type: '/tableCell' } ] );
+	return [ opening ].concat( content, { type: '/tableCell' } );
 };
 
 ve.dm.TableCellNode.static.describeChange = function ( key, change ) {

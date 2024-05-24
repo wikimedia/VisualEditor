@@ -29,7 +29,7 @@ ve.dm.BranchNode = function VeDmBranchNode( element, children ) {
 
 	// TODO: children is only ever used in tests
 	if ( Array.isArray( children ) && children.length ) {
-		this.splice.apply( this, [ 0, 0 ].concat( children ) );
+		this.splice( 0, 0, ...children );
 	}
 };
 

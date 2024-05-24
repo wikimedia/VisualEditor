@@ -289,7 +289,7 @@ ve.dm.Surface.prototype.resetHistoryTrackingInterval = function () {
 ve.dm.Surface.prototype.getHistory = function () {
 	const appliedUndoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
 	if ( this.newTransactions.length > 0 ) {
-		return appliedUndoStack.concat( [ { transactions: this.newTransactions.slice( 0 ) } ] );
+		appliedUndoStack.push( { transactions: this.newTransactions.slice( 0 ) } );
 	}
 	return appliedUndoStack;
 };

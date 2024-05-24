@@ -325,7 +325,7 @@ QUnit.test( 'special key down: linear backspace/delete', ( assert ) => {
 				expectedData: function ( data ) {
 					const paragraph = data.splice( 14, 5 );
 					data.splice( 13, 2 ); // Remove the empty listItem
-					data.splice.apply( data, [ 14, 0 ].concat( paragraph ) );
+					data.splice( 14, 0, ...paragraph );
 				},
 				expectedRangeOrSelection: new ve.Range( 18 ),
 				msg: 'Non-empty multi-item list at end of document unwrapped by delete'

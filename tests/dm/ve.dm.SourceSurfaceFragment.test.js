@@ -17,9 +17,11 @@ QUnit.test( 'insertContent/insertDocument', ( assert ) => {
 				'a',
 				{ type: '/heading' }
 			],
-			expected: [ { type: 'paragraph' } ]
-				.concat( '<h1>a</h1>'.split( '' ) )
-				.concat( [ { type: '/paragraph' } ] )
+			expected: [
+				{ type: 'paragraph' },
+				...'<h1>a</h1>',
+				{ type: '/paragraph' }
+			]
 		},
 		{
 			msg: 'Simple text insert',

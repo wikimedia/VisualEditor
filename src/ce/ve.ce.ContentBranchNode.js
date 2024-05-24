@@ -224,6 +224,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		annotationSet = new ve.dm.AnnotationSet( store ),
 		doc = this.getElementDocument(),
 		wrapper = doc.createElement( 'div' ),
+		annotatedHtml = [],
 		annotationStack = [],
 		nodeStack = [],
 		unicornInfo = {
@@ -233,7 +234,6 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 		};
 
 	let annotationsChanged,
-		annotatedHtml = [],
 		current = wrapper,
 		buffer = '';
 	// Source mode optimization
@@ -284,7 +284,7 @@ ve.ce.ContentBranchNode.prototype.getRenderedContents = function () {
 
 	// Gather annotated HTML from the child nodes
 	for ( let i = 0, ilen = this.children.length; i < ilen; i++ ) {
-		annotatedHtml = annotatedHtml.concat( this.children[ i ].getAnnotatedHtml() );
+		ve.batchPush( annotatedHtml, this.children[ i ].getAnnotatedHtml() );
 	}
 
 	// Set relCursor to collapsed selection offset, or -1 if none

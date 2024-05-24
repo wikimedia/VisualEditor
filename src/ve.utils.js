@@ -325,24 +325,17 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 		removed = [];
 	const batchSize = 1024;
 
-	let splice;
-	if ( !Array.isArray( arr ) ) {
-		splice = arr.splice;
-	} else {
-		splice = Array.prototype.splice;
-	}
-
 	if ( data.length === 0 ) {
 		// Special case: data is empty, so we're just doing a removal
 		// The code below won't handle that properly, so we do it here
-		return splice.call( arr, offset, remove );
+		return arr.splice( offset, remove );
 	}
 
 	while ( index < data.length ) {
 		// Call arr.splice( offset, remove, i0, i1, i2, …, i1023 );
 		// Only set remove on the first call, and set it to zero on subsequent calls
-		const spliced = splice.apply(
-			arr, [ index + offset, toRemove ].concat( data.slice( index, index + batchSize ) )
+		const spliced = arr.splice(
+			index + offset, toRemove, ...data.slice( index, index + batchSize )
 		);
 		if ( toRemove > 0 ) {
 			removed = spliced;
@@ -356,7 +349,7 @@ ve.batchSplice = function ( arr, offset, remove, data ) {
 /**
  * Splice one array into another, replicating any holes
  *
- * Similar to arr.splice.apply( arr, [ offset, remove ].concat( data ) ), except holes in
+ * Similar to arr.splice( offset, remove, ...data ), except holes in
  * data remain holes in arr. Optimized for length changes that are negative, zero, or
  * fairly small positive.
  *
@@ -433,14 +426,12 @@ ve.batchPush = function ( arr, data ) {
 	const batchSize = 1024;
 	if ( batchSize >= data.length ) {
 		// Avoid slicing for small lists
-		return arr.push.apply( arr, data );
+		return arr.push( ...data );
 	}
 	let length;
 	while ( index < data.length ) {
 		// Call arr.push( i0, i1, i2, …, i1023 );
-		length = arr.push.apply(
-			arr, data.slice( index, index + batchSize )
-		);
+		length = arr.push( ...data.slice( index, index + batchSize ) );
 		index += batchSize;
 	}
 	return length;

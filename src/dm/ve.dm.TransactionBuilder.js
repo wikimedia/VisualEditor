@@ -160,13 +160,12 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 		// newDoc is brand new, so use doc's internal list as a base
 		listData = doc.getData( listNodeRange, true );
 	}
-	let i, len;
-	for ( i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
+	for ( let i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
 		linearData = new ve.dm.ElementLinearData(
 			doc.getStore(),
 			newDoc.getData( listMerge.newItemRanges[ i ], true )
 		);
-		listData = listData.concat( linearData.data );
+		ve.batchPush( listData, linearData.data );
 	}
 
 	const txBuilder = new ve.dm.TransactionBuilder();
@@ -202,7 +201,7 @@ ve.dm.TransactionBuilder.static.newFromDocumentInsertion = function ( doc, offse
 		// offset is within listNodeRange
 		// Merge data into listData, then only replace the internal list
 		// Find the internalItem we are inserting into
-		i = 0;
+		let i = 0;
 		// Find item node in doc
 		let spliceItemRange;
 		while (

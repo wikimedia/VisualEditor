@@ -81,7 +81,7 @@
 	 */
 	function removeType( obj, ...keys ) {
 		const value = keys.pop(),
-			arr = ve.getProp.apply( obj, [ obj ].concat( keys ) );
+			arr = ve.getProp( obj, ...keys );
 
 		if ( arr ) {
 			const index = arr.indexOf( value );
@@ -249,7 +249,7 @@
 	 */
 	ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
 		const nodeName = node.nodeName.toLowerCase();
-		let types;
+		const types = [];
 
 		const byRegistrationOrderDesc = ( a, b ) => this.registrationOrder[ b ] - this.registrationOrder[ a ];
 
@@ -287,6 +287,7 @@
 			}
 
 			if ( matchTypes !== null ) {
+				// Don't modify allowedTypes as it is a pointer to the orignal array
 				allowedTypes = allowedTypes.concat( matchTypes );
 			}
 
@@ -312,14 +313,13 @@
 		const matchWithFunc = ( tag ) => {
 			let queue = [],
 				queue2 = [];
-			let j;
-			for ( j = 0; j < types.length; j++ ) {
+			for ( let j = 0; j < types.length; j++ ) {
 				// Queue string matches and regexp matches separately
-				queue = queue.concat( ve.getProp( this.modelsByTypeAndTag, 1, types[ j ], tag ) || [] );
+				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 1, types[ j ], tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
-				queue2 = queue2.concat( matchTypeRegExps( types[ j ], tag, true ) );
+				ve.batchPush( queue2, matchTypeRegExps( types[ j ], tag, true ) );
 			}
 			// Filter out matches which contain types which aren't allowed
 			queue = queue.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
@@ -332,8 +332,8 @@
 			// Try string matches first, then regexp matches
 			queue.sort( byRegistrationOrderDesc );
 			queue2.sort( byRegistrationOrderDesc );
-			queue = queue.concat( queue2 );
-			for ( j = 0; j < queue.length; j++ ) {
+			ve.batchPush( queue, queue2 );
+			for ( let j = 0; j < queue.length; j++ ) {
 				if ( this.registry[ queue[ j ] ].static.matchFunction( node ) ) {
 					return queue[ j ];
 				}
@@ -345,14 +345,13 @@
 			let queue = [],
 				queue2 = [],
 				winningName = null;
-			let j;
-			for ( j = 0; j < types.length; j++ ) {
+			for ( let j = 0; j < types.length; j++ ) {
 				// Queue string and regexp matches separately
-				queue = queue.concat( ve.getProp( this.modelsByTypeAndTag, 0, types[ j ], tag ) || [] );
+				ve.batchPush( queue, ve.getProp( this.modelsByTypeAndTag, 0, types[ j ], tag ) || [] );
 				if ( excludeTypes ) {
 					queue = OO.simpleArrayDifference( queue, excludeTypes );
 				}
-				queue2 = queue2.concat( matchTypeRegExps( types[ j ], tag, false ) );
+				ve.batchPush( queue2, matchTypeRegExps( types[ j ], tag, false ) );
 			}
 			// Filter out matches which contain types which aren't allowed
 			queue = queue.filter( ( name ) => allTypesAllowed( this.lookup( name ) ) );
@@ -365,7 +364,7 @@
 			// Only try regexp matches if there are no string matches
 			queue = queue.length > 0 ? queue : queue2;
 			// Find most recently registered
-			for ( j = 0; j < queue.length; j++ ) {
+			for ( let j = 0; j < queue.length; j++ ) {
 				if (
 					winningName === null ||
 					this.registrationOrder[ winningName ] < this.registrationOrder[ queue[ j ] ]
@@ -376,16 +375,15 @@
 			return winningName;
 		};
 
-		types = [];
 		if ( node.getAttribute ) {
 			if ( node.getAttribute( 'rel' ) ) {
-				types = types.concat( node.getAttribute( 'rel' ).trim().split( /\s+/ ) );
+				types.push( ...node.getAttribute( 'rel' ).trim().split( /\s+/ ) );
 			}
 			if ( node.getAttribute( 'typeof' ) ) {
-				types = types.concat( node.getAttribute( 'typeof' ).trim().split( /\s+/ ) );
+				types.push( ...node.getAttribute( 'typeof' ).trim().split( /\s+/ ) );
 			}
 			if ( node.getAttribute( 'property' ) ) {
-				types = types.concat( node.getAttribute( 'property' ).trim().split( /\s+/ ) );
+				types.push( ...node.getAttribute( 'property' ).trim().split( /\s+/ ) );
 			}
 		}
 

@@ -285,10 +285,10 @@ ve.init.sa.Platform.prototype.getUserLanguages = function () {
 ve.init.sa.Platform.prototype.initialize = function () {
 	const messagePaths = this.getMessagePaths(),
 		locale = $.i18n().locale,
+		languages = [ locale, 'en' ], // Always use 'en' as the final fallback
 		languagesCovered = {},
 		promises = [];
-	let languages = [ locale, 'en' ], // Always use 'en' as the final fallback
-		fallbacks = $.i18n.fallbacks[ locale ];
+	let fallbacks = $.i18n.fallbacks[ locale ];
 
 	if ( !VisualEditorSupportCheck() ) {
 		return ve.createDeferred().reject().promise();
@@ -309,7 +309,7 @@ ve.init.sa.Platform.prototype.initialize = function () {
 	}
 
 	if ( fallbacks ) {
-		languages = languages.concat( fallbacks );
+		languages.push( ...fallbacks );
 	}
 
 	this.userLanguages = languages;

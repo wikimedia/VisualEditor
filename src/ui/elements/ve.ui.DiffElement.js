@@ -1377,7 +1377,7 @@ ve.ui.DiffElement.prototype.getChangeDescriptionItem = function ( changes, class
 	const item = new OO.ui.OptionWidget( {
 		label: $label,
 		data: elementId,
-		classes: [ 've-ui-diffElement-attributeChange' ].concat( classes || [] )
+		classes: [ 've-ui-diffElement-attributeChange', ...classes || [] ]
 	} );
 	this.elementId++;
 	return item;
@@ -1451,16 +1451,16 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 	let start = 0; // The starting index for a range for building an annotation
 
 	// Make a new document from the diff
-	let diffDocData = linearDiff[ 0 ][ 1 ];
-	let i, ilen;
-	for ( i = 1, ilen = linearDiff.length; i < ilen; i++ ) {
-		diffDocData = diffDocData.concat( linearDiff[ i ][ 1 ] );
+	const diffDocData = linearDiff[ 0 ][ 1 ].slice();
+	const ilen = linearDiff.length;
+	for ( let i = 1; i < ilen; i++ ) {
+		ve.batchPush( diffDocData, linearDiff[ i ][ 1 ] );
 	}
 	const diffDoc = newDoc.cloneWithData( diffDocData );
 
 	// Add spans with the appropriate attributes for removes and inserts
 	// TODO: do insert and remove outside of loop
-	for ( i = 0; i < ilen; i++ ) {
+	for ( let i = 0; i < ilen; i++ ) {
 		const end = start + linearDiff[ i ][ 1 ].length;
 		if ( start !== end ) {
 			const range = new ve.Range( start, end );
@@ -1493,7 +1493,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 				domElement.setAttribute( 'data-diff-action', typeAsString );
 				const domElements = [ domElement ];
 
-				let changes = [];
+				const changes = [];
 				if ( linearDiff[ i ].annotationChanges ) {
 					linearDiff[ i ].annotationChanges.forEach( ( annotationChange ) => {
 						let attributeChanges;
@@ -1502,13 +1502,13 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 								annotationChange.oldAnnotation.getAttributes(),
 								annotationChange.newAnnotation.getAttributes()
 							);
-							changes = changes.concat( ve.dm.modelRegistry.lookup( annotationChange.newAnnotation.getType() ).static.describeChanges(
+							ve.batchPush( changes, ve.dm.modelRegistry.lookup( annotationChange.newAnnotation.getType() ).static.describeChanges(
 								attributeChanges, annotationChange.newAnnotation.getAttributes(), annotationChange.newAnnotation.getElement()
 							) );
 						} else if ( annotationChange.newAnnotation ) {
-							changes = changes.concat( annotationChange.newAnnotation.describeAdded() );
+							ve.batchPush( changes, annotationChange.newAnnotation.describeAdded() );
 						} else if ( annotationChange.oldAnnotation ) {
-							changes = changes.concat( annotationChange.oldAnnotation.describeRemoved() );
+							ve.batchPush( changes, annotationChange.oldAnnotation.describeRemoved() );
 						}
 					} );
 				}
@@ -1519,7 +1519,7 @@ ve.ui.DiffElement.prototype.annotateNode = function ( linearDiff, newNode ) {
 							attributeChange.oldAttributes,
 							attributeChange.newAttributes
 						);
-						changes = changes.concat( ve.dm.modelRegistry.lookup( element.type ).static.describeChanges(
+						ve.batchPush( changes, ve.dm.modelRegistry.lookup( element.type ).static.describeChanges(
 							attributeChanges, element.attributes, element
 						) );
 					} );

@@ -201,7 +201,7 @@ ve.ce.FocusableNode.static.getRectsForElement = function ( $element, relativeRec
 ve.ce.FocusableNode.prototype.createHighlight = function () {
 	// eslint-disable-next-line mediawiki/class-doc
 	return $( '<div>' )
-		.addClass( [ 've-ce-focusableNode-highlight' ].concat( this.getExtraHighlightClasses() ) )
+		.addClass( [ 've-ce-focusableNode-highlight', ...this.getExtraHighlightClasses() ] )
 		.prop( {
 			title: this.constructor.static.getDescription( this.model ),
 			draggable: true
@@ -328,7 +328,7 @@ ve.ce.FocusableNode.prototype.updateInvisibleIconSync = function ( showIcon ) {
 	}
 	if ( showIcon ) {
 		// Don't try to append to void tags, or unrendered tags
-		const voidAndHiddenTypes = ve.elementTypes.void.concat( 'style', 'script' );
+		const voidAndHiddenTypes = [ 'style', 'script', ...ve.elementTypes.void ];
 		const $firstElement = this.$element.not( voidAndHiddenTypes.join( ',' ) ).first();
 		this.createInvisibleIcon();
 		if (

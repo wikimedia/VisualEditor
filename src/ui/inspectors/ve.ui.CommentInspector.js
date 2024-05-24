@@ -39,8 +39,9 @@ ve.ui.CommentInspector.static.actions = [
 		label: OO.ui.deferMsg( 'visualeditor-inspector-remove-tooltip' ),
 		flags: 'destructive',
 		modes: 'edit'
-	}
-].concat( ve.ui.CommentInspector.super.static.actions );
+	},
+	...ve.ui.CommentInspector.super.static.actions
+];
 
 /* Methods */
 

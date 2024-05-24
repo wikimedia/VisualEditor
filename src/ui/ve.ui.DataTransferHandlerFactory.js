@@ -161,14 +161,14 @@ ve.ui.DataTransferHandlerFactory.prototype.getHandlerNameForItem = function ( it
 		return obj;
 	}
 
-	const names = [].concat(
+	const names = [
 		// 1. Match by kind + type (e.g. 'file' + 'text/html')
-		fetch( this.handlerNamesByKindAndType, item.kind, item.type ),
+		...fetch( this.handlerNamesByKindAndType, item.kind, item.type ),
 		// 2. Match by just type (e.g. 'image/jpeg')
-		fetch( this.handlerNamesByType, item.type ),
+		...fetch( this.handlerNamesByType, item.type ),
 		// 3. Match by file extension (e.g. 'csv')
-		fetch( this.handlerNamesByExtension, item.getExtension() )
-	);
+		...fetch( this.handlerNamesByExtension, item.getExtension() )
+	];
 
 	for ( let i = 0; i < names.length; i++ ) {
 		const name = names[ i ];

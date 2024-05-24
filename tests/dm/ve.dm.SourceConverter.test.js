@@ -67,7 +67,7 @@ QUnit.test( 'conversion', ( assert ) => {
 		const doc = ve.dm.sourceConverter.getModelFromSourceText( caseItem.text, caseItem.options );
 		assert.deepEqual(
 			doc.data.data,
-			[].concat( caseItem.data, [ { type: 'internalList' }, { type: '/internalList' } ] ),
+			[ ...caseItem.data, { type: 'internalList' }, { type: '/internalList' } ],
 			caseItem.msg + ': getModelFromSourceText (data)'
 		);
 		if ( caseItem.options ) {

@@ -35,11 +35,10 @@ ve.ui.UrlStringTransferHandler.static.types = [
 	// Firefox type, preserves title
 	'text/x-moz-url',
 	// Used in GNOME drag-and-drop
-	'text/x-uri'
-].concat(
+	'text/x-uri',
 	// Identify links in pasted plain text as well
-	ve.ui.UrlStringTransferHandler.super.static.types
-);
+	...ve.ui.UrlStringTransferHandler.super.static.types
+];
 
 ve.ui.UrlStringTransferHandler.static.handlesPaste = true;
 

@@ -711,7 +711,7 @@ ve.init.Target.prototype.setupToolbar = function ( surface ) {
 	this.actionGroups.forEach( ( group ) => {
 		group.align = 'after';
 	} );
-	const groups = [].concat( this.toolbarGroups, this.actionGroups );
+	const groups = [ ...this.toolbarGroups, ...this.actionGroups ];
 
 	toolbar.setup( groups, surface );
 	this.attachToolbar();

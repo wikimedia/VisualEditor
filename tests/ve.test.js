@@ -295,8 +295,8 @@ QUnit.test( 'batchSplice', ( assert ) => {
 		bigArr[ i ] = i;
 	}
 	actualRet = ve.batchSplice( actual, 2, 3, bigArr );
-	expectedRet = expected.splice.apply( expected, [ 2, 3 ].concat( bigArr.slice( 0, 1050 ) ) );
-	expected.splice.apply( expected, [ 1052, 0 ].concat( bigArr.slice( 1050 ) ) );
+	expectedRet = expected.splice( 2, 3, ...bigArr.slice( 0, 1050 ) );
+	expected.splice( 1052, 0, ...bigArr.slice( 1050 ) );
 	assert.deepEqual( expectedRet, actualRet, 'Replacing 3 elements with 2100 elements (return value)' );
 	assert.deepEqual( expected, actual, 'Replacing 3 elements with 2100 elements (array)' );
 } );

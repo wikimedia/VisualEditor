@@ -265,7 +265,8 @@ ve.ui.CommandHelpDialog.static.sortedCommandsFromGroup = function ( groupName, p
 		}
 		auto.push( commands[ name ] );
 	} );
-	return promoted.concat( auto, demoted );
+	promoted.push( ...auto, ...demoted );
+	return promoted;
 };
 
 /* Registration */

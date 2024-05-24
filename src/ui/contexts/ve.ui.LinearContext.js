@@ -247,7 +247,7 @@ ve.ui.LinearContext.prototype.getRelatedSources = function () {
 		if ( selectedModels.length ) {
 			this.relatedSources = this.getRelatedSourcesFromModels( selectedModels );
 		}
-		this.relatedSources = this.relatedSources.concat( this.persistentSources );
+		this.relatedSources.push( ...this.persistentSources );
 	}
 
 	return this.relatedSources;

@@ -37,7 +37,7 @@ ve.ui.DSVFileTransferHandler.static.extensions = [ 'csv', 'tsv' ];
  * @inheritdoc
  */
 ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
-	let data = [];
+	const data = [];
 	const input = Papa.parse( this.reader.result );
 
 	if ( input.meta.aborted || ( input.data.length <= 0 ) ) {
@@ -69,7 +69,7 @@ ve.ui.DSVFileTransferHandler.prototype.onFileLoad = function () {
 					{ type: 'tableCell', attributes: { style: ( i === 0 ? 'header' : 'data' ) } },
 					{ type: 'paragraph', internal: { generated: 'wrapper' } }
 				);
-				data = data.concat( line[ j ].split( '' ) );
+				ve.batchPush( data, line[ j ].split( '' ) );
 				data.push(
 					{ type: '/paragraph' },
 					{ type: '/tableCell' }

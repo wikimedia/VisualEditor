@@ -126,13 +126,13 @@ QUnit.test( 'cloneFromRange', ( assert ) => {
 				msg: 'first internal item',
 				doc: 'internalData',
 				range: new ve.Range( 7, 12 ),
-				expectedData: doc.data.slice( 7, 12 ).concat( doc.data.slice( 5, 21 ) )
+				expectedData: [ ...doc.data.slice( 7, 12 ), ...doc.data.slice( 5, 21 ) ]
 			},
 			{
 				msg: 'second internal item',
 				doc: 'internalData',
 				range: doc.getInternalList().getItemNode( 1 ).getRange(),
-				expectedData: doc.data.slice( 14, 19 ).concat( doc.data.slice( 5, 21 ) )
+				expectedData: [ ...doc.data.slice( 14, 19 ), ...doc.data.slice( 5, 21 ) ]
 			},
 			{
 				msg: 'paragraph at the start',
@@ -144,7 +144,7 @@ QUnit.test( 'cloneFromRange', ( assert ) => {
 				msg: 'paragraph at the end',
 				doc: 'internalData',
 				range: new ve.Range( 21, 27 ),
-				expectedData: doc.data.slice( 21, 27 ).concat( doc.data.slice( 5, 21 ) )
+				expectedData: [ ...doc.data.slice( 21, 27 ), ...doc.data.slice( 5, 21 ) ]
 			}
 		];
 
@@ -548,8 +548,8 @@ QUnit.test( 'selectNodes', ( assert ) => {
 
 	function resolveNode( item, doc ) {
 		const newItem = ve.extendObject( {}, item );
-		newItem.node = ve.dm.example.lookupNode.apply(
-			ve.dm.example, [ doc.getDocumentNode() ].concat( item.node )
+		newItem.node = ve.dm.example.lookupNode(
+			doc.getDocumentNode(), ...item.node
 		);
 		return newItem;
 	}

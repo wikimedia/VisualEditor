@@ -1722,13 +1722,12 @@ ve.dm.example.domToDataCases = {
 	},
 	'block images': {
 		body: ve.dm.example.blockImage.html + ve.dm.example.blockImage.html,
-		data: ve.dm.example.blockImage.data.concat(
-			ve.dm.example.blockImage.data,
-			[
-				{ type: 'internalList' },
-				{ type: '/internalList' }
-			]
-		),
+		data: [
+			...ve.dm.example.blockImage.data,
+			...ve.dm.example.blockImage.data,
+			{ type: 'internalList' },
+			{ type: '/internalList' }
+		],
 		ceHtml: ve.dm.example.blockSlug +
 			ve.dm.example.blockImage.ceHtml +
 			// No block slug between two floated images
@@ -1737,10 +1736,11 @@ ve.dm.example.domToDataCases = {
 	},
 	'block image modified': {
 		body: ve.dm.example.blockImage.html,
-		data: ve.dm.example.blockImage.data.concat( [
+		data: [
+			...ve.dm.example.blockImage.data,
 			{ type: 'internalList' },
 			{ type: '/internalList' }
-		] ),
+		],
 		modify: function ( doc ) {
 			doc.commit( ve.dm.TransactionBuilder.static.newFromAnnotation(
 				doc,

@@ -2435,7 +2435,7 @@ QUnit.test( 'onDocumentDragStart/onDocumentDrop', ( assert ) => {
 				},
 				expectedData: function ( data ) {
 					const removed = data.splice( 1, 3 );
-					data.splice.apply( data, [ 7, 0 ].concat( removed ) );
+					data.splice( 7, 0, ...removed );
 				},
 				expectedSelection: new ve.dm.LinearSelection( new ve.Range( 7, 10 ) )
 			},
@@ -2658,14 +2658,12 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 		},
 		{
 			msg: 'Only block images (no suitable position)',
-			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
-				ve.dm.example.blockImage.data,
-				ve.dm.example.blockImage.data,
-				[
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				]
-			), null, ve.dm.example.baseUri ),
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [
+				...ve.dm.example.blockImage.data,
+				...ve.dm.example.blockImage.data,
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			], null, ve.dm.example.baseUri ),
 			firstRange: null,
 			lastRange: null
 		},
@@ -2704,7 +2702,7 @@ QUnit.test( 'selectFirstSelectableContentOffset/selectLastSelectableContentOffse
 } );
 
 QUnit.test( 'getViewportRange', ( assert ) => {
-	const doc = ve.dm.example.createExampleDocumentFromData( [].concat(
+	const doc = ve.dm.example.createExampleDocumentFromData( [
 		{ type: 'paragraph' },
 		// 1
 		...'Foo',
@@ -2733,18 +2731,16 @@ QUnit.test( 'getViewportRange', ( assert ) => {
 		{ type: '/paragraph' },
 		{ type: 'internalList' },
 		{ type: '/internalList' }
-	) );
+	] );
 	const cases = [
 		{
 			msg: 'Document with only an alien returns whole range',
-			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [].concat(
+			htmlOrDoc: ve.dm.example.createExampleDocumentFromData( [
 				{ type: 'alienBlock' },
 				{ type: '/alienBlock' },
-				[
-					{ type: 'internalList' },
-					{ type: '/internalList' }
-				]
-			) ),
+				{ type: 'internalList' },
+				{ type: '/internalList' }
+			] ),
 			expectedContains: new ve.Range( 0, 2 ),
 			expectedCovering: new ve.Range( 0, 2 )
 		},

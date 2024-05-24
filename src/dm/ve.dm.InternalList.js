@@ -206,23 +206,23 @@ ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
 ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
 	const itemHtmlQueue = this.getItemHtmlQueue();
 
-	let list = [];
+	const list = [];
 	list.push( { type: 'internalList' } );
 	for ( let i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
 		if ( itemHtmlQueue[ i ] !== '' ) {
 			const div = doc.createElement( 'div' );
 			div.innerHTML = itemHtmlQueue[ i ];
 			const itemData = [].concat(
-				[ { type: 'internalItem' } ],
+				{ type: 'internalItem' },
 				converter.getDataFromDomSubtree( div ),
-				[ { type: '/internalItem' } ]
+				{ type: '/internalItem' }
 			);
 			if ( !converter.isFromClipboard() ) {
 				itemData[ 0 ].attributes = { originalHtml: itemHtmlQueue[ i ] };
 			}
-			list = list.concat( itemData );
+			ve.batchPush( list, itemData );
 		} else {
-			list = list.concat( [ { type: 'internalItem' }, { type: '/internalItem' } ] );
+			list.push( { type: 'internalItem' }, { type: '/internalItem' } );
 		}
 	}
 	list.push( { type: '/internalList' } );
@@ -248,7 +248,7 @@ ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data 
 		index = this.getItemNodeCount();
 		this.keyIndexes[ groupName + '/' + key ] = index;
 
-		const itemData = [ { type: 'internalItem' } ].concat( data, [ { type: '/internalItem' } ] );
+		const itemData = [].concat( { type: 'internalItem' }, data, { type: '/internalItem' } );
 		tx = ve.dm.TransactionBuilder.static.newFromInsertion(
 			this.getDocument(),
 			this.getListNode().getRange().end,

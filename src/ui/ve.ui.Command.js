@@ -40,7 +40,7 @@ ve.ui.Command = function VeUiCommand( name, action, method, options ) {
 ve.ui.Command.prototype.execute = function ( surface, args, source ) {
 	args = args || this.args;
 	if ( this.isExecutable( surface.getModel().getFragment() ) ) {
-		return surface.executeWithSource.apply( surface, [ this.action, this.method, source ].concat( args ) );
+		return surface.executeWithSource( this.action, this.method, source, ...args );
 	} else {
 		return false;
 	}

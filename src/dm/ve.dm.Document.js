@@ -490,10 +490,10 @@ ve.dm.Document.prototype.shallowCloneFromSelection = function ( selection ) {
 	if ( selection instanceof ve.dm.LinearSelection ) {
 		return this.shallowCloneFromRange( selection.getRange() );
 	} else if ( selection instanceof ve.dm.TableSelection ) {
-		let data = [];
+		const data = [];
 		const ranges = selection.getTableSliceRanges( this );
 		for ( let i = 0, l = ranges.length; i < l; i++ ) {
-			data = data.concat( this.data.slice( ranges[ i ].start, ranges[ i ].end ) );
+			ve.batchPush( data, this.data.slice( ranges[ i ].start, ranges[ i ].end ) );
 		}
 		const linearData = new ve.dm.ElementLinearData( this.getStore(), data );
 
@@ -642,11 +642,13 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
 			//  contextOpenings + balanceOpenings + data slice + balanceClosings + contextClosings
 			linearData = new ve.dm.ElementLinearData(
 				this.getStore(),
-				contextOpenings.reverse()
-					.concat( balanceOpenings.reverse() )
-					.concat( this.data.slice( range.start, range.end ) )
-					.concat( balanceClosings )
-					.concat( contextClosings )
+				[].concat(
+					contextOpenings.reverse(),
+					balanceOpenings.reverse(),
+					this.data.slice( range.start, range.end ),
+					balanceClosings,
+					contextClosings
+				)
 			);
 			originalRange = new ve.Range(
 				contextOpenings.length + balanceOpenings.length,
@@ -683,10 +685,10 @@ ve.dm.Document.prototype.shallowCloneFromRange = function ( range ) {
  */
 ve.dm.Document.prototype.cloneFromRange = function ( range, detachedCopy, mode ) {
 	const listRange = this.getInternalList().getListNode().getOuterRange();
-	let data = ve.copy( this.getFullData( range, mode || 'roundTrip' ) );
+	const data = ve.copy( this.getFullData( range, mode || 'roundTrip' ) );
 	if ( range && ( range.start > listRange.start || range.end < listRange.end ) ) {
 		// The range does not include the entire internal list, so add it
-		data = data.concat( this.getFullData( listRange ) );
+		ve.batchPush( data, this.getFullData( listRange ) );
 	}
 	return this.cloneWithData( data, true, detachedCopy );
 };
@@ -1191,15 +1193,16 @@ ve.dm.Document.prototype.updateNodesByType = function ( addedNodes, removedNodes
  * @return {ve.dm.Node[]} Nodes of a specific type
  */
 ve.dm.Document.prototype.getNodesByType = function ( type, sort ) {
-	let nodes = [];
 	if ( !this.documentNode.length && !this.documentNode.getDocument().buildingNodeTree ) {
 		this.buildNodeTree();
 	}
+	let nodes;
 	if ( type instanceof Function ) {
+		nodes = [];
 		for ( const t in this.nodesByType ) {
 			const nodeType = ve.dm.nodeFactory.lookup( t );
 			if ( nodeType === type || nodeType.prototype instanceof type ) {
-				nodes = nodes.concat( this.getNodesByType( t ) );
+				ve.batchPush( nodes, this.getNodesByType( t ) );
 			}
 		}
 	} else {
